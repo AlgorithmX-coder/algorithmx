@@ -20,13 +20,23 @@ import {
  * A persistent outline rail (desktop) shows the four stages and the
  * learner's place, so it reads as a course, not a slideshow. */
 
-const STAGES: { key: Exclude<LessonPhase, "intro" | "done">; label: string; sub: string }[] = [
-  { key: "learn", label: "Learn", sub: "the idea" },
-  { key: "see", label: "See", sub: "a real case" },
-  { key: "try", label: "Try", sub: "hands on" },
-  { key: "check", label: "Check", sub: "prove it" },
+type StageKey = Exclude<LessonPhase, "intro" | "done">;
+const STAGES: { key: StageKey; label: string; sub: string; desc: string }[] = [
+  { key: "learn", label: "Learn", sub: "the idea", desc: "The concept in plain English, with everyday examples and a real analogy." },
+  { key: "see", label: "See", sub: "a real case", desc: "A real company this happened to, what went wrong, and what it cost them." },
+  { key: "try", label: "Try", sub: "hands on", desc: "Do it yourself in a safe lab that runs entirely in your own browser." },
+  { key: "check", label: "Check", sub: "prove it", desc: "Explain it back in your own words, then a couple of quick questions." },
 ];
 const STAGE_ORDER = STAGES.map((s) => s.key);
+
+/* Line icons for the four stages (24x24, inherit stroke via currentColor). */
+function StageIcon({ kind, size = 22 }: { kind: StageKey; size?: number }) {
+  const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
+  if (kind === "learn") return <svg {...common}><path d="M12 6C10.6 4.9 8.8 4.3 6.7 4.3c-1 0-1.9.1-2.7.4v12.6c.8-.3 1.7-.4 2.7-.4 2.1 0 3.9.6 5.3 1.7M12 6c1.4-1.1 3.2-1.7 5.3-1.7 1 0 1.9.1 2.7.4v12.6c-.8-.3-1.7-.4-2.7-.4-2.1 0-3.9.6-5.3 1.7M12 6v12.6" /></svg>;
+  if (kind === "see") return <svg {...common}><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg>;
+  if (kind === "try") return <svg {...common}><path d="M9 3.5h6M10 4v4.7L5.5 17c-.7 1.3.2 2.9 1.7 2.9h9.6c1.5 0 2.4-1.6 1.7-2.9L14 8.7V4" /><path d="M8 14.5h8" /></svg>;
+  return <svg {...common}><path d="M12 3.5l7 2.6v5.3c0 4.2-3 6.9-7 8.4-4-1.5-7-4.2-7-8.4V6.1l7-2.6z" /><path d="M9 12l2 2 4-4.4" /></svg>;
+}
 
 /* --- the outline rail --- */
 function TickDot({ state }: { state: "done" | "current" | "upcoming" }) {
@@ -121,14 +131,52 @@ function ControlTag({ control }: { control: CaseCard["control"] }) {
   );
 }
 
-/* A clean company identity mark (monogram in the brand colour). Scales
- * to any company incl. those with no usable logo; real brand SVGs can
- * be swapped in per case later. */
-function CaseLogo({ org, color, size = 40 }: { org: string; color?: string; size?: number }) {
-  const initial = (org.replace(/[^A-Za-z0-9]/g, "")[0] ?? "?").toUpperCase();
+/* --- company identity ---
+ * A proper brand lockup: an authentic icon where the brand has a simple
+ * reproducible one (LinkedIn), otherwise a wordmark set in the brand's
+ * real colour. Real logos are used only to identify the real company a
+ * documented case is about (editorial / nominative use); we never draw
+ * an inaccurate mark. Official SVGs can be dropped in via BRAND_SVG. */
+type BrandSpec = { name: string; color: string; lower?: boolean; icon?: (s: number) => ReactNode };
+
+/* Slot for future official brand SVGs, keyed by lower-cased match token. */
+const BRAND_SVG: Record<string, (s: number) => ReactNode> = {
+  linkedin: (s) => (
+    <svg width={s} height={s} viewBox="0 0 32 32" aria-hidden style={{ flexShrink: 0 }}>
+      <rect width="32" height="32" rx="6" fill="#0A66C2" />
+      <circle cx="9.4" cy="9.1" r="2" fill="#fff" />
+      <rect x="7.5" y="12.4" width="3.8" height="12.1" fill="#fff" />
+      <path d="M13.6 12.4h3.65v1.65h.05c.51-.9 1.75-1.85 3.6-1.85 3.85 0 4.56 2.4 4.56 5.52v6.79h-3.8v-6.02c0-1.44-.03-3.28-2.05-3.28-2.05 0-2.36 1.56-2.36 3.17v6.13h-3.8V12.4z" fill="#fff" />
+    </svg>
+  ),
+};
+
+const BRANDS: { test: RegExp; spec: BrandSpec }[] = [
+  { test: /linkedin/i, spec: { name: "LinkedIn", color: "#0A66C2", icon: BRAND_SVG.linkedin } },
+  { test: /talktalk/i, spec: { name: "talktalk", color: "#E6007E", lower: true } },
+  { test: /rockyou/i, spec: { name: "RockYou", color: "#E0524A" } },
+  { test: /\bdyn\b|mirai/i, spec: { name: "Dyn", color: "#F2681C" } },
+];
+
+function brandFor(org: string, color?: string): BrandSpec {
+  const hit = BRANDS.find((b) => b.test.test(org));
+  if (hit) return hit.spec;
+  return { name: org, color: color ?? T.primary };
+}
+
+/* The identity lockup: [mark] Wordmark. `mark` is the authentic icon
+ * where we have one, else a brand-coloured tab that anchors the wordmark
+ * so it reads as a logo, not just coloured text. */
+function BrandLockup({ org, color, size = "md" }: { org: string; color?: string; size?: "sm" | "md" | "lg" }) {
+  const b = brandFor(org, color);
+  const fs = size === "lg" ? 23 : size === "md" ? 18 : 15;
+  const iconPx = Math.round(fs * 1.4);
   return (
-    <span aria-hidden style={{ width: size, height: size, borderRadius: size * 0.24, background: color ?? T.primary, color: "#fff", fontFamily: T.display, fontWeight: 700, fontSize: size * 0.44, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)" }}>
-      {initial}
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
+      {b.icon ? b.icon(iconPx) : (
+        <span aria-hidden style={{ width: Math.round(fs * 0.34), height: iconPx, borderRadius: 3, background: `linear-gradient(${b.color}, ${b.color}bb)`, boxShadow: `0 0 0 4px ${b.color}1f`, flexShrink: 0 }} />
+      )}
+      <span style={{ fontFamily: T.display, fontWeight: 800, fontSize: fs, letterSpacing: "-0.01em", color: b.color, textTransform: b.lower ? "lowercase" : "none", whiteSpace: "nowrap" }}>{b.name}</span>
     </span>
   );
 }
@@ -257,8 +305,14 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
   );
 
   return (
-    <div className="pro-learn" style={{ minHeight: "100vh", background: T.bg, color: T.body, fontFamily: T.sans }}>
+    <div className="pro-learn" style={{ minHeight: "100vh", color: T.body, fontFamily: T.sans }}>
       <style>{`
+        .pro-learn {
+          background:
+            radial-gradient(1100px 560px at 50% -8%, rgba(139,109,255,0.13), transparent 60%),
+            radial-gradient(820px 460px at 90% 2%, rgba(53,214,240,0.08), transparent 55%),
+            ${T.bg};
+        }
         .pro-learn :focus-visible { outline: 2px solid ${T.cyan}; outline-offset: 2px; }
         .pro-learn ::selection { background: ${T.primary}; color: #fff; }
         .pro-learn textarea::placeholder, .pro-learn input::placeholder { color: ${T.muted}; }
@@ -273,6 +327,50 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
           .pro-rail { display: block; width: 208px; flex-shrink: 0; }
           .pro-topbar { display: none; }
         }
+
+        /* ---- intro ---- */
+        .pro-intro { padding-top: 40px; }
+        .pro-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: ${T.mono}; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: ${T.primary}; margin-bottom: 16px; }
+        .pro-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: ${T.primary}; box-shadow: 0 0 10px ${T.primary}; }
+        .pro-h1 { font-family: ${T.display}; font-size: 40px; font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 16px; color: ${T.ink}; text-wrap: balance; }
+        .pro-promise { font-size: 18px; line-height: 1.65; color: ${T.muted}; max-width: 60ch; margin: 0 0 6px; }
+
+        .pro-intro-grid { display: grid; grid-template-columns: 1fr; gap: 22px; margin: 30px 0 26px; }
+        @media (min-width: 720px) { .pro-intro-grid { grid-template-columns: 1.12fr 0.88fr; gap: 30px; align-items: start; } }
+
+        .pro-kicker { font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.faint}; margin-bottom: 14px; }
+        .pro-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+        .pro-step { display: flex; gap: 15px; padding: 4px 0 18px; position: relative; }
+        .pro-step:last-child { padding-bottom: 0; }
+        .pro-step:not(:last-child)::before { content: ""; position: absolute; left: 18px; top: 40px; bottom: 4px; width: 2px; background: linear-gradient(${T.primary}66, ${T.edge}); }
+        .pro-step-mark { position: relative; z-index: 1; width: 38px; height: 38px; flex-shrink: 0; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; color: ${T.cyan}; background: ${T.panel}; border: 1px solid ${T.edge}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+        .pro-step-head { display: flex; align-items: baseline; gap: 9px; }
+        .pro-step-n { font-family: ${T.mono}; font-size: 11px; font-weight: 700; color: ${T.primary}; }
+        .pro-step-label { font-family: ${T.display}; font-size: 16px; font-weight: 700; color: ${T.ink}; }
+        .pro-step-sub { font-size: 12.5px; color: ${T.faint}; }
+        .pro-step-desc { font-size: 14px; line-height: 1.5; color: ${T.muted}; margin-top: 3px; max-width: 42ch; }
+        .pro-facts { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 22px; padding-top: 16px; border-top: 1px solid ${T.edge}; font-size: 13px; color: ${T.muted}; }
+        .pro-fact b { color: ${T.ink}; font-weight: 700; }
+        .pro-fact-sep { width: 3px; height: 3px; border-radius: 50%; background: ${T.faint}; }
+
+        .pro-story { position: relative; overflow: hidden; background: linear-gradient(180deg, ${T.panel}, ${T.bgRaise}); border: 1px solid ${T.edge}; border-radius: 16px; padding: 20px 22px; }
+        .pro-story-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+        .pro-story-tag { font-family: ${T.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.red}; margin-bottom: 14px; }
+        .pro-story-brandrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+        .pro-story-year { font-family: ${T.mono}; font-size: 13px; color: ${T.muted}; }
+        .pro-story-hook { font-family: ${T.display}; font-size: 18px; font-weight: 700; line-height: 1.35; color: ${T.ink}; }
+        .pro-story-sub { font-size: 14px; line-height: 1.55; color: ${T.muted}; margin-top: 8px; }
+
+        .pro-why { max-width: 66ch; font-size: 15px; line-height: 1.6; color: ${T.body}; margin: 4px 0 28px; }
+        .pro-why-label { display: block; font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.cyan}; margin-bottom: 6px; }
+        .pro-cta-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+        .pro-cta { display: inline-flex; align-items: center; gap: 10px; font-family: ${T.display}; font-size: 16px; font-weight: 700; letter-spacing: 0.01em; color: #fff; background: linear-gradient(135deg, ${T.primary}, ${T.cyan}); border: none; border-radius: 12px; padding: 15px 28px; cursor: pointer; box-shadow: 0 8px 26px rgba(139,109,255,0.34); transition: transform 160ms ease, box-shadow 160ms ease; }
+        .pro-cta:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(139,109,255,0.44); }
+        .pro-cta svg { transition: transform 160ms ease; }
+        .pro-cta:hover svg { transform: translateX(3px); }
+        .pro-cta-note { font-size: 13px; color: ${T.faint}; max-width: 34ch; line-height: 1.45; }
+        @media (prefers-reduced-motion: reduce) { .pro-cta, .pro-cta svg { transition: none; } .pro-cta:hover { transform: none; } .pro-cta:hover svg { transform: none; } }
+        @media (max-width: 520px) { .pro-h1 { font-size: 31px; } .pro-intro { padding-top: 24px; } }
       `}</style>
 
       <div className={`pro-shell${inLesson ? " with-rail" : ""}`}>
@@ -305,42 +403,65 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
 
           {/* INTRO */}
           {phase === "intro" && (
-            <main style={{ marginTop: "5vh" }}>
-              <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.primary, marginBottom: 14 }}>{lesson.act}</div>
-              <h1 style={{ fontFamily: T.display, fontSize: 34, fontWeight: 700, lineHeight: 1.2, margin: "0 0 16px", color: T.ink }}>{lesson.title}</h1>
-              <p style={{ fontSize: 17, lineHeight: 1.7, color: T.body, maxWidth: "60ch" }}>{lesson.promise}</p>
+            <main className="pro-intro">
+              {/* hero */}
+              <div className="pro-eyebrow"><span className="pro-eyebrow-dot" />{lesson.act}</div>
+              <h1 className="pro-h1">{lesson.title}</h1>
+              <p className="pro-promise">{lesson.promise}</p>
 
-              {/* the hook: a real company teased up front, with its logo and press coverage */}
-              {heroCase && (
-                <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderLeft: `3px solid ${T.red}`, borderRadius: "0 12px 12px 0", padding: "16px 20px", margin: "24px 0", maxWidth: "62ch" }}>
-                  <div style={{ fontFamily: T.mono, fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: T.red, marginBottom: 12 }}>This week&apos;s true story</div>
-                  <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                    <CaseLogo org={heroCase.org} color={heroCase.brandColor} />
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: T.ink, lineHeight: 1.4 }}>{heroCase.org} <span style={{ color: T.muted, fontWeight: 400, fontFamily: T.mono, fontSize: 13 }}>{heroCase.year}</span></div>
-                      <div style={{ fontSize: 14.5, color: T.body, marginTop: 4, lineHeight: 1.5 }}>{heroCase.headline}. You will see exactly how, and how one measure would have stopped it.</div>
+              <div className="pro-intro-grid">
+                {/* LEFT: how this lesson works */}
+                <section>
+                  <div className="pro-kicker">How this lesson works</div>
+                  <ol className="pro-steps">
+                    {STAGES.map((s, i) => (
+                      <li key={s.key} className="pro-step">
+                        <span className="pro-step-mark"><StageIcon kind={s.key} /></span>
+                        <div>
+                          <div className="pro-step-head">
+                            <span className="pro-step-n">{i + 1}</span>
+                            <span className="pro-step-label">{s.label}</span>
+                            <span className="pro-step-sub">{s.sub}</span>
+                          </div>
+                          <div className="pro-step-desc">{s.desc}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className="pro-facts">
+                    <span className="pro-fact"><b>~{lesson.minutes} min</b> this session</span>
+                    <span className="pro-fact-sep" />
+                    <span className="pro-fact"><b>4 steps</b></span>
+                    <span className="pro-fact-sep" />
+                    <span className="pro-fact"><b>nothing to install</b></span>
+                  </div>
+                </section>
+
+                {/* RIGHT: this week's true story */}
+                {heroCase && (
+                  <aside className="pro-story">
+                    <div className="pro-story-accent" style={{ background: `linear-gradient(${brandFor(heroCase.org, heroCase.brandColor).color}, ${T.red})` }} />
+                    <div className="pro-story-tag">This week&apos;s true story</div>
+                    <div className="pro-story-brandrow">
+                      <BrandLockup org={heroCase.org} color={heroCase.brandColor} size="lg" />
+                      <span className="pro-story-year">{heroCase.year}</span>
                     </div>
-                  </div>
-                  {heroCase.news && <div style={{ marginTop: 14 }}><NewsCard news={heroCase.news} /></div>}
-                </div>
-              )}
-
-              {/* how this works: the four steps, so they know the shape */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 10, margin: "8px 0 26px", maxWidth: "62ch" }}>
-                {STAGES.map((s, i) => (
-                  <div key={s.key} style={{ display: "flex", alignItems: "center", gap: 8, background: T.panelSoft, border: `1px solid ${T.edge}`, borderRadius: 9, padding: "8px 13px" }}>
-                    <span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color: T.primary }}>{i + 1}</span>
-                    <span style={{ fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: T.ink }}>{s.label}</span>
-                    <span style={{ fontSize: 12, color: T.muted }}>{s.sub}</span>
-                  </div>
-                ))}
+                    <div className="pro-story-hook">{heroCase.headline}.</div>
+                    <div className="pro-story-sub">You&apos;ll investigate exactly how it happened, and find the one measure that would have stopped it.</div>
+                    {heroCase.news && <div style={{ marginTop: 14 }}><NewsCard news={heroCase.news} /></div>}
+                  </aside>
+                )}
               </div>
 
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 20, margin: "0 0 30px", fontSize: 13.5, color: T.muted }}>
-                <span><b style={{ color: T.ink }}>~{lesson.minutes} min</b> this session</span>
-                <span style={{ maxWidth: "48ch" }}><b style={{ color: T.ink }}>Why it matters:</b> {lesson.role}</span>
+              {/* why it matters + CTA */}
+              <div className="pro-why"><span className="pro-why-label">Why this matters</span>{lesson.role}</div>
+              <div className="pro-cta-row">
+                <button className="pro-cta" onClick={() => setPhase("learn")}>
+                  Start the lesson
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </button>
+                <span className="pro-cta-note">Begins with the idea, in plain English. Pick up where you left off any time.</span>
               </div>
-              {btn("Start the lesson", () => setPhase("learn"))}
             </main>
           )}
 
@@ -393,15 +514,12 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {lesson.cases.map((c, i) => (
                   <article key={i} style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "20px 22px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                      <CaseLogo org={c.org} color={c.brandColor} size={34} />
-                      <div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
-                          <span style={{ fontFamily: T.display, fontSize: 19, fontWeight: 700, color: T.ink }}>{c.org}</span>
-                          <span style={{ fontFamily: T.mono, fontSize: 12, color: T.muted }}>{c.year}</span>
-                        </div>
-                        <div style={{ fontSize: 15, fontWeight: 700, color: T.cyan, marginTop: 1 }}>{c.headline}</div>
+                    <div style={{ marginBottom: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                        <BrandLockup org={c.org} color={c.brandColor} size="md" />
+                        <span style={{ fontFamily: T.mono, fontSize: 12, color: T.muted }}>{c.year}</span>
                       </div>
+                      <div style={{ fontSize: 15, fontWeight: 700, color: T.cyan, marginTop: 6 }}>{c.headline}</div>
                     </div>
                     <p style={{ fontSize: 15, lineHeight: 1.65, color: T.body }}>{c.whatHappened}</p>
                     <div style={{ background: T.redSoft, borderRadius: 8, padding: "10px 14px", margin: "6px 0 12px" }}>
