@@ -454,9 +454,15 @@ export default async function HubPage() {
             {products.map((product, i) => {
               const cfg = TRACK_CONFIG[product.slug] ?? FALLBACK_CONFIG;
               const owned = ownedSlugs.has(product.slug);
-              const isLive = product.status === "ACTIVE";
-              const enterHref = owned ? "/dashboard" : `/purchase/${product.slug}`;
-              const enterLabel = owned ? "Continue Adventure" : "Get started";
+              // Cyber Explorers is self-contained (localStorage progress, no
+              // entitlement) and is open for testing behind the /password gate:
+              // surface it live and enter straight into its mission map,
+              // regardless of the seeded COMING_SOON status / ownership.
+              const explorersTest = product.slug === "cyberexplorers";
+              const cardStatus = (explorersTest ? "ACTIVE" : product.status) as "ACTIVE" | "COMING_SOON";
+              const isLive = cardStatus === "ACTIVE";
+              const enterHref = explorersTest ? "/explorers" : owned ? "/dashboard" : `/purchase/${product.slug}`;
+              const enterLabel = explorersTest ? "Enter" : owned ? "Continue Adventure" : "Get started";
               return (
                 <HubTrackCard
                   key={product.id}
@@ -471,7 +477,7 @@ export default async function HubPage() {
                   ageRange={cfg.ageRange ?? product.ageRange}
                   duration={product.duration}
                   weeksCount={product.weeksCount}
-                  status={product.status as "ACTIVE" | "COMING_SOON"}
+                  status={cardStatus}
                   owned={owned}
                   landingHref={landingRouteFor(product.slug)}
                   enterHref={enterHref}
