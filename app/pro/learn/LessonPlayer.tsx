@@ -233,9 +233,17 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
         <div className="pro-main">
           {/* header */}
           <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "6px 0 18px", borderBottom: `1px solid ${T.edge}`, flexWrap: "wrap" }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", minWidth: 0 }}>
               <span style={{ fontFamily: T.display, fontWeight: 700, fontSize: 16, letterSpacing: "0.07em", color: T.ink }}>CYBER PRO</span>
-              <span style={{ fontFamily: T.mono, fontSize: 11, color: T.muted }}>{lesson.weekLabel}</span>
+              <span style={{ fontFamily: T.mono, fontSize: 11, color: T.muted }}>
+                {lesson.weekLabel}
+                {lesson.title ? (
+                  <>
+                    {" · "}
+                    <span style={{ color: T.ink }}>{lesson.title}</span>
+                  </>
+                ) : null}
+              </span>
             </div>
             {inLesson && (
               <div className="pro-topbar">
