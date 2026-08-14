@@ -60,6 +60,8 @@ const week13: LessonManifest = {
       theCost: "One of the largest DDoS attacks in history at the time. The Mirai source code was then published, and its descendants still run the same playbook against every exposed device today, which is why your honeypot fills up within minutes.",
       control: "access-control",
       source: "Public record; US-CERT/CISA advisories on Mirai; Krebs on Security 2016; Dyn incident report.",
+      brandColor: "#f26b21",
+      news: { headline: "DDoS attack that disrupted internet was largest of its kind in history", outlet: "The Guardian", date: "October 2016", url: "https://www.theguardian.com/technology/2016/oct/26/ddos-attack-dyn-mirai-botnet" },
     },
   ],
 

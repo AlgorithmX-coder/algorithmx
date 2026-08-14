@@ -32,6 +32,13 @@ export interface CaseCard {
    * Ties every case back to the same recurring scorecard. */
   control: "access-control" | "secure-configuration" | "patching" | "malware-protection" | "firewalls";
   source: string; // primary reference, verified at authoring time
+  /* Optional brand colour for the company logo chip (its real brand
+   * colour where known). Falls back to the tier accent. */
+  brandColor?: string;
+  /* A real piece of press coverage, as a sourced headline card (we cite
+   * the headline/outlet/date and link out; we never embed a copyrighted
+   * article screenshot). Verify the headline + url at authoring time. */
+  news?: { headline: string; outlet: string; date: string; url?: string };
 }
 
 /* ---- TRY ---- */
