@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { T } from "./tokens";
 import {
   FIVE_CONTROLS,
   lessonCheckpointKey,
   type CaseCard,
+  type GlossaryEntry,
   type LearnCard,
   type LessonCheckpoint,
   type LessonManifest,
@@ -146,6 +147,57 @@ function NewsCard({ news }: { news: NonNullable<CaseCard["news"]> }) {
   return news.url
     ? <a href={news.url} target="_blank" rel="noopener noreferrer" style={style}>{inner}</a>
     : <div style={style}>{inner}</div>;
+}
+
+/* A key term the learner can hover (desktop) or tap (mobile) to see a
+ * plain-language meaning. */
+function GlossaryTerm({ term, definition }: { term: string; definition: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span style={{ position: "relative", display: "inline-block" }}>
+      <button type="button"
+        onClick={() => setOpen((o) => !o)}
+        onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
+        onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}
+        aria-expanded={open}
+        style={{ font: "inherit", color: T.cyan, background: "transparent", border: "none", padding: 0, cursor: "help", borderBottom: `1.5px dotted ${T.cyan}99` }}>
+        {term}
+      </button>
+      {open && (
+        <span role="tooltip" style={{ position: "absolute", left: 0, bottom: "calc(100% + 8px)", zIndex: 30, width: 268, maxWidth: "80vw", background: T.panel, border: `1px solid ${T.cyan}66`, borderRadius: 10, padding: "11px 13px", boxShadow: "0 10px 28px rgba(0,0,0,0.55)", fontFamily: T.sans, fontSize: 13.5, fontWeight: 400, lineHeight: 1.55, color: T.body, whiteSpace: "normal", letterSpacing: "normal", textTransform: "none" }}>
+          <span style={{ display: "block", fontFamily: T.mono, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: T.cyan, marginBottom: 5 }}>{term.toUpperCase()}</span>
+          {definition}
+        </span>
+      )}
+    </span>
+  );
+}
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/* Wraps the first unseen occurrence of each glossary term (across the
+ * shared `seen` set, so a term lights up once per card, not per line). */
+function renderWithGlossary(text: string, glossary: GlossaryEntry[] | undefined, seen: Set<string>, keyPrefix: string): ReactNode {
+  if (!glossary || glossary.length === 0) return text;
+  const sorted = [...glossary].sort((a, b) => b.term.length - a.term.length);
+  const pattern = new RegExp(`\\b(${sorted.map((g) => escapeRegExp(g.term)).join("|")})\\b`, "gi");
+  const out: ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = pattern.exec(text)) !== null) {
+    const matched = m[0];
+    const key = matched.toLowerCase();
+    const entry = sorted.find((g) => g.term.toLowerCase() === key);
+    if (!entry || seen.has(key)) continue;
+    seen.add(key);
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push(<GlossaryTerm key={`${keyPrefix}-${m.index}`} term={matched} definition={entry.definition} />);
+    last = m.index + matched.length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out.length ? out : text;
 }
 
 export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
@@ -296,11 +348,23 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
           {phase === "learn" && (() => {
             const card = lesson.learn[learnIdx];
             const last = learnIdx === lesson.learn.length - 1;
+            const seen = new Set<string>(); // glossary terms light up once per card
             return (
               <main style={{ marginTop: 26 }}>
                 <div style={{ fontFamily: T.mono, fontSize: 11, color: T.muted, marginBottom: 10 }}>Idea {learnIdx + 1} of {lesson.learn.length}</div>
                 <h2 style={{ fontFamily: T.display, fontSize: 25, fontWeight: 700, lineHeight: 1.25, margin: "0 0 16px", color: T.ink }}>{card.heading}</h2>
-                {card.body.map((p, i) => <p key={i} style={{ fontSize: 16.5, lineHeight: 1.75, color: T.body, maxWidth: "62ch" }}>{p}</p>)}
+                {card.body.map((p, i) => <p key={i} style={{ fontSize: 16.5, lineHeight: 1.75, color: T.body, maxWidth: "62ch" }}>{renderWithGlossary(p, lesson.glossary, seen, `l${learnIdx}b${i}`)}</p>)}
+                {card.examples && card.examples.length > 0 && (
+                  <div style={{ margin: "2px 0 6px", maxWidth: "62ch", display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: T.faint }}>A few examples</div>
+                    {card.examples.map((ex, i) => (
+                      <div key={i} style={{ display: "flex", gap: 10, fontSize: 15, color: T.body, lineHeight: 1.55 }}>
+                        <span aria-hidden style={{ color: T.cyan, flexShrink: 0, fontWeight: 700 }}>&rsaquo;</span>
+                        <span>{renderWithGlossary(ex, lesson.glossary, seen, `l${learnIdx}e${i}`)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {card.analogy && (
                   <div style={{ background: T.primarySoft, borderLeft: `3px solid ${T.primary}`, borderRadius: "0 10px 10px 0", padding: "14px 18px", margin: "18px 0", maxWidth: "62ch" }}>
                     <div style={{ fontSize: 16, color: T.ink, lineHeight: 1.6 }}>{card.analogy.plain}</div>

@@ -13,10 +13,19 @@ export interface LearnCard {
   /* Plain-English teaching paragraphs. Adult voice, no jargon before
    * it is defined. */
   body: string[];
+  /* A few concrete examples of the idea, to help it land. */
+  examples?: string[];
   /* One everyday analogy, set apart visually. */
   analogy?: { plain: string; realTerm: string };
   /* Optional captioned diagram slug the engine knows how to draw. */
   diagram?: "hash-oneway" | "avalanche";
+}
+
+/* A key term the learner can hover/tap for a plain-language meaning.
+ * Definitions are written in-house (never copied from a dictionary). */
+export interface GlossaryEntry {
+  term: string;
+  definition: string;
 }
 
 /* ---- SEE (real cases; sourced public record only) ---- */
@@ -99,6 +108,9 @@ export interface LessonManifest {
   /* One-line promise shown on the intro card. */
   promise: string;
   learn: LearnCard[];
+  /* Key terms the learner can hover/tap in the Learn text for a
+   * plain-language meaning. */
+  glossary?: GlossaryEntry[];
   /* Heading for the See phase (defaults to a generic line). */
   seeHeading?: string;
   cases: CaseCard[];

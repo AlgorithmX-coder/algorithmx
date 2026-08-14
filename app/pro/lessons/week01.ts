@@ -28,6 +28,11 @@ const week01: LessonManifest = {
         "When you make an account, it feels like the website saves your password in a big list next to your name. If that were true, anyone who stole the list would instantly have every password. Good websites never do this.",
         "Instead they run your password through a one-way maths function called a hash. It turns any text into a fixed jumble of characters, and there is no reverse gear: you cannot turn the jumble back into the password.",
       ],
+      examples: [
+        "'apple' always turns into the same fixed jumble, but there is no button to turn that jumble back into 'apple'.",
+        "It is like mincing meat: the steak goes through the grinder easily, but you can never un-grind the mince back into a steak.",
+        "When you log in, the site does not compare your password to a saved password. It compares the jumble of what you typed to the jumble it saved.",
+      ],
       analogy: {
         plain: "A hash is like a fingerprint, not a lock. You can take someone's fingerprint in a second, but you cannot rebuild the person from the fingerprint.",
         realTerm: "hashing",
@@ -39,6 +44,11 @@ const week01: LessonManifest = {
       body: [
         "Hashing is consistent: the same password always produces the same fingerprint. That is how a site checks your login without ever storing the real password. It fingerprints what you typed and compares it to the fingerprint it saved.",
         "But change a single character and the whole fingerprint transforms completely. This is called the avalanche effect, and you will watch it happen for yourself in a moment.",
+      ],
+      examples: [
+        "'password' and 'Password' (one capital letter) produce two completely unrelated fingerprints.",
+        "There is no 'close enough': a fingerprint either matches exactly or it does not, which is why a single wrong character fails the login.",
+        "This is also how a site can spot two files are identical without opening them: same contents, same fingerprint.",
       ],
       analogy: {
         plain: "Add one full stop to a sentence and imagine the whole page rewriting itself. Small change in, huge change out.",
@@ -52,7 +62,21 @@ const week01: LessonManifest = {
         "Two reasons, and they are exactly the mistakes our two real companies made. First, some sites do not hash at all and store the raw password. Second, some hash badly: they use a fast, outdated method with no random 'salt' added, so attackers can guess billions of candidates per second and crack the weak ones anyway.",
         "You cannot control how a website stores your password. But you can control two things that beat both mistakes: make each password long and unique, and turn on a second step (MFA) so a stolen password is not enough on its own.",
       ],
+      examples: [
+        "RockYou kept the raw words, so the leak handed attackers every password instantly, no cracking needed.",
+        "LinkedIn used a fast method with no salt, so attackers guessed billions per second and cracked the weak ones anyway.",
+        "A long passphrase like 'purple-tractor-window-jazz' would take centuries to crack; 'password123' falls in under a second.",
+      ],
     },
+  ],
+
+  glossary: [
+    { term: "hash", definition: "A one-way maths function that turns any text into a fixed jumble of characters. You can go text to jumble, but never jumble back to text." },
+    { term: "hashing", definition: "Running data through a one-way function to get a fixed 'fingerprint'. Same input always gives the same fingerprint; you cannot reverse it." },
+    { term: "salt", definition: "A random value added to a password before hashing, so two people with the same password get different fingerprints and pre-built cracking tables are useless." },
+    { term: "MFA", definition: "Multi-factor authentication: a second step to log in (like a code on your phone), so a stolen password alone is not enough to get in." },
+    { term: "avalanche effect", definition: "The way changing one character of the input changes the entire hash, with no resemblance to the original." },
+    { term: "fingerprint", definition: "A plain-English word for a hash: a short, unique-looking value that stands in for the original data." },
   ],
 
   seeHeading: "Two companies that got this wrong",
