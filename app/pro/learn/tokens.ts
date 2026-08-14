@@ -11,10 +11,10 @@ export const T = Object.freeze({
   edge: "#272544",
   edgeSoft: "rgba(255,255,255,0.08)",
 
-  ink: "#edecf7",
-  body: "#c7c4de", // reading body, softer than pure ink
-  muted: "#9a96b8",
-  faint: "#6a6690",
+  ink: "#f3f2fb",  // headings / emphasis, near-white
+  body: "#dcdaf1", // reading body, bright for sharp contrast on the dark ground
+  muted: "#b4afd4", // secondary text (leads, captions)
+  faint: "#8681a8", // tertiary labels / hints
 
   primary: "#8b6dff", // cosmic violet, lifted for dark ground
   primarySoft: "rgba(139,109,255,0.14)",
