@@ -62,12 +62,16 @@ export const mission08: MissionManifest = {
       instruction: "Tap the 3 whispers under the perfect writing.",
       intel: {
         beats: [
-          "Someone probably told you: scams are full of typos.",
-          "Yeah, that rule is dead.",
-          "Ghostwriter lets a machine write his scams now. Perfectly. For free.",
-          "So perfect spelling? Proves absolutely nothing.",
-          "But lean in close. The fake still whispers a few tells.",
-          "Three of them, coming up.",
+          "You may have heard that scams are full of typos.",
+          "That rule is out of date now.",
+          "Ghostwriter lets a machine write his messages, perfectly, for free. So perfect spelling proves nothing.",
+          "But look closely. The fake still leaves a few quiet tells. Here are three.",
+        ],
+        beatAudio: [
+          "/audio/wren/m08-c1-b1.mp3",
+          "/audio/wren/m08-c1-b2.mp3",
+          "/audio/wren/m08-c1-b3.mp3",
+          "/audio/wren/m08-c1-b4.mp3",
         ],
         prediction: {
           question: "Why don't typos give scams away now?",
@@ -115,6 +119,7 @@ export const mission08: MissionManifest = {
           doneLine: "Perfect spelling, three whispers. The writing is perfect. The writer is the question.",
         },
       },
+      playAudio: "/audio/wren/m08-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -151,11 +156,15 @@ export const mission08: MissionManifest = {
       intel: {
         beats: [
           "Into the simulator. We replay a real pen-pal scam.",
-          "Watch what the machine does brilliantly: mirroring.",
-          "It loves everything you love. Instantly.",
-          "And watch what it can't do: take time.",
-          "Real feelings are slow. Scripts are instant.",
-          "Clues, not proof. They fade as machines improve. Watch anyway.",
+          "Watch what the machine does well: mirroring. It loves everything you love, instantly.",
+          "And watch what it can't do: take time. Real feelings are slow. Scripts are instant.",
+          "These are clues, not proof. They fade as machines improve. Watch closely anyway.",
+        ],
+        beatAudio: [
+          "/audio/wren/m08-c2-b1.mp3",
+          "/audio/wren/m08-c2-b2.mp3",
+          "/audio/wren/m08-c2-b3.mp3",
+          "/audio/wren/m08-c2-b4.mp3",
         ],
         prediction: {
           question: "Can these clues ALWAYS catch a machine fake?",
@@ -217,6 +226,7 @@ export const mission08: MissionManifest = {
           doneLine: "MIRROR, CRISIS, GUILT. THE FRIENDSHIP WAS A SCRIPT WITH YOUR NAME PASTED IN.",
         },
       },
+      playAudio: "/audio/wren/m08-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -252,12 +262,16 @@ export const mission08: MissionManifest = {
       instruction: "Pick the move that unmasks the writer.",
       intel: {
         beats: [
-          "So if style proves nothing, what does?",
-          "Whether they're real.",
-          "A machine can write a person. It can't BE one.",
-          "No real school. No real mutuals. No real anywhere.",
-          "Style can be generated in forty seconds.",
-          "A life can't. Check the life, not the writing.",
+          "So if style proves nothing, what does? Whether the person is real.",
+          "A machine can write a person. It cannot BE one.",
+          "No real school, no real mutuals, no real anywhere.",
+          "Style takes forty seconds to fake. A whole life can't. Check the life, not the writing.",
+        ],
+        beatAudio: [
+          "/audio/wren/m08-c3-b1.mp3",
+          "/audio/wren/m08-c3-b2.mp3",
+          "/audio/wren/m08-c3-b3.mp3",
+          "/audio/wren/m08-c3-b4.mp3",
         ],
         prediction: {
           question: "What beats a perfect fake every time?",
@@ -301,6 +315,7 @@ export const mission08: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m08-c3-play.mp3",
       checkpoint: {
         questions: [
           {

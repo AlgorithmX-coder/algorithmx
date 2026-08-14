@@ -62,12 +62,16 @@ export const mission14: MissionManifest = {
       instruction: "Tap the 3 powers this torch never needs.",
       intel: {
         beats: [
-          "Installing an app isn't like grabbing a toy off a shelf.",
-          "It's more like hiring a worker to move into your house.",
+          "Installing an app isn't grabbing a toy. It's hiring a worker to move into your house.",
           "Permissions are the powers you hand that worker on day one.",
           "Read your messages. Listen to your room. Always know where you are.",
-          "So the question is never “is this app fun?”",
-          "It's “why does a flashlight need my whole contact list?”",
+          "So don't ask if the app is fun. Ask why a flashlight needs your whole contact list.",
+        ],
+        beatAudio: [
+          "/audio/wren/m14-c1-b1.mp3",
+          "/audio/wren/m14-c1-b2.mp3",
+          "/audio/wren/m14-c1-b3.mp3",
+          "/audio/wren/m14-c1-b4.mp3",
         ],
         prediction: {
           question: "A flashlight app asks for your contact list. Why?",
@@ -115,6 +119,7 @@ export const mission14: MissionManifest = {
           doneLine: "Three powers a torch never needs. It wasn't selling light. It was buying you.",
         },
       },
+      playAudio: "/audio/wren/m14-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -150,12 +155,16 @@ export const mission14: MissionManifest = {
       instruction: "Pick when the update happens.",
       intel: {
         beats: [
-          "“Update available.” Probably the most-ignored message ever written.",
-          "So here's what an update actually is.",
-          "Someone found a hole in the app's walls.",
-          "The update is the patch that plugs it.",
-          "And here's the part nobody mentions: that hole is now PUBLIC.",
+          "“Update available” might be the most-ignored message ever written. Here's what it really is.",
+          "Someone found a hole in the app's walls. The update is the patch that plugs it.",
+          "And here's the part nobody mentions: that hole is now public.",
           "Attackers keep a list of every device that skipped the fix. Don't be on it.",
+        ],
+        beatAudio: [
+          "/audio/wren/m14-c2-b1.mp3",
+          "/audio/wren/m14-c2-b2.mp3",
+          "/audio/wren/m14-c2-b3.mp3",
+          "/audio/wren/m14-c2-b4.mp3",
         ],
         prediction: {
           question: "Why do attackers love devices that skip updates?",
@@ -199,6 +208,7 @@ export const mission14: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m14-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -234,12 +244,16 @@ export const mission14: MissionManifest = {
       instruction: "Predict the installer's next move. Three rounds.",
       intel: {
         beats: [
-          "GHOSTWRITER's whole talent is the wrapping.",
-          "His pitch: “Don't check inside, love. Just admire the lovely label.”",
+          "GHOSTWRITER's whole talent is the wrapping. “Don't check inside,” he says. “Just admire the label.”",
           "A free game. A paid app, suddenly free. An update you totally “need”.",
-          "The pitch is the same old trick: pressure, prizes, costumes.",
-          "What's hidden is the new part: a whole app, stuffed with powers.",
-          "Into the range. Watch one of his presents unwrap itself.",
+          "The pitch is the old trick: pressure, prizes, costumes. What's new is hidden: a whole app stuffed with powers.",
+          "Into the range, Agent. Watch one of his presents unwrap itself.",
+        ],
+        beatAudio: [
+          "/audio/wren/m14-c3-b1.mp3",
+          "/audio/wren/m14-c3-b2.mp3",
+          "/audio/wren/m14-c3-b3.mp3",
+          "/audio/wren/m14-c3-b4.mp3",
         ],
         prediction: {
           question: "Where do trojans hide?",
@@ -301,6 +315,7 @@ export const mission14: MissionManifest = {
           doneLine: "GUARD OFF, POWERS GRANTED, HORSE INSIDE. NOW YOU'VE SEEN THE WHOLE UNWRAPPING.",
         },
       },
+      playAudio: "/audio/wren/m14-c3-play.mp3",
       checkpoint: {
         questions: [
           {

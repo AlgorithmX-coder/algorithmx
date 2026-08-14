@@ -62,12 +62,16 @@ export const mission12: MissionManifest = {
       instruction: "Spin the shift dial until the note reads.",
       intel: {
         beats: [
-          "Sealing messages is older than computers.",
-          "Julius Caesar did it by sliding the alphabet.",
-          "A becomes D. B becomes E. Slide by three.",
-          "Unreadable. Unless you know the slide.",
-          "Or unless you just… try every slide.",
-          "There are only 25. Watch how fast you break it.",
+          "Sealing messages is older than computers. Julius Caesar did it by sliding the alphabet.",
+          "A becomes D, B becomes E. Slide by three.",
+          "Unreadable... unless you know the slide. Or unless you just try every slide.",
+          "There are only 25 to try. Watch how fast you break it.",
+        ],
+        beatAudio: [
+          "/audio/wren/m12-c1-b1.mp3",
+          "/audio/wren/m12-c1-b2.mp3",
+          "/audio/wren/m12-c1-b3.mp3",
+          "/audio/wren/m12-c1-b4.mp3",
         ],
         prediction: {
           question: "Why do slide-the-alphabet ciphers always fall?",
@@ -104,6 +108,7 @@ export const mission12: MissionManifest = {
           doneLine: "TWO SEALS BROKEN IN A MINUTE. NOW YOU KNOW WHY MODERN SEALS USE MATH INSTEAD OF SLIDES.",
         },
       },
+      playAudio: "/audio/wren/m12-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -139,12 +144,16 @@ export const mission12: MissionManifest = {
       instruction: "Tap the 3 seals and leaks in this scan.",
       intel: {
         beats: [
-          "Every message you send takes a journey.",
-          "Through routers, cables, and strangers' machines.",
-          "A SEALED message crosses them unreadable.",
+          "Every message you send takes a journey, through routers, cables, and strangers' machines.",
+          "A sealed message crosses them unreadable.",
           "An unsealed one is a postcard. Everyone on the way can read it.",
-          "The browser tells you which is which.",
-          "The padlock. Smallest icon, biggest promise.",
+          "The browser tells you which is which: the padlock. Smallest icon, biggest promise.",
+        ],
+        beatAudio: [
+          "/audio/wren/m12-c2-b1.mp3",
+          "/audio/wren/m12-c2-b2.mp3",
+          "/audio/wren/m12-c2-b3.mp3",
+          "/audio/wren/m12-c2-b4.mp3",
         ],
         prediction: {
           question: "The padlock next to a web address promises:",
@@ -192,6 +201,7 @@ export const mission12: MissionManifest = {
           doneLine: "Sealed, postcard, end-to-end. Three kinds of journey. Now you can tell them apart.",
         },
       },
+      playAudio: "/audio/wren/m12-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -227,12 +237,16 @@ export const mission12: MissionManifest = {
       instruction: "Pick the safe move at the café.",
       intel: {
         beats: [
-          "Free public Wi-Fi is a room full of strangers.",
-          "Whoever runs the network sits on the road itself.",
-          "Sealed traffic? Still safe. They see gibberish.",
-          "Unsealed traffic? PACKRAT is reading your postcards from the comfy chair.",
-          "And a network named FREE_COFFEE could be anyone's laptop.",
-          "Rule: unknown network plus no padlock, never both at once.",
+          "Free public Wi-Fi is a room full of strangers. Whoever runs it sits on the road.",
+          "Sealed traffic? Still safe. They just see gibberish.",
+          "Unsealed traffic? PACKRAT reads your postcards from the comfy chair.",
+          "The rule: unknown network plus no padlock, never both at once.",
+        ],
+        beatAudio: [
+          "/audio/wren/m12-c3-b1.mp3",
+          "/audio/wren/m12-c3-b2.mp3",
+          "/audio/wren/m12-c3-b3.mp3",
+          "/audio/wren/m12-c3-b4.mp3",
         ],
         prediction: {
           question: "On café Wi-Fi with the padlock showing, a snooper sees:",
@@ -276,6 +290,7 @@ export const mission12: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m12-c3-play.mp3",
       checkpoint: {
         questions: [
           {

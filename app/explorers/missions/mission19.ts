@@ -63,12 +63,16 @@ export const mission19: MissionManifest = {
       instruction: "Order the 4 phases of the campaign.",
       intel: {
         beats: [
-          "Big attacks aren't one move. They're a sequence.",
-          "RECON: PACKRAT collects who's who.",
-          "LURE: PHANTOM HOOK and SIREN bait the click.",
-          "ACCESS: SKELETON KEY and MIMIC get in.",
-          "HARVEST: everything of value, taken and sold.",
-          "See the phases and you can defend each one.",
+          "Big attacks aren't one move. They run in a sequence of phases.",
+          "RECON: PACKRAT collects who's who. LURE: PHANTOM HOOK and SIREN bait the click.",
+          "ACCESS: SKELETON KEY and MIMIC get in. HARVEST: your data, taken and sold.",
+          "See the phases, and you can defend every single one.",
+        ],
+        beatAudio: [
+          "/audio/wren/m19-c1-b1.mp3",
+          "/audio/wren/m19-c1-b2.mp3",
+          "/audio/wren/m19-c1-b3.mp3",
+          "/audio/wren/m19-c1-b4.mp3",
         ],
         prediction: {
           question: "What comes FIRST in a big campaign?",
@@ -143,6 +147,7 @@ export const mission19: MissionManifest = {
           doneLine: "Recon → lure → access → harvest. You just mapped a whole attack, end to end.",
         },
       },
+      playAudio: "/audio/wren/m19-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -174,12 +179,16 @@ export const mission19: MissionManifest = {
       instruction: "Fill each slot with a layer that holds.",
       intel: {
         beats: [
-          "Here's the secret of real security.",
-          "No single defense is perfect. Not one.",
-          "So you don't build ONE wall. You build many.",
-          "If the lure slips past, the vault catches it.",
-          "If the password leaks, 2FA catches it.",
-          "Every layer covers the gap in the layer before.",
+          "Here's the secret of real security. No single defense is perfect.",
+          "So you don't build one wall. You build many.",
+          "If the lure slips past, the vault catches it. If the password leaks, 2FA does.",
+          "Every layer covers the gap in the one before it.",
+        ],
+        beatAudio: [
+          "/audio/wren/m19-c2-b1.mp3",
+          "/audio/wren/m19-c2-b2.mp3",
+          "/audio/wren/m19-c2-b3.mp3",
+          "/audio/wren/m19-c2-b4.mp3",
         ],
         prediction: {
           question: "Why build many defenses instead of one perfect one?",
@@ -231,6 +240,7 @@ export const mission19: MissionManifest = {
           doneLine: "Three layers, each covering the last one's gap. One mistake can't sink you now.",
         },
       },
+      playAudio: "/audio/wren/m19-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -266,12 +276,16 @@ export const mission19: MissionManifest = {
       instruction: "Predict the wave's next phase. Three rounds.",
       intel: {
         beats: [
-          "When the wave hits, panic is the enemy's friend.",
-          "Analysts run a calm routine instead.",
-          "TRIAGE: what's worst, first.",
-          "CONTAIN: stop the spread before the cleanup.",
-          "REPORT and COMMUNICATE: adults, platform, everyone at risk.",
+          "When the wave hits, panic is the enemy's friend. Analysts stay calm.",
+          "TRIAGE: handle what's worst, first. CONTAIN: stop the spread.",
+          "REPORT and COMMUNICATE: tell adults, the platform, everyone at risk.",
           "And predict the next phase, because you know the pattern now.",
+        ],
+        beatAudio: [
+          "/audio/wren/m19-c3-b1.mp3",
+          "/audio/wren/m19-c3-b2.mp3",
+          "/audio/wren/m19-c3-b3.mp3",
+          "/audio/wren/m19-c3-b4.mp3",
         ],
         prediction: {
           question: "First move when a whole-school attack hits?",
@@ -333,6 +347,7 @@ export const mission19: MissionManifest = {
           doneLine: "TRIAGE, CONTAIN, REPORT. THE WAVE'S OWN RHYTHM POINTED HOME. ONE CASE LEFT.",
         },
       },
+      playAudio: "/audio/wren/m19-c3-play.mp3",
       checkpoint: {
         questions: [
           {

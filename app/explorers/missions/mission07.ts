@@ -61,12 +61,16 @@ export const mission07: MissionManifest = {
       instruction: "Tap the 3 signs the hands aren't Leo's.",
       intel: {
         beats: [
-          "This isn't some clumsy fake profile. MIMIC is fancier than that.",
-          "This is Leo's REAL account. The genuine article.",
-          "Real photo, real history, real friends list, all of it true.",
-          "MIMIC didn't copy the account. He walked in and put it on.",
-          "The face is your friend's. No argument there.",
-          "The hands on the keyboard? Those might belong to a copycat.",
+          "This isn't a clumsy fake profile. MIMIC works fancier than that.",
+          "This is Leo's REAL account. Real photo, real history, all of it true.",
+          "MIMIC didn't copy it. He walked in and put it on like a costume.",
+          "The face is your friend's. The hands on the keyboard might be a copycat's.",
+        ],
+        beatAudio: [
+          "/audio/wren/m07-c1-b1.mp3",
+          "/audio/wren/m07-c1-b2.mp3",
+          "/audio/wren/m07-c1-b3.mp3",
+          "/audio/wren/m07-c1-b4.mp3",
         ],
         prediction: {
           question: "The message really does come from Leo's account. What does that actually prove?",
@@ -114,6 +118,7 @@ export const mission07: MissionManifest = {
           doneLine: "Right face, wrong hands. Three signs say Leo isn't home.",
         },
       },
+      playAudio: "/audio/wren/m07-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -150,11 +155,15 @@ export const mission07: MissionManifest = {
       intel: {
         beats: [
           "Here's the protocol. Boring name, unbeatable move.",
-          "MIMIC only ever grabs ONE channel: this chat.",
-          "So we step clean OUT of it.",
-          "Call the real number. Catch them at school. Knock on the actual door.",
+          "MIMIC only ever grabs ONE channel: this chat. So step clean out of it.",
+          "Call Leo's real number. Catch him at school. Knock on the actual door.",
           "ARC calls it out-of-band: a channel the copycat was never handed.",
-          "The costume only ever covers one channel. Every single time.",
+        ],
+        beatAudio: [
+          "/audio/wren/m07-c2-b1.mp3",
+          "/audio/wren/m07-c2-b2.mp3",
+          "/audio/wren/m07-c2-b3.mp3",
+          "/audio/wren/m07-c2-b4.mp3",
         ],
         prediction: {
           question: "Why not just ask right there in the chat: “is this really you?”",
@@ -198,6 +207,7 @@ export const mission07: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m07-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -234,11 +244,15 @@ export const mission07: MissionManifest = {
       intel: {
         beats: [
           "One alarm covers every borrowed face MIMIC will ever wear.",
-          "Real friends ask for memes. Homework. Backup in a boss fight.",
-          "Copycats ask for three things, always the same three.",
-          "Codes. Money. Secrecy.",
-          "Any one of those, from ANY account: alarm goes off.",
-          "Even when the face is your best friend's. Especially then.",
+          "Real friends ask for memes, homework, backup in a boss fight.",
+          "Copycats ask for three things, always: codes, money, secrecy.",
+          "Any one of those, from ANY account, and the alarm goes off. Especially from a best friend.",
+        ],
+        beatAudio: [
+          "/audio/wren/m07-c3-b1.mp3",
+          "/audio/wren/m07-c3-b2.mp3",
+          "/audio/wren/m07-c3-b3.mp3",
+          "/audio/wren/m07-c3-b4.mp3",
         ],
         prediction: {
           question: "Why do copycats always slip in “don't tell anyone”?",
@@ -273,6 +287,7 @@ export const mission07: MissionManifest = {
           doneLine: "Codes, cash, secrecy. The weird-ask alarm is installed for life.",
         },
       },
+      playAudio: "/audio/wren/m07-c3-play.mp3",
       checkpoint: {
         questions: [
           {

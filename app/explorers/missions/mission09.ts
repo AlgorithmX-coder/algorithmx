@@ -61,12 +61,16 @@ export const mission09: MissionManifest = {
       instruction: "Pick the 3 moves that prove it's a business.",
       intel: {
         beats: [
-          "Here's the secret that breaks every long con.",
-          "It's not personal. It's a business.",
-          "Siren runs hundreds of targets at once. Same scripts, copy-pasted.",
-          "Little numbers tracked in a spreadsheet.",
-          "So you're not her special one. You're a row. Row 37, maybe.",
-          "Which means none of it was ever really about you. Kind of freeing, right?",
+          "Here's the secret that breaks every long con: it isn't personal. It's a business.",
+          "Siren runs hundreds of targets at once, same scripts, copy-pasted.",
+          "So you were never her special one. You're just a row on a spreadsheet.",
+          "None of it was ever really about you. That's actually freeing.",
+        ],
+        beatAudio: [
+          "/audio/wren/m09-c1-b1.mp3",
+          "/audio/wren/m09-c1-b2.mp3",
+          "/audio/wren/m09-c1-b3.mp3",
+          "/audio/wren/m09-c1-b4.mp3",
         ],
         prediction: {
           question: "Why does it HELP to know you're one of hundreds?",
@@ -101,6 +105,7 @@ export const mission09: MissionManifest = {
           doneLine: "A spreadsheet, not a friendship. You were just a number. Good news.",
         },
       },
+      playAudio: "/audio/wren/m09-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -136,12 +141,16 @@ export const mission09: MissionManifest = {
       instruction: "Pin the 4 farming moves. Then order them.",
       intel: {
         beats: [
-          "Long cons don't take. Not at first.",
-          "They GIVE. Gifts, compliments, time.",
+          "Long cons don't take, not at first. They give: gifts, compliments, time.",
           "Every gift plants a tiny feeling: I owe them.",
-          "Weeks of deposits into your guilt account.",
-          "Then one day the account gets collected.",
-          "You never signed the loan. Doesn't matter. It FEELS real.",
+          "Weeks of little deposits, and then one day the account gets collected.",
+          "You never signed for that loan. It still feels real. That feeling is the trap.",
+        ],
+        beatAudio: [
+          "/audio/wren/m09-c2-b1.mp3",
+          "/audio/wren/m09-c2-b2.mp3",
+          "/audio/wren/m09-c2-b3.mp3",
+          "/audio/wren/m09-c2-b4.mp3",
         ],
         prediction: {
           question: "Why does SIREN give real gifts for weeks?",
@@ -216,6 +225,7 @@ export const mission09: MissionManifest = {
           doneLine: "Gift → streak → deposits → collection. A loan you never asked for, called in.",
         },
       },
+      playAudio: "/audio/wren/m09-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -251,12 +261,16 @@ export const mission09: MissionManifest = {
       instruction: "Pick the exit that actually works.",
       intel: {
         beats: [
-          "The most important skill tonight: leaving.",
-          "Cons make exits feel impossible. “You've come this far.”",
-          "That's the sunk-cost trap. It counts your old steps for you.",
-          "Truth: steps already taken are never a reason for one more.",
-          "And if anyone threatens to share something embarrassing:",
-          "Never pay. Never obey. Tell an adult. You are NOT in trouble.",
+          "The most important skill tonight is leaving.",
+          "Cons make the exit feel impossible: “you've come this far.” That's the sunk-cost trap.",
+          "The truth: steps you already took are never a reason to take one more.",
+          "And if anyone threatens to share something embarrassing: never pay, never obey, tell an adult. You are not in trouble.",
+        ],
+        beatAudio: [
+          "/audio/wren/m09-c3-b1.mp3",
+          "/audio/wren/m09-c3-b2.mp3",
+          "/audio/wren/m09-c3-b3.mp3",
+          "/audio/wren/m09-c3-b4.mp3",
         ],
         prediction: {
           question: "Three weeks in, leaving feels wasteful. That feeling is:",
@@ -300,6 +314,7 @@ export const mission09: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m09-c3-play.mp3",
       checkpoint: {
         questions: [
           {

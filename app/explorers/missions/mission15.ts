@@ -66,12 +66,16 @@ export const mission15: MissionManifest = {
       instruction: "Tap the 3 clues. None are in the pixels.",
       intel: {
         beats: [
-          "Once upon a time, fake sites had tells. Blurry logos. Weird fonts.",
-          "Now MIMIC copies a whole site the same way he copies a face.",
-          "Perfectly. The pixels match because they're flat-out STOLEN.",
-          "So where did the clues run off to?",
-          "Not into anything the page shows you.",
-          "Into where it lives, how you got there, and what it wants.",
+          "Fake sites used to have tells: blurry logos, weird fonts.",
+          "Now MIMIC copies a whole site the same way he copies a face. Perfectly.",
+          "The pixels match because they're flat-out stolen. So where did the clues go?",
+          "Not into what the page shows you. Into where it lives, how you got there, and what it wants.",
+        ],
+        beatAudio: [
+          "/audio/wren/m15-c1-b1.mp3",
+          "/audio/wren/m15-c1-b2.mp3",
+          "/audio/wren/m15-c1-b3.mp3",
+          "/audio/wren/m15-c1-b4.mp3",
         ],
         prediction: {
           question: "A login page looks EXACTLY right. What does that actually prove?",
@@ -119,6 +123,7 @@ export const mission15: MissionManifest = {
           doneLine: "The look was flawless. Every clue lived somewhere the eyes never look. Eyes retire tonight.",
         },
       },
+      playAudio: "/audio/wren/m15-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -155,11 +160,15 @@ export const mission15: MissionManifest = {
       intel: {
         beats: [
           "Your screen is split into two territories.",
-          "The FRAME: address bar, padlock, buttons. That belongs to your browser.",
-          "The PAGE: everything inside it. That belongs to whoever sent it.",
-          "The page can draw ANYTHING it likes. Including a lovely fake padlock.",
-          "The frame can't be drawn on. It's your browser's turf, not MIMIC's.",
-          "Trust the territory, never the decoration.",
+          "The frame, address bar and padlock and buttons, belongs to your browser. The page belongs to whoever sent it.",
+          "The page can draw anything it likes, even a lovely fake padlock. The frame can't be drawn on.",
+          "It's your browser's turf, not MIMIC's. Trust the territory, never the decoration.",
+        ],
+        beatAudio: [
+          "/audio/wren/m15-c2-b1.mp3",
+          "/audio/wren/m15-c2-b2.mp3",
+          "/audio/wren/m15-c2-b3.mp3",
+          "/audio/wren/m15-c2-b4.mp3",
         ],
         prediction: {
           question: "A page shows a big padlock badge inside its banner. That padlock is:",
@@ -203,6 +212,7 @@ export const mission15: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m15-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -238,12 +248,16 @@ export const mission15: MissionManifest = {
       instruction: "Fill each slot with the part that holds.",
       intel: {
         beats: [
-          "Now put it all together. Case 1 handed you domains.",
-          "Case 11 handed you the vault.",
-          "Here's the secret MIMIC hates: the vault READS domains.",
-          "Autofill only fills on the EXACT site it saved. No exceptions.",
+          "Now put it together. Case 1 gave you domains. Case 11 gave you the vault.",
+          "Here's the secret MIMIC hates: the vault reads domains. It only fills on the exact site it saved.",
           "A mirror can fool your eyes all day. It can never fool the vault.",
           "So when autofill goes quiet on a login page, that silence is a siren.",
+        ],
+        beatAudio: [
+          "/audio/wren/m15-c3-b1.mp3",
+          "/audio/wren/m15-c3-b2.mp3",
+          "/audio/wren/m15-c3-b3.mp3",
+          "/audio/wren/m15-c3-b4.mp3",
         ],
         prediction: {
           question: "Your vault refuses to autofill on a login page. Most likely:",
@@ -295,6 +309,7 @@ export const mission15: MissionManifest = {
           doneLine: "Arrive on your own terms, let the vault type, treat silence as a siren. Officially mirror-proof.",
         },
       },
+      playAudio: "/audio/wren/m15-c3-play.mp3",
       checkpoint: {
         questions: [
           {

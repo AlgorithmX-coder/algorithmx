@@ -64,12 +64,16 @@ export const mission03: MissionManifest = {
       instruction: "Tap the 3 passwords the rig eats first.",
       intel: {
         beats: [
-          "The rig's running in ARC's sealed range right now. Behind glass. Relax.",
-          "Watch it work. It isn't guessing at random.",
-          "It runs lists: names, pets, birthdays, keyboard rows.",
-          "Millions of common patterns, most likely ones first.",
+          "The rig's running in ARC's sealed range, behind glass. It isn't guessing at random.",
+          "It runs lists: names, pets, birthdays, keyboard rows, common patterns first.",
           "Millie2013! looks personal, right? It's already on the list.",
           "SKELETON KEY never met Millie. Didn't need to. That's the con.",
+        ],
+        beatAudio: [
+          "/audio/wren/m03-c1-b1.mp3",
+          "/audio/wren/m03-c1-b2.mp3",
+          "/audio/wren/m03-c1-b3.mp3",
+          "/audio/wren/m03-c1-b4.mp3",
         ],
         prediction: {
           question: "Why does Millie2013! fall in seconds?",
@@ -118,6 +122,7 @@ export const mission03: MissionManifest = {
           doneLine: "Three soft locks, gone. The rig eats these for breakfast. That library one will still be standing.",
         },
       },
+      playAudio: "/audio/wren/m03-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -149,12 +154,16 @@ export const mission03: MissionManifest = {
       instruction: "Pick which account Jake fixes first.",
       intel: {
         beats: [
-          "Last month a tiny game forum spilled its passwords.",
-          "SKELETON KEY bought the whole list. Cheap, apparently.",
+          "Last month a tiny game forum spilled its passwords. SKELETON KEY bought the list.",
           "Now he tries every stolen key on every other door.",
-          "Email, games, school. Same key, same minute.",
-          "A reused password isn't one problem.",
-          "It's every problem at once, gift-wrapped.",
+          "Email, games, school. Same key opens them all, same minute.",
+          "A reused password isn't one problem. It's every problem at once, gift-wrapped.",
+        ],
+        beatAudio: [
+          "/audio/wren/m03-c2-b1.mp3",
+          "/audio/wren/m03-c2-b2.mp3",
+          "/audio/wren/m03-c2-b3.mp3",
+          "/audio/wren/m03-c2-b4.mp3",
         ],
         prediction: {
           question: "A forum leaks your password. Which door does SK try first?",
@@ -198,6 +207,7 @@ export const mission03: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m03-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -233,12 +243,16 @@ export const mission03: MissionManifest = {
       instruction: "Pick the 3 rules that stop the rig.",
       intel: {
         beats: [
-          "So what actually survives the rig?",
-          "Not cleverness. Boring old length.",
-          "P@ssw0rd! looks tough. Falls in minutes. The rig knows every letter-swap.",
-          "Three random words beat one clever word, every time.",
+          "So what survives the rig? Not cleverness. Boring old length.",
+          "P@ssw0rd! looks tough, but falls in minutes. The rig knows every letter-swap.",
           "banana-rocket-lampshade-9 buys you centuries of the rig's time.",
           "Long, random, never reused. That's the whole trick.",
+        ],
+        beatAudio: [
+          "/audio/wren/m03-c3-b1.mp3",
+          "/audio/wren/m03-c3-b2.mp3",
+          "/audio/wren/m03-c3-b3.mp3",
+          "/audio/wren/m03-c3-b4.mp3",
         ],
         prediction: {
           question: "Which password survives the rig longest?",
@@ -269,6 +283,7 @@ export const mission03: MissionManifest = {
           doneLine: "Long, random, unique. Now the rig is SKELETON KEY's problem, not yours.",
         },
       },
+      playAudio: "/audio/wren/m03-c3-play.mp3",
       checkpoint: {
         questions: [
           {

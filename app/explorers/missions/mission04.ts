@@ -66,11 +66,15 @@ export const mission04: MissionManifest = {
       intel: {
         beats: [
           "One post on its own? PACKRAT can't do a thing with it.",
-          "That's the trap: every crumb feels harmless.",
-          "A handle here. A photo there. A joke about birthdays.",
-          "Alone, they're nothing. Stacked in his nest, they're a file.",
-          "ARC calls it the assembly attack.",
+          "That's the trap: every crumb feels harmless. A handle, a photo, a birthday joke.",
+          "Alone they're nothing. Stacked in his nest they're a file. ARC calls it the assembly attack.",
           "Tonight we run one ourselves, on a volunteer's test account, with her OK.",
+        ],
+        beatAudio: [
+          "/audio/wren/m04-c1-b1.mp3",
+          "/audio/wren/m04-c1-b2.mp3",
+          "/audio/wren/m04-c1-b3.mp3",
+          "/audio/wren/m04-c1-b4.mp3",
         ],
         prediction: {
           question: "Priya's posts each share one tiny thing. What's the real danger?",
@@ -145,6 +149,7 @@ export const mission04: MissionManifest = {
           doneLine: "Who → where → when → birthday. Four posts, one file. That's assembly, and PACKRAT never lifted a claw.",
         },
       },
+      playAudio: "/audio/wren/m04-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -180,11 +185,16 @@ export const mission04: MissionManifest = {
       instruction: "Tap the 3 leaks hiding in this photo.",
       intel: {
         beats: [
-          "A photo shows what you pointed it at.",
-          "It also shows everything BEHIND what you pointed it at.",
+          "A photo shows what you pointed it at. It also shows everything BEHIND it.",
           "Uniform crests. Street signs. Reflections in windows.",
           "And underneath, the location tag your phone stapled on without asking.",
           "You checked the smile. PACKRAT checked the background.",
+        ],
+        beatAudio: [
+          "/audio/wren/m04-c2-b1.mp3",
+          "/audio/wren/m04-c2-b2.mp3",
+          "/audio/wren/m04-c2-b3.mp3",
+          "/audio/wren/m04-c2-b4.mp3",
         ],
         prediction: {
           question: "What does PACKRAT look at first in a photo?",
@@ -233,6 +243,7 @@ export const mission04: MissionManifest = {
           doneLine: "Three leaks, and not one of them in the caption. That's why PACKRAT loves a photo.",
         },
       },
+      playAudio: "/audio/wren/m04-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -269,10 +280,15 @@ export const mission04: MissionManifest = {
       intel: {
         beats: [
           "One thing makes assembly even easier: the same handle everywhere.",
-          "@priya_riverdale09 on games, photos, forums.",
-          "Same name = one thread tying every crumb together.",
+          "@priya_riverdale09 on games, photos, forums. Same name, one thread tying every crumb together.",
           "You can't delete the internet. Good news: you don't need to.",
           "Analysts scrub by priority: the crumb that hurts most goes first.",
+        ],
+        beatAudio: [
+          "/audio/wren/m04-c3-b1.mp3",
+          "/audio/wren/m04-c3-b2.mp3",
+          "/audio/wren/m04-c3-b3.mp3",
+          "/audio/wren/m04-c3-b4.mp3",
         ],
         prediction: {
           question: "Why does the same handle everywhere help PACKRAT?",
@@ -316,6 +332,7 @@ export const mission04: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m04-c3-play.mp3",
       checkpoint: {
         questions: [
           {
