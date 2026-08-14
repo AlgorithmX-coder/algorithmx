@@ -59,6 +59,8 @@ const week08: LessonManifest = {
       theCost: "The ICO issued a then-record £400,000 fine for failing to take basic steps. TalkTalk reported around £77M in costs and lost over 100,000 customers, and the CEO faced the press and Parliament. All from an attack a first-week student can now run in a browser.",
       control: "secure-configuration",
       source: "ICO monetary penalty notice, October 2016; UK parliamentary and press coverage, 2015-2016.",
+      brandColor: "#ec008c",
+      news: { headline: "TalkTalk fined £400,000 for theft of customer details", outlet: "BBC News", date: "October 2016", url: "https://www.bbc.co.uk/news/business-37565367" },
     },
   ],
 

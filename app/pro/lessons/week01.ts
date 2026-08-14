@@ -67,6 +67,8 @@ const week01: LessonManifest = {
       theCost: "The full list of 32 million real passwords was published. It became the file `rockyou.txt`, still the first password-guessing wordlist attackers reach for today. One company's shortcut became a permanent weapon against everyone.",
       control: "secure-configuration",
       source: "Public breach record; Imperva 'Consumer Password Worst Practices' analysis, 2010.",
+      brandColor: "#e0524a",
+      news: { headline: "RockYou hack: from bad to worse", outlet: "TechCrunch", date: "December 2009", url: "https://techcrunch.com/2009/12/14/rockyou-hack-security-myspace-facebook-passwords/" },
     },
     {
       org: "LinkedIn",
@@ -77,6 +79,8 @@ const week01: LessonManifest = {
       theCost: "First reported as 6.5 million in 2012, the true scale emerged in 2016: over 117 million accounts. The dumped credentials fed years of account-takeover attacks on other sites, because people reuse passwords.",
       control: "secure-configuration",
       source: "Public breach record; 2016 disclosure of the full ~117M dataset.",
+      brandColor: "#0a66c2",
+      news: { headline: "LinkedIn passwords leaked by hackers", outlet: "BBC News", date: "June 2012", url: "https://www.bbc.co.uk/news/technology-18338956" },
     },
   ],
 

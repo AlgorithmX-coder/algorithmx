@@ -120,6 +120,34 @@ function ControlTag({ control }: { control: CaseCard["control"] }) {
   );
 }
 
+/* A clean company identity mark (monogram in the brand colour). Scales
+ * to any company incl. those with no usable logo; real brand SVGs can
+ * be swapped in per case later. */
+function CaseLogo({ org, color, size = 40 }: { org: string; color?: string; size?: number }) {
+  const initial = (org.replace(/[^A-Za-z0-9]/g, "")[0] ?? "?").toUpperCase();
+  return (
+    <span aria-hidden style={{ width: size, height: size, borderRadius: size * 0.24, background: color ?? T.primary, color: "#fff", fontFamily: T.display, fontWeight: 700, fontSize: size * 0.44, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)" }}>
+      {initial}
+    </span>
+  );
+}
+
+/* A sourced press-coverage card: the real headline, outlet and date,
+ * with a link to the original. Never a copyrighted article screenshot. */
+function NewsCard({ news }: { news: NonNullable<CaseCard["news"]> }) {
+  const inner = (
+    <>
+      <div style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: T.faint, marginBottom: 6 }}>In the news</div>
+      <div style={{ fontSize: 14.5, fontWeight: 700, color: T.ink, lineHeight: 1.4 }}>&ldquo;{news.headline}&rdquo;</div>
+      <div style={{ fontSize: 12, color: T.muted, marginTop: 5 }}>{news.outlet} &middot; {news.date}{news.url ? " ›" : ""}</div>
+    </>
+  );
+  const style: React.CSSProperties = { display: "block", background: T.bgRaise, border: `1px solid ${T.edge}`, borderRadius: 9, padding: "12px 15px", textDecoration: "none" };
+  return news.url
+    ? <a href={news.url} target="_blank" rel="noopener noreferrer" style={style}>{inner}</a>
+    : <div style={style}>{inner}</div>;
+}
+
 export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
   const [phase, setPhase] = useState<LessonPhase>("intro");
   const [learnIdx, setLearnIdx] = useState(0);
@@ -230,14 +258,18 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
               <h1 style={{ fontFamily: T.display, fontSize: 34, fontWeight: 700, lineHeight: 1.2, margin: "0 0 16px", color: T.ink }}>{lesson.title}</h1>
               <p style={{ fontSize: 17, lineHeight: 1.7, color: T.body, maxWidth: "60ch" }}>{lesson.promise}</p>
 
-              {/* the hook: a real company teased up front */}
+              {/* the hook: a real company teased up front, with its logo and press coverage */}
               {heroCase && (
-                <div style={{ display: "flex", gap: 14, alignItems: "flex-start", background: T.panel, border: `1px solid ${T.edge}`, borderLeft: `3px solid ${T.red}`, borderRadius: "0 12px 12px 0", padding: "16px 20px", margin: "24px 0", maxWidth: "62ch" }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontFamily: T.mono, fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: T.red, marginBottom: 7 }}>This week&apos;s true story</div>
-                    <div style={{ fontSize: 16, fontWeight: 700, color: T.ink, lineHeight: 1.4 }}>{heroCase.org} <span style={{ color: T.muted, fontWeight: 400, fontFamily: T.mono, fontSize: 13 }}>{heroCase.year}</span></div>
-                    <div style={{ fontSize: 14.5, color: T.body, marginTop: 4, lineHeight: 1.5 }}>{heroCase.headline}. You will see exactly how, and how one measure would have stopped it.</div>
+                <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderLeft: `3px solid ${T.red}`, borderRadius: "0 12px 12px 0", padding: "16px 20px", margin: "24px 0", maxWidth: "62ch" }}>
+                  <div style={{ fontFamily: T.mono, fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: T.red, marginBottom: 12 }}>This week&apos;s true story</div>
+                  <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                    <CaseLogo org={heroCase.org} color={heroCase.brandColor} />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 16, fontWeight: 700, color: T.ink, lineHeight: 1.4 }}>{heroCase.org} <span style={{ color: T.muted, fontWeight: 400, fontFamily: T.mono, fontSize: 13 }}>{heroCase.year}</span></div>
+                      <div style={{ fontSize: 14.5, color: T.body, marginTop: 4, lineHeight: 1.5 }}>{heroCase.headline}. You will see exactly how, and how one measure would have stopped it.</div>
+                    </div>
                   </div>
+                  {heroCase.news && <div style={{ marginTop: 14 }}><NewsCard news={heroCase.news} /></div>}
                 </div>
               )}
 
@@ -297,17 +329,23 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {lesson.cases.map((c, i) => (
                   <article key={i} style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "20px 22px" }}>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 4 }}>
-                      <span style={{ fontFamily: T.display, fontSize: 19, fontWeight: 700, color: T.ink }}>{c.org}</span>
-                      <span style={{ fontFamily: T.mono, fontSize: 12, color: T.muted }}>{c.year}</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                      <CaseLogo org={c.org} color={c.brandColor} size={34} />
+                      <div>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+                          <span style={{ fontFamily: T.display, fontSize: 19, fontWeight: 700, color: T.ink }}>{c.org}</span>
+                          <span style={{ fontFamily: T.mono, fontSize: 12, color: T.muted }}>{c.year}</span>
+                        </div>
+                        <div style={{ fontSize: 15, fontWeight: 700, color: T.cyan, marginTop: 1 }}>{c.headline}</div>
+                      </div>
                     </div>
-                    <div style={{ fontSize: 15.5, fontWeight: 700, color: T.cyan, marginBottom: 12 }}>{c.headline}</div>
                     <p style={{ fontSize: 15, lineHeight: 1.65, color: T.body }}>{c.whatHappened}</p>
                     <div style={{ background: T.redSoft, borderRadius: 8, padding: "10px 14px", margin: "6px 0 12px" }}>
                       <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: "0.14em", color: T.red, marginBottom: 4 }}>THE MISSED MEASURE</div>
                       <div style={{ fontSize: 14.5, color: T.ink, lineHeight: 1.55 }}>{c.theMissedMeasure}</div>
                     </div>
                     <p style={{ fontSize: 15, lineHeight: 1.65, color: T.body }}><b style={{ color: T.ink }}>What it cost:</b> {c.theCost}</p>
+                    {c.news && <div style={{ marginTop: 12 }}><NewsCard news={c.news} /></div>}
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
                       <ControlTag control={c.control} />
                       <span style={{ fontSize: 11, color: T.faint, fontStyle: "italic" }}>{c.source}</span>
