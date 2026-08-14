@@ -285,7 +285,18 @@ function renderWithGlossary(text: string, glossary: GlossaryEntry[] | undefined,
   return out.length ? out : text;
 }
 
-export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
+/* When a lesson runs as one topic inside a week, the player takes a few
+ * extra props: a topic counter for the header, and callbacks to finish
+ * the topic (advance the week) or jump back to the week overview. */
+export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle, onComplete, onExit }: {
+  lesson: LessonManifest;
+  topicIndex?: number; // 0-based position within the week
+  topicCount?: number; // total topics in the week
+  weekTitle?: string;
+  onComplete?: () => void; // finished this topic; advance the week
+  onExit?: () => void; // jump back to the week overview
+}) {
+  const embedded = typeof topicIndex === "number" && typeof topicCount === "number";
   const [phase, setPhase] = useState<LessonPhase>("intro");
   const [learnIdx, setLearnIdx] = useState(0);
   const [didTry, setDidTry] = useState(false);
@@ -420,17 +431,24 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
         <div className="pro-main">
           {/* header */}
           <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "6px 0 18px", borderBottom: `1px solid ${T.edge}`, flexWrap: "wrap" }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", minWidth: 0 }}>
-              <span style={{ fontFamily: T.display, fontWeight: 700, fontSize: 16, letterSpacing: "0.07em", color: T.ink }}>CYBER PRO</span>
-              <span style={{ fontFamily: T.mono, fontSize: 11, color: T.muted }}>
-                {lesson.weekLabel}
-                {lesson.title ? (
-                  <>
-                    {" · "}
-                    <span style={{ color: T.ink }}>{lesson.title}</span>
-                  </>
-                ) : null}
-              </span>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", minWidth: 0 }}>
+              {embedded && onExit ? (
+                <button onClick={onExit} style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "transparent", border: "none", padding: 0, cursor: "pointer", fontFamily: T.mono, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: T.muted }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
+                  {lesson.weekLabel}
+                </button>
+              ) : (
+                <>
+                  <span style={{ fontFamily: T.display, fontWeight: 700, fontSize: 16, letterSpacing: "0.07em", color: T.ink }}>CYBER PRO</span>
+                  <span style={{ fontFamily: T.mono, fontSize: 11, color: T.muted }}>
+                    {lesson.weekLabel}
+                    {lesson.title ? (<>{" · "}<span style={{ color: T.ink }}>{lesson.title}</span></>) : null}
+                  </span>
+                </>
+              )}
+              {embedded && (
+                <span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color: T.cyan, background: T.cyanSoft, border: `1px solid ${T.cyan}44`, borderRadius: 6, padding: "2px 9px" }}>Topic {(topicIndex as number) + 1} / {topicCount}</span>
+              )}
             </div>
             {inLesson && (
               <div className="pro-topbar">
@@ -684,7 +702,7 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
           {phase === "done" && (
             <main style={{ marginTop: 34 }}>
               <div style={{ background: T.greenSoft, border: `1px solid ${T.green}66`, borderRadius: 12, padding: "16px 20px", marginBottom: 22 }}>
-                <span style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.18em", color: T.green, fontWeight: 600 }}>LESSON COMPLETE</span>
+                <span style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.18em", color: T.green, fontWeight: 600 }}>{embedded ? `TOPIC ${(topicIndex as number) + 1} OF ${topicCount} COMPLETE` : "LESSON COMPLETE"}</span>
                 <div style={{ fontFamily: T.display, fontSize: 22, fontWeight: 700, color: T.ink, marginTop: 6 }}>{lesson.wrap.headline ?? "Lesson complete. Well done."}</div>
               </div>
 
@@ -707,8 +725,17 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
               )}
 
               <div style={{ marginTop: 26, display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <a href="/pro" style={{ fontFamily: T.display, fontSize: 14, fontWeight: 700, letterSpacing: "0.03em", padding: "12px 24px", borderRadius: 10, color: "#fff", textDecoration: "none", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})` }}>Back to the course</a>
-                {btn("Review the lesson", () => { setPhase("intro"); setLearnIdx(0); }, { ghost: true })}
+                {embedded ? (
+                  <>
+                    {btn((topicIndex as number) + 1 >= (topicCount as number) ? "Finish the week" : "Next topic", () => onComplete?.())}
+                    {btn("Week overview", () => onExit?.(), { ghost: true })}
+                  </>
+                ) : (
+                  <>
+                    <a href="/pro" style={{ fontFamily: T.display, fontSize: 14, fontWeight: 700, letterSpacing: "0.03em", padding: "12px 24px", borderRadius: 10, color: "#fff", textDecoration: "none", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})` }}>Back to the course</a>
+                    {btn("Review the lesson", () => { setPhase("intro"); setLearnIdx(0); }, { ghost: true })}
+                  </>
+                )}
               </div>
             </main>
           )}

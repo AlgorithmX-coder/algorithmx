@@ -126,6 +126,36 @@ export interface LessonManifest {
   };
 }
 
+/* A topic is a single Learn -> See -> Try -> Check lesson. A week groups
+ * several of them; `LessonManifest` and `TopicManifest` are the same shape. */
+export type TopicManifest = LessonManifest;
+
+/* ---- a WEEK: a group of topics ----
+ * Feedback: one lesson is too short to be a whole week. A week now bundles
+ * ~5 focused topics (each a full lesson), so a week is a proper ~2 hours.
+ * The week adds an overview "map" and a completion screen on top. */
+export interface WeekManifest {
+  id: string; // "week-01"
+  weekLabel: string; // "Week 1"
+  act: string; // "Act 1 - Foundations you can touch"
+  title: string; // the week's theme, e.g. "Passwords & account security"
+  /* One-line overview shown on the week map. */
+  intro: string;
+  /* Why this whole week matters (career framing). */
+  role: string;
+  /* What the learner can do once the week is finished. */
+  outcomes: string[];
+  topics: TopicManifest[];
+}
+
+export const weekProgressKey = (id: string) => `pro:week:${id}`;
+
+export interface WeekProgress {
+  id: string;
+  /* topic ids the learner has completed */
+  doneTopics: string[];
+}
+
 /* ---- resume (localStorage for the prototype) ---- */
 
 export const lessonCheckpointKey = (id: string) => `pro:lesson:${id}`;
