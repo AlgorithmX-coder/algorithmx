@@ -61,12 +61,16 @@ export const mission16: MissionManifest = {
       instruction: "Pick the smart call on tracking.",
       intel: {
         beats: [
-          "You already know: everything online leaves tracks.",
-          "Here's the bigger-kid truth: those tracks get SOLD.",
+          "You already know everything online leaves tracks. Here's the bigger-kid truth: those tracks get sold.",
           "Free apps have trackers that watch what you do.",
-          "Collectors like PACKRAT buy those logs and build a file on you.",
-          "That file follows you: ads, offers, and worse.",
+          "Collectors like PACKRAT buy those logs and build a file on you. It follows you: ads, offers, and worse.",
           "A free app isn't a gift. You are what it sells.",
+        ],
+        beatAudio: [
+          "/audio/wren/m16-c1-b1.mp3",
+          "/audio/wren/m16-c1-b2.mp3",
+          "/audio/wren/m16-c1-b3.mp3",
+          "/audio/wren/m16-c1-b4.mp3",
         ],
         prediction: {
           question: "How does a free game with no purchases make money?",
@@ -110,6 +114,7 @@ export const mission16: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m16-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -145,12 +150,16 @@ export const mission16: MissionManifest = {
       instruction: "Pin the 4 loudest clues in your trail.",
       intel: {
         beats: [
-          "In Case 4, you dug through Priya's trail.",
-          "Tonight you do it to your OWN trail.",
-          "Your test account's trail is on the board.",
-          "Find the clues a collector would link up.",
+          "In Case 4, you dug through Priya's trail. Tonight you do it to your own.",
+          "Your test account's trail is on the board. Find the clues a collector would link up.",
           "This is the check real analysts run on themselves.",
-          "Twice a year, for life. Starting now.",
+          "Twice a year, for life. Starting tonight.",
+        ],
+        beatAudio: [
+          "/audio/wren/m16-c2-b1.mp3",
+          "/audio/wren/m16-c2-b2.mp3",
+          "/audio/wren/m16-c2-b3.mp3",
+          "/audio/wren/m16-c2-b4.mp3",
         ],
         prediction: {
           question: "Why check your own trail like an attacker would?",
@@ -225,6 +234,7 @@ export const mission16: MissionManifest = {
           doneLine: "Name, pin, answer, dead door. Your file, mapped. Now we shrink it.",
         },
       },
+      playAudio: "/audio/wren/m16-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -260,12 +270,16 @@ export const mission16: MissionManifest = {
       instruction: "Fill each slot with the choice that holds up.",
       intel: {
         beats: [
-          "You can't delete the whole internet. Old news.",
-          "But you CAN cut the links that make files valuable.",
+          "You can't delete the whole internet. But you can cut the links that make files valuable.",
           "Close dead accounts. Remove tags. Use different names.",
-          "And here's the grown-up move:",
-          "Leave GOOD tracks on purpose.",
+          "And here's the grown-up move: leave good tracks on purpose.",
           "The trail you choose is the story strangers read.",
+        ],
+        beatAudio: [
+          "/audio/wren/m16-c3-b1.mp3",
+          "/audio/wren/m16-c3-b2.mp3",
+          "/audio/wren/m16-c3-b3.mp3",
+          "/audio/wren/m16-c3-b4.mp3",
         ],
         prediction: {
           question: "Why leave good tracks instead of posting nothing?",
@@ -317,6 +331,7 @@ export const mission16: MissionManifest = {
           doneLine: "Doors closed, links cut, story chosen. The file shrinks; the trail shines.",
         },
       },
+      playAudio: "/audio/wren/m16-c3-play.mp3",
       checkpoint: {
         questions: [
           {

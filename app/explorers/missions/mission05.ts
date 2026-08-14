@@ -65,12 +65,16 @@ export const mission05: MissionManifest = {
       instruction: "Tap the 3 fingerprints the channels share.",
       intel: {
         beats: [
-          "A text. A QR poster. A DM. Three different screens.",
-          "Three channels. Three costumes. One quick-change artist.",
+          "A text. A QR poster. A DM. Three screens, three costumes, one quick-change artist.",
           "Underneath every costume: one author, running one play.",
-          "He swaps costumes because costumes are cheap and easy.",
-          "He keeps the moves because moves are habits, and habits leave fingerprints.",
+          "He swaps costumes because they're cheap. He keeps the moves, and habits leave fingerprints.",
           "Match the fingerprints and the whole storm becomes one case.",
+        ],
+        beatAudio: [
+          "/audio/wren/m05-c1-b1.mp3",
+          "/audio/wren/m05-c1-b2.mp3",
+          "/audio/wren/m05-c1-b3.mp3",
+          "/audio/wren/m05-c1-b4.mp3",
         ],
         prediction: {
           question: "The same scam hits texts, posters, and DMs. Why bother spreading it around?",
@@ -118,6 +122,7 @@ export const mission05: MissionManifest = {
           doneLine: "Three costumes, one signature. Tick tock, player: your storm is one case now.",
         },
       },
+      playAudio: "/audio/wren/m05-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -153,12 +158,16 @@ export const mission05: MissionManifest = {
       instruction: "Pick the 3 sender moves in this actor's M.O.",
       intel: {
         beats: [
-          "Every message shows up wearing a name tag.",
-          "“GameHub Support.” “Library Desk.” Even “Mrs. Cole.”",
+          "Every message shows up wearing a name tag: “GameHub Support.” “Library Desk.” Even “Mrs. Cole.”",
           "Here's the catch: the name tag is typed by the SENDER.",
           "Anyone can type anything. Phantom Hook types whatever fits you.",
-          "The address underneath is much harder to fake.",
-          "So analysts read the address. Names are just costume.",
+          "The address underneath is much harder to fake. So analysts read the address, not the name.",
+        ],
+        beatAudio: [
+          "/audio/wren/m05-c2-b1.mp3",
+          "/audio/wren/m05-c2-b2.mp3",
+          "/audio/wren/m05-c2-b3.mp3",
+          "/audio/wren/m05-c2-b4.mp3",
         ],
         prediction: {
           question: "A message swears it's from your head teacher. What actually proves that?",
@@ -193,6 +202,7 @@ export const mission05: MissionManifest = {
           doneLine: "Names are costume. Addresses are fingerprints. Filed, and he hates that.",
         },
       },
+      playAudio: "/audio/wren/m05-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -224,12 +234,16 @@ export const mission05: MissionManifest = {
       instruction: "Pick which flagged message you handle first.",
       intel: {
         beats: [
-          "In a storm, every message is screaming for attention.",
-          "Analysts don't answer screams. They rank them.",
+          "In a storm, every message is screaming for attention. Analysts don't answer screams, they rank them.",
           "Loud is not the same as dangerous.",
           "A message blasted to everyone is spray. It's just guessing.",
-          "A message that knows YOUR name and YOUR club took real research.",
-          "Targeted beats loud. Every single time.",
+          "One that knows YOUR name and YOUR club took real research. Targeted beats loud, every time.",
+        ],
+        beatAudio: [
+          "/audio/wren/m05-c3-b1.mp3",
+          "/audio/wren/m05-c3-b2.mp3",
+          "/audio/wren/m05-c3-b3.mp3",
+          "/audio/wren/m05-c3-b4.mp3",
         ],
         prediction: {
           question: "Two threats land at once. Which one is actually more dangerous?",
@@ -273,6 +287,7 @@ export const mission05: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m05-c3-play.mp3",
       checkpoint: {
         questions: [
           {

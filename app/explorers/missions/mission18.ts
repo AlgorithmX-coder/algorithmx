@@ -67,12 +67,16 @@ export const mission18: MissionManifest = {
       instruction: "Pick what makes you an analyst, not an actor.",
       intel: {
         beats: [
-          "Look at everything you've learned.",
-          "Reading lures. Cloning voices. Tracing people.",
-          "An attacker learns the exact same things.",
-          "The skills don't know if they're good or bad.",
-          "Only ONE thing decides that. Not talent. Not knowledge.",
+          "Look at everything you've learned. Reading lures, cloning voices, tracing people.",
+          "An attacker learns the exact same things. The skills don't pick a side.",
+          "Only one thing decides good or bad. Not talent, not knowledge.",
           "The choice. The ARC Code. That's the whole difference.",
+        ],
+        beatAudio: [
+          "/audio/wren/m18-c1-b1.mp3",
+          "/audio/wren/m18-c1-b2.mp3",
+          "/audio/wren/m18-c1-b3.mp3",
+          "/audio/wren/m18-c1-b4.mp3",
         ],
         prediction: {
           question: "What separates an analyst from an attacker?",
@@ -116,6 +120,7 @@ export const mission18: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m18-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -151,12 +156,16 @@ export const mission18: MissionManifest = {
       instruction: "Pick the responsible move.",
       intel: {
         beats: [
-          "Your skills will find real holes. Guaranteed.",
-          "A classmate left logged in. A group left wide open.",
-          "A site with a door hanging loose.",
-          "Three wrong moves: sneak in, ignore it, or shame them.",
-          "One right move: report it, quietly, to someone who can fix it.",
+          "Your skills will find real holes. A login left open, a door hanging loose.",
+          "Three wrong moves: sneak in, ignore it, or shame the person.",
+          "One right move: report it quietly, to someone who can fix it.",
           "That's responsible disclosure. It's what real heroes do.",
+        ],
+        beatAudio: [
+          "/audio/wren/m18-c2-b1.mp3",
+          "/audio/wren/m18-c2-b2.mp3",
+          "/audio/wren/m18-c2-b3.mp3",
+          "/audio/wren/m18-c2-b4.mp3",
         ],
         prediction: {
           question: "You spot a classmate's account left logged in on a school PC. Best move?",
@@ -191,6 +200,7 @@ export const mission18: MissionManifest = {
           doneLine: "Report, don't sneak in, don't shame. That's the code, filed and yours.",
         },
       },
+      playAudio: "/audio/wren/m18-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -226,12 +236,16 @@ export const mission18: MissionManifest = {
       instruction: "Tap the 3 levers in the recruiter's message.",
       intel: {
         beats: [
-          "Now the reason tonight matters.",
-          "Kids DO get pulled into cybercrime. Quietly.",
-          "It never starts with “commit a crime”.",
-          "It starts with a small favor. Borrow an account. Move some money.",
-          "The pitch is just CASE 006's levers, aimed at you.",
+          "Here's why tonight matters. Kids do get pulled into cybercrime, quietly.",
+          "It never starts with “commit a crime”. It starts with a small favor.",
+          "Borrow an account. Move some money. It's CASE 006's levers, aimed at you.",
           "Spotting it is the most advanced skill in this whole course.",
+        ],
+        beatAudio: [
+          "/audio/wren/m18-c3-b1.mp3",
+          "/audio/wren/m18-c3-b2.mp3",
+          "/audio/wren/m18-c3-b3.mp3",
+          "/audio/wren/m18-c3-b4.mp3",
         ],
         prediction: {
           question: "How does recruitment into cybercrime usually START?",
@@ -279,6 +293,7 @@ export const mission18: MissionManifest = {
           doneLine: "Flattery, money, a tiny favor. Same levers as CASE 006, aimed at you this time. And you named them.",
         },
       },
+      playAudio: "/audio/wren/m18-c3-play.mp3",
       checkpoint: {
         questions: [
           {

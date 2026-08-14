@@ -66,12 +66,16 @@ export const mission10: MissionManifest = {
       instruction: "Predict the clone's next move. Three rounds.",
       intel: {
         beats: [
-          "How much audio does MIMIC need to clone a voice?",
-          "Not hours. Seconds.",
-          "One birthday video. One clip from the school assembly. Done.",
-          "The copy laughs like her. Pauses like her. Nails the little sigh.",
-          "Your ears will swear it's really her.",
-          "Your ears are wrong tonight. Into the simulator.",
+          "How much audio does MIMIC need to clone a voice? Not hours. Just seconds.",
+          "One birthday video, one clip from assembly, and he's got it.",
+          "The copy laughs like her, pauses like her, nails the little sigh.",
+          "Your ears will swear it's really her. Tonight your ears are wrong.",
+        ],
+        beatAudio: [
+          "/audio/wren/m10-c1-b1.mp3",
+          "/audio/wren/m10-c1-b2.mp3",
+          "/audio/wren/m10-c1-b3.mp3",
+          "/audio/wren/m10-c1-b4.mp3",
         ],
         prediction: {
           question: "Where would MIMIC get seconds of a parent's voice?",
@@ -133,6 +137,7 @@ export const mission10: MissionManifest = {
           doneLine: "URGENCY, THE ASK, THE RECOGNITION TRAP. NEW VOICE, ANCIENT CON.",
         },
       },
+      playAudio: "/audio/wren/m10-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -168,12 +173,16 @@ export const mission10: MissionManifest = {
       instruction: "Tap the 3 tells in this video call.",
       intel: {
         beats: [
-          "Deepfake video has tells. For now.",
-          "Mouths that lag the words. Earrings that flicker.",
-          "Here's the honest bit: those tells DECAY.",
-          "Every month, MIMIC's fakes get a little cleaner.",
-          "One tell never decays: what the caller ASKS you for.",
-          "Spot with your eyes today. Verify with protocol forever.",
+          "Deepfake video has tells, for now. Mouths that lag. Earrings that flicker.",
+          "Here's the honest part: those tells decay. MIMIC's fakes get cleaner every month.",
+          "One tell never fades. It's what the caller ASKS you for.",
+          "Spot with your eyes today. Verify with your protocol forever.",
+        ],
+        beatAudio: [
+          "/audio/wren/m10-c2-b1.mp3",
+          "/audio/wren/m10-c2-b2.mp3",
+          "/audio/wren/m10-c2-b3.mp3",
+          "/audio/wren/m10-c2-b4.mp3",
         ],
         prediction: {
           question: "Why can't we just learn to spot deepfakes and be done forever?",
@@ -221,6 +230,7 @@ export const mission10: MissionManifest = {
           doneLine: "Two fading tells, one forever-tell. Bank on the forever one.",
         },
       },
+      playAudio: "/audio/wren/m10-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -256,12 +266,16 @@ export const mission10: MissionManifest = {
       instruction: "Pick the code-word system that holds.",
       intel: {
         beats: [
-          "Now, the best defense this whole course will ever hand you.",
-          "The family code word.",
-          "A phrase only your family knows, and nobody else.",
-          "Never typed. Never posted. Just rehearsed once out loud.",
+          "Now, the best defense this whole course will ever hand you: the family code word.",
+          "A phrase only your family knows. Never typed, never posted, just rehearsed out loud.",
           "Any emergency call, any voice, no matter how perfect: ask for the word.",
           "Real family answers, or laughs at you. MIMIC's clone goes dead quiet.",
+        ],
+        beatAudio: [
+          "/audio/wren/m10-c3-b1.mp3",
+          "/audio/wren/m10-c3-b2.mp3",
+          "/audio/wren/m10-c3-b3.mp3",
+          "/audio/wren/m10-c3-b4.mp3",
         ],
         prediction: {
           question: "Why does one code word beat a flawless voice clone?",
@@ -305,6 +319,7 @@ export const mission10: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m10-c3-play.mp3",
       checkpoint: {
         questions: [
           {

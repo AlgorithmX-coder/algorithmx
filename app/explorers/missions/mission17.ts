@@ -67,11 +67,15 @@ export const mission17: MissionManifest = {
       intel: {
         beats: [
           "Photos used to be proof. Screenshots used to be proof.",
-          "Now they're PRODUCTS. GHOSTWRITER makes them to order, in seconds.",
-          "So squinting harder at the pixels is a dead end.",
-          "Ask the better question instead:",
-          "WHO BENEFITS if I believe this?",
-          "Every fake has a customer. Find the customer, find the fake.",
+          "Now they're products. GHOSTWRITER makes them to order, in seconds.",
+          "So squinting harder at the pixels is a dead end. Ask a better question.",
+          "Who benefits if I believe this? Every fake has a customer. Find the customer, find the fake.",
+        ],
+        beatAudio: [
+          "/audio/wren/m17-c1-b1.mp3",
+          "/audio/wren/m17-c1-b2.mp3",
+          "/audio/wren/m17-c1-b3.mp3",
+          "/audio/wren/m17-c1-b4.mp3",
         ],
         prediction: {
           question: "A “screenshot” of a celebrity's post proves:",
@@ -119,6 +123,7 @@ export const mission17: MissionManifest = {
           doneLine: "Three products, one real document. The tell that lasts: who benefits.",
         },
       },
+      playAudio: "/audio/wren/m17-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -154,12 +159,16 @@ export const mission17: MissionManifest = {
       instruction: "Pin the 4 chain links. Then put them in order.",
       intel: {
         beats: [
-          "Here's how real fact-checkers read.",
-          "Not deeper into the page. SIDEWAYS, right out of it.",
-          "A page bragging about itself proves nothing.",
-          "Open a second tab. Search the claim.",
-          "Does anyone REAL report it? That's the whole test.",
-          "Lateral reading: ten seconds, kills most fakes.",
+          "Here's how real fact-checkers read. Not deeper into the page. Sideways, right out of it.",
+          "A page bragging about itself proves nothing. Open a second tab and search the claim.",
+          "Does anyone real report it? That's the whole test.",
+          "It's called lateral reading. Ten seconds, and it kills most fakes.",
+        ],
+        beatAudio: [
+          "/audio/wren/m17-c2-b1.mp3",
+          "/audio/wren/m17-c2-b2.mp3",
+          "/audio/wren/m17-c2-b3.mp3",
+          "/audio/wren/m17-c2-b4.mp3",
         ],
         prediction: {
           question: "A shocking claim appears on a site you've never heard of. First move?",
@@ -234,6 +243,7 @@ export const mission17: MissionManifest = {
           doneLine: "Claim → newborn account → cardboard source → silence. Ten seconds of sideways reading.",
         },
       },
+      playAudio: "/audio/wren/m17-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -269,12 +279,16 @@ export const mission17: MissionManifest = {
       instruction: "Predict the next move. Three rounds.",
       intel: {
         beats: [
-          "Last tool on the bench: AI itself.",
-          "Brilliant for leads. Fast at summaries.",
-          "And it lies with PERFECT confidence.",
-          "Exact same warm voice when it's right and when it's dead wrong.",
+          "Last tool on the bench: AI itself. Brilliant for leads, fast at summaries.",
+          "And it lies with perfect confidence. Same warm voice when it's right and when it's dead wrong.",
           "Rule: AI hands you clues to check, never the final answer.",
           "Final answers come from real sources. Every time.",
+        ],
+        beatAudio: [
+          "/audio/wren/m17-c3-b1.mp3",
+          "/audio/wren/m17-c3-b2.mp3",
+          "/audio/wren/m17-c3-b3.mp3",
+          "/audio/wren/m17-c3-b4.mp3",
         ],
         prediction: {
           question: "An AI chatbot says a rumor is “definitely true.” That confidence is:",
@@ -336,6 +350,7 @@ export const mission17: MissionManifest = {
           doneLine: "TARGETS PREDICTED, LIMITS KNOWN. THE MILL CAN'T SURPRISE YOU. NEITHER CAN THE CHATBOT.",
         },
       },
+      playAudio: "/audio/wren/m17-c3-play.mp3",
       checkpoint: {
         questions: [
           {

@@ -62,12 +62,16 @@ export const mission13: MissionManifest = {
       instruction: "Pin the 4 break-in steps. Then order them.",
       intel: {
         beats: [
-          "Remember CASE 004? Priya's crumbs. PACKRAT's file.",
-          "Watch what those little crumbs are worth now.",
+          "Remember Case 4? Priya's crumbs, PACKRAT's file. Watch what they're worth now.",
           "“First pet's name?” Her posts already answered that.",
           "“First school?” The match-day photo answered that too.",
-          "Security questions assume your life is a secret.",
-          "But your life is posted. And that's his back door.",
+          "Security questions assume your life is a secret. But it's posted, and that's SKELETON KEY's back door.",
+        ],
+        beatAudio: [
+          "/audio/wren/m13-c1-b1.mp3",
+          "/audio/wren/m13-c1-b2.mp3",
+          "/audio/wren/m13-c1-b3.mp3",
+          "/audio/wren/m13-c1-b4.mp3",
         ],
         prediction: {
           question: "Why does SKELETON KEY love security questions?",
@@ -142,6 +146,7 @@ export const mission13: MissionManifest = {
           doneLine: "Question → crumb → answer → open door. That monster passphrase never even got a knock.",
         },
       },
+      playAudio: "/audio/wren/m13-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -173,12 +178,16 @@ export const mission13: MissionManifest = {
       instruction: "Fill each slot with the part that holds.",
       intel: {
         beats: [
-          "Here's the trick nobody tells you.",
-          "Security answers don't have to be TRUE.",
-          "They just have to be UNGUESSABLE.",
-          "First pet? “purple-staircase-42.” The robot won't blink.",
-          "Stash the nonsense in your vault, the machine from Case 11.",
+          "Here's the trick nobody tells you: security answers don't have to be TRUE.",
+          "They just have to be UNGUESSABLE. First pet? “purple-staircase-42.” The robot won't blink.",
+          "Stash the nonsense in your vault, the machine you built in Case 11.",
           "And keep your recovery email and phone CURRENT. Stale ones get snatched.",
+        ],
+        beatAudio: [
+          "/audio/wren/m13-c2-b1.mp3",
+          "/audio/wren/m13-c2-b2.mp3",
+          "/audio/wren/m13-c2-b3.mp3",
+          "/audio/wren/m13-c2-b4.mp3",
         ],
         prediction: {
           question: "Best answer to “What's your first pet's name?”",
@@ -230,6 +239,7 @@ export const mission13: MissionManifest = {
           doneLine: "The crumbs are worthless now. PACKRAT's whole file just stopped opening doors.",
         },
       },
+      playAudio: "/audio/wren/m13-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -266,11 +276,15 @@ export const mission13: MissionManifest = {
       intel: {
         beats: [
           "One last kind of door: the session.",
-          "Every device you've EVER logged in on is holding one open.",
-          "The library computer. Your cousin's tablet. That old phone in a drawer.",
+          "Every device you've EVER logged in on is holding one open. The library computer. That old phone in a drawer.",
           "Logged in means open. Still. Right now.",
-          "Every account keeps a “logged-in devices” list.",
-          "Analysts read that list like a door check at closing time.",
+          "Every account keeps a “logged-in devices” list. Read it like a door check at closing time.",
+        ],
+        beatAudio: [
+          "/audio/wren/m13-c3-b1.mp3",
+          "/audio/wren/m13-c3-b2.mp3",
+          "/audio/wren/m13-c3-b3.mp3",
+          "/audio/wren/m13-c3-b4.mp3",
         ],
         prediction: {
           question: "You logged into a library computer last month. That session is:",
@@ -314,6 +328,7 @@ export const mission13: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m13-c3-play.mp3",
       checkpoint: {
         questions: [
           {
