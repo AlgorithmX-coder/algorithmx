@@ -94,31 +94,68 @@ function Rail({ phase, learnIdx, learnCount, onGo }: { phase: LessonPhase; learn
 function Diagram({ kind }: { kind: NonNullable<LearnCard["diagram"]> }) {
   if (kind === "hash-oneway") {
     return (
-      <svg viewBox="0 0 420 96" role="img" aria-label="A password goes one way through a hash into a fingerprint; the reverse is blocked" style={{ width: "100%", maxWidth: 420, height: "auto" }}>
-        <rect x="4" y="30" width="120" height="36" rx="8" fill={T.primarySoft} stroke={T.primary} />
-        <text x="64" y="53" fill={T.ink} fontFamily="monospace" fontSize="13" textAnchor="middle">hunter2</text>
-        <rect x="164" y="24" width="92" height="48" rx="8" fill={T.panel} stroke={T.edge} />
-        <text x="210" y="46" fill={T.muted} fontFamily="monospace" fontSize="10" textAnchor="middle">hash()</text>
-        <text x="210" y="60" fill={T.faint} fontFamily="monospace" fontSize="9" textAnchor="middle">one way</text>
-        <rect x="296" y="30" width="120" height="36" rx="8" fill={T.cyanSoft} stroke={T.cyan} />
-        <text x="356" y="53" fill={T.ink} fontFamily="monospace" fontSize="12" textAnchor="middle">f52e9a...</text>
-        <path d="M124 48 H164" stroke={T.green} strokeWidth="2" markerEnd="url(#ar)" />
-        <path d="M296 48 H256" stroke={T.red} strokeWidth="2" strokeDasharray="4 4" />
-        <line x1="270" y1="40" x2="282" y2="56" stroke={T.red} strokeWidth="2" />
+      <svg viewBox="0 0 480 186" role="img" aria-label="Your password runs one way through a hash function into the value the website stores; there is no way back to the password" style={{ width: "100%", maxWidth: 480, height: "auto" }}>
+        {/* the three boxes */}
+        <rect x="8" y="26" width="134" height="46" rx="9" fill={T.primarySoft} stroke={T.primary} />
+        <text x="75" y="55" fill={T.ink} fontFamily="monospace" fontSize="15" textAnchor="middle">hunter2</text>
+
+        <rect x="173" y="26" width="134" height="46" rx="9" fill={T.panel} stroke={T.edge} />
+        <text x="240" y="49" fill={T.body} fontFamily="monospace" fontSize="14" textAnchor="middle">hash( )</text>
+        <text x="240" y="64" fill={T.faint} fontFamily="monospace" fontSize="10" textAnchor="middle">one-way</text>
+
+        <rect x="338" y="26" width="134" height="46" rx="9" fill={T.cyanSoft} stroke={T.cyan} />
+        <text x="405" y="55" fill={T.ink} fontFamily="monospace" fontSize="15" textAnchor="middle">f52e9a…</text>
+
+        {/* forward arrows */}
+        <path d="M142 49 H171" stroke={T.green} strokeWidth="2.5" markerEnd="url(#fg)" />
+        <path d="M307 49 H336" stroke={T.green} strokeWidth="2.5" markerEnd="url(#fg)" />
+
+        {/* plain-English labels under each box */}
+        <g fontFamily={T.sans} textAnchor="middle" fontSize="11.5">
+          <text x="75" y="92" fill={T.muted}>The password</text>
+          <text x="75" y="107" fill={T.muted}>you type</text>
+          <text x="240" y="92" fill={T.muted}>A one-way</text>
+          <text x="240" y="107" fill={T.muted}>scrambler</text>
+          <text x="405" y="92" fill={T.muted}>What the website</text>
+          <text x="405" y="107" fill={T.muted}>actually stores</text>
+        </g>
+
+        {/* the key point: no reverse */}
+        <path d="M405 146 H91" stroke={T.red} strokeWidth="2" strokeDasharray="5 5" markerEnd="url(#rd)" />
+        <g stroke={T.red} strokeWidth="2.4">
+          <line x1="234" y1="140" x2="246" y2="152" />
+          <line x1="246" y1="140" x2="234" y2="152" />
+        </g>
+        <text x="240" y="176" fill={T.red} fontFamily={T.sans} fontSize="12" fontWeight="700" textAnchor="middle">No way back to your password</text>
+
         <defs>
-          <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0 0 L6 3 L0 6 Z" fill={T.green} />
-          </marker>
+          <marker id="fg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill={T.green} /></marker>
+          <marker id="rd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill={T.red} /></marker>
         </defs>
       </svg>
     );
   }
   return (
-    <svg viewBox="0 0 420 96" role="img" aria-label="Changing one letter of the input changes the entire fingerprint" style={{ width: "100%", maxWidth: 420, height: "auto" }}>
-      <text x="10" y="30" fill={T.body} fontFamily="monospace" fontSize="12">hunter2  {"->"}  f52e9a1c...</text>
-      <text x="10" y="66" fill={T.body} fontFamily="monospace" fontSize="12">hunter3  {"->"}  </text>
-      <text x="150" y="66" fill={T.cyan} fontFamily="monospace" fontSize="12" fontWeight="700">9b0c74ef...</text>
-      <text x="10" y="88" fill={T.faint} fontFamily="monospace" fontSize="10">one character changed, the whole fingerprint changed</text>
+    <svg viewBox="0 0 480 150" role="img" aria-label="Changing one character of the password completely changes the fingerprint it produces" style={{ width: "100%", maxWidth: 480, height: "auto" }}>
+      {/* column headers */}
+      <text x="90" y="16" fill={T.faint} fontFamily={T.mono} fontSize="10" textAnchor="middle">THE PASSWORD</text>
+      <text x="336" y="16" fill={T.faint} fontFamily={T.mono} fontSize="10" textAnchor="middle">THE FINGERPRINT IT PRODUCES</text>
+
+      {/* row 1: original */}
+      <rect x="20" y="28" width="140" height="36" rx="8" fill={T.primarySoft} stroke={T.primary} />
+      <text x="90" y="51" fill={T.ink} fontFamily="monospace" fontSize="15" textAnchor="middle">hunter2</text>
+      <path d="M166 46 H196" stroke={T.green} strokeWidth="2.5" markerEnd="url(#av)" />
+      <text x="336" y="51" fill={T.body} fontFamily="monospace" fontSize="15" textAnchor="middle">f52e9a1c 4b7d…</text>
+
+      {/* row 2: one character different */}
+      <rect x="20" y="82" width="140" height="36" rx="8" fill={T.primarySoft} stroke={T.primary} />
+      <text x="90" y="105" fontFamily="monospace" fontSize="15" textAnchor="middle"><tspan fill={T.ink}>hunter</tspan><tspan fill={T.amber} fontWeight="700">3</tspan></text>
+      <path d="M166 100 H196" stroke={T.green} strokeWidth="2.5" markerEnd="url(#av)" />
+      <text x="336" y="105" fill={T.cyan} fontFamily="monospace" fontSize="15" fontWeight="700" textAnchor="middle">9b0c74ef a1c2…</text>
+
+      <text x="240" y="142" fill={T.muted} fontFamily={T.sans} fontSize="12" textAnchor="middle">Change one character, and the whole fingerprint changes.</text>
+
+      <defs><marker id="av" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill={T.green} /></marker></defs>
     </svg>
   );
 }
