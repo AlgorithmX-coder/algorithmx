@@ -142,6 +142,7 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
         .pro-learn ::selection { background: ${T.primary}; color: #fff; }
         .pro-learn textarea::placeholder { color: ${T.faint}; }
         .pro-learn p { margin: 0 0 14px; }
+        .pro-learn .quiz-opt:not([disabled]):hover { border-color: ${T.primary}; background: ${T.primarySoft}; }
       `}</style>
 
       <div className="pro-learn" style={{ maxWidth: 760, margin: "0 auto", padding: "20px 24px 80px" }}>
@@ -285,13 +286,14 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
                         const answered = chosen !== null;
                         const isChosen = chosen === oi;
                         const isCorrect = oi === que.answer;
-                        let border: string = T.edge, bg = "transparent", fg: string = T.body;
+                        let border: string = T.edgeSoft, bg: string = T.panelSoft, fg: string = T.ink;
                         if (answered && isCorrect) { border = T.green; bg = T.greenSoft; fg = T.ink; }
                         else if (answered && isChosen && !isCorrect) { border = T.red; bg = T.redSoft; fg = T.ink; }
+                        else if (answered) { fg = T.muted; } // unpicked options dim once answered
                         return (
-                          <button key={oi} onClick={() => { if (chosen === null) setQuizAnswers((a) => a.map((v, i) => i === qi ? oi : v)); }}
+                          <button key={oi} className="quiz-opt" onClick={() => { if (chosen === null) setQuizAnswers((a) => a.map((v, i) => i === qi ? oi : v)); }}
                             disabled={answered}
-                            style={{ textAlign: "left", fontFamily: T.sans, fontSize: 14.5, color: fg, background: bg, border: `1px solid ${border}`, borderRadius: 8, padding: "10px 13px", cursor: answered ? "default" : "pointer" }}>
+                            style={{ textAlign: "left", fontFamily: T.sans, fontSize: 15, fontWeight: 600, lineHeight: 1.45, color: fg, background: bg, border: `1px solid ${border}`, borderRadius: 9, padding: "12px 15px", cursor: answered ? "default" : "pointer" }}>
                             {opt}
                           </button>
                         );
