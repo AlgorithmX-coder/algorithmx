@@ -8,7 +8,7 @@
  * terminal. Every case is playable in any order. PoC lives at /explorers/poc.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import MissionRuntime from "./engine/MissionRuntime";
 import { useReducedMotion } from "./engine/primitives";
@@ -91,9 +91,11 @@ export default function ExplorersPage() {
   const [active, setActive] = useState<MissionManifest | null>(null);
   const [status, setStatus] = useState<Record<string, string>>({});
   const [totalXp, setTotalXp] = useState(0);
-  const [devBoss, setDevBoss] = useState(false);
+  // Which case (if any) the dev deep-link jumped straight to the boss on. Scoped
+  // to that one case so Next-case navigation always starts the next mission fresh.
+  const [devBossId, setDevBossId] = useState<string | null>(null);
 
-  useEffect(() => {
+  const refreshStatus = useCallback(() => {
     const s: Record<string, string> = {};
     let xp = 0;
     for (const m of CASES) {
@@ -110,6 +112,12 @@ export default function ExplorersPage() {
     setTotalXp(xp);
   }, []);
 
+  // Re-read on mount and whenever we return from a mission, so a just-closed
+  // case shows as CLOSED (with its stamp) the moment you're back on the map.
+  useEffect(() => {
+    refreshStatus();
+  }, [refreshStatus]);
+
   // Dev-only deep link: /explorers?case=16 opens that case; &at=boss jumps to the boss.
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
@@ -119,7 +127,7 @@ export default function ExplorersPage() {
     const found = CASES.find((m) => m.id === `explorers-m${c.padStart(2, "0")}`);
     if (found) {
       setActive(found);
-      setDevBoss(p.get("at") === "boss");
+      setDevBossId(p.get("at") === "boss" ? found.id : null);
     }
   }, []);
 
@@ -133,7 +141,29 @@ export default function ExplorersPage() {
   });
   const ladder = blockStats.map((b) => (b.done ? "■" : "□")).join(" ");
 
-  if (active) return <MissionRuntime manifest={active} devStartBeat={devBoss ? "incident" : undefined} />;
+  if (active) {
+    const activeIdx = CASES.findIndex((m) => m.id === active.id);
+    const hasNext = activeIdx >= 0 && activeIdx < CASES.length - 1;
+    return (
+      <MissionRuntime
+        key={active.id}
+        manifest={active}
+        devStartBeat={active.id === devBossId ? "incident" : undefined}
+        onExit={() => {
+          refreshStatus();
+          setActive(null);
+        }}
+        onNextCase={
+          hasNext
+            ? () => {
+                refreshStatus();
+                setActive(CASES[activeIdx + 1]);
+              }
+            : undefined
+        }
+      />
+    );
+  }
 
   const continueLabel = !nextCase
     ? "ALL CASES SOLVED"
@@ -236,8 +266,36 @@ export default function ExplorersPage() {
                       className={`tc-card${isNext ? " tc-next" : ""}`}
                       onClick={() => setActive(m)}
                       aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : isNext ? " Play next." : ""}`}
-                      style={{ ["--accent"]: accent } as CSSProperties}
+                      style={{ ["--accent"]: accent, position: "relative" } as CSSProperties}
                     >
+                      {isClosed && (
+                        <span
+                          aria-hidden
+                          className="tc-stamp"
+                          style={{
+                            position: "absolute",
+                            top: "47%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%) rotate(-10deg)",
+                            padding: "5px 13px",
+                            border: "3px solid #FF4D5E",
+                            borderRadius: 4,
+                            color: "#FF4D5E",
+                            background: "rgba(24,8,12,0.5)",
+                            fontFamily: MONO,
+                            fontWeight: 800,
+                            fontSize: 14,
+                            letterSpacing: "0.12em",
+                            textTransform: "uppercase",
+                            whiteSpace: "nowrap",
+                            boxShadow: "0 0 16px rgba(255,77,94,0.45), inset 0 0 10px rgba(255,77,94,0.16)",
+                            pointerEvents: "none",
+                            zIndex: 4,
+                          }}
+                        >
+                          Case Closed
+                        </span>
+                      )}
                       <div className="tc-cardbar">
                         <span style={{ color: isNext ? AMBER : b.color }}>{m.caseNumber}</span>
                         {isClosed ? (
