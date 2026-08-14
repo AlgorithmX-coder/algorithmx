@@ -133,6 +133,9 @@ export default function ExplorersPage() {
 
   const closedCount = useMemo(() => CASES.filter((m) => status[m.id] === "CLOSED").length, [status]);
   const nextCase = useMemo(() => CASES.find((m) => status[m.id] !== "CLOSED") ?? null, [status]);
+  // Chronological gate: the only playable case is the first unsolved one. Every
+  // case after it is locked until the case before it is closed (in order).
+  const nextIdx = nextCase ? CASES.indexOf(nextCase) : CASES.length;
 
   const blockStats = BLOCKS.map((b) => {
     const cases = CASES.filter((m) => m.block === b.n);
@@ -191,6 +194,8 @@ export default function ExplorersPage() {
         .tc-card{position:relative;text-align:left;border:1px solid color-mix(in srgb, var(--accent) 34%, transparent);border-radius:4px;background:rgba(8,13,24,0.74);cursor:pointer;overflow:hidden;padding:0;transition:box-shadow .18s,border-color .18s,transform .18s}
         .tc-card:hover{border-color:var(--accent);box-shadow:0 0 26px color-mix(in srgb, var(--accent) 45%, transparent);transform:translateY(-2px)}
         .tc-next{border-color:var(--accent);box-shadow:0 0 24px color-mix(in srgb, var(--accent) 46%, transparent)}
+        .tc-locked{opacity:.46;cursor:not-allowed;filter:saturate(.55)}
+        .tc-locked:hover{border-color:color-mix(in srgb, var(--accent) 34%, transparent);box-shadow:none;transform:none}
         .tc-cardbar{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid color-mix(in srgb, var(--accent) 22%, transparent);background:rgba(3,6,14,0.55)}
         .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
         .tc-title{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:17px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;margin-top:12px}
@@ -256,16 +261,18 @@ export default function ExplorersPage() {
                   const st = status[m.id];
                   const isClosed = st === "CLOSED";
                   const isNext = nextCase?.id === m.id;
-                  const accent = isNext ? AMBER : b.color;
-                  const ring = isClosed ? DIM : accent;
-                  const titleColor = isClosed ? DIM : b.color;
+                  const locked = CASES.indexOf(m) > nextIdx;
+                  const accent = locked ? DIM : isNext ? AMBER : b.color;
+                  const ring = isClosed || locked ? DIM : accent;
+                  const titleColor = isClosed || locked ? DIM : b.color;
                   const sevFilled = "■".repeat(b.sev) + "□".repeat(5 - b.sev);
                   return (
                     <button
                       key={m.id}
-                      className={`tc-card${isNext ? " tc-next" : ""}`}
-                      onClick={() => setActive(m)}
-                      aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : isNext ? " Play next." : ""}`}
+                      className={`tc-card${isNext ? " tc-next" : ""}${locked ? " tc-locked" : ""}`}
+                      onClick={locked ? undefined : () => setActive(m)}
+                      disabled={locked}
+                      aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : locked ? " Locked. Finish the earlier cases first." : isNext ? " Play next." : ""}`}
                       style={{ ["--accent"]: accent, position: "relative" } as CSSProperties}
                     >
                       {isClosed && (
@@ -296,10 +303,37 @@ export default function ExplorersPage() {
                           Case Closed
                         </span>
                       )}
+                      {locked && (
+                        <span
+                          aria-hidden
+                          style={{
+                            position: "absolute",
+                            top: "52%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            zIndex: 4,
+                            color: DIM,
+                            pointerEvents: "none",
+                          }}
+                        >
+                          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+                            <rect x="4" y="10.5" width="16" height="10.5" rx="2.2" stroke="currentColor" strokeWidth="2" fill="rgba(3,6,14,0.45)" />
+                            <path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" stroke="currentColor" strokeWidth="2" />
+                          </svg>
+                        </span>
+                      )}
                       <div className="tc-cardbar">
                         <span style={{ color: isNext ? AMBER : b.color }}>{m.caseNumber}</span>
                         {isClosed ? (
                           <span style={{ color: DIM }}>{"✓"} CLOSED</span>
+                        ) : locked ? (
+                          <span style={{ color: DIM, display: "inline-flex", alignItems: "center", gap: 5 }}>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden>
+                              <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" strokeWidth="2.4" />
+                              <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2.4" />
+                            </svg>
+                            LOCKED
+                          </span>
                         ) : isNext ? (
                           <span className="tc-blink" style={{ color: AMBER }}>{"●"} {st === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
                         ) : st === "IN PROGRESS" ? (
