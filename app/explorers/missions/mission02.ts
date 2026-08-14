@@ -59,11 +59,16 @@ export const mission02: MissionManifest = {
       instruction: "Find 3 clues. Tap anything that looks like bait.",
       intel: {
         beats: [
-          "Picture a fishing hook for a second.",
-          "That juicy little worm is totally free, if you're the fish.",
-          "The fisher isn't being kind. The worm is equipment.",
-          "SIREN's prizes work the exact same way. The prize is the worm.",
+          "Picture a fishing hook. That juicy worm is totally free, if you're the fish.",
+          "The fisher isn't being kind. The worm is just equipment.",
+          "SIREN's prizes work the same way. The prize is the worm.",
           "One question snaps the spell: what does SHE get back?",
+        ],
+        beatAudio: [
+          "/audio/wren/m02-c1-b1.mp3",
+          "/audio/wren/m02-c1-b2.mp3",
+          "/audio/wren/m02-c1-b3.mp3",
+          "/audio/wren/m02-c1-b4.mp3",
         ],
         prediction: {
           question: "Why would a stranger give 500 skins away for nothing?",
@@ -124,6 +129,7 @@ export const mission02: MissionManifest = {
           doneLine: "Three hooks in one post. SIREN's fishing your whole school, and calling every fish the chosen one.",
         },
       },
+      playAudio: "/audio/wren/m02-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -159,11 +165,16 @@ export const mission02: MissionManifest = {
       instruction: "Pin the 4 matching clues. Then order the trail.",
       intel: {
         beats: [
-          "Here's a secret most people never spot.",
           "The chat post, the DM, the website: not three things.",
-          "One SIREN, wearing three different costumes.",
+          "It's one SIREN, wearing three different costumes.",
           "Scammers forget to change small details. We call those fingerprints.",
           "Match the fingerprints, and the costumes stop working.",
+        ],
+        beatAudio: [
+          "/audio/wren/m02-c2-b1.mp3",
+          "/audio/wren/m02-c2-b2.mp3",
+          "/audio/wren/m02-c2-b3.mp3",
+          "/audio/wren/m02-c2-b4.mp3",
         ],
         prediction: {
           question: "The same prize turns up in the group chat, a DM, and a website. What's the smartest read?",
@@ -238,6 +249,7 @@ export const mission02: MissionManifest = {
           doneLine: "Bait → costume change → the net → the squeeze. You just drew SIREN's assembly line.",
         },
       },
+      playAudio: "/audio/wren/m02-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -273,11 +285,16 @@ export const mission02: MissionManifest = {
       instruction: "Help Leo. Pick your best move.",
       intel: {
         beats: [
-          "The post, the DM, the countdown: all had ONE goal.",
-          "Get you to the claim form.",
-          "The form IS the scam. Everything else is decoration.",
+          "The post, the DM, the countdown: all had ONE goal. The claim form.",
+          "The form IS the scam. Everything else is just decoration.",
           "Read a form like a price tag. Every box costs you something.",
           "And no prize on earth costs a password.",
+        ],
+        beatAudio: [
+          "/audio/wren/m02-c3-b1.mp3",
+          "/audio/wren/m02-c3-b2.mp3",
+          "/audio/wren/m02-c3-b3.mp3",
+          "/audio/wren/m02-c3-b4.mp3",
         ],
         prediction: {
           question: "The form says it needs your password 'to deliver the skins.' What's it really for?",
@@ -321,6 +338,7 @@ export const mission02: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m02-c3-play.mp3",
       checkpoint: {
         questions: [
           {

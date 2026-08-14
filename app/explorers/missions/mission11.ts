@@ -61,12 +61,16 @@ export const mission11: MissionManifest = {
       instruction: "Pick the plan that actually works.",
       intel: {
         beats: [
-          "Quick math, Agent.",
-          "Every account needs a STRONG password.",
-          "Every account needs a DIFFERENT one. That was Case 3.",
-          "You've got about forty accounts.",
-          "Forty strong, unique passwords, all memorized? Nobody alive can.",
+          "Quick math, Agent. Every account needs a strong password.",
+          "And every account needs a different one. That was Case 3.",
+          "You've got about forty accounts. Forty strong, unique passwords, all memorized? Nobody alive can.",
           "So people cave and reuse. And the rig adores a reuser.",
+        ],
+        beatAudio: [
+          "/audio/wren/m11-c1-b1.mp3",
+          "/audio/wren/m11-c1-b2.mp3",
+          "/audio/wren/m11-c1-b3.mp3",
+          "/audio/wren/m11-c1-b4.mp3",
         ],
         prediction: {
           question: "Why do most people end up reusing passwords?",
@@ -110,6 +114,7 @@ export const mission11: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m11-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -145,12 +150,16 @@ export const mission11: MissionManifest = {
       instruction: "Fill each slot with the part that holds.",
       intel: {
         beats: [
-          "New tool unlocked: the WORKBENCH.",
-          "Three slots make a vault.",
+          "New tool unlocked: the WORKBENCH. Three slots make a vault.",
           "The master passphrase: the one key you'll actually remember.",
-          "The generator: where the forty monsters get built.",
-          "The storage: where they live, sealed tight.",
+          "The generator builds your forty monsters. The storage keeps them sealed tight.",
           "Choose well. The rig gets a crack at it right after.",
+        ],
+        beatAudio: [
+          "/audio/wren/m11-c2-b1.mp3",
+          "/audio/wren/m11-c2-b2.mp3",
+          "/audio/wren/m11-c2-b3.mp3",
+          "/audio/wren/m11-c2-b4.mp3",
         ],
         prediction: {
           question: "The master passphrase is the one password you memorize. It should be:",
@@ -202,6 +211,7 @@ export const mission11: MissionManifest = {
           doneLine: "One key in his head, forty monsters in the vault. Jake just out-engineered the whole rig.",
         },
       },
+      playAudio: "/audio/wren/m11-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -233,12 +243,16 @@ export const mission11: MissionManifest = {
       instruction: "Tap the 3 accounts missing their second lock.",
       intel: {
         beats: [
-          "One more layer and this fortress is finished.",
-          "Two-factor authentication. 2FA.",
-          "Lock one: something you KNOW, the password.",
-          "Lock two: something you HAVE, the code on your phone.",
-          "A thief needs both. Grabbing just one gets him nowhere.",
+          "One more layer and this fortress is finished. Two-factor, or 2FA.",
+          "Lock one is something you KNOW: the password.",
+          "Lock two is something you HAVE: the code on your phone. A thief needs both.",
           "And remember Case 7: codes are keys. Nobody legit ever asks for your keys.",
+        ],
+        beatAudio: [
+          "/audio/wren/m11-c3-b1.mp3",
+          "/audio/wren/m11-c3-b2.mp3",
+          "/audio/wren/m11-c3-b3.mp3",
+          "/audio/wren/m11-c3-b4.mp3",
         ],
         prediction: {
           question: "A thief has your password. 2FA is on. What happens?",
@@ -286,6 +300,7 @@ export const mission11: MissionManifest = {
           doneLine: "Three doors upgraded to two locks each. Now even a leaked password opens nothing.",
         },
       },
+      playAudio: "/audio/wren/m11-c3-play.mp3",
       checkpoint: {
         questions: [
           {

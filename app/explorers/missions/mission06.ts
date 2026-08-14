@@ -60,12 +60,16 @@ export const mission06: MissionManifest = {
       instruction: "Tap the 3 levers hiding in this chat.",
       intel: {
         beats: [
-          "HURRY: act now, think never.",
-          "SCARCITY: only two left.",
-          "AUTHORITY: I'm in charge, obey.",
-          "LIKING: we're friends, right?",
-          "FEAR: or something bad happens.",
-          "PAYBACK: I helped you, now you owe me.",
+          "Almost every scam pulls one of six feelings. Meet all six.",
+          "HURRY: act now, think never. SCARCITY: only two left, grab it.",
+          "AUTHORITY: I'm in charge, obey. LIKING: we're friends, right?",
+          "FEAR: or something bad happens. PAYBACK: I helped you, now you owe me.",
+        ],
+        beatAudio: [
+          "/audio/wren/m06-c1-b1.mp3",
+          "/audio/wren/m06-c1-b2.mp3",
+          "/audio/wren/m06-c1-b3.mp3",
+          "/audio/wren/m06-c1-b4.mp3",
         ],
         prediction: {
           question: "Why levers instead of hacking the machine?",
@@ -113,6 +117,7 @@ export const mission06: MissionManifest = {
           doneLine: "Three levers in four lines, and a compliment for dessert. That's SIREN-grade work.",
         },
       },
+      playAudio: "/audio/wren/m06-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -141,11 +146,15 @@ export const mission06: MissionManifest = {
       intel: {
         beats: [
           "New tool unlocked: the SIMULATOR.",
-          "A captured con, replayed in ARC's range.",
-          "Your job isn't to stop it. Not yet.",
-          "Your job is to call the next move before it lands.",
-          "If you can predict a con, it can't surprise you.",
-          "And a con that can't surprise you is already dead.",
+          "It replays a captured con inside ARC's range.",
+          "Your job isn't to stop it yet. Just call the next move before it lands.",
+          "Predict a con and it can't surprise you. A con that can't surprise you is finished.",
+        ],
+        beatAudio: [
+          "/audio/wren/m06-c2-b1.mp3",
+          "/audio/wren/m06-c2-b2.mp3",
+          "/audio/wren/m06-c2-b3.mp3",
+          "/audio/wren/m06-c2-b4.mp3",
         ],
         prediction: {
           question: "Why practice predicting instead of just blocking?",
@@ -207,6 +216,7 @@ export const mission06: MissionManifest = {
           doneLine: "THREE MOVES, THREE CALLS. THE CON CAN'T SURPRISE YOU NOW.",
         },
       },
+      playAudio: "/audio/wren/m06-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -243,11 +253,15 @@ export const mission06: MissionManifest = {
       intel: {
         beats: [
           "Here's the strange part: levers only work in the dark.",
-          "The moment you NAME one, it stops working.",
-          "“That's a countdown. That's HURRY.”",
-          "Say it out loud and the spell breaks.",
-          "Not just for you. For everyone who hears you.",
-          "Analysts don't just resist cons. They call them out.",
+          "Name one out loud and it stops working. “That's a countdown. That's HURRY.”",
+          "Say it and the spell breaks, for you and for everyone who hears you.",
+          "Real analysts don't just resist cons. They call them out.",
+        ],
+        beatAudio: [
+          "/audio/wren/m06-c3-b1.mp3",
+          "/audio/wren/m06-c3-b2.mp3",
+          "/audio/wren/m06-c3-b3.mp3",
+          "/audio/wren/m06-c3-b4.mp3",
         ],
         prediction: {
           question: "Why does naming the lever break it?",
@@ -291,6 +305,7 @@ export const mission06: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m06-c3-play.mp3",
       checkpoint: {
         questions: [
           {

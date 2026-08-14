@@ -20,12 +20,15 @@ import type { SignalAudio } from "./types";
  */
 let wrenEl: HTMLAudioElement | null = null;
 
-export function playWren(url: string, enabled: boolean) {
+export function playWren(url: string, enabled: boolean, onEnded?: () => void) {
   if (typeof window === "undefined" || !enabled) return;
   try {
     wrenEl?.pause();
     wrenEl = new Audio(url);
     wrenEl.volume = 0.55;
+    // Narrator-led lessons advance when the clip finishes. `ended` fires only on
+    // natural completion, never on pause()/stop, so auto-advance can't double-fire.
+    if (onEnded) wrenEl.onended = onEnded;
     void wrenEl.play().catch(() => {});
   } catch {
     /* audio unavailable — mission plays silent */

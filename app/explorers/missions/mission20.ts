@@ -64,12 +64,16 @@ export const mission20: MissionManifest = {
       instruction: "Pin the 4 breadcrumbs that name the coordinator.",
       intel: {
         beats: [
-          "Every case left a breadcrumb. Remember them.",
-          "The routing tag. The linked actors. One supplier for all.",
-          "The one architect. The recruiter's fingerprint.",
-          "Alone, each was a whisper.",
-          "Tonight they all point at one desk. One person.",
+          "Every case left a breadcrumb. The routing tag. The linked actors.",
+          "One supplier for all. The hidden architect. The recruiter's fingerprint.",
+          "Alone, each was a whisper. Tonight they all point at one person.",
           "Assemble the board. Name the coordinator.",
+        ],
+        beatAudio: [
+          "/audio/wren/m20-c1-b1.mp3",
+          "/audio/wren/m20-c1-b2.mp3",
+          "/audio/wren/m20-c1-b3.mp3",
+          "/audio/wren/m20-c1-b4.mp3",
         ],
         prediction: {
           question: "How do five small clues catch one big villain?",
@@ -144,6 +148,7 @@ export const mission20: MissionManifest = {
           doneLine: "Tag → connection → architect → recruiter. Five whispers, one name. The board is complete.",
         },
       },
+      playAudio: "/audio/wren/m20-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -179,12 +184,16 @@ export const mission20: MissionManifest = {
       instruction: "Tap the 3 tells hidden in the perfect lure.",
       intel: {
         beats: [
-          "The coordinator has one move left. Aimed at YOU.",
-          "Not a sloppy scam. The perfect one.",
-          "Built from every crumb you ever left in these cases.",
-          "Your callsign. Your cases. Your habits. Even WREN's name.",
+          "The coordinator has one move left, aimed at you. Not a sloppy scam.",
+          "The perfect one, built from every crumb you left. Your callsign, your cases, even my name.",
           "It will feel completely real. That's the point.",
           "But you know the tells live where the pixels aren't.",
+        ],
+        beatAudio: [
+          "/audio/wren/m20-c2-b1.mp3",
+          "/audio/wren/m20-c2-b2.mp3",
+          "/audio/wren/m20-c2-b3.mp3",
+          "/audio/wren/m20-c2-b4.mp3",
         ],
         prediction: {
           question: "The most dangerous lure of all is the one that:",
@@ -236,6 +245,7 @@ export const mission20: MissionManifest = {
           doneLine: "It knew everything about you. Still it couldn't fake a real address or a real ask. The perfect lure fails to the basics.",
         },
       },
+      playAudio: "/audio/wren/m20-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -272,11 +282,15 @@ export const mission20: MissionManifest = {
       intel: {
         beats: [
           "You've cornered the coordinator. Now the real lesson.",
-          "You are not the police. You're not the judge.",
-          "You are the analyst who SEES clearly and DOCUMENTS.",
-          "You don't hack them back. You don't expose them yourself.",
-          "You hand the evidence to the adults and the platform.",
+          "You're not the police, not the judge. You're the analyst who sees clearly and documents.",
+          "You don't hack them back. You hand the evidence to adults and the platform.",
           "That's not weakness. That's exactly how the pros end it.",
+        ],
+        beatAudio: [
+          "/audio/wren/m20-c3-b1.mp3",
+          "/audio/wren/m20-c3-b2.mp3",
+          "/audio/wren/m20-c3-b3.mp3",
+          "/audio/wren/m20-c3-b4.mp3",
         ],
         prediction: {
           question: "You've found a real criminal. The right final move?",
@@ -320,6 +334,7 @@ export const mission20: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m20-c3-play.mp3",
       checkpoint: {
         questions: [
           {

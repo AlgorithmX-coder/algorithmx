@@ -62,11 +62,15 @@ export const mission01: MissionManifest = {
       intel: {
         beats: [
           "Every Phantom Hook scam opens the exact same way: a countdown.",
-          "Not a fact. A feeling. And that feeling is HURRY.",
-          "A ticking clock flips your brain from “think it through” to “panic and click.”",
-          "That's the whole trick. No magic, just pressure.",
-          "Phantom Hook is basically yelling “don't think, just click!”",
+          "That clock isn't a fact. It's a feeling, and the feeling is HURRY.",
+          "Rush your brain and it stops thinking and just clicks. That's the whole trick: no magic, just pressure.",
           "So we do the rudest thing you can do to a scammer. We slow right down.",
+        ],
+        beatAudio: [
+          "/audio/wren/m01-c1-b1.mp3",
+          "/audio/wren/m01-c1-b2.mp3",
+          "/audio/wren/m01-c1-b3.mp3",
+          "/audio/wren/m01-c1-b4.mp3",
         ],
         prediction: {
           question: "Why slap a 24-hour deadline on a message?",
@@ -132,6 +136,7 @@ export const mission01: MissionManifest = {
           doneLine: "All three, clean. Phantom Hook is not as slick as he thinks.",
         },
       },
+      playAudio: "/audio/wren/m01-c1-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -169,11 +174,16 @@ export const mission01: MissionManifest = {
       instruction: "Pick the safest move for Maya.",
       intel: {
         beats: [
-          "Web addresses read right to left. Weird, but true.",
-          "The words just before the first slash? That's who you're really visiting.",
-          "Everything in front of that is just decoration.",
-          "So gamehub.support-verify.net is NOT GameHub.",
-          "It's support-verify.net, wearing a GameHub costume. Phantom Hook loves a costume.",
+          "Web addresses have a secret: you read them right to left.",
+          "The words just before the first slash are who you're really talking to. Everything in front is just decoration.",
+          "So that link that looks like GameHub? It actually belongs to support-verify.net, a stranger's address wearing a GameHub costume.",
+          "And Phantom Hook loves a costume. Let's learn to see straight through it.",
+        ],
+        beatAudio: [
+          "/audio/wren/m01-c2-b1.mp3",
+          "/audio/wren/m01-c2-b2.mp3",
+          "/audio/wren/m01-c2-b3.mp3",
+          "/audio/wren/m01-c2-b4.mp3",
         ],
         prediction: {
           question: "Which address really belongs to GameHub?",
@@ -213,6 +223,7 @@ export const mission01: MissionManifest = {
           ],
         },
       },
+      playAudio: "/audio/wren/m01-c2-play.mp3",
       checkpoint: {
         questions: [
           {
@@ -246,9 +257,14 @@ export const mission01: MissionManifest = {
         beats: [
           "Scammers are repeat offenders. They reuse their best tricks.",
           "The costume changes. The moves never do.",
-          "Spot the pattern once, and you'll clock every disguise after.",
-          "ARC files each villain's moves as an M.O.",
-          "One closed case protects a thousand inboxes. Yours included.",
+          "Spot the pattern once, and you'll clock every disguise that comes after it.",
+          "That's why ARC keeps a file on every villain. One closed case protects a thousand inboxes, yours included.",
+        ],
+        beatAudio: [
+          "/audio/wren/m01-c3-b1.mp3",
+          "/audio/wren/m01-c3-b2.mp3",
+          "/audio/wren/m01-c3-b3.mp3",
+          "/audio/wren/m01-c3-b4.mp3",
         ],
         prediction: {
           question: "Next month Phantom Hook targets a homework app. What stays the same?",
@@ -279,6 +295,7 @@ export const mission01: MissionManifest = {
           doneLine: "That's his pattern. Next time he'll just be wearing a different logo.",
         },
       },
+      playAudio: "/audio/wren/m01-c3-play.mp3",
       checkpoint: {
         questions: [
           {
