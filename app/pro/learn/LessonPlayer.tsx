@@ -22,10 +22,10 @@ import {
 
 type StageKey = Exclude<LessonPhase, "intro" | "done">;
 const STAGES: { key: StageKey; label: string; sub: string; desc: string }[] = [
-  { key: "learn", label: "Learn", sub: "the idea", desc: "The concept in plain English, with everyday examples and a real analogy." },
-  { key: "see", label: "See", sub: "a real case", desc: "A real company this happened to, what went wrong, and what it cost them." },
-  { key: "try", label: "Try", sub: "hands on", desc: "Do it yourself in a safe lab that runs entirely in your own browser." },
-  { key: "check", label: "Check", sub: "prove it", desc: "Explain it back in your own words, then a couple of quick questions." },
+  { key: "learn", label: "Learn", sub: "the idea", desc: "The idea in plain English, with real examples." },
+  { key: "see", label: "See", sub: "a real case", desc: "A real company it happened to, and the cost." },
+  { key: "try", label: "Try", sub: "hands on", desc: "Do it yourself in a safe browser lab." },
+  { key: "check", label: "Check", sub: "prove it", desc: "Explain it back, then a quick quiz." },
 ];
 const STAGE_ORDER = STAGES.map((s) => s.key);
 
@@ -243,38 +243,42 @@ function NewsCard({ news }: { news: NonNullable<CaseCard["news"]> }) {
     : <div style={style}>{inner}</div>;
 }
 
-/* "This week's true story" as a news clipping: a real company logo, a
- * masthead, a serif headline, and a credit to the real coverage that
- * links out to the original article. It never reproduces the article
- * itself, only cites the headline, outlet and date. */
+/* The real case, styled like a newspaper clipping on white stock: a real
+ * company logo, a masthead, a serif headline, a "by the numbers" factbox
+ * of real impact figures, and a plain-text credit to the coverage. It is
+ * not a link, and never reproduces the article, only cites it. */
 function NewsStory({ c }: { c: CaseCard }) {
   const b = brandFor(c.org, c.brandColor);
-  const inner = (
+  return (
     <article className="pns">
       <div className="pns-masthead">
         <span className="pns-kicker">In the news</span>
         <span className="pns-dateline">{c.year}</span>
       </div>
       <div className="pns-lead">
-        <CompanyLogo org={c.org} color={c.brandColor} size={62} />
+        <CompanyLogo org={c.org} color={c.brandColor} size={58} />
         <div style={{ minWidth: 0 }}>
           <div className="pns-subject" style={{ color: b.color }}>{b.name}</div>
           <h3 className="pns-headline">{c.headline}.</h3>
         </div>
       </div>
       <p className="pns-standfirst">You&apos;ll investigate exactly how it happened, and find the one measure that would have stopped it.</p>
+      {c.impact && c.impact.length > 0 && (
+        <div className="pns-impact">
+          <span className="pns-impact-label">The damage</span>
+          <div className="pns-stats">
+            {c.impact.map((s, i) => <span key={i} className="pns-stat">{s}</span>)}
+          </div>
+        </div>
+      )}
       {c.news && (
         <div className="pns-source">
           <span className="pns-outlet">{c.news.outlet}</span>
           <span className="pns-cite">&ldquo;{c.news.headline}&rdquo; &middot; {c.news.date}</span>
-          {c.news.url && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" /></svg>}
         </div>
       )}
     </article>
   );
-  return c.news?.url
-    ? <a href={c.news.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>{inner}</a>
-    : inner;
 }
 
 /* A key term the learner can hover (desktop) or tap (mobile) to see a
@@ -411,6 +415,8 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
         .pro-learn .quiz-opt:not([disabled]):hover { border-color: ${T.primary}; background: ${T.primarySoft}; }
         .pro-shell { display: flex; justify-content: center; gap: 34px; max-width: 760px; margin: 0 auto; padding: 20px 24px 90px; }
         .pro-shell.with-rail { max-width: 1000px; }
+        .pro-shell--intro { max-width: 900px; }
+        .pro-shell--intro .pro-main { max-width: 900px; }
         .pro-rail { display: none; }
         .pro-main { flex: 1 1 auto; min-width: 0; max-width: 720px; }
         .pro-topbar { display: flex; align-items: center; gap: 8px; }
@@ -432,42 +438,47 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
         .pro-brief-why-label { font-family: ${T.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: ${T.cyan}; margin-bottom: 6px; }
         .pro-brief-why p { font-size: 15.5px; line-height: 1.6; color: ${T.body}; margin: 0; }
 
-        .pro-intro-grid { display: grid; grid-template-columns: 1fr; gap: 26px; margin: 34px 0 30px; }
-        @media (min-width: 720px) { .pro-intro-grid { grid-template-columns: 1.12fr 0.88fr; gap: 34px; align-items: start; } }
+        .pro-block { margin: 34px 0 0; }
+        .pro-newswrap { max-width: 560px; margin-top: 4px; }
 
         /* clear section headings */
-        .pro-section-label { display: flex; align-items: center; gap: 10px; font-family: ${T.display}; font-size: 16px; font-weight: 700; color: ${T.ink}; margin-bottom: 4px; }
-        .pro-section-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: ${T.primarySoft}; border: 1px solid ${T.primary}55; color: ${T.primary}; font-family: ${T.mono}; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
-        .pro-section-note { font-size: 13px; line-height: 1.5; color: ${T.muted}; margin: 0 0 16px; padding-left: 32px; }
-        .pro-kicker { font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.faint}; margin-bottom: 14px; }
-        .pro-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-        .pro-step { display: flex; gap: 15px; padding: 4px 0 18px; position: relative; }
-        .pro-step:last-child { padding-bottom: 0; }
-        .pro-step:not(:last-child)::before { content: ""; position: absolute; left: 18px; top: 40px; bottom: 4px; width: 2px; background: linear-gradient(${T.primary}66, ${T.edge}); }
-        .pro-step-mark { position: relative; z-index: 1; width: 38px; height: 38px; flex-shrink: 0; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; color: ${T.cyan}; background: ${T.panel}; border: 1px solid ${T.edge}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
-        .pro-step-head { display: flex; align-items: baseline; gap: 9px; }
-        .pro-step-n { font-family: ${T.mono}; font-size: 11px; font-weight: 700; color: ${T.primary}; }
-        .pro-step-label { font-family: ${T.display}; font-size: 16px; font-weight: 700; color: ${T.ink}; }
-        .pro-step-sub { font-size: 12.5px; color: ${T.faint}; }
-        .pro-step-desc { font-size: 14px; line-height: 1.5; color: ${T.muted}; margin-top: 3px; max-width: 42ch; }
-        .pro-facts { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 22px; padding-top: 16px; border-top: 1px solid ${T.edge}; font-size: 13px; color: ${T.muted}; }
-        .pro-fact b { color: ${T.ink}; font-weight: 700; }
-        .pro-fact-sep { width: 3px; height: 3px; border-radius: 50%; background: ${T.faint}; }
+        .pro-section-label { display: flex; align-items: center; gap: 10px; font-family: ${T.display}; font-size: 18px; font-weight: 800; color: ${T.ink}; margin-bottom: 5px; letter-spacing: -0.01em; }
+        .pro-section-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 7px; background: linear-gradient(135deg, ${T.primary}, ${T.cyan}); color: #fff; font-family: ${T.mono}; font-size: 12.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+        .pro-section-note { font-size: 14px; line-height: 1.5; color: ${T.muted}; margin: 0 0 18px; padding-left: 34px; }
+        .pro-kicker { font-family: ${T.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.muted}; margin-bottom: 14px; }
 
-        /* "this week's true story" as a news clipping */
-        .pns { display: block; overflow: hidden; background: linear-gradient(180deg, ${T.panel}, ${T.bgRaise}); border: 1px solid ${T.edge}; border-radius: 14px; text-decoration: none; transition: border-color 150ms ease, transform 150ms ease; }
-        a:hover > .pns { border-color: ${T.cyan}66; transform: translateY(-1px); }
-        .pns-masthead { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 16px; border-bottom: 1px solid ${T.edge}; background: rgba(0,0,0,0.22); }
-        .pns-kicker { font-family: ${T.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.red}; }
-        .pns-dateline { font-family: ${T.mono}; font-size: 11px; color: ${T.muted}; }
-        .pns-lead { display: flex; gap: 15px; align-items: flex-start; padding: 16px 16px 10px; }
-        .pns-subject { font-family: ${T.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px; }
-        .pns-headline { font-family: Georgia, "Times New Roman", "Noto Serif", serif; font-size: 21px; font-weight: 700; line-height: 1.22; letter-spacing: -0.005em; color: ${T.ink}; margin: 0; }
-        .pns-standfirst { font-size: 14px; line-height: 1.55; color: ${T.muted}; margin: 0; padding: 0 16px 15px; }
-        .pns-source { display: flex; align-items: center; gap: 9px; padding: 11px 16px; border-top: 1px solid ${T.edge}; background: rgba(0,0,0,0.22); color: ${T.muted}; }
-        .pns-outlet { font-family: ${T.display}; font-weight: 800; font-size: 12.5px; color: ${T.ink}; white-space: nowrap; }
-        .pns-cite { flex: 1; min-width: 0; font-size: 11.5px; color: ${T.muted}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        @media (prefers-reduced-motion: reduce) { .pns { transition: none; } a:hover > .pns { transform: none; } }
+        /* horizontal step strip */
+        .pro-steps-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 12px; }
+        @media (min-width: 560px) { .pro-steps-row { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 820px) { .pro-steps-row { grid-template-columns: repeat(4, 1fr); } }
+        .pro-stepcard { background: ${T.panel}; border: 1px solid ${T.edge}; border-radius: 12px; padding: 15px 15px 14px; }
+        .pro-step-mark { width: 38px; height: 38px; flex-shrink: 0; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; color: ${T.cyan}; background: ${T.cyanSoft}; border: 1px solid ${T.cyan}44; margin-bottom: 11px; }
+        .pro-step-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .pro-step-n { font-family: ${T.mono}; font-size: 11px; font-weight: 700; color: ${T.cyan}; }
+        .pro-step-label { font-family: ${T.display}; font-size: 16px; font-weight: 700; color: ${T.ink}; }
+        .pro-step-sub { font-size: 12px; color: ${T.muted}; }
+        .pro-step-desc { font-size: 13.5px; line-height: 1.5; color: ${T.body}; margin-top: 6px; }
+        .pro-facts { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid ${T.edge}; font-size: 13px; color: ${T.muted}; }
+        .pro-fact b { color: ${T.ink}; font-weight: 700; }
+        .pro-fact-sep { width: 3px; height: 3px; border-radius: 50%; background: ${T.muted}; }
+
+        /* the real case, as a newspaper clipping on white stock */
+        .pns { display: block; overflow: hidden; background: #fbfbf6; border: 1px solid rgba(0,0,0,0.14); border-radius: 12px; box-shadow: 0 16px 34px rgba(0,0,0,0.4); }
+        .pns-masthead { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; border-bottom: 2px solid #17161d; }
+        .pns-kicker { font-family: ${T.mono}; font-size: 10.5px; font-weight: 800; letter-spacing: 0.17em; text-transform: uppercase; color: #b3271b; }
+        .pns-dateline { font-family: ${T.mono}; font-size: 11px; font-weight: 600; color: #6c6b74; }
+        .pns-lead { display: flex; gap: 14px; align-items: flex-start; padding: 15px 16px 9px; }
+        .pns-subject { font-family: ${T.mono}; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 5px; }
+        .pns-headline { font-family: Georgia, "Times New Roman", "Noto Serif", serif; font-size: 22px; font-weight: 700; line-height: 1.18; letter-spacing: -0.01em; color: #16151d; margin: 0; }
+        .pns-standfirst { font-size: 14px; line-height: 1.55; color: #44434e; margin: 0; padding: 0 16px 14px; }
+        .pns-impact { padding: 11px 16px; background: #f1f0e8; border-top: 1px solid rgba(0,0,0,0.09); border-bottom: 1px solid rgba(0,0,0,0.09); }
+        .pns-impact-label { display: block; font-family: ${T.mono}; font-size: 9.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #b3271b; margin-bottom: 7px; }
+        .pns-stats { display: flex; flex-wrap: wrap; gap: 5px 0; }
+        .pns-stat { font-size: 12.5px; font-weight: 700; color: #16151d; line-height: 1.35; padding-right: 13px; margin-right: 13px; position: relative; }
+        .pns-stat:not(:last-child)::after { content: ""; position: absolute; right: 0; top: 15%; height: 70%; width: 1px; background: rgba(0,0,0,0.18); }
+        .pns-source { display: flex; align-items: center; gap: 9px; padding: 10px 16px; background: #efeee6; }
+        .pns-outlet { font-family: ${T.display}; font-weight: 800; font-size: 12.5px; color: #16151d; white-space: nowrap; }
+        .pns-cite { flex: 1; min-width: 0; font-size: 11.5px; font-style: italic; color: #55545f; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         .pro-why { max-width: 66ch; font-size: 15px; line-height: 1.6; color: ${T.body}; margin: 4px 0 28px; }
         .pro-why-label { display: block; font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.cyan}; margin-bottom: 6px; }
@@ -481,7 +492,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
         @media (max-width: 520px) { .pro-h1 { font-size: 31px; } .pro-intro { padding-top: 24px; } }
       `}</style>
 
-      <div className={`pro-shell${inLesson ? " with-rail" : ""}`}>
+      <div className={`pro-shell${inLesson ? " with-rail" : phase === "intro" ? " pro-shell--intro" : ""}`}>
         {inLesson && (
           <aside className="pro-rail">
             <Rail phase={phase} learnIdx={learnIdx} learnCount={lesson.learn.length} onGo={(p) => setPhase(p)} />
@@ -539,44 +550,40 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                 </div>
               </div>
 
-              <div className="pro-intro-grid">
-                {/* LEFT: how you'll learn it */}
-                <section>
-                  <div className="pro-section-label"><span className="pro-section-num">1</span>How you&apos;ll learn it</div>
-                  <p className="pro-section-note">Every lesson follows the same four steps, so you always know where you are.</p>
-                  <ol className="pro-steps">
-                    {STAGES.map((s, i) => (
-                      <li key={s.key} className="pro-step">
-                        <span className="pro-step-mark"><StageIcon kind={s.key} /></span>
-                        <div>
-                          <div className="pro-step-head">
-                            <span className="pro-step-n">{i + 1}</span>
-                            <span className="pro-step-label">{s.label}</span>
-                            <span className="pro-step-sub">{s.sub}</span>
-                          </div>
-                          <div className="pro-step-desc">{s.desc}</div>
-                        </div>
-                      </li>
-                    ))}
-                  </ol>
-                  <div className="pro-facts">
-                    <span className="pro-fact"><b>~{lesson.minutes} min</b> this lesson</span>
-                    <span className="pro-fact-sep" />
-                    <span className="pro-fact"><b>4 steps</b></span>
-                    <span className="pro-fact-sep" />
-                    <span className="pro-fact"><b>nothing to install</b></span>
-                  </div>
-                </section>
+              {/* how you'll learn it: full-width horizontal step strip */}
+              <section className="pro-block">
+                <div className="pro-section-label"><span className="pro-section-num">1</span>How you&apos;ll learn it</div>
+                <p className="pro-section-note">Every lesson follows the same four steps, so you always know where you are.</p>
+                <ol className="pro-steps-row">
+                  {STAGES.map((s, i) => (
+                    <li key={s.key} className="pro-stepcard">
+                      <span className="pro-step-mark"><StageIcon kind={s.key} /></span>
+                      <div className="pro-step-head">
+                        <span className="pro-step-n">{i + 1}</span>
+                        <span className="pro-step-label">{s.label}</span>
+                        <span className="pro-step-sub">{s.sub}</span>
+                      </div>
+                      <div className="pro-step-desc">{s.desc}</div>
+                    </li>
+                  ))}
+                </ol>
+                <div className="pro-facts">
+                  <span className="pro-fact"><b>~{lesson.minutes} min</b> this lesson</span>
+                  <span className="pro-fact-sep" />
+                  <span className="pro-fact"><b>4 steps</b></span>
+                  <span className="pro-fact-sep" />
+                  <span className="pro-fact"><b>nothing to install</b></span>
+                </div>
+              </section>
 
-                {/* RIGHT: the real case, as a news clipping */}
-                {heroCase && (
-                  <aside>
-                    <div className="pro-section-label"><span className="pro-section-num">2</span>The real case you&apos;ll dig into</div>
-                    <p className="pro-section-note">A true story that shows why this matters, not a made-up example.</p>
-                    <NewsStory c={heroCase} />
-                  </aside>
-                )}
-              </div>
+              {/* the real case, as a newspaper clipping */}
+              {heroCase && (
+                <section className="pro-block">
+                  <div className="pro-section-label"><span className="pro-section-num">2</span>The real case you&apos;ll dig into</div>
+                  <p className="pro-section-note">A true story that shows why this matters, not a made-up example.</p>
+                  <div className="pro-newswrap"><NewsStory c={heroCase} /></div>
+                </section>
+              )}
 
               <div className="pro-cta-row">
                 <button className="pro-cta" onClick={() => setPhase("learn")}>
@@ -599,8 +606,8 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                 <h2 style={{ fontFamily: T.display, fontSize: 25, fontWeight: 700, lineHeight: 1.25, margin: "0 0 16px", color: T.ink }}>{card.heading}</h2>
                 {card.body.map((p, i) => <p key={i} style={{ fontSize: 16.5, lineHeight: 1.75, color: T.body, maxWidth: "62ch" }}>{renderWithGlossary(p, lesson.glossary, seen, `l${learnIdx}b${i}`)}</p>)}
                 {card.examples && card.examples.length > 0 && (
-                  <div style={{ margin: "2px 0 6px", maxWidth: "62ch", display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: T.faint }}>A few examples</div>
+                  <div style={{ margin: "6px 0 6px", maxWidth: "62ch", display: "flex", flexDirection: "column", gap: 9 }}>
+                    <div style={{ fontFamily: T.mono, fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: T.cyan }}>A few examples</div>
                     {card.examples.map((ex, i) => (
                       <div key={i} style={{ display: "flex", gap: 10, fontSize: 15, color: T.body, lineHeight: 1.55 }}>
                         <span aria-hidden style={{ color: T.cyan, flexShrink: 0, fontWeight: 700 }}>&rsaquo;</span>
@@ -610,9 +617,10 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                   </div>
                 )}
                 {card.analogy && (
-                  <div style={{ background: T.primarySoft, borderLeft: `3px solid ${T.primary}`, borderRadius: "0 10px 10px 0", padding: "14px 18px", margin: "18px 0", maxWidth: "62ch" }}>
+                  <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderLeft: `3px solid ${T.primary}`, borderRadius: "0 10px 10px 0", padding: "15px 18px", margin: "18px 0", maxWidth: "62ch" }}>
+                    <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: T.cyan, marginBottom: 8 }}>In plain terms</div>
                     <div style={{ fontSize: 16, color: T.ink, lineHeight: 1.6 }}>{card.analogy.plain}</div>
-                    <div style={{ fontFamily: T.mono, fontSize: 11.5, letterSpacing: "0.1em", textTransform: "uppercase", color: T.primary, marginTop: 8 }}>the real term: {card.analogy.realTerm}</div>
+                    <div style={{ fontSize: 13.5, color: T.muted, marginTop: 10 }}>The real term is <b style={{ color: T.ink, fontFamily: T.mono, fontSize: 13 }}>{card.analogy.realTerm}</b>.</div>
                   </div>
                 )}
                 {card.diagram && (

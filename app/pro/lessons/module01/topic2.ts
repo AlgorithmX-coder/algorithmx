@@ -80,6 +80,7 @@ const topic2: TopicManifest = {
       theMissedMeasure: "A known, published vulnerability was left unpatched on an internet-facing system holding highly sensitive data, and the internal alerting that might have caught the intrusion was not working properly.",
       theCost: "Personal and financial data on roughly 147 million people. Settlements and penalties ran to hundreds of millions of dollars, and it became the standard example of a preventable, patch-and-it-would-not-have-happened breach.",
       control: "patching",
+      impact: ["147 million people exposed", "over $700M in settlements", "names, Social Security and card data taken"],
       source: "Public record; US Congressional report and regulator settlements, 2017-2019.",
       brandColor: "#822433",
       news: { headline: "Equifax data breach: What you need to know", outlet: "BBC News", date: "September 2017", url: "https://www.bbc.co.uk/news/technology-41192163" },

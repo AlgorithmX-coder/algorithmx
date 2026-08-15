@@ -81,6 +81,7 @@ const topic4: TopicManifest = {
       theMissedMeasure: "Too little segmentation and too much internal trust let a single foothold reach everything. Stronger defence in depth and least privilege would have contained the spread.",
       theCost: "Estimated at around $300 million and a near-total shutdown of operations for days. It became the defining example of why 'flat network, everything trusts everything' is a catastrophic design.",
       control: "access-control",
+      impact: ["~$300M in losses", "~49,000 laptops and thousands of servers wiped", "global operations frozen for days"],
       source: "Public record; Maersk executives' own conference accounts and wide reporting, 2017-2019.",
       brandColor: "#42b0d5",
       news: { headline: "The untold story of NotPetya, the most devastating cyberattack in history", outlet: "Wired", date: "August 2018", url: "https://www.wired.com/story/notpetya-cyberattack-ukraine-russia-code-crashed-the-world/" },
