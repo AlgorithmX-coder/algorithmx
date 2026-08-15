@@ -148,3 +148,146 @@ export function MindsetLab({ onDidTry }: LabProps) {
     { text: "'Where would an alert tell me first that something is wrong?'", cat: "def", why: "Defenders build in detection and early warning." },
   ]} />;
 }
+
+/* ---- ScenarioGame: a short branching decision, one choice at a time ---- */
+type ScenarioStep = { role: string; prompt: string; options: { text: string; correct: boolean; why: string }[] };
+
+function ScenarioGame({ steps, intro, onDidTry }: LabProps & { steps: ScenarioStep[]; intro: string }) {
+  const [i, setI] = useState(0);
+  const [chosen, setChosen] = useState<number | null>(null);
+  const [finished, setFinished] = useState(false);
+
+  const pick = (oi: number) => { if (chosen === null) { setChosen(oi); onDidTry(); } };
+  const advance = () => { if (i + 1 >= steps.length) { setFinished(true); } else { setI(i + 1); setChosen(null); } };
+
+  if (finished) {
+    return (
+      <div style={{ fontFamily: T.sans, background: T.greenSoft, border: `1px solid ${T.green}66`, borderRadius: 12, padding: "16px 18px" }}>
+        <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: T.green, marginBottom: 6 }}>Played out</div>
+        <div style={{ fontSize: 14.5, color: T.body, lineHeight: 1.55 }}>You switched between the attacker&apos;s and the defender&apos;s head at each step. That is the exact habit this whole course builds.</div>
+      </div>
+    );
+  }
+
+  const step = steps[i];
+  const answered = chosen !== null;
+  return (
+    <div style={{ fontFamily: T.sans }}>
+      <div style={{ fontSize: 13.5, color: T.muted, marginBottom: 14, lineHeight: 1.5 }}>{intro}</div>
+      <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+        {steps.map((_, k) => <span key={k} style={{ flex: 1, height: 4, borderRadius: 2, background: k < i ? T.green : k === i ? T.cyan : T.edge }} />)}
+      </div>
+      <div style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: T.cyan, marginBottom: 8 }}>{step.role}</div>
+      <div style={{ fontSize: 16, fontWeight: 700, color: T.ink, lineHeight: 1.4, marginBottom: 14 }}>{step.prompt}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+        {step.options.map((o, oi) => {
+          const isChosen = chosen === oi;
+          let bg: string = T.panel, bd: string = T.edge;
+          if (answered && o.correct) { bg = T.greenSoft; bd = T.green; }
+          else if (answered && isChosen && !o.correct) { bg = T.redSoft; bd = T.red; }
+          return (
+            <button key={oi} onClick={() => pick(oi)} disabled={answered}
+              style={{ textAlign: "left", fontFamily: T.sans, fontSize: 15, fontWeight: 600, lineHeight: 1.45, color: T.ink, background: bg, border: `1px solid ${bd}`, borderRadius: 10, padding: "12px 15px", cursor: answered ? "default" : "pointer" }}>
+              {o.text}
+            </button>
+          );
+        })}
+      </div>
+      {answered && (
+        <div style={{ marginTop: 12, fontSize: 13.5, color: T.body, lineHeight: 1.55, background: T.panelSoft, borderLeft: `3px solid ${step.options[chosen].correct ? T.green : T.amber}`, borderRadius: "0 8px 8px 0", padding: "11px 15px" }}>
+          {step.options[chosen].why}
+        </div>
+      )}
+      {answered && (
+        <button onClick={advance} style={{ marginTop: 14, fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: "#fff", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 9, padding: "10px 20px", cursor: "pointer" }}>
+          {i + 1 >= steps.length ? "Finish" : "Next"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+export function MindsetScenarioLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry} intro="Play it out. First you think like the attacker, then like the defender. There is a best answer each time, with the reasoning." steps={[
+    { role: "You're the attacker", prompt: "You want inside a mid-sized company. Where do you start?", options: [
+      { text: "Send a convincing, urgent email to a busy employee and hope they click.", correct: true, why: "Attackers go for the easiest door, and a rushed person is it. This is how most real breaches begin." },
+      { text: "Brute-force your way through the company firewall.", correct: false, why: "Modern firewalls are hard and noisy to attack. Real attackers skip the strong wall and target the weak person." },
+      { text: "Guess the CEO's password from the company website.", correct: false, why: "Slow and rarely works. The reliable way in is almost always a person, not a lucky guess." },
+    ] },
+    { role: "Now you're the defender", prompt: "You know phishing is the likely way in. What protects you best?", options: [
+      { text: "MFA on every account, plus training so staff spot and report phishing.", correct: true, why: "MFA means a stolen password alone fails, and training lowers the click rate. Good defence assumes some emails get through." },
+      { text: "Just make the minimum password longer.", correct: false, why: "Helps a little, but does nothing once a password is phished. MFA is what stops the stolen-password login." },
+      { text: "Tell staff to simply never make a mistake.", correct: false, why: "People will click sometimes. Real defence plans for that instead of wishing it away." },
+    ] },
+    { role: "The worst happens", prompt: "One employee's laptop gets infected anyway. What limits the damage most?", options: [
+      { text: "Least privilege and segmentation, so that laptop can reach very little.", correct: true, why: "Assume-breach in action: when one machine falls, tight access and segmentation stop it spreading. This is the defender's real edge." },
+      { text: "Hope the antivirus catches it eventually.", correct: false, why: "Hope is not a plan. You design so one infection is contained, not catastrophic." },
+      { text: "Unplug the whole company from the internet.", correct: false, why: "That stops the business too. The goal is to shrink the blast radius, not shut everything down." },
+    ] },
+  ]} />;
+}
+
+/* ---- OrderGame: put the items in the right order (up/down, no drag) ---- */
+type OrderItem = { label: string; note: string };
+
+function OrderGame({ items, prompt, onDidTry }: LabProps & { items: OrderItem[]; prompt: string }) {
+  // `items` is the correct order; start from a fixed scramble (reversed) so
+  // SSR and the client agree (no random on first render).
+  const [order, setOrder] = useState<number[]>(() => items.map((_, i) => items.length - 1 - i));
+  const [checked, setChecked] = useState(false);
+
+  const move = (pos: number, dir: -1 | 1) => {
+    const to = pos + dir;
+    if (to < 0 || to >= order.length) return;
+    const next = [...order];
+    [next[pos], next[to]] = [next[to], next[pos]];
+    setOrder(next);
+    setChecked(false);
+    onDidTry();
+  };
+  const correctCount = order.filter((idx, pos) => idx === pos).length;
+
+  return (
+    <div style={{ fontFamily: T.sans }}>
+      <div style={{ fontSize: 13.5, color: T.muted, marginBottom: 14, lineHeight: 1.5 }}>{prompt}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+        {order.map((idx, pos) => {
+          const it = items[idx];
+          const right = checked && idx === pos;
+          const wrong = checked && idx !== pos;
+          return (
+            <div key={idx} style={{ display: "flex", alignItems: "center", gap: 12, background: right ? T.greenSoft : wrong ? T.redSoft : T.panel, border: `1px solid ${right ? T.green : wrong ? `${T.red}66` : T.edge}`, borderRadius: 11, padding: "11px 13px" }}>
+              <span style={{ fontFamily: T.mono, fontSize: 13, fontWeight: 700, color: T.faint, width: 18, flexShrink: 0 }}>{pos + 1}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 14.5, fontWeight: 700, color: T.ink }}>{it.label}</div>
+                <div style={{ fontSize: 12.5, color: T.muted, marginTop: 2, lineHeight: 1.4 }}>{it.note}</div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 3, flexShrink: 0 }}>
+                <button aria-label="Move up" onClick={() => move(pos, -1)} disabled={pos === 0} style={{ width: 28, height: 22, borderRadius: 6, background: T.panelSoft, border: `1px solid ${T.edge}`, color: pos === 0 ? T.faint : T.body, cursor: pos === 0 ? "default" : "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M18 15l-6-6-6 6" /></svg>
+                </button>
+                <button aria-label="Move down" onClick={() => move(pos, 1)} disabled={pos === order.length - 1} style={{ width: 28, height: 22, borderRadius: 6, background: T.panelSoft, border: `1px solid ${T.edge}`, color: pos === order.length - 1 ? T.faint : T.body, cursor: pos === order.length - 1 ? "default" : "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M6 9l6 6 6-6" /></svg>
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 14 }}>
+        <button onClick={() => setChecked(true)} style={{ fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: "#fff", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 9, padding: "10px 20px", cursor: "pointer" }}>Check the order</button>
+        {checked && <span style={{ fontSize: 13.5, color: correctCount === items.length ? T.green : T.muted }}>{correctCount === items.length ? "Perfect. That is defence in depth: layer after layer." : `${correctCount} of ${items.length} in the right place. Use the arrows and check again.`}</span>}
+      </div>
+    </div>
+  );
+}
+
+export function DefenceOrderLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry} prompt="An attacker on the internet wants your customer database. Defence in depth means layers. Put these defences in the order the attacker would have to beat them, from the outside in." items={[
+    { label: "Firewall at the edge", note: "Blocks unwanted traffic before it reaches anything inside." },
+    { label: "Network segmentation", note: "Even once inside, the attacker cannot freely reach the servers." },
+    { label: "A hardened server", note: "No spare software or open doors left to exploit." },
+    { label: "Least-privilege access", note: "A stolen account can touch very little." },
+    { label: "Encrypted data", note: "Even a stolen copy of the database is unreadable." },
+  ]} />;
+}

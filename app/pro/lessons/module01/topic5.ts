@@ -1,5 +1,5 @@
 import type { TopicManifest } from "../../learn/types";
-import { MindsetLab } from "../../learn/conceptLabs";
+import { MindsetScenarioLab } from "../../learn/conceptLabs";
 
 /* Module 1 - Topic 5: thinking like a defender and an attacker. Case:
  * SolarWinds 2020 (a trusted, signed software update was the way in,
@@ -88,14 +88,14 @@ const topic5: TopicManifest = {
   ],
 
   lab: {
-    title: "Attacker thought, or defender thought?",
-    intro: "Security needs both heads. Read each thought and decide which mindset it comes from. Fluency in switching between them is the skill this whole course builds.",
+    title: "Think it through, both ways",
+    intro: "A short scenario. First you play the attacker, then the defender, one decision at a time.",
     prompts: [
-      "For each thought, pick Attacker thinking or Defender thinking.",
-      "Every answer explains the reasoning.",
-      "Notice how each attacker question has a matching defender question.",
+      "Read each situation and pick the best move.",
+      "You get the reasoning on every choice.",
+      "Then move on to the next step.",
     ],
-    component: MindsetLab,
+    component: MindsetScenarioLab,
   },
 
   check: {

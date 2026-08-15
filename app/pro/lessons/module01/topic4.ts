@@ -1,5 +1,5 @@
 import type { TopicManifest } from "../../learn/types";
-import { LayersLab } from "../../learn/conceptLabs";
+import { DefenceOrderLab } from "../../learn/conceptLabs";
 
 /* Module 1 - Topic 4: defence in depth and least privilege. Case:
  * Maersk / NotPetya 2017 (a flat, over-trusting network let one wiper
@@ -89,14 +89,14 @@ const topic4: TopicManifest = {
   ],
 
   lab: {
-    title: "Place each defence in its layer",
-    intro: "Defence in depth means covering people, the network, and the data. Sort each control into the layer it protects, and see how the layers combine.",
+    title: "Build the layers",
+    intro: "Defence in depth means layer after layer, so no single failure lets an attacker win. Put the defences in the order an attacker would have to beat them.",
     prompts: [
-      "For each control, pick People, Network, or Data.",
-      "Every answer explains why it sits in that layer.",
-      "Notice that a strong defence has something in every layer.",
+      "Use the arrows to order the defences from the outside in.",
+      "Then press 'Check the order'.",
+      "Aim to get all five in the right place.",
     ],
-    component: LayersLab,
+    component: DefenceOrderLab,
   },
 
   check: {
