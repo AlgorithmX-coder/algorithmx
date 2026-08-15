@@ -252,7 +252,7 @@ function NewsStory({ c }: { c: CaseCard }) {
   const inner = (
     <article className="pns">
       <div className="pns-masthead">
-        <span className="pns-kicker">This week&apos;s true story</span>
+        <span className="pns-kicker">In the news</span>
         <span className="pns-dateline">{c.year}</span>
       </div>
       <div className="pns-lead">
@@ -423,12 +423,22 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
         .pro-intro { padding-top: 40px; }
         .pro-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: ${T.mono}; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: ${T.primary}; margin-bottom: 16px; }
         .pro-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: ${T.primary}; box-shadow: 0 0 10px ${T.primary}; }
-        .pro-h1 { font-family: ${T.display}; font-size: 40px; font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 16px; color: ${T.ink}; text-wrap: balance; }
-        .pro-promise { font-size: 18px; line-height: 1.65; color: ${T.muted}; max-width: 60ch; margin: 0 0 6px; }
+        .pro-h1 { font-family: ${T.display}; font-size: 40px; font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 20px; color: ${T.ink}; text-wrap: balance; }
 
-        .pro-intro-grid { display: grid; grid-template-columns: 1fr; gap: 22px; margin: 30px 0 26px; }
-        @media (min-width: 720px) { .pro-intro-grid { grid-template-columns: 1.12fr 0.88fr; gap: 30px; align-items: start; } }
+        /* spoken introduction */
+        .pro-brief { max-width: 66ch; margin: 0 0 8px; }
+        .pro-brief-lead { font-size: 20px; line-height: 1.6; color: ${T.body}; margin: 0 0 18px; }
+        .pro-brief-why { border-left: 3px solid ${T.cyan}; background: ${T.cyanSoft}; border-radius: 0 10px 10px 0; padding: 13px 18px; }
+        .pro-brief-why-label { font-family: ${T.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: ${T.cyan}; margin-bottom: 6px; }
+        .pro-brief-why p { font-size: 15.5px; line-height: 1.6; color: ${T.body}; margin: 0; }
 
+        .pro-intro-grid { display: grid; grid-template-columns: 1fr; gap: 26px; margin: 34px 0 30px; }
+        @media (min-width: 720px) { .pro-intro-grid { grid-template-columns: 1.12fr 0.88fr; gap: 34px; align-items: start; } }
+
+        /* clear section headings */
+        .pro-section-label { display: flex; align-items: center; gap: 10px; font-family: ${T.display}; font-size: 16px; font-weight: 700; color: ${T.ink}; margin-bottom: 4px; }
+        .pro-section-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: ${T.primarySoft}; border: 1px solid ${T.primary}55; color: ${T.primary}; font-family: ${T.mono}; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+        .pro-section-note { font-size: 13px; line-height: 1.5; color: ${T.muted}; margin: 0 0 16px; padding-left: 32px; }
         .pro-kicker { font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.faint}; margin-bottom: 14px; }
         .pro-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
         .pro-step { display: flex; gap: 15px; padding: 4px 0 18px; position: relative; }
@@ -517,15 +527,23 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
           {/* INTRO */}
           {phase === "intro" && (
             <main className="pro-intro">
-              {/* hero */}
               <div className="pro-eyebrow"><span className="pro-eyebrow-dot" />{lesson.act}</div>
               <h1 className="pro-h1">{lesson.title}</h1>
-              <p className="pro-promise">{lesson.promise}</p>
+
+              {/* spoken introduction: talk directly to the learner */}
+              <div className="pro-brief">
+                <p className="pro-brief-lead">{lesson.brief ?? lesson.promise}</p>
+                <div className="pro-brief-why">
+                  <div className="pro-brief-why-label">Why this matters</div>
+                  <p>{lesson.role}</p>
+                </div>
+              </div>
 
               <div className="pro-intro-grid">
-                {/* LEFT: how this lesson works */}
+                {/* LEFT: how you'll learn it */}
                 <section>
-                  <div className="pro-kicker">How this lesson works</div>
+                  <div className="pro-section-label"><span className="pro-section-num">1</span>How you&apos;ll learn it</div>
+                  <p className="pro-section-note">Every lesson follows the same four steps, so you always know where you are.</p>
                   <ol className="pro-steps">
                     {STAGES.map((s, i) => (
                       <li key={s.key} className="pro-step">
@@ -542,7 +560,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                     ))}
                   </ol>
                   <div className="pro-facts">
-                    <span className="pro-fact"><b>~{lesson.minutes} min</b> this session</span>
+                    <span className="pro-fact"><b>~{lesson.minutes} min</b> this lesson</span>
                     <span className="pro-fact-sep" />
                     <span className="pro-fact"><b>4 steps</b></span>
                     <span className="pro-fact-sep" />
@@ -550,18 +568,22 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                   </div>
                 </section>
 
-                {/* RIGHT: this week's true story, as a news clipping */}
-                {heroCase && <aside><NewsStory c={heroCase} /></aside>}
+                {/* RIGHT: the real case, as a news clipping */}
+                {heroCase && (
+                  <aside>
+                    <div className="pro-section-label"><span className="pro-section-num">2</span>The real case you&apos;ll dig into</div>
+                    <p className="pro-section-note">A true story that shows why this matters, not a made-up example.</p>
+                    <NewsStory c={heroCase} />
+                  </aside>
+                )}
               </div>
 
-              {/* why it matters + CTA */}
-              <div className="pro-why"><span className="pro-why-label">Why this matters</span>{lesson.role}</div>
               <div className="pro-cta-row">
                 <button className="pro-cta" onClick={() => setPhase("learn")}>
                   Start the lesson
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                 </button>
-                <span className="pro-cta-note">Begins with the idea, in plain English. Pick up where you left off any time.</span>
+                <span className="pro-cta-note">We start with the idea, in plain English. Your place is saved, so you can stop and pick up any time.</span>
               </div>
             </main>
           )}

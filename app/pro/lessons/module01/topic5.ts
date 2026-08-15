@@ -10,9 +10,10 @@ const topic5: TopicManifest = {
   weekLabel: "Module 1",
   act: "Act 1 - Foundations you can touch",
   title: "Thinking like a defender, and an attacker",
-  role: "The best defenders can think like the people they defend against. This mindset is what turns a list of tools into real judgement, and it runs through every later module.",
+  role: "As a cyber security analyst, your real edge is thinking like an attacker to find the weak spot first, then switching to the defender's view to close it. This double vision runs through every module that follows.",
   minutes: 18,
-  promise: "Learn the two mindsets security runs on, then see the attack that broke the deepest assumption of all: that software you trust is safe.",
+  promise: "The two mindsets security runs on, and the attack that broke the deepest assumption of all.",
+  brief: "In this lesson, we'll meet the two mindsets security runs on, the attacker's and the defender's. You'll learn to switch between them on demand, then see the attack that broke the deepest assumption of all: that software you already trust is safe.",
 
   learn: [
     {

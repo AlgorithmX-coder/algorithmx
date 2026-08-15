@@ -9,9 +9,10 @@ const topic1: TopicManifest = {
   weekLabel: "Module 1",
   act: "Act 1 - Foundations you can touch",
   title: "The CIA triad: what security is protecting",
-  role: "Every security exam opens here, and every real decision, from a firewall rule to a backup policy, is protecting one of these three things.",
+  role: "As a cyber security analyst, you'll describe every incident you ever touch in these three terms: was something exposed, changed, or made unavailable? It's the shared language the whole industry speaks, which is why we start right here.",
   minutes: 18,
-  promise: "Learn the three-word idea at the heart of all cyber security, then see a real attack that took one of the three away and stopped fuel flowing to a third of a country.",
+  promise: "The three-word idea at the heart of all cyber security, and a real attack that took one of the three away.",
+  brief: "In this lesson, we'll meet the three-word idea at the heart of every cyber security certificate: confidentiality, integrity and availability. You'll see exactly what each one means, then watch a real attack take one of them away and stop fuel flowing to a third of a country.",
 
   learn: [
     {
