@@ -9,9 +9,10 @@ const topic3: TopicManifest = {
   weekLabel: "Module 1",
   act: "Act 1 - Foundations you can touch",
   title: "The kinds of defence: preventive, detective, corrective",
-  role: "Every control you will ever deploy falls into these buckets, and knowing which is which is how you spot the gaps in a defence.",
+  role: "As a cyber security analyst, you'll work with these controls every day, and your value is spotting where one is missing. Knowing the difference is how you find the gap before an attacker does.",
   minutes: 18,
-  promise: "Learn the three jobs a security control can do, then see the breach where the alarm actually went off, and nobody acted on it.",
+  promise: "The three jobs a security control can do, and the breach where the alarm was ignored.",
+  brief: "In this lesson, we'll look at the three jobs a security control can do, and the three forms it can take. Then you'll see the breach where the alarm genuinely went off, and nobody acted on it, at one of the biggest retailers in the world.",
 
   learn: [
     {

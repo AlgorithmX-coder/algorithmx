@@ -10,9 +10,10 @@ const topic4: TopicManifest = {
   weekLabel: "Module 1",
   act: "Act 1 - Foundations you can touch",
   title: "Defence in depth and least privilege",
-  role: "Assume something will get through. These two ideas decide whether that means a small incident or a company-ending one, and they shape how real networks are built.",
+  role: "As a cyber security analyst, you'll always assume something will eventually get through. These two ideas are what turn that inevitable breach into a small, contained incident instead of a company-ending one.",
   minutes: 18,
-  promise: "Learn the two ideas that limit the damage when an attacker gets in, then see the attack that spread across an entire global shipping company in minutes because neither was in place.",
+  promise: "The two ideas that limit the damage once an attacker is in, and the attack that ignored them.",
+  brief: "In this lesson, we'll cover the two ideas that decide how far an attack spreads once someone is in: defence in depth and least privilege. Then you'll see the attack that wiped a global shipping company in minutes because neither was in place.",
 
   learn: [
     {

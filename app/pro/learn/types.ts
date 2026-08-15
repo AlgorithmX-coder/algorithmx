@@ -105,8 +105,12 @@ export interface LessonManifest {
   title: string;
   role: string; // the real job role this connects to
   minutes: number;
-  /* One-line promise shown on the intro card. */
+  /* One-line promise, shown on the week-map topic card. Keep it short. */
   promise: string;
+  /* A warm, direct introduction spoken to the learner ("In this lesson,
+   * we'll ..."), shown prominently on the lesson intro. Falls back to
+   * `promise` if absent. */
+  brief?: string;
   learn: LearnCard[];
   /* Key terms the learner can hover/tap in the Learn text for a
    * plain-language meaning. */

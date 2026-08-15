@@ -10,9 +10,10 @@ const topic2: TopicManifest = {
   weekLabel: "Module 1",
   act: "Act 1 - Foundations you can touch",
   title: "Threat, vulnerability, and risk",
-  role: "These three words are used loosely everywhere, but security work depends on telling them apart. Risk is the language the whole business speaks.",
+  role: "As a cyber security analyst, this is how you decide what to fix first. You can't remove every threat or patch every weakness, so you manage risk, and 'risk' is the word the business actually listens to.",
   minutes: 18,
-  promise: "Learn the difference between a threat, a vulnerability, and a risk, then see the breach that happened because one known, unpatched weakness met a motivated attacker.",
+  promise: "Pin down three words people mix up, then see the breach one unpatched weakness caused.",
+  brief: "In this lesson, we'll pin down three words people mix up all the time: threat, vulnerability and risk. Once you can tell them apart, you'll see the breach that happened when one known, unpatched weakness met a motivated attacker, and exposed 147 million people.",
 
   learn: [
     {
