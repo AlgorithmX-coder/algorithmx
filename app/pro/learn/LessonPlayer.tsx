@@ -169,30 +169,26 @@ function ControlTag({ control }: { control: CaseCard["control"] }) {
 }
 
 /* --- company identity ---
- * A proper brand lockup: an authentic icon where the brand has a simple
- * reproducible one (LinkedIn), otherwise a wordmark set in the brand's
- * real colour. Real logos are used only to identify the real company a
- * documented case is about (editorial / nominative use); we never draw
- * an inaccurate mark. Official SVGs can be dropped in via BRAND_SVG. */
-type BrandSpec = { name: string; color: string; lower?: boolean; icon?: (s: number) => ReactNode };
-
-/* Slot for future official brand SVGs, keyed by lower-cased match token. */
-const BRAND_SVG: Record<string, (s: number) => ReactNode> = {
-  linkedin: (s) => (
-    <svg width={s} height={s} viewBox="0 0 32 32" aria-hidden style={{ flexShrink: 0 }}>
-      <rect width="32" height="32" rx="6" fill="#0A66C2" />
-      <circle cx="9.4" cy="9.1" r="2" fill="#fff" />
-      <rect x="7.5" y="12.4" width="3.8" height="12.1" fill="#fff" />
-      <path d="M13.6 12.4h3.65v1.65h.05c.51-.9 1.75-1.85 3.6-1.85 3.85 0 4.56 2.4 4.56 5.52v6.79h-3.8v-6.02c0-1.44-.03-3.28-2.05-3.28-2.05 0-2.36 1.56-2.36 3.17v6.13h-3.8V12.4z" fill="#fff" />
-    </svg>
-  ),
-};
+ * We show each company's REAL logo, loaded by its domain from a public
+ * logo service, with a favicon fallback and finally a brand-coloured
+ * wordmark if neither loads. Logos are used only to identify the real
+ * company a documented case is about (editorial / nominative use). */
+type BrandSpec = { name: string; color: string; domain?: string; lower?: boolean };
 
 const BRANDS: { test: RegExp; spec: BrandSpec }[] = [
-  { test: /linkedin/i, spec: { name: "LinkedIn", color: "#0A66C2", icon: BRAND_SVG.linkedin } },
-  { test: /talktalk/i, spec: { name: "talktalk", color: "#E6007E", lower: true } },
-  { test: /rockyou/i, spec: { name: "RockYou", color: "#E0524A" } },
-  { test: /\bdyn\b|mirai/i, spec: { name: "Dyn", color: "#F2681C" } },
+  { test: /linkedin/i, spec: { name: "LinkedIn", color: "#0A66C2", domain: "linkedin.com" } },
+  { test: /talktalk/i, spec: { name: "TalkTalk", color: "#E6007E", domain: "talktalk.co.uk" } },
+  { test: /rockyou/i, spec: { name: "RockYou", color: "#E0524A", domain: "rockyou.com" } },
+  { test: /\bdyn\b|mirai/i, spec: { name: "Dyn", color: "#F2681C", domain: "dyn.com" } },
+  { test: /adobe/i, spec: { name: "Adobe", color: "#FA0F00", domain: "adobe.com" } },
+  { test: /dropbox/i, spec: { name: "Dropbox", color: "#0061FF", domain: "dropbox.com" } },
+  { test: /reddit/i, spec: { name: "Reddit", color: "#FF4500", domain: "reddit.com" } },
+  { test: /google/i, spec: { name: "Google", color: "#4285F4", domain: "google.com" } },
+  { test: /colonial/i, spec: { name: "Colonial Pipeline", color: "#D1462A", domain: "colpipe.com" } },
+  { test: /equifax/i, spec: { name: "Equifax", color: "#822433", domain: "equifax.com" } },
+  { test: /target/i, spec: { name: "Target", color: "#CC0000", domain: "target.com" } },
+  { test: /maersk/i, spec: { name: "Maersk", color: "#42B0D5", domain: "maersk.com" } },
+  { test: /solarwinds/i, spec: { name: "SolarWinds", color: "#F47B20", domain: "solarwinds.com" } },
 ];
 
 function brandFor(org: string, color?: string): BrandSpec {
@@ -201,19 +197,32 @@ function brandFor(org: string, color?: string): BrandSpec {
   return { name: org, color: color ?? T.primary };
 }
 
-/* The identity lockup: [mark] Wordmark. `mark` is the authentic icon
- * where we have one, else a brand-coloured tab that anchors the wordmark
- * so it reads as a logo, not just coloured text. */
-function BrandLockup({ org, color, size = "md" }: { org: string; color?: string; size?: "sm" | "md" | "lg" }) {
+/* The real company logo, on a clean white tile so any brand reads well
+ * on the dark ground. Tries a logo service, then a favicon, then falls
+ * back to the brand-coloured wordmark if the company has no fetchable
+ * mark (e.g. a long-defunct site). */
+function CompanyLogo({ org, color, size = 56 }: { org: string; color?: string; size?: number }) {
   const b = brandFor(org, color);
-  const fs = size === "lg" ? 23 : size === "md" ? 18 : 15;
-  const iconPx = Math.round(fs * 1.4);
+  const sources = b.domain
+    ? [`https://logo.clearbit.com/${b.domain}?size=128`, `https://www.google.com/s2/favicons?domain=${b.domain}&sz=128`]
+    : [];
+  const [step, setStep] = useState(0);
+
+  if (sources.length > 0 && step < sources.length) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={sources[step]}
+        alt={`${b.name} logo`}
+        onError={() => setStep((s) => s + 1)}
+        style={{ width: size, height: size, objectFit: "contain", borderRadius: 12, background: "#fff", padding: Math.round(size * 0.14), flexShrink: 0, boxShadow: "0 1px 0 rgba(255,255,255,0.05)" }}
+      />
+    );
+  }
+  // final fallback: brand-coloured wordmark tile
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
-      {b.icon ? b.icon(iconPx) : (
-        <span aria-hidden style={{ width: Math.round(fs * 0.34), height: iconPx, borderRadius: 3, background: `linear-gradient(${b.color}, ${b.color}bb)`, boxShadow: `0 0 0 4px ${b.color}1f`, flexShrink: 0 }} />
-      )}
-      <span style={{ fontFamily: T.display, fontWeight: 800, fontSize: fs, letterSpacing: "-0.01em", color: b.color, textTransform: b.lower ? "lowercase" : "none", whiteSpace: "nowrap" }}>{b.name}</span>
+    <span aria-label={`${b.name} logo`} style={{ width: size, height: size, borderRadius: 12, background: `${b.color}1f`, border: `1px solid ${b.color}55`, display: "inline-flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 6, flexShrink: 0, fontFamily: T.display, fontWeight: 800, fontSize: size * 0.2, lineHeight: 1.1, letterSpacing: "-0.01em", color: b.color }}>
+      {b.name}
     </span>
   );
 }
@@ -232,6 +241,40 @@ function NewsCard({ news }: { news: NonNullable<CaseCard["news"]> }) {
   return news.url
     ? <a href={news.url} target="_blank" rel="noopener noreferrer" style={style}>{inner}</a>
     : <div style={style}>{inner}</div>;
+}
+
+/* "This week's true story" as a news clipping: a real company logo, a
+ * masthead, a serif headline, and a credit to the real coverage that
+ * links out to the original article. It never reproduces the article
+ * itself, only cites the headline, outlet and date. */
+function NewsStory({ c }: { c: CaseCard }) {
+  const b = brandFor(c.org, c.brandColor);
+  const inner = (
+    <article className="pns">
+      <div className="pns-masthead">
+        <span className="pns-kicker">This week&apos;s true story</span>
+        <span className="pns-dateline">{c.year}</span>
+      </div>
+      <div className="pns-lead">
+        <CompanyLogo org={c.org} color={c.brandColor} size={62} />
+        <div style={{ minWidth: 0 }}>
+          <div className="pns-subject" style={{ color: b.color }}>{b.name}</div>
+          <h3 className="pns-headline">{c.headline}.</h3>
+        </div>
+      </div>
+      <p className="pns-standfirst">You&apos;ll investigate exactly how it happened, and find the one measure that would have stopped it.</p>
+      {c.news && (
+        <div className="pns-source">
+          <span className="pns-outlet">{c.news.outlet}</span>
+          <span className="pns-cite">&ldquo;{c.news.headline}&rdquo; &middot; {c.news.date}</span>
+          {c.news.url && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" /></svg>}
+        </div>
+      )}
+    </article>
+  );
+  return c.news?.url
+    ? <a href={c.news.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>{inner}</a>
+    : inner;
 }
 
 /* A key term the learner can hover (desktop) or tap (mobile) to see a
@@ -401,13 +444,20 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
         .pro-fact b { color: ${T.ink}; font-weight: 700; }
         .pro-fact-sep { width: 3px; height: 3px; border-radius: 50%; background: ${T.faint}; }
 
-        .pro-story { position: relative; overflow: hidden; background: linear-gradient(180deg, ${T.panel}, ${T.bgRaise}); border: 1px solid ${T.edge}; border-radius: 16px; padding: 20px 22px; }
-        .pro-story-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-        .pro-story-tag { font-family: ${T.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.red}; margin-bottom: 14px; }
-        .pro-story-brandrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
-        .pro-story-year { font-family: ${T.mono}; font-size: 13px; color: ${T.muted}; }
-        .pro-story-hook { font-family: ${T.display}; font-size: 18px; font-weight: 700; line-height: 1.35; color: ${T.ink}; }
-        .pro-story-sub { font-size: 14px; line-height: 1.55; color: ${T.muted}; margin-top: 8px; }
+        /* "this week's true story" as a news clipping */
+        .pns { display: block; overflow: hidden; background: linear-gradient(180deg, ${T.panel}, ${T.bgRaise}); border: 1px solid ${T.edge}; border-radius: 14px; text-decoration: none; transition: border-color 150ms ease, transform 150ms ease; }
+        a:hover > .pns { border-color: ${T.cyan}66; transform: translateY(-1px); }
+        .pns-masthead { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 16px; border-bottom: 1px solid ${T.edge}; background: rgba(0,0,0,0.22); }
+        .pns-kicker { font-family: ${T.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.red}; }
+        .pns-dateline { font-family: ${T.mono}; font-size: 11px; color: ${T.muted}; }
+        .pns-lead { display: flex; gap: 15px; align-items: flex-start; padding: 16px 16px 10px; }
+        .pns-subject { font-family: ${T.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px; }
+        .pns-headline { font-family: Georgia, "Times New Roman", "Noto Serif", serif; font-size: 21px; font-weight: 700; line-height: 1.22; letter-spacing: -0.005em; color: ${T.ink}; margin: 0; }
+        .pns-standfirst { font-size: 14px; line-height: 1.55; color: ${T.muted}; margin: 0; padding: 0 16px 15px; }
+        .pns-source { display: flex; align-items: center; gap: 9px; padding: 11px 16px; border-top: 1px solid ${T.edge}; background: rgba(0,0,0,0.22); color: ${T.muted}; }
+        .pns-outlet { font-family: ${T.display}; font-weight: 800; font-size: 12.5px; color: ${T.ink}; white-space: nowrap; }
+        .pns-cite { flex: 1; min-width: 0; font-size: 11.5px; color: ${T.muted}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        @media (prefers-reduced-motion: reduce) { .pns { transition: none; } a:hover > .pns { transform: none; } }
 
         .pro-why { max-width: 66ch; font-size: 15px; line-height: 1.6; color: ${T.body}; margin: 4px 0 28px; }
         .pro-why-label { display: block; font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.cyan}; margin-bottom: 6px; }
@@ -500,20 +550,8 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                   </div>
                 </section>
 
-                {/* RIGHT: this week's true story */}
-                {heroCase && (
-                  <aside className="pro-story">
-                    <div className="pro-story-accent" style={{ background: `linear-gradient(${brandFor(heroCase.org, heroCase.brandColor).color}, ${T.red})` }} />
-                    <div className="pro-story-tag">This week&apos;s true story</div>
-                    <div className="pro-story-brandrow">
-                      <BrandLockup org={heroCase.org} color={heroCase.brandColor} size="lg" />
-                      <span className="pro-story-year">{heroCase.year}</span>
-                    </div>
-                    <div className="pro-story-hook">{heroCase.headline}.</div>
-                    <div className="pro-story-sub">You&apos;ll investigate exactly how it happened, and find the one measure that would have stopped it.</div>
-                    {heroCase.news && <div style={{ marginTop: 14 }}><NewsCard news={heroCase.news} /></div>}
-                  </aside>
-                )}
+                {/* RIGHT: this week's true story, as a news clipping */}
+                {heroCase && <aside><NewsStory c={heroCase} /></aside>}
               </div>
 
               {/* why it matters + CTA */}
@@ -577,12 +615,15 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {lesson.cases.map((c, i) => (
                   <article key={i} style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "20px 22px" }}>
-                    <div style={{ marginBottom: 12 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-                        <BrandLockup org={c.org} color={c.brandColor} size="md" />
-                        <span style={{ fontFamily: T.mono, fontSize: 12, color: T.muted }}>{c.year}</span>
+                    <div style={{ display: "flex", gap: 14, alignItems: "flex-start", marginBottom: 12 }}>
+                      <CompanyLogo org={c.org} color={c.brandColor} size={46} />
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: 9, flexWrap: "wrap" }}>
+                          <span style={{ fontFamily: T.display, fontWeight: 800, fontSize: 18, color: brandFor(c.org, c.brandColor).color }}>{brandFor(c.org, c.brandColor).name}</span>
+                          <span style={{ fontFamily: T.mono, fontSize: 12, color: T.muted }}>{c.year}</span>
+                        </div>
+                        <div style={{ fontSize: 15, fontWeight: 700, color: T.cyan, marginTop: 4 }}>{c.headline}</div>
                       </div>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: T.cyan, marginTop: 6 }}>{c.headline}</div>
                     </div>
                     <p style={{ fontSize: 15, lineHeight: 1.65, color: T.body }}>{c.whatHappened}</p>
                     <div style={{ background: T.redSoft, borderRadius: 8, padding: "10px 14px", margin: "6px 0 12px" }}>
