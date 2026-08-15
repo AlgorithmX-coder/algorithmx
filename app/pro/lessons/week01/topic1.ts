@@ -6,7 +6,7 @@ import PasswordLab from "../../learn/PasswordLab";
  * SHA-256). Cases are real, source-verified public record only. */
 const topic1: TopicManifest = {
   id: "w1t1",
-  weekLabel: "Week 1",
+  weekLabel: "Module 3",
   act: "Act 1 - Foundations you can touch",
   title: "How your password is really stored",
   role: "Every role starts here. SOC analysts, incident responders and pen testers all reason about credentials daily.",

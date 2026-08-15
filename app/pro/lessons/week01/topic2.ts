@@ -7,7 +7,7 @@ import PasswordLab from "../../learn/PasswordLab";
  * mode with plaintext password hints, making them trivially recoverable). */
 const topic2: TopicManifest = {
   id: "w1t2",
-  weekLabel: "Week 1",
+  weekLabel: "Module 3",
   act: "Act 1 - Foundations you can touch",
   title: "How attackers crack the stolen file",
   role: "Understanding cracking is the analyst's mindset: when a hash dump leaks, you need to know how fast the weak ones fall and which accounts to force-reset first.",
