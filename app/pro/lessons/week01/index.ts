@@ -10,7 +10,7 @@ import topic5 from "./topic5";
  * (the Personal Security Audit) across the week. */
 const week01: WeekManifest = {
   id: "week-01",
-  weekLabel: "Week 1",
+  weekLabel: "Module 3",
   act: "Act 1 - Foundations you can touch",
   title: "Passwords & account security",
   intro: "The lock everyone picks first. Over five hands-on topics you will learn how passwords are really stored, how they get cracked, how to build ones worth trusting, why a second factor changes everything, and how to lock down your own accounts, finishing with a real security audit you can put in your portfolio.",

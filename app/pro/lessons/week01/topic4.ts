@@ -7,7 +7,7 @@ import MfaLab from "../../learn/MfaLab";
  * attackers intercepted; Reddit moved to token-based 2FA afterwards). */
 const topic4: TopicManifest = {
   id: "w1t4",
-  weekLabel: "Week 1",
+  weekLabel: "Module 3",
   act: "Act 1 - Foundations you can touch",
   title: "The second lock: multi-factor authentication",
   role: "MFA is the single control that stops the most account takeovers, and knowing the difference between weak and strong MFA is exactly the advice a security professional is paid to give.",

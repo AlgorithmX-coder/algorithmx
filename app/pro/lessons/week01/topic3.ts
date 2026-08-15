@@ -7,7 +7,7 @@ import PasswordLab from "../../learn/PasswordLab";
  * password that had leaked in the LinkedIn breach). */
 const topic3: TopicManifest = {
   id: "w1t3",
-  weekLabel: "Week 1",
+  weekLabel: "Module 3",
   act: "Act 1 - Foundations you can touch",
   title: "Building passwords worth trusting",
   role: "Advising people on real password hygiene is core to security awareness work, and the reuse problem is behind a huge share of real-world account takeovers.",

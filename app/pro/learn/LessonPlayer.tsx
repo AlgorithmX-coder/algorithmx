@@ -803,7 +803,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                   </>
                 ) : (
                   <>
-                    <a href="/pro" style={{ fontFamily: T.display, fontSize: 14, fontWeight: 700, letterSpacing: "0.03em", padding: "12px 24px", borderRadius: 10, color: "#fff", textDecoration: "none", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})` }}>Back to the course</a>
+                    <a href="/pro" style={{ fontFamily: T.display, fontSize: 14, fontWeight: 700, letterSpacing: "0.03em", padding: "12px 24px", borderRadius: 10, color: "#fff", textDecoration: "none", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})` }}>Back to all modules</a>
                     {btn("Review the lesson", () => { setPhase("intro"); setLearnIdx(0); }, { ghost: true })}
                   </>
                 )}

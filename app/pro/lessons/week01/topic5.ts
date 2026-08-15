@@ -7,7 +7,7 @@ import AuditChecklistLab from "../../learn/AuditChecklistLab";
  * reported zero confirmed account takeovers by phishing). */
 const topic5: TopicManifest = {
   id: "w1t5",
-  weekLabel: "Week 1",
+  weekLabel: "Module 3",
   act: "Act 1 - Foundations you can touch",
   title: "Lock down your own accounts",
   role: "Turning knowledge into a finished, documented audit is exactly the deliverable employers want to see, and it is the first piece of your portfolio.",
