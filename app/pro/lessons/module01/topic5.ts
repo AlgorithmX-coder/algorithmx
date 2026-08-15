@@ -80,6 +80,7 @@ const topic5: TopicManifest = {
       theMissedMeasure: "The deepest assumption, that signed software from a trusted vendor is safe, was the very thing exploited. It is the case most often cited for why 'assume breach' and zero trust (verify, do not simply trust) became mainstream.",
       theCost: "Thousands of organisations were exposed, including multiple US government agencies, and the clean-up and investigation ran for years. It reset how the industry thinks about trusting suppliers and updates.",
       control: "secure-configuration",
+      impact: ["~18,000 organisations installed the tainted update", "multiple US government agencies breached", "a years-long clean-up"],
       source: "Public record; US government findings and wide reporting, 2020-2021.",
       brandColor: "#f47b20",
       news: { headline: "SolarWinds: Why the Sunburst hack is so serious", outlet: "BBC News", date: "December 2020", url: "https://www.bbc.co.uk/news/technology-55368917" },

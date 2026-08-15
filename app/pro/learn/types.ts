@@ -44,9 +44,12 @@ export interface CaseCard {
   /* Optional brand colour for the company logo chip (its real brand
    * colour where known). Falls back to the tier accent. */
   brandColor?: string;
-  /* A real piece of press coverage, as a sourced headline card (we cite
-   * the headline/outlet/date and link out; we never embed a copyrighted
-   * article screenshot). Verify the headline + url at authoring time. */
+  /* Short, real "by the numbers" impact facts shown in the news clipping
+   * (e.g. "$4.4M ransom paid", "147 million people exposed"). Public
+   * record only, verified at authoring time. */
+  impact?: string[];
+  /* A real piece of press coverage, cited as a headline/outlet/date. We
+   * never reproduce the article, only cite it. Verify at authoring time. */
   news?: { headline: string; outlet: string; date: string; url?: string };
 }
 

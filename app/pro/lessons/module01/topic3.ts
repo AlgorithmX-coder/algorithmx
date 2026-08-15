@@ -75,6 +75,7 @@ const topic3: TopicManifest = {
       theMissedMeasure: "The detective control worked, but the response process behind it did not. Alerts were generated and effectively ignored, and the network was not segmented enough to keep a supplier's access away from the payment systems.",
       theCost: "Around 40 million payment cards and personal details on tens of millions more. The financial and reputational damage ran into hundreds of millions, and the CEO ultimately lost his job. The lesson stuck: detection without response is not defence.",
       control: "access-control",
+      impact: ["40 million payment cards stolen", "70 million more records exposed", "$18.5M settlement; the CEO resigned"],
       source: "Public record; US Senate Commerce Committee report, 2014, and contemporary reporting.",
       brandColor: "#cc0000",
       news: { headline: "Target hackers stole 40 million credit cards", outlet: "BBC News", date: "December 2013", url: "https://www.bbc.co.uk/news/technology-25506020" },

@@ -75,6 +75,7 @@ const topic1: TopicManifest = {
       theMissedMeasure: "Initial access was traced to a single exposed account with no multi-factor authentication, and the business had limited ability to keep operating once systems were locked (an availability and access-control gap).",
       theCost: "Nearly half the fuel supply to the US East Coast was disrupted for days, causing panic-buying and shortages. The company paid a multi-million-dollar ransom (some was later recovered). It became the clearest modern example that an availability attack can be a national event.",
       control: "access-control",
+      impact: ["$4.4M ransom paid", "~45% of US East Coast fuel supply disrupted", "days of shortages and panic-buying"],
       source: "Public record; US government statements and company disclosures, 2021.",
       brandColor: "#d1462a",
       news: { headline: "Colonial Pipeline: US recovers millions in cryptocurrency paid to ransomware hackers", outlet: "BBC News", date: "June 2021", url: "https://www.bbc.co.uk/news/business-57394730" },
