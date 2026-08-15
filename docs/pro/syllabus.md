@@ -199,7 +199,7 @@ an analogy; a real company it happened to and what it cost; a hands-on **in-brow
 
 ---
 
-## ACT 4 - Get hired (Modules 17-20)
+## ACT 4 - Get hired (Modules 17-21)
 *Security+ D5 (Governance, Risk & Compliance) + the career on-ramp.*
 
 ### Module 17 - Governance, risk & compliance (GRC)
@@ -211,7 +211,19 @@ an analogy; a real company it happened to and what it cost; a hands-on **in-brow
 5. Audits and evidence
 - **Project:** small-business risk assessment.
 
-### Module 18 - Resilience: backups & continuity
+### Module 18 - Scripting for defenders  `[CODE PLAYGROUND LIVE]`
+*Security+ 4.0; the skill that gets analysts hired faster.* You do not need to be
+a programmer, but a little code goes a long way. Taught and practised in the
+in-browser **Code Lab** (`/pro/code`): real JavaScript, run instantly, nothing to
+install. (Python via Pyodide is a later upgrade.)
+1. Why an analyst writes code (parse, check, automate)
+2. The basics: variables, conditions, loops, functions
+3. Read a log: count and flag suspicious lines
+4. Check input: a password / IOC validator
+5. Automate the boring bit: a small end-to-end script
+- **Project:** a working script + short README (a real GitHub artefact).
+
+### Module 19 - Resilience: backups & continuity
 *Security+ 3.0/4.0; ISC² CC D2.*
 1. Business continuity and disaster recovery
 2. Backups that survive ransomware (3-2-1)
@@ -219,7 +231,7 @@ an analogy; a real company it happened to and what it cost; a hands-on **in-brow
 4. Redundancy and failover
 5. Testing your recovery (the untested plan fails)
 
-### Module 19 - The roles & the certification roadmap
+### Module 20 - The roles & the certification roadmap
 *Career map; the cert ladder.*
 1. The real entry roles (SOC, GRC, IT security, pen-test path)
 2. What each job actually does day to day
@@ -227,7 +239,7 @@ an analogy; a real company it happened to and what it cost; a hands-on **in-brow
 4. The honest UK market and the funnel
 5. Turning a non-technical background into an asset
 
-### Module 20 - The job machinery + capstone
+### Module 21 - The job machinery + capstone
 *Assess by doing; portfolio.*
 1. Your portfolio: audit, phishing guide, breach write-up, IR timeline
 2. CV and LinkedIn for cyber
@@ -243,14 +255,17 @@ Personal Security Audit (M5); Phishing Field Guide (M7); vulnerability assessmen
 hardening checklist (M12); honeypot/SIEM triage report (M14); incident report (M16);
 small-business risk assessment (M17); capstone incident report + board briefing (M20).
 
-## Build status (2026-08-14)
+## Build status (2026-08-15)
 
-- **Built:** Module 3 (Passwords, 5 topics); Module 14 (Logs & SIEM, single lesson).
+- **Built:** Module 1 (5 topics); Module 3 (Passwords, 5 topics); Module 14 (Logs &
+  SIEM, single lesson). **Code Lab** live at `/pro/code` (in-browser JS playground +
+  security challenges) - the hands-on home of Module 18.
 - **Part-built:** Module 9 (Web/SQLi, single lesson).
-- **Building:** Module 1 (What security actually means).
-- **Renumber pending:** the built modules currently route as `/pro` (M3), `/pro/week08`
-  (M9), `/pro/week13` (M14). A course hub at `/pro` listing all 20 modules, and the
-  route renumber, land once a few more modules exist.
+- **In progress:** making every Try exercise bespoke per topic (variety), starting
+  with Module 1's five.
+- **Renumber pending:** built modules route as `/pro` (M3), `/pro/module01` (M1),
+  `/pro/week08` (M9), `/pro/week13` (M14), `/pro/code` (Code Lab). A course hub at
+  `/pro` listing all 21 modules, and the route renumber, land once more modules exist.
 
 ## Sources
 
