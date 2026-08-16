@@ -84,6 +84,43 @@ const SYS = "#34E1FF"; // system / chrome
 const TXT = "#D3E6F7"; // readable body
 const DIM = "#5E7699"; // muted
 const AMBER = "#FFC24B"; // the next case
+
+/* Locked cards read as "encrypted intel awaiting decryption", not dead grey
+ * boxes: a faint grid of glyphs keeps re-scrambling behind the padlock, with a
+ * scan line sweeping down, so a kid anticipates what's locked away. Motion is
+ * skipped under prefers-reduced-motion (glyphs render once, statically). */
+const CIPHER_GLYPHS = "01<>/{}[]#$%*+=?ｱｲｳｴｵｶｷｸﾉﾘﾜﾝABCDEF01";
+const cipherChar = () => CIPHER_GLYPHS[Math.floor(Math.random() * CIPHER_GLYPHS.length)];
+
+function CipherFX({ accent, reduced }: { accent: string; reduced: boolean }) {
+  const CELLS = 42; // 7 cols x 6 rows
+  // Static seed so server and client HTML match (no Math.random at render time);
+  // real glyphs are filled in on the client after mount to avoid a hydration
+  // mismatch.
+  const [cells, setCells] = useState<string[]>(() => Array(CELLS).fill("0"));
+  useEffect(() => {
+    setCells(Array.from({ length: CELLS }, cipherChar));
+    if (reduced) return;
+    const id = window.setInterval(() => {
+      setCells((prev) => {
+        const next = prev.slice();
+        for (let k = 0; k < 8; k++) next[Math.floor(Math.random() * CELLS)] = cipherChar();
+        return next;
+      });
+    }, 120);
+    return () => window.clearInterval(id);
+  }, [reduced]);
+  return (
+    <>
+      <span aria-hidden className="tc-cipher" style={{ fontFamily: MONO, color: accent }}>
+        {cells.map((c, i) => (
+          <span key={i}>{c}</span>
+        ))}
+      </span>
+      {!reduced && <span aria-hidden className="tc-scan" style={{ background: `linear-gradient(180deg, transparent, ${accent}, transparent)` }} />}
+    </>
+  );
+}
 const BG = "#060810";
 
 export default function ExplorersPage() {
@@ -194,13 +231,21 @@ export default function ExplorersPage() {
         .tc-card{position:relative;text-align:left;border:1px solid color-mix(in srgb, var(--accent) 34%, transparent);border-radius:4px;background:rgba(8,13,24,0.74);cursor:pointer;overflow:hidden;padding:0;transition:box-shadow .18s,border-color .18s,transform .18s}
         .tc-card:hover{border-color:var(--accent);box-shadow:0 0 26px color-mix(in srgb, var(--accent) 45%, transparent);transform:translateY(-2px)}
         .tc-next{border-color:var(--accent);box-shadow:0 0 24px color-mix(in srgb, var(--accent) 46%, transparent)}
-        .tc-locked{opacity:.46;cursor:not-allowed;filter:saturate(.55)}
-        .tc-locked:hover{border-color:color-mix(in srgb, var(--accent) 34%, transparent);box-shadow:none;transform:none}
+        .tc-locked{cursor:not-allowed}
+        .tc-locked:hover{border-color:color-mix(in srgb, var(--accent) 55%, transparent);box-shadow:0 0 22px color-mix(in srgb, var(--accent) 28%, transparent);transform:none}
+        .tc-cipher{position:absolute;inset:0;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);align-content:space-between;padding:30px 9px 12px;font-size:11px;line-height:1;letter-spacing:.05em;opacity:.16;overflow:hidden;pointer-events:none;user-select:none}
+        .tc-cipher span{text-align:center}
+        .tc-locked:hover .tc-cipher{opacity:.32}
+        .tc-scan{position:absolute;left:0;right:0;top:-30px;height:30px;z-index:1;opacity:.45;pointer-events:none;animation:tcScan 3.4s linear infinite}
+        @keyframes tcScan{0%{top:-30px;opacity:0}14%{opacity:.5}86%{opacity:.5}100%{top:100%;opacity:0}}
+        .tc-cardbar{position:relative;z-index:2}
+        .tc-lockpulse{animation:tcLock 2.6s ease-in-out infinite}
+        @keyframes tcLock{0%,100%{opacity:.85;filter:drop-shadow(0 0 5px var(--accent))}50%{opacity:1;filter:drop-shadow(0 0 12px var(--accent))}}
         .tc-cardbar{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid color-mix(in srgb, var(--accent) 22%, transparent);background:rgba(3,6,14,0.55)}
         .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
         .tc-title{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:17px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;margin-top:12px}
         .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
-        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}}
+        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}.tc-scan{display:none}.tc-lockpulse{animation:none}}
       `}</style>
 
       <MatrixRain reduced={reduced} opacity={0.24} colors={RAIN_COLORS} />
@@ -304,35 +349,40 @@ export default function ExplorersPage() {
                         </span>
                       )}
                       {locked && (
-                        <span
-                          aria-hidden
-                          style={{
-                            position: "absolute",
-                            top: "52%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            zIndex: 4,
-                            color: DIM,
-                            pointerEvents: "none",
-                          }}
-                        >
-                          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-                            <rect x="4" y="10.5" width="16" height="10.5" rx="2.2" stroke="currentColor" strokeWidth="2" fill="rgba(3,6,14,0.45)" />
-                            <path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" stroke="currentColor" strokeWidth="2" />
-                          </svg>
-                        </span>
+                        <>
+                          <CipherFX accent={b.color} reduced={reduced} />
+                          <span
+                            aria-hidden
+                            className="tc-lockpulse"
+                            style={{
+                              position: "absolute",
+                              top: "54%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              zIndex: 4,
+                              color: b.color,
+                              ["--accent"]: b.color,
+                              pointerEvents: "none",
+                            } as CSSProperties}
+                          >
+                            <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+                              <rect x="4" y="10.5" width="16" height="10.5" rx="2.2" stroke="currentColor" strokeWidth="2" fill="rgba(3,6,14,0.6)" />
+                              <path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" stroke="currentColor" strokeWidth="2" />
+                            </svg>
+                          </span>
+                        </>
                       )}
                       <div className="tc-cardbar">
                         <span style={{ color: isNext ? AMBER : b.color }}>{m.caseNumber}</span>
                         {isClosed ? (
                           <span style={{ color: DIM }}>{"✓"} CLOSED</span>
                         ) : locked ? (
-                          <span style={{ color: DIM, display: "inline-flex", alignItems: "center", gap: 5 }}>
+                          <span style={{ color: b.color, display: "inline-flex", alignItems: "center", gap: 5, opacity: 0.9 }}>
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden>
                               <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" strokeWidth="2.4" />
                               <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2.4" />
                             </svg>
-                            LOCKED
+                            ENCRYPTED
                           </span>
                         ) : isNext ? (
                           <span className="tc-blink" style={{ color: AMBER }}>{"●"} {st === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
@@ -343,7 +393,7 @@ export default function ExplorersPage() {
                         )}
                       </div>
 
-                      <div style={{ padding: "12px 13px 14px" }}>
+                      <div style={{ padding: "12px 13px 14px", position: "relative", zIndex: 2 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                           <span className="tc-glyph" style={{ borderColor: ring, color: ring, boxShadow: `0 0 14px ${ring}55` }}>
                             <CaseGlyph id={m.id} size={26} color={ring} />
@@ -359,7 +409,7 @@ export default function ExplorersPage() {
                           {m.title}
                         </div>
                         <div style={{ fontSize: 11, color: TXT, opacity: 0.7, marginTop: 4 }}>{TOPICS[m.id] ?? ""}</div>
-                        <div style={{ fontSize: 10.5, color: AMBER, opacity: 0.85, marginTop: 9 }}>
+                        <div style={{ fontSize: 10.5, color: locked ? DIM : AMBER, opacity: 0.85, marginTop: 9 }}>
                           {"Villain: "}
                           {m.actor.codename}
                         </div>
