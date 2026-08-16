@@ -218,7 +218,9 @@ export function AmberButton({ label, onClick }: { label: string; onClick: () => 
   );
 }
 
-/** Quiet secondary action — symmetric choice, never styled to disappear. */
+/** Secondary action (reconsider / restart). Quieter than the amber CTA, but it
+ * must never disappear into the dark ground, so it has a real filled body, a
+ * bright cyan edge and glow, and high-contrast text (kids have to see it). */
 export function GhostButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <button
@@ -226,14 +228,16 @@ export function GhostButton({ label, onClick }: { label: string; onClick: () => 
       className="sr-btn"
       style={{
         fontFamily: MONO,
-        fontSize: 12,
+        fontSize: 13,
+        fontWeight: 700,
         letterSpacing: "0.06em",
-        color: T.textSecondary,
-        background: "transparent",
-        border: `1px solid ${T.hairline}`,
-        borderRadius: 3,
-        padding: "11px 18px",
+        color: T.textPrimary,
+        background: `${T.arcCyan}14`,
+        border: `1.5px solid ${T.arcCyan}88`,
+        borderRadius: 6,
+        padding: "12px 22px",
         cursor: "pointer",
+        boxShadow: `0 0 16px ${T.arcCyan}26, inset 0 1px 0 rgba(255,255,255,0.06)`,
       }}
     >
       {label}
