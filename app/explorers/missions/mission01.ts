@@ -32,8 +32,8 @@ export const mission01: MissionManifest = {
     lines: [
       "Maya just got a message. It says her game account will be deleted in 24 hours.",
       "It's got a scary countdown and big shouty capital letters.",
-      "She almost tapped it. Most people would, and that's exactly what the sender wants.",
-      "But it's a fake. And the person who sent it made some mistakes. Let's go find them.",
+      "She almost tapped it. Most people would, and that's exactly what the hacker wants.",
+      "But it's a fake. And the hacker who sent it made some mistakes. Let's go find them.",
     ],
   },
 
@@ -74,12 +74,12 @@ export const mission01: MissionManifest = {
           options: [
             "Accounts really do disappear that fast",
             "To make you act before you think",
-            "The sender is just in a hurry",
+            "The hacker is just in a hurry",
           ],
           answer: 1,
           right: "Exactly. The countdown is there to rush you, not to tell you the truth.",
           wrong: "Not quite. That clock isn't real, it's just there to make you panic. Have another think.",
-          hint: "Ask yourself: does that countdown help YOU, or does it help the person who sent it?",
+          hint: "Ask yourself: does that countdown help YOU, or does it help the hacker who sent it?",
         },
         predictionAudio: {
           question: "/audio/wren/m01-c1-q.mp3",
@@ -220,7 +220,7 @@ export const mission01: MissionManifest = {
               id: "reply",
               label: "Reply and ask if it's real",
               outcome:
-                "But the sender IS the scammer. Reply, and tomorrow he sends even more fakes.",
+                "But the hacker IS the scammer. Reply, and tomorrow he sends even more fakes.",
             },
             {
               id: "official",
@@ -344,7 +344,7 @@ export const mission01: MissionManifest = {
 
   debrief: {
     report: [
-      "You took the fake email apart: the scary countdown, the sneaky sender, and the fake link.",
+      "You took the fake email apart: the scary countdown, the sneaky hacker, and the fake link.",
       "You made the right call: open the real app, report it, and don't tap any links.",
       "The second wave is sorted. Phantom Hook's plan is stopped and on the record.",
     ],
