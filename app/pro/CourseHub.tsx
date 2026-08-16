@@ -1,4 +1,5 @@
 import { T } from "./learn/tokens";
+import CodeRainBg from "./CodeRainBg";
 
 /* The Cyber Pro course hub: every module, grouped into the four acts, with
  * a clear route into the ones that are built. Static and link-based so it
@@ -67,13 +68,9 @@ export default function CourseHub() {
   return (
     <div className="pro-hub">
       <style>{`
-        .pro-hub { min-height: 100vh; color: ${T.body}; font-family: ${T.sans};
-          background:
-            radial-gradient(1200px 620px at 50% -10%, rgba(139,109,255,0.16), transparent 60%),
-            radial-gradient(900px 520px at 92% 3%, rgba(53,214,240,0.09), transparent 55%),
-            ${T.bg}; }
+        .pro-hub { min-height: 100vh; color: ${T.body}; font-family: ${T.sans}; background: ${T.bg}; }
         .pro-hub :focus-visible { outline: 2px solid ${T.cyan}; outline-offset: 2px; }
-        .hub-wrap { max-width: 1080px; margin: 0 auto; padding: 22px 24px 110px; }
+        .hub-wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 22px 24px 110px; }
         .hub-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0 18px; border-bottom: 1px solid ${T.edge}; }
 
         /* hero */
@@ -133,6 +130,8 @@ export default function CourseHub() {
 
         @media (prefers-reduced-motion: reduce) { a.mod, .hub-cta, .hub-cta svg { transition: none; } a.mod:hover, .hub-cta:hover { transform: none; } }
       `}</style>
+
+      <CodeRainBg />
 
       <div className="hub-wrap">
         <header className="hub-head">
