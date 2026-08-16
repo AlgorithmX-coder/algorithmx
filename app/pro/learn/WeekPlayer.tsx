@@ -172,16 +172,22 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
 
           {restored && allDone && (
             <div className="pro-week-done" style={{ marginTop: 22 }}>
-              <span style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.18em", color: T.green, fontWeight: 700 }}>WEEK COMPLETE</span>
+              <span style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.18em", color: T.green, fontWeight: 700 }}>MODULE COMPLETE</span>
               <div style={{ fontFamily: T.display, fontSize: 20, fontWeight: 700, color: T.ink, marginTop: 6, marginBottom: 10 }}>You finished all {week.topics.length} topics of {week.weekLabel}.</div>
               <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: T.green, marginBottom: 8 }}>You can now</div>
               <ul style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 6 }}>
                 {week.outcomes.map((o, i) => <li key={i} style={{ fontSize: 15, color: T.body, lineHeight: 1.55 }}>{o}</li>)}
               </ul>
-              <a href="/pro" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 16, fontFamily: T.display, fontSize: 14, fontWeight: 700, color: "#fff", textDecoration: "none", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, borderRadius: 10, padding: "11px 22px" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
-                Back to all modules
-              </a>
+              <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
+                <a href="/pro" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: T.display, fontSize: 14, fontWeight: 700, color: "#fff", textDecoration: "none", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, borderRadius: 10, padding: "11px 22px" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
+                  Back to all modules
+                </a>
+                <button onClick={resetWeek} style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: T.display, fontSize: 14, fontWeight: 700, color: T.body, background: "transparent", border: `1px solid ${T.edge}`, borderRadius: 10, padding: "11px 22px", cursor: "pointer" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /></svg>
+                  Start this module again
+                </button>
+              </div>
             </div>
           )}
 
@@ -220,7 +226,7 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
 
           <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
             <button className="pro-week-cta" onClick={() => setActive(resumeIdx)}>
-              {allDone ? "Review the week" : doneCount > 0 ? `Continue: topic ${resumeIdx + 1}` : "Start topic 1"}
+              {allDone ? "Review the module" : doneCount > 0 ? `Continue: topic ${resumeIdx + 1}` : "Start topic 1"}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </button>
             <span style={{ fontSize: 13, color: T.faint, maxWidth: "38ch", lineHeight: 1.45 }}>Work through the topics in order, or jump to any one. Your place is saved as you go.</span>

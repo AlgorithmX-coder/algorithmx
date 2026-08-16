@@ -798,8 +798,8 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
               <div style={{ marginTop: 26, display: "flex", gap: 12, flexWrap: "wrap" }}>
                 {embedded ? (
                   <>
-                    {btn((topicIndex as number) + 1 >= (topicCount as number) ? "Finish the week" : "Next topic", () => onComplete?.())}
-                    {btn("Week overview", () => onExit?.(), { ghost: true })}
+                    {btn((topicIndex as number) + 1 >= (topicCount as number) ? "Finish the module" : "Next topic", () => onComplete?.())}
+                    {btn("Module overview", () => onExit?.(), { ghost: true })}
                   </>
                 ) : (
                   <>
