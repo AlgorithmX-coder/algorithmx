@@ -1,5 +1,5 @@
 import type { TopicManifest } from "../../learn/types";
-import { RiskLab } from "../../learn/conceptLabs";
+import { RiskBuilderLab } from "../../learn/conceptLabs";
 
 /* Module 1 - Topic 2: threat vs vulnerability vs risk. Case: Equifax
  * 2017 (a known, unpatched Apache Struts vulnerability plus attackers
@@ -88,14 +88,14 @@ const topic2: TopicManifest = {
   ],
 
   lab: {
-    title: "Threat, vulnerability, or risk?",
-    intro: "Read each statement and label it. This is the exact distinction certificate exams test, and the one a business will pay you to make.",
+    title: "Assemble the risk",
+    intro: "Every risk is a threat meeting a weakness. Build each one by picking the threat and the weakness that create it.",
     prompts: [
-      "For each line, choose Threat, Vulnerability, or Risk.",
-      "Every answer comes with a short why.",
-      "Watch how 'risk' always combines a threat, a weakness, and an impact.",
+      "For each risk, pick the threat, then the weakness it uses.",
+      "Get both right and the risk clicks into place, with a short why.",
+      "This is the exact decomposition a business pays an analyst to make.",
     ],
-    component: RiskLab,
+    component: RiskBuilderLab,
   },
 
   check: {

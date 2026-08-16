@@ -291,3 +291,123 @@ export function DefenceOrderLab({ onDidTry }: LabProps) {
     { label: "Encrypted data", note: "Even a stolen copy of the database is unreadable." },
   ]} />;
 }
+
+/* ---- ComposeGame: assemble a risk from a threat and a weakness ---- */
+type ComposeCase = { outcome: string; threat: string; weakness: string; why: string };
+
+function ComposeGame({ threats, weaknesses, cases, prompt, onDidTry }: LabProps & { threats: string[]; weaknesses: string[]; cases: ComposeCase[]; prompt: string }) {
+  const [picks, setPicks] = useState<Record<number, { t?: string; w?: string }>>({});
+  const started = Object.keys(picks).length;
+  useEffect(() => { if (started >= 1) onDidTry(); }, [started, onDidTry]);
+
+  const chip = (label: string, sel: string | undefined, correct: string, both: boolean, accent: string, onClick: () => void, locked: boolean) => {
+    let bg: string = T.panelSoft, bd: string = T.edge, fg: string = T.body;
+    if (both && label === correct) { bg = T.greenSoft; bd = T.green; fg = T.ink; }
+    else if (both && sel === label) { bg = T.redSoft; bd = T.red; fg = T.ink; }
+    else if (!both && sel === label) { bg = `${accent}22`; bd = accent; fg = T.ink; }
+    return <button key={label} onClick={onClick} disabled={locked} style={{ fontFamily: T.sans, fontSize: 13.5, fontWeight: 600, color: fg, background: bg, border: `1px solid ${bd}`, borderRadius: 8, padding: "8px 12px", cursor: locked ? "default" : "pointer", textAlign: "left" }}>{label}</button>;
+  };
+
+  return (
+    <div style={{ fontFamily: T.sans }}>
+      <div style={{ fontSize: 13.5, color: T.muted, marginBottom: 16, lineHeight: 1.5 }}>{prompt}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {cases.map((c, i) => {
+          const p = picks[i] ?? {};
+          const both = !!(p.t && p.w);
+          const correct = both && p.t === c.threat && p.w === c.weakness;
+          const setV = (key: "t" | "w", v: string) => { if (!correct) setPicks((prev) => ({ ...prev, [i]: { ...prev[i], [key]: v } })); };
+          return (
+            <div key={i} style={{ background: T.panel, border: `1px solid ${both ? (correct ? `${T.green}66` : `${T.red}66`) : T.edge}`, borderRadius: 12, padding: "14px 16px" }}>
+              <div style={{ fontSize: 14.5, color: T.ink, lineHeight: 1.5, marginBottom: 13 }}><span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color: T.cyan }}>THE RISK &nbsp;</span>{c.outcome}</div>
+              <div style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: T.red, marginBottom: 7 }}>Pick the threat</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginBottom: 13 }}>{threats.map((t) => chip(t, p.t, c.threat, both, T.red, () => setV("t", t), correct))}</div>
+              <div style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: T.amber, marginBottom: 7 }}>Pick the weakness it uses</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>{weaknesses.map((w) => chip(w, p.w, c.weakness, both, T.amber, () => setV("w", w), correct))}</div>
+              {both && (
+                <div style={{ marginTop: 12, fontSize: 13.5, color: correct ? T.green : T.muted, lineHeight: 1.5 }}>
+                  {correct ? "Assembled. " : "Not quite, try again. "}{c.why}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function RiskBuilderLab({ onDidTry }: LabProps) {
+  return <ComposeGame onDidTry={onDidTry}
+    prompt="Every risk is a threat meeting a weakness. For each one below, pick the threat, then the weakness that lets it happen."
+    threats={["A ransomware gang", "A credential-stuffing crew", "A careless insider"]}
+    weaknesses={["Servers missing a security update", "Staff who reuse passwords", "No offline backups"]}
+    cases={[
+      { outcome: "Attackers log straight into staff accounts using passwords leaked from other websites.", threat: "A credential-stuffing crew", weakness: "Staff who reuse passwords", why: "The crew tries leaked email-and-password pairs everywhere, and reuse means one old leak unlocks your accounts too." },
+      { outcome: "A known flaw is exploited weeks after a fix was already available.", threat: "A ransomware gang", weakness: "Servers missing a security update", why: "The gang scans the internet for unpatched systems; a fix you have but never applied is an open door." },
+      { outcome: "One careless click deletes critical files, and there is no clean copy to restore.", threat: "A careless insider", weakness: "No offline backups", why: "Mistakes happen; with no offline backup there is simply nothing to recover to." },
+    ]} />;
+}
+
+/* ---- MatchGame: tap an item, then tap the category it belongs to ---- */
+function MatchGame({ categories, items, prompt, onDidTry }: LabProps & { categories: Cat[]; items: Item[]; prompt: string }) {
+  const [assign, setAssign] = useState<Record<number, string>>({});
+  const [sel, setSel] = useState<number | null>(null);
+  const [checked, setChecked] = useState(false);
+  const started = Object.keys(assign).length;
+  useEffect(() => { if (started >= 1) onDidTry(); }, [started, onDidTry]);
+
+  const allAssigned = items.every((_, i) => assign[i]);
+  const correctCount = items.filter((it, i) => assign[i] === it.cat).length;
+  const catOf = (id: string) => categories.find((c) => c.id === id);
+
+  return (
+    <div style={{ fontFamily: T.sans }}>
+      <div style={{ fontSize: 13.5, color: T.muted, marginBottom: 14, lineHeight: 1.5 }}>{prompt}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
+        {items.map((it, i) => {
+          const cat = assign[i];
+          const c = cat ? catOf(cat) : undefined;
+          const right = checked && cat === it.cat;
+          const wrong = checked && cat !== undefined && cat !== it.cat;
+          const border = sel === i ? T.cyan : right ? T.green : wrong ? T.red : T.edge;
+          return (
+            <div key={i}>
+              <button onClick={() => !checked && setSel(sel === i ? null : i)} disabled={checked}
+                style={{ width: "100%", textAlign: "left", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, background: sel === i ? T.cyanSoft : right ? T.greenSoft : wrong ? T.redSoft : T.panel, border: `1px solid ${border}`, borderRadius: 10, padding: "11px 14px", cursor: checked ? "default" : "pointer" }}>
+                <span style={{ fontSize: 14.5, color: T.ink }}>{it.text}</span>
+                <span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color: c ? c.color : (sel === i ? T.cyan : T.faint), whiteSpace: "nowrap", flexShrink: 0 }}>{c ? c.label : (sel === i ? "pick a job ↓" : "tap")}</span>
+              </button>
+              {checked && wrong && <div style={{ fontSize: 12.5, color: T.muted, margin: "4px 0 2px 4px" }}>Actually {catOf(it.cat)?.label}. {it.why}</div>}
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+        {categories.map((c) => (
+          <button key={c.id} onClick={() => { if (sel !== null && !checked) { setAssign((a) => ({ ...a, [sel]: c.id })); setSel(null); } }} disabled={sel === null || checked}
+            style={{ flex: "1 1 120px", fontFamily: T.mono, fontSize: 12.5, fontWeight: 700, color: sel === null ? T.faint : c.color, background: sel === null ? T.panelSoft : `${c.color}18`, border: `1px solid ${sel === null ? T.edge : `${c.color}66`}`, borderRadius: 9, padding: "10px 12px", cursor: sel === null || checked ? "default" : "pointer" }}>{c.label}</button>
+        ))}
+      </div>
+      {allAssigned && !checked && (
+        <button onClick={() => setChecked(true)} style={{ fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: "#fff", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 9, padding: "10px 20px", cursor: "pointer" }}>Check the matches</button>
+      )}
+      {checked && (
+        <div style={{ fontSize: 14, color: correctCount === items.length ? T.green : T.muted }}>You matched {correctCount} of {items.length}. {correctCount === items.length ? "Every control has a job, and a good defence uses all three." : "Re-read the ones marked, then remember: prevent, detect, correct."}</div>
+      )}
+    </div>
+  );
+}
+
+export function ControlMatchLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={CTRL}
+    prompt="Tap a control, then tap the job it does. Prevent stops it, detect spots it, correct puts it right."
+    items={[
+      { text: "A firewall that blocks bad traffic before it arrives", cat: "p", why: "It stops the bad thing before it happens: preventive." },
+      { text: "A CCTV camera and alarm that flag a break-in", cat: "d", why: "It notices something happening: detective." },
+      { text: "Restoring files from a clean backup after ransomware", cat: "c", why: "It puts things right after the event: corrective." },
+      { text: "Requiring MFA so a stolen password alone cannot log in", cat: "p", why: "It prevents the takeover in the first place: preventive." },
+      { text: "A SIEM alert when 500 logins fail in a minute", cat: "d", why: "It detects the attack in progress: detective." },
+      { text: "An incident-response plan that isolates and rebuilds a machine", cat: "c", why: "It corrects and recovers after the incident: corrective." },
+    ]} />;
+}
