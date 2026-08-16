@@ -80,6 +80,12 @@ export interface TrackCardProps {
    *  the copy always reads without heavy scrims, and it echoes the
    *  ghost-code motif the homepage backdrop already uses. */
   codeBackdrop?: boolean;
+  /** Extra network-diagram layer (Cyber Ops, owner call: "more
+   *  diagram"): an SVG constellation of nodes/links drawn OVER the
+   *  scene art, extending its map into the card's quiet zones. Drawn
+   *  rather than re-cropped so densifying the diagram can never
+   *  re-expose the art's baked terminal chrome. */
+  diagramOverlay?: boolean;
 }
 
 export default function TrackCard({
@@ -102,6 +108,7 @@ export default function TrackCard({
   lockup,
   specs,
   codeBackdrop,
+  diagramOverlay,
 }: TrackCardProps) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -187,9 +194,9 @@ export default function TrackCard({
               margin: 0,
               fontFamily: "var(--lv2-font-mono)",
               fontSize: 10,
-              lineHeight: 2.0,
+              lineHeight: 1.9,
               letterSpacing: "0.02em",
-              color: "rgba(232,237,255,0.13)",
+              color: "rgba(232,237,255,0.15)",
               textAlign: "left",
               pointerEvents: "none",
               userSelect: "none",
@@ -199,9 +206,12 @@ export default function TrackCard({
             {"  443/tcp open\n"}
             {"$ run exploit.py\n"}
             <span style={{ color: `${accent}59` }}>{"[+] auth bypass\n"}</span>
+            <span style={{ color: `${accent}4d` }}>{"[+] www-data shell\n"}</span>
             {"$ sudo -l\n"}
             {"  NOPASSWD: backup\n"}
-            <span style={{ color: `${accent}66` }}>{"[+] root shell"}</span>
+            <span style={{ color: `${accent}66` }}>{"[+] root shell\n"}</span>
+            {"$ cat proof.txt\n"}
+            <span style={{ color: `${accent}73` }}>{"[+] flag captured"}</span>
           </pre>
         </>
       )}
@@ -306,6 +316,54 @@ export default function TrackCard({
             }}
           />
         </>
+      )}
+
+      {/* Extended network diagram — drawn nodes/links continuing the
+       *  scene art's map into the card's quiet zones (top strip above
+       *  the title, right rail, bottom-left shelf). Painted AFTER the
+       *  art + scrim so it stays visible; kept clear of the headline/
+       *  blurb/CTA boxes; faint mono labels sell the range fiction. */}
+      {diagramOverlay && (
+        <svg
+          aria-hidden
+          viewBox="0 0 520 430"
+          preserveAspectRatio="none"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <g stroke="rgba(125,240,255,0.3)" strokeWidth="1" fill="none">
+            <path d="M-6 20 L120 12 L290 22 L438 58" strokeDasharray="2 5" />
+            <path d="M120 12 L212 16" />
+            <path d="M508 214 L468 258 L508 300" strokeDasharray="2 5" />
+            <path d="M468 258 L432 246" />
+            <path d="M56 380 L148 398 L296 388" strokeDasharray="2 5" />
+            <path d="M148 398 L128 372" />
+          </g>
+          <g fill="rgba(9,12,22,0.85)" stroke={`${accent}80`} strokeWidth="1.2">
+            <circle cx="120" cy="12" r="4.5" />
+            <circle cx="290" cy="22" r="3.5" />
+            <circle cx="468" cy="258" r="5" />
+            <circle cx="148" cy="398" r="4.5" />
+            <circle cx="296" cy="388" r="3" />
+          </g>
+          <g
+            fill="rgba(125,240,255,0.42)"
+            fontFamily="ui-monospace, Menlo, monospace"
+            fontSize="7.5"
+            letterSpacing="0.08em"
+          >
+            <text x="130" y="9">fw-01</text>
+            <text x="298" y="19">vpn</text>
+            <text x="452" y="274">dmz-9</text>
+            <text x="158" y="401">db-02</text>
+          </g>
+        </svg>
       )}
 
       {/* Header row — the course nameplate leads the card (lockup as
