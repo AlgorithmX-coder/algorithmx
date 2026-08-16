@@ -100,6 +100,13 @@ const TRACK_CODE_BACKDROP: Record<string, boolean> = {
   "cyberstart-pro": true,
 };
 
+/* Ops gets the drawn network-diagram overlay on top of its scene art
+ * (owner call: "more diagram") - extends the map into the card's quiet
+ * zones without re-exposing the art's baked chrome. */
+const TRACK_DIAGRAM_OVERLAY: Record<string, boolean> = {
+  cyberstart: true,
+};
+
 /* Spec chips anchoring the lower zone of the two coming-soon cards. */
 const TRACK_SPECS: Record<string, string[]> = {
   cyberstart: ["Live range", "Attack + defend", "Real portfolio"],
@@ -535,6 +542,7 @@ export default async function CybersecurityPage() {
                   contentMaxWidth={TRACK_CONTENT_MAX_WIDTH[p.slug]}
                   specs={TRACK_SPECS[p.slug]}
                   codeBackdrop={TRACK_CODE_BACKDROP[p.slug]}
+                  diagramOverlay={TRACK_DIAGRAM_OVERLAY[p.slug]}
                 />
               );
             })}
