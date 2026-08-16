@@ -86,24 +86,21 @@ const TRACK_CHARACTER_IMAGES: Record<string, string> = {
    * at a holo-desk, daylight + colorful screens) — v2's dark-silhouette
    * scene read too scary for 10–13 per owner review. */
   cyberexplorers: "/explorers/scenes/explorers-card-v3.jpg",
+  /* Ops (owner call 2026-08-16: bottom cards ALIGN with the top two -
+   * art embedded across the whole card). Cropped LOW so the source's
+   * baked caption strip stays out of frame; the split scrim keeps the
+   * copy column solid. */
+  cyberstart: "/operators/cyberops-card.jpg",
 };
 
-/* Ops + Pro (2026-08 redesign, owner call): their console art carries
- * baked-in UI chrome (terminal windows, readouts, flag counters) that
- * collided with the card's real text when run full-bleed behind it.
- * They now use TrackCard's BANNER variant - the art contained in a
- * framed panel over a clean text zone - plus spec chips that fill the
- * card's lower zone with substance. */
-const TRACK_BANNER_IMAGES: Record<string, string> = {
-  cyberstart: "/operators/cyberops-card.jpg",
-  "cyberstart-pro": "/operators/cyberpro-card.jpg",
+/* Cyber Pro runs TrackCard's black coding-theme backdrop instead of
+ * scene art (owner call 2026-08-16: "black coding theme") - a full-card
+ * CSS terminal in Pro's own accent. */
+const TRACK_CODE_BACKDROP: Record<string, boolean> = {
+  "cyberstart-pro": true,
 };
-const TRACK_BANNER_POSITION: Record<string, string> = {
-  /* Bright console half of the split scene; Ops crops LOW to keep the
-   * art's baked caption strip (top edge of the source) out of frame. */
-  cyberstart: "62% 82%",
-  "cyberstart-pro": "right center",
-};
+
+/* Spec chips anchoring the lower zone of the two coming-soon cards. */
 const TRACK_SPECS: Record<string, string[]> = {
   cyberstart: ["Live range", "Attack + defend", "Real portfolio"],
   "cyberstart-pro": ["Pen-testing", "Threat modelling", "Security projects"],
@@ -299,17 +296,32 @@ const TRACK_LOCKUPS: Record<string, React.ReactNode> = {
  * over the code. This is what keeps it bright AND readable at once. */
 const TRACK_IMAGE_FILTER: Record<string, string> = {
   cyberexplorers: "saturate(1.12) brightness(1.05)",
+  cyberstart: "saturate(1.06) brightness(1.03)",
 };
 const TRACK_IMAGE_OPACITY: Record<string, number> = {
   cyberexplorers: 0.95,
+  cyberstart: 1,
 };
 const TRACK_IMAGE_POSITION: Record<string, string> = {
   cyberexplorers: "62% 38%",
+  /* Zoomed framing (with TRACK_IMAGE_SIZE): the source bakes terminal
+   * chrome into its upper band and a flags strip low; zooming past
+   * cover and centring on the map region keeps only the clean star-map
+   * visual in frame. */
+  cyberstart: "62% 72%",
+};
+const TRACK_IMAGE_SIZE: Record<string, string> = {
+  cyberstart: "185%",
 };
 const TRACK_SCRIM: Record<string, "default" | "light" | "split"> = {
   cyberexplorers: "light",
+  cyberstart: "split",
 };
-const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {};
+const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {
+  cyberstart: 265,
+  /* Pro's ghost code sits upper-right; cap the copy so they never meet. */
+  "cyberstart-pro": 330,
+};
 
 export const metadata: Metadata = {
   title: "Cybersecurity. Tracks for Every Age, 6 to 18+ | AlgorithmX",
@@ -518,11 +530,11 @@ export default async function CybersecurityPage() {
                   imageFilter={TRACK_IMAGE_FILTER[p.slug]}
                   imageOpacity={TRACK_IMAGE_OPACITY[p.slug]}
                   imagePosition={TRACK_IMAGE_POSITION[p.slug]}
+                  imageSize={TRACK_IMAGE_SIZE[p.slug]}
                   scrim={TRACK_SCRIM[p.slug]}
                   contentMaxWidth={TRACK_CONTENT_MAX_WIDTH[p.slug]}
-                  bannerImage={TRACK_BANNER_IMAGES[p.slug]}
-                  bannerPosition={TRACK_BANNER_POSITION[p.slug]}
                   specs={TRACK_SPECS[p.slug]}
+                  codeBackdrop={TRACK_CODE_BACKDROP[p.slug]}
                 />
               );
             })}
