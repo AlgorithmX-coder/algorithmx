@@ -15,7 +15,7 @@ export const COURSE_LANDING_ROUTES: Readonly<Record<string, string>> = {
   "cyber-heroes": "/cyberheroes",
   "cyberexplorers": "/cyberexplorers",
   "cyberstart": "/ops",
-  "cyberstart-pro": "/cyberstart-pro",
+  "cyberstart-pro": "/pro",
 };
 
 /** Returns the landing route for a product slug, or null if none. */

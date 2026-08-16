@@ -69,7 +69,7 @@ export default function CodeLab() {
     <div style={{ minHeight: "100vh", color: T.body, fontFamily: T.sans, background: `radial-gradient(1100px 560px at 50% -8%, rgba(139,109,255,0.13), transparent 60%), radial-gradient(820px 460px at 90% 2%, rgba(53,214,240,0.08), transparent 55%), ${T.bg}` }}>
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "20px 24px 90px" }}>
         <header style={{ display: "flex", alignItems: "center", gap: 12, padding: "6px 0 18px", borderBottom: `1px solid ${T.edge}` }}>
-          <a href="/pro" style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: T.muted, textDecoration: "none" }}>← Cyber Pro</a>
+          <a href="/pro/course" style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: T.muted, textDecoration: "none" }}>← All modules</a>
           <span style={{ fontFamily: T.display, fontWeight: 700, fontSize: 16, letterSpacing: "0.07em", color: T.ink }}>CODE LAB</span>
         </header>
 
