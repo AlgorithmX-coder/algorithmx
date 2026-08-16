@@ -1,5 +1,5 @@
 import type { TopicManifest } from "../../learn/types";
-import { ControlLab } from "../../learn/conceptLabs";
+import { ControlMatchLab } from "../../learn/conceptLabs";
 
 /* Module 1 - Topic 3: types of security control. Case: Target 2013,
  * where detective controls fired but nobody acted, so the breach ran
@@ -83,14 +83,14 @@ const topic3: TopicManifest = {
   ],
 
   lab: {
-    title: "Sort the controls by their job",
-    intro: "Read each control and decide whether it prevents, detects, or corrects. Then remember MGM: a control only counts if the people and process behind it hold.",
+    title: "Match each control to its job",
+    intro: "Tap a control, then tap the job it does: prevent, detect, or correct. A good defence needs all three.",
     prompts: [
-      "For each control, pick Preventive, Detective, or Corrective.",
-      "Every answer explains the reasoning.",
-      "Notice a good defence needs all three, not just prevention.",
+      "Tap a control to select it, then tap Preventive, Detective, or Corrective.",
+      "Match all six, then press Check.",
+      "Then remember MGM: a control only counts if the people and process behind it hold.",
     ],
-    component: ControlLab,
+    component: ControlMatchLab,
   },
 
   check: {
