@@ -117,10 +117,17 @@ const NET_EDGES: [number, number, number, number][] = [
 function LockedFX({ variant, accent }: { variant: LockVariant; accent: string }) {
   if (variant === "signal") {
     return (
-      <span aria-hidden className="lf lf-signal" style={{ color: accent }}>
-        {Array.from({ length: 13 }).map((_, i) => (
-          <span key={i} style={{ animationDelay: `${(i % 7) * 0.12}s` }} />
-        ))}
+      <span aria-hidden className="lf lf-radar" style={{ color: accent }}>
+        <svg className="radar-grid" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="46" />
+          <circle cx="50" cy="50" r="31" />
+          <circle cx="50" cy="50" r="16" />
+          <line x1="50" y1="3" x2="50" y2="97" />
+          <line x1="3" y1="50" x2="97" y2="50" />
+        </svg>
+        <span className="radar-sweep" style={{ background: `conic-gradient(from 0deg, ${accent}, transparent 62deg)` }} />
+        <span className="radar-blip" style={{ top: "34%", left: "64%" }} />
+        <span className="radar-blip" style={{ top: "60%", left: "40%", animationDelay: "1.5s" }} />
       </span>
     );
   }
@@ -271,9 +278,14 @@ export default function ExplorersPage() {
         .tc-locked:hover{border-color:color-mix(in srgb, var(--accent) 55%, transparent);box-shadow:0 0 22px color-mix(in srgb, var(--accent) 28%, transparent);transform:none}
         .lf{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;user-select:none}
         .tc-locked:hover .lf{filter:brightness(1.6)}
-        .lf-signal{display:flex;align-items:flex-end;gap:3px;padding:32px 14px 18px;opacity:.24}
-        .lf-signal>span{flex:1;background:currentColor;border-radius:2px;height:100%;transform:scaleY(.28);transform-origin:bottom;animation:lfEq 1.05s ease-in-out infinite}
-        @keyframes lfEq{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
+        .lf-radar{opacity:.5}
+        .radar-grid{position:absolute;top:52%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;opacity:.4}
+        .radar-grid circle{fill:none;stroke:currentColor;stroke-width:.6}
+        .radar-grid line{stroke:currentColor;stroke-width:.5;opacity:.7}
+        .radar-sweep{position:absolute;top:52%;left:50%;width:120px;height:120px;transform:translate(-50%,-50%);border-radius:50%;opacity:.5;animation:radarSpin 3.4s linear infinite}
+        @keyframes radarSpin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+        .radar-blip{position:absolute;width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 0 7px currentColor;opacity:0;animation:radarBlip 3.4s ease-in-out infinite}
+        @keyframes radarBlip{0%,100%{opacity:0}18%{opacity:1}42%{opacity:0}}
         .lf-redact{display:flex;flex-direction:column;justify-content:center;gap:7px;padding:34px 14px 16px;opacity:.5}
         .lf-redact .row{display:flex;gap:5px;align-items:center}
         .lf-redact .w{height:5px;border-radius:2px;background:currentColor;opacity:.22}
@@ -293,7 +305,7 @@ export default function ExplorersPage() {
         .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
         .tc-title{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:17px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;margin-top:12px}
         .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
-        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}.tc-lockpulse,.lf-signal>span,.lf-redact .rd,.lf-hex .hexroll,.lf-net .node{animation:none}}
+        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}.tc-lockpulse,.radar-sweep,.radar-blip,.lf-redact .rd,.lf-hex .hexroll,.lf-net .node{animation:none}}
       `}</style>
 
       <MatrixRain reduced={reduced} opacity={0.24} colors={RAIN_COLORS} />
@@ -355,9 +367,11 @@ export default function ExplorersPage() {
                   const isClosed = st === "CLOSED";
                   const isNext = nextCase?.id === m.id;
                   const locked = CASES.indexOf(m) > nextIdx;
-                  const accent = locked ? DIM : isNext ? AMBER : b.color;
-                  const ring = isClosed || locked ? DIM : accent;
-                  const titleColor = isClosed || locked ? DIM : b.color;
+                  // Locked cards now wear the block's colour (not grey) so the
+                  // case name + glyph stand out and read as "encrypted", not dead.
+                  const accent = isNext ? AMBER : b.color;
+                  const ring = isClosed ? DIM : accent;
+                  const titleColor = isClosed ? DIM : b.color;
                   const sevFilled = "■".repeat(b.sev) + "□".repeat(5 - b.sev);
                   return (
                     <button
@@ -404,9 +418,9 @@ export default function ExplorersPage() {
                             className="tc-lockpulse"
                             style={{
                               position: "absolute",
-                              top: "54%",
+                              top: 44,
                               left: "50%",
-                              transform: "translate(-50%, -50%)",
+                              transform: "translateX(-50%)",
                               zIndex: 4,
                               color: b.color,
                               ["--accent"]: b.color,
