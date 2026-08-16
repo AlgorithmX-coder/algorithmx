@@ -1,15 +1,11 @@
 /**
- * Mission 02 — "Too Good To Be True" (Block 1: Signals, CONFIDENTIAL).
- * Actor: SIREN ①. TRACE debuts. Map slot: curriculum-map-v1 §M02.
+ * Mission 02 — "Bait & Switch" (Block 1: Signals, CONFIDENTIAL).
+ * Actor: SIREN. Gold-standard pass (base = Mission 01): child-first wording,
+ * SORT debuts in cycle 1, voiced + hinted predictions, slowed WREN voice.
  *
- * Teaching register (ages 10–13): the fishing metaphor carries the whole
- * mission — the prize is the bait, the funnel is the line, the form is
- * the net, and YOU are the catch. Mechanism over slogan: Heroes taught
- * "free currency is a scam"; this teaches how the funnel is built and
- * therefore where to cut it.
- *
- * VOICE PASS v1: WREN wry-mentor + SIREN as a honeyed "collector" who
- * makes every mark feel chosen; teaching, ids, answers all unchanged.
+ * Teaching register (ages 10-13): the fishing metaphor carries the mission.
+ * The prize is the bait, the funnel is the line, the form is the net, and
+ * YOU are the catch. Plain words over clever ones.
  */
 
 import Mission02Incident from "../incidents/Mission02Incident";
@@ -27,42 +23,43 @@ export const mission02: MissionManifest = {
     portrait: "/explorers/actors/siren.png",
   },
 
-  hook: "Half your school just got told they're 'specially chosen.' Same message, every one of them. Let's spoil the surprise.",
+  hook: "Half your school just got told they were 'specially chosen.' Same message, every single one of them. Let's spoil the surprise.",
   scene: "/explorers/scenes/m02-cold-open.jpg",
 
   transmission: {
     headline: "BAIT IN THE WATER",
     lines: [
-      "Agent. Half the school is buzzing: five hundred free skins, today only, and every kid swears THEY got picked. Group chats, stream chats, DMs, all lit up.",
-      "Here's the thing. Nobody hands out five hundred of anything for love. Somebody's collecting. Find out what 'free' is really charging.",
+      "Agent, half the school is buzzing. Five hundred free skins, today only, and every kid swears THEY got picked.",
+      "Here's the thing. Nobody gives away five hundred of anything for free. Somebody is collecting something.",
+      "Let's find out what 'free' is really charging, and catch the person behind it.",
     ],
   },
 
   briefing: {
     summary:
-      "A prize that finds YOU, in three places at once, wrapped like it's just for you, with a clock ticking on it. That's not luck, and it isn't a gift. It's equipment. Somebody built this to collect.",
+      "It's one prize, popping up in three places at once, wrapped like it's just for you, with a clock ticking on it. That's not luck, and it's not a gift. Somebody built it to collect.",
     objectives: [
       "Work out what 'free' is really charging",
-      "Follow the trail and prove it's one operation",
-      "Find the net and shut the factory down",
+      "Prove the messages all come from one scammer",
+      "Find the form and shut it down",
     ],
-    wrenLine: "Rule of the water, Agent: if you can't spot the catch, you're the catch.",
+    wrenLine: "One rule today, Agent. If you can't spot the trap, you're the one caught in it. Ready?",
   },
 
   cycles: [
-    /* ---------------------------------------- cycle 1: the bait */
+    /* ---------------------------------------- cycle 1: the bait (SORT) */
     {
       id: "bait",
       title: "Read the bait",
       concept: "Free is a price",
       promise: "You'll learn why 'free' online usually isn't.",
-      instruction: "Find 3 clues. Tap anything that looks like bait.",
+      instruction: "Sort each message: is it a hook, or just normal?",
       intel: {
         beats: [
           "Picture a fishing hook. That juicy worm is totally free, if you're the fish.",
-          "The fisher isn't being kind. The worm is just equipment.",
-          "SIREN's prizes work the same way. The prize is the worm.",
-          "One question snaps the spell: what does SHE get back?",
+          "The fisher isn't being kind. The worm is just there to catch you.",
+          "SIREN's prizes work the exact same way. The prize is the worm.",
+          "One question breaks the spell. What does she get back?",
         ],
         beatAudio: [
           "/audio/wren/m02-c1-b1.mp3",
@@ -78,55 +75,63 @@ export const mission02: MissionManifest = {
             "Game companies make them do it",
           ],
           answer: 1,
-          right: "Exactly. Your password is worth more than fake skins.",
-          wrong: "Kind strangers exist, but they don't need your password. What comes back to the giver?",
+          right: "Exactly. What you type in, your password, is worth way more to them than a few skins.",
+          wrong: "Kind people are real, but they don't need your password. Ask what comes BACK to the person giving it away.",
+          hint: "Nobody runs a shop that only gives things away. So what are they quietly collecting?",
+        },
+        predictionAudio: {
+          question: "/audio/wren/m02-c1-q.mp3",
+          right: "/audio/wren/m02-c1-qr.mp3",
+          wrong: "/audio/wren/m02-c1-qw.mp3",
         },
       },
       fieldwork: {
-        verb: "INSPECT",
+        verb: "SORT",
         payload: {
-          intro: "Evidence 01: the giveaway post · tap anything that smells like bait",
-          device: { app: "CLASS GROUP CHAT", owner: "CAPTURED POST" },
-          header: [
-            { label: "WHERE:", seg: { id: "where", text: "School group chat · posted by a number nobody knows" } },
+          intro: "Messages flying around your school. Sort each one.",
+          buckets: [
+            { id: "hook", label: "That's a hook", hint: "bait or pressure" },
+            { id: "fine", label: "Just normal", hint: "nothing to claim" },
+          ],
+          items: [
             {
-              label: "POST:",
-              seg: { id: "title", text: "SKINSTORM 500: FREE SKINS EVENT (TODAY ONLY!)", tellId: "clock" },
+              id: "s1",
+              label: "“Today only! First 500 claim the drop.”",
+              bucket: "hook",
+              why: "A real event doesn't vanish by tonight. That clock is only there to make you rush.",
+            },
+            {
+              id: "s2",
+              label: "“No catch, no cost, pinky promise!”",
+              bucket: "hook",
+              why: "Nobody who isn't fishing needs to swear there's no catch. The louder the promise, the bigger the hook.",
+            },
+            {
+              id: "s3",
+              label: "“Claim here: skinstorm-event.net”",
+              bucket: "hook",
+              why: "That's not the game's real website. A stranger built it to collect whatever you type in.",
+            },
+            {
+              id: "s4",
+              label: "“You were specially chosen for this 💖”",
+              bucket: "hook",
+              why: "Everyone in your school got the exact same message. Feeling chosen is the bait.",
+            },
+            {
+              id: "s5",
+              label: "“Reminder: coding club is on Thursday.”",
+              bucket: "fine",
+              why: "Just a normal school message. Nothing to claim, nothing to sell.",
+            },
+            {
+              id: "s6",
+              label: "“gg, that last match was so close lol”",
+              bucket: "fine",
+              why: "Just a friend chatting. No prize, no link, no pressure.",
             },
           ],
-          body: [
-            [
-              { id: "b1", text: "EVERYONE'S A WINNER today, and yes, that means YOU 💖 first 500 claims get the drop. " },
-              { id: "b2", text: "No catch, no cost, 100% real, pinky promise.", tellId: "nocatch" },
-            ],
-            [
-              {
-                id: "link",
-                text: "[ CLAIM YOURS → skinstorm-event.net/claim ]",
-                tellId: "domain",
-                mono: true,
-              },
-            ],
-            [{ id: "b3", text: "Winners posted tonight. Good luck!" }],
-          ],
-          tells: [
-            {
-              id: "clock",
-              label: "The clock",
-              why: "“Today only” is the hurry lever: the same pressure PHANTOM HOOK used, wearing a party hat. Real events don't evaporate.",
-            },
-            {
-              id: "nocatch",
-              label: "The 'no catch' promise",
-              why: "Nobody who ISN'T fishing needs to say 'no catch.' The louder the promise, the bigger the hook.",
-            },
-            {
-              id: "domain",
-              label: "The claim link",
-              why: "skinstorm-event.net isn't the game's site. Real drops live on the game's own domain. This is a stranger's net.",
-            },
-          ],
-          doneLine: "Three hooks in one post. SIREN's fishing your whole school, and calling every fish the chosen one.",
+          doneLine: "Four hooks, pulled out of the noise. That's SIREN's whole trick, laid out flat.",
         },
       },
       playAudio: "/audio/wren/m02-c1-play.mp3",
@@ -134,7 +139,7 @@ export const mission02: MissionManifest = {
         questions: [
           {
             id: "c1q1",
-            question: "A stream chat says: “FIRST 100 CLICKS GET A GIFT CARD!” What is the bait's real job?",
+            question: "A stream chat says: “FIRST 100 CLICKS GET A GIFT CARD!” What's the bait's real job?",
             options: [
               "To be generous to fast people",
               "To make you click before you think",
@@ -156,19 +161,19 @@ export const mission02: MissionManifest = {
       },
     },
 
-    /* ---------------------------------------- cycle 2: the trail */
+    /* ---------------------------------------- cycle 2: the trail (TRACE) */
     {
       id: "trail",
       title: "Follow the trail",
       concept: "One campaign, many costumes",
       promise: "You'll learn to prove two messages come from one scammer.",
-      instruction: "Pin the 4 matching clues. Then order the trail.",
+      instruction: "Pin the 4 matching clues, then put the trail in order.",
       intel: {
         beats: [
-          "The chat post, the DM, the website: not three things.",
-          "It's one SIREN, wearing three different costumes.",
-          "Scammers forget to change small details. We call those fingerprints.",
-          "Match the fingerprints, and the costumes stop working.",
+          "The chat post, the DM, the website. They're not three different things.",
+          "It's one scammer, SIREN, wearing three different costumes.",
+          "Scammers get lazy and reuse tiny details. Those are like fingerprints.",
+          "Match the fingerprints, and every costume falls off at once.",
         ],
         beatAudio: [
           "/audio/wren/m02-c2-b1.mp3",
@@ -177,22 +182,28 @@ export const mission02: MissionManifest = {
           "/audio/wren/m02-c2-b4.mp3",
         ],
         prediction: {
-          question: "The same prize turns up in the group chat, a DM, and a website. What's the smartest read?",
+          question: "The same prize shows up in the group chat, a DM, and a website. What's the smartest guess?",
           options: [
             "It's popular, so it's probably real",
-            "One operation wearing three costumes",
+            "One scammer wearing three costumes",
             "Three different scammers had the same idea",
           ],
           answer: 1,
-          right: "Exactly. Real news spreads messily. Campaigns arrive everywhere at once, polished.",
-          wrong: "Being everywhere at once is what campaigns do. Real news spreads messily.",
+          right: "Exactly. Real news spreads in a messy, random way. A scam shows up everywhere at once, all polished and identical.",
+          wrong: "Showing up everywhere at once, word for word, is what a scam campaign does. Real news is messier than that.",
+          hint: "Look at the web address in each one. Do they all point to the same odd place?",
+        },
+        predictionAudio: {
+          question: "/audio/wren/m02-c2-q.mp3",
+          right: "/audio/wren/m02-c2-qr.mp3",
+          wrong: "/audio/wren/m02-c2-qw.mp3",
         },
       },
       fieldwork: {
         verb: "TRACE",
         payload: {
-          intro: "Evidence board: pin every piece that belongs to the SKINSTORM operation",
-          fingerprintHint: "same domain, same prize name, same countdown",
+          intro: "Evidence board: pin every piece that belongs to the SKINSTORM scam",
+          fingerprintHint: "same web address, same prize name, same countdown",
           cards: [
             {
               id: "t1",
@@ -200,7 +211,7 @@ export const mission02: MissionManifest = {
               from: "unknown number",
               text: "SKINSTORM 500 free skins event, today only: skinstorm-event.net",
               inCampaign: true,
-              clue: "the domain + the clock",
+              clue: "the web address and the clock",
               order: 1,
             },
             {
@@ -209,7 +220,7 @@ export const mission02: MissionManifest = {
               from: "@skins_mod_amy",
               text: "hiii! out of EVERYONE, you made the SKINSTORM winner list 💖 claim in 2 hrs → skinstorm-event.net/claim",
               inCampaign: true,
-              clue: "same domain, same prize, new costume",
+              clue: "same web address, same prize, new costume",
               order: 2,
             },
             {
@@ -241,12 +252,12 @@ export const mission02: MissionManifest = {
               from: "unknown number",
               text: "last hours for SKINSTORM!! almost 500 claimed, don't miss out",
               inCampaign: true,
-              clue: "the clock again, squeeze harder as the net fills",
+              clue: "the clock again, squeezing harder as the net fills",
               order: 4,
             },
           ],
-          stage2Prompt: "Now run it like SIREN does: put the trail in firing order",
-          doneLine: "Bait → costume change → the net → the squeeze. You just drew SIREN's assembly line.",
+          stage2Prompt: "Now line it up the way SIREN runs it: put the trail in order",
+          doneLine: "Bait, then a costume change, then the net, then the squeeze. You just drew SIREN's whole assembly line.",
         },
       },
       playAudio: "/audio/wren/m02-c2-play.mp3",
@@ -254,17 +265,17 @@ export const mission02: MissionManifest = {
         questions: [
           {
             id: "c2q1",
-            question: "Which detail PROVES two messages belong to the same operation?",
+            question: "Which detail PROVES two messages come from the same scammer?",
             options: [
               "They both sound friendly",
-              "They both point at the same weird domain",
+              "They both point at the same weird web address",
               "They arrived on the same day",
             ],
             answer: 1,
           },
           {
             id: "c2q2",
-            question: "Why does the DM come AFTER the chat post in the funnel?",
+            question: "Why does the DM come AFTER the big chat post?",
             options: [
               "DMs are slower to send",
               "The post throws the net wide; the DM reels in whoever looked",
@@ -276,19 +287,19 @@ export const mission02: MissionManifest = {
       },
     },
 
-    /* ---------------------------------------- cycle 3: the net */
+    /* ---------------------------------------- cycle 3: the net (DECIDE) */
     {
       id: "net",
       title: "Study the net",
       concept: "The form is the whole point",
-      promise: "You'll learn which form boxes are never okay to fill.",
-      instruction: "Help Leo. Pick your best move.",
+      promise: "You'll learn which form boxes are never okay to fill in.",
+      instruction: "Your friend Leo is on the form right now. Pick your best move.",
       intel: {
         beats: [
-          "The post, the DM, the countdown: all had ONE goal. The claim form.",
-          "The form IS the scam. Everything else is just decoration.",
-          "Read a form like a price tag. Every box costs you something.",
-          "And no prize on earth costs a password.",
+          "The post, the DM, the countdown. They all had ONE job: get you to the claim form.",
+          "The form IS the scam. Everything else was just decoration.",
+          "Read a form like a price tag. Every box is asking you to pay with something.",
+          "And no prize on earth is worth paying for with your password.",
         ],
         beatAudio: [
           "/audio/wren/m02-c3-b1.mp3",
@@ -297,15 +308,21 @@ export const mission02: MissionManifest = {
           "/audio/wren/m02-c3-b4.mp3",
         ],
         prediction: {
-          question: "The form says it needs your password 'to deliver the skins.' What's it really for?",
+          question: "The form asks for your password 'to deliver the skins.' What's it really for?",
           options: [
             "Skins get delivered through your login",
-            "The password IS the prize: theirs, not yours",
-            "It's to verify your age",
+            "The password is the real prize, for THEM not you",
+            "It's just checking your age",
           ],
           answer: 1,
-          right: "That's the catch, caught. The whole factory was built to collect that one box.",
-          wrong: "No real delivery needs your password. The game already knows who you are when YOU log in. The password box is the entire point of the operation.",
+          right: "That's the catch, caught. The whole thing was built to grab that one box.",
+          wrong: "No real prize needs your password. The game already knows you when YOU log in. That password box was the entire point.",
+          hint: "Which box would let a stranger log in AS you? That's the one they actually want.",
+        },
+        predictionAudio: {
+          question: "/audio/wren/m02-c3-q.mp3",
+          right: "/audio/wren/m02-c3-qr.mp3",
+          wrong: "/audio/wren/m02-c3-qw.mp3",
         },
       },
       fieldwork: {
@@ -313,27 +330,27 @@ export const mission02: MissionManifest = {
         payload: {
           intro: "Field decision: Leo is on the claim page RIGHT NOW",
           situation:
-            "Your friend Leo has the SKINSTORM form open. He's typed his username and he's about to type his password. He says: “It's only skins, what's the worst that happens?”",
+            "Your friend Leo has the SKINSTORM form open. He's typed his username, and he's about to type his password. He says: “It's only skins, what's the worst that happens?”",
           prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "half",
-              label: "Tell him to fill it in but use a fake password",
+              label: "Tell him to fill it in, but use a fake password",
               outcome:
-                "Closer, but he's still handing over his username and phone, and he's still on their winner list for the NEXT trick. Half-caught is still caught.",
+                "Closer, but he still hands over his username and phone number, and he stays on their list for the next trick. That's still getting caught.",
             },
             {
               id: "worst",
-              label: "Answer his question: walk him through what the worst actually is",
+              label: "Answer his question: show him what the worst really is",
               correct: true,
               outcome:
-                "That's the analyst move. The worst is: they log in AS him, spend his saved money, message all his friends as bait, and lock him out. Once he can see the price tag, he closes the tab himself. The exit was open the whole time. Skills beat warnings.",
+                "Good call. Walk him through it: they could log in AS him, spend any money on his account, message all his friends the same trick, and lock him out. Once Leo can see the real price, he closes the tab himself.",
             },
             {
               id: "grab",
               label: "Grab the phone and close the tab for him",
               outcome:
-                "Tab's closed, but Leo learned nothing, and the next giveaway catches him when you're not there. Protect the person, not just the moment.",
+                "Tab's closed, but Leo didn't learn anything, so the next giveaway catches him when you're not around. Help him see it, don't just grab the phone.",
             },
           ],
         },
@@ -343,8 +360,8 @@ export const mission02: MissionManifest = {
         questions: [
           {
             id: "c3q1",
-            question: "Which form box should END the conversation instantly, every time?",
-            options: ["Your username", "Your favorite skin", "Your password"],
+            question: "Which form box should end the conversation instantly, every single time?",
+            options: ["Your username", "Your favourite skin", "Your password"],
             answer: 2,
           },
           {
@@ -371,12 +388,12 @@ export const mission02: MissionManifest = {
 
   debrief: {
     report: [
-      "One giveaway, dissected: bait post, costume-change DM, harvest form, countdown squeeze.",
-      "The trail proved it: three surfaces, one SIREN, and every 'winner' got the identical message. Fingerprints don't lie.",
-      "Factory shut at the hub, and the warning that went out had no link and no shame in it.",
+      "You took the giveaway apart: the bait post, the costume-change DM, the harvest form, and the ticking clock.",
+      "The trail proved it. Three places, one scammer, and every 'winner' got the exact same words.",
+      "You shut the factory at its hub, and the warning you sent had no link and nothing to be ashamed of.",
     ],
     realWorldMove:
-      "This week: when any giveaway finds you, don't touch it. Go find IT. Open the game or brand's official site or app yourself and look for the event there. If it's not on their page, it was never real. And no prize, ever, costs a password. You were never the chosen one, everyone got the same message.",
+      "This week: when a giveaway finds YOU, don't tap it. Go and find it yourself. Open the real game or brand's app and look for the event there. If it's not on their own page, it was never real. And remember, no prize ever costs a password. You weren't the chosen one. Everybody got the same message.",
     wrenLine: "Free bait costs the most. Clean sweep. Sign out.",
   },
 

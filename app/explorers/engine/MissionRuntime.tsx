@@ -46,6 +46,9 @@ import Trace from "../mechanics/Trace";
 import Simulate from "../mechanics/Simulate";
 import Build from "../mechanics/Build";
 import Cipher from "../mechanics/Cipher";
+import Sort from "../mechanics/Sort";
+import Meter from "../mechanics/Meter";
+import Redact from "../mechanics/Redact";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
@@ -801,6 +804,9 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
       {fw.verb === "SIMULATE" && <Simulate payload={fw.payload} {...props} />}
       {fw.verb === "BUILD" && <Build payload={fw.payload} {...props} />}
       {fw.verb === "CIPHER" && <Cipher payload={fw.payload} {...props} />}
+      {fw.verb === "SORT" && <Sort payload={fw.payload} {...props} />}
+      {fw.verb === "METER" && <Meter payload={fw.payload} {...props} />}
+      {fw.verb === "REDACT" && <Redact payload={fw.payload} {...props} />}
     </div>
   );
 }

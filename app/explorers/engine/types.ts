@@ -224,6 +224,85 @@ export interface CipherPayload {
   doneLine: string;
 }
 
+export interface SortItem {
+  id: string;
+  label: string;
+  /** id of the bucket this item belongs in. */
+  bucket: string;
+  /** Shown if the child drops it in the wrong bucket. */
+  why: string;
+}
+
+export interface SortBucket {
+  id: string;
+  label: string;
+  /** One-word helper under the bucket title ("keep private"). */
+  hint?: string;
+}
+
+/**
+ * SORT — triage under a rule (debuts M02). A pool of items, two or three
+ * labelled buckets; the child taps an item then taps its bucket. A wrong
+ * drop bounces back with a reason. Teaches the safe/scam, public/private
+ * split as a physical sorting act, not another multiple-choice.
+ */
+export interface SortPayload {
+  intro: string;
+  buckets: SortBucket[];
+  items: SortItem[];
+  doneLine: string;
+}
+
+export interface MeterZone {
+  /** Upper bound of this zone on the 0-100 track (inclusive). Ascending. */
+  upTo: number;
+  label: string;
+  /** The live readout for this zone ("cracked in 2 seconds"). */
+  caption: string;
+  good: boolean;
+}
+
+/**
+ * METER — set a level and watch it react (debuts M03). The child drags a
+ * single slider; a live gauge + readout update per zone, and they must
+ * park it in the safe zone to answer. Makes an abstract trade-off
+ * (password length, how much to share) physical and immediate.
+ */
+export interface MeterPayload {
+  intro: string;
+  /** What the slider controls, kid-worded. */
+  prompt: string;
+  minLabel: string;
+  maxLabel: string;
+  /** Label above the live readout ("Time to crack:"). */
+  readoutLabel: string;
+  /** Sorted ascending by `upTo`; the last zone must reach 100. */
+  zones: MeterZone[];
+  doneLine: string;
+}
+
+export interface RedactSpan {
+  id: string;
+  text: string;
+  /** True = private, must be blacked out; false = safe, bounces if tapped. */
+  risky: boolean;
+  why: string;
+}
+
+/**
+ * REDACT — hide what's private (debuts M04). A real post/photo caption
+ * split into spans; the child taps the risky ones to black them out and
+ * leaves the safe ones alone. Tapping a safe span bounces with why it's
+ * fine. The inverse of INSPECT: the action is to COVER, not to find.
+ */
+export interface RedactPayload {
+  intro: string;
+  /** Whose surface this is ("Maya's photo caption"). */
+  surface: string;
+  spans: RedactSpan[];
+  doneLine: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
@@ -231,7 +310,10 @@ export type FieldworkDef =
   | { verb: "TRACE"; payload: TracePayload }
   | { verb: "SIMULATE"; payload: SimulatePayload }
   | { verb: "BUILD"; payload: BuildPayload }
-  | { verb: "CIPHER"; payload: CipherPayload };
+  | { verb: "CIPHER"; payload: CipherPayload }
+  | { verb: "SORT"; payload: SortPayload }
+  | { verb: "METER"; payload: MeterPayload }
+  | { verb: "REDACT"; payload: RedactPayload };
 
 /* ------------------------------------------------------------ cycles */
 
