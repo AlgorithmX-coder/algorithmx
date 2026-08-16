@@ -86,15 +86,27 @@ const TRACK_CHARACTER_IMAGES: Record<string, string> = {
    * at a holo-desk, daylight + colorful screens) — v2's dark-silhouette
    * scene read too scary for 10–13 per owner review. */
   cyberexplorers: "/explorers/scenes/explorers-card-v3.jpg",
-  /* Operator's-console scene: terminals mid-engagement + the star-fort
-   * (Cyber Ops' motif), composed for the card scrim (focal upper-right,
-   * dark left for the text). Signals the hands-on, real-tooling format. */
+};
+
+/* Ops + Pro (2026-08 redesign, owner call): their console art carries
+ * baked-in UI chrome (terminal windows, readouts, flag counters) that
+ * collided with the card's real text when run full-bleed behind it.
+ * They now use TrackCard's BANNER variant - the art contained in a
+ * framed panel over a clean text zone - plus spec chips that fill the
+ * card's lower zone with substance. */
+const TRACK_BANNER_IMAGES: Record<string, string> = {
   cyberstart: "/operators/cyberops-card.jpg",
-  /* Cyber Pro (18+): the same split-scene treatment as Cyber Ops but in
-   * a warm/amber key (matches its orange accent) with career-grade
-   * content - a live pen-test to root, a CVSS/STRIDE threat model, and a
-   * signed-off remediation report. Signals the professional tier. */
   "cyberstart-pro": "/operators/cyberpro-card.jpg",
+};
+const TRACK_BANNER_POSITION: Record<string, string> = {
+  /* Bright console half of the split scene; Ops crops LOW to keep the
+   * art's baked caption strip (top edge of the source) out of frame. */
+  cyberstart: "62% 82%",
+  "cyberstart-pro": "right center",
+};
+const TRACK_SPECS: Record<string, string[]> = {
+  cyberstart: ["Live range", "Attack + defend", "Real portfolio"],
+  "cyberstart-pro": ["Pen-testing", "Threat modelling", "Security projects"],
 };
 
 /* Feature tag shown with the art (TrackCard defaults to the Heroes
@@ -287,28 +299,17 @@ const TRACK_LOCKUPS: Record<string, React.ReactNode> = {
  * over the code. This is what keeps it bright AND readable at once. */
 const TRACK_IMAGE_FILTER: Record<string, string> = {
   cyberexplorers: "saturate(1.12) brightness(1.05)",
-  cyberstart: "saturate(1.06) brightness(1.03)",
-  "cyberstart-pro": "saturate(1.08) brightness(1.03)",
 };
 const TRACK_IMAGE_OPACITY: Record<string, number> = {
   cyberexplorers: 0.95,
-  cyberstart: 1,
-  "cyberstart-pro": 1,
 };
 const TRACK_IMAGE_POSITION: Record<string, string> = {
   cyberexplorers: "62% 38%",
-  cyberstart: "center",
-  "cyberstart-pro": "center",
 };
 const TRACK_SCRIM: Record<string, "default" | "light" | "split"> = {
   cyberexplorers: "light",
-  cyberstart: "split",
-  "cyberstart-pro": "split",
 };
-const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {
-  cyberstart: 265,
-  "cyberstart-pro": 265,
-};
+const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {};
 
 export const metadata: Metadata = {
   title: "Cybersecurity. Tracks for Every Age, 6 to 18+ | AlgorithmX",
@@ -519,6 +520,9 @@ export default async function CybersecurityPage() {
                   imagePosition={TRACK_IMAGE_POSITION[p.slug]}
                   scrim={TRACK_SCRIM[p.slug]}
                   contentMaxWidth={TRACK_CONTENT_MAX_WIDTH[p.slug]}
+                  bannerImage={TRACK_BANNER_IMAGES[p.slug]}
+                  bannerPosition={TRACK_BANNER_POSITION[p.slug]}
+                  specs={TRACK_SPECS[p.slug]}
                 />
               );
             })}
