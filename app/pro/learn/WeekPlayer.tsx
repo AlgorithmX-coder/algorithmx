@@ -136,7 +136,7 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
             <span style={{ fontFamily: T.display, fontWeight: 700, fontSize: 16, letterSpacing: "0.07em", color: T.ink }}>CYBER PRO</span>
             <span style={{ fontFamily: T.mono, fontSize: 11, color: T.muted }}>{week.weekLabel}</span>
           </div>
-          <a href="/pro" style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: T.mono, fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: T.muted, textDecoration: "none" }}>
+          <a href="/pro/course" style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: T.mono, fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: T.muted, textDecoration: "none" }}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
             All modules
           </a>
@@ -179,7 +179,7 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
                 {week.outcomes.map((o, i) => <li key={i} style={{ fontSize: 15, color: T.body, lineHeight: 1.55 }}>{o}</li>)}
               </ul>
               <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
-                <a href="/pro" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: T.display, fontSize: 14, fontWeight: 700, color: "#fff", textDecoration: "none", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, borderRadius: 10, padding: "11px 22px" }}>
+                <a href="/pro/course" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: T.display, fontSize: 14, fontWeight: 700, color: "#fff", textDecoration: "none", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, borderRadius: 10, padding: "11px 22px" }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
                   Back to all modules
                 </a>
