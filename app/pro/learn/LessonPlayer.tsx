@@ -178,7 +178,7 @@ type BrandSpec = { name: string; color: string; domain?: string; lower?: boolean
 const BRANDS: { test: RegExp; spec: BrandSpec }[] = [
   { test: /linkedin/i, spec: { name: "LinkedIn", color: "#0A66C2", domain: "linkedin.com" } },
   { test: /talktalk/i, spec: { name: "TalkTalk", color: "#E6007E", domain: "talktalk.co.uk" } },
-  { test: /rockyou/i, spec: { name: "RockYou", color: "#E0524A", domain: "rockyou.com" } },
+  { test: /rockyou/i, spec: { name: "RockYou2024", color: "#E0524A", domain: "" } },
   { test: /\bdyn\b|mirai/i, spec: { name: "Dyn", color: "#F2681C", domain: "dyn.com" } },
   { test: /adobe/i, spec: { name: "Adobe", color: "#FA0F00", domain: "adobe.com" } },
   { test: /dropbox/i, spec: { name: "Dropbox", color: "#0061FF", domain: "dropbox.com" } },
@@ -189,6 +189,16 @@ const BRANDS: { test: RegExp; spec: BrandSpec }[] = [
   { test: /target/i, spec: { name: "Target", color: "#CC0000", domain: "target.com" } },
   { test: /maersk/i, spec: { name: "Maersk", color: "#42B0D5", domain: "maersk.com" } },
   { test: /solarwinds/i, spec: { name: "SolarWinds", color: "#F47B20", domain: "solarwinds.com" } },
+  { test: /synnovis/i, spec: { name: "Synnovis", color: "#00A499", domain: "synnovis.co.uk" } },
+  { test: /change ?healthcare/i, spec: { name: "Change Healthcare", color: "#E4002B", domain: "changehealthcare.com" } },
+  { test: /\bmgm\b/i, spec: { name: "MGM Resorts", color: "#B8975A", domain: "mgmresorts.com" } },
+  { test: /log4|apache/i, spec: { name: "Apache Log4j", color: "#D22128", domain: "apache.org" } },
+  { test: /3cx/i, spec: { name: "3CX", color: "#0A5CFF", domain: "3cx.com" } },
+  { test: /lastpass/i, spec: { name: "LastPass", color: "#D32D27", domain: "lastpass.com" } },
+  { test: /23andme/i, spec: { name: "23andMe", color: "#4C9A2A", domain: "23andme.com" } },
+  { test: /uber/i, spec: { name: "Uber", color: "#000000", domain: "uber.com" } },
+  { test: /cloudflare/i, spec: { name: "Cloudflare", color: "#F38020", domain: "cloudflare.com" } },
+  { test: /moveit|progress/i, spec: { name: "MOVEit", color: "#5CE500", domain: "progress.com" } },
 ];
 
 function brandFor(org: string, color?: string): BrandSpec {

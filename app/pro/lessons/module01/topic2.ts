@@ -13,7 +13,7 @@ const topic2: TopicManifest = {
   role: "As a cyber security analyst, this is how you decide what to fix first. You can't remove every threat or patch every weakness, so you manage risk, and 'risk' is the word the business actually listens to.",
   minutes: 18,
   promise: "Pin down three words people mix up, then see the breach one unpatched weakness caused.",
-  brief: "In this lesson, we'll pin down three words people mix up all the time: threat, vulnerability and risk. Once you can tell them apart, you'll see the breach that happened when one known, unpatched weakness met a motivated attacker, and exposed 147 million people.",
+  brief: "In this lesson, we'll pin down three words people mix up all the time: threat, vulnerability and risk. Once you can tell them apart, you'll see how a single flaw in a tiny, free logging tool, Log4Shell, put millions of systems worldwide at risk almost overnight.",
 
   learn: [
     {
@@ -73,17 +73,17 @@ const topic2: TopicManifest = {
 
   cases: [
     {
-      org: "Equifax",
-      year: "2017",
-      headline: "One unpatched weakness, 147 million people exposed",
-      whatHappened: "Equifax, a credit-reporting company holding deeply sensitive data on hundreds of millions of people, was breached in 2017. The way in was a vulnerability in a piece of web software (Apache Struts) that already had a fix available. The fix was not applied in time. Attackers (the threat) found the unpatched system (the vulnerability), and the risk became reality: they roamed for weeks and took the records of around 147 million people.",
-      theMissedMeasure: "A known, published vulnerability was left unpatched on an internet-facing system holding highly sensitive data, and the internal alerting that might have caught the intrusion was not working properly.",
-      theCost: "Personal and financial data on roughly 147 million people. Settlements and penalties ran to hundreds of millions of dollars, and it became the standard example of a preventable, patch-and-it-would-not-have-happened breach.",
+      org: "Apache Log4j",
+      year: "2021",
+      headline: "One flaw in a tiny logging tool put millions of systems at risk",
+      whatHappened: "In December 2021 a critical flaw, nicknamed Log4Shell, was found in Log4j: a small, free logging component quietly built into a huge share of the world's software. It was trivial to exploit and let an attacker run their own code on a vulnerable machine. The threat (attackers everywhere) started scanning within hours; the vulnerability sat inside countless apps, often ones companies did not even know used it; and so the risk was enormous.",
+      theMissedMeasure: "You cannot patch what you do not know you run. Many organisations had no inventory of where Log4j was buried, so they could not find and fix it quickly, while attackers already were.",
+      theCost: "Officials called it one of the most serious vulnerabilities in years. It set off a global, holiday-season scramble to patch, and it was still being exploited long after the fix existed.",
       control: "patching",
-      impact: ["147 million people exposed", "over $700M in settlements", "names, Social Security and card data taken"],
-      source: "Public record; US Congressional report and regulator settlements, 2017-2019.",
-      brandColor: "#822433",
-      news: { headline: "Equifax data breach: What you need to know", outlet: "BBC News", date: "September 2017", url: "https://www.bbc.co.uk/news/technology-41192163" },
+      impact: ["millions of systems worldwide at risk", "trivial to exploit, scanned within hours", "a global holiday scramble to patch"],
+      source: "Public record; CISA advisories and 2021-2022 reporting on CVE-2021-44228.",
+      brandColor: "#d22128",
+      news: { headline: "Log4j: the internet's biggest security flaw, explained", outlet: "BBC News", date: "December 2021" },
     },
   ],
 
@@ -100,8 +100,8 @@ const topic2: TopicManifest = {
 
   check: {
     explain: {
-      prompt: "In your own words, use the Equifax breach to explain the difference between a threat, a vulnerability, and a risk. Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "The threat was the attackers who wanted the data. The vulnerability was the unpatched Apache Struts flaw on an internet-facing system, a known weakness with a fix already available. The risk was the realistic chance those attackers would find and exploit that weakness against highly sensitive data, and the huge impact if they did. The risk was high precisely because a serious threat met an easy, exposed vulnerability guarding valuable data. Applying the patch would have reduced that risk to almost nothing.",
+      prompt: "In your own words, use Log4Shell to explain the difference between a threat, a vulnerability, and a risk. Write a sentence or two, then reveal a model answer.",
+      modelAnswer: "The threat was the attackers worldwide who started scanning for it within hours. The vulnerability was the Log4Shell flaw itself, sitting inside a huge share of the world's software. The risk was the realistic chance those attackers would find and exploit it, weighed by how much damage running their own code on your systems would do. The risk was so high because a serious, motivated threat met an easy, extremely widespread vulnerability. Finding every copy of Log4j and patching it fast was how you reduced that risk.",
     },
     quiz: [
       {
@@ -125,7 +125,7 @@ const topic2: TopicManifest = {
         q: "Which of these is NOT one of the four ways to treat a risk?",
         options: ["Reduce it", "Transfer it", "Ignore it", "Accept it"],
         answer: 2,
-        why: "The four legitimate options are reduce, transfer, avoid, or accept. Ignoring a risk you do not know about is exactly how breaches like Equifax happen.",
+        why: "The four legitimate options are reduce, transfer, avoid, or accept. Ignoring a risk you do not even know you have is exactly how a hidden flaw like Log4Shell catches people out.",
       },
     ],
   },

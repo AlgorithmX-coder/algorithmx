@@ -11,7 +11,7 @@ const topic1: TopicManifest = {
   title: "How your password is really stored",
   role: "Every role starts here. SOC analysts, incident responders and pen testers all reason about credentials daily.",
   minutes: 22,
-  promise: "See how good websites store your password without ever keeping the password itself, and meet two companies that got it badly wrong.",
+  promise: "See how good websites store your password without ever keeping the password itself, and meet a password manager whose stolen vaults showed why it all comes down to storage.",
 
   learn: [
     {
@@ -51,12 +51,12 @@ const topic1: TopicManifest = {
     {
       heading: "So why do breaches still leak passwords?",
       body: [
-        "Two reasons, and they are exactly the mistakes our two real companies made. First, some sites do not hash at all and store the raw password. Second, some hash badly: they use a fast, outdated method with no random 'salt' added, so attackers can guess billions of candidates per second and crack the weak ones anyway.",
-        "You cannot control how a website stores your password. But you can control two things that beat both mistakes: make each password long and unique, and turn on a second step (MFA) so a stolen password is not enough on its own.",
+        "A few reasons. Some sites still store passwords in a recoverable form. Others hash badly: a fast, outdated method with no random 'salt' added, so attackers can guess billions of candidates a second and crack the weak ones. And even when the storage is done right, as with the password manager you are about to meet, a stolen store is only as strong as the one password guarding it.",
+        "You cannot control how a website stores your password. But you can control two things that beat every version of this: make each password long and unique, and turn on a second step (MFA) so a stolen password is not enough on its own.",
       ],
       examples: [
-        "RockYou kept the raw words, so the leak handed attackers every password instantly, no cracking needed.",
-        "LinkedIn used a fast method with no salt, so attackers guessed billions per second and cracked the weak ones anyway.",
+        "Stored in a recoverable form: a leak hands attackers every password instantly, no cracking needed.",
+        "Hashed with a fast method and no salt: attackers guess billions per second and crack the weak ones anyway.",
         "A long passphrase like 'purple-tractor-window-jazz' would take centuries to crack; 'password123' falls in under a second.",
       ],
     },
@@ -71,32 +71,21 @@ const topic1: TopicManifest = {
     { term: "fingerprint", definition: "A plain-English word for a hash: a short, unique-looking value that stands in for the original data." },
   ],
 
-  seeHeading: "Two companies that got this wrong",
+  seeHeading: "When even a password manager was breached",
 
   cases: [
     {
-      org: "RockYou",
-      year: "2009",
-      headline: "32 million passwords, stored as plain readable text",
-      whatHappened: "RockYou built widgets for social networks and kept every user's password in its database exactly as typed, with no hashing at all. In December 2009 an attacker pulled the whole database out through a basic SQL injection flaw.",
-      theMissedMeasure: "Passwords were never hashed. Once the database leaked, every password was simply readable.",
-      theCost: "The full list of 32 million real passwords was published. It became the file `rockyou.txt`, still the first password-guessing wordlist attackers reach for today. One company's shortcut became a permanent weapon against everyone.",
+      org: "LastPass",
+      year: "2022",
+      headline: "Attackers walked off with the encrypted password vaults themselves",
+      whatHappened: "LastPass, a widely used password manager, was breached in 2022. Attackers first stole source code, then used credentials taken from a senior engineer's home computer to reach cloud backups and copy customers' password vaults. The vaults were encrypted, so the passwords inside were not instantly readable, but the attackers now held the files and could attack them offline, at their leisure.",
+      theMissedMeasure: "Once a vault is stolen, its safety comes down to how it was protected. Vaults locked with a short or reused master password could be brute-forced offline, and some data stored alongside them, like the website addresses, was not encrypted at all.",
+      theCost: "Millions of customers' encrypted vaults were taken, triggering a wave of 'change everything' advice, and later thefts where weakly-protected vaults were cracked to reach crypto wallets. The lesson: how your passwords are stored, and the strength of the one password guarding them, is everything.",
       control: "secure-configuration",
-      source: "Public breach record; Imperva 'Consumer Password Worst Practices' analysis, 2010.",
-      brandColor: "#e0524a",
-      news: { headline: "RockYou hack: from bad to worse", outlet: "TechCrunch", date: "December 2009", url: "https://techcrunch.com/2009/12/14/rockyou-hack-security-myspace-facebook-passwords/" },
-    },
-    {
-      org: "LinkedIn",
-      year: "2012",
-      headline: "Hashed, but the lazy way, so 117 million cracked anyway",
-      whatHappened: "LinkedIn did hash its passwords, but used an old fast method (SHA-1) with no random salt added. That let attackers pre-compute and guess candidates at enormous speed against the whole leaked set.",
-      theMissedMeasure: "Hashing without salt and with a fast algorithm. Hashing is not a tick-box; done poorly it barely slows an attacker down.",
-      theCost: "First reported as 6.5 million in 2012, the true scale emerged in 2016: over 117 million accounts. The dumped credentials fed years of account-takeover attacks on other sites, because people reuse passwords.",
-      control: "secure-configuration",
-      source: "Public breach record; 2016 disclosure of the full ~117M dataset.",
-      brandColor: "#0a66c2",
-      news: { headline: "LinkedIn passwords leaked by hackers", outlet: "BBC News", date: "June 2012", url: "https://www.bbc.co.uk/news/technology-18338956" },
+      impact: ["Millions of encrypted vaults stolen", "weak master passwords crackable offline", "stored web addresses left unencrypted"],
+      source: "Public record; LastPass incident disclosures, 2022-2023.",
+      brandColor: "#d32d27",
+      news: { headline: "LastPass says hackers copied customer password vaults", outlet: "BBC News", date: "December 2022" },
     },
   ],
 
@@ -114,7 +103,7 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "A friend says: 'I use one really strong password everywhere, so I'm safe.' In your own words, why is that still risky? Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "The password being strong does not help if any one of those sites stores or hashes it badly and gets breached, like RockYou or LinkedIn. Once that single password leaks, attackers try it on every other site the person uses, because reuse means one leak unlocks everything. Strong-but-reused still has a single point of failure; unique passwords plus MFA remove it.",
+      modelAnswer: "The password being strong does not help if any one of those sites stores or protects it badly and gets breached, the way even LastPass's vaults were stolen. Once that single password leaks, attackers try it on every other site the person uses, because reuse means one leak unlocks everything. Strong-but-reused still has a single point of failure; unique passwords plus MFA remove it.",
     },
     quiz: [
       {
@@ -129,15 +118,15 @@ const topic1: TopicManifest = {
         why: "Hashing is one-way. The site saves the fingerprint of your password, then fingerprints your login attempt and checks the two match, so it never needs the real password on file.",
       },
       {
-        q: "What was the specific mistake that made the RockYou breach so damaging?",
+        q: "When attackers stole LastPass's encrypted vaults, what decided whether a customer's passwords were safe?",
         options: [
-          "They used weak two-factor authentication",
-          "They hashed passwords with an old algorithm",
-          "They stored passwords as plain readable text, not hashed at all",
-          "They reused the same password internally",
+          "How often they changed their password",
+          "The strength of their one master password",
+          "Whether they used the mobile app",
+          "How many passwords were in the vault",
         ],
-        answer: 2,
-        why: "RockYou stored raw passwords with no hashing, so the leaked database was instantly readable. That is why the list became the rockyou.txt wordlist attackers still use.",
+        answer: 1,
+        why: "The vaults were encrypted, so a strong master password kept them locked. Short or reused master passwords could be cracked offline once the files were stolen. How your store is protected, and by what, is everything.",
       },
       {
         q: "You cannot control how a site stores your password. What best protects you anyway?",
@@ -148,7 +137,7 @@ const topic1: TopicManifest = {
           "Adding numbers to the end of one favourite password",
         ],
         answer: 1,
-        why: "Unique-per-site means one breach cannot unlock your other accounts, and MFA means a stolen password alone is not enough to get in. Together they beat both the RockYou and LinkedIn failure modes.",
+        why: "Unique-per-site means one breach cannot unlock your other accounts, and MFA means a stolen password alone is not enough to get in. Together they beat every version of the storage problem.",
       },
     ],
   },
@@ -157,7 +146,7 @@ const topic1: TopicManifest = {
     headline: "You understand how passwords really work, and you have the fingerprints to prove it.",
     takeaways: [
       "Good sites store a one-way hash of your password, never the password itself.",
-      "Hashing done badly (no salt, fast algorithm) is barely better than not hashing at all, as LinkedIn found out.",
+      "Hashing done badly (no salt, fast algorithm) is barely better than not hashing at all.",
       "You control the two measures that beat both mistakes: unique passwords and MFA.",
     ],
     project: {

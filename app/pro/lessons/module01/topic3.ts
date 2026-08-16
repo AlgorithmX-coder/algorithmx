@@ -12,7 +12,7 @@ const topic3: TopicManifest = {
   role: "As a cyber security analyst, you'll work with these controls every day, and your value is spotting where one is missing. Knowing the difference is how you find the gap before an attacker does.",
   minutes: 18,
   promise: "The three jobs a security control can do, and the breach where the alarm was ignored.",
-  brief: "In this lesson, we'll look at the three jobs a security control can do, and the three forms it can take. Then you'll see the breach where the alarm genuinely went off, and nobody acted on it, at one of the biggest retailers in the world.",
+  brief: "In this lesson, we'll look at the three jobs a security control can do, and the three forms it can take. Then you'll see the breach where one phone call to the help desk undid the controls, at one of the biggest names in Las Vegas.",
 
   learn: [
     {
@@ -44,10 +44,10 @@ const topic3: TopicManifest = {
       ],
     },
     {
-      heading: "A detective control is worthless if nobody acts on it",
+      heading: "A control is only as strong as the people and process behind it",
       body: [
-        "Here is the trap that catches real companies. Buying a detective control (an alarm, an alerting tool) is not the same as detecting. If the alert fires into an inbox nobody reads, or a queue nobody works, the attack succeeds anyway, and you will have paid for the tool that watched it happen.",
-        "This is why the human process around a control matters as much as the control itself. A brilliant alarm plus no one to answer it equals no alarm. You are about to see exactly that, at one of the biggest retailers in the world.",
+        "Here is the trap that catches real companies. Buying a control (an alarm, an MFA policy, a help desk that can reset access) is not the same as being protected. If the alert fires into an inbox nobody reads, or the help desk resets a login for anyone who calls and sounds convincing, the attack succeeds anyway.",
+        "This is why the human process around a control matters as much as the control itself. A brilliant lock plus a guard who opens it for a smooth-talking stranger is no lock at all. You are about to see exactly that take down one of the biggest names in Las Vegas.",
       ],
       examples: [
         "An alert that lands in an unmonitored inbox is a control on paper only.",
@@ -64,27 +64,27 @@ const topic3: TopicManifest = {
     { term: "corrective control", definition: "A safeguard that puts things right after an incident, like restoring from backup or an incident-response plan." },
   ],
 
-  seeHeading: "When the alarm rang and no one answered",
+  seeHeading: "When one phone call undid the controls",
 
   cases: [
     {
-      org: "Target",
-      year: "2013",
-      headline: "The breach the security system actually detected",
-      whatHappened: "Attackers got into the US retailer Target through a supplier's stolen login, then planted software on the checkout tills to skim payment cards. The striking part: Target's expensive threat-detection system did its job and raised alerts as the malware was installed. The warnings were not acted on in time, and the theft continued through the busiest shopping season of the year.",
-      theMissedMeasure: "The detective control worked, but the response process behind it did not. Alerts were generated and effectively ignored, and the network was not segmented enough to keep a supplier's access away from the payment systems.",
-      theCost: "Around 40 million payment cards and personal details on tens of millions more. The financial and reputational damage ran into hundreds of millions, and the CEO ultimately lost his job. The lesson stuck: detection without response is not defence.",
+      org: "MGM Resorts",
+      year: "2023",
+      headline: "One phone call to the help desk took down a casino empire",
+      whatHappened: "In September 2023, attackers phoned MGM Resorts' IT help desk, pretended to be an employee they had researched online, and talked staff into resetting that account's login and second factor. No malware, no clever exploit, just a convincing call. From there they spread ransomware across MGM's systems: slot machines went dark, hotel room keys and check-in failed, and operations were disrupted for around ten days.",
+      theMissedMeasure: "The control that failed was a human process: the help desk reset access without properly checking who was really asking. The strongest technology means little if a phone call can undo it.",
+      theCost: "Around $100M in impact and roughly ten days of disruption across hotels and casinos. It became the textbook proof that your controls are only as strong as the people and process behind them.",
       control: "access-control",
-      impact: ["40 million payment cards stolen", "70 million more records exposed", "$18.5M settlement; the CEO resigned"],
-      source: "Public record; US Senate Commerce Committee report, 2014, and contemporary reporting.",
-      brandColor: "#cc0000",
-      news: { headline: "Target hackers stole 40 million credit cards", outlet: "BBC News", date: "December 2013", url: "https://www.bbc.co.uk/news/technology-25506020" },
+      impact: ["~$100M impact", "~10 days of disruption", "slot machines and room keys down"],
+      source: "Public record; MGM disclosures and 2023 reporting.",
+      brandColor: "#b8975a",
+      news: { headline: "MGM Resorts hit by cyber-attack that disrupted casinos and hotels", outlet: "BBC News", date: "September 2023" },
     },
   ],
 
   lab: {
     title: "Sort the controls by their job",
-    intro: "Read each control and decide whether it prevents, detects, or corrects. Then remember Target: detection only counts if someone acts.",
+    intro: "Read each control and decide whether it prevents, detects, or corrects. Then remember MGM: a control only counts if the people and process behind it hold.",
     prompts: [
       "For each control, pick Preventive, Detective, or Corrective.",
       "Every answer explains the reasoning.",
@@ -95,8 +95,8 @@ const topic3: TopicManifest = {
 
   check: {
     explain: {
-      prompt: "Using the Target breach, explain why buying a detective control is not the same as being protected. Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "A detective control only tells you something is happening; it does not stop it. Target actually had a good detection system, and it did fire alerts when the card-skimming malware was installed. But the process behind the alert failed: nobody acted in time, so the theft ran on. A control is only as good as the human response wrapped around it. Real protection needs prevention to stop what it can, detection to catch the rest, and a fast, staffed process to respond, plus corrective controls to recover.",
+      prompt: "Using the MGM breach, explain why simply having controls is not the same as being protected. Write a sentence or two, then reveal a model answer.",
+      modelAnswer: "MGM had controls, including MFA and a help desk that could reset access. But the process around one control failed: the help desk reset an account for an attacker who just phoned up and sounded convincing, so the strong technology was bypassed without any hacking at all. A control is only as good as the people and process wrapped around it. Real protection needs prevention to stop what it can, detection to catch the rest, a fast staffed process to respond, and corrective controls to recover.",
     },
     quiz: [
       {
@@ -112,15 +112,15 @@ const topic3: TopicManifest = {
         why: "It puts things right after the incident, so it is corrective. Backups are the classic corrective control.",
       },
       {
-        q: "What was the core lesson of the Target 2013 breach?",
+        q: "What was the core lesson of the MGM 2023 breach?",
         options: [
-          "Detection tools are a waste of money",
-          "Detection without a response process is not protection",
+          "Casinos should not use computers",
+          "A control is only as strong as the people and process behind it",
           "Firewalls do not work",
           "Only physical controls matter",
         ],
         answer: 1,
-        why: "Target's detective control worked and alerted, but nobody acted in time. A control needs a staffed, fast response process behind it, or the attack succeeds anyway.",
+        why: "MGM's technology was strong, but the help-desk process let an attacker reset access with a phone call. A control needs a solid, verified process behind it, or it can be bypassed with no hacking at all.",
       },
     ],
   },

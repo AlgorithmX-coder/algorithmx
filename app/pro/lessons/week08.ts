@@ -74,16 +74,17 @@ const week08: LessonManifest = {
 
   cases: [
     {
-      org: "TalkTalk",
-      year: "2015",
-      headline: "One SQL injection, 156,959 customers, a record fine",
-      whatHappened: "Attackers, later found to be teenagers, ran a SQL injection against old, forgotten TalkTalk webpages, the exact attack you are about to perform. The pages had been inherited from an acquisition and never secured. Through them, the attackers reached a database of 156,959 customers, and for over 15,000 of those, bank account numbers and sort codes.",
-      theMissedMeasure: "User input was built straight into SQL queries (no parameterised queries), on public pages nobody was maintaining. The database also held data that was not encrypted.",
-      theCost: "The ICO issued a then-record £400,000 fine for failing to take basic steps. TalkTalk reported around £77M in costs and lost over 100,000 customers, and the CEO faced the press and Parliament. All from an attack a first-week student can now run in a browser.",
+      org: "MOVEit",
+      year: "2023",
+      headline: "One SQL injection flaw, thousands of organisations breached",
+      whatHappened: "In mid-2023 a criminal group found a previously-unknown SQL injection flaw in MOVEit Transfer, a widely-used file-transfer product. Before any fix existed, they used it, the exact kind of attack you are about to perform, to break into the databases of one organisation after another that ran MOVEit and steal their files. Because so many companies and government bodies relied on it, one flaw cascaded into one of the largest data-theft campaigns ever seen.",
+      theMissedMeasure: "User input reached the database as part of the query (an injection flaw), in software that thousands of organisations trusted and exposed to the internet. Parameterised queries are the defence that stops exactly this.",
+      theCost: "The number of affected organisations ran into the thousands and the number of people whose data was exposed into the tens of millions, with costs and lawsuits still mounting. All from a single injection flaw, the same class of bug you will exploit and then fix in a moment.",
       control: "secure-configuration",
-      source: "ICO monetary penalty notice, October 2016; UK parliamentary and press coverage, 2015-2016.",
-      brandColor: "#ec008c",
-      news: { headline: "TalkTalk fined £400,000 for theft of customer details", outlet: "BBC News", date: "October 2016", url: "https://www.bbc.co.uk/news/business-37565367" },
+      impact: ["thousands of organisations breached", "tens of millions of people's data stolen", "one SQL-injection flaw, exploited before a patch"],
+      source: "Public record; MOVEit / Progress advisories and 2023-2024 reporting.",
+      brandColor: "#5ce500",
+      news: { headline: "MOVEit hack: millions caught up in a mass data theft", outlet: "BBC News", date: "2023" },
     },
   ],
 
@@ -124,7 +125,7 @@ const week08: LessonManifest = {
           "Blocking the attacker's IP",
         ],
         answer: 2,
-        why: "Parameterised queries (prepared statements) send the query and the input separately, so input can never become part of the SQL. It is the fix TalkTalk's pages were missing.",
+        why: "Parameterised queries (prepared statements) send the query and the input separately, so input can never become part of the SQL. It is the fix MOVEit was missing.",
       },
       {
         q: "Where does SQL injection sit on the OWASP Top 10?",
@@ -151,7 +152,7 @@ const week08: LessonManifest = {
       name: "Write your first vulnerability note",
       blurb: "Real security work is as much about writing up a flaw as finding it. Write a short note, in the shape of a real bug report: what the vulnerability is (SQL injection in the login), how you proved it (the exact input you used), what it exposed (the customer table), and the fix (parameterised queries). Keep it. In Week 10 you will do this properly for a full breach; this is the first rep, and the format employers expect.",
     },
-    ethicsNote: "You just did this in a sandbox that lives entirely in your own browser. Running the same injection against a website you do not own is a criminal offence in the UK under the Computer Misuse Act 1990, exactly what the TalkTalk attackers were prosecuted for. The only places to practise on real targets are deliberately vulnerable training apps and published bug bounty programmes, within their rules.",
+    ethicsNote: "You just did this in a sandbox that lives entirely in your own browser. Running the same injection against a website you do not own is a criminal offence in the UK under the Computer Misuse Act 1990, and people are regularly prosecuted for exactly this. The only places to practise on real targets are deliberately vulnerable training apps and published bug bounty programmes, within their rules.",
   },
 };
 

@@ -12,7 +12,7 @@ const topic3: TopicManifest = {
   title: "Building passwords worth trusting",
   role: "Advising people on real password hygiene is core to security awareness work, and the reuse problem is behind a huge share of real-world account takeovers.",
   minutes: 20,
-  promise: "Learn the three habits that actually protect you (length over cleverness, one unique password per site, and a password manager), and see how one reused password cost Dropbox 68 million accounts.",
+  promise: "Learn the three habits that actually protect you (length over cleverness, one unique password per site, and a password manager), and see how reused passwords exposed 6.9 million people at 23andMe.",
 
   learn: [
     {
@@ -73,16 +73,17 @@ const topic3: TopicManifest = {
 
   cases: [
     {
-      org: "Dropbox",
-      year: "2012",
-      headline: "68 million accounts, from a single reused password",
-      whatHappened: "Attackers got into Dropbox not by cracking Dropbox, but through a password. An employee had reused, on a Dropbox work account, a password that had leaked in the LinkedIn breach. Attackers took that leaked password, tried it, and got in, then reached a database of around 68 million user credentials. The full scale only became public in 2016.",
-      theMissedMeasure: "A reused password on an account with wide access, and no second factor to stop a stolen-but-correct password.",
-      theCost: "Roughly 68 million user credentials exposed. It is one of the clearest real-world lessons that reuse plus no MFA is how big companies fall, even when their own hashing is fine.",
+      org: "23andMe",
+      year: "2023",
+      headline: "Reused passwords unlocked 6.9 million people's DNA profiles",
+      whatHappened: "In 2023, attackers broke into around 14,000 23andMe accounts by credential stuffing: trying email-and-password pairs leaked from other sites, betting people had reused them. It worked. But 23andMe links you to relatives through a shared-DNA feature, so from those 14,000 accounts the attackers scraped personal and ancestry data on roughly 6.9 million people, most of whom never had their own password stolen.",
+      theMissedMeasure: "Users reused passwords that had already leaked elsewhere, and a second factor was not enforced, so a stolen-but-correct password was enough to walk in.",
+      theCost: "Data on about 6.9 million people exposed, lawsuits, and a settlement; 23andMe later made MFA mandatory. It is the textbook modern example: reuse, not clever hacking, is how accounts really fall.",
       control: "access-control",
-      source: "Public breach record; 2016 disclosure of the ~68M-credential dataset.",
-      brandColor: "#0061ff",
-      news: { headline: "Dropbox hack leads to leaking of 68m user passwords", outlet: "The Guardian", date: "August 2016", url: "https://www.theguardian.com/technology/2016/aug/31/dropbox-hack-passwords-68m-data-breach" },
+      impact: ["~14,000 accounts stuffed with leaked passwords", "~6.9 million people's data scraped", "no MFA enforced"],
+      source: "Public record; 23andMe disclosures and 2023-2024 reporting.",
+      brandColor: "#4c9a2a",
+      news: { headline: "23andMe confirms hackers stole ancestry data on 6.9 million users", outlet: "TechCrunch", date: "December 2023" },
     },
   ],
 
