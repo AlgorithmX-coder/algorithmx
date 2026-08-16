@@ -31,6 +31,7 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
   const [doneIds, setDoneIds] = useState<string[]>([]);
   const [startedIds, setStartedIds] = useState<string[]>([]);
   const [restored, setRestored] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
 
   const recompute = useCallback(() => {
     const done: string[] = [];
@@ -50,6 +51,14 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
   }, [week.topics]);
 
   useEffect(() => { recompute(); setRestored(true); }, [recompute]);
+
+  const resetWeek = useCallback(() => {
+    for (const t of week.topics) {
+      try { localStorage.removeItem(lessonCheckpointKey(t.id)); } catch { /* ignore */ }
+    }
+    recompute();
+    setActive(null);
+  }, [week.topics, recompute]);
 
   const totalMins = useMemo(() => week.topics.reduce((s, t) => s + t.minutes, 0), [week.topics]);
   const doneCount = doneIds.length;
@@ -146,6 +155,20 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
             <span><b>{doneCount} / {week.topics.length}</b> done</span>
           </div>
           <div className="pro-progress-track"><div className="pro-progress-fill" style={{ width: `${(doneCount / week.topics.length) * 100}%` }} /></div>
+
+          {restored && (doneCount > 0 || startedIds.length > 0) && (
+            <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 10, fontSize: 12.5 }}>
+              {!confirmReset ? (
+                <button onClick={() => setConfirmReset(true)} style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer", fontFamily: T.mono, fontSize: 12, color: T.faint, textDecoration: "underline", textUnderlineOffset: 3 }}>Start over</button>
+              ) : (
+                <>
+                  <span style={{ color: T.muted }}>Clear your progress and restart?</span>
+                  <button onClick={() => { resetWeek(); setConfirmReset(false); }} style={{ fontFamily: T.mono, fontSize: 12, fontWeight: 700, color: T.red, background: T.redSoft, border: `1px solid ${T.red}55`, borderRadius: 6, padding: "3px 10px", cursor: "pointer" }}>Yes, reset</button>
+                  <button onClick={() => setConfirmReset(false)} style={{ fontFamily: T.mono, fontSize: 12, color: T.muted, background: "transparent", border: "none", cursor: "pointer" }}>Cancel</button>
+                </>
+              )}
+            </div>
+          )}
 
           {restored && allDone && (
             <div className="pro-week-done" style={{ marginTop: 22 }}>
