@@ -86,39 +86,75 @@ const DIM = "#5E7699"; // muted
 const AMBER = "#FFC24B"; // the next case
 
 /* Locked cards read as "encrypted intel awaiting decryption", not dead grey
- * boxes: a faint grid of glyphs keeps re-scrambling behind the padlock, with a
- * scan line sweeping down, so a kid anticipates what's locked away. Motion is
- * skipped under prefers-reduced-motion (glyphs render once, statically). */
-const CIPHER_GLYPHS = "01<>/{}[]#$%*+=?ｱｲｳｴｵｶｷｸﾉﾘﾜﾝABCDEF01";
-const cipherChar = () => CIPHER_GLYPHS[Math.floor(Math.random() * CIPHER_GLYPHS.length)];
+ * boxes, and each of the four blocks gets its OWN texture so they feel distinct:
+ *   signal   -> intercepted waveform / spectrum (Signals)
+ *   redacted -> a censored classified file (The Human Factor)
+ *   hex      -> a scrolling memory dump (Systems)
+ *   network  -> the mastermind's node web (The Long Game)
+ * All pure CSS (no Math.random at render, so no hydration mismatch); motion is
+ * dropped under prefers-reduced-motion but each texture still reads. */
+const LOCK_VARIANTS = ["signal", "redacted", "hex", "network"] as const;
+type LockVariant = (typeof LOCK_VARIANTS)[number];
 
-function CipherFX({ accent, reduced }: { accent: string; reduced: boolean }) {
-  const CELLS = 42; // 7 cols x 6 rows
-  // Static seed so server and client HTML match (no Math.random at render time);
-  // real glyphs are filled in on the client after mount to avoid a hydration
-  // mismatch.
-  const [cells, setCells] = useState<string[]>(() => Array(CELLS).fill("0"));
-  useEffect(() => {
-    setCells(Array.from({ length: CELLS }, cipherChar));
-    if (reduced) return;
-    const id = window.setInterval(() => {
-      setCells((prev) => {
-        const next = prev.slice();
-        for (let k = 0; k < 8; k++) next[Math.floor(Math.random() * CELLS)] = cipherChar();
-        return next;
-      });
-    }, 120);
-    return () => window.clearInterval(id);
-  }, [reduced]);
-  return (
-    <>
-      <span aria-hidden className="tc-cipher" style={{ fontFamily: MONO, color: accent }}>
-        {cells.map((c, i) => (
-          <span key={i}>{c}</span>
+const REDACT_ROWS: { w: number; rd?: boolean }[][] = [
+  [{ w: 34 }, { w: 48, rd: true }, { w: 22 }],
+  [{ w: 20 }, { w: 30 }, { w: 54, rd: true }],
+  [{ w: 60, rd: true }, { w: 18 }, { w: 26 }],
+  [{ w: 28 }, { w: 40, rd: true }, { w: 20 }],
+  [{ w: 44, rd: true }, { w: 24 }, { w: 34 }],
+];
+const HEX_BLOCK = [
+  "4F2A 8B01 D39C 77", "1A0E FF42 8BA4 2D", "C7 91 3E 5B 0A F8", "6D14 2277 E0 9C 3F",
+  "AA 05 B2 7E 44 10", "9F3C 81 D6 2B 5508", "07 EE 4A 1C 90 63", "B8 2F 7D 00 4E A1",
+].join("\n");
+const NET_NODES: [number, number, number][] = [
+  [60, 35, 3.4], [20, 16, 2], [99, 22, 2], [28, 56, 2], [94, 52, 2], [58, 9, 1.7],
+];
+const NET_EDGES: [number, number, number, number][] = [
+  [60, 35, 20, 16], [60, 35, 99, 22], [60, 35, 28, 56], [60, 35, 94, 52], [60, 35, 58, 9], [20, 16, 58, 9], [99, 22, 94, 52],
+];
+
+function LockedFX({ variant, accent }: { variant: LockVariant; accent: string }) {
+  if (variant === "signal") {
+    return (
+      <span aria-hidden className="lf lf-signal" style={{ color: accent }}>
+        {Array.from({ length: 13 }).map((_, i) => (
+          <span key={i} style={{ animationDelay: `${(i % 7) * 0.12}s` }} />
         ))}
       </span>
-      {!reduced && <span aria-hidden className="tc-scan" style={{ background: `linear-gradient(180deg, transparent, ${accent}, transparent)` }} />}
-    </>
+    );
+  }
+  if (variant === "redacted") {
+    return (
+      <span aria-hidden className="lf lf-redact" style={{ color: accent }}>
+        {REDACT_ROWS.map((row, r) => (
+          <span className="row" key={r}>
+            {row.map((seg, i) => (
+              <span key={i} className={seg.rd ? "rd" : "w"} style={{ width: seg.w, animationDelay: `${(r * 2 + i) * 0.22}s` }} />
+            ))}
+          </span>
+        ))}
+      </span>
+    );
+  }
+  if (variant === "hex") {
+    return (
+      <span aria-hidden className="lf lf-hex" style={{ color: accent, fontFamily: MONO }}>
+        <span className="hexroll">{HEX_BLOCK + "\n" + HEX_BLOCK}</span>
+      </span>
+    );
+  }
+  return (
+    <span aria-hidden className="lf lf-net" style={{ color: accent }}>
+      <svg viewBox="0 0 120 70" preserveAspectRatio="xMidYMid slice" style={{ width: "100%", height: "100%" }}>
+        {NET_EDGES.map((e, i) => (
+          <line key={i} className="edge" x1={e[0]} y1={e[1]} x2={e[2]} y2={e[3]} />
+        ))}
+        {NET_NODES.map((n, i) => (
+          <circle key={i} className="node" cx={n[0]} cy={n[1]} r={n[2]} style={{ animationDelay: `${i * 0.3}s` }} />
+        ))}
+      </svg>
+    </span>
   );
 }
 const BG = "#060810";
@@ -233,11 +269,23 @@ export default function ExplorersPage() {
         .tc-next{border-color:var(--accent);box-shadow:0 0 24px color-mix(in srgb, var(--accent) 46%, transparent)}
         .tc-locked{cursor:not-allowed}
         .tc-locked:hover{border-color:color-mix(in srgb, var(--accent) 55%, transparent);box-shadow:0 0 22px color-mix(in srgb, var(--accent) 28%, transparent);transform:none}
-        .tc-cipher{position:absolute;inset:0;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);align-content:space-between;padding:30px 9px 12px;font-size:11px;line-height:1;letter-spacing:.05em;opacity:.16;overflow:hidden;pointer-events:none;user-select:none}
-        .tc-cipher span{text-align:center}
-        .tc-locked:hover .tc-cipher{opacity:.32}
-        .tc-scan{position:absolute;left:0;right:0;top:-30px;height:30px;z-index:1;opacity:.45;pointer-events:none;animation:tcScan 3.4s linear infinite}
-        @keyframes tcScan{0%{top:-30px;opacity:0}14%{opacity:.5}86%{opacity:.5}100%{top:100%;opacity:0}}
+        .lf{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;user-select:none}
+        .tc-locked:hover .lf{filter:brightness(1.6)}
+        .lf-signal{display:flex;align-items:flex-end;gap:3px;padding:32px 14px 18px;opacity:.24}
+        .lf-signal>span{flex:1;background:currentColor;border-radius:2px;height:100%;transform:scaleY(.28);transform-origin:bottom;animation:lfEq 1.05s ease-in-out infinite}
+        @keyframes lfEq{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
+        .lf-redact{display:flex;flex-direction:column;justify-content:center;gap:7px;padding:34px 14px 16px;opacity:.5}
+        .lf-redact .row{display:flex;gap:5px;align-items:center}
+        .lf-redact .w{height:5px;border-radius:2px;background:currentColor;opacity:.22}
+        .lf-redact .rd{height:8px;border-radius:2px;background:rgba(6,9,16,.92);box-shadow:inset 0 0 0 1px currentColor;opacity:.55;animation:lfRedact 2.6s ease-in-out infinite}
+        @keyframes lfRedact{0%,100%{opacity:.4}50%{opacity:.75}}
+        .lf-hex{padding-top:30px;font-size:10px;line-height:1.55;letter-spacing:.08em;opacity:.16}
+        .lf-hex .hexroll{display:block;white-space:pre;animation:lfHex 10s linear infinite}
+        @keyframes lfHex{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+        .lf-net{opacity:.55}
+        .lf-net .edge{stroke:currentColor;stroke-width:.5;opacity:.25}
+        .lf-net .node{fill:currentColor;animation:lfNode 2.4s ease-in-out infinite}
+        @keyframes lfNode{0%,100%{opacity:.3}50%{opacity:.95}}
         .tc-cardbar{position:relative;z-index:2}
         .tc-lockpulse{animation:tcLock 2.6s ease-in-out infinite}
         @keyframes tcLock{0%,100%{opacity:.85;filter:drop-shadow(0 0 5px var(--accent))}50%{opacity:1;filter:drop-shadow(0 0 12px var(--accent))}}
@@ -245,7 +293,7 @@ export default function ExplorersPage() {
         .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
         .tc-title{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:17px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;margin-top:12px}
         .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
-        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}.tc-scan{display:none}.tc-lockpulse{animation:none}}
+        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}.tc-lockpulse,.lf-signal>span,.lf-redact .rd,.lf-hex .hexroll,.lf-net .node{animation:none}}
       `}</style>
 
       <MatrixRain reduced={reduced} opacity={0.24} colors={RAIN_COLORS} />
@@ -350,7 +398,7 @@ export default function ExplorersPage() {
                       )}
                       {locked && (
                         <>
-                          <CipherFX accent={b.color} reduced={reduced} />
+                          <LockedFX variant={LOCK_VARIANTS[b.n - 1] ?? "signal"} accent={b.color} />
                           <span
                             aria-hidden
                             className="tc-lockpulse"
