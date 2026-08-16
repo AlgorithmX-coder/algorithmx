@@ -47,6 +47,12 @@ export interface TrackCardProps {
    *  ("right 75%") was tuned for the Heroes art; bright scenes with a
    *  centred subject want their own focal point. */
   imagePosition?: string;
+  /** Per-track background-size override (default "cover"). Lets a card
+   *  ZOOM into a region of the source - the Ops art bakes terminal
+   *  chrome into its upper band, and on a tall card `cover` always
+   *  shows the source's full height, so only zooming past cover can
+   *  frame the clean map zone. */
+  imageSize?: string;
   /** "light" swaps the heavy diagonal scrim for a gentler one so bright,
    *  colourful sources stay visibly bright; text protection moves to the
    *  radial pool behind the copy. "split" is for art that already bakes a
@@ -64,20 +70,16 @@ export interface TrackCardProps {
    *  lockup carries the course name as real text so semantics and
    *  screen-reader output are unchanged. Omit to render `name`. */
   lockup?: React.ReactNode;
-  /** Banner variant (2026-08 redesign of the coming-soon cards): the
-   *  scene art renders CONTAINED in a framed panel at the top of the
-   *  card instead of full-bleed behind the copy. The Ops/Pro art carries
-   *  baked-in console chrome (terminal windows, readouts) that collided
-   *  with the card's real text when used as a background; framed, it
-   *  reads as a feed from inside the course and the text zone below
-   *  stays clean glass. Mutually exclusive with characterImage. */
-  bannerImage?: string;
-  /** Focal crop for the banner art (object-position). */
-  bannerPosition?: string;
-  /** Short mono spec chips under the blurb (banner cards only) — fills
-   *  the card's lower zone with selling substance instead of dead space.
-   *  Keep to 3, a few words each. */
+  /** Short mono spec chips under the blurb — fills the card's lower
+   *  zone with selling substance instead of dead space. Keep to 3, a
+   *  few words each. */
   specs?: string[];
+  /** Black coding-theme backdrop (Cyber Pro, owner call 2026-08-16):
+   *  a full-card CSS terminal — near-black gradient + faint ghost code
+   *  in the card's accent — instead of scene art. Black by design, so
+   *  the copy always reads without heavy scrims, and it echoes the
+   *  ghost-code motif the homepage backdrop already uses. */
+  codeBackdrop?: boolean;
 }
 
 export default function TrackCard({
@@ -94,12 +96,12 @@ export default function TrackCard({
   imageFilter,
   imageOpacity,
   imagePosition,
+  imageSize,
   scrim,
   contentMaxWidth,
   lockup,
-  bannerImage,
-  bannerPosition,
   specs,
+  codeBackdrop,
 }: TrackCardProps) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -124,8 +126,8 @@ export default function TrackCard({
          *  and overflow:hidden clips it to the rounded corners.
          *  Only applied when characterImage is set so other cards'
          *  behaviour (e.g. unclipped hover shadows) is untouched. */
-        isolation: characterImage ? "isolate" : undefined,
-        overflow: characterImage ? "hidden" : undefined,
+        isolation: characterImage || codeBackdrop ? "isolate" : undefined,
+        overflow: characterImage || codeBackdrop ? "hidden" : undefined,
         /* Translucent frosted fill — more see-through + a stronger blur
          *  so the cosmic backdrop reads through the glass and the card
          *  feels seated in the scene rather than stamped on top. */
@@ -152,69 +154,56 @@ export default function TrackCard({
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
       }}
     >
-      {/* Framed media banner (banner variant) — the scene art contained
-       *  in its own panel, like a live feed from inside the course. The
-       *  status pill rides the banner's corner so it reads as a tag on
-       *  the footage, never colliding with the art's baked-in chrome. */}
-      {bannerImage && (
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            margin: "-8px -4px 0",
-            height: 158,
-            borderRadius: 16,
-            overflow: "hidden",
-            border: `1px solid ${accent}30`,
-            boxShadow: `0 14px 34px -20px ${accent}59, inset 0 0 0 1px rgba(0,0,0,0.3)`,
-          }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={bannerImage}
-            alt=""
-            aria-hidden
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: bannerPosition ?? "center",
-              display: "block",
-              filter: "saturate(1.06) brightness(1.02)",
-            }}
-          />
+      {/* Black coding-theme backdrop (Cyber Pro) — a full-card CSS
+       *  terminal: near-black gradient, faint ghost engagement log in
+       *  the card's accent, and a soft accent glow pooling bottom-right.
+       *  Embeds edge to edge like the top cards' scene art, but black
+       *  by design so the copy reads without heavy scrims. */}
+      {codeBackdrop && (
+        <>
           <div
             aria-hidden
             style={{
               position: "absolute",
               inset: 0,
+              zIndex: 0,
               background:
-                "linear-gradient(180deg, rgba(10,12,20,0.18) 0%, rgba(10,12,20,0) 32%, rgba(10,12,20,0) 60%, rgba(10,12,20,0.44) 100%)",
+                "radial-gradient(90% 70% at 85% 92%, " +
+                `${accent}1f 0%, rgba(0,0,0,0) 58%), ` +
+                "linear-gradient(135deg, #060709 0%, #090a0e 52%, #0b0c12 100%)",
+              pointerEvents: "none",
             }}
           />
-          <span
+          {/* Ghost log: short lines, seated BELOW the header row so it
+           *  never runs behind the status pill, and narrow enough that
+           *  the width-capped blurb never reaches it. */}
+          <pre
+            aria-hidden
             style={{
               position: "absolute",
-              top: 12,
-              right: 12,
+              top: 92,
+              right: 20,
+              zIndex: 0,
+              margin: 0,
               fontFamily: "var(--lv2-font-mono)",
               fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: accent,
-              background: "rgba(10,12,20,0.72)",
-              border: `1px solid ${accent}66`,
-              padding: "4px 11px",
-              borderRadius: 999,
-              backdropFilter: "blur(4px)",
-              WebkitBackdropFilter: "blur(4px)",
-              textShadow: "0 1px 3px rgba(0,0,0,0.55)",
+              lineHeight: 2.0,
+              letterSpacing: "0.02em",
+              color: "rgba(232,237,255,0.13)",
+              textAlign: "left",
+              pointerEvents: "none",
+              userSelect: "none",
             }}
           >
-            {isLive ? "Live now" : "Coming soon"}
-          </span>
-        </div>
+            {"$ nmap -sV target\n"}
+            {"  443/tcp open\n"}
+            {"$ run exploit.py\n"}
+            <span style={{ color: `${accent}59` }}>{"[+] auth bypass\n"}</span>
+            {"$ sudo -l\n"}
+            {"  NOPASSWD: backup\n"}
+            <span style={{ color: `${accent}66` }}>{"[+] root shell"}</span>
+          </pre>
+        </>
       )}
 
       {/* Atmospheric background layer — animated-world ambience for the
@@ -232,7 +221,7 @@ export default function TrackCard({
               position: "absolute",
               inset: 0,
               backgroundImage: `url(${characterImage})`,
-              backgroundSize: "cover",
+              backgroundSize: imageSize ?? "cover",
               /* Pull the focal point toward the right-lower portion
                *  of the source so Adam and Layla settle into the
                *  centre-right of the card, well away from the headline
@@ -358,7 +347,6 @@ export default function TrackCard({
         >
           {lockup ?? name}
         </h3>
-        {!bannerImage && (
         <span
           style={{
             fontFamily: "var(--lv2-font-mono)",
@@ -389,7 +377,6 @@ export default function TrackCard({
         >
           {isLive ? "Live now" : "Coming soon"}
         </span>
-        )}
       </div>
 
       {/* Age chip — solid accent fill so the band is the card's loudest
@@ -429,7 +416,7 @@ export default function TrackCard({
        *  → 0.18em) for cleaner legibility against the brighter
        *  background image; opacity at full so it reads on first scan
        *  but the small size + mono treatment keep it subtle. */}
-      {(characterImage || bannerImage) && (
+      {(characterImage || codeBackdrop) && (
         <p
           style={{
             position: "relative",
