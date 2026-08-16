@@ -38,43 +38,45 @@ function StageIcon({ kind, size = 22 }: { kind: StageKey; size?: number }) {
   return <svg {...common}><path d="M12 3.5l7 2.6v5.3c0 4.2-3 6.9-7 8.4-4-1.5-7-4.2-7-8.4V6.1l7-2.6z" /><path d="M9 12l2 2 4-4.4" /></svg>;
 }
 
-/* --- the outline rail --- */
-function TickDot({ state }: { state: "done" | "current" | "upcoming" }) {
-  if (state === "done") {
-    return (
-      <span style={{ width: 20, height: 20, borderRadius: "50%", background: T.greenSoft, border: `1px solid ${T.green}`, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="3.5" aria-hidden><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
-      </span>
-    );
-  }
-  if (state === "current") {
-    return <span style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${T.cyan}`, background: T.cyanSoft, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: T.cyan }} /></span>;
-  }
-  return <span style={{ width: 20, height: 20, borderRadius: "50%", border: `1.5px solid ${T.edge}`, flexShrink: 0 }} />;
+/* --- the outline rail: each stage marked by its own icon --- */
+function RailMark({ kind, state }: { kind: StageKey; state: "done" | "current" | "upcoming" }) {
+  const color = state === "done" ? T.green : state === "current" ? T.cyan : T.faint;
+  const bg = state === "done" ? T.greenSoft : state === "current" ? T.cyanSoft : T.panel;
+  const border = state === "done" ? T.green : state === "current" ? T.cyan : T.edge;
+  return (
+    <span style={{ position: "relative", width: 40, height: 40, borderRadius: 11, background: bg, border: `1px solid ${border}`, color, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <StageIcon kind={kind} size={22} />
+      {state === "done" && (
+        <span style={{ position: "absolute", right: -3, bottom: -3, width: 16, height: 16, borderRadius: "50%", background: T.green, border: `2px solid ${T.bg}`, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#062012" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 13l4 4L19 7" /></svg>
+        </span>
+      )}
+    </span>
+  );
 }
 
 function Rail({ phase, learnIdx, learnCount, onGo }: { phase: LessonPhase; learnIdx: number; learnCount: number; onGo: (p: LessonPhase) => void }) {
   const idx = STAGE_ORDER.indexOf(phase as (typeof STAGE_ORDER)[number]);
   return (
     <div style={{ position: "sticky", top: 22 }}>
-      <div style={{ fontFamily: T.mono, fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: T.faint, marginBottom: 16 }}>Your progress</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <div style={{ fontFamily: T.mono, fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: T.faint, marginBottom: 14 }}>Your progress</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {STAGES.map((s, i) => {
           const state: "done" | "current" | "upcoming" = i < idx ? "done" : i === idx ? "current" : "upcoming";
           const reached = i <= idx;
           return (
             <div key={s.key}>
               <button onClick={() => reached && onGo(s.key)} disabled={!reached}
-                style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", textAlign: "left", background: "transparent", border: "none", padding: "7px 0", cursor: reached ? "pointer" : "default" }}>
-                <TickDot state={state} />
-                <span style={{ display: "flex", flexDirection: "column" }}>
-                  <span style={{ fontFamily: T.display, fontSize: 14.5, fontWeight: 700, color: state === "upcoming" ? T.faint : T.ink }}>{s.label}</span>
-                  <span style={{ fontSize: 11.5, color: state === "current" ? T.cyan : T.faint }}>{s.sub}</span>
+                style={{ display: "flex", alignItems: "center", gap: 13, width: "100%", textAlign: "left", background: state === "current" ? T.cyanSoft : "transparent", border: `1px solid ${state === "current" ? `${T.cyan}44` : "transparent"}`, borderRadius: 12, padding: "8px 10px", cursor: reached ? "pointer" : "default" }}>
+                <RailMark kind={s.key} state={state} />
+                <span style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                  <span style={{ fontFamily: T.display, fontSize: 17, fontWeight: 800, letterSpacing: "-0.01em", color: state === "upcoming" ? T.muted : T.ink }}>{s.label}</span>
+                  <span style={{ fontSize: 12.5, fontWeight: 600, color: state === "current" ? T.cyan : state === "done" ? T.muted : T.faint }}>{s.sub}</span>
                 </span>
               </button>
               {/* sub-steps for the multi-part Learn stage */}
               {s.key === "learn" && i === idx && learnCount > 1 && (
-                <div style={{ marginLeft: 9, paddingLeft: 15, borderLeft: `1px solid ${T.edge}`, display: "flex", flexDirection: "column", gap: 5, padding: "4px 0 8px 15px" }}>
+                <div style={{ marginLeft: 30, paddingLeft: 15, borderLeft: `1px solid ${T.edge}`, display: "flex", flexDirection: "column", gap: 5, padding: "6px 0 8px 15px" }}>
                   {Array.from({ length: learnCount }, (_, k) => (
                     <span key={k} style={{ fontSize: 12, fontFamily: T.mono, color: k === learnIdx ? T.cyan : k < learnIdx ? T.muted : T.faint }}>
                       {k < learnIdx ? "✓ " : k === learnIdx ? "→ " : "• "}Idea {k + 1}
