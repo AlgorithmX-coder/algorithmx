@@ -631,8 +631,10 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   // ends. Falls back to silent tap-through when there's no VO, voice is off, or
   // reduced-motion is on (a tap always advances too).
   const narrated = !!beatAudio && voiceOn && !reduced;
+  const predAudio = cycle.intel.predictionAudio;
   const [shown, setShown] = useState(reduced ? beats.length : 1);
   const [replies, setReplies] = useState<{ text: string; ok: boolean; response: string }[]>([]);
+  const [hintShown, setHintShown] = useState(false);
   const settled = replies.some((r) => r.ok);
   const beatsDone = shown >= beats.length;
 
@@ -649,7 +651,13 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
     }
     let cancelled = false;
     playWren(clip, true, () => {
-      if (!cancelled) setShown((s) => Math.min(beats.length, s + 1));
+      if (cancelled) return;
+      if (shown < beats.length) {
+        setShown((s) => Math.min(beats.length, s + 1));
+      } else if (predAudio?.question) {
+        // Last beat finished — WREN asks the "your call" question out loud.
+        playWren(predAudio.question, true);
+      }
     });
     return () => {
       cancelled = true;
@@ -670,6 +678,11 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
     setReplies((r) => [...r, { text: p.options[i], ok, response: ok ? p.right : p.wrong }]);
     if (ok) audio.latch();
     else audio.thud();
+    // WREN reacts out loud to what they picked.
+    if (voiceOn && !reduced) {
+      const rc = ok ? predAudio?.right : predAudio?.wrong;
+      if (rc) playWren(rc, true);
+    }
   };
 
   return (
@@ -694,6 +707,24 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
             </span>
             {p.question}
           </Bubble>
+        )}
+
+        {/* Optional guided help before answering */}
+        {beatsDone && !settled && p.hint && (
+          hintShown ? (
+            <Bubble who="wren" tone={T.arcCyan}>
+              <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.arcCyan, marginBottom: 6 }}>HINT</span>
+              {p.hint}
+            </Bubble>
+          ) : (
+            <button
+              onClick={() => { audio.click(); setHintShown(true); }}
+              className="sr-btn"
+              style={{ justifySelf: "start", background: `${T.arcCyan}14`, border: `1.5px solid ${T.arcCyan}88`, borderRadius: 10, padding: "10px 16px", cursor: "pointer", color: T.arcCyan, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", boxShadow: `0 0 14px ${T.arcCyan}22` }}
+            >
+              NEED A HINT?
+            </button>
+          )
         )}
 
         {replies.map((r, i) => (

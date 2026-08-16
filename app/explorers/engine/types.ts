@@ -241,6 +241,8 @@ export interface PredictionQ {
   answer: number;
   right: string;
   wrong: string;
+  /** Optional "Need a hint?" nudge the child can reveal before answering. */
+  hint?: string;
 }
 
 export interface CheckpointQ {
@@ -263,6 +265,9 @@ export interface CycleDef {
     /** Narrator-led lessons: WREN VO per beat (public/ paths), 1:1 with `beats`. When present the LEARN beats auto-advance as each clip ends; a tap always overrides. */
     beatAudio?: string[];
     prediction: PredictionQ;
+    /** WREN voices the "your call" question when it appears, then reacts to the
+     * answer (right/wrong), turning the checkpoint into a real back-and-forth. */
+    predictionAudio?: { question?: string; right?: string; wrong?: string };
   };
   fieldwork: FieldworkDef;
   /** WREN VO that explains the PLAY exercise set-up (public/ path); played once when PLAY opens. */
