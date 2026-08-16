@@ -69,16 +69,17 @@ const topic5: TopicManifest = {
 
   cases: [
     {
-      org: "Google",
-      year: "2017",
-      headline: "Physical keys took employee phishing to zero",
-      whatHappened: "Rather than a breach, this is what strong authentication done right looks like. Google required its tens of thousands of employees to use physical security keys as their second factor instead of codes or passwords alone. Afterwards, Google reported that it had not had a single confirmed account takeover by phishing among its staff.",
-      theMissedMeasure: "Nothing was missed here; this is the positive case. The key was choosing phishing-resistant MFA (hardware keys) over weaker methods.",
-      theCost: "The cost was avoided. It is the clearest real-world evidence that phishing-resistant factors (the same technology behind passkeys) simply shut down the most common attack.",
+      org: "Cloudflare",
+      year: "2022",
+      headline: "The same phishing attack that breached others hit a wall here",
+      whatHappened: "In 2022 a slick phishing campaign hit dozens of companies at once. Cloudflare employees were targeted too, and some did enter their username and password on a convincing fake login page. But Cloudflare had given staff physical security keys as their second factor, and those keys only work with the genuine site. The fake page could not complete the login, so the attackers were stopped with nothing, while other firms hit by the same campaign were breached.",
+      theMissedMeasure: "Nothing was missed here; this is the positive case. The difference was phishing-resistant MFA (hardware security keys) instead of codes that a fake site can capture and replay.",
+      theCost: "The cost was avoided. It is clear, recent proof that phishing-resistant factors, the same technology behind passkeys, shut down even a well-run phishing attack that fooled people into typing their password.",
       control: "access-control",
-      source: "Public record; Google's 2018 statements on staff security-key rollout.",
-      brandColor: "#4285f4",
-      news: { headline: "Google: Security Keys Neutralized Employee Phishing", outlet: "Krebs on Security", date: "July 2018", url: "https://krebsonsecurity.com/2018/07/google-security-keys-neutralized-employee-phishing/" },
+      impact: ["Employees did enter passwords on a fake page", "hardware keys blocked the login anyway", "no breach, while others fell to the same campaign"],
+      source: "Public record; Cloudflare's own 2022 write-up of the attack.",
+      brandColor: "#f38020",
+      news: { headline: "Cloudflare: how we stopped the phishing attack that got Twilio", outlet: "Cloudflare blog", date: "August 2022" },
     },
   ],
 

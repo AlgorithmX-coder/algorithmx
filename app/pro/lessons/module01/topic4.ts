@@ -13,7 +13,7 @@ const topic4: TopicManifest = {
   role: "As a cyber security analyst, you'll always assume something will eventually get through. These two ideas are what turn that inevitable breach into a small, contained incident instead of a company-ending one.",
   minutes: 18,
   promise: "The two ideas that limit the damage once an attacker is in, and the attack that ignored them.",
-  brief: "In this lesson, we'll cover the two ideas that decide how far an attack spreads once someone is in: defence in depth and least privilege. Then you'll see the attack that wiped a global shipping company in minutes because neither was in place.",
+  brief: "In this lesson, we'll cover the two ideas that decide how far an attack spreads once someone is in: defence in depth and least privilege. Then you'll see the attack that seized up much of US healthcare for weeks, because neither was in place behind one weak login.",
 
   learn: [
     {
@@ -52,7 +52,7 @@ const topic4: TopicManifest = {
       heading: "The opposite of depth: a flat, over-trusting network",
       body: [
         "The failure mode is a 'flat' network, where once you are inside, everything trusts everything else and one machine can reach all the others. It is convenient, and it is how a single infected laptop can become a company-wide disaster in minutes.",
-        "The modern name for the fix is zero trust: stop trusting something just because it is 'inside', and check every access as if it came from outside. You are about to see what a flat network cost one of the largest companies on earth.",
+        "The modern name for the fix is zero trust: stop trusting something just because it is 'inside', and check every access as if it came from outside. You are about to see what missing these layers cost a company that much of US healthcare relies on.",
       ],
       examples: [
         "Flat network: one infected PC can talk to every server, so malware spreads everywhere.",
@@ -70,21 +70,21 @@ const topic4: TopicManifest = {
     { term: "zero trust", definition: "The principle of never trusting a user or device just because it is 'inside' the network; every access is verified." },
   ],
 
-  seeHeading: "When one flat network sank a global company",
+  seeHeading: "When one missing lock let an attack spread",
 
   cases: [
     {
-      org: "Maersk",
-      year: "2017",
-      headline: "A single infection spread worldwide in minutes",
-      whatHappened: "In 2017 a destructive attack called NotPetya, disguised as ransomware, spread through the shipping and logistics giant Maersk. Because the internal network was largely flat and over-trusting, the malware raced from machine to machine and wiped tens of thousands of computers and servers across the world in a matter of minutes, freezing operations at ports globally. The company reportedly recovered only because one server in a remote office happened to be offline during the attack and held a surviving copy of a critical system.",
-      theMissedMeasure: "Too little segmentation and too much internal trust let a single foothold reach everything. Stronger defence in depth and least privilege would have contained the spread.",
-      theCost: "Estimated at around $300 million and a near-total shutdown of operations for days. It became the defining example of why 'flat network, everything trusts everything' is a catastrophic design.",
+      org: "Change Healthcare",
+      year: "2024",
+      headline: "One login with no second factor, and US healthcare seized up",
+      whatHappened: "In February 2024, attackers logged into a Change Healthcare remote-access portal with a stolen password. That portal had no multi-factor authentication, so the password alone was enough. Once inside, they moved across the network for days, stole data and set off ransomware. Change Healthcare handles a huge share of US medical claims and prescriptions, so the outage rippled out for weeks: pharmacies, doctors and hospitals could not bill or get paid.",
+      theMissedMeasure: "No second factor on an internet-facing entry point, and too little internal segmentation or least privilege to stop one foothold from reaching everything. Depth was missing at every layer.",
+      theCost: "A $22M ransom was paid, the parent company reported costs of roughly $2.9 billion, and the disruption to US healthcare payments ran for weeks. One of the most damaging attacks the sector has ever seen.",
       control: "access-control",
-      impact: ["~$300M in losses", "~49,000 laptops and thousands of servers wiped", "global operations frozen for days"],
-      source: "Public record; Maersk executives' own conference accounts and wide reporting, 2017-2019.",
-      brandColor: "#42b0d5",
-      news: { headline: "The untold story of NotPetya, the most devastating cyberattack in history", outlet: "Wired", date: "August 2018", url: "https://www.wired.com/story/notpetya-cyberattack-ukraine-russia-code-crashed-the-world/" },
+      impact: ["$22M ransom paid", "~$2.9B in reported costs", "weeks of US healthcare payment chaos"],
+      source: "Public record; UnitedHealth Congressional testimony and 2024 reporting.",
+      brandColor: "#e4002b",
+      news: { headline: "Change Healthcare hack disrupts US pharmacies for weeks", outlet: "BBC News", date: "2024" },
     },
   ],
 
@@ -101,8 +101,8 @@ const topic4: TopicManifest = {
 
   check: {
     explain: {
-      prompt: "Using Maersk, explain how defence in depth and least privilege would have changed the outcome. Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "The malware was so devastating because the network was flat: once one machine was infected, it could reach almost every other, so the damage spread company-wide in minutes. Defence in depth would have added internal boundaries (segmentation, so an infection hits a zone and stops), and least privilege would have meant each account and machine could only reach what it truly needed, shrinking the blast radius. Neither would have made Maersk unbreachable, but either would have turned a global wipe-out into a contained incident. The single surviving offline server shows how thin the margin was.",
+      prompt: "Using Change Healthcare, explain how defence in depth and least privilege would have changed the outcome. Write a sentence or two, then reveal a model answer.",
+      modelAnswer: "The attackers got in through one internet-facing login with no second factor, a missing preventive layer, and then moved freely across the network because there was too little segmentation and least privilege to stop them. Defence in depth would have added more layers behind that login (MFA, then internal boundaries so a foothold hits a wall), and least privilege would have meant the stolen account could reach very little. Neither would have made Change Healthcare unbreachable, but either would have turned a weeks-long, industry-wide outage into a contained incident.",
     },
     quiz: [
       {
@@ -128,15 +128,15 @@ const topic4: TopicManifest = {
         why: "Least privilege limits what each account or system can reach, so a compromise inherits as little as possible and the blast radius stays small.",
       },
       {
-        q: "Why was the NotPetya attack on Maersk so devastating?",
+        q: "Why did the Change Healthcare attack spread so far?",
         options: [
-          "The malware was unstoppable by design",
-          "The flat, over-trusting network let one infection reach everything",
+          "The attack was unstoppable by design",
+          "One login with no second factor, and too little segmentation to stop the spread",
           "They had no antivirus at all",
           "It targeted their customers, not them",
         ],
         answer: 1,
-        why: "A flat network meant one foothold could spread everywhere in minutes. Segmentation and least privilege would have contained it.",
+        why: "A missing second factor let attackers in with just a password, and a lack of segmentation and least privilege let that one foothold reach everything. Depth at each layer would have contained it.",
       },
     ],
   },

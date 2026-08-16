@@ -19,7 +19,7 @@ const topic2: TopicManifest = {
       heading: "Cracking is guessing at enormous speed, not reversing",
       body: [
         "You already know a hash cannot be reversed. So how do stolen passwords get cracked? The attacker guesses. They take a candidate word, hash it, and check if the result matches a hash in the stolen file. If it does, they have found that password.",
-        "The trick is speed. A cheap graphics card can try billions of guesses a second, and attackers start with wordlists of real leaked passwords, like the rockyou.txt file from the last topic. Every common password falls almost instantly.",
+        "The trick is speed. A cheap graphics card can try billions of guesses a second, and attackers start with wordlists of real leaked passwords, like the RockYou2024 list you are about to meet. Every common password falls almost instantly.",
       ],
       examples: [
         "The guess list starts with millions of real passwords from past breaches, so 'liverpool1' or 'letmein' are found in under a second.",
@@ -40,7 +40,7 @@ const topic2: TopicManifest = {
       examples: [
         "Without salt: everyone who chose 'sunshine' shares one fingerprint, so cracking it once cracks all of them at the same time.",
         "With salt: each 'sunshine' looks different, so the attacker has to attack every account separately, which is vastly slower.",
-        "This is exactly the step LinkedIn skipped in 2012, which is why so many of their hashes fell so fast.",
+        "This is exactly the step that separates a breach where only a few weak passwords fall from one where nearly all of them do.",
       ],
       analogy: {
         plain: "Salt is like adding a different random word to everyone's answer before locking it away. Even people who gave the same answer now have different-looking locks, so one master key can't open them all.",
@@ -54,7 +54,7 @@ const topic2: TopicManifest = {
         "Password-specific functions like bcrypt, scrypt and Argon2 are deliberately slow and can be tuned slower as computers get faster. If each guess takes a fraction of a second instead of a billionth, a full cracking run goes from minutes to lifetimes.",
       ],
       examples: [
-        "A fast hash lets an attacker try the entire rockyou.txt list against a leaked file in seconds.",
+        "A fast hash lets an attacker try the entire RockYou2024 list against a leaked file in no time.",
         "A slow hash like bcrypt can make that same run take years, so only the very weakest passwords are ever recovered.",
         "Good sites combine both defences: a unique salt per user and a slow, modern hash.",
       ],
@@ -62,7 +62,7 @@ const topic2: TopicManifest = {
   ],
 
   glossary: [
-    { term: "wordlist", definition: "A ready-made list of likely passwords (often real ones from past breaches) that an attacker hashes and checks against a stolen file. rockyou.txt is the classic example." },
+    { term: "wordlist", definition: "A ready-made list of likely passwords (often real ones from past breaches) that an attacker hashes and checks against a stolen file. The RockYou2024 compilation is the biggest example." },
     { term: "salt", definition: "A random value added to each password before hashing, so identical passwords get different fingerprints and pre-built cracking tables stop working." },
     { term: "rainbow table", definition: "A giant pre-computed lookup of common passwords and their hashes. Salting defeats it, because every account's hash is now unique." },
     { term: "brute force", definition: "Trying huge numbers of guesses in a row, very fast, until one matches." },
@@ -70,20 +70,21 @@ const topic2: TopicManifest = {
     { term: "MD5", definition: "An old, very fast hash. Fine for checking a file downloaded correctly, but unsafe for passwords precisely because it is so fast to guess against." },
   ],
 
-  seeHeading: "When the file was barely protected at all",
+  seeHeading: "The biggest guess-list ever assembled",
 
   cases: [
     {
-      org: "Adobe",
-      year: "2013",
-      headline: "150 million passwords, 'encrypted' in a way that unravelled",
-      whatHappened: "Attackers stole a database of around 150 million Adobe accounts. Instead of salted, slow hashes, Adobe had encrypted the passwords with a reversible cipher, used in a mode where identical passwords produced identical output, and stored each user's password hint in plain text right next to it. Researchers used the repeated patterns and the hints to recover huge numbers of passwords.",
-      theMissedMeasure: "Passwords were encrypted (reversible) rather than salted and hashed, in a mode that leaked which accounts shared a password, with plaintext hints handed to the attacker as clues.",
-      theCost: "One of the most-studied password failures ever. The dataset became a teaching example of everything not to do, and the reused passwords fuelled account-takeover attempts across other sites for years.",
+      org: "RockYou2024",
+      year: "2024",
+      headline: "Nearly 10 billion real passwords, stacked into one file",
+      whatHappened: "In mid-2024 a file named rockyou2024.txt appeared on a hacking forum: a compilation of close to 10 billion unique passwords, gathered from thousands of past breaches over many years. It was not a new hack; it was every old leak, stacked together into the single largest password list ever assembled, and handed to every attacker on earth for free.",
+      theMissedMeasure: "There is no one company to blame here, and that is the point. Every password that has ever leaked is now on the guess list, so anything that has appeared in any breach, or merely looks like a common choice, is tried first and falls instantly.",
+      theCost: "It supercharges both credential stuffing and offline cracking: attackers run these billions of known passwords before anything else, so reused and common passwords are cracked in moments. It is the clearest proof that only a genuinely long, unique password survives.",
       control: "secure-configuration",
-      source: "Public breach record; widely analysed 2013 disclosure of the ~150M-record dump.",
-      brandColor: "#fa0f00",
-      news: { headline: "Adobe hack: At least 38 million accounts breached", outlet: "BBC News", date: "October 2013", url: "https://www.bbc.co.uk/news/technology-24740873" },
+      impact: ["~10 billion passwords in one list", "compiled from thousands of past breaches", "free fuel for cracking and credential stuffing"],
+      source: "Public record; 2024 disclosure of the rockyou2024.txt compilation.",
+      brandColor: "#e0524a",
+      news: { headline: "Nearly 10 billion passwords leaked in the largest compilation ever", outlet: "Cybernews", date: "July 2024" },
     },
   ],
 

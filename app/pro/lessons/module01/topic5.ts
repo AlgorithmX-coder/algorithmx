@@ -66,24 +66,24 @@ const topic5: TopicManifest = {
     { term: "attacker mindset", definition: "Looking at your own systems the way an attacker would, to find the weakest point before they do. Used for defence, not harm." },
     { term: "assume breach", definition: "The modern defender's stance: work as if an attacker is already inside, and design so that a compromise is detectable and survivable." },
     { term: "zero trust", definition: "Never trusting a user or device just because it is 'inside' the network; verify every access as if it came from outside." },
-    { term: "supply chain attack", definition: "Attacking a trusted supplier or piece of software to reach its many customers at once, as in the SolarWinds case." },
+    { term: "supply chain attack", definition: "Attacking a trusted supplier or piece of software to reach its many customers at once, as in the 3CX case." },
   ],
 
   seeHeading: "When the trusted thing was the attack",
 
   cases: [
     {
-      org: "SolarWinds",
-      year: "2020",
-      headline: "The attack came through a software update you were told to trust",
-      whatHappened: "SolarWinds made network-management software used by thousands of organisations, including large companies and government agencies. Attackers quietly slipped malicious code into a legitimate, digitally signed SolarWinds update. Customers installed it as normal, trusting it because it came from their vendor and was correctly signed. Through that one trusted channel, the attackers reached into a huge number of high-value networks at once.",
-      theMissedMeasure: "The deepest assumption, that signed software from a trusted vendor is safe, was the very thing exploited. It is the case most often cited for why 'assume breach' and zero trust (verify, do not simply trust) became mainstream.",
-      theCost: "Thousands of organisations were exposed, including multiple US government agencies, and the clean-up and investigation ran for years. It reset how the industry thinks about trusting suppliers and updates.",
+      org: "3CX",
+      year: "2023",
+      headline: "A trusted, signed app update was itself the attack",
+      whatHappened: "3CX makes calling software used by hundreds of thousands of organisations. In 2023, attackers slipped malicious code into a legitimate, digitally signed 3CX desktop app, and it went out to customers as a normal update. People installed it trusting it, because it came from their vendor and was correctly signed. More striking still, 3CX itself had been compromised through another trojanised piece of software: an attack on the supplier of a supplier.",
+      theMissedMeasure: "The deepest assumption, that signed software from a trusted vendor is safe, was the very thing exploited. It is a case now cited for why 'assume breach' and zero trust (verify, do not simply trust) are mainstream.",
+      theCost: "Malicious code was delivered through a vendor trusted by more than 600,000 organisations. It is often described as the first clearly documented 'cascading' supply-chain attack, where one trusted supplier was used to poison another.",
       control: "secure-configuration",
-      impact: ["~18,000 organisations installed the tainted update", "multiple US government agencies breached", "a years-long clean-up"],
-      source: "Public record; US government findings and wide reporting, 2020-2021.",
-      brandColor: "#f47b20",
-      news: { headline: "SolarWinds: Why the Sunburst hack is so serious", outlet: "BBC News", date: "December 2020", url: "https://www.bbc.co.uk/news/technology-55368917" },
+      impact: ["a trusted, signed update carried the malware", "600,000+ organisations use 3CX", "a supply-chain attack on a supply chain"],
+      source: "Public record; security-vendor investigations and 2023 reporting.",
+      brandColor: "#0a5cff",
+      news: { headline: "3CX desktop app compromised in a supply-chain attack", outlet: "The Register", date: "March 2023" },
     },
   ],
 
@@ -100,8 +100,8 @@ const topic5: TopicManifest = {
 
   check: {
     explain: {
-      prompt: "Using SolarWinds, explain what 'assume breach' means and why it matters. Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "SolarWinds worked because everyone trusted a signed update from a known vendor, so the attack arrived through the one channel nobody was watching. 'Assume breach' means you stop relying on that kind of blanket trust and instead work as if an attacker is already inside: you verify things that used to be taken on faith, you watch for unusual behaviour even from trusted software, and you limit what any one component can reach. It would not have made SolarWinds impossible, but organisations practising assume breach and zero trust were better placed to detect the strange activity and contain how far it spread.",
+      prompt: "Using 3CX, explain what 'assume breach' means and why it matters. Write a sentence or two, then reveal a model answer.",
+      modelAnswer: "3CX worked because everyone trusted a signed update from a known vendor, so the attack arrived through the one channel nobody was watching. 'Assume breach' means you stop relying on that kind of blanket trust and instead work as if an attacker is already inside: you verify things that used to be taken on faith, you watch for unusual behaviour even from trusted software, and you limit what any one component can reach. It would not have made 3CX impossible, but organisations practising assume breach and zero trust were better placed to notice the strange activity and contain how far it spread.",
     },
     quiz: [
       {
@@ -127,7 +127,7 @@ const topic5: TopicManifest = {
         why: "Assume breach adds the questions 'how will I detect them?' and 'how do I limit what they reach?' on top of prevention, because some attacks will get in.",
       },
       {
-        q: "Why was SolarWinds such a wake-up call?",
+        q: "Why was the 3CX attack such a wake-up call?",
         options: [
           "The software was badly written",
           "A trusted, signed vendor update was the attack, breaking the assumption that trusted software is safe",
@@ -135,7 +135,7 @@ const topic5: TopicManifest = {
           "It only affected one company",
         ],
         answer: 1,
-        why: "The attack rode in through a legitimate, signed update everyone trusted. It pushed 'verify, do not simply trust' (zero trust and assume breach) into the mainstream.",
+        why: "The attack rode in through a legitimate, signed update everyone trusted, and even the vendor had been compromised through another supplier. It reinforced 'verify, do not simply trust'.",
       },
     ],
   },
