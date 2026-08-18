@@ -187,7 +187,9 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const audio = useSignalAudio();
   const storageKey = checkpointStorageKey(manifest.id);
 
-  const [pos, setPos] = useState<BeatPos>(devStartBeat === "incident" ? { beat: "incident", incidentPhase: 1 } : { beat: "transmission" });
+  const [pos, setPos] = useState<BeatPos>(
+    devStartBeat === "incident" ? { beat: "incident", incidentPhase: 1 } : devStartBeat === "catch" ? { beat: "catch" } : { beat: "transmission" },
+  );
   const [intro, setIntro] = useState(!devStartBeat);
   /** Map moment between steps: which row was just stamped. */
   const [mapGate, setMapGate] = useState<number | null>(null);
