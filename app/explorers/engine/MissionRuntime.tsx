@@ -31,6 +31,7 @@ import { BODY, MONO, T } from "./tokens";
 import type {
   AwardEvent,
   BeatPos,
+  CatchThemDef,
   CheckpointEvidence,
   CycleDef,
   MissionCheckpoint,
@@ -52,7 +53,7 @@ import Redact from "../mechanics/Redact";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
-function nextPos(pos: BeatPos): BeatPos {
+function nextPos(pos: BeatPos, hasCatch = false): BeatPos {
   if (pos.beat === "transmission") return { beat: "briefing" };
   if (pos.beat === "briefing") return { beat: "cycle", cycleIndex: 0, stage: "intel" };
   if (pos.beat === "cycle") {
@@ -61,7 +62,9 @@ function nextPos(pos: BeatPos): BeatPos {
     if (pos.cycleIndex < 2) return { beat: "cycle", cycleIndex: (pos.cycleIndex + 1) as 0 | 1 | 2, stage: "intel" };
     return { beat: "incident", incidentPhase: 0 };
   }
-  if (pos.beat === "incident") return { beat: "debrief" };
+  // The must-pass gate sits between the boss and the report, when present.
+  if (pos.beat === "incident") return hasCatch ? { beat: "catch" } : { beat: "debrief" };
+  if (pos.beat === "catch") return { beat: "debrief" };
   if (pos.beat === "debrief") return { beat: "closed" };
   return pos;
 }
@@ -73,6 +76,7 @@ function describePos(pos: BeatPos): string {
     return `SKILL ${pos.cycleIndex + 1} · ${stage}`;
   }
   if (pos.beat === "incident") return "BOSS";
+  if (pos.beat === "catch") return "CATCH THEM";
   if (pos.beat === "debrief") return "MISSION REPORT";
   if (pos.beat === "closed") return "REWARDS";
   return "MISSION START";
@@ -80,6 +84,7 @@ function describePos(pos: BeatPos): string {
 
 function toneFor(pos: BeatPos): string {
   if (pos.beat === "incident") return T.threatRed;
+  if (pos.beat === "catch") return T.threatRed;
   if (pos.beat === "debrief") return T.confirmedGreen;
   if (pos.beat === "closed") return T.clearanceBrass;
   if (pos.beat === "cycle") {
@@ -94,6 +99,7 @@ function stepsDone(pos: BeatPos): number {
   if (pos.beat === "transmission" || pos.beat === "briefing") return 0;
   if (pos.beat === "cycle") return pos.cycleIndex;
   if (pos.beat === "incident") return 3;
+  if (pos.beat === "catch") return 3; // the gate lives inside the boss step
   if (pos.beat === "debrief") return 4;
   return 5;
 }
@@ -267,13 +273,14 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const advance = useCallback(() => {
     audio.click();
     setPos((p) => {
-      const n = nextPos(p);
+      const n = nextPos(p, !!manifest.catchThem);
       if (p.beat === "cycle" && p.stage === "checkpoint") setMapGate(p.cycleIndex);
-      if (p.beat === "incident") setMapGate(3);
+      // Skip the "back to map" beat when the boss flows straight into Catch Them.
+      if (p.beat === "incident" && !manifest.catchThem) setMapGate(3);
       return n;
     });
     window.scrollTo({ top: 0 });
-  }, [audio]);
+  }, [audio, manifest]);
 
   const startMission = () => {
     audio.click();
@@ -438,6 +445,9 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
             )}
             {pos.beat === "incident" && (
               <BossScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} onNext={advance} />
+            )}
+            {pos.beat === "catch" && manifest.catchThem && (
+              <CatchThemStage def={manifest.catchThem} cycles={manifest.cycles} actor={manifest.actor.codename} reduced={reduced} audio={audio} emit={emit} onPass={advance} voiceOn={voiceOn} />
             )}
             {pos.beat === "debrief" && <ReportScene manifest={manifest} reduced={reduced} onNext={advance} />}
             {pos.beat === "closed" && <RewardsScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} xp={xp} onExit={onExit} onNextCase={onNextCase} />}
@@ -902,6 +912,187 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
         </div>
       )}
     </div>
+  );
+}
+
+/* -------------------------------------------------------- catch them */
+
+/**
+ * CATCH THEM — the must-pass case-closer. Fresh fakes mixing all three
+ * skills; the child must catch `def.pass` of them to close the case. A
+ * miss re-teaches only the weakest skill (its LEARN beats) and lets them
+ * try again, unlimited and kind. A showdown, never an exam.
+ */
+function CatchThemStage({ def, cycles, actor, reduced, audio, emit, onPass, voiceOn }: {
+  def: CatchThemDef; cycles: readonly CycleDef[]; actor: string; reduced: boolean;
+  audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onPass: () => void; voiceOn: boolean;
+}) {
+  const scenarios = def.scenarios;
+  const [phase, setPhase] = useState<"intro" | "play" | "reteach" | "passed">("intro");
+  const [idx, setIdx] = useState(0);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [results, setResults] = useState<boolean[]>([]);
+  const [reteachSkill, setReteachSkill] = useState<0 | 1 | 2>(0);
+  const s = scenarios[idx];
+  const caught = results.filter(Boolean).length;
+
+  const begin = () => { audio.click(); setPhase("play"); };
+
+  const pick = (i: number) => {
+    if (picked !== null) return;
+    setPicked(i);
+    const ok = i === s.answer;
+    if (ok) audio.latch(); else audio.thud();
+    setResults((r) => { const n = [...r]; n[idx] = ok; return n; });
+  };
+
+  const next = () => {
+    audio.click();
+    setPicked(null);
+    if (idx + 1 < scenarios.length) { setIdx(idx + 1); return; }
+    // round over — tally
+    const got = scenarios.filter((_, i) => results[i]).length;
+    if (got >= def.pass) {
+      setPhase("passed");
+      audio.stamp();
+      emit({ type: "CHECKPOINT_PASSED", sourceKey: "catch-them", evidence: [] });
+      if (voiceOn && def.voice?.pass) playWren(def.voice.pass, true);
+    } else {
+      // weakest skill = the one missed most (first on a tie)
+      const miss: Record<number, number> = { 0: 0, 1: 0, 2: 0 };
+      scenarios.forEach((sc, i) => { if (!results[i]) miss[sc.skill]++; });
+      const weak = ([0, 1, 2] as const).reduce((a, b) => (miss[b] > miss[a] ? b : a), 0);
+      setReteachSkill(weak);
+      setPhase("reteach");
+      if (voiceOn && def.voice?.fail) playWren(def.voice.fail, true);
+    }
+  };
+
+  const retry = () => { audio.click(); setResults([]); setIdx(0); setPicked(null); setPhase("play"); };
+
+  // intro voice, once
+  useEffect(() => {
+    if (phase === "intro" && voiceOn && def.voice?.intro) playWren(def.voice.intro, true);
+    return () => stopWren();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (phase === "intro") {
+    return (
+      <section style={{ maxWidth: 620, margin: "0 auto", textAlign: "center" }}>
+        <Eyebrow text="Final test · catch them" color={T.threatRed} />
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 18px", textShadow: `0 0 40px ${T.threatRed}33` }}>
+          Prove You Can Catch {actor}
+        </h1>
+        <div style={{ textAlign: "left", marginBottom: 22 }}>
+          <Bubble who="wren" tone={T.threatRed}>{def.intro}</Bubble>
+        </div>
+        <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 20 }}>
+          {scenarios.length} fresh tricks. Catch {def.pass} to close the case.
+        </p>
+        <AmberButton label="BRING IT ON →" onClick={begin} />
+      </section>
+    );
+  }
+
+  if (phase === "reteach") {
+    const cyc = cycles[reteachSkill];
+    const line = def.reteach?.[reteachSkill] ?? `Let's look at "${cyc.title}" one more time.`;
+    return (
+      <section style={{ maxWidth: 640, margin: "0 auto" }}>
+        <Eyebrow text={`He slipped past · Skill ${reteachSkill + 1}`} color={T.actionAmber} />
+        <div style={{ display: "grid", gap: 12, margin: "14px 0 22px" }}>
+          <Bubble who="wren" tone={T.actionAmber}>{line}</Bubble>
+          {cyc.intel.beats.map((b, i) => (
+            <Bubble key={i} who="wren">{b}</Bubble>
+          ))}
+        </div>
+        <AmberButton label="TRY AGAIN →" onClick={retry} />
+      </section>
+    );
+  }
+
+  if (phase === "passed") {
+    return (
+      <section style={{ maxWidth: 620, margin: "0 auto", textAlign: "center", position: "relative" }}>
+        <StampMark text="CAUGHT" visible reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -6, right: 8 }} />
+        <Eyebrow text="Case cracked" color={T.confirmedGreen} />
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 18px", color: T.confirmedGreen }}>
+          You Caught {actor}
+        </h1>
+        <p style={{ fontFamily: MONO, fontSize: 14, color: T.textPrimary, marginBottom: 8 }}>
+          {caught} of {scenarios.length} tricks spotted.
+        </p>
+        <div style={{ textAlign: "left", margin: "18px 0 22px" }}>
+          <Bubble who="wren" tone={T.confirmedGreen}>
+            That's the real thing, Agent. You didn't just watch me do it, you did it yourself. Case closed.
+          </Bubble>
+        </div>
+        <AmberButton label="CLOSE THE CASE →" onClick={onPass} />
+      </section>
+    );
+  }
+
+  // phase === "play"
+  const answered = picked !== null;
+  const ok = answered && picked === s.answer;
+  return (
+    <section style={{ maxWidth: 680, margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+        <Eyebrow text={`Catch them · trick ${idx + 1} of ${scenarios.length}`} color={T.threatRed} />
+        <span style={{ display: "flex", gap: 6 }} aria-label={`${caught} caught so far`}>
+          {scenarios.map((_, i) => {
+            const done = i < results.length && (picked !== null || i < idx);
+            const col = !done || i > idx || (i === idx && !answered) ? T.hairline : results[i] ? T.confirmedGreen : T.threatRed;
+            return <span key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: col, boxShadow: col !== T.hairline ? `0 0 8px ${col}88` : "none" }} />;
+          })}
+        </span>
+      </div>
+
+      <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 4, padding: "18px 20px" }}>
+        <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.6, color: T.textPrimary }}>{s.prompt}</p>
+        {s.evidence && (
+          <p style={{ margin: "12px 0 0", fontFamily: MONO, fontSize: 13.5, color: T.arcCyan, background: T.inkBlack, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "10px 12px", wordBreak: "break-all" }}>
+            {s.evidence}
+          </p>
+        )}
+      </div>
+
+      <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
+        {s.options.map((o, i) => {
+          const isPick = picked === i;
+          const show = answered && (i === s.answer || isPick);
+          const col = i === s.answer ? T.confirmedGreen : T.threatRed;
+          return (
+            <button
+              key={i}
+              onClick={() => pick(i)}
+              className="sr-btn"
+              disabled={answered}
+              style={{
+                textAlign: "left", fontFamily: MONO, fontSize: 14, lineHeight: 1.5,
+                color: show ? col : T.textPrimary,
+                background: show ? `${col}14` : T.panelRaised,
+                border: `1.5px solid ${show ? col : isPick ? T.arcCyan : T.hairline}`,
+                borderRadius: 6, padding: "13px 16px", cursor: answered ? "default" : "pointer",
+                boxShadow: answered ? "none" : `inset 0 1px 0 rgba(255,255,255,0.05)`,
+              }}
+            >
+              {o}
+            </button>
+          );
+        })}
+      </div>
+
+      {answered && (
+        <div style={{ marginTop: 16, borderLeft: `2px solid ${ok ? T.confirmedGreen : T.threatRed}`, paddingLeft: 14 }}>
+          <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: T.textPrimary }}>{ok ? s.right : s.wrong}</p>
+          <div style={{ marginTop: 12 }}>
+            <AmberButton label={idx + 1 < scenarios.length ? "NEXT TRICK →" : "SEE THE VERDICT →"} onClick={next} />
+          </div>
+        </div>
+      )}
+    </section>
   );
 }
 

@@ -342,6 +342,91 @@ export const mission01: MissionManifest = {
     component: Mission01Incident,
   },
 
+  catchThem: {
+    intro:
+      "Right, Agent. From here, I go quiet. Five fresh tricks are coming, some you've never seen. Read each one and make the call yourself. Catch four to close the case.",
+    pass: 4,
+    voice: {
+      intro: "/audio/wren/m01-catch-intro.mp3",
+      pass: "/audio/wren/m01-catch-pass.mp3",
+      fail: "/audio/wren/m01-catch-fail.mp3",
+    },
+    reteach: [
+      "He caught you with the panic trick. Remember, a countdown is there to rush you, not to help you. Watch again.",
+      "He got you with the fake links. The trick's always the same: read the name right before the first slash. Here.",
+      "He switched costumes and fooled you. But his tricks never change. Let's run them one more time.",
+    ],
+    scenarios: [
+      {
+        id: "ct1",
+        skill: 0,
+        prompt: "A pop-up flashes: “WARNING! Your account will be DELETED in 15 minutes. Act NOW!” What's the real giveaway that it's a scam?",
+        options: [
+          "It mentions your account",
+          "The countdown rushing you to act fast",
+          "It uses capital letters",
+        ],
+        answer: 1,
+        right: "Yes. That ticking clock is the whole trick. A real warning never hands you 15 minutes to panic.",
+        wrong: "Look at what it's doing to you. The countdown is there to make you panic and tap before you think.",
+      },
+      {
+        id: "ct2",
+        skill: 1,
+        prompt: "You get a link to “fix” your Roblox account. Which web address is the REAL Roblox?",
+        evidence: "roblox.com/login    ·    roblox-support.net    ·    login-roblox-help.com",
+        options: [
+          "roblox.com/login",
+          "roblox-support.net",
+          "login-roblox-help.com",
+        ],
+        answer: 0,
+        right: "Correct. The real name sits right before the first slash: roblox.com. The other two just borrow the word.",
+        wrong: "Read the part right before the first slash. Only roblox.com is really Roblox. The others are strangers wearing the name.",
+      },
+      {
+        id: "ct3",
+        skill: 0,
+        prompt: "A DM lands: “You won a £50 gift card! Claim it here before it expires.” You never entered anything. What's the smart move?",
+        options: [
+          "Claim it fast before it expires",
+          "Ignore it, you can't win what you never entered",
+          "Reply to ask if it's real",
+        ],
+        answer: 1,
+        right: "Exactly. No entry, no prize. And replying only tells them you're a real person. Just delete it.",
+        wrong: "You never entered a giveaway, so there's no prize. Replying just proves you're real. The safe move is ignore and delete.",
+      },
+      {
+        id: "ct4",
+        skill: 1,
+        prompt: "Which of these is the FAKE, a stranger pretending to be Google?",
+        evidence: "mail.google.com    ·    google-mail-login.com    ·    drive.google.com",
+        options: [
+          "mail.google.com",
+          "google-mail-login.com",
+          "drive.google.com",
+        ],
+        answer: 1,
+        right: "Sharp. mail.google.com and drive.google.com are real parts of google.com. google-mail-login.com just stuffs the word in with dashes.",
+        wrong: "The fake is google-mail-login.com. The real ones end in .google.com. Extra words bolted on with dashes are a costume.",
+      },
+      {
+        id: "ct5",
+        skill: 2,
+        prompt: "Next week the same scammer goes after a homework app instead of a game. What will probably STAY the same?",
+        options: [
+          "The brand name in the message",
+          "The scary countdown and the fake link",
+          "The time of day it's sent",
+        ],
+        answer: 1,
+        right: "Exactly. The costume changes, the tricks don't. The countdown and the fake link are his signature.",
+        wrong: "The disguise changes every time, the brand, the wording. What stays the same is his method: the countdown and the fake link.",
+      },
+    ],
+  },
+
   debrief: {
     report: [
       "You took the fake email apart: the scary countdown, the sneaky hacker, and the fake link.",

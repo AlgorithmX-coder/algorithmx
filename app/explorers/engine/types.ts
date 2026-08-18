@@ -357,6 +357,43 @@ export interface CycleDef {
   checkpoint: { questions: CheckpointQ[] };
 }
 
+/* --------------------------------------------------------- catch them */
+
+export interface CatchScenario {
+  id: string;
+  /** Which skill (cycle index) this tests, so a miss re-teaches the right one. */
+  skill: 0 | 1 | 2;
+  /** The fresh fake/situation the child has never seen before. */
+  prompt: string;
+  /** Optional evidence line shown in a device frame (a link, a message). */
+  evidence?: string;
+  options: string[];
+  answer: number;
+  /** WREN's reaction, right vs wrong. */
+  right: string;
+  wrong: string;
+}
+
+/**
+ * CATCH THEM — the must-pass case-closer (base = Mission 01). After the boss,
+ * the child faces `scenarios` of fresh fakes mixing all three skills, and must
+ * get `pass` of them right to close the case. Missing it re-teaches only the
+ * weakest skill (its LEARN beats) and lets them try again, unlimited and kind:
+ * a showdown with the villain, never an exam. Optional — a mission without a
+ * `catchThem` closes straight from the boss, unchanged.
+ */
+export interface CatchThemDef {
+  /** WREN sets up the showdown. */
+  intro: string;
+  /** How many correct to close the case (e.g. 4 of 5). */
+  pass: number;
+  scenarios: CatchScenario[];
+  /** Kind re-teach lead-in per skill (cycle index), shown before replaying its beats. */
+  reteach?: [string, string, string];
+  /** WREN voice for the intro + pass/fail beats (public/ paths). */
+  voice?: { intro?: string; pass?: string; fail?: string };
+}
+
 /* ---------------------------------------------------------- incident */
 
 export interface IncidentProps {
@@ -393,6 +430,8 @@ export interface MissionManifest {
     phaseNames?: string[];
     component: ComponentType<IncidentProps>;
   };
+  /** Must-pass end gate: fresh fakes the child clears to close the case. Optional. */
+  catchThem?: CatchThemDef;
   debrief: { report: string[]; realWorldMove: string; wrenLine: string };
   dossier: { mo: string; defeatedBy: string; breadcrumb?: string };
   /** WREN VO clips per beat (public/ paths). Played mute-gated at 0.55. */
@@ -402,7 +441,7 @@ export interface MissionManifest {
 /* ------------------------------------------------------- save/resume */
 
 export type BeatPos =
-  | { beat: "transmission" | "briefing" | "debrief" | "closed" }
+  | { beat: "transmission" | "briefing" | "catch" | "debrief" | "closed" }
   | { beat: "cycle"; cycleIndex: 0 | 1 | 2; stage: "intel" | "fieldwork" | "checkpoint" }
   | { beat: "incident"; incidentPhase: number };
 
