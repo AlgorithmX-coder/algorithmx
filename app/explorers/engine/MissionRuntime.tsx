@@ -76,7 +76,7 @@ function describePos(pos: BeatPos): string {
     return `SKILL ${pos.cycleIndex + 1} · ${stage}`;
   }
   if (pos.beat === "incident") return "BOSS";
-  if (pos.beat === "catch") return "CATCH THEM";
+  if (pos.beat === "catch") return "THE TEST";
   if (pos.beat === "debrief") return "MISSION REPORT";
   if (pos.beat === "closed") return "REWARDS";
   return "MISSION START";
@@ -84,7 +84,7 @@ function describePos(pos: BeatPos): string {
 
 function toneFor(pos: BeatPos): string {
   if (pos.beat === "incident") return T.threatRed;
-  if (pos.beat === "catch") return T.threatRed;
+  if (pos.beat === "catch") return T.arcCyan; // a calm exam room, not the alarm-red boss
   if (pos.beat === "debrief") return T.confirmedGreen;
   if (pos.beat === "closed") return T.clearanceBrass;
   if (pos.beat === "cycle") {
@@ -447,7 +447,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
               <BossScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} onNext={advance} />
             )}
             {pos.beat === "catch" && manifest.catchThem && (
-              <CatchThemStage def={manifest.catchThem} cycles={manifest.cycles} actor={manifest.actor.codename} reduced={reduced} audio={audio} emit={emit} onPass={advance} voiceOn={voiceOn} />
+              <CatchThemStage def={manifest.catchThem} actor={manifest.actor.codename} reduced={reduced} audio={audio} emit={emit} onPass={advance} onResit={restart} voiceOn={voiceOn} />
             )}
             {pos.beat === "debrief" && <ReportScene manifest={manifest} reduced={reduced} onNext={advance} />}
             {pos.beat === "closed" && <RewardsScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} xp={xp} onExit={onExit} onNextCase={onNextCase} />}
@@ -915,62 +915,51 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
   );
 }
 
-/* -------------------------------------------------------- catch them */
+/* --------------------------------------------------------- case test */
 
 /**
- * CATCH THEM — the must-pass case-closer. Fresh fakes mixing all three
- * skills; the child must catch `def.pass` of them to close the case. A
- * miss re-teaches only the weakest skill (its LEARN beats) and lets them
- * try again, unlimited and kind. A showdown, never an exam.
+ * CASE TEST — the must-pass end-of-case exam. The child answers every
+ * question BLIND: no right/wrong is shown per question. At the end they see
+ * only their score. `def.pass` or more closes the case; below it, they must
+ * resit the WHOLE case, and are never told which questions they missed.
  */
-function CatchThemStage({ def, cycles, actor, reduced, audio, emit, onPass, voiceOn }: {
-  def: CatchThemDef; cycles: readonly CycleDef[]; actor: string; reduced: boolean;
-  audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onPass: () => void; voiceOn: boolean;
+function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voiceOn }: {
+  def: CatchThemDef; actor: string; reduced: boolean;
+  audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void;
+  onPass: () => void; onResit: () => void; voiceOn: boolean;
 }) {
   const scenarios = def.scenarios;
-  const [phase, setPhase] = useState<"intro" | "play" | "reteach" | "passed">("intro");
+  const [phase, setPhase] = useState<"intro" | "test" | "passed" | "failed">("intro");
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
-  const [results, setResults] = useState<boolean[]>([]);
-  const [reteachSkill, setReteachSkill] = useState<0 | 1 | 2>(0);
+  const [answers, setAnswers] = useState<number[]>([]);
   const s = scenarios[idx];
-  const caught = results.filter(Boolean).length;
+  const score = scenarios.reduce((n, sc, i) => n + (answers[i] === sc.answer ? 1 : 0), 0);
 
-  const begin = () => { audio.click(); setPhase("play"); };
+  const begin = () => { audio.click(); setPhase("test"); };
 
   const pick = (i: number) => {
     if (picked !== null) return;
     setPicked(i);
-    const ok = i === s.answer;
-    if (ok) audio.latch(); else audio.thud();
-    setResults((r) => { const n = [...r]; n[idx] = ok; return n; });
+    setAnswers((a) => { const n = [...a]; n[idx] = i; return n; });
+    audio.click(); // neutral — a test never reveals right/wrong as you go
   };
 
   const next = () => {
-    audio.click();
-    setPicked(null);
-    if (idx + 1 < scenarios.length) { setIdx(idx + 1); return; }
-    // round over — tally
-    const got = scenarios.filter((_, i) => results[i]).length;
+    if (picked === null) return;
+    if (idx + 1 < scenarios.length) { setIdx(idx + 1); setPicked(null); audio.click(); return; }
+    // last question answered — tally (current pick may not be flushed into answers yet)
+    const got = scenarios.reduce((n, sc, i) => n + ((i === idx ? picked : answers[i]) === sc.answer ? 1 : 0), 0);
     if (got >= def.pass) {
-      setPhase("passed");
-      audio.stamp();
-      emit({ type: "CHECKPOINT_PASSED", sourceKey: "catch-them", evidence: [] });
+      setPhase("passed"); audio.stamp();
+      emit({ type: "CHECKPOINT_PASSED", sourceKey: "case-test", evidence: [] });
       if (voiceOn && def.voice?.pass) playWren(def.voice.pass, true);
     } else {
-      // weakest skill = the one missed most (first on a tie)
-      const miss: Record<number, number> = { 0: 0, 1: 0, 2: 0 };
-      scenarios.forEach((sc, i) => { if (!results[i]) miss[sc.skill]++; });
-      const weak = ([0, 1, 2] as const).reduce((a, b) => (miss[b] > miss[a] ? b : a), 0);
-      setReteachSkill(weak);
-      setPhase("reteach");
+      setPhase("failed"); audio.thud();
       if (voiceOn && def.voice?.fail) playWren(def.voice.fail, true);
     }
   };
 
-  const retry = () => { audio.click(); setResults([]); setIdx(0); setPicked(null); setPhase("play"); };
-
-  // intro voice, once
   useEffect(() => {
     if (phase === "intro" && voiceOn && def.voice?.intro) playWren(def.voice.intro, true);
     return () => stopWren();
@@ -980,34 +969,17 @@ function CatchThemStage({ def, cycles, actor, reduced, audio, emit, onPass, voic
   if (phase === "intro") {
     return (
       <section style={{ maxWidth: 620, margin: "0 auto", textAlign: "center" }}>
-        <Eyebrow text="Final test · catch them" color={T.threatRed} />
-        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 18px", textShadow: `0 0 40px ${T.threatRed}33` }}>
-          Prove You Can Catch {actor}
+        <Eyebrow text="Final step · the test" color={T.arcCyan} />
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 18px" }}>
+          Time for the Test
         </h1>
         <div style={{ textAlign: "left", marginBottom: 22 }}>
-          <Bubble who="wren" tone={T.threatRed}>{def.intro}</Bubble>
+          <Bubble who="wren" tone={T.arcCyan}>{def.intro}</Bubble>
         </div>
         <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 20 }}>
-          {scenarios.length} fresh tricks. Catch {def.pass} to close the case.
+          {scenarios.length} questions. Get {def.pass} right to close the case. Miss it and you sit the whole case again.
         </p>
-        <AmberButton label="BRING IT ON →" onClick={begin} />
-      </section>
-    );
-  }
-
-  if (phase === "reteach") {
-    const cyc = cycles[reteachSkill];
-    const line = def.reteach?.[reteachSkill] ?? `Let's look at "${cyc.title}" one more time.`;
-    return (
-      <section style={{ maxWidth: 640, margin: "0 auto" }}>
-        <Eyebrow text={`He slipped past · Skill ${reteachSkill + 1}`} color={T.actionAmber} />
-        <div style={{ display: "grid", gap: 12, margin: "14px 0 22px" }}>
-          <Bubble who="wren" tone={T.actionAmber}>{line}</Bubble>
-          {cyc.intel.beats.map((b, i) => (
-            <Bubble key={i} who="wren">{b}</Bubble>
-          ))}
-        </div>
-        <AmberButton label="TRY AGAIN →" onClick={retry} />
+        <AmberButton label="START THE TEST →" onClick={begin} />
       </section>
     );
   }
@@ -1015,17 +987,17 @@ function CatchThemStage({ def, cycles, actor, reduced, audio, emit, onPass, voic
   if (phase === "passed") {
     return (
       <section style={{ maxWidth: 620, margin: "0 auto", textAlign: "center", position: "relative" }}>
-        <StampMark text="CAUGHT" visible reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -6, right: 8 }} />
-        <Eyebrow text="Case cracked" color={T.confirmedGreen} />
-        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 18px", color: T.confirmedGreen }}>
-          You Caught {actor}
+        <StampMark text="PASSED" visible reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -6, right: 8 }} />
+        <Eyebrow text="Test passed" color={T.confirmedGreen} />
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 14px", color: T.confirmedGreen }}>
+          You Passed
         </h1>
-        <p style={{ fontFamily: MONO, fontSize: 14, color: T.textPrimary, marginBottom: 8 }}>
-          {caught} of {scenarios.length} tricks spotted.
+        <p style={{ fontFamily: MONO, fontSize: 18, fontWeight: 700, color: T.textPrimary, marginBottom: 18 }}>
+          You scored {score} out of {scenarios.length}.
         </p>
-        <div style={{ textAlign: "left", margin: "18px 0 22px" }}>
+        <div style={{ textAlign: "left", margin: "0 0 22px" }}>
           <Bubble who="wren" tone={T.confirmedGreen}>
-            That's the real thing, Agent. You didn't just watch me do it, you did it yourself. Case closed.
+            That's the real thing, Agent. You earned this one yourself. Case closed.
           </Bubble>
         </div>
         <AmberButton label="CLOSE THE CASE →" onClick={onPass} />
@@ -1033,17 +1005,39 @@ function CatchThemStage({ def, cycles, actor, reduced, audio, emit, onPass, voic
     );
   }
 
-  // phase === "play"
+  if (phase === "failed") {
+    return (
+      <section style={{ maxWidth: 620, margin: "0 auto", textAlign: "center" }}>
+        <Eyebrow text="Not this time" color={T.actionAmber} />
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 14px", color: T.actionAmber }}>
+          Not Quite Yet
+        </h1>
+        <p style={{ fontFamily: MONO, fontSize: 18, fontWeight: 700, color: T.textPrimary, marginBottom: 6 }}>
+          You scored {score} out of {scenarios.length}.
+        </p>
+        <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 18 }}>
+          You needed {def.pass} to pass.
+        </p>
+        <div style={{ textAlign: "left", margin: "0 0 22px" }}>
+          <Bubble who="wren" tone={T.actionAmber}>
+            Close, but not there yet. Run the case again and it'll stick. No shortcuts, that's how you really learn it.
+          </Bubble>
+        </div>
+        <AmberButton label="RESIT THE CASE →" onClick={onResit} />
+      </section>
+    );
+  }
+
+  // phase === "test" — questions answered blind, no right/wrong shown
   const answered = picked !== null;
-  const ok = answered && picked === s.answer;
   return (
     <section style={{ maxWidth: 680, margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-        <Eyebrow text={`Catch them · trick ${idx + 1} of ${scenarios.length}`} color={T.threatRed} />
-        <span style={{ display: "flex", gap: 6 }} aria-label={`${caught} caught so far`}>
+        <Eyebrow text={`The test · question ${idx + 1} of ${scenarios.length}`} color={T.arcCyan} />
+        <span style={{ display: "flex", gap: 6 }} aria-label={`question ${idx + 1} of ${scenarios.length}`}>
           {scenarios.map((_, i) => {
-            const done = i < results.length && (picked !== null || i < idx);
-            const col = !done || i > idx || (i === idx && !answered) ? T.hairline : results[i] ? T.confirmedGreen : T.threatRed;
+            const isAnswered = answers[i] != null || (i === idx && answered);
+            const col = isAnswered ? T.arcCyan : i === idx ? T.actionAmber : T.hairline;
             return <span key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: col, boxShadow: col !== T.hairline ? `0 0 8px ${col}88` : "none" }} />;
           })}
         </span>
@@ -1061,8 +1055,6 @@ function CatchThemStage({ def, cycles, actor, reduced, audio, emit, onPass, voic
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
         {s.options.map((o, i) => {
           const isPick = picked === i;
-          const show = answered && (i === s.answer || isPick);
-          const col = i === s.answer ? T.confirmedGreen : T.threatRed;
           return (
             <button
               key={i}
@@ -1071,10 +1063,11 @@ function CatchThemStage({ def, cycles, actor, reduced, audio, emit, onPass, voic
               disabled={answered}
               style={{
                 textAlign: "left", fontFamily: MONO, fontSize: 14, lineHeight: 1.5,
-                color: show ? col : T.textPrimary,
-                background: show ? `${col}14` : T.panelRaised,
-                border: `1.5px solid ${show ? col : isPick ? T.arcCyan : T.hairline}`,
+                color: isPick ? T.arcCyan : T.textPrimary,
+                background: isPick ? `${T.arcCyan}14` : T.panelRaised,
+                border: `1.5px solid ${isPick ? T.arcCyan : T.hairline}`,
                 borderRadius: 6, padding: "13px 16px", cursor: answered ? "default" : "pointer",
+                opacity: answered && !isPick ? 0.5 : 1,
                 boxShadow: answered ? "none" : `inset 0 1px 0 rgba(255,255,255,0.05)`,
               }}
             >
@@ -1085,11 +1078,8 @@ function CatchThemStage({ def, cycles, actor, reduced, audio, emit, onPass, voic
       </div>
 
       {answered && (
-        <div style={{ marginTop: 16, borderLeft: `2px solid ${ok ? T.confirmedGreen : T.threatRed}`, paddingLeft: 14 }}>
-          <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: T.textPrimary }}>{ok ? s.right : s.wrong}</p>
-          <div style={{ marginTop: 12 }}>
-            <AmberButton label={idx + 1 < scenarios.length ? "NEXT TRICK →" : "SEE THE VERDICT →"} onClick={next} />
-          </div>
+        <div style={{ marginTop: 16 }}>
+          <AmberButton label={idx + 1 < scenarios.length ? "NEXT QUESTION →" : "FINISH THE TEST →"} onClick={next} />
         </div>
       )}
     </section>

@@ -361,35 +361,31 @@ export interface CycleDef {
 
 export interface CatchScenario {
   id: string;
-  /** Which skill (cycle index) this tests, so a miss re-teaches the right one. */
+  /** Which taught skill (cycle index) this question checks. Every question MUST be
+   *  100% answerable from that skill's LEARN material — no outside knowledge. */
   skill: 0 | 1 | 2;
   /** The fresh fake/situation the child has never seen before. */
   prompt: string;
-  /** Optional evidence line shown in a device frame (a link, a message). */
+  /** Optional evidence line shown in a mono panel (a link, a message). */
   evidence?: string;
   options: string[];
   answer: number;
-  /** WREN's reaction, right vs wrong. */
-  right: string;
-  wrong: string;
 }
 
 /**
- * CATCH THEM — the must-pass case-closer (base = Mission 01). After the boss,
- * the child faces `scenarios` of fresh fakes mixing all three skills, and must
- * get `pass` of them right to close the case. Missing it re-teaches only the
- * weakest skill (its LEARN beats) and lets them try again, unlimited and kind:
- * a showdown with the villain, never an exam. Optional — a mission without a
- * `catchThem` closes straight from the boss, unchanged.
+ * CASE TEST — the must-pass end-of-case exam (base = Mission 01). After the
+ * boss, the child answers `scenarios` fresh questions BLIND (no right/wrong
+ * shown per question). At the end they see only their score: `pass` or more
+ * closes the case; below `pass` they must resit the WHOLE case (lessons +
+ * test), and are never told which questions they missed. Optional — a mission
+ * without a `catchThem` closes straight from the boss, unchanged.
  */
 export interface CatchThemDef {
-  /** WREN sets up the showdown. */
+  /** WREN sets up the test. */
   intro: string;
-  /** How many correct to close the case (e.g. 4 of 5). */
+  /** How many correct to pass and close the case (e.g. 4 of 5). */
   pass: number;
   scenarios: CatchScenario[];
-  /** Kind re-teach lead-in per skill (cycle index), shown before replaying its beats. */
-  reteach?: [string, string, string];
   /** WREN voice for the intro + pass/fail beats (public/ paths). */
   voice?: { intro?: string; pass?: string; fail?: string };
 }
