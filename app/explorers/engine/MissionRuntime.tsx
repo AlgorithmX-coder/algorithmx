@@ -652,6 +652,11 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   const [hintShown, setHintShown] = useState(false);
   const settled = replies.some((r) => r.ok);
   const beatsDone = shown >= beats.length;
+  // Force reading: a short per-beat timer (scaled to the beat's length) must
+  // pass before the next beat can be revealed, so kids can't machine-gun
+  // "tap for more" without reading.
+  const readMs = (t: string) => Math.min(5000, Math.max(2000, Math.round((t.trim().split(/\s+/).filter(Boolean).length || 1) * 260)));
+  const [ready, setReady] = useState(reduced);
 
   // Play the current beat's clip; when it finishes, reveal the next one.
   useEffect(() => {
@@ -681,8 +686,17 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   }, [shown, narrated]);
   // Silence WREN when leaving LEARN (e.g. into PLAY).
   useEffect(() => () => stopWren(), []);
+  // Reset the read-timer whenever a new beat appears; this gates "tap for more".
+  useEffect(() => {
+    if (reduced || beatsDone) { setReady(true); return; }
+    setReady(false);
+    const t = setTimeout(() => setReady(true), readMs(beats[shown - 1] ?? ""));
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shown, reduced, beatsDone]);
 
   const more = () => {
+    if (!ready) return;
     audio.click();
     setShown((s) => Math.min(beats.length, s + 1));
   };
@@ -709,11 +723,18 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
           </Bubble>
         ))}
 
-        {!beatsDone && (
+        {!beatsDone && (ready ? (
           <button onClick={more} className="sr-btn sr-choice" style={{ justifySelf: "start", display: "flex", gap: 10, alignItems: "center", background: T.panel, border: `1px solid ${T.arcCyan}55`, borderRadius: 12, padding: "10px 16px", cursor: "pointer", color: T.arcCyan, fontFamily: MONO, fontSize: 12.5, letterSpacing: "0.06em" }}>
             <TypingDots /> TAP FOR MORE
           </button>
-        )}
+        ) : (
+          <div style={{ justifySelf: "start", display: "flex", flexDirection: "column", gap: 6, width: 150 }} aria-label="reading">
+            <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>READING…</span>
+            <span style={{ display: "block", height: 3, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+              <span key={shown} style={{ display: "block", height: "100%", background: T.arcCyan, transformOrigin: "left", transform: "scaleX(0)", animation: `sr-read ${readMs(beats[shown - 1] ?? "")}ms linear forwards` }} />
+            </span>
+          </div>
+        ))}
 
         {beatsDone && (
           <Bubble who="wren" tone={T.actionAmber}>

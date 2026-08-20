@@ -407,6 +407,10 @@ export function EngineStyles() {
       .sr-wavebar { animation: srWave 0.9s cubic-bezier(0.2, 0, 0, 1) infinite alternate; }
       @keyframes srWave { from { height: 4px; } to { height: 14px; } }
 
+      /* lesson read-timer fill — gates "tap for more" so kids read the beat */
+      @keyframes sr-read { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      @media (prefers-reduced-motion: reduce) { .sr-read-instant { animation: none !important; } }
+
       .sr-tell, .sr-decoy {
         background: none; border: none; padding: 0 2px; margin: 0;
         font: inherit; color: inherit; cursor: pointer; text-align: left;
