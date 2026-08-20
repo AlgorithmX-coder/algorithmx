@@ -45,7 +45,7 @@ export const mission01: MissionManifest = {
       "Find out who a link really goes to",
       "Learn the scammer's habits",
     ],
-    wrenLine: "Three quick skills, then we catch him. Ready?",
+    wrenLine: "Three quick skills, then a test to close the case. Every answer is hidden in the lessons, so pay close attention. Ready?",
   },
 
   cycles: [
@@ -344,71 +344,74 @@ export const mission01: MissionManifest = {
 
   catchThem: {
     intro:
-      "Okay Agent, this is the test. Five questions, and I won't tell you how you're doing until the end. Get four right and the case is closed. Miss it, and you'll run the whole case again. Take your time.",
+      "Okay Agent, this is the test. Five questions, and every answer is somewhere in the three lessons you just did. I won't tell you how you're doing until the end. Get four right to close the case. Miss it, and you sit the whole case again.",
     pass: 4,
     voice: {
       intro: "/audio/wren/m01-catch-intro.mp3",
       pass: "/audio/wren/m01-catch-pass.mp3",
       fail: "/audio/wren/m01-catch-fail.mp3",
     },
-    // Every question is answerable from this case's lessons only:
-    // skill 0 = a countdown rushes you to panic; skill 1 = the name right
-    // before the first slash is who a link really goes to; skill 2 = scammers
-    // reuse the same tricks (countdown + fake link) in new disguises.
+    // 4 recall questions + 1 "use it". Every answer is stated in this case's
+    // lessons, line by line:
+    //  ct1 <- skill 1 beat "Every one of his tricks starts the same way: with a countdown."
+    //  ct2 <- skill 1 beat "It's only there to make you panic and rush."
+    //  ct3 <- skill 2 beat "The important bit is right before the first single slash."
+    //  ct4 <- skill 3 beat "The disguise changes. But the tricks stay exactly the same."
+    //  ct5 <- USE IT: apply the skill 2 rule to a fresh link.
     scenarios: [
       {
         id: "ct1",
         skill: 0,
-        prompt: "A pop-up says: “Your account closes in 10 minutes. Verify NOW.” What is the trick here?",
+        prompt: "In the lesson, how does nearly every one of Phantom Hook's tricks start?",
         options: [
-          "The 10-minute countdown, to make you panic and rush",
-          "That it is a pop-up and not an email",
-          "That it uses the word account",
+          "With a countdown",
+          "With a friendly hello",
+          "With your real name",
         ],
         answer: 0,
       },
       {
         id: "ct2",
-        skill: 1,
-        prompt: "You get a link to fix your GameHub account. Which web address really belongs to GameHub?",
-        evidence: "gamehub.com/account    ·    gamehub-fix.net    ·    account-gamehub-help.com",
+        skill: 0,
+        prompt: "The lesson said the countdown isn't real. So what is it only there to do?",
         options: [
-          "gamehub.com/account",
-          "gamehub-fix.net",
-          "account-gamehub-help.com",
+          "Make you panic and rush",
+          "Tell you the real deadline",
+          "Count how many people saw it",
         ],
         answer: 0,
       },
       {
         id: "ct3",
         skill: 1,
-        prompt: "A button says “Open GameHub”, but the address underneath it is gh-secure-login.net. Where does it really go?",
+        prompt: "To find out who a link REALLY goes to, which part of the web address do you read?",
         options: [
-          "To a stranger's site, not GameHub",
-          "To GameHub, because the button says so",
-          "To your email inbox",
+          "The part right before the first slash",
+          "The very last word of the address",
+          "The first word after www",
         ],
         answer: 0,
       },
       {
         id: "ct4",
         skill: 2,
-        prompt: "Next week the same scammer goes after a homework app instead of a game. What will probably STAY the same?",
+        prompt: "The lesson said a scammer's disguise changes every time. What stays exactly the same?",
         options: [
-          "The scary countdown and the fake link",
-          "The name of the app in the message",
-          "The time of day it is sent",
+          "His tricks, like the countdown and the fake link",
+          "The name of the game or app",
+          "The day of the week he strikes",
         ],
         answer: 0,
       },
       {
         id: "ct5",
-        skill: 0,
-        prompt: "Why do these scams almost always give you a short deadline or countdown?",
+        skill: 1,
+        prompt: "Now use it. Read the name right before the first slash. Who does this link really belong to?",
+        evidence: "gamehub-rewards.net/claim",
         options: [
-          "To make you rush and stop thinking",
-          "Because accounts really do expire that fast",
-          "To be helpful and remind you",
+          "A stranger's site, not GameHub",
+          "GameHub, because it says gamehub",
+          "You can't tell from the address",
         ],
         answer: 0,
       },
