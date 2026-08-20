@@ -72,7 +72,7 @@ function nextPos(pos: BeatPos, hasCatch = false): BeatPos {
 /** Kid-plain position label for the HUD. */
 function describePos(pos: BeatPos): string {
   if (pos.beat === "cycle") {
-    const stage = pos.stage === "intel" ? "LEARN" : pos.stage === "fieldwork" ? "PLAY" : "QUICK QUIZ";
+    const stage = pos.stage === "intel" ? "LEARN" : pos.stage === "fieldwork" ? "PLAY" : "SKILL CHECK";
     return `SKILL ${pos.cycleIndex + 1} · ${stage}`;
   }
   if (pos.beat === "incident") return "BOSS";
@@ -616,7 +616,7 @@ function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, vo
             <div style={{ fontSize: 13, color: T.textSecondary }}>{cycle.promise ?? cycle.concept}</div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            {["LEARN", "PLAY", "QUIZ"].map((k, i) => {
+            {["LEARN", "PLAY", "CHECK"].map((k, i) => {
               const active = i === stageIndex;
               const stageDone = i < stageIndex;
               return (
@@ -823,97 +823,108 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
   );
 }
 
-/* QUICK QUIZ — chat quiz, plain label */
+/* SKILL CHECK — blind, must-pass gate. Four options, no right/wrong shown per
+   question; the next skill stays locked until EVERY answer is right. A miss
+   re-teaches this skill (replays its beats) and sends him back through the
+   check. No tapping-until-green. */
 function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
   const questions = cycle.checkpoint.questions;
-  const [qIndex, setQIndex] = useState(0);
-  const [attempts, setAttempts] = useState(1);
-  const [evidence, setEvidence] = useState<CheckpointEvidence[]>([]);
-  const [passed, setPassed] = useState(false);
-  const [thread, setThread] = useState<{ who: "wren" | "you"; text: string; ok?: boolean }[]>([
-    { who: "wren", text: "Quick quiz. Two questions. Show me you've got it." },
-  ]);
-  const q = questions[Math.min(qIndex, questions.length - 1)];
-  const WRONG_LINES = ["Not that one. Think about what you just saw.", "Close. Read the question one more time."];
+  const [phase, setPhase] = useState<"check" | "reteach" | "passed">("check");
+  const [idx, setIdx] = useState(0);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const q = questions[idx];
 
-  const choose = (i: number) => {
-    if (passed) return;
-    const text = q.options[i];
-    if (i === q.answer) {
-      audio.latch();
-      const record: CheckpointEvidence = { questionId: q.id, answerIndex: i, attempts };
-      const nextEvidence = [...evidence, record];
-      const isLast = qIndex + 1 >= questions.length;
-      setThread((t) => [...t, { who: "you", text, ok: true }, { who: "wren", text: isLast ? "That's both. Quiz passed." : "Right. Next question." }]);
-      if (isLast) {
-        setEvidence(nextEvidence);
-        setPassed(true);
-        audio.stamp();
-        emit({ type: "CHECKPOINT_PASSED", sourceKey: `cycle-${cycleIndex}`, evidence: nextEvidence });
-      } else {
-        setEvidence(nextEvidence);
-        setQIndex(qIndex + 1);
-        setAttempts(1);
-      }
+  const pick = (i: number) => {
+    if (picked !== null) return;
+    setPicked(i);
+    setAnswers((a) => { const n = [...a]; n[idx] = i; return n; });
+    audio.click(); // blind — never reveal right/wrong as you go
+  };
+
+  const next = () => {
+    if (picked === null) return;
+    if (idx + 1 < questions.length) { setIdx(idx + 1); setPicked(null); audio.click(); return; }
+    const allRight = questions.every((qq, i) => (i === idx ? picked : answers[i]) === qq.answer);
+    if (allRight) {
+      setPhase("passed"); audio.stamp();
+      emit({
+        type: "CHECKPOINT_PASSED",
+        sourceKey: `cycle-${cycleIndex}`,
+        evidence: questions.map((qq, i) => ({ questionId: qq.id, answerIndex: (i === idx ? picked : answers[i]) ?? -1, attempts: 1 })),
+      });
     } else {
-      audio.thud();
-      setAttempts((a) => a + 1);
-      setThread((t) => [...t, { who: "you", text, ok: false }, { who: "wren", text: WRONG_LINES[(attempts - 1) % WRONG_LINES.length] }]);
+      setPhase("reteach"); audio.thud();
     }
   };
 
-  const answered = new Set(thread.filter((m) => m.who === "you").map((m) => m.text));
+  const retry = () => { audio.click(); setAnswers([]); setIdx(0); setPicked(null); setPhase("check"); };
 
+  if (phase === "reteach") {
+    return (
+      <section style={{ maxWidth: 640, margin: "0 auto" }}>
+        <Eyebrow text={`Not yet · ${cycle.title}`} color={T.actionAmber} />
+        <div style={{ display: "grid", gap: 12, margin: "14px 0 22px" }}>
+          <Bubble who="wren" tone={T.actionAmber}>Not quite. Let's go over it once more, and this time listen for the answers.</Bubble>
+          {cycle.intel.beats.map((b, i) => (<Bubble key={i} who="wren">{b}</Bubble>))}
+        </div>
+        <AmberButton label="TRY THE CHECK AGAIN →" onClick={retry} />
+      </section>
+    );
+  }
+
+  if (phase === "passed") {
+    return (
+      <section style={{ maxWidth: 620, margin: "0 auto", position: "relative", textAlign: "center" }}>
+        <StampMark text="PASSED" visible reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -8, right: 8 }} />
+        <Eyebrow text="Skill check passed" color={T.confirmedGreen} />
+        <p style={{ fontFamily: MONO, fontSize: 16, color: T.confirmedGreen, margin: "14px 0 20px" }}>
+          All {questions.length} right. Skill {cycleIndex + 1} locked in.
+        </p>
+        <AmberButton label="NEXT →" onClick={onNext} />
+      </section>
+    );
+  }
+
+  // phase "check" — blind, four options, must get every one right
+  const answered = picked !== null;
   return (
-    <div style={{ maxWidth: 700, margin: "0 auto", position: "relative" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
-        <Eyebrow text="Quick quiz" color={T.confirmedGreen} />
-        <span style={{ fontFamily: MONO, fontSize: 12, color: passed ? T.confirmedGreen : T.textSecondary }}>
-          {Math.min(qIndex + (passed ? 1 : 0), questions.length)}/{questions.length}
+    <section style={{ maxWidth: 680, margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+        <Eyebrow text={`Skill check · question ${idx + 1} of ${questions.length}`} color={T.confirmedGreen} />
+        <span style={{ display: "flex", gap: 6 }} aria-label={`question ${idx + 1} of ${questions.length}`}>
+          {questions.map((_, i) => {
+            const done = answers[i] != null || (i === idx && answered);
+            const col = done ? T.confirmedGreen : i === idx ? T.actionAmber : T.hairline;
+            return <span key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: col, boxShadow: col !== T.hairline ? `0 0 8px ${col}88` : "none" }} />;
+          })}
         </span>
       </div>
-      <div style={{ display: "grid", gap: 14 }}>
-        {thread.map((m, i) =>
-          m.who === "wren" ? (
-            <Bubble key={i} who="wren" tone={i === 0 ? T.confirmedGreen : undefined}>
-              {m.text}
-            </Bubble>
-          ) : (
-            <div key={i} className="sr-msg" style={{ display: "flex", gap: 12, flexDirection: "row-reverse", alignItems: "flex-end" }}>
-              <Face who="you" />
-              <div style={{ maxWidth: "78%", background: m.ok ? `${T.confirmedGreen}12` : `${T.threatRed}10`, border: `1px solid ${m.ok ? T.confirmedGreen : T.threatRed}88`, borderRadius: "14px 14px 3px 14px", padding: "12px 16px", fontSize: 16, lineHeight: 1.6 }}>
-                {m.text}
-              </div>
-            </div>
-          ),
-        )}
-        {!passed && (
-          <Bubble who="wren" tone={T.confirmedGreen}>
-            <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.confirmedGreen, marginBottom: 6 }}>
-              QUESTION {qIndex + 1} OF {questions.length}
-            </span>
-            {q.question}
-          </Bubble>
-        )}
-        {!passed && (
-          <div className="sr-msg" style={{ display: "grid", gap: 10, justifyItems: "end" }}>
-            {q.options.map((o, i) =>
-              answered.has(o) ? null : (
-                <button key={o} onClick={() => choose(i)} className="sr-btn sr-choice" style={{ textAlign: "right", fontSize: 15.5, lineHeight: 1.55, color: T.confirmedGreen, background: `${T.confirmedGreen}0A`, border: `1px solid ${T.confirmedGreen}55`, borderRadius: "14px 14px 3px 14px", padding: "13px 17px", cursor: "pointer", maxWidth: "82%" }}>
-                  {o}
-                </button>
-              ),
-            )}
-          </div>
-        )}
+      <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 4, padding: "18px 20px" }}>
+        <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.6, color: T.textPrimary }}>{q.question}</p>
       </div>
-      <StampMark text="PASSED" visible={passed} reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -10, right: 8 }} />
-      {passed && (
-        <div className="sr-msg" style={{ marginTop: 22 }}>
-          <AmberButton label="BACK TO THE MAP →" onClick={onNext} />
+      <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
+        {q.options.map((o, i) => {
+          const isPick = picked === i;
+          return (
+            <button key={i} onClick={() => pick(i)} className="sr-btn" disabled={answered}
+              style={{
+                textAlign: "left", fontFamily: MONO, fontSize: 14, lineHeight: 1.5,
+                color: isPick ? T.arcCyan : T.textPrimary, background: isPick ? `${T.arcCyan}14` : T.panelRaised,
+                border: `1.5px solid ${isPick ? T.arcCyan : T.hairline}`, borderRadius: 6, padding: "13px 16px",
+                cursor: answered ? "default" : "pointer", opacity: answered && !isPick ? 0.5 : 1,
+              }}>
+              {o}
+            </button>
+          );
+        })}
+      </div>
+      {answered && (
+        <div style={{ marginTop: 16 }}>
+          <AmberButton label={idx + 1 < questions.length ? "NEXT QUESTION →" : "FINISH THE CHECK →"} onClick={next} />
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

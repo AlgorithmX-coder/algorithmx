@@ -100,7 +100,7 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
           <Bubble who="wren" tone={T.confirmedGreen}>
             {payload.doneLine}
           </Bubble>
-          <AmberButton label="QUICK QUIZ →" onClick={() => onEvent({ kind: "COMPLETED", mastery: !missed })} />
+          <AmberButton label="SKILL CHECK →" onClick={() => onEvent({ kind: "COMPLETED", mastery: !missed })} />
         </div>
       )}
     </section>
