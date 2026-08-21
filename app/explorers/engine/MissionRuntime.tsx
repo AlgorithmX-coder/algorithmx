@@ -14,7 +14,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { playWren, stopWren, useSignalAudio } from "./audio";
+import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
 import {
   AmberButton,
   Bubble,
@@ -353,6 +353,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
 
   const tone = mapGate !== null ? T.confirmedGreen : toneFor(pos);
   const done = stepsDone(pos);
+  const speaking = useWrenSpeaking();
 
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
@@ -463,6 +464,17 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
           </div>
         )}
       </div>
+
+      {/* While WREN is talking, lock out every click in the content (they can't
+          tap ahead or trigger another line). The HUD voice toggle sits above
+          this (z 2), so muting is always the escape. Auto-clears when she ends. */}
+      {speaking && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 1, cursor: "default", background: "transparent" }}>
+          <div style={{ position: "fixed", bottom: 22, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 10, alignItems: "center", background: "rgba(8,14,26,0.92)", border: `1px solid ${T.arcCyan}55`, borderRadius: 999, padding: "9px 18px", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.arcCyan, boxShadow: `0 0 22px ${T.arcCyan}22` }}>
+            <TypingDots /> WREN IS SPEAKING
+          </div>
+        </div>
+      )}
 
       {/* dev tools (event ledger + restart) — hidden in production so kids never see them */}
       {process.env.NODE_ENV !== "production" && (

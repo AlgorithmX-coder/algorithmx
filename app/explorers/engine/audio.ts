@@ -9,8 +9,29 @@
  * the Heroes lesson).
  */
 
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, useSyncExternalStore } from "react";
 import type { SignalAudio } from "./types";
+
+/* ---- "is WREN speaking" signal, so the UI can lock clicks while she talks -- */
+let speaking = false;
+let safetyTimer: ReturnType<typeof setTimeout> | null = null;
+const speakListeners = new Set<() => void>();
+function setSpeaking(v: boolean) {
+  if (speaking === v) return;
+  speaking = v;
+  speakListeners.forEach((l) => l());
+}
+export function subscribeSpeaking(l: () => void) {
+  speakListeners.add(l);
+  return () => { speakListeners.delete(l); };
+}
+export function isWrenSpeaking() {
+  return speaking;
+}
+/** React hook: true while a WREN line is playing. */
+export function useWrenSpeaking() {
+  return useSyncExternalStore(subscribeSpeaking, isWrenSpeaking, () => false);
+}
 
 /*
  * WREN voice player. Deliberately self-implements the two rules that
@@ -20,18 +41,35 @@ import type { SignalAudio } from "./types";
  */
 let wrenEl: HTMLAudioElement | null = null;
 
+function clearSafety() {
+  if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
+}
+
 export function playWren(url: string, enabled: boolean, onEnded?: () => void) {
   if (typeof window === "undefined" || !enabled) return;
   try {
     wrenEl?.pause();
+    clearSafety();
     wrenEl = new Audio(url);
     wrenEl.volume = 0.55;
+    setSpeaking(true); // lock the UI while she talks
+    const done = () => { setSpeaking(false); clearSafety(); };
     // Narrator-led lessons advance when the clip finishes. `ended` fires only on
     // natural completion, never on pause()/stop, so auto-advance can't double-fire.
-    if (onEnded) wrenEl.onended = onEnded;
-    void wrenEl.play().catch(() => {});
+    wrenEl.onended = () => { done(); onEnded?.(); };
+    wrenEl.onerror = done;
+    // Refine the unlock to the real clip length once known; hard cap as a backstop
+    // so a stuck/blocked clip can never leave the UI locked forever.
+    wrenEl.onloadedmetadata = () => {
+      if (!wrenEl) return;
+      const ms = Number.isFinite(wrenEl.duration) ? wrenEl.duration * 1000 + 900 : 20000;
+      clearSafety();
+      safetyTimer = setTimeout(done, ms);
+    };
+    safetyTimer = setTimeout(done, 20000);
+    void wrenEl.play().catch(() => done()); // autoplay blocked -> don't lock
   } catch {
-    /* audio unavailable — mission plays silent */
+    setSpeaking(false); /* audio unavailable — mission plays silent */
   }
 }
 
@@ -39,6 +77,8 @@ export function stopWren() {
   try {
     wrenEl?.pause();
   } catch {}
+  clearSafety();
+  setSpeaking(false);
 }
 
 export function useSignalAudio(): SignalAudio {
