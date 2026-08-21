@@ -334,6 +334,36 @@ export interface CheckpointQ {
   answer: number;
 }
 
+export interface ArtifactHotspot {
+  id: string;
+  /** Short callout header ("The countdown"). */
+  label: string;
+  /** The teaching that appears when this spot is tapped. */
+  reveal: string;
+  /** WREN voice for the reveal (public/ path). */
+  audio?: string;
+}
+
+/**
+ * ARTIFACT lesson — an alternative to chat-bubble beats. The real scam
+ * message fills the screen; the child taps its suspicious parts and the
+ * teaching pops ON the message. They uncover the lesson by exploring, so
+ * nothing is "dumped at the end". One of the per-case delivery styles: a
+ * cycle uses this when `intel.artifact` is set, otherwise it uses `beats`.
+ */
+export interface ArtifactLesson {
+  /** Bold "your mission" line above the artifact, voiced. */
+  intro: string;
+  introAudio?: string;
+  device?: { app: string; owner: string };
+  /** The message in order; a segment with a hotspotId is tappable. */
+  segments: { id: string; text: string; hotspotId?: string; mono?: boolean }[];
+  hotspots: ArtifactHotspot[];
+  /** Shown once every hotspot is uncovered, voiced. */
+  doneLine: string;
+  doneAudio?: string;
+}
+
 export interface CycleDef {
   id: string;
   title: string;
@@ -346,6 +376,8 @@ export interface CycleDef {
     beats: string[];
     /** Narrator-led lessons: WREN VO per beat (public/ paths), 1:1 with `beats`. When present the LEARN beats auto-advance as each clip ends; a tap always overrides. */
     beatAudio?: string[];
+    /** Alternative delivery: teach ON the real message instead of chat bubbles. Takes precedence over `beats` when set. */
+    artifact?: ArtifactLesson;
     prediction: PredictionQ;
     /** WREN voices the "your call" question when it appears, then reacts to the
      * answer (right/wrong), turning the checkpoint into a real back-and-forth. */

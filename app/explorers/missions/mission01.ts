@@ -73,6 +73,44 @@ export const mission01: MissionManifest = {
           "/audio/wren/m01-c1-b4.mp3",
           "/audio/wren/m01-c1-b5.mp3",
         ],
+        // Delivery: teach ON the real message (not chat bubbles). The child taps
+        // the parts that pressure them and uncovers the feeling each one fakes.
+        artifact: {
+          intro: "This is the message that nearly caught Maya. Tap each part that's trying to PUSH you, and I'll tell you the feeling it's faking.",
+          introAudio: "/audio/wren/m01-c1-art-intro.mp3",
+          device: { app: "MAIL", owner: "MAYA'S PHONE" },
+          segments: [
+            { id: "from", text: "From: GameHub Support" },
+            { id: "hi", text: "Hi player," },
+            { id: "prob", text: "We've spotted a problem with your account." },
+            { id: "s-threat", text: "Your account will be permanently DELETED", hotspotId: "threat" },
+            { id: "s-clock", text: "unless you act within the next 24 hours.", hotspotId: "clock" },
+            { id: "s-now", text: "Verify your password NOW to save it.", hotspotId: "now" },
+            { id: "sig", text: "The GameHub Team" },
+          ],
+          hotspots: [
+            {
+              id: "threat",
+              label: "The threat",
+              reveal: "This one fakes FEAR. It puts something you care about, your account, in danger, so you feel scared. And scared people act fast, without stopping to think.",
+              audio: "/audio/wren/m01-c1-art-threat.mp3",
+            },
+            {
+              id: "clock",
+              label: "The countdown",
+              reveal: "This one fakes RUSH. A real company would give you time. This clock is made up, it's only here to hurry you along before your brain catches up.",
+              audio: "/audio/wren/m01-c1-art-clock.mp3",
+            },
+            {
+              id: "now",
+              label: "The push",
+              reveal: "See the word NOW? Every line is shoving you to act this second. That jolt of panic you feel reading it? THAT feeling is your signal, to stop, not to tap.",
+              audio: "/audio/wren/m01-c1-art-now.mp3",
+            },
+          ],
+          doneLine: "That's the whole pressure play: fear, then a fake clock, then act NOW. Some scams fake good news instead (you've WON!), but it's the same trick, a strong feeling to rush you.",
+          doneAudio: "/audio/wren/m01-c1-art-done.mp3",
+        },
         prediction: {
           question: "A DM says: “You've WON a prize! Claim in the next 5 minutes!” Which two tricks is it using at once?",
           options: [

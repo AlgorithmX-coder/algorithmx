@@ -29,6 +29,7 @@ import {
 } from "./primitives";
 import { BODY, MONO, T } from "./tokens";
 import type {
+  ArtifactLesson,
   AwardEvent,
   BeatPos,
   CatchThemDef,
@@ -637,6 +638,106 @@ function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, vo
   );
 }
 
+/* ARTIFACT — teach ON the real message. The child taps the suspicious parts
+   and the lesson pops on the message itself; nothing is dumped at the end.
+   A per-case delivery style, used instead of chat beats when set. */
+function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
+  art: ArtifactLesson; voiceOn: boolean; reduced: boolean;
+  audio: ReturnType<typeof useSignalAudio>; onDone: () => void;
+}) {
+  const [revealed, setRevealed] = useState<Record<string, boolean>>({});
+  const [active, setActive] = useState<string | null>(null);
+  const total = art.hotspots.length;
+  const count = Object.keys(revealed).length;
+  const allDone = count >= total;
+  const activeHs = art.hotspots.find((h) => h.id === active) ?? null;
+
+  useEffect(() => {
+    if (voiceOn && art.introAudio) playWren(art.introAudio, true);
+    return () => stopWren();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const tap = (hid: string) => {
+    const hs = art.hotspots.find((h) => h.id === hid);
+    if (!hs) return;
+    setActive(hid);
+    setRevealed((r) => {
+      if (r[hid]) return r;
+      const n = { ...r, [hid]: true };
+      if (Object.keys(n).length >= total) audio.stamp(); else audio.latch();
+      return n;
+    });
+    if (voiceOn && hs.audio) playWren(hs.audio, true);
+  };
+
+  return (
+    <section>
+      {/* bold YOUR MISSION banner (#5) */}
+      <div style={{ display: "flex", gap: 13, alignItems: "center", background: `${T.actionAmber}18`, border: `1px solid ${T.actionAmber}66`, borderLeft: `4px solid ${T.actionAmber}`, borderRadius: 6, padding: "14px 18px", marginBottom: 16 }}>
+        <span aria-hidden style={{ flexShrink: 0, display: "grid", placeItems: "center", width: 28, height: 28, borderRadius: "50%", border: `2px solid ${T.actionAmber}`, color: T.actionAmber, fontFamily: MONO, fontSize: 15, fontWeight: 800 }}>!</span>
+        <div>
+          <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.16em", color: T.actionAmber, marginBottom: 3 }}>YOUR MISSION</div>
+          <div style={{ fontFamily: BODY, fontSize: 16, fontWeight: 700, lineHeight: 1.45, color: T.textPrimary }}>{art.intro}</div>
+        </div>
+      </div>
+
+      {/* the real message */}
+      <div style={{ background: T.paper, border: `1px solid ${T.hairline}`, borderRadius: 6, overflow: "hidden" }}>
+        {art.device && (
+          <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.fileInk, background: "rgba(0,0,0,0.05)", padding: "8px 14px", borderBottom: `1px solid ${T.hairline}` }}>
+            <span>{art.device.app}</span><span>{art.device.owner}</span>
+          </div>
+        )}
+        <div style={{ padding: "16px 18px", display: "grid", gap: 9, fontSize: 15.5, lineHeight: 1.7, color: T.fileInk }}>
+          {art.segments.map((s) => {
+            if (!s.hotspotId) return <div key={s.id} style={{ fontFamily: s.mono ? MONO : BODY }}>{s.text}</div>;
+            const isR = revealed[s.hotspotId];
+            const isA = active === s.hotspotId;
+            return (
+              <button key={s.id} onClick={() => tap(s.hotspotId!)} className="sr-btn" style={{
+                justifySelf: "start", textAlign: "left", fontFamily: s.mono ? MONO : BODY, fontSize: "inherit", color: T.fileInk,
+                background: isR ? `${T.threatRed}22` : `${T.actionAmber}22`,
+                border: `2px ${isR ? "solid" : "dashed"} ${isR ? T.threatRed : T.actionAmber}`,
+                borderRadius: 6, padding: "7px 12px", cursor: "pointer",
+                boxShadow: isA ? `0 0 0 3px ${T.actionAmber}44` : "none",
+              }}>
+                {s.text}{isR ? "  ✓" : ""}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* progress + the lesson callout */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "14px 0 10px" }}>
+        <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: allDone ? T.confirmedGreen : T.textSecondary }}>
+          {count} of {total} tricks uncovered
+        </span>
+        <span style={{ display: "flex", gap: 5 }}>
+          {art.hotspots.map((h) => <span key={h.id} style={{ width: 9, height: 9, borderRadius: "50%", background: revealed[h.id] ? T.confirmedGreen : T.hairline, boxShadow: revealed[h.id] ? `0 0 6px ${T.confirmedGreen}88` : "none" }} />)}
+        </span>
+      </div>
+
+      {activeHs ? (
+        <div style={{ borderLeft: `3px solid ${T.threatRed}`, background: `${T.threatRed}0E`, borderRadius: "0 6px 6px 0", padding: "14px 16px" }}>
+          <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.12em", color: T.threatRed, marginBottom: 6 }}>{activeHs.label.toUpperCase()}</div>
+          <div style={{ fontSize: 15, lineHeight: 1.6, color: T.textPrimary }}>{activeHs.reveal}</div>
+        </div>
+      ) : (
+        <div style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, padding: "8px 4px" }}>Tap a highlighted part of the message to find out why it's a trick.</div>
+      )}
+
+      {allDone && (
+        <div style={{ marginTop: 18 }}>
+          <Bubble who="wren" tone={T.confirmedGreen}>{art.doneLine}</Bubble>
+          <div style={{ marginTop: 14 }}><AmberButton label="I'VE GOT IT →" onClick={() => { audio.click(); stopWren(); onDone(); }} /></div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 /* LEARN — tap-to-continue dialogue (law 8: the kid sets the pace) */
 function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
   const p = cycle.intel.prediction;
@@ -657,6 +758,13 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   // Deliberately slow (~450ms/word, 3.5-9s) so they actually read it.
   const readMs = (t: string) => Math.min(9000, Math.max(3500, Math.round((t.trim().split(/\s+/).filter(Boolean).length || 1) * 450)));
   const [ready, setReady] = useState(reduced);
+  // Delivery: teach ON the real message (artifact) when set, else chat beats.
+  const artifact = cycle.intel.artifact;
+  const [artifactDone, setArtifactDone] = useState(false);
+  const taught = artifact ? artifactDone : beatsDone;
+  // Anti-brute-force (#4): a wrong "your call" pick locks the options for a
+  // few seconds and tells them to read it again, so they can't spam to green.
+  const [retryLock, setRetryLock] = useState(false);
 
   // Play the current beat's clip; when it finishes, reveal the next one.
   useEffect(() => {
@@ -705,11 +813,15 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   };
 
   const choose = (i: number) => {
-    if (settled || replies.some((r) => r.text === p.options[i])) return;
+    if (retryLock || settled || replies.some((r) => r.text === p.options[i])) return;
     const ok = i === p.answer;
     setReplies((r) => [...r, { text: p.options[i], ok, response: ok ? p.right : p.wrong }]);
     if (ok) audio.latch();
-    else audio.thud();
+    else {
+      audio.thud();
+      setRetryLock(true); // make them stop and re-read before trying again
+      setTimeout(() => setRetryLock(false), 5000);
+    }
     // WREN reacts out loud to what they picked.
     if (voiceOn && !reduced) {
       const rc = ok ? predAudio?.right : predAudio?.wrong;
@@ -718,15 +830,18 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   };
 
   return (
-    <div style={{ maxWidth: 700, margin: "0 auto" }}>
+    <div style={{ maxWidth: 720, margin: "0 auto" }}>
+      {artifact && !artifactDone ? (
+        <ArtifactReveal art={artifact} voiceOn={voiceOn} reduced={reduced} audio={audio} onDone={() => setArtifactDone(true)} />
+      ) : (
       <div style={{ display: "grid", gap: 14 }}>
-        {beats.slice(0, shown).map((b, i) => (
+        {!artifact && beats.slice(0, shown).map((b, i) => (
           <Bubble key={i} who="wren">
             {b}
           </Bubble>
         ))}
 
-        {!beatsDone && (ready ? (
+        {!artifact && !beatsDone && (ready ? (
           <button onClick={more} className="sr-btn sr-choice" style={{ justifySelf: "start", display: "flex", gap: 10, alignItems: "center", background: T.panel, border: `1px solid ${T.arcCyan}55`, borderRadius: 12, padding: "10px 16px", cursor: "pointer", color: T.arcCyan, fontFamily: MONO, fontSize: 12.5, letterSpacing: "0.06em" }}>
             <TypingDots /> TAP FOR MORE
           </button>
@@ -743,7 +858,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
           </div>
         ))}
 
-        {beatsDone && (
+        {taught && (
           <Bubble who="wren" tone={T.actionAmber}>
             <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.actionAmber, marginBottom: 6 }}>
               YOUR CALL
@@ -753,7 +868,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
         )}
 
         {/* Optional guided help before answering */}
-        {beatsDone && !settled && p.hint && (
+        {taught && !settled && p.hint && (
           hintShown ? (
             <Bubble who="wren" tone={T.arcCyan}>
               <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.arcCyan, marginBottom: 6 }}>HINT</span>
@@ -784,7 +899,14 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
           </div>
         ))}
 
-        {beatsDone && !settled && (
+        {taught && !settled && (retryLock ? (
+          <div style={{ justifySelf: "end", display: "flex", flexDirection: "column", gap: 7, width: 230, alignItems: "flex-end" }} aria-label="read it again">
+            <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.threatRed }}>READ IT AGAIN, THEN TRY...</span>
+            <span style={{ display: "block", width: "100%", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+              <span key={replies.length} style={{ display: "block", height: "100%", background: T.threatRed, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 5000ms linear forwards" }} />
+            </span>
+          </div>
+        ) : (
           <div className="sr-msg" style={{ display: "grid", gap: 10, justifyItems: "end" }}>
             {p.options.map((o, i) =>
               replies.some((r) => r.text === o) ? null : (
@@ -794,8 +916,9 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
               ),
             )}
           </div>
-        )}
+        ))}
       </div>
+      )}
 
       {settled && (
         <div className="sr-msg" style={{ marginTop: 22 }}>
