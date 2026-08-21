@@ -652,10 +652,10 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   const [hintShown, setHintShown] = useState(false);
   const settled = replies.some((r) => r.ok);
   const beatsDone = shown >= beats.length;
-  // Force reading: a short per-beat timer (scaled to the beat's length) must
-  // pass before the next beat can be revealed, so kids can't machine-gun
-  // "tap for more" without reading.
-  const readMs = (t: string) => Math.min(5000, Math.max(2000, Math.round((t.trim().split(/\s+/).filter(Boolean).length || 1) * 260)));
+  // Force reading: a per-beat timer (scaled to the beat's length) must pass
+  // before the next beat can be revealed, so kids can't machine-gun through.
+  // Deliberately slow (~450ms/word, 3.5-9s) so they actually read it.
+  const readMs = (t: string) => Math.min(9000, Math.max(3500, Math.round((t.trim().split(/\s+/).filter(Boolean).length || 1) * 450)));
   const [ready, setReady] = useState(reduced);
 
   // Play the current beat's clip; when it finishes, reveal the next one.
@@ -686,14 +686,17 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   }, [shown, narrated]);
   // Silence WREN when leaving LEARN (e.g. into PLAY).
   useEffect(() => () => stopWren(), []);
-  // Reset the read-timer whenever a new beat appears; this gates "tap for more".
+  // Gate advancing whenever a new beat appears. Voice ON: the narrator paces it
+  // and auto-advances when the clip ends — no early skip; a long safety fallback
+  // only re-enables a manual tap if the audio can't play. Voice OFF: a slow
+  // read-timer makes them actually read the message first.
   useEffect(() => {
     if (reduced || beatsDone) { setReady(true); return; }
     setReady(false);
-    const t = setTimeout(() => setReady(true), readMs(beats[shown - 1] ?? ""));
+    const t = setTimeout(() => setReady(true), narrated ? 15000 : readMs(beats[shown - 1] ?? ""));
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shown, reduced, beatsDone]);
+  }, [shown, reduced, beatsDone, narrated]);
 
   const more = () => {
     if (!ready) return;
@@ -727,10 +730,14 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
           <button onClick={more} className="sr-btn sr-choice" style={{ justifySelf: "start", display: "flex", gap: 10, alignItems: "center", background: T.panel, border: `1px solid ${T.arcCyan}55`, borderRadius: 12, padding: "10px 16px", cursor: "pointer", color: T.arcCyan, fontFamily: MONO, fontSize: 12.5, letterSpacing: "0.06em" }}>
             <TypingDots /> TAP FOR MORE
           </button>
+        ) : narrated ? (
+          <div style={{ justifySelf: "start", display: "flex", gap: 10, alignItems: "center", color: T.textDisabled, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em" }} aria-label="WREN is speaking">
+            <TypingDots /> WREN IS SPEAKING...
+          </div>
         ) : (
-          <div style={{ justifySelf: "start", display: "flex", flexDirection: "column", gap: 6, width: 150 }} aria-label="reading">
-            <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>READING…</span>
-            <span style={{ display: "block", height: 3, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+          <div style={{ justifySelf: "start", display: "flex", flexDirection: "column", gap: 7, width: 210 }} aria-label="read the message">
+            <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: T.arcCyan }}>READ THE MESSAGE...</span>
+            <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
               <span key={shown} style={{ display: "block", height: "100%", background: T.arcCyan, transformOrigin: "left", transform: "scaleX(0)", animation: `sr-read ${readMs(beats[shown - 1] ?? "")}ms linear forwards` }} />
             </span>
           </div>
