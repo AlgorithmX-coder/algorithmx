@@ -108,7 +108,7 @@ export const mission01: MissionManifest = {
               audio: "/audio/wren/m01-c1-art-now.mp3",
             },
           ],
-          doneLine: "That's the whole pressure play: fear, then a fake clock, then act NOW. Some scams fake good news instead (you've WON!), but it's the same trick, a strong feeling to rush you.",
+          doneLine: "That's the whole pressure play. Fear, then a fake clock, then a push to act now. Some scams fake good news instead, like winning a prize. But underneath, it's the same trick. A strong feeling, to rush you past thinking.",
           doneAudio: "/audio/wren/m01-c1-art-done.mp3",
         },
       },
