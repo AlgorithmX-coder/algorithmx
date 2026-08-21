@@ -1,12 +1,14 @@
 /**
- * Mission 01 — "The 24-Hour Threat" (Block 1: Signals, CONFIDENTIAL).
- * Actor: PHANTOM HOOK. Concept: pressure + look-alike addresses are the
- * anatomy of a lure; slow readers beat fast clickers.
+ * Mission 01 — "Phishing" (Block 1: Signals, CONFIDENTIAL).
+ * Actor: PHANTOM HOOK.
  *
- * GOLD STANDARD PASS (child-first): every on-screen line rewritten for a
- * 10-13 year old — short, concrete, warm, plain words, no adult wit. The
- * "your call" questions are voiced and interactive (WREN asks, waits, reacts)
- * and each has a hint. This mission is the template the other 19 copy.
+ * DEPTH PASS (owner: "too easy, feels like a recap"): the three lessons now
+ * teach the REASONING, not just facts — the feelings a scammer fakes, how to
+ * properly take a web address apart (incl. the subdomain trap), and the
+ * three-part anatomy behind every disguise. The skill checks and the final
+ * test are think-for-yourself: fresh messages the child must work out, not
+ * "what did WREN say". Everything needed is still taught in-lesson.
+ * This is the template the other 19 copy.
  */
 
 import Mission01Incident from "../incidents/Mission01Incident";
@@ -39,47 +41,50 @@ export const mission01: MissionManifest = {
 
   briefing: {
     summary:
-      "It's one fake email. Its whole job is to scare you into typing your password fast.",
+      "It's one fake email. Its whole job is to scare you into typing your password fast. Learn how it's built, and you'll spot every one like it.",
     objectives: [
-      "Spot the scare trick",
-      "Find out who a link really goes to",
-      "Learn the scammer's habits",
+      "Spot the feelings a scammer fakes",
+      "Take apart a link and find its real owner",
+      "Learn the pattern behind every disguise",
     ],
-    wrenLine: "Three quick skills, then a test to close the case. Every answer is hidden in the lessons, so pay close attention. Ready?",
+    wrenLine: "Three skills, then a test to close the case. This test makes you THINK, it won't just ask what I said. So learn it properly. Ready?",
   },
 
   cycles: [
-    /* ------------------------------------------ cycle 1: read the lure */
+    /* ------------------------------------------ cycle 1: spot the pressure */
     {
       id: "lure",
-      title: "Read the lure",
-      concept: "A countdown is a trick to rush you",
-      promise: "You'll learn why scary countdowns are just for show.",
+      title: "Spot the pressure",
+      concept: "Scammers fake a strong feeling to rush you past thinking",
+      promise: "You'll learn the feelings a scammer fakes, and how to catch it.",
       instruction: "Tap the 3 clues that show it's a fake.",
       intel: {
         beats: [
-          "Every one of Phantom Hook's tricks starts the same way: with a countdown.",
-          "But that countdown isn't real. It's only there to make you panic and rush.",
-          "When you rush, you stop thinking and just tap. That's the whole trick. Nothing clever, just pressure.",
-          "So here's how we beat him. We slow down and think first. That's it.",
+          "A scammer can't reach through the screen and make you do anything. So they do the next best thing. They make you FEEL something strong, fast.",
+          "There are three feelings they fake again and again. Fear: your account's in danger. Greed: you've won something. And rush: act NOW, or lose it.",
+          "Here's the tell most people miss. A real message gives you time. A scam slams a clock on you, so you move before your brain catches up.",
+          "So no real company will ever say your account gets deleted in an hour. That countdown isn't a warning. It's the bait.",
+          "Which means the feeling itself is your clue. The moment a message makes you panic or rush, that's the signal to STOP, not to tap.",
         ],
         beatAudio: [
           "/audio/wren/m01-c1-b1.mp3",
           "/audio/wren/m01-c1-b2.mp3",
           "/audio/wren/m01-c1-b3.mp3",
           "/audio/wren/m01-c1-b4.mp3",
+          "/audio/wren/m01-c1-b5.mp3",
         ],
         prediction: {
-          question: "Why does the message only give you 24 hours?",
+          question: "A DM says: “You've WON a prize! Claim in the next 5 minutes!” Which two tricks is it using at once?",
           options: [
-            "Accounts really do disappear that fast",
-            "To make you act before you think",
-            "The hacker is just in a hurry",
+            "Faking good news, plus a countdown to rush you",
+            "It's just a friendly message",
+            "A spelling test and a countdown",
+            "Fear, plus a real deadline",
           ],
-          answer: 1,
-          right: "Exactly. The countdown is there to rush you, not to tell you the truth.",
-          wrong: "Not quite. That clock isn't real, it's just there to make you panic. Have another think.",
-          hint: "Ask yourself: does that countdown help YOU, or does it help the hacker who sent it?",
+          answer: 0,
+          right: "Exactly. It fakes greed, you've won, and slaps on a rush, 5 minutes. Two feelings, one message.",
+          wrong: "Look at the two feelings it's pulling. “You won” fakes greed, and “5 minutes” is the rush. Have another think.",
+          hint: "It's doing two things at once: a feeling to hook you, and a clock to rush you. Which two?",
         },
         predictionAudio: {
           question: "/audio/wren/m01-c1-q.mp3",
@@ -133,7 +138,7 @@ export const mission01: MissionManifest = {
             {
               id: "link",
               label: "Where the link goes",
-              why: "The button says GameHub, but the link actually goes to support-verify.net. It's only pretending to be GameHub.",
+              why: "The button says GameHub, but the last two chunks are support-verify.net. It's only pretending to be GameHub.",
             },
           ],
           doneLine: "Nice, all three! Phantom Hook isn't as clever as he thinks.",
@@ -144,53 +149,75 @@ export const mission01: MissionManifest = {
         questions: [
           {
             id: "c1q1",
-            question: "How does nearly every one of Phantom Hook's tricks start?",
-            options: ["With a countdown", "With a friendly hello", "With a spelling mistake", "With your real name"],
+            question: "A DM says: “You've WON! Claim in 10 minutes.” Which trick is it using?",
+            options: [
+              "A fake prize (greed), plus a countdown to rush you",
+              "Nothing, it looks safe",
+              "A spelling test",
+              "A friendly hello",
+            ],
             answer: 0,
           },
           {
             id: "c1q2",
-            question: "The lesson said the countdown isn't real. So what is it only there to do?",
-            options: ["Make you panic and rush", "Tell you the real deadline", "Count how many people saw it", "Keep your account safe"],
+            question: "A REAL company notices a problem with your account. What would it actually do?",
+            options: [
+              "Give you time, and let you check in the real app",
+              "Threaten to delete it in one hour",
+              "Slam a 10-minute countdown on you",
+              "Demand your password by reply",
+            ],
             answer: 0,
           },
           {
             id: "c1q3",
-            question: "So what should you do the moment you see a countdown?",
-            options: ["Slow down and think first", "Tap it before time runs out", "Forward it to a friend", "Turn your phone off"],
+            question: "You read a message and feel a jolt of panic. What is that feeling really telling you?",
+            options: [
+              "Slow down, this could be bait",
+              "Act fast before it's too late",
+              "The message must be important",
+              "It's definitely real",
+            ],
             answer: 0,
           },
         ],
       },
     },
 
-    /* -------------------------------------- cycle 2: read the address */
+    /* -------------------------------------- cycle 2: take apart the address */
     {
       id: "address",
-      title: "Read the address",
-      concept: "A link's real owner is right before the first slash",
-      promise: "You'll learn how to tell who a link really goes to.",
+      title: "Take apart the address",
+      concept: "The real owner is the last two chunks before the first slash",
+      promise: "You'll learn to find who a link REALLY goes to, even the sneaky ones.",
       instruction: "Help Maya pick the safest move.",
       intel: {
         beats: [
-          "Web addresses have a little secret. The important bit is right before the first single slash.",
-          "That bit tells you who you're really visiting. Everything in front of it is just for show.",
-          "So that link that looks like GameHub? It really goes to support-verify.net. That's a stranger pretending to be GameHub.",
-          "Phantom Hook loves a good disguise. Let's learn to see straight through it.",
+          "Every web address has one part that can't lie: the real name. Everything else is decoration the scammer gets to choose.",
+          "To find the real name, do two things. Find the first single slash. Then read the two chunks right before it.",
+          "So in account.gamehub.com/login, the two chunks before the slash are gamehub.com. That's the real owner. “account” is just a room inside their house.",
+          "Now the trick that fools grown-ups. Look at gamehub.com.rewards-login.net. It SAYS gamehub.com, but the last two chunks are rewards-login.net. The real name is glued on the front to trick you.",
+          "So never read left to right and relax the moment you see a name you know. Find the slash, take the last two chunks. That's who you're really talking to.",
         ],
         beatAudio: [
           "/audio/wren/m01-c2-b1.mp3",
           "/audio/wren/m01-c2-b2.mp3",
           "/audio/wren/m01-c2-b3.mp3",
           "/audio/wren/m01-c2-b4.mp3",
+          "/audio/wren/m01-c2-b5.mp3",
         ],
         prediction: {
-          question: "Which address really belongs to GameHub?",
-          options: ["gamehub.support-verify.net", "gamehub.com/account", "secure-gamehub-login.net"],
-          answer: 1,
-          right: "Yes! gamehub.com is the real one. The /account part is just a page inside it.",
-          wrong: "That one's a disguise. Look for the name right before the first slash, that's the real owner. Try again.",
-          hint: "Find the first single slash. The word right before it is who you're really visiting.",
+          question: "Which of these really belongs to GameHub?",
+          options: [
+            "account.gamehub.com",
+            "gamehub.com.secure-login.net",
+            "gamehub-rewards.com",
+            "login.gamehub.verify.io",
+          ],
+          answer: 0,
+          right: "Yes! Its last two chunks are gamehub.com, so it's really GameHub. “account” is just a page inside it.",
+          wrong: "Read the LAST two chunks of each name. Only account.gamehub.com ends in gamehub.com. The rest are disguises. Try again.",
+          hint: "Ignore the front of each address. Which one actually ENDS in gamehub.com?",
         },
         predictionAudio: {
           question: "/audio/wren/m01-c2-q.mp3",
@@ -233,53 +260,75 @@ export const mission01: MissionManifest = {
         questions: [
           {
             id: "c2q1",
-            question: "Which part of a web address tells you who it REALLY goes to?",
-            options: ["The part right before the first slash", "The very last word", "The first word after www", "The longest word"],
+            question: "Which of these is really Netflix?",
+            options: [
+              "account.netflix.com",
+              "netflix.com.watch-verify.net",
+              "netflix-login.com",
+              "secure-netflix.tv",
+            ],
             answer: 0,
           },
           {
             id: "c2q2",
-            question: "Everything in FRONT of that important part is...?",
-            options: ["Just for show", "The bit that really matters", "Who really owns the site", "A secret safety code"],
+            question: "Who really owns  login.gamehub.com.secure-net.io ?",
+            options: [
+              "secure-net.io, a stranger",
+              "gamehub.com",
+              "login",
+              "GameHub",
+            ],
             answer: 0,
           },
           {
             id: "c2q3",
-            question: "In the lesson, the link looked like GameHub. Where did it REALLY go?",
-            options: ["support-verify.net, a stranger's site", "gamehub.com, the real one", "straight to your account", "nowhere at all"],
+            question: "A link is  help.roblox.com . Using the rule, is it really Roblox?",
+            options: [
+              "Yes, its last two chunks are roblox.com",
+              "No, it says help at the front",
+              "No, you can never really tell",
+              "Yes, because it's short",
+            ],
             answer: 0,
           },
         ],
       },
     },
 
-    /* ---------------------------------------- cycle 3: know the actor */
+    /* ---------------------------------------- cycle 3: know the play */
     {
       id: "actor",
-      title: "Know the actor",
-      concept: "The disguise changes; the tricks stay the same",
-      promise: "You'll learn to spot this scammer even in a new disguise.",
+      title: "Know the play",
+      concept: "Every phishing scam is built from the same three parts",
+      promise: "You'll learn the pattern behind every disguise, and the one move that beats it.",
       instruction: "Tap the 3 tricks that are really his.",
       intel: {
         beats: [
-          "Scammers do the same tricks over and over. They don't invent new ones.",
-          "The disguise changes. The tricks stay exactly the same.",
-          "Learn his tricks once, and you'll spot him every time, no matter what he's dressed as.",
-          "That's why ARC keeps a file on every villain. Catch one scam, and you protect loads of people, including you.",
+          "Here's the secret that makes you unbeatable. Every phishing scam, whatever it's dressed as, is built from the same three parts.",
+          "One: a feeling, to rush you. Two: a trusted name, faked. Three: a link that lies about where it goes.",
+          "You don't need all three to be sure. Spot two of them in a message, and you're almost certainly looking at a scam. Game, bank, or school, it doesn't matter.",
+          "And here's the move that beats every single one of them. Never act from the message itself. Go to the real app or website yourself, and check there.",
+          "That one habit, go direct and never tap the message, defeats every disguise he will ever wear.",
         ],
         beatAudio: [
           "/audio/wren/m01-c3-b1.mp3",
           "/audio/wren/m01-c3-b2.mp3",
           "/audio/wren/m01-c3-b3.mp3",
           "/audio/wren/m01-c3-b4.mp3",
+          "/audio/wren/m01-c3-b5.mp3",
         ],
         prediction: {
-          question: "Next month Phantom Hook goes after a homework app. What will be the same?",
-          options: ["The logo on the email", "The countdown and the fake link", "The colour of the button"],
-          answer: 1,
-          right: "Exactly. The scary countdown and the fake link are his signature. Those never change.",
-          wrong: "Those are just the disguise. His real signature is the countdown and the fake link. Try again.",
-          hint: "The disguise (logo, colours) changes every time. Which TRICKS did he use in both scams?",
+          question: "An email copies your school's logo perfectly, with zero spelling mistakes. But it rushes you, and its link goes to a stranger's site. Scam or safe?",
+          options: [
+            "Scam, it has two of the three parts, so the disguise doesn't matter",
+            "Safe, the logo is perfect",
+            "Safe, there are no spelling mistakes",
+            "Can't tell without more info",
+          ],
+          answer: 0,
+          right: "Right. A perfect disguise means nothing. The rush and the fake link are two of the three parts. That's a scam.",
+          wrong: "Don't be fooled by a good disguise. Count the parts: a rush AND a fake link. That's two of three. Try again.",
+          hint: "Ignore the logo and the spelling, that's just the costume. How many of the three scam parts can you count?",
         },
         predictionAudio: {
           question: "/audio/wren/m01-c3-q.mp3",
@@ -313,20 +362,35 @@ export const mission01: MissionManifest = {
         questions: [
           {
             id: "c3q1",
-            question: "Do scammers invent brand-new tricks each time?",
-            options: ["No, they reuse the same tricks over and over", "Yes, always brand-new ones", "Only on weekends", "Only when going after banks"],
+            question: "A message has a faked sender AND a link that lies, but no countdown. Scam or safe?",
+            options: [
+              "Almost certainly a scam, that's two of the three parts",
+              "Safe, there's no countdown",
+              "Safe, it has a link",
+              "Can't tell",
+            ],
             answer: 0,
           },
           {
             id: "c3q2",
-            question: "The disguise changes every time. What stays exactly the same?",
-            options: ["His tricks", "The brand he copies", "The time of day he strikes", "The name he uses"],
+            question: "An email looks perfect, but it asks you to log in through its link. What's the ONE safe move?",
+            options: [
+              "Ignore the link, go to the real site yourself",
+              "Log in through the link, it looks fine",
+              "Reply to ask if it's real",
+              "Forward it to a friend",
+            ],
             answer: 0,
           },
           {
             id: "c3q3",
-            question: "Why is it worth learning his tricks just once?",
-            options: ["You'll spot him every time, in any disguise", "He'll leave you alone after that", "You win a prize for it", "It makes him stop scamming forever"],
+            question: "Why does “go direct” beat every disguise a scammer wears?",
+            options: [
+              "You check the real source yourself, instead of trusting the message",
+              "Because scammers give up",
+              "Because all links are fake",
+              "Because it's the fastest way",
+            ],
             answer: 0,
           },
         ],
@@ -343,79 +407,87 @@ export const mission01: MissionManifest = {
 
   catchThem: {
     intro:
-      "Okay Agent, this is the test. Five questions, and every answer is somewhere in the three lessons you just did. I won't tell you how you're doing until the end. Get four right to close the case. Miss it, and you sit the whole case again.",
-    pass: 4,
+      "Okay Agent, this is the test. Six questions, and they're not “what did I say”. You'll have to work each one out using what you learned. I won't tell you how you're doing until the end. Get five right to close the case. Miss it, and you sit the whole case again.",
+    pass: 5,
     voice: {
       intro: "/audio/wren/m01-catch-intro.mp3",
       pass: "/audio/wren/m01-catch-pass.mp3",
       fail: "/audio/wren/m01-catch-fail.mp3",
     },
-    // 4 recall questions + 1 "use it". Every answer is stated in this case's
-    // lessons, line by line:
-    //  ct1 <- skill 1 beat "Every one of his tricks starts the same way: with a countdown."
-    //  ct2 <- skill 1 beat "It's only there to make you panic and rush."
-    //  ct3 <- skill 2 beat "The important bit is right before the first single slash."
-    //  ct4 <- skill 3 beat "The disguise changes. But the tricks stay exactly the same."
-    //  ct5 <- USE IT: apply the skill 2 rule to a fresh link.
+    // Think-for-yourself: fresh scenarios the child must reason through, mixing
+    // all three skills. Everything needed was taught, but none of it is recall.
     scenarios: [
       {
         id: "ct1",
         skill: 0,
-        prompt: "In the lesson, how does nearly every one of Phantom Hook's tricks start?",
+        prompt: "A pop-up: “Unusual activity on your account. Verify within 30 minutes or lose access.” What makes this a classic scam move?",
         options: [
-          "With a countdown",
-          "With a friendly hello",
-          "With your real name",
-          "With a spelling mistake",
+          "The 30-minute deadline, built to panic you into acting",
+          "It mentions your account",
+          "It uses the word verify",
+          "It's about activity",
         ],
         answer: 0,
       },
       {
         id: "ct2",
         skill: 0,
-        prompt: "The lesson said the countdown isn't real. So what is it only there to do?",
+        prompt: "Which of these is the LEAST likely to be a scam?",
         options: [
-          "Make you panic and rush",
-          "Tell you the real deadline",
-          "Count how many people saw it",
-          "Keep your account safe",
+          "A shop emails your receipt after you bought something",
+          "A “bank” texts: confirm your PIN in 5 minutes",
+          "A DM: you've won, claim in 10 minutes",
+          "A pop-up: your account deletes tonight",
         ],
         answer: 0,
       },
       {
         id: "ct3",
         skill: 1,
-        prompt: "To find out who a link REALLY goes to, which part of the web address do you read?",
+        prompt: "Which link REALLY belongs to GameHub?",
+        evidence: "account.gamehub.com   ·   gamehub.com.rewards-login.net   ·   gamehub-support.net   ·   secure-gamehub.com",
         options: [
-          "The part right before the first slash",
-          "The very last word of the address",
-          "The first word after www",
-          "The longest word in it",
+          "account.gamehub.com",
+          "gamehub.com.rewards-login.net",
+          "gamehub-support.net",
+          "secure-gamehub.com",
         ],
         answer: 0,
       },
       {
         id: "ct4",
-        skill: 2,
-        prompt: "The lesson said a scammer's disguise changes every time. What stays exactly the same?",
+        skill: 1,
+        prompt: "Who really owns this link?",
+        evidence: "login-gamehub.com.verify-now.io",
         options: [
-          "His tricks, like the countdown and the fake link",
-          "The name of the game or app",
-          "The day of the week he strikes",
-          "The colour of the message",
+          "verify-now.io, a stranger",
+          "gamehub.com",
+          "GameHub login",
+          "login-gamehub.com",
         ],
         answer: 0,
       },
       {
         id: "ct5",
-        skill: 1,
-        prompt: "Now use it. Read the name right before the first slash. Who does this link really belong to?",
-        evidence: "gamehub-rewards.net/claim",
+        skill: 2,
+        prompt: "A message copies your bank's logo perfectly, no spelling mistakes. But its link goes to bankofsafe-verify.net and it says “act within 1 hour”. Scam or safe?",
         options: [
-          "A stranger's site, not GameHub",
-          "GameHub, because it says gamehub",
-          "You can't tell from the address",
-          "The GameHub rewards team",
+          "Scam, the fake link and the rush are two of the three parts",
+          "Safe, the logo is perfect",
+          "Safe, there are no spelling mistakes",
+          "Can't tell",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct6",
+        skill: 2,
+        prompt: "Everything about an email looks fine, but it wants you to log in through its link. Safest thing to do?",
+        options: [
+          "Ignore the link, go to the real site yourself and log in there",
+          "Log in through the link, since it looks fine",
+          "Reply to check it's real first",
+          "Click it just to see where it goes",
         ],
         answer: 0,
       },
@@ -424,13 +496,13 @@ export const mission01: MissionManifest = {
 
   debrief: {
     report: [
-      "You took the fake email apart: the scary countdown, the sneaky hacker, and the fake link.",
+      "You took the fake email apart: the feeling it faked, the sneaky sender, and the link that lied.",
       "You made the right call: open the real app, report it, and don't tap any links.",
       "The second wave is sorted. Phantom Hook's plan is stopped and on the record.",
     ],
     realWorldMove:
       "This week: if a message tries to rush you, don't tap its links. Open the real app yourself and check there. Still feels wrong? Tell an adult you trust, and report it.",
-    wrenLine: "Four fakes, and you didn't fall for a single one. Nice work, Agent.",
+    wrenLine: "You didn't just remember it, you worked it out. That's the real thing, Agent.",
   },
 
   voice: {
