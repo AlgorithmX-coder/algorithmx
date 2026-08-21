@@ -54,14 +54,17 @@ import Redact from "../mechanics/Redact";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
-function nextPos(pos: BeatPos, hasCatch = false): BeatPos {
+function nextPos(pos: BeatPos, hasCatch = false, hasCheckpoint = true): BeatPos {
   if (pos.beat === "transmission") return { beat: "briefing" };
   if (pos.beat === "briefing") return { beat: "cycle", cycleIndex: 0, stage: "intel" };
   if (pos.beat === "cycle") {
     if (pos.stage === "intel") return { ...pos, stage: "fieldwork" };
-    if (pos.stage === "fieldwork") return { ...pos, stage: "checkpoint" };
-    if (pos.cycleIndex < 2) return { beat: "cycle", cycleIndex: (pos.cycleIndex + 1) as 0 | 1 | 2, stage: "intel" };
-    return { beat: "incident", incidentPhase: 0 };
+    const afterCycle: BeatPos = pos.cycleIndex < 2
+      ? { beat: "cycle", cycleIndex: (pos.cycleIndex + 1) as 0 | 1 | 2, stage: "intel" }
+      : { beat: "incident", incidentPhase: 0 };
+    // Structure v2: a cycle with no checkpoint goes LEARN -> PRACTICE -> next.
+    if (pos.stage === "fieldwork") return hasCheckpoint ? { ...pos, stage: "checkpoint" } : afterCycle;
+    return afterCycle; // checkpoint stage
   }
   // The must-pass gate sits between the boss and the report, when present.
   if (pos.beat === "incident") return hasCatch ? { beat: "catch" } : { beat: "debrief" };
@@ -73,7 +76,7 @@ function nextPos(pos: BeatPos, hasCatch = false): BeatPos {
 /** Kid-plain position label for the HUD. */
 function describePos(pos: BeatPos): string {
   if (pos.beat === "cycle") {
-    const stage = pos.stage === "intel" ? "LEARN" : pos.stage === "fieldwork" ? "PLAY" : "SKILL CHECK";
+    const stage = pos.stage === "intel" ? "LEARN" : pos.stage === "fieldwork" ? "PRACTICE" : "SKILL CHECK";
     return `SKILL ${pos.cycleIndex + 1} · ${stage}`;
   }
   if (pos.beat === "incident") return "BOSS";
@@ -276,8 +279,11 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const advance = useCallback(() => {
     audio.click();
     setPos((p) => {
-      const n = nextPos(p, !!manifest.catchThem);
-      if (p.beat === "cycle" && p.stage === "checkpoint") setMapGate(p.cycleIndex);
+      const hasCheck = p.beat === "cycle" ? !!manifest.cycles[p.cycleIndex]?.checkpoint?.questions?.length : true;
+      const n = nextPos(p, !!manifest.catchThem, hasCheck);
+      // A skill is "done" (stamp it on the map) when it clears its last stage —
+      // the checkpoint if it has one, otherwise the practice.
+      if (p.beat === "cycle" && (p.stage === "checkpoint" || (p.stage === "fieldwork" && !hasCheck))) setMapGate(p.cycleIndex);
       // Skip the "back to map" beat when the boss flows straight into Catch Them.
       if (p.beat === "incident" && !manifest.catchThem) setMapGate(3);
       return n;
@@ -617,7 +623,7 @@ function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, vo
             <div style={{ fontSize: 13, color: T.textSecondary }}>{cycle.promise ?? cycle.concept}</div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            {["LEARN", "PLAY", "CHECK"].map((k, i) => {
+            {(cycle.checkpoint?.questions?.length ? ["LEARN", "PRACTICE", "CHECK"] : ["LEARN", "PRACTICE"]).map((k, i) => {
               const active = i === stageIndex;
               const stageDone = i < stageIndex;
               return (
@@ -762,6 +768,9 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   const artifact = cycle.intel.artifact;
   const [artifactDone, setArtifactDone] = useState(false);
   const taught = artifact ? artifactDone : beatsDone;
+  // Structure v2: no mid-lesson "your call". When there's no prediction, the
+  // lesson is done as soon as it's been taught, and goes straight to PRACTICE.
+  const lessonDone = taught && (!p || settled);
   // Anti-brute-force (#4): a wrong "your call" pick locks the options for a
   // few seconds and tells them to read it again, so they can't spam to green.
   const [retryLock, setRetryLock] = useState(false);
@@ -813,6 +822,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   };
 
   const choose = (i: number) => {
+    if (!p) return;
     if (retryLock || settled || replies.some((r) => r.text === p.options[i])) return;
     const ok = i === p.answer;
     setReplies((r) => [...r, { text: p.options[i], ok, response: ok ? p.right : p.wrong }]);
@@ -858,7 +868,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
           </div>
         ))}
 
-        {taught && (
+        {taught && p && (
           <Bubble who="wren" tone={T.actionAmber}>
             <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.actionAmber, marginBottom: 6 }}>
               YOUR CALL
@@ -868,7 +878,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
         )}
 
         {/* Optional guided help before answering */}
-        {taught && !settled && p.hint && (
+        {taught && p && !settled && p.hint && (
           hintShown ? (
             <Bubble who="wren" tone={T.arcCyan}>
               <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.arcCyan, marginBottom: 6 }}>HINT</span>
@@ -899,7 +909,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
           </div>
         ))}
 
-        {taught && !settled && (retryLock ? (
+        {taught && p && !settled && (retryLock ? (
           <div style={{ justifySelf: "end", display: "flex", flexDirection: "column", gap: 7, width: 230, alignItems: "flex-end" }} aria-label="read it again">
             <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.threatRed }}>READ IT AGAIN, THEN TRY...</span>
             <span style={{ display: "block", width: "100%", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
@@ -920,10 +930,10 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
       </div>
       )}
 
-      {settled && (
+      {lessonDone && (
         <div className="sr-msg" style={{ marginTop: 22 }}>
           <AmberButton
-            label="PLAY IT →"
+            label="PRACTICE IT →"
             onClick={() => {
               emit({ type: "INTEL_COMPLETED", sourceKey: `cycle-${cycleIndex}` });
               onNext();
@@ -979,7 +989,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
    re-teaches this skill (replays its beats) and sends him back through the
    check. No tapping-until-green. */
 function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
-  const questions = cycle.checkpoint.questions;
+  const questions = cycle.checkpoint?.questions ?? [];
   const [phase, setPhase] = useState<"check" | "reteach" | "passed">("check");
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);

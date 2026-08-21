@@ -378,7 +378,9 @@ export interface CycleDef {
     beatAudio?: string[];
     /** Alternative delivery: teach ON the real message instead of chat bubbles. Takes precedence over `beats` when set. */
     artifact?: ArtifactLesson;
-    prediction: PredictionQ;
+    /** Optional mid-lesson "your call". Structure v2 (teach->practice->test) OMITS
+     * this — the LEARN stage is pure teaching, then goes straight to PRACTICE. */
+    prediction?: PredictionQ;
     /** WREN voices the "your call" question when it appears, then reacts to the
      * answer (right/wrong), turning the checkpoint into a real back-and-forth. */
     predictionAudio?: { question?: string; right?: string; wrong?: string };
@@ -386,7 +388,9 @@ export interface CycleDef {
   fieldwork: FieldworkDef;
   /** WREN VO that explains the PLAY exercise set-up (public/ path); played once when PLAY opens. */
   playAudio?: string;
-  checkpoint: { questions: CheckpointQ[] };
+  /** Optional per-skill quiz. Structure v2 OMITS this — the only graded test is
+   * the end-of-case `catchThem`. When absent the cycle is just LEARN -> PRACTICE. */
+  checkpoint?: { questions: CheckpointQ[] };
 }
 
 /* --------------------------------------------------------- catch them */

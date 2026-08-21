@@ -57,7 +57,7 @@ export const mission01: MissionManifest = {
       title: "Spot the pressure",
       concept: "Scammers fake a strong feeling to rush you past thinking",
       promise: "You'll learn the feelings a scammer fakes, and how to catch it.",
-      instruction: "Tap the 3 clues that show it's a fake.",
+      instruction: "Read this NEW message. Select every part that's trying to pressure you, then submit.",
       intel: {
         beats: [
           "A scammer can't reach through the screen and make you do anything. So they do the next best thing. They make you FEEL something strong, fast.",
@@ -76,7 +76,7 @@ export const mission01: MissionManifest = {
         // Delivery: teach ON the real message (not chat bubbles). The child taps
         // the parts that pressure them and uncovers the feeling each one fakes.
         artifact: {
-          intro: "This is the message that nearly caught Maya. Tap each part that's trying to PUSH you, and I'll tell you the feeling it's faking.",
+          intro: "This is the message that nearly caught Maya. Let me show you the three tricks hiding in it. Tap each highlighted part and I'll explain exactly how it works on you.",
           introAudio: "/audio/wren/m01-c1-art-intro.mp3",
           device: { app: "MAIL", owner: "MAYA'S PHONE" },
           segments: [
@@ -111,115 +111,48 @@ export const mission01: MissionManifest = {
           doneLine: "That's the whole pressure play: fear, then a fake clock, then act NOW. Some scams fake good news instead (you've WON!), but it's the same trick, a strong feeling to rush you.",
           doneAudio: "/audio/wren/m01-c1-art-done.mp3",
         },
-        prediction: {
-          question: "A DM says: “You've WON a prize! Claim in the next 5 minutes!” Which two tricks is it using at once?",
-          options: [
-            "Faking good news, plus a countdown to rush you",
-            "It's just a friendly message",
-            "A spelling test and a countdown",
-            "Fear, plus a real deadline",
-          ],
-          answer: 0,
-          right: "Exactly. It fakes greed, you've won, and slaps on a rush, 5 minutes. Two feelings, one message.",
-          wrong: "Look at the two feelings it's pulling. “You won” fakes greed, and “5 minutes” is the rush. Have another think.",
-          hint: "It's doing two things at once: a feeling to hook you, and a clock to rush you. Which two?",
-        },
-        predictionAudio: {
-          question: "/audio/wren/m01-c1-q.mp3",
-          right: "/audio/wren/m01-c1-qr.mp3",
-          wrong: "/audio/wren/m01-c1-qw.mp3",
-        },
       },
       fieldwork: {
         verb: "INSPECT",
         payload: {
-          intro: "Here's Maya's email. Three things give it away as a fake. Tap the three you can spot.",
-          device: { app: "MAIL", owner: "MAYA'S PHONE" },
+          // PRACTICE on a NEW message (a prize scam), so they APPLY "spot the
+          // pressure" rather than re-recognise the one they were taught on.
+          // Select the 3 pressure lines; the 4 safe lines are decoys.
+          intro: "A brand-new message just landed on Sam's phone. Find every part that's trying to pressure him.",
+          device: { app: "TEXTS", owner: "SAM'S PHONE" },
           header: [
-            {
-              label: "FROM:",
-              seg: { id: "from", text: "GameHub Support <support@gamehub-rewards-center.com>", tellId: "sender" },
-            },
-            { label: "TO:", seg: { id: "to", text: "maya.k@homemail.com" } },
-            {
-              label: "SUBJ:",
-              seg: { id: "subj", text: "URGENT: your account will be DELETED in 24 hours", tellId: "urgency" },
-            },
+            { label: "FROM:", seg: { id: "from", text: "+44 7700 900418 (unknown)" } },
           ],
           body: [
-            [{ id: "greet", text: "Hi player," }],
-            [
-              { id: "p1", text: "We detected a problem with your GameHub account. " },
-              { id: "p2", text: "To keep your skins and progress, you must verify your password now:" },
-            ],
-            [
-              {
-                id: "link",
-                text: "[ VERIFY MY ACCOUNT → gamehub.support-verify.net ]",
-                tellId: "link",
-                mono: true,
-              },
-            ],
-            [{ id: "sig", text: "The GameHub Team" }],
+            [{ id: "greet", text: "Hi there!" }],
+            [{ id: "win", text: "You've been specially chosen to WIN a £100 voucher!", tellId: "greed" }],
+            [{ id: "rush", text: "Claim it in the next 15 minutes, before it's gone.", tellId: "rush" }],
+            [{ id: "miss", text: "You really DON'T want to miss out on this one.", tellId: "fomo" }],
+            [{ id: "members", text: "This offer is just for our valued members." }],
+            [{ id: "reply", text: "Reply YES to claim yours." }],
+            [{ id: "sig", text: "The Prizes Team" }],
           ],
           tells: [
             {
-              id: "sender",
-              label: "Who it's from",
-              why: "Look at the address. It's gamehub-rewards-center.com. The real one is just gamehub.com. Close, but not the same.",
+              id: "greed",
+              label: "Fake good news",
+              why: "That's GREED, being told you've won gets you excited so you act without checking.",
             },
             {
-              id: "urgency",
+              id: "rush",
               label: "The countdown",
-              why: "It threatens you with a timer. Real companies don't do that. It's only there to make you rush.",
+              why: "That's RUSH, a made-up 15-minute clock to hurry you before you think.",
             },
             {
-              id: "link",
-              label: "Where the link goes",
-              why: "The button says GameHub, but the last two chunks are support-verify.net. It's only pretending to be GameHub.",
+              id: "fomo",
+              label: "Fear of missing out",
+              why: "Another pressure trick, scaring you that you'll lose out if you don't act fast.",
             },
           ],
-          doneLine: "Nice, all three! Phantom Hook isn't as clever as he thinks.",
+          doneLine: "Spot on. Different scam, different bait, same three pressure tricks you just learned: greed, a countdown, and fear of missing out. The other lines are just normal message bits.",
         },
       },
       playAudio: "/audio/wren/m01-c1-play.mp3",
-      checkpoint: {
-        questions: [
-          {
-            id: "c1q1",
-            question: "A DM says: “You've WON! Claim in 10 minutes.” Which trick is it using?",
-            options: [
-              "A fake prize (greed), plus a countdown to rush you",
-              "Nothing, it looks safe",
-              "A spelling test",
-              "A friendly hello",
-            ],
-            answer: 0,
-          },
-          {
-            id: "c1q2",
-            question: "A REAL company notices a problem with your account. What would it actually do?",
-            options: [
-              "Give you time, and let you check in the real app",
-              "Threaten to delete it in one hour",
-              "Slam a 10-minute countdown on you",
-              "Demand your password by reply",
-            ],
-            answer: 0,
-          },
-          {
-            id: "c1q3",
-            question: "You read a message and feel a jolt of panic. What is that feeling really telling you?",
-            options: [
-              "Slow down, this could be bait",
-              "Act fast before it's too late",
-              "The message must be important",
-              "It's definitely real",
-            ],
-            answer: 0,
-          },
-        ],
-      },
     },
 
     /* -------------------------------------- cycle 2: take apart the address */
