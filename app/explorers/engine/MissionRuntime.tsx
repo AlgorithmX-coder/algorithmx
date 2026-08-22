@@ -669,6 +669,7 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
   const count = Object.keys(revealed).length;
   const allDone = count >= total;
   const activeHs = art.hotspots.find((h) => h.id === active) ?? null;
+  const speaking = useWrenSpeaking(); // lock taps while WREN is explaining
 
   useEffect(() => {
     if (voiceOn && art.introAudio) playWren(art.introAudio, true);
@@ -677,6 +678,7 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
   }, []);
 
   const tap = (hid: string) => {
+    if (speaking) return; // can't tap another part until she's finished this one
     const hs = art.hotspots.find((h) => h.id === hid);
     if (!hs) return;
     setActive(hid);
@@ -713,11 +715,12 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
             const isR = revealed[s.hotspotId];
             const isA = active === s.hotspotId;
             return (
-              <button key={s.id} onClick={() => tap(s.hotspotId!)} className="sr-btn" style={{
+              <button key={s.id} onClick={() => tap(s.hotspotId!)} className="sr-btn" disabled={speaking && !isR} style={{
                 justifySelf: "start", textAlign: "left", fontFamily: s.mono ? MONO : BODY, fontSize: "inherit", color: T.fileInk,
                 background: isR ? `${T.threatRed}22` : `${T.actionAmber}22`,
                 border: `2px ${isR ? "solid" : "dashed"} ${isR ? T.threatRed : T.actionAmber}`,
-                borderRadius: 6, padding: "7px 12px", cursor: "pointer",
+                borderRadius: 6, padding: "7px 12px", cursor: speaking ? "default" : "pointer",
+                opacity: speaking && !isR ? 0.5 : 1,
                 boxShadow: isA ? `0 0 0 3px ${T.actionAmber}44` : "none",
               }}>
                 {s.text}{isR ? "  ✓" : ""}
@@ -749,7 +752,15 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
       {allDone && (
         <div style={{ marginTop: 18 }}>
           <Bubble who="wren" tone={T.confirmedGreen}>{art.doneLine}</Bubble>
-          <div style={{ marginTop: 14 }}><AmberButton label="I'VE GOT IT →" onClick={() => { audio.click(); stopWren(); onDone(); }} /></div>
+          <div style={{ marginTop: 14 }}>
+            {speaking ? (
+              <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
+                <TypingDots /> WREN IS SPEAKING...
+              </span>
+            ) : (
+              <AmberButton label="I'VE GOT IT →" onClick={() => { audio.click(); stopWren(); onDone(); }} />
+            )}
+          </div>
         </div>
       )}
     </section>
