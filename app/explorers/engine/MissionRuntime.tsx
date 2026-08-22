@@ -54,13 +54,13 @@ import Redact from "../mechanics/Redact";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
-function nextPos(pos: BeatPos, hasCatch = false, hasCheckpoint = true): BeatPos {
+function nextPos(pos: BeatPos, hasCatch = false, hasCheckpoint = true, lastCycle = 2): BeatPos {
   if (pos.beat === "transmission") return { beat: "briefing" };
   if (pos.beat === "briefing") return { beat: "cycle", cycleIndex: 0, stage: "intel" };
   if (pos.beat === "cycle") {
     if (pos.stage === "intel") return { ...pos, stage: "fieldwork" };
-    const afterCycle: BeatPos = pos.cycleIndex < 2
-      ? { beat: "cycle", cycleIndex: (pos.cycleIndex + 1) as 0 | 1 | 2, stage: "intel" }
+    const afterCycle: BeatPos = pos.cycleIndex < lastCycle
+      ? { beat: "cycle", cycleIndex: pos.cycleIndex + 1, stage: "intel" }
       : { beat: "incident", incidentPhase: 0 };
     // Structure v2: a cycle with no checkpoint goes LEARN -> PRACTICE -> next.
     if (pos.stage === "fieldwork") return hasCheckpoint ? { ...pos, stage: "checkpoint" } : afterCycle;
@@ -98,28 +98,30 @@ function toneFor(pos: BeatPos): string {
   return T.arcCyan;
 }
 
-/** How far through the checklist are we? 0=start, 1..3=skills done, 4=boss done, 5=report done. */
-function stepsDone(pos: BeatPos): number {
+/** How far through the checklist are we? 0=start, 1..n=skills done, n+1=boss done,
+ *  n+2=report done, where n = the mission's skill count. */
+function stepsDone(pos: BeatPos, n = 3): number {
   if (pos.beat === "transmission" || pos.beat === "briefing") return 0;
   if (pos.beat === "cycle") return pos.cycleIndex;
-  if (pos.beat === "incident") return 3;
-  if (pos.beat === "catch") return 3; // the gate lives inside the boss step
-  if (pos.beat === "debrief") return 4;
-  return 5;
+  if (pos.beat === "incident") return n;
+  if (pos.beat === "catch") return n; // the gate lives inside the boss step
+  if (pos.beat === "debrief") return n + 1;
+  return n + 2;
 }
 
 /* ================================================================= map */
 
 function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; pos: BeatPos; stampNew?: number }) {
-  const done = stepsDone(pos);
+  const n = manifest.cycles.length;
+  const done = stepsDone(pos, n);
   const rows: { label: string; sub: string; idx: number }[] = [
     ...manifest.cycles.map((c, i) => ({
       label: `SKILL ${i + 1}: ${c.title}`,
       sub: c.promise ?? c.concept,
       idx: i,
     })),
-    { label: `BOSS: ${manifest.incident.title}`, sub: `Use all 3 skills against ${manifest.actor.codename}`, idx: 3 },
-    { label: "MISSION REPORT", sub: "What you learned + your move in real life", idx: 4 },
+    { label: `BOSS: ${manifest.incident.title}`, sub: `Use all ${n} skills against ${manifest.actor.codename}`, idx: n },
+    { label: "MISSION REPORT", sub: "What you learned + your move in real life", idx: n + 1 },
   ];
   return (
     <div style={{ display: "grid", gap: 10 }}>
@@ -127,7 +129,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
         const isDone = r.idx < done;
         const isCurrent = r.idx === done;
         const justStamped = stampNew !== undefined && r.idx === stampNew;
-        const boss = r.idx === 3;
+        const boss = r.idx === n;
         const accent = boss ? T.threatRed : T.arcCyan;
         return (
           <div
@@ -161,7 +163,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
                 border: isDone ? "none" : `2px solid ${isCurrent ? accent : T.hairline}`,
               }}
             >
-              {isDone ? "✓" : boss ? "!" : r.idx < 3 ? r.idx + 1 : "★"}
+              {isDone ? "✓" : boss ? "!" : r.idx < n ? r.idx + 1 : "★"}
             </span>
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: BODY, fontSize: 15, fontWeight: 700, color: isDone ? T.confirmedGreen : isCurrent ? T.textPrimary : T.textSecondary }}>
@@ -280,13 +282,13 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     audio.click();
     setPos((p) => {
       const hasCheck = p.beat === "cycle" ? !!manifest.cycles[p.cycleIndex]?.checkpoint?.questions?.length : true;
-      const n = nextPos(p, !!manifest.catchThem, hasCheck);
+      const next = nextPos(p, !!manifest.catchThem, hasCheck, manifest.cycles.length - 1);
       // A skill is "done" (stamp it on the map) when it clears its last stage —
       // the checkpoint if it has one, otherwise the practice.
       if (p.beat === "cycle" && (p.stage === "checkpoint" || (p.stage === "fieldwork" && !hasCheck))) setMapGate(p.cycleIndex);
       // Skip the "back to map" beat when the boss flows straight into Catch Them.
-      if (p.beat === "incident" && !manifest.catchThem) setMapGate(3);
-      return n;
+      if (p.beat === "incident" && !manifest.catchThem) setMapGate(manifest.cycles.length);
+      return next;
     });
     window.scrollTo({ top: 0 });
   }, [audio, manifest]);
@@ -352,7 +354,8 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   useEffect(() => () => stopWren(), []);
 
   const tone = mapGate !== null ? T.confirmedGreen : toneFor(pos);
-  const done = stepsDone(pos);
+  const skillCount = manifest.cycles.length;
+  const done = stepsDone(pos, skillCount);
   const speaking = useWrenSpeaking();
 
   return (
@@ -420,12 +423,12 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
         </div>
         {/* checklist echo bar: start + 3 skills + boss + report + rewards */}
         <div style={{ display: "flex", gap: 4, padding: "0 18px 10px" }}>
-          {["S1", "S2", "S3", "BOSS", "REPORT"].map((seg, i) => {
+          {[...manifest.cycles.map((_, i) => `S${i + 1}`), "BOSS", "REPORT"].map((seg, i) => {
             const fill = i < done ? 1 : i === done && pos.beat !== "closed" ? 0.45 : pos.beat === "closed" ? 1 : 0;
             const live = i === done && pos.beat !== "closed" && !atStart;
             return (
               <div key={seg} style={{ flex: seg === "BOSS" ? 1.3 : 1, height: 4, background: T.hairline, borderRadius: 2, overflow: "hidden" }}>
-                <div className={live ? "sr-seg sr-seg-live" : "sr-seg"} style={{ width: `${fill * 100}%`, height: "100%", background: i === 3 ? T.threatRed : pos.beat === "closed" ? T.clearanceBrass : tone, boxShadow: fill > 0 ? `0 0 8px ${tone}66` : "none" }} />
+                <div className={live ? "sr-seg sr-seg-live" : "sr-seg"} style={{ width: `${fill * 100}%`, height: "100%", background: i === skillCount ? T.threatRed : pos.beat === "closed" ? T.clearanceBrass : tone, boxShadow: fill > 0 ? `0 0 8px ${tone}66` : "none" }} />
               </div>
             );
           })}
@@ -445,6 +448,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
                 key={`${pos.cycleIndex}-${pos.stage}`}
                 cycle={manifest.cycles[pos.cycleIndex]}
                 cycleIndex={pos.cycleIndex}
+                total={skillCount}
                 stage={pos.stage}
                 reduced={reduced}
                 audio={audio}
@@ -596,18 +600,19 @@ function MissionStartScene({ manifest, reduced, onBegin }: { manifest: MissionMa
 
 /* the map moment between steps */
 function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { manifest: MissionManifest; pos: BeatPos; stamped: number; xp: number; audio: ReturnType<typeof useSignalAudio>; onContinue: () => void }) {
-  const done = stepsDone(pos);
+  const n = manifest.cycles.length;
+  const done = stepsDone(pos, n);
   const nextLabel =
-    done < 3 ? `NEXT: SKILL ${done + 1} · ${manifest.cycles[done].title}` : done === 3 ? `NEXT: BOSS · ${manifest.incident.title}` : "NEXT: MISSION REPORT";
+    done < n ? `NEXT: SKILL ${done + 1} · ${manifest.cycles[done].title}` : done === n ? `NEXT: BOSS · ${manifest.incident.title}` : "NEXT: MISSION REPORT";
   useEffect(() => {
     audio.stamp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section style={{ maxWidth: 660, margin: "0 auto" }}>
-      <Eyebrow text={stamped === 3 ? "Boss defeated" : `Skill ${stamped + 1} complete`} color={T.confirmedGreen} />
+      <Eyebrow text={stamped === n ? "Boss defeated" : `Skill ${stamped + 1} complete`} color={T.confirmedGreen} />
       <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>
-        {stamped === 3 ? "You beat the boss." : "Nice work. One box down."}
+        {stamped === n ? "You beat the boss." : "Nice work. One box down."}
       </h1>
       <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.confirmedGreen}44`, padding: "18px 20px 20px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: "0.12em", color: T.textSecondary, marginBottom: 12 }}>
@@ -627,7 +632,7 @@ function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { man
 
 /* ------------------------------------------------------------- cycles */
 
-function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; stage: "intel" | "fieldwork" | "checkpoint"; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
+function CycleScene({ cycle, cycleIndex, total, stage, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; total: number; stage: "intel" | "fieldwork" | "checkpoint"; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
   const stageIndex = stage === "intel" ? 0 : stage === "fieldwork" ? 1 : 2;
   const stageTones = [T.arcCyan, T.actionAmber, T.confirmedGreen];
   return (
@@ -636,7 +641,7 @@ function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, vo
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
           <div>
             <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.14em", color: stageTones[stageIndex] }}>
-              SKILL {cycleIndex + 1} OF 3
+              SKILL {cycleIndex + 1} OF {total}
             </div>
             <div style={{ fontFamily: BODY, fontSize: "clamp(17px, 2.6vw, 22px)", fontWeight: 700, margin: "4px 0 2px" }}>{cycle.title}</div>
             <div style={{ fontSize: 13, color: T.textSecondary }}>{cycle.promise ?? cycle.concept}</div>

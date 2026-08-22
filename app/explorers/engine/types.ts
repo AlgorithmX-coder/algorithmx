@@ -397,9 +397,9 @@ export interface CycleDef {
 
 export interface CatchScenario {
   id: string;
-  /** Which taught skill (cycle index) this question checks. Every question MUST be
-   *  100% answerable from that skill's LEARN material — no outside knowledge. */
-  skill: 0 | 1 | 2;
+  /** Which taught skill (cycle index, 0-based) this question checks. Every question
+   *  MUST be 100% answerable from that skill's LEARN material — no outside knowledge. */
+  skill: number;
   /** The fresh fake/situation the child has never seen before. */
   prompt: string;
   /** Optional evidence line shown in a mono panel (a link, a message). */
@@ -450,7 +450,10 @@ export interface MissionManifest {
     objectives: [string, string, string];
     wrenLine: string;
   };
-  cycles: [CycleDef, CycleDef, CycleDef];
+  /** 3 to 5 skills. Three is the default spine; a case adds a 4th/5th only when
+   *  the topic genuinely earns it. The tuple-plus-rest keeps a compile-time floor
+   *  of three while allowing more; the engine derives every step from the length. */
+  cycles: [CycleDef, CycleDef, CycleDef, ...CycleDef[]];
   /** One-line hook WREN speaks on the Mission Start map (≤20 words). Falls back to transmission.lines[0]. */
   hook?: string;
   /** Cinematic 21:9 cold-open scene image (public/ path) — the mission's establishing shot. */
@@ -474,7 +477,7 @@ export interface MissionManifest {
 
 export type BeatPos =
   | { beat: "transmission" | "briefing" | "catch" | "debrief" | "closed" }
-  | { beat: "cycle"; cycleIndex: 0 | 1 | 2; stage: "intel" | "fieldwork" | "checkpoint" }
+  | { beat: "cycle"; cycleIndex: number; stage: "intel" | "fieldwork" | "checkpoint" }
   | { beat: "incident"; incidentPhase: number };
 
 /**
