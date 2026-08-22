@@ -13,8 +13,14 @@
  * checkpoints still resume.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
+
+// Arm narration BEFORE the browser paints, so a narrated screen shows up with the
+// WREN speaking-lock already in place — no one-frame gap where a fast tap slips
+// through as the screen appears. Isomorphic (useEffect on the server) so SSR never
+// warns; the mission subtree is client-only anyway.
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 import {
   AmberButton,
   Bubble,
@@ -340,7 +346,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     });
   };
   const atStart = intro && (pos.beat === "transmission" || pos.beat === "briefing");
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (resumeOffer || filmToPlay) {
       stopWren();
       return;
@@ -683,7 +689,7 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
   const activeHs = art.hotspots.find((h) => h.id === active) ?? null;
   const speaking = useWrenSpeaking(); // lock taps while WREN is explaining
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (voiceOn && art.introAudio) playWren(art.introAudio, true);
     return () => stopWren();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -811,7 +817,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   const [retryLock, setRetryLock] = useState(false);
 
   // Play the current beat's clip; when it finishes, reveal the next one.
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (!narrated) {
       stopWren(); // cut any bookend VO bleeding in from the transmission
       return;
@@ -985,7 +991,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
   const fw = cycle.fieldwork;
   const instruction = cycle.instruction ?? fw.payload.intro;
   // WREN explains the challenge once when PLAY opens (#4), then hands over.
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (cycle.playAudio && voiceOn) playWren(cycle.playAudio, true);
     else stopWren();
     return () => stopWren();
@@ -1202,7 +1208,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
     }
   };
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (phase === "intro" && voiceOn && def.voice?.intro) playWren(def.voice.intro, true);
     return () => stopWren();
     // eslint-disable-next-line react-hooks/exhaustive-deps
