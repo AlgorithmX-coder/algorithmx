@@ -1000,6 +1000,37 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
    question; the next skill stays locked until EVERY answer is right. A miss
    re-teaches this skill (replays its beats) and sends him back through the
    check. No tapping-until-green. */
+/** An advance button that stays locked for a few seconds so the child actually
+ *  reviews what's on screen before moving on (a filling bar shows the wait). */
+function GatedButton({ label, onClick, delayMs = 3500, note = "TAKE A MOMENT TO REVIEW..." }: { label: string; onClick: () => void; delayMs?: number; note?: string }) {
+  const [ready, setReady] = useState(delayMs <= 0);
+  useEffect(() => {
+    if (delayMs <= 0) return;
+    const t = setTimeout(() => setReady(true), delayMs);
+    return () => clearTimeout(t);
+  }, [delayMs]);
+  if (ready) return <AmberButton label={label} onClick={onClick} />;
+  return (
+    <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 230 }} aria-label="review time">
+      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>{note}</span>
+      <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+        <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: `sr-read ${delayMs}ms linear forwards` }} />
+      </span>
+    </div>
+  );
+}
+
+/** Shuffle a question's options so the correct answer isn't in a predictable
+ *  slot; returns the reordered options with the remapped answer index. */
+function shuffleQ<Q extends { options: string[]; answer: number }>(q: Q): Q {
+  const order = q.options.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return { ...q, options: order.map((i) => q.options[i]), answer: order.indexOf(q.answer) };
+}
+
 function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
   const questions = cycle.checkpoint?.questions ?? [];
   const [phase, setPhase] = useState<"check" | "reteach" | "passed">("check");
@@ -1114,7 +1145,8 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
   audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void;
   onPass: () => void; onResit: () => void; voiceOn: boolean;
 }) {
-  const scenarios = def.scenarios;
+  // Shuffle options once (correct answer not always first), and keep fresh order.
+  const [scenarios] = useState(() => def.scenarios.map(shuffleQ));
   const [phase, setPhase] = useState<"intro" | "test" | "passed" | "failed">("intro");
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -1124,11 +1156,11 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
 
   const begin = () => { audio.click(); setPhase("test"); };
 
+  // Change your answer freely until you press NEXT; nothing is revealed as you go.
   const pick = (i: number) => {
-    if (picked !== null) return;
     setPicked(i);
     setAnswers((a) => { const n = [...a]; n[idx] = i; return n; });
-    audio.click(); // neutral — a test never reveals right/wrong as you go
+    audio.click();
   };
 
   const next = () => {
@@ -1172,21 +1204,36 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
 
   if (phase === "passed") {
     return (
-      <section style={{ maxWidth: 620, margin: "0 auto", textAlign: "center", position: "relative" }}>
+      <section style={{ maxWidth: 660, margin: "0 auto", textAlign: "center", position: "relative" }}>
         <StampMark text="PASSED" visible reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -6, right: 8 }} />
         <Eyebrow text="Test passed" color={T.confirmedGreen} />
         <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 14px", color: T.confirmedGreen }}>
           You Passed
         </h1>
-        <p style={{ fontFamily: MONO, fontSize: 18, fontWeight: 700, color: T.textPrimary, marginBottom: 18 }}>
+        <p style={{ fontFamily: MONO, fontSize: 18, fontWeight: 700, color: T.textPrimary, marginBottom: 16 }}>
           You scored {score} out of {scenarios.length}.
         </p>
-        <div style={{ textAlign: "left", margin: "0 0 22px" }}>
+        <div style={{ textAlign: "left", margin: "0 0 16px" }}>
           <Bubble who="wren" tone={T.confirmedGreen}>
-            That's the real thing, Agent. You earned this one yourself. Case closed.
+            That's the real thing, Agent. You earned this yourself. Now here's how each one went.
           </Bubble>
         </div>
-        <AmberButton label="CLOSE THE CASE →" onClick={onPass} />
+        {/* feedback AFTER passing — never during the test */}
+        <div style={{ display: "grid", gap: 10, textAlign: "left", marginBottom: 22 }}>
+          {scenarios.map((sc, i) => {
+            const gotIt = answers[i] === sc.answer;
+            return (
+              <div key={sc.id} style={{ background: T.panel, border: `1px solid ${(gotIt ? T.confirmedGreen : T.threatRed)}55`, borderLeft: `3px solid ${gotIt ? T.confirmedGreen : T.threatRed}`, borderRadius: 4, padding: "12px 14px" }}>
+                <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: T.textSecondary }}>{sc.prompt}</p>
+                <p style={{ margin: "8px 0 0", fontFamily: MONO, fontSize: 13, color: T.confirmedGreen }}>✓ {sc.options[sc.answer]}</p>
+                {!gotIt && (
+                  <p style={{ margin: "4px 0 0", fontFamily: MONO, fontSize: 12.5, color: T.threatRed }}>You put: {sc.options[answers[i]] ?? "nothing"}</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <GatedButton label="CLOSE THE CASE →" onClick={onPass} delayMs={4000} note="LOOK OVER YOUR ANSWERS..." />
       </section>
     );
   }
@@ -1246,15 +1293,14 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
               key={i}
               onClick={() => pick(i)}
               className="sr-btn"
-              disabled={answered}
+              aria-pressed={isPick}
               style={{
                 textAlign: "left", fontFamily: MONO, fontSize: 14, lineHeight: 1.5,
                 color: isPick ? T.arcCyan : T.textPrimary,
-                background: isPick ? `${T.arcCyan}14` : T.panelRaised,
+                background: isPick ? `${T.arcCyan}22` : T.panelRaised,
                 border: `1.5px solid ${isPick ? T.arcCyan : T.hairline}`,
-                borderRadius: 6, padding: "13px 16px", cursor: answered ? "default" : "pointer",
-                opacity: answered && !isPick ? 0.5 : 1,
-                boxShadow: answered ? "none" : `inset 0 1px 0 rgba(255,255,255,0.05)`,
+                borderRadius: 6, padding: "13px 16px", cursor: "pointer",
+                boxShadow: isPick ? `0 0 0 2px ${T.arcCyan}33` : `inset 0 1px 0 rgba(255,255,255,0.05)`,
               }}
             >
               {o}

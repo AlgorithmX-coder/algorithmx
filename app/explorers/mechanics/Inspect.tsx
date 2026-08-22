@@ -7,7 +7,7 @@
  * again, so it's a real judgment call, not tap-until-it-lights-up.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AmberButton, Bubble, DeviceFrame } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { EvidenceSegment, InspectPayload, MechanicProps } from "../engine/types";
@@ -19,6 +19,13 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
   const [wrongOnce, setWrongOnce] = useState(false);
   const [locked, setLocked] = useState(false);
   const [passed, setPassed] = useState(false);
+  const [reviewReady, setReviewReady] = useState(false);
+  // After a correct answer, hold the CONTINUE button so they review it first.
+  useEffect(() => {
+    if (!passed) return;
+    const t = setTimeout(() => setReviewReady(true), 3000);
+    return () => clearTimeout(t);
+  }, [passed]);
 
   const toggle = (seg: EvidenceSegment) => {
     if (passed || locked) return;
@@ -122,7 +129,16 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
       {passed && (
         <div className="sr-msg" style={{ marginTop: 18, display: "grid", gap: 12 }}>
           <Bubble who="wren" tone={T.confirmedGreen}>{payload.doneLine}</Bubble>
-          <AmberButton label="CONTINUE →" onClick={() => onEvent({ kind: "COMPLETED", mastery: !wrongOnce })} />
+          {reviewReady ? (
+            <AmberButton label="CONTINUE →" onClick={() => onEvent({ kind: "COMPLETED", mastery: !wrongOnce })} />
+          ) : (
+            <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 220 }} aria-label="review time">
+              <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>LOOK IT OVER...</span>
+              <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+                <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 3000ms linear forwards" }} />
+              </span>
+            </div>
+          )}
         </div>
       )}
     </section>
