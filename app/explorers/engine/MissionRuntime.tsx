@@ -465,11 +465,18 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
         )}
       </div>
 
-      {/* While WREN is talking, lock out every click in the content (they can't
-          tap ahead or trigger another line). The HUD voice toggle sits above
-          this (z 2), so muting is always the escape. Auto-clears when she ends. */}
+      {/* HARD LOCK: while WREN is talking, NOTHING on the page is clickable.
+          A full-viewport catcher sits above the HUD (z2), the content (z1) and the
+          dev tools (z3) — z50, just under a cinematic (z60) — and swallows every
+          pointer event. Kids can't tap ahead, re-trigger a line, navigate away, or
+          toggle voice until she finishes. Auto-clears when the clip ends; audio.ts
+          also has duration + 20s safety timers so it can never stick. */}
       {speaking && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 1, cursor: "default", background: "transparent" }}>
+        <div
+          aria-hidden
+          onClickCapture={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          style={{ position: "fixed", inset: 0, zIndex: 50, cursor: "not-allowed", background: "transparent", pointerEvents: "auto" }}
+        >
           <div style={{ position: "fixed", bottom: 22, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 10, alignItems: "center", background: "rgba(8,14,26,0.92)", border: `1px solid ${T.arcCyan}55`, borderRadius: 999, padding: "9px 18px", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.arcCyan, boxShadow: `0 0 22px ${T.arcCyan}22` }}>
             <TypingDots /> WREN IS SPEAKING
           </div>
