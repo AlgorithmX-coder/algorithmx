@@ -7,6 +7,7 @@
 
 import { useState } from "react";
 import Engagement, { type WeekDef, C, MONO, Btn } from "./Engagement";
+import CourseIntro from "./CourseIntro";
 
 const LEAK_EMAIL = "j.reed@meridian.range";
 const LEAK_PASS = "M3ridian#Setup";
@@ -130,5 +131,7 @@ export const WEEK1: WeekDef = {
 };
 
 export default function Week1() {
+  const [started, setStarted] = useState(false);
+  if (!started) return <CourseIntro onBegin={() => setStarted(true)} />;
   return <Engagement week={WEEK1} />;
 }
