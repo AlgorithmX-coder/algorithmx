@@ -156,41 +156,42 @@ export default function Mission01Incident({ reduced, audio, onPhaseCleared, onCo
 
 function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: IncidentProps["audio"]; onDone: () => void }) {
   const [verdicts, setVerdicts] = useState<Record<string, Verdict | undefined>>({});
-  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
+  const answered = Object.keys(verdicts).length;
+  const allAnswered = answered === WAVE.length;
   const correctCount = WAVE.filter((m) => verdicts[m.id] === m.truth).length;
   const allCorrect = correctCount === WAVE.length;
 
+  // Blind: change your calls freely; nothing is revealed until you SUBMIT.
   const call = (m: WaveMessage, v: Verdict) => {
-    if (verdicts[m.id] === m.truth) return;
+    if (submitted) return;
+    audio.click();
     setVerdicts((s) => ({ ...s, [m.id]: v }));
-    if (v === m.truth) {
-      audio.latch();
-      setNotes((n) => ({ ...n, [m.id]: m.why }));
-    } else {
-      audio.thud();
-      setNotes((n) => ({ ...n, [m.id]: "Wrong call. Look at the sender and what it's asking of you, then call it again." }));
-    }
+  };
+  const submit = () => {
+    if (!allAnswered) return;
+    setSubmitted(true);
+    if (allCorrect) audio.stamp(); else audio.thud();
   };
 
   return (
     <div>
-      <Eyebrow text="Phase 1 · Triage: four messages just hit the class group. Call each one." color={T.actionAmber} />
+      <Eyebrow text="Phase 1 · Triage: four messages just hit the class group. Call each one, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 12, marginTop: 14 }}>
         {WAVE.map((m) => {
           const v = verdicts[m.id];
-          const settled = v === m.truth;
-          const wrong = v !== undefined && !settled;
+          const correct = v === m.truth;
           return (
             <div
               key={m.id}
-              className={!reduced && !settled ? "sr-takeover" : undefined}
+              className={!reduced && !submitted ? "sr-takeover" : undefined}
               style={{
                 background: T.paper,
                 color: T.fileInk,
                 borderRadius: 2,
                 padding: "14px 16px",
                 boxShadow: "0 2px 0 rgba(0,0,0,0.55)",
-                border: settled ? `1px solid ${T.confirmedGreen}` : reduced ? undefined : "1px solid transparent",
+                border: submitted ? `1px solid ${correct ? T.confirmedGreen : T.threatRed}` : reduced ? undefined : "1px solid transparent",
               }}
             >
               <div style={{ fontFamily: MONO, fontSize: 12, opacity: 0.65, marginBottom: 6 }}>FROM: {m.from}</div>
@@ -198,31 +199,33 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                 {(["THREAT", "SAFE"] as Verdict[]).map((opt) => {
                   const chosen = v === opt;
-                  const chosenColor = opt === m.truth ? T.confirmedGreen : T.threatRed;
+                  // Pre-submit: neutral highlight on your pick. Post-submit: the
+                  // TRUE answer goes green, and a wrong pick goes red.
+                  const bg = submitted
+                    ? opt === m.truth ? T.confirmedGreen : chosen ? T.threatRed : "transparent"
+                    : chosen ? T.arcCyan : "transparent";
+                  const filled = bg !== "transparent";
                   return (
                     <button
                       key={opt}
                       onClick={() => call(m, opt)}
                       className="sr-btn"
+                      disabled={submitted}
                       style={{
-                        fontFamily: MONO,
-                        fontSize: 11,
-                        letterSpacing: "0.08em",
-                        padding: "6px 12px",
-                        borderRadius: 2,
-                        cursor: settled ? "default" : "pointer",
-                        color: chosen ? T.paper : T.fileInk,
-                        background: chosen ? chosenColor : "transparent",
-                        border: `1px solid ${chosen ? chosenColor : T.fileInk}55`,
+                        fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", padding: "6px 12px", borderRadius: 2,
+                        cursor: submitted ? "default" : "pointer",
+                        color: filled ? T.paper : T.fileInk,
+                        background: bg,
+                        border: `1px solid ${T.fileInk}55`,
                       }}
                     >
                       {opt}
                     </button>
                   );
                 })}
-                {notes[m.id] && (
-                  <span role="status" style={{ fontSize: 12.5, lineHeight: 1.5, color: settled ? "#1F7A4D" : "#8A2E2E", flex: 1, minWidth: 200 }}>
-                    {notes[m.id]}
+                {submitted && v && (
+                  <span role="status" style={{ fontSize: 12.5, lineHeight: 1.5, color: correct ? "#1F7A4D" : "#8A2E2E", flex: 1, minWidth: 200 }}>
+                    {correct ? m.why : `Wrong call — this one was ${m.truth}. ${m.why}`}
                   </span>
                 )}
               </div>
@@ -230,11 +233,24 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
           );
         })}
       </div>
-      <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 14 }}>
-        <span style={{ fontFamily: MONO, fontSize: 12, color: allCorrect ? T.confirmedGreen : T.textSecondary }}>
-          {correctCount}/{WAVE.length} CALLED CORRECTLY
-        </span>
-        {allCorrect && <AmberButton label="WAVE SORTED · NEXT" onClick={onDone} />}
+      <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+        {!submitted ? (
+          allAnswered ? (
+            <AmberButton label="SUBMIT ALL CALLS" onClick={submit} />
+          ) : (
+            <span style={{ fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>Call all four, then submit ({answered}/{WAVE.length})</span>
+          )
+        ) : allCorrect ? (
+          <>
+            <span style={{ fontFamily: MONO, fontSize: 12, color: T.confirmedGreen }}>ALL {WAVE.length} CALLED RIGHT</span>
+            <AmberButton label="WAVE SORTED · NEXT" onClick={onDone} />
+          </>
+        ) : (
+          <>
+            <span style={{ fontFamily: MONO, fontSize: 12, color: T.threatRed }}>{correctCount}/{WAVE.length} right — see the marks above.</span>
+            <AmberButton label="TRY AGAIN" onClick={() => setSubmitted(false)} />
+          </>
+        )}
       </div>
     </div>
   );
@@ -244,41 +260,44 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
 
 function ContainmentPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone: () => void }) {
   const [chosen, setChosen] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const option = CONTAINMENT.find((o) => o.id === chosen) ?? null;
 
+  // Blind: pick and change freely; the outcome only shows after you submit.
   const choose = (id: string) => {
-    if (chosen) return;
-    const o = CONTAINMENT.find((x) => x.id === id);
-    if (!o) return;
+    if (submitted) return;
+    audio.click();
     setChosen(id);
-    if (o.correct) audio.latch();
-    else audio.thud();
+  };
+  const submit = () => {
+    if (!chosen) return;
+    setSubmitted(true);
+    if (option?.correct) audio.latch(); else audio.thud();
   };
 
   return (
     <div style={{ maxWidth: 640 }}>
-      <Eyebrow text="Phase 2 · Cut the hook: the group is still getting hit. Your containment call." color={T.actionAmber} />
+      <Eyebrow text="Phase 2 · Cut the hook: the group is still getting hit. Make your call, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
         {CONTAINMENT.map((o) => {
           const isChosen = chosen === o.id;
-          const stateColor = o.correct ? T.confirmedGreen : T.threatRed;
+          // Pre-submit: neutral highlight on your pick. Post-submit: green if it
+          // was right, red if it was wrong.
+          const col = submitted && isChosen ? (o.correct ? T.confirmedGreen : T.threatRed) : isChosen ? T.arcCyan : T.hairline;
           return (
             <button
               key={o.id}
               onClick={() => choose(o.id)}
               className="sr-btn"
-              disabled={!!chosen}
+              disabled={submitted}
+              aria-pressed={isChosen}
               style={{
-                textAlign: "left",
-                fontFamily: MONO,
-                fontSize: 13,
-                lineHeight: 1.5,
-                color: isChosen ? stateColor : T.textPrimary,
-                background: isChosen ? `${stateColor}14` : T.panelRaised,
-                border: `1px solid ${isChosen ? stateColor : T.hairline}`,
-                borderRadius: 3,
-                padding: "12px 14px",
-                cursor: chosen ? "default" : "pointer",
+                textAlign: "left", fontFamily: MONO, fontSize: 13, lineHeight: 1.5,
+                color: isChosen ? T.textPrimary : T.textSecondary,
+                background: isChosen ? `${col}1F` : T.panelRaised,
+                border: `1px solid ${col}`,
+                borderRadius: 3, padding: "12px 14px",
+                cursor: submitted ? "default" : "pointer",
               }}
             >
               {o.label}
@@ -286,18 +305,26 @@ function ContainmentPhase({ audio, onDone }: { audio: IncidentProps["audio"]; on
           );
         })}
       </div>
-      {option && (
+      {!submitted ? (
+        <div style={{ marginTop: 14 }}>
+          {chosen ? (
+            <AmberButton label="SUBMIT MY CALL" onClick={submit} />
+          ) : (
+            <span style={{ fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>Pick your containment call, then submit.</span>
+          )}
+        </div>
+      ) : option ? (
         <div role="status" style={{ marginTop: 14, borderLeft: `2px solid ${option.correct ? T.confirmedGreen : T.threatRed}`, paddingLeft: 14 }}>
           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{option.outcome}</p>
           <div style={{ marginTop: 12 }}>
             {option.correct ? (
               <AmberButton label="CONTAINMENT SET · NEXT" onClick={onDone} />
             ) : (
-              <GhostButton label="RECONSIDER" onClick={() => setChosen(null)} />
+              <GhostButton label="RECONSIDER" onClick={() => { setSubmitted(false); setChosen(null); }} />
             )}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

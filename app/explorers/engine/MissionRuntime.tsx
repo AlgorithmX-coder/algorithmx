@@ -1043,7 +1043,7 @@ function shuffleQ<Q extends { options: string[]; answer: number }>(q: Q): Q {
 }
 
 function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
-  const questions = cycle.checkpoint?.questions ?? [];
+  const [questions] = useState(() => (cycle.checkpoint?.questions ?? []).map(shuffleQ));
   const [phase, setPhase] = useState<"check" | "reteach" | "passed">("check");
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -1158,6 +1158,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
 }) {
   // Shuffle options once (correct answer not always first), and keep fresh order.
   const [scenarios] = useState(() => def.scenarios.map(shuffleQ));
+  const speaking = useWrenSpeaking(); // lock "start the test" while she reads the intro
   const [phase, setPhase] = useState<"intro" | "test" | "passed" | "failed">("intro");
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -1208,7 +1209,13 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
         <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 20 }}>
           {scenarios.length} questions. Get {def.pass} right to close the case. Miss it and you sit the whole case again.
         </p>
-        <AmberButton label="START THE TEST →" onClick={begin} />
+        {speaking ? (
+          <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
+            <TypingDots /> WREN IS SPEAKING...
+          </span>
+        ) : (
+          <AmberButton label="START THE TEST →" onClick={begin} />
+        )}
       </section>
     );
   }
@@ -1244,7 +1251,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
             );
           })}
         </div>
-        <GatedButton label="CLOSE THE CASE →" onClick={onPass} delayMs={4000} note="LOOK OVER YOUR ANSWERS..." />
+        <GatedButton label="CLOSE THE CASE →" onClick={onPass} delayMs={7000} note="LOOK OVER YOUR ANSWERS..." />
       </section>
     );
   }

@@ -23,7 +23,7 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
   // After a correct answer, hold the CONTINUE button so they review it first.
   useEffect(() => {
     if (!passed) return;
-    const t = setTimeout(() => setReviewReady(true), 3000);
+    const t = setTimeout(() => setReviewReady(true), 5500);
     return () => clearTimeout(t);
   }, [passed]);
 
@@ -135,7 +135,7 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
             <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 220 }} aria-label="review time">
               <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>LOOK IT OVER...</span>
               <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
-                <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 3000ms linear forwards" }} />
+                <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 5500ms linear forwards" }} />
               </span>
             </div>
           )}
