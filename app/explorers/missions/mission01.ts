@@ -161,7 +161,7 @@ export const mission01: MissionManifest = {
       title: "Take apart the address",
       concept: "The real owner is the last two chunks before the first slash",
       promise: "You'll learn to find who a link REALLY goes to, even the sneaky ones.",
-      instruction: "Help Maya pick the safest move.",
+      instruction: "Sort each address: really the brand, or a disguise?",
       intel: {
         beats: [
           "Every web address has one part that can't lie: the real name. Everything else is decoration the scammer gets to choose.",
@@ -177,93 +177,30 @@ export const mission01: MissionManifest = {
           "/audio/wren/m01-c2-b4.mp3",
           "/audio/wren/m01-c2-b5.mp3",
         ],
-        prediction: {
-          question: "Which of these really belongs to GameHub?",
-          options: [
-            "account.gamehub.com",
-            "gamehub.com.secure-login.net",
-            "gamehub-rewards.com",
-            "login.gamehub.verify.io",
-          ],
-          answer: 0,
-          right: "Yes! Its last two chunks are gamehub.com, so it's really GameHub. “account” is just a page inside it.",
-          wrong: "Read the LAST two chunks of each name. Only account.gamehub.com ends in gamehub.com. The rest are disguises. Try again.",
-          hint: "Ignore the front of each address. Which one actually ENDS in gamehub.com?",
-        },
-        predictionAudio: {
-          question: "/audio/wren/m01-c2-q.mp3",
-          right: "/audio/wren/m01-c2-qr.mp3",
-          wrong: "/audio/wren/m01-c2-qw.mp3",
-        },
       },
       fieldwork: {
-        verb: "DECIDE",
+        verb: "SORT",
         payload: {
-          intro: "Maya isn't sure what to do. Help her pick the safest move.",
-          situation:
-            "Maya's locked out and worried. What if the problem is actually real?",
-          prompt: "YOUR CALL, AGENT:",
-          options: [
-            {
-              id: "click",
-              label: "Click the link and check",
-              outcome:
-                "That's the trap. Everything she types goes straight to Phantom Hook.",
-            },
-            {
-              id: "reply",
-              label: "Reply and ask if it's real",
-              outcome:
-                "But the hacker IS the scammer. Reply, and tomorrow he sends even more fakes.",
-            },
-            {
-              id: "official",
-              label: "Open the real app, check there, then report it",
-              correct: true,
-              outcome:
-                "Perfect. The real app tells the truth, and reporting it helps the next person too.",
-            },
+          // PRACTICE the address rule on SIX fresh addresses (brand never seen in
+          // the lesson). The child must apply "last two chunks before the first
+          // slash" to each one to place it, not recognise a taught example.
+          intro: "Six addresses, all claiming to be PixelPlay. Sort each one: really PixelPlay, or a disguise wearing the name? Use the rule.",
+          buckets: [
+            { id: "real", label: "REALLY PIXELPLAY", hint: "ends in pixelplay.com" },
+            { id: "fake", label: "A DISGUISE", hint: "a stranger's site" },
           ],
+          items: [
+            { id: "a1", label: "account.pixelplay.com", bucket: "real", why: "The last two chunks before any slash are pixelplay.com. That's the real owner. 'account' is just a room inside it." },
+            { id: "a2", label: "pixelplay.com/redeem", bucket: "real", why: "Find the first slash, read the two chunks before it: pixelplay.com. Real owner. '/redeem' is only a page inside." },
+            { id: "a3", label: "help.pixelplay.com", bucket: "real", why: "Last two chunks: pixelplay.com. 'help' is just a room inside the real site." },
+            { id: "a4", label: "pixelplay.com.free-coins.net", bucket: "fake", why: "Read the LAST two chunks: free-coins.net. 'pixelplay.com' is glued on the front to fool you." },
+            { id: "a5", label: "login.pixelplay.rewards.io", bucket: "fake", why: "The last two chunks are rewards.io, a stranger. 'pixelplay' is just decoration in the middle." },
+            { id: "a6", label: "pixelplay-support.net", bucket: "fake", why: "The owner is pixelplay-support.net, a name a stranger made up. The real one is simply pixelplay.com." },
+          ],
+          doneLine: "That's the rule in action. Ignore the front, find the first slash, read the two chunks before it. No glued-on name can fool you now.",
         },
       },
       playAudio: "/audio/wren/m01-c2-play.mp3",
-      checkpoint: {
-        questions: [
-          {
-            id: "c2q1",
-            question: "Which of these is really Netflix?",
-            options: [
-              "account.netflix.com",
-              "netflix.com.watch-verify.net",
-              "netflix-login.com",
-              "secure-netflix.tv",
-            ],
-            answer: 0,
-          },
-          {
-            id: "c2q2",
-            question: "Who really owns  login.gamehub.com.secure-net.io ?",
-            options: [
-              "secure-net.io, a stranger",
-              "gamehub.com",
-              "login",
-              "GameHub",
-            ],
-            answer: 0,
-          },
-          {
-            id: "c2q3",
-            question: "A link is  help.roblox.com . Using the rule, is it really Roblox?",
-            options: [
-              "Yes, its last two chunks are roblox.com",
-              "No, it says help at the front",
-              "No, you can never really tell",
-              "Yes, because it's short",
-            ],
-            answer: 0,
-          },
-        ],
-      },
     },
 
     /* ---------------------------------------- cycle 3: know the play */
@@ -288,24 +225,6 @@ export const mission01: MissionManifest = {
           "/audio/wren/m01-c3-b4.mp3",
           "/audio/wren/m01-c3-b5.mp3",
         ],
-        prediction: {
-          question: "An email copies your school's logo perfectly, with zero spelling mistakes. But it rushes you, and its link goes to a stranger's site. Scam or safe?",
-          options: [
-            "Scam, it has two of the three parts, so the disguise doesn't matter",
-            "Safe, the logo is perfect",
-            "Safe, there are no spelling mistakes",
-            "Can't tell without more info",
-          ],
-          answer: 0,
-          right: "Right. A perfect disguise means nothing. The rush and the fake link are two of the three parts. That's a scam.",
-          wrong: "Don't be fooled by a good disguise. Count the parts: a rush AND a fake link. That's two of three. Try again.",
-          hint: "Ignore the logo and the spelling, that's just the costume. How many of the three scam parts can you count?",
-        },
-        predictionAudio: {
-          question: "/audio/wren/m01-c3-q.mp3",
-          right: "/audio/wren/m01-c3-qr.mp3",
-          wrong: "/audio/wren/m01-c3-qw.mp3",
-        },
       },
       fieldwork: {
         verb: "PROFILE",
@@ -329,43 +248,6 @@ export const mission01: MissionManifest = {
         },
       },
       playAudio: "/audio/wren/m01-c3-play.mp3",
-      checkpoint: {
-        questions: [
-          {
-            id: "c3q1",
-            question: "A message has a faked sender AND a link that lies, but no countdown. Scam or safe?",
-            options: [
-              "Almost certainly a scam, that's two of the three parts",
-              "Safe, there's no countdown",
-              "Safe, it has a link",
-              "Can't tell",
-            ],
-            answer: 0,
-          },
-          {
-            id: "c3q2",
-            question: "An email looks perfect, but it asks you to log in through its link. What's the ONE safe move?",
-            options: [
-              "Ignore the link, go to the real site yourself",
-              "Log in through the link, it looks fine",
-              "Reply to ask if it's real",
-              "Forward it to a friend",
-            ],
-            answer: 0,
-          },
-          {
-            id: "c3q3",
-            question: "Why does “go direct” beat every disguise a scammer wears?",
-            options: [
-              "You check the real source yourself, instead of trusting the message",
-              "Because scammers give up",
-              "Because all links are fake",
-              "Because it's the fastest way",
-            ],
-            answer: 0,
-          },
-        ],
-      },
     },
   ],
 
@@ -378,89 +260,141 @@ export const mission01: MissionManifest = {
 
   catchThem: {
     intro:
-      "Okay Agent, this is the test. Six questions, and they're not “what did I say”. You'll have to work each one out using what you learned. I won't tell you how you're doing until the end. Get five right to close the case. Miss it, and you sit the whole case again.",
-    pass: 5,
+      "Okay Agent, this is the real test. Ten questions, and not one of them is “what did I say”. Every single one makes you THINK. Take what you learned and work out an answer you've never seen before. I won't tell you how you're doing until the very end. Get eight right to close the case. Miss it, and you sit the whole case again. Take your time.",
+    pass: 8,
     voice: {
       intro: "/audio/wren/m01-catch-intro.mp3",
       pass: "/audio/wren/m01-catch-pass.mp3",
       fail: "/audio/wren/m01-catch-fail.mp3",
     },
-    // Think-for-yourself, mixing all three skills. DIFFERENT questions on the
-    // same topics — fresh brands/scenarios that never appear in the lessons or
-    // practice (which used GameHub, Netflix, Roblox, a school). Options are
-    // shuffled at render, so the correct one is never in a fixed slot.
+    // Think-for-yourself, all ten mixing the three skills. DIFFERENT questions
+    // on the same topics, with fresh brands/scenarios that never appear in the
+    // lessons or practice, and twists that punish surface-reading (a scary
+    // message that's actually safe, a real link that looks messy, a trusted
+    // friend whose account is hacked). Every question is still 100% answerable
+    // from the LEARN material. Options are shuffled at render, so the correct
+    // one is never in a fixed slot.
     scenarios: [
       {
         id: "ct1",
         skill: 0,
-        prompt: "A text says: “Your CloudDrive is FULL and gets wiped TONIGHT unless you upgrade now.” What's the trick?",
+        prompt: "Four messages land at once. Which one is NOT trying to pressure you?",
         options: [
-          "The “tonight” deadline, made to panic you into acting",
-          "It mentions CloudDrive",
-          "It offers an upgrade",
-          "It's about storage space",
+          "“Reminder: your library book is due back next Tuesday.”",
+          "“URGENT: your account closes in 1 hour unless you act!”",
+          "“You've WON a new phone! Claim in the next 5 minutes!”",
+          "“Final warning: verify your details NOW or lose access.”",
         ],
         answer: 0,
       },
       {
         id: "ct2",
         skill: 0,
-        prompt: "Which of these is a normal message, NOT a scam?",
+        prompt: "A message says: “You're today's lucky winner, but only for the next 10 minutes, grab it before someone else does!” There's no scary threat at all. Is it using pressure?",
         options: [
-          "“Your pizza is on its way!”",
-          "“Your account locks in 1 hour, confirm your PIN now.”",
-          "“You've WON! Claim your prize in the next 5 minutes.”",
-          "“Verify your password immediately or lose access.”",
+          "Yes, it fakes greed and rush, excitement is pressure too",
+          "No, it's good news, so it must be safe",
+          "No, because nothing bad is being threatened",
+          "Only if it also has a link",
         ],
         answer: 0,
       },
       {
         id: "ct3",
-        skill: 1,
-        prompt: "Which of these links is really CityBank?",
-        evidence: "help.citybank.com   ·   citybank.com.secure-login.net   ·   citybank-support.com   ·   login.citybank.verify.io",
+        skill: 0,
+        prompt: "“Only 3 left! Everyone's getting one! Don't be the one who misses out!” Which feeling is this built to fake?",
         options: [
-          "help.citybank.com",
-          "citybank.com.secure-login.net",
-          "citybank-support.com",
-          "login.citybank.verify.io",
+          "Fear of missing out, to rush you into acting",
+          "Boredom, so you keep reading",
+          "Trust, because it sounds friendly",
+          "None, it's just being helpful",
         ],
         answer: 0,
       },
       {
         id: "ct4",
         skill: 1,
-        prompt: "Where does this link really go?",
-        evidence: "mail.snapchat.com.free-coins.net",
+        prompt: "Where does this link REALLY go? Look carefully, the brand name is in there somewhere.",
+        evidence: "secure-verify.net/streamnow.com/login",
         options: [
-          "free-coins.net, a stranger's site",
-          "snapchat.com",
-          "Snapchat's mail",
-          "mail.snapchat.com",
+          "secure-verify.net, a stranger, StreamNow only appears after the slash",
+          "streamnow.com",
+          "StreamNow's login page",
+          "login.com",
         ],
         answer: 0,
       },
       {
         id: "ct5",
-        skill: 2,
-        prompt: "A DM from a YouTuber you follow is written perfectly and has their logo. But it rushes you to tap a link to “claim your free gift”. What is it?",
+        skill: 1,
+        prompt: "This link looks long and messy. Using the rule, is it really PlayVault?",
+        evidence: "account.security.login.playvault.com/reset",
         options: [
-          "A scam, a perfect look doesn't matter when the rush and fake link are there",
-          "Safe, it's your favourite YouTuber",
-          "Safe, there are no spelling mistakes",
-          "Can't tell without asking them",
+          "Yes, the two chunks before the slash are playvault.com",
+          "No, it has far too many words to be real",
+          "No, the word 'security' at the front makes it fake",
+          "You can't tell when there are this many parts",
         ],
         answer: 0,
       },
       {
         id: "ct6",
-        skill: 2,
-        prompt: "A friend messages you a link: “log in here for free stuff on your game.” What's the safe move?",
+        skill: 1,
+        prompt: "Only ONE of these is really MegaMart. Which one?",
+        evidence: "megamart.com   ·   megamart-rewards.com   ·   login.megamart.deals.net   ·   shop.megamart-uk.net",
         options: [
-          "Open the real game yourself, don't use their link",
-          "Log in through the link, it's from a friend",
-          "Reply to ask if it's really them",
-          "Share the link with your other friends",
+          "megamart.com",
+          "megamart-rewards.com",
+          "login.megamart.deals.net",
+          "shop.megamart-uk.net",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct7",
+        skill: 2,
+        prompt: "An email is a flawless copy of QuickPay: perfect logo, zero spelling mistakes, and it even arrives the day your bill is due. It rushes you to tap a link that goes to quickpay-support.net. Scam or safe?",
+        options: [
+          "Scam, the rush and the lying link are two of the three parts, a perfect look means nothing",
+          "Safe, the logo and spelling are perfect",
+          "Safe, it arrived on exactly the right day",
+          "Can't tell without phoning QuickPay first",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct8",
+        skill: 2,
+        prompt: "Your best friend messages you an amazing free-game link. It really is your friend's account. Is it safe to log in through their link?",
+        options: [
+          "No, open the real game yourself, their account could be hacked",
+          "Yes, it's your best friend",
+          "Yes, friends never send scams",
+          "Only if the link looks normal",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct9",
+        skill: 2,
+        prompt: "A message has a link you're unsure about, but no rush and a normal-looking sender, only one possible scam part. What's the safest move?",
+        options: [
+          "Don't tap it, go to the real app yourself and check there",
+          "Tap it, one part isn't enough to worry about",
+          "Reply and ask if it's genuine",
+          "Forward it to a friend to decide",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct10",
+        skill: 1,
+        prompt: "A text shouts “ACCOUNT LOCKED, verify within 10 minutes!” and its link is netbank.com.account-secure.net. Name the TWO things that prove it's a scam.",
+        options: [
+          "A fake countdown to rush you, and a link whose real owner is account-secure.net",
+          "It mentions your account, and it's a text message",
+          "It's quite short, and it contains a link",
+          "It uses capital letters, and it's about a bank",
         ],
         answer: 0,
       },
