@@ -303,6 +303,33 @@ export interface RedactPayload {
   doneLine: string;
 }
 
+export interface UnmaskItem {
+  id: string;
+  /** The friendly "From" name the child sees first. */
+  displayName: string;
+  /** The real email address hiding behind the name (revealed on tap). */
+  address: string;
+  /** True = the address's real owner genuinely matches the brand. */
+  real: boolean;
+  /** Shown after submit — why this sender is genuine or a fake. */
+  why: string;
+}
+
+/**
+ * UNMASK — names lie, addresses don't (debuts M01, Skill 3). Each message shows
+ * only a trusted-looking display name; the child taps to peel it back and reveal
+ * the real address underneath, then calls REAL or FAKE on every one and submits
+ * together. A two-step act — look first, judge second — so a friendly name can
+ * never be taken at face value.
+ */
+export interface UnmaskPayload {
+  intro: string;
+  /** The brand every sender claims to be, for the real/fake call. */
+  brand: string;
+  items: UnmaskItem[];
+  doneLine: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
@@ -313,7 +340,8 @@ export type FieldworkDef =
   | { verb: "CIPHER"; payload: CipherPayload }
   | { verb: "SORT"; payload: SortPayload }
   | { verb: "METER"; payload: MeterPayload }
-  | { verb: "REDACT"; payload: RedactPayload };
+  | { verb: "REDACT"; payload: RedactPayload }
+  | { verb: "UNMASK"; payload: UnmaskPayload };
 
 /* ------------------------------------------------------------ cycles */
 

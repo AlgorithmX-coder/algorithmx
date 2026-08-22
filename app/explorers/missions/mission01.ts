@@ -2,12 +2,16 @@
  * Mission 01 — "Phishing" (Block 1: Signals, CONFIDENTIAL).
  * Actor: PHANTOM HOOK.
  *
- * DEPTH PASS (owner: "too easy, feels like a recap"): the three lessons now
- * teach the REASONING, not just facts — the feelings a scammer fakes, how to
- * properly take a web address apart (incl. the subdomain trap), and the
- * three-part anatomy behind every disguise. The skill checks and the final
- * test are think-for-yourself: fresh messages the child must work out, not
- * "what did WREN say". Everything needed is still taught in-lesson.
+ * DEPTH PASS (owner: "too easy, feels like a recap"): FIVE skills, each
+ * LEARN -> PRACTICE, then ONE must-pass 10-question TEST. Every skill has a
+ * different hands-on practice so nothing repeats:
+ *   1 pressure  (ARTIFACT teach + INSPECT)   — the feelings a scammer fakes
+ *   2 address   (beats + SORT)               — take a web address apart
+ *   3 sender    (beats + UNMASK)             — the name lies, the address doesn't
+ *   4 the play  (beats + PROFILE)            — the three-part anatomy + go direct
+ *   5 recovery  (beats + BUILD)              — the rescue plan if you get caught
+ * Lessons teach the REASONING; the practices and the blind final test are
+ * think-for-yourself on fresh material, never "what did WREN say".
  * This is the template the other 19 copy.
  */
 
@@ -43,11 +47,11 @@ export const mission01: MissionManifest = {
     summary:
       "It's one fake email. Its whole job is to scare you into typing your password fast. Learn how it's built, and you'll spot every one like it.",
     objectives: [
-      "Spot the feelings a scammer fakes",
-      "Take apart a link and find its real owner",
-      "Learn the pattern behind every disguise",
+      "Spot the tricks that rush you",
+      "Check the link and the sender for fakes",
+      "Beat the pattern, and bounce back if you slip",
     ],
-    wrenLine: "Three skills, then a test to close the case. This test makes you THINK, it won't just ask what I said. So learn it properly. Ready?",
+    wrenLine: "Five skills, then a test to close the case. This test makes you THINK, it won't just ask what I said. So learn it properly. Ready?",
   },
 
   cycles: [
@@ -203,7 +207,45 @@ export const mission01: MissionManifest = {
       playAudio: "/audio/wren/m01-c2-play.mp3",
     },
 
-    /* ---------------------------------------- cycle 3: know the play */
+    /* -------------------------------------------- cycle 3: check the sender */
+    {
+      id: "sender",
+      title: "Check the sender",
+      concept: "The friendly name is a costume; the real address tells the truth",
+      promise: "You'll learn to see past the name and read who REALLY sent it.",
+      instruction: "Unmask each sender, then call real or fake.",
+      intel: {
+        beats: [
+          "Every message shows a name at the top, like GameHub Support. But that name is just a label. The sender can type whatever they want there.",
+          "The truth is hiding one tap away. Behind the name sits the real email address, and that part is far harder to fake.",
+          "So you read that address exactly like a link. Find the real owner, the last two chunks. If it isn't the brand, then the friendly name was a lie.",
+          "Never trust the name on its own. Peel it back, read the real address, and only then decide.",
+        ],
+        beatAudio: [
+          "/audio/wren/m01-c-sender-b1.mp3",
+          "/audio/wren/m01-c-sender-b2.mp3",
+          "/audio/wren/m01-c-sender-b3.mp3",
+          "/audio/wren/m01-c-sender-b4.mp3",
+        ],
+      },
+      fieldwork: {
+        verb: "UNMASK",
+        payload: {
+          intro: "Four messages, all signed GameHub. Tap each to reveal the real address, then call it.",
+          brand: "GameHub",
+          items: [
+            { id: "s1", displayName: "GameHub Support", address: "support@gamehub.com", real: true, why: "The real owner is gamehub.com. The name and the address match. Genuine." },
+            { id: "s2", displayName: "GameHub Security", address: "alert@gamehub.com.account-check.net", real: false, why: "The real owner is account-check.net, a stranger. 'gamehub.com' is glued on the front to fool you." },
+            { id: "s3", displayName: "GameHub Rewards", address: "prizes@gamehub-rewards.net", real: false, why: "gamehub-rewards.net is a made-up name a stranger owns. The real GameHub is simply gamehub.com." },
+            { id: "s4", displayName: "GameHub Team", address: "noreply@mail.gamehub.com", real: true, why: "The last two chunks are gamehub.com. 'mail' is just a room inside the real site." },
+          ],
+          doneLine: "Names lie, addresses don't.",
+        },
+      },
+      playAudio: "/audio/wren/m01-c-sender-play.mp3",
+    },
+
+    /* ---------------------------------------- cycle 4: know the play */
     {
       id: "actor",
       title: "Know the play",
@@ -249,6 +291,77 @@ export const mission01: MissionManifest = {
       },
       playAudio: "/audio/wren/m01-c3-play.mp3",
     },
+
+    /* ------------------------------------------- cycle 5: if you get caught */
+    {
+      id: "recover",
+      title: "If you get caught",
+      concept: "If you slip and click or type your password, fast action keeps you safe",
+      promise: "You'll learn the exact rescue steps if a scam ever catches you.",
+      instruction: "Build the rescue plan: pick the right move for each step.",
+      intel: {
+        beats: [
+          "Even careful people get caught sometimes. If you ever tap a scam link or type your password into a fake page, don't panic. What you do NEXT matters most.",
+          "First, change your password on the REAL site, straight away. That locks the scammer out before they can use what they took.",
+          "Then make it even safer. Turn on two-step verification, so a password on its own isn't enough to get in.",
+          "And you're never on your own. Tell a trusted adult, and report the scam so it gets taken down. That protects you, and everyone after you.",
+        ],
+        beatAudio: [
+          "/audio/wren/m01-c-recover-b1.mp3",
+          "/audio/wren/m01-c-recover-b2.mp3",
+          "/audio/wren/m01-c-recover-b3.mp3",
+          "/audio/wren/m01-c-recover-b4.mp3",
+        ],
+      },
+      fieldwork: {
+        verb: "BUILD",
+        payload: {
+          intro: "Someone just typed their password into a fake GameHub page. Build the rescue plan.",
+          target: "The rescue plan",
+          slots: [
+            {
+              id: "first",
+              label: "The very first move",
+              options: [
+                { id: "pw", label: "Change your password on the real site now", good: true, why: "Yes. That locks the scammer out before they can use what they stole." },
+                { id: "off", label: "Turn your phone off and hope", good: false, why: "That changes nothing. The stolen password still works. Change it first." },
+                { id: "ignore", label: "Ignore it, it's probably fine", good: false, why: "It isn't. If you typed your password into a fake page, act now." },
+              ],
+            },
+            {
+              id: "lock",
+              label: "Lock it down harder",
+              options: [
+                { id: "2fa", label: "Turn on two-step verification", good: true, why: "Now a password alone can't get in. A strong second lock." },
+                { id: "same", label: "Set the same password again", good: false, why: "The scammer may already know it. Use a brand-new one, then add two-step." },
+                { id: "post", label: "Post about it online", good: false, why: "That doesn't protect your account. Add a real second lock instead." },
+              ],
+            },
+            {
+              id: "tell",
+              label: "Get help",
+              options: [
+                { id: "adult", label: "Tell a trusted adult", good: true, why: "Always. They can help you check everything is safe." },
+                { id: "secret", label: "Keep it a secret", good: false, why: "Secrets help the scammer. A trusted adult helps you." },
+                { id: "wait", label: "Wait and see what happens", good: false, why: "Waiting gives the scammer time. Get help now." },
+              ],
+            },
+            {
+              id: "report",
+              label: "Protect other people",
+              options: [
+                { id: "report", label: "Report the scam message", good: true, why: "Reporting gets it taken down, so it can't catch the next person." },
+                { id: "forward", label: "Forward it to your friends", good: false, why: "That just spreads the bait. Report it instead." },
+                { id: "delete", label: "Delete it and tell no one", good: false, why: "Deleting only hides it. Reporting actually stops it." },
+              ],
+            },
+          ],
+          testLine: "PLAN HOLDS: account secured.",
+          doneLine: "Change it, lock it, tell someone, report it. That's the rescue plan.",
+        },
+      },
+      playAudio: "/audio/wren/m01-c-recover-play.mp3",
+    },
   ],
 
   incident: {
@@ -267,13 +380,13 @@ export const mission01: MissionManifest = {
       pass: "/audio/wren/m01-catch-pass.mp3",
       fail: "/audio/wren/m01-catch-fail.mp3",
     },
-    // Think-for-yourself, all ten mixing the three skills. DIFFERENT questions
-    // on the same topics, with fresh brands/scenarios that never appear in the
-    // lessons or practice, and twists that punish surface-reading (a scary
-    // message that's actually safe, a real link that looks messy, a trusted
-    // friend whose account is hacked). Every question is still 100% answerable
-    // from the LEARN material. Options are shuffled at render, so the correct
-    // one is never in a fixed slot.
+    // Think-for-yourself, ten questions covering ALL FIVE skills (two each,
+    // interleaved). Fresh brands/scenarios that never appear in the lessons or
+    // practice, with twists that punish surface-reading (a scary message that's
+    // actually safe, a real link that looks messy, a friendly sender name over a
+    // stranger's address). Every question is 100% answerable from the LEARN
+    // material. Options shuffle at render, so the answer is never a fixed slot.
+    // skill: 0 pressure · 1 address · 2 sender · 3 the play · 4 recovery.
     scenarios: [
       {
         id: "ct1",
@@ -289,30 +402,6 @@ export const mission01: MissionManifest = {
       },
       {
         id: "ct2",
-        skill: 0,
-        prompt: "A message says: “You're today's lucky winner, but only for the next 10 minutes, grab it before someone else does!” There's no scary threat at all. Is it using pressure?",
-        options: [
-          "Yes, it fakes greed and rush, excitement is pressure too",
-          "No, it's good news, so it must be safe",
-          "No, because nothing bad is being threatened",
-          "Only if it also has a link",
-        ],
-        answer: 0,
-      },
-      {
-        id: "ct3",
-        skill: 0,
-        prompt: "“Only 3 left! Everyone's getting one! Don't be the one who misses out!” Which feeling is this built to fake?",
-        options: [
-          "Fear of missing out, to rush you into acting",
-          "Boredom, so you keep reading",
-          "Trust, because it sounds friendly",
-          "None, it's just being helpful",
-        ],
-        answer: 0,
-      },
-      {
-        id: "ct4",
         skill: 1,
         prompt: "Where does this link REALLY go? Look carefully, the brand name is in there somewhere.",
         evidence: "secure-verify.net/streamnow.com/login",
@@ -325,7 +414,56 @@ export const mission01: MissionManifest = {
         answer: 0,
       },
       {
+        id: "ct3",
+        skill: 2,
+        prompt: "An email's sender name says “Netflix Help”. You tap to reveal the real address behind it. Real or fake?",
+        evidence: "help@netflix.account-verify.com",
+        options: [
+          "Fake, the real owner is account-verify.com, a stranger",
+          "Real, the address has netflix in it",
+          "Real, it came from Netflix Help",
+          "You can't tell from the address",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct4",
+        skill: 3,
+        prompt: "An email is a flawless copy of QuickPay: perfect logo, zero spelling mistakes, and it even arrives the day your bill is due. It rushes you to tap a link that goes to quickpay-support.net. Scam or safe?",
+        options: [
+          "Scam, the rush and the lying link are two of the three parts, a perfect look means nothing",
+          "Safe, the logo and spelling are perfect",
+          "Safe, it arrived on exactly the right day",
+          "Can't tell without phoning QuickPay first",
+        ],
+        answer: 0,
+      },
+      {
         id: "ct5",
+        skill: 4,
+        prompt: "You just typed your password into a fake game site. What's the FIRST thing to do?",
+        options: [
+          "Change your password on the real site right away",
+          "Turn the computer off and wait",
+          "See if anything bad happens first",
+          "Make a brand-new account",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct6",
+        skill: 0,
+        prompt: "A message says: “You're today's lucky winner, but only for the next 10 minutes, grab it before someone else does!” There's no scary threat at all. Is it using pressure?",
+        options: [
+          "Yes, it fakes greed and rush, excitement is pressure too",
+          "No, it's good news, so it must be safe",
+          "No, because nothing bad is being threatened",
+          "Only if it also has a link",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct7",
         skill: 1,
         prompt: "This link looks long and messy. Using the rule, is it really PlayVault?",
         evidence: "account.security.login.playvault.com/reset",
@@ -338,33 +476,20 @@ export const mission01: MissionManifest = {
         answer: 0,
       },
       {
-        id: "ct6",
-        skill: 1,
-        prompt: "Only ONE of these is really MegaMart. Which one?",
-        evidence: "megamart.com   ·   megamart-rewards.com   ·   login.megamart.deals.net   ·   shop.megamart-uk.net",
-        options: [
-          "megamart.com",
-          "megamart-rewards.com",
-          "login.megamart.deals.net",
-          "shop.megamart-uk.net",
-        ],
-        answer: 0,
-      },
-      {
-        id: "ct7",
-        skill: 2,
-        prompt: "An email is a flawless copy of QuickPay: perfect logo, zero spelling mistakes, and it even arrives the day your bill is due. It rushes you to tap a link that goes to quickpay-support.net. Scam or safe?",
-        options: [
-          "Scam, the rush and the lying link are two of the three parts, a perfect look means nothing",
-          "Safe, the logo and spelling are perfect",
-          "Safe, it arrived on exactly the right day",
-          "Can't tell without phoning QuickPay first",
-        ],
-        answer: 0,
-      },
-      {
         id: "ct8",
         skill: 2,
+        prompt: "A message's sender name is “Your School”. Should the name on its own tell you it's safe?",
+        options: [
+          "No, tap to check the real address behind the name",
+          "Yes, the name proves it's your school",
+          "Yes, school names can't be copied",
+          "Only if there are no spelling mistakes",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct9",
+        skill: 3,
         prompt: "Your best friend messages you an amazing free-game link. It really is your friend's account. Is it safe to log in through their link?",
         options: [
           "No, open the real game yourself, their account could be hacked",
@@ -375,26 +500,14 @@ export const mission01: MissionManifest = {
         answer: 0,
       },
       {
-        id: "ct9",
-        skill: 2,
-        prompt: "A message has a link you're unsure about, but no rush and a normal-looking sender, only one possible scam part. What's the safest move?",
-        options: [
-          "Don't tap it, go to the real app yourself and check there",
-          "Tap it, one part isn't enough to worry about",
-          "Reply and ask if it's genuine",
-          "Forward it to a friend to decide",
-        ],
-        answer: 0,
-      },
-      {
         id: "ct10",
-        skill: 1,
-        prompt: "A text shouts “ACCOUNT LOCKED, verify within 10 minutes!” and its link is netbank.com.account-secure.net. Name the TWO things that prove it's a scam.",
+        skill: 4,
+        prompt: "You've changed your password after a scam caught you. What else keeps your account safe?",
         options: [
-          "A fake countdown to rush you, and a link whose real owner is account-secure.net",
-          "It mentions your account, and it's a text message",
-          "It's quite short, and it contains a link",
-          "It uses capital letters, and it's about a bank",
+          "Turn on two-step verification and tell a trusted adult",
+          "Keep it secret so nobody worries",
+          "Set your old password back",
+          "Tap the scam link again to check",
         ],
         answer: 0,
       },

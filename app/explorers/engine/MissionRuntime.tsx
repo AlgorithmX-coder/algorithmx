@@ -57,6 +57,7 @@ import Cipher from "../mechanics/Cipher";
 import Sort from "../mechanics/Sort";
 import Meter from "../mechanics/Meter";
 import Redact from "../mechanics/Redact";
+import Unmask from "../mechanics/Unmask";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
@@ -1021,6 +1022,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
       {fw.verb === "SORT" && <Sort payload={fw.payload} {...props} />}
       {fw.verb === "METER" && <Meter payload={fw.payload} {...props} />}
       {fw.verb === "REDACT" && <Redact payload={fw.payload} {...props} />}
+      {fw.verb === "UNMASK" && <Unmask payload={fw.payload} {...props} />}
     </div>
   );
 }
