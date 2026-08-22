@@ -163,7 +163,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               </span>
             </Link>
             <div className="flex items-center gap-4">
-              <a href="/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Log In</a>
+              <a href="/login?course=cyberstart-pro" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Log In</a>
               <motion.a href="/signup?course=cyberstart-pro"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
