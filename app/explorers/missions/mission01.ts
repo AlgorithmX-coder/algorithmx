@@ -2,14 +2,15 @@
  * Mission 01 — "Phishing" (Block 1: Signals, CONFIDENTIAL).
  * Actor: PHANTOM HOOK.
  *
- * DEPTH PASS (owner: "too easy, feels like a recap"): FIVE skills, each
- * LEARN -> PRACTICE, then ONE must-pass 10-question TEST. Every skill has a
- * different hands-on practice so nothing repeats:
+ * DEPTH PASS (owner: "too easy, feels like a recap"): SEVEN skills, each
+ * LEARN -> PRACTICE, then ONE must-pass blind TEST. Hands-on practice each:
  *   1 pressure  (ARTIFACT teach + INSPECT)   — the feelings a scammer fakes
  *   2 address   (beats + SORT)               — take a web address apart
  *   3 sender    (beats + UNMASK)             — the name lies, the address doesn't
- *   4 the play  (beats + PROFILE)            — the three-part anatomy + go direct
- *   5 recovery  (beats + BUILD)              — the rescue plan if you get caught
+ *   4 QR codes  (beats + UNMASK/scan)        — a code is just a hidden link
+ *   5 downloads (beats + SORT)               — 'free' hacks/generators are traps
+ *   6 the play  (beats + PROFILE)            — the three-part anatomy + go direct
+ *   7 recovery  (beats + BUILD)              — the rescue plan if you get caught
  * Lessons teach the REASONING; the practices and the blind final test are
  * think-for-yourself on fresh material, never "what did WREN say".
  * This is the template the other 19 copy.
@@ -48,10 +49,10 @@ export const mission01: MissionManifest = {
       "It's one fake email. Its whole job is to scare you into typing your password fast. Learn how it's built, and you'll spot every one like it.",
     objectives: [
       "Spot the tricks that rush you",
-      "Check the link and the sender for fakes",
+      "Check links, senders, QR codes and downloads",
       "Beat the pattern, and bounce back if you slip",
     ],
-    wrenLine: "Five skills, then a test to close the case. This test makes you THINK, it won't just ask what I said. So learn it properly. Ready?",
+    wrenLine: "Seven skills, then a test to close the case. This test makes you THINK, it won't just ask what I said. So learn it properly. Ready?",
   },
 
   cycles: [
@@ -263,7 +264,92 @@ export const mission01: MissionManifest = {
       playAudio: "/audio/wren/m01-c-sender-play.mp3",
     },
 
-    /* ---------------------------------------- cycle 4: know the play */
+    /* ------------------------------------------------ cycle 4: scan with care */
+    {
+      id: "qrcode",
+      title: "Scan with care",
+      concept: "A QR code is just a hidden link, so check where it really goes before you scan",
+      promise: "You'll learn to see where a QR code REALLY takes you, before it opens.",
+      instruction: "Scan each code, read the address, then call it.",
+      intel: {
+        beats: [
+          "Here's a sneaky one. A QR code is just a link in disguise, a little pattern of squares your camera turns into a web address.",
+          "Scammers love them, because you can't SEE where a code goes just by looking. They stick fake ones on posters, car parks, even inside emails.",
+          "But your phone has your back. When you scan a code, it shows you the address FIRST, before it opens anything. That little preview is the whole game.",
+          "So read that address just like any link. Find the real owner, the last two chunks. A stranger? Don't open it. Same rule, brand-new trick.",
+        ],
+        beatAudio: [
+          "/audio/wren/m01-c-qr-b1.mp3",
+          "/audio/wren/m01-c-qr-b2.mp3",
+          "/audio/wren/m01-c-qr-b3.mp3",
+          "/audio/wren/m01-c-qr-b4.mp3",
+        ],
+      },
+      fieldwork: {
+        verb: "UNMASK",
+        payload: {
+          intro: "Some QR codes have turned up, each claiming to be PayZone, the parking app. Scan each one to reveal where it really goes, then call it.",
+          brand: "PayZone",
+          sourceLabel: "QR CODE",
+          revealText: "▸ TAP TO SCAN THE CODE",
+          items: [
+            { id: "q1", displayName: "Car park payment", address: "pay.payzone.com", real: true, why: "The last two chunks are payzone.com, the real parking app. Safe to scan." },
+            { id: "q2", displayName: "Unpaid fine, pay now", address: "payzone.com.quick-pay.net", real: false, why: "Read the LAST two chunks: quick-pay.net, a stranger. 'payzone.com' is glued on the front." },
+            { id: "q3", displayName: "Top up your balance", address: "app.payzone.com", real: true, why: "Last two chunks: payzone.com. 'app' is just a room inside the real site." },
+            { id: "q4", displayName: "Free parking offer", address: "payzone-refund.net", real: false, why: "The owner is payzone-refund.net, a name a stranger made up. The real one is simply payzone.com." },
+            { id: "q5", displayName: "Scan to renew", address: "renew.payzone.billing.io", real: false, why: "The last two chunks are billing.io, a stranger. 'payzone' is just decoration in the middle." },
+          ],
+          doneLine: "Nicely done. A QR code can't hide from the rule. Scan it, read the address it shows you, take the last two chunks. If it's a stranger, don't open it.",
+          doneAudio: "/audio/wren/m01-c-qr-review.mp3",
+        },
+      },
+      playAudio: "/audio/wren/m01-c-qr-play.mp3",
+    },
+
+    /* ------------------------------------------- cycle 5: don't download the trap */
+    {
+      id: "download",
+      title: "Don't download the trap",
+      concept: "Free hacks and generators are traps; real apps come only from the official store or site",
+      promise: "You'll learn why 'free' downloads are bait, and where safe ones really come from.",
+      instruction: "Sort each download: safe to get, or a trap?",
+      intel: {
+        beats: [
+          "Ever seen a free Robux generator, or a game hack that promises unlimited coins? Here's the truth. Those don't exist.",
+          "That download isn't free coins. It's a virus, or a trick to steal your login. The 'free prize' is just the bait, again.",
+          "Real games and apps come from one place: the official app store, or the company's own website. Never a random 'free' link.",
+          "So before you download anything, ask one question. Is this the official place? If it's a stranger's free file, close it. It's a trap.",
+        ],
+        beatAudio: [
+          "/audio/wren/m01-c-dl-b1.mp3",
+          "/audio/wren/m01-c-dl-b2.mp3",
+          "/audio/wren/m01-c-dl-b3.mp3",
+          "/audio/wren/m01-c-dl-b4.mp3",
+        ],
+      },
+      fieldwork: {
+        verb: "SORT",
+        payload: {
+          intro: "A pile of downloads just showed up. Sort each one: safe to get, or a trap? Remember where real apps come from.",
+          buckets: [
+            { id: "safe", label: "SAFE TO GET", hint: "official store or site" },
+            { id: "trap", label: "A TRAP", hint: "a stranger's 'free' file" },
+          ],
+          items: [
+            { id: "d1", label: "Fortnite from the App Store", bucket: "safe", why: "The official app store, exactly where real games come from. Safe." },
+            { id: "d2", label: "free-robux-generator.exe (from a pop-up)", bucket: "trap", why: "Free Robux generators don't exist. That file is a virus, not a prize." },
+            { id: "d3", label: "Minecraft from minecraft.net", bucket: "safe", why: "The company's own real website. Safe." },
+            { id: "d4", label: "unlimited-coins-hack.exe", bucket: "trap", why: "A 'hack' that gives free coins is bait. It's malware, not magic." },
+            { id: "d5", label: "A worksheet your teacher emailed you", bucket: "safe", why: "A file you were expecting, from someone you know. Fine to open." },
+            { id: "d6", label: "gta5-free-full-game.zip (from a forum)", bucket: "trap", why: "A pricey game, 'free' from a stranger's forum? That's a trap every time." },
+          ],
+          doneLine: "That's the rule. Real apps come from the official store or the real site. A stranger's 'free' hack, generator or full game is always the bait, so close it.",
+        },
+      },
+      playAudio: "/audio/wren/m01-c-dl-play.mp3",
+    },
+
+    /* ---------------------------------------- cycle 6: know the play */
     {
       id: "actor",
       title: "Know the play",
@@ -312,7 +398,7 @@ export const mission01: MissionManifest = {
       playAudio: "/audio/wren/m01-c3-play.mp3",
     },
 
-    /* ------------------------------------------- cycle 5: if you get caught */
+    /* ------------------------------------------- cycle 7: if you get caught */
     {
       id: "recover",
       title: "If you get caught",
@@ -402,8 +488,8 @@ export const mission01: MissionManifest = {
 
   catchThem: {
     intro:
-      "Okay Agent, this is the real test. Fifteen questions, and not one of them is “what did I say”. Every single one makes you THINK. Take what you learned and work out an answer you've never seen before. I won't tell you how you're doing until the very end. Get twelve right to close the case. Miss it, and you sit the whole case again. Take your time.",
-    pass: 12,
+      "Okay Agent, this is the real test. Nineteen questions, and not one of them is “what did I say”. Every single one makes you THINK. Take what you learned and work out an answer you've never seen before. I won't tell you how you're doing until the very end. Get fifteen right to close the case. Miss it, and you sit the whole case again. Take your time.",
+    pass: 15,
     voice: {
       intro: "/audio/wren/m01-catch-intro.mp3",
       pass: "/audio/wren/m01-catch-pass.mp3",
@@ -457,7 +543,7 @@ export const mission01: MissionManifest = {
       },
       {
         id: "ct4",
-        skill: 3,
+        skill: 5,
         prompt: "An email is a flawless copy of QuickPay: perfect logo, zero spelling mistakes, and it even arrives the day your bill is due. It rushes you to tap a link that goes to quickpay-support.net. Scam or safe?",
         options: [
           "Scam, the rush and fake link give it away",
@@ -469,7 +555,7 @@ export const mission01: MissionManifest = {
       },
       {
         id: "ct5",
-        skill: 4,
+        skill: 6,
         prompt: "You just typed your password into a fake game site. What's the FIRST thing to do?",
         options: [
           "Change your password on the real site",
@@ -518,7 +604,7 @@ export const mission01: MissionManifest = {
       },
       {
         id: "ct9",
-        skill: 3,
+        skill: 5,
         prompt: "Your best friend messages you an amazing free-game link. It really is your friend's account. Is it safe to log in through their link?",
         options: [
           "No, their account could be hacked",
@@ -530,7 +616,7 @@ export const mission01: MissionManifest = {
       },
       {
         id: "ct10",
-        skill: 4,
+        skill: 6,
         prompt: "You've changed your password after a scam caught you. What else keeps your account safe?",
         options: [
           "Turn on two-step and tell a trusted adult",
@@ -580,7 +666,7 @@ export const mission01: MissionManifest = {
       },
       {
         id: "ct14",
-        skill: 3,
+        skill: 5,
         prompt: "A message has a faked sender name AND rushes you, but you can't check its link. How many scam parts is that, and what do you do?",
         options: [
           "Two already, don't tap, go direct",
@@ -592,13 +678,63 @@ export const mission01: MissionManifest = {
       },
       {
         id: "ct15",
-        skill: 4,
+        skill: 6,
         prompt: "You used the same password on three sites, and one just got phished. What must you do?",
         options: [
           "Change it on all three sites",
           "Only change the one that got phished",
           "Change nothing, a single leak is fine",
           "Delete all three of the accounts to be safe",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ctQR1",
+        skill: 3,
+        prompt: "A poster's QR code says “Scan for free cinema tickets!” You scan it and it previews the address below. Safe or a trap?",
+        evidence: "freetickets.scan-win.net",
+        options: [
+          "A trap, a stranger owns that address",
+          "Safe, it's offering you free tickets",
+          "Safe, the code was on a real poster",
+          "You can never tell from a QR code",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ctQR2",
+        skill: 3,
+        prompt: "You scan a QR code and it previews this address before opening. Should you go ahead?",
+        evidence: "shop.pixelplay.com",
+        options: [
+          "Yes, it ends in pixelplay.com",
+          "No, QR codes are always scams",
+          "No, it has extra words in front",
+          "Only if there's no countdown too",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ctDL1",
+        skill: 4,
+        prompt: "A YouTuber links a “free V-Bucks generator.exe” in the description. What is it?",
+        options: [
+          "A trap, those generators are fake",
+          "Real, YouTubers only share safe files",
+          "Real, because it ends in dot exe",
+          "Safe if you virus-scan it first",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ctDL2",
+        skill: 4,
+        prompt: "Where's the ONLY safe place to get a brand-new game?",
+        options: [
+          "The official store or real site",
+          "Any link a friend sends you",
+          "A forum that offers it for free",
+          "Wherever it downloads the fastest",
         ],
         answer: 0,
       },

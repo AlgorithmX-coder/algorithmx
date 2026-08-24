@@ -59,6 +59,27 @@ const WAVE: WaveMessage[] = [
     truth: "THREAT",
     why: "A prize you never entered for, a countdown, and gamehub riding in front of a stranger's domain.",
   },
+  {
+    id: "qr-verify",
+    from: "security@gamehub.account-check.net",
+    text: "Scan the QR code in this email to verify your account. It opens: gamehub.account-check.net/verify",
+    truth: "THREAT",
+    why: "A QR is just a hidden link. Its real owner is account-check.net, a stranger, and it's rushing you to verify. Threat.",
+  },
+  {
+    id: "coin-gen",
+    from: "no-reply@gamehub-coins.net",
+    text: "Download the free GameHub Coin Generator and get 10,000 coins instantly!",
+    truth: "THREAT",
+    why: "Free coin generators don't exist. That download is a virus, not coins. And the sender isn't even really GameHub.",
+  },
+  {
+    id: "newsletter",
+    from: "news@gamehub.com",
+    text: "Your monthly GameHub newsletter: three new games out this week. No action needed.",
+    truth: "SAFE",
+    why: "Real domain, no link to tap, no pressure, nothing asked. Just news. Safe.",
+  },
 ];
 
 const CONTAINMENT = [
@@ -96,7 +117,7 @@ export default function Mission01Incident({ reduced, audio, onPhaseCleared, onCo
             INTERCEPTED: PHANTOM HOOK, ON THE WIRE
           </div>
           <Bubble who="villain">
-            <em>&ldquo;One email down, little analyst? Cute. I sent four more while you were reading it.&rdquo;</em>
+            <em>&ldquo;One email down, little analyst? Cute. I sent a whole WAVE while you were reading it. Links, codes, downloads, the lot. Sort THAT.&rdquo;</em>
           </Bubble>
         </div>
       )}
@@ -176,7 +197,7 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
 
   return (
     <div>
-      <Eyebrow text="Phase 1 · Triage: four messages just hit the class group. Call each one, then submit." color={T.actionAmber} />
+      <Eyebrow text="Phase 1 · Triage: a wave just hit the class group. Call every one, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 12, marginTop: 14 }}>
         {WAVE.map((m) => {
           const v = verdicts[m.id];

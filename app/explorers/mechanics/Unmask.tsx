@@ -86,7 +86,7 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
             <div key={it.id} style={{ background: T.paper, color: T.fileInk, borderRadius: 4, border: `1px solid ${edge}`, boxShadow: "0 2px 0 rgba(0,0,0,0.5)", overflow: "hidden" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: `1px solid ${T.fileInk}18` }}>
                 <span style={{ fontFamily: BODY, fontSize: 14.5, fontWeight: 700 }}>{it.displayName}</span>
-                <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", opacity: 0.55 }}>SENDER</span>
+                <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", opacity: 0.55 }}>{payload.sourceLabel ?? "SENDER"}</span>
               </div>
 
               {!isRevealed ? (
@@ -96,7 +96,7 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
                   disabled={submitted || locked}
                   style={{ width: "100%", textAlign: "left", fontFamily: MONO, fontSize: 12.5, color: T.actionAmber, background: `${T.actionAmber}12`, border: "none", borderTop: `1px dashed ${T.actionAmber}`, padding: "12px 14px", cursor: "pointer" }}
                 >
-                  ▸ TAP TO REVEAL THE REAL ADDRESS
+                  {payload.revealText ?? "▸ TAP TO REVEAL THE REAL ADDRESS"}
                 </button>
               ) : (
                 <div style={{ padding: "12px 14px" }}>

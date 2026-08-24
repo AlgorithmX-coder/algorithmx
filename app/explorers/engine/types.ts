@@ -329,12 +329,16 @@ export interface UnmaskItem {
  */
 export interface UnmaskPayload {
   intro: string;
-  /** The brand every sender claims to be, for the real/fake call. */
+  /** The brand every item claims to be, for the real/fake call. */
   brand: string;
   items: UnmaskItem[];
   doneLine: string;
   /** WREN reviews the answer aloud during the "look it over" hold (public/ path). */
   doneAudio?: string;
+  /** The chip on each card ("SENDER" by default; a QR-code round uses "QR CODE"). */
+  sourceLabel?: string;
+  /** The reveal-button text (defaults to revealing an email address; QR "scans"). */
+  revealText?: string;
 }
 
 export type FieldworkDef =
