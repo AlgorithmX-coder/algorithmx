@@ -7,11 +7,12 @@
  */
 
 import { useState } from "react";
+import { playWrenNudge } from "../engine/audio";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, ProfilePayload } from "../engine/types";
 
-export default function Profile({ payload, audio, onEvent }: MechanicProps<ProfilePayload>) {
+export default function Profile({ payload, audio, onEvent, voiceOn }: MechanicProps<ProfilePayload>) {
   // Muddle the behaviours so the matching ones aren't grouped in a predictable row.
   const [behaviors] = useState(() => {
     const a = [...payload.behaviors];
@@ -40,6 +41,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
       setWrongIds(wrong);
       setMissedOnce(true);
       audio.thud();
+      playWrenNudge(!!voiceOn); // "not quite, look again"
       onEvent({ kind: "MISS" });
     }
   };

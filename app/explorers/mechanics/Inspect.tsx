@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { playWren, stopWren } from "../engine/audio";
+import { playWren, playWrenNudge, stopWren } from "../engine/audio";
 import { AmberButton, Bubble, DeviceFrame } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { EvidenceSegment, InspectPayload, MechanicProps } from "../engine/types";
@@ -46,6 +46,7 @@ export default function Inspect({ payload, reduced, audio, onEvent, voiceOn }: M
       setPassed(true); audio.stamp(); // COMPLETED fires on the CONTINUE click below
     } else {
       setWrongOnce(true); audio.thud();
+      playWrenNudge(!!voiceOn); // "not quite, look again"
       setResult({ wrong, missed });
       setLocked(true); setTimeout(() => setLocked(false), 4000);
       onEvent({ kind: "MISS" });

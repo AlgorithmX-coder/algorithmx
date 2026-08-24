@@ -10,7 +10,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { playWren, stopWren } from "../engine/audio";
+import { playWren, playWrenNudge, stopWren } from "../engine/audio";
 import { AmberButton } from "../engine/primitives";
 import { MONO, BODY, T } from "../engine/tokens";
 import type { MechanicProps, UnmaskPayload } from "../engine/types";
@@ -60,6 +60,7 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
       setWrongOnce(true);
       setSubmitted(true);
       audio.thud();
+      playWrenNudge(!!voiceOn); // "not quite, look again"
       onEvent({ kind: "MISS" });
       setLocked(true);
       setTimeout(() => { setLocked(false); setSubmitted(false); }, 4000);

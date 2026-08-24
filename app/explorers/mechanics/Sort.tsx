@@ -11,11 +11,12 @@
  */
 
 import { useState } from "react";
+import { playWrenNudge } from "../engine/audio";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, SortPayload } from "../engine/types";
 
-export default function Sort({ payload, audio, onEvent }: MechanicProps<SortPayload>) {
+export default function Sort({ payload, audio, onEvent, voiceOn }: MechanicProps<SortPayload>) {
   const [held, setHeld] = useState<string | null>(null);
   const [placed, setPlaced] = useState<Record<string, string>>({}); // itemId -> bucketId
   const [wrongOnce, setWrongOnce] = useState(false);
@@ -47,6 +48,7 @@ export default function Sort({ payload, audio, onEvent }: MechanicProps<SortPayl
       setWrongOnce(true);
       setBounce({ id: item.id, why: item.why });
       audio.thud();
+      playWrenNudge(!!voiceOn); // "not quite, look again"
       onEvent({ kind: "MISS" });
     }
   };

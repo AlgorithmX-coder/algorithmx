@@ -83,6 +83,21 @@ export function stopWren() {
   setSpeaking(false);
 }
 
+/**
+ * WREN's "not quite, look again" nudge on a wrong practice answer. Generic and
+ * answer-free, so one small set serves every practice in every case. Rotates
+ * variants so it isn't the same line twice, and NEVER interrupts a clip already
+ * playing (so rapid wrong taps can't stack or spam it).
+ */
+const NUDGES = ["/audio/wren/nudge-1.mp3", "/audio/wren/nudge-2.mp3", "/audio/wren/nudge-3.mp3"];
+let nudgeIdx = 0;
+export function playWrenNudge(enabled: boolean) {
+  if (!enabled || speaking) return;
+  const url = NUDGES[nudgeIdx % NUDGES.length];
+  nudgeIdx += 1;
+  playWren(url, true);
+}
+
 export function useSignalAudio(): SignalAudio {
   const ctxRef = useRef<AudioContext | null>(null);
 

@@ -10,11 +10,12 @@
  */
 
 import { useState } from "react";
+import { playWrenNudge } from "../engine/audio";
 import { AmberButton, Eyebrow } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { BuildPayload, MechanicProps } from "../engine/types";
 
-export default function Build({ payload, reduced, audio, onEvent }: MechanicProps<BuildPayload>) {
+export default function Build({ payload, reduced, audio, onEvent, voiceOn }: MechanicProps<BuildPayload>) {
   const [picks, setPicks] = useState<Record<string, string>>({});
   const [misses, setMisses] = useState(0);
   const [tested, setTested] = useState(false);
@@ -38,6 +39,7 @@ export default function Build({ payload, reduced, audio, onEvent }: MechanicProp
     } else {
       setMisses((m) => m + 1);
       audio.thud();
+      playWrenNudge(!!voiceOn); // "not quite, look again"
       onEvent({ kind: "MISS" });
     }
   };
