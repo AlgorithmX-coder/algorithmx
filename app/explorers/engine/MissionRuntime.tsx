@@ -689,15 +689,27 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
   const allDone = count >= total;
   const activeHs = art.hotspots.find((h) => h.id === active) ?? null;
   const speaking = useWrenSpeaking(); // lock taps while WREN is explaining
+  // Lock from the very first frame: assume the intro is about to talk, so the
+  // artifact is non-clickable the instant it appears — before the speaking
+  // signal can even round-trip. Cleared the moment the real signal takes over,
+  // with a safety timeout so a blocked/failed intro can never leave it stuck.
+  const [introLock, setIntroLock] = useState(voiceOn && !!art.introAudio);
+  const locked = speaking || introLock;
 
   useIsoLayoutEffect(() => {
     if (voiceOn && art.introAudio) playWren(art.introAudio, true);
+    else { stopWren(); setIntroLock(false); }
     return () => stopWren();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (speaking) { setIntroLock(false); return; }
+    const t = setTimeout(() => setIntroLock(false), 2500);
+    return () => clearTimeout(t);
+  }, [speaking]);
 
   const tap = (hid: string) => {
-    if (speaking) return; // can't tap another part until she's finished this one
+    if (locked) return; // can't tap while WREN is explaining (or about to)
     const hs = art.hotspots.find((h) => h.id === hid);
     if (!hs) return;
     setActive(hid);
@@ -734,12 +746,12 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
             const isR = revealed[s.hotspotId];
             const isA = active === s.hotspotId;
             return (
-              <button key={s.id} onClick={() => tap(s.hotspotId!)} className="sr-btn" disabled={speaking && !isR} style={{
+              <button key={s.id} onClick={() => tap(s.hotspotId!)} className="sr-btn" disabled={locked && !isR} style={{
                 justifySelf: "start", textAlign: "left", fontFamily: s.mono ? MONO : BODY, fontSize: "inherit", color: T.fileInk,
                 background: isR ? `${T.threatRed}22` : `${T.actionAmber}22`,
                 border: `2px ${isR ? "solid" : "dashed"} ${isR ? T.threatRed : T.actionAmber}`,
-                borderRadius: 6, padding: "7px 12px", cursor: speaking ? "default" : "pointer",
-                opacity: speaking && !isR ? 0.5 : 1,
+                borderRadius: 6, padding: "7px 12px", cursor: locked ? "default" : "pointer",
+                opacity: locked && !isR ? 0.5 : 1,
                 boxShadow: isA ? `0 0 0 3px ${T.actionAmber}44` : "none",
               }}>
                 {s.text}{isR ? "  ✓" : ""}
@@ -772,7 +784,7 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
         <div style={{ marginTop: 18 }}>
           <Bubble who="wren" tone={T.confirmedGreen}>{art.doneLine}</Bubble>
           <div style={{ marginTop: 14 }}>
-            {speaking ? (
+            {locked ? (
               <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
                 <TypingDots /> WREN IS SPEAKING...
               </span>
@@ -819,6 +831,10 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
 
   // Play the current beat's clip; when it finishes, reveal the next one.
   useIsoLayoutEffect(() => {
+    // The ARTIFACT owns WREN on this cycle (it plays its own intro + reveals).
+    // Bail so we never race it with a stopWren that drops the speaking-lock
+    // while the intro is still playing.
+    if (artifact) return;
     if (!narrated) {
       stopWren(); // cut any bookend VO bleeding in from the transmission
       return;
