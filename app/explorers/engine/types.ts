@@ -284,6 +284,8 @@ export interface MeterPayload {
   /** Sorted ascending by `upTo`; the last zone must reach 100. */
   zones: MeterZone[];
   doneLine: string;
+  /** WREN reviews the answer aloud during the 15s "look it over" hold (public/ path). */
+  doneAudio?: string;
 }
 
 export interface RedactSpan {
