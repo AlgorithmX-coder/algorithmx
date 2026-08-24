@@ -116,6 +116,28 @@ function stepsDone(pos: BeatPos, n = 3): number {
   return n + 2;
 }
 
+/**
+ * Will WREN narrate the moment this beat appears? Used to arm the speaking-lock
+ * from the very first frame of every narrated screen — the transmission, the
+ * briefing, each LEARN (message OR chat beats), the PLAY instructions, the test
+ * intro, the debrief — so nothing is clickable before the audio signal has even
+ * had time to travel. Kept in lockstep with the playWren triggers below.
+ */
+function beatNarrates(pos: BeatPos, manifest: MissionManifest, voiceOn: boolean, intro: boolean, reduced: boolean): boolean {
+  if (!voiceOn) return false;
+  if (pos.beat === "transmission" || pos.beat === "briefing") return intro && !!manifest.voice?.transmission;
+  if (pos.beat === "debrief") return !!manifest.voice?.debrief;
+  if (pos.beat === "catch") return !!manifest.catchThem?.voice?.intro;
+  if (pos.beat === "cycle") {
+    const c = manifest.cycles[pos.cycleIndex];
+    if (!c) return false;
+    if (pos.stage === "intel") return c.intel.artifact ? !!c.intel.artifact.introAudio : (!reduced && !!c.intel.beatAudio?.length);
+    if (pos.stage === "fieldwork") return !!c.playAudio;
+    return false; // checkpoint has no set-up VO
+  }
+  return false; // incident (boss) has no narrator VO
+}
+
 /* ================================================================= map */
 
 function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; pos: BeatPos; stampNew?: number }) {
@@ -364,6 +386,22 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const skillCount = manifest.cycles.length;
   const done = stepsDone(pos, skillCount);
   const speaking = useWrenSpeaking();
+  // Arm the lock from the first frame a narrated screen mounts, so the whole page
+  // is non-clickable before the async speaking signal can even round-trip. The
+  // real signal takes over the instant it fires; a short safety window means a
+  // screen that turns out not to narrate never stays dead.
+  // Don't arm on the between-skills map moment or the resume screen — pos has
+  // already advanced there, but those screens are static and must stay clickable.
+  const narratesNow = mapGate === null && !resumeOffer && beatNarrates(pos, manifest, voiceOn, intro, reduced);
+  const [armLock, setArmLock] = useState(false);
+  useIsoLayoutEffect(() => { setArmLock(narratesNow); }, [narratesNow, pos]);
+  useEffect(() => {
+    if (!armLock) return;
+    if (speaking) { setArmLock(false); return; } // real signal governs now
+    const t = setTimeout(() => setArmLock(false), 1200); // never stay dead
+    return () => clearTimeout(t);
+  }, [armLock, speaking]);
+  const locked = speaking || armLock;
 
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
@@ -482,7 +520,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
           pointer event. Kids can't tap ahead, re-trigger a line, navigate away, or
           toggle voice until she finishes. Auto-clears when the clip ends; audio.ts
           also has duration + 20s safety timers so it can never stick. */}
-      {speaking && (
+      {locked && (
         <div
           aria-hidden
           onClickCapture={(e) => { e.preventDefault(); e.stopPropagation(); }}
@@ -859,8 +897,10 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shown, narrated]);
-  // Silence WREN when leaving LEARN (e.g. into PLAY).
-  useEffect(() => () => stopWren(), []);
+  // Silence WREN when leaving LEARN. MUST be a layout cleanup: it has to run
+  // BEFORE the next stage's layout-effect playWren (e.g. PLAY's instructions),
+  // or a passive cleanup would fire afterwards and cut the new narration + lock.
+  useIsoLayoutEffect(() => () => stopWren(), []);
   // Gate advancing whenever a new beat appears. Voice ON: the narrator paces it
   // and auto-advances when the clip ends — no early skip; a long safety fallback
   // only re-enables a manual tap if the audio can't play. Voice OFF: a slow
