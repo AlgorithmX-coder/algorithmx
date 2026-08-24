@@ -41,31 +41,56 @@ export function useWrenSpeaking() {
  * volume is capped at the coach level (0.55) and playback is gated by
  * the caller's voice toggle. A new line always cuts the previous one.
  */
+/*
+ * ONE persistent <audio> element carries every WREN line. Browsers (iOS Safari
+ * especially) "bless" the specific element a user gesture first plays, and then
+ * only that element is allowed to play programmatically — so a fresh `new Audio()`
+ * per line came out silent. Reusing the primed element is what fixes it.
+ */
 let wrenEl: HTMLAudioElement | null = null;
+function getWrenEl(): HTMLAudioElement | null {
+  if (typeof window === "undefined") return null;
+  if (!wrenEl) wrenEl = new Audio();
+  return wrenEl;
+}
 
 function clearSafety() {
   if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
 }
 
 /*
- * Autoplay unlock. Browsers swallow the FIRST Audio().play() of a session until
- * the page has a user gesture they recognise, so WREN's opening line came out
- * silent ("needs a click to activate") while later ones played. On the very
- * first pointer/key/touch anywhere, play a 0-length silent clip inside that
- * gesture — that unlocks audio for the origin, so every WREN line after (incl.
- * the first real one) is allowed. This module is imported on page load, before
- * the "START CASE" click, so that click is the one that primes it.
+ * Autoplay unlock. Browsers swallow audio until the page has a user gesture they
+ * recognise, so WREN's opening line came out silent ("needs a click to activate")
+ * while later ones played. On the first pointer/key/touch anywhere we prime the
+ * shared element inside that gesture. And if the opening line was already tried
+ * and blocked — e.g. a link that lands straight on a narrated screen, before any
+ * tap — we replay THAT exact line for real on the priming tap, so the very first
+ * line is never lost. This module loads before the first click, so that click is
+ * the one that primes it.
  */
 const SILENT_WAV =
   "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
 let audioPrimed = false;
+/** A first line blocked before any gesture; replayed for real on the priming tap. */
+let pendingFirst: { url: string; enabled: boolean; onEnded?: () => void } | null = null;
 function primeAudio() {
   if (audioPrimed || typeof window === "undefined") return;
   audioPrimed = true;
+  if (pendingFirst) {
+    // The opening line was blocked before this gesture — play it for real now.
+    // If the user's tap also advanced the screen, the next line's playWren will
+    // supersede this replay, so we never talk over the new screen.
+    const p = pendingFirst;
+    pendingFirst = null;
+    playWren(p.url, p.enabled, p.onEnded);
+    return;
+  }
+  const el = getWrenEl();
+  if (!el) return;
   try {
-    const a = new Audio(SILENT_WAV);
-    a.volume = 0;
-    void a.play().then(() => a.pause()).catch(() => {});
+    el.src = SILENT_WAV;
+    el.volume = 0;
+    void el.play().catch(() => {});
   } catch {}
 }
 if (typeof window !== "undefined") {
@@ -82,29 +107,39 @@ if (typeof window !== "undefined") {
 
 export function playWren(url: string, enabled: boolean, onEnded?: () => void) {
   if (typeof window === "undefined" || !enabled) return;
+  const el = getWrenEl();
+  if (!el) { setSpeaking(false); return; }
+  pendingFirst = null; // a newer line supersedes any blocked opening line
   try {
-    wrenEl?.pause();
+    el.pause();
     clearSafety();
-    wrenEl = new Audio(url);
-    wrenEl.volume = 0.55;
+    el.onended = null;
+    el.onerror = null;
+    el.onloadedmetadata = null;
+    el.src = url;
+    el.volume = 0.55;
     setSpeaking(true); // lock the UI while she talks
     const done = () => { setSpeaking(false); clearSafety(); };
     // Narrator-led lessons advance when the clip finishes. `ended` fires only on
     // natural completion, never on pause()/stop, so auto-advance can't double-fire.
-    wrenEl.onended = () => { done(); onEnded?.(); };
-    wrenEl.onerror = done;
+    el.onended = () => { done(); onEnded?.(); };
+    el.onerror = done;
     // Refine the unlock to the real clip length once known; hard cap as a backstop
     // so a stuck/blocked clip can never leave the UI locked forever.
-    wrenEl.onloadedmetadata = () => {
-      if (!wrenEl) return;
+    el.onloadedmetadata = () => {
       // duration + margin once known; a generous backstop otherwise. Must exceed
       // the longest clip (~24s test intro) so `speaking` never clears mid-clip.
-      const ms = Number.isFinite(wrenEl.duration) ? wrenEl.duration * 1000 + 900 : 60000;
+      const ms = Number.isFinite(el.duration) ? el.duration * 1000 + 900 : 60000;
       clearSafety();
       safetyTimer = setTimeout(done, ms);
     };
     safetyTimer = setTimeout(done, 60000);
-    void wrenEl.play().catch(() => done()); // autoplay blocked -> don't lock
+    void el.play().catch(() => {
+      done(); // autoplay blocked -> don't lock
+      // Blocked before the first gesture: remember this line so the priming tap
+      // can replay it, and the opening line is never lost.
+      if (!audioPrimed) pendingFirst = { url, enabled, onEnded };
+    });
   } catch {
     setSpeaking(false); /* audio unavailable — mission plays silent */
   }

@@ -10,18 +10,29 @@
  * The inverse of INSPECT: here the action is to COVER, not to find.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { playWren, playWrenNudge, stopWren } from "../engine/audio";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, RedactPayload } from "../engine/types";
 
-export default function Redact({ payload, audio, onEvent }: MechanicProps<RedactPayload>) {
+export default function Redact({ payload, audio, onEvent, voiceOn }: MechanicProps<RedactPayload>) {
   const [redacted, setRedacted] = useState<Record<string, boolean>>({});
   const [wrongOnce, setWrongOnce] = useState(false);
   const [note, setNote] = useState<{ id: string; why: string; ok: boolean } | null>(null);
+  const [reviewReady, setReviewReady] = useState(false);
 
   const riskyIds = payload.spans.filter((s) => s.risky).map((s) => s.id);
   const done = riskyIds.every((id) => redacted[id]);
+
+  // Once every risky span is covered, WREN reviews it aloud and the completion
+  // button is held ~15s so they read + hear the review through (locked rule).
+  useEffect(() => {
+    if (!done) return;
+    if (payload.doneAudio) playWren(payload.doneAudio, !!voiceOn);
+    const t = setTimeout(() => setReviewReady(true), 15000);
+    return () => { clearTimeout(t); stopWren(); };
+  }, [done]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tap = (id: string) => {
     if (done) return;
@@ -38,6 +49,7 @@ export default function Redact({ payload, audio, onEvent }: MechanicProps<Redact
       setWrongOnce(true);
       setNote({ id, why: span.why, ok: false });
       audio.thud();
+      playWrenNudge(!!voiceOn); // "not quite, look again"
       onEvent({ kind: "MISS" });
     }
   };
@@ -108,7 +120,16 @@ export default function Redact({ payload, audio, onEvent }: MechanicProps<Redact
       {done && (
         <div style={{ marginTop: 16 }}>
           <p style={{ margin: "0 0 12px", fontSize: 14, lineHeight: 1.6, color: T.confirmedGreen }}>{payload.doneLine}</p>
-          <AmberButton label="POST IT SAFELY" onClick={() => onEvent({ kind: "COMPLETED", mastery: !wrongOnce })} />
+          {reviewReady ? (
+            <AmberButton label={payload.doneLabel ?? "POST IT SAFELY"} onClick={() => onEvent({ kind: "COMPLETED", mastery: !wrongOnce })} />
+          ) : (
+            <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 220 }} aria-label="review time">
+              <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>LOOK IT OVER...</span>
+              <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+                <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 15000ms linear forwards" }} />
+              </span>
+            </div>
+          )}
         </div>
       )}
     </section>

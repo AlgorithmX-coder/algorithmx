@@ -284,6 +284,8 @@ export interface MeterPayload {
   /** Sorted ascending by `upTo`; the last zone must reach 100. */
   zones: MeterZone[];
   doneLine: string;
+  /** WREN reviews the answer aloud during the 15s "look it over" hold (public/ path). */
+  doneAudio?: string;
 }
 
 export interface RedactSpan {
@@ -306,6 +308,10 @@ export interface RedactPayload {
   surface: string;
   spans: RedactSpan[];
   doneLine: string;
+  /** Completion button label (default "POST IT SAFELY"; a form uses e.g. "DONE"). */
+  doneLabel?: string;
+  /** WREN's spoken review, played on completion during the 15s "look it over" hold. */
+  doneAudio?: string;
 }
 
 export interface UnmaskItem {

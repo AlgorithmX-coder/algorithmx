@@ -3,27 +3,41 @@
 /**
  * METER — set a level and watch it react. One slider; a live gauge and
  * readout update per zone as the child drags. They lock it in; if it's
- * parked in a safe (good) zone the fieldwork completes, otherwise it
- * bounces with the zone's readout so they can adjust. A wrong lock costs
- * the mastery bonus, never XP.
+ * parked in a safe (good) zone the fieldwork holds for review, otherwise
+ * it bounces with the zone's readout so they can adjust. A wrong lock
+ * costs the mastery bonus, never XP.
+ *
+ * On a correct lock WREN reviews it aloud during a 15s "look it over" hold
+ * (the locked review-on-correct rule), then CONTINUE fires COMPLETED.
  *
  * Native <input type="range"> so keyboard, touch and screen readers all
  * work for free; the coloured gauge above it is the eye-candy.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { playWren, playWrenNudge, stopWren } from "../engine/audio";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, MeterPayload } from "../engine/types";
 
-export default function Meter({ payload, audio, onEvent }: MechanicProps<MeterPayload>) {
+export default function Meter({ payload, audio, onEvent, voiceOn }: MechanicProps<MeterPayload>) {
   const [value, setValue] = useState(0);
   const [wrongOnce, setWrongOnce] = useState(false);
   const [locked, setLocked] = useState(false);
+  const [reviewReady, setReviewReady] = useState(false);
 
   const zones = payload.zones;
   const zone = zones.find((z) => value <= z.upTo) ?? zones[zones.length - 1];
   const fillColor = zone.good ? T.confirmedGreen : T.threatRed;
+
+  // Once locked in a safe zone, WREN reviews it aloud and CONTINUE is held ~15s
+  // so they read + hear the review through (locked rule).
+  useEffect(() => {
+    if (!locked) return;
+    if (payload.doneAudio) playWren(payload.doneAudio, !!voiceOn);
+    const t = setTimeout(() => setReviewReady(true), 15000);
+    return () => { clearTimeout(t); stopWren(); };
+  }, [locked]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const change = (v: number) => {
     if (locked) return;
@@ -32,14 +46,15 @@ export default function Meter({ payload, audio, onEvent }: MechanicProps<MeterPa
   };
 
   const lockIn = () => {
+    if (locked) return;
     if (zone.good) {
       setLocked(true);
       audio.stamp();
-      onEvent({ kind: "HIT" });
-      onEvent({ kind: "COMPLETED", mastery: !wrongOnce });
+      onEvent({ kind: "HIT" }); // COMPLETED fires on the CONTINUE click below
     } else {
       setWrongOnce(true);
       audio.thud();
+      playWrenNudge(!!voiceOn); // "not quite, look again"
       onEvent({ kind: "MISS" });
     }
   };
@@ -95,9 +110,21 @@ export default function Meter({ payload, audio, onEvent }: MechanicProps<MeterPa
 
       <div style={{ marginTop: 16 }}>
         {locked ? (
-          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: T.confirmedGreen, borderLeft: `2px solid ${T.confirmedGreen}`, paddingLeft: 14 }}>
-            {payload.doneLine}
-          </p>
+          <div style={{ display: "grid", gap: 12 }}>
+            <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: T.confirmedGreen, borderLeft: `2px solid ${T.confirmedGreen}`, paddingLeft: 14 }}>
+              {payload.doneLine}
+            </p>
+            {reviewReady ? (
+              <AmberButton label="CONTINUE →" onClick={() => onEvent({ kind: "COMPLETED", mastery: !wrongOnce })} />
+            ) : (
+              <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 220 }} aria-label="review time">
+                <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>LOOK IT OVER...</span>
+                <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+                  <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 15000ms linear forwards" }} />
+                </span>
+              </div>
+            )}
+          </div>
         ) : (
           <AmberButton label="LOCK IT IN" onClick={lockIn} />
         )}
