@@ -47,6 +47,39 @@ function clearSafety() {
   if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
 }
 
+/*
+ * Autoplay unlock. Browsers swallow the FIRST Audio().play() of a session until
+ * the page has a user gesture they recognise, so WREN's opening line came out
+ * silent ("needs a click to activate") while later ones played. On the very
+ * first pointer/key/touch anywhere, play a 0-length silent clip inside that
+ * gesture — that unlocks audio for the origin, so every WREN line after (incl.
+ * the first real one) is allowed. This module is imported on page load, before
+ * the "START CASE" click, so that click is the one that primes it.
+ */
+const SILENT_WAV =
+  "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+let audioPrimed = false;
+function primeAudio() {
+  if (audioPrimed || typeof window === "undefined") return;
+  audioPrimed = true;
+  try {
+    const a = new Audio(SILENT_WAV);
+    a.volume = 0;
+    void a.play().then(() => a.pause()).catch(() => {});
+  } catch {}
+}
+if (typeof window !== "undefined") {
+  const onFirstGesture = () => {
+    primeAudio();
+    window.removeEventListener("pointerdown", onFirstGesture, true);
+    window.removeEventListener("touchstart", onFirstGesture, true);
+    window.removeEventListener("keydown", onFirstGesture, true);
+  };
+  window.addEventListener("pointerdown", onFirstGesture, true);
+  window.addEventListener("touchstart", onFirstGesture, true);
+  window.addEventListener("keydown", onFirstGesture, true);
+}
+
 export function playWren(url: string, enabled: boolean, onEnded?: () => void) {
   if (typeof window === "undefined" || !enabled) return;
   try {
