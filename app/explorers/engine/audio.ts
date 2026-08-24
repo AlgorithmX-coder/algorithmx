@@ -12,7 +12,9 @@
 import { useCallback, useMemo, useRef, useSyncExternalStore } from "react";
 import type { SignalAudio } from "./types";
 
-/* ---- "is WREN speaking" signal, so the UI can lock clicks while she talks -- */
+/* ---- "is WREN speaking" signal, so the UI can lock clicks while she talks.
+   (The block films run their own lock — they cover the screen and disable SKIP
+   locally while playing — so they don't need this shared signal.) ------------ */
 let speaking = false;
 let safetyTimer: ReturnType<typeof setTimeout> | null = null;
 const speakListeners = new Set<() => void>();
