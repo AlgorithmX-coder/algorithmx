@@ -106,6 +106,9 @@ export function BlockFilm({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
+  // True while the film is actively playing (its narrator is speaking). SKIP is
+  // locked until it's done, so kids can't click past the story mid-narration.
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (reduced) return; // respect reduced-motion: wait for an explicit tap
@@ -116,6 +119,9 @@ export function BlockFilm({
         /* autoplay blocked: the center Play button handles it */
       });
   }, [reduced]);
+
+  const onPlaying = () => { setStarted(true); setPlaying(true); };
+  const finish = () => { setPlaying(false); onDone(); };
 
   const play = () => {
     videoRef.current
@@ -159,8 +165,13 @@ export function BlockFilm({
         <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.14em", color: T.actionAmber }}>
           {eyebrow}
         </span>
+        {/* SKIP is locked while the narrator is speaking — it only frees up if
+            the film never actually plays (blocked autoplay / load error), so a
+            stuck film is never a trap. */}
         <button
-          onClick={onDone}
+          onClick={finish}
+          disabled={playing}
+          aria-hidden={playing}
           style={{
             fontFamily: MONO,
             fontSize: 11,
@@ -170,7 +181,10 @@ export function BlockFilm({
             border: `1px solid ${T.hairline}`,
             borderRadius: 3,
             padding: "7px 14px",
-            cursor: "pointer",
+            cursor: playing ? "default" : "pointer",
+            opacity: playing ? 0 : 1,
+            transition: "opacity 300ms",
+            pointerEvents: playing ? "none" : "auto",
           }}
         >
           SKIP ▸
@@ -181,8 +195,9 @@ export function BlockFilm({
         ref={videoRef}
         src={film.src}
         playsInline
-        onEnded={onDone}
-        onPlay={() => setStarted(true)}
+        onEnded={finish}
+        onPlay={onPlaying}
+        onPause={() => setPlaying(false)}
         style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", display: "block" }}
       />
 

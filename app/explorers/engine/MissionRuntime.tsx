@@ -13,8 +13,14 @@
  * checkpoints still resume.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { playWren, stopWren, useSignalAudio } from "./audio";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
+
+// Arm narration BEFORE the browser paints, so a narrated screen shows up with the
+// WREN speaking-lock already in place — no one-frame gap where a fast tap slips
+// through as the screen appears. Isomorphic (useEffect on the server) so SSR never
+// warns; the mission subtree is client-only anyway.
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 import {
   AmberButton,
   Bubble,
@@ -29,8 +35,10 @@ import {
 } from "./primitives";
 import { BODY, MONO, T } from "./tokens";
 import type {
+  ArtifactLesson,
   AwardEvent,
   BeatPos,
+  CatchThemDef,
   CheckpointEvidence,
   CycleDef,
   MissionCheckpoint,
@@ -46,19 +54,28 @@ import Trace from "../mechanics/Trace";
 import Simulate from "../mechanics/Simulate";
 import Build from "../mechanics/Build";
 import Cipher from "../mechanics/Cipher";
+import Sort from "../mechanics/Sort";
+import Meter from "../mechanics/Meter";
+import Redact from "../mechanics/Redact";
+import Unmask from "../mechanics/Unmask";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
-function nextPos(pos: BeatPos): BeatPos {
+function nextPos(pos: BeatPos, hasCatch = false, hasCheckpoint = true, lastCycle = 2): BeatPos {
   if (pos.beat === "transmission") return { beat: "briefing" };
   if (pos.beat === "briefing") return { beat: "cycle", cycleIndex: 0, stage: "intel" };
   if (pos.beat === "cycle") {
     if (pos.stage === "intel") return { ...pos, stage: "fieldwork" };
-    if (pos.stage === "fieldwork") return { ...pos, stage: "checkpoint" };
-    if (pos.cycleIndex < 2) return { beat: "cycle", cycleIndex: (pos.cycleIndex + 1) as 0 | 1 | 2, stage: "intel" };
-    return { beat: "incident", incidentPhase: 0 };
+    const afterCycle: BeatPos = pos.cycleIndex < lastCycle
+      ? { beat: "cycle", cycleIndex: pos.cycleIndex + 1, stage: "intel" }
+      : { beat: "incident", incidentPhase: 0 };
+    // Structure v2: a cycle with no checkpoint goes LEARN -> PRACTICE -> next.
+    if (pos.stage === "fieldwork") return hasCheckpoint ? { ...pos, stage: "checkpoint" } : afterCycle;
+    return afterCycle; // checkpoint stage
   }
-  if (pos.beat === "incident") return { beat: "debrief" };
+  // The must-pass gate sits between the boss and the report, when present.
+  if (pos.beat === "incident") return hasCatch ? { beat: "catch" } : { beat: "debrief" };
+  if (pos.beat === "catch") return { beat: "debrief" };
   if (pos.beat === "debrief") return { beat: "closed" };
   return pos;
 }
@@ -66,10 +83,11 @@ function nextPos(pos: BeatPos): BeatPos {
 /** Kid-plain position label for the HUD. */
 function describePos(pos: BeatPos): string {
   if (pos.beat === "cycle") {
-    const stage = pos.stage === "intel" ? "LEARN" : pos.stage === "fieldwork" ? "PLAY" : "QUICK QUIZ";
+    const stage = pos.stage === "intel" ? "LEARN" : pos.stage === "fieldwork" ? "PRACTICE" : "SKILL CHECK";
     return `SKILL ${pos.cycleIndex + 1} · ${stage}`;
   }
   if (pos.beat === "incident") return "BOSS";
+  if (pos.beat === "catch") return "THE TEST";
   if (pos.beat === "debrief") return "MISSION REPORT";
   if (pos.beat === "closed") return "REWARDS";
   return "MISSION START";
@@ -77,6 +95,7 @@ function describePos(pos: BeatPos): string {
 
 function toneFor(pos: BeatPos): string {
   if (pos.beat === "incident") return T.threatRed;
+  if (pos.beat === "catch") return T.arcCyan; // a calm exam room, not the alarm-red boss
   if (pos.beat === "debrief") return T.confirmedGreen;
   if (pos.beat === "closed") return T.clearanceBrass;
   if (pos.beat === "cycle") {
@@ -86,27 +105,52 @@ function toneFor(pos: BeatPos): string {
   return T.arcCyan;
 }
 
-/** How far through the checklist are we? 0=start, 1..3=skills done, 4=boss done, 5=report done. */
-function stepsDone(pos: BeatPos): number {
+/** How far through the checklist are we? 0=start, 1..n=skills done, n+1=boss done,
+ *  n+2=report done, where n = the mission's skill count. */
+function stepsDone(pos: BeatPos, n = 3): number {
   if (pos.beat === "transmission" || pos.beat === "briefing") return 0;
   if (pos.beat === "cycle") return pos.cycleIndex;
-  if (pos.beat === "incident") return 3;
-  if (pos.beat === "debrief") return 4;
-  return 5;
+  if (pos.beat === "incident") return n;
+  if (pos.beat === "catch") return n; // the gate lives inside the boss step
+  if (pos.beat === "debrief") return n + 1;
+  return n + 2;
+}
+
+/**
+ * Will WREN narrate the moment this beat appears? Used to arm the speaking-lock
+ * from the very first frame of every narrated screen — the transmission, the
+ * briefing, each LEARN (message OR chat beats), the PLAY instructions, the test
+ * intro, the debrief — so nothing is clickable before the audio signal has even
+ * had time to travel. Kept in lockstep with the playWren triggers below.
+ */
+function beatNarrates(pos: BeatPos, manifest: MissionManifest, voiceOn: boolean, intro: boolean, reduced: boolean): boolean {
+  if (!voiceOn) return false;
+  if (pos.beat === "transmission" || pos.beat === "briefing") return intro && !!manifest.voice?.transmission;
+  if (pos.beat === "debrief") return !!manifest.voice?.debrief;
+  if (pos.beat === "catch") return !!manifest.catchThem?.voice?.intro;
+  if (pos.beat === "cycle") {
+    const c = manifest.cycles[pos.cycleIndex];
+    if (!c) return false;
+    if (pos.stage === "intel") return c.intel.artifact ? !!c.intel.artifact.introAudio : (!reduced && !!c.intel.beatAudio?.length);
+    if (pos.stage === "fieldwork") return !!c.playAudio;
+    return false; // checkpoint has no set-up VO
+  }
+  return false; // incident (boss) has no narrator VO
 }
 
 /* ================================================================= map */
 
 function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; pos: BeatPos; stampNew?: number }) {
-  const done = stepsDone(pos);
+  const n = manifest.cycles.length;
+  const done = stepsDone(pos, n);
   const rows: { label: string; sub: string; idx: number }[] = [
     ...manifest.cycles.map((c, i) => ({
       label: `SKILL ${i + 1}: ${c.title}`,
       sub: c.promise ?? c.concept,
       idx: i,
     })),
-    { label: `BOSS: ${manifest.incident.title}`, sub: `Use all 3 skills against ${manifest.actor.codename}`, idx: 3 },
-    { label: "MISSION REPORT", sub: "What you learned + your move in real life", idx: 4 },
+    { label: `BOSS: ${manifest.incident.title}`, sub: `Use all ${n} skills against ${manifest.actor.codename}`, idx: n },
+    { label: "MISSION REPORT", sub: "What you learned + your move in real life", idx: n + 1 },
   ];
   return (
     <div style={{ display: "grid", gap: 10 }}>
@@ -114,7 +158,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
         const isDone = r.idx < done;
         const isCurrent = r.idx === done;
         const justStamped = stampNew !== undefined && r.idx === stampNew;
-        const boss = r.idx === 3;
+        const boss = r.idx === n;
         const accent = boss ? T.threatRed : T.arcCyan;
         return (
           <div
@@ -148,7 +192,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
                 border: isDone ? "none" : `2px solid ${isCurrent ? accent : T.hairline}`,
               }}
             >
-              {isDone ? "✓" : boss ? "!" : r.idx < 3 ? r.idx + 1 : "★"}
+              {isDone ? "✓" : boss ? "!" : r.idx < n ? r.idx + 1 : "★"}
             </span>
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: BODY, fontSize: 15, fontWeight: 700, color: isDone ? T.confirmedGreen : isCurrent ? T.textPrimary : T.textSecondary }}>
@@ -178,7 +222,9 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const audio = useSignalAudio();
   const storageKey = checkpointStorageKey(manifest.id);
 
-  const [pos, setPos] = useState<BeatPos>(devStartBeat === "incident" ? { beat: "incident", incidentPhase: 1 } : { beat: "transmission" });
+  const [pos, setPos] = useState<BeatPos>(
+    devStartBeat === "incident" ? { beat: "incident", incidentPhase: 1 } : devStartBeat === "catch" ? { beat: "catch" } : { beat: "transmission" },
+  );
   const [intro, setIntro] = useState(!devStartBeat);
   /** Map moment between steps: which row was just stamped. */
   const [mapGate, setMapGate] = useState<number | null>(null);
@@ -264,13 +310,17 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const advance = useCallback(() => {
     audio.click();
     setPos((p) => {
-      const n = nextPos(p);
-      if (p.beat === "cycle" && p.stage === "checkpoint") setMapGate(p.cycleIndex);
-      if (p.beat === "incident") setMapGate(3);
-      return n;
+      const hasCheck = p.beat === "cycle" ? !!manifest.cycles[p.cycleIndex]?.checkpoint?.questions?.length : true;
+      const next = nextPos(p, !!manifest.catchThem, hasCheck, manifest.cycles.length - 1);
+      // A skill is "done" (stamp it on the map) when it clears its last stage —
+      // the checkpoint if it has one, otherwise the practice.
+      if (p.beat === "cycle" && (p.stage === "checkpoint" || (p.stage === "fieldwork" && !hasCheck))) setMapGate(p.cycleIndex);
+      // Skip the "back to map" beat when the boss flows straight into Catch Them.
+      if (p.beat === "incident" && !manifest.catchThem) setMapGate(manifest.cycles.length);
+      return next;
     });
     window.scrollTo({ top: 0 });
-  }, [audio]);
+  }, [audio, manifest]);
 
   const startMission = () => {
     audio.click();
@@ -319,7 +369,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     });
   };
   const atStart = intro && (pos.beat === "transmission" || pos.beat === "briefing");
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (resumeOffer || filmToPlay) {
       stopWren();
       return;
@@ -333,7 +383,25 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   useEffect(() => () => stopWren(), []);
 
   const tone = mapGate !== null ? T.confirmedGreen : toneFor(pos);
-  const done = stepsDone(pos);
+  const skillCount = manifest.cycles.length;
+  const done = stepsDone(pos, skillCount);
+  const speaking = useWrenSpeaking();
+  // Arm the lock from the first frame a narrated screen mounts, so the whole page
+  // is non-clickable before the async speaking signal can even round-trip. The
+  // real signal takes over the instant it fires; a short safety window means a
+  // screen that turns out not to narrate never stays dead.
+  // Don't arm on the between-skills map moment or the resume screen — pos has
+  // already advanced there, but those screens are static and must stay clickable.
+  const narratesNow = mapGate === null && !resumeOffer && beatNarrates(pos, manifest, voiceOn, intro, reduced);
+  const [armLock, setArmLock] = useState(false);
+  useIsoLayoutEffect(() => { setArmLock(narratesNow); }, [narratesNow, pos]);
+  useEffect(() => {
+    if (!armLock) return;
+    if (speaking) { setArmLock(false); return; } // real signal governs now
+    const t = setTimeout(() => setArmLock(false), 1200); // never stay dead
+    return () => clearTimeout(t);
+  }, [armLock, speaking]);
+  const locked = speaking || armLock;
 
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
@@ -400,12 +468,12 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
         </div>
         {/* checklist echo bar: start + 3 skills + boss + report + rewards */}
         <div style={{ display: "flex", gap: 4, padding: "0 18px 10px" }}>
-          {["S1", "S2", "S3", "BOSS", "REPORT"].map((seg, i) => {
+          {[...manifest.cycles.map((_, i) => `S${i + 1}`), "BOSS", "REPORT"].map((seg, i) => {
             const fill = i < done ? 1 : i === done && pos.beat !== "closed" ? 0.45 : pos.beat === "closed" ? 1 : 0;
             const live = i === done && pos.beat !== "closed" && !atStart;
             return (
               <div key={seg} style={{ flex: seg === "BOSS" ? 1.3 : 1, height: 4, background: T.hairline, borderRadius: 2, overflow: "hidden" }}>
-                <div className={live ? "sr-seg sr-seg-live" : "sr-seg"} style={{ width: `${fill * 100}%`, height: "100%", background: i === 3 ? T.threatRed : pos.beat === "closed" ? T.clearanceBrass : tone, boxShadow: fill > 0 ? `0 0 8px ${tone}66` : "none" }} />
+                <div className={live ? "sr-seg sr-seg-live" : "sr-seg"} style={{ width: `${fill * 100}%`, height: "100%", background: i === skillCount ? T.threatRed : pos.beat === "closed" ? T.clearanceBrass : tone, boxShadow: fill > 0 ? `0 0 8px ${tone}66` : "none" }} />
               </div>
             );
           })}
@@ -425,6 +493,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
                 key={`${pos.cycleIndex}-${pos.stage}`}
                 cycle={manifest.cycles[pos.cycleIndex]}
                 cycleIndex={pos.cycleIndex}
+                total={skillCount}
                 stage={pos.stage}
                 reduced={reduced}
                 audio={audio}
@@ -436,11 +505,32 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
             {pos.beat === "incident" && (
               <BossScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} onNext={advance} />
             )}
+            {pos.beat === "catch" && manifest.catchThem && (
+              <CatchThemStage def={manifest.catchThem} actor={manifest.actor.codename} reduced={reduced} audio={audio} emit={emit} onPass={advance} onResit={restart} voiceOn={voiceOn} />
+            )}
             {pos.beat === "debrief" && <ReportScene manifest={manifest} reduced={reduced} onNext={advance} />}
             {pos.beat === "closed" && <RewardsScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} xp={xp} onExit={onExit} onNextCase={onNextCase} />}
           </div>
         )}
       </div>
+
+      {/* HARD LOCK: while WREN is talking, NOTHING on the page is clickable.
+          A full-viewport catcher sits above the HUD (z2), the content (z1) and the
+          dev tools (z3) — z50, just under a cinematic (z60) — and swallows every
+          pointer event. Kids can't tap ahead, re-trigger a line, navigate away, or
+          toggle voice until she finishes. Auto-clears when the clip ends; audio.ts
+          also has duration + 20s safety timers so it can never stick. */}
+      {locked && (
+        <div
+          aria-hidden
+          onClickCapture={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          style={{ position: "fixed", inset: 0, zIndex: 50, cursor: "not-allowed", background: "transparent", pointerEvents: "auto" }}
+        >
+          <div style={{ position: "fixed", bottom: 22, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 10, alignItems: "center", background: "rgba(8,14,26,0.92)", border: `1px solid ${T.arcCyan}55`, borderRadius: 999, padding: "9px 18px", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.arcCyan, boxShadow: `0 0 22px ${T.arcCyan}22` }}>
+            <TypingDots /> WREN IS SPEAKING
+          </div>
+        </div>
+      )}
 
       {/* dev tools (event ledger + restart) — hidden in production so kids never see them */}
       {process.env.NODE_ENV !== "production" && (
@@ -555,18 +645,19 @@ function MissionStartScene({ manifest, reduced, onBegin }: { manifest: MissionMa
 
 /* the map moment between steps */
 function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { manifest: MissionManifest; pos: BeatPos; stamped: number; xp: number; audio: ReturnType<typeof useSignalAudio>; onContinue: () => void }) {
-  const done = stepsDone(pos);
+  const n = manifest.cycles.length;
+  const done = stepsDone(pos, n);
   const nextLabel =
-    done < 3 ? `NEXT: SKILL ${done + 1} · ${manifest.cycles[done].title}` : done === 3 ? `NEXT: BOSS · ${manifest.incident.title}` : "NEXT: MISSION REPORT";
+    done < n ? `NEXT: SKILL ${done + 1} · ${manifest.cycles[done].title}` : done === n ? `NEXT: BOSS · ${manifest.incident.title}` : "NEXT: MISSION REPORT";
   useEffect(() => {
     audio.stamp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section style={{ maxWidth: 660, margin: "0 auto" }}>
-      <Eyebrow text={stamped === 3 ? "Boss defeated" : `Skill ${stamped + 1} complete`} color={T.confirmedGreen} />
+      <Eyebrow text={stamped === n ? "Boss defeated" : `Skill ${stamped + 1} complete`} color={T.confirmedGreen} />
       <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>
-        {stamped === 3 ? "You beat the boss." : "Nice work. One box down."}
+        {stamped === n ? "You beat the boss." : "Nice work. One box down."}
       </h1>
       <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.confirmedGreen}44`, padding: "18px 20px 20px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: "0.12em", color: T.textSecondary, marginBottom: 12 }}>
@@ -586,7 +677,7 @@ function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { man
 
 /* ------------------------------------------------------------- cycles */
 
-function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; stage: "intel" | "fieldwork" | "checkpoint"; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
+function CycleScene({ cycle, cycleIndex, total, stage, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; total: number; stage: "intel" | "fieldwork" | "checkpoint"; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
   const stageIndex = stage === "intel" ? 0 : stage === "fieldwork" ? 1 : 2;
   const stageTones = [T.arcCyan, T.actionAmber, T.confirmedGreen];
   return (
@@ -595,13 +686,13 @@ function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, vo
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
           <div>
             <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.14em", color: stageTones[stageIndex] }}>
-              SKILL {cycleIndex + 1} OF 3
+              SKILL {cycleIndex + 1} OF {total}
             </div>
             <div style={{ fontFamily: BODY, fontSize: "clamp(17px, 2.6vw, 22px)", fontWeight: 700, margin: "4px 0 2px" }}>{cycle.title}</div>
             <div style={{ fontSize: 13, color: T.textSecondary }}>{cycle.promise ?? cycle.concept}</div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            {["LEARN", "PLAY", "QUIZ"].map((k, i) => {
+            {(cycle.checkpoint?.questions?.length ? ["LEARN", "PRACTICE", "CHECK"] : ["LEARN", "PRACTICE"]).map((k, i) => {
               const active = i === stageIndex;
               const stageDone = i < stageIndex;
               return (
@@ -622,6 +713,129 @@ function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, vo
   );
 }
 
+/* ARTIFACT — teach ON the real message. The child taps the suspicious parts
+   and the lesson pops on the message itself; nothing is dumped at the end.
+   A per-case delivery style, used instead of chat beats when set. */
+function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
+  art: ArtifactLesson; voiceOn: boolean; reduced: boolean;
+  audio: ReturnType<typeof useSignalAudio>; onDone: () => void;
+}) {
+  const [revealed, setRevealed] = useState<Record<string, boolean>>({});
+  const [active, setActive] = useState<string | null>(null);
+  const total = art.hotspots.length;
+  const count = Object.keys(revealed).length;
+  const allDone = count >= total;
+  const activeHs = art.hotspots.find((h) => h.id === active) ?? null;
+  const speaking = useWrenSpeaking(); // lock taps while WREN is explaining
+  // Lock from the very first frame: assume the intro is about to talk, so the
+  // artifact is non-clickable the instant it appears — before the speaking
+  // signal can even round-trip. Cleared the moment the real signal takes over,
+  // with a safety timeout so a blocked/failed intro can never leave it stuck.
+  const [introLock, setIntroLock] = useState(voiceOn && !!art.introAudio);
+  const locked = speaking || introLock;
+
+  useIsoLayoutEffect(() => {
+    if (voiceOn && art.introAudio) playWren(art.introAudio, true);
+    else { stopWren(); setIntroLock(false); }
+    return () => stopWren();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (speaking) { setIntroLock(false); return; }
+    const t = setTimeout(() => setIntroLock(false), 2500);
+    return () => clearTimeout(t);
+  }, [speaking]);
+
+  const tap = (hid: string) => {
+    if (locked) return; // can't tap while WREN is explaining (or about to)
+    const hs = art.hotspots.find((h) => h.id === hid);
+    if (!hs) return;
+    setActive(hid);
+    setRevealed((r) => {
+      if (r[hid]) return r;
+      const n = { ...r, [hid]: true };
+      if (Object.keys(n).length >= total) audio.stamp(); else audio.latch();
+      return n;
+    });
+    if (voiceOn && hs.audio) playWren(hs.audio, true);
+  };
+
+  return (
+    <section>
+      {/* bold YOUR MISSION banner (#5) */}
+      <div style={{ display: "flex", gap: 13, alignItems: "center", background: `${T.actionAmber}18`, border: `1px solid ${T.actionAmber}66`, borderLeft: `4px solid ${T.actionAmber}`, borderRadius: 6, padding: "14px 18px", marginBottom: 16 }}>
+        <span aria-hidden style={{ flexShrink: 0, display: "grid", placeItems: "center", width: 28, height: 28, borderRadius: "50%", border: `2px solid ${T.actionAmber}`, color: T.actionAmber, fontFamily: MONO, fontSize: 15, fontWeight: 800 }}>!</span>
+        <div>
+          <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.16em", color: T.actionAmber, marginBottom: 3 }}>YOUR MISSION</div>
+          <div style={{ fontFamily: BODY, fontSize: 16, fontWeight: 700, lineHeight: 1.45, color: T.textPrimary }}>{art.intro}</div>
+        </div>
+      </div>
+
+      {/* the real message */}
+      <div style={{ background: T.paper, border: `1px solid ${T.hairline}`, borderRadius: 6, overflow: "hidden" }}>
+        {art.device && (
+          <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.fileInk, background: "rgba(0,0,0,0.05)", padding: "8px 14px", borderBottom: `1px solid ${T.hairline}` }}>
+            <span>{art.device.app}</span><span>{art.device.owner}</span>
+          </div>
+        )}
+        <div style={{ padding: "16px 18px", display: "grid", gap: 9, fontSize: 15.5, lineHeight: 1.7, color: T.fileInk }}>
+          {art.segments.map((s) => {
+            if (!s.hotspotId) return <div key={s.id} style={{ fontFamily: s.mono ? MONO : BODY }}>{s.text}</div>;
+            const isR = revealed[s.hotspotId];
+            const isA = active === s.hotspotId;
+            return (
+              <button key={s.id} onClick={() => tap(s.hotspotId!)} className="sr-btn" disabled={locked && !isR} style={{
+                justifySelf: "start", textAlign: "left", fontFamily: s.mono ? MONO : BODY, fontSize: "inherit", color: T.fileInk,
+                background: isR ? `${T.threatRed}22` : `${T.actionAmber}22`,
+                border: `2px ${isR ? "solid" : "dashed"} ${isR ? T.threatRed : T.actionAmber}`,
+                borderRadius: 6, padding: "7px 12px", cursor: locked ? "default" : "pointer",
+                opacity: locked && !isR ? 0.5 : 1,
+                boxShadow: isA ? `0 0 0 3px ${T.actionAmber}44` : "none",
+              }}>
+                {s.text}{isR ? "  ✓" : ""}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* progress + the lesson callout */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "14px 0 10px" }}>
+        <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: allDone ? T.confirmedGreen : T.textSecondary }}>
+          {count} of {total} tricks uncovered
+        </span>
+        <span style={{ display: "flex", gap: 5 }}>
+          {art.hotspots.map((h) => <span key={h.id} style={{ width: 9, height: 9, borderRadius: "50%", background: revealed[h.id] ? T.confirmedGreen : T.hairline, boxShadow: revealed[h.id] ? `0 0 6px ${T.confirmedGreen}88` : "none" }} />)}
+        </span>
+      </div>
+
+      {activeHs ? (
+        <div style={{ borderLeft: `3px solid ${T.threatRed}`, background: `${T.threatRed}0E`, borderRadius: "0 6px 6px 0", padding: "14px 16px" }}>
+          <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.12em", color: T.threatRed, marginBottom: 6 }}>{activeHs.label.toUpperCase()}</div>
+          <div style={{ fontSize: 15, lineHeight: 1.6, color: T.textPrimary }}>{activeHs.reveal}</div>
+        </div>
+      ) : (
+        <div style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, padding: "8px 4px" }}>Tap a highlighted part of the message to find out why it's a trick.</div>
+      )}
+
+      {allDone && (
+        <div style={{ marginTop: 18 }}>
+          <Bubble who="wren" tone={T.confirmedGreen}>{art.doneLine}</Bubble>
+          <div style={{ marginTop: 14 }}>
+            {locked ? (
+              <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
+                <TypingDots /> WREN IS SPEAKING...
+              </span>
+            ) : (
+              <AmberButton label="I'VE GOT IT →" onClick={() => { audio.click(); stopWren(); onDone(); }} />
+            )}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 /* LEARN — tap-to-continue dialogue (law 8: the kid sets the pace) */
 function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
   const p = cycle.intel.prediction;
@@ -637,9 +851,28 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   const [hintShown, setHintShown] = useState(false);
   const settled = replies.some((r) => r.ok);
   const beatsDone = shown >= beats.length;
+  // Force reading: a per-beat timer (scaled to the beat's length) must pass
+  // before the next beat can be revealed, so kids can't machine-gun through.
+  // Deliberately slow (~450ms/word, 3.5-9s) so they actually read it.
+  const readMs = (t: string) => Math.min(9000, Math.max(3500, Math.round((t.trim().split(/\s+/).filter(Boolean).length || 1) * 450)));
+  const [ready, setReady] = useState(reduced);
+  // Delivery: teach ON the real message (artifact) when set, else chat beats.
+  const artifact = cycle.intel.artifact;
+  const [artifactDone, setArtifactDone] = useState(false);
+  const taught = artifact ? artifactDone : beatsDone;
+  // Structure v2: no mid-lesson "your call". When there's no prediction, the
+  // lesson is done as soon as it's been taught, and goes straight to PRACTICE.
+  const lessonDone = taught && (!p || settled);
+  // Anti-brute-force (#4): a wrong "your call" pick locks the options for a
+  // few seconds and tells them to read it again, so they can't spam to green.
+  const [retryLock, setRetryLock] = useState(false);
 
   // Play the current beat's clip; when it finishes, reveal the next one.
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
+    // The ARTIFACT owns WREN on this cycle (it plays its own intro + reveals).
+    // Bail so we never race it with a stopWren that drops the speaking-lock
+    // while the intro is still playing.
+    if (artifact) return;
     if (!narrated) {
       stopWren(); // cut any bookend VO bleeding in from the transmission
       return;
@@ -664,20 +897,39 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shown, narrated]);
-  // Silence WREN when leaving LEARN (e.g. into PLAY).
-  useEffect(() => () => stopWren(), []);
+  // Silence WREN when leaving LEARN. MUST be a layout cleanup: it has to run
+  // BEFORE the next stage's layout-effect playWren (e.g. PLAY's instructions),
+  // or a passive cleanup would fire afterwards and cut the new narration + lock.
+  useIsoLayoutEffect(() => () => stopWren(), []);
+  // Gate advancing whenever a new beat appears. Voice ON: the narrator paces it
+  // and auto-advances when the clip ends — no early skip; a long safety fallback
+  // only re-enables a manual tap if the audio can't play. Voice OFF: a slow
+  // read-timer makes them actually read the message first.
+  useEffect(() => {
+    if (reduced || beatsDone) { setReady(true); return; }
+    setReady(false);
+    const t = setTimeout(() => setReady(true), narrated ? 15000 : readMs(beats[shown - 1] ?? ""));
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shown, reduced, beatsDone, narrated]);
 
   const more = () => {
+    if (!ready) return;
     audio.click();
     setShown((s) => Math.min(beats.length, s + 1));
   };
 
   const choose = (i: number) => {
-    if (settled || replies.some((r) => r.text === p.options[i])) return;
+    if (!p) return;
+    if (retryLock || settled || replies.some((r) => r.text === p.options[i])) return;
     const ok = i === p.answer;
     setReplies((r) => [...r, { text: p.options[i], ok, response: ok ? p.right : p.wrong }]);
     if (ok) audio.latch();
-    else audio.thud();
+    else {
+      audio.thud();
+      setRetryLock(true); // make them stop and re-read before trying again
+      setTimeout(() => setRetryLock(false), 5000);
+    }
     // WREN reacts out loud to what they picked.
     if (voiceOn && !reduced) {
       const rc = ok ? predAudio?.right : predAudio?.wrong;
@@ -686,21 +938,35 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   };
 
   return (
-    <div style={{ maxWidth: 700, margin: "0 auto" }}>
+    <div style={{ maxWidth: 720, margin: "0 auto" }}>
+      {artifact && !artifactDone ? (
+        <ArtifactReveal art={artifact} voiceOn={voiceOn} reduced={reduced} audio={audio} onDone={() => setArtifactDone(true)} />
+      ) : (
       <div style={{ display: "grid", gap: 14 }}>
-        {beats.slice(0, shown).map((b, i) => (
+        {!artifact && beats.slice(0, shown).map((b, i) => (
           <Bubble key={i} who="wren">
             {b}
           </Bubble>
         ))}
 
-        {!beatsDone && (
+        {!artifact && !beatsDone && (ready ? (
           <button onClick={more} className="sr-btn sr-choice" style={{ justifySelf: "start", display: "flex", gap: 10, alignItems: "center", background: T.panel, border: `1px solid ${T.arcCyan}55`, borderRadius: 12, padding: "10px 16px", cursor: "pointer", color: T.arcCyan, fontFamily: MONO, fontSize: 12.5, letterSpacing: "0.06em" }}>
             <TypingDots /> TAP FOR MORE
           </button>
-        )}
+        ) : narrated ? (
+          <div style={{ justifySelf: "start", display: "flex", gap: 10, alignItems: "center", color: T.textDisabled, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em" }} aria-label="WREN is speaking">
+            <TypingDots /> WREN IS SPEAKING...
+          </div>
+        ) : (
+          <div style={{ justifySelf: "start", display: "flex", flexDirection: "column", gap: 7, width: 210 }} aria-label="read the message">
+            <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: T.arcCyan }}>READ THE MESSAGE...</span>
+            <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+              <span key={shown} style={{ display: "block", height: "100%", background: T.arcCyan, transformOrigin: "left", transform: "scaleX(0)", animation: `sr-read ${readMs(beats[shown - 1] ?? "")}ms linear forwards` }} />
+            </span>
+          </div>
+        ))}
 
-        {beatsDone && (
+        {taught && p && (
           <Bubble who="wren" tone={T.actionAmber}>
             <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.actionAmber, marginBottom: 6 }}>
               YOUR CALL
@@ -710,7 +976,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
         )}
 
         {/* Optional guided help before answering */}
-        {beatsDone && !settled && p.hint && (
+        {taught && p && !settled && p.hint && (
           hintShown ? (
             <Bubble who="wren" tone={T.arcCyan}>
               <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.arcCyan, marginBottom: 6 }}>HINT</span>
@@ -741,7 +1007,14 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
           </div>
         ))}
 
-        {beatsDone && !settled && (
+        {taught && p && !settled && (retryLock ? (
+          <div style={{ justifySelf: "end", display: "flex", flexDirection: "column", gap: 7, width: 230, alignItems: "flex-end" }} aria-label="read it again">
+            <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.threatRed }}>READ IT AGAIN, THEN TRY...</span>
+            <span style={{ display: "block", width: "100%", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+              <span key={replies.length} style={{ display: "block", height: "100%", background: T.threatRed, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 5000ms linear forwards" }} />
+            </span>
+          </div>
+        ) : (
           <div className="sr-msg" style={{ display: "grid", gap: 10, justifyItems: "end" }}>
             {p.options.map((o, i) =>
               replies.some((r) => r.text === o) ? null : (
@@ -751,13 +1024,14 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
               ),
             )}
           </div>
-        )}
+        ))}
       </div>
+      )}
 
-      {settled && (
+      {lessonDone && (
         <div className="sr-msg" style={{ marginTop: 22 }}>
           <AmberButton
-            label="PLAY IT →"
+            label="PRACTICE IT →"
             onClick={() => {
               emit({ type: "INTEL_COMPLETED", sourceKey: `cycle-${cycleIndex}` });
               onNext();
@@ -774,7 +1048,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
   const fw = cycle.fieldwork;
   const instruction = cycle.instruction ?? fw.payload.intro;
   // WREN explains the challenge once when PLAY opens (#4), then hands over.
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (cycle.playAudio && voiceOn) playWren(cycle.playAudio, true);
     else stopWren();
     return () => stopWren();
@@ -786,7 +1060,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
       onNext();
     }
   };
-  const props = { reduced, audio, onEvent: handle } as const;
+  const props = { reduced, audio, onEvent: handle, voiceOn } as const;
   return (
     <div>
       {/* the instruction strip — the only amber text on screen */}
@@ -801,101 +1075,356 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
       {fw.verb === "SIMULATE" && <Simulate payload={fw.payload} {...props} />}
       {fw.verb === "BUILD" && <Build payload={fw.payload} {...props} />}
       {fw.verb === "CIPHER" && <Cipher payload={fw.payload} {...props} />}
+      {fw.verb === "SORT" && <Sort payload={fw.payload} {...props} />}
+      {fw.verb === "METER" && <Meter payload={fw.payload} {...props} />}
+      {fw.verb === "REDACT" && <Redact payload={fw.payload} {...props} />}
+      {fw.verb === "UNMASK" && <Unmask payload={fw.payload} {...props} />}
     </div>
   );
 }
 
-/* QUICK QUIZ — chat quiz, plain label */
-function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
-  const questions = cycle.checkpoint.questions;
-  const [qIndex, setQIndex] = useState(0);
-  const [attempts, setAttempts] = useState(1);
-  const [evidence, setEvidence] = useState<CheckpointEvidence[]>([]);
-  const [passed, setPassed] = useState(false);
-  const [thread, setThread] = useState<{ who: "wren" | "you"; text: string; ok?: boolean }[]>([
-    { who: "wren", text: "Quick quiz. Two questions. Show me you've got it." },
-  ]);
-  const q = questions[Math.min(qIndex, questions.length - 1)];
-  const WRONG_LINES = ["Not that one. Think about what you just saw.", "Close. Read the question one more time."];
+/* SKILL CHECK — blind, must-pass gate. Four options, no right/wrong shown per
+   question; the next skill stays locked until EVERY answer is right. A miss
+   re-teaches this skill (replays its beats) and sends him back through the
+   check. No tapping-until-green. */
+/** An advance button that stays locked for a few seconds so the child actually
+ *  reviews what's on screen before moving on (a filling bar shows the wait). */
+function GatedButton({ label, onClick, delayMs = 3500, note = "TAKE A MOMENT TO REVIEW..." }: { label: string; onClick: () => void; delayMs?: number; note?: string }) {
+  const [ready, setReady] = useState(delayMs <= 0);
+  useEffect(() => {
+    if (delayMs <= 0) return;
+    const t = setTimeout(() => setReady(true), delayMs);
+    return () => clearTimeout(t);
+  }, [delayMs]);
+  if (ready) return <AmberButton label={label} onClick={onClick} />;
+  return (
+    <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 230 }} aria-label="review time">
+      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>{note}</span>
+      <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+        <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: `sr-read ${delayMs}ms linear forwards` }} />
+      </span>
+    </div>
+  );
+}
 
-  const choose = (i: number) => {
-    if (passed) return;
-    const text = q.options[i];
-    if (i === q.answer) {
-      audio.latch();
-      const record: CheckpointEvidence = { questionId: q.id, answerIndex: i, attempts };
-      const nextEvidence = [...evidence, record];
-      const isLast = qIndex + 1 >= questions.length;
-      setThread((t) => [...t, { who: "you", text, ok: true }, { who: "wren", text: isLast ? "That's both. Quiz passed." : "Right. Next question." }]);
-      if (isLast) {
-        setEvidence(nextEvidence);
-        setPassed(true);
-        audio.stamp();
-        emit({ type: "CHECKPOINT_PASSED", sourceKey: `cycle-${cycleIndex}`, evidence: nextEvidence });
-      } else {
-        setEvidence(nextEvidence);
-        setQIndex(qIndex + 1);
-        setAttempts(1);
-      }
+/** Shuffle a question's options so the correct answer isn't in a predictable
+ *  slot; returns the reordered options with the remapped answer index. */
+function shuffleQ<Q extends { options: string[]; answer: number }>(q: Q): Q {
+  const order = q.options.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return { ...q, options: order.map((i) => q.options[i]), answer: order.indexOf(q.answer) };
+}
+
+function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
+  const [questions] = useState(() => (cycle.checkpoint?.questions ?? []).map(shuffleQ));
+  const [phase, setPhase] = useState<"check" | "reteach" | "passed">("check");
+  const [idx, setIdx] = useState(0);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const q = questions[idx];
+
+  const pick = (i: number) => {
+    if (picked !== null) return;
+    setPicked(i);
+    setAnswers((a) => { const n = [...a]; n[idx] = i; return n; });
+    audio.click(); // blind — never reveal right/wrong as you go
+  };
+
+  const next = () => {
+    if (picked === null) return;
+    if (idx + 1 < questions.length) { setIdx(idx + 1); setPicked(null); audio.click(); return; }
+    const allRight = questions.every((qq, i) => (i === idx ? picked : answers[i]) === qq.answer);
+    if (allRight) {
+      setPhase("passed"); audio.stamp();
+      emit({
+        type: "CHECKPOINT_PASSED",
+        sourceKey: `cycle-${cycleIndex}`,
+        evidence: questions.map((qq, i) => ({ questionId: qq.id, answerIndex: (i === idx ? picked : answers[i]) ?? -1, attempts: 1 })),
+      });
     } else {
-      audio.thud();
-      setAttempts((a) => a + 1);
-      setThread((t) => [...t, { who: "you", text, ok: false }, { who: "wren", text: WRONG_LINES[(attempts - 1) % WRONG_LINES.length] }]);
+      setPhase("reteach"); audio.thud();
     }
   };
 
-  const answered = new Set(thread.filter((m) => m.who === "you").map((m) => m.text));
+  const retry = () => { audio.click(); setAnswers([]); setIdx(0); setPicked(null); setPhase("check"); };
 
+  if (phase === "reteach") {
+    return (
+      <section style={{ maxWidth: 640, margin: "0 auto" }}>
+        <Eyebrow text={`Not yet · ${cycle.title}`} color={T.actionAmber} />
+        <div style={{ display: "grid", gap: 12, margin: "14px 0 22px" }}>
+          <Bubble who="wren" tone={T.actionAmber}>Not quite. Let's go over it once more, and this time listen for the answers.</Bubble>
+          {cycle.intel.beats.map((b, i) => (<Bubble key={i} who="wren">{b}</Bubble>))}
+        </div>
+        <AmberButton label="TRY THE CHECK AGAIN →" onClick={retry} />
+      </section>
+    );
+  }
+
+  if (phase === "passed") {
+    return (
+      <section style={{ maxWidth: 620, margin: "0 auto", position: "relative", textAlign: "center" }}>
+        <StampMark text="PASSED" visible reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -8, right: 8 }} />
+        <Eyebrow text="Skill check passed" color={T.confirmedGreen} />
+        <p style={{ fontFamily: MONO, fontSize: 16, color: T.confirmedGreen, margin: "14px 0 20px" }}>
+          All {questions.length} right. Skill {cycleIndex + 1} locked in.
+        </p>
+        <AmberButton label="NEXT →" onClick={onNext} />
+      </section>
+    );
+  }
+
+  // phase "check" — blind, four options, must get every one right
+  const answered = picked !== null;
   return (
-    <div style={{ maxWidth: 700, margin: "0 auto", position: "relative" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
-        <Eyebrow text="Quick quiz" color={T.confirmedGreen} />
-        <span style={{ fontFamily: MONO, fontSize: 12, color: passed ? T.confirmedGreen : T.textSecondary }}>
-          {Math.min(qIndex + (passed ? 1 : 0), questions.length)}/{questions.length}
+    <section style={{ maxWidth: 680, margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+        <Eyebrow text={`Skill check · question ${idx + 1} of ${questions.length}`} color={T.confirmedGreen} />
+        <span style={{ display: "flex", gap: 6 }} aria-label={`question ${idx + 1} of ${questions.length}`}>
+          {questions.map((_, i) => {
+            const done = answers[i] != null || (i === idx && answered);
+            const col = done ? T.confirmedGreen : i === idx ? T.actionAmber : T.hairline;
+            return <span key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: col, boxShadow: col !== T.hairline ? `0 0 8px ${col}88` : "none" }} />;
+          })}
         </span>
       </div>
-      <div style={{ display: "grid", gap: 14 }}>
-        {thread.map((m, i) =>
-          m.who === "wren" ? (
-            <Bubble key={i} who="wren" tone={i === 0 ? T.confirmedGreen : undefined}>
-              {m.text}
-            </Bubble>
-          ) : (
-            <div key={i} className="sr-msg" style={{ display: "flex", gap: 12, flexDirection: "row-reverse", alignItems: "flex-end" }}>
-              <Face who="you" />
-              <div style={{ maxWidth: "78%", background: m.ok ? `${T.confirmedGreen}12` : `${T.threatRed}10`, border: `1px solid ${m.ok ? T.confirmedGreen : T.threatRed}88`, borderRadius: "14px 14px 3px 14px", padding: "12px 16px", fontSize: 16, lineHeight: 1.6 }}>
-                {m.text}
-              </div>
-            </div>
-          ),
-        )}
-        {!passed && (
-          <Bubble who="wren" tone={T.confirmedGreen}>
-            <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.confirmedGreen, marginBottom: 6 }}>
-              QUESTION {qIndex + 1} OF {questions.length}
-            </span>
-            {q.question}
-          </Bubble>
-        )}
-        {!passed && (
-          <div className="sr-msg" style={{ display: "grid", gap: 10, justifyItems: "end" }}>
-            {q.options.map((o, i) =>
-              answered.has(o) ? null : (
-                <button key={o} onClick={() => choose(i)} className="sr-btn sr-choice" style={{ textAlign: "right", fontSize: 15.5, lineHeight: 1.55, color: T.confirmedGreen, background: `${T.confirmedGreen}0A`, border: `1px solid ${T.confirmedGreen}55`, borderRadius: "14px 14px 3px 14px", padding: "13px 17px", cursor: "pointer", maxWidth: "82%" }}>
-                  {o}
-                </button>
-              ),
-            )}
-          </div>
-        )}
+      <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 4, padding: "18px 20px" }}>
+        <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.6, color: T.textPrimary }}>{q.question}</p>
       </div>
-      <StampMark text="PASSED" visible={passed} reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -10, right: 8 }} />
-      {passed && (
-        <div className="sr-msg" style={{ marginTop: 22 }}>
-          <AmberButton label="BACK TO THE MAP →" onClick={onNext} />
+      <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
+        {q.options.map((o, i) => {
+          const isPick = picked === i;
+          return (
+            <button key={i} onClick={() => pick(i)} className="sr-btn" disabled={answered}
+              style={{
+                textAlign: "left", fontFamily: MONO, fontSize: 14, lineHeight: 1.5,
+                color: isPick ? T.arcCyan : T.textPrimary, background: isPick ? `${T.arcCyan}14` : T.panelRaised,
+                border: `1.5px solid ${isPick ? T.arcCyan : T.hairline}`, borderRadius: 6, padding: "13px 16px",
+                cursor: answered ? "default" : "pointer", opacity: answered && !isPick ? 0.5 : 1,
+              }}>
+              {o}
+            </button>
+          );
+        })}
+      </div>
+      {answered && (
+        <div style={{ marginTop: 16 }}>
+          <AmberButton label={idx + 1 < questions.length ? "NEXT QUESTION →" : "FINISH THE CHECK →"} onClick={next} />
         </div>
       )}
-    </div>
+    </section>
+  );
+}
+
+/* --------------------------------------------------------- case test */
+
+/**
+ * CASE TEST — the must-pass end-of-case exam. The child answers every
+ * question BLIND: no right/wrong is shown per question. At the end they see
+ * only their score. `def.pass` or more closes the case; below it, they must
+ * resit the WHOLE case, and are never told which questions they missed.
+ */
+function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voiceOn }: {
+  def: CatchThemDef; actor: string; reduced: boolean;
+  audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void;
+  onPass: () => void; onResit: () => void; voiceOn: boolean;
+}) {
+  // Shuffle options once (correct answer not always first), and keep fresh order.
+  const [scenarios] = useState(() => def.scenarios.map(shuffleQ));
+  const speaking = useWrenSpeaking(); // lock "start the test" while she reads the intro
+  const [introEnded, setIntroEnded] = useState(false); // set when the intro clip finishes
+  const spokeRef = useRef(false); // did the intro ever actually start speaking?
+  const [phase, setPhase] = useState<"intro" | "test" | "passed" | "failed">("intro");
+  const [idx, setIdx] = useState(0);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const s = scenarios[idx];
+  const score = scenarios.reduce((n, sc, i) => n + (answers[i] === sc.answer ? 1 : 0), 0);
+
+  const begin = () => { audio.click(); setPhase("test"); };
+
+  // Change your answer freely until you press NEXT; nothing is revealed as you go.
+  const pick = (i: number) => {
+    setPicked(i);
+    setAnswers((a) => { const n = [...a]; n[idx] = i; return n; });
+    audio.click();
+  };
+
+  const next = () => {
+    if (picked === null) return;
+    if (idx + 1 < scenarios.length) { setIdx(idx + 1); setPicked(null); audio.click(); return; }
+    // last question answered — tally (current pick may not be flushed into answers yet)
+    const got = scenarios.reduce((n, sc, i) => n + ((i === idx ? picked : answers[i]) === sc.answer ? 1 : 0), 0);
+    if (got >= def.pass) {
+      setPhase("passed"); audio.stamp();
+      emit({ type: "CHECKPOINT_PASSED", sourceKey: "case-test", evidence: [] });
+      if (voiceOn && def.voice?.pass) playWren(def.voice.pass, true);
+    } else {
+      setPhase("failed"); audio.thud();
+      if (voiceOn && def.voice?.fail) playWren(def.voice.fail, true);
+    }
+  };
+
+  useIsoLayoutEffect(() => {
+    if (phase === "intro" && voiceOn && def.voice?.intro) {
+      playWren(def.voice.intro, true, () => setIntroEnded(true));
+      // Last resort well past the ~24s clip: if the end event never fires, START
+      // still frees so a child is never stuck on the intro.
+      const t = setTimeout(() => setIntroEnded(true), 30000);
+      return () => { stopWren(); clearTimeout(t); };
+    }
+    return () => stopWren();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => { if (speaking) spokeRef.current = true; }, [speaking]);
+
+  // Can only START once WREN has FINISHED the intro. onEnded is the exact signal
+  // (the 24s clip runs longer than any lock timer, so we don't trust `speaking`
+  // alone here). Fallbacks: no voiced intro, or a blocked/failed clip that
+  // spoke-then-stopped, so a child is never trapped on the intro screen.
+  const introVoiced = voiceOn && !!def.voice?.intro;
+  const canStart = !introVoiced || introEnded || (spokeRef.current && !speaking);
+
+  if (phase === "intro") {
+    return (
+      <section style={{ maxWidth: 620, margin: "0 auto", textAlign: "center" }}>
+        <Eyebrow text="Final step · the test" color={T.arcCyan} />
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 18px" }}>
+          Time for the Test
+        </h1>
+        <div style={{ textAlign: "left", marginBottom: 22 }}>
+          <Bubble who="wren" tone={T.arcCyan}>{def.intro}</Bubble>
+        </div>
+        <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 20 }}>
+          {scenarios.length} questions. Get {def.pass} right to close the case. Miss it and you sit the whole case again.
+        </p>
+        {canStart ? (
+          <AmberButton label="START THE TEST →" onClick={begin} />
+        ) : (
+          <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
+            <TypingDots /> WREN IS SPEAKING...
+          </span>
+        )}
+      </section>
+    );
+  }
+
+  if (phase === "passed") {
+    return (
+      <section style={{ maxWidth: 660, margin: "0 auto", textAlign: "center", position: "relative" }}>
+        <StampMark text="PASSED" visible reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -6, right: 8 }} />
+        <Eyebrow text="Test passed" color={T.confirmedGreen} />
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 14px", color: T.confirmedGreen }}>
+          You Passed
+        </h1>
+        <p style={{ fontFamily: MONO, fontSize: 18, fontWeight: 700, color: T.textPrimary, marginBottom: 16 }}>
+          You scored {score} out of {scenarios.length}.
+        </p>
+        <div style={{ textAlign: "left", margin: "0 0 16px" }}>
+          <Bubble who="wren" tone={T.confirmedGreen}>
+            That's the real thing, Agent. You earned this yourself. Now here's how each one went.
+          </Bubble>
+        </div>
+        {/* feedback AFTER passing — never during the test */}
+        <div style={{ display: "grid", gap: 10, textAlign: "left", marginBottom: 22 }}>
+          {scenarios.map((sc, i) => {
+            const gotIt = answers[i] === sc.answer;
+            return (
+              <div key={sc.id} style={{ background: T.panel, border: `1px solid ${(gotIt ? T.confirmedGreen : T.threatRed)}55`, borderLeft: `3px solid ${gotIt ? T.confirmedGreen : T.threatRed}`, borderRadius: 4, padding: "12px 14px" }}>
+                <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: T.textSecondary }}>{sc.prompt}</p>
+                <p style={{ margin: "8px 0 0", fontFamily: MONO, fontSize: 13, color: T.confirmedGreen }}>✓ {sc.options[sc.answer]}</p>
+                {!gotIt && (
+                  <p style={{ margin: "4px 0 0", fontFamily: MONO, fontSize: 12.5, color: T.threatRed }}>You put: {sc.options[answers[i]] ?? "nothing"}</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <GatedButton label="CLOSE THE CASE →" onClick={onPass} delayMs={7000} note="LOOK OVER YOUR ANSWERS..." />
+      </section>
+    );
+  }
+
+  if (phase === "failed") {
+    return (
+      <section style={{ maxWidth: 620, margin: "0 auto", textAlign: "center" }}>
+        <Eyebrow text="Not this time" color={T.actionAmber} />
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.5vw, 40px)", fontWeight: 800, margin: "12px 0 14px", color: T.actionAmber }}>
+          Not Quite Yet
+        </h1>
+        <p style={{ fontFamily: MONO, fontSize: 18, fontWeight: 700, color: T.textPrimary, marginBottom: 6 }}>
+          You scored {score} out of {scenarios.length}.
+        </p>
+        <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 18 }}>
+          You needed {def.pass} to pass.
+        </p>
+        <div style={{ textAlign: "left", margin: "0 0 22px" }}>
+          <Bubble who="wren" tone={T.actionAmber}>
+            Close, but not there yet. Run the case again and it'll stick. No shortcuts, that's how you really learn it.
+          </Bubble>
+        </div>
+        <AmberButton label="RESIT THE CASE →" onClick={onResit} />
+      </section>
+    );
+  }
+
+  // phase === "test" — questions answered blind, no right/wrong shown
+  const answered = picked !== null;
+  return (
+    <section style={{ maxWidth: 680, margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+        <Eyebrow text={`The test · question ${idx + 1} of ${scenarios.length}`} color={T.arcCyan} />
+        <span style={{ display: "flex", gap: 6 }} aria-label={`question ${idx + 1} of ${scenarios.length}`}>
+          {scenarios.map((_, i) => {
+            const isAnswered = answers[i] != null || (i === idx && answered);
+            const col = isAnswered ? T.arcCyan : i === idx ? T.actionAmber : T.hairline;
+            return <span key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: col, boxShadow: col !== T.hairline ? `0 0 8px ${col}88` : "none" }} />;
+          })}
+        </span>
+      </div>
+
+      <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 4, padding: "18px 20px" }}>
+        <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.6, color: T.textPrimary }}>{s.prompt}</p>
+        {s.evidence && (
+          <p style={{ margin: "12px 0 0", fontFamily: MONO, fontSize: 13.5, color: T.arcCyan, background: T.inkBlack, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "10px 12px", wordBreak: "break-all" }}>
+            {s.evidence}
+          </p>
+        )}
+      </div>
+
+      <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
+        {s.options.map((o, i) => {
+          const isPick = picked === i;
+          return (
+            <button
+              key={i}
+              onClick={() => pick(i)}
+              className="sr-btn"
+              aria-pressed={isPick}
+              style={{
+                textAlign: "left", fontFamily: MONO, fontSize: 14, lineHeight: 1.5,
+                color: isPick ? T.arcCyan : T.textPrimary,
+                background: isPick ? `${T.arcCyan}22` : T.panelRaised,
+                border: `1.5px solid ${isPick ? T.arcCyan : T.hairline}`,
+                borderRadius: 6, padding: "13px 16px", cursor: "pointer",
+                boxShadow: isPick ? `0 0 0 2px ${T.arcCyan}33` : `inset 0 1px 0 rgba(255,255,255,0.05)`,
+              }}
+            >
+              {o}
+            </button>
+          );
+        })}
+      </div>
+
+      {answered && (
+        <div style={{ marginTop: 16 }}>
+          <AmberButton label={idx + 1 < scenarios.length ? "NEXT QUESTION →" : "FINISH THE TEST →"} onClick={next} />
+        </div>
+      )}
+    </section>
   );
 }
 

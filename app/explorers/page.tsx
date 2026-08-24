@@ -174,6 +174,7 @@ export default function ExplorersPage() {
   // Which case (if any) the dev deep-link jumped straight to the boss on. Scoped
   // to that one case so Next-case navigation always starts the next mission fresh.
   const [devBossId, setDevBossId] = useState<string | null>(null);
+  const [devAt, setDevAt] = useState<string | null>(null); // "boss" | "test"
 
   const refreshStatus = useCallback(() => {
     const s: Record<string, string> = {};
@@ -198,7 +199,8 @@ export default function ExplorersPage() {
     refreshStatus();
   }, [refreshStatus]);
 
-  // Dev-only deep link: /explorers?case=16 opens that case; &at=boss jumps to the boss.
+  // Dev-only deep link: /explorers?case=16 opens that case; &at=boss jumps to the
+  // boss; &at=test jumps straight to the end-of-case test.
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
     const p = new URLSearchParams(window.location.search);
@@ -206,8 +208,10 @@ export default function ExplorersPage() {
     if (!c) return;
     const found = CASES.find((m) => m.id === `explorers-m${c.padStart(2, "0")}`);
     if (found) {
+      const at = p.get("at");
       setActive(found);
-      setDevBossId(p.get("at") === "boss" ? found.id : null);
+      setDevBossId(at === "boss" || at === "test" ? found.id : null);
+      setDevAt(at);
     }
   }, []);
 
@@ -231,7 +235,7 @@ export default function ExplorersPage() {
       <MissionRuntime
         key={active.id}
         manifest={active}
-        devStartBeat={active.id === devBossId ? "incident" : undefined}
+        devStartBeat={active.id === devBossId ? (devAt === "test" ? "catch" : "incident") : undefined}
         onExit={() => {
           refreshStatus();
           setActive(null);

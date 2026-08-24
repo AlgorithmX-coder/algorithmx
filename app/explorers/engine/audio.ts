@@ -9,8 +9,31 @@
  * the Heroes lesson).
  */
 
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, useSyncExternalStore } from "react";
 import type { SignalAudio } from "./types";
+
+/* ---- "is WREN speaking" signal, so the UI can lock clicks while she talks.
+   (The block films run their own lock — they cover the screen and disable SKIP
+   locally while playing — so they don't need this shared signal.) ------------ */
+let speaking = false;
+let safetyTimer: ReturnType<typeof setTimeout> | null = null;
+const speakListeners = new Set<() => void>();
+function setSpeaking(v: boolean) {
+  if (speaking === v) return;
+  speaking = v;
+  speakListeners.forEach((l) => l());
+}
+export function subscribeSpeaking(l: () => void) {
+  speakListeners.add(l);
+  return () => { speakListeners.delete(l); };
+}
+export function isWrenSpeaking() {
+  return speaking;
+}
+/** React hook: true while a WREN line is playing. */
+export function useWrenSpeaking() {
+  return useSyncExternalStore(subscribeSpeaking, isWrenSpeaking, () => false);
+}
 
 /*
  * WREN voice player. Deliberately self-implements the two rules that
@@ -20,18 +43,70 @@ import type { SignalAudio } from "./types";
  */
 let wrenEl: HTMLAudioElement | null = null;
 
+function clearSafety() {
+  if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
+}
+
+/*
+ * Autoplay unlock. Browsers swallow the FIRST Audio().play() of a session until
+ * the page has a user gesture they recognise, so WREN's opening line came out
+ * silent ("needs a click to activate") while later ones played. On the very
+ * first pointer/key/touch anywhere, play a 0-length silent clip inside that
+ * gesture — that unlocks audio for the origin, so every WREN line after (incl.
+ * the first real one) is allowed. This module is imported on page load, before
+ * the "START CASE" click, so that click is the one that primes it.
+ */
+const SILENT_WAV =
+  "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+let audioPrimed = false;
+function primeAudio() {
+  if (audioPrimed || typeof window === "undefined") return;
+  audioPrimed = true;
+  try {
+    const a = new Audio(SILENT_WAV);
+    a.volume = 0;
+    void a.play().then(() => a.pause()).catch(() => {});
+  } catch {}
+}
+if (typeof window !== "undefined") {
+  const onFirstGesture = () => {
+    primeAudio();
+    window.removeEventListener("pointerdown", onFirstGesture, true);
+    window.removeEventListener("touchstart", onFirstGesture, true);
+    window.removeEventListener("keydown", onFirstGesture, true);
+  };
+  window.addEventListener("pointerdown", onFirstGesture, true);
+  window.addEventListener("touchstart", onFirstGesture, true);
+  window.addEventListener("keydown", onFirstGesture, true);
+}
+
 export function playWren(url: string, enabled: boolean, onEnded?: () => void) {
   if (typeof window === "undefined" || !enabled) return;
   try {
     wrenEl?.pause();
+    clearSafety();
     wrenEl = new Audio(url);
     wrenEl.volume = 0.55;
+    setSpeaking(true); // lock the UI while she talks
+    const done = () => { setSpeaking(false); clearSafety(); };
     // Narrator-led lessons advance when the clip finishes. `ended` fires only on
     // natural completion, never on pause()/stop, so auto-advance can't double-fire.
-    if (onEnded) wrenEl.onended = onEnded;
-    void wrenEl.play().catch(() => {});
+    wrenEl.onended = () => { done(); onEnded?.(); };
+    wrenEl.onerror = done;
+    // Refine the unlock to the real clip length once known; hard cap as a backstop
+    // so a stuck/blocked clip can never leave the UI locked forever.
+    wrenEl.onloadedmetadata = () => {
+      if (!wrenEl) return;
+      // duration + margin once known; a generous backstop otherwise. Must exceed
+      // the longest clip (~24s test intro) so `speaking` never clears mid-clip.
+      const ms = Number.isFinite(wrenEl.duration) ? wrenEl.duration * 1000 + 900 : 60000;
+      clearSafety();
+      safetyTimer = setTimeout(done, ms);
+    };
+    safetyTimer = setTimeout(done, 60000);
+    void wrenEl.play().catch(() => done()); // autoplay blocked -> don't lock
   } catch {
-    /* audio unavailable — mission plays silent */
+    setSpeaking(false); /* audio unavailable — mission plays silent */
   }
 }
 
@@ -39,6 +114,23 @@ export function stopWren() {
   try {
     wrenEl?.pause();
   } catch {}
+  clearSafety();
+  setSpeaking(false);
+}
+
+/**
+ * WREN's "not quite, look again" nudge on a wrong practice answer. Generic and
+ * answer-free, so one small set serves every practice in every case. Rotates
+ * variants so it isn't the same line twice, and NEVER interrupts a clip already
+ * playing (so rapid wrong taps can't stack or spam it).
+ */
+const NUDGES = ["/audio/wren/nudge-1.mp3", "/audio/wren/nudge-2.mp3", "/audio/wren/nudge-3.mp3"];
+let nudgeIdx = 0;
+export function playWrenNudge(enabled: boolean) {
+  if (!enabled || speaking) return;
+  const url = NUDGES[nudgeIdx % NUDGES.length];
+  nudgeIdx += 1;
+  playWren(url, true);
 }
 
 export function useSignalAudio(): SignalAudio {

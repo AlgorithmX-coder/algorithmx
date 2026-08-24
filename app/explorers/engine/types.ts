@@ -70,6 +70,9 @@ export interface MechanicProps<P> {
   reduced: boolean;
   audio: SignalAudio;
   onEvent: (e: MechanicEvent) => void;
+  /** Whether WREN's voice is on — mechanics with a review beat use it to speak
+   *  the answer back during the "look it over" hold. */
+  voiceOn?: boolean;
 }
 
 /* -------------------------------------------------- mechanic payloads */
@@ -96,6 +99,8 @@ export interface InspectPayload {
   body: EvidenceSegment[][];
   tells: InspectTell[];
   doneLine: string;
+  /** WREN reviews the answer aloud during the "look it over" hold (public/ path). */
+  doneAudio?: string;
 }
 
 export interface DecideOption {
@@ -224,6 +229,118 @@ export interface CipherPayload {
   doneLine: string;
 }
 
+export interface SortItem {
+  id: string;
+  label: string;
+  /** id of the bucket this item belongs in. */
+  bucket: string;
+  /** Shown if the child drops it in the wrong bucket. */
+  why: string;
+}
+
+export interface SortBucket {
+  id: string;
+  label: string;
+  /** One-word helper under the bucket title ("keep private"). */
+  hint?: string;
+}
+
+/**
+ * SORT — triage under a rule (debuts M02). A pool of items, two or three
+ * labelled buckets; the child taps an item then taps its bucket. A wrong
+ * drop bounces back with a reason. Teaches the safe/scam, public/private
+ * split as a physical sorting act, not another multiple-choice.
+ */
+export interface SortPayload {
+  intro: string;
+  buckets: SortBucket[];
+  items: SortItem[];
+  doneLine: string;
+}
+
+export interface MeterZone {
+  /** Upper bound of this zone on the 0-100 track (inclusive). Ascending. */
+  upTo: number;
+  label: string;
+  /** The live readout for this zone ("cracked in 2 seconds"). */
+  caption: string;
+  good: boolean;
+}
+
+/**
+ * METER — set a level and watch it react (debuts M03). The child drags a
+ * single slider; a live gauge + readout update per zone, and they must
+ * park it in the safe zone to answer. Makes an abstract trade-off
+ * (password length, how much to share) physical and immediate.
+ */
+export interface MeterPayload {
+  intro: string;
+  /** What the slider controls, kid-worded. */
+  prompt: string;
+  minLabel: string;
+  maxLabel: string;
+  /** Label above the live readout ("Time to crack:"). */
+  readoutLabel: string;
+  /** Sorted ascending by `upTo`; the last zone must reach 100. */
+  zones: MeterZone[];
+  doneLine: string;
+}
+
+export interface RedactSpan {
+  id: string;
+  text: string;
+  /** True = private, must be blacked out; false = safe, bounces if tapped. */
+  risky: boolean;
+  why: string;
+}
+
+/**
+ * REDACT — hide what's private (debuts M04). A real post/photo caption
+ * split into spans; the child taps the risky ones to black them out and
+ * leaves the safe ones alone. Tapping a safe span bounces with why it's
+ * fine. The inverse of INSPECT: the action is to COVER, not to find.
+ */
+export interface RedactPayload {
+  intro: string;
+  /** Whose surface this is ("Maya's photo caption"). */
+  surface: string;
+  spans: RedactSpan[];
+  doneLine: string;
+}
+
+export interface UnmaskItem {
+  id: string;
+  /** The friendly "From" name the child sees first. */
+  displayName: string;
+  /** The real email address hiding behind the name (revealed on tap). */
+  address: string;
+  /** True = the address's real owner genuinely matches the brand. */
+  real: boolean;
+  /** Shown after submit — why this sender is genuine or a fake. */
+  why: string;
+}
+
+/**
+ * UNMASK — names lie, addresses don't (debuts M01, Skill 3). Each message shows
+ * only a trusted-looking display name; the child taps to peel it back and reveal
+ * the real address underneath, then calls REAL or FAKE on every one and submits
+ * together. A two-step act — look first, judge second — so a friendly name can
+ * never be taken at face value.
+ */
+export interface UnmaskPayload {
+  intro: string;
+  /** The brand every item claims to be, for the real/fake call. */
+  brand: string;
+  items: UnmaskItem[];
+  doneLine: string;
+  /** WREN reviews the answer aloud during the "look it over" hold (public/ path). */
+  doneAudio?: string;
+  /** The chip on each card ("SENDER" by default; a QR-code round uses "QR CODE"). */
+  sourceLabel?: string;
+  /** The reveal-button text (defaults to revealing an email address; QR "scans"). */
+  revealText?: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
@@ -231,7 +348,11 @@ export type FieldworkDef =
   | { verb: "TRACE"; payload: TracePayload }
   | { verb: "SIMULATE"; payload: SimulatePayload }
   | { verb: "BUILD"; payload: BuildPayload }
-  | { verb: "CIPHER"; payload: CipherPayload };
+  | { verb: "CIPHER"; payload: CipherPayload }
+  | { verb: "SORT"; payload: SortPayload }
+  | { verb: "METER"; payload: MeterPayload }
+  | { verb: "REDACT"; payload: RedactPayload }
+  | { verb: "UNMASK"; payload: UnmaskPayload };
 
 /* ------------------------------------------------------------ cycles */
 
@@ -252,6 +373,36 @@ export interface CheckpointQ {
   answer: number;
 }
 
+export interface ArtifactHotspot {
+  id: string;
+  /** Short callout header ("The countdown"). */
+  label: string;
+  /** The teaching that appears when this spot is tapped. */
+  reveal: string;
+  /** WREN voice for the reveal (public/ path). */
+  audio?: string;
+}
+
+/**
+ * ARTIFACT lesson — an alternative to chat-bubble beats. The real scam
+ * message fills the screen; the child taps its suspicious parts and the
+ * teaching pops ON the message. They uncover the lesson by exploring, so
+ * nothing is "dumped at the end". One of the per-case delivery styles: a
+ * cycle uses this when `intel.artifact` is set, otherwise it uses `beats`.
+ */
+export interface ArtifactLesson {
+  /** Bold "your mission" line above the artifact, voiced. */
+  intro: string;
+  introAudio?: string;
+  device?: { app: string; owner: string };
+  /** The message in order; a segment with a hotspotId is tappable. */
+  segments: { id: string; text: string; hotspotId?: string; mono?: boolean }[];
+  hotspots: ArtifactHotspot[];
+  /** Shown once every hotspot is uncovered, voiced. */
+  doneLine: string;
+  doneAudio?: string;
+}
+
 export interface CycleDef {
   id: string;
   title: string;
@@ -264,7 +415,11 @@ export interface CycleDef {
     beats: string[];
     /** Narrator-led lessons: WREN VO per beat (public/ paths), 1:1 with `beats`. When present the LEARN beats auto-advance as each clip ends; a tap always overrides. */
     beatAudio?: string[];
-    prediction: PredictionQ;
+    /** Alternative delivery: teach ON the real message instead of chat bubbles. Takes precedence over `beats` when set. */
+    artifact?: ArtifactLesson;
+    /** Optional mid-lesson "your call". Structure v2 (teach->practice->test) OMITS
+     * this — the LEARN stage is pure teaching, then goes straight to PRACTICE. */
+    prediction?: PredictionQ;
     /** WREN voices the "your call" question when it appears, then reacts to the
      * answer (right/wrong), turning the checkpoint into a real back-and-forth. */
     predictionAudio?: { question?: string; right?: string; wrong?: string };
@@ -272,7 +427,42 @@ export interface CycleDef {
   fieldwork: FieldworkDef;
   /** WREN VO that explains the PLAY exercise set-up (public/ path); played once when PLAY opens. */
   playAudio?: string;
-  checkpoint: { questions: CheckpointQ[] };
+  /** Optional per-skill quiz. Structure v2 OMITS this — the only graded test is
+   * the end-of-case `catchThem`. When absent the cycle is just LEARN -> PRACTICE. */
+  checkpoint?: { questions: CheckpointQ[] };
+}
+
+/* --------------------------------------------------------- catch them */
+
+export interface CatchScenario {
+  id: string;
+  /** Which taught skill (cycle index, 0-based) this question checks. Every question
+   *  MUST be 100% answerable from that skill's LEARN material — no outside knowledge. */
+  skill: number;
+  /** The fresh fake/situation the child has never seen before. */
+  prompt: string;
+  /** Optional evidence line shown in a mono panel (a link, a message). */
+  evidence?: string;
+  options: string[];
+  answer: number;
+}
+
+/**
+ * CASE TEST — the must-pass end-of-case exam (base = Mission 01). After the
+ * boss, the child answers `scenarios` fresh questions BLIND (no right/wrong
+ * shown per question). At the end they see only their score: `pass` or more
+ * closes the case; below `pass` they must resit the WHOLE case (lessons +
+ * test), and are never told which questions they missed. Optional — a mission
+ * without a `catchThem` closes straight from the boss, unchanged.
+ */
+export interface CatchThemDef {
+  /** WREN sets up the test. */
+  intro: string;
+  /** How many correct to pass and close the case (e.g. 4 of 5). */
+  pass: number;
+  scenarios: CatchScenario[];
+  /** WREN voice for the intro + pass/fail beats (public/ paths). */
+  voice?: { intro?: string; pass?: string; fail?: string };
 }
 
 /* ---------------------------------------------------------- incident */
@@ -299,7 +489,10 @@ export interface MissionManifest {
     objectives: [string, string, string];
     wrenLine: string;
   };
-  cycles: [CycleDef, CycleDef, CycleDef];
+  /** 3 to 5 skills. Three is the default spine; a case adds a 4th/5th only when
+   *  the topic genuinely earns it. The tuple-plus-rest keeps a compile-time floor
+   *  of three while allowing more; the engine derives every step from the length. */
+  cycles: [CycleDef, CycleDef, CycleDef, ...CycleDef[]];
   /** One-line hook WREN speaks on the Mission Start map (≤20 words). Falls back to transmission.lines[0]. */
   hook?: string;
   /** Cinematic 21:9 cold-open scene image (public/ path) — the mission's establishing shot. */
@@ -311,6 +504,8 @@ export interface MissionManifest {
     phaseNames?: string[];
     component: ComponentType<IncidentProps>;
   };
+  /** Must-pass end gate: fresh fakes the child clears to close the case. Optional. */
+  catchThem?: CatchThemDef;
   debrief: { report: string[]; realWorldMove: string; wrenLine: string };
   dossier: { mo: string; defeatedBy: string; breadcrumb?: string };
   /** WREN VO clips per beat (public/ paths). Played mute-gated at 0.55. */
@@ -320,8 +515,8 @@ export interface MissionManifest {
 /* ------------------------------------------------------- save/resume */
 
 export type BeatPos =
-  | { beat: "transmission" | "briefing" | "debrief" | "closed" }
-  | { beat: "cycle"; cycleIndex: 0 | 1 | 2; stage: "intel" | "fieldwork" | "checkpoint" }
+  | { beat: "transmission" | "briefing" | "catch" | "debrief" | "closed" }
+  | { beat: "cycle"; cycleIndex: number; stage: "intel" | "fieldwork" | "checkpoint" }
   | { beat: "incident"; incidentPhase: number };
 
 /**

@@ -7,11 +7,18 @@
  */
 
 import { useState } from "react";
+import { playWrenNudge } from "../engine/audio";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, ProfilePayload } from "../engine/types";
 
-export default function Profile({ payload, audio, onEvent }: MechanicProps<ProfilePayload>) {
+export default function Profile({ payload, audio, onEvent, voiceOn }: MechanicProps<ProfilePayload>) {
+  // Muddle the behaviours so the matching ones aren't grouped in a predictable row.
+  const [behaviors] = useState(() => {
+    const a = [...payload.behaviors];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  });
   const [picked, setPicked] = useState<string[]>([]);
   const [wrongIds, setWrongIds] = useState<string[]>([]);
   const [missedOnce, setMissedOnce] = useState(false);
@@ -34,6 +41,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
       setWrongIds(wrong);
       setMissedOnce(true);
       audio.thud();
+      playWrenNudge(!!voiceOn); // "not quite, look again"
       onEvent({ kind: "MISS" });
     }
   };
@@ -58,7 +66,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
       </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }} className="sr-two-col">
-        {payload.behaviors.map((b) => {
+        {behaviors.map((b) => {
           const isPicked = picked.includes(b.id);
           const isWrong = wrongIds.includes(b.id);
           const border = isWrong ? T.threatRed : isPicked ? (done ? T.confirmedGreen : T.arcCyan) : T.hairline;

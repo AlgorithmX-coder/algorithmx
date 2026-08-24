@@ -1,5 +1,7 @@
 # Cyber Explorers — Mission Template v1
 
+> **SUPERSEDED ON STRUCTURE (2026-08-24):** how a case is shaped is now locked in **`case-framework-locked.md`** (Case 001 = reference: 7-skill LEARN→PRACTICE, bigger boss field mission, blind must-pass test, narration locks). This doc's platform/engine/reward/art canon still holds; where the two disagree on case shape, the locked framework wins.
+
 **Status:** Working canon for the Mission 01 vertical slice; locks on Asad's sign-off together with the art direction. Companion to `algorithmx-explorers-art-direction.md` (same directory — visual/motion/audio/tone canon) and the gamification skill references (reward economy + child safety, binding).
 
 **Markers:** `LOCKED` = platform canon or signed design-session decision. `DEFAULT` = this template's recommended value; change here, in one place only. `DECIDE` = open, recommendation attached.
