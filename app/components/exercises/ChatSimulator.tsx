@@ -186,8 +186,11 @@ export default function ChatSimulator({
     return () => {
       clearTimers();
     };
+    // showIntro MUST be here: the effect early-returns while the intro is up,
+    // so it has to re-run when the intro is dismissed or the message queue
+    // never starts (drill hangs on "Waiting for a message…").
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cursor, phase, waitingChoice, typing]);
+  }, [cursor, phase, waitingChoice, typing, showIntro]);
 
   // Auto-scroll the feed to the bottom when new messages arrive
   useEffect(() => {

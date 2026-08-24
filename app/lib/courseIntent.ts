@@ -21,10 +21,18 @@ export function safeCourseSlug(raw: string | null | undefined): string | null {
   return raw && COURSE_SLUG_RE.test(raw) ? raw : null;
 }
 
+/* Courses that own a dedicated home to land on after auth, instead of the
+ * family hub. Cyber Pro drops the learner straight onto its module page. */
+const COURSE_HOME: Record<string, string> = {
+  "cyberstart-pro": "/pro/course",
+};
+
 /**
- * The hub destination, optionally pre-selecting a course. Pass the
- * result of {@link safeCourseSlug}; a null slug yields the plain hub.
+ * The post-auth destination for a course. A course with its own home (see
+ * COURSE_HOME) goes straight there; otherwise the family hub, optionally
+ * pre-selecting the course. Pass the result of {@link safeCourseSlug}.
  */
 export function hubTargetFor(slug: string | null): string {
+  if (slug && COURSE_HOME[slug]) return COURSE_HOME[slug];
   return slug ? `/hub?selected=${slug}` : "/hub";
 }

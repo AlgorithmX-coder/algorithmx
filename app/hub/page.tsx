@@ -109,6 +109,16 @@ const FALLBACK_CONFIG: TrackCfg = {
   accentHex: C.cyan,
 };
 
+/* Tracks opened for testing behind the /password gate, regardless of their
+ * seeded COMING_SOON status. Each maps to the surface its "Enter" button
+ * jumps straight into, with no entitlement/purchase gate. Cyber Explorers
+ * (self-contained), Cyber Ops (its landing) and Cyber Pro (its course hub). */
+const TEST_ENTER: Record<string, string> = {
+  cyberexplorers: "/explorers",
+  cyberstart: "/ops",
+  "cyberstart-pro": "/pro/course",
+};
+
 function firstName(full?: string | null): string {
   if (!full) return "hero";
   const t = full.trim();
@@ -454,15 +464,14 @@ export default async function HubPage() {
             {products.map((product, i) => {
               const cfg = TRACK_CONFIG[product.slug] ?? FALLBACK_CONFIG;
               const owned = ownedSlugs.has(product.slug);
-              // Cyber Explorers is self-contained (localStorage progress, no
-              // entitlement) and is open for testing behind the /password gate:
-              // surface it live and enter straight into its mission map,
-              // regardless of the seeded COMING_SOON status / ownership.
-              const explorersTest = product.slug === "cyberexplorers";
-              const cardStatus = (explorersTest ? "ACTIVE" : product.status) as "ACTIVE" | "COMING_SOON";
+              // Tracks opened for testing behind the /password gate surface as
+              // live and enter straight into their own surface, regardless of
+              // the seeded COMING_SOON status / ownership (see TEST_ENTER).
+              const testEnter = TEST_ENTER[product.slug];
+              const cardStatus = (testEnter ? "ACTIVE" : product.status) as "ACTIVE" | "COMING_SOON";
               const isLive = cardStatus === "ACTIVE";
-              const enterHref = explorersTest ? "/explorers" : owned ? "/dashboard" : `/purchase/${product.slug}`;
-              const enterLabel = explorersTest ? "Enter" : owned ? "Continue Adventure" : "Get started";
+              const enterHref = testEnter ?? (owned ? "/dashboard" : `/purchase/${product.slug}`);
+              const enterLabel = testEnter ? "Enter" : owned ? "Continue Adventure" : "Get started";
               return (
                 <HubTrackCard
                   key={product.id}

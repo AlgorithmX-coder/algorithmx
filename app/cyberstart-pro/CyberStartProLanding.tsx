@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Product } from "@prisma/client";
-import { DataLabScene } from "@/app/components/CyberFutureScenes";
+import CodeRainBg from "@/app/pro/CodeRainBg";
 import WaitlistForm from "@/app/components/WaitlistForm";
 
 // Cosmic violet → cyan for the Pro tier — on-palette with the cyber
@@ -42,19 +42,19 @@ const METHOD = [
 ];
 
 const BREACHES = [
-  { org: "RockYou", year: "2009", lesson: "32 million passwords, stored in plain text for anyone to read.", tag: "Passwords" },
-  { org: "TalkTalk", year: "2015", lesson: "One SQL injection through a forgotten page. A record £400k fine.", tag: "Web attacks" },
-  { org: "Colonial Pipeline", year: "2021", lesson: "One account, no second step, and fuel panic across a nation.", tag: "Access control" },
-  { org: "Equifax", year: "2017", lesson: "A security update they had for months, ignored. 147 million people.", tag: "Patching" },
-  { org: "WannaCry / NHS", year: "2017", lesson: "Unpatched computers, 19,000 hospital appointments cancelled.", tag: "Updates" },
-  { org: "British Library", year: "2023", lesson: "Ransomware, and a brutally honest report they published themselves.", tag: "Resilience" },
+  { org: "LastPass", year: "2022", lesson: "Attackers stole customers' encrypted password vaults, and weak master passwords fell.", tag: "Passwords" },
+  { org: "23andMe", year: "2023", lesson: "Reused passwords unlocked the DNA profiles of 6.9 million people.", tag: "Reuse & MFA" },
+  { org: "MOVEit", year: "2023", lesson: "One SQL-injection flaw breached thousands of organisations at once.", tag: "Web attacks" },
+  { org: "Change Healthcare", year: "2024", lesson: "One login with no MFA, and US healthcare billing froze for weeks.", tag: "Access control" },
+  { org: "MGM Resorts", year: "2023", lesson: "A single phone call to the help desk shut the casinos for days.", tag: "Social engineering" },
+  { org: "Log4Shell", year: "2021", lesson: "One flaw in a free tool put millions of systems at risk overnight.", tag: "Vulnerabilities" },
 ];
 
 const ACTS = [
-  { n: "Act 1", weeks: "Weeks 1 to 5", t: "Foundations you can touch", d: "How the internet, passwords and computers really work. Taught from scratch, hands-on from day one." },
-  { n: "Act 2", weeks: "Weeks 6 to 11", t: "How attacks happen", d: "Phishing, malware, web attacks and breaches, each rebuilt so you understand it by doing it." },
-  { n: "Act 3", weeks: "Weeks 12 to 16", t: "Defence for real", d: "Become the analyst: read the alerts, run a real SIEM, investigate an intrusion, write the report." },
-  { n: "Act 4", weeks: "Weeks 17 to 20", t: "Get hired", d: "Try the roles, build your CV, rehearse the interviews, and finish with a portfolio and a plan." },
+  { n: "Act 1", weeks: "Modules 1 to 5", t: "Foundations you can touch", d: "How security, the internet, passwords and cryptography really work. Taught from scratch, hands-on from day one." },
+  { n: "Act 2", weeks: "Modules 6 to 11", t: "How attacks happen", d: "Phishing, malware, web and network attacks and the breaches they caused, each rebuilt so you understand it by doing it." },
+  { n: "Act 3", weeks: "Modules 12 to 16", t: "Defence for real", d: "Become the analyst: hardening, the SOC, a real SIEM, detection and threat intel, and incident response." },
+  { n: "Act 4", weeks: "Modules 17 to 21", t: "Get hired", d: "Governance, scripting, resilience, the roles and cert roadmap, and a capstone. Finish with a portfolio and a plan." },
 ];
 
 const PORTFOLIO = [
@@ -112,9 +112,9 @@ function HoneypotDemo() {
 }
 
 const DEMOS = [
-  { week: "Week 1", t: "Crack a password", d: "Type any password and watch a real cracking estimate. See why a long phrase beats a clever one.", demo: <PasswordDemo /> },
-  { week: "Week 8", t: "Break into a database", d: "Perform a real SQL injection on a practice site, watch it leak, then apply the one-line fix.", demo: <InjectionDemo /> },
-  { week: "Week 13", t: "Catch an attacker", d: "Investigate a real capture of bots attacking a server, and find the single break-in in the noise.", demo: <HoneypotDemo /> },
+  { week: "Module 3", t: "Crack a password", d: "Type any password and watch a real cracking estimate. See why a long phrase beats a clever one.", demo: <PasswordDemo /> },
+  { week: "Module 9", t: "Break into a database", d: "Perform a real SQL injection on a practice site, watch it leak, then apply the one-line fix.", demo: <InjectionDemo /> },
+  { week: "Module 14", t: "Catch an attacker", d: "Investigate a real capture of bots attacking a server, and find the single break-in in the noise.", demo: <HoneypotDemo /> },
 ];
 
 export default function CyberStartProLanding({ product }: { product: Product }) {
@@ -137,9 +137,9 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         @media (prefers-reduced-motion: reduce) { .cypro-cursor { animation: none; } }
       `}</style>
 
-      <DataLabScene />
+      <CodeRainBg />
 
-      <div className="min-h-screen relative" style={{ background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, #080a16 70%, #04050d 100%)`, zIndex: 1 }}>
+      <div className="min-h-screen relative" style={{ background: "transparent", zIndex: 1 }}>
         {/* Nav */}
         <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
           style={{
@@ -163,7 +163,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               </span>
             </Link>
             <div className="flex items-center gap-4">
-              <a href="/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Log In</a>
+              <a href="/login?course=cyberstart-pro" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Log In</a>
               <motion.a href="/signup?course=cyberstart-pro"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
@@ -175,31 +175,33 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
           </div>
         </nav>
 
-        {/* Hero */}
-        <section className="max-w-[900px] mx-auto px-6 md:px-10 pt-28 sm:pt-36 pb-14 sm:pb-20 text-center">
-          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: "easeOut" }}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-[0.18em] mb-7"
-              style={{ background: `${PRIMARY}18`, border: `1px solid ${PRIMARY}40`, color: "#c3b3ff", fontFamily: MONO }}>
-              For total beginners &middot; 18+
+        {/* Hero — full-bleed, cinematic, code-rain behind */}
+        <section className="relative max-w-[980px] mx-auto px-6 md:px-10 min-h-[90vh] flex flex-col justify-center text-center pt-28 pb-20">
+          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-8"
+              style={{ background: `${PRIMARY}1f`, border: `1px solid ${PRIMARY}55`, color: "#c9b8ff", fontFamily: MONO, boxShadow: `0 0 24px ${PRIMARY}22` }}>
+              <span aria-hidden style={{ width: 6, height: 6, borderRadius: "50%", background: ACCENT, boxShadow: `0 0 10px ${ACCENT}` }} />
+              Cyber security &middot; for total beginners &middot; 18+
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-black text-white leading-[1.08] mb-6">
+            <h1 className="font-black text-white leading-[1.04] mb-7" style={{ fontSize: "clamp(2.6rem, 6.4vw, 4.6rem)", letterSpacing: "-0.02em" }}>
               You don&apos;t need to be technical to start.
               <br className="hidden sm:block" />{" "}
-              <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>You will be by the end.</span>
+              <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text", filter: `drop-shadow(0 0 30px ${PRIMARY}44)` }}>You will be by the end.</span>
             </h1>
 
-            <p className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-8">
-              Cyber Pro is a cybersecurity course that starts from zero. We teach you properly, you practise on real systems in your own browser, and you finish with a portfolio of real work and an honest route to your first job.
+            <p className="text-gray-300 leading-relaxed max-w-2xl mx-auto mb-9" style={{ fontSize: "clamp(1rem, 1.4vw, 1.2rem)" }}>
+              A cyber security course that starts from zero. We teach you properly, you practise on real systems in your own browser, and you finish with a portfolio of real work and an honest route to your first job.
             </p>
 
             <div className="flex justify-center flex-wrap gap-2.5 mb-9">
-              {["No experience needed", "Hands-on from week 1", "Aligned to CompTIA Security+"].map((chip, i) => (
+              {["No experience needed", "Hands-on from module 1", "Aligned to CompTIA Security+"].map((chip, i) => (
                 <span key={i} style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   padding: "7px 14px", borderRadius: 9,
-                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
-                  fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.72)",
+                  background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
+                  fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.78)",
+                  backdropFilter: "blur(6px)",
                 }}>
                   <span aria-hidden style={{ color: GREEN }}>&#10003;</span>{chip}
                 </span>
@@ -216,9 +218,14 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
                 source="hero"
               />
             </div>
-            <p className="mt-6 text-xs font-bold uppercase tracking-widest text-gray-500" style={{ fontFamily: MONO }}>
-              Ages {product.ageRange} &middot; 20 weeks &middot; {priceLine} once
-            </p>
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <a href="/pro/course" className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors" style={{ color: ACCENT }}>
+                Explore the 21 modules <span aria-hidden>&rarr;</span>
+              </a>
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-500" style={{ fontFamily: MONO }}>
+                Ages {product.ageRange} &middot; 21 modules &middot; {priceLine} once
+              </p>
+            </div>
           </motion.div>
         </section>
 
@@ -316,7 +323,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
             </h2>
           </ScrollReveal>
           <ScrollReveal className="text-center mb-12" delay={0.05}>
-            <p className="text-gray-400 text-base max-w-2xl mx-auto">Twenty weeks, at your own pace. Each act builds on the last.</p>
+            <p className="text-gray-400 text-base max-w-2xl mx-auto">Twenty-one modules, at your own pace. Each act builds on the last.</p>
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -398,7 +405,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
                 {[
                   { k: "Price", v: `${priceLine} once` },
                   { k: "Access", v: "Lifetime" },
-                  { k: "Length", v: "20 weeks" },
+                  { k: "Length", v: "21 modules" },
                   { k: "Pace", v: `${product.duration} guided` },
                   { k: "Billing", v: "No subscription" },
                 ].map((f, i) => (
