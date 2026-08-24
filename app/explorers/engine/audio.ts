@@ -97,11 +97,13 @@ export function playWren(url: string, enabled: boolean, onEnded?: () => void) {
     // so a stuck/blocked clip can never leave the UI locked forever.
     wrenEl.onloadedmetadata = () => {
       if (!wrenEl) return;
-      const ms = Number.isFinite(wrenEl.duration) ? wrenEl.duration * 1000 + 900 : 20000;
+      // duration + margin once known; a generous backstop otherwise. Must exceed
+      // the longest clip (~24s test intro) so `speaking` never clears mid-clip.
+      const ms = Number.isFinite(wrenEl.duration) ? wrenEl.duration * 1000 + 900 : 60000;
       clearSafety();
       safetyTimer = setTimeout(done, ms);
     };
-    safetyTimer = setTimeout(done, 20000);
+    safetyTimer = setTimeout(done, 60000);
     void wrenEl.play().catch(() => done()); // autoplay blocked -> don't lock
   } catch {
     setSpeaking(false); /* audio unavailable — mission plays silent */

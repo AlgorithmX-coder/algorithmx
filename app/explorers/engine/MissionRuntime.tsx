@@ -1235,6 +1235,8 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
   // Shuffle options once (correct answer not always first), and keep fresh order.
   const [scenarios] = useState(() => def.scenarios.map(shuffleQ));
   const speaking = useWrenSpeaking(); // lock "start the test" while she reads the intro
+  const [introEnded, setIntroEnded] = useState(false); // set when the intro clip finishes
+  const spokeRef = useRef(false); // did the intro ever actually start speaking?
   const [phase, setPhase] = useState<"intro" | "test" | "passed" | "failed">("intro");
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -1267,10 +1269,24 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
   };
 
   useIsoLayoutEffect(() => {
-    if (phase === "intro" && voiceOn && def.voice?.intro) playWren(def.voice.intro, true);
+    if (phase === "intro" && voiceOn && def.voice?.intro) {
+      playWren(def.voice.intro, true, () => setIntroEnded(true));
+      // Last resort well past the ~24s clip: if the end event never fires, START
+      // still frees so a child is never stuck on the intro.
+      const t = setTimeout(() => setIntroEnded(true), 30000);
+      return () => { stopWren(); clearTimeout(t); };
+    }
     return () => stopWren();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => { if (speaking) spokeRef.current = true; }, [speaking]);
+
+  // Can only START once WREN has FINISHED the intro. onEnded is the exact signal
+  // (the 24s clip runs longer than any lock timer, so we don't trust `speaking`
+  // alone here). Fallbacks: no voiced intro, or a blocked/failed clip that
+  // spoke-then-stopped, so a child is never trapped on the intro screen.
+  const introVoiced = voiceOn && !!def.voice?.intro;
+  const canStart = !introVoiced || introEnded || (spokeRef.current && !speaking);
 
   if (phase === "intro") {
     return (
@@ -1285,12 +1301,12 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
         <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 20 }}>
           {scenarios.length} questions. Get {def.pass} right to close the case. Miss it and you sit the whole case again.
         </p>
-        {speaking ? (
+        {canStart ? (
+          <AmberButton label="START THE TEST →" onClick={begin} />
+        ) : (
           <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
             <TypingDots /> WREN IS SPEAKING...
           </span>
-        ) : (
-          <AmberButton label="START THE TEST →" onClick={begin} />
         )}
       </section>
     );
