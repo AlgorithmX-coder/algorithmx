@@ -8,11 +8,12 @@
  */
 
 import { useEffect, useState } from "react";
+import { playWren, stopWren } from "../engine/audio";
 import { AmberButton, Bubble, DeviceFrame } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { EvidenceSegment, InspectPayload, MechanicProps } from "../engine/types";
 
-export default function Inspect({ payload, reduced, audio, onEvent }: MechanicProps<InspectPayload>) {
+export default function Inspect({ payload, reduced, audio, onEvent, voiceOn }: MechanicProps<InspectPayload>) {
   const allSegs: EvidenceSegment[] = [...payload.header.map((h) => h.seg), ...payload.body.flat()];
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [result, setResult] = useState<null | { wrong: string[]; missed: number }>(null);
@@ -20,11 +21,13 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
   const [locked, setLocked] = useState(false);
   const [passed, setPassed] = useState(false);
   const [reviewReady, setReviewReady] = useState(false);
-  // After a correct answer, hold the CONTINUE button so they review it first.
+  // After a correct answer, WREN reviews it aloud and CONTINUE is held so they
+  // read + hear it through first.
   useEffect(() => {
     if (!passed) return;
+    if (payload.doneAudio) playWren(payload.doneAudio, !!voiceOn);
     const t = setTimeout(() => setReviewReady(true), 15000);
-    return () => clearTimeout(t);
+    return () => { clearTimeout(t); stopWren(); };
   }, [passed]);
 
   const toggle = (seg: EvidenceSegment) => {

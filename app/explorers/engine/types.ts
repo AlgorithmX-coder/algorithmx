@@ -70,6 +70,9 @@ export interface MechanicProps<P> {
   reduced: boolean;
   audio: SignalAudio;
   onEvent: (e: MechanicEvent) => void;
+  /** Whether WREN's voice is on — mechanics with a review beat use it to speak
+   *  the answer back during the "look it over" hold. */
+  voiceOn?: boolean;
 }
 
 /* -------------------------------------------------- mechanic payloads */
@@ -96,6 +99,8 @@ export interface InspectPayload {
   body: EvidenceSegment[][];
   tells: InspectTell[];
   doneLine: string;
+  /** WREN reviews the answer aloud during the "look it over" hold (public/ path). */
+  doneAudio?: string;
 }
 
 export interface DecideOption {
@@ -328,6 +333,8 @@ export interface UnmaskPayload {
   brand: string;
   items: UnmaskItem[];
   doneLine: string;
+  /** WREN reviews the answer aloud during the "look it over" hold (public/ path). */
+  doneAudio?: string;
 }
 
 export type FieldworkDef =

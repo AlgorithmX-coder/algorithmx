@@ -1060,7 +1060,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
       onNext();
     }
   };
-  const props = { reduced, audio, onEvent: handle } as const;
+  const props = { reduced, audio, onEvent: handle, voiceOn } as const;
   return (
     <div>
       {/* the instruction strip — the only amber text on screen */}

@@ -10,13 +10,14 @@
  */
 
 import { useEffect, useState } from "react";
+import { playWren, stopWren } from "../engine/audio";
 import { AmberButton } from "../engine/primitives";
 import { MONO, BODY, T } from "../engine/tokens";
 import type { MechanicProps, UnmaskPayload } from "../engine/types";
 
 type Verdict = "REAL" | "FAKE";
 
-export default function Unmask({ payload, audio, onEvent }: MechanicProps<UnmaskPayload>) {
+export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicProps<UnmaskPayload>) {
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
   const [verdicts, setVerdicts] = useState<Record<string, Verdict>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -30,11 +31,13 @@ export default function Unmask({ payload, audio, onEvent }: MechanicProps<Unmask
   const correct = (i: (typeof payload.items)[number]) => (verdicts[i.id] === "REAL") === i.real;
   const allCorrect = payload.items.every(correct);
 
-  // 15s review hold after a clean submit, so the reveals + reasons get read.
+  // After a clean submit, WREN reviews it aloud and CONTINUE is held so the
+  // reveals + reasons get read + heard through.
   useEffect(() => {
     if (!passed) return;
+    if (payload.doneAudio) playWren(payload.doneAudio, !!voiceOn);
     const t = setTimeout(() => setReviewReady(true), 15000);
-    return () => clearTimeout(t);
+    return () => { clearTimeout(t); stopWren(); };
   }, [passed]);
 
   const reveal = (id: string) => {
