@@ -122,18 +122,24 @@ export const mission01: MissionManifest = {
           // PRACTICE on a NEW message (a prize scam), so they APPLY "spot the
           // pressure" rather than re-recognise the one they were taught on.
           // Select the 3 pressure lines; the 4 safe lines are decoys.
-          intro: "A brand-new message just landed on Sam's phone. Find every part that's trying to pressure him.",
+          // Harder than the taught example: FOUR pressure lines hidden among five
+          // official-looking decoys (automated notice, reference number, unsubscribe
+          // footer). Miss one tell OR tap a safe line and the submit fails, so it's
+          // a real discrimination call, not "tap the shouty ones".
+          intro: "A brand-new message just landed on Sam's phone. Find EVERY part that's trying to pressure him. Some safe-looking lines are there to throw you.",
           device: { app: "TEXTS", owner: "SAM'S PHONE" },
           header: [
             { label: "FROM:", seg: { id: "from", text: "+44 7700 900418 (unknown)" } },
           ],
           body: [
             [{ id: "greet", text: "Hi there!" }],
+            [{ id: "auto", text: "This is an automated message from our rewards system." }],
             [{ id: "win", text: "You've been specially chosen to WIN a £100 voucher!", tellId: "greed" }],
             [{ id: "rush", text: "Claim it in the next 15 minutes, before it's gone.", tellId: "rush" }],
-            [{ id: "miss", text: "You really DON'T want to miss out on this one.", tellId: "fomo" }],
-            [{ id: "members", text: "This offer is just for our valued members." }],
-            [{ id: "reply", text: "Reply YES to claim yours." }],
+            [{ id: "ref", text: "Your reference number is 4471-B." }],
+            [{ id: "loss", text: "Miss the deadline and your prize is GONE for good.", tellId: "loss" }],
+            [{ id: "fomo", text: "Everyone else has already claimed theirs, don't be left out.", tellId: "fomo" }],
+            [{ id: "unsub", text: "Reply STOP to unsubscribe." }],
             [{ id: "sig", text: "The Prizes Team" }],
           ],
           tells: [
@@ -148,12 +154,17 @@ export const mission01: MissionManifest = {
               why: "That's RUSH, a made-up 15-minute clock to hurry you before you think.",
             },
             {
+              id: "loss",
+              label: "The threat",
+              why: "That's FEAR, threatening to snatch the prize away so you panic and act now.",
+            },
+            {
               id: "fomo",
               label: "Fear of missing out",
-              why: "Another pressure trick, scaring you that you'll lose out if you don't act fast.",
+              why: "Everyone's-doing-it pressure, scaring you that you'll be the one who loses out.",
             },
           ],
-          doneLine: "Spot on. Different scam, different bait, same three pressure tricks you just learned: greed, a countdown, and fear of missing out. The other lines are just normal message bits.",
+          doneLine: "Spot on. Four pressure tricks in one message: greed, a countdown, a threat, and fear of missing out. The automated notice, the reference number and the unsubscribe line are just normal message bits, there to fool you.",
           doneAudio: "/audio/wren/m01-c1-review.mp3",
         },
       },
@@ -189,7 +200,7 @@ export const mission01: MissionManifest = {
           // PRACTICE the address rule on SIX fresh addresses (brand never seen in
           // the lesson). The child must apply "last two chunks before the first
           // slash" to each one to place it, not recognise a taught example.
-          intro: "Six addresses, all claiming to be PixelPlay. Sort each one: really PixelPlay, or a disguise wearing the name? Use the rule.",
+          intro: "A whole batch of addresses, every one claiming to be PixelPlay. Sort each one: really PixelPlay, or a disguise wearing the name? Some are sneaky. Use the rule.",
           buckets: [
             { id: "real", label: "REALLY PIXELPLAY", hint: "ends in pixelplay.com" },
             { id: "fake", label: "A DISGUISE", hint: "a stranger's site" },
@@ -198,11 +209,14 @@ export const mission01: MissionManifest = {
             { id: "a1", label: "account.pixelplay.com", bucket: "real", why: "The last two chunks before any slash are pixelplay.com. That's the real owner. 'account' is just a room inside it." },
             { id: "a2", label: "pixelplay.com/redeem", bucket: "real", why: "Find the first slash, read the two chunks before it: pixelplay.com. Real owner. '/redeem' is only a page inside." },
             { id: "a3", label: "help.pixelplay.com", bucket: "real", why: "Last two chunks: pixelplay.com. 'help' is just a room inside the real site." },
-            { id: "a4", label: "pixelplay.com.free-coins.net", bucket: "fake", why: "Read the LAST two chunks: free-coins.net. 'pixelplay.com' is glued on the front to fool you." },
-            { id: "a5", label: "login.pixelplay.rewards.io", bucket: "fake", why: "The last two chunks are rewards.io, a stranger. 'pixelplay' is just decoration in the middle." },
-            { id: "a6", label: "pixelplay-support.net", bucket: "fake", why: "The owner is pixelplay-support.net, a name a stranger made up. The real one is simply pixelplay.com." },
+            { id: "a4", label: "eu.login.pixelplay.com", bucket: "real", why: "However many rooms in front, the last two chunks are still pixelplay.com. Real owner." },
+            { id: "a5", label: "pixelplay.com.free-coins.net", bucket: "fake", why: "Read the LAST two chunks: free-coins.net. 'pixelplay.com' is glued on the front to fool you." },
+            { id: "a6", label: "login.pixelplay.rewards.io", bucket: "fake", why: "The last two chunks are rewards.io, a stranger. 'pixelplay' is just decoration in the middle." },
+            { id: "a7", label: "pixelplay-support.net", bucket: "fake", why: "The owner is pixelplay-support.net, a name a stranger made up. The real one is simply pixelplay.com." },
+            { id: "a8", label: "secure-login.net/pixelplay.com", bucket: "fake", why: "Before the first slash it's secure-login.net, a stranger. 'pixelplay.com' is only in the path AFTER the slash." },
+            { id: "a9", label: "get.pixelplay.deals.com", bucket: "fake", why: "The last two chunks are deals.com, a stranger. 'pixelplay' is just a room in the middle, not the owner." },
           ],
-          doneLine: "That's the rule in action. Ignore the front, find the first slash, read the two chunks before it. No glued-on name can fool you now.",
+          doneLine: "That's the rule in action. Ignore the front, ignore anything after the slash, find the first slash and read the two chunks before it. No glued-on name can fool you now.",
         },
       },
       playAudio: "/audio/wren/m01-c2-play.mp3",
@@ -232,15 +246,17 @@ export const mission01: MissionManifest = {
       fieldwork: {
         verb: "UNMASK",
         payload: {
-          intro: "Four messages, all signed GameHub. Tap each to reveal the real address, then call it.",
+          intro: "A pile of messages, all signed GameHub. Tap each one to reveal the real address, then call it. Some hide the fake well.",
           brand: "GameHub",
           items: [
             { id: "s1", displayName: "GameHub Support", address: "support@gamehub.com", real: true, why: "The real owner is gamehub.com. The name and the address match. Genuine." },
             { id: "s2", displayName: "GameHub Security", address: "alert@gamehub.com.account-check.net", real: false, why: "The real owner is account-check.net, a stranger. 'gamehub.com' is glued on the front to fool you." },
             { id: "s3", displayName: "GameHub Rewards", address: "prizes@gamehub-rewards.net", real: false, why: "gamehub-rewards.net is a made-up name a stranger owns. The real GameHub is simply gamehub.com." },
             { id: "s4", displayName: "GameHub Team", address: "noreply@mail.gamehub.com", real: true, why: "The last two chunks are gamehub.com. 'mail' is just a room inside the real site." },
+            { id: "s5", displayName: "GameHub Accounts", address: "help@accounts.gamehub.com", real: true, why: "The last two chunks are gamehub.com. 'accounts' is just another room inside the real site." },
+            { id: "s6", displayName: "GameHub Care", address: "care@gamehub.support-team.com", real: false, why: "The real owner is support-team.com, a stranger. 'gamehub' is just a room in the middle, not the owner." },
           ],
-          doneLine: "Let's check those back. The two real ones ended in gamehub.com, so the name and the address matched. The two fakes hid a stranger's address behind the GameHub name. Names lie, but addresses don't, so always read the address, not the name.",
+          doneLine: "Let's check those back. The real ones all ended in gamehub.com, so the name and the address matched. The fakes hid a stranger's address behind the GameHub name. Names lie, but addresses don't, so always read the address, not the name.",
           doneAudio: "/audio/wren/m01-c-sender-review.mp3",
         },
       },
@@ -283,12 +299,14 @@ export const mission01: MissionManifest = {
             { id: "deadline", label: "Makes up a countdown to rush you", matches: true },
             { id: "costume", label: "Uses a trusted name over a stranger's address", matches: true },
             { id: "mislink", label: "Sends links that lie about where they go", matches: true },
+            { id: "logo", label: "Copies a company's exact logo and colours", matches: false },
+            { id: "spell", label: "Misspells words to slip past spam filters", matches: false },
             { id: "guess", label: "Tries to guess your password over and over", matches: false },
             { id: "voice", label: "Fakes a friend's voice on a phone call", matches: false },
             { id: "meet", label: "Asks to meet you in person", matches: false },
           ],
           picks: 3,
-          doneLine: "That's his pattern. Next time, he'll just be wearing a different disguise.",
+          doneLine: "That's his pattern, straight from the evidence: the countdown, the faked name, the lying link. Copying a logo or misspelling words are real scammer tricks too, but they're not what THIS file shows. Next time, he'll just wear a different disguise.",
         },
       },
       playAudio: "/audio/wren/m01-c3-play.mp3",
@@ -326,8 +344,8 @@ export const mission01: MissionManifest = {
               label: "The very first move",
               options: [
                 { id: "pw", label: "Change your password on the real site now", good: true, why: "Yes. That locks the scammer out before they can use what they stole." },
-                { id: "off", label: "Turn your phone off and hope", good: false, why: "That changes nothing. The stolen password still works. Change it first." },
-                { id: "ignore", label: "Ignore it, it's probably fine", good: false, why: "It isn't. If you typed your password into a fake page, act now." },
+                { id: "check", label: "Log back in to double-check nothing changed", good: false, why: "Not first, and never on the fake page. Change the password first, THEN check on the real site." },
+                { id: "off", label: "Turn your device off and wait a while", good: false, why: "That changes nothing. The stolen password still works. Change it first." },
               ],
             },
             {
@@ -335,8 +353,17 @@ export const mission01: MissionManifest = {
               label: "Lock it down harder",
               options: [
                 { id: "2fa", label: "Turn on two-step verification", good: true, why: "Now a password alone can't get in. A strong second lock." },
-                { id: "same", label: "Set the same password again", good: false, why: "The scammer may already know it. Use a brand-new one, then add two-step." },
-                { id: "post", label: "Post about it online", good: false, why: "That doesn't protect your account. Add a real second lock instead." },
+                { id: "easy", label: "Pick a new password that's easy to remember", good: false, why: "A weak new password isn't a stronger lock. Add two-step so a password alone can't get in." },
+                { id: "clear", label: "Just clear your browser history", good: false, why: "That hides nothing from the scammer. Add a real second lock instead." },
+              ],
+            },
+            {
+              id: "accounts",
+              label: "Your other accounts",
+              options: [
+                { id: "reuse", label: "Change it anywhere you used the same password", good: true, why: "If you reused that password, the scammer can try it everywhere. Change it on all of them." },
+                { id: "leave", label: "Leave your other accounts, they're fine", good: false, why: "They're not. A reused password means one leak can open them all." },
+                { id: "clone", label: "Give every account the same new password", good: false, why: "One leak would unlock them all again. Each account needs its own password." },
               ],
             },
             {
@@ -344,8 +371,8 @@ export const mission01: MissionManifest = {
               label: "Get help",
               options: [
                 { id: "adult", label: "Tell a trusted adult", good: true, why: "Always. They can help you check everything is safe." },
-                { id: "secret", label: "Keep it a secret", good: false, why: "Secrets help the scammer. A trusted adult helps you." },
-                { id: "wait", label: "Wait and see what happens", good: false, why: "Waiting gives the scammer time. Get help now." },
+                { id: "solo", label: "Sort it out yourself so no one worries", good: false, why: "Keeping it secret helps the scammer. A trusted adult helps you." },
+                { id: "post", label: "Post what happened on social media", good: false, why: "That doesn't protect your account, and it's not the same as telling someone you trust." },
               ],
             },
             {
@@ -353,13 +380,13 @@ export const mission01: MissionManifest = {
               label: "Protect other people",
               options: [
                 { id: "report", label: "Report the scam message", good: true, why: "Reporting gets it taken down, so it can't catch the next person." },
-                { id: "forward", label: "Forward it to your friends", good: false, why: "That just spreads the bait. Report it instead." },
-                { id: "delete", label: "Delete it and tell no one", good: false, why: "Deleting only hides it. Reporting actually stops it." },
+                { id: "forward", label: "Forward it round to warn your friends", good: false, why: "That just spreads the live bait. Warn people in words, but report the message itself." },
+                { id: "block", label: "Block the sender and move on", good: false, why: "Blocking protects only you. Reporting gets it taken down for everyone." },
               ],
             },
           ],
           testLine: "PLAN HOLDS: account secured.",
-          doneLine: "Change it, lock it, tell someone, report it. That's the rescue plan.",
+          doneLine: "Change it, lock it, protect your other accounts, tell someone, report it. That's the full rescue plan.",
         },
       },
       playAudio: "/audio/wren/m01-c-recover-play.mp3",
@@ -375,8 +402,8 @@ export const mission01: MissionManifest = {
 
   catchThem: {
     intro:
-      "Okay Agent, this is the real test. Ten questions, and not one of them is “what did I say”. Every single one makes you THINK. Take what you learned and work out an answer you've never seen before. I won't tell you how you're doing until the very end. Get eight right to close the case. Miss it, and you sit the whole case again. Take your time.",
-    pass: 8,
+      "Okay Agent, this is the real test. Fifteen questions, and not one of them is “what did I say”. Every single one makes you THINK. Take what you learned and work out an answer you've never seen before. I won't tell you how you're doing until the very end. Get twelve right to close the case. Miss it, and you sit the whole case again. Take your time.",
+    pass: 12,
     voice: {
       intro: "/audio/wren/m01-catch-intro.mp3",
       pass: "/audio/wren/m01-catch-pass.mp3",
@@ -510,6 +537,68 @@ export const mission01: MissionManifest = {
           "Keep the whole thing secret so nobody worries",
           "Put your old password back for now",
           "Tap the scam link again just to check",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct11",
+        skill: 0,
+        prompt: "“Act now or your photos are deleted forever!” Which trick is this?",
+        options: [
+          "Fear, it threatens what you care about",
+          "Greed, it's offering you a nice prize",
+          "Nothing, deletion warnings are always fine",
+          "It's just a normal, helpful reminder",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct12",
+        skill: 1,
+        prompt: "Where does this link REALLY go? The brand name is in there to fool you.",
+        evidence: "account-help.com/paypal.com/login",
+        options: [
+          "account-help.com, a stranger",
+          "paypal.com, the real PayPal",
+          "PayPal's own account help page",
+          "A site called login.com",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct13",
+        skill: 2,
+        prompt: "An email's sender name is “Apple”. You reveal the address behind it. Real or fake?",
+        evidence: "no-reply@apple.security-alerts.com",
+        options: [
+          "Fake, a stranger owns the real address",
+          "Real, the word Apple is right there in it",
+          "Real, it's an official security alert",
+          "There's no way to know from the address",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct14",
+        skill: 3,
+        prompt: "A message has a faked sender name AND rushes you, but you can't check its link. How many scam parts is that, and what do you do?",
+        options: [
+          "Two already, don't tap, go direct",
+          "Zero, wait until you see the link",
+          "One, so it's probably safe enough",
+          "Three, every message has all three",
+        ],
+        answer: 0,
+      },
+      {
+        id: "ct15",
+        skill: 4,
+        prompt: "You used the same password on three sites, and one just got phished. What must you do?",
+        options: [
+          "Change it on all three sites",
+          "Only change the one that got phished",
+          "Change nothing, a single leak is fine",
+          "Delete all three of the accounts to be safe",
         ],
         answer: 0,
       },
