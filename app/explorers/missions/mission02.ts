@@ -7,12 +7,16 @@
  * fishing metaphor carries it: the prize is the bait, the funnel is the line,
  * the form is the net, YOU are the catch.
  *   1 too good     (beats + INSPECT)  — the gut-check that pops most scams
- *   2 free's price  (beats + SORT)     — 'free' always charges something
+ *   2 free's price  (beats + DECIDE)   — a live call: a 'free' offer wants a card
  *   3 fake giveaway (beats + UNMASK)   — the "winner" account is a look-alike
  *   4 the funnel    (beats + TRACE)    — one scam, many costumes, one line
- *   5 fake proof    (beats + INSPECT)  — fake reviews, winners, countdowns
+ *   5 guard the form(beats + REDACT)   — form harvesting: each box is money
  *   6 SIREN's play  (beats + PROFILE)  — offer + funnel + the switch
  *   7 reeled in     (beats + BUILD)    — the rescue plan if you paid/shared
+ *
+ * Signature per curriculum-map-v1: TRACE debut (the funnel), form-harvesting
+ * taught as REDACT, and a find-the-hub boss (The Prize Factory) — deliberately
+ * NOT Case 001's triage flood.
  */
 
 import Mission02Incident from "../incidents/Mission02Incident";
@@ -47,7 +51,7 @@ export const mission02: MissionManifest = {
       "It's one prize, popping up in three places at once, wrapped like it's just for you, with a clock ticking on it. That's not luck, and it's not a gift. Somebody built it to collect.",
     objectives: [
       "Learn the gut-check that pops a scam on sight",
-      "Work out what 'free' is really charging, and follow the funnel",
+      "Follow the funnel, and see what the 'claim your prize' form really collects",
       "Know SIREN's play, and bounce back if you're reeled in",
     ],
     wrenLine: "Seven skills, then a test to close the case. One rule today, Agent. If you can't spot the trap, you're the one caught in it. Ready?",
@@ -111,7 +115,7 @@ export const mission02: MissionManifest = {
       title: "'Free' has a price",
       concept: "Nothing online is really free; work out what the 'free' offer actually takes from you",
       promise: "You'll learn to read what 'free' is really charging.",
-      instruction: "Sort each offer: genuinely free, or is there a catch?",
+      instruction: "Your friend's about to grab a 'free' pass. Make the call.",
       intel: {
         beats: [
           "When something's free, ask one question. If I'm not paying with money, then what AM I paying with?",
@@ -127,22 +131,33 @@ export const mission02: MissionManifest = {
         ],
       },
       fieldwork: {
-        verb: "SORT",
+        verb: "DECIDE",
         payload: {
-          intro: "A batch of 'free' offers. Sort each one: genuinely free, or is there a catch? Ask what it really takes from you.",
-          buckets: [
-            { id: "free", label: "GENUINELY FREE", hint: "no cost, no data grab" },
-            { id: "catch", label: "THERE'S A CATCH", hint: "money or data later" },
+          intro: "Field decision: your friend Mia is about to grab a 'free' offer.",
+          situation:
+            "A pop-up: “FREE 3-month game pass! Enter your card to start, you won't be charged.” Mia's about to type in her card number. “It's free,” she says, “so it's fine, right?”",
+          prompt: "YOUR CALL, AGENT:",
+          options: [
+            {
+              id: "stop",
+              label: "Stop her, and check the game's real page instead",
+              correct: true,
+              outcome:
+                "Good call. A 'free' offer that needs your card is built to bill you the moment the free bit ends, and they're famously hard to cancel. On the game's own real page, a genuine free trial is clear about the cost and easy to stop.",
+            },
+            {
+              id: "cancel",
+              label: "Let her, but remind her to cancel before it charges",
+              outcome:
+                "Risky. These are designed to be hard to cancel, and they've got her card either way. Far safer not to hand it over at all.",
+            },
+            {
+              id: "fake",
+              label: "Tell her to type in a made-up card number",
+              outcome:
+                "Closer, but a fake number just means it won't work, and she's still on a scam site being nudged for more. Don't play their game, just leave.",
+            },
           ],
-          items: [
-            { id: "f1", label: "A free maths game your school gave you", bucket: "free", why: "A real free tool, from a place you trust, asking for nothing back. Genuinely free." },
-            { id: "f2", label: "Free ringtones, £4.99 a week after 3 days", bucket: "catch", why: "A 'free trial' that quietly bills you every week. That's the real price, hidden in the small print." },
-            { id: "f3", label: "A free demo: play level 1, buy to go on", bucket: "free", why: "An honest free demo. It's clear about what's free and what costs. Fine." },
-            { id: "f4", label: "A free quiz that wants your email and friend list", bucket: "catch", why: "You pay with your data. Your details get sold on. You ARE what's being sold." },
-            { id: "f5", label: "A free £100 gift card, 'just finish 20 offers'", bucket: "catch", why: "Free that makes you jump through hoops and hand over info is never free. The card never arrives." },
-            { id: "f6", label: "A free library eBook from your library app", bucket: "free", why: "A real service you're already part of. Nothing hidden, nothing to pay. Genuinely free." },
-          ],
-          doneLine: "That's the rule. If it's not costing money, it's costing your data, or setting a trap for later. Always ask what 'free' is really charging.",
         },
       },
       playAudio: "/audio/wren/m02-c2-play.mp3",
@@ -231,19 +246,19 @@ export const mission02: MissionManifest = {
       playAudio: "/audio/wren/m02-c4-play.mp3",
     },
 
-    /* --------------------------------------------- cycle 5: spot the fake proof */
+    /* --------------------------------------------- cycle 5: guard the form (form harvesting) */
     {
-      id: "fakeproof",
-      title: "Spot the fake proof",
-      concept: "Scam pages fake trust and rush: made-up reviews, fake winners, and countdowns that reset",
-      promise: "You'll learn to see through the fake proof that makes a scam look real.",
-      instruction: "Tap every part of the page that's faking proof or rushing you.",
+      id: "form",
+      title: "Guard the form",
+      concept: "The funnel ends at a form; 'claim your prize' really means 'hand over your data', and each box is money",
+      promise: "You'll learn which boxes to slam shut the moment a 'prize' asks you to fill them in.",
+      instruction: "Black out every box you'd never hand over for a prize.",
       intel: {
         beats: [
-          "A scam page has a problem. It's new, and nobody trusts it. So it fakes the trust it hasn't earned.",
-          "Rows of five-star reviews, all posted the same day, all saying the same thing. Photos of 'winners' who don't exist.",
-          "And a clock. Only three minutes left! Only two in stock! Refresh the page, and the clock is full again. It was never real.",
-          "Real trust is slow and messy. Fake proof is loud, shiny, and always in a hurry. Spot it, and the whole page falls apart.",
+          "Every funnel SIREN builds ends in the same place. A form. 'Just fill this in to claim your prize!' That form isn't the last little step. It's the whole point.",
+          "So read a claim form backwards, like a price tag. Every box is asking you to PAY with something. The prize is the bait. Your details are what she's really shopping for.",
+          "Some boxes are cheap. Your first name, your favourite colour. A bit annoying to give, but harmless on their own.",
+          "But some are worth real money to her. Your password is the key to your whole account. Your card number IS money. Your home address tells a stranger where you sleep. Those aren't 'boxes'. They're the catch. Black them out, and if a 'prize' can't live without them, it was never a prize.",
         ],
         beatAudio: [
           "/audio/wren/m02-c5-b1.mp3",
@@ -253,28 +268,21 @@ export const mission02: MissionManifest = {
         ],
       },
       fieldwork: {
-        verb: "INSPECT",
+        verb: "REDACT",
         payload: {
-          intro: "Here's SIREN's 'shop' page. Tap every part that's faking proof or rushing you. Some parts are just a normal page.",
-          device: { app: "WEB", owner: "skinstorm-event.net" },
-          header: [
-            { label: "PAGE:", seg: { id: "title", text: "SKINSTORM — Official Skins Drop" } },
+          intro: "SIREN's 'claim your prize' form. Black out every box you should NEVER hand over for a prize. Leave the harmless ones.",
+          surface: "SKINSTORM — claim your prize",
+          spans: [
+            { id: "lead", text: "To send your prize we just need", risky: false, why: "Just the setup line. Nothing to give away here." },
+            { id: "name", text: "your first name,", risky: false, why: "A first name on its own is pretty harmless. Fine to leave." },
+            { id: "pw", text: "your game password,", risky: true, why: "NEVER. A prize can't need your password. That's the key to your whole account. This is what she's really after." },
+            { id: "colour", text: "your favourite colour,", risky: false, why: "Silly and harmless. It's only there to make the form feel normal." },
+            { id: "card", text: "your card number,", risky: true, why: "No free prize needs your card. Your card number IS money. Black it out." },
+            { id: "address", text: "your home address,", risky: true, why: "Your home address tells a stranger exactly where you live. Never, for a 'prize'. Black it out." },
+            { id: "game", text: "and your favourite game.", risky: false, why: "Harmless, and honestly she's already guessed it. Fine to leave." },
           ],
-          body: [
-            [{ id: "timer", text: "⏳ Offer ends in 02:59 (resets when you refresh)", tellId: "timer" }],
-            [{ id: "about", text: "About: we love games and giveaways!" }],
-            [{ id: "reviews", text: "★★★★★ '10/10 got my skins instantly!' — 400 reviews, all posted today", tellId: "reviews" }],
-            [{ id: "stock", text: "Only 2 spots left! 998 people already claimed!", tellId: "stock" }],
-            [{ id: "winners", text: "Recent winners: Jake_92, xX_Skins_Xx, User4471 (no real profiles)", tellId: "winners" }],
-            [{ id: "contact", text: "Contact: help@skinstorm-event.net" }],
-          ],
-          tells: [
-            { id: "timer", label: "The fake countdown", why: "A clock that refills when you refresh was never real. It's only there to rush you." },
-            { id: "reviews", label: "The fake reviews", why: "Four hundred identical five-star reviews, all posted today, are made up. Real reviews trickle in slowly." },
-            { id: "stock", label: "Fake scarcity", why: "'Only 2 left, 998 claimed' is invented pressure, designed to make you panic and rush." },
-            { id: "winners", label: "The fake winners", why: "Random usernames with no real profiles. Nobody actually won. They never do." },
-          ],
-          doneLine: "Every bit of 'proof' on that page was faked: the clock, the reviews, the scarcity, the winners. Strip the fake trust away and there's nothing real underneath.",
+          doneLine: "That's the net, disarmed. A name and a favourite colour are harmless. But a password, a card number, a home address? No prize is worth those. When a form asks for the expensive boxes, the form WAS the trick.",
+          doneLabel: "DONE",
           doneAudio: "/audio/wren/m02-c5-review.mp3",
         },
       },
@@ -401,7 +409,7 @@ export const mission02: MissionManifest = {
   incident: {
     title: "The Prize Factory",
     phases: 3,
-    phaseNames: ["Sort the flood", "Cut the funnel", "Warn everyone"],
+    phaseNames: ["Find the hub", "Cut the funnel", "Warn everyone"],
     component: Mission02Incident,
   },
 
@@ -416,26 +424,26 @@ export const mission02: MissionManifest = {
     },
     // 19 fresh, think-for-yourself questions across the 7 skills. Options shuffle
     // at render; lengths balanced so the correct one is never the giveaway-longest.
-    // skill: 0 too-good · 1 free's-price · 2 giveaway · 3 funnel · 4 fake-proof
+    // skill: 0 too-good · 1 free's-price · 2 giveaway · 3 funnel · 4 guard-the-form
     //        5 SIREN's-play · 6 reeled-in.
     scenarios: [
       { id: "cq1", skill: 0, prompt: "An ad says “Spin the wheel, everyone's a winner, brand-new phones!” What's the tell?", options: ["Everyone can't really win a phone", "It's at a funfair, so it's harmless", "It says brand-new, so it's honest", "A phone is a fairly boring prize"], answer: 0 },
       { id: "cq2", skill: 1, prompt: "A “free” app wants your email, birthday and contacts before you can use it. What are you really paying with?", options: ["Your data, which they sell on", "Nothing at all, it's really free", "A tiny bit of your phone's battery", "Only a little bit of your time"], answer: 0 },
       { id: "cq3", skill: 2, prompt: "A DM says you won a Nintendo giveaway. It's from “Nintendo_Prizes_Official_2024”. Real or fake?", options: ["Fake, the handle is a look-alike", "Real, it clearly says Nintendo", "Real, 'official' is in the handle", "You can't tell from an account"], answer: 0 },
       { id: "cq4", skill: 3, prompt: "The same prize and web link show up in a post, a DM and a text, word for word. What does that prove?", options: ["One scam wearing three costumes", "It must be real if it's everywhere", "Three scammers, one shared idea", "Nothing, popular things spread"], answer: 0 },
-      { id: "cq5", skill: 4, prompt: "A shop page shows a countdown that fills back up every time you refresh the page. What is it?", options: ["Fake urgency, made to rush you", "A normal shop's countdown timer", "Proof the deal is really popular", "A harmless glitch you can ignore"], answer: 0 },
+      { id: "cq5", skill: 4, prompt: "A “claim your prize” form asks for your name, your favourite colour, and your game password. Which box do you slam shut?", options: ["Your game password", "Your favourite colour", "Your first name", "None, it's just a form"], answer: 0 },
       { id: "cq6", skill: 5, prompt: "Post → DM → look-alike page → 'enter your password'. What just happened, in SIREN's words?", options: ["An offer, a funnel, a switch", "Just bad luck, three times over", "A normal sign-up process for you", "A game being unusually generous"], answer: 0 },
       { id: "cq7", skill: 6, prompt: "You typed your password into a fake giveaway page. What's the FIRST thing to do?", options: ["Change it on the real site now", "Wait to see if anything happens", "Make a whole new account instead", "Turn the computer off for now"], answer: 0 },
       { id: "cq8", skill: 0, prompt: "Which of these is a NORMAL offer, not a too-good-to-be-true trap?", options: ["“10% off your next order over £20”", "“FREE iPhone for the first 100,000!”", "“You won a car you never entered!”", "“95% off everything, today only!”"], answer: 0 },
       { id: "cq9", skill: 1, prompt: "A “free trial” asks for your card “just to verify, you won't be charged”. What's likely going on?", options: ["It'll bill you when the trial ends", "Cards prove your age these days", "It's checking you're a real person", "It's completely safe and free"], answer: 0 },
       { id: "cq10", skill: 2, prompt: "How does a REAL brand usually run a giveaway?", options: ["On its real verified page", "In a private DM, just for you", "Through a brand-new side account", "By asking for a small entry fee"], answer: 0 },
       { id: "cq11", skill: 3, prompt: "Why does the DM (“you're a winner!”) come AFTER the big public post?", options: ["The post baits, the DM reels in", "DMs simply take longer to send", "Scammers prefer to text at night", "The post is counting the real winners"], answer: 0 },
-      { id: "cq12", skill: 4, prompt: "A page brags “400 five-star reviews, all posted today”. Why is that a red flag?", options: ["Real reviews trickle in slowly", "Five stars is simply too many stars", "Reviews belong on a different page", "Four hundred is not nearly enough"], answer: 0 },
+      { id: "cq12", skill: 4, prompt: "A giveaway for a digital game skin asks for your HOME ADDRESS “to deliver it”. What does that tell you?", options: ["A game skin has nothing to post", "They're just being very thorough", "Big prizes need more of your details", "It's how online delivery normally works"], answer: 0 },
       { id: "cq13", skill: 5, prompt: "A giveaway you never entered finds YOU. What's the one move that beats it?", options: ["Check the brand's own real page", "Reply and ask if it's genuine", "Tap it, but type a fake password", "Share it to see if friends got it"], answer: 0 },
       { id: "cq14", skill: 6, prompt: "You paid a “£2 postage fee” to a scam, then it asks for £5 more to “release the prize”. What now?", options: ["Stop paying, tell an adult", "Pay the £5 to finally unlock it", "Pay it once more, and then stop", "Wait for the prize to turn up"], answer: 0 },
       { id: "cq15", skill: 0, prompt: "What makes “too good to be true” such a reliable alarm?", options: ["Real deals are small; scams aren't", "Good online things never happen", "Anything with big numbers is a lie", "Free things are always viruses"], answer: 0 },
       { id: "cq16", skill: 2, prompt: "Two accounts both say “GameHub”. One is @GameHub verified with millions of followers, the other @GameHub.Prizes made yesterday. Which is real?", options: ["The verified one with millions", "The newer one, it's the prizes account", "Both, they're the same brand really", "Neither, all giveaways are fake"], answer: 0 },
-      { id: "cq17", skill: 4, prompt: "Which is the SAFEST sign a shop is real?", options: ["A long history and real reviews", "A big flashy countdown timer", "A banner shouting '100% legit'", "Lots of prizes on the front page"], answer: 0 },
+      { id: "cq17", skill: 4, prompt: "On any “claim your prize” form, which box is the real jackpot for the scammer?", options: ["Your password", "Your first name", "Your favourite game", "Your favourite colour"], answer: 0 },
       { id: "cq18", skill: 6, prompt: "A friend is embarrassed they fell for a giveaway and got their password stolen. Best thing to tell them?", options: ["Not your fault, let's fix it", "You really should have known better", "Just delete all of your accounts", "Don't tell anyone what happened"], answer: 0 },
       { id: "cq19", skill: 1, prompt: "When is something online actually, genuinely free?", options: ["When it wants nothing back", "Whenever it says the word FREE", "When only the shipping is charged", "When you win it in a giveaway"], answer: 0 },
     ],
@@ -444,7 +452,7 @@ export const mission02: MissionManifest = {
   debrief: {
     report: [
       "You took the giveaway apart: the impossible prize, the 'free' that charges, the look-alike account, and the funnel that reeled kids down it.",
-      "You saw through the fake proof, named SIREN's three moves, and knew exactly how to bounce back if a prize ever catches you.",
+      "You saw what the 'claim your prize' form was really collecting, named SIREN's three moves, and knew exactly how to bounce back if a prize ever catches you.",
       "You shut the factory at its hub, and the warning you sent had no link and nothing to be ashamed of.",
     ],
     realWorldMove:

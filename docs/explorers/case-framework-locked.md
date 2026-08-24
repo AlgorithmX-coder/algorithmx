@@ -6,6 +6,21 @@ Ages 10–13. Buyer = parent; player = kid. One case = one topic (see `curriculu
 
 ---
 
+## 0. Fixed spine, varied surface (the anti-sameness rule)
+
+**The framework fixes the *learning*, never the *game*.** Same rules every case; a different level every case. If two cases feel like "the same case with new words," the framework has been mis-applied. What is fixed vs what MUST vary:
+
+**FIXED (identical every case):** the teach → practice → must-pass blind test spine; all §7 interaction rules (narration lock, blind test, review-on-correct, nudge-on-wrong, no tells); the must-pass gate; the universal skills PROFILE ("know the villain's play") and BUILD ("recovery plan"), which close every case.
+
+**MUST VARY, case to case (a build requirement, not a nicety):**
+1. **Signature mechanic.** `curriculum-map-v1.md` assigns each case a debut/signature verb (M02 = TRACE, M06 = SIMULATE, M11 = BUILD, M12 = CIPHER; INSPECT/DECIDE/PROFILE shipped M01). Feature it hard. Across a case's ~7 practices, do NOT default to the Case 001 palette (INSPECT/SORT/UNMASK) — pull in the mechanics that case hasn't leaned on (DECIDE, TRACE, REDACT, METER, SIMULATE, CIPHER) where they genuinely fit the topic. Aim: no two consecutive cases share more than ~half their mechanic types (PROFILE + BUILD excepted).
+2. **Boss shape.** Each incident is its OWN kind of challenge, taken from the curriculum map's incident line, NOT Case 001's triage re-skinned. (Case 001 = a blind SCAM/SAFE triage flood. M02 "The Prize Factory" = assemble the campaign on an evidence board, then cut its hub — a different interaction entirely.) Never clone a prior boss.
+3. **Teach hook / world.** Each villain gets its own signature teach moment and metaphor (Case 001: the ARTIFACT "teach on the real message"; SIREN: the fishing/funnel metaphor). Vary the delivery so the LEARN doesn't feel identical.
+
+Build every case FROM its curriculum-map row (locked concepts + assigned verb + named incident), then fill the 7-skill spine around it — don't build a generic 7-skill case and re-skin it.
+
+---
+
 ## 1. The skeleton (fixed order)
 
 ```

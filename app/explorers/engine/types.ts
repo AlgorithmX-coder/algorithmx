@@ -306,6 +306,10 @@ export interface RedactPayload {
   surface: string;
   spans: RedactSpan[];
   doneLine: string;
+  /** Completion button label (default "POST IT SAFELY"; a form uses e.g. "DONE"). */
+  doneLabel?: string;
+  /** WREN's spoken review, played on completion during the 15s "look it over" hold. */
+  doneAudio?: string;
 }
 
 export interface UnmaskItem {
