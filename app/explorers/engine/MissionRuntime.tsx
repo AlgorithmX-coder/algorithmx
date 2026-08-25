@@ -58,6 +58,7 @@ import Sort from "../mechanics/Sort";
 import Meter from "../mechanics/Meter";
 import Redact from "../mechanics/Redact";
 import Unmask from "../mechanics/Unmask";
+import CallTheLever from "../mechanics/CallTheLever";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
@@ -402,14 +403,22 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     return () => clearTimeout(t);
   }, [armLock, speaking]);
   const locked = speaking || armLock;
+  // Block 2 world skin: swap the Signal Room ground for a carnival-at-night ground.
+  const carnival = manifest.theme === "carnival";
 
   return (
-    <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
+    <main style={{ minHeight: "100vh", background: carnival ? "#180B27" : T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
-      {/* matrix-terminal backdrop, dimmed in-mission so it never fights the reading (kept for identity) */}
-      <MatrixRain reduced={reduced} opacity={0.16} />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.32 }} />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 82% 72% at 50% 34%, transparent 44%, ${tone}12 74%, rgba(3,5,12,0.9) 100%)`, transition: "background 700ms" }} />
+      {carnival ? (
+        <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(1100px 640px at 50% -8%, #3a1560 0%, rgba(58,21,96,0) 55%), radial-gradient(820px 560px at 84% 18%, rgba(255,61,127,0.16) 0%, rgba(255,61,127,0) 60%), radial-gradient(820px 560px at 12% 32%, rgba(55,224,184,0.09) 0%, rgba(55,224,184,0) 55%)" }} />
+      ) : (
+        <>
+          {/* matrix-terminal backdrop, dimmed in-mission so it never fights the reading (kept for identity) */}
+          <MatrixRain reduced={reduced} opacity={0.16} />
+          <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.32 }} />
+          <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 82% 72% at 50% 34%, transparent 44%, ${tone}12 74%, rgba(3,5,12,0.9) 100%)`, transition: "background 700ms" }} />
+        </>
+      )}
 
       {filmToPlay &&
         (() => {
@@ -1079,6 +1088,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
       {fw.verb === "METER" && <Meter payload={fw.payload} {...props} />}
       {fw.verb === "REDACT" && <Redact payload={fw.payload} {...props} />}
       {fw.verb === "UNMASK" && <Unmask payload={fw.payload} {...props} />}
+      {fw.verb === "LEVER" && <CallTheLever payload={fw.payload} {...props} />}
     </div>
   );
 }

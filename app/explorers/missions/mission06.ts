@@ -1,14 +1,22 @@
 /**
  * Mission 06 — "Levers" (Block 2: The Human Factor, SECRET track).
- * Actor: SIREN ②. SIMULATE debuts. Map slot: curriculum-map-v1 §M06.
+ * Actor: SIREN ②. SIMULATE / "Call the Lever" debuts. Map slot: §M06.
  *
- * Teaching register (ages 10–13): the tier's core mental model — the
- * six pressure levers (hurry, scarcity, authority, liking, fear,
- * payback). Attackers aim at brains, not machines. Anticipation is
- * defense (SIMULATE), and naming the lever out loud kills it.
+ * ★ BLOCK 2 STARTS HERE — a deliberate world change. Where Block 1 was the
+ *   dark Signal Room (audit a static artifact), Block 2 is THE CARNIVAL:
+ *   a warm fairground at night where a con works you in real time and you
+ *   call the pressure lever before the pitch lands. `theme: "carnival"`
+ *   swaps the mission ground; the LEVER mechanic is fully carnival-styled;
+ *   WREN comes off the analyst desk and into your earpiece.
  *
- * VOICE PASS v1: WREN wry-mentor + SIREN as a honeyed, patient charmer
- * who builds fake friendship before the ask; teaching/ids/answers intact.
+ * Teaching register (ages 10–13): the tier's core mental model — the six
+ * pressure levers (hurry, scarcity, authority, liking, fear, payback).
+ * Attackers aim at brains, not machines. Anticipation is defence (call the
+ * lever live), and naming the lever out loud kills it.
+ *
+ * NOTE: prototype of the new Block-2 direction (owner reviewing the feel).
+ * Three genuine skills + the blind must-pass test; expands toward the full
+ * framework once the direction is signed off.
  */
 
 import Mission06Incident from "../incidents/Mission06Incident";
@@ -17,53 +25,53 @@ import type { MissionManifest } from "../engine/types";
 export const mission06: MissionManifest = {
   id: "explorers-m06",
   caseNumber: "CASE 006",
-  title: "Social Engineering",
+  title: "Levers",
   block: 2,
   classification: "SECRET",
+  theme: "carnival",
   actor: {
     codename: "SIREN",
     mo: "Doesn't hack machines. Pulls the levers in your heart, sweetly, patiently, until you say yes.",
     portrait: "/explorers/actors/siren.png",
   },
 
-  hook: "Every scam pulls one of six levers. Learn all six and you're armored.",
+  hook: "Every con pulls one of six levers inside you. Learn all six, and no barker can move you.",
   scene: "/explorers/scenes/m06-cold-open.jpg",
 
   transmission: {
-    headline: "NEW CLEARANCE, NEW GAME",
+    headline: "STEP RIGHT UP",
     lines: [
-      "Block Two, Agent. The machines were the warm-up.",
-      "SIREN never wanted your machine. She wants YOU, and she'll be lovely about it.",
-      "She pulls levers: the feelings that make good people click.",
-      "There are six. Tonight, you learn every one.",
+      "New clearance, Agent, and a whole new world. Forget the quiet control room. Tonight we're going somewhere loud.",
+      "SIREN is back, and she's working a carnival. Every game rigged, every barker a con. And she never once touches your machine.",
+      "She reaches for the levers inside YOU. Hurry. Fear. Wanting to be liked. There are six, and tonight you learn to feel every single one being pulled.",
     ],
   },
 
   briefing: {
     summary:
-      "Six levers move almost every con on earth. Learn the board.",
+      "Almost every con on earth pulls one of six feelings: hurry, scarcity, authority, liking, fear, payback. Learn the six, and you can feel the hand reaching for the lever before it even pulls.",
     objectives: [
-      "Name the six levers",
-      "Predict the next pull",
-      "Call it out and kill it",
+      "Learn the six pressure levers",
+      "Call the lever a con pulls, live",
+      "Name it out loud, and watch it die",
     ],
-    wrenLine: "Feelings aren't weaknesses, Agent. Unnamed ones are.",
+    wrenLine: "I'm in your ear the whole way tonight, Agent. Feelings aren't weaknesses. Unnamed ones are. Ready?",
   },
 
   cycles: [
-    /* ------------------------------------------ cycle 1: the lever board */
+    /* --------------------------------------------- cycle 1: the six levers */
     {
       id: "board",
       title: "The six levers",
-      concept: "Pressure comes in six flavors",
-      promise: "You'll learn the six feelings every scam pulls.",
-      instruction: "Tap the 3 levers hiding in this chat.",
+      concept: "Almost every con pulls one of six feelings, not a single wire in a machine",
+      promise: "You'll learn the six feelings every scam reaches for.",
+      instruction: "Tap the 3 levers hiding in this one little chat.",
       intel: {
         beats: [
-          "Almost every scam pulls one of six feelings. Meet all six.",
-          "HURRY: act now, think never. SCARCITY: only two left, grab it.",
-          "AUTHORITY: I'm in charge, obey. LIKING: we're friends, right?",
-          "FEAR: or something bad happens. PAYBACK: I helped you, now you owe me.",
+          "Here's the secret of Block Two, Agent. Con artists don't hack computers. They hack the person holding the computer. YOU.",
+          "And they do it with just six levers, six feelings that make good, clever people click. HURRY: decide now, think never. SCARCITY: only one left, grab it.",
+          "AUTHORITY: I'm in charge, do as I say. LIKING: we're friends, aren't we? FEAR: do it, or something bad happens. PAYBACK: I did you a favour, now you owe me.",
+          "That's the whole board. Six levers. Once you can feel one being pulled, the con stops being magic and starts being obvious.",
         ],
         beatAudio: [
           "/audio/wren/m06-c1-b1.mp3",
@@ -71,22 +79,11 @@ export const mission06: MissionManifest = {
           "/audio/wren/m06-c1-b3.mp3",
           "/audio/wren/m06-c1-b4.mp3",
         ],
-        prediction: {
-          question: "Why levers instead of hacking the machine?",
-          options: [
-            "Machines are impossible to hack",
-            "A tricked person opens the door for you",
-            "Levers are more polite",
-          ],
-          answer: 1,
-          right: "Right. Why pick a lock when the owner will open it for you?",
-          wrong: "Machines have patches. Brains have buttons. SIREN pushes buttons.",
-        },
       },
       fieldwork: {
         verb: "INSPECT",
         payload: {
-          intro: "Tap the 3 levers hiding in this chat.",
+          intro: "A captured con from the range. Tap the 3 pressure levers hiding in four short lines.",
           device: { app: "GROUP CHAT", owner: "CAPTURED CON · RANGE COPY" },
           header: [
             { label: "FROM:", seg: { id: "from", text: "“TournamentMod_Kai”, joined the server yesterday" } },
@@ -94,61 +91,34 @@ export const mission06: MissionManifest = {
           body: [
             [{ id: "l1", text: "yo! tournament slots close in 20 minutes", tellId: "hurry" }],
             [{ id: "l2", text: "only 3 spots left for your whole school", tellId: "scarcity" }],
-            [{ id: "l3", text: "I'm a mod, I can hold one. But I need your login to lock it in", tellId: "authority" }],
-            [{ id: "l4", text: "gl in the quarterfinals btw, you deserve it 🏆" }],
+            [{ id: "l3", text: "I'm a mod, I can hold one for you. just need your login to lock it in", tellId: "authority" }],
+            [{ id: "l4", text: "gl in the quarterfinals btw, you totally deserve it 🏆" }],
           ],
           tells: [
-            {
-              id: "hurry",
-              label: "HURRY",
-              why: "Twenty minutes. The clock isn't real. The rush is the tool.",
-            },
-            {
-              id: "scarcity",
-              label: "SCARCITY",
-              why: "“Only 3 left” makes you grab before you think.",
-            },
-            {
-              id: "authority",
-              label: "AUTHORITY",
-              why: "“I'm a mod” is just a title. It makes the password ask feel normal.",
-            },
+            { id: "hurry", label: "HURRY", why: "Twenty minutes. The clock isn't real. The rush is the whole tool." },
+            { id: "scarcity", label: "SCARCITY", why: "“Only 3 left” makes you grab before you stop to think." },
+            { id: "authority", label: "AUTHORITY", why: "“I'm a mod” is just a title. It's there to make the password ask feel normal." },
           ],
-          doneLine: "Three levers in four lines, and a compliment for dessert. That's SIREN-grade work.",
+          doneLine: "Three levers in four little lines, and a compliment for dessert. That's SIREN-grade work, and you read all of it.",
+          doneAudio: "/audio/wren/m06-c1-review.mp3",
         },
       },
       playAudio: "/audio/wren/m06-c1-play.mp3",
-      checkpoint: {
-        questions: [
-          {
-            id: "c1q1",
-            question: "“Everyone else already claimed theirs!” Which lever?",
-            options: ["Scarcity", "Payback", "Fear"],
-            answer: 0,
-          },
-          {
-            id: "c1q2",
-            question: "“I gave you that rare skin, remember?” Which lever?",
-            options: ["Authority", "Payback", "Hurry"],
-            answer: 1,
-          },
-        ],
-      },
     },
 
-    /* ------------------------------------------ cycle 2: SIMULATE debut */
+    /* --------------------------------------------- cycle 2: call the lever (LEVER — carnival signature) */
     {
-      id: "simulate",
-      title: "One move ahead",
-      concept: "Predict the pull before it comes",
-      promise: "You'll learn to see the next lever coming.",
-      instruction: "Predict the con's next move. Three rounds.",
+      id: "call",
+      title: "Call the lever",
+      concept: "You don't have to wait for the con to land; you can name the lever while it's being pulled",
+      promise: "You'll learn to call the lever a barker pulls, live, before the pitch even lands.",
+      instruction: "A barker's working you. Call the lever before he finishes.",
       intel: {
         beats: [
-          "New tool unlocked: the SIMULATOR.",
-          "It replays a captured con inside ARC's range.",
-          "Your job isn't to stop it yet. Just call the next move before it lands.",
-          "Predict a con and it can't surprise you. A con that can't surprise you is finished.",
+          "Now the fun part. You're at the carnival, in the crowd, and a barker leans in to work you. You don't have to wait to see how it ends.",
+          "The moment you feel a feeling being FORCED, that's a lever. Your job is to name which one, right there, out loud, before the pitch lands.",
+          "That's the new skill, Agent. Not reacting after. Reading one move AHEAD. A con you can call is a con that can't surprise you.",
+          "So watch his hands, not the shiny prize. Feel for the push, and call the lever. Ready? Step right up.",
         ],
         beatAudio: [
           "/audio/wren/m06-c2-b1.mp3",
@@ -156,106 +126,53 @@ export const mission06: MissionManifest = {
           "/audio/wren/m06-c2-b3.mp3",
           "/audio/wren/m06-c2-b4.mp3",
         ],
-        prediction: {
-          question: "Why practice predicting instead of just blocking?",
-          options: [
-            "Blocking is against the rules",
-            "Prediction works on cons you've never seen before",
-            "It's faster than blocking",
-          ],
-          answer: 1,
-          right: "Exactly. You can't block what you can't read. Read first.",
-          wrong: "Blocking kills ONE con. Prediction kills every con shaped like it.",
-        },
       },
       fieldwork: {
-        verb: "SIMULATE",
+        verb: "LEVER",
         payload: {
-          intro: "Range playback: call each move before it lands",
-          steps: [
+          intro: "Four stalls, four barkers. Call the lever each one is pulling.",
+          rounds: [
             {
-              scene:
-                "“hey!! it's Amara from the year above, we met at sports day 😊 you were so funny”",
-              question: "what's the next pull?",
-              options: [
-                "Ask for money straight away",
-                "Keep being nice for days to build the LIKING lever",
-                "Send a virus link immediately",
-              ],
-              answer: 1,
-              reveal:
-                "Three days of memes and compliments follow. No ask. LIKING gets built before it gets used.",
+              line: "Psst, kid. This golden ticket? I've got ONE left. One. Blink and it's somebody else's. You want it or not, quick-quick!",
+              answer: "scarcity",
+              why: "“One left, blink and it's gone.” That's SCARCITY, fake shortage. A real prize doesn't run a stopwatch on you. Name it, and the panic just drains out.",
             },
             {
-              scene:
-                "Day 4: “omg my phone is being weird, I'm locked out of everything and my mum will KILL me 😭”",
-              question: "what's the next pull?",
-              options: [
-                "A sad story, then a small favor: the ask arrives",
-                "She fixes it herself and never messages again",
-                "She reports her phone to the police",
-              ],
-              answer: 0,
-              reveal:
-                "“Can I just get my verification code sent to YOUR number? Pleeease, you're the only one I trust.” That favor is the whole point of the con.",
+              line: "Listen, I RUN this carnival, kid, official staff, see the badge? Just hand me your account so I can 'verify' you for the big prize.",
+              answer: "authority",
+              why: "“I run this place, official, trust me.” That's AUTHORITY, borrowed. A badge you can print proves nothing, and nobody real needs your account to 'verify' you.",
             },
             {
-              scene:
-                "You don't reply for an hour. Then: “wow. I thought you were different. Everyone said you were nice.”",
-              question: "what's the next pull?",
-              options: [
-                "An apology for asking",
-                "GUILT: payback and fear teamed up to force a yes",
-                "She gives up politely",
-              ],
-              answer: 1,
-              reveal:
-                "Guilt is the closer: payback (“I was nice to you”) plus fear (“you're a bad friend”). Cons never end politely. They push harder.",
+              line: "Come ooon, I gave you three free goes already, didn't I? Don't be like that. One tiny favour back. You wouldn't stiff a mate.",
+              answer: "payback",
+              why: "“I gave you free goes, now do me a favour.” That's PAYBACK, the debt trap. A gift with strings was never a gift. You owe a con nothing.",
+            },
+            {
+              line: "If you DON'T claim this right now, your account gets wiped tonight, and honestly? That'd be your own fault, kid.",
+              answer: "fear",
+              why: "“Do it now or something terrible happens, and it's your fault.” That's FEAR plus blame. Real help never threatens you or makes you the villain.",
             },
           ],
-          doneLine: "THREE MOVES, THREE CALLS. THE CON CAN'T SURPRISE YOU NOW.",
+          doneLine: "Four stalls, four levers, every one named before it landed. That's the whole game: see the lever, say its name, watch it snap.",
+          doneAudio: "/audio/wren/m06-c2-review.mp3",
         },
       },
       playAudio: "/audio/wren/m06-c2-play.mp3",
-      checkpoint: {
-        questions: [
-          {
-            id: "c2q1",
-            question: "A stranger is suddenly SUPER nice for days. What's really going on?",
-            options: [
-              "Some people are just nice",
-              "A lever is being built before it's pulled",
-              "They want homework help",
-            ],
-            answer: 1,
-          },
-          {
-            id: "c2q2",
-            question: "“Send the code to my phone, you're the only one I trust.” That code is:",
-            options: [
-              "A friendship test",
-              "A key to an account, and keys are never favors",
-              "Junk mail",
-            ],
-            answer: 1,
-          },
-        ],
-      },
     },
 
-    /* ------------------------------------------ cycle 3: name it, kill it */
+    /* --------------------------------------------- cycle 3: name it, kill it (DECIDE) */
     {
       id: "naming",
       title: "Name it, kill it",
-      concept: "A named lever loses its power",
-      promise: "You'll learn the one move that breaks every lever.",
-      instruction: "Pick the counter-move that kills the con.",
+      concept: "A lever only works in the dark; say its name out loud and it stops working",
+      promise: "You'll learn the one move that breaks every lever, for you and for your friends.",
+      instruction: "Your friend's mid-con. Make the call that actually helps.",
       intel: {
         beats: [
-          "Here's the strange part: levers only work in the dark.",
-          "Name one out loud and it stops working. “That's a countdown. That's HURRY.”",
-          "Say it and the spell breaks, for you and for everyone who hears you.",
-          "Real analysts don't just resist cons. They call them out.",
+          "Here's the strangest part of all, Agent. These levers only work in the dark. The second you SAY one out loud, it dies.",
+          "“That's a countdown, that's HURRY.” “Only one left? That's SCARCITY.” Named, a lever looks silly, and a silly trick can't push anyone.",
+          "And it doesn't just save you. Say it out loud and the spell breaks for everyone who hears you. That's how you cover your friends.",
+          "One rule, though. Name the TRICK, never the person. “You fell for that?” glues people TO the con. “That's the HURRY trick” sets them free.",
         ],
         beatAudio: [
           "/audio/wren/m06-c3-b1.mp3",
@@ -263,38 +180,27 @@ export const mission06: MissionManifest = {
           "/audio/wren/m06-c3-b3.mp3",
           "/audio/wren/m06-c3-b4.mp3",
         ],
-        prediction: {
-          question: "Why does naming the lever break it?",
-          options: [
-            "Scammers can hear you and get scared",
-            "Pressure needs to feel like YOUR feeling, not their tool",
-            "It doesn't, you still have to panic",
-          ],
-          answer: 1,
-          right: "Exactly. Seen from outside, pressure is just a trick with a name.",
-          wrong: "The lever works while it feels like YOUR rush. Named, it's just their tool.",
-        },
       },
       fieldwork: {
         verb: "DECIDE",
         payload: {
-          intro: "Pick the counter-move that kills the con.",
+          intro: "Your friend Zaid is about to hand over his login. Make the call.",
           situation:
-            "Your friend Zaid is typing his login. “The mod says slots close in ten minutes and there's only two left!!”",
+            "Zaid is typing his password into a chat. “The mod says slots close in ten minutes and there's only two left!!” His thumb is hovering over send.",
           prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "grab",
               label: "Grab his phone and delete the chat",
               outcome:
-                "Chat's gone, but the lever isn't. Next con, same pull, and you're not there. Zaid learned nothing.",
+                "The chat's gone, but the lever isn't. Next con, same pull, and you won't be there. Zaid learned nothing, and he'll click next time.",
             },
             {
               id: "name",
-              label: "Name the levers out loud: “ten minutes = HURRY, two left = SCARCITY”",
+              label: "Name the levers out loud: “ten minutes is HURRY, two left is SCARCITY”",
               correct: true,
               outcome:
-                "Watch it happen: Zaid stops typing. Named levers look silly. He closes it himself. Now he owns the trick forever.",
+                "Watch it happen. Zaid stops typing. Named out loud, the levers look silly, and he closes it himself. Now he owns the trick forever, not just today.",
             },
             {
               id: "mock",
@@ -306,30 +212,6 @@ export const mission06: MissionManifest = {
         },
       },
       playAudio: "/audio/wren/m06-c3-play.mp3",
-      checkpoint: {
-        questions: [
-          {
-            id: "c3q1",
-            question: "The fastest way to break a pressure lever:",
-            options: [
-              "Ignore all messages forever",
-              "Say its name out loud",
-              "Reply with an angry emoji",
-            ],
-            answer: 1,
-          },
-          {
-            id: "c3q2",
-            question: "Your friend half-fell for a con. You say:",
-            options: [
-              "“That's the HURRY trick, it nearly got me once too”",
-              "“That was so obvious”",
-              "Nothing, too awkward",
-            ],
-            answer: 0,
-          },
-        ],
-      },
     },
   ],
 
@@ -340,15 +222,43 @@ export const mission06: MissionManifest = {
     component: Mission06Incident,
   },
 
+  catchThem: {
+    intro:
+      "Alright Agent, last game of the night, and it's the real one. Twelve questions. Not one of them is “what did I say”. Every single one makes you THINK. Take the six levers into a con you've never seen and call it. I won't say how you're doing till the very end. Get nine right to close the case. Miss it, and you walk the whole midway again. Take your time.",
+    pass: 9,
+    voice: {
+      intro: "/audio/wren/m06-catch-intro.mp3",
+      pass: "/audio/wren/m01-catch-pass.mp3",
+      fail: "/audio/wren/m01-catch-fail.mp3",
+    },
+    // 12 fresh, think-for-yourself questions across the 3 skills. Options shuffle
+    // at render; lengths balanced so the correct one is never the giveaway-longest.
+    // skill: 0 the-six-levers · 1 call-the-lever · 2 name-it-kill-it.
+    scenarios: [
+      { id: "cq1", skill: 0, prompt: "“Only 2 left, and everyone else already grabbed theirs!” Which lever?", options: ["Scarcity", "Payback", "Wanting to fit in", "Liking"], answer: 0 },
+      { id: "cq2", skill: 0, prompt: "“I gave you that rare skin last week, remember?” Which lever?", options: ["Payback", "Authority", "Hurry", "Fear"], answer: 0 },
+      { id: "cq3", skill: 0, prompt: "Why do con artists pull levers instead of hacking the machine?", options: ["A tricked person opens the door", "Machines can't be hacked at all", "Levers are just more polite", "It is the only way in"], answer: 0 },
+      { id: "cq4", skill: 0, prompt: "“Do this now or your account is deleted forever.” Which lever?", options: ["Fear", "Liking", "Scarcity", "Payback"], answer: 0 },
+      { id: "cq5", skill: 1, prompt: "A brand-new 'friend' is super nice for days, then asks a favour. What was the niceness?", options: ["The LIKING lever, built first", "A genuine new best friend", "Just some random online kindness", "A test of your patience"], answer: 0 },
+      { id: "cq6", skill: 1, prompt: "“Quick, before the timer runs out!” The barker is pulling:", options: ["Hurry", "Payback", "Authority", "Liking"], answer: 0 },
+      { id: "cq7", skill: 1, prompt: "Why call the lever WHILE it's happening, not after?", options: ["A con you read can't surprise you", "It is faster than blocking it", "It makes the con artist leave", "Reacting later is against the rules"], answer: 0 },
+      { id: "cq8", skill: 1, prompt: "“Official staff here, just send me your password to verify.” Which lever?", options: ["Authority", "Scarcity", "Just being helpful", "Payback"], answer: 0 },
+      { id: "cq9", skill: 2, prompt: "What's the fastest way to break a pressure lever?", options: ["Say its name out loud", "Ignore every message forever", "Reply with an angry emoji", "Turn your phone off"], answer: 0 },
+      { id: "cq10", skill: 2, prompt: "Your friend half-fell for a con. The BEST thing to say is:", options: ["“That's the HURRY trick”", "“That was honestly so obvious”", "Nothing; it's too awkward now", "“You really should know better”"], answer: 0 },
+      { id: "cq11", skill: 2, prompt: "Why does naming a lever out loud kill it?", options: ["Named, the pressure looks silly", "Scammers overhear and get scared", "It doesn't; you still panic", "It deletes the message for you"], answer: 0 },
+      { id: "cq12", skill: 2, prompt: "You should name the ___, never the ___.", options: ["trick, person", "person, trick", "friend, scammer", "app, feeling"], answer: 0 },
+    ],
+  },
+
   debrief: {
     report: [
-      "The six-lever board learned: hurry, scarcity, authority, liking, fear, payback.",
-      "A live con simulated and read one move ahead, all three calls made.",
-      "The carnival cleared: every lever named before it landed.",
+      "The six-lever board, learned cold: hurry, scarcity, authority, liking, fear, payback.",
+      "A carnival of barkers worked, and every lever called out loud before it could land.",
+      "The closer beaten the only way it can be: name the trick, never the person, and the spell breaks for everyone.",
     ],
     realWorldMove:
-      "This week: name one lever out loud when you see it. Ads count. “Only 2 left”? That's SCARCITY. Say it and watch it shrink.",
-    wrenLine: "Six levers, zero surprises. The carnival's closed, Agent. Sign out.",
+      "This week: name one lever out loud when you spot it. Ads count. “Only 2 left”? That's SCARCITY. Say it, and watch it shrink to nothing. Try it on a grown-up, they fall for these too.",
+    wrenLine: "Six levers, zero surprises. The carnival's closed, Agent, and you never once reached for a prize. Sign out.",
   },
 
   voice: {
@@ -358,7 +268,7 @@ export const mission06: MissionManifest = {
   },
 
   dossier: {
-    mo: "Pulls six levers in brains, sweetly: hurry, scarcity, authority, liking, fear, payback. Makes every mark feel like the one true friend.",
-    defeatedBy: "Anyone who names the lever out loud, and remembers a real friend never needs your password or your code. Named levers look silly.",
+    mo: "Pulls six levers in brains, sweetly: hurry, scarcity, authority, liking, fear, payback. Makes every mark feel like the one true friend, right up until the ask.",
+    defeatedBy: "Anyone who names the lever out loud, and remembers a real friend never needs your password or your code. Named levers look silly, and silly can't push you.",
   },
 };

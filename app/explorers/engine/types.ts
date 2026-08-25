@@ -175,6 +175,30 @@ export interface SimulatePayload {
   doneLine: string;
 }
 
+export interface LeverRound {
+  /** The barker's live line — the con working you in real time. */
+  line: string;
+  /** id of the pressure lever this line pulls (hurry|scarcity|authority|liking|fear|payback). */
+  answer: string;
+  /** Shown after a correct call — why it's that lever, and how naming it kills it. */
+  why: string;
+}
+
+/**
+ * LEVER — "Call the Lever" (Block 2 carnival signature). A barker works you
+ * one line at a time; before the pitch lands the child taps the pressure lever
+ * being pulled. Naming it right snaps it. A wrong tap buzzes and makes them read
+ * the con again (no answer given). Self-contained carnival styling — the human-
+ * factor block's deliberate break from the Signal Room look.
+ */
+export interface LeverPayload {
+  intro: string;
+  rounds: LeverRound[];
+  doneLine: string;
+  /** WREN's in-ear review, played on completion during the "look it over" hold. */
+  doneAudio?: string;
+}
+
 export interface BuildSlotOption {
   id: string;
   label: string;
@@ -358,7 +382,8 @@ export type FieldworkDef =
   | { verb: "SORT"; payload: SortPayload }
   | { verb: "METER"; payload: MeterPayload }
   | { verb: "REDACT"; payload: RedactPayload }
-  | { verb: "UNMASK"; payload: UnmaskPayload };
+  | { verb: "UNMASK"; payload: UnmaskPayload }
+  | { verb: "LEVER"; payload: LeverPayload };
 
 /* ------------------------------------------------------------ cycles */
 
@@ -503,6 +528,10 @@ export interface MissionManifest {
   hook?: string;
   /** Cinematic 21:9 cold-open scene image (public/ path) — the mission's establishing shot. */
   scene?: string;
+  /** Optional world skin for the mission shell. "carnival" swaps the ink-black
+   *  Signal Room ground for Block 2's warm carnival-at-night ground. Additive —
+   *  omitting it keeps the default Signal Room look (all of Block 1). */
+  theme?: "carnival";
   incident: {
     title: string;
     phases: number;
