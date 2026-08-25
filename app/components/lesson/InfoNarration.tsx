@@ -23,6 +23,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useComfortMode } from "@/app/lib/comfortMode";
 import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
+import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
 
 // The narration is played via a raw `new Audio()`, which defaults to 1.0
 // (FULL volume) - that was the loud blast when a lesson screen opened, so
@@ -322,6 +323,10 @@ export default function InfoNarration({
   const audioAvailable = mode === "recorded" || mode === "tts";
 
   return (
+    <>
+      {/* Block clicks while the narrator speaks so children listen (mute at
+          z-index 90 stays reachable and stops narration). */}
+      <NarrationClickGuard active={speaking} />
     <div
       style={{
         display: "flex",
@@ -451,5 +456,6 @@ export default function InfoNarration({
         </ul>
       </div>
     </div>
+    </>
   );
 }
