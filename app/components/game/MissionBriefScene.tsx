@@ -15,8 +15,8 @@
  *   - missions: length 3, see Mission type below
  */
 
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useAnimationControls } from "motion/react";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ───────────────────────── PUBLIC API ───────────────────────── */
@@ -643,6 +643,32 @@ function MissionCard({
   onFlip: () => void;
   nudgeNonce: number;
 }) {
+  // 2D "flip" (NOT a 3D rotateY): the card squeezes horizontally to a thin
+  // line, swaps its face content while it's invisible, then opens back up.
+  // There is deliberately NO preserve-3d / rotateY / back face here — a
+  // coplanar 3D face-pair is what made Chrome/Edge rasterise a stray seam
+  // straight down the middle of the card. One flat face can't seam.
+  const flipControls = useAnimationControls();
+  const [showObjective, setShowObjective] = useState(flipped);
+  const didMount = useRef(false);
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      setShowObjective(flipped);
+      return;
+    }
+    let cancelled = false;
+    void (async () => {
+      await flipControls.start({ scaleX: 0, transition: { duration: 0.16, ease: "easeIn" } });
+      if (cancelled) return;
+      setShowObjective(flipped); // swap the face while it's an invisible sliver
+      await flipControls.start({ scaleX: 1, transition: { duration: 0.18, ease: "easeOut" } });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [flipped, flipControls]);
+
   return (
     <motion.button
       type="button"
@@ -678,8 +704,6 @@ function MissionCard({
         cursor: flipped ? "default" : "pointer",
         touchAction: "manipulation",
         fontFamily: "inherit",
-        transformStyle: "preserve-3d",
-        WebkitTransformStyle: "preserve-3d",
         transform: isMiddle ? "translateY(-18px) scale(1.08)" : undefined,
       }}
     >
@@ -697,105 +721,68 @@ function MissionCard({
           transition: "opacity 400ms ease",
         }}
       />
-      {/* 3D flipper */}
-      {/* NOTE: no CSS `animation` here — a CSS transform animation
-          overrides framer's rotateY and the flip never renders. */}
+      {/* 2D flipper — ONE flat face that squeezes horizontally to a line
+          (scaleX) and opens again, swapping its content while invisible.
+          Deliberately NO rotateY / preserve-3d / back face: a coplanar 3D
+          face-pair is what made Chrome/Edge rasterise a seam down the middle
+          of the card. A single flat face cannot seam. The dark 2px edge keeps
+          the thin squeeze-sliver from flashing the accent colour mid-flip. */}
       <motion.div
         aria-hidden
-        animate={{ rotateY: flipped ? 0 : 180 }}
+        animate={flipControls}
         initial={false}
-        transition={{ type: "spring", stiffness: 200, damping: 20 }}
         style={{
           position: "absolute",
           inset: 0,
-          transformStyle: "preserve-3d",
-          WebkitTransformStyle: "preserve-3d",
-          // Own compositing layer: steadier 3D rasterization, which also helps
-          // suppress the mid-card seam on GPUs prone to it.
+          borderRadius: 18,
+          overflow: "hidden",
+          transformOrigin: "center center",
           willChange: "transform",
-        }}
-      >
-        {/* FRONT (revealed objective) — glassy night panel */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            borderRadius: 18,
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            // Lift the two faces apart in depth (front +1px, back -1px) so they
-            // are NOT coplanar. Coplanar preserve-3d faces z-fight on some GPUs
-            // (notably Windows/Edge at high DPI), which rendered a stray line
-            // straight down the middle of the card at rest. The 1px separation
-            // is invisible in 2D but gives the compositor an unambiguous order.
-            transform: "translateZ(1px)",
-            // OPAQUE (no alpha): a semi-transparent face let the other face
-            // bleed through along that seam. Solid navy can't.
-            background: "linear-gradient(180deg, rgb(22,28,62) 0%, rgb(12,16,40) 100%)",
-            // A dark 2px hairline at the very edge, with the accent ring just
-            // INSIDE it. When the card turns edge-on mid-flip its outer sliver
-            // reads dark (blends into the scene) instead of a bright accent-
-            // coloured "line" — that stray line was most visible on the amber
-            // objective card (looked yellow). Face-on is unchanged.
-            boxShadow:
-              `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
+          background: showObjective
+            ? "linear-gradient(180deg, rgb(22,28,62) 0%, rgb(12,16,40) 100%)"
+            : "linear-gradient(180deg, rgb(26,33,71) 0%, rgb(15,21,48) 100%)",
+          boxShadow: showObjective
+            ? `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
               `0 0 0 2px rgba(4, 5, 13, 0.98) inset, ` +
               `0 0 0 3.5px ${mission.colour}88 inset, ` +
               `0 -3px 0 ${mission.colour}44 inset, ` +
-              `0 0 30px ${mission.glow}`,
-            overflow: "hidden",
-          }}
-        >
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 6, background: `linear-gradient(90deg, ${mission.colour}aa, ${mission.colour}, ${mission.colour}aa)` }} />
-          <div style={{ position: "absolute", top: 16, left: "50%", transform: "translateX(-50%)", fontSize: 44, lineHeight: 1, filter: `drop-shadow(0 0 18px ${mission.glow})` }}>
-            <PixIcon emoji={mission.icon} size={52} />
-          </div>
-          <div style={{ position: "absolute", top: 74, left: 0, right: 0, textAlign: "center", color: mission.colour, fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
-            OBJECTIVE 0{index + 1}
-          </div>
-          <div style={{ position: "absolute", top: 92, left: 12, right: 12, textAlign: "center", color: "#f2f6ff", fontSize: 13, fontWeight: 700, lineHeight: 1.25 }}>
-            {mission.text}
-          </div>
-        </div>
-
-        {/* BACK (face-down) — sealed envelope, tap to open */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            borderRadius: 18,
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            // rotateY keeps it on the reverse side; translateZ(1px) (applied in
-            // its own rotated frame) pushes it a further 1px behind the front so
-            // the two faces never share a plane — see the front face note.
-            transform: "rotateY(180deg) translateZ(1px)",
-            // OPAQUE so the front can't bleed through the seam either.
-            background: "linear-gradient(180deg, rgb(26,33,71) 0%, rgb(15,21,48) 100%)",
-            // Same dark-edge treatment as the front so the face-down card's
-            // cyan edge doesn't flash a line as it turns edge-on mid-flip.
-            boxShadow:
-              `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
+              `0 0 30px ${mission.glow}`
+            : `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
               `0 0 0 2px rgba(4, 5, 13, 0.98) inset, ` +
               `0 0 0 3.5px rgba(125,240,255,0.4) inset, ` +
               `0 0 24px rgba(0,229,255,0.18)`,
-            overflow: "hidden",
-            display: "grid",
-            placeItems: "center",
-          }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 8, filter: "drop-shadow(0 0 14px rgba(125,240,255,0.5))" }}>
-              <PixIcon emoji="✉️" size={48} />
+        }}
+      >
+        {showObjective ? (
+          /* REVEALED objective */
+          <>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 6, background: `linear-gradient(90deg, ${mission.colour}aa, ${mission.colour}, ${mission.colour}aa)` }} />
+            <div style={{ position: "absolute", top: 16, left: "50%", transform: "translateX(-50%)", fontSize: 44, lineHeight: 1, filter: `drop-shadow(0 0 18px ${mission.glow})` }}>
+              <PixIcon emoji={mission.icon} size={52} />
             </div>
-            <div style={{ color: "#7df0ff", fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
+            <div style={{ position: "absolute", top: 74, left: 0, right: 0, textAlign: "center", color: mission.colour, fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
               OBJECTIVE 0{index + 1}
             </div>
-            <div style={{ color: "#f2f6ff", fontSize: 13, fontWeight: 800, marginTop: 4 }}>
-              TAP TO OPEN
+            <div style={{ position: "absolute", top: 92, left: 12, right: 12, textAlign: "center", color: "#f2f6ff", fontSize: 13, fontWeight: 700, lineHeight: 1.25 }}>
+              {mission.text}
+            </div>
+          </>
+        ) : (
+          /* FACE-DOWN — sealed envelope, tap to open */
+          <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", textAlign: "center" }}>
+            <div>
+              <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 8, filter: "drop-shadow(0 0 14px rgba(125,240,255,0.5))" }}>
+                <PixIcon emoji="✉️" size={48} />
+              </div>
+              <div style={{ color: "#7df0ff", fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
+                OBJECTIVE 0{index + 1}
+              </div>
+              <div style={{ color: "#f2f6ff", fontSize: 13, fontWeight: 800, marginTop: 4 }}>
+                TAP TO OPEN
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </motion.div>
     </motion.button>
   );
