@@ -115,6 +115,10 @@ const MissionBriefScene = dynamic(
   () => import("@/app/components/game/MissionBriefScene"),
   { ssr: false }
 );
+const WeekIntroScene = dynamic(
+  () => import("@/app/components/lesson/WeekIntroScene"),
+  { ssr: false }
+);
 
 /**
  * Set of screen types treated as "interactive exercise" for chrome
@@ -1197,6 +1201,21 @@ function DynamicLessonInner({
           </FullScene>
         );
       }
+
+      case "weekIntro":
+        return (
+          <FullScene>
+            <WeekIntroScene
+              title={def.title}
+              tagline={def.tagline}
+              audioSrc={def.audioSrc}
+              accent={def.accent}
+              points={def.points}
+              commanderName={def.commanderName}
+              onBegin={() => navigate(screen + 1)}
+            />
+          </FullScene>
+        );
 
       case "alert":
         return (

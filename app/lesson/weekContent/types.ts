@@ -463,6 +463,28 @@ export type ScreenDef = (
   // actual <video> player; when omitted it falls back to the decorative
   // placeholder play button (used for weeks whose video isn't filmed yet).
   | { type: "video"; videoPlaceholder: string; videoSrc?: string }
+  | {
+      /**
+       * Mission-commander briefing, one per week, that plays right AFTER the
+       * intro video. Narrated by ATLAS — a steady man's voice (ElevenLabs
+       * "Daniel") — distinct from Sarah, the in-lesson coach. Warm and simple
+       * for ages 6–9: big title, one line, ATLAS auto-plays a ~15s welcome,
+       * three picture-chips of what's coming, and a "Let's go!" button.
+       */
+      type: "weekIntro";
+      /** Big title, e.g. "Passwords: The Secret Code". */
+      title: string;
+      /** One friendly line under the title. */
+      tagline: string;
+      /** Path to the ATLAS narration mp3, e.g. "/audio/atlas/heroes-week-01.mp3". */
+      audioSrc: string;
+      /** Per-week accent colour (hex). Defaults to cyan. */
+      accent?: string;
+      /** Up to three "what we'll do" chips (emoji + short label). */
+      points?: { icon: string; label: string }[];
+      /** Commander label under the player. Defaults to "MISSION COMMAND". */
+      commanderName?: string;
+    }
   | { type: "mission"; objectives: string[] }
   | {
       /** Post-intro "incident report" reveal with the week's topic image. */
