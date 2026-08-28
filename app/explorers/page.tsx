@@ -11,6 +11,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import MissionRuntime from "./engine/MissionRuntime";
+import PhoneRuntime from "./phone/PhoneRuntime";
+import { case06Phone } from "./phone/case06";
 import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
@@ -231,6 +233,16 @@ export default function ExplorersPage() {
   if (active) {
     const activeIdx = CASES.findIndex((m) => m.id === active.id);
     const hasNext = activeIdx >= 0 && activeIdx < CASES.length - 1;
+    // Block 2 runs in THE PHONE, not the Signal Room engine.
+    if (active.id === "explorers-m06") {
+      return (
+        <PhoneRuntime
+          phoneCase={case06Phone}
+          onExit={() => { refreshStatus(); setActive(null); }}
+          onNextCase={hasNext ? () => { refreshStatus(); setActive(CASES[activeIdx + 1]); } : undefined}
+        />
+      );
+    }
     return (
       <MissionRuntime
         key={active.id}
