@@ -30,6 +30,14 @@ const UI = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sa
 // WREN's spoken "not that one, look again" on a wrong lever — rotates so it's not
 // the same line twice, and never reveals the answer (the Block-1 nudge, restored).
 const NUDGES = ["/audio/wren/m06p-nudge-1.mp3", "/audio/wren/m06p-nudge-2.mp3", "/audio/wren/m06p-nudge-3.mp3"];
+// The same three lines as TEXT — shown on-screen the instant a wrong lever is
+// tapped, so the "not that one, try again" feedback is clear even with voice
+// off. No answer is revealed; the child gets to feel it and pick again.
+const NUDGE_TEXTS = [
+  "Not that one. Feel it again: what's he really trying to make you feel?",
+  "Nope, look again. Which feeling is he pushing on you right there?",
+  "Not quite. Read it once more. What's the con reaching for?",
+];
 
 const CSS = `
 .ph *{box-sizing:border-box}
@@ -69,6 +77,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const [items, setItems] = useState<Item[]>([]);
   const [dock, setDock] = useState<Dock>(null);
   const [wrongId, setWrongId] = useState<LeverId | null>(null);
+  const [nudge, setNudge] = useState<string | null>(null);
   const [voiceOn, setVoiceOn] = useState(true);
   const voiceRef = useRef(true);
   const speaking = useWrenSpeaking();
@@ -123,6 +132,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         push({ id: nextId(), kind: "wren", text: step.text });
         await speak(step.text, step.voice);
       } else if (step.t === "call") {
+        setNudge(null); setWrongId(null); // fresh question, clear any prior feedback
         setDock({ type: "call", answer: step.answer });
         await awaitUser(); // resolves only on the correct lever
         setDock(null);
@@ -179,11 +189,14 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const nudgeRef = useRef(0);
   const tapLever = (id: LeverId) => {
     if (dock?.type !== "call") return;
-    if (id === dock.answer) { setWrongId(null); resolveRef.current?.("ok"); }
+    if (id === dock.answer) { setWrongId(null); setNudge(null); resolveRef.current?.("ok"); }
     else {
-      setWrongId(id); force(); setTimeout(() => setWrongId(null), 350);
-      // WREN speaks up when you get it wrong (rotating, no answer given).
-      if (voiceRef.current) playWren(NUDGES[nudgeRef.current++ % NUDGES.length], true);
+      // Wrong: mark the lever red, show a clear "not that one, try again" line
+      // on screen, and (voice on) speak the matching nudge. The pad stays put so
+      // the child picks again. The red mark holds until they act.
+      const i = nudgeRef.current++ % NUDGES.length;
+      setWrongId(id); setNudge(NUDGE_TEXTS[i]); force();
+      if (voiceRef.current) playWren(NUDGES[i], true);
     }
   };
   const tapReply = (label: string) => { if (dock?.type === "choose") resolveRef.current?.(label); };
@@ -246,7 +259,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
 
               {/* dock */}
               <div style={{ flex: "0 0 auto", borderTop: `1px solid ${C.line}`, background: C.chrome, padding: "11px 12px 14px" }}>
-                <DockView dock={dock} wrongId={wrongId} onLever={tapLever} onReply={tapReply} onContinue={tapContinue} />
+                <DockView dock={dock} wrongId={wrongId} nudge={nudge} onLever={tapLever} onReply={tapReply} onContinue={tapContinue} />
               </div>
             </>
           )}
@@ -290,7 +303,7 @@ function ItemView({ it, wrenAvatar }: { it: Item; wrenAvatar: React.ReactNode })
   );
 }
 
-function DockView({ dock, wrongId, onLever, onReply, onContinue }: { dock: Dock; wrongId: LeverId | null; onLever: (id: LeverId) => void; onReply: (l: string) => void; onContinue: () => void }) {
+function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue }: { dock: Dock; wrongId: LeverId | null; nudge: string | null; onLever: (id: LeverId) => void; onReply: (l: string) => void; onContinue: () => void }) {
   if (!dock || dock.type === "composer") {
     return (
       <div style={{ display: "flex", alignItems: "center", gap: 9, opacity: 0.55 }}>
@@ -302,7 +315,14 @@ function DockView({ dock, wrongId, onLever, onReply, onContinue }: { dock: Dock;
   if (dock.type === "call") {
     return (
       <>
-        <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>Which lever is he pulling <b style={{ color: C.pink }}>now</b>? Tap it.</p>
+        {nudge ? (
+          <div role="alert" style={{ background: "rgba(255,90,99,.12)", border: `1px solid rgba(255,90,99,.5)`, borderRadius: 11, padding: "8px 11px", margin: "0 0 9px", textAlign: "center", lineHeight: 1.4 }}>
+            <span style={{ fontSize: 12.5, color: C.red, fontWeight: 600 }}>{nudge}</span>{" "}
+            <b style={{ fontSize: 12.5, color: C.ink, fontWeight: 800 }}>Try again 👇</b>
+          </div>
+        ) : (
+          <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>Which lever is he pulling <b style={{ color: C.pink }}>now</b>? Tap it.</p>
+        )}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 7 }}>
           {LEVERS.map((l) => (
             <button key={l.id} className={`ph-lever${wrongId === l.id ? " no" : ""}`} onClick={() => onLever(l.id)}
