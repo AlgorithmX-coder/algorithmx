@@ -26,6 +26,10 @@ export const LEVERS: { id: LeverId; name: string; emoji: string }[] = [
   { id: "payback", name: "PAYBACK", emoji: "🎁" },
 ];
 
+/** A teaching card for one lever — shown BEFORE the child is ever asked to name
+ * a lever, so the pad options are things they've been taught, not guessed. */
+export interface LeverTeach { id: LeverId; line: string; example: string; voice?: string }
+
 export type PhoneStep =
   | { t: "con"; text: string; ask?: boolean; delay?: number }
   | { t: "you"; text: string }
@@ -56,6 +60,12 @@ export interface PhoneCase {
   actor: string;
   open: string[];
   openVoice?: string[];
+  /** LEARN phase: teach all six levers before any are asked as pad options. */
+  teachIntro?: string;
+  teachIntroVoice?: string;
+  teach?: LeverTeach[];
+  teachOutro?: string;
+  teachOutroVoice?: string;
   threads: PhoneThread[];
   debrief: { title: string; lines: string[]; move: string };
 }
@@ -68,15 +78,27 @@ export const case06Phone: PhoneCase = {
   open: [
     "New block, Agent, and a whole new job. No control room tonight. Just this, your phone.",
     "Because this is where it really happens. People won't hack your machine. They'll message you, sweet as anything, and try to work you through the screen.",
-    "They do it with six feelings: hurry, scarcity, authority, liking, fear, and payback. I'll be right here in your messages. Your job is to feel a lever the second it's pulled, and name it.",
-    "Here comes the first one now.",
+    "They do it with just six feelings, six levers they pull on you. Before anyone tries a single one, I'm going to teach you all six.",
   ],
   openVoice: [
     "/audio/wren/m06p-open-1.mp3",
     "/audio/wren/m06p-open-2.mp3",
-    "/audio/wren/m06p-open-3.mp3",
-    "/audio/wren/m06p-open-4.mp3",
+    "/audio/wren/m06p-open-3b.mp3",
   ],
+
+  // ---- LEARN: meet the six levers, taught one at a time, BEFORE any pad ----
+  teachIntro: "Here they are. Learn these six and you'll see a con coming a mile off. Each one is a feeling they try to switch on in you.",
+  teachIntroVoice: "/audio/wren/m06p-teach-intro.mp3",
+  teach: [
+    { id: "hurry", line: "They rush you so you can't stop and think.", example: "Quick, only 20 mins left!", voice: "/audio/wren/m06p-teach-hurry.mp3" },
+    { id: "scarcity", line: "They make it feel rare, so you grab it fast.", example: "Only 2 spots left!", voice: "/audio/wren/m06p-teach-scarcity.mp3" },
+    { id: "authority", line: "They act important so you just do as you're told.", example: "I'm a mod. I'm from security.", voice: "/audio/wren/m06p-teach-authority.mp3" },
+    { id: "liking", line: "They befriend you first, so you won't want to say no.", example: "You're so funny, we just click!", voice: "/audio/wren/m06p-teach-liking.mp3" },
+    { id: "fear", line: "They scare you so you panic and act fast.", example: "Someone's breaking into your account!", voice: "/audio/wren/m06p-teach-fear.mp3" },
+    { id: "payback", line: "They give you a gift so you feel you owe them.", example: "Here's something free, enjoy!", voice: "/audio/wren/m06p-teach-payback.mp3" },
+  ],
+  teachOutro: "That's your six: hurry, scarcity, authority, liking, fear, payback. Now let's catch them in the wild. Here comes your first message.",
+  teachOutroVoice: "/audio/wren/m06p-teach-outro.mp3",
 
   threads: [
     /* ---------------- 1 · the tournament con · hurry, scarcity, authority ---------------- */

@@ -62,6 +62,7 @@ type Item =
   | { id: number; kind: "con"; text: string; ask?: boolean; tag?: string }
   | { id: number; kind: "you"; text: string }
   | { id: number; kind: "wren"; text: string }
+  | { id: number; kind: "lever"; lever: LeverId; line: string; example: string }
   | { id: number; kind: "typing" };
 
 type Dock =
@@ -174,7 +175,16 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     setHeader({ ...phoneCase.threads[0], who: "WREN", avatar: "◈", tag: undefined, sub: "in your ear" });
     setItems([]);
     for (let i = 0; i < phoneCase.open.length; i++) { const line = phoneCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, phoneCase.openVoice?.[i]); }
-    setDock({ type: "clear", text: "Ready when you are." });
+    // LEARN: teach the six levers, one card at a time, before any are asked.
+    if (phoneCase.teach?.length) {
+      if (phoneCase.teachIntro) { push({ id: nextId(), kind: "wren", text: phoneCase.teachIntro }); await speak(phoneCase.teachIntro, phoneCase.teachIntroVoice); }
+      for (const lv of phoneCase.teach) {
+        push({ id: nextId(), kind: "lever", lever: lv.id, line: lv.line, example: lv.example });
+        await speak(`${lv.line} ${lv.example}`, lv.voice);
+      }
+      if (phoneCase.teachOutro) { push({ id: nextId(), kind: "wren", text: phoneCase.teachOutro }); await speak(phoneCase.teachOutro, phoneCase.teachOutroVoice); }
+    }
+    setDock({ type: "clear", text: "Ready to spot them for real?" });
     await awaitUser();
     for (let i = 0; i < phoneCase.threads.length; i++) {
       await runThread(phoneCase.threads[i], i === phoneCase.threads.length - 1);
@@ -275,6 +285,20 @@ function ItemView({ it, wrenAvatar }: { it: Item; wrenAvatar: React.ReactNode })
       <div className="ph-row" style={{ display: "flex", marginTop: 7 }}>
         <div style={{ display: "inline-flex", gap: 4, alignItems: "center", padding: "13px 15px", background: C.inc, borderRadius: 19, borderBottomLeftRadius: 6 }}>
           {[0, 1, 2].map((i) => <i key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: C.dim, display: "block", animation: `ph-blink 1.2s ${i * 0.18}s infinite ease-in-out` }} />)}
+        </div>
+      </div>
+    );
+  }
+  if (it.kind === "lever") {
+    const lv = LEVERS.find((l) => l.id === it.lever)!;
+    return (
+      <div className="ph-row" style={{ margin: "9px 2px 3px", background: C.pinkbg, border: `1px solid rgba(255,61,138,.55)`, borderRadius: 16, padding: "12px 13px", display: "flex", gap: 12, alignItems: "flex-start" }}>
+        <span aria-hidden style={{ flex: "0 0 auto", width: 46, height: 46, borderRadius: 13, background: "rgba(255,61,138,.16)", border: `1px solid rgba(255,61,138,.5)`, display: "grid", placeItems: "center", fontSize: 25 }}>{lv.emoji}</span>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: ".12em", color: C.pinkHi, fontWeight: 800, textTransform: "uppercase", marginBottom: 1 }}>Lever · learn it</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: C.ink, letterSpacing: ".01em" }}>{lv.name}</div>
+          <div style={{ fontSize: 13.5, color: C.ink, lineHeight: 1.4, margin: "3px 0 7px" }}>{it.line}</div>
+          <div style={{ display: "inline-block", background: C.inc, borderRadius: 13, borderBottomLeftRadius: 5, padding: "6px 11px", fontSize: 13, color: C.dim, fontStyle: "italic" }}>“{it.example}”</div>
         </div>
       </div>
     );
