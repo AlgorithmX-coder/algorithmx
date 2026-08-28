@@ -718,7 +718,7 @@ const FOILED_LINES: Record<PhaseKey, string> = {
   whack: "My beautiful pre-filled form! RUINED!",
   hand: "Favourites?! I can't USE favourites!",
   grill: "Stop asking WHY! It's SO unfair!",
-  assemble: "CometWizard WHO?! That's not a NAME!",
+  assemble: "NovaOtter88 WHO?! That's not a NAME!",
   rapid: "NOTHING?! I got... NOTHING?!",
 };
 

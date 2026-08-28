@@ -741,49 +741,49 @@ export const WEEK_11: WeekContent = {
         kind: "counterCard",
         attack: 0,
         coach: "Whose choice was it? Tap the card!",
-        situation: "A boulder rolls in with your name chalked on it: 'This one's YOURS.'",
+        situation: "Someone left a nasty comment because they didn't like your drawing. A sneaky thought whispers: 'If I hadn't posted it, they couldn't have been mean.'",
         situationIcon: "🙈",
         cards: [
-          { id: "sender", label: "THE SENDER CHOSE TO SEND IT - NEVER MY FAULT", icon: "🛡️", isRight: true, note: "" },
-          { id: "abit", label: "Maybe a little bit my fault", icon: "🌀", isRight: false, note: "Not even a little. The sender made the choice - reading a message doesn't make it yours." },
-          { id: "online", label: "My fault for being online", icon: "💬", isRight: false, note: "Being online is like being at the park. If someone throws mud, the mud-thrower did it - not you for standing there." },
+          { id: "sender", label: "SHARING MY DRAWING WASN'T THE UNKIND BIT - THEY CHOSE THAT", icon: "🛡️", isRight: true, note: "" },
+          { id: "shouldnt", label: "True, I shouldn't have posted at all", icon: "🌀", isRight: false, note: "Sharing something you made is a lovely thing to do. The unkind words were THEIR choice, not your drawing's fault, and not yours." },
+          { id: "half", label: "Half my fault for showing it", icon: "💬", isRight: false, note: "Not even half. Being proud of your work is never what makes someone mean, that's always on the person who chose to be mean." },
         ],
       },
-      // P2 · SECRET WEIGHT → TAP-THE-TELL: name the hidden heavy thing;
-      // naming it out loud IS the tell, and the bag gets lighter.
+      // P2 · SECRET WEIGHT → TAP-THE-TELL: pick the worry that belongs
+      // with your team; the everyday bumps you handle yourself.
       {
         kind: "tapTell",
         attack: 1,
-        coach: "Secrets get lighter when you NAME them. Tap the heavy one!",
+        coach: "Some things you handle yourself. Tap the one your TEAM should hear!",
         rounds: [
           {
             id: "bag1",
-            prompt: "The backpack sags. What's the heavy thing hiding inside?",
+            prompt: "Three things happened today. Which one does your team need to hear?",
             promptIcon: "🤐",
             options: [
-              { id: "meanmsg", label: "A mean message I never told anyone about", icon: "💬", isTell: true, note: "" },
-              { id: "homework", label: "My spelling homework", icon: "📋", isTell: false, note: "Homework's heavy, but it's no secret. Find the one you'd whisper." },
-              { id: "book", label: "A library book to return", icon: "🎁", isTell: false, note: "That's just Tuesday stuff. Find the thing that's been hiding." },
+              { id: "videochat", label: "A stranger in a game keeps asking to video-chat with you ALONE", icon: "🎮", isTell: true, note: "" },
+              { id: "pencil", label: "You lost your favorite pencil at school", icon: "📋", isTell: false, note: "A lost pencil is an everyday bump, you've got this one. Find the thing a grown-up should hear." },
+              { id: "draw", label: "Your football match ended in a draw", icon: "⚙️", isTell: false, note: "A drawn match is just sport, no team needed. Find the worry that belongs with your grown-ups." },
             ],
           },
           {
             id: "bag2",
-            prompt: "Lighter already! But the bag still sags...",
+            prompt: "Lighter already! What else happened today?",
             promptIcon: "🤐",
             options: [
-              { id: "cleats", label: "My muddy soccer cleats", icon: "⚙️", isTell: false, note: "Muddy, sure - secret, no. Find the one that makes your tummy flip." },
-              { id: "weirdchat", label: "A game chat that made me feel weird", icon: "🎮", isTell: true, note: "" },
-              { id: "sweater", label: "My rainy-day sweater", icon: "🎁", isTell: false, note: "Cozy, not heavy. Find the hiding one." },
+              { id: "spelling", label: "A tricky spelling test", icon: "📋", isTell: false, note: "Tricky tests happen, that's a you-and-your-teacher thing, not a worry. Find the one to tell." },
+              { id: "photodemand", label: "Someone online says 'send a photo or I'll share your secret'", icon: "💬", isTell: true, note: "" },
+              { id: "battery", label: "Your tablet battery died", icon: "⚙️", isTell: false, note: "A flat battery just needs a charger. Find the thing your team should hear." },
             ],
           },
           {
             id: "bag3",
-            prompt: "One last lump at the very bottom...",
+            prompt: "One last thing from your day...",
             promptIcon: "🤐",
             options: [
-              { id: "snack", label: "A squashed granola bar", icon: "🎁", isTell: false, note: "Squashy, not secret. One more heavy thing to name!" },
-              { id: "marker", label: "A dried-out marker", icon: "📋", isTell: false, note: "That's just clutter. Find the one someone told you to HIDE." },
-              { id: "secretpic", label: "A picture someone said to keep secret", icon: "🤫", isTell: true, note: "" },
+              { id: "lunch", label: "You didn't like the school lunch", icon: "🎁", isTell: false, note: "A yucky lunch is an everyday grumble, not for the team. Find the real worry." },
+              { id: "lace", label: "Your shoelace snapped", icon: "⚙️", isTell: false, note: "A snapped lace is a two-minute fix. Find the one to tell a grown-up." },
+              { id: "scarypic", label: "A horrible scary picture popped up on your screen", icon: "🤫", isTell: true, note: "" },
             ],
           },
         ],
@@ -792,20 +792,20 @@ export const WEEK_11: WeekContent = {
       {
         kind: "orderStrike",
         attack: 2,
-        coach: "Camera BEFORE the door! Tap the steps in order!",
-        intro: "'Bin it! Pretend it never happened!' Counter him with the hero protocol.",
+        coach: "Freeze the proof BEFORE you block! Tap the steps in order!",
+        intro: "A stranger's mean messages keep buzzing in. Stay calm and run the drill: tap the steps in the order you'd really do them.",
         steps: [
-          { id: "stop", label: "STOP - don't reply", icon: "✋" },
-          { id: "shot", label: "SCREENSHOT - freeze the proof", icon: "📋" },
-          { id: "block", label: "BLOCK the sender", icon: "🔒" },
-          { id: "tell", label: "TELL your team", icon: "👪" },
+          { id: "stop", label: "STOP - hands off, send nothing back", icon: "✋" },
+          { id: "shot", label: "SCREENSHOT - freeze it before it can vanish", icon: "📋" },
+          { id: "block", label: "BLOCK - shut the door on the sender", icon: "🔒" },
+          { id: "tell", label: "TELL your team what happened", icon: "👪" },
         ],
       },
     ],
     weakPoints: [
-      { question: "Someone sends you a horrid message. Whose fault is it?", answers: ["Theirs - they chose to send it", "Yours", "A little bit yours", "Nobody knows"], correctIndex: 0, explanation: "The sender made the choice - it is never your fault." },
-      { question: "Why does 'keep it secret' make everything heavier?", answers: ["Carrying it alone grows the worry - telling shares the weight", "Secrets are illegal", "Grown-ups always find out", "It doesn't"], correctIndex: 0, explanation: "Telling someone starts making it lighter right away - that's the whole trick." },
-      { question: "A nasty message arrives. What happens to it FIRST?", answers: ["Screenshot - freeze the proof", "Delete it fast", "Reply to it", "Forward it to friends"], correctIndex: 0, explanation: "Camera, not trash - your team helps best when they can see." },
+      { question: "A kid you don't know sends a horrible message, then says 'you MADE me do it.' Is that true?", answers: ["No, being unkind was their choice, never my fault", "Yes, I must have done something", "A little bit true", "Only if I replied"], correctIndex: 0, explanation: "'You made me' is a trick. The person who chose to be unkind is the only one at fault." },
+      { question: "Something online is worrying you, but it's the middle of the night and everyone's asleep. Who can you still reach?", answers: ["Childhelp on 1-800-422-4453, free, just for kids, always awake", "No one until morning", "A stranger from your game", "Just keep it secret"], correctIndex: 0, explanation: "Your team includes the golden number. Childhelp never sleeps, so help is always there." },
+      { question: "Your friend says 'just tell the meanie to stop and they'll go away.' What's the better move?", answers: ["Don't reply at all, even 'stop' gives them a reaction; block and tell instead", "Reply 'stop' lots of times", "Reply once, politely", "Fire back something meaner"], correctIndex: 0, explanation: "Any reply, even 'stop', feeds the game. Blocking shuts the door without giving them a thing." },
     ],
     finisher: {
       chargeLabel: "CHARGE THE TEAM BEACON",
