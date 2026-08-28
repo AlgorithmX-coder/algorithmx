@@ -401,7 +401,7 @@ export default function CyberStartLanding() {
                   fontSize: 10, fontWeight: 700, letterSpacing: "0.22em",
                   textTransform: "uppercase", color: "#b9aaff",
                 }}>
-                  Aligned with
+                  Aligned with UK
                 </span>
                 <span aria-hidden style={{ width: 1, height: 22, background: "rgba(255,255,255,0.16)" }} />
                 {/* eslint-disable-next-line @next/next/no-img-element */}

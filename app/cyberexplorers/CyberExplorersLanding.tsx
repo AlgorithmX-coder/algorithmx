@@ -795,7 +795,7 @@ export default function CyberExplorersLanding() {
               <span style={{ color: T.textSecondary, fontWeight: 500 }}>Covers</span>&nbsp;&nbsp;Scams · Deepfakes · Passwords · Privacy · Social engineering
             </p>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 13, margin: "0 0 20px", padding: "10px 18px", borderRadius: 11, background: "rgba(255,255,255,0.05)", border: `1px solid ${T.arcCyan}3A`, boxShadow: `0 0 26px -14px ${T.arcCyan}` }}>
-              <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.2em", color: T.textSecondary, textTransform: "uppercase", whiteSpace: "nowrap" }}>Aligned with</span>
+              <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.2em", color: T.textSecondary, textTransform: "uppercase", whiteSpace: "nowrap" }}>Aligned with UK</span>
               <span aria-hidden style={{ width: 1, height: 24, background: T.hairline }} />
               <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" style={{ height: 36, width: "auto" }} />
             </div>
