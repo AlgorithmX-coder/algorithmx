@@ -21,10 +21,15 @@ import { block2Intro } from "./blockIntroData";
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#6b6b78",
   phone: "#0A0A0C", chat: "#101017", chrome: "#17171f",
-  inc: "#26262f", out: "#2E6BE6", wren: "#2BD4B4", wrenbg: "#0f2622",
+  inc: "#26262f", out: "#FF3D8A", wren: "#2BD4B4", wrenbg: "#0f2622",
+  // Block 2 identity = PINK (matrix, brand actions, your own bubbles). WREN stays teal.
+  pink: "#FF3D8A", pinkHi: "#FF74AE", pinkbg: "#2a0f1e",
   warn: "#F5A623", red: "#FF5A63", mint: "#31D9A0", line: "#232330", chip: "#1c1c26", chipedge: "#33333f",
 };
 const UI = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif`;
+// WREN's spoken "not that one, look again" on a wrong lever — rotates so it's not
+// the same line twice, and never reveals the answer (the Block-1 nudge, restored).
+const NUDGES = ["/audio/wren/m06p-nudge-1.mp3", "/audio/wren/m06p-nudge-2.mp3", "/audio/wren/m06p-nudge-3.mp3"];
 
 const CSS = `
 .ph *{box-sizing:border-box}
@@ -171,10 +176,15 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const start = () => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(); };
 
   // ---- interaction handlers ----
+  const nudgeRef = useRef(0);
   const tapLever = (id: LeverId) => {
     if (dock?.type !== "call") return;
     if (id === dock.answer) { setWrongId(null); resolveRef.current?.("ok"); }
-    else { setWrongId(id); force(); setTimeout(() => setWrongId(null), 350); }
+    else {
+      setWrongId(id); force(); setTimeout(() => setWrongId(null), 350);
+      // WREN speaks up when you get it wrong (rotating, no answer given).
+      if (voiceRef.current) playWren(NUDGES[nudgeRef.current++ % NUDGES.length], true);
+    }
   };
   const tapReply = (label: string) => { if (dock?.type === "choose") resolveRef.current?.(label); };
   const tapContinue = () => resolveRef.current?.("go");
@@ -192,7 +202,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   return (
     <main className="ph" style={{ minHeight: "100vh", background: `radial-gradient(900px 500px at 50% -10%, #241033 0%, rgba(36,16,51,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden" }}>
       <style>{CSS}</style>
-      <MatrixRain reduced={!!reduce} opacity={0.13} colors={["#FF3D7F", "#B98BFF", "#2E6BE6"]} head="#FFE3EE" />
+      <MatrixRain reduced={!!reduce} opacity={0.13} colors={["#FF3D8A", "#FF74AE", "#C355FF"]} head="#FFE3EE" />
 
       <button className="ph-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>← Leave</button>
       <button className="ph-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
@@ -320,7 +330,7 @@ function DockView({ dock, wrongId, onLever, onReply, onContinue }: { dock: Dock;
   return (
     <div style={{ textAlign: "center" }}>
       <p style={{ fontSize: 13.5, color: C.mint, margin: "2px 0 11px", fontWeight: 600 }}>{dock.text}</p>
-      <button className="ph-btn" onClick={onContinue} style={{ fontFamily: UI, fontWeight: 700, fontSize: 13.5, color: C.page, background: C.wren, border: 0, borderRadius: 999, padding: "10px 24px", cursor: "pointer" }}>Continue →</button>
+      <button className="ph-btn" onClick={onContinue} style={{ fontFamily: UI, fontWeight: 700, fontSize: 13.5, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "10px 24px", cursor: "pointer" }}>Continue →</button>
     </div>
   );
 }
@@ -328,14 +338,14 @@ function DockView({ dock, wrongId, onLever, onReply, onContinue }: { dock: Dock;
 function LockScreen({ open, title, onOpen }: { open: string[]; title: string; onOpen: () => void }) {
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 26px 30px", textAlign: "center" }}>
-      <div style={{ fontSize: 12, letterSpacing: ".28em", textTransform: "uppercase", color: C.wren, fontWeight: 700, marginBottom: 6 }}>Case 006</div>
+      <div style={{ fontSize: 12, letterSpacing: ".28em", textTransform: "uppercase", color: C.pink, fontWeight: 700, marginBottom: 6 }}>Case 006</div>
       <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: "-.01em", marginBottom: 20 }}>{title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 9, textAlign: "left", marginBottom: 26 }}>
         {open.slice(0, 2).map((l, i) => (
           <div key={i} style={{ background: C.wrenbg, border: `1px solid rgba(43,212,180,.4)`, borderRadius: 14, padding: "10px 13px", fontSize: 13.5, lineHeight: 1.42, color: C.ink }}>{l}</div>
         ))}
       </div>
-      <button className="ph-btn" onClick={onOpen} style={{ fontFamily: UI, fontWeight: 700, fontSize: 15, color: C.page, background: C.wren, border: 0, borderRadius: 999, padding: "13px 20px", cursor: "pointer" }}>Open your messages →</button>
+      <button className="ph-btn" onClick={onOpen} style={{ fontFamily: UI, fontWeight: 700, fontSize: 15, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "13px 20px", cursor: "pointer" }}>Open your messages →</button>
     </div>
   );
 }
@@ -352,11 +362,11 @@ function Debrief({ data, onExit, onNext }: { data: PhoneCase["debrief"]; onExit?
         ))}
       </div>
       <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 14, padding: "13px 15px", fontSize: 13.5, lineHeight: 1.5, color: C.dim, marginBottom: 20 }}>
-        <b style={{ color: C.wren, display: "block", fontSize: 10.5, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 5 }}>Your move this week</b>{data.move}
+        <b style={{ color: C.pink, display: "block", fontSize: 10.5, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 5 }}>Your move this week</b>{data.move}
       </div>
       <div style={{ display: "flex", gap: 10 }}>
         <button className="ph-btn" onClick={onExit} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Back to map</button>
-        {onNext && <button className="ph-btn" onClick={onNext} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.page, background: C.wren, border: 0, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Next case →</button>}
+        {onNext && <button className="ph-btn" onClick={onNext} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Next case →</button>}
       </div>
     </div>
   );

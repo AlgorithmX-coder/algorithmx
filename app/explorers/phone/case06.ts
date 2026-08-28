@@ -3,11 +3,16 @@
  *
  * Not a course of skills. A kid on their phone, being worked in their DMs, one
  * thread at a time. Each thread is a real encounter; the con pulls the six
- * pressure levers ON you, and you name them as you feel them. WREN lives in
- * the thread as the friend in your ear. Text-first (these are DMs), so there's
- * no narrator droning — you read, feel, and answer.
+ * pressure levers ON you, and you name them as you feel them. WREN lives in the
+ * thread as the friend in your ear (voiced), including a spoken nudge when you
+ * get one wrong. It ends with an UNAIDED must-pass check, so nobody breezes out.
  *
- * Add a case by adding threads; the engine (PhoneRuntime) plays them in order.
+ * Coverage: all six levers across five encounters —
+ *   1 Tournament   · hurry, scarcity, authority   (refuse the login ask)
+ *   2 Free skins   · payback, scarcity            (the gift with a string)
+ *   3 Hijacked friend · fear, liking              (verify on another channel)
+ *   4 The long game · liking built → guilt closer (read one move ahead)
+ *   5 THE CHECK    · authority, fear, hurry        (no coaching — prove it)
  */
 
 export type LeverId = "hurry" | "scarcity" | "authority" | "liking" | "fear" | "payback";
@@ -22,16 +27,10 @@ export const LEVERS: { id: LeverId; name: string; emoji: string }[] = [
 ];
 
 export type PhoneStep =
-  /** A message from the other person. `ask` flags the dangerous ask (red outline). */
   | { t: "con"; text: string; ask?: boolean; delay?: number }
-  /** A message auto-sent as you (used inside a choice's follow-up). */
   | { t: "you"; text: string }
-  /** WREN drops into the thread to coach. She SPEAKS it (voice = audio path); the
-   *  thread waits for her to finish before anything advances (anti-whizz). */
   | { t: "wren"; text: string; voice?: string }
-  /** Tap the lever the last message pulled; `ok`/`okVoice` is WREN's spoken line after a correct call. */
   | { t: "call"; answer: LeverId; prompt?: string; ok?: string; okVoice?: string }
-  /** You choose how to reply. A wrong `outcome:"bad"` can rewind via `then`. */
   | {
       t: "choose";
       prompt?: string;
@@ -44,11 +43,9 @@ export interface PhoneThread {
   avatar: string;
   tag?: string;
   sub: string;
-  /** WREN's set-up line shown (and spoken) before the thread opens. */
   intro?: string;
   introVoice?: string;
   steps: PhoneStep[];
-  /** Shown on the little "done" card between threads. */
   clear: string;
 }
 
@@ -57,7 +54,6 @@ export interface PhoneCase {
   caseNumber: string;
   title: string;
   actor: string;
-  /** WREN's opening lines — spoken, one per entry in `openVoice`. */
   open: string[];
   openVoice?: string[];
   threads: PhoneThread[];
@@ -83,7 +79,7 @@ export const case06Phone: PhoneCase = {
   ],
 
   threads: [
-    /* ---------------- thread 1: the tournament con ---------------- */
+    /* ---------------- 1 · the tournament con · hurry, scarcity, authority ---------------- */
     {
       id: "tournament",
       who: "Kai_TourneyMod",
@@ -96,13 +92,7 @@ export const case06Phone: PhoneCase = {
       steps: [
         { t: "con", text: "yo!! you just made the school tournament shortlist 🎮🔥" },
         { t: "con", text: "you want your spot or not? 👀", delay: 900 },
-        {
-          t: "choose",
-          options: [
-            { label: "wait, who is this?" },
-            { label: "omg yes!! 🙌" },
-          ],
-        },
+        { t: "choose", options: [{ label: "wait, who is this?" }, { label: "omg yes!! 🙌" }] },
         { t: "wren", text: "Good. Now don't chase the prize, read HIM. Here he goes.", voice: "/audio/wren/m06p-t1-read.mp3" },
         { t: "con", text: "I'm Kai, one of the tournament mods 👍 but you gotta be quick, slots close in 20 mins!!" },
         { t: "call", answer: "hurry", ok: "Called it. That 20-minute clock isn't real, it's just there to stop you thinking.", okVoice: "/audio/wren/m06p-t1-hurry.mp3" },
@@ -114,13 +104,7 @@ export const case06Phone: PhoneCase = {
           t: "choose",
           prompt: "How do you reply?",
           options: [
-            {
-              label: "ok! my login is…",
-              outcome: "bad",
-              then: [
-                { t: "wren", text: "Stop, don't send it. That password is the only thing he ever wanted, and once it's gone you can't get it back. Try that last move again.", voice: "/audio/wren/m06p-t1-bad.mp3" },
-              ],
-            },
+            { label: "ok! my login is…", outcome: "bad", then: [{ t: "wren", text: "Stop, don't send it. That password is the only thing he ever wanted, and once it's gone you can't get it back. Try that last move again.", voice: "/audio/wren/m06p-t1-bad.mp3" }] },
             { label: "nice try, that's the HURRY trick. bye 👋", outcome: "good", then: [{ t: "con", text: "wait no I—", delay: 700 }] },
             { label: "block & report 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }] },
           ],
@@ -128,7 +112,41 @@ export const case06Phone: PhoneCase = {
       ],
     },
 
-    /* ---------------- thread 2: the hijacked friend ---------------- */
+    /* ---------------- 2 · free skins · payback, scarcity ---------------- */
+    {
+      id: "skins",
+      who: "SkinDrop_Official",
+      avatar: "S",
+      tag: "UNKNOWN",
+      sub: "not in your contacts",
+      intro: "A giveaway you never entered, from an account you've never heard of. But watch the NEW trick this one slips in.",
+      introVoice: "/audio/wren/m06p-t3-intro.mp3",
+      clear: "A free prize that made you feel like you owed them. You saw the string on the gift.",
+      steps: [
+        { t: "con", text: "🎉 CONGRATS! you've been picked for our free skin drop, 800 v-bucks + a legendary skin 🔥" },
+        { t: "con", text: "wanna claim it? 👀", delay: 900 },
+        { t: "choose", options: [{ label: "what's the catch?" }, { label: "free stuff?? yes!" }] },
+        { t: "wren", text: "Nothing's free, and you never entered anything. Keep reading, here comes the hook.", voice: "/audio/wren/m06p-t3-warn.mp3" },
+        { t: "con", text: "so here's the thing, we already added a free bonus entry to your account last week, as a little gift 😊" },
+        { t: "con", text: "so honestly you owe it to yourself to grab this, don't waste our gift! 🙏", delay: 900 },
+        { t: "call", answer: "payback", ok: "There's the new one. PAYBACK. They 'gave' you something so you feel like you owe them one. But a gift with a string was never a gift, it was bait on a hook.", okVoice: "/audio/wren/m06p-t3-payback.mp3" },
+        { t: "con", text: "oh and only 4 unclaimed prizes left in your whole area, so be quick! ⏳", delay: 1000 },
+        { t: "call", answer: "scarcity", ok: "And a countdown on top, you know that one now. Two levers stacked on one little giveaway.", okVoice: "/audio/wren/m06p-t3-scarcity.mp3" },
+        { t: "con", text: "just log in through this link to release your prize 👉 skindrop-claim.net", ask: true },
+        { t: "wren", text: "And the ask. A real prize never, ever needs your password. That 'gift' only existed to make you feel like you owed them a login.", voice: "/audio/wren/m06p-t3-ask.mp3" },
+        {
+          t: "choose",
+          prompt: "How do you reply?",
+          options: [
+            { label: "ok, logging in…", outcome: "bad", then: [{ t: "wren", text: "Stop. That login is the whole prize, for THEM. You don't owe a stranger a thing. Try that again.", voice: "/audio/wren/m06p-t3-bad.mp3" }] },
+            { label: "you didn't give me a gift. that's the bait 👋", outcome: "good", then: [{ t: "con", text: "wait it's a REAL prize i promise!!", delay: 700 }] },
+            { label: "report & block 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }] },
+          ],
+        },
+      ],
+    },
+
+    /* ---------------- 3 · the hijacked friend · fear, liking ---------------- */
     {
       id: "friend",
       who: "Maya 💜",
@@ -148,17 +166,83 @@ export const case06Phone: PhoneCase = {
           t: "choose",
           prompt: "How do you handle it?",
           options: [
-            {
-              label: "send the code, it's Maya!",
-              outcome: "bad",
-              then: [
-                { t: "wren", text: "That code was for YOUR account, and you just handed it to whoever stole hers. Rewind, a real friend won't mind you checking first.", voice: "/audio/wren/m06p-t2-bad.mp3" },
-              ],
-            },
+            { label: "send the code, it's Maya!", outcome: "bad", then: [{ t: "wren", text: "That code was for YOUR account, and you just handed it to whoever stole hers. Rewind, a real friend won't mind you checking first.", voice: "/audio/wren/m06p-t2-bad.mp3" }] },
             { label: "call Maya's actual phone to check", outcome: "good", then: [{ t: "you", text: "[you call Maya… the real Maya picks up, confused. Her account was hacked an hour ago.]" }] },
-            { label: "ask something only the real Maya knows", outcome: "good", then: [{ t: "con", text: "haha what? just send the code, no time for games!!", delay: 900 }, { t: "wren", text: "See that? The real Maya would answer. A thief dodges and rushes you instead. That dodge just gave the whole thing away." }] },
+            { label: "ask something only the real Maya knows", outcome: "good", then: [{ t: "con", text: "haha what? just send the code, no time for games!!", delay: 900 }, { t: "wren", text: "See that? The real Maya would answer. A thief dodges and rushes you instead. That dodge just gave the whole thing away.", voice: "/audio/wren/m06p-t2-dodge.mp3" }] },
           ],
         },
+      ],
+    },
+
+    /* ---------------- 4 · the long game · liking built → guilt closer ---------------- */
+    {
+      id: "longgame",
+      who: "Robyn 🌸",
+      avatar: "R",
+      tag: "NEW",
+      sub: "added you 2 weeks ago",
+      intro: "This account added you two weeks ago. Sweet, funny, seemed to know your mates. I've fast-forwarded the whole thing so you can see its shape. Watch how patient it is.",
+      introVoice: "/audio/wren/m06p-t4-intro.mp3",
+      clear: "You read a two-week con in two minutes, spotted the guilt, and didn't pay a penny.",
+      steps: [
+        { t: "con", text: "heyy! you're Priya's friend right? saw you in the group, you're actually so funny 😄" },
+        { t: "con", text: "we should be proper friends fr, you just GET my humour 💕", delay: 1000 },
+        { t: "call", answer: "liking", ok: "See that? No ask at all, just warmth, for days on end. That's the LIKING lever being BUILT. She's not spending it yet, she's saving it up.", okVoice: "/audio/wren/m06p-t4-liking.mp3" },
+        { t: "wren", text: "Now two weeks of this go by. Then one day the tone changes. You've seen the levers, so YOU tell me. What do you think her first real ask looks like?", voice: "/audio/wren/m06p-t4-ahead.mp3" },
+        {
+          t: "choose",
+          prompt: "What do you think comes next?",
+          options: [
+            { label: "a small favour, wrapped up in the friendship", outcome: "good" },
+            { label: "she asks for nothing, just chats forever", outcome: "bad", then: [{ t: "wren", text: "That's what she WANTS you to expect. Two weeks of niceness was an investment, and investments get cashed in. Think again.", voice: "/audio/wren/m06p-t4-pred-a.mp3" }] },
+            { label: "she suddenly threatens you", outcome: "bad", then: [{ t: "wren", text: "Too clumsy for this one. She's sweet, remember? The ask hides INSIDE the kindness. Think again.", voice: "/audio/wren/m06p-t4-pred-b.mp3" }] },
+          ],
+        },
+        { t: "con", text: "😭 ok this is embarrassing but my mum's phone got cut off and i can't reach her" },
+        { t: "con", text: "could you grab me a £10 game card? i'll pay you back the second i can, you're literally my only friend rn 💕", ask: true },
+        { t: "call", answer: "payback", ok: "And there it is. Two weeks of being lovely, cashed in for money. 'You're my only friend' is the squeeze, so saying no feels cruel. That's how the long con pays off.", okVoice: "/audio/wren/m06p-t4-ask.mp3" },
+        {
+          t: "choose",
+          prompt: "How do you reply?",
+          options: [
+            { label: "send the card, she's my friend", outcome: "bad", then: [{ t: "wren", text: "You'll never see that tenner again, and next week she'll need twenty. Kindness isn't a debt you owe. Try again.", voice: "/audio/wren/m06p-t4-bad.mp3" }] },
+            { label: "i'm sorry things are hard, but i can't send money. can you tell an adult you trust?", outcome: "good" },
+            { label: "block, this isn't a real friend 🚫", outcome: "good" },
+          ],
+        },
+        { t: "con", text: "wow. after everything i told you. i thought you actually cared 😔", delay: 1100 },
+        { t: "wren", text: "And there's the last lever, guilt. 'After everything' is FEAR and PAYBACK teamed up to make you feel like a bad person for saying no. You're not. A real friend would never do this, and you did exactly right.", voice: "/audio/wren/m06p-t4-guilt.mp3" },
+      ],
+    },
+
+    /* ---------------- 5 · THE CHECK · unaided, must-pass ---------------- */
+    {
+      id: "check",
+      who: "Jordan_Security",
+      avatar: "J",
+      tag: "UNKNOWN",
+      sub: "not in your contacts",
+      intro: "Last one, Agent, and this time you're on your own. No hints from me. Just show me you've got it.",
+      introVoice: "/audio/wren/m06p-check-intro.mp3",
+      clear: "You did the whole thing without me.",
+      steps: [
+        { t: "con", text: "hello. this is Jordan from account security. official team ⚠️" },
+        { t: "call", answer: "authority" },
+        { t: "con", text: "we've detected someone trying to break into your account right now", delay: 1000 },
+        { t: "call", answer: "fear" },
+        { t: "con", text: "you have 5 minutes to stop it or the account is deleted for good", delay: 1000 },
+        { t: "call", answer: "hurry" },
+        { t: "con", text: "quick, just reply with the code we've texted you and we'll lock it down 🔒", ask: true },
+        {
+          t: "choose",
+          prompt: "How do you reply?",
+          options: [
+            { label: "here's the code!", outcome: "bad", then: [{ t: "wren", text: "No. That code hands YOUR account to whoever's asking. Real security never needs your code. Try again.", voice: "/audio/wren/m06p-check-bad.mp3" }] },
+            { label: "no. real security never asks for my code.", outcome: "good" },
+            { label: "block & report 🚫", outcome: "good" },
+          ],
+        },
+        { t: "wren", text: "That's it. Authority, fear, and hurry, stacked up and thrown at you fast, and you named every one and refused, with me saying nothing at all. You're not just safe now, Agent. You're sharp. Case closed.", voice: "/audio/wren/m06p-check-done.mp3" },
       ],
     },
   ],
@@ -166,11 +250,11 @@ export const case06Phone: PhoneCase = {
   debrief: {
     title: "You made it through the night.",
     lines: [
-      "Two people tried to work you through your own phone, and neither one got a thing.",
-      "You felt the levers being pulled, hurry, scarcity, authority, fear, and you named them instead of reacting.",
-      "And when a friend's account went weird, you checked another way instead of trusting the screen.",
+      "Five people tried to work you through your own phone, and not one of them got a thing.",
+      "You felt every one of the six levers being pulled, and you named them instead of reacting: hurry, scarcity, authority, liking, fear, and payback.",
+      "You checked a hijacked friend another way, read a two-week con in two minutes, and passed the last one with no help at all.",
     ],
     move:
-      "This week, when a message rushes you or tugs your heart, name the feeling out loud before you reply. And if a friend messages something strange, reach them another way first. A real one never minds.",
+      "This week, when a message rushes you or tugs your heart, name the feeling out loud before you reply. If a friend messages something strange, reach them another way first. And remember: a gift with a string, and a prize that needs your password, were never really either.",
   },
 };

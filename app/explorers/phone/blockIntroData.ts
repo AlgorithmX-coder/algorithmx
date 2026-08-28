@@ -78,10 +78,10 @@ export const block2Intro: BlockIntroData = {
     "This is where nearly everyone gets caught. It's harder, it's personal, and from here, <em>WREN takes you into the field.</em>",
   beginLabel: "Begin Case 006 →",
   theme: {
-    accent: "#D8432E",
-    accentHi: "#EE6B54",
-    accentRGB: "216, 67, 46",
+    accent: "#FF3D8A",
+    accentHi: "#FF74AE",
+    accentRGB: "255, 61, 138",
     classification: "SECRET",
-    matrix: ["#D8432E", "#FF3D7F", "#B98BFF"],
+    matrix: ["#FF3D8A", "#FF74AE", "#C355FF"],
   },
 };
