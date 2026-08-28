@@ -671,12 +671,15 @@ function MissionCard({
         width: 196,
         height: 154,
         border: "none",
+        outline: "none",
+        WebkitTapHighlightColor: "transparent",
         background: "transparent",
         padding: 0,
         cursor: flipped ? "default" : "pointer",
         touchAction: "manipulation",
         fontFamily: "inherit",
         transformStyle: "preserve-3d",
+        WebkitTransformStyle: "preserve-3d",
         transform: isMiddle ? "translateY(-18px) scale(1.08)" : undefined,
       }}
     >
@@ -706,6 +709,7 @@ function MissionCard({
           position: "absolute",
           inset: 0,
           transformStyle: "preserve-3d",
+          WebkitTransformStyle: "preserve-3d",
         }}
       >
         {/* FRONT (revealed objective) — glassy night panel */}
@@ -715,10 +719,17 @@ function MissionCard({
             inset: 0,
             borderRadius: 18,
             backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
             background: "linear-gradient(180deg, rgba(22,28,62,0.92) 0%, rgba(12,16,40,0.95) 100%)",
+            // A dark 2px hairline at the very edge, with the accent ring just
+            // INSIDE it. When the card turns edge-on mid-flip its outer sliver
+            // reads dark (blends into the scene) instead of a bright accent-
+            // coloured "line" — that stray line was most visible on the amber
+            // objective card (looked yellow). Face-on is unchanged.
             boxShadow:
               `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
-              `0 0 0 1.5px ${mission.colour}88 inset, ` +
+              `0 0 0 2px rgba(4, 5, 13, 0.98) inset, ` +
+              `0 0 0 3.5px ${mission.colour}88 inset, ` +
               `0 -3px 0 ${mission.colour}44 inset, ` +
               `0 0 30px ${mission.glow}`,
             overflow: "hidden",
@@ -743,11 +754,15 @@ function MissionCard({
             inset: 0,
             borderRadius: 18,
             backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
             background: "linear-gradient(180deg, rgba(26,33,71,0.9) 0%, rgba(15,21,48,0.94) 100%)",
+            // Same dark-edge treatment as the front so the face-down card's
+            // cyan edge doesn't flash a line as it turns edge-on mid-flip.
             boxShadow:
               `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
-              `0 0 0 1.5px rgba(125,240,255,0.4) inset, ` +
+              `0 0 0 2px rgba(4, 5, 13, 0.98) inset, ` +
+              `0 0 0 3.5px rgba(125,240,255,0.4) inset, ` +
               `0 0 24px rgba(0,229,255,0.18)`,
             overflow: "hidden",
             display: "grid",
