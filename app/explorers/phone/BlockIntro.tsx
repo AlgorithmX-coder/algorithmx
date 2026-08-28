@@ -53,6 +53,19 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
     return () => { a.removeEventListener("loadedmetadata", onMeta); a.removeEventListener("timeupdate", onTime); a.removeEventListener("ended", onEnd); a.pause(); };
   }, [data.commander.name]);
 
+  // ATLAS starts speaking straight away. Arriving from the map carries a user
+  // gesture, so play() is allowed immediately; on a cold deep-link autoplay is
+  // blocked, so the first tap anywhere starts him instead.
+  useEffect(() => {
+    const a = audioRef.current; if (!a) return;
+    let done = false;
+    const start = () => { if (done) return; done = true; a.play().then(() => setPlaying(true)).catch(() => { done = false; }); };
+    start();
+    const onGesture = () => { if (a.paused) start(); window.removeEventListener("pointerdown", onGesture); };
+    window.addEventListener("pointerdown", onGesture);
+    return () => window.removeEventListener("pointerdown", onGesture);
+  }, []);
+
   const toggle = () => { const a = audioRef.current; if (!a) return; if (a.paused) a.play().then(() => setPlaying(true)).catch(() => {}); else { a.pause(); setPlaying(false); } };
   const bars = Array.from({ length: 22 });
   const barH = (i: number) => (playing && !reduce ? 3 + Math.abs(Math.sin((audioRef.current?.currentTime ?? 0) * 3 + i * 0.5)) * 13 : 4);
@@ -92,7 +105,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
 
           {/* ATLAS player */}
           <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(180deg,#171C24,#12161C)", border: "1px solid #232B36", borderLeft: `3px solid ${acc}`, borderRadius: 12, padding: "11px 15px 11px 12px" }}>
-            <button className="play" onClick={toggle} aria-label={playing ? "Pause briefing" : "Play briefing"}
+            <button className="play" onClick={toggle} onPointerDown={(e) => e.stopPropagation()} aria-label={playing ? "Pause briefing" : "Play briefing"}
               style={{ flex: "0 0 auto", width: 48, height: 48, borderRadius: "50%", border: `1px solid ${acc}`, background: `radial-gradient(circle at 40% 35%, rgba(${t.accentRGB},.22), #14110a)`, color: accHi, fontSize: 17, display: "grid", placeItems: "center", cursor: "pointer" }}>
               {playing ? "❚❚" : "▶"}
             </button>
