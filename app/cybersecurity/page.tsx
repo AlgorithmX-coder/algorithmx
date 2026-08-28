@@ -483,7 +483,7 @@ export default async function CybersecurityPage() {
                   fontSize: 10.5, fontWeight: 700, letterSpacing: "0.24em",
                   textTransform: "uppercase", color: "var(--lv2-cyan-soft)",
                 }}>
-                  Aligned with UK
+                  Aligned with UK&rsquo;s National Cyber Security Centre
                 </span>
                 <span aria-hidden style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)" }} />
                 {/* eslint-disable-next-line @next/next/no-img-element */}

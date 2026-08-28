@@ -914,7 +914,7 @@ export default function HomePage() {
                     fontSize: 10, fontWeight: 800, letterSpacing: "0.2em",
                     textTransform: "uppercase", color: "#ffd158",
                   }}>
-                    Aligned with UK
+                    Aligned with UK&rsquo;s National Cyber Security Centre
                   </span>
                   <span aria-hidden style={{ width: 1, height: 20, background: "rgba(255,255,255,0.18)" }} />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
