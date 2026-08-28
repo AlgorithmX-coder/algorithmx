@@ -637,19 +637,30 @@ function LessonLoading() {
 
 export default function DynamicLesson({
   qaEnabled = false,
+  ownerPreview = false,
 }: {
   /** Server-set (E2E_TESTS) flag that re-enables the ?screen QA deep-link
    *  in production builds for Playwright. Never true in a real deploy. */
   qaEnabled?: boolean;
+  /** Server-set: the signed-in user is the site owner, so the ?screen= /
+   *  ?boss=1 preview deep-links are allowed even in production. Never true
+   *  for a kid's account, so they still can't skip to the boss. */
+  ownerPreview?: boolean;
 }) {
   return (
     <ComfortModeProvider>
-      <DynamicLessonInner qaEnabled={qaEnabled} />
+      <DynamicLessonInner qaEnabled={qaEnabled} ownerPreview={ownerPreview} />
     </ComfortModeProvider>
   );
 }
 
-function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
+function DynamicLessonInner({
+  qaEnabled,
+  ownerPreview,
+}: {
+  qaEnabled: boolean;
+  ownerPreview: boolean;
+}) {
   const rawParams = useParams<{ week: string }>();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -659,13 +670,20 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
   // QA deep-link: ?screen=N jumps straight to that screen on mount.
   // Bypasses the resume banner. Out-of-range values are clamped. DEV-ONLY —
   // disabled in production so kids can't skip past the learning to the boss.
+  const deepLinkAllowed =
+    process.env.NODE_ENV !== "production" || qaEnabled || ownerPreview;
   const deepLinkScreen = (() => {
-    if (process.env.NODE_ENV === "production" && !qaEnabled) return null;
+    if (!deepLinkAllowed) return null;
     const raw = searchParams?.get("screen");
     if (!raw) return null;
     const n = Number(raw);
     return Number.isFinite(n) && n >= 0 ? Math.floor(n) : null;
   })();
+  // `?boss=1` jumps straight to this week's boss battle without needing to
+  // know its screen index (resolved against content.screens below).
+  const deepLinkBoss =
+    deepLinkAllowed &&
+    (searchParams?.get("boss") === "1" || searchParams?.get("boss") === "true");
 
   // `useParams` in App Router is synchronous, but we still guard for the
   // edge case where a value comes through as `undefined` (empty routing state)
@@ -766,6 +784,18 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     if (resumedRef.current) return;
     if (progress.resumeIndex === null) return;
 
+    // `?boss=1` deep-link: jump straight to the boss-battle screen.
+    if (deepLinkBoss && content) {
+      const bossIdx = content.screens.findIndex((s) => s.type === "bossBattle");
+      const target = bossIdx >= 0 ? bossIdx : content.screens.length - 1;
+      setScreen(target);
+      progress.markScreenStart(target);
+      screenXpBaselineRef.current = lessonXp;
+      if (progress.pendingResume) progress.acknowledgeResume();
+      resumedRef.current = true;
+      return;
+    }
+
     // QA deep-link wins over both first-visit and pending-resume.
     // We clamp to valid range, jump, mark the clock, dismiss the
     // resume banner if it was about to show, and flag done.
@@ -789,7 +819,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
       screenXpBaselineRef.current = lessonXp;
       resumedRef.current = true;
     }
-  }, [progress, screen, lessonXp, deepLinkScreen, content]);
+  }, [progress, screen, lessonXp, deepLinkScreen, deepLinkBoss, content]);
 
   const onResumeContinue = useCallback(() => {
     // resumeIndex is the last COMPLETED screen, so "Keep going" advances to

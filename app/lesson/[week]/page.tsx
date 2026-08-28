@@ -13,6 +13,15 @@ import DynamicLesson from "./DynamicLesson";
 const BYPASS_ENTITLEMENT_FOR_TESTING = false;
 
 /**
+ * Owner accounts that may use the `?screen=` / `?boss=1` preview deep-links
+ * on production (to QA a boss without playing the whole lesson). Kids' own
+ * accounts are never in this list, so the "no skipping to the boss" guard
+ * still holds for them. The email is already public in this repo's git
+ * history, so it leaks nothing new.
+ */
+const OWNER_EMAILS = ["asadjalal96@outlook.com"];
+
+/**
  * /lesson/[week] - server-side auth + entitlement gate.
  *
  * The lesson UI itself is a client component (DynamicLesson) that uses
@@ -31,5 +40,12 @@ export default async function WeekRoutePage() {
 
   // E2E_TESTS (set only by the Playwright webServer) re-enables the
   // ?screen QA deep-link so the click-through test can visit every screen.
-  return <DynamicLesson qaEnabled={process.env.E2E_TESTS === "1"} />;
+  // ownerPreview grants the same deep-link to the site owner only.
+  const ownerPreview = !!session.user.email && OWNER_EMAILS.includes(session.user.email);
+  return (
+    <DynamicLesson
+      qaEnabled={process.env.E2E_TESTS === "1"}
+      ownerPreview={ownerPreview}
+    />
+  );
 }
