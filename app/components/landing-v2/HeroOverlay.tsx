@@ -161,6 +161,42 @@ export default function HeroOverlay() {
             <span aria-hidden style={{ marginLeft: 8 }}>→</span>
           </Link>
         </div>
+
+        {/* Aligned with the NCSC (alignment, not endorsement — the NCSC
+            runs no endorsement scheme). Above the fold so it's the first
+            trust mark a visitor sees, matching the course landings. */}
+        <div style={{ marginTop: "calc(var(--lv2-rail) * 0.45)" }}>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 13,
+              padding: "10px 18px",
+              borderRadius: 999,
+              background: "rgba(13,15,24,0.55)",
+              border: "1px solid rgba(159,245,255,0.28)",
+              boxShadow: "0 0 30px -16px rgba(159,245,255,0.9)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "var(--lv2-font-mono)",
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "var(--lv2-cyan-soft)",
+              }}
+            >
+              Aligned with UK&rsquo;s National Cyber Security Centre
+            </span>
+            <span aria-hidden style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 28, width: "auto" }} />
+          </span>
+        </div>
       </div>
     </div>
 

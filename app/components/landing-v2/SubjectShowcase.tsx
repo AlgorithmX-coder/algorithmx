@@ -673,7 +673,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                     color: a,
                   }}
                 >
-                  Aligned with UK
+                  Aligned with UK&rsquo;s National Cyber Security Centre
                 </span>
                 <span aria-hidden style={{ width: 1, height: 20, background: "rgba(232,237,255,0.18)" }} />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
