@@ -1,11 +1,12 @@
 "use client";
 
 /**
- * BLOCK INTRO — one comprehensive briefing screen per block, spoken by ATLAS
- * (ARC Command; a man's voice, not WREN). Data-driven and THEMED per block
- * (accent = the block's classification colour; code-rain tinted to match), so
- * each of the four block openings matches its block's world. Self-contained
- * styling. The ATLAS voice plays from a dedicated <audio> (not the WREN engine).
+ * BLOCK INTRO — one comprehensive briefing per block, spoken by ATLAS (ARC
+ * Command; a man's voice, not WREN). Designed to sit on a SINGLE SCREEN,
+ * aggregated: a kid takes the whole block in at a glance, presses play to hear
+ * ATLAS, and goes — no scrolling. Data-driven and THEMED per block (accent =
+ * the block's classification colour; code-rain tinted to match). The ATLAS
+ * voice plays from a dedicated <audio> (not the WREN engine).
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -22,16 +23,16 @@ const CSS = `
 .bi *{ box-sizing:border-box }
 .bi ::selection{ background:var(--acc); color:#0b0b0b }
 .bi .disp{ font-family:${DISP}; font-weight:600; text-transform:uppercase }
-.bi .playbtn{ transition:transform .12s, box-shadow .2s }
-.bi .playbtn:hover{ transform:scale(1.05); box-shadow:0 0 24px rgba(var(--accRGB),.4) }
-.bi .playbtn:focus-visible{ outline:2px solid var(--acc); outline-offset:3px }
+.bi .play{ transition:transform .12s, box-shadow .2s }
+.bi .play:hover{ transform:scale(1.05); box-shadow:0 0 22px rgba(var(--accRGB),.4) }
+.bi .play:focus-visible{ outline:2px solid var(--acc); outline-offset:3px }
 .bi .cta:hover{ filter:brightness(1.08) }
 .bi .cta:focus-visible{ outline:2px solid var(--ink); outline-offset:2px }
-.bi .file{ transition:border-color .2s, transform .12s }
-.bi .file:hover{ transform:translateY(-2px) }
-@keyframes bi-pulse{ 0%,100%{opacity:1} 50%{opacity:.45} }
-.bi .dot{ animation:bi-pulse 1.6s infinite }
+.bi .file{ transition:border-color .15s, transform .12s }
+.bi .file:hover{ transform:translateY(-2px); border-color:rgba(var(--accRGB),.6) }
 @media (prefers-reduced-motion: reduce){ .bi *{ animation:none !important; transition:none !important } }
+@media (max-width:760px){ .bi-files{ grid-template-columns:repeat(2,1fr) !important } .bi-title{ font-size:34px !important } }
+@media (max-width:460px){ .bi-files{ grid-template-columns:1fr !important } }
 `;
 
 export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; onBegin: () => void }) {
@@ -39,155 +40,110 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [label, setLabel] = useState("Play the briefing");
-  const [tick, setTick] = useState(0);
+  const [, setTick] = useState(0);
   const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-
   const fmt = (s: number) => { s = Math.max(0, s | 0); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
 
   useEffect(() => {
     const a = audioRef.current; if (!a) return;
-    const onMeta = () => setLabel(`Play the briefing · ${fmt(a.duration)}`);
-    const onTime = () => { setTick((n) => n + 1); if (a.duration) setLabel(`${data.commander.name} speaking · ${fmt(a.currentTime)} / ${fmt(a.duration)}`); };
-    const onEnd = () => { setPlaying(false); setLabel("Replay the briefing"); };
-    a.addEventListener("loadedmetadata", onMeta);
-    a.addEventListener("timeupdate", onTime);
-    a.addEventListener("ended", onEnd);
+    const onMeta = () => setLabel(`Briefing · ${fmt(a.duration)}`);
+    const onTime = () => { setTick((n) => n + 1); if (a.duration) setLabel(`${data.commander.name} · ${fmt(a.currentTime)} / ${fmt(a.duration)}`); };
+    const onEnd = () => { setPlaying(false); setLabel("Replay briefing"); };
+    a.addEventListener("loadedmetadata", onMeta); a.addEventListener("timeupdate", onTime); a.addEventListener("ended", onEnd);
     return () => { a.removeEventListener("loadedmetadata", onMeta); a.removeEventListener("timeupdate", onTime); a.removeEventListener("ended", onEnd); a.pause(); };
   }, [data.commander.name]);
 
-  const toggle = () => { const a = audioRef.current; if (!a) return; if (a.paused) { a.play().then(() => setPlaying(true)).catch(() => {}); } else { a.pause(); setPlaying(false); } };
+  const toggle = () => { const a = audioRef.current; if (!a) return; if (a.paused) a.play().then(() => setPlaying(true)).catch(() => {}); else { a.pause(); setPlaying(false); } };
+  const bars = Array.from({ length: 22 });
+  const barH = (i: number) => (playing && !reduce ? 3 + Math.abs(Math.sin((audioRef.current?.currentTime ?? 0) * 3 + i * 0.5)) * 13 : 4);
 
-  const bars = Array.from({ length: 26 });
-  const barH = (i: number) => {
-    const ct = audioRef.current?.currentTime ?? 0;
-    return playing && !reduce ? 4 + Math.abs(Math.sin(ct * 3 + i * 0.5)) * 15 : 5;
-  };
+  const acc = t.accent, accHi = t.accentHi;
 
   return (
     <main
       className="bi"
       style={{
-        // theme vars
-        ["--acc" as string]: t.accent, ["--acc-hi" as string]: t.accentHi, ["--accRGB" as string]: t.accentRGB,
-        minHeight: "100vh", background: "radial-gradient(1200px 600px at 50% -8%, #1a2230 0%, rgba(26,34,48,0) 58%), #0A0C10",
-        color: "var(--ink)", fontFamily: BODY, lineHeight: 1.62, position: "relative", overflowX: "hidden",
+        ["--acc" as string]: acc, ["--acc-hi" as string]: accHi, ["--accRGB" as string]: t.accentRGB,
+        height: "100vh", minHeight: 560, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center",
+        background: "radial-gradient(1000px 520px at 50% -6%, #241033 0%, rgba(36,16,51,0) 58%), #0A0C10",
+        color: "#ECEFF3", fontFamily: BODY, position: "relative", padding: "16px",
       }}
     >
       <style>{CSS}</style>
-      <MatrixRain reduced={!!reduce} opacity={0.1} colors={t.matrix} head={t.accentHi} />
-      <div style={{ position: "relative", zIndex: 1 }}>
+      <MatrixRain reduced={!!reduce} opacity={0.1} colors={t.matrix} head={accHi} />
 
-        {/* classification band */}
-        <div style={{ position: "sticky", top: 0, zIndex: 30, background: "linear-gradient(180deg,#0c0e12,#0a0c10)", borderBottom: "1px solid var(--edge)", fontFamily: MONO, fontSize: 11, letterSpacing: ".22em", color: "var(--dim)", textTransform: "uppercase" }}>
-          <Wrap style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 38, gap: 12 }}>
-            <span style={{ color: t.accent, fontWeight: 500, display: "inline-flex", alignItems: "center", gap: 7 }}>
-              <span className="dot" style={{ width: 8, height: 8, background: t.accent, borderRadius: "50%", boxShadow: `0 0 8px ${t.accent}`, display: "block" }} />
-              {t.classification}
-            </span>
-            <span style={{ color: "var(--faint)" }}>{data.commander.org} · CLEARANCE UPGRADE</span>
-          </Wrap>
+      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 1000, maxHeight: "calc(100vh - 24px)", display: "flex", flexDirection: "column", gap: 14, background: "linear-gradient(180deg, rgba(19,22,28,.72), rgba(10,12,16,.72))", border: "1px solid #232B36", borderRadius: 16, padding: "clamp(16px, 3vw, 26px)", backdropFilter: "blur(4px)" }}>
+
+        {/* top strip */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", color: "#9BA6B2" }}>
+          <span style={{ color: acc, display: "inline-flex", alignItems: "center", gap: 7 }}><span style={{ width: 7, height: 7, background: acc, borderRadius: "50%", boxShadow: `0 0 8px ${acc}`, display: "block" }} />{t.classification} · Clearance Upgrade</span>
+          <span style={{ color: "#5E6874" }}>{data.commander.org}</span>
         </div>
 
-        {/* hero */}
-        <header style={{ padding: "60px 0 38px" }}>
-          <Wrap>
-            <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: ".34em", color: t.accent, textTransform: "uppercase", margin: "0 0 14px" }}>Mission briefing · authorized: Agent</p>
-            <div className="disp" style={{ fontWeight: 700, fontSize: 15, letterSpacing: ".5em", color: "var(--dim)", marginBottom: 2 }}>{data.block}</div>
-            <h1 className="disp" style={{ fontSize: "clamp(46px, 9vw, 100px)", lineHeight: 0.92, margin: "0 0 18px", textWrap: "balance", background: "linear-gradient(180deg,#fff 0%, #cdd4dc 60%, #97a1ac 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              {data.title.map((l, i) => <span key={i} style={{ display: "block" }}>{l}</span>)}
+        {/* title + thesis + player, in a row on wide screens */}
+        <div style={{ display: "flex", gap: 22, alignItems: "flex-end", flexWrap: "wrap" }}>
+          <div style={{ flex: "1 1 380px", minWidth: 0 }}>
+            <div className="disp" style={{ fontWeight: 700, fontSize: 13, letterSpacing: ".45em", color: "#9BA6B2" }}>{data.block}</div>
+            <h1 className="bi-title disp" style={{ fontWeight: 700, fontSize: "clamp(38px, 6.4vw, 68px)", lineHeight: 0.9, margin: "4px 0 8px", background: "linear-gradient(180deg,#fff 0%, #cdd4dc 62%, #97a1ac 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
+              {data.title.join(" ")}
             </h1>
-            <p style={{ fontSize: "clamp(17px,2.4vw,21px)", color: "var(--dim)", maxWidth: "52ch", margin: 0 }} dangerouslySetInnerHTML={{ __html: data.thesis }} />
+            <p style={{ fontSize: "clamp(14px,1.7vw,17px)", color: "#9BA6B2", margin: 0, maxWidth: "44ch" }} dangerouslySetInnerHTML={{ __html: data.thesis }} />
+          </div>
 
-            {/* ATLAS voice player */}
-            <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 18, background: "linear-gradient(180deg,var(--panel2),var(--panel))", border: "1px solid var(--edge)", borderLeft: `3px solid ${t.accent}`, borderRadius: 12, padding: "16px 20px", maxWidth: 560, boxShadow: playing ? `0 0 22px rgba(${t.accentRGB},.28)` : "none" }}>
-              <button className="playbtn" onClick={toggle} aria-label={playing ? "Pause the briefing" : "Play the briefing"}
-                style={{ flex: "0 0 auto", width: 56, height: 56, borderRadius: "50%", border: `1px solid ${t.accent}`, background: `radial-gradient(circle at 40% 35%, rgba(${t.accentRGB},.22), #14110a)`, color: t.accentHi, fontSize: 20, display: "grid", placeItems: "center", cursor: "pointer" }}>
-                {playing ? "❚❚" : "▶"}
-              </button>
-              <div style={{ minWidth: 0 }}>
-                <div className="disp" style={{ fontWeight: 600, fontSize: 16, letterSpacing: ".06em", color: "var(--ink)" }}>
-                  {data.commander.name} <span style={{ color: t.accent, fontSize: 11, fontFamily: MONO, letterSpacing: ".16em", marginLeft: 8 }}>{data.commander.org}</span>
-                </div>
-                <div style={{ fontSize: 13, color: "var(--dim)", marginTop: 1 }}>{label}</div>
-                <div aria-hidden style={{ display: "flex", alignItems: "center", gap: 3, height: 22, marginTop: 8 }}>
-                  {bars.map((_, i) => <i key={i} style={{ width: 3, height: barH(i), background: playing ? t.accent : "#7C8CA0", borderRadius: 2, display: "block", transition: "height .1s" }} data-k={tick} />)}
-                </div>
+          {/* ATLAS player */}
+          <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(180deg,#171C24,#12161C)", border: "1px solid #232B36", borderLeft: `3px solid ${acc}`, borderRadius: 12, padding: "11px 15px 11px 12px" }}>
+            <button className="play" onClick={toggle} aria-label={playing ? "Pause briefing" : "Play briefing"}
+              style={{ flex: "0 0 auto", width: 48, height: 48, borderRadius: "50%", border: `1px solid ${acc}`, background: `radial-gradient(circle at 40% 35%, rgba(${t.accentRGB},.22), #14110a)`, color: accHi, fontSize: 17, display: "grid", placeItems: "center", cursor: "pointer" }}>
+              {playing ? "❚❚" : "▶"}
+            </button>
+            <div>
+              <div className="disp" style={{ fontWeight: 600, fontSize: 15, letterSpacing: ".05em" }}>{data.commander.name} <span style={{ color: acc, fontSize: 10, fontFamily: MONO, letterSpacing: ".14em" }}>ARC CMD</span></div>
+              <div style={{ fontSize: 12, color: "#9BA6B2", marginTop: 1 }}>{label}</div>
+              <div aria-hidden style={{ display: "flex", alignItems: "center", gap: 2.5, height: 16, marginTop: 6 }}>
+                {bars.map((_, i) => <i key={i} style={{ width: 2.5, height: barH(i), background: playing ? acc : "#4a5563", borderRadius: 2, display: "block", transition: "height .1s" }} />)}
               </div>
             </div>
             <audio ref={audioRef} preload="auto" src={data.audio} />
-          </Wrap>
-        </header>
+          </div>
+        </div>
 
-        {/* the shift */}
-        <Section>
-          <p style={kicker(t.accent)}>{data.shift.kicker}</p>
-          <p className="disp" style={{ fontSize: "clamp(24px,4.4vw,38px)", fontWeight: 600, lineHeight: 1.08, margin: "0 0 14px", textWrap: "balance", color: "var(--ink)", textTransform: "none" }} dangerouslySetInnerHTML={{ __html: emHtml(data.shift.lede, t.accent) }} />
-          <p style={{ color: "var(--dim)", maxWidth: "64ch", margin: 0 }} dangerouslySetInnerHTML={{ __html: data.shift.body }} />
-        </Section>
-
-        {/* dossier */}
-        <Section>
-          <p style={kicker(t.accent)}>{data.filesKicker}</p>
-          <p className="disp" style={{ fontSize: "clamp(24px,4.4vw,38px)", fontWeight: 600, margin: "0 0 20px", color: "var(--ink)", textTransform: "none" }}>The dossier</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 14 }} className="bi-files">
+        {/* the five cases — one aggregated row */}
+        <div>
+          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", color: acc, marginBottom: 7 }}>{data.filesKicker}</div>
+          <div className="bi-files" style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 9 }}>
             {data.files.map((f) => (
-              <div key={f.caseNo} className="file" style={{ background: "linear-gradient(180deg,var(--panel2),var(--panel))", border: "1px solid var(--edge)", borderRadius: 10, padding: "18px 18px 16px", position: "relative", overflow: "hidden" }}>
+              <div key={f.caseNo} className="file" style={{ background: "linear-gradient(180deg,#171C24,#12161C)", border: "1px solid #232B36", borderRadius: 9, padding: "11px 11px 10px", position: "relative", overflow: "hidden", minWidth: 0 }}>
                 <span style={{ position: "absolute", inset: "0 auto 0 0", width: 3, background: `rgba(${t.accentRGB},.55)`, display: "block" }} />
-                <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".14em", color: "var(--faint)" }}>{f.caseNo}</div>
-                <div style={{ display: "inline-block", fontFamily: MONO, fontSize: 10.5, letterSpacing: ".12em", color: t.accent, border: `1px solid rgba(${t.accentRGB},.5)`, borderRadius: 4, padding: "1px 7px", margin: "8px 0 6px" }}>{f.codename}</div>
-                <h3 className="disp" style={{ fontSize: 22, margin: "0 0 6px", color: "var(--ink)", fontWeight: 600, textTransform: "none" }}>{f.title}</h3>
-                <p style={{ fontSize: 14, color: "var(--dim)", margin: 0 }}>{f.blurb}</p>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+                  <span style={{ fontFamily: MONO, fontSize: 10, color: "#5E6874" }}>{f.caseNo}</span>
+                  <span style={{ fontFamily: MONO, fontSize: 9, letterSpacing: ".08em", color: acc, border: `1px solid rgba(${t.accentRGB},.5)`, borderRadius: 3, padding: "0 5px" }}>{f.codename}</span>
+                </div>
+                <div className="disp" style={{ fontSize: 15, color: "#ECEFF3", fontWeight: 600, textTransform: "none", lineHeight: 1.05, marginBottom: 3 }}>{f.title}</div>
+                <div style={{ fontSize: 11.5, color: "#9BA6B2", lineHeight: 1.3 }}>{f.blurb}</div>
               </div>
             ))}
-            <div className="file" style={{ display: "grid", placeItems: "center", textAlign: "center", border: "1px dashed var(--edge)", borderRadius: 10, padding: 18 }}>
-              <div>
-                <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".16em", color: t.accent }}>CEREMONY</div>
-                <div className="disp" style={{ fontSize: 19, marginTop: 6, color: "var(--ink)", textTransform: "none" }}>Clear all five</div>
-                <p style={{ fontSize: 13, color: "var(--dim)", margin: "4px 0 0" }}>{data.ceremony.replace("Clear all five and ", "and ")}</p>
-              </div>
+          </div>
+        </div>
+
+        {/* skills + begin, one row */}
+        <div style={{ display: "flex", gap: 18, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", marginTop: 2 }}>
+          <div style={{ flex: "1 1 300px", minWidth: 0 }}>
+            <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", color: acc, marginBottom: 7 }}>By the end, you'll be able to</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+              {data.skills.map((s) => (
+                <span key={s.name} className="disp" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 600, letterSpacing: ".02em", textTransform: "none", color: "#ECEFF3", background: "#12161C", border: "1px solid #232B36", borderRadius: 999, padding: "6px 12px" }}>
+                  <span style={{ color: acc, fontWeight: 700 }}>✓</span>{s.name}
+                </span>
+              ))}
             </div>
           </div>
-        </Section>
-
-        {/* skills */}
-        <Section>
-          <p style={kicker(t.accent)}>By the end of this block</p>
-          <p className="disp" style={{ fontSize: "clamp(24px,4.4vw,38px)", fontWeight: 600, margin: "0 0 18px", color: "var(--ink)", textTransform: "none" }}>You'll walk away able to…</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 1, background: "var(--edge)", border: "1px solid var(--edge)", borderRadius: 10, overflow: "hidden" }}>
-            {data.skills.map((s) => (
-              <div key={s.name} style={{ display: "flex", alignItems: "center", gap: 14, background: "var(--panel)", padding: "14px 18px", flexWrap: "wrap" }}>
-                <span style={{ flex: "0 0 auto", width: 22, height: 22, borderRadius: "50%", border: `1.5px solid ${t.accent}`, color: t.accent, display: "grid", placeItems: "center", fontSize: 12, fontWeight: 700 }}>✓</span>
-                <b className="disp" style={{ fontWeight: 600, letterSpacing: ".03em", color: "var(--ink)", fontSize: 16, textTransform: "none" }}>{s.name}</b>
-                <span style={{ color: "var(--dim)", fontSize: 14 }}>{s.desc}</span>
-              </div>
-            ))}
+          <div style={{ flex: "0 0 auto", textAlign: "right" }}>
+            <button className="cta" onClick={onBegin} style={{ fontFamily: DISP, fontWeight: 600, fontSize: 17, letterSpacing: ".05em", textTransform: "uppercase", color: "#14110a", background: `linear-gradient(180deg,${accHi},${acc})`, border: 0, borderRadius: 9, padding: "14px 30px", cursor: "pointer" }}>{data.beginLabel}</button>
+            <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".12em", color: "#5E6874", marginTop: 8, textTransform: "uppercase" }}>— {data.commander.signoff}</div>
           </div>
-        </Section>
+        </div>
 
-        {/* handoff */}
-        <Section last>
-          <div style={{ background: "linear-gradient(180deg,var(--panel2),var(--panel))", border: "1px solid var(--edge)", borderRadius: 12, padding: "28px 24px", textAlign: "center" }}>
-            <p className="disp" style={{ fontWeight: 600, fontSize: "clamp(22px,4vw,30px)", color: "var(--ink)", margin: "0 0 8px", textTransform: "none" }} dangerouslySetInnerHTML={{ __html: emHtml(data.handoff, t.accent) }} />
-            <button className="cta" onClick={onBegin} style={{ display: "inline-flex", alignItems: "center", gap: 9, marginTop: 18, fontFamily: DISP, fontWeight: 600, fontSize: 16, letterSpacing: ".05em", textTransform: "uppercase", color: "#14110a", background: `linear-gradient(180deg,${t.accentHi},${t.accent})`, border: 0, borderRadius: 8, padding: "13px 28px", cursor: "pointer" }}>{data.beginLabel}</button>
-            <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: ".16em", color: "var(--faint)", marginTop: 16, textTransform: "uppercase" }}>— {data.commander.signoff}</div>
-          </div>
-        </Section>
       </div>
-
-      <style>{`@media (max-width:680px){ .bi-files{ grid-template-columns:1fr !important } }`}</style>
     </main>
   );
-}
-
-function Wrap({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return <div style={{ maxWidth: 920, margin: "0 auto", padding: "0 24px", ...style }}>{children}</div>;
-}
-function Section({ children, last }: { children: React.ReactNode; last?: boolean }) {
-  return <section style={{ borderTop: "1px solid var(--edge)", padding: last ? "34px 0 60px" : "34px 0" }}><Wrap>{children}</Wrap></section>;
-}
-function kicker(acc: string): React.CSSProperties {
-  return { fontFamily: MONO, fontSize: 12, letterSpacing: ".24em", textTransform: "uppercase", color: acc, margin: "0 0 10px" };
-}
-function emHtml(s: string, acc: string) {
-  return s.replace(/<em>/g, `<em style="color:${acc};font-style:normal">`);
 }
