@@ -113,14 +113,19 @@ export default function WeekIntroScene({
   return (
     <div
       style={{
-        position: "absolute",
-        inset: 0,
+        // Self-sizing (NOT position:absolute) so it has real height inside
+        // LessonStage's content-driven wrapper — an absolute inset:0 child
+        // there collapses to zero height and renders blank.
+        position: "relative",
+        width: "100%",
+        minHeight: "min(88vh, 820px)",
+        borderRadius: 24,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         gap: "clamp(18px, 3.2vh, 34px)",
-        padding: "24px",
+        padding: "clamp(24px, 4vh, 44px) 24px",
         textAlign: "center",
         background:
           "radial-gradient(900px 500px at 50% -8%, rgba(36,20,66,0.9) 0%, rgba(10,12,32,0) 60%), linear-gradient(180deg, #070912 0%, #0d1030 100%)",
