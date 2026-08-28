@@ -94,7 +94,7 @@ export const case06Phone: PhoneCase = {
         { t: "con", text: "you want your spot or not? 👀", delay: 900 },
         { t: "choose", options: [{ label: "wait, who is this?" }, { label: "omg yes!! 🙌" }] },
         { t: "wren", text: "Good. Now don't chase the prize, read HIM. Here he goes.", voice: "/audio/wren/m06p-t1-read.mp3" },
-        { t: "con", text: "I'm Kai, one of the tournament mods 👍 but you gotta be quick, slots close in 20 mins!!" },
+        { t: "con", text: "I'm Kai, one of the tournament mods 👍 but you gotta be quick, I need your answer in the next 20 mins!!" },
         { t: "call", answer: "hurry", ok: "Called it. That 20-minute clock isn't real, it's just there to stop you thinking.", okVoice: "/audio/wren/m06p-t1-hurry.mp3" },
         { t: "con", text: "and only 2 spots left for your whole school tbh 😬", delay: 1000 },
         { t: "call", answer: "scarcity", ok: "Two in a row. He's stacking levers, hoping one of them lands.", okVoice: "/audio/wren/m06p-t1-scarcity.mp3" },

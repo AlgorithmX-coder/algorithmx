@@ -302,7 +302,7 @@ function DockView({ dock, wrongId, onLever, onReply, onContinue }: { dock: Dock;
   if (dock.type === "call") {
     return (
       <>
-        <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>Which lever is he pulling? Tap it.</p>
+        <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>Which lever is he pulling <b style={{ color: C.pink }}>now</b>? Tap it.</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 7 }}>
           {LEVERS.map((l) => (
             <button key={l.id} className={`ph-lever${wrongId === l.id ? " no" : ""}`} onClick={() => onLever(l.id)}
