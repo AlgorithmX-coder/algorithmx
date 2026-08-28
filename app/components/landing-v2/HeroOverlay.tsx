@@ -146,9 +146,10 @@ export default function HeroOverlay() {
         <div
           style={{
             display: "flex",
-            gap: 12,
+            gap: 14,
             marginTop: "calc(var(--lv2-rail) * 0.6)",
             flexWrap: "wrap",
+            alignItems: "center",
             pointerEvents: "auto",
           }}
         >
@@ -160,18 +161,20 @@ export default function HeroOverlay() {
             Explore courses
             <span aria-hidden style={{ marginLeft: 8 }}>→</span>
           </Link>
-        </div>
 
-        {/* Aligned with the NCSC (alignment, not endorsement — the NCSC
-            runs no endorsement scheme). Above the fold so it's the first
-            trust mark a visitor sees, matching the course landings. */}
-        <div style={{ marginTop: "calc(var(--lv2-rail) * 0.45)" }}>
+          {/* Aligned with the NCSC (alignment, not endorsement — the NCSC
+              runs no endorsement scheme). Inline with the CTA rather than
+              stacked below it: the hero column safe-centres in the
+              viewport, and a stacked badge fell below the fold on ~770px
+              laptop heights — inline keeps it in the first screenful,
+              which is the whole point of having it here. Wraps under the
+              CTA on narrow screens via the row's flexWrap. */}
           <span
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: 13,
-              padding: "10px 18px",
+              gap: 12,
+              padding: "8px 16px",
               borderRadius: 999,
               background: "rgba(13,15,24,0.55)",
               border: "1px solid rgba(159,245,255,0.28)",
@@ -192,9 +195,9 @@ export default function HeroOverlay() {
             >
               Aligned with UK&rsquo;s National Cyber Security Centre
             </span>
-            <span aria-hidden style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)" }} />
+            <span aria-hidden style={{ width: 1, height: 20, background: "rgba(232,237,255,0.18)" }} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 28, width: "auto" }} />
+            <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 26, width: "auto" }} />
           </span>
         </div>
       </div>
