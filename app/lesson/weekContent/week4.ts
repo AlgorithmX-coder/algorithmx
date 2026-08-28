@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 4 - Scams and Tricks: Real or Fake?
@@ -38,6 +39,9 @@ export const WEEK_4: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the V-Bucks blast
     { type: "video", videoPlaceholder: "Week 4: The Prize That Wasn't", videoSrc: "/videos/module-04-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[4] },
 
     // 1 - ALERT: incident report
     {

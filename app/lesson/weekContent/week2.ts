@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 2 - Private Info: Guard Your Secrets.
@@ -37,6 +38,9 @@ export const WEEK_2: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: "The Break-In" (the free-game trap)
     { type: "video", videoPlaceholder: "Week 2: The Break-In", videoSrc: "/videos/module-02-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[2] },
 
     // 1 - ALERT: incident report with this week's topic image
     {

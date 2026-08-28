@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 14 - Smart Devices: Who's Listening?
@@ -40,6 +41,9 @@ export const WEEK_14: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the house that listens
     { type: "video", videoPlaceholder: "Week 14: The House That Listens", videoSrc: "/videos/module-14-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[14] },
 
     // 1 - ALERT: incident report
     {

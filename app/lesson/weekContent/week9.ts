@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 9 - Apps & Downloads: Spot the Fakes.
@@ -39,6 +40,9 @@ export const WEEK_9: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the copycat shop
     { type: "video", videoPlaceholder: "Week 9: The Copycat Shop", videoSrc: "/videos/module-09-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[9] },
 
     // 1 - ALERT: incident report
     {

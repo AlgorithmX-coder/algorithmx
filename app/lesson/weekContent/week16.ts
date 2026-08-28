@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 16 - QR Codes & Links: Don't Take the Bait
@@ -41,6 +42,9 @@ export const WEEK_16: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the doorway trick
     { type: "video", videoPlaceholder: "Week 16: The Doorway Trick", videoSrc: "/videos/module-16-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[16] },
 
     // 1 - ALERT: incident report
     {

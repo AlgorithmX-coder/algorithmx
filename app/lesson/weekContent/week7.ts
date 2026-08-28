@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 7 - In-Game Spending: The V-Bucks Trap.
@@ -39,6 +40,9 @@ export const WEEK_7: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the shop that drained an account
     { type: "video", videoPlaceholder: "Week 7: The V-Bucks Trap", videoSrc: "/videos/module-07-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[7] },
 
     // 1 - ALERT: incident report
     {

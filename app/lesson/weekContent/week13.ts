@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 13 - Screen Time: Balance Your Power.
@@ -40,6 +41,9 @@ export const WEEK_13: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the battery thief
     { type: "video", videoPlaceholder: "Week 13: The Battery Thief", videoSrc: "/videos/module-13-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[13] },
 
     // 1 - ALERT: incident report
     {

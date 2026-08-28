@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 5 - Cyberbullying: Words Have Power.
@@ -40,6 +41,9 @@ export const WEEK_5: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the group chat pile-on
     { type: "video", videoPlaceholder: "Week 5: The Pile-On", videoSrc: "/videos/module-05-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[5] },
 
     // 1 - ALERT: incident report
     {

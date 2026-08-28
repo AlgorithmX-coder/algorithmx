@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 20 - Graduation Day: The Final Mission
@@ -44,6 +45,9 @@ export const WEEK_20: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the final mission
     { type: "video", videoPlaceholder: "Week 20: The Final Mission", videoSrc: "/videos/module-20-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[20] },
 
     // 1 - ALERT: incident report
     {

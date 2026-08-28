@@ -1202,20 +1202,13 @@ function DynamicLessonInner({
         );
       }
 
-      case "weekIntro": {
-        // Owner A/B audition: ?atlas=b|c swaps the ATLAS clip to a "-b"/"-c"
-        // sibling file so a voice take can be heard in context. Owner-gated
-        // (deepLinkAllowed) and alphanumeric-guarded so it can't touch the path.
-        const atlasParam = deepLinkAllowed ? searchParams?.get("atlas") ?? "" : "";
-        const audioSrc = /^[a-z0-9]+$/.test(atlasParam)
-          ? def.audioSrc.replace(/\.mp3$/, `-${atlasParam}.mp3`)
-          : def.audioSrc;
+      case "weekIntro":
         return (
           <FullScene>
             <WeekIntroScene
               title={def.title}
               tagline={def.tagline}
-              audioSrc={audioSrc}
+              audioSrc={def.audioSrc}
               accent={def.accent}
               points={def.points}
               commanderName={def.commanderName}
@@ -1223,7 +1216,6 @@ function DynamicLessonInner({
             />
           </FullScene>
         );
-      }
 
       case "alert":
         return (

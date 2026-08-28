@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 3 - Stranger Danger: Friend or Foe?
@@ -37,6 +38,9 @@ export const WEEK_3: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the fake-kid profile trap
     { type: "video", videoPlaceholder: "Week 3: The Fake Friend", videoSrc: "/videos/module-03-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[3] },
 
     // 1 - ALERT: incident report
     {

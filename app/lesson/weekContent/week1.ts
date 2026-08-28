@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 1 - Passwords: The Secret Code.
@@ -36,20 +37,8 @@ export const WEEK_1: WeekContent = {
     // 0 - OPENING VIDEO: "The Break-In" (Raccoon cracks a weak password)
     { type: "video", videoPlaceholder: "Week 1: The Break-In", videoSrc: "/videos/module-01-intro.mp4" },
 
-    // 1 - WEEK INTRO: ATLAS (Mission Command) frames the week, plays after the video
-    {
-      type: "weekIntro",
-      title: "Passwords: The Secret Code",
-      tagline: "Learn the magic words that keep the Hacker Raccoon locked out.",
-      audioSrc: "/audio/atlas/heroes-week-01.mp3",
-      accent: "#00e5ff",
-      commanderName: "MISSION COMMAND",
-      points: [
-        { icon: "🔑", label: "Build a super-strong password" },
-        { icon: "🤫", label: "Keep it secret" },
-        { icon: "🦝", label: "Beat the Hacker Raccoon" },
-      ],
-    },
+    // 1 - WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[1] },
 
     // 1 - ALERT: incident report with this week's topic image
     {

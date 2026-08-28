@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 12 - Digital Footprint: Tracks in the Snow.
@@ -38,6 +39,9 @@ export const WEEK_12: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the snowfield
     { type: "video", videoPlaceholder: "Week 12: Tracks in the Snow", videoSrc: "/videos/module-12-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[12] },
 
     // 1 - ALERT: incident report
     {

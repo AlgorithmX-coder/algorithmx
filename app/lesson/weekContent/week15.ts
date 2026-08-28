@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 15 - AI & Chatbots: Robot or Real?
@@ -42,6 +43,9 @@ export const WEEK_15: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the know-it-all that didn't
     { type: "video", videoPlaceholder: "Week 15: The Know-It-All That Didn't", videoSrc: "/videos/module-15-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[15] },
 
     // 1 - ALERT: incident report
     {

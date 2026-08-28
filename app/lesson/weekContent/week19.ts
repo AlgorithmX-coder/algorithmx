@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 19 - Protecting Family: Family Firewall
@@ -48,6 +49,9 @@ export const WEEK_19: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the expert in the house
     { type: "video", videoPlaceholder: "Week 19: The Expert in the House", videoSrc: "/videos/module-19-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[19] },
 
     // 1 - ALERT: incident report
     {

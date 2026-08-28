@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 6 - Gaming Safety: Defend Your Game Zone.
@@ -40,6 +41,9 @@ export const WEEK_6: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the raccoon joins the lobby
     { type: "video", videoPlaceholder: "Week 6: The Lobby Intruder", videoSrc: "/videos/module-06-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[6] },
 
     // 1 - ALERT: incident report
     {

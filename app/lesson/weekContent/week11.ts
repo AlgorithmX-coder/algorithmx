@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 11 - Something Wrong? Emergency Protocol.
@@ -46,6 +47,9 @@ export const WEEK_11: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: something feels wrong
     { type: "video", videoPlaceholder: "Week 11: Something Wrong?", videoSrc: "/videos/module-11-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[11] },
 
     // 1 - ALERT: incident report (warm, not scary)
     {

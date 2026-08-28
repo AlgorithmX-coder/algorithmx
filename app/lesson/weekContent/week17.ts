@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 17 - Social Media: The Profile Shield
@@ -44,6 +45,9 @@ export const WEEK_17: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the highlight reel
     { type: "video", videoPlaceholder: "Week 17: The Highlight Reel", videoSrc: "/videos/module-17-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[17] },
 
     // 1 - ALERT: incident report
     {

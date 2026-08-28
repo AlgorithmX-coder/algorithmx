@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 8 - Photos & Videos: Think Before You Share.
@@ -39,6 +40,9 @@ export const WEEK_8: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the photo that ran away
     { type: "video", videoPlaceholder: "Week 8: The Runaway Photo", videoSrc: "/videos/module-08-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[8] },
 
     // 1 - ALERT: incident report
     {

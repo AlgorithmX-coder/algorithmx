@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 18 - Sharing Devices: Lock Before You Leave
@@ -44,6 +45,9 @@ export const WEEK_18: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: the family tablet
     { type: "video", videoPlaceholder: "Week 18: The Family Tablet", videoSrc: "/videos/module-18-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[18] },
 
     // 1 - ALERT: incident report
     {

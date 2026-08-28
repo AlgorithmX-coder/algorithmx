@@ -1,4 +1,5 @@
 import type { WeekContent } from "./types";
+import { WEEK_INTROS } from "./weekIntros";
 
 /**
  * Week 10 - YouTube & Videos: Escape the Rabbit Hole.
@@ -40,6 +41,9 @@ export const WEEK_10: WeekContent = {
   screens: [
     // 0 - OPENING VIDEO: down the rabbit hole
     { type: "video", videoPlaceholder: "Week 10: Down the Rabbit Hole", videoSrc: "/videos/module-10-intro.mp4" },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
+    { type: "weekIntro", ...WEEK_INTROS[10] },
 
     // 1 - ALERT: incident report
     {
