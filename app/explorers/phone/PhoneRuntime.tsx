@@ -15,6 +15,8 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep } from "./case06";
+import BlockIntro from "./BlockIntro";
+import { block2Intro } from "./blockIntroData";
 
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#6b6b78",
@@ -57,7 +59,7 @@ type Dock =
   | null;
 
 export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneCase: PhoneCase; onExit?: () => void; onNextCase?: () => void }) {
-  const [phase, setPhase] = useState<"lock" | "play" | "debrief">("lock");
+  const [phase, setPhase] = useState<"brief" | "lock" | "play" | "debrief">("brief");
   const [header, setHeader] = useState(phoneCase.threads[0]);
   const [items, setItems] = useState<Item[]>([]);
   const [dock, setDock] = useState<Dock>(null);
@@ -183,6 +185,9 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
       {[5, 11, 7].map((h, i) => <i key={i} style={{ width: 2.5, height: h, background: C.wren, borderRadius: 2, display: "block", animation: reduce ? "none" : `ph-eq .9s ${i * 0.15}s infinite ease-in-out` }} />)}
     </span>
   );
+
+  // The block briefing (ATLAS) plays first, then the phone opens.
+  if (phase === "brief") return <BlockIntro data={block2Intro} onBegin={() => setPhase("lock")} />;
 
   return (
     <main className="ph" style={{ minHeight: "100vh", background: `radial-gradient(900px 500px at 50% -10%, #241033 0%, rgba(36,16,51,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden" }}>
