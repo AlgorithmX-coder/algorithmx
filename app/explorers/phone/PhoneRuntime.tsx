@@ -12,6 +12,8 @@
  */
 
 import { useEffect, useReducer, useRef, useState } from "react";
+import { MatrixRain } from "../MatrixRain";
+import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep } from "./case06";
 
 const C = {
@@ -60,6 +62,9 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const [items, setItems] = useState<Item[]>([]);
   const [dock, setDock] = useState<Dock>(null);
   const [wrongId, setWrongId] = useState<LeverId | null>(null);
+  const [voiceOn, setVoiceOn] = useState(true);
+  const voiceRef = useRef(true);
+  const speaking = useWrenSpeaking();
   const [, force] = useReducer((n) => n + 1, 0);
 
   const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -85,6 +90,19 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   };
   const awaitUser = () => new Promise<string>((res) => { resolveRef.current = res; });
 
+  // WREN speaks a coaching line and the thread WAITS for her to finish before
+  // anything advances — that's the anti-whizz. Voice off = a read-timer instead.
+  const speak = (text: string, voice?: string) =>
+    new Promise<void>((res) => {
+      let done = false;
+      const fin = () => { if (!done) { done = true; res(); } };
+      if (voice && voiceRef.current) { playWren(voice, true, fin); setTimeout(fin, 16000); }
+      else setTimeout(fin, reduce ? 300 : Math.max(2400, text.length * 42));
+    });
+
+  useEffect(() => { voiceRef.current = voiceOn; }, [voiceOn]);
+  useEffect(() => () => stopWren(), []);
+
   // process a flat list of steps; choose loops on a "bad" outcome (rewind)
   const runSteps = async (steps: PhoneStep[]) => {
     for (const step of steps) {
@@ -96,7 +114,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         await wait(500);
       } else if (step.t === "wren") {
         push({ id: nextId(), kind: "wren", text: step.text });
-        await wait(reduce ? 300 : 1100);
+        await speak(step.text, step.voice);
       } else if (step.t === "call") {
         setDock({ type: "call", answer: step.answer });
         await awaitUser(); // resolves only on the correct lever
@@ -104,7 +122,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         const cid = lastConRef.current;
         const nm = LEVERS.find((l) => l.id === step.answer)!.name;
         setItems((a) => a.map((x) => (x.id === cid && x.kind === "con" ? { ...x, tag: nm } : x)));
-        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await wait(reduce ? 300 : 1100); }
+        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       } else if (step.t === "choose") {
         let done = false;
         while (!done) {
@@ -127,7 +145,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     setItems([]);
     lastConRef.current = null;
     await wait(500);
-    if (t.intro) { push({ id: nextId(), kind: "wren", text: t.intro }); await wait(reduce ? 300 : 1300); }
+    if (t.intro) { push({ id: nextId(), kind: "wren", text: t.intro }); await speak(t.intro, t.introVoice); }
     await runSteps(t.steps);
     // thread cleared
     setDock({ type: "clear", text: t.clear });
@@ -138,7 +156,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     // WREN's opening lines land as messages before the first thread
     setHeader({ ...phoneCase.threads[0], who: "WREN", avatar: "◈", tag: undefined, sub: "in your ear" });
     setItems([]);
-    for (const line of phoneCase.open) { push({ id: nextId(), kind: "wren", text: line }); await wait(reduce ? 300 : 1200); }
+    for (let i = 0; i < phoneCase.open.length; i++) { const line = phoneCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, phoneCase.openVoice?.[i]); }
     setDock({ type: "clear", text: "Ready when you are." });
     await awaitUser();
     for (let i = 0; i < phoneCase.threads.length; i++) {
@@ -167,12 +185,14 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   );
 
   return (
-    <main className="ph" style={{ minHeight: "100vh", background: `radial-gradient(900px 500px at 50% -10%, #1c1c2b 0%, rgba(28,28,43,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden" }}>
+    <main className="ph" style={{ minHeight: "100vh", background: `radial-gradient(900px 500px at 50% -10%, #241033 0%, rgba(36,16,51,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden" }}>
       <style>{CSS}</style>
+      <MatrixRain reduced={!!reduce} opacity={0.13} colors={["#FF3D7F", "#B98BFF", "#2E6BE6"]} head="#FFE3EE" />
 
       <button className="ph-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>← Leave</button>
+      <button className="ph-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
 
-      <div style={{ width: "100%", maxWidth: 384, height: 780, maxHeight: "calc(100vh - 30px)", background: C.phone, borderRadius: 42, padding: 10, boxShadow: `0 0 0 2px #2a2a34, 0 30px 80px rgba(0,0,0,.6)`, position: "relative" }}>
+      <div style={{ width: "100%", maxWidth: 384, height: 780, maxHeight: "calc(100vh - 30px)", background: C.phone, borderRadius: 42, padding: 10, boxShadow: `0 0 0 2px #2a2a34, 0 30px 80px rgba(0,0,0,.6)`, position: "relative", zIndex: 1 }}>
         <div style={{ position: "relative", height: "100%", background: C.chat, borderRadius: 33, overflow: "hidden", display: "flex", flexDirection: "column" }}>
           <div aria-hidden style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 148, height: 25, background: C.phone, borderRadius: "0 0 17px 17px", zIndex: 6 }} />
           {/* status bar */}

@@ -26,10 +26,11 @@ export type PhoneStep =
   | { t: "con"; text: string; ask?: boolean; delay?: number }
   /** A message auto-sent as you (used inside a choice's follow-up). */
   | { t: "you"; text: string }
-  /** WREN drops into the thread to coach. */
-  | { t: "wren"; text: string }
-  /** Tap the lever the last message pulled; `ok` is WREN's line after a correct call. */
-  | { t: "call"; answer: LeverId; prompt?: string; ok?: string }
+  /** WREN drops into the thread to coach. She SPEAKS it (voice = audio path); the
+   *  thread waits for her to finish before anything advances (anti-whizz). */
+  | { t: "wren"; text: string; voice?: string }
+  /** Tap the lever the last message pulled; `ok`/`okVoice` is WREN's spoken line after a correct call. */
+  | { t: "call"; answer: LeverId; prompt?: string; ok?: string; okVoice?: string }
   /** You choose how to reply. A wrong `outcome:"bad"` can rewind via `then`. */
   | {
       t: "choose";
@@ -43,8 +44,9 @@ export interface PhoneThread {
   avatar: string;
   tag?: string;
   sub: string;
-  /** WREN's set-up line shown before the thread opens. */
+  /** WREN's set-up line shown (and spoken) before the thread opens. */
   intro?: string;
+  introVoice?: string;
   steps: PhoneStep[];
   /** Shown on the little "done" card between threads. */
   clear: string;
@@ -55,8 +57,9 @@ export interface PhoneCase {
   caseNumber: string;
   title: string;
   actor: string;
-  /** WREN's very first line, on the lock screen. */
+  /** WREN's opening lines — spoken, one per entry in `openVoice`. */
   open: string[];
+  openVoice?: string[];
   threads: PhoneThread[];
   debrief: { title: string; lines: string[]; move: string };
 }
@@ -72,6 +75,12 @@ export const case06Phone: PhoneCase = {
     "They do it with six feelings: hurry, scarcity, authority, liking, fear, and payback. I'll be right here in your messages. Your job is to feel a lever the second it's pulled, and name it.",
     "Here comes the first one now.",
   ],
+  openVoice: [
+    "/audio/wren/m06p-open-1.mp3",
+    "/audio/wren/m06p-open-2.mp3",
+    "/audio/wren/m06p-open-3.mp3",
+    "/audio/wren/m06p-open-4.mp3",
+  ],
 
   threads: [
     /* ---------------- thread 1: the tournament con ---------------- */
@@ -82,6 +91,7 @@ export const case06Phone: PhoneCase = {
       tag: "UNKNOWN",
       sub: "not in your contacts",
       intro: "You don't know this account. Watch how he talks, not what he's offering.",
+      introVoice: "/audio/wren/m06p-t1-intro.mp3",
       clear: "One con down. You felt the levers instead of the prize.",
       steps: [
         { t: "con", text: "yo!! you just made the school tournament shortlist 🎮🔥" },
@@ -93,13 +103,13 @@ export const case06Phone: PhoneCase = {
             { label: "omg yes!! 🙌" },
           ],
         },
-        { t: "wren", text: "Good. Now don't chase the prize, read HIM. Here he goes." },
+        { t: "wren", text: "Good. Now don't chase the prize, read HIM. Here he goes.", voice: "/audio/wren/m06p-t1-read.mp3" },
         { t: "con", text: "I'm Kai, one of the tournament mods 👍 but you gotta be quick, slots close in 20 mins!!" },
-        { t: "call", answer: "hurry", ok: "Called it. That 20-minute clock isn't real, it's just there to stop you thinking." },
+        { t: "call", answer: "hurry", ok: "Called it. That 20-minute clock isn't real, it's just there to stop you thinking.", okVoice: "/audio/wren/m06p-t1-hurry.mp3" },
         { t: "con", text: "and only 2 spots left for your whole school tbh 😬", delay: 1000 },
-        { t: "call", answer: "scarcity", ok: "Two in a row. He's stacking levers, hoping one of them lands." },
+        { t: "call", answer: "scarcity", ok: "Two in a row. He's stacking levers, hoping one of them lands.", okVoice: "/audio/wren/m06p-t1-scarcity.mp3" },
         { t: "con", text: "since I'm a mod I can lock yours in right now, just send me your login + password so I can enter you 🙏", ask: true },
-        { t: "wren", text: "And there's the real ask. Freeze. A real mod NEVER needs your password. This whole 'tournament' was the bait for THIS. Your call." },
+        { t: "wren", text: "And there's the real ask. Freeze. A real mod NEVER needs your password. This whole 'tournament' was the bait for THIS. Your call.", voice: "/audio/wren/m06p-t1-ask.mp3" },
         {
           t: "choose",
           prompt: "How do you reply?",
@@ -108,7 +118,7 @@ export const case06Phone: PhoneCase = {
               label: "ok! my login is…",
               outcome: "bad",
               then: [
-                { t: "wren", text: "Stop, don't send it. That password is the only thing he ever wanted, and once it's gone you can't get it back. Try that last move again." },
+                { t: "wren", text: "Stop, don't send it. That password is the only thing he ever wanted, and once it's gone you can't get it back. Try that last move again.", voice: "/audio/wren/m06p-t1-bad.mp3" },
               ],
             },
             { label: "nice try, that's the HURRY trick. bye 👋", outcome: "good", then: [{ t: "con", text: "wait no I—", delay: 700 }] },
@@ -125,14 +135,15 @@ export const case06Phone: PhoneCase = {
       avatar: "M",
       sub: "best friend · online now",
       intro: "This one's different. This is actually your best friend Maya's account. So why does it feel off? Watch.",
+      introVoice: "/audio/wren/m06p-t2-intro.mp3",
       clear: "You spotted a hijacked account, and checked another way. Textbook.",
       steps: [
         { t: "con", text: "heyyy you around? 🥺 kind of an emergency" },
         { t: "con", text: "i'm locked out of my account and the only way to fix it is a code, but it's sending to YOUR number by mistake", delay: 1200 },
-        { t: "wren", text: "It really is Maya's account, so this is confusing. But accounts get stolen, and when they do, the thief keeps the friendship you built. Keep watching how 'Maya' is talking." },
+        { t: "wren", text: "It really is Maya's account, so this is confusing. But accounts get stolen, and when they do, the thief keeps the friendship you built. Keep watching how 'Maya' is talking.", voice: "/audio/wren/m06p-t2-hijack.mp3" },
         { t: "con", text: "can you just screenshot me the code the second it comes? pleeease, i'll literally cry, you're the only one online 😭", ask: true },
-        { t: "call", answer: "fear", ok: "Yep, panic and pressure, so you act before you think. There's a bit of LIKING in there too, leaning on your friendship. But a code sent to YOUR phone unlocks YOUR account, never hers." },
-        { t: "wren", text: "Here's the golden rule for a friend acting weird: check on a DIFFERENT channel. Don't reply here, where a thief could be reading. What do you do?" },
+        { t: "call", answer: "fear", ok: "Yep, panic and pressure, so you act before you think. There's a bit of LIKING in there too, leaning on your friendship. But a code sent to YOUR phone unlocks YOUR account, never hers.", okVoice: "/audio/wren/m06p-t2-fear.mp3" },
+        { t: "wren", text: "Here's the golden rule for a friend acting weird: check on a DIFFERENT channel. Don't reply here, where a thief could be reading. What do you do?", voice: "/audio/wren/m06p-t2-verify.mp3" },
         {
           t: "choose",
           prompt: "How do you handle it?",
@@ -141,7 +152,7 @@ export const case06Phone: PhoneCase = {
               label: "send the code, it's Maya!",
               outcome: "bad",
               then: [
-                { t: "wren", text: "That code was for YOUR account, and you just handed it to whoever stole hers. Rewind, a real friend won't mind you checking first." },
+                { t: "wren", text: "That code was for YOUR account, and you just handed it to whoever stole hers. Rewind, a real friend won't mind you checking first.", voice: "/audio/wren/m06p-t2-bad.mp3" },
               ],
             },
             { label: "call Maya's actual phone to check", outcome: "good", then: [{ t: "you", text: "[you call Maya… the real Maya picks up, confused. Her account was hacked an hour ago.]" }] },
