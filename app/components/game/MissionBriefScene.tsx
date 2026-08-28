@@ -710,6 +710,9 @@ function MissionCard({
           inset: 0,
           transformStyle: "preserve-3d",
           WebkitTransformStyle: "preserve-3d",
+          // Own compositing layer: steadier 3D rasterization, which also helps
+          // suppress the mid-card seam on GPUs prone to it.
+          willChange: "transform",
         }}
       >
         {/* FRONT (revealed objective) — glassy night panel */}
@@ -720,7 +723,15 @@ function MissionCard({
             borderRadius: 18,
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
-            background: "linear-gradient(180deg, rgba(22,28,62,0.92) 0%, rgba(12,16,40,0.95) 100%)",
+            // Lift the two faces apart in depth (front +1px, back -1px) so they
+            // are NOT coplanar. Coplanar preserve-3d faces z-fight on some GPUs
+            // (notably Windows/Edge at high DPI), which rendered a stray line
+            // straight down the middle of the card at rest. The 1px separation
+            // is invisible in 2D but gives the compositor an unambiguous order.
+            transform: "translateZ(1px)",
+            // OPAQUE (no alpha): a semi-transparent face let the other face
+            // bleed through along that seam. Solid navy can't.
+            background: "linear-gradient(180deg, rgb(22,28,62) 0%, rgb(12,16,40) 100%)",
             // A dark 2px hairline at the very edge, with the accent ring just
             // INSIDE it. When the card turns edge-on mid-flip its outer sliver
             // reads dark (blends into the scene) instead of a bright accent-
@@ -755,8 +766,12 @@ function MissionCard({
             borderRadius: 18,
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-            background: "linear-gradient(180deg, rgba(26,33,71,0.9) 0%, rgba(15,21,48,0.94) 100%)",
+            // rotateY keeps it on the reverse side; translateZ(1px) (applied in
+            // its own rotated frame) pushes it a further 1px behind the front so
+            // the two faces never share a plane — see the front face note.
+            transform: "rotateY(180deg) translateZ(1px)",
+            // OPAQUE so the front can't bleed through the seam either.
+            background: "linear-gradient(180deg, rgb(26,33,71) 0%, rgb(15,21,48) 100%)",
             // Same dark-edge treatment as the front so the face-down card's
             // cyan edge doesn't flash a line as it turns edge-on mid-flip.
             boxShadow:
