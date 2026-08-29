@@ -854,34 +854,64 @@ export default function LeakTorch({ onComplete }: { onComplete: () => void }) {
                 position: "absolute",
                 inset: 0,
                 zIndex: 10,
-                display: "grid",
-                placeItems: "center",
+                // The start button lives in a PINNED footer that is always on
+                // screen; the instructions scroll above it. On a short viewport
+                // this stops the button being clipped off the bottom of the
+                // fixed-aspect scene (which previously trapped the child here).
+                display: "flex",
+                flexDirection: "column",
                 background: "rgba(8,11,24,0.82)",
                 backdropFilter: "blur(3px)",
               }}
             >
-              <div style={{ textAlign: "center", padding: 24, maxWidth: 520 }}>
-                <PixIcon emoji="🔍" size={62} />
-                <h2
-                  style={{
-                    margin: "10px 0 6px",
-                    fontSize: 28,
-                    fontWeight: 900,
-                    letterSpacing: 1,
-                    color: "#ffd76a",
-                  }}
-                >
-                  THE LEAK TORCH
-                </h2>
-                <p style={{ margin: "0 0 16px", fontSize: 15.5, opacity: 0.9, lineHeight: 1.45 }}>
-                  Lights out! Private info is hiding in plain sight all over this
-                  room. Sweep the torch beam and find it before a snoop does.
-                </p>
-                <div style={{ display: "grid", gap: 8, marginBottom: 20 }}>
-                  <IntroChip icon="👀" text="Drag the beam to search the dark" />
-                  <IntroChip icon="🛡️" text="Tap a gold glow to seal the leak" />
-                  <IntroChip icon="✅" text="Seal all 4 leaks to win" />
+              <div
+                style={{
+                  flex: "1 1 auto",
+                  minHeight: 0,
+                  overflowY: "auto",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "safe center",
+                  padding: "16px 12px 6px",
+                }}
+              >
+                <div style={{ textAlign: "center", maxWidth: 520 }}>
+                  <PixIcon emoji="🔍" size={52} />
+                  <h2
+                    style={{
+                      margin: "8px 0 6px",
+                      fontSize: 26,
+                      fontWeight: 900,
+                      letterSpacing: 1,
+                      color: "#ffd76a",
+                    }}
+                  >
+                    THE LEAK TORCH
+                  </h2>
+                  <p style={{ margin: "0 0 14px", fontSize: 15, opacity: 0.9, lineHeight: 1.4 }}>
+                    Lights out! Private info is hiding in plain sight all over this
+                    room. Sweep the torch beam and find it before a snoop does.
+                  </p>
+                  <div style={{ display: "grid", gap: 8 }}>
+                    <IntroChip icon="👀" text="Drag the beam to search the dark" />
+                    <IntroChip icon="🛡️" text="Tap a gold glow to seal the leak" />
+                    <IntroChip icon="✅" text="Seal all 4 leaks to win" />
+                  </div>
                 </div>
+              </div>
+              <div
+                style={{
+                  flex: "0 0 auto",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  padding: "10px 12px 16px",
+                  background:
+                    "linear-gradient(180deg, rgba(8,11,24,0) 0%, rgba(8,11,24,0.92) 42%)",
+                }}
+              >
                 <button
                   onClick={() => setPhase("play")}
                   style={{
