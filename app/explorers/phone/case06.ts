@@ -114,7 +114,13 @@ export const case06Phone: PhoneCase = {
       steps: [
         { t: "con", text: "yo!! you just made the school tournament shortlist 🎮🔥" },
         { t: "con", text: "you want your spot or not? 👀", delay: 900 },
-        { t: "choose", options: [{ label: "wait, who is this?" }, { label: "omg yes!! 🙌" }] },
+        {
+          t: "choose",
+          options: [
+            { label: "wait, who is this?", outcome: "good" },
+            { label: "omg yes!! 🙌", outcome: "bad", then: [{ t: "wren", text: "Whoa, slow down. You don't even know who this is yet. Getting excited is exactly what he's counting on. Ask who he is first.", voice: "/audio/wren/m06p-t1-eager.mp3" }] },
+          ],
+        },
         { t: "wren", text: "Good. Now don't chase the prize, read HIM. Here he goes.", voice: "/audio/wren/m06p-t1-read.mp3" },
         { t: "con", text: "I'm Kai, one of the tournament mods 👍 but you gotta be quick, I need your answer in the next 20 mins!!" },
         { t: "call", answer: "hurry", ok: "Called it. That 20-minute clock isn't real, it's just there to stop you thinking.", okVoice: "/audio/wren/m06p-t1-hurry.mp3" },
@@ -147,7 +153,13 @@ export const case06Phone: PhoneCase = {
       steps: [
         { t: "con", text: "🎉 CONGRATS! you've been picked for our free skin drop, 800 v-bucks + a legendary skin 🔥" },
         { t: "con", text: "wanna claim it? 👀", delay: 900 },
-        { t: "choose", options: [{ label: "what's the catch?" }, { label: "free stuff?? yes!" }] },
+        {
+          t: "choose",
+          options: [
+            { label: "what's the catch?", outcome: "good" },
+            { label: "free stuff?? yes!", outcome: "bad", then: [{ t: "wren", text: "Careful. Free stuff you never entered for, from a stranger? That's the hook, and you're reaching for it. Ask what the catch is first.", voice: "/audio/wren/m06p-t3-eager.mp3" }] },
+          ],
+        },
         { t: "wren", text: "Nothing's free, and you never entered anything. Keep reading, here comes the hook.", voice: "/audio/wren/m06p-t3-warn.mp3" },
         { t: "con", text: "so here's the thing, we already added a free bonus entry to your account last week, as a little gift 😊" },
         { t: "con", text: "so honestly you owe it to yourself to grab this, don't waste our gift! 🙏", delay: 900 },
