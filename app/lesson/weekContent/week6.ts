@@ -66,6 +66,13 @@ export const WEEK_6: WeekContent = {
       ],
     },
 
+    // Signature mini-game (bespoke to this week)
+    {
+      type: "signature",
+      mechanic: "lobbyKeeper",
+      title: "Lobby Keeper",
+    },
+
     /* ─────────── BEAT 1 · REAL INFO STAYS OUT OF CHAT ─────────── */
     // 3 - Learn
     {

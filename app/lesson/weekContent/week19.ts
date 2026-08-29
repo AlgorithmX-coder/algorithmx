@@ -74,6 +74,13 @@ export const WEEK_19: WeekContent = {
       ],
     },
 
+    // Signature mini-game (bespoke to this week)
+    {
+      type: "signature",
+      mechanic: "hearthLoom",
+      title: "The Hearth Loom",
+    },
+
     /* ─────────── BEAT 1 · THE EXPERT ─────────── */
     // 3 - Learn
     {

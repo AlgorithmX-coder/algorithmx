@@ -70,6 +70,13 @@ export const WEEK_17: WeekContent = {
       ],
     },
 
+    // Signature mini-game (bespoke to this week)
+    {
+      type: "signature",
+      mechanic: "friendPanner",
+      title: "The Friend Panner",
+    },
+
     /* ─────────── BEAT 1 · THE 13+ SIGN ─────────── */
     // 3 - Learn
     {

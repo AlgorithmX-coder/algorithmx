@@ -67,6 +67,13 @@ export const WEEK_16: WeekContent = {
       ],
     },
 
+    // Signature mini-game (bespoke to this week)
+    {
+      type: "signature",
+      mechanic: "keyholeCheck",
+      title: "The Keyhole Check",
+    },
+
     /* ─────────── BEAT 1 · A DOOR YOU CAN'T SEE THROUGH ─────────── */
     // 3 - Learn
     {

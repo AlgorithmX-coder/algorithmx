@@ -70,6 +70,13 @@ export const WEEK_20: WeekContent = {
       ],
     },
 
+    // Signature mini-game (bespoke to this week)
+    {
+      type: "signature",
+      mechanic: "encoreOfTwenty",
+      title: "Encore of Twenty",
+    },
+
     /* ─────────── MISSION 1 · THE PASSWORD VAULT ─────────── */
     // 3 - Learn
     {

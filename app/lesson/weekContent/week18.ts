@@ -70,6 +70,13 @@ export const WEEK_18: WeekContent = {
       ],
     },
 
+    // Signature mini-game (bespoke to this week)
+    {
+      type: "signature",
+      mechanic: "logOutFlick",
+      title: "Log-Out Flick",
+    },
+
     /* ─────────── BEAT 1 · THE COAT RACK ─────────── */
     // 3 - Learn
     {

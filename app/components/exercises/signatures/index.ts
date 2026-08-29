@@ -41,4 +41,16 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
   goodnightGadgets: dynamic(() => import("./GoodnightGadgets"), { ssr: false }),
   // Week 15 · AI — weigh each robot claim against real evidence.
   proofScale: dynamic(() => import("./ProofScale"), { ssr: false }),
+  // Week 6 · Safe Sharing — goalkeeper block: high-five badges, deny imposters.
+  lobbyKeeper: dynamic(() => import("./LobbyKeeper"), { ssr: false }),
+  // Week 16 · QR & Links — superimpose your trusted key over each door's pattern.
+  keyholeCheck: dynamic(() => import("./KeyholeCheck"), { ssr: false }),
+  // Week 17 · Followers — pan the brag-crowd 100 down to your 6 real friends.
+  friendPanner: dynamic(() => import("./FriendPanner"), { ssr: false }),
+  // Week 18 · Shared Devices — flick every app shut, then look back and lock up.
+  logOutFlick: dynamic(() => import("./LogOutFlick"), { ssr: false }),
+  // Week 19 · Family Firewall — weave learned defences to each family member.
+  hearthLoom: dynamic(() => import("./HearthLoom"), { ssr: false }),
+  // Week 20 · Graduation — Simon echo of all twenty week emblems.
+  encoreOfTwenty: dynamic(() => import("./EncoreOfTwenty"), { ssr: false }),
 };
