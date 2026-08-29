@@ -61,6 +61,7 @@ type Item =
   | { id: number; kind: "lever"; lever: LeverId; line: string; example: string }
   | { id: number; kind: "divider"; kicker: string; title: string; sub?: string; boss?: boolean }
   | { id: number; kind: "phase"; label: string }
+  | { id: number; kind: "roadmap"; title: string; actor: string; skills: { n: number; title: string; goal: string }[] }
   | { id: number; kind: "typing" };
 
 type Header = { who: string; avatar: string; tag?: string; sub: string };
@@ -213,6 +214,9 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     setHeader(WREN_HEADER);
     setItems([]);
     for (let i = 0; i < phoneCase.open.length; i++) { const line = phoneCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, phoneCase.openVoice?.[i]); }
+    // The roadmap: every skill you'll learn, up front (like Block 1's mission map).
+    push({ id: nextId(), kind: "roadmap", title: phoneCase.title, actor: phoneCase.actor, skills: phoneCase.skills.map((s) => ({ n: s.n, title: s.title, goal: s.goal })) });
+    await wait(650);
     setDock({ type: "clear", text: "Ready? Skill 1 first." });
     await awaitUser();
     const total = phoneCase.skills.length;
@@ -328,6 +332,25 @@ function ItemView({ it, wrenAvatar }: { it: Item; wrenAvatar: React.ReactNode })
         <div style={{ fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: accent, fontWeight: 800 }}>{it.kicker}</div>
         <div style={{ fontSize: 18, fontWeight: 800, color: C.ink, margin: "3px 0 2px", letterSpacing: ".01em" }}>{it.title}</div>
         {it.sub && <div style={{ fontSize: 12.5, color: C.dim, lineHeight: 1.35 }}>{it.sub}</div>}
+      </div>
+    );
+  }
+  if (it.kind === "roadmap") {
+    return (
+      <div className="ph-row" style={{ margin: "10px 2px 4px", background: "linear-gradient(180deg, rgba(255,61,138,.10), rgba(255,61,138,.03))", border: `1px solid rgba(255,61,138,.45)`, borderRadius: 16, padding: "14px 15px" }}>
+        <div style={{ fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", color: C.pinkHi, fontWeight: 800, marginBottom: 2 }}>Your mission · vs {it.actor}</div>
+        <div style={{ fontSize: 18, fontWeight: 800, color: C.ink, marginBottom: 11 }}>{it.skills.length} skills to master</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+          {it.skills.map((s) => (
+            <div key={s.n} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <span aria-hidden style={{ flex: "0 0 auto", width: 22, height: 22, borderRadius: 7, background: "rgba(255,61,138,.16)", border: `1px solid rgba(255,61,138,.5)`, color: C.pinkHi, fontSize: 11, fontWeight: 800, display: "grid", placeItems: "center" }}>{s.n}</span>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 13.5, fontWeight: 700, color: C.ink, lineHeight: 1.2 }}>{s.title}</div>
+                <div style={{ fontSize: 11.5, color: C.dim, lineHeight: 1.3 }}>{s.goal}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
