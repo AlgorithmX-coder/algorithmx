@@ -19,7 +19,7 @@ const BODY = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, 
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
-.bi{ --ground:#0A0C10; --panel:#12161C; --panel2:#171C24; --edge:#232B36; --ink:#ECEFF3; --dim:#9BA6B2; --faint:#5E6874; }
+.bi{ --ground:#0A0C10; --panel:#12161C; --panel2:#171C24; --edge:#232B36; --ink:#ECEFF3; --dim:#9BA6B2; --faint:#5E6874; min-height:100vh; min-height:100dvh; }
 .bi *{ box-sizing:border-box }
 .bi ::selection{ background:var(--acc); color:#0b0b0b }
 .bi .disp{ font-family:${DISP}; font-weight:600; text-transform:uppercase }
@@ -78,7 +78,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
       className="bi"
       style={{
         ["--acc" as string]: acc, ["--acc-hi" as string]: accHi, ["--accRGB" as string]: t.accentRGB,
-        height: "100vh", minHeight: 560, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center",
+        overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center",
         background: "radial-gradient(1000px 520px at 50% -6%, #241033 0%, rgba(36,16,51,0) 58%), #0A0C10",
         color: "#ECEFF3", fontFamily: BODY, position: "relative", padding: "16px",
       }}

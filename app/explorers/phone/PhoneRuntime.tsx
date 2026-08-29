@@ -37,6 +37,7 @@ const NUDGE_TEXTS = [
 ];
 
 const CSS = `
+.ph{min-height:100vh;min-height:100dvh}
 .ph *{box-sizing:border-box}
 .ph-thread::-webkit-scrollbar{width:0}
 @keyframes ph-pop{from{opacity:0;transform:translateY(9px) scale(.98)}to{opacity:1;transform:none}}
@@ -256,14 +257,14 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   if (phase === "brief") return <BlockIntro data={block2Intro} onBegin={() => setPhase("lock")} />;
 
   return (
-    <main className="ph" style={{ minHeight: "100vh", background: `radial-gradient(900px 500px at 50% -10%, #241033 0%, rgba(36,16,51,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden" }}>
+    <main className="ph" style={{ background: `radial-gradient(900px 500px at 50% -10%, #241033 0%, rgba(36,16,51,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden" }}>
       <style>{CSS}</style>
       <MatrixRain reduced={!!reduce} opacity={0.13} colors={["#FF3D8A", "#FF74AE", "#C355FF"]} head="#FFE3EE" />
 
       <button className="ph-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>← Leave</button>
       <button className="ph-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
 
-      <div style={{ width: "100%", maxWidth: 384, height: 780, maxHeight: "calc(100vh - 30px)", background: C.phone, borderRadius: 42, padding: 10, boxShadow: `0 0 0 2px #2a2a34, 0 30px 80px rgba(0,0,0,.6)`, position: "relative", zIndex: 1 }}>
+      <div style={{ width: "100%", maxWidth: 384, height: 780, maxHeight: "calc(100dvh - 30px)", background: C.phone, borderRadius: 42, padding: 10, boxShadow: `0 0 0 2px #2a2a34, 0 30px 80px rgba(0,0,0,.6)`, position: "relative", zIndex: 1 }}>
         <div style={{ position: "relative", height: "100%", background: C.chat, borderRadius: 33, overflow: "hidden", display: "flex", flexDirection: "column" }}>
           <div aria-hidden style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 148, height: 25, background: C.phone, borderRadius: "0 0 17px 17px", zIndex: 6 }} />
           {/* status bar */}
