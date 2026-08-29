@@ -85,3 +85,44 @@ export const block2Intro: BlockIntroData = {
     matrix: ["#FF3D8A", "#FF74AE", "#C355FF"],
   },
 };
+
+export const block1Intro: BlockIntroData = {
+  block: "BLOCK ONE",
+  title: ["Signals"],
+  thesis:
+    "Every scam has to reach you first, as a message, a link, a post. Learn to read it, and you'll spot the trap <b>before it springs.</b>",
+  audio: "/audio/atlas/block1.mp3",
+  commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Start here" },
+  shift: {
+    kicker: "The job",
+    lede: "Before anyone can steal a thing from you, they have to <em>reach you first.</em>",
+    body:
+      "Every attack starts as a signal: a message, a post, a link that looks completely normal. This block is five of them, and in each one someone sends you something built to fool you. Your job is simple to say and hard to do. Read the signal, and spot the trap before it springs.",
+  },
+  filesKicker: "Five cases. Five ways in.",
+  files: [
+    { caseNo: "001", codename: "PHANTOM HOOK", title: "The Fake Message", blurb: "A message pretending to be someone you trust." },
+    { caseNo: "002", codename: "SIREN", title: "Too Good To Be True", blurb: "The prize that costs you everything." },
+    { caseNo: "003", codename: "SKELETON KEY", title: "The Guessing Game", blurb: "How a machine cracks a weak password." },
+    { caseNo: "004", codename: "PACKRAT", title: "The Puzzle You Posted", blurb: "What your posts quietly give away." },
+    { caseNo: "005", codename: "PHANTOM HOOK", title: "Signal Storm", blurb: "One attack, aimed straight at you." },
+  ],
+  ceremony: "Clear all five → CONFIDENTIAL clearance.",
+  skills: [
+    { name: "Spot a fake message", desc: "" },
+    { name: "Ignore a too-good offer", desc: "" },
+    { name: "Build a strong password", desc: "" },
+    { name: "See what you leak", desc: "" },
+    { name: "Catch a targeted attack", desc: "" },
+  ],
+  handoff:
+    "Master this, and everything that comes after gets easier. <em>WREN is waiting for you.</em>",
+  beginLabel: "Begin Case 001 →",
+  theme: {
+    accent: "#34E1FF",
+    accentHi: "#7FF0FF",
+    accentRGB: "52, 225, 255",
+    classification: "CONFIDENTIAL",
+    matrix: ["#34E1FF", "#7FF0FF", "#3BF57E"],
+  },
+};

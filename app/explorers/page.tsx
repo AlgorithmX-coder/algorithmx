@@ -13,6 +13,9 @@ import type { CSSProperties } from "react";
 import MissionRuntime from "./engine/MissionRuntime";
 import PhoneRuntime from "./phone/PhoneRuntime";
 import { case06Phone } from "./phone/case06";
+import BlockIntro from "./phone/BlockIntro";
+import { block1Intro } from "./phone/blockIntroData";
+import type { BlockIntroData } from "./phone/blockIntroData";
 import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
@@ -78,6 +81,11 @@ const TOPICS: Record<string, string> = {
   "explorers-m19": "the full attack, end to end",
   "explorers-m20": "unmask the coordinator",
 };
+
+// Page-level block-intro slides (ATLAS briefings), shown once when a kid opens
+// the FIRST case of a block. Block 2 self-briefs inside the phone, so it's not
+// listed here; blocks 3-4 will be added as their intros are built.
+const BLOCK_INTROS: Record<number, BlockIntroData> = { 1: block1Intro };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
 
@@ -177,6 +185,15 @@ export default function ExplorersPage() {
   // to that one case so Next-case navigation always starts the next mission fresh.
   const [devBossId, setDevBossId] = useState<string | null>(null);
   const [devAt, setDevAt] = useState<string | null>(null); // "boss" | "test"
+  // When true, show the block-intro (ATLAS) slide before the active case's runtime.
+  const [showBrief, setShowBrief] = useState(false);
+
+  const firstIdOfBlock = useCallback((block: number) => CASES.find((m) => m.block === block)?.id, []);
+  // Open a case, briefing the block first if this is the block's opening case.
+  const openCase = useCallback((m: MissionManifest) => {
+    setActive(m);
+    setShowBrief(!!BLOCK_INTROS[m.block] && firstIdOfBlock(m.block) === m.id);
+  }, [firstIdOfBlock]);
 
   const refreshStatus = useCallback(() => {
     const s: Record<string, string> = {};
@@ -214,6 +231,8 @@ export default function ExplorersPage() {
       setActive(found);
       setDevBossId(at === "boss" || at === "test" ? found.id : null);
       setDevAt(at);
+      // Brief the block on a cold deep-link to its opening case (unless jumping to boss/test).
+      setShowBrief(!at && !!BLOCK_INTROS[found.block] && CASES.find((m) => m.block === found.block)?.id === found.id);
     }
   }, []);
 
@@ -233,13 +252,18 @@ export default function ExplorersPage() {
   if (active) {
     const activeIdx = CASES.findIndex((m) => m.id === active.id);
     const hasNext = activeIdx >= 0 && activeIdx < CASES.length - 1;
+    // The block-intro (ATLAS) slide plays before the block's opening case.
+    const pageIntro = BLOCK_INTROS[active.block];
+    if (pageIntro && showBrief && firstIdOfBlock(active.block) === active.id) {
+      return <BlockIntro data={pageIntro} onBegin={() => setShowBrief(false)} />;
+    }
     // Block 2 runs in THE PHONE, not the Signal Room engine.
     if (active.id === "explorers-m06") {
       return (
         <PhoneRuntime
           phoneCase={case06Phone}
           onExit={() => { refreshStatus(); setActive(null); }}
-          onNextCase={hasNext ? () => { refreshStatus(); setActive(CASES[activeIdx + 1]); } : undefined}
+          onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
         />
       );
     }
@@ -256,7 +280,7 @@ export default function ExplorersPage() {
           hasNext
             ? () => {
                 refreshStatus();
-                setActive(CASES[activeIdx + 1]);
+                openCase(CASES[activeIdx + 1]);
               }
             : undefined
         }
@@ -354,7 +378,7 @@ export default function ExplorersPage() {
           </div>
 
           <div style={{ marginTop: 18 }}>
-            <button className="tc-cta" onClick={() => nextCase && setActive(nextCase)} disabled={!nextCase}>
+            <button className="tc-cta" onClick={() => nextCase && openCase(nextCase)} disabled={!nextCase}>
               {nextCase ? "▶ " : "✓ "}
               {continueLabel}
             </button>
@@ -393,7 +417,7 @@ export default function ExplorersPage() {
                     <button
                       key={m.id}
                       className={`tc-card${isNext ? " tc-next" : ""}${locked ? " tc-locked" : ""}`}
-                      onClick={locked ? undefined : () => setActive(m)}
+                      onClick={locked ? undefined : () => openCase(m)}
                       disabled={locked}
                       aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : locked ? " Locked. Finish the earlier cases first." : isNext ? " Play next." : ""}`}
                       style={{ ["--accent"]: accent, position: "relative" } as CSSProperties}
