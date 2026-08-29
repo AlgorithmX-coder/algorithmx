@@ -34,6 +34,7 @@ import { useLessonProgress } from "@/app/lib/useLessonProgress";
 import { analytics } from "@/app/lib/analytics";
 import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
 import { LessonThemeContext } from "@/app/components/lesson/LessonThemeContext";
+import { SIGNATURES } from "@/app/components/exercises/signatures";
 
 // Exercise components
 import CyberScanner from "@/app/components/exercises/CyberScanner";
@@ -134,6 +135,7 @@ const WeekIntroScene = dynamic(
  * ARE the narration.
  */
 const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
+  "signature",
   "cyberScanner",
   "protectTheData",
   "passwordLab",
@@ -1218,6 +1220,17 @@ function DynamicLessonInner({
             />
           </FullScene>
         );
+
+      case "signature": {
+        // A week's bespoke signature mini-game (registry-keyed by `mechanic`).
+        const Signature = SIGNATURES[def.mechanic];
+        if (!Signature) return null;
+        return (
+          <FullScene>
+            <Signature onComplete={() => navigate(screen + 1)} />
+          </FullScene>
+        );
+      }
 
       case "alert":
         return (

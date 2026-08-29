@@ -60,6 +60,9 @@ export const WEEK_1: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Tumbler Dials (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "tumblerDials", title: "The Tumbler Dials" },
+
     /* ─────────── BEAT 1 · KEY ─────────── */
     // 3 - Learn
     {

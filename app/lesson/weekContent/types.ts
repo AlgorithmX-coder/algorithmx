@@ -487,6 +487,16 @@ export type ScreenDef = (
   // placeholder play button (used for weeks whose video isn't filmed yet).
   | { type: "video"; videoPlaceholder: string; videoSrc?: string }
   | ({ type: "weekIntro" } & WeekIntroContent)
+  | {
+      /**
+       * A week's bespoke SIGNATURE mini-game — one distinctive activity unique
+       * to that week (like the bosses are bespoke). `mechanic` keys into the
+       * SIGNATURE component registry (app/components/exercises/signatures).
+       */
+      type: "signature";
+      mechanic: string;
+      title?: string;
+    }
   | { type: "mission"; objectives: string[] }
   | {
       /** Post-intro "incident report" reveal with the week's topic image. */

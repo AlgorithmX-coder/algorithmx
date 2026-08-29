@@ -66,6 +66,9 @@ export const WEEK_5: WeekContent = {
       ],
     },
 
+      // SIGNATURE: Do Not Feed the Fire (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "dontFeedTheFire", title: "Do Not Feed the Fire" },
+
     /* ─────────── BEAT 1 · WHAT CYBERBULLYING IS ─────────── */
     // 3 - Learn
     {

@@ -65,6 +65,9 @@ export const WEEK_8: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Developing Tray (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "developingTray", title: "The Developing Tray" },
+
     /* ─────────── BEAT 1 · SHARED MEANS OUT FOREVER ─────────── */
     // 3 - Learn
     {
