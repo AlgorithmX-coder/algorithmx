@@ -2,19 +2,19 @@
 
 /**
  * THE PHONE — Block 2's runtime. Not the Signal Room. A full-screen fake phone
- * where a con plays out in the child's DMs and WREN coaches from inside the
- * thread. Data-driven by a PhoneCase (see phone/case06.ts): threads play in
- * order, the con pulls levers, the child names them and chooses how it ends.
+ * where cons play out in the child's DMs and WREN coaches from inside the thread.
  *
- * Self-contained styling (its own palette + system font) so it reads as a real
- * phone, a completely different world from the analyst desk. Text-first, so
- * there's no narrator to sound robotic.
+ * SAME STRUCTURE as Block 1 (owner): 7 skills, each LEARN -> PRACTICE, then a
+ * blind BOSS, then a must-pass TEST — all delivered as DMs. Data-driven by a
+ * PhoneCase (see phone/case06.ts). Self-contained styling so it reads as a real
+ * phone, a different world from the analyst desk. Cons are text (never voiced);
+ * only WREN has a voice, so there's no narrator to sound robotic.
  */
 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
-import { LEVERS, type LeverId, type PhoneCase, type PhoneStep } from "./case06";
+import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest } from "./case06";
 import BlockIntro from "./BlockIntro";
 import { block2Intro } from "./blockIntroData";
 
@@ -27,12 +27,9 @@ const C = {
   warn: "#F5A623", red: "#FF5A63", mint: "#31D9A0", line: "#232330", chip: "#1c1c26", chipedge: "#33333f",
 };
 const UI = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif`;
-// WREN's spoken "not that one, look again" on a wrong lever — rotates so it's not
-// the same line twice, and never reveals the answer (the Block-1 nudge, restored).
+// WREN's spoken "not that one, look again" on a wrong lever — rotates, no answer given.
 const NUDGES = ["/audio/wren/m06p-nudge-1.mp3", "/audio/wren/m06p-nudge-2.mp3", "/audio/wren/m06p-nudge-3.mp3"];
-// The same three lines as TEXT — shown on-screen the instant a wrong lever is
-// tapped, so the "not that one, try again" feedback is clear even with voice
-// off. No answer is revealed; the child gets to feel it and pick again.
+// The same three lines as TEXT — clear on-screen feedback even with voice off.
 const NUDGE_TEXTS = [
   "Not that one. Feel it again: what's he really trying to make you feel?",
   "Nope, look again. Which feeling is he pushing on you right there?",
@@ -63,7 +60,12 @@ type Item =
   | { id: number; kind: "you"; text: string }
   | { id: number; kind: "wren"; text: string }
   | { id: number; kind: "lever"; lever: LeverId; line: string; example: string }
+  | { id: number; kind: "divider"; kicker: string; title: string; sub?: string; boss?: boolean }
+  | { id: number; kind: "phase"; label: string }
   | { id: number; kind: "typing" };
+
+type Header = { who: string; avatar: string; tag?: string; sub: string };
+const WREN_HEADER: Header = { who: "WREN", avatar: "◈", sub: "in your ear" };
 
 type Dock =
   | { type: "call"; answer: LeverId }
@@ -73,15 +75,15 @@ type Dock =
   | null;
 
 export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneCase: PhoneCase; onExit?: () => void; onNextCase?: () => void }) {
-  const [phase, setPhase] = useState<"brief" | "lock" | "play" | "debrief">("brief");
-  const [header, setHeader] = useState(phoneCase.threads[0]);
+  const [phase, setPhase] = useState<"brief" | "lock" | "play" | "test" | "debrief">("brief");
+  const [header, setHeader] = useState<Header>(WREN_HEADER);
   const [items, setItems] = useState<Item[]>([]);
   const [dock, setDock] = useState<Dock>(null);
   const [wrongId, setWrongId] = useState<LeverId | null>(null);
   const [nudge, setNudge] = useState<string | null>(null);
   const [voiceOn, setVoiceOn] = useState(true);
   const voiceRef = useRef(true);
-  const speaking = useWrenSpeaking();
+  useWrenSpeaking();
   const [, force] = useReducer((n) => n + 1, 0);
 
   const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -107,8 +109,8 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   };
   const awaitUser = () => new Promise<string>((res) => { resolveRef.current = res; });
 
-  // WREN speaks a coaching line and the thread WAITS for her to finish before
-  // anything advances — that's the anti-whizz. Voice off = a read-timer instead.
+  // WREN speaks a line and the thread WAITS for her to finish before anything
+  // advances — the anti-whizz. Voice off = a read-timer instead.
   const speak = (text: string, voice?: string) =>
     new Promise<void>((res) => {
       let done = false;
@@ -133,7 +135,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         push({ id: nextId(), kind: "wren", text: step.text });
         await speak(step.text, step.voice);
       } else if (step.t === "call") {
-        setNudge(null); setWrongId(null); // fresh question, clear any prior feedback
+        setNudge(null); setWrongId(null);
         setDock({ type: "call", answer: step.answer });
         await awaitUser(); // resolves only on the correct lever
         setDock(null);
@@ -151,46 +153,81 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           push({ id: nextId(), kind: "you", text: opt.label });
           await wait(500);
           if (opt.then) await runSteps(opt.then);
-          if (opt.outcome === "bad") { await wait(300); continue; } // rewind: re-present the choice
+          if (opt.outcome === "bad") { await wait(300); continue; } // rewind
           done = true;
         }
       }
     }
   };
 
-  const runThread = async (t: PhoneCase["threads"][number], last: boolean) => {
-    setHeader(t);
+  // one skill: LEARN (WREN) -> PRACTICE (the con)
+  const runSkill = async (sk: PhoneCase["skills"][number], total: number) => {
+    setDock(null); // clear the between-skills Continue so it can't linger over the LEARN
     setItems([]);
     lastConRef.current = null;
-    await wait(500);
-    if (t.intro) { push({ id: nextId(), kind: "wren", text: t.intro }); await speak(t.intro, t.introVoice); }
-    await runSteps(t.steps);
-    // thread cleared
-    setDock({ type: "clear", text: t.clear });
-    if (!last) await awaitUser();
-  };
-
-  const run = async () => {
-    // WREN's opening lines land as messages before the first thread
-    setHeader({ ...phoneCase.threads[0], who: "WREN", avatar: "◈", tag: undefined, sub: "in your ear" });
-    setItems([]);
-    for (let i = 0; i < phoneCase.open.length; i++) { const line = phoneCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, phoneCase.openVoice?.[i]); }
-    // LEARN: teach the six levers, one card at a time, before any are asked.
-    if (phoneCase.teach?.length) {
-      if (phoneCase.teachIntro) { push({ id: nextId(), kind: "wren", text: phoneCase.teachIntro }); await speak(phoneCase.teachIntro, phoneCase.teachIntroVoice); }
-      for (const lv of phoneCase.teach) {
+    setHeader(WREN_HEADER);
+    await wait(400);
+    push({ id: nextId(), kind: "divider", kicker: `Skill ${sk.n} of ${total}`, title: sk.title, sub: sk.goal });
+    await wait(650);
+    // LEARN
+    if (sk.cards?.length) {
+      if (sk.cardsIntro) { push({ id: nextId(), kind: "wren", text: sk.cardsIntro }); await speak(sk.cardsIntro, sk.cardsIntroVoice); }
+      for (const lv of sk.cards) {
         push({ id: nextId(), kind: "lever", lever: lv.id, line: lv.line, example: lv.example });
         await speak(`${lv.line} ${lv.example}`, lv.voice);
       }
-      if (phoneCase.teachOutro) { push({ id: nextId(), kind: "wren", text: phoneCase.teachOutro }); await speak(phoneCase.teachOutro, phoneCase.teachOutroVoice); }
+      if (sk.cardsOutro) { push({ id: nextId(), kind: "wren", text: sk.cardsOutro }); await speak(sk.cardsOutro, sk.cardsOutroVoice); }
     }
-    setDock({ type: "clear", text: "Ready to spot them for real?" });
+    await runSteps(sk.learn);
+    // PRACTICE
+    if (sk.who) { setHeader({ who: sk.who, avatar: sk.avatar!, tag: sk.tag, sub: sk.sub! }); await wait(500); }
+    await runSteps(sk.practice);
+    setDock({ type: "clear", text: `Skill ${sk.n} clear ✓` });
     await awaitUser();
-    for (let i = 0; i < phoneCase.threads.length; i++) {
-      await runThread(phoneCase.threads[i], i === phoneCase.threads.length - 1);
-    }
+  };
+
+  const runBoss = async () => {
+    const b = phoneCase.boss;
     setDock(null);
-    setPhase("debrief");
+    setItems([]);
+    lastConRef.current = null;
+    setHeader(WREN_HEADER);
+    await wait(400);
+    push({ id: nextId(), kind: "divider", kicker: "The Boss", title: "The Setup", sub: "One con, no coaching. Prove it.", boss: true });
+    await wait(650);
+    push({ id: nextId(), kind: "wren", text: b.intro }); await speak(b.intro, b.introVoice);
+    setHeader({ who: b.who, avatar: b.avatar, tag: b.tag, sub: b.sub });
+    await wait(500);
+    for (let i = 0; i < b.phases.length; i++) {
+      const ph = b.phases[i];
+      push({ id: nextId(), kind: "phase", label: `Phase ${i + 1} · ${ph.name}` });
+      await wait(350);
+      await runSteps(ph.steps);
+    }
+    setHeader(WREN_HEADER);
+    push({ id: nextId(), kind: "wren", text: b.win }); await speak(b.win, b.winVoice);
+    setDock({ type: "clear", text: "Boss beaten ✓" });
+    await awaitUser();
+  };
+
+  const run = async () => {
+    setHeader(WREN_HEADER);
+    setItems([]);
+    for (let i = 0; i < phoneCase.open.length; i++) { const line = phoneCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, phoneCase.openVoice?.[i]); }
+    setDock({ type: "clear", text: "Ready? Skill 1 first." });
+    await awaitUser();
+    const total = phoneCase.skills.length;
+    for (const sk of phoneCase.skills) await runSkill(sk, total);
+    await runBoss();
+    // hand off to the must-pass test
+    setItems([]);
+    setHeader(WREN_HEADER);
+    await wait(400);
+    push({ id: nextId(), kind: "wren", text: phoneCase.test.intro }); await speak(phoneCase.test.intro, phoneCase.test.introVoice);
+    setDock({ type: "clear", text: "Start the test →" });
+    await awaitUser();
+    setDock(null);
+    setPhase("test");
   };
 
   const start = () => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(); };
@@ -201,9 +238,6 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     if (dock?.type !== "call") return;
     if (id === dock.answer) { setWrongId(null); setNudge(null); resolveRef.current?.("ok"); }
     else {
-      // Wrong: mark the lever red, show a clear "not that one, try again" line
-      // on screen, and (voice on) speak the matching nudge. The pad stays put so
-      // the child picks again. The red mark holds until they act.
       const i = nudgeRef.current++ % NUDGES.length;
       setWrongId(id); setNudge(NUDGE_TEXTS[i]); force();
       if (voiceRef.current) playWren(NUDGES[i], true);
@@ -219,7 +253,6 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     </span>
   );
 
-  // The block briefing (ATLAS) plays first, then the phone opens.
   if (phase === "brief") return <BlockIntro data={block2Intro} onBegin={() => setPhase("lock")} />;
 
   return (
@@ -244,6 +277,8 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
 
           {phase === "lock" ? (
             <LockScreen open={phoneCase.open} title={phoneCase.title} onOpen={start} />
+          ) : phase === "test" ? (
+            <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => setPhase("debrief")} />
           ) : phase === "debrief" ? (
             <Debrief data={phoneCase.debrief} onExit={onExit} onNext={onNextCase} />
           ) : (
@@ -286,6 +321,23 @@ function ItemView({ it, wrenAvatar }: { it: Item; wrenAvatar: React.ReactNode })
         <div style={{ display: "inline-flex", gap: 4, alignItems: "center", padding: "13px 15px", background: C.inc, borderRadius: 19, borderBottomLeftRadius: 6 }}>
           {[0, 1, 2].map((i) => <i key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: C.dim, display: "block", animation: `ph-blink 1.2s ${i * 0.18}s infinite ease-in-out` }} />)}
         </div>
+      </div>
+    );
+  }
+  if (it.kind === "divider") {
+    const accent = it.boss ? C.red : C.pink;
+    return (
+      <div className="ph-row" style={{ margin: "6px 0 8px", textAlign: "center", padding: "13px 12px", background: it.boss ? "rgba(255,90,99,.08)" : "rgba(255,61,138,.07)", border: `1px solid ${it.boss ? "rgba(255,90,99,.4)" : "rgba(255,61,138,.35)"}`, borderRadius: 16 }}>
+        <div style={{ fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: accent, fontWeight: 800 }}>{it.kicker}</div>
+        <div style={{ fontSize: 18, fontWeight: 800, color: C.ink, margin: "3px 0 2px", letterSpacing: ".01em" }}>{it.title}</div>
+        {it.sub && <div style={{ fontSize: 12.5, color: C.dim, lineHeight: 1.35 }}>{it.sub}</div>}
+      </div>
+    );
+  }
+  if (it.kind === "phase") {
+    return (
+      <div className="ph-row" style={{ textAlign: "center", margin: "9px 0 4px" }}>
+        <span style={{ fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.warn, fontWeight: 700, background: "rgba(245,166,35,.12)", border: `1px solid rgba(245,166,35,.35)`, borderRadius: 999, padding: "3px 12px" }}>{it.label}</span>
       </div>
     );
   }
@@ -370,11 +422,71 @@ function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue }: { dock
       </>
     );
   }
-  // clear
   return (
     <div style={{ textAlign: "center" }}>
       <p style={{ fontSize: 13.5, color: C.mint, margin: "2px 0 11px", fontWeight: 600 }}>{dock.text}</p>
       <button className="ph-btn" onClick={onContinue} style={{ fontFamily: UI, fontWeight: 700, fontSize: 13.5, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "10px 24px", cursor: "pointer" }}>Continue →</button>
+    </div>
+  );
+}
+
+/* ---- the must-pass TEST: fresh scenarios, shuffled options, blind, resit on fail ---- */
+function shuffled(n: number): number[] {
+  const a = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean; onPass: () => void }) {
+  const [qi, setQi] = useState(0);
+  const [correct, setCorrect] = useState(0);
+  const [result, setResult] = useState<null | "pass" | "fail">(null);
+  const [orders, setOrders] = useState<number[][]>(() => test.questions.map((q) => shuffled(q.options.length)));
+
+  const restart = () => { setQi(0); setCorrect(0); setResult(null); setOrders(test.questions.map((q) => shuffled(q.options.length))); };
+
+  const answer = (optIdx: number) => {
+    const right = !!test.questions[qi].options[optIdx].correct;
+    const nextCorrect = correct + (right ? 1 : 0);
+    if (qi + 1 < test.questions.length) { setCorrect(nextCorrect); setQi(qi + 1); }
+    else {
+      const passed = nextCorrect >= test.pass;
+      setCorrect(nextCorrect);
+      setResult(passed ? "pass" : "fail");
+      if (voiceOn) playWren(passed ? "/audio/wren/m06p-test-pass.mp3" : "/audio/wren/m06p-test-fail.mp3", true);
+    }
+  };
+
+  if (result) {
+    const passed = result === "pass";
+    return (
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 24px 30px", textAlign: "center" }}>
+        <div style={{ fontSize: 44, marginBottom: 8 }}>{passed ? "🏅" : "🔁"}</div>
+        <div style={{ fontSize: 24, fontWeight: 800, color: passed ? C.mint : C.warn, marginBottom: 8 }}>{passed ? "Case closed." : "So close."}</div>
+        <div style={{ fontSize: 15, color: C.ink, lineHeight: 1.5, marginBottom: 8 }}>You got <b style={{ color: passed ? C.mint : C.warn }}>{correct} of {test.questions.length}</b> right.</div>
+        <div style={{ fontSize: 13.5, color: C.dim, lineHeight: 1.5, marginBottom: 24 }}>{passed ? "You spotted every scam on your own. That's a pass." : `You need ${test.pass} to close the case. Give it another go, you've got this.`}</div>
+        <button className="ph-btn" onClick={passed ? onPass : restart} style={{ fontFamily: UI, fontWeight: 700, fontSize: 15, color: C.page, background: passed ? C.mint : C.pink, border: 0, borderRadius: 999, padding: "13px 20px", cursor: "pointer" }}>{passed ? "Finish →" : "Try the test again"}</button>
+      </div>
+    );
+  }
+
+  const q = test.questions[qi];
+  const order = orders[qi];
+  return (
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", overflowY: "auto", padding: "16px 18px 20px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+        <span style={{ fontSize: 10.5, letterSpacing: ".18em", textTransform: "uppercase", color: C.pink, fontWeight: 800 }}>The Test · Prove it</span>
+        <span style={{ fontSize: 12, color: C.dim, fontWeight: 600 }}>{qi + 1} / {test.questions.length}</span>
+      </div>
+      <div style={{ height: 4, background: C.chip, borderRadius: 4, marginBottom: 18, overflow: "hidden" }}>
+        <div style={{ height: "100%", width: `${((qi) / test.questions.length) * 100}%`, background: C.pink, borderRadius: 4, transition: "width .3s" }} />
+      </div>
+      <div style={{ background: C.inc, borderRadius: 16, borderBottomLeftRadius: 6, padding: "12px 14px", fontSize: 15, lineHeight: 1.4, color: C.ink, marginBottom: 16 }}>{q.scenario}</div>
+      <div style={{ fontSize: 14, fontWeight: 700, color: C.ink, marginBottom: 12 }}>{q.ask}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+        {order.map((oi) => (
+          <button key={oi} className="ph-reply" onClick={() => answer(oi)} style={{ fontFamily: UI, fontSize: 14.5, fontWeight: 600, textAlign: "left", color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 14, padding: "12px 14px", cursor: "pointer" }}>{q.options[oi].label}</button>
+        ))}
+      </div>
     </div>
   );
 }
