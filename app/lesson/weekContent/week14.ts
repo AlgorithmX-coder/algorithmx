@@ -66,6 +66,9 @@ export const WEEK_14: WeekContent = {
       ],
     },
 
+      // SIGNATURE: Goodnight, Gadgets (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "goodnightGadgets", title: "Goodnight, Gadgets" },
+
     /* ─────────── BEAT 1 · KNOW THE EARS ─────────── */
     // 3 - Learn
     {

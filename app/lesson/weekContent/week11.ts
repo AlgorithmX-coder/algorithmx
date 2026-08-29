@@ -72,6 +72,9 @@ export const WEEK_11: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Calm-Down Console (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "calmDownConsole", title: "The Calm-Down Console" },
+
     /* ─────────── BEAT 1 · NEVER YOUR FAULT ─────────── */
     // 3 - Learn
     {

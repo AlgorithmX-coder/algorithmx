@@ -68,6 +68,9 @@ export const WEEK_15: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Proof Scale (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "proofScale", title: "The Proof Scale" },
+
     /* ─────────── BEAT 1 · A TOOL, NOT A FRIEND ─────────── */
     // 3 - Learn
     {

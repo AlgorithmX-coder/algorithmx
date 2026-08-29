@@ -64,6 +64,9 @@ export const WEEK_12: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Trail Planner (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "trailPlanner", title: "The Trail Planner" },
+
     /* ─────────── BEAT 1 · EVERYTHING LEAVES A TRACK ─────────── */
     // 3 - Learn
     {

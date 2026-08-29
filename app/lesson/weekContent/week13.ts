@@ -66,6 +66,9 @@ export const WEEK_13: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Day Jug (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "dayJug", title: "The Day Jug" },
+
     /* ─────────── BEAT 1 · YOUR POWER BAR ─────────── */
     // 3 - Learn
     {

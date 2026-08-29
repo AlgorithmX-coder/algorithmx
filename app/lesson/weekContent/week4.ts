@@ -64,6 +64,9 @@ export const WEEK_4: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Rigged Ring Toss (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "riggedRingToss", title: "The Rigged Ring Toss" },
+
     /* ─────────── BEAT 1 · WHAT A SCAM IS ─────────── */
     // 3 - Learn
     {
