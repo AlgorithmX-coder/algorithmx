@@ -61,7 +61,19 @@ export const WEEK_1: WeekContent = {
     },
 
       // SIGNATURE: The Tumbler Dials (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "tumblerDials", title: "The Tumbler Dials" },
+      {
+        type: "signature",
+        mechanic: "tumblerDials",
+        title: "The Tumbler Dials",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[excited] Time to build a super-strong password on the vault dials!",
+            "Spin each dial to the strongest choice you can find.",
+            "[warmly] Lock in all three, and the vault clicks open!",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · KEY ─────────── */
     // 3 - Learn

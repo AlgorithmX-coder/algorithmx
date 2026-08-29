@@ -79,6 +79,7 @@ import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
 import VaultDrop from "@/app/components/exercises/VaultDrop";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
+import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import ConceptRecap from "@/app/components/lesson/ConceptRecap";
 import StickerUnlock from "@/app/components/lesson/StickerUnlock";
 import BossVictoryScene from "@/app/components/lesson/BossVictoryScene";
@@ -371,6 +372,47 @@ function FullScene({ children, bg, glow }: { children: React.ReactNode; bg?: str
       {children}
     </LessonStage>
   );
+}
+
+/**
+ * A signature mini-game preceded by a spoken "here's what to do" intro.
+ *
+ * Reuses the SAME ExerciseIntroBeat as every regular exercise (Sarah reads
+ * the instruction aloud, the on-screen text stays, and the start button is
+ * gated behind a short "Listen first…" countdown) so the child always hears
+ * what to do before a bespoke game — the signatures previously dropped
+ * straight into play with text-only instructions. When the screen has no
+ * `narration`, the intro is skipped and the game mounts immediately (so this
+ * is a no-op for any signature we haven't scripted yet).
+ */
+function SignaturePlay({
+  mechanic,
+  title,
+  narration,
+  onComplete,
+}: {
+  mechanic: string;
+  title?: string;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  onComplete: () => void;
+}) {
+  const Signature = SIGNATURES[mechanic];
+  const hasIntro = !!narration && narration.lines.length > 0;
+  const [started, setStarted] = useState(!hasIntro);
+  if (!Signature) return null;
+  if (!started) {
+    return (
+      <div style={{ position: "relative", width: "100%", minHeight: "min(78vh, 640px)" }}>
+        <ExerciseIntroBeat
+          title={title ?? "Your challenge"}
+          welcome="Your challenge!"
+          narration={narration}
+          onDismiss={() => setStarted(true)}
+        />
+      </div>
+    );
+  }
+  return <Signature onComplete={onComplete} />;
 }
 
 // Document-level keyframe for the FullScene/LessonStage glow cross-fade.
@@ -1222,12 +1264,18 @@ function DynamicLessonInner({
         );
 
       case "signature": {
-        // A week's bespoke signature mini-game (registry-keyed by `mechanic`).
-        const Signature = SIGNATURES[def.mechanic];
-        if (!Signature) return null;
+        // A week's bespoke signature mini-game (registry-keyed by `mechanic`),
+        // preceded by a spoken "here's what to do" intro when the screen has
+        // narration (same Sarah read-aloud + Listen-first gate as exercises).
+        if (!SIGNATURES[def.mechanic]) return null;
         return (
           <FullScene>
-            <Signature onComplete={() => navigate(screen + 1)} />
+            <SignaturePlay
+              mechanic={def.mechanic}
+              title={def.title}
+              narration={def.narration}
+              onComplete={() => navigate(screen + 1)}
+            />
           </FullScene>
         );
       }

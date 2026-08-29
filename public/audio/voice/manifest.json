@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T09:52:27.014Z",
+  "generatedAt": "2026-08-29T19:27:57.102Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -20,6 +20,18 @@
   },
   "chunkStrategy": "block",
   "entries": [
+    {
+      "key": "f12c86d43f9ccd3b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Time to build a super-strong password on the vault dials! Spin each dial to the strongest choice you can find. [warmly] Lock in all three, and the vault clicks open!",
+      "lines": [
+        "[excited] Time to build a super-strong password on the vault dials!",
+        "Spin each dial to the strongest choice you can find.",
+        "[warmly] Lock in all three, and the vault clicks open!"
+      ],
+      "file": "/audio/voice/f12c86d43f9ccd3b.mp3"
+    },
     {
       "key": "c53034ffff6980db",
       "speaker": "adam",
