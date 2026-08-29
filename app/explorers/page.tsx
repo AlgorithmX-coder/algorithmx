@@ -15,6 +15,7 @@ import PhoneRuntime from "./phone/PhoneRuntime";
 import { case06Phone } from "./phone/case06";
 import { case07Phone } from "./phone/case07";
 import { case08Phone } from "./phone/case08";
+import { case09Phone } from "./phone/case09";
 import type { PhoneCase } from "./phone/case06";
 import BlockIntro from "./phone/BlockIntro";
 import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
@@ -95,6 +96,7 @@ const PHONE_CASES: Record<string, PhoneCase> = {
   "explorers-m06": case06Phone,
   "explorers-m07": case07Phone,
   "explorers-m08": case08Phone,
+  "explorers-m09": case09Phone,
 };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
