@@ -66,6 +66,9 @@ export const WEEK_10: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Great Climb-Out (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "greatClimbOut", title: "The Great Climb-Out" },
+
     /* ─────────── BEAT 1 · THE AUTOPLAY BELT ─────────── */
     // 3 - Learn
     {

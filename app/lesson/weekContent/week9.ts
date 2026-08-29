@@ -65,6 +65,9 @@ export const WEEK_9: WeekContent = {
       ],
     },
 
+      // SIGNATURE: Flip the Box (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "flipTheBox", title: "Flip the Box" },
+
     /* ─────────── BEAT 1 · OFFICIAL STORES ONLY ─────────── */
     // 3 - Learn
     {

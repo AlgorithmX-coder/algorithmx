@@ -63,6 +63,9 @@ export const WEEK_3: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Mask Waltz (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "maskWaltz", title: "The Mask Waltz" },
+
     /* ─────────── BEAT 1 · MASKS: WHO'S REALLY TYPING? ─────────── */
     // 3 - Learn
     {

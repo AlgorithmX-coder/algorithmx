@@ -65,6 +65,9 @@ export const WEEK_7: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The True-Price Lever (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "truePriceLever", title: "The True-Price Lever" },
+
     /* ─────────── BEAT 1 · COINS = REAL MONEY ─────────── */
     // 3 - Learn
     {

@@ -18,6 +18,285 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useAnimationControls } from "motion/react";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+
+/* ───────────────────────── WEEK-THEME PALETTE ─────────────────────────
+ * The briefing adopts the week's world (weekThemes.ts) when a WeekTheme is
+ * present: sky from the theme's bgGradient/deepBg, and pedestal / beam /
+ * title chrome / stars / motes tinted from the theme accent.
+ *
+ * HARD REQUIREMENT: theme === null → DEFAULT_BRIEF below, whose every value
+ * is the exact string this scene has always hardcoded, so un-themed weeks
+ * render byte-identically to the default cyber-sky look.
+ */
+
+/** "#rrggbb" → "r, g, b" (for rgba() tints). */
+function hexToRGB(hex: string): string {
+  const n = parseInt(hex.slice(1), 16);
+  return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+}
+
+/** Linear mix of two "#rrggbb" colors; t = 0 → a, t = 1 → b. */
+function mixHex(a: string, b: string, t: number): string {
+  const pa = parseInt(a.slice(1), 16);
+  const pb = parseInt(b.slice(1), 16);
+  const ch = (sh: number) => {
+    const va = (pa >> sh) & 255;
+    const vb = (pb >> sh) & 255;
+    return Math.round(va + (vb - va) * t);
+  };
+  return (
+    "#" +
+    ((ch(16) << 16) | (ch(8) << 8) | ch(0)).toString(16).padStart(6, "0")
+  );
+}
+
+type BriefPalette = {
+  containerBg: string;
+  containerShadow: string;
+  sky: string;
+  halo: string;
+  ridgeFar: string;
+  ridgeMid: string;
+  ridgeNear: string;
+  starColor: string;
+  starGlow: string;
+  moteA: string;
+  moteAGlow: string;
+  moteB: string;
+  moteBGlow: string;
+  floorPlate: string;
+  floorPlateShadow: string;
+  floorRings: string;
+  floorGlow: string;
+  pedFlange: string;
+  pedFlangeShadow: string;
+  pedBody: string;
+  pedBodyShadow: string;
+  pedBowl: string;
+  pedBowlShadow: string;
+  pedEmissive: string;
+  pedRingBorder: string;
+  pedRingShadow: string;
+  beam: string;
+  chipBg: string;
+  chipBorder: string;
+  chipColor: string;
+  chipTextShadow: string;
+  titleShadow: string;
+  dotOn: string;
+  dotOff: string;
+  dotShadow: string;
+  acceptReadyBg: string;
+  acceptWaitBg: string;
+  acceptWaitColor: string;
+  acceptReadyShadow: string;
+  acceptWaitShadow: string;
+  vignette: string;
+  cardFaceUpBg: string;
+  cardFaceDownBg: string;
+  cardDownShadow: string;
+  envelopeGlow: string;
+  envelopeLabelColor: string;
+};
+
+/** The scene's original hardcoded cyber-sky values, verbatim. */
+const DEFAULT_BRIEF: BriefPalette = {
+  containerBg: "#04050d",
+  containerShadow:
+    "0 40px 90px -30px rgba(8, 10, 22, 0.7), " +
+    "0 0 0 1px rgba(125, 240, 255, 0.25) inset, " +
+    "0 0 60px rgba(0, 229, 255, 0.12) inset",
+  sky:
+    "linear-gradient(180deg, " +
+    "#04050d 0%, " +
+    "#0f1530 25%, " +
+    "#1a2147 55%, " +
+    "#252d5e 78%, " +
+    "#1a2147 92%, " +
+    "#0f1530 100%)",
+  halo: "radial-gradient(circle, rgba(0, 229, 255, 0.55) 0%, rgba(124, 92, 255, 0.32) 25%, rgba(124, 92, 255, 0.08) 55%, transparent 100%)",
+  ridgeFar: "#3a1a3e",
+  ridgeMid: "#5a2540",
+  ridgeNear: "#2a1230",
+  starColor: "#fff7e6",
+  starGlow: "rgba(255, 240, 200, 0.6)",
+  moteA: "rgba(125, 240, 255, 0.85)",
+  moteAGlow: "rgba(0, 229, 255, 0.6)",
+  moteB: "rgba(160, 143, 255, 0.85)",
+  moteBGlow: "rgba(124, 92, 255, 0.6)",
+  floorPlate:
+    "radial-gradient(ellipse at 50% 30%, " +
+    "#1a2147 0%, " +
+    "#0f1530 35%, " +
+    "#080a16 70%, " +
+    "#04050d 100%)",
+  floorPlateShadow:
+    "inset 0 -40px 80px rgba(8, 10, 22, 0.65), " +
+    "inset 0 0 0 1px rgba(125, 240, 255, 0.18)",
+  floorRings:
+    "repeating-radial-gradient(ellipse at 50% 28%, " +
+    "transparent 0px, " +
+    "transparent 38px, " +
+    "rgba(0, 229, 255, 0.10) 39px, " +
+    "rgba(0, 229, 255, 0.10) 40px)",
+  floorGlow:
+    "radial-gradient(ellipse at center, rgba(0, 229, 255, 0.18) 0%, transparent 70%)",
+  pedFlange: "radial-gradient(ellipse at 50% 35%, #1f2855 0%, #0a0e22 100%)",
+  pedFlangeShadow:
+    "0 6px 14px rgba(8, 10, 22, 0.6), inset 0 -3px 6px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(125, 240, 255, 0.22)",
+  pedBody:
+    "linear-gradient(90deg, #0f1530 0%, #1a2147 25%, #252d5e 50%, #1a2147 75%, #0f1530 100%)",
+  pedBodyShadow:
+    "inset 0 -8px 14px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(125, 240, 255, 0.18)",
+  pedBowl: "radial-gradient(ellipse at 50% 35%, #1a2147 0%, #04050d 100%)",
+  pedBowlShadow:
+    "inset 0 4px 10px rgba(0,0,0,0.6), 0 -2px 0 rgba(125, 240, 255, 0.18)",
+  pedEmissive:
+    "radial-gradient(ellipse at 50% 50%, rgba(220, 250, 255, 0.95) 0%, rgba(125, 240, 255, 0.85) 30%, rgba(0, 229, 255, 0.55) 60%, transparent 100%)",
+  pedRingBorder: "2px solid rgba(0, 229, 255, 0.7)",
+  pedRingShadow:
+    "0 0 20px rgba(0, 229, 255, 0.55), inset 0 0 10px rgba(125, 240, 255, 0.4)",
+  beam:
+    "linear-gradient(to top, " +
+    "rgba(0, 229, 255, 0) 0%, " +
+    "rgba(0, 229, 255, 0.32) 35%, " +
+    "rgba(125, 240, 255, 0.6) 75%, " +
+    "rgba(220, 250, 255, 0.85) 100%)",
+  chipBg: "rgba(0, 229, 255, 0.10)",
+  chipBorder: "1px solid rgba(125, 240, 255, 0.55)",
+  chipColor: "#7df0ff",
+  chipTextShadow: "0 0 12px rgba(0, 229, 255, 0.55)",
+  titleShadow:
+    "0 4px 18px rgba(8, 10, 22, 0.65), " +
+    "0 0 28px rgba(0, 229, 255, 0.55), " +
+    "0 0 56px rgba(124, 92, 255, 0.4)",
+  dotOn: "linear-gradient(135deg, #7df0ff, #7c5cff)",
+  dotOff: "rgba(125, 240, 255, 0.18)",
+  dotShadow: "0 0 14px rgba(0, 229, 255, 0.7), 0 0 28px rgba(124, 92, 255, 0.4)",
+  acceptReadyBg: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+  acceptWaitBg:
+    "linear-gradient(135deg, rgba(40,50,100,0.85), rgba(30,36,80,0.85))",
+  acceptWaitColor: "#cfe0ff",
+  acceptReadyShadow:
+    "0 0 24px rgba(0, 229, 255, 0.55), " +
+    "0 8px 20px -6px rgba(0, 229, 255, 0.45), " +
+    "0 0 0 1px rgba(125, 240, 255, 0.6) inset",
+  acceptWaitShadow:
+    "0 8px 20px -8px rgba(2,4,12,0.7), 0 0 0 1px rgba(125, 240, 255, 0.35) inset",
+  vignette:
+    "radial-gradient(ellipse at center, transparent 50%, rgba(4, 5, 13, 0.65) 100%)",
+  cardFaceUpBg: "linear-gradient(180deg, rgb(22,28,62) 0%, rgb(12,16,40) 100%)",
+  cardFaceDownBg:
+    "linear-gradient(180deg, rgb(26,33,71) 0%, rgb(15,21,48) 100%)",
+  cardDownShadow:
+    "0 18px 40px -12px rgba(2, 4, 12, 0.75), " +
+    "0 0 0 2px rgba(4, 5, 13, 0.98) inset, " +
+    "0 0 0 3.5px rgba(125,240,255,0.4) inset, " +
+    "0 0 24px rgba(0,229,255,0.18)",
+  envelopeGlow: "drop-shadow(0 0 14px rgba(125,240,255,0.5))",
+  envelopeLabelColor: "#7df0ff",
+};
+
+/**
+ * Palette for the whole scene. Null theme → DEFAULT_BRIEF (unchanged look);
+ * themed week → the same roles re-derived from the world's deepBg + accent.
+ */
+function useBriefPalette(): BriefPalette {
+  const theme = useLessonTheme();
+  return useMemo(() => {
+    if (!theme) return DEFAULT_BRIEF;
+    const accent = theme.accent;
+    const aRGB = theme.accentRGB;
+    const deep = theme.deepBg;
+    const deepRGB = hexToRGB(deep);
+    // Pale + near-white companions to the accent (the #7df0ff / #dcfaff roles)
+    const light = mixHex(accent, "#ffffff", 0.55);
+    const lightRGB = hexToRGB(light);
+    const nearWhiteRGB = hexToRGB(mixHex(accent, "#ffffff", 0.85));
+    // "Shell" shades: the chrome navies (#0f1530/#1a2147/#252d5e roles),
+    // rebuilt as the world's deep colour warmed slightly toward its accent.
+    const shellHi = mixHex(deep, accent, 0.24);
+    const shellMid = mixHex(deep, accent, 0.15);
+    const shellLo = mixHex(deep, accent, 0.07);
+    const shellDim = mixHex(deep, "#000000", 0.3);
+    return {
+      containerBg: deep,
+      containerShadow:
+        "0 40px 90px -30px rgba(8, 10, 22, 0.7), " +
+        `0 0 0 1px rgba(${lightRGB}, 0.25) inset, ` +
+        `0 0 60px rgba(${aRGB}, 0.12) inset`,
+      sky: theme.bgGradient,
+      halo: `radial-gradient(circle, rgba(${aRGB}, 0.55) 0%, rgba(${aRGB}, 0.3) 25%, rgba(${aRGB}, 0.08) 55%, transparent 100%)`,
+      ridgeFar: shellMid,
+      ridgeMid: shellHi,
+      ridgeNear: mixHex(deep, accent, 0.05),
+      starColor: mixHex("#fff7e6", accent, 0.35),
+      starGlow: `rgba(${lightRGB}, 0.6)`,
+      moteA: `rgba(${lightRGB}, 0.85)`,
+      moteAGlow: `rgba(${aRGB}, 0.6)`,
+      moteB: `rgba(${aRGB}, 0.85)`,
+      moteBGlow: `rgba(${aRGB}, 0.6)`,
+      floorPlate: `radial-gradient(ellipse at 50% 30%, ${shellMid} 0%, ${shellLo} 35%, ${shellDim} 70%, ${deep} 100%)`,
+      floorPlateShadow:
+        "inset 0 -40px 80px rgba(8, 10, 22, 0.65), " +
+        `inset 0 0 0 1px rgba(${lightRGB}, 0.18)`,
+      floorRings:
+        "repeating-radial-gradient(ellipse at 50% 28%, " +
+        "transparent 0px, transparent 38px, " +
+        `rgba(${aRGB}, 0.10) 39px, rgba(${aRGB}, 0.10) 40px)`,
+      floorGlow: `radial-gradient(ellipse at center, rgba(${aRGB}, 0.18) 0%, transparent 70%)`,
+      pedFlange: `radial-gradient(ellipse at 50% 35%, ${mixHex(deep, accent, 0.2)} 0%, ${mixHex(deep, "#000000", 0.15)} 100%)`,
+      pedFlangeShadow:
+        "0 6px 14px rgba(8, 10, 22, 0.6), inset 0 -3px 6px rgba(0,0,0,0.5), " +
+        `inset 0 0 0 1px rgba(${lightRGB}, 0.22)`,
+      pedBody: `linear-gradient(90deg, ${shellLo} 0%, ${shellMid} 25%, ${shellHi} 50%, ${shellMid} 75%, ${shellLo} 100%)`,
+      pedBodyShadow:
+        "inset 0 -8px 14px rgba(0,0,0,0.55), " +
+        `inset 0 0 0 1px rgba(${lightRGB}, 0.18)`,
+      pedBowl: `radial-gradient(ellipse at 50% 35%, ${shellMid} 0%, ${deep} 100%)`,
+      pedBowlShadow: `inset 0 4px 10px rgba(0,0,0,0.6), 0 -2px 0 rgba(${lightRGB}, 0.18)`,
+      pedEmissive: `radial-gradient(ellipse at 50% 50%, rgba(${nearWhiteRGB}, 0.95) 0%, rgba(${lightRGB}, 0.85) 30%, rgba(${aRGB}, 0.55) 60%, transparent 100%)`,
+      pedRingBorder: `2px solid rgba(${aRGB}, 0.7)`,
+      pedRingShadow: `0 0 20px rgba(${aRGB}, 0.55), inset 0 0 10px rgba(${lightRGB}, 0.4)`,
+      beam:
+        "linear-gradient(to top, " +
+        `rgba(${aRGB}, 0) 0%, ` +
+        `rgba(${aRGB}, 0.32) 35%, ` +
+        `rgba(${lightRGB}, 0.6) 75%, ` +
+        `rgba(${nearWhiteRGB}, 0.85) 100%)`,
+      chipBg: `rgba(${aRGB}, 0.10)`,
+      chipBorder: `1px solid rgba(${lightRGB}, 0.55)`,
+      chipColor: light,
+      chipTextShadow: `0 0 12px rgba(${aRGB}, 0.55)`,
+      titleShadow:
+        "0 4px 18px rgba(8, 10, 22, 0.65), " +
+        `0 0 28px rgba(${aRGB}, 0.55), ` +
+        `0 0 56px rgba(${aRGB}, 0.4)`,
+      dotOn: `linear-gradient(135deg, ${light}, ${accent})`,
+      dotOff: `rgba(${lightRGB}, 0.18)`,
+      dotShadow: `0 0 14px rgba(${aRGB}, 0.7), 0 0 28px rgba(${aRGB}, 0.4)`,
+      acceptReadyBg: `linear-gradient(135deg, ${light}, ${accent})`,
+      acceptWaitBg: `linear-gradient(135deg, rgba(${hexToRGB(mixHex(deep, accent, 0.28))}, 0.85), rgba(${hexToRGB(mixHex(deep, accent, 0.14))}, 0.85))`,
+      acceptWaitColor: mixHex(accent, "#ffffff", 0.8),
+      acceptReadyShadow:
+        `0 0 24px rgba(${aRGB}, 0.55), ` +
+        `0 8px 20px -6px rgba(${aRGB}, 0.45), ` +
+        `0 0 0 1px rgba(${lightRGB}, 0.6) inset`,
+      acceptWaitShadow: `0 8px 20px -8px rgba(2,4,12,0.7), 0 0 0 1px rgba(${lightRGB}, 0.35) inset`,
+      vignette: `radial-gradient(ellipse at center, transparent 50%, rgba(${deepRGB}, 0.65) 100%)`,
+      cardFaceUpBg: `linear-gradient(180deg, ${mixHex(deep, accent, 0.13)} 0%, ${mixHex(deep, accent, 0.05)} 100%)`,
+      cardFaceDownBg: `linear-gradient(180deg, ${mixHex(deep, accent, 0.17)} 0%, ${mixHex(deep, accent, 0.08)} 100%)`,
+      cardDownShadow:
+        "0 18px 40px -12px rgba(2, 4, 12, 0.75), " +
+        "0 0 0 2px rgba(4, 5, 13, 0.98) inset, " +
+        `0 0 0 3.5px rgba(${lightRGB}, 0.4) inset, ` +
+        `0 0 24px rgba(${aRGB}, 0.18)`,
+      envelopeGlow: `drop-shadow(0 0 14px rgba(${lightRGB}, 0.5))`,
+      envelopeLabelColor: light,
+    };
+  }, [theme]);
+}
 
 /* ───────────────────────── PUBLIC API ───────────────────────── */
 
@@ -59,6 +338,9 @@ export default function MissionBriefScene({
     });
   };
 
+  // Per-week world palette (null theme → the original cyber-sky, unchanged)
+  const p = useBriefPalette();
+
   // Subtle mouse-parallax for storybook depth
   const [px, setPx] = useState({ x: 0, y: 0 });
   useEffect(() => {
@@ -79,11 +361,8 @@ export default function MissionBriefScene({
         height: "min(82vh, 760px)",
         borderRadius: 28,
         overflow: "hidden",
-        background: "#04050d",
-        boxShadow:
-          "0 40px 90px -30px rgba(8, 10, 22, 0.7), " +
-          "0 0 0 1px rgba(125, 240, 255, 0.25) inset, " +
-          "0 0 60px rgba(0, 229, 255, 0.12) inset",
+        background: p.containerBg,
+        boxShadow: p.containerShadow,
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
@@ -179,6 +458,9 @@ function CastRow({ px }: { px: { x: number; y: number } }) {
 /* ───────────────────────── SKY BACKDROP ───────────────────────── */
 
 function SkyBackdrop({ px }: { px: { x: number; y: number } }) {
+  // Default: Cyber Heroes Lab sky - abyss → twilight navy → midnight.
+  // Themed week: the world's own bgGradient + an accent halo.
+  const p = useBriefPalette();
   return (
     <div
       aria-hidden
@@ -186,22 +468,12 @@ function SkyBackdrop({ px }: { px: { x: number; y: number } }) {
         position: "absolute",
         inset: -20,
         zIndex: 0,
-        // Cyber Heroes Lab sky - abyss → twilight navy → midnight,
-        // replaces the warm sunset that was bleeding orange into the
-        // mission brief surface.
-        background:
-          "linear-gradient(180deg, " +
-          "#04050d 0%, " +
-          "#0f1530 25%, " +
-          "#1a2147 55%, " +
-          "#252d5e 78%, " +
-          "#1a2147 92%, " +
-          "#0f1530 100%)",
+        background: p.sky,
         transform: `translate(${px.x * -4}px, ${px.y * -2}px)`,
         transition: "transform 0.5s ease-out",
       }}
     >
-      {/* Cyan/cosmic halo - top right (replaces the warm sun) */}
+      {/* Cosmic halo - top right (accent-tinted on themed weeks) */}
       <div
         style={{
           position: "absolute",
@@ -210,8 +482,7 @@ function SkyBackdrop({ px }: { px: { x: number; y: number } }) {
           width: 320,
           height: 320,
           borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(0, 229, 255, 0.55) 0%, rgba(124, 92, 255, 0.32) 25%, rgba(124, 92, 255, 0.08) 55%, transparent 100%)",
+          background: p.halo,
           filter: "blur(4px)",
           animation: "sunPulse 6s ease-in-out infinite",
         }}
@@ -223,6 +494,7 @@ function SkyBackdrop({ px }: { px: { x: number; y: number } }) {
 /* ───────────────────────── DISTANT RIDGES ───────────────────────── */
 
 function DistantRidges({ px }: { px: { x: number; y: number } }) {
+  const p = useBriefPalette();
   return (
     <div
       aria-hidden
@@ -246,19 +518,19 @@ function DistantRidges({ px }: { px: { x: number; y: number } }) {
         {/* Far ridge */}
         <path
           d="M0,240 L0,160 Q60,140 120,150 Q200,120 280,140 Q360,110 460,135 Q540,105 640,130 Q740,100 840,125 Q940,95 1040,115 Q1130,135 1200,120 L1200,240 Z"
-          fill="#3a1a3e"
+          fill={p.ridgeFar}
           opacity="0.65"
         />
         {/* Mid ridge */}
         <path
           d="M0,240 L0,180 Q90,150 180,170 Q280,135 380,165 Q480,145 580,170 Q680,140 780,165 Q880,145 980,170 Q1090,150 1200,165 L1200,240 Z"
-          fill="#5a2540"
+          fill={p.ridgeMid}
           opacity="0.75"
         />
         {/* Near ridge */}
         <path
           d="M0,240 L0,205 Q120,180 240,195 Q360,170 480,195 Q600,175 720,200 Q840,180 960,205 Q1080,185 1200,205 L1200,240 Z"
-          fill="#2a1230"
+          fill={p.ridgeNear}
           opacity="0.9"
         />
       </svg>
@@ -269,6 +541,7 @@ function DistantRidges({ px }: { px: { x: number; y: number } }) {
 /* ───────────────────────── STAR FIELD ───────────────────────── */
 
 function StarField() {
+  const p = useBriefPalette();
   // Stable positions via memo (not random per render)
   const stars = useMemo(
     () =>
@@ -302,9 +575,9 @@ function StarField() {
             width: s.size,
             height: s.size,
             borderRadius: "50%",
-            background: "#fff7e6",
+            background: p.starColor,
             opacity: s.opacity,
-            boxShadow: `0 0 ${s.size * 3}px rgba(255, 240, 200, 0.6)`,
+            boxShadow: `0 0 ${s.size * 3}px ${p.starGlow}`,
             animation: `starTwinkle ${3 + (i % 3)}s ease-in-out ${s.delay}s infinite`,
           }}
         />
@@ -316,6 +589,7 @@ function StarField() {
 /* ───────────────────────── FLOATING PARTICLES (dust motes) ───────────────────────── */
 
 function FloatingParticles() {
+  const p = useBriefPalette();
   const motes = useMemo(
     () =>
       Array.from({ length: 28 }, (_, i) => ({
@@ -352,10 +626,10 @@ function FloatingParticles() {
             width: m.size,
             height: m.size,
             borderRadius: "50%",
-            background: m.cyan ? "rgba(125, 240, 255, 0.85)" : "rgba(160, 143, 255, 0.85)",
+            background: m.cyan ? p.moteA : p.moteB,
             boxShadow: m.cyan
-              ? `0 0 ${m.size * 4}px rgba(0, 229, 255, 0.6)`
-              : `0 0 ${m.size * 4}px rgba(124, 92, 255, 0.6)`,
+              ? `0 0 ${m.size * 4}px ${p.moteAGlow}`
+              : `0 0 ${m.size * 4}px ${p.moteBGlow}`,
             animation: `moteFloat ${m.duration}s ease-in-out ${m.delay}s infinite`,
             ["--moteDrift" as string]: `${m.drift}px`,
           } as React.CSSProperties}
@@ -373,6 +647,7 @@ function FloatingParticles() {
  */
 
 function WoodFloor() {
+  const p = useBriefPalette();
   return (
     <div
       aria-hidden
@@ -387,40 +662,28 @@ function WoodFloor() {
         pointerEvents: "none",
       }}
     >
-      {/* Chrome plate - deep navy with cyan rim */}
+      {/* Chrome plate - deep tones with an accent rim */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           borderRadius: "50% / 24%",
-          background:
-            "radial-gradient(ellipse at 50% 30%, " +
-            "#1a2147 0%, " +
-            "#0f1530 35%, " +
-            "#080a16 70%, " +
-            "#04050d 100%)",
-          boxShadow:
-            "inset 0 -40px 80px rgba(8, 10, 22, 0.65), " +
-            "inset 0 0 0 1px rgba(125, 240, 255, 0.18)",
+          background: p.floorPlate,
+          boxShadow: p.floorPlateShadow,
         }}
       />
-      {/* Concentric cyan rings - radar/grid feel */}
+      {/* Concentric accent rings - radar/grid feel */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           borderRadius: "50% / 24%",
-          background:
-            "repeating-radial-gradient(ellipse at 50% 28%, " +
-            "transparent 0px, " +
-            "transparent 38px, " +
-            "rgba(0, 229, 255, 0.10) 39px, " +
-            "rgba(0, 229, 255, 0.10) 40px)",
+          background: p.floorRings,
           mixBlendMode: "screen",
           opacity: 0.85,
         }}
       />
-      {/* Soft cyan glow at the centre of the disc */}
+      {/* Soft accent glow at the centre of the disc */}
       <div
         style={{
           position: "absolute",
@@ -430,8 +693,7 @@ function WoodFloor() {
           width: "55%",
           height: "30%",
           borderRadius: "50%",
-          background:
-            "radial-gradient(ellipse at center, rgba(0, 229, 255, 0.18) 0%, transparent 70%)",
+          background: p.floorGlow,
           filter: "blur(20px)",
         }}
       />
@@ -447,6 +709,7 @@ function WoodFloor() {
  */
 
 function HoloPedestal() {
+  const p = useBriefPalette();
   return (
     <div
       aria-hidden
@@ -480,10 +743,8 @@ function HoloPedestal() {
           width: 280,
           height: 32,
           borderRadius: "50%",
-          background:
-            "radial-gradient(ellipse at 50% 35%, #1f2855 0%, #0a0e22 100%)",
-          boxShadow:
-            "0 6px 14px rgba(8, 10, 22, 0.6), inset 0 -3px 6px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(125, 240, 255, 0.22)",
+          background: p.pedFlange,
+          boxShadow: p.pedFlangeShadow,
         }}
       />
       {/* Cylinder body - chrome */}
@@ -494,11 +755,9 @@ function HoloPedestal() {
           marginLeft: 18,
           width: 244,
           height: 56,
-          background:
-            "linear-gradient(90deg, #0f1530 0%, #1a2147 25%, #252d5e 50%, #1a2147 75%, #0f1530 100%)",
+          background: p.pedBody,
           borderRadius: "8px / 4px",
-          boxShadow:
-            "inset 0 -8px 14px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(125, 240, 255, 0.18)",
+          boxShadow: p.pedBodyShadow,
         }}
       />
       {/* Top inset disc - chrome bowl */}
@@ -510,13 +769,11 @@ function HoloPedestal() {
           width: 236,
           height: 28,
           borderRadius: "50%",
-          background:
-            "radial-gradient(ellipse at 50% 35%, #1a2147 0%, #04050d 100%)",
-          boxShadow:
-            "inset 0 4px 10px rgba(0,0,0,0.6), 0 -2px 0 rgba(125, 240, 255, 0.18)",
+          background: p.pedBowl,
+          boxShadow: p.pedBowlShadow,
         }}
       />
-      {/* Glowing cyan emissive top - pulses */}
+      {/* Glowing emissive top - pulses in the week's accent */}
       <div
         style={{
           position: "absolute",
@@ -526,13 +783,12 @@ function HoloPedestal() {
           width: 200,
           height: 22,
           borderRadius: "50%",
-          background:
-            "radial-gradient(ellipse at 50% 50%, rgba(220, 250, 255, 0.95) 0%, rgba(125, 240, 255, 0.85) 30%, rgba(0, 229, 255, 0.55) 60%, transparent 100%)",
+          background: p.pedEmissive,
           filter: "blur(2px)",
           animation: "pedestalGlow 2.4s ease-in-out infinite",
         }}
       />
-      {/* Ring rim - cyan */}
+      {/* Ring rim - accent */}
       <div
         style={{
           position: "absolute",
@@ -542,9 +798,8 @@ function HoloPedestal() {
           width: 220,
           height: 18,
           borderRadius: "50%",
-          border: "2px solid rgba(0, 229, 255, 0.7)",
-          boxShadow:
-            "0 0 20px rgba(0, 229, 255, 0.55), inset 0 0 10px rgba(125, 240, 255, 0.4)",
+          border: p.pedRingBorder,
+          boxShadow: p.pedRingShadow,
         }}
       />
     </div>
@@ -554,6 +809,8 @@ function HoloPedestal() {
 /* ───────────────────────── BEAM RAYS ───────────────────────── */
 
 function BeamRays() {
+  // Projector beam in the week's accent (default: cool cyan holo emitter).
+  const p = useBriefPalette();
   return (
     <div
       aria-hidden
@@ -567,14 +824,7 @@ function BeamRays() {
         zIndex: 3,
         pointerEvents: "none",
         clipPath: "polygon(38% 0%, 62% 0%, 88% 100%, 12% 100%)",
-        // Was warm-gold beams (clashed with cyber sky). Now a cool
-        // cyan/violet projector beam that reads as a holo emitter.
-        background:
-          "linear-gradient(to top, " +
-          "rgba(0, 229, 255, 0) 0%, " +
-          "rgba(0, 229, 255, 0.32) 35%, " +
-          "rgba(125, 240, 255, 0.6) 75%, " +
-          "rgba(220, 250, 255, 0.85) 100%)",
+        background: p.beam,
         mixBlendMode: "screen",
         animation: "beamShimmer 3.6s ease-in-out infinite",
       }}
@@ -648,6 +898,7 @@ function MissionCard({
   // There is deliberately NO preserve-3d / rotateY / back face here — a
   // coplanar 3D face-pair is what made Chrome/Edge rasterise a stray seam
   // straight down the middle of the card. One flat face can't seam.
+  const p = useBriefPalette();
   const flipControls = useAnimationControls();
   const [showObjective, setShowObjective] = useState(flipped);
   const didMount = useRef(false);
@@ -738,19 +989,14 @@ function MissionCard({
           overflow: "hidden",
           transformOrigin: "center center",
           willChange: "transform",
-          background: showObjective
-            ? "linear-gradient(180deg, rgb(22,28,62) 0%, rgb(12,16,40) 100%)"
-            : "linear-gradient(180deg, rgb(26,33,71) 0%, rgb(15,21,48) 100%)",
+          background: showObjective ? p.cardFaceUpBg : p.cardFaceDownBg,
           boxShadow: showObjective
             ? `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
               `0 0 0 2px rgba(4, 5, 13, 0.98) inset, ` +
               `0 0 0 3.5px ${mission.colour}88 inset, ` +
               `0 -3px 0 ${mission.colour}44 inset, ` +
               `0 0 30px ${mission.glow}`
-            : `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
-              `0 0 0 2px rgba(4, 5, 13, 0.98) inset, ` +
-              `0 0 0 3.5px rgba(125,240,255,0.4) inset, ` +
-              `0 0 24px rgba(0,229,255,0.18)`,
+            : p.cardDownShadow,
         }}
       >
         {showObjective ? (
@@ -771,10 +1017,10 @@ function MissionCard({
           /* FACE-DOWN — sealed envelope, tap to open */
           <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", textAlign: "center" }}>
             <div>
-              <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 8, filter: "drop-shadow(0 0 14px rgba(125,240,255,0.5))" }}>
+              <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 8, filter: p.envelopeGlow }}>
                 <PixIcon emoji="✉️" size={48} />
               </div>
-              <div style={{ color: "#7df0ff", fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
+              <div style={{ color: p.envelopeLabelColor, fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
                 OBJECTIVE 0{index + 1}
               </div>
               <div style={{ color: "#f2f6ff", fontSize: 13, fontWeight: 800, marginTop: 4 }}>
@@ -791,6 +1037,7 @@ function MissionCard({
 /* ───────────────────────── TITLE PLATE ───────────────────────── */
 
 function TitlePlate({ title }: { title: string }) {
+  const p = useBriefPalette();
   return (
     <motion.div
       initial={{ opacity: 0, y: -12 }}
@@ -810,19 +1057,19 @@ function TitlePlate({ title }: { title: string }) {
         style={{
           display: "inline-block",
           padding: "6px 20px",
-          background: "rgba(0, 229, 255, 0.10)",
-          border: "1px solid rgba(125, 240, 255, 0.55)",
+          background: p.chipBg,
+          border: p.chipBorder,
           borderRadius: 999,
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
-          color: "#7df0ff",
+          color: p.chipColor,
           fontSize: 12,
           fontWeight: 700,
           letterSpacing: 5,
           textTransform: "uppercase",
           marginBottom: 12,
           fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-          textShadow: "0 0 12px rgba(0, 229, 255, 0.55)",
+          textShadow: p.chipTextShadow,
         }}
       >
         ◇ Mission Briefing ◇
@@ -836,10 +1083,7 @@ function TitlePlate({ title }: { title: string }) {
           letterSpacing: 0.5,
           lineHeight: 1,
           whiteSpace: "nowrap",
-          textShadow:
-            "0 4px 18px rgba(8, 10, 22, 0.65), " +
-            "0 0 28px rgba(0, 229, 255, 0.55), " +
-            "0 0 56px rgba(124, 92, 255, 0.4)",
+          textShadow: p.titleShadow,
         }}
       >
         {title}
@@ -851,6 +1095,7 @@ function TitlePlate({ title }: { title: string }) {
 /* ───────────────────────── PROGRESS DOTS ───────────────────────── */
 
 function ProgressDots({ phase }: { phase: number }) {
+  const p = useBriefPalette();
   return (
     <div
       style={{
@@ -869,14 +1114,8 @@ function ProgressDots({ phase }: { phase: number }) {
             width: 10,
             height: 10,
             borderRadius: "50%",
-            background:
-              phase > i
-                ? "linear-gradient(135deg, #7df0ff, #7c5cff)"
-                : "rgba(125, 240, 255, 0.18)",
-            boxShadow:
-              phase > i
-                ? "0 0 14px rgba(0, 229, 255, 0.7), 0 0 28px rgba(124, 92, 255, 0.4)"
-                : "none",
+            background: phase > i ? p.dotOn : p.dotOff,
+            boxShadow: phase > i ? p.dotShadow : "none",
             transition: "all 0.4s ease",
           }}
         />
@@ -897,6 +1136,7 @@ function AcceptButton({
   onAccept: () => void;
 }) {
   const visible = phase >= 3;
+  const p = useBriefPalette();
   return (
     <div
       style={{
@@ -924,19 +1164,13 @@ function AcceptButton({
             padding: "16px 38px",
             fontSize: 18,
             fontWeight: 800,
-            color: allFlipped ? "#080a16" : "#cfe0ff",
-            background: allFlipped
-              ? "linear-gradient(135deg, #00e5ff, #7c5cff)"
-              : "linear-gradient(135deg, rgba(40,50,100,0.85), rgba(30,36,80,0.85))",
+            color: allFlipped ? "#080a16" : p.acceptWaitColor,
+            background: allFlipped ? p.acceptReadyBg : p.acceptWaitBg,
             borderRadius: 999,
             fontFamily: "'Space Grotesk', system-ui, sans-serif",
             letterSpacing: 1,
             textTransform: "uppercase",
-            boxShadow: allFlipped
-              ? "0 0 24px rgba(0, 229, 255, 0.55), " +
-                "0 8px 20px -6px rgba(0, 229, 255, 0.45), " +
-                "0 0 0 1px rgba(125, 240, 255, 0.6) inset"
-              : "0 8px 20px -8px rgba(2,4,12,0.7), 0 0 0 1px rgba(125, 240, 255, 0.35) inset",
+            boxShadow: allFlipped ? p.acceptReadyShadow : p.acceptWaitShadow,
             transition: "background 300ms ease, color 300ms ease",
           }}
         >
@@ -950,6 +1184,7 @@ function AcceptButton({
 /* ───────────────────────── VIGNETTE ───────────────────────── */
 
 function Vignette() {
+  const p = useBriefPalette();
   return (
     <div
       aria-hidden
@@ -958,8 +1193,7 @@ function Vignette() {
         inset: 0,
         zIndex: 5,
         pointerEvents: "none",
-        background:
-          "radial-gradient(ellipse at center, transparent 50%, rgba(4, 5, 13, 0.65) 100%)",
+        background: p.vignette,
       }}
     />
   );

@@ -63,6 +63,9 @@ export const WEEK_2: WeekContent = {
       ],
     },
 
+      // SIGNATURE: The Leak Torch (bespoke mini-game unique to this week)
+      { type: "signature", mechanic: "leakTorch", title: "The Leak Torch" },
+
     /* ─────────── BEAT 1 · WHAT'S PRIVATE ─────────── */
     // 3 - Learn
     {
