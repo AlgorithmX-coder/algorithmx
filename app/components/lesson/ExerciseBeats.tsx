@@ -59,6 +59,13 @@ export interface ExerciseIntroBeatProps {
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Which character fronts the intro (defaults to the narration speaker). */
   character?: "adam" | "layla";
+  /**
+   * Optional accent colour (hex) that overrides the speaker cyan/pink for the
+   * card chrome (eyebrow, border, title gradient, narration box). Used by the
+   * signature-game intro so the "here's what to do" card matches the week's
+   * theme instead of clashing with the game's art. Omit = classic look.
+   */
+  accent?: string;
   /** Optional exercise logo path. When set, the intro shows this themed logo
    *  INSTEAD of the speaker portrait — the narrator isn't a character, so a
    *  logo avoids a face/voice mismatch on the intro. */
@@ -76,12 +83,15 @@ export default function ExerciseIntroBeat({
   autoMs = 0,
   narration,
   character,
+  accent: accentOverride,
 }: ExerciseIntroBeatProps) {
   const intensity = useMotionIntensity();
   const audio = useGameAudio();
   const paced = !!narration && narration.lines.length > 0;
   const speaker = character ?? narration?.speaker ?? "adam";
-  const accent = speaker === "adam" ? "#00e5ff" : "#ff5fb3";
+  // Themed accent when provided (signature intros pass the week colour);
+  // otherwise the classic speaker cyan/pink.
+  const accent = accentOverride ?? (speaker === "adam" ? "#00e5ff" : "#ff5fb3");
   // Hold the start button back until the child has had time to hear the
   // narration. Non-paced intros are ready immediately.
   // Seconds to hold the start button while the narration plays — shown as a
@@ -211,7 +221,9 @@ export default function ExerciseIntroBeat({
             margin: "0 0 8px",
             fontSize: 26,
             fontWeight: 900,
-            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            background: accentOverride
+              ? `linear-gradient(135deg, ${accent}, ${accent}aa)`
+              : "linear-gradient(135deg, #00e5ff, #7c5cff)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -222,7 +234,7 @@ export default function ExerciseIntroBeat({
 
         {paced ? (
           <div style={{ margin: "10px 0 16px", textAlign: "left", overflowY: "auto", minHeight: 0, flex: "0 1 auto" }}>
-            <InfoNarration lines={narration!.lines} speaker={speaker} />
+            <InfoNarration lines={narration!.lines} speaker={speaker} accent={accentOverride} />
           </div>
         ) : (
           subtitle && (

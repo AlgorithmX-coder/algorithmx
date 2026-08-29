@@ -10,6 +10,14 @@ import type { ComponentType } from "react";
  */
 export interface SignatureProps {
   onComplete: () => void;
+  /**
+   * Optional spoken "here's what to do" instruction (Sarah), authored on the
+   * week's signature screen def. Games that own a themed intro render this
+   * inside it (a themed InfoNarration: auto-play + Read-aloud + Listen-first
+   * gate) so the child hears the task before playing. Colour it to the game's
+   * own palette so it never clashes.
+   */
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
 }
 
 export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {

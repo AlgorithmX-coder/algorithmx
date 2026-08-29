@@ -58,6 +58,14 @@ export interface InfoNarrationProps {
   speaker?: "adam" | "layla";
   /** Auto-play on mount. Defaults to true; user toggle overrides. */
   autoPlay?: boolean;
+  /**
+   * Accent colour (hex) for the box chrome — the ♪ ring, border, label and
+   * "Read aloud" button. Lets a themed screen (e.g. a signature game with its
+   * own palette) tint the narration block to match instead of the default
+   * cyan, so it never clashes with the surrounding art. Omit for the classic
+   * cyan look (byte-identical to before).
+   */
+  accent?: string;
 }
 
 interface ManifestEntry {
@@ -138,7 +146,11 @@ export default function InfoNarration({
   lines,
   speaker = "adam",
   autoPlay = true,
+  accent,
 }: InfoNarrationProps) {
+  // Themed accent (hex). Defaults to the classic cyan so un-themed callers are
+  // byte-identical. `${A}NN` appends an 8-digit-hex alpha channel.
+  const A = accent ?? "#7df0ff";
   const comfort = useComfortMode();
   const [speaking, setSpeaking] = useState<boolean>(false);
   const [activeLine, setActiveLine] = useState<number>(-1);
@@ -334,7 +346,7 @@ export default function InfoNarration({
         alignItems: "flex-start",
         padding: 14,
         background: "rgba(15, 21, 48, 0.65)",
-        border: "1px solid rgba(125, 240, 255, 0.25)",
+        border: `1px solid ${A}40`,
         borderRadius: 14,
         marginBottom: 16,
       }}
@@ -348,18 +360,18 @@ export default function InfoNarration({
           borderRadius: "50%",
           display: "grid",
           placeItems: "center",
-          border: "2px solid #7df0ff",
+          border: `2px solid ${A}`,
           boxShadow: speaking
-            ? "0 0 18px rgba(125, 240, 255, 0.6)"
-            : "0 0 0 1px rgba(125, 240, 255, 0.25) inset",
+            ? `0 0 18px ${A}99`
+            : `0 0 0 1px ${A}40 inset`,
           background:
             "radial-gradient(circle at 30% 30%, #1a2147 0%, #0a0f24 70%)",
           flexShrink: 0,
           transition: "box-shadow 200ms ease-out",
           fontSize: 22,
-          color: "#7df0ff",
+          color: A,
           filter: speaking
-            ? "drop-shadow(0 0 6px rgba(125, 240, 255, 0.8))"
+            ? `drop-shadow(0 0 6px ${A}cc)`
             : undefined,
         }}
       >
@@ -382,7 +394,7 @@ export default function InfoNarration({
               fontWeight: 800,
               fontSize: 10,
               letterSpacing: "0.14em",
-              color: "#7df0ff",
+              color: A,
               textTransform: "uppercase",
             }}
           >
@@ -396,7 +408,9 @@ export default function InfoNarration({
               style={{
                 background: speaking
                   ? "linear-gradient(135deg, #ff5fb3, #7c5cff)"
-                  : "linear-gradient(135deg, #00e5ff, #7c5cff)",
+                  : accent
+                    ? `linear-gradient(135deg, ${A}, ${A}bb)`
+                    : "linear-gradient(135deg, #00e5ff, #7c5cff)",
                 color: "#fff",
                 border: "none",
                 borderRadius: 999,
@@ -446,8 +460,8 @@ export default function InfoNarration({
                   width: 6,
                   height: 6,
                   borderRadius: "50%",
-                  background: "#7df0ff",
-                  boxShadow: "0 0 6px rgba(125, 240, 255, 0.6)",
+                  background: A,
+                  boxShadow: `0 0 6px ${A}99`,
                 }}
               />
               {stripTags(l)}

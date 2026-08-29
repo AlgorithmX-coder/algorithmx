@@ -33,7 +33,7 @@ import { ComfortModeProvider, useComfortMode } from "@/app/lib/comfortMode";
 import { useLessonProgress } from "@/app/lib/useLessonProgress";
 import { analytics } from "@/app/lib/analytics";
 import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
-import { LessonThemeContext } from "@/app/components/lesson/LessonThemeContext";
+import { LessonThemeContext, useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import { SIGNATURES } from "@/app/components/exercises/signatures";
 
 // Exercise components
@@ -375,6 +375,20 @@ function FullScene({ children, bg, glow }: { children: React.ReactNode; bg?: str
 }
 
 /**
+ * Signatures that ship their OWN themed intro screen (with a start button).
+ * These speak the instruction INSIDE that intro (via the `narration` prop) so
+ * the flavour + colour stay the game's own; the shared card is skipped for
+ * them. Tumbler Dials is the exception — it has no intro of its own, so it
+ * uses the shared (week-themed) card.
+ */
+const SIGNATURES_WITH_OWN_INTRO = new Set<string>([
+  "leakTorch", "maskWaltz", "riggedRingToss", "dontFeedTheFire", "lobbyKeeper",
+  "truePriceLever", "developingTray", "flipTheBox", "greatClimbOut", "calmDownConsole",
+  "trailPlanner", "dayJug", "goodnightGadgets", "proofScale", "keyholeCheck",
+  "friendPanner", "logOutFlick", "hearthLoom", "encoreOfTwenty",
+]);
+
+/**
  * A signature mini-game preceded by a spoken "here's what to do" intro.
  *
  * Reuses the SAME ExerciseIntroBeat as every regular exercise (Sarah reads
@@ -397,8 +411,13 @@ function SignaturePlay({
   onComplete: () => void;
 }) {
   const Signature = SIGNATURES[mechanic];
-  const hasIntro = !!narration && narration.lines.length > 0;
-  const [started, setStarted] = useState(!hasIntro);
+  const theme = useLessonTheme();
+  // Games that carry their OWN themed intro speak the instruction inside it
+  // (they read the `narration` prop); the shared card would double up on them,
+  // so we skip it and mount the game directly.
+  const gameHasOwnIntro = SIGNATURES_WITH_OWN_INTRO.has(mechanic);
+  const useCard = !!narration && narration.lines.length > 0 && !gameHasOwnIntro;
+  const [started, setStarted] = useState(!useCard);
   if (!Signature) return null;
   if (!started) {
     return (
@@ -407,12 +426,13 @@ function SignaturePlay({
           title={title ?? "Your challenge"}
           welcome="Your challenge!"
           narration={narration}
+          accent={theme?.accent}
           onDismiss={() => setStarted(true)}
         />
       </div>
     );
   }
-  return <Signature onComplete={onComplete} />;
+  return <Signature onComplete={onComplete} narration={narration} />;
 }
 
 // Document-level keyframe for the FullScene/LessonStage glow cross-fade.
