@@ -58,12 +58,13 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
   // blocked, so the first tap anywhere starts him instead.
   useEffect(() => {
     const a = audioRef.current; if (!a) return;
-    let done = false;
-    const start = () => { if (done) return; done = true; a.play().then(() => setPlaying(true)).catch(() => { done = false; }); };
+    let alive = true, done = false;
+    const start = () => { if (done || !alive) return; done = true; a.play().then(() => { if (alive) setPlaying(true); else a.pause(); }).catch(() => { done = false; }); };
     start();
-    const onGesture = () => { if (a.paused) start(); window.removeEventListener("pointerdown", onGesture); };
+    const onGesture = () => { if (alive && a.paused) start(); window.removeEventListener("pointerdown", onGesture); };
     window.addEventListener("pointerdown", onGesture);
-    return () => window.removeEventListener("pointerdown", onGesture);
+    // On leave, stop ATLAS for good — a play() still in flight must not bleed over WREN in the phone.
+    return () => { alive = false; window.removeEventListener("pointerdown", onGesture); try { a.pause(); } catch {} };
   }, []);
 
   const toggle = () => { const a = audioRef.current; if (!a) return; if (a.paused) a.play().then(() => setPlaying(true)).catch(() => {}); else { a.pause(); setPlaying(false); } };

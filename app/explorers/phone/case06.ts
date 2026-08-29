@@ -133,8 +133,8 @@ export const case06Phone: PhoneCase = {
           prompt: "How do you reply?",
           options: [
             { label: "ok! my login is…", outcome: "bad", then: [{ t: "wren", text: "Stop, don't send it. That password is the only thing he ever wanted, and once it's gone you can't get it back. Try that last move again.", voice: "/audio/wren/m06p-t1-bad.mp3" }] },
-            { label: "nice try, that's the HURRY trick. bye 👋", outcome: "good", then: [{ t: "con", text: "wait no I—", delay: 700 }] },
-            { label: "block & report 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }] },
+            { label: "nice try, that's the HURRY trick. bye 👋", outcome: "good", then: [{ t: "con", text: "wait no i...", delay: 700 }, { t: "wren", text: "Ha! Look at that. The second you named his trick, his smooth 'mod' act fell to pieces. 'Wait, no'? That's him panicking. That's exactly what a beaten scammer sounds like. Brilliant, Agent.", voice: "/audio/wren/m06p-t1-win.mp3" }] },
+            { label: "block & report 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }, { t: "wren", text: "Even better. You shut him down before he could get another word in. That's how you end it. Well done, Agent.", voice: "/audio/wren/m06p-t1-win2.mp3" }] },
           ],
         },
       ],
