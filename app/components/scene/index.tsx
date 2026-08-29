@@ -49,7 +49,14 @@ export function SceneFrame({
       style={{
         position: "relative",
         width: "100%",
-        height,
+        // minHeight (not a fixed height) so a scene laid out in normal flow
+        // can grow taller than the design height on short viewports instead
+        // of its content overflowing the fixed box and colliding with the
+        // absolute title/CTA bands (the "ALERT INCOMING over the polaroid"
+        // bug). Absolute-only scenes are unaffected: with no in-flow child
+        // the box still resolves to exactly `height`. LessonStage scrolls
+        // when the grown frame exceeds the viewport.
+        minHeight: height,
         borderRadius: 28,
         overflow: "hidden",
         background: "#1a0d1f",
@@ -396,10 +403,18 @@ export function SceneTitle({
   title,
   badge = "Mission Briefing",
   delay = 0.3,
+  flow = false,
 }: {
   title: string;
   badge?: string | null;
   delay?: number;
+  /**
+   * When true the title sits in normal document flow (for scenes laid out
+   * as a flex column) instead of being absolutely pinned to the top. This
+   * is what lets the title, content and CTA stack without overlapping on
+   * short viewports.
+   */
+  flow?: boolean;
 }) {
   return (
     <motion.div
@@ -407,10 +422,9 @@ export function SceneTitle({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay, ease: "easeOut" }}
       style={{
-        position: "absolute",
-        top: 28,
-        left: 0,
-        right: 0,
+        ...(flow
+          ? { position: "relative" }
+          : { position: "absolute", top: 28, left: 0, right: 0 }),
         textAlign: "center",
         zIndex: 8,
         pointerEvents: "none",

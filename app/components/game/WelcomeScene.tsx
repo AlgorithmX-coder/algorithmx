@@ -76,44 +76,44 @@ export default function WelcomeScene({
         }}
       />
 
-      <SceneTitle title={title} badge={badge} />
-
-      {/* Centerpiece: polaroid + caption. Flex column spanning the scene
-          with the title zone (150px) and CTA zone (110px) reserved as
-          padding, so the polaroid centers in the REMAINING space and can
-          never rise into the absolute SceneTitle above it (the old
-          top:44% centering overlapped the headline on 900px viewports). */}
+      {/* Foreground laid out in NORMAL FLOW (title -> polaroid+caption -> CTA)
+          so nothing overlaps at any viewport height or caption length. The
+          column fills the frame with space-between on tall screens; on short
+          ones it grows past the frame's min-height and LessonStage scrolls.
+          The old version pinned all three as absolute layers over a fixed
+          632px frame, so on a 771px laptop the centred content overflowed up
+          into the title ("ALERT INCOMING" over the polaroid) and down into
+          the CTA. */}
       <div
         style={{
-          position: "absolute",
-          inset: 0,
+          position: "relative",
           zIndex: 6,
+          minHeight: "min(82vh, 760px)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          gap: 18,
-          padding: "150px 20px 110px",
-          pointerEvents: "none",
+          justifyContent: "space-between",
+          gap: 24,
+          padding: "clamp(20px, 4vh, 40px) 20px",
         }}
       >
-        <Polaroid src={photoSrc} caption={photoCaption} />
-        <CaptionPlaque text={caption} />
-      </div>
+        <SceneTitle title={title} badge={badge} flow />
 
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 18,
+            pointerEvents: "none",
+          }}
+        >
+          <Polaroid src={photoSrc} caption={photoCaption} />
+          <CaptionPlaque text={caption} />
+        </div>
 
-      {/* Cyber-styled CTA - replaces PrimaryButton (warm gold gradient)
-          for the cyber app surface. Position absolute at the bottom
-          centre, above the lesson page's bottom edge. */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 30,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 9,
-        }}
-      >
+        {/* Cyber-styled CTA (replaces the warm gold PrimaryButton for the
+            cyber app surface), now in flow at the column's foot. */}
         <motion.button
           onClick={onContinue}
           whileHover={{ y: -3, scale: 1.04, boxShadow: "0 0 32px rgba(0, 229, 255, 0.85), 0 14px 28px -6px rgba(0, 229, 255, 0.55), 0 0 0 1px rgba(125, 240, 255, 0.7) inset" }}
@@ -171,7 +171,7 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
     <div
       style={{
         position: "relative",
-        padding: "14px 14px 50px",
+        padding: "12px 12px 40px",
         background: "linear-gradient(180deg, #faf3e3 0%, #f0e3c5 100%)",
         borderRadius: 6,
         boxShadow:
@@ -181,10 +181,10 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
     >
       <div
         style={{
-          // Slightly smaller than the old min(50vw,380px) so the whole
-          // polaroid+plaque column clears the reserved title/CTA zones
-          // on a 900px-tall viewport.
-          width: "min(46vw, 340px)",
+          // Sized so the full flow column (title + polaroid + caption + CTA)
+          // fits a ~771px laptop without scrolling for typical captions; the
+          // vh term shrinks it further on shorter viewports.
+          width: "min(44vw, 300px, 40vh * 4 / 3)",
           aspectRatio: "4 / 3",
           backgroundImage: `url(${src})`,
           backgroundSize: "cover",
@@ -252,8 +252,8 @@ function CaptionPlaque({ text }: { text: string }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...SPRING.gentle, delay: 1.4 }}
       style={{
-        maxWidth: 540,
-        padding: "12px 22px",
+        maxWidth: 500,
+        padding: "11px 20px",
         // Was warm purple-brown bg + warm cream border (Pixar leftover).
         // Now cyber-glass: deep navy translucent + cyan border, matches
         // every other plaque/banner across the cyber lesson surface.
@@ -265,7 +265,7 @@ function CaptionPlaque({ text }: { text: string }) {
         borderColor: "rgba(125, 240, 255, 0.45)",
         borderRadius: 16,
         color: COLOR.cream,
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: 600,
         textAlign: "center",
         lineHeight: 1.4,
