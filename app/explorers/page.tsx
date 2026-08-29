@@ -14,7 +14,7 @@ import MissionRuntime from "./engine/MissionRuntime";
 import PhoneRuntime from "./phone/PhoneRuntime";
 import { case06Phone } from "./phone/case06";
 import BlockIntro from "./phone/BlockIntro";
-import { block1Intro } from "./phone/blockIntroData";
+import { block1Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
 import type { BlockIntroData } from "./phone/blockIntroData";
 import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
@@ -85,7 +85,7 @@ const TOPICS: Record<string, string> = {
 // Page-level block-intro slides (ATLAS briefings), shown once when a kid opens
 // the FIRST case of a block. Block 2 self-briefs inside the phone, so it's not
 // listed here; blocks 3-4 will be added as their intros are built.
-const BLOCK_INTROS: Record<number, BlockIntroData> = { 1: block1Intro };
+const BLOCK_INTROS: Record<number, BlockIntroData> = { 1: block1Intro, 3: block3Intro, 4: block4Intro };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
 

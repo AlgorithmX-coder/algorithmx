@@ -126,3 +126,85 @@ export const block1Intro: BlockIntroData = {
     matrix: ["#34E1FF", "#7FF0FF", "#3BF57E"],
   },
 };
+
+export const block3Intro: BlockIntroData = {
+  block: "BLOCK THREE",
+  title: ["Systems"],
+  thesis:
+    "You've beaten the tricks. Now look under the hood: how the tech really works, and <b>where it breaks.</b>",
+  audio: "/audio/atlas/block3.mp3",
+  commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Top clearance" },
+  shift: {
+    kicker: "The shift",
+    lede: "Every con eventually touches a machine, and <em>machines have rules.</em>",
+    body:
+      "You've learned to read the message and the person. This block goes under the surface: the locks, the networks, the hidden doors. Five cases on how the technology actually works, and exactly where each part can be forced. Once you see how a system really works, you can see how it breaks, and how to defend it.",
+  },
+  filesKicker: "Five systems. Five weak points.",
+  files: [
+    { caseNo: "011", codename: "SKELETON KEY", title: "The Second Lock", blurb: "Why one password is never enough." },
+    { caseNo: "012", codename: "PACKRAT", title: "The Listener", blurb: "Someone quietly reading your wi-fi." },
+    { caseNo: "013", codename: "SKELETON KEY", title: "The Side Door", blurb: "The secret way back into a system." },
+    { caseNo: "014", codename: "GHOSTWRITER", title: "The Trojan", blurb: "Malware hiding in something you want." },
+    { caseNo: "015", codename: "MIMIC", title: "The Look-Alike", blurb: "A fake site dressed as the real one." },
+  ],
+  ceremony: "Clear all five → TOP SECRET clearance.",
+  skills: [
+    { name: "Lock down an account", desc: "" },
+    { name: "Spot a fake network", desc: "" },
+    { name: "Find the side door", desc: "" },
+    { name: "Unmask a Trojan", desc: "" },
+    { name: "Catch a look-alike site", desc: "" },
+  ],
+  handoff:
+    "Stop trusting the surface. Start understanding the wiring. <em>WREN's ready when you are.</em>",
+  beginLabel: "Begin Case 011 →",
+  theme: {
+    accent: "#FFB23E",
+    accentHi: "#FFD27A",
+    accentRGB: "255, 178, 62",
+    classification: "TOP SECRET",
+    matrix: ["#FFB23E", "#FFD27A", "#FF7A3E"],
+  },
+};
+
+export const block4Intro: BlockIntroData = {
+  block: "BLOCK FOUR",
+  title: ["The Long", "Game"],
+  thesis:
+    "Everything so far was one attacker warming up. This is the big picture, and <b>the mind behind it.</b>",
+  audio: "/audio/atlas/block4.mp3",
+  commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Highest clearance" },
+  shift: {
+    kicker: "The endgame",
+    lede: "Every message, every trick, every system, was <em>one person.</em>",
+    body:
+      "This is the highest clearance we have. Five cases that pull it all together: who's really buying your life, what's real and what's faked, the choice every hacker faces, and the single mind coordinating every attack you've seen. This is where a trainee becomes an operator. Read the whole board, then find the one behind it.",
+  },
+  filesKicker: "Five cases. One mastermind.",
+  files: [
+    { caseNo: "016", codename: "PACKRAT", title: "Who Owns You", blurb: "The companies quietly buying your data." },
+    { caseNo: "017", codename: "GHOSTWRITER", title: "Seeing Isn't Believing", blurb: "Faked faces, voices, and video." },
+    { caseNo: "018", codename: "ZERO", title: "The Choice", blurb: "The line between hacker and criminal." },
+    { caseNo: "019", codename: "ZERO", title: "The Whole Attack", blurb: "Every trick, linked into one." },
+    { caseNo: "020", codename: "ZERO", title: "Signal Zero", blurb: "Unmask the mind behind it all." },
+  ],
+  ceremony: "Clear all five → ULTRA clearance.",
+  skills: [
+    { name: "See who buys your data", desc: "" },
+    { name: "Spot a deepfake", desc: "" },
+    { name: "Know the line you won't cross", desc: "" },
+    { name: "Read a whole attack", desc: "" },
+    { name: "Unmask the mastermind", desc: "" },
+  ],
+  handoff:
+    "This is where a trainee becomes an operator. <em>Read the board. Then finish this.</em>",
+  beginLabel: "Begin Case 016 →",
+  theme: {
+    accent: "#B98BFF",
+    accentHi: "#D4B8FF",
+    accentRGB: "185, 139, 255",
+    classification: "ULTRA",
+    matrix: ["#B98BFF", "#D4B8FF", "#7A5CFF"],
+  },
+};
