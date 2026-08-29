@@ -27,6 +27,7 @@ import {
 } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                            */
@@ -95,8 +96,12 @@ type SparkState = "burning" | "ash";
 
 export default function DontFeedTheFire({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const reduce = !!useReducedMotion();
 
@@ -387,7 +392,14 @@ export default function DontFeedTheFire({
       </motion.div>
 
       {/* ---------- overlays ---------- */}
-      {phase === "intro" && <IntroOverlay onStart={() => setPhase("play")} reduce={reduce} />}
+      {phase === "intro" && (
+        <IntroOverlay
+          onStart={() => setPhase("play")}
+          reduce={reduce}
+          narration={narration}
+          accent={accent}
+        />
+      )}
 
       <AnimatePresence>
         {teach && (
@@ -1322,7 +1334,17 @@ const overlayBase: CSSProperties = {
   WebkitBackdropFilter: "blur(4px)",
 };
 
-function IntroOverlay({ onStart, reduce }: { onStart: () => void; reduce: boolean }) {
+function IntroOverlay({
+  onStart,
+  reduce,
+  narration,
+  accent,
+}: {
+  onStart: () => void;
+  reduce: boolean;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -1341,6 +1363,11 @@ function IntroOverlay({ onStart, reduce }: { onStart: () => void; reduce: boolea
           border: "2px solid rgba(255,157,77,0.5)",
           background: "linear-gradient(180deg, rgba(56,28,12,0.96) 0%, rgba(30,16,8,0.98) 100%)",
           boxShadow: "0 30px 70px -20px rgba(0,0,0,0.8)",
+          // The spoken-instruction block makes the card taller; on short
+          // viewports the card scrolls internally so the start button is
+          // always reachable (never clipped by the centered overlay).
+          maxHeight: "100%",
+          overflowY: "auto",
         }}
       >
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
@@ -1378,6 +1405,11 @@ function IntroOverlay({ onStart, reduce }: { onStart: () => void; reduce: boolea
         >
           Press and HOLD the cool river stone to starve each spark until it fizzles out.
         </div>
+        {narration && narration.lines.length > 0 && (
+          <div style={{ textAlign: "left" }}>
+            <InfoNarration lines={narration.lines} accent={accent ?? "#ff8e6e"} />
+          </div>
+        )}
         <motion.button
           type="button"
           onClick={onStart}

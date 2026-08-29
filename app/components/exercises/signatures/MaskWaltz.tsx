@@ -22,6 +22,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 /* ------------------------------------------------------------------ */
 /* Tuning + content                                                   */
@@ -106,7 +107,7 @@ type Face = "friend" | "raccoon";
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function MaskWaltz({ onComplete }: { onComplete: () => void }) {
+export default function MaskWaltz({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("meet");
@@ -359,17 +360,43 @@ export default function MaskWaltz({ onComplete }: { onComplete: () => void }) {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "center",
                 gap: 10,
                 padding: 16,
                 textAlign: "center",
               }}
             >
-              <Bubble>
-                Hi! It's me, Layla! See my red scarf and my wave? When my mask goes on,
-                keep your eyes on me the whole dance!
-              </Bubble>
-              <Dancer face="friend" open waving={!reduce} scale={1.05} />
+              {/* Scrolls when the intro is taller than the stage (short
+                  viewports) so the start button below is never clipped.
+                  `margin: auto` centres the column when there IS room. */}
+              <div
+                style={{
+                  flex: 1,
+                  minHeight: 0,
+                  width: "100%",
+                  overflowY: "auto",
+                  display: "flex",
+                }}
+              >
+                <div
+                  style={{
+                    margin: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 10,
+                    width: "min(520px, 100%)",
+                  }}
+                >
+                  <Bubble>
+                    Hi! It's me, Layla! See my red scarf and my wave? When my mask goes on,
+                    keep your eyes on me the whole dance!
+                  </Bubble>
+                  {narration && narration.lines.length > 0 && (
+                    <InfoNarration lines={narration.lines} accent={accent ?? "#f5a623"} />
+                  )}
+                  <Dancer face="friend" open waving={!reduce} scale={1.05} />
+                </div>
+              </div>
               <motion.button
                 onClick={() => startRound(0, 1)}
                 whileHover={{ scale: 1.05 }}

@@ -66,7 +66,19 @@ export const WEEK_8: WeekContent = {
     },
 
       // SIGNATURE: The Developing Tray (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "developingTray", title: "The Developing Tray" },
+      {
+        type: "signature",
+        mechanic: "developingTray",
+        title: "The Developing Tray",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[excited] A secret picture is hiding in this tray!",
+            "Rub it all over with your finger to develop it.",
+            "Look at the whole photo, then choose share or keep.",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · SHARED MEANS OUT FOREVER ─────────── */
     // 3 - Learn

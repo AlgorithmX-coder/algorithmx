@@ -67,7 +67,19 @@ export const WEEK_14: WeekContent = {
     },
 
       // SIGNATURE: Goodnight, Gadgets (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "goodnightGadgets", title: "Goodnight, Gadgets" },
+      {
+        type: "signature",
+        mechanic: "goodnightGadgets",
+        title: "Goodnight, Gadgets",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[warmly] Bedtime, hero! Some gadgets in this room can see and hear.",
+            "Put each one to sleep: cover its camera or mute its mic.",
+            "No eyes and no ears? Then it can stay up with you.",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · KNOW THE EARS ─────────── */
     // 3 - Learn

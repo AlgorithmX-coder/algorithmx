@@ -69,7 +69,19 @@ export const WEEK_15: WeekContent = {
     },
 
       // SIGNATURE: The Proof Scale (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "proofScale", title: "The Proof Scale" },
+      {
+        type: "signature",
+        mechanic: "proofScale",
+        title: "The Proof Scale",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[warmly] That robot sounds so sure, but sure is not proof.",
+            "Drag its claim onto the scale, then find the matching proof book.",
+            "No book anywhere? Slam the buzzer. Don't believe it!",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · A TOOL, NOT A FRIEND ─────────── */
     // 3 - Learn

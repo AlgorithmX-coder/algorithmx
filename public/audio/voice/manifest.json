@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T19:27:57.102Z",
+  "generatedAt": "2026-08-29T19:54:29.992Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -284,6 +284,18 @@
       "file": "/audio/voice/d7deef07485d9b75.mp3"
     },
     {
+      "key": "62419cfac55e517b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Those videos pulled you deep, but you can climb out. Tap left, then right, up the ladder to the daylight. Don't tap the shiny bubbles. You choose when to stop!",
+      "lines": [
+        "[warmly] Those videos pulled you deep, but you can climb out.",
+        "Tap left, then right, up the ladder to the daylight.",
+        "Don't tap the shiny bubbles. You choose when to stop!"
+      ],
+      "file": "/audio/voice/62419cfac55e517b.mp3"
+    },
+    {
       "key": "e199acb449b56ecf",
       "speaker": "adam",
       "voice": "Sarah",
@@ -545,6 +557,18 @@
         "[excited] Sticker time!"
       ],
       "file": "/audio/voice/2ffaa84deb741ae0.mp3"
+    },
+    {
+      "key": "f676498e0146ebf5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Something feels wrong, so let's take slow hero breaths. Breathe in and out with the ring until you feel calm. Then tell a trusted grown-up right away.",
+      "lines": [
+        "[warmly] Something feels wrong, so let's take slow hero breaths.",
+        "Breathe in and out with the ring until you feel calm.",
+        "Then tell a trusted grown-up right away."
+      ],
+      "file": "/audio/voice/f676498e0146ebf5.mp3"
     },
     {
       "key": "5ae1b9e6625a0175",
@@ -830,6 +854,18 @@
       "file": "/audio/voice/52b87eaccd41254c.mp3"
     },
     {
+      "key": "e9796d60e381f39f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Use your finger to draw a trail in the snow. Then watch the hound read every track you left. Keep your trail small and safe, hero.",
+      "lines": [
+        "[warmly] Use your finger to draw a trail in the snow.",
+        "Then watch the hound read every track you left.",
+        "Keep your trail small and safe, hero."
+      ],
+      "file": "/audio/voice/e9796d60e381f39f.mp3"
+    },
+    {
       "key": "670d33b9b922ffa5",
       "speaker": "adam",
       "voice": "Sarah",
@@ -1101,6 +1137,18 @@
         "[excited] Sticker time, Trail Ranger!"
       ],
       "file": "/audio/voice/2816dc69cd5a707c.mp3"
+    },
+    {
+      "key": "3b22d6cfba590733",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Time to pour your whole day into the cups! There is only so much to go around. Keep it balanced so nothing runs dry!",
+      "lines": [
+        "[excited] Time to pour your whole day into the cups!",
+        "There is only so much to go around.",
+        "Keep it balanced so nothing runs dry!"
+      ],
+      "file": "/audio/voice/3b22d6cfba590733.mp3"
     },
     {
       "key": "dad3c802eefac579",
@@ -1376,6 +1424,18 @@
       "file": "/audio/voice/a64391893edefce7.mp3"
     },
     {
+      "key": "9955f7034839d5ea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Bedtime, hero! Some gadgets in this room can see and hear. Put each one to sleep: cover its camera or mute its mic. No eyes and no ears? Then it can stay up with you.",
+      "lines": [
+        "[warmly] Bedtime, hero! Some gadgets in this room can see and hear.",
+        "Put each one to sleep: cover its camera or mute its mic.",
+        "No eyes and no ears? Then it can stay up with you."
+      ],
+      "file": "/audio/voice/9955f7034839d5ea.mp3"
+    },
+    {
       "key": "1d77bac3766eccad",
       "speaker": "adam",
       "voice": "Sarah",
@@ -1647,6 +1707,18 @@
         "[excited] Sticker time, Settings Scout!"
       ],
       "file": "/audio/voice/4b7a19db70e5ae59.mp3"
+    },
+    {
+      "key": "dde65c0e36e7d7f4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] That robot sounds so sure, but sure is not proof. Drag its claim onto the scale, then find the matching proof book. No book anywhere? Slam the buzzer. Don't believe it!",
+      "lines": [
+        "[warmly] That robot sounds so sure, but sure is not proof.",
+        "Drag its claim onto the scale, then find the matching proof book.",
+        "No book anywhere? Slam the buzzer. Don't believe it!"
+      ],
+      "file": "/audio/voice/dde65c0e36e7d7f4.mp3"
     },
     {
       "key": "75fe9706901e6261",
@@ -1922,6 +1994,18 @@
       "file": "/audio/voice/fe4c60c46b154769.mp3"
     },
     {
+      "key": "c8d164f81b1d41f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Drag your trusted key onto each door in the maze! Check every tooth to see if the patterns match. All green means unlock it. One red tooth? Chain it shut!",
+      "lines": [
+        "[excited] Drag your trusted key onto each door in the maze!",
+        "Check every tooth to see if the patterns match.",
+        "All green means unlock it. One red tooth? Chain it shut!"
+      ],
+      "file": "/audio/voice/c8d164f81b1d41f8.mp3"
+    },
+    {
       "key": "c5081ae6f3aa96c5",
       "speaker": "adam",
       "voice": "Sarah",
@@ -2195,6 +2279,18 @@
       "file": "/audio/voice/a38fed1ef8ca06f2.mp3"
     },
     {
+      "key": "9c2d85dd47f61e0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Time to pan for real treasure in the Feed river! Shake the pan hard to wash the strangers away. Keep the friends you know off the screen. That's your true gold!",
+      "lines": [
+        "[excited] Time to pan for real treasure in the Feed river!",
+        "Shake the pan hard to wash the strangers away.",
+        "Keep the friends you know off the screen. That's your true gold!"
+      ],
+      "file": "/audio/voice/9c2d85dd47f61e0c.mp3"
+    },
+    {
       "key": "040f0d88eb38658b",
       "speaker": "layla",
       "voice": "Sarah",
@@ -2466,6 +2562,18 @@
         "[excited] Sticker time, Shield Bearer!"
       ],
       "file": "/audio/voice/0f3f52228e179b49.mp3"
+    },
+    {
+      "key": "5c88f6d8bd51e994",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Break is over, hero. Time to sweep the shared tablet. Flick every open card down to log it out. Look back for sneaky ones, then tap the lock before you leave.",
+      "lines": [
+        "[warmly] Break is over, hero. Time to sweep the shared tablet.",
+        "Flick every open card down to log it out.",
+        "Look back for sneaky ones, then tap the lock before you leave."
+      ],
+      "file": "/audio/voice/5c88f6d8bd51e994.mp3"
     },
     {
       "key": "803d52d4febf2401",
@@ -2742,6 +2850,18 @@
       "file": "/audio/voice/2850abe2273c9ad9.mp3"
     },
     {
+      "key": "5c0bd981747c1e68",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Your family needs you, hero. Look at each trouble bubble. Drag the right safety thread to each family member. Weave all three and keep your whole family safe!",
+      "lines": [
+        "[warmly] Your family needs you, hero. Look at each trouble bubble.",
+        "Drag the right safety thread to each family member.",
+        "Weave all three and keep your whole family safe!"
+      ],
+      "file": "/audio/voice/5c0bd981747c1e68.mp3"
+    },
+    {
       "key": "3ea2d28a438ea1a8",
       "speaker": "layla",
       "voice": "Sarah",
@@ -3013,6 +3133,18 @@
         "[excited] Sticker time, Family Firewall!"
       ],
       "file": "/audio/voice/cf5cecdd6bcf7482.mp3"
+    },
+    {
+      "key": "f3e84381a0b01a58",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] It's so dark in here! Drag your torch beam around the room. See a gold glow? That's a leak. Tap it to seal it! Seal all four leaks and the room is safe. You've got this!",
+      "lines": [
+        "[warmly] It's so dark in here! Drag your torch beam around the room.",
+        "See a gold glow? That's a leak. Tap it to seal it!",
+        "Seal all four leaks and the room is safe. You've got this!"
+      ],
+      "file": "/audio/voice/f3e84381a0b01a58.mp3"
     },
     {
       "key": "24e69e302153f951",
@@ -3289,6 +3421,18 @@
       "file": "/audio/voice/982cc8ad224246e0.mp3"
     },
     {
+      "key": "65752cb52f4a9061",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] It is graduation night, hero, and this stage is yours. Watch closely as the stage lights up your power emblems. Then tap them back in the same order, even as it grows.",
+      "lines": [
+        "[warmly] It is graduation night, hero, and this stage is yours.",
+        "Watch closely as the stage lights up your power emblems.",
+        "Then tap them back in the same order, even as it grows."
+      ],
+      "file": "/audio/voice/65752cb52f4a9061.mp3"
+    },
+    {
       "key": "045c068ed56f3a78",
       "speaker": "adam",
       "voice": "Sarah",
@@ -3520,6 +3664,18 @@
         "[warmly] One thing left, graduate. The stickers - then the stage."
       ],
       "file": "/audio/voice/84c0177b75fa88c4.mp3"
+    },
+    {
+      "key": "7201c6aed0fe212c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Watch your real friend closely before her mask goes on. Keep your eyes on her while the dancers swap places. When the music stops, tap your real friend!",
+      "lines": [
+        "[warmly] Watch your real friend closely before her mask goes on.",
+        "Keep your eyes on her while the dancers swap places.",
+        "When the music stops, tap your real friend!"
+      ],
+      "file": "/audio/voice/7201c6aed0fe212c.mp3"
     },
     {
       "key": "20ba4c4b67640f89",
@@ -3796,6 +3952,18 @@
       "file": "/audio/voice/4b58206e6cef388f.mp3"
     },
     {
+      "key": "b59d1a1b061c3137",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Drag back and let go to flick rings onto the pegs! Watch closely, because one shiny booth never lets you win. Sniff out the hidden trick and shut that booth down!",
+      "lines": [
+        "[excited] Drag back and let go to flick rings onto the pegs!",
+        "Watch closely, because one shiny booth never lets you win.",
+        "Sniff out the hidden trick and shut that booth down!"
+      ],
+      "file": "/audio/voice/b59d1a1b061c3137.mp3"
+    },
+    {
       "key": "561664db38eea8cb",
       "speaker": "adam",
       "voice": "Sarah",
@@ -4049,6 +4217,18 @@
         "[excited] Every scam went straight back to sender. Sticker time!"
       ],
       "file": "/audio/voice/b73cf36247e7e255.mp3"
+    },
+    {
+      "key": "765d97e4259c4b56",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] A mean message is a spark that wants to grow. Don't tap reply. Your reply is firewood for the fire. Hold the cool river stone until the spark fizzles out.",
+      "lines": [
+        "[warmly] A mean message is a spark that wants to grow.",
+        "Don't tap reply. Your reply is firewood for the fire.",
+        "Hold the cool river stone until the spark fizzles out."
+      ],
+      "file": "/audio/voice/765d97e4259c4b56.mp3"
     },
     {
       "key": "53bc12f7578a6ca4",
@@ -4325,6 +4505,18 @@
       "file": "/audio/voice/b9a8fc5183cb945e.mp3"
     },
     {
+      "key": "09fa351a5d655638",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Game night! You are the keeper of this lobby. Slide Adam side to side, just like a goalie. High five the badge friends. No badge? Block them out!",
+      "lines": [
+        "[excited] Game night! You are the keeper of this lobby.",
+        "Slide Adam side to side, just like a goalie.",
+        "High five the badge friends. No badge? Block them out!"
+      ],
+      "file": "/audio/voice/09fa351a5d655638.mp3"
+    },
+    {
       "key": "1a3251262986c9c3",
       "speaker": "adam",
       "voice": "Sarah",
@@ -4589,6 +4781,18 @@
       "file": "/audio/voice/175d491d20a08065.mp3"
     },
     {
+      "key": "0274e1f635c136c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Pull the truth lever and hold it down tight. Watch the real price print out. See how big it grows! Before spending real money, always ask a grown-up first.",
+      "lines": [
+        "[warmly] Pull the truth lever and hold it down tight.",
+        "Watch the real price print out. See how big it grows!",
+        "Before spending real money, always ask a grown-up first."
+      ],
+      "file": "/audio/voice/0274e1f635c136c1.mp3"
+    },
+    {
       "key": "c631330de36c383c",
       "speaker": "adam",
       "voice": "Sarah",
@@ -4840,6 +5044,18 @@
         "[excited] The trap shop is OUT of business. Sticker time!"
       ],
       "file": "/audio/voice/9d320e28348ce869.mp3"
+    },
+    {
+      "key": "ff45ceea45ec3ff5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] A secret picture is hiding in this tray! Rub it all over with your finger to develop it. Look at the whole photo, then choose share or keep.",
+      "lines": [
+        "[excited] A secret picture is hiding in this tray!",
+        "Rub it all over with your finger to develop it.",
+        "Look at the whole photo, then choose share or keep."
+      ],
+      "file": "/audio/voice/ff45ceea45ec3ff5.mp3"
     },
     {
       "key": "249ce7f81443d7a6",
@@ -5113,6 +5329,18 @@
         "[excited] His photo heist is CLOSED. Sticker time!"
       ],
       "file": "/audio/voice/05f3cb50d7195587.mp3"
+    },
+    {
+      "key": "592262b18d344d9b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] A new app is rolling in, and the front looks perfect. Flip the box over. Check who made it and the reviews. If every side looks safe, install it. If not, bin it!",
+      "lines": [
+        "[excited] A new app is rolling in, and the front looks perfect.",
+        "Flip the box over. Check who made it and the reviews.",
+        "If every side looks safe, install it. If not, bin it!"
+      ],
+      "file": "/audio/voice/592262b18d344d9b.mp3"
     },
     {
       "key": "06bac7e1bdb9b86c",

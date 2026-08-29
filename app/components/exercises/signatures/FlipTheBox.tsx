@@ -23,6 +23,7 @@ import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                            */
@@ -200,7 +201,15 @@ const clamp = (n: number, lo: number, hi: number) =>
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function FlipTheBox({ onComplete }: { onComplete: () => void }) {
+export default function FlipTheBox({
+  onComplete,
+  narration,
+  accent,
+}: {
+  onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("intro");
@@ -795,7 +804,12 @@ export default function FlipTheBox({ onComplete }: { onComplete: () => void }) {
 
       {/* -------- overlays -------- */}
       {phase === "intro" && (
-        <IntroOverlay onStart={() => setPhase("play")} reduce={reduce} />
+        <IntroOverlay
+          onStart={() => setPhase("play")}
+          reduce={reduce}
+          narration={narration}
+          accent={accent}
+        />
       )}
       {phase === "celebrate" && (
         <WinOverlay onContinue={finish} reduce={reduce} />
@@ -1367,9 +1381,13 @@ const overlayBase: CSSProperties = {
 function IntroOverlay({
   onStart,
   reduce,
+  narration,
+  accent,
 }: {
   onStart: () => void;
   reduce: boolean;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={overlayBase}>
@@ -1386,6 +1404,11 @@ function IntroOverlay({
           background:
             "linear-gradient(180deg, rgba(18,28,60,0.97) 0%, rgba(10,16,36,0.98) 100%)",
           boxShadow: "0 30px 70px -20px rgba(0,0,0,0.8)",
+          // The spoken-instruction block makes the card taller; on short
+          // viewports the card scrolls internally so the start button is
+          // always reachable (never clipped by the centered overlay).
+          maxHeight: "100%",
+          overflowY: "auto",
         }}
       >
         {/* tiny box-on-belt illustration */}
@@ -1431,6 +1454,11 @@ function IntroOverlay({
         >
           {INTRO.tip}
         </div>
+        {narration && narration.lines.length > 0 && (
+          <div style={{ textAlign: "left" }}>
+            <InfoNarration lines={narration.lines} accent={accent ?? "#2b7fff"} />
+          </div>
+        )}
         <motion.button
           type="button"
           onClick={onStart}

@@ -75,6 +75,14 @@ export const WEEK_20: WeekContent = {
       type: "signature",
       mechanic: "encoreOfTwenty",
       title: "Encore of Twenty",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] It is graduation night, hero, and this stage is yours.",
+          "Watch closely as the stage lights up your power emblems.",
+          "Then tap them back in the same order, even as it grows.",
+        ],
+      },
     },
 
     /* ─────────── MISSION 1 · THE PASSWORD VAULT ─────────── */

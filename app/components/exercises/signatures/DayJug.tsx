@@ -25,6 +25,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, animate, motion, useMotionValue } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ────────────────────────── tuning ────────────────────────── */
@@ -88,7 +89,7 @@ function statusOf(amount: number, spec: CupSpec): CupStatus {
 
 /* ────────────────────────── component ────────────────────────── */
 
-export default function DayJug({ onComplete }: { onComplete: () => void }) {
+export default function DayJug({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [sim, setSim] = useState<Sim>({ jug: TOTAL, cups: [0, 0, 0, 0] });
   const [pourTarget, setPourTarget] = useState<number | null>(null);
@@ -596,94 +597,112 @@ export default function DayJug({ onComplete }: { onComplete: () => void }) {
                 zIndex: 8,
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 14,
                 padding: 24,
                 textAlign: "center",
                 background: "rgba(10, 14, 34, 0.82)",
                 backdropFilter: "blur(6px)",
+                // The spoken-instruction block makes the intro taller; on short
+                // viewports the overlay scrolls internally so the start button
+                // is always reachable. The inner wrapper's auto margins keep it
+                // dead-centre whenever everything fits (same look as before).
+                overflowY: "auto",
               }}
             >
-              <div style={{ width: 84, height: 91 }}>
-                <JugSvg levelPct={1} />
-              </div>
               <div
                 style={{
-                  fontSize: 30,
-                  fontWeight: 800,
-                  letterSpacing: 3,
-                  color: "#fff3d6",
-                  textShadow: "0 2px 16px rgba(255, 209, 102, 0.45)",
+                  margin: "auto",
+                  flexShrink: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 14,
                 }}
               >
-                {"THE DAY JUG"}
-              </div>
-              <div
-                style={{
-                  fontSize: 16,
-                  lineHeight: 1.55,
-                  color: "rgba(231, 236, 255, 0.92)",
-                  maxWidth: 460,
-                }}
-              >
-                {"Your whole day is water in one jug. Pour it into four cups: "}
-                <b>{"Screens"}</b>
-                {", "}
-                <b>{"Outside"}</b>
-                {", "}
-                <b>{"Family"}</b>
-                {" and "}
-                <b>{"Sleep"}</b>
-                {". Fill each cup up to its green band. When the jug runs dry, the day is spent!"}
-              </div>
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
-                {[
-                  { icon: "👆", text: "Drag the jug, hold to pour" },
-                  { icon: "🎯", text: "Green band = just right" },
-                  { icon: "✅", text: "Tap a cup to pour back" },
-                ].map((chip) => (
-                  <div
-                    key={chip.text}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 7,
-                      padding: "7px 13px",
-                      borderRadius: 999,
-                      background: "rgba(125, 240, 255, 0.1)",
-                      border: "1px solid rgba(125, 240, 255, 0.3)",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#c9f2ff",
-                    }}
-                  >
-                    <PixIcon emoji={chip.icon} size={18} />
-                    {chip.text}
+                <div style={{ width: 84, height: 91 }}>
+                  <JugSvg levelPct={1} />
+                </div>
+                <div
+                  style={{
+                    fontSize: 30,
+                    fontWeight: 800,
+                    letterSpacing: 3,
+                    color: "#fff3d6",
+                    textShadow: "0 2px 16px rgba(255, 209, 102, 0.45)",
+                  }}
+                >
+                  {"THE DAY JUG"}
+                </div>
+                <div
+                  style={{
+                    fontSize: 16,
+                    lineHeight: 1.55,
+                    color: "rgba(231, 236, 255, 0.92)",
+                    maxWidth: 460,
+                  }}
+                >
+                  {"Your whole day is water in one jug. Pour it into four cups: "}
+                  <b>{"Screens"}</b>
+                  {", "}
+                  <b>{"Outside"}</b>
+                  {", "}
+                  <b>{"Family"}</b>
+                  {" and "}
+                  <b>{"Sleep"}</b>
+                  {". Fill each cup up to its green band. When the jug runs dry, the day is spent!"}
+                </div>
+                {narration && narration.lines.length > 0 && (
+                  <div style={{ width: "100%", maxWidth: 460, textAlign: "left" }}>
+                    <InfoNarration lines={narration.lines} accent={accent ?? "#2ec4b6"} />
                   </div>
-                ))}
+                )}
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
+                  {[
+                    { icon: "👆", text: "Drag the jug, hold to pour" },
+                    { icon: "🎯", text: "Green band = just right" },
+                    { icon: "✅", text: "Tap a cup to pour back" },
+                  ].map((chip) => (
+                    <div
+                      key={chip.text}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 7,
+                        padding: "7px 13px",
+                        borderRadius: 999,
+                        background: "rgba(125, 240, 255, 0.1)",
+                        border: "1px solid rgba(125, 240, 255, 0.3)",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        color: "#c9f2ff",
+                      }}
+                    >
+                      <PixIcon emoji={chip.icon} size={18} />
+                      {chip.text}
+                    </div>
+                  ))}
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setPhase("play")}
+                  style={{
+                    marginTop: 6,
+                    padding: "14px 38px",
+                    borderRadius: 999,
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: 18,
+                    fontWeight: 800,
+                    fontFamily: FONT_STACK,
+                    letterSpacing: 1,
+                    color: "#231303",
+                    background: `linear-gradient(180deg, ${GOLD}, #f0a94b)`,
+                    boxShadow: "0 8px 26px rgba(255, 209, 102, 0.4)",
+                  }}
+                >
+                  {"Start the Day"}
+                </motion.button>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.96 }}
-                onClick={() => setPhase("play")}
-                style={{
-                  marginTop: 6,
-                  padding: "14px 38px",
-                  borderRadius: 999,
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 18,
-                  fontWeight: 800,
-                  fontFamily: FONT_STACK,
-                  letterSpacing: 1,
-                  color: "#231303",
-                  background: `linear-gradient(180deg, ${GOLD}, #f0a94b)`,
-                  boxShadow: "0 8px 26px rgba(255, 209, 102, 0.4)",
-                }}
-              >
-                {"Start the Day"}
-              </motion.button>
             </motion.div>
           )}
         </AnimatePresence>

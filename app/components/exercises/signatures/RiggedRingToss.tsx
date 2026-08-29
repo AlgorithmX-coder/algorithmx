@@ -25,6 +25,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import {
   setupHiDpiCanvas,
@@ -663,8 +664,12 @@ function spawnWinConfetti(gs: GameState) {
 
 export default function RiggedRingToss({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [honestWins, setHonestWins] = useState(0);
@@ -1337,8 +1342,7 @@ export default function RiggedRingToss({
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: 12,
+                  overflowY: "auto",
                   textAlign: "center",
                   padding: 24,
                   zIndex: 8,
@@ -1346,43 +1350,58 @@ export default function RiggedRingToss({
                     "radial-gradient(circle at 50% 30%, rgba(60, 30, 100, 0.9) 0%, rgba(18, 10, 40, 0.95) 75%)",
                 }}
               >
-                <PixIcon emoji="🎯" size={52} />
-                <div style={{ fontSize: 26, fontWeight: 900, color: "#ffd166" }}>
-                  Step right up!
-                </div>
+                {/* margin auto = centered when it fits, scrollable when tall
+                    (never clips the start button on short viewports). */}
                 <div
                   style={{
-                    fontSize: 15,
-                    lineHeight: 1.5,
-                    maxWidth: 430,
-                    opacity: 0.92,
+                    margin: "auto 0",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 12,
                   }}
                 >
-                  Flick rings onto the pegs and win prizes! Keep your hero
-                  nose ready. Some booths play fair... and some do NOT.
+                  <PixIcon emoji="🎯" size={52} />
+                  <div style={{ fontSize: 26, fontWeight: 900, color: "#ffd166" }}>
+                    Step right up!
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 15,
+                      lineHeight: 1.5,
+                      maxWidth: 430,
+                      opacity: 0.92,
+                    }}
+                  >
+                    Flick rings onto the pegs and win prizes! Keep your hero
+                    nose ready. Some booths play fair... and some do NOT.
+                  </div>
+                  {narration && narration.lines.length > 0 && (
+                    <InfoNarration lines={narration.lines} accent={accent ?? "#e84dff"} />
+                  )}
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setPhase("honest")}
+                    style={{
+                      marginTop: 6,
+                      padding: "14px 30px",
+                      fontSize: 19,
+                      fontWeight: 800,
+                      fontFamily: "inherit",
+                      color: "#3a2200",
+                      background:
+                        "linear-gradient(180deg, #ffd166 0%, #ffb347 100%)",
+                      border: "none",
+                      borderRadius: 999,
+                      cursor: "pointer",
+                      boxShadow: "0 6px 18px rgba(255, 180, 70, 0.4)",
+                    }}
+                  >
+                    Let me play!
+                  </motion.button>
                 </div>
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setPhase("honest")}
-                  style={{
-                    marginTop: 6,
-                    padding: "14px 30px",
-                    fontSize: 19,
-                    fontWeight: 800,
-                    fontFamily: "inherit",
-                    color: "#3a2200",
-                    background:
-                      "linear-gradient(180deg, #ffd166 0%, #ffb347 100%)",
-                    border: "none",
-                    borderRadius: 999,
-                    cursor: "pointer",
-                    boxShadow: "0 6px 18px rgba(255, 180, 70, 0.4)",
-                  }}
-                >
-                  Let me play!
-                </motion.button>
               </motion.div>
             )}
           </AnimatePresence>

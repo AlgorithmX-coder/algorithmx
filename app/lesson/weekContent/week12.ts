@@ -65,7 +65,19 @@ export const WEEK_12: WeekContent = {
     },
 
       // SIGNATURE: The Trail Planner (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "trailPlanner", title: "The Trail Planner" },
+      {
+        type: "signature",
+        mechanic: "trailPlanner",
+        title: "The Trail Planner",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[warmly] Use your finger to draw a trail in the snow.",
+            "Then watch the hound read every track you left.",
+            "Keep your trail small and safe, hero.",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · EVERYTHING LEAVES A TRACK ─────────── */
     // 3 - Learn

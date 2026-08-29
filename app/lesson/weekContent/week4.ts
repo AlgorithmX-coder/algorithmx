@@ -65,7 +65,19 @@ export const WEEK_4: WeekContent = {
     },
 
       // SIGNATURE: The Rigged Ring Toss (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "riggedRingToss", title: "The Rigged Ring Toss" },
+      {
+        type: "signature",
+        mechanic: "riggedRingToss",
+        title: "The Rigged Ring Toss",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[excited] Drag back and let go to flick rings onto the pegs!",
+            "Watch closely, because one shiny booth never lets you win.",
+            "Sniff out the hidden trick and shut that booth down!",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · WHAT A SCAM IS ─────────── */
     // 3 - Learn

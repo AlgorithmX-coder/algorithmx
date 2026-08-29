@@ -18,6 +18,12 @@ export interface SignatureProps {
    * own palette so it never clashes.
    */
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /**
+   * The week's theme accent (hex), passed so the game can tint its spoken-
+   * instruction block to match the week — keeping one colour per week with no
+   * jarring contrasts. Falls back to the game's own colour when absent.
+   */
+  accent?: string;
 }
 
 export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {

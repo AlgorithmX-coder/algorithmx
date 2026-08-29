@@ -31,6 +31,7 @@ import {
 import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -508,8 +509,12 @@ type Outcome = "safe" | "chained" | "trap";
 
 export default function KeyholeCheck({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [doorIndex, setDoorIndex] = useState(0);
@@ -1263,6 +1268,9 @@ export default function KeyholeCheck({
               alignItems: "center",
               justifyContent: "center",
               fontFamily: FONT_STACK,
+              // The card grew with the narration block: allow the overlay to
+              // scroll on short viewports so the start button never clips.
+              overflowY: "auto",
             }}
           >
             <motion.div
@@ -1270,6 +1278,9 @@ export default function KeyholeCheck({
               animate={{ scale: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 220, damping: 20 }}
               style={{
+                // Auto margins keep the card centered when it fits and make
+                // it scrollable from the top (not clipped) when it doesn't.
+                margin: "auto",
                 maxWidth: 460,
                 textAlign: "center",
                 padding: "28px 30px",
@@ -1321,6 +1332,14 @@ export default function KeyholeCheck({
                   <PixIcon emoji="🔒" size={22} /> A red tooth? CHAIN IT shut!
                 </div>
               </div>
+              {narration && narration.lines.length > 0 && (
+                <div style={{ textAlign: "left" }}>
+                  <InfoNarration
+                    lines={narration.lines}
+                    accent={accent ?? "#b44dff"}
+                  />
+                </div>
+              )}
               <div>
                 <motion.button
                   whileHover={{ scale: 1.06 }}

@@ -29,6 +29,7 @@ import {
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ────────────────────────── constants ────────────────────────── */
@@ -214,7 +215,7 @@ function IntroChip({ icon, text }: { icon: string; text: string }) {
 
 /* ────────────────────────── component ────────────────────────── */
 
-export default function LeakTorch({ onComplete }: { onComplete: () => void }) {
+export default function LeakTorch({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
   const rawId = useId();
   const uid = `lt${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
@@ -894,6 +895,9 @@ export default function LeakTorch({ onComplete }: { onComplete: () => void }) {
                     Lights out! Private info is hiding in plain sight all over this
                     room. Sweep the torch beam and find it before a snoop does.
                   </p>
+                  {narration && narration.lines.length > 0 && (
+                    <InfoNarration lines={narration.lines} accent={accent ?? "#9d7bff"} />
+                  )}
                   <div style={{ display: "grid", gap: 8 }}>
                     <IntroChip icon="👀" text="Drag the beam to search the dark" />
                     <IntroChip icon="🛡️" text="Tap a gold glow to seal the leak" />

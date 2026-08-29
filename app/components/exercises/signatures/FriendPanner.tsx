@@ -32,6 +32,7 @@ import {
   type Variants,
 } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ────────────────────────── constants ────────────────────────── */
@@ -227,8 +228,12 @@ function FoolFace() {
 
 export default function FriendPanner({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [pebbles, setPebbles] = useState<Pebble[]>(makePebbles);
@@ -1054,7 +1059,11 @@ export default function FriendPanner({
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  justifyContent: "center",
+                  // `safe center` + scroll: with the spoken-instruction block the
+                  // column can outgrow the 360px stage; plain `center` would clip
+                  // BOTH ends (stage is overflow:hidden) and strand the button.
+                  justifyContent: "safe center",
+                  overflowY: "auto",
                   gap: 10,
                   textAlign: "center",
                   padding: 24,
@@ -1087,6 +1096,9 @@ export default function FriendPanner({
                   the same as a friend? Scoop your gold-pan in and shake to
                   find the REAL treasure.
                 </div>
+                {narration && narration.lines.length > 0 && (
+                  <InfoNarration lines={narration.lines} accent={accent ?? "#38b6ff"} />
+                )}
                 <motion.button
                   type="button"
                   whileHover={{ scale: 1.05 }}

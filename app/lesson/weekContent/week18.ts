@@ -75,6 +75,14 @@ export const WEEK_18: WeekContent = {
       type: "signature",
       mechanic: "logOutFlick",
       title: "Log-Out Flick",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Break is over, hero. Time to sweep the shared tablet.",
+          "Flick every open card down to log it out.",
+          "Look back for sneaky ones, then tap the lock before you leave.",
+        ],
+      },
     },
 
     /* ─────────── BEAT 1 · THE COAT RACK ─────────── */

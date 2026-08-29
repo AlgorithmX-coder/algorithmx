@@ -75,6 +75,14 @@ export const WEEK_17: WeekContent = {
       type: "signature",
       mechanic: "friendPanner",
       title: "The Friend Panner",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Time to pan for real treasure in the Feed river!",
+          "Shake the pan hard to wash the strangers away.",
+          "Keep the friends you know off the screen. That's your true gold!",
+        ],
+      },
     },
 
     /* ─────────── BEAT 1 · THE 13+ SIGN ─────────── */

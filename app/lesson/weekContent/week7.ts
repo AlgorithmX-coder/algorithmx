@@ -66,7 +66,19 @@ export const WEEK_7: WeekContent = {
     },
 
       // SIGNATURE: The True-Price Lever (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "truePriceLever", title: "The True-Price Lever" },
+      {
+        type: "signature",
+        mechanic: "truePriceLever",
+        title: "The True-Price Lever",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[warmly] Pull the truth lever and hold it down tight.",
+            "Watch the real price print out. See how big it grows!",
+            "Before spending real money, always ask a grown-up first.",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · COINS = REAL MONEY ─────────── */
     // 3 - Learn

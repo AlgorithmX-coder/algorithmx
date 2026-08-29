@@ -26,6 +26,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { playSound } from "@/app/lib/sounds";
 
@@ -114,7 +115,7 @@ function tilePos(i: number): { left: string; top: string } {
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function EncoreOfTwenty({ onComplete }: { onComplete: () => void }) {
+export default function EncoreOfTwenty({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("intro");
@@ -538,6 +539,9 @@ export default function EncoreOfTwenty({ onComplete }: { onComplete: () => void 
               background: "rgba(10, 14, 32, 0.78)",
               backdropFilter: "blur(4px)",
               padding: 24,
+              // Scroll (never clip) when the intro is taller than a short
+              // viewport, so the start button always stays reachable.
+              overflowY: "auto",
             }}
           >
             <motion.div
@@ -545,6 +549,9 @@ export default function EncoreOfTwenty({ onComplete }: { onComplete: () => void 
               animate={{ scale: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 240, damping: 22 }}
               style={{
+                // `auto` margins keep the card centered when it fits but stop
+                // the flex-centering from clipping its top edge on overflow.
+                margin: "auto",
                 maxWidth: 460,
                 textAlign: "center",
                 display: "flex",
@@ -575,6 +582,9 @@ export default function EncoreOfTwenty({ onComplete }: { onComplete: () => void 
                 carefully, then tap them back in the same order. Three encores
                 and the stage is yours!
               </div>
+              {narration && narration.lines.length > 0 && (
+                <InfoNarration lines={narration.lines} accent={accent ?? "#5b76ff"} />
+              )}
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

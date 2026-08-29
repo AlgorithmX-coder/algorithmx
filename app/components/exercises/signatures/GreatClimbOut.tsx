@@ -26,6 +26,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ------------------------------------------------------------------ */
@@ -94,8 +95,12 @@ const THUMBS: ThumbDef[] = [
 
 export default function GreatClimbOut({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const reduce = !!useReducedMotion();
 
@@ -557,7 +562,12 @@ export default function GreatClimbOut({
 
       {/* ---------- overlays ---------- */}
       {phase === "intro" && (
-        <IntroOverlay onStart={() => setPhase("climb")} reduce={reduce} />
+        <IntroOverlay
+          onStart={() => setPhase("climb")}
+          reduce={reduce}
+          narration={narration}
+          accent={accent}
+        />
       )}
       {phase === "celebrate" && (
         <CelebrateOverlay
@@ -1216,9 +1226,13 @@ const overlayBase: CSSProperties = {
 function IntroOverlay({
   onStart,
   reduce,
+  narration,
+  accent,
 }: {
   onStart: () => void;
   reduce: boolean;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   return (
     <motion.div
@@ -1226,6 +1240,9 @@ function IntroOverlay({
       animate={{ opacity: 1 }}
       style={{
         ...overlayBase,
+        // Scroll (never clip) when the card outgrows short viewports; the
+        // child's `margin: auto` keeps it centered whenever it fits.
+        overflowY: "auto",
         background: "rgba(10, 6, 20, 0.8)",
         backdropFilter: "blur(4px)",
         WebkitBackdropFilter: "blur(4px)",
@@ -1236,6 +1253,7 @@ function IntroOverlay({
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 240, damping: 22 }}
         style={{
+          margin: "auto",
           maxWidth: 460,
           textAlign: "center",
           padding: "28px 26px",
@@ -1345,6 +1363,9 @@ function IntroOverlay({
             Don&apos;t tap the juicy bubbles!
           </span>
         </div>
+        {narration && narration.lines.length > 0 && (
+          <InfoNarration lines={narration.lines} accent={accent ?? "#b8e34b"} />
+        )}
         <div>
           <motion.button
             type="button"

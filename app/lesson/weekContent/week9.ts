@@ -66,7 +66,19 @@ export const WEEK_9: WeekContent = {
     },
 
       // SIGNATURE: Flip the Box (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "flipTheBox", title: "Flip the Box" },
+      {
+        type: "signature",
+        mechanic: "flipTheBox",
+        title: "Flip the Box",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[excited] A new app is rolling in, and the front looks perfect.",
+            "Flip the box over. Check who made it and the reviews.",
+            "If every side looks safe, install it. If not, bin it!",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · OFFICIAL STORES ONLY ─────────── */
     // 3 - Learn

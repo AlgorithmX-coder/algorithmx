@@ -27,6 +27,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import {
   setupHiDpiCanvas,
   getPointerLogicalPos,
@@ -699,8 +700,12 @@ function drawGoldTrail(ctx: CanvasRenderingContext2D, pts: Pt[], now: number) {
 
 export default function TrailPlanner({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [round, setRound] = useState<1 | 2>(1);
@@ -1611,6 +1616,27 @@ export default function TrailPlanner({
                     Careful: the snow remembers EVERY footprint you leave, and
                     the loud post zones tell everyone who walked by!
                   </div>
+                  {/* Spoken "here's what to do" (Sarah) - lives INSIDE this
+                      themed intro so the flavour stays the game's own. The
+                      wrapper is the one shrinkable flex child (minHeight 0 +
+                      internal scroll) so on short viewports it compresses and
+                      scrolls instead of pushing the start button off-screen. */}
+                  {narration && narration.lines.length > 0 && (
+                    <div
+                      style={{
+                        width: "100%",
+                        maxWidth: 440,
+                        textAlign: "left",
+                        minHeight: 0,
+                        overflowY: "auto",
+                      }}
+                    >
+                      <InfoNarration
+                        lines={narration.lines}
+                        accent={accent ?? "#a8e4ff"}
+                      />
+                    </div>
+                  )}
                   <motion.button
                     type="button"
                     whileHover={{ scale: 1.05 }}

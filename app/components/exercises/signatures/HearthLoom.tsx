@@ -32,6 +32,7 @@ import { useEffect, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ------------------------------------------------------------------ */
@@ -189,7 +190,15 @@ const springy = { type: "spring" as const, stiffness: 300, damping: 24 };
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function HearthLoom({ onComplete }: { onComplete: () => void }) {
+export default function HearthLoom({
+  onComplete,
+  narration,
+  accent,
+}: {
+  onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("intro");
@@ -1023,7 +1032,13 @@ export default function HearthLoom({ onComplete }: { onComplete: () => void }) {
       </div>
 
       {/* intro */}
-      {phase === "intro" && <IntroOverlay onStart={() => setPhase("play")} />}
+      {phase === "intro" && (
+        <IntroOverlay
+          onStart={() => setPhase("play")}
+          narration={narration}
+          accent={accent}
+        />
+      )}
 
       {/* finish banner */}
       {phase === "woven" && <WovenBanner onFinish={finish} />}
@@ -1503,7 +1518,15 @@ function LoomHud({ solved, count }: { solved: Record<PersonId, boolean>; count: 
   );
 }
 
-function IntroOverlay({ onStart }: { onStart: () => void }) {
+function IntroOverlay({
+  onStart,
+  narration,
+  accent,
+}: {
+  onStart: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   const rows: { color: string; text: string }[] = [
     { color: "#ffd166", text: "Read the trouble bubble above each family member" },
     { color: "#7df0ff", text: "Find the wall charm that beats that trick" },
@@ -1536,6 +1559,11 @@ function IntroOverlay({ onStart }: { onStart: () => void }) {
           border: "1px solid rgba(255,209,102,0.4)",
           boxShadow: "0 30px 60px rgba(0,0,0,0.45)",
           textAlign: "center",
+          // The spoken-instruction block makes the card taller; on short
+          // viewports the card scrolls internally so the start button is
+          // always reachable (never clipped by the centered overlay).
+          maxHeight: "100%",
+          overflowY: "auto",
         }}
       >
         <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 10 }}>
@@ -1583,6 +1611,11 @@ function IntroOverlay({ onStart }: { onStart: () => void }) {
         <div style={{ fontSize: 14, color: "#d4b8ca", marginBottom: 18 }}>
           A wrong thread just fizzles. Try as many times as you like!
         </div>
+        {narration && narration.lines.length > 0 && (
+          <div style={{ textAlign: "left" }}>
+            <InfoNarration lines={narration.lines} accent={accent ?? "#ffb26b"} />
+          </div>
+        )}
         <button
           onClick={onStart}
           style={{

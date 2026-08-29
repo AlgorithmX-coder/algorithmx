@@ -29,6 +29,7 @@ import { useEffect, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ------------------------------------------------------------------ */
@@ -87,7 +88,7 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function GoodnightGadgets({ onComplete }: { onComplete: () => void }) {
+export default function GoodnightGadgets({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("intro");
@@ -1356,7 +1357,9 @@ export default function GoodnightGadgets({ onComplete }: { onComplete: () => voi
       </div>
 
       {/* intro */}
-      {phase === "intro" && <IntroOverlay onStart={() => setPhase("play")} />}
+      {phase === "intro" && (
+        <IntroOverlay onStart={() => setPhase("play")} narration={narration} accent={accent} />
+      )}
 
       {/* finish banner */}
       {phase === "night" && <NightBanner onFinish={finish} />}
@@ -1624,7 +1627,15 @@ function ProgressHud({ asleep, count }: { asleep: Record<DeviceId, boolean>; cou
 /* Overlays                                                           */
 /* ------------------------------------------------------------------ */
 
-function IntroOverlay({ onStart }: { onStart: () => void }) {
+function IntroOverlay({
+  onStart,
+  narration,
+  accent,
+}: {
+  onStart: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   const rows: { color: string; text: string }[] = [
     { color: "#7df0ff", text: "Camera: drag its cap onto the lens" },
     { color: "#ffd166", text: "Speaker: pull its plug from the outlet" },
@@ -1653,13 +1664,20 @@ function IntroOverlay({ onStart }: { onStart: () => void }) {
         style={{
           width: "min(100%, 500px)",
           borderRadius: 24,
-          padding: "26px 28px",
           background: "linear-gradient(180deg, #171d44, #121737)",
           border: "1px solid rgba(125,240,255,0.35)",
           boxShadow: "0 30px 60px rgba(0,0,0,0.45)",
           textAlign: "center",
+          // The spoken-instruction block makes the card taller than a short
+          // viewport. The content scrolls in its own region and the start
+          // button lives in a PINNED footer, so it is always on screen.
+          display: "flex",
+          flexDirection: "column",
+          maxHeight: "100%",
+          overflow: "hidden",
         }}
       >
+        <div style={{ flex: "1 1 auto", minHeight: 0, overflowY: "auto", padding: "26px 28px 10px" }}>
         <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 10 }}>
           <PixIcon emoji="👀" size={34} />
           <PixIcon emoji="🔔" size={34} />
@@ -1705,6 +1723,13 @@ function IntroOverlay({ onStart }: { onStart: () => void }) {
         <div style={{ fontSize: 14, color: "#aebadf", marginBottom: 18 }}>
           No eyes and no ears? Then it can stay up with you.
         </div>
+        {narration && narration.lines.length > 0 && (
+          <div style={{ textAlign: "left" }}>
+            <InfoNarration lines={narration.lines} accent={accent ?? "#45e3ff"} />
+          </div>
+        )}
+        </div>
+        <div style={{ flex: "0 0 auto", padding: "12px 28px 20px" }}>
         <button
           onClick={onStart}
           style={{
@@ -1722,6 +1747,7 @@ function IntroOverlay({ onStart }: { onStart: () => void }) {
         >
           Start bedtime
         </button>
+        </div>
       </motion.div>
     </motion.div>
   );

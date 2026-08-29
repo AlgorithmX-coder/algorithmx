@@ -32,6 +32,7 @@ import {
   type PanInfo,
 } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ────────────────────────── constants ────────────────────────── */
@@ -556,8 +557,12 @@ function BookFace({ book, width }: { book: Book; width: number }) {
 
 export default function ProofScale({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [claimIdx, setClaimIdx] = useState(0);
@@ -1392,13 +1397,29 @@ export default function ProofScale({
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
-              gap: 16,
-              padding: 24,
+              // The spoken-instruction block makes the intro taller than a
+              // short viewport. Content scrolls in its own region and the start
+              // button sits in a PINNED footer, so it is always on screen.
+              overflow: "hidden",
+              padding: 0,
               textAlign: "center",
               fontFamily: FONT_STACK,
             }}
           >
+            <div
+              style={{
+                flex: "1 1 auto",
+                minHeight: 0,
+                overflowY: "auto",
+                justifyContent: "safe center",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 16,
+                width: "100%",
+                padding: "24px 24px 8px",
+              }}
+            >
             <motion.div
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -1478,13 +1499,21 @@ export default function ProofScale({
                 </div>
               ))}
             </div>
+            {/* Spoken "here's what to do" instruction (Sarah), authored on the
+                week's signature screen def. Auto-plays + Read-aloud button. */}
+            {narration && narration.lines.length > 0 && (
+              <div style={{ width: "100%", maxWidth: 560, textAlign: "left" }}>
+                <InfoNarration lines={narration.lines} accent={accent ?? "#3dffc4"} />
+              </div>
+            )}
+            </div>
+            <div style={{ flex: "0 0 auto", padding: "12px 24px 20px", display: "flex", justifyContent: "center" }}>
             <motion.button
               type="button"
               onClick={() => setPhase("play")}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
-                marginTop: 6,
                 border: "none",
                 borderRadius: 16,
                 padding: "14px 44px",
@@ -1500,6 +1529,7 @@ export default function ProofScale({
             >
               START WEIGHING
             </motion.button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

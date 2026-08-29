@@ -31,6 +31,7 @@ import {
 import type { Variants } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                            */
@@ -209,7 +210,15 @@ const coinVariants: Variants = {
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function TruePriceLever({ onComplete }: { onComplete: () => void }) {
+export default function TruePriceLever({
+  onComplete,
+  narration,
+  accent,
+}: {
+  onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("intro");
@@ -739,6 +748,11 @@ export default function TruePriceLever({ onComplete }: { onComplete: () => void 
               alignItems: "center",
               gap: 14,
               textAlign: "center",
+              // The spoken-instruction block makes the intro taller; on short
+              // viewports the card scrolls internally so the start button is
+              // always reachable (never clipped by the centered overlay).
+              maxHeight: "100%",
+              overflowY: "auto",
             }}
           >
             <div style={{ display: "flex", gap: 6 }}>
@@ -762,6 +776,11 @@ export default function TruePriceLever({ onComplete }: { onComplete: () => void 
               every deal and HOLD it: a paper receipt prints the REAL total. And if
               anything costs more than 2 coins, ring the ASK A GROWN-UP bell first!
             </div>
+            {narration && narration.lines.length > 0 && (
+              <div style={{ width: "100%", textAlign: "left" }}>
+                <InfoNarration lines={narration.lines} accent={accent ?? "#ff4e6a"} />
+              </div>
+            )}
             <BigButton onClick={() => setPhase("shop")} kind="buy">
               OPEN THE SHOP
             </BigButton>

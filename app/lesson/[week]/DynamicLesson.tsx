@@ -432,7 +432,7 @@ function SignaturePlay({
       </div>
     );
   }
-  return <Signature onComplete={onComplete} narration={narration} />;
+  return <Signature onComplete={onComplete} narration={narration} accent={theme?.accent} />;
 }
 
 // Document-level keyframe for the FullScene/LessonStage glow cross-fade.

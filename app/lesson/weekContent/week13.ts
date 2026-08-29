@@ -67,7 +67,19 @@ export const WEEK_13: WeekContent = {
     },
 
       // SIGNATURE: The Day Jug (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "dayJug", title: "The Day Jug" },
+      {
+        type: "signature",
+        mechanic: "dayJug",
+        title: "The Day Jug",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[excited] Time to pour your whole day into the cups!",
+            "There is only so much to go around.",
+            "Keep it balanced so nothing runs dry!",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · YOUR POWER BAR ─────────── */
     // 3 - Learn

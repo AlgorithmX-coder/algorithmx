@@ -64,7 +64,19 @@ export const WEEK_3: WeekContent = {
     },
 
       // SIGNATURE: The Mask Waltz (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "maskWaltz", title: "The Mask Waltz" },
+      {
+        type: "signature",
+        mechanic: "maskWaltz",
+        title: "The Mask Waltz",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[warmly] Watch your real friend closely before her mask goes on.",
+            "Keep your eyes on her while the dancers swap places.",
+            "When the music stops, tap your real friend!",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · MASKS: WHO'S REALLY TYPING? ─────────── */
     // 3 - Learn

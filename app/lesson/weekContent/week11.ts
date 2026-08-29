@@ -73,7 +73,19 @@ export const WEEK_11: WeekContent = {
     },
 
       // SIGNATURE: The Calm-Down Console (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "calmDownConsole", title: "The Calm-Down Console" },
+      {
+        type: "signature",
+        mechanic: "calmDownConsole",
+        title: "The Calm-Down Console",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[warmly] Something feels wrong, so let's take slow hero breaths.",
+            "Breathe in and out with the ring until you feel calm.",
+            "Then tell a trusted grown-up right away.",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · NEVER YOUR FAULT ─────────── */
     // 3 - Learn

@@ -64,7 +64,19 @@ export const WEEK_2: WeekContent = {
     },
 
       // SIGNATURE: The Leak Torch (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "leakTorch", title: "The Leak Torch" },
+      {
+        type: "signature",
+        mechanic: "leakTorch",
+        title: "The Leak Torch",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[warmly] It's so dark in here! Drag your torch beam around the room.",
+            "See a gold glow? That's a leak. Tap it to seal it!",
+            "Seal all four leaks and the room is safe. You've got this!",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · WHAT'S PRIVATE ─────────── */
     // 3 - Learn

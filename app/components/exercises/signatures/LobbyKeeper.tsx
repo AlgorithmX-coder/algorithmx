@@ -36,6 +36,7 @@ import {
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import {
   setupHiDpiCanvas,
@@ -872,8 +873,12 @@ function spawnWinConfetti(gs: GameState) {
 
 export default function LobbyKeeper({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [lobbyCount, setLobbyCount] = useState(0);
@@ -1522,8 +1527,8 @@ export default function LobbyKeeper({
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: 12,
+                  overflowY: "auto",
+                  touchAction: "pan-y",
                   textAlign: "center",
                   padding: 24,
                   zIndex: 8,
@@ -1531,45 +1536,63 @@ export default function LobbyKeeper({
                     "radial-gradient(circle at 50% 30%, rgba(60, 30, 100, 0.9) 0%, rgba(18, 10, 40, 0.95) 75%)",
                 }}
               >
-                <PixIcon emoji="🎮" size={52} />
-                <div style={{ fontSize: 26, fontWeight: 900, color: "#ffd166" }}>
-                  Game night at Adam&apos;s lobby!
-                </div>
+                {/* margin:auto wrapper = centred when it fits, top-anchored +
+                    scrollable when it doesn't (never clips the start button). */}
                 <div
                   style={{
-                    fontSize: 15,
-                    lineHeight: 1.5,
-                    maxWidth: 460,
-                    opacity: 0.92,
+                    margin: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 12,
+                    width: "100%",
                   }}
                 >
-                  Real teammates carry your glowing gold team badge. Glitchy
-                  strangers with NO badge want to sneak in. Drag Adam left and
-                  right like a goalkeeper: block the glitchy ones, step aside
-                  for your friends!
+                  <PixIcon emoji="🎮" size={52} />
+                  <div style={{ fontSize: 26, fontWeight: 900, color: "#ffd166" }}>
+                    Game night at Adam&apos;s lobby!
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 15,
+                      lineHeight: 1.5,
+                      maxWidth: 460,
+                      opacity: 0.92,
+                    }}
+                  >
+                    Real teammates carry your glowing gold team badge. Glitchy
+                    strangers with NO badge want to sneak in. Drag Adam left and
+                    right like a goalkeeper: block the glitchy ones, step aside
+                    for your friends!
+                  </div>
+                  {narration && narration.lines.length > 0 && (
+                    <div style={{ width: "100%", maxWidth: 460, textAlign: "left" }}>
+                      <InfoNarration lines={narration.lines} accent={accent ?? "#ff3cb4"} />
+                    </div>
+                  )}
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={startPlay}
+                    style={{
+                      marginTop: 6,
+                      padding: "14px 30px",
+                      fontSize: 19,
+                      fontWeight: 800,
+                      fontFamily: "inherit",
+                      color: "#3a2200",
+                      background:
+                        "linear-gradient(180deg, #ffd166 0%, #ffb347 100%)",
+                      border: "none",
+                      borderRadius: 999,
+                      cursor: "pointer",
+                      boxShadow: "0 6px 18px rgba(255, 180, 70, 0.4)",
+                    }}
+                  >
+                    Start guarding!
+                  </motion.button>
                 </div>
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={startPlay}
-                  style={{
-                    marginTop: 6,
-                    padding: "14px 30px",
-                    fontSize: 19,
-                    fontWeight: 800,
-                    fontFamily: "inherit",
-                    color: "#3a2200",
-                    background:
-                      "linear-gradient(180deg, #ffd166 0%, #ffb347 100%)",
-                    border: "none",
-                    borderRadius: 999,
-                    cursor: "pointer",
-                    boxShadow: "0 6px 18px rgba(255, 180, 70, 0.4)",
-                  }}
-                >
-                  Start guarding!
-                </motion.button>
               </motion.div>
             )}
           </AnimatePresence>

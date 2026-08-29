@@ -25,6 +25,7 @@ import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent, PointerEvent a
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                            */
@@ -73,7 +74,15 @@ function smooth(p: number): number {
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function CalmDownConsole({ onComplete }: { onComplete: () => void }) {
+export default function CalmDownConsole({
+  onComplete,
+  narration,
+  accent,
+}: {
+  onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("intro");
@@ -784,6 +793,11 @@ export default function CalmDownConsole({ onComplete }: { onComplete: () => void
               style={{
                 ...overlayStyle,
                 zIndex: 30,
+                // The spoken-instruction block makes the intro taller; on short
+                // viewports the overlay scrolls so the start button is always
+                // reachable ("safe center" top-aligns instead of clipping).
+                overflowY: "auto",
+                justifyContent: "safe center",
               }}
             >
               <motion.div
@@ -825,6 +839,11 @@ export default function CalmDownConsole({ onComplete }: { onComplete: () => void
                   Press and HOLD the ring to breathe in. Let GO to breathe out.
                 </span>
               </div>
+              {narration && narration.lines.length > 0 && (
+                <div style={{ width: "min(460px, 100%)", textAlign: "left" }}>
+                  <InfoNarration lines={narration.lines} accent={accent ?? "#ff9528"} />
+                </div>
+              )}
               <motion.button
                 type="button"
                 whileTap={{ scale: 0.95 }}

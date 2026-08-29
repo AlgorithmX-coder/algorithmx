@@ -79,6 +79,14 @@ export const WEEK_19: WeekContent = {
       type: "signature",
       mechanic: "hearthLoom",
       title: "The Hearth Loom",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Your family needs you, hero. Look at each trouble bubble.",
+          "Drag the right safety thread to each family member.",
+          "Weave all three and keep your whole family safe!",
+        ],
+      },
     },
 
     /* ─────────── BEAT 1 · THE EXPERT ─────────── */

@@ -67,7 +67,19 @@ export const WEEK_10: WeekContent = {
     },
 
       // SIGNATURE: The Great Climb-Out (bespoke mini-game unique to this week)
-      { type: "signature", mechanic: "greatClimbOut", title: "The Great Climb-Out" },
+      {
+        type: "signature",
+        mechanic: "greatClimbOut",
+        title: "The Great Climb-Out",
+        narration: {
+          speaker: "adam",
+          lines: [
+            "[warmly] Those videos pulled you deep, but you can climb out.",
+            "Tap left, then right, up the ladder to the daylight.",
+            "Don't tap the shiny bubbles. You choose when to stop!",
+          ],
+        },
+      },
 
     /* ─────────── BEAT 1 · THE AUTOPLAY BELT ─────────── */
     // 3 - Learn

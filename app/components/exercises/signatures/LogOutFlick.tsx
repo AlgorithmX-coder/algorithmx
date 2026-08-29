@@ -29,6 +29,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { PanInfo } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 /* ------------------------------------------------------------------ */
 /* Constants + content                                                */
@@ -73,7 +74,15 @@ const FLICK_TOAST: Record<CardId, { title: string; body: string }> = {
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function LogOutFlick({ onComplete }: { onComplete: () => void }) {
+export default function LogOutFlick({
+  onComplete,
+  narration,
+  accent,
+}: {
+  onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("intro");
@@ -986,6 +995,8 @@ export default function LogOutFlick({ onComplete }: { onComplete: () => void }) 
       {/* intro */}
       {phase === "intro" && (
         <IntroOverlay
+          narration={narration}
+          accent={accent}
           onStart={() => {
             setPhase("sweep");
             showToast("hint", "Flick it down!", "Press the top card and swipe it down fast.");
@@ -1515,7 +1526,15 @@ function Padlock({ shut, armed }: { shut: boolean; armed: boolean }) {
 /* Overlays                                                           */
 /* ------------------------------------------------------------------ */
 
-function IntroOverlay({ onStart }: { onStart: () => void }) {
+function IntroOverlay({
+  onStart,
+  narration,
+  accent,
+}: {
+  onStart: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+}) {
   const rows: { color: string; text: string }[] = [
     { color: "#7df0ff", text: "FLICK every open card down to log it out" },
     { color: "#ffb347", text: "AMBER locker light means something is still open" },
@@ -1548,6 +1567,11 @@ function IntroOverlay({ onStart }: { onStart: () => void }) {
           border: "1px solid rgba(125,240,255,0.35)",
           boxShadow: "0 30px 60px rgba(0,0,0,0.45)",
           textAlign: "center",
+          // The spoken-instruction block makes the intro taller; on short
+          // viewports the card scrolls internally so the start button is
+          // always reachable (never clipped by the centered overlay).
+          maxHeight: "100%",
+          overflowY: "auto",
         }}
       >
         <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 10 }}>
@@ -1594,6 +1618,11 @@ function IntroOverlay({ onStart }: { onStart: () => void }) {
         <div style={{ fontSize: 14, color: "#aebadf", marginBottom: 18 }}>
           Hero rule: before you walk away, always look back and check one more time.
         </div>
+        {narration && narration.lines.length > 0 && (
+          <div style={{ textAlign: "left" }}>
+            <InfoNarration lines={narration.lines} accent={accent ?? "#62b6cb"} />
+          </div>
+        )}
         <button
           onClick={onStart}
           style={{

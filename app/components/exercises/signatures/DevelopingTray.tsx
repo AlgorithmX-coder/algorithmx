@@ -22,6 +22,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import {
   setupHiDpiCanvas,
@@ -556,8 +557,12 @@ function drawStamp(
 
 export default function DevelopingTray({
   onComplete,
+  narration,
+  accent,
 }: {
   onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
 }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [percent, setPercent] = useState(0);
@@ -1076,7 +1081,12 @@ export default function DevelopingTray({
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "center",
+                    // "safe center" + internal scrolling: the spoken-instruction
+                    // block makes the intro taller, so on short viewports the
+                    // overlay scrolls and the start button stays reachable
+                    // (never clipped by a centered overflow).
+                    justifyContent: "safe center",
+                    overflowY: "auto",
                     gap: 14,
                     textAlign: "center",
                     padding: 24,
@@ -1106,6 +1116,16 @@ export default function DevelopingTray({
                     reveal the picture. A cyber hero looks at the WHOLE photo
                     before deciding what to do with it.
                   </div>
+                  {narration && narration.lines.length > 0 && (
+                    <div
+                      style={{ width: "100%", maxWidth: 480, textAlign: "left" }}
+                    >
+                      <InfoNarration
+                        lines={narration.lines}
+                        accent={accent ?? "#ff6b3d"}
+                      />
+                    </div>
+                  )}
                   <motion.button
                     type="button"
                     whileHover={{ scale: 1.05 }}

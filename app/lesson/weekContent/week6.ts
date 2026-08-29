@@ -71,6 +71,14 @@ export const WEEK_6: WeekContent = {
       type: "signature",
       mechanic: "lobbyKeeper",
       title: "Lobby Keeper",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Game night! You are the keeper of this lobby.",
+          "Slide Adam side to side, just like a goalie.",
+          "High five the badge friends. No badge? Block them out!",
+        ],
+      },
     },
 
     /* ─────────── BEAT 1 · REAL INFO STAYS OUT OF CHAT ─────────── */

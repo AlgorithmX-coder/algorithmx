@@ -72,6 +72,14 @@ export const WEEK_16: WeekContent = {
       type: "signature",
       mechanic: "keyholeCheck",
       title: "The Keyhole Check",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Drag your trusted key onto each door in the maze!",
+          "Check every tooth to see if the patterns match.",
+          "All green means unlock it. One red tooth? Chain it shut!",
+        ],
+      },
     },
 
     /* ─────────── BEAT 1 · A DOOR YOU CAN'T SEE THROUGH ─────────── */
