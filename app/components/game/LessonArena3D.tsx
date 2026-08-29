@@ -9,7 +9,7 @@
  * rather than a combat arena.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { getQualitySettings } from "@/app/lib/gameEngine";
 
@@ -19,6 +19,19 @@ export interface LessonArena3DProps {
   mood: "normal" | "correct" | "wrong" | "celebration";
   /** Increment to trigger a visual pulse (shockwave, code flash, screen brighten). */
   pulseKey: number;
+  /**
+   * Optional per-week palette override for the calm "normal" mood + drifting
+   * particles (from WeekTheme.arena). Undefined = the default cosmic look.
+   * The feedback moods (correct/wrong/celebration) are never overridden — they
+   * carry meaning.
+   */
+  themePalette?: {
+    ambient: string;
+    key: string;
+    spot: string;
+    fill: string;
+    particles: number[];
+  };
 }
 
 type Mood = LessonArena3DProps["mood"];
@@ -570,9 +583,27 @@ export default function LessonArena3D({
   height,
   mood,
   pulseKey,
+  themePalette,
 }: LessonArena3DProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const refs = useRef<SceneRefs | null>(null);
+
+  // A themed week recolours the calm "normal" lighting + particle colours.
+  // Feedback moods stay standard (they signal correct/wrong). Built once.
+  const themedNormal = useMemo(
+    () =>
+      themePalette
+        ? {
+            ...MOOD_PALETTE.normal,
+            ambient: new THREE.Color(themePalette.ambient),
+            key: new THREE.Color(themePalette.key),
+            spot: new THREE.Color(themePalette.spot),
+            fill: new THREE.Color(themePalette.fill),
+          }
+        : MOOD_PALETTE.normal,
+    [themePalette]
+  );
+  const parts = themePalette?.particles ?? BRAND_COLOURS;
 
   const moodRef = useRef<Mood>(mood);
   const pulseKeyRef = useRef<number>(pulseKey);
@@ -820,7 +851,7 @@ export default function LessonArena3D({
     scene.add(stripR);
 
     // ── Lighting (warmer/brighter than battle) ──
-    const palette = MOOD_PALETTE.normal;
+    const palette = themedNormal;
     const ambient = new THREE.AmbientLight(palette.ambient, palette.ambientI);
     scene.add(ambient);
 
@@ -896,7 +927,7 @@ export default function LessonArena3D({
     const partGeom = new THREE.SphereGeometry(1, 6, 6);
     disposables.push(partGeom);
     const partOpacities = [0.14, 0.17, 0.2, 0.16];
-    const partMats = BRAND_COLOURS.map((c, i) => {
+    const partMats = parts.map((c, i) => {
       const m = new THREE.MeshBasicMaterial({
         color: c,
         transparent: true,
@@ -911,7 +942,7 @@ export default function LessonArena3D({
     partMats.forEach((mat, i) => {
       particleBaseColours.set(
         mat,
-        new THREE.Color(BRAND_COLOURS[i % BRAND_COLOURS.length])
+        new THREE.Color(parts[i % parts.length])
       );
     });
     for (let i = 0; i < particleCount; i++) {
@@ -940,7 +971,7 @@ export default function LessonArena3D({
       const shieldGeom = new THREE.PlaneGeometry(1, 1);
       disposables.push(shieldGeom);
       for (let i = 0; i < 4; i++) {
-        const colour = new THREE.Color(BRAND_COLOURS[i % BRAND_COLOURS.length]);
+        const colour = new THREE.Color(parts[i % parts.length]);
         const mat = new THREE.MeshBasicMaterial({
           color: colour.clone(),
           alphaMap: shieldAlpha ?? undefined,
@@ -1019,7 +1050,7 @@ export default function LessonArena3D({
       }
 
       const currentMood = moodRef.current;
-      const palette = MOOD_PALETTE[currentMood];
+      const palette = currentMood === "normal" ? themedNormal : MOOD_PALETTE[currentMood];
       const lerpSpeed = 1 - Math.pow(0.001, dt);
 
       // ── Lighting lerp ──

@@ -33,6 +33,7 @@
  */
 
 import type { ReactNode, CSSProperties } from "react";
+import { useLessonTheme } from "./LessonThemeContext";
 
 export interface ExerciseFrameProps {
   /**
@@ -102,6 +103,15 @@ export default function ExerciseFrame({
   style,
   children,
 }: ExerciseFrameProps) {
+  // A themed week re-skins the card: swap the (opaque) gradient for the week's
+  // frameBg and tint the decor with its accent. `background={null}` (inherit
+  // the stage) is preserved so those exercises still show the themed stage.
+  // No theme → everything below is byte-identical to before.
+  const theme = useLessonTheme();
+  const resolvedBg = background === null ? null : theme?.frameBg ?? background;
+  const shadow = theme
+    ? `0 40px 90px -30px rgba(8, 10, 22, 0.55), 0 0 0 1px rgba(${theme.accentRGB}, 0.22) inset`
+    : COSMIC_SHADOW;
   // Width math: capped both by `maxWidth` and (optionally) by the
   // viewport-height-derived value so canvas-style exercises shrink
   // horizontally on short viewports rather than overflowing.
@@ -125,8 +135,8 @@ export default function ExerciseFrame({
         minHeight: 420,
         borderRadius: 28,
         overflow: "hidden",
-        background: background ?? undefined,
-        boxShadow: background ? COSMIC_SHADOW : undefined,
+        background: resolvedBg ?? undefined,
+        boxShadow: resolvedBg ? shadow : undefined,
         touchAction: touchActionNone ? "none" : undefined,
         color: "#e7ecff",
         fontFamily:
@@ -134,7 +144,7 @@ export default function ExerciseFrame({
         ...style,
       }}
     >
-      {decor && background && <FrameDecor />}
+      {decor && resolvedBg && <FrameDecor accentRGB={theme?.accentRGB} />}
       {children}
     </div>
   );
@@ -147,7 +157,13 @@ export default function ExerciseFrame({
  * "command-center" feel instead of a flat wash. Deliberately subtle —
  * the brief is "richer, not busier / not overstimulating".
  */
-function FrameDecor() {
+function FrameDecor({ accentRGB }: { accentRGB?: string }) {
+  // Un-themed (accentRGB undefined) reproduces the exact cyan/violet decor.
+  // Themed → the whole decor tints to the week's accent.
+  const grid = accentRGB ?? "0,229,255";
+  const glow1 = accentRGB ?? "0,229,255";
+  const glow2 = accentRGB ?? "124,92,255";
+  const bracket = accentRGB ?? "125,240,255";
   return (
     <div
       aria-hidden
@@ -166,8 +182,8 @@ function FrameDecor() {
           position: "absolute",
           inset: 0,
           backgroundImage:
-            "linear-gradient(rgba(0,229,255,0.05) 1px, transparent 1px)," +
-            "linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px)",
+            `linear-gradient(rgba(${grid},0.05) 1px, transparent 1px),` +
+            `linear-gradient(90deg, rgba(${grid},0.05) 1px, transparent 1px)`,
           backgroundSize: "46px 46px",
           maskImage:
             "radial-gradient(ellipse at 50% 38%, #000 50%, transparent 100%)",
@@ -184,7 +200,7 @@ function FrameDecor() {
           width: 360,
           height: 360,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,229,255,0.16) 0%, transparent 70%)",
+          background: `radial-gradient(circle, rgba(${glow1},0.16) 0%, transparent 70%)`,
           filter: "blur(22px)",
         }}
       />
@@ -196,7 +212,7 @@ function FrameDecor() {
           width: 420,
           height: 420,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(124,92,255,0.15) 0%, transparent 70%)",
+          background: `radial-gradient(circle, rgba(${glow2},0.15) 0%, transparent 70%)`,
           filter: "blur(24px)",
         }}
       />
@@ -238,10 +254,10 @@ function FrameDecor() {
             right: c.right,
             width: 20,
             height: 20,
-            borderTop: c.bt ? "2px solid rgba(125,240,255,0.32)" : undefined,
-            borderBottom: c.bb ? "2px solid rgba(125,240,255,0.32)" : undefined,
-            borderLeft: c.bl ? "2px solid rgba(125,240,255,0.32)" : undefined,
-            borderRight: c.br ? "2px solid rgba(125,240,255,0.32)" : undefined,
+            borderTop: c.bt ? `2px solid rgba(${bracket},0.32)` : undefined,
+            borderBottom: c.bb ? `2px solid rgba(${bracket},0.32)` : undefined,
+            borderLeft: c.bl ? `2px solid rgba(${bracket},0.32)` : undefined,
+            borderRight: c.br ? `2px solid rgba(${bracket},0.32)` : undefined,
             borderTopLeftRadius: c.bt && c.bl ? 8 : undefined,
             borderTopRightRadius: c.bt && c.br ? 8 : undefined,
             borderBottomLeftRadius: c.bb && c.bl ? 8 : undefined,

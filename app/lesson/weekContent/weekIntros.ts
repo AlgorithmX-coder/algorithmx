@@ -13,7 +13,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Passwords: The Secret Code",
     tagline: "Learn the magic words that keep the Hacker Raccoon locked out.",
     audioSrc: "/audio/atlas/heroes-week-01.mp3",
-    accent: "#00e5ff",
+    accent: "#e3b341",
     points: [
       { icon: "🔑", label: "Build a strong password" },
       { icon: "🤫", label: "Keep it secret" },
@@ -24,7 +24,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Private Info: Guard Your Secrets",
     tagline: "Some things you can share, and some you keep locked away.",
     audioSrc: "/audio/atlas/heroes-week-02.mp3",
-    accent: "#7c5cff",
+    accent: "#9d7bff",
     points: [
       { icon: "🆔", label: "Spot your secrets" },
       { icon: "🔒", label: "Lock them away" },
@@ -35,7 +35,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Stranger Danger: Friend or Foe?",
     tagline: "Online, not everyone is who they say they are.",
     audioSrc: "/audio/atlas/heroes-week-03.mp3",
-    accent: "#f59e0b",
+    accent: "#f5a623",
     points: [
       { icon: "🕵️", label: "Spot a fake friend" },
       { icon: "🚫", label: "Don't share with strangers" },
@@ -46,7 +46,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Scams and Tricks: Real or Fake?",
     tagline: "If it seems too good to be true, it usually is.",
     audioSrc: "/audio/atlas/heroes-week-04.mp3",
-    accent: "#ff5fb3",
+    accent: "#e84dff",
     points: [
       { icon: "🎁", label: "Spot the fake prize" },
       { icon: "🔍", label: "Find the clues" },
@@ -57,7 +57,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Cyberbullying: Words Have Power",
     tagline: "Be the kind one, and stop the bullies cold.",
     audioSrc: "/audio/atlas/heroes-week-05.mp3",
-    accent: "#34d399",
+    accent: "#ff8e6e",
     points: [
       { icon: "💬", label: "Be kind" },
       { icon: "🦸", label: "Stand up for others" },
@@ -68,7 +68,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Gaming Safety: Defend Your Game Zone",
     tagline: "Every game zone needs a guard.",
     audioSrc: "/audio/atlas/heroes-week-06.mp3",
-    accent: "#4d9bff",
+    accent: "#ff3cb4",
     points: [
       { icon: "🎮", label: "Guard your game" },
       { icon: "🚫", label: "Block strangers" },
@@ -79,7 +79,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "In-Game Spending: The V-Bucks Trap",
     tagline: "Every shiny coin costs real money.",
     audioSrc: "/audio/atlas/heroes-week-07.mp3",
-    accent: "#ffd158",
+    accent: "#ff4e6a",
     points: [
       { icon: "💎", label: "Spot the spending trap" },
       { icon: "⏸️", label: "Don't tap buy" },
@@ -90,7 +90,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Photos & Videos: Think Before You Share",
     tagline: "Once a photo is out, it's hard to bring back.",
     audioSrc: "/audio/atlas/heroes-week-08.mp3",
-    accent: "#2dd4bf",
+    accent: "#ff6b3d",
     points: [
       { icon: "📸", label: "Think before you share" },
       { icon: "🔒", label: "Keep pics private" },
@@ -101,7 +101,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Apps & Downloads: Spot the Fakes",
     tagline: "Not every app is what it pretends to be.",
     audioSrc: "/audio/atlas/heroes-week-09.mp3",
-    accent: "#ff8a3d",
+    accent: "#2b7fff",
     points: [
       { icon: "📱", label: "Spot fake apps" },
       { icon: "🔍", label: "Check first" },
@@ -112,7 +112,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "YouTube & Videos: Escape the Rabbit Hole",
     tagline: "You choose when to stop, not the screen.",
     audioSrc: "/audio/atlas/heroes-week-10.mp3",
-    accent: "#ff5d5d",
+    accent: "#b8e34b",
     points: [
       { icon: "🌀", label: "Spot the rabbit hole" },
       { icon: "⏸️", label: "Choose to stop" },
@@ -123,7 +123,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Something Wrong? Emergency Protocol",
     tagline: "When something feels wrong, here's what to do.",
     audioSrc: "/audio/atlas/heroes-week-11.mp3",
-    accent: "#fb7185",
+    accent: "#ff9528",
     points: [
       { icon: "✋", label: "Stay calm" },
       { icon: "🚫", label: "Don't reply" },
@@ -134,7 +134,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Digital Footprint: Tracks in the Snow",
     tagline: "Everywhere you go online, you leave little tracks.",
     audioSrc: "/audio/atlas/heroes-week-12.mp3",
-    accent: "#38bdf8",
+    accent: "#a8e4ff",
     points: [
       { icon: "📍", label: "See your tracks" },
       { icon: "🔒", label: "Keep them clean" },
@@ -145,7 +145,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Screen Time: Balance Your Power",
     tagline: "Even heroes need to recharge.",
     audioSrc: "/audio/atlas/heroes-week-13.mp3",
-    accent: "#a3e635",
+    accent: "#2ec4b6",
     points: [
       { icon: "⚡", label: "Recharge your power" },
       { icon: "⏱️", label: "Know when to stop" },
@@ -156,7 +156,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Smart Devices: Who's Listening?",
     tagline: "Some gadgets have ears and eyes.",
     audioSrc: "/audio/atlas/heroes-week-14.mp3",
-    accent: "#818cf8",
+    accent: "#45e3ff",
     points: [
       { icon: "🔔", label: "Who's listening?" },
       { icon: "👀", label: "Who's watching?" },
@@ -167,7 +167,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "AI & Chatbots: Robot or Real?",
     tagline: "Some voices online aren't people at all.",
     audioSrc: "/audio/atlas/heroes-week-15.mp3",
-    accent: "#e879f9",
+    accent: "#3dffc4",
     points: [
       { icon: "🤖", label: "Robot or real?" },
       { icon: "❓", label: "Check the facts" },
@@ -178,7 +178,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "QR Codes & Links: Don't Take the Bait",
     tagline: "A link is a doorway, so look before you leap.",
     audioSrc: "/audio/atlas/heroes-week-16.mp3",
-    accent: "#fb923c",
+    accent: "#b44dff",
     points: [
       { icon: "🔗", label: "Check the link" },
       { icon: "🔍", label: "Look before you tap" },
@@ -189,7 +189,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Social Media: The Profile Shield",
     tagline: "Raise your shield and share a little less.",
     audioSrc: "/audio/atlas/heroes-week-17.mp3",
-    accent: "#22d3ee",
+    accent: "#38b6ff",
     points: [
       { icon: "🛡️", label: "Shield your profile" },
       { icon: "👤", label: "Followers aren't friends" },
@@ -200,7 +200,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Sharing Devices: Lock Before You Leave",
     tagline: "Using a device that isn't yours? Lock up.",
     audioSrc: "/audio/atlas/heroes-week-18.mp3",
-    accent: "#a78bfa",
+    accent: "#62b6cb",
     points: [
       { icon: "🚪", label: "Log out" },
       { icon: "🔑", label: "Keep your keys" },
@@ -211,7 +211,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Protecting Family: Family Firewall",
     tagline: "Now protect the people you love.",
     audioSrc: "/audio/atlas/heroes-week-19.mp3",
-    accent: "#10d9a0",
+    accent: "#ffb26b",
     points: [
       { icon: "👪", label: "Protect your family" },
       { icon: "🔒", label: "Build the firewall" },
@@ -222,7 +222,7 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     title: "Graduation Day: The Final Mission",
     tagline: "Everything you've learned, all at once.",
     audioSrc: "/audio/atlas/heroes-week-20.mp3",
-    accent: "#ffcf3d",
+    accent: "#5b76ff",
     points: [
       { icon: "🎓", label: "Graduate" },
       { icon: "🏆", label: "Final mission" },

@@ -32,6 +32,8 @@ import LessonStage, {
 import { ComfortModeProvider, useComfortMode } from "@/app/lib/comfortMode";
 import { useLessonProgress } from "@/app/lib/useLessonProgress";
 import { analytics } from "@/app/lib/analytics";
+import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
+import { LessonThemeContext } from "@/app/components/lesson/LessonThemeContext";
 
 // Exercise components
 import CyberScanner from "@/app/components/exercises/CyberScanner";
@@ -2693,8 +2695,12 @@ function DynamicLessonInner({
     );
   }
 
+  // Optional per-week visual theme (null for un-themed weeks → default look).
+  const weekTheme = WEEK_THEMES[content.weekNumber] ?? null;
+
   return (
-    <div style={{ position: "relative", minHeight: "100vh", background: "#05061a", color: "#e2e8f0" }}>
+    <LessonThemeContext.Provider value={weekTheme}>
+    <div style={{ position: "relative", minHeight: "100vh", background: weekTheme?.deepBg ?? "#05061a", color: "#e2e8f0" }}>
       {/* 3D arena backdrop */}
       <div
         aria-hidden
@@ -2710,10 +2716,11 @@ function DynamicLessonInner({
           height={winDim.h}
           mood={arena3DMood}
           pulseKey={arena3DPulse}
+          themePalette={weekTheme?.arena}
         />
       </div>
 
-      <LessonAmbience />
+      <LessonAmbience glows={weekTheme?.ambienceGlows} />
 
       {/* Resume banner - only renders when the server returned an
           unfinished attempt with progress > 0 AND the child hasn't
@@ -2738,6 +2745,7 @@ function DynamicLessonInner({
         caseMeta={deriveCaseMeta(def, screen)}
         muted={muted}
         onMuteToggle={handleMuteToggle}
+        accent={weekTheme?.accent}
       />
 
       {/* No character guides anywhere near the boss: the bespoke fights
@@ -3172,5 +3180,6 @@ function DynamicLessonInner({
         </div>
       )}
     </div>
+    </LessonThemeContext.Provider>
   );
 }

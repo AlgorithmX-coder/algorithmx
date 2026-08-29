@@ -24,7 +24,14 @@ const PARTICLES: Particle[] = [
   { left: "54%", top: "54%", size: 3, color: "#60a5fa", opacity: 0.06, path: "A", duration: 15, delay: -12 },
 ];
 
-export default function LessonAmbience() {
+export default function LessonAmbience({ glows }: { glows?: string[] } = {}) {
+  // A themed week recolours the four corner glows to its palette and makes them
+  // a touch more present; an un-themed week keeps the faint cool defaults.
+  const glowOpacity = glows ? 0.4 : 0.04;
+  const cornerBg = (i: number, fallback: string) =>
+    glows?.[i]
+      ? `radial-gradient(circle, ${glows[i]} 0%, transparent 70%)`
+      : fallback;
   return (
     <>
       <style>{`
@@ -75,9 +82,8 @@ export default function LessonAmbience() {
             width: 300,
             height: 300,
             borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(96,165,250,1) 0%, rgba(96,165,250,0) 70%)",
-            opacity: 0.04,
+            background: cornerBg(0, "radial-gradient(circle, rgba(96,165,250,1) 0%, rgba(96,165,250,0) 70%)"),
+            opacity: glowOpacity,
             filter: "blur(24px)",
             animation: "axAmbGlowBlue 10s ease-in-out infinite",
           }}
@@ -90,9 +96,8 @@ export default function LessonAmbience() {
             width: 300,
             height: 300,
             borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(52,211,153,1) 0%, rgba(52,211,153,0) 70%)",
-            opacity: 0.04,
+            background: cornerBg(1, "radial-gradient(circle, rgba(52,211,153,1) 0%, rgba(52,211,153,0) 70%)"),
+            opacity: glowOpacity,
             filter: "blur(24px)",
             animation: "axAmbGlowGreen 10s ease-in-out infinite",
             animationDelay: "-2.5s",
@@ -106,9 +111,8 @@ export default function LessonAmbience() {
             width: 300,
             height: 300,
             borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(249,115,22,1) 0%, rgba(249,115,22,0) 70%)",
-            opacity: 0.04,
+            background: cornerBg(2, "radial-gradient(circle, rgba(249,115,22,1) 0%, rgba(249,115,22,0) 70%)"),
+            opacity: glowOpacity,
             filter: "blur(24px)",
             animation: "axAmbGlowOrange 10s ease-in-out infinite",
             animationDelay: "-5s",
@@ -122,9 +126,8 @@ export default function LessonAmbience() {
             width: 300,
             height: 300,
             borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(245,158,11,1) 0%, rgba(245,158,11,0) 70%)",
-            opacity: 0.04,
+            background: cornerBg(3, "radial-gradient(circle, rgba(245,158,11,1) 0%, rgba(245,158,11,0) 70%)"),
+            opacity: glowOpacity,
             filter: "blur(24px)",
             animation: "axAmbGlowYellow 10s ease-in-out infinite",
             animationDelay: "-7.5s",

@@ -21,6 +21,18 @@ export interface LessonHUDProps {
   caseMeta?: CaseMeta | null;
   onMuteToggle?: () => void;
   muted?: boolean;
+  /** Optional per-week accent (hex) that tints the bar edge/glow + progress. */
+  accent?: string;
+}
+
+/** "#ff3cb4" → "255, 60, 180" (for rgba tints). Falls back to cyan. */
+function hexToRgb(hex?: string): string {
+  if (!hex) return "0, 229, 255";
+  const h = hex.replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const n = parseInt(full, 16);
+  if (Number.isNaN(n)) return "0, 229, 255";
+  return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
 }
 
 export default function LessonHUD({
@@ -32,7 +44,9 @@ export default function LessonHUD({
   caseMeta,
   onMuteToggle,
   muted = false,
+  accent,
 }: LessonHUDProps) {
+  const accRGB = hexToRgb(accent);
   const [totalXP, setTotalXP] = useState<number>(0);
   const [xpPulseKey, setXpPulseKey] = useState(0);
   const comfort = useComfortMode();
@@ -68,8 +82,8 @@ export default function LessonHUD({
         WebkitBackdropFilter: "blur(12px)",
         background:
           "linear-gradient(180deg, rgba(8, 10, 22, 0.92) 0%, rgba(15, 21, 48, 0.88) 100%)",
-        borderBottom: "1px solid rgba(0, 229, 255, 0.22)",
-        boxShadow: "inset 0 -1px 0 rgba(0, 229, 255, 0.32), 0 0 24px rgba(0, 229, 255, 0.08)",
+        borderBottom: `1px solid rgba(${accRGB}, 0.22)`,
+        boxShadow: `inset 0 -1px 0 rgba(${accRGB}, 0.32), 0 0 24px rgba(${accRGB}, 0.08)`,
         display: "flex",
         alignItems: "center",
         gap: 18,
@@ -294,7 +308,9 @@ export default function LessonHUD({
             style={{
               height: "100%",
               width: `${lessonFillPct}%`,
-              background: "linear-gradient(90deg, #00e5ff, #7c5cff)",
+              background: accent
+                ? `linear-gradient(90deg, rgba(${accRGB},0.8), ${accent})`
+                : "linear-gradient(90deg, #00e5ff, #7c5cff)",
               transition: "width 0.4s ease-out",
               boxShadow: "0 0 10px rgba(0, 229, 255, 0.8), 0 0 20px rgba(124, 92, 255, 0.45)",
             }}

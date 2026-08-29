@@ -24,6 +24,7 @@
  */
 
 import type { ReactNode } from "react";
+import { useLessonTheme } from "./LessonThemeContext";
 
 /**
  * Constant the rest of the lesson layout reads. Kept in one place so a
@@ -78,6 +79,11 @@ export default function LessonStage({
   maxWidth = 1500,
   children,
 }: LessonStageProps) {
+  // A themed week overrides the per-screen gradient with its own world bg/glow;
+  // an un-themed week (theme === null) keeps the exact per-screen values passed.
+  const theme = useLessonTheme();
+  const bgValue = theme?.bgGradient ?? bg ?? "linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)";
+  const glowValue = theme?.glow ?? glow;
   return (
     <div
       style={{
@@ -85,7 +91,7 @@ export default function LessonStage({
         // toolbar collapses. minHeight (not height) so content can
         // grow naturally; the scroll fallback handles the rest.
         minHeight: `calc(100dvh - ${LESSON_HUD_HEIGHT}px)`,
-        background: bg ?? "linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)",
+        background: bgValue,
         position: "relative",
         display: "flex",
         flexDirection: "column",
@@ -107,9 +113,9 @@ export default function LessonStage({
         WebkitOverflowScrolling: "touch",
       }}
     >
-      {glow && (
+      {glowValue && (
         <div
-          key={glow}
+          key={glowValue}
           aria-hidden
           style={{
             position: "absolute",
@@ -119,7 +125,7 @@ export default function LessonStage({
             width: 600,
             height: 600,
             borderRadius: "50%",
-            background: glow,
+            background: glowValue,
             filter: "blur(120px)",
             opacity: 0.3,
             pointerEvents: "none",
