@@ -85,6 +85,8 @@ export interface PhoneTestQ {
 export interface PhoneTest {
   intro: string;
   introVoice?: string;
+  passVoice?: string;
+  failVoice?: string;
   pass: number; // questions needed to pass
   questions: PhoneTestQ[];
 }
@@ -407,6 +409,8 @@ export const case06Phone: PhoneCase = {
   test: {
     intro: "Last thing before I close the case: the test. Six quick ones, fresh scams you haven't seen. No hints, and you need five right. Take what you learned and think. Ready?",
     introVoice: "/audio/wren/m06p-test-intro.mp3",
+    passVoice: "/audio/wren/m06p-test-pass.mp3",
+    failVoice: "/audio/wren/m06p-test-fail.mp3",
     pass: 5,
     questions: [
       {

@@ -15,8 +15,6 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest } from "./case06";
-import BlockIntro from "./BlockIntro";
-import { block2Intro } from "./blockIntroData";
 
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#6b6b78",
@@ -76,7 +74,7 @@ type Dock =
   | null;
 
 export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneCase: PhoneCase; onExit?: () => void; onNextCase?: () => void }) {
-  const [phase, setPhase] = useState<"brief" | "lock" | "play" | "test" | "debrief">("brief");
+  const [phase, setPhase] = useState<"lock" | "play" | "test" | "debrief">("lock");
   const [header, setHeader] = useState<Header>(WREN_HEADER);
   const [items, setItems] = useState<Item[]>([]);
   const [dock, setDock] = useState<Dock>(null);
@@ -254,8 +252,6 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     </span>
   );
 
-  if (phase === "brief") return <BlockIntro data={block2Intro} onBegin={() => setPhase("lock")} />;
-
   return (
     <main className="ph" style={{ background: `radial-gradient(900px 500px at 50% -10%, #241033 0%, rgba(36,16,51,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden" }}>
       <style>{CSS}</style>
@@ -277,7 +273,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           </div>
 
           {phase === "lock" ? (
-            <LockScreen open={phoneCase.open} title={phoneCase.title} onOpen={start} />
+            <LockScreen caseNumber={phoneCase.caseNumber} open={phoneCase.open} title={phoneCase.title} onOpen={start} />
           ) : phase === "test" ? (
             <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => setPhase("debrief")} />
           ) : phase === "debrief" ? (
@@ -453,7 +449,8 @@ function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean
       const passed = nextCorrect >= test.pass;
       setCorrect(nextCorrect);
       setResult(passed ? "pass" : "fail");
-      if (voiceOn) playWren(passed ? "/audio/wren/m06p-test-pass.mp3" : "/audio/wren/m06p-test-fail.mp3", true);
+      const v = passed ? test.passVoice : test.failVoice;
+      if (voiceOn && v) playWren(v, true);
     }
   };
 
@@ -492,10 +489,10 @@ function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean
   );
 }
 
-function LockScreen({ open, title, onOpen }: { open: string[]; title: string; onOpen: () => void }) {
+function LockScreen({ caseNumber, open, title, onOpen }: { caseNumber: string; open: string[]; title: string; onOpen: () => void }) {
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 26px 30px", textAlign: "center" }}>
-      <div style={{ fontSize: 12, letterSpacing: ".28em", textTransform: "uppercase", color: C.pink, fontWeight: 700, marginBottom: 6 }}>Case 006</div>
+      <div style={{ fontSize: 12, letterSpacing: ".28em", textTransform: "uppercase", color: C.pink, fontWeight: 700, marginBottom: 6 }}>{caseNumber}</div>
       <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: "-.01em", marginBottom: 20 }}>{title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 9, textAlign: "left", marginBottom: 26 }}>
         {open.slice(0, 2).map((l, i) => (

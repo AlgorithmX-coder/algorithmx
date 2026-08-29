@@ -13,8 +13,10 @@ import type { CSSProperties } from "react";
 import MissionRuntime from "./engine/MissionRuntime";
 import PhoneRuntime from "./phone/PhoneRuntime";
 import { case06Phone } from "./phone/case06";
+import { case07Phone } from "./phone/case07";
+import type { PhoneCase } from "./phone/case06";
 import BlockIntro from "./phone/BlockIntro";
-import { block1Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
+import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
 import type { BlockIntroData } from "./phone/blockIntroData";
 import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
@@ -85,7 +87,13 @@ const TOPICS: Record<string, string> = {
 // Page-level block-intro slides (ATLAS briefings), shown once when a kid opens
 // the FIRST case of a block. Block 2 self-briefs inside the phone, so it's not
 // listed here; blocks 3-4 will be added as their intros are built.
-const BLOCK_INTROS: Record<number, BlockIntroData> = { 1: block1Intro, 3: block3Intro, 4: block4Intro };
+const BLOCK_INTROS: Record<number, BlockIntroData> = { 1: block1Intro, 2: block2Intro, 3: block3Intro, 4: block4Intro };
+
+// Block 2 cases run in THE PHONE (not the Signal Room engine), one PhoneCase each.
+const PHONE_CASES: Record<string, PhoneCase> = {
+  "explorers-m06": case06Phone,
+  "explorers-m07": case07Phone,
+};
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
 
@@ -257,11 +265,13 @@ export default function ExplorersPage() {
     if (pageIntro && showBrief && firstIdOfBlock(active.block) === active.id) {
       return <BlockIntro data={pageIntro} onBegin={() => setShowBrief(false)} />;
     }
-    // Block 2 runs in THE PHONE, not the Signal Room engine.
-    if (active.id === "explorers-m06") {
+    // Block 2 cases run in THE PHONE, not the Signal Room engine.
+    const phoneCase = PHONE_CASES[active.id];
+    if (phoneCase) {
       return (
         <PhoneRuntime
-          phoneCase={case06Phone}
+          key={active.id}
+          phoneCase={phoneCase}
           onExit={() => { refreshStatus(); setActive(null); }}
           onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
         />
