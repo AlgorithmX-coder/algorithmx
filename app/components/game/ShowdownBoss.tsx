@@ -137,14 +137,21 @@ export default function ShowdownBoss({
   const shakeControls = useAnimationControls();
   // Declared up here (not with the other handlers) because the entrance
   // effect below lists it as a dependency.
-  const shake = useCallback(() => {
+  // `mult` lets later hits (a more broken machine, a hot combo) shake harder
+  // so the fight escalates instead of every impact feeling identical.
+  const shake = useCallback((mult = 1) => {
     if (reduce) return;
+    const m = Math.min(Math.max(mult, 0.6), 2.4);
     void shakeControls.start({
-      x: [0, -7, 6, -4, 2, 0],
-      y: [0, 3, -2, 1, 0, 0],
+      x: [0, -7 * m, 6 * m, -4 * m, 2 * m, 0],
+      y: [0, 3 * m, -2 * m, 1 * m, 0, 0],
       transition: { duration: 0.35 },
     });
   }, [reduce, shakeControls]);
+  // Live combo streak (consecutive correct answers) — the momentum layer.
+  const [combo, setCombo] = useState(0);
+  const comboRef = useRef(0);
+  const bestComboRef = useRef(0);
   const [popups, setPopups] = useState<{ id: number; text: string; colour: string; x: number; y: number }[]>([]);
   const [payoffStamp, setPayoffStamp] = useState(false);
   // W20 finale: the Graduate's Protocol gates the charge (finisher.protocol).
@@ -301,14 +308,27 @@ export default function ShowdownBoss({
       const py = at && rect ? at.y - rect.top : (rect?.height ?? 400) / 2;
 
       if (wasCorrect) {
-        setScore((s) => s + 100);
+        comboRef.current += 1;
+        const c = comboRef.current;
+        if (c > bestComboRef.current) bestComboRef.current = c;
+        setCombo(c);
+        // Each unbroken correct answer is worth more — a streak of 4 lands
+        // 100+150+200+250 instead of a flat 400, so momentum pays off.
+        const bonus = c >= 2 ? (c - 1) * 50 : 0;
+        setScore((s) => s + 100 + bonus);
         playSound("correct");
-        particlesRef.current?.burst(px, py, accent, reduce ? 0 : 16);
-        addPopup("+100", "#2fae4e", px, py);
+        particlesRef.current?.burst(px, py, accent, reduce ? 0 : Math.min(16 + c * 6, 42));
+        addPopup(bonus > 0 ? `+${100 + bonus}` : "+100", "#2fae4e", px, py);
+        if (c >= 2) {
+          addPopup(c >= 5 ? `x${c} ON FIRE!` : `COMBO x${c}!`, "#ffce5c", px, py - 42);
+          if (c >= 3) shake(0.7 + Math.min(c * 0.12, 0.7));
+        }
         setHeroMood("attack");
         window.setTimeout(() => setHeroMood("idle"), 450);
         flashMood("hurt", null, 750);
       } else {
+        comboRef.current = 0;
+        setCombo(0);
         playSound("wrong");
         shake();
         addPopup("TRY AGAIN!", "#e0447d", px, py);
@@ -330,7 +350,8 @@ export default function ShowdownBoss({
   /* Weak point answered → the gear pops. */
   const weakPointDone = useCallback(() => {
     playSound("screenShake");
-    shake();
+    // Later gears pop harder — the machine is closer to breaking.
+    shake(1.3 + phaseIdx * 0.4);
     setGears((g) => g + 1);
     setScore((s) => s + 250);
     setRaccoonMood("hurt");
@@ -390,7 +411,7 @@ export default function ShowdownBoss({
       { q: 0, c: 0, w: 0 },
     );
     onEnd?.(true, {
-      combo: totals.c,
+      combo: bestComboRef.current,
       accuracy: totals.q > 0 ? Math.round((totals.c / totals.q) * 100) : 100,
       xp: Math.round(score / 10),
       totalQuestions: totals.q,
@@ -525,6 +546,27 @@ export default function ShowdownBoss({
             <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 900, color: "#fff7e6", textShadow: "0 1px 6px rgba(13,24,58,0.8)", minWidth: 92, textAlign: "right" }}>
               SCORE {score}
             </span>
+            <AnimatePresence>
+              {combo >= 2 && (
+                <motion.span
+                  key={combo}
+                  initial={reduce ? false : { scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={reduce ? undefined : { scale: 0.7, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 420, damping: 16 }}
+                  style={{
+                    fontFamily: MONO, fontSize: 12, fontWeight: 900,
+                    color: "#2a1800",
+                    background: "linear-gradient(180deg, #ffe08a, #ffb43d)",
+                    borderRadius: 999, padding: "3px 10px",
+                    boxShadow: "0 0 12px rgba(255,180,61,0.75)",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  🔥 x{combo}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
           <div style={{ fontFamily: MONO, fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", color: "#eafff0", textShadow: "0 1px 6px rgba(13,24,58,0.8)", display: "flex", alignItems: "center", gap: 6 }}>
             {hero && <span>★ {heroes[hero].name}</span>}
