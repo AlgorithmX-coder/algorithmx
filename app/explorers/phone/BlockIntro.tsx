@@ -42,6 +42,8 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
   const [label, setLabel] = useState("Play the briefing");
   const [, setTick] = useState(0);
   const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  // Fast test mode (?fast=1): don't auto-play ATLAS, so testing is voice-free.
+  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
   const fmt = (s: number) => { s = Math.max(0, s | 0); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
   // gesture, so play() is allowed immediately; on a cold deep-link autoplay is
   // blocked, so the first tap anywhere starts him instead.
   useEffect(() => {
-    const a = audioRef.current; if (!a) return;
+    const a = audioRef.current; if (!a || fast) return; // fast test mode: no auto-play
     let alive = true, done = false;
     const start = () => { if (done || !alive) return; done = true; a.play().then(() => { if (alive) setPlaying(true); else a.pause(); }).catch(() => { done = false; }); };
     start();
