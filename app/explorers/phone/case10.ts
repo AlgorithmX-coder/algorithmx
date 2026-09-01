@@ -19,6 +19,7 @@ export const case10Phone: PhoneCase = {
   caseNumber: "CASE 010",
   title: "The Voice",
   actor: "MIMIC",
+  app: { name: "Ringer", accent: "#35C777", wall: "radial-gradient(130% 90% at 50% 0%, #0f2418 0%, #0a0d0a 62%)" },
   open: [
     "Last case of the block, Agent, and MIMIC has saved its scariest trick for the end. It can clone a voice.",
     "Not a typed message, an actual voice. A few seconds of someone talking, grabbed from a video online, is enough for a machine to copy them. Your mum, your best friend. It can make their voice say anything.",

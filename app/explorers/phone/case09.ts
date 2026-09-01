@@ -22,6 +22,7 @@ export const case09Phone: PhoneCase = {
   caseNumber: "CASE 009",
   title: "The Long Game",
   actor: "SIREN",
+  app: { name: "Bond", accent: "#FFB13D", wall: "radial-gradient(130% 90% at 50% 0%, #2a2110 0%, #0d0c0a 62%)" },
   open: [
     "Toughest case yet, Agent. SIREN is back, and this time there's no rush, no quick trick. This is the long con.",
     "SIREN doesn't want your password today. SIREN spends weeks being your best friend, so that one day, when the ask finally comes, saying no feels impossible.",

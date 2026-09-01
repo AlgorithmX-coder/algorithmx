@@ -90,6 +90,11 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const [, force] = useReducer((n) => n + 1, 0);
 
   const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+  // Per-case app skin (wallpaper + accent + name) so each case feels like a
+  // different app; falls back to the block pink if a case sets none.
+  const OUT = phoneCase.app?.accent ?? C.out;
+  const WALL = phoneCase.app?.wall ?? C.chat;
+  const APP = phoneCase.app?.name ?? "Messages";
   const idRef = useRef(0);
   const lastConRef = useRef<number | null>(null);
   const resolveRef = useRef<((v: string) => void) | null>(null);
@@ -291,21 +296,22 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
             <>
               {/* chat header */}
               <div style={{ flex: "0 0 auto", padding: "4px 13px 11px", borderBottom: `1px solid ${C.line}`, display: "flex", alignItems: "center", gap: 10, background: C.chrome }}>
-                <span aria-hidden style={{ color: C.out, fontSize: 25, lineHeight: 1, marginRight: -2 }}>‹</span>
+                <span aria-hidden style={{ color: OUT, fontSize: 25, lineHeight: 1, marginRight: -2 }}>‹</span>
                 <span aria-hidden style={{ width: 37, height: 37, borderRadius: "50%", background: header.who === "WREN" ? "radial-gradient(circle at 40% 35%,#1c5248,#0c2f29)" : "linear-gradient(135deg,#7a49c9,#c9497f)", border: header.who === "WREN" ? `1.5px solid ${C.wren}` : "none", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 14, color: "#fff" }}>{header.avatar}</span>
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 15.5, lineHeight: 1.15, color: header.who === "WREN" ? C.wren : C.ink }}>{header.who}</div>
                   <div style={{ fontSize: 11.5, color: header.tag ? C.warn : C.dim, display: "flex", alignItems: "center", gap: 5 }}>
                     {header.tag && <b style={{ fontSize: 9.5, background: "rgba(245,166,35,.16)", border: `1px solid rgba(245,166,35,.5)`, color: C.warn, padding: "1px 6px", borderRadius: 999, fontWeight: 700, letterSpacing: ".03em" }}>{header.tag}</b>}
                     {header.sub}
                   </div>
                 </div>
+                <span style={{ marginLeft: "auto", flex: "0 0 auto", fontSize: 9.5, fontWeight: 800, letterSpacing: ".14em", textTransform: "uppercase", color: OUT, opacity: 0.8 }}>{APP}</span>
               </div>
 
               {/* thread */}
-              <div ref={threadRef} className="ph-thread" style={{ flex: "1 1 auto", overflowY: "auto", padding: "14px 13px 8px", display: "flex", flexDirection: "column", gap: 3 }}>
+              <div ref={threadRef} className="ph-thread" style={{ flex: "1 1 auto", overflowY: "auto", padding: "14px 13px 8px", display: "flex", flexDirection: "column", gap: 3, background: WALL }}>
                 <div style={{ textAlign: "center", color: C.faint, fontSize: 11, margin: "2px 0 8px" }}>Today 9:41</div>
-                {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={wrenAvatar} />)}
+                {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={wrenAvatar} accent={OUT} />)}
               </div>
 
               {/* dock */}
@@ -320,7 +326,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   );
 }
 
-function ItemView({ it, wrenAvatar }: { it: Item; wrenAvatar: React.ReactNode }) {
+function ItemView({ it, wrenAvatar, accent }: { it: Item; wrenAvatar: React.ReactNode; accent: string }) {
   if (it.kind === "typing") {
     return (
       <div className="ph-row" style={{ display: "flex", marginTop: 7 }}>
@@ -394,7 +400,7 @@ function ItemView({ it, wrenAvatar }: { it: Item; wrenAvatar: React.ReactNode })
   const me = it.kind === "you";
   return (
     <div className="ph-row" style={{ display: "flex", marginTop: 7, justifyContent: me ? "flex-end" : "flex-start" }}>
-      <div style={{ maxWidth: "80%", padding: "9px 13px", borderRadius: 19, fontSize: 15, lineHeight: 1.34, background: me ? C.out : C.inc, color: me ? "#fff" : C.ink, borderBottomRightRadius: me ? 6 : 19, borderBottomLeftRadius: me ? 19 : 6, boxShadow: (it as { ask?: boolean }).ask ? `0 0 0 1.5px ${C.red}` : "none" }}>
+      <div style={{ maxWidth: "80%", padding: "9px 13px", borderRadius: 19, fontSize: 15, lineHeight: 1.34, background: me ? accent : C.inc, color: me ? "#fff" : C.ink, borderBottomRightRadius: me ? 6 : 19, borderBottomLeftRadius: me ? 19 : 6, boxShadow: (it as { ask?: boolean }).ask ? `0 0 0 1.5px ${C.red}` : "none" }}>
         {it.text}
         {"tag" in it && it.tag && (
           <span style={{ display: "flex", width: "fit-content", alignItems: "center", gap: 4, marginTop: 6, fontSize: 10.5, fontWeight: 700, letterSpacing: ".05em", color: C.mint, background: "rgba(49,217,160,.12)", border: `1px solid rgba(49,217,160,.4)`, padding: "1px 7px", borderRadius: 999 }}>⚑ {it.tag} · called</span>

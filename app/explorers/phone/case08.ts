@@ -20,6 +20,7 @@ export const case08Phone: PhoneCase = {
   caseNumber: "CASE 008",
   title: "The Perfect Message",
   actor: "GHOSTWRITER",
+  app: { name: "Glint", accent: "#FF7A4D", wall: "radial-gradient(130% 90% at 50% 0%, #2a1710 0%, #0d0b0a 62%)" },
   open: [
     "New case, Agent. This villain is called GHOSTWRITER, and GHOSTWRITER doesn't type. It uses a machine.",
     "Everything you were taught about spotting scams, bad spelling, dodgy grammar, is out of date. AI now writes perfect, warm, friendly messages by the thousand, each one tweaked to feel like it was made just for you.",

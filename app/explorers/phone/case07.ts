@@ -17,6 +17,7 @@ export const case07Phone: PhoneCase = {
   caseNumber: "CASE 007",
   title: "Borrowed Faces",
   actor: "MIMIC",
+  app: { name: "Loop", accent: "#9B7BFF", wall: "radial-gradient(130% 90% at 50% 0%, #171233 0%, #0b0b14 62%)" },
   open: [
     "Next case, Agent, and a new kind of enemy. This one's name is MIMIC, and MIMIC doesn't send you a dodgy link.",
     "MIMIC steals a real account, one of your actual friends, and wears it like a mask. Same name, same photo, every chat you've ever had. So the message really is from your friend's account. That's what makes it so dangerous.",
