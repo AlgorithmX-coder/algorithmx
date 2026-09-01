@@ -75,18 +75,21 @@ type Dock =
   | null;
 
 export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneCase: PhoneCase; onExit?: () => void; onNextCase?: () => void }) {
+  // Fast test mode (?fast=1): skip the narrator wait so the owner can click
+  // through quickly. Real users never set it, so the anti-skip stays on.
+  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
   const [phase, setPhase] = useState<"lock" | "play" | "test" | "debrief">("lock");
   const [header, setHeader] = useState<Header>(WREN_HEADER);
   const [items, setItems] = useState<Item[]>([]);
   const [dock, setDock] = useState<Dock>(null);
   const [wrongId, setWrongId] = useState<LeverId | null>(null);
   const [nudge, setNudge] = useState<string | null>(null);
-  const [voiceOn, setVoiceOn] = useState(true);
-  const voiceRef = useRef(true);
+  const [voiceOn, setVoiceOn] = useState(!fast);
+  const voiceRef = useRef(!fast);
   useWrenSpeaking();
   const [, force] = useReducer((n) => n + 1, 0);
 
-  const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const idRef = useRef(0);
   const lastConRef = useRef<number | null>(null);
   const resolveRef = useRef<((v: string) => void) | null>(null);
@@ -115,8 +118,10 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     new Promise<void>((res) => {
       let done = false;
       const fin = () => { if (!done) { done = true; res(); } };
-      if (voice && voiceRef.current) { playWren(voice, true, fin); setTimeout(fin, 16000); }
-      else setTimeout(fin, reduce ? 300 : Math.max(2400, text.length * 42));
+      // Normal: wait for WREN to finish (anti-whizz). Fast/reduced: don't wait —
+      // start the clip if voice is on, but advance quickly so testing flies.
+      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 16000); }
+      else { if (voice && voiceRef.current) playWren(voice, true); setTimeout(fin, reduce ? 250 : Math.max(2400, text.length * 42)); }
     });
 
   useEffect(() => { voiceRef.current = voiceOn; }, [voiceOn]);

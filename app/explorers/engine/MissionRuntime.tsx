@@ -218,7 +218,11 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
 /* ============================================================== runtime */
 
 export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextCase }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"]; onExit?: () => void; onNextCase?: () => void }) {
-  const reduced = useReducedMotion();
+  // Fast test mode (?fast=1): reuse the reduced-motion path to skip the narrator
+  // wait / anti-skip so the owner can click through quickly. Real users never set
+  // it, so the anti-skip stays on for them.
+  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
+  const reduced = useReducedMotion() || fast;
   const audio = useSignalAudio();
   const storageKey = checkpointStorageKey(manifest.id);
 
@@ -351,7 +355,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   };
 
   /* ---- WREN voice ---- */
-  const [voiceOn, setVoiceOn] = useState(true);
+  const [voiceOn, setVoiceOn] = useState(!fast); // fast test mode starts muted so nothing gates
   useEffect(() => {
     try {
       const v = localStorage.getItem("explorers:voice");
