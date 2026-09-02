@@ -105,7 +105,7 @@ export const case16War: WarCase = {
     {
       n: 1,
       title: "The data economy",
-      goal: "Companies quietly keep a file on you — and buy and sell it.",
+      goal: "Companies quietly keep a file on you, then buy and sell it.",
       board: "THE MARKET",
       learn: [
         { t: "wren", text: "Start with the big secret of the internet. A lot of 'free' apps and sites aren't really free, you pay with data. As you browse, tap, and post, trackers quietly note what you like, where you go, and who you talk to. That gets bundled into a file about YOU, and companies buy and sell those files to target you. When something's free, quite often, the product being sold is you.", voice: "/audio/wren/m16w-s1-learn.mp3" },
@@ -170,7 +170,7 @@ export const case16War: WarCase = {
           t: "choose",
           prompt: "What's the FIRST step to taking control of your data trail?",
           options: [
-            { label: "Audit yourself — search your name, view your profiles logged out", outcome: "good", then: [{ t: "wren", text: "Exactly. You can't tidy a trail you've never looked at. Searching yourself and viewing your profiles as a stranger shows you the real file. Once you can see it, you can start cutting it down.", voice: "/audio/wren/m16w-s3-ok.mp3" }] },
+            { label: "Audit yourself: search your name, view your profiles logged out", outcome: "good", then: [{ t: "wren", text: "Exactly. You can't tidy a trail you've never looked at. Searching yourself and viewing your profiles as a stranger shows you the real file. Once you can see it, you can start cutting it down.", voice: "/audio/wren/m16w-s3-ok.mp3" }] },
             { label: "Delete all your accounts immediately", outcome: "bad", then: [{ t: "wren", text: "That's drastic and usually unnecessary. Start by seeing what's actually out there, then fix the real gaps. Audit first. Try again.", voice: "/audio/wren/m16w-s3-bad.mp3" }] },
             { label: "Nothing, you can't see your own file", outcome: "bad", then: [{ t: "wren", text: "You can, that's the point. Search yourself and view your profiles logged out to see what a stranger sees. Try again.", voice: "/audio/wren/m16w-s3-bad2.mp3" }] },
           ],
@@ -221,8 +221,8 @@ export const case16War: WarCase = {
           t: "choose",
           prompt: "You find an old profile with your data on a site you forgot about. What can you do?",
           options: [
-            { label: "Use its delete/privacy option to remove it — ask an adult if stuck", outcome: "good", then: [{ t: "wren", text: "Exactly. Most sites have a way to delete an account or request your data be removed. It won't fix everything overnight, but every takedown is a real crumb gone. And an adult can help with the trickier ones.", voice: "/audio/wren/m16w-s5-ok.mp3" }] },
-            { label: "Nothing — once it's online it's out of your hands", outcome: "bad", then: [{ t: "wren", text: "Not true. You often have the right to have data removed, and most sites have a delete option. Asking works more than you'd think. Try again.", voice: "/audio/wren/m16w-s5-bad.mp3" }] },
+            { label: "Use its delete/privacy option to remove it, ask an adult if stuck", outcome: "good", then: [{ t: "wren", text: "Exactly. Most sites have a way to delete an account or request your data be removed. It won't fix everything overnight, but every takedown is a real crumb gone. And an adult can help with the trickier ones.", voice: "/audio/wren/m16w-s5-ok.mp3" }] },
+            { label: "Nothing, once it's online it's out of your hands", outcome: "bad", then: [{ t: "wren", text: "Not true. You often have the right to have data removed, and most sites have a delete option. Asking works more than you'd think. Try again.", voice: "/audio/wren/m16w-s5-bad.mp3" }] },
             { label: "Post more to bury it", outcome: "bad", then: [{ t: "wren", text: "Posting more just adds to the file. The move is to remove the old data, not pile new data on top. Try again.", voice: "/audio/wren/m16w-s5-bad2.mp3" }] },
           ],
         },
@@ -233,7 +233,7 @@ export const case16War: WarCase = {
     {
       n: 6,
       title: "Know PACKRAT's play",
-      goal: "The data-broker con runs four moves — and you can starve it at the source.",
+      goal: "The data-broker con runs four moves, and you can starve it at the source.",
       board: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See PACKRAT's data play, four moves. First, collect your crumbs from everywhere. Second, assemble them into a file. Third, package that file up. Fourth, sell it to whoever pays. And here's your power: the file is only as rich as the crumbs feeding it. Cut the sources, lock your profiles, delete old data, request takedowns, and the file starves. You can't stop every crumb, but you can make PACKRAT's file thin and nearly worthless.", voice: "/audio/wren/m16w-s6-learn.mp3" },
@@ -243,7 +243,7 @@ export const case16War: WarCase = {
           t: "choose",
           prompt: "PACKRAT's file on you is built from crumbs. What's the best way to fight it?",
           options: [
-            { label: "Starve it — cut the sources so there are fewer crumbs to collect", outcome: "good", then: [{ t: "wren", text: "That's the whole strategy. You can't chase down every copy of your data, but you CAN turn off the taps feeding it. Fewer crumbs in means a thinner, weaker, less valuable file. Starve the source.", voice: "/audio/wren/m16w-s6-ok.mp3" }] },
+            { label: "Starve it: cut the sources so there are fewer crumbs to collect", outcome: "good", then: [{ t: "wren", text: "That's the whole strategy. You can't chase down every copy of your data, but you CAN turn off the taps feeding it. Fewer crumbs in means a thinner, weaker, less valuable file. Starve the source.", voice: "/audio/wren/m16w-s6-ok.mp3" }] },
             { label: "Try to buy your own file back", outcome: "bad", then: [{ t: "wren", text: "You can't buy back every copy, and it just keeps rebuilding. Cut the sources instead so it can't be refilled. Try again.", voice: "/audio/wren/m16w-s6-bad.mp3" }] },
             { label: "Ignore it, files can't be reduced", outcome: "bad", then: [{ t: "wren", text: "They can, that's this whole case. Cut the sources and the file shrinks. Try again.", voice: "/audio/wren/m16w-s6-bad2.mp3" }] },
           ],
@@ -294,7 +294,7 @@ export const case16War: WarCase = {
             t: "choose",
             prompt: "The file is rich because it has many live sources. What's your move before the gavel?",
             options: [
-              { label: "Cut the sources feeding it — starve the file", outcome: "good" },
+              { label: "Cut the sources feeding it, starve the file", outcome: "good" },
               { label: "Bid on it yourself", outcome: "bad", then: [{ t: "note", text: "PACKRAT: I'll just rebuild it from your live sources…" }] },
               { label: "Do nothing, it's too late", outcome: "bad", then: [{ t: "note", text: "GAVEL RISING… the file is still full" }] },
             ],
@@ -330,9 +330,9 @@ export const case16War: WarCase = {
             t: "choose",
             prompt: "The gavel falls. Why did the file sell for almost nothing?",
             options: [
-              { label: "You cut its sources — the file starved to nearly empty", outcome: "good" },
-              { label: "Nobody was interested that day", outcome: "bad", then: [{ t: "note", text: "BIDDERS: keen as ever — the file was just empty" }] },
-              { label: "PACKRAT felt generous", outcome: "bad", then: [{ t: "note", text: "PACKRAT: I'd have sold it gladly — there was nothing left to sell" }] },
+              { label: "You cut its sources, the file starved to nearly empty", outcome: "good" },
+              { label: "Nobody was interested that day", outcome: "bad", then: [{ t: "note", text: "BIDDERS: keen as ever, the file was just empty" }] },
+              { label: "PACKRAT felt generous", outcome: "bad", then: [{ t: "note", text: "PACKRAT: I'd have sold it gladly, but there was nothing left to sell" }] },
             ],
           },
         ],
@@ -351,10 +351,10 @@ export const case16War: WarCase = {
     questions: [
       { scenario: "A game is totally free with no visible ads.", ask: "How is it most likely making money?", options: [{ label: "Collecting and selling data about you", correct: true }, { label: "Pure kindness" }, { label: "It isn't, and never will" }] },
       { scenario: "Location tags, one reused username, and purchase history.", ask: "What do these together reveal?", options: [{ label: "Where you are, all your linked accounts, and your habits", correct: true }, { label: "Nothing useful" }, { label: "Only your favourite colour" }] },
-      { scenario: "You want to take control of your data trail.", ask: "What's the first step?", options: [{ label: "Audit yourself — search your name, view profiles logged out", correct: true }, { label: "Delete every account at once" }, { label: "Nothing, you can't see your file" }] },
+      { scenario: "You want to take control of your data trail.", ask: "What's the first step?", options: [{ label: "Audit yourself: search your name, view profiles logged out", correct: true }, { label: "Delete every account at once" }, { label: "Nothing, you can't see your file" }] },
       { scenario: "You want to shrink the file companies hold on you.", ask: "Which move helps?", options: [{ label: "Set profiles private, location off, delete old posts", correct: true }, { label: "Post your birthday and address" }, { label: "Reuse one public handle everywhere" }] },
       { scenario: "You find old data about you on a site you forgot.", ask: "What can you do?", options: [{ label: "Use its delete/privacy option; ask an adult if stuck", correct: true }, { label: "Nothing, it's permanent" }, { label: "Post more to bury it" }] },
-      { scenario: "A data broker's file on you is built from many crumbs.", ask: "What's the best way to fight it?", options: [{ label: "Cut the sources so fewer crumbs feed it", correct: true }, { label: "Buy the file back" }, { label: "Ignore it — files can't shrink" }] },
+      { scenario: "A data broker's file on you is built from many crumbs.", ask: "What's the best way to fight it?", options: [{ label: "Cut the sources so fewer crumbs feed it", correct: true }, { label: "Buy the file back" }, { label: "Ignore it, files can't shrink" }] },
     ],
   },
 

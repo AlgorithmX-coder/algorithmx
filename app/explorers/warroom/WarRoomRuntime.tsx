@@ -155,7 +155,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
   const start = () => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(); };
 
   const nudgeRef = useRef(0);
-  const nudgeBad = (text?: string) => { const i = nudgeRef.current++ % NUDGES.length; setNudge(text ?? "Not quite — look again."); force(); if (voiceRef.current) playWren(NUDGES[i], true); };
+  const nudgeBad = (text?: string) => { const i = nudgeRef.current++ % NUDGES.length; setNudge(text ?? "Not quite. Look again."); force(); if (voiceRef.current) playWren(NUDGES[i], true); };
 
   const wrenDot = <span aria-hidden style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 12 }}>{[4, 10, 6].map((h, i) => <i key={i} style={{ width: 2.5, height: h, background: C.wren, borderRadius: 2, display: "block" }} />)}</span>;
 
@@ -284,7 +284,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
       if (rightIdForLeft(selLeft) === rid) {
         const nm = [...matched, selLeft]; setMatched(nm); setSelLeft(null);
         if (nm.length === total) setTimeout(() => onResolve("ok"), 350);
-      } else { setSelLeft(null); onBad("Not a match — look again at what links to what."); }
+      } else { setSelLeft(null); onBad("Not a match. Look again at what links to what."); }
     };
     return (
       <>
@@ -312,7 +312,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   // pin
   const need = dock.need;
   const toggle = (i: number) => setSel((a) => (a.includes(i) ? a.filter((x) => x !== i) : a.length < need ? [...a, i] : a));
-  const submit = () => { const chosen = sel.map((i) => dock.cards[i]); if (chosen.length === need && chosen.every((c) => c.good)) onResolve("ok"); else onBad("Not quite — pin only the right cards."); };
+  const submit = () => { const chosen = sel.map((i) => dock.cards[i]); if (chosen.length === need && chosen.every((c) => c.good)) onResolve("ok"); else onBad("Not quite. Pin only the right cards."); };
   return (
     <>
       {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
