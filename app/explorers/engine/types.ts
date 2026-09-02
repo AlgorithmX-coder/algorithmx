@@ -377,6 +377,13 @@ export interface CheckpointQ {
   question: string;
   options: string[];
   answer: number;
+  /** Optional evidence line shown in a mono panel above the options (a link, a message). */
+  evidence?: string;
+  /** Immediate-feedback SKILL CHECK: WREN's short spoken confirmation on the
+   *  correct answer (matches the practice style of blocks 2-4). Wrong answers
+   *  reuse a shared nudge, so no per-question "wrong" line is needed. */
+  ok?: string;
+  okVoice?: string;
 }
 
 export interface ArtifactHotspot {
