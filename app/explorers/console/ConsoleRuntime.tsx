@@ -173,7 +173,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   const nudgeRef = useRef(0);
   const nudgeBad = (text?: string) => {
     const i = nudgeRef.current++ % NUDGES.length;
-    setNudge(text ?? "Not quite — check it again."); force();
+    setNudge(text ?? "Not quite. Check it again."); force();
     if (voiceRef.current) playWren(NUDGES[i], true);
   };
 
@@ -306,7 +306,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
     );
   }
   if (dock.type === "toggle") {
-    const submit = () => { if (dock.switches.every((s, i) => sw[i] === s.want)) onResolve("ok"); else onBad("Not quite — set all the switches right and confirm."); };
+    const submit = () => { if (dock.switches.every((s, i) => sw[i] === s.want)) onResolve("ok"); else onBad("Not quite. Set all the switches right and confirm."); };
     return (
       <>
         {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
@@ -333,7 +333,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   // build
   const need = dock.need;
   const toggleSel = (i: number) => setSel((a) => (a.includes(i) ? a.filter((x) => x !== i) : a.length < need ? [...a, i] : a));
-  const submit = () => { const chosen = sel.map((i) => dock.parts[i]); if (chosen.length === need && chosen.every((p) => p.good)) onResolve("ok"); else onBad("Not quite — pick only the strong, unguessable parts."); };
+  const submit = () => { const chosen = sel.map((i) => dock.parts[i]); if (chosen.length === need && chosen.every((p) => p.good)) onResolve("ok"); else onBad("Not quite. Pick only the strong, unguessable parts."); };
   return (
     <>
       {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>

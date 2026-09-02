@@ -1,5 +1,5 @@
 /**
- * Block 2 · Case 007 "Borrowed Faces" — MIMIC ① — authored for THE PHONE runtime.
+ * Block 2 · Case 007 "Borrowed Faces", MIMIC ①, authored for THE PHONE runtime.
  *
  * Same framework as Case 001/006 (7 skills LEARN -> PRACTICE, blind boss, must-pass
  * test), a DIFFERENT game (anti-sameness §0): no lever-pad here. MIMIC's trick is
@@ -52,6 +52,25 @@ export const case07Phone: PhoneCase = {
             { label: "She used the 👀 emoji", outcome: "bad", then: [{ t: "wren", text: "Emojis prove nothing, thieves use them too. Look at the ask itself, not the decoration. Try again.", voice: "/audio/wren/m07p-s1-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "it's DEFINITELY me lol, look, it's my account with all our old chats 😄 so just trust me and send your password x", ask: true },
+        {
+          t: "choose",
+          prompt: "The account really is your friend's. So what can you actually trust here?",
+          options: [
+            { label: "Only the person's actions, never the account itself", outcome: "good", then: [{ t: "wren", text: "Right. The account being real proves nothing. A real friend never asks for your password, so the ask tells you it's a thief.", voice: "/audio/wren/m07p-s1-q2ok.mp3" }] },
+            { label: "The old chats, they prove it's really her", outcome: "bad", then: [{ t: "wren", text: "A thief inherits every old chat the moment they steal the account. Old messages prove the account, not the person. Try again.", voice: "/audio/wren/m07p-s1-q2bad.mp3" }] },
+            { label: "The fact she typed 'trust me'", outcome: "bad", then: [{ t: "wren", text: "Anyone can type 'trust me', a thief most of all. Trust is earned by the person, not claimed in a message. Try again.", voice: "/audio/wren/m07p-s1-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "Why can a message from your friend's REAL account still be a thief?",
+          options: [
+            { label: "A thief can steal the account and wear it like a mask", outcome: "good", then: [{ t: "wren", text: "Exactly. A stolen account keeps the real name, photo and chats, but a thief is holding it now. Real account, wrong person.", voice: "/audio/wren/m07p-s1-q3ok.mp3" }] },
+            { label: "It can't, a real account always means a real friend", outcome: "bad", then: [{ t: "wren", text: "That's the exact trap. A stolen account is real but held by a thief. The account being real proves nothing. Try again.", voice: "/audio/wren/m07p-s1-q3bad.mp3" }] },
+            { label: "Only if the profile photo has changed", outcome: "bad", then: [{ t: "wren", text: "The photo stays the same, that's what makes it dangerous. You judge by the ask, never the picture. Try again.", voice: "/audio/wren/m07p-s1-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
 
@@ -75,6 +94,25 @@ export const case07Phone: PhoneCase = {
             { label: "Three: money, a rush, and secrecy", outcome: "good", then: [{ t: "wren", text: "All three. Money you can't easily get back, a rush so you don't think, and 'don't tell an adult', which is a flag on its own. Any one of those from a friend is odd. All three together is a thief.", voice: "/audio/wren/m07p-s2-ok.mp3" }] },
             { label: "None, friends lend each other money", outcome: "bad", then: [{ t: "wren", text: "A real mate might, but not a stranger's gift card, in a rush, kept secret from adults. Read it again and count the odd bits. Try again.", voice: "/audio/wren/m07p-s2-bad.mp3" }] },
             { label: "One: the kiss at the end", outcome: "bad", then: [{ t: "wren", text: "The 'x' is just her normal style, that's not it. Look at what she's asking you to do, and how many odd things are stacked in it. Try again.", voice: "/audio/wren/m07p-s2-bad2.mp3" }] },
+          ],
+        },
+        { t: "con", text: "quick favour! read me the 6-digit code that just landed on your phone? i'm setting something up and it went to you by accident 🙈", ask: true },
+        {
+          t: "choose",
+          prompt: "What's the weird ask hiding in this friendly message?",
+          options: [
+            { label: "A code from YOUR phone, which only unlocks YOUR account", outcome: "good", then: [{ t: "wren", text: "Spot on. A code sent to your phone protects your account, never hers. A real friend would never need it.", voice: "/audio/wren/m07p-s2-q2ok.mp3" }] },
+            { label: "Nothing weird, codes get sent to the wrong person all the time", outcome: "bad", then: [{ t: "wren", text: "Codes don't wander off to the wrong phone by accident, and a real friend wouldn't ask for yours. That ask doesn't fit. Try again.", voice: "/audio/wren/m07p-s2-q2bad.mp3" }] },
+            { label: "The 🙈 emoji is the weird part", outcome: "bad", then: [{ t: "wren", text: "The emoji is just dressing. The weird bit is asking for a code off your phone. Look at the ask itself. Try again.", voice: "/audio/wren/m07p-s2-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "Which of these asks from a friend's account should make you stop?",
+          options: [
+            { label: "Buy me a gift card and don't tell anyone", outcome: "good", then: [{ t: "wren", text: "That's the one. Money plus secrecy is the classic weird ask, and a real friend needs neither from you.", voice: "/audio/wren/m07p-s2-q3ok.mp3" }] },
+            { label: "Can you send me the homework page?", outcome: "bad", then: [{ t: "wren", text: "That's a totally normal favour, nothing odd about it. Look for the ask that doesn't fit a real friend. Try again.", voice: "/audio/wren/m07p-s2-q3bad.mp3" }] },
+            { label: "Wanna come round on Saturday?", outcome: "bad", then: [{ t: "wren", text: "That's just a friend being a friend. No code, no money, no secrecy. Keep looking for the odd one. Try again.", voice: "/audio/wren/m07p-s2-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -102,6 +140,25 @@ export const case07Phone: PhoneCase = {
             { label: "Send the code, she sounds really upset", outcome: "bad", then: [{ t: "wren", text: "The upset is the weapon, it's there to rush you. And that code unlocks YOUR account, not hers. Never send it. Try again.", voice: "/audio/wren/m07p-s3-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "no need to call me or anything, we're literally chatting right now 😅 just send the reset code from your phone", ask: true },
+        {
+          t: "choose",
+          prompt: "She's telling you NOT to check any other way. What's the safe move?",
+          options: [
+            { label: "Reach the real her a different way anyway, like calling", outcome: "good", then: [{ t: "wren", text: "Yes. The one telling you not to check elsewhere is exactly who you should check on. Step outside this chat.", voice: "/audio/wren/m07p-s3-q2ok.mp3" }] },
+            { label: "She's right, you're already talking, so just reply here", outcome: "bad", then: [{ t: "wren", text: "This chat is the one channel a thief controls. 'No need to call' is a thief's favourite line. Verify a different way. Try again.", voice: "/audio/wren/m07p-s3-q2bad.mp3" }] },
+            { label: "Send the code to save time", outcome: "bad", then: [{ t: "wren", text: "That code unlocks your account, not hers, and the rush is the trap. Never send it, check her another way first. Try again.", voice: "/audio/wren/m07p-s3-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "Why must you check on a different app or by phone, not in the same chat?",
+          options: [
+            { label: "A thief holds this chat and will just answer 'yes it's me'", outcome: "good", then: [{ t: "wren", text: "Exactly. Whoever controls the chat controls the answer. A different channel is one the thief can't reach.", voice: "/audio/wren/m07p-s3-q3ok.mp3" }] },
+            { label: "Because replying in the chat is slower", outcome: "bad", then: [{ t: "wren", text: "It's not about speed. It's that the thief runs this chat and will lie in it. You need a channel they don't hold. Try again.", voice: "/audio/wren/m07p-s3-q3bad.mp3" }] },
+            { label: "It doesn't matter, the same chat is fine", outcome: "bad", then: [{ t: "wren", text: "That's the trap. Asking in the same chat lets the thief just say 'yes'. Always step outside it. Try again.", voice: "/audio/wren/m07p-s3-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
 
@@ -124,6 +181,25 @@ export const case07Phone: PhoneCase = {
             { label: "What did we nickname our maths teacher?", outcome: "good", then: [{ t: "wren", text: "Perfect. An inside thing a thief could never find on a profile. The real Priya answers in a second. A thief has no idea.", voice: "/audio/wren/m07p-s4-ok.mp3" }] },
             { label: "What's your birthday?", outcome: "bad", then: [{ t: "wren", text: "A birthday is on her profile and half the internet. A thief can just look it up. Pick something only you two would know. Try again.", voice: "/audio/wren/m07p-s4-bad.mp3" }] },
             { label: "What's your dog's name?", outcome: "bad", then: [{ t: "wren", text: "Her dog's name is probably in a dozen photos she's posted. Too easy to find. Go for a private, shared memory instead. Try again.", voice: "/audio/wren/m07p-s4-bad2.mp3" }] },
+          ],
+        },
+        { t: "con", text: "it's me for real, i promise!! can you just hurry and send the code? 🙏", ask: true },
+        {
+          t: "choose",
+          prompt: "You want to test it's really her. Which check-question is safe to fire back?",
+          options: [
+            { label: "Where did we sit on our very first day?", outcome: "good", then: [{ t: "wren", text: "Perfect. A private memory only the two of you share. A thief reading her profile has no way to know it.", voice: "/audio/wren/m07p-s4-q2ok.mp3" }] },
+            { label: "What's your username again?", outcome: "bad", then: [{ t: "wren", text: "Her username is right there on the account for anyone to read. That tests nothing. Pick a shared secret instead. Try again.", voice: "/audio/wren/m07p-s4-q2bad.mp3" }] },
+            { label: "What school do you go to?", outcome: "bad", then: [{ t: "wren", text: "Her school is easy to find and probably on her profile. A thief could answer that. Go private and personal. Try again.", voice: "/audio/wren/m07p-s4-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "What makes a check-question one a thief CAN'T answer?",
+          options: [
+            { label: "It's a private thing only the two of you share", outcome: "good", then: [{ t: "wren", text: "Right. Inside jokes and shared memories live only between you two. Nothing on a profile can leak them.", voice: "/audio/wren/m07p-s4-q3ok.mp3" }] },
+            { label: "It's a fact taken straight from their profile", outcome: "bad", then: [{ t: "wren", text: "Profile facts are the worst kind, a thief just reads them off. Go for something private instead. Try again.", voice: "/audio/wren/m07p-s4-q3bad.mp3" }] },
+            { label: "It's really tricky to spell", outcome: "bad", then: [{ t: "wren", text: "Hard spelling doesn't stop a thief, only a real answer does. Pick something only the real friend would know. Try again.", voice: "/audio/wren/m07p-s4-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -152,6 +228,25 @@ export const case07Phone: PhoneCase = {
             { label: "Can't tell from this", outcome: "bad", then: [{ t: "wren", text: "You can, actually. A dodge plus a rush, right after a simple check-question, is a thief every time. Try again.", voice: "/audio/wren/m07p-s5-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "why are you asking me random questions?! stop wasting time and just send the code 😤", ask: true },
+        {
+          t: "choose",
+          prompt: "You sent a check-question and got THIS back. Real friend, or thief?",
+          options: [
+            { label: "Thief, it dodged the question and pushed harder", outcome: "good", then: [{ t: "wren", text: "Caught. A real friend answers in a heartbeat and teases you for asking. A dodge plus 'hurry up' is the thief every time.", voice: "/audio/wren/m07p-s5-q2ok.mp3" }] },
+            { label: "Real friend, they're just busy right now", outcome: "bad", then: [{ t: "wren", text: "Too busy for a one-line answer, but not too busy to demand a code? That's a dodge, not a friend. Try again.", voice: "/audio/wren/m07p-s5-q2bad.mp3" }] },
+            { label: "Real friend, they replied to you", outcome: "bad", then: [{ t: "wren", text: "Look again, they never answered the question at all. They changed the subject and rushed you, that's the dodge. Try again.", voice: "/audio/wren/m07p-s5-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "You send a check-question. Which reply comes from the REAL friend?",
+          options: [
+            { label: "\"ha, the spaghetti incident 🍝 anyway what's up?\"", outcome: "good", then: [{ t: "wren", text: "That's the real one. They answer, they laugh, they carry on. No dodge, no rush.", voice: "/audio/wren/m07p-s5-q3ok.mp3" }] },
+            { label: "\"no time for games, just send it!\"", outcome: "bad", then: [{ t: "wren", text: "That's a dodge and a rush stacked together, the thief's move. The real friend simply answers. Try again.", voice: "/audio/wren/m07p-s5-q3bad.mp3" }] },
+            { label: "\"why are you being weird? send the code\"", outcome: "bad", then: [{ t: "wren", text: "That dodges the question and pushes for the code, classic thief. The real friend would just tell you the answer. Try again.", voice: "/audio/wren/m07p-s5-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
 
@@ -173,6 +268,25 @@ export const case07Phone: PhoneCase = {
             { label: "Wear the friendship → rush you → steal the account → the weird ask", outcome: "bad", then: [{ t: "wren", text: "Close, but you can't wear a friendship you haven't stolen yet. Stealing the account is always move one. Try again.", voice: "/audio/wren/m07p-s6-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "heyy it's me 💕 we've been mates for years, you know you can trust me right? anyway i need a tiny favour...", ask: true },
+        {
+          t: "choose",
+          prompt: "Which move of MIMIC's play is this message?",
+          options: [
+            { label: "Wearing the friendship, spending trust the account already earned", outcome: "good", then: [{ t: "wren", text: "That's it. Before any weird ask, MIMIC leans on the friendship the stolen account already built. Move two, every time.", voice: "/audio/wren/m07p-s6-q2ok.mp3" }] },
+            { label: "Stealing the account, that's move one", outcome: "bad", then: [{ t: "wren", text: "The theft already happened, that's how they're inside the account. This message is them cashing in the friendship. Try again.", voice: "/audio/wren/m07p-s6-q2bad.mp3" }] },
+            { label: "The weird ask, move three", outcome: "bad", then: [{ t: "wren", text: "Not yet, they only hint at 'a tiny favour'. This is the trust warm-up that comes just before the ask. Try again.", voice: "/audio/wren/m07p-s6-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "You've spotted the weird ask. In MIMIC's play, what move comes NEXT?",
+          options: [
+            { label: "Rushing you past every check", outcome: "good", then: [{ t: "wren", text: "Right. After the weird ask comes the rush, hurrying you so you never verify. Knowing the order means you see it coming.", voice: "/audio/wren/m07p-s6-q3ok.mp3" }] },
+            { label: "Stealing the account", outcome: "bad", then: [{ t: "wren", text: "That was move one, long before the ask. After the ask comes the rush to stop you checking. Try again.", voice: "/audio/wren/m07p-s6-q3bad.mp3" }] },
+            { label: "Wearing the friendship", outcome: "bad", then: [{ t: "wren", text: "That happened before the ask, not after. Once the ask is out, MIMIC rushes you past your checks. Try again.", voice: "/audio/wren/m07p-s6-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
 
@@ -192,6 +306,25 @@ export const case07Phone: PhoneCase = {
             { label: "Send nothing, reach the real friend another way, tell an adult", outcome: "good", then: [{ t: "wren", text: "Perfect. Nothing handed over, the real friend warned on a safe channel, and an adult looped in so the account gets recovered. That's the whole rescue, done right.", voice: "/audio/wren/m07p-s7-ok.mp3" }] },
             { label: "Send the code, you don't want to seem rude", outcome: "bad", then: [{ t: "wren", text: "Being 'polite' to a thief costs you your account. A real friend will thank you for checking. Never send the code. Try again.", voice: "/audio/wren/m07p-s7-bad.mp3" }] },
             { label: "Argue with the thief until they admit it", outcome: "bad", then: [{ t: "wren", text: "Arguing just keeps you talking to them and gives nothing away for free. Don't debate a thief, step out and warn the real friend. Try again.", voice: "/audio/wren/m07p-s7-bad2.mp3" }] },
+          ],
+        },
+        { t: "con", text: "please don't tell anyone about this or i'll get in trouble, just quietly send me the code and delete these messages ok? 🙏", ask: true },
+        {
+          t: "choose",
+          prompt: "It's asking for a code AND for secrecy. What's the play?",
+          options: [
+            { label: "Send nothing, and tell an adult you trust", outcome: "good", then: [{ t: "wren", text: "Exactly. 'Keep it secret' is the thief's tell, so do the opposite: hand over nothing and loop in an adult.", voice: "/audio/wren/m07p-s7-q2ok.mp3" }] },
+            { label: "Keep it quiet and send the code, just this once", outcome: "bad", then: [{ t: "wren", text: "Secrecy is exactly what a thief wants. You never send the code, and you always tell an adult. Try again.", voice: "/audio/wren/m07p-s7-q2bad.mp3" }] },
+            { label: "Delete the messages so there's no drama", outcome: "bad", then: [{ t: "wren", text: "Deleting them hides the evidence and helps the thief. Keep them, send nothing, and show an adult. Try again.", voice: "/audio/wren/m07p-s7-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "You're sure your friend's account is stolen. What's the kindest, safest thing to do for the REAL friend?",
+          options: [
+            { label: "Warn the real friend on another channel so they can lock it back down", outcome: "good", then: [{ t: "wren", text: "Perfect. Your friend is a victim too. Reaching the real them on a safe channel is a rescue, not telling tales.", voice: "/audio/wren/m07p-s7-q3ok.mp3" }] },
+            { label: "Say nothing, it's not really your problem", outcome: "bad", then: [{ t: "wren", text: "It kind of is, your friend's been robbed and doesn't know. Warn the real them another way so they can recover it. Try again.", voice: "/audio/wren/m07p-s7-q3bad.mp3" }] },
+            { label: "Reply in the stolen chat to warn them there", outcome: "bad", then: [{ t: "wren", text: "That only warns the thief holding the chat. Reach the real friend on a different channel instead. Try again.", voice: "/audio/wren/m07p-s7-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -237,8 +370,8 @@ export const case07Phone: PhoneCase = {
             t: "choose",
             prompt: "Which account has been stolen?",
             options: [
-              { label: "Chat 2 (Jordan) — a weird ask, then a dodge and a rush", outcome: "good" },
-              { label: "Chat 1 (Priya) — she's asking for something too", outcome: "bad", then: [{ t: "con", text: "Chat 2 · Jordan: helloooo?? the code!!", delay: 700 }] },
+              { label: "Chat 2 (Jordan), a weird ask, then a dodge and a rush", outcome: "good" },
+              { label: "Chat 1 (Priya), she's asking for something too", outcome: "bad", then: [{ t: "con", text: "Chat 2 · Jordan: helloooo?? the code!!", delay: 700 }] },
               { label: "Both of them", outcome: "bad", then: [{ t: "con", text: "Chat 2 · Jordan: come on!!", delay: 700 }] },
             ],
           },
@@ -270,7 +403,7 @@ export const case07Phone: PhoneCase = {
         scenario: "\"It's Ella! I got a new number. Can you send the login code that just arrived on your phone? Locked out 😭\"",
         ask: "What is this, really?",
         options: [
-          { label: "A stolen account — a code sent to YOUR phone unlocks YOUR account", correct: true },
+          { label: "A stolen account, a code sent to YOUR phone unlocks YOUR account", correct: true },
           { label: "Your friend Ella, who genuinely needs help getting in" },
           { label: "A normal request you should just say yes to" },
         ],
@@ -297,7 +430,7 @@ export const case07Phone: PhoneCase = {
         scenario: "You send a friend a check-question. They reply: \"no time for that, just send it NOW!\"",
         ask: "What does that reply tell you?",
         options: [
-          { label: "It's a thief — that's a dodge and a rush", correct: true },
+          { label: "It's a thief, that's a dodge and a rush", correct: true },
           { label: "It's really them, just stressed" },
           { label: "Nothing, you can't tell" },
         ],

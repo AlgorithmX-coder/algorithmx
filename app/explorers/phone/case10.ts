@@ -1,5 +1,5 @@
 /**
- * Block 2 · Case 010 "The Voice" — MIMIC ② — BLOCK FINALE — for THE PHONE runtime.
+ * Block 2 · Case 010 "The Voice", MIMIC ②, BLOCK FINALE, for THE PHONE runtime.
  *
  * Same framework (7 skills LEARN -> PRACTICE, blind boss, must-pass test). MIMIC's
  * last trick is a CLONED VOICE, so the signature is: a familiar voice is no longer
@@ -8,7 +8,7 @@
  * ID" (an urgent call in a voice you love). Ends the block: SECRET ceremony.
  *
  * Breadcrumb ③ (curriculum §8): the clone needs SCRAPED audio (PACKRAT) read from a
- * SCRIPT (GHOSTWRITER) — three actors, one supply chain. Arc lives in the fiction.
+ * SCRIPT (GHOSTWRITER), three actors, one supply chain. Arc lives in the fiction.
  * Transfer: set the family code word this week.
  */
 
@@ -55,6 +55,25 @@ export const case10Phone: PhoneCase = {
             { label: "Yes, voices are impossible to fake", outcome: "bad", then: [{ t: "wren", text: "They used to be. Not any more, a few seconds of audio is all a machine needs. That's exactly why this case exists. Try again.", voice: "/audio/wren/m10p-s1-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "[voice message] heyyy it's your best mate, my card's not working, can you send a fiver to this account? do it quick 🙏", ask: true },
+        {
+          t: "choose",
+          prompt: "It's clearly your best friend's voice. How could a scammer even have it?",
+          options: [
+            { label: "From a few seconds of any video or voice note they've posted online", outcome: "good", then: [{ t: "wren", text: "Right. Your friend never had to send anyone their voice, a clip from any post is plenty. That's all a machine needs to copy them.", voice: "/audio/wren/m10p-s1-q2ok.mp3" }] },
+            { label: "They couldn't, you'd need hours of your friend recorded", outcome: "bad", then: [{ t: "wren", text: "Nope, a few seconds is enough now, not hours. One short clip online can do it. Try again.", voice: "/audio/wren/m10p-s1-q2bad.mp3" }] },
+            { label: "Only if your friend handed it over on purpose", outcome: "bad", then: [{ t: "wren", text: "They never had to. Anything they've posted can be grabbed by anyone, without them ever knowing. Try again.", voice: "/audio/wren/m10p-s1-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "A machine needs only a few seconds of talking to copy a voice. Whose voice is safe?",
+          options: [
+            { label: "Nobody's, anyone who has ever been recorded can be copied", outcome: "good", then: [{ t: "wren", text: "Exactly. If a voice exists as a recording anywhere, it can be cloned, even the people you love most. That's why the voice alone can never be your proof.", voice: "/audio/wren/m10p-s1-q3ok.mp3" }] },
+            { label: "Only famous people with loads of videos are at risk", outcome: "bad", then: [{ t: "wren", text: "Not just them, a short clip of anyone will do. Ordinary voices get cloned all the time. Try again.", voice: "/audio/wren/m10p-s1-q3bad.mp3" }] },
+            { label: "Your family's voices are safe because they're private", outcome: "bad", then: [{ t: "wren", text: "One voice note or video from a family member is enough. Being family doesn't make a voice safe to trust. Try again.", voice: "/audio/wren/m10p-s1-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
 
@@ -78,6 +97,25 @@ export const case10Phone: PhoneCase = {
             { label: "Something that doesn't rely on spotting the fake at all", outcome: "good", then: [{ t: "wren", text: "Yes. You can't win a spotting contest against a machine that keeps improving, you'd lose eventually. So we stop playing that game entirely, and use a defence the fake can't beat, no matter how good it gets.", voice: "/audio/wren/m10p-s2-ok.mp3" }] },
             { label: "Just practise spotting the tells until you're an expert", outcome: "bad", then: [{ t: "wren", text: "Even an expert loses this race, the tells you learn today are gone next month. You need a defence that doesn't depend on spotting at all. Try again.", voice: "/audio/wren/m10p-s2-bad.mp3" }] },
             { label: "Assume any video that looks good is real", outcome: "bad", then: [{ t: "wren", text: "That's the opposite of safe, looking good is exactly what a deepfake does. Don't judge by how it looks. Try again.", voice: "/audio/wren/m10p-s2-bad2.mp3" }] },
+          ],
+        },
+        { t: "con", text: "[voice message] it's grandad, i'm on video calling you right now, look, it's really my face, so send that money over", ask: true },
+        {
+          t: "choose",
+          prompt: "The video looks a little glitchy but mostly convincing. Can you rely on catching those glitches?",
+          options: [
+            { label: "No, the glitches shrink every month, spotting is a losing race", outcome: "good", then: [{ t: "wren", text: "Right. What looks glitchy today looks perfect next month. If your whole defence is catching the glitch, you lose the second the fakes improve.", voice: "/audio/wren/m10p-s2-q2ok.mp3" }] },
+            { label: "Yes, a real deepfake always glitches somewhere", outcome: "bad", then: [{ t: "wren", text: "Not for long, the glitches are vanishing fast. Soon a fake won't glitch at all. Try again.", voice: "/audio/wren/m10p-s2-q2bad.mp3" }] },
+            { label: "Yes, if it doesn't glitch then it must be real", outcome: "bad", then: [{ t: "wren", text: "A smooth video isn't proof, that's exactly what a good deepfake looks like. Don't judge it by the glitches. Try again.", voice: "/audio/wren/m10p-s2-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "Your friend says he can always catch a fake by its weird blinking. Why is that risky?",
+          options: [
+            { label: "The tells he relies on are vanishing, soon there'll be none to catch", outcome: "good", then: [{ t: "wren", text: "Exactly. The blink, the odd pause, they're all disappearing month by month. A defence built on tells has a very short shelf life.", voice: "/audio/wren/m10p-s2-q3ok.mp3" }] },
+            { label: "It isn't risky, blinking always gives a fake away", outcome: "bad", then: [{ t: "wren", text: "It used to, but not for much longer. Betting on one tell is betting on a race you'll lose. Try again.", voice: "/audio/wren/m10p-s2-q3bad.mp3" }] },
+            { label: "It's fine as long as he checks the blinking really carefully", outcome: "bad", then: [{ t: "wren", text: "Checking harder won't help once the tell is gone. You need a defence that doesn't depend on spotting at all. Try again.", voice: "/audio/wren/m10p-s2-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -106,6 +144,25 @@ export const case10Phone: PhoneCase = {
             { label: "Ask the caller to prove it's really him", outcome: "bad", then: [{ t: "wren", text: "A clone will happily 'prove' it in his exact voice, that's the trap. Don't ask the caller, check on a channel they can't fake. Try again.", voice: "/audio/wren/m10p-s3-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "[voice message] hi it's your auntie, my phone broke so i'm on a new number, i'm a bit stuck and could really use some cash today", ask: true },
+        {
+          t: "choose",
+          prompt: "She says her usual phone is broken. How do you check it's really her?",
+          options: [
+            { label: "Reach her a way she can't fake, like her real number or asking family", outcome: "good", then: [{ t: "wren", text: "That's it. A clone loves a broken-phone excuse, it kills your check. So use a channel it can't touch, her real number or someone who's with her.", voice: "/audio/wren/m10p-s3-q2ok.mp3" }] },
+            { label: "Believe her, a broken phone explains the new number", outcome: "bad", then: [{ t: "wren", text: "That excuse is doing a lot of work, it exists to stop you checking. Verify another way before you trust it. Try again.", voice: "/audio/wren/m10p-s3-q2bad.mp3" }] },
+            { label: "Ask this caller to prove she's really your auntie", outcome: "bad", then: [{ t: "wren", text: "A clone will 'prove' it in her exact voice all day. Don't ask the caller, check on a channel they can't fake. Try again.", voice: "/audio/wren/m10p-s3-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "A caller says: you can't call me back, my phone's dead, just trust my voice. What does that tell you?",
+          options: [
+            { label: "It's blocking the one check that works, that's a big red flag", outcome: "good", then: [{ t: "wren", text: "Spot on. The thing that would expose a clone is exactly the thing it's trying to stop you doing. That's your signal to verify, not to trust.", voice: "/audio/wren/m10p-s3-q3ok.mp3" }] },
+            { label: "It's fair enough, a dead phone can't take a call", outcome: "bad", then: [{ t: "wren", text: "Maybe, but a real person can be reached some other way. Blocking every check is the flag here. Try again.", voice: "/audio/wren/m10p-s3-q3bad.mp3" }] },
+            { label: "It means you should just listen to the voice more closely", outcome: "bad", then: [{ t: "wren", text: "Listening harder is spotting, and spotting loses. Verify the person on a channel they can't fake instead. Try again.", voice: "/audio/wren/m10p-s3-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
 
@@ -127,6 +184,25 @@ export const case10Phone: PhoneCase = {
             { label: "The name of your street", outcome: "bad", then: [{ t: "wren", text: "Your street is public and easy to look up. The code word must be something only your family would ever know. Try again.", voice: "/audio/wren/m10p-s4-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "[voice message] it's mum, i need you to move some money for me right now, i'll explain it all when i'm home", ask: true },
+        {
+          t: "choose",
+          prompt: "Your family has agreed a code word. What do you do?",
+          options: [
+            { label: "Ask her to tell you the code word before you do anything", outcome: "good", then: [{ t: "wren", text: "Perfect. Real mum says it straight back. A clone has no idea what it is. One question, and the whole trick falls apart.", voice: "/audio/wren/m10p-s4-q2ok.mp3" }] },
+            { label: "Skip the word, her voice is proof enough", outcome: "bad", then: [{ t: "wren", text: "The voice is the one thing a clone can copy. That's exactly why you have a code word, so use it. Try again.", voice: "/audio/wren/m10p-s4-q2bad.mp3" }] },
+            { label: "Text her the code word so she can confirm it", outcome: "bad", then: [{ t: "wren", text: "Never send the word to them, that hands it to a scammer. They say it to you, not the other way round. Try again.", voice: "/audio/wren/m10p-s4-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "Why does a code word beat even a perfect voice clone?",
+          options: [
+            { label: "Real family just knows the secret word, a clone was never told it", outcome: "good", then: [{ t: "wren", text: "Exactly. The clone can nail the voice but not the secret. The word is knowledge, and knowledge is the one thing it can't copy.", voice: "/audio/wren/m10p-s4-q3ok.mp3" }] },
+            { label: "Because a clone physically can't say the word out loud", outcome: "bad", then: [{ t: "wren", text: "It can say any word, it just doesn't know the right one. It's about the secret, not the speaking. Try again.", voice: "/audio/wren/m10p-s4-q3bad.mp3" }] },
+            { label: "Because the word makes your voice impossible to clone", outcome: "bad", then: [{ t: "wren", text: "A code word doesn't protect your voice, it proves the person. That's what beats the clone. Try again.", voice: "/audio/wren/m10p-s4-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
 
@@ -143,7 +219,7 @@ export const case10Phone: PhoneCase = {
         { t: "wren", text: "Predict what a cloned-voice emergency is FOR. It's nearly always the same shape: a panic, then a rush, then money or a code or an action, right now, before you can think or check. I'm in trouble, don't tell anyone, just send it quick. So the second a familiar voice puts panic, urgency, and a payment together, that's your cue. Not to act, but to stop and verify.", voice: "/audio/wren/m10p-s5-learn.mp3" },
       ],
       practice: [
-        { t: "con", text: "[voice message] oh my goodness it's mum, there's been an accident, i can't talk long, i just need you to—", ask: true },
+        { t: "con", text: "[voice message] oh my goodness it's mum, there's been an accident, i can't talk long, i just need you to, ", ask: true },
         {
           t: "choose",
           prompt: "A panicking familiar voice, cut short. What is it about to ask for?",
@@ -153,6 +229,25 @@ export const case10Phone: PhoneCase = {
             { label: "For you to relax and take your time", outcome: "bad", then: [{ t: "wren", text: "The whole point is the opposite, to rush you so you can't check. It's about to demand something fast. Try again.", voice: "/audio/wren/m10p-s5-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "[voice message] it's dad, don't ask questions, i need you to buy some gift cards and read me the numbers, be quick", ask: true },
+        {
+          t: "choose",
+          prompt: "Where is this rushed call really heading?",
+          options: [
+            { label: "Straight at money, those gift card codes, before you can think", outcome: "good", then: [{ t: "wren", text: "You called it. Gift card numbers are just money in disguise, and be quick, don't ask is the rush. Same shape every time.", voice: "/audio/wren/m10p-s5-q2ok.mp3" }] },
+            { label: "Nowhere, dad just wants a quick favour", outcome: "bad", then: [{ t: "wren", text: "A favour that's cash, in a rush, with no questions allowed. That's the ask, dressed up. Try again.", voice: "/audio/wren/m10p-s5-q2bad.mp3" }] },
+            { label: "It wants you to slow down and check first", outcome: "bad", then: [{ t: "wren", text: "The opposite, it's built to stop you checking. It's steering hard at a payment. Try again.", voice: "/audio/wren/m10p-s5-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "A familiar voice opens with panic and there's no time. What have you learned to expect next?",
+          options: [
+            { label: "A demand for money, a code, or a quick action right now", outcome: "good", then: [{ t: "wren", text: "Exactly. Panic, then no time, then the ask, it's always that shape. Seeing it coming is what stops it working.", voice: "/audio/wren/m10p-s5-q3ok.mp3" }] },
+            { label: "A calm, ordinary request you can take your time over", outcome: "bad", then: [{ t: "wren", text: "Panic and no time are never calm. Something urgent is about to be demanded. Try again.", voice: "/audio/wren/m10p-s5-q3bad.mp3" }] },
+            { label: "A kind offer to help you out with something", outcome: "bad", then: [{ t: "wren", text: "This shape doesn't give, it takes. An ask is coming, not an offer. Try again.", voice: "/audio/wren/m10p-s5-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
 
@@ -160,7 +255,7 @@ export const case10Phone: PhoneCase = {
     {
       n: 6,
       title: "Know MIMIC's play",
-      goal: "Every voice-clone scam runs the same four moves — and it takes a whole team.",
+      goal: "Every voice-clone scam runs the same four moves, and it takes a whole team.",
       learn: [
         { t: "wren", text: "MIMIC's voice play, four moves, always in order. First, scrape a few seconds of the voice, from a video or voice note online. Second, clone it with a machine. Third, fake an emergency in that voice. Fourth, rush you for money or a code before you can check. And Agent, notice this: to pull it off, MIMIC needed audio someone had scraped, and a script someone had written. These villains are not working alone. Put that in your dossier.", voice: "/audio/wren/m10p-s6-learn.mp3" },
       ],
@@ -172,6 +267,25 @@ export const case10Phone: PhoneCase = {
             { label: "Scrape the voice → clone it → fake an emergency → rush you for money", outcome: "good", then: [{ t: "wren", text: "That's the play. Scrape, clone, panic, rush. And remember, the scraped audio and the script mean MIMIC has help. Six villains, one supply chain. The dossier's filling in.", voice: "/audio/wren/m10p-s6-ok.mp3" }] },
             { label: "Fake an emergency → scrape the voice → rush you → clone it", outcome: "bad", then: [{ t: "wren", text: "It can't fake an emergency in a voice it hasn't cloned yet. Scraping the voice comes first. Try again.", voice: "/audio/wren/m10p-s6-bad.mp3" }] },
             { label: "Clone it → scrape the voice → rush you → fake an emergency", outcome: "bad", then: [{ t: "wren", text: "You can't clone a voice before you've scraped it. Getting the audio is always move one. Try again.", voice: "/audio/wren/m10p-s6-bad2.mp3" }] },
+          ],
+        },
+        { t: "con", text: "[voice message] it's mum, send the money now, there's no time to explain!!", ask: true },
+        {
+          t: "choose",
+          prompt: "Which move of MIMIC's play is this message?",
+          options: [
+            { label: "The last move, the rush, after the voice was scraped and cloned", outcome: "good", then: [{ t: "wren", text: "Right. By the time you hear the panic, the scraping and cloning already happened offstage. This is move four, the push.", voice: "/audio/wren/m10p-s6-q2ok.mp3" }] },
+            { label: "The first move, scraping the voice", outcome: "bad", then: [{ t: "wren", text: "Scraping happened quietly, long before this call. What you're hearing is the final rush. Try again.", voice: "/audio/wren/m10p-s6-q2bad.mp3" }] },
+            { label: "It's not part of the play at all", outcome: "bad", then: [{ t: "wren", text: "It's the whole point of the play, the rush for money. That's move four. Try again.", voice: "/audio/wren/m10p-s6-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "MIMIC pulled this off with scraped audio and a written script. What does that tell you?",
+          options: [
+            { label: "MIMIC isn't working alone, other villains supplied the pieces", outcome: "good", then: [{ t: "wren", text: "Exactly. Someone scraped the audio, someone wrote the script. It's a supply chain, and it goes straight in your dossier.", voice: "/audio/wren/m10p-s6-q3ok.mp3" }] },
+            { label: "MIMIC did every part of it single-handedly", outcome: "bad", then: [{ t: "wren", text: "The scraped audio and the script came from others. MIMIC had help. Try again.", voice: "/audio/wren/m10p-s6-q3bad.mp3" }] },
+            { label: "The audio and script don't matter to the scam", outcome: "bad", then: [{ t: "wren", text: "They're the fuel for the whole thing, and they show MIMIC has a team. That matters a lot. Try again.", voice: "/audio/wren/m10p-s6-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -195,6 +309,25 @@ export const case10Phone: PhoneCase = {
             { label: "Stay on the line and do exactly what she says", outcome: "bad", then: [{ t: "wren", text: "Staying on their line is staying in their control. Hang up, call the real number, tell an adult. That's what beats a clone. Try again.", voice: "/audio/wren/m10p-s7-bad2.mp3" }] },
           ],
         },
+        { t: "con", text: "[voice message] it's your sister, i'm in real trouble, stay on the phone with me and whatever you do don't hang up", ask: true },
+        {
+          t: "choose",
+          prompt: "The caller begs you to stay on the line. Why is hanging up still the right move?",
+          options: [
+            { label: "Staying on their line keeps you in their control, hang up and call back", outcome: "good", then: [{ t: "wren", text: "Exactly. As long as you're on their call, they're steering you. Hang up, ring the number you know, and you take control back.", voice: "/audio/wren/m10p-s7-q2ok.mp3" }] },
+            { label: "You shouldn't hang up, that would be rude to your sister", outcome: "bad", then: [{ t: "wren", text: "If it's really her, she'll completely understand a call-back. Don't hang up is the trap, not manners. Try again.", voice: "/audio/wren/m10p-s7-q2bad.mp3" }] },
+            { label: "Just stay on and do whatever she asks", outcome: "bad", then: [{ t: "wren", text: "Staying on the line is staying under their control. Hang up and verify, that's the play. Try again.", voice: "/audio/wren/m10p-s7-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "choose",
+          prompt: "You feel bad about checking in case it's a real emergency. What's the calming truth?",
+          options: [
+            { label: "A real emergency survives a two-minute check, a scam does not", outcome: "good", then: [{ t: "wren", text: "That's the one to remember. Checking never hurts a real emergency, but it stops a scam cold. So you can always take the two minutes.", voice: "/audio/wren/m10p-s7-q3ok.mp3" }] },
+            { label: "A real emergency can't wait two minutes, so just send it", outcome: "bad", then: [{ t: "wren", text: "Real help survives a quick call-back just fine. The can't wait pressure is the scam talking. Try again.", voice: "/audio/wren/m10p-s7-q3bad.mp3" }] },
+            { label: "Checking always makes a real emergency worse", outcome: "bad", then: [{ t: "wren", text: "It doesn't, a real one holds up to a check. Slowing down only ever costs the scammer. Try again.", voice: "/audio/wren/m10p-s7-q3bad2.mp3" }] },
+          ],
+        },
       ],
     },
   ],
@@ -216,7 +349,7 @@ export const case10Phone: PhoneCase = {
         ],
       },
       {
-        name: "Don't panic — verify",
+        name: "Don't panic, verify",
         steps: [
           {
             t: "choose",
@@ -261,9 +394,9 @@ export const case10Phone: PhoneCase = {
         scenario: "You get a voice message that sounds exactly like your mum, asking for a bank code.",
         ask: "Does the familiar voice prove it's really her?",
         options: [
-          { label: "No — a voice can be cloned from a few seconds of audio", correct: true },
-          { label: "Yes — you'd always know your own mum's voice" },
-          { label: "Yes — voices can't be faked" },
+          { label: "No, a voice can be cloned from a few seconds of audio", correct: true },
+          { label: "Yes, you'd always know your own mum's voice" },
+          { label: "Yes, voices can't be faked" },
         ],
       },
       {
@@ -280,7 +413,7 @@ export const case10Phone: PhoneCase = {
         ask: "What's the safest move?",
         options: [
           { label: "Hang up and call his real number to check", correct: true },
-          { label: "Send it — he sounds really scared" },
+          { label: "Send it, he sounds really scared" },
           { label: "Ask the caller to prove it's him" },
         ],
       },

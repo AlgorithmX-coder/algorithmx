@@ -1,5 +1,5 @@
 /**
- * Block 3 · Case 014 "The Update Trap" — GHOSTWRITER ② — THE CONSOLE.
+ * Block 3 · Case 014 "The Update Trap", GHOSTWRITER ②, THE CONSOLE.
  *
  * Systems block. Signature = permissions as POWERS: a download is a set of
  * capabilities you grant; updates are armour; and GHOSTWRITER dresses malware as
@@ -37,9 +37,32 @@ export const case14Console: ConsoleCase = {
           t: "choose",
           prompt: "What are you really doing when you install an app and tap 'Allow'?",
           options: [
-            { label: "Granting it powers — like your camera, files, or location", outcome: "good", then: [{ t: "wren", text: "Exactly. 'Allow' is you handing over keys. Which is fine when the app needs that room, and a problem when it doesn't. From here, you decide which keys it gets, not the app.", voice: "/audio/wren/m14c-s1-ok.mp3" }] },
+            { label: "Granting it powers, like your camera, files, or location", outcome: "good", then: [{ t: "wren", text: "Exactly. 'Allow' is you handing over keys. Which is fine when the app needs that room, and a problem when it doesn't. From here, you decide which keys it gets, not the app.", voice: "/audio/wren/m14c-s1-ok.mp3" }] },
             { label: "Just getting the app, nothing more", outcome: "bad", then: [{ t: "wren", text: "There's more to it. Each 'Allow' grants a real power over your device. That's the part we're learning to control. Try again.", voice: "/audio/wren/m14c-s1-bad.mp3" }] },
-            { label: "Nothing — apps can't access your stuff", outcome: "bad", then: [{ t: "wren", text: "They can, but only what you grant. That's why permissions matter so much. Try again.", voice: "/audio/wren/m14c-s1-bad2.mp3" }] },
+            { label: "Nothing, apps can't access your stuff", outcome: "bad", then: [{ t: "wren", text: "They can, but only what you grant. That's why permissions matter so much. Try again.", voice: "/audio/wren/m14c-s1-bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "build",
+          prompt: "Tap the THREE real powers an app can be handed when you install it:",
+          need: 3,
+          parts: [
+            { label: "Your camera", good: true, sub: "" },
+            { label: "Your files", good: true, sub: "" },
+            { label: "Your location", good: true, sub: "" },
+            { label: "Today's weather", good: false, sub: "not yours to grant" },
+            { label: "Your favourite colour", good: false, sub: "not a device power" },
+          ],
+          ok: "Right. Camera, files, location, those are real keys to real rooms on your device. Every 'Allow' hands one over.",
+          okVoice: "/audio/wren/m14c-s1-q2ok.mp3",
+        },
+        {
+          t: "choose",
+          prompt: "A new drawing app opens and requests your camera and microphone. What is that request really?",
+          options: [
+            { label: "The app asking you to hand over real powers on your device", outcome: "good", then: [{ t: "wren", text: "Exactly. That request is the app reaching for keys, your camera and your mic. Installing is never just getting the app, it is handing over powers.", voice: "/audio/wren/m14c-s1-q3ok.mp3" }] },
+            { label: "Just a friendly hello from the app", outcome: "bad", then: [{ t: "wren", text: "It is more than hello, it is a reach for real powers on your device. Try again.", voice: "/audio/wren/m14c-s1-q3bad.mp3" }] },
+            { label: "Proof the app is safe and official", outcome: "bad", then: [{ t: "wren", text: "Asking for powers proves nothing about safety, it only shows what it wants to hold. Try again.", voice: "/audio/wren/m14c-s1-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -60,9 +83,29 @@ export const case14Console: ConsoleCase = {
           t: "choose",
           prompt: "'Super Torch' wants your contacts, texts, and location. What does that tell you?",
           options: [
-            { label: "It's asking for powers a torch can't possibly need — a red flag", outcome: "good", then: [{ t: "wren", text: "Spot on. A torch needs the flash, full stop. Contacts, texts, location? That's an app harvesting your life under cover of a light switch. Powers that don't match the job are the whole tell.", voice: "/audio/wren/m14c-s2-ok.mp3" }] },
+            { label: "It's asking for powers a torch can't possibly need, a red flag", outcome: "good", then: [{ t: "wren", text: "Spot on. A torch needs the flash, full stop. Contacts, texts, location? That's an app harvesting your life under cover of a light switch. Powers that don't match the job are the whole tell.", voice: "/audio/wren/m14c-s2-ok.mp3" }] },
             { label: "It must need them for extra features", outcome: "bad", then: [{ t: "wren", text: "What feature of a torch needs your text messages? None. Those powers don't match the job, that's the red flag. Try again.", voice: "/audio/wren/m14c-s2-bad.mp3" }] },
             { label: "All apps need all permissions", outcome: "bad", then: [{ t: "wren", text: "They really don't. A good app asks only for what its job needs. Over-asking is the warning sign. Try again.", voice: "/audio/wren/m14c-s2-bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "toggle",
+          prompt: "A WEATHER app lists its requests. Flip ON only what its job actually needs:",
+          switches: [
+            { label: "Location", sub: "for your local forecast", want: true },
+            { label: "Your contacts", sub: "weather doesn't need people", want: false },
+            { label: "Your camera", sub: "weather doesn't take photos", want: false },
+          ],
+          ok: "Exactly. A weather app needs your location to know where you are, and nothing else. Contacts and camera don't fit the job, so they stay off.",
+          okVoice: "/audio/wren/m14c-s2-q2ok.mp3",
+        },
+        {
+          t: "choose",
+          prompt: "A simple notes app asks for your location. Does it need it?",
+          options: [
+            { label: "No. Writing notes has nothing to do with where you are", outcome: "good", then: [{ t: "wren", text: "Right. A notes app stores words, and your location adds nothing to that. A power that doesn't fit the job is one to refuse.", voice: "/audio/wren/m14c-s2-q3ok.mp3" }] },
+            { label: "Yes, everything needs your location", outcome: "bad", then: [{ t: "wren", text: "Notes are just words, your location adds nothing to them. When a power doesn't fit the job, deny it. Try again.", voice: "/audio/wren/m14c-s2-q3bad.mp3" }] },
+            { label: "Maybe, better to allow it just in case", outcome: "bad", then: [{ t: "wren", text: "'Just in case' is how apps collect what they don't need. If the job doesn't need it, it doesn't get it. Try again.", voice: "/audio/wren/m14c-s2-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -80,7 +123,7 @@ export const case14Console: ConsoleCase = {
       practice: [
         {
           t: "toggle",
-          prompt: "Set the map app's permissions — grant only what a map needs:",
+          prompt: "Set the map app's permissions, grant only what a map needs:",
           switches: [
             { label: "Location", sub: "needed to give directions", want: true },
             { label: "Microphone", sub: "a map doesn't listen", want: false },
@@ -90,6 +133,29 @@ export const case14Console: ConsoleCase = {
           okVoice: "/audio/wren/m14c-s3-ok.mp3",
           bad: "Not quite. A map needs your location, but it has no reason to hear you or see your photos. Grant only the one that fits the job.",
           badVoice: "/audio/wren/m14c-s3-bad.mp3",
+        },
+        {
+          t: "choose",
+          prompt: "A video-call app asks for your camera and microphone. What should you grant?",
+          options: [
+            { label: "Both, a video call genuinely needs to see and hear you", outcome: "good", then: [{ t: "wren", text: "Exactly. A video call really does need to see and hear you, so those two fit the job. Granting isn't bad, granting what doesn't fit is.", voice: "/audio/wren/m14c-s3-q2ok.mp3" }] },
+            { label: "Neither, deny everything to be safe", outcome: "bad", then: [{ t: "wren", text: "Deny-all breaks the app, a video call truly needs camera and mic to work. Grant what fits the job. Try again.", voice: "/audio/wren/m14c-s3-q2bad.mp3" }] },
+            { label: "Camera only, calls don't need sound", outcome: "bad", then: [{ t: "wren", text: "A call with no sound isn't much of a call, it needs the mic too. Grant the powers the job needs. Try again.", voice: "/audio/wren/m14c-s3-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "build",
+          prompt: "A CAMERA app is installing. Tap the THREE powers that fit its job:",
+          need: 3,
+          parts: [
+            { label: "Camera", good: true, sub: "to take photos" },
+            { label: "Save to your photos", good: true, sub: "to store the pictures" },
+            { label: "Microphone", good: true, sub: "for video sound" },
+            { label: "Your contacts", good: false, sub: "a camera doesn't need people" },
+            { label: "Your location", good: false, sub: "not needed to take a photo" },
+          ],
+          ok: "Perfect. Camera, saving photos and mic all fit what a camera does. Contacts and location don't, so they get denied. Grant what fits, deny the rest.",
+          okVoice: "/audio/wren/m14c-s3-q3ok.mp3",
         },
       ],
     },
@@ -108,9 +174,29 @@ export const case14Console: ConsoleCase = {
           t: "choose",
           prompt: "A pop-up says a security update is ready. What's the smart move?",
           options: [
-            { label: "Install it — updates patch holes attackers exploit", outcome: "good", then: [{ t: "wren", text: "Exactly. Every update you skip leaves a known hole open for anyone who knows about it. Installing it is patching your armour. Best of all, turn on automatic updates so it just happens.", voice: "/audio/wren/m14c-s4-ok.mp3" }] },
-            { label: "Ignore it — updates just change things around", outcome: "bad", then: [{ t: "wren", text: "Skipping updates leaves known holes open, and those are exactly what attackers target. Updates are armour, install them. Try again.", voice: "/audio/wren/m14c-s4-bad.mp3" }] },
+            { label: "Install it, updates patch holes attackers exploit", outcome: "good", then: [{ t: "wren", text: "Exactly. Every update you skip leaves a known hole open for anyone who knows about it. Installing it is patching your armour. Best of all, turn on automatic updates so it just happens.", voice: "/audio/wren/m14c-s4-ok.mp3" }] },
+            { label: "Ignore it, updates just change things around", outcome: "bad", then: [{ t: "wren", text: "Skipping updates leaves known holes open, and those are exactly what attackers target. Updates are armour, install them. Try again.", voice: "/audio/wren/m14c-s4-bad.mp3" }] },
             { label: "Put it off forever, it's annoying", outcome: "bad", then: [{ t: "wren", text: "The longer you wait, the longer the hole stays open. That's the un-updated device an attacker walks into. Try again.", voice: "/audio/wren/m14c-s4-bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "toggle",
+          prompt: "Turn ON automatic updates so your armour stays fresh:",
+          switches: [
+            { label: "Your phone's system", sub: "patches the whole device", want: true },
+            { label: "Your apps", sub: "each one gets fixed too", want: true },
+            { label: "Your web browser", sub: "your window to the internet", want: true },
+          ],
+          ok: "Locked in. With auto-updates on across your system, apps and browser, holes get patched the moment a fix exists. No nagging, no forgetting.",
+          okVoice: "/audio/wren/m14c-s4-q2ok.mp3",
+        },
+        {
+          t: "choose",
+          prompt: "Two identical tablets: one is fully updated, one hasn't updated in a year. Which does an attacker go for?",
+          options: [
+            { label: "The one that hasn't updated, its old holes are still wide open", outcome: "good", then: [{ t: "wren", text: "Exactly. Attackers hunt for known holes, and the un-updated tablet still has every one of them open. Updates are what close the door.", voice: "/audio/wren/m14c-s4-q3ok.mp3" }] },
+            { label: "The updated one, it has more features to attack", outcome: "bad", then: [{ t: "wren", text: "Features aren't holes. The attacker wants the un-patched tablet, its known holes are still open. Try again.", voice: "/audio/wren/m14c-s4-q3bad.mp3" }] },
+            { label: "Neither, updates make no difference", outcome: "bad", then: [{ t: "wren", text: "They make all the difference, the un-updated one is the easy target. Try again.", voice: "/audio/wren/m14c-s4-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -131,10 +217,36 @@ export const case14Console: ConsoleCase = {
           t: "choose",
           prompt: "That pop-up wants you to download UPDATE.exe from fast-fix-now.net. What is it?",
           options: [
-            { label: "A fake installer — real updates never come from random pop-ups", outcome: "good", then: [{ t: "wren", text: "Exactly. Real updates come through your device's own settings or the official store, never a scary pop-up linking to some random site. That 'update' is GHOSTWRITER's malware in a hi-vis jacket. Close it, don't click it.", voice: "/audio/wren/m14c-s5-ok.mp3" }] },
-            { label: "A real update — better install it fast", outcome: "bad", then: [{ t: "wren", text: "The urgency and the random site are the tell. Real updates never arrive as a panic pop-up from fast-fix-now dot net. That's a fake installer. Try again.", voice: "/audio/wren/m14c-s5-bad.mp3" }] },
-            { label: "Harmless — pop-ups can't install anything", outcome: "bad", then: [{ t: "wren", text: "If you click and run that file, it very much can. Only install from official sources, never a pop-up's link. Try again.", voice: "/audio/wren/m14c-s5-bad2.mp3" }] },
+            { label: "A fake installer, real updates never come from random pop-ups", outcome: "good", then: [{ t: "wren", text: "Exactly. Real updates come through your device's own settings or the official store, never a scary pop-up linking to some random site. That 'update' is GHOSTWRITER's malware in a hi-vis jacket. Close it, don't click it.", voice: "/audio/wren/m14c-s5-ok.mp3" }] },
+            { label: "A real update, better install it fast", outcome: "bad", then: [{ t: "wren", text: "The urgency and the random site are the tell. Real updates never arrive as a panic pop-up from fast-fix-now dot net. That's a fake installer. Try again.", voice: "/audio/wren/m14c-s5-bad.mp3" }] },
+            { label: "Harmless, pop-ups can't install anything", outcome: "bad", then: [{ t: "wren", text: "If you click and run that file, it very much can. Only install from official sources, never a pop-up's link. Try again.", voice: "/audio/wren/m14c-s5-bad2.mp3" }] },
           ],
+        },
+        {
+          t: "toggle",
+          prompt: "Flip ON only the sources you can trust for a download:",
+          switches: [
+            { label: "The official app store", sub: "the safe source", want: true },
+            { label: "The maker's own website", sub: "also trustworthy", want: true },
+            { label: "A random pop-up link", sub: "a stranger's parcel", want: false },
+            { label: "A cracked-app site", sub: "malware's home", want: false },
+          ],
+          ok: "Right. Trust the official store and the maker's real site, and switch off anything from a random link or a cracked-app site.",
+          okVoice: "/audio/wren/m14c-s5-q2ok.mp3",
+        },
+        {
+          t: "build",
+          prompt: "Tap the THREE warning signs that a download is a fake installer:",
+          need: 3,
+          parts: [
+            { label: "Comes from a random pop-up or link", good: true, sub: "" },
+            { label: "Screams that you must act NOW", good: true, sub: "urgency lure" },
+            { label: "Promises a free or cracked version", good: true, sub: "free-stuff lure" },
+            { label: "Comes from the official app store", good: false, sub: "that's the safe source" },
+            { label: "Was made by the app's real maker", good: false, sub: "that's legit" },
+          ],
+          ok: "That's the fake-installer fingerprint. Random source, panic urgency, and a too-good freebie. Spot those three and you close the lid before it opens.",
+          okVoice: "/audio/wren/m14c-s5-q3ok.mp3",
         },
       ],
     },
@@ -143,7 +255,7 @@ export const case14Console: ConsoleCase = {
     {
       n: 6,
       title: "Know GHOSTWRITER's play",
-      goal: "The malware con runs four moves — and checking source + permissions breaks it.",
+      goal: "The malware con runs four moves, and checking source + permissions breaks it.",
       panel: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See GHOSTWRITER's malware play, four moves. First, dress the malware as something you want, a game, an update, a freebie. Second, get you to install it. Third, grab powers it should never have, your files, your camera, your messages. Fourth, do the damage. And you break it at move two: install only from official sources, and grant only the powers that fit the job. It never gets in, and if it did, it gets no keys.", voice: "/audio/wren/m14c-s6-learn.mp3" },
@@ -157,6 +269,28 @@ export const case14Console: ConsoleCase = {
             { label: "Install everything, then delete the bad ones", outcome: "bad", then: [{ t: "wren", text: "By the time it's installed, the damage can be done. You stop it by not installing it, only from official sources. Try again.", voice: "/audio/wren/m14c-s6-bad.mp3" }] },
             { label: "Hope your device catches it", outcome: "bad", then: [{ t: "wren", text: "Don't leave it to hope. The reliable move is your own habit: official sources only. Try again.", voice: "/audio/wren/m14c-s6-bad2.mp3" }] },
           ],
+        },
+        {
+          t: "choose",
+          prompt: "Say something slipped through and installed anyway. What's your BACKUP lock that limits the damage?",
+          options: [
+            { label: "Grant only the powers that fit the job, so it gets no keys", outcome: "good", then: [{ t: "wren", text: "Right. Official sources is the front door, and matching permissions is the backup lock. Malware that sneaks in still gets no camera, no files, no keys.", voice: "/audio/wren/m14c-s6-q2ok.mp3" }] },
+            { label: "Nothing can be done once it's installed", outcome: "bad", then: [{ t: "wren", text: "There is a backup: tight permissions mean even installed malware gets no keys. Try again.", voice: "/audio/wren/m14c-s6-q2bad.mp3" }] },
+            { label: "Install ten more apps to hide it", outcome: "bad", then: [{ t: "wren", text: "That just adds risk. Your backup lock is careful permissions, not more apps. Try again.", voice: "/audio/wren/m14c-s6-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "build",
+          prompt: "Tap the TWO habits that break GHOSTWRITER's malware play:",
+          need: 2,
+          parts: [
+            { label: "Install only from official sources", good: true, sub: "blocks it at move two" },
+            { label: "Grant only permissions that fit", good: true, sub: "gives it no keys" },
+            { label: "Tap 'Allow' on everything", good: false, sub: "hands over the keys" },
+            { label: "Install any free app you find", good: false, sub: "invites it in" },
+          ],
+          ok: "Those two together break the whole play. Official sources stop it getting in, and tight permissions mean it gets nothing even if it does.",
+          okVoice: "/audio/wren/m14c-s6-q3ok.mp3",
         },
       ],
     },
@@ -187,6 +321,26 @@ export const case14Console: ConsoleCase = {
           bad: "Careful, you picked a risky one. Cracked apps from random links, or blanket 'Allow', are exactly how malware gets in. Choose only the three safe moves.",
           badVoice: "/audio/wren/m14c-s7-bad.mp3",
         },
+        {
+          t: "choose",
+          prompt: "An install just feels off: wrong source, way too many permissions. What's the move?",
+          options: [
+            { label: "Stop, don't install, and investigate or ask an adult", outcome: "good", then: [{ t: "wren", text: "Exactly. A gut 'this feels off' is worth listening to. Stop, investigate, or ask an adult, before anything installs.", voice: "/audio/wren/m14c-s7-q2ok.mp3" }] },
+            { label: "Install it anyway, you can remove it later", outcome: "bad", then: [{ t: "wren", text: "By then the damage may be done. If it feels off, stop and check first. Try again.", voice: "/audio/wren/m14c-s7-q2bad.mp3" }] },
+            { label: "Tap 'Allow' fast to get past the warnings", outcome: "bad", then: [{ t: "wren", text: "Rushing past warnings is how malware gets in. Slow down and investigate. Try again.", voice: "/audio/wren/m14c-s7-q2bad2.mp3" }] },
+          ],
+        },
+        {
+          t: "toggle",
+          prompt: "Set your safe-install habit. Flip every switch ON:",
+          switches: [
+            { label: "Official sources only", sub: "the front door", want: true },
+            { label: "Permissions that fit the job", sub: "no spare keys", want: true },
+            { label: "Automatic updates on", sub: "fresh armour", want: true },
+          ],
+          ok: "That's the whole habit, switched on for good. Trusted sources, matching permissions, fresh armour. Your machine stays yours.",
+          okVoice: "/audio/wren/m14c-s7-q3ok.mp3",
+        },
       ],
     },
   ],
@@ -204,8 +358,8 @@ export const case14Console: ConsoleCase = {
             t: "choose",
             prompt: "A security update from your device's own Settings. What do you do?",
             options: [
-              { label: "Install it — official source, it's your armour", outcome: "good" },
-              { label: "Deny — all updates are suspicious", outcome: "bad", then: [{ t: "sys", text: "REMINDER: this one's from your own Settings — that's the safe source" }] },
+              { label: "Install it, official source, it's your armour", outcome: "good" },
+              { label: "Deny, all updates are suspicious", outcome: "bad", then: [{ t: "sys", text: "REMINDER: this one's from your own Settings, that's the safe source" }] },
               { label: "Download it again from a website first", outcome: "bad", then: [{ t: "sys", text: "REMINDER: it's already here, from the official source" }] },
             ],
           },
@@ -219,8 +373,8 @@ export const case14Console: ConsoleCase = {
             t: "choose",
             prompt: "A 'free v-bucks' app from a random link, wanting contacts, camera, and messages. What is it?",
             options: [
-              { label: "Deny — random source AND powers no game needs. It's malware", outcome: "good" },
-              { label: "Install — free v-bucks!", outcome: "bad", then: [{ t: "sys", text: "GHOSTWRITER: yes, install me…" }] },
+              { label: "Deny, random source AND powers no game needs. It's malware", outcome: "good" },
+              { label: "Install, free v-bucks!", outcome: "bad", then: [{ t: "sys", text: "GHOSTWRITER: yes, install me…" }] },
               { label: "Install, then turn the permissions off after", outcome: "bad", then: [{ t: "sys", text: "GHOSTWRITER: once I'm in, the damage is done…" }] },
             ],
           },
@@ -234,7 +388,7 @@ export const case14Console: ConsoleCase = {
             t: "choose",
             prompt: "A pop-up screaming to install SUPER-CLEAN.exe from a random site right now. What do you do?",
             options: [
-              { label: "Deny and close it — real warnings never work like this", outcome: "good" },
+              { label: "Deny and close it, real warnings never work like this", outcome: "good" },
               { label: "Install it fast before the virus spreads", outcome: "bad", then: [{ t: "sys", text: "GHOSTWRITER: the panic is the trick…" }] },
               { label: "Click to see what it does", outcome: "bad", then: [{ t: "sys", text: "GHOSTWRITER: one click is all I need…" }] },
             ],
@@ -253,11 +407,11 @@ export const case14Console: ConsoleCase = {
     failVoice: "/audio/wren/m14c-test-fail.mp3",
     pass: 5,
     questions: [
-      { scenario: "You install an app and tap 'Allow' on its requests.", ask: "What are you really doing?", options: [{ label: "Granting it powers over your device", correct: true }, { label: "Just getting the app, nothing else" }, { label: "Nothing — apps can't reach your stuff" }] },
-      { scenario: "A torch app asks for your contacts, texts and location.", ask: "What does that tell you?", options: [{ label: "It wants powers a torch can't need — a red flag", correct: true }, { label: "It needs them for features" }, { label: "All apps need everything" }] },
-      { scenario: "A map app asks for your location and your microphone.", ask: "Which should you grant?", options: [{ label: "Location only — a map doesn't need to listen", correct: true }, { label: "Both, to be safe" }, { label: "Neither" }] },
-      { scenario: "A pop-up offers a security update.", ask: "Why do updates matter?", options: [{ label: "They patch holes attackers exploit — they're armour", correct: true }, { label: "They just move things around" }, { label: "They don't, ignore them" }] },
-      { scenario: "\"Your device is out of date! Download UPDATE.exe from fast-fix-now.net!\"", ask: "What is it?", options: [{ label: "A fake installer — real updates don't come from pop-ups", correct: true }, { label: "A real update, install it fast" }, { label: "Harmless" }] },
+      { scenario: "You install an app and tap 'Allow' on its requests.", ask: "What are you really doing?", options: [{ label: "Granting it powers over your device", correct: true }, { label: "Just getting the app, nothing else" }, { label: "Nothing, apps can't reach your stuff" }] },
+      { scenario: "A torch app asks for your contacts, texts and location.", ask: "What does that tell you?", options: [{ label: "It wants powers a torch can't need, a red flag", correct: true }, { label: "It needs them for features" }, { label: "All apps need everything" }] },
+      { scenario: "A map app asks for your location and your microphone.", ask: "Which should you grant?", options: [{ label: "Location only, a map doesn't need to listen", correct: true }, { label: "Both, to be safe" }, { label: "Neither" }] },
+      { scenario: "A pop-up offers a security update.", ask: "Why do updates matter?", options: [{ label: "They patch holes attackers exploit, they're armour", correct: true }, { label: "They just move things around" }, { label: "They don't, ignore them" }] },
+      { scenario: "\"Your device is out of date! Download UPDATE.exe from fast-fix-now.net!\"", ask: "What is it?", options: [{ label: "A fake installer, real updates don't come from pop-ups", correct: true }, { label: "A real update, install it fast" }, { label: "Harmless" }] },
       { scenario: "You want to stop malware before it can ever run.", ask: "What's the key habit?", options: [{ label: "Only install from official sources", correct: true }, { label: "Install everything, delete the bad ones" }, { label: "Hope your device catches it" }] },
     ],
   },
