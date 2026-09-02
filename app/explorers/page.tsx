@@ -25,6 +25,9 @@ import { case13Console } from "./console/case13";
 import { case14Console } from "./console/case14";
 import { case15Console } from "./console/case15";
 import type { ConsoleCase } from "./console/case11";
+import WarRoomRuntime from "./warroom/WarRoomRuntime";
+import { case16War } from "./warroom/case16";
+import type { WarCase } from "./warroom/case16";
 import BlockIntro from "./phone/BlockIntro";
 import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
 import type { BlockIntroData } from "./phone/blockIntroData";
@@ -115,6 +118,11 @@ const CONSOLE_CASES: Record<string, ConsoleCase> = {
   "explorers-m13": case13Console,
   "explorers-m14": case14Console,
   "explorers-m15": case15Console,
+};
+
+// Block 4 cases run in THE WAR ROOM (a violet evidence board), one WarCase each.
+const WAR_CASES: Record<string, WarCase> = {
+  "explorers-m16": case16War,
 };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
@@ -306,6 +314,18 @@ export default function ExplorersPage() {
         <ConsoleRuntime
           key={active.id}
           consoleCase={consoleCase}
+          onExit={() => { refreshStatus(); setActive(null); }}
+          onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
+        />
+      );
+    }
+    // Block 4 cases run in THE WAR ROOM.
+    const warCase = WAR_CASES[active.id];
+    if (warCase) {
+      return (
+        <WarRoomRuntime
+          key={active.id}
+          warCase={warCase}
           onExit={() => { refreshStatus(); setActive(null); }}
           onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
         />
