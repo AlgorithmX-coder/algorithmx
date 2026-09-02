@@ -67,6 +67,12 @@ export const mission04: MissionManifest = {
       id: "assembly",
       title: "The assembly attack",
       concept: "Harmless crumbs combine into one file",
+      checkpoint: {
+        questions: [
+          { id: "m04-c1-chk1", question: "Over one week Leo posts his dog's name, his estate's summer fair, and his Saturday football club. Each post is harmless. Why should he still worry?", options: ["Three posts in a week looks like showing off", "One of the posts probably has a typo", "Stacked together they reveal his where, his when, and a password answer"], answer: 2, ok: "Exactly. On their own they are crumbs. Stacked, they hand a stranger a whole file. That is the assembly attack.", okVoice: "/audio/wren/m04-c1-chk1-ok.mp3" },
+          { id: "m04-c1-chk2", question: "A stranger has built a file on a girl he has never met, and he never once touched her account. How did he most likely do it?", options: ["He guessed her password over and over", "He collected her separate public posts and stacked them", "He read a fake prize email she tapped"], answer: 1, ok: "That is the whole trick. No break-in, just patience. He pockets each harmless crumb and stacks them into one file.", okVoice: "/audio/wren/m04-c1-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn how a stranger turns scattered posts into a profile.",
       instruction: "Pin every crumb that feeds the file, then chain them in order.",
       intel: {
@@ -108,6 +114,12 @@ export const mission04: MissionManifest = {
       id: "photo",
       title: "Read the photo",
       concept: "A photo leaks far more than the thing you pointed it at",
+      checkpoint: {
+        questions: [
+          { id: "m04-c2-chk1", question: "Maya posts a cute selfie in her bedroom. She only meant to show off her new haircut. What might the photo ALSO give away?", options: ["Details behind her, like a school letter or a house number on view", "Nothing, a selfie only ever shows her face", "Only the haircut, a phone never captures anything else"], answer: 0, ok: "Right. You checked the haircut. PACKRAT checks the shelf, the window, the letter on the desk. Same photo, a whole other read.", okVoice: "/audio/wren/m04-c2-chk1-ok.mp3" },
+          { id: "m04-c2-chk2", question: "Sam took a photo at the park and posted it straight away. He typed no location at all. How could a stranger still learn exactly where he was?", options: ["They could not, because he typed no location", "Only if Sam had tagged the park himself", "His phone can staple a location tag on automatically"], answer: 2, ok: "That is the silent one. The phone tags the exact spot without ever asking. Turn location tags off and that leak closes.", okVoice: "/audio/wren/m04-c2-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to see everything a photo quietly gives away.",
       instruction: "Tap every leak hiding in this photo. Some of it is just a nice picture.",
       intel: {
@@ -157,6 +169,12 @@ export const mission04: MissionManifest = {
       id: "quiz",
       title: "The fun quiz that isn't",
       concept: "Those 'fun' quizzes are quietly harvesting the answers to your security questions",
+      checkpoint: {
+        questions: [
+          { id: "m04-c3-chk1", question: "A quiz going round says 'Your elf name = your first pet plus your birth month!'. Why is joining in risky?", options: ["Elf names are a bit childish and embarrassing", "First pet and birth month are answers banks use to check it is really you", "It will spam a link to all of your friends"], answer: 1, ok: "Spot on. Those are not random. They are the exact security answers that unlock accounts, and the quiz just got you to post them for laughs.", okVoice: "/audio/wren/m04-c3-chk1-ok.mp3" },
+          { id: "m04-c3-chk2", question: "Which of these 'fun' quizzes is actually SAFE to join in?", options: ["Which pizza topping matches your personality?", "Your rockstar name = your first street plus your first pet", "Your secret code = the town you were born in plus your mum's maiden name"], answer: 0, ok: "That is the safe one. It asks for an opinion, not a real fact from your life. The dangerous ones always fish for facts.", okVoice: "/audio/wren/m04-c3-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to spot the quiz that's really fishing for your secrets.",
       instruction: "Sort each quiz: harmless fun, or is it fishing for a real secret?",
       intel: {
@@ -201,6 +219,12 @@ export const mission04: MissionManifest = {
       id: "scrubpost",
       title: "Scrub the post",
       concept: "Before a post goes up, black out the bits that hand a stranger your where-and-when",
+      checkpoint: {
+        questions: [
+          { id: "m04-c4-chk1", question: "Priya's friend is about to post this. Which part should she black out before it goes up?", evidence: "Buzzing after drama club! We meet at St Mark's Hall every Thursday at 5.", options: ["The word buzzing, it sounds a bit too excited", "Nothing, the whole post is fine to share", "St Mark's Hall and every Thursday at 5, the where and the when"], answer: 2, ok: "Exactly. Keep the excitement, black out the where-and-when. A stranger should learn she is happy, and nothing else.", okVoice: "/audio/wren/m04-c4-chk1-ok.mp3" },
+          { id: "m04-c4-chk2", question: "Which line is completely safe to keep in a post, with no scrubbing needed?", options: ["We train on Oak Road every Monday night", "That was the best game I have ever played", "Come find me at Northgate School at 4"], answer: 1, ok: "That is the one. A feeling gives a stranger nothing to stand on. The other two hand over exactly where and when to find you.", okVoice: "/audio/wren/m04-c4-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to scrub a post down to the bits that are actually safe to share.",
       instruction: "Black out everything a stranger could use to find Priya in person.",
       intel: {
@@ -243,6 +267,12 @@ export const mission04: MissionManifest = {
       id: "scrub",
       title: "Scrub by priority",
       concept: "You can't delete the internet, so take down the crumb that hurts most, first",
+      checkpoint: {
+        questions: [
+          { id: "m04-c5-chk1", question: "An audit finds three of Jordan's leaks at once: an old blurry team photo, a joke about his birthday, and a public post saying 'at the skate park every Friday at 6'. He can fix ONE now. Which comes first?", options: ["The skate park every Friday at 6, a real place and time", "The old blurry team photo", "The birthday joke"], answer: 0, ok: "Right first move. A real-world where-and-when beats every other leak. That one comes down first, then the rest.", okVoice: "/audio/wren/m04-c5-chk1-ok.mp3" },
+          { id: "m04-c5-chk2", question: "Panicking, Jordan wants to just delete his whole account instead. Why is that the wrong call?", options: ["Deleting an account is against the rules", "He would lose all of his likes and followers", "The file a stranger already built stays built, and he learns nothing"], answer: 2, ok: "That is it. Panic is not a plan. Scrub the most dangerous crumb first instead, calm and by priority.", okVoice: "/audio/wren/m04-c5-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn what to scrub first, and why panic is the wrong move.",
       instruction: "Priya has five minutes. Make the call: what comes down first?",
       intel: {
@@ -297,6 +327,12 @@ export const mission04: MissionManifest = {
       id: "play",
       title: "Know PACKRAT's play",
       concept: "PACKRAT never hacks; he collects public crumbs, links them by your handle, and sells the file",
+      checkpoint: {
+        questions: [
+          { id: "m04-c6-chk1", question: "Someone uses the exact same username on their game, their photo app, and a forum. How does that HELP a collector like PACKRAT?", options: ["It makes their username a little easier to spell", "It is one thread that ties all of their accounts together", "It has no real effect on anything at all"], answer: 1, ok: "That is the thread he pulls. One handle links every account, so every crumb comes along together. Vary it and you cut the thread.", okVoice: "/audio/wren/m04-c6-chk1-ok.mp3" },
+          { id: "m04-c6-chk2", question: "Which of these is NOT part of PACKRAT's method?", options: ["Breaking into a locked account", "Saving public crumbs and keeping them forever", "Stacking the crumbs into a file and selling it"], answer: 0, ok: "Correct. He never breaks in. He only collects, links, and sells what you already left lying out. That is the whole game.", okVoice: "/audio/wren/m04-c6-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn PACKRAT's whole game, and the one thing that starves him.",
       instruction: "Tap the 3 moves that are really PACKRAT's.",
       intel: {
@@ -342,6 +378,12 @@ export const mission04: MissionManifest = {
       id: "lockdown",
       title: "Lock down your trail",
       concept: "The footprint clean-up: audit your posts, kill location, go private, vary your handle",
+      checkpoint: {
+        questions: [
+          { id: "m04-c7-chk1", question: "You are starting a footprint clean-up on your own accounts. What is the sensible FIRST step?", options: ["Buy yourself a brand-new phone", "Post lots more to bury the old posts", "Audit your recent posts the way a collector would"], answer: 2, ok: "Right. You cannot scrub what you have not spotted. Look at your own posts first and find the leaks.", okVoice: "/audio/wren/m04-c7-chk1-ok.mp3" },
+          { id: "m04-c7-chk2", question: "As part of the clean-up, what does turning location tags OFF actually stop?", options: ["Your friends from ever finding you again", "Your phone from stapling the exact spot onto your photos", "Your photos from saving to your phone at all"], answer: 1, ok: "Exactly. It kills the silent geotag your phone adds on its own. One setting, and that leak is closed.", okVoice: "/audio/wren/m04-c7-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll build the exact plan to starve the nest for good.",
       instruction: "Build the footprint clean-up. Pick the right move for each step.",
       intel: {

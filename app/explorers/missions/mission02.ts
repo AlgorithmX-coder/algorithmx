@@ -63,6 +63,12 @@ export const mission02: MissionManifest = {
       id: "toogood",
       title: "Too good to be true",
       concept: "If an offer sounds impossible, it is; the bigger the promise, the bigger the trap",
+      checkpoint: {
+        questions: [
+          { id: "m02-c1-chk1", question: "A banner shouts 'Every visitor today gets a FREE laptop, no catch!'. What should that tell you?", options: ["Grab it fast before they run out", "It's too good to be true, so it's bait", "It's fine as long as it's a big website"], answer: 1, ok: "Right. Nobody hands a laptop to every visitor for nothing. The bigger the free promise, the bigger the trap behind it.", okVoice: "/audio/wren/m02-c1-chk1-ok.mp3" },
+          { id: "m02-c1-chk2", question: "Three offers land. Which one is the classic too-good-to-be-true trap?", options: ["A shop takes 15 percent off a game this weekend", "A cafe gives a free biscuit with any drink", "A stranger promises you a brand-new phone for nothing"], answer: 2, ok: "That's the one. Small, boring deals are usually real. A stranger giving away a phone was never real, it's the bait.", okVoice: "/audio/wren/m02-c1-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn the one gut-check that pops most scams on sight.",
       instruction: "Tap every claim that's too good to be true.",
       intel: {
@@ -114,6 +120,12 @@ export const mission02: MissionManifest = {
       id: "freeprice",
       title: "'Free' has a price",
       concept: "Nothing online is really free; work out what the 'free' offer actually takes from you",
+      checkpoint: {
+        questions: [
+          { id: "m02-c2-chk1", question: "A 'free' quiz app won't open until you hand over your email, your birthday and your whole contact list. What are you really paying with?", options: ["Your personal data, which they can sell on", "Nothing, free really does mean free", "Just a few seconds of your time"], answer: 0, ok: "Exactly. When the app is free, you are the thing being sold. Your data is the price.", okVoice: "/audio/wren/m02-c2-chk1-ok.mp3" },
+          { id: "m02-c2-chk2", question: "A 'free 7-day trial' asks for your card number up front and swears you won't be charged. What's the likely catch?", options: ["The card just checks that you're a real person", "It will quietly start charging you when the trial ends", "Cards make the app load faster"], answer: 1, ok: "Good thinking. A free trial that needs your card is built to bill you the moment the free part runs out.", okVoice: "/audio/wren/m02-c2-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to read what 'free' is really charging.",
       instruction: "Your friend's about to grab a 'free' pass. Make the call.",
       intel: {
@@ -168,6 +180,12 @@ export const mission02: MissionManifest = {
       id: "giveaway",
       title: "The fake giveaway",
       concept: "Fake giveaways impersonate a real brand or star; the account behind the name gives it away",
+      checkpoint: {
+        questions: [
+          { id: "m02-c3-chk1", question: "A DM says you won a Roblox giveaway. You check the account behind the name. Real or fake?", evidence: "@Roblox_Winners_Official_2024 · made 3 days ago, 11 followers", options: ["Real, the name says Roblox", "Real, the handle even says official", "Fake, it's a brand-new look-alike account"], answer: 2, ok: "Nailed it. A real brand doesn't need '_winners_official' bolted on, and it isn't three days old with 11 followers. That's a costume.", okVoice: "/audio/wren/m02-c3-chk1-ok.mp3" },
+          { id: "m02-c3-chk2", question: "Where does a REAL brand run a genuine giveaway?", options: ["On its own real, verified page, open to everyone", "In a private DM sent just to you", "From a page made yesterday with a handful of followers"], answer: 0, ok: "That's it. A real giveaway is public, on the brand's own verified page. A secret one, just for you, is the tell.", okVoice: "/audio/wren/m02-c3-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to unmask the account behind a 'you won!' message.",
       instruction: "Unmask each account, then call real or fake.",
       intel: {
@@ -210,6 +228,12 @@ export const mission02: MissionManifest = {
       id: "funnel",
       title: "Follow the funnel",
       concept: "One scam wears many costumes across platforms; reused details are its fingerprints",
+      checkpoint: {
+        questions: [
+          { id: "m02-c4-chk1", question: "The exact same web link, prize and countdown turn up in a group chat, a DM and a printed poster. What does that reused detail prove?", options: ["Three separate scams by pure luck", "One scammer wearing three different costumes", "The prize is real because it's everywhere"], answer: 1, ok: "Right. Scammers reuse the same link and prize because they're lazy. Those repeats are fingerprints from one scam.", okVoice: "/audio/wren/m02-c4-chk1-ok.mp3" },
+          { id: "m02-c4-chk2", question: "You want to prove two messages come from the same scam. What do you hunt for?", options: ["Whichever one sounds the friendliest", "The one with the nicer picture attached", "Reused details, like the same link, prize or clock"], answer: 2, ok: "Exactly. Match the fingerprints, the shared link or prize, and both costumes fall off at once.", okVoice: "/audio/wren/m02-c4-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to prove three messages come from one scammer, and see the line they reel you down.",
       instruction: "Pin every clue that belongs to SIREN's scam, then put the trail in order.",
       intel: {
@@ -251,6 +275,12 @@ export const mission02: MissionManifest = {
       id: "form",
       title: "Guard the form",
       concept: "The funnel ends at a form; 'claim your prize' really means 'hand over your data', and each box is money",
+      checkpoint: {
+        questions: [
+          { id: "m02-c5-chk1", question: "A 'claim your prize' form asks for your first name, your favourite colour, and your account password. Which box do you slam shut?", options: ["Your account password", "Your favourite colour", "Your first name"], answer: 0, ok: "Yes. A name or a colour is harmless. Your password is the key to your whole account, and no prize ever needs it.", okVoice: "/audio/wren/m02-c5-chk1-ok.mp3" },
+          { id: "m02-c5-chk2", question: "A giveaway for a digital in-game skin asks for your HOME ADDRESS to 'post it out to you'. What does that tell you?", options: ["Bigger prizes just need more of your details", "A digital skin has nothing to post, so it's a data grab", "That's simply how online delivery always works"], answer: 1, ok: "Spot on. A skin lands in your game, not your letterbox. Asking for your address is SIREN shopping for your data.", okVoice: "/audio/wren/m02-c5-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn which boxes to slam shut the moment a 'prize' asks you to fill them in.",
       instruction: "Black out every box you'd never hand over for a prize.",
       intel: {
@@ -271,7 +301,7 @@ export const mission02: MissionManifest = {
         verb: "REDACT",
         payload: {
           intro: "SIREN's 'claim your prize' form. Black out every box you should NEVER hand over for a prize. Leave the harmless ones.",
-          surface: "SKINSTORM — claim your prize",
+          surface: "SKINSTORM: claim your prize",
           spans: [
             { id: "lead", text: "To send your prize we just need", risky: false, why: "Just the setup line. Nothing to give away here." },
             { id: "name", text: "your first name,", risky: false, why: "A first name on its own is pretty harmless. Fine to leave." },
@@ -294,6 +324,12 @@ export const mission02: MissionManifest = {
       id: "play",
       title: "Know SIREN's play",
       concept: "Every SIREN scam is an irresistible offer, a funnel, and a switch",
+      checkpoint: {
+        questions: [
+          { id: "m02-c6-chk1", question: "A public post leads you to a DM, the DM leads to a look-alike page, and the page asks for your password. Name that pattern in SIREN's words.", options: ["Just three unlucky coincidences", "A normal sign-up you should finish", "An offer, a funnel, and a switch"], answer: 2, ok: "Exactly her three moves. The offer pulls you in, the funnel walks you along, and the switch swaps your prize for your password.", okVoice: "/audio/wren/m02-c6-chk1-ok.mp3" },
+          { id: "m02-c6-chk2", question: "A giveaway you never entered comes looking for YOU. What's the one move that beats it every time?", options: ["Go to the real brand's own page and check there", "Reply and politely ask if it's genuine", "Tap it, but type in a made-up password"], answer: 0, ok: "That's the move. Never chase the offer that finds you. Go to the real page yourself. If it's not there, it was never real.", okVoice: "/audio/wren/m02-c6-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn the pattern behind every giveaway scam, and the move that beats it.",
       instruction: "Tap the 3 moves that are really hers.",
       intel: {
@@ -339,6 +375,12 @@ export const mission02: MissionManifest = {
       id: "reeledin",
       title: "If you got reeled in",
       concept: "If you paid or gave info to a giveaway scam, fast action limits the damage",
+      checkpoint: {
+        questions: [
+          { id: "m02-c7-chk1", question: "You paid a scam's '2 pound postage fee' with a card, then it demands 5 pounds more to 'release your prize'. What now?", options: ["Pay the 5 pounds so the first 2 isn't wasted", "Stop paying, and tell a trusted adult to call the bank", "Wait quietly and hope the prize turns up"], answer: 1, ok: "Right call. There is no prize, so every extra payment is just more lost. Stop, and get an adult onto the bank fast.", okVoice: "/audio/wren/m02-c7-chk1-ok.mp3" },
+          { id: "m02-c7-chk2", question: "A giveaway scam just caught your friend. How do you warn everyone else safely?", options: ["Forward them the giveaway link so they can see it", "Say nothing, it's all a bit embarrassing", "Tell them in your own plain words, with no link"], answer: 2, ok: "Perfect. Warning people in words protects them. Forwarding the link would just spread the live bait.", okVoice: "/audio/wren/m02-c7-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn the exact steps if a 'free' prize ever catches you.",
       instruction: "Build the rescue plan: pick the right move for each step.",
       intel: {
