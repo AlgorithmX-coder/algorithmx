@@ -20,6 +20,7 @@ import { case10Phone } from "./phone/case10";
 import type { PhoneCase } from "./phone/case06";
 import ConsoleRuntime from "./console/ConsoleRuntime";
 import { case11Console } from "./console/case11";
+import { case12Console } from "./console/case12";
 import type { ConsoleCase } from "./console/case11";
 import BlockIntro from "./phone/BlockIntro";
 import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
@@ -107,6 +108,7 @@ const PHONE_CASES: Record<string, PhoneCase> = {
 // Block 3 cases run in THE CONSOLE (an amber control panel), one ConsoleCase each.
 const CONSOLE_CASES: Record<string, ConsoleCase> = {
   "explorers-m11": case11Console,
+  "explorers-m12": case12Console,
 };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
