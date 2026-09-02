@@ -852,8 +852,12 @@ function DynamicLessonInner({
   const resumedRef = useRef<boolean>(false);
   useEffect(() => {
     if (resumedRef.current) return;
-    if (progress.resumeIndex === null) return;
 
+    // Owner/QA deep-links must jump on a BRAND-NEW attempt too: a week the
+    // owner has never played has resumeIndex === null, so this has to run
+    // BEFORE the resume guard below — otherwise ?boss=1 / ?screen= are ignored
+    // and the whole week plays from screen 0 (owner: "it's making me do the
+    // whole week again").
     // `?boss=1` deep-link: jump straight to the boss-battle screen.
     if (deepLinkBoss && content) {
       const bossIdx = content.screens.findIndex((s) => s.type === "bossBattle");
@@ -881,6 +885,9 @@ function DynamicLessonInner({
       resumedRef.current = true;
       return;
     }
+
+    // Resume / first-visit decisions below need progress to have hydrated.
+    if (progress.resumeIndex === null) return;
 
     // First-visit case: no progress to resume, just mark the
     // starting stopwatch and move on.
