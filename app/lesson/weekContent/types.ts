@@ -387,13 +387,32 @@ export type ShowdownRush = {
   }[];
 };
 
+/** SIGNATURE — a bespoke climactic mechanic unique to this week's boss (the
+ *  boss counterpart to the per-week signature mini-games). `mechanic` keys
+ *  into the BOSS_SIGNATURES registry (app/components/game/bossSignatures); the
+ *  mounted component reports hits via `judge` (feeding score + combo) and calls
+ *  `done()` when the attack is beaten. `config` is the mechanic's own data
+ *  shape, read + validated by that component. This is the extension point that
+ *  lets every boss fight on its own distinctive board instead of reshuffling
+ *  the shared mechanics. */
+export type ShowdownSignature = {
+  kind: "signature";
+  attack: number;
+  coach: string;
+  /** Registry key → app/components/game/bossSignatures/index.ts. */
+  mechanic: string;
+  /** Mechanic-specific data; the component reads its own shape. */
+  config?: Record<string, unknown>;
+};
+
 export type ShowdownPhaseDef =
   | ShowdownTapTell
   | ShowdownShieldHold
   | ShowdownCounterCard
   | ShowdownOrderStrike
   | ShowdownDeflectSort
-  | ShowdownRush;
+  | ShowdownRush
+  | ShowdownSignature;
 
 export interface ShowdownDef {
   machine: {

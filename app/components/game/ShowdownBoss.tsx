@@ -40,7 +40,9 @@ import type {
   ShowdownOrderStrike,
   ShowdownDeflectSort,
   ShowdownRush,
+  ShowdownSignature,
 } from "@/app/lesson/weekContent/types";
+import { BOSS_SIGNATURES } from "@/app/components/game/bossSignatures";
 import type { BossEndStats, BossPhaseResult } from "@/app/components/game/BossBattle";
 import {
   MONO,
@@ -749,6 +751,7 @@ export default function ShowdownBoss({
               {phase.kind === "orderStrike" && <OrderStrikePhase data={phase} pkey={`p${phaseIdx}`} judge={judge} done={playDone} reduce={reduce} accent={attack.color} />}
               {phase.kind === "deflectSort" && <DeflectSortPhase data={phase} pkey={`p${phaseIdx}`} judge={judge} done={playDone} reduce={reduce} accent={attack.color} />}
               {phase.kind === "rush" && <RushPhase data={phase} pkey={`p${phaseIdx}`} paused={!!teach} judge={judge} done={playDone} reduce={reduce} accent={attack.color} />}
+              {phase.kind === "signature" && <BossSignaturePhase data={phase} judge={judge} done={playDone} reduce={reduce} accent={attack.color} />}
             </motion.div>
           )}
 
@@ -905,6 +908,20 @@ type JudgeFn = (
   teach?: { title: string; explanation: string },
   at?: { x: number; y: number },
 ) => void;
+
+/* ─────────────────── SIGNATURE (bespoke per-week boss mechanic) ───────────────────
+   Mounts the week's registered BOSS_SIGNATURES component inside the fight with
+   the standard contract (judge for hit juice/combo, done to pop the gear). An
+   unregistered mechanic advances gracefully so a mis-keyed week can't wedge the
+   fight. */
+function BossSignaturePhase({ data, judge, done, reduce, accent }: { data: ShowdownSignature; judge: JudgeFn; done: () => void; reduce: boolean; accent: string }) {
+  const Sig = BOSS_SIGNATURES[data.mechanic];
+  useEffect(() => {
+    if (!Sig) done();
+  }, [Sig, done]);
+  if (!Sig) return null;
+  return <Sig config={data.config} accent={accent} judge={judge} done={done} reduce={reduce} />;
+}
 
 /* ───────────────────────── COACH BANNER ───────────────────────── */
 
