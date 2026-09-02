@@ -27,6 +27,10 @@ import { case15Console } from "./console/case15";
 import type { ConsoleCase } from "./console/case11";
 import WarRoomRuntime from "./warroom/WarRoomRuntime";
 import { case16War } from "./warroom/case16";
+import { case17War } from "./warroom/case17";
+import { case18War } from "./warroom/case18";
+import { case19War } from "./warroom/case19";
+import { case20War } from "./warroom/case20";
 import type { WarCase } from "./warroom/case16";
 import BlockIntro from "./phone/BlockIntro";
 import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
@@ -123,6 +127,10 @@ const CONSOLE_CASES: Record<string, ConsoleCase> = {
 // Block 4 cases run in THE WAR ROOM (a violet evidence board), one WarCase each.
 const WAR_CASES: Record<string, WarCase> = {
   "explorers-m16": case16War,
+  "explorers-m17": case17War,
+  "explorers-m18": case18War,
+  "explorers-m19": case19War,
+  "explorers-m20": case20War,
 };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
