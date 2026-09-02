@@ -720,22 +720,16 @@ export const WEEK_4: WeekContent = {
       },
     },
     phases: [
-      // P1 · FAKE PRIZE → DEFLECT-SORT: prize-hooks rain among real mail.
+      // P1 · FAKE PRIZE → SIGNATURE ("The Bargainster's hooked lures"): the
+      // bespoke climactic board for this boss — reel in each dangling deal, cut
+      // the baited scams (each hides a tell), set the real notes free. Replaces
+      // the plain deflect-sort so W4's fight has its own distinctive mechanic.
+      // Uses the component's built-in W4 lure set (no config needed).
       {
-        kind: "deflectSort",
+        kind: "signature",
+        mechanic: "w4Bargainster",
         attack: 0,
-        coach: "Bait gets CUT. Real mail reels in!",
-        actLabel: "CUT IT LOOSE!",
-        actIcon: "🚫",
-        passLabel: "REEL IT IN",
-        items: [
-          { id: "secretpet", label: "'Tap to unlock a SECRET pet nobody else has!'", icon: "🎁", act: true, note: "A 'secret prize' that just wants your tap is bait. Cut it!" },
-          { id: "calendar", label: "A reminder from your own calendar: swimming at 5", icon: "✅", act: false, note: "Your own calendar, wants nothing. Reel it in!" },
-          { id: "lucky7", label: "'You're the LUCKY 7th player, claim your reward!'", icon: "🪤", act: true, note: "Everyone sees 'lucky player'. Fake prize, cut it!" },
-          { id: "coach", label: "'Great effort today!' from Coach Lee", icon: "⭐", act: false, note: "A friendly note from a real coach. Reel it in." },
-          { id: "gems", label: "'FREE 5000 game gems, claim now!'", icon: "🎁", act: true, note: "Free game money is always bait. Cut it!" },
-          { id: "gran", label: "A thank-you text from Gran for your drawing", icon: "👪", act: false, note: "A saved family contact saying thanks. Reel it in." },
-        ],
+        coach: "Reel in each deal! Cut the baited hooks, set the real notes free.",
       },
       // P2 · COUNTDOWN SCARE → SHIELD-HOLD: the clock blares and burns out.
       {

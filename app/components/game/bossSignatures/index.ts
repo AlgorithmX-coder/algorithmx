@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 
 /**
@@ -38,7 +39,8 @@ export interface BossSignatureProps {
   reduce: boolean;
 }
 
-// Register each mechanic with a dynamic import, e.g.:
-//   import dynamic from "next/dynamic";
-//   w4Bargainster: dynamic(() => import("./W4Bargainster"), { ssr: false }),
-export const BOSS_SIGNATURES: Record<string, ComponentType<BossSignatureProps>> = {};
+export const BOSS_SIGNATURES: Record<string, ComponentType<BossSignatureProps>> = {
+  // Week 4 · Scams — reel in the Bargainster's lures: cut the hooked scams
+  // (each hides a tell), let the real mail drift by.
+  w4Bargainster: dynamic(() => import("./W4Bargainster"), { ssr: false }),
+};
