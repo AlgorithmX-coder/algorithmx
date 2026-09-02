@@ -18,6 +18,9 @@ import { case08Phone } from "./phone/case08";
 import { case09Phone } from "./phone/case09";
 import { case10Phone } from "./phone/case10";
 import type { PhoneCase } from "./phone/case06";
+import ConsoleRuntime from "./console/ConsoleRuntime";
+import { case11Console } from "./console/case11";
+import type { ConsoleCase } from "./console/case11";
 import BlockIntro from "./phone/BlockIntro";
 import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
 import type { BlockIntroData } from "./phone/blockIntroData";
@@ -99,6 +102,11 @@ const PHONE_CASES: Record<string, PhoneCase> = {
   "explorers-m08": case08Phone,
   "explorers-m09": case09Phone,
   "explorers-m10": case10Phone,
+};
+
+// Block 3 cases run in THE CONSOLE (an amber control panel), one ConsoleCase each.
+const CONSOLE_CASES: Record<string, ConsoleCase> = {
+  "explorers-m11": case11Console,
 };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
@@ -278,6 +286,18 @@ export default function ExplorersPage() {
         <PhoneRuntime
           key={active.id}
           phoneCase={phoneCase}
+          onExit={() => { refreshStatus(); setActive(null); }}
+          onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
+        />
+      );
+    }
+    // Block 3 cases run in THE CONSOLE.
+    const consoleCase = CONSOLE_CASES[active.id];
+    if (consoleCase) {
+      return (
+        <ConsoleRuntime
+          key={active.id}
+          consoleCase={consoleCase}
           onExit={() => { refreshStatus(); setActive(null); }}
           onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
         />
