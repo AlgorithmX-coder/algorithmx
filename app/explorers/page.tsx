@@ -22,6 +22,7 @@ import ConsoleRuntime from "./console/ConsoleRuntime";
 import { case11Console } from "./console/case11";
 import { case12Console } from "./console/case12";
 import { case13Console } from "./console/case13";
+import { case14Console } from "./console/case14";
 import type { ConsoleCase } from "./console/case11";
 import BlockIntro from "./phone/BlockIntro";
 import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
@@ -111,6 +112,7 @@ const CONSOLE_CASES: Record<string, ConsoleCase> = {
   "explorers-m11": case11Console,
   "explorers-m12": case12Console,
   "explorers-m13": case13Console,
+  "explorers-m14": case14Console,
 };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
