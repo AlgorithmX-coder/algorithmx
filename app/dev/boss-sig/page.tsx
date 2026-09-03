@@ -11,11 +11,22 @@
  * Usage:  /dev/boss-sig?m=<mechanicKey>[&accent=%23ff4e6a]
  */
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { BOSS_SIGNATURES } from "@/app/components/game/bossSignatures";
 
-export default function BossSignaturePreview() {
+// useSearchParams() needs a Suspense boundary above it or `next build` fails to
+// prerender this route (missing-suspense-with-csr-bailout). The default export
+// provides that boundary; the inner component holds the actual preview.
+export default function BossSignaturePreviewPage() {
+  return (
+    <Suspense fallback={null}>
+      <BossSignaturePreview />
+    </Suspense>
+  );
+}
+
+function BossSignaturePreview() {
   const params = useSearchParams();
   const mechanic = params?.get("m") ?? "";
   const accent = params?.get("accent") ?? "#ff4e6a";
