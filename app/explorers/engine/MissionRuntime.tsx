@@ -218,7 +218,11 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
 /* ============================================================== runtime */
 
 export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextCase }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"]; onExit?: () => void; onNextCase?: () => void }) {
-  const reduced = useReducedMotion();
+  // Fast test mode (?fast=1): reuse the reduced-motion path to skip the narrator
+  // wait / anti-skip so the owner can click through quickly. Real users never set
+  // it, so the anti-skip stays on for them.
+  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
+  const reduced = useReducedMotion() || fast;
   const audio = useSignalAudio();
   const storageKey = checkpointStorageKey(manifest.id);
 
@@ -351,7 +355,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   };
 
   /* ---- WREN voice ---- */
-  const [voiceOn, setVoiceOn] = useState(true);
+  const [voiceOn, setVoiceOn] = useState(!fast); // fast test mode starts muted so nothing gates
   useEffect(() => {
     try {
       const v = localStorage.getItem("explorers:voice");
@@ -708,7 +712,7 @@ function CycleScene({ cycle, cycleIndex, total, stage, reduced, audio, emit, onN
 
       {stage === "intel" && <LearnStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} voiceOn={voiceOn} />}
       {stage === "fieldwork" && <PlayStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} voiceOn={voiceOn} />}
-      {stage === "checkpoint" && <QuizStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} />}
+      {stage === "checkpoint" && <QuizStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} voiceOn={voiceOn} />}
     </section>
   );
 }
@@ -1083,10 +1087,12 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
   );
 }
 
-/* SKILL CHECK — blind, must-pass gate. Four options, no right/wrong shown per
-   question; the next skill stays locked until EVERY answer is right. A miss
-   re-teaches this skill (replays its beats) and sends him back through the
-   check. No tapping-until-green. */
+/* SKILL CHECK — a short immediate-feedback practice check after PRACTICE, so
+   each skill takes a few questions to complete, not just the one fieldwork
+   exercise. Each question reveals right/wrong at once: a green tick + WREN's
+   spoken confirmation on the correct answer, or a red nudge + voice that lets
+   the child try the same question again. Matches the practice feel of blocks
+   2-4. Optional per cycle (`cycle.checkpoint.questions`). */
 /** An advance button that stays locked for a few seconds so the child actually
  *  reviews what's on screen before moving on (a filling bar shows the wait). */
 function GatedButton({ label, onClick, delayMs = 3500, note = "TAKE A MOMENT TO REVIEW..." }: { label: string; onClick: () => void; delayMs?: number; note?: string }) {
@@ -1118,74 +1124,53 @@ function shuffleQ<Q extends { options: string[]; answer: number }>(q: Q): Q {
   return { ...q, options: order.map((i) => q.options[i]), answer: order.indexOf(q.answer) };
 }
 
-function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
+const CHK_NUDGES = ["/audio/wren/chk-nudge-1.mp3", "/audio/wren/chk-nudge-2.mp3", "/audio/wren/chk-nudge-3.mp3"];
+const CHK_NUDGE_TEXTS = ["Not quite. Take another look and try again.", "Not that one. Have another go.", "Close, but not it. Try again."];
+let chkNudgeI = 0;
+
+function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
   const [questions] = useState(() => (cycle.checkpoint?.questions ?? []).map(shuffleQ));
-  const [phase, setPhase] = useState<"check" | "reteach" | "passed">("check");
   const [idx, setIdx] = useState(0);
-  const [picked, setPicked] = useState<number | null>(null);
-  const [answers, setAnswers] = useState<number[]>([]);
+  const [solved, setSolved] = useState(false);
+  const [wrong, setWrong] = useState<number | null>(null);
+  const [nudge, setNudge] = useState<string | null>(null);
   const q = questions[idx];
 
-  const pick = (i: number) => {
-    if (picked !== null) return;
-    setPicked(i);
-    setAnswers((a) => { const n = [...a]; n[idx] = i; return n; });
-    audio.click(); // blind — never reveal right/wrong as you go
-  };
+  useEffect(() => { if (!questions.length) onNext(); return () => stopWren(); }, []);
+  if (!q) return null;
 
-  const next = () => {
-    if (picked === null) return;
-    if (idx + 1 < questions.length) { setIdx(idx + 1); setPicked(null); audio.click(); return; }
-    const allRight = questions.every((qq, i) => (i === idx ? picked : answers[i]) === qq.answer);
-    if (allRight) {
-      setPhase("passed"); audio.stamp();
-      emit({
-        type: "CHECKPOINT_PASSED",
-        sourceKey: `cycle-${cycleIndex}`,
-        evidence: questions.map((qq, i) => ({ questionId: qq.id, answerIndex: (i === idx ? picked : answers[i]) ?? -1, attempts: 1 })),
-      });
+  const pick = (i: number) => {
+    if (solved) return;
+    if (i === q.answer) {
+      setSolved(true); setWrong(null); setNudge(null); audio.latch();
+      if (voiceOn && q.okVoice) playWren(q.okVoice, true);
     } else {
-      setPhase("reteach"); audio.thud();
+      setWrong(i); audio.thud();
+      const k = chkNudgeI++ % CHK_NUDGES.length;
+      setNudge(CHK_NUDGE_TEXTS[k]);
+      if (voiceOn) playWren(CHK_NUDGES[k], true);
     }
   };
 
-  const retry = () => { audio.click(); setAnswers([]); setIdx(0); setPicked(null); setPhase("check"); };
+  const next = () => {
+    stopWren();
+    if (idx + 1 < questions.length) { setIdx(idx + 1); setSolved(false); setWrong(null); setNudge(null); audio.click(); return; }
+    emit({
+      type: "CHECKPOINT_PASSED",
+      sourceKey: `cycle-${cycleIndex}`,
+      evidence: questions.map((qq) => ({ questionId: qq.id, answerIndex: qq.answer, attempts: 1 })),
+    });
+    audio.stamp();
+    onNext();
+  };
 
-  if (phase === "reteach") {
-    return (
-      <section style={{ maxWidth: 640, margin: "0 auto" }}>
-        <Eyebrow text={`Not yet · ${cycle.title}`} color={T.actionAmber} />
-        <div style={{ display: "grid", gap: 12, margin: "14px 0 22px" }}>
-          <Bubble who="wren" tone={T.actionAmber}>Not quite. Let's go over it once more, and this time listen for the answers.</Bubble>
-          {cycle.intel.beats.map((b, i) => (<Bubble key={i} who="wren">{b}</Bubble>))}
-        </div>
-        <AmberButton label="TRY THE CHECK AGAIN →" onClick={retry} />
-      </section>
-    );
-  }
-
-  if (phase === "passed") {
-    return (
-      <section style={{ maxWidth: 620, margin: "0 auto", position: "relative", textAlign: "center" }}>
-        <StampMark text="PASSED" visible reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -8, right: 8 }} />
-        <Eyebrow text="Skill check passed" color={T.confirmedGreen} />
-        <p style={{ fontFamily: MONO, fontSize: 16, color: T.confirmedGreen, margin: "14px 0 20px" }}>
-          All {questions.length} right. Skill {cycleIndex + 1} locked in.
-        </p>
-        <AmberButton label="NEXT →" onClick={onNext} />
-      </section>
-    );
-  }
-
-  // phase "check" — blind, four options, must get every one right
-  const answered = picked !== null;
   return (
     <section style={{ maxWidth: 680, margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
         <Eyebrow text={`Skill check · question ${idx + 1} of ${questions.length}`} color={T.confirmedGreen} />
         <span style={{ display: "flex", gap: 6 }} aria-label={`question ${idx + 1} of ${questions.length}`}>
           {questions.map((_, i) => {
-            const done = answers[i] != null || (i === idx && answered);
+            const done = i < idx || (i === idx && solved);
             const col = done ? T.confirmedGreen : i === idx ? T.actionAmber : T.hairline;
             return <span key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: col, boxShadow: col !== T.hairline ? `0 0 8px ${col}88` : "none" }} />;
           })}
@@ -1193,26 +1178,34 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
       </div>
       <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 4, padding: "18px 20px" }}>
         <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.6, color: T.textPrimary }}>{q.question}</p>
+        {q.evidence && <p style={{ margin: "10px 0 0", fontFamily: MONO, fontSize: 13, color: T.textSecondary, wordBreak: "break-word" }}>{q.evidence}</p>}
       </div>
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
         {q.options.map((o, i) => {
-          const isPick = picked === i;
+          const isRight = solved && i === q.answer;
+          const isWrong = wrong === i && !solved;
+          const border = isRight ? T.confirmedGreen : isWrong ? T.threatRed : T.hairline;
+          const bg = isRight ? `${T.confirmedGreen}14` : isWrong ? `${T.threatRed}14` : T.panelRaised;
+          const col = isRight ? T.confirmedGreen : isWrong ? T.threatRed : T.textPrimary;
           return (
-            <button key={i} onClick={() => pick(i)} className="sr-btn" disabled={answered}
+            <button key={i} onClick={() => pick(i)} className="sr-btn" disabled={solved}
               style={{
                 textAlign: "left", fontFamily: MONO, fontSize: 14, lineHeight: 1.5,
-                color: isPick ? T.arcCyan : T.textPrimary, background: isPick ? `${T.arcCyan}14` : T.panelRaised,
-                border: `1.5px solid ${isPick ? T.arcCyan : T.hairline}`, borderRadius: 6, padding: "13px 16px",
-                cursor: answered ? "default" : "pointer", opacity: answered && !isPick ? 0.5 : 1,
+                color: col, background: bg, border: `1.5px solid ${border}`, borderRadius: 6, padding: "13px 16px",
+                cursor: solved ? "default" : "pointer", opacity: solved && !isRight ? 0.5 : 1,
               }}>
-              {o}
+              {isRight ? "✓ " : ""}{o}
             </button>
           );
         })}
       </div>
-      {answered && (
+      {nudge && !solved && <p style={{ marginTop: 12, fontFamily: MONO, fontSize: 13, fontWeight: 600, color: T.threatRed }}>{nudge}</p>}
+      {solved && (
         <div style={{ marginTop: 16 }}>
-          <AmberButton label={idx + 1 < questions.length ? "NEXT QUESTION →" : "FINISH THE CHECK →"} onClick={next} />
+          {q.ok && <Bubble who="wren" tone={T.confirmedGreen}>{q.ok}</Bubble>}
+          <div style={{ marginTop: 14 }}>
+            <GatedButton label={idx + 1 < questions.length ? "NEXT QUESTION →" : "SKILL LOCKED IN →"} onClick={next} delayMs={reduced ? 0 : 2600} note="TAKE A MOMENT..." />
+          </div>
         </div>
       )}
     </section>

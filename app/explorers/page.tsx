@@ -11,6 +11,30 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import MissionRuntime from "./engine/MissionRuntime";
+import PhoneRuntime from "./phone/PhoneRuntime";
+import { case06Phone } from "./phone/case06";
+import { case07Phone } from "./phone/case07";
+import { case08Phone } from "./phone/case08";
+import { case09Phone } from "./phone/case09";
+import { case10Phone } from "./phone/case10";
+import type { PhoneCase } from "./phone/case06";
+import ConsoleRuntime from "./console/ConsoleRuntime";
+import { case11Console } from "./console/case11";
+import { case12Console } from "./console/case12";
+import { case13Console } from "./console/case13";
+import { case14Console } from "./console/case14";
+import { case15Console } from "./console/case15";
+import type { ConsoleCase } from "./console/case11";
+import WarRoomRuntime from "./warroom/WarRoomRuntime";
+import { case16War } from "./warroom/case16";
+import { case17War } from "./warroom/case17";
+import { case18War } from "./warroom/case18";
+import { case19War } from "./warroom/case19";
+import { case20War } from "./warroom/case20";
+import type { WarCase } from "./warroom/case16";
+import BlockIntro from "./phone/BlockIntro";
+import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
+import type { BlockIntroData } from "./phone/blockIntroData";
 import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
@@ -75,6 +99,38 @@ const TOPICS: Record<string, string> = {
   "explorers-m18": "cybercrime & the choice",
   "explorers-m19": "the full attack, end to end",
   "explorers-m20": "unmask the coordinator",
+};
+
+// Page-level block-intro slides (ATLAS briefings), shown once when a kid opens
+// the FIRST case of a block. Block 2 self-briefs inside the phone, so it's not
+// listed here; blocks 3-4 will be added as their intros are built.
+const BLOCK_INTROS: Record<number, BlockIntroData> = { 1: block1Intro, 2: block2Intro, 3: block3Intro, 4: block4Intro };
+
+// Block 2 cases run in THE PHONE (not the Signal Room engine), one PhoneCase each.
+const PHONE_CASES: Record<string, PhoneCase> = {
+  "explorers-m06": case06Phone,
+  "explorers-m07": case07Phone,
+  "explorers-m08": case08Phone,
+  "explorers-m09": case09Phone,
+  "explorers-m10": case10Phone,
+};
+
+// Block 3 cases run in THE CONSOLE (an amber control panel), one ConsoleCase each.
+const CONSOLE_CASES: Record<string, ConsoleCase> = {
+  "explorers-m11": case11Console,
+  "explorers-m12": case12Console,
+  "explorers-m13": case13Console,
+  "explorers-m14": case14Console,
+  "explorers-m15": case15Console,
+};
+
+// Block 4 cases run in THE WAR ROOM (a violet evidence board), one WarCase each.
+const WAR_CASES: Record<string, WarCase> = {
+  "explorers-m16": case16War,
+  "explorers-m17": case17War,
+  "explorers-m18": case18War,
+  "explorers-m19": case19War,
+  "explorers-m20": case20War,
 };
 
 const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
@@ -175,6 +231,15 @@ export default function ExplorersPage() {
   // to that one case so Next-case navigation always starts the next mission fresh.
   const [devBossId, setDevBossId] = useState<string | null>(null);
   const [devAt, setDevAt] = useState<string | null>(null); // "boss" | "test"
+  // When true, show the block-intro (ATLAS) slide before the active case's runtime.
+  const [showBrief, setShowBrief] = useState(false);
+
+  const firstIdOfBlock = useCallback((block: number) => CASES.find((m) => m.block === block)?.id, []);
+  // Open a case, briefing the block first if this is the block's opening case.
+  const openCase = useCallback((m: MissionManifest) => {
+    setActive(m);
+    setShowBrief(!!BLOCK_INTROS[m.block] && firstIdOfBlock(m.block) === m.id);
+  }, [firstIdOfBlock]);
 
   const refreshStatus = useCallback(() => {
     const s: Record<string, string> = {};
@@ -212,6 +277,8 @@ export default function ExplorersPage() {
       setActive(found);
       setDevBossId(at === "boss" || at === "test" ? found.id : null);
       setDevAt(at);
+      // Brief the block on a cold deep-link to its opening case (unless jumping to boss/test).
+      setShowBrief(!at && !!BLOCK_INTROS[found.block] && CASES.find((m) => m.block === found.block)?.id === found.id);
     }
   }, []);
 
@@ -231,6 +298,47 @@ export default function ExplorersPage() {
   if (active) {
     const activeIdx = CASES.findIndex((m) => m.id === active.id);
     const hasNext = activeIdx >= 0 && activeIdx < CASES.length - 1;
+    // The block-intro (ATLAS) slide plays before the block's opening case.
+    const pageIntro = BLOCK_INTROS[active.block];
+    if (pageIntro && showBrief && firstIdOfBlock(active.block) === active.id) {
+      return <BlockIntro data={pageIntro} onBegin={() => setShowBrief(false)} />;
+    }
+    // Block 2 cases run in THE PHONE, not the Signal Room engine.
+    const phoneCase = PHONE_CASES[active.id];
+    if (phoneCase) {
+      return (
+        <PhoneRuntime
+          key={active.id}
+          phoneCase={phoneCase}
+          onExit={() => { refreshStatus(); setActive(null); }}
+          onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
+        />
+      );
+    }
+    // Block 3 cases run in THE CONSOLE.
+    const consoleCase = CONSOLE_CASES[active.id];
+    if (consoleCase) {
+      return (
+        <ConsoleRuntime
+          key={active.id}
+          consoleCase={consoleCase}
+          onExit={() => { refreshStatus(); setActive(null); }}
+          onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
+        />
+      );
+    }
+    // Block 4 cases run in THE WAR ROOM.
+    const warCase = WAR_CASES[active.id];
+    if (warCase) {
+      return (
+        <WarRoomRuntime
+          key={active.id}
+          warCase={warCase}
+          onExit={() => { refreshStatus(); setActive(null); }}
+          onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
+        />
+      );
+    }
     return (
       <MissionRuntime
         key={active.id}
@@ -244,7 +352,7 @@ export default function ExplorersPage() {
           hasNext
             ? () => {
                 refreshStatus();
-                setActive(CASES[activeIdx + 1]);
+                openCase(CASES[activeIdx + 1]);
               }
             : undefined
         }
@@ -342,7 +450,7 @@ export default function ExplorersPage() {
           </div>
 
           <div style={{ marginTop: 18 }}>
-            <button className="tc-cta" onClick={() => nextCase && setActive(nextCase)} disabled={!nextCase}>
+            <button className="tc-cta" onClick={() => nextCase && openCase(nextCase)} disabled={!nextCase}>
               {nextCase ? "▶ " : "✓ "}
               {continueLabel}
             </button>
@@ -381,7 +489,7 @@ export default function ExplorersPage() {
                     <button
                       key={m.id}
                       className={`tc-card${isNext ? " tc-next" : ""}${locked ? " tc-locked" : ""}`}
-                      onClick={locked ? undefined : () => setActive(m)}
+                      onClick={locked ? undefined : () => openCase(m)}
                       disabled={locked}
                       aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : locked ? " Locked. Finish the earlier cases first." : isNext ? " Play next." : ""}`}
                       style={{ ["--accent"]: accent, position: "relative" } as CSSProperties}

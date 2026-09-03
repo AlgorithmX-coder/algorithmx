@@ -64,6 +64,12 @@ export const mission05: MissionManifest = {
       id: "costume",
       title: "The costume change",
       concept: "The same scam wears a different costume on every channel",
+      checkpoint: {
+        questions: [
+          { id: "m05-c1-chk1", question: "You get an email AND an Instagram DM the same afternoon, both saying your account is locked and both linking to secure-fix-now.net. What does that tell you?", options: ["One scammer running the same play in two costumes", "Two unrelated companies happened to contact you", "Proof the warning must be real, since it came twice"], answer: 0, ok: "Right. Same link, same story, two channels. That is one author swapping costumes, not two real alerts.", okVoice: "/audio/wren/m05-c1-chk1-ok.mp3" },
+          { id: "m05-c1-chk2", question: "PHANTOM HOOK jumps from a text to a QR poster to a DM. Why keep changing costume like that?", options: ["Because posters simply cost him money", "Because he prefers one channel over another", "To hide that it is all one scam with the same moves underneath"], answer: 2, ok: "Exactly. The costume keeps changing, the moves stay the same. Match the moves and the whole storm becomes one case.", okVoice: "/audio/wren/m05-c1-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to see one scam wearing three costumes at once.",
       instruction: "Tap the 3 fingerprints every channel shares. One message is genuinely fine.",
       intel: {
@@ -111,6 +117,12 @@ export const mission05: MissionManifest = {
       id: "senders",
       title: "Read the address, not the name",
       concept: "The sender's name is a costume too; the address underneath is the truth",
+      checkpoint: {
+        questions: [
+          { id: "m05-c2-chk1", question: "A DM's name tag reads 'Head Teacher Office', but it comes from mrsp-school-alerts.co. Should the name make you trust it?", evidence: "from: mrsp-school-alerts.co", options: ["Yes, only a real teacher could set that name", "No, anyone can type that name, so read the address", "Yes, because it clearly mentions the school"], answer: 1, ok: "That is it. The name tag is typed by whoever sent it. The address, mrsp-school-alerts dot co, is the giveaway.", okVoice: "/audio/wren/m05-c2-chk1-ok.mp3" },
+          { id: "m05-c2-chk2", question: "An email says 'StreamBox Billing'. You peel back the name and the real address is billing@streambox.com. Real or fake?", evidence: "billing@streambox.com", options: ["Real, the address is the genuine streambox.com", "Fake, billing teams never send emails", "Fake, the name sounds far too friendly"], answer: 0, ok: "Correct. Name and address agree, and the address is the real streambox.com. This one genuinely is them.", okVoice: "/audio/wren/m05-c2-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn why the sender's name proves absolutely nothing.",
       instruction: "Tap each sender to reveal the real address, then call REAL or FAKE.",
       intel: {
@@ -151,6 +163,12 @@ export const mission05: MissionManifest = {
       id: "qr",
       title: "The QR costume",
       concept: "A QR code hides its destination completely, so a swapped sticker sends you anywhere",
+      checkpoint: {
+        questions: [
+          { id: "m05-c3-chk1", question: "Why can a scammer stick a fake QR sticker over a real one and fool almost everyone?", options: ["Because QR codes need a special camera", "Because stickers are really hard to make", "Because you cannot see where a square leads until you scan it"], answer: 2, ok: "Right. A square hides its destination. Swap the sticker and the same-looking code now points at his site.", okVoice: "/audio/wren/m05-c3-chk1-ok.mp3" },
+          { id: "m05-c3-chk2", question: "You scan a bus-stop QR to buy a ticket, and it previews buytickets.city-transit-verify.net. What now?", evidence: "buytickets.city-transit-verify.net", options: ["Pay quickly, the bus is nearly here", "Do not go; that is a stranger's verify-site, so type the real address yourself", "Scan it a second time just to be sure"], answer: 1, ok: "Good call. The preview showed a stranger's verify-site, not the real one. Type the real address in yourself instead.", okVoice: "/audio/wren/m05-c3-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to never trust a square you can't read.",
       instruction: "Tap each code to scan the real address, then call REAL or FAKE.",
       intel: {
@@ -192,6 +210,12 @@ export const mission05: MissionManifest = {
       id: "spear",
       title: "Spray vs spear",
       concept: "A message that KNOWS things about you is more dangerous than one blasted to everyone",
+      checkpoint: {
+        questions: [
+          { id: "m05-c4-chk1", question: "Two messages arrive. One went to your whole year group. One uses your first name, your club, and last week's match score. Which is the bigger threat?", options: ["The one that knows your name and details", "The one sent to the whole year group", "They are exactly equal, both are messages"], answer: 0, ok: "Yes. Personal details mean someone did homework on you. That is a spear, and it outranks the mass blast.", okVoice: "/audio/wren/m05-c4-chk1-ok.mp3" },
+          { id: "m05-c4-chk2", question: "Why does a spear-phish worry an analyst more than a spray blast, even though the blast reaches more people?", options: ["Because it always has a scarier logo", "Because it usually arrives faster", "Because someone chose to target you and put real effort in"], answer: 2, ok: "Exactly. Spray is cheap guessing. A spear cost effort, which means someone decided you were worth the aim.", okVoice: "/audio/wren/m05-c4-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn why the quiet, personal message is the real threat.",
       instruction: "Three flagged messages, one of you. Make the call: which goes to the top?",
       intel: {
@@ -246,6 +270,12 @@ export const mission05: MissionManifest = {
       id: "queue",
       title: "Work the queue",
       concept: "In a flood, rank messages by severity, not by how loud they shout",
+      checkpoint: {
+        questions: [
+          { id: "m05-c5-chk1", question: "Your inbox floods. A message in all caps with rocket emojis shouts 'FREE CONSOLE!!!'. Where does it go in your queue?", options: ["Straight to the top, it is the loudest", "Log it and ignore it, because loud is not dangerous", "Reply fast to claim before it expires"], answer: 1, ok: "Right. Loud and asking for nothing real is just noise. Log it and move to the threats that matter.", okVoice: "/audio/wren/m05-c5-chk1-ok.mp3" },
+          { id: "m05-c5-chk2", question: "In the same flood, which quiet message should jump to the top of the queue?", options: ["A short message asking you to log in to unlock your account", "A 'you have 2 new likes' notification", "A friend asking about tonight's homework"], answer: 0, ok: "That is the one. It asks for your login, which is the whole scam. Quiet and specific beats loud every time.", okVoice: "/audio/wren/m05-c5-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to handle the real threats first and let the noise wait.",
       instruction: "Sort the flood: handle now, or log and ignore?",
       intel: {
@@ -290,6 +320,12 @@ export const mission05: MissionManifest = {
       id: "play",
       title: "Know PHANTOM HOOK's play",
       concept: "Many costumes, a borrowed name, and always the same ask; sometimes armed with a bought file",
+      checkpoint: {
+        questions: [
+          { id: "m05-c6-chk1", question: "Across texts, QR codes and DMs, what is the ONE thing PHANTOM HOOK always ends up asking for?", options: ["Your favourite colour", "A funny meme to share", "Your login"], answer: 2, ok: "Yes. The costume changes and the channel changes, but the ask never does. It is always your login.", okVoice: "/audio/wren/m05-c6-chk1-ok.mp3" },
+          { id: "m05-c6-chk2", question: "One of his messages knew your name and your form room. How did his scam turn into a spear?", options: ["He guessed both of them by pure luck", "He bought a file of details about you first", "The school posted them somewhere public"], answer: 1, ok: "Exactly. A bought file turned a blind blast into a hook aimed at you. Remember who sells those files.", okVoice: "/audio/wren/m05-c6-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn PHANTOM HOOK's whole play, and the upgrade that makes it a spear.",
       instruction: "Tap the 3 moves that are really PHANTOM HOOK's.",
       intel: {
@@ -335,6 +371,12 @@ export const mission05: MissionManifest = {
       id: "drill",
       title: "The two-check habit",
       concept: "The storm drill: pause, check the address, open the real app, tell an adult if it's still off",
+      checkpoint: {
+        questions: [
+          { id: "m05-c7-chk1", question: "An urgent 'your account is locked' text lands with a 10-minute timer. What is step one of the drill?", options: ["Pause, and do not tap anything yet", "Tap the link before the timer ends", "Reply to ask if it is genuine"], answer: 0, ok: "Right. The timer is fake and the pause beats it. Nothing gets tapped until you have checked.", okVoice: "/audio/wren/m05-c7-chk1-ok.mp3" },
+          { id: "m05-c7-chk2", question: "You paused, and the address looks off. What is the safe way to check whether the alert is real?", options: ["Tap the link in the message to see", "Reply and ask the sender to prove it", "Open the real app yourself and look there"], answer: 2, ok: "That is the second check. If it is real it will be in your actual account. His link only ever goes to his page.", okVoice: "/audio/wren/m05-c7-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll build the ten-second drill that beats any costume on any channel.",
       instruction: "Build the storm drill. Pick the right move for each step.",
       intel: {

@@ -67,6 +67,12 @@ export const mission03: MissionManifest = {
       id: "rig",
       title: "How the rig guesses",
       concept: "A guessing rig isn't magic; it runs lists, and the obvious stuff falls first",
+      checkpoint: {
+        questions: [
+          { id: "m03-c1-chk1", question: "The rig works down a list, most common first. Which of these would it reach almost instantly?", options: ["football", "wobble-tractor-lemon-glow", "kv83-quartz-hollow"], answer: 0, ok: "Right. 'football' is a common word sitting near the top of the rig's list, so it falls in the first second.", okVoice: "/audio/wren/m03-c1-chk1-ok.mp3" },
+          { id: "m03-c1-chk2", question: "Which of these would make the rig grind the LONGEST?", options: ["password2024", "iloveyou", "kettle-marble-fox-73"], answer: 2, ok: "Exactly. Random, unrelated words are on no list, so the rig has nothing to grab and has to grind for years.", okVoice: "/audio/wren/m03-c1-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn why a weak password falls in seconds and a strong one doesn't.",
       instruction: "Sort each password: is it already on the rig's list, or does it make the rig work?",
       intel: {
@@ -111,6 +117,12 @@ export const mission03: MissionManifest = {
       id: "ingredients",
       title: "The ingredients you hand it",
       concept: "A weak password is built from YOU, and the rig can read your life",
+      checkpoint: {
+        questions: [
+          { id: "m03-c2-chk1", question: "Why isn't Leo's password as personal and safe as he thinks?", evidence: "Leo's password: Leo2011!", options: ["The symbols make it really strong", "Every part is his name and birth year, both easy to look up", "It's far too long for the rig to bother with"], answer: 1, ok: "That's it. His name and birth year are one quick search away, so none of it is actually a secret.", okVoice: "/audio/wren/m03-c2-chk1-ok.mp3" },
+          { id: "m03-c2-chk2", question: "Does writing 'Passw0rd' with a zero instead of an o fool the rig?", options: ["No, the rig already tries that swap automatically", "Yes, zeros are impossible to guess", "Yes, it becomes a brand-new word"], answer: 0, ok: "Right. Swapping o for 0 is an old trick the rig checks by itself, so it doesn't slow it down at all.", okVoice: "/audio/wren/m03-c2-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to spot the guessable bits you've baked into a password.",
       instruction: "Tap every password the rig would crack from knowing Jake, plus the mistake that links them.",
       intel: {
@@ -159,6 +171,12 @@ export const mission03: MissionManifest = {
       id: "reuse",
       title: "One key, every door",
       concept: "A reused password is a master key; one leak opens every door, and email is the master door",
+      checkpoint: {
+        questions: [
+          { id: "m03-c3-chk1", question: "Sara uses the same password on her game, her socials, and her email. That one password leaks. What can the attacker do?", options: ["Only open the game it leaked from", "Try that one key on every other account too", "Nothing, a leaked password is harmless"], answer: 1, ok: "Exactly. One reused key means a single leak swings open every door that shares it.", okVoice: "/audio/wren/m03-c3-chk1-ok.mp3" },
+          { id: "m03-c3-chk2", question: "Why is the email account the very first one to protect?", options: ["It can reset the passwords on your other accounts", "It just holds your oldest messages", "It collects the most adverts"], answer: 0, ok: "Right. 'Forgot password' sends a reset link to your email, so owning the email means owning everything.", okVoice: "/audio/wren/m03-c3-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn why one leak can take every account, and which door to save first.",
       instruction: "Jake's reused password just leaked. Make the call.",
       intel: {
@@ -213,6 +231,12 @@ export const mission03: MissionManifest = {
       id: "length",
       title: "Length beats cleverness",
       concept: "What actually costs the rig time is length, not clever symbol swaps",
+      checkpoint: {
+        questions: [
+          { id: "m03-c4-chk1", question: "Which of these would take the rig the LONGEST to crack?", options: ["Xy7$!q", "coppertunnelmangoladder", "P@ss1"], answer: 1, ok: "Yes. It has no symbols at all, but it's long, and length is what buries the rig for centuries.", okVoice: "/audio/wren/m03-c4-chk1-ok.mp3" },
+          { id: "m03-c4-chk2", question: "You can change ONE thing about a short password. Which helps most against the rig?", options: ["Add several more characters to make it longer", "Add a single ! at the end", "Change an e to a 3"], answer: 0, ok: "That's the real lever. Length multiplies the rig's work, while a lone symbol or swap barely slows it down.", okVoice: "/audio/wren/m03-c4-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll SEE why a long dull password beats a short clever one.",
       instruction: "Drag the length up until the rig would give up, then lock it in.",
       intel: {
@@ -255,6 +279,12 @@ export const mission03: MissionManifest = {
       id: "phrase",
       title: "Three random words",
       concept: "Three or four random, unrelated words make a long password you can actually remember",
+      checkpoint: {
+        questions: [
+          { id: "m03-c5-chk1", question: "Which of these is the best passphrase?", options: ["badger-lantern-syrup-cloud", "MyTownIsLeeds2012", "summer-holiday-fun"], answer: 0, ok: "Perfect. Four random, unrelated words that are nothing to do with you: long, unguessable, and easy to picture.", okVoice: "/audio/wren/m03-c5-chk1-ok.mp3" },
+          { id: "m03-c5-chk2", question: "Why NOT build your passphrase from a line of your favourite song?", options: ["Song words are too short to use", "The words rhyme and confuse the rig", "Famous lines are already on the rig's list"], answer: 2, ok: "Right. A well-known lyric is on the list the rig already tries, so random has to mean truly random.", okVoice: "/audio/wren/m03-c5-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll build a passphrase that's long, strong, and sticks in your head.",
       instruction: "Build a passphrase the rig can't guess. Pick the safe part for each slot.",
       intel: {
@@ -322,6 +352,12 @@ export const mission03: MissionManifest = {
       id: "play",
       title: "Know SKELETON KEY's play",
       concept: "Every guessing attack is a list, plus your own life, plus endless patience",
+      checkpoint: {
+        questions: [
+          { id: "m03-c6-chk1", question: "Which of these is one of SKELETON KEY's three real moves?", options: ["Sending a fake 'you won a prize!' message", "Building a copycat login page", "Scraping your posts for your pet and birthday"], answer: 2, ok: "Yes. Feeding your own life into the rig is move two. He doesn't trick you, he studies you.", okVoice: "/audio/wren/m03-c6-chk1-ok.mp3" },
+          { id: "m03-c6-chk2", question: "What single habit beats every part of his guessing game?", options: ["Changing your username often", "Long, random, unique passwords for each door", "A trickier secret question"], answer: 1, ok: "Exactly. He can't guess what isn't a word and isn't about you, and a unique key stops one lucky hit spreading.", okVoice: "/audio/wren/m03-c6-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn SKELETON KEY's whole game, and the one thing that beats it.",
       instruction: "Tap the 3 moves that are really SKELETON KEY's.",
       intel: {
@@ -367,6 +403,12 @@ export const mission03: MissionManifest = {
       id: "plan",
       title: "Lock every door",
       concept: "The fix-it plan: change the reused one, go long, make each unique, let a manager remember",
+      checkpoint: {
+        questions: [
+          { id: "m03-c7-chk1", question: "You're locking down all your accounts. What's the very FIRST move?", options: ["Buy a brand-new device first", "Change your least-used account first", "Change your most-reused password, starting with email"], answer: 2, ok: "Right. Snapping the most-reused key first, at the master door, does the most good the fastest.", okVoice: "/audio/wren/m03-c7-chk1-ok.mp3" },
+          { id: "m03-c7-chk2", question: "How do the pros remember forty different strong passwords?", options: ["They reuse one clever password everywhere", "A password manager remembers them all", "They write them in a note called 'passwords'"], answer: 1, ok: "That's the cheat code. A manager holds every strong key, so you only have to remember one.", okVoice: "/audio/wren/m03-c7-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll build the exact plan to lock every door for good.",
       instruction: "Build the lock-down plan. Pick the right move for each step.",
       intel: {

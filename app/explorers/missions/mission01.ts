@@ -61,6 +61,12 @@ export const mission01: MissionManifest = {
       id: "lure",
       title: "Spot the pressure",
       concept: "Scammers fake a strong feeling to rush you past thinking",
+      checkpoint: {
+        questions: [
+          { id: "m01-c1-chk1", question: "A message says 'Your account will be DELETED in 1 hour unless you act NOW!'. What trick is it using?", options: ["Fake urgency to rush you past thinking", "A friendly hello", "A helpful reminder"], answer: 0, ok: "Exactly. That scary countdown is there to panic you into acting before you think. Real companies never rush you like that.", okVoice: "/audio/wren/m01-c1-chk1-ok.mp3" },
+          { id: "m01-c1-chk2", question: "A message gives you a sudden jolt of fear or excitement. What's the smart first move?", options: ["Do what it says right away", "Stop and slow down before doing anything", "Forward it to all your friends"], answer: 1, ok: "That's it. The feeling is the trap. Slowing down is how you beat it every single time.", okVoice: "/audio/wren/m01-c1-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn the feelings a scammer fakes, and how to catch it.",
       instruction: "Read this NEW message. Select every part that's trying to pressure you, then submit.",
       intel: {
@@ -177,6 +183,12 @@ export const mission01: MissionManifest = {
       id: "address",
       title: "Take apart the address",
       concept: "The real owner is the last two chunks before the first slash",
+      checkpoint: {
+        questions: [
+          { id: "m01-c2-chk1", question: "Read the link. Who really owns it?", evidence: "login.gamehub-rewards.co/verify", options: ["gamehub-rewards.co", "login.gamehub", "gamehub.com"], answer: 0, ok: "Right. The owner is the last two chunks before the first slash: gamehub-rewards.co. That is not the real GameHub.", okVoice: "/audio/wren/m01-c2-chk1-ok.mp3" },
+          { id: "m01-c2-chk2", question: "Is this the real paypal.com?", evidence: "secure.paypal.com.account-fix.net/login", options: ["Yes, it says paypal.com", "No, the owner is account-fix.net", "Yes, it says secure"], answer: 1, ok: "Nice. The paypal.com bit is just decoration. The owner is account-fix.net, the last two chunks before the slash. Fake.", okVoice: "/audio/wren/m01-c2-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to find who a link REALLY goes to, even the sneaky ones.",
       instruction: "Sort each address: really the brand, or a disguise?",
       intel: {
@@ -228,6 +240,12 @@ export const mission01: MissionManifest = {
       id: "sender",
       title: "Check the sender",
       concept: "The friendly name is a costume; the real address tells the truth",
+      checkpoint: {
+        questions: [
+          { id: "m01-c3-chk1", question: "An email's name says 'Apple Support' but the address is help@apple-account.ru. Who really sent it?", options: ["Apple, the name says so", "Not Apple, look at the real address", "You cannot tell"], answer: 1, ok: "Exactly. The display name is a costume. The real address, apple-account.ru, gives it away.", okVoice: "/audio/wren/m01-c3-chk1-ok.mp3" },
+          { id: "m01-c3-chk2", question: "Where do you look to know who REALLY sent a message?", options: ["The actual email address, not the display name", "The friendly name at the top", "The nice logo"], answer: 0, ok: "That's the rule. Names and logos are easy to fake. The real address tells the truth.", okVoice: "/audio/wren/m01-c3-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to see past the name and read who REALLY sent it.",
       instruction: "Unmask each sender, then call real or fake.",
       intel: {
@@ -269,6 +287,12 @@ export const mission01: MissionManifest = {
       id: "qrcode",
       title: "Scan with care",
       concept: "A QR code is just a hidden link, so check where it really goes before you scan",
+      checkpoint: {
+        questions: [
+          { id: "m01-c4-chk1", question: "A poster says 'Scan for a free 50 pound gift card!'. What is a QR code really?", options: ["A hidden link your eyes cannot read", "A safe official stamp", "Just a fun picture"], answer: 0, ok: "Right. A QR code is a link in disguise. You cannot see where it goes until you check, so treat a surprise one like any strange link.", okVoice: "/audio/wren/m01-c4-chk1-ok.mp3" },
+          { id: "m01-c4-chk2", question: "Your phone shows a QR code leads to 'free-robux-now.xyz'. What do you do?", options: ["Open it, free stuff", "Scan it again to be sure", "Do not open it, it is a trap"], answer: 2, ok: "Good call. A random 'free robux' link is bait. Reading where it goes before you tap just saved you.", okVoice: "/audio/wren/m01-c4-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn to see where a QR code REALLY takes you, before it opens.",
       instruction: "Scan each code, read the address, then call it.",
       intel: {
@@ -311,6 +335,12 @@ export const mission01: MissionManifest = {
       id: "download",
       title: "Don't download the trap",
       concept: "Free hacks and generators are traps; real apps come only from the official store or site",
+      checkpoint: {
+        questions: [
+          { id: "m01-c5-chk1", question: "A site offers a 'free game hack that gives unlimited coins'. What is it most likely?", options: ["A trap that installs something harmful", "A helpful free tool", "An official update"], answer: 0, ok: "Exactly. Free hacks and coin generators are classic bait for malware. Nothing good comes from them.", okVoice: "/audio/wren/m01-c5-chk1-ok.mp3" },
+          { id: "m01-c5-chk2", question: "Where should you get your apps and games from?", options: ["Any link a stranger sends", "The official app store or the real website", "A random 'free download' site"], answer: 1, ok: "That's the safe path. Official store or the real site, never a random download link.", okVoice: "/audio/wren/m01-c5-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn why 'free' downloads are bait, and where safe ones really come from.",
       instruction: "Sort each download: safe to get, or a trap?",
       intel: {
@@ -354,6 +384,12 @@ export const mission01: MissionManifest = {
       id: "actor",
       title: "Know the play",
       concept: "Every phishing scam is built from the same three parts",
+      checkpoint: {
+        questions: [
+          { id: "m01-c6-chk1", question: "Every phishing scam is built from the same parts. Which is one of them?", options: ["A strong feeling that rushes you", "A handwritten letter", "A visit from your teacher"], answer: 0, ok: "Yes. Whatever the story, there is always a feeling pushing you to act fast. Spot that and you spot the scam.", okVoice: "/audio/wren/m01-c6-chk1-ok.mp3" },
+          { id: "m01-c6-chk2", question: "Why is knowing the phishing recipe so useful?", options: ["It only works on old scams", "You can spot a brand-new scam you've never seen", "You can write your own scams"], answer: 1, ok: "Exactly. The disguise changes, the recipe does not. Know the parts and no new costume fools you.", okVoice: "/audio/wren/m01-c6-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn the pattern behind every disguise, and the one move that beats it.",
       instruction: "Tap the 3 tricks that are really his.",
       intel: {
@@ -403,6 +439,12 @@ export const mission01: MissionManifest = {
       id: "recover",
       title: "If you get caught",
       concept: "If you slip and click or type your password, fast action keeps you safe",
+      checkpoint: {
+        questions: [
+          { id: "m01-c7-chk1", question: "You typed your password into a fake site by mistake. What's the FIRST thing to do?", options: ["Change that password right away", "Say nothing and hope", "Turn off your phone"], answer: 0, ok: "Right. Change the password fast, so the stolen one stops working. Speed is everything here.", okVoice: "/audio/wren/m01-c7-chk1-ok.mp3" },
+          { id: "m01-c7-chk2", question: "After a slip like that, who should you tell?", options: ["Nobody, keep it secret", "A trusted adult, so they can help", "Only the scammer"], answer: 1, ok: "That's it. A trusted adult helps you lock things down and report it. You never have to handle it alone.", okVoice: "/audio/wren/m01-c7-chk2-ok.mp3" },
+        ],
+      },
       promise: "You'll learn the exact rescue steps if a scam ever catches you.",
       instruction: "Build the rescue plan: pick the right move for each step.",
       intel: {
