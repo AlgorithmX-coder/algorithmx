@@ -233,6 +233,22 @@ export default function ExplorersPage() {
   const [devAt, setDevAt] = useState<string | null>(null); // "boss" | "test"
   // When true, show the block-intro (ATLAS) slide before the active case's runtime.
   const [showBrief, setShowBrief] = useState(false);
+  // QA/owner unlock. Visit ?qa=1 once to persist it (this browser only): it
+  // enables the ?case= deep-link on prod and unlocks every case on the map for
+  // testing. ?qa=0 clears it. Content is already behind auth, so this only
+  // reorders access for someone who has it, never exposes it publicly.
+  // Starts false and is set in an effect (never in the initializer) so the
+  // server + first client render agree — otherwise the lock state hydration-
+  // mismatches. Mirrors how `status` is read below.
+  const [qa, setQa] = useState(false);
+  useEffect(() => {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      if (p.get("qa") === "1") { localStorage.setItem("explorers:qa", "1"); setQa(true); return; }
+      if (p.get("qa") === "0") { localStorage.removeItem("explorers:qa"); setQa(false); return; }
+      setQa(localStorage.getItem("explorers:qa") === "1");
+    } catch {}
+  }, []);
 
   const firstIdOfBlock = useCallback((block: number) => CASES.find((m) => m.block === block)?.id, []);
   // Open a case, briefing the block first if this is the block's opening case.
@@ -264,10 +280,11 @@ export default function ExplorersPage() {
     refreshStatus();
   }, [refreshStatus]);
 
-  // Dev-only deep link: /explorers?case=16 opens that case; &at=boss jumps to the
-  // boss; &at=test jumps straight to the end-of-case test.
+  // Deep link: /explorers?case=16 opens that case; &at=boss jumps to the boss;
+  // &at=test jumps straight to the end-of-case test. Dev always; on prod only
+  // with the ?qa unlock set (so testers get clickable per-case links).
   useEffect(() => {
-    if (process.env.NODE_ENV === "production") return;
+    if (process.env.NODE_ENV === "production" && !qa) return;
     const p = new URLSearchParams(window.location.search);
     const c = p.get("case");
     if (!c) return;
@@ -280,7 +297,7 @@ export default function ExplorersPage() {
       // Brief the block on a cold deep-link to its opening case (unless jumping to boss/test).
       setShowBrief(!at && !!BLOCK_INTROS[found.block] && CASES.find((m) => m.block === found.block)?.id === found.id);
     }
-  }, []);
+  }, [qa]);
 
   const closedCount = useMemo(() => CASES.filter((m) => status[m.id] === "CLOSED").length, [status]);
   const nextCase = useMemo(() => CASES.find((m) => status[m.id] !== "CLOSED") ?? null, [status]);
@@ -478,7 +495,7 @@ export default function ExplorersPage() {
                   const st = status[m.id];
                   const isClosed = st === "CLOSED";
                   const isNext = nextCase?.id === m.id;
-                  const locked = CASES.indexOf(m) > nextIdx;
+                  const locked = !qa && CASES.indexOf(m) > nextIdx;
                   // Locked cards now wear the block's colour (not grey) so the
                   // case name + glyph stand out and read as "encrypted", not dead.
                   const accent = isNext ? AMBER : b.color;

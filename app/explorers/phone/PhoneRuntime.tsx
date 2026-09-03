@@ -15,7 +15,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
-import { type CaseStage, readProgress, saveProgress, clearProgress, isResumable, stageLabel } from "../engine/caseProgress";
+import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { ResumePrompt } from "../engine/ResumePrompt";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest } from "./case06";
 
@@ -304,7 +304,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
               <LockScreen caseNumber={phoneCase.caseNumber} open={phoneCase.open} title={phoneCase.title} onOpen={beginFresh} />
             )
           ) : phase === "test" ? (
-            <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => { clearProgress(phoneCase.id); setPhase("debrief"); }} />
+            <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => { markCaseComplete(phoneCase.id); clearProgress(phoneCase.id); setPhase("debrief"); }} />
           ) : phase === "debrief" ? (
             <Debrief data={phoneCase.debrief} onExit={onExit} onNext={onNextCase} />
           ) : (
