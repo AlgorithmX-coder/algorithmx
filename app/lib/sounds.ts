@@ -122,6 +122,11 @@ const BGM_REGISTRY: Record<string, SoundEntry> = {
   // Boss bed (a cappella - voices only, ElevenLabs Music). Same rule:
   // very very faint under the villain/narrator voices + SFX. Was 0.09.
   bgmBoss: { path: "/audio/sfx/bgm-boss.mp3", volume: 0.03 },
+  // Explorers FINAL-TEST focus bed: the calm "Guardian Calm" hub track reused as
+  // study/focus music under the must-pass exam. Louder than the CH hub bed (0.05)
+  // because the test is mostly silent (WREN only voices the intro + result), so it
+  // should be felt as focus music, not just room tone - but still under WREN.
+  bgmFocus: { path: "/audio/sfx/bgm-hq.mp3", volume: 0.13 },
   // Dashboard ambient bed: the Week-1 lesson track (bgm-lesson.mp3) brought
   // back as faint atmosphere on /dashboard, where no narration competes for
   // the mix. Deliberately a SEPARATE key from bgmLesson - the lesson bed was
@@ -497,7 +502,7 @@ export function playSound(key: string): void {
  * hardened (per-track volume cap + NaN-safe), so re-enabling another
  * surface later is just adding its key here.
  */
-const BGM_ALLOWLIST = new Set<string>(["bgmHub", "bgmBoss", "bgmDashboard"]);
+const BGM_ALLOWLIST = new Set<string>(["bgmHub", "bgmBoss", "bgmDashboard", "bgmFocus"]);
 
 export function playBGM(trackOrKey: string): void {
   if (!BGM_ALLOWLIST.has(trackOrKey)) {
