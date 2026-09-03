@@ -13,7 +13,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
-import { type CaseStage, readProgress, saveProgress, clearProgress, isResumable, stageLabel } from "../engine/caseProgress";
+import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { ResumePrompt } from "../engine/ResumePrompt";
 import type { WarCase, WarStep, WarTest } from "./case16";
 
@@ -192,7 +192,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
             <BootScreen title={warCase.title} caseNumber={warCase.caseNumber} open={warCase.open} acc={acc} onBoot={beginFresh} />
           )
         ) : phase === "test" ? (
-          <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { clearProgress(warCase.id); setPhase("debrief"); }} />
+          <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(warCase.id); clearProgress(warCase.id); setPhase("debrief"); }} />
         ) : phase === "debrief" ? (
           <Debrief data={warCase.debrief} acc={acc} onExit={onExit} onNext={onNextCase} />
         ) : (
