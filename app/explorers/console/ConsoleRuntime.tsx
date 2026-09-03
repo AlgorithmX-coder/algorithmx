@@ -11,6 +11,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
+import { playBGM, stopBGM } from "@/app/lib/sounds";
 import type { ConsoleCase, ConsoleStep, ConsoleTest } from "./case11";
 
 const C = {
@@ -360,6 +361,11 @@ function TestView({ test, voiceOn, acc, onPass }: { test: ConsoleTest; voiceOn: 
   const [correct, setCorrect] = useState(0);
   const [result, setResult] = useState<null | "pass" | "fail">(null);
   const [orders, setOrders] = useState<number[][]>(() => test.questions.map((q) => shuffled(q.options.length)));
+  useEffect(() => { // focus/study music bed under the exam (Guardian Calm, same as Cyber Heroes)
+    if (!voiceOn) return;
+    playBGM("bgmFocus");
+    return () => stopBGM(700);
+  }, [voiceOn]);
   const restart = () => { setQi(0); setCorrect(0); setResult(null); setOrders(test.questions.map((q) => shuffled(q.options.length))); };
   const answer = (oi: number) => {
     const right = !!test.questions[qi].options[oi].correct;

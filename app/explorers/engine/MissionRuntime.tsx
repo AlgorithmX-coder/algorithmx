@@ -15,6 +15,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
+import { playBGM, stopBGM } from "@/app/lib/sounds";
 
 // Arm narration BEFORE the browser paints, so a narrated screen shows up with the
 // WREN speaking-lock already in place — no one-frame gap where a fast tap slips
@@ -1231,6 +1232,16 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
   const [introEnded, setIntroEnded] = useState(false); // set when the intro clip finishes
   const spokeRef = useRef(false); // did the intro ever actually start speaking?
   const [phase, setPhase] = useState<"intro" | "test" | "passed" | "failed">("intro");
+
+  // Focus/study music bed ("Guardian Calm", the same track Cyber Heroes uses)
+  // under the must-pass exam. Starts once the test begins (kept calm and clean
+  // during WREN's spoken intro), stops when the stage unmounts. Gated on voiceOn.
+  const focusMusic = voiceOn && phase !== "intro";
+  useEffect(() => {
+    if (!focusMusic) return;
+    playBGM("bgmFocus");
+    return () => stopBGM(700);
+  }, [focusMusic]);
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
