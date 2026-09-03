@@ -13,6 +13,8 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
+import { type CaseStage, readProgress, saveProgress, clearProgress, isResumable, stageLabel } from "../engine/caseProgress";
+import { ResumePrompt } from "../engine/ResumePrompt";
 import type { WarCase, WarStep, WarTest } from "./case16";
 
 const C = {
@@ -74,6 +76,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
   const resolveRef = useRef<((v: string) => void) | null>(null);
   const startedRef = useRef(false);
   const workRef = useRef<HTMLDivElement>(null);
+  const [resumeStage] = useState<CaseStage | null>(() => readProgress(warCase.id));
 
   const nextId = () => ++idRef.current;
   const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, reduce ? Math.min(ms, 120) : ms));
@@ -138,22 +141,29 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
     setDock({ type: "clear", text: "Case cracked ✓" }); await awaitUser();
   };
 
-  const run = async () => {
+  const run = async (from: CaseStage = { kind: "skill", index: 0 }) => {
     setItems([]); setBoard("CASE BOARD");
-    for (let i = 0; i < warCase.open.length; i++) { const line = warCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, warCase.openVoice?.[i]); }
-    push({ id: nextId(), kind: "roadmap", title: warCase.title, actor: warCase.actor, skills: warCase.skills.map((s) => ({ n: s.n, title: s.title, goal: s.goal })) });
-    await wait(650);
-    setDock({ type: "clear", text: "Ready? Skill 1 first." }); await awaitUser();
     const total = warCase.skills.length;
-    for (const sk of warCase.skills) await runSkill(sk, total);
-    await runBoss();
+    if (from.kind === "skill") {
+      if (from.index === 0) { // fresh run: play the opening + roadmap
+        for (let i = 0; i < warCase.open.length; i++) { const line = warCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, warCase.openVoice?.[i]); }
+        push({ id: nextId(), kind: "roadmap", title: warCase.title, actor: warCase.actor, skills: warCase.skills.map((s) => ({ n: s.n, title: s.title, goal: s.goal })) });
+        await wait(650);
+        setDock({ type: "clear", text: "Ready? Skill 1 first." }); await awaitUser();
+      }
+      for (let i = from.index; i < total; i++) { saveProgress(warCase.id, { kind: "skill", index: i }); await runSkill(warCase.skills[i], total); }
+    }
+    if (from.kind === "skill" || from.kind === "boss") { saveProgress(warCase.id, { kind: "boss" }); await runBoss(); }
+    saveProgress(warCase.id, { kind: "test" });
     setItems([]); setBoard("CASE BOARD"); await wait(400);
     push({ id: nextId(), kind: "wren", text: warCase.test.intro }); await speak(warCase.test.intro, warCase.test.introVoice);
     setDock({ type: "clear", text: "Start the test →" }); await awaitUser(); setDock(null);
     setPhase("test");
   };
 
-  const start = () => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(); };
+  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(from); };
+  const beginFresh = () => { clearProgress(warCase.id); start({ kind: "skill", index: 0 }); };
+  const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
 
   const nudgeRef = useRef(0);
   const nudgeBad = (text?: string) => { const i = nudgeRef.current++ % NUDGES.length; setNudge(text ?? "Not quite. Look again."); force(); if (voiceRef.current) playWren(NUDGES[i], true); };
@@ -176,9 +186,13 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
         </div>
 
         {phase === "boot" ? (
-          <BootScreen title={warCase.title} caseNumber={warCase.caseNumber} open={warCase.open} acc={acc} onBoot={start} />
+          isResumable(resumeStage) ? (
+            <ResumePrompt caseNumber={warCase.caseNumber} title={warCase.title} acc={acc} atLabel={stageLabel(resumeStage, warCase.skills)} onContinue={beginResume} onRestart={beginFresh} />
+          ) : (
+            <BootScreen title={warCase.title} caseNumber={warCase.caseNumber} open={warCase.open} acc={acc} onBoot={beginFresh} />
+          )
         ) : phase === "test" ? (
-          <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => setPhase("debrief")} />
+          <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { clearProgress(warCase.id); setPhase("debrief"); }} />
         ) : phase === "debrief" ? (
           <Debrief data={warCase.debrief} acc={acc} onExit={onExit} onNext={onNextCase} />
         ) : (

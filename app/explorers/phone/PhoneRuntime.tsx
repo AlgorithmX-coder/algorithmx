@@ -15,6 +15,8 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
+import { type CaseStage, readProgress, saveProgress, clearProgress, isResumable, stageLabel } from "../engine/caseProgress";
+import { ResumePrompt } from "../engine/ResumePrompt";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest } from "./case06";
 
 const C = {
@@ -101,6 +103,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const resolveRef = useRef<((v: string) => void) | null>(null);
   const startedRef = useRef(false);
   const threadRef = useRef<HTMLDivElement>(null);
+  const [resumeStage] = useState<CaseStage | null>(() => readProgress(phoneCase.id));
 
   const nextId = () => ++idRef.current;
   const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, reduce ? Math.min(ms, 120) : ms));
@@ -221,19 +224,24 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     await awaitUser();
   };
 
-  const run = async () => {
+  const run = async (from: CaseStage = { kind: "skill", index: 0 }) => {
     setHeader(WREN_HEADER);
     setItems([]);
-    for (let i = 0; i < phoneCase.open.length; i++) { const line = phoneCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, phoneCase.openVoice?.[i]); }
-    // The roadmap: every skill you'll learn, up front (like Block 1's mission map).
-    push({ id: nextId(), kind: "roadmap", title: phoneCase.title, actor: phoneCase.actor, skills: phoneCase.skills.map((s) => ({ n: s.n, title: s.title, goal: s.goal })) });
-    await wait(650);
-    setDock({ type: "clear", text: "Ready? Skill 1 first." });
-    await awaitUser();
     const total = phoneCase.skills.length;
-    for (const sk of phoneCase.skills) await runSkill(sk, total);
-    await runBoss();
+    if (from.kind === "skill") {
+      if (from.index === 0) { // fresh run: play the opening + roadmap
+        for (let i = 0; i < phoneCase.open.length; i++) { const line = phoneCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, phoneCase.openVoice?.[i]); }
+        // The roadmap: every skill you'll learn, up front (like Block 1's mission map).
+        push({ id: nextId(), kind: "roadmap", title: phoneCase.title, actor: phoneCase.actor, skills: phoneCase.skills.map((s) => ({ n: s.n, title: s.title, goal: s.goal })) });
+        await wait(650);
+        setDock({ type: "clear", text: "Ready? Skill 1 first." });
+        await awaitUser();
+      }
+      for (let i = from.index; i < total; i++) { saveProgress(phoneCase.id, { kind: "skill", index: i }); await runSkill(phoneCase.skills[i], total); }
+    }
+    if (from.kind === "skill" || from.kind === "boss") { saveProgress(phoneCase.id, { kind: "boss" }); await runBoss(); }
     // hand off to the must-pass test
+    saveProgress(phoneCase.id, { kind: "test" });
     setItems([]);
     setHeader(WREN_HEADER);
     await wait(400);
@@ -244,7 +252,9 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     setPhase("test");
   };
 
-  const start = () => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(); };
+  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(from); };
+  const beginFresh = () => { clearProgress(phoneCase.id); start({ kind: "skill", index: 0 }); };
+  const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
 
   // ---- interaction handlers ----
   const nudgeRef = useRef(0);
@@ -288,9 +298,13 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           </div>
 
           {phase === "lock" ? (
-            <LockScreen caseNumber={phoneCase.caseNumber} open={phoneCase.open} title={phoneCase.title} onOpen={start} />
+            isResumable(resumeStage) ? (
+              <ResumePrompt caseNumber={phoneCase.caseNumber} title={phoneCase.title} acc={OUT} atLabel={stageLabel(resumeStage, phoneCase.skills)} onContinue={beginResume} onRestart={beginFresh} />
+            ) : (
+              <LockScreen caseNumber={phoneCase.caseNumber} open={phoneCase.open} title={phoneCase.title} onOpen={beginFresh} />
+            )
           ) : phase === "test" ? (
-            <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => setPhase("debrief")} />
+            <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => { clearProgress(phoneCase.id); setPhase("debrief"); }} />
           ) : phase === "debrief" ? (
             <Debrief data={phoneCase.debrief} onExit={onExit} onNext={onNextCase} />
           ) : (

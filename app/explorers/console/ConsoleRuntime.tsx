@@ -12,6 +12,8 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
+import { type CaseStage, readProgress, saveProgress, clearProgress, isResumable, stageLabel } from "../engine/caseProgress";
+import { ResumePrompt } from "../engine/ResumePrompt";
 import type { ConsoleCase, ConsoleStep, ConsoleTest } from "./case11";
 
 const C = {
@@ -72,6 +74,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   useWrenSpeaking();
   const [, force] = useReducer((n) => n + 1, 0);
   const acc = consoleCase.accent ?? C.amber;
+  const [resumeStage] = useState<CaseStage | null>(() => readProgress(consoleCase.id));
 
   const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const idRef = useRef(0);
@@ -154,22 +157,29 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
     setDock({ type: "clear", text: "Attack repelled ✓" }); await awaitUser();
   };
 
-  const run = async () => {
+  const run = async (from: CaseStage = { kind: "skill", index: 0 }) => {
     setItems([]); setPanel("ARC SYSTEMS");
-    for (let i = 0; i < consoleCase.open.length; i++) { const line = consoleCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, consoleCase.openVoice?.[i]); }
-    push({ id: nextId(), kind: "roadmap", title: consoleCase.title, actor: consoleCase.actor, skills: consoleCase.skills.map((s) => ({ n: s.n, title: s.title, goal: s.goal })) });
-    await wait(650);
-    setDock({ type: "clear", text: "Ready? Skill 1 first." }); await awaitUser();
     const total = consoleCase.skills.length;
-    for (const sk of consoleCase.skills) await runSkill(sk, total);
-    await runBoss();
+    if (from.kind === "skill") {
+      if (from.index === 0) { // fresh run: play the opening + roadmap
+        for (let i = 0; i < consoleCase.open.length; i++) { const line = consoleCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, consoleCase.openVoice?.[i]); }
+        push({ id: nextId(), kind: "roadmap", title: consoleCase.title, actor: consoleCase.actor, skills: consoleCase.skills.map((s) => ({ n: s.n, title: s.title, goal: s.goal })) });
+        await wait(650);
+        setDock({ type: "clear", text: "Ready? Skill 1 first." }); await awaitUser();
+      }
+      for (let i = from.index; i < total; i++) { saveProgress(consoleCase.id, { kind: "skill", index: i }); await runSkill(consoleCase.skills[i], total); }
+    }
+    if (from.kind === "skill" || from.kind === "boss") { saveProgress(consoleCase.id, { kind: "boss" }); await runBoss(); }
+    saveProgress(consoleCase.id, { kind: "test" });
     setItems([]); setPanel("ARC SYSTEMS"); await wait(400);
     push({ id: nextId(), kind: "wren", text: consoleCase.test.intro }); await speak(consoleCase.test.intro, consoleCase.test.introVoice);
     setDock({ type: "clear", text: "Start the test →" }); await awaitUser(); setDock(null);
     setPhase("test");
   };
 
-  const start = () => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(); };
+  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(from); };
+  const beginFresh = () => { clearProgress(consoleCase.id); start({ kind: "skill", index: 0 }); };
+  const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
 
   const nudgeRef = useRef(0);
   const nudgeBad = (text?: string) => {
@@ -198,9 +208,13 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         </div>
 
         {phase === "boot" ? (
-          <BootScreen title={consoleCase.title} caseNumber={consoleCase.caseNumber} open={consoleCase.open} acc={acc} onBoot={start} />
+          isResumable(resumeStage) ? (
+            <ResumePrompt caseNumber={consoleCase.caseNumber} title={consoleCase.title} acc={acc} atLabel={stageLabel(resumeStage, consoleCase.skills)} onContinue={beginResume} onRestart={beginFresh} />
+          ) : (
+            <BootScreen title={consoleCase.title} caseNumber={consoleCase.caseNumber} open={consoleCase.open} acc={acc} onBoot={beginFresh} />
+          )
         ) : phase === "test" ? (
-          <TestView test={consoleCase.test} voiceOn={voiceOn} acc={acc} onPass={() => setPhase("debrief")} />
+          <TestView test={consoleCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { clearProgress(consoleCase.id); setPhase("debrief"); }} />
         ) : phase === "debrief" ? (
           <Debrief data={consoleCase.debrief} acc={acc} onExit={onExit} onNext={onNextCase} />
         ) : (
