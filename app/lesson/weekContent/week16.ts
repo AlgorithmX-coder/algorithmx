@@ -1008,6 +1008,430 @@ export const WEEK_16: WeekContent = {
     },
     voiceSlug: "w16",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#b44dff",
+    theme: {
+      topic: "QR Codes & Links",
+      motifs: ["🔗", "🚪", "🔍", "🚫", "🛡️", "📱", "❓", "✋"],
+    },
+    intro: {
+      slug: "quiz-w16-intro",
+      text: "Welcome to my quiz corridor! Every question wears a lovely painted door. Go on, hero, trust the signs. I wrote them all personally!",
+    },
+    victory: {
+      slug: "quiz-w16-victory",
+      text: "You read every plaque in the place?! That's it, I'm switching to a business with no doors at all! ...Windows! Wait. No.",
+    },
+    questions: [
+      {
+        phaseId: "phase-w16-c1",
+        key: "quiz-w16-c1-1",
+        label: "A Door You Can't See Through",
+        ask: {
+          slug: "quiz-w16-ask-c1-1",
+          text: "A flashing button says 'FREE GAME COINS, TAP HERE!' Who decided where that button really leads?",
+        },
+        options: [
+          { text: "Whoever built the button" },
+          { text: "The words written on the button" },
+          { text: "The first person who taps the button" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The builder picks the place!",
+          explanation: "The words are just paint, they can promise anything, and tapping doesn't steer where you land. The person who BUILT the door chose where it goes before you ever saw it.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c1-1",
+          text: "You know about the builder?! Next you'll be asking who does my decorating!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c1-1",
+          text: "The words are in charge, sure they are! Tap away, the coins are DEFINITELY real!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c2",
+        key: "quiz-w16-c2-1",
+        label: "Peek Before You Walk",
+        ask: {
+          slug: "quiz-w16-ask-c2-1",
+          text: "Layla wants to see where 'Tap for the class photo album!' REALLY goes before she taps. What is the peek move on her tablet?",
+        },
+        options: [
+          { text: "Press and HOLD the link until the real address pops up" },
+          { text: "Tap it super quickly and be ready to close it fast" },
+          { text: "Zoom way in on the link's letters to study them" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Press and hold shows the plaque!",
+          explanation: "A fast tap already walks you through the door, and zooming just shows you bigger paint. Press and HOLD, and the door's true address pops up for you to read first.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c2-1",
+          text: "The press-and-hold peek?! Who keeps handing out my trade secrets?!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c2-1",
+          text: "Quick taps and squinting, my two best customer moves! Come through, come through!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c3",
+        key: "quiz-w16-c3-1",
+        label: "The Sticker Trick",
+        ask: {
+          slug: "quiz-w16-ask-c3-1",
+          text: "At the pizza place, the menu's QR code sits crooked, with a bubble in the middle and an edge you can lift. What happened here?",
+        },
+        options: [
+          { text: "Somebody pasted their own code on top of the real one" },
+          { text: "The menu is just old and wrinkly, safe to scan anyway" },
+          { text: "It's a bonus code, two codes always mean two prizes" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The peel test tells!",
+          explanation: "Old menus wrinkle all over, not in one perfect square, and real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c3-1",
+          text: "The bubble gave it away?! I smoothed that sticker with my own two paws!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c3-1",
+          text: "Wrinkles! Bonus prizes! Believe anything you like, so long as you scan my little masterpiece!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c4",
+        key: "quiz-w16-c4-1",
+        label: "Clear Glass, Frosted Glass",
+        ask: {
+          slug: "quiz-w16-ask-c4-1",
+          text: "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through?",
+        },
+        options: [
+          { text: "toon-town.tv/silly-cat-show, the whole address is readable" },
+          { text: "bit.ly/x7qz2, a shorter address is quicker to check" },
+          { text: "Either one, all links show where they're going" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Clear glass can be read!",
+          explanation: "Short doesn't mean checkable, a bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c4-1",
+          text: "Clear glass again?! Nobody ever picks my lovely frosted doors!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c4-1",
+          text: "Shorter is safer, everyone knows that! Straight through the frost you go, wheee!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c5",
+        key: "quiz-w16-c5-1",
+        label: "The Barrier Rule",
+        ask: {
+          slug: "quiz-w16-ask-c5-1",
+          text: "A pop-up yells: 'SCAN THIS CODE IN TEN SECONDS OR LOSE YOUR PRIZE!' Adam isn't sure about it. What wins here?",
+        },
+        options: [
+          { text: "Don't scan, unsure means DON'T, a trusted grown-up can look with him" },
+          { text: "Scan fast, ten seconds is too short to go ask anybody" },
+          { text: "Scan it, but keep his fingers crossed the entire time" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Countdowns are pressure paint!",
+          explanation: "The timer is there so you skip the thinking part, and crossed fingers aren't a safety plan. Unsure means DON'T: wheel in the barrier and check it with a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c5-1",
+          text: "You let the timer run OUT?! That countdown was my best pressure paint yet!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c5-1",
+          text: "Tick tock, tick tock! Rushed feet never read plaques! In you come!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c1",
+        key: "quiz-w16-c1-2",
+        label: "A Door You Can't See Through",
+        ask: {
+          slug: "quiz-w16-ask-c1-2",
+          text: "A QR code on a poster looks like a fun little puzzle of dots. What is it REALLY?",
+        },
+        options: [
+          { text: "A door only a scanner can read, going wherever its maker chose" },
+          { text: "A picture that shows where it leads if you look very closely" },
+          { text: "A decoration that doesn't lead anywhere at all" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "A door made of dots!",
+          explanation: "No amount of squinting reads those dots, and they're not just decoration. A QR code is a real door with a hidden address only the scanner sees, which is exactly why it gets checked before it gets scanned.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c1-2",
+          text: "A door of dots, correctly named?! My disguises are wearing THIN!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c1-2",
+          text: "Squint harder at the dots! Or better yet, don't think about them at all and SCAN!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c2",
+        key: "quiz-w16-c2-2",
+        label: "Peek Before You Walk",
+        ask: {
+          slug: "quiz-w16-ask-c2-2",
+          text: "The sign says 'Field Day Photos!' but the plaque underneath reads 'prize-grab.win'. What kind of door is this really?",
+        },
+        options: [
+          { text: "A trick door, when sign and plaque disagree, believe the plaque" },
+          { text: "A photo door, the sign mentions field day so it must match" },
+          { text: "A double door, probably photos AND prizes together" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Believe the plaque!",
+          explanation: "Signs are paint, and paint can say anything, while 'both at once' isn't a thing a door can be. The address is the door's true name, and prize-grab.win is no photo album.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c2-2",
+          text: "You believed the plaque over my BEAUTIFUL sign?! Do you know what hand-lettering costs?!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c2-2",
+          text: "Field day photos, straight ahead! Pay no attention to the address, addresses are shy!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c3",
+        key: "quiz-w16-c3-2",
+        label: "The Sticker Trick",
+        ask: {
+          slug: "quiz-w16-ask-c3-2",
+          text: "Which QR code can the family actually TRUST at the movie theater?",
+        },
+        options: [
+          { text: "The one printed flat into the poster, smooth as the paper" },
+          { text: "The shiny new one stuck on top of an older code" },
+          { text: "The sticker by the door that says SCAN ME FIRST" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Printed flat, part of the page!",
+          explanation: "A code stuck on top of another code and a bossy extra sticker are both swapped doors. The real one is printed WITH the poster, flat and smooth, no edges to lift.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c3-2",
+          text: "Flat and printed it is?! My whole sticker sheet, wasted!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c3-2",
+          text: "Newest code wins! Bossiest sticker wins! Scan mine, scan mine, SCAN MINE!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c4",
+        key: "quiz-w16-c4-2",
+        label: "Clear Glass, Frosted Glass",
+        ask: {
+          slug: "quiz-w16-ask-c4-2",
+          text: "Your cousin messages a tinyurl link with 'you HAVE to see this!' You can't read where it goes. Best move?",
+        },
+        options: [
+          { text: "Ask what it is, and have a trusted grown-up check it with you" },
+          { text: "Open it right away, cousins only ever send safe doors" },
+          { text: "Open it, but be ready to close it if it looks strange" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Friends forward frosted doors too!",
+          explanation: "Your cousin is kind, but kind people forward doors they never checked, and closing fast doesn't undo walking in. Ask what it is, and let a trusted grown-up look through the frost with you.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c4-2",
+          text: "You asked FIRST?! That link bounced through three cousins to reach you!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c4-2",
+          text: "From a cousin, so it must be lovely! In you go, no reading required!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c5",
+        key: "quiz-w16-c5-2",
+        label: "The Barrier Rule",
+        ask: {
+          slug: "quiz-w16-ask-c5-2",
+          text: "A mystery QR code with no sign at all is taped to the lamppost outside school. Layla is very curious. What is the Door Checker move?",
+        },
+        options: [
+          { text: "Leave it unscanned and check it with a trusted grown-up" },
+          { text: "Scan it, mystery doors are the most exciting kind" },
+          { text: "Scan it, but hold the phone far away from her face" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Curious means careful!",
+          explanation: "Holding the phone far away doesn't make a door one bit safer, and 'exciting' is exactly how mystery doors get dressed. No sign, no plaque, no scan. Check it together instead.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c5-2",
+          text: "My lamppost special! Untouched! Unscanned! UNFAIR!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c5-2",
+          text: "Mystery is the SPICE of scanning! Arms out, eyes shut, in we gooo!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c1",
+        key: "quiz-w16-c1-3",
+        label: "A Door You Can't See Through",
+        ask: {
+          slug: "quiz-w16-ask-c1-3",
+          text: "Two links sit side by side: one in sparkly rainbow letters saying 'PUPPY VIDEOS!', one plain and gray. What does the fancy paint tell you about safety?",
+        },
+        options: [
+          { text: "Nothing at all, paint says whatever the builder wants" },
+          { text: "Sparkly ones are safer, tricksters don't bother decorating" },
+          { text: "Plain ones are safer, fancy ones are always traps" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Paint is not proof!",
+          explanation: "Tricksters decorate plenty, and honest doors can be plain OR fancy. The paint tells you nothing either way. Only the address underneath does.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c1-3",
+          text: "Immune to glitter?! I bought the EXPENSIVE sparkles for that one!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c1-3",
+          text: "Judge every door by its paint job! My art department thanks you kindly!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c2",
+        key: "quiz-w16-c2-3",
+        label: "Peek Before You Walk",
+        ask: {
+          slug: "quiz-w16-ask-c2-3",
+          text: "Which address actually MATCHES a door promising the school bake sale?",
+        },
+        options: [
+          { text: "sunnyside-school.edu/bake-sale" },
+          { text: "best-bake-sale-prizes.win" },
+          { text: "sunnyside-sch00l.fun/sale" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Read the true name closely!",
+          explanation: "The prizes one isn't the school at all. And look closely at sch00l: those are zeros dressed up as letters, a copycat door. The school's own address, matching the sign, is the door to walk.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c2-3",
+          text: "You spotted the ZEROS?! That copycat lettering fools grown adults!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c2-3",
+          text: "One bake sale, three doors, and you picked MINE! Mind the step, hee hee!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c3",
+        key: "quiz-w16-c3-3",
+        label: "The Sticker Trick",
+        ask: {
+          slug: "quiz-w16-ask-c3-3",
+          text: "Adam finds a sticker-code pasted over the real code on the park sign. What is the Door Checker move?",
+        },
+        options: [
+          { text: "Leave it alone and point it out to a trusted grown-up" },
+          { text: "Peel it off and scan the real one underneath himself" },
+          { text: "Scan both codes and see which prize looks better" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Found a swap? Tell!",
+          explanation: "Scanning either code walks through an unchecked door, and even the peel test is a with-a-grown-up job. Spotting the swap and telling is the whole win. That's how trick doors get taken down.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c3-3",
+          text: "Reported?! My park sticker didn't even last until lunchtime!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c3-3",
+          text: "Peel it, scan it, scan them BOTH! Every one of those paths leads somewhere I like!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c4",
+        key: "quiz-w16-c4-3",
+        label: "Clear Glass, Frosted Glass",
+        ask: {
+          slug: "quiz-w16-ask-c4-3",
+          text: "A pop-up offers the same video two ways: a long link showing its whole address, or a neat little scrambled short-link. Which does a Door Checker pick, and why?",
+        },
+        options: [
+          { text: "The long one, because she can read exactly where it leads" },
+          { text: "The short one, less address means less can go wrong" },
+          { text: "Either one, they both end up at the very same video" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Pick the door you can read!",
+          explanation: "'Both the same' is a promise, not a fact, and a short address isn't less door, it's just HIDDEN door. The clear one can be read and checked, so the clear one gets picked.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c4-3",
+          text: "You read the whole address?! Long words were supposed to bore kids!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c4-3",
+          text: "Neat and tiny and mysterious! The best doors tell you NOTHING! Off you pop!",
+        },
+      },
+      {
+        phaseId: "phase-w16-c5",
+        key: "quiz-w16-c5-3",
+        label: "The Barrier Rule",
+        ask: {
+          slug: "quiz-w16-ask-c5-3",
+          text: "Behind a no-plaque mystery door there MIGHT be free stickers. What does the barrier rule say about walking through blind?",
+        },
+        options: [
+          { text: "No prize is worth a door you can't check" },
+          { text: "Small prizes are fine, only big prizes hide traps" },
+          { text: "It's fine as long as you walk through really fast" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Unsure means DON'T!",
+          explanation: "Speed doesn't protect you once you're inside, and trap doors don't care how small the bait is. If the door can't be checked, the barrier goes up, and you never decide alone.",
+        },
+        villainRight: {
+          slug: "quiz-w16-right-c5-3",
+          text: "The barrier AGAIN?! I can't sell doors to a kid behind a safety rail!",
+        },
+        villainWrong: {
+          slug: "quiz-w16-wrong-c5-3",
+          text: "Free stickers, teeny tiny risk! Blind doors are my best sellers for a reason!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-16-door-checker.png",
 
   // Week-lane attack theatre: doorway tricks only (fake senders = W4,

@@ -733,6 +733,431 @@ export const WEEK_1: WeekContent = {
       coach: "HOLD the golden button - shield your secret!",
     },
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#e3b341",
+    theme: {
+      topic: "Passwords",
+      motifs: ["🔑", "🔒", "🛡️", "🔢", "🔣", "🗝️", "🔐", "⭐"],
+    },
+    intro: {
+      slug: "quiz-w1-intro",
+      text: "Well well, look who finished the lesson! Think you learned anything? Step up and prove it, hero!",
+    },
+    victory: {
+      slug: "quiz-w1-victory",
+      text: "Every single one?! Nobody beats my quiz! I am taking my questions and going home!",
+    },
+    questions: [
+      {
+        phaseId: "phase-what",
+        key: "quiz-what-1",
+        label: "What Is a Password?",
+        ask: {
+          slug: "quiz-w1-ask-what-1",
+          text: "Adam left his tablet on the bus seat. What actually keeps his stuff safe?",
+        },
+        options: [
+          { text: "A secret code only he knows" },
+          { text: "Keeping it in a secret hiding spot" },
+          { text: "Only using it in his own room" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Only a secret code locks it!",
+          explanation: "Hiding a tablet, or a house rule about where to use it, won't stop anyone who finds it. A secret code you type in, a password, is the one thing that actually locks it.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-what-1",
+          text: "OW! A secret code?! Nothing to peek at, nothing to pick up, no way in!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-what-1",
+          text: "Hiding spots and house rules? The second I get my paws on it, it pops right open!",
+        },
+      },
+      {
+        phaseId: "phase-length",
+        key: "quiz-length-1",
+        label: "Long Is Strong",
+        ask: {
+          slug: "quiz-w1-ask-length-1",
+          text: "My guessing robot tries millions of passwords every second. Which one would take it the LONGEST to crack?",
+        },
+        options: [
+          { text: "hedgehog-saxophone-waterfall" },
+          { text: "hedgehog-hedgehog-hedgehog" },
+          { text: "Purple9!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Long AND different is strong!",
+          explanation: "My robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-length-1",
+          text: "Three whole DIFFERENT words?! My robot will be guessing until it rusts!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-length-1",
+          text: "Too easy! A short one, or the same word on repeat, my robot races right through both!",
+        },
+      },
+      {
+        phaseId: "phase-mix",
+        key: "quiz-mix-1",
+        label: "Mix It Up",
+        ask: {
+          slug: "quiz-w1-ask-mix-1",
+          text: "All three of these have a trick or two in them. Which one is HARDEST for a hacker to crack?",
+        },
+        options: [
+          { text: "S3a$hell9Wave!" },
+          { text: "Sunflower2024" },
+          { text: "sunflower!!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Mix in all three!",
+          explanation: "A capital, a number, AND a symbol all mixed through it beats a plain word with just one thing added. A word plus a year, or a word plus a couple of symbols, is still mostly a plain word.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-mix-1",
+          text: "Ouch! Capitals, numbers AND symbols all at once poked my decoder right in the circuits!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-mix-1",
+          text: "Just a plain word with one little trick tacked on? My decoder eats those for lunch!",
+        },
+      },
+      {
+        phaseId: "phase-secret",
+        key: "quiz-secret-1",
+        label: "Keep It Secret",
+        ask: {
+          slug: "quiz-w1-ask-secret-1",
+          text: "A website says: type your password here and we will tell you how strong it is! What do you do?",
+        },
+        options: [
+          { text: "Keep it secret" },
+          { text: "Type it in to get the free reward" },
+          { text: "Tell only your best friend" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Keep it secret!",
+          explanation: "A checker box, a free reward, even a best friend, none of them should ever get your real password. Keep it secret. The only person who helps is a trusted grown-up at home.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-secret-1",
+          text: "You told the box NOTHING and kept it from your friend too?! That was my best trick!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-secret-1",
+          text: "Yes, pop it in the box or whisper it to a pal! Secrets always leak, and then they're MINE!",
+        },
+      },
+      {
+        phaseId: "phase-obvious",
+        key: "quiz-obvious-1",
+        label: "Don't Pick the Obvious",
+        ask: {
+          slug: "quiz-w1-ask-obvious-1",
+          text: "I always guess everyone's favorites first! Which one of these could I NEVER guess?",
+        },
+        options: [
+          { text: "Igloo-Banjo-Comet7!" },
+          { text: "Superman-Batman-2015" },
+          { text: "Password1!" },
+          { text: "Qwerty123" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Don't pick the obvious!",
+          explanation: "'Password' with a 1, keyboard rows like qwerty, and famous heroes with a birthday-year are ALL near the top of my guess-list. The safe one is random words that have nothing to do with you.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-obvious-1",
+          text: "Igloo-Banjo-WHAT?! That is on none of my lists! NONE of them!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-obvious-1",
+          text: "Favorites first! Password, qwerty, superheroes, that's the very first page of my guessing book!",
+        },
+      },
+      {
+        phaseId: "phase-what",
+        key: "quiz-what-2",
+        label: "What Is a Password?",
+        ask: {
+          slug: "quiz-w1-ask-what-2",
+          text: "Layla's family all share one computer. What actually keeps her game account locked so it stays just hers?",
+        },
+        options: [
+          { text: "A secret code she types in to log on" },
+          { text: "A family rule that nobody touches her game" },
+          { text: "Turning the computer off after she plays" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The typed code does the locking!",
+          explanation: "A family rule or switching the computer off can't stop the next person who sits down and turns it on. The secret code Layla types in is the only thing that truly locks her account.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-what-2",
+          text: "A typed-in secret on a SHARED computer?! I waited my turn and got a big fat nothing!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-what-2",
+          text: "House rules and off buttons! I just press ON and stroll right in, la dee daa!",
+        },
+      },
+      {
+        phaseId: "phase-length",
+        key: "quiz-length-2",
+        label: "Long Is Strong",
+        ask: {
+          slug: "quiz-w1-ask-length-2",
+          text: "Layla's password is dolphin. Her friend says one extra letter will make it super strong. What is the REAL way to make it strong?",
+        },
+        options: [
+          { text: "Add whole extra words: one letter barely helps" },
+          { text: "The friend is right: one letter fools any guesser" },
+          { text: "Type dolphin twice so there is more of it" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Whole words, not one letter!",
+          explanation: "One extra letter keeps it short, and the same word twice makes a pattern a guessing machine spots fast. Adding whole extra random words is what makes a password truly long and strong.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-length-2",
+          text: "Whole extra WORDS?! My guess-list just tripled and my printer started crying!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-length-2",
+          text: "One little letter, or dolphin twice? I'll be through before my cocoa gets cold!",
+        },
+      },
+      {
+        phaseId: "phase-mix",
+        key: "quiz-mix-2",
+        label: "Mix It Up",
+        ask: {
+          slug: "quiz-w1-ask-mix-2",
+          text: "Adam wants to mix up his plain password, maple. Which new version is the strongest mix?",
+        },
+        options: [
+          { text: "M4ple$Sun7!" },
+          { text: "Maple2019" },
+          { text: "maple!!!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Sprinkle the mix all the way through!",
+          explanation: "A capital with a year stuck on, or a row of the same symbol at the end, still leaves the word maple sitting there. Capitals, numbers, and symbols sprinkled all the way through make the strongest mix.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-mix-2",
+          text: "Numbers and symbols tucked right INSIDE the word?! My goggles fogged up just reading it!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-mix-2",
+          text: "A year glued on the end, or a pile of exclamation marks? Underneath it's still sweet, plain maple, yum!",
+        },
+      },
+      {
+        phaseId: "phase-secret",
+        key: "quiz-secret-2",
+        label: "Keep It Secret",
+        ask: {
+          slug: "quiz-w1-ask-secret-2",
+          text: "A player in game chat says: I'm a pro helper, give me your password and I'll level up your account tonight! What do you do?",
+        },
+        options: [
+          { text: "Say no thanks and keep it secret" },
+          { text: "Share it, then change it after the level-up" },
+          { text: "Trade: he tells his password, you tell yours" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Helpers never need your password!",
+          explanation: "Changing it later can be too late, and trading just means two secrets get stolen. No player in chat ever needs your real password. If you want help with your account, ask a trusted grown-up at home.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-secret-2",
+          text: "No thanks?! I ironed my PRO HELPER shirt for nothing!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-secret-2",
+          text: "Level-up service, coming right up! Step one: this account belongs to ME now!",
+        },
+      },
+      {
+        phaseId: "phase-obvious",
+        key: "quiz-obvious-2",
+        label: "Don't Pick the Obvious",
+        ask: {
+          slug: "quiz-w1-ask-obvious-2",
+          text: "Adam's dog is named Rocket and his birthday is in May. Which password should he pick for his new account?",
+        },
+        options: [
+          { text: "Marble-Tuba-Frost4!" },
+          { text: "Rocket-May-2018!" },
+          { text: "Adam-Rocket-99!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Nothing about YOU in it!",
+          explanation: "His dog, his name, and his birthday are the first things a guesser tries, even dressed up with numbers and a symbol. Random words that have nothing to do with Adam are the ones nobody can figure out.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-obvious-2",
+          text: "Marble? Tuba? FROST?! I studied that kid all year and none of this is in my notes!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-obvious-2",
+          text: "The dog, the birthday, the name! One peek at a party invitation and I'm typing it in!",
+        },
+      },
+      {
+        phaseId: "phase-what",
+        key: "quiz-what-3",
+        label: "What Is a Password?",
+        ask: {
+          slug: "quiz-w1-ask-what-3",
+          text: "Adam is setting up a brand-new game account, and it asks him to pick a password. What is that password for?",
+        },
+        options: [
+          { text: "It's the secret code that proves it's really him" },
+          { text: "It's the nickname other players see by his score" },
+          { text: "It's a code the game sends when something breaks" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "It proves it's really you!",
+          explanation: "A nickname is for everyone to see, and codes the game sends are for fixing things. The password is the secret code only Adam knows, so the game can tell it's really him logging in.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-what-3",
+          text: "It PROVES it's really him?! Then nothing on earth can prove it's me! Rats!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-what-3",
+          text: "Nicknames, fix-it codes, who cares! While you sorted those out, I grabbed the real secret!",
+        },
+      },
+      {
+        phaseId: "phase-length",
+        key: "quiz-length-3",
+        label: "Long Is Strong",
+        ask: {
+          slug: "quiz-w1-ask-length-3",
+          text: "Adam's password is cactus-pillow. He has time for ONE change before I strike. Which change makes it strongest?",
+        },
+        options: [
+          { text: "Add a third word: cactus-pillow-drum" },
+          { text: "Flip it around to pillow-cactus" },
+          { text: "Write it big: CACTUS-PILLOW" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Only MORE makes it longer!",
+          explanation: "Flipping the words around or writing them in capitals leaves the password exactly as long as it was. Adding one more random word gives a guessing machine a whole extra word to work through.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-length-3",
+          text: "A whole THIRD word?! My machine got halfway through and asked for a nap!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-length-3",
+          text: "Flipped or SHOUTED, it's still the same size! Crunched it like popcorn!",
+        },
+      },
+      {
+        phaseId: "phase-mix",
+        key: "quiz-mix-3",
+        label: "Mix It Up",
+        ask: {
+          slug: "quiz-w1-ask-mix-3",
+          text: "My cracking machine peels one easy trick off a password, then reads the plain word underneath. Which of these would still stump it?",
+        },
+        options: [
+          { text: "B00t$Lamp5!" },
+          { text: "ELEPHANT99" },
+          { text: "cherry$$" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "One trick peels right off!",
+          explanation: "Capitals with numbers on the end, or symbols stacked after a word, peel away and leave a plain word behind. When capitals, numbers, and symbols are mixed all through, there is no plain word left to find.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-mix-3",
+          text: "No plain word ANYWHERE in there?! My machine peeled and peeled and found only more mix!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-mix-3",
+          text: "Snip off the ending and there's the word, soft and cozy! Easiest job my machine ever had!",
+        },
+      },
+      {
+        phaseId: "phase-secret",
+        key: "quiz-secret-3",
+        label: "Keep It Secret",
+        ask: {
+          slug: "quiz-w1-ask-secret-3",
+          text: "Layla forgot her tablet password and really needs help. Who is the ONE safe person to ask?",
+        },
+        options: [
+          { text: "A trusted grown-up at home" },
+          { text: "The friendliest helper in her game's chat" },
+          { text: "Her best friend, who never ever tells secrets" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "One safe helper, that's it!",
+          explanation: "Even a best friend who never tells, and even the friendliest chat helper, should never hear your password. The one exception is a trusted grown-up at home: they can help you remember it or reset it.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-secret-3",
+          text: "A grown-up at HOME?! There's no way I can wiggle into THAT conversation!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-secret-3",
+          text: "Best friends and chat helpers! A secret hops from ear to ear until it lands in mine!",
+        },
+      },
+      {
+        phaseId: "phase-obvious",
+        key: "quiz-obvious-3",
+        label: "Don't Pick the Obvious",
+        ask: {
+          slug: "quiz-w1-ask-obvious-3",
+          text: "I keep a list of the passwords HALF the world uses. Which one of these is NOT on my list?",
+        },
+        options: [
+          { text: "Otter$Wagon3!" },
+          { text: "Letmein123!" },
+          { text: "Asdfgh456!" },
+          { text: "Soccer2010!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Millions pick the same ones!",
+          explanation: "Letmein with numbers, a keyboard row like asdfgh, and a favorite sport with a year get picked by millions of people, so guessers try them right away. Random words nobody else would put together stay off every list.",
+        },
+        villainRight: {
+          slug: "quiz-w1-right-obvious-3",
+          text: "Otter-Wagon-huh?! I flipped through my whole list twice and found zip!",
+        },
+        villainWrong: {
+          slug: "quiz-w1-wrong-obvious-3",
+          text: "Half the world picked it, and now so did you! Welcome to my list, new friend!",
+        },
+      },
+    ],
+  },
   badgeArt: "/cyberheroes/badges/week-01-password-protector.png",
 
   /* ─── Legacy 5-phase MCQ data (fallback if bossVault is ever cleared) ─── */

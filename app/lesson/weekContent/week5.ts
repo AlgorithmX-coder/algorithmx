@@ -800,6 +800,439 @@ export const WEEK_5: WeekContent = {
     },
     voiceSlug: "w05",
   },
+  /* ──────────────── THE STANDARD QUIZ BOSS (week-ending test) ────────────────
+     Same contract as W1: 15 apply-the-skill questions, 3 per taught
+     concept, interleaved round-robin (c1..c5, c1..c5, c1..c5). Every
+     villain line below is DISTINCT (zero repeated phrases in this file).
+     SENSITIVE WEEK: his gloats mock his own Echo Machine and his plans,
+     never a child and never a victim.
+     TODO(audio): record every slug below (villain = Callum via the
+     cyberheroes-narration-audio pipeline); browser TTS speaks each text
+     until its clip exists at /audio/villain/{slug}.mp3. */
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#ff8e6e",
+    theme: {
+      topic: "Cyberbullying",
+      motifs: ["💬", "🛡️", "👍", "🤫", "✋", "⭐", "👪", "🚫"],
+    },
+    intro: {
+      slug: "quiz-w5-intro",
+      text: "Testing, testing! My Echo Machine is polished up and ready to repeat every wobbly answer you give me. Speak up, hero, it's hungry!",
+    },
+    victory: {
+      slug: "quiz-w5-victory",
+      text: "All that kindness gummed up my speakers! Echo... echo... ech... oh no, it's gone all warm and quiet in here! I'm leaving before I catch the niceness!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w5-c1",
+        key: "quiz-w5-c1-1",
+        label: "The Laugh Test",
+        ask: {
+          slug: "quiz-w5-ask-c1-1",
+          text: "Adam teases his friend Leo about a typo in the class chat, and Leo posts three laughing faces back. What's the verdict?",
+        },
+        options: [
+          { text: "A shared joke, both of them are laughing" },
+          { text: "Bullying, teasing always counts as mean" },
+          { text: "Bullying, because it happened in the chat" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Use the laugh test!",
+          explanation: "The test is simple: is everyone laughing, or is someone hurting? When both friends are cracking up, that's shared fun. Chats and teasing aren't the problem by themselves.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c1-1",
+          text: "Both laughing?! My Echo Machine can't echo giggles, they're too bouncy!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c1-1",
+          text: "Every tease into the echo bin! My machine never checks who's laughing, hee hee!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c2",
+        key: "quiz-w5-c2-1",
+        label: "Never Your Fault",
+        ask: {
+          slug: "quiz-w5-ask-c2-1",
+          text: "A mean comment lands on Adam's dinosaur drawing, and he thinks: 'I shouldn't have posted it.' What's the truth?",
+        },
+        options: [
+          { text: "Posting was fine, the meanness is the typer's choice" },
+          { text: "He should wait to post until he draws better" },
+          { text: "It's a little bit his fault for posting in public" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Sharing isn't wrong. Meanness is.",
+          explanation: "His drawing made kind people smile, sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c2-1",
+          text: "You blamed the TYPER?! But my doubt clouds were so gray and convincing!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c2-1",
+          text: "Yes, blame the drawing! Upside-down thinking, my absolute favorite kind!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c3",
+        key: "quiz-w5-c3-1",
+        label: "Fire Starver",
+        ask: {
+          slug: "quiz-w5-ask-c3-1",
+          text: "'You're the WORST goalie ever' pops up after Layla's game, and her fingers are already typing something meaner back. What happens if she sends it?",
+        },
+        options: [
+          { text: "The fire grows, now there are two mean messages" },
+          { text: "The bully learns a lesson and stops" },
+          { text: "Nothing much, they started it first" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Angry replies are wood!",
+          explanation: "Mean messages are a fire, and firing back is wood: the chat just gets hotter and Layla feels worse, not better. Don't reply, that's what stops the fire growing.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c3-1",
+          text: "You saw the fire trick coming?! I had a whole wheelbarrow of wood ready!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c3-1",
+          text: "TWO mean messages now! The fire says thank you and orders marshmallows!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c4",
+        key: "quiz-w5-c4-1",
+        label: "The Kind Door",
+        ask: {
+          slug: "quiz-w5-ask-c4-1",
+          text: "An embarrassing photo of Sam is going around with 'pass it on lol', and it lands on Adam's screen. Adam didn't write anything mean. Does forwarding still join in?",
+        },
+        options: [
+          { text: "Yes, every forward spreads the hurt" },
+          { text: "No, joining in needs mean words" },
+          { text: "Only if he adds a laughing face to it" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Forwarding is joining!",
+          explanation: "You don't have to write a word to join a pile-on. Forwarding, laughing along, even one little emoji all tell the bully 'more please'. Heroes stop the chain instead.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c4-1",
+          text: "The chain stopped at YOU?! Chains aren't supposed to have heroes in them!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c4-1",
+          text: "Pass it on, pass it on! The best part is nobody thinks they joined in!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c5",
+        key: "quiz-w5-c5-1",
+        label: "Never Alone",
+        ask: {
+          slug: "quiz-w5-ask-c5-1",
+          text: "A mean message about Adam is sitting in his chat, and his first thought is to delete it so he never sees it again. Why keep it instead?",
+        },
+        options: [
+          { text: "A trusted grown-up needs to see it to help" },
+          { text: "Deleting messages breaks the chat rules" },
+          { text: "He might want to answer it later on" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Keep it, don't delete it!",
+          explanation: "Deleting feels better for a second, but the proof vanishes with it. Keep the message, don't reply, and show it to a trusted grown-up, that's how real help arrives.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c5-1",
+          text: "You KEPT it?! Deleting was supposed to be the comfy choice!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c5-1",
+          text: "Delete delete delete! If nobody ever sees it, nobody ever helps!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c1",
+        key: "quiz-w5-c1-2",
+        label: "The Laugh Test",
+        ask: {
+          slug: "quiz-w5-ask-c1-2",
+          text: "Every day this week, the same player has called Maya 'slowpoke' in the game, and Maya has stopped joining. What makes this bullying instead of a joke?",
+        },
+        options: [
+          { text: "It's mean on purpose, again and again" },
+          { text: "It happened inside a video game" },
+          { text: "Slowpoke is a banned word online" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Spot the pattern!",
+          explanation: "No word is banned on its own, and games aren't the problem. Mean on purpose, repeated day after day, with only one side laughing: that's the bullying pattern.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c1-2",
+          text: "You spotted the again-and-again pattern?! My repeat button is my favorite button!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c1-2",
+          text: "Game words don't count! (A rule I just made up this second.)",
+        },
+      },
+      {
+        phaseId: "phase-w5-c2",
+        key: "quiz-w5-c2-2",
+        label: "Never Your Fault",
+        ask: {
+          slug: "quiz-w5-ask-c2-2",
+          text: "Someone has been mean to Layla in chat three times this week, and she starts wondering if something is wrong with HER. What do mean words actually tell you about?",
+        },
+        options: [
+          { text: "The person typing them, nothing else" },
+          { text: "Both people, a little bit each" },
+          { text: "Whoever gets picked on the most" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Mean words describe the typer!",
+          explanation: "Being picked on says zero about Layla, the kindest, most amazing kids get picked on too. Mean words only ever describe the person choosing to type them.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c2-2",
+          text: "Nothing else?! But I aimed those words SO carefully at the wrong target!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c2-2",
+          text: "Split the blame, a little each! Half-price fault for everybody!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c3",
+        key: "quiz-w5-c3-2",
+        label: "Fire Starver",
+        ask: {
+          slug: "quiz-w5-ask-c3-2",
+          text: "A player calls Adam a cheater in front of the whole lobby, and Adam is boiling inside. What does staying calm actually do to the meanness?",
+        },
+        options: [
+          { text: "Starves it, no reply means nothing to burn" },
+          { text: "Nothing, staying calm is just being shy" },
+          { text: "Saves his energy for a comeback later" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Calm is the power move!",
+          explanation: "Staying calm isn't weak or shy, and comebacks are just slow wood. A mean message that gets no reply has nothing to burn, so it fizzles while Adam plays the next race.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c3-2",
+          text: "It FIZZLED?! A mean message with no reply is just me shouting at a wall!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c3-2",
+          text: "Calm is shy, loud is strong! Now say that back to me angrily, please!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c4",
+        key: "quiz-w5-c4-2",
+        label: "The Kind Door",
+        ask: {
+          slug: "quiz-w5-ask-c4-2",
+          text: "Kids are dropping laughing emojis on the new kid's very first game, and Layla wants to be the hero of this chat. Which move flips it?",
+        },
+        options: [
+          { text: "One kind message, said out loud in the chat" },
+          { text: "Leaving the lobby so she's not part of it" },
+          { text: "Watching quietly without adding an emoji" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Kindness out loud wins!",
+          explanation: "Not joining in is good, but the hero move goes one step further. One kind message out loud shows the new kid they're not alone, and it can turn the whole chat warm again.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c4-2",
+          text: "One kind message and the whole lobby went WARM?! My echo hates warm!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c4-2",
+          text: "Tiptoe away, look away! An empty room is almost as good as a mean one!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c5",
+        key: "quiz-w5-c5-2",
+        label: "Never Alone",
+        ask: {
+          slug: "quiz-w5-ask-c5-2",
+          text: "Layla told her mom about the mean messages, and her tummy already feels lighter. Then a classmate says: 'You snitched!' What's true?",
+        },
+        options: [
+          { text: "Telling isn't snitching, it's how hurting stops" },
+          { text: "It was snitching, but worth it this once" },
+          { text: "It only counts as telling if it's about you" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Telling is the hero step!",
+          explanation: "Snitching tries to get someone IN trouble. Telling gets someone OUT of hurt. Heroes never carry heavy words alone, and telling someone you trust is exactly how the hurting stops.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c5-2",
+          text: "She told and felt LIGHTER?! Heavy was the whole entire point!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c5-2",
+          text: "Snitch snitch! Keep every heavy word to yourself, they're collectible!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c1",
+        key: "quiz-w5-c1-3",
+        label: "The Laugh Test",
+        ask: {
+          slug: "quiz-w5-ask-c1-3",
+          text: "Layla nicknames herself 'CaptainClumsy' after tripping, and everyone giggles WITH her. Later, kids start calling Sam 'CaptainClumsy' to make him feel small. Same nickname, so what changed?",
+        },
+        options: [
+          { text: "Who's laughing: with her, but at him" },
+          { text: "Nothing, nicknames are always just fun" },
+          { text: "The nickname got too old to be funny" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "With you or at you?",
+          explanation: "The words stayed the same, the laughing moved. Layla picked her nickname and laughed along. Sam didn't pick it and isn't laughing, and when someone's hurting, it stopped being a joke.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c1-3",
+          text: "You tracked where the laugh WENT?! I thought recycled nicknames were untraceable!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c1-3",
+          text: "Same name, same joke, no difference! My echo plays reruns all day long!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c2",
+        key: "quiz-w5-c2-3",
+        label: "Never Your Fault",
+        ask: {
+          slug: "quiz-w5-ask-c2-3",
+          text: "Sam keeps getting mean messages about his favorite hobby, and a friend suggests: 'Just change your hobby and they'll stop.' Is the hobby the problem?",
+        },
+        options: [
+          { text: "No, the bully's choice is the only problem" },
+          { text: "Partly, unusual hobbies invite teasing" },
+          { text: "Yes, quieter hobbies are safer online" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The hobby was never the problem!",
+          explanation: "Sam's hobby is great, and hiding it wouldn't fix a thing, because the meanness was never really about the hobby. It's the typer's choice and the typer's fault, full stop.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c2-3",
+          text: "The hobby STAYS?! I was so sure you'd blame the hobby!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c2-3",
+          text: "Swap the hobby, hide the fun! An idea only I could love!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c3",
+        key: "quiz-w5-c3-3",
+        label: "Fire Starver",
+        ask: {
+          slug: "quiz-w5-ask-c3-3",
+          text: "Layla is SO angry about a mean message that her hands are shaking, and she really wants to fight back. What's the calm-and-strong path?",
+        },
+        options: [
+          { text: "Breathe, don't reply, and tell a trusted grown-up" },
+          { text: "Send one small mean reply, then stop there" },
+          { text: "Wait an hour, then fire back calmly" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Shaky hands, steady plan!",
+          explanation: "One small mean reply is still wood, and a comeback an hour later burns just the same. Breathe until the shake fades, reply with nothing, and let a trusted grown-up help put it out.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c3-3",
+          text: "You BREATHED?! Nobody breathes! My whole plan runs on shaky hands!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c3-3",
+          text: "An hour later still burns beautifully! Slow wood is still wood!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c4",
+        key: "quiz-w5-c4-3",
+        label: "The Kind Door",
+        ask: {
+          slug: "quiz-w5-ask-c4-3",
+          text: "'Haha pass it on: Leo still wears armbands at the pool.' It's been forwarded loads already, so one more won't matter... right?",
+        },
+        options: [
+          { text: "Wrong, every single forward makes it heavier" },
+          { text: "Right, it's already everywhere anyway" },
+          { text: "Right, if she adds 'this isn't nice' under it" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The chain stops with you!",
+          explanation: "A forward with a kind note stapled on is still a forward, and 'it's everywhere anyway' is exactly how pile-ons grow. Stop the chain, then check that Leo is okay.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c4-3",
+          text: "You checked on LEO instead?! That was my juiciest forward of the year!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c4-3",
+          text: "One more is free, it's everywhere anyway! That's pile-on math!",
+        },
+      },
+      {
+        phaseId: "phase-w5-c5",
+        key: "quiz-w5-c5-3",
+        label: "Never Alone",
+        ask: {
+          slug: "quiz-w5-ask-c5-3",
+          text: "Mean messages keep landing, and Sam has already done 'don't reply' and 'keep the message'. He's tired and wants to skip the last step. Which step finishes the path?",
+        },
+        options: [
+          { text: "Tell someone you trust, every single time" },
+          { text: "Wait quietly for the messages to stop" },
+          { text: "Mute the chat and handle it all alone" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The last stone matters most!",
+          explanation: "The first two steps stop the fire growing, but only telling shares the weight and brings real help. A trusted grown-up, a parent, a caregiver, a teacher: that's how the path ends and the hurting stops.",
+        },
+        villainRight: {
+          slug: "quiz-w5-right-c5-3",
+          text: "He TOLD someone?! Shared between two, heavy words weigh nothing, and that's TERRIBLE news for me!",
+        },
+        villainWrong: {
+          slug: "quiz-w5-wrong-c5-3",
+          text: "Handle it alone, super duper quietly! Lonely heroes are my best customers!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-05-kind-defender.png",
 
   bossAttacks: [

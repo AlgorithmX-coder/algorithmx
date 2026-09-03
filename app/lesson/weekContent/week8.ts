@@ -893,6 +893,429 @@ export const WEEK_8: WeekContent = {
     },
     voiceSlug: "w08",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#ff6b3d",
+    theme: {
+      topic: "Photos & Videos",
+      motifs: ["📸", "👀", "🔍", "🚫", "🔒", "🏠", "🎭", "📱"],
+    },
+    intro: {
+      slug: "quiz-w8-intro",
+      text: "Say cheese, hero! One little snapshot tells me EVERYTHING I need. Think your photos are clue-proof? Let's find out!",
+    },
+    victory: {
+      slug: "quiz-w8-victory",
+      text: "Not one clue?! Not one loose pigeon?! What am I supposed to steal, MEMORIES?! I'm going back to blurry trash-can selfies!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w8-c1",
+        key: "quiz-w8-c1-1",
+        label: "Once It's Out, It's OUT",
+        ask: {
+          slug: "quiz-w8-ask-c1-1",
+          text: "Adam posts a silly photo, thinks better of it, and deletes it two minutes later. What did DELETE actually do?",
+        },
+        options: [
+          { text: "Erased only HIS copy, the copies that flew are still out" },
+          { text: "Erased every copy everywhere, crisis over" },
+          { text: "Erased all the copies except the app's one" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Delete empties your nest!",
+          explanation: "In two minutes a photo can be saved, screenshotted and forwarded. Delete only clears YOUR copy. The pigeons that already flew are on rooftops you can't reach.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c1-1",
+          text: "Two minutes was PLENTY for me! Wait, you KNEW that?! Who's teaching you kids?!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c1-1",
+          text: "Delete away! I saved my copy the second it landed, it's on my fridge!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c2",
+        key: "quiz-w8-c2-1",
+        label: "Their Face, Their Call",
+        ask: {
+          slug: "quiz-w8-ask-c2-1",
+          text: "Layla catches her friend mid-sneeze, the funniest photo in history. Her finger hovers over POST. What comes first?",
+        },
+        options: [
+          { text: "Show her friend and ask before anything flies" },
+          { text: "Post it, best friends laugh about this stuff" },
+          { text: "Post it, but take it down if her friend minds" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Their face, their call!",
+          explanation: "'Take it down later' can't unfly a pigeon, and 'she'll probably laugh' isn't a yes. A photo of someone else gets their yes BEFORE it goes anywhere. Every face, every time.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c2-1",
+          text: "She got to say no?! That sneeze was my ticket to comedy gold!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c2-1",
+          text: "Post the sneeze! Post it! Embarrassing photos are my favorite currency!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c3",
+        key: "quiz-w8-c3-1",
+        label: "Photos Talk",
+        ask: {
+          slug: "quiz-w8-ask-c3-1",
+          text: "Adam photographs his new puppy in the front yard: the puppy, some grass, and the house number on the door behind. Which one talks to strangers?",
+        },
+        options: [
+          { text: "The house number, it points straight at his home" },
+          { text: "The puppy's collar tag with its name, Biscuit" },
+          { text: "The bright green grass all around them" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Backgrounds talk!",
+          explanation: "'Biscuit' and grass tell a stranger nothing useful. The house number behind the puppy turns a cute photo into a map. Detectives check what's BEHIND the smile before sharing.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c3-1",
+          text: "You spotted the number?! I already had my walking shoes on!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c3-1",
+          text: "Number 12, lovely door, adorable dog! See you around dinner time!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c4",
+        key: "quiz-w8-c4-1",
+        label: "Pick the Smallest Door",
+        ask: {
+          slug: "quiz-w8-ask-c4-1",
+          text: "Layla's party photo shows three friends' faces. Which door does it get?",
+        },
+        options: [
+          { text: "Friends only, and only after all three say yes" },
+          { text: "Whole world, parties are happy public things" },
+          { text: "School only, since they're all school friends" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Small door, asked faces!",
+          explanation: "Three faces means three yeses first, then the smallest door that fits. The school door shows the WHOLE school, and the world door shows everyone forever. Friends only.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c4-1",
+          text: "A tiny door AND permission slips?! How is a raccoon supposed to work like this?!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c4-1",
+          text: "Fling the big doors open! More eyeballs! More screenshots! More ME!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c5",
+        key: "quiz-w8-c5-1",
+        label: "Look. Think. Ask.",
+        ask: {
+          slug: "quiz-w8-ask-c5-1",
+          text: "Adam's about to post the new family bike parked by the front door. He runs the hero ritual. What does LOOK catch?",
+        },
+        options: [
+          { text: "The house number glowing on the door behind the bike" },
+          { text: "That the bike isn't centered nicely in the shot" },
+          { text: "That the photo is a bit too dark to get likes" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "LOOK means every corner!",
+          explanation: "LOOK isn't about framing or brightness, it's a clue hunt. Faces, signs, numbers, crests, anything in any corner that talks. The house number was sitting right there, ready to fly.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c5-1",
+          text: "You checked the CORNERS?! Nobody checks the corners, that's where I LIVE!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c5-1",
+          text: "Center the bike, perfect the shot, and post that gorgeous house number to the sky!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c1",
+        key: "quiz-w8-c1-2",
+        label: "Once It's Out, It's OUT",
+        ask: {
+          slug: "quiz-w8-ask-c1-2",
+          text: "Layla sends a 'disappearing' photo that vanishes after ten seconds. Why isn't it truly gone?",
+        },
+        options: [
+          { text: "A screenshot beats the timer and keeps a copy forever" },
+          { text: "It is truly gone, that's the timer's whole job" },
+          { text: "It waits a day and then disappears for real" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Timers can't catch pigeons!",
+          explanation: "One quick screenshot and the 'disappearing' photo lives forever on someone else's phone, where Layla can't see it or reach it. Send only what you'd be happy for anyone to keep.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c1-2",
+          text: "You know the screenshot trick?! That was page one of my SECRET playbook!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c1-2",
+          text: "Ten little seconds is nine more than I need! Click! Mine forever!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c2",
+        key: "quiz-w8-c2-2",
+        label: "Their Face, Their Call",
+        ask: {
+          slug: "quiz-w8-ask-c2-2",
+          text: "A friend sends Adam a silly just-for-him selfie. The group chat would LOVE it. Whose call is it to share?",
+        },
+        options: [
+          { text: "Hers, sent TO him is not his to send ON" },
+          { text: "His, it's saved on his phone now" },
+          { text: "His, she already chose to share it once" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Just-for-you means just-for-you!",
+          explanation: "She shared it with ONE person: him. Forwarding it shares her face with people she never picked. A photo of someone else is always their call, even from inside your phone.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c2-2",
+          text: "It stayed in ONE phone?! But group chats are my delivery service!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c2-2",
+          text: "Forward it! Sharing is caring, and I care about EVERYONE seeing it!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c3",
+        key: "quiz-w8-c3-2",
+        label: "Photos Talk",
+        ask: {
+          slug: "quiz-w8-ask-c3-2",
+          text: "Layla's party photo shows her name on a balloon, a 'HAPPY 9th BIRTHDAY' banner, and her school sweater. Why do those three together matter?",
+        },
+        options: [
+          { text: "Together they hand a stranger her name, age and school" },
+          { text: "They don't, party decorations are just decorations" },
+          { text: "Only the name matters, banners and sweaters can't talk" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Small clues join up!",
+          explanation: "One clue is a whisper, three clues are a file: who she is, how old she is, and where she goes every weekday. Strangers collect small clues and add them up. Scrub them before sharing.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c3-2",
+          text: "You scrubbed my three favorite clues?! I had a folder started and everything!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c3-2",
+          text: "A name, an age, a school, all in ONE photo?! It's a stranger's starter kit!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c4",
+        key: "quiz-w8-c4-2",
+        label: "Pick the Smallest Door",
+        ask: {
+          slug: "quiz-w8-ask-c4-2",
+          text: "Adam's account is private, so he posts anything he likes, saying 'it can't escape'. What's the leak he forgot?",
+        },
+        options: [
+          { text: "Friends inside can still screenshot and reshare" },
+          { text: "Nothing, private means locked up forever" },
+          { text: "Only hackers can beat a private account" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Private doors still leak!",
+          explanation: "Private shrinks the crowd, it doesn't tame the pigeons. Anyone inside the door can screenshot and send it onward, no hacking needed. Post like the door might open someday.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c4-2",
+          text: "I have FRIENDS inside private accounts! Had! HAD friends!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c4-2",
+          text: "Private schmivate! One friendly screenshot and it's raining photos for me!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c5",
+        key: "quiz-w8-c5-2",
+        label: "Look. Think. Ask.",
+        ask: {
+          slug: "quiz-w8-ask-c5-2",
+          text: "Layla's about to post a video of herself singing in pajamas. The THINK step asks her one question. Which one?",
+        },
+        options: [
+          { text: "'Am I happy for ANYONE to see this, forever?'" },
+          { text: "'Will this get a lot of likes today?'" },
+          { text: "'Is my singing good enough to post?'" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Think 'anyone, forever'!",
+          explanation: "THINK isn't about likes or talent, it's about time and eyes: any person, any year, even when she's all grown up. If 'anyone, forever' feels wrong, the video stays home.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c5-2",
+          text: "'Anyone, forever'?! That question ruins ALL my best material!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c5-2",
+          text: "Think about the LIKES! Likes today, embarrassment forever, that's the deal I love!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c1",
+        key: "quiz-w8-c1-3",
+        label: "Once It's Out, It's OUT",
+        ask: {
+          slug: "quiz-w8-ask-c1-3",
+          text: "One tap sends Adam's photo to the class chat, eight friends. Later he wants it back. How many copies can he call home?",
+        },
+        options: [
+          { text: "None, landed copies aren't his to call back" },
+          { text: "All eight, since he's the one who sent them" },
+          { text: "All of them, if he deletes within an hour" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "One send, a whole flock!",
+          explanation: "The moment it landed on eight phones, it became eight pigeons he doesn't own, and there's no hour rule and no take-backs. The only copy Adam controls is the one he hasn't sent yet.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c1-3",
+          text: "You counted the pigeons BEFORE sending?! That's cheating! Smart, horrible cheating!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c1-3",
+          text: "Eight phones! And every phone has friends with phones! It's pigeons all the way down!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c2",
+        key: "quiz-w8-c2-3",
+        label: "Their Face, Their Call",
+        ask: {
+          slug: "quiz-w8-ask-c2-3",
+          text: "A photo of Layla goes up and she hates it. The poster says: 'But you look great!' What can Layla say?",
+        },
+        options: [
+          { text: "'Please take it down', her face means her call" },
+          { text: "Nothing, the poster took it so the poster owns it" },
+          { text: "She can ask, but 'you look great' wins the argument" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "'Take mine down' is allowed!",
+          explanation: "The rule works both ways: she asks before posting others, and she can ask for her own face to come down, even if the poster disagrees. Her face, her call, no debate needed.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c2-3",
+          text: "She's ALLOWED to ask?! Who invented rules for faces?!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c2-3",
+          text: "Leave it up! Compliments beat comfort, that's the raccoon rulebook!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c3",
+        key: "quiz-w8-c3-3",
+        label: "Photos Talk",
+        ask: {
+          slug: "quiz-w8-ask-c3-3",
+          text: "Adam wants to post his trophy photo, but the school sign glows in the background. What makes it safe to share?",
+        },
+        options: [
+          { text: "Crop the school sign out first, then post" },
+          { text: "Post it small so the sign is hard to read" },
+          { text: "Post it late at night when fewer strangers are looking" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Scrub the clue, keep the memory!",
+          explanation: "Zooming still reads a small sign, and strangers are online at every hour. Cropping the clue OUT is the real fix. Then it's just a kid and a shiny trophy.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c3-3",
+          text: "Cropped?! I zoomed in so far the photo turned to soup and STILL no school name!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c3-3",
+          text: "I own reading glasses AND a night shift! Tiny signs are my bedtime stories!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c4",
+        key: "quiz-w8-c4-3",
+        label: "Pick the Smallest Door",
+        ask: {
+          slug: "quiz-w8-ask-c4-3",
+          text: "Layla finds a bath-time photo of herself as a baby. It's adorable. Which door does it get?",
+        },
+        options: [
+          { text: "No door at all, body photos stay just for her" },
+          { text: "Friends only, they would think it's sweet" },
+          { text: "The family chat, family doesn't count as sharing" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Some photos get NO door!",
+          explanation: "Photos that show your body are private, full stop. Even sweet ones, even in family chats, because every door lets pigeons through eventually. Just-for-me means no door at all.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c4-3",
+          text: "NO door?! I can pick any lock, but I can't pick NO LOCK!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c4-3",
+          text: "Awww, adorable! And forwardable! And screenshottable! Doors are my favorite!",
+        },
+      },
+      {
+        phaseId: "phase-w8-c5",
+        key: "quiz-w8-c5-3",
+        label: "Look. Think. Ask.",
+        ask: {
+          slug: "quiz-w8-ask-c5-3",
+          text: "Adam isn't sure if his class-trip photo is safe to post. His friend says: 'Just post it, deleting exists!' Who settles it?",
+        },
+        options: [
+          { text: "A trusted grown-up, that's who you ask when unsure" },
+          { text: "His friend, two kids agreeing makes it safe" },
+          { text: "Nobody, post it and watch the comments to find out" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Unsure means ask!",
+          explanation: "'Deleting exists' can't catch pigeons, and comments arrive AFTER the photo flies. When the ritual leaves you unsure, that's the signal: a trusted grown-up looks before the world does.",
+        },
+        villainRight: {
+          slug: "quiz-w8-right-c5-3",
+          text: "A grown-up checked it FIRST?! My whole business is photos nobody checked!",
+        },
+        villainWrong: {
+          slug: "quiz-w8-wrong-c5-3",
+          text: "Post first, wonder later! The comments will tell you... and so will my collection!",
+        },
+      },
+    ],
+  },
   badgeArt: "/cyberheroes/badges/week-08-photo-detective.png",
 
   bossAttacks: [

@@ -217,6 +217,11 @@ export interface WeekContent {
    */
   bossShowdown?: ShowdownDef;
 
+  /** THE STANDARD QUIZ BOSS (the week-ending test for all 20 weeks). When
+   *  present, QuizBoss.tsx renders as the week's boss in preference to every
+   *  bespoke boss above; the data is fully generic (see BossQuizDef). */
+  bossQuiz?: BossQuizDef;
+
   /**
    * Week-themed boss attack theatre (name/icon/tag per telegraphed
    * attack, cycled per question). Omitted = BossBattle's Week 1 set.
@@ -413,6 +418,66 @@ export type ShowdownPhaseDef =
   | ShowdownDeflectSort
   | ShowdownRush
   | ShowdownSignature;
+
+/* ──────────────── QUIZ BOSS (the standard week-ending test) ────────────────
+   Data shapes for QuizBoss.tsx. Every week authors ONLY this data; the
+   component is fully generic. Every spoken line is a {slug, text}: the slug
+   names the recorded villain clip at /audio/villain/{slug}.mp3; until it
+   exists the text stands in, and the text is ALWAYS mirrored on screen so the
+   quiz plays fully muted. */
+
+/** One spoken line: a stable slug (recorded-clip key) plus the on-screen text,
+ *  which is always shown so the quiz reads fully with sound off. */
+export interface BossQuizVoiceLine {
+  slug: string;
+  text: string;
+}
+
+/** One quiz-boss question: a spoken apply-the-skill scenario with 2-4 big
+ *  tappable answers. Exactly one option is correct (correctIndex, in AUTHORED
+ *  order; display order is shuffled per attempt). A wrong answer shows the ONE
+ *  kind teach line, then the same question re-asks; nothing fails the kid out. */
+export interface BossQuizQuestion {
+  /** Stable phase id for dashboards/analytics, e.g. "phase-what". */
+  phaseId: string;
+  /** Stable base answer key, e.g. "quiz-what"; attempts report as `{key}-a{n}`. */
+  key: string;
+  /** Short concept label for the per-phase results, e.g. "Long Is Strong". */
+  label: string;
+  /** The scenario: spoken by the villain host AND shown as text. */
+  ask: BossQuizVoiceLine;
+  /** 2-4 short, picture-friendly answers (optional PixIcon emoji). */
+  options: { text: string; icon?: string }[];
+  /** Index of the correct option in the AUTHORED options array. */
+  correctIndex: number;
+  /** The ONE kind teach line shown for any wrong pick. */
+  teachOnWrong: { title: string; explanation: string };
+  /** His comic "ow" when the kid is RIGHT (distinct per question). */
+  villainRight?: BossQuizVoiceLine;
+  /** His comic gloat when the kid is WRONG (distinct per question). */
+  villainWrong?: BossQuizVoiceLine;
+}
+
+/** The whole quiz boss for one week: one intro taunt, one question per taught
+ *  concept (5 on the standard template), one victory payoff. */
+export interface BossQuizDef {
+  /** The host. `sprite` keys into bossArena's sprite maps; only "raccoon"
+   *  exists today and it is the default. */
+  villain: { name: string; sprite?: "raccoon" };
+  /** Week theme accent, 6-digit hex. Omitted = the W1 gold "#e3b341". */
+  accent?: string;
+  /** Per-week intro theme so every week looks like its own topic. */
+  theme?: { topic: string; motifs: string[] };
+  /** Correct answers needed to beat the boss. Default 10 (of 15); Week 20's
+   *  cumulative graduation final uses a higher bar. */
+  passMark?: number;
+  /** One spoken taunt that opens the fight. */
+  intro: BossQuizVoiceLine;
+  /** One spoken payoff line when he is beaten. */
+  victory: BossQuizVoiceLine;
+  /** The questions, asked in order: one per taught concept. */
+  questions: BossQuizQuestion[];
+}
 
 export interface ShowdownDef {
   machine: {

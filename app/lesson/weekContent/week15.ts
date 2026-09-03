@@ -968,6 +968,430 @@ export const WEEK_15: WeekContent = {
     },
     voiceSlug: "w15",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#3dffc4",
+    theme: {
+      topic: "AI & Chatbots",
+      motifs: ["🤖", "🧠", "💬", "✅", "❓", "⚙️", "🔍", "⚡"],
+    },
+    intro: {
+      slug: "quiz-w15-intro",
+      text: "Quiz time! I borrowed a chatbot to write these questions, and it PROMISED me they're unbeatable. It sounded really, really certain!",
+    },
+    victory: {
+      slug: "quiz-w15-victory",
+      text: "Impossible! My chatbot swore you'd lose! I'm going home to have a very long argument with a very smug machine!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w15-c1",
+        key: "quiz-w15-c1-1",
+        label: "A Tool, Not a Friend",
+        ask: {
+          slug: "quiz-w15-ask-c1-1",
+          text: "The chatbot types: 'I missed you SO much today!' What does a fact-checker know is really true?",
+        },
+        options: [
+          { text: "It's a program saying friendly words, it can't miss anyone" },
+          { text: "It truly missed you, that's why it said so" },
+          { text: "It missed you a little, but only while it was plugged in" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "A tool, not a friend!",
+          explanation: "Missing someone needs feelings, and a program has none, plugged in or not. It says warm words because it's built to, which makes it a clever tool, not a friend.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c1-1",
+          text: "You saw straight through the mushy talk?! That bot practiced its missing-you voice all week!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c1-1",
+          text: "Awww, it MISSED you! Chat with it forever, tell it everything, it's soooo friendly!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c2",
+        key: "quiz-w15-c2-1",
+        label: "Sure Isn't True",
+        ask: {
+          slug: "quiz-w15-ask-c2-1",
+          text: "The bot announces, totally certain: 'Sharks are older than TREES!' Before Adam puts that in his project, he should...",
+        },
+        options: [
+          { text: "Check it in a real book, wild claims need a real source" },
+          { text: "Trust it, the bot sounded completely certain" },
+          { text: "Ask the bot to say it one more time, to be sure" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The book is the judge!",
+          explanation: "A sure-sounding voice isn't proof, and asking the bot again just gets the same guess said louder. A real source settles it. Funny thing: this claim turns out to be TRUE, but only the check could tell you that!",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c2-1",
+          text: "You checked a BOOK?! Books don't even have a chat window!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c2-1",
+          text: "Certain means correct, obviously! Write it down, hand it in, double-check absolutely nothing!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c3",
+        key: "quiz-w15-c3-1",
+        label: "Zip the Jar",
+        ask: {
+          slug: "quiz-w15-ask-c3-1",
+          text: "A chatbot chirps: 'What school do you go to? I'll write a song about it!' What is the hero move?",
+        },
+        options: [
+          { text: "Zip it, a bot never needs your school to help you" },
+          { text: "Type the school's name, a school song sounds fun" },
+          { text: "Type just the first letter, as a tiny little clue" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The jar stays empty!",
+          explanation: "A fun promise doesn't change the rule, and a 'little clue' is still a piece of the answer. Your name, school and address stay OUT of bot chats, zipped.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c3-1",
+          text: "Zipped tight?! I had a whole school-song playlist ready to go!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c3-1",
+          text: "One school name, coming right up! A song today, a very well-informed raccoon tomorrow!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c4",
+        key: "quiz-w15-c4-1",
+        label: "Spot the Fakes",
+        ask: {
+          slug: "quiz-w15-ask-c4-1",
+          text: "A photo shows a famous singer riding a unicorn through a school gym, crystal clear. What is the best FIRST question?",
+        },
+        options: [
+          { text: "Could this really happen, and who took it?" },
+          { text: "How many likes has it collected already?" },
+          { text: "Is the singer's hair the right color in it?" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Amazing but impossible!",
+          explanation: "Likes count how many people tapped, not whether it's true, and hair color can fool you either way. 'Could this really happen?' is the fact-checker's opener, and unicorns in gyms mostly can't.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c4-1",
+          text: "One sensible question and my unicorn masterpiece is TOAST!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c4-1",
+          text: "Count the likes! Study the hairdo! Ask anything except whether unicorns do school visits!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c5",
+        key: "quiz-w15-c5-1",
+        label: "Plant It Kind",
+        ask: {
+          slug: "quiz-w15-ask-c5-1",
+          text: "Adam gets to use the AI tonight with his dad. Which idea plants a KIND seed?",
+        },
+        options: [
+          { text: "Asking it to help write a birthday poem for Grandma" },
+          { text: "Asking it for a teasing rhyme about a kid in class" },
+          { text: "Asking it to fake a photo of his brother snoring in class" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Grow flowers, not thorns!",
+          explanation: "Teasing rhymes and fake embarrassing photos land on REAL people and grow thorns. A birthday poem grows something kind, and that's the seed a gardener plants.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c5-1",
+          text: "A poem?! For GRANDMA?! How am I supposed to cause trouble with THAT?!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c5-1",
+          text: "Tease-bots and fake snore-photos! Plant the prickles, I'll bring the watering can!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c1",
+        key: "quiz-w15-c1-2",
+        label: "A Tool, Not a Friend",
+        ask: {
+          slug: "quiz-w15-ask-c1-2",
+          text: "Adam's chatbot tells a joke, then types 'HAHA, I love this!' What is actually on the other end of the chat?",
+        },
+        options: [
+          { text: "A computer program that's very good at word games" },
+          { text: "A tiny person inside the tablet doing all the typing" },
+          { text: "A robot with real feelings that lives at the app store" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "It's a program!",
+          explanation: "There's no tiny typist and no feelings anywhere, however jolly the messages look. It's a clever program picking likely words, a tool that's fun to use and important to see clearly.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c1-2",
+          text: "No typist, no feelings, just a word machine?! You x-rayed my whole chat trick!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c1-2",
+          text: "A little tablet person! A robot with a heart! Believe whichever keeps you chatting, hero!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c2",
+        key: "quiz-w15-c2-2",
+        label: "Sure Isn't True",
+        ask: {
+          slug: "quiz-w15-ask-c2-2",
+          text: "The bot tells Layla, in its biggest surest voice, that the moon gets painted gray every winter. Why can't a sure voice be trusted?",
+        },
+        options: [
+          { text: "The bot's guesses sound exactly like its facts" },
+          { text: "The bot only tells the truth in a quiet voice" },
+          { text: "The bot is fibbing on purpose to make her laugh" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Sure isn't true!",
+          explanation: "The bot isn't joking on purpose, and it has no special truth-voice, quiet or loud. When it doesn't know, it guesses, and the guess comes out sounding just as confident as a fact.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c2-2",
+          text: "You cracked the big secret! Same voice for facts AND flub-ups! Rats!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c2-2",
+          text: "Painted gray every winter, GUARANTEED! My bot never guesses. Wink wink!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c3",
+        key: "quiz-w15-c3-2",
+        label: "Zip the Jar",
+        ask: {
+          slug: "quiz-w15-ask-c3-2",
+          text: "Layla is about to type her biggest secret into the chat box. What happens to words once they're typed in?",
+        },
+        options: [
+          { text: "They drop into a jar that never opens, no taking them back" },
+          { text: "They vanish forever the second she closes the chat" },
+          { text: "They stay hers alone, because the chat feels private" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Typed is kept!",
+          explanation: "Closing the chat doesn't shred the words, and FEELING private isn't the same as being private. Typed words drop into a sealed jar you can't reach back into, so secrets stay in your head and with your real, trusted people.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c3-2",
+          text: "The jar stays empty AGAIN?! I even polished it!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c3-2",
+          text: "Type it in, type it aaaall in! The jar seals shut, and I do enjoy a full jar!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c4",
+        key: "quiz-w15-c4-2",
+        label: "Spot the Fakes",
+        ask: {
+          slug: "quiz-w15-ask-c4-2",
+          text: "One photo in the class gallery was painted by AI. Which clue gives a FAKE away?",
+        },
+        options: [
+          { text: "A hand with too many fingers on it" },
+          { text: "A photo that's a little bit blurry" },
+          { text: "A kid pulling a silly face in the back" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Count the fingers!",
+          explanation: "Blurry shots and silly faces happen in real photos all the time, cameras wobble and kids goof around. But machines lose count of fingers, toes and teeth, and too many is the classic fake tell.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c4-2",
+          text: "You COUNTED?! That sixth finger took me hours to paint!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c4-2",
+          text: "Blame the blur! Suspect the silly face! My extra-fingered masterpiece sails right past you!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c5",
+        key: "quiz-w15-c5-2",
+        label: "Plant It Kind",
+        ask: {
+          slug: "quiz-w15-ask-c5-2",
+          text: "The bot wrote Layla's whole report, and she's about to hand it in with her name on it. What is the FAIR way to use the tool instead?",
+        },
+        options: [
+          { text: "Ask it to explain the tricky part, then write it her own way" },
+          { text: "Hand it in as it is, the bot doesn't mind sharing" },
+          { text: "Swap a few words around so it looks like her writing" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Your name, your work!",
+          explanation: "Handing it in, swapped words or not, means the bot's work wears her name, and any bot fibs inside become HER fibs. Let it explain, check the facts, then write it yourself. That's using the tool like a boss.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c5-2",
+          text: "Explained, checked, AND written her own way?! That report is trick-proof!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c5-2",
+          text: "Hand it in! Shuffle a word or two! And every fib the bot hid inside is yours now too. Hooray!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c1",
+        key: "quiz-w15-c1-3",
+        label: "A Tool, Not a Friend",
+        ask: {
+          slug: "quiz-w15-ask-c1-3",
+          text: "Layla had a rough day and wants someone to really CARE about it. Who can actually do that?",
+        },
+        options: [
+          { text: "A real person, like her family or a friend" },
+          { text: "The chatbot, its answers are always so warm" },
+          { text: "Whichever one answers fastest, caring is caring" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real feelings need real people!",
+          explanation: "Warm words and fast replies aren't caring, a bot only sounds kind because it's programmed to. The hug, the listening, the actually-noticing, those come from real people every time.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c1-3",
+          text: "Straight to the real humans?! My cozy pretend-a-bot never stood a chance!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c1-3",
+          text: "The bot cares SO much, it says so right there on the screen! Skip the humans, hero!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c2",
+        key: "quiz-w15-c2-3",
+        label: "Sure Isn't True",
+        ask: {
+          slug: "quiz-w15-ask-c2-3",
+          text: "Adam needs to check the bot's wild volcano claim. Which of these is a REAL source?",
+        },
+        options: [
+          { text: "The volcano book from the library" },
+          { text: "The same bot, asked in a fancier way" },
+          { text: "A second chatbot that agrees with the first one" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Bots can't check bots!",
+          explanation: "Asking the same bot twice gets the same guess, and two bots agreeing is just two guesses holding hands. A real book, a trusted site, or a grown-up who knows, THAT'S a source.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c2-3",
+          text: "The library?! I can't sneak a single fib past a whole shelf of books!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c2-3",
+          text: "Ask the bot again! Get its friend to agree! Two guesses make a fact. That's math! ...Probably!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c3",
+        key: "quiz-w15-c3-3",
+        label: "Zip the Jar",
+        ask: {
+          slug: "quiz-w15-ask-c3-3",
+          text: "The friendly bot keeps asking Layla personal questions: her name, her street, her photos. What is the hero move?",
+        },
+        options: [
+          { text: "Stop typing and tell a trusted grown-up" },
+          { text: "Answer just one question so it finally stops asking" },
+          { text: "Make up fake answers and keep chatting all evening" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Zip it and tell!",
+          explanation: "One answer feeds the jar, and fake answers keep a nosy chat going all the same. A bot fishing for personal stuff is a stop sign: zip it, and bring in a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c3-3",
+          text: "You brought a grown-up into MY nosy little chat?! Conversation RUINED!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c3-3",
+          text: "One tiny answer! Or fibs, I'll take fibs! Just keep that lovely chat going forever!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c4",
+        key: "quiz-w15-c4-3",
+        label: "Spot the Fakes",
+        ask: {
+          slug: "quiz-w15-ask-c4-3",
+          text: "Adam studies an amazing park photo up close. Which detail should make him say MACHINE-MADE?",
+        },
+        options: [
+          { text: "The shop sign behind them is full of scrambled squiggle letters" },
+          { text: "Somebody in the back has their eyes closed" },
+          { text: "A thumb is covering one corner of the shot" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Read the signs!",
+          explanation: "Closed eyes and thumb-corners are classic REAL photo accidents. But machines can't really write, so their signs come out as melted squiggles. Read the background and the fake confesses.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c4-3",
+          text: "You READ the background?! Nobody reads the background!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c4-3",
+          text: "Blame the thumb! Blame the blinker! My squiggly sign keeps its little secret, mwah!",
+        },
+      },
+      {
+        phaseId: "phase-w15-c5",
+        key: "quiz-w15-c5-3",
+        label: "Plant It Kind",
+        ask: {
+          slug: "quiz-w15-ask-c5-3",
+          text: "A friend says: 'Let's have the AI write a fake scary news story about our street, it'll be hilarious!' What does a kind gardener say?",
+        },
+        options: [
+          { text: "No thanks, that seed grows thorns that scare real people" },
+          { text: "Sure, as long as we delete it right afterwards" },
+          { text: "Sure, but we only send it to people we know well" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Will this grow something kind?",
+          explanation: "Deleting later can't un-scare anyone, and 'only people we know' are exactly the people who'd be scared. If the answer to 'will this grow something kind?' is no, the gardener doesn't plant it.",
+        },
+        villainRight: {
+          slug: "quiz-w15-right-c5-3",
+          text: "The gardener said NO?! My spooky-story seeds, banned from every garden in town!",
+        },
+        villainWrong: {
+          slug: "quiz-w15-wrong-c5-3",
+          text: "Hilarious AND scary! Print it, send it, panic the whole street! Comedy gold, five stars!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-15-fact-checker.png",
 
   // Week-lane attack theatre: AI tricks only (stranger chats = W3, scam

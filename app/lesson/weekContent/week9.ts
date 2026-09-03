@@ -824,6 +824,430 @@ export const WEEK_9: WeekContent = {
     },
     voiceSlug: "w09",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#2b7fff",
+    theme: {
+      topic: "Apps & Downloads",
+      motifs: ["📱", "⚙️", "🔍", "✅", "🚫", "🛡️", "⭐", "🔒"],
+    },
+    intro: {
+      slug: "quiz-w9-intro",
+      text: "Welcome to my app bazaar, hero! Fifteen questions, hand-stuffed with my finest fakes. Spot them all? HA! Nobody reads the small print!",
+    },
+    victory: {
+      slug: "quiz-w9-victory",
+      text: "You checked EVERYTHING?! The names, the stars, the keys?! That's it, I'm melting down the cannon and opening a soup stand!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w9-c1",
+        key: "quiz-w9-c1-1",
+        label: "The One Real Shop",
+        ask: {
+          slug: "quiz-w9-ask-c1-1",
+          text: "Adam's cousin messages: 'Skip the app store, download my favorite game straight from this chat link!' What's the safe move?",
+        },
+        options: [
+          { text: "Say no thanks, new apps come from the official store only" },
+          { text: "Download it, links from family are family-checked" },
+          { text: "Download it, then run a free virus scan right after" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "One real shop, no exceptions!",
+          explanation: "The official store checks apps before they hit the shelf. A chat link skips that check no matter who sent it, and an after-scan can be too late. Not in the real shop, not coming home.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c1-1",
+          text: "Even from a COUSIN?! I borrowed that cousin's account specially!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c1-1",
+          text: "Straight from the chat, fresh and unchecked! Just how I package them!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c2",
+        key: "quiz-w9-c2-1",
+        label: "Count the Whiskers",
+        ask: {
+          slug: "quiz-w9-ask-c2-1",
+          text: "Layla searches 'Blast Birds' and four results wear the same icon. Which one is the copycat?",
+        },
+        options: [
+          { text: "Blast Birdz, 2.1 stars, 12 downloads, new yesterday" },
+          { text: "Blast Birds, 4.8 stars, 5 million downloads" },
+          { text: "Blast Birds 2, 4.6 stars, by the same maker" },
+          { text: "Blast Birds Stickers, 4.5 stars, the official pack" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Count the whiskers!",
+          explanation: "Sequels, sticker packs and spin-offs from the real maker are fine. The copycat is the one with a wrong-ish name, sad stars and no history. That sneaky Z plus twelve downloads gives it away.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c2-1",
+          text: "You caught the Z?! I stared at that Z for a WEEK and even I missed it!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c2-1",
+          text: "One little letter and BOOM, you're in MY game! Welcome to Blast Birdzzzz!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c3",
+        key: "quiz-w9-c3-1",
+        label: "Why Does It Need That?",
+        ask: {
+          slug: "quiz-w9-ask-c3-1",
+          text: "Torchy the flashlight app asks for the light, the on-button... and Adam's contacts. Which key gets blocked?",
+        },
+        options: [
+          { text: "The contacts, making light needs zero phone numbers" },
+          { text: "The on-button, buttons can secretly track your taps" },
+          { text: "The light, it's the most powerful key of the three" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Job-keys yes, greedy-keys no!",
+          explanation: "The light and the button ARE the flashlight's job, and blocking those just breaks it. The contacts have nothing to do with shining. Match every key to the job, then block the extras.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c3-1",
+          text: "Blocked?! I NEEDED those contacts! For... torch reasons!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c3-1",
+          text: "Yes, block the button, keep the contacts flowing! Perfect! For me!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c4",
+        key: "quiz-w9-c4-1",
+        label: "Flip the FREE Tag",
+        ask: {
+          slug: "quiz-w9-ask-c4-1",
+          text: "Layla's FREE game stops for a thirty-second ad every single minute. What is she really paying with?",
+        },
+        options: [
+          { text: "Her time, the ads are selling her attention" },
+          { text: "Nothing, the ads are the game being generous" },
+          { text: "Her coins, each ad quietly takes one" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Free apps get paid somehow!",
+          explanation: "Apps cost money to make, always. When there's no price tag, the app earns another way, and ads every minute mean the payment is her time and her eyeballs. Flip the FREE tag and read the real price.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c4-1",
+          text: "You flipped my FREE tag?! The glue was still WET!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c4-1",
+          text: "Watch another ad! And another! Your time pays MY bills, little customer!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c5",
+        key: "quiz-w9-c5-1",
+        label: "The Install Handshake",
+        ask: {
+          slug: "quiz-w9-ask-c5-1",
+          text: "Adam found the perfect drawing app and the INSTALL button is glowing under his finger. What's the handshake move?",
+        },
+        options: [
+          { text: "Install it together with a trusted grown-up" },
+          { text: "Install now and show the grown-up his drawings later" },
+          { text: "Install alone, but read three reviews first to be safe" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Install together, every time!",
+          explanation: "Reviews help, but four eyes catch what two miss: a copycat whisker, a greedy key, a hidden coin shop. Ten seconds of checking together, then he plays. That's the install handshake.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c5-1",
+          text: "TWO of you checked?! My fakes are built for one pair of eyes, TOPS!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c5-1",
+          text: "Tap it alone, tap it fast! Glowing buttons hate waiting, and so do I!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c1",
+        key: "quiz-w9-c1-2",
+        label: "The One Real Shop",
+        ask: {
+          slug: "quiz-w9-ask-c1-2",
+          text: "A pop-up says: 'Download the game HERE, it's faster than the app store!' Why is the store still the right door?",
+        },
+        options: [
+          { text: "The store checks apps first, the pop-up checked nothing" },
+          { text: "Pop-ups are slower, the speed claim is backwards" },
+          { text: "Either is fine as long as the game is famous" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Checked beats fast!",
+          explanation: "It isn't about speed at all. The real store checks every app before the shelf, and a pop-up's package was checked by nobody. 'Faster' is just the bait on an unchecked box.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c1-2",
+          text: "It WAS faster! Faster at installing my seventeen surprise toolbars!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c1-2",
+          text: "Zoom zoom! The express lane to Raccoonware! No waiting, no checking!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c2",
+        key: "quiz-w9-c2-2",
+        label: "Count the Whiskers",
+        ask: {
+          slug: "quiz-w9-ask-c2-2",
+          text: "Two apps are both spelled 'Bubble Pop' perfectly. How does Adam catch the copycat?",
+        },
+        options: [
+          { text: "Check the history, 9 million players beats 6 downloads from today" },
+          { text: "He can't, a matching name means both are real" },
+          { text: "Play both, the copycat will crash first" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "History doesn't lie!",
+          explanation: "A copycat can copy a name letter-perfect, but it can't fake years of happy players. Brand new plus almost no downloads on a 'famous' app is the tell. Real apps have history.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c2-2",
+          text: "The HISTORY?! I copied every letter and forgot to copy TIME itself!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c2-2",
+          text: "Spelled it perfectly, didn't I? Practiced all week! Now hold still while it installs!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c3",
+        key: "quiz-w9-c3-2",
+        label: "Why Does It Need That?",
+        ask: {
+          slug: "quiz-w9-ask-c3-2",
+          text: "A weather app asks for Layla's location. Is that a greedy grab or a job-key?",
+        },
+        options: [
+          { text: "Job-key, showing HER local weather needs to know where she is" },
+          { text: "Greedy grab, no app ever truly needs your location" },
+          { text: "Greedy grab, weather is the same everywhere anyway" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Match the key to the job!",
+          explanation: "Some keys ARE the job: a weather app needs your location like a flashlight needs its light. The question is never 'is this key scary', it's 'does the JOB need it'. Here, it does.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c3-2",
+          text: "You checked the JOB?! I was hoping you'd just block everything and blame the app!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c3-2",
+          text: "Block it all! Break the app! Confused kids come shopping at MY stall instead!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c4",
+        key: "quiz-w9-c4-2",
+        label: "Flip the FREE Tag",
+        ask: {
+          slug: "quiz-w9-ask-c4-2",
+          text: "A FREE game is fun for one level, then level two wants coins, and coins want dollars. What was the FREE tag hiding?",
+        },
+        options: [
+          { text: "Free to START isn't free to PLAY, the shop was inside" },
+          { text: "A mistake, the game meant to be free all the way through" },
+          { text: "A test, waiting a day unlocks level two for free" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The shop hides inside!",
+          explanation: "Plenty of 'free' games are really stores with a fun lobby. Level one is the free sample, and the coin shop is the business. Flip the tag before you fall in love with level one.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c4-2",
+          text: "You found my shop behind level one?! I hid it behind a WATERFALL!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c4-2",
+          text: "Level one's on the house! Levels two through nine hundred? Cha-ching!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c5",
+        key: "quiz-w9-c5-2",
+        label: "The Install Handshake",
+        ask: {
+          slug: "quiz-w9-ask-c5-2",
+          text: "Layla's friend scoffs: 'You ASK before installing? Asking is for babies!' What's true?",
+        },
+        options: [
+          { text: "Checkers are smart, four eyes catch what two miss" },
+          { text: "He's right once you turn nine or ten" },
+          { text: "Asking is only for paid apps, free ones are safe alone" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Checkers are the smart ones!",
+          explanation: "Even grown-ups double-check big choices with each other. There's no age where checking stops working, and free apps hide the most surprises of all. The handshake is a team move, not a baby move.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c5-2",
+          text: "Teamwork?! Ugh! My whole bazaar depends on kids too cool to ask!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c5-2",
+          text: "Big kids don't ask! Big kids tap! Tap tap tap, right into my aisle!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c1",
+        key: "quiz-w9-c1-3",
+        label: "The One Real Shop",
+        ask: {
+          slug: "quiz-w9-ask-c1-3",
+          text: "A forum post offers a hot new game 'EARLY, before it hits the shops!' What does 'not in shops yet' really mean?",
+        },
+        options: [
+          { text: "Nobody has checked it yet, so it doesn't come home" },
+          { text: "You'd be first, forums do get real games early" },
+          { text: "It's fine if the post has lots of likes and upvotes" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Early means unchecked!",
+          explanation: "Real games launch in the real store, where the checkers look first. 'Before the shops' means 'before anyone checked it', and likes can be faked by the seller. Cut it loose.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c1-3",
+          text: "But EARLY sounds so exciting! I upvoted myself four hundred times!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c1-3",
+          text: "Be the FIRST! First to play, first to call a repair shop, heh heh!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c2",
+        key: "quiz-w9-c2-3",
+        label: "Count the Whiskers",
+        ask: {
+          slug: "quiz-w9-ask-c2-3",
+          text: "One search result says 'R0bo Racers', 30 downloads, new today. What gave the costume away?",
+        },
+        options: [
+          { text: "The first 'o' is really a zero, and there's no history" },
+          { text: "Nothing, it's the real game with a cool spelling" },
+          { text: "The 30 downloads just mean it's new, not fake" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Read it letter by letter!",
+          explanation: "R-zero-bo is not Robo, and the real Robo Racers has millions of players, not thirty since breakfast. A cool spelling plus an empty history equals a costume. Read names out loud, slowly.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c2-3",
+          text: "The zero was my masterpiece! Months in the costume workshop, WASTED!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c2-3",
+          text: "Z3ro? H3ro? Wh0 can tell?! Type first, squint later!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c3",
+        key: "quiz-w9-c3-3",
+        label: "Why Does It Need That?",
+        ask: {
+          slug: "quiz-w9-ask-c3-3",
+          text: "A stopwatch app wants Adam's camera and his photos. Which question settles it?",
+        },
+        options: [
+          { text: "'Does counting seconds need those keys?' No, so block them" },
+          { text: "'Is the app popular?' Popular apps have earned extra keys" },
+          { text: "'Did it ask politely?' A polite ask is a fair ask" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The job decides, nothing else!",
+          explanation: "Popularity and politeness don't change the job. A stopwatch counts seconds, and seconds need no camera and no photo album. When the job doesn't need the key, the key stays blocked.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c3-3",
+          text: "Stop asking the JOB question! It beats me every single time!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c3-3",
+          text: "So polite! So popular! Now smile, your stopwatch is PHOTOGRAPHING you!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c4",
+        key: "quiz-w9-c4-3",
+        label: "Flip the FREE Tag",
+        ask: {
+          slug: "quiz-w9-ask-c4-3",
+          text: "Two FREE reading apps: the library's asks for nothing, the other wants Layla's name, age, school and favorites before she can read. What's the difference?",
+        },
+        options: [
+          { text: "The second one's price is her info, the library's is truly free" },
+          { text: "The second one is friendlier, questions show it cares" },
+          { text: "No difference, all free apps ask questions eventually" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Some free IS free!",
+          explanation: "Library and school apps were made to help, someone already paid so kids don't. An app that collects your name, age and school IS charging you, the price is just written in info. Flip the tag.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c4-3",
+          text: "The library?! I can't compete with FREE that's actually FREE!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c4-3",
+          text: "Name, age, school, favorites... sign here, tiny customer! Your info is my paycheck!",
+        },
+      },
+      {
+        phaseId: "phase-w9-c5",
+        key: "quiz-w9-c5-3",
+        label: "The Install Handshake",
+        ask: {
+          slug: "quiz-w9-ask-c5-3",
+          text: "A pop-up shouts: 'Your game needs an UPDATE, tap HERE now!' It's not from the app store. What is it?",
+        },
+        options: [
+          { text: "A fake in an update costume, real updates live in the real store" },
+          { text: "A real update taking a helpful shortcut to you" },
+          { text: "A real update, games shout when they're out of date" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Updates come from the store!",
+          explanation: "Real updates arrive quietly, inside the official store itself. Anything shouting from a pop-up is wearing an update costume over something nasty. Close it, then check the real store together.",
+        },
+        villainRight: {
+          slug: "quiz-w9-right-c5-3",
+          text: "My update costume! It took three fittings! THREE!",
+        },
+        villainWrong: {
+          slug: "quiz-w9-wrong-c5-3",
+          text: "Urgent! Critical! Extremely real! Tap before your brain gets a vote!",
+        },
+      },
+    ],
+  },
   badgeArt: "/cyberheroes/badges/week-09-copycat-catcher.png",
 
   // Week-lane attack theatre: fake-app tricks only (message scams = W4;

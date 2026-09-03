@@ -801,6 +801,438 @@ export const WEEK_4: WeekContent = {
     },
     voiceSlug: "w04",
   },
+  /* ──────────────── THE STANDARD QUIZ BOSS (week-ending test) ────────────────
+     Same contract as W1: 15 apply-the-skill questions, 3 per taught
+     concept, interleaved round-robin (c1..c5, c1..c5, c1..c5). Every
+     villain line below is DISTINCT (zero repeated phrases in this file).
+     TODO(audio): record every slug below (villain = Callum via the
+     cyberheroes-narration-audio pipeline); browser TTS speaks each text
+     until its clip exists at /audio/villain/{slug}.mp3. */
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#e84dff",
+    theme: {
+      topic: "Scams & Tricks",
+      motifs: ["🎁", "🪤", "💎", "❓", "🔍", "🚫", "💬", "⚡"],
+    },
+    intro: {
+      slug: "quiz-w4-intro",
+      text: "Ding ding ding! YOU are my one millionth quiz-taker! Your prize is a quiz stuffed with my finest tricks. No refunds, no escaping!",
+    },
+    victory: {
+      slug: "quiz-w4-victory",
+      text: "Not a single bite?! Not even a nibble?! My hooks are bent, my glitter budget is blown, and my countdown clock just quit on the spot!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w4-c1",
+        key: "quiz-w4-c1-1",
+        label: "Trick Radar",
+        ask: {
+          slug: "quiz-w4-ask-c1-1",
+          text: "Three quiet little messages land on Adam's tablet. A scam always wants something back. Which one is the scam?",
+        },
+        options: [
+          { text: "Game bag full! Type your password to make space" },
+          { text: "Library: your dragon book is ready for pickup" },
+          { text: "Coach: practice moved to four o'clock today" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Scams always WANT something!",
+          explanation: "The library and the coach just tell Adam things and ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c1-1",
+          text: "OW! You spotted the WANT! I worked so hard to make that message sound bored!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c1-1",
+          text: "Password accepted! Your game bag has loads of space now, because it's MY game bag!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c2",
+        key: "quiz-w4-c2-1",
+        label: "Bait Detector",
+        ask: {
+          slug: "quiz-w4-ask-c2-1",
+          text: "Three 'you won!' messages arrive on the same day. Which win could actually be REAL?",
+        },
+        options: [
+          { text: "Coach Lee: You won player of the match!" },
+          { text: "PrizeZone: You won a brand-new game console!" },
+          { text: "LuckyMail: You won a family trip to the beach!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real wins come from real tries!",
+          explanation: "Adam really played in that match, and Coach Lee is someone he knows and can check. Winning a contest you never entered, from a name you've never heard of, is bait wearing a bow.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c2-1",
+          text: "You kept the one prize you actually EARNED?! Who taught you that?!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c2-1",
+          text: "A console AND a beach trip! Enjoy them both! They're imaginary, but enjoy them!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c3",
+        key: "quiz-w4-c3-1",
+        label: "Panic-Proof",
+        ask: {
+          slug: "quiz-w4-ask-c3-1",
+          text: "A message tells Layla: 'Your account breaks in 5 minutes! Fix it NOW!' Her heart starts racing. What is her racing heart telling her?",
+        },
+        options: [
+          { text: "The rush trick is working, slow down" },
+          { text: "Something really is wrong, so hurry" },
+          { text: "Fix it first and think about it after" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Feeling rushed IS the red flag!",
+          explanation: "Scams squeeze your heart on purpose, because a racing heart doesn't stop to think. The rushed feeling is the alarm itself: breathe, slow right down, and show a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c3-1",
+          text: "You slowed DOWN?! That message was built entirely for speed!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c3-1",
+          text: "Hurry hurry, fix fix fix! Thinking is for people with spare minutes, and you have NONE!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c4",
+        key: "quiz-w4-c4-1",
+        label: "Imposter Buster",
+        ask: {
+          slug: "quiz-w4-ask-c4-1",
+          text: "Layla lines up four senders from her inbox. Which one is wearing a costume?",
+        },
+        options: [
+          { text: "Petpa1s Club, gift@petpa1s.fun" },
+          { text: "PetPals, message center inside the app" },
+          { text: "Grandpa, saved in the family phone" },
+          { text: "Maple Hill School, office@maplehill.edu" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Read it letter by letter!",
+          explanation: "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c4-1",
+          text: "You found the ONE?! I hid it right where the L should be, my best hiding spot ever!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c4-1",
+          text: "Welcome to Petpa1s Club! Membership costs everything you type, hee hee!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c5",
+        key: "quiz-w4-c5-1",
+        label: "The No-Bite Rule",
+        ask: {
+          slug: "quiz-w4-ask-c5-1",
+          text: "A scary message is sitting on Adam's screen, and his finger is hovering over its big red button. What's step one of the no-bite rule?",
+        },
+        options: [
+          { text: "STOP, no clicking while he checks" },
+          { text: "Press it once, just to see what happens" },
+          { text: "Delete it fast without reading anything" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Stop comes first!",
+          explanation: "One press is a bite, and deleting skips the checking and the showing. Step one is STOP: no clicking, no replying, no rushing. Then check it slowly and show a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c5-1",
+          text: "You just... STOPPED?! My big red button has never felt so unclicked!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c5-1",
+          text: "One little press! Buttons love being pressed, it's their whole entire job!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c1",
+        key: "quiz-w4-c1-2",
+        label: "Trick Radar",
+        ask: {
+          slug: "quiz-w4-ask-c1-2",
+          text: "A message says: 'Rate our fun quiz FIVE STARS and win a prize! Just enter a parent's card number for the tiny entry fee.' Which part shouts SCAM?",
+        },
+        options: [
+          { text: "The part asking for a card number" },
+          { text: "The part about the five stars" },
+          { text: "The part that says the quiz is fun" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Follow the WANT!",
+          explanation: "Stars and fun talk are just decoration. The moment a message wants a card number, it's after your family's money, and that's the whole plan hiding under the sparkles.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c1-2",
+          text: "You sniffed out the card ask?! But my stars were SO twinkly and distracting!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c1-2",
+          text: "The entry fee is teeny! The prize is huge! The math is fake, but who's checking?!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c2",
+        key: "quiz-w4-c2-2",
+        label: "Bait Detector",
+        ask: {
+          slug: "quiz-w4-ask-c2-2",
+          text: "A message offers Layla ten thousand free game gems, and she would LOVE ten thousand gems. What's the hero rule here?",
+        },
+        options: [
+          { text: "Too good to be true means not true" },
+          { text: "Big game companies can afford big gifts" },
+          { text: "It's fine if she only claims half of them" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Amazing = bait!",
+          explanation: "Nobody hands mountains of treasure to strangers, not even game companies. The more amazing an offer sounds, the harder the trick is pulling, that's exactly how bait works.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c2-2",
+          text: "Ten thousand gems refused?! I glued extra sparkle on every single one!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c2-2",
+          text: "Half the gems is a very sensible scam! DEAL! I meant deal, a sensible deal!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c3",
+        key: "quiz-w4-c3-2",
+        label: "Panic-Proof",
+        ask: {
+          slug: "quiz-w4-ask-c3-2",
+          text: "Three notices pop up on the family computer. Which one is the trick?",
+        },
+        options: [
+          { text: "12 VIRUSES FOUND! Call this number in 10 minutes or it's ruined!" },
+          { text: "An update is ready, it will install tonight" },
+          { text: "Storage is almost full, delete old photos sometime" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real notices stay calm!",
+          explanation: "Real computer notes are calm and happy to wait. Screaming virus counts, deadlines and 'call right now' are the fear trick in full costume: close it and show a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c3-2",
+          text: "You saw past twelve whole viruses?! I even made the pop-up wobble scarily!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c3-2",
+          text: "Call the number! The helpful voice on the line is me in a computer-doctor hat!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c4",
+        key: "quiz-w4-c4-2",
+        label: "Imposter Buster",
+        ask: {
+          slug: "quiz-w4-ask-c4-2",
+          text: "A message from 'N1ntendo' has a number one where the i should be. Adam's friend shrugs: 'Companies make typos!' What does a hero know?",
+        },
+        options: [
+          { text: "Almost-right names are all-wrong" },
+          { text: "Big companies do slip up sometimes" },
+          { text: "It's fine as long as the logo looks right" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Companies don't typo their own name!",
+          explanation: "A company's name is its most polished treasure, it never gets misspelled in its own message. A swapped letter is the mask slipping, and logos are easy to copy.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c4-2",
+          text: "One sneaky number in the name and you CAUGHT it?! Read something else for once!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c4-2",
+          text: "Just a typo, everyone typos! My keyboard simply has a one where the i should be!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c5",
+        key: "quiz-w4-c5-2",
+        label: "The No-Bite Rule",
+        ask: {
+          slug: "quiz-w4-ask-c5-2",
+          text: "Layla stopped and checked a fishy message, and now she's SURE it's a scam. Does she still need step three, showing a grown-up?",
+        },
+        options: [
+          { text: "Yes, show a trusted grown-up every time" },
+          { text: "No, being sure finishes the job" },
+          { text: "Only if she accidentally clicked something" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Showing protects everyone!",
+          explanation: "Step three isn't just for emergencies. A trusted grown-up can warn the rest of the family so the same trick doesn't catch somebody else, so the showing step always happens.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c5-2",
+          text: "You showed a grown-up even after WINNING?! Now the whole family knows my trick!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c5-2",
+          text: "Being sure is plenty! No need to show anybody anything, ever, at all!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c1",
+        key: "quiz-w4-c1-3",
+        label: "Trick Radar",
+        ask: {
+          slug: "quiz-w4-ask-c1-3",
+          text: "A message tells Adam: 'Press the shiny button and a mystery prize appears!' It asks for no info and no money. So what does this scam want?",
+        },
+        options: [
+          { text: "The press itself, that's how tricks get in" },
+          { text: "Nothing, no-ask messages are safe" },
+          { text: "Only to share some happy prize news" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Clicks are treasure too!",
+          explanation: "Scams want your info, your family's money, or your click, and pressing the button is how the trick climbs in. A message begging for a press is asking for plenty.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c1-3",
+          text: "You figured out I wanted the PRESS?! That was my most invisible want EVER!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c1-3",
+          text: "Free mystery prize, no strings attached! The strings are under the button!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c2",
+        key: "quiz-w4-c2-3",
+        label: "Bait Detector",
+        ask: {
+          slug: "quiz-w4-ask-c2-3",
+          text: "'FREE tablet for the first three kids to reply!' Adam is a very fast typer. Why does 'first three' make it MORE fishy, not less?",
+        },
+        options: [
+          { text: "The race is there to stop kids thinking" },
+          { text: "Three tablets is too few for a giveaway" },
+          { text: "It isn't fishy, fast kids earn prizes" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Races are bait plus rush!",
+          explanation: "'Only the first few!' bolts a sprint onto the bait so you reply before your brain catches up. Real free things never make anyone race, so walking away wins.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c2-3",
+          text: "The race was the whole trick and you just WALKED?! Nobody walks!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c2-3",
+          text: "Ready, set, REPLY! Fast kids win big! Slow kids ask questions, yuck!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c3",
+        key: "quiz-w4-c3-3",
+        label: "Panic-Proof",
+        ask: {
+          slug: "quiz-w4-ask-c3-3",
+          text: "A countdown clock ticks on a prize page: 59... 58... 57... Layla feels the push to hurry. What do real companies do with scary countdowns?",
+        },
+        options: [
+          { text: "They never use them, only tricksters do" },
+          { text: "They save them for the very best deals" },
+          { text: "They use them but add extra time after" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Countdowns are costume clocks!",
+          explanation: "Real companies never chase you with a scary clock, ever. A countdown pressing on your heart is the surest sign a trickster built the page: walk away and let it tick.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c3-3",
+          text: "My beautiful clock! I polished every scary second of it!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c3-3",
+          text: "Fifty-six! Fifty-five! Hear your heartbeat? That's the sound of my plan working!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c4",
+        key: "quiz-w4-c4-3",
+        label: "Imposter Buster",
+        ask: {
+          slug: "quiz-w4-ask-c4-3",
+          text: "A prize note says it's from Layla's school. How does a hero CHECK instead of guessing?",
+        },
+        options: [
+          { text: "Ask at school, real senders can be checked" },
+          { text: "Reply and ask the note if it's really real" },
+          { text: "See if it uses the school's own colors" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Check in the real world!",
+          explanation: "Asking the note gets you an imposter's answer, and colors and crests are easy to copy. Real senders can be checked outside the screen: ask at school, or show a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c4-3",
+          text: "You checked in the REAL WORLD?! No fair, I only exist on screens!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c4-3",
+          text: "Yes, reply and ask me! I mean them! The answer will definitely be yes!",
+        },
+      },
+      {
+        phaseId: "phase-w4-c5",
+        key: "quiz-w4-c5-3",
+        label: "The No-Bite Rule",
+        ask: {
+          slug: "quiz-w4-ask-c5-3",
+          text: "A trick message promises Adam the world if he just replies YES. Adam does absolutely nothing. What happened to the scam?",
+        },
+        options: [
+          { text: "It lost, scams only work if you bite" },
+          { text: "It's still winning while it sits there" },
+          { text: "It wins unless he answers it in time" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "No bite, no trick!",
+          explanation: "A scam with no click, no reply and no rush is just a silly message going nowhere. The trick is already beaten, now show a trusted grown-up so it can't fool anyone else.",
+        },
+        villainRight: {
+          slug: "quiz-w4-right-c5-3",
+          text: "You did NOTHING and it beat me?! Doing nothing is supposed to be relaxing, not a WEAPON!",
+        },
+        villainWrong: {
+          slug: "quiz-w4-wrong-c5-3",
+          text: "It's still there! Panic quietly! A worried hero is a clicking hero!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-04-trick-catcher.png",
 
   // Week-lane attack theatre: scam-message tricks only (no fake-people

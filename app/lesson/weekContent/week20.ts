@@ -1054,6 +1054,435 @@ export const WEEK_20: WeekContent = {
     },
     voiceSlug: "w20",
   },
+
+  // GRADUATION CUMULATIVE FINAL: the 15 questions sample the whole course
+  // (weeks 1-19) across 5 course-theme groups, and the pass bar is raised
+  // to 12 for the Certified Cyber Hero badge.
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#5b76ff",
+    theme: {
+      topic: "Graduation",
+      motifs: ["🎓", "🏆", "🥇", "👑", "🎉", "✨", "🦸", "⭐"],
+    },
+    intro: {
+      slug: "quiz-w20-intro",
+      text: "So it all comes down to this, the FINAL EXAM! Every trick I own, sharpened and shined, from week one to week twenty. Pass this and they'll call you a Certified Cyber Hero. Nobody passes. NOBODY!",
+    },
+    victory: {
+      slug: "quiz-w20-victory",
+      text: "Passwords, footprints, fake friends, sneaky links... you saw through every single trick in my book, and it's my ONLY book! Take the cape and the seal, Certified Cyber Hero. The city is all yours. I'm retiring to a nice quiet dumpster!",
+    },
+    passMark: 12,
+    questions: [
+      {
+        phaseId: "phase-w20-c1",
+        key: "quiz-w20-c1-1",
+        label: "Strong Passwords & Accounts",
+        ask: {
+          slug: "quiz-w20-ask-c1-1",
+          text: "Final exam, question one! My guessing robot is fully charged. Which password keeps it spinning the longest?",
+        },
+        options: [
+          { text: "Lantern-Cricket-Meadow8!" },
+          { text: "Lantern-Lantern-Lantern8!" },
+          { text: "L4ntern!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Long AND different wins!",
+          explanation: "A short password falls in a blink, and the same word repeated is one pattern away from cracked. Three different random words with a mix sprinkled in keeps a guessing robot busy for ages.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c1-1",
+          text: "Three DIFFERENT words, all these weeks later?! My robot just handed in its resignation!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c1-1",
+          text: "Short or samey, my robot chews through both before its batteries even warm up!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c2",
+        key: "quiz-w20-c2-1",
+        label: "Private Info & Footprint",
+        ask: {
+          slug: "quiz-w20-ask-c2-1",
+          text: "A fun quiz app asks for your full name, your school, and your home address to build your hero profile. Which of those does it get?",
+        },
+        options: [
+          { text: "None of them, real-life info stays out of little boxes" },
+          { text: "Just the school, since schools are public buildings anyway" },
+          { text: "All of them, words in a quiz can't go anywhere" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real-life info stays home!",
+          explanation: "Your name, school, and address are real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c2-1",
+          text: "Empty boxes?! I built that adorable quiz myself! Three little boxes, one big map to YOU!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c2-1",
+          text: "Name, school, address, thank you kindly! My map of you is drawing itself!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c3",
+        key: "quiz-w20-c3-1",
+        label: "Strangers, Scams & Links",
+        ask: {
+          slug: "quiz-w20-ask-c3-1",
+          text: "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you?",
+        },
+        options: [
+          { text: "They've been digging up your info, that's not a safe friend, tell a trusted grown-up" },
+          { text: "They're extra clever, and clever players make the best friends" },
+          { text: "They must live nearby, so it's fine to keep chatting" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Safe friends don't snoop!",
+          explanation: "A real friend learns about you by talking WITH you, not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c3-1",
+          text: "How did you spot my homework?! Do you know how long it takes to research one dog's name?!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c3-1",
+          text: "Keep chatting, old pal! I know your dog, your street, and by Friday, your SCHEDULE!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c4",
+        key: "quiz-w20-c4-1",
+        label: "Being Safe & Kind Online",
+        ask: {
+          slug: "quiz-w20-ask-c4-1",
+          text: "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest?",
+        },
+        options: [
+          { text: "No reply at all, then block and tell, a reaction is what they're fishing for" },
+          { text: "One perfect comeback, so everyone can watch you win" },
+          { text: "A polite reply asking them very nicely to stop" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Don't feed the bully!",
+          explanation: "A comeback, and even a polite please-stop, are both reactions, and reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c4-1",
+          text: "You gave them NOTHING?! A bully with no reaction is just a sad little typer in the dark!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c4-1",
+          text: "Reply, reply! Feed the fire! I'll fetch the marshmallows and the popcorn!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c5",
+        key: "quiz-w20-c5-1",
+        label: "Getting Help & Balance",
+        ask: {
+          slug: "quiz-w20-ask-c5-1",
+          text: "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true?",
+        },
+        options: [
+          { text: "Telling a trusted grown-up is the hero move, and you're never in trouble for telling" },
+          { text: "It's safest to wait a week, most scary things fix themselves" },
+          { text: "It only counts as worth telling if it happens twice" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Telling is the hero move!",
+          explanation: "That little keep-it-secret voice is the trick talking. Scary things shrink the moment a trusted grown-up hears them, and telling never gets you in trouble. Not once, not ever.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c5-1",
+          text: "You TOLD?! Secrets are my oxygen! I'm wheezing over here!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c5-1",
+          text: "Keep it secret, keep it simmering! Scared and silent is my favorite flavor of hero!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c1",
+        key: "quiz-w20-c1-2",
+        label: "Strong Passwords & Accounts",
+        ask: {
+          slug: "quiz-w20-ask-c1-2",
+          text: "Layla's cat is called Biscuit and her birthday is in April. Which password should she pick for her brand-new account?",
+        },
+        options: [
+          { text: "Anchor-Pretzel-Cloud6!" },
+          { text: "Biscuit-April-2017!" },
+          { text: "Layla-Biscuit-4!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Nothing about you in it!",
+          explanation: "Her cat, her name, and her birthday are the first guesses anyone who knows her would try, even dressed up with numbers. Random words with no story about her are the ones nobody can figure out.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c1-2",
+          text: "Anchor-PRETZEL?! I've followed that cat for a month and it never once said pretzel!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c1-2",
+          text: "The cat and the birthday! I read one party invitation and I'm in like a whisker!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c2",
+        key: "quiz-w20-c2-2",
+        label: "Private Info & Footprint",
+        ask: {
+          slug: "quiz-w20-ask-c2-2",
+          text: "You post a silly photo, think twice, and delete it two minutes later. What's true about those two minutes?",
+        },
+        options: [
+          { text: "A copy could already be saved on someone else's device, out of your reach" },
+          { text: "Deleting reaches into every phone and wipes the copies too" },
+          { text: "Photos only start counting once they've been up a whole day" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Copies fly fast!",
+          explanation: "Two minutes is plenty of time for someone to save or screenshot a post. Delete empties YOUR nest, not everyone else's, which is why you think twice BEFORE you post, not after.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c2-2",
+          text: "You knew about my two-minute snatch-and-save?! It's my fastest trick and you dodged it before it started!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c2-2",
+          text: "Deleted, is it? Funny, I'm looking at my copy RIGHT NOW. It's framed!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c3",
+        key: "quiz-w20-c3-2",
+        label: "Strangers, Scams & Links",
+        ask: {
+          slug: "quiz-w20-ask-c3-2",
+          text: "A message promises a FREE game console if you forward it to ten friends before the timer runs out. What's really going on?",
+        },
+        options: [
+          { text: "It's bait, nobody mails treasure to strangers, and the timer stops you thinking" },
+          { text: "It's real, companies hand out consoles to kids who help them advertise" },
+          { text: "It's real, but only if you forward it to more than ten friends" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Too good to be true!",
+          explanation: "No company mails free consoles for forwarded messages, and the countdown is there so you'll tap before your brain catches up. When a prize is that shiny AND that rushed, it's bait every time.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c3-2",
+          text: "That console doesn't even EXIST! I drew it myself! The shading took HOURS!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c3-2",
+          text: "Forward it, hurry, the timer! Ten friends for you means ten fresh customers for me!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c4",
+        key: "quiz-w20-c4-2",
+        label: "Being Safe & Kind Online",
+        ask: {
+          slug: "quiz-w20-ask-c4-2",
+          text: "In game chat, a teammate asks for your username, your rank, and which school you go to. Which one stays OUT of chat?",
+        },
+        options: [
+          { text: "The school, that's real-life info" },
+          { text: "The username, that's the biggest secret of the three" },
+          { text: "The rank, a stranger can do a lot with a rank" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Game stuff stays in the game!",
+          explanation: "Your username and rank live inside the game, that's what they're for. Your school lives in real life, and real-life clues never go into chat, however friendly the teammate sounds.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c4-2",
+          text: "The school stayed secret?! My whole Tuesday plan needed that one little answer!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c4-2",
+          text: "Wrong secret, little hero! While you guarded your rank, your school just waved at me!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c5",
+        key: "quiz-w20-c5-2",
+        label: "Getting Help & Balance",
+        ask: {
+          slug: "quiz-w20-ask-c5-2",
+          text: "You promised yourself you'd stop playing when the game feels done. Why does that moment never come?",
+        },
+        options: [
+          { text: "Games are built to never feel done, so YOU pick the ending" },
+          { text: "It comes eventually, every game runs out if you wait" },
+          { text: "Games end themselves when the battery gets low" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "You pick the ending!",
+          explanation: "Games are built with one-more-level hooks so done never arrives on its own, and a low battery just sends you hunting for a charger. A hero decides the ending on purpose, then refills for real: moving, food, people.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c5-2",
+          text: "You just STOOD UP and ended it?! It wasn't done! It's never done! That's the whole POINT of it!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c5-2",
+          text: "One more level! Just one more! Say it with me forever and ever and ever!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c1",
+        key: "quiz-w20-c1-3",
+        label: "Strong Passwords & Accounts",
+        ask: {
+          slug: "quiz-w20-ask-c1-3",
+          text: "Adam finishes his game at the computer club just as his ride arrives. Which move keeps his account HIS after he runs out?",
+        },
+        options: [
+          { text: "Tapping LOG OUT before he leaves the chair" },
+          { text: "Tapping Home so the game vanishes from the screen" },
+          { text: "Switching the monitor off on his way past" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Log out, every time!",
+          explanation: "Home hides the game and a dark monitor switches right back on, his account stays open behind both. On any shared computer, LOG OUT is the tap that takes his account with him.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c1-3",
+          text: "Logged out at the CLUB?! That chair is usually the best restaurant in town!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c1-3",
+          text: "Off he runs, account still warm! The next kid in that chair could be anyone. It's me. It's always me!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c2",
+        key: "quiz-w20-c2-3",
+        label: "Private Info & Footprint",
+        ask: {
+          slug: "quiz-w20-ask-c2-3",
+          text: "Adam is boiling mad and about to post an angry comment about a kid in his class. What does the Trail Ranger rule say?",
+        },
+        options: [
+          { text: "Tracks print and stay, so only stamp ones you'd be proud of later" },
+          { text: "Angry tracks melt away on their own after a few days" },
+          { text: "Comments don't count as tracks, only photos do" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Every tap prints a track!",
+          explanation: "Comments, likes, and searches all print in the snow just like photos, and tracks don't melt on their own. Before you stamp one, ask if you'd be proud to find it there years from now.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c2-3",
+          text: "He put the angry comment DOWN?! I collect those! They're worth more every year!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c2-3",
+          text: "Stamp it, stamp it! Angry tracks never melt, and I do love showing them around later!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c3",
+        key: "quiz-w20-c3-3",
+        label: "Strangers, Scams & Links",
+        ask: {
+          slug: "quiz-w20-ask-c3-3",
+          text: "A link says: watch the big game FREE! But press-and-hold shows the address underneath: grab-ur-coins.biz. Which one do you believe?",
+        },
+        options: [
+          { text: "The address, the words on top are paint anyone can write" },
+          { text: "The words, since that's what the link is named for" },
+          { text: "Both, a link's words and its address always match" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The address is the truth!",
+          explanation: "The words on a link are paint, anyone can write anything on them. The address underneath is the door's real name, and a door named grab-ur-coins tells you exactly who's waiting behind it.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c3-3",
+          text: "You held it down and read my REAL address?! That paint job cost me a fortune!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c3-3",
+          text: "Believe the paint, everyone believes the paint! Enjoy the big game, it's coin-shaped!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c4",
+        key: "quiz-w20-c4-3",
+        label: "Being Safe & Kind Online",
+        ask: {
+          slug: "quiz-w20-ask-c4-3",
+          text: "Layla took a great photo of her friend, but the friend says: please don't post it, I hate it. Layla thinks she looks amazing in it. Whose call is it?",
+        },
+        options: [
+          { text: "The friend's, her face means her decision" },
+          { text: "Layla's, the person who took the photo owns it" },
+          { text: "Nobody's, photos with people in can never be posted" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Their face, their call!",
+          explanation: "Taking the photo doesn't make someone's face yours to share, and you-look-great doesn't change a no. Ask before you post people, and take it down the moment they ask, every time.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c4-3",
+          text: "She ASKED first?! I've never asked permission for anything in my life and now I feel weird about it!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c4-3",
+          text: "Post it, photographer's rules! Nothing helps a friendship like a photo somebody begged you not to share!",
+        },
+      },
+      {
+        phaseId: "phase-w20-c5",
+        key: "quiz-w20-c5-3",
+        label: "Getting Help & Balance",
+        ask: {
+          slug: "quiz-w20-ask-c5-3",
+          text: "A chatbot answers your homework question and sounds one hundred percent sure of itself. Before you write it down, you...",
+        },
+        options: [
+          { text: "Check it in a real book or with a person who knows, confident isn't correct" },
+          { text: "Write it down, chatbots aren't allowed to be wrong" },
+          { text: "Ask the bot again, if it says the same thing twice it's true" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Check the confident robot!",
+          explanation: "A chatbot can be perfectly sure and perfectly wrong at the same time, and asking twice just gets the same guess twice. A real book or a person who knows is the judge, every single time.",
+        },
+        villainRight: {
+          slug: "quiz-w20-right-c5-3",
+          text: "You double-checked the ROBOT?! I trained that thing to sound extra convincing! It does a voice!",
+        },
+        villainWrong: {
+          slug: "quiz-w20-wrong-c5-3",
+          text: "The bot said it, twice even! Enjoy your homework, I hear the moon IS made of cheese now!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-20-certified-cyber-hero.png",
 
   // The finale's attack theatre: his whole playbook at once - every name

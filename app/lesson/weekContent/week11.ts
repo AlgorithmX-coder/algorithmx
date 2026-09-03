@@ -845,6 +845,430 @@ export const WEEK_11: WeekContent = {
     },
     voiceSlug: "w11",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#ff9528",
+    theme: {
+      topic: "Emergencies",
+      motifs: ["✋", "📸", "🔔", "👪", "⚠️", "🚫", "🛡️", "💬"],
+    },
+    intro: {
+      slug: "quiz-w11-intro",
+      text: "Ah, the little captain! I hear you learned five calm steps. Calm! Steps! Let's see if they hold when my quiz-machine gives them a wobble!",
+    },
+    victory: {
+      slug: "quiz-w11-victory",
+      text: "Every boulder... floated?! Fine! I'll lug my blame machine home myself. It's heavier than it looks, and NOBODY is helping me carry it!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w11-c1",
+        key: "quiz-w11-c1-1",
+        label: "Never Your Fault",
+        ask: {
+          slug: "quiz-w11-ask-c1-1",
+          text: "A kid sends a horrid message, then says 'you MADE me do it, your drawing was silly.' What's true?",
+        },
+        options: [
+          { text: "Being unkind was their choice, it is never my fault" },
+          { text: "It's a little bit my fault for posting the drawing" },
+          { text: "It's only my fault if I reply back" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Their choice, never yours!",
+          explanation: "'You made me' is a trick, nobody can make someone be unkind. Not posting, not replying, nothing you did. The person who chose the mean words is the only one at fault.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c1-1",
+          text: "Their choice, not yours?! But I painted that blame boulder SO convincingly!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c1-1",
+          text: "A little bit your fault? Splendid! I sell fault by the little bit, first slice free!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c2",
+        key: "quiz-w11-c2-1",
+        label: "Name Your Team",
+        ask: {
+          slug: "quiz-w11-ask-c2-1",
+          text: "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach?",
+        },
+        options: [
+          { text: "Childhelp, 1-800-422-4453, free and always awake" },
+          { text: "Nobody until morning, worries have to wait" },
+          { text: "A friendly player from my game, they're online all night" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Someone is always awake!",
+          explanation: "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c2-1",
+          text: "The golden number?! Even at midnight there's a helper?! Who approved this?!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c2-1",
+          text: "Wait till morning, wait till NEXT week! Worries age beautifully overnight!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c3",
+        key: "quiz-w11-c3-1",
+        label: "Stop and Block",
+        ask: {
+          slug: "quiz-w11-ask-c3-1",
+          text: "Your friend says 'just reply STOP and the meanie will quit.' What's the better move?",
+        },
+        options: [
+          { text: "Don't reply at all, block instead, even STOP feeds them" },
+          { text: "Reply STOP once, politely, then wait and see" },
+          { text: "Reply STOP in capitals so they know you mean it" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Not even one STOP!",
+          explanation: "Even a polite 'stop' is a reply, and a reply is what the sender is fishing for. Block shuts the door without giving them a single thing, then tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c3-1",
+          text: "Not even one tiny STOP?! I had a whole comeback speech memorized!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c3-1",
+          text: "One polite STOP coming up! And then a reply to the reply to the reply...",
+        },
+      },
+      {
+        phaseId: "phase-w11-c4",
+        key: "quiz-w11-c4-1",
+        label: "Camera, Not Trash",
+        ask: {
+          slug: "quiz-w11-ask-c4-1",
+          text: "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first?",
+        },
+        options: [
+          { text: "Camera, freeze the proof, then show a trusted grown-up" },
+          { text: "Delete it fast so it can't scare me again" },
+          { text: "Beg them not to ban me, just in case" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Freeze it first!",
+          explanation: "Deleting makes it feel gone, but then there's nothing to show your team, and begging tells the trickster the trick is working. Screenshot first, then a trusted grown-up can see exactly what happened and help fast.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c4-1",
+          text: "Frozen AND shown?! That threat looked much scarier un-photographed!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c4-1",
+          text: "Poof, deleted! Nothing to show anybody... so I'll just send another one!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c5",
+        key: "quiz-w11-c5-1",
+        label: "The Protocol",
+        ask: {
+          slug: "quiz-w11-ask-c5-1",
+          text: "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one?",
+        },
+        options: [
+          { text: "STOP, hands off, send nothing back" },
+          { text: "Screenshot it before anything else" },
+          { text: "Block the sender before they send more" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "STOP comes first!",
+          explanation: "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c5-1",
+          text: "Hands off FIRST?! But itchy fingers are my favorite fingers!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c5-1",
+          text: "Skipping straight to the middle? A wobbly first step makes the whole drill wobble!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c1",
+        key: "quiz-w11-c1-2",
+        label: "Never Your Fault",
+        ask: {
+          slug: "quiz-w11-ask-c1-2",
+          text: "A mean message lands and a heavy thought whispers 'this is my fault.' What do heroes know about that thought?",
+        },
+        options: [
+          { text: "It's lying, the sender made the choice, not me" },
+          { text: "It's half right, both people always share the fault" },
+          { text: "It's right if I was online too late" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "That thought is lying!",
+          explanation: "Fault isn't a sandwich to split. Being online, posting things, being yourself, none of that makes someone unkind. Their words were their choice, all of it.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c1-2",
+          text: "You caught the thought LYING?! It practiced that whisper for weeks!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c1-2",
+          text: "Half the fault each, like splitting a sandwich! I do love serving fault-sandwiches!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c2",
+        key: "quiz-w11-c2-2",
+        label: "Name Your Team",
+        ask: {
+          slug: "quiz-w11-ask-c2-2",
+          text: "Nothing is wrong today, everything is sunny and fine. What's the captain move to make right now?",
+        },
+        options: [
+          { text: "Name my team now, before I ever need it" },
+          { text: "Wait, teams are for when something goes wrong" },
+          { text: "Keep my team a secret so nobody copies it" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Pick your team early!",
+          explanation: "The best time to name your team is a sunny, boring day like today. Then, if something ever feels wrong, you already know exactly who to tell, no thinking needed.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c2-2",
+          text: "A team named BEFORE trouble?! That's preparing! Nobody prepares!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c2-2",
+          text: "Teams later, worries now! I'll pencil your helpers in for... hmm... never!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c3",
+        key: "quiz-w11-c3-2",
+        label: "Stop and Block",
+        ask: {
+          slug: "quiz-w11-ask-c3-2",
+          text: "Mean messages keep buzzing in and your fingers are itching to fire one back. Why do heroes keep hands off?",
+        },
+        options: [
+          { text: "A reply is exactly what the sender wants, so I starve it" },
+          { text: "Firing back is fine if mine is only a little bit mean" },
+          { text: "Replying is okay as long as I count to ten first" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Starve it, don't feed it!",
+          explanation: "A tiny bit mean back still feeds the game, and counting to ten just delays the feeding. Heroes send nothing at all: screenshot, block, and tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c3-2",
+          text: "Starved again! My mean-message machine runs on replies, you know!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c3-2",
+          text: "A tiny bit mean back is fair! And then a tiny bit meaner, and then, and THEN...",
+        },
+      },
+      {
+        phaseId: "phase-w11-c4",
+        key: "quiz-w11-c4-2",
+        label: "Camera, Not Trash",
+        ask: {
+          slug: "quiz-w11-ask-c4-2",
+          text: "You deleted a nasty message so it felt gone. Later you go to tell your grown-up. What's the problem?",
+        },
+        options: [
+          { text: "There's nothing left to show them, seeing it is how they help" },
+          { text: "No problem, I can describe it from memory" },
+          { text: "No problem, they can un-delete it whenever they like" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Memory isn't proof!",
+          explanation: "You'd remember the feeling, but grown-ups help fastest when they can SEE the exact words, and nobody can un-delete what's gone. That's why the camera always comes before the trash.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c4-2",
+          text: "You knew memory fades?! The screenshot people are ruining my act!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c4-2",
+          text: "Describe it from memory, lovely! Memories go fuzzy. Screenshots, sadly, don't.",
+        },
+      },
+      {
+        phaseId: "phase-w11-c5",
+        key: "quiz-w11-c5-2",
+        label: "The Protocol",
+        ask: {
+          slug: "quiz-w11-ask-c5-2",
+          text: "Which order keeps the proof safe AND shuts the door?",
+        },
+        options: [
+          { text: "Stop, screenshot, block, tell a trusted grown-up" },
+          { text: "Stop, block, screenshot, tell a trusted grown-up" },
+          { text: "Screenshot, reply, block, tell a trusted grown-up" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Camera before the door!",
+          explanation: "The order matters: blocking can make a chat vanish, so freeze the proof FIRST, and replying never belongs anywhere. Stop, screenshot, block, tell. Fingers, camera, door, team.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c5-2",
+          text: "Camera before the door?! Who taught you my least favorite order?!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c5-2",
+          text: "Shuffle those steps! A messy drill is my favorite kind of drill!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c1",
+        key: "quiz-w11-c1-3",
+        label: "Never Your Fault",
+        ask: {
+          slug: "quiz-w11-ask-c1-3",
+          text: "You want to tell your grown-up, but you worry YOU'LL be the one in trouble. What's the truth?",
+        },
+        options: [
+          { text: "Helping with exactly this is their job, telling is the way out of trouble" },
+          { text: "Wait until you're totally sure you did nothing wrong first" },
+          { text: "Only tell if it happens a second time" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Telling is the way out!",
+          explanation: "Helpers aren't there to blame you, helping with exactly this is their whole job. You don't need to be 'sure' of anything first, and you never have to wait for a second time.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c1-3",
+          text: "Telling is the way OUT of trouble?! That was my best rumor!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c1-3",
+          text: "Wait and wonder and worry! I'll hold onto your worry for you... forever!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c2",
+        key: "quiz-w11-c2-3",
+        label: "Name Your Team",
+        ask: {
+          slug: "quiz-w11-ask-c2-3",
+          text: "A player from your game lobby says 'we're basically best friends, put me on your team poster!' Do they go on?",
+        },
+        options: [
+          { text: "No, my team is real-life grown-ups plus the Childhelp line" },
+          { text: "Yes, if we've played together for a whole year" },
+          { text: "Yes, but only in the smallest spot" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real-life team only!",
+          explanation: "Game friends can be fun to play with, but a poster spot is for grown-ups who are truly there for you: a parent or caregiver, a teacher, a grandparent, plus the golden Childhelp line.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c2-3",
+          text: "The poster said real-life grown-ups?! But my lobby costume is SO friendly!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c2-3",
+          text: "A poster spot for a screen name! I'll take the tiny corner one, tee-hee!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c3",
+        key: "quiz-w11-c3-3",
+        label: "Stop and Block",
+        ask: {
+          slug: "quiz-w11-ask-c3-3",
+          text: "You're about to BLOCK the sender. What must happen right before, so nothing gets lost?",
+        },
+        options: [
+          { text: "Screenshot the message, blocking can make it vanish" },
+          { text: "Read the message one more time so I remember it" },
+          { text: "Delete the message so blocking works properly" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Snap, THEN block!",
+          explanation: "If the door shuts first, the proof can vanish with it, and remembering isn't the same as keeping. Screenshot freezes the message safe, and then blocking can't lose a thing.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c3-3",
+          text: "Snapped, THEN blocked?! Nothing vanished! Vanishing is my whole trick!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c3-3",
+          text: "Door first, camera never! Whoops, where did all the evidence go?",
+        },
+      },
+      {
+        phaseId: "phase-w11-c4",
+        key: "quiz-w11-c4-3",
+        label: "Camera, Not Trash",
+        ask: {
+          slug: "quiz-w11-ask-c4-3",
+          text: "In the class chat, someone starts posting mean things about your friend. What's the hero move?",
+        },
+        options: [
+          { text: "Screenshot it and tell a trusted grown-up, my friend gets backup" },
+          { text: "Stay quiet, it isn't about me" },
+          { text: "Tell my friend to just leave the chat" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Your friend needs backup!",
+          explanation: "Staying quiet keeps the meanness rolling, and leaving the chat doesn't stop it either. Freeze the proof and tell a trusted grown-up, that's how your friend gets real help.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c4-3",
+          text: "Backup for your friend TOO?! Heroes are multiplying! Terrible news!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c4-3",
+          text: "Stay quiet, stay comfy! Meanness rolls best across a silent chat!",
+        },
+      },
+      {
+        phaseId: "phase-w11-c5",
+        key: "quiz-w11-c5-3",
+        label: "The Protocol",
+        ask: {
+          slug: "quiz-w11-ask-c5-3",
+          text: "You ran the whole protocol perfectly and you STILL feel a bit wobbly inside. What's the extra move?",
+        },
+        options: [
+          { text: "Call Childhelp, 1-800-422-4453, free, always awake, always kind" },
+          { text: "Run the protocol again from step one" },
+          { text: "Keep the wobbly feeling secret until it fades" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "There's always one more helper!",
+          explanation: "Wobbly feelings after a scare are completely normal, and they're not for keeping secret. Childhelp, 1-800-422-4453, is free, always awake, and always kind. Talking shrinks the wobble.",
+        },
+        villainRight: {
+          slug: "quiz-w11-right-c5-3",
+          text: "You called the always-awake helpers?! Even nighttime isn't mine anymore!",
+        },
+        villainWrong: {
+          slug: "quiz-w11-wrong-c5-3",
+          text: "Keep the wobble secret! Wobbles grow SO big in the quiet!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-11-team-captain.png",
 
   // Week-lane attack theatre: the blame-and-silence tricks only (mean-words

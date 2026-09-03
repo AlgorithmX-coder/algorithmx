@@ -806,6 +806,429 @@ export const WEEK_6: WeekContent = {
     },
     voiceSlug: "w06",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#ff3cb4",
+    theme: {
+      topic: "Gaming Safety",
+      motifs: ["🎮", "🛡️", "💬", "🚫", "⚙️", "🎯", "⭐", "🔒"],
+    },
+    intro: {
+      slug: "quiz-w6-intro",
+      text: "So YOU'RE the kid guarding this lobby? I crash game nights for a living! Beat my quiz or the lobby is MINE!",
+    },
+    victory: {
+      slug: "quiz-w6-victory",
+      text: "Reported, blocked, AND out-quizzed?! This lobby has way too many guards. I'm going back to raiding trash cans!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w6-c1",
+        key: "quiz-w6-c1-1",
+        label: "Game Chat Is For Game Talk",
+        ask: {
+          slug: "quiz-w6-ask-c1-1",
+          text: "Mid-match, a player Adam just met types: 'What school do you go to? I bet I know you!' What does Adam send back?",
+        },
+        options: [
+          { text: "'Nice try! Game talk only', and he keeps playing" },
+          { text: "Just the name of his town, not the school" },
+          { text: "The school's name, since they might really be neighbors" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real-life info stays out!",
+          explanation: "Your school, your town, your street, they all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c1-1",
+          text: "OW! Game talk only?! I had my 'friendly neighbor' costume all zipped up!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c1-1",
+          text: "A town, a school, ANY crumb! I follow crumbs for a LIVING!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c2",
+        key: "quiz-w6-c2-1",
+        label: "Lock Your Lobby",
+        ask: {
+          slug: "quiz-w6-ask-c2-1",
+          text: "Strangers keep dropping into Layla's lobby mid-game. Which fix locks the door for good?",
+        },
+        options: [
+          { text: "Flip 'who can join' to friends only" },
+          { text: "Pick a scarier hero name so strangers stay away" },
+          { text: "Quit and start a fresh lobby every time one appears" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Let the settings guard you!",
+          explanation: "A scary name and lobby-hopping can't stop the NEXT stranger from walking in. Flipping 'who can join' to friends only locks the door once, and it stays locked every game after.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c2-1",
+          text: "Friends only?! I rattled the lobby door and it didn't even WIGGLE!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c2-1",
+          text: "New lobby, same open door! I'll just stroll into the next one, and the next, and the NEXT!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c3",
+        key: "quiz-w6-c3-1",
+        label: "The 'Somewhere Else' Trick",
+        ask: {
+          slug: "quiz-w6-ask-c3-1",
+          text: "A player Layla met tonight says: 'This chat is so laggy, message me on SnapTalk instead!' What's the hero answer?",
+        },
+        options: [
+          { text: "'No thanks, I chat where the guards are'" },
+          { text: "'OK, but only to talk about the game'" },
+          { text: "'OK, since laggy chat is hard to read'" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Stay with the guards!",
+          explanation: "Game chat has rules, moderators and report buttons. 'Let's chat somewhere else' means leaving all of that behind, and that is exactly why tricksters ask. Red flag, every time.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c3-1",
+          text: "Curses! Over THERE I had snacks, beanbags, and zero moderators!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c3-1",
+          text: "Yesss, hop over to the app with no guards! I redecorated JUST for you!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c4",
+        key: "quiz-w6-c4-1",
+        label: "Report & Block: Your Power Buttons",
+        ask: {
+          slug: "quiz-w6-ask-c4-1",
+          text: "A player calls Adam nasty names every single round. Which button does Adam press FIRST?",
+        },
+        options: [
+          { text: "REPORT, so the game's guards check the player" },
+          { text: "BLOCK, so the player vanishes right away" },
+          { text: "MUTE, so the nasty names go quiet" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Report first, then block!",
+          explanation: "Mute and block only fix YOUR game. Report calls the game's guards so they can deal with the bully for everyone. Report first, then block, then tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c4-1",
+          text: "Not the BELL! Every guard in the building just looked straight at me!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c4-1",
+          text: "Mute and block all you like, I'll still be out here bothering EVERYONE else!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c5",
+        key: "quiz-w6-c5-1",
+        label: "The 'Free Mod' Trap",
+        ask: {
+          slug: "quiz-w6-ask-c5-1",
+          text: "A website offers Adam a super-rare skin for FREE, it just needs his game login 'to deliver it'. What's really going on?",
+        },
+        options: [
+          { text: "It's an account thief, close it and tell a trusted grown-up" },
+          { text: "It's real, deliveries always need a login" },
+          { text: "It's safe as long as he changes his password right after" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Your login is the loot!",
+          explanation: "No real site needs your password to give you a gift, and 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c5-1",
+          text: "You closed the tab?! That fake skin took me ALL night to sparkle!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c5-1",
+          text: "Delivery incoming! One rare skin... aaand one raccoon moving into your account! Roomies!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c1",
+        key: "quiz-w6-c1-2",
+        label: "Game Chat Is For Game Talk",
+        ask: {
+          slug: "quiz-w6-ask-c1-2",
+          text: "Adam's squad is planning tomorrow's rematch. Which message is safe to hit SEND on?",
+        },
+        options: [
+          { text: "'Meet at the castle map, same time as today!'" },
+          { text: "'Meet me at Elm Park after school instead!'" },
+          { text: "'I get home alone at 4, message me then!'" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Plans stay inside the game!",
+          explanation: "Park meetups and home-alone times tell strangers where you are in real life. Game plans happen in game places. Castle map yes, Elm Park no.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c1-2",
+          text: "The CASTLE map?! I waited at Elm Park for HOURS with a picnic!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c1-2",
+          text: "A park! A home-alone time! I'll bring my net and my little sandwich cooler!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c2",
+        key: "quiz-w6-c2-2",
+        label: "Lock Your Lobby",
+        ask: {
+          slug: "quiz-w6-ask-c2-2",
+          text: "Through Adam's open mic, a lobby stranger hears his little sister and asks: 'Is that your sister?' What's the hero fix?",
+        },
+        options: [
+          { text: "Set the mic to friends-only so strangers can't listen in" },
+          { text: "Whisper for the rest of the match" },
+          { text: "Tell the stranger it was just the TV" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Close the mic door!",
+          explanation: "Whispers and cover stories still leave the mic wide open for next time. A friends-only mic means strangers can't hear your home at all, tonight and every night after.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c2-2",
+          text: "The mic slammed shut?! I had my listening cup pressed RIGHT against it!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c2-2",
+          text: "Keep whispering, I have EXCELLENT ears! Big, fluffy, excellent ears!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c3",
+        key: "quiz-w6-c3-2",
+        label: "The 'Somewhere Else' Trick",
+        ask: {
+          slug: "quiz-w6-ask-c3-2",
+          text: "A player who keeps getting muted by the mods begs Layla: 'Talk to me on another app, the mods are SO unfair!' What is he really after?",
+        },
+        options: [
+          { text: "A place with no guards, where nobody can stop him" },
+          { text: "A faster app, so his messages stop lagging" },
+          { text: "A fresh start, since the mods keep misjudging him" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Muted for a reason!",
+          explanation: "The mods muted him because he broke the rules. A player who wants you where the guards can't see is telling you exactly what he plans to do there. Stay in the guarded chat.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c3-2",
+          text: "How did you know about my no-guards clubhouse?! I just put in a slide!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c3-2",
+          text: "Poor misunderstood ME! Now follow me somewhere nice and dark and rule-free!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c4",
+        key: "quiz-w6-c4-2",
+        label: "Report & Block: Your Power Buttons",
+        ask: {
+          slug: "quiz-w6-ask-c4-2",
+          text: "Adam blocks GrumbleGoblin after reporting him. What happens in Adam's game now?",
+        },
+        options: [
+          { text: "GrumbleGoblin vanishes for Adam, no messages, no joining" },
+          { text: "GrumbleGoblin is kicked out of the whole game for everyone" },
+          { text: "GrumbleGoblin gets one last warning, then stays" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Block clears YOUR game!",
+          explanation: "Removing a player for everyone is the guards' job after a report. Block is your personal magic trick: that player can't message you, join you, or even see you. Poof.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c4-2",
+          text: "POOF?! Where did the lobby go?! Hello?? It's dark in here!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c4-2",
+          text: "A warning? For ME? I collect warnings! I keep them in a scrapbook!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c5",
+        key: "quiz-w6-c5-2",
+        label: "The 'Free Mod' Trap",
+        ask: {
+          slug: "quiz-w6-ask-c5-2",
+          text: "A mod's install page tells Layla: 'Turn OFF your virus checker first, it blocks our mod by mistake.' What does she do?",
+        },
+        options: [
+          { text: "Close the page, that ask is the trap sign itself" },
+          { text: "Turn it off for one minute, then straight back on" },
+          { text: "Install anyway, the checker can clean up afterward" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Never unplug the alarm!",
+          explanation: "A download that needs your protection switched off is a burglar asking you to unplug the alarm first. One minute is plenty for a nasty program. Close it and tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c5-2",
+          text: "The checker stayed ON?! My mod is terribly allergic to those things!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c5-2",
+          text: "One tiny minute is all my sneaky software needs! In and out, like a raccoon through a cat flap!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c1",
+        key: "quiz-w6-c1-3",
+        label: "Game Chat Is For Game Talk",
+        ask: {
+          slug: "quiz-w6-ask-c1-3",
+          text: "A teammate Layla has played with for weeks says: 'We're basically best friends now, what's your real name?' What does she do?",
+        },
+        options: [
+          { text: "Keep using hero names, even with game friends" },
+          { text: "Tell just her first name, first names are everywhere" },
+          { text: "Trade names, and he has to go first so it's fair" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Hero names for everyone!",
+          explanation: "Weeks of matches still means you've never actually met. First names and trades are how real-life info leaks out one crumb at a time. In the lobby, everyone gets your hero name.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c1-3",
+          text: "WEEKS of buttering you up and I don't even get a FIRST name?! My acting was FLAWLESS!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c1-3",
+          text: "A real name! Now I just need a school, a street, and a spare key!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c2",
+        key: "quiz-w6-c2-3",
+        label: "Lock Your Lobby",
+        ask: {
+          slug: "quiz-w6-ask-c2-3",
+          text: "Layla is picking the name other players will see. Which one keeps the real her hidden?",
+        },
+        options: [
+          { text: "CometCrafter77" },
+          { text: "LaylaFromMapleHill" },
+          { text: "Layla_2017" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Your name is a clue!",
+          explanation: "A hero name should say NOTHING true about you. Real names, school names and birth years hand strangers the exact clues they hunt for. Comets and crafters tell them zip.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c2-3",
+          text: "CometCrafter?! I searched every class list for a Comet and found NOTHING!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c2-3",
+          text: "A name, a school, a birth year, it's like a menu! And I am STARVING!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c3",
+        key: "quiz-w6-c3-3",
+        label: "The 'Somewhere Else' Trick",
+        ask: {
+          slug: "quiz-w6-ask-c3-3",
+          text: "A gaming friend of two months says: 'Let's swap phone numbers, texting beats game chat!' What's the hero move?",
+        },
+        options: [
+          { text: "Keep chatting in the game, that's where the guards are" },
+          { text: "Swap numbers, two months makes him a real friend" },
+          { text: "Swap, but make him promise to text only about the game" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real gaming friends stay put!",
+          explanation: "A phone number is real-life info, and texting has no mods and no report button. A real gaming friend is happy right where the guards are. Two months changes nothing.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c3-3",
+          text: "But texting is where I do my BEST creeping! Er, I mean chatting! CHATTING!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c3-3",
+          text: "A phone number! Now I can pester you at breakfast, lunch AND dinner!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c4",
+        key: "quiz-w6-c4-3",
+        label: "Report & Block: Your Power Buttons",
+        ask: {
+          slug: "quiz-w6-ask-c4-3",
+          text: "Layla wants to report a player who keeps being creepy, but her friend says reporting is snitching. What's true?",
+        },
+        options: [
+          { text: "Reporting is exactly what the button is for, press it" },
+          { text: "Report only after giving three fair warnings" },
+          { text: "Just block him quietly, blocking is kinder" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Reporting protects everyone!",
+          explanation: "The report button exists so the guards can stop creeps, and pressing it is brave, not snitching. Warnings and quiet blocks leave him free to bother other kids. Report, block, tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c4-3",
+          text: "Stop pressing that bell! Every time it rings, a guard gets my address!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c4-3",
+          text: "Yes! No bells, no reports, just lovely quiet lobbies full of ME!",
+        },
+      },
+      {
+        phaseId: "phase-w6-c5",
+        key: "quiz-w6-c5-3",
+        label: "The 'Free Mod' Trap",
+        ask: {
+          slug: "quiz-w6-ask-c5-3",
+          text: "Layla wants a new character pack for her game. Which way is the safe way to get it?",
+        },
+        options: [
+          { text: "The game's own shop, with a grown-up's OK" },
+          { text: "A fan site giving the same pack away free" },
+          { text: "A player in chat offering it as a gift for her login" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real stuff lives in the real shop!",
+          explanation: "Fan sites and chat 'gifts' are how stolen accounts start. Real games sell their packs inside the game, and a grown-up's OK makes it safe. Outside downloads always get a grown-up check.",
+        },
+        villainRight: {
+          slug: "quiz-w6-right-c5-3",
+          text: "The REAL shop?! But my fake one has balloons! And a suspicious smell!",
+        },
+        villainWrong: {
+          slug: "quiz-w6-wrong-c5-3",
+          text: "Step right up to Raccoon's Bargain Corner! All packs free! All logins MINE!",
+        },
+      },
+    ],
+  },
   badgeArt: "/cyberheroes/badges/week-06-lobby-guardian.png",
 
   bossAttacks: [

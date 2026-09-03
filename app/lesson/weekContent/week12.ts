@@ -814,6 +814,430 @@ export const WEEK_12: WeekContent = {
     },
     voiceSlug: "w12",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#a8e4ff",
+    theme: {
+      topic: "Digital Footprint",
+      motifs: ["📍", "👀", "🔍", "🌍", "🏷️", "⭐", "📱", "🔒"],
+    },
+    intro: {
+      slug: "quiz-w12-intro",
+      text: "Sniff sniff... fresh prints, leading right to my quiz stand! I've read a thousand trails, little ranger. Yours smells... beatable!",
+    },
+    victory: {
+      slug: "quiz-w12-victory",
+      text: "My map, my sniffing, my whole trail-reading business... useless! Go on then, stamp your gold everywhere. I can't STAND glitter!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w12-c1",
+        key: "quiz-w12-c1-1",
+        label: "Tracks in the Snow",
+        ask: {
+          slug: "quiz-w12-ask-c1-1",
+          text: "You searched 'best dinosaur jokes', giggled twice, and closed the tab without posting a thing. Track or no track?",
+        },
+        options: [
+          { text: "Track, searches print even when I post nothing" },
+          { text: "No track, closing the tab wipes it clean" },
+          { text: "Half a track, it fades away by tomorrow" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Searches print too!",
+          explanation: "Closing the tab puts the jokes away, but the search engine kept your question, plus when you asked it, and tracks don't fade by tomorrow. Every search presses a print, posted or not.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c1-1",
+          text: "Even your JOKES leave prints?! Stop knowing my favorite secret!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c1-1",
+          text: "Closed the tab, wiped the snow? Ho ho, the snow remembers EVERYTHING!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c2",
+        key: "quiz-w12-c2-1",
+        label: "The Snowball Problem",
+        ask: {
+          slug: "quiz-w12-ask-c2-1",
+          text: "You sent ONE photo to just ONE friend. How many copies of it exist now?",
+        },
+        options: [
+          { text: "More than one: mine, my friend's, and the app kept one too" },
+          { text: "Exactly one, on my friend's phone" },
+          { text: "Zero, sending moves a photo instead of copying it" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Count ALL the copies!",
+          explanation: "Sending doesn't move a photo, it copies it. One stays at your end, one lands at your friend's end, and the app kept one too. Shared once means stored more than once.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c2-1",
+          text: "You counted the app's copy TOO?! Nobody ever counts the app's copy!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c2-1",
+          text: "One little copy, all alone? Keep believing that while they multiply!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c3",
+        key: "quiz-w12-c3-1",
+        label: "The Future-Self Mirror",
+        ask: {
+          slug: "quiz-w12-ask-c3-1",
+          text: "You lost the final and your thumbs are already typing a rage-post about the ref. Mirror check: what does future-you say?",
+        },
+        options: [
+          { text: "Skip it, the anger melts by morning, the track stays" },
+          { text: "Post it, you can delete it once you calm down" },
+          { text: "Post it, being right makes it a golden track" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The fume melts, the track doesn't!",
+          explanation: "By breakfast you won't even mean it anymore, but deleting later only cleans YOUR snow, and being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c3-1",
+          text: "You mirror-checked my rage bait?! It marinated in fury ALL day!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c3-1",
+          text: "Post it hot! Angry tracks press deepest, and I read them with popcorn!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c4",
+        key: "quiz-w12-c4-1",
+        label: "Stamp It Gold",
+        ask: {
+          slug: "quiz-w12-ask-c4-1",
+          text: "Your team won on penalties! Which post stamps the win GOLD?",
+        },
+        options: [
+          { text: "'What a save, Jaya, champions!'" },
+          { text: "'We won! Their goalie is terrible, ha!'" },
+          { text: "'We won, no thanks to our slowpoke defenders'" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Win it kind!",
+          explanation: "A win posted loud and mean, at the other team or your own, turns a golden day into a stain. Proud AND kind is the champion stamp, and it gleams for years.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c4-1",
+          text: "Kind AND proud?! That post is so golden it hurt my eyes!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c4-1",
+          text: "Boast it loud and mean! A stained win reads deliciously from up here!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c5",
+        key: "quiz-w12-c5-1",
+        label: "Read Your Trail",
+        ask: {
+          slug: "quiz-w12-ask-c5-1",
+          text: "A trail check with your grown-up finds a bio: 'Age 8, Northside Elementary, class 3B.' What kind of track is that?",
+        },
+        options: [
+          { text: "Pointy, it aims a stranger straight at me, tidy it" },
+          { text: "Golden, it helps real friends find me" },
+          { text: "Neither, bios don't count as tracks" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "That bio is pointy!",
+          explanation: "Real friends already know where to find you, so a bio doesn't need your school, and bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c5-1",
+          text: "You called the bio pointy?! I had that trail memorized in one sniff!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c5-1",
+          text: "Name, age, school, all on one line! It's a menu, and I'm starving!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c1",
+        key: "quiz-w12-c1-2",
+        label: "Tracks in the Snow",
+        ask: {
+          slug: "quiz-w12-ask-c1-2",
+          text: "You tap one tiny heart on a puppy video. Half a second, barely a touch. What got written down?",
+        },
+        options: [
+          { text: "A track, the app noted 'this kid loves puppies'" },
+          { text: "Nothing, likes are too small to save" },
+          { text: "Just the puppy's name, nothing about me" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "No tap is too tiny!",
+          explanation: "Half a second still prints. The app wrote down what you liked and uses it to pick what you see next. Likes aren't really about the puppy, they're about YOU.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c1-2",
+          text: "Half a second and it STILL counts?! Who leaked the lamp?!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c1-2",
+          text: "Too small to save! Sure! And I definitely don't collect crumbs!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c2",
+        key: "quiz-w12-c2-2",
+        label: "The Snowball Problem",
+        ask: {
+          slug: "quiz-w12-ask-c2-2",
+          text: "An embarrassing post got shared around, so you delete it. What did delete actually do?",
+        },
+        options: [
+          { text: "Cleaned MY snow only, the copies keep rolling" },
+          { text: "Wiped it from everywhere at once" },
+          { text: "Turned all the copies into blank pictures" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Delete cleans only your snow!",
+          explanation: "Your post disappears from YOUR page, but every copy that already rolled keeps rolling where your broom can't reach. That's why the thinking happens BEFORE the post.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c2-2",
+          text: "You knew the broom stops at your own snow?! My favorite loophole, exposed!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c2-2",
+          text: "Deleted from everywhere, poof! ...except the seventeen hills it already rolled over!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c3",
+        key: "quiz-w12-c3-2",
+        label: "The Future-Self Mirror",
+        ask: {
+          slug: "quiz-w12-ask-c3-2",
+          text: "The CRINGE CHALLENGE is everywhere: post your most embarrassing moment! Everyone in class is doing it. Ranger call?",
+        },
+        options: [
+          { text: "Skip it, trends melt by Friday, tracks don't" },
+          { text: "Join in, a track everyone else has too is safe" },
+          { text: "Join in, then delete it when the trend ends" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Trends melt, tracks stay!",
+          explanation: "By Friday nobody remembers the challenge, but the embarrassing post waits in the snow, and deleting won't catch the copies. 'Everyone's doing it' just means everyone pressed a track, it doesn't protect yours.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c3-2",
+          text: "You skipped the cringe challenge?! But EVERYONE was rolling in it!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c3-2",
+          text: "Join the trend, press the track! Next year's nickname, courtesy of me!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c4",
+        key: "quiz-w12-c4-2",
+        label: "Stamp It Gold",
+        ask: {
+          slug: "quiz-w12-ask-c4-2",
+          text: "Two videos on your camera roll: your rocket-build hitting the ceiling, and your brother mid-tantrum (SO funny). Which goes out?",
+        },
+        options: [
+          { text: "The rocket, my proud build is my track to press" },
+          { text: "The tantrum, funny tracks get the most likes" },
+          { text: "Both, more tracks means more gold" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "His worst moment isn't your track!",
+          explanation: "Funny likes fade fast, but a tantrum video trips your brother for years, and 'more tracks' was never the goal, better ones are. Press YOUR proud build, that's the golden print.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c4-2",
+          text: "The rocket over the tantrum?! Tantrums get premium giggles!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c4-2",
+          text: "Press his worst moment! Trip hazards in other people's snow, delightful!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c5",
+        key: "quiz-w12-c5-2",
+        label: "Read Your Trail",
+        ask: {
+          slug: "quiz-w12-ask-c5-2",
+          text: "Your username is your real name plus your birth year. What does a ranger do about it?",
+        },
+        options: [
+          { text: "Pick a made-up name with my grown-up, that one's pointy" },
+          { text: "Keep it, a true name is more honest than a fake one" },
+          { text: "Keep it, usernames aren't part of my trail" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Make the name point nowhere!",
+          explanation: "Honest is for people, usernames are just labels, and a label with your real name and birth year stamps itself onto every track you leave. A made-up name keeps the trail yours.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c5-2",
+          text: "A made-up name?! Now every print reads 'somebody somewhere'! Useless!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c5-2",
+          text: "Real name, real year, stamped on every track! My map fills itself!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c1",
+        key: "quiz-w12-c1-3",
+        label: "Tracks in the Snow",
+        ask: {
+          slug: "quiz-w12-ask-c1-3",
+          text: "You type 'cool video!' under someone else's clip. Where does that track live?",
+        },
+        options: [
+          { text: "On their page, with my name stitched to it" },
+          { text: "Only on my own phone, where I typed it" },
+          { text: "Nowhere, comments melt when the video ends" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Comments live in other snow!",
+          explanation: "Your words went onto somebody else's page with your name stitched on, and they stay there long after the video ends. Comments are tracks you press in other people's snow.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c1-3",
+          text: "You know your words live on THEIR page?! My comment collection is leaking!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c1-3",
+          text: "Melted when the video ended? Comments are forever, signed and dated!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c2",
+        key: "quiz-w12-c2-3",
+        label: "The Snowball Problem",
+        ask: {
+          slug: "quiz-w12-ask-c2-3",
+          text: "A friend sends you an embarrassing video of another kid: 'forward it to everyone!' What does a ranger know?",
+        },
+        options: [
+          { text: "Don't roll it, once it's out no broom catches every copy" },
+          { text: "Forward it, then delete it if the kid minds" },
+          { text: "Forward it to just one person, that's only one copy" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Don't roll it at all!",
+          explanation: "One forward makes copies, each copy can copy again, and deleting later never catches them. 'Just one person' is how every blizzard starts. The kind move is not rolling someone's worst moment at all.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c2-3",
+          text: "You didn't roll it?! One forward and it was mine by lunchtime!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c2-3",
+          text: "Roll it, roll it! One forward each and by Friday it's a blizzard!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c3",
+        key: "quiz-w12-c3-3",
+        label: "The Future-Self Mirror",
+        ask: {
+          slug: "quiz-w12-ask-c3-3",
+          text: "You filmed your unbelievable three-floor marble-run, a lift, a loop, everything. Post it or not?",
+        },
+        options: [
+          { text: "Post it proudly, that's a track future-me grins at" },
+          { text: "Never post, every track is a risk" },
+          { text: "Post it, but say a friend built it, just in case" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Golden tracks belong out there!",
+          explanation: "The snow isn't lava, and fibbing about your own build just presses a weird track. A proud, kind post is exactly what the snow is FOR. Skip the rage-posts, keep the marble-runs.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c3-3",
+          text: "You posted your build ON PURPOSE?! Confident trails are unreadable!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c3-3",
+          text: "No proud tracks, or fibbed ones! A trail with no shine suits me fine!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c4",
+        key: "quiz-w12-c4-3",
+        label: "Stamp It Gold",
+        ask: {
+          slug: "quiz-w12-ask-c4-3",
+          text: "A mean meme about Sam is rolling around the group chat. Which stamp is the golden one?",
+        },
+        options: [
+          { text: "'Not cool, Sam's our friend'" },
+          { text: "Send Sam a private 'ignore them' and stay quiet in the chat" },
+          { text: "Forward it with 'so mean lol' so everyone knows it's bad" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Stand up, don't pass it on!",
+          explanation: "Forwarding a mean meme rolls it onward, even with 'so mean' written on it, and a quiet chat lets it keep rolling too. Five brave words, 'Not cool, Sam's our friend', are the brightest gold there is.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c4-3",
+          text: "You stood up IN the chat?! Gold that bright shows up from space!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c4-3",
+          text: "Pass it on or hush it up, the snowball rolls either way! Wheee!",
+        },
+      },
+      {
+        phaseId: "phase-w12-c5",
+        key: "quiz-w12-c5-3",
+        label: "Read Your Trail",
+        ask: {
+          slug: "quiz-w12-ask-c5-3",
+          text: "Scanning your trail you find a dragon drawing signed 'E'... and a caption with your Friday park time. What's the call?",
+        },
+        options: [
+          { text: "Tidy the park caption, keep the dragon gleaming" },
+          { text: "Delete both, a clean trail is the safest trail" },
+          { text: "Keep both, nobody reads old captions" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Tidy the pointy, keep the gold!",
+          explanation: "A where-and-when on repeat is a map a stranger can read, so that caption gets tidied with a trusted grown-up. The dragon shows your spark and points at nobody. Rangers never scrub the gold.",
+        },
+        villainRight: {
+          slug: "quiz-w12-right-c5-3",
+          text: "You kept the dragon and scrubbed the park time?! Precision tidying! Revolting!",
+        },
+        villainWrong: {
+          slug: "quiz-w12-wrong-c5-3",
+          text: "A schedule pressed in the snow! I do love a trail that plans ahead for me!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-12-trail-ranger.png",
 
   // Week-lane attack theatre: footprint tricks only (photo consent = W8;

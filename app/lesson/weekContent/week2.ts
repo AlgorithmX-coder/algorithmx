@@ -812,6 +812,438 @@ export const WEEK_2: WeekContent = {
     },
   },
 
+  /* ──────────────── THE STANDARD QUIZ BOSS (week-ending test) ────────────────
+     Same contract as W1: 15 apply-the-skill questions, 3 per taught
+     concept, interleaved round-robin (c1..c5, c1..c5, c1..c5). Every
+     villain line below is DISTINCT (zero repeated phrases in this file).
+     TODO(audio): record every slug below (villain = Callum via the
+     cyberheroes-narration-audio pipeline); browser TTS speaks each text
+     until its clip exists at /audio/villain/{slug}.mp3. */
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#9d7bff",
+    theme: {
+      topic: "Private Info",
+      motifs: ["🆔", "📍", "🏠", "🎭", "📱", "🌍", "🔒", "👤"],
+    },
+    intro: {
+      slug: "quiz-w2-intro",
+      text: "Ah, the little vault-keeper is back! You guarded your treasures all lesson, but one quiz with me and they'll come tumbling out!",
+    },
+    victory: {
+      slug: "quiz-w2-victory",
+      text: "Not one single secret?! My grab list is blank, my scanner is sulking, and my snoop-mobile just ran out of gas!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w2-c1",
+        key: "quiz-w2-c1-1",
+        label: "Private Radar",
+        ask: {
+          slug: "quiz-w2-ask-c1-1",
+          text: "Adam's new game wants him to fill in his player card, and three facts are ready to type. Which one stays locked in the vault?",
+        },
+        options: [
+          { text: "The name of the school he goes to" },
+          { text: "The name of the game he plays most" },
+          { text: "The name of his favorite dinosaur" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Who-you-are and where-you-are stay locked!",
+          explanation: "A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week, and that's one of the five private treasures.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c1-1",
+          text: "OW! Zero schools on that card?! My snoop-map has a big empty hole where you should be!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c1-1",
+          text: "A school name! My wish list finally gets its gold star sticker!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c2",
+        key: "quiz-w2-c2-1",
+        label: "Share Smarts",
+        ask: {
+          slug: "quiz-w2-ask-c2-1",
+          text: "Layla's club profile has one empty box left for a fun line about herself. Which line is safe to type in?",
+        },
+        options: [
+          { text: "Pancakes are the best breakfast ever" },
+          { text: "Maple Hill is the best school ever" },
+          { text: "Rainbow Road is the best street ever" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Favorites yes, places no!",
+          explanation: "All three sound like favorites, but only the pancakes are really about what she likes. A best school or a best street quietly tells a stranger where to find her.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c2-1",
+          text: "Pancakes?! I can't DO anything with pancakes except get hungry! Unfair!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c2-1",
+          text: "A school or a street dressed up as a favorite, and you waved it right through! Scribble scribble!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c3",
+        key: "quiz-w2-c3-1",
+        label: "The Why-Check",
+        ask: {
+          slug: "quiz-w2-ask-c3-1",
+          text: "Three coloring apps each want one thing before Adam can draw. Which app is being too nosy?",
+        },
+        options: [
+          { text: "The one that wants his phone number" },
+          { text: "The one that wants a made-up nickname" },
+          { text: "The one that wants his favorite color" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Ask what the app NEEDS!",
+          explanation: "A nickname labels his art and a favorite color picks his paints, those asks match the app. Coloring never rings anybody, so a phone number is an over-ask. Too nosy!",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c3-1",
+          text: "You asked WHY?! That question gives me a rash, you know that?!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c3-1",
+          text: "Phone number collected! RING RING, it's your friendly coloring app calling at bedtime!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c4",
+        key: "quiz-w2-c4-1",
+        label: "Secret Identity",
+        ask: {
+          slug: "quiz-w2-ask-c4-1",
+          text: "Layla needs a username for her drawing club. Which one keeps her hero mask on?",
+        },
+        options: [
+          { text: "VelvetFox31" },
+          { text: "Layla_Draws" },
+          { text: "MapleHill_Artist" },
+          { text: "ArtKid2017" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "No real-you clues in the mask!",
+          explanation: "A real first name, a school, or a birth year pokes a hole in the mask, even inside a cool-sounding name. Hero words plus a number that means nothing keep the real Layla invisible.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c4-1",
+          text: "VelvetFox WHO?! I own an actual fox costume and even I can't trace that name!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c4-1",
+          text: "A name, a school, a birth year... that's not a mask, that's a name tag! I LOVE name tags!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c5",
+        key: "quiz-w2-c5-1",
+        label: "Ask First",
+        ask: {
+          slug: "quiz-w2-ask-c5-1",
+          text: "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move?",
+        },
+        options: [
+          { text: "Pause and ask a trusted grown-up" },
+          { text: "Type an answer and see what happens" },
+          { text: "Ask the app's help robot instead" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Heroes don't guess!",
+          explanation: "The help robot works for the app, and typing to see what happens is just guessing. When you're not sure, hit pause and call your backup: a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c5-1",
+          text: "A trusted grown-up?! They ruin EVERYTHING! They check things! With their EYES!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c5-1",
+          text: "Type first, think never! You're my favorite kind of quiz-taker!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c1",
+        key: "quiz-w2-c1-2",
+        label: "Private Radar",
+        ask: {
+          slug: "quiz-w2-ask-c1-2",
+          text: "My scanner beeps when it finds private treasure. Adam typed three things in chat today. Which one made it beep?",
+        },
+        options: [
+          { text: "I ride the number 12 bus home" },
+          { text: "I beat level 12 this morning" },
+          { text: "My high score ends in 12" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Where-you-go is treasure too!",
+          explanation: "Levels and high scores say nothing about the real Adam. The bus he rides home shows where he goes every single day, and that's exactly the kind of treasure a scanner hunts.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c1-2",
+          text: "The bus?! I waited at level 12 with a butterfly net and caught NOTHING!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c1-2",
+          text: "The number 12 bus! Time to buy myself a little raccoon bus pass, toot toot!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c2",
+        key: "quiz-w2-c2-2",
+        label: "Share Smarts",
+        ask: {
+          slug: "quiz-w2-ask-c2-2",
+          text: "Layla won her swim race and wants to tell her game friends. Which message is the safe way to celebrate?",
+        },
+        options: [
+          { text: "I won my swim race today, best day ever!" },
+          { text: "I won my swim race at the pool on Oak Street!" },
+          { text: "I won my swim race for Maple Hill School!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Share the win, not the where!",
+          explanation: "The happy news is hers to shout! It only turns private when a place gets attached: a pool's street or a school name tells strangers where to find her.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c2-2",
+          text: "You shared the WIN and kept the WHERE?! That's not how bragging is supposed to work!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c2-2",
+          text: "A trophy with a street or a school attached?! Best gift wrap I ever saw!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c3",
+        key: "quiz-w2-c3-2",
+        label: "The Why-Check",
+        ask: {
+          slug: "quiz-w2-ask-c3-2",
+          text: "Layla's word-puzzle app suddenly asks for her home address 'to find puzzles near you'. What should she do?",
+        },
+        options: [
+          { text: "Close it, puzzles work the same on every street" },
+          { text: "Type it in, nearby puzzles sound more fun" },
+          { text: "Type just the street name, not the house number" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Over-asking = too nosy!",
+          explanation: "Word puzzles don't change from street to street, so the app has no reason to need an address, not even half of one. An app that asks for more than it needs is too nosy: close it and tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c3-2",
+          text: "Closed it?! I spent all week teaching that puzzle app to ask nicely!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c3-2",
+          text: "Half an address is half a map, and I am GREAT at finishing maps!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c4",
+        key: "quiz-w2-c4-2",
+        label: "Secret Identity",
+        ask: {
+          slug: "quiz-w2-ask-c4-2",
+          text: "Adam's username is TurboFalcon9. A friend says it needs an upgrade and offers three. Which upgrade is safe to take?",
+        },
+        options: [
+          { text: "TurboFalcon900" },
+          { text: "TurboAdam9" },
+          { text: "TurboFalcon2016" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Upgrades can spring leaks!",
+          explanation: "Swapping in a real name or a birth year turns a hero name into a name tag. Extra numbers that mean nothing change the look without leaking a thing, so that's the only safe upgrade here.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c4-2",
+          text: "More meaningless zeros?! Numbers that mean NOTHING are my natural enemy!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c4-2",
+          text: "A real name or a birth year bolted onto the falcon! The bird tells me nothing, the rest tells me PLENTY!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c5",
+        key: "quiz-w2-c5-2",
+        label: "Ask First",
+        ask: {
+          slug: "quiz-w2-ask-c5-2",
+          text: "Layla's tablet shows a form she only half understands. Her big cousin, who is twelve, says 'just fill it in, it's fine'. What should Layla do?",
+        },
+        options: [
+          { text: "Check with a trusted grown-up before typing" },
+          { text: "Trust her cousin, twelve is pretty old" },
+          { text: "Fill in only the parts she understands" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Backup means a grown-up!",
+          explanation: "A twelve-year-old is bigger, but backup means a parent, a caregiver or a teacher. A confusing form waits until a trusted grown-up has looked at it, every time.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c5-2",
+          text: "You skipped the twelve-year-old and went straight to a grown-up?! My whole plan needed that shortcut!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c5-2",
+          text: "Ha! Big cousins make TERRIBLE guards. I've checked!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c1",
+        key: "quiz-w2-c1-3",
+        label: "Private Radar",
+        ask: {
+          slug: "quiz-w2-ask-c1-3",
+          text: "Layla is making a poster about herself for her online club page. Which line has to come off before she posts it?",
+        },
+        options: [
+          { text: "Call me any time on 555-0176" },
+          { text: "Ask me anything about dragons" },
+          { text: "Send me your very best joke" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Your number is a treasure!",
+          explanation: "Club friends can already message her inside the club, that's what it's for. A phone number on a poster lets any stranger ring her at home, and it's one of the five private treasures.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c1-3",
+          text: "You peeled the number right off?! I had my dialing paw warmed up and everything!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c1-3",
+          text: "Call any time? Don't mind if I DO! At dinner! At bedtime! During cartoons!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c2",
+        key: "quiz-w2-c2-3",
+        label: "Share Smarts",
+        ask: {
+          slug: "quiz-w2-ask-c2-3",
+          text: "A quiz game asks every player to share one fun fact out loud. Which fact hands me absolutely NOTHING?",
+        },
+        options: [
+          { text: "I can name twenty different dinosaurs" },
+          { text: "I turn nine this coming Saturday" },
+          { text: "I live two doors down from the park" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Fun facts can leak!",
+          explanation: "Dinosaur counting is a hobby, share away! A birthday coming up and a house near the park are who-you-are and where-you-are clues wearing fun-fact costumes.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c2-3",
+          text: "Twenty dinosaurs?! What am I supposed to do with DINOSAUR FACTS?!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c2-3",
+          text: "A birthday or a doorstep dressed as a fun fact! Funnest fact I've grabbed all week!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c3",
+        key: "quiz-w2-c3-3",
+        label: "The Why-Check",
+        ask: {
+          slug: "quiz-w2-ask-c3-3",
+          text: "Adam's racing game shows three setup steps before the big cup. Which step should make a hero stop and ask WHY?",
+        },
+        options: [
+          { text: "Type your school to join a local trophy race" },
+          { text: "Pick a nickname for the scoreboard" },
+          { text: "Choose a color for your kart" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Match the ask to the app!",
+          explanation: "A scoreboard needs a nickname and a kart needs a color, those asks fit a racing game. No race anywhere needs to know your school, that ask is for the Raccoon, not the track.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c3-3",
+          text: "You stopped at MY step?! The nickname and the kart were only there to make the school ask look cozy!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c3-3",
+          text: "A school for a trophy, what a deal! The trophy is invisible, by the way.",
+        },
+      },
+      {
+        phaseId: "phase-w2-c4",
+        key: "quiz-w2-c4-3",
+        label: "Secret Identity",
+        ask: {
+          slug: "quiz-w2-ask-c4-3",
+          text: "Layla loves ninjas, so she wrote three ninja usernames on paper. Which one can she actually use?",
+        },
+        options: [
+          { text: "CloudNinja55" },
+          { text: "Class4B_Ninja" },
+          { text: "NinjaBorn2017" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Ninja outside, nothing inside!",
+          explanation: "The ninja part is great in all three. But her class points straight at her school, and a birth year is a real clue about the real her. The safe ninja carries zero facts.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c4-3",
+          text: "A ninja with NO clues?! Even my magnifying glass just shrugged!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c4-3",
+          text: "A class or a birth year in a ninja suit! Sneaky suit, leaky ninja!",
+        },
+      },
+      {
+        phaseId: "phase-w2-c5",
+        key: "quiz-w2-c5-3",
+        label: "Ask First",
+        ask: {
+          slug: "quiz-w2-ask-c5-3",
+          text: "A box pops up in Adam's game: 'Allow FRIEND FINDER? YES or NO.' He has no idea what it does. Which button plan is right?",
+        },
+        options: [
+          { text: "Press neither, ask a trusted grown-up first" },
+          { text: "Press YES, finders sound friendly" },
+          { text: "Press NO now, then YES if nothing breaks" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Mystery buttons wait!",
+          explanation: "When you don't know what a button does, the answer isn't yes OR no. A mystery ask waits until a trusted grown-up has looked, that's the golden rule doing its job.",
+        },
+        villainRight: {
+          slug: "quiz-w2-right-c5-3",
+          text: "You pressed NEITHER?! There were only two buttons! I planned for both!",
+        },
+        villainWrong: {
+          slug: "quiz-w2-wrong-c5-3",
+          text: "Yes, no, yes, no, press them all! Mystery buttons are the tastiest buttons!",
+        },
+      },
+    ],
+  },
+
   /* Bespoke medal art for the victory scene (W2 rewrap). */
   badgeArt: "/cyberheroes/badges/week-02-privacy-guardian.png",
 
