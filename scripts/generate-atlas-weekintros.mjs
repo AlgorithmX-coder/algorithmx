@@ -2,9 +2,13 @@
 // One MP3 per week -> public/audio/atlas/heroes-week-NN.mp3.
 //
 // Voice: ATLAS = ElevenLabs "Daniel" (steady British male) — the SAME voice as
-// the Explorers block intro. The owner auditioned takes and chose the eleven_v3
-// read with a FLOWING, conversational script (no hard <break> pauses — those
-// staccato breaks are what made the first take "sound too AI").
+// the Explorers block intro, with a FLOWING, conversational script (no hard
+// <break> pauses — those staccato breaks made the first take "sound too AI").
+//
+// MODEL: eleven_multilingual_v2 (was eleven_v3). The v3 alpha model added a
+// reverby/doubled "echo" artifact to the read (worse, not better, at low
+// style), which the owner flagged. v2 is the stable production model and
+// renders the same voice cleanly. Keep flowing script; style kept modest.
 //
 // Usage:
 //   node --env-file=.env.local scripts/generate-atlas-weekintros.mjs [--force]
@@ -20,11 +24,11 @@ if (!KEY) {
 const FORCE = process.argv.includes("--force");
 
 const VOICE_ID = "onwK4e9ZLuTAKqWW03F9"; // Daniel — Steady Broadcaster
-const MODEL_ID = "eleven_v3"; // owner-chosen (more expressive than v2)
+const MODEL_ID = "eleven_multilingual_v2"; // stable model — no v3 echo artifact
 const VOICE_SETTINGS = {
-  stability: 0.4,
+  stability: 0.45,
   similarity_boost: 0.75,
-  style: 0.4,
+  style: 0.35,
   use_speaker_boost: true,
 };
 const OUTPUT_FORMAT = "mp3_44100_128";
