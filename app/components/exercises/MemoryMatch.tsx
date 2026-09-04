@@ -949,6 +949,8 @@ function PhaseTransitionCard({
         style={{
           maxWidth: 460,
           width: "100%",
+          maxHeight: "100%",
+          overflowY: "auto",
           padding: "26px 28px 22px",
           borderRadius: 22,
           background:

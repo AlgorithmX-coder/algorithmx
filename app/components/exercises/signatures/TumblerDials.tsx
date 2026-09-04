@@ -32,6 +32,7 @@ import {
 } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                */
@@ -720,6 +721,7 @@ type Phase = "play" | "opening" | "open";
 
 export default function TumblerDials({ onComplete }: { onComplete: () => void }) {
   const reduceMotion = useReducedMotion();
+  const audio = useGameAudio();
   const [seated, setSeated] = useState<Partial<Record<RingId, string>>>({});
   const [phase, setPhase] = useState<Phase>("play");
   const [toast, setToast] = useState<{ id: number; kind: "good" | "bad"; text: string } | null>(
@@ -744,11 +746,13 @@ export default function TumblerDials({ onComplete }: { onComplete: () => void })
   };
 
   const handleSeat = (ring: RingDef, slot: DialSlot) => {
+    audio.correct();
     setSeated((prev) => ({ ...prev, [ring.id]: slot.label }));
     showToast("good", `CLUNK! The ${ring.name} tumbler is locked!`);
   };
 
   const handleDecoy = (slot: DialSlot) => {
+    audio.wrong();
     showToast("bad", slot.teach ?? "The Raccoon guesses that one first!");
   };
 
@@ -757,6 +761,7 @@ export default function TumblerDials({ onComplete }: { onComplete: () => void })
     if (seatedCount < 3) return;
     const t1 = window.setTimeout(() => {
       setToast(null);
+      audio.unlock();
       setPhase("opening");
     }, 850);
     const t2 = window.setTimeout(() => setPhase("open"), 1900);

@@ -24,6 +24,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                            */
@@ -211,6 +212,7 @@ export default function FlipTheBox({
   accent?: string;
 }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [boxIdx, setBoxIdx] = useState(0);
@@ -244,6 +246,7 @@ export default function FlipTheBox({
    * visible face at the call site (rather than an effect) is safe. */
   const rotateBy = (delta: number) => {
     const next = rot + delta;
+    audio.cardFlip(); // one cue per committed 90-degree turn
     setSeen((prev) => {
       const face = FACE_ORDER[mod4(next)];
       return prev.includes(face) ? prev : [...prev, face];
@@ -283,6 +286,7 @@ export default function FlipTheBox({
 
   const advance = () => {
     if (boxIdx + 1 >= BOXES.length) {
+      audio.unlock();
       setPhase("celebrate");
       return;
     }
@@ -295,6 +299,7 @@ export default function FlipTheBox({
 
   const judge = (choice: "install" | "bin") => {
     if (choice === box.verdict) {
+      audio.correct();
       if (choice === "bin") {
         setStatus("crush");
         later(advance, reduce ? 1000 : 1900);
@@ -303,6 +308,7 @@ export default function FlipTheBox({
         later(advance, reduce ? 900 : 1500);
       }
     } else {
+      audio.wrong();
       setStatus("wrong");
       later(
         () => {
@@ -325,6 +331,7 @@ export default function FlipTheBox({
     if (phase !== "play") return;
     if (status === "inspect") {
       if (!allSeen) {
+        audio.wrong(); // soft nudge: sides still unseen
         setHintPulse((n) => n + 1);
         return;
       }
@@ -1516,6 +1523,10 @@ function WinOverlay({
             "linear-gradient(180deg, rgba(10,46,32,0.97) 0%, rgba(6,26,18,0.98) 100%)",
           boxShadow:
             "0 30px 70px -20px rgba(0,0,0,0.85), 0 0 50px -8px rgba(52,211,153,0.55)",
+          // Scroll-safe like the intro: on short viewports the card scrolls
+          // internally so the Continue button is never clipped.
+          maxHeight: "100%",
+          overflowY: "auto",
         }}
       >
         <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 12 }}>

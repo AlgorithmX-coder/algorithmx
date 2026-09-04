@@ -34,6 +34,7 @@ import {
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -564,6 +565,7 @@ export default function ProofScale({
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   accent?: string;
 }) {
+  const audio = useGameAudio();
   const [phase, setPhase] = useState<Phase>("intro");
   const [claimIdx, setClaimIdx] = useState(0);
   const [stage, setStage] = useState<Stage>("claim");
@@ -632,13 +634,14 @@ export default function ProofScale({
     (_e: unknown, info: PanInfo) => {
       if (stage !== "claim") return;
       if (hitsRect(info, leftPanRef.current, DROP_INFLATE)) {
+        audio.drop(); // claim card seats on the pan
         setStage("evidence");
         setNudge(null);
         // tiny settle wiggle so the drop feels physical
         animate(tilt, [0, -2.5, 1.5, 0], { duration: 0.7, ease: "easeInOut" });
       }
     },
-    [stage, tilt]
+    [stage, tilt, audio]
   );
 
   const handleBookDragEnd = useCallback(
@@ -646,6 +649,7 @@ export default function ProofScale({
       if (stage !== "evidence" || verdict) return;
       if (!hitsRect(info, rightPanRef.current, DROP_INFLATE)) return;
       if (book.id === claim.bookId) {
+        audio.correct(); // matching proof book found
         setPlacedBookId(book.id);
         setUsedBookIds((ids) => [...ids, book.id]);
         setVerdict("true");
@@ -661,6 +665,7 @@ export default function ProofScale({
         later(() => goNext(claimIdx), ADVANCE_MS);
       } else {
         // wrong book: wobble level, nudge gently, book snaps home
+        audio.wrong();
         animate(tilt, [0, -6, 5, -3.5, 2, 0], {
           duration: 0.9,
           ease: "easeInOut",
@@ -671,12 +676,13 @@ export default function ProofScale({
         );
       }
     },
-    [stage, verdict, claim, claimIdx, tilt, showNudge, later, goNext]
+    [stage, verdict, claim, claimIdx, tilt, showNudge, later, goNext, audio]
   );
 
   const handleBuzzer = useCallback(() => {
     if (stage !== "evidence" || verdict) return;
     if (claim.bookId === null) {
+      audio.correct(); // right call — the claim really had no proof
       setVerdict("busted");
       setStage("resolved");
       setJudged((j) => [...j, "busted"]);
@@ -685,18 +691,20 @@ export default function ProofScale({
       animate(tilt, [0, 3.5, -2, 0], { duration: 0.8, ease: "easeOut" });
       later(() => goNext(claimIdx), ADVANCE_MS + 200);
     } else {
+      audio.wrong(); // buzzer slammed but a proof book exists
       animate(buzzShake, [0, -7, 7, -5, 5, 0], { duration: 0.5 });
       showNudge(
         `Beep? Wait. I think one of those books DOES talk about ${claim.topic}. Peek again!`,
         "nudge"
       );
     }
-  }, [stage, verdict, claim, claimIdx, tilt, buzzShake, showNudge, later, goNext]);
+  }, [stage, verdict, claim, claimIdx, tilt, buzzShake, showNudge, later, goNext, audio]);
 
   /* ── win: deflate the robot, stamp the seal, complete once ── */
 
   useEffect(() => {
     if (phase !== "win") return;
+    audio.unlock(); // win beat — all claims weighed
     const anim = animate(winConf, 11, {
       duration: 1.5,
       delay: 0.5,
@@ -710,7 +718,7 @@ export default function ProofScale({
     }, 2600);
     timersRef.current.push(t);
     return () => anim.stop();
-  }, [phase, winConf, onComplete]);
+  }, [phase, winConf, onComplete, audio]);
 
   const placedBook = BOOKS.find((b) => b.id === placedBookId) ?? null;
   const statusDefault =

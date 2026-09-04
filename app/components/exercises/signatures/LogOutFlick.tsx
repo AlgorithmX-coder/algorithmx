@@ -30,6 +30,7 @@ import type { PanInfo } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Constants + content                                                */
@@ -84,6 +85,7 @@ export default function LogOutFlick({
   accent?: string;
 }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [openCards, setOpenCards] = useState<CardId[]>(STACK);
@@ -146,6 +148,7 @@ export default function LogOutFlick({
   /* -------- the flick -------- */
 
   const flickOff = (id: CardId) => {
+    audio.correct();
     setOpenCards((prev) => prev.filter((c) => c !== id));
     setLoggedOut((prev) => ({ ...prev, [id]: true }));
     setStamp({ key: Date.now() });
@@ -159,12 +162,14 @@ export default function LogOutFlick({
     if (info.offset.y > DISMISS_OFFSET || info.velocity.y > DISMISS_VELOCITY) {
       flickOff(id);
     } else if (info.offset.y < -50 || Math.abs(info.offset.x) > 60) {
+      audio.wrong();
       showToast("hint", "Almost!", "Flick the card DOWN, all the way off the screen.");
     }
   };
 
   const onCardTap = () => {
     if (!interactive) return;
+    audio.tap();
     showToast("hint", "Give it a flick!", "Press the card and swipe it down fast.");
   };
 
@@ -216,6 +221,7 @@ export default function LogOutFlick({
 
   const lockUp = () => {
     if (lockShut) return;
+    audio.unlock();
     setLockShut(true);
     setLockBurst(true);
     later(() => setLockBurst(false), 800);
@@ -224,11 +230,14 @@ export default function LogOutFlick({
 
   const onDoorTap = () => {
     if (phase === "sweep") {
+      audio.wrong();
       flashAmber();
       showToast("amber", "Amber light!", "Amber means something is still open. Flick every card off the tablet first!");
     } else if (phase === "ready") {
+      audio.tap();
       startLeaving();
     } else if (phase === "lookback") {
+      audio.wrong();
       flashAmber();
       showToast("amber", "Still amber!", "The goblin opened a card behind you. Flick it off, then come back!");
     } else if (phase === "lock") {

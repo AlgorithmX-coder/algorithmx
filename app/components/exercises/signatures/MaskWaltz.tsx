@@ -23,6 +23,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Tuning + content                                                   */
@@ -109,6 +110,7 @@ type Face = "friend" | "raccoon";
 
 export default function MaskWaltz({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("meet");
   const [round, setRound] = useState(0);
@@ -187,10 +189,14 @@ export default function MaskWaltz({ onComplete, narration, accent }: { onComplet
     if (phase !== "pick" || completedRef.current) return;
     setPicked(dancer);
     if (dancer === FRIEND) {
+      audio.correct();
       setWins((w) => w + 1);
       setPhase("correct");
       if (round + 1 >= ROUNDS.length) {
-        later(() => setPhase("celebrate"), 2100);
+        later(() => {
+          audio.unlock();
+          setPhase("celebrate");
+        }, 2100);
         later(() => {
           if (!completedRef.current) {
             completedRef.current = true;
@@ -201,6 +207,7 @@ export default function MaskWaltz({ onComplete, narration, accent }: { onComplet
         later(() => startRound(round + 1, 1), 2600);
       }
     } else {
+      audio.wrong();
       setTeach(dancer === FLASHY ? TEACH_FLASHY : TEACH_NORMAL);
       setPhase("wrong");
       later(() => startRound(round, Math.min(slowMult * SLOW_STEP, SLOW_CAP)), 4200);
@@ -398,7 +405,10 @@ export default function MaskWaltz({ onComplete, narration, accent }: { onComplet
                 </div>
               </div>
               <motion.button
-                onClick={() => startRound(0, 1)}
+                onClick={() => {
+                  audio.tap();
+                  startRound(0, 1);
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 style={{

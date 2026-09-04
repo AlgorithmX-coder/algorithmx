@@ -145,6 +145,10 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   /** Questions beaten so far = health segments drained. */
   const [beaten, setBeaten] = useState(0);
   const [score, setScore] = useState(0);
+  // How many times the child has fallen short of the pass mark. After a couple
+  // of misses we offer a gentle "Keep going" escape (via onEnd(false)) so a
+  // struggling kid is never hard-stuck on the boss with no way forward.
+  const [failedTries, setFailedTries] = useState(0);
   const [judging, setJudging] = useState(false);
   const [raccoonMood, setRaccoonMood] = useState<RaccoonMood>("taunt");
   const [raccoonLine, setRaccoonLine] = useState<string | null>(null);
@@ -338,6 +342,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           setStage("victory");
         } else {
           setRaccoonMood("taunt");
+          setFailedTries((n) => n + 1);
           setStage("failed");
         }
       } else {
@@ -370,7 +375,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     setStage("ask");
   };
 
-  const finish = () => {
+  const endBoss = (won: boolean) => {
     const phaseResults = quiz.questions
       .map((q) => statsRef.current.get(q.phaseId))
       .filter((r): r is BossPhaseResult => !!r);
@@ -378,7 +383,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
       (acc, r) => ({ q: acc.q + r.totalQuestions, c: acc.c + r.correctCount, w: acc.w + r.wrongCount }),
       { q: 0, c: 0, w: 0 },
     );
-    onEnd?.(true, {
+    onEnd?.(won, {
       combo: totals.c,
       accuracy: totals.q > 0 ? Math.round((totals.c / totals.q) * 100) : 100,
       xp: Math.round(score / 10),
@@ -389,6 +394,10 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
       phaseResults,
     });
   };
+  // Beating the boss (victory "Claim the win") ends won; the failed-screen
+  // "Keep going" escape ends not-won, so DynamicLesson shows its gentle
+  // "So close ... Keep going" card instead of hard-blocking a struggling kid.
+  const finish = () => endBoss(true);
 
   return (
     <motion.div
@@ -697,7 +706,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           )}
 
           {stage === "victory" && (
-            <motion.div key="victory" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, zIndex: 15 }}>
+            <motion.div key="victory" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "8%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
                 <motion.img src={RACCOON.defeated} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.5))" }} />
@@ -741,7 +750,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           )}
 
           {stage === "failed" && (
-            <motion.div key="failed" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, zIndex: 15 }}>
+            <motion.div key="failed" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "6%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
                 <motion.img src={RACCOON.taunt} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 12px 16px rgba(5,10,30,0.5)) drop-shadow(0 0 18px ${accent}66)` }} />
@@ -770,6 +779,14 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               <button onClick={redo} style={{ marginTop: 20, fontFamily: ROUNDED, fontWeight: 900, fontSize: 17, letterSpacing: "0.06em", textTransform: "uppercase", cursor: "pointer", color: "#12101f", padding: "15px 42px", border: "none", touchAction: "manipulation", clipPath: "polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%)", background: `linear-gradient(180deg, ${accent}, ${accent}cc)`, boxShadow: `0 0 26px -4px ${accent}bf, 0 10px 22px -10px #000` }}>
                 Try Again ▸
               </button>
+              {failedTries >= 2 && (
+                <button
+                  onClick={() => endBoss(false)}
+                  style={{ marginTop: 12, background: "none", border: "none", cursor: "pointer", fontFamily: ROUNDED, fontWeight: 800, fontSize: 14, letterSpacing: "0.04em", color: "#aeb8e8", textDecoration: "underline", textUnderlineOffset: 3, touchAction: "manipulation" }}
+                >
+                  Keep going for now →
+                </button>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

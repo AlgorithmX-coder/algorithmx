@@ -31,6 +31,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Constants + content                                                */
@@ -90,6 +91,7 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
 
 export default function GoodnightGadgets({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [asleep, setAsleep] = useState<Record<DeviceId, boolean>>({
@@ -154,6 +156,7 @@ export default function GoodnightGadgets({ onComplete, narration, accent }: { on
   /* -------- sleep + win -------- */
 
   const sleepDevice = (id: DeviceId) => {
+    audio.correct(); // gadget tucked in
     setAsleep((prev) => (prev[id] ? prev : { ...prev, [id]: true }));
     const t = SLEEP_TOAST[id];
     showToast("green", t.title, t.body);
@@ -161,10 +164,13 @@ export default function GoodnightGadgets({ onComplete, narration, accent }: { on
 
   useEffect(() => {
     if (phase === "play" && DEVICES.every((d) => asleep[d])) {
-      const t = window.setTimeout(() => setPhase("night"), 900);
+      const t = window.setTimeout(() => {
+        audio.unlock(); // win beat — night falls, room is safe
+        setPhase("night");
+      }, 900);
       timersRef.current.push(t);
     }
-  }, [asleep, phase]);
+  }, [asleep, phase, audio]);
 
   const completedRef = useRef(false);
   const finish = () => {
@@ -174,11 +180,15 @@ export default function GoodnightGadgets({ onComplete, narration, accent }: { on
   };
 
   const hintFor = (id: DeviceId) => {
-    if (!asleep[id] && phase === "play") showToast("hint", HINT_TOAST[id]);
+    if (!asleep[id] && phase === "play") {
+      audio.tap(); // friendly nudge, never a fail buzz
+      showToast("hint", HINT_TOAST[id]);
+    }
   };
 
   const onHarmless = (which: "teddy" | "nightlight") => {
     if (phase !== "play") return;
+    audio.tap(); // soft teach — no eyes, no ears
     setWobble((w) => ({ ...w, [which]: w[which] + 1 }));
     if (which === "teddy") {
       showToast("soft", "Teddy can stay!", "Button eyes cannot see. Cuddle friends are not gadgets.");
