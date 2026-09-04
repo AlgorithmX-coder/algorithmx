@@ -383,7 +383,10 @@ export default function SpamBlaster({
     audio.wrong();
     state.current.streak = 0;
     onWrong?.();
-    em.vx += (Math.random() - 0.5) * 2;
+    // NB: do NOT perturb em.vx here. A velocity kick could knock the real
+    // email off its path to the monitor so it never resolves; combined with
+    // the off-screen reclaim below that used to be a hard dead-end. The email
+    // keeps its course and delivers to the monitor normally.
     setWrongCount((n) => n + 1);
     setFeedback({
       title: "That email was real!",
@@ -842,6 +845,17 @@ export default function SpamBlaster({
               em.enteringMonitor = true;
               safeDelivered(em);
             }
+          }
+
+          // Off-screen reclaim: a real email knocked off-course (or any email
+          // that drifts past the monitor) must never fly away forever, or
+          // checkFinished (every email resolved) can never fire and the child
+          // is stuck with no way forward. Retire any live email that leaves
+          // the play area well beyond its spawn edge.
+          const off = EMAIL_W * 2;
+          if (em.x < -off || em.x > CANVAS_W + off || em.y < -off || em.y > CANVAS_H + off) {
+            em.resolved = true;
+            em.alive = false;
           }
         }
 

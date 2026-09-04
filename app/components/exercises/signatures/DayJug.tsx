@@ -27,6 +27,7 @@ import { AnimatePresence, animate, motion, useMotionValue } from "framer-motion"
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── tuning ────────────────────────── */
 
@@ -90,6 +91,7 @@ function statusOf(amount: number, spec: CupSpec): CupStatus {
 /* ────────────────────────── component ────────────────────────── */
 
 export default function DayJug({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
+  const audio = useGameAudio();
   const [phase, setPhase] = useState<Phase>("intro");
   const [sim, setSim] = useState<Sim>({ jug: TOTAL, cups: [0, 0, 0, 0] });
   const [pourTarget, setPourTarget] = useState<number | null>(null);
@@ -169,6 +171,7 @@ export default function DayJug({ onComplete, narration, accent }: { onComplete: 
             const room = spec.cap - s.cups[over];
             if (s.jug > EPS && room > EPS) {
               const d = Math.min(POUR_RATE * dt, s.jug, room);
+              const prevStatus = statusOf(s.cups[over], spec);
               const cups = s.cups.slice();
               cups[over] += d;
               const next: Sim = { jug: Math.max(0, s.jug - d), cups };
@@ -187,9 +190,17 @@ export default function DayJug({ onComplete, narration, accent }: { onComplete: 
                 holdingRef.current = false;
                 pourRef.current = null;
                 setPourTarget(null);
+                audio.unlock(); // win beat — a perfectly balanced day
                 setPhase("win");
                 animate(x, 0, { type: "spring", stiffness: 70, damping: 16 });
                 return; // stop the loop; the phase change also cleans up
+              }
+              // One cue per band crossing (discrete, never per-frame):
+              // reaching the green band is a win-let; crossing past it warns.
+              const nextStatus = statusOf(next.cups[over], spec);
+              if (nextStatus !== prevStatus) {
+                if (nextStatus === "good") audio.correct();
+                else if (nextStatus === "over") audio.wrong();
               }
             }
           }
@@ -197,6 +208,7 @@ export default function DayJug({ onComplete, narration, accent }: { onComplete: 
           dwellRef.current = { cup: null, since: 0 };
         }
         if (pouringInto !== pourRef.current) {
+          if (pouringInto !== null) audio.drop(); // tilt begins — one cue per pour
           pourRef.current = pouringInto;
           setPourTarget(pouringInto);
         }
@@ -205,7 +217,7 @@ export default function DayJug({ onComplete, narration, accent }: { onComplete: 
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [phase, x]);
+  }, [phase, x, audio]);
 
   /* onComplete fires once, a beat after the sun has risen */
   useEffect(() => {
@@ -225,6 +237,7 @@ export default function DayJug({ onComplete, narration, accent }: { onComplete: 
     const s = simRef.current;
     const d = Math.min(SCOOP, s.cups[i], TOTAL - s.jug);
     if (d <= EPS) return;
+    audio.tap(); // scoop back into the jug
     const cups = s.cups.slice();
     cups[i] -= d;
     const next: Sim = { jug: Math.min(TOTAL, s.jug + d), cups };

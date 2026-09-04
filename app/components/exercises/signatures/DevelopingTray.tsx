@@ -28,6 +28,7 @@ import {
   setupHiDpiCanvas,
   getPointerLogicalPos,
 } from "@/app/lib/gameEngine/canvas";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -564,6 +565,7 @@ export default function DevelopingTray({
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   accent?: string;
 }) {
+  const audio = useGameAudio();
   const [phase, setPhase] = useState<Phase>("intro");
   const [percent, setPercent] = useState(0);
   const [nudge, setNudge] = useState(0);
@@ -754,6 +756,7 @@ export default function DevelopingTray({
   const triggerSurge = useCallback(() => {
     if (surgedRef.current) return;
     surgedRef.current = true;
+    audio.correct(); // fully developed - the mid-game success beat
     setPercent(100);
     // Warm developer flash while the last slivers fade out.
     fxStateRef.current.mode = "flash";
@@ -766,7 +769,7 @@ export default function DevelopingTray({
     surgeTimerRef.current = setTimeout(() => {
       setPhase("verdict");
     }, 800);
-  }, []);
+  }, [audio]);
 
   const stampAt = useCallback(
     (x: number, y: number) => {
@@ -802,6 +805,7 @@ export default function DevelopingTray({
     if (!pos) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     scrubbingRef.current = true;
+    audio.tap(); // one cue per scrub stroke - never on pointer move
     lastPosRef.current = pos;
     stampAt(pos.x, pos.y);
   };
@@ -831,6 +835,7 @@ export default function DevelopingTray({
   const unlocked = phase === "verdict" || phase === "teach";
 
   const handleLockedPress = () => {
+    audio.wrong();
     setNudge((n) => n + 1);
     setShowLockTip(true);
     if (tipTimerRef.current) clearTimeout(tipTimerRef.current);
@@ -838,6 +843,7 @@ export default function DevelopingTray({
   };
 
   const win = useCallback(() => {
+    audio.unlock();
     setPhase("win");
     const st = fxStateRef.current;
     st.mode = "confetti";
@@ -862,10 +868,11 @@ export default function DevelopingTray({
         onComplete();
       }
     }, WIN_DELAY_MS);
-  }, [onComplete]);
+  }, [audio, onComplete]);
 
   const handleShare = () => {
     if (phase !== "verdict") return;
+    audio.wrong();
     setPhase("teach");
     fxStateRef.current.mode = "leaks";
     fxStateRef.current.modeStart = performance.now();

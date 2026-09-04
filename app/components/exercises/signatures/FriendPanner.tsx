@@ -34,6 +34,7 @@ import {
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -235,6 +236,7 @@ export default function FriendPanner({
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   accent?: string;
 }) {
+  const audio = useGameAudio();
   const [phase, setPhase] = useState<Phase>("intro");
   const [pebbles, setPebbles] = useState<Pebble[]>(makePebbles);
   const [hasShaken, setHasShaken] = useState(false);
@@ -304,6 +306,8 @@ export default function FriendPanner({
     if (now - lastBurstRef.current < BURST_COOLDOWN_MS) return;
     lastBurstRef.current = now;
     setHasShaken(true);
+    // One thunk per shake burst (cooldown-gated above, never per pointermove).
+    audio.drop();
 
     void panCtrl.start({
       rotate: [0, -4, 4, -3, 3, 0],
@@ -402,12 +406,15 @@ export default function FriendPanner({
   const handleFoolTap = (p: Pebble) => {
     if (phaseRef.current !== "inspect" || modal || p.resolved) return;
     if (p.kind !== "fool" || p.status !== "in") return;
+    audio.tap();
     setModal({ id: p.id, name: p.label ?? "", sub: p.sub ?? "", answered: null });
   };
 
   const answerFool = (answer: "no" | "keep") => {
     if (!modal || modal.answered) return;
     const id = modal.id;
+    if (answer === "no") audio.correct();
+    else audio.wrong();
     setModal({ ...modal, answered: answer });
     patchPebble(id, { resolved: true });
     later(() => {
@@ -429,6 +436,7 @@ export default function FriendPanner({
   /* ── the profile shield ── */
   const chooseEveryone = () => {
     if (phaseRef.current !== "shield") return;
+    audio.wrong();
     setShieldMsg("Then strangers can scoop YOU into their pan! Try the other one.");
     void everyoneCtrl.start({
       x: [0, -9, 9, -6, 6, 0],
@@ -438,9 +446,11 @@ export default function FriendPanner({
 
   const chooseGold = () => {
     if (phaseRef.current !== "shield" || shieldOn) return;
+    audio.correct();
     setShieldOn(true);
     setShieldMsg(null);
     later(() => {
+      audio.unlock();
       setPhase("win");
       later(() => {
         if (!completedRef.current) {

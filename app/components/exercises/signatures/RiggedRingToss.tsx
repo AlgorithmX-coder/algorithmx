@@ -31,6 +31,7 @@ import {
   setupHiDpiCanvas,
   getPointerLogicalPos,
 } from "@/app/lib/gameEngine/canvas";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -671,6 +672,7 @@ export default function RiggedRingToss({
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   accent?: string;
 }) {
+  const audio = useGameAudio();
   const [phase, setPhase] = useState<Phase>("intro");
   const [honestWins, setHonestWins] = useState(0);
   const [riggedThrows, setRiggedThrows] = useState(0);
@@ -779,6 +781,7 @@ export default function RiggedRingToss({
       gs.ringState = "rest";
       gs.rx = REST.x;
       gs.ry = REST.y;
+      audio.correct();
       spawnBurst(gs, peg.x, peg.tipY, 26);
       gs.flares.push({
         text: "YOU WIN!",
@@ -797,6 +800,7 @@ export default function RiggedRingToss({
       const dir = gs.rx >= REST.x ? 1 : -1;
       gs.rvx = dir * (400 + Math.random() * 140);
       gs.rvy = -240;
+      audio.wrong();
       spawnSparks(gs, gs.rx, gs.ry);
       gs.flares.push({
         text: "TINK?!",
@@ -825,6 +829,7 @@ export default function RiggedRingToss({
         });
         setRiggedThrows((t) => t + 1);
       } else {
+        audio.wrong();
         gs.flares.push({
           text: "Almost!",
           x: fx,
@@ -984,7 +989,7 @@ export default function RiggedRingToss({
       running = false;
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [audio]);
 
   /* ── slingshot drag mechanics ── */
   const toLogical = useCallback((e: { clientX: number; clientY: number }) => {
@@ -1034,20 +1039,24 @@ export default function RiggedRingToss({
     gs.spin = 0;
     gs.deflected = false;
     gs.ringState = "fly";
+    audio.tap();
     setHasThrown(true);
   };
 
   /* ── expose + stamp + win ── */
   const handleSmell = () => {
     if (phaseRef.current !== "rigged") return;
+    audio.tap();
     gsRef.current.ringState = "gone";
     setPhase("xray");
   };
 
   const handleStamp = () => {
     if (stamped) return;
+    audio.drop();
     setStamped(true);
     const t1 = setTimeout(() => {
+      audio.unlock();
       setPhase("win");
       spawnWinConfetti(gsRef.current);
       const t2 = setTimeout(() => {
@@ -1420,7 +1429,10 @@ export default function RiggedRingToss({
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  justifyContent: "center",
+                  // "safe center" + internal scroll: the CTA can never clip
+                  // off a short viewport (matches the intro overlay pattern).
+                  justifyContent: "safe center",
+                  overflowY: "auto",
                   gap: 12,
                   textAlign: "center",
                   padding: 24,

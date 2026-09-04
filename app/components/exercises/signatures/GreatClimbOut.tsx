@@ -28,6 +28,7 @@ import {
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Tuning                                                             */
@@ -103,6 +104,7 @@ export default function GreatClimbOut({
   accent?: string;
 }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [height, setHeight] = useState(0); // rungs above the start, float
@@ -203,6 +205,7 @@ export default function GreatClimbOut({
     const ctrl = side === "left" ? leftCtrl : rightCtrl;
     if (side !== nextSide) {
       // Forgiving: no slide, just a wobble and a nudge to alternate.
+      audio.wrong();
       ctrl.start({ x: [0, -7, 7, -5, 5, 0], transition: { duration: 0.4 } });
       showToast(
         "hint",
@@ -215,6 +218,10 @@ export default function GreatClimbOut({
     setHeight(h);
     setNextSide(side === "left" ? "right" : "left");
     setTaps((n) => n + 1);
+    // One cue per tap: a tactile tick per rung, the correct chime on the
+    // final rung (the daylight moment).
+    if (h >= GOAL - 1e-6) audio.correct();
+    else audio.tap();
     ctrl.start({ scale: [1, 0.92, 1.06, 1], transition: { duration: 0.35 } });
     childCtrl.start({
       y: [0, -10, 0],
@@ -225,12 +232,16 @@ export default function GreatClimbOut({
       setHeight(GOAL);
       setLure(null);
       setPhase("surfacing");
-      later(() => setPhase("celebrate"), reduce ? 400 : 1300);
+      later(() => {
+        audio.unlock();
+        setPhase("celebrate");
+      }, reduce ? 400 : 1300);
     }
   };
 
   const popLure = (id: number) => {
     if (phase !== "climb") return;
+    audio.wrong();
     setLure((cur) => (cur && cur.id === id ? null : cur));
     const h = Math.max(0, heightRef.current - 1);
     heightRef.current = h;
@@ -1540,6 +1551,11 @@ function CelebrateOverlay({
           maxWidth: 440,
           textAlign: "center",
           padding: "26px 26px 28px",
+          // Scroll-safe: this is the tallest win card and the overlay is
+          // overflow:hidden, so on short viewports the banner scrolls
+          // internally and the Continue button is never clipped.
+          maxHeight: "100%",
+          overflowY: "auto",
           borderRadius: 24,
           border: "3px solid #7dffb0",
           background: `linear-gradient(180deg, ${GOOD_GREEN} 0%, #0e9f6e 100%)`,

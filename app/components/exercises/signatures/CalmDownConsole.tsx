@@ -26,6 +26,7 @@ import { AnimatePresence, motion, useMotionValue, useReducedMotion, useTransform
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                            */
@@ -84,6 +85,7 @@ export default function CalmDownConsole({
   accent?: string;
 }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [stage, setStage] = useState<Stage>("idle");
@@ -158,6 +160,7 @@ export default function CalmDownConsole({
               goStage("exhale");
               setMsgKey("exhale");
             } else {
+              audio.wrong(); // released too early — gentle re-sync cue
               goStage("resync");
               setMsgKey("resync");
             }
@@ -193,9 +196,11 @@ export default function CalmDownConsole({
             if (releasedRef.current) {
               calmRef.current += 1;
               setCalm(calmRef.current);
+              audio.correct(); // one completed breath
               goStage("success");
               setMsgKey("success");
             } else {
+              audio.wrong(); // held all the way through — gentle re-sync cue
               goStage("resync");
               setMsgKey("resync");
             }
@@ -248,6 +253,7 @@ export default function CalmDownConsole({
     if (s === "idle" || s === "resync") {
       releasedRef.current = false;
       lateWarnRef.current = false;
+      audio.tap(); // breath begins on this press
       goStage("inhale");
       setMsgKey("inhale");
     }
@@ -719,7 +725,10 @@ export default function CalmDownConsole({
                   <motion.button
                     type="button"
                     onClick={() => {
-                      if (phase === "tell") setPhase("celebrate");
+                      if (phase === "tell") {
+                        audio.unlock(); // win beat — emergency handled
+                        setPhase("celebrate");
+                      }
                     }}
                     animate={reduce ? { scale: 1 } : { scale: [1, 1.05, 1] }}
                     transition={reduce ? undefined : { duration: 1.4, repeat: Infinity }}
@@ -883,6 +892,10 @@ export default function CalmDownConsole({
               style={{
                 ...overlayStyle,
                 zIndex: 40,
+                // Scroll-safe like the intro: on a short viewport the overlay
+                // scrolls instead of clipping ("safe center" top-aligns).
+                overflowY: "auto",
+                justifyContent: "safe center",
               }}
             >
               <motion.div

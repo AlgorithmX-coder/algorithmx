@@ -32,6 +32,7 @@ import type { Variants } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                            */
@@ -220,6 +221,7 @@ export default function TruePriceLever({
   accent?: string;
 }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [dealIdx, setDealIdx] = useState(0);
@@ -279,7 +281,10 @@ export default function TruePriceLever({
       setDealIdx((i) => i + 1);
       setBusy(false);
     } else if (ownedAfter > 0) {
-      later(() => setPhase("celebrate"), 300);
+      later(() => {
+        audio.unlock();
+        setPhase("celebrate");
+      }, 300);
     } else {
       resetBeat();
       setBonusBeat(true);
@@ -291,6 +296,7 @@ export default function TruePriceLever({
   const buyFair = () => {
     if (busy || teach) return;
     setBusy(true);
+    audio.correct();
     setSpendKind("fair");
     setCoins((c) => c - deal.advertised);
     setOwned((o) => [...o, deal.id]);
@@ -302,6 +308,7 @@ export default function TruePriceLever({
   const buyTrap = () => {
     if (busy || teach) return;
     setBusy(true);
+    audio.wrong();
     setSpendKind("trap");
     setDrainFlash(true);
     const have = coins;
@@ -332,6 +339,7 @@ export default function TruePriceLever({
     const { drained, refundTo } = teach;
     const ownedNow = owned.length;
     setTeach(null);
+    audio.tap();
     setSpendKind("refund");
     showToast("Coins refunded. Phew!", "good");
     if (reduce) {
@@ -348,6 +356,7 @@ export default function TruePriceLever({
   const walkAway = () => {
     if (busy || teach) return;
     setBusy(true);
+    audio.correct();
     showToast(
       deal.honest ? "Saving is smart too!" : "Smart move! You dodged a coin trap.",
       "good",
@@ -357,6 +366,7 @@ export default function TruePriceLever({
 
   const ringBell = () => {
     if (bellRung || busy || teach) return;
+    audio.tap();
     setBellRung(true);
     setBellUsed(true);
     const allowBuy = coins - deal.advertised >= 1;
@@ -486,7 +496,10 @@ export default function TruePriceLever({
             deal={deal}
             done={revealed}
             reduce={reduce}
-            onRevealed={() => setRevealed(true)}
+            onRevealed={() => {
+              audio.drop(); // the receipt's stamp-thunk payoff
+              setRevealed(true);
+            }}
           />
         </div>
 
@@ -812,6 +825,10 @@ export default function TruePriceLever({
               alignItems: "center",
               gap: 12,
               textAlign: "center",
+              // Scroll-safe like the intro: on short viewports the card
+              // scrolls internally so COLLECT MY STARS is never clipped.
+              maxHeight: "100%",
+              overflowY: "auto",
             }}
           >
             <div style={{ display: "flex", gap: 10 }}>

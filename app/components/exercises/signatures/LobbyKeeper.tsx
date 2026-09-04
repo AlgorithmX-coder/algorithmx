@@ -42,6 +42,7 @@ import {
   setupHiDpiCanvas,
   getPointerLogicalPos,
 } from "@/app/lib/gameEngine/canvas";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -880,6 +881,7 @@ export default function LobbyKeeper({
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   accent?: string;
 }) {
+  const audio = useGameAudio();
   const [phase, setPhase] = useState<Phase>("intro");
   const [lobbyCount, setLobbyCount] = useState(0);
   const [deniedCount, setDeniedCount] = useState(0);
@@ -1016,6 +1018,7 @@ export default function LobbyKeeper({
       ) {
         gs.winScheduled = true;
         const t1 = setTimeout(() => {
+          audio.unlock();
           setPhase("win");
           setHint({
             text: "Party safe! Only real teammates got in. Game on!",
@@ -1075,6 +1078,7 @@ export default function LobbyKeeper({
                 gs.denyFlashT0 = now;
                 gs.denied++;
                 setDeniedCount(gs.denied);
+                audio.correct();
                 spawnDenySparks(gs, laneCx, m.y);
                 gs.flares.push({
                   text: "DENIED!",
@@ -1105,6 +1109,7 @@ export default function LobbyKeeper({
                 // Soft miss: bonk on the inner door, float back, retry.
                 m.state = "bonkback";
                 m.retry++;
+                audio.wrong();
                 spawnBonkDust(gs, laneCx, DOOR_Y - 6);
                 gs.flares.push({
                   text: "BONK!",
@@ -1159,6 +1164,7 @@ export default function LobbyKeeper({
               m.resolved = true;
               gs.lobby++;
               setLobbyCount(gs.lobby);
+              audio.correct();
               spawnDoorConfetti(gs, laneCx);
               gs.flares.push({
                 text: "HIGH FIVE!",
@@ -1275,7 +1281,8 @@ export default function LobbyKeeper({
       running = false;
       cancelAnimationFrame(raf);
     };
-  }, []);
+    // `audio` is a stable memoised facade - including it never re-runs the loop.
+  }, [audio]);
 
   /* ── one horizontal drag input ── */
   const setTargetFromEvent = useCallback(
@@ -1292,6 +1299,7 @@ export default function LobbyKeeper({
     if (phaseRef.current !== "play") return;
     e.currentTarget.setPointerCapture(e.pointerId);
     draggingRef.current = true;
+    audio.tap(); // one cue per grab - never on pointer move
     setTargetFromEvent(e);
     setHasDragged(true);
   };

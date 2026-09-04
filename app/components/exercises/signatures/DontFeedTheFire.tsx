@@ -28,6 +28,7 @@ import {
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                            */
@@ -104,6 +105,7 @@ export default function DontFeedTheFire({
   accent?: string;
 }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [sparkIdx, setSparkIdx] = useState(0);
@@ -163,6 +165,7 @@ export default function DontFeedTheFire({
         // Spark starved: fizzle to ash, then bring on the next beat.
         holdingRef.current = false;
         setHolding(false);
+        audio.correct();
         setSparkState("ash");
         setStarvedCount((n) => n + 1);
         later(() => {
@@ -194,6 +197,7 @@ export default function DontFeedTheFire({
     } catch {
       /* pointer capture is best-effort */
     }
+    audio.tap();
     holdingRef.current = true;
     setHolding(true);
   };
@@ -220,18 +224,24 @@ export default function DontFeedTheFire({
 
   const tapReply = () => {
     if (teach) return;
+    audio.wrong();
     flareAndTeach(phase === "friend" ? TEACH_FRIEND : TEACH_SPARK);
   };
 
   const tapStoneOnFriend = () => {
     if (teach) return;
+    audio.wrong();
     setTeach(TEACH_STONE_ON_FRIEND);
   };
 
   const tapStandUp = () => {
     if (stood || teach) return;
+    audio.correct();
     setStood(true);
-    later(() => setPhase("celebrate"), reduce ? 900 : 2000);
+    later(() => {
+      audio.unlock();
+      setPhase("celebrate");
+    }, reduce ? 900 : 2000);
   };
 
   const finish = () => {
@@ -1472,6 +1482,10 @@ function TeachOverlay({
           border: "2.5px solid rgba(255,125,60,0.65)",
           background: "linear-gradient(180deg, rgba(66,26,10,0.97) 0%, rgba(34,14,8,0.98) 100%)",
           boxShadow: "0 30px 70px -20px rgba(0,0,0,0.85), 0 0 40px -10px rgba(255,120,50,0.5)",
+          // Scrolls internally on short viewports so the "Got it!" button
+          // is always reachable (same pattern as the intro card).
+          maxHeight: "100%",
+          overflowY: "auto",
         }}
       >
         {/* firewood illustration */}
@@ -1557,6 +1571,10 @@ function WinOverlay({ onContinue, reduce }: { onContinue: () => void; reduce: bo
           border: `2.5px solid ${GOOD_GREEN}`,
           background: "linear-gradient(180deg, rgba(10,46,32,0.97) 0%, rgba(6,26,18,0.98) 100%)",
           boxShadow: "0 30px 70px -20px rgba(0,0,0,0.85), 0 0 50px -8px rgba(52,211,153,0.55)",
+          // Scrolls internally on short viewports so the Continue button
+          // is always reachable (same pattern as the intro card).
+          maxHeight: "100%",
+          overflowY: "auto",
         }}
       >
         <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 12 }}>

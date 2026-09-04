@@ -32,6 +32,7 @@ import {
   setupHiDpiCanvas,
   getPointerLogicalPos,
 } from "@/app/lib/gameEngine/canvas";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -707,6 +708,7 @@ export default function TrailPlanner({
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   accent?: string;
 }) {
+  const audio = useGameAudio();
   const [phase, setPhase] = useState<Phase>("intro");
   const [round, setRound] = useState<1 | 2>(1);
   const [revealed, setRevealed] = useState<string[]>([]);
@@ -871,6 +873,7 @@ export default function TrailPlanner({
 
   /* ── win + replay endings (stable for the rAF loop) ── */
   const startWin = useCallback(() => {
+    audio.unlock(); // win beat — quiet tracks proved
     setPhase("win");
     const bag = fxBagRef.current;
     bag.wanderStart = performance.now();
@@ -895,7 +898,7 @@ export default function TrailPlanner({
         onCompleteRef.current();
       }
     }, WIN_DELAY_MS);
-  }, []);
+  }, [audio]);
 
   const endReplay = useCallback(() => {
     verdictTimerRef.current = setTimeout(() => {
@@ -904,12 +907,13 @@ export default function TrailPlanner({
       } else {
         // Quiet trail (round 2, or a sneaky round 1): the Hound learned
         // nothing. Gold path, confused Hound, then the win.
+        audio.correct(); // the Hound learned nothing — good trail
         fxBagRef.current.goldStart = performance.now();
         setPhase("confused");
         confusedTimerRef.current = setTimeout(() => startWin(), CONFUSED_MS);
       }
     }, 550);
-  }, [startWin]);
+  }, [audio, startWin]);
 
   /* ── trail mechanics ── */
   const stampBigPrints = useCallback((entry: Pt, prev: Pt, z: PostZone) => {
@@ -944,6 +948,7 @@ export default function TrailPlanner({
       if (bustingRef.current) return;
       bustingRef.current = true;
       drawingRef.current = false;
+      audio.wrong(); // stepped into a loud post zone
       const bag = fxBagRef.current;
       bag.flashStart = performance.now();
       zoneGlowRef.current.set(z.id, {
@@ -957,12 +962,13 @@ export default function TrailPlanner({
         bustingRef.current = false;
       }, BUST_RESET_MS);
     },
-    [clearTrail, spawnFlakes]
+    [audio, clearTrail, spawnFlakes]
   );
 
   const finishTrail = useCallback(() => {
     drawingRef.current = false;
     trailDoneRef.current = true;
+    audio.drop(); // trail lands at the FUN FORT
     const pts = pointsRef.current;
     if (pts.length < 2) return;
     const cum: number[] = new Array(pts.length);
@@ -999,7 +1005,7 @@ export default function TrailPlanner({
     };
     houndRef.current = { x: pts[0].x, y: pts[0].y, face: 1 };
     setPhase(roundRef.current === 1 ? "replay1" : "replay2");
-  }, []);
+  }, [audio]);
 
   const appendTrail = useCallback(
     (to: Pt) => {
@@ -1085,6 +1091,7 @@ export default function TrailPlanner({
       }
       e.currentTarget.setPointerCapture(e.pointerId);
       drawingRef.current = true;
+      audio.tap(); // first step off HOME
       pts.push(pos);
       setHasInk(true);
       setBustMsg(null);
@@ -1097,6 +1104,7 @@ export default function TrailPlanner({
     }
     e.currentTarget.setPointerCapture(e.pointerId);
     drawingRef.current = true;
+    audio.tap(); // re-grab the trail end
     setBustMsg(null);
     appendTrail(pos);
   };
@@ -1589,7 +1597,11 @@ export default function TrailPlanner({
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "center",
+                    // Scroll-safe: on a short/narrow viewport the overlay
+                    // scrolls internally so the Start button never clips
+                    // ("safe center" top-aligns instead of clipping).
+                    justifyContent: "safe center",
+                    overflowY: "auto",
                     gap: 14,
                     textAlign: "center",
                     padding: 24,

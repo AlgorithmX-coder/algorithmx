@@ -31,6 +31,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -218,6 +219,7 @@ function IntroChip({ icon, text }: { icon: string; text: string }) {
 export default function LeakTorch({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
   const rawId = useId();
   const uid = `lt${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [torch, setTorch] = useState<Pt>({ x: VIEW_W / 2, y: VIEW_H / 2 });
@@ -298,14 +300,16 @@ export default function LeakTorch({ onComplete, narration, accent }: { onComplet
       if (target.kind === "leak") {
         setSealed((prev) => {
           if (prev.includes(target.id)) return prev;
+          audio.correct();
           showToast("green", target.sealMsg ?? "Sealed!", target);
           return [...prev, target.id];
         });
       } else {
+        audio.wrong();
         showToast("amber", target.safeMsg ?? "That one is fine for anyone to see.", target);
       }
     },
-    [showToast]
+    [showToast, audio]
   );
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -352,9 +356,12 @@ export default function LeakTorch({ onComplete, narration, accent }: { onComplet
 
   useEffect(() => {
     if (phase !== "play" || sealed.length < LEAKS.length) return;
-    const t = setTimeout(() => setPhase("win"), WIN_LIGHTS_DELAY_MS);
+    const t = setTimeout(() => {
+      audio.unlock();
+      setPhase("win");
+    }, WIN_LIGHTS_DELAY_MS);
     return () => clearTimeout(t);
-  }, [phase, sealed]);
+  }, [phase, sealed, audio]);
 
   useEffect(() => {
     if (phase !== "win") return;
@@ -917,7 +924,10 @@ export default function LeakTorch({ onComplete, narration, accent }: { onComplet
                 }}
               >
                 <button
-                  onClick={() => setPhase("play")}
+                  onClick={() => {
+                    audio.tap();
+                    setPhase("play");
+                  }}
                   style={{
                     minHeight: 54,
                     padding: "14px 34px",

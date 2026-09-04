@@ -34,6 +34,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ------------------------------------------------------------------ */
 /* Constants + content                                                */
@@ -200,6 +201,7 @@ export default function HearthLoom({
   accent?: string;
 }) {
   const reduce = !!useReducedMotion();
+  const audio = useGameAudio();
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [solved, setSolved] = useState<Record<PersonId, boolean>>({
@@ -275,10 +277,13 @@ export default function HearthLoom({
 
   useEffect(() => {
     if (phase === "play" && PEOPLE.every((p) => solved[p.id])) {
-      const t = window.setTimeout(() => setPhase("woven"), 1000);
+      const t = window.setTimeout(() => {
+        audio.unlock();
+        setPhase("woven");
+      }, 1000);
       timersRef.current.push(t);
     }
-  }, [solved, phase]);
+  }, [solved, phase, audio]);
 
   // Gentle nudge if nothing is woven after a while.
   useEffect(() => {
@@ -377,10 +382,12 @@ export default function HearthLoom({
 
     const a = charmAnchor(d.charm);
     if (CORRECT[target.id] === d.charm) {
+      audio.correct();
       setSolved((prev) => ({ ...prev, [target.id]: true }));
       setBurst((prev) => ({ ...prev, [target.id]: prev[target.id] + 1 }));
       showToast("green", target.winTitle, target.winBody);
     } else {
+      audio.wrong();
       const key = Date.now() + Math.random();
       setFizzles((f) => [
         ...f,
@@ -396,6 +403,7 @@ export default function HearthLoom({
 
   const onPersonTap = (p: Person) => {
     if (phase !== "play") return;
+    audio.tap();
     if (solved[p.id]) {
       showToast("soft", "Already woven!", p.safeLine);
     } else {
@@ -409,6 +417,7 @@ export default function HearthLoom({
 
   const onCatTap = () => {
     if (phase !== "play") return;
+    audio.tap();
     setCatWobble((w) => w + 1);
     showToast("soft", "The cat is fine!", "No phone, no messages, just naps.");
   };

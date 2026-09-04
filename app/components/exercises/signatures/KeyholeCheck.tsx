@@ -32,6 +32,7 @@ import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -516,6 +517,7 @@ export default function KeyholeCheck({
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   accent?: string;
 }) {
+  const audio = useGameAudio();
   const [phase, setPhase] = useState<Phase>("intro");
   const [doorIndex, setDoorIndex] = useState(0);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
@@ -563,6 +565,7 @@ export default function KeyholeCheck({
       schedule(() => {
         if (doorIndex >= DOORS.length - 1) {
           setPhase("win");
+          audio.unlock();
           schedule(() => {
             if (!doneRef.current) {
               doneRef.current = true;
@@ -578,7 +581,7 @@ export default function KeyholeCheck({
         }
       }, ADVANCE_MS);
     },
-    [doorIndex, onComplete, schedule]
+    [doorIndex, onComplete, schedule, audio]
   );
 
   const handleKeyDragEnd = useCallback(
@@ -586,52 +589,59 @@ export default function KeyholeCheck({
       if (phase !== "drag") return;
       if (!hitsRect(info, doorRef.current, DROP_INFLATE)) return;
       if (dragged.id === door.senderId) {
+        audio.drop();
         setHint(null);
         setPhase("compare");
         schedule(() => setPhase("verdict"), COMPARE_MS);
       } else {
+        audio.wrong();
         showHint(
           `That key opens doors from ${dragged.name}. This door says it is from ${sender.name}.`
         );
       }
     },
-    [phase, door.senderId, sender.name, schedule, showHint]
+    [phase, door.senderId, sender.name, schedule, showHint, audio]
   );
 
   const handleVerdict = useCallback(
     (unlock: boolean) => {
       if (phase !== "verdict") return;
       if (door.honest && unlock) {
+        audio.correct();
         setOutcome("safe");
         setPhase("result");
         finalize("safe");
       } else if (!door.honest && !unlock) {
+        audio.correct();
         setOutcome("chained");
         setShakeSeq((s) => s + 1);
         setPhase("result");
         finalize("chained");
       } else if (!door.honest && unlock) {
         // opened a fake: soft trap net + teach beat, then let them chain it
+        audio.wrong();
         setOutcome("trap");
         setTrapped(true);
         setPhase("result");
       } else {
         // tried to chain an honest door: gentle nudge, no penalty
+        audio.wrong();
         setShakeSeq((s) => s + 1);
         showHint(
           `Look again! Every tooth glowed green, so this door really is from ${sender.name}. Try UNLOCK!`
         );
       }
     },
-    [phase, door.honest, sender.name, finalize, showHint]
+    [phase, door.honest, sender.name, finalize, showHint, audio]
   );
 
   const handleChainAfterTrap = useCallback(() => {
     if (outcome !== "trap") return;
+    audio.tap();
     setOutcome("chained");
     setShakeSeq((s) => s + 1);
     finalize("chained");
-  }, [outcome, finalize]);
+  }, [outcome, finalize, audio]);
 
   /* ── derived display bits ── */
 
@@ -1383,13 +1393,16 @@ export default function KeyholeCheck({
               alignItems: "center",
               justifyContent: "center",
               fontFamily: FONT_STACK,
+              // Scroll-safe like the intro overlay: on a short viewport the
+              // overlay scrolls instead of clipping the celebration card.
+              overflowY: "auto",
             }}
           >
             <motion.div
               initial={{ scale: 0.6, y: 24 }}
               animate={{ scale: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 200, damping: 16 }}
-              style={{ textAlign: "center", maxWidth: 440, padding: 24 }}
+              style={{ textAlign: "center", maxWidth: 440, padding: 24, margin: "auto" }}
             >
               <motion.div
                 animate={{ y: [0, -10, 0] }}
