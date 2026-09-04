@@ -781,6 +781,430 @@ export const WEEK_10: WeekContent = {
     },
     voiceSlug: "w10",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#b8e34b",
+    theme: {
+      topic: "YouTube Rabbit Hole",
+      motifs: ["⏸️", "👀", "⏱️", "🧠", "🚫", "💬", "🔍", "⭐"],
+    },
+    intro: {
+      slug: "quiz-w10-intro",
+      text: "Well hopped, hero, right down MY rabbit hole! The belt only rolls one way, and it is not out. Let's see you answer your way up!",
+    },
+    victory: {
+      slug: "quiz-w10-victory",
+      text: "You climbed OUT?! Nobody climbs out! My belt, my countdowns, my beautiful greasy machine... I'm switching the whole thing off and going to bed!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w10-c1",
+        key: "quiz-w10-c1-1",
+        label: "The Next-Video Belt",
+        ask: {
+          slug: "quiz-w10-ask-c1-1",
+          text: "Your puppy video ends and BAM, a new one is already playing. You never tapped a thing. Who picked it?",
+        },
+        options: [
+          { text: "The app's next-video machine picked it for me" },
+          { text: "I picked it without noticing when I tapped play" },
+          { text: "The puppy video's maker lined it up for me" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The belt picks, not you!",
+          explanation: "You only tapped play on the FIRST video, and video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c1-1",
+          text: "You SAW the belt?! It's supposed to be invisible! I greased it myself!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c1-1",
+          text: "Hee hee, you never even feel the belt rolling! Comfy, isn't it? Rolllll...",
+        },
+      },
+      {
+        phaseId: "phase-w10-c2",
+        key: "quiz-w10-c2-1",
+        label: "Weigh the Claim",
+        ask: {
+          slug: "quiz-w10-ask-c2-1",
+          text: "A video says eating carrots lets you see in the dark like a cat! What's the smart first move?",
+        },
+        options: [
+          { text: "Check it against my science book before believing it" },
+          { text: "Watch the video again to make sure I heard right" },
+          { text: "Try it tonight and see if it works" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Check before you believe!",
+          explanation: "Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up, is what can actually check it.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c2-1",
+          text: "A science book?! Who checks BOOKS?! Paper beats my shouting?!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c2-1",
+          text: "Watch it again, watch it twice! The louder it plays, the truer it gets!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c3",
+        key: "quiz-w10-c3-1",
+        label: "The Calm Escape",
+        ask: {
+          slug: "quiz-w10-ask-c3-1",
+          text: "The belt rolls in a video that's way too scary and your tummy drops. Whose fault is it on your screen?",
+        },
+        options: [
+          { text: "Not mine, the belt rolled it in, so I back out and tell" },
+          { text: "Mine a little, I should have picked more carefully" },
+          { text: "Mine, because I didn't skip it fast enough" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Never your fault!",
+          explanation: "The belt rolled that video in, you never asked for it, and there's no 'picking carefully' when a machine chooses. Back out with one calm tap, and tell a trusted grown-up if it felt icky.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c3-1",
+          text: "You didn't blame yourself for even a SECOND?! That guilt trap is my comfiest one!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c3-1",
+          text: "Ooh yes, take the blame for my belt's work! I never have to say sorry for anything!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c4",
+        key: "quiz-w10-c4-1",
+        label: "The Comment Pond",
+        ask: {
+          slug: "quiz-w10-ask-c4-1",
+          text: "Under a video, a comment asks: 'Which school do you go to? Just curious!' What do you do?",
+        },
+        options: [
+          { text: "Scroll past, a stranger never needs my school" },
+          { text: "Answer with just my town, not the school name" },
+          { text: "Ask them which school THEY go to first" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "No info is the whole rule!",
+          explanation: "Even just your town points a stranger toward you, and asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no info.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c4-1",
+          text: "Scrolled right past?! I typed 'just curious' with my own paws!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c4-1",
+          text: "The town, the school, any crumb will do! Keep chatting, the pond is listening!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c5",
+        key: "quiz-w10-c5-1",
+        label: "The Body Bell",
+        ask: {
+          slug: "quiz-w10-ask-c5-1",
+          text: "You look up from the screen and the sky outside has gone dark, and you never noticed. What just happened?",
+        },
+        options: [
+          { text: "My body's bell rang: been watching a while, time to pause" },
+          { text: "Nothing, the sun just set extra early today" },
+          { text: "The bright screen made the window look darker than it is" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "That's your bell!",
+          explanation: "The sky doesn't sneak, and screen brightness can't change what's outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c5-1",
+          text: "You noticed the SKY?! I worked hard to keep your eyes off that window!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c5-1",
+          text: "The sun sets when I say it sets! Keep watching, little night owl!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c1",
+        key: "quiz-w10-c1-2",
+        label: "The Next-Video Belt",
+        ask: {
+          slug: "quiz-w10-ask-c1-2",
+          text: "The screen flashes NEXT VIDEO IN 5... 4... 3! Why does it rush you like that?",
+        },
+        options: [
+          { text: "So there's no time to ask 'do I even want this?'" },
+          { text: "So the app can load the video without freezing" },
+          { text: "So kids don't miss the best part at the start" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The rush is on purpose!",
+          explanation: "Videos load fine without a countdown, and it isn't there to save you the good bits. Five seconds is just too short to ask 'do I even want this?', and that's exactly the point. The pause button beats every countdown.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c1-2",
+          text: "You spotted the rush! That countdown cost me a fortune in tiny numbers!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c1-2",
+          text: "No thinking time, that's the recipe! Three... two... too late, rolling on!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c2",
+        key: "quiz-w10-c2-2",
+        label: "Weigh the Claim",
+        ask: {
+          slug: "quiz-w10-ask-c2-2",
+          text: "Two videos disagree: one says lightning is hotter than the sun's surface, one says that's made up. Who settles it?",
+        },
+        options: [
+          { text: "A real source, like my science book or my teacher" },
+          { text: "The video with more views, more people checked it" },
+          { text: "The newer video, it has the latest facts" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Sources beat views!",
+          explanation: "Millions of people can click a wrong video, and newer doesn't mean truer either. The winner is whatever a real source says. Your science book and your teacher can check things; view counters can't.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c2-2",
+          text: "A teacher beats a million views?! That math is OUTRAGEOUS!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c2-2",
+          text: "Views are proof! A zillion clicks can't be wrong, only LOUD!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c3",
+        key: "quiz-w10-c3-2",
+        label: "The Calm Escape",
+        ask: {
+          slug: "quiz-w10-ask-c3-2",
+          text: "A not-for-kids video starts playing. Which move actually gets you OUT?",
+        },
+        options: [
+          { text: "One calm tap on BACK, then tell a trusted grown-up" },
+          { text: "Tap NEXT VIDEO and jump to a nicer one" },
+          { text: "Turn the volume down and wait for it to end" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "BACK is the only way out!",
+          explanation: "NEXT VIDEO is the belt again, it rolls you deeper down the hole, and waiting with the sound off keeps the icky video right there. One calm tap on BACK gets you out, then tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c3-2",
+          text: "The BACK button?! Who keeps showing kids the BACK button?!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c3-2",
+          text: "Deeper, deeper! Every other button leads straight back to meee!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c4",
+        key: "quiz-w10-c4-2",
+        label: "The Comment Pond",
+        ask: {
+          slug: "quiz-w10-ask-c4-2",
+          text: "A comment says: 'You'd be PERFECT for a kids TV show! Message me your address and I'll post you a prize!' Best move?",
+        },
+        options: [
+          { text: "Don't reply, and show a trusted grown-up" },
+          { text: "Ask what the prize is before deciding anything" },
+          { text: "Reply with just my first name, not my address" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Don't take the bait!",
+          explanation: "Asking about the prize is already a reply, and even your first name is a piece of you. A stranger with a prize is fishing, so don't answer at all, and show a trusted grown-up instead.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c4-2",
+          text: "No reply AND a grown-up?! My TV-scout costume was rented, you know!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c4-2",
+          text: "Curious about the prize? The prize is a brand-new pen pal: ME!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c5",
+        key: "quiz-w10-c5-2",
+        label: "The Body Bell",
+        ask: {
+          slug: "quiz-w10-ask-c5-2",
+          text: "You said 'just one more' three videos ago, and video four is loading itself. What's the hero move?",
+        },
+        options: [
+          { text: "Pause it, I pick what happens next" },
+          { text: "Let this one finish, then stop for sure" },
+          { text: "Watch it at double speed so it's over sooner" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "You pick, not the belt!",
+          explanation: "'After this one' is exactly what the belt wants you to say, and speeding it up still means the belt chose. Pausing is the strongest button on the whole player, then YOU decide if there even is a next one.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c5-2",
+          text: "You PAUSED it mid-load?! That's belt sabotage, I'm telling the machine!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c5-2",
+          text: "'After this one'! The four tastiest words on my whole belt!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c1",
+        key: "quiz-w10-c1-3",
+        label: "The Next-Video Belt",
+        ask: {
+          slug: "quiz-w10-ask-c1-3",
+          text: "A thumbnail shows a HUGE shocked face and screams YOU WON'T BELIEVE THIS! What's that picture really doing?",
+        },
+        options: [
+          { text: "Hooking my eyes so I tap before I think" },
+          { text: "Warning me the video might be scary" },
+          { text: "Proving the video is the best one on the app" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Thumbnails are hooks!",
+          explanation: "A shocked face isn't a warning, and it isn't proof the video is any good. That exact picture was picked to grab YOUR eyes, like candy stacked at the checkout. Ask: do I want this, or did the picture just shout the loudest?",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c1-3",
+          text: "You out-stared my hungriest thumbnail?! It had a shocked face AND an arrow!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c1-3",
+          text: "The big face got you! My thumbnails shout, your fingers obey!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c2",
+        key: "quiz-w10-c2-3",
+        label: "Weigh the Claim",
+        ask: {
+          slug: "quiz-w10-ask-c2-3",
+          text: "A YouTuber yells: SCHOOL IS CANCELED FOREVER, tell everyone! What do you do?",
+        },
+        options: [
+          { text: "Ask a trusted grown-up, they would actually know" },
+          { text: "Share it fast so nobody goes to school by mistake" },
+          { text: "Wait a week and see if it comes true" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Ask someone who'd know!",
+          explanation: "Sharing spreads a wild story faster, and waiting a week just leaves everyone mixed up. School news comes from your school, so a teacher or a trusted grown-up can check it in seconds.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c2-3",
+          text: "You checked my canceled-school scoop?! Facts ruin every good story!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c2-3",
+          text: "Spread it, spread it! Wild stories travel fastest with a helper!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c3",
+        key: "quiz-w10-c3-3",
+        label: "The Calm Escape",
+        ask: {
+          slug: "quiz-w10-ask-c3-3",
+          text: "You backed out of an icky video all by yourself. Why still tell a trusted grown-up?",
+        },
+        options: [
+          { text: "Telling makes the icky feeling lighter, and they can fix what shows next" },
+          { text: "You don't need to, backing out already fixed everything" },
+          { text: "Only tell if the same video ever comes back" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Telling finishes the escape!",
+          explanation: "Backing out got you away, but the icky feeling can tag along, and telling makes it lighter. A trusted grown-up can also fix what the belt shows next, so it doesn't come back at all.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c3-3",
+          text: "You told a grown-up even AFTER escaping?! Now the belt gets fixed AND I get found out!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c3-3",
+          text: "Handled it solo, so zip those lips! Then I can re-run it tomorrow!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c4",
+        key: "quiz-w10-c4-3",
+        label: "The Comment Pond",
+        ask: {
+          slug: "quiz-w10-ask-c4-3",
+          text: "A comment dares: 'Reply I'M SCARED if you're too chicken to try this!' It asks for no info at all. Trap or not?",
+        },
+        options: [
+          { text: "Trap, any reply tells a stranger I'm listening" },
+          { text: "Not a trap, it never asked for my name or school" },
+          { text: "Only a trap if I reply with my real name" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Dares fish for replies!",
+          explanation: "Some hooks have no bait on them at all. A dare just wants ANY reply, because any reply tells a stranger you're listening. Watch, smile, move on, no nibbles.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c4-3",
+          text: "You spotted a hook with NO bait on it?! That dare was my finest fishing!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c4-3",
+          text: "Any reply is a nibble, and nibbles make my whole day!",
+        },
+      },
+      {
+        phaseId: "phase-w10-c5",
+        key: "quiz-w10-c5-3",
+        label: "The Body Bell",
+        ask: {
+          slug: "quiz-w10-ask-c5-3",
+          text: "Dinner's ready, but the screen yells NEXT EPISODE IN 3... 2... What wins?",
+        },
+        options: [
+          { text: "Screen off, dinner, the episode will wait all night" },
+          { text: "Just the start of the next one, then dinner" },
+          { text: "Eat dinner in front of the episode, that's both at once" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Screens wait, dinners don't!",
+          explanation: "'Just the start' has a way of becoming the middle, and dinner in front of the screen means the belt is still picking. The episode will wait all night without moving a pixel. Hot dinner wins.",
+        },
+        villainRight: {
+          slug: "quiz-w10-right-c5-3",
+          text: "You picked DINNER over my countdown?! The episode sulked all night!",
+        },
+        villainWrong: {
+          slug: "quiz-w10-wrong-c5-3",
+          text: "Just the start, then the middle, then cold peas! My belt eats dinners whole!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-10-pull-noticer.png",
 
   // Week-lane attack theatre: the video-hole tricks only (screen-time

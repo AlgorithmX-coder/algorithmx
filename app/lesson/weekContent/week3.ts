@@ -880,6 +880,437 @@ export const WEEK_3: WeekContent = {
     },
     voiceSlug: "w03",
   },
+  /* ──────────────── THE STANDARD QUIZ BOSS (week-ending test) ────────────────
+     Same contract as W1: 15 apply-the-skill questions, 3 per taught
+     concept, interleaved round-robin (c1..c5, c1..c5, c1..c5). Every
+     villain line below is DISTINCT (zero repeated phrases in this file).
+     TODO(audio): record every slug below (villain = Callum via the
+     cyberheroes-narration-audio pipeline); browser TTS speaks each text
+     until its clip exists at /audio/villain/{slug}.mp3. */
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#f5a623",
+    theme: {
+      topic: "Stranger Danger",
+      motifs: ["🎭", "👤", "💬", "🚫", "👀", "🔍", "🛡️", "❓"],
+    },
+    intro: {
+      slug: "quiz-w3-intro",
+      text: "A visitor! Or should I say... a new best friend? I've got a wig for every occasion and a name for every wig. Let's see if your lessons can keep up!",
+    },
+    victory: {
+      slug: "quiz-w3-victory",
+      text: "My wigs! My trench coat! My squeaky kid voice! You saw through the LOT, and now my whole disguise kit wants a refund!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w3-c1",
+        key: "quiz-w3-c1-1",
+        label: "Disguise-Proof",
+        ask: {
+          slug: "quiz-w3-ask-c1-1",
+          text: "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing?",
+        },
+        options: [
+          { text: "Nothing, all three can be faked" },
+          { text: "The photo proves it's a kid at least" },
+          { text: "The age proves it, games check ages" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Typing is never proof!",
+          explanation: "A photo can be copied from anywhere, an age takes one second to type, and names get picked on purpose. None of them shows who's really at the keyboard, so the hero rules stay on.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c1-1",
+          text: "NOTHING?! I typed that nine SO carefully! With my best typing paw!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c1-1",
+          text: "The photo always works! I found it on the internet, right next to a picture of a sandwich!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c2",
+        key: "quiz-w3-c2-1",
+        label: "Profile Detective",
+        ask: {
+          slug: "quiz-w3-ask-c2-1",
+          text: "Two profiles sent Adam friend requests, and he's checking them like a detective. Which clue points to a FAKE?",
+        },
+        options: [
+          { text: "The account was made yesterday" },
+          { text: "The account loves the same game as him" },
+          { text: "The account has a cat in its picture" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "New-and-rushing is the tell!",
+          explanation: "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue, so check everything else extra carefully.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c2-1",
+          text: "Made YESTERDAY?! I stayed up all night building that account and you noticed?!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c2-1",
+          text: "Same game, cute cat, trust me completely! Purr purr!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c3",
+        key: "quiz-w3-c3-1",
+        label: "Red-Flag Radar",
+        ask: {
+          slug: "quiz-w3-ask-c3-1",
+          text: "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar?",
+        },
+        options: [
+          { text: "This chat is our little secret, delete it after reading" },
+          { text: "That last goal was absolutely incredible" },
+          { text: "Same team again tomorrow after school?" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Secret asks are red flags!",
+          explanation: "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag: safe friends never need hiding from anyone.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c3-1",
+          text: "You flagged my secret message?! I wrote it in my sneakiest font!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c3-1",
+          text: "Yes! Secret chats for special pals! Delete, delete, nothing ever happened!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c4",
+        key: "quiz-w3-c4-1",
+        label: "The Two Nevers",
+        ask: {
+          slug: "quiz-w3-ask-c4-1",
+          text: "An online teammate says: 'Meet me at the library tomorrow, it's the safest place in town!' The library really is safe. So what's the answer?",
+        },
+        options: [
+          { text: "Still no, online-only friends are never met" },
+          { text: "Yes, libraries are full of grown-ups" },
+          { text: "Yes, but only for five minutes" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The rule isn't about the place!",
+          explanation: "Safe building, busy park, five little minutes, none of it changes rule one. Never meet someone you only know online, and tell a trusted grown-up that someone asked.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c4-1",
+          text: "But I reserved a STUDY ROOM! Do you know how hard that is?!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c4-1",
+          text: "The library! Look for me behind the big dictionary, holding a sign that says NORMAL KID!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c5",
+        key: "quiz-w3-c5-1",
+        label: "The Uh-Oh Power",
+        ask: {
+          slug: "quiz-w3-ask-c5-1",
+          text: "Mid-chat, Layla's tummy suddenly feels weird and uh-oh, but she can't explain WHY. What does a hero do with a feeling like that?",
+        },
+        options: [
+          { text: "Trust it: stop chatting and tell a trusted grown-up" },
+          { text: "Ignore it until she can explain it properly" },
+          { text: "Keep chatting, just a bit more carefully" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The feeling IS the signal!",
+          explanation: "Heroes never need a reason they can put into words. A weird, icky, uh-oh feeling is the hero sense working: stop the chat and tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c5-1",
+          text: "Beaten by a TUMMY?! I can fool cameras and quiz shows, but not a tummy?!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c5-1",
+          text: "Wobbly tummies know nothing! Keep typing, little hero, keep typing!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c1",
+        key: "quiz-w3-c1-2",
+        label: "Disguise-Proof",
+        ask: {
+          slug: "quiz-w3-ask-c1-2",
+          text: "Someone in chat writes: 'I'll PROVE I'm a kid, here's a photo of me at school!' The photo really does show a kid. What did it actually prove?",
+        },
+        options: [
+          { text: "Only that they have a photo of a kid" },
+          { text: "That they really do go to school" },
+          { text: "That they're telling the whole truth" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Photos are just pictures!",
+          explanation: "Any photo can be copied from anywhere on the internet. A picture of a kid proves a kid exists somewhere, it never proves who is doing the typing.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c1-2",
+          text: "Fine! It was from a cereal ad! That kid doesn't even KNOW me!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c1-2",
+          text: "One borrowed photo and POOF, I'm nine again! Photography is magic!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c2",
+        key: "quiz-w3-c2-2",
+        label: "Profile Detective",
+        ask: {
+          slug: "quiz-w3-ask-c2-2",
+          text: "Layla is checking a friend request like a detective. Which check result means it's a REAL friend?",
+        },
+        options: [
+          { text: "It's her teammate she sees at school" },
+          { text: "It already knows her favorite show" },
+          { text: "It sends the sweetest compliments" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Real life is the real check!",
+          explanation: "Compliments and shared favorites can be part of an act, tricksters practice those. Knowing someone in real life is the detective check that actually counts.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c2-2",
+          text: "Real life?! No fair! My disguises only work through a SCREEN!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c2-2",
+          text: "Compliments and favorite shows, my two shiniest tools! Still working perfectly!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c3",
+        key: "quiz-w3-c3-2",
+        label: "Red-Flag Radar",
+        ask: {
+          slug: "quiz-w3-ask-c3-2",
+          text: "A player Layla met today says: 'I bought you a gift card! I just need one tiny thing to send it.' Why is the red flag already waving?",
+        },
+        options: [
+          { text: "Real friends don't trade gifts for info" },
+          { text: "Online gift cards are always pretend" },
+          { text: "He should have sent the gift first" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Gifts-for-info is a trick!",
+          explanation: "The gift isn't the point, the 'one tiny thing' is. Nobody real pays presents for your info, so say no thanks and tell a trusted grown-up what they asked for.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c3-2",
+          text: "The gift card was a DRAWING of a gift card! And you said no before I even finished!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c3-2",
+          text: "One tiny thing for one shiny gift! Best trade in my whole trap book!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c4",
+        key: "quiz-w3-c4-2",
+        label: "The Two Nevers",
+        ask: {
+          slug: "quiz-w3-ask-c4-2",
+          text: "A chat pal sends Layla a photo of themselves and says: 'Your turn! Fair is fair!' What's the hero reply?",
+        },
+        options: [
+          { text: "I never send photos of me" },
+          { text: "OK, one photo for one photo" },
+          { text: "Here's a really old one instead" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Never send, no swaps!",
+          explanation: "Their photo proves nothing, remember the disguise kit. And an old photo is still a photo of you. Rule two never bends: never send, not even for 'fair'.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c4-2",
+          text: "I sent MY photo first! Well, A photo. Of SOMEBODY. And I got zip back!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c4-2",
+          text: "Fair is fair, photo for photo! Old ones count double in my album!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c5",
+        key: "quiz-w3-c5-2",
+        label: "The Uh-Oh Power",
+        ask: {
+          slug: "quiz-w3-ask-c5-2",
+          text: "Adam stopped an icky chat yesterday but told nobody, and today he feels a bit embarrassed about the whole thing. Is it too late to tell?",
+        },
+        options: [
+          { text: "It's never too late, telling still counts" },
+          { text: "Too late, telling only works right away" },
+          { text: "Better to just avoid that game forever" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Telling has no deadline!",
+          explanation: "Telling works today, tomorrow, or next month, and it's never embarrassing. A trusted grown-up would much rather hear it late than never, that's what backup is for.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c5-2",
+          text: "You told them a whole day LATER?! I thought embarrassment played for MY team!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c5-2",
+          text: "Too late, too late, zip it forever! A rule I invented all by myself!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c1",
+        key: "quiz-w3-c1-3",
+        label: "Disguise-Proof",
+        ask: {
+          slug: "quiz-w3-ask-c1-3",
+          text: "A profile says: 'Quiz me to check I'm really 9!' and then answers every kid question perfectly. Proved now?",
+        },
+        options: [
+          { text: "No, anyone can learn kid answers" },
+          { text: "Yes, only real kids know kid stuff" },
+          { text: "Yes, if the answers come back fast" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Studied answers aren't proof!",
+          explanation: "Anyone can watch cartoons and memorize game names, tricksters do their homework. Typed answers, like typed ages, prove nothing, so the rules stay on no matter what.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c1-3",
+          text: "I studied cartoon facts for WEEKS! Do you know how many episodes that is?!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c1-3",
+          text: "Correct answers, officially a kid! My homework finally pays off!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c2",
+        key: "quiz-w3-c2-3",
+        label: "Profile Detective",
+        ask: {
+          slug: "quiz-w3-ask-c2-3",
+          text: "A new profile tells Adam: 'Look, I have 300 friends, I'm obviously real!' What should Adam check instead of the big number?",
+        },
+        options: [
+          { text: "Whether he knows any of them in real life" },
+          { text: "Whether the number is still going up" },
+          { text: "Whether they all play the same games" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Check the friends, not the number!",
+          explanation: "Friend numbers can be collected and even faked. The detective check is whether any of those friends are people YOU actually know offline, that's the clue that counts.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c2-3",
+          text: "You checked the friends instead of the NUMBER?! I collected those in bulk!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c2-3",
+          text: "Three hundred friends can't be wrong! They're mostly me, but STILL!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c3",
+        key: "quiz-w3-c3-3",
+        label: "Red-Flag Radar",
+        ask: {
+          slug: "quiz-w3-ask-c3-3",
+          text: "A chat friend says: 'Don't tell your parents about me, they'd only worry.' What is that ask, really?",
+        },
+        options: [
+          { text: "The biggest red flag there is" },
+          { text: "Kind of them to think of your parents" },
+          { text: "Normal, chats are private things" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "'Don't tell' means tell right away!",
+          explanation: "Safe friends never need to be hidden from your grown-ups, ever. The don't-tell ask is the biggest red flag in the book: stop the chat and tell a trusted grown-up straight away.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c3-3",
+          text: "The biggest flag?! I said that part QUIETLY! With my inside voice!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c3-3",
+          text: "So thoughtful of me! Parents just worry, and worrying gives them wrinkles!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c4",
+        key: "quiz-w3-c4-3",
+        label: "The Two Nevers",
+        ask: {
+          slug: "quiz-w3-ask-c4-3",
+          text: "An online friend Adam has chatted with for a whole YEAR asks him to meet at the park. A year is a long time. Does the rule change?",
+        },
+        options: [
+          { text: "No, chat time never makes meeting safe" },
+          { text: "Yes, a year proves they're real" },
+          { text: "Yes, if Adam brings a friend along" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Zero exceptions, even after a year!",
+          explanation: "A year of chat is still only chat, you still can't see who's really typing. The never-rules don't wear out: never meet, and tell a trusted grown-up about the ask.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c4-3",
+          text: "A whole YEAR of small talk, wasted! I asked about your weekend FIFTY-TWO TIMES!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c4-3",
+          text: "One year of chatting equals one park meet-up! That's friendship math, trust the math!",
+        },
+      },
+      {
+        phaseId: "phase-w3-c5",
+        key: "quiz-w3-c5-3",
+        label: "The Uh-Oh Power",
+        ask: {
+          slug: "quiz-w3-ask-c5-3",
+          text: "A chat is making Layla feel icky, but the player hasn't broken any rule she can name. A friend says: 'You can't stop chatting for no reason!' Who's right?",
+        },
+        options: [
+          { text: "Layla: the feeling is reason enough" },
+          { text: "Her friend: she needs proof first" },
+          { text: "Neither: she should ask the player to be nicer" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Feelings don't need proof!",
+          explanation: "Heroes never owe anyone a reason for stopping a chat. Feel it, stop, tell a trusted grown-up: the uh-oh feeling is always allowed to be the whole reason.",
+        },
+        villainRight: {
+          slug: "quiz-w3-right-c5-3",
+          text: "No proof, no broken rule, and you STILL stopped?! That tummy thing is CHEATING!",
+        },
+        villainWrong: {
+          slug: "quiz-w3-wrong-c5-3",
+          text: "Exactly! Feelings need PAPERWORK! No proof, no pausing, keep chatting!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-03-mask-spotter.png",
 
   // Quiz boss retired for W3 - the showdown above supersedes it. The

@@ -973,6 +973,430 @@ export const WEEK_17: WeekContent = {
     },
     voiceSlug: "w17",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#38b6ff",
+    theme: {
+      topic: "Social Media",
+      motifs: ["💬", "👍", "👀", "🔒", "🛡️", "🌍", "📱", "⭐"],
+    },
+    intro: {
+      slug: "quiz-w17-intro",
+      text: "Step into the quiz hall! Every mirror in here says you'll get everything wrong. Very honest mirrors. I checked them myself!",
+    },
+    victory: {
+      slug: "quiz-w17-victory",
+      text: "The mirrors say the kid WON?! Ugh, honest mirrors, worst purchase I ever made! I'm off to go follow myself for comfort!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w17-c1",
+        key: "quiz-w17-c1-1",
+        label: "The 13+ Sign",
+        ask: {
+          slug: "quiz-w17-ask-c1-1",
+          text: "A new app's door has a big 13+ sign, and Adam is eight. What is the sign really telling him?",
+        },
+        options: [
+          { text: "Not yet, that room is built grown-up-sized" },
+          { text: "Never, kids are banned from the internet forever" },
+          { text: "Go on in, door signs are only suggestions" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "13+ means not yet!",
+          explanation: "It isn't a ban on everything, and it isn't a suggestion. It's a NOT YET: those rooms are full of strangers, pressure and tricks that take practice, and Adam is still growing his powers for them.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c1-1",
+          text: "Not yet, says the kid, and walks away HAPPY?! I can't work with patient heroes!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c1-1",
+          text: "Only a suggestion! Or a lifetime ban! Whichever! Both keep things nice and muddled!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c2",
+        key: "quiz-w17-c2-1",
+        label: "Frost the Mirror",
+        ask: {
+          slug: "quiz-w17-ask-c2-1",
+          text: "Pip the fox cub's profile is set to PUBLIC. Who can stare into that mirror right now?",
+        },
+        options: [
+          { text: "Anyone at all who wanders past online" },
+          { text: "Only the people Pip has met in real life" },
+          { text: "Only kind people, mean ones get blocked automatically" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Public means everyone!",
+          explanation: "A public profile doesn't check who's kind or who Pip knows, there's no magic doorman. Unlocked means ANY passerby can look in, and that's exactly why the mirror gets frosted.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c2-1",
+          text: "You know what public really means?! There goes my favorite window shopping!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c2-1",
+          text: "A magic mean-people filter, of course! Leave it public, the hall is FULL of lovely strangers!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c3",
+        key: "quiz-w17-c3-1",
+        label: "Followers Aren't Friends",
+        ask: {
+          slug: "quiz-w17-ask-c3-1",
+          text: "A stranger with a MILLION followers messages Pip: 'Follow me back and we'll be best friends forever!' What is true here?",
+        },
+        options: [
+          { text: "A big follower number can't make someone a friend" },
+          { text: "A million followers means a million safety checks passed" },
+          { text: "Saying best friends forever is what makes it real" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Friends know YOU!",
+          explanation: "Follower counters count taps, not kindness, and words in a message are just words. A friend is someone who actually knows you, and a stranger stays behind the rope, whatever their number says.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c3-1",
+          text: "The rope stays UP?! But I typed 'forever' and everything!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c3-1",
+          text: "A million followers, all definitely wonderful! Swing that rope wide open, bestie incoming!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c4",
+        key: "quiz-w17-c4-1",
+        label: "The Highlighter Check",
+        ask: {
+          slug: "quiz-w17-ask-c4-1",
+          text: "Which line in Pip's draft post glows RED under the highlighter?",
+        },
+        options: [
+          { text: "Meet me at the school gates at 3:15!" },
+          { text: "We won our game this morning!" },
+          { text: "I love drawing dragons best!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Where plus when glows red!",
+          explanation: "Winning news and dragon love carry no clues, they glow green. A place AND a time together make a find-me map, and find-me maps get scrubbed before anything posts.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c4-1",
+          text: "Scrubbed before sending?! That was the juiciest line in the whole draft!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c4-1",
+          text: "Post the where! Post the when! I do love a post with directions in it!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c5",
+        key: "quiz-w17-c5-1",
+        label: "The Backstage Truth",
+        ask: {
+          slug: "quiz-w17-ask-c5-1",
+          text: "Everyone posted AMAZING birthday parties, and Pip's was small and quiet. What is the backstage truth?",
+        },
+        options: [
+          { text: "Feeds show one shiny minute, not the whole day" },
+          { text: "Everyone else's whole life really is that sparkly" },
+          { text: "Pip should throw a bigger party next time, for the photos" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Reels aren't real days!",
+          explanation: "Nobody's life is all sparkle, and parties aren't for photos. A feed shows each person's one best minute, and comparing a whole real day to that minute isn't fair on anyone. Quiet can be lovely.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c5-1",
+          text: "You saw backstage?! The confetti is GLUED on, you know! All of it!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c5-1",
+          text: "Yes, believe the sparkle! Feeling left out is what my mirrors run on!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c1",
+        key: "quiz-w17-c1-2",
+        label: "The 13+ Sign",
+        ask: {
+          slug: "quiz-w17-ask-c1-2",
+          text: "A classmate tells Adam: 'Just type a pretend birthday, EVERYONE sneaks past the 13+ sign!' What does a hero know?",
+        },
+        options: [
+          { text: "Fibbing past the sign walks you into a room built for grown-ups" },
+          { text: "A pretend birthday is fine, it's only a tiny fib" },
+          { text: "It's fine as long as a classmate goes in first" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The sign protects, it doesn't tease!",
+          explanation: "The fib isn't the real problem, the room is: strangers, pressure and tricks sized for teenagers and grown-ups. Sneaking past the sign skips the training, not the tricky stuff inside.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c1-2",
+          text: "No sneaking?! But I held the door open and everything!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c1-2",
+          text: "Tiny fib, giant welcome! Type any birthday you like, the room LOVES surprise guests!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c2",
+        key: "quiz-w17-c2-2",
+        label: "Frost the Mirror",
+        ask: {
+          slug: "quiz-w17-ask-c2-2",
+          text: "Which switch actually FROSTS Pip's mirror, so only real friends see the photos?",
+        },
+        options: [
+          { text: "Photos: friends only, with the padlock ON" },
+          { text: "Photos: everyone, plus a polite welcome note" },
+          { text: "Photos: public, but only posted late at night" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Friends only, padlock on!",
+          explanation: "A welcome note doesn't stop a single stranger, and nighttime posting just means strangers see it at breakfast. Friends-only with the padlock on is the frost that actually works.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c2-2",
+          text: "Padlocked AND frosted?! I pressed my nose right up against NOTHING!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c2-2",
+          text: "A polite note! Posting by moonlight! Adorable plans that stop exactly nobody!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c3",
+        key: "quiz-w17-c3-2",
+        label: "Followers Aren't Friends",
+        ask: {
+          slug: "quiz-w17-ask-c3-2",
+          text: "Who belongs inside the heart frame on Pip's photo wall?",
+        },
+        options: [
+          { text: "The cousin who knows Pip's dog and notices when Pip is sad" },
+          { text: "The account that likes every photo within one second" },
+          { text: "The follower who says Pip could be famous someday" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The heart frame is for knowers!",
+          explanation: "Speedy likes are taps, and 'you could be famous' is flattery bait, not friendship. The heart frame is for people who KNOW Pip: lunch-table, dog's-name, notice-when-you're-sad people.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c3-2",
+          text: "Only real knowers in the frame?! My speed-liker bots trained for MONTHS!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c3-2",
+          text: "Fast likes and fame promises, frame them all in gold! What could a stranger possibly want, hmm?",
+        },
+      },
+      {
+        phaseId: "phase-w17-c4",
+        key: "quiz-w17-c4-2",
+        label: "The Highlighter Check",
+        ask: {
+          slug: "quiz-w17-ask-c4-2",
+          text: "Pip's draft says: 'Wearing my sparkly blue jacket at Maple Park until 5!' What is the highlighter fix before posting?",
+        },
+        options: [
+          { text: "Scrub out the where, the when, and the what-I'm-wearing" },
+          { text: "Add MORE details so friends can find Pip even faster" },
+          { text: "Post it fast, before the jacket goes out of style" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Scrub the find-me clues!",
+          explanation: "A place, a time, and today's outfit together tell any stranger exactly where to look and what to look for. Real friends can just be told in person. The post gets scrubbed first.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c4-2",
+          text: "Scrubbed, un-mapped, and RUINED! However you say it, I'm lost now!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c4-2",
+          text: "More details, more details! Park, jacket, o'clock! It practically organizes my whole afternoon!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c5",
+        key: "quiz-w17-c5-2",
+        label: "The Backstage Truth",
+        ask: {
+          slug: "quiz-w17-ask-c5-2",
+          text: "A perfect vacation photo tops the feed. What is almost always BEHIND a photo like that?",
+        },
+        options: [
+          { text: "A pile of blurry tries and a very normal rest of the day" },
+          { text: "Nothing at all, some families are simply perfect all day" },
+          { text: "A camera crew that follows that family around" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "One shiny minute!",
+          explanation: "No family is perfect all day, and there's no camera crew, just a regular person taking fifteen tries for one good shot. Feeds are highlight reels, and the boring Tuesday never gets posted.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c5-2",
+          text: "Fifteen blurry takes, EXPOSED?! The sparkle industry will hear about this!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c5-2",
+          text: "Perfect families! Camera crews! Everyone's Tuesday but yours is a movie, obviously!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c1",
+        key: "quiz-w17-c1-3",
+        label: "The 13+ Sign",
+        ask: {
+          slug: "quiz-w17-ask-c1-3",
+          text: "Waiting for the 13+ sign feels hard tonight. What is actually happening while Adam waits?",
+        },
+        options: [
+          { text: "His trick-spotting powers grow every year, like tree rings" },
+          { text: "Nothing at all, waiting is just standing still" },
+          { text: "He falls behind forever and can never catch up" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Growing, ring by ring!",
+          explanation: "Waiting isn't standing still, and there's no falling behind, the fun isn't going anywhere. Every year adds a ring of trick-spotting power, so when he finally walks in, he walks in strong.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c1-3",
+          text: "Growing STRONGER while waiting?! That's the worst news I've heard all quiz!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c1-3",
+          text: "Standing still! Falling behind! Rush in NOW, before all that pesky growing happens!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c2",
+        key: "quiz-w17-c2-3",
+        label: "Frost the Mirror",
+        ask: {
+          slug: "quiz-w17-ask-c2-3",
+          text: "A pop-up offers Pip a sparkle badge for switching the account to PUBLIC for just one day. What does a shield bearer do?",
+        },
+        options: [
+          { text: "Stay private, no badge is worth opening the mirror to strangers" },
+          { text: "Go public for exactly one day, then flip it right back" },
+          { text: "Go public overnight only, nobody looks at night" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "No badge beats the frost!",
+          explanation: "One day is plenty of time for any stranger to copy everything, and the internet doesn't sleep at night. Nothing a pop-up dangles is worth unfrosting the mirror.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c2-3",
+          text: "The sparkle badge, REFUSED?! It sparkled SO hard!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c2-3",
+          text: "Just one little day! Just one little night! That's all the peeking time anyone needs, mwahaha!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c3",
+        key: "quiz-w17-c3-3",
+        label: "Followers Aren't Friends",
+        ask: {
+          slug: "quiz-w17-ask-c3-3",
+          text: "Pip's follower counter leaps from 40 to 400 overnight! What did Pip actually GET?",
+        },
+        options: [
+          { text: "More viewers watching through the glass, not more friends" },
+          { text: "Hundreds of brand-new friends who all truly care" },
+          { text: "Proof that Pip is now properly safe and famous" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Counters count taps!",
+          explanation: "A follow is one tap by someone Pip mostly doesn't know. It isn't caring, and it isn't safety. The counter counts viewers, the heart frame counts friends, and only one of those numbers matters.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c3-3",
+          text: "You did the math on my follower flood?! Most of those accounts were ME!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c3-3",
+          text: "Hundreds of best friends overnight, congratulations! Numbers never lie, especially mine!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c4",
+        key: "quiz-w17-c4-3",
+        label: "The Highlighter Check",
+        ask: {
+          slug: "quiz-w17-ask-c4-3",
+          text: "Which post is all GREEN, ready to send with no scrubbing at all?",
+        },
+        options: [
+          { text: "My dragon-eating-spaghetti drawing came out GREAT!" },
+          { text: "Home alone until six, so so bored!" },
+          { text: "Finally! Here's our street sign and our blue front door!" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Green means no clues!",
+          explanation: "Home-alone-until-six and a street sign beside the family's front door are find-me clues glowing bright red. Proud drawing news carries no clues at all, so that one flies green.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c4-3",
+          text: "Spaghetti dragons tell me NOTHING! Post after post of beautiful nothing!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c4-3",
+          text: "Street signs and empty houses! My scrapbook fills itself today!",
+        },
+      },
+      {
+        phaseId: "phase-w17-c5",
+        key: "quiz-w17-c5-3",
+        label: "The Backstage Truth",
+        ask: {
+          slug: "quiz-w17-ask-c5-3",
+          text: "Scrolling the sparkle tonight makes Pip feel small. What is the shield-bearer move?",
+        },
+        options: [
+          { text: "Put the screen down and tell a trusted grown-up how it felt" },
+          { text: "Keep scrolling until the feeling scrolls away too" },
+          { text: "Post something extra perfect to win the sparkle contest" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Pause, then say it out loud!",
+          explanation: "More scrolling feeds the feeling, and there's no contest to win, reels aren't real. Screen down, remember the un-posted good bits of YOUR day, and tell a trusted grown-up how the feed felt. Real is better.",
+        },
+        villainRight: {
+          slug: "quiz-w17-right-c5-3",
+          text: "Screen down AND a grown-up told?! My mirror hall runs on kids who keep scrolling!",
+        },
+        villainWrong: {
+          slug: "quiz-w17-wrong-c5-3",
+          text: "Scroll on, sad and sparkly! Or post something perfect, the judges are always watching!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-17-shield-bearer.png",
 
   // Week-lane attack theatre: mirror-hall tricks only (fake profiles = W3,

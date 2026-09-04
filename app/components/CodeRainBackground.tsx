@@ -9,6 +9,9 @@ type Props = {
   head?: string;
   accentA?: string;
   accentB?: string;
+  /** `true` (default) pins the canvas to the viewport; `false` positions it
+   *  absolutely so it fills the nearest positioned ancestor instead. */
+  fixed?: boolean;
 };
 
 /**
@@ -25,6 +28,7 @@ export default function CodeRainBackground({
   head = "rgba(120,224,255,0.92)",
   accentA = "rgba(150,135,255,0.9)",
   accentB = "rgba(74,222,128,0.85)",
+  fixed = true,
 }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
 
@@ -122,7 +126,7 @@ export default function CodeRainBackground({
     <canvas
       ref={ref}
       aria-hidden="true"
-      style={{ position: "fixed", inset: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }}
+      style={{ position: fixed ? "fixed" : "absolute", inset: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }}
     />
   );
 }

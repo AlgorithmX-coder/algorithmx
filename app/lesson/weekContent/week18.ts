@@ -1039,6 +1039,431 @@ export const WEEK_18: WeekContent = {
     },
     voiceSlug: "w18",
   },
+
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#62b6cb",
+    theme: {
+      topic: "Sharing Devices",
+      motifs: ["🔒", "🔑", "👤", "🚪", "🛡️", "📱", "⚙️", "🔐"],
+    },
+    intro: {
+      slug: "quiz-w18-intro",
+      text: "So you think you're a Lock Master now? I've slipped through a thousand left-open screens, and yours will be next, unless you can answer me door for door!",
+    },
+    victory: {
+      slug: "quiz-w18-victory",
+      text: "Every hook checked, every door bolted, every balloon popped?! There isn't a single crack left in this house for a raccoon to wiggle through! I'm off to find a family that never logs out!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w18-c1",
+        key: "quiz-w18-c1-1",
+        label: "Spot the Shared Device",
+        ask: {
+          slug: "quiz-w18-ask-c1-1",
+          text: "Layla is about to open her diary app. One of these screens deserves EXTRA care before she types anything. Which one?",
+        },
+        options: [
+          { text: "The computer in the school library" },
+          { text: "Her own tablet with her name stickers on it" },
+          { text: "The e-reader she got for her birthday" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Everyone's hands, extra care!",
+          explanation: "Her own tablet and her birthday e-reader hang on HER hook, but the library computer hangs on everyone's. When lots of hands share a screen, that's the one that gets extra care.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c1-1",
+          text: "The LIBRARY one?! How did you know that's where I do my best lurking?!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c1-1",
+          text: "Type away, type away! Forty kids use that computer, and one of them has a stripey tail!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c2",
+        key: "quiz-w18-c2-1",
+        label: "The Log-Out Relay",
+        ask: {
+          slug: "quiz-w18-ask-c2-1",
+          text: "Adam finishes his game on the library computer and taps the little X to close the window. Is his account safe now?",
+        },
+        options: [
+          { text: "No, the X just hides the window, only LOG OUT shuts the door" },
+          { text: "Yes, the X signs him out all by itself" },
+          { text: "Yes, library computers wipe everything at closing time" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The X only hides it!",
+          explanation: "Closing a window is like sliding a book over your open diary, everything is still there underneath. Only tapping LOG OUT actually shuts your account before the next person sits down.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c2-1",
+          text: "You know about the X trick?! That little X has fed me for YEARS!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c2-1",
+          text: "One tap of the X and off you skip! Meanwhile your account sits there warm and cozy, waiting for meeee!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c3",
+        key: "quiz-w18-c3-1",
+        label: "The Front Door",
+        ask: {
+          slug: "quiz-w18-ask-c3-1",
+          text: "I read lock codes like bedtime stories! Adam's soccer number is 9 and his birthday is June 2. Which code tells me NOTHING?",
+        },
+        options: [
+          { text: "83-51-27" },
+          { text: "99-99-99" },
+          { text: "06-02-16" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Codes with no story!",
+          explanation: "His soccer nines and his birthday digits are stories a guesser can read about him. Quiet digits that mean nothing to anybody are the ones no guesser can figure out.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c3-1",
+          text: "Eighty-three, fifty-one, WHAT?! I read that code front to back and learned absolutely nothing!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c3-1",
+          text: "A story code! I read the soccer newsletter AND the birthday calendar, so I already know the ending!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c4",
+        key: "quiz-w18-c4-1",
+        label: "The Closed Chest",
+        ask: {
+          slug: "quiz-w18-ask-c4-1",
+          text: "On the bus, the kid next to Adam falls asleep and their phone slips out, screen glowing and unlocked. What's the Lock Master move?",
+        },
+        options: [
+          { text: "Leave it alone, an unlocked phone still isn't an invitation" },
+          { text: "Take one tiny peek, then put it back exactly where it was" },
+          { text: "Scroll through it to check the kid isn't in any trouble" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Open isn't an invitation!",
+          explanation: "Even one tiny peek, even a helpful-sounding peek, is still reading someone's private things. A phone that isn't yours stays a closed chest, glowing or not.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c4-1",
+          text: "You didn't even PEEK?! That was a free sample and you just walked past it!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c4-1",
+          text: "Yes, peek! Everybody peeks! And once you've peeked, you can never un-know my favorite hobby!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c5",
+        key: "quiz-w18-c5-1",
+        label: "The Save-Me Balloon",
+        ask: {
+          slug: "quiz-w18-ask-c5-1",
+          text: "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer?",
+        },
+        options: [
+          { text: "No thanks, it's a shared computer, so my keys shouldn't live in it" },
+          { text: "Save it, a grown-up just said it was fine" },
+          { text: "Save it now and delete it before going home" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Shared screens keep no keys!",
+          explanation: "Grandad is being kind, but his computer is shared, so a saved password would wait there for whoever clicks next. The ask-first rule only opens the door on your OWN device.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c5-1",
+          text: "But GRANDAD said yes! You out-ruled a grandad! Who does that?!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c5-1",
+          text: "Saved on Grandad's computer! I visit on Sundays, you know. For the cookies. And the passwords!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c1",
+        key: "quiz-w18-c1-2",
+        label: "Spot the Shared Device",
+        ask: {
+          slug: "quiz-w18-ask-c1-2",
+          text: "Adam sits down at the living-room console the whole family plays on. What should he remember before he logs in?",
+        },
+        options: [
+          { text: "Other hands use this screen, so it hangs on everyone's hook" },
+          { text: "It's inside his own house, so it counts as just his" },
+          { text: "Consoles don't really have accounts, so none of this matters" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Home can still be shared!",
+          explanation: "Being in your own living room doesn't make a screen yours alone, and consoles hold accounts, coins, and chats just like tablets do. If the whole family uses it, it hangs on everyone's hook.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c1-2",
+          text: "Even the cozy living-room one counts?! You're hanging hooks EVERYWHERE, it's a nightmare!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c1-2",
+          text: "His house, his console, his rules? Wonderful! Somebody left the shopping app open, so now it's MY rules!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c2",
+        key: "quiz-w18-c2-2",
+        label: "The Log-Out Relay",
+        ask: {
+          slug: "quiz-w18-ask-c2-2",
+          text: "Layla is done on the family tablet. Which move actually hands it back clean?",
+        },
+        options: [
+          { text: "Tapping LOG OUT inside her account" },
+          { text: "Pressing Home so her apps disappear" },
+          { text: "Turning the screen off so it goes dark" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Only LOG OUT counts!",
+          explanation: "Home just hides your apps and screen-off just makes the glass go dark, your account stays open behind both. Tapping LOG OUT is the only move that hands the tablet over clean.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c2-2",
+          text: "A real log-out?! But the Home button is RIGHT THERE, big and friendly and useless!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c2-2",
+          text: "Dark screens and hidden apps, my two favorite doormats! One tap and everything's exactly where you left it, for me!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c3",
+        key: "quiz-w18-c3-2",
+        label: "The Front Door",
+        ask: {
+          slug: "quiz-w18-ask-c3-2",
+          text: "Layla's brand-new tablet arrives with no lock screen at all. Does it need one?",
+        },
+        options: [
+          { text: "Yes, a screen with no lock is a house with no front door" },
+          { text: "Only if she takes it outside, at home it's fine without one" },
+          { text: "Not yet, brand-new tablets have nothing on them worth locking" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Every device gets a door!",
+          explanation: "The moment she signs in to anything, that tablet is full of her stuff, and screens get borrowed and picked up at home too. Every device needs its front door from day one.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c3-2",
+          text: "A front door from DAY ONE?! I had plans for that shiny new thing! Dinner plans!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c3-2",
+          text: "No lock! Come in, come in! I'll wipe my paws on the mat, and I promise nothing else!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c4",
+        key: "quiz-w18-c4-2",
+        label: "The Closed Chest",
+        ask: {
+          slug: "quiz-w18-ask-c4-2",
+          text: "Layla picks up the family tablet and her brother's diary app is sitting wide open. What does she do?",
+        },
+        options: [
+          { text: "Close it gently without reading and tell him it was open" },
+          { text: "Read just the first page, since he's the one who left it open" },
+          { text: "Screenshot it, in case she gets blamed for it later" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Don't read, close, tell!",
+          explanation: "Leaving it open was an accident, not an invitation, and a screenshot is just a peek you keep. Close it gently and tell him, so he knows his chest is safe around you.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c4-2",
+          text: "Closed WITHOUT reading?! I've been circling that diary for a week, and you shut it in one second!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c4-2",
+          text: "Read it, save it, frame it! And when you're done, I know a raccoon who buys secondhand secrets!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c5",
+        key: "quiz-w18-c5-2",
+        label: "The Save-Me Balloon",
+        ask: {
+          slug: "quiz-w18-ask-c5-2",
+          text: "The SAVE PASSWORD balloon bobs up on Layla's very own phone at home. What's the rule there?",
+        },
+        options: [
+          { text: "Ask her trusted grown-up first, her own device is the only maybe" },
+          { text: "Always yes, saving is exactly what your own phone is for" },
+          { text: "Always no, passwords can never be saved anywhere, ever" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Your own device? Ask first!",
+          explanation: "On shared or borrowed screens the balloon always gets a NO, but her own phone is the one maybe. That's a question for her trusted grown-up, who knows where keys can safely live.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c5-2",
+          text: "She asked a GROWN-UP?! There's no balloon big enough to float past a grown-up!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c5-2",
+          text: "Always yes! Save them all! I love a phone that remembers everything, especially one left on a bus!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c1",
+        key: "quiz-w18-c1-3",
+        label: "Spot the Shared Device",
+        ask: {
+          slug: "quiz-w18-ask-c1-3",
+          text: "On vacation, the hotel lobby has a tablet that any guest can use. Layla wants to check her game on it. What is she looking at?",
+        },
+        options: [
+          { text: "A shared device, a new stranger uses it every single night" },
+          { text: "A safe device, hotels clean their tablets between guests" },
+          { text: "Her family's device, since they paid for the room" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The share-iest screen of all!",
+          explanation: "Cleaning wipes off fingerprints, not accounts, and paying for a room doesn't make the lobby tablet yours. A screen a new stranger uses every night needs the most care of all.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c1-3",
+          text: "The LOBBY tablet?! That's my summer home! Do you know how many vacations I've borrowed from that thing?!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c1-3",
+          text: "Log in, sandy fingers! Guest number one hundred says thank you, and guest number one-oh-one has a TAIL!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c2",
+        key: "quiz-w18-c2-3",
+        label: "The Log-Out Relay",
+        ask: {
+          slug: "quiz-w18-ask-c2-3",
+          text: "The bell rings and the next class is walking in to the school computers. Adam is still signed in to three things. What does a relay runner do?",
+        },
+        options: [
+          { text: "Log out of all three, even if he's last out the door" },
+          { text: "Leave them open, the next kid has their own login anyway" },
+          { text: "Turn the monitor off so nobody can see his accounts" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Hand the baton clean!",
+          explanation: "The next kid doesn't need their own login to use YOURS if it's still open, and a dark monitor switches right back on. A relay runner logs out of everything, every time.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c2-3",
+          text: "All THREE?! Even the email?! Nobody remembers the email! I COUNT on the email!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c2-3",
+          text: "The next kid sits down wearing YOUR name! And who taught that kid everything he knows? Wink!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c3",
+        key: "quiz-w18-c3-3",
+        label: "The Front Door",
+        ask: {
+          slug: "quiz-w18-ask-c3-3",
+          text: "The family is picking a lock code for the new tablet, and everyone shouts an idea. Which idea wins?",
+        },
+        options: [
+          { text: "Random digits that no birthday can explain" },
+          { text: "The house number, so everyone remembers it" },
+          { text: "1-2-3-4, quick to type in a hurry" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Quiet digits win!",
+          explanation: "The house number is painted right on the front of the house, and 1-2-3-4 is the first code every guesser tries. Digits with no story are the ones that keep the front door shut.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c3-3",
+          text: "Digits with no STORY?! I'm a detective with nothing to detect! It's insulting!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c3-3",
+          text: "The house number! On the house! Next to the door! Some mysteries solve themselves, folks!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c4",
+        key: "quiz-w18-c4-3",
+        label: "The Closed Chest",
+        ask: {
+          slug: "quiz-w18-ask-c4-3",
+          text: "You borrow your friend's tablet for a game and their private messages pop up on the screen. What's the hero move?",
+        },
+        options: [
+          { text: "Look away, hand it back, and tell them it popped up" },
+          { text: "Read them fast, so you can warn your friend if anything's wrong" },
+          { text: "Say nothing, so your friend never feels embarrassed about it" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Eyes off, hand it back!",
+          explanation: "Reading to help is still reading, and staying quiet leaves their chest hanging open. Look away, hand it back, and tell them, so they can close it themselves.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c4-3",
+          text: "You looked AWAY?! I once climbed three drainpipes to read half a message!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c4-3",
+          text: "Ooh yes, read it for SAFETY reasons! That's what I always say! We're basically twins!",
+        },
+      },
+      {
+        phaseId: "phase-w18-c5",
+        key: "quiz-w18-c5-3",
+        label: "The Save-Me Balloon",
+        ask: {
+          slug: "quiz-w18-ask-c5-3",
+          text: "Adam borrows his friend's laptop for homework and the SAVE PASSWORD balloon bobs up. Why does it get a NO?",
+        },
+        options: [
+          { text: "The laptop goes home with his friend, and saved keys would go with it" },
+          { text: "It's fine to save, his best friend would never ever peek" },
+          { text: "It's fine to save, if he promises to delete it at the end of the year" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Borrowed means it goes home!",
+          explanation: "It isn't about whether his friend would peek. When the laptop goes home, Adam's saved key rides along inside it, out of his reach. Borrowed and shared screens never keep your keys.",
+        },
+        villainRight: {
+          slug: "quiz-w18-right-c5-3",
+          text: "POP goes my balloon! Do you know how long it takes to blow those up?!",
+        },
+        villainWrong: {
+          slug: "quiz-w18-wrong-c5-3",
+          text: "Saved on a TRAVELING laptop! A password with wheels! It'll roll right to my den!",
+        },
+      },
+    ],
+  },
+
   badgeArt: "/cyberheroes/badges/week-18-lock-master.png",
 
   // Week-lane attack theatre: left-open-device tricks only (password

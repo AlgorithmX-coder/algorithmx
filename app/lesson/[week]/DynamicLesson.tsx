@@ -111,6 +111,10 @@ const ShowdownBoss = dynamic(
   () => import("@/app/components/game/ShowdownBoss"),
   { ssr: false }
 );
+const QuizBoss = dynamic(
+  () => import("@/app/components/game/QuizBoss"),
+  { ssr: false }
+);
 const WelcomeScene = dynamic(
   () => import("@/app/components/game/WelcomeScene"),
   { ssr: false }
@@ -2887,7 +2891,71 @@ function DynamicLessonInner({
       {/* Boss battle fullscreen overlay */}
       {showBoss && (
         <div style={{ position: "fixed", inset: 0, zIndex: 80 }}>
-          {content.bossShowdown ? (
+          {content.bossQuiz ? (
+            /* THE STANDARD QUIZ BOSS (the week-ending test, all 20 weeks).
+               TOP preference over every bespoke boss; delete this branch for a
+               one-line revert. Same outcome/stats shapes and phase ids, so
+               persistence, analytics and family dashboards are unchanged. */
+            <QuizBoss
+              quiz={content.bossQuiz}
+              onQuestionAnswered={(o) => {
+                const keyWithPhase = o.phaseId ? `${o.key}@${o.phaseId}` : o.key;
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: keyWithPhase,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, keyWithPhase);
+                }
+              }}
+              onEnd={(won, stats) => {
+                setShowBoss(false);
+                setBossDone(true);
+                setBossWon(won);
+                setBossStats({
+                  combo: stats.combo ?? 0,
+                  accuracy: stats.accuracy ?? 0,
+                  xp: stats.xp ?? 0,
+                });
+                progress.saveBoss({
+                  won,
+                  accuracy: stats.accuracy ?? 0,
+                  totalQuestions: stats.totalQuestions ?? 0,
+                  correctCount: stats.correctCount ?? 0,
+                  wrongCount: stats.wrongCount ?? 0,
+                  bestCombo: stats.combo ?? 0,
+                  durationMs: stats.durationMs ?? 0,
+                  badgeEarned: won,
+                  badgeId: won ? `week-${content.weekNumber}` : undefined,
+                });
+                for (const pr of stats.phaseResults ?? []) {
+                  analytics.bossCompleted({
+                    weekNumber: content.weekNumber,
+                    won: pr.wrongCount === 0,
+                    accuracy:
+                      pr.totalQuestions > 0
+                        ? Math.round((pr.correctCount / pr.totalQuestions) * 100)
+                        : 0,
+                    bestCombo: 0,
+                    durationMs: 0,
+                  });
+                }
+                if (won) {
+                  awardXp(150);
+                  void correctAnswerBurst();
+                  void badgeEarnedCelebration();
+                  // PILOT FEEDBACK (global): straight into the outro video;
+                  // the badge scene follows the video. Deferred a beat so
+                  // the navigate updater (which persists the leaving
+                  // screen) runs outside this handler's state batch.
+                  window.setTimeout(() => navigate(screen + 1), 450);
+                }
+              }}
+            />
+          ) : content.bossShowdown ? (
             /* Bespoke SHOWDOWN boss (Weeks 3-20, the boss batch). The
                config-driven machine-fight engine — same outcome/stats
                shapes as BossBattle, so persistence, analytics and the

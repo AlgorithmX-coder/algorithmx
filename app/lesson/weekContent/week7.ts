@@ -833,6 +833,429 @@ export const WEEK_7: WeekContent = {
     },
     voiceSlug: "w07",
   },
+  bossQuiz: {
+    villain: { name: "HACKER RACCOON", sprite: "raccoon" },
+    accent: "#ff4e6a",
+    theme: {
+      topic: "In-Game Spending",
+      motifs: ["🎁", "💎", "🔒", "🎯", "⏸️", "⭐", "🚫", "👍"],
+    },
+    intro: {
+      slug: "quiz-w7-intro",
+      text: "Welcome to my quiz emporium, tiny customer! Fifteen questions, and every wrong answer feeds my piggy bank. Care to spend a little... pride?",
+    },
+    victory: {
+      slug: "quiz-w7-victory",
+      text: "You spent NOTHING and won EVERYTHING?! My piggy bank is wheezing! Keep your coins, I'm off to sell rocks to pigeons!",
+    },
+    questions: [
+      {
+        phaseId: "phase-w7-c1",
+        key: "quiz-w7-c1-1",
+        label: "Game Coins Are Real Money",
+        ask: {
+          slug: "quiz-w7-ask-c1-1",
+          text: "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth?",
+        },
+        options: [
+          { text: "Real dollars bought them, so they're real money in a costume" },
+          { text: "He's right, money stops being real once it turns into coins" },
+          { text: "Only the giant coin packs count as real money" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Coins are dollars in disguise!",
+          explanation: "Every coin pack, big or small, is bought with real dollars someone in your family worked for. The fun name and bright colors are just the costume. See the dollars underneath, every time.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c1-1",
+          text: "You saw the dollars?! But I hand-painted every coin to look like candy!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c1-1",
+          text: "Not real! Not real at all! Now hand over nine hundred not-real dollars!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c2",
+        key: "quiz-w7-c2-1",
+        label: "The Loot Box Gamble",
+        ask: {
+          slug: "quiz-w7-ask-c2-1",
+          text: "Layla opened nine loot boxes chasing the dragon pet. Her friend says the tenth HAS to win. What's true?",
+        },
+        options: [
+          { text: "Box ten has the exact same tiny chance as box one" },
+          { text: "Her friend is right, ten tries earns the prize" },
+          { text: "The chance doubles with every box she opens" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Boxes have no memory!",
+          explanation: "Box ten doesn't know the other nine ever happened. Same jar, same ninety-nine gray marbles, same one gold, every single time. Nobody 'earns' the rare prize by opening more boxes.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c2-1",
+          text: "No memory?! But the 'lucky number ten' speech is my best seller!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c2-1",
+          text: "One more box! Then one more! Then ONE more! Music to my fuzzy ears!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c3",
+        key: "quiz-w7-c3-1",
+        label: "Shop Pressure Tricks",
+        ask: {
+          slug: "quiz-w7-ask-c3-1",
+          text: "The shop flashes: 'GOLDEN CAPE, gone FOREVER in 3 minutes!' Layla loves it. What should she know?",
+        },
+        options: [
+          { text: "'Gone forever' deals almost always come back, real deals can wait" },
+          { text: "The timer is real, forever really means forever" },
+          { text: "She can buy it now and return it if she changes her mind" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Countdowns are pressure paint!",
+          explanation: "Shops put clocks on things so you buy before you think, and 'forever gone' capes come back all the time. A deal that can't wait for you was never a real deal.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c3-1",
+          text: "The cape came BACK?! Who reset my forever clock?!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c3-1",
+          text: "Tick tock, tick tock! Rushed brains buy the SHINIEST junk!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c4",
+        key: "quiz-w7-c4-1",
+        label: "Always Ask Before You Buy",
+        ask: {
+          slug: "quiz-w7-ask-c4-1",
+          text: "Mid-game, a box pops up: 'GOLDEN BLASTER, $7.99, card already saved, just tap YES!' What's the hero move?",
+        },
+        options: [
+          { text: "Pause the game and ask the grown-up whose money it is" },
+          { text: "Tap YES, a saved card means it's already allowed" },
+          { text: "Buy it now and pay it back from his piggy bank later" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Saved isn't allowed!",
+          explanation: "A saved card is real money with a shortcut button, and nobody said yes to THIS buy. Piggy-bank paybacks skip the ask too. Every buy starts with asking the grown-up whose money it is.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c4-1",
+          text: "You PAUSED?! Nobody pauses in my shop! The music is too exciting!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c4-1",
+          text: "Tap tap tap! The saved card sings, and NOBODY had to say yes! Beautiful!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c5",
+        key: "quiz-w7-c5-1",
+        label: "'FREE Coins' Are Never Free",
+        ask: {
+          slug: "quiz-w7-ask-c5-1",
+          text: "A site promises Layla 10,000 free V-Bucks if she types her username and password. What is the site really for?",
+        },
+        options: [
+          { text: "Stealing accounts, free game money doesn't exist" },
+          { text: "Sharing leftover coins the game company didn't sell" },
+          { text: "Real coins, they just take a few weeks to arrive" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Free coins are bait!",
+          explanation: "Coins cost the game company real money, so nobody hands out ten thousand for free. The 'prize' is your password. Close the page with the X and tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c5-1",
+          text: "Closed?! But I typed all those beautiful zeros MYSELF!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c5-1",
+          text: "Ten thousand pretend coins for one real password? Best trade in raccoon history!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c1",
+        key: "quiz-w7-c1-2",
+        label: "Game Coins Are Real Money",
+        ask: {
+          slug: "quiz-w7-ask-c1-2",
+          text: "The shop shows '500 Blast Coins' instead of '$4.99'. Why does the game hide the dollars?",
+        },
+        options: [
+          { text: "Play-money names make real money easier to spend" },
+          { text: "Coin numbers fit better on small screens" },
+          { text: "Games aren't allowed to show real prices" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The costume is on purpose!",
+          explanation: "When money looks like toy coins, spending it stops feeling real, and that's the whole trick. Flip every coin price back into dollars in your head and the spell breaks.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c1-2",
+          text: "You flipped it back into dollars?! My beautiful costume, unzipped!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c1-2",
+          text: "Coins, gems, sparkle-bucks! Anything but DOLLARS, dollars make people THINK!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c2",
+        key: "quiz-w7-c2-2",
+        label: "The Loot Box Gamble",
+        ask: {
+          slug: "quiz-w7-ask-c2-2",
+          text: "The prize wheel stops ONE space from the mega prize. 'SO close! Spin again?' What just happened?",
+        },
+        options: [
+          { text: "The near-miss was built in to sell one more spin" },
+          { text: "Real bad luck, and luck that bad must turn around" },
+          { text: "A glitch, the wheel meant to land on the prize" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "'Almost' is part of the machine!",
+          explanation: "The wheel is designed to stop just short, because 'so close' makes you want just one more. It isn't luck warming up and it isn't broken. It's a sales trick doing its job.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c2-2",
+          text: "You found the little brake inside my wheel?! I greased it and everything!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c2-2",
+          text: "Sooooo close! Again! Again! My favorite word is AGAIN!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c3",
+        key: "quiz-w7-c3-2",
+        label: "Shop Pressure Tricks",
+        ask: {
+          slug: "quiz-w7-ask-c3-2",
+          text: "A banner tells Adam: 'EVERYONE in your class already has the Neon Ninja skin!' How does he know it's a trick?",
+        },
+        options: [
+          { text: "A game shop can't know his class, it's left-out bait" },
+          { text: "It's true, shops keep lists of who owns what" },
+          { text: "Popular skins are the best ones, so the banner helps" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Nobody knows your class!",
+          explanation: "A shop has no idea who's in your class. It just knows 'left out' is a feeling that opens wallets. When a banner sells a feeling instead of a thing, that's the trick showing.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c3-2",
+          text: "OK FINE, I never met your class! I just guessed they were cool!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c3-2",
+          text: "Left out! Left out! The saddest words in shopping! Buy your way back in!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c4",
+        key: "quiz-w7-c4-2",
+        label: "Always Ask Before You Buy",
+        ask: {
+          slug: "quiz-w7-ask-c4-2",
+          text: "Layla's friend says: 'It's a 99-cent sticker pack, tiny buys don't need an ask!' What's true?",
+        },
+        options: [
+          { text: "Every buy gets an ask, tiny ones add up" },
+          { text: "Under a dollar is fine to buy without asking" },
+          { text: "Only buys over five dollars need the ask" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Tiny buys count too!",
+          explanation: "Little buys pile up in secret until someone gets a shock at the bill. There's no magic number that skips the rule. Every buy, every size, gets an ask first.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c4-2",
+          text: "Even the TINY ones?! Tiny buys are my bread and butter! Mostly butter!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c4-2",
+          text: "One little dollar here, one little dollar there... and soon I'm SWIMMING in them!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c5",
+        key: "quiz-w7-c5-2",
+        label: "'FREE Coins' Are Never Free",
+        ask: {
+          slug: "quiz-w7-ask-c5-2",
+          text: "In a streamer's chat: 'I'm giving 100,000 coins to my fans, log in here!' It uses the streamer's real name. What is it?",
+        },
+        options: [
+          { text: "A fake wearing the streamer's name, free coins don't exist" },
+          { text: "Real, famous streamers can afford big giveaways" },
+          { text: "Real if other fans in the chat say it worked" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Famous names get borrowed!",
+          explanation: "Anyone can slap a famous name on a scam, and the 'it worked!' replies can be fakes too. Free game money isn't real, no matter who seems to offer it. Close it and tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c5-2",
+          text: "How?! I practiced that streamer's signature for WEEKS!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c5-2",
+          text: "The famous name does ALL the work! I just hold the password bucket!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c1",
+        key: "quiz-w7-c1-3",
+        label: "Game Coins Are Real Money",
+        ask: {
+          slug: "quiz-w7-ask-c1-3",
+          text: "Adam taps 'buy 1,000 coins' on the family tablet. Where does the money actually come from?",
+        },
+        options: [
+          { text: "A real card, real dollars a grown-up worked for" },
+          { text: "The game company's giant coin vault" },
+          { text: "Nowhere, games mint their coins for free" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Someone always pays!",
+          explanation: "Behind every BUY button is a real card and real work. The game doesn't pay, the coin vault isn't real, and free minting is pretend. That's exactly why the ask comes first.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c1-3",
+          text: "You followed the money?! Nobody follows the money! That's MY job!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c1-3",
+          text: "A magic vault, yes! Definitely not your family's wallet! Wink wink!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c2",
+        key: "quiz-w7-c2-3",
+        label: "The Loot Box Gamble",
+        ask: {
+          slug: "quiz-w7-ask-c2-3",
+          text: "A crate costs $3 and flashes 'LEGENDARY INSIDE?!' The tiny print says 1-in-100. Adam buys ONE crate. What does he most likely get?",
+        },
+        options: [
+          { text: "One of the ninety-nine ordinary prizes" },
+          { text: "The legendary, it's right there on the picture" },
+          { text: "A refund if the prize turns out ordinary" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Read the tiny print!",
+          explanation: "The picture shows the best prize, but the tiny print tells the truth: ninety-nine times out of a hundred, it's a gray marble. That $3 buys a mystery, not a legendary.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c2-3",
+          text: "You read the TINY print?! I printed it tiny for a REASON!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c2-3",
+          text: "The picture never lies! Except legally! Legally it lies a LOT!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c3",
+        key: "quiz-w7-c3-3",
+        label: "Shop Pressure Tricks",
+        ask: {
+          slug: "quiz-w7-ask-c3-3",
+          text: "Layla's heart is racing at the shop and her finger hovers over BUY. What is that racing heart telling her?",
+        },
+        options: [
+          { text: "A pressure trick is working, slow down and think" },
+          { text: "The deal is truly amazing, hearts know these things" },
+          { text: "She wants it, and wanting means she should buy it" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Racing heart, slow hands!",
+          explanation: "Shops build countdowns and left-out panic exactly to make hearts race, because racing buyers don't think. The feeling is your alarm bell. Slow down, breathe, and the trick loses.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c3-3",
+          text: "You took a BREATH?! Breathing customers are my worst customers!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c3-3",
+          text: "Listen to the thumpy heart! Thump thump BUY, thump thump BUY!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c4",
+        key: "quiz-w7-c4-3",
+        label: "Always Ask Before You Buy",
+        ask: {
+          slug: "quiz-w7-ask-c4-3",
+          text: "'MEGA DEAL ends in 5 minutes!' but Adam's mom is in the shower. What does a Wallet Guard do?",
+        },
+        options: [
+          { text: "Wait and ask anyway, a deal that can't wait is a trick" },
+          { text: "Buy it now and explain when she's out" },
+          { text: "Buy it now, timers beat rules when time is short" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "Deals wait, tricks don't!",
+          explanation: "That 'mega deal' will be back next week, they almost always are. A shower is ten minutes, and the ask still comes first. Any offer that can't survive an ask was a trick all along.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c4-3",
+          text: "You WAITED?! My whole shop runs on kids who can't wait!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c4-3",
+          text: "No time to ask! No time to think! Just time to BUY! My favorite kind of time!",
+        },
+      },
+      {
+        phaseId: "phase-w7-c5",
+        key: "quiz-w7-c5-3",
+        label: "'FREE Coins' Are Never Free",
+        ask: {
+          slug: "quiz-w7-ask-c5-3",
+          text: "A pop-up fills Adam's screen: 'FREE SKIN SPINNER, every spin wins!' There's a giant SPIN button and a tiny X. Which tap wins?",
+        },
+        options: [
+          { text: "The tiny X, close it and tell a trusted grown-up" },
+          { text: "One SPIN, since every spin wins something" },
+          { text: "SPIN once with a made-up username, to be safe" },
+        ],
+        correctIndex: 0,
+        teachOnWrong: {
+          title: "The X is the winning move!",
+          explanation: "'Every spin wins' means every spin is bait, and made-up names don't make traps safe. The big shiny button is always the trap. Find the X, close it, tell a trusted grown-up.",
+        },
+        villainRight: {
+          slug: "quiz-w7-right-c5-3",
+          text: "Nooo, not the X! I hid it in the corner and EVERYTHING!",
+        },
+        villainWrong: {
+          slug: "quiz-w7-wrong-c5-3",
+          text: "Round and round it goes! Every spin wins... for MEEEE!",
+        },
+      },
+    ],
+  },
   badgeArt: "/cyberheroes/badges/week-07-wallet-guard.png",
 
   // Week-lane attack theatre: money tricks only (message scams = W4;

@@ -120,8 +120,9 @@ const BGM_REGISTRY: Record<string, SoundEntry> = {
   // felt as atmosphere, never listened to. Was 0.18.
   bgmHub: { path: "/audio/sfx/bgm-hq.mp3", volume: 0.05 },
   // Boss bed (a cappella - voices only, ElevenLabs Music). Same rule:
-  // very very faint under the villain/narrator voices + SFX. Was 0.09.
-  bgmBoss: { path: "/audio/sfx/bgm-boss.mp3", volume: 0.03 },
+  // very very faint under the villain/narrator voices + SFX. Was 0.09,
+  // then 0.03; owner toned the boss music right down to 0.01 (2026-09-03).
+  bgmBoss: { path: "/audio/sfx/bgm-boss.mp3", volume: 0.01 },
   // Explorers FINAL-TEST focus bed: the calm "Guardian Calm" hub track reused as
   // study/focus music under the must-pass exam. Louder than the CH hub bed (0.05)
   // because the test is mostly silent (WREN only voices the intro + result), so it
@@ -135,6 +136,10 @@ const BGM_REGISTRY: Record<string, SoundEntry> = {
   // perceived loudness: bgm-lesson measures ~2.4 dB louder than bgm-hq, so
   // 0.05 x 10^(-2.4/20) ~= 0.04.
   bgmDashboard: { path: "/audio/sfx/bgm-lesson.mp3", volume: 0.04 },
+  // Quiz-boss "brain waves": calm focus/concentration ambient (ElevenLabs
+  // Music). The quiz-boss has narrator OFF, so this is a standalone bed, a
+  // touch more present than the hub so it reads as focus music, still gentle.
+  bgmQuizFocus: { path: "/audio/sfx/bgm-quiz-focus.mp3", volume: 0.07 },
 };
 
 const SFX_KEYS = Object.keys(SFX_REGISTRY);
@@ -502,7 +507,7 @@ export function playSound(key: string): void {
  * hardened (per-track volume cap + NaN-safe), so re-enabling another
  * surface later is just adding its key here.
  */
-const BGM_ALLOWLIST = new Set<string>(["bgmHub", "bgmBoss", "bgmDashboard", "bgmFocus"]);
+const BGM_ALLOWLIST = new Set<string>(["bgmHub", "bgmBoss", "bgmDashboard", "bgmFocus", "bgmQuizFocus"]);
 
 export function playBGM(trackOrKey: string): void {
   if (!BGM_ALLOWLIST.has(trackOrKey)) {
