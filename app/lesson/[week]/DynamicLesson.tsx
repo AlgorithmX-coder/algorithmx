@@ -1285,6 +1285,7 @@ function DynamicLessonInner({
               accent={def.accent}
               points={def.points}
               commanderName={def.commanderName}
+              weekNumber={content.weekNumber}
               onBegin={() => navigate(screen + 1)}
             />
           </FullScene>
