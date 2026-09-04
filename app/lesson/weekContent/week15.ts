@@ -62,9 +62,9 @@ export const WEEK_15: WeekContent = {
     {
       type: "mission",
       objectives: [
-        "Know a robot voice from a real one",
-        "Check the bot against a REAL source",
-        "Keep secrets out - and use it kind",
+        "Tell a robot chatbot from a real person",
+        "Check a bot's answer before you believe it",
+        "Keep your secrets safe - and use AI kindly",
       ],
     },
 
@@ -103,11 +103,27 @@ export const WEEK_15: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Week fifteen - the robot week!",
+          "[warmly] Today we're learning to tell a robot chatbot from a real person.",
           "Chatbots can joke and chat like a person.",
           "But an AI is a computer program.",
           "No feelings. No birthday. Never, ever tired.",
           "[warmly] That makes it a TOOL - a powerful one. Not a friend.",
           "[excited] Voices incoming - who's robot, who's real? Let's sort!",
+        ],
+      },
+    },
+    // 3b - Spot the danger: the Raccoon reveals his trick before the game
+    {
+      type: "threat",
+      title: "The Friendly-Robot Trick",
+      raccoonLine:
+        "Heh heh! My Know-It-All bot talks SO nicely that kids think it's their friend - and tell it all their little secrets. Watch me sound JUST like a real person!",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "The Raccoon's robot pretends to be a real friend.",
+          "Your job: listen to each voice...",
+          "[warmly] ...and sort the real people from the robots.",
         ],
       },
     },
@@ -220,7 +236,7 @@ export const WEEK_15: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "AI talks like a person but it's a program - a powerful TOOL; friends are real people.",
+      learned: "You can tell a robot chatbot from a real person - so the Raccoon's bot can't trick you into thinking it's your friend.",
       next: "the Know-It-All's embarrassing secret: it makes things up",
       emblem: "🧠",
       narration: {
@@ -254,11 +270,27 @@ export const WEEK_15: WeekContent = {
         speaker: "adam",
         lines: [
           "[whispers] Ready for the Know-It-All's secret?",
+          "[warmly] Today we're learning that a chatbot can sound sure but be wrong - so we check it.",
           "Sometimes... it makes things up.",
           "Not fibbing on purpose - just guessing out loud,",
           "in the same big confident voice as its facts.",
           "[warmly] So the golden rule: sounding sure isn't being right.",
           "[excited] A bot answer just landed on the desk - check every line!",
+        ],
+      },
+    },
+    // 7b - Spot the danger
+    {
+      type: "threat",
+      title: "The Sounds-Sure Trick",
+      raccoonLine:
+        "My bot says EVERYTHING like it's totally sure - even when it's making it up! Kids just believe it. Go on... believe my bot about the ice-cream volcano!",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "Sounding sure is NOT the same as being right.",
+          "Your job: check the bot's report against the real book...",
+          "[warmly] ...every single line. Then make the call.",
         ],
       },
     },
@@ -356,7 +388,7 @@ export const WEEK_15: WeekContent = {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "AI can be confidently wrong - sounding sure isn't being right, so check a real source.",
+      learned: "You check a chatbot against a real book - so the Raccoon's bot can't fool you with made-up answers, however sure it sounds.",
       next: "what a chatbot should NEVER be told",
       emblem: "🔍",
       narration: {
@@ -390,11 +422,27 @@ export const WEEK_15: WeekContent = {
         speaker: "layla",
         lines: [
           "[warmly] Chatbots feel SO friendly.",
+          "Today we're learning to keep our secrets away from chatbots.",
           "They remember what you type. They chat back warmly.",
           "So here's the rule, hero:",
           "a bot is a stranger with perfect spelling.",
           "[whispers] Everything you type drops into a jar that never opens.",
           "[excited] Three bot chats coming - keep the jar EMPTY!",
+        ],
+      },
+    },
+    // 11b - Spot the danger
+    {
+      type: "threat",
+      title: "The Nosy-Question Trick",
+      raccoonLine:
+        "My friendly bot LOVES asking little questions - your name, your school, where you live. Kids tell it EVERYTHING! Keep chatting... keep telling...",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "A chatbot is not a safe place for secrets.",
+          "Your job: keep your private things zipped in the jar.",
+          "[warmly] Don't hand them to the bot.",
         ],
       },
     },
@@ -477,7 +525,7 @@ export const WEEK_15: WeekContent = {
       type: "recap",
       concept: 3,
       total: 5,
-      learned: "A bot is a stranger with perfect spelling - names, schools, photos and secrets stay out of the jar.",
+      learned: "You keep your secrets zipped away from chatbots - so the Raccoon can't collect your name, school or photos through his chatty bot.",
       next: "the pictures that never happened - and how to catch them",
       emblem: "🤐",
       narration: {
@@ -511,11 +559,27 @@ export const WEEK_15: WeekContent = {
         speaker: "adam",
         lines: [
           "[whispers] AI can paint pictures of things that never happened.",
+          "Today we're learning to spot pictures made by AI.",
           "And they can look SO real.",
           "But fakes leave clues:",
           "wrong-way shadows. Extra fingers. Melty edges. Scrambled signs.",
           "[excited] Three photo line-ups coming - one fake hides in each.",
           "Look twice, count fingers - and catch them all!",
+        ],
+      },
+    },
+    // 15b - Spot the danger
+    {
+      type: "threat",
+      title: "The Fake-Photo Trick",
+      raccoonLine:
+        "My AI paints pictures of things that NEVER happened - and kids believe every single one! Look closely if you dare... or just believe them, heh heh!",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "AI can make pictures that look real but aren't.",
+          "Your job: look for the little tells...",
+          "[warmly] ...and spot the fake in every line-up.",
         ],
       },
     },
@@ -596,7 +660,7 @@ export const WEEK_15: WeekContent = {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "AI pictures leave clues - wrong-way shadows, extra fingers, melty edges, scrambled signs. Look twice.",
+      learned: "You can spot an AI-made picture by its clues - so the Raccoon's fake photos can't fool you into believing something that never happened.",
       next: "the last power: using the tool to GROW things, not wreck them",
       emblem: "👀",
       narration: {
@@ -630,11 +694,27 @@ export const WEEK_15: WeekContent = {
         speaker: "layla",
         lines: [
           "[warmly] Last power - and it's the biggest one.",
+          "Today we're learning to use AI for kind things, not mean ones.",
           "AI is like a garden. It grows whatever seeds YOU plant.",
           "Story ideas, birthday poems - flowers.",
           "Teasing, faking, tricking - thorns. On someone REAL.",
           "[excited] Five moments, two stamps each.",
           "Plant the kind garden - let's grow!",
+        ],
+      },
+    },
+    // 19b - Spot the danger
+    {
+      type: "threat",
+      title: "The Be-Mean Trick",
+      raccoonLine:
+        "The same clever tool can grow lovely flowers... or nasty thorns. I LOVE it when kids use it to tease and trick people! Go on - plant a thorn for me...",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "AI is a tool - how you use it is up to YOU.",
+          "Your job: choose the kind way...",
+          "[warmly] ...every single time.",
         ],
       },
     },
@@ -727,7 +807,7 @@ export const WEEK_15: WeekContent = {
       type: "recap",
       concept: 5,
       total: 5,
-      learned: "AI grows what you plant - use it with a grown-up for ideas and kindness, never to tease, fake or trick.",
+      learned: "You choose to use AI kindly - so you're the hero who grows flowers, not thorns, and makes the internet nicer for everyone.",
       next: "one final stamp parade, then the Know-It-All's booth",
       emblem: "⭐",
       narration: {
@@ -811,13 +891,13 @@ export const WEEK_15: WeekContent = {
     {
       type: "missionDebrief",
       title: "Mission Complete!",
-      subtitle: "Here's everything you mastered this week.",
+      subtitle: "Here's what you learned - and what it keeps you safe from.",
       concepts: [
-        { id: "tool", label: "Tool Truth", accent: "#7eff97", icon: "🧠", summary: "AI talks like a person but it's a program - a tool, not a friend." },
-        { id: "check", label: "Book Checker", accent: "#7df0ff", icon: "🔍", summary: "Sure isn't true - you check the bot against a real source." },
-        { id: "jar", label: "Jar Zipper", accent: "#c084fc", icon: "🤐", summary: "Names, schools, photos and secrets never go in the bot's jar." },
-        { id: "fakes", label: "Fake Finder", accent: "#ffd158", icon: "👀", summary: "Wrong-way shadows, extra fingers, scrambled signs - you look twice." },
-        { id: "kind", label: "Kind Gardener", accent: "#ff5fb3", icon: "⭐", summary: "You plant kind seeds - ideas and gifts, never teasing or fakes." },
+        { id: "tool", label: "Tool Truth", accent: "#7eff97", icon: "🧠", summary: "You can tell a chatbot from a real person - so it can't trick you into thinking it's your friend." },
+        { id: "check", label: "Book Checker", accent: "#7df0ff", icon: "🔍", summary: "You check a bot against a real book - so made-up answers can't fool you." },
+        { id: "jar", label: "Jar Zipper", accent: "#c084fc", icon: "🤐", summary: "You keep your secrets out of the bot's jar - so no one can collect them." },
+        { id: "fakes", label: "Fake Finder", accent: "#ffd158", icon: "👀", summary: "You spot AI-made pictures - so fake photos can't fool you." },
+        { id: "kind", label: "Kind Gardener", accent: "#ff5fb3", icon: "⭐", summary: "You use AI kindly - so you grow flowers, not thorns." },
       ],
       narration: {
         speaker: "layla",
