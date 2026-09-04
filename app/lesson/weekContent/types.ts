@@ -204,6 +204,25 @@ export type ScreenDef = (
     }
   | { type: "mission"; objectives: string[] }
   | {
+      /**
+       * The Raccoon's "spot the danger" beat — one per skill, shown right
+       * before that skill's game. He reveals the trick he's about to try, in
+       * kid words, so the child knows exactly what they're defending against
+       * (the "why" that turns the game into a mission). Part of the Learn Loop:
+       * Learn → Spot the danger → Your turn → Prove it → You're protected.
+       */
+      type: "threat";
+      /** The Raccoon's trick, shown large in his speech bubble. Kid language. */
+      raccoonLine: string;
+      /** Small label above the bubble (defaults to "The Raccoon's Trick"). */
+      title?: string;
+      /**
+       * Spoken setup by Sarah (read aloud) that frames the danger and names
+       * the child's job. Short lines (≤ 12 words), plain 6–9-year-old words.
+       */
+      narration?: { speaker?: "adam" | "layla"; lines: string[] };
+    }
+  | {
       /** Post-intro "incident report" reveal with the week's topic image. */
       type: "alert";
       /** Per-week scene image shown in the polaroid (e.g. /cyberheroes/alerts/week-01.png). */

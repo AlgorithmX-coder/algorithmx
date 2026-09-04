@@ -115,6 +115,10 @@ const WeekIntroScene = dynamic(
   () => import("@/app/components/lesson/WeekIntroScene"),
   { ssr: false }
 );
+const RaccoonThreatScene = dynamic(
+  () => import("@/app/components/lesson/RaccoonThreatScene"),
+  { ssr: false }
+);
 
 /**
  * Set of screen types treated as "interactive exercise" for chrome
@@ -1321,6 +1325,18 @@ function DynamicLessonInner({
             <MissionBriefCase
               objectives={def.objectives}
               onAccept={() => navigate(screen + 1)}
+            />
+          </FullScene>
+        );
+
+      case "threat":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0e0a24 0%, #060a1c 100%)">
+            <RaccoonThreatScene
+              raccoonLine={def.raccoonLine}
+              title={def.title}
+              narration={def.narration}
+              onNext={() => navigate(screen + 1)}
             />
           </FullScene>
         );
