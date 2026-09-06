@@ -466,18 +466,26 @@ export const case18War: WarCase = {
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. Six fresh ones, no hints, and you need five right. Everything about doing this right and getting out safely, put it to work. Ready?",
+    intro: "Last thing before I sign this off, the test. All fresh scenarios, no hints, and you'll need a clear pass. Everything about doing this right and getting out safely, put it to work. Ready?",
     introVoice: "/audio/wren/m18w-test-intro.mp3",
     passVoice: "/audio/wren/m18w-test-pass.mp3",
     failVoice: "/audio/wren/m18w-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       { scenario: "The same security skill can help or harm.", ask: "What decides which?", options: [{ label: "Permission from the owner and intent to help", correct: true }, { label: "How clever the trick is" }, { label: "Whether you get caught" }] },
+      { scenario: "A friend dares you to guess your way into his sister's account, just for a laugh.", ask: "Is doing it okay?", options: [{ label: "Yes, if you're skilled enough to manage it" }, { label: "Yes, as long as you don't change anything" }, { label: "No, there's no permission and the intent is to intrude", correct: true }] },
       { scenario: "Someone is hired to test a company's site and reports the bugs.", ask: "Which hat is that?", options: [{ label: "White hat, permission and helping", correct: true }, { label: "Black hat" }, { label: "Grey hat" }] },
+      { scenario: "You test the wifi security of a cafe you're sitting in, without asking the owner, just to see if you can.", ask: "Which hat are you wearing?", options: [{ label: "White hat, because you didn't break anything" }, { label: "Grey hat, no permission, so still against the rules", correct: true }, { label: "No hat, it's a public place" }] },
       { scenario: "You accidentally find a bug exposing others' private data.", ask: "What's the right move?", options: [{ label: "Quietly report it to a trusted adult, don't use it", correct: true }, { label: "Look through everyone's data" }, { label: "Post the bug publicly" }] },
+      { scenario: "You notice the school library site lets you change other students' book loans.", ask: "What does responsible disclosure mean here?", options: [{ label: "Change a few loans to prove the bug is real" }, { label: "Post the trick online so it gets fixed faster" }, { label: "Tell a librarian or teacher privately, and change nothing", correct: true }] },
+      { scenario: "A stranger online says, \"You're way too talented for that little programme, come join my real crew.\"", ask: "Which lever is that?", options: [{ label: "Flattery, hooking your ego", correct: true }, { label: "An honest job offer with no catch" }, { label: "A plain compliment that means nothing" }] },
+      { scenario: "The same stranger adds, \"Don't mention this to your parents, they wouldn't understand.\"", ask: "What is that line doing?", options: [{ label: "Respecting your privacy" }, { label: "Pulling the secrecy lever to cut you off from help", correct: true }, { label: "Saving your parents from worry" }] },
       { scenario: "An offer says 'easy money, tell no one, decide now'.", ask: "What are those?", options: [{ label: "Red flags: reward, secrecy, and pressure", correct: true }, { label: "Signs of a great opportunity" }, { label: "Proof it's safe" }] },
+      { scenario: "Two offers arrive. One says \"ask a parent first, here's exactly who we are.\" The other says \"decide within the hour, and keep it quiet.\"", ask: "Which one is the honest offer?", options: [{ label: "The second, because real chances move fast" }, { label: "The first, it welcomes an adult and is clear about who they are", correct: true }, { label: "Neither, no offer can ever be trusted" }] },
       { scenario: "A recruiter asks for one tiny rule-breaking favour first.", ask: "What stops the whole play?", options: [{ label: "Refuse the small ask and tell a trusted adult", correct: true }, { label: "Do it, it's basically nothing" }, { label: "Keep it secret and handle it alone" }] },
+      { scenario: "A recruiter says, \"You already did one small favour, so now you can't stop.\"", ask: "Is that true?", options: [{ label: "Yes, once you start you're committed" }, { label: "Yes, but only after you've been paid" }, { label: "No, you can always stop and tell a trusted adult, it's never too late", correct: true }] },
       { scenario: "An offer feels off and you're not sure what to do.", ask: "What's always your exit?", options: [{ label: "Stop, don't act, and tell a trusted adult", correct: true }, { label: "It's too late to back out" }, { label: "Keep it secret to be safe" }] },
+      { scenario: "Before anyone ever makes you an offer, you decide your line in advance.", ask: "What three parts should that line have?", options: [{ label: "Be clever, be fast, and be quiet" }, { label: "No harm, no secrets, and only ever with permission", correct: true }, { label: "Say yes to anyone who compliments your skills" }] },
     ],
   },
 

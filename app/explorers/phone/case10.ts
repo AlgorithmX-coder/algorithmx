@@ -384,11 +384,11 @@ export const case10Phone: PhoneCase = {
 
   /* ================= TEST · "Prove it" (blind, must-pass) ================= */
   test: {
-    intro: "Last thing before I close the case and your SECRET clearance, the test. Six fresh ones, no hints, and you need five right. This one earns your promotion, so take your time and think. Ready?",
+    intro: "Last thing before I close the case and your SECRET clearance, the test. A fresh set, no hints, and you'll need most of them right. This earns your promotion, so take your time and think. Ready?",
     introVoice: "/audio/wren/m10p-test-intro.mp3",
     passVoice: "/audio/wren/m10p-test-pass.mp3",
     failVoice: "/audio/wren/m10p-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       {
         scenario: "You get a voice message that sounds exactly like your mum, asking for a bank code.",
@@ -442,6 +442,78 @@ export const case10Phone: PhoneCase = {
           { label: "Stay calm, hang up, call her real number, and tell an adult", correct: true },
           { label: "Send it, she sounds terrified" },
           { label: "Stay on the line and do as she says" },
+        ],
+      },
+      {
+        scenario: "You post a quick video of yourself singing, just a few seconds long, on a public account.",
+        ask: "Could that tiny clip ever be a problem?",
+        options: [
+          { label: "No, a clip that short is far too small to copy a voice" },
+          { label: "Yes, even a few seconds is enough for a machine to clone your voice", correct: true },
+          { label: "No, only videos of grown-ups can ever be cloned" },
+        ],
+      },
+      {
+        scenario: "A new phone app promises it can automatically flag every fake voice for you.",
+        ask: "Can you count on it to keep you safe for good?",
+        options: [
+          { label: "Yes, once an app spots fakes you never have to check again" },
+          { label: "Yes, apps are always cleverer than the scammers" },
+          { label: "No, the fakes keep improving, so catching them is still a losing race", correct: true },
+        ],
+      },
+      {
+        scenario: "Your dad's voice calls from a number you don't recognise, saying he borrowed a stranger's phone and needs your help fast.",
+        ask: "How do you confirm it's really him?",
+        options: [
+          { label: "Hang up and reach him on the number you already have for him", correct: true },
+          { label: "Trust it, the borrowed-phone story explains the strange number" },
+          { label: "Ask the caller to describe what your dad looks like" },
+        ],
+      },
+      {
+        scenario: "A caller who sounds just like your gran says, \"Remind me what our family code word is, I've forgotten it.\"",
+        ask: "What do you do?",
+        options: [
+          { label: "Tell her the word so she can use it next time" },
+          { label: "Refuse, you never tell a caller the word, they say it to you", correct: true },
+          { label: "Give her a small hint to jog her memory" },
+        ],
+      },
+      {
+        scenario: "A voice like your sister's calls in tears, saying she's locked out of her account and needs you to read her the code that just texted your phone.",
+        ask: "What's really going on here?",
+        options: [
+          { label: "Nothing, she just needs a quick favour from you" },
+          { label: "She wants you to slow down and think it through" },
+          { label: "It's the same panic-then-grab, steering at a code before you can check", correct: true },
+        ],
+      },
+      {
+        scenario: "You wonder how a scammer ever got hold of your uncle's voice in the first place.",
+        ask: "Which move of MIMIC's play answers that?",
+        options: [
+          { label: "The last move, when it rushes you for money" },
+          { label: "The first move, scraping a few seconds of his voice from a post online", correct: true },
+          { label: "None, a cloned voice just appears out of nowhere" },
+        ],
+      },
+      {
+        scenario: "MIMIC brags that it built the whole voice scam completely by itself.",
+        ask: "Why don't you believe it?",
+        options: [
+          { label: "It needed scraped audio and a written script from others, so it had help", correct: true },
+          { label: "You do believe it, one villain can easily do everything" },
+          { label: "The audio and script it used don't matter at all" },
+        ],
+      },
+      {
+        scenario: "A panic call in your cousin's voice comes through while you're home alone and feeling scared.",
+        ask: "What's the safest first thing to do?",
+        options: [
+          { label: "Handle it yourself quickly so nobody has to worry" },
+          { label: "Do whatever the caller says, since there's no one else around" },
+          { label: "Take a breath, don't act on the voice, and get a trusted adult involved", correct: true },
         ],
       },
     ],
