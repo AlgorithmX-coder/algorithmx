@@ -1462,7 +1462,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
                 {manifest.actor.codename} IS LIVE
               </div>
               <div style={{ fontSize: 15, lineHeight: 1.6, color: T.textSecondary, marginTop: 6 }}>
-                Use your 3 skills. Beat the phases. No timer. Think, then act.
+                Use all {manifest.cycles.length} skills. Beat the phases. No timer. Think, then act.
               </div>
             </div>
           </div>
@@ -1520,7 +1520,7 @@ function ReportScene({ manifest, reduced, onNext }: { manifest: MissionManifest;
   return (
     <section style={{ maxWidth: 640 }}>
       <Eyebrow text="Mission report" color={T.confirmedGreen} />
-      <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>You learned 3 skills today.</h1>
+      <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>You learned {manifest.cycles.length} skills today.</h1>
       <div style={{ display: "grid", gap: 10, marginBottom: 18 }}>
         {manifest.cycles.map((c, i) => (
           <div key={c.id} style={{ display: "flex", gap: 14, alignItems: "center", background: `${T.confirmedGreen}0A`, border: `1px solid ${T.confirmedGreen}55`, borderRadius: 4, padding: "13px 16px" }}>

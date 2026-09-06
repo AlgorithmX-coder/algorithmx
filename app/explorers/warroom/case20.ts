@@ -475,11 +475,11 @@ export const case20War: WarCase = {
   },
 
   test: {
-    intro: "One last test, Agent, the final one. Six questions, no hints, and you need five. Everything you've become across twenty cases, put it to work one more time. Ready?",
+    intro: "The last test, Agent. No hints this time, just you and the board. Everything you've become across the whole programme, put it to work again now. This is where it all comes together. Ready?",
     introVoice: "/audio/wren/m20w-test-intro.mp3",
     passVoice: "/audio/wren/m20w-test-pass.mp3",
     failVoice: "/audio/wren/m20w-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       { scenario: "A dozen separate alerts arrive across the year.", ask: "What's the analyst move?", options: [{ label: "Look for the pattern that connects them", correct: true }, { label: "Handle each alone and forget it" }, { label: "Ignore them all" }] },
       { scenario: "A quiet file is built from your data crumbs to be sold.", ask: "Whose signature is that?", options: [{ label: "PACKRAT, data hoarding", correct: true }, { label: "PHANTOM HOOK, phishing" }, { label: "GHOSTWRITER, fakes" }] },
@@ -487,6 +487,14 @@ export const case20War: WarCase = {
       { scenario: "You and the coordinator have the exact same skills.", ask: "What separates you?", options: [{ label: "The Code: permission, no harm, no secrets", correct: true }, { label: "Nothing, skill is all" }, { label: "Whoever is cleverer" }] },
       { scenario: "The coordinator turns out to be a former trained analyst.", ask: "What's the lesson?", options: [{ label: "Skills don't make you good, the Code does", correct: true }, { label: "Trained people can't go bad" }, { label: "Training is pointless" }] },
       { scenario: "You've identified the coordinator and could strike back.", ask: "How do you finish it right?", options: [{ label: "Clean evidence to the authorities, keep the Code", correct: true }, { label: "Hack them back for revenge" }, { label: "Dump their private data online" }] },
+      { scenario: "On their own, five reports each looked like a harmless slip, but the same odd username sits in every one.", ask: "What does that repeat tell you?", options: [{ label: "Deal with each slip on its own" }, { label: "The repeat is a pattern worth tracing", correct: true }, { label: "Delete them, five is too many to read" }] },
+      { scenario: "The exact same \"you've won a prize\" message lands in thousands of inboxes at once, hoping a few reply.", ask: "Whose signature is that?", options: [{ label: "PACKRAT, quiet hoarding" }, { label: "GHOSTWRITER, faked media" }, { label: "THE FLOOD, mass scam spray", correct: true }] },
+      { scenario: "Stolen crumbs feed a phishing wave, and the logins it steals are sold on for cash.", ask: "Follow the benefit. Who gains from the whole chain?", options: [{ label: "Each crook alone, sharing nothing" }, { label: "One operator profiting from every stage", correct: true }, { label: "No one, it earns nothing" }] },
+      { scenario: "You can't yet prove who runs the attacks, but the right question narrows it fast.", ask: "Which question do you ask first?", options: [{ label: "Who profits if all of these succeed?", correct: true }, { label: "Which attack is the biggest?" }, { label: "Which attack happened first?" }] },
+      { scenario: "All four campaigns went silent on the same three days, then started up again together.", ask: "What does that shared timing point to?", options: [{ label: "Four crews who happened to rest" }, { label: "The internet simply went down" }, { label: "One schedule, so one coordinator", correct: true }] },
+      { scenario: "You spot a way into a rival's system that nobody would ever notice.", ask: "What does the Code tell you?", options: [{ label: "Go in, no one will ever know" }, { label: "Don't go in without permission", correct: true }, { label: "Go in if you're skilled enough" }] },
+      { scenario: "A brilliant classmate brags that being clever means the rules don't apply to them.", ask: "What does the K-STATIC lesson warn?", options: [{ label: "That's exactly how a trained person turns bad", correct: true }, { label: "Clever people are always safe" }, { label: "The rules really don't apply to the smart" }] },
+      { scenario: "You could quietly break into the coordinator's system to grab proof faster.", ask: "Why does a real analyst refuse?", options: [{ label: "Speed matters more than the Code" }, { label: "It's fine because the cause is good" }, { label: "Breaking rules to catch a rule-breaker makes two of them", correct: true }] },
     ],
   },
 

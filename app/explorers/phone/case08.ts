@@ -393,11 +393,11 @@ export const case08Phone: PhoneCase = {
 
   /* ================= TEST · "Prove it" (blind, must-pass) ================= */
   test: {
-    intro: "Last thing before I close the case, the test. Six fresh ones you haven't seen. No hints, and you need five right. Remember, the trick isn't spotting typos any more. Ready?",
+    intro: "Last thing before I close the case, the test. A fresh batch you haven't seen. No hints, and you'll need most of them right. Remember, the trick isn't spotting typos any more. Ready?",
     introVoice: "/audio/wren/m08p-test-intro.mp3",
     passVoice: "/audio/wren/m08p-test-pass.mp3",
     failVoice: "/audio/wren/m08p-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       {
         scenario: "A message from a stranger has perfect spelling, perfect grammar, and no typos at all.",
@@ -451,6 +451,78 @@ export const case08Phone: PhoneCase = {
           { label: "Send nothing, verify who they are, and tell an adult", correct: true },
           { label: "Send it, they've been so nice all week" },
           { label: "Keep the secret, but just don't send money" },
+        ],
+      },
+      {
+        scenario: "A flawless, beautifully written message makes you sure only a careful, genuine adult could have sent it.",
+        ask: "What does the perfect writing actually prove about who sent it?",
+        options: [
+          { label: "It's genuine, careful writing always means a careful, honest person" },
+          { label: "Nothing, a machine writes perfectly too, so polish points to nobody", correct: true },
+          { label: "It came from an adult, because kids always make mistakes" },
+        ],
+      },
+      {
+        scenario: "A stranger writes: \"Out of everyone online, I picked just you to message, because you seem so special.\"",
+        ask: "Why should that not make you feel specially chosen?",
+        options: [
+          { label: "Because the message was spelled perfectly" },
+          { label: "Because they already knew your first name" },
+          { label: "A machine can send that exact \"just you\" line to thousands at once", correct: true },
+        ],
+      },
+      {
+        scenario: "After a couple of days of chatting, a new contact writes: \"you understand me better than my own family ever has.\"",
+        ask: "What's the clue in that?",
+        options: [
+          { label: "Nothing, they clearly just feel a strong connection" },
+          { label: "Enormous closeness with no real time or shared moments behind it", correct: true },
+          { label: "Nothing, their message is warm and well written" },
+        ],
+      },
+      {
+        scenario: "A message reads: \"it's Jordan from your football team, I'm on my back-up account now.\"",
+        ask: "How do you check it's really Jordan?",
+        options: [
+          { label: "Believe it, it sounds exactly like something Jordan would say" },
+          { label: "Reply on this account and ask him to promise it's really him" },
+          { label: "Ask Jordan in person, or on an account you already know is his", correct: true },
+        ],
+      },
+      {
+        scenario: "A new online friend has been endlessly kind for weeks and has never wanted a single thing.",
+        ask: "When the ask finally comes, how will it be built to feel?",
+        options: [
+          { label: "Small and reasonable, so all that kindness makes it hard to say no", correct: true },
+          { label: "Big and frightening, so you panic and rush" },
+          { label: "It won't ever come, they plainly want nothing" },
+        ],
+      },
+      {
+        scenario: "A friend describes an online chat they had: a perfect first message, then loads of flattery, then days of being lovely, then a request for money.",
+        ask: "What have they just described?",
+        options: [
+          { label: "Some unlucky coincidences that just happened in a row" },
+          { label: "A real friendship that sadly went wrong at the end" },
+          { label: "GHOSTWRITER's whole play, run from start to finish", correct: true },
+        ],
+      },
+      {
+        scenario: "An online friend who has always felt completely trustworthy asks for your account password and adds \"don't tell your mum, she wouldn't get it.\"",
+        ask: "What's the play?",
+        options: [
+          { label: "Refuse, check who they really are, and tell a trusted adult", correct: true },
+          { label: "Share it, that trustworthy feeling means it must be safe" },
+          { label: "Share it, but keep it from your mum like they asked" },
+        ],
+      },
+      {
+        scenario: "A new contact's messages are flawless and are now drowning you in compliments, but there's been no request of any kind yet.",
+        ask: "Which move are you in, and what does the play say is coming?",
+        options: [
+          { label: "The last move, so the danger has already passed" },
+          { label: "Fake warmth now, with trust-building and then an ask still to come", correct: true },
+          { label: "No move at all, this isn't part of any pattern" },
         ],
       },
     ],
