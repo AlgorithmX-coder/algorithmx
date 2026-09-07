@@ -39,6 +39,7 @@ import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
 import { checkpointStorageKey, xpForEvent } from "./engine/types";
+import { loadExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { CaseGlyph } from "./CaseGlyphs";
 import { MatrixRain } from "./MatrixRain";
 import { mission01 } from "./missions/mission01";
@@ -279,6 +280,32 @@ export default function ExplorersPage() {
   useEffect(() => {
     refreshStatus();
   }, [refreshStatus]);
+
+  // Merge account-synced progress on top of the local read: a case finished on
+  // another device shows CLOSED (and unlocks the next) here too. Additive and
+  // best-effort — never clears a locally-known status; no-ops when signed out.
+  useEffect(() => {
+    let alive = true;
+    loadExplorersProgress()
+      .then((prog) => {
+        if (!alive) return;
+        setStatus((prev) => {
+          const next = { ...prev };
+          for (const m of CASES) {
+            const n = parseInt(m.caseNumber.replace(/\D/g, ""), 10);
+            const p = prog.byCase[n];
+            if (p?.completed) next[m.id] = "CLOSED";
+            else if (p && next[m.id] == null) next[m.id] = "IN PROGRESS";
+          }
+          return next;
+        });
+        if (prog.totalXp > 0) setTotalXp((x) => Math.max(x, prog.totalXp));
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   // Deep link: /explorers?case=16 opens that case; &at=boss jumps to the boss;
   // &at=test jumps straight to the end-of-case test. Dev always; on prod only

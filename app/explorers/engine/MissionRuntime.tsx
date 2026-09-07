@@ -16,6 +16,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
+import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 
 // Arm narration BEFORE the browser paints, so a narrated screen shows up with the
 // WREN speaking-lock already in place — no one-frame gap where a fast tap slips
@@ -271,6 +272,15 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
       localStorage.setItem(storageKey, JSON.stringify({ missionId: manifest.id, pos, events } satisfies MissionCheckpoint));
     } catch {}
   }, [pos, events, hydrated, resumeOffer, storageKey, manifest.id, devStartBeat]);
+
+  // Account-synced completion (additive to the localStorage checkpoint above).
+  // Best-effort: no-ops when signed out / no child / content unseeded.
+  useEffect(() => {
+    if (pos.beat !== "closed" || !hydrated) return;
+    const caseNo = parseInt(manifest.caseNumber.replace(/\D/g, ""), 10) || 0;
+    void saveExplorersProgress(caseNo, { completed: true, xp, screen: 99 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pos.beat, hydrated]);
 
   const emit = useCallback((e: AwardEvent) => {
     const key = eventKey(e);

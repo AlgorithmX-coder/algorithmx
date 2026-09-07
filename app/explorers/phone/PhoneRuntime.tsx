@@ -16,6 +16,7 @@ import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
+import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest } from "./case06";
 
@@ -304,7 +305,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
               <LockScreen caseNumber={phoneCase.caseNumber} open={phoneCase.open} title={phoneCase.title} onOpen={beginFresh} />
             )
           ) : phase === "test" ? (
-            <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => { markCaseComplete(phoneCase.id); clearProgress(phoneCase.id); setPhase("debrief"); }} />
+            <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => { markCaseComplete(phoneCase.id); clearProgress(phoneCase.id); void saveExplorersProgress(parseInt(phoneCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
           ) : phase === "debrief" ? (
             <Debrief data={phoneCase.debrief} onExit={onExit} onNext={onNextCase} />
           ) : (
