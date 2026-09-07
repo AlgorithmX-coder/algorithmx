@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaClient, ProductStatus } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { EXPLORERS_CONTENT } from "./explorersContent";
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
@@ -61,18 +62,23 @@ const products = [
   // exist as catalogue rows so /api/waitlist FK lookups succeed; no
   // CourseContent until they actually launch.
   {
+    // The Explorers course app is live at /explorers; its 20 cases carry
+    // per-child Progress (case = week). Status stays COMING_SOON here because
+    // catalogue/purchase state is a separate commercial decision — content can
+    // exist without flipping that. On prod, add content via the idempotent
+    // scripts/seed-explorers-content.ts (never the destructive full seed).
     slug: "cyberexplorers",
     name: "Cyber Explorers",
     ageMin: 10,
     ageMax: 13,
     priceGBP: 9900,
-    weeks: 0,
+    weeks: 20,
     status: ProductStatus.COMING_SOON,
     emoji: "🧭",
     ageRange: "10–13",
     duration: "60 min/week",
-    weeksCount: 0,
-    content: [],
+    weeksCount: 20,
+    content: EXPLORERS_CONTENT,
   },
   {
     slug: "cyberstart",
