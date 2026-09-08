@@ -619,7 +619,7 @@ function VideoScreen({
                   textAlign: "center",
                 }}
               >
-                Video couldn&apos;t load — tap &ldquo;Skip video&rdquo; to continue.
+                Video couldn&apos;t load. Tap &ldquo;Skip video&rdquo; to continue.
               </div>
             )}
 
@@ -1163,6 +1163,25 @@ function DynamicLessonInner({
     wrongAnswerShake();
   }, [setArenaMoodBrief]);
 
+  // A11y: when the child advances, move focus to the new screen region so
+  // screen readers announce it and keyboard/switch users land in the new
+  // content. Skips the first mount (the resume banner manages its own focus).
+  // Declared BEFORE the early returns below so the hook order stays identical
+  // on every render (a conditional hook here crashed the brief hydration path
+  // where rawWeek is still undefined).
+  const screenRegionRef = useRef<HTMLDivElement>(null);
+  const firstScreenFocusRef = useRef(true);
+  useEffect(() => {
+    if (firstScreenFocusRef.current) {
+      firstScreenFocusRef.current = false;
+      return;
+    }
+    const t = window.setTimeout(() => {
+      screenRegionRef.current?.focus({ preventScroll: true });
+    }, 60);
+    return () => window.clearTimeout(t);
+  }, [screen]);
+
   // Param hasn't resolved yet (very brief moment in some hydration paths) -
   // render a simple loading state so the page never appears "blank."
   if (rawWeek === undefined) {
@@ -1176,22 +1195,6 @@ function DynamicLessonInner({
 
   const def = content.screens[screen];
   const stars = (wrongCounts[screen] ?? 0) === 0 ? 3 : (wrongCounts[screen] ?? 0) <= 1 ? 2 : 1;
-
-  // A11y: when the child advances, move focus to the new screen region so
-  // screen readers announce it and keyboard/switch users land in the new
-  // content. Skips the first mount (the resume banner manages its own focus).
-  const screenRegionRef = useRef<HTMLDivElement>(null);
-  const firstScreenFocusRef = useRef(true);
-  useEffect(() => {
-    if (firstScreenFocusRef.current) {
-      firstScreenFocusRef.current = false;
-      return;
-    }
-    const t = window.setTimeout(() => {
-      screenRegionRef.current?.focus({ preventScroll: true });
-    }, 60);
-    return () => window.clearTimeout(t);
-  }, [screen]);
 
   const renderScreen = (): React.ReactNode => {
     if (!def) return null;
@@ -2534,7 +2537,7 @@ function DynamicLessonInner({
                         marginInline: "auto",
                       }}
                     >
-                      The Hacker Raccoon is a tricky one — but you&apos;ve got
+                      The Hacker Raccoon is a tricky one, but you&apos;ve got
                       this. Want another go?
                     </p>
                     <OrangeButton
