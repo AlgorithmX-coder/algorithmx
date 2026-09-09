@@ -24,6 +24,17 @@ import { useCallback } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { useComfortMode } from "@/app/lib/comfortMode";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+
+/** Pick dark or white text so a button label is readable on any accent hue. */
+function readableInk(hex: string): string {
+  const h = hex.replace("#", "");
+  const full = h.length === 3 ? h.replace(/(.)/g, "$1$1") : h;
+  const n = parseInt(full, 16);
+  if (Number.isNaN(n)) return "#fff";
+  const lum = 0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255);
+  return lum > 150 ? "#04140f" : "#fff";
+}
 
 export type GameButtonVariant =
   | "primary"   // orange hero CTA (Next/Continue/Accept)
@@ -116,6 +127,17 @@ export default function GameButton({
   const reduce = comfort.enabled || comfort.prefersReducedMotion;
   const v = VARIANTS[variant];
   const s = SIZES[size];
+  // Cohesion: on a themed week the hero CTA (primary/secondary/success) uses
+  // the ONE week accent so every "Next / I'm ready / Continue" matches the
+  // screen instead of a warm orange pop. Un-themed weeks keep the variants.
+  const themeAccent = useLessonTheme()?.accent;
+  // Only the PRIMARY hero CTA themes to the accent — secondary/success keep
+  // their own colours so states like "not ready yet" (secondary) stay distinct.
+  const themed = !!themeAccent && variant === "primary";
+  const bg = themed ? `linear-gradient(135deg, ${themeAccent}, ${themeAccent}cc)` : v.bg;
+  const fg = themed ? readableInk(themeAccent!) : v.color;
+  const shadow = themed ? `0 6px 22px ${themeAccent}55` : v.shadow;
+  const hoverShadow = themed ? `0 10px 30px ${themeAccent}88` : v.shadow.replace("0.45", "0.65").replace("0.4", "0.6");
 
   const handleClick = useCallback(() => {
     if (disabled) return;
@@ -132,13 +154,13 @@ export default function GameButton({
         if (disabled || reduce) return;
         const el = e.currentTarget as HTMLButtonElement;
         el.style.transform = "translateY(-2px)";
-        el.style.boxShadow = v.shadow.replace("0.45", "0.65").replace("0.4", "0.6");
+        el.style.boxShadow = hoverShadow;
         if (hoverSound) playSound(hoverSound);
       }}
       onPointerLeave={(e) => {
         const el = e.currentTarget as HTMLButtonElement;
         el.style.transform = "";
-        el.style.boxShadow = v.shadow;
+        el.style.boxShadow = shadow;
       }}
       onPointerDown={(e) => {
         if (disabled || reduce) return;
@@ -150,8 +172,8 @@ export default function GameButton({
         (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)";
       }}
       style={{
-        background: v.bg,
-        color: v.color,
+        background: bg,
+        color: fg,
         border: `2px solid ${v.border}`,
         borderRadius: 14,
         padding: s.padding,
@@ -160,7 +182,7 @@ export default function GameButton({
         fontWeight: 800,
         cursor: disabled ? "not-allowed" : "pointer",
         opacity: disabled ? 0.5 : 1,
-        boxShadow: v.shadow,
+        boxShadow: shadow,
         letterSpacing: "0.02em",
         fontFamily: "'Space Grotesk', sans-serif",
         display: "inline-flex",

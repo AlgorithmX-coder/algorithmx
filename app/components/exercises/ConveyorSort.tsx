@@ -28,6 +28,7 @@ import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 export interface ConveyorCategory {
   id: string;
@@ -56,8 +57,12 @@ export interface ConveyorSortProps {
   completeTitle?: string;
   completeLine?: string;
   hints?: { tier1: string; tier2: string };
+  /** Spot-the-Danger preamble folded into the intro (the Raccoon's boast). */
+  threat?: { raccoonLine: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken Sarah acknowledgment on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -95,8 +100,10 @@ export default function ConveyorSort({
   completeTitle,
   completeLine,
   hints,
+  threat,
   introNarration,
   coachLines,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -108,6 +115,9 @@ export default function ConveyorSort({
   const intensity = useMotionIntensity();
   const comfort = useComfortMode();
   const reduce = intensity < 1;
+  // Cohesion: the belt scanner tints to the week accent (teal on W15) instead
+  // of its stock violet; un-themed weeks keep the violet.
+  const accent = useLessonTheme()?.accent;
 
   const [showIntro, setShowIntro] = useState(true);
   const [idx, setIdx] = useState(0);
@@ -146,7 +156,9 @@ export default function ConveyorSort({
     return () => window.clearInterval(id);
   }, [showIntro, finished, idx, comfort.enabled]);
 
-  // Scanner caught the card → gentle timeout teach.
+  // The card must be sorted before it reaches the scanner. Run out of time and
+  // the scanner catches it: it counts as wrong and teaches via WrongAnswerPanel
+  // (owner wants the belt to have real stakes, not wait forever).
   useEffect(() => {
     if (progress < 1 || !item || paused || feedback || stamp) return;
     audio.wrong();
@@ -155,7 +167,7 @@ export default function ConveyorSort({
     setPaused(true);
     setFeedback({
       title: "The scanner beat you to it!",
-      explanation: `That one was "${item.text}" — ${item.explanation}`,
+      explanation: `That one was "${item.text}". ${item.explanation}`,
       tip: "No rush next time - the belt always waits after a stumble.",
     });
     onAnswered?.({
@@ -213,7 +225,7 @@ export default function ConveyorSort({
   };
 
   const stars = wrongCount === 0 ? 3 : wrongCount <= 2 ? 2 : 1;
-  const beltX = 4 + progress * 68; // % across the machine face
+  const beltX = 4 + progress * 68; // % across the machine face (rides to the scanner)
 
   const stampCat = useMemo(
     () => (stamp ? categories.find((c) => c.id === stamp.categoryId) : null),
@@ -230,6 +242,7 @@ export default function ConveyorSort({
           subtitle={introSubtitle ?? "Send each card down the right chute before it reaches the scanner."}
           icon={introIcon ?? "🌍"}
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
@@ -298,8 +311,10 @@ export default function ConveyorSort({
               bottom: 30,
               width: 46,
               borderRadius: 10,
-              background: "linear-gradient(180deg, rgba(124,92,255,0.32), rgba(124,92,255,0.12))",
-              border: "1px solid rgba(160,106,255,0.6)",
+              background: accent
+                ? `linear-gradient(180deg, ${accent}52, ${accent}1f)`
+                : "linear-gradient(180deg, rgba(124,92,255,0.32), rgba(124,92,255,0.12))",
+              border: accent ? `1px solid ${accent}99` : "1px solid rgba(160,106,255,0.6)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -308,7 +323,7 @@ export default function ConveyorSort({
             }}
           >
             <PixIcon emoji="👀" size={22} />
-            <span style={{ fontSize: 8.5, fontWeight: 900, color: "#c9b6ff", letterSpacing: "0.08em" }}>
+            <span style={{ fontSize: 8.5, fontWeight: 900, color: accent ?? "#c9b6ff", letterSpacing: "0.08em" }}>
               SCAN
             </span>
             <div
@@ -316,7 +331,9 @@ export default function ConveyorSort({
                 width: 3,
                 alignSelf: "stretch",
                 margin: "2px auto 0",
-                background: "linear-gradient(180deg, transparent, rgba(192,132,252,0.8))",
+                background: accent
+                  ? `linear-gradient(180deg, transparent, ${accent}cc)`
+                  : "linear-gradient(180deg, transparent, rgba(192,132,252,0.8))",
               }}
             />
           </div>
@@ -454,6 +471,7 @@ export default function ConveyorSort({
             `${correctCount}/${items.length} sorted first try`,
             completeLine ?? "The vault is locked and the share pile is safe.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(correctCount)}
         />
       )}

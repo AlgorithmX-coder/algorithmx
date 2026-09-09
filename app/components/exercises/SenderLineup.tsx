@@ -11,17 +11,19 @@
  * mechanics live in Week 16.
  */
 
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 export interface LineupSender {
   id: string;
@@ -31,6 +33,8 @@ export interface LineupSender {
   detail: string;
   /** Emoji rendered via PixIcon as the badge crest. */
   icon: string;
+  /** Optional photo shown in place of the emoji crest. */
+  image?: string;
   /** True = the lookalike imposter (exactly one per round). */
   isFake: boolean;
   /** Teach copy: why this one is fake / why it checks out. */
@@ -59,8 +63,12 @@ export interface SenderLineupProps {
   completeTitle?: string;
   completeLine?: string;
   hints?: { tier1: string; tier2: string };
+  /** Spot-the-Danger preamble folded into the intro (the Raccoon's boast). */
+  threat?: { raccoonLine: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken Sarah acknowledgment on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -84,8 +92,10 @@ export default function SenderLineup({
   completeTitle,
   completeLine,
   hints,
+  threat,
   introNarration,
   coachLines,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -96,6 +106,15 @@ export default function SenderLineup({
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  // Cohesion: the (un-busted) card chrome + prompt use the week accent instead
+  // of cyan; the "caught" pink stays as a deliberate gotcha pop. Un-themed
+  // weeks keep the cyan.
+  const accent = useLessonTheme()?.accent;
+  const cardEdge = accent ? `${accent}66` : "rgba(125,240,255,0.4)";
+  const cardBg = accent
+    ? `linear-gradient(165deg, ${accent}1a, rgba(12,18,48,0.92))`
+    : "linear-gradient(165deg, rgba(0,229,255,0.1), rgba(12,18,48,0.92))";
+  const cardGlow = accent ? `0 14px 30px -18px ${accent}b3` : "0 14px 30px -18px rgba(0,229,255,0.7)";
 
   const [showIntro, setShowIntro] = useState(true);
   const [idx, setIdx] = useState(0);
@@ -107,6 +126,9 @@ export default function SenderLineup({
 
   const finished = idx >= rounds.length;
   const round = rounds[idx];
+  // Sarah reads the round aloud (the prompt now spells out the task) so the
+  // child knows exactly what to do. Stable array keyed off the round.
+  const promptLines = useMemo(() => (round ? [round.prompt] : []), [round]);
 
   useEffect(() => {
     setBusted(null);
@@ -163,18 +185,17 @@ export default function SenderLineup({
           subtitle={introSubtitle ?? "One of these senders is wearing a disguise. Read carefully - then bust the imposter!"}
           icon={introIcon ?? "🕵️"}
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
       )}
 
       {round && !finished && (
-        <AnimatePresence mode="wait">
           <motion.div
             key={round.id}
             initial={reduce ? false : { x: 40, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={reduce ? undefined : { x: -40, opacity: 0 }}
           >
             {/* Situation prompt */}
             <div
@@ -184,8 +205,8 @@ export default function SenderLineup({
                 margin: "0 auto 20px",
                 padding: "12px 18px",
                 borderRadius: 14,
-                background: "rgba(0,229,255,0.08)",
-                border: "1px solid rgba(125,240,255,0.35)",
+                background: accent ? `${accent}14` : "rgba(0,229,255,0.08)",
+                border: accent ? `1px solid ${accent}59` : "1px solid rgba(125,240,255,0.35)",
                 color: "#dff6ff",
                 fontSize: 16,
                 fontWeight: 800,
@@ -193,6 +214,12 @@ export default function SenderLineup({
               }}
             >
               {round.prompt}
+            </div>
+
+            {/* Sarah reads the round aloud (audio-only; the prompt above shows
+                the words + the task). Keyed per round so she re-reads each one. */}
+            <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+              <InfoNarration key={`lineup-${idx}`} speaker="adam" lines={promptLines} accent={accent ?? "#7df0ff"} />
             </div>
 
             {/* The lineup */}
@@ -219,7 +246,15 @@ export default function SenderLineup({
                         ? { y: 0, opacity: 1, rotate: [0, -4, 4, -2, 0] }
                         : { y: 0, opacity: 1 }
                     }
-                    transition={{ delay: reduce ? 0 : 0.07 * i, type: "spring", stiffness: 260, damping: 20 }}
+                    transition={
+                      // When shaking (a keyframe array), use a TWEEN — a spring
+                      // transition throws "only two keyframes with spring" (the
+                      // error fires during keyframe resolution, before any
+                      // per-property override applies). Spring only when settling.
+                      isBusted && !reduce
+                        ? { delay: reduce ? 0 : 0.07 * i, duration: 0.45, ease: "easeInOut" }
+                        : { delay: reduce ? 0 : 0.07 * i, type: "spring", stiffness: 260, damping: 20 }
+                    }
                     whileHover={reduce || busted ? undefined : { y: -6 }}
                     whileTap={busted ? undefined : { scale: 0.96 }}
                     style={{
@@ -230,31 +265,49 @@ export default function SenderLineup({
                       gap: 8,
                       padding: "18px 10px 14px",
                       borderRadius: 16,
-                      border: `2px solid ${isBusted ? "#ff5fb3" : "rgba(125,240,255,0.4)"}`,
+                      border: `2px solid ${isBusted ? "#ff5fb3" : cardEdge}`,
                       background: isBusted
                         ? "linear-gradient(165deg, rgba(255,95,179,0.2), rgba(30,8,26,0.92))"
-                        : "linear-gradient(165deg, rgba(0,229,255,0.1), rgba(12,18,48,0.92))",
+                        : cardBg,
                       color: "#eaf9ff",
                       cursor: busted ? "default" : "pointer",
                       fontFamily: "inherit",
                       minHeight: 168,
                       boxShadow: isBusted
                         ? "0 0 34px -4px rgba(255,95,179,0.7)"
-                        : "0 14px 30px -18px rgba(0,229,255,0.7)",
+                        : cardGlow,
                       touchAction: "manipulation",
                     }}
                   >
-                    <span
-                      style={{
-                        display: "inline-flex",
-                        padding: 9,
-                        borderRadius: "50%",
-                        background: "rgba(255,255,255,0.08)",
-                        border: "1.5px solid rgba(255,255,255,0.2)",
-                      }}
-                    >
-                      <PixIcon emoji={s.icon} size={34} />
-                    </span>
+                    {s.image ? (
+                      // A real photo (with the clue underneath) so a "spot the
+                      // fake photo" round is easier for a 6-9yo to read; falls
+                      // back to the emoji crest when a round has no photos.
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={s.image}
+                        alt=""
+                        style={{
+                          width: "100%",
+                          aspectRatio: "1 / 1",
+                          objectFit: "cover",
+                          borderRadius: 12,
+                          border: "2px solid rgba(255,255,255,0.18)",
+                        }}
+                      />
+                    ) : (
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          padding: 9,
+                          borderRadius: "50%",
+                          background: "rgba(255,255,255,0.08)",
+                          border: "1.5px solid rgba(255,255,255,0.2)",
+                        }}
+                      >
+                        <PixIcon emoji={s.icon} size={34} />
+                      </span>
+                    )}
                     <span style={{ fontSize: 15.5, fontWeight: 900, letterSpacing: "0.01em" }}>{s.name}</span>
                     <span
                       style={{
@@ -276,7 +329,7 @@ export default function SenderLineup({
                         width: "70%",
                         height: 8,
                         borderRadius: 4,
-                        background: "rgba(125,240,255,0.18)",
+                        background: accent ? `${accent}2e` : "rgba(125,240,255,0.18)",
                       }}
                     />
                     {isBusted && (
@@ -322,7 +375,6 @@ export default function SenderLineup({
               {wrongCount >= 2 && hints && <HintBubble tier={2} speaker="layla" text={hints.tier2} />}
             </div>
           </motion.div>
-        </AnimatePresence>
       )}
 
       {coachLines && !showIntro && !hasInteracted && !finished && (
@@ -346,6 +398,7 @@ export default function SenderLineup({
             `${correctCount}/${rounds.length} lineups solved first try`,
             completeLine ?? "Real senders cleared, lookalikes exposed.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(correctCount)}
         />
       )}

@@ -37,9 +37,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { playSound, playBGM, stopBGM } from "@/app/lib/sounds";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import CodeRainBackground from "@/app/components/CodeRainBackground";
 import type { WeekContent, BossQuizQuestion } from "@/app/lesson/weekContent/types";
 import type { BossEndStats, BossPhaseResult } from "@/app/components/game/BossBattle";
@@ -87,6 +89,12 @@ type Stage = "intro" | "ask" | "victory" | "failed";
 /** Same-every-week how-to line (the whole format IS the instruction). */
 const HOW_TO_PLAY = "Tap the right answer to beat him!";
 
+/** Spoken + on-screen option labels. Sarah reads "Is it option A… / Option B…
+ *  / Or is it option C…" and each answer card wears the matching badge, so a
+ *  6-9yo can follow by ear and by eye. Read order == display order (both seed
+ *  qIdx*47+5), so the letters always line up. */
+const OPTION_LETTERS = ["A", "B", "C", "D", "E"];
+
 // "#e3b341" -> "227,179,65" so the canvas rain can be tinted to the week accent.
 function hexRgb(hex: string): string {
   const h = hex.replace("#", "");
@@ -114,9 +122,10 @@ const MOTIF_SPOTS = [
 /** Default accent when a week forgets to author one (W1 gold). */
 const DEFAULT_ACCENT = "#e3b341";
 
-/** Deterministic display shuffle (locked pilot rule: answers shuffled
- *  everywhere, seeded so a given attempt always lays out the same way,
- *  and a retry lays out DIFFERENTLY so it is not just position memory). */
+/** Deterministic display shuffle: answers are shuffled per question (seeded by
+ *  qIdx), so the correct one isn't always in the same slot, but a given
+ *  question always lays out the SAME way — including on a redo — so the spoken
+ *  "option A/B/C" read-out stays lined up with the on-screen badges. */
 function seededShuffle<T>(arr: readonly T[], seed: number): T[] {
   const out = [...arr];
   let s = (seed * 9301 + 49297) % 233280;
@@ -139,8 +148,9 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
 
   const [stage, setStage] = useState<Stage>("intro");
   const [qIdx, setQIdx] = useState(0);
-  /** Bumps on every retry of the current question: reshuffles the
-   *  options and re-speaks the scenario. */
+  /** Bumps on a full-set redo: re-speaks each scenario. (It does NOT reshuffle
+   *  the options — the layout is pinned to qIdx so the spoken A/B/C order keeps
+   *  matching the badges; see seededShuffle + displayOptions.) */
   const [attemptNonce, setAttemptNonce] = useState(0);
   /** Questions beaten so far = health segments drained. */
   const [beaten, setBeaten] = useState(0);
@@ -150,6 +160,11 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   // struggling kid is never hard-stuck on the boss with no way forward.
   const [failedTries, setFailedTries] = useState(0);
   const [judging, setJudging] = useState(false);
+  // The answer options stay LOCKED until Sarah finishes reading the question,
+  // so the child can't tap before/over the voice (which cut her off mid-read).
+  // Set true by the ask-narration onDone (fires on end/block/error/safety),
+  // reset per question below.
+  const [askDone, setAskDone] = useState(false);
   const [raccoonMood, setRaccoonMood] = useState<RaccoonMood>("taunt");
   const [raccoonLine, setRaccoonLine] = useState<string | null>(null);
   /** The tapped answer during the brief reveal beat: highlights the picked
@@ -160,6 +175,10 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   const [report, setReport] = useState<{ phaseId: string; label: string; correct: number; total: number }[]>([]);
   const [shakeNonce, setShakeNonce] = useState(0);
   const [popups, setPopups] = useState<{ id: number; text: string; colour: string; x: number; y: number }[]>([]);
+  // The teach Sarah reads on the reveal (right AND wrong), mirrored on screen.
+  // Null except during the brief reveal beat between a tap and the next
+  // question — the fight waits for her to finish before advancing.
+  const [explain, setExplain] = useState<null | { lines: string[]; correct: boolean }>(null);
 
   const arenaRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<ParticleAPI | null>(null);
@@ -170,12 +189,64 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   /** Attempt counter per phase id, for the -a{n} key numbering. */
   const attemptsRef = useRef<Map<string, number>>(new Map());
   const timersRef = useRef<number[]>([]);
+  // Reveal → explanation gating. Sarah explains EVERY answer and the fight
+  // waits for her to finish (or a safety cap) before moving on, so she is
+  // never cut off. `advancedRef` guards a single advance per reveal;
+  // `pendingAdvanceRef` holds the step to run; `revealStart` enforces a short
+  // minimum so the teach is seen even when audio is muted/blocked.
+  const advancedRef = useRef(false);
+  const pendingAdvanceRef = useRef<null | (() => void)>(null);
+  const revealStart = useRef(0);
+  // The reveal's advance-safety timer id, tracked so it's cleared the instant
+  // the reveal advances — otherwise a stale timer from an earlier question
+  // could fire during a later one and skip it forward.
+  const revealSafetyRef = useRef<number | null>(null);
 
-  const later = useCallback((fn: () => void, ms: number) => {
-    timersRef.current.push(window.setTimeout(fn, ms));
-  }, []);
+  // Advance / grade — runs ONCE per reveal, only after both Sarah's
+  // explanation has finished (onDone) and a short minimum has elapsed.
+  const runAdvance = useCallback(() => {
+    if (advancedRef.current) return;
+    const MIN = reduce ? 1100 : 2000;
+    const elapsed = performance.now() - revealStart.current;
+    if (elapsed < MIN) {
+      timersRef.current.push(window.setTimeout(() => runAdvance(), MIN - elapsed));
+      return;
+    }
+    advancedRef.current = true;
+    if (revealSafetyRef.current !== null) {
+      window.clearTimeout(revealSafetyRef.current);
+      revealSafetyRef.current = null;
+    }
+    const step = pendingAdvanceRef.current;
+    pendingAdvanceRef.current = null;
+    step?.();
+  }, [reduce]);
 
   const question: BossQuizQuestion | undefined = questions[qIdx];
+  // Sarah reads the whole question aloud on the boss (accessibility for 6-9yo
+  // non-readers) as a clear, playful multiple-choice: the scenario, then
+  // "Is it option A… <answer>, Option B… <answer>, Or is it option C… <answer>",
+  // then "So, what do you think?". The choices are read in the SAME shuffled
+  // order they're shown (both seed qIdx*47+5), so the spoken A/B/C always line
+  // up with the on-screen badges AND she never reads the correct one first.
+  // Keep in lock-step with the generator's bossAsk read-out builder so the
+  // recorded clip matches the manifest.
+  const askLines = useMemo(() => {
+    if (!question) return [];
+    const ordered = seededShuffle(question.options, qIdx * 47 + 5);
+    const lines: string[] = [question.ask.text];
+    ordered.forEach((o, i) => {
+      const last = i === ordered.length - 1;
+      const lead = i === 0
+        ? `Is it option ${OPTION_LETTERS[i]}...`
+        : last
+          ? `Or is it option ${OPTION_LETTERS[i]}...`
+          : `Option ${OPTION_LETTERS[i]}...`;
+      lines.push(lead, o.text);
+    });
+    lines.push("So, what do you think?");
+    return lines;
+  }, [question, qIdx]);
   const themeMotifs = quiz.theme?.motifs ?? [];
   /** The distinct taught concepts, in order, for the end-of-test report. */
   const conceptList = useMemo(() => {
@@ -209,11 +280,33 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   useEffect(() => {
     if (stage !== "intro") return;
     const id = window.setTimeout(() => {
-      playSound("bossRoar");
+      // (No roar — it startled young players; the intro opens calmly.)
       speakVillain(quiz.intro.slug, quiz.intro.text);
     }, reduce ? 250 : 700);
     return () => window.clearTimeout(id);
   }, [stage, quiz, reduce]);
+
+  /* Lock the answer options while Sarah reads a NEW question (or retry); they
+     re-open when she finishes (askDone via onDone). TWO safety nets so the
+     child is NEVER stranded behind a lock that can't lift:
+       - muted: there's no voice to wait for and the recorded onDone never
+         fires, so unlock at once (the whole question is on screen as text);
+       - otherwise: a generous read-time cap unlocks even if onDone never fires
+         (captions-only, or a flaky audio engine), like the exercise intros. */
+  useEffect(() => {
+    if (stage !== "ask") { setAskDone(false); return; }
+    if (isAudioMuted()) { setAskDone(true); return; }
+    setAskDone(false);
+    const maxMs = 6000 + askLines.length * 4500;
+    const id = window.setTimeout(() => setAskDone(true), maxMs);
+    return () => window.clearTimeout(id);
+  }, [qIdx, attemptNonce, stage, askLines.length]);
+
+  /* If the child mutes mid-question, the recorded voice stops and its onDone
+     never comes — unlock the options right away rather than trapping them. */
+  useEffect(() => subscribeAudioMute((muted) => {
+    if (muted) setAskDone(true);
+  }), []);
 
   /* Each ASK (and each retry): the villain speaks the scenario, queued
      behind whatever line he is finishing so audio never overlaps. */
@@ -261,12 +354,14 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     setStage("ask");
   };
 
-  /** Options in display order, reshuffled per attempt. */
+  /** Options in display order. Seeded by qIdx only (NOT attemptNonce) so the
+   *  layout matches the recorded read-out's A/B/C order every time — a redo
+   *  keeps the same letters rather than desyncing the voice from the badges. */
   const displayOptions = useMemo(() => {
     if (!question) return [];
     const tagged = question.options.map((opt, origIdx) => ({ opt, origIdx }));
-    return seededShuffle(tagged, qIdx * 47 + attemptNonce * 13 + 5);
-  }, [question, qIdx, attemptNonce]);
+    return seededShuffle(tagged, qIdx * 47 + 5);
+  }, [question, qIdx]);
 
   const pick = (displayIndex: number, e: React.MouseEvent) => {
     if (!question || judging || stage !== "ask") return;
@@ -325,8 +420,13 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
       }
     }
 
-    // Reveal beat: the correct answer flashes green (learning), then advance.
-    later(() => {
+    // Reveal beat: the correct answer flashes green, and Sarah explains WHY
+    // it's the safe answer (right = affirm + why; wrong = "not quite" + the
+    // same teach). The fight advances only when she finishes — never cut off.
+    revealStart.current = performance.now();
+    advancedRef.current = false;
+    pendingAdvanceRef.current = () => {
+      setExplain(null);
       setRaccoonLine(null);
       setPicked(null);
       setJudging(false);
@@ -350,11 +450,29 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
         setRaccoonMood("taunt");
         setQIdx((i) => i + 1);
       }
-    }, reduce ? 1150 : 1950);
+    };
+    setExplain({
+      lines: [wasCorrect ? "That's right!" : "Not quite.", question.teachOnWrong.explanation],
+      correct: wasCorrect,
+    });
+    // Safety net: advance even if the explanation's onDone never fires. Muted =
+    // no voice, so a short readable pause (the caption is on screen); otherwise
+    // a GENEROUS backstop that must sit comfortably above the longest recorded
+    // explanation, because the recorded onDone normally advances first and this
+    // only exists for the rare case where `ended` never fires. (A tighter cap
+    // here was clipping Sarah mid-sentence on the longer explanations — the
+    // audio ran past it, so the backstop advanced the question before she was
+    // done.) Reduced-motion must NOT shorten it: motion≠audio length. Tracked in
+    // revealSafetyRef and cleared the instant the reveal advances (runAdvance),
+    // so a stale timer can't reach into the next question.
+    if (revealSafetyRef.current !== null) window.clearTimeout(revealSafetyRef.current);
+    const revealSafetyMs = isAudioMuted() ? (reduce ? 2600 : 3600) : 45000;
+    revealSafetyRef.current = window.setTimeout(runAdvance, revealSafetyMs);
+    timersRef.current.push(revealSafetyRef.current);
   };
 
   /** Under the pass mark: wipe the score and run the whole set again
-   *  (options reshuffled via attemptNonce). */
+   *  (same layout, re-read from the top via attemptNonce). */
   const redo = () => {
     playSound("select");
     const m = new Map<string, BossPhaseResult>();
@@ -519,6 +637,39 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
         )}
       </AnimatePresence>
 
+      {/* Sarah's reveal teach, mirrored on screen (she reads it aloud). Shown
+          for both right and wrong so a child always hears WHY — bottom-centre
+          so it never collides with the villain bubble (top-right). */}
+      <AnimatePresence>
+        {explain && (
+          <motion.div
+            key={`explain-${qIdx}-${attemptNonce}`}
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: "absolute", left: "50%", bottom: "3.5%", transform: "translateX(-50%)",
+              zIndex: 30, width: "min(560px, 92%)",
+              padding: "13px 18px", borderRadius: 14,
+              background: "linear-gradient(180deg, rgba(20,27,52,0.97), rgba(9,13,28,0.98))",
+              border: `1.5px solid ${explain.correct ? "#57e08a" : `${accent}c0`}`,
+              boxShadow: "0 18px 40px -16px #000",
+              display: "flex", alignItems: "flex-start", gap: 12,
+            }}
+          >
+            <span style={{ flexShrink: 0, display: "grid", placeItems: "center", width: 34, height: 34, borderRadius: "50%", background: explain.correct ? "rgba(87,224,138,0.16)" : `${accent}22`, border: `1.5px solid ${explain.correct ? "#57e08a" : `${accent}c0`}` }}>
+              <PixIcon emoji={explain.correct ? "✅" : "💡"} size={20} />
+            </span>
+            <span style={{ textAlign: "left", lineHeight: 1.4 }}>
+              <b style={{ display: "block", fontSize: 14, fontWeight: 900, letterSpacing: "0.02em", color: explain.correct ? "#7eff97" : accent, marginBottom: 2 }}>
+                {explain.lines[0]}
+              </b>
+              <span style={{ fontSize: 14.5, fontWeight: 600, color: "#eef4ff" }}>{explain.lines[1]}</span>
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* HUD: the boss health bar (one segment per concept) + score */}
       {stage !== "intro" && (
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 20, padding: "12px 16px 8px", display: "flex", flexDirection: "column", gap: 6 }}>
@@ -538,7 +689,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                 const alive = i >= beaten;
                 return (
                   <motion.div
-                    key={q.phaseId}
+                    key={q.key ?? `${q.phaseId}-${i}`}
                     animate={alive ? { opacity: 1, scaleY: 1 } : { opacity: 0.3, scaleY: 0.55 }}
                     style={{
                       flex: 1, height: 13, borderRadius: 3,
@@ -556,7 +707,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           </div>
           {stage === "ask" && (
             <div style={{ fontFamily: MONO, fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", color: "#cfe3ff", textShadow: "0 1px 6px rgba(5,10,30,0.8)" }}>
-              QUESTION {Math.min(qIdx + 1, total)}/{total} · {question?.label.toUpperCase()} · CORRECT {beaten}/{passMark} TO PASS
+              QUESTION {Math.min(qIdx + 1, total)}/{total} · {question?.label.toUpperCase()} · CORRECT {Math.min(beaten, passMark)}/{passMark} TO PASS
             </div>
           )}
         </div>
@@ -658,6 +809,25 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                 </div>
               </div>
 
+              {/* Sarah reads the question aloud (audio-only, visually hidden;
+                  the text above carries it on screen). Keyed to the question +
+                  retry so she re-reads on a reshuffled retry. speaker="adam" =
+                  Sarah, matching the recorded boss-ask in the manifest. */}
+              <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+                {/* MUTUALLY EXCLUSIVE: exactly one narration is ever mounted, so
+                    the two Sarahs can never overlap. InfoNarration instances do
+                    NOT coordinate audio, and mounting the reveal narration used
+                    to remount the ask one and re-fire its autoplay on top. */}
+                {!explain ? (
+                  <InfoNarration key={`boss-ask-${qIdx}-${attemptNonce}`} speaker="adam" lines={askLines} accent={accent} onDone={() => setAskDone(true)} recordedOnly />
+                ) : (
+                  // Sarah's reveal explanation (why the safe answer is right).
+                  // Audio-only; the caption below mirrors it. onDone advances
+                  // the fight, so she is never cut off mid-sentence.
+                  <InfoNarration key={`boss-explain-${qIdx}-${attemptNonce}`} speaker="adam" lines={explain.lines} accent={accent} onDone={runAdvance} recordedOnly />
+                )}
+              </div>
+
               {/* 2-4 big option cards. One verb: TAP. */}
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center", width: "100%", maxWidth: 680 }}>
                 {displayOptions.map((entry, i) => {
@@ -672,22 +842,25 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                       ? "linear-gradient(180deg, rgba(190,60,60,0.96), rgba(130,30,30,0.97))"
                       : "linear-gradient(180deg, rgba(20,27,52,0.94), rgba(10,14,30,0.96))";
                   const bd = revealCorrect ? "#57e08a" : revealWrong ? "#ff8f8b" : `${accent}80`;
-                  const dim = judging && !revealCorrect && !revealWrong;
+                  // Locked until Sarah has finished reading the question, so a
+                  // tap can't fire before/over her voice and cut it off.
+                  const inert = judging || !askDone;
+                  const dim = (judging && !revealCorrect && !revealWrong) || !askDone;
                   return (
                     <motion.button
                       key={`${qIdx}-${attemptNonce}-${entry.origIdx}`}
                       onClick={(e) => pick(i, e)}
-                      disabled={judging}
-                      animate={judging || reduce ? { scale: revealCorrect ? 1.05 : 1 } : { scale: [1, 1.04, 1] }}
-                      transition={judging || reduce ? { duration: 0.2 } : { duration: 1.3, repeat: Infinity, ease: "easeInOut", delay: i * 0.25 }}
-                      whileTap={reduce || judging ? undefined : { scale: 0.92 }}
+                      disabled={inert}
+                      animate={inert || reduce ? { scale: revealCorrect ? 1.05 : 1 } : { scale: [1, 1.04, 1] }}
+                      transition={inert || reduce ? { duration: 0.2 } : { duration: 1.3, repeat: Infinity, ease: "easeInOut", delay: i * 0.25 }}
+                      whileTap={reduce || inert ? undefined : { scale: 0.92 }}
                       style={{
-                        display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-                        minHeight: 64, minWidth: 200, maxWidth: 320,
-                        padding: "14px 22px", borderRadius: 12,
-                        cursor: judging ? "default" : "pointer",
+                        display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 12,
+                        minHeight: 64, minWidth: 240, maxWidth: 340,
+                        padding: "14px 18px", borderRadius: 12,
+                        cursor: inert ? "default" : "pointer",
                         touchAction: "manipulation", fontFamily: "inherit", fontSize: 17, fontWeight: 800,
-                        textAlign: "center", lineHeight: 1.25,
+                        textAlign: "left", lineHeight: 1.25,
                         background: bg,
                         border: `1px solid ${bd}`,
                         color: "#eef4ff",
@@ -697,7 +870,21 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                         opacity: dim ? 0.5 : 1,
                       }}
                     >
-                      {entry.opt.text}
+                      {/* The A/B/C badge matches what Sarah says ("option B…") */}
+                      <span
+                        aria-hidden
+                        style={{
+                          flexShrink: 0, width: 32, height: 32, borderRadius: 9,
+                          display: "grid", placeItems: "center",
+                          fontFamily: MONO, fontSize: 16, fontWeight: 900,
+                          color: revealCorrect ? "#0b2417" : revealWrong ? "#2a0d0d" : accent,
+                          background: revealCorrect || revealWrong ? "rgba(255,255,255,0.85)" : `${accent}22`,
+                          border: `1.5px solid ${revealCorrect ? "#bff5d2" : revealWrong ? "#ffc9c6" : `${accent}70`}`,
+                        }}
+                      >
+                        {OPTION_LETTERS[i]}
+                      </span>
+                      <span style={{ flex: 1 }}>{entry.opt.text}</span>
                     </motion.button>
                   );
                 })}

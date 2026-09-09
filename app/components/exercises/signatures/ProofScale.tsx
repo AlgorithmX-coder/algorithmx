@@ -554,15 +554,53 @@ function BookFace({ book, width }: { book: Book; width: number }) {
   );
 }
 
+/* A bouncing "👆 label" arrow for the guided first round. Absolutely
+ * positioned by the caller (the parent element must be position:relative). */
+function GuideArrow({ label, style }: { label: string; style?: React.CSSProperties }) {
+  return (
+    <motion.div
+      aria-hidden
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
+      transition={{ y: { duration: 1, repeat: Infinity, ease: "easeInOut" } }}
+      style={{
+        position: "absolute",
+        zIndex: 45,
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "5px 12px 5px 9px",
+        borderRadius: 999,
+        background: "#3dffc4",
+        color: "#04241a",
+        fontFamily: FONT_STACK,
+        fontSize: 13,
+        fontWeight: 900,
+        whiteSpace: "nowrap",
+        boxShadow: "0 6px 18px rgba(61,255,196,0.55)",
+        pointerEvents: "none",
+        ...style,
+      }}
+    >
+      <span style={{ fontSize: 18 }}>👆</span>
+      {label}
+    </motion.div>
+  );
+}
+
 /* ═══════════════════════ main component ═══════════════════════ */
 
 export default function ProofScale({
   onComplete,
   narration,
+  winNarration,
+  guide,
   accent,
 }: {
   onComplete: () => void;
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  winNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  guide?: { speaker?: "adam" | "layla"; claim: string; evidence: string };
   accent?: string;
 }) {
   const audio = useGameAudio();
@@ -589,6 +627,11 @@ export default function ProofScale({
   const doneRef = useRef(false);
 
   const claim = CLAIMS[claimIdx];
+
+  // First-round WALKTHROUGH: on the very first claim only, Sarah talks the child
+  // through it and arrows point at what to tap. Purely additive — never changes
+  // the game logic; from round 2 on it's the normal game.
+  const guided = !!guide && phase === "play" && claimIdx === 0;
 
   const later = useCallback((fn: () => void, ms: number) => {
     timersRef.current.push(window.setTimeout(fn, ms));
@@ -630,24 +673,31 @@ export default function ProofScale({
     [tilt]
   );
 
+  // Place the claim on the left pan. Shared by TAP and DRAG so little hands
+  // can just tap the card — dragging a floating card is hard for a 6-year-old,
+  // and a tap is the interaction kids reach for first.
+  const placeClaim = useCallback(() => {
+    if (stage !== "claim") return;
+    audio.drop(); // claim card seats on the pan
+    setStage("evidence");
+    setNudge(null);
+    // tiny settle wiggle so the drop feels physical
+    animate(tilt, [0, -2.5, 1.5, 0], { duration: 0.7, ease: "easeInOut" });
+  }, [stage, tilt, audio]);
+
   const handleClaimDragEnd = useCallback(
     (_e: unknown, info: PanInfo) => {
       if (stage !== "claim") return;
-      if (hitsRect(info, leftPanRef.current, DROP_INFLATE)) {
-        audio.drop(); // claim card seats on the pan
-        setStage("evidence");
-        setNudge(null);
-        // tiny settle wiggle so the drop feels physical
-        animate(tilt, [0, -2.5, 1.5, 0], { duration: 0.7, ease: "easeInOut" });
-      }
+      if (hitsRect(info, leftPanRef.current, DROP_INFLATE)) placeClaim();
     },
-    [stage, tilt, audio]
+    [stage, placeClaim]
   );
 
-  const handleBookDragEnd = useCallback(
-    (book: Book) => (_e: unknown, info: PanInfo) => {
+  // Judge a book against the current claim. Shared by TAP and DRAG.
+  const placeBook = useCallback(
+    (book: Book) => {
       if (stage !== "evidence" || verdict) return;
-      if (!hitsRect(info, rightPanRef.current, DROP_INFLATE)) return;
+      if (usedBookIds.includes(book.id)) return;
       if (book.id === claim.bookId) {
         audio.correct(); // matching proof book found
         setPlacedBookId(book.id);
@@ -676,7 +726,14 @@ export default function ProofScale({
         );
       }
     },
-    [stage, verdict, claim, claimIdx, tilt, showNudge, later, goNext, audio]
+    [stage, verdict, usedBookIds, claim, claimIdx, tilt, showNudge, later, goNext, audio]
+  );
+
+  const handleBookDragEnd = useCallback(
+    (book: Book) => (_e: unknown, info: PanInfo) => {
+      if (hitsRect(info, rightPanRef.current, DROP_INFLATE)) placeBook(book);
+    },
+    [placeBook]
   );
 
   const handleBuzzer = useCallback(() => {
@@ -702,6 +759,12 @@ export default function ProofScale({
 
   /* ── win: deflate the robot, stamp the seal, complete once ── */
 
+  const finish = useCallback(() => {
+    if (doneRef.current) return;
+    doneRef.current = true;
+    onComplete();
+  }, [onComplete]);
+
   useEffect(() => {
     if (phase !== "win") return;
     audio.unlock(); // win beat — all claims weighed
@@ -710,22 +773,22 @@ export default function ProofScale({
       delay: 0.5,
       ease: "easeOut",
     });
-    const t = window.setTimeout(() => {
-      if (!doneRef.current) {
-        doneRef.current = true;
-        onComplete();
-      }
-    }, 2600);
-    timersRef.current.push(t);
+    // With a spoken closing payoff, DON'T auto-advance — let the child hear
+    // Sarah's "well done, now you can fact-check" and tap Continue when ready.
+    const hasWinNarration = !!winNarration && winNarration.lines.length > 0;
+    if (!hasWinNarration) {
+      const t = window.setTimeout(finish, 2600);
+      timersRef.current.push(t);
+    }
     return () => anim.stop();
-  }, [phase, winConf, onComplete, audio]);
+  }, [phase, winConf, finish, audio, winNarration]);
 
   const placedBook = BOOKS.find((b) => b.id === placedBookId) ?? null;
   const statusDefault =
     stage === "claim"
-      ? "Drag the CLAIM card onto the left pan of the scale."
+      ? "Tap the CLAIM card to put it on the scale."
       : stage === "evidence"
-        ? "Find the matching proof book for the right pan. No book? Slam NO PROOF!"
+        ? "Now tap the matching proof book. No book anywhere? Slam NO PROOF!"
         : "";
   const status = nudge ?? (statusDefault ? { text: statusDefault, kind: "info" } : null);
   const statusColor =
@@ -828,6 +891,21 @@ export default function ProofScale({
           </div>
         </div>
 
+        {/* First-round walkthrough voice (Sarah), audio-only; guard OFF so the
+            child can tap the arrowed target while she talks. Re-keyed per stage
+            so she speaks the right step at the right moment. */}
+        {guided && guide && (stage === "claim" || stage === "evidence") && (
+          <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+            <InfoNarration
+              key={`ps-guide-${stage}`}
+              speaker={guide.speaker ?? "adam"}
+              lines={[stage === "claim" ? guide.claim : guide.evidence]}
+              accent={accent ?? "#3dffc4"}
+              guard={false}
+            />
+          </div>
+        )}
+
         {/* main lab row */}
         <div
           style={{
@@ -893,7 +971,7 @@ export default function ProofScale({
             </div>
 
             {/* the draggable claim card, presented by the robot */}
-            <div style={{ height: 92, display: "flex", alignItems: "center" }}>
+            <div style={{ height: 92, display: "flex", alignItems: "center", position: "relative" }}>
               <AnimatePresence>
                 {phase === "play" && stage === "claim" && (
                   <motion.div
@@ -902,6 +980,9 @@ export default function ProofScale({
                     dragSnapToOrigin
                     dragMomentum={false}
                     onDragEnd={handleClaimDragEnd}
+                    onTap={() => placeClaim()}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.94 }}
                     whileDrag={{ scale: 1.08, zIndex: 60 }}
                     initial={{ opacity: 0, scale: 0.7 }}
                     animate={{ opacity: 1, scale: 1, y: [0, -5, 0] }}
@@ -910,18 +991,21 @@ export default function ProofScale({
                       y: { duration: 1.4, repeat: Infinity, ease: "easeInOut" },
                     }}
                     style={{
-                      cursor: "grab",
+                      cursor: "pointer",
                       touchAction: "none",
                       position: "relative",
                       zIndex: 20,
                     }}
                     role="button"
-                    aria-label={`Claim card: ${claim.card}. Drag onto the left scale pan.`}
+                    aria-label={`Claim card: ${claim.card}. Tap it, or drag it, onto the left scale pan.`}
                   >
                     <ClaimCardFace text={claim.card} width={168} />
                   </motion.div>
                 )}
               </AnimatePresence>
+              {guided && stage === "claim" && (
+                <GuideArrow label="Tap this claim!" style={{ left: "50%", bottom: 0, transform: "translateX(-50%)" }} />
+              )}
             </div>
           </div>
 
@@ -937,6 +1021,9 @@ export default function ProofScale({
           >
             {/* evidence shelf */}
             <div style={{ position: "relative", zIndex: 10 }}>
+              {guided && stage === "evidence" && (
+                <GuideArrow label="Which book proves it?" style={{ right: 4, top: -14 }} />
+              )}
               <div
                 style={{
                   fontSize: 11,
@@ -971,11 +1058,13 @@ export default function ProofScale({
                       dragSnapToOrigin
                       dragMomentum={false}
                       onDragEnd={handleBookDragEnd(book)}
+                      onTap={draggable ? () => placeBook(book) : undefined}
                       whileDrag={{ scale: 1.1, zIndex: 60 }}
                       whileHover={draggable ? { y: -6 } : undefined}
+                      whileTap={draggable ? { scale: 0.94 } : undefined}
                       animate={{ opacity: used ? 0.35 : draggable ? 1 : 0.55 }}
                       style={{
-                        cursor: draggable ? "grab" : "default",
+                        cursor: draggable ? "pointer" : "default",
                         touchAction: "none",
                         position: "relative",
                       }}
@@ -983,7 +1072,7 @@ export default function ProofScale({
                       aria-label={
                         used
                           ? `${book.title}, already used`
-                          : `Proof book: ${book.title}`
+                          : `Proof book: ${book.title}. Tap it, or drag it, onto the right scale pan.`
                       }
                     >
                       <BookFace book={book} width={92} />
@@ -1298,6 +1387,9 @@ export default function ProofScale({
                   textAlign: "center",
                 }}
               >
+                {guided && stage === "evidence" && (
+                  <GuideArrow label="or slam NO PROOF!" style={{ right: 0, top: -22 }} />
+                )}
                 <motion.button
                   type="button"
                   onClick={handleBuzzer}
@@ -1419,13 +1511,16 @@ export default function ProofScale({
                 flex: "1 1 auto",
                 minHeight: 0,
                 overflowY: "auto",
-                justifyContent: "safe center",
+                // Top-aligned (was "safe center", which centred the overflowing
+                // column and CLIPPED the bottom — the 3rd How-to-play step was
+                // cut off). Tighter spacing so all 3 steps clear the fold.
+                justifyContent: "flex-start",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: 16,
+                gap: 12,
                 width: "100%",
-                padding: "24px 24px 8px",
+                padding: "16px 24px 8px",
               }}
             >
             <motion.div
@@ -1446,55 +1541,109 @@ export default function ProofScale({
             >
               THE PROOF SCALE
             </div>
+            {/* Real-life hook: why this skill matters, in kid words. */}
             <div
               style={{
                 fontSize: 16,
-                fontWeight: 700,
-                color: "#c6cef2",
-                maxWidth: 460,
-                lineHeight: 1.5,
+                fontWeight: 600,
+                color: "#d6ddf6",
+                maxWidth: 500,
+                lineHeight: 1.55,
               }}
             >
-              The Know-It-All Robot sounds SO sure about everything. But is it
-              right? Weigh every claim against real proof!
+              Out in the real world, people, videos and even robots say all
+              sorts of things, and not all of it is true! A{" "}
+              <b style={{ color: GREEN_SOFT }}>real fact</b> has proof to back it
+              up. A made-up thing has{" "}
+              <b style={{ color: RED }}>no proof anywhere</b>. In this game YOU
+              are the fact-checker who tells them apart.
             </div>
+
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 900,
+                letterSpacing: 2.5,
+                color: "#7df0ff",
+                textTransform: "uppercase",
+              }}
+            >
+              How to play
+            </div>
+
+            {/* Step-by-step, pointing at where each thing is on screen. */}
             <div
               style={{
                 display: "flex",
+                flexDirection: "column",
                 gap: 10,
-                flexWrap: "wrap",
-                justifyContent: "center",
-                maxWidth: 560,
+                width: "100%",
+                maxWidth: 520,
               }}
             >
               {[
-                { icon: "👆", text: "Drag the CLAIM onto the scale" },
-                { icon: "🔍", text: "Find its matching proof book" },
-                { icon: "✋", text: "No book? Slam NO PROOF!" },
+                {
+                  icon: "🤖",
+                  body: (
+                    <>
+                      On the <b style={{ color: "#fff" }}>left</b>, the robot
+                      makes a <b style={{ color: "#fff" }}>CLAIM</b>.{" "}
+                      <span style={{ color: "#7df0ff", fontWeight: 800 }}>
+                        Tap it
+                      </span>{" "}
+                      to pop it on the scale.
+                    </>
+                  ),
+                },
+                {
+                  icon: "📚",
+                  body: (
+                    <>
+                      Look at the{" "}
+                      <b style={{ color: "#fff" }}>proof books</b> on the shelf.
+                      If one proves the claim,{" "}
+                      <span style={{ color: "#7df0ff", fontWeight: 800 }}>
+                        tap that book
+                      </span>{" "}
+                      &rarr; it stamps{" "}
+                      <b style={{ color: GREEN_SOFT }}>TRUE</b>.
+                    </>
+                  ),
+                },
+                {
+                  icon: "🚨",
+                  body: (
+                    <>
+                      No book proves it anywhere? Then it&apos;s{" "}
+                      <b style={{ color: RED }}>made up</b>! &rarr; Slam the big
+                      red <b style={{ color: "#fff" }}>NO PROOF</b> button.
+                    </>
+                  ),
+                },
               ].map((step, i) => (
                 <div
                   key={i}
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: 8,
-                    background: "rgba(255,255,255,0.07)",
-                    border: "1.5px solid rgba(125,240,255,0.3)",
-                    borderRadius: 12,
-                    padding: "8px 14px",
-                    fontSize: 14,
-                    fontWeight: 800,
-                    color: "#e7ecff",
+                    gap: 12,
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1.5px solid rgba(125,240,255,0.22)",
+                    borderRadius: 14,
+                    padding: "12px 16px",
+                    textAlign: "left",
                   }}
                 >
                   <span
                     style={{
-                      width: 22,
-                      height: 22,
+                      flexShrink: 0,
+                      width: 28,
+                      height: 28,
                       borderRadius: "50%",
                       background: "#7df0ff",
                       color: "#0c1126",
-                      fontSize: 13,
+                      fontSize: 15,
+                      fontWeight: 900,
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -1502,8 +1651,18 @@ export default function ProofScale({
                   >
                     {i + 1}
                   </span>
-                  <PixIcon emoji={step.icon} size={22} />
-                  {step.text}
+                  <PixIcon emoji={step.icon} size={30} />
+                  <span
+                    style={{
+                      flex: 1,
+                      fontSize: 15,
+                      fontWeight: 600,
+                      color: "#e7ecff",
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {step.body}
+                  </span>
                 </div>
               ))}
             </div>
@@ -1518,7 +1677,7 @@ export default function ProofScale({
             <div style={{ flex: "0 0 auto", padding: "12px 24px 20px", display: "flex", justifyContent: "center" }}>
             <motion.button
               type="button"
-              onClick={() => setPhase("play")}
+              onClick={() => { audio.tap(); setPhase("play"); }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
@@ -1655,32 +1814,74 @@ export default function ProofScale({
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.3 }}
+              transition={{ delay: 1.2 }}
               style={{
-                fontSize: 24,
+                fontSize: 26,
                 fontWeight: 900,
                 color: "#f5f9ff",
                 letterSpacing: 0.5,
               }}
             >
-              All claims weighed!
+              Well done, Fact Checker!
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.6 }}
+              transition={{ delay: 1.5 }}
               style={{
                 fontSize: 16,
                 fontWeight: 700,
                 color: "#c6cef2",
-                maxWidth: 460,
-                lineHeight: 1.5,
+                maxWidth: 480,
+                lineHeight: 1.55,
               }}
             >
-              A loud, confident voice is not proof. Real facts come with real
-              sources. You checked before you believed, and that is a
-              superpower!
+              You checked every claim against real proof. Now YOU can fact-check
+              anything. When something online sounds super sure, remember to ask:
+              where&apos;s the proof? Carry that with you in the real world!
             </motion.div>
+
+            {/* Sarah's spoken closing payoff — audio-only (visually hidden):
+                the title + subtitle already show this text, and hiding the box
+                keeps the Continue button on screen instead of clipping it. */}
+            {winNarration && winNarration.lines.length > 0 && (
+              <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+                <InfoNarration
+                  lines={winNarration.lines}
+                  speaker={winNarration.speaker}
+                  accent={accent ?? GREEN_SOFT}
+                />
+              </div>
+            )}
+
+            {/* With a spoken payoff there's no auto-advance — the child taps on. */}
+            {winNarration && winNarration.lines.length > 0 && (
+              <motion.button
+                type="button"
+                onClick={() => { audio.tap(); finish(); }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 2.1 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                style={{
+                  marginTop: 4,
+                  border: "none",
+                  borderRadius: 16,
+                  padding: "13px 42px",
+                  fontSize: 18,
+                  fontWeight: 900,
+                  letterSpacing: 1,
+                  fontFamily: FONT_STACK,
+                  color: "#0a1a10",
+                  background: `linear-gradient(180deg, ${GREEN_SOFT}, ${GREEN})`,
+                  boxShadow: "0 10px 26px rgba(52,211,153,0.4)",
+                  cursor: "pointer",
+                }}
+              >
+                Continue →
+              </motion.button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

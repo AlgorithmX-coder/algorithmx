@@ -34,6 +34,7 @@ import {
   SPRING,
   gradientFromStops,
 } from "./tokens";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 /* ───────────────────────── SCENE FRAME ───────────────────────── */
 
@@ -416,6 +417,16 @@ export function SceneTitle({
    */
   flow?: boolean;
 }) {
+  // When a week theme is active, the badge + title glow adopt the week
+  // accent so the scene matches its lesson; un-themed scenes (and the
+  // marketing home, which has no LessonThemeProvider) keep the warm gold.
+  const accent = useLessonTheme()?.accent;
+  const badgeBg = accent ? `${accent}30` : "rgba(255, 219, 168, 0.22)";
+  const badgeBorder = accent ? `${accent}8c` : "rgba(255, 232, 195, 0.55)";
+  const badgeInk = accent ?? COLOR.cream;
+  const titleShadow = accent
+    ? `0 4px 18px rgba(0, 0, 0, 0.55), 0 0 36px ${accent}73`
+    : "0 4px 18px rgba(80, 30, 10, 0.65), 0 0 36px rgba(255, 178, 110, 0.45)";
   return (
     <motion.div
       initial={{ opacity: 0, y: -12 }}
@@ -435,14 +446,14 @@ export function SceneTitle({
           style={{
             display: "inline-block",
             padding: "6px 20px",
-            background: "rgba(255, 219, 168, 0.22)",
+            background: badgeBg,
             borderStyle: "solid",
             borderWidth: 1,
-            borderColor: "rgba(255, 232, 195, 0.55)",
+            borderColor: badgeBorder,
             borderRadius: 999,
             backdropFilter: "blur(8px)",
             WebkitBackdropFilter: "blur(8px)",
-            color: COLOR.cream,
+            color: badgeInk,
             fontSize: 12,
             fontWeight: 700,
             letterSpacing: 5,
@@ -462,8 +473,7 @@ export function SceneTitle({
           letterSpacing: 0.5,
           lineHeight: 1,
           whiteSpace: "nowrap",
-          textShadow:
-            "0 4px 18px rgba(80, 30, 10, 0.65), 0 0 36px rgba(255, 178, 110, 0.45)",
+          textShadow: titleShadow,
         }}
       >
         {title}

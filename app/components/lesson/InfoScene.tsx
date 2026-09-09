@@ -27,6 +27,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 export interface InfoSceneProps {
   title: string;
@@ -36,6 +37,11 @@ export interface InfoSceneProps {
   bulletIcons?: string[];
   /** Header emblem glyph (defaults to the lock brand mark). */
   emblem?: string;
+  /** Optional "Concept N of M" marker so this Learn screen shares the SAME
+   *  progression label as its checkpoint — a consistent through-line across
+   *  the Learn → Play → Prove → Complete loop. */
+  conceptNumber?: number;
+  conceptTotal?: number;
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   onNext: () => void;
 }
@@ -55,11 +61,19 @@ export default function InfoScene({
   bullets,
   bulletIcons,
   emblem = "🔒",
+  conceptNumber,
+  conceptTotal,
   narration,
   onNext,
 }: InfoSceneProps) {
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  // Cohesion: on a themed week the whole Learn screen (title, kicker, emblem,
+  // frame rim, clue rows) uses the ONE week accent instead of the gold/rainbow
+  // command-center palette. Un-themed weeks keep the classic gold look.
+  const themeAccent = useLessonTheme()?.accent;
+  const gold = themeAccent ?? "#ffce78";
+  const rim = themeAccent ?? "#ffc478";
 
   // Tap-to-power-up state: which clue rows the child has lit.
   const [lit, setLit] = useState<Set<number>>(new Set());
@@ -119,7 +133,7 @@ export default function InfoScene({
             "linear-gradient(180deg, rgba(18,24,58,0.72) 0%, rgba(10,14,36,0.82) 100%)",
           // gold rim via layered ring + soft outer glow + inner top highlight
           boxShadow:
-            "0 0 0 1px rgba(255,212,120,0.55), 0 0 0 4px rgba(120,92,30,0.35), 0 24px 60px -28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,233,170,0.28), inset 0 0 36px rgba(60,90,170,0.14)",
+            `0 0 0 1px ${rim}8c, 0 0 0 4px ${rim}33, 0 24px 60px -28px rgba(0,0,0,0.7), inset 0 1px 0 ${rim}47, inset 0 0 36px rgba(60,90,170,0.14)`,
           backdropFilter: "blur(2px)",
         }}
       >
@@ -128,13 +142,13 @@ export default function InfoScene({
           { top: 8, left: 8 }, { top: 8, right: 8 },
           { bottom: 8, left: 8 }, { bottom: 8, right: 8 },
         ].map((pos, i) => (
-          <span key={i} aria-hidden style={{ position: "absolute", ...pos, width: 12, height: 12, borderRadius: 3, background: "radial-gradient(circle at 35% 35%, #ffe7a8, #b8861f)", boxShadow: "0 0 8px rgba(255,206,90,0.5)" }} />
+          <span key={i} aria-hidden style={{ position: "absolute", ...pos, width: 12, height: 12, borderRadius: 3, background: `radial-gradient(circle at 35% 35%, ${gold}, ${gold}99)`, boxShadow: `0 0 8px ${gold}80` }} />
         ))}
 
         {/* Emblem + sparkles + LEARN kicker + title */}
         <div style={{ textAlign: "center", marginBottom: 16 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
-            <span aria-hidden style={{ color: "#ffe7a8", fontSize: 14, opacity: 0.85, textShadow: "0 0 10px rgba(255,206,90,0.6)" }}>✦</span>
+            <span aria-hidden style={{ color: gold, fontSize: 14, opacity: 0.85, textShadow: `0 0 10px ${gold}99` }}>✦</span>
             <motion.div
               initial={reduce ? false : { scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -143,23 +157,27 @@ export default function InfoScene({
                 width: 66, height: 66, borderRadius: "50%",
                 display: "grid", placeItems: "center", fontSize: 30,
                 background: "radial-gradient(circle at 50% 32%, #46508a 0%, #1a2150 70%)",
-                border: "2px solid rgba(255,206,90,0.75)",
-                boxShadow: "0 6px 20px -6px rgba(255,206,90,0.5), inset 0 2px 6px rgba(255,233,170,0.35), inset 0 -6px 12px rgba(0,0,0,0.4)",
+                border: `2px solid ${gold}bf`,
+                boxShadow: `0 6px 20px -6px ${gold}80, inset 0 2px 6px ${gold}59, inset 0 -6px 12px rgba(0,0,0,0.4)`,
               }}
             >
               <PixIcon emoji={emblem} size={46} />
             </motion.div>
-            <span aria-hidden style={{ color: "#ffe7a8", fontSize: 14, opacity: 0.85, textShadow: "0 0 10px rgba(255,206,90,0.6)" }}>✦</span>
+            <span aria-hidden style={{ color: gold, fontSize: 14, opacity: 0.85, textShadow: `0 0 10px ${gold}99` }}>✦</span>
           </div>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.24em", textTransform: "uppercase", color: "#9fe9ff", margin: "12px 0 6px" }}>
-            ◇ Learn ◇
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.24em", textTransform: "uppercase", color: themeAccent ?? "#9fe9ff", margin: "12px 0 6px" }}>
+            {conceptNumber && conceptTotal
+              ? `◇ Concept ${conceptNumber} of ${conceptTotal} · Learn ◇`
+              : "◇ Learn ◇"}
           </div>
           <h2 style={{
             margin: 0, maxWidth: 680, marginInline: "auto",
             fontSize: "clamp(1.6rem, 3.4vw, 2.2rem)", fontWeight: 900, lineHeight: 1.12,
-            background: "linear-gradient(180deg, #fff4cf 0%, #ffd86b 55%, #f3b13a 100%)",
+            background: themeAccent
+              ? `linear-gradient(180deg, #ffffff 0%, ${themeAccent} 100%)`
+              : "linear-gradient(180deg, #fff4cf 0%, #ffd86b 55%, #f3b13a 100%)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-            filter: "drop-shadow(0 2px 6px rgba(180,120,20,0.45))",
+            filter: themeAccent ? `drop-shadow(0 2px 10px ${themeAccent}55)` : "drop-shadow(0 2px 6px rgba(180,120,20,0.45))",
           }}>
             {title}
           </h2>
@@ -186,7 +204,7 @@ export default function InfoScene({
             </div>
             <div style={{ display: "grid", gap: 11, maxWidth: 600, margin: "0 auto 22px" }}>
               {bullets.map((b, i) => {
-                const accent = ROW_COLOURS[i % ROW_COLOURS.length];
+                const accent = themeAccent ?? ROW_COLOURS[i % ROW_COLOURS.length];
                 const icon = bulletIcons?.[i];
                 const on = lit.has(i);
                 return (

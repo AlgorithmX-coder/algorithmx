@@ -37,6 +37,10 @@ if (!KEY) {
 const VOICE = {
   adam:  { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
   layla: { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
+  // Storyteller NARRATOR — a deliberately DIFFERENT voice (ElevenLabs "George",
+  // warm mature male) that reads the "Choose Your Path" scenario setups aloud,
+  // so Sarah (the coach) can then jump in and ask "which one do you think?".
+  narrator: { id: "JBFqnCBsd6RMkjVDRZzb", name: "George" },
 };
 
 // v9-expressive tune. The flat "reading-from-a-script" delivery came
@@ -96,7 +100,37 @@ const weekFiles = (await readdir(WEEK_CONTENT_DIR))
 // Scans both the intro `narration:` blocks and the in-exercise
 // `coachLines:` blocks (teach-once first-action lines) so every spoken
 // line in the content gets a recorded Sarah voice.
-const blockRe = /(?:narration|coachLines):\s*\{\s*speaker:\s*"(adam|layla)",\s*lines:\s*\[([\s\S]*?)\]\s*,?\s*\}/g;
+const blockRe = /(?:narration|coachLines|winNarration|teachNarration|completeNarration|promptNarration):\s*\{\s*speaker:\s*"(adam|layla|narrator)",\s*lines:\s*\[([\s\S]*?)\]\s*,?\s*\}/g;
+// Choose-Your-Path scenario setups are read by the NARRATOR voice (one mp3 each).
+const setupRe = /setup:\s*"((?:[^"\\]|\\.)*)"/g;
+// Choose-Your-Path choice consequences → Sarah reads the outcome on the reveal.
+const consequenceRe = /consequence:\s*"((?:[^"\\]|\\.)*)"/g;
+// Prove-it (QuickCheck) question prompts → Sarah reads the question aloud when
+// the beat appears. Scoped to quickCheck blocks (via the type anchor) so the
+// game round prompts aren't swept up. A finish-mode blank (___) → "blank".
+const quickCheckPromptRe = /type:\s*"quickCheck"[\s\S]{0,200}?\bprompt:\s*"((?:[^"\\]|\\.)*)"/g;
+// QuizBoss questions → Sarah reads the WHOLE question aloud (scenario + every
+// choice + "which do you think?") so a 6-9yo non-reader can do the final test.
+// Captures the ask text (group 1) AND the options block (group 2). The villain
+// intro/taunt/victory lines stay off (the quiz-boss villain voice is OFF).
+const bossAskRe = /ask:\s*\{\s*slug:\s*"[^"]*",\s*text:\s*"((?:[^"\\]|\\.)*)"\s*,?\s*\},\s*options:\s*\[([\s\S]*?)\]/g;
+
+// MUST stay identical to seededShuffle in app/components/game/QuizBoss.tsx so
+// the recorded read matches the on-screen (shuffled) option order — Sarah never
+// gives the answer away by always reading the correct choice first.
+function seededShuffle(arr, seed) {
+  const out = [...arr];
+  let s = (seed * 9301 + 49297) % 233280;
+  for (let i = out.length - 1; i > 0; i--) {
+    s = (s * 9301 + 49297) % 233280;
+    const j = Math.floor((s / 233280) * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+// SenderLineup round prompts (the "…tap the fake" set-up) → Sarah reads each
+// round aloud. Scoped by the following `senders:` key so only these match.
+const senderRoundPromptRe = /prompt:\s*"((?:[^"\\]|\\.)*)"\s*,\s*senders:/g;
 const blocks = [];
 
 for (const fname of weekFiles) {
@@ -114,6 +148,132 @@ for (const fname of weekFiles) {
     }
     if (lines.length > 0) {
       blocks.push({ speaker, lines, source: fname });
+      fileBlocks++;
+    }
+  }
+  // Scenario setups → SARAH voice. Sarah (the teacher) reads the situation
+  // aloud, then asks "which do you think?" — one consistent classroom voice
+  // (owner dropped the separate storyteller for the scenarios). Recorded as
+  // "adam" (both content speakers = Sarah); the component narrates the setup
+  // with speaker="adam" to match this key.
+  let sm;
+  while ((sm = setupRe.exec(src)) !== null) {
+    const text = sm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+    if (text) {
+      blocks.push({ speaker: "adam", lines: [text], source: fname });
+      fileBlocks++;
+    }
+  }
+  // Choose-Your-Path consequences → SARAH voice. On the reveal, Sarah reads the
+  // chosen path's outcome aloud so the child hears WHY it was the right (or
+  // wrong) choice. Recorded as "adam" (both content speakers = Sarah); the
+  // component narrates the consequence with speaker="adam" to match this key.
+  let cq;
+  while ((cq = consequenceRe.exec(src)) !== null) {
+    const text = cq[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+    if (text) {
+      blocks.push({ speaker: "adam", lines: [text], source: fname });
+      fileBlocks++;
+    }
+  }
+  let qp;
+  while ((qp = quickCheckPromptRe.exec(src)) !== null) {
+    const text = qp[1]
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, "\\")
+      .replace(/_{2,}/g, "blank")
+      .trim();
+    if (text) {
+      blocks.push({ speaker: "adam", lines: [text], source: fname });
+      fileBlocks++;
+    }
+  }
+  // TEMP scope: only week 15's boss is trimmed-to-5 + finalized. The other
+  // weeks still have 15 un-rewritten questions, so skip recording their long
+  // read-outs until the learn-loop rollout trims them. Remove this guard then.
+  let ba, bossQ = 0;
+  while (fname.includes("week15") && (ba = bossAskRe.exec(src)) !== null) {
+    const askText = ba[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+    const optRe = /text:\s*"((?:[^"\\]|\\.)*)"/g;
+    const opts = [];
+    let om;
+    while ((om = optRe.exec(ba[2])) !== null) {
+      opts.push(om[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim());
+    }
+    if (askText && opts.length) {
+      // Same seed as QuizBoss askLines (qIdx*47+5) so the read matches the
+      // shown order; bossQ is the question's index within this week's quiz.
+      // Lines MUST stay identical to QuizBoss askLines (see that comment):
+      // "Is it option A… <ans>, Option B… <ans>, Or is it option C… <ans>".
+      const ordered = seededShuffle(opts, bossQ * 47 + 5);
+      const LETTERS = ["A", "B", "C", "D", "E"];
+      const lines = [askText];
+      ordered.forEach((text, i) => {
+        const last = i === ordered.length - 1;
+        const lead = i === 0
+          ? `Is it option ${LETTERS[i]}...`
+          : last
+            ? `Or is it option ${LETTERS[i]}...`
+            : `Option ${LETTERS[i]}...`;
+        lines.push(lead, text);
+      });
+      lines.push("So, what do you think?");
+      blocks.push({ speaker: "adam", lines, source: fname });
+      fileBlocks++;
+    }
+    bossQ++;
+  }
+  // Boss reveal teach → Sarah explains WHY the safe answer is right on every
+  // pick, and the fight waits for her to finish. Records BOTH the correct lead
+  // ("That's right!") and the wrong lead ("Not quite.") in front of the same
+  // teachOnWrong.explanation, matching QuizBoss's `explain.lines` exactly. Same
+  // week-15-only scope as the read-outs above.
+  if (fname.includes("week15")) {
+    const bossTeachRe = /teachOnWrong:\s*\{\s*title:\s*"(?:[^"\\]|\\.)*"\s*,\s*explanation:\s*"((?:[^"\\]|\\.)*)"/g;
+    let bt;
+    while ((bt = bossTeachRe.exec(src)) !== null) {
+      const expl = bt[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+      if (!expl) continue;
+      blocks.push({ speaker: "adam", lines: ["That's right!", expl], source: fname });
+      blocks.push({ speaker: "adam", lines: ["Not quite.", expl], source: fname });
+      fileBlocks += 2;
+    }
+  }
+  // Wrong-answer teaching (owner 2026-09-09): Sarah reads the WrongAnswerPanel
+  // explanation aloud on any wrong pick. The panel's `explanation` prop is a
+  // verbatim content field — `explanation` (ClueBoard/ConveyorSort/quickCheck)
+  // or `note` (SenderLineup/TrailStamper) — so record each non-empty one as a
+  // single-line block, matching InfoNarration({ lines: [explanation] }). Same
+  // week-15-only scope; dedupes, and over-recording a few strings that aren't
+  // shown in the panel is harmless.
+  if (fname.includes("week15")) {
+    const wrongRe = /(?:explanation|note):\s*"((?:[^"\\]|\\.)*)"/g;
+    const seenWrong = new Set();
+    let wm;
+    while ((wm = wrongRe.exec(src)) !== null) {
+      const text = wm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+      if (!text || seenWrong.has(text)) continue;
+      seenWrong.add(text);
+      blocks.push({ speaker: "adam", lines: [text], source: fname });
+      fileBlocks++;
+    }
+    // Signature guided first-round walkthrough (ProofScale): the `guide` field's
+    // `claim` + `evidence` lines, each read as a single-line block by
+    // InfoNarration({ lines: [guide.claim] } / [guide.evidence]).
+    const guideRe = /guide:\s*\{[^}]*?claim:\s*"((?:[^"\\]|\\.)*)"[^}]*?evidence:\s*"((?:[^"\\]|\\.)*)"/g;
+    let gm;
+    while ((gm = guideRe.exec(src)) !== null) {
+      for (const raw of [gm[1], gm[2]]) {
+        const text = raw.replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+        if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
+      }
+    }
+  }
+  let sr;
+  while ((sr = senderRoundPromptRe.exec(src)) !== null) {
+    const text = sr[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+    if (text) {
+      blocks.push({ speaker: "adam", lines: [text], source: fname });
       fileBlocks++;
     }
   }

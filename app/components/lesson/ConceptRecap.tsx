@@ -22,6 +22,7 @@ import { playSound } from "@/app/lib/sounds";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 export interface ConceptRecapProps {
   concept: number;
@@ -32,9 +33,6 @@ export interface ConceptRecapProps {
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   onContinue: () => void;
 }
-
-const GREEN = "#7eff97";
-const CYAN = "#7df0ff";
 
 export default function ConceptRecap({
   concept,
@@ -48,6 +46,12 @@ export default function ConceptRecap({
   const isFinale = concept >= total;
   // Strict reduced-motion: skip the entrance springs (render at rest).
   const reduce = useMotionIntensity() === 0;
+  // Cohesion: the recap's "complete" accents follow the WEEK accent so every
+  // week's checkpoint matches its world (teal on W15). Un-themed weeks keep the
+  // classic green/cyan.
+  const themeAccent = useLessonTheme()?.accent;
+  const GREEN = themeAccent ?? "#7eff97";
+  const CYAN = themeAccent ?? "#7df0ff";
   // SCREEN-AUDIT: the takeaway is tappable — the child STAMPS what they
   // learned into their logbook (reward interaction; advancing is never
   // gated on it, per the recap e2e contract).
@@ -106,7 +110,7 @@ export default function ConceptRecap({
           color: GREEN,
         }}
       >
-        ◇ Checkpoint · Concept {concept} of {total} ◇
+        ◇ Concept {concept} of {total} · Complete ◇
       </div>
 
       {/* burst emblem */}

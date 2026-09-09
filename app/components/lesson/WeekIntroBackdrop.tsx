@@ -36,7 +36,10 @@ type SceneFactory = (p: Palette) => SceneDraw;
 const TAU = Math.PI * 2;
 const rnd = (a: number, b: number) => a + Math.random() * (b - a);
 const pick = <T,>(arr: T[]): T => arr[(Math.random() * arr.length) | 0];
-const rgba = (c: RGB, a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+// Null-safe: a missing colour (e.g. a stale-HMR palette) must never crash the
+// per-frame draw loop — fall back to a soft accent-neutral instead of throwing.
+const rgba = (c: RGB | undefined, a: number) =>
+  c ? `rgba(${c[0]},${c[1]},${c[2]},${a})` : `rgba(120,180,255,${a})`;
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
@@ -600,17 +603,27 @@ const sceneNetwork: SceneFactory = (p) => {
   };
 };
 
-// WK15 · Robot Lab — PCB traces with light pulses running along them.
+// WK15 · Robot Lab — a bright PCB with streams of data pulses racing along the
+// traces, blinking chip pads, and a slow scan sweep. Built to read as clearly
+// ALIVE (the old version was one faint dot crawling on near-invisible lines).
 const sceneCircuit: SceneFactory = (p) => {
   const paths: [number, number][][] = [
-    [[0, 0.3], [0.3, 0.3], [0.3, 0.6], [0.6, 0.6], [0.6, 0.25], [1, 0.25]],
-    [[0, 0.7], [0.25, 0.7], [0.25, 0.45], [0.55, 0.45], [0.55, 0.8], [1, 0.8]],
-    [[0.1, 0.1], [0.1, 0.5], [0.45, 0.5], [0.45, 0.15], [0.9, 0.15]],
+    [[0, 0.22], [0.28, 0.22], [0.28, 0.52], [0.62, 0.52], [0.62, 0.16], [1, 0.16]],
+    [[0, 0.5], [0.18, 0.5], [0.18, 0.8], [0.5, 0.8], [0.5, 0.38], [1, 0.38]],
+    [[0, 0.82], [0.4, 0.82], [0.4, 0.6], [0.78, 0.6], [0.78, 0.9], [1, 0.9]],
+    [[0.08, 0.06], [0.08, 0.44], [0.46, 0.44], [0.46, 0.1], [0.92, 0.1]],
+    [[0.12, 0.96], [0.12, 0.66], [0.36, 0.66], [0.36, 0.92], [0.72, 0.92]],
   ];
+  // Chip pads sit on trace junctions and blink like a working board.
+  const chips: [number, number][] = [
+    [0.28, 0.52], [0.62, 0.16], [0.5, 0.38], [0.46, 0.44], [0.18, 0.8], [0.4, 0.6],
+  ];
+  const PULSES = 3; // a stream of lights per trace, not a lone dot
   return (ctx, w, h, t) => {
     paths.forEach((pts, pi) => {
-      ctx.strokeStyle = rgba(p.accent, 0.16);
-      ctx.lineWidth = 2;
+      // the trace itself — bright enough to actually see
+      ctx.strokeStyle = rgba(p.accent, 0.3);
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       pts.forEach((pt, i) => {
         const x = pt[0] * w, y = pt[1] * h;
@@ -618,28 +631,52 @@ const sceneCircuit: SceneFactory = (p) => {
         else ctx.moveTo(x, y);
       });
       ctx.stroke();
+      // solder pads at each corner
       pts.forEach((pt) => {
         ctx.beginPath();
-        ctx.arc(pt[0] * w, pt[1] * h, 3, 0, TAU);
-        ctx.fillStyle = rgba(p.second, 0.5);
+        ctx.arc(pt[0] * w, pt[1] * h, 3.5, 0, TAU);
+        ctx.fillStyle = rgba(p.second, 0.6);
         ctx.fill();
       });
+      // a whole STREAM of pulses racing along the trace
       const segs = pts.length - 1;
-      const f = ((t * 0.15 + pi * 0.33) % 1) * segs;
-      const si = Math.floor(f);
-      const lf = f - si;
-      const a = pts[si];
-      const b = pts[Math.min(si + 1, pts.length - 1)];
-      const x = (a[0] + (b[0] - a[0]) * lf) * w;
-      const y = (a[1] + (b[1] - a[1]) * lf) * h;
-      ctx.beginPath();
-      ctx.arc(x, y, 4, 0, TAU);
-      ctx.fillStyle = rgba(p.accent, 0.95);
-      ctx.shadowColor = rgba(p.accent, 0.9);
-      ctx.shadowBlur = 12;
-      ctx.fill();
-      ctx.shadowBlur = 0;
+      for (let k = 0; k < PULSES; k++) {
+        const f = (((t * 0.5 + pi * 0.2 + k / PULSES) % 1)) * segs;
+        const si = Math.floor(f);
+        const lf = f - si;
+        const a = pts[si];
+        const b = pts[Math.min(si + 1, pts.length - 1)];
+        if (!a || !b) continue;
+        const x = (a[0] + (b[0] - a[0]) * lf) * w;
+        const y = (a[1] + (b[1] - a[1]) * lf) * h;
+        ctx.beginPath();
+        ctx.arc(x, y, 4.5, 0, TAU);
+        ctx.fillStyle = rgba(p.accent, 0.98);
+        ctx.shadowColor = rgba(p.accent, 0.95);
+        ctx.shadowBlur = 16;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
     });
+    // blinking chip pads
+    chips.forEach((c, ci) => {
+      const blink = 0.3 + 0.55 * Math.abs(Math.sin(t * 2.2 + ci * 1.3));
+      const cx = c[0] * w, cy = c[1] * h, s = 16;
+      roundRect(ctx, cx - s / 2, cy - s / 2, s, s, 3);
+      ctx.fillStyle = rgba(p.accent, 0.22 * blink);
+      ctx.fill();
+      ctx.strokeStyle = rgba(p.accent, 0.6 * blink);
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+    // a slow vertical scan sweep, so the whole board feels "powered on"
+    const sx = ((t * 0.09) % 1) * (w + 160) - 80;
+    const g = ctx.createLinearGradient(sx - 70, 0, sx + 70, 0);
+    g.addColorStop(0, rgba(p.accent, 0));
+    g.addColorStop(0.5, rgba(p.accent, 0.12));
+    g.addColorStop(1, rgba(p.accent, 0));
+    ctx.fillStyle = g;
+    ctx.fillRect(sx - 70, 0, 140, h);
   };
 };
 

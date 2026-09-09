@@ -19,6 +19,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import WeekIntroBackdrop from "@/app/components/lesson/WeekIntroBackdrop";
+import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
 import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
 
 interface WeekIntroSceneProps {
@@ -107,6 +108,13 @@ export default function WeekIntroScene({
     let started = false;
     const tryPlay = () => {
       if (started) return;
+      // Already rolling (e.g. a stray double-invoke): adopt it, never start a
+      // second overlapping stream — that was the "echo / plays twice".
+      if (!a.paused) {
+        started = true;
+        setPlaying(true);
+        return;
+      }
       a.play()
         .then(() => {
           started = true;
@@ -164,6 +172,12 @@ export default function WeekIntroScene({
         overflow: "hidden",
       }}
     >
+      {/* While ATLAS is speaking, block clicks so the child can't skip or click
+          through the briefing — they stay and listen (matches the InfoNarration
+          rule). Lifts the moment he's paused/finished; the "Let's go!" button is
+          separately locked until `heard`. */}
+      <NarrationClickGuard active={playing} />
+
       {/* live-moving, per-week backdrop */}
       <WeekIntroBackdrop weekNumber={weekNumber} accent={accent} />
 
@@ -338,7 +352,10 @@ export default function WeekIntroScene({
             ))}
           </div>
         </div>
-        <audio ref={audioRef} preload="auto" autoPlay src={audioSrc} />
+        {/* No `autoPlay` attribute on purpose: playback is driven ONLY by the
+            guarded effect below. The attribute + JS play() together double-fired
+            under React strict-mode dev, which the child heard as an echo. */}
+        <audio ref={audioRef} preload="auto" src={audioSrc} />
       </div>
 
       {/* what we'll do — picture chips */}

@@ -26,6 +26,7 @@ import {
 } from "@/app/lib/celebrations";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 
@@ -43,7 +44,15 @@ export interface Scenario {
 
 export interface ChooseYourPathProps {
   scenarios?: Scenario[];
+  /** Spot-the-Danger preamble folded into the intro (the Raccoon's boast). */
+  threat?: { raccoonLine: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Sarah's spoken "which one do you think?" prompt, after the narrator reads
+   *  the scenario aloud. */
+  promptNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken Sarah acknowledgment on the finish screen ("well done, use it in
+   *  the real world, this is what you learned"). */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -154,7 +163,10 @@ const DOOR_PALETTE = [DOOR_PALETTE_CYBER, DOOR_PALETTE_CYBER];
 
 export default function ChooseYourPath({
   scenarios,
+  threat,
   introNarration,
+  promptNarration,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -178,6 +190,9 @@ export default function ChooseYourPath({
   const [correctCount, setCorrectCount] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [finished, setFinished] = useState(false);
+  // Sarah reads the scenario; once that finishes, she asks "which do you
+  // think?" (promptNarration) — chained so the two reads don't overlap.
+  const [narratorDone, setNarratorDone] = useState(false);
 
   const resetExercise = () => {
     setIdx(0);
@@ -208,6 +223,14 @@ export default function ChooseYourPath({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx, list]);
 
+  // Stable array for the setup narration so the typewriter's rapid re-renders
+  // don't churn InfoNarration's props (which would re-resolve its manifest
+  // lookup every frame). The autoplay-timer fix lives in InfoNarration itself.
+  const setupLines = useMemo(
+    () => (rawScenario ? [rawScenario.setup] : []),
+    [rawScenario],
+  );
+
   // Type out setup text
   useEffect(() => {
     if (showIntro) return;
@@ -216,6 +239,7 @@ export default function ChooseYourPath({
     setTyped(0);
     setPicked(null);
     setParticles([]);
+    setNarratorDone(false);
     const chars = scenario.setup;
     if (typeTimerRef.current) clearInterval(typeTimerRef.current);
     const t = setInterval(() => {
@@ -301,6 +325,7 @@ export default function ChooseYourPath({
         correctCount={correctCount}
         total={list.length}
         stars={stars}
+        narration={completeNarration}
         onContinue={() => {
           audio.tap();
           onComplete(correctCount);
@@ -488,12 +513,19 @@ export default function ChooseYourPath({
                     position: "absolute",
                     inset: 0,
                     transformOrigin: "left center",
+                    // Hide the door's back face so, as it swings past 90deg on
+                    // open, it disappears (revealing the panel behind) instead
+                    // of showing its front content MIRRORED (backwards text).
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                    // Delay is folded INTO the `animation` shorthand (not a
+                    // separate `animationDelay`) — mixing the shorthand with the
+                    // longhand made React warn about a style conflict on rerender.
                     animation: willOpen
-                      ? "cypDoorOpen 0.7s cubic-bezier(0.3,1.5,0.4,1) forwards"
+                      ? `cypDoorOpen 0.7s cubic-bezier(0.3,1.5,0.4,1) ${picking ? `${i * 0.12}s` : "0s"} forwards`
                       : i === 0
-                        ? "cypDoorSlideL 0.45s ease-out both"
-                        : "cypDoorSlideR 0.45s ease-out both",
-                    animationDelay: picking ? `${i * 0.12}s` : "0s",
+                        ? `cypDoorSlideL 0.45s ease-out ${picking ? `${i * 0.12}s` : "0s"} both`
+                        : `cypDoorSlideR 0.45s ease-out ${picking ? `${i * 0.12}s` : "0s"} both`,
                     width: "100%",
                     borderRadius: 14,
                     padding: 0,
@@ -713,6 +745,47 @@ export default function ChooseYourPath({
         </div>
       )}
 
+      {/* Sarah (the teacher) reads the scenario aloud; when she finishes, she
+          asks "which do you think?" (promptNarration). Audio-only (visually
+          hidden) so it never duplicates the typed setup — the "Listening… tap
+          to skip" guard still shows and holds the doors until the child has
+          heard the question. speaker="adam" = Sarah, matching the recording. */}
+      {!showIntro && (
+        <div
+          aria-hidden
+          style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}
+        >
+          <InfoNarration
+            key={`cyp-narr-${idx}`}
+            speaker="adam"
+            lines={setupLines}
+            accent="#7df0ff"
+            onDone={() => setNarratorDone(true)}
+          />
+          {narratorDone && promptNarration && promptNarration.lines.length > 0 && (
+            <InfoNarration
+              key={`cyp-prompt-${idx}`}
+              speaker={promptNarration.speaker}
+              lines={promptNarration.lines}
+              accent="#00e5ff"
+            />
+          )}
+          {/* On ANY pick, Sarah reads that door's outcome aloud (owner
+              2026-09-09) — the payoff when the safe path is chosen, and WHY the
+              wrong door was risky on a wrong pick. The click-guard holds
+              "Continue" until she finishes, so the child hears the correction.
+              speaker "adam" = Sarah, matching the recorded consequence. */}
+          {revealing && pickedChoice && (
+            <InfoNarration
+              key={`cyp-explain-${idx}`}
+              speaker="adam"
+              lines={[pickedChoice.consequence]}
+              accent={pickedChoice.isSafe ? "#7eff97" : "#ff9db0"}
+            />
+          )}
+        </div>
+      )}
+
       {showIntro && (
         <ExerciseIntroBeat
           title="Choose Your Path"
@@ -723,6 +796,7 @@ export default function ChooseYourPath({
           subtitle="You'll face real online situations. Pick a door to see what happens - choose wisely!"
           icon="🚪"
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker ?? "layla"}
           onDismiss={() => setShowIntro(false)}
         />
@@ -803,12 +877,14 @@ function FinishOverlay({
   correctCount,
   total,
   stars,
+  narration,
   onContinue,
   onRetry,
 }: {
   correctCount: number;
   total: number;
   stars: number;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
   onContinue: () => void;
   onRetry: () => void;
 }) {
@@ -892,6 +968,12 @@ function FinishOverlay({
           </motion.span>
         ))}
       </div>
+      {/* Audio-only acknowledgment (visually hidden) so the buttons stay on screen. */}
+      {narration && narration.lines.length > 0 && (
+        <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+          <InfoNarration lines={narration.lines} speaker={narration.speaker} accent="#7eff97" />
+        </div>
+      )}
       <div
         style={{
           display: "flex",

@@ -201,8 +201,42 @@ export type ScreenDef = (
       type: "signature";
       mechanic: string;
       title?: string;
+      /** Spoken "here's what to do" intro (Sarah), read aloud in the game's intro. */
+      narration?: { speaker?: "adam" | "layla"; lines: string[] };
+      /**
+       * Spoken closing payoff (Sarah), read aloud on the game's WIN screen:
+       * "well done, now you can fact-check, carry this to the real world."
+       * Part of the Learn Loop's "You're protected" beat, on the game itself.
+       */
+      winNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+      /**
+       * Optional first-round WALKTHROUGH (Sarah), used by signature games that
+       * support a guided first round with on-screen arrows: `claim` is spoken
+       * when the first claim needs tapping, `evidence` when the child must then
+       * pick a proof (currently the Proof Scale, W15).
+       */
+      guide?: { speaker?: "adam" | "layla"; claim: string; evidence: string };
     }
   | { type: "mission"; objectives: string[] }
+  | {
+      /**
+       * The Raccoon's "spot the danger" beat — one per skill, shown right
+       * before that skill's game. He reveals the trick he's about to try, in
+       * kid words, so the child knows exactly what they're defending against
+       * (the "why" that turns the game into a mission). Part of the Learn Loop:
+       * Learn → Spot the danger → Your turn → Prove it → You're protected.
+       */
+      type: "threat";
+      /** The Raccoon's trick, shown large in his speech bubble. Kid language. */
+      raccoonLine: string;
+      /** Small label above the bubble (defaults to "The Raccoon's Trick"). */
+      title?: string;
+      /**
+       * Spoken setup by Sarah (read aloud) that frames the danger and names
+       * the child's job. Short lines (≤ 12 words), plain 6–9-year-old words.
+       */
+      narration?: { speaker?: "adam" | "layla"; lines: string[] };
+    }
   | {
       /** Post-intro "incident report" reveal with the week's topic image. */
       type: "alert";
@@ -284,6 +318,13 @@ export type ScreenDef = (
       nudge?: string;
       /** `speed` mode urgency window (ms). Cosmetic. */
       speedMs?: number;
+      /**
+       * Optional spoken teacher explanation (Sarah), read aloud when the child
+       * answers CORRECTLY — a real "here's WHY that's right, and why it helps
+       * you" moment instead of a silent tick. When present, the beat waits on a
+       * "Got it!" button instead of auto-advancing, so the child hears it out.
+       */
+      teachNarration?: { speaker?: "adam" | "layla"; lines: string[] };
     }
   | {
       /**
@@ -834,6 +875,12 @@ export type ScreenDef = (
           detail: string;
           /** Emoji rendered via PixIcon as the badge crest. */
           icon: string;
+          /**
+           * Optional photo (public path) shown INSTEAD of the emoji crest, so a
+           * "spot the fake photo" round shows real pictures with the clue under
+           * each (W15 "Odd Shadow Out"). Falls back to `icon` when absent.
+           */
+          image?: string;
           /** True = the imposter (exactly one per round). */
           isFake: boolean;
           /** Teach copy: why fake / why it checks out. */
@@ -1382,4 +1429,30 @@ export type ScreenDef = (
    * `coachLines: { speaker, lines }` blocks so these get a recorded voice.
    */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /**
+   * Optional spoken acknowledgment read aloud on an exercise's COMPLETE screen
+   * ("well done, now you can X, use it in the real world, this is what you
+   * learned"). The ElevenLabs generator scans `completeNarration` blocks too.
+   */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /**
+   * Optional spoken prompt (Sarah) for Choose-Your-Path scenarios, read AFTER
+   * the storyteller narrator reads the situation ("which one do you think?").
+   * The generator scans `promptNarration` blocks too.
+   */
+  promptNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /**
+   * Optional "Spot the Danger" preamble folded into a game's own intro: the
+   * Hacker Raccoon's boast, shown above the warm mission so the get-ready is
+   * ONE screen (no separate `type:"threat"` scene). The Learn Loop merges the
+   * threat beat into the game intro this way. Shown as text in his bubble.
+   */
+  threat?: { raccoonLine: string };
+  /**
+   * Optional "Concept N of M" progression marker for a Learn (info) screen, so
+   * it shares the same label as its end-of-concept checkpoint (recap). Makes
+   * the Learn → Play → Prove → Complete loop read as one numbered concept.
+   */
+  conceptNumber?: number;
+  conceptTotal?: number;
 };

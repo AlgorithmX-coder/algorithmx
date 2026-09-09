@@ -5,7 +5,6 @@ import { getProgressionState, getRank, RANKS } from "@/app/lib/progression";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import AnimatedCounter from "@/app/components/AnimatedCounter";
 import type { CaseMeta } from "@/app/lib/caseTitles";
-import { useComfortMode } from "@/app/lib/comfortMode";
 
 export interface LessonHUDProps {
   /** Optional - legacy single-character name (unused now, both heroes are shown). */
@@ -49,7 +48,6 @@ export default function LessonHUD({
   const accRGB = hexToRgb(accent);
   const [totalXP, setTotalXP] = useState<number>(0);
   const [xpPulseKey, setXpPulseKey] = useState(0);
-  const comfort = useComfortMode();
 
   // Sync rank info from localStorage on mount and whenever lesson XP shifts.
   useEffect(() => {
@@ -92,6 +90,9 @@ export default function LessonHUD({
         color: "#fff7e6",
       }}
     >
+      {/* LEFT group — flex:1 so the centre title sits at the true middle of the
+          whole bar (owner 2026-09-09), balanced against the flex:1 right group. */}
+      <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 18, minWidth: 0 }}>
       {/* Characters - Adam + Layla overlapping avatars */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
@@ -231,11 +232,14 @@ export default function LessonHUD({
           </div>
         </div>
       </div>
+      </div>
 
-      {/* Lesson progress */}
+      {/* Lesson progress — centre column (fixed-ish width, centred between the
+          two flex:1 side groups so it lands in the true middle of the bar). */}
       <div
         style={{
-          flex: 1,
+          flexShrink: 0,
+          maxWidth: "min(48vw, 560px)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -318,6 +322,8 @@ export default function LessonHUD({
         </div>
       </div>
 
+      {/* RIGHT group — flex:1 balances the left group so the centre is true. */}
+      <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
       {/* Lesson XP + mute */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
         <div
@@ -334,44 +340,6 @@ export default function LessonHUD({
         >
           <AnimatedCounter value={xpEarned} prefix="+" suffix=" XP" />
         </div>
-        <button
-          type="button"
-          onClick={comfort.toggle}
-          aria-label={
-            comfort.enabled ? "Turn off comfort mode" : "Turn on comfort mode"
-          }
-          aria-pressed={comfort.enabled}
-          title={
-            comfort.enabled
-              ? "Comfort mode ON - slower games, less motion"
-              : "Comfort mode OFF - tap for slower games and less motion"
-          }
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            height: 32,
-            padding: "0 12px",
-            borderRadius: 999,
-            background: comfort.enabled
-              ? "linear-gradient(135deg, rgba(126, 255, 151, 0.22), rgba(0, 229, 255, 0.18))"
-              : "rgba(15, 21, 48, 0.55)",
-            border: `1px solid ${comfort.enabled ? "rgba(126, 255, 151, 0.7)" : "rgba(125, 240, 255, 0.32)"}`,
-            color: comfort.enabled ? "#7eff97" : "#fff7e6",
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700,
-            fontSize: 11,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            cursor: "pointer",
-            transition: "all 180ms ease-out",
-          }}
-        >
-          <span aria-hidden style={{ fontSize: 14 }}>
-            {comfort.enabled ? "🌿" : "🌀"}
-          </span>
-          <span>Comfort</span>
-        </button>
         {onMuteToggle && (
           <button
             type="button"
@@ -408,6 +376,7 @@ export default function LessonHUD({
             </svg>
           </button>
         )}
+      </div>
       </div>
 
       <style>{`
