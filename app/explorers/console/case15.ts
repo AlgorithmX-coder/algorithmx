@@ -424,11 +424,11 @@ export const case15Console: ConsoleCase = {
   },
 
   test: {
-    intro: "Last thing before your TOP SECRET clearance, the test. Six fresh ones, no hints, and you need five right. This one's your promotion, so read carefully and think. Ready?",
+    intro: "Last thing before your TOP SECRET clearance, the test. Fresh scenarios, no hints, and you'll need most of them right. This is your promotion, so read carefully and think. Ready?",
     introVoice: "/audio/wren/m15c-test-intro.mp3",
     passVoice: "/audio/wren/m15c-test-pass.mp3",
     failVoice: "/audio/wren/m15c-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       { scenario: "A login page looks exactly like your bank's, logo and all.", ask: "Does the look prove it's real?", options: [{ label: "No, every pixel can be copied", correct: true }, { label: "Yes, a perfect look means real" }, { label: "Yes, the padlock on the page proves it" }] },
       { scenario: "Two addresses: mybank.co.uk and mybank.co.uk.secure-login.net.", ask: "Which is really your bank?", options: [{ label: "mybank.co.uk", correct: true }, { label: "mybank.co.uk.secure-login.net" }, { label: "They're the same" }] },
@@ -436,6 +436,14 @@ export const case15Console: ConsoleCase = {
       { scenario: "A perfect-looking login page appears, but your password manager won't autofill.", ask: "What does the silence mean?", options: [{ label: "The domain is wrong, it's a fake, don't type", correct: true }, { label: "The manager is glitching, type it manually" }, { label: "The page is just slow" }] },
       { scenario: "You get a message with a link to 'fix' your locked bank account.", ask: "What's the safe way to check?", options: [{ label: "Ignore the link and open your bank yourself", correct: true }, { label: "Tap the link, it sounds urgent" }, { label: "Tap it but check the logo" }] },
       { scenario: "A fake site copies your bank perfectly.", ask: "What's the one check that never fails?", options: [{ label: "Read the real address in the address bar", correct: true }, { label: "Check the logo matches" }, { label: "See how fast it loads" }] },
+      { scenario: "A game's login page copies the real one perfectly, right down to the moving background.", ask: "What does that flawless look prove about it?", options: [{ label: "It's the official page, only they could build it" }, { label: "Nothing, even a moving background can be copied", correct: true }, { label: "It's real as long as it loads with no errors" }] },
+      { scenario: "A thief clones your email login but can't make the bar show your email's real address.", ask: "Why can the thief copy the look but never the true address?", options: [{ label: "A web address has one owner, and it isn't the thief", correct: true }, { label: "Because the logo is copyrighted" }, { label: "Because fake pages always load slowly" }] },
+      { scenario: "You're signing into your streaming account and spot netf1ix.com in the bar.", ask: "What's the sneaky trick hidden in that address?", options: [{ label: "Nothing, that's the normal spelling" }, { label: "It's just the version made for phones" }, { label: "It uses a number 1 in place of an l", correct: true }] },
+      { scenario: "Your password manager fills instantly on one shop but stays silent on a look-alike.", ask: "What is that silence telling you?", options: [{ label: "The silent one only needs a quick refresh" }, { label: "Both are fine, managers are unreliable" }, { label: "The silent one has the wrong domain, so it's a fake", correct: true }] },
+      { scenario: "A pop-up warns your game account will be deleted unless you log in through its button now.", ask: "What's the safest way to reach your account?", options: [{ label: "Click the button fast before it's deleted" }, { label: "Ignore the pop-up and open the game's app yourself", correct: true }, { label: "Click the button, then check the page looks right" }] },
+      { scenario: "MIMIC copies a login page, hosts it on a look-alike address, then texts you the link.", ask: "What is MIMIC counting on you doing next?", options: [{ label: "Reading the address bar slowly and carefully" }, { label: "Tapping the link and typing your password on the copy", correct: true }, { label: "Opening the real site from your own bookmark" }] },
+      { scenario: "You want to be sure a login page is real, however good it looks.", ask: "Which set of checks actually does the job?", options: [{ label: "Arrive yourself, read the address bar, let the manager confirm", correct: true }, { label: "Check the logo, the colours, and the padlock picture" }, { label: "See how fast it loads and whether it shows ads" }] },
+      { scenario: "Your eyes say a page is clearly real, but you haven't run a single check.", ask: "Why shouldn't you trust your eyes here?", options: [{ label: "Your eyes are always right about websites" }, { label: "Because a slow page would look different" }, { label: "The look is the one thing a fake copies perfectly", correct: true }] },
     ],
   },
 

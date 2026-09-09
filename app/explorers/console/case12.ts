@@ -416,11 +416,11 @@ export const case12Console: ConsoleCase = {
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. Six fresh ones, no hints, and you need five right. Everything about keeping things sealed, put it to work. Ready?",
+    intro: "Last thing before I sign this off, the test. A fresh batch, no hints, and you need to get most of them right. Everything about keeping things sealed, put it to work. Ready?",
     introVoice: "/audio/wren/m12c-test-intro.mp3",
     passVoice: "/audio/wren/m12c-test-pass.mp3",
     failVoice: "/audio/wren/m12c-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       { scenario: "A message is scrambled with a secret key so only the right person can read it.", ask: "What's that called?", options: [{ label: "A cipher, encryption", correct: true }, { label: "A password" }, { label: "A firewall" }] },
       { scenario: "A shift cipher just moves each letter along by a fixed amount.", ask: "Why is it useless against a computer?", options: [{ label: "There are only 25 shifts to try", correct: true }, { label: "Computers can't read letters" }, { label: "It's actually unbreakable" }] },
@@ -428,6 +428,14 @@ export const case12Console: ConsoleCase = {
       { scenario: "You send a password over a plain, unencrypted connection.", ask: "What's it like?", options: [{ label: "A postcard anyone on the route can read", correct: true }, { label: "A sealed letter" }, { label: "Totally private, always" }] },
       { scenario: "You're on free cafe wi-fi and want to log in somewhere.", ask: "What's the safe rule?", options: [{ label: "Only use padlocked sites; save private stuff for a trusted network", correct: true }, { label: "Anything's fine on wi-fi" }, { label: "Plain http is faster, use that" }] },
       { scenario: "A listener captures all your traffic on open wi-fi, but gets only gibberish.", ask: "Why?", options: [{ label: "Your connections were padlocked and sealed", correct: true }, { label: "The listener was incompetent" }, { label: "The wi-fi was slow" }] },
+      { scenario: "A friend hands you a note scrambled with a secret rule, but never tells you what the rule is.", ask: "Can you read it?", options: [{ label: "No, without the key it stays gibberish", correct: true }, { label: "Yes, scrambled notes are easy to read" }, { label: "Yes, if you read it fast enough" }] },
+      { scenario: "Two locks: one has only a handful of possible keys, the other has more keys than there are atoms in the universe.", ask: "Which one is safe from a computer trying every key?", options: [{ label: "The lock with a handful of keys, fewer to remember" }, { label: "The lock with a mountain of possible keys", correct: true }, { label: "Both crack just as fast" }] },
+      { scenario: "A shopping page wants your card number, but there's no padlock and the address begins with plain http.", ask: "What should you do?", options: [{ label: "Type it fast, before anyone notices" }, { label: "Type it, the page looks friendly enough" }, { label: "Don't type your card, the line isn't sealed", correct: true }] },
+      { scenario: "You want to post a funny meme for everyone to see, and also send your bank details to a shop.", ask: "Which one MUST go in a sealed envelope?", options: [{ label: "The meme, so no one copies it" }, { label: "The bank details", correct: true }, { label: "Neither, a postcard is fine for both" }] },
+      { scenario: "You're on the airport's open wi-fi and need to send a private message, but there's no padlock in sight.", ask: "Best move?", options: [{ label: "Wait and send it on a network you trust", correct: true }, { label: "Send it now, airports are safe places" }, { label: "Send it, a busy place is a safe place" }] },
+      { scenario: "PACKRAT sits quietly on an open network, reading whatever flies past.", ask: "How does it get people's secrets?", options: [{ label: "By politely asking each person for their password" }, { label: "By guessing every password by hand" }, { label: "By listening to unsealed traffic, it never has to ask", correct: true }] },
+      { scenario: "You sit down at a cafe and want to log into your email.", ask: "What's the very first thing to do?", options: [{ label: "Type your password as fast as you can" }, { label: "Glance for the padlock before typing anything private", correct: true }, { label: "Turn the screen brightness up" }] },
+      { scenario: "You've finished your drink and want to do your online banking, but you're still on the cafe's open wi-fi.", ask: "Best move?", options: [{ label: "Save the banking for a network you trust", correct: true }, { label: "Do it now on the open wi-fi, it's quicker" }, { label: "Do it, just don't tell anyone" }] },
     ],
   },
 

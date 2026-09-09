@@ -13,6 +13,7 @@ import { MatrixRain } from "../MatrixRain";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
+import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
 import type { ConsoleCase, ConsoleStep, ConsoleTest } from "./case11";
 
@@ -214,7 +215,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
             <BootScreen title={consoleCase.title} caseNumber={consoleCase.caseNumber} open={consoleCase.open} acc={acc} onBoot={beginFresh} />
           )
         ) : phase === "test" ? (
-          <TestView test={consoleCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(consoleCase.id); clearProgress(consoleCase.id); setPhase("debrief"); }} />
+          <TestView test={consoleCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(consoleCase.id); clearProgress(consoleCase.id); void saveExplorersProgress(parseInt(consoleCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
         ) : phase === "debrief" ? (
           <Debrief data={consoleCase.debrief} acc={acc} onExit={onExit} onNext={onNextCase} />
         ) : (

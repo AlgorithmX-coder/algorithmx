@@ -474,18 +474,26 @@ export const case19War: WarCase = {
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. Six fresh ones, no hints, and you need five right. The whole campaign, start to finish, put it to work. Ready?",
+    intro: "Last thing before I sign this off, the test. A fresh set, no hints, and you need to pass. The whole campaign, start to finish, put it to work. Ready?",
     introVoice: "/audio/wren/m19w-test-intro.mp3",
     passVoice: "/audio/wren/m19w-test-pass.mp3",
     failVoice: "/audio/wren/m19w-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       { scenario: "A serious attack runs recon, lure, access, harvest, spread.", ask: "What's your big advantage?", options: [{ label: "You only need to break one link to stop it", correct: true }, { label: "You must be perfect at every stage" }, { label: "Nothing can be done" }] },
+      { scenario: "You spot and delete an attacker's bait before you ever click it.", ask: "What happens to the rest of their campaign?", options: [{ label: "It carries on just fine without you" }, { label: "It stalls, one broken link stops the whole chain", correct: true }, { label: "Only the very first stage is affected" }] },
       { scenario: "Attackers research a target before striking.", ask: "How do you weaken their recon?", options: [{ label: "Keep a small public footprint", correct: true }, { label: "Post much more to confuse them" }, { label: "Recon can't be weakened" }] },
+      { scenario: "You're about to post a photo at your school gates with your timetable in the caption.", ask: "Why think twice before sharing it?", options: [{ label: "Photos like this are always completely safe" }, { label: "It makes any fake message harder to send" }, { label: "It hands recon exactly where and when to find you", correct: true }] },
+      { scenario: "A stranger online says you're clearly gifted and offers to make you famous if you share a few private details.", ask: "What's really going on?", options: [{ label: "A real talent scout you should trust" }, { label: "A recruitment lure, flattery to lower your guard", correct: true }, { label: "A harmless compliment with no risk at all" }] },
+      { scenario: "A video clip shows a famous streamer promising to double any money you send to a link.", ask: "What's the smart read?", options: [{ label: "If it's on video, it must be true" }, { label: "Send a little first to test if it works" }, { label: "It's likely a faked video, nobody doubles your money", correct: true }] },
       { scenario: "A phishing link has stolen one of your passwords.", ask: "What still stops the break-in?", options: [{ label: "Two-factor, plus that password being unique", correct: true }, { label: "Reusing it everywhere" }, { label: "Nothing, it's over" }] },
+      { scenario: "You use the exact same password for your email and your game account.", ask: "Why is that risky at the access stage?", options: [{ label: "It makes both accounts much safer" }, { label: "One leak would open both doors at once", correct: true }, { label: "Reusing a password blocks attackers" }] },
       { scenario: "Friends get scam links 'from you' that you never sent.", ask: "What matters most?", options: [{ label: "Act fast to contain the spread", correct: true }, { label: "Ignore it, not your problem" }, { label: "Wait a few days" }] },
+      { scenario: "You notice money gone from an account that you never spent.", ask: "Which stage is this, and what matters?", options: [{ label: "Recon, they're only researching you" }, { label: "Just a glitch, best to ignore it" }, { label: "Harvest, they took what they came for, so act fast", correct: true }] },
       { scenario: "You want no single mistake to be fatal.", ask: "What is defence in depth?", options: [{ label: "Stacking layers so one failure is caught by another", correct: true }, { label: "One perfect password for everything" }, { label: "Assuming you'll never be fooled" }] },
+      { scenario: "A friend keeps one master password on a sticky note and uses it for everything.", ask: "What's the problem with that?", options: [{ label: "It's perfect defence in depth" }, { label: "It's a single point of failure, one slip opens everything", correct: true }, { label: "A sticky note makes a password stronger" }] },
       { scenario: "An account gets hacked and is spreading to others.", ask: "What's the right first response?", options: [{ label: "Contain, tell a trusted adult, recover, in order", correct: true }, { label: "Fix it alone in secret" }, { label: "Panic and change nothing" }] },
+      { scenario: "You've contained a hack, but a nagging voice says just keep it secret and sort it alone.", ask: "What's the right move now?", options: [{ label: "Keep it secret and cope on your own" }, { label: "Do nothing and hope it's fine" }, { label: "Tell a trusted adult, you never handle a real incident alone", correct: true }] },
     ],
   },
 

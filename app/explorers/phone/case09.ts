@@ -390,11 +390,11 @@ export const case09Phone: PhoneCase = {
 
   /* ================= TEST · "Prove it" (blind, must-pass) ================= */
   test: {
-    intro: "Last thing before I close the case, the test. Six fresh ones you haven't seen. No hints, and you need five right. Take everything you learned about the long con, and think. Ready?",
+    intro: "Last thing before I close the case, the test. A fresh batch you haven't seen, no hints. Get enough of them right and the case is closed for good. Take everything you learned about the long con, and think. Ready?",
     introVoice: "/audio/wren/m09p-test-intro.mp3",
     passVoice: "/audio/wren/m09p-test-pass.mp3",
     failVoice: "/audio/wren/m09p-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       {
         scenario: "A new online friend says: \"I've never felt a connection like this with anyone.\"",
@@ -448,6 +448,78 @@ export const case09Phone: PhoneCase = {
           { label: "Don't pay, don't reply, and tell a trusted adult straight away", correct: true },
           { label: "Quietly pay so it goes away" },
           { label: "Beg them not to do it" },
+        ],
+      },
+      {
+        scenario: "In a game chat, someone tells you: \"I message loads of people, but you're the one I actually mean it with.\"",
+        ask: "What's really going on?",
+        options: [
+          { label: "You genuinely stood out from everyone else" },
+          { label: "It's a factory line, said to thousands to make each one feel chosen", correct: true },
+          { label: "They're being honest about how they feel" },
+        ],
+      },
+      {
+        scenario: "For a month, an online friend remembers every little thing you say, cheers you up, and never once asks for anything.",
+        ask: "Why might a stranger do all that?",
+        options: [
+          { label: "Some people are just naturally that thoughtful" },
+          { label: "It means the friendship is completely safe" },
+          { label: "They're farming trust now to spend it on a big ask later", correct: true },
+        ],
+      },
+      {
+        scenario: "\"We've built something real over all these weeks, don't let it be for nothing.\"",
+        ask: "What is this line really doing?",
+        options: [
+          { label: "Making an honest case for your friendship" },
+          { label: "Using the weeks you've spent as a chain to keep you from leaving", correct: true },
+          { label: "Showing how much the bond is worth protecting" },
+        ],
+      },
+      {
+        scenario: "After warmth, a gift, and one ask you turned down, they now message non-stop, piling on guilt and pressure.",
+        ask: "Which stage of the con timeline is this?",
+        options: [
+          { label: "The squeeze, the final heavy pressure", correct: true },
+          { label: "Contact, the very first hello" },
+          { label: "Warmth, the friendly build-up" },
+        ],
+      },
+      {
+        scenario: "You lay a long con out on a timeline to see where the ask is coming.",
+        ask: "Which stage comes right before the ask?",
+        options: [
+          { label: "The squeeze, the last big push" },
+          { label: "The very first contact" },
+          { label: "The turn, where it flips from giving to taking", correct: true },
+        ],
+      },
+      {
+        scenario: "For weeks a friend only ever gave, kind words and a small gift. Today: \"could you do me one quick favour and buy me a gift card?\"",
+        ask: "What just happened?",
+        options: [
+          { label: "Just more of the same friendly giving" },
+          { label: "That's the turn, the first time they take instead of give", correct: true },
+          { label: "Nothing worth noting, it's only a small favour" },
+        ],
+      },
+      {
+        scenario: "You've spotted the con and blocked them, but you feel embarrassed you didn't see it sooner.",
+        ask: "What's the healthy truth?",
+        options: [
+          { label: "Con artists fool people for a living, so it's not your fault, and a trusted adult can help", correct: true },
+          { label: "You should feel silly for taking so long to notice" },
+          { label: "Best to keep it to yourself and quietly move on" },
+        ],
+      },
+      {
+        scenario: "\"Move some of your birthday money to this account for me, and let's keep it just between us.\"",
+        ask: "What's the safe move?",
+        options: [
+          { label: "Send it quietly, since it's a secret between friends" },
+          { label: "Say no, but keep the secret like they asked" },
+          { label: "Move nothing, pause, and tell a trusted adult", correct: true },
         ],
       },
     ],

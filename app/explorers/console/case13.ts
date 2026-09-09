@@ -419,18 +419,26 @@ export const case13Console: ConsoleCase = {
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. Six fresh ones, no hints, and you need five right. Everything about back doors, put it to work. Ready?",
+    intro: "Last thing before I sign this off, the test. Fresh scenarios, no hints, and you need to pass. Everything about back doors, put it to work. Ready?",
     introVoice: "/audio/wren/m13c-test-intro.mp3",
     passVoice: "/audio/wren/m13c-test-pass.mp3",
     failVoice: "/audio/wren/m13c-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       { scenario: "You have a strong unique password and 2FA.", ask: "Where does a thief attack instead?", options: [{ label: "The account recovery / 'forgot password' path", correct: true }, { label: "They just try the password harder" }, { label: "They give up entirely" }] },
+      { scenario: "A classmate says their account is unhackable because their password is super long.", ask: "What are they missing?", options: [{ label: "A long password means there's no other way in" }, { label: "The recovery path is a second door that could be weaker than the password", correct: true }, { label: "Long passwords switch off the recovery option" }] },
       { scenario: "A security question asks for your first pet's name.", ask: "Why is that a weak secret?", options: [{ label: "It's findable in your posts and photos", correct: true }, { label: "Only you could ever know it" }, { label: "Pets can't be security questions" }] },
+      { scenario: "A game account offers \"What primary school did you go to?\" as a security question.", ask: "Why should that worry you?", options: [{ label: "School names are impossible for anyone to find" }, { label: "Security questions are always unbreakable" }, { label: "Your school is likely tagged in old posts, so a stranger could look it up", correct: true }] },
       { scenario: "You want a security answer a thief can't guess.", ask: "What's the trick?", options: [{ label: "Use a made-up answer, stored in your manager", correct: true }, { label: "Use your real, true answer" }, { label: "Use something from your bio" }] },
+      { scenario: "A site asks \"What is your favourite food?\" as a recovery question.", ask: "What is the smartest thing to type?", options: [{ label: "A made-up answer like 'copper-kite-51' that only your manager knows", correct: true }, { label: "Your real favourite food, pizza" }, { label: "Something you've posted about loving before" }] },
       { scenario: "Your account can reset through an old email you don't use.", ask: "Why is that dangerous?", options: [{ label: "Whoever gets that dead inbox can reset your account", correct: true }, { label: "Old emails are always safe" }, { label: "It's fine as a backup" }] },
+      { scenario: "You switched phone numbers last year, but your accounts still recover through the old one.", ask: "What should you do?", options: [{ label: "Leave it, old numbers still work fine" }, { label: "Update recovery to your current number, so whoever gets the old one can't reset you", correct: true }, { label: "Nothing, phone numbers can't reset accounts" }] },
       { scenario: "You used a library computer to log into your account.", ask: "What should you do when done?", options: [{ label: "Log out fully, don't just close the tab", correct: true }, { label: "Just close the tab" }, { label: "Leave it, it's fine" }] },
+      { scenario: "Weeks ago you logged into your account on a friend's tablet to show them a game.", ask: "What is the safe move now?", options: [{ label: "Nothing, it was only a friend" }, { label: "Ask the friend never to open the tablet" }, { label: "Open your device list and log that tablet out", correct: true }] },
       { scenario: "A thief knows your real pet, street and school, but still can't reset your account.", ask: "Why?", options: [{ label: "Your answers are made-up and recovery is locked", correct: true }, { label: "It doesn't really know your details" }, { label: "Recovery paths don't work" }] },
+      { scenario: "Watching SKELETON KEY work, you notice it never even types your password.", ask: "What does that tell you about its plan?", options: [{ label: "It has given up on your account" }, { label: "It's going around the password, straight for the recovery back door", correct: true }, { label: "It doesn't know your username" }] },
+      { scenario: "You want one weekend habit that keeps your back door shut for good.", ask: "Which set of moves does the job?", options: [{ label: "Read about back doors and hope for the best" }, { label: "Only change your login password now and then" }, { label: "Made-up security answers, a current recovery email with 2FA, and clean sessions", correct: true }] },
+      { scenario: "A younger cousin asks how to stop anyone resetting their account through the recovery path.", ask: "What is the best advice to give?", options: [{ label: "Tell no one their password and hope that's enough" }, { label: "Make the security answers unguessable lies and lock the recovery email with 2FA", correct: true }, { label: "Never use the account again" }] },
     ],
   },
 

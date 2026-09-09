@@ -393,11 +393,11 @@ export const case07Phone: PhoneCase = {
 
   /* ================= TEST · "Prove it" (blind, must-pass) ================= */
   test: {
-    intro: "Last thing before I close the case, the test. Six fresh ones you haven't seen. No hints, and you need five right. Take everything you learned about stolen faces, and think. Ready?",
+    intro: "Last thing before I close the case, the test. A fresh batch you haven't seen, no hints, and you'll need most of them right. Take everything you learned about stolen faces, and think. Ready?",
     introVoice: "/audio/wren/m07p-test-intro.mp3",
     passVoice: "/audio/wren/m07p-test-pass.mp3",
     failVoice: "/audio/wren/m07p-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       {
         scenario: "\"It's Ella! I got a new number. Can you send the login code that just arrived on your phone? Locked out 😭\"",
@@ -451,6 +451,78 @@ export const case07Phone: PhoneCase = {
           { label: "\"Send me the security code on your phone\"", correct: true },
           { label: "\"Did you finish the homework?\"" },
           { label: "\"Wanna come round Saturday?\"" },
+        ],
+      },
+      {
+        scenario: "Your sister's real account, same name and photo, messages: \"quietly send me your tablet passcode, don't make a fuss x\"",
+        ask: "The account really is hers. So is the request safe?",
+        options: [
+          { label: "Yes, it's her genuine account, so it must be her asking" },
+          { label: "No, her real account could be in a thief's hands right now", correct: true },
+          { label: "Yes, sisters are allowed each other's passcodes" },
+        ],
+      },
+      {
+        scenario: "In your gaming clan, the leader Ola's account (real, and in the clan for years) DMs you privately for your account password \"to fix a glitch\".",
+        ask: "Does the account being real and long-trusted make the ask safe?",
+        options: [
+          { label: "No, trust belongs to Ola the person, and a thief could be holding the account", correct: true },
+          { label: "Yes, an account trusted for years can be believed" },
+          { label: "Yes, clan leaders are allowed to ask for passwords" },
+        ],
+      },
+      {
+        scenario: "Your mate Theo's account sends an urgent, weird ask. You sit next to him in class tomorrow, and you know his home phone number.",
+        ask: "What's a proper way to check it's really him?",
+        options: [
+          { label: "Reply in the same DM asking if it's really him" },
+          { label: "Check whether his profile photo still looks normal" },
+          { label: "Ask him face to face tomorrow, or ring the number you know is his", correct: true },
+        ],
+      },
+      {
+        scenario: "You want to test a suspicious account that says it's your friend Nadia.",
+        ask: "Which question would a THIEF find easiest to answer?",
+        options: [
+          { label: "\"What did we rename the ice-cream van tune?\"" },
+          { label: "\"What town do you live in?\"", correct: true },
+          { label: "\"What did we call our den in the park?\"" },
+        ],
+      },
+      {
+        scenario: "You ask a suspicious account \"what did we bury in the garden in Year 3?\" It replies: \"stop messing about, this is serious, send the code!\"",
+        ask: "What just happened?",
+        options: [
+          { label: "It's your friend being serious about a real emergency" },
+          { label: "It answered you, so it must really be them" },
+          { label: "It dodged the question and pushed harder, so it's a thief", correct: true },
+        ],
+      },
+      {
+        scenario: "An account you trust writes: \"we've been best mates since reception, you totally trust me yeah? 😊\" and hasn't asked for anything yet.",
+        ask: "Which move of MIMIC's play is this?",
+        options: [
+          { label: "Rushing you past your checks" },
+          { label: "Wearing the friendship, spending trust before the ask", correct: true },
+          { label: "Stealing the account" },
+        ],
+      },
+      {
+        scenario: "A stolen account has already leaned on your friendship and just made a weird ask for a code.",
+        ask: "If it follows MIMIC's usual play, what comes NEXT?",
+        options: [
+          { label: "It finally stops and lets you verify calmly" },
+          { label: "It goes back and wears the friendship all over again" },
+          { label: "A rush, hurrying you so you don't stop to check", correct: true },
+        ],
+      },
+      {
+        scenario: "You've caught a thief on your friend Amara's account, and you feel bad, like you might be getting a real friend in trouble.",
+        ask: "What's the kind AND safe thing to do?",
+        options: [
+          { label: "Say nothing, so you don't stir up any drama" },
+          { label: "Warn the real Amara another way, she's a victim too and needs her account back", correct: true },
+          { label: "Delete the messages so nobody ever sees them" },
         ],
       },
     ],

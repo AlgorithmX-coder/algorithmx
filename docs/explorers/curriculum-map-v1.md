@@ -143,7 +143,7 @@ Out-of-band verification → home **M07** (reinforced M10, M15, M17, M20) · nam
 
 ## 11. Sensitive-topics policy
 
-Embarrassment-blackmail is covered abstractly in M09 (the lever + the absolute rule: never comply, never pay, tell an adult immediately, you are not in trouble) — never depicted with imagery or sexual framing (DECIDE 1). Cybercrime recruitment (M18) is framed as recognition-and-refusal, empowering not frightening. Nothing in the tier depicts personal jeopardy (art canon: threats are cases); every sensitive beat exits to a named adult path, US-localized.
+Embarrassment-blackmail is covered abstractly in M09 (the lever + the absolute rule: never comply, never pay, tell an adult immediately, you are not in trouble) — never depicted with imagery or sexual framing (DECIDE 1). Cybercrime recruitment (M18) is framed as recognition-and-refusal, empowering not frightening. Nothing in the tier depicts personal jeopardy (art canon: threats are cases); every sensitive beat exits to a named adult path, UK-localized (UK spelling + "trusted adult" framing throughout; £ pricing = UK market. The earlier "US-localized" note is superseded).
 
 ## 12. Landing-promise coverage check
 

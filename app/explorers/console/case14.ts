@@ -401,11 +401,11 @@ export const case14Console: ConsoleCase = {
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. Six fresh ones, no hints, and you need five right. Everything about controlling what runs on your machine, put it to work. Ready?",
+    intro: "Last thing before I sign this off, the test. All fresh, no hints, and you need most of them right. Everything about controlling what runs on your machine, put it to work. Ready?",
     introVoice: "/audio/wren/m14c-test-intro.mp3",
     passVoice: "/audio/wren/m14c-test-pass.mp3",
     failVoice: "/audio/wren/m14c-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       { scenario: "You install an app and tap 'Allow' on its requests.", ask: "What are you really doing?", options: [{ label: "Granting it powers over your device", correct: true }, { label: "Just getting the app, nothing else" }, { label: "Nothing, apps can't reach your stuff" }] },
       { scenario: "A torch app asks for your contacts, texts and location.", ask: "What does that tell you?", options: [{ label: "It wants powers a torch can't need, a red flag", correct: true }, { label: "It needs them for features" }, { label: "All apps need everything" }] },
@@ -413,6 +413,14 @@ export const case14Console: ConsoleCase = {
       { scenario: "A pop-up offers a security update.", ask: "Why do updates matter?", options: [{ label: "They patch holes attackers exploit, they're armour", correct: true }, { label: "They just move things around" }, { label: "They don't, ignore them" }] },
       { scenario: "\"Your device is out of date! Download UPDATE.exe from fast-fix-now.net!\"", ask: "What is it?", options: [{ label: "A fake installer, real updates don't come from pop-ups", correct: true }, { label: "A real update, install it fast" }, { label: "Harmless" }] },
       { scenario: "You want to stop malware before it can ever run.", ask: "What's the key habit?", options: [{ label: "Only install from official sources", correct: true }, { label: "Install everything, delete the bad ones" }, { label: "Hope your device catches it" }] },
+      { scenario: "You download a new game and it lists the powers it wants before it opens.", ask: "Agreeing to that list does what?", options: [{ label: "Only downloads pictures for the game" }, { label: "Hands the game real powers over your device, like your files or camera", correct: true }, { label: "Nothing, the list is just for show" }] },
+      { scenario: "A calculator app asks to use your microphone and your contacts.", ask: "Does it need them?", options: [{ label: "Yes, every app needs those" }, { label: "Maybe, so grant them anyway" }, { label: "No, a calculator only works with numbers, those powers don't fit", correct: true }] },
+      { scenario: "A music app asks to use your storage to save songs, and also your location.", ask: "Which should you grant?", options: [{ label: "Storage only, music has no need to know where you are", correct: true }, { label: "Both, just to be safe" }, { label: "Neither, deny it all" }] },
+      { scenario: "You have skipped your favourite app's updates for months.", ask: "What's the risk?", options: [{ label: "Nothing, older versions are safer" }, { label: "Its known holes stay wide open for attackers", correct: true }, { label: "You just miss out on new colours" }] },
+      { scenario: "A message links you to a \"free\" copy of a paid game on a site you've never heard of.", ask: "What should you think?", options: [{ label: "Grab it fast before the offer ends" }, { label: "It's safe, someone shared it with you" }, { label: "Treat it as a fake installer, free plus an unknown site is the lure", correct: true }] },
+      { scenario: "A bad app slipped through, but you'd granted it no camera and no file access.", ask: "What limited the damage?", options: [{ label: "Tight permissions, so it got no keys to use", correct: true }, { label: "Nothing, it was already too late" }, { label: "The app quietly fixed itself" }] },
+      { scenario: "You're setting up the habit that keeps bad software off your machine.", ask: "Which set of habits does that?", options: [{ label: "Any source, allow everything, updates off" }, { label: "Official source, permissions that fit, auto-updates on", correct: true }, { label: "Cracked sites, allow all, ignore updates" }] },
+      { scenario: "A download looks tempting, but its source and permissions both seem wrong.", ask: "What's the safest response?", options: [{ label: "Install it now and decide later" }, { label: "Rush past the warnings to get it" }, { label: "Don't install, investigate it or ask a trusted adult", correct: true }] },
     ],
   },
 

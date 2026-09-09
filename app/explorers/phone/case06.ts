@@ -541,11 +541,11 @@ export const case06Phone: PhoneCase = {
 
   /* ================= TEST · "Prove it" (blind, must-pass) ================= */
   test: {
-    intro: "Last thing before I close the case: the test. Six quick ones, fresh scams you haven't seen. No hints, and you need five right. Take what you learned and think. Ready?",
+    intro: "Last thing before I close the case: the test. A fresh batch of scams you haven't seen. No hints, and you'll need most of them right. Take what you learned and think. Ready?",
     introVoice: "/audio/wren/m06p-test-intro.mp3",
     passVoice: "/audio/wren/m06p-test-pass.mp3",
     failVoice: "/audio/wren/m06p-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       {
         scenario: "\"⚠️ Your account will be LOCKED in 1 hour unless you verify now.\"",
@@ -599,6 +599,78 @@ export const case06Phone: PhoneCase = {
           { label: "Stop replying, block and report, tell an adult you trust", correct: true },
           { label: "Argue until they admit it's a scam" },
           { label: "Keep chatting to find out who they are" },
+        ],
+      },
+      {
+        scenario: "\"honestly you're the coolest person i've talked to all week, i feel like i can already trust you 💛\"",
+        ask: "Which lever is this?",
+        options: [
+          { label: "Liking", correct: true },
+          { label: "Fear" },
+          { label: "Hurry" },
+        ],
+      },
+      {
+        scenario: "\"⚡ flash giveaway! only 1 winner slot left and i'm closing it in 60 seconds, don't miss out!\"",
+        ask: "How many levers is this stacking?",
+        options: [
+          { label: "None, it's a real giveaway" },
+          { label: "Two: scarcity and hurry", correct: true },
+          { label: "One: just liking" },
+        ],
+      },
+      {
+        scenario: "\"here's a free £15 game voucher for being awesome 🎁 just send me your account email and password so i can load it on 👍\"",
+        ask: "Under the 'free voucher', what is he really after?",
+        options: [
+          { label: "To reward you for being awesome" },
+          { label: "To send you even more vouchers" },
+          { label: "Your account login", correct: true },
+        ],
+      },
+      {
+        scenario: "\"hi it's your sister, i got a new number! quick, what's the code that just landed on your phone? i need it to set up my account 🙏\"",
+        ask: "What's the safe first move?",
+        options: [
+          { label: "Send the code, she said it's her new number" },
+          { label: "Reach your sister a way you already trust before doing anything", correct: true },
+          { label: "Reply here asking her to prove it's really her" },
+        ],
+      },
+      {
+        scenario: "A player you met a month ago has been kind and never asked for a thing. Today: \"you're the only one i can trust with this.\"",
+        ask: "What is this most likely setting up?",
+        options: [
+          { label: "An ask coming next, wrapped in all that trust", correct: true },
+          { label: "Nothing, they simply trust you now" },
+          { label: "A surprise gift they're about to send you" },
+        ],
+      },
+      {
+        scenario: "A con warmed you up, pulled a lever, then made the real ask, and you paused instead of saying yes.",
+        ask: "In SIREN's play, what move usually comes next?",
+        options: [
+          { label: "They start the warm-up all over again" },
+          { label: "Nothing, they give up politely" },
+          { label: "Guilt, to shove you over the line", correct: true },
+        ],
+      },
+      {
+        scenario: "\"heyy you seem so cool, i feel like we'd get on great 😄\" and nothing has been asked for yet.",
+        ask: "Which move of SIREN's play is this?",
+        options: [
+          { label: "The real ask" },
+          { label: "The warm-up, making friends first", correct: true },
+          { label: "The guilt trip at the end" },
+        ],
+      },
+      {
+        scenario: "You spotted a scam and blocked them. Now a brand-new account messages: \"why did you block me?? that was so rude.\"",
+        ask: "What's the clean move?",
+        options: [
+          { label: "Don't engage, block and report this one too", correct: true },
+          { label: "Reply to explain exactly why you blocked them" },
+          { label: "Apologise so they don't feel bad" },
         ],
       },
     ],

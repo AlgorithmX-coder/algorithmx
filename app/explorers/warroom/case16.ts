@@ -519,18 +519,26 @@ export const case16War: WarCase = {
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. Six fresh ones, no hints, and you need five right. Everything about owning your data, put it to work. Ready?",
+    intro: "Last thing before I sign this off, the test. Fresh scenarios, no hints, and you'll need most of them right. Everything about owning your data, put it to work. Ready?",
     introVoice: "/audio/wren/m16w-test-intro.mp3",
     passVoice: "/audio/wren/m16w-test-pass.mp3",
     failVoice: "/audio/wren/m16w-test-fail.mp3",
-    pass: 5,
+    pass: 11,
     questions: [
       { scenario: "A game is totally free with no visible ads.", ask: "How is it most likely making money?", options: [{ label: "Collecting and selling data about you", correct: true }, { label: "Pure kindness" }, { label: "It isn't, and never will" }] },
+      { scenario: "A free flashlight app asks to see your contacts and your location.", ask: "Why would a simple flashlight app want all that?", options: [{ label: "The app genuinely needs them to make light" }, { label: "It wants that data to bundle up and sell", correct: true }, { label: "It's just being extra careful for you" }] },
       { scenario: "Location tags, one reused username, and purchase history.", ask: "What do these together reveal?", options: [{ label: "Where you are, all your linked accounts, and your habits", correct: true }, { label: "Nothing useful" }, { label: "Only your favourite colour" }] },
+      { scenario: "You post a photo of your new bedroom, tagged at home, wearing your school jumper with its logo.", ask: "What could a stranger piece together from that one post?", options: [{ label: "Only that you like taking photos" }, { label: "Nothing, a single photo says little" }, { label: "Where you live and which school you go to", correct: true }] },
       { scenario: "You want to take control of your data trail.", ask: "What's the first step?", options: [{ label: "Audit yourself: search your name, view profiles logged out", correct: true }, { label: "Delete every account at once" }, { label: "Nothing, you can't see your file" }] },
+      { scenario: "A friend insists nobody can see your old posts, but you're not sure.", ask: "What's the smartest way to find out what a stranger really sees?", options: [{ label: "Log out and view your own profile the way a stranger would", correct: true }, { label: "Just trust your friend and move on" }, { label: "Ask the app to promise it's private" }] },
       { scenario: "You want to shrink the file companies hold on you.", ask: "Which move helps?", options: [{ label: "Set profiles private, location off, delete old posts", correct: true }, { label: "Post your birthday and address" }, { label: "Reuse one public handle everywhere" }] },
+      { scenario: "Your profile shows your full birthday and it's set to public.", ask: "What shrinks your file here?", options: [{ label: "Add your home address too, for balance" }, { label: "Leave it, a birthday is harmless" }, { label: "Hide the birthday or set it to private", correct: true }] },
       { scenario: "You find old data about you on a site you forgot.", ask: "What can you do?", options: [{ label: "Use its delete/privacy option; ask an adult if stuck", correct: true }, { label: "Nothing, it's permanent" }, { label: "Post more to bury it" }] },
+      { scenario: "A data-broker site lists your old email and school, and ignores comments asking it to stop.", ask: "What's a real way to get it removed?", options: [{ label: "Keep posting angry comments on the page" }, { label: "Send its delete-my-data request, with a trusted adult if it's tricky", correct: true }, { label: "Accept that broker lists can never be changed" }] },
       { scenario: "A data broker's file on you is built from many crumbs.", ask: "What's the best way to fight it?", options: [{ label: "Cut the sources so fewer crumbs feed it", correct: true }, { label: "Buy the file back" }, { label: "Ignore it, files can't shrink" }] },
+      { scenario: "You lock one account but leave another wide open, and the file fills right back up.", ask: "What does that teach you?", options: [{ label: "One open source keeps refilling the file, so cut them all", correct: true }, { label: "Locking accounts never does anything" }, { label: "The file is impossible to shrink" }] },
+      { scenario: "You did a big cleanup six months ago and haven't checked your trail since.", ask: "What's the smart habit now?", options: [{ label: "Never check again, one cleanup lasts forever" }, { label: "Delete every account so there's nothing to check" }, { label: "Audit again now and then, since new crumbs pile up", correct: true }] },
+      { scenario: "A friend says privacy is pointless because you can never be totally invisible online.", ask: "What's the realistic goal?", options: [{ label: "Give up, since being invisible is the only win" }, { label: "You decide what's out there, even if you're never invisible", correct: true }, { label: "Post everything, privacy makes no difference" }] },
     ],
   },
 
