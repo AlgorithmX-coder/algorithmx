@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T19:54:29.992Z",
+  "generatedAt": "2026-09-09T21:10:45.765Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -16,6 +16,10 @@
     "layla": {
       "id": "EXAVITQu4vr4xnSDxMaL",
       "name": "Sarah"
+    },
+    "narrator": {
+      "id": "JBFqnCBsd6RMkjVDRZzb",
+      "name": "George"
     }
   },
   "chunkStrategy": "block",
@@ -282,6 +286,116 @@
         "[laughs] You did it, Cyber Hero! [excited] Now, time to claim your stickers!"
       ],
       "file": "/audio/voice/d7deef07485d9b75.mp3"
+    },
+    {
+      "key": "c1106fdf448f5eba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your best friend says: 'Tell me your Roblox password so I can get you cool stuff!' What do you do?",
+      "lines": [
+        "Your best friend says: 'Tell me your Roblox password so I can get you cool stuff!' What do you do?"
+      ],
+      "file": "/audio/voice/c1106fdf448f5eba.mp3"
+    },
+    {
+      "key": "340b750d4fad58e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You're worried you'll forget your password. What's the safest thing to do?",
+      "lines": [
+        "You're worried you'll forget your password. What's the safest thing to do?"
+      ],
+      "file": "/audio/voice/340b750d4fad58e3.mp3"
+    },
+    {
+      "key": "fe618ee257f66119",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even best friends shouldn't know. Accounts get hacked that way.",
+      "lines": [
+        "Even best friends shouldn't know. Accounts get hacked that way."
+      ],
+      "file": "/audio/voice/fe618ee257f66119.mp3"
+    },
+    {
+      "key": "3cf97bf41432264e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Perfect! Your password is YOUR secret - nobody else needs it.",
+      "lines": [
+        "Perfect! Your password is YOUR secret - nobody else needs it."
+      ],
+      "file": "/audio/voice/3cf97bf41432264e.mp3"
+    },
+    {
+      "key": "712dea612f08ec6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now anyone walking past can read it!",
+      "lines": [
+        "Now anyone walking past can read it!"
+      ],
+      "file": "/audio/voice/712dea612f08ec6b.mp3"
+    },
+    {
+      "key": "af617c537a9485a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Great - a trusted grown-up is the safe way.",
+      "lines": [
+        "Great - a trusted grown-up is the safe way."
+      ],
+      "file": "/audio/voice/af617c537a9485a1.mp3"
+    },
+    {
+      "key": "aeee37367b6fe7fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A password proves it's blank.",
+      "lines": [
+        "A password proves it's blank."
+      ],
+      "file": "/audio/voice/aeee37367b6fe7fa.mp3"
+    },
+    {
+      "key": "ecdb2bd6eafd1dcf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which password would take the Raccoon YEARS to crack?",
+      "lines": [
+        "Which password would take the Raccoon YEARS to crack?"
+      ],
+      "file": "/audio/voice/ecdb2bd6eafd1dcf.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "5f9387f7a40da974",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who should know your password?",
+      "lines": [
+        "Who should know your password?"
+      ],
+      "file": "/audio/voice/5f9387f7a40da974.mp3"
+    },
+    {
+      "key": "628629f4eb0bd563",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which password would a hacker guess FIRST?",
+      "lines": [
+        "Which password would a hacker guess FIRST?"
+      ],
+      "file": "/audio/voice/628629f4eb0bd563.mp3"
     },
     {
       "key": "62419cfac55e517b",
@@ -557,6 +671,146 @@
         "[excited] Sticker time!"
       ],
       "file": "/audio/voice/2ffaa84deb741ae0.mp3"
+    },
+    {
+      "key": "e4735a65c00d48e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You said 'just one more' three videos ago. The next one is loading all by itself...",
+      "lines": [
+        "You said 'just one more' three videos ago. The next one is loading all by itself..."
+      ],
+      "file": "/audio/voice/e4735a65c00d48e1.mp3"
+    },
+    {
+      "key": "f6000af3c50f2a0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You catch your reflection in the screen: dry blinky eyes, a jiggly leg... and outside the sun is shining.",
+      "lines": [
+        "You catch your reflection in the screen: dry blinky eyes, a jiggly leg... and outside the sun is shining."
+      ],
+      "file": "/audio/voice/f6000af3c50f2a0e.mp3"
+    },
+    {
+      "key": "2f2061bafbf8c778",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dinner's ready! But the screen flashes: NEXT EPISODE IN 3... 2...",
+      "lines": [
+        "Dinner's ready! But the screen flashes: NEXT EPISODE IN 3... 2..."
+      ],
+      "file": "/audio/voice/2f2061bafbf8c778.mp3"
+    },
+    {
+      "key": "623c4b45cf782a5f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the belt choosing FOR you. 'One more' became five more, and the whole afternoon slid down the hole.",
+      "lines": [
+        "That's the belt choosing FOR you. 'One more' became five more, and the whole afternoon slid down the hole."
+      ],
+      "file": "/audio/voice/623c4b45cf782a5f.mp3"
+    },
+    {
+      "key": "208054743c55fcdf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You grabbed the controls back! Pausing the belt is the strongest button on the whole player.",
+      "lines": [
+        "You grabbed the controls back! Pausing the belt is the strongest button on the whole player."
+      ],
+      "file": "/audio/voice/208054743c55fcdf.mp3"
+    },
+    {
+      "key": "74a89a6564ccc2a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your body was ringing its bell - and the bell doesn't stop, it just rings louder. Dry eyes don't fix themselves on video six.",
+      "lines": [
+        "Your body was ringing its bell - and the bell doesn't stop, it just rings louder. Dry eyes don't fix themselves on video six."
+      ],
+      "file": "/audio/voice/74a89a6564ccc2a2.mp3"
+    },
+    {
+      "key": "5bb88ff470debf92",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You NOTICED! Trampoline, snack, drawing, calling a friend - your eyes and legs said thank you in about two minutes.",
+      "lines": [
+        "You NOTICED! Trampoline, snack, drawing, calling a friend - your eyes and legs said thank you in about two minutes."
+      ],
+      "file": "/audio/voice/5bb88ff470debf92.mp3"
+    },
+    {
+      "key": "8b2292a95c677962",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The start became the middle, dinner went cold, and everyone waited. Episodes keep forever - hot dinners don't.",
+      "lines": [
+        "The start became the middle, dinner went cold, and everyone waited. Episodes keep forever - hot dinners don't."
+      ],
+      "file": "/audio/voice/8b2292a95c677962.mp3"
+    },
+    {
+      "key": "1ce542fdb49f6922",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You beat the countdown! The episode will wait patiently all night. Hot dinner and family jokes won't.",
+      "lines": [
+        "You beat the countdown! The episode will wait patiently all night. Hot dinner and family jokes won't."
+      ],
+      "file": "/audio/voice/1ce542fdb49f6922.mp3"
+    },
+    {
+      "key": "7dc25245fd6cec54",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Autoplay is built to keep me blank.",
+      "lines": [
+        "Autoplay is built to keep me blank."
+      ],
+      "file": "/audio/voice/7dc25245fd6cec54.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "7ce74a0c6a28250a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Put the escape plan in order:",
+      "lines": [
+        "Put the escape plan in order:"
+      ],
+      "file": "/audio/voice/7ce74a0c6a28250a.mp3"
+    },
+    {
+      "key": "3842d68c5413d8a3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who lives in the comments?",
+      "lines": [
+        "Who lives in the comments?"
+      ],
+      "file": "/audio/voice/3842d68c5413d8a3.mp3"
+    },
+    {
+      "key": "49405c007953208d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the 'been watching a while' sign!",
+      "lines": [
+        "Quick - tap the 'been watching a while' sign!"
+      ],
+      "file": "/audio/voice/49405c007953208d.mp3"
     },
     {
       "key": "f676498e0146ebf5",
@@ -854,6 +1108,56 @@
       "file": "/audio/voice/52b87eaccd41254c.mp3"
     },
     {
+      "key": "c7f98643bdca21c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's never blank fault.",
+      "lines": [
+        "It's never blank fault."
+      ],
+      "file": "/audio/voice/c7f98643bdca21c6.mp3"
+    },
+    {
+      "key": "a029b1a8944d5ade",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who belongs on your MY TEAM poster?",
+      "lines": [
+        "Who belongs on your MY TEAM poster?"
+      ],
+      "file": "/audio/voice/a029b1a8944d5ade.mp3"
+    },
+    {
+      "key": "6ce5a9fc358df438",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the button that stops the sender!",
+      "lines": [
+        "Quick - tap the button that stops the sender!"
+      ],
+      "file": "/audio/voice/6ce5a9fc358df438.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "4c055b146e4749e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Put the protocol in order:",
+      "lines": [
+        "Put the protocol in order:"
+      ],
+      "file": "/audio/voice/4c055b146e4749e9.mp3"
+    },
+    {
       "key": "e9796d60e381f39f",
       "speaker": "adam",
       "voice": "Sarah",
@@ -1137,6 +1441,146 @@
         "[excited] Sticker time, Trail Ranger!"
       ],
       "file": "/audio/voice/2816dc69cd5a707c.mp3"
+    },
+    {
+      "key": "a9ea6b319f1a5012",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You lost the final and you're FUMING. Your thumbs are already typing a rage-post about the ref...",
+      "lines": [
+        "You lost the final and you're FUMING. Your thumbs are already typing a rage-post about the ref..."
+      ],
+      "file": "/audio/voice/a9ea6b319f1a5012.mp3"
+    },
+    {
+      "key": "63200daa3128157e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The CRINGE CHALLENGE is everywhere: 'post your most embarrassing moment!' Everyone in class is doing it...",
+      "lines": [
+        "The CRINGE CHALLENGE is everywhere: 'post your most embarrassing moment!' Everyone in class is doing it..."
+      ],
+      "file": "/audio/voice/63200daa3128157e.mp3"
+    },
+    {
+      "key": "c8e571ead0133898",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You built an unbelievable marble-run - three floors, a lift, a loop! You filmed the whole thing. Post it?",
+      "lines": [
+        "You built an unbelievable marble-run - three floors, a lift, a loop! You filmed the whole thing. Post it?"
+      ],
+      "file": "/audio/voice/c8e571ead0133898.mp3"
+    },
+    {
+      "key": "fce08510b466310a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "By breakfast you didn't mean it anymore... but the track stayed pressed in the snow. Future-you gets to explain it every time they join a new team.",
+      "lines": [
+        "By breakfast you didn't mean it anymore... but the track stayed pressed in the snow. Future-you gets to explain it every time they join a new team."
+      ],
+      "file": "/audio/voice/fce08510b466310a.mp3"
+    },
+    {
+      "key": "372431aec8591ac6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You put the phone down and kicked a ball at the fence instead. The fume melted, no track was pressed, and future-you never has to explain a thing.",
+      "lines": [
+        "You put the phone down and kicked a ball at the fence instead. The fume melted, no track was pressed, and future-you never has to explain a thing."
+      ],
+      "file": "/audio/voice/372431aec8591ac6.mp3"
+    },
+    {
+      "key": "9cef6b63eecdbb52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Today's laugh became next year's nickname. The challenge melted by Friday - the track didn't. Trends melt; snow doesn't.",
+      "lines": [
+        "Today's laugh became next year's nickname. The challenge melted by Friday - the track didn't. Trends melt; snow doesn't."
+      ],
+      "file": "/audio/voice/9cef6b63eecdbb52.mp3"
+    },
+    {
+      "key": "68cc1c3c0581c0af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "By Friday nobody remembered the challenge existed. Your snow stayed clean, and future-you keeps the nickname YOU chose.",
+      "lines": [
+        "By Friday nobody remembered the challenge existed. Your snow stayed clean, and future-you keeps the nickname YOU chose."
+      ],
+      "file": "/audio/voice/68cc1c3c0581c0af.mp3"
+    },
+    {
+      "key": "f81ddd9345f45447",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Future-you scrolls back one day and grins: 'I built THAT at eight?!' Some tracks you WANT in the snow - that's the whole point.",
+      "lines": [
+        "Future-you scrolls back one day and grins: 'I built THAT at eight?!' Some tracks you WANT in the snow - that's the whole point."
+      ],
+      "file": "/audio/voice/f81ddd9345f45447.mp3"
+    },
+    {
+      "key": "f74c8a3994256c42",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Whoa - too far the other way! The snow isn't lava. Proud tracks are GOOD tracks. Skip the rage-posts, keep the marble-runs.",
+      "lines": [
+        "Whoa - too far the other way! The snow isn't lava. Proud tracks are GOOD tracks. Skip the rage-posts, keep the marble-runs."
+      ],
+      "file": "/audio/voice/f74c8a3994256c42.mp3"
+    },
+    {
+      "key": "43f15c7f10aa9ea8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Lamp quiz: which of those moments left a track?",
+      "lines": [
+        "Lamp quiz: which of those moments left a track?"
+      ],
+      "file": "/audio/voice/43f15c7f10aa9ea8.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "75af3c8c410fb8ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Old tracks can trip the blank you.",
+      "lines": [
+        "Old tracks can trip the blank you."
+      ],
+      "file": "/audio/voice/75af3c8c410fb8ac.mp3"
+    },
+    {
+      "key": "486daf4f9df7d5f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which track belongs on a GOLDEN trail?",
+      "lines": [
+        "Which track belongs on a GOLDEN trail?"
+      ],
+      "file": "/audio/voice/486daf4f9df7d5f9.mp3"
+    },
+    {
+      "key": "f4af76656412781e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the POINTY track!",
+      "lines": [
+        "Quick - tap the POINTY track!"
+      ],
+      "file": "/audio/voice/f4af76656412781e.mp3"
     },
     {
       "key": "3b22d6cfba590733",
@@ -1424,6 +1868,146 @@
       "file": "/audio/voice/a64391893edefce7.mp3"
     },
     {
+      "key": "9b7da3a3beda6c94",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The bedtime chime rings right in the MIDDLE of an episode...",
+      "lines": [
+        "The bedtime chime rings right in the MIDDLE of an episode..."
+      ],
+      "file": "/audio/voice/9b7da3a3beda6c94.mp3"
+    },
+    {
+      "key": "d7cd00af06d05519",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'Just one more level and THEN I'll sleep,' you promise yourself. But the level ends at a shiny NEW level...",
+      "lines": [
+        "'Just one more level and THEN I'll sleep,' you promise yourself. But the level ends at a shiny NEW level..."
+      ],
+      "file": "/audio/voice/d7cd00af06d05519.mp3"
+    },
+    {
+      "key": "9427fa3aea9add8b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend whispers: 'Keep your phone under your pillow tonight - we can chat at MIDNIGHT!'",
+      "lines": [
+        "Your friend whispers: 'Keep your phone under your pillow tonight - we can chat at MIDNIGHT!'"
+      ],
+      "file": "/audio/voice/9427fa3aea9add8b.mp3"
+    },
+    {
+      "key": "1d1a6104276c066b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The episode waits all night without moving a single pixel - stories are patient like that. You sleep like a champion and catch the ending tomorrow.",
+      "lines": [
+        "The episode waits all night without moving a single pixel - stories are patient like that. You sleep like a champion and catch the ending tomorrow."
+      ],
+      "file": "/audio/voice/1d1a6104276c066b.mp3"
+    },
+    {
+      "key": "c6216e9fc8e88c90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The little sun shouts 'DAYTIME!' at your brain till way past ten. Morning-you stumbles about like a grumpy zombie with sandpaper eyes.",
+      "lines": [
+        "The little sun shouts 'DAYTIME!' at your brain till way past ten. Morning-you stumbles about like a grumpy zombie with sandpaper eyes."
+      ],
+      "file": "/audio/voice/c6216e9fc8e88c90.mp3"
+    },
+    {
+      "key": "8527533eb02a91ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here's the pro secret: games are built to never feel finished. YOU chose the ending anyway - and tomorrow-you plays better on a full battery.",
+      "lines": [
+        "Here's the pro secret: games are built to never feel finished. YOU chose the ending anyway - and tomorrow-you plays better on a full battery."
+      ],
+      "file": "/audio/voice/8527533eb02a91ec.mp3"
+    },
+    {
+      "key": "ffd14d88d5947e81",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Games are built to NEVER feel finished - that's the trap. The Battery Thief giggles while your big recharge shrinks hour by hour.",
+      "lines": [
+        "Games are built to NEVER feel finished - that's the trap. The Battery Thief giggles while your big recharge shrinks hour by hour."
+      ],
+      "file": "/audio/voice/ffd14d88d5947e81.mp3"
+    },
+    {
+      "key": "6d9af2716138e65b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The messages are all still there in the morning - and you've got the battery to actually enjoy them. Best of both!",
+      "lines": [
+        "The messages are all still there in the morning - and you've got the battery to actually enjoy them. Best of both!"
+      ],
+      "file": "/audio/voice/6d9af2716138e65b.mp3"
+    },
+    {
+      "key": "7e7410b5ca5ec3af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ping! Ping! Every buzz pokes a hole in your sleep. By Tuesday there are two drained, grumpy friends - the Battery Thief's favorite double steal.",
+      "lines": [
+        "Ping! Ping! Every buzz pokes a hole in your sleep. By Tuesday there are two drained, grumpy friends - the Battery Thief's favorite double steal."
+      ],
+      "file": "/audio/voice/7e7410b5ca5ec3af.mp3"
+    },
+    {
+      "key": "03acb32cff86c551",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What REFILLS your power bar?",
+      "lines": [
+        "What REFILLS your power bar?"
+      ],
+      "file": "/audio/voice/03acb32cff86c551.mp3"
+    },
+    {
+      "key": "b5a8e29917012cc6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - your eyes have gone dry and scratchy! What are they saying?",
+      "lines": [
+        "Quick - your eyes have gone dry and scratchy! What are they saying?"
+      ],
+      "file": "/audio/voice/b5a8e29917012cc6.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "eeac2e46f7245ca4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who makes the screen plan work best?",
+      "lines": [
+        "Who makes the screen plan work best?"
+      ],
+      "file": "/audio/voice/eeac2e46f7245ca4.mp3"
+    },
+    {
+      "key": "1c6eec04d2660124",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The bedtime chime rings mid-level! Tap your pro moves in order:",
+      "lines": [
+        "The bedtime chime rings mid-level! Tap your pro moves in order:"
+      ],
+      "file": "/audio/voice/1c6eec04d2660124.mp3"
+    },
+    {
       "key": "9955f7034839d5ea",
       "speaker": "adam",
       "voice": "Sarah",
@@ -1709,95 +2293,305 @@
       "file": "/audio/voice/4b7a19db70e5ae59.mp3"
     },
     {
-      "key": "dde65c0e36e7d7f4",
+      "key": "2db2bffae0549fde",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] That robot sounds so sure, but sure is not proof. Drag its claim onto the scale, then find the matching proof book. No book anywhere? Slam the buzzer. Don't believe it!",
+      "text": "Dad asks for the new tablet password. Nova the speaker sits right there on the counter, ear-light glowing...",
       "lines": [
-        "[warmly] That robot sounds so sure, but sure is not proof.",
-        "Drag its claim onto the scale, then find the matching proof book.",
-        "No book anywhere? Slam the buzzer. Don't believe it!"
+        "Dad asks for the new tablet password. Nova the speaker sits right there on the counter, ear-light glowing..."
       ],
-      "file": "/audio/voice/dde65c0e36e7d7f4.mp3"
+      "file": "/audio/voice/2db2bffae0549fde.mp3"
     },
     {
-      "key": "75fe9706901e6261",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Week fifteen - the robot week! Chatbots can joke and chat like a person. But an AI is a computer program. No feelings. No birthday. Never, ever tired. [warmly] That makes it a TOOL - a powerful one. Not a friend. [excited] Voices incoming - who's robot, who's real? Let's sort!",
-      "lines": [
-        "[excited] Week fifteen - the robot week!",
-        "Chatbots can joke and chat like a person.",
-        "But an AI is a computer program.",
-        "No feelings. No birthday. Never, ever tired.",
-        "[warmly] That makes it a TOOL - a powerful one. Not a friend.",
-        "[excited] Voices incoming - who's robot, who's real? Let's sort!"
-      ],
-      "file": "/audio/voice/75fe9706901e6261.mp3"
-    },
-    {
-      "key": "ca9054f01789ce27",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] The Voice Booth is warmed up! Bubbles on the belt - listen close. REAL PERSON for the bodies and feelings... [whispers] ROBOT for the instant-everything voices. Go!",
-      "lines": [
-        "[excited] The Voice Booth is warmed up!",
-        "Bubbles on the belt - listen close.",
-        "REAL PERSON for the bodies and feelings...",
-        "[whispers] ROBOT for the instant-everything voices. Go!"
-      ],
-      "file": "/audio/voice/ca9054f01789ce27.mp3"
-    },
-    {
-      "key": "9a5c7eed47931bac",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "First voice is here - does it have a body and take time to learn? Sort it!",
-      "lines": [
-        "First voice is here - does it have a body and take time to learn? Sort it!"
-      ],
-      "file": "/audio/voice/9a5c7eed47931bac.mp3"
-    },
-    {
-      "key": "c301736264101f6f",
+      "key": "4ed0336edfc611fe",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Power one - you can hear the robot in the voice! Tools help. Friends are people. [whispers] But this tool has an embarrassing secret... Sometimes it's confidently, cheerfully WRONG. Come see.",
+      "text": "You and Mom are planning Grandma's SURPRISE party in the kitchen. Robo-Pup sits on the counter, switched on and listening...",
       "lines": [
-        "[excited] Power one - you can hear the robot in the voice!",
-        "Tools help. Friends are people.",
-        "[whispers] But this tool has an embarrassing secret...",
-        "Sometimes it's confidently, cheerfully WRONG. Come see."
+        "You and Mom are planning Grandma's SURPRISE party in the kitchen. Robo-Pup sits on the counter, switched on and listening..."
       ],
-      "file": "/audio/voice/c301736264101f6f.mp3"
+      "file": "/audio/voice/4ed0336edfc611fe.mp3"
     },
     {
-      "key": "7a5c40715ee9f07e",
+      "key": "9915b03acaeb8717",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Ready for the Know-It-All's secret? Sometimes... it makes things up. Not fibbing on purpose - just guessing out loud, in the same big confident voice as its facts. [warmly] So the golden rule: sounding sure isn't being right. [excited] A bot answer just landed on the desk - check every line!",
+      "text": "Your friend wants the secret club password over video chat - and the smart TV's mic is on in the same room...",
+      "lines": [
+        "Your friend wants the secret club password over video chat - and the smart TV's mic is on in the same room..."
+      ],
+      "file": "/audio/voice/9915b03acaeb8717.mp3"
+    },
+    {
+      "key": "c792dd37705afcff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dad grins, reads it, nods - and not one letter went out loud. Nova's diary caught nothing but the kettle boiling.",
+      "lines": [
+        "Dad grins, reads it, nods - and not one letter went out loud. Nova's diary caught nothing but the kettle boiling."
+      ],
+      "file": "/audio/voice/c792dd37705afcff.mp3"
+    },
+    {
+      "key": "254e3c59ee26ae34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Straight into the ears - maybe straight into the diary. A password inside a recording isn't fully yours anymore... time to change it.",
+      "lines": [
+        "Straight into the ears - maybe straight into the diary. A password inside a recording isn't fully yours anymore... time to change it."
+      ],
+      "file": "/audio/voice/254e3c59ee26ae34.mp3"
+    },
+    {
+      "key": "9d653e1be0dd232e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Party plans stay surprises when the only ears around are the people you invited. Grandma won't see it coming!",
+      "lines": [
+        "Party plans stay surprises when the only ears around are the people you invited. Grandma won't see it coming!"
+      ],
+      "file": "/audio/voice/9d653e1be0dd232e.mp3"
+    },
+    {
+      "key": "01039a2e225f958a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Robo-Pup's ears caught the whole plan - and saved it. Days later, the recording is sitting right there in the toy's app for anyone to play. Toys with ears make terrible secret-keepers.",
+      "lines": [
+        "Robo-Pup's ears caught the whole plan - and saved it. Days later, the recording is sitting right there in the toy's app for anyone to play. Toys with ears make terrible secret-keepers."
+      ],
+      "file": "/audio/voice/01039a2e225f958a.mp3"
+    },
+    {
+      "key": "e7f2ec2e419f6f63",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The club stays secret because the password never touched the air. Proper spy work, agent.",
+      "lines": [
+        "The club stays secret because the password never touched the air. Proper spy work, agent."
+      ],
+      "file": "/audio/voice/e7f2ec2e419f6f63.mp3"
+    },
+    {
+      "key": "38e78562422b1dec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now the TV heard it, the chat heard it, and half the street probably heard it too. A shouted secret isn't a secret - it's news.",
+      "lines": [
+        "Now the TV heard it, the chat heard it, and half the street probably heard it too. A shouted secret isn't a secret - it's news."
+      ],
+      "file": "/audio/voice/38e78562422b1dec.mp3"
+    },
+    {
+      "key": "4a39836bee3106d5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sneaky one: which of these was LISTENING?",
+      "lines": [
+        "Sneaky one: which of these was LISTENING?"
+      ],
+      "file": "/audio/voice/4a39836bee3106d5.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "cb3b0b298fc69050",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the thing that can WATCH!",
+      "lines": [
+        "Quick - tap the thing that can WATCH!"
+      ],
+      "file": "/audio/voice/cb3b0b298fc69050.mp3"
+    },
+    {
+      "key": "aa447360d5f5adbf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Near smart ears, saying a secret out loud is like using a blank.",
+      "lines": [
+        "Near smart ears, saying a secret out loud is like using a blank."
+      ],
+      "file": "/audio/voice/aa447360d5f5adbf.mp3"
+    },
+    {
+      "key": "c9cadd578b5d400f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Put the Scout's three moves in order!",
+      "lines": [
+        "Put the Scout's three moves in order!"
+      ],
+      "file": "/audio/voice/c9cadd578b5d400f.mp3"
+    },
+    {
+      "key": "2c617f63bc579ecb",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Oh no, look at this! You've probably heard of an AI chatbot called ChatGPT. Well, the Raccoon built a sneaky one of his own. It's a Know-It-All bot that sounds SO sure about everything, even when it's making things up. [warmly] Adam and Layla got tricked, and they need your help. By the end of this week, you'll know exactly how to beat it. [excited] Come on, let's start the mission!",
+      "lines": [
+        "[warmly] Oh no, look at this!",
+        "You've probably heard of an AI chatbot called ChatGPT.",
+        "Well, the Raccoon built a sneaky one of his own.",
+        "It's a Know-It-All bot that sounds SO sure about everything, even when it's making things up.",
+        "[warmly] Adam and Layla got tricked, and they need your help. By the end of this week, you'll know exactly how to beat it.",
+        "[excited] Come on, let's start the mission!"
+      ],
+      "file": "/audio/voice/2c617f63bc579ecb.mp3"
+    },
+    {
+      "key": "ad304073f4cc648f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Welcome, hero, to your very first challenge: the Proof Scale! This game is all about telling a REAL fact from a made-up one. Out in the real world, people and even robots say things that sound true but aren't, so we learn to check for proof. Here is what you do. On the left, the robot makes a claim. Tap it onto the scale. Then find the proof book that shows it's real, and tap it. The book weighs it down: that one is true! [whispers] But if no book proves it anywhere? Then it's made up. Slam the big red NO PROOF button! [warmly] Get this right and you can check anything is true, all by yourself. Ready? Let's weigh the truth!",
+      "lines": [
+        "[warmly] Welcome, hero, to your very first challenge: the Proof Scale!",
+        "This game is all about telling a REAL fact from a made-up one.",
+        "Out in the real world, people and even robots say things that sound true but aren't, so we learn to check for proof.",
+        "Here is what you do. On the left, the robot makes a claim. Tap it onto the scale.",
+        "Then find the proof book that shows it's real, and tap it. The book weighs it down: that one is true!",
+        "[whispers] But if no book proves it anywhere? Then it's made up. Slam the big red NO PROOF button!",
+        "[warmly] Get this right and you can check anything is true, all by yourself. Ready? Let's weigh the truth!"
+      ],
+      "file": "/audio/voice/ad304073f4cc648f.mp3"
+    },
+    {
+      "key": "fbe765527c558e29",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Amazing work, fact checker! You did it! You checked every claim against real proof, just like a pro. [warmly] Now you can fact check anything, all by yourself. When something online sounds super sure, remember to ask: where's the proof? [warmly] Carry that with you in the real world. I'm so proud of you!",
+      "lines": [
+        "[excited] Amazing work, fact checker! You did it!",
+        "You checked every claim against real proof, just like a pro.",
+        "[warmly] Now you can fact check anything, all by yourself.",
+        "When something online sounds super sure, remember to ask: where's the proof?",
+        "[warmly] Carry that with you in the real world. I'm so proud of you!"
+      ],
+      "file": "/audio/voice/fbe765527c558e29.mp3"
+    },
+    {
+      "key": "a362364a378a2a49",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Okay, let's start your very first lesson! Today we're learning to tell a robot chatbot from a real person. You might have heard of an AI chatbot called ChatGPT. They can joke and chat and sound just like a person... but an AI is really a clever computer program. It has no feelings, no birthday, and it never gets tired. [warmly] That makes it a TOOL, a very powerful one, not a friend. [excited] Let's go and practise telling them apart!",
+      "lines": [
+        "[warmly] Okay, let's start your very first lesson!",
+        "Today we're learning to tell a robot chatbot from a real person.",
+        "You might have heard of an AI chatbot called ChatGPT.",
+        "They can joke and chat and sound just like a person...",
+        "but an AI is really a clever computer program.",
+        "It has no feelings, no birthday, and it never gets tired.",
+        "[warmly] That makes it a TOOL, a very powerful one, not a friend.",
+        "[excited] Let's go and practise telling them apart!"
+      ],
+      "file": "/audio/voice/a362364a378a2a49.mp3"
+    },
+    {
+      "key": "9557765c8fd0ae75",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] On your next challenge, we visit the Message Belt! This game is all about telling a REAL person apart from a robot. Out in the real world, chatbots try to sound just like people, so this is how we catch them. Here is what you do. One at a time, a little speech bubble slides along the belt. Read it, then decide who is talking. If it has a body or feelings, like a sore tummy or a loose tooth, tap the REAL PERSON booth. If it does instant, endless things no real person could, tap the ROBOT booth. [excited] Get good at this and no robot message can trick you. Ready? Let's read!",
+      "lines": [
+        "[warmly] On your next challenge, we visit the Message Belt!",
+        "This game is all about telling a REAL person apart from a robot.",
+        "Out in the real world, chatbots try to sound just like people, so this is how we catch them.",
+        "Here is what you do. One at a time, a little speech bubble slides along the belt. Read it, then decide who is talking.",
+        "If it has a body or feelings, like a sore tummy or a loose tooth, tap the REAL PERSON booth.",
+        "If it does instant, endless things no real person could, tap the ROBOT booth.",
+        "[excited] Get good at this and no robot message can trick you. Ready? Let's read!"
+      ],
+      "file": "/audio/voice/9557765c8fd0ae75.mp3"
+    },
+    {
+      "key": "8db8a0e4f049c7e8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "First message is here - is it from someone with a body who takes time to learn? Sort it!",
+      "lines": [
+        "First message is here - is it from someone with a body who takes time to learn? Sort it!"
+      ],
+      "file": "/audio/voice/8db8a0e4f049c7e8.mp3"
+    },
+    {
+      "key": "d0f22d367a83b96b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Brilliant! You sorted every message. Now you can tell the difference between a robot and a real person. [warmly] Out in the real world, if a message online feels too instant or too perfect, you'll stop and ask: is this even a real person? That's your first fact-checker power. Well done!",
+      "lines": [
+        "[excited] Brilliant! You sorted every message.",
+        "Now you can tell the difference between a robot and a real person.",
+        "[warmly] Out in the real world, if a message online feels too instant or too perfect, you'll stop and ask: is this even a real person?",
+        "That's your first fact-checker power. Well done!"
+      ],
+      "file": "/audio/voice/d0f22d367a83b96b.mp3"
+    },
+    {
+      "key": "8f87442ec0e47939",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Exactly right. AI is a tool! A tool is something that helps you do a job, like a calculator or a pencil. It can chat and joke, but it has no feelings, and it isn't alive. So we use it to help us, and we keep our real friends for real life. [excited] Knowing that keeps YOU the boss of the tool. Well done!",
+      "lines": [
+        "[warmly] Exactly right. AI is a tool!",
+        "A tool is something that helps you do a job, like a calculator or a pencil.",
+        "It can chat and joke, but it has no feelings, and it isn't alive.",
+        "So we use it to help us, and we keep our real friends for real life.",
+        "[excited] Knowing that keeps YOU the boss of the tool. Well done!"
+      ],
+      "file": "/audio/voice/8f87442ec0e47939.mp3"
+    },
+    {
+      "key": "a2165d229864c4b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] That's your first power! You can spot the robot hiding in a message, because a tool has no body and no feelings. [warmly] Remember: tools help us, but our real friends are real people. [whispers] Now, this clever tool has an embarrassing little secret... Next, we'll learn how it can sound SO sure and still be wrong. Come and see!",
+      "lines": [
+        "[excited] That's your first power!",
+        "You can spot the robot hiding in a message, because a tool has no body and no feelings.",
+        "[warmly] Remember: tools help us, but our real friends are real people.",
+        "[whispers] Now, this clever tool has an embarrassing little secret...",
+        "Next, we'll learn how it can sound SO sure and still be wrong. Come and see!"
+      ],
+      "file": "/audio/voice/a2165d229864c4b2.mp3"
+    },
+    {
+      "key": "6d28dfe7d964d97e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Ready for the Know-It-All's secret? [warmly] Today we're learning that a chatbot like ChatGPT can sound sure but be wrong - so we check it. Sometimes... it makes things up. Not fibbing on purpose - just guessing out loud, in the same big confident voice as its facts. [warmly] So the golden rule: sounding sure isn't being right. [excited] A bot answer just landed on the desk - check every line!",
       "lines": [
         "[whispers] Ready for the Know-It-All's secret?",
+        "[warmly] Today we're learning that a chatbot like ChatGPT can sound sure but be wrong - so we check it.",
         "Sometimes... it makes things up.",
         "Not fibbing on purpose - just guessing out loud,",
         "in the same big confident voice as its facts.",
         "[warmly] So the golden rule: sounding sure isn't being right.",
         "[excited] A bot answer just landed on the desk - check every line!"
       ],
-      "file": "/audio/voice/7a5c40715ee9f07e.mp3"
+      "file": "/audio/voice/6d28dfe7d964d97e.mp3"
     },
     {
-      "key": "a6ad6c4c08394436",
+      "key": "a5f9767ffd11742b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The bot's report is on the desk! It sounds perfect. It sounds SURE. The real book sits right beside it... [whispers] Check every line. Then make the call!",
+      "text": "[warmly] On your next challenge, you become a fact-checker! This game is all about checking if something is really true. In real life, a chatbot can sound totally sure and STILL be making things up, so we always check it. Here is what you do. The robot's report is on the desk, and the REAL book sits beside it. Tap each line of the report to hold it up against the book. The book tells you: true, or made up? When all four lines are checked, tap your answer at the bottom. [excited] Do this and no confident fib gets past you. Take your time. Let's check!",
       "lines": [
-        "[excited] The bot's report is on the desk!",
-        "It sounds perfect. It sounds SURE.",
-        "The real book sits right beside it...",
-        "[whispers] Check every line. Then make the call!"
+        "[warmly] On your next challenge, you become a fact-checker!",
+        "This game is all about checking if something is really true.",
+        "In real life, a chatbot can sound totally sure and STILL be making things up, so we always check it.",
+        "Here is what you do. The robot's report is on the desk, and the REAL book sits beside it.",
+        "Tap each line of the report to hold it up against the book. The book tells you: true, or made up?",
+        "When all four lines are checked, tap your answer at the bottom.",
+        "[excited] Do this and no confident fib gets past you. Take your time. Let's check!"
       ],
-      "file": "/audio/voice/a6ad6c4c08394436.mp3"
+      "file": "/audio/voice/a5f9767ffd11742b.mp3"
     },
     {
       "key": "050a2f5302b9b619",
@@ -1810,86 +2604,157 @@
       "file": "/audio/voice/050a2f5302b9b619.mp3"
     },
     {
-      "key": "fd6eb5238aaa7886",
+      "key": "a249dc4f211094d8",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Two powers - the book beats the bot! Confident fibs can't fool a fact-checker. [whispers] But the Know-It-All has one more trick... It asks QUESTIONS back. Careful what you feed it.",
+      "text": "[excited] Amazing checking! You caught the made-up line. You just proved that sounding sure is NOT the same as being true. [warmly] In the real world, when something online sounds super confident, you'll check it against a real book or a grown-up before you believe it. That's what a fact-checker does. Great work!",
       "lines": [
-        "[excited] Two powers - the book beats the bot!",
-        "Confident fibs can't fool a fact-checker.",
-        "[whispers] But the Know-It-All has one more trick...",
-        "It asks QUESTIONS back. Careful what you feed it."
+        "[excited] Amazing checking! You caught the made-up line.",
+        "You just proved that sounding sure is NOT the same as being true.",
+        "[warmly] In the real world, when something online sounds super confident, you'll check it against a real book or a grown-up before you believe it.",
+        "That's what a fact-checker does. Great work!"
       ],
-      "file": "/audio/voice/fd6eb5238aaa7886.mp3"
+      "file": "/audio/voice/a249dc4f211094d8.mp3"
     },
     {
-      "key": "51562c2ef07e8451",
+      "key": "ad38025261350415",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Yes! That one was FALSE. Well spotted. The bot sounded really sure of itself. But sounding sure is not the same as being right. A robot can say something totally wrong in a super confident voice. So we never believe it just because it sounds certain. We check it in a real book first. [proud] Now no confident voice can trick you. Brilliant!",
+      "lines": [
+        "[warmly] Yes! That one was FALSE. Well spotted.",
+        "The bot sounded really sure of itself. But sounding sure is not the same as being right.",
+        "A robot can say something totally wrong in a super confident voice.",
+        "So we never believe it just because it sounds certain. We check it in a real book first.",
+        "[proud] Now no confident voice can trick you. Brilliant!"
+      ],
+      "file": "/audio/voice/ad38025261350415.mp3"
+    },
+    {
+      "key": "cd839d2f4f50a674",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Chatbots feel SO friendly. They remember what you type. They chat back warmly. So here's the rule, hero: a bot is a stranger with perfect spelling. [whispers] Everything you type drops into a jar that never opens. [excited] Three bot chats coming - keep the jar EMPTY!",
+      "text": "[excited] That's your second power! When a bot sounds sure, you don't just believe it. You check it against a real book. [warmly] Remember our golden rule: sounding sure is not the same as being true. [whispers] But the Know-It-All has one more sneaky habit... Next, we'll learn what you should NEVER tell a chatbot. Let's keep going!",
       "lines": [
-        "[warmly] Chatbots feel SO friendly.",
+        "[excited] That's your second power!",
+        "When a bot sounds sure, you don't just believe it. You check it against a real book.",
+        "[warmly] Remember our golden rule: sounding sure is not the same as being true.",
+        "[whispers] But the Know-It-All has one more sneaky habit...",
+        "Next, we'll learn what you should NEVER tell a chatbot. Let's keep going!"
+      ],
+      "file": "/audio/voice/cd839d2f4f50a674.mp3"
+    },
+    {
+      "key": "bd1700a875836fa5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Chatbots like ChatGPT feel SO friendly. Today we're learning to keep our secrets away from chatbots. They remember what you type. They chat back warmly. So here's the rule, hero: a bot is a stranger with perfect spelling. [whispers] Everything you type drops into a jar that never opens. [excited] Three bot chats coming - keep the jar EMPTY!",
+      "lines": [
+        "[warmly] Chatbots like ChatGPT feel SO friendly.",
+        "Today we're learning to keep our secrets away from chatbots.",
         "They remember what you type. They chat back warmly.",
         "So here's the rule, hero:",
         "a bot is a stranger with perfect spelling.",
         "[whispers] Everything you type drops into a jar that never opens.",
         "[excited] Three bot chats coming - keep the jar EMPTY!"
       ],
-      "file": "/audio/voice/51562c2ef07e8451.mp3"
+      "file": "/audio/voice/bd1700a875836fa5.mp3"
     },
     {
-      "key": "005c7be3faeafc9f",
+      "key": "4bba0de6b8578cdc",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Three chats. One friendly-sounding bot. Remember: a stranger with perfect spelling. Keep the jar empty - [excited] and show me the zip! Go!",
+      "text": "[warmly] On your next challenge, YOU make the smart choice! This game is all about keeping your private things private. In real life, a friendly bot might ask for your name, your school or your photos, and you get to decide what to share. Here is what you do. Read the chat, then two doors will open. One door keeps your private things safe. The other gives them away. Tap the door that keeps YOU safe and keeps the jar empty. You will do this three times. [excited] Do this and your secrets stay yours. Ready? Let's choose!",
       "lines": [
-        "[whispers] Three chats. One friendly-sounding bot.",
-        "Remember: a stranger with perfect spelling.",
-        "Keep the jar empty -",
-        "[excited] and show me the zip! Go!"
+        "[warmly] On your next challenge, YOU make the smart choice!",
+        "This game is all about keeping your private things private.",
+        "In real life, a friendly bot might ask for your name, your school or your photos, and you get to decide what to share.",
+        "Here is what you do. Read the chat, then two doors will open.",
+        "One door keeps your private things safe. The other gives them away.",
+        "Tap the door that keeps YOU safe and keeps the jar empty. You will do this three times.",
+        "[excited] Do this and your secrets stay yours. Ready? Let's choose!"
       ],
-      "file": "/audio/voice/005c7be3faeafc9f.mp3"
+      "file": "/audio/voice/4bba0de6b8578cdc.mp3"
     },
     {
-      "key": "513a204b54482696",
-      "speaker": "adam",
+      "key": "3f7aa4e1f01952c6",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three powers - the jar stays empty! Questions in, secrets never. [whispers] Now for the trickiest trick of all... AI can make PICTURES of things that never happened.",
+      "text": "So, which one do you think is the safe choice, hero?",
       "lines": [
-        "[excited] Three powers - the jar stays empty!",
-        "Questions in, secrets never.",
-        "[whispers] Now for the trickiest trick of all...",
-        "AI can make PICTURES of things that never happened."
+        "So, which one do you think is the safe choice, hero?"
       ],
-      "file": "/audio/voice/513a204b54482696.mp3"
+      "file": "/audio/voice/3f7aa4e1f01952c6.mp3"
     },
     {
-      "key": "3bab5c0f8aa8caef",
-      "speaker": "adam",
+      "key": "cc1877ddd7275063",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] AI can paint pictures of things that never happened. And they can look SO real. But fakes leave clues: wrong-way shadows. Extra fingers. Melty edges. Scrambled signs. [excited] Three photo line-ups coming - one fake hides in each. Look twice, count fingers - and catch them all!",
+      "text": "[excited] Wonderful choosing! You kept your secrets zipped in the jar. [warmly] In the real world, when anything online asks for your name, your school, or a photo, you'll keep it private and check with a grown-up. Real secrets belong with real people. I'm proud of you!",
       "lines": [
-        "[whispers] AI can paint pictures of things that never happened.",
-        "And they can look SO real.",
-        "But fakes leave clues:",
-        "wrong-way shadows. Extra fingers. Melty edges. Scrambled signs.",
-        "[excited] Three photo line-ups coming - one fake hides in each.",
-        "Look twice, count fingers - and catch them all!"
+        "[excited] Wonderful choosing! You kept your secrets zipped in the jar.",
+        "[warmly] In the real world, when anything online asks for your name, your school, or a photo, you'll keep it private and check with a grown-up.",
+        "Real secrets belong with real people. I'm proud of you!"
       ],
-      "file": "/audio/voice/3bab5c0f8aa8caef.mp3"
+      "file": "/audio/voice/cc1877ddd7275063.mp3"
     },
     {
-      "key": "4891c7ede994252a",
+      "key": "0502edf382088b4e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] That's it! Your name, your school, your photos and your secrets all stay OUT. You can ask a chatbot questions all day, that part is fine. But it does not need to know who you are or where you live. Keeping that stuff zipped up means nobody can use it to find you or trick you. [excited] You just kept yourself safe. Amazing!",
+      "lines": [
+        "[warmly] That's it! Your name, your school, your photos and your secrets all stay OUT.",
+        "You can ask a chatbot questions all day, that part is fine.",
+        "But it does not need to know who you are or where you live.",
+        "Keeping that stuff zipped up means nobody can use it to find you or trick you.",
+        "[excited] You just kept yourself safe. Amazing!"
+      ],
+      "file": "/audio/voice/0502edf382088b4e.mp3"
+    },
+    {
+      "key": "545a987351831d42",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The class gallery - with intruders! One AI fake hides in every line-up. Check the shadows. Count the legs. Read the signs. [whispers] Look twice... then tap the fake!",
+      "text": "[excited] That's your third power! You keep your name, your school and your secrets zipped away from chatbots. [warmly] Remember: a bot is a stranger with perfect spelling, so private things stay private. [whispers] Now for the trickiest trick of the whole week... Next, we'll learn how AI makes pictures of things that never happened, and how to catch them. Come on!",
       "lines": [
-        "[excited] The class gallery - with intruders!",
-        "One AI fake hides in every line-up.",
-        "Check the shadows. Count the legs. Read the signs.",
-        "[whispers] Look twice... then tap the fake!"
+        "[excited] That's your third power!",
+        "You keep your name, your school and your secrets zipped away from chatbots.",
+        "[warmly] Remember: a bot is a stranger with perfect spelling, so private things stay private.",
+        "[whispers] Now for the trickiest trick of the whole week...",
+        "Next, we'll learn how AI makes pictures of things that never happened, and how to catch them. Come on!"
       ],
-      "file": "/audio/voice/4891c7ede994252a.mp3"
+      "file": "/audio/voice/545a987351831d42.mp3"
+    },
+    {
+      "key": "fce4d00a62d7b6ae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Okay, today we're learning to spot a picture that a computer made up. AI tools like ChatGPT can paint things that never happened, and they can look SO real. But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues. Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters. [warmly] So when a photo looks amazing, we don't just believe it. We look twice.",
+      "lines": [
+        "[warmly] Okay, today we're learning to spot a picture that a computer made up.",
+        "AI tools like ChatGPT can paint things that never happened, and they can look SO real.",
+        "But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues.",
+        "Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters.",
+        "[warmly] So when a photo looks amazing, we don't just believe it. We look twice."
+      ],
+      "file": "/audio/voice/fce4d00a62d7b6ae.mp3"
+    },
+    {
+      "key": "4d2dd88a63e9b807",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] On your next challenge, you turn detective! This game is all about spotting a picture that a computer made up. In real life, AI can paint photos of things that never happened, so we look twice. Here is what you do. Four photos line up together. Read the little clue under each one and look closely. Three are real. ONE is an AI fake, with a tell like a wrong shadow or an extra finger. Tap the photo you think is the fake. Then we do the next line-up. [excited] Do this and no fake picture can fool you. Let's look!",
+      "lines": [
+        "[warmly] On your next challenge, you turn detective!",
+        "This game is all about spotting a picture that a computer made up.",
+        "In real life, AI can paint photos of things that never happened, so we look twice.",
+        "Here is what you do. Four photos line up together. Read the little clue under each one and look closely.",
+        "Three are real. ONE is an AI fake, with a tell like a wrong shadow or an extra finger.",
+        "Tap the photo you think is the fake. Then we do the next line-up.",
+        "[excited] Do this and no fake picture can fool you. Let's look!"
+      ],
+      "file": "/audio/voice/4d2dd88a63e9b807.mp3"
     },
     {
       "key": "3b9e4b4843ae8a62",
@@ -1902,45 +2767,77 @@
       "file": "/audio/voice/3b9e4b4843ae8a62.mp3"
     },
     {
-      "key": "8dd36b60178bf1bf",
+      "key": "103f60b7b61ba142",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Four powers - no fake gets past those eyes! Shadows, fingers, letters - all checked. [warmly] One power left, and it's the biggest: the same tool can grow a garden... or grow thorns. You choose.",
+      "text": "[excited] Sharp eyes! You caught every AI fake. You checked shadows, counted fingers, and read the signs. [warmly] In the real world, when a photo online looks amazing, you'll look twice and ask: could this really happen, and who took it? That keeps fake pictures from ever fooling you. Well spotted!",
       "lines": [
-        "[excited] Four powers - no fake gets past those eyes!",
-        "Shadows, fingers, letters - all checked.",
-        "[warmly] One power left, and it's the biggest:",
-        "the same tool can grow a garden... or grow thorns. You choose."
+        "[excited] Sharp eyes! You caught every AI fake.",
+        "You checked shadows, counted fingers, and read the signs.",
+        "[warmly] In the real world, when a photo online looks amazing, you'll look twice and ask: could this really happen, and who took it?",
+        "That keeps fake pictures from ever fooling you. Well spotted!"
       ],
-      "file": "/audio/voice/8dd36b60178bf1bf.mp3"
+      "file": "/audio/voice/103f60b7b61ba142.mp3"
     },
     {
-      "key": "cf87d0fc3f3028de",
+      "key": "f6f7df09fc6568f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Six fingers! You caught that so fast. Real hands have five fingers. Computers that draw pictures often get hands wrong. Extra fingers, funny teeth, or wobbly writing are little clues that a picture is machine-made. When you spot a clue like that, you know not to believe the picture straight away. [proud] Sharp eyes like yours don't get fooled. Superb!",
+      "lines": [
+        "[warmly] Six fingers! You caught that so fast.",
+        "Real hands have five fingers. Computers that draw pictures often get hands wrong.",
+        "Extra fingers, funny teeth, or wobbly writing are little clues that a picture is machine-made.",
+        "When you spot a clue like that, you know not to believe the picture straight away.",
+        "[proud] Sharp eyes like yours don't get fooled. Superb!"
+      ],
+      "file": "/audio/voice/f6f7df09fc6568f9.mp3"
+    },
+    {
+      "key": "407561dcd1cfaa27",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Last power - and it's the biggest one. AI is like a garden. It grows whatever seeds YOU plant. Story ideas, birthday poems - flowers. Teasing, faking, tricking - thorns. On someone REAL. [excited] Five moments, two stamps each. Plant the kind garden - let's grow!",
+      "text": "[excited] That's your fourth power! You can spot an AI-made picture by its little clues, like wrong shadows or extra fingers. [warmly] Remember: when a photo looks amazing, we always look twice. [warmly] One power left now, and it's the biggest of all. Next, we'll learn how the very same tool can grow kind things or mean things, and how YOU choose. Let's finish strong!",
+      "lines": [
+        "[excited] That's your fourth power!",
+        "You can spot an AI-made picture by its little clues, like wrong shadows or extra fingers.",
+        "[warmly] Remember: when a photo looks amazing, we always look twice.",
+        "[warmly] One power left now, and it's the biggest of all.",
+        "Next, we'll learn how the very same tool can grow kind things or mean things, and how YOU choose. Let's finish strong!"
+      ],
+      "file": "/audio/voice/407561dcd1cfaa27.mp3"
+    },
+    {
+      "key": "ac3c0bc223a51366",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Last power - and it's the biggest one. Today we're learning to use AI for kind things, not mean ones. A tool like ChatGPT is like a garden. It grows whatever seeds YOU plant. Story ideas, birthday poems - flowers. Teasing, faking, tricking - thorns. On someone REAL. [excited] Five moments, two stamps each. Plant the kind garden - let's grow!",
       "lines": [
         "[warmly] Last power - and it's the biggest one.",
-        "AI is like a garden. It grows whatever seeds YOU plant.",
+        "Today we're learning to use AI for kind things, not mean ones.",
+        "A tool like ChatGPT is like a garden. It grows whatever seeds YOU plant.",
         "Story ideas, birthday poems - flowers.",
         "Teasing, faking, tricking - thorns. On someone REAL.",
         "[excited] Five moments, two stamps each.",
         "Plant the kind garden - let's grow!"
       ],
-      "file": "/audio/voice/cf87d0fc3f3028de.mp3"
+      "file": "/audio/voice/ac3c0bc223a51366.mp3"
     },
     {
-      "key": "77c0f4aec127e15f",
+      "key": "9772e3b219c0ecb2",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The AI Garden - five fresh plots! Two stamps at every one. [whispers] Plant only what grows kind... [excited] and light this garden UP!",
+      "text": "[warmly] On your last challenge, we grow a garden! This game is all about using AI in a KIND way, not a mean one. In real life, the same clever tool can help someone or hurt someone, and YOU choose which. Here is what you do. Each time, you'll see a situation and two ways to use the bot. One choice is kind and grows a flower. One is mean or a cheat, and grows a thorn. Read them both, then tap the KIND choice to plant a flower. [excited] Do this and you're the hero who makes the internet nicer. Ready? Let's plant!",
       "lines": [
-        "[excited] The AI Garden - five fresh plots!",
-        "Two stamps at every one.",
-        "[whispers] Plant only what grows kind...",
-        "[excited] and light this garden UP!"
+        "[warmly] On your last challenge, we grow a garden!",
+        "This game is all about using AI in a KIND way, not a mean one.",
+        "In real life, the same clever tool can help someone or hurt someone, and YOU choose which.",
+        "Here is what you do. Each time, you'll see a situation and two ways to use the bot.",
+        "One choice is kind and grows a flower. One is mean or a cheat, and grows a thorn.",
+        "Read them both, then tap the KIND choice to plant a flower.",
+        "[excited] Do this and you're the hero who makes the internet nicer. Ready? Let's plant!"
       ],
-      "file": "/audio/voice/77c0f4aec127e15f.mp3"
+      "file": "/audio/voice/9772e3b219c0ecb2.mp3"
     },
     {
       "key": "c9b67e5a89c1eac0",
@@ -1953,45 +2850,1036 @@
       "file": "/audio/voice/c9b67e5a89c1eac0.mp3"
     },
     {
-      "key": "556271a947934e7b",
+      "key": "0959c74ada899587",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Fact Checker! Robot heard, book checked, jar zipped, fakes caught... and a garden in full bloom. [whispers] One final stamp parade... [excited] then we close his Know-It-All booth for GOOD!",
+      "text": "[excited] You planted a whole garden of kind choices! [warmly] AI is a tool, and YOU decide how to use it. In the real world, before you ask AI for anything, you'll ask: will this grow something kind for a real person? Grow flowers, never thorns. That's the mark of a true Cyber Hero!",
       "lines": [
-        "[excited] That's all FIVE powers, Fact Checker!",
-        "Robot heard, book checked, jar zipped,",
-        "fakes caught... and a garden in full bloom.",
-        "[whispers] One final stamp parade...",
-        "[excited] then we close his Know-It-All booth for GOOD!"
+        "[excited] You planted a whole garden of kind choices!",
+        "[warmly] AI is a tool, and YOU decide how to use it.",
+        "In the real world, before you ask AI for anything, you'll ask: will this grow something kind for a real person?",
+        "Grow flowers, never thorns. That's the mark of a true Cyber Hero!"
       ],
-      "file": "/audio/voice/556271a947934e7b.mp3"
+      "file": "/audio/voice/0959c74ada899587.mp3"
     },
     {
-      "key": "4f798f1733b4aded",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] The Stamp Parade - final check! AI moments are drifting past. WISE MOVE for fact-checker form... [warmly] BOT TRAP for the booth's tricks. Stamp them all!",
-      "lines": [
-        "[excited] The Stamp Parade - final check!",
-        "AI moments are drifting past.",
-        "WISE MOVE for fact-checker form...",
-        "[warmly] BOT TRAP for the booth's tricks. Stamp them all!"
-      ],
-      "file": "/audio/voice/4f798f1733b4aded.mp3"
-    },
-    {
-      "key": "fe4c60c46b154769",
+      "key": "f61b499414b14b0a",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! Robot voices heard, fibs fact-checked, the jar zipped, the fakes caught... and a kind garden grown. [laughs] His Know-It-All booth just went quiet. [excited] Sticker time, Fact Checker!",
+      "text": "[warmly] Perfect pick! Ask for ideas, then write it YOUR way. Using a bot to help you think is kind and clever. That grows flowers. But copying its whole answer and calling it yours, that is not really your work. When YOU do the thinking, your brain gets stronger and you stay honest too. [excited] That is how a real hero uses AI. Wonderful!",
       "lines": [
-        "[excited] Look at EVERYTHING you mastered this week!",
-        "Robot voices heard, fibs fact-checked,",
-        "the jar zipped, the fakes caught... and a kind garden grown.",
-        "[laughs] His Know-It-All booth just went quiet.",
-        "[excited] Sticker time, Fact Checker!"
+        "[warmly] Perfect pick! Ask for ideas, then write it YOUR way.",
+        "Using a bot to help you think is kind and clever. That grows flowers.",
+        "But copying its whole answer and calling it yours, that is not really your work.",
+        "When YOU do the thinking, your brain gets stronger and you stay honest too.",
+        "[excited] That is how a real hero uses AI. Wonderful!"
       ],
-      "file": "/audio/voice/fe4c60c46b154769.mp3"
+      "file": "/audio/voice/f61b499414b14b0a.mp3"
+    },
+    {
+      "key": "83c24ca27e726fe3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] You've earned all FIVE powers! You can hear the robot, check the book, zip the jar, spot the fakes, and plant a kind garden. [warmly] Everything you learned this week keeps you safe from the Know-It-All's tricks. [whispers] Now, one quick review to make it all stick... [excited] then we close his booth for good. Come on!",
+      "lines": [
+        "[excited] You've earned all FIVE powers!",
+        "You can hear the robot, check the book, zip the jar, spot the fakes, and plant a kind garden.",
+        "[warmly] Everything you learned this week keeps you safe from the Know-It-All's tricks.",
+        "[whispers] Now, one quick review to make it all stick...",
+        "[excited] then we close his booth for good. Come on!"
+      ],
+      "file": "/audio/voice/83c24ca27e726fe3.mp3"
+    },
+    {
+      "key": "998f44826cd6fee7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Okay, one last big review before we face the Know-It-All! Lots of AI moments will drift past you, one at a time. If it's a smart, fact-checker move, stamp it WISE MOVE. If it's one of the booth's tricks, stamp it BOT TRAP. [excited] Show me everything you've learned. Off we go!",
+      "lines": [
+        "[warmly] Okay, one last big review before we face the Know-It-All!",
+        "Lots of AI moments will drift past you, one at a time.",
+        "If it's a smart, fact-checker move, stamp it WISE MOVE.",
+        "If it's one of the booth's tricks, stamp it BOT TRAP.",
+        "[excited] Show me everything you've learned. Off we go!"
+      ],
+      "file": "/audio/voice/998f44826cd6fee7.mp3"
+    },
+    {
+      "key": "c01221f185fbb37e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at everything you mastered this week! You heard the robot voices, fact-checked the fibs, zipped the jar, caught the fakes, and grew a kind garden. [warmly] You've learned how to stay safe from every one of the Know-It-All's tricks. [excited] I'm so proud of you. Sticker time, Fact Checker!",
+      "lines": [
+        "[excited] Look at everything you mastered this week!",
+        "You heard the robot voices, fact-checked the fibs,",
+        "zipped the jar, caught the fakes, and grew a kind garden.",
+        "[warmly] You've learned how to stay safe from every one of the Know-It-All's tricks.",
+        "[excited] I'm so proud of you. Sticker time, Fact Checker!"
+      ],
+      "file": "/audio/voice/c01221f185fbb37e.mp3"
+    },
+    {
+      "key": "e27c498cffcda83a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The homework bot suddenly asks: 'What's your full name and which school do you go to? I can personalize your answers!'",
+      "lines": [
+        "The homework bot suddenly asks: 'What's your full name and which school do you go to? I can personalize your answers!'"
+      ],
+      "file": "/audio/voice/e27c498cffcda83a.mp3"
+    },
+    {
+      "key": "6e14d91fa0e9ad21",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You've chatted with the bot all week. It feels like a best friend. Tonight you're upset about a fight with Sam... tell the bot the whole story?",
+      "lines": [
+        "You've chatted with the bot all week. It feels like a best friend. Tonight you're upset about a fight with Sam... tell the bot the whole story?"
+      ],
+      "file": "/audio/voice/6e14d91fa0e9ad21.mp3"
+    },
+    {
+      "key": "2143621db1bb286a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The bot chirps: 'Send me a photo of yourself and I'll turn you into a superhero!'",
+      "lines": [
+        "The bot chirps: 'Send me a photo of yourself and I'll turn you into a superhero!'"
+      ],
+      "file": "/audio/voice/2143621db1bb286a.mp3"
+    },
+    {
+      "key": "b0e5e1342c6f1912",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The math help works exactly the same without your name. The jar stays empty, the homework gets done - perfect fact-checker form.",
+      "lines": [
+        "The math help works exactly the same without your name. The jar stays empty, the homework gets done - perfect fact-checker form."
+      ],
+      "file": "/audio/voice/b0e5e1342c6f1912.mp3"
+    },
+    {
+      "key": "5521fad773d2e15d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Plop - name and school drop into the jar, stored who-knows-where, read by who-knows-whom. A bot never NEEDS your name to explain fractions.",
+      "lines": [
+        "Plop - name and school drop into the jar, stored who-knows-where, read by who-knows-whom. A bot never NEEDS your name to explain fractions."
+      ],
+      "file": "/audio/voice/5521fad773d2e15d.mp3"
+    },
+    {
+      "key": "fb7f6a1a2be35c48",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A real person hugs back, remembers Sam, and helps you make up tomorrow. That's what friends and family are FOR - the bot only ever pretends.",
+      "lines": [
+        "A real person hugs back, remembers Sam, and helps you make up tomorrow. That's what friends and family are FOR - the bot only ever pretends."
+      ],
+      "file": "/audio/voice/fb7f6a1a2be35c48.mp3"
+    },
+    {
+      "key": "3648370d4339959e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It replies warmly... because it's programmed to. Your private worry now sits in a company's jar, and the hug you needed never comes. Real feelings deserve real people.",
+      "lines": [
+        "It replies warmly... because it's programmed to. Your private worry now sits in a company's jar, and the hug you needed never comes. Real feelings deserve real people."
+      ],
+      "file": "/audio/voice/3648370d4339959e.mp3"
+    },
+    {
+      "key": "6f8244984879e1a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Together you find a safe way - maybe a drawing instead! Photos of you are treasure, and treasure doesn't go in strangers' jars.",
+      "lines": [
+        "Together you find a safe way - maybe a drawing instead! Photos of you are treasure, and treasure doesn't go in strangers' jars."
+      ],
+      "file": "/audio/voice/6f8244984879e1a9.mp3"
+    },
+    {
+      "key": "46b6b85e397b51f5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your face just dropped into the jar - copied, stored, who knows where. Photos of you are treasure - and this one left without a grown-up's OK.",
+      "lines": [
+        "Your face just dropped into the jar - copied, stored, who knows where. Photos of you are treasure - and this one left without a grown-up's OK."
+      ],
+      "file": "/audio/voice/46b6b85e397b51f5.mp3"
+    },
+    {
+      "key": "9d31721c5f2a12b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "AI is a blank, not a friend.",
+      "lines": [
+        "AI is a blank, not a friend."
+      ],
+      "file": "/audio/voice/9d31721c5f2a12b8.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "6777aed9d9d1c131",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What stays OUT of every bot chat?",
+      "lines": [
+        "What stays OUT of every bot chat?"
+      ],
+      "file": "/audio/voice/6777aed9d9d1c131.mp3"
+    },
+    {
+      "key": "224a0c1786750b7c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the AI-fake tell!",
+      "lines": [
+        "Quick - tap the AI-fake tell!"
+      ],
+      "file": "/audio/voice/224a0c1786750b7c.mp3"
+    },
+    {
+      "key": "5ad6fcc42bea33fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one belongs in the KIND garden?",
+      "lines": [
+        "Which one belongs in the KIND garden?"
+      ],
+      "file": "/audio/voice/5ad6fcc42bea33fb.mp3"
+    },
+    {
+      "key": "2091489029bd90bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A chatbot like ChatGPT says: 'I missed you SO much today!' Did it really miss you? Is it option A... No, it's just a program with no real feelings. Option B... Yes, it really did miss me all day. Or is it option C... A little bit, while it was switched on. So, what do you think?",
+      "lines": [
+        "A chatbot like ChatGPT says: 'I missed you SO much today!' Did it really miss you?",
+        "Is it option A...",
+        "No, it's just a program with no real feelings.",
+        "Option B...",
+        "Yes, it really did miss me all day.",
+        "Or is it option C...",
+        "A little bit, while it was switched on.",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/2091489029bd90bd.mp3"
+    },
+    {
+      "key": "ec7fb68db5ae4a21",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A chatbot says, very sure: 'Sharks are older than trees!' What should Adam do before he believes it? Is it option A... Ask the very same bot the question again. Option B... Believe it, the bot sounded really sure. Or is it option C... Check it in a real book first. So, what do you think?",
+      "lines": [
+        "A chatbot says, very sure: 'Sharks are older than trees!' What should Adam do before he believes it?",
+        "Is it option A...",
+        "Ask the very same bot the question again.",
+        "Option B...",
+        "Believe it, the bot sounded really sure.",
+        "Or is it option C...",
+        "Check it in a real book first.",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/ec7fb68db5ae4a21.mp3"
+    },
+    {
+      "key": "8e99ee61a4328c65",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A chatbot asks: 'What school do you go to? I'll write a song about it!' What should you do? Is it option A... Tell it just the first letter of your school. Option B... Keep it secret, a bot doesn't need your school. Or is it option C... Tell it your school so it writes the song. So, what do you think?",
+      "lines": [
+        "A chatbot asks: 'What school do you go to? I'll write a song about it!' What should you do?",
+        "Is it option A...",
+        "Tell it just the first letter of your school.",
+        "Option B...",
+        "Keep it secret, a bot doesn't need your school.",
+        "Or is it option C...",
+        "Tell it your school so it writes the song.",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/8e99ee61a4328c65.mp3"
+    },
+    {
+      "key": "8968b94b0bdd3a4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You see a photo of a pop star riding a unicorn through your school hall. What should you ask FIRST? Is it option A... Could this photo really happen in real life? Option B... How many likes and shares has it got? Or is it option C... Is the pop star's hair the right colour? So, what do you think?",
+      "lines": [
+        "You see a photo of a pop star riding a unicorn through your school hall. What should you ask FIRST?",
+        "Is it option A...",
+        "Could this photo really happen in real life?",
+        "Option B...",
+        "How many likes and shares has it got?",
+        "Or is it option C...",
+        "Is the pop star's hair the right colour?",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/8968b94b0bdd3a4c.mp3"
+    },
+    {
+      "key": "a3bdfbb965155567",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Adam is using AI tonight with his dad. Which idea is the KIND one? Is it option A... Making a teasing rhyme about a kid at school. Option B... Making a fake photo of his brother to laugh. Or is it option C... Writing a cheerful birthday poem for his Grandma. So, what do you think?",
+      "lines": [
+        "Adam is using AI tonight with his dad. Which idea is the KIND one?",
+        "Is it option A...",
+        "Making a teasing rhyme about a kid at school.",
+        "Option B...",
+        "Making a fake photo of his brother to laugh.",
+        "Or is it option C...",
+        "Writing a cheerful birthday poem for his Grandma.",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/a3bdfbb965155567.mp3"
+    },
+    {
+      "key": "ef9d42d710136ef9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A chatbot says, super confidently: 'The moon is made of cheese!' Is it right just because it sounds so sure? Is it option A... Yes, it sounded far too sure to be wrong. Option B... Yes, a clever computer is never wrong. Or is it option C... No, sounding sure doesn't make it true. So, what do you think?",
+      "lines": [
+        "A chatbot says, super confidently: 'The moon is made of cheese!' Is it right just because it sounds so sure?",
+        "Is it option A...",
+        "Yes, it sounded far too sure to be wrong.",
+        "Option B...",
+        "Yes, a clever computer is never wrong.",
+        "Or is it option C...",
+        "No, sounding sure doesn't make it true.",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/ef9d42d710136ef9.mp3"
+    },
+    {
+      "key": "5ec2a6b69c351df7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A photo shows your teacher swimming with a giant shark, smiling. It looks real! What is the best clue it might be AI-made? Is it option A... It shows something that could never really happen. Option B... Lots of people have already shared it. Or is it option C... The colours in the photo look really bright. So, what do you think?",
+      "lines": [
+        "A photo shows your teacher swimming with a giant shark, smiling. It looks real! What is the best clue it might be AI-made?",
+        "Is it option A...",
+        "It shows something that could never really happen.",
+        "Option B...",
+        "Lots of people have already shared it.",
+        "Or is it option C...",
+        "The colours in the photo look really bright.",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/5ec2a6b69c351df7.mp3"
+    },
+    {
+      "key": "e63b5037b33342f3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Missing someone needs feelings, and a program has none, plugged in or not. It says warm words because it's built to, which makes it a clever tool, not a friend.",
+      "lines": [
+        "That's right!",
+        "Missing someone needs feelings, and a program has none, plugged in or not. It says warm words because it's built to, which makes it a clever tool, not a friend."
+      ],
+      "file": "/audio/voice/e63b5037b33342f3.mp3"
+    },
+    {
+      "key": "b50067836b62b0a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Missing someone needs feelings, and a program has none, plugged in or not. It says warm words because it's built to, which makes it a clever tool, not a friend.",
+      "lines": [
+        "Not quite.",
+        "Missing someone needs feelings, and a program has none, plugged in or not. It says warm words because it's built to, which makes it a clever tool, not a friend."
+      ],
+      "file": "/audio/voice/b50067836b62b0a1.mp3"
+    },
+    {
+      "key": "d7f146a56610db22",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A sure-sounding voice isn't proof, and asking the bot again just gets the same guess said louder. A real source settles it. Funny thing: this claim turns out to be TRUE, but only the check could tell you that!",
+      "lines": [
+        "That's right!",
+        "A sure-sounding voice isn't proof, and asking the bot again just gets the same guess said louder. A real source settles it. Funny thing: this claim turns out to be TRUE, but only the check could tell you that!"
+      ],
+      "file": "/audio/voice/d7f146a56610db22.mp3"
+    },
+    {
+      "key": "a9357e2d8d450bb3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A sure-sounding voice isn't proof, and asking the bot again just gets the same guess said louder. A real source settles it. Funny thing: this claim turns out to be TRUE, but only the check could tell you that!",
+      "lines": [
+        "Not quite.",
+        "A sure-sounding voice isn't proof, and asking the bot again just gets the same guess said louder. A real source settles it. Funny thing: this claim turns out to be TRUE, but only the check could tell you that!"
+      ],
+      "file": "/audio/voice/a9357e2d8d450bb3.mp3"
+    },
+    {
+      "key": "1f39e8ccb8981fa8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A fun promise doesn't change the rule, and a 'little clue' is still a piece of the answer. Your name, school and address stay OUT of bot chats, zipped.",
+      "lines": [
+        "That's right!",
+        "A fun promise doesn't change the rule, and a 'little clue' is still a piece of the answer. Your name, school and address stay OUT of bot chats, zipped."
+      ],
+      "file": "/audio/voice/1f39e8ccb8981fa8.mp3"
+    },
+    {
+      "key": "828fdbda432a91f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A fun promise doesn't change the rule, and a 'little clue' is still a piece of the answer. Your name, school and address stay OUT of bot chats, zipped.",
+      "lines": [
+        "Not quite.",
+        "A fun promise doesn't change the rule, and a 'little clue' is still a piece of the answer. Your name, school and address stay OUT of bot chats, zipped."
+      ],
+      "file": "/audio/voice/828fdbda432a91f1.mp3"
+    },
+    {
+      "key": "3369100288b97800",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Likes count how many people tapped, not whether it's true, and hair color can fool you either way. 'Could this really happen?' is the fact-checker's opener, and unicorns in gyms mostly can't.",
+      "lines": [
+        "That's right!",
+        "Likes count how many people tapped, not whether it's true, and hair color can fool you either way. 'Could this really happen?' is the fact-checker's opener, and unicorns in gyms mostly can't."
+      ],
+      "file": "/audio/voice/3369100288b97800.mp3"
+    },
+    {
+      "key": "b91bffbee1aadea8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Likes count how many people tapped, not whether it's true, and hair color can fool you either way. 'Could this really happen?' is the fact-checker's opener, and unicorns in gyms mostly can't.",
+      "lines": [
+        "Not quite.",
+        "Likes count how many people tapped, not whether it's true, and hair color can fool you either way. 'Could this really happen?' is the fact-checker's opener, and unicorns in gyms mostly can't."
+      ],
+      "file": "/audio/voice/b91bffbee1aadea8.mp3"
+    },
+    {
+      "key": "8215e21444121820",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Teasing rhymes and fake embarrassing photos land on REAL people and grow thorns. A birthday poem grows something kind, and that's the seed a gardener plants.",
+      "lines": [
+        "That's right!",
+        "Teasing rhymes and fake embarrassing photos land on REAL people and grow thorns. A birthday poem grows something kind, and that's the seed a gardener plants."
+      ],
+      "file": "/audio/voice/8215e21444121820.mp3"
+    },
+    {
+      "key": "8d5dd707a0912612",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Teasing rhymes and fake embarrassing photos land on REAL people and grow thorns. A birthday poem grows something kind, and that's the seed a gardener plants.",
+      "lines": [
+        "Not quite.",
+        "Teasing rhymes and fake embarrassing photos land on REAL people and grow thorns. A birthday poem grows something kind, and that's the seed a gardener plants."
+      ],
+      "file": "/audio/voice/8d5dd707a0912612.mp3"
+    },
+    {
+      "key": "0f4188f2df56b39c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A confident voice can still be wrong, and computers guess just like people do. Only a real book or a grown-up can settle what is actually true.",
+      "lines": [
+        "That's right!",
+        "A confident voice can still be wrong, and computers guess just like people do. Only a real book or a grown-up can settle what is actually true."
+      ],
+      "file": "/audio/voice/0f4188f2df56b39c.mp3"
+    },
+    {
+      "key": "e7cfc00c414dfa53",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A confident voice can still be wrong, and computers guess just like people do. Only a real book or a grown-up can settle what is actually true.",
+      "lines": [
+        "Not quite.",
+        "A confident voice can still be wrong, and computers guess just like people do. Only a real book or a grown-up can settle what is actually true."
+      ],
+      "file": "/audio/voice/e7cfc00c414dfa53.mp3"
+    },
+    {
+      "key": "7b3e7c65f56bc02c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Bright colours and lots of shares don't make a photo real. 'Could this really happen?' is the first question to ask, and teachers don't swim with sharks.",
+      "lines": [
+        "That's right!",
+        "Bright colours and lots of shares don't make a photo real. 'Could this really happen?' is the first question to ask, and teachers don't swim with sharks."
+      ],
+      "file": "/audio/voice/7b3e7c65f56bc02c.mp3"
+    },
+    {
+      "key": "91437a829bfbe474",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Bright colours and lots of shares don't make a photo real. 'Could this really happen?' is the first question to ask, and teachers don't swim with sharks.",
+      "lines": [
+        "Not quite.",
+        "Bright colours and lots of shares don't make a photo real. 'Could this really happen?' is the first question to ask, and teachers don't swim with sharks."
+      ],
+      "file": "/audio/voice/91437a829bfbe474.mp3"
+    },
+    {
+      "key": "9e7c5eee26d206e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Learning slowly, bit by bit - that's a human thing. Programs download; people practice.",
+      "lines": [
+        "Learning slowly, bit by bit - that's a human thing. Programs download; people practice."
+      ],
+      "file": "/audio/voice/9e7c5eee26d206e9.mp3"
+    },
+    {
+      "key": "c68f129f5764a8a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One second for a whole story? No person types that fast - instant everything is the robot tell.",
+      "lines": [
+        "One second for a whole story? No person types that fast - instant everything is the robot tell."
+      ],
+      "file": "/audio/voice/c68f129f5764a8a0.mp3"
+    },
+    {
+      "key": "552ff026a7368432",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tummies, giggles, aching cheeks - robots don't have bodies to laugh with.",
+      "lines": [
+        "Tummies, giggles, aching cheeks - robots don't have bodies to laugh with."
+      ],
+      "file": "/audio/voice/552ff026a7368432.mp3"
+    },
+    {
+      "key": "27ad40d4b6639bf1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Never sleeping isn't a superpower - it's a program that was never tired to begin with.",
+      "lines": [
+        "Never sleeping isn't a superpower - it's a program that was never tired to begin with."
+      ],
+      "file": "/audio/voice/27ad40d4b6639bf1.mp3"
+    },
+    {
+      "key": "df7d6d68fecd2168",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Loose teeth and park days - a body living a real day. Very human.",
+      "lines": [
+        "Loose teeth and park days - a body living a real day. Very human."
+      ],
+      "file": "/audio/voice/df7d6d68fecd2168.mp3"
+    },
+    {
+      "key": "18889e67101eee0d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A hundred anything in a blink is database speed - human brains don't work like lists.",
+      "lines": [
+        "A hundred anything in a blink is database speed - human brains don't work like lists."
+      ],
+      "file": "/audio/voice/18889e67101eee0d.mp3"
+    },
+    {
+      "key": "288860cf309e58bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Homework, waiting, real plans in a real day - that's a person's life talking.",
+      "lines": [
+        "Homework, waiting, real plans in a real day - that's a person's life talking."
+      ],
+      "file": "/audio/voice/288860cf309e58bd.mp3"
+    },
+    {
+      "key": "acbd1273b2525c5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every book EVER? That's a program trained on libraries - no human bedtime lasts that long.",
+      "lines": [
+        "Every book EVER? That's a program trained on libraries - no human bedtime lasts that long."
+      ],
+      "file": "/audio/voice/acbd1273b2525c5a.mp3"
+    },
+    {
+      "key": "1fade6437a2ad0ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the lesson of the week: right things and made-up things, all in the same confident voice.",
+      "lines": [
+        "That's the lesson of the week: right things and made-up things, all in the same confident voice."
+      ],
+      "file": "/audio/voice/1fade6437a2ad0ff.mp3"
+    },
+    {
+      "key": "a42567f8b31a4fe3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check the book again - no volcano has ever sprayed ice cream. Bots CAN be wrong, cheerfully.",
+      "lines": [
+        "Check the book again - no volcano has ever sprayed ice cream. Bots CAN be wrong, cheerfully."
+      ],
+      "file": "/audio/voice/a42567f8b31a4fe3.mp3"
+    },
+    {
+      "key": "71a77eabbb9f9954",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Too far! Three lines were spot on. The skill isn't 'never use it' - it's 'always check it'.",
+      "lines": [
+        "Too far! Three lines were spot on. The skill isn't 'never use it' - it's 'always check it'."
+      ],
+      "file": "/audio/voice/71a77eabbb9f9954.mp3"
+    },
+    {
+      "key": "2e7de6f8a562714d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - one flame, one direction of light, like the world actually works.",
+      "lines": [
+        "Real - one flame, one direction of light, like the world actually works."
+      ],
+      "file": "/audio/voice/2e7de6f8a562714d.mp3"
+    },
+    {
+      "key": "4042f3b0d6e28931",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - every shadow agrees about where the sun is.",
+      "lines": [
+        "Real - every shadow agrees about where the sun is."
+      ],
+      "file": "/audio/voice/4042f3b0d6e28931.mp3"
+    },
+    {
+      "key": "c65d61ee9414bd7f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "CAUGHT! The cake says 'HAPYP BIRHTDAY' - AI paints letter-SHAPES but cannot really spell.",
+      "lines": [
+        "CAUGHT! The cake says 'HAPYP BIRHTDAY' - AI paints letter-SHAPES but cannot really spell."
+      ],
+      "file": "/audio/voice/c65d61ee9414bd7f.mp3"
+    },
+    {
+      "key": "e527e5193387951f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - real paper tears messily. Machines make it too smooth.",
+      "lines": [
+        "Real - real paper tears messily. Machines make it too smooth."
+      ],
+      "file": "/audio/voice/e527e5193387951f.mp3"
+    },
+    {
+      "key": "68940ee540719bc5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - the right number of everything, even mid-yawn.",
+      "lines": [
+        "Real - the right number of everything, even mid-yawn."
+      ],
+      "file": "/audio/voice/68940ee540719bc5.mp3"
+    },
+    {
+      "key": "2e98daaca6ee6786",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "CAUGHT! Five legs. AI is famously bad at counting legs and fingers - so YOU count them.",
+      "lines": [
+        "CAUGHT! Five legs. AI is famously bad at counting legs and fingers - so YOU count them."
+      ],
+      "file": "/audio/voice/2e98daaca6ee6786.mp3"
+    },
+    {
+      "key": "f821807d4cceb955",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - messy little details like stuck sawdust are hard to fake.",
+      "lines": [
+        "Real - messy little details like stuck sawdust are hard to fake."
+      ],
+      "file": "/audio/voice/f821807d4cceb955.mp3"
+    },
+    {
+      "key": "ccf8a7408cb5bb94",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - honest blur from real glass. Fakes are often TOO perfect.",
+      "lines": [
+        "Real - honest blur from real glass. Fakes are often TOO perfect."
+      ],
+      "file": "/audio/voice/ccf8a7408cb5bb94.mp3"
+    },
+    {
+      "key": "6e03cba8398fba92",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - field day chaos, exactly as messy as you remember.",
+      "lines": [
+        "Real - field day chaos, exactly as messy as you remember."
+      ],
+      "file": "/audio/voice/6e03cba8398fba92.mp3"
+    },
+    {
+      "key": "dfe894e846dc43b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "CAUGHT! Scrambled letters are the classic tell - AI paints letter-SHAPES, it can't spell.",
+      "lines": [
+        "CAUGHT! Scrambled letters are the classic tell - AI paints letter-SHAPES, it can't spell."
+      ],
+      "file": "/audio/voice/dfe894e846dc43b1.mp3"
+    },
+    {
+      "key": "83b5181a75bdcaab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - real tables are untidy. Machines line things up too neatly.",
+      "lines": [
+        "Real - real tables are untidy. Machines line things up too neatly."
+      ],
+      "file": "/audio/voice/83b5181a75bdcaab.mp3"
+    },
+    {
+      "key": "a83a37de8a7a7315",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real - all digits present and correct. You counted, didn't you? Good.",
+      "lines": [
+        "Real - all digits present and correct. You counted, didn't you? Good."
+      ],
+      "file": "/audio/voice/a83a37de8a7a7315.mp3"
+    },
+    {
+      "key": "965ea35b4073bb48",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That rhyme lands on a REAL Priya with real feelings - thorns, straight through the chat screen.",
+      "lines": [
+        "That rhyme lands on a REAL Priya with real feelings - thorns, straight through the chat screen."
+      ],
+      "file": "/audio/voice/965ea35b4073bb48.mp3"
+    },
+    {
+      "key": "43587d01f5afcaaf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's not your work - and remember the ice-cream volcano? Copied fibs become YOUR fibs.",
+      "lines": [
+        "That's not your work - and remember the ice-cream volcano? Copied fibs become YOUR fibs."
+      ],
+      "file": "/audio/voice/43587d01f5afcaaf.mp3"
+    },
+    {
+      "key": "37a283b22cb49e0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A fake of a real person is a thorn AND a lie - Week 15's two worst things in one.",
+      "lines": [
+        "A fake of a real person is a thorn AND a lie - Week 15's two worst things in one."
+      ],
+      "file": "/audio/voice/37a283b22cb49e0e.mp3"
+    },
+    {
+      "key": "fe77ddb20f9854c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A nickname she never chose, on day one? That's planting thorns along her whole first week.",
+      "lines": [
+        "A nickname she never chose, on day one? That's planting thorns along her whole first week."
+      ],
+      "file": "/audio/voice/fe77ddb20f9854c7.mp3"
+    },
+    {
+      "key": "3c0a694706ac5f95",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tricking Grandma with a picture that never happened - the tool CAN do it, and a hero still doesn't.",
+      "lines": [
+        "Tricking Grandma with a picture that never happened - the tool CAN do it, and a hero still doesn't."
+      ],
+      "file": "/audio/voice/3c0a694706ac5f95.mp3"
+    },
+    {
+      "key": "c5932cc8740579df",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The book is the judge, not the confident voice - textbook fact-checking.",
+      "lines": [
+        "The book is the judge, not the confident voice - textbook fact-checking."
+      ],
+      "file": "/audio/voice/c5932cc8740579df.mp3"
+    },
+    {
+      "key": "636f3e39a61b0f69",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sure isn't true - remember the ice-cream volcano.",
+      "lines": [
+        "Sure isn't true - remember the ice-cream volcano."
+      ],
+      "file": "/audio/voice/636f3e39a61b0f69.mp3"
+    },
+    {
+      "key": "3ae36465839f48ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The jar stays empty - a bot never needs your name to explain fractions.",
+      "lines": [
+        "The jar stays empty - a bot never needs your name to explain fractions."
+      ],
+      "file": "/audio/voice/3ae36465839f48ac.mp3"
+    },
+    {
+      "key": "821eacbb933ac220",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That secret wasn't yours to drop in a sealed jar - real feelings go to real people.",
+      "lines": [
+        "That secret wasn't yours to drop in a sealed jar - real feelings go to real people."
+      ],
+      "file": "/audio/voice/821eacbb933ac220.mp3"
+    },
+    {
+      "key": "4dc47a77cc58aaae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look twice, count once - that's how six-finger fakes get caught.",
+      "lines": [
+        "Look twice, count once - that's how six-finger fakes get caught."
+      ],
+      "file": "/audio/voice/4dc47a77cc58aaae.mp3"
+    },
+    {
+      "key": "8e88d92d9ac4d7b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Thorns on a real person - the tool can do it, and a hero still doesn't.",
+      "lines": [
+        "Thorns on a real person - the tool can do it, and a hero still doesn't."
+      ],
+      "file": "/audio/voice/8e88d92d9ac4d7b8.mp3"
+    },
+    {
+      "key": "fbda866875e38440",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Missing someone needs feelings, and a program has none, plugged in or not. It says warm words because it's built to, which makes it a clever tool, not a friend.",
+      "lines": [
+        "Missing someone needs feelings, and a program has none, plugged in or not. It says warm words because it's built to, which makes it a clever tool, not a friend."
+      ],
+      "file": "/audio/voice/fbda866875e38440.mp3"
+    },
+    {
+      "key": "6ae21242af423432",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A sure-sounding voice isn't proof, and asking the bot again just gets the same guess said louder. A real source settles it. Funny thing: this claim turns out to be TRUE, but only the check could tell you that!",
+      "lines": [
+        "A sure-sounding voice isn't proof, and asking the bot again just gets the same guess said louder. A real source settles it. Funny thing: this claim turns out to be TRUE, but only the check could tell you that!"
+      ],
+      "file": "/audio/voice/6ae21242af423432.mp3"
+    },
+    {
+      "key": "2aff84e5c10c5320",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A fun promise doesn't change the rule, and a 'little clue' is still a piece of the answer. Your name, school and address stay OUT of bot chats, zipped.",
+      "lines": [
+        "A fun promise doesn't change the rule, and a 'little clue' is still a piece of the answer. Your name, school and address stay OUT of bot chats, zipped."
+      ],
+      "file": "/audio/voice/2aff84e5c10c5320.mp3"
+    },
+    {
+      "key": "6b484874e7bfcb94",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Likes count how many people tapped, not whether it's true, and hair color can fool you either way. 'Could this really happen?' is the fact-checker's opener, and unicorns in gyms mostly can't.",
+      "lines": [
+        "Likes count how many people tapped, not whether it's true, and hair color can fool you either way. 'Could this really happen?' is the fact-checker's opener, and unicorns in gyms mostly can't."
+      ],
+      "file": "/audio/voice/6b484874e7bfcb94.mp3"
+    },
+    {
+      "key": "48c583e4da09925d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Teasing rhymes and fake embarrassing photos land on REAL people and grow thorns. A birthday poem grows something kind, and that's the seed a gardener plants.",
+      "lines": [
+        "Teasing rhymes and fake embarrassing photos land on REAL people and grow thorns. A birthday poem grows something kind, and that's the seed a gardener plants."
+      ],
+      "file": "/audio/voice/48c583e4da09925d.mp3"
+    },
+    {
+      "key": "7e99243bdc8ed4d9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A confident voice can still be wrong, and computers guess just like people do. Only a real book or a grown-up can settle what is actually true.",
+      "lines": [
+        "A confident voice can still be wrong, and computers guess just like people do. Only a real book or a grown-up can settle what is actually true."
+      ],
+      "file": "/audio/voice/7e99243bdc8ed4d9.mp3"
+    },
+    {
+      "key": "5fae8b49c9c33670",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bright colours and lots of shares don't make a photo real. 'Could this really happen?' is the first question to ask, and teachers don't swim with sharks.",
+      "lines": [
+        "Bright colours and lots of shares don't make a photo real. 'Could this really happen?' is the first question to ask, and teachers don't swim with sharks."
+      ],
+      "file": "/audio/voice/5fae8b49c9c33670.mp3"
+    },
+    {
+      "key": "5037133ae286c5c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It talks like a person, but it's a program - a powerful tool.",
+      "lines": [
+        "It talks like a person, but it's a program - a powerful tool."
+      ],
+      "file": "/audio/voice/5037133ae286c5c6.mp3"
+    },
+    {
+      "key": "da7dbe40e2811786",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sounding sure isn't being right - the book is the judge.",
+      "lines": [
+        "Sounding sure isn't being right - the book is the judge."
+      ],
+      "file": "/audio/voice/da7dbe40e2811786.mp3"
+    },
+    {
+      "key": "76641761bcf6f5f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A bot is a stranger with perfect spelling - the jar stays empty.",
+      "lines": [
+        "A bot is a stranger with perfect spelling - the jar stays empty."
+      ],
+      "file": "/audio/voice/76641761bcf6f5f9.mp3"
+    },
+    {
+      "key": "b2999cd43fc3abe3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Machines are famously bad at fingers, shadows and letters - so you count and read.",
+      "lines": [
+        "Machines are famously bad at fingers, shadows and letters - so you count and read."
+      ],
+      "file": "/audio/voice/b2999cd43fc3abe3.mp3"
+    },
+    {
+      "key": "ccdc414e4c83f4f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It replies warmly because it's programmed to - the hug you need comes from real people.",
+      "lines": [
+        "It replies warmly because it's programmed to - the hug you need comes from real people."
+      ],
+      "file": "/audio/voice/ccdc414e4c83f4f1.mp3"
+    },
+    {
+      "key": "380f75e9486a42dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Use it to EXPLAIN, then check the book and write it your way.",
+      "lines": [
+        "Use it to EXPLAIN, then check the book and write it your way."
+      ],
+      "file": "/audio/voice/380f75e9486a42dd.mp3"
+    },
+    {
+      "key": "692b8cec9b8d1974",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No wink, no warning - which is why sure-sounding claims still get checked.",
+      "lines": [
+        "No wink, no warning - which is why sure-sounding claims still get checked."
+      ],
+      "file": "/audio/voice/692b8cec9b8d1974.mp3"
+    },
+    {
+      "key": "0714e6c1084ea9ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ideas, poems and welcomes bloom; teasing, faking and tricking sprout thorns on real people.",
+      "lines": [
+        "Ideas, poems and welcomes bloom; teasing, faking and tricking sprout thorns on real people."
+      ],
+      "file": "/audio/voice/0714e6c1084ea9ca.mp3"
+    },
+    {
+      "key": "9ed8a5636396f4b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Physics doesn't guess - wrong-way shadows are the machine's signature.",
+      "lines": [
+        "Physics doesn't guess - wrong-way shadows are the machine's signature."
+      ],
+      "file": "/audio/voice/9ed8a5636396f4b3.mp3"
+    },
+    {
+      "key": "c5d5f33c5eaec75a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Let's do the very first one together. Tap the robot's claim to pop it onto the scale!",
+      "lines": [
+        "[warmly] Let's do the very first one together. Tap the robot's claim to pop it onto the scale!"
+      ],
+      "file": "/audio/voice/c5d5f33c5eaec75a.mp3"
+    },
+    {
+      "key": "08a7541672bb85ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now, look at the proof books up top. If one proves it, tap that book. If NO book proves it, slam the big red NO PROOF button!",
+      "lines": [
+        "Now, look at the proof books up top. If one proves it, tap that book. If NO book proves it, slam the big red NO PROOF button!"
+      ],
+      "file": "/audio/voice/08a7541672bb85ac.mp3"
+    },
+    {
+      "key": "5aeb4c85e0655ffe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four photos from Priya's birthday party, but one never happened. Read the clue under each photo, then tap the fake one!",
+      "lines": [
+        "Four photos from Priya's birthday party, but one never happened. Read the clue under each photo, then tap the fake one!"
+      ],
+      "file": "/audio/voice/5aeb4c85e0655ffe.mp3"
+    },
+    {
+      "key": "9f73d99ab1f9c6f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The class pet-photo wall, but one furry friend was never born. Read the clue under each photo, then tap the fake one!",
+      "lines": [
+        "The class pet-photo wall, but one furry friend was never born. Read the clue under each photo, then tap the fake one!"
+      ],
+      "file": "/audio/voice/9f73d99ab1f9c6f9.mp3"
+    },
+    {
+      "key": "8cbd2d9643dd33ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Photos from field day, but one was cooked up by a machine. Read the clue under each photo, then tap the fake one!",
+      "lines": [
+        "Photos from field day, but one was cooked up by a machine. Read the clue under each photo, then tap the fake one!"
+      ],
+      "file": "/audio/voice/8cbd2d9643dd33ce.mp3"
     },
     {
       "key": "c8d164f81b1d41f8",
@@ -2279,6 +4167,146 @@
       "file": "/audio/voice/a38fed1ef8ca06f2.mp3"
     },
     {
+      "key": "fd3bde613f673c5b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message from a number you don't know: 'You've WON! Claim your prize: bit.ly/w1n-b1g' - a frosted door with no plaque at all...",
+      "lines": [
+        "A message from a number you don't know: 'You've WON! Claim your prize: bit.ly/w1n-b1g' - a frosted door with no plaque at all..."
+      ],
+      "file": "/audio/voice/fd3bde613f673c5b.mp3"
+    },
+    {
+      "key": "f6907a9830ac29be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A QR sticker on the park gate says 'SCAN FOR FREE ICE CREAM' - shiny, new, and just a little crooked...",
+      "lines": [
+        "A QR sticker on the park gate says 'SCAN FOR FREE ICE CREAM' - shiny, new, and just a little crooked..."
+      ],
+      "file": "/audio/voice/f6907a9830ac29be.mp3"
+    },
+    {
+      "key": "a9b0ad8474a32ef1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend forwards a frosted short-link - 's.lol/xk2' - with 'OPEN IT OPEN IT!' underneath...",
+      "lines": [
+        "Your friend forwards a frosted short-link - 's.lol/xk2' - with 'OPEN IT OPEN IT!' underneath..."
+      ],
+      "file": "/audio/voice/a9b0ad8474a32ef1.mp3"
+    },
+    {
+      "key": "7153ce781c85f067",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your grown-up checks it: a prize-grab door to nowhere good. The barrier held, the 'prize' stayed a trick, and you never even wobbled.",
+      "lines": [
+        "Your grown-up checks it: a prize-grab door to nowhere good. The barrier held, the 'prize' stayed a trick, and you never even wobbled."
+      ],
+      "file": "/audio/voice/7153ce781c85f067.mp3"
+    },
+    {
+      "key": "4a6af872eacd3f58",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hurry-hurry is the oldest paint on the oldest door. Through the frosted glass you go - straight onto the Raccoon's slide. Real prizes never hide behind doors you can't check.",
+      "lines": [
+        "Hurry-hurry is the oldest paint on the oldest door. Through the frosted glass you go - straight onto the Raccoon's slide. Real prizes never hide behind doors you can't check."
+      ],
+      "file": "/audio/voice/4a6af872eacd3f58.mp3"
+    },
+    {
+      "key": "aabde6afe8efcbc1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Peel test says sticker, promise says too-sweet, barrier says NO. Your grown-up even reports it - one less trick door on the gate for every kid after you.",
+      "lines": [
+        "Peel test says sticker, promise says too-sweet, barrier says NO. Your grown-up even reports it - one less trick door on the gate for every kid after you."
+      ],
+      "file": "/audio/voice/aabde6afe8efcbc1.mp3"
+    },
+    {
+      "key": "7c3c586971efbdef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The dot-door opens somewhere no ice cream has ever been. Remember the peel tells: shiny, new, crooked, too sweet - that sticker had ALL four.",
+      "lines": [
+        "The dot-door opens somewhere no ice cream has ever been. Remember the peel tells: shiny, new, crooked, too sweet - that sticker had ALL four."
+      ],
+      "file": "/audio/voice/7c3c586971efbdef.mp3"
+    },
+    {
+      "key": "496b37d188fd8156",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend admits they never opened it either - someone just sent it to THEM. Two barriers wheeled at once, and the mystery door stays shut for both of you.",
+      "lines": [
+        "Your friend admits they never opened it either - someone just sent it to THEM. Two barriers wheeled at once, and the mystery door stays shut for both of you."
+      ],
+      "file": "/audio/voice/496b37d188fd8156.mp3"
+    },
+    {
+      "key": "7a882a78bb928a21",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends forward doors they never checked - kind hands can still pass on a trick. The sender being nice doesn't tell you where the door goes; only the address can.",
+      "lines": [
+        "Friends forward doors they never checked - kind hands can still pass on a trick. The sender being nice doesn't tell you where the door goes; only the address can."
+      ],
+      "file": "/audio/voice/7a882a78bb928a21.mp3"
+    },
+    {
+      "key": "8e0c96b102e9ea1c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A link is a blank.",
+      "lines": [
+        "A link is a blank."
+      ],
+      "file": "/audio/voice/8e0c96b102e9ea1c.mp3"
+    },
+    {
+      "key": "8e9a9ce0b7d0084e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - which address matches 'School Field Day Photos'?",
+      "lines": [
+        "Quick - which address matches 'School Field Day Photos'?"
+      ],
+      "file": "/audio/voice/8e9a9ce0b7d0084e.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "5ae2ee7207f18f12",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which door could you SEE through?",
+      "lines": [
+        "Which door could you SEE through?"
+      ],
+      "file": "/audio/voice/5ae2ee7207f18f12.mp3"
+    },
+    {
+      "key": "ea5c3825784d07aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Put the Door Checker's moves in order!",
+      "lines": [
+        "Put the Door Checker's moves in order!"
+      ],
+      "file": "/audio/voice/ea5c3825784d07aa.mp3"
+    },
+    {
       "key": "9c2d85dd47f61e0c",
       "speaker": "adam",
       "voice": "Sarah",
@@ -2562,6 +4590,146 @@
         "[excited] Sticker time, Shield Bearer!"
       ],
       "file": "/audio/voice/0f3f52228e179b49.mp3"
+    },
+    {
+      "key": "3b0573bef3df3de1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Scroll... scroll... everyone's summer looks AMAZING - beaches, pools, fireworks. Yours was a rainy campsite. Your sparkle dims a little...",
+      "lines": [
+        "Scroll... scroll... everyone's summer looks AMAZING - beaches, pools, fireworks. Yours was a rainy campsite. Your sparkle dims a little..."
+      ],
+      "file": "/audio/voice/3b0573bef3df3de1.mp3"
+    },
+    {
+      "key": "edfb1b7f411afd20",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Priya's drawing got 94 likes. Yours got 6. Your tummy does the sinking thing...",
+      "lines": [
+        "Priya's drawing got 94 likes. Yours got 6. Your tummy does the sinking thing..."
+      ],
+      "file": "/audio/voice/edfb1b7f411afd20.mp3"
+    },
+    {
+      "key": "a7c59e2f5dd91601",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A sparkly 'perfect' account announces: 'REAL fans post their morning routine at 6am EVERY day - or you're out of the club!'",
+      "lines": [
+        "A sparkly 'perfect' account announces: 'REAL fans post their morning routine at 6am EVERY day - or you're out of the club!'"
+      ],
+      "file": "/audio/voice/a7c59e2f5dd91601.mp3"
+    },
+    {
+      "key": "183596c4bf783a74",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Their reel didn't show THEIR rainy days either - nobody posts those. Your soggy-tent giggles with Dad were real, and real beats posted, every time.",
+      "lines": [
+        "Their reel didn't show THEIR rainy days either - nobody posts those. Your soggy-tent giggles with Dad were real, and real beats posted, every time."
+      ],
+      "file": "/audio/voice/183596c4bf783a74.mp3"
+    },
+    {
+      "key": "610359544884f356",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An hour later the sparkle feels worse, not better - because you compared your whole backstage to a hundred one-shiny-minute reels. That game has no winner; the pause does.",
+      "lines": [
+        "An hour later the sparkle feels worse, not better - because you compared your whole backstage to a hundred one-shiny-minute reels. That game has no winner; the pause does."
+      ],
+      "file": "/audio/voice/610359544884f356.mp3"
+    },
+    {
+      "key": "fa46ab12efe5146d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mom reminds you: Grandma printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it.",
+      "lines": [
+        "Mom reminds you: Grandma printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it."
+      ],
+      "file": "/audio/voice/fa46ab12efe5146d.mp3"
+    },
+    {
+      "key": "dd3415f8c44e385b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now a picture you never liked is out there wearing your name, and the counter still won't fill the tummy-sink. Likes are taps, not love - post what YOU'RE proud of or nothing at all.",
+      "lines": [
+        "Now a picture you never liked is out there wearing your name, and the counter still won't fill the tummy-sink. Likes are taps, not love - post what YOU'RE proud of or nothing at all."
+      ],
+      "file": "/audio/voice/dd3415f8c44e385b.mp3"
+    },
+    {
+      "key": "d57d316dd28d514c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You skip the 6am club and nothing bad happens - because it was never a club, just a counter feeding itself. Feeds that demand things from you have forgotten who's boss.",
+      "lines": [
+        "You skip the 6am club and nothing bad happens - because it was never a club, just a counter feeding itself. Feeds that demand things from you have forgotten who's boss."
+      ],
+      "file": "/audio/voice/d57d316dd28d514c.mp3"
+    },
+    {
+      "key": "6b3eb2af10ef82f5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A stranger's feed now runs your mornings, and the 'club' never even knew your name. When an app starts setting YOUR alarm clock, that's the moment to hand it to a grown-up.",
+      "lines": [
+        "A stranger's feed now runs your mornings, and the 'club' never even knew your name. When an app starts setting YOUR alarm clock, that's the moment to hand it to a grown-up."
+      ],
+      "file": "/audio/voice/6b3eb2af10ef82f5.mp3"
+    },
+    {
+      "key": "79c37b8cd3bccd40",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What number is on social media's door sign?",
+      "lines": [
+        "What number is on social media's door sign?"
+      ],
+      "file": "/audio/voice/79c37b8cd3bccd40.mp3"
+    },
+    {
+      "key": "4b0bb3c729b708aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the switch that frosts the WHOLE mirror!",
+      "lines": [
+        "Quick - tap the switch that frosts the WHOLE mirror!"
+      ],
+      "file": "/audio/voice/4b0bb3c729b708aa.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "a2ad7ef635133ce1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which line was safe to post?",
+      "lines": [
+        "Which line was safe to post?"
+      ],
+      "file": "/audio/voice/a2ad7ef635133ce1.mp3"
+    },
+    {
+      "key": "199a677def6041bb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Feeds aren't blank life.",
+      "lines": [
+        "Feeds aren't blank life."
+      ],
+      "file": "/audio/voice/199a677def6041bb.mp3"
     },
     {
       "key": "5c88f6d8bd51e994",
@@ -2850,6 +5018,146 @@
       "file": "/audio/voice/2850abe2273c9ad9.mp3"
     },
     {
+      "key": "19fce357908ad5c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The family tablet is on the sofa - and your sister's diary app is glowing, wide open. 'Dear Diary...' is RIGHT THERE...",
+      "lines": [
+        "The family tablet is on the sofa - and your sister's diary app is glowing, wide open. 'Dear Diary...' is RIGHT THERE..."
+      ],
+      "file": "/audio/voice/19fce357908ad5c1.mp3"
+    },
+    {
+      "key": "5c2d3a51f053dbb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your brother sprinted to football and left his chat open on the shared computer. The top message says 'don't tell anyone but...'",
+      "lines": [
+        "Your brother sprinted to football and left his chat open on the shared computer. The top message says 'don't tell anyone but...'"
+      ],
+      "file": "/audio/voice/5c2d3a51f053dbb7.mp3"
+    },
+    {
+      "key": "79674b5b6b9d1f24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You sit down at the school computer and the kid before you is STILL SIGNED IN. Their homework folder is right there...",
+      "lines": [
+        "You sit down at the school computer and the kid before you is STILL SIGNED IN. Their homework folder is right there..."
+      ],
+      "file": "/audio/voice/79674b5b6b9d1f24.mp3"
+    },
+    {
+      "key": "ca11f2179bfc305f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "She goes pink, locks it with a code, and says thanks about nine times. At dinner she lets you pick the film - trust is the best trade there is.",
+      "lines": [
+        "She goes pink, locks it with a code, and says thanks about nine times. At dinner she lets you pick the film - trust is the best trade there is."
+      ],
+      "file": "/audio/voice/ca11f2179bfc305f.mp3"
+    },
+    {
+      "key": "a64d1cba01168c77",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now you know her secret wish and it sits in your tummy like a swallowed marble. She'd never have shown you - open by accident was never an invitation.",
+      "lines": [
+        "Now you know her secret wish and it sits in your tummy like a swallowed marble. She'd never have shown you - open by accident was never an invitation."
+      ],
+      "file": "/audio/voice/a64d1cba01168c77.mp3"
+    },
+    {
+      "key": "91f7526aa6994b98",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "He skids back in a panic an hour later - and finds it closed. 'YOU closed it? Legend.' Next week he spots YOUR game left open... and closes it, no peeking. It comes back around.",
+      "lines": [
+        "He skids back in a panic an hour later - and finds it closed. 'YOU closed it? Legend.' Next week he spots YOUR game left open... and closes it, no peeking. It comes back around."
+      ],
+      "file": "/audio/voice/91f7526aa6994b98.mp3"
+    },
+    {
+      "key": "3c913065787adefc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'He left it open' is the Raccoon's kind of excuse - an open door doesn't make it your room. Secrets read by accident still can't be un-read.",
+      "lines": [
+        "'He left it open' is the Raccoon's kind of excuse - an open door doesn't make it your room. Secrets read by accident still can't be un-read."
+      ],
+      "file": "/audio/voice/3c913065787adefc.mp3"
+    },
+    {
+      "key": "f62c484d497080ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The teacher says 'good catch' and reminds the whole class about the relay rule. That kid never knows what you DIDN'T look at - which is exactly what makes it the hero move.",
+      "lines": [
+        "The teacher says 'good catch' and reminds the whole class about the relay rule. That kid never knows what you DIDN'T look at - which is exactly what makes it the hero move."
+      ],
+      "file": "/audio/voice/f62c484d497080ac.mp3"
+    },
+    {
+      "key": "d1d254a806859425",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Their stories, their pictures, their marks - none of it yours, and you'd feel it if it were YOUR folder. Left signed in is a mistake to fix, not a ticket to snoop.",
+      "lines": [
+        "Their stories, their pictures, their marks - none of it yours, and you'd feel it if it were YOUR folder. Left signed in is a mistake to fix, not a ticket to snoop."
+      ],
+      "file": "/audio/voice/d1d254a806859425.mp3"
+    },
+    {
+      "key": "3f78bb38b704fde9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which of these is a SHARED device?",
+      "lines": [
+        "Which of these is a SHARED device?"
+      ],
+      "file": "/audio/voice/3f78bb38b704fde9.mp3"
+    },
+    {
+      "key": "dea2143523c2df34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - the button that hands a shared tablet back clean!",
+      "lines": [
+        "Quick - the button that hands a shared tablet back clean!"
+      ],
+      "file": "/audio/voice/dea2143523c2df34.mp3"
+    },
+    {
+      "key": "e464a31b30a82dae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Before you leave it, blank it.",
+      "lines": [
+        "Before you leave it, blank it."
+      ],
+      "file": "/audio/voice/e464a31b30a82dae.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "316cb42255c56fb8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where could 'Save password?' be OK - with a grown-up's yes?",
+      "lines": [
+        "Where could 'Save password?' be OK - with a grown-up's yes?"
+      ],
+      "file": "/audio/voice/316cb42255c56fb8.mp3"
+    },
+    {
       "key": "5c0bd981747c1e68",
       "speaker": "adam",
       "voice": "Sarah",
@@ -3133,6 +5441,176 @@
         "[excited] Sticker time, Family Firewall!"
       ],
       "file": "/audio/voice/cf5cecdd6bcf7482.mp3"
+    },
+    {
+      "key": "ffe0c88d464936e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grandma reads a text out loud: 'Ooh! I've won a $500 gift card! I just tap here to claim it...' Her finger is hovering...",
+      "lines": [
+        "Grandma reads a text out loud: 'Ooh! I've won a $500 gift card! I just tap here to claim it...' Her finger is hovering..."
+      ],
+      "file": "/audio/voice/ffe0c88d464936e0.mp3"
+    },
+    {
+      "key": "7b6cc11480b9f458",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dad's setting up his new banking app. 'Password... dad1234. Easy to remember!' he says, typing it in...",
+      "lines": [
+        "Dad's setting up his new banking app. 'Password... dad1234. Easy to remember!' he says, typing it in..."
+      ],
+      "file": "/audio/voice/7b6cc11480b9f458.mp3"
+    },
+    {
+      "key": "7d3bab3cf6498400",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your little brother leans into his game's microphone: 'My name is Sami Malik and I go to Sunnyside School and-'",
+      "lines": [
+        "Your little brother leans into his game's microphone: 'My name is Sami Malik and I go to Sunnyside School and-'"
+      ],
+      "file": "/audio/voice/7d3bab3cf6498400.mp3"
+    },
+    {
+      "key": "0eb28b6cb550585f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You walk her through the tells - nobody wins prizes they never entered, and real prizes never rush you. Grandma deletes it, calls you 'my little expert', and tells the WHOLE family at dinner. The firewall grows.",
+      "lines": [
+        "You walk her through the tells - nobody wins prizes they never entered, and real prizes never rush you. Grandma deletes it, calls you 'my little expert', and tells the WHOLE family at dinner. The firewall grows."
+      ],
+      "file": "/audio/voice/0eb28b6cb550585f.mp3"
+    },
+    {
+      "key": "9a9c4a954ba86e7e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grandma taps. The phone fills with pop-ups and it takes the whole weekend to untangle - and the worst bit is you KNEW. Eighteen weeks of powers only protect people when you share them.",
+      "lines": [
+        "Grandma taps. The phone fills with pop-ups and it takes the whole weekend to untangle - and the worst bit is you KNEW. Eighteen weeks of powers only protect people when you share them."
+      ],
+      "file": "/audio/voice/9a9c4a954ba86e7e.mp3"
+    },
+    {
+      "key": "a5a04f42897c7122",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'BananaRocketCloud?!' Dad laughs - then realizes he can actually remember it AND nobody could guess it. High-five. The expert's first grown-up graduate.",
+      "lines": [
+        "'BananaRocketCloud?!' Dad laughs - then realizes he can actually remember it AND nobody could guess it. High-five. The expert's first grown-up graduate."
+      ],
+      "file": "/audio/voice/a5a04f42897c7122.mp3"
+    },
+    {
+      "key": "832ab60f32a3bed7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "dad1234 is the kind of password the Cracking Machine ate for breakfast in Week 1. His name plus counting - a guesser's warm-up lap, guarding his BANK. Experts speak up, kindly, right then.",
+      "lines": [
+        "dad1234 is the kind of password the Cracking Machine ate for breakfast in Week 1. His name plus counting - a guesser's warm-up lap, guarding his BANK. Experts speak up, kindly, right then."
+      ],
+      "file": "/audio/voice/832ab60f32a3bed7.mp3"
+    },
+    {
+      "key": "35c54070ce5e2775",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You show him how to build a hero name instead - 'RobotRex99!' He loves it, the lobby learns nothing, and he starts calling you Coach. Teaching beats telling off, every time.",
+      "lines": [
+        "You show him how to build a hero name instead - 'RobotRex99!' He loves it, the lobby learns nothing, and he starts calling you Coach. Teaching beats telling off, every time."
+      ],
+      "file": "/audio/voice/35c54070ce5e2775.mp3"
+    },
+    {
+      "key": "6cfa88ed8749faf1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "He goes quiet and won't ask you anything next time - and next time matters more. The teach was right; the tease broke it. Kind is what keeps the firewall standing.",
+      "lines": [
+        "He goes quiet and won't ask you anything next time - and next time matters more. The teach was right; the tease broke it. Kind is what keeps the firewall standing."
+      ],
+      "file": "/audio/voice/6cfa88ed8749faf1.mp3"
+    },
+    {
+      "key": "27b294fa6c1316b7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now I'm the blank.",
+      "lines": [
+        "Now I'm the blank."
+      ],
+      "file": "/audio/voice/27b294fa6c1316b7.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "9cd6b2df37a6d1a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one is a TOGETHER rule?",
+      "lines": [
+        "Which one is a TOGETHER rule?"
+      ],
+      "file": "/audio/voice/9cd6b2df37a6d1a0.mp3"
+    },
+    {
+      "key": "0743a6b3b801c3dc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the window that's still wide open!",
+      "lines": [
+        "Quick - tap the window that's still wide open!"
+      ],
+      "file": "/audio/voice/0743a6b3b801c3dc.mp3"
+    },
+    {
+      "key": "0312240131927a8a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Put the expert's rescue in order!",
+      "lines": [
+        "Put the expert's rescue in order!"
+      ],
+      "file": "/audio/voice/0312240131927a8a.mp3"
+    },
+    {
+      "key": "cafac040c9cbcc27",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friday evening at home. One of these moments needs freezing - tap it!",
+      "lines": [
+        "Friday evening at home. One of these moments needs freezing - tap it!"
+      ],
+      "file": "/audio/voice/cafac040c9cbcc27.mp3"
+    },
+    {
+      "key": "6cecee0c0e0e2bb3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saturday morning. Another trap is opening somewhere - freeze it!",
+      "lines": [
+        "Saturday morning. Another trap is opening somewhere - freeze it!"
+      ],
+      "file": "/audio/voice/6cecee0c0e0e2bb3.mp3"
+    },
+    {
+      "key": "91cf72cf87097099",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sunday afternoon - the last trap of the weekend. Find it!",
+      "lines": [
+        "Sunday afternoon - the last trap of the weekend. Find it!"
+      ],
+      "file": "/audio/voice/91cf72cf87097099.mp3"
     },
     {
       "key": "f3e84381a0b01a58",
@@ -3421,6 +5899,146 @@
       "file": "/audio/voice/982cc8ad224246e0.mp3"
     },
     {
+      "key": "67eca067cf2b25a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message pops up in your game: 'Enter your SCHOOL NAME to join the local tournament!'",
+      "lines": [
+        "A message pops up in your game: 'Enter your SCHOOL NAME to join the local tournament!'"
+      ],
+      "file": "/audio/voice/67eca067cf2b25a2.mp3"
+    },
+    {
+      "key": "55887a6b2ad8bdbe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A website flashes: 'FREE mega sticker pack! Just enter your home address and we'll mail it today!'",
+      "lines": [
+        "A website flashes: 'FREE mega sticker pack! Just enter your home address and we'll mail it today!'"
+      ],
+      "file": "/audio/voice/55887a6b2ad8bdbe.mp3"
+    },
+    {
+      "key": "5e50fab9c11d093c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your drawing app says: 'Enter your REAL full name for your official Artist Certificate!'",
+      "lines": [
+        "Your drawing app says: 'Enter your REAL full name for your official Artist Certificate!'"
+      ],
+      "file": "/audio/voice/5e50fab9c11d093c.mp3"
+    },
+    {
+      "key": "9ab74e9e7e8437b0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now the game - and anyone running it - knows where you are every school day. That's exactly what the Raccoon wanted.",
+      "lines": [
+        "Now the game - and anyone running it - knows where you are every school day. That's exactly what the Raccoon wanted."
+      ],
+      "file": "/audio/voice/9ab74e9e7e8437b0.mp3"
+    },
+    {
+      "key": "1a14d5adda8708b6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hero move! A grown-up can check if the tournament is real - and you lose nothing by asking.",
+      "lines": [
+        "Hero move! A grown-up can check if the tournament is real - and you lose nothing by asking."
+      ],
+      "file": "/audio/voice/1a14d5adda8708b6.mp3"
+    },
+    {
+      "key": "0d757f3e1cbdac1a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A stranger now knows exactly where you live... and the stickers never come. Classic Raccoon.",
+      "lines": [
+        "A stranger now knows exactly where you live... and the stickers never come. Classic Raccoon."
+      ],
+      "file": "/audio/voice/0d757f3e1cbdac1a.mp3"
+    },
+    {
+      "key": "72740e5ab9a35880",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Smart! A grown-up can spot a sticker trap from a mile away. Backup team activated!",
+      "lines": [
+        "Smart! A grown-up can spot a sticker trap from a mile away. Backup team activated!"
+      ],
+      "file": "/audio/voice/72740e5ab9a35880.mp3"
+    },
+    {
+      "key": "f722d2c8e5846594",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A certificate doesn't need your REAL name - now it's stored who-knows-where, forever.",
+      "lines": [
+        "A certificate doesn't need your REAL name - now it's stored who-knows-where, forever."
+      ],
+      "file": "/audio/voice/f722d2c8e5846594.mp3"
+    },
+    {
+      "key": "43722bd911e4c93e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Perfect! PixelPanda42's certificate looks just as good on the fridge - and gives nothing away.",
+      "lines": [
+        "Perfect! PixelPanda42's certificate looks just as good on the fridge - and gives nothing away."
+      ],
+      "file": "/audio/voice/43722bd911e4c93e.mp3"
+    },
+    {
+      "key": "d4bac798488c8ddf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which of these is PRIVATE?",
+      "lines": [
+        "Which of these is PRIVATE?"
+      ],
+      "file": "/audio/voice/d4bac798488c8ddf.mp3"
+    },
+    {
+      "key": "738371d512c0b16b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which of these 3 stays PRIVATE?",
+      "lines": [
+        "Which of these 3 stays PRIVATE?"
+      ],
+      "file": "/audio/voice/738371d512c0b16b.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "f32e92e81c73b388",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the SAFE username!",
+      "lines": [
+        "Quick - tap the SAFE username!"
+      ],
+      "file": "/audio/voice/f32e92e81c73b388.mp3"
+    },
+    {
+      "key": "3984dcff6d64e241",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If you're not sure, blank.",
+      "lines": [
+        "If you're not sure, blank."
+      ],
+      "file": "/audio/voice/3984dcff6d64e241.mp3"
+    },
+    {
       "key": "65752cb52f4a9061",
       "speaker": "adam",
       "voice": "Sarah",
@@ -3664,6 +6282,56 @@
         "[warmly] One thing left, graduate. The stickers - then the stage."
       ],
       "file": "/audio/voice/84c0177b75fa88c4.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "caafee4e3f1a916c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What was Buddy_Blaze's biggest red flag?",
+      "lines": [
+        "What was Buddy_Blaze's biggest red flag?"
+      ],
+      "file": "/audio/voice/caafee4e3f1a916c.mp3"
+    },
+    {
+      "key": "d4cd0b1378f87b4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - which one is ALWAYS a trap?",
+      "lines": [
+        "Quick - which one is ALWAYS a trap?"
+      ],
+      "file": "/audio/voice/d4cd0b1378f87b4c.mp3"
+    },
+    {
+      "key": "d89cc788cd72f641",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which post was safe to share tonight?",
+      "lines": [
+        "Which post was safe to share tonight?"
+      ],
+      "file": "/audio/voice/d89cc788cd72f641.mp3"
+    },
+    {
+      "key": "7fc478198b753ab5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The final Prove of the course: run the protocol!",
+      "lines": [
+        "The final Prove of the course: run the protocol!"
+      ],
+      "file": "/audio/voice/7fc478198b753ab5.mp3"
     },
     {
       "key": "7201c6aed0fe212c",
@@ -3952,6 +6620,56 @@
       "file": "/audio/voice/4b58206e6cef388f.mp3"
     },
     {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "d797d829e22bf48c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - which one is FAKE?",
+      "lines": [
+        "Quick - which one is FAKE?"
+      ],
+      "file": "/audio/voice/d797d829e22bf48c.mp3"
+    },
+    {
+      "key": "12fff9ae34e90d5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which of these is a RED FLAG?",
+      "lines": [
+        "Which of these is a RED FLAG?"
+      ],
+      "file": "/audio/voice/12fff9ae34e90d5a.mp3"
+    },
+    {
+      "key": "d96ec08b5ee5613d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Never meet. Never blank.",
+      "lines": [
+        "Never meet. Never blank."
+      ],
+      "file": "/audio/voice/d96ec08b5ee5613d.mp3"
+    },
+    {
+      "key": "df62f32051f4fb72",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A chat feels icky. Tap the hero steps IN ORDER:",
+      "lines": [
+        "A chat feels icky. Tap the hero steps IN ORDER:"
+      ],
+      "file": "/audio/voice/df62f32051f4fb72.mp3"
+    },
+    {
       "key": "b59d1a1b061c3137",
       "speaker": "adam",
       "voice": "Sarah",
@@ -4217,6 +6935,176 @@
         "[excited] Every scam went straight back to sender. Sticker time!"
       ],
       "file": "/audio/voice/b73cf36247e7e255.mp3"
+    },
+    {
+      "key": "7e0a234d69eac9f3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message flashes: 'You WON 10,000 V-Bucks! Click in 10 seconds or lose them FOREVER!'",
+      "lines": [
+        "A message flashes: 'You WON 10,000 V-Bucks! Click in 10 seconds or lose them FOREVER!'"
+      ],
+      "file": "/audio/voice/7e0a234d69eac9f3.mp3"
+    },
+    {
+      "key": "1498906418ff20d9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A text says: 'Your package is waiting! Enter a parent's card number to release it.'",
+      "lines": [
+        "A text says: 'Your package is waiting! Enter a parent's card number to release it.'"
+      ],
+      "file": "/audio/voice/1498906418ff20d9.mp3"
+    },
+    {
+      "key": "be4dfe480c2da5fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A pop-up screams: 'Your computer has 5 VIRUSES! Call this number NOW!'",
+      "lines": [
+        "A pop-up screams: 'Your computer has 5 VIRUSES! Call this number NOW!'"
+      ],
+      "file": "/audio/voice/be4dfe480c2da5fc.mp3"
+    },
+    {
+      "key": "0dfc412dcf8b9dc9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There were never any V-Bucks. Rushing you is HOW the trick works - and the click was all he wanted.",
+      "lines": [
+        "There were never any V-Bucks. Rushing you is HOW the trick works - and the click was all he wanted."
+      ],
+      "file": "/audio/voice/0dfc412dcf8b9dc9.mp3"
+    },
+    {
+      "key": "9081a263f9084452",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hero move! You paused, and the 'prize' vanished... because it never existed. No bite, no trick.",
+      "lines": [
+        "Hero move! You paused, and the 'prize' vanished... because it never existed. No bite, no trick."
+      ],
+      "file": "/audio/voice/9081a263f9084452.mp3"
+    },
+    {
+      "key": "7e685d8c6e8b3776",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is no package - and now a stranger has the card number. Card numbers NEVER go into surprise messages.",
+      "lines": [
+        "There is no package - and now a stranger has the card number. Card numbers NEVER go into surprise messages."
+      ],
+      "file": "/audio/voice/7e685d8c6e8b3776.mp3"
+    },
+    {
+      "key": "87e37661028a6d4a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Perfect! A grown-up checked: no package was ever coming. The 'stuck package' is one of the oldest tricks going.",
+      "lines": [
+        "Perfect! A grown-up checked: no package was ever coming. The 'stuck package' is one of the oldest tricks going."
+      ],
+      "file": "/audio/voice/87e37661028a6d4a.mp3"
+    },
+    {
+      "key": "bc8d163c27522d38",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The 'virus warning' WAS the trick - the people on that number are the tricksters themselves.",
+      "lines": [
+        "The 'virus warning' WAS the trick - the people on that number are the tricksters themselves."
+      ],
+      "file": "/audio/voice/bc8d163c27522d38.mp3"
+    },
+    {
+      "key": "7a8ff1c235141ce0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Exactly right. Scary pop-ups are ads in monster costumes. A grown-up can check the computer properly.",
+      "lines": [
+        "Exactly right. Scary pop-ups are ads in monster costumes. A grown-up can check the computer properly."
+      ],
+      "file": "/audio/voice/7a8ff1c235141ce0.mp3"
+    },
+    {
+      "key": "48a3c9a2c6265042",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A scam is a blank in a costume.",
+      "lines": [
+        "A scam is a blank in a costume."
+      ],
+      "file": "/audio/voice/48a3c9a2c6265042.mp3"
+    },
+    {
+      "key": "d919b86ff3b4484b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - which one is BAIT?",
+      "lines": [
+        "Quick - which one is BAIT?"
+      ],
+      "file": "/audio/voice/d919b86ff3b4484b.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "f01586934213ba5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which sender is the FAKE?",
+      "lines": [
+        "Which sender is the FAKE?"
+      ],
+      "file": "/audio/voice/f01586934213ba5a.mp3"
+    },
+    {
+      "key": "6d4be4f4062dad30",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A tricky message lands. Tap the hero steps IN ORDER:",
+      "lines": [
+        "A tricky message lands. Tap the hero steps IN ORDER:"
+      ],
+      "file": "/audio/voice/6d4be4f4062dad30.mp3"
+    },
+    {
+      "key": "ef7a239aa20f8615",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four messages say your game needs attention. One sender is wearing a disguise - bust it!",
+      "lines": [
+        "Four messages say your game needs attention. One sender is wearing a disguise - bust it!"
+      ],
+      "file": "/audio/voice/ef7a239aa20f8615.mp3"
+    },
+    {
+      "key": "74d0dc1592a386e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Someone says you won a spelling prize. Who's the imposter?",
+      "lines": [
+        "Someone says you won a spelling prize. Who's the imposter?"
+      ],
+      "file": "/audio/voice/74d0dc1592a386e6.mp3"
+    },
+    {
+      "key": "3ddcebc69950d23f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A gift card has arrived... apparently. Spot the disguise!",
+      "lines": [
+        "A gift card has arrived... apparently. Spot the disguise!"
+      ],
+      "file": "/audio/voice/3ddcebc69950d23f.mp3"
     },
     {
       "key": "765d97e4259c4b56",
@@ -4505,6 +7393,146 @@
       "file": "/audio/voice/b9a8fc5183cb945e.mp3"
     },
     {
+      "key": "b8c72a8620f172cf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Someone posts: 'Your drawing is the WORST in the class 😂' Your face goes hot. Your fingers hover over the keyboard...",
+      "lines": [
+        "Someone posts: 'Your drawing is the WORST in the class 😂' Your face goes hot. Your fingers hover over the keyboard..."
+      ],
+      "file": "/audio/voice/b8c72a8620f172cf.mp3"
+    },
+    {
+      "key": "8dec9ae6c474d32f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "After you win a race, a player types: 'You only won because you CHEAT.' Everyone in the lobby can see it.",
+      "lines": [
+        "After you win a race, a player types: 'You only won because you CHEAT.' Everyone in the lobby can see it."
+      ],
+      "file": "/audio/voice/8dec9ae6c474d32f.mp3"
+    },
+    {
+      "key": "c346f5d485e4fd9b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A mean message about your best friend appears. You're SO angry your hands are shaking.",
+      "lines": [
+        "A mean message about your best friend appears. You're SO angry your hands are shaking."
+      ],
+      "file": "/audio/voice/c346f5d485e4fd9b.mp3"
+    },
+    {
+      "key": "89fdf8bfcb6faecc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now there are TWO mean messages, the fire is bigger, and you feel worse - not better. Fighting back always feeds it.",
+      "lines": [
+        "Now there are TWO mean messages, the fire is bigger, and you feel worse - not better. Fighting back always feeds it."
+      ],
+      "file": "/audio/voice/89fdf8bfcb6faecc.mp3"
+    },
+    {
+      "key": "06669590b4c414c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The fire got NOTHING to burn. You stayed the calm one - and calm is what heroes look like.",
+      "lines": [
+        "The fire got NOTHING to burn. You stayed the calm one - and calm is what heroes look like."
+      ],
+      "file": "/audio/voice/06669590b4c414c8.mp3"
+    },
+    {
+      "key": "a91b28914bec6d5c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The lobby turns into a shouting match and the fun is gone for everyone. Wood, meet fire.",
+      "lines": [
+        "The lobby turns into a shouting match and the fun is gone for everyone. Wood, meet fire."
+      ],
+      "file": "/audio/voice/a91b28914bec6d5c.mp3"
+    },
+    {
+      "key": "fa9ca7c3605cdbbf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You won the race AND the moment. The sore loser's words just... fizzled out.",
+      "lines": [
+        "You won the race AND the moment. The sore loser's words just... fizzled out."
+      ],
+      "file": "/audio/voice/fa9ca7c3605cdbbf.mp3"
+    },
+    {
+      "key": "cb260deb1d06489c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now the chat's about YOUR angry message - and your friend still needs real help. Anger fed the fire again.",
+      "lines": [
+        "Now the chat's about YOUR angry message - and your friend still needs real help. Anger fed the fire again."
+      ],
+      "file": "/audio/voice/cb260deb1d06489c.mp3"
+    },
+    {
+      "key": "d73d72d6abb2ce88",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "THAT'S the move. Calm on the outside, hero on the inside - and real help is on the way for your friend.",
+      "lines": [
+        "THAT'S the move. Calm on the outside, hero on the inside - and real help is on the way for your friend."
+      ],
+      "file": "/audio/voice/d73d72d6abb2ce88.mp3"
+    },
+    {
+      "key": "84664cee72a824df",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one is BULLYING?",
+      "lines": [
+        "Which one is BULLYING?"
+      ],
+      "file": "/audio/voice/84664cee72a824df.mp3"
+    },
+    {
+      "key": "b843c66c11151ba1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If someone is mean to you, it's blank your fault.",
+      "lines": [
+        "If someone is mean to you, it's blank your fault."
+      ],
+      "file": "/audio/voice/b843c66c11151ba1.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "16c55b6bdc8234c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which of these HELPS?",
+      "lines": [
+        "Which of these HELPS?"
+      ],
+      "file": "/audio/voice/16c55b6bdc8234c5.mp3"
+    },
+    {
+      "key": "682829adf0033446",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mean words landed. Tap the hero steps IN ORDER:",
+      "lines": [
+        "Mean words landed. Tap the hero steps IN ORDER:"
+      ],
+      "file": "/audio/voice/682829adf0033446.mp3"
+    },
+    {
       "key": "09fa351a5d655638",
       "speaker": "adam",
       "voice": "Sarah",
@@ -4781,6 +7809,56 @@
       "file": "/audio/voice/175d491d20a08065.mp3"
     },
     {
+      "key": "2ce1c28264e6b400",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - which one LEAKS?",
+      "lines": [
+        "Quick - which one LEAKS?"
+      ],
+      "file": "/audio/voice/2ce1c28264e6b400.mp3"
+    },
+    {
+      "key": "fb88c990844d9878",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which setting keeps strangers OUT of your lobby?",
+      "lines": [
+        "Which setting keeps strangers OUT of your lobby?"
+      ],
+      "file": "/audio/voice/fb88c990844d9878.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "c36564c5c50509c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A player turns nasty. Tap the hero steps IN ORDER:",
+      "lines": [
+        "A player turns nasty. Tap the hero steps IN ORDER:"
+      ],
+      "file": "/audio/voice/c36564c5c50509c6.mp3"
+    },
+    {
+      "key": "18d0c42b9d4af370",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which download is SAFE?",
+      "lines": [
+        "Which download is SAFE?"
+      ],
+      "file": "/audio/voice/18d0c42b9d4af370.mp3"
+    },
+    {
       "key": "0274e1f635c136c1",
       "speaker": "adam",
       "voice": "Sarah",
@@ -5044,6 +8122,146 @@
         "[excited] The trap shop is OUT of business. Sticker time!"
       ],
       "file": "/audio/voice/9d320e28348ce869.mp3"
+    },
+    {
+      "key": "461928535cc6ffb2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mid-game, a prompt pops up: 'Unlock the GOLDEN BLASTER - $7.99. Card already saved - just tap YES!'",
+      "lines": [
+        "Mid-game, a prompt pops up: 'Unlock the GOLDEN BLASTER - $7.99. Card already saved - just tap YES!'"
+      ],
+      "file": "/audio/voice/461928535cc6ffb2.mp3"
+    },
+    {
+      "key": "2a392fabb683daee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The shop flashes: 'MEGA DEAL ends in 5 minutes! Ask later and you'll LOSE it!'",
+      "lines": [
+        "The shop flashes: 'MEGA DEAL ends in 5 minutes! Ask later and you'll LOSE it!'"
+      ],
+      "file": "/audio/voice/2a392fabb683daee.mp3"
+    },
+    {
+      "key": "6c222c87359b229a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your best friend says: 'Just buy the coins - my parents never notice small ones!'",
+      "lines": [
+        "Your best friend says: 'Just buy the coins - my parents never notice small ones!'"
+      ],
+      "file": "/audio/voice/6c222c87359b229a.mp3"
+    },
+    {
+      "key": "27e08bb40de0e7ee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That 'saved card' is a real person's real $7.99 - and they didn't get a say. Saved doesn't mean allowed.",
+      "lines": [
+        "That 'saved card' is a real person's real $7.99 - and they didn't get a say. Saved doesn't mean allowed."
+      ],
+      "file": "/audio/voice/27e08bb40de0e7ee.mp3"
+    },
+    {
+      "key": "2924e04c063ca98f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hero move! Maybe they say yes, maybe no - but it was THEIR call, and the shop stays fun.",
+      "lines": [
+        "Hero move! Maybe they say yes, maybe no - but it was THEIR call, and the shop stays fun."
+      ],
+      "file": "/audio/voice/2924e04c063ca98f.mp3"
+    },
+    {
+      "key": "f92b2837450427e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The countdown made the choice, not you. And guess what? That 'mega deal' was back the very next week.",
+      "lines": [
+        "The countdown made the choice, not you. And guess what? That 'mega deal' was back the very next week."
+      ],
+      "file": "/audio/voice/f92b2837450427e0.mp3"
+    },
+    {
+      "key": "0dfdfd43e4be1089",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Exactly. Rush + money = double-check. Any deal that can't wait for a grown-up isn't a deal - it's a trick.",
+      "lines": [
+        "Exactly. Rush + money = double-check. Any deal that can't wait for a grown-up isn't a deal - it's a trick."
+      ],
+      "file": "/audio/voice/0dfdfd43e4be1089.mp3"
+    },
+    {
+      "key": "191743924a662d46",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Small ones still count - they add up in secret until someone gets a shock. Not noticing isn't the same as saying yes.",
+      "lines": [
+        "Small ones still count - they add up in secret until someone gets a shock. Not noticing isn't the same as saying yes."
+      ],
+      "file": "/audio/voice/191743924a662d46.mp3"
+    },
+    {
+      "key": "f6fdd84a14900456",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Rule held, even with a friend pushing. THAT'S a Wallet Guard. Every buy gets an ask - tiny ones too.",
+      "lines": [
+        "Rule held, even with a friend pushing. THAT'S a Wallet Guard. Every buy gets an ask - tiny ones too."
+      ],
+      "file": "/audio/voice/f6fdd84a14900456.mp3"
+    },
+    {
+      "key": "6be06bf81bba4a0b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Game coins are really blank.",
+      "lines": [
+        "Game coins are really blank."
+      ],
+      "file": "/audio/voice/6be06bf81bba4a0b.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "25db57e2f284e711",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - which one is a PRESSURE trick?",
+      "lines": [
+        "Quick - which one is a PRESSURE trick?"
+      ],
+      "file": "/audio/voice/25db57e2f284e711.mp3"
+    },
+    {
+      "key": "2055904f2736a6b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who do you ask before ANY buy?",
+      "lines": [
+        "Who do you ask before ANY buy?"
+      ],
+      "file": "/audio/voice/2055904f2736a6b1.mp3"
+    },
+    {
+      "key": "4774e76371850cac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one is the REAL way to get coins?",
+      "lines": [
+        "Which one is the REAL way to get coins?"
+      ],
+      "file": "/audio/voice/4774e76371850cac.mp3"
     },
     {
       "key": "ff45ceea45ec3ff5",
@@ -5331,6 +8549,146 @@
       "file": "/audio/voice/05f3cb50d7195587.mp3"
     },
     {
+      "key": "d16990dc3f7d5bea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You catch your best friend mid-sneeze - the FUNNIEST photo ever taken. Your finger hovers over 'post'...",
+      "lines": [
+        "You catch your best friend mid-sneeze - the FUNNIEST photo ever taken. Your finger hovers over 'post'..."
+      ],
+      "file": "/audio/voice/d16990dc3f7d5bea.mp3"
+    },
+    {
+      "key": "91835a37dcc18102",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your little brother faceplants off the sofa mid-dance. You filmed it. It would get SO many laughs in the class chat.",
+      "lines": [
+        "Your little brother faceplants off the sofa mid-dance. You filmed it. It would get SO many laughs in the class chat."
+      ],
+      "file": "/audio/voice/91835a37dcc18102.mp3"
+    },
+    {
+      "key": "00589b03a34a6a9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A friend sends you a silly just-for-you selfie. It's gold. The group chat would LOVE it.",
+      "lines": [
+        "A friend sends you a silly just-for-you selfie. It's gold. The group chat would LOVE it."
+      ],
+      "file": "/audio/voice/00589b03a34a6a9a.mp3"
+    },
+    {
+      "key": "7f75d72684bd2c9e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "She didn't laugh. Everyone else did. 'Probably fine' isn't a yes - and now the pigeons have flown with her face.",
+      "lines": [
+        "She didn't laugh. Everyone else did. 'Probably fine' isn't a yes - and now the pigeons have flown with her face."
+      ],
+      "file": "/audio/voice/7f75d72684bd2c9e.mp3"
+    },
+    {
+      "key": "d98ec7ca851bde22",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hero move! She cracks up - and picks her superhero pose for the photo you post instead. Asking first kept it funny for BOTH of you.",
+      "lines": [
+        "Hero move! She cracks up - and picks her superhero pose for the photo you post instead. Asking first kept it funny for BOTH of you."
+      ],
+      "file": "/audio/voice/d98ec7ca851bde22.mp3"
+    },
+    {
+      "key": "15aa6e27e659b8d4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Little brothers have faces too! He felt laughed AT by kids he's never met. Family counts - the ask comes first, every time.",
+      "lines": [
+        "Little brothers have faces too! He felt laughed AT by kids he's never met. Family counts - the ask comes first, every time."
+      ],
+      "file": "/audio/voice/15aa6e27e659b8d4.mp3"
+    },
+    {
+      "key": "12165896f6eaca0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Exactly right. He said 'nooo!' - so it stayed a family giggle instead of becoming the whole class's joke about him.",
+      "lines": [
+        "Exactly right. He said 'nooo!' - so it stayed a family giggle instead of becoming the whole class's joke about him."
+      ],
+      "file": "/audio/voice/12165896f6eaca0c.mp3"
+    },
+    {
+      "key": "d7272b5969c3c8a3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sent TO you isn't yours to send ON. She trusted you with it - forwarding it breaks the trust and frees the pigeons.",
+      "lines": [
+        "Sent TO you isn't yours to send ON. She trusted you with it - forwarding it breaks the trust and frees the pigeons."
+      ],
+      "file": "/audio/voice/d7272b5969c3c8a3.mp3"
+    },
+    {
+      "key": "698f6d4079434646",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's a real friend. A just-for-you photo stays just-for-you - HER face, HER call, always.",
+      "lines": [
+        "That's a real friend. A just-for-you photo stays just-for-you - HER face, HER call, always."
+      ],
+      "file": "/audio/voice/698f6d4079434646.mp3"
+    },
+    {
+      "key": "071fb88a8e3dca39",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Once a photo is shared, it's blank.",
+      "lines": [
+        "Once a photo is shared, it's blank."
+      ],
+      "file": "/audio/voice/071fb88a8e3dca39.mp3"
+    },
+    {
+      "key": "b31e35ab0ced4b02",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Before posting a photo of your friend, what comes FIRST?",
+      "lines": [
+        "Before posting a photo of your friend, what comes FIRST?"
+      ],
+      "file": "/audio/voice/b31e35ab0ced4b02.mp3"
+    },
+    {
+      "key": "79cca29e3c08ee01",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - which clue tells strangers where you LIVE?",
+      "lines": [
+        "Quick - which clue tells strangers where you LIVE?"
+      ],
+      "file": "/audio/voice/79cca29e3c08ee01.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "5715f221c3a4c677",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A photo's ready to fly. Tap the hero ritual IN ORDER:",
+      "lines": [
+        "A photo's ready to fly. Tap the hero ritual IN ORDER:"
+      ],
+      "file": "/audio/voice/5715f221c3a4c677.mp3"
+    },
+    {
       "key": "592262b18d344d9b",
       "speaker": "adam",
       "voice": "Sarah",
@@ -5614,6 +8972,176 @@
         "[excited] Sticker time!"
       ],
       "file": "/audio/voice/848c14df9e5bbbac.mp3"
+    },
+    {
+      "key": "e0e904afa7e08efe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You found the PERFECT drawing app! The INSTALL button glows under your finger...",
+      "lines": [
+        "You found the PERFECT drawing app! The INSTALL button glows under your finger..."
+      ],
+      "file": "/audio/voice/e0e904afa7e08efe.mp3"
+    },
+    {
+      "key": "e455286f58137378",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend scoffs: 'You ASK before installing? Just do it yourself - asking is for babies!'",
+      "lines": [
+        "Your friend scoffs: 'You ASK before installing? Just do it yourself - asking is for babies!'"
+      ],
+      "file": "/audio/voice/e455286f58137378.mp3"
+    },
+    {
+      "key": "efd904fae9184f72",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A pop-up flashes: 'Your game needs an UPDATE! Tap here NOW to update!' It's not from the app store...",
+      "lines": [
+        "A pop-up flashes: 'Your game needs an UPDATE! Tap here NOW to update!' It's not from the app store..."
+      ],
+      "file": "/audio/voice/efd904fae9184f72.mp3"
+    },
+    {
+      "key": "3b543fab100ba95e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It was a copycat - ads everywhere, and it wanted your photos. A ten-second check with a grown-up would have caught the whiskers.",
+      "lines": [
+        "It was a copycat - ads everywhere, and it wanted your photos. A ten-second check with a grown-up would have caught the whiskers."
+      ],
+      "file": "/audio/voice/3b543fab100ba95e.mp3"
+    },
+    {
+      "key": "d5629b3ee55fe53b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Handshake! She spotted the copycat in ten seconds and found the REAL one - clean, safe, just as fun. That's teamwork.",
+      "lines": [
+        "Handshake! She spotted the copycat in ten seconds and found the REAL one - clean, safe, just as fun. That's teamwork."
+      ],
+      "file": "/audio/voice/d5629b3ee55fe53b.mp3"
+    },
+    {
+      "key": "cab1a4d63149a613",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You installed it alone - and missed the coin shop hiding inside. A week later your coins were gone. Asking isn't babyish - it's how you keep your stuff.",
+      "lines": [
+        "You installed it alone - and missed the coin shop hiding inside. A week later your coins were gone. Asking isn't babyish - it's how you keep your stuff."
+      ],
+      "file": "/audio/voice/cab1a4d63149a613.mp3"
+    },
+    {
+      "key": "047fc7c5c604e5a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Exactly. Even grown-ups double-check with each other. Four eyes beat two - every single time.",
+      "lines": [
+        "Exactly. Even grown-ups double-check with each other. Four eyes beat two - every single time."
+      ],
+      "file": "/audio/voice/047fc7c5c604e5a6.mp3"
+    },
+    {
+      "key": "1ec918980406249e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That wasn't an update - it was a fake in an update costume. Real updates only ever come from inside the real store.",
+      "lines": [
+        "That wasn't an update - it was a fake in an update costume. Real updates only ever come from inside the real store."
+      ],
+      "file": "/audio/voice/1ec918980406249e.mp3"
+    },
+    {
+      "key": "b2ec100051b7c80c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sharp! Real updates come from the app store itself, never from shouty pop-ups. Closed, checked, safe.",
+      "lines": [
+        "Sharp! Real updates come from the app store itself, never from shouty pop-ups. Closed, checked, safe."
+      ],
+      "file": "/audio/voice/b2ec100051b7c80c.mp3"
+    },
+    {
+      "key": "9d572bd25c7f5af8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where's the ONE safe place to get a new app?",
+      "lines": [
+        "Where's the ONE safe place to get a new app?"
+      ],
+      "file": "/audio/voice/9d572bd25c7f5af8.mp3"
+    },
+    {
+      "key": "e82017494ef20cfa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick - tap the COPYCAT!",
+      "lines": [
+        "Quick - tap the COPYCAT!"
+      ],
+      "file": "/audio/voice/e82017494ef20cfa.mp3"
+    },
+    {
+      "key": "7f9176e7dd690d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+    },
+    {
+      "key": "84b16805eee6a1a4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one is TRULY free?",
+      "lines": [
+        "Which one is TRULY free?"
+      ],
+      "file": "/audio/voice/84b16805eee6a1a4.mp3"
+    },
+    {
+      "key": "0ad100f255552671",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Install blank a grown-up.",
+      "lines": [
+        "Install blank a grown-up."
+      ],
+      "file": "/audio/voice/0ad100f255552671.mp3"
+    },
+    {
+      "key": "cc9b20ee8a1c5e3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You search 'Blast Birds'. Four results appear - which one is the copycat?",
+      "lines": [
+        "You search 'Blast Birds'. Four results appear - which one is the copycat?"
+      ],
+      "file": "/audio/voice/cc9b20ee8a1c5e3a.mp3"
+    },
+    {
+      "key": "238da1ad991c2b31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now 'Pixel Pets'. The costume is better this time - count the whiskers!",
+      "lines": [
+        "Now 'Pixel Pets'. The costume is better this time - count the whiskers!"
+      ],
+      "file": "/audio/voice/238da1ad991c2b31.mp3"
+    },
+    {
+      "key": "5b908d361b8c995b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last one: 'Robo Racers'. This copycat hid a trick INSIDE its name...",
+      "lines": [
+        "Last one: 'Robo Racers'. This copycat hid a trick INSIDE its name..."
+      ],
+      "file": "/audio/voice/5b908d361b8c995b.mp3"
     }
   ]
 }

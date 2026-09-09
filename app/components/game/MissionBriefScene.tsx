@@ -901,13 +901,19 @@ function MissionCard({
   const p = useBriefPalette();
   const flipControls = useAnimationControls();
   const [showObjective, setShowObjective] = useState(flipped);
-  const didMount = useRef(false);
+  // Run the flip ONLY when `flipped` actually changes. A plain didMount ref
+  // (skip-the-first-run) breaks under React strict-mode's mount→unmount→remount:
+  // the ref persists `true` across the remount, so the effect fires on the
+  // strict re-run and calls flipControls.start() before the <motion.div> below
+  // has re-subscribed → the "controls.start() should only be called after a
+  // component has mounted" invariant. Comparing against the previously-applied
+  // value skips the initial mount AND the strict remount (flipped is unchanged
+  // in both), so start() only ever fires on a real user flip — long after mount,
+  // when the motion element is definitely subscribed.
+  const prevFlippedRef = useRef(flipped);
   useEffect(() => {
-    if (!didMount.current) {
-      didMount.current = true;
-      setShowObjective(flipped);
-      return;
-    }
+    if (prevFlippedRef.current === flipped) return;
+    prevFlippedRef.current = flipped;
     let cancelled = false;
     void (async () => {
       await flipControls.start({ scaleX: 0, transition: { duration: 0.16, ease: "easeIn" } });

@@ -38,6 +38,7 @@ import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 /* ─────────────── Intro beat ─────────────── */
 
@@ -72,6 +73,15 @@ export interface ExerciseIntroBeatProps {
   logo?: string;
   /** Warm welcoming eyebrow shown above the title (e.g. "Welcome, Cyber Hero!"). */
   welcome?: string;
+  /**
+   * Optional "Spot the Danger" preamble folded into the intro: the Hacker
+   * Raccoon reveals the trick he'll try (his taunt), shown ABOVE the warm coach
+   * mission so the whole get-ready is ONE screen with ONE "I'm ready" gate — no
+   * separate threat screen. `raccoonLine` is his boast (shown as text, in his
+   * voice-bubble). When present the "Welcome" pill is dropped so there's a
+   * single eyebrow ("Spot the Danger").
+   */
+  threat?: { raccoonLine: string };
 }
 
 export default function ExerciseIntroBeat({
@@ -84,45 +94,38 @@ export default function ExerciseIntroBeat({
   narration,
   character,
   accent: accentOverride,
+  threat,
 }: ExerciseIntroBeatProps) {
   const intensity = useMotionIntensity();
   const audio = useGameAudio();
   const paced = !!narration && narration.lines.length > 0;
   const speaker = character ?? narration?.speaker ?? "adam";
-  // Themed accent when provided (signature intros pass the week colour);
-  // otherwise the classic speaker cyan/pink.
-  const accent = accentOverride ?? (speaker === "adam" ? "#00e5ff" : "#ff5fb3");
-  // Hold the start button back until the child has had time to hear the
-  // narration. Non-paced intros are ready immediately.
-  // Seconds to hold the start button while the narration plays — shown as a
-  // visible countdown so the child clearly knows WHEN they can move on
-  // (≈ the spoken length; Sarah runs slow at speed 0.85).
-  const gateSecs = paced
-    ? Math.min(Math.round((narration?.lines.length ?? 1) * 1.1 + 1), 5)
-    : 0;
-  const [secsLeft, setSecsLeft] = useState(gateSecs);
-  const canStart = !paced || secsLeft <= 0;
+  // Themed accent: an explicit override wins, else the WEEK theme accent (so
+  // every game intro on a themed week is one colour — no off-theme cyan/pink),
+  // else the classic speaker cyan/pink for un-themed weeks.
+  const themeAccent = useLessonTheme()?.accent;
+  const accent = accentOverride ?? themeAccent ?? (speaker === "adam" ? "#00e5ff" : "#ff5fb3");
+  const themed = !!(accentOverride ?? themeAccent);
+  // NO-SKIP gate (owner 2026-09-07): the start button stays hidden until the
+  // narration FINISHES, so the child can't skip the teaching voice. The click-
+  // guard blocks the screen while it speaks; when it ends, the guard lifts and
+  // the button appears. InfoNarration fires onDone on end / block / error / its
+  // own safety-release, so this can't stick. Non-paced intros are ready at once.
+  const [narrationDone, setNarrationDone] = useState(false);
+  const canStart = !paced || narrationDone;
 
   useEffect(() => {
     audio.transition();
   }, [audio]);
 
-  // Paced countdown: ONE stable interval (deps [paced] only) so frequent
-  // re-renders from the game underneath (e.g. Memory Match's timer) can't keep
-  // resetting a per-tick timeout and freeze the counter. Clears itself at 0.
+  // Final belt-and-suspenders: release the gate after a generous length-based
+  // max even if onDone never fires, so the button is never permanently stuck.
   useEffect(() => {
     if (!paced) return;
-    const id = window.setInterval(() => {
-      setSecsLeft((s) => {
-        if (s <= 1) {
-          window.clearInterval(id);
-          return 0;
-        }
-        return s - 1;
-      });
-    }, 1000);
-    return () => window.clearInterval(id);
-  }, [paced]);
+    const maxMs = Math.min(60000, 8000 + (narration?.lines.length ?? 1) * 4500);
+    const id = window.setTimeout(() => setNarrationDone(true), maxMs);
+    return () => window.clearTimeout(id);
+  }, [paced, narration?.lines.length]);
 
   // Non-paced auto-dismiss (legacy autoMs callers).
   useEffect(() => {
@@ -137,9 +140,12 @@ export default function ExerciseIntroBeat({
       aria-modal="true"
       aria-labelledby="ex-intro-title"
       style={{
-        position: "absolute",
+        // A merged (threat) intro carries more content than the small game
+        // frame is tall, so it covers the whole viewport (a real modal) to get
+        // the room; plain intros stay an in-frame overlay as before.
+        position: threat ? "fixed" : "absolute",
         inset: 0,
-        zIndex: 25,
+        zIndex: threat ? 90 : 25,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -157,15 +163,14 @@ export default function ExerciseIntroBeat({
       <div
         style={{
           width: "100%",
-          maxWidth: paced ? 470 : 420,
+          maxWidth: threat ? 560 : paced ? 470 : 420,
           margin: "auto 0",
-          // Never taller than the exercise frame: the card flexes and the
-          // narration list scrolls INSIDE it, so the "I'm ready" button is
-          // always on screen (it used to clip off short frames, e.g. W4 s04).
+          // Card grows to fit ALL its content (danger + title + the FULL
+          // narration + button) so nothing is squeezed into a scroll sliver.
+          // The overlay itself (inset:0, overflowY:auto) scrolls if the whole
+          // card is ever taller than the frame, so "I'm ready" stays reachable.
           display: "flex",
           flexDirection: "column",
-          maxHeight: "100%",
-          minHeight: 0,
           textAlign: "center",
           color: "#fff7e6",
           background: paced
@@ -173,12 +178,72 @@ export default function ExerciseIntroBeat({
             : "transparent",
           border: paced ? `1px solid ${accent}55` : "none",
           borderRadius: paced ? 22 : 0,
-          padding: paced ? "26px 22px 24px" : 0,
+          padding: threat ? "18px 22px 18px" : paced ? "26px 22px 24px" : 0,
           boxShadow: paced
             ? "0 24px 60px -28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)"
             : "none",
         }}
       >
+        {/* Spot-the-Danger preamble: the Raccoon reveals his trick, folded in
+            above the warm mission so the get-ready is ONE screen (no separate
+            threat scene). Leads the card with its own eyebrow. */}
+        {threat && (
+          <div style={{ flexShrink: 0, marginBottom: 12 }}>
+            <div
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: "0.24em",
+                textTransform: "uppercase",
+                color: accent,
+                marginBottom: 8,
+              }}
+            >
+              ◇ Spot the Danger ◇
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/game/characters/raccoon-taunt.png"
+                alt="The Hacker Raccoon"
+                style={{
+                  height: 76,
+                  flexShrink: 0,
+                  objectFit: "contain",
+                  filter: `drop-shadow(0 10px 20px ${accent}66)`,
+                  animation: intensity === 0 ? undefined : "exThreatBob 2.6s ease-in-out infinite",
+                }}
+              />
+              <div
+                style={{
+                  maxWidth: 320,
+                  padding: "13px 18px",
+                  borderRadius: 16,
+                  background: `${accent}1c`,
+                  border: `1px solid ${accent}70`,
+                  color: "#f0e4ff",
+                  fontStyle: "italic",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  lineHeight: 1.4,
+                  textAlign: "left",
+                }}
+              >
+                &ldquo;{threat.raccoonLine}&rdquo;
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* R10: no character/logo emblem on paced (narrated) intros — the
             narrator isn't a character, so the intro leads with the title. The
             legacy non-paced variant keeps its small object icon. */}
@@ -196,7 +261,7 @@ export default function ExerciseIntroBeat({
             <PixIcon emoji={icon} size={64} />
           </div>
         )}
-        {welcome && (
+        {!threat && welcome && (
           <div
             style={{
               display: "inline-block",
@@ -221,7 +286,7 @@ export default function ExerciseIntroBeat({
             margin: "0 0 8px",
             fontSize: 26,
             fontWeight: 900,
-            background: accentOverride
+            background: themed
               ? `linear-gradient(135deg, ${accent}, ${accent}aa)`
               : "linear-gradient(135deg, #00e5ff, #7c5cff)",
             WebkitBackgroundClip: "text",
@@ -233,8 +298,16 @@ export default function ExerciseIntroBeat({
         </h2>
 
         {paced ? (
-          <div style={{ margin: "10px 0 16px", textAlign: "left", overflowY: "auto", minHeight: 0, flex: "0 1 auto" }}>
-            <InfoNarration lines={narration!.lines} speaker={speaker} accent={accentOverride} />
+          <div style={{ margin: "10px 0 16px", textAlign: "left" }}>
+            {/* The guard blocks the screen while Sarah speaks (no skip); when
+                she finishes, onDone lifts the gate so "I'm ready" appears. One
+                "Listening…" indicator (the old countdown pill is gone). */}
+            <InfoNarration
+              lines={narration!.lines}
+              speaker={speaker}
+              accent={accent}
+              onDone={() => setNarrationDone(true)}
+            />
           </div>
         ) : (
           subtitle && (
@@ -257,22 +330,7 @@ export default function ExerciseIntroBeat({
               {paced ? "I'm ready →" : "Let's go →"}
             </GameButton>
           </div>
-        ) : (
-          <div
-            style={{
-              padding: "13px 0 4px",
-              color: accent,
-              fontSize: 13,
-              fontWeight: 800,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              opacity: 0.9,
-              animation: intensity === 0 ? undefined : "exIntroListen 1.6s ease-in-out infinite",
-            }}
-          >
-            🔊 Listen first… {secsLeft}
-          </div>
-        )}
+        ) : null}
       </div>
       <style>{`
         @keyframes exIntroFade {
@@ -287,6 +345,10 @@ export default function ExerciseIntroBeat({
         @keyframes exIntroListen {
           0%, 100% { opacity: 0.5; }
           50% { opacity: 1; }
+        }
+        @keyframes exThreatBob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
         }
       `}</style>
     </div>
@@ -307,6 +369,12 @@ export interface ExerciseCompleteBeatProps {
   onRetry?: () => void;
   /** Warm encouraging line under the title (defaults to a generic one). */
   encouragement?: string;
+  /**
+   * Optional spoken Sarah acknowledgment, read aloud on completion:
+   * "Well done! Now you can X — carry it into the real world. This is what you
+   * learned." The Learn Loop's "You're protected" payoff, on the game itself.
+   */
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
 }
 
 export function ExerciseCompleteBeat({
@@ -316,6 +384,7 @@ export function ExerciseCompleteBeat({
   onContinue,
   onRetry,
   encouragement = "You're getting stronger, Cyber Hero!",
+  narration,
 }: ExerciseCompleteBeatProps) {
   const intensity = useMotionIntensity();
   const audio = useGameAudio();
@@ -337,8 +406,10 @@ export function ExerciseCompleteBeat({
         inset: 0,
         zIndex: 30,
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        // margin:auto on the card centres it when it fits and top-aligns +
+        // scrolls when the acknowledgment makes it taller than the frame, so
+        // the Continue button is NEVER clipped off the bottom.
+        overflowY: "auto",
         padding: 20,
         background: "rgba(8, 10, 22, 0.85)",
         backdropFilter: "blur(10px)",
@@ -348,6 +419,7 @@ export function ExerciseCompleteBeat({
     >
       <div
         style={{
+          margin: "auto",
           maxWidth: 420,
           textAlign: "center",
           color: "#fff7e6",
@@ -404,6 +476,14 @@ export function ExerciseCompleteBeat({
               <li key={i}>{line}</li>
             ))}
           </ul>
+        )}
+        {/* Spoken acknowledgment — audio-only (visually hidden) so it never
+            pushes the Continue button off-screen; the title + stat lines carry
+            the visible "well done", and Sarah reads the full payoff aloud. */}
+        {narration && narration.lines.length > 0 && (
+          <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+            <InfoNarration lines={narration.lines} speaker={narration.speaker} accent="#7eff97" />
+          </div>
         )}
         <div
           style={{

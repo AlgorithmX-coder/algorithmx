@@ -24,6 +24,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useComfortMode } from "@/app/lib/comfortMode";
 import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 // The narration is played via a raw `new Audio()`, which defaults to 1.0
 // (FULL volume) - that was the loud blast when a lesson screen opened, so
@@ -54,10 +55,14 @@ export interface InfoNarrationProps {
   /**
    * Voice selection: which character's recorded voice to use. Also
    * drives the synth-voice pitch when falling back to browser TTS.
+   * "narrator" = the storyteller voice (a different voice from Sarah).
    */
-  speaker?: "adam" | "layla";
+  speaker?: "adam" | "layla" | "narrator";
   /** Auto-play on mount. Defaults to true; user toggle overrides. */
   autoPlay?: boolean;
+  /** Fires once when playback ends (or fails/blocks) — used to chain a
+   *  follow-up line, e.g. the narrator finishes, then Sarah asks the question. */
+  onDone?: () => void;
   /**
    * Accent colour (hex) for the box chrome — the ♪ ring, border, label and
    * "Read aloud" button. Lets a themed screen (e.g. a signature game with its
@@ -66,11 +71,28 @@ export interface InfoNarrationProps {
    * cyan look (byte-identical to before).
    */
   accent?: string;
+  /**
+   * Render the full-screen "Listening… tap to skip" click-guard while speaking.
+   * Default true. Set false when the HOST already gates the screen (e.g. the
+   * exercise intro has its own "Listen first…" countdown + a modal overlay that
+   * sits ABOVE the guard) — otherwise two "listen" indicators stack and fight.
+   */
+  guard?: boolean;
+  /**
+   * When true, NEVER fall back to the robotic browser TTS voice: if this block
+   * has no pre-recorded clip in the manifest, stay SILENT (captions mode) and
+   * fire onDone immediately so any host gate releases. Use this for narration
+   * that is only recorded for SOME weeks (e.g. the boss questions and the
+   * wrong-answer panels, recorded for Week 15 but not yet the others) so an
+   * un-recorded week is silent instead of robot-voiced. Default false (the
+   * classic behaviour: recorded → TTS → captions).
+   */
+  recordedOnly?: boolean;
 }
 
 interface ManifestEntry {
   key: string;
-  speaker: "adam" | "layla";
+  speaker: "adam" | "layla" | "narrator";
   voice: string;
   /** Full joined block text - the key used at lookup time. */
   text: string;
@@ -93,6 +115,12 @@ const MANIFEST_URL = "/audio/voice/manifest.json";
 // straight to TTS.
 let manifestCache: Manifest | null = null;
 let manifestPromise: Promise<Manifest | null> | null = null;
+
+// Only ONE narration plays at a time across the whole app. When any instance
+// starts, it stops whichever OTHER instance is still sounding — this kills a
+// previous screen's clip bleeding into the next one (and any accidental double
+// of two mounted narrations). Holds the currently-playing instance's stop().
+let activeNarrationStop: (() => void) | null = null;
 async function loadManifest(): Promise<Manifest | null> {
   if (manifestCache) return manifestCache;
   if (manifestPromise) return manifestPromise;
@@ -131,7 +159,7 @@ function buildBlockKey(lines: string[]): string {
 
 function findBlockEntry(
   manifest: Manifest | null,
-  speaker: "adam" | "layla",
+  speaker: "adam" | "layla" | "narrator",
   lines: string[],
 ): ManifestEntry | null {
   if (!manifest) return null;
@@ -147,10 +175,26 @@ export default function InfoNarration({
   speaker = "adam",
   autoPlay = true,
   accent,
+  onDone,
+  guard = true,
+  recordedOnly = false,
 }: InfoNarrationProps) {
-  // Themed accent (hex). Defaults to the classic cyan so un-themed callers are
-  // byte-identical. `${A}NN` appends an 8-digit-hex alpha channel.
-  const A = accent ?? "#7df0ff";
+  // Themed accent (hex). An explicit `accent` prop wins; otherwise the week
+  // theme's accent (so every narration box on a themed week is one colour);
+  // otherwise the classic cyan (un-themed weeks stay byte-identical).
+  // `${A}NN` appends an 8-digit-hex alpha channel.
+  const themeAccent = useLessonTheme()?.accent;
+  const A = accent ?? themeAccent ?? "#7df0ff";
+  // Fire onDone exactly once (natural end, error, or blocked) so a caller can
+  // chain a follow-up line without it double-firing.
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+  const doneFiredRef = useRef(false);
+  const fireDone = useCallback(() => {
+    if (doneFiredRef.current) return;
+    doneFiredRef.current = true;
+    onDoneRef.current?.();
+  }, []);
   const comfort = useComfortMode();
   const [speaking, setSpeaking] = useState<boolean>(false);
   const [activeLine, setActiveLine] = useState<number>(-1);
@@ -184,18 +228,31 @@ export default function InfoNarration({
       if (entry) {
         setBlockFile(entry.file);
         setMode("recorded");
-      } else if (ttsSupported) {
+      } else if (ttsSupported && !recordedOnly) {
         setMode("tts");
       } else {
+        // No recording — either TTS is unavailable, or the caller demanded
+        // recordedOnly (never robot-voice). Either way: silent captions.
         setMode("captions");
       }
     });
     return () => {
       cancelled = true;
     };
-  }, [lines, speaker, ttsSupported]);
+  }, [lines, speaker, ttsSupported, recordedOnly]);
+
+  // Nothing to play (captions = no recording and TTS suppressed/unavailable):
+  // fire onDone once so a host gate waiting on the voice (e.g. the boss
+  // unlocking its answer buttons) releases instead of hanging on audio that
+  // will never sound. Recorded/TTS modes fire onDone from playback end instead.
+  useEffect(() => {
+    if (mode === "captions") fireDone();
+  }, [mode, fireDone]);
 
   /* ────── Stop both pipelines cleanly ────── */
+  // Per-instance stable handle to this instance's stop(), used for the global
+  // single-narration registry (compared by identity).
+  const stopRef = useRef<() => void>(() => {});
   const stop = useCallback(() => {
     playRunRef.current++; // invalidate any in-flight sequence
     // Recorded
@@ -216,14 +273,21 @@ export default function InfoNarration({
         /* noop */
       }
     }
+    // Release the global single-narration slot if we held it.
+    if (activeNarrationStop === stopRef.current) activeNarrationStop = null;
     setSpeaking(false);
     setActiveLine(-1);
   }, [ttsSupported]);
+  stopRef.current = stop;
 
   /* ────── Recorded playback: one continuous block-level MP3 ────── */
   const playRecorded = useCallback(
     (file: string) => {
       stop();
+      // Global single-narration: stop any OTHER instance still sounding, then
+      // claim the slot (so a previous screen's clip can't overlap this one).
+      if (activeNarrationStop && activeNarrationStop !== stopRef.current) activeNarrationStop();
+      activeNarrationStop = stopRef.current;
       const runId = ++playRunRef.current;
       setSpeaking(true);
       // No per-line active highlight under recorded mode - the whole
@@ -242,6 +306,7 @@ export default function InfoNarration({
           if (runId !== playRunRef.current) return;
           setSpeaking(false);
           audioElRef.current = null;
+          fireDone();
         },
         { once: true },
       );
@@ -251,6 +316,7 @@ export default function InfoNarration({
           if (runId !== playRunRef.current) return;
           setSpeaking(false);
           audioElRef.current = null;
+          fireDone();
         },
         { once: true },
       );
@@ -261,6 +327,7 @@ export default function InfoNarration({
         if (runId !== playRunRef.current) return;
         setSpeaking(false);
         audioElRef.current = null;
+        fireDone();
       });
     },
     [stop],
@@ -270,11 +337,13 @@ export default function InfoNarration({
   const playTts = useCallback(() => {
     if (!ttsSupported || lines.length === 0) return;
     stop();
+    if (activeNarrationStop && activeNarrationStop !== stopRef.current) activeNarrationStop();
+    activeNarrationStop = stopRef.current;
     const runId = ++playRunRef.current;
     const text = lines.join(". ");
     const utter = new SpeechSynthesisUtterance(text);
     utter.rate = comfort.enabled ? 0.9 : 1.0;
-    utter.pitch = speaker === "layla" ? 1.15 : 0.95;
+    utter.pitch = speaker === "layla" ? 1.15 : speaker === "narrator" ? 0.85 : 0.95;
     utter.volume = 1;
     utter.onstart = () => {
       if (runId !== playRunRef.current) return;
@@ -285,11 +354,13 @@ export default function InfoNarration({
       if (runId !== playRunRef.current) return;
       setSpeaking(false);
       setActiveLine(-1);
+      fireDone();
     };
     utter.onerror = () => {
       if (runId !== playRunRef.current) return;
       setSpeaking(false);
       setActiveLine(-1);
+      fireDone();
     };
     utteranceRef.current = utter;
     try {
@@ -309,6 +380,8 @@ export default function InfoNarration({
 
   // Auto-play on mount, ONCE mode has resolved. Slight delay so the
   // screen transition can settle before audio fires.
+  const speakRef = useRef(speak);
+  speakRef.current = speak;
   const autoFiredRef = useRef(false);
   useEffect(() => {
     // Narration autoplays everywhere by default — the master mute (the HUD
@@ -318,9 +391,36 @@ export default function InfoNarration({
     if (mode === "loading" || mode === "captions") return;
     if (autoFiredRef.current) return;
     autoFiredRef.current = true;
-    const id = window.setTimeout(speak, 400);
+    // Fire through a ref, with deps [autoPlay, mode] only (NOT `speak`). If a
+    // parent re-renders rapidly while passing an inline `lines` array (e.g. the
+    // Choose-Your-Path typewriter re-rendering ~30x/s), `speak`'s identity
+    // churns; had it been a dep, each re-run's cleanup would clear this 400ms
+    // timer before it fired and the narration would never play.
+    const id = window.setTimeout(() => speakRef.current(), 400);
     return () => window.clearTimeout(id);
-  }, [autoPlay, mode, speak]);
+  }, [autoPlay, mode]);
+
+  // Safety release: the click-guard blocks the screen while `speaking`. Some
+  // browsers' Web-Speech engine never fires `onend` (a known flake), which
+  // would leave `speaking` stuck true and the whole lesson frozen ("can't
+  // click anything"). Force playback to end after a generous, length-based
+  // max so a child is never trapped behind the guard.
+  useEffect(() => {
+    if (!speaking) return;
+    // Recorded MP3s end reliably via the `ended` event, so their backstop is
+    // very generous (never cut a long clip short — that was clipping the last
+    // bullet of long narrations). Only the flaky TTS `onend` needs the tight
+    // length-based estimate.
+    const maxMs =
+      mode === "recorded"
+        ? 120000
+        : Math.min(60000, 6000 + lines.length * 4500);
+    // stop() lifts the guard; fireDone() also releases any host gate tied to
+    // onDone (e.g. the intro's "button appears when the voice ends"), so a
+    // flaky engine that never fires `ended` can't leave the child stuck.
+    const id = window.setTimeout(() => { stop(); fireDone(); }, maxMs);
+    return () => window.clearTimeout(id);
+  }, [speaking, lines.length, stop, fireDone, mode]);
 
   // Stop when unmounting / navigating away.
   useEffect(() => () => stop(), [stop]);
@@ -337,8 +437,9 @@ export default function InfoNarration({
   return (
     <>
       {/* Block clicks while the narrator speaks so children listen (mute at
-          z-index 90 stays reachable and stops narration). */}
-      <NarrationClickGuard active={speaking} />
+          z-index 90 stays reachable and stops narration). Suppressed when the
+          host owns the gate (guard=false) to avoid two "listen" indicators. */}
+      <NarrationClickGuard active={speaking && guard} />
     <div
       style={{
         display: "flex",
@@ -400,18 +501,17 @@ export default function InfoNarration({
           >
             Narration
           </span>
-          {audioAvailable && (
+          {/* No manual STOP while speaking — the child can't skip the voice
+              (owner 2026-09-07). Only a "Read aloud" replay shows once the
+              voice has finished (also the recovery if autoplay was blocked). */}
+          {audioAvailable && !speaking && (
             <button
               type="button"
-              onClick={speaking ? stop : speak}
-              aria-label={speaking ? "Stop narration" : "Read aloud"}
+              onClick={speak}
+              aria-label="Read aloud"
               style={{
-                background: speaking
-                  ? "linear-gradient(135deg, #ff5fb3, #7c5cff)"
-                  : accent
-                    ? `linear-gradient(135deg, ${A}, ${A}bb)`
-                    : "linear-gradient(135deg, #00e5ff, #7c5cff)",
-                color: "#fff",
+                background: `linear-gradient(135deg, ${A}, ${A}bb)`,
+                color: "#04140f",
                 border: "none",
                 borderRadius: 999,
                 padding: "4px 12px",
@@ -421,7 +521,7 @@ export default function InfoNarration({
                 letterSpacing: "0.04em",
               }}
             >
-              {speaking ? "■ Stop" : "▶ Read aloud"}
+              ▶ Read aloud
             </button>
           )}
         </div>

@@ -19,11 +19,23 @@ export interface SignatureProps {
    */
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   /**
+   * Optional spoken closing payoff (Sarah), read aloud on the game's WIN
+   * screen: "well done, now you can do X — carry it into the real world."
+   * Games that have a win overlay render this inside it.
+   */
+  winNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /**
    * The week's theme accent (hex), passed so the game can tint its spoken-
    * instruction block to match the week — keeping one colour per week with no
    * jarring contrasts. Falls back to the game's own colour when absent.
    */
   accent?: string;
+  /**
+   * Optional first-round WALKTHROUGH (Sarah) for games that support a guided
+   * first round with on-screen arrows. `claim`/`evidence` are the two spoken
+   * steps. Only the Proof Scale (W15) uses this today; other games ignore it.
+   */
+  guide?: { speaker?: "adam" | "layla"; claim: string; evidence: string };
 }
 
 export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {

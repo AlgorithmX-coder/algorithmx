@@ -16,6 +16,7 @@ import { useMotionIntensity } from "@/app/lib/gameEngine";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 export interface RaccoonThreatSceneProps {
   raccoonLine: string;
@@ -33,12 +34,16 @@ export default function RaccoonThreatScene({
   onNext,
 }: RaccoonThreatSceneProps) {
   const reduce = useMotionIntensity() < 1;
+  // Cohesion: the chrome uses the WEEK accent (teal on W15), on a neutral-dark
+  // base so it reads as one family with the rest of the week. The Raccoon +
+  // "Spot the Danger" wording carry the "danger" meaning, not an off-theme hue.
+  const accent = useLessonTheme()?.accent ?? VIOLET;
   return (
     <ExerciseFrame
       maxWidth={780}
       padding={0}
-      background="radial-gradient(120% 90% at 50% 0%, #241a44 0%, #140f2e 45%, #070510 100%)"
-      style={{ color: "#f3ecff", position: "relative", overflow: "hidden" }}
+      background="radial-gradient(120% 90% at 50% 0%, #13161f 0%, #0b0d16 45%, #05060c 100%)"
+      style={{ color: "#eef2ff", position: "relative", overflow: "hidden" }}
     >
       {/* soft danger glow behind the villain */}
       <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -46,7 +51,7 @@ export default function RaccoonThreatScene({
           style={{
             position: "absolute", left: "50%", top: "-8%", width: 460, height: 320,
             transform: "translateX(-50%)", borderRadius: "50%",
-            background: `radial-gradient(circle, ${VIOLET}2e 0%, transparent 70%)`, filter: "blur(10px)",
+            background: `radial-gradient(circle, ${accent}2e 0%, transparent 70%)`, filter: "blur(10px)",
           }}
         />
       </div>
@@ -55,7 +60,7 @@ export default function RaccoonThreatScene({
         <div
           style={{
             fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800,
-            letterSpacing: "0.24em", textTransform: "uppercase", color: VIOLET, marginBottom: 6,
+            letterSpacing: "0.24em", textTransform: "uppercase", color: accent, marginBottom: 6,
           }}
         >
           ◇ Spot the Danger ◇
@@ -81,7 +86,7 @@ export default function RaccoonThreatScene({
                 ? { duration: 0.3 }
                 : { scale: { type: "spring", stiffness: 200, damping: 16 }, y: { duration: 2.6, repeat: Infinity, ease: "easeInOut" } }
             }
-            style={{ height: 132, flexShrink: 0, objectFit: "contain", filter: `drop-shadow(0 10px 20px ${VIOLET}66)` }}
+            style={{ height: 132, flexShrink: 0, objectFit: "contain", filter: `drop-shadow(0 10px 20px ${accent}66)` }}
           />
           <motion.div
             initial={reduce ? false : { scale: 0.9, opacity: 0 }}
@@ -89,7 +94,7 @@ export default function RaccoonThreatScene({
             transition={{ type: "spring", stiffness: 300, damping: 22, delay: 0.1 }}
             style={{
               position: "relative", maxWidth: 440, padding: "16px 22px", borderRadius: 18,
-              background: `${VIOLET}1c`, border: `1px solid ${VIOLET}70`, color: "#f0e4ff",
+              background: `${accent}1c`, border: `1px solid ${accent}70`, color: "#f0e4ff",
               fontStyle: "italic", fontSize: "clamp(1.05rem, 2.2vw, 1.35rem)", fontWeight: 650, lineHeight: 1.4,
             }}
           >

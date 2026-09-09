@@ -30,6 +30,8 @@ import {
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 export type QuickCheckMode = "finish" | "speed" | "lie" | "recall" | "order";
 
@@ -51,6 +53,12 @@ export interface QuickCheckProps {
   nudge?: string;
   /** `speed` mode urgency window, ms. Cosmetic — never hard-fails. */
   speedMs?: number;
+  /**
+   * Optional spoken teacher explanation (Sarah), read aloud on a CORRECT
+   * answer — the "here's WHY, and why it helps you" moment. When present, the
+   * beat shows the explanation + a "Got it!" button instead of auto-advancing.
+   */
+  teachNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -103,11 +111,22 @@ export default function QuickCheck({
   praise,
   nudge,
   speedMs = 5000,
+  teachNarration,
   onComplete,
   onCorrect,
   onWrong,
 }: QuickCheckProps) {
   const audio = useGameAudio();
+  // Cohesion: on a themed week, every answer chip uses the ONE week accent
+  // instead of the cyan/violet/green/amber rainbow (un-themed weeks keep it).
+  const themeAccent = useLessonTheme()?.accent;
+  const hasTeach = !!teachNarration && teachNarration.lines.length > 0;
+  const advancedRef = useRef(false);
+  const advance = () => {
+    if (advancedRef.current) return;
+    advancedRef.current = true;
+    onComplete(1);
+  };
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
@@ -143,7 +162,9 @@ export default function QuickCheck({
     audio.correct();
     void correctAnswerBurst();
     onCorrect?.();
-    window.setTimeout(() => onComplete(1), reduce ? 350 : 1100);
+    // With a spoken teacher explanation, wait on the "Got it!" button so the
+    // child actually hears WHY it's right; otherwise snap forward as before.
+    if (!hasTeach) window.setTimeout(advance, reduce ? 350 : 1100);
   };
 
   const handlePick = (i: number) => {
@@ -198,6 +219,12 @@ export default function QuickCheck({
   // Shuffle once per mount so the correct answer isn't predictably first.
   const shuffledChoices = useMemo(() => shuffleChoices(choices), [choices]);
 
+  // Sarah reads the question aloud when the Prove-it appears (a fill-blank
+  // "___" is spoken as "blank"). Stable array so re-renders (e.g. speed mode's
+  // urgency ticker) don't churn InfoNarration. speaker="adam" = Sarah, matching
+  // the recorded quickCheck prompt in the manifest.
+  const promptLines = useMemo(() => [prompt.replace(/_{2,}/g, "blank")], [prompt]);
+
   // render the prompt with the blank emphasised for `finish`
   const promptNode =
     mode === "finish" && prompt.includes("___") ? (
@@ -228,6 +255,13 @@ export default function QuickCheck({
       background="radial-gradient(120% 100% at 50% 0%, #131a3e 0%, #0c1230 45%, #060a1c 100%)"
       style={{ color: "#fff7e6", position: "relative", overflow: "hidden" }}
     >
+      {/* Sarah reads the question aloud when the Prove-it appears (audio-only,
+          visually hidden; the "tap to skip" guard still shows and holds the
+          answers until the child has heard the question). */}
+      <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+        <InfoNarration speaker="adam" lines={promptLines} accent="#7df0ff" />
+      </div>
+
       {/* drifting glow orbs — depth so it never reads flat */}
       {!reduce &&
         orbs.map((o, i) => (
@@ -460,7 +494,7 @@ export default function QuickCheck({
         }}
       >
         {shuffledChoices.map((c, i) => {
-          const accent = ACCENTS[i % ACCENTS.length];
+          const accent = themeAccent ?? ACCENTS[i % ACCENTS.length];
           const isWrongPick = wrongIdx === i;
           const placedPos = mode === "order" ? placed.indexOf(i) : -1;
           const isSolvedRight =
@@ -557,6 +591,53 @@ export default function QuickCheck({
 
       {/* shake keyframe key driver (force remount of the wrong chip animation) */}
       <span key={wrongKey} style={{ display: "none" }} />
+
+      {/* Teacher explanation on a CORRECT answer — Sarah says WHY it's right and
+          why it helps, then the child taps on (no silent auto-advance). */}
+      {solved && teachNarration && teachNarration.lines.length > 0 && (
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          style={{
+            position: "relative",
+            zIndex: 3,
+            maxWidth: 620,
+            margin: "24px auto 0",
+            textAlign: "left",
+          }}
+        >
+          <InfoNarration
+            lines={teachNarration.lines}
+            speaker={teachNarration.speaker}
+            accent="#7eff97"
+          />
+          <div style={{ textAlign: "center", marginTop: 10 }}>
+            <button
+              type="button"
+              onClick={() => {
+                audio.tap();
+                advance();
+              }}
+              style={{
+                border: "none",
+                borderRadius: 14,
+                padding: "12px 40px",
+                fontSize: 17,
+                fontWeight: 900,
+                letterSpacing: 0.5,
+                fontFamily: "'Space Grotesk', sans-serif",
+                color: "#06220f",
+                background: "linear-gradient(180deg, #8bffb0, #34d399)",
+                boxShadow: "0 10px 26px rgba(52,211,153,0.4)",
+                cursor: "pointer",
+              }}
+            >
+              Got it! →
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {fx.layer()}
     </ExerciseFrame>

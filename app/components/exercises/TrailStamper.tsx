@@ -13,7 +13,7 @@
  * CHOOSE the ones you leave.
  */
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
@@ -24,6 +24,7 @@ import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 export interface StampOption {
   label: string;
@@ -55,8 +56,12 @@ export interface TrailStamperProps {
   completeTitle?: string;
   completeLine?: string;
   hints?: { tier1: string; tier2: string };
+  /** Spot-the-Danger preamble folded into the intro (the Raccoon's boast). */
+  threat?: { raccoonLine: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken Sarah acknowledgment on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -80,8 +85,10 @@ export default function TrailStamper({
   completeTitle,
   completeLine,
   hints,
+  threat,
   introNarration,
   coachLines,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -92,6 +99,9 @@ export default function TrailStamper({
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  // Cohesion: the glow meter tints to the week accent (teal on W15) instead of
+  // its stock amber; un-themed weeks keep the amber.
+  const accent = useLessonTheme()?.accent;
 
   const [showIntro, setShowIntro] = useState(true);
   const [spotIdx, setSpotIdx] = useState(0);
@@ -104,6 +114,24 @@ export default function TrailStamper({
   const finished = spotIdx >= spots.length;
   const spot = spots[spotIdx];
   const glow = Math.round((spotIdx / spots.length) * 100);
+
+  // Stable per-spot shuffle so the KIND (isProud) choice isn't always first /
+  // on the left (owner spotted every answer was on the left). Each entry keeps
+  // its ORIGINAL index so pick() still resolves the right option. Seeded off
+  // spotIdx so it's stable within a spot but varies spot to spot.
+  const displayOptions = useMemo(() => {
+    if (!spot) return [];
+    const tagged = spot.options.map((o, i) => ({ o, i }));
+    // Fisher-Yates once per plot (useMemo caches it, so it stays put across
+    // re-renders and retries within the plot, but re-rolls on the next plot
+    // and varies playthrough to playthrough).
+    for (let k = tagged.length - 1; k > 0; k--) {
+      const j = Math.floor(Math.random() * (k + 1));
+      [tagged[k], tagged[j]] = [tagged[j], tagged[k]];
+    }
+    return tagged;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spot, spotIdx]);
 
   const reportedTier = useRef(0);
   const reportTier = (n: number) => {
@@ -160,6 +188,7 @@ export default function TrailStamper({
           subtitle={introSubtitle ?? "Five footprint spots, two stamps each. Press only the tracks you'd be proud of in a year."}
           icon={introIcon ?? "⭐"}
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
@@ -167,7 +196,7 @@ export default function TrailStamper({
 
       {/* Glow meter */}
       <div style={{ maxWidth: 640, margin: "0 auto 12px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, fontWeight: 900, letterSpacing: "0.1em", color: "#ffd158", marginBottom: 4 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, fontWeight: 900, letterSpacing: "0.1em", color: accent ?? "#ffd158", marginBottom: 4 }}>
           <span>{meterLabel ?? "TRAIL GLOW"}</span>
           <span>{glow}%</span>
         </div>
@@ -175,7 +204,7 @@ export default function TrailStamper({
           <motion.div
             animate={{ width: `${glow}%` }}
             transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 120, damping: 20 }}
-            style={{ height: "100%", background: "linear-gradient(90deg, #ffd158, #ffb347)", boxShadow: "0 0 14px rgba(255,209,88,0.8)" }}
+            style={{ height: "100%", background: accent ? `linear-gradient(90deg, ${accent}, ${accent}bb)` : "linear-gradient(90deg, #ffd158, #ffb347)", boxShadow: accent ? `0 0 14px ${accent}cc` : "0 0 14px rgba(255,209,88,0.8)" }}
           />
         </div>
       </div>
@@ -258,7 +287,7 @@ export default function TrailStamper({
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 12, maxWidth: 620, margin: "0 auto" }}>
-              {spot.options.map((o, i) => (
+              {displayOptions.map(({ o, i }) => (
                 <motion.button
                   key={`${spot.id}-${i}`}
                   type="button"
@@ -326,6 +355,7 @@ export default function TrailStamper({
             `${firstTryCount}/${spots.length} golden stamps first try`,
             completeLine ?? "Tracks you chose, tracks you're proud of - that's ranger work.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(firstTryCount)}
         />
       )}

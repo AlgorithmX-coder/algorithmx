@@ -204,6 +204,13 @@ function resumeConcept(screens: WeekContent["screens"], idx: number): string | n
   return null;
 }
 
+// Owner 2026-09-07: the "Welcome back / Keep going / Start over" resume prompt
+// and the HUD case chip ("DRILL · THE VOICE BOOTH") are switched OFF for now.
+// A proper saving/resume technique will replace the prompt later. Flip either
+// flag back to true to restore.
+const SHOW_RESUME_PROMPT: boolean = false;
+const SHOW_HUD_CASE_CHIP: boolean = false;
+
 function ResumeBanner({
   concept,
   onContinue,
@@ -399,11 +406,15 @@ function SignaturePlay({
   mechanic,
   title,
   narration,
+  winNarration,
+  guide,
   onComplete,
 }: {
   mechanic: string;
   title?: string;
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  winNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  guide?: { speaker?: "adam" | "layla"; claim: string; evidence: string };
   onComplete: () => void;
 }) {
   const Signature = SIGNATURES[mechanic];
@@ -428,7 +439,7 @@ function SignaturePlay({
       </div>
     );
   }
-  return <Signature onComplete={onComplete} narration={narration} accent={theme?.accent} />;
+  return <Signature onComplete={onComplete} narration={narration} winNarration={winNarration} guide={guide} accent={theme?.accent} />;
 }
 
 // Document-level keyframe for the FullScene/LessonStage glow cross-fade.
@@ -513,7 +524,12 @@ function MissionBriefCase({
   useEffect(() => {
     const target = Math.max(3, objectives.length);
     const timers = Array.from({ length: target }, (_, i) =>
-      window.setTimeout(() => setPhase(i + 1), 450 + i * 620)
+      window.setTimeout(() => {
+        setPhase(i + 1);
+        // A soft "card flips in" sound as each objective is revealed, so the
+        // reveal isn't silent (owner ask).
+        if (i < objectives.length) playSFX("pop");
+      }, 450 + i * 620)
     );
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [objectives.length]);
@@ -547,18 +563,38 @@ function VideoScreen({
   const FADE_OUT_SECS = 1.3;
   const [fadingOut, setFadingOut] = useState(false);
 
-  const play = () => {
+  const startedRef = useRef(false);
+  // Autoplay with NO play button (owner 2026-09-09): try to start WITH SOUND on
+  // mount; if the browser blocks that on a cold page-load (no carried user
+  // gesture), fall back to a muted autostart so the clip still plays, then
+  // unmute on the first interaction. onEnded auto-advances, so no button is
+  // needed to move on — children watch the whole clip.
+  const play = useCallback(() => {
     const v = videoRef.current;
-    if (!v) return;
-    // The bookend videos play their own soundtrack (the lesson BGM bed is
-    // held off until the first non-video screen). A touch below full so a
-    // hot baked mix can't blast.
-    v.volume = 0.6;
-    setStarted(true);
-    // play() rejects if the browser still blocks it; native controls
-    // (now visible) give the learner a manual fallback.
-    void v.play().catch(() => {});
-  };
+    if (!v || startedRef.current) return;
+    v.volume = 0.6; // below full so a hot baked mix can't blast
+    v.muted = false;
+    v.play()
+      .then(() => { startedRef.current = true; setStarted(true); })
+      .catch(() => {
+        v.muted = true;
+        v.play()
+          .then(() => { startedRef.current = true; setStarted(true); })
+          .catch(() => { /* fully blocked; the load-error fallback covers it */ });
+      });
+  }, []);
+
+  useEffect(() => {
+    play();
+    const onGesture = () => {
+      const v = videoRef.current;
+      if (v && v.muted) { v.muted = false; v.volume = 0.6; }
+      play();
+    };
+    const events: (keyof WindowEventMap)[] = ["pointerdown", "keydown", "touchstart", "click"];
+    events.forEach((e) => window.addEventListener(e, onGesture, true));
+    return () => events.forEach((e) => window.removeEventListener(e, onGesture, true));
+  }, [play]);
 
   // Drive the fade from playback position: within the last FADE_OUT_SECS,
   // ramp the volume down and flip the black overlay on (CSS transition times
@@ -597,7 +633,6 @@ function VideoScreen({
               <video
                 ref={videoRef}
                 src={videoSrc}
-                controls={started}
                 playsInline
                 onPlay={(e) => {
                   // Video plays its own soundtrack; the lesson BGM bed is
@@ -623,7 +658,7 @@ function VideoScreen({
                   textAlign: "center",
                 }}
               >
-                Video couldn&apos;t load — tap &ldquo;Skip video&rdquo; to continue.
+                Video couldn&apos;t load. Tap &ldquo;Continue&rdquo; below to move on.
               </div>
             )}
 
@@ -643,33 +678,12 @@ function VideoScreen({
               />
             )}
 
-            {!started && !failed && (
-              <button
-                type="button"
-                onClick={play}
-                aria-label="Play"
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  width: 96,
-                  height: 96,
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 42,
-                  color: "#fff",
-                  boxShadow: "0 0 36px rgba(59,130,246,0.6)",
-                }}
-              >
-                ▶
-              </button>
-            )}
           </div>
           <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 18 }}>{caption}</p>
-          <OrangeButton onClick={onSkip}>Skip video →</OrangeButton>
+          {/* No skip: children watch the clip, which auto-advances when it ends
+              (owner 2026-09-09). A Continue appears ONLY if the video can't load,
+              so a missing/broken file never traps them. */}
+          {failed && <OrangeButton onClick={onSkip}>Continue →</OrangeButton>}
         </div>
       </Card>
     </FullScene>
@@ -773,11 +787,14 @@ function DynamicLessonInner({
   const [lessonXp, setLessonXp] = useState(0);
   const [wrongCounts, setWrongCounts] = useState<Record<number, number>>({});
 
-  // Master audio mute — drives the HUD mute button. Audio (sounds + voice)
-  // plays by default; this one control mutes everything for the week.
+  // The mute control was removed (owner 2026-09-08) so a child can't skip the
+  // narrator by muting — every week's voice must be heard. Force audio ON at
+  // week start, so any mute persisted from before (there's no un-mute button
+  // now) can't leave a child silently stuck behind a listen-gate.
   const [muted, setMutedState] = useState(false);
   useEffect(() => {
-    setMutedState(isAudioMuted());
+    setAudioMuted(false);
+    setMutedState(false);
     return subscribeAudioMute((m) => setMutedState(m));
   }, []);
 
@@ -787,13 +804,6 @@ function DynamicLessonInner({
   // local state. Silent max-merge; never lowers local, never throws.
   useEffect(() => {
     void hydrateProgressionFromServer();
-  }, []);
-  const handleMuteToggle = useCallback(() => {
-    setMutedState((prev) => {
-      const next = !prev;
-      setAudioMuted(next);
-      return next;
-    });
   }, []);
   const [shakeTrigger, setShakeTrigger] = useState(0);
   const [showBoss, setShowBoss] = useState(false);
@@ -956,6 +966,13 @@ function DynamicLessonInner({
     screenRef.current = screen;
   }, [screen]);
 
+  // Screens the child has already advanced PAST. XP for a screen is granted on
+  // the FIRST play only; replaying/redoing a completed screen must NOT re-award
+  // (owner 2026-09-09: "I redid an exercise then it started adding more XP").
+  // A first visit can still award multiple times (multi-round games); only a
+  // redo of an already-completed screen is blocked. See awardXp + navigate.
+  const completedScreensRef = useRef<Set<number>>(new Set());
+
   // exercise_quit on unmount if the lesson isn't completed.
   useEffect(() => {
     return () => {
@@ -1079,6 +1096,9 @@ function DynamicLessonInner({
       // forward past the leaving screen and only when it's a real
       // advance, not a back-navigation).
       if (next > prev) {
+        // Mark the screen we're leaving as completed, so a later redo of it
+        // can't re-award XP (see awardXp).
+        completedScreensRef.current.add(prev);
         const w = wrongCounts[prev] ?? 0;
         const stars = w === 0 ? 3 : w <= 1 ? 2 : 1;
         const xpEarned = Math.max(0, lessonXp - screenXpBaselineRef.current);
@@ -1147,6 +1167,9 @@ function DynamicLessonInner({
 
   const awardXp = useCallback((amount: number) => {
     if (!content) return;
+    // Idempotent per screen: a redo of an already-completed screen never
+    // re-awards XP (it would otherwise stack on the durable rank total).
+    if (completedScreensRef.current.has(screenRef.current)) return;
     const result = addXP(amount, `week-${content.weekNumber}`);
     setLessonXp((v) => v + amount);
     setArenaMoodBrief("correct");
@@ -1167,6 +1190,25 @@ function DynamicLessonInner({
     wrongAnswerShake();
   }, [setArenaMoodBrief]);
 
+  // A11y: when the child advances, move focus to the new screen region so
+  // screen readers announce it and keyboard/switch users land in the new
+  // content. Skips the first mount (the resume banner manages its own focus).
+  // Declared BEFORE the early returns below so the hook order stays identical
+  // on every render (a conditional hook here crashed the brief hydration path
+  // where rawWeek is still undefined).
+  const screenRegionRef = useRef<HTMLDivElement>(null);
+  const firstScreenFocusRef = useRef(true);
+  useEffect(() => {
+    if (firstScreenFocusRef.current) {
+      firstScreenFocusRef.current = false;
+      return;
+    }
+    const t = window.setTimeout(() => {
+      screenRegionRef.current?.focus({ preventScroll: true });
+    }, 60);
+    return () => window.clearTimeout(t);
+  }, [screen]);
+
   // Param hasn't resolved yet (very brief moment in some hydration paths) -
   // render a simple loading state so the page never appears "blank."
   if (rawWeek === undefined) {
@@ -1180,22 +1222,6 @@ function DynamicLessonInner({
 
   const def = content.screens[screen];
   const stars = (wrongCounts[screen] ?? 0) === 0 ? 3 : (wrongCounts[screen] ?? 0) <= 1 ? 2 : 1;
-
-  // A11y: when the child advances, move focus to the new screen region so
-  // screen readers announce it and keyboard/switch users land in the new
-  // content. Skips the first mount (the resume banner manages its own focus).
-  const screenRegionRef = useRef<HTMLDivElement>(null);
-  const firstScreenFocusRef = useRef(true);
-  useEffect(() => {
-    if (firstScreenFocusRef.current) {
-      firstScreenFocusRef.current = false;
-      return;
-    }
-    const t = window.setTimeout(() => {
-      screenRegionRef.current?.focus({ preventScroll: true });
-    }, 60);
-    return () => window.clearTimeout(t);
-  }, [screen]);
 
   const renderScreen = (): React.ReactNode => {
     if (!def) return null;
@@ -1298,6 +1324,8 @@ function DynamicLessonInner({
               mechanic={def.mechanic}
               title={def.title}
               narration={def.narration}
+              winNarration={def.winNarration}
+              guide={def.guide}
               onComplete={() => navigate(screen + 1)}
             />
           </FullScene>
@@ -1314,6 +1342,7 @@ function DynamicLessonInner({
               caption={def.caption}
               photoCaption={def.photoCaption}
               ctaLabel={def.ctaLabel}
+              narration={def.narration}
               onContinue={() => navigate(screen + 1)}
             />
           </FullScene>
@@ -1350,6 +1379,8 @@ function DynamicLessonInner({
               bullets={def.bullets}
               bulletIcons={def.bulletIcons}
               emblem={def.emblem}
+              conceptNumber={def.conceptNumber}
+              conceptTotal={def.conceptTotal}
               narration={def.narration}
               onNext={() => navigate(screen + 1)}
             />
@@ -1460,6 +1491,7 @@ function DynamicLessonInner({
               praise={def.praise}
               nudge={def.nudge}
               speedMs={def.speedMs}
+              teachNarration={def.teachNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(15)}
               onWrong={() => addWrong(screen)}
@@ -1648,6 +1680,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #101a3d 100%)">
             <ConveyorSort
+              threat={def.threat}
               categories={def.categories}
               items={def.items}
               introTitle={def.introTitle}
@@ -1660,6 +1693,7 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1785,6 +1819,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #0a0704 0%, #1d1408 100%)">
             <ClueBoard
+              threat={def.threat}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
@@ -1798,6 +1833,7 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1880,6 +1916,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #0a1030 0%, #1c2b52 100%)">
             <TrailStamper
+              threat={def.threat}
               spots={def.spots}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
@@ -1892,6 +1929,7 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2261,8 +2299,11 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)">
             <ChooseYourPath
+              threat={def.threat}
               scenarios={def.scenarios}
               introNarration={def.narration}
+              promptNarration={def.promptNarration}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2362,6 +2403,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #16103a 100%)">
             <SenderLineup
+              threat={def.threat}
               rounds={def.rounds}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
@@ -2374,6 +2416,7 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2550,7 +2593,7 @@ function DynamicLessonInner({
                         marginInline: "auto",
                       }}
                     >
-                      The Hacker Raccoon is a tricky one — but you&apos;ve got
+                      The Hacker Raccoon is a tricky one, but you&apos;ve got
                       this. Want another go?
                     </p>
                     <OrangeButton
@@ -2822,7 +2865,7 @@ function DynamicLessonInner({
       {/* Resume banner - only renders when the server returned an
           unfinished attempt with progress > 0 AND the child hasn't
           chosen continue or restart yet. */}
-      {progress.pendingResume && progress.resumeIndex !== null && (
+      {SHOW_RESUME_PROMPT && progress.pendingResume && progress.resumeIndex !== null && (
         <ResumeBanner
           concept={resumeConcept(content.screens, progress.resumeIndex)}
           onContinue={onResumeContinue}
@@ -2839,9 +2882,8 @@ function DynamicLessonInner({
         currentScreen={screen}
         totalScreens={totalScreens}
         xpEarned={lessonXp}
-        caseMeta={deriveCaseMeta(def, screen)}
+        caseMeta={SHOW_HUD_CASE_CHIP ? deriveCaseMeta(def, screen) : null}
         muted={muted}
-        onMuteToggle={handleMuteToggle}
         accent={weekTheme?.accent}
       />
 

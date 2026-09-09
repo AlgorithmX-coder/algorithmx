@@ -15,6 +15,8 @@
 import { useEffect, useRef } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { useComfortMode } from "@/app/lib/comfortMode";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 export interface WrongAnswerPanelProps {
   /** Short headline ("That one was WEAK"). */
@@ -42,6 +44,31 @@ export default function WrongAnswerPanel({
 }: WrongAnswerPanelProps) {
   const comfort = useComfortMode();
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const accent = useLessonTheme()?.accent;
+
+  // Themed vs. default (amber) accent for the panel chrome. When a week
+  // theme is active every warm-gold value swaps to the week accent so the
+  // teach panel matches its playfield; un-themed weeks stay byte-identical.
+  const ring = accent ?? "#ffd158";
+  const panelBorder = accent ? `2px solid ${accent}8c` : "2px solid rgba(255, 209, 88, 0.55)";
+  const panelGlow = accent
+    ? `0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px ${accent}2e`
+    : "0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 209, 88, 0.18)";
+  const emblemGlow = accent
+    ? `0 0 18px ${accent}80, 0 0 0 1px ${accent}40 inset`
+    : "0 0 18px rgba(255, 209, 88, 0.5), 0 0 0 1px rgba(255, 209, 88, 0.25) inset";
+  const emblemBg = accent
+    ? `radial-gradient(circle at 30% 30%, ${accent}26 0%, #0f1530 70%)`
+    : "radial-gradient(circle at 30% 30%, #2a1f08 0%, #0f1530 70%)";
+  const emblemFilter = accent
+    ? `drop-shadow(0 0 6px ${accent}b3)`
+    : "drop-shadow(0 0 6px rgba(255, 209, 88, 0.7))";
+  const headingShadow = accent
+    ? `0 0 12px ${accent}73`
+    : "0 0 12px rgba(255, 209, 88, 0.45)";
+  const tipInk = accent ?? "#7df0ff";
+  const tipBg = accent ? `${accent}14` : "rgba(0, 229, 255, 0.08)";
+  const tipBorder = accent ? `1px solid ${accent}40` : "1px solid rgba(0, 229, 255, 0.25)";
 
   // Focus the Got It button on mount so keyboard / switch users can
   // advance with Enter or Space.
@@ -79,10 +106,9 @@ export default function WrongAnswerPanel({
           width: "100%",
           maxWidth: 420,
           background: "linear-gradient(180deg, #1a1f4d 0%, #0f1530 100%)",
-          border: "2px solid rgba(255, 209, 88, 0.55)",
+          border: panelBorder,
           borderRadius: 22,
-          boxShadow:
-            "0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 209, 88, 0.18)",
+          boxShadow: panelGlow,
           padding: 22,
           color: "#fff7e6",
           fontFamily:
@@ -108,14 +134,12 @@ export default function WrongAnswerPanel({
               borderRadius: "50%",
               display: "grid",
               placeItems: "center",
-              border: "3px solid #ffd158",
-              boxShadow:
-                "0 0 18px rgba(255, 209, 88, 0.5), 0 0 0 1px rgba(255, 209, 88, 0.25) inset",
-              background:
-                "radial-gradient(circle at 30% 30%, #2a1f08 0%, #0f1530 70%)",
+              border: `3px solid ${ring}`,
+              boxShadow: emblemGlow,
+              background: emblemBg,
               flexShrink: 0,
               fontSize: 28,
-              filter: "drop-shadow(0 0 6px rgba(255, 209, 88, 0.7))",
+              filter: emblemFilter,
             }}
           >
             <span>!</span>
@@ -127,12 +151,26 @@ export default function WrongAnswerPanel({
               fontSize: 22,
               fontWeight: 900,
               letterSpacing: "0.02em",
-              color: "#ffd158",
-              textShadow: "0 0 12px rgba(255, 209, 88, 0.45)",
+              color: ring,
+              textShadow: headingShadow,
             }}
           >
             {title}
           </h2>
+        </div>
+
+        {/* Sarah reads the "why it was wrong" teaching aloud the instant this
+            panel appears (owner 2026-09-09) — across EVERY exercise and week,
+            since they all share this panel. Audio-only (the text below mirrors
+            it); the narration click-guard holds "Got it!" until she finishes so
+            the child hears the correction. Reads the explanation verbatim so a
+            recorded clip matches; the "Remember" tip stays on screen.
+            recordedOnly = stay SILENT (never robot-TTS) on any week whose
+            explanations aren't recorded yet (only Week 15 is today), so the
+            other weeks match prod's current silent panel instead of regressing
+            to the robotic voice. */}
+        <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+          <InfoNarration speaker="adam" lines={[explanation]} accent={accent} recordedOnly />
         </div>
 
         <p
@@ -153,13 +191,13 @@ export default function WrongAnswerPanel({
               padding: "10px 12px",
               fontSize: 14,
               lineHeight: 1.4,
-              color: "#7df0ff",
-              background: "rgba(0, 229, 255, 0.08)",
-              border: "1px solid rgba(0, 229, 255, 0.25)",
+              color: tipInk,
+              background: tipBg,
+              border: tipBorder,
               borderRadius: 10,
             }}
           >
-            <strong style={{ color: "#7df0ff" }}>Remember: </strong>
+            <strong style={{ color: tipInk }}>Remember: </strong>
             {tip}
           </p>
         )}

@@ -139,7 +139,7 @@ const BGM_REGISTRY: Record<string, SoundEntry> = {
   // Quiz-boss "brain waves": calm focus/concentration ambient (ElevenLabs
   // Music). The quiz-boss has narrator OFF, so this is a standalone bed, a
   // touch more present than the hub so it reads as focus music, still gentle.
-  bgmQuizFocus: { path: "/audio/sfx/bgm-quiz-focus.mp3", volume: 0.07 },
+  bgmQuizFocus: { path: "/audio/sfx/bgm-quiz-focus.mp3", volume: 0.09 },
 };
 
 const SFX_KEYS = Object.keys(SFX_REGISTRY);

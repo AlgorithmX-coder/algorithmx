@@ -22,6 +22,32 @@ import {
   SHADOW,
   SPRING,
 } from "@/app/components/scene";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+
+/** Pick dark or white ink for readable text on a solid accent fill. */
+function readableInk(hex: string): string {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return "#080a16";
+  const n = parseInt(m[1], 16);
+  const r = (n >> 16) & 255,
+    g = (n >> 8) & 255,
+    b = n & 255;
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.6 ? "#08110d" : "#f4fffb";
+}
+
+/** Darken a #rrggbb hex toward black by `amt` (0..1) for gradient depth. */
+function darken(hex: string, amt: number): string {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return hex;
+  const n = parseInt(m[1], 16);
+  const f = (c: number) => Math.max(0, Math.round(c * (1 - amt)));
+  const r = f((n >> 16) & 255),
+    g = f((n >> 8) & 255),
+    b = f(n & 255);
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
 
 export interface WelcomeSceneProps {
   onContinue: () => void;
@@ -37,6 +63,8 @@ export interface WelcomeSceneProps {
   photoCaption?: string;
   /** Continue-button label. */
   ctaLabel?: string;
+  /** Optional Sarah voice framing the incident (audio-only, auto-plays). */
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
 }
 
 export default function WelcomeScene({
@@ -47,17 +75,41 @@ export default function WelcomeScene({
   caption = "Adam and Layla just got hacked by the Hacker Raccoon. They need YOUR help.",
   photoCaption = "Wk 1, Day 0 - Adam & Layla",
   ctaLabel = "I'll Save Them →",
+  narration,
 }: WelcomeSceneProps) {
+  // Week accent (null on un-themed weeks / the marketing home) tints the
+  // nebula bleeds, the periodic flash and the CTA so the alert scene reads
+  // as part of the week's world. Fallbacks are the original cyber colours.
+  const accent = useLessonTheme()?.accent;
+  const bleedA = accent
+    ? `radial-gradient(ellipse, ${accent}2e 0%, ${accent}10 40%, transparent 70%)`
+    : "radial-gradient(ellipse, rgba(0, 229, 255, 0.18) 0%, rgba(0, 229, 255, 0.06) 40%, transparent 70%)";
+  const bleedB = accent
+    ? `radial-gradient(ellipse, ${accent}24 0%, ${accent}0d 40%, transparent 70%)`
+    : "radial-gradient(ellipse, rgba(124, 92, 255, 0.20) 0%, rgba(124, 92, 255, 0.06) 40%, transparent 70%)";
+  const flash = accent
+    ? `radial-gradient(ellipse at 50% 18%, ${accent}24 0%, transparent 55%)`
+    : "radial-gradient(ellipse at 50% 18%, rgba(255, 220, 200, 0.18) 0%, transparent 55%)";
+  const ctaBg = accent
+    ? `linear-gradient(135deg, ${accent}, ${darken(accent, 0.4)})`
+    : "linear-gradient(135deg, #00e5ff, #7c5cff)";
+  const ctaInk = accent ? readableInk(accent) : "#080a16";
+  const ctaShadow = accent
+    ? `0 0 24px ${accent}8c, 0 8px 20px -6px ${accent}73, 0 0 0 1px ${accent}99 inset`
+    : "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset";
+  const ctaHoverShadow = accent
+    ? `0 0 32px ${accent}d9, 0 14px 28px -6px ${accent}8c, 0 0 0 1px ${accent}b3 inset`
+    : "0 0 32px rgba(0, 229, 255, 0.85), 0 14px 28px -6px rgba(0, 229, 255, 0.55), 0 0 0 1px rgba(125, 240, 255, 0.7) inset";
   return (
     <SceneFrame>
       {/* Cyber backdrop - transparent layers over the lesson page's
-          dark navy bg, with cyan/cosmic nebula bleeds + drifting
-          particles in cyber palette. The Pixar warm scene layers are
+          dark navy bg, with nebula bleeds + drifting particles that adopt
+          the week accent when themed. The Pixar warm scene layers are
           preserved on the marketing home; this scene runs inside the
           cyber app surface. */}
       <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(15, 21, 48, 0.4) 0%, rgba(8, 10, 22, 0.7) 100%)", pointerEvents: "none" }} />
-      <div aria-hidden style={{ position: "absolute", left: "-15%", top: "-10%", width: "60vw", height: "70vh", background: "radial-gradient(ellipse, rgba(0, 229, 255, 0.18) 0%, rgba(0, 229, 255, 0.06) 40%, transparent 70%)", filter: "blur(48px)", pointerEvents: "none" }} />
-      <div aria-hidden style={{ position: "absolute", right: "-10%", top: "30%", width: "55vw", height: "60vh", background: "radial-gradient(ellipse, rgba(124, 92, 255, 0.20) 0%, rgba(124, 92, 255, 0.06) 40%, transparent 70%)", filter: "blur(50px)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", left: "-15%", top: "-10%", width: "60vw", height: "70vh", background: bleedA, filter: "blur(48px)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", right: "-10%", top: "30%", width: "55vw", height: "60vh", background: bleedB, filter: "blur(50px)", pointerEvents: "none" }} />
       <StarField count={60} />
       <FloatingParticles count={20} />
 
@@ -69,8 +121,7 @@ export default function WelcomeScene({
           inset: 0,
           zIndex: 1,
           pointerEvents: "none",
-          background:
-            "radial-gradient(ellipse at 50% 18%, rgba(255, 220, 200, 0.18) 0%, transparent 55%)",
+          background: flash,
           mixBlendMode: "screen",
           animation: "lightningFlash 6s ease-in-out infinite",
         }}
@@ -109,14 +160,24 @@ export default function WelcomeScene({
           }}
         >
           <Polaroid src={photoSrc} caption={photoCaption} />
-          <CaptionPlaque text={caption} />
+          <CaptionPlaque text={caption} accent={accent} />
         </div>
 
+        {/* Sarah frames the incident aloud (audio-only, visually hidden so the
+            cinematic polaroid + CTA composition is untouched; the caption
+            already carries the words on screen). Auto-plays with tap-to-skip. */}
+        {narration && narration.lines.length > 0 && (
+          <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+            <InfoNarration lines={narration.lines} speaker={narration.speaker} accent={accent} />
+          </div>
+        )}
+
         {/* Cyber-styled CTA (replaces the warm gold PrimaryButton for the
-            cyber app surface), now in flow at the column's foot. */}
+            cyber app surface), now in flow at the column's foot. Adopts the
+            week accent when themed. */}
         <motion.button
           onClick={onContinue}
-          whileHover={{ y: -3, scale: 1.04, boxShadow: "0 0 32px rgba(0, 229, 255, 0.85), 0 14px 28px -6px rgba(0, 229, 255, 0.55), 0 0 0 1px rgba(125, 240, 255, 0.7) inset" }}
+          whileHover={{ y: -3, scale: 1.04, boxShadow: ctaHoverShadow }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 320, damping: 20 }}
           style={{
@@ -125,13 +186,13 @@ export default function WelcomeScene({
             padding: "16px 38px",
             fontSize: 18,
             fontWeight: 800,
-            color: "#080a16",
-            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            color: ctaInk,
+            background: ctaBg,
             borderRadius: 999,
             fontFamily: "'Space Grotesk', system-ui, sans-serif",
             letterSpacing: 1,
             textTransform: "uppercase",
-            boxShadow: "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset",
+            boxShadow: ctaShadow,
           }}
         >
           {ctaLabel}
@@ -245,7 +306,7 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
 
 /* ───────────────────────── CAPTION PLAQUE ───────────────────────── */
 
-function CaptionPlaque({ text }: { text: string }) {
+function CaptionPlaque({ text, accent }: { text: string; accent?: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -255,22 +316,24 @@ function CaptionPlaque({ text }: { text: string }) {
         maxWidth: 500,
         padding: "11px 20px",
         // Was warm purple-brown bg + warm cream border (Pixar leftover).
-        // Now cyber-glass: deep navy translucent + cyan border, matches
-        // every other plaque/banner across the cyber lesson surface.
+        // Now cyber-glass: deep navy translucent + accent border (week
+        // accent when themed, cyan otherwise), matching every other
+        // plaque/banner across the cyber lesson surface.
         background: "rgba(8, 10, 22, 0.78)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: "rgba(125, 240, 255, 0.45)",
+        borderColor: accent ? `${accent}73` : "rgba(125, 240, 255, 0.45)",
         borderRadius: 16,
         color: COLOR.cream,
         fontSize: 15,
         fontWeight: 600,
         textAlign: "center",
         lineHeight: 1.4,
-        boxShadow:
-          "0 12px 28px -8px rgba(8, 10, 22, 0.7), 0 0 22px rgba(0, 229, 255, 0.18)",
+        boxShadow: accent
+          ? `0 12px 28px -8px rgba(8, 10, 22, 0.7), 0 0 22px ${accent}2e`
+          : "0 12px 28px -8px rgba(8, 10, 22, 0.7), 0 0 22px rgba(0, 229, 255, 0.18)",
       }}
     >
       {text}

@@ -189,12 +189,14 @@ const CV = {
 } as const;
 
 function transitTimeMs(i: number, comfort: boolean) {
-  // Standard pacing for older / quick learners.
+  // Pacing (owner 2026-09-09: cards were "whizzing by too quickly to read").
+  // Slowed right down so a 6-9yo can read the card AND decide — a gentle
+  // speed-up remains, but even the fastest card gives 8s to cross the beam.
   let base: number;
-  if (i === 0) base = 10500;
-  else if (i < 4) base = 8000;
-  else if (i < 7) base = 6000;
-  else base = 4500;
+  if (i === 0) base = 12000;
+  else if (i < 4) base = 10500;
+  else if (i < 7) base = 9000;
+  else base = 8000;
   // Comfort mode: a lot more reading time per card. We don't go to
   // Infinity because the card needs to drift across the beam visually.
   return comfort ? Math.round(base * 2.2) + 4000 : base;
@@ -539,9 +541,13 @@ export default function CyberScanner({
           // than punishing with a fast auto-advance. Got-It will move
           // to the next card.
           setWrongCount((n) => n + 1);
+          // Verdict goes in the TITLE; the explanation stays the card's
+          // verbatim line so Sarah reads it in her REAL recorded voice (a
+          // constructed "It was X - ..." string can't match a recording and
+          // fell back to robotic TTS — owner 2026-09-09).
           setFeedback({
-            title: "That one ran out of time",
-            explanation: `It was ${c.isStrong ? L.positive : L.negative} - ${c.explanation}`,
+            title: `Ran out of time. It was ${c.isStrong ? L.positive : L.negative}.`,
+            explanation: c.explanation,
             tip: `It's OK to take your time. Tap ${L.positive} or ${L.negative} before the card crosses the beam.`,
           });
         }

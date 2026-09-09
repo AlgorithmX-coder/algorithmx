@@ -28,6 +28,7 @@ import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 
 export interface BoardClue {
   id: string;
@@ -67,8 +68,12 @@ export interface ClueBoardProps {
   completeTitle?: string;
   completeLine?: string;
   hints?: { tier1: string; tier2: string };
+  /** Spot-the-Danger preamble folded into the intro (the Raccoon's boast). */
+  threat?: { raccoonLine: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken Sarah acknowledgment on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -93,8 +98,10 @@ export default function ClueBoard({
   completeTitle,
   completeLine,
   hints,
+  threat,
   introNarration,
   coachLines,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -105,6 +112,17 @@ export default function ClueBoard({
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  // Themed weeks re-tint the warm detective "cork" board into the week's cool
+  // family so it belongs to the week (teal on W15); un-themed weeks keep the
+  // original corkboard byte-for-byte.
+  const accent = useLessonTheme()?.accent;
+  const boardBg = accent
+    ? `radial-gradient(circle at 20% 15%, ${accent}22, transparent 55%), linear-gradient(180deg, #16242c 0%, #0e1a22 100%)`
+    : "radial-gradient(circle at 20% 15%, rgba(150,103,44,0.35), transparent 55%), linear-gradient(180deg, #4a351d 0%, #3a2a12 100%)";
+  const boardBgColor = accent ? "#12202a" : "#42301a";
+  const boardBorder = accent ? "#0a161d" : "#2b1d0d";
+  const boardHeader = accent ?? "#ffd9a0";
+  const boardSub = accent ? `${accent}bb` : "#d9b98c";
 
   const [showIntro, setShowIntro] = useState(true);
   const [found, setFound] = useState<Set<string>>(new Set());
@@ -172,6 +190,7 @@ export default function ClueBoard({
           title={introTitle ?? "The Clue Board"}
           subtitle={introSubtitle ?? "Pin every clue to the board, then make the call."}
           icon={introIcon ?? "🔍"}
+          threat={threat}
           narration={introNarration}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
@@ -184,10 +203,9 @@ export default function ClueBoard({
           position: "relative",
           borderRadius: 20,
           padding: "16px 14px 14px",
-          background:
-            "radial-gradient(circle at 20% 15%, rgba(150,103,44,0.35), transparent 55%), linear-gradient(180deg, #4a351d 0%, #3a2a12 100%)",
-          backgroundColor: "#42301a",
-          border: "10px solid #2b1d0d",
+          background: boardBg,
+          backgroundColor: boardBgColor,
+          border: `10px solid ${boardBorder}`,
           boxShadow: "inset 0 2px 14px rgba(0,0,0,0.55), 0 18px 44px -22px rgba(0,0,0,0.8)",
         }}
       >
@@ -200,10 +218,10 @@ export default function ClueBoard({
             padding: "0 4px",
           }}
         >
-          <span style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.08em", color: "#ffd9a0" }}>
+          <span style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.08em", color: boardHeader }}>
             EVIDENCE BOARD
           </span>
-          <span style={{ fontSize: 12.5, fontWeight: 800, color: "#d9b98c" }}>
+          <span style={{ fontSize: 12.5, fontWeight: 800, color: boardSub }}>
             Clues pinned: {found.size} of {clues.length}
           </span>
         </div>
@@ -284,7 +302,11 @@ export default function ClueBoard({
                       }}
                       aria-label={isFound ? `${clue.label} - pinned` : `Inspect ${clue.label}`}
                     >
-                      <PixIcon emoji={clue.icon} size={22} />
+                      {/* Neutral "inspect me" icon. The clue's OWN icon (✅ / 🌀)
+                          would give the answer away before the child checks it
+                          against the book — the verdict only shows on the pinned
+                          evidence card, after they've done the checking. */}
+                      <PixIcon emoji="🔍" size={22} />
                       <span>{clue.label}</span>
                       {isFound && (
                         <span aria-hidden style={{ marginLeft: "auto", display: "inline-flex" }}>
@@ -389,7 +411,12 @@ export default function ClueBoard({
                         }}
                       />
                       <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
-                        <PixIcon emoji={clue.icon} size={18} />
+                        {/* Uniform "book verdict" icon for EVERY evidence card.
+                            Never render clue.icon here: a week that authored a
+                            true/false icon (✅ vs 🌀) would flag the made-up clue
+                            at a glance, so the child could pick the odd one out
+                            without reading the book. They must read "Book says:". */}
+                        <PixIcon emoji="📖" size={18} />
                         <span style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: "0.06em", textTransform: "uppercase" }}>
                           {clue.label}
                         </span>
@@ -510,6 +537,7 @@ export default function ClueBoard({
             `${clues.length}/${clues.length} clues pinned to the board`,
             completeLine ?? "Photos talk - now you hear every word.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(stars)}
         />
       )}
