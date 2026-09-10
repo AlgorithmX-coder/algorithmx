@@ -41,9 +41,6 @@ export const WEEK_7: WeekContent = {
     // 0 - OPENING VIDEO: the shop that drained an account
     { type: "video", videoPlaceholder: "Week 7: The V-Bucks Trap", videoSrc: "/videos/module-07-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[7] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -52,8 +49,11 @@ export const WEEK_7: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon's 'LIMITED-TIME bundle!' and 'FREE V-Bucks generator!' drained a family's account - real money, gone. This week you learn what game coins REALLY cost.",
       photoCaption: "Wk 7 - The V-Bucks Trap",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[7] },
 
     // 2 - Mission brief
     {

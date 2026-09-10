@@ -42,9 +42,6 @@ export const WEEK_10: WeekContent = {
     // 0 - OPENING VIDEO: down the rabbit hole
     { type: "video", videoPlaceholder: "Week 10: Down the Rabbit Hole", videoSrc: "/videos/module-10-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[10] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -53,8 +50,11 @@ export const WEEK_10: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later - and some of what they watched wasn't even true. This week you learn to notice the pull... and climb out.",
       photoCaption: "Wk 10 - Escape the Rabbit Hole",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[10] },
 
     // 2 - Mission brief
     {

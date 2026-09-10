@@ -39,9 +39,6 @@ export const WEEK_2: WeekContent = {
     // 0 - OPENING VIDEO: "The Break-In" (the free-game trap)
     { type: "video", videoPlaceholder: "Week 2: The Break-In", videoSrc: "/videos/module-02-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[2] },
-
     // 1 - ALERT: incident report with this week's topic image
     {
       type: "alert",
@@ -50,8 +47,11 @@ export const WEEK_2: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon tricked Adam and Layla into typing their address, school and phone number. Now he knows EVERYTHING. Your secrets? He's not getting a single one - let's make sure.",
       photoCaption: "Wk 2 - The Free Game Trap",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[2] },
 
     // 2 - Mission brief
     {

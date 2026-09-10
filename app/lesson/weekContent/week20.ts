@@ -46,9 +46,6 @@ export const WEEK_20: WeekContent = {
     // 0 - OPENING VIDEO: the final mission
     { type: "video", videoPlaceholder: "Week 20: The Final Mission", videoSrc: "/videos/module-20-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[20] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -57,8 +54,11 @@ export const WEEK_20: WeekContent = {
       badge: "Incident Report",
       caption: "Storm clouds over the city. Nineteen weeks of defeats have left the Raccoon exactly one plan: EVERYTHING, all at once, in one night. The fake reset envelope. The too-friendly buddy. The free-coin machines. The leak hunt. Every trick he owns, thrown in one last heist. Here's what he still hasn't understood: you've beaten every single one of these before. Tonight isn't a lesson - it's a graduation. Five final missions. Finish them, and at dawn you walk out CERTIFIED.",
       photoCaption: "Wk 20 - Graduation Day",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[20] },
 
     // 2 - Mission brief
     {

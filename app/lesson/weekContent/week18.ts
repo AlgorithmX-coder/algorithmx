@@ -46,9 +46,6 @@ export const WEEK_18: WeekContent = {
     // 0 - OPENING VIDEO: the family tablet
     { type: "video", videoPlaceholder: "Week 18: The Family Tablet", videoSrc: "/videos/module-18-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[18] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -57,8 +54,11 @@ export const WEEK_18: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon doesn't need to crack anything this week - he just waits. A family tablet left signed in on the kitchen shelf, a school computer still wearing the last kid's name, SAVE PASSWORD balloons bobbing over every login... every left-open device is a door he can stroll through wearing YOUR face. This week you become the Lock Master: spot the shared devices, log out like a relay runner, forge a front-door code - and pop every sticky balloon.",
       photoCaption: "Wk 18 - The Family Tablet",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[18] },
 
     // 2 - Mission brief
     {

@@ -42,9 +42,6 @@ export const WEEK_6: WeekContent = {
     // 0 - OPENING VIDEO: the raccoon joins the lobby
     { type: "video", videoPlaceholder: "Week 6: The Lobby Intruder", videoSrc: "/videos/module-06-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[6] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -53,8 +50,11 @@ export const WEEK_6: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon slipped into a game lobby with a friendly username, fished for real names and schools - then asked kids to 'chat somewhere else'. Your game zone needs DEFENDING!",
       photoCaption: "Wk 6 - The Lobby Intruder",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[6] },
 
     // 2 - Mission brief
     {

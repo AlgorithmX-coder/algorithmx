@@ -926,6 +926,14 @@ function MissionCard({
     };
   }, [flipped, flipControls]);
 
+  // The "nudge" wobble animates a multi-keyframe `x` array. Motion's spring
+  // (and any physics transition) supports only 2 keyframes and THROWS on a
+  // longer array — blanking the render and poisoning the loop. So we must use
+  // a TWEEN whenever the keyframe-array branch is active, and the spring only
+  // for the settle. Per-property transition overrides don't help here: Motion
+  // resolves the `x` array against the top-level transition.
+  const isNudging = visible && !flipped && nudgeNonce !== 0;
+
   return (
     <motion.button
       type="button"
@@ -940,12 +948,16 @@ function MissionCard({
             : { opacity: 1, y: 0, scale: 1, rotateX: 0, x: [0, -6, 6, -3, 0] }
           : { opacity: 0, y: 50, scale: 0.6, rotateX: 30 }
       }
-      transition={{
-        type: "spring",
-        stiffness: 220,
-        damping: 22,
-        delay: visible ? index * 0.08 : 0,
-      }}
+      transition={
+        isNudging
+          ? { duration: 0.4, ease: "easeInOut" }
+          : {
+              type: "spring",
+              stiffness: 220,
+              damping: 22,
+              delay: visible ? index * 0.08 : 0,
+            }
+      }
       // nudgeNonce keys the wobble so every Accept press replays it on
       // the cards that are still face-down.
       data-nudge={nudgeNonce}

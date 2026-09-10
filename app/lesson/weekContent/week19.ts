@@ -50,9 +50,6 @@ export const WEEK_19: WeekContent = {
     // 0 - OPENING VIDEO: the expert in the house
     { type: "video", videoPlaceholder: "Week 19: The Expert in the House", videoSrc: "/videos/module-19-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[19] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -61,8 +58,11 @@ export const WEEK_19: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon has given up on YOU - eighteen weeks of walls, locks and popped balloons taught him that lesson. So he's turned his tricks on your FAMILY: a gift-card prize text for Grandma, a $1 package scam for Dad, a free-coin machine for your little brother. Same tricks, bigger font. But he's forgotten the most important thing in the whole house... it has an EXPERT now. This week the roles flip: you teach, you check, you speak up - and together you raise the Family Firewall.",
       photoCaption: "Wk 19 - The Expert in the House",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[19] },
 
     // 2 - Mission brief
     {

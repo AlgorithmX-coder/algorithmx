@@ -59,6 +59,8 @@ export interface WeakSorterProps {
   items: WeakItem[];
   hints?: WeakSorterHints;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -87,6 +89,7 @@ export default function WeakSorter({
   items,
   hints,
   introNarration,
+  threat,
   onComplete,
   onCorrect,
   onWrong,
@@ -129,14 +132,30 @@ export default function WeakSorter({
   // (first card on mount). Resets on reset.
   const [cardKey, setCardKey] = useState<number>(0);
 
-  const current = items[idx];
+  // Shuffle the items ONCE per play (Fisher-Yates in a useState initializer so
+  // it's stable within a play but random each time). The authored order in the
+  // week data groups each reason in a fixed cycle (too-short, common-word,
+  // personal, keyboard, repeat) which let a child tap the reasons A,B,C,D,A,B,
+  // C,D by rhythm without reading — an answer giveaway. Shuffling breaks the
+  // pattern; the reason BUTTONS stay in fixed positions so the spatial mapping
+  // a child learns ("too short is top-left") still holds.
+  const [gameItems] = useState<WeakItem[]>(() => {
+    const a = [...items];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  });
+
+  const current = gameItems[idx];
   const reasonsById = useMemo(() => {
     const m = new Map<string, WeakReason>();
     reasons.forEach((r) => m.set(r.id, r));
     return m;
   }, [reasons]);
 
-  const finished = idx >= items.length;
+  const finished = idx >= gameItems.length;
 
   // After the burst on a correct answer, advance to next item.
   useEffect(() => {
@@ -210,8 +229,8 @@ export default function WeakSorter({
           : hints?.tier3 ?? "Check each reason carefully.";
 
   if (finished) {
-    const accuracy = items.length
-      ? Math.round((correctCount / items.length) * 100)
+    const accuracy = gameItems.length
+      ? Math.round((correctCount / gameItems.length) * 100)
       : 0;
     const stars = wrongTotal === 0 ? 3 : wrongTotal <= 2 ? 2 : 1;
     return (
@@ -235,7 +254,7 @@ export default function WeakSorter({
           Weakness Detective!
         </h2>
         <p style={{ color: "#cbd5e1", margin: "0 0 4px" }}>
-          You spotted {correctCount} of {items.length} weak-password
+          You spotted {correctCount} of {gameItems.length} weak-password
           reasons.
         </p>
         <p style={{ color: "#94a3b8", margin: "0 0 18px" }}>
@@ -268,6 +287,7 @@ export default function WeakSorter({
           subtitle="For each password, work out WHY it's weak."
           icon="🕵️"
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker ?? "adam"}
           onDismiss={() => setShowIntro(false)}
         />
@@ -300,7 +320,7 @@ export default function WeakSorter({
             fontFamily: "'JetBrains Mono', monospace",
           }}
         >
-          {idx + 1} / {items.length}
+          {idx + 1} / {gameItems.length}
         </span>
       </div>
 

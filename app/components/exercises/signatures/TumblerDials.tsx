@@ -33,6 +33,7 @@ import {
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                */
@@ -63,20 +64,38 @@ interface RingDef {
 const SLOT_STEP = 90;
 const SLOT_COUNT = 4;
 
+// Each dial is a GENUINE 1-of-4 choice (one strong slot, three weak decoys),
+// and EVERY slot carries a teach line so the child learns WHY on every pick -
+// not just when they land on the one decoy. The strong slot sits at a
+// different index on each dial so there's no positional giveaway. Together the
+// three dials preview the week: a long random WORD, a tricky NUMBER, a real
+// SYMBOL.
 const RINGS: RingDef[] = [
   {
     id: "word",
     name: "WORD",
     emoji: "🔠",
     slots: [
-      { label: "dragon", good: true },
+      {
+        label: "cat",
+        good: false,
+        teach: "'cat' is tiny. A short password gets cracked in a blink.",
+      },
+      {
+        label: "otter-comet",
+        good: true,
+        teach: "Yes! Two random words make it long and hard to guess. Long is strong!",
+      },
       {
         label: "password",
         good: false,
         teach: 'The Raccoon guesses "password" first, every single time!',
       },
-      { label: "rocket", good: true },
-      { label: "purple", good: true },
+      {
+        label: "dragon",
+        good: false,
+        teach: "'dragon' is a plain word loads of people pick. Too easy to guess.",
+      },
     ],
   },
   {
@@ -84,14 +103,26 @@ const RINGS: RingDef[] = [
     name: "NUMBER",
     emoji: "🔢",
     slots: [
-      { label: "42", good: true },
-      { label: "7", good: true },
       {
         label: "1234",
         good: false,
         teach: "1-2-3-4 is the very first number the Raccoon tries!",
       },
-      { label: "93", good: true },
+      {
+        label: "2011",
+        good: false,
+        teach: "A year like that is easy to guess, just like a birthday.",
+      },
+      {
+        label: "93",
+        good: true,
+        teach: "A random number the Raccoon can't predict. Nice pick!",
+      },
+      {
+        label: "0000",
+        good: false,
+        teach: "All the same number? He guesses that in a heartbeat.",
+      },
     ],
   },
   {
@@ -99,16 +130,28 @@ const RINGS: RingDef[] = [
     name: "SYMBOL",
     emoji: "🔣",
     slots: [
-      { label: "!", good: true },
-      { label: "*", good: true },
+      {
+        label: "!",
+        good: true,
+        teach: "A symbol like ! makes it much harder. The Raccoon hates those!",
+      },
+      {
+        label: "a",
+        good: false,
+        teach: "That's a letter, not a symbol. Symbols are marks like ! or #.",
+      },
+      {
+        label: "5",
+        good: false,
+        teach: "That's a number, not a symbol. A symbol is a mark like ! or $.",
+      },
       {
         label: "",
         display: "none",
         ghost: true,
         good: false,
-        teach: "No symbol? Too easy! The Raccoon slips right in!",
+        teach: "No symbol at all? Too easy, he slips right in!",
       },
-      { label: "#", good: true },
     ],
   },
 ];
@@ -719,7 +762,13 @@ function PasswordPlate({
 
 type Phase = "play" | "opening" | "open";
 
-export default function TumblerDials({ onComplete }: { onComplete: () => void }) {
+export default function TumblerDials({
+  onComplete,
+  guide,
+}: {
+  onComplete: () => void;
+  guide?: { speaker?: "adam" | "layla"; claim: string; evidence: string };
+}) {
   const reduceMotion = useReducedMotion();
   const audio = useGameAudio();
   const [seated, setSeated] = useState<Partial<Record<RingId, string>>>({});
@@ -728,6 +777,16 @@ export default function TumblerDials({ onComplete }: { onComplete: () => void })
     null,
   );
   const [hasSpun, setHasSpun] = useState(false);
+  // Guided first round: Sarah talks the child through the WORD dial, then
+  // hands over. Audio-only and non-blocking; recordedOnly keeps it silent on
+  // any week without a recorded guide clip. It stops the instant the first
+  // tumbler locks.
+  const [guideStage, setGuideStage] = useState<"claim" | "evidence" | "done">(
+    guide ? "claim" : "done",
+  );
+  useEffect(() => {
+    if (seated.word !== undefined) setGuideStage("done");
+  }, [seated.word]);
 
   const doneRef = useRef(false);
   const toastId = useRef(0);
@@ -742,13 +801,16 @@ export default function TumblerDials({ onComplete }: { onComplete: () => void })
     window.clearTimeout(toastTimer.current);
     toastId.current += 1;
     setToast({ id: toastId.current, kind, text });
-    toastTimer.current = window.setTimeout(() => setToast(null), kind === "bad" ? 3000 : 1800);
+    // Both kinds now carry a teach line ("why it's strong" / "why it's weak"),
+    // so give the child time to read either.
+    toastTimer.current = window.setTimeout(() => setToast(null), kind === "bad" ? 3600 : 3000);
   };
 
   const handleSeat = (ring: RingDef, slot: DialSlot) => {
     audio.correct();
     setSeated((prev) => ({ ...prev, [ring.id]: slot.label }));
-    showToast("good", `CLUNK! The ${ring.name} tumbler is locked!`);
+    // Teach WHY this pick is strong (not just "locked"), so every choice learns.
+    showToast("good", slot.teach ?? `CLUNK! The ${ring.name} tumbler is locked!`);
   };
 
   const handleDecoy = (slot: DialSlot) => {
@@ -781,6 +843,23 @@ export default function TumblerDials({ onComplete }: { onComplete: () => void })
   return (
     <ExerciseFrame padding={24}>
       <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 14 }}>
+        {/* Guided first round (audio-only): Sarah walks the child through the
+            WORD dial, then hands over once it locks. Never blocks the dials. */}
+        {guide && guideStage !== "done" && phase === "play" && (
+          <div
+            aria-hidden
+            style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}
+          >
+            <InfoNarration
+              key={`tumbler-guide-${guideStage}`}
+              speaker={guide.speaker ?? "adam"}
+              lines={[guideStage === "claim" ? guide.claim : guide.evidence]}
+              guard={false}
+              recordedOnly
+              onDone={() => setGuideStage((s) => (s === "claim" ? "evidence" : "done"))}
+            />
+          </div>
+        )}
         {/* Header */}
         <div style={{ textAlign: "center" }}>
           <div

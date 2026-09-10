@@ -219,11 +219,19 @@ export default function QuickCheck({
   // Shuffle once per mount so the correct answer isn't predictably first.
   const shuffledChoices = useMemo(() => shuffleChoices(choices), [choices]);
 
-  // Sarah reads the question aloud when the Prove-it appears (a fill-blank
-  // "___" is spoken as "blank"). Stable array so re-renders (e.g. speed mode's
-  // urgency ticker) don't churn InfoNarration. speaker="adam" = Sarah, matching
-  // the recorded quickCheck prompt in the manifest.
-  const promptLines = useMemo(() => [prompt.replace(/_{2,}/g, "blank")], [prompt]);
+  // Sarah reads the challenge aloud when the Prove-it appears. For `finish`
+  // (fill-in-the-blank) she must NOT read the gapped sentence - it came out as
+  // the broken "...proves it's blank" - so she gives a clean instruction and the
+  // child reads the sentence + word choices on screen. Other modes read the real
+  // question. Stable array so re-renders (e.g. speed mode's urgency ticker) don't
+  // churn InfoNarration. speaker="adam" = Sarah, matching the manifest.
+  const promptLines = useMemo(
+    () =>
+      mode === "finish"
+        ? ["Can you fill in the missing word?"]
+        : [prompt.replace(/_{2,}/g, "blank")],
+    [prompt, mode],
+  );
 
   // render the prompt with the blank emphasised for `finish`
   const promptNode =

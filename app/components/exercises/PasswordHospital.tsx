@@ -87,6 +87,8 @@ export interface PasswordHospitalProps {
   patients: HospitalPatient[];
   hints?: HospitalHints;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
   /** Teach-once coach line played on Patient #1's diagnosis, then dismissed. */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
@@ -304,6 +306,7 @@ export default function PasswordHospital({
   patients,
   hints,
   introNarration,
+  threat,
   coachLines,
   onComplete,
   onCorrect,
@@ -703,6 +706,7 @@ export default function PasswordHospital({
           subtitle="Diagnose each weak password, then repair it back to full strength."
           icon="🏥"
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker ?? "adam"}
           onDismiss={() => setPhase("diagnosis")}
         />

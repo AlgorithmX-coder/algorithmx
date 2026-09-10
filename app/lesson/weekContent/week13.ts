@@ -42,9 +42,6 @@ export const WEEK_13: WeekContent = {
     // 0 - OPENING VIDEO: the battery thief
     { type: "video", videoPlaceholder: "Week 13: The Battery Thief", videoSrc: "/videos/module-13-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[13] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -53,8 +50,11 @@ export const WEEK_13: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon's got a new hobby: battery thieving. Not phone batteries - KID batteries. He loves heroes drained, grumpy and glued to the glow, because tired heroes are easy to trick. This week you take your power back: hear the warning bells, guard your sleep, and power off like a pro.",
       photoCaption: "Wk 13 - The Battery Thief",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[13] },
 
     // 2 - Mission brief
     {

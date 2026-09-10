@@ -41,9 +41,6 @@ export const WEEK_9: WeekContent = {
     // 0 - OPENING VIDEO: the copycat shop
     { type: "video", videoPlaceholder: "Week 9: The Copycat Shop", videoSrc: "/videos/module-09-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[9] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -52,8 +49,11 @@ export const WEEK_9: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon built a COPYCAT of the most popular game - same icon, one letter different. Kids who grabbed it got endless ads, coin traps and a sneaky camera permission. This week you learn to spot the fakes.",
       photoCaption: "Wk 9 - Spot the Fakes",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[9] },
 
     // 2 - Mission brief
     {
