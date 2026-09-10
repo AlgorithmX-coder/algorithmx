@@ -197,6 +197,11 @@ export default function InfoNarration({
   }, []);
   const comfort = useComfortMode();
   const [speaking, setSpeaking] = useState<boolean>(false);
+  // `armed` bridges the ~400ms pre-roll between autoplay committing and the
+  // audio actually sounding (`speaking`). Without it the click-guard is down
+  // for that window and a fast tap skips the very start of the voice. See the
+  // autoplay effect + the disarm effect below.
+  const [armed, setArmed] = useState<boolean>(false);
   const [activeLine, setActiveLine] = useState<number>(-1);
   // Resolved playback mode for this block. "loading" until the
   // manifest fetch completes; "recorded" if the block has an entry;
@@ -391,14 +396,29 @@ export default function InfoNarration({
     if (mode === "loading" || mode === "captions") return;
     if (autoFiredRef.current) return;
     autoFiredRef.current = true;
+    // Arm the click-guard NOW — we're committed to playing, so the child must
+    // not be able to tap through the 400ms pre-roll before the voice sounds.
+    // Disarmed the instant `speaking` turns true (see effect below); a 2s
+    // backstop guarantees it can never stick if playback fails to start.
+    setArmed(true);
+    const armBackstop = window.setTimeout(() => setArmed(false), 2000);
     // Fire through a ref, with deps [autoPlay, mode] only (NOT `speak`). If a
     // parent re-renders rapidly while passing an inline `lines` array (e.g. the
     // Choose-Your-Path typewriter re-rendering ~30x/s), `speak`'s identity
     // churns; had it been a dep, each re-run's cleanup would clear this 400ms
     // timer before it fired and the narration would never play.
     const id = window.setTimeout(() => speakRef.current(), 400);
-    return () => window.clearTimeout(id);
+    return () => {
+      window.clearTimeout(id);
+      window.clearTimeout(armBackstop);
+    };
   }, [autoPlay, mode]);
+
+  // Disarm the pre-roll guard once the audio is actually sounding — from here
+  // `speaking` keeps the guard up until playback ends/errors/stops.
+  useEffect(() => {
+    if (speaking) setArmed(false);
+  }, [speaking]);
 
   // Safety release: the click-guard blocks the screen while `speaking`. Some
   // browsers' Web-Speech engine never fires `onend` (a known flake), which
@@ -439,7 +459,7 @@ export default function InfoNarration({
       {/* Block clicks while the narrator speaks so children listen (mute at
           z-index 90 stays reachable and stops narration). Suppressed when the
           host owns the gate (guard=false) to avoid two "listen" indicators. */}
-      <NarrationClickGuard active={speaking && guard} />
+      <NarrationClickGuard active={(speaking || armed) && guard} />
     <div
       style={{
         display: "flex",

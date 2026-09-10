@@ -40,9 +40,6 @@ export const WEEK_4: WeekContent = {
     // 0 - OPENING VIDEO: the V-Bucks blast
     { type: "video", videoPlaceholder: "Week 4: The Prize That Wasn't", videoSrc: "/videos/module-04-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[4] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -51,8 +48,11 @@ export const WEEK_4: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon blasted out 'YOU WON 10,000 V-BUCKS!' to every kid in the city - and someone clicked. There was no prize. There never is. Time to learn his tricks!",
       photoCaption: "Wk 4 - The Prize That Wasn't",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[4] },
 
     // 2 - Mission brief
     {

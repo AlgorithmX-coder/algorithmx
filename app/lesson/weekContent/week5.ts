@@ -42,9 +42,6 @@ export const WEEK_5: WeekContent = {
     // 0 - OPENING VIDEO: the group chat pile-on
     { type: "video", videoPlaceholder: "Week 5: The Pile-On", videoSrc: "/videos/module-05-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[5] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -53,8 +50,11 @@ export const WEEK_5: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon stirred up a group chat and got kids piling on ONE kid with mean messages. Words can really, really hurt - but this week, YOUR words become a superpower.",
       photoCaption: "Wk 5 - The Pile-On",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[5] },
 
     // 2 - Mission brief
     {

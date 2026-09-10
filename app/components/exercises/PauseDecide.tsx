@@ -24,16 +24,29 @@ import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 export interface PauseScenario {
   setup: string;
   choices: { text: string; isSafe: boolean; consequence: string }[];
   frame?: { appName: string; icon: string };
+  /** How the SAFE move reads. "pause" (default) = the red PAUSE/don't-share
+   *  button; "ask" = a friendly green "ask a grown-up" button — the one person
+   *  it IS safe to tell. Varying this stops the drill being "always tap PAUSE"
+   *  and teaches who's safe to ask for help. */
+  safeKind?: "pause" | "ask";
 }
 
 export interface PauseDecideProps {
   scenarios: PauseScenario[];
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** When true, Sarah reads each scenario (and its outcome) aloud, with the
+   *  no-skip guard holding the buttons until she finishes — matching the
+   *  classroom principle used in ChooseYourPath. Opt-in so device weeks that
+   *  ship no per-scenario recordings (W2/W5) stay silent + unchanged. */
+  speakScenarios?: boolean;
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -42,6 +55,8 @@ export interface PauseDecideProps {
 export default function PauseDecide({
   scenarios,
   introNarration,
+  threat,
+  speakScenarios = false,
   onComplete,
   onCorrect,
   onWrong,
@@ -63,6 +78,21 @@ export default function PauseDecide({
   const sc = scenarios[idx];
   const tempting = sc?.choices.find((c) => !c.isSafe);
   const pauseChoice = sc?.choices.find((c) => c.isSafe);
+  // The safe move's look: red PAUSE (don't share) vs friendly green "ask a
+  // grown-up" (the one safe person to tell).
+  const safeIsAsk = (sc?.safeKind ?? "pause") === "ask";
+  const safeIcon = safeIsAsk ? "👪" : "⏸️";
+  const safeFxText = safeIsAsk ? "GOOD CALL!" : "PAUSED!";
+  const safeOverlayLabel = safeIsAsk ? "GOOD CALL" : "PAUSED";
+  const safeGrad = safeIsAsk
+    ? "radial-gradient(circle at 50% 26%, #6be08a 0%, #2fb45a 68%, #1f8a45 100%)"
+    : "radial-gradient(circle at 50% 26%, #ff6b6b 0%, #d92f3e 68%, #a91f2e 100%)";
+  const safeBorder = safeIsAsk ? "3px solid #a9f0c0" : "3px solid #ff9d9d";
+  const safeShadow = safeIsAsk
+    ? "0 10px 26px -10px rgba(47,180,90,0.8), inset 0 2px 0 rgba(255,255,255,0.25)"
+    : "0 10px 26px -10px rgba(217,47,62,0.8), inset 0 2px 0 rgba(255,255,255,0.25)";
+  const safeOverlayBorder = safeIsAsk ? "3px solid #5fe08a" : "3px solid #ff5f5f";
+  const safeOverlayColor = safeIsAsk ? "#b1ffc4" : "#ffb1b1";
 
   const advance = () => {
     setSafeCard(null);
@@ -82,7 +112,7 @@ export default function PauseDecide({
   const choosePause = () => {
     if (!pauseChoice || safeCard || wrongPanel) return;
     audio.correct();
-    fx.correct({ xp: 25, text: "PAUSED!" });
+    fx.correct({ xp: 25, text: safeFxText });
     onCorrect?.();
     setCorrectCount((n) => n + 1);
     setPausedFx(true);
@@ -101,9 +131,34 @@ export default function PauseDecide({
           subtitle="Feel the 'hmm, not sure' tingle? Hit PAUSE and ask first."
           icon="⏸️"
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
+      )}
+
+      {/* Sarah reads each scenario aloud, then its outcome after a pick.
+          Audio-only (visually hidden) so it never duplicates the on-screen
+          app message; the "Listening…" click-guard still shows and holds the
+          two buttons / Continue until she finishes. setup + consequence are
+          recorded under speaker "adam" (see the narration generator), so we
+          narrate them with speaker="adam" regardless of the intro's speaker.
+          recordedOnly = stay silent (no robotic TTS) if a line isn't recorded. */}
+      {speakScenarios && !showIntro && sc && (
+        <div
+          aria-hidden
+          style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}
+        >
+          {!safeCard && !wrongPanel && (
+            <InfoNarration key={`pd-setup-${idx}`} speaker="adam" lines={[sc.setup]} accent="#7df0ff" recordedOnly />
+          )}
+          {safeCard && (
+            <InfoNarration key={`pd-safe-${idx}`} speaker="adam" lines={[safeCard]} accent="#7eff97" recordedOnly />
+          )}
+          {wrongPanel && (
+            <InfoNarration key={`pd-wrong-${idx}`} speaker="adam" lines={[wrongPanel]} accent="#ff9db0" recordedOnly />
+          )}
+        </div>
       )}
 
       {sc && (
@@ -207,14 +262,14 @@ export default function PauseDecide({
                         padding: "10px 26px",
                         borderRadius: 999,
                         background: "rgba(8,10,22,0.9)",
-                        border: "3px solid #ff5f5f",
-                        color: "#ffb1b1",
+                        border: safeOverlayBorder,
+                        color: safeOverlayColor,
                         fontSize: 24,
                         fontWeight: 900,
                         letterSpacing: "0.12em",
                       }}
                     >
-                      <PixIcon emoji="⏸️" size={30} /> PAUSED
+                      <PixIcon emoji={safeIcon} size={30} /> {safeOverlayLabel}
                     </motion.span>
                   </motion.div>
                 )}
@@ -266,13 +321,13 @@ export default function PauseDecide({
                   cursor: "pointer",
                   touchAction: "manipulation",
                   fontFamily: "inherit",
-                  background: "radial-gradient(circle at 50% 26%, #ff6b6b 0%, #d92f3e 68%, #a91f2e 100%)",
-                  border: "3px solid #ff9d9d",
-                  boxShadow: "0 10px 26px -10px rgba(217,47,62,0.8), inset 0 2px 0 rgba(255,255,255,0.25)",
+                  background: safeGrad,
+                  border: safeBorder,
+                  boxShadow: safeShadow,
                   color: "#fff",
                 }}
               >
-                <PixIcon emoji="⏸️" size={30} />
+                <PixIcon emoji={safeIcon} size={30} />
                 <span style={{ fontSize: 15, fontWeight: 900, letterSpacing: "0.05em", lineHeight: 1.25, textAlign: "center" }}>
                   {pauseChoice?.text ?? "PAUSE — ask first"}
                 </span>

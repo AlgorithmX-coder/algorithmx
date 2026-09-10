@@ -39,9 +39,6 @@ export const WEEK_3: WeekContent = {
     // 0 - OPENING VIDEO: the fake-kid profile trap
     { type: "video", videoPlaceholder: "Week 3: The Fake Friend", videoSrc: "/videos/module-03-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[3] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -50,8 +47,11 @@ export const WEEK_3: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon built a FAKE kid profile - fake photo, fake age, fake name - and tricked a hero into telling him secrets. He's sending friend requests right now!",
       photoCaption: "Wk 3 - The Fake Friend",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[3] },
 
     // 2 - Mission brief
     {

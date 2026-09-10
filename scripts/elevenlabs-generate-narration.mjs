@@ -133,6 +133,12 @@ function seededShuffle(arr, seed) {
 const senderRoundPromptRe = /prompt:\s*"((?:[^"\\]|\\.)*)"\s*,\s*senders:/g;
 const blocks = [];
 
+// Shared, non-week-specific lines. Finish-mode quick-checks speak a fixed
+// instruction (Sarah must not read the gapped sentence, which came out as
+// "...proves it's blank"); one recording, reused by every week's finish
+// quick-check. speaker "adam" = Sarah, matching QuickCheck's promptLines.
+blocks.push({ speaker: "adam", lines: ["Can you fill in the missing word?"], source: "shared" });
+
 for (const fname of weekFiles) {
   const src = await readFile(join(WEEK_CONTENT_DIR, fname), "utf8");
   let fileBlocks = 0;
@@ -188,11 +194,29 @@ for (const fname of weekFiles) {
       fileBlocks++;
     }
   }
-  // TEMP scope: only week 15's boss is trimmed-to-5 + finalized. The other
-  // weeks still have 15 un-rewritten questions, so skip recording their long
-  // read-outs until the learn-loop rollout trims them. Remove this guard then.
+  // SignBingo: Sarah reads each `scene` aloud, then explains the `why` on a
+  // correct tap. Week 1 only for now (like the boss scans) so shipped weeks
+  // (e.g. W13) don't gain voice unexpectedly; `scene:`/`why:` are SignBingo
+  // keys. Recorded as "adam" (both content speakers = Sarah).
+  if (fname === "week1.ts") {
+    const sbSceneRe = /\bscene:\s*"((?:[^"\\]|\\.)*)"/g;
+    const sbWhyRe = /\bwhy:\s*"((?:[^"\\]|\\.)*)"/g;
+    let sbm;
+    while ((sbm = sbSceneRe.exec(src)) !== null) {
+      const text = sbm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+      if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
+    }
+    while ((sbm = sbWhyRe.exec(src)) !== null) {
+      const text = sbm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+      if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
+    }
+  }
+  // TEMP scope: only weeks 1 and 15 have trimmed, finalized bosses (7 Q /
+  // pass 5). The other weeks still have 15 un-rewritten questions, so skip
+  // recording their long read-outs until the learn-loop rollout trims them.
+  // Add each week's filename here as it is finalized; drop the guard at the end.
   let ba, bossQ = 0;
-  while (fname.includes("week15") && (ba = bossAskRe.exec(src)) !== null) {
+  while ((fname === "week1.ts" || fname === "week15.ts") && (ba = bossAskRe.exec(src)) !== null) {
     const askText = ba[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
     const optRe = /text:\s*"((?:[^"\\]|\\.)*)"/g;
     const opts = [];
@@ -228,7 +252,7 @@ for (const fname of weekFiles) {
   // ("That's right!") and the wrong lead ("Not quite.") in front of the same
   // teachOnWrong.explanation, matching QuizBoss's `explain.lines` exactly. Same
   // week-15-only scope as the read-outs above.
-  if (fname.includes("week15")) {
+  if ((fname === "week1.ts" || fname === "week15.ts")) {
     const bossTeachRe = /teachOnWrong:\s*\{\s*title:\s*"(?:[^"\\]|\\.)*"\s*,\s*explanation:\s*"((?:[^"\\]|\\.)*)"/g;
     let bt;
     while ((bt = bossTeachRe.exec(src)) !== null) {
@@ -246,7 +270,7 @@ for (const fname of weekFiles) {
   // single-line block, matching InfoNarration({ lines: [explanation] }). Same
   // week-15-only scope; dedupes, and over-recording a few strings that aren't
   // shown in the panel is harmless.
-  if (fname.includes("week15")) {
+  if ((fname === "week1.ts" || fname === "week15.ts")) {
     const wrongRe = /(?:explanation|note):\s*"((?:[^"\\]|\\.)*)"/g;
     const seenWrong = new Set();
     let wm;

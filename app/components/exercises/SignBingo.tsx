@@ -14,7 +14,7 @@
  * sign card that fills up square by square.
  */
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
@@ -25,6 +25,8 @@ import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import GameButton from "@/app/components/lesson/GameButton";
 
 export interface BingoSign {
   id: string;
@@ -36,7 +38,7 @@ export interface BingoSign {
 
 export interface BingoRound {
   id: string;
-  /** The mini scene played above the card. */
+  /** The mini scene played above the card. Read aloud by Sarah. */
   scene: string;
   /** Emoji badge on the scene card. */
   sceneIcon?: string;
@@ -44,6 +46,10 @@ export interface BingoRound {
   signId: string;
   /** Teach copy on a wrong tap for this scene. */
   note: string;
+  /** Positive explanation on a CORRECT tap - WHY this move shows that power.
+   *  Shown + read aloud by Sarah before advancing (teach-on-success). When
+   *  omitted, a correct tap advances immediately (legacy behaviour). */
+  why?: string;
 }
 
 export interface SignBingoProps {
@@ -107,9 +113,21 @@ export default function SignBingo({
   const [wobbleId, setWobbleId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
+  // Teach-on-success: after a correct tap, hold on a "why" beat (Sarah explains
+  // the reasoning) with a gated Next before advancing.
+  const [explain, setExplain] = useState<null | { why: string; key: number }>(null);
+  const [whyDone, setWhyDone] = useState(false);
 
   const finished = roundIdx >= rounds.length;
   const round = rounds[roundIdx];
+
+  // Safety release: never leave the "why" beat's gated Next stuck behind a
+  // narration that fails to fire onDone.
+  useEffect(() => {
+    if (!explain) return;
+    const id = window.setTimeout(() => setWhyDone(true), 12000);
+    return () => window.clearTimeout(id);
+  }, [explain]);
 
   const reportedTier = useRef(0);
   const reportTier = (n: number) => {
@@ -142,7 +160,14 @@ export default function SignBingo({
       if (!wrongOnCurrent) setFirstTryCount((n) => n + 1);
       setWrongOnCurrent(false);
       setStamped((prev) => new Set(prev).add(sign.id));
-      setRoundIdx((i) => i + 1);
+      // Teach-on-success: hold on Sarah's "why" before advancing. Without a
+      // `why`, advance immediately (legacy).
+      if (round.why) {
+        setWhyDone(false);
+        setExplain({ why: round.why, key: Date.now() });
+      } else {
+        setRoundIdx((i) => i + 1);
+      }
     } else {
       audio.wrong();
       onWrong?.();
@@ -173,6 +198,9 @@ export default function SignBingo({
           icon={introIcon ?? "🔔"}
           narration={introNarration}
           character={introNarration?.speaker}
+          // This game frame is wide (820px); without `overlay` the threat-less
+          // intro renders as a big empty box inside it. overlay = clean modal.
+          overlay
           onDismiss={() => setShowIntro(false)}
         />
       )}
@@ -207,6 +235,15 @@ export default function SignBingo({
         </AnimatePresence>
       )}
 
+      {/* Sarah reads the scene aloud (audio-only, visually hidden so it doesn't
+          duplicate the scene card); the click-guard holds the squares until she
+          finishes. recordedOnly = silent on un-recorded weeks (no robotic TTS). */}
+      {round && !finished && !feedback && !explain && (
+        <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+          <InfoNarration key={`sb-scene-${round.id}`} speaker="adam" lines={[round.scene]} accent="#7df0ff" recordedOnly />
+        </div>
+      )}
+
       {/* The bingo card */}
       <div
         style={{
@@ -231,7 +268,7 @@ export default function SignBingo({
                 type="button"
                 onClick={() => tap(s, i)}
                 onPointerEnter={() => audio.hover()}
-                disabled={!!feedback || finished}
+                disabled={!!feedback || !!explain || finished}
                 animate={wobbleId === s.id && !reduce ? { rotate: [0, -4, 4, -2, 0] } : { rotate: 0 }}
                 whileHover={reduce || isStamped ? undefined : { y: -4 }}
                 whileTap={{ scale: 0.96 }}
@@ -308,6 +345,57 @@ export default function SignBingo({
           tip={feedback.tip}
           onContinue={() => setFeedback(null)}
         />
+      )}
+
+      {/* Teach-on-success: Sarah explains WHY that move showed the power. The
+          InfoNarration reads it aloud (guard holds the screen); Next appears
+          once she's finished (or the safety release fires). */}
+      {explain && (
+        <div style={{ maxWidth: 560, margin: "14px auto 0", textAlign: "center" }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 10,
+              padding: "5px 14px",
+              borderRadius: 999,
+              background: "rgba(126,255,151,0.14)",
+              border: "1px solid rgba(126,255,151,0.5)",
+              color: "#a0ffb0",
+              fontSize: 12,
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+            }}
+          >
+            <PixIcon emoji="⭐" size={16} /> SPOT ON!
+          </div>
+          <div style={{ textAlign: "left" }}>
+            <InfoNarration
+              key={`sb-why-${explain.key}`}
+              lines={[explain.why]}
+              speaker="adam"
+              accent="#7eff97"
+              recordedOnly
+              onDone={() => setWhyDone(true)}
+            />
+          </div>
+          {whyDone && (
+            <div style={{ marginTop: 12 }}>
+              <GameButton
+                variant="primary"
+                size="lg"
+                onClick={() => {
+                  setExplain(null);
+                  setWhyDone(false);
+                  setRoundIdx((i) => i + 1);
+                }}
+              >
+                {stamped.size >= signs.length ? "See your bingo →" : "Next →"}
+              </GameButton>
+            </div>
+          )}
+        </div>
       )}
 
       {finished && (

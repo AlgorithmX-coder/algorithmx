@@ -82,6 +82,10 @@ export interface ExerciseIntroBeatProps {
    * single eyebrow ("Spot the Danger").
    */
   threat?: { raccoonLine: string };
+  /** Force the full-viewport modal presentation even without a `threat`. Use
+   *  for a threat-less intro hosted in a WIDE game frame (e.g. SignBingo's 820px
+   *  frame), where the default in-frame overlay renders as a big empty box. */
+  overlay?: boolean;
 }
 
 export default function ExerciseIntroBeat({
@@ -95,7 +99,11 @@ export default function ExerciseIntroBeat({
   character,
   accent: accentOverride,
   threat,
+  overlay = false,
 }: ExerciseIntroBeatProps) {
+  // A merged (threat) intro OR an explicit `overlay` request covers the whole
+  // viewport (a real modal); plain intros stay an in-frame overlay.
+  const fullScreen = !!threat || overlay;
   const intensity = useMotionIntensity();
   const audio = useGameAudio();
   const paced = !!narration && narration.lines.length > 0;
@@ -142,10 +150,11 @@ export default function ExerciseIntroBeat({
       style={{
         // A merged (threat) intro carries more content than the small game
         // frame is tall, so it covers the whole viewport (a real modal) to get
-        // the room; plain intros stay an in-frame overlay as before.
-        position: threat ? "fixed" : "absolute",
+        // the room; plain intros stay an in-frame overlay as before. `overlay`
+        // forces the modal for threat-less intros in wide frames.
+        position: fullScreen ? "fixed" : "absolute",
         inset: 0,
-        zIndex: threat ? 90 : 25,
+        zIndex: fullScreen ? 90 : 25,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

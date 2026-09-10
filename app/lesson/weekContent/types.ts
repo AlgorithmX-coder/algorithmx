@@ -633,6 +633,9 @@ export type ScreenDef = (
         choices: { text: string; isSafe: boolean; consequence: string }[];
         /** `device` presentation: what app/site this moment happens in. */
         frame?: { appName: string; icon: string };
+        /** `device` presentation: how the SAFE move reads - "pause" (default,
+         *  red don't-share) or "ask" (green "ask a grown-up"). */
+        safeKind?: "pause" | "ask";
       }[];
       /**
        * Presentation variant. `device` stages each scenario as an in-world
@@ -641,6 +644,14 @@ export type ScreenDef = (
        * keeps the classic Week 1 look.
        */
       presentation?: "device";
+      /**
+       * `device` presentation only: have Sarah read each scenario (and its
+       * outcome) aloud, with the no-skip guard holding the buttons until she
+       * finishes. Opt-in because device weeks without per-scenario recordings
+       * stay silent; setups/consequences must be generated (they record under
+       * speaker "adam").
+       */
+      speakScenarios?: boolean;
     }
   | {
       /**
@@ -1118,6 +1129,9 @@ export type ScreenDef = (
         signId: string;
         /** Teach copy on a wrong tap for this scene. */
         note: string;
+        /** Positive explanation read aloud on a CORRECT tap (teach-on-success);
+         *  omit to advance immediately. */
+        why?: string;
       }[];
       /** Copy overrides (defaults keep the W13 body-bell skin). */
       introTitle?: string;
@@ -1409,6 +1423,24 @@ export type ScreenDef = (
       /** What's coming next. Omit/replace with a finale line on the last. */
       next?: string;
       /** Header emblem glyph (defaults to ✅). */
+      emblem?: string;
+    }
+  | {
+      /**
+       * NEXT-POWER chapter card — the scene break BETWEEN a concept's Complete
+       * recap and the next concept's Learn. Names the upcoming power + a one-line
+       * tease so the seam reads as "a new lesson starts", not "an exercise is
+       * coming". Sits after concepts 1..total-1. Sarah teases it via `narration`.
+       */
+      type: "nextPower";
+      /** The upcoming power's number and the week's total (e.g. 2 of 5). */
+      power: number;
+      total: number;
+      /** The next concept's title, e.g. "Long Is Strong". */
+      title: string;
+      /** One-line tease of the next power. */
+      tease: string;
+      /** Emblem glyph for the next power (defaults to ⚡). */
       emblem?: string;
     }
   | { type: "bossBattle" }

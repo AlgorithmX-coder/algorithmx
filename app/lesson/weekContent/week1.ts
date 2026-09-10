@@ -37,18 +37,29 @@ export const WEEK_1: WeekContent = {
     // 0 - OPENING VIDEO: "The Break-In" (Raccoon cracks a weak password)
     { type: "video", videoPlaceholder: "Week 1: The Break-In", videoSrc: "/videos/module-01-intro.mp4" },
 
-    // 1 - WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[1] },
-
-    // 1 - ALERT: incident report with this week's topic image
+    // 1 - ALERT: incident report with this week's topic image (comes FIRST now,
+    // so the incident lands before Mission Command briefs the plan - owner 2026-09-10)
     {
       type: "alert",
       photoSrc: "/cyberheroes/alerts/week-01.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
       caption: "The Hacker Raccoon is hunting for Adam and Layla's passwords. They need YOUR help!",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Oh no, Cyber Hero, look at this!",
+          "The Hacker Raccoon is trying to steal Adam and Layla's passwords.",
+          "If he cracks even one, he can get into all their games and messages.",
+          "[warmly] But by the end of this week, you'll build a password he can NEVER break.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
+
+    // 2 - WEEK INTRO: ATLAS (Mission Command) briefing, now AFTER the alert
+    { type: "weekIntro", ...WEEK_INTROS[1] },
 
     // 2 - Mission brief
     {
@@ -60,25 +71,16 @@ export const WEEK_1: WeekContent = {
       ],
     },
 
-      // SIGNATURE: The Tumbler Dials (bespoke mini-game unique to this week)
-      {
-        type: "signature",
-        mechanic: "tumblerDials",
-        title: "The Tumbler Dials",
-        narration: {
-          speaker: "adam",
-          lines: [
-            "[excited] Time to build a super-strong password on the vault dials!",
-            "Spin each dial to the strongest choice you can find.",
-            "[warmly] Lock in all three, and the vault clicks open!",
-          ],
-        },
-      },
+    // (Signature "Tumbler Dials" removed 2026-09-10: it sat before any teaching
+    // and asked kids to build a strong password they hadn't learned to build.
+    // Week 1 now opens straight into Concept 1's teaching, teach-first.)
 
     /* ─────────── BEAT 1 · KEY ─────────── */
     // 3 - Learn
     {
       type: "info",
+      conceptNumber: 1,
+      conceptTotal: 5,
       title: "What Is a Password?",
       content:
         "A password is a secret code that only YOU know. It's like a key - it proves to the computer that it's really you. A weak key snaps. A strong key keeps the Raccoon out.",
@@ -105,22 +107,31 @@ export const WEEK_1: WeekContent = {
     // 4 - Game: MATCH (Cyber Words)
     {
       type: "memoryMatch",
-      // Each meaning maps to exactly ONE term, mirroring the four bullets
-      // from the "What Is a Password?" beat above. (The old set used "Key"
-      // and "Mine" as terms and gave three meanings that all just described
-      // "the password", so nothing matched uniquely.)
+      threat: {
+        raccoonLine:
+          "Heh heh! Most kids don't even know what a password really IS. They think a hiding spot keeps them safe. That's how I sneak right in!",
+      },
+      introTitle: "Cyber Word Match",
+      introSubtitle: "Match each cyber word to what it means. Remember where the cards are!",
+      // Four DISTINCT cyber words, each with a meaning that fits exactly one
+      // of them (unique keyword in every clue: unlocks / guesses / crack /
+      // tell). The earlier set overlapped for a 6-9yo - "Proves it's YOU" vs
+      // "Only YOU know it" both said YOU, and "Keeps hackers out" mirrored
+      // "Wants to break in" - so more than one card could plausibly match.
       pairs: [
-        { term: "Password", match: "Proves it's YOU", colour: "#00e5ff" },
-        { term: "Strong Password", match: "Keeps hackers out", colour: "#7eff97" },
-        { term: "Hacker", match: "Wants to break in", colour: "#ff5fb3" },
-        { term: "Keep it Secret", match: "Only YOU know it", colour: "#ffd158" },
+        { term: "Password", match: "Unlocks your account", colour: "#00e5ff" },
+        { term: "Strong", match: "Too hard to crack", colour: "#7eff97" },
+        { term: "Hacker", match: "A baddie who guesses", colour: "#ff5fb3" },
+        { term: "Secret", match: "You never tell anyone", colour: "#ffd158" },
       ],
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Let's match the cyber words to their meanings!",
-          "Flip two cards to find a matching pair.",
-          "[warmly] Take your time, and remember where they are!",
+          "[warmly] On your very first challenge, we learn the cyber words!",
+          "This game is all about knowing what a password really is, and the words that go with it.",
+          "Out in the real world, once you know these words, nobody can muddle you up.",
+          "Here is what you do. The cards are face down. Tap one card, then tap another to find its matching pair.",
+          "[excited] Match them all and you're a cyber-word expert. Ready? Let's play!",
         ],
       },
       // Played at the "Rebuild From Memory" phase-2 card so the second
@@ -146,6 +157,15 @@ export const WEEK_1: WeekContent = {
         { text: "your friend", isCorrect: false },
       ],
       praise: "Exactly - it proves it's YOU! ✓",
+      teachNarration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Exactly right. A password proves it's YOU.",
+          "It's like showing a secret key that only you have.",
+          "So the computer knows the real you is logging in, not a sneaky Raccoon.",
+          "[excited] That is what keeps your stuff yours. Well done!",
+        ],
+      },
     },
 
     // - Recap · Concept 1 of 5 (What Is a Password?)
@@ -153,16 +173,33 @@ export const WEEK_1: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "A password is a secret code that proves it's really YOU.",
+      learned: "You know a password is your own secret key that proves it's YOU - so no one can pretend to be you and get into your stuff.",
       next: "making your password super strong",
       emblem: "🔑",
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Amazing work, Cyber Hero!",
-          "You just learned what a password really is.",
-          "It's a secret code that proves it's really you.",
-          "[excited] Next, let's make it super strong!",
+          "[excited] That's your first power, Cyber Hero!",
+          "You know a password is your very own secret key. It proves it's really YOU.",
+          "[warmly] So nobody can pretend to be you, and the Raccoon can't get into your things.",
+          "Next, we'll make that key so long the Raccoon can never crack it. Come and see!",
+        ],
+      },
+    },
+
+    // Next-Power chapter card → bridges the Concept-1 recap into Concept 2's
+    // Learn so the seam reads as "a new lesson starts", not "an exercise".
+    {
+      type: "nextPower",
+      power: 2,
+      total: 5,
+      title: "Long Is Strong",
+      tease: "Learn the trick that makes your password so long the Raccoon can never crack it.",
+      emblem: "💪",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Next up, your second power! Let's make your key so long the Raccoon can never crack it.",
         ],
       },
     },
@@ -171,6 +208,8 @@ export const WEEK_1: WeekContent = {
     // 6 - Learn
     {
       type: "info",
+      conceptNumber: 2,
+      conceptTotal: 5,
       title: "Long Is Strong",
       content:
         "The longer your password, the harder it is to crack. The easiest trick? Stick THREE RANDOM WORDS together - like dragon-taco-comet. Long, strong, AND easy to remember!",
@@ -195,6 +234,10 @@ export const WEEK_1: WeekContent = {
     // 7 - Game: BUILD (Three Random Words)
     {
       type: "threeRandomWords",
+      threat: {
+        raccoonLine:
+          "My guessing machine chews through short little passwords in a blink! Go on, pick a nice SHORT one, make my job easy, heh heh!",
+      },
       slots: 3,
       words: [
         { id: "w-tiger", text: "tiger", category: "animal" },
@@ -235,10 +278,11 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Time to build a password the Raccoon can't crack!",
-          "Tap any three silly words from the wall.",
-          "The longer and sillier, the stronger it gets!",
-          "[warmly] Take your time, pick words you'll remember.",
+          "[warmly] On your next challenge, we build a super-long password!",
+          "This game is all about making your password long, by sticking three random words together.",
+          "Out in the real world, a long password is one the Raccoon's machine can never crack in time.",
+          "Here is what you do. Tap any three silly words from the wall to snap them together.",
+          "[excited] The longer and sillier, the stronger it gets. Ready? Let's build!",
         ],
       },
       coachLines: {
@@ -259,6 +303,15 @@ export const WEEK_1: WeekContent = {
         { text: "sun", isCorrect: false },
       ],
       praise: "Fast AND right - long is strong! ✓",
+      teachNarration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Yes! The long one, dragon-taco-comet, is the winner.",
+          "The more letters there are, the longer the Raccoon's machine has to guess.",
+          "Three random words make it so long he simply runs out of time.",
+          "[excited] Long really is strong. Well done!",
+        ],
+      },
     },
 
     // - Recap · Concept 2 of 5 (Long Is Strong)
@@ -266,16 +319,32 @@ export const WEEK_1: WeekContent = {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "The longer your password, the harder it is to crack.",
+      learned: "You make your password long with three random words - so the Raccoon's guessing machine runs out of time before it ever cracks yours.",
       next: "mixing it up to really stump the Raccoon",
       emblem: "💪",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Amazing! You're getting stronger already!",
-          "You just learned that long passwords are strong passwords.",
-          "Three random words make a key that's super hard to crack.",
-          "[warmly] Now, let's mix things up!",
+          "[excited] That's your second power!",
+          "You make your password nice and long with three random words.",
+          "[warmly] So the Raccoon's guessing machine runs and runs and never cracks it. Your stuff stays locked up tight.",
+          "Next, we'll mix it up so there's nothing plain left for him to grab. Come on!",
+        ],
+      },
+    },
+
+    // Next-Power chapter card → Concept 3.
+    {
+      type: "nextPower",
+      power: 3,
+      total: 5,
+      title: "Mix It Up",
+      tease: "Mix in capitals, numbers and symbols so your password is a jumble no one can read.",
+      emblem: "🎨",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Power three coming up! Time to mix it ALL up so your password is a total jumble.",
         ],
       },
     },
@@ -284,6 +353,8 @@ export const WEEK_1: WeekContent = {
     // 9 - Learn
     {
       type: "info",
+      conceptNumber: 3,
+      conceptTotal: 5,
       title: "Mix It Up",
       content:
         "A strong password mixes different kinds of characters: BIG letters, small letters, numbers, and symbols like ! or $. And never use a plain word on its own - the Raccoon guesses those first.",
@@ -308,6 +379,10 @@ export const WEEK_1: WeekContent = {
     // 10 - Game: REPAIR (Fix the Weak Password)
     {
       type: "passwordHospital",
+      threat: {
+        raccoonLine:
+          "A plain little word with nothing mixed in? I gobble those up in one bite! Leave them nice and plain for me, won't you?",
+      },
       reasons: [
         { id: "common-word", label: "Plain word - no mix", example: "like 'banana'" },
         { id: "too-short", label: "Too short", example: "like 'cat'" },
@@ -379,10 +454,11 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Uh oh! These passwords are sick! You're the cyber-doctor.",
-          "First, figure out what's WRONG with each one.",
-          "Then use your tools to make it strong, watch the meter climb!",
-          "[warmly] No rush, Doctor. Take your time.",
+          "[warmly] On your next challenge, you're the cyber-doctor!",
+          "This game is all about MIXING a password up, so there's no plain word left inside.",
+          "Out in the real world, a mixed-up password gives the Raccoon nothing to guess.",
+          "Here is what you do. Look at each sick password, tap what is WRONG with it, then use your tools to make it strong. Watch the strength meter climb.",
+          "[excited] Heal them all and the Raccoon is stumped. Ready? Let's go, Doctor!",
         ],
       },
       coachLines: {
@@ -402,6 +478,15 @@ export const WEEK_1: WeekContent = {
       ],
       praise: "You caught it - he said something TRUE for once! Long passwords really do stump him. ✓",
       nudge: "Careful - even the Raccoon tells the truth sometimes. Is the fact itself right?",
+      teachNarration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Good catch. This time the Raccoon told the truth.",
+          "Long passwords really ARE harder to crack. That is why he hates them!",
+          "Always check if the fact itself is right, no matter who says it.",
+          "[excited] You are thinking like a real Cyber Hero. Well done!",
+        ],
+      },
     },
 
     // - Recap · Concept 3 of 5 (Mix It Up)
@@ -410,16 +495,32 @@ export const WEEK_1: WeekContent = {
       concept: 3,
       total: 5,
       learned:
-        "Mixing big letters, small letters, numbers and symbols makes a password tough.",
+        "You mix in capitals, numbers and symbols - so there's no plain word left for the Raccoon to guess.",
       next: "keeping your password secret",
       emblem: "🎨",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Wow! Look at you go!",
-          "You just learned how to mix it all up.",
-          "Big letters, little letters, numbers and symbols make a password really tough.",
-          "[warmly] Next up, a super important one. Keeping it secret.",
+          "[excited] That's your third power!",
+          "You mix in big letters, little letters, numbers and symbols.",
+          "[warmly] So there's no plain word left for the Raccoon to guess. He's completely stumped!",
+          "Next up, the most important one of all. Keeping it secret. Come and see!",
+        ],
+      },
+    },
+
+    // Next-Power chapter card → Concept 4.
+    {
+      type: "nextPower",
+      power: 4,
+      total: 5,
+      title: "Keep It Secret",
+      tease: "Learn how to keep your password YOUR secret, even when someone asks ever so nicely.",
+      emblem: "🤐",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Here comes power four! Let's learn how to keep your password your own secret.",
         ],
       },
     },
@@ -428,6 +529,8 @@ export const WEEK_1: WeekContent = {
     // 12 - Learn
     {
       type: "info",
+      conceptNumber: 4,
+      conceptTotal: 5,
       title: "Keep It Secret",
       content:
         "A password only works if you're the ONLY one who knows it. Don't tell your best friend. Don't leave it where others can see. The only people who help are your parents or a trusted grown-up.",
@@ -451,29 +554,65 @@ export const WEEK_1: WeekContent = {
     },
     // 13 - Game: DECIDE (What Would You Do?)
     {
+      // Uses the chooseYourPath DATA shape but presentation:"device" mounts
+      // PauseDecide (an app screen + a big red PAUSE button) instead of the
+      // adventure doors - a different mechanic from Week 15's doors. The safe
+      // choice is always PAUSE: the pedagogy is rehearsing the stop, and each
+      // moment is a real "someone's asking for your secret" pop-up.
       type: "chooseYourPath",
+      presentation: "device",
+      speakScenarios: true,
+      threat: {
+        raccoonLine:
+          "My best trick of all? I don't crack passwords, I get kids to just HAND them over! Watch me pop up and ask ever so nicely, heh heh!",
+      },
+      // The safe answer VARIES so it's a real decision, not "always tap PAUSE":
+      // keep it secret from strangers/sites/friends, but the ONE safe helper is
+      // a trusted grown-up (moment 2, safeKind:"ask"). The odd-one-out sits at
+      // position 2, not first/last, so it isn't positionally predictable.
       scenarios: [
         {
-          setup: "Your best friend says: 'Tell me your Roblox password so I can get you cool stuff!' What do you do?",
+          frame: { appName: "Game Chat", icon: "🎮" },
+          setup: "A player messages you: \"Send me your password and I'll give you FREE stuff!\"",
           choices: [
-            { text: "Share it - they're my best friend", isSafe: false, consequence: "Even best friends shouldn't know. Accounts get hacked that way." },
-            { text: "Say no - it's my secret", isSafe: true, consequence: "Perfect! Your password is YOUR secret - nobody else needs it." },
+            { text: "Send my password", isSafe: false, consequence: "That 'free' gift was a trap - they only wanted your account, and now it's gone." },
+            { text: "PAUSE - it's my secret", isSafe: true, consequence: "Yes! A real gift NEVER needs your password. You kept your secret safe." },
           ],
         },
         {
-          setup: "You're worried you'll forget your password. What's the safest thing to do?",
+          frame: { appName: "Login", icon: "🔐" },
+          setup: "Uh oh - you forgot your password and can't log in. What's the smart thing to do?",
+          safeKind: "ask",
           choices: [
-            { text: "Write it on your desk so you see it", isSafe: false, consequence: "Now anyone walking past can read it!" },
-            { text: "Ask a parent to help you remember", isSafe: true, consequence: "Great - a trusted grown-up is the safe way." },
+            { text: "Ask a friend to guess it", isSafe: false, consequence: "Friends can't get it back for you - and now they might learn your secret. There's a safer helper." },
+            { text: "Ask my mum or dad", isSafe: true, consequence: "Exactly! A parent or trusted grown-up is the ONE person who helps you with your password." },
+          ],
+        },
+        {
+          frame: { appName: "PasswordChecker.fun", icon: "🔐" },
+          setup: "A website pops up: \"Type your password here and we'll tell you how STRONG it is!\"",
+          choices: [
+            { text: "Type it in", isSafe: false, consequence: "That box doesn't check anything - it just STEALS whatever you type." },
+            { text: "PAUSE - close it", isSafe: true, consequence: "Spot on! A real checker never wants your actual password." },
+          ],
+        },
+        {
+          frame: { appName: "Messages", icon: "💬" },
+          setup: "Your best friend texts: \"Tell me your password so I can log in and get you cool stuff!\"",
+          choices: [
+            { text: "Tell my best friend", isSafe: false, consequence: "Even best friends shouldn't know. If THEIR account gets hacked, yours does too." },
+            { text: "PAUSE - keep it zipped", isSafe: true, consequence: "Perfect. Your password is YOUR secret - nobody else needs it, not even a best friend." },
           ],
         },
       ],
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] The Raccoon's set some sneaky traps for you.",
-          "Read each one carefully. Think, what would YOU do?",
-          "[excited] Then pick the safe path. You've got this!",
+          "[warmly] On your next challenge, you make the smart choice!",
+          "This game is all about keeping your password secret, even when something on the screen begs you to share it.",
+          "The Raccoon LOVES to pop up and ask ever so nicely. So when ANYTHING asks for your password, you STOP and keep it secret.",
+          "But if you're ever stuck and need help, there is ONE safe person to ask. A parent, or a grown-up you trust.",
+          "[excited] So keep it secret from everyone else, and only ever ask a grown-up. Ready? You've got this!",
         ],
       },
     },
@@ -489,6 +628,15 @@ export const WEEK_1: WeekContent = {
         { text: "Anyone who asks", isCorrect: false },
       ],
       praise: "Right - it stays your secret! ✓",
+      teachNarration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] That is right. Only you, and a trusted grown-up at home.",
+          "Not your best friend, not your class, not anyone who asks.",
+          "A password only stays safe while it stays your secret.",
+          "[excited] Keep it zipped, and the Raccoon gets nothing. Well done!",
+        ],
+      },
     },
 
     // - Recap · Concept 4 of 5 (Keep It Secret)
@@ -496,16 +644,32 @@ export const WEEK_1: WeekContent = {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "Never share your password, not even with your best friend.",
+      learned: "You keep your password secret and never share it - so no one can ever be tricked into handing it to the Raccoon.",
       next: "spotting passwords that are too easy to guess",
       emblem: "🤫",
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] You're doing so well, Cyber Hero.",
-          "You just learned the golden rule, keep it secret.",
-          "Never share your password, not even with your best friend.",
-          "[excited] One more thing to master before the big battle!",
+          "[excited] That's your fourth power!",
+          "You keep your password secret. You never share it, not even with a best friend.",
+          "[warmly] So no one can ever be tricked into handing it over to the Raccoon.",
+          "One last power to master before the big test. Come on, Cyber Hero!",
+        ],
+      },
+    },
+
+    // Next-Power chapter card → Concept 5.
+    {
+      type: "nextPower",
+      power: 5,
+      total: 5,
+      title: "Don't Pick the Obvious",
+      tease: "Spot the passwords that are too easy to guess, so you never pick one yourself.",
+      emblem: "🚫",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Your last power! Let's learn to dodge the passwords the Raccoon guesses first.",
         ],
       },
     },
@@ -514,6 +678,8 @@ export const WEEK_1: WeekContent = {
     // 15 - Learn
     {
       type: "info",
+      conceptNumber: 5,
+      conceptTotal: 5,
       title: "Don't Pick the Obvious",
       content:
         "The Raccoon tries the OBVIOUS passwords first: your name, your birthday, 123456, or the word 'password'. If someone could guess it about you, it's a bad password.",
@@ -538,6 +704,10 @@ export const WEEK_1: WeekContent = {
     // 16 - Game: SORT (Why Is It Weak?)
     {
       type: "weakSorter",
+      threat: {
+        raccoonLine:
+          "I always try the OBVIOUS ones first: names, birthdays, one-two-three! You'd be amazed how many kids pick those. Please, make it easy for me!",
+      },
       reasons: [
         { id: "too-short", label: "Too short", example: "abc" },
         { id: "common-word", label: "Common word", example: "football" },
@@ -562,9 +732,11 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Detective time, Cyber Hero! Each password here is weak.",
-          "Look closely and figure out WHY it's weak.",
-          "[warmly] Too short? A real word? About you? Take your time.",
+          "[warmly] On your last challenge, you turn detective!",
+          "This game is all about spotting WHY a password is weak, so you never pick one like it.",
+          "Out in the real world, knowing why a password is weak means you'll always build a strong one.",
+          "Here is what you do. Look at each weak password, then tap the reason it's weak. Too short? A real word? About you? Or just keyboard keys in a row?",
+          "[excited] Sort them all and no weak password can fool you. Ready? Let's investigate!",
         ],
       },
     },
@@ -580,6 +752,15 @@ export const WEEK_1: WeekContent = {
         { text: "Waffle!Ninja6", isCorrect: false },
       ],
       praise: "Yep - 'password' is the #1 worst! ✓",
+      teachNarration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Yes! 'password' is the number-one password people pick.",
+          "So it is the very FIRST thing the Raccoon tries.",
+          "The safe ones are random words that have nothing to do with you.",
+          "[excited] Pick something he would never guess. Well done!",
+        ],
+      },
     },
 
     // - Recap · Concept 5 of 5 (Don't Pick the Obvious)
@@ -588,37 +769,85 @@ export const WEEK_1: WeekContent = {
       concept: 5,
       total: 5,
       learned:
-        "Stay away from obvious passwords, not your name, your birthday, or 123456.",
+        "You steer clear of obvious passwords - so the Raccoon can't guess his way in from your name, birthday or 123456.",
       next: "one final challenge, then the big boss battle",
       emblem: "🕵️",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Incredible! You've mastered all five secrets!",
-          "You just learned to dodge the obvious ones. No names, no birthdays, no one-two-three.",
-          "[warmly] You're ready, Cyber Hero.",
-          "[excited] Time to show that Raccoon who's boss!",
+          "[excited] You've earned all FIVE powers, Cyber Hero!",
+          "You steer clear of the obvious ones. No names, no birthdays, no one-two-three-four-five-six.",
+          "[warmly] So the Raccoon can't guess his way in, no matter how hard he tries.",
+          "You're ready. Time to show that Raccoon who's boss!",
         ],
       },
     },
 
-    // 18 - Consolidation: "The Raccoon's Notebook" (fun mixed recap)
+    // 18 - Consolidation: "Hero Power Bingo" (mixed review of the week's
+    // password-building powers). A DIFFERENT mechanic from Week 15's
+    // CyberScanner: each round plays a little move and the child taps which
+    // password power it used, filling a 2x2 card to BINGO.
     {
-      type: "cyberScanner",
-      items: [
-        { text: "password123", isStrong: false, explanation: "Obvious AND a common word - the Raccoon's favorite." },
-        { text: "Comet-Dragon-Waffle7!", isStrong: true, explanation: "Three random words, mixed up - long and strong!" },
-        { text: "qwerty", isStrong: false, explanation: "A keyboard row - the first pattern hackers try." },
-        { text: "dragon-taco-comet", isStrong: true, explanation: "Three random words - long and hard to crack." },
-        { text: "Sam2014", isStrong: false, explanation: "A name and a birthday - easy to guess about you." },
-        { text: "Pickle-Rocket-Moon9!", isStrong: true, explanation: "Three random words, mixed up - keeps the Raccoon out." },
+      type: "signBingo",
+      introTitle: "Hero Power Bingo",
+      introSubtitle: "Watch each move, then tap the password power it used.",
+      introIcon: "🛡️",
+      cardTitle: "Your 4 password powers",
+      stampToast: "POWER SPOTTED!",
+      wrongTitle: "Look again, Cyber Hero",
+      completeTitle: "BINGO! All powers spotted!",
+      completeLine: "You know every password power by heart. The Raccoon doesn't stand a chance!",
+      signs: [
+        { id: "long", label: "Long & random", icon: "💪" },
+        { id: "mix", label: "Mix it up", icon: "🎨" },
+        { id: "secret", label: "Keep it secret", icon: "🤐" },
+        { id: "obvious", label: "Nothing obvious", icon: "🚫" },
       ],
+      rounds: [
+        {
+          id: "r-long",
+          scene: "Mia's password is otter-lamp-rocket-comet. The Raccoon's cracker runs for a MILLION years and still can't open it!",
+          sceneIcon: "🧩",
+          signId: "long",
+          note: "Four random words stuck together makes it super LONG - that's the long-and-random power.",
+          why: "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power.",
+        },
+        {
+          id: "r-mix",
+          scene: "Ben took his word and popped in a big capital, a 9 and a $ sign. Now it's a jumble the Raccoon can't read.",
+          sceneIcon: "🔢",
+          signId: "mix",
+          note: "Capitals, numbers AND a symbol all mixed in - that's the mix-it-up power.",
+          why: "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power.",
+        },
+        {
+          id: "r-secret",
+          scene: "A stranger in chat begs Ada for her password. She zips her lips and tells a grown-up instead.",
+          sceneIcon: "💬",
+          signId: "secret",
+          note: "She didn't share it with anyone - that's the keep-it-secret power.",
+          why: "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power.",
+        },
+        {
+          id: "r-obvious",
+          scene: "Sam nearly used his birthday... then picked something no one could EVER guess about him.",
+          sceneIcon: "🎂",
+          signId: "obvious",
+          note: "No name, no birthday, nothing easy to guess - that's the nothing-obvious power.",
+          why: "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power.",
+        },
+      ],
+      hints: {
+        tier1: "Which of your four powers does this move show?",
+        tier2: "Listen to what they DID: made it long, mixed it up, kept it secret, or picked nothing obvious?",
+      },
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Final drill, Cyber Hero! Passwords will drift past.",
-          "Quickly tap STRONG or WEAK for each one.",
-          "[warmly] Trust everything you've learned, you're ready!",
+          "[excited] Final drill, Cyber Hero - it's Power Bingo!",
+          "You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action.",
+          "Here is what you do. I'll read out a move someone made, and you tap the power it used on your bingo card.",
+          "[warmly] Then I'll tell you WHY it works. Fill all four squares to get BINGO - you're ready!",
         ],
       },
     },
@@ -669,6 +898,7 @@ export const WEEK_1: WeekContent = {
   bossQuiz: {
     villain: { name: "HACKER RACCOON", sprite: "raccoon" },
     accent: "#e3b341",
+    passMark: 5,
     theme: {
       topic: "Passwords",
       motifs: ["🔑", "🔒", "🛡️", "🔢", "🔣", "🗝️", "🔐", "⭐"],
@@ -818,87 +1048,9 @@ export const WEEK_1: WeekContent = {
           text: "Favorites first! Password, qwerty, superheroes, that's the very first page of my guessing book!",
         },
       },
-      {
-        phaseId: "phase-what",
-        key: "quiz-what-2",
-        label: "What Is a Password?",
-        ask: {
-          slug: "quiz-w1-ask-what-2",
-          text: "Layla's family all share one computer. What actually keeps her game account locked so it stays just hers?",
-        },
-        options: [
-          { text: "A secret code she types in to log on" },
-          { text: "A family rule that nobody touches her game" },
-          { text: "Turning the computer off after she plays" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "The typed code does the locking!",
-          explanation: "A family rule or switching the computer off can't stop the next person who sits down and turns it on. The secret code Layla types in is the only thing that truly locks her account.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-what-2",
-          text: "A typed-in secret on a SHARED computer?! I waited my turn and got a big fat nothing!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-what-2",
-          text: "House rules and off buttons! I just press ON and stroll right in, la dee daa!",
-        },
-      },
-      {
-        phaseId: "phase-length",
-        key: "quiz-length-2",
-        label: "Long Is Strong",
-        ask: {
-          slug: "quiz-w1-ask-length-2",
-          text: "Layla's password is dolphin. Her friend says one extra letter will make it super strong. What is the REAL way to make it strong?",
-        },
-        options: [
-          { text: "Add whole extra words: one letter barely helps" },
-          { text: "The friend is right: one letter fools any guesser" },
-          { text: "Type dolphin twice so there is more of it" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Whole words, not one letter!",
-          explanation: "One extra letter keeps it short, and the same word twice makes a pattern a guessing machine spots fast. Adding whole extra random words is what makes a password truly long and strong.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-length-2",
-          text: "Whole extra WORDS?! My guess-list just tripled and my printer started crying!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-length-2",
-          text: "One little letter, or dolphin twice? I'll be through before my cocoa gets cold!",
-        },
-      },
-      {
-        phaseId: "phase-mix",
-        key: "quiz-mix-2",
-        label: "Mix It Up",
-        ask: {
-          slug: "quiz-w1-ask-mix-2",
-          text: "Adam wants to mix up his plain password, maple. Which new version is the strongest mix?",
-        },
-        options: [
-          { text: "M4ple$Sun7!" },
-          { text: "Maple2019" },
-          { text: "maple!!!" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Sprinkle the mix all the way through!",
-          explanation: "A capital with a year stuck on, or a row of the same symbol at the end, still leaves the word maple sitting there. Capitals, numbers, and symbols sprinkled all the way through make the strongest mix.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-mix-2",
-          text: "Numbers and symbols tucked right INSIDE the word?! My goggles fogged up just reading it!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-mix-2",
-          text: "A year glued on the end, or a pile of exclamation marks? Underneath it's still sweet, plain maple, yum!",
-        },
-      },
+
+
+
       {
         phaseId: "phase-secret",
         key: "quiz-secret-2",
@@ -953,142 +1105,11 @@ export const WEEK_1: WeekContent = {
           text: "The dog, the birthday, the name! One peek at a party invitation and I'm typing it in!",
         },
       },
-      {
-        phaseId: "phase-what",
-        key: "quiz-what-3",
-        label: "What Is a Password?",
-        ask: {
-          slug: "quiz-w1-ask-what-3",
-          text: "Adam is setting up a brand-new game account, and it asks him to pick a password. What is that password for?",
-        },
-        options: [
-          { text: "It's the secret code that proves it's really him" },
-          { text: "It's the nickname other players see by his score" },
-          { text: "It's a code the game sends when something breaks" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "It proves it's really you!",
-          explanation: "A nickname is for everyone to see, and codes the game sends are for fixing things. The password is the secret code only Adam knows, so the game can tell it's really him logging in.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-what-3",
-          text: "It PROVES it's really him?! Then nothing on earth can prove it's me! Rats!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-what-3",
-          text: "Nicknames, fix-it codes, who cares! While you sorted those out, I grabbed the real secret!",
-        },
-      },
-      {
-        phaseId: "phase-length",
-        key: "quiz-length-3",
-        label: "Long Is Strong",
-        ask: {
-          slug: "quiz-w1-ask-length-3",
-          text: "Adam's password is cactus-pillow. He has time for ONE change before I strike. Which change makes it strongest?",
-        },
-        options: [
-          { text: "Add a third word: cactus-pillow-drum" },
-          { text: "Flip it around to pillow-cactus" },
-          { text: "Write it big: CACTUS-PILLOW" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Only MORE makes it longer!",
-          explanation: "Flipping the words around or writing them in capitals leaves the password exactly as long as it was. Adding one more random word gives a guessing machine a whole extra word to work through.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-length-3",
-          text: "A whole THIRD word?! My machine got halfway through and asked for a nap!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-length-3",
-          text: "Flipped or SHOUTED, it's still the same size! Crunched it like popcorn!",
-        },
-      },
-      {
-        phaseId: "phase-mix",
-        key: "quiz-mix-3",
-        label: "Mix It Up",
-        ask: {
-          slug: "quiz-w1-ask-mix-3",
-          text: "My cracking machine peels one easy trick off a password, then reads the plain word underneath. Which of these would still stump it?",
-        },
-        options: [
-          { text: "B00t$Lamp5!" },
-          { text: "ELEPHANT99" },
-          { text: "cherry$$" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "One trick peels right off!",
-          explanation: "Capitals with numbers on the end, or symbols stacked after a word, peel away and leave a plain word behind. When capitals, numbers, and symbols are mixed all through, there is no plain word left to find.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-mix-3",
-          text: "No plain word ANYWHERE in there?! My machine peeled and peeled and found only more mix!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-mix-3",
-          text: "Snip off the ending and there's the word, soft and cozy! Easiest job my machine ever had!",
-        },
-      },
-      {
-        phaseId: "phase-secret",
-        key: "quiz-secret-3",
-        label: "Keep It Secret",
-        ask: {
-          slug: "quiz-w1-ask-secret-3",
-          text: "Layla forgot her tablet password and really needs help. Who is the ONE safe person to ask?",
-        },
-        options: [
-          { text: "A trusted grown-up at home" },
-          { text: "The friendliest helper in her game's chat" },
-          { text: "Her best friend, who never ever tells secrets" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "One safe helper, that's it!",
-          explanation: "Even a best friend who never tells, and even the friendliest chat helper, should never hear your password. The one exception is a trusted grown-up at home: they can help you remember it or reset it.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-secret-3",
-          text: "A grown-up at HOME?! There's no way I can wiggle into THAT conversation!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-secret-3",
-          text: "Best friends and chat helpers! A secret hops from ear to ear until it lands in mine!",
-        },
-      },
-      {
-        phaseId: "phase-obvious",
-        key: "quiz-obvious-3",
-        label: "Don't Pick the Obvious",
-        ask: {
-          slug: "quiz-w1-ask-obvious-3",
-          text: "I keep a list of the passwords HALF the world uses. Which one of these is NOT on my list?",
-        },
-        options: [
-          { text: "Otter$Wagon3!" },
-          { text: "Letmein123!" },
-          { text: "Asdfgh456!" },
-          { text: "Soccer2010!" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Millions pick the same ones!",
-          explanation: "Letmein with numbers, a keyboard row like asdfgh, and a favorite sport with a year get picked by millions of people, so guessers try them right away. Random words nobody else would put together stay off every list.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-obvious-3",
-          text: "Otter-Wagon-huh?! I flipped through my whole list twice and found zip!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-obvious-3",
-          text: "Half the world picked it, and now so did you! Welcome to my list, new friend!",
-        },
-      },
+
+
+
+
+
     ],
   },
   badgeArt: "/cyberheroes/badges/week-01-password-protector.png",

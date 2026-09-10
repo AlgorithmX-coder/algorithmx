@@ -51,6 +51,8 @@ export interface MemoryMatchProps {
   introSubtitle?: string;
   introWelcome?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
   /** Spoken explanation for the phase-2 "Rebuild From Memory" mini-game. */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
@@ -157,6 +159,7 @@ export default function MemoryMatch({
   introSubtitle,
   introWelcome,
   introNarration,
+  threat,
   coachLines,
   onComplete,
   onCorrect,
@@ -276,11 +279,10 @@ export default function MemoryMatch({
       next[idx] = { ...next[idx], flipped: true };
       return next;
     });
-    setFlippedIdxs((prev) => {
-      const now = [...prev, idx];
-      if (now.length === 2) checkMatch(now[0], now[1]);
-      return now;
-    });
+    // Pure updater: just record the flip. Resolving the pair (which fires
+    // onCorrect/onWrong -> parent state) happens in the effect below, never
+    // inside this updater (React runs updaters during render).
+    setFlippedIdxs((prev) => [...prev, idx]);
   };
 
   const addBurst = (idx: number, colour: string) => {
@@ -364,6 +366,14 @@ export default function MemoryMatch({
       }, 1200);
     }
   };
+
+  // Resolve the pair once two cards are face-up. Runs in an effect, NOT inside
+  // the setFlippedIdxs updater, so the mismatch side effects (streak, shake and
+  // onWrong -> parent setState) never fire during render.
+  useEffect(() => {
+    if (flippedIdxs.length === 2) checkMatch(flippedIdxs[0], flippedIdxs[1]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flippedIdxs]);
 
   const triggerFinish = () => {
     if (completedRef.current) return;
@@ -564,20 +574,31 @@ export default function MemoryMatch({
               color: "#eaf2ff",
             }}
           >
-            Memory{" "}
-            <span
-              style={{
-                background: "linear-gradient(120deg, #00e5ff, #7c5cff)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Match
-            </span>
+            {(() => {
+              // Use the caller's title (e.g. "Cyber Word Match") if set, else
+              // the default. Keep the two-tone look by accenting the LAST word.
+              const words = (introTitle ?? "Memory Match").split(" ");
+              const last = words.pop() ?? "";
+              const head = words.join(" ");
+              return (
+                <>
+                  {head ? head + " " : ""}
+                  <span
+                    style={{
+                      background: "linear-gradient(120deg, #00e5ff, #7c5cff)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    {last}
+                  </span>
+                </>
+              );
+            })()}
           </h2>
           <p style={{ margin: 0, fontSize: 14, color: "#94a3b8" }}>
-            Flip the cards, find the matching pairs — remember where they are!{" "}
+            Flip two cards to find a word and its matching meaning. Remember where they are!{" "}
             <span aria-hidden>✦</span>
           </p>
         </div>
@@ -691,7 +712,7 @@ export default function MemoryMatch({
             <HintBubble
               tier={mismatchCount >= 5 ? 3 : 2}
               speaker="adam"
-              text="Try to remember WHERE you saw each meaning. Tap two that go together - a word and what it means."
+              text="Remember where each card was. Tap a cyber word, then the meaning that matches it."
             />
           </div>
         )}
@@ -832,6 +853,7 @@ export default function MemoryMatch({
           }
           icon="🧠"
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker ?? "adam"}
           onDismiss={() => setShowIntro(false)}
         />

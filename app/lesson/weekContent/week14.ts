@@ -42,9 +42,6 @@ export const WEEK_14: WeekContent = {
     // 0 - OPENING VIDEO: the house that listens
     { type: "video", videoPlaceholder: "Week 14: The House That Listens", videoSrc: "/videos/module-14-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[14] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -53,8 +50,11 @@ export const WEEK_14: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon's found a lazy new trick: he listens through the gadgets already inside your house. Speakers, TVs, even talking toys. This week you become a Settings Scout: spot the ears, find the eyes, keep secrets off the air - and flip the switches together.",
       photoCaption: "Wk 14 - The House That Listens",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[14] },
 
     // 2 - Mission brief
     {

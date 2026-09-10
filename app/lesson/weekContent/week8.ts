@@ -41,9 +41,6 @@ export const WEEK_8: WeekContent = {
     // 0 - OPENING VIDEO: the photo that ran away
     { type: "video", videoPlaceholder: "Week 8: The Runaway Photo", videoSrc: "/videos/module-08-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[8] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -52,8 +49,11 @@ export const WEEK_8: WeekContent = {
       badge: "Incident Report",
       caption: "A kid shared one photo with one friend. The Raccoon grabbed it and passed it on - and the school crest and street sign in the background showed strangers her school and her street, way more than she ever meant to share. This week you become a Picture Detective.",
       photoCaption: "Wk 8 - Think Before You Share",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[8] },
 
     // 2 - Mission brief
     {

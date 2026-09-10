@@ -267,6 +267,9 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   /* Battle bed for the whole fight; every pending timer dies with the
      component. */
   useEffect(() => {
+    // Epic-but-kid-friendly entrance sting as the showdown screen appears, then
+    // the calm focus bed for the fight. The villain taunt follows ~700ms later.
+    playSound("bossShowdown");
     playBGM("bgmQuizFocus");
     const timers = timersRef.current;
     return () => {

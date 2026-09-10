@@ -44,9 +44,6 @@ export const WEEK_15: WeekContent = {
     // 0 - OPENING VIDEO: the know-it-all that didn't
     { type: "video", videoPlaceholder: "Week 15: The Know-It-All That Didn't", videoSrc: "/videos/module-15-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[15] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -55,7 +52,7 @@ export const WEEK_15: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon's newest gadget: a smooth-talking Know-It-All bot that sounds SO sure about everything... even when it's making things up. He loves kids who believe every confident robot voice - and tell it their secrets. This week you out-smart the smart machine: spot the robot, check the book, zip the jar, catch the fakes - and use the tool for GOOD.",
       photoCaption: "Wk 15 - The Know-It-All",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
       narration: {
         speaker: "layla",
         lines: [
@@ -68,6 +65,9 @@ export const WEEK_15: WeekContent = {
         ],
       },
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[15] },
 
     // 2 - Mission brief
     {

@@ -43,9 +43,6 @@ export const WEEK_16: WeekContent = {
     // 0 - OPENING VIDEO: the doorway trick
     { type: "video", videoPlaceholder: "Week 16: The Doorway Trick", videoSrc: "/videos/module-16-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[16] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -54,8 +51,11 @@ export const WEEK_16: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes - but the doors open onto his slide. He's even pasting his own sticker-codes OVER real ones on posters and menus. This week you become a Door Checker. Peek at every address. Peel test the stickers. Pick the see-through doors. And when you can't tell? Wheel out the barrier and ask.",
       photoCaption: "Wk 16 - The Doorway Trick",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[16] },
 
     // 2 - Mission brief
     {

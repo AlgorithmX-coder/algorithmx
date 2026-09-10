@@ -176,7 +176,9 @@ export default function WeekIntroScene({
           through the briefing — they stay and listen (matches the InfoNarration
           rule). Lifts the moment he's paused/finished; the "Let's go!" button is
           separately locked until `heard`. */}
-      <NarrationClickGuard active={playing} />
+      {/* hidePill: the "Let's go!" button already shows the listen state
+          ("🔊 Listen…"), so suppress the guard's own pill to avoid two badges. */}
+      <NarrationClickGuard active={playing} hidePill />
 
       {/* live-moving, per-week backdrop */}
       <WeekIntroBackdrop weekNumber={weekNumber} accent={accent} />

@@ -46,9 +46,6 @@ export const WEEK_17: WeekContent = {
     // 0 - OPENING VIDEO: the highlight reel
     { type: "video", videoPlaceholder: "Week 17: The Highlight Reel", videoSrc: "/videos/module-17-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[17] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -57,8 +54,11 @@ export const WEEK_17: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone - ANYONE - can stare into. He wants kids dazzled, comparing, and wide open. This week you forge the Profile Shield: learn why the 13+ sign stands at the door, make your profile private, sort followers from friends, scrub your drafts - and see through the highlight reel.",
       photoCaption: "Wk 17 - The Highlight Reel",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[17] },
 
     // 2 - Mission brief
     {

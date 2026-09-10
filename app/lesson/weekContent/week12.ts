@@ -40,9 +40,6 @@ export const WEEK_12: WeekContent = {
     // 0 - OPENING VIDEO: the snowfield
     { type: "video", videoPlaceholder: "Week 12: Tracks in the Snow", videoSrc: "/videos/module-12-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[12] },
-
     // 1 - ALERT: incident report
     {
       type: "alert",
@@ -51,8 +48,11 @@ export const WEEK_12: WeekContent = {
       badge: "Incident Report",
       caption: "The Raccoon's been reading kids' online trails like a MAP - school names in bios, park times in captions, grumpy posts to giggle at. This week you get the ranger kit: see the tracks you leave, learn why copies can't be caught... and stamp a trail you're proud of.",
       photoCaption: "Wk 12 - Tracks in the Snow",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[12] },
 
     // 2 - Mission brief
     {

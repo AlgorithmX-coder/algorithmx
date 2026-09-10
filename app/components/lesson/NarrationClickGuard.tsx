@@ -18,7 +18,16 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-export default function NarrationClickGuard({ active }: { active: boolean }) {
+export default function NarrationClickGuard({
+  active,
+  hidePill = false,
+}: {
+  active: boolean;
+  /** Keep the no-skip click-block but hide the "Listening…" pill, for a host
+   *  that already shows its own listen indicator (e.g. WeekIntroScene's gated
+   *  "Let's go!" button) - avoids two "listen" badges on one screen. */
+  hidePill?: boolean;
+}) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -48,33 +57,37 @@ export default function NarrationClickGuard({ active }: { active: boolean }) {
         touchAction: "none",
       }}
     >
-      <style>{`@keyframes ncgPulse{0%,100%{opacity:.72}50%{opacity:1}}`}</style>
-      <div
-        style={{
-          position: "fixed",
-          left: "50%",
-          bottom: 76,
-          transform: "translateX(-50%)",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          padding: "7px 16px",
-          borderRadius: 999,
-          background: "rgba(10,16,38,0.9)",
-          border: "1px solid rgba(125,240,255,0.45)",
-          color: "#dff3ff",
-          fontSize: 13,
-          fontWeight: 800,
-          letterSpacing: "0.02em",
-          fontFamily: "'Nunito', system-ui, sans-serif",
-          boxShadow: "0 10px 28px -8px rgba(0,0,0,0.65), 0 0 18px rgba(0,229,255,0.25)",
-          pointerEvents: "none",
-          whiteSpace: "nowrap",
-          animation: "ncgPulse 1.6s ease-in-out infinite",
-        }}
-      >
-        <span aria-hidden>🔊</span> Listening…
-      </div>
+      {!hidePill && (
+        <>
+          <style>{`@keyframes ncgPulse{0%,100%{opacity:.72}50%{opacity:1}}`}</style>
+          <div
+            style={{
+              position: "fixed",
+              left: "50%",
+              bottom: 76,
+              transform: "translateX(-50%)",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "7px 16px",
+              borderRadius: 999,
+              background: "rgba(10,16,38,0.9)",
+              border: "1px solid rgba(125,240,255,0.45)",
+              color: "#dff3ff",
+              fontSize: 13,
+              fontWeight: 800,
+              letterSpacing: "0.02em",
+              fontFamily: "'Nunito', system-ui, sans-serif",
+              boxShadow: "0 10px 28px -8px rgba(0,0,0,0.65), 0 0 18px rgba(0,229,255,0.25)",
+              pointerEvents: "none",
+              whiteSpace: "nowrap",
+              animation: "ncgPulse 1.6s ease-in-out infinite",
+            }}
+          >
+            <span aria-hidden>🔊</span> Listening…
+          </div>
+        </>
+      )}
     </div>,
     document.body,
   );

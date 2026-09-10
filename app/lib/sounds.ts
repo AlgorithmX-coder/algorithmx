@@ -41,6 +41,10 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
   hitImpact: { path: "/audio/sfx/hit-impact.mp3", volume: 0.6 },
   bossHurt: { path: "/audio/sfx/boss-hurt.mp3", volume: 0.6 },
   bossRoar: { path: "/audio/sfx/boss-roar.mp3", volume: 0.6 },
+  // Epic-but-friendly entrance sting played once when the boss quiz screen
+  // appears (all weeks). Deliberately NOT the roar (that startled young
+  // players) - a triumphant "showdown" hit for 6-9s.
+  bossShowdown: { path: "/audio/sfx/boss-showdown.mp3", volume: 0.7 },
   bossDefeated: { path: "/audio/sfx/boss-defeated.mp3", volume: 0.6 },
   shieldBlock: { path: "/audio/sfx/shield-block.mp3", volume: 0.6 },
   phaseChange: { path: "/audio/sfx/phase-change.mp3", volume: 0.6 },

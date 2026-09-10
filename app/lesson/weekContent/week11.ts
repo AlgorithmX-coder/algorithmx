@@ -48,9 +48,6 @@ export const WEEK_11: WeekContent = {
     // 0 - OPENING VIDEO: something feels wrong
     { type: "video", videoPlaceholder: "Week 11: Something Wrong?", videoSrc: "/videos/module-11-intro.mp4" },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the video
-    { type: "weekIntro", ...WEEK_INTROS[11] },
-
     // 1 - ALERT: incident report (warm, not scary)
     {
       type: "alert",
@@ -59,8 +56,11 @@ export const WEEK_11: WeekContent = {
       badge: "Incident Report",
       caption: "Kids across Cyber City got messages that made their tummies drop - and the Raccoon spread a sneaky lie: 'it's YOUR fault, keep it secret.' This week you learn the calm five-step protocol every hero knows. First truth first: it is NEVER your fault.",
       photoCaption: "Wk 11 - Emergency Protocol",
-      ctaLabel: "Start the Mission →",
+      ctaLabel: "See the Mission →",
     },
+
+    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    { type: "weekIntro", ...WEEK_INTROS[11] },
 
     // 2 - Mission brief
     {

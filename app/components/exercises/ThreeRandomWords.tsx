@@ -44,6 +44,8 @@ export interface ThreeRandomWordsProps {
   hints?: { tier1: string; tier2: string };
   /** Spoken, paced intro that explains the task (read aloud before play). */
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
   /** Teach-once coach line played at the first word pick, then dismissed. */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
@@ -91,6 +93,7 @@ export default function ThreeRandomWords({
   slots: slotCount = 3,
   hints,
   introNarration,
+  threat,
   coachLines,
   onComplete,
   onCorrect,
@@ -638,7 +641,12 @@ export default function ThreeRandomWords({
                 background: isPicked
                   ? `linear-gradient(135deg, ${colour}34, ${colour}14)`
                   : "rgba(13, 18, 42, 0.72)",
-                border: `1.5px solid ${isPicked ? colour : "rgba(148, 163, 184, 0.22)"}`,
+                // Longhand (not the `border` shorthand) so it never conflicts
+                // with the `borderLeft` accent stripe — mixing shorthand +
+                // longhand for one value triggers React's styling-bug warning.
+                borderTop: `1.5px solid ${isPicked ? colour : "rgba(148, 163, 184, 0.22)"}`,
+                borderRight: `1.5px solid ${isPicked ? colour : "rgba(148, 163, 184, 0.22)"}`,
+                borderBottom: `1.5px solid ${isPicked ? colour : "rgba(148, 163, 184, 0.22)"}`,
                 borderLeft: `4px solid ${colour}`,
                 borderRadius: 10,
                 color: isPicked ? colour : "#e2e8f0",
@@ -718,6 +726,7 @@ export default function ThreeRandomWords({
           subtitle="Tap 3 words from the wall. Long random combos are way harder to crack than short clever ones."
           icon="✦"
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker ?? "layla"}
           onDismiss={() => setPhase("active")}
         />
