@@ -15,8 +15,10 @@ import { test, expect } from "@playwright/test";
  */
 
 test.describe("Week 1 new screens - no dead-ends", () => {
-  // The four mid-week concept recaps.
-  for (const idx of [6, 10, 14, 18]) {
+  // The four mid-week concept recaps. Screen indices are position-coupled to
+  // week1.ts's `screens` array — recaps sit at 8/12/16/20, the finale recap at
+  // 24, the mission brief at 3. Recompute these if Week 1 is restructured.
+  for (const idx of [8, 12, 16, 20]) {
     test(`recap checkpoint (screen ${idx}) shows takeaway + enabled "Keep going"`, async ({
       page,
     }) => {
@@ -40,10 +42,10 @@ test.describe("Week 1 new screens - no dead-ends", () => {
     });
   }
 
-  test("finale recap (screen 22) shows mastery + an enabled advance button", async ({
+  test("finale recap (screen 24) shows mastery + an enabled advance button", async ({
     page,
   }) => {
-    await page.goto("/lesson/1?screen=22");
+    await page.goto("/lesson/1?screen=24");
     // Target the headline specifically — the narration caption also says
     // "…you've mastered…", which would trip strict mode on a bare getByText.
     await expect(
@@ -54,17 +56,22 @@ test.describe("Week 1 new screens - no dead-ends", () => {
     ).toBeEnabled({ timeout: 10_000 });
   });
 
-  test("mission brief (screen 2): tapping the objectives arms Accept Mission", async ({
+  test("mission brief (screen 3): tapping the objectives arms Accept Mission", async ({
     page,
   }) => {
-    await page.goto("/lesson/1?screen=2");
+    await page.goto("/lesson/1?screen=3");
     // SCREEN-AUDIT rebuild: objectives arrive as sealed envelopes the
-    // child taps open; the CTA reads "Tap your objectives!" until all
+    // child taps open; the CTA reads "Tap your objectives!" until ALL
     // are flipped, then becomes Accept Mission. The CTA is never
-    // disabled (gate-button contract) - it ARMS after the taps.
-    for (let i = 1; i <= 3; i++) {
+    // disabled (gate-button contract) - it ARMS after the taps. Tap
+    // however many objectives this mission has (Week 1 = 4) rather than a
+    // hardcoded count, so it survives a different objective count.
+    const objectives = page.getByRole("button", { name: /Objective \d/i });
+    await expect(objectives.first()).toBeVisible({ timeout: 10_000 });
+    const count = await objectives.count();
+    for (let i = 1; i <= count; i++) {
       await page
-        .getByRole("button", { name: new RegExp(`Objective ${i}`, "i") })
+        .getByRole("button", { name: new RegExp(`Objective ${i}\\b`, "i") })
         .click({ timeout: 10_000, force: true });
     }
     await expect(

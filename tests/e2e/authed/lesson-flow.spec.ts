@@ -49,13 +49,13 @@ test.describe("Lesson flow - authed", () => {
     expect(errors, "page errors on /dashboard").toEqual([]);
   });
 
-  test("cyberheroes course page still says 6-10 (authed view)", async ({
+  test("cyberheroes course page says 6-9 (authed view)", async ({
     page,
   }) => {
+    // Age range is 6-9 (2026-07-17 age-label truth sweep, #96).
     await page.goto("/cyberheroes");
     const text = await page.locator("body").innerText();
-    expect(text).toMatch(/6\s*[–-]\s*10/);
-    expect(text).not.toMatch(/6\s*[–-]\s*9(?!\d)/);
+    expect(text).toMatch(/6\s*[–-]\s*9(?!\d)/);
   });
 
   test("first lesson screen has at least one clickable CTA - no dead ends", async ({
