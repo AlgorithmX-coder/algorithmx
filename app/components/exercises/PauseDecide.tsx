@@ -32,8 +32,6 @@ import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import { useShuffledOnce, fisherYates } from "@/app/lib/gameEngine/useShuffledOnce";
-import { weekCharacterSrc, fallbackToShared } from "@/app/lib/weekCharacters";
-import { useLessonWeek } from "@/app/components/lesson/LessonWeekContext";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
@@ -118,7 +116,6 @@ export default function PauseDecide({
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
-  const week = useLessonWeek();
 
   // NO SEQUENCE: random moment order per play, stable within the play.
   const order = useShuffledOnce(scenarios);
@@ -280,9 +277,8 @@ export default function PauseDecide({
             exit={reduce ? undefined : { x: -40, opacity: 0 }}
             style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 18 }}
           >
-            {/* Top row: Layla + her "You decide!" pill, progress dots on the right */}
+            {/* Top row: the "You decide!" pill, progress dots on the right (owner: no portrait here) */}
             <div data-pd-head style={{ display: "flex", alignItems: "center", gap: 12, minHeight: 54 }}>
-              <LaylaPortrait week={week} />
               <div
                 style={{
                   position: "relative",
@@ -571,39 +567,3 @@ export default function PauseDecide({
 /* Small round Layla portrait (54px). Uses the week's costumed idle sprite when
  * the week has one (app/lib/weekCharacters.ts) and falls back to the shared
  * sprite on error. The full-body idle art is cropped to the head. */
-function LaylaPortrait({ week }: { week: number | null }) {
-  return (
-    <div
-      aria-hidden
-      style={{
-        position: "relative",
-        width: 54,
-        height: 54,
-        flexShrink: 0,
-        borderRadius: "50%",
-        overflow: "hidden",
-        border: "2px solid #b39dff",
-        background: "radial-gradient(circle at 50% 30%, #3a2f7a 0%, #1e1a4a 100%)",
-        boxShadow: "0 8px 18px -8px rgba(0,0,0,0.8), 0 0 14px rgba(124,92,255,0.35)",
-      }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={weekCharacterSrc(week ?? undefined, "layla", "idle")}
-        onError={fallbackToShared("layla", "idle")}
-        alt=""
-        style={{
-          position: "absolute",
-          top: -20,
-          left: "50%",
-          width: 96,
-          // The global img { max-width: 100% } would shrink the sprite to the
-          // 50px content box; we WANT it larger than the circle (head crop).
-          maxWidth: "none",
-          transform: "translateX(-50%)",
-          display: "block",
-        }}
-      />
-    </div>
-  );
-}
