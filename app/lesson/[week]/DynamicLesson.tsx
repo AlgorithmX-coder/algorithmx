@@ -1975,6 +1975,7 @@ function DynamicLessonInner({
             <SignBingo
               signs={def.signs}
               rounds={def.rounds}
+              skin={def.skin}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}

@@ -1116,6 +1116,9 @@ export type ScreenDef = (
        * buttonHunt (find controls) and quickCheck recall (one question).
        */
       type: "signBingo";
+      /** Board dressing: "card" (W13 2x2 card, default) or "vault" (W1 brass dials
+       *  around a vault door; a correct tap bolts the door). Needs exactly 4 signs. */
+      skin?: "card" | "vault";
       /** The card squares (4 recommended). */
       signs: {
         id: string;
