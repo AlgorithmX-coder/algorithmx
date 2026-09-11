@@ -81,7 +81,7 @@ import VaultDrop from "@/app/components/exercises/VaultDrop";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import ConceptRecap from "@/app/components/lesson/ConceptRecap";
-import NextPowerScene from "@/app/components/lesson/NextPowerScene";
+import { LessonWeekContext } from "@/app/components/lesson/LessonWeekContext";
 import StickerUnlock from "@/app/components/lesson/StickerUnlock";
 import BossVictoryScene from "@/app/components/lesson/BossVictoryScene";
 import { awardStickers } from "@/app/lib/stickers.actions";
@@ -506,9 +506,12 @@ const MISSION_CARD_STYLES = [
 function MissionBriefCase({
   objectives,
   onAccept,
+  week,
 }: {
   objectives: string[];
   onAccept: () => void;
+  /** Week number for the themed cast (Adam / Layla / Raccoon). */
+  week?: number;
 }) {
   const missions = useMemo(
     () =>
@@ -536,7 +539,7 @@ function MissionBriefCase({
   }, [objectives.length]);
 
   return (
-    <MissionBriefScene phase={phase} missions={missions} onAccept={onAccept} />
+    <MissionBriefScene phase={phase} missions={missions} onAccept={onAccept} week={week} />
   );
 }
 
@@ -1355,6 +1358,7 @@ function DynamicLessonInner({
             <MissionBriefCase
               objectives={def.objectives}
               onAccept={() => navigate(screen + 1)}
+              week={content.weekNumber}
             />
           </FullScene>
         );
@@ -1403,20 +1407,6 @@ function DynamicLessonInner({
           </FullScene>
         );
 
-      case "nextPower":
-        return (
-          <FullScene bg="linear-gradient(180deg, #0a1030 0%, #060a1c 100%)">
-            <NextPowerScene
-              power={def.power}
-              total={def.total}
-              title={def.title}
-              tease={def.tease}
-              emblem={def.emblem}
-              narration={def.narration}
-              onContinue={() => navigate(screen + 1)}
-            />
-          </FullScene>
-        );
 
       case "cyberScanner":
         return (
@@ -1425,6 +1415,7 @@ function DynamicLessonInner({
               passwords={def.items}
               labels={def.labels}
               introNarration={def.narration}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1489,6 +1480,7 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1526,6 +1518,7 @@ function DynamicLessonInner({
               introNarration={def.narration}
               coachLines={def.coachLines}
               threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1587,6 +1580,7 @@ function DynamicLessonInner({
               slots={def.slots}
               hints={def.hints}
               introNarration={def.narration}
+              completeNarration={def.completeNarration}
               coachLines={def.coachLines}
               threat={def.threat}
               onComplete={() => navigate(screen + 1)}
@@ -1650,6 +1644,8 @@ function DynamicLessonInner({
               boardIcon={def.boardIcon}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onAnswered={(o) => {
@@ -1675,6 +1671,8 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1747,6 +1745,8 @@ function DynamicLessonInner({
               nosyLabel={def.nosyLabel}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1986,6 +1986,7 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2248,6 +2249,13 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              skin={def.skin}
+              pathLabel={def.pathLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              speakSteps={def.speakSteps}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2277,6 +2285,8 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2310,6 +2320,7 @@ function DynamicLessonInner({
                 introNarration={def.narration}
                 threat={def.threat}
                 speakScenarios={def.speakScenarios}
+                completeNarration={def.completeNarration}
                 onComplete={() => navigate(screen + 1)}
                 onCorrect={() => awardXp(25)}
                 onWrong={() => addWrong(screen)}
@@ -2343,6 +2354,7 @@ function DynamicLessonInner({
               introNarration={def.narration}
               coachLines={def.coachLines}
               threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2374,6 +2386,9 @@ function DynamicLessonInner({
               introIcon={def.introIcon}
               hints={def.hints}
               introNarration={def.narration}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              copy={def.copy}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2861,7 +2876,7 @@ function DynamicLessonInner({
   const weekTheme = WEEK_THEMES[content.weekNumber] ?? null;
 
   return (
-    <LessonThemeContext.Provider value={weekTheme}>
+    <LessonThemeContext.Provider value={weekTheme}><LessonWeekContext.Provider value={content?.weekNumber ?? null}>
     <div style={{ position: "relative", minHeight: "100vh", background: weekTheme?.deepBg ?? "#05061a", color: "#e2e8f0" }}>
       {/* 3D arena backdrop */}
       <div
@@ -3210,6 +3225,6 @@ function DynamicLessonInner({
         </div>
       )}
     </div>
-    </LessonThemeContext.Provider>
+    </LessonWeekContext.Provider></LessonThemeContext.Provider>
   );
 }

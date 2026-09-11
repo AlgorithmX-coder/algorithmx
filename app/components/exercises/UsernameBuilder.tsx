@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -46,6 +47,10 @@ export interface UsernameBuilderProps {
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken "you're protected" payoff on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -58,12 +63,72 @@ export interface UsernameBuilderProps {
   }) => void;
 }
 
+/**
+ * One reel's tray of parts. Its own component so the anti-sequence shuffle
+ * runs once PER TRAY (the authored trays park the trap part in a tell-tale
+ * slot); the three reels themselves keep their fixed hero/sidekick/number
+ * order because that structure IS the name being built.
+ */
+function SlotTray({
+  parts,
+  pickedId,
+  disabled,
+  reduce,
+  onPick,
+}: {
+  parts: BuilderPart[];
+  pickedId?: string;
+  disabled: boolean;
+  reduce: boolean;
+  onPick: (part: BuilderPart) => void;
+}) {
+  const shownParts = useShuffledOnce(parts);
+  const lockedOut = !!pickedId;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      {shownParts.map((p) => {
+        const used = pickedId === p.id;
+        return (
+          <motion.button
+            key={p.id}
+            onClick={() => onPick(p)}
+            disabled={lockedOut || disabled}
+            whileHover={lockedOut || reduce ? undefined : { scale: 1.04 }}
+            whileTap={lockedOut || reduce ? undefined : { scale: 0.95 }}
+            style={{
+              padding: "8px 6px",
+              borderRadius: 10,
+              cursor: lockedOut ? "default" : "pointer",
+              touchAction: "manipulation",
+              fontFamily: "inherit",
+              fontSize: 13.5,
+              fontWeight: 900,
+              letterSpacing: "0.02em",
+              background: used
+                ? "rgba(52,211,153,0.2)"
+                : lockedOut
+                  ? "rgba(8,10,22,0.4)"
+                  : "linear-gradient(180deg, rgba(124,92,255,0.22), rgba(124,92,255,0.1))",
+              border: used ? "1.5px solid #34d399" : "1.5px solid rgba(160,140,255,0.45)",
+              color: used ? "#7eff97" : lockedOut ? "#3d466f" : "#dcd6ff",
+            }}
+          >
+            {p.text}
+          </motion.button>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function UsernameBuilder({
   slots,
   parts,
   hints,
   introNarration,
   coachLines,
+  threat,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -151,6 +216,7 @@ export default function UsernameBuilder({
           subtitle="Forge a hero name that says NOTHING about the real you."
           icon="🎭"
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
@@ -246,43 +312,14 @@ export default function UsernameBuilder({
                     )}
                   </AnimatePresence>
                 </div>
-                {/* Tray */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  {parts
-                    .filter((p) => p.slotId === slot.id)
-                    .map((p) => {
-                      const used = part?.id === p.id;
-                      const lockedOut = !!part;
-                      return (
-                        <motion.button
-                          key={p.id}
-                          onClick={() => pick(p)}
-                          disabled={lockedOut || showIntro || badgeStamped}
-                          whileHover={lockedOut || reduce ? undefined : { scale: 1.04 }}
-                          whileTap={lockedOut || reduce ? undefined : { scale: 0.95 }}
-                          style={{
-                            padding: "8px 6px",
-                            borderRadius: 10,
-                            cursor: lockedOut ? "default" : "pointer",
-                            touchAction: "manipulation",
-                            fontFamily: "inherit",
-                            fontSize: 13.5,
-                            fontWeight: 900,
-                            letterSpacing: "0.02em",
-                            background: used
-                              ? "rgba(52,211,153,0.2)"
-                              : lockedOut
-                                ? "rgba(8,10,22,0.4)"
-                                : "linear-gradient(180deg, rgba(124,92,255,0.22), rgba(124,92,255,0.1))",
-                            border: used ? "1.5px solid #34d399" : "1.5px solid rgba(160,140,255,0.45)",
-                            color: used ? "#7eff97" : lockedOut ? "#3d466f" : "#dcd6ff",
-                          }}
-                        >
-                          {p.text}
-                        </motion.button>
-                      );
-                    })}
-                </div>
+                {/* Tray (shuffled once per reel, see SlotTray) */}
+                <SlotTray
+                  parts={parts.filter((p) => p.slotId === slot.id)}
+                  pickedId={part?.id}
+                  disabled={showIntro || badgeStamped}
+                  reduce={reduce}
+                  onPick={pick}
+                />
               </div>
             );
           })}
@@ -335,6 +372,7 @@ export default function UsernameBuilder({
             "The Raccoon can stare all day and learn NOTHING.",
           ]}
           encouragement="Your mask has no holes, Cyber Hero!"
+          narration={completeNarration}
           onContinue={() => onComplete(slots.length)}
         />
       )}

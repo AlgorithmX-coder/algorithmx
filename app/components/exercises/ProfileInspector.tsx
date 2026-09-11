@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -88,8 +89,12 @@ export default function ProfileInspector({
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const finished = idx >= profiles.length;
-  const profile = profiles[idx];
+  // Anti-sequence: the profiles arrive in a random order every play (authored
+  // lists alternate real/fake). Each profile's 4 inspect zones are the fixed
+  // checking procedure and stay in place; Real / FAKE keep their sides.
+  const shownProfiles = useShuffledOnce(profiles);
+  const finished = idx >= shownProfiles.length;
+  const profile = shownProfiles[idx];
   const allInspected = profile ? profile.zones.every((z) => inspected.has(z.id)) : false;
 
   // Reset per profile when advancing.
@@ -356,7 +361,7 @@ export default function ProfileInspector({
             {!allInspected && (
               <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#7d8cc9" }}>
                 Inspect all {profile.zones.length} clues to unlock your verdict · Profile{" "}
-                {Math.min(idx + 1, profiles.length)} of {profiles.length}
+                {Math.min(idx + 1, shownProfiles.length)} of {shownProfiles.length}
               </div>
             )}
 
@@ -386,7 +391,7 @@ export default function ProfileInspector({
           title="Every profile checked!"
           stars={stars}
           statLines={[
-            `${correctCount}/${profiles.length} verdicts right first try`,
+            `${correctCount}/${shownProfiles.length} verdicts right first try`,
             "Fakes unmasked, real friends welcomed.",
           ]}
           onContinue={() => onComplete(correctCount)}

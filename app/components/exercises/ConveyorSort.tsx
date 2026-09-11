@@ -22,6 +22,7 @@ import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import { useComfortMode } from "@/app/lib/comfortMode";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -129,8 +130,12 @@ export default function ConveyorSort({
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const finished = idx >= items.length;
-  const item = items[idx];
+  // Anti-sequence: cards ride the belt in a random order every play (authored
+  // lists alternate share/private). The two chutes keep their sides.
+  const shownItems = useShuffledOnce(items);
+
+  const finished = idx >= shownItems.length;
+  const item = shownItems[idx];
   const runningRef = useRef(false);
   runningRef.current = !showIntro && !finished && !paused && !stamp && !feedback;
 
@@ -271,7 +276,7 @@ export default function ConveyorSort({
             {machineLabel ?? "THE SORTING MACHINE"}
           </span>
           <span style={{ fontSize: 12.5, fontWeight: 800, color: "#7d8cc9" }}>
-            Card {Math.min(idx + 1, items.length)} of {items.length}
+            Card {Math.min(idx + 1, shownItems.length)} of {shownItems.length}
           </span>
         </div>
 
@@ -468,7 +473,7 @@ export default function ConveyorSort({
           title={completeTitle ?? "Belt cleared!"}
           stars={stars}
           statLines={[
-            `${correctCount}/${items.length} sorted first try`,
+            `${correctCount}/${shownItems.length} sorted first try`,
             completeLine ?? "The vault is locked and the share pile is safe.",
           ]}
           narration={completeNarration}

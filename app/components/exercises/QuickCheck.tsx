@@ -1,4 +1,6 @@
 "use client";
+import { useLessonWeek } from "@/app/components/lesson/LessonWeekContext";
+import { weekCharacterSrc, fallbackToShared } from "@/app/lib/weekCharacters";
 
 /**
  * QuickCheck — the "Prove it" beat that closes every concept loop.
@@ -129,6 +131,7 @@ export default function QuickCheck({
   };
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
+  const week = useLessonWeek();
   const reduce = intensity < 1;
 
   const [solved, setSolved] = useState(false);
@@ -370,7 +373,8 @@ export default function QuickCheck({
               character art, not an emoji chip. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/game/characters/raccoon-taunt.png"
+            src={weekCharacterSrc(week ?? undefined, "raccoon", "taunt")}
+            onError={fallbackToShared("raccoon", "taunt")}
             alt=""
             aria-hidden
             style={{

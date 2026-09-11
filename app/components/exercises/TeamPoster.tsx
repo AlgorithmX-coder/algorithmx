@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -101,7 +102,10 @@ export default function TeamPoster({
   const [hasInteracted, setHasInteracted] = useState(false);
   const [finished, setFinished] = useState(false);
 
-  const teamTiles = tiles.filter((t) => t.isTeam);
+  // Anti-sequence: the tray tiles are dealt in a random order every play
+  // (authored lists alternate team/not-team). Poster slots fill in tap order.
+  const shownTiles = useShuffledOnce(tiles);
+  const teamTiles = shownTiles.filter((t) => t.isTeam);
   const placed = (id: string) => placedIds.includes(id);
 
   const reportedTier = useRef(0);
@@ -281,7 +285,7 @@ export default function TeamPoster({
           }}
         >
           <AnimatePresence>
-            {tiles.map((tile, i) => {
+            {shownTiles.map((tile, i) => {
               if (placed(tile.id)) return null;
               return (
                 <motion.button

@@ -35,6 +35,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
+import { isAudioMuted } from "@/app/lib/audioMute";
 
 /* ────────────────────────── constants ────────────────────────── */
 
@@ -633,6 +634,28 @@ export default function ProofScale({
   // the game logic; from round 2 on it's the normal game.
   const guided = !!guide && phase === "play" && claimIdx === 0;
 
+  // Guided-round pacing (owner rule: the child must never be able to click
+  // while a narrator speaks). Sarah's walkthrough line runs WITH the click-
+  // guard on, and the "tap this" arrows appear only once she has finished
+  // (InfoNarration onDone), so the arrow invites a tap that can actually
+  // land. Reset per guided stage (claim -> evidence re-keys the line). Two
+  // safety nets so the arrows can never fail to show: muted = no voice to
+  // wait for (recorded onDone never fires), so ready at once; otherwise a
+  // generous cap in case `ended` never fires.
+  const guideStageActive = guided && (stage === "claim" || stage === "evidence");
+  // Which guided stage Sarah has finished speaking for (claim / evidence);
+  // comparing against the current stage key is the reset, so no state is
+  // written synchronously in an effect.
+  const guideStageKey = `${claimIdx}-${stage}`;
+  const [guideReadyFor, setGuideReadyFor] = useState<string | null>(null);
+  useEffect(() => {
+    if (!guideStageActive) return;
+    // Muted = nothing to wait for, release on the next tick; else the cap.
+    const id = window.setTimeout(() => setGuideReadyFor(guideStageKey), isAudioMuted() ? 0 : 14000);
+    return () => window.clearTimeout(id);
+  }, [guideStageActive, guideStageKey]);
+  const arrowsOn = guideStageActive && guideReadyFor === guideStageKey;
+
   const later = useCallback((fn: () => void, ms: number) => {
     timersRef.current.push(window.setTimeout(fn, ms));
   }, []);
@@ -891,17 +914,18 @@ export default function ProofScale({
           </div>
         </div>
 
-        {/* First-round walkthrough voice (Sarah), audio-only; guard OFF so the
-            child can tap the arrowed target while she talks. Re-keyed per stage
-            so she speaks the right step at the right moment. */}
-        {guided && guide && (stage === "claim" || stage === "evidence") && (
+        {/* First-round walkthrough voice (Sarah), audio-only. The click-guard
+            stays ON while she talks (no tapping over the narrator); when she
+            finishes, onDone lights the arrows that invite the tap. Re-keyed
+            per stage so she speaks the right step at the right moment. */}
+        {guideStageActive && guide && (
           <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
             <InfoNarration
               key={`ps-guide-${stage}`}
               speaker={guide.speaker ?? "adam"}
               lines={[stage === "claim" ? guide.claim : guide.evidence]}
               accent={accent ?? "#3dffc4"}
-              guard={false}
+              onDone={() => setGuideReadyFor(guideStageKey)}
             />
           </div>
         )}
@@ -1003,7 +1027,7 @@ export default function ProofScale({
                   </motion.div>
                 )}
               </AnimatePresence>
-              {guided && stage === "claim" && (
+              {arrowsOn && stage === "claim" && (
                 <GuideArrow label="Tap this claim!" style={{ left: "50%", bottom: 0, transform: "translateX(-50%)" }} />
               )}
             </div>
@@ -1021,7 +1045,7 @@ export default function ProofScale({
           >
             {/* evidence shelf */}
             <div style={{ position: "relative", zIndex: 10 }}>
-              {guided && stage === "evidence" && (
+              {arrowsOn && stage === "evidence" && (
                 <GuideArrow label="Which book proves it?" style={{ right: 4, top: -14 }} />
               )}
               <div
@@ -1387,7 +1411,7 @@ export default function ProofScale({
                   textAlign: "center",
                 }}
               >
-                {guided && stage === "evidence" && (
+                {arrowsOn && stage === "evidence" && (
                   <GuideArrow label="or slam NO PROOF!" style={{ right: 0, top: -22 }} />
                 )}
                 <motion.button

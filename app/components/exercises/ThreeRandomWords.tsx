@@ -22,6 +22,7 @@ import {
   useGameAudio,
   useMotionIntensity,
 } from "@/app/lib/gameEngine";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, {
   ExerciseCompleteBeat,
@@ -48,6 +49,8 @@ export interface ThreeRandomWordsProps {
   threat?: { raccoonLine: string };
   /** Teach-once coach line played at the first word pick, then dismissed. */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken Sarah acknowledgment on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -95,6 +98,7 @@ export default function ThreeRandomWords({
   introNarration,
   threat,
   coachLines,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -104,6 +108,11 @@ export default function ThreeRandomWords({
   const intensity = useMotionIntensity();
   const fx = useExerciseFeedback();
   const audio = useGameAudio();
+
+  // Anti-sequence: the word wall is dealt in a random order every play (the
+  // authored wall is grouped by category). Lookups go by id, so the slots and
+  // the strength meter are unaffected.
+  const wall = useShuffledOnce(words);
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [picked, setPicked] = useState<(string | null)[]>(() =>
@@ -240,6 +249,7 @@ export default function ThreeRandomWords({
               ? "Variety bonus: 3 different word types!"
               : "Try a mix of animals / objects / places / foods for a bonus.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(strength.score)}
         />
       </ExerciseFrame>
@@ -626,7 +636,7 @@ export default function ThreeRandomWords({
           marginBottom: 16,
         }}
       >
-        {words.map((w) => {
+        {wall.map((w) => {
           const isPicked = picked.includes(w.id);
           const colour = CATEGORY_COLOUR[w.category];
           return (

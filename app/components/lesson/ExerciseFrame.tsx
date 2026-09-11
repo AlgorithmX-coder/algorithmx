@@ -82,6 +82,16 @@ export interface ExerciseFrameProps {
    * Default false.
    */
   touchActionNone?: boolean;
+  /**
+   * Minimum frame height (px). Default 420. Floor so the frame can never
+   * collapse to padding-only height: an absolutely-positioned overlay
+   * (intro / complete beat) adds no flow height, so without a floor the
+   * frame shrinks and overflow:hidden clips the centered overlay's title.
+   * Only kicks in when content is shorter than this; taller exercises are
+   * unaffected. Raise it for a board that should stand taller than its
+   * content, lower it for a deliberately compact widget.
+   */
+  floor?: number;
   /** Custom style override (merged last). */
   style?: CSSProperties;
   children: ReactNode;
@@ -100,6 +110,7 @@ export default function ExerciseFrame({
   padding = 0,
   touchActionNone = false,
   decor = true,
+  floor = 420,
   style,
   children,
 }: ExerciseFrameProps) {
@@ -127,12 +138,9 @@ export default function ExerciseFrame({
         maxWidth: widthCss,
         margin: "0 auto",
         padding,
-        // Floor so the frame can never collapse to padding-only height. An
-        // absolutely-positioned overlay (intro / complete beat) adds no flow
-        // height, so without this floor the frame shrinks and overflow:hidden
-        // clips the centered overlay's title. Only kicks in when content is
-        // shorter than this; real exercises are taller and unaffected.
-        minHeight: 420,
+        // Height floor (see the `floor` prop): keeps an overlay-only frame
+        // from collapsing under overflow:hidden.
+        minHeight: floor,
         borderRadius: 28,
         overflow: "hidden",
         background: resolvedBg ?? undefined,

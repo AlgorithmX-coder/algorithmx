@@ -21,6 +21,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -73,6 +74,8 @@ export interface PasscodeForgeProps {
   }) => void;
 }
 
+const EMPTY_OPTIONS: ForgeOption[] = [];
+
 export default function PasscodeForge({
   rounds,
   introTitle,
@@ -108,6 +111,10 @@ export default function PasscodeForge({
 
   const finished = idx >= rounds.length;
   const round = rounds[idx];
+  // Anti-sequence: the three metal blanks of each round are dealt in a random
+  // order (authored data keeps the guess-proof one in a predictable spot). The
+  // rounds themselves stay in order: "first pair, second pair..." IS the code bar.
+  const roundOptions = useShuffledOnce(round?.options ?? EMPTY_OPTIONS, { key: round?.id ?? "done" });
 
   useEffect(() => {
     setRoundClean(true);
@@ -125,8 +132,8 @@ export default function PasscodeForge({
   const strike = (i: number) => {
     if (!round || showIntro || finished) return;
     setHasInteracted(true);
-    const option = round.options[i];
-    const correctIndex = round.options.findIndex((o) => o.isStrong);
+    const option = roundOptions[i];
+    const correctIndex = roundOptions.findIndex((o) => o.isStrong);
     onAnswered?.({
       questionKey: `forge-${round.id}`,
       selectedIndex: i,
@@ -274,13 +281,13 @@ export default function PasscodeForge({
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: `repeat(${round.options.length}, minmax(0,1fr))`,
+                gridTemplateColumns: `repeat(${roundOptions.length}, minmax(0,1fr))`,
                 gap: 12,
                 maxWidth: 620,
                 margin: "0 auto",
               }}
             >
-              {round.options.map((o, i) => (
+              {roundOptions.map((o, i) => (
                 <motion.button
                   key={`${round.id}-${o.digits}`}
                   type="button"

@@ -1,4 +1,6 @@
 "use client";
+import { useLessonWeek } from "@/app/components/lesson/LessonWeekContext";
+import { weekCharacterSrc, fallbackToShared } from "@/app/lib/weekCharacters";
 
 /**
  * RaccoonThreatScene — the "Spot the Danger" beat of the Learn Loop.
@@ -34,6 +36,7 @@ export default function RaccoonThreatScene({
   onNext,
 }: RaccoonThreatSceneProps) {
   const reduce = useMotionIntensity() < 1;
+  const week = useLessonWeek();
   // Cohesion: the chrome uses the WEEK accent (teal on W15), on a neutral-dark
   // base so it reads as one family with the rest of the week. The Raccoon +
   // "Spot the Danger" wording carry the "danger" meaning, not an off-theme hue.
@@ -77,7 +80,8 @@ export default function RaccoonThreatScene({
           }}
         >
           <motion.img
-            src="/game/characters/raccoon-taunt.png"
+            src={weekCharacterSrc(week ?? undefined, "raccoon", "taunt")}
+            onError={fallbackToShared("raccoon", "taunt")}
             alt="The Hacker Raccoon"
             initial={reduce ? false : { scale: 0.85, opacity: 0, rotate: -4 }}
             animate={reduce ? { opacity: 1 } : { scale: 1, opacity: 1, rotate: 0, y: [0, -6, 0] }}

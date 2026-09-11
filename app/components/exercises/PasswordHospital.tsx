@@ -91,6 +91,8 @@ export interface PasswordHospitalProps {
   threat?: { raccoonLine: string };
   /** Teach-once coach line played on Patient #1's diagnosis, then dismissed. */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken "you're protected" payoff read on the finish overlay (recorded only). */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -308,6 +310,7 @@ export default function PasswordHospital({
   introNarration,
   threat,
   coachLines,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -544,6 +547,7 @@ export default function PasswordHospital({
               ? "Spotless diagnosis - no wrong picks!"
               : `${wrongTotal} wrong diagnosis ${wrongTotal === 1 ? "pick" : "picks"} on the way`,
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(healedCount)}
         />
       </ExerciseFrame>

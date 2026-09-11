@@ -10,7 +10,7 @@
  * bespoke per week.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { isAudioMuted } from "@/app/lib/audioMute";
 
 export const MONO = "'JetBrains Mono', ui-monospace, Menlo, monospace";
@@ -102,12 +102,56 @@ export function makeHeroes(
  *  audio contract. Never full volume. Tracked so the victory sequence
  *  can wait for the current bark to finish (see whenVillainQuiet). */
 let villainEl: HTMLAudioElement | null = null;
+
+/** "Villain speaking" signal (owner rule: the child must never be able to
+ *  click while a narrator speaks - Callum included). True from the moment a
+ *  bark is committed to play until it ends / errors / is paused, with a 9s
+ *  backstop so a stalled clip can never wedge a guard shut. Hosts subscribe
+ *  via useVillainSpeaking() and mount <NarrationClickGuard active={...} />. */
+let villainSpeaking = false;
+let villainBackstop: number | null = null;
+const villainListeners = new Set<() => void>();
+const VILLAIN_BACKSTOP_MS = 9000;
+function setVillainSpeaking(on: boolean) {
+  if (villainBackstop !== null) {
+    window.clearTimeout(villainBackstop);
+    villainBackstop = null;
+  }
+  if (on) villainBackstop = window.setTimeout(() => setVillainSpeaking(false), VILLAIN_BACKSTOP_MS);
+  if (villainSpeaking === on) return;
+  villainSpeaking = on;
+  villainListeners.forEach((l) => l());
+}
+export function subscribeVillainSpeaking(cb: () => void): () => void {
+  villainListeners.add(cb);
+  return () => {
+    villainListeners.delete(cb);
+  };
+}
+export function isVillainSpeaking(): boolean {
+  return villainSpeaking;
+}
+const villainSilentOnServer = () => false;
+/** Subscribe a component to the villain-speaking signal. */
+export function useVillainSpeaking(): boolean {
+  return useSyncExternalStore(subscribeVillainSpeaking, isVillainSpeaking, villainSilentOnServer);
+}
+
 export function playVillain(file: string) {
   if (typeof window === "undefined" || isAudioMuted()) return;
   const el = new Audio(`/audio/villain/${file}.mp3`);
   el.volume = 0.45;
   villainEl = el;
-  void el.play().catch(() => {});
+  // Only the CURRENT bark may lower the flag: an older clip ending under a
+  // newer one must not drop the guard while the new one still sounds.
+  const off = () => {
+    if (villainEl === el) setVillainSpeaking(false);
+  };
+  el.addEventListener("ended", off, { once: true });
+  el.addEventListener("error", off, { once: true });
+  el.addEventListener("pause", off);
+  setVillainSpeaking(true);
+  void el.play().catch(off);
 }
 
 /** PILOT FEEDBACK (global): victory audio must never overlap — the

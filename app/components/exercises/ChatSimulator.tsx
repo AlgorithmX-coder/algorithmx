@@ -7,6 +7,7 @@ import {
   badgeEarnedCelebration,
 } from "@/app/lib/celebrations";
 import { playSound } from "@/app/lib/sounds";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 
 type Sender = "stranger" | "narrator";
@@ -70,6 +71,7 @@ function ensureStyles() {
 
 const TYPING_MS = 1000;
 const DEFAULT_DELAY = 500;
+const EMPTY_OPTIONS: ChoiceOption[] = [];
 
 function dangerStops(level: number): { label: string; color: string; bg: string } {
   if (level >= 0.66) return { label: "⚠️ HIGH", color: "#ef4444", bg: "rgba(239,68,68,0.14)" };
@@ -105,6 +107,13 @@ export default function ChatSimulator({
   const perfectFiredRef = useRef(false);
 
   const totalChoices = choices.length;
+
+  // Anti-sequence: each choice group's reply options appear in a random order
+  // (authored lists lead with the safe reply). The message transcript is NEVER
+  // shuffled: the order of the conversation is the lesson.
+  const shownOptions = useShuffledOnce(waitingChoice?.options ?? EMPTY_OPTIONS, {
+    key: waitingChoice ? waitingChoice.triggerAfterMessage : -1,
+  });
 
   useEffect(() => {
     ensureStyles();
@@ -495,7 +504,7 @@ export default function ChatSimulator({
           >
             HOW DO YOU REPLY?
           </div>
-          {waitingChoice.options.map((opt, i) => (
+          {shownOptions.map((opt, i) => (
             <ChoiceCard
               key={i}
               option={opt}

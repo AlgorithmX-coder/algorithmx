@@ -21,6 +21,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -85,6 +86,7 @@ export interface DayBalancerProps {
 // even small angles swing the ends far - the padding on the see-saw
 // band below must absorb sin(angle) * half-width of vertical overflow.
 const TILT_START = -6;
+const EMPTY_OPTIONS: BalancerOption[] = [];
 
 function Chip({ label, icon, tone, pulse }: { label: string; icon: string; tone: "screen" | "recharge"; pulse?: boolean }) {
   return (
@@ -155,10 +157,15 @@ export default function DayBalancer({
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const finished = swapIdx >= swaps.length;
-  const swap = swaps[swapIdx];
-  const balance = Math.round((swapIdx / swaps.length) * 100);
-  const angle = TILT_START * (1 - swapIdx / swaps.length);
+  // Anti-sequence: the swaps arrive in a random order, and each swap's three
+  // cards are dealt in a random order (authored data keeps the real recharge
+  // in a predictable spot). keptBlocks are display-only and stay as authored.
+  const shownSwaps = useShuffledOnce(swaps);
+  const finished = swapIdx >= shownSwaps.length;
+  const swap = shownSwaps[swapIdx];
+  const swapOptions = useShuffledOnce(swap?.options ?? EMPTY_OPTIONS, { key: swap?.id ?? "done" });
+  const balance = Math.round((swapIdx / shownSwaps.length) * 100);
+  const angle = TILT_START * (1 - swapIdx / shownSwaps.length);
 
   const reportedTier = useRef(0);
   const reportTier = (n: number) => {
@@ -172,11 +179,11 @@ export default function DayBalancer({
   const pick = (idx: number) => {
     if (!swap || showIntro || feedback || finished) return;
     setHasInteracted(true);
-    const option = swap.options[idx];
+    const option = swapOptions[idx];
     onAnswered?.({
       questionKey: `swap-${swap.id}`,
       selectedIndex: idx,
-      correctIndex: swap.options.findIndex((o) => o.isBalancing),
+      correctIndex: swapOptions.findIndex((o) => o.isBalancing),
       wasCorrect: option.isBalancing,
     });
     if (option.isBalancing) {
@@ -208,10 +215,10 @@ export default function DayBalancer({
   // Plank contents: remaining swap blocks + the kept-for-fun blocks on the
   // screen side; every completed swap's true recharge on the other side.
   const leftChips = [
-    ...swaps.slice(swapIdx).map((s) => ({ key: s.id, label: s.blockLabel, icon: s.blockIcon, pulse: s.id === swap?.id })),
+    ...shownSwaps.slice(swapIdx).map((s) => ({ key: s.id, label: s.blockLabel, icon: s.blockIcon, pulse: s.id === swap?.id })),
     ...keptBlocks.map((b, i) => ({ key: `kept-${i}`, label: b.label, icon: b.icon, pulse: false })),
   ];
-  const rightChips = swaps.slice(0, swapIdx).map((s) => {
+  const rightChips = shownSwaps.slice(0, swapIdx).map((s) => {
     const o = s.options.find((x) => x.isBalancing);
     return { key: s.id, label: o?.label ?? "", icon: o?.icon ?? "✅" };
   });
@@ -319,7 +326,7 @@ export default function DayBalancer({
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 10, maxWidth: 640, margin: "0 auto" }}>
-              {swap.options.map((o, i) => (
+              {swapOptions.map((o, i) => (
                 <motion.button
                   key={`${swap.id}-${i}`}
                   type="button"
@@ -355,7 +362,7 @@ export default function DayBalancer({
             </div>
 
             <div style={{ textAlign: "center", marginTop: 12, fontSize: 12, fontWeight: 800, color: "#7d8cc9", letterSpacing: "0.1em" }}>
-              SWAP {Math.min(swapIdx + 1, swaps.length)} OF {swaps.length}
+              SWAP {Math.min(swapIdx + 1, shownSwaps.length)} OF {shownSwaps.length}
             </div>
           </motion.div>
         </AnimatePresence>

@@ -637,6 +637,7 @@ export const WEEK_15: WeekContent = {
           "But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues.",
           "Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters.",
           "[warmly] So when a photo looks amazing, we don't just believe it. We look twice.",
+          "[excited] Come on, detective, let's line up the photos!",
         ],
       },
     },
@@ -982,6 +983,13 @@ export const WEEK_15: WeekContent = {
           "[excited] Show me everything you've learned. Off we go!",
         ],
       },
+      completeNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Review complete! You spotted every wise move and every bot trap.",
+          "[warmly] Out in the real world, you know every one of his tricks by heart now. Time to close that booth for good!",
+        ],
+      },
     },
 
     // 24 - BOSS BATTLE (placeholder quiz boss - the bespoke W15 fight comes with the boss batch)
@@ -1068,7 +1076,7 @@ export const WEEK_15: WeekContent = {
         },
         villainRight: {
           slug: "quiz-w15-right-c1-1",
-          text: "You saw straight through the mushy talk?! That bot practiced its missing-you voice all week!",
+          text: "You saw straight through the mushy no-feelings talk?! That program practiced its missing-you voice all week!",
         },
         villainWrong: {
           slug: "quiz-w15-wrong-c1-1",

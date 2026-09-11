@@ -30,7 +30,8 @@ Then `trim({threshold: 8})` and resize. `scripts/_showdown-art.mjs` does key+tri
 | Asset | Size | Path |
 |---|---|---|
 | Hero outfit sprites (idle/attack/celebrate × adam/layla) | height 900 | `public/game/characters/wNN/{hero}-{outfit}-{pose}.png` |
-| Raccoon moods (idle/taunt/attack/hurt/defeated) | 1232×900 canvas | `public/game/characters/raccoon-{mood}.png` (shared by all 20 weeks) |
+| Raccoon moods (idle/taunt/attack/hurt/defeated) | 1232×900 canvas | `public/game/characters/raccoon-{mood}.png` (shared fallback; still what the BOSS uses) |
+| Raccoon per-week themed TAUNT (2026-09-11) | 1232×900 canvas, bottom-centred | `public/game/characters/wNN/raccoon-{outfit}-taunt.png` — resolved by `app/lib/weekCharacters.ts` (`WEEK_OUTFITS` map + `weekCharacterSrc`, `onError` → `fallbackToShared`); week comes from `LessonWeekContext`. Generated image2image off the canon taunt ref with "change ONLY the costume … exactly ONE {prop}"; prop-doubling is the common defect — fix with a self-referencing retake "remove the {prop} from the paw on the viewer's LEFT/RIGHT". Other moods not themed yet (theming the boss would swap costume mid-fight). |
 | Machines (intact/damaged/defeated) | height 700 | `public/game/bosses/` |
 | Arenas | 1920×1080 | `public/game/backgrounds/` |
 | Badge medals | height 512 | `public/cyberheroes/badges/week-NN-{name}.png` |

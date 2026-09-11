@@ -55,6 +55,8 @@ export interface MemoryMatchProps {
   threat?: { raccoonLine: string };
   /** Spoken explanation for the phase-2 "Rebuild From Memory" mini-game. */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken "you're protected" payoff read on the finish overlay (recorded only). */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -161,6 +163,7 @@ export default function MemoryMatch({
   introNarration,
   threat,
   coachLines,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -824,6 +827,17 @@ export default function MemoryMatch({
         })}
       </div>
 
+      {/* Spoken payoff on the finish overlay (audio only; the guard holds Continue). */}
+      {finished && completeNarration && (
+        <div style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
+          <InfoNarration
+            key="mm-complete"
+            speaker={completeNarration.speaker ?? "adam"}
+            lines={completeNarration.lines}
+            recordedOnly
+          />
+        </div>
+      )}
       {finished && (
         <FinishOverlay
           mm={mm}

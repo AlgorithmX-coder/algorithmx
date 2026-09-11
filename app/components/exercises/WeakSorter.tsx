@@ -35,6 +35,7 @@ import HintBubble from "@/app/components/lesson/HintBubble";
 import GameButton from "@/app/components/lesson/GameButton";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 export interface WeakReason {
   id: string;
@@ -61,6 +62,8 @@ export interface WeakSorterProps {
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
   threat?: { raccoonLine: string };
+  /** Spoken "you're protected" payoff read on the finish screen (recorded only). */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -90,6 +93,7 @@ export default function WeakSorter({
   hints,
   introNarration,
   threat,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -260,6 +264,16 @@ export default function WeakSorter({
         <p style={{ color: "#94a3b8", margin: "0 0 18px" }}>
           {accuracy}% · {Array.from({ length: stars }, (_, i) => (<PixIcon key={i} emoji="⭐" size={16} />))}
         </p>
+        {completeNarration && (
+          <div style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
+            <InfoNarration
+              key="ws-complete"
+              speaker={completeNarration.speaker ?? "adam"}
+              lines={completeNarration.lines}
+              recordedOnly
+            />
+          </div>
+        )}
         <GameButton
           variant="primary"
           size="lg"

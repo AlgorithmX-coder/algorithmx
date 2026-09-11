@@ -23,6 +23,7 @@ import {
   useGameAudio,
   useMotionIntensity,
 } from "@/app/lib/gameEngine";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, {
   ExerciseCompleteBeat,
@@ -92,7 +93,10 @@ export default function PopupPanic({
   // on close. Avoids any chance of a "ghost" of the previous popup.
   const [popupRenderKey, setPopupRenderKey] = useState(0);
 
-  const popup = popups[popupIdx];
+  // Anti-sequence: the pop-ups fire in a random order every play so the
+  // scare-script never plays the same way twice.
+  const shownPopups = useShuffledOnce(popups);
+  const popup = shownPopups[popupIdx];
 
   // Hint tier rises when the same popup has been "OK"-tapped multiple
   // times in a row. We surface tier-2/3 only - tier 1 is the popup
@@ -117,13 +121,13 @@ export default function PopupPanic({
     setClosedCount((n) => n + 1);
     setWrongOnCurrent(0);
     const next = popupIdx + 1;
-    if (next >= popups.length) {
+    if (next >= shownPopups.length) {
       setPhase("finished");
     } else {
       setPopupIdx(next);
       setPopupRenderKey((k) => k + 1);
     }
-  }, [popup, feedback, popupIdx, popups.length, fx, onCorrect, onAnswered]);
+  }, [popup, feedback, popupIdx, shownPopups.length, fx, onCorrect, onAnswered]);
 
   const handleOk = useCallback(() => {
     if (!popup || feedback) return;
@@ -153,7 +157,7 @@ export default function PopupPanic({
           title="All pop-ups closed!"
           stars={stars}
           statLines={[
-            `${closedCount} of ${popups.length} dismissed`,
+            `${closedCount} of ${shownPopups.length} dismissed`,
             wrongTotal === 0
               ? "Not once fooled by an OK button."
               : `${wrongTotal} OK-trap${wrongTotal === 1 ? "" : "s"} along the way.`,
@@ -200,7 +204,7 @@ export default function PopupPanic({
             color: "#cbd5e1",
           }}
         >
-          {Math.min(popupIdx + 1, popups.length)} / {popups.length}
+          {Math.min(popupIdx + 1, shownPopups.length)} / {shownPopups.length}
         </span>
       </div>
 

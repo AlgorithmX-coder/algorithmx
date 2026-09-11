@@ -216,7 +216,7 @@ for (const fname of weekFiles) {
   // recording their long read-outs until the learn-loop rollout trims them.
   // Add each week's filename here as it is finalized; drop the guard at the end.
   let ba, bossQ = 0;
-  while ((fname === "week1.ts" || fname === "week15.ts") && (ba = bossAskRe.exec(src)) !== null) {
+  while ((fname === "week1.ts" || fname === "week2.ts" || fname === "week15.ts") && (ba = bossAskRe.exec(src)) !== null) {
     const askText = ba[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
     const optRe = /text:\s*"((?:[^"\\]|\\.)*)"/g;
     const opts = [];
@@ -252,7 +252,7 @@ for (const fname of weekFiles) {
   // ("That's right!") and the wrong lead ("Not quite.") in front of the same
   // teachOnWrong.explanation, matching QuizBoss's `explain.lines` exactly. Same
   // week-15-only scope as the read-outs above.
-  if ((fname === "week1.ts" || fname === "week15.ts")) {
+  if ((fname === "week1.ts" || fname === "week2.ts" || fname === "week15.ts")) {
     const bossTeachRe = /teachOnWrong:\s*\{\s*title:\s*"(?:[^"\\]|\\.)*"\s*,\s*explanation:\s*"((?:[^"\\]|\\.)*)"/g;
     let bt;
     while ((bt = bossTeachRe.exec(src)) !== null) {
@@ -270,7 +270,7 @@ for (const fname of weekFiles) {
   // single-line block, matching InfoNarration({ lines: [explanation] }). Same
   // week-15-only scope; dedupes, and over-recording a few strings that aren't
   // shown in the panel is harmless.
-  if ((fname === "week1.ts" || fname === "week15.ts")) {
+  if ((fname === "week1.ts" || fname === "week2.ts" || fname === "week15.ts")) {
     const wrongRe = /(?:explanation|note):\s*"((?:[^"\\]|\\.)*)"/g;
     const seenWrong = new Set();
     let wm;
@@ -292,6 +292,45 @@ for (const fname of weekFiles) {
         if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
       }
     }
+  }
+  // Week 2 Learn-Loop read-alouds (owner 2026-09-11): RevealBoard vignette beats
+  // (steps[].text + counter + finale, "Sarah narrates these"), RequestInspector
+  // zone notes ("read out the inspections as you click") + think nudges, and
+  // StepOrder step affirmations (Sarah reads each step as it lands). Scoped to
+  // week2.ts so shipped legacy weeks that use these engines stay silent
+  // (recordedOnly) until their lines are recorded. Both content voices = Sarah.
+  if (fname === "week2.ts") {
+    const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
+    const w2Starts = [];
+    let w2m;
+    while ((w2m = w2TypeRe.exec(src)) !== null) w2Starts.push({ type: w2m[1], off: w2m.index });
+    const pushAll = (span, re) => {
+      let mm;
+      while ((mm = re.exec(span)) !== null) {
+        const text = mm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+        if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
+      }
+    };
+    w2Starts.forEach((st, i) => {
+      const span = src.slice(st.off, i + 1 < w2Starts.length ? w2Starts[i + 1].off : src.length);
+      if (st.type === "reveal") {
+        pushAll(span, /\btext:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\bcounter:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\bfinale:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "requestInspector") {
+        // Sarah reads each inspection as "label note" (question + answer), so record
+        // the joined line the component speaks, not the bare note.
+        let zm;
+        const zoneRe = /label:\s*"((?:[^"\\]|\\.)*)",\s*note:\s*"((?:[^"\\]|\\.)*)"/g;
+        while ((zm = zoneRe.exec(span)) !== null) {
+          const text = (zm[1] + " " + zm[2]).replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+          if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
+        }
+        pushAll(span, /\bnudge:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "stepOrder") pushAll(span, /\baffirmation:\s*"((?:[^"\\]|\\.)*)"/g);
+    });
   }
   let sr;
   while ((sr = senderRoundPromptRe.exec(src)) !== null) {

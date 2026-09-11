@@ -1,4 +1,6 @@
 "use client";
+import { useLessonWeek } from "@/app/components/lesson/LessonWeekContext";
+import { weekCharacterSrc, fallbackToShared } from "@/app/lib/weekCharacters";
 
 /**
  * Standardised intro + completion beats for exercises.
@@ -108,6 +110,7 @@ export default function ExerciseIntroBeat({
   const audio = useGameAudio();
   const paced = !!narration && narration.lines.length > 0;
   const speaker = character ?? narration?.speaker ?? "adam";
+  const week = useLessonWeek();
   // Themed accent: an explicit override wins, else the WEEK theme accent (so
   // every game intro on a themed week is one colour — no off-theme cyan/pink),
   // else the classic speaker cyan/pink for un-themed weeks.
@@ -222,7 +225,8 @@ export default function ExerciseIntroBeat({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/game/characters/raccoon-taunt.png"
+                src={weekCharacterSrc(week ?? undefined, "raccoon", "taunt")}
+                onError={fallbackToShared("raccoon", "taunt")}
                 alt="The Hacker Raccoon"
                 style={{
                   height: 76,

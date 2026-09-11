@@ -635,7 +635,7 @@ export type ScreenDef = (
         frame?: { appName: string; icon: string };
         /** `device` presentation: how the SAFE move reads - "pause" (default,
          *  red don't-share) or "ask" (green "ask a grown-up"). */
-        safeKind?: "pause" | "ask";
+        safeKind?: "pause" | "ask" | "go";
       }[];
       /**
        * Presentation variant. `device` stages each scenario as an in-world
@@ -774,6 +774,10 @@ export type ScreenDef = (
         }[];
         /** Explanation shown after the child's verdict. */
         verdictNote: string;
+        /** Optional Sarah "think" nudge: shown and read aloud once all four zones
+         *  are inspected, BEFORE the verdict buttons unlock (owner: a little hint
+         *  like "it is only a quiz form, do they really need this?"). */
+        nudge?: string;
       }[];
       hints?: { tier1: string; tier2: string };
     }
@@ -1319,6 +1323,16 @@ export type ScreenDef = (
       introTitle: string;
       introSubtitle?: string;
       introIcon?: string;
+      /** Board dressing: "river" (W5 stepping stones, default) or "hero"
+       *  (W2 Hero Pause: badge trail on a purple backup-signal board). */
+      skin?: "river" | "hero";
+      /** Label above the path (e.g. "THE HERO PAUSE"). */
+      pathLabel?: string;
+      /** Complete-beat copy overrides. */
+      completeTitle?: string;
+      completeLine?: string;
+      /** Sarah reads each step's affirmation aloud as it lands (default true). */
+      speakSteps?: boolean;
       hints?: { tier1: string; tier2: string };
     }
   | {
@@ -1395,6 +1409,26 @@ export type ScreenDef = (
       introIcon?: string;
       /** Tiered wrong-try hints (defaults keep the Week 1 email copy). */
       hints?: { tier1: string; tier2: string; tier2Example?: string; tier3?: string };
+      /** Per-week copy (device title, pile label, wrong-panel + finish text;
+       *  templates may use {sender} {subject} {clue}). A reuse must be a genuine
+       *  re-theme, so every visible word is re-skinnable. */
+      copy?: {
+        deviceTitle?: string;
+        inboxLabel?: string;
+        missWord?: string;
+        missWordPlural?: string;
+        clearLabel?: string;
+        safeFloater?: string;
+        safeWrongTitle?: string;
+        safeWrongExplanation?: string;
+        safeWrongTip?: string;
+        missTitle?: string;
+        missExplanation?: string;
+        missClueFallback?: string;
+        missTip?: string;
+        finishTitle?: string;
+        deliveredWord?: string;
+      };
     }
   | {
       type: "cyberMaze";
@@ -1423,24 +1457,6 @@ export type ScreenDef = (
       /** What's coming next. Omit/replace with a finale line on the last. */
       next?: string;
       /** Header emblem glyph (defaults to ✅). */
-      emblem?: string;
-    }
-  | {
-      /**
-       * NEXT-POWER chapter card — the scene break BETWEEN a concept's Complete
-       * recap and the next concept's Learn. Names the upcoming power + a one-line
-       * tease so the seam reads as "a new lesson starts", not "an exercise is
-       * coming". Sits after concepts 1..total-1. Sarah teases it via `narration`.
-       */
-      type: "nextPower";
-      /** The upcoming power's number and the week's total (e.g. 2 of 5). */
-      power: number;
-      total: number;
-      /** The next concept's title, e.g. "Long Is Strong". */
-      title: string;
-      /** One-line tease of the next power. */
-      tease: string;
-      /** Emblem glyph for the next power (defaults to ⚡). */
       emblem?: string;
     }
   | { type: "bossBattle" }

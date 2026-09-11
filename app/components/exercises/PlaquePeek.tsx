@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -107,8 +108,11 @@ export default function PlaquePeek({
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const finished = doorIdx >= doors.length;
-  const door = doors[doorIdx];
+  // Anti-sequence: the doors come up in a random order every play (authored
+  // lists alternate honest/sneaky). The two verdict buttons keep their sides.
+  const shownDoors = useShuffledOnce(doors);
+  const finished = doorIdx >= shownDoors.length;
+  const door = shownDoors[doorIdx];
 
   const reportedTier = useRef(0);
   const reportTier = (n: number) => {
@@ -183,7 +187,7 @@ export default function PlaquePeek({
 
       {/* Corridor progress */}
       <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 14 }}>
-        {doors.map((d, i) => (
+        {shownDoors.map((d, i) => (
           <div
             key={d.id}
             style={{
@@ -367,7 +371,7 @@ export default function PlaquePeek({
             </div>
 
             <div style={{ textAlign: "center", marginTop: 12, fontSize: 12, fontWeight: 800, color: "#7d8cc9", letterSpacing: "0.1em" }}>
-              DOOR {Math.min(doorIdx + 1, doors.length)} OF {doors.length}
+              DOOR {Math.min(doorIdx + 1, shownDoors.length)} OF {shownDoors.length}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -396,7 +400,7 @@ export default function PlaquePeek({
           title={completeTitle ?? "Every plaque peeked!"}
           stars={stars}
           statLines={[
-            `${firstTryCount}/${doors.length} doors called right first try`,
+            `${firstTryCount}/${shownDoors.length} doors called right first try`,
             completeLine ?? "You never judged a door by its paint - only by its address.",
           ]}
           onContinue={() => onComplete(firstTryCount)}
