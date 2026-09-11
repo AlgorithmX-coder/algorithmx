@@ -115,14 +115,15 @@ test.describe("Public pages render", () => {
 });
 
 test.describe("Critical UI invariants", () => {
-  test("Cyber Heroes course shows 6-10 age range, not 6-9", async ({
+  test("Cyber Heroes course shows the ages 6-9 range", async ({
     page,
   }) => {
-    // Regression guard: the marketing age range was widened from 6-9
-    // to 6-10. If anyone reverts it, we want to know immediately.
+    // Regression guard: the course is for ages 6-9 (owner decision 2026-07-24,
+    // PH review). Anchor on "ages" so the "Weeks 6-10" roadmap label never
+    // masquerades as an age range.
     await page.goto("/cyberheroes");
     const text = await page.locator("body").innerText();
-    expect(text).toMatch(/6\s*[–-]\s*10/);
-    expect(text).not.toMatch(/6\s*[–-]\s*9(?!\d)/);
+    expect(text).toMatch(/ages 6\s*[–-]\s*9(?!\d)/i);
+    expect(text).not.toMatch(/ages 6\s*[–-]\s*10/i);
   });
 });
