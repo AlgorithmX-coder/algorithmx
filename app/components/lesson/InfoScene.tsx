@@ -19,8 +19,8 @@
  * of advancing. Same data, same 29-screen structure, every week.
  */
 
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { useMotionIntensity } from "@/app/lib/gameEngine";
 import { playSound } from "@/app/lib/sounds";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
@@ -74,6 +74,20 @@ export default function InfoScene({
   const themeAccent = useLessonTheme()?.accent;
   const gold = themeAccent ?? "#ffce78";
   const rim = themeAccent ?? "#ffc478";
+
+  // Chapter sweep (owner decision 2026-09-11, replaces the Next-Power screen):
+  // a numbered Learn opens on a ~2s "POWER N OF M" title card that fades into
+  // the lesson. Purely visual; the narration mounts only once it has cleared so
+  // Sarah never talks over it, and the card itself swallows clicks meanwhile.
+  const hasChapter = !!(conceptNumber && conceptTotal);
+  const [sweep, setSweep] = useState(hasChapter);
+  useEffect(() => {
+    if (!hasChapter) return;
+    playSound("whoosh");
+    const t = window.setTimeout(() => setSweep(false), reduce ? 1100 : 2000);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Tap-to-power-up state: which clue rows the child has lit.
   const [lit, setLit] = useState<Set<number>>(new Set());
@@ -167,7 +181,7 @@ export default function InfoScene({
           </div>
           <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.24em", textTransform: "uppercase", color: themeAccent ?? "#9fe9ff", margin: "12px 0 6px" }}>
             {conceptNumber && conceptTotal
-              ? `◇ Concept ${conceptNumber} of ${conceptTotal} · Learn ◇`
+              ? `◇ Power ${conceptNumber} of ${conceptTotal} · Learn ◇`
               : "◇ Learn ◇"}
           </div>
           <h2 style={{
@@ -184,7 +198,7 @@ export default function InfoScene({
         </div>
 
         {/* Narration */}
-        {narration && (
+        {narration && !sweep && (
           <InfoNarration lines={narration.lines} speaker={narration.speaker ?? "adam"} />
         )}
 
@@ -297,6 +311,114 @@ export default function InfoScene({
           </GameButton>
         </div>
       </div>
+      {/* POWER N OF M chapter sweep */}
+      <AnimatePresence>
+        {sweep && (
+          <motion.div
+            key="chapter-sweep"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: reduce ? 0.2 : 0.45, ease: "easeOut" } }}
+            aria-live="polite"
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 6,
+              display: "grid",
+              placeItems: "center",
+              padding: 24,
+              background: "linear-gradient(180deg, rgba(8,12,32,0.97) 0%, rgba(5,8,22,0.99) 100%)",
+              overflow: "hidden",
+            }}
+          >
+            {/* travelling light sweep */}
+            {!reduce && (
+              <motion.div
+                aria-hidden
+                initial={{ x: "-60%" }}
+                animate={{ x: "160%" }}
+                transition={{ duration: 1.3, ease: "easeInOut", delay: 0.2 }}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  width: "40%",
+                  background: `linear-gradient(90deg, transparent, ${gold}22, transparent)`,
+                  pointerEvents: "none",
+                }}
+              />
+            )}
+            <div style={{ textAlign: "center", position: "relative" }}>
+              <motion.div
+                initial={reduce ? false : { scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                style={{
+                  width: 104,
+                  height: 104,
+                  borderRadius: "50%",
+                  margin: "0 auto 18px",
+                  display: "grid",
+                  placeItems: "center",
+                  background: "radial-gradient(circle at 50% 32%, #46508a 0%, #1a2150 70%)",
+                  border: `2px solid ${gold}bf`,
+                  boxShadow: `0 0 48px -8px ${gold}aa, inset 0 2px 6px ${gold}59`,
+                }}
+              >
+                <PixIcon emoji={emblem} size={70} />
+              </motion.div>
+              <motion.div
+                initial={reduce ? false : { y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.15, duration: 0.35 }}
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: 15,
+                  fontWeight: 900,
+                  letterSpacing: "0.34em",
+                  textTransform: "uppercase",
+                  color: themeAccent ?? "#9fe9ff",
+                  textShadow: `0 0 14px ${themeAccent ?? "#9fe9ff"}66`,
+                }}
+              >
+                Power {conceptNumber} of {conceptTotal}
+              </motion.div>
+              <motion.h2
+                initial={reduce ? false : { y: 12, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.4 }}
+                style={{
+                  margin: "10px auto 0",
+                  maxWidth: 640,
+                  fontSize: "clamp(1.9rem, 4.2vw, 2.8rem)",
+                  fontWeight: 900,
+                  lineHeight: 1.1,
+                  background: themeAccent
+                    ? `linear-gradient(180deg, #ffffff 0%, ${themeAccent} 100%)`
+                    : "linear-gradient(180deg, #fff4cf 0%, #ffd86b 55%, #f3b13a 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {title}
+              </motion.h2>
+              <motion.div
+                aria-hidden
+                initial={reduce ? false : { scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.45, duration: 0.6, ease: "easeOut" }}
+                style={{
+                  height: 3,
+                  width: 240,
+                  margin: "20px auto 0",
+                  borderRadius: 2,
+                  background: `linear-gradient(90deg, transparent, ${gold}, transparent)`,
+                }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </ExerciseFrame>
   );
 }

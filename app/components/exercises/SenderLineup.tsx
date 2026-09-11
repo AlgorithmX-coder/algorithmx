@@ -16,6 +16,7 @@ import { motion } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
@@ -81,6 +82,8 @@ export interface SenderLineupProps {
   }) => void;
 }
 
+const EMPTY_SENDERS: LineupSender[] = [];
+
 export default function SenderLineup({
   rounds,
   introTitle,
@@ -124,8 +127,13 @@ export default function SenderLineup({
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const finished = idx >= rounds.length;
-  const round = rounds[idx];
+  // Anti-sequence: the lineups arrive in a random order, and each lineup's four
+  // podiums are dealt in a random order (authored data keeps the imposter in a
+  // predictable spot).
+  const shownRounds = useShuffledOnce(rounds);
+  const finished = idx >= shownRounds.length;
+  const round = shownRounds[idx];
+  const senders = useShuffledOnce(round?.senders ?? EMPTY_SENDERS, { key: round?.id ?? "done" });
   // Sarah reads the round aloud (the prompt now spells out the task) so the
   // child knows exactly what to do. Stable array keyed off the round.
   const promptLines = useMemo(() => (round ? [round.prompt] : []), [round]);
@@ -146,8 +154,8 @@ export default function SenderLineup({
   const pick = (senderIdx: number) => {
     if (!round || busted || showIntro || feedback) return;
     setHasInteracted(true);
-    const sender = round.senders[senderIdx];
-    const correctIndex = round.senders.findIndex((s) => s.isFake);
+    const sender = senders[senderIdx];
+    const correctIndex = senders.findIndex((s) => s.isFake);
     onAnswered?.({
       questionKey: `lineup-${round.id}`,
       selectedIndex: senderIdx,
@@ -231,7 +239,7 @@ export default function SenderLineup({
                 alignItems: "end",
               }}
             >
-              {round.senders.map((s, i) => {
+              {senders.map((s, i) => {
                 const isBusted = busted === s.id;
                 return (
                   <motion.button
@@ -367,7 +375,7 @@ export default function SenderLineup({
                 letterSpacing: "0.1em",
               }}
             >
-              LINEUP {Math.min(idx + 1, rounds.length)} OF {rounds.length}
+              LINEUP {Math.min(idx + 1, shownRounds.length)} OF {shownRounds.length}
             </div>
 
             <div style={{ maxWidth: 560, margin: "8px auto 0" }}>
@@ -395,7 +403,7 @@ export default function SenderLineup({
           title={completeTitle ?? "Every imposter busted!"}
           stars={stars}
           statLines={[
-            `${correctCount}/${rounds.length} lineups solved first try`,
+            `${correctCount}/${shownRounds.length} lineups solved first try`,
             completeLine ?? "Real senders cleared, lookalikes exposed.",
           ]}
           narration={completeNarration}

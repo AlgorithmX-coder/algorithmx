@@ -637,6 +637,7 @@ export const WEEK_15: WeekContent = {
           "But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues.",
           "Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters.",
           "[warmly] So when a photo looks amazing, we don't just believe it. We look twice.",
+          "[excited] Come on, detective, let's line up the photos!",
         ],
       },
     },
@@ -980,6 +981,13 @@ export const WEEK_15: WeekContent = {
           "If it's a smart, fact-checker move, stamp it WISE MOVE.",
           "If it's one of the booth's tricks, stamp it BOT TRAP.",
           "[excited] Show me everything you've learned. Off we go!",
+        ],
+      },
+      completeNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Review complete! You spotted every wise move and every bot trap.",
+          "[warmly] Out in the real world, you know every one of his tricks by heart now. Time to close that booth for good!",
         ],
       },
     },

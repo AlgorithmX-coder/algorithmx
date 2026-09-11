@@ -17,6 +17,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -101,8 +102,11 @@ export default function HookSort({
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const finished = idx >= items.length;
-  const item = items[idx];
+  // Anti-sequence: the catches come up in a random order every play (authored
+  // lists alternate real/scam). The REEL / CUT buttons keep their sides.
+  const shownItems = useShuffledOnce(items);
+  const finished = idx >= shownItems.length;
+  const item = shownItems[idx];
 
   useEffect(() => {
     setResolved(null);
@@ -282,7 +286,7 @@ export default function HookSort({
               letterSpacing: "0.1em",
             }}
           >
-            CATCH {Math.min(idx + 1, items.length)} OF {items.length} ·{" "}
+            CATCH {Math.min(idx + 1, shownItems.length)} OF {shownItems.length} ·{" "}
             {correctCount} sorted right
           </div>
 
@@ -311,7 +315,7 @@ export default function HookSort({
           title={completeTitle ?? "The dock is clear!"}
           stars={stars}
           statLines={[
-            `${correctCount}/${items.length} calls right first try`,
+            `${correctCount}/${shownItems.length} calls right first try`,
             completeLine ?? "Real ones reeled in, scams cut loose.",
           ]}
           onContinue={() => onComplete(correctCount)}

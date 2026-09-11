@@ -22,6 +22,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -132,6 +133,12 @@ export default function ClueBoard({
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
+  // Anti-sequence: the clue chips (and their evidence slots) and the verdict
+  // options are laid out in a random order every play; authored data lists
+  // them in a teaching order that would otherwise give the odd one out away.
+  const shownClues = useShuffledOnce(clues);
+  const verdictOptions = useShuffledOnce(verdict.options);
+
   const allFound = clues.every((c) => found.has(c.id));
 
   const reportedTier = useRef(0);
@@ -153,8 +160,8 @@ export default function ClueBoard({
 
   const decide = (i: number) => {
     if (!allFound || solved || feedback) return;
-    const option = verdict.options[i];
-    const correctIndex = verdict.options.findIndex((o) => o.isCorrect);
+    const option = verdictOptions[i];
+    const correctIndex = verdictOptions.findIndex((o) => o.isCorrect);
     onAnswered?.({
       questionKey: "clueboard-verdict",
       selectedIndex: i,
@@ -269,7 +276,7 @@ export default function ClueBoard({
 
               {/* Clue chips ON the photo */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                {clues.map((clue) => {
+                {shownClues.map((clue) => {
                   const isFound = found.has(clue.id);
                   return (
                     <motion.button
@@ -366,7 +373,7 @@ export default function ClueBoard({
 
           {/* Evidence cards pin in as clues are found */}
           <div style={{ flex: "1 1 240px", minWidth: 230, display: "flex", flexDirection: "column", gap: 10 }}>
-            {clues.map((clue, i) => {
+            {shownClues.map((clue, i) => {
               const isFound = found.has(clue.id);
               return (
                 <AnimatePresence key={clue.id}>
@@ -476,11 +483,11 @@ export default function ClueBoard({
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: `repeat(${verdict.options.length}, minmax(0,1fr))`,
+                  gridTemplateColumns: `repeat(${verdictOptions.length}, minmax(0,1fr))`,
                   gap: 10,
                 }}
               >
-                {verdict.options.map((o, i) => (
+                {verdictOptions.map((o, i) => (
                   <motion.button
                     key={i}
                     type="button"

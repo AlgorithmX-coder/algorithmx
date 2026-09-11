@@ -42,6 +42,7 @@ import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
 import CodeRainBackground from "@/app/components/CodeRainBackground";
 import type { WeekContent, BossQuizQuestion } from "@/app/lesson/weekContent/types";
 import type { BossEndStats, BossPhaseResult } from "@/app/components/game/BossBattle";
@@ -52,6 +53,7 @@ import {
   type RaccoonMood,
   playVillain,
   whenVillainQuiet,
+  useVillainSpeaking,
   ParticleLayer,
   type ParticleAPI,
 } from "@/app/components/game/bossArena";
@@ -140,6 +142,12 @@ function seededShuffle<T>(arr: readonly T[], seed: number): T[] {
 export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossProps) {
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  // NO-SKIP for the villain too (owner rule: nothing is clickable while a
+  // narrator speaks): while Callum's bark plays (intro taunt, scenario,
+  // ow / gloat, victory payoff) the guard below swallows every tap, so the
+  // INITIATE TEST button and the answers can't fire mid-speech. Sarah's lines
+  // here go through InfoNarration, which carries its own guard.
+  const villainSpeaking = useVillainSpeaking();
 
   const accent = quiz.accent ?? DEFAULT_ACCENT;
   const questions = quiz.questions;
@@ -527,6 +535,8 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
       transition={{ duration: 0.35 }}
       style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "#101736", color: "#f6f9ff", fontFamily: ROUNDED }}
     >
+      {/* Hold the board while the villain speaks (portalled to body). */}
+      <NarrationClickGuard active={villainSpeaking} />
       {/* Friendly quiz-show backdrop: navy stage + accent spotlight. No
           week art needed, so the component stays 100% data-driven. */}
       {/* Live techy backdrop: accent-tinted digital rain (canvas, reduced-motion

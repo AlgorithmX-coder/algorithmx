@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -70,6 +71,7 @@ export interface ReplyCardsProps {
 }
 
 const CARD_TILT = [-4, 0, 4, -2];
+const EMPTY_REPLIES: ReplyOption[] = [];
 
 export default function ReplyCards({
   rounds,
@@ -106,8 +108,13 @@ export default function ReplyCards({
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const finished = idx >= rounds.length;
-  const round = rounds[idx];
+  // Anti-sequence: the messages land in a random order, and each round's reply
+  // cards are fanned out in a random order (authored data keeps the safe reply
+  // in a predictable spot).
+  const shownRounds = useShuffledOnce(rounds);
+  const finished = idx >= shownRounds.length;
+  const round = shownRounds[idx];
+  const replies = useShuffledOnce(round?.replies ?? EMPTY_REPLIES, { key: round?.id ?? "done" });
 
   useEffect(() => {
     setSent(null);
@@ -125,8 +132,8 @@ export default function ReplyCards({
   const pick = (i: number) => {
     if (!round || sent !== null || showIntro) return;
     setHasInteracted(true);
-    const reply = round.replies[i];
-    const correctIndex = round.replies.findIndex((r) => r.isSafe);
+    const reply = replies[i];
+    const correctIndex = replies.findIndex((r) => r.isSafe);
     onAnswered?.({
       questionKey: `reply-${round.id}`,
       selectedIndex: i,
@@ -239,7 +246,7 @@ export default function ReplyCards({
                     lineHeight: 1.4,
                   }}
                 >
-                  {round.replies[sent].text} <span style={{ color: "#7eff97" }}>✓</span>
+                  {replies[sent].text} <span style={{ color: "#7eff97" }}>✓</span>
                 </div>
               </motion.div>
             )}
@@ -258,17 +265,17 @@ export default function ReplyCards({
                     margin: "4px 0 10px",
                   }}
                 >
-                  ▼ {pickLabel ?? "Pick your reply"} · {roundNoun ?? "Message"} {Math.min(idx + 1, rounds.length)} of {rounds.length} ▼
+                  ▼ {pickLabel ?? "Pick your reply"} · {roundNoun ?? "Message"} {Math.min(idx + 1, shownRounds.length)} of {shownRounds.length} ▼
                 </div>
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: `repeat(${round.replies.length}, minmax(0,1fr))`,
+                    gridTemplateColumns: `repeat(${replies.length}, minmax(0,1fr))`,
                     gap: 12,
                     alignItems: "stretch",
                   }}
                 >
-                  {round.replies.map((r, i) => (
+                  {replies.map((r, i) => (
                     <motion.button
                       key={i}
                       type="button"
@@ -488,7 +495,7 @@ export default function ReplyCards({
           title={completeTitle ?? "Every reply a hero reply!"}
           stars={stars}
           statLines={[
-            `${correctCount}/${rounds.length} ${scoreNoun ?? "safe replies"} first try`,
+            `${correctCount}/${shownRounds.length} ${scoreNoun ?? "safe replies"} first try`,
             completeLine ?? "Never meet. Never send. Tell a grown-up.",
           ]}
           onContinue={() => onComplete(correctCount)}

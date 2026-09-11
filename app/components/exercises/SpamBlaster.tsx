@@ -19,6 +19,7 @@ import { PixarFinishOverlay } from "@/app/components/scene";
 import { useComfortMode } from "@/app/lib/comfortMode";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import {
   setupHiDpiCanvas,
   scaledParticleCount,
@@ -50,12 +51,66 @@ export interface SpamBlasterProps {
   /** Spoken, paced intro. When present the rich narrated ExerciseIntroBeat
    *  replaces the legacy ExerciseIntro card. */
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spot-the-Danger boast folded into the narrated intro (Learn Loop). */
+  threat?: { raccoonLine: string };
+  /** Spoken "you're protected" payoff read on the finish overlay (recorded only). */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /**
+   * Per-week copy so a re-theme is a genuine re-theme (owner rule: never copy
+   * an exercise). Templates may use {sender}, {subject} and {clue}. Defaults keep
+   * the Week 4-era email skin.
+   */
+  copy?: SpamBlasterCopy;
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
   /** See CyberScanner.onHintReached - same tier semantics. */
   onHintReached?: (tier: 1 | 2 | 3) => void;
 }
+
+export interface SpamBlasterCopy {
+  /** Device app-bar title drawn in the monitor (default "◆ AlgorithmX Mail"). */
+  deviceTitle?: string;
+  /** Label of the safe pile (default "INBOX"). */
+  inboxLabel?: string;
+  /** Singular / plural word for tricks that got through (default "VIRUS"/"VIRUSES"). */
+  missWord?: string;
+  missWordPlural?: string;
+  /** Status when nothing got through (default "ALL CLEAR"). */
+  clearLabel?: string;
+  /** Floater + wrong panel when the child zaps a SAFE card. */
+  safeFloater?: string;
+  safeWrongTitle?: string;
+  safeWrongExplanation?: string;
+  safeWrongTip?: string;
+  /** Wrong panel when a TRICK reaches the device. */
+  missTitle?: string;
+  missExplanation?: string;
+  missClueFallback?: string;
+  missTip?: string;
+  /** Finish overlay title + the "delivered" word in its subline. */
+  finishTitle?: string;
+  deliveredWord?: string;
+}
+
+const DEFAULT_COPY: Required<SpamBlasterCopy> = {
+  deviceTitle: "◆ AlgorithmX Mail",
+  inboxLabel: "INBOX",
+  missWord: "VIRUS",
+  missWordPlural: "VIRUSES",
+  clearLabel: "ALL CLEAR",
+  safeFloater: "OOPS! That was a real email!",
+  safeWrongTitle: "That email was real!",
+  safeWrongExplanation:
+    '"{sender}" was a normal email - not phishing. Only zap messages that look like tricks (free prizes, URGENT password demands, scary pop-ups).',
+  safeWrongTip: "Real friends, teachers and parents are NOT bait. Read the sender first.",
+  missTitle: "A phishing email got through!",
+  missExplanation: '"{subject}" from "{sender}" was bait. {clue}',
+  missClueFallback: "Look for scare tactics, urgent passwords or free prizes.",
+  missTip: "Phishing emails try to RUSH or REWARD you. Slow down and check.",
+  finishTitle: "DEFENCE COMPLETE!",
+  deliveredWord: "Delivered",
+};
 
 const DEFAULT_EMAILS: SpamEmail[] = [
   { sender: "Prize Central", subject: "YOU WON A FREE iPHONE!", isPhishing: true, clue: "Too good to be true" },
@@ -158,6 +213,9 @@ export default function SpamBlaster({
   introIcon,
   hints,
   introNarration,
+  threat,
+  completeNarration,
+  copy,
   onComplete,
   onCorrect,
   onWrong,
@@ -166,6 +224,12 @@ export default function SpamBlaster({
   const list = useMemo(() => emails ?? DEFAULT_EMAILS, [emails]);
   const headlineText = headline ?? "⚡ ZAP THE VIRUS EMAILS! ⚡";
   const missLabelText = missLabel ?? "VIRUSES";
+  const cp = useMemo(() => ({ ...DEFAULT_COPY, ...(copy ?? {}) }), [copy]);
+  const fill = (tpl: string, em: { sender: string; subject: string; clue: string }) =>
+    tpl
+      .replace(/\{sender\}/g, em.sender)
+      .replace(/\{subject\}/g, em.subject)
+      .replace(/\{clue\}/g, em.clue || cp.missClueFallback);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
   const [showIntro, setShowIntro] = useState(true);
@@ -379,7 +443,7 @@ export default function SpamBlaster({
   };
 
   const nudgeSafe = (em: LiveEmail) => {
-    addFloater("OOPS! That was a real email!", em.x, em.y - 30, "#ffd158", 1100);
+    addFloater(cp.safeFloater, em.x, em.y - 30, "#ffd158", 1100);
     audio.wrong();
     state.current.streak = 0;
     onWrong?.();
@@ -389,9 +453,9 @@ export default function SpamBlaster({
     // keeps its course and delivers to the monitor normally.
     setWrongCount((n) => n + 1);
     setFeedback({
-      title: "That email was real!",
-      explanation: `"${em.sender}" was a normal email - not phishing. Only zap messages that look like tricks (free prizes, URGENT password demands, scary pop-ups).`,
-      tip: "Real friends, teachers and parents are NOT bait. Read the sender first.",
+      title: cp.safeWrongTitle,
+      explanation: fill(cp.safeWrongExplanation, em),
+      tip: cp.safeWrongTip,
     });
   };
 
@@ -409,9 +473,9 @@ export default function SpamBlaster({
     onWrong?.();
     setWrongCount((n) => n + 1);
     setFeedback({
-      title: "A phishing email got through!",
-      explanation: `"${em.subject}" from "${em.sender}" was bait. ${em.clue || "Look for scare tactics, urgent passwords or free prizes."}`,
-      tip: "Phishing emails try to RUSH or REWARD you. Slow down and check.",
+      title: cp.missTitle,
+      explanation: fill(cp.missExplanation, em),
+      tip: cp.missTip,
     });
   };
 
@@ -597,7 +661,7 @@ export default function SpamBlaster({
       ctx.font = "900 9px 'Space Grotesk', sans-serif";
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
-      ctx.fillText("◆ AlgorithmX Mail", sx + 32, sy + 9);
+      ctx.fillText(cp.deviceTitle, sx + 32, sy + 9);
       // Status dot (live)
       ctx.fillStyle = "#7eff97";
       ctx.beginPath();
@@ -610,7 +674,7 @@ export default function SpamBlaster({
       ctx.fillStyle = "#7c5cff";
       ctx.font = "900 9px 'Courier New', monospace";
       ctx.textAlign = "left";
-      ctx.fillText("▸ INBOX", sx + 8, sy + 26);
+      ctx.fillText(`▸ ${cp.inboxLabel}`, sx + 8, sy + 26);
       ctx.fillStyle = "#a0ffb0";
       ctx.textAlign = "right";
       ctx.fillText(`${s.inbox}/${s.totalSafe}`, sx + sw - 8, sy + 26);
@@ -657,7 +721,7 @@ export default function SpamBlaster({
       ctx.font = "700 8px 'Courier New', monospace";
       ctx.textAlign = "left";
       ctx.fillText(
-        s.viruses > 0 ? `${s.viruses} VIRUS${s.viruses > 1 ? "ES" : ""} DETECTED` : "ALL CLEAR",
+        s.viruses > 0 ? `${s.viruses} ${s.viruses > 1 ? cp.missWordPlural : cp.missWord} DETECTED` : cp.clearLabel,
         sx + 14, sy + sh - 7
       );
       ctx.textAlign = "right";
@@ -692,7 +756,7 @@ export default function SpamBlaster({
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
       ctx.fillText(
-        `INBOX ${s.inbox}/${s.totalSafe}`,
+        `${cp.inboxLabel} ${s.inbox}/${s.totalSafe}`,
         MONITOR_X,
         MONITOR_Y - MONITOR_H / 2 - 8
       );
@@ -1060,7 +1124,7 @@ export default function SpamBlaster({
       ctx.fillText(`ZAPPED ${s.zapped}/${s.totalPhishing}`, 14, 12);
       ctx.textAlign = "right";
       ctx.fillStyle = "#a0ffb0";
-      ctx.fillText(`INBOX ${s.inbox}/${s.totalSafe}`, CANVAS_W - 14, 12);
+      ctx.fillText(`${cp.inboxLabel} ${s.inbox}/${s.totalSafe}`, CANVAS_W - 14, 12);
       ctx.textAlign = "center";
       ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#4b5563";
       ctx.fillText(`${missLabelText} ${s.viruses}`, CANVAS_W / 2, 12);
@@ -1317,9 +1381,9 @@ export default function SpamBlaster({
       />
       {s.finished && (
         <PixarFinishOverlay
-          title="DEFENCE COMPLETE!"
+          title={cp.finishTitle}
           accuracy={accuracy}
-          subline={`Zapped ${s.zapped}/${s.totalPhishing} · Delivered ${s.inbox}/${s.totalSafe} · Viruses ${s.viruses}`}
+          subline={`Zapped ${s.zapped}/${s.totalPhishing} · ${cp.deliveredWord} ${s.inbox}/${s.totalSafe} · ${missLabelText} ${s.viruses}`}
           stars={stars}
           onContinue={() => {
             audio.tap();
@@ -1331,6 +1395,17 @@ export default function SpamBlaster({
           }}
         />
       )}
+      {/* Spoken payoff on the finish overlay (audio only; the guard holds Continue). */}
+      {s.finished && completeNarration && (
+        <div style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
+          <InfoNarration
+            key="blaster-complete"
+            speaker={completeNarration.speaker ?? "adam"}
+            lines={completeNarration.lines}
+            recordedOnly
+          />
+        </div>
+      )}
       {showIntro &&
         (introNarration ? (
           <ExerciseIntroBeat
@@ -1339,6 +1414,7 @@ export default function SpamBlaster({
             icon={introIcon ?? "📧"}
             narration={introNarration}
             character={introNarration.speaker}
+            threat={threat}
             onDismiss={() => setShowIntro(false)}
           />
         ) : (

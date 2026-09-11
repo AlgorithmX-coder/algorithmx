@@ -18,6 +18,7 @@ import { motion } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -90,6 +91,11 @@ export default function ButtonHunt({
   const [hasInteracted, setHasInteracted] = useState(false);
   const [finished, setFinished] = useState(false);
 
+  // Anti-sequence: the menu buttons are laid out in a random order every play
+  // (the authored list parks the targets in a tell-tale spot). The FIND order
+  // itself (targets sorted by targetOrder) is the lesson and stays as authored.
+  const shownButtons = useShuffledOnce(buttons);
+
   const targets = useMemo(
     () => buttons.filter((b) => (b.targetOrder ?? 0) > 0).sort((a, b) => (a.targetOrder! - b.targetOrder!)),
     [buttons],
@@ -112,7 +118,7 @@ export default function ButtonHunt({
     onAnswered?.({
       questionKey: `hunt-${btn.id}`,
       selectedIndex: idx,
-      correctIndex: buttons.findIndex((b) => b.id === nextTarget?.id),
+      correctIndex: shownButtons.findIndex((b) => b.id === nextTarget?.id),
       wasCorrect,
     });
     if (wasCorrect) {
@@ -227,7 +233,7 @@ export default function ButtonHunt({
             background: "linear-gradient(180deg, rgba(12,18,48,0.95), rgba(8,12,32,0.98))",
           }}
         >
-          {buttons.map((btn, i) => {
+          {shownButtons.map((btn, i) => {
             const found = foundIds.has(btn.id);
             return (
               <motion.button

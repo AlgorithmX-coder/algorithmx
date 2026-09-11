@@ -25,11 +25,24 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import GameButton from "@/app/components/lesson/GameButton";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+
+// Audio-only narration: Sarah's voice with no visible narration box (the beat
+// text is already on screen), same recipe as PauseDecide / SignBingo.
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
 
 export interface RevealItem {
   id: string;
@@ -49,6 +62,10 @@ export interface RevealBoardProps {
   boardIcon?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken "you're protected" payoff on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onAnswered?: (data: {
@@ -69,6 +86,8 @@ export default function RevealBoard({
   boardIcon = "🦝",
   introNarration,
   coachLines,
+  threat,
+  completeNarration,
   onComplete,
   onCorrect,
   onAnswered,
@@ -86,8 +105,16 @@ export default function RevealBoard({
   // Locking beat between the last stamp and the completion overlay.
   const [boardLocked, setBoardLocked] = useState(false);
 
+  // NO SEQUENCE (owner rule): the cards land on the board in a random order
+  // every play, so the child picks in any order. The beats INSIDE a card stay
+  // authored: they are the story.
+  const boardItems = useShuffledOnce(items);
+
   // The counter-line renders as its own final beat after the steps.
   const onCounterBeat = active !== null && stepIdx >= active.steps.length;
+  // The line on screen for the current beat (a step, then the counter). Sarah
+  // reads exactly this; the raw text is also the recorded-clip lookup key.
+  const beatText = active ? (onCounterBeat ? active.counter : active.steps[stepIdx]?.text) : undefined;
 
   const openCard = (item: RevealItem) => {
     if (phase !== "board" || active || revealed.has(item.id) || boardLocked) return;
@@ -143,6 +170,7 @@ export default function RevealBoard({
           subtitle={subtitle ?? "Tap a card to see the Raccoon's sneaky plan for it."}
           icon={boardIcon}
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setPhase("board")}
         />
@@ -195,7 +223,7 @@ export default function RevealBoard({
             gap: 12,
           }}
         >
-          {items.map((item) => {
+          {boardItems.map((item) => {
             const done = revealed.has(item.id);
             return (
               <motion.button
@@ -205,7 +233,7 @@ export default function RevealBoard({
                 whileHover={done || reduce ? undefined : { scale: 1.04, rotate: -1 }}
                 whileTap={done || reduce ? undefined : { scale: 0.96 }}
                 aria-label={
-                  done ? `${item.label} — guarded` : `Reveal the Raccoon's plan for ${item.label}`
+                  done ? `${item.label} - guarded` : `Reveal the Raccoon's plan for ${item.label}`
                 }
                 style={{
                   position: "relative",
@@ -294,7 +322,7 @@ export default function RevealBoard({
 
         <div style={{ textAlign: "center", fontSize: 12.5, fontWeight: 800, color: "#e8c890" }}>
           {boardLocked
-            ? "Wish list DENIED — nothing left for him to grab!"
+            ? "Wish list DENIED - nothing left for him to grab!"
             : `${revealed.size} of ${items.length} guarded`}
         </div>
       </motion.div>
@@ -323,6 +351,23 @@ export default function RevealBoard({
               WebkitBackdropFilter: "blur(8px)",
             }}
           >
+            {/* Sarah reads every beat as it appears (owner: "I want Sarah to
+                narrate these"). Audio-only: the beat text is already on the
+                card. Re-keyed per item + beat so each step (and the counter)
+                gets its own read; the click-guard holds the advance button
+                until she finishes. recordedOnly = other weeks' reveal boards
+                stay silent until their lines are recorded (no robot voice). */}
+            {beatText && (
+              <div aria-hidden style={AUDIO_ONLY_STYLE}>
+                <InfoNarration
+                  key={`rb-beat-${active.id}-${stepIdx}`}
+                  speaker="adam"
+                  lines={[beatText]}
+                  accent={onCounterBeat ? "#7eff97" : "#c084fc"}
+                  recordedOnly
+                />
+              </div>
+            )}
             <motion.div
               key={`${active.id}-${stepIdx}`}
               initial={reduce ? false : { y: 18, opacity: 0, scale: 0.97 }}
@@ -419,6 +464,7 @@ export default function RevealBoard({
             `${items.length} private details guarded`,
             finale ?? "The Raccoon gets NOTHING.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(items.length)}
         />
       )}

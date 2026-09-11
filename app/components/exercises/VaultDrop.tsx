@@ -19,6 +19,7 @@ import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import { playSound } from "@/app/lib/sounds";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -39,6 +40,10 @@ export interface VaultDropProps {
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken "you're protected" payoff on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -66,6 +71,8 @@ export default function VaultDrop({
   hints,
   introNarration,
   coachLines,
+  threat,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -94,8 +101,11 @@ export default function VaultDrop({
   const lockBtnRef = useRef<HTMLButtonElement>(null);
   const reportedTier = useRef(0);
 
-  const finished = idx >= items.length;
-  const item = items[idx];
+  // Anti-sequence: treasures come to the table in a random order every play
+  // (authored lists alternate share/private). Board and vault keep their sides.
+  const shownItems = useShuffledOnce(items);
+  const finished = idx >= shownItems.length;
+  const item = shownItems[idx];
 
   const bumpHints = () => {
     setWrongCount((n) => {
@@ -199,6 +209,7 @@ export default function VaultDrop({
           subtitle="Drag each treasure to the share board or the vault."
           icon="🛡️"
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
@@ -317,7 +328,7 @@ export default function VaultDrop({
             ↖ Drag it to the right place ↗
           </div>
           <div style={{ fontSize: 12, fontWeight: 800, color: "#ffd158", marginTop: 2, letterSpacing: "0.06em" }}>
-            ✦ Treasure {Math.min(idx + 1, items.length)} of {items.length} ✦
+            ✦ Treasure {Math.min(idx + 1, shownItems.length)} of {shownItems.length} ✦
           </div>
 
           <div style={{ minHeight: 108, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 10 }}>
@@ -379,7 +390,7 @@ export default function VaultDrop({
         </div>
 
         {/* ── Action row: glossy buttons + Layla's moment ── */}
-        <div style={{ position: "relative", zIndex: 3, display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 12, alignItems: "center" }}>
+        <div style={{ position: "relative", zIndex: 3, display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 20, alignItems: "end" }}>
           <motion.button
             ref={pinBtnRef}
             onClick={() => sortCurrent(false)}
@@ -403,8 +414,9 @@ export default function VaultDrop({
             </span>
           </motion.button>
 
-          {/* Layla: you decide! */}
-          <div style={{ position: "relative", textAlign: "center", width: 92 }}>
+          {/* Layla: you decide! (wide enough for the nowrap pill; bottom-aligned
+              with the buttons so the head never pokes into the motto strip) */}
+          <div style={{ position: "relative", textAlign: "center", minWidth: 136, padding: "0 6px" }}>
             <div
               style={{
                 display: "inline-block", marginBottom: 4, padding: "4px 12px", borderRadius: 999, borderBottomLeftRadius: 3,
@@ -416,7 +428,7 @@ export default function VaultDrop({
               You decide! ⭐
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/game/characters/layla-head.png" alt="Layla" style={{ width: 58, height: 58, objectFit: "contain", filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.55))" }} />
+            <img src="/game/characters/layla-head.png" alt="Layla" style={{ display: "block", margin: "0 auto", width: 54, height: 54, objectFit: "contain", filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.55))" }} />
           </div>
 
           <motion.button
@@ -444,7 +456,8 @@ export default function VaultDrop({
         </div>
 
         {/* ── Motto strip ── */}
-        <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "center", marginTop: 12 }}>
+        {/* Hidden while the coach caption toast sits over this row (first interaction dismisses it). */}
+        <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "center", marginTop: 26, visibility: coachLines && !hasInteracted && !showIntro ? "hidden" : "visible" }}>
           <span
             style={{
               padding: "6px 18px", borderRadius: 999,
@@ -491,9 +504,10 @@ export default function VaultDrop({
           title="Every treasure sorted!"
           stars={stars}
           statLines={[
-            `${correctCount}/${items.length} sorted first try`,
+            `${correctCount}/${shownItems.length} sorted first try`,
             `${vaulted} locked in the vault · ${pinned.length} pinned to share`,
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(correctCount)}
         />
       )}

@@ -30,6 +30,7 @@ import {
   useGameAudio,
   useMotionIntensity,
 } from "@/app/lib/gameEngine";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, {
   ExerciseCompleteBeat,
@@ -124,7 +125,11 @@ export default function PhishInspector({
   }>(null);
   const [correctCount, setCorrectCount] = useState(0);
 
-  const email = emails[emailIdx];
+  // Anti-sequence: the inbox opens its emails in a random order every play
+  // (authored lists alternate phish/real). The 4 inspect zones are the fixed
+  // checking procedure and stay in place; ZAP / SAFE keep their sides.
+  const shownEmails = useShuffledOnce(emails);
+  const email = shownEmails[emailIdx];
   const allInspected = useMemo(
     () => inspected.sender && inspected.link && inspected.urgency && inspected.claim,
     [inspected]
@@ -196,7 +201,7 @@ export default function PhishInspector({
         window.setTimeout(
           () => {
             const next = emailIdx + 1;
-            if (next >= emails.length) {
+            if (next >= shownEmails.length) {
               setPhase("finished");
             } else {
               setEmailIdx(next);
@@ -229,7 +234,7 @@ export default function PhishInspector({
       feedback,
       decided,
       emailIdx,
-      emails.length,
+      shownEmails.length,
       wrongOnCurrent,
       fx,
       audio,
@@ -250,7 +255,7 @@ export default function PhishInspector({
           title="Inspector training complete!"
           stars={stars}
           statLines={[
-            `${correctCount} of ${emails.length} emails decided correctly`,
+            `${correctCount} of ${shownEmails.length} emails decided correctly`,
             wrongTotal === 0
               ? "Spotted every trick first time!"
               : `${wrongTotal} wrong decision${wrongTotal === 1 ? "" : "s"} along the way.`,
@@ -298,7 +303,7 @@ export default function PhishInspector({
             color: "#cbd5e1",
           }}
         >
-          Email {emailIdx + 1} / {emails.length}
+          Email {emailIdx + 1} / {shownEmails.length}
         </span>
       </div>
 

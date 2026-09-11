@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -67,6 +68,8 @@ export interface SignBingoProps {
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken Sarah acknowledgment on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -93,6 +96,7 @@ export default function SignBingo({
   hints,
   introNarration,
   coachLines,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -118,8 +122,13 @@ export default function SignBingo({
   const [explain, setExplain] = useState<null | { why: string; key: number }>(null);
   const [whyDone, setWhyDone] = useState(false);
 
-  const finished = roundIdx >= rounds.length;
-  const round = rounds[roundIdx];
+  // Anti-sequence: the bingo squares are dealt in a random layout AND the
+  // scenes play in a random order (authored data pairs scene N with square N,
+  // a diagonal giveaway).
+  const shownSigns = useShuffledOnce(signs);
+  const shownRounds = useShuffledOnce(rounds);
+  const finished = roundIdx >= shownRounds.length;
+  const round = shownRounds[roundIdx];
 
   // Safety release: never leave the "why" beat's gated Next stuck behind a
   // narration that fails to fire onDone.
@@ -150,7 +159,7 @@ export default function SignBingo({
     onAnswered?.({
       questionKey: `bingo-${round.id}`,
       selectedIndex: idx,
-      correctIndex: signs.findIndex((s) => s.id === round.signId),
+      correctIndex: shownSigns.findIndex((s) => s.id === round.signId),
       wasCorrect: sign.id === round.signId,
     });
     if (sign.id === round.signId) {
@@ -260,7 +269,7 @@ export default function SignBingo({
           {cardTitle ?? "BREAK-SIGN BINGO"} · {stamped.size}/{signs.length}
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 10 }}>
-          {signs.map((s, i) => {
+          {shownSigns.map((s, i) => {
             const isStamped = stamped.has(s.id);
             return (
               <motion.button
@@ -324,7 +333,7 @@ export default function SignBingo({
         </div>
         {!finished && (
           <div style={{ textAlign: "center", marginTop: 10, fontSize: 12, fontWeight: 800, color: "#7d8cc9", letterSpacing: "0.1em" }}>
-            SCENE {Math.min(roundIdx + 1, rounds.length)} OF {rounds.length}
+            SCENE {Math.min(roundIdx + 1, shownRounds.length)} OF {shownRounds.length}
           </div>
         )}
       </div>
@@ -403,9 +412,10 @@ export default function SignBingo({
           title={completeTitle ?? "BINGO! Full card!"}
           stars={stars}
           statLines={[
-            `${firstTryCount}/${rounds.length} signs spotted first try`,
+            `${firstTryCount}/${shownRounds.length} signs spotted first try`,
             completeLine ?? "Four body-bells learned - when one rings, it's break time.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(firstTryCount)}
         />
       )}

@@ -19,6 +19,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useAnimationControls } from "motion/react";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { weekCharacterSrc, fallbackToShared } from "@/app/lib/weekCharacters";
 
 /* ───────────────────────── WEEK-THEME PALETTE ─────────────────────────
  * The briefing adopts the week's world (weekThemes.ts) when a WeekTheme is
@@ -308,6 +309,8 @@ export type Mission = {
 };
 
 export interface MissionBriefSceneProps {
+  /** Week number -> themed Adam/Layla/Raccoon sprites (missing art falls back to shared). */
+  week?: number;
   phase: number;
   onAccept: () => void;
   missions: Mission[];
@@ -316,6 +319,7 @@ export interface MissionBriefSceneProps {
 }
 
 export default function MissionBriefScene({
+  week,
   phase,
   onAccept,
   missions,
@@ -375,7 +379,7 @@ export default function MissionBriefScene({
       <HoloPedestal />
       <BeamRays />
 
-      <CastRow px={px} />
+      <CastRow px={px} week={week} />
       <MissionCardsRow
         missions={missions}
         phase={phase}
@@ -406,13 +410,14 @@ export default function MissionBriefScene({
    briefing is a stand-off, not a slideshow. Art from the shared
    character set; parallax keeps them in the world. */
 
-function CastRow({ px }: { px: { x: number; y: number } }) {
+function CastRow({ px, week }: { px: { x: number; y: number }; week?: number }) {
   return (
     <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 5, pointerEvents: "none" }}>
       {/* Heroes — bottom left, facing in (transparent sprites; the duo
           PNG has a baked-in background so it can't sit in a scene) */}
       <motion.img
-        src="/game/characters/adam-idle.png"
+        src={weekCharacterSrc(week, "adam", "idle")}
+        onError={fallbackToShared("adam", "idle")}
         alt=""
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0, y: [0, -5, 0] }}
@@ -424,7 +429,8 @@ function CastRow({ px }: { px: { x: number; y: number } }) {
         }}
       />
       <motion.img
-        src="/game/characters/layla-idle.png"
+        src={weekCharacterSrc(week, "layla", "idle")}
+        onError={fallbackToShared("layla", "idle")}
         alt=""
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0, y: [0, -4, 0] }}
@@ -439,7 +445,8 @@ function CastRow({ px }: { px: { x: number; y: number } }) {
 
       {/* The Hacker Raccoon — bottom right, plotting */}
       <motion.img
-        src="/game/characters/raccoon-taunt.png"
+        src={weekCharacterSrc(week, "raccoon", "taunt")}
+        onError={fallbackToShared("raccoon", "taunt")}
         alt=""
         initial={{ opacity: 0, x: 30 }}
         animate={{ opacity: 1, x: 0, y: [0, -7, 0] }}

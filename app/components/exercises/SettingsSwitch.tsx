@@ -19,6 +19,7 @@ import { motion } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
@@ -91,6 +92,9 @@ export default function SettingsSwitch({
   const [hasInteracted, setHasInteracted] = useState(false);
   const [finished, setFinished] = useState(false);
 
+  // Anti-sequence: the settings rows are listed in a random order every play
+  // (authored panels alternate risky/safe rows).
+  const shownRows = useShuffledOnce(rows);
   const riskyTotal = useMemo(() => rows.filter((r) => r.isRisky).length, [rows]);
   const flippedCount = flipped.size;
 
@@ -192,7 +196,7 @@ export default function SettingsSwitch({
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          {rows.map((row, i) => {
+          {shownRows.map((row, i) => {
             const safe = !row.isRisky || flipped.has(row.id);
             const justFlipped = flipped.has(row.id);
             return (

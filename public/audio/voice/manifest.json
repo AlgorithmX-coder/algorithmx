@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T21:25:16.433Z",
+  "generatedAt": "2026-09-11T11:00:54.209Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -49,19 +49,20 @@
       "file": "/audio/voice/2758a8b61f0475eb.mp3"
     },
     {
-      "key": "c53034ffff6980db",
+      "key": "a0e5356b697386a1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Hey there, Cyber Hero! I've got a secret... just for you. [whispers] Come a little closer. Your password is like a magic key, and it's all yours. It's how the computer knows it's really YOU. [nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in. [excited] But a big, strong one? [laughs] He doesn't stand a chance!",
+      "text": "[warmly] Hey there, Cyber Hero! I've got a secret... just for you. [whispers] Come a little closer. Your password is like a magic key, and it's all yours. It's how the computer knows it's really YOU. [nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in. [excited] But a big, strong one? [laughs] He doesn't stand a chance! [warmly] First, let's learn the words heroes use!",
       "lines": [
         "[warmly] Hey there, Cyber Hero! I've got a secret... just for you.",
         "[whispers] Come a little closer.",
         "Your password is like a magic key, and it's all yours.",
         "It's how the computer knows it's really YOU.",
         "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
-        "[excited] But a big, strong one? [laughs] He doesn't stand a chance!"
+        "[excited] But a big, strong one? [laughs] He doesn't stand a chance!",
+        "[warmly] First, let's learn the words heroes use!"
       ],
-      "file": "/audio/voice/c53034ffff6980db.mp3"
+      "file": "/audio/voice/a0e5356b697386a1.mp3"
     },
     {
       "key": "1245edc89ef6aa4e",
@@ -90,6 +91,17 @@
       "file": "/audio/voice/8b4da7d3609c9b5f.mp3"
     },
     {
+      "key": "9b52459b0dbafb1f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every pair matched! Now you know the cyber words heroes use. [warmly] Out in the real world, when someone says password, strong, hacker or secret, you'll know exactly what they mean.",
+      "lines": [
+        "[proud] Every pair matched! Now you know the cyber words heroes use.",
+        "[warmly] Out in the real world, when someone says password, strong, hacker or secret, you'll know exactly what they mean."
+      ],
+      "file": "/audio/voice/9b52459b0dbafb1f.mp3"
+    },
+    {
       "key": "5766585e0594944f",
       "speaker": "adam",
       "voice": "Sarah",
@@ -116,27 +128,18 @@
       "file": "/audio/voice/6e426cdf6b358144.mp3"
     },
     {
-      "key": "a7aaed173fd63061",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Next up, your second power! Let's make your key so long the Raccoon can never crack it.",
-      "lines": [
-        "[excited] Next up, your second power! Let's make your key so long the Raccoon can never crack it."
-      ],
-      "file": "/audio/voice/a7aaed173fd63061.mp3"
-    },
-    {
-      "key": "3a6df4e4a90af6b1",
+      "key": "d80507bbeafa3dfb",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Ooh, want to know a clever trick? The longer your key, the harder it is to crack! [excited] So glue three silly words together, like dragon, taco, comet! [laughs] Long, strong, and super easy to remember!",
+      "text": "[excited] Ooh, want to know a clever trick? The longer your key, the harder it is to crack! [excited] So glue three silly words together, like dragon, taco, comet! [laughs] Long, strong, and super easy to remember! [excited] Let's go and build one!",
       "lines": [
         "[excited] Ooh, want to know a clever trick?",
         "The longer your key, the harder it is to crack!",
         "[excited] So glue three silly words together, like dragon, taco, comet!",
-        "[laughs] Long, strong, and super easy to remember!"
+        "[laughs] Long, strong, and super easy to remember!",
+        "[excited] Let's go and build one!"
       ],
-      "file": "/audio/voice/3a6df4e4a90af6b1.mp3"
+      "file": "/audio/voice/d80507bbeafa3dfb.mp3"
     },
     {
       "key": "93e7907172935c06",
@@ -161,6 +164,17 @@
         "Go on, tap any word you like to begin!"
       ],
       "file": "/audio/voice/0460c239a169ef9d.mp3"
+    },
+    {
+      "key": "d5b8a4f476824232",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] What a password! Now you can build one so long the Raccoon's machine never finishes guessing. [warmly] Out in the real world, three silly words are all it takes. Long really is strong.",
+      "lines": [
+        "[proud] What a password! Now you can build one so long the Raccoon's machine never finishes guessing.",
+        "[warmly] Out in the real world, three silly words are all it takes. Long really is strong."
+      ],
+      "file": "/audio/voice/d5b8a4f476824232.mp3"
     },
     {
       "key": "9dbed34c11022fea",
@@ -189,27 +203,18 @@
       "file": "/audio/voice/e837e0d2a3e91880.mp3"
     },
     {
-      "key": "6e21370f77cd91ec",
+      "key": "dea400be098ddcc6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Power three coming up! Time to mix it ALL up so your password is a total jumble.",
-      "lines": [
-        "[excited] Power three coming up! Time to mix it ALL up so your password is a total jumble."
-      ],
-      "file": "/audio/voice/6e21370f77cd91ec.mp3"
-    },
-    {
-      "key": "4afc63aff8357505",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Now let's make that key SUPER tough! Mix it all up, big letters, little letters, numbers, and squiggly symbols! [nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite. [excited] But scramble it like that, [laughs] and he's totally stumped!",
+      "text": "[excited] Now let's make that key SUPER tough! Mix it all up, big letters, little letters, numbers, and squiggly symbols! [nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite. [excited] But scramble it like that, [laughs] and he's totally stumped! [warmly] Grab your doctor coat, we have passwords to heal!",
       "lines": [
         "[excited] Now let's make that key SUPER tough!",
         "Mix it all up, big letters, little letters, numbers, and squiggly symbols!",
         "[nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite.",
-        "[excited] But scramble it like that, [laughs] and he's totally stumped!"
+        "[excited] But scramble it like that, [laughs] and he's totally stumped!",
+        "[warmly] Grab your doctor coat, we have passwords to heal!"
       ],
-      "file": "/audio/voice/4afc63aff8357505.mp3"
+      "file": "/audio/voice/dea400be098ddcc6.mp3"
     },
     {
       "key": "f363df4397e0e0ea",
@@ -236,67 +241,80 @@
       "file": "/audio/voice/21cfe14959d2e00a.mp3"
     },
     {
-      "key": "f5fbc122146ba3f8",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Good catch. This time the Raccoon told the truth. Long passwords really ARE harder to crack. That is why he hates them! Always check if the fact itself is right, no matter who says it. [excited] You are thinking like a real Cyber Hero. Well done!",
-      "lines": [
-        "[warmly] Good catch. This time the Raccoon told the truth.",
-        "Long passwords really ARE harder to crack. That is why he hates them!",
-        "Always check if the fact itself is right, no matter who says it.",
-        "[excited] You are thinking like a real Cyber Hero. Well done!"
-      ],
-      "file": "/audio/voice/f5fbc122146ba3f8.mp3"
-    },
-    {
-      "key": "dcda7044278a1a5d",
+      "key": "704f5f7eb3f327e2",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's your third power! You mix in big letters, little letters, numbers and symbols. [warmly] So there's no plain word left for the Raccoon to guess. He's completely stumped! Next up, the most important one of all. Keeping it secret. Come and see!",
+      "text": "[proud] Every patient healed! Now you can turn a plain, weak password into a mixed-up jumble. [warmly] Out in the real world, a capital, a number and a symbol give the Raccoon nothing to guess.",
+      "lines": [
+        "[proud] Every patient healed! Now you can turn a plain, weak password into a mixed-up jumble.",
+        "[warmly] Out in the real world, a capital, a number and a symbol give the Raccoon nothing to guess."
+      ],
+      "file": "/audio/voice/704f5f7eb3f327e2.mp3"
+    },
+    {
+      "key": "7672e50bdab33062",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Busted! That was a fib. A password that's all small letters is easy pickings. Mix in capitals, numbers and symbols and it turns into a jumble. The Raccoon's machine has to try WAY more guesses, so it gives up. [excited] Mix it up every time. Nice catch!",
+      "lines": [
+        "[warmly] Busted! That was a fib.",
+        "A password that's all small letters is easy pickings. Mix in capitals, numbers and symbols and it turns into a jumble.",
+        "The Raccoon's machine has to try WAY more guesses, so it gives up.",
+        "[excited] Mix it up every time. Nice catch!"
+      ],
+      "file": "/audio/voice/7672e50bdab33062.mp3"
+    },
+    {
+      "key": "bf3f6856710c974a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's your third power! You mix in big letters, little letters, numbers and symbols. [warmly] So there's no plain word left for the Raccoon to guess. He's completely stumped! Next, we'll learn the most important one of all. Keeping it secret. Come and see!",
       "lines": [
         "[excited] That's your third power!",
         "You mix in big letters, little letters, numbers and symbols.",
         "[warmly] So there's no plain word left for the Raccoon to guess. He's completely stumped!",
-        "Next up, the most important one of all. Keeping it secret. Come and see!"
+        "Next, we'll learn the most important one of all. Keeping it secret. Come and see!"
       ],
-      "file": "/audio/voice/dcda7044278a1a5d.mp3"
+      "file": "/audio/voice/bf3f6856710c974a.mp3"
     },
     {
-      "key": "4596b9e9f09a53e0",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Here comes power four! Let's learn how to keep your password your own secret.",
-      "lines": [
-        "[excited] Here comes power four! Let's learn how to keep your password your own secret."
-      ],
-      "file": "/audio/voice/4596b9e9f09a53e0.mp3"
-    },
-    {
-      "key": "9934ff4901cdba19",
+      "key": "a9de66b3b79054f4",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Okay, this is the MOST important part. Lean in close... [whispers] A password only works if you keep it secret. Don't tell your best friend. Don't leave it where anyone can peek! [warmly] The only person who ever helps is a grown-up you really trust. Deal?",
+      "text": "[warmly] Okay, this is the MOST important part. Lean in close... [whispers] A password only works if you keep it secret. Don't tell your best friend. Don't leave it where anyone can peek! [warmly] The only place you ever type it is your own real login screen, and the only person who ever helps is a grown-up you really trust. Deal? [excited] Let's practise saying no to the sneaky pop-ups!",
       "lines": [
         "[warmly] Okay, this is the MOST important part. Lean in close...",
         "[whispers] A password only works if you keep it secret.",
         "Don't tell your best friend. Don't leave it where anyone can peek!",
-        "[warmly] The only person who ever helps is a grown-up you really trust. Deal?"
+        "[warmly] The only place you ever type it is your own real login screen, and the only person who ever helps is a grown-up you really trust. Deal?",
+        "[excited] Let's practise saying no to the sneaky pop-ups!"
       ],
-      "file": "/audio/voice/9934ff4901cdba19.mp3"
+      "file": "/audio/voice/a9de66b3b79054f4.mp3"
     },
     {
-      "key": "cc56d1c59dbdcc9b",
+      "key": "4dfa72e054fa7a8f",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] On your next challenge, you make the smart choice! This game is all about keeping your password secret, even when something on the screen begs you to share it. The Raccoon LOVES to pop up and ask ever so nicely. So when ANYTHING asks for your password, you STOP and keep it secret. But if you're ever stuck and need help, there is ONE safe person to ask. A parent, or a grown-up you trust. [excited] So keep it secret from everyone else, and only ever ask a grown-up. Ready? You've got this!",
+      "text": "[warmly] On your next challenge, you make the smart choice! This game is all about keeping your password secret, even when something on the screen begs you to share it. The Raccoon LOVES to pop up and ask ever so nicely. So when a stranger, a website or even a friend asks for your password, you STOP and keep it secret. Your own real login screen is the one place it belongs. And if you're ever stuck, there is ONE safe person to ask: a parent, or a grown-up you trust. [excited] Here is what you do. Read each moment, think, then tap the card that keeps your secret safe. Ready? You've got this!",
       "lines": [
         "[warmly] On your next challenge, you make the smart choice!",
         "This game is all about keeping your password secret, even when something on the screen begs you to share it.",
-        "The Raccoon LOVES to pop up and ask ever so nicely. So when ANYTHING asks for your password, you STOP and keep it secret.",
-        "But if you're ever stuck and need help, there is ONE safe person to ask. A parent, or a grown-up you trust.",
-        "[excited] So keep it secret from everyone else, and only ever ask a grown-up. Ready? You've got this!"
+        "The Raccoon LOVES to pop up and ask ever so nicely. So when a stranger, a website or even a friend asks for your password, you STOP and keep it secret.",
+        "Your own real login screen is the one place it belongs. And if you're ever stuck, there is ONE safe person to ask: a parent, or a grown-up you trust.",
+        "[excited] Here is what you do. Read each moment, think, then tap the card that keeps your secret safe. Ready? You've got this!"
       ],
-      "file": "/audio/voice/cc56d1c59dbdcc9b.mp3"
+      "file": "/audio/voice/4dfa72e054fa7a8f.mp3"
+    },
+    {
+      "key": "8adc8d4615096bde",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] You kept your secret every single time! Now you know exactly who gets your password: only you, and a trusted grown-up. [warmly] Out in the real world, when a stranger, a pop-up or a friend asks for it, you pause, and the Raccoon gets nothing.",
+      "lines": [
+        "[proud] You kept your secret every single time! Now you know exactly who gets your password: only you, and a trusted grown-up.",
+        "[warmly] Out in the real world, when a stranger, a pop-up or a friend asks for it, you pause, and the Raccoon gets nothing."
+      ],
+      "file": "/audio/voice/8adc8d4615096bde.mp3"
     },
     {
       "key": "c01b4e8d3b271c40",
@@ -312,40 +330,31 @@
       "file": "/audio/voice/c01b4e8d3b271c40.mp3"
     },
     {
-      "key": "7fa5fd78f75ab0ee",
+      "key": "761df4902e97ba00",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's your fourth power! You keep your password secret. You never share it, not even with a best friend. [warmly] So no one can ever be tricked into handing it over to the Raccoon. One last power to master before the big test. Come on, Cyber Hero!",
+      "text": "[excited] That's your fourth power! You keep your password secret. You never share it, not even with a best friend. [warmly] So no one can ever be tricked into handing it over to the Raccoon. One last power to master. Next, we'll learn which passwords the Raccoon guesses FIRST, so you never pick one. Come on, Cyber Hero!",
       "lines": [
         "[excited] That's your fourth power!",
         "You keep your password secret. You never share it, not even with a best friend.",
         "[warmly] So no one can ever be tricked into handing it over to the Raccoon.",
-        "One last power to master before the big test. Come on, Cyber Hero!"
+        "One last power to master. Next, we'll learn which passwords the Raccoon guesses FIRST, so you never pick one. Come on, Cyber Hero!"
       ],
-      "file": "/audio/voice/7fa5fd78f75ab0ee.mp3"
+      "file": "/audio/voice/761df4902e97ba00.mp3"
     },
     {
-      "key": "2f2a8aa661cd381b",
+      "key": "1668275591aeca69",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Your last power! Let's learn to dodge the passwords the Raccoon guesses first.",
-      "lines": [
-        "[excited] Your last power! Let's learn to dodge the passwords the Raccoon guesses first."
-      ],
-      "file": "/audio/voice/2f2a8aa661cd381b.mp3"
-    },
-    {
-      "key": "125177e180d8467d",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Let's get inside the sneaky Raccoon's head! [whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday? And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries! [excited] So pick something he'd NEVER guess, and outsmart him!",
+      "text": "[excited] Let's get inside the sneaky Raccoon's head! [whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday? And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries! [excited] So pick something he'd NEVER guess, and outsmart him! [warmly] Come on, detective, let's find out WHY weak passwords are weak!",
       "lines": [
         "[excited] Let's get inside the sneaky Raccoon's head!",
         "[whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday?",
         "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
-        "[excited] So pick something he'd NEVER guess, and outsmart him!"
+        "[excited] So pick something he'd NEVER guess, and outsmart him!",
+        "[warmly] Come on, detective, let's find out WHY weak passwords are weak!"
       ],
-      "file": "/audio/voice/125177e180d8467d.mp3"
+      "file": "/audio/voice/1668275591aeca69.mp3"
     },
     {
       "key": "8e299f4ff2384185",
@@ -362,6 +371,17 @@
       "file": "/audio/voice/8e299f4ff2384185.mp3"
     },
     {
+      "key": "9ed105c29f43c29a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Case closed, detective! Now you can spot WHY a password is weak before the Raccoon ever tries it. [warmly] Out in the real world, no names, no birthdays, no one-two-three-four-five-six. Just words nobody could guess.",
+      "lines": [
+        "[proud] Case closed, detective! Now you can spot WHY a password is weak before the Raccoon ever tries it.",
+        "[warmly] Out in the real world, no names, no birthdays, no one-two-three-four-five-six. Just words nobody could guess."
+      ],
+      "file": "/audio/voice/9ed105c29f43c29a.mp3"
+    },
+    {
       "key": "11e4f447cd25e6dc",
       "speaker": "adam",
       "voice": "Sarah",
@@ -375,17 +395,17 @@
       "file": "/audio/voice/11e4f447cd25e6dc.mp3"
     },
     {
-      "key": "b4171c2d394348a1",
+      "key": "86988cecde837d3b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] You've earned all FIVE powers, Cyber Hero! You steer clear of the obvious ones. No names, no birthdays, no one-two-three-four-five-six. [warmly] So the Raccoon can't guess his way in, no matter how hard he tries. You're ready. Time to show that Raccoon who's boss!",
+      "text": "[excited] You've earned all FIVE powers, Cyber Hero! You steer clear of the obvious ones. No names, no birthdays, no one-two-three-four-five-six. [warmly] So the Raccoon can't guess his way in, no matter how hard he tries. Now, one quick Power Bingo to make it all stick... then the Raccoon gets locked out for good. Come on!",
       "lines": [
         "[excited] You've earned all FIVE powers, Cyber Hero!",
         "You steer clear of the obvious ones. No names, no birthdays, no one-two-three-four-five-six.",
         "[warmly] So the Raccoon can't guess his way in, no matter how hard he tries.",
-        "You're ready. Time to show that Raccoon who's boss!"
+        "Now, one quick Power Bingo to make it all stick... then the Raccoon gets locked out for good. Come on!"
       ],
-      "file": "/audio/voice/b4171c2d394348a1.mp3"
+      "file": "/audio/voice/86988cecde837d3b.mp3"
     },
     {
       "key": "d377df27710f46ac",
@@ -399,6 +419,17 @@
         "[warmly] Then I'll tell you WHY it works. Fill all four squares to get BINGO - you're ready!"
       ],
       "file": "/audio/voice/d377df27710f46ac.mp3"
+    },
+    {
+      "key": "9ae545d3f411c33d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] BINGO! You spotted every password power in action. [warmly] Long, mixed up, secret, and nothing obvious. Out in the real world, that's a password the Raccoon can never beat. Now let's lock him out for good!",
+      "lines": [
+        "[proud] BINGO! You spotted every password power in action.",
+        "[warmly] Long, mixed up, secret, and nothing obvious. Out in the real world, that's a password the Raccoon can never beat. Now let's lock him out for good!"
+      ],
+      "file": "/audio/voice/9ae545d3f411c33d.mp3"
     },
     {
       "key": "d7deef07485d9b75",
@@ -452,6 +483,16 @@
         "Your best friend texts: \"Tell me your password so I can log in and get you cool stuff!\""
       ],
       "file": "/audio/voice/7c979765a17206fa.mp3"
+    },
+    {
+      "key": "875ba2c582b49cf1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You open YOUR game on the family tablet. The real login screen asks for your password so you can play.",
+      "lines": [
+        "You open YOUR game on the family tablet. The real login screen asks for your password so you can play."
+      ],
+      "file": "/audio/voice/875ba2c582b49cf1.mp3"
     },
     {
       "key": "f1308d926dc13214",
@@ -532,6 +573,26 @@
         "Perfect. Your password is YOUR secret - nobody else needs it, not even a best friend."
       ],
       "file": "/audio/voice/e86158fc4f0759aa.mp3"
+    },
+    {
+      "key": "b4113a76725e17ad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Yes! Your own real login screen is the ONE place your password belongs. Just make sure nobody is peeking.",
+      "lines": [
+        "Yes! Your own real login screen is the ONE place your password belongs. Just make sure nobody is peeking."
+      ],
+      "file": "/audio/voice/b4113a76725e17ad.mp3"
+    },
+    {
+      "key": "4699f6b1a4ff3881",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A password has to go SOMEWHERE, and your own real login is exactly where it belongs. It's strangers, pop-ups and friends who never get it.",
+      "lines": [
+        "A password has to go SOMEWHERE, and your own real login is exactly where it belongs. It's strangers, pop-ups and friends who never get it."
+      ],
+      "file": "/audio/voice/4699f6b1a4ff3881.mp3"
     },
     {
       "key": "aeee37367b6fe7fa",
@@ -3798,18 +3859,19 @@
       "file": "/audio/voice/545a987351831d42.mp3"
     },
     {
-      "key": "fce4d00a62d7b6ae",
+      "key": "5b88af8710d3af6b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Okay, today we're learning to spot a picture that a computer made up. AI tools like ChatGPT can paint things that never happened, and they can look SO real. But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues. Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters. [warmly] So when a photo looks amazing, we don't just believe it. We look twice.",
+      "text": "[warmly] Okay, today we're learning to spot a picture that a computer made up. AI tools like ChatGPT can paint things that never happened, and they can look SO real. But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues. Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters. [warmly] So when a photo looks amazing, we don't just believe it. We look twice. [excited] Come on, detective, let's line up the photos!",
       "lines": [
         "[warmly] Okay, today we're learning to spot a picture that a computer made up.",
         "AI tools like ChatGPT can paint things that never happened, and they can look SO real.",
         "But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues.",
         "Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters.",
-        "[warmly] So when a photo looks amazing, we don't just believe it. We look twice."
+        "[warmly] So when a photo looks amazing, we don't just believe it. We look twice.",
+        "[excited] Come on, detective, let's line up the photos!"
       ],
-      "file": "/audio/voice/fce4d00a62d7b6ae.mp3"
+      "file": "/audio/voice/5b88af8710d3af6b.mp3"
     },
     {
       "key": "4d2dd88a63e9b807",
@@ -3974,6 +4036,17 @@
         "[excited] Show me everything you've learned. Off we go!"
       ],
       "file": "/audio/voice/998f44826cd6fee7.mp3"
+    },
+    {
+      "key": "8d18039d1a330c07",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Review complete! You spotted every wise move and every bot trap. [warmly] Out in the real world, you know every one of his tricks by heart now. Time to close that booth for good!",
+      "lines": [
+        "[proud] Review complete! You spotted every wise move and every bot trap.",
+        "[warmly] Out in the real world, you know every one of his tricks by heart now. Time to close that booth for good!"
+      ],
+      "file": "/audio/voice/8d18039d1a330c07.mp3"
     },
     {
       "key": "c01221f185fbb37e",
@@ -6684,16 +6757,17 @@
       "file": "/audio/voice/91cf72cf87097099.mp3"
     },
     {
-      "key": "f3e84381a0b01a58",
+      "key": "763cfa4680f46b94",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] It's so dark in here! Drag your torch beam around the room. See a gold glow? That's a leak. Tap it to seal it! Seal all four leaks and the room is safe. You've got this!",
+      "text": "[nervous] Oh no, look what happened! The Raccoon tricked Adam and Layla into typing their address, their school, even their phone number. [whispers] Now he knows exactly where they are... yikes. [warmly] But YOUR secrets? He is getting nothing. [excited] By the end of this week, you'll guard every private treasure like a hero. Come on, let's see the mission!",
       "lines": [
-        "[warmly] It's so dark in here! Drag your torch beam around the room.",
-        "See a gold glow? That's a leak. Tap it to seal it!",
-        "Seal all four leaks and the room is safe. You've got this!"
+        "[nervous] Oh no, look what happened! The Raccoon tricked Adam and Layla into typing their address, their school, even their phone number.",
+        "[whispers] Now he knows exactly where they are... yikes.",
+        "[warmly] But YOUR secrets? He is getting nothing.",
+        "[excited] By the end of this week, you'll guard every private treasure like a hero. Come on, let's see the mission!"
       ],
-      "file": "/audio/voice/f3e84381a0b01a58.mp3"
+      "file": "/audio/voice/763cfa4680f46b94.mp3"
     },
     {
       "key": "24e69e302153f951",
@@ -6711,17 +6785,18 @@
       "file": "/audio/voice/24e69e302153f951.mp3"
     },
     {
-      "key": "2d6cf36e560a801a",
+      "key": "4cf9b871b15e2fed",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Look! We found the Raccoon's secret wish list! It's everything he WISHES he knew about you. [excited] Tap each card to see his sneaky plan... then slam it shut with a shield!",
+      "text": "[excited] On your very first challenge, we raid the Raccoon's secret wish list! This game is all about knowing which bits of YOU are private treasure. Out in the real world, the Raccoon collects these little clues to find you and trick you. Here is what you do. Tap each golden card to see his sneaky plan, then slam it shut with a shield. [excited] Foil every plan and his wish list is worthless. Ready? Let's peek!",
       "lines": [
-        "[whispers] Look! We found the Raccoon's secret wish list!",
-        "It's everything he WISHES he knew about you.",
-        "[excited] Tap each card to see his sneaky plan...",
-        "then slam it shut with a shield!"
+        "[excited] On your very first challenge, we raid the Raccoon's secret wish list!",
+        "This game is all about knowing which bits of YOU are private treasure.",
+        "Out in the real world, the Raccoon collects these little clues to find you and trick you.",
+        "Here is what you do. Tap each golden card to see his sneaky plan, then slam it shut with a shield.",
+        "[excited] Foil every plan and his wish list is worthless. Ready? Let's peek!"
       ],
-      "file": "/audio/voice/2d6cf36e560a801a.mp3"
+      "file": "/audio/voice/4cf9b871b15e2fed.mp3"
     },
     {
       "key": "4402b17dcaf52595",
@@ -6734,46 +6809,70 @@
       "file": "/audio/voice/4402b17dcaf52595.mp3"
     },
     {
-      "key": "0f55f631f30eb6ce",
+      "key": "ada894238d9ffe92",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Awesome start, Cyber Hero! You found all five treasures the Raccoon hunts for. Your name, address, school, phone, and where you are... all PRIVATE. [excited] Next up, let's get sorting!",
+      "text": "[proud] Every card slammed shut! You just learned the five private treasures the Raccoon hunts for. [warmly] Out in the real world, keep your name, address, school, phone and where-you-are locked away, and he can never find you.",
+      "lines": [
+        "[proud] Every card slammed shut! You just learned the five private treasures the Raccoon hunts for.",
+        "[warmly] Out in the real world, keep your name, address, school, phone and where-you-are locked away, and he can never find you."
+      ],
+      "file": "/audio/voice/ada894238d9ffe92.mp3"
+    },
+    {
+      "key": "148fe3da7ff3e429",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Exactly right. Your home address is PRIVATE. It tells a stranger WHERE you live, and that's one of your five treasures. A favorite pizza or a favorite color says nothing about who or where you are, so those are fine to share. [excited] Keep the treasures locked and the Raccoon can never find you. Well done!",
+      "lines": [
+        "[warmly] Exactly right. Your home address is PRIVATE.",
+        "It tells a stranger WHERE you live, and that's one of your five treasures.",
+        "A favorite pizza or a favorite color says nothing about who or where you are, so those are fine to share.",
+        "[excited] Keep the treasures locked and the Raccoon can never find you. Well done!"
+      ],
+      "file": "/audio/voice/148fe3da7ff3e429.mp3"
+    },
+    {
+      "key": "2b83198518021eb6",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Awesome start, Cyber Hero! You found all five treasures the Raccoon hunts for. Your name, address, school, phone, and where you are... all PRIVATE. Next, we'll learn what's fine to share and what stays locked away. Come and see!",
       "lines": [
         "[warmly] Awesome start, Cyber Hero!",
         "You found all five treasures the Raccoon hunts for.",
         "Your name, address, school, phone, and where you are... all PRIVATE.",
-        "[excited] Next up, let's get sorting!"
+        "Next, we'll learn what's fine to share and what stays locked away. Come and see!"
       ],
-      "file": "/audio/voice/0f55f631f30eb6ce.mp3"
+      "file": "/audio/voice/2b83198518021eb6.mp3"
     },
     {
-      "key": "46c9c4ca5d1b193a",
+      "key": "59f2f65697a605f1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Good news! You don't have to keep EVERYTHING secret. Love drawing? Say it! Favorite color is blue? Shout it! [laughs] Favorites don't tell anyone who you are. [whispers] But if it points at YOU, your name, your school, your street... [warmly] ...that goes straight in the vault. Ready to sort?",
+      "text": "[excited] Good news! You don't have to keep EVERYTHING secret. Love drawing? Say it! Favorite color is blue? Shout it! [laughs] Favorites don't tell anyone who you are. [whispers] But if it points at YOU, your name, your school, your street... [warmly] ...that goes straight in the vault. [excited] Time to guard the Treasure Table!",
       "lines": [
         "[excited] Good news! You don't have to keep EVERYTHING secret.",
         "Love drawing? Say it! Favorite color is blue? Shout it!",
         "[laughs] Favorites don't tell anyone who you are.",
         "[whispers] But if it points at YOU, your name, your school, your street...",
-        "[warmly] ...that goes straight in the vault. Ready to sort?"
+        "[warmly] ...that goes straight in the vault.",
+        "[excited] Time to guard the Treasure Table!"
       ],
-      "file": "/audio/voice/46c9c4ca5d1b193a.mp3"
+      "file": "/audio/voice/59f2f65697a605f1.mp3"
     },
     {
-      "key": "ba0b49e6ab02951c",
+      "key": "283bc1cea5abe964",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Welcome to the Treasure Table! Every card is a piece of info about you. [warmly] Grab each one and DRAG it where it belongs. Favorites go up to the share board. [whispers] Who-you-are and where-you-are... straight into the vault. [excited] No rush. You're the guard here!",
+      "text": "[excited] On your next challenge, you're the guard at the Treasure Table! This game is all about sorting what's safe to share from what stays locked away. Out in the real world, mixing those two up is exactly how the Raccoon grabs a clue about you. Here is what you do. Grab each card and drag it. Favorites go up to the share board. Who-you-are and where-you-are drop straight into the vault. [excited] Guard every treasure and he gets nothing. Ready? Let's sort!",
       "lines": [
-        "[excited] Welcome to the Treasure Table!",
-        "Every card is a piece of info about you.",
-        "[warmly] Grab each one and DRAG it where it belongs.",
-        "Favorites go up to the share board.",
-        "[whispers] Who-you-are and where-you-are... straight into the vault.",
-        "[excited] No rush. You're the guard here!"
+        "[excited] On your next challenge, you're the guard at the Treasure Table!",
+        "This game is all about sorting what's safe to share from what stays locked away.",
+        "Out in the real world, mixing those two up is exactly how the Raccoon grabs a clue about you.",
+        "Here is what you do. Grab each card and drag it. Favorites go up to the share board. Who-you-are and where-you-are drop straight into the vault.",
+        "[excited] Guard every treasure and he gets nothing. Ready? Let's sort!"
       ],
-      "file": "/audio/voice/ba0b49e6ab02951c.mp3"
+      "file": "/audio/voice/283bc1cea5abe964.mp3"
     },
     {
       "key": "8715d7183d60425e",
@@ -6786,45 +6885,71 @@
       "file": "/audio/voice/8715d7183d60425e.mp3"
     },
     {
-      "key": "e829512aa94ea8c0",
+      "key": "aa1f334c6f0681a4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at you sort! That vault has never been safer! Favorites? Share away. Who you are, where you are? Straight in the vault. [warmly] Now for my favorite trick of all...",
+      "text": "[proud] Vault sealed! Now you can tell your favorites from your private treasure. [warmly] Share the fun stuff all you like, and keep who-you-are and where-you-are locked, so the Raccoon leaves empty-pawed.",
+      "lines": [
+        "[proud] Vault sealed! Now you can tell your favorites from your private treasure.",
+        "[warmly] Share the fun stuff all you like, and keep who-you-are and where-you-are locked, so the Raccoon leaves empty-pawed."
+      ],
+      "file": "/audio/voice/aa1f334c6f0681a4.mp3"
+    },
+    {
+      "key": "b85cbb5655f94e6b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Yes! Your school stays PRIVATE. It points right at you, every single weekday. Your favorite game and favorite food are just things you LIKE, so share those away. [excited] Sort them right and your vault stays sealed. Great work!",
+      "lines": [
+        "[warmly] Yes! Your school stays PRIVATE.",
+        "It points right at you, every single weekday.",
+        "Your favorite game and favorite food are just things you LIKE, so share those away.",
+        "[excited] Sort them right and your vault stays sealed. Great work!"
+      ],
+      "file": "/audio/voice/b85cbb5655f94e6b.mp3"
+    },
+    {
+      "key": "f9104a432b30a180",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at you sort! That vault has never been safer! Favorites? Share away. Who you are, where you are? Straight in the vault. [warmly] Now for my favorite hero question of all... Next, we'll learn the ONE question that beats almost every trick. Come and see!",
       "lines": [
         "[excited] Look at you sort! That vault has never been safer!",
         "Favorites? Share away.",
         "Who you are, where you are? Straight in the vault.",
-        "[warmly] Now for my favorite trick of all..."
+        "[warmly] Now for my favorite hero question of all...",
+        "Next, we'll learn the ONE question that beats almost every trick. Come and see!"
       ],
-      "file": "/audio/voice/e829512aa94ea8c0.mp3"
+      "file": "/audio/voice/f9104a432b30a180.mp3"
     },
     {
-      "key": "75e5c9502cb946cb",
+      "key": "bca4c5e9d07aa85e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Here's the question that beats almost every trick... [whispers] WHY are they asking? A drawing app needs a nickname. Fair enough! [nervous] But a kitten quiz that wants your HOME ADDRESS? [laughs] A quiz doesn't visit your house! Too nosy! [excited] Let's inspect some forms, detective.",
+      "text": "[warmly] Ready for my favorite hero question? [whispers] WHY are they asking? A drawing app needs a nickname. Fair enough! [nervous] But a kitten quiz that wants your HOME ADDRESS? [laughs] A quiz doesn't visit your house! Too nosy! [excited] Let's inspect some forms, detective.",
       "lines": [
-        "[warmly] Here's the question that beats almost every trick...",
+        "[warmly] Ready for my favorite hero question?",
         "[whispers] WHY are they asking?",
         "A drawing app needs a nickname. Fair enough!",
         "[nervous] But a kitten quiz that wants your HOME ADDRESS?",
         "[laughs] A quiz doesn't visit your house! Too nosy!",
         "[excited] Let's inspect some forms, detective."
       ],
-      "file": "/audio/voice/75e5c9502cb946cb.mp3"
+      "file": "/audio/voice/bca4c5e9d07aa85e.mp3"
     },
     {
-      "key": "9058b10a1856b0d7",
+      "key": "7a54e514fe3f0d89",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Detective time! Forms are coming in. Inspect all four clues on each one... who's asking, what they want, whether they NEED it, and what happens next. [warmly] Then make the call: fair ask... or too nosy?",
+      "text": "[excited] On your next challenge, you become a form detective! This game is all about asking one hero question before you type: WHY are they asking? Out in the real world, sneaky apps ask for far more than they need, and that's the Raccoon's trap. Here is what you do. Tap all four magnifying glasses on each form, who's asking, what they want, whether they NEED it, and what happens next. Then make the call: fair ask, or too nosy? [excited] Catch every nosy form and no trick gets past you. Ready? Let's inspect!",
       "lines": [
-        "[excited] Detective time! Forms are coming in.",
-        "Inspect all four clues on each one...",
-        "who's asking, what they want, whether they NEED it, and what happens next.",
-        "[warmly] Then make the call: fair ask... or too nosy?"
+        "[excited] On your next challenge, you become a form detective!",
+        "This game is all about asking one hero question before you type: WHY are they asking?",
+        "Out in the real world, sneaky apps ask for far more than they need, and that's the Raccoon's trap.",
+        "Here is what you do. Tap all four magnifying glasses on each form, who's asking, what they want, whether they NEED it, and what happens next. Then make the call: fair ask, or too nosy?",
+        "[excited] Catch every nosy form and no trick gets past you. Ready? Let's inspect!"
       ],
-      "file": "/audio/voice/9058b10a1856b0d7.mp3"
+      "file": "/audio/voice/7a54e514fe3f0d89.mp3"
     },
     {
       "key": "1b523a7b23ed6fb0",
@@ -6837,45 +6962,70 @@
       "file": "/audio/voice/1b523a7b23ed6fb0.mp3"
     },
     {
-      "key": "63a7db42fad7d63e",
+      "key": "761c3e24b0a2786b",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three down! You're a real form detective now. One little question beats the trick every time... [whispers] why are they asking? [excited] Next: the coolest part of being a hero. Your SECRET IDENTITY!",
+      "text": "[proud] Case closed, detective! Now you can ask WHY any app wants your info. [warmly] If it asks for more than it needs to work, it's too nosy, so you close it and tell a grown-up.",
+      "lines": [
+        "[proud] Case closed, detective! Now you can ask WHY any app wants your info.",
+        "[warmly] If it asks for more than it needs to work, it's too nosy, so you close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/761c3e24b0a2786b.mp3"
+    },
+    {
+      "key": "f5db26c69cf28e31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Busted! That was a fib. A quiz just matches you to a kitten. It does NOT need your home address to do that. Whenever an app asks for more than it needs, that's the hero signal: too nosy. [excited] Ask WHY every time and the trick falls apart. Nice catch!",
+      "lines": [
+        "[warmly] Busted! That was a fib.",
+        "A quiz just matches you to a kitten. It does NOT need your home address to do that.",
+        "Whenever an app asks for more than it needs, that's the hero signal: too nosy.",
+        "[excited] Ask WHY every time and the trick falls apart. Nice catch!"
+      ],
+      "file": "/audio/voice/f5db26c69cf28e31.mp3"
+    },
+    {
+      "key": "0bb9bf93eba99e39",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three down! You're a real form detective now. One little question beats the trick every time... [whispers] why are they asking? [excited] Next, we'll learn the coolest part of being a hero. Your SECRET IDENTITY!",
       "lines": [
         "[excited] Three down! You're a real form detective now.",
         "One little question beats the trick every time...",
         "[whispers] why are they asking?",
-        "[excited] Next: the coolest part of being a hero. Your SECRET IDENTITY!"
+        "[excited] Next, we'll learn the coolest part of being a hero. Your SECRET IDENTITY!"
       ],
-      "file": "/audio/voice/63a7db42fad7d63e.mp3"
+      "file": "/audio/voice/0bb9bf93eba99e39.mp3"
     },
     {
-      "key": "23ae32afc91af5be",
+      "key": "87d8c5542ab83a72",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Every hero has a secret identity... [excited] and online, your username IS your mask! But careful. Put your real name or birthday in it... [nervous] and the mask has a hole in it. [laughs] emma2017? The Raccoon reads that like a name tag! [excited] Come on - let's forge you a TRUE hero name.",
+      "text": "[whispers] Every hero has a secret identity... [excited] and online, your username IS your mask! But careful. Put your real name or birthday in it... [nervous] and the mask has a hole in it. [laughs] emma2017? The Raccoon reads that like a name tag! [excited] Come on, your hero mask is waiting!",
       "lines": [
         "[whispers] Every hero has a secret identity...",
         "[excited] and online, your username IS your mask!",
         "But careful. Put your real name or birthday in it...",
         "[nervous] and the mask has a hole in it.",
         "[laughs] emma2017? The Raccoon reads that like a name tag!",
-        "[excited] Come on - let's forge you a TRUE hero name."
+        "[excited] Come on, your hero mask is waiting!"
       ],
-      "file": "/audio/voice/23ae32afc91af5be.mp3"
+      "file": "/audio/voice/87d8c5542ab83a72.mp3"
     },
     {
-      "key": "47628fe398892350",
+      "key": "854c5f6cfb192786",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Welcome to the Secret Identity Machine! Pick a hero word, a sidekick, and a lucky number. [whispers] But watch out... some parts LEAK who you really are. [warmly] Fill the disguise meter and stamp your hero badge!",
+      "text": "[excited] On your next challenge, we fire up the Secret Identity Machine! This game is all about building a username that's a perfect mask, with none of the real you inside. Out in the real world, a username with your name or birthday is a mask with a hole in it, and the Raccoon peeks right through. Here is what you do. Tap a hero word, a sidekick, and a lucky number for each reel, and dodge any part that leaks the real you. [excited] Fill the disguise meter and stamp your hero badge. Ready? Let's forge!",
       "lines": [
-        "[excited] Welcome to the Secret Identity Machine!",
-        "Pick a hero word, a sidekick, and a lucky number.",
-        "[whispers] But watch out... some parts LEAK who you really are.",
-        "[warmly] Fill the disguise meter and stamp your hero badge!"
+        "[excited] On your next challenge, we fire up the Secret Identity Machine!",
+        "This game is all about building a username that's a perfect mask, with none of the real you inside.",
+        "Out in the real world, a username with your name or birthday is a mask with a hole in it, and the Raccoon peeks right through.",
+        "Here is what you do. Tap a hero word, a sidekick, and a lucky number for each reel, and dodge any part that leaks the real you.",
+        "[excited] Fill the disguise meter and stamp your hero badge. Ready? Let's forge!"
       ],
-      "file": "/audio/voice/47628fe398892350.mp3"
+      "file": "/audio/voice/854c5f6cfb192786.mp3"
     },
     {
       "key": "8ce782cdacaa22b9",
@@ -6888,72 +7038,145 @@
       "file": "/audio/voice/8ce782cdacaa22b9.mp3"
     },
     {
-      "key": "dc19badef230fe77",
+      "key": "bd4d23e98c67483a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Your secret identity is FORGED! No name, no birthday, no school. Just pure hero. [laughs] The Raccoon can stare at it all day and learn nothing. [warmly] One last power to collect. The golden rule.",
+      "text": "[proud] Hero name forged! Now you can build a username that's a mask with no holes. [warmly] No real name, no age, no birthday, no school, so the Raccoon can stare all day and learn nothing.",
       "lines": [
-        "[excited] Your secret identity is FORGED!",
-        "No name, no birthday, no school. Just pure hero.",
-        "[laughs] The Raccoon can stare at it all day and learn nothing.",
-        "[warmly] One last power to collect. The golden rule."
+        "[proud] Hero name forged! Now you can build a username that's a mask with no holes.",
+        "[warmly] No real name, no age, no birthday, no school, so the Raccoon can stare all day and learn nothing."
       ],
-      "file": "/audio/voice/dc19badef230fe77.mp3"
+      "file": "/audio/voice/bd4d23e98c67483a.mp3"
     },
     {
-      "key": "16d53c6eb910f130",
+      "key": "e95ef23a143c9f82",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Fast and sharp! PixelPanda42 is the safe one. No real name, no age, no school, nothing that points at the real you. emma2017, Jake underscore Age9 and MapleHill underscore Star each leak a clue, so the mask has a hole. [excited] A true hero name gives the Raccoon nothing. Brilliant!",
+      "lines": [
+        "[warmly] Fast and sharp! PixelPanda42 is the safe one.",
+        "No real name, no age, no school, nothing that points at the real you.",
+        "emma2017, Jake underscore Age9 and MapleHill underscore Star each leak a clue, so the mask has a hole.",
+        "[excited] A true hero name gives the Raccoon nothing. Brilliant!"
+      ],
+      "file": "/audio/voice/e95ef23a143c9f82.mp3"
+    },
+    {
+      "key": "f0c37d583df4b1a7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Last one, and it's the golden rule. Sometimes you won't be sure. That's okay! [whispers] Heroes don't guess... [excited] they hit PAUSE and call for backup! A parent. A caregiver. A teacher. Your backup team. [warmly] If you're not sure - ask first. Every single time.",
+      "text": "[excited] Your secret identity is FORGED! Nothing that points at the real you. Just pure hero. [laughs] The Raccoon can stare at it all day and learn nothing. [warmly] One more power to collect, and it's the one that saves you when you're stuck. Next, we'll learn what to do when you're just not sure. Come and see!",
+      "lines": [
+        "[excited] Your secret identity is FORGED!",
+        "Nothing that points at the real you. Just pure hero.",
+        "[laughs] The Raccoon can stare at it all day and learn nothing.",
+        "[warmly] One more power to collect, and it's the one that saves you when you're stuck.",
+        "Next, we'll learn what to do when you're just not sure. Come and see!"
+      ],
+      "file": "/audio/voice/f0c37d583df4b1a7.mp3"
+    },
+    {
+      "key": "b3613777c2ce5d17",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last one, and it's the golden rule. Sometimes you won't be sure. That's okay! [whispers] Heroes don't guess... [excited] they hit PAUSE and call for backup! A parent. A caregiver. A teacher. Your backup team. [warmly] If you're not sure, ask first. Every single time. [excited] Let's practise the Hero Pause together!",
       "lines": [
         "[warmly] Last one, and it's the golden rule.",
         "Sometimes you won't be sure. That's okay!",
         "[whispers] Heroes don't guess...",
         "[excited] they hit PAUSE and call for backup!",
         "A parent. A caregiver. A teacher. Your backup team.",
-        "[warmly] If you're not sure - ask first. Every single time."
+        "[warmly] If you're not sure, ask first. Every single time.",
+        "[excited] Let's practise the Hero Pause together!"
       ],
-      "file": "/audio/voice/16d53c6eb910f130.mp3"
+      "file": "/audio/voice/b3613777c2ce5d17.mp3"
     },
     {
-      "key": "eb7ab5c075708e61",
+      "key": "353952ca38ba7f42",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Time to practice the golden rule. Tricky moments are about to pop up on screen. [whispers] Feel that 'hmm, not sure' feeling? That's your hero sense! [excited] When it tingles... hit PAUSE!",
+      "text": "[excited] On your LAST challenge, you learn the Hero Pause! This game is all about what to do when you're just not sure: stop, and ask a grown-up. Out in the real world, tricky pop-ups appear all the time, and the smartest heroes never guess. Here is what you do. Four hero moves are jumbled up below. Tap them in the order a hero does them, and each one lights up on the path. [excited] Get the whole Hero Pause in order and no trick can catch you. Ready? You've got this!",
       "lines": [
-        "[warmly] Time to practice the golden rule.",
-        "Tricky moments are about to pop up on screen.",
-        "[whispers] Feel that 'hmm, not sure' feeling? That's your hero sense!",
-        "[excited] When it tingles... hit PAUSE!"
+        "[excited] On your LAST challenge, you learn the Hero Pause!",
+        "This game is all about what to do when you're just not sure: stop, and ask a grown-up.",
+        "Out in the real world, tricky pop-ups appear all the time, and the smartest heroes never guess.",
+        "Here is what you do. Four hero moves are jumbled up below. Tap them in the order a hero does them, and each one lights up on the path.",
+        "[excited] Get the whole Hero Pause in order and no trick can catch you. Ready? You've got this!"
       ],
-      "file": "/audio/voice/eb7ab5c075708e61.mp3"
+      "file": "/audio/voice/353952ca38ba7f42.mp3"
     },
     {
-      "key": "b7f6c5b93fd3579e",
+      "key": "4ebef826b5dc8e98",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which hero move comes FIRST? Tap it!",
+      "lines": [
+        "Which hero move comes FIRST? Tap it!"
+      ],
+      "file": "/audio/voice/4ebef826b5dc8e98.mp3"
+    },
+    {
+      "key": "b1536a250c0b7075",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Cyber Hero! You know what's private, what to share, when to ask why... you've got a secret identity, AND the golden rule. [whispers] The Raccoon has no idea what's coming. [excited] Quick final drill - then we forge your profile!",
+      "text": "[proud] Golden rule mastered! When you're not sure, you stop and ask a trusted grown-up. [warmly] A parent, a carer, a teacher, your backup team, so you never have to guess and the Raccoon never wins.",
+      "lines": [
+        "[proud] Golden rule mastered! When you're not sure, you stop and ask a trusted grown-up.",
+        "[warmly] A parent, a carer, a teacher, your backup team, so you never have to guess and the Raccoon never wins."
+      ],
+      "file": "/audio/voice/b1536a250c0b7075.mp3"
+    },
+    {
+      "key": "b734c397b7dd2305",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] That's the golden rule. When you're not sure, you ask a grown-up. Not a guess, not a quick type, not the Raccoon. A parent, a carer or a teacher. They're your backup team, and asking first is the smartest hero move there is. [excited] Pause and ask, every single time. You've got this!",
+      "lines": [
+        "[warmly] That's the golden rule. When you're not sure, you ask a grown-up.",
+        "Not a guess, not a quick type, not the Raccoon. A parent, a carer or a teacher.",
+        "They're your backup team, and asking first is the smartest hero move there is.",
+        "[excited] Pause and ask, every single time. You've got this!"
+      ],
+      "file": "/audio/voice/b734c397b7dd2305.mp3"
+    },
+    {
+      "key": "71e20fee08e55d1e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Cyber Hero! You know what's private, what to share, when to ask why... you've got a secret identity, AND the golden rule. [whispers] The Raccoon has no idea what's coming. [excited] One quick final drill to make it all stick... then we send that Raccoon home empty-pawed. Come on!",
       "lines": [
         "[excited] That's all FIVE powers, Cyber Hero!",
         "You know what's private, what to share, when to ask why...",
         "you've got a secret identity, AND the golden rule.",
         "[whispers] The Raccoon has no idea what's coming.",
-        "[excited] Quick final drill - then we forge your profile!"
+        "[excited] One quick final drill to make it all stick... then we send that Raccoon home empty-pawed. Come on!"
       ],
-      "file": "/audio/voice/b7f6c5b93fd3579e.mp3"
+      "file": "/audio/voice/71e20fee08e55d1e.mp3"
     },
     {
-      "key": "928e2d8dbea04ca9",
+      "key": "645ede7a724c116a",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Final drill! Info cards are drifting past. Tap SAFE if it's fine to share... and RISKY if it belongs in the vault. [warmly] Trust your training - you've got this!",
+      "text": "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you. This one mixes up everything you learned about guarding your secrets. Out in the real world, grabs for your private info and perfectly safe messages fly past you all the time. Here is what you do. Messages fly toward your device. Tap a grab for private info to ZAP it. Leave the safe ones alone and they land in your vault. [warmly] Trust your training, you guard this vault now. Ready? Let's zap!",
       "lines": [
-        "[excited] Final drill! Info cards are drifting past.",
-        "Tap SAFE if it's fine to share...",
-        "and RISKY if it belongs in the vault.",
-        "[warmly] Trust your training - you've got this!"
+        "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you.",
+        "This one mixes up everything you learned about guarding your secrets.",
+        "Out in the real world, grabs for your private info and perfectly safe messages fly past you all the time.",
+        "Here is what you do. Messages fly toward your device. Tap a grab for private info to ZAP it. Leave the safe ones alone and they land in your vault.",
+        "[warmly] Trust your training, you guard this vault now. Ready? Let's zap!"
       ],
-      "file": "/audio/voice/928e2d8dbea04ca9.mp3"
+      "file": "/audio/voice/645ede7a724c116a.mp3"
+    },
+    {
+      "key": "030500dc98e35c54",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Grab bag empty! You can spot a grab for private info in a flash. [warmly] The Raccoon packed up his bag and went home with absolutely nothing. That's a Privacy Guardian!",
+      "lines": [
+        "[proud] Grab bag empty! You can spot a grab for private info in a flash.",
+        "[warmly] The Raccoon packed up his bag and went home with absolutely nothing. That's a Privacy Guardian!"
+      ],
+      "file": "/audio/voice/030500dc98e35c54.mp3"
     },
     {
       "key": "982cc8ad224246e0",
@@ -6968,96 +7191,6 @@
         "[excited] The Raccoon's form came back BLANK. Time for stickers!"
       ],
       "file": "/audio/voice/982cc8ad224246e0.mp3"
-    },
-    {
-      "key": "67eca067cf2b25a2",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A message pops up in your game: 'Enter your SCHOOL NAME to join the local tournament!'",
-      "lines": [
-        "A message pops up in your game: 'Enter your SCHOOL NAME to join the local tournament!'"
-      ],
-      "file": "/audio/voice/67eca067cf2b25a2.mp3"
-    },
-    {
-      "key": "55887a6b2ad8bdbe",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A website flashes: 'FREE mega sticker pack! Just enter your home address and we'll mail it today!'",
-      "lines": [
-        "A website flashes: 'FREE mega sticker pack! Just enter your home address and we'll mail it today!'"
-      ],
-      "file": "/audio/voice/55887a6b2ad8bdbe.mp3"
-    },
-    {
-      "key": "5e50fab9c11d093c",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Your drawing app says: 'Enter your REAL full name for your official Artist Certificate!'",
-      "lines": [
-        "Your drawing app says: 'Enter your REAL full name for your official Artist Certificate!'"
-      ],
-      "file": "/audio/voice/5e50fab9c11d093c.mp3"
-    },
-    {
-      "key": "9ab74e9e7e8437b0",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Now the game - and anyone running it - knows where you are every school day. That's exactly what the Raccoon wanted.",
-      "lines": [
-        "Now the game - and anyone running it - knows where you are every school day. That's exactly what the Raccoon wanted."
-      ],
-      "file": "/audio/voice/9ab74e9e7e8437b0.mp3"
-    },
-    {
-      "key": "1a14d5adda8708b6",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Hero move! A grown-up can check if the tournament is real - and you lose nothing by asking.",
-      "lines": [
-        "Hero move! A grown-up can check if the tournament is real - and you lose nothing by asking."
-      ],
-      "file": "/audio/voice/1a14d5adda8708b6.mp3"
-    },
-    {
-      "key": "0d757f3e1cbdac1a",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A stranger now knows exactly where you live... and the stickers never come. Classic Raccoon.",
-      "lines": [
-        "A stranger now knows exactly where you live... and the stickers never come. Classic Raccoon."
-      ],
-      "file": "/audio/voice/0d757f3e1cbdac1a.mp3"
-    },
-    {
-      "key": "72740e5ab9a35880",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Smart! A grown-up can spot a sticker trap from a mile away. Backup team activated!",
-      "lines": [
-        "Smart! A grown-up can spot a sticker trap from a mile away. Backup team activated!"
-      ],
-      "file": "/audio/voice/72740e5ab9a35880.mp3"
-    },
-    {
-      "key": "f722d2c8e5846594",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A certificate doesn't need your REAL name - now it's stored who-knows-where, forever.",
-      "lines": [
-        "A certificate doesn't need your REAL name - now it's stored who-knows-where, forever."
-      ],
-      "file": "/audio/voice/f722d2c8e5846594.mp3"
-    },
-    {
-      "key": "43722bd911e4c93e",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Perfect! PixelPanda42's certificate looks just as good on the fridge - and gives nothing away.",
-      "lines": [
-        "Perfect! PixelPanda42's certificate looks just as good on the fridge - and gives nothing away."
-      ],
-      "file": "/audio/voice/43722bd911e4c93e.mp3"
     },
     {
       "key": "d4bac798488c8ddf",
@@ -7108,6 +7241,1311 @@
         "If you're not sure, blank."
       ],
       "file": "/audio/voice/3984dcff6d64e241.mp3"
+    },
+    {
+      "key": "1dc8dfd1fec12b47",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Adam's new game wants him to fill in his player card, and three facts are ready to type. Which one stays locked in the vault? Is it option A... The name of the school he goes to Option B... The name of the game he plays most Or is it option C... The name of his favorite dinosaur So, what do you think?",
+      "lines": [
+        "Adam's new game wants him to fill in his player card, and three facts are ready to type. Which one stays locked in the vault?",
+        "Is it option A...",
+        "The name of the school he goes to",
+        "Option B...",
+        "The name of the game he plays most",
+        "Or is it option C...",
+        "The name of his favorite dinosaur",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/1dc8dfd1fec12b47.mp3"
+    },
+    {
+      "key": "ebc52cb920f1e191",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla's club profile has one empty box left for a fun line about herself. Which line is safe to type in? Is it option A... Rainbow Road is the best street ever Option B... Maple Hill is the best school ever Or is it option C... Pancakes are the best breakfast ever So, what do you think?",
+      "lines": [
+        "Layla's club profile has one empty box left for a fun line about herself. Which line is safe to type in?",
+        "Is it option A...",
+        "Rainbow Road is the best street ever",
+        "Option B...",
+        "Maple Hill is the best school ever",
+        "Or is it option C...",
+        "Pancakes are the best breakfast ever",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/ebc52cb920f1e191.mp3"
+    },
+    {
+      "key": "a61d68d7b3be5ce2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three coloring apps each want one thing before Adam can draw. Which app is being too nosy? Is it option A... The one that wants his favorite color Option B... The one that wants his phone number Or is it option C... The one that wants a made-up nickname So, what do you think?",
+      "lines": [
+        "Three coloring apps each want one thing before Adam can draw. Which app is being too nosy?",
+        "Is it option A...",
+        "The one that wants his favorite color",
+        "Option B...",
+        "The one that wants his phone number",
+        "Or is it option C...",
+        "The one that wants a made-up nickname",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/a61d68d7b3be5ce2.mp3"
+    },
+    {
+      "key": "3a9deb4b2d12cf0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla needs a username for her drawing club. Which one keeps her hero mask on? Is it option A... Layla_Draws Option B... VelvetFox31 Option C... MapleHill_Artist Or is it option D... ArtKid2017 So, what do you think?",
+      "lines": [
+        "Layla needs a username for her drawing club. Which one keeps her hero mask on?",
+        "Is it option A...",
+        "Layla_Draws",
+        "Option B...",
+        "VelvetFox31",
+        "Option C...",
+        "MapleHill_Artist",
+        "Or is it option D...",
+        "ArtKid2017",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/3a9deb4b2d12cf0e.mp3"
+    },
+    {
+      "key": "c40a3f2e65ca1d44",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move? Is it option A... Type an answer and see what happens Option B... Ask the app's help robot instead Or is it option C... Pause and ask a trusted grown-up So, what do you think?",
+      "lines": [
+        "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move?",
+        "Is it option A...",
+        "Type an answer and see what happens",
+        "Option B...",
+        "Ask the app's help robot instead",
+        "Or is it option C...",
+        "Pause and ask a trusted grown-up",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/c40a3f2e65ca1d44.mp3"
+    },
+    {
+      "key": "abdab2c2c5bfa4dc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "My scanner beeps when it finds private treasure. Adam typed three things in chat today. Which one made it beep? Is it option A... I beat level 12 this morning Option B... My high score ends in 12 Or is it option C... I ride the number 12 bus home So, what do you think?",
+      "lines": [
+        "My scanner beeps when it finds private treasure. Adam typed three things in chat today. Which one made it beep?",
+        "Is it option A...",
+        "I beat level 12 this morning",
+        "Option B...",
+        "My high score ends in 12",
+        "Or is it option C...",
+        "I ride the number 12 bus home",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/abdab2c2c5bfa4dc.mp3"
+    },
+    {
+      "key": "162f5e7ac087361f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla won her swim race and wants to tell her game friends. Which message is the safe way to celebrate? Is it option A... I won my swim race today, best day ever! Option B... I won my swim race for Maple Hill School! Or is it option C... I won my swim race at the pool on Oak Street! So, what do you think?",
+      "lines": [
+        "Layla won her swim race and wants to tell her game friends. Which message is the safe way to celebrate?",
+        "Is it option A...",
+        "I won my swim race today, best day ever!",
+        "Option B...",
+        "I won my swim race for Maple Hill School!",
+        "Or is it option C...",
+        "I won my swim race at the pool on Oak Street!",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/162f5e7ac087361f.mp3"
+    },
+    {
+      "key": "f14151a6f46c5741",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week, and that's one of the five private treasures.",
+      "lines": [
+        "That's right!",
+        "A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week, and that's one of the five private treasures."
+      ],
+      "file": "/audio/voice/f14151a6f46c5741.mp3"
+    },
+    {
+      "key": "c6be8ac7192116aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week, and that's one of the five private treasures.",
+      "lines": [
+        "Not quite.",
+        "A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week, and that's one of the five private treasures."
+      ],
+      "file": "/audio/voice/c6be8ac7192116aa.mp3"
+    },
+    {
+      "key": "39e68d3dce45f15d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! All three sound like favorites, but only the pancakes are really about what she likes. A best school or a best street quietly tells a stranger where to find her.",
+      "lines": [
+        "That's right!",
+        "All three sound like favorites, but only the pancakes are really about what she likes. A best school or a best street quietly tells a stranger where to find her."
+      ],
+      "file": "/audio/voice/39e68d3dce45f15d.mp3"
+    },
+    {
+      "key": "d460f36826cb8cfe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. All three sound like favorites, but only the pancakes are really about what she likes. A best school or a best street quietly tells a stranger where to find her.",
+      "lines": [
+        "Not quite.",
+        "All three sound like favorites, but only the pancakes are really about what she likes. A best school or a best street quietly tells a stranger where to find her."
+      ],
+      "file": "/audio/voice/d460f36826cb8cfe.mp3"
+    },
+    {
+      "key": "e6635c0290bb7664",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A nickname labels his art and a favorite color picks his paints, those asks match the app. Coloring never rings anybody, so a phone number is an over-ask. Too nosy!",
+      "lines": [
+        "That's right!",
+        "A nickname labels his art and a favorite color picks his paints, those asks match the app. Coloring never rings anybody, so a phone number is an over-ask. Too nosy!"
+      ],
+      "file": "/audio/voice/e6635c0290bb7664.mp3"
+    },
+    {
+      "key": "ace636b2baea8647",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A nickname labels his art and a favorite color picks his paints, those asks match the app. Coloring never rings anybody, so a phone number is an over-ask. Too nosy!",
+      "lines": [
+        "Not quite.",
+        "A nickname labels his art and a favorite color picks his paints, those asks match the app. Coloring never rings anybody, so a phone number is an over-ask. Too nosy!"
+      ],
+      "file": "/audio/voice/ace636b2baea8647.mp3"
+    },
+    {
+      "key": "26992e3bf68785ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A real first name, a school, or a birth year pokes a hole in the mask, even inside a cool-sounding name. Hero words plus a number that means nothing keep the real Layla invisible.",
+      "lines": [
+        "That's right!",
+        "A real first name, a school, or a birth year pokes a hole in the mask, even inside a cool-sounding name. Hero words plus a number that means nothing keep the real Layla invisible."
+      ],
+      "file": "/audio/voice/26992e3bf68785ac.mp3"
+    },
+    {
+      "key": "d36ba63342a12cbc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A real first name, a school, or a birth year pokes a hole in the mask, even inside a cool-sounding name. Hero words plus a number that means nothing keep the real Layla invisible.",
+      "lines": [
+        "Not quite.",
+        "A real first name, a school, or a birth year pokes a hole in the mask, even inside a cool-sounding name. Hero words plus a number that means nothing keep the real Layla invisible."
+      ],
+      "file": "/audio/voice/d36ba63342a12cbc.mp3"
+    },
+    {
+      "key": "f0b0ead61ee18ba9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The help robot works for the app, and typing to see what happens is just guessing. When you're not sure, hit pause and call your backup: a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "The help robot works for the app, and typing to see what happens is just guessing. When you're not sure, hit pause and call your backup: a trusted grown-up."
+      ],
+      "file": "/audio/voice/f0b0ead61ee18ba9.mp3"
+    },
+    {
+      "key": "576b5cbf184e2e78",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The help robot works for the app, and typing to see what happens is just guessing. When you're not sure, hit pause and call your backup: a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "The help robot works for the app, and typing to see what happens is just guessing. When you're not sure, hit pause and call your backup: a trusted grown-up."
+      ],
+      "file": "/audio/voice/576b5cbf184e2e78.mp3"
+    },
+    {
+      "key": "f61653ee747870e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Levels and high scores say nothing about the real Adam. The bus he rides home shows where he goes every single day, and that's exactly the kind of treasure a scanner hunts.",
+      "lines": [
+        "That's right!",
+        "Levels and high scores say nothing about the real Adam. The bus he rides home shows where he goes every single day, and that's exactly the kind of treasure a scanner hunts."
+      ],
+      "file": "/audio/voice/f61653ee747870e1.mp3"
+    },
+    {
+      "key": "46bb95af950a5181",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Levels and high scores say nothing about the real Adam. The bus he rides home shows where he goes every single day, and that's exactly the kind of treasure a scanner hunts.",
+      "lines": [
+        "Not quite.",
+        "Levels and high scores say nothing about the real Adam. The bus he rides home shows where he goes every single day, and that's exactly the kind of treasure a scanner hunts."
+      ],
+      "file": "/audio/voice/46bb95af950a5181.mp3"
+    },
+    {
+      "key": "ec1e53b8b0597e0b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The happy news is hers to shout! It only turns private when a place gets attached: a pool's street or a school name tells strangers where to find her.",
+      "lines": [
+        "That's right!",
+        "The happy news is hers to shout! It only turns private when a place gets attached: a pool's street or a school name tells strangers where to find her."
+      ],
+      "file": "/audio/voice/ec1e53b8b0597e0b.mp3"
+    },
+    {
+      "key": "69d569f82cf70562",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The happy news is hers to shout! It only turns private when a place gets attached: a pool's street or a school name tells strangers where to find her.",
+      "lines": [
+        "Not quite.",
+        "The happy news is hers to shout! It only turns private when a place gets attached: a pool's street or a school name tells strangers where to find her."
+      ],
+      "file": "/audio/voice/69d569f82cf70562.mp3"
+    },
+    {
+      "key": "eb0bb5633b83d774",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A favorite color doesn't tell anyone who or where you are - share away!",
+      "lines": [
+        "A favorite color doesn't tell anyone who or where you are - share away!"
+      ],
+      "file": "/audio/voice/eb0bb5633b83d774.mp3"
+    },
+    {
+      "key": "2f183fb4d003e196",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An address tells a stranger exactly WHERE you live. Vault it!",
+      "lines": [
+        "An address tells a stranger exactly WHERE you live. Vault it!"
+      ],
+      "file": "/audio/voice/2f183fb4d003e196.mp3"
+    },
+    {
+      "key": "d4bd8a06c066304e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Favorite games are safe - they're about what you LIKE, not who you ARE.",
+      "lines": [
+        "Favorite games are safe - they're about what you LIKE, not who you ARE."
+      ],
+      "file": "/audio/voice/d4bd8a06c066304e.mp3"
+    },
+    {
+      "key": "19cea61c36ad155b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school tells a stranger where to find you every single day. Private!",
+      "lines": [
+        "Your school tells a stranger where to find you every single day. Private!"
+      ],
+      "file": "/audio/voice/19cea61c36ad155b.mp3"
+    },
+    {
+      "key": "176b6ed5190d82dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hobbies are safe to share - no dragon ever leaked an address.",
+      "lines": [
+        "Hobbies are safe to share - no dragon ever leaked an address."
+      ],
+      "file": "/audio/voice/176b6ed5190d82dd.mp3"
+    },
+    {
+      "key": "518e70d6ed565ef6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A phone number lets strangers reach you any time. Vault it!",
+      "lines": [
+        "A phone number lets strangers reach you any time. Vault it!"
+      ],
+      "file": "/audio/voice/518e70d6ed565ef6.mp3"
+    },
+    {
+      "key": "11299f0120a428d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Favorite foods give nothing away - unless the Raccoon wants pizza too.",
+      "lines": [
+        "Favorite foods give nothing away - unless the Raccoon wants pizza too."
+      ],
+      "file": "/audio/voice/11299f0120a428d8.mp3"
+    },
+    {
+      "key": "72afa3045a6e15fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your full name is the first clue to finding YOU. Keep it private.",
+      "lines": [
+        "Your full name is the first clue to finding YOU. Keep it private."
+      ],
+      "file": "/audio/voice/72afa3045a6e15fd.mp3"
+    },
+    {
+      "key": "d64ebd4284334e65",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Movies you love are totally safe to talk about.",
+      "lines": [
+        "Movies you love are totally safe to talk about."
+      ],
+      "file": "/audio/voice/d64ebd4284334e65.mp3"
+    },
+    {
+      "key": "c1f871363d9176a3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saying where you are RIGHT NOW is like dropping a pin for strangers. Private!",
+      "lines": [
+        "Saying where you are RIGHT NOW is like dropping a pin for strangers. Private!"
+      ],
+      "file": "/audio/voice/c1f871363d9176a3.mp3"
+    },
+    {
+      "key": "1c7f6c28904a4b5f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An app you've never heard of, made by... who knows?",
+      "lines": [
+        "An app you've never heard of, made by... who knows?"
+      ],
+      "file": "/audio/voice/1c7f6c28904a4b5f.mp3"
+    },
+    {
+      "key": "934e5fdc3830c9de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your FULL NAME and your HOME ADDRESS.",
+      "lines": [
+        "Your FULL NAME and your HOME ADDRESS."
+      ],
+      "file": "/audio/voice/934e5fdc3830c9de.mp3"
+    },
+    {
+      "key": "66349c2514335d38",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A quiz matches you to a kitten. It needs NONE of that to work!",
+      "lines": [
+        "A quiz matches you to a kitten. It needs NONE of that to work!"
+      ],
+      "file": "/audio/voice/66349c2514335d38.mp3"
+    },
+    {
+      "key": "c0cb611b1722b375",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your details fly off to a stranger - and you can't get them back.",
+      "lines": [
+        "Your details fly off to a stranger - and you can't get them back."
+      ],
+      "file": "/audio/voice/c0cb611b1722b375.mp3"
+    },
+    {
+      "key": "b4353662462955f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A drawing app your grown-up already installed with you.",
+      "lines": [
+        "A drawing app your grown-up already installed with you."
+      ],
+      "file": "/audio/voice/b4353662462955f8.mp3"
+    },
+    {
+      "key": "3d95c9d7691cb9fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Just a nickname and your favorite color.",
+      "lines": [
+        "Just a nickname and your favorite color."
+      ],
+      "file": "/audio/voice/3d95c9d7691cb9fa.mp3"
+    },
+    {
+      "key": "dcf4a2f469d9dc43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The nickname labels your saved art. Makes sense!",
+      "lines": [
+        "The nickname labels your saved art. Makes sense!"
+      ],
+      "file": "/audio/voice/dcf4a2f469d9dc43.mp3"
+    },
+    {
+      "key": "534afe070b1164a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing private leaves your device - a nickname isn't a secret.",
+      "lines": [
+        "Nothing private leaves your device - a nickname isn't a secret."
+      ],
+      "file": "/audio/voice/534afe070b1164a9.mp3"
+    },
+    {
+      "key": "ecd171a98f9b5724",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A 'free stuff' site nobody's ever checked.",
+      "lines": [
+        "A 'free stuff' site nobody's ever checked."
+      ],
+      "file": "/audio/voice/ecd171a98f9b5724.mp3"
+    },
+    {
+      "key": "8fa243ba014f5640",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your SCHOOL and your PHONE NUMBER.",
+      "lines": [
+        "Your SCHOOL and your PHONE NUMBER."
+      ],
+      "file": "/audio/voice/8fa243ba014f5640.mp3"
+    },
+    {
+      "key": "9f26fe1f9603bbe1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stickers are STICKERS. They don't ring you or visit your school!",
+      "lines": [
+        "Stickers are STICKERS. They don't ring you or visit your school!"
+      ],
+      "file": "/audio/voice/9f26fe1f9603bbe1.mp3"
+    },
+    {
+      "key": "75daeb56dee93b46",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A stranger learns where you are every weekday - for some stickers.",
+      "lines": [
+        "A stranger learns where you are every weekday - for some stickers."
+      ],
+      "file": "/audio/voice/75daeb56dee93b46.mp3"
+    },
+    {
+      "key": "4533a72bc9387932",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week, and that's one of the five private treasures.",
+      "lines": [
+        "A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week, and that's one of the five private treasures."
+      ],
+      "file": "/audio/voice/4533a72bc9387932.mp3"
+    },
+    {
+      "key": "0b26e92d3a719cb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All three sound like favorites, but only the pancakes are really about what she likes. A best school or a best street quietly tells a stranger where to find her.",
+      "lines": [
+        "All three sound like favorites, but only the pancakes are really about what she likes. A best school or a best street quietly tells a stranger where to find her."
+      ],
+      "file": "/audio/voice/0b26e92d3a719cb7.mp3"
+    },
+    {
+      "key": "4393abfebc911e7d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A nickname labels his art and a favorite color picks his paints, those asks match the app. Coloring never rings anybody, so a phone number is an over-ask. Too nosy!",
+      "lines": [
+        "A nickname labels his art and a favorite color picks his paints, those asks match the app. Coloring never rings anybody, so a phone number is an over-ask. Too nosy!"
+      ],
+      "file": "/audio/voice/4393abfebc911e7d.mp3"
+    },
+    {
+      "key": "06e2a6bbc774b733",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A real first name, a school, or a birth year pokes a hole in the mask, even inside a cool-sounding name. Hero words plus a number that means nothing keep the real Layla invisible.",
+      "lines": [
+        "A real first name, a school, or a birth year pokes a hole in the mask, even inside a cool-sounding name. Hero words plus a number that means nothing keep the real Layla invisible."
+      ],
+      "file": "/audio/voice/06e2a6bbc774b733.mp3"
+    },
+    {
+      "key": "6eb7ebd610e55873",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The help robot works for the app, and typing to see what happens is just guessing. When you're not sure, hit pause and call your backup: a trusted grown-up.",
+      "lines": [
+        "The help robot works for the app, and typing to see what happens is just guessing. When you're not sure, hit pause and call your backup: a trusted grown-up."
+      ],
+      "file": "/audio/voice/6eb7ebd610e55873.mp3"
+    },
+    {
+      "key": "db4697b716a3f2f6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Levels and high scores say nothing about the real Adam. The bus he rides home shows where he goes every single day, and that's exactly the kind of treasure a scanner hunts.",
+      "lines": [
+        "Levels and high scores say nothing about the real Adam. The bus he rides home shows where he goes every single day, and that's exactly the kind of treasure a scanner hunts."
+      ],
+      "file": "/audio/voice/db4697b716a3f2f6.mp3"
+    },
+    {
+      "key": "9d9a477712a62f3d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The happy news is hers to shout! It only turns private when a place gets attached: a pool's street or a school name tells strangers where to find her.",
+      "lines": [
+        "The happy news is hers to shout! It only turns private when a place gets attached: a pool's street or a school name tells strangers where to find her."
+      ],
+      "file": "/audio/voice/9d9a477712a62f3d.mp3"
+    },
+    {
+      "key": "26123cb32403ed13",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An address tells strangers WHERE you live - never on a profile.",
+      "lines": [
+        "An address tells strangers WHERE you live - never on a profile."
+      ],
+      "file": "/audio/voice/26123cb32403ed13.mp3"
+    },
+    {
+      "key": "0ee445ee5e34077a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Favorites are safe - the rest point straight at the real you.",
+      "lines": [
+        "Favorites are safe - the rest point straight at the real you."
+      ],
+      "file": "/audio/voice/0ee445ee5e34077a.mp3"
+    },
+    {
+      "key": "6116b52b5a1d9b53",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your location is private treasure - his scanner would LOVE it.",
+      "lines": [
+        "Your location is private treasure - his scanner would LOVE it."
+      ],
+      "file": "/audio/voice/6116b52b5a1d9b53.mp3"
+    },
+    {
+      "key": "32a30050433f043e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your full name is the first clue to the real you.",
+      "lines": [
+        "Your full name is the first clue to the real you."
+      ],
+      "file": "/audio/voice/32a30050433f043e.mp3"
+    },
+    {
+      "key": "ef2b9bb9c61e3857",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A school name is a map to you, five days a week. Private!",
+      "lines": [
+        "A school name is a map to you, five days a week. Private!"
+      ],
+      "file": "/audio/voice/ef2b9bb9c61e3857.mp3"
+    },
+    {
+      "key": "fc7049711a95906a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hobbies give nothing away - the others say where you are or how to reach you.",
+      "lines": [
+        "Hobbies give nothing away - the others say where you are or how to reach you."
+      ],
+      "file": "/audio/voice/fc7049711a95906a.mp3"
+    },
+    {
+      "key": "3986775571509199",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A street name is where-you-are info. Vault. Locked. Done.",
+      "lines": [
+        "A street name is where-you-are info. Vault. Locked. Done."
+      ],
+      "file": "/audio/voice/3986775571509199.mp3"
+    },
+    {
+      "key": "1ec3e0fc92749fbc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Favorites are safe; ages, schools, numbers and schedules are private.",
+      "lines": [
+        "Favorites are safe; ages, schools, numbers and schedules are private."
+      ],
+      "file": "/audio/voice/1ec3e0fc92749fbc.mp3"
+    },
+    {
+      "key": "02c5de5c600b6661",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A color says nothing about who or where you are.",
+      "lines": [
+        "A color says nothing about who or where you are."
+      ],
+      "file": "/audio/voice/02c5de5c600b6661.mp3"
+    },
+    {
+      "key": "0e4725772534023a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the rule: WHO you are or WHERE you are = private.",
+      "lines": [
+        "That's the rule: WHO you are or WHERE you are = private."
+      ],
+      "file": "/audio/voice/0e4725772534023a.mp3"
+    },
+    {
+      "key": "7bc013397f73ca50",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask WHY first - a game profile works fine without your number.",
+      "lines": [
+        "Ask WHY first - a game profile works fine without your number."
+      ],
+      "file": "/audio/voice/7bc013397f73ca50.mp3"
+    },
+    {
+      "key": "8f3b7b309c703cb4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A quiz needs ZERO of that to work. Too nosy!",
+      "lines": [
+        "A quiz needs ZERO of that to work. Too nosy!"
+      ],
+      "file": "/audio/voice/8f3b7b309c703cb4.mp3"
+    },
+    {
+      "key": "6c483edd4e2d8a8e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A nickname to label your art makes sense - the rest over-ask.",
+      "lines": [
+        "A nickname to label your art makes sense - the rest over-ask."
+      ],
+      "file": "/audio/voice/6c483edd4e2d8a8e.mp3"
+    },
+    {
+      "key": "96c360bc7aa9fa95",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Over-asking = nosy. Close it and tell a grown-up.",
+      "lines": [
+        "Over-asking = nosy. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/96c360bc7aa9fa95.mp3"
+    },
+    {
+      "key": "cd7826d155fe32da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One little WHY unmasks almost every trick. Keep asking it!",
+      "lines": [
+        "One little WHY unmasks almost every trick. Keep asking it!"
+      ],
+      "file": "/audio/voice/cd7826d155fe32da.mp3"
+    },
+    {
+      "key": "dabba06737846474",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nice try, Raccoon - hero names only, no clues about the real you.",
+      "lines": [
+        "Nice try, Raccoon - hero names only, no clues about the real you."
+      ],
+      "file": "/audio/voice/dabba06737846474.mp3"
+    },
+    {
+      "key": "9bb10f49091683bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It hands over a name and a birth year in one go.",
+      "lines": [
+        "It hands over a name and a birth year in one go."
+      ],
+      "file": "/audio/voice/9bb10f49091683bf.mp3"
+    },
+    {
+      "key": "457d7c0c3601e97f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A mask with no holes - that's the whole point.",
+      "lines": [
+        "A mask with no holes - that's the whole point."
+      ],
+      "file": "/audio/voice/457d7c0c3601e97f.mp3"
+    },
+    {
+      "key": "b5056e20ae731c50",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Birth years are real clues - pick numbers that mean nothing.",
+      "lines": [
+        "Birth years are real clues - pick numbers that mean nothing."
+      ],
+      "file": "/audio/voice/b5056e20ae731c50.mp3"
+    },
+    {
+      "key": "243a9923bebcdc1c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Zero clues. He can stare all day and learn NOTHING.",
+      "lines": [
+        "Zero clues. He can stare all day and learn NOTHING."
+      ],
+      "file": "/audio/voice/243a9923bebcdc1c.mp3"
+    },
+    {
+      "key": "7d333bf650d2e2fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No prize is ever worth your private info - and a grown-up should hear about this.",
+      "lines": [
+        "No prize is ever worth your private info - and a grown-up should hear about this."
+      ],
+      "file": "/audio/voice/7d333bf650d2e2fb.mp3"
+    },
+    {
+      "key": "46e94fb3668be7fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If someone claims a grown-up said yes - go CHECK with the grown-up.",
+      "lines": [
+        "If someone claims a grown-up said yes - go CHECK with the grown-up."
+      ],
+      "file": "/audio/voice/46e94fb3668be7fd.mp3"
+    },
+    {
+      "key": "3c5c4971af41609a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One 'little' leak is all he needs. He gets NOTHING.",
+      "lines": [
+        "One 'little' leak is all he needs. He gets NOTHING."
+      ],
+      "file": "/audio/voice/3c5c4971af41609a.mp3"
+    },
+    {
+      "key": "06da1d54f39e73b6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Backup team, assemble - asking first is the hero move.",
+      "lines": [
+        "Backup team, assemble - asking first is the hero move."
+      ],
+      "file": "/audio/voice/06da1d54f39e73b6.mp3"
+    },
+    {
+      "key": "b965af4c4fe4eeb1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A hero name, some favorites... and NOTHING private. Victory!",
+      "lines": [
+        "A hero name, some favorites... and NOTHING private. Victory!"
+      ],
+      "file": "/audio/voice/b965af4c4fe4eeb1.mp3"
+    },
+    {
+      "key": "1c618a5391e58ef3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An address tells strangers where you live.",
+      "lines": [
+        "An address tells strangers where you live."
+      ],
+      "file": "/audio/voice/1c618a5391e58ef3.mp3"
+    },
+    {
+      "key": "4a6ec841913d250b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No real name, age or school - a mask with no holes.",
+      "lines": [
+        "No real name, age or school - a mask with no holes."
+      ],
+      "file": "/audio/voice/4a6ec841913d250b.mp3"
+    },
+    {
+      "key": "46e80dcdd0f16717",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A quiz needs none of that to work.",
+      "lines": [
+        "A quiz needs none of that to work."
+      ],
+      "file": "/audio/voice/46e80dcdd0f16717.mp3"
+    },
+    {
+      "key": "7c48b039735035fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Favorites give nothing away.",
+      "lines": [
+        "Favorites give nothing away."
+      ],
+      "file": "/audio/voice/7c48b039735035fc.mp3"
+    },
+    {
+      "key": "fdafaae205189b40",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Over-asking = too nosy.",
+      "lines": [
+        "Over-asking = too nosy."
+      ],
+      "file": "/audio/voice/fdafaae205189b40.mp3"
+    },
+    {
+      "key": "672558e3862779c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The golden rule: ask first.",
+      "lines": [
+        "The golden rule: ask first."
+      ],
+      "file": "/audio/voice/672558e3862779c1.mp3"
+    },
+    {
+      "key": "d194c523587ee6eb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No prize is worth your private info.",
+      "lines": [
+        "No prize is worth your private info."
+      ],
+      "file": "/audio/voice/d194c523587ee6eb.mp3"
+    },
+    {
+      "key": "8fe72df70016d4e4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two real clues about the real you.",
+      "lines": [
+        "Two real clues about the real you."
+      ],
+      "file": "/audio/voice/8fe72df70016d4e4.mp3"
+    },
+    {
+      "key": "1eadc5be2c8f4542",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the test - who you are, where you are.",
+      "lines": [
+        "That's the test - who you are, where you are."
+      ],
+      "file": "/audio/voice/1eadc5be2c8f4542.mp3"
+    },
+    {
+      "key": "21720c05d7903c01",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If he learns your real name...",
+      "lines": [
+        "If he learns your real name..."
+      ],
+      "file": "/audio/voice/21720c05d7903c01.mp3"
+    },
+    {
+      "key": "6844a9c2eb7b27ed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "...his messages start saying 'Hi, it's me! Your FRIEND!' - using YOUR name.",
+      "lines": [
+        "...his messages start saying 'Hi, it's me! Your FRIEND!' - using YOUR name."
+      ],
+      "file": "/audio/voice/6844a9c2eb7b27ed.mp3"
+    },
+    {
+      "key": "302df73bde086cdf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A stranger who knows your name FEELS like a friend. That's the whole trick!",
+      "lines": [
+        "A stranger who knows your name FEELS like a friend. That's the whole trick!"
+      ],
+      "file": "/audio/voice/302df73bde086cdf.mp3"
+    },
+    {
+      "key": "e808f5acb48d25a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If he finds out where you live...",
+      "lines": [
+        "If he finds out where you live..."
+      ],
+      "file": "/audio/voice/e808f5acb48d25a1.mp3"
+    },
+    {
+      "key": "888a55642139b517",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ding-dong! A wobbly 'delivery robot' with a stripy tail turns up at your door!",
+      "lines": [
+        "Ding-dong! A wobbly 'delivery robot' with a stripy tail turns up at your door!"
+      ],
+      "file": "/audio/voice/888a55642139b517.mp3"
+    },
+    {
+      "key": "5430e4e3eb6d730d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "He'd know your street, your door, even when you're home.",
+      "lines": [
+        "He'd know your street, your door, even when you're home."
+      ],
+      "file": "/audio/voice/5430e4e3eb6d730d.mp3"
+    },
+    {
+      "key": "fb6e680768d2c2d0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If he learns which school is yours...",
+      "lines": [
+        "If he learns which school is yours..."
+      ],
+      "file": "/audio/voice/fb6e680768d2c2d0.mp3"
+    },
+    {
+      "key": "ce2403e8d015d569",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Out comes the trench coat and a sign: 'TOTALLY A NORMAL SCHOOL FRIEND.'",
+      "lines": [
+        "Out comes the trench coat and a sign: 'TOTALLY A NORMAL SCHOOL FRIEND.'"
+      ],
+      "file": "/audio/voice/ce2403e8d015d569.mp3"
+    },
+    {
+      "key": "67e4ea97f450d197",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "He'd wait at the gates, pretending he knows you.",
+      "lines": [
+        "He'd wait at the gates, pretending he knows you."
+      ],
+      "file": "/audio/voice/67e4ea97f450d197.mp3"
+    },
+    {
+      "key": "e6eaff48ef6fc211",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If he gets your number...",
+      "lines": [
+        "If he gets your number..."
+      ],
+      "file": "/audio/voice/e6eaff48ef6fc211.mp3"
+    },
+    {
+      "key": "08af0825635e7b29",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "RING RING! At dinner! At bedtime! Pranks that never, ever stop!",
+      "lines": [
+        "RING RING! At dinner! At bedtime! Pranks that never, ever stop!"
+      ],
+      "file": "/audio/voice/08af0825635e7b29.mp3"
+    },
+    {
+      "key": "e88d48f496b72f4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And sneaky texts pretending to be someone you trust.",
+      "lines": [
+        "And sneaky texts pretending to be someone you trust."
+      ],
+      "file": "/audio/voice/e88d48f496b72f4c.mp3"
+    },
+    {
+      "key": "21024c297cb9d225",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If he can see where you are right now...",
+      "lines": [
+        "If he can see where you are right now..."
+      ],
+      "file": "/audio/voice/21024c297cb9d225.mp3"
+    },
+    {
+      "key": "d67e965856b9d2a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "He follows your little pin around the map. Park... store... home...",
+      "lines": [
+        "He follows your little pin around the map. Park... store... home..."
+      ],
+      "file": "/audio/voice/d67e965856b9d2a5.mp3"
+    },
+    {
+      "key": "d771b194a1b1b5fe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "...and POP! There he is, wherever you go. No thanks!",
+      "lines": [
+        "...and POP! There he is, wherever you go. No thanks!"
+      ],
+      "file": "/audio/voice/d771b194a1b1b5fe.mp3"
+    },
+    {
+      "key": "e5bdef8d4c118e12",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your real name stays with you. Strangers online never need it.",
+      "lines": [
+        "Your real name stays with you. Strangers online never need it."
+      ],
+      "file": "/audio/voice/e5bdef8d4c118e12.mp3"
+    },
+    {
+      "key": "f2ba697b234c8b04",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where you live stays locked away - so he can NEVER show up.",
+      "lines": [
+        "Where you live stays locked away - so he can NEVER show up."
+      ],
+      "file": "/audio/voice/f2ba697b234c8b04.mp3"
+    },
+    {
+      "key": "66b61337e22380c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school stays secret. No gate-lurking raccoons!",
+      "lines": [
+        "Your school stays secret. No gate-lurking raccoons!"
+      ],
+      "file": "/audio/voice/66b61337e22380c1.mp3"
+    },
+    {
+      "key": "d974eb366199489b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your number is for family and real friends only.",
+      "lines": [
+        "Your number is for family and real friends only."
+      ],
+      "file": "/audio/voice/d974eb366199489b.mp3"
+    },
+    {
+      "key": "016dd701bf1830cc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where you are is nobody's business but yours.",
+      "lines": [
+        "Where you are is nobody's business but yours."
+      ],
+      "file": "/audio/voice/016dd701bf1830cc.mp3"
+    },
+    {
+      "key": "41280b8aaab10a1b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every plan foiled - his wish list is worthless!",
+      "lines": [
+        "Every plan foiled - his wish list is worthless!"
+      ],
+      "file": "/audio/voice/41280b8aaab10a1b.mp3"
+    },
+    {
+      "key": "1c7f6c28904a4b5f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An app you've never heard of, made by... who knows?",
+      "lines": [
+        "An app you've never heard of, made by... who knows?"
+      ],
+      "file": "/audio/voice/1c7f6c28904a4b5f.mp3"
+    },
+    {
+      "key": "934e5fdc3830c9de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your FULL NAME and your HOME ADDRESS.",
+      "lines": [
+        "Your FULL NAME and your HOME ADDRESS."
+      ],
+      "file": "/audio/voice/934e5fdc3830c9de.mp3"
+    },
+    {
+      "key": "66349c2514335d38",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A quiz matches you to a kitten. It needs NONE of that to work!",
+      "lines": [
+        "A quiz matches you to a kitten. It needs NONE of that to work!"
+      ],
+      "file": "/audio/voice/66349c2514335d38.mp3"
+    },
+    {
+      "key": "c0cb611b1722b375",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your details fly off to a stranger - and you can't get them back.",
+      "lines": [
+        "Your details fly off to a stranger - and you can't get them back."
+      ],
+      "file": "/audio/voice/c0cb611b1722b375.mp3"
+    },
+    {
+      "key": "b4353662462955f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A drawing app your grown-up already installed with you.",
+      "lines": [
+        "A drawing app your grown-up already installed with you."
+      ],
+      "file": "/audio/voice/b4353662462955f8.mp3"
+    },
+    {
+      "key": "3d95c9d7691cb9fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Just a nickname and your favorite color.",
+      "lines": [
+        "Just a nickname and your favorite color."
+      ],
+      "file": "/audio/voice/3d95c9d7691cb9fa.mp3"
+    },
+    {
+      "key": "dcf4a2f469d9dc43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The nickname labels your saved art. Makes sense!",
+      "lines": [
+        "The nickname labels your saved art. Makes sense!"
+      ],
+      "file": "/audio/voice/dcf4a2f469d9dc43.mp3"
+    },
+    {
+      "key": "534afe070b1164a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing private leaves your device - a nickname isn't a secret.",
+      "lines": [
+        "Nothing private leaves your device - a nickname isn't a secret."
+      ],
+      "file": "/audio/voice/534afe070b1164a9.mp3"
+    },
+    {
+      "key": "ecd171a98f9b5724",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A 'free stuff' site nobody's ever checked.",
+      "lines": [
+        "A 'free stuff' site nobody's ever checked."
+      ],
+      "file": "/audio/voice/ecd171a98f9b5724.mp3"
+    },
+    {
+      "key": "8fa243ba014f5640",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your SCHOOL and your PHONE NUMBER.",
+      "lines": [
+        "Your SCHOOL and your PHONE NUMBER."
+      ],
+      "file": "/audio/voice/8fa243ba014f5640.mp3"
+    },
+    {
+      "key": "9f26fe1f9603bbe1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stickers are STICKERS. They don't ring you or visit your school!",
+      "lines": [
+        "Stickers are STICKERS. They don't ring you or visit your school!"
+      ],
+      "file": "/audio/voice/9f26fe1f9603bbe1.mp3"
+    },
+    {
+      "key": "75daeb56dee93b46",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A stranger learns where you are every weekday - for some stickers.",
+      "lines": [
+        "A stranger learns where you are every weekday - for some stickers."
+      ],
+      "file": "/audio/voice/75daeb56dee93b46.mp3"
+    },
+    {
+      "key": "4700c35aca21ce43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think. It's only a kitten quiz. Does it really need your name and your address?",
+      "lines": [
+        "Think. It's only a kitten quiz. Does it really need your name and your address?"
+      ],
+      "file": "/audio/voice/4700c35aca21ce43.mp3"
+    },
+    {
+      "key": "0f3ef45122990cba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think. It's a drawing app. Does a nickname and a favorite color give anything away?",
+      "lines": [
+        "Think. It's a drawing app. Does a nickname and a favorite color give anything away?"
+      ],
+      "file": "/audio/voice/0f3ef45122990cba.mp3"
+    },
+    {
+      "key": "c963f1c64092c11a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think. They're stickers. Do stickers need your school and your phone number?",
+      "lines": [
+        "Think. They're stickers. Do stickers need your school and your phone number?"
+      ],
+      "file": "/audio/voice/c963f1c64092c11a.mp3"
+    },
+    {
+      "key": "66e68647f72cb7fe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That tingle is your hero alarm!",
+      "lines": [
+        "That tingle is your hero alarm!"
+      ],
+      "file": "/audio/voice/66e68647f72cb7fe.mp3"
+    },
+    {
+      "key": "fe53b2fb0c85e943",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hands off. The Raccoon HATES a pause!",
+      "lines": [
+        "Hands off. The Raccoon HATES a pause!"
+      ],
+      "file": "/audio/voice/fe53b2fb0c85e943.mp3"
+    },
+    {
+      "key": "33f916241c989a09",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Backup team, called in!",
+      "lines": [
+        "Backup team, called in!"
+      ],
+      "file": "/audio/voice/33f916241c989a09.mp3"
+    },
+    {
+      "key": "8491a6fb3beec446",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now you choose, and you choose safe!",
+      "lines": [
+        "Now you choose, and you choose safe!"
+      ],
+      "file": "/audio/voice/8491a6fb3beec446.mp3"
     },
     {
       "key": "65752cb52f4a9061",
