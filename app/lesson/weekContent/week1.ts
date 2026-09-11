@@ -776,14 +776,26 @@ export const WEEK_1: WeekContent = {
     // password power it used, filling a 2x2 card to BINGO.
     {
       type: "signBingo",
+      // Owner picked "The Vault Door" from three concept boards (2026-09-11):
+      // four brass dials around the vault door; a correct tap turns the dial
+      // and slides its bolt home; four bolts seal the vault.
+      skin: "vault",
+      // Sarah's instructions ON the board (owner: "I need instructions from Sarah"):
+      // the how-to once as the board appears (coachLines), then after every move the
+      // prompt below, plus the visible action strip the component renders.
+      roundPrompt: "Which power did that move use? Turn its dial.",
+      coachLines: {
+        speaker: "adam",
+        lines: ["Listen to the move, then turn the dial for the power it used. Get it right and the bolt slides home!"],
+      },
       introTitle: "Hero Power Bingo",
-      introSubtitle: "Watch each move, then tap the password power it used.",
-      introIcon: "🛡️",
-      cardTitle: "Your 4 password powers",
-      stampToast: "POWER SPOTTED!",
-      wrongTitle: "Look again, Cyber Hero",
-      completeTitle: "BINGO! All powers spotted!",
-      completeLine: "You know every password power by heart. The Raccoon doesn't stand a chance!",
+      introSubtitle: "Watch each move, then turn the dial for the password power it used. Four bolts home seals the vault!",
+      introIcon: "🔒",
+      cardTitle: "Hero Power Bingo",
+      stampToast: "BOLTED!",
+      wrongTitle: "Not that dial, Cyber Hero",
+      completeTitle: "BINGO! Vault sealed!",
+      completeLine: "Four bolts home. The Raccoon is locked out for good!",
       signs: [
         { id: "long", label: "Long & random", icon: "💪" },
         { id: "mix", label: "Mix it up", icon: "🎨" },
@@ -825,7 +837,7 @@ export const WEEK_1: WeekContent = {
         },
       ],
       hints: {
-        tier1: "Which of your four powers does this move show?",
+        tier1: "Which of your four powers does this move show? Turn that dial.",
         tier2: "Listen to what they DID: made it long, mixed it up, kept it secret, or picked nothing obvious?",
       },
       narration: {
@@ -833,8 +845,8 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[excited] Final drill, Cyber Hero - it's Power Bingo!",
           "You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action.",
-          "Here is what you do. I'll read out a move someone made, and you tap the power it used on your bingo card.",
-          "[warmly] Then I'll tell you WHY it works. Fill all four squares to get BINGO - you're ready!",
+          "Here is what you do. I'll read out a move someone made, and you turn the dial for the power it used. Its bolt slides home into the vault door.",
+          "[warmly] Then I'll tell you WHY it works. Bolt all four powers home to seal the vault - that's BINGO!",
         ],
       },
       completeNarration: {

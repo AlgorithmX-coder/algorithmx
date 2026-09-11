@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11T13:50:39.575Z",
+  "generatedAt": "2026-09-11T14:36:24.942Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -33,6 +33,16 @@
         "Can you fill in the missing word?"
       ],
       "file": "/audio/voice/5423452b0980a0e4.mp3"
+    },
+    {
+      "key": "75c80fb0784164c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which power did that move use? Turn its dial.",
+      "lines": [
+        "Which power did that move use? Turn its dial."
+      ],
+      "file": "/audio/voice/75c80fb0784164c8.mp3"
     },
     {
       "key": "2758a8b61f0475eb",
@@ -408,17 +418,27 @@
       "file": "/audio/voice/86988cecde837d3b.mp3"
     },
     {
-      "key": "d377df27710f46ac",
+      "key": "c8a73cbb59a58549",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Final drill, Cyber Hero - it's Power Bingo! You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action. Here is what you do. I'll read out a move someone made, and you tap the power it used on your bingo card. [warmly] Then I'll tell you WHY it works. Fill all four squares to get BINGO - you're ready!",
+      "text": "Listen to the move, then turn the dial for the power it used. Get it right and the bolt slides home!",
+      "lines": [
+        "Listen to the move, then turn the dial for the power it used. Get it right and the bolt slides home!"
+      ],
+      "file": "/audio/voice/c8a73cbb59a58549.mp3"
+    },
+    {
+      "key": "f3f0bfb452d044d4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Final drill, Cyber Hero - it's Power Bingo! You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action. Here is what you do. I'll read out a move someone made, and you turn the dial for the power it used. Its bolt slides home into the vault door. [warmly] Then I'll tell you WHY it works. Bolt all four powers home to seal the vault - that's BINGO!",
       "lines": [
         "[excited] Final drill, Cyber Hero - it's Power Bingo!",
         "You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action.",
-        "Here is what you do. I'll read out a move someone made, and you tap the power it used on your bingo card.",
-        "[warmly] Then I'll tell you WHY it works. Fill all four squares to get BINGO - you're ready!"
+        "Here is what you do. I'll read out a move someone made, and you turn the dial for the power it used. Its bolt slides home into the vault door.",
+        "[warmly] Then I'll tell you WHY it works. Bolt all four powers home to seal the vault - that's BINGO!"
       ],
-      "file": "/audio/voice/d377df27710f46ac.mp3"
+      "file": "/audio/voice/f3f0bfb452d044d4.mp3"
     },
     {
       "key": "9ae545d3f411c33d",
