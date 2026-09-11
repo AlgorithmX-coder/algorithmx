@@ -796,7 +796,7 @@ export const WEEK_1: WeekContent = {
           scene: "Mia's password is otter-lamp-rocket-comet. The Raccoon's cracker runs for a MILLION years and still can't open it!",
           sceneIcon: "🧩",
           signId: "long",
-          note: "Four random words stuck together makes it super LONG - that's the long-and-random power.",
+          note: "Four random words stuck together, like Mia's, make a password super LONG. That's the long-and-random power.",
           why: "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power.",
         },
         {
@@ -976,7 +976,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Mix in all three!",
-          explanation: "A capital, a number, AND a symbol all mixed through it beats a plain word with just one thing added. A word plus a year, or a word plus a couple of symbols, is still mostly a plain word.",
+          explanation: "A capital, a number, AND a symbol all mixed through it beats a single extra added onto an ordinary word. A word plus a year, or a word plus a couple of symbols, is still mostly that ordinary word.",
         },
         villainRight: {
           slug: "quiz-w1-right-mix-1",
@@ -1007,7 +1007,7 @@ export const WEEK_1: WeekContent = {
         },
         villainRight: {
           slug: "quiz-w1-right-secret-1",
-          text: "You told the box NOTHING and kept it from your friend too?! That was my best trick!",
+          text: "You kept your secret from the box AND from your friend?! That was my best trick!",
         },
         villainWrong: {
           slug: "quiz-w1-wrong-secret-1",

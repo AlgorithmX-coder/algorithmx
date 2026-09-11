@@ -153,7 +153,10 @@ export default function RequestInspector({
   const finished = idx >= total;
   const req = order[idx];
   const allInspected = req ? req.zones.every((z) => inspected.has(z.id)) : false;
-  const readNote = req && readZone ? req.zones.find((z) => z.id === readZone)?.note : undefined;
+  // Sarah reads the inspection as a question and its answer ("Who's asking? An app you've
+  // never heard of...") so each tap continues the dialogue instead of a bare fragment.
+  const readZoneObj = req && readZone ? req.zones.find((z) => z.id === readZone) : undefined;
+  const readNote = readZoneObj ? `${readZoneObj.label} ${readZoneObj.note}` : undefined;
   const nudgeText = req?.nudge;
   // The Think nudge shows once every clue is open, before the verdict, and only
   // after Sarah has finished the last clue (so two lines never talk over each

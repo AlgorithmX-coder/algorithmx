@@ -319,7 +319,14 @@ for (const fname of weekFiles) {
         pushAll(span, /\bfinale:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       if (st.type === "requestInspector") {
-        pushAll(span, /\bnote:\s*"((?:[^"\\]|\\.)*)"/g);
+        // Sarah reads each inspection as "label note" (question + answer), so record
+        // the joined line the component speaks, not the bare note.
+        let zm;
+        const zoneRe = /label:\s*"((?:[^"\\]|\\.)*)",\s*note:\s*"((?:[^"\\]|\\.)*)"/g;
+        while ((zm = zoneRe.exec(span)) !== null) {
+          const text = (zm[1] + " " + zm[2]).replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+          if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
+        }
         pushAll(span, /\bnudge:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       if (st.type === "stepOrder") pushAll(span, /\baffirmation:\s*"((?:[^"\\]|\\.)*)"/g);

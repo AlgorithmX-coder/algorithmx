@@ -1076,7 +1076,7 @@ export const WEEK_15: WeekContent = {
         },
         villainRight: {
           slug: "quiz-w15-right-c1-1",
-          text: "You saw straight through the mushy talk?! That bot practiced its missing-you voice all week!",
+          text: "You saw straight through the mushy no-feelings talk?! That program practiced its missing-you voice all week!",
         },
         villainWrong: {
           slug: "quiz-w15-wrong-c1-1",

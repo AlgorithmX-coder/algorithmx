@@ -146,10 +146,10 @@ export const WEEK_2: WeekContent = {
           icon: "🏠",
           steps: [
             { icon: "🦝", text: "If he finds out where you live..." },
-            { icon: "🚪", text: "Ding-dong! A wobbly 'delivery robot' with a stripy tail turns up at your door!" },
-            { icon: "👀", text: "He'd know your street, your door, even when you're home." },
+            { icon: "👀", text: "...he'd know your street, your door, even when you're home." },
+            { icon: "🚪", text: "Then one day: DING-DONG! A wobbly 'delivery robot' with a stripy tail is standing on your doorstep." },
           ],
-          counter: "Where you live stays locked away - so he can NEVER show up.",
+          counter: "So where you live stays locked away, and he can NEVER turn up.",
         },
         {
           id: "school",
@@ -157,10 +157,11 @@ export const WEEK_2: WeekContent = {
           icon: "🏫",
           steps: [
             { icon: "🦝", text: "If he learns which school is yours..." },
-            { icon: "🎭", text: "Out comes the trench coat and a sign: 'TOTALLY A NORMAL SCHOOL FRIEND.'" },
-            { icon: "🪤", text: "He'd wait at the gates, pretending he knows you." },
+            { icon: "👀", text: "...he'd know exactly where to find you, five days a week." },
+            { icon: "🎭", text: "So out comes the trench coat and a big sign: 'TOTALLY A NORMAL SCHOOL FRIEND.'" },
+            { icon: "🪤", text: "And there he'd wait at the gates, pretending he knows you." },
           ],
-          counter: "Your school stays secret. No gate-lurking raccoons!",
+          counter: "Your school stays secret, so there is never a raccoon at your gates!",
         },
         {
           id: "phone",
@@ -168,10 +169,10 @@ export const WEEK_2: WeekContent = {
           icon: "📱",
           steps: [
             { icon: "🦝", text: "If he gets your number..." },
-            { icon: "🔔", text: "RING RING! At dinner! At bedtime! Pranks that never, ever stop!" },
-            { icon: "💬", text: "And sneaky texts pretending to be someone you trust." },
+            { icon: "🔔", text: "...it's RING RING at dinner, RING RING at bedtime. Pranks that never, ever stop!" },
+            { icon: "💬", text: "And in between the pranks, sneaky texts pretending to be someone you trust." },
           ],
-          counter: "Your number is for family and real friends only.",
+          counter: "So your number is for family and real friends only.",
         },
         {
           id: "location",
@@ -182,7 +183,7 @@ export const WEEK_2: WeekContent = {
             { icon: "📍", text: "He follows your little pin around the map. Park... store... home..." },
             { icon: "🎭", text: "...and POP! There he is, wherever you go. No thanks!" },
           ],
-          counter: "Where you are is nobody's business but yours.",
+          counter: "So where you are is nobody's business but yours.",
         },
       ],
       finale: "Every plan foiled - his wish list is worthless!",
@@ -436,7 +437,7 @@ export const WEEK_2: WeekContent = {
             { id: "need", label: "Do they NEED it?", note: "The nickname labels your saved art. Makes sense!", isRedFlag: false },
             { id: "happens", label: "If I type it in?", note: "Nothing private leaves your device - a nickname isn't a secret.", isRedFlag: false },
           ],
-          verdictNote: "A nickname and a color give nothing away. That's a fair ask!",
+          verdictNote: "Nope. A nickname and a favorite color point at nothing real. That's a fair ask!",
           nudge: "Think. It's a drawing app. Does a nickname and a favorite color give anything away?",
         },
         {
@@ -701,10 +702,10 @@ export const WEEK_2: WeekContent = {
       introSubtitle: "A confusing pop-up just appeared. Put the four hero moves in the order a hero does them.",
       introIcon: "⏸️",
       steps: [
-        { id: "tingle", text: "Feel the not-sure tingle", icon: "❓", affirmation: "That tingle is your hero alarm!" },
-        { id: "stop", text: "Stop. Don't type yet", icon: "✋", affirmation: "Hands off. The Raccoon HATES a pause!" },
-        { id: "ask", text: "Ask a grown-up", icon: "👪", affirmation: "Backup team, called in!" },
-        { id: "decide", text: "Decide together", icon: "✅", affirmation: "Now you choose, and you choose safe!" },
+        { id: "tingle", text: "Feel the not-sure tingle", icon: "❓", affirmation: "First, feel that tingle. It's your hero alarm!" },
+        { id: "stop", text: "Stop. Don't type yet", icon: "✋", affirmation: "Then hands off! The Raccoon HATES a pause." },
+        { id: "ask", text: "Ask a grown-up", icon: "👪", affirmation: "Now call in your backup team!" },
+        { id: "decide", text: "Decide together", icon: "✅", affirmation: "And last, you decide together, and you choose safe!" },
       ],
       completeTitle: "Backup team, assembled!",
       completeLine: "Tingle, stop, ask, decide. That's the Hero Pause, for real life too.",
@@ -1000,7 +1001,7 @@ export const WEEK_2: WeekContent = {
         },
         villainRight: {
           slug: "quiz-w2-right-c3-1",
-          text: "You asked WHY?! That question gives me a rash, you know that?!",
+          text: "You asked WHY a coloring app needs a phone number?! That question gives me a rash!",
         },
         villainWrong: {
           slug: "quiz-w2-wrong-c3-1",
@@ -1105,11 +1106,11 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Share the win, not the where!",
-          explanation: "The happy news is hers to shout! It only turns private when a place gets attached: a pool's street or a school name tells strangers where to find her.",
+          explanation: "The happy news is hers to shout! It only turns private when a place gets attached: the pool's road or the name of her school tells strangers where to find her.",
         },
         villainRight: {
           slug: "quiz-w2-right-c2-2",
-          text: "You shared the WIN and kept the WHERE?! That's not how bragging is supposed to work!",
+          text: "You shared the swim race WIN and kept the WHERE?! That's not how bragging is supposed to work!",
         },
         villainWrong: {
           slug: "quiz-w2-wrong-c2-2",
