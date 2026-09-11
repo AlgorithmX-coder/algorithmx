@@ -43,6 +43,8 @@ import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
+import { useLessonWeek } from "@/app/components/lesson/LessonWeekContext";
+import { fallbackToShared, weekCharacterSrc } from "@/app/lib/weekCharacters";
 import CodeRainBackground from "@/app/components/CodeRainBackground";
 import type { WeekContent, BossQuizQuestion } from "@/app/lesson/weekContent/types";
 import type { BossEndStats, BossPhaseResult } from "@/app/components/game/BossBattle";
@@ -174,6 +176,9 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   // reset per question below.
   const [askDone, setAskDone] = useState(false);
   const [raccoonMood, setRaccoonMood] = useState<RaccoonMood>("taunt");
+  // Per-week costumed Raccoon (owner: the cast wears the week, boss fight included);
+  // falls back to the shared sprite when a themed mood is missing.
+  const week = useLessonWeek() ?? undefined;
   const [raccoonLine, setRaccoonLine] = useState<string | null>(null);
   /** The tapped answer during the brief reveal beat: highlights the picked
    *  option and flashes the correct one, then the fight advances. */
@@ -604,7 +609,8 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
         <>
           <motion.img
             key={raccoonMood}
-            src={RACCOON[raccoonMood]}
+            src={weekCharacterSrc(week, "raccoon", raccoonMood)}
+            onError={fallbackToShared("raccoon", raccoonMood)}
             alt={quiz.villain.name}
             initial={reduce ? false : { scale: 0.94, opacity: 0.7 }}
             animate={
@@ -762,7 +768,8 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                 <div aria-hidden style={{ position: "absolute", left: -4, top: "50%", transform: "translateY(-50%)", width: 12, height: 2, background: accent }} />
                 <div aria-hidden style={{ position: "absolute", right: -4, top: "50%", transform: "translateY(-50%)", width: 12, height: 2, background: accent }} />
                 <motion.img
-                  src={RACCOON.taunt}
+                  src={weekCharacterSrc(week, "raccoon", "taunt")}
+                  onError={fallbackToShared("raccoon", "taunt")}
                   alt={quiz.villain.name}
                   initial={reduce ? false : { scale: 0.9, opacity: 0, y: -8 }}
                   animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -8, 0] }}
@@ -909,7 +916,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="victory" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "8%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
-                <motion.img src={RACCOON.defeated} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.5))" }} />
+                <motion.img src={weekCharacterSrc(week, "raccoon", "defeated")} onError={fallbackToShared("raccoon", "defeated")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.5))" }} />
                 {/* Comic KO: dizzy stars orbit his head so the defeat reads funny, not sad. */}
                 <div aria-hidden style={{ position: "absolute", top: 6, left: "50%", width: 108, height: 108, marginLeft: -54, animation: reduce ? undefined : "qbSpin 3.2s linear infinite", pointerEvents: "none", zIndex: 3 }}>
                   {[0, 120, 240].map((deg) => (

@@ -25,6 +25,14 @@ A **global** white-key (all pixels mn≥238 && sat≤14 → transparent, 220–2
 
 Then `trim({threshold: 8})` and resize. `scripts/_showdown-art.mjs` does key+trim+resize+install (global key — use flood-fill for white costumes); sharp snippets need forward-slash paths.
 
+## Pocket defects (learned on the themed Raccoon set, 2026-09-11)
+
+The enclosed-pocket rule (step 3 above) also punches out any flat PURE-WHITE detail INSIDE the character: the Raccoon's white brow/muzzle markings and flat specular highlights on silver armour came out as dark holes on the arena, on 48 of 100 sprites. After every key+install run: `node scripts/_sprite-pockets.mjs public/game/characters --out .pockets` lists enclosed transparent pockets whose rim is near-white (a genuine gap between arm and head has the darker body outline as its rim; a punched marking has white fur/silver around it), writes before/after crops, and `--heal` fills them with the mean rim colour and solidifies the feathered ring. LOOK at the crops; add a per-file rule in EXTRA for costume-specific cases (W15 reporter chest plate). Bar: 0 defect pockets.
+
+## Costume + pose from two references (the boss mood recipe)
+
+To re-pose a costumed character: reference 1 = the costumed sprite flattened on white (the ONLY clothing source), reference 2 = the shared pose sprite on white (POSE ONLY). The prompt must say so explicitly and add "NO hood, NO cloak, NO props other than the costume", otherwise nano-banana-2 copies the pose reference's hoodie (idle poses especially), the costume reference's pose, or a handheld prop from the taunt. Other retake triggers seen: two figures, purple/brown fur bleed from the pose ref, white sleeves eaten by the key (ask for "soft off-white sleeves with grey shading and a distinct edge"). One extra sentence naming the defect fixed every case in one retake. Pipeline record: scratchpad `raccoon-boss/BRIEF.md` + `install-mood.mjs` (per-week magenta sheets, `results-wNN.json`).
+
 ## Install conventions
 
 | Asset | Size | Path |
