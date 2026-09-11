@@ -15,8 +15,10 @@ import { test, expect } from "@playwright/test";
  */
 
 test.describe("Week 1 new screens - no dead-ends", () => {
-  // The four mid-week concept recaps.
-  for (const idx of [6, 10, 14, 18]) {
+  // The four mid-week concept recaps. Week 1 layout (30 screens): video 0, alert 1,
+  // weekIntro 2, mission 3, then 5 x (Learn, game, quickCheck, recap) from 4, so the
+  // recaps sit at 7, 11, 15, 19 and the finale recap at 23.
+  for (const idx of [7, 11, 15, 19]) {
     test(`recap checkpoint (screen ${idx}) shows takeaway + enabled "Keep going"`, async ({
       page,
     }) => {
@@ -40,10 +42,10 @@ test.describe("Week 1 new screens - no dead-ends", () => {
     });
   }
 
-  test("finale recap (screen 22) shows mastery + an enabled advance button", async ({
+  test("finale recap (screen 23) shows mastery + an enabled advance button", async ({
     page,
   }) => {
-    await page.goto("/lesson/1?screen=22");
+    await page.goto("/lesson/1?screen=23");
     // Target the headline specifically — the narration caption also says
     // "…you've mastered…", which would trip strict mode on a bare getByText.
     await expect(
@@ -54,10 +56,10 @@ test.describe("Week 1 new screens - no dead-ends", () => {
     ).toBeEnabled({ timeout: 10_000 });
   });
 
-  test("mission brief (screen 2): tapping the objectives arms Accept Mission", async ({
+  test("mission brief (screen 3): tapping the objectives arms Accept Mission", async ({
     page,
   }) => {
-    await page.goto("/lesson/1?screen=2");
+    await page.goto("/lesson/1?screen=3");
     // SCREEN-AUDIT rebuild: objectives arrive as sealed envelopes the
     // child taps open; the CTA reads "Tap your objectives!" until all
     // are flipped, then becomes Accept Mission. The CTA is never
