@@ -13,6 +13,16 @@
  * real friends, copied photo, too-friendly-too-fast. Lane-clean: this
  * judges PEOPLE, not messages (W4's inspector) and not the report/block
  * protocol (W11).
+ *
+ * Learn-Loop wiring (owner standards, 2026-09-11, ported from the Week 2
+ * inspector): the Raccoon's boast folds into the intro (`threat`); Sarah
+ * reads each inspection aloud as question + answer ("When did it join?
+ * Yesterday! ...") as it is tapped, then an optional "Think!" `nudge` once
+ * every clue is open, holding the verdict until she finishes (audio-only,
+ * `recordedOnly` so un-recorded weeks stay silent); the hint bubble is per
+ * profile (never haunts the next one); a spoken `completeNarration` payoff.
+ * Profiles are shuffled per play; the four zones keep their order because
+ * they ARE the checking procedure.
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -21,13 +31,26 @@ import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import GameButton from "@/app/components/lesson/GameButton";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+
+const SPOKEN_GATE_MAX_MS = 15000;
 
 export interface ProfileZone {
   id: string;
@@ -45,13 +68,29 @@ export interface InspectProfile {
   isFake: boolean;
   zones: ProfileZone[];
   verdictNote: string;
+  /** Optional "Think!" line Sarah says once every clue is open, before the
+   *  verdict. Read aloud; the verdict buttons unlock when she finishes. */
+  nudge?: string;
 }
 
 export interface ProfileInspectorProps {
   profiles: InspectProfile[];
   hints?: { tier1: string; tier2: string };
+  /** Intro copy overrides (defaults keep the W3 detective skin). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  /** Verdict button labels (defaults: "Real friend" / "FAKE!"). */
+  realLabel?: string;
+  fakeLabel?: string;
+  completeTitle?: string;
+  completeLine?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken "you're protected" payoff on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -67,8 +106,17 @@ export interface ProfileInspectorProps {
 export default function ProfileInspector({
   profiles,
   hints,
+  introTitle,
+  introSubtitle,
+  introIcon,
+  realLabel,
+  fakeLabel,
+  completeTitle,
+  completeLine,
   introNarration,
   coachLines,
+  threat,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -79,15 +127,25 @@ export default function ProfileInspector({
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  const voice = introNarration?.speaker ?? "adam";
 
   const [showIntro, setShowIntro] = useState(true);
   const [idx, setIdx] = useState(0);
   const [inspected, setInspected] = useState<Set<string>>(new Set());
   const [decided, setDecided] = useState<null | "real" | "fake">(null);
+  // Exercise-wide wrong count: stars + reported hint tier.
   const [wrongCount, setWrongCount] = useState(0);
+  // Per-profile wrong count: drives the VISIBLE hint bubble only.
+  const [profWrong, setProfWrong] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
+  // Read-aloud: the zone Sarah is reading, and whether her voice is going.
+  const [readZone, setReadZone] = useState<string | null>(null);
+  const [zoneSpeaking, setZoneSpeaking] = useState(false);
+  const [nudgeDone, setNudgeDone] = useState(false);
+  // Master mute mirror: a muted nudge never plays, so it never holds the verdict.
+  const [muted, setMuted] = useState(() => isAudioMuted());
 
   // Anti-sequence: the profiles arrive in a random order every play (authored
   // lists alternate real/fake). Each profile's 4 inspect zones are the fixed
@@ -96,12 +154,47 @@ export default function ProfileInspector({
   const finished = idx >= shownProfiles.length;
   const profile = shownProfiles[idx];
   const allInspected = profile ? profile.zones.every((z) => inspected.has(z.id)) : false;
+  // Sarah reads the inspection as a question and its answer ("When did it join?
+  // Yesterday! ...") so each tap continues the dialogue instead of a bare fragment.
+  const readZoneObj = profile && readZone ? profile.zones.find((z) => z.id === readZone) : undefined;
+  const readNote = readZoneObj ? `${readZoneObj.label} ${readZoneObj.note}` : undefined;
+  const nudgeText = profile?.nudge;
+  const showNudge = !!nudgeText && allInspected && !decided && !zoneSpeaking;
+  const verdictHeld = zoneSpeaking || (!!nudgeText && !muted && !nudgeDone);
 
-  // Reset per profile when advancing.
-  useEffect(() => {
+  // Advance to the next profile, resetting the per-profile state in the same
+  // update (clues, verdict, hint, read-aloud, nudge).
+  const advance = () => {
+    setIdx((i) => i + 1);
     setInspected(new Set());
     setDecided(null);
-  }, [idx]);
+    setProfWrong(0);
+    setReadZone(null);
+    setZoneSpeaking(false);
+    setNudgeDone(false);
+  };
+
+  // Safety releases for the spoken gates (see SPOKEN_GATE_MAX_MS).
+  useEffect(() => {
+    if (!zoneSpeaking) return;
+    const id = window.setTimeout(() => setZoneSpeaking(false), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [zoneSpeaking]);
+  useEffect(() => {
+    if (!showNudge || nudgeDone || muted) return;
+    const id = window.setTimeout(() => setNudgeDone(true), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [showNudge, nudgeDone, muted]);
+  useEffect(
+    () =>
+      subscribeAudioMute((m) => {
+        setMuted(m);
+        if (!m) return;
+        setZoneSpeaking(false);
+        setNudgeDone(true);
+      }),
+    [],
+  );
 
   const reportedTier = useRef(0);
   useEffect(() => {
@@ -113,7 +206,7 @@ export default function ProfileInspector({
   }, [wrongCount, onHintReached]);
 
   const inspect = (zone: ProfileZone) => {
-    if (inspected.has(zone.id) || decided || showIntro) return;
+    if (inspected.has(zone.id) || decided || showIntro || zoneSpeaking) return;
     setHasInteracted(true);
     audio.tap();
     fx.toast(
@@ -122,10 +215,14 @@ export default function ProfileInspector({
         : { text: "Checks out", tone: "xp" },
     );
     setInspected((prev) => new Set(prev).add(zone.id));
+    // Sarah reads the revealed clue aloud; the guard holds further taps until
+    // she finishes. Muted = she never starts, so don't wait on her.
+    setReadZone(zone.id);
+    if (!isAudioMuted()) setZoneSpeaking(true);
   };
 
   const decide = (callFake: boolean) => {
-    if (!profile || !allInspected || decided) return;
+    if (!profile || !allInspected || decided || verdictHeld) return;
     const wasCorrect = callFake === profile.isFake;
     onAnswered?.({
       questionKey: `profile-${profile.id}`,
@@ -139,11 +236,12 @@ export default function ProfileInspector({
       onCorrect?.();
       setCorrectCount((n) => n + 1);
       setDecided(callFake ? "fake" : "real");
-      window.setTimeout(() => setIdx((i) => i + 1), reduce ? 700 : 1400);
+      window.setTimeout(advance, reduce ? 700 : 1400);
     } else {
       audio.wrong();
       onWrong?.();
       setWrongCount((n) => n + 1);
+      setProfWrong((n) => n + 1);
       setFeedback({
         title: profile.isFake
           ? "Careful - that profile was a FAKE"
@@ -172,10 +270,11 @@ export default function ProfileInspector({
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="The Profile Detective"
-          subtitle="Check every clue, then decide: real friend... or FAKE?"
-          icon="🔍"
+          title={introTitle ?? "The Profile Detective"}
+          subtitle={introSubtitle ?? "Check every clue, then decide: real friend... or FAKE?"}
+          icon={introIcon ?? "🔍"}
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
@@ -311,7 +410,7 @@ export default function ProfileInspector({
                   <motion.button
                     key={zone.id}
                     onClick={() => inspect(zone)}
-                    disabled={open || !!decided || showIntro}
+                    disabled={open || !!decided || showIntro || zoneSpeaking}
                     animate={open && !reduce ? { scale: [1, 1.04, 1] } : undefined}
                     style={{
                       textAlign: "left",
@@ -339,35 +438,146 @@ export default function ProfileInspector({
               })}
             </div>
 
-            {/* Verdict buttons — unlocked only after full inspection */}
+            {/* Sarah reads the tapped clue aloud (audio-only; keyed per profile
+                + zone so each tap is its own read; recordedOnly keeps un-recorded
+                weeks silent). */}
+            {readNote && (
+              <div aria-hidden style={AUDIO_ONLY_STYLE}>
+                <InfoNarration
+                  key={`pi-zone-${profile.id}-${readZone}`}
+                  speaker={voice}
+                  lines={[readNote]}
+                  accent="#7df0ff"
+                  recordedOnly
+                  onDone={() => setZoneSpeaking(false)}
+                />
+              </div>
+            )}
+
+            {/* Sarah's "Think!" nudge: every clue is open, one last prompt
+                before the verdict (opt-in per profile via `nudge`). */}
+            <AnimatePresence>
+              {showNudge && nudgeText && (
+                <motion.div
+                  key={`nudge-${profile.id}`}
+                  role="status"
+                  aria-live="polite"
+                  initial={reduce ? false : { opacity: 0, y: 8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={reduce ? undefined : { opacity: 0, y: -6 }}
+                  style={{ display: "flex", justifyContent: "center", paddingBottom: 6 }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      maxWidth: 520,
+                      padding: "10px 14px",
+                      borderRadius: 14,
+                      background: "rgba(15, 21, 48, 0.95)",
+                      border: "2px solid #7df0ff",
+                      boxShadow: "0 0 16px rgba(125, 240, 255, 0.35)",
+                      color: "#e7ecff",
+                      fontFamily:
+                        "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+                      fontSize: 14,
+                      lineHeight: 1.4,
+                      fontWeight: 700,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: "50%",
+                        border: "2px solid #7df0ff",
+                        flexShrink: 0,
+                        background: "rgba(15, 21, 48, 0.6)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <PixIcon emoji="🧠" size={22} />
+                    </div>
+                    <div style={{ textAlign: "left", flex: 1 }}>
+                      <div
+                        style={{
+                          fontFamily: "'Space Grotesk', sans-serif",
+                          fontWeight: 800,
+                          fontSize: 10,
+                          letterSpacing: "0.12em",
+                          color: "#7df0ff",
+                          textTransform: "uppercase",
+                          marginBottom: 2,
+                        }}
+                      >
+                        Think!
+                      </div>
+                      <div>{nudgeText}</div>
+                    </div>
+                    <span
+                      aria-hidden
+                      style={{
+                        position: "absolute",
+                        left: "50%",
+                        bottom: -9,
+                        width: 14,
+                        height: 14,
+                        transform: "translateX(-50%) rotate(45deg)",
+                        background: "rgba(15, 21, 48, 0.95)",
+                        borderRight: "2px solid #7df0ff",
+                        borderBottom: "2px solid #7df0ff",
+                      }}
+                    />
+                  </div>
+                  <div aria-hidden style={AUDIO_ONLY_STYLE}>
+                    <InfoNarration
+                      key={`pi-nudge-${profile.id}`}
+                      speaker={voice}
+                      lines={[nudgeText]}
+                      accent="#7df0ff"
+                      recordedOnly
+                      onDone={() => setNudgeDone(true)}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Verdict buttons — unlocked only after full inspection (and after
+                Sarah has finished the last clue / the Think nudge) */}
             <div style={{ display: "flex", gap: 10, justifyContent: "center", opacity: allInspected ? 1 : 0.5 }}>
               <GameButton
                 variant="success"
                 size="lg"
-                disabled={!allInspected || !!decided}
+                disabled={!allInspected || !!decided || verdictHeld}
                 onClick={() => decide(false)}
               >
-                ✅ Real friend
+                ✅ {realLabel ?? "Real friend"}
               </GameButton>
               <GameButton
                 variant="danger"
                 size="lg"
-                disabled={!allInspected || !!decided}
+                disabled={!allInspected || !!decided || verdictHeld}
                 onClick={() => decide(true)}
               >
-                🚫 FAKE!
+                🚫 {fakeLabel ?? "FAKE!"}
               </GameButton>
             </div>
             {!allInspected && (
               <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#7d8cc9" }}>
-                Inspect all {profile.zones.length} clues to unlock your verdict · Profile{" "}
+                Tap all {profile.zones.length} magnifying glasses to unlock your verdict · Profile{" "}
                 {Math.min(idx + 1, shownProfiles.length)} of {shownProfiles.length}
               </div>
             )}
 
-            <div style={{ padding: wrongCount > 0 ? "2px 4px 0" : 0 }}>
-              {wrongCount === 1 && hints && <HintBubble tier={1} speaker="adam" text={hints.tier1} />}
-              {wrongCount >= 2 && hints && <HintBubble tier={2} speaker="adam" text={hints.tier2} />}
+            {/* Hint bubble is PER PROFILE, never the exercise-wide count. */}
+            <div style={{ padding: profWrong > 0 ? "2px 4px 0" : 0 }}>
+              {profWrong === 1 && hints && <HintBubble tier={1} speaker={voice} text={hints.tier1} />}
+              {profWrong >= 2 && hints && <HintBubble tier={2} speaker={voice} text={hints.tier2} />}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -388,12 +598,13 @@ export default function ProfileInspector({
 
       {finished && (
         <ExerciseCompleteBeat
-          title="Every profile checked!"
+          title={completeTitle ?? "Every profile checked!"}
           stars={stars}
           statLines={[
-            `${correctCount}/${shownProfiles.length} verdicts right first try`,
-            "Fakes unmasked, real friends welcomed.",
+            `${correctCount}/${shownProfiles.length} verdicts called`,
+            completeLine ?? "Fakes unmasked, real friends welcomed.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(correctCount)}
         />
       )}

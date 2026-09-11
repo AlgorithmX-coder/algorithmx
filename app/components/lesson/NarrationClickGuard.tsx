@@ -44,6 +44,7 @@ export default function NarrationClickGuard({
   return createPortal(
     <div
       aria-hidden
+      data-narration-guard=""
       onPointerDownCapture={block}
       onMouseDownCapture={block}
       onClickCapture={block}
