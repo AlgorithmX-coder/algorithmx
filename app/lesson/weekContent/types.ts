@@ -1119,6 +1119,9 @@ export type ScreenDef = (
       /** Board dressing: "card" (W13 2x2 card, default) or "vault" (W1 brass dials
        *  around a vault door; a correct tap bolts the door). Needs exactly 4 signs. */
       skin?: "card" | "vault";
+      /** Vault skin: the short prompt Sarah reads after every move so the board
+       *  always states the action ("Which power did that move use? Turn its dial."). */
+      roundPrompt?: string;
       /** The card squares (4 recommended). */
       signs: {
         id: string;

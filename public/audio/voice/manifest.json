@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11T13:54:20.898Z",
+  "generatedAt": "2026-09-11T14:36:24.942Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -33,6 +33,16 @@
         "Can you fill in the missing word?"
       ],
       "file": "/audio/voice/5423452b0980a0e4.mp3"
+    },
+    {
+      "key": "75c80fb0784164c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which power did that move use? Turn its dial.",
+      "lines": [
+        "Which power did that move use? Turn its dial."
+      ],
+      "file": "/audio/voice/75c80fb0784164c8.mp3"
     },
     {
       "key": "2758a8b61f0475eb",
@@ -406,6 +416,16 @@
         "Now, one quick Power Bingo to make it all stick... then the Raccoon gets locked out for good. Come on!"
       ],
       "file": "/audio/voice/86988cecde837d3b.mp3"
+    },
+    {
+      "key": "c8a73cbb59a58549",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Listen to the move, then turn the dial for the power it used. Get it right and the bolt slides home!",
+      "lines": [
+        "Listen to the move, then turn the dial for the power it used. Get it right and the bolt slides home!"
+      ],
+      "file": "/audio/voice/c8a73cbb59a58549.mp3"
     },
     {
       "key": "f3f0bfb452d044d4",

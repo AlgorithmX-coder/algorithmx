@@ -780,6 +780,14 @@ export const WEEK_1: WeekContent = {
       // four brass dials around the vault door; a correct tap turns the dial
       // and slides its bolt home; four bolts seal the vault.
       skin: "vault",
+      // Sarah's instructions ON the board (owner: "I need instructions from Sarah"):
+      // the how-to once as the board appears (coachLines), then after every move the
+      // prompt below, plus the visible action strip the component renders.
+      roundPrompt: "Which power did that move use? Turn its dial.",
+      coachLines: {
+        speaker: "adam",
+        lines: ["Listen to the move, then turn the dial for the power it used. Get it right and the bolt slides home!"],
+      },
       introTitle: "Hero Power Bingo",
       introSubtitle: "Watch each move, then turn the dial for the password power it used. Four bolts home seals the vault!",
       introIcon: "🔒",

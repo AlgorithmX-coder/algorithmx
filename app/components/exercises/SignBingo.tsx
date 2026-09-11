@@ -69,6 +69,9 @@ export interface SignBingoProps {
   /** Board dressing: "card" (W13 2x2 bingo card, default) or "vault" (W1 brass
    *  dials around a vault door, bolts slide home). Needs exactly 4 signs. */
   skin?: SignBingoSkin;
+  /** Vault skin: the short prompt Sarah reads after every move ("Which power did that
+   *  move use? Turn its dial."), so the board always tells the child what to do. */
+  roundPrompt?: string;
   /** Copy overrides (defaults keep the W13 body-bell skin). */
   introTitle?: string;
   introSubtitle?: string;
@@ -99,6 +102,7 @@ export default function SignBingo({
   signs,
   rounds,
   skin = "card",
+  roundPrompt,
   introTitle,
   introSubtitle,
   introIcon,
@@ -135,6 +139,16 @@ export default function SignBingo({
   // the reasoning) with a gated Next before advancing.
   const [explain, setExplain] = useState<null | { why: string; key: number }>(null);
   const [whyDone, setWhyDone] = useState(false);
+  // Vault skin pacing (owner: "slow the speed down"): after a correct tap the dial
+  // turn, bolt slide and socket light play out on a clear board BEFORE the why
+  // panel dims it; the fourth bolt gets the wheel turn + door glow first; the
+  // final Next gives the door a seal moment before the complete beat.
+  const [bolting, setBolting] = useState(false);
+  const [sealing, setSealing] = useState(false);
+  // Vault skin narration chain per round (owner: "I need instructions from Sarah"):
+  // how-to once (coach line) -> the move -> "turn its dial" prompt. Audio only,
+  // sequenced so two lines never overlap; the guard holds the dials throughout.
+  const [narr, setNarr] = useState<"howto" | "scene" | "prompt" | "done">("scene");
 
   // Anti-sequence: the bingo squares are dealt in a random layout AND the
   // scenes play in a random order (authored data pairs scene N with square N,
@@ -143,6 +157,13 @@ export default function SignBingo({
   const shownRounds = useShuffledOnce(rounds);
   const finished = roundIdx >= shownRounds.length;
   const round = shownRounds[roundIdx];
+  const vault = skin === "vault";
+  const prompt = roundPrompt ?? (vault ? "Which power did that move use? Turn its dial." : undefined);
+  const hasCoach = !!coachLines;
+  useEffect(() => {
+    if (!vault) return;
+    setNarr(roundIdx === 0 && hasCoach ? "howto" : "scene");
+  }, [roundIdx, vault, hasCoach]);
 
   // Safety release: never leave the "why" beat's gated Next stuck behind a
   // narration that fails to fire onDone.
@@ -162,7 +183,7 @@ export default function SignBingo({
   };
 
   const tap = (sign: BingoSign, idx: number) => {
-    if (!round || showIntro || feedback || finished) return;
+    if (!round || showIntro || feedback || finished || bolting) return;
     setHasInteracted(true);
     // A square that's already stamped just wobbles - no penalty.
     if (stamped.has(sign.id)) {
@@ -178,7 +199,6 @@ export default function SignBingo({
     });
     if (sign.id === round.signId) {
       audio.correct();
-      if (skin === "vault") playSound("lock");
       fx.correct({ xp: 25, text: stampToast ?? (skin === "vault" ? "BOLTED!" : "SIGN SPOTTED!") });
       onCorrect?.();
       if (!wrongOnCurrent) setFirstTryCount((n) => n + 1);
@@ -186,11 +206,23 @@ export default function SignBingo({
       setStamped((prev) => new Set(prev).add(sign.id));
       // Teach-on-success: hold on Sarah's "why" before advancing. Without a
       // `why`, advance immediately (legacy).
-      if (round.why) {
-        setWhyDone(false);
-        setExplain({ why: round.why, key: Date.now() });
+      const goOn = () => {
+        if (round.why) {
+          setWhyDone(false);
+          setExplain({ why: round.why, key: Date.now() });
+        } else {
+          setRoundIdx((i) => i + 1);
+        }
+      };
+      if (skin === "vault") {
+        // Let the dial turn, the bolt slide home and the socket light play out
+        // (and the wheel turn on the fourth bolt) before the why panel dims the board.
+        const lastBolt = stamped.size + 1 >= signs.length;
+        setBolting(true);
+        window.setTimeout(() => playSound("lock"), reduce ? 80 : 750);
+        window.setTimeout(() => { setBolting(false); goOn(); }, reduce ? (lastBolt ? 900 : 500) : (lastBolt ? 2400 : 1700));
       } else {
-        setRoundIdx((i) => i + 1);
+        goOn();
       }
     } else {
       audio.wrong();
@@ -210,7 +242,6 @@ export default function SignBingo({
   };
 
   const stars = wrongCount === 0 ? 3 : wrongCount <= 2 ? 2 : 1;
-  const vault = skin === "vault";
   const allBolted = stamped.size >= signs.length;
   const roundLabel = finished ? "SEALED" : `ROUND ${Math.min(roundIdx + 1, shownRounds.length)} OF ${shownRounds.length}`;
 
@@ -303,9 +334,33 @@ export default function SignBingo({
       {/* Sarah reads the scene aloud (audio-only, visually hidden so it doesn't
           duplicate the scene card); the click-guard holds the squares until she
           finishes. recordedOnly = silent on un-recorded weeks (no robotic TTS). */}
-      {round && !finished && !feedback && !explain && (
+      {!vault && round && !finished && !feedback && !explain && (
         <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
           <InfoNarration key={`sb-scene-${round.id}`} speaker="adam" lines={[round.scene]} accent="#7df0ff" recordedOnly />
+        </div>
+      )}
+
+      {/* Vault skin: Sarah's instructions ON the board, as a sequenced chain so no
+          two lines overlap: the how-to once -> the move -> "turn its dial". */}
+      {vault && round && !showIntro && !finished && !feedback && !explain && !bolting && (
+        <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+          {narr === "howto" && coachLines && (
+            <InfoNarration key="sb-howto" speaker={coachLines.speaker ?? "adam"} lines={coachLines.lines} accent="#e3b341" recordedOnly onDone={() => setNarr("scene")} />
+          )}
+          {narr === "scene" && (
+            <InfoNarration key={`sb-scene-${round.id}`} speaker="adam" lines={[round.scene]} accent="#e3b341" recordedOnly onDone={() => setNarr(prompt ? "prompt" : "done")} />
+          )}
+          {narr === "prompt" && prompt && (
+            <InfoNarration key={`sb-prompt-${round.id}-${wrongCount}`} speaker="adam" lines={[prompt]} accent="#e3b341" recordedOnly onDone={() => setNarr("done")} />
+          )}
+        </div>
+      )}
+
+      {/* Vault skin: the action, always visible on the board (not only in the intro). */}
+      {vault && round && !finished && (
+        <div style={{ textAlign: "center", margin: "-2px auto 12px", fontSize: 11.5, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#cfd6e6", opacity: 0.85 }}>
+          <PixIcon emoji="👆" size={15} style={{ verticalAlign: "-3px", marginRight: 6 }} />
+          Tap the dial for the power this move used
         </div>
       )}
 
@@ -317,7 +372,7 @@ export default function SignBingo({
             <motion.svg
               viewBox="0 0 300 300"
               aria-hidden
-              animate={allBolted && !reduce ? { scale: [1, 1.04, 1] } : { scale: 1 }}
+              animate={sealing && !reduce ? { scale: [1, 1.08, 1], rotate: [0, -2, 0] } : allBolted && !reduce ? { scale: [1, 1.04, 1] } : { scale: 1 }}
               transition={{ duration: 0.8 }}
               style={{
                 position: "absolute",
@@ -390,7 +445,7 @@ export default function SignBingo({
                   <motion.div
                     initial={false}
                     animate={{ width: lit ? "100%" : "0%" }}
-                    transition={{ duration: reduce ? 0.2 : 0.55, ease: "easeOut" }}
+                    transition={{ duration: reduce ? 0.2 : 0.9, delay: lit && !reduce ? 0.35 : 0, ease: "easeOut" }}
                     style={{
                       position: "absolute",
                       top: 2,
@@ -415,7 +470,7 @@ export default function SignBingo({
                   type="button"
                   onClick={() => tap(s, i)}
                   onPointerEnter={() => audio.hover()}
-                  disabled={!!feedback || !!explain || finished}
+                  disabled={!!feedback || !!explain || finished || bolting || sealing}
                   aria-label={`${s.label}${isStamped ? ", bolted" : ""}`}
                   animate={wobbleId === s.id && !reduce ? { rotate: [0, -4, 4, -2, 0] } : { rotate: 0 }}
                   whileHover={reduce || isStamped ? undefined : { y: -4 }}
@@ -443,7 +498,7 @@ export default function SignBingo({
                     aria-hidden
                     initial={false}
                     animate={{ rotate: isStamped ? 90 : 0 }}
-                    transition={{ duration: reduce ? 0.2 : 0.5, ease: "easeOut" }}
+                    transition={{ duration: reduce ? 0.2 : 0.8, ease: "easeOut" }}
                     style={{ position: "absolute", left: "50%", top: 3, width: 6, height: 16, marginLeft: -3, borderRadius: 3, background: isStamped ? "#ffe08a" : "#2b1d02", transformOrigin: `3px ${DIAL / 2 - 3}px`, boxShadow: "0 0 0 1.5px rgba(255,241,194,0.6)" }}
                   />
                   <span
@@ -512,7 +567,7 @@ export default function SignBingo({
                 type="button"
                 onClick={() => tap(s, i)}
                 onPointerEnter={() => audio.hover()}
-                disabled={!!feedback || !!explain || finished}
+                disabled={!!feedback || !!explain || finished || bolting || sealing}
                 animate={wobbleId === s.id && !reduce ? { rotate: [0, -4, 4, -2, 0] } : { rotate: 0 }}
                 whileHover={reduce || isStamped ? undefined : { y: -4 }}
                 whileTap={{ scale: 0.96 }}
@@ -579,7 +634,8 @@ export default function SignBingo({
         {wrongCount >= 2 && hints && <HintBubble tier={2} speaker="layla" text={hints.tier2} />}
       </div>
 
-      {coachLines && !showIntro && !hasInteracted && !finished && (
+      {/* Card skin only: the vault skin speaks its coach line inside the sequenced chain above. */}
+      {coachLines && !vault && !showIntro && !hasInteracted && !finished && (
         <CoachCaption lines={coachLines.lines} speaker={coachLines.speaker} />
       )}
 
@@ -588,7 +644,11 @@ export default function SignBingo({
           title={feedback.title}
           explanation={feedback.explanation}
           tip={feedback.tip}
-          onContinue={() => setFeedback(null)}
+          onContinue={() => {
+            setFeedback(null);
+            // Vault skin: Sarah re-prompts after a wrong tap ("turn its dial").
+            if (vault) setNarr("prompt");
+          }}
         />
       )}
 
@@ -652,7 +712,17 @@ export default function SignBingo({
                 onClick={() => {
                   setExplain(null);
                   setWhyDone(false);
-                  setRoundIdx((i) => i + 1);
+                  if (vault && allBolted) {
+                    // Seal moment: the door gets its pulse before the complete beat.
+                    setSealing(true);
+                    playSound("unlock");
+                    window.setTimeout(() => setRoundIdx((i) => i + 1), reduce ? 400 : 1300);
+                  } else if (vault) {
+                    // A breath before the next move card slides in.
+                    window.setTimeout(() => setRoundIdx((i) => i + 1), reduce ? 100 : 600);
+                  } else {
+                    setRoundIdx((i) => i + 1);
+                  }
                 }}
               >
                 {stamped.size >= signs.length ? (vault ? "Seal the vault →" : "See your bingo →") : "Next →"}

@@ -138,6 +138,8 @@ const blocks = [];
 // "...proves it's blank"); one recording, reused by every week's finish
 // quick-check. speaker "adam" = Sarah, matching QuickCheck's promptLines.
 blocks.push({ speaker: "adam", lines: ["Can you fill in the missing word?"], source: "shared" });
+// SignBingo vault skin: the per-move prompt Sarah reads after each scene (W1 Vault Door bingo).
+blocks.push({ speaker: "adam", lines: ["Which power did that move use? Turn its dial."], source: "shared" });
 
 for (const fname of weekFiles) {
   const src = await readFile(join(WEEK_CONTENT_DIR, fname), "utf8");
