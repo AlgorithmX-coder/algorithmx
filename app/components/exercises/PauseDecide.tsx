@@ -38,6 +38,7 @@ import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import VerdictVoice from "@/app/components/lesson/VerdictVoice";
 
 const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -259,12 +260,8 @@ export default function PauseDecide({
           {!safeCard && !wrongPanel && (
             <InfoNarration key={`pd-setup-${idx}`} speaker="adam" lines={[sc.setup]} accent="#7df0ff" recordedOnly />
           )}
-          {safeCard && (
-            <InfoNarration key={`pd-safe-${idx}`} speaker="adam" lines={[safeCard]} accent="#7eff97" recordedOnly />
-          )}
-          {wrongPanel && (
-            <InfoNarration key={`pd-wrong-${idx}`} speaker="adam" lines={[wrongPanel]} accent="#ff9db0" recordedOnly />
-          )}
+          {safeCard && <VerdictVoice key={`pd-safe-${idx}`} verdict="right" why={safeCard} />}
+          {/* wrong: WrongAnswerPanel speaks "Not quite." + the consequence itself */}
         </div>
       )}
 

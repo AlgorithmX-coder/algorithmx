@@ -268,7 +268,7 @@ export type ScreenDef = (
     }
   | {
       type: "cyberScanner";
-      items: { text: string; isStrong: boolean; explanation: string }[];
+      items: { text: string; isStrong: boolean; explanation: string; why?: string }[];
       /**
        * Re-theme the scanner's copy (verdict buttons, how-to rows, tips,
        * tiered hints). Omitted = Week 1's STRONG/WEAK password drill.
@@ -311,7 +311,13 @@ export type ScreenDef = (
       type: "quickCheck";
       mode: "finish" | "speed" | "lie" | "recall" | "order";
       prompt: string;
-      choices: { text: string; isCorrect: boolean }[];
+      /**
+       * `why` (owner 2026-09-12, spoken verdicts): Sarah's reason for THIS
+       * choice. Wrong choice = "Not quite." + why it is wrong (no giveaway).
+       * Correct choice = "That's right!" + why, used only when there is no
+       * teachNarration. Ignored in `order` mode (the nudge speaks instead).
+       */
+      choices: { text: string; isCorrect: boolean; why?: string }[];
       /** `lie` mode: the Raccoon's bogus claim shown in his speech bubble. */
       raccoonLine?: string;
       praise?: string;
@@ -402,6 +408,8 @@ export type ScreenDef = (
         reasonId: string;
         /** Sentence shown in the WrongAnswerPanel when the child mis-sorts this item. */
         explanation: string;
+        /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+        why?: string;
       }[];
       hints?: { tier1: string; tier2: string; tier3: string };
     }
@@ -555,6 +563,8 @@ export type ScreenDef = (
       /** Number of words to pick. Default 3. */
       slots?: number;
       hints?: { tier1: string; tier2: string };
+      /** Sarah's reason on a RIGHT answer ("That's right!" + why). */
+      whyRight?: string;
       /** Spoken, paced intro that explains the task before play (read aloud). */
       narration?: { speaker?: "adam" | "layla"; lines: string[] };
     }
@@ -631,6 +641,8 @@ export type ScreenDef = (
          * child mis-diagnoses this patient.
          */
         diagnosisExplanation: string;
+        /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+        why?: string;
         /**
          * Recommended repair actions (by action id). Used for hint
          * targeting in phase 2 - the panel can nudge "try adding a
@@ -722,6 +734,8 @@ export type ScreenDef = (
         isPrivate: boolean;
         /** Shown in the WrongAnswerPanel on a wrong drop. */
         explanation: string;
+        /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+        why?: string;
       }[];
       hints?: { tier1: string; tier2: string };
     }
@@ -745,6 +759,8 @@ export type ScreenDef = (
         categoryId: string;
         /** Shown in the WrongAnswerPanel on a mis-sort. */
         explanation: string;
+        /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+        why?: string;
       }[];
       /** Copy overrides (re-theme per week; defaults keep the W3 machine skin). */
       introTitle?: string;
@@ -793,6 +809,8 @@ export type ScreenDef = (
         }[];
         /** Explanation shown after the child's verdict. */
         verdictNote: string;
+        /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+        why?: string;
         /** Optional Sarah "think" nudge: shown and read aloud once all four zones
          *  are inspected, BEFORE the verdict buttons unlock (owner: a little hint
          *  like "it is only a quiz form, do they really need this?"). */
@@ -919,6 +937,8 @@ export type ScreenDef = (
           isFake: boolean;
           /** Teach copy: why fake / why it checks out. */
           note: string;
+          /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+          why?: string;
         }[];
       }[];
       hints?: { tier1: string; tier2: string };
@@ -955,6 +975,8 @@ export type ScreenDef = (
         }[];
         /** Explanation shown after the child's verdict. */
         verdictNote: string;
+        /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+        why?: string;
         /** Optional "Think!" line Sarah says once every clue is open, before the
          *  verdict (read aloud; the verdict unlocks when she finishes). */
         nudge?: string;
@@ -968,6 +990,64 @@ export type ScreenDef = (
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Clue Stamper (Week 3, replaces the profile inspector: owner
+       * 2026-09-12, "we never copy an exercise"). The MARK-A-SET-THEN-LOCK
+       * drill: a friend request lands beside a detective notebook showing
+       * the profile's FOUR clues in the fixed order the Learn screen teaches
+       * (WHEN did it join, WHO are its friends, HOW does it talk, WHAT does
+       * it ask for). Nothing is hidden. The child taps a clue to stamp it
+       * SNEAKY! (tap again to lift), then taps CLOSE THE CASE to commit the
+       * whole set at once; zero stamps is a legal answer. The verdict is
+       * never picked: it is derived from the set (any sneaky clue = fake).
+       * A wrong lock teaches the first mismatched clue and keeps every
+       * stamp, so the retry is a one-row fix.
+       */
+      type: "clueStamper";
+      cases: {
+        id: string;
+        /** Display handle e.g. "SkaterKid_Max". */
+        handle: string;
+        /** Emoji rendered via PixIcon as the avatar. */
+        avatar: string;
+        /** The one-line bio in the speech bubble, six to nine words. */
+        pitch: string;
+        /** Sarah's read-aloud as the case arrives: the pitch, then each row
+         *  as "question? evidence." in WHEN/WHO/HOW/WHAT order. */
+        readAloud: string;
+        /** Exactly four, one per id. Authored order does not matter: the
+         *  component renders the fixed WHEN/WHO/HOW/WHAT procedure. */
+        clues: {
+          id: "when" | "who" | "how" | "what";
+          /** The visible evidence, five words or fewer ("Joined: yesterday"). */
+          evidence: string;
+          isRedFlag: boolean;
+          /** Sarah's teach line when this row is mismatched at the lock. A
+           *  red clue can only be missed, a clean clue only over-stamped, so
+           *  one line per clue reads in its only possible direction. */
+          teach: string;
+        }[];
+        /** Sarah's reason on a correct lock ("That's right!" + rightWhy). */
+        rightWhy: string;
+      }[];
+      /** Copy overrides (defaults keep the W3 detective skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** Text on the red rubber stamp. Default "SNEAKY!". One short word. */
+      stampLabel?: string;
+      /** Text on the commit button. Default "CLOSE THE CASE". */
+      closeLabel?: string;
+      realSeal?: string;
+      fakeSeal?: string;
+      realToast?: string;
+      fakeToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string; tier3?: string };
     }
   | {
       /**
@@ -1037,7 +1117,7 @@ export type ScreenDef = (
       verdict: {
         prompt: string;
         /** Exactly one isCorrect; explanation teaches on a wrong call. */
-        options: { text: string; isCorrect: boolean; explanation: string }[];
+        options: { text: string; isCorrect: boolean; explanation: string; why?: string }[];
       };
       /** Stamp + complete-beat copy overrides. */
       stampText?: string;
@@ -1130,6 +1210,8 @@ export type ScreenDef = (
           isProud: boolean;
           /** Teach copy when the regret stamp is picked. */
           note: string;
+          /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+          why?: string;
         }[];
       }[];
       /** Copy overrides (defaults keep the W12 snow-trail skin). */
@@ -1295,6 +1377,8 @@ export type ScreenDef = (
         matches: boolean;
         /** Teach copy shown on a wrong verdict for this door. */
         note: string;
+        /** Sarah's reason on a RIGHT verdict ("That's right!" + why); defaults to note. */
+        why?: string;
         /** Mask skin: the friend's display name. */
         name?: string;
       }[];
@@ -1385,6 +1469,8 @@ export type ScreenDef = (
       /** Sarah reads each step's affirmation aloud as it lands (default true). */
       speakSteps?: boolean;
       hints?: { tier1: string; tier2: string };
+      /** Sarah's reason on a WRONG tile ("Not quite." + whyWrong); falls back to hints.tier1. */
+      whyWrong?: string;
     }
   | {
       /**
@@ -1434,6 +1520,8 @@ export type ScreenDef = (
         slotId: string;
         /** If set, this part LEAKS real info; value = why (teach copy). */
         trap?: string;
+        /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+        why?: string;
       }[];
       hints?: { tier1: string; tier2: string };
     }
@@ -1443,7 +1531,9 @@ export type ScreenDef = (
       introTitle?: string;
       introSubtitle?: string;
       introWelcome?: string;
-      pairs: { term: string; match: string; colour: string }[];
+      /** Sarah's line on a mismatch ("Not quite." + whyWrong). */
+      whyWrong?: string;
+      pairs: { term: string; match: string; colour: string; why?: string }[];
     }
   | {
       type: "firewallBuilder";
@@ -1457,6 +1547,8 @@ export type ScreenDef = (
         subject: string;
         isPhishing: boolean;
         clue: string;
+        /** Sarah's reason on a RIGHT answer ("That's right!" + why). Defaults to the clue. */
+        why?: string;
       }[];
       /** Intro card copy overrides (re-theme per week). */
       introTitle?: string;

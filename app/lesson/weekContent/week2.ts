@@ -216,9 +216,9 @@ export const WEEK_2: WeekContent = {
       prompt: "Which of these is PRIVATE?",
       choices: [
         { text: "Your home address", isCorrect: true },
-        { text: "Your favorite pizza", isCorrect: false },
-        { text: "A cartoon you like", isCorrect: false },
-        { text: "Your favorite color", isCorrect: false },
+        { text: "Your favorite pizza", isCorrect: false, why: "Pizza is safe to share; it doesn't tell a stranger who or where you are." },
+        { text: "A cartoon you like", isCorrect: false, why: "A cartoon you like is fine to share; it can't lead anyone to you." },
+        { text: "Your favorite color", isCorrect: false, why: "A favorite color is safe; it doesn't say who or where you are." },
       ],
       praise: "Exactly - WHERE you live stays private! ✓",
       teachNarration: {
@@ -334,8 +334,8 @@ export const WEEK_2: WeekContent = {
       prompt: "Which of these 3 stays PRIVATE?",
       choices: [
         { text: "My school's name", isCorrect: true },
-        { text: "My favorite game", isCorrect: false },
-        { text: "My favorite food", isCorrect: false },
+        { text: "My favorite game", isCorrect: false, why: "Your favorite game is safe to share; it doesn't tell anyone where to find you." },
+        { text: "My favorite food", isCorrect: false, why: "Favorite food is safe; it doesn't say where you are." },
       ],
       praise: "Yes - your school points right at YOU! ✓",
       teachNarration: {
@@ -426,7 +426,7 @@ export const WEEK_2: WeekContent = {
         },
         {
           id: "doodle-pad",
-          appName: "Doodle Pad",
+          appName: "Doodle Pad", why: "A nickname and a favorite color point at nothing real, so that's a fair ask.",
           appIcon: "🎨",
           tagline: "Draw, color and save your masterpieces!",
           asksFor: ["A nickname", "Favorite color"],
@@ -490,7 +490,7 @@ export const WEEK_2: WeekContent = {
       prompt: "Is that true?",
       raccoonLine: "a quiz app NEEDS your home address, or the quiz won't work!",
       choices: [
-        { text: "TRUE", isCorrect: false },
+        { text: "TRUE", isCorrect: false, why: "A quiz has no use for your address; it's private info, and an app that asks for it is up to something." },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted! A quiz needs ZERO of that to work. ✓",
@@ -569,20 +569,20 @@ export const WEEK_2: WeekContent = {
         { id: "num", label: "Lucky Number", icon: "🔢" },
       ],
       parts: [
-        { id: "p-shadow", text: "Shadow", slotId: "hero" },
-        { id: "p-comet", text: "Comet", slotId: "hero" },
-        { id: "p-pixel", text: "Pixel", slotId: "hero" },
-        { id: "p-turbo", text: "Turbo", slotId: "hero" },
+        { id: "p-shadow", text: "Shadow", why: "A made-up hero name gives nothing away about the real you.", slotId: "hero" },
+        { id: "p-comet", text: "Comet", why: "A made-up hero name gives nothing away about the real you.", slotId: "hero" },
+        { id: "p-pixel", text: "Pixel", why: "A made-up hero name gives nothing away about the real you.", slotId: "hero" },
+        { id: "p-turbo", text: "Turbo", why: "A made-up hero name gives nothing away about the real you.", slotId: "hero" },
         { id: "p-emma", text: "Emma", slotId: "hero", trap: "That's a real first name! A username with a real name is a mask with a hole in it." },
-        { id: "p-panda", text: "Panda", slotId: "side" },
-        { id: "p-wizard", text: "Wizard", slotId: "side" },
-        { id: "p-falcon", text: "Falcon", slotId: "side" },
-        { id: "p-ninja", text: "Ninja", slotId: "side" },
+        { id: "p-panda", text: "Panda", why: "An animal or a job word says nothing about who or where you are.", slotId: "side" },
+        { id: "p-wizard", text: "Wizard", why: "An animal or a job word says nothing about who or where you are.", slotId: "side" },
+        { id: "p-falcon", text: "Falcon", why: "An animal or a job word says nothing about who or where you are.", slotId: "side" },
+        { id: "p-ninja", text: "Ninja", why: "An animal or a job word says nothing about who or where you are.", slotId: "side" },
         { id: "p-maple", text: "MapleHill", slotId: "side", trap: "That's a school name - it's a map that leads straight to you!" },
-        { id: "p-42", text: "42", slotId: "num" },
-        { id: "p-77", text: "77", slotId: "num" },
-        { id: "p-300", text: "300", slotId: "num" },
-        { id: "p-55", text: "55", slotId: "num" },
+        { id: "p-42", text: "42", why: "A number that means nothing about you is a safe number.", slotId: "num" },
+        { id: "p-77", text: "77", why: "A number that means nothing about you is a safe number.", slotId: "num" },
+        { id: "p-300", text: "300", why: "A number that means nothing about you is a safe number.", slotId: "num" },
+        { id: "p-55", text: "55", why: "A number that means nothing about you is a safe number.", slotId: "num" },
         { id: "p-2017", text: "2017", slotId: "num", trap: "That looks like a birth year - a real clue about the real you. Pick a number that means nothing!" },
       ],
       hints: {
@@ -619,9 +619,9 @@ export const WEEK_2: WeekContent = {
       speedMs: 5000,
       choices: [
         { text: "PixelPanda42", isCorrect: true },
-        { text: "emma2017", isCorrect: false },
-        { text: "Jake_Age9", isCorrect: false },
-        { text: "MapleHill_Star", isCorrect: false },
+        { text: "emma2017", isCorrect: false, why: "emma2017 gives away a real name and a birth year; that's two private things." },
+        { text: "Jake_Age9", isCorrect: false, why: "Jake_Age9 shows a real name and an age; a stranger learns too much." },
+        { text: "MapleHill_Star", isCorrect: false, why: "MapleHill sounds like a real place, maybe a school; a username should never point to where you are." },
       ],
       praise: "Fast AND masked - no clues in there! ✓",
       teachNarration: {
@@ -692,6 +692,7 @@ export const WEEK_2: WeekContent = {
     // on a different board (hero-badge trail, not W5's river stones).
     {
       type: "stepOrder",
+      whyWrong: "That step isn't next. Think about what a hero does first.",
       skin: "hero",
       pathLabel: "THE HERO PAUSE",
       threat: {
@@ -742,9 +743,9 @@ export const WEEK_2: WeekContent = {
       prompt: "If you're not sure, ___.",
       choices: [
         { text: "ask a grown-up", isCorrect: true },
-        { text: "type it quickly", isCorrect: false },
-        { text: "just guess", isCorrect: false },
-        { text: "ask the Raccoon", isCorrect: false },
+        { text: "type it quickly", isCorrect: false, why: "Typing fast doesn't make it safe; when you're not sure, you need a person who knows." },
+        { text: "just guess", isCorrect: false, why: "Guessing can hand your private info to the wrong place; not sure means get help." },
+        { text: "ask the Raccoon", isCorrect: false, why: "The Raccoon is the one trying to trick you; never ask him." },
       ],
       praise: "That's the golden rule - backup team, assemble! ✓",
       teachNarration: {

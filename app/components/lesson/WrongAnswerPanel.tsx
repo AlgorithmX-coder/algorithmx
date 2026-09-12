@@ -16,7 +16,7 @@ import { useEffect, useRef } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { useComfortMode } from "@/app/lib/comfortMode";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
-import InfoNarration from "@/app/components/lesson/InfoNarration";
+import VerdictVoice from "@/app/components/lesson/VerdictVoice";
 
 export interface WrongAnswerPanelProps {
   /** Short headline ("That one was WEAK"). */
@@ -159,19 +159,15 @@ export default function WrongAnswerPanel({
           </h2>
         </div>
 
-        {/* Sarah reads the "why it was wrong" teaching aloud the instant this
-            panel appears (owner 2026-09-09) — across EVERY exercise and week,
-            since they all share this panel. Audio-only (the text below mirrors
-            it); the narration click-guard holds "Got it!" until she finishes so
-            the child hears the correction. Reads the explanation verbatim so a
-            recorded clip matches; the "Remember" tip stays on screen.
-            recordedOnly = stay SILENT (never robot-TTS) on any week whose
-            explanations aren't recorded yet (only Week 15 is today), so the
-            other weeks match prod's current silent panel instead of regressing
-            to the robotic voice. */}
-        <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
-          <InfoNarration speaker="adam" lines={[explanation]} accent={accent} recordedOnly />
-        </div>
+        {/* Sarah speaks the verdict the instant this panel appears (owner
+            2026-09-09, made uniform 2026-09-12): "Not quite." then the
+            explanation, across EVERY exercise and week, since they all share
+            this panel. Audio-only (the text below mirrors it); the narration
+            click-guard holds "Got it!" until she finishes so the child hears the
+            correction. The explanation is read verbatim so a recorded clip
+            matches; a week whose explanations aren't recorded yet hears the
+            shared lead only (never the robot voice). */}
+        <VerdictVoice verdict="wrong" why={explanation} />
 
         <p
           style={{

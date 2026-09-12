@@ -35,12 +35,21 @@ import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 
 export type QuickCheckMode = "finish" | "speed" | "lie" | "recall" | "order";
 
 export interface QuickCheckChoice {
   text: string;
   isCorrect: boolean;
+  /**
+   * Sarah's reason for THIS choice (owner 2026-09-12: every verdict is spoken
+   * with its why). A wrong choice: "Not quite." + why it is wrong, without
+   * giving the answer away. The correct choice: "That's right!" + why, used
+   * only when the check has no teachNarration. Not used in `order` mode
+   * (the screen-level nudge speaks there).
+   */
+  why?: string;
 }
 
 export interface QuickCheckProps {
@@ -124,6 +133,9 @@ export default function QuickCheck({
   // instead of the cyan/violet/green/amber rainbow (un-themed weeks keep it).
   const themeAccent = useLessonTheme()?.accent;
   const hasTeach = !!teachNarration && teachNarration.lines.length > 0;
+  // Spoken verdicts (owner 2026-09-12): Sarah says right/wrong AND why, and the
+  // check waits for her before it advances or lets the child retry.
+  const verdict = useVerdictVoice();
   const advancedRef = useRef(false);
   const advance = () => {
     if (advancedRef.current) return;
@@ -167,12 +179,32 @@ export default function QuickCheck({
     void correctAnswerBurst();
     onCorrect?.();
     // With a spoken teacher explanation, wait on the "Got it!" button so the
-    // child actually hears WHY it's right; otherwise snap forward as before.
-    if (!hasTeach) window.setTimeout(advance, reduce ? 350 : 1100);
+    // child actually hears WHY it's right (the teach opens with the praise).
+    // Otherwise Sarah says "That's right!" + the correct choice's why, then
+    // the check moves on.
+    if (!hasTeach) {
+      const right = choices.find((c) => c.isCorrect);
+      verdict.say("right", right?.why ?? null, () => window.setTimeout(advance, reduce ? 200 : 500));
+    }
+  };
+
+  // Wrong pick: shake + nudge on screen as before, and Sarah says "Not quite."
+  // + why THAT choice is wrong (falls back to the nudge). The narration guard
+  // holds the screen while she speaks; the child retries when she has finished.
+  const wrongPick = (i: number) => {
+    audio.wrong();
+    setWrongIdx(i);
+    setWrongKey((k) => k + 1);
+    const nudgeLine = nudge ?? defaultNudge(mode);
+    setNudgeText(nudgeLine);
+    onWrong?.();
+    // Only an AUTHORED nudge is spoken as the fallback (the default nudges
+    // already start with "Not quite", which would double the lead).
+    verdict.say("wrong", (mode === "order" ? null : shuffledChoices[i].why) ?? nudge ?? null);
   };
 
   const handlePick = (i: number) => {
-    if (solved) return;
+    if (solved || verdict.speaking) return;
     if (mode === "order") {
       if (placed.includes(i)) return;
       // The authored `choices` order IS the correct sequence; compare the
@@ -189,22 +221,14 @@ export default function QuickCheck({
           audio.tap();
         }
       } else {
-        audio.wrong();
-        setWrongIdx(i);
-        setWrongKey((k) => k + 1);
-        setNudgeText(nudge ?? defaultNudge(mode));
-        onWrong?.();
+        wrongPick(i);
       }
       return;
     }
     if (shuffledChoices[i].isCorrect) {
       onCorrectFire();
     } else {
-      audio.wrong();
-      setWrongIdx(i);
-      setWrongKey((k) => k + 1);
-      setNudgeText(nudge ?? defaultNudge(mode));
-      onWrong?.();
+      wrongPick(i);
     }
   };
 
@@ -654,6 +678,7 @@ export default function QuickCheck({
         </motion.div>
       )}
 
+      {verdict.element}
       {fx.layer()}
     </ExerciseFrame>
   );

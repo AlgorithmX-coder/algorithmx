@@ -53,6 +53,7 @@ import ExerciseIntroBeat, {
 } from "@/app/components/lesson/ExerciseBeats";
 import GameButton from "@/app/components/lesson/GameButton";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import PixIcon from "@/app/components/lesson/PixIcon";
@@ -72,6 +73,8 @@ export interface HospitalPatient {
   primaryReason: string;
   chartNote?: string;
   diagnosisExplanation: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
   recommendedActions: string[];
 }
 
@@ -361,9 +364,12 @@ export default function PasswordHospital({
 
   /* ─── Diagnosis phase ─── */
 
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
   const handleDiagnosis = useCallback(
     (reasonId: string, index: number) => {
-      if (!patient || feedback) return;
+      if (!patient || feedback || verdict.speaking) return;
       const correctIndex = reasons.findIndex((r) => r.id === patient.primaryReason);
       const wasCorrect = reasonId === patient.primaryReason;
       onAnswered?.({
@@ -375,7 +381,8 @@ export default function PasswordHospital({
       if (wasCorrect) {
         fx.correct({ xp: 10, text: "DIAGNOSED!" });
         onCorrect?.();
-        setPhase("repair");
+        // Sarah: "That's right!" + why, then the repair phase opens.
+        verdict.say("right", patient.why ?? patient.diagnosisExplanation, () => setPhase("repair"));
       } else {
         audio.wrong();
         onWrong?.();
@@ -398,6 +405,7 @@ export default function PasswordHospital({
       patient,
       reasons,
       feedback,
+      verdict,
       fx,
       audio,
       onAnswered,
@@ -734,6 +742,7 @@ export default function PasswordHospital({
 
       {/* Self-rendered toast layer from useExerciseFeedback */}
       {fx.layer()}
+      {verdict.element}
     </ExerciseFrame>
   );
 }

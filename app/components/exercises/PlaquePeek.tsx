@@ -40,6 +40,7 @@ import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 // Audio-only narration: Sarah's voice with no visible narration box (the text
@@ -70,8 +71,10 @@ export interface PeekDoor {
   address: string;
   /** True = the address matches the claim (an honest door / real proof). */
   matches: boolean;
-  /** Teach copy shown on a wrong verdict for this door. */
+  /** Teach copy shown on a wrong verdict for this door (Sarah: "Not quite." + note). */
   note: string;
+  /** Sarah's reason on a RIGHT verdict ("That's right!" + why). Defaults to `note`. */
+  why?: string;
   /** Mask skin: the "friend's" display name shown on the card. */
   name?: string;
 }
@@ -225,7 +228,10 @@ export default function PlaquePeek({
   const finished = doorIdx >= shownDoors.length;
   const door = shownDoors[doorIdx];
   const chain = mask;
-  const speaking = chain && narr !== "idle";
+  // Spoken verdicts (owner 2026-09-12): Sarah says right AND why; the next
+  // card waits for her and taps are held meanwhile (wrong = the panel below).
+  const verdict = useVerdictVoice();
+  const speaking = (chain && narr !== "idle") || verdict.speaking;
 
   // Kick the chain when the board appears / a new card arrives.
   useEffect(() => {
@@ -279,11 +285,12 @@ export default function PlaquePeek({
       onCorrect?.();
       if (!wrongOnCurrent) setFirstTryCount((n) => n + 1);
       setWrongOnCurrent(false);
-      // Let the toast land before the next card slides in.
-      window.setTimeout(() => {
+      // Sarah: "That's right!" + the door's own truth line; the next card
+      // slides in when she has finished.
+      verdict.say("right", door.why ?? door.note, () => {
         setPeeked(false);
         setDoorIdx((i) => i + 1);
-      }, reduce ? 300 : 900);
+      });
     } else {
       audio.wrong();
       onWrong?.();
@@ -307,6 +314,7 @@ export default function PlaquePeek({
   return (
     <ExerciseFrame maxWidth={sk.frameMax} decor>
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat

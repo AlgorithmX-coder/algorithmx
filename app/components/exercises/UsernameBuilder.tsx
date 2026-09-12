@@ -24,6 +24,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
@@ -39,6 +40,8 @@ export interface BuilderPart {
   slotId: string;
   /** If set, this part LEAKS real info; value = why (teach copy). */
   trap?: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
 }
 
 export interface UsernameBuilderProps {
@@ -169,8 +172,11 @@ export default function UsernameBuilder({
     });
   };
 
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
   const pick = (part: BuilderPart) => {
-    if (showIntro || badgeStamped || picked[part.slotId]) return;
+    if (showIntro || badgeStamped || picked[part.slotId] || verdict.speaking) return;
     setHasInteracted(true);
     onAnswered?.({
       questionKey: `forge-${part.slotId}@${part.id}`,
@@ -196,12 +202,14 @@ export default function UsernameBuilder({
     onCorrect?.();
     const next = { ...picked, [part.slotId]: part };
     setPicked(next);
-    if (Object.keys(next).length >= slots.length) {
-      window.setTimeout(() => {
+    const sealed = Object.keys(next).length >= slots.length;
+    // Sarah: "That's right!" + why that part is safe; the seal waits for her.
+    verdict.say("right", part.why ?? null, () => {
+      if (sealed) {
         fx.unlock({ text: "IDENTITY SEALED!" });
         setBadgeStamped(true);
-      }, reduce ? 400 : 900);
-    }
+      }
+    });
   };
 
   const stars = wrongCount === 0 ? 3 : wrongCount <= 2 ? 2 : 1;
@@ -209,6 +217,7 @@ export default function UsernameBuilder({
   return (
     <ExerciseFrame maxWidth={760} decor>
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat

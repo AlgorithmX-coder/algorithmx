@@ -30,7 +30,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import HintBubble from "@/app/components/lesson/HintBubble";
-import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 export interface OrderStep {
@@ -62,6 +62,8 @@ export interface StepOrderProps {
   /** Read each step's affirmation aloud as it lands (recorded only). Default true. */
   speakSteps?: boolean;
   hints?: { tier1: string; tier2: string };
+  /** Sarah's reason on a WRONG tile ("Not quite." + whyWrong); falls back to hints.tier1. */
+  whyWrong?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Spot-the-Danger boast folded into the intro. */
@@ -132,6 +134,7 @@ export default function StepOrder({
   completeLine,
   speakSteps = true,
   hints,
+  whyWrong,
   introNarration,
   coachLines,
   threat,
@@ -157,6 +160,9 @@ export default function StepOrder({
   // True while Sarah is reading the last landed step's affirmation. The
   // complete beat waits for it so two narrations never overlap.
   const [affSpeaking, setAffSpeaking] = useState(false);
+  // Spoken verdicts (owner 2026-09-12): every landed step = "That's right!" +
+  // its affirmation; a wrong tile = "Not quite." + why. Taps wait for her.
+  const verdict = useVerdictVoice();
   const [hasInteracted, setHasInteracted] = useState(false);
   const [finished, setFinished] = useState(false);
 
@@ -178,7 +184,7 @@ export default function StepOrder({
   };
 
   const pick = (step: OrderStep) => {
-    if (showIntro || finished || affSpeaking || placedIds.has(step.id)) return;
+    if (showIntro || finished || affSpeaking || verdict.speaking || placedIds.has(step.id)) return;
     setHasInteracted(true);
     const expected = steps[placedCount];
     const wasCorrect = step.id === expected.id;
@@ -193,7 +199,10 @@ export default function StepOrder({
       setWrongId(null);
       const line = step.affirmation ?? null;
       setAffirmation(line);
-      if (speakSteps && line) setAffSpeaking(true);
+      if (speakSteps) {
+        setAffSpeaking(true);
+        verdict.say("right", line, () => setAffSpeaking(false));
+      }
       const next = placedCount + 1;
       setPlacedCount(next);
       onCorrect?.();
@@ -202,6 +211,7 @@ export default function StepOrder({
       audio.wrong();
       setWrongId(step.id);
       onWrong?.();
+      verdict.say("wrong", whyWrong ?? hints?.tier1 ?? null);
       setWrongCount((n) => {
         const v = n + 1;
         reportTier(v);
@@ -266,18 +276,8 @@ export default function StepOrder({
         />
       )}
 
-      {/* Sarah reads the landed step (audio only; the guard holds taps). */}
-      {speakSteps && affSpeaking && affirmation && (
-        <div style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
-          <InfoNarration
-            key={`step-aff-${placedCount}`}
-            speaker={voice}
-            lines={[affirmation]}
-            recordedOnly
-            onDone={() => setAffSpeaking(false)}
-          />
-        </div>
-      )}
+      {/* Sarah's spoken verdicts (audio only; the guard holds taps). */}
+      {verdict.element}
 
       <div style={{ position: "relative", zIndex: 2, minHeight: 440, paddingTop: 8 }}>
         {pathLabel && (

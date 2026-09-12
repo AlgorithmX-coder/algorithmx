@@ -153,6 +153,17 @@ function chainsFor(type, span) {
       if (nudge && verdict) chains.push({ name: "profile verdict: " + un(nm[1]), mode: "chain", beats: [pairs[pairs.length - 1] || "", nudge, verdict].filter(Boolean) });
     }
   }
+  if (type === "clueStamper") {
+    // each case: the read-aloud -> Sarah's why on the lock; each clue's teach answers the read-aloud
+    const parts = span.split(/\bhandle:\s*/).slice(1);
+    for (const p of parts) {
+      const nm = p.match(new RegExp("^" + STR)); if (!nm) continue;
+      const read = field(p, "readAloud"), right = field(p, "rightWhy");
+      const teaches = all(new RegExp("teach:\\s*" + STR, "g"), p);
+      if (read && right) chains.push({ name: "case closed: " + un(nm[1]), mode: "chain", beats: [read, right] });
+      if (read && teaches.length) chains.push({ name: "case (wrong stamp): " + un(nm[1]), mode: "branch", beats: [read], branches: teaches });
+    }
+  }
   if (type === "popupPanic") {
     // each request: the message as it pops -> Sarah's why after the call
     const parts = span.split(/\bbody:\s*/).slice(1);

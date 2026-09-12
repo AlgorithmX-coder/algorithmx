@@ -18,6 +18,7 @@ import { PixarFinishOverlay } from "@/app/components/scene";
 // difficulty for prefers-reduced-motion users. Flagged in report.
 import { useComfortMode } from "@/app/lib/comfortMode";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import {
@@ -33,6 +34,8 @@ export interface SpamEmail {
   subject: string;
   isPhishing: boolean;
   clue: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why). Defaults to the clue. */
+  why?: string;
 }
 
 export interface SpamBlasterProps {
@@ -147,6 +150,7 @@ interface LiveEmail {
   subject: string;
   isPhishing: boolean;
   clue: string;
+  why?: string;
   x: number;
   y: number;
   vx: number;
@@ -257,10 +261,14 @@ export default function SpamBlaster({
     explanation: string;
     tip?: string;
   }>(null);
+  // Spoken verdicts (owner 2026-09-12): a zap = "That's right!" + the clue;
+  // a real email zapped / a phish that got through speaks via the panel. The
+  // game holds while she speaks, exactly as it does for the panel.
+  const verdict = useVerdictVoice();
   const pausedRef = useRef(false);
   useEffect(() => {
-    pausedRef.current = !!feedback;
-  }, [feedback]);
+    pausedRef.current = !!feedback || verdict.speaking;
+  }, [feedback, verdict.speaking]);
   const [wrongCount, setWrongCount] = useState(0);
 
   // Hint-tier emission. Same convention as CyberScanner: tier 1 at
@@ -440,6 +448,7 @@ export default function SpamBlaster({
     s.bestStreak = Math.max(s.bestStreak, s.streak);
     audio.correct();
     onCorrect?.();
+    verdict.say("right", em.why ?? (em.clue || null));
   };
 
   const nudgeSafe = (em: LiveEmail) => {
@@ -494,6 +503,8 @@ export default function SpamBlaster({
     s.monitorFlashUntil = performance.now() + 280;
     playSound("pop");
     onCorrect?.();
+    // A real email reached the inbox: a quiet right call, spoken when authored.
+    if (em.why) verdict.say("right", em.why);
   };
 
   const resetExercise = () => {
@@ -596,6 +607,7 @@ export default function SpamBlaster({
         subject: em.subject,
         isPhishing: em.isPhishing,
         clue: em.clue,
+        why: em.why,
         x,
         y,
         vx: (dx / len) * speed,
@@ -1471,6 +1483,7 @@ export default function SpamBlaster({
       {/* `render` is read so state-bumps trigger re-render for the finish overlay */}
       <span style={{ display: "none" }}>{render}</span>
       {fx.layer()}
+      {verdict.element}
     </ExerciseFrame>
   );
 }

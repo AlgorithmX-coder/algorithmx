@@ -35,6 +35,7 @@ import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import VerdictVoice from "@/app/components/lesson/VerdictVoice";
 import GameButton from "@/app/components/lesson/GameButton";
 
 export interface BingoSign {
@@ -695,14 +696,17 @@ export default function SignBingo({
             <PixIcon emoji="⭐" size={16} /> {vault ? "BOLT HOME!" : "SPOT ON!"}
           </div>
           <div style={{ textAlign: "left" }}>
+            {/* Text on screen; the voice is the shared verdict ("That's right!" + why). */}
             <InfoNarration
               key={`sb-why-${explain.key}`}
               lines={[explain.why]}
               speaker="adam"
               accent={vault ? "#e3b341" : "#7eff97"}
               recordedOnly
-              onDone={() => setWhyDone(true)}
+              autoPlay={false}
+              guard={false}
             />
+            <VerdictVoice key={`sb-vv-${explain.key}`} verdict="right" why={explain.why} onDone={() => setWhyDone(true)} />
           </div>
           {whyDone && (
             <div style={{ marginTop: 12 }}>

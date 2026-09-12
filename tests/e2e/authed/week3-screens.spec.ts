@@ -67,12 +67,12 @@ test.describe("Week 3 screens - no dead-ends", () => {
   test("the six Week 3 games render their intro beat (no blank frames)", async ({
     page,
   }) => {
-    // plaquePeek 5, profileInspector 9, popupPanic 13, cyberMaze 17,
+    // plaquePeek 5, clueStamper 9, popupPanic 13, cyberMaze 17,
     // chatSimulator 21, teamPoster 24: each opens on the shared intro beat
     // whose start button is held while Sarah speaks, never missing.
     for (const [idx, title] of [
       [5, /The Mask Peek/i],
-      [9, /The Profile Detective/i],
+      [9, /The Clue Stamper/i],
       [13, /Red-Flag Requests/i],
       [17, /The Meet-Up Maze/i],
       [21, /The Uh-Oh Chat/i],

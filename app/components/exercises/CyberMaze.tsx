@@ -32,6 +32,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import { validateMaze, pathFromExit } from "./maze-helpers";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
@@ -326,7 +327,10 @@ export default function CyberMaze({
     setAnswerOrder(qList.map((q) => fisherYates(q.answers.map((_, i) => i))));
   }, [qList]);
 
-  const speaking = narr !== "idle";
+  // Spoken verdicts (owner 2026-09-12): "That's right!" leads the gate's why;
+  // a wrong reply speaks through WrongAnswerPanel. Moves wait for her.
+  const verdict = useVerdictVoice();
+  const speaking = narr !== "idle" || verdict.speaking;
 
   // How-to once as the maze appears.
   useEffect(() => {
@@ -477,11 +481,13 @@ export default function CyberMaze({
       s.tweenStart = performance.now();
       s.activeGateIdx = null;
       setActiveQuestion(null);
-      // Sarah explains why that was the hero reply (audio only).
-      if (q.why && !isAudioMuted()) {
-        setWhyText(q.why);
-        setNarr("why");
-      }
+      // Sarah: "That's right!", then why that was the hero reply (audio only).
+      verdict.say("right", null, () => {
+        if (q.why && !isAudioMuted()) {
+          setWhyText(q.why);
+          setNarr("why");
+        }
+      });
     } else {
       s.wrongCount += 1;
       gate.flashUntil = performance.now() + 500;
@@ -1223,6 +1229,7 @@ export default function CyberMaze({
         )}
       <span style={{ display: "none" }}>{render}</span>
       {fx.layer()}
+      {verdict.element}
       </div>
     </ExerciseFrame>
   );

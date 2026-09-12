@@ -37,6 +37,7 @@ import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 // Flagged in migration report.
 import { useComfortMode } from "@/app/lib/comfortMode";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import {
   setupHiDpiCanvas,
@@ -53,6 +54,8 @@ export interface CyberScannerPassword {
   text: string;
   isStrong: boolean;
   explanation: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
 }
 
 import InfoNarration from "@/app/components/lesson/InfoNarration";
@@ -211,6 +214,7 @@ interface RunningCard {
   text: string;
   isStrong: boolean;
   explanation: string;
+  why?: string;
   startTime: number;
   duration: number;
   resolved: boolean;
@@ -357,12 +361,16 @@ export default function CyberScanner({
     }
   };
 
+  // Spoken verdicts (owner 2026-09-12): a right call = "That's right!" + why,
+  // and the beam holds on the resolved card until she is done; a wrong call
+  // speaks through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
   const resolveCurrent = (guess: boolean) => {
     const s = state.current;
     const c = s.card;
     if (!c || c.resolved) return;
-    // Paused waiting for "Got it" - swallow button presses.
-    if (feedback) return;
+    // Paused waiting for "Got it" (or for Sarah) - swallow button presses.
+    if (feedback || verdict.speaking) return;
     const now = performance.now();
     const progress = Math.min(1, (now - c.startTime) / c.duration);
     const correct = guess === c.isStrong;
@@ -401,12 +409,12 @@ export default function CyberScanner({
       });
       return;
     }
-    // Correct path: advance after the absorb animation.
-    window.setTimeout(() => {
+    // Correct path: Sarah says why, then the next card spawns.
+    verdict.say("right", c.why ?? c.explanation, () => {
       s.card = null;
       s.idx = c.idx + 1;
-      s.nextStartAt = performance.now() + 600;
-    }, 700);
+      s.nextStartAt = performance.now() + 400;
+    });
   };
 
   // Got-It handler: clear pause, advance to next card.
@@ -502,6 +510,7 @@ export default function CyberScanner({
         text: p.text,
         isStrong: p.isStrong,
         explanation: p.explanation,
+        why: p.why,
         startTime: now,
         duration: transitTimeMs(s.idx, comfortRef.current),
         resolved: false,
@@ -957,6 +966,7 @@ export default function CyberScanner({
       )}
       <span style={{ display: "none" }}>{render}</span>
       {fx.layer()}
+      {verdict.element}
     </ExerciseFrame>
   );
 }

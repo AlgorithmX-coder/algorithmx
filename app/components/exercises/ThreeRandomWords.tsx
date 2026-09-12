@@ -23,6 +23,7 @@ import {
   useMotionIntensity,
 } from "@/app/lib/gameEngine";
 import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, {
   ExerciseCompleteBeat,
@@ -43,6 +44,8 @@ export interface ThreeRandomWordsProps {
   /** Number of slots. Defaults to 3. */
   slots?: number;
   hints?: { tier1: string; tier2: string };
+  /** Sarah's reason on the build ("That's right!" + whyRight). */
+  whyRight?: string;
   /** Spoken, paced intro that explains the task (read aloud before play). */
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
@@ -95,6 +98,7 @@ export default function ThreeRandomWords({
   words,
   slots: slotCount = 3,
   hints,
+  whyRight,
   introNarration,
   threat,
   coachLines,
@@ -181,6 +185,9 @@ export default function ThreeRandomWords({
     [picked, phase, audio]
   );
 
+  // Spoken verdict (owner 2026-09-12): the build is always right; Sarah says
+  // "That's right!" + why three random words work, then the beat finishes.
+  const verdict = useVerdictVoice();
   const handleSubmit = useCallback(() => {
     if (!allFilled) {
       // Nudge hint after first submit attempt with empty slots
@@ -215,13 +222,11 @@ export default function ThreeRandomWords({
     if (hasVariety) {
       setShowVarietyHint(true);
     }
-    // Brief hold on the submitted state, then finish.
-    window.setTimeout(
-      () => setPhase("finished"),
-      intensity === 0 ? 800 : 1600
-    );
+    verdict.say("right", whyRight ?? null, () => window.setTimeout(() => setPhase("finished"), intensity === 0 ? 400 : 900));
   }, [
     allFilled,
+    verdict,
+    whyRight,
     pickedWords,
     fx,
     hasVariety,
@@ -748,6 +753,7 @@ export default function ThreeRandomWords({
       )}
 
       {fx.layer()}
+      {verdict.element}
     </ExerciseFrame>
   );
 }

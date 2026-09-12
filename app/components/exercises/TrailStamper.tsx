@@ -22,6 +22,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
@@ -34,6 +35,8 @@ export interface StampOption {
   isProud: boolean;
   /** Teach copy shown when the regret stamp is picked. */
   note: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
 }
 
 export interface StampSpot {
@@ -142,8 +145,11 @@ export default function TrailStamper({
     }
   };
 
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
   const pick = (idx: number) => {
-    if (!spot || showIntro || feedback || finished) return;
+    if (!spot || showIntro || feedback || finished || verdict.speaking) return;
     setHasInteracted(true);
     const option = spot.options[idx];
     onAnswered?.({
@@ -158,7 +164,7 @@ export default function TrailStamper({
       onCorrect?.();
       if (!wrongOnCurrent) setFirstTryCount((n) => n + 1);
       setWrongOnCurrent(false);
-      setSpotIdx((i) => i + 1);
+      verdict.say("right", option.why ?? option.note, () => setSpotIdx((i) => i + 1));
     } else {
       audio.wrong();
       onWrong?.();
@@ -181,6 +187,7 @@ export default function TrailStamper({
   return (
     <ExerciseFrame maxWidth={820} decor>
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat

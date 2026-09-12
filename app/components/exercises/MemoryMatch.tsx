@@ -36,12 +36,15 @@ import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 
 export interface MemoryPair {
   term: string;
   match: string;
   /** Hex accent. Defaults will pull from a Pixar-warm palette. */
   colour: string;
+  /** Sarah's reason on a match ("That's right!" + why). */
+  why?: string;
 }
 
 export interface MemoryMatchProps {
@@ -50,6 +53,8 @@ export interface MemoryMatchProps {
   introTitle?: string;
   introSubtitle?: string;
   introWelcome?: string;
+  /** Sarah's line on a mismatch ("Not quite." + whyWrong). */
+  whyWrong?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
   threat?: { raccoonLine: string };
@@ -160,6 +165,7 @@ export default function MemoryMatch({
   introTitle,
   introSubtitle,
   introWelcome,
+  whyWrong,
   introNarration,
   threat,
   coachLines,
@@ -172,6 +178,9 @@ export default function MemoryMatch({
   useEffect(ensureStyles, []);
 
   const pairList = useMemo(() => pairs ?? DEFAULT_PAIRS, [pairs]);
+  // Spoken verdicts (owner 2026-09-12): a match = "That's right!" + the pair's
+  // why; a mismatch = "Not quite." + whyWrong. The board stays locked meanwhile.
+  const verdict = useVerdictVoice();
 
   const [cards, setCards] = useState<Card[]>(() => buildDeck(pairList));
 
@@ -347,8 +356,8 @@ export default function MemoryMatch({
           return ns;
         });
         setFlippedIdxs([]);
-        lockRef.current = false;
         onCorrect?.();
+        verdict.say("right", pairList[a.pairId]?.why ?? null, () => { lockRef.current = false; });
       }, 320);
     } else {
       audio.wrong();
@@ -356,6 +365,10 @@ export default function MemoryMatch({
       setShakeIdxs([aIdx, bIdx]);
       setMismatchCount((n) => n + 1);
       onWrong?.();
+      // The board unlocks once the cards have flipped back AND Sarah is done.
+      let pending = 2;
+      const release = () => { if (--pending === 0) lockRef.current = false; };
+      verdict.say("wrong", whyWrong ?? null, release);
       window.setTimeout(() => {
         setShakeIdxs([]);
         setCards((prev) => {
@@ -365,7 +378,7 @@ export default function MemoryMatch({
           return next;
         });
         setFlippedIdxs([]);
-        lockRef.current = false;
+        release();
       }, 1200);
     }
   };
@@ -477,7 +490,8 @@ export default function MemoryMatch({
         onCorrect?.();
 
         const nextPrompt = rebuildPromptIdx + 1;
-        window.setTimeout(() => {
+        // Sarah: "That's right!" + the pair's why, then the next prompt.
+        verdict.say("right", promptPair.why ?? null, () => {
           if (nextPrompt >= pairList.length) {
             // Phase B complete - celebrate, then open the FinishOverlay
             setPhase("done");
@@ -488,7 +502,7 @@ export default function MemoryMatch({
             setRebuildPromptIdx(nextPrompt);
           }
           rebuildLockRef.current = false;
-        }, 700);
+        });
       }, 280);
     } else {
       // Wrong card - let the kid see what it actually was for ~1.1s,
@@ -496,6 +510,9 @@ export default function MemoryMatch({
       audio.wrong();
       setShakeIdxs([idx]);
       onWrong?.();
+      let pending = 2;
+      const release = () => { if (--pending === 0) rebuildLockRef.current = false; };
+      verdict.say("wrong", whyWrong ?? null, release);
       window.setTimeout(() => {
         setShakeIdxs([]);
         setCards((prev) => {
@@ -503,7 +520,7 @@ export default function MemoryMatch({
           next[idx] = { ...next[idx], flipped: false };
           return next;
         });
-        rebuildLockRef.current = false;
+        release();
       }, 1200);
     }
   };
@@ -907,6 +924,7 @@ export default function MemoryMatch({
         </div>
       )}
       {fx.layer()}
+      {verdict.element}
       </div>
     </ExerciseFrame>
   );
