@@ -1,18 +1,42 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-// playSound KEPT for sounds without useGameAudio facade equivalents:
-// "pop", "confetti". Flagged in migration report.
+/**
+ * CyberMaze — the NAVIGATE drill (Week 3 debut as "The Meet-Up Maze").
+ *
+ * A glowing maze on a canvas. The child taps a lit square next to their hero
+ * to move. Five forks are blocked by a fake friend's gate: at each one the
+ * "friend" proposes something (a meet-up, a photo swap, a secret) and three
+ * replies fan out. The hero reply opens the gate; a wrong reply teaches and
+ * closes it again for another go. Reach the exit and the trusted grown-up is
+ * waiting at the door.
+ *
+ * Kid-first contract: tap-only (arrow keys still work for laptops), nothing
+ * races the child, no timer, no lose state, wrong answers teach and retry.
+ *
+ * Learn-Loop wiring (owner standards, 2026-09-11), the first legacy canvas
+ * engine brought to the standard: shared intro beat with `introNarration` +
+ * the Raccoon's boast (`threat`); Sarah reads the how-to once as the maze
+ * appears (`coachLines`), each gate's proposal as it opens and its `why`
+ * after the hero reply (audio-only, `recordedOnly`), holding taps while she
+ * speaks; the reply options are shuffled per play (never authored order); a
+ * per-gate teach (`explanation`) on a wrong reply; a visible action strip
+ * naming the next move; shared complete beat with a spoken payoff
+ * (`completeNarration`). Legacy weeks that never used the engine are
+ * unaffected (this is its first outing).
+ */
+
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
-// KEPT + FLAGGED: correctAnswerBurst (no toolkit equivalent),
-// intensity-gated below.
 import { correctAnswerBurst } from "@/app/lib/celebrations";
-import ExerciseIntro from "./ExerciseIntro";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import { validateMaze, pathFromExit } from "./maze-helpers";
-import { PixarFinishOverlay } from "@/app/components/scene";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import PixIcon from "@/app/components/lesson/PixIcon";
+import { fisherYates } from "@/app/lib/gameEngine/useShuffledOnce";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import {
   setupHiDpiCanvas,
   scaledParticleCount,
@@ -21,14 +45,58 @@ import {
   useMotionIntensity,
 } from "@/app/lib/gameEngine";
 
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+
+const SPOKEN_GATE_MAX_MS = 15000;
+
 export interface MazeQuestion {
+  /** The gate's proposal / question ("Let's meet at the park after school!"). */
   question: string;
+  /** Reply options; authored data may put the hero reply first (shuffled at runtime). */
   answers: string[];
   correctIndex: number;
+  /** Optional: who is asking (shown on the gate card). */
+  from?: string;
+  /** Optional: Sarah's spoken why after the hero reply. */
+  why?: string;
+  /** Optional: teach copy on a wrong reply (defaults to a generic line). */
+  explanation?: string;
 }
 
 export interface CyberMazeProps {
   questions: MazeQuestion[];
+  /** Copy overrides (defaults keep the generic cyber-maze skin). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  /** Eyebrow on the gate card ("SECURITY GATE"). */
+  gateLabel?: string;
+  /** HUD labels. */
+  gatesLabel?: string;
+  tokensLabel?: string;
+  /** Visible action strip under the maze. */
+  movePrompt?: string;
+  gateToast?: string;
+  wrongTitle?: string;
+  wrongTip?: string;
+  completeTitle?: string;
+  completeLine?: string;
+  hints?: { tier2: string; tier3: string };
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken "you're protected" payoff on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -80,7 +148,6 @@ const GATES: Array<{ row: number; col: number }> = (() => {
     const idx = Math.floor(((i + 1) * interior.length) / (gateCount + 1));
     picks.push(interior[Math.min(idx, interior.length - 1)]);
   }
-  // Deduplicate
   const seen = new Set<string>();
   return picks.filter((p) => {
     const k = `${p.row},${p.col}`;
@@ -104,7 +171,6 @@ const TOKENS: Array<{ row: number; col: number }> = (() => {
       candidates.push({ row: r, col: c });
     }
   }
-  // Pick up to 6 spread across the map.
   const picks: Array<{ row: number; col: number }> = [];
   const stride = Math.max(1, Math.floor(candidates.length / 6));
   for (let i = 0; i < candidates.length && picks.length < 6; i += stride) {
@@ -116,52 +182,27 @@ const TOKENS: Array<{ row: number; col: number }> = (() => {
 const DEFAULT_QUESTIONS: MazeQuestion[] = [
   {
     question: "What should you NEVER share online?",
-    answers: [
-      "Your home address",
-      "Your favourite game",
-      "Your favourite colour",
-      "Your age range",
-    ],
+    answers: ["Your home address", "Your favourite game", "Your favourite colour", "Your age range"],
     correctIndex: 0,
   },
   {
     question: "A strong password should have...",
-    answers: [
-      "At least 8 characters with a mix",
-      "Your name",
-      "Just numbers",
-      "One word",
-    ],
+    answers: ["At least 8 characters with a mix", "Your name", "Just numbers", "One word"],
     correctIndex: 0,
   },
   {
     question: "If someone online asks to meet in person...",
-    answers: [
-      "Tell a trusted adult immediately",
-      "Meet them at a park",
-      "Ask a friend to come",
-      "Ignore it",
-    ],
+    answers: ["Tell a trusted adult immediately", "Meet them at a park", "Ask a friend to come", "Ignore it"],
     correctIndex: 0,
   },
   {
     question: "Two-factor authentication means...",
-    answers: [
-      "A second check to prove it's you",
-      "Two passwords",
-      "Logging in twice",
-      "Two email addresses",
-    ],
+    answers: ["A second check to prove it's you", "Two passwords", "Logging in twice", "Two email addresses"],
     correctIndex: 0,
   },
   {
     question: "What is a digital footprint?",
-    answers: [
-      "Everything you do online that stays",
-      "Your shoe size",
-      "A computer game",
-      "Your profile picture",
-    ],
+    answers: ["Everything you do online that stays", "Your shoe size", "A computer game", "Your profile picture"],
     correctIndex: 0,
   },
 ];
@@ -182,6 +223,23 @@ interface GateState {
 
 export default function CyberMaze({
   questions,
+  introTitle,
+  introSubtitle,
+  introIcon,
+  gateLabel,
+  gatesLabel,
+  tokensLabel,
+  movePrompt,
+  gateToast,
+  wrongTitle,
+  wrongTip,
+  completeTitle,
+  completeLine,
+  hints,
+  introNarration,
+  coachLines,
+  threat,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -192,10 +250,8 @@ export default function CyberMaze({
     () => (questions.length > 0 ? questions : DEFAULT_QUESTIONS),
     [questions]
   );
+  const voice = introNarration?.speaker ?? "adam";
 
-  // Toolkit hooks. CyberMaze had no comfort handling before this
-  // migration; intensityRef mirrors intensity so rAF/loops can read
-  // it safely without stale closures.
   const audio = useGameAudio();
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
@@ -210,20 +266,16 @@ export default function CyberMaze({
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
-  const startTimeRef = useRef<number>(0);
 
   const state = useRef({
-    // player position in cells (logical)
     cellCol: 0,
     cellRow: 0,
-    // tween animation
     fromX: 0,
     fromY: 0,
     toX: 0,
     toY: 0,
     tweenStart: 0,
     tweenDuration: 150,
-    // current render position
     x: CELL / 2,
     y: CELL / 2,
     gates: GATES.map((g, i) => ({
@@ -261,13 +313,37 @@ export default function CyberMaze({
     tip?: string;
   }>(null);
   const [wrongOnGate, setWrongOnGate] = useState<Record<number, number>>({});
+  // Read-aloud chain: the how-to once as the maze appears, each gate's
+  // proposal as its card opens, the why after the hero reply. Taps are held
+  // while Sarah speaks. "idle" = nothing playing.
+  const [narr, setNarr] = useState<"howto" | "ask" | "why" | "idle">("idle");
+  const [whyText, setWhyText] = useState<string | null>(null);
+  // NO SEQUENCE (owner rule): each gate's replies show in a random order every
+  // play (authored data leads with the hero reply). Shuffled after mount so the
+  // server and first client render agree.
+  const [answerOrder, setAnswerOrder] = useState<number[][]>(() => qList.map((q) => q.answers.map((_, i) => i)));
+  useIsoLayoutEffect(() => {
+    setAnswerOrder(qList.map((q) => fisherYates(q.answers.map((_, i) => i))));
+  }, [qList]);
 
-  // Hint-tier emission. CyberMaze gates surface the HintBubble when
-  // a single gate has been failed >= 2 times, so the screen reaches
-  // tier 2 first and tier 3 at 3+ wrongs on the same gate. We
-  // compute the max across all gates so the screen's overall tier
-  // reflects the worst point. The hook dedupes per-screen, so
-  // re-emitting on every wrongOnGate change is safe.
+  const speaking = narr !== "idle";
+
+  // How-to once as the maze appears.
+  useEffect(() => {
+    if (showIntro || finished) return;
+    if (coachLines && !isAudioMuted()) setNarr("howto");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showIntro]);
+
+  useEffect(() => {
+    if (!speaking) return;
+    const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [speaking, narr]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
+
+  // Hint-tier emission: tier 2 when a single gate has been failed twice,
+  // tier 3 at 3+ wrongs on the same gate.
   useEffect(() => {
     if (!onHintReached) return;
     let maxOnAnyGate = 0;
@@ -279,65 +355,37 @@ export default function CyberMaze({
     onHintReached(tier);
   }, [wrongOnGate, onHintReached]);
 
-  const resetExercise = () => {
-    state.current = {
-      cellCol: 0,
-      cellRow: 0,
-      fromX: 0,
-      fromY: 0,
-      toX: CELL / 2,
-      toY: CELL / 2,
-      tweenStart: 0,
-      tweenDuration: 150,
-      x: CELL / 2,
-      y: CELL / 2,
-      gates: GATES.map((g, i) => ({
-        ...g,
-        qIdx: i % qList.length,
-        open: false,
-        flashUntil: 0,
-      })),
-      tokens: TOKENS.map((t) => ({ ...t, collected: false })),
-      tokensCollected: 0,
-      questionsAnswered: 0,
-      wrongCount: 0,
-      activeGateIdx: null,
-      complete: false,
-      particles: [],
-      particleId: 0,
-      trail: [],
-    };
-    startTimeRef.current = performance.now();
-    setActiveQuestion(null);
-    setFinished(false);
-    setShowIntro(true);
-    setRender((n) => n + 1);
-  };
-
   useEffect(() => {
-    startTimeRef.current = performance.now();
     state.current.x = CELL / 2;
     state.current.y = CELL / 2;
   }, []);
 
   const tryMove = (dr: number, dc: number) => {
     const s = state.current;
-    if (showIntro) return;
+    if (showIntro || speaking || feedback) return;
     if (s.complete || activeQuestion !== null) return;
     if (performance.now() < s.tweenStart + s.tweenDuration) return;
     const newRow = s.cellRow + dr;
     const newCol = s.cellCol + dc;
     if (newRow < 0 || newRow >= ROWS || newCol < 0 || newCol >= COLS) return;
     if (walls[newRow][newCol]) return;
+    // The exit stays locked until every gate has been opened with a hero reply:
+    // the maze has more than one route, and the lesson is the five replies.
+    if (newRow === ROWS - 1 && newCol === COLS - 1 && s.questionsAnswered < s.gates.length) {
+      audio.select();
+      fx.toast({ text: `Open every ? gate first! ${s.gates.length - s.questionsAnswered} to go`, tone: "danger" });
+      return;
+    }
     // Gate collision - only stop if gate isn't open yet
     const gateIdx = s.gates.findIndex(
       (g) => g.row === newRow && g.col === newCol
     );
     if (gateIdx >= 0 && !s.gates[gateIdx].open) {
-      // trigger question
       s.activeGateIdx = gateIdx;
       setActiveQuestion(s.gates[gateIdx].qIdx);
       audio.select();
+      // Sarah reads the proposal; the replies wait for her.
+      if (!isAudioMuted()) setNarr("ask");
       return;
     }
     // move
@@ -358,7 +406,6 @@ export default function CyberMaze({
       s.tokens[tIdx].collected = true;
       s.tokensCollected += 1;
       audio.xpTick();
-      // sparkle burst (adaptive: low-power tier renders fewer dots)
       const sparkleCount = scaledParticleCount(10);
       for (let i = 0; i < sparkleCount; i++) {
         const a = Math.random() * Math.PI * 2;
@@ -379,7 +426,6 @@ export default function CyberMaze({
     if (newRow === ROWS - 1 && newCol === COLS - 1) {
       s.complete = true;
       playSound("confetti");
-      // Intensity-gated: strict reduced-motion skips the burst.
       if (intensityRef.current > 0) void correctAnswerBurst();
       window.setTimeout(() => setFinished(true), 1000);
     }
@@ -388,14 +434,10 @@ export default function CyberMaze({
 
   const answerQuestion = (choice: number) => {
     const s = state.current;
-    if (s.activeGateIdx === null) return;
+    if (s.activeGateIdx === null || speaking || feedback) return;
     const gate = s.gates[s.activeGateIdx];
     const q = qList[gate.qIdx];
 
-    // Per-question hook for persistence + analytics. Fires once per
-    // answer regardless of correct/wrong - the parent decides what
-    // to persist. `questionIndex` is the position in the input list
-    // so the parent can build a stable key.
     onAnswered?.({
       questionIndex: gate.qIdx,
       selectedIndex: choice,
@@ -404,12 +446,11 @@ export default function CyberMaze({
     });
 
     if (choice === q.correctIndex) {
-      // Open the gate, play correct, continue motion into that cell
       gate.open = true;
       s.questionsAnswered += 1;
       audio.correct();
       onCorrect?.();
-      // burst at gate
+      fx.correct({ xp: 25, text: gateToast ?? "GATE OPEN!" });
       const gx = gate.col * CELL + CELL / 2;
       const gy = gate.row * CELL + CELL / 2;
       const gateBurst = scaledParticleCount(14);
@@ -436,42 +477,36 @@ export default function CyberMaze({
       s.tweenStart = performance.now();
       s.activeGateIdx = null;
       setActiveQuestion(null);
+      // Sarah explains why that was the hero reply (audio only).
+      if (q.why && !isAudioMuted()) {
+        setWhyText(q.why);
+        setNarr("why");
+      }
     } else {
-      // wrong: push back a cell in any open direction away from gate
       s.wrongCount += 1;
       gate.flashUntil = performance.now() + 500;
       audio.wrong();
       onWrong?.();
-      // Pause-on-wrong: explain the correct answer before letting the
-      // child move on. The maze gate stays closed so they'll have to
-      // re-attempt the question on the next pass.
       setWrongOnGate((prev) => ({
         ...prev,
         [s.activeGateIdx!]: (prev[s.activeGateIdx!] ?? 0) + 1,
       }));
       setFeedback({
-        title: "Not quite",
-        explanation: `The right answer was "${q.answers[q.correctIndex]}". Read the question again next time you reach this gate.`,
-        tip: "Use what we learned: strong passwords are long, mixed, secret and unique.",
+        title: wrongTitle ?? "Not quite",
+        explanation:
+          q.explanation ??
+          `The hero reply was "${q.answers[q.correctIndex]}". Read the gate again next time you reach it.`,
+        tip: wrongTip ?? "Use what we learned: strong passwords are long, mixed, secret and unique.",
       });
-      // push back to previous cell (approx): move player back to start-side neighbour
-      // simplest: bump back by one cell in direction away from gate, or stay
-      const dirs: Array<[number, number]> = [
-        [-1, 0],
-        [1, 0],
-        [0, -1],
-        [0, 1],
-      ];
+      // The gate stays shut; step back one cell so the child can re-approach.
+      const dirs: Array<[number, number]> = [[-1, 0], [1, 0], [0, -1], [0, 1]];
       for (const [dr, dc] of dirs) {
         const nr = s.cellRow + dr;
         const nc = s.cellCol + dc;
         if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
         if (walls[nr][nc]) continue;
-        const isGate = s.gates.some(
-          (g) => g.row === nr && g.col === nc && !g.open
-        );
+        const isGate = s.gates.some((g) => g.row === nr && g.col === nc && !g.open);
         if (isGate) continue;
-        // push back
         s.fromX = s.x;
         s.fromY = s.y;
         s.cellRow = nr;
@@ -483,12 +518,11 @@ export default function CyberMaze({
       }
       s.activeGateIdx = null;
       setActiveQuestion(null);
-      // Re-trigger: open question again after a beat if player re-enters the cell
     }
     setRender((n) => n + 1);
   };
 
-  // Keyboard input
+  // Keyboard input (laptops); tapping is the primary control.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (activeQuestion !== null) return;
@@ -509,7 +543,7 @@ export default function CyberMaze({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeQuestion]);
+  }, [activeQuestion, showIntro, speaking, feedback]);
 
   // Click / tap on neighbour cell
   const onCanvasClick = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -533,8 +567,6 @@ export default function CyberMaze({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    // Hi-DPI buffer so the maze grid lines, gate glyphs and token
-    // sparkles render at native pixel sharpness on Retina/2x screens.
     const setup = setupHiDpiCanvas(canvas, {
       logicalWidth: BOARD_W,
       logicalHeight: BOARD_H,
@@ -553,9 +585,6 @@ export default function CyberMaze({
 
     const tick = (now: number) => {
       if (!running) return;
-      // True-pause when tab is hidden. The maze loop draws fog, a
-      // trail, and particles every frame - none of which need to
-      // tick while invisible.
       if (document.hidden) {
         rafRef.current = requestAnimationFrame(tick);
         return;
@@ -595,8 +624,6 @@ export default function CyberMaze({
 
       // DRAW
       ctx.clearRect(0, 0, BOARD_W, BOARD_H);
-      // Cyber-grid base - radial gradient plus animated diagonal scan lines
-      // and a subtle nebula glow. Reads like a holographic data-vault floor.
       const baseGrad = ctx.createRadialGradient(BOARD_W / 2, BOARD_H / 2, 0, BOARD_W / 2, BOARD_H / 2, Math.max(BOARD_W, BOARD_H));
       baseGrad.addColorStop(0, "#1a2147");
       baseGrad.addColorStop(0.55, "#0f1530");
@@ -636,24 +663,21 @@ export default function CyberMaze({
       ctx.setLineDash([]);
       ctx.restore();
 
-      // Floor cells - pulsing hex-style outlines with a soft inner tint
+      // Floor cells
       const cellPulse = 0.55 + 0.25 * Math.sin(now / 600);
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
           if (walls[r][c]) continue;
           const x = c * CELL;
           const y = r * CELL;
-          // Inner tint
           const tint = ctx.createLinearGradient(x, y, x, y + CELL);
           tint.addColorStop(0, "rgba(255, 200, 130, 0.08)");
           tint.addColorStop(1, "rgba(255, 95, 179, 0.06)");
           ctx.fillStyle = tint;
           ctx.fillRect(x + 4, y + 4, CELL - 8, CELL - 8);
-          // Outline
           ctx.strokeStyle = `rgba(124, 92, 255, ${0.14 * cellPulse + 0.08})`;
           ctx.lineWidth = 1;
           ctx.strokeRect(x + 3, y + 3, CELL - 6, CELL - 6);
-          // Corner ticks (HUD-style)
           ctx.strokeStyle = "rgba(125, 240, 255, 0.3)";
           ctx.lineWidth = 1.2;
           const tick = 5;
@@ -666,7 +690,7 @@ export default function CyberMaze({
         }
       }
 
-      // Walls - neon-edged data blocks with a moving highlight stripe
+      // Walls
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
           if (!walls[r][c]) continue;
@@ -678,13 +702,11 @@ export default function CyberMaze({
           grad.addColorStop(1, "#2a1208");
           ctx.fillStyle = grad;
           ctx.fillRect(x + 2, y + 2, CELL - 4, CELL - 4);
-          // Inner circuit dots
           ctx.fillStyle = "rgba(125, 240, 255, 0.4)";
           ctx.fillRect(x + CELL / 2 - 1, y + 8, 2, 2);
           ctx.fillRect(x + 8, y + CELL / 2 - 1, 2, 2);
           ctx.fillRect(x + CELL - 10, y + CELL / 2 - 1, 2, 2);
           ctx.fillRect(x + CELL / 2 - 1, y + CELL - 10, 2, 2);
-          // Moving highlight stripe
           ctx.save();
           ctx.beginPath();
           ctx.rect(x + 2, y + 2, CELL - 4, CELL - 4);
@@ -697,7 +719,6 @@ export default function CyberMaze({
           ctx.fillStyle = sg;
           ctx.fillRect(x, y, CELL, CELL);
           ctx.restore();
-          // Warm edge
           ctx.strokeStyle = "rgba(124, 92, 255, 0.7)";
           ctx.shadowColor = "#00e5ff";
           ctx.shadowBlur = 8;
@@ -707,18 +728,16 @@ export default function CyberMaze({
         }
       }
 
-      // Exit portal - multi-ring cinematic vortex
+      // Exit portal
       const exitX = (COLS - 1) * CELL + CELL / 2;
       const exitY = (ROWS - 1) * CELL + CELL / 2;
       const portalPulse = 0.7 + 0.3 * Math.sin(now / 350);
-      // Outer halo
       const halo = ctx.createRadialGradient(exitX, exitY, 0, exitX, exitY, CELL);
       halo.addColorStop(0, `rgba(255, 220, 130, ${0.65 * portalPulse})`);
       halo.addColorStop(0.5, "rgba(124, 92, 255, 0.32)");
       halo.addColorStop(1, "rgba(212, 115, 58, 0)");
       ctx.fillStyle = halo;
       ctx.fillRect(exitX - CELL, exitY - CELL, CELL * 2, CELL * 2);
-      // Concentric spinning rings
       for (let k = 0; k < 3; k++) {
         const radius = CELL / 2 - 6 - k * 5;
         if (radius <= 4) break;
@@ -737,13 +756,12 @@ export default function CyberMaze({
       }
       ctx.shadowBlur = 0;
       ctx.setLineDash([]);
-      // Inner sparkle dot
       ctx.fillStyle = "#fff";
       ctx.beginPath();
       ctx.arc(exitX, exitY, 2 + portalPulse * 1.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Gates - pulsing hex-coded data nodes with rotating outline
+      // Gates
       for (const g of s.gates) {
         if (g.open) continue;
         const gx = g.col * CELL;
@@ -754,13 +772,11 @@ export default function CyberMaze({
         const baseCol = flashing ? "#ff7a59" : "#ffd158";
         const accent = flashing ? "#f4a89a" : "#ffe9b8";
         const pulse = 0.6 + 0.4 * Math.sin(now / 280);
-        // Soft glow
         const gateGlow = ctx.createRadialGradient(cxg, cyg, 0, cxg, cyg, CELL / 2 + 4);
         gateGlow.addColorStop(0, flashing ? "rgba(255, 95, 179, 0.55)" : "rgba(255, 220, 130, 0.5)");
         gateGlow.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = gateGlow;
         ctx.fillRect(gx, gy, CELL, CELL);
-        // Hex body
         ctx.save();
         ctx.translate(cxg, cyg);
         ctx.rotate(now / 1200);
@@ -782,7 +798,6 @@ export default function CyberMaze({
         ctx.stroke();
         ctx.shadowBlur = 0;
         ctx.restore();
-        // Animated dashed counter-ring
         ctx.save();
         ctx.translate(cxg, cyg);
         ctx.rotate(-now / 600);
@@ -796,7 +811,6 @@ export default function CyberMaze({
         ctx.stroke();
         ctx.restore();
         ctx.setLineDash([]);
-        // ? glyph
         ctx.fillStyle = "#e8edff";
         ctx.font = "900 20px ui-rounded, 'Fredoka', system-ui, sans-serif";
         ctx.textAlign = "center";
@@ -807,7 +821,7 @@ export default function CyberMaze({
         ctx.shadowBlur = 0;
       }
 
-      // Tokens - 3D-looking data crystals with sparkle
+      // Tokens
       for (const t of s.tokens) {
         if (t.collected) continue;
         const tx = t.col * CELL + CELL / 2;
@@ -815,7 +829,6 @@ export default function CyberMaze({
         ctx.save();
         ctx.translate(tx, ty);
         ctx.rotate(now / 500);
-        // Outer crystal
         const crystGrad = ctx.createLinearGradient(0, -12, 0, 12);
         crystGrad.addColorStop(0, "#fef3c7");
         crystGrad.addColorStop(0.45, "#00e5ff");
@@ -836,7 +849,6 @@ export default function CyberMaze({
         ctx.fill();
         ctx.stroke();
         ctx.shadowBlur = 0;
-        // Inner facet (lighter)
         ctx.fillStyle = "rgba(255,255,255,0.45)";
         ctx.beginPath();
         ctx.moveTo(-4, -7);
@@ -846,7 +858,6 @@ export default function CyberMaze({
         ctx.closePath();
         ctx.fill();
         ctx.restore();
-        // Floating sparkle
         const spkA = 0.4 + 0.6 * Math.abs(Math.sin(now / 200 + t.col));
         ctx.fillStyle = `rgba(255,255,255,${spkA})`;
         ctx.beginPath();
@@ -866,7 +877,7 @@ export default function CyberMaze({
       }
       ctx.globalAlpha = 1;
 
-      // Player - warm gold-coral hero orb
+      // Player
       const pGrad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 14);
       pGrad.addColorStop(0, "#7df0ff");
       pGrad.addColorStop(0.5, "#ffd158");
@@ -884,6 +895,28 @@ export default function CyberMaze({
       ctx.arc(s.x, s.y, 11, 0, Math.PI * 2);
       ctx.stroke();
 
+      // "Tap me" rings on the open neighbour cells (the on-board instruction:
+      // the child always sees exactly where they can go next).
+      if (!s.complete && s.activeGateIdx === null) {
+        const ringPulse = 0.5 + 0.5 * Math.sin(now / 320);
+        const dirs: Array<[number, number]> = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+        for (const [dr, dc] of dirs) {
+          const nr = s.cellRow + dr;
+          const nc = s.cellCol + dc;
+          if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
+          if (walls[nr][nc]) continue;
+          const nx = nc * CELL;
+          const ny = nr * CELL;
+          ctx.save();
+          ctx.strokeStyle = `rgba(255, 255, 255, ${0.35 + 0.45 * ringPulse})`;
+          ctx.lineWidth = 2.5;
+          ctx.setLineDash([6, 5]);
+          ctx.lineDashOffset = -(now / 40) % 22;
+          ctx.strokeRect(nx + 7, ny + 7, CELL - 14, CELL - 14);
+          ctx.restore();
+        }
+      }
+
       // Particles
       for (const p of s.particles) {
         const alpha = Math.max(0, p.life / 700);
@@ -895,17 +928,10 @@ export default function CyberMaze({
       }
       ctx.globalAlpha = 1;
 
-      // Fog of war
-      const fog = ctx.createRadialGradient(
-        s.x,
-        s.y,
-        CELL * 1.2,
-        s.x,
-        s.y,
-        CELL * 3.5
-      );
+      // Fog of war (lighter than before so the next squares always read)
+      const fog = ctx.createRadialGradient(s.x, s.y, CELL * 1.6, s.x, s.y, CELL * 4.2);
       fog.addColorStop(0, "rgba(0,0,0,0)");
-      fog.addColorStop(1, "rgba(0,0,0,0.55)");
+      fog.addColorStop(1, "rgba(0,0,0,0.45)");
       ctx.fillStyle = fog;
       ctx.fillRect(0, 0, BOARD_W, BOARD_H);
 
@@ -919,12 +945,13 @@ export default function CyberMaze({
       document.removeEventListener("visibilitychange", onVis);
       ctx.clearRect(0, 0, BOARD_W, BOARD_H);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walls]);
 
   const s = state.current;
-  const secs = Math.floor((performance.now() - startTimeRef.current) / 1000);
   const stars = s.wrongCount === 0 ? 3 : s.wrongCount <= 2 ? 2 : 1;
+  const activeQ = activeQuestion !== null ? qList[activeQuestion] : null;
+  const activeOrder = activeQuestion !== null ? answerOrder[activeQuestion] ?? activeQ?.answers.map((_, i) => i) ?? [] : [];
+  const gatesLeft = s.gates.length - s.questionsAnswered;
 
   return (
     <ExerciseFrame
@@ -939,8 +966,6 @@ export default function CyberMaze({
         color: "#e8edff",
       }}
     >
-      {/* Inner div carries tabIndex (focus target for keyboard nav)
-          since ExerciseFrame doesn't surface that attribute. */}
       <div tabIndex={0} style={{ outline: "none" }}>
       <div
         style={{
@@ -953,13 +978,10 @@ export default function CyberMaze({
         }}
       >
         <span style={{ color: "#a0ffb0" }}>
-          GATES {s.questionsAnswered}/{s.gates.length}
+          {gatesLabel ?? "GATES"} {s.questionsAnswered}/{s.gates.length}
         </span>
         <span style={{ color: "#00e5ff" }}>
-          TOKENS {s.tokensCollected}/{s.tokens.length}
-        </span>
-        <span style={{ color: "#7c5cff", fontFamily: "monospace" }}>
-          TIME {secs}s
+          {tokensLabel ?? "TOKENS"} {s.tokensCollected}/{s.tokens.length}
         </span>
       </div>
 
@@ -972,25 +994,60 @@ export default function CyberMaze({
           display: "block",
           borderRadius: 14,
           background: "#0a0e1a",
-          cursor: "pointer",
+          cursor: speaking ? "wait" : "pointer",
           touchAction: "manipulation",
         }}
-        aria-label="Cyber Maze"
+        aria-label={introTitle ?? "Cyber Maze"}
       />
 
+      {/* On-board action strip: says what to do right now. */}
       <div
+        role="status"
         style={{
-          marginTop: 8,
-          fontSize: 11,
-          color: "#64748b",
-          textAlign: "center",
+          marginTop: 10,
+          display: "flex",
+          justifyContent: "center",
+          gap: 8,
+          fontSize: 12,
+          fontWeight: 900,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          flexWrap: "wrap",
         }}
       >
-        Arrow keys / WASD / tap an adjacent cell to move
+        <span style={{ padding: "6px 12px", borderRadius: 999, border: "1.5px solid #ffd158", background: "rgba(255,209,88,0.14)", color: "#ffe9b8" }}>
+          {activeQ
+            ? "Pick the hero reply to open the gate"
+            : s.complete
+              ? "You made it out!"
+              : movePrompt ?? "Tap a glowing square next to your hero to move"}
+        </span>
+        {!activeQ && !s.complete && (
+          <span style={{ padding: "6px 12px", borderRadius: 999, border: "1.5px solid rgba(125,240,255,0.4)", color: "#9fd8ff" }}>
+            {gatesLeft > 0
+              ? `Find the ${gatesLeft} glowing ? gate${gatesLeft === 1 ? "" : "s"}, then the exit at the bottom right`
+              : "Every gate open! Head for the exit at the bottom right"}
+          </span>
+        )}
       </div>
 
-      {/* Question modal */}
-      {activeQuestion !== null && (
+      {/* Sarah's read-aloud chain (audio only; the board waits for her). */}
+      {!showIntro && !finished && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          {narr === "howto" && coachLines && (
+            <InfoNarration key="cm-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent="#ffd158" recordedOnly onDone={() => setNarr("idle")} />
+          )}
+          {narr === "ask" && activeQ && (
+            <InfoNarration key={`cm-ask-${activeQuestion}`} speaker={voice} lines={[activeQ.question]} accent="#ffd158" recordedOnly onDone={() => setNarr("idle")} />
+          )}
+          {narr === "why" && whyText && (
+            <InfoNarration key={`cm-why-${s.questionsAnswered}`} speaker={voice} lines={[whyText]} accent="#ffd158" recordedOnly onDone={() => setNarr("idle")} />
+          )}
+        </div>
+      )}
+
+      {/* Gate card */}
+      {activeQ && (
         <div
           style={{
             position: "absolute",
@@ -1007,12 +1064,12 @@ export default function CyberMaze({
           <div
             style={{
               width: "100%",
-              maxWidth: 460,
+              maxWidth: 520,
               padding: 22,
               borderRadius: 18,
               background:
                 "linear-gradient(180deg, rgba(15,23,42,0.98), rgba(5,8,18,0.98))",
-              border: "2px solid rgba(0,229,255,0.5)",
+              border: "2px solid rgba(255,209,88,0.55)",
               boxShadow: "0 0 30px rgba(124,92,255,0.35)",
               textAlign: "center",
             }}
@@ -1021,23 +1078,37 @@ export default function CyberMaze({
               style={{
                 fontSize: 11,
                 letterSpacing: 3,
-                color: "#93c5fd",
+                color: "#ffd158",
                 fontWeight: 900,
-                marginBottom: 6,
+                marginBottom: 8,
               }}
             >
-              SECURITY GATE
+              {gateLabel ?? "SECURITY GATE"}
             </div>
+            {activeQ.from && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8, color: "#c9b8ff", fontSize: 13, fontWeight: 800 }}>
+                <PixIcon emoji="💬" size={18} />
+                {activeQ.from} says:
+              </div>
+            )}
             <div
               style={{
                 fontSize: 18,
-                fontWeight: 700,
+                fontWeight: 800,
                 color: "#f1f5f9",
                 marginBottom: 18,
-                lineHeight: 1.35,
+                lineHeight: 1.4,
+                padding: activeQ.from ? "12px 16px" : 0,
+                borderRadius: activeQ.from ? "16px 16px 16px 4px" : 0,
+                background: activeQ.from ? "rgba(255,255,255,0.08)" : "transparent",
+                border: activeQ.from ? "1.5px solid rgba(255,255,255,0.25)" : "none",
+                textAlign: activeQ.from ? "left" : "center",
               }}
             >
-              {qList[activeQuestion].question}
+              {activeQ.question}
+            </div>
+            <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: "0.1em", color: "#9fd8ff", marginBottom: 10 }}>
+              WHAT DOES A HERO REPLY?
             </div>
             <div
               style={{
@@ -1046,35 +1117,39 @@ export default function CyberMaze({
                 gap: 10,
               }}
             >
-              {qList[activeQuestion].answers.map((a, i) => (
+              {activeOrder.map((ai) => (
                 <button
-                  key={i}
+                  key={ai}
                   type="button"
-                  onClick={() => answerQuestion(i)}
+                  disabled={speaking || !!feedback}
+                  onClick={() => answerQuestion(ai)}
                   style={{
-                    padding: "12px 14px",
+                    padding: "13px 14px",
                     borderRadius: 12,
                     background: "rgba(30,41,59,0.8)",
-                    border: "1px solid rgba(0,229,255,0.35)",
+                    border: "1.5px solid rgba(255,209,88,0.4)",
                     color: "#e8edff",
-                    fontSize: 14,
-                    fontWeight: 600,
-                    cursor: "pointer",
+                    fontSize: 14.5,
+                    fontWeight: 700,
+                    cursor: speaking ? "wait" : "pointer",
+                    opacity: speaking ? 0.7 : 1,
                     textAlign: "left",
                     transition: "all 0.15s ease",
+                    fontFamily: "inherit",
+                    touchAction: "manipulation",
                   }}
                   onMouseEnter={(e) => {
                     const t = e.currentTarget;
                     t.style.background = "rgba(124,92,255,0.2)";
-                    t.style.borderColor = "#00e5ff";
+                    t.style.borderColor = "#ffd158";
                   }}
                   onMouseLeave={(e) => {
                     const t = e.currentTarget;
                     t.style.background = "rgba(30,41,59,0.8)";
-                    t.style.borderColor = "rgba(0,229,255,0.35)";
+                    t.style.borderColor = "rgba(255,209,88,0.4)";
                   }}
                 >
-                  {a}
+                  {activeQ.answers[ai]}
                 </button>
               ))}
             </div>
@@ -1083,28 +1158,33 @@ export default function CyberMaze({
       )}
 
       {finished && (
-        <PixarFinishOverlay
-          badge="Maze Cleared"
-          title="WELL DONE!"
-          subline={`${s.questionsAnswered}/${s.gates.length} gates · ${s.tokensCollected}/${s.tokens.length} tokens · ${secs}s · ${s.wrongCount} wrong`}
+        <ExerciseCompleteBeat
+          title={completeTitle ?? "Maze cleared!"}
           stars={stars}
+          statLines={[
+            `${s.questionsAnswered}/${s.gates.length} gates opened with a hero reply`,
+            completeLine ?? `${s.tokensCollected}/${s.tokens.length} tokens collected along the way.`,
+          ]}
+          narration={completeNarration}
           onContinue={() => {
             audio.tap();
             onComplete(s.questionsAnswered);
           }}
-          onRetry={() => {
-            audio.select();
-            resetExercise();
-          }}
         />
       )}
       {showIntro && (
-        <ExerciseIntro
-          title="Cyber Maze"
-          description="Navigate through the maze and answer questions at each gate to unlock the path! Collect shield tokens along the way!"
-          icon="🧩"
-          controls="Arrow keys / WASD to move"
-          onStart={() => setShowIntro(false)}
+        <ExerciseIntroBeat
+          title={introTitle ?? "Cyber Maze"}
+          subtitle={
+            introSubtitle ??
+            "Find your way through the maze. Every gate asks a question - the right answer opens it. Collect the tokens along the way!"
+          }
+          icon={introIcon ?? "🧩"}
+          narration={introNarration}
+          threat={threat}
+          character={introNarration?.speaker}
+          overlay
+          onDismiss={() => setShowIntro(false)}
         />
       )}
       {feedback && (
@@ -1112,7 +1192,7 @@ export default function CyberMaze({
           title={feedback.title}
           explanation={feedback.explanation}
           tip={feedback.tip}
-          speaker="layla"
+          speaker={voice}
           onContinue={() => setFeedback(null)}
         />
       )}
@@ -1132,8 +1212,12 @@ export default function CyberMaze({
           >
             <HintBubble
               tier={(wrongOnGate[s.activeGateIdx] ?? 0) >= 3 ? 3 : 2}
-              speaker="adam"
-              text="Read the question slowly. One answer matches what we learned earlier - the other three don't."
+              speaker={voice}
+              text={
+                (wrongOnGate[s.activeGateIdx] ?? 0) >= 3
+                  ? hints?.tier3 ?? "Read the question slowly. One answer matches what we learned earlier - the others don't."
+                  : hints?.tier2 ?? "Read the question slowly. One answer matches what we learned earlier - the others don't."
+              }
             />
           </div>
         )}

@@ -8,7 +8,22 @@ import {
 } from "@/app/lib/celebrations";
 import { playSound } from "@/app/lib/sounds";
 import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+
+// Audio-only narration (Sarah reads the bubbles that are already on screen).
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+
+// A held gate can never stick (see RequestInspector).
+const SPOKEN_GATE_MAX_MS = 15000;
 
 type Sender = "stranger" | "narrator";
 
@@ -38,6 +53,17 @@ type ChatSimulatorProps = {
   choices: ChoiceGroup[];
   /** Spoken, paced intro explaining the task before the chat starts. */
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Intro copy overrides (defaults keep the W3 uh-oh meter skin). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken "you're protected" payoff on the summary. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Sarah reads each incoming bubble and each feedback line aloud
+   *  (recorded only; un-recorded weeks stay silent). Default true. */
+  speakMessages?: boolean;
   onComplete: (score: number, total: number) => void;
 };
 
@@ -86,9 +112,20 @@ export default function ChatSimulator({
   messages,
   choices,
   introNarration,
+  introTitle,
+  introSubtitle,
+  introIcon,
+  threat,
+  completeNarration,
+  speakMessages = true,
   onComplete,
 }: ChatSimulatorProps) {
+  const voice = introNarration?.speaker ?? "adam";
   const [showIntro, setShowIntro] = useState(true);
+  // Read-aloud: the bubble Sarah is reading (the queue and the choices wait).
+  const [speak, setSpeak] = useState<null | { key: string; text: string }>(null);
+  const speaking = speak !== null;
+  const [payoffSpeaking, setPayoffSpeaking] = useState(false);
   const [shown, setShown] = useState<ShownMsg[]>([]);
   const [cursor, setCursor] = useState(0);
   const [typing, setTyping] = useState<null | { sender: Sender }>(null);
@@ -119,11 +156,42 @@ export default function ChatSimulator({
     ensureStyles();
   }, []);
 
+  // Safety releases for the spoken gates (see SPOKEN_GATE_MAX_MS).
+  useEffect(() => {
+    if (!speaking) return;
+    const id = window.setTimeout(() => setSpeak(null), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [speaking, speak]);
+  useEffect(() => {
+    if (!payoffSpeaking) return;
+    const id = window.setTimeout(() => setPayoffSpeaking(false), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [payoffSpeaking]);
+  useEffect(
+    () =>
+      subscribeAudioMute((muted) => {
+        if (!muted) return;
+        setSpeak(null);
+        setPayoffSpeaking(false);
+      }),
+    [],
+  );
+
   const pushShown = useCallback((msg: Omit<ShownMsg, "id">) => {
     idCounterRef.current += 1;
     const id = idCounterRef.current;
     setShown((prev) => [...prev, { ...msg, id }]);
   }, []);
+
+  // Sarah reads a bubble aloud (audio only). Skipped when muted / disabled so
+  // the queue never waits on a voice that isn't coming.
+  const speakLine = useCallback(
+    (key: string, text: string) => {
+      if (!speakMessages || isAudioMuted()) return;
+      setSpeak({ key, text });
+    },
+    [speakMessages],
+  );
 
   // Helper: find a choice group that should trigger AFTER message index `idx`
   const choiceForIndex = useCallback(
@@ -154,6 +222,8 @@ export default function ChatSimulator({
     if (phase !== "active") return;
     if (waitingChoice) return;
     if (typing) return;
+    // Sarah is reading the last bubble: the next one waits for her.
+    if (speaking) return;
 
     // If we've consumed all provided messages, conclude the conversation
     if (cursor >= messages.length) {
@@ -177,29 +247,53 @@ export default function ChatSimulator({
     const nextMsg = messages[cursor];
     const wait = nextMsg.delay ?? DEFAULT_DELAY;
 
+    // Step 1: the typing indicator. The reveal is a SEPARATE effect keyed on
+    // `typing` (below): with React 18+ batching, a reveal timer armed here
+    // would be cleared by this effect's own cleanup the moment `typing` flips,
+    // and the chat would sit on the three dots forever.
     nextMsgTimerRef.current = setTimeout(() => {
       setTyping({ sender: nextMsg.sender });
-      revealTimerRef.current = setTimeout(() => {
-        setTyping(null);
-        if (nextMsg.sender === "stranger") playSound("chatReceive");
-        pushShown({ sender: nextMsg.sender, text: nextMsg.text });
-        // After showing, check for a choice trigger on THIS index
-        const group = choiceForIndex(cursor);
-        if (group) {
-          setWaitingChoice(group);
-        }
-        setCursor((c) => c + 1);
-      }, nextMsg.sender === "stranger" ? TYPING_MS : 350);
     }, wait);
 
     return () => {
-      clearTimers();
+      if (nextMsgTimerRef.current) {
+        clearTimeout(nextMsgTimerRef.current);
+        nextMsgTimerRef.current = null;
+      }
     };
     // showIntro MUST be here: the effect early-returns while the intro is up,
     // so it has to re-run when the intro is dismissed or the message queue
-    // never starts (drill hangs on "Waiting for a message…").
+    // never starts (drill hangs on "Waiting for a message…"). `speaking` too:
+    // the queue resumes the moment Sarah finishes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cursor, phase, waitingChoice, typing, showIntro]);
+  }, [cursor, phase, waitingChoice, typing, showIntro, speaking]);
+
+  // Step 2: reveal the message the indicator is typing.
+  useEffect(() => {
+    if (!typing || phase !== "active") return;
+    const nextMsg = messages[cursor];
+    if (!nextMsg) return;
+    revealTimerRef.current = setTimeout(() => {
+      setTyping(null);
+      if (nextMsg.sender === "stranger") playSound("chatReceive");
+      pushShown({ sender: nextMsg.sender, text: nextMsg.text });
+      // Sarah reads the bubble as it lands (the queue + choices wait for her).
+      speakLine(`msg-${cursor}`, nextMsg.text);
+      // After showing, check for a choice trigger on THIS index
+      const group = choiceForIndex(cursor);
+      if (group) {
+        setWaitingChoice(group);
+      }
+      setCursor((c) => c + 1);
+    }, nextMsg.sender === "stranger" ? TYPING_MS : 350);
+    return () => {
+      if (revealTimerRef.current) {
+        clearTimeout(revealTimerRef.current);
+        revealTimerRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typing, phase]);
 
   // Auto-scroll the feed to the bottom when new messages arrive
   useEffect(() => {
@@ -220,12 +314,13 @@ export default function ChatSimulator({
       // push a narrator bubble showing `You: …` styled subtly.
       pushShown({ sender: "narrator", text: `You: "${opt.text}"` });
 
-      // Feedback narrator bubble
+      // Feedback narrator bubble (Sarah reads it; the chat waits for her)
       pushShown({
         sender: "narrator",
         text: opt.feedback,
         tone: opt.isSafe ? "good" : "bad",
       });
+      speakLine(`fb-${triggerIdx}`, opt.feedback);
 
       if (opt.isSafe) {
         playSound("correct");
@@ -245,8 +340,14 @@ export default function ChatSimulator({
       });
       setWaitingChoice(null);
     },
-    [waitingChoice, pushShown],
+    [waitingChoice, pushShown, speakLine],
   );
+
+  // The payoff is spoken on the summary; Continue waits for it.
+  useEffect(() => {
+    if (phase !== "complete") return;
+    if (completeNarration && completeNarration.lines.length && !isAudioMuted()) setPayoffSpeaking(true);
+  }, [phase, completeNarration]);
 
   // Celebrate a perfect run the moment the chat wraps; onComplete itself
   // fires from the Summary's Continue button so the child reads their score.
@@ -509,6 +610,7 @@ export default function ChatSimulator({
               key={i}
               option={opt}
               delay={i * 80}
+              held={speaking}
               onPick={() => handleChoice(opt)}
             />
           ))}
@@ -516,15 +618,43 @@ export default function ChatSimulator({
       )}
 
       {phase === "complete" && (
-        <Summary score={score} total={totalChoices} onContinue={handleContinue} />
+        <Summary score={score} total={totalChoices} held={payoffSpeaking} onContinue={handleContinue} />
+      )}
+
+      {/* Sarah's read-alouds (audio only): each bubble as it lands, the
+          feedback after a pick, the payoff on the summary. */}
+      {speak && !showIntro && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          <InfoNarration
+            key={`cs-${speak.key}`}
+            speaker={voice}
+            lines={[speak.text]}
+            accent="#00e5ff"
+            recordedOnly
+            onDone={() => setSpeak(null)}
+          />
+        </div>
+      )}
+      {phase === "complete" && completeNarration && payoffSpeaking && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          <InfoNarration
+            key="cs-payoff"
+            speaker={completeNarration.speaker ?? voice}
+            lines={completeNarration.lines}
+            accent="#00e5ff"
+            recordedOnly
+            onDone={() => setPayoffSpeaking(false)}
+          />
+        </div>
       )}
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="The Uh-Oh Meter"
-          subtitle="A chat is coming in. Watch the meter - and trust that funny feeling."
-          icon="💬"
+          title={introTitle ?? "The Uh-Oh Meter"}
+          subtitle={introSubtitle ?? "A chat is coming in. Watch the meter - and trust that funny feeling."}
+          icon={introIcon ?? "💬"}
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
@@ -680,25 +810,27 @@ function TypingIndicator({ sender }: { sender: Sender }) {
 function ChoiceCard({
   option,
   delay,
+  held = false,
   onPick,
 }: {
   option: ChoiceOption;
   delay: number;
+  /** True while Sarah is speaking: the card waits (no-skip rule). */
+  held?: boolean;
   onPick: () => void;
 }) {
   const [hover, setHover] = useState(false);
   const [picked, setPicked] = useState(false);
 
   const handle = () => {
-    if (picked) return;
+    if (picked || held) return;
     setPicked(true);
     onPick();
   };
 
-  // Subtle tint hints at the choice tone without giving the answer away.
-  const hintTint = option.isSafe
-    ? "linear-gradient(135deg, rgba(124,200,154,0.12), rgba(15,23,42,0.9))"
-    : "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,23,42,0.9))";
+  // NEUTRAL cards (anti-giveaway rule): every reply wears the same tint until
+  // it is picked; the colour is revealed by the pick, never before.
+  const hintTint = "linear-gradient(135deg, rgba(124,92,255,0.14), rgba(15,23,42,0.9))";
   const border = picked
     ? option.isSafe
       ? "#7eff97"
@@ -717,7 +849,7 @@ function ChoiceCard({
   return (
     <button
       type="button"
-      disabled={picked}
+      disabled={picked || held}
       onClick={handle}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -731,7 +863,8 @@ function ChoiceCard({
         fontFamily: "'Nunito', sans-serif",
         fontSize: 14,
         fontWeight: 600,
-        cursor: picked ? "default" : "pointer",
+        opacity: held && !picked ? 0.7 : 1,
+        cursor: picked ? "default" : held ? "wait" : "pointer",
         transition: "border-color 0.25s, transform 0.2s, box-shadow 0.25s, filter 0.2s",
         boxShadow: shadow,
         transform: hover && !picked ? "translateY(-2px) scale(1.01)" : "none",
@@ -750,10 +883,13 @@ function ChoiceCard({
 function Summary({
   score,
   total,
+  held = false,
   onContinue,
 }: {
   score: number;
   total: number;
+  /** True while Sarah speaks the payoff: Continue waits (no-skip rule). */
+  held?: boolean;
   onContinue: () => void;
 }) {
   const perfect = total > 0 && score === total;
@@ -789,7 +925,8 @@ function Summary({
       </div>
       <button
         type="button"
-        onClick={onContinue}
+        onClick={() => { if (!held) onContinue(); }}
+        disabled={held}
         style={{
           padding: "10px 24px",
           borderRadius: 999,
@@ -799,11 +936,12 @@ function Summary({
           fontFamily: "'Fredoka', 'Nunito', sans-serif",
           fontWeight: 700,
           fontSize: 14,
-          cursor: "pointer",
+          cursor: held ? "wait" : "pointer",
+          opacity: held ? 0.7 : 1,
           boxShadow: "0 6px 18px rgba(249,115,22,0.4)",
         }}
       >
-        Continue →
+        {held ? "Listening…" : "Continue →"}
       </button>
     </div>
   );

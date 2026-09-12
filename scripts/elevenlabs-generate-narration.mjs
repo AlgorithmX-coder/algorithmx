@@ -217,8 +217,12 @@ for (const fname of weekFiles) {
   // pass 5). The other weeks still have 15 un-rewritten questions, so skip
   // recording their long read-outs until the learn-loop rollout trims them.
   // Add each week's filename here as it is finalized; drop the guard at the end.
+  // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 7 / pass 5, wrong
+  // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week15.ts"]);
+  const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
-  while ((fname === "week1.ts" || fname === "week2.ts" || fname === "week15.ts") && (ba = bossAskRe.exec(src)) !== null) {
+  while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
     const askText = ba[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
     const optRe = /text:\s*"((?:[^"\\]|\\.)*)"/g;
     const opts = [];
@@ -254,7 +258,7 @@ for (const fname of weekFiles) {
   // ("That's right!") and the wrong lead ("Not quite.") in front of the same
   // teachOnWrong.explanation, matching QuizBoss's `explain.lines` exactly. Same
   // week-15-only scope as the read-outs above.
-  if ((fname === "week1.ts" || fname === "week2.ts" || fname === "week15.ts")) {
+  if (learnLoop) {
     const bossTeachRe = /teachOnWrong:\s*\{\s*title:\s*"(?:[^"\\]|\\.)*"\s*,\s*explanation:\s*"((?:[^"\\]|\\.)*)"/g;
     let bt;
     while ((bt = bossTeachRe.exec(src)) !== null) {
@@ -272,7 +276,7 @@ for (const fname of weekFiles) {
   // single-line block, matching InfoNarration({ lines: [explanation] }). Same
   // week-15-only scope; dedupes, and over-recording a few strings that aren't
   // shown in the panel is harmless.
-  if ((fname === "week1.ts" || fname === "week2.ts" || fname === "week15.ts")) {
+  if (learnLoop) {
     const wrongRe = /(?:explanation|note):\s*"((?:[^"\\]|\\.)*)"/g;
     const seenWrong = new Set();
     let wm;
@@ -301,7 +305,10 @@ for (const fname of weekFiles) {
   // StepOrder step affirmations (Sarah reads each step as it lands). Scoped to
   // week2.ts so shipped legacy weeks that use these engines stay silent
   // (recordedOnly) until their lines are recorded. Both content voices = Sarah.
-  if (fname === "week2.ts") {
+  // Week 3 (2026-09-11) adds: PlaquePeek claim -> reveal, ProfileInspector
+  // "label note" + nudge, PopupPanic request body -> why, CyberMaze gate
+  // proposal -> why, ChatSimulator bubbles + feedback, TeamPoster pin notes.
+  if (fname === "week2.ts" || fname === "week3.ts") {
     const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
     const w2Starts = [];
     let w2m;
@@ -332,6 +339,34 @@ for (const fname of weekFiles) {
         pushAll(span, /\bnudge:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       if (st.type === "stepOrder") pushAll(span, /\baffirmation:\s*"((?:[^"\\]|\\.)*)"/g);
+      if (st.type === "plaquePeek") {
+        pushAll(span, /\bclaim:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\baddress:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "profileInspector") {
+        let zm;
+        const zoneRe = /label:\s*"((?:[^"\\]|\\.)*)",\s*note:\s*"((?:[^"\\]|\\.)*)"/g;
+        while ((zm = zoneRe.exec(span)) !== null) {
+          const text = (zm[1] + " " + zm[2]).replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+          if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
+        }
+        pushAll(span, /\bnudge:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "popupPanic") {
+        pushAll(span, /\bbody:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\bwhyTrick:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "cyberMaze") {
+        pushAll(span, /\bquestion:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\bwhy:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "chatSimulator") {
+        // only the transcript bubbles are spoken, never the reply labels
+        const msgBlock = span.match(/messages:\s*\[([\s\S]*?)\]\s*,\s*choices:/);
+        if (msgBlock) pushAll(msgBlock[1], /\btext:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\bfeedback:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      // teamPoster notes are already covered by the wrong-answer `note:` scan above
     });
   }
   let sr;

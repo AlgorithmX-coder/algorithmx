@@ -496,6 +496,9 @@ export type ScreenDef = (
        * scary countdown / unknown sender claim).
        */
       type: "popupPanic";
+      /** Visual skin: scary browser pop-ups (default) or W3 chat requests
+       *  judged RED FLAG / FRIENDLY on two identical, side-swapping buttons. */
+      skin?: "popup" | "request";
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
@@ -503,15 +506,31 @@ export type ScreenDef = (
       popups: {
         /** Stable id e.g. "pop-1". */
         id: string;
-        /** Headline shown big in the popup. */
+        /** Headline shown big in the popup (request skin: small eyebrow under the name). */
         title: string;
-        /** Optional supporting line under the headline. */
+        /** Optional supporting line under the headline (request skin: the message, read aloud). */
         body?: string;
-        /** Emoji that prefixes the title for visual flavour. */
+        /** Emoji that prefixes the title for visual flavour (request skin: the sender's avatar). */
         icon?: string;
-        /** Why this popup is a trick - shown in the wrong-answer panel if the child taps OK. */
+        /** Why this popup is a trick / why the ask is fine - Sarah reads it after a correct call
+         *  and the wrong-answer panel shows it after a wrong one. */
         whyTrick: string;
+        /** Request skin: false = a fine, friendly ask (default true = red flag). */
+        isRedFlag?: boolean;
+        /** Request skin: who the request is from. */
+        from?: string;
       }[];
+      /** Board copy (request skin re-theme). */
+      headerLabel?: string;
+      boardPrompt?: string;
+      flagLabel?: string;
+      fineLabel?: string;
+      flagToast?: string;
+      fineToast?: string;
+      wrongTitle?: string;
+      wrongTip?: string;
+      completeTitle?: string;
+      completeLine?: string;
       hints?: { tier1: string; tier2: string; tier3: string };
     }
   | {
@@ -936,7 +955,18 @@ export type ScreenDef = (
         }[];
         /** Explanation shown after the child's verdict. */
         verdictNote: string;
+        /** Optional "Think!" line Sarah says once every clue is open, before the
+         *  verdict (read aloud; the verdict unlocks when she finishes). */
+        nudge?: string;
       }[];
+      /** Copy overrides (defaults keep the W3 detective skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      realLabel?: string;
+      fakeLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
       hints?: { tier1: string; tier2: string };
     }
   | {
@@ -1039,6 +1069,8 @@ export type ScreenDef = (
         /** Teach copy: why it belongs / why it doesn't. */
         note: string;
       }[];
+      /** Visual skin: warm W11 poster (default) or the W3 detective cork board. */
+      skin?: "poster" | "case";
       /** Copy overrides (defaults keep the W11 team skin). */
       introTitle?: string;
       introSubtitle?: string;
@@ -1049,6 +1081,10 @@ export type ScreenDef = (
       wrongTitle?: string;
       completeTitle?: string;
       completeLine?: string;
+      /** Counter label under the board ("ON THE POSTER" / "CLUES PINNED"). */
+      countLabel?: string;
+      /** Sarah reads each pinned tile's note aloud as it lands (recorded only). */
+      speakNotes?: boolean;
       hints?: { tier1: string; tier2: string };
     }
   | {
@@ -1242,24 +1278,33 @@ export type ScreenDef = (
        * (many clues, one verdict) and the zone inspectors.
        */
       type: "plaquePeek";
+      /** Visual skin: W16 link doors (default) or W3 masked friends ("The Mask
+       *  Peek": peek behind the claim to see what it really proves). */
+      skin?: "door" | "mask";
       doors: {
         id: string;
-        /** The shiny sign's claim, e.g. "FREE GAME COINS!" */
+        /** The shiny sign's claim, e.g. "FREE GAME COINS!" (mask skin: what the
+         *  friend says, read aloud as the card arrives). */
         claim: string;
-        /** Emoji rendered via PixIcon on the sign. */
+        /** Emoji rendered via PixIcon on the sign (mask skin: the friend's avatar). */
         icon: string;
-        /** The real address revealed under the plaque. */
+        /** The real address revealed under the plaque (mask skin: what the claim
+         *  really proves, read aloud as it lifts). */
         address: string;
-        /** True = the address matches the claim (an honest door). */
+        /** True = the address matches the claim (an honest door / real proof). */
         matches: boolean;
         /** Teach copy shown on a wrong verdict for this door. */
         note: string;
+        /** Mask skin: the friend's display name. */
+        name?: string;
       }[];
       /** Copy overrides (defaults keep the W16 doorway skin). */
       introTitle?: string;
       introSubtitle?: string;
       introIcon?: string;
       peekPrompt?: string;
+      revealLabel?: string;
+      cardNoun?: string;
       matchLabel?: string;
       sneakyLabel?: string;
       matchToast?: string;
@@ -1355,12 +1400,21 @@ export type ScreenDef = (
       chatTitle?: string;
       /** One-line scene-setter shown above the phone. */
       scenario: string;
+      /** The transcript, in order (the order IS the lesson; never shuffled).
+       *  Sarah reads each bubble aloud as it lands. */
       messages: { sender: "stranger" | "narrator"; text: string; delay?: number }[];
       choices: {
         /** 0-based message index this choice moment fires after. */
         triggerAfterMessage: number;
+        /** Reply options (shuffled at runtime); `feedback` is read aloud after the pick. */
         options: { text: string; isSafe: boolean; feedback: string }[];
       }[];
+      /** Intro copy overrides (defaults keep the W3 uh-oh meter skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** Sarah reads bubbles + feedback aloud (recorded only). Default true. */
+      speakMessages?: boolean;
     }
   | {
       /**
@@ -1437,12 +1491,42 @@ export type ScreenDef = (
       };
     }
   | {
+      /**
+       * Cyber Maze (Week 3 debut as "The Meet-Up Maze"). The NAVIGATE drill:
+       * tap a lit square next to the hero to move through a glowing maze; five
+       * forks are blocked by a gate where the fake friend proposes something
+       * and three replies fan out (shuffled at runtime). The hero reply opens
+       * the gate (Sarah reads the `why`); a wrong reply teaches (`explanation`)
+       * and the gate stays shut for another go. Tap-only, no timer, no lose.
+       */
       type: "cyberMaze";
       questions: {
+        /** The gate's proposal / question, read aloud as the gate card opens. */
         question: string;
+        /** Reply options; authored data may lead with the hero reply. */
         answers: string[];
         correctIndex: number;
+        /** Who is asking (shown on the gate card as a chat bubble). */
+        from?: string;
+        /** Sarah's spoken why after the hero reply. */
+        why?: string;
+        /** Teach copy on a wrong reply. */
+        explanation?: string;
       }[];
+      /** Copy overrides (defaults keep the generic cyber-maze skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      gateLabel?: string;
+      gatesLabel?: string;
+      tokensLabel?: string;
+      movePrompt?: string;
+      gateToast?: string;
+      wrongTitle?: string;
+      wrongTip?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier2: string; tier3: string };
     }
   | {
       /**

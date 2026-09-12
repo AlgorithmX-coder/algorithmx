@@ -132,6 +132,67 @@ function chainsFor(type, span) {
     const claim = field(span, "claim"), evidence = field(span, "evidence");
     if (claim && evidence) chains.push({ name: "guided round", mode: "chain", beats: [claim, evidence] });
   }
+  // Week 3 engines (rebuilt 2026-09-11).
+  if (type === "plaquePeek") {
+    // each card: the claim as it arrives -> the reveal as it lifts; the wrong-tap note answers the claim
+    const parts = span.split(/\bclaim:\s*/).slice(1);
+    for (const p of parts) {
+      const c = p.match(new RegExp("^" + STR)); if (!c) continue;
+      const address = field(p, "address"), note = field(p, "note");
+      if (address) chains.push({ name: "peek card: " + un(c[1]).slice(0, 40) + "...", mode: "chain", beats: [un(c[1]), address] });
+      if (note) chains.push({ name: "peek card (wrong call): " + un(c[1]).slice(0, 40) + "...", mode: "branch", beats: [un(c[1])], branches: [note] });
+    }
+  }
+  if (type === "profileInspector") {
+    const parts = span.split(/\bhandle:\s*/).slice(1);
+    for (const p of parts) {
+      const nm = p.match(new RegExp("^" + STR)); if (!nm) continue;
+      const pairs = [...p.matchAll(new RegExp("label:\\s*" + STR + ",\\s*note:\\s*" + STR, "g"))].map((m) => un(m[1]) + " " + un(m[2]));
+      const nudge = field(p, "nudge"), verdict = field(p, "verdictNote");
+      chains.push({ name: "profile check: " + un(nm[1]), mode: "checklist", beats: pairs });
+      if (nudge && verdict) chains.push({ name: "profile verdict: " + un(nm[1]), mode: "chain", beats: [pairs[pairs.length - 1] || "", nudge, verdict].filter(Boolean) });
+    }
+  }
+  if (type === "popupPanic") {
+    // each request: the message as it pops -> Sarah's why after the call
+    const parts = span.split(/\bbody:\s*/).slice(1);
+    for (const p of parts) {
+      const b = p.match(new RegExp("^" + STR)); if (!b) continue;
+      const why = field(p, "whyTrick");
+      if (why) chains.push({ name: "request: " + un(b[1]).slice(0, 40) + "...", mode: "chain", beats: [un(b[1]), why] });
+    }
+  }
+  if (type === "cyberMaze") {
+    // each gate: the proposal -> the why after the hero reply; the teach answers the proposal
+    const parts = span.split(/\bquestion:\s*/).slice(1);
+    for (const p of parts) {
+      const q = p.match(new RegExp("^" + STR)); if (!q) continue;
+      const why = field(p, "why"), expl = field(p, "explanation");
+      const optBlock = p.match(/answers:\s*\[([\s\S]*?)\]/);
+      const options = optBlock ? [...optBlock[1].matchAll(new RegExp(STR, "g"))].map((m) => un(m[1])) : [];
+      if (why) chains.push({ name: "gate: " + un(q[1]).slice(0, 40) + "...", mode: "chain", beats: [un(q[1]), why], ctx: [options.join(" ")] });
+      if (expl) chains.push({ name: "gate (wrong reply): " + un(q[1]).slice(0, 40) + "...", mode: "branch", beats: [un(q[1])], branches: [{ beat: expl, ctx: options.join(" ") }] });
+    }
+  }
+  if (type === "chatSimulator") {
+    // the transcript in order (the order IS the lesson) + each choice's feedback answering the reply tapped
+    const msgBlock = span.match(/messages:\s*\[([\s\S]*?)\]\s*,\s*choices:/);
+    const msgs = msgBlock ? [...msgBlock[1].matchAll(new RegExp("text:\\s*" + STR, "g"))].map((m) => un(m[1])) : [];
+    if (msgs.length) chains.push({ name: "chat transcript", mode: "chain", beats: msgs });
+    const groups = span.split(/\btriggerAfterMessage:\s*/).slice(1);
+    for (const g of groups) {
+      const idx = Number((g.match(/^(\d+)/) || [])[1]);
+      const setup = msgs[idx] || "";
+      const fbs = [...g.matchAll(new RegExp("text:\\s*" + STR + "[^}]*?feedback:\\s*" + STR, "g"))].map((m) => ({ beat: un(m[2]), ctx: un(m[1]) }));
+      if (setup && fbs.length) chains.push({ name: "chat choice after: " + setup.slice(0, 40) + "...", mode: "branch", beats: [setup], branches: fbs });
+    }
+  }
+  if (type === "teamPoster") {
+    // the tray prompt -> each pinned clue's why (spoken as it lands); decoys' notes answer the prompt too
+    const prompt = field(span, "trayPrompt") || "";
+    const tiles = [...span.matchAll(new RegExp("label:\\s*" + STR + "[\\s\\S]*?isTeam:\\s*(true|false)[\\s\\S]*?note:\\s*" + STR, "g"))].map((m) => ({ beat: un(m[3]), ctx: un(m[1]), team: m[2] === "true" }));
+    if (prompt && tiles.length) chains.push({ name: "case board pins", mode: "branch", beats: [prompt], branches: tiles });
+  }
   return chains;
 }
 

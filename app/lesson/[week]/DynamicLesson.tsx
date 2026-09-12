@@ -1547,11 +1547,25 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a0f2a 100%)">
             <PopupPanic
               popups={def.popups}
+              skin={def.skin}
               hints={def.hints}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
+              headerLabel={def.headerLabel}
+              boardPrompt={def.boardPrompt}
+              flagLabel={def.flagLabel}
+              fineLabel={def.fineLabel}
+              flagToast={def.flagToast}
+              fineToast={def.fineToast}
+              wrongTitle={def.wrongTitle}
+              wrongTip={def.wrongTip}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1773,8 +1787,17 @@ function DynamicLessonInner({
             <ProfileInspector
               profiles={def.profiles}
               hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              realLabel={def.realLabel}
+              fakeLabel={def.fakeLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1878,6 +1901,7 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #0a1030 0%, #2a1c40 100%)">
             <TeamPoster
               tiles={def.tiles}
+              skin={def.skin}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
@@ -1887,9 +1911,13 @@ function DynamicLessonInner({
               wrongTitle={def.wrongTitle}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
+              countLabel={def.countLabel}
+              speakNotes={def.speakNotes}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2054,10 +2082,13 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #0f0a2e 0%, #241547 100%)">
             <PlaquePeek
               doors={def.doors}
+              skin={def.skin}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
               peekPrompt={def.peekPrompt}
+              revealLabel={def.revealLabel}
+              cardNoun={def.cardNoun}
               matchLabel={def.matchLabel}
               sneakyLabel={def.sneakyLabel}
               matchToast={def.matchToast}
@@ -2068,6 +2099,8 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2165,7 +2198,13 @@ function DynamicLessonInner({
                 scenario={def.scenario}
                 messages={def.messages}
                 choices={def.choices}
+                introTitle={def.introTitle}
+                introSubtitle={def.introSubtitle}
+                introIcon={def.introIcon}
+                speakMessages={def.speakMessages}
                 introNarration={def.narration}
+                threat={def.threat}
+                completeNarration={def.completeNarration}
                 onComplete={(score, total) => {
                   awardXp(Math.max(10, Math.round((score / Math.max(1, total)) * 25)));
                   navigate(screen + 1);
@@ -2481,6 +2520,23 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <CyberMaze
               questions={def.questions}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              gateLabel={def.gateLabel}
+              gatesLabel={def.gatesLabel}
+              tokensLabel={def.tokensLabel}
+              movePrompt={def.movePrompt}
+              gateToast={def.gateToast}
+              wrongTitle={def.wrongTitle}
+              wrongTip={def.wrongTip}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}

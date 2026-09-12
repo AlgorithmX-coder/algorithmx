@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2];
+const REBUILT = [15, 1, 2, 3];
 const CAP = 3;
 
 // Screen types that are the spine, not exercises.
