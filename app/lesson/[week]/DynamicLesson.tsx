@@ -33,6 +33,8 @@ import { ComfortModeProvider, useComfortMode } from "@/app/lib/comfortMode";
 import { useLessonProgress } from "@/app/lib/useLessonProgress";
 import { analytics } from "@/app/lib/analytics";
 import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
+import { MISSION_WORLDS } from "@/app/lesson/weekContent/missionWorlds";
+import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 import { LessonThemeContext, useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import { SIGNATURES } from "@/app/components/exercises/signatures";
 
@@ -539,7 +541,14 @@ function MissionBriefCase({
   }, [objectives.length]);
 
   return (
-    <MissionBriefScene phase={phase} missions={missions} onAccept={onAccept} week={week} />
+    <MissionBriefScene
+      phase={phase}
+      missions={missions}
+      onAccept={onAccept}
+      week={week}
+      // Per-week stage world (missionWorlds.ts); weeks without one are unchanged.
+      world={week != null ? MISSION_WORLDS[week] ?? null : null}
+    />
   );
 }
 
@@ -2742,6 +2751,7 @@ function DynamicLessonInner({
             <div
               style={{
                 position: "relative",
+                isolation: "isolate",
                 width: "100%",
                 maxWidth: 720,
                 margin: "0 auto",
@@ -2752,6 +2762,8 @@ function DynamicLessonInner({
                 textAlign: "center",
               }}
             >
+              {/* The week's world + motes behind the badge (world weeks only) */}
+              <WorldBackdrop intensity={0.4} motes moteCount={14} fade={false} />
               {/* Rotating laurels / rays behind the badge */}
               <div
                 aria-hidden

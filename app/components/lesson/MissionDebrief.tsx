@@ -32,6 +32,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 
 export interface DebriefConcept {
   id: string;
@@ -102,7 +103,10 @@ export default function MissionDebrief({
       maxWidth={1000}
       padding={28}
       background="linear-gradient(180deg, #050a1a 0%, #1a1f4d 70%, #062019 100%)"
+      style={{ isolation: "isolate" }}
     >
+      {/* The week's world behind the debrief (world weeks only) */}
+      <WorldBackdrop intensity={0.36} motes moteCount={14} moteOpacity={0.45} />
       {/* Header */}
       <div style={{ textAlign: "center", marginBottom: 18 }}>
         <span
