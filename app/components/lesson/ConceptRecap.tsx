@@ -23,6 +23,7 @@ import InfoNarration from "@/app/components/lesson/InfoNarration";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 
 export interface ConceptRecapProps {
   concept: number;
@@ -70,6 +71,7 @@ export default function ConceptRecap({
         margin: "0 auto",
         borderRadius: 28,
         overflow: "hidden",
+        isolation: "isolate",
         padding: "30px 26px 26px",
         background:
           "radial-gradient(120% 90% at 50% 0%, #14323a 0%, #0f1530 42%, #060a1c 100%)",
@@ -81,6 +83,8 @@ export default function ConceptRecap({
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
+      {/* The week's world + its motes behind the stamp (world weeks only) */}
+      <WorldBackdrop intensity={0.45} motes moteCount={16} moteOpacity={0.6} moteMask="gutters" />
       {/* celebratory glow behind the emblem */}
       <div
         aria-hidden

@@ -24,6 +24,7 @@ import {
 } from "@/app/components/scene";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 
 /** Pick dark or white ink for readable text on a solid accent fill. */
 function readableInk(hex: string): string {
@@ -108,6 +109,9 @@ export default function WelcomeScene({
           preserved on the marketing home; this scene runs inside the
           cyber app surface. */}
       <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(15, 21, 48, 0.4) 0%, rgba(8, 10, 22, 0.7) 100%)", pointerEvents: "none" }} />
+      {/* The week's world behind the incident report (world weeks only; the
+          scene's own layers are positioned, so a z-index of 0 sits under them) */}
+      <WorldBackdrop intensity={0.38} zIndex={0} />
       <div aria-hidden style={{ position: "absolute", left: "-15%", top: "-10%", width: "60vw", height: "70vh", background: bleedA, filter: "blur(48px)", pointerEvents: "none" }} />
       <div aria-hidden style={{ position: "absolute", right: "-10%", top: "30%", width: "55vw", height: "60vh", background: bleedB, filter: "blur(50px)", pointerEvents: "none" }} />
       <StarField count={60} />

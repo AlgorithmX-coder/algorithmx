@@ -25,6 +25,7 @@ import {
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 
 export interface StickerData {
   id: string;
@@ -67,11 +68,10 @@ export default function StickerUnlock({
         // sticker landing" character.
         audio.signature("sticker-drop");
         audio.unlock();
-        if (intensity > 0) {
-          fx.unlock({
-            text: stickers[droppedCount]?.name.toUpperCase() ?? "STICKER!",
-          });
-        }
+        // Confetti + chime only: the sticker's name is already on its card,
+        // and the old top-centre name toast landed on the "Stickers Unlocked!"
+        // title (owner screenshot 2026-09-12).
+        if (intensity > 0) fx.unlock();
       },
       droppedCount === 0 ? 600 : DROP_STAGGER_MS
     );
@@ -93,7 +93,10 @@ export default function StickerUnlock({
       maxWidth={1000}
       padding={28}
       background="linear-gradient(180deg, #050a1a 0%, #1f1240 70%, #1a1f4d 100%)"
+      style={{ isolation: "isolate" }}
     >
+      {/* The week's world behind the sticker sheet (world weeks only) */}
+      <WorldBackdrop intensity={0.36} />
       {/* Above the beams: the light shafts poke ~60px up out of the grid
           and must never wash over the heading/subtitle copy. */}
       <div style={{ position: "relative", zIndex: 2, textAlign: "center", marginBottom: 20 }}>
@@ -163,21 +166,24 @@ export default function StickerUnlock({
               {/* Light beam from above - fades in once the sticker lands.
                   zIndex 0 keeps it under the sticker cards AND under the
                   header copy it pokes up towards. */}
+              {/* Owner 2026-09-12: the shaft is PROPORTIONAL to its card (a
+                  cone from a narrow lamp point above the card to the card's
+                  full width at its top edge), identical on every card, and it
+                  stops at the card so it never washes over the header copy. */}
               <span
                 aria-hidden
                 style={{
                   position: "absolute",
-                  top: -60,
-                  left: "50%",
-                  width: 130,
-                  height: 100,
+                  top: -54,
+                  left: "8%",
+                  right: "8%",
+                  height: 58,
                   zIndex: 0,
-                  transform: "translateX(-50%)",
-                  clipPath: "polygon(34% 0%, 66% 0%, 88% 100%, 12% 100%)",
+                  clipPath: "polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",
                   background:
-                    "linear-gradient(180deg, rgba(255,248,220,0.7) 0%, rgba(253,224,71,0.55) 45%, rgba(255,122,89,0.25) 80%, transparent 100%)",
-                  filter: "blur(6px)",
-                  opacity: visible ? 0.9 : 0,
+                    "linear-gradient(180deg, rgba(255,248,220,0.85) 0%, rgba(253,224,71,0.5) 55%, rgba(253,224,71,0.18) 100%)",
+                  filter: "blur(3px)",
+                  opacity: visible ? 0.85 : 0,
                   transition: `opacity ${intensity === 0 ? 80 : 420}ms ease-out`,
                   mixBlendMode: "screen",
                   pointerEvents: "none",
@@ -205,6 +211,9 @@ export default function StickerUnlock({
                 }
                 style={{
                   position: "relative",
+                  // Fill the column so every card in a row is the same height
+                  // whatever its description's line count (polish 2026-09-12).
+                  flex: 1,
                   padding: "20px 18px 18px",
                   borderRadius: 22,
                   background: visible

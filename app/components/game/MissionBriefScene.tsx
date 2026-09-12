@@ -20,6 +20,9 @@ import { motion, useAnimationControls } from "motion/react";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import { weekCharacterSrc, fallbackToShared } from "@/app/lib/weekCharacters";
+import WeekIntroBackdrop from "@/app/components/lesson/WeekIntroBackdrop";
+import type { MissionWorld } from "@/app/lesson/weekContent/missionWorlds";
+import { WORLD_FLOORS, CARD_MATERIALS, CardDecoration, WorldMotes } from "@/app/components/game/missionWorldStyles";
 
 /* ───────────────────────── WEEK-THEME PALETTE ─────────────────────────
  * The briefing adopts the week's world (weekThemes.ts) when a WeekTheme is
@@ -311,6 +314,12 @@ export type Mission = {
 export interface MissionBriefSceneProps {
   /** Week number -> themed Adam/Layla/Raccoon sprites (missing art falls back to shared). */
   week?: number;
+  /**
+   * Per-week stage WORLD (missionWorlds.ts): swaps the sky, floor, beam motes
+   * and card material around the unchanged flip ritual. null/undefined = the
+   * scene renders exactly as before.
+   */
+  world?: MissionWorld | null;
   phase: number;
   onAccept: () => void;
   missions: Mission[];
@@ -320,6 +329,7 @@ export interface MissionBriefSceneProps {
 
 export default function MissionBriefScene({
   week,
+  world = null,
   phase,
   onAccept,
   missions,
@@ -371,11 +381,17 @@ export default function MissionBriefScene({
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
-      <SkyBackdrop px={px} />
-      <DistantRidges px={px} />
-      <StarField />
-      <FloatingParticles />
-      <WoodFloor />
+      {world ? (
+        <WorldSky px={px} week={week ?? 0} />
+      ) : (
+        <>
+          <SkyBackdrop px={px} />
+          <DistantRidges px={px} />
+          <StarField />
+        </>
+      )}
+      {world ? <WorldMotes kind={world.motes} /> : <FloatingParticles />}
+      {world ? <WorldFloor kind={world.floor} /> : <WoodFloor />}
       <HoloPedestal />
       <BeamRays />
 
@@ -386,6 +402,7 @@ export default function MissionBriefScene({
         flipped={flipped}
         onFlip={flipCard}
         nudgeNonce={nudgeNonce}
+        world={world}
       />
 
       <TitlePlate title={title} />
@@ -458,6 +475,98 @@ function CastRow({ px, week }: { px: { x: number; y: number }; week?: number }) 
         }}
       />
       <div style={{ position: "absolute", right: "4%", bottom: "3.5%", width: "12%", height: 14, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(2,4,12,0.5), transparent 70%)" }} />
+    </div>
+  );
+}
+
+/* ───────────────────────── STAGE WORLDS (per-week materials) ─────────────────────────
+ * Owner 2026-09-12: the briefing must be a different world every week while
+ * the ritual (flip three cards, Accept) stays identical. Each layer below is
+ * a drop-in for its default sibling and only mounts when a MissionWorld
+ * exists for the week (missionWorlds.ts); weeks without one are untouched. */
+
+/** The week's live Mission Command backdrop as the sky, over the theme's own
+ *  sky gradient, fading into the stage floor. */
+function WorldSky({ px, week }: { px: { x: number; y: number }; week: number }) {
+  const p = useBriefPalette();
+  const theme = useLessonTheme();
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        inset: -20,
+        zIndex: 0,
+        background: p.sky,
+        transform: `translate(${px.x * -4}px, ${px.y * -2}px)`,
+        transition: "transform 0.5s ease-out",
+      }}
+    >
+      <div style={{ position: "absolute", inset: 20, opacity: 0.95 }}>
+        <WeekIntroBackdrop weekNumber={week} accent={theme?.accent ?? "#e3b341"} />
+      </div>
+      {/* ground fade so the scene meets the floor instead of cutting across it */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: "42%",
+          background: `linear-gradient(to top, ${p.containerBg} 0%, rgba(0,0,0,0) 100%)`,
+        }}
+      />
+    </div>
+  );
+}
+
+/** The stage floor in the world's material (same ellipse as WoodFloor, so the
+ *  pedestal, beam and cast keep their places). */
+function WorldFloor({ kind }: { kind: NonNullable<MissionWorld["floor"]> }) {
+  const p = useBriefPalette();
+  const f = WORLD_FLOORS[kind];
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        left: "50%",
+        bottom: "-8%",
+        transform: "translateX(-50%)",
+        width: "150%",
+        height: "55%",
+        zIndex: 2,
+        pointerEvents: "none",
+      }}
+    >
+      <div style={{ position: "absolute", inset: 0, borderRadius: "50% / 24%", background: f.base, boxShadow: f.rim }} />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          borderRadius: "50% / 24%",
+          background: f.texture,
+          backgroundSize: f.textureSize,
+          mixBlendMode: f.blend,
+          opacity: f.textureOpacity,
+          // the texture fades toward the far edge so it reads as depth
+          maskImage: "radial-gradient(ellipse at 50% 30%, black 20%, rgba(0,0,0,0.35) 70%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 30%, black 20%, rgba(0,0,0,0.35) 70%, transparent 100%)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "20%",
+          transform: "translateX(-50%)",
+          width: "55%",
+          height: "30%",
+          borderRadius: "50%",
+          background: p.floorGlow,
+          filter: "blur(20px)",
+        }}
+      />
     </div>
   );
 }
@@ -847,12 +956,14 @@ function MissionCardsRow({
   flipped,
   onFlip,
   nudgeNonce,
+  world,
 }: {
   missions: Mission[];
   phase: number;
   flipped: Set<number>;
   onFlip: (i: number) => void;
   nudgeNonce: number;
+  world?: MissionWorld | null;
 }) {
   return (
     <div
@@ -877,6 +988,7 @@ function MissionCardsRow({
           flipped={flipped.has(i)}
           onFlip={() => onFlip(i)}
           nudgeNonce={nudgeNonce}
+          world={world}
         />
       ))}
     </div>
@@ -891,6 +1003,7 @@ function MissionCard({
   flipped,
   onFlip,
   nudgeNonce,
+  world,
 }: {
   mission: Mission;
   index: number;
@@ -899,7 +1012,10 @@ function MissionCard({
   flipped: boolean;
   onFlip: () => void;
   nudgeNonce: number;
+  world?: MissionWorld | null;
 }) {
+  // World material (null = the default cyber card, byte-identical to before).
+  const mat = world ? CARD_MATERIALS[world.card.material] : null;
   // 2D "flip" (NOT a 3D rotateY): the card squeezes horizontally to a thin
   // line, swaps its face content while it's invisible, then opens back up.
   // There is deliberately NO preserve-3d / rotateY / back face here — a
@@ -1014,41 +1130,48 @@ function MissionCard({
           overflow: "hidden",
           transformOrigin: "center center",
           willChange: "transform",
-          background: showObjective ? p.cardFaceUpBg : p.cardFaceDownBg,
-          boxShadow: showObjective
-            ? `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
-              `0 0 0 2px rgba(4, 5, 13, 0.98) inset, ` +
-              `0 0 0 3.5px ${mission.colour}88 inset, ` +
-              `0 -3px 0 ${mission.colour}44 inset, ` +
-              `0 0 30px ${mission.glow}`
-            : p.cardDownShadow,
+          background: mat ? (showObjective ? mat.up : mat.down) : showObjective ? p.cardFaceUpBg : p.cardFaceDownBg,
+          boxShadow: mat
+            ? showObjective
+              ? `0 18px 40px -12px rgba(2, 4, 12, 0.75), 0 0 0 2px ${mat.edge} inset, 0 0 26px ${mission.glow}`
+              : `0 18px 40px -12px rgba(2, 4, 12, 0.75), 0 0 0 2px ${mat.edge}99 inset`
+            : showObjective
+              ? `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
+                `0 0 0 2px rgba(4, 5, 13, 0.98) inset, ` +
+                `0 0 0 3.5px ${mission.colour}88 inset, ` +
+                `0 -3px 0 ${mission.colour}44 inset, ` +
+                `0 0 30px ${mission.glow}`
+              : p.cardDownShadow,
         }}
       >
+        {mat && <CardDecoration deco={mat.deco} edge={mat.edge} />}
         {showObjective ? (
           /* REVEALED objective */
           <>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 6, background: `linear-gradient(90deg, ${mission.colour}aa, ${mission.colour}, ${mission.colour}aa)` }} />
+            {!mat && (
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 6, background: `linear-gradient(90deg, ${mission.colour}aa, ${mission.colour}, ${mission.colour}aa)` }} />
+            )}
             <div style={{ position: "absolute", top: 16, left: "50%", transform: "translateX(-50%)", fontSize: 44, lineHeight: 1, filter: `drop-shadow(0 0 18px ${mission.glow})` }}>
               <PixIcon emoji={mission.icon} size={52} />
             </div>
-            <div style={{ position: "absolute", top: 74, left: 0, right: 0, textAlign: "center", color: mission.colour, fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
+            <div style={{ position: "absolute", top: 74, left: 0, right: 0, textAlign: "center", color: mat ? mat.label : mission.colour, fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
               OBJECTIVE 0{index + 1}
             </div>
-            <div style={{ position: "absolute", top: 92, left: 12, right: 12, textAlign: "center", color: "#f2f6ff", fontSize: 13, fontWeight: 700, lineHeight: 1.25 }}>
+            <div style={{ position: "absolute", top: 92, left: 12, right: 12, textAlign: "center", color: mat ? mat.text : "#f2f6ff", fontSize: 13, fontWeight: 700, lineHeight: 1.25 }}>
               {mission.text}
             </div>
           </>
         ) : (
-          /* FACE-DOWN — sealed envelope, tap to open */
+          /* FACE-DOWN — sealed envelope (or the world's motif), tap to open */
           <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", textAlign: "center" }}>
             <div>
-              <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 8, filter: p.envelopeGlow }}>
-                <PixIcon emoji="✉️" size={48} />
+              <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 8, filter: mat ? `drop-shadow(0 0 14px ${mat.edge}88)` : p.envelopeGlow }}>
+                <PixIcon emoji={world ? world.card.backIcon : "✉️"} size={48} />
               </div>
-              <div style={{ color: p.envelopeLabelColor, fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
+              <div style={{ color: mat ? mat.label : p.envelopeLabelColor, fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
                 OBJECTIVE 0{index + 1}
               </div>
-              <div style={{ color: "#f2f6ff", fontSize: 13, fontWeight: 800, marginTop: 4 }}>
+              <div style={{ color: mat ? mat.text : "#f2f6ff", fontSize: 13, fontWeight: 800, marginTop: 4 }}>
                 TAP TO OPEN
               </div>
             </div>

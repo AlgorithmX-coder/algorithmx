@@ -28,6 +28,7 @@ import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { useWeekWorld, WorldBackdrop, CARD_MATERIALS, CardDecoration } from "@/app/components/game/missionWorldStyles";
 
 export interface InfoSceneProps {
   title: string;
@@ -71,9 +72,15 @@ export default function InfoScene({
   // Cohesion: on a themed week the whole Learn screen (title, kicker, emblem,
   // frame rim, clue rows) uses the ONE week accent instead of the gold/rainbow
   // command-center palette. Un-themed weeks keep the classic gold look.
-  const themeAccent = useLessonTheme()?.accent;
-  const gold = themeAccent ?? "#ffce78";
-  const rim = themeAccent ?? "#ffc478";
+  const theme = useLessonTheme();
+  const themeAccent = theme?.accent;
+  // Per-week world (owner 2026-09-12): the week's live scene replaces the
+  // shared command-center painting and the console frame borrows the world's
+  // card material for its rim + corner details. No world = exactly as before.
+  const world = useWeekWorld();
+  const mat = world ? CARD_MATERIALS[world.card.material] : null;
+  const gold = mat?.edge ?? themeAccent ?? "#ffce78";
+  const rim = mat?.edge ?? themeAccent ?? "#ffc478";
 
   // Chapter sweep (owner decision 2026-09-11, replaces the Next-Power screen):
   // a numbered Learn opens on a ~2s "POWER N OF M" title card that fades into
@@ -121,9 +128,15 @@ export default function InfoScene({
     <ExerciseFrame
       maxWidth={880}
       padding={0}
-      background="linear-gradient(180deg, rgba(18,24,58,0.86) 0%, rgba(7,11,30,0.94) 100%), url(/cyberheroes/scenes/learn-command-center.png) center / cover no-repeat"
-      style={{ color: "#fff7e6", position: "relative", overflow: "hidden" }}
+      background={
+        world
+          ? theme?.bgGradient ?? "linear-gradient(180deg, #0a1020 0%, #060a1c 100%)"
+          : "linear-gradient(180deg, rgba(18,24,58,0.86) 0%, rgba(7,11,30,0.94) 100%), url(/cyberheroes/scenes/learn-command-center.png) center / cover no-repeat"
+      }
+      style={{ color: "#fff7e6", position: "relative", overflow: "hidden", isolation: "isolate" }}
     >
+      {/* The week's world behind the console (world weeks only) */}
+      <WorldBackdrop intensity={0.55} />
       {/* Warm lit glow at top + soft side glows + vignette */}
       <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         <div style={{ position: "absolute", left: "50%", top: "-6%", width: 460, height: 320, transform: "translateX(-50%)", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,206,120,0.16) 0%, transparent 70%)", filter: "blur(8px)" }} />
@@ -143,21 +156,29 @@ export default function InfoScene({
           margin: 18,
           padding: "26px 26px 28px",
           borderRadius: 22,
-          background:
-            "linear-gradient(180deg, rgba(18,24,58,0.72) 0%, rgba(10,14,36,0.82) 100%)",
+          // World weeks: a more translucent console so the week's scene shows
+          // through the panel, not only at its edges (copy stays on the
+          // narration/clue cards, which keep their own dark surfaces).
+          background: world
+            ? "linear-gradient(180deg, rgba(14,18,44,0.52) 0%, rgba(8,11,30,0.66) 100%)"
+            : "linear-gradient(180deg, rgba(18,24,58,0.72) 0%, rgba(10,14,36,0.82) 100%)",
           // gold rim via layered ring + soft outer glow + inner top highlight
           boxShadow:
             `0 0 0 1px ${rim}8c, 0 0 0 4px ${rim}33, 0 24px 60px -28px rgba(0,0,0,0.7), inset 0 1px 0 ${rim}47, inset 0 0 36px rgba(60,90,170,0.14)`,
           backdropFilter: "blur(2px)",
         }}
       >
-        {/* corner accent brackets */}
-        {[
-          { top: 8, left: 8 }, { top: 8, right: 8 },
-          { bottom: 8, left: 8 }, { bottom: 8, right: 8 },
-        ].map((pos, i) => (
-          <span key={i} aria-hidden style={{ position: "absolute", ...pos, width: 12, height: 12, borderRadius: 3, background: `radial-gradient(circle at 35% 35%, ${gold}, ${gold}99)`, boxShadow: `0 0 8px ${gold}80` }} />
-        ))}
+        {/* corner accent brackets (world weeks: the material's own details) */}
+        {mat ? (
+          <CardDecoration deco={mat.deco} edge={mat.edge} tone="chrome" />
+        ) : (
+          [
+            { top: 8, left: 8 }, { top: 8, right: 8 },
+            { bottom: 8, left: 8 }, { bottom: 8, right: 8 },
+          ].map((pos, i) => (
+            <span key={i} aria-hidden style={{ position: "absolute", ...pos, width: 12, height: 12, borderRadius: 3, background: `radial-gradient(circle at 35% 35%, ${gold}, ${gold}99)`, boxShadow: `0 0 8px ${gold}80` }} />
+          ))
+        )}
 
         {/* Emblem + sparkles + LEARN kicker + title */}
         <div style={{ textAlign: "center", marginBottom: 16 }}>

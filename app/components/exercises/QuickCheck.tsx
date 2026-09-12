@@ -34,6 +34,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 
 export type QuickCheckMode = "finish" | "speed" | "lie" | "recall" | "order";
 
@@ -264,8 +265,10 @@ export default function QuickCheck({
       maxWidth={1100}
       padding={28}
       background="radial-gradient(120% 100% at 50% 0%, #131a3e 0%, #0c1230 45%, #060a1c 100%)"
-      style={{ color: "#fff7e6", position: "relative", overflow: "hidden" }}
+      style={{ color: "#fff7e6", position: "relative", overflow: "hidden", isolation: "isolate" }}
     >
+      {/* The week's world behind the prove-it (world weeks only) */}
+      <WorldBackdrop intensity={0.34} />
       {/* Sarah reads the question aloud when the Prove-it appears (audio-only,
           visually hidden; the "tap to skip" guard still shows and holds the
           answers until the child has heard the question). */}

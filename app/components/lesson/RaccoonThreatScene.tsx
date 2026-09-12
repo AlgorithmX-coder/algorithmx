@@ -19,6 +19,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 
 export interface RaccoonThreatSceneProps {
   raccoonLine: string;
@@ -46,8 +47,10 @@ export default function RaccoonThreatScene({
       maxWidth={780}
       padding={0}
       background="radial-gradient(120% 90% at 50% 0%, #13161f 0%, #0b0d16 45%, #05060c 100%)"
-      style={{ color: "#eef2ff", position: "relative", overflow: "hidden" }}
+      style={{ color: "#eef2ff", position: "relative", overflow: "hidden", isolation: "isolate" }}
     >
+      {/* The week's world behind the villain (world weeks only) */}
+      <WorldBackdrop intensity={0.4} />
       {/* soft danger glow behind the villain */}
       <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         <div

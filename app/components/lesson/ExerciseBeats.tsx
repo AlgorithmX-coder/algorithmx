@@ -41,6 +41,7 @@ import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { useWeekWorld, WorldBackdrop, CARD_MATERIALS, CardDecoration } from "@/app/components/game/missionWorldStyles";
 
 /* ─────────────── Intro beat ─────────────── */
 
@@ -117,6 +118,10 @@ export default function ExerciseIntroBeat({
   const themeAccent = useLessonTheme()?.accent;
   const accent = accentOverride ?? themeAccent ?? (speaker === "adam" ? "#00e5ff" : "#ff5fb3");
   const themed = !!(accentOverride ?? themeAccent);
+  // Per-week world (owner 2026-09-12): the week's live scene shows through the
+  // dimmed overlay and the card borrows the world's material for its rim.
+  const world = useWeekWorld();
+  const mat = world ? CARD_MATERIALS[world.card.material] : null;
   // NO-SKIP gate (owner 2026-09-07): the start button stays hidden until the
   // narration FINISHES, so the child can't skip the teaching voice. The click-
   // guard blocks the screen while it speaks; when it ends, the guard lifts and
@@ -167,13 +172,17 @@ export default function ExerciseIntroBeat({
         background: "rgba(8, 10, 22, 0.88)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
+        isolation: "isolate",
         animation: intensity === 0 ? undefined : "exIntroFade 240ms ease-out",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
+      {/* The week's world behind the card (world weeks only) */}
+      <WorldBackdrop intensity={0.42} />
       <div
         style={{
+          position: "relative",
           width: "100%",
           maxWidth: threat ? 560 : paced ? 470 : 420,
           margin: "auto 0",
@@ -188,14 +197,17 @@ export default function ExerciseIntroBeat({
           background: paced
             ? "linear-gradient(180deg, rgba(18,24,58,0.92) 0%, rgba(10,14,36,0.94) 100%)"
             : "transparent",
-          border: paced ? `1px solid ${accent}55` : "none",
+          border: paced ? `1px solid ${mat?.edge ?? accent}${mat ? "" : "55"}` : "none",
           borderRadius: paced ? 22 : 0,
           padding: threat ? "18px 22px 18px" : paced ? "26px 22px 24px" : 0,
           boxShadow: paced
-            ? "0 24px 60px -28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)"
+            ? mat
+              ? `0 24px 60px -28px rgba(0,0,0,0.7), inset 0 0 0 2px ${mat.edge}66, inset 0 1px 0 rgba(255,255,255,0.08)`
+              : "0 24px 60px -28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)"
             : "none",
         }}
       >
+        {mat && paced && <CardDecoration deco={mat.deco} edge={mat.edge} tone="chrome" />}
         {/* Spot-the-Danger preamble: the Raccoon reveals his trick, folded in
             above the warm mission so the get-ready is ONE screen (no separate
             threat scene). Leads the card with its own eyebrow. */}
@@ -427,11 +439,15 @@ export function ExerciseCompleteBeat({
         background: "rgba(8, 10, 22, 0.85)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
+        isolation: "isolate",
         animation: intensity === 0 ? undefined : "exCompleteFade 240ms ease-out",
       }}
     >
+      {/* The week's world + motes behind the complete card (world weeks only) */}
+      <WorldBackdrop intensity={0.38} motes moteCount={12} />
       <div
         style={{
+          position: "relative",
           margin: "auto",
           maxWidth: 420,
           textAlign: "center",
