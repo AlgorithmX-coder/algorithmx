@@ -470,15 +470,17 @@ export default function ClueStamper({
                 {phase === "sealed" && (
                   <motion.div
                     key="seal"
-                    initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.8, rotate: -20 }}
-                    animate={{ opacity: 1, scale: 1, rotate: -8 }}
-                    exit={{ opacity: 0 }}
+                    // Centring lives in the motion values (x), not a CSS transform:
+                    // motion owns `transform`, so a CSS translateX would be dropped
+                    // and the seal would hang off the card's right edge.
+                    initial={reduce ? { opacity: 0, x: "-50%" } : { opacity: 0, x: "-50%", scale: 1.8, rotate: -20 }}
+                    animate={{ opacity: 1, x: "-50%", scale: 1, rotate: -8 }}
+                    exit={{ opacity: 0, x: "-50%" }}
                     transition={reduce ? { duration: 0.2 } : { type: "spring", stiffness: 380, damping: 14, delay: 0.15 }}
                     style={{
                       position: "absolute",
                       left: "50%",
                       bottom: 14,
-                      transform: "translateX(-50%)",
                       padding: "8px 16px",
                       borderRadius: 10,
                       border: `4px double ${isFake ? "#ff5fb3" : "#34d399"}`,
