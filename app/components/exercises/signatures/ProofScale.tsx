@@ -33,6 +33,7 @@ import {
 } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { isAudioMuted } from "@/app/lib/audioMute";
@@ -54,7 +55,6 @@ const HANGER_H = 158; // hit box height below each hang point
 const TILT_PROOF = 12; // degrees, right (book) side down on a proved claim
 const DROP_INFLATE = 56; // generous drop forgiveness for small hands
 
-const ADVANCE_MS = 2300; // pause on a resolved claim before the next one
 const NUDGE_MS = 3000;
 
 const GREEN = "#34d399";
@@ -87,6 +87,11 @@ interface Claim {
   /** One-line teach beat shown when the claim is resolved. */
   fact: string;
 }
+
+// Wrong-call nudges, one template per claim, so the spoken clip (the narration
+// generator records them from CLAIMS) matches the text on screen exactly.
+const nudgeBook = (c: Claim) => `Hmm, does that book really talk about ${c.topic}? Look for one that does!`;
+const nudgeBuzz = (c: Claim) => `Beep? Wait. I think one of those books DOES talk about ${c.topic}. Peek again!`;
 
 const BOOKS: Book[] = [
   { id: "space", title: "Space Facts", icon: "⭐", color: "#4f6bd0" },
@@ -609,6 +614,9 @@ export default function ProofScale({
   const [claimIdx, setClaimIdx] = useState(0);
   const [stage, setStage] = useState<Stage>("claim");
   const [verdict, setVerdict] = useState<Verdict | null>(null);
+  // Spoken verdicts (owner 2026-09-12): the fact (already an affirmation) on a
+  // right call, "Not quite." + the nudge on a wrong one; the next claim waits.
+  const voice = useVerdictVoice();
   const [placedBookId, setPlacedBookId] = useState<string | null>(null);
   const [usedBookIds, setUsedBookIds] = useState<string[]>([]);
   const [judged, setJudged] = useState<Verdict[]>([]);
@@ -719,7 +727,7 @@ export default function ProofScale({
   // Judge a book against the current claim. Shared by TAP and DRAG.
   const placeBook = useCallback(
     (book: Book) => {
-      if (stage !== "evidence" || verdict) return;
+      if (stage !== "evidence" || verdict || voice.speaking) return;
       if (usedBookIds.includes(book.id)) return;
       if (book.id === claim.bookId) {
         audio.correct(); // matching proof book found
@@ -735,7 +743,7 @@ export default function ProofScale({
           damping: 9,
           delay: 0.15,
         });
-        later(() => goNext(claimIdx), ADVANCE_MS);
+        voice.say("right", claim.fact, () => later(() => goNext(claimIdx), 400), { leadless: true });
       } else {
         // wrong book: wobble level, nudge gently, book snaps home
         audio.wrong();
@@ -743,13 +751,11 @@ export default function ProofScale({
           duration: 0.9,
           ease: "easeInOut",
         });
-        showNudge(
-          `Hmm, does that book really talk about ${claim.topic}? Look for one that does!`,
-          "nudge"
-        );
+        showNudge(nudgeBook(claim), "nudge");
+        voice.say("wrong", nudgeBook(claim));
       }
     },
-    [stage, verdict, usedBookIds, claim, claimIdx, tilt, showNudge, later, goNext, audio]
+    [stage, verdict, usedBookIds, claim, claimIdx, tilt, showNudge, later, goNext, audio, voice]
   );
 
   const handleBookDragEnd = useCallback(
@@ -760,7 +766,7 @@ export default function ProofScale({
   );
 
   const handleBuzzer = useCallback(() => {
-    if (stage !== "evidence" || verdict) return;
+    if (stage !== "evidence" || verdict || voice.speaking) return;
     if (claim.bookId === null) {
       audio.correct(); // right call — the claim really had no proof
       setVerdict("busted");
@@ -769,16 +775,14 @@ export default function ProofScale({
       setMood("oops");
       showNudge(claim.fact, "good");
       animate(tilt, [0, 3.5, -2, 0], { duration: 0.8, ease: "easeOut" });
-      later(() => goNext(claimIdx), ADVANCE_MS + 200);
+      voice.say("right", claim.fact, () => later(() => goNext(claimIdx), 500), { leadless: true });
     } else {
       audio.wrong(); // buzzer slammed but a proof book exists
       animate(buzzShake, [0, -7, 7, -5, 5, 0], { duration: 0.5 });
-      showNudge(
-        `Beep? Wait. I think one of those books DOES talk about ${claim.topic}. Peek again!`,
-        "nudge"
-      );
+      showNudge(nudgeBuzz(claim), "nudge");
+      voice.say("wrong", nudgeBuzz(claim));
     }
-  }, [stage, verdict, claim, claimIdx, tilt, buzzShake, showNudge, later, goNext, audio]);
+  }, [stage, verdict, claim, claimIdx, tilt, buzzShake, showNudge, later, goNext, audio, voice]);
 
   /* ── win: deflate the robot, stamp the seal, complete once ── */
 
@@ -918,6 +922,7 @@ export default function ProofScale({
             stays ON while she talks (no tapping over the narrator); when she
             finishes, onDone lights the arrows that invite the tap. Re-keyed
             per stage so she speaks the right step at the right moment. */}
+        {voice.element}
         {guideStageActive && guide && (
           <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
             <InfoNarration

@@ -34,6 +34,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
@@ -231,12 +232,16 @@ export default function TeamPoster({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inlineCoach, showIntro]);
 
+  // Spoken verdicts (owner 2026-09-12): "That's right!" leads the pinned
+  // clue's note; a decoy speaks through WrongAnswerPanel. Taps wait for her.
+  const verdict = useVerdictVoice();
+
   // Completion waits for the last spoken note so two voices never overlap.
   useEffect(() => {
-    if (!allPlaced || finished || noteSpeaking) return;
+    if (!allPlaced || finished || noteSpeaking || verdict.speaking) return;
     const t = window.setTimeout(() => setFinished(true), reduce ? 600 : 1400);
     return () => window.clearTimeout(t);
-  }, [allPlaced, finished, noteSpeaking, reduce]);
+  }, [allPlaced, finished, noteSpeaking, verdict.speaking, reduce]);
 
   const reportedTier = useRef(0);
   const reportTier = (n: number) => {
@@ -247,7 +252,7 @@ export default function TeamPoster({
     }
   };
 
-  const held = noteSpeaking || howto;
+  const held = noteSpeaking || howto || verdict.speaking;
 
   const tap = (tile: PosterTile, idx: number) => {
     if (showIntro || finished || placed(tile.id) || feedback || held) return;
@@ -263,10 +268,13 @@ export default function TeamPoster({
       fx.correct({ xp: 25, text: placedToast ?? sk.placedToast });
       onCorrect?.();
       setPlacedIds((prev) => [...prev, tile.id]);
-      if (speakNotes && tile.note) {
-        setReadTile(tile);
-        if (!isAudioMuted()) setNoteSpeaking(true);
-      }
+      // Sarah: "That's right!", then the clue's note (why it belongs).
+      verdict.say("right", null, () => {
+        if (speakNotes && tile.note) {
+          setReadTile(tile);
+          if (!isAudioMuted()) setNoteSpeaking(true);
+        }
+      });
     } else {
       audio.wrong();
       onWrong?.();
@@ -289,6 +297,7 @@ export default function TeamPoster({
   return (
     <ExerciseFrame maxWidth={820} decor>
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat

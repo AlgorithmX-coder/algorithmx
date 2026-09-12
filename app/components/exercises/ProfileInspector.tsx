@@ -36,6 +36,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
@@ -68,6 +69,8 @@ export interface InspectProfile {
   isFake: boolean;
   zones: ProfileZone[];
   verdictNote: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
   /** Optional "Think!" line Sarah says once every clue is open, before the
    *  verdict. Read aloud; the verdict buttons unlock when she finishes. */
   nudge?: string;
@@ -160,7 +163,10 @@ export default function ProfileInspector({
   const readNote = readZoneObj ? `${readZoneObj.label} ${readZoneObj.note}` : undefined;
   const nudgeText = profile?.nudge;
   const showNudge = !!nudgeText && allInspected && !decided && !zoneSpeaking;
-  const verdictHeld = zoneSpeaking || (!!nudgeText && !muted && !nudgeDone);
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
+  const verdictHeld = zoneSpeaking || (!!nudgeText && !muted && !nudgeDone) || verdict.speaking;
 
   // Advance to the next profile, resetting the per-profile state in the same
   // update (clues, verdict, hint, read-aloud, nudge).
@@ -209,11 +215,7 @@ export default function ProfileInspector({
     if (inspected.has(zone.id) || decided || showIntro || zoneSpeaking) return;
     setHasInteracted(true);
     audio.tap();
-    fx.toast(
-      zone.isRedFlag
-        ? { text: "SUSPICIOUS!", tone: "danger" }
-        : { text: "Checks out", tone: "xp" },
-    );
+    fx.toast({ text: "Clue noted", tone: "xp" });
     setInspected((prev) => new Set(prev).add(zone.id));
     // Sarah reads the revealed clue aloud; the guard holds further taps until
     // she finishes. Muted = she never starts, so don't wait on her.
@@ -236,7 +238,7 @@ export default function ProfileInspector({
       onCorrect?.();
       setCorrectCount((n) => n + 1);
       setDecided(callFake ? "fake" : "real");
-      window.setTimeout(advance, reduce ? 700 : 1400);
+      verdict.say("right", profile.why ?? profile.verdictNote, advance);
     } else {
       audio.wrong();
       onWrong?.();
@@ -258,15 +260,21 @@ export default function ProfileInspector({
     () => (zone: ProfileZone) =>
       !inspected.has(zone.id)
         ? { border: "#7df0ff55", text: "#7df0ff", bg: "rgba(0,179,255,0.08)" }
-        : zone.isRedFlag
-          ? { border: "#ff5fb3aa", text: "#ff9bcb", bg: "rgba(255,95,179,0.1)" }
-          : { border: "#34d399aa", text: "#a0ffb0", bg: "rgba(52,211,153,0.1)" },
-    [inspected],
+        // Owner 2026-09-12: an inspected clue stays NEUTRAL (violet) until the
+        // child commits, so red/green never gives the verdict away. The
+        // suspicious/safe colour is revealed only after `decided`.
+        : !decided
+          ? { border: "#9d7bff88", text: "#d7ccff", bg: "rgba(157,123,255,0.10)" }
+          : zone.isRedFlag
+            ? { border: "#ff5fb3aa", text: "#ff9bcb", bg: "rgba(255,95,179,0.1)" }
+            : { border: "#34d399aa", text: "#a0ffb0", bg: "rgba(52,211,153,0.1)" },
+    [inspected, decided],
   );
 
   return (
     <ExerciseFrame maxWidth={760} decor>
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat
@@ -427,7 +435,7 @@ export default function ProfileInspector({
                     aria-label={open ? `${zone.label}: ${zone.note}` : `Inspect: ${zone.label}`}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13.5, fontWeight: 900 }}>
-                      <PixIcon emoji={open ? (zone.isRedFlag ? "🚫" : "✅") : "🔍"} size={18} />
+                      <PixIcon emoji={open && decided ? (zone.isRedFlag ? "🚫" : "✅") : "🔍"} size={18} />
                       {zone.label}
                     </div>
                     <div style={{ marginTop: 4, fontSize: 12.5, fontWeight: 700, lineHeight: 1.35, color: open ? undefined : "#7d8cc9" }}>

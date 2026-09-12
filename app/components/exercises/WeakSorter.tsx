@@ -31,6 +31,7 @@ import {
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import GameButton from "@/app/components/lesson/GameButton";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
@@ -47,6 +48,8 @@ export interface WeakItem {
   text: string;
   reasonId: string;
   explanation: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
 }
 
 export interface WeakSorterHints {
@@ -167,8 +170,11 @@ export default function WeakSorter({
     void correctAnswerBurst();
   }, [finished]);
 
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
   const handleTap = (reasonId: string) => {
-    if (feedback || !current) return;
+    if (feedback || !current || verdict.speaking) return;
     const correct = reasonId === current.reasonId;
     if (correct) {
       audio.correct();
@@ -187,12 +193,12 @@ export default function WeakSorter({
       // Advance after a beat so the stamp and pulse register. The
       // delay is longer in regular play because the stamp animation
       // is 600ms and we want it to land.
-      const advanceDelay = reduce ? 250 : 700;
-      window.setTimeout(() => {
+      // Sarah: "That's right!" + why; the next card slides in when she is done.
+      verdict.say("right", current.why ?? current.explanation, () => {
         setStamp(null);
         setIdx((i) => i + 1);
         setCardKey((k) => k + 1);
-      }, advanceDelay);
+      });
     } else {
       audio.wrong();
       setWrongTotal((n) => n + 1);
@@ -293,6 +299,7 @@ export default function WeakSorter({
       background="linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)"
       style={{ color: "#fff7e6" }}
     >
+      {verdict.element}
       {showIntro && (
         <ExerciseIntroBeat
           title="Weakness Detective"

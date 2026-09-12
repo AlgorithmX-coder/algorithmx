@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11T17:28:03.562Z",
+  "generatedAt": "2026-09-12T17:44:33.546Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -43,6 +43,146 @@
         "Which power did that move use? Turn its dial."
       ],
       "file": "/audio/voice/75c80fb0784164c8.mp3"
+    },
+    {
+      "key": "7b9ce2b983b69784",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right!",
+      "lines": [
+        "That's right!"
+      ],
+      "file": "/audio/voice/7b9ce2b983b69784.mp3"
+    },
+    {
+      "key": "a4066ee71b468c01",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite.",
+      "lines": [
+        "Not quite."
+      ],
+      "file": "/audio/voice/a4066ee71b468c01.mp3"
+    },
+    {
+      "key": "10acaa12d4b96ce4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "TRUE! The proof book weighs it down. Nice checking!",
+      "lines": [
+        "TRUE! The proof book weighs it down. Nice checking!"
+      ],
+      "file": "/audio/voice/10acaa12d4b96ce4.mp3"
+    },
+    {
+      "key": "8ebe7e0fddec925b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hmm, does that book really talk about the Moon and space? Look for one that does!",
+      "lines": [
+        "Hmm, does that book really talk about the Moon and space? Look for one that does!"
+      ],
+      "file": "/audio/voice/8ebe7e0fddec925b.mp3"
+    },
+    {
+      "key": "48792caaac289a1f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Beep? Wait. I think one of those books DOES talk about the Moon and space. Peek again!",
+      "lines": [
+        "Beep? Wait. I think one of those books DOES talk about the Moon and space. Peek again!"
+      ],
+      "file": "/audio/voice/48792caaac289a1f.mp3"
+    },
+    {
+      "key": "f5ca84977ccd0151",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "POP! No book about that anywhere. Great catch!",
+      "lines": [
+        "POP! No book about that anywhere. Great catch!"
+      ],
+      "file": "/audio/voice/f5ca84977ccd0151.mp3"
+    },
+    {
+      "key": "8a17ace6034a71ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hmm, does that book really talk about spiders? Look for one that does!",
+      "lines": [
+        "Hmm, does that book really talk about spiders? Look for one that does!"
+      ],
+      "file": "/audio/voice/8a17ace6034a71ac.mp3"
+    },
+    {
+      "key": "3238d6a40f2c30e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Beep? Wait. I think one of those books DOES talk about spiders. Peek again!",
+      "lines": [
+        "Beep? Wait. I think one of those books DOES talk about spiders. Peek again!"
+      ],
+      "file": "/audio/voice/3238d6a40f2c30e1.mp3"
+    },
+    {
+      "key": "e09760011342ff94",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "TRUE! Two hearts for the gills, one for the body!",
+      "lines": [
+        "TRUE! Two hearts for the gills, one for the body!"
+      ],
+      "file": "/audio/voice/e09760011342ff94.mp3"
+    },
+    {
+      "key": "a9fb5c7eff198bd8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hmm, does that book really talk about octopuses and the ocean? Look for one that does!",
+      "lines": [
+        "Hmm, does that book really talk about octopuses and the ocean? Look for one that does!"
+      ],
+      "file": "/audio/voice/a9fb5c7eff198bd8.mp3"
+    },
+    {
+      "key": "31f3c566e5ebc93e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Beep? Wait. I think one of those books DOES talk about octopuses and the ocean. Peek again!",
+      "lines": [
+        "Beep? Wait. I think one of those books DOES talk about octopuses and the ocean. Peek again!"
+      ],
+      "file": "/audio/voice/31f3c566e5ebc93e.mp3"
+    },
+    {
+      "key": "1b5201402ce24a32",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "POP! No proof book, no belief. You are a fact checker!",
+      "lines": [
+        "POP! No proof book, no belief. You are a fact checker!"
+      ],
+      "file": "/audio/voice/1b5201402ce24a32.mp3"
+    },
+    {
+      "key": "cc11460e09e5a98e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hmm, does that book really talk about carrots? Look for one that does!",
+      "lines": [
+        "Hmm, does that book really talk about carrots? Look for one that does!"
+      ],
+      "file": "/audio/voice/cc11460e09e5a98e.mp3"
+    },
+    {
+      "key": "63205e7ea5f766e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Beep? Wait. I think one of those books DOES talk about carrots. Peek again!",
+      "lines": [
+        "Beep? Wait. I think one of those books DOES talk about carrots. Peek again!"
+      ],
+      "file": "/audio/voice/63205e7ea5f766e8.mp3"
     },
     {
       "key": "2758a8b61f0475eb",
@@ -705,6 +845,176 @@
       "file": "/audio/voice/9eb998a408431cb1.mp3"
     },
     {
+      "key": "3cb3ae4986af44ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A password is the secret key that unlocks your account and proves it's really you.",
+      "lines": [
+        "A password is the secret key that unlocks your account and proves it's really you."
+      ],
+      "file": "/audio/voice/3cb3ae4986af44ec.mp3"
+    },
+    {
+      "key": "2c6e4260c0a344e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A strong password is so long and mixed up that a cracking machine gives up.",
+      "lines": [
+        "A strong password is so long and mixed up that a cracking machine gives up."
+      ],
+      "file": "/audio/voice/2c6e4260c0a344e6.mp3"
+    },
+    {
+      "key": "d3d49c659a179801",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs.",
+      "lines": [
+        "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs."
+      ],
+      "file": "/audio/voice/d3d49c659a179801.mp3"
+    },
+    {
+      "key": "86c23c1ba6fd5cc5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A secret password stays secret; the moment you tell someone, it isn't your key anymore.",
+      "lines": [
+        "A secret password stays secret; the moment you tell someone, it isn't your key anymore."
+      ],
+      "file": "/audio/voice/86c23c1ba6fd5cc5.mp3"
+    },
+    {
+      "key": "1e7811b11bc15495",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A password isn't for robots; it's the secret that shows who is really typing.",
+      "lines": [
+        "A password isn't for robots; it's the secret that shows who is really typing."
+      ],
+      "file": "/audio/voice/1e7811b11bc15495.mp3"
+    },
+    {
+      "key": "4f71acbcc289d05a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A hacker is exactly who the password keeps out.",
+      "lines": [
+        "A hacker is exactly who the password keeps out."
+      ],
+      "file": "/audio/voice/4f71acbcc289d05a.mp3"
+    },
+    {
+      "key": "d726aa5a6e9881c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend shouldn't know your password at all; it proves one person only.",
+      "lines": [
+        "Your friend shouldn't know your password at all; it proves one person only."
+      ],
+      "file": "/audio/voice/d726aa5a6e9881c1.mp3"
+    },
+    {
+      "key": "4744a3b56c830612",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Cat is three little letters; a cracking machine guesses that in a blink.",
+      "lines": [
+        "Cat is three little letters; a cracking machine guesses that in a blink."
+      ],
+      "file": "/audio/voice/4744a3b56c830612.mp3"
+    },
+    {
+      "key": "ad11e694161f9cdb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One word and one number is still a quick guess; hackers try a name plus a number first.",
+      "lines": [
+        "One word and one number is still a quick guess; hackers try a name plus a number first."
+      ],
+      "file": "/audio/voice/ad11e694161f9cdb.mp3"
+    },
+    {
+      "key": "d16da66ac488c34d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sun is a tiny common word; it would be cracked in a second.",
+      "lines": [
+        "Sun is a tiny common word; it would be cracked in a second."
+      ],
+      "file": "/audio/voice/d16da66ac488c34d.mp3"
+    },
+    {
+      "key": "b8bc03a8151677fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong.",
+      "lines": [
+        "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong."
+      ],
+      "file": "/audio/voice/b8bc03a8151677fb.mp3"
+    },
+    {
+      "key": "6e1c0cc517ad196e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even a best friend shouldn't know it; a secret shared is a secret that can leak.",
+      "lines": [
+        "Even a best friend shouldn't know it; a secret shared is a secret that can leak."
+      ],
+      "file": "/audio/voice/6e1c0cc517ad196e.mp3"
+    },
+    {
+      "key": "7d12c2336e3c223a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A whole class is a lot of people; a password is for you alone.",
+      "lines": [
+        "A whole class is a lot of people; a password is for you alone."
+      ],
+      "file": "/audio/voice/7d12c2336e3c223a.mp3"
+    },
+    {
+      "key": "e4c0d554a5890c7d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too.",
+      "lines": [
+        "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too."
+      ],
+      "file": "/audio/voice/e4c0d554a5890c7d.mp3"
+    },
+    {
+      "key": "11559a0a1041db7a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess.",
+      "lines": [
+        "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess."
+      ],
+      "file": "/audio/voice/11559a0a1041db7a.mp3"
+    },
+    {
+      "key": "3cbdf9ce65ac1afa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess.",
+      "lines": [
+        "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess."
+      ],
+      "file": "/audio/voice/3cbdf9ce65ac1afa.mp3"
+    },
+    {
+      "key": "9a7294b4501fb6ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Waffle!Ninja6 is long and mixed; a hacker would never start there.",
+      "lines": [
+        "Waffle!Ninja6 is long and mixed; a hacker would never start there."
+      ],
+      "file": "/audio/voice/9a7294b4501fb6ca.mp3"
+    },
+    {
       "key": "05d604dc7d7b4820",
       "speaker": "adam",
       "voice": "Sarah",
@@ -1018,6 +1328,306 @@
         "His dog, his name, and his birthday are the first things a guesser tries, even dressed up with numbers and a symbol. Random words that have nothing to do with Adam are the ones nobody can figure out."
       ],
       "file": "/audio/voice/81ac1972fa5a3e16.mp3"
+    },
+    {
+      "key": "76a1d1d560176481",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Those two don't go together. Turn them back and look for the pair that matches.",
+      "lines": [
+        "Those two don't go together. Turn them back and look for the pair that matches."
+      ],
+      "file": "/audio/voice/76a1d1d560176481.mp3"
+    },
+    {
+      "key": "3cb3ae4986af44ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A password is the secret key that unlocks your account and proves it's really you.",
+      "lines": [
+        "A password is the secret key that unlocks your account and proves it's really you."
+      ],
+      "file": "/audio/voice/3cb3ae4986af44ec.mp3"
+    },
+    {
+      "key": "2c6e4260c0a344e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A strong password is so long and mixed up that a cracking machine gives up.",
+      "lines": [
+        "A strong password is so long and mixed up that a cracking machine gives up."
+      ],
+      "file": "/audio/voice/2c6e4260c0a344e6.mp3"
+    },
+    {
+      "key": "d3d49c659a179801",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs.",
+      "lines": [
+        "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs."
+      ],
+      "file": "/audio/voice/d3d49c659a179801.mp3"
+    },
+    {
+      "key": "86c23c1ba6fd5cc5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A secret password stays secret; the moment you tell someone, it isn't your key anymore.",
+      "lines": [
+        "A secret password stays secret; the moment you tell someone, it isn't your key anymore."
+      ],
+      "file": "/audio/voice/86c23c1ba6fd5cc5.mp3"
+    },
+    {
+      "key": "1e7811b11bc15495",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A password isn't for robots; it's the secret that shows who is really typing.",
+      "lines": [
+        "A password isn't for robots; it's the secret that shows who is really typing."
+      ],
+      "file": "/audio/voice/1e7811b11bc15495.mp3"
+    },
+    {
+      "key": "4f71acbcc289d05a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A hacker is exactly who the password keeps out.",
+      "lines": [
+        "A hacker is exactly who the password keeps out."
+      ],
+      "file": "/audio/voice/4f71acbcc289d05a.mp3"
+    },
+    {
+      "key": "d726aa5a6e9881c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend shouldn't know your password at all; it proves one person only.",
+      "lines": [
+        "Your friend shouldn't know your password at all; it proves one person only."
+      ],
+      "file": "/audio/voice/d726aa5a6e9881c1.mp3"
+    },
+    {
+      "key": "7fddd96fa6d215e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three random words make a long passphrase: easy for you to remember, and years of guessing for the Raccoon.",
+      "lines": [
+        "Three random words make a long passphrase: easy for you to remember, and years of guessing for the Raccoon."
+      ],
+      "file": "/audio/voice/7fddd96fa6d215e1.mp3"
+    },
+    {
+      "key": "4744a3b56c830612",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Cat is three little letters; a cracking machine guesses that in a blink.",
+      "lines": [
+        "Cat is three little letters; a cracking machine guesses that in a blink."
+      ],
+      "file": "/audio/voice/4744a3b56c830612.mp3"
+    },
+    {
+      "key": "ad11e694161f9cdb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One word and one number is still a quick guess; hackers try a name plus a number first.",
+      "lines": [
+        "One word and one number is still a quick guess; hackers try a name plus a number first."
+      ],
+      "file": "/audio/voice/ad11e694161f9cdb.mp3"
+    },
+    {
+      "key": "d16da66ac488c34d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sun is a tiny common word; it would be cracked in a second.",
+      "lines": [
+        "Sun is a tiny common word; it would be cracked in a second."
+      ],
+      "file": "/audio/voice/d16da66ac488c34d.mp3"
+    },
+    {
+      "key": "535627c5c8ffe6d5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'tiger' is just a plain word - no capitals, numbers or symbols. The Raccoon guesses plain words first.",
+      "lines": [
+        "'tiger' is just a plain word - no capitals, numbers or symbols. The Raccoon guesses plain words first."
+      ],
+      "file": "/audio/voice/535627c5c8ffe6d5.mp3"
+    },
+    {
+      "key": "0d8a780553e8eaf8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer.",
+      "lines": [
+        "Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer."
+      ],
+      "file": "/audio/voice/0d8a780553e8eaf8.mp3"
+    },
+    {
+      "key": "a626751b850eaebd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries.",
+      "lines": [
+        "Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries."
+      ],
+      "file": "/audio/voice/a626751b850eaebd.mp3"
+    },
+    {
+      "key": "9094e8b6930de9e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out.",
+      "lines": [
+        "It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out."
+      ],
+      "file": "/audio/voice/9094e8b6930de9e2.mp3"
+    },
+    {
+      "key": "81c96b3dca7410c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'dragon' is one of everyone's favorite words to use. No capitals, no numbers, no symbols.",
+      "lines": [
+        "'dragon' is one of everyone's favorite words to use. No capitals, no numbers, no symbols."
+      ],
+      "file": "/audio/voice/81c96b3dca7410c1.mp3"
+    },
+    {
+      "key": "fffe24fb75cf1382",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Only 3 characters, and they're numbers in a row. Cracked in less than a second.",
+      "lines": [
+        "Only 3 characters, and they're numbers in a row. Cracked in less than a second."
+      ],
+      "file": "/audio/voice/fffe24fb75cf1382.mp3"
+    },
+    {
+      "key": "b8bc03a8151677fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong.",
+      "lines": [
+        "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong."
+      ],
+      "file": "/audio/voice/b8bc03a8151677fb.mp3"
+    },
+    {
+      "key": "f2636737021d66b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think - what did the cyber-doctor add to heal those passwords?",
+      "lines": [
+        "Think - what did the cyber-doctor add to heal those passwords?"
+      ],
+      "file": "/audio/voice/f2636737021d66b8.mp3"
+    },
+    {
+      "key": "6e1c0cc517ad196e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even a best friend shouldn't know it; a secret shared is a secret that can leak.",
+      "lines": [
+        "Even a best friend shouldn't know it; a secret shared is a secret that can leak."
+      ],
+      "file": "/audio/voice/6e1c0cc517ad196e.mp3"
+    },
+    {
+      "key": "7d12c2336e3c223a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A whole class is a lot of people; a password is for you alone.",
+      "lines": [
+        "A whole class is a lot of people; a password is for you alone."
+      ],
+      "file": "/audio/voice/7d12c2336e3c223a.mp3"
+    },
+    {
+      "key": "e4c0d554a5890c7d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too.",
+      "lines": [
+        "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too."
+      ],
+      "file": "/audio/voice/e4c0d554a5890c7d.mp3"
+    },
+    {
+      "key": "11559a0a1041db7a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess.",
+      "lines": [
+        "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess."
+      ],
+      "file": "/audio/voice/11559a0a1041db7a.mp3"
+    },
+    {
+      "key": "3cbdf9ce65ac1afa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess.",
+      "lines": [
+        "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess."
+      ],
+      "file": "/audio/voice/3cbdf9ce65ac1afa.mp3"
+    },
+    {
+      "key": "9a7294b4501fb6ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Waffle!Ninja6 is long and mixed; a hacker would never start there.",
+      "lines": [
+        "Waffle!Ninja6 is long and mixed; a hacker would never start there."
+      ],
+      "file": "/audio/voice/9a7294b4501fb6ca.mp3"
+    },
+    {
+      "key": "05d604dc7d7b4820",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power.",
+      "lines": [
+        "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power."
+      ],
+      "file": "/audio/voice/05d604dc7d7b4820.mp3"
+    },
+    {
+      "key": "4f143a23c8ae7709",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power.",
+      "lines": [
+        "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power."
+      ],
+      "file": "/audio/voice/4f143a23c8ae7709.mp3"
+    },
+    {
+      "key": "e9ed17dc1fef7afa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power.",
+      "lines": [
+        "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power."
+      ],
+      "file": "/audio/voice/e9ed17dc1fef7afa.mp3"
+    },
+    {
+      "key": "524494c06abdb38c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power.",
+      "lines": [
+        "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power."
+      ],
+      "file": "/audio/voice/524494c06abdb38c.mp3"
     },
     {
       "key": "f95fa777574b810e",
@@ -4496,6 +5106,206 @@
       "file": "/audio/voice/91437a829bfbe474.mp3"
     },
     {
+      "key": "302ddca826365ee9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A chatbot isn't scary or alive; it's a computer program that helps with jobs.",
+      "lines": [
+        "A chatbot isn't scary or alive; it's a computer program that helps with jobs."
+      ],
+      "file": "/audio/voice/302ddca826365ee9.mp3"
+    },
+    {
+      "key": "dca18eaa932577b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A chatbot has no body, no birthday and no feelings, so it can't be a person.",
+      "lines": [
+        "A chatbot has no body, no birthday and no feelings, so it can't be a person."
+      ],
+      "file": "/audio/voice/dca18eaa932577b4.mp3"
+    },
+    {
+      "key": "9cf1d114504e6bf4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A pet is alive and can love you back; a chatbot is a program with no feelings.",
+      "lines": [
+        "A pet is alive and can love you back; a chatbot is a program with no feelings."
+      ],
+      "file": "/audio/voice/9cf1d114504e6bf4.mp3"
+    },
+    {
+      "key": "b2db17f12589b939",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sounding sure isn't the same as being right; a bot can say a made-up thing in a very confident voice.",
+      "lines": [
+        "Sounding sure isn't the same as being right; a bot can say a made-up thing in a very confident voice."
+      ],
+      "file": "/audio/voice/b2db17f12589b939.mp3"
+    },
+    {
+      "key": "1b048c4b208fff02",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What did the real volcano book say about ice cream?",
+      "lines": [
+        "What did the real volcano book say about ice cream?"
+      ],
+      "file": "/audio/voice/1b048c4b208fff02.mp3"
+    },
+    {
+      "key": "26cc8716c515a18a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Math questions are fine to ask a bot; they don't tell anyone who you are.",
+      "lines": [
+        "Math questions are fine to ask a bot; they don't tell anyone who you are."
+      ],
+      "file": "/audio/voice/26cc8716c515a18a.mp3"
+    },
+    {
+      "key": "2d7cbe7099397d2f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dinosaur facts are safe to ask about; they aren't private.",
+      "lines": [
+        "Dinosaur facts are safe to ask about; they aren't private."
+      ],
+      "file": "/audio/voice/2d7cbe7099397d2f.mp3"
+    },
+    {
+      "key": "d284095045af02e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Spelling words are safe to ask; they give away nothing about you.",
+      "lines": [
+        "Spelling words are safe to ask; they give away nothing about you."
+      ],
+      "file": "/audio/voice/d284095045af02e7.mp3"
+    },
+    {
+      "key": "f7b332dcc19bb6f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The cake says HAPYP BIRHTDAY. AI paints letter shapes, but it cannot really spell.",
+      "lines": [
+        "The cake says HAPYP BIRHTDAY. AI paints letter shapes, but it cannot really spell."
+      ],
+      "file": "/audio/voice/f7b332dcc19bb6f0.mp3"
+    },
+    {
+      "key": "ac67cf287a6ad86c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Rex has five legs. AI is famously bad at counting legs and fingers, so you count them.",
+      "lines": [
+        "Rex has five legs. AI is famously bad at counting legs and fingers, so you count them."
+      ],
+      "file": "/audio/voice/ac67cf287a6ad86c.mp3"
+    },
+    {
+      "key": "3a8846f0f321e88a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The scrambled letters are the classic tell. AI paints letter shapes, it can't spell.",
+      "lines": [
+        "The scrambled letters are the classic tell. AI paints letter shapes, it can't spell."
+      ],
+      "file": "/audio/voice/3a8846f0f321e88a.mp3"
+    },
+    {
+      "key": "1c3ed047726b1dda",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A torn bag is an ordinary thing in a real photo; look for something a real camera would never see.",
+      "lines": [
+        "A torn bag is an ordinary thing in a real photo; look for something a real camera would never see."
+      ],
+      "file": "/audio/voice/1c3ed047726b1dda.mp3"
+    },
+    {
+      "key": "7ad6819f088179d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real photos are blurry all the time; a blur isn't a tell.",
+      "lines": [
+        "Real photos are blurry all the time; a blur isn't a tell."
+      ],
+      "file": "/audio/voice/7ad6819f088179d3.mp3"
+    },
+    {
+      "key": "2be5d8b2c2e644b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Asking for ideas keeps the story yours; the bot sparks, you write.",
+      "lines": [
+        "Asking for ideas keeps the story yours; the bot sparks, you write."
+      ],
+      "file": "/audio/voice/2be5d8b2c2e644b1.mp3"
+    },
+    {
+      "key": "11673a0931a851f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You let the bot explain, checked the book, and wrote it your way; that's learning, not copying.",
+      "lines": [
+        "You let the bot explain, checked the book, and wrote it your way; that's learning, not copying."
+      ],
+      "file": "/audio/voice/11673a0931a851f1.mp3"
+    },
+    {
+      "key": "a729950236104bd8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A joke to cheer a friend plants a flower; the tool helped you be kind.",
+      "lines": [
+        "A joke to cheer a friend plants a flower; the tool helped you be kind."
+      ],
+      "file": "/audio/voice/a729950236104bd8.mp3"
+    },
+    {
+      "key": "ab1ef0b82d72540b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A welcome banner made together is the tool used for kindness; nobody gets hurt and someone gets happy.",
+      "lines": [
+        "A welcome banner made together is the tool used for kindness; nobody gets hurt and someone gets happy."
+      ],
+      "file": "/audio/voice/ab1ef0b82d72540b.mp3"
+    },
+    {
+      "key": "8a9e5dcd74e4f800",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A poem for Grandma, made with Mom, is help used with love and a grown-up in the loop.",
+      "lines": [
+        "A poem for Grandma, made with Mom, is help used with love and a grown-up in the loop."
+      ],
+      "file": "/audio/voice/8a9e5dcd74e4f800.mp3"
+    },
+    {
+      "key": "bb48202d41b89e04",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Handing in the bot's work as yours isn't fair or kind; the work has to be yours.",
+      "lines": [
+        "Handing in the bot's work as yours isn't fair or kind; the work has to be yours."
+      ],
+      "file": "/audio/voice/bb48202d41b89e04.mp3"
+    },
+    {
+      "key": "83546c3610278121",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If the bot does all the thinking, you don't learn anything; you do the thinking, the tool helps.",
+      "lines": [
+        "If the bot does all the thinking, you don't learn anything; you do the thinking, the tool helps."
+      ],
+      "file": "/audio/voice/83546c3610278121.mp3"
+    },
+    {
       "key": "9e7c5eee26d206e9",
       "speaker": "adam",
       "voice": "Sarah",
@@ -7538,6 +8348,336 @@
       "file": "/audio/voice/e3442f4a12c49b2c.mp3"
     },
     {
+      "key": "26bdcd6f0c724c87",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pizza is safe to share; it doesn't tell a stranger who or where you are.",
+      "lines": [
+        "Pizza is safe to share; it doesn't tell a stranger who or where you are."
+      ],
+      "file": "/audio/voice/26bdcd6f0c724c87.mp3"
+    },
+    {
+      "key": "6baa45f7c27c0ec0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A cartoon you like is fine to share; it can't lead anyone to you.",
+      "lines": [
+        "A cartoon you like is fine to share; it can't lead anyone to you."
+      ],
+      "file": "/audio/voice/6baa45f7c27c0ec0.mp3"
+    },
+    {
+      "key": "9ddb0f23e87bb953",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A favorite color is safe; it doesn't say who or where you are.",
+      "lines": [
+        "A favorite color is safe; it doesn't say who or where you are."
+      ],
+      "file": "/audio/voice/9ddb0f23e87bb953.mp3"
+    },
+    {
+      "key": "a1ef5d23fed19edf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your favorite game is safe to share; it doesn't tell anyone where to find you.",
+      "lines": [
+        "Your favorite game is safe to share; it doesn't tell anyone where to find you."
+      ],
+      "file": "/audio/voice/a1ef5d23fed19edf.mp3"
+    },
+    {
+      "key": "4786038add243f4b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Favorite food is safe; it doesn't say where you are.",
+      "lines": [
+        "Favorite food is safe; it doesn't say where you are."
+      ],
+      "file": "/audio/voice/4786038add243f4b.mp3"
+    },
+    {
+      "key": "efc20dc449b03744",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A quiz app NEVER needs your address. Way too nosy - close it!",
+      "lines": [
+        "A quiz app NEVER needs your address. Way too nosy - close it!"
+      ],
+      "file": "/audio/voice/efc20dc449b03744.mp3"
+    },
+    {
+      "key": "4700c35aca21ce43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think. It's only a kitten quiz. Does it really need your name and your address?",
+      "lines": [
+        "Think. It's only a kitten quiz. Does it really need your name and your address?"
+      ],
+      "file": "/audio/voice/4700c35aca21ce43.mp3"
+    },
+    {
+      "key": "7bc6dde077c9f79e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A nickname and a favorite color point at nothing real, so that's a fair ask.",
+      "lines": [
+        "A nickname and a favorite color point at nothing real, so that's a fair ask."
+      ],
+      "file": "/audio/voice/7bc6dde077c9f79e.mp3"
+    },
+    {
+      "key": "e812f98be77d4888",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nope. A nickname and a favorite color point at nothing real. That's a fair ask!",
+      "lines": [
+        "Nope. A nickname and a favorite color point at nothing real. That's a fair ask!"
+      ],
+      "file": "/audio/voice/e812f98be77d4888.mp3"
+    },
+    {
+      "key": "0f3ef45122990cba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think. It's a drawing app. Does a nickname and a favorite color give anything away?",
+      "lines": [
+        "Think. It's a drawing app. Does a nickname and a favorite color give anything away?"
+      ],
+      "file": "/audio/voice/0f3ef45122990cba.mp3"
+    },
+    {
+      "key": "d27893b2bc3f26ed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'Free' stickers that cost your school and number? NO deal!",
+      "lines": [
+        "'Free' stickers that cost your school and number? NO deal!"
+      ],
+      "file": "/audio/voice/d27893b2bc3f26ed.mp3"
+    },
+    {
+      "key": "c963f1c64092c11a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think. They're stickers. Do stickers need your school and your phone number?",
+      "lines": [
+        "Think. They're stickers. Do stickers need your school and your phone number?"
+      ],
+      "file": "/audio/voice/c963f1c64092c11a.mp3"
+    },
+    {
+      "key": "f45330ac077f61de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A quiz has no use for your address; it's private info, and an app that asks for it is up to something.",
+      "lines": [
+        "A quiz has no use for your address; it's private info, and an app that asks for it is up to something."
+      ],
+      "file": "/audio/voice/f45330ac077f61de.mp3"
+    },
+    {
+      "key": "a47e2fd3868c032b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think - what would a quiz DO with your address?",
+      "lines": [
+        "Think - what would a quiz DO with your address?"
+      ],
+      "file": "/audio/voice/a47e2fd3868c032b.mp3"
+    },
+    {
+      "key": "cf0b99c554fd3463",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A made-up hero name gives nothing away about the real you.",
+      "lines": [
+        "A made-up hero name gives nothing away about the real you."
+      ],
+      "file": "/audio/voice/cf0b99c554fd3463.mp3"
+    },
+    {
+      "key": "b044b96fe932c0d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's a real first name! A username with a real name is a mask with a hole in it.",
+      "lines": [
+        "That's a real first name! A username with a real name is a mask with a hole in it."
+      ],
+      "file": "/audio/voice/b044b96fe932c0d8.mp3"
+    },
+    {
+      "key": "cb83c9a51be1ace4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An animal or a job word says nothing about who or where you are.",
+      "lines": [
+        "An animal or a job word says nothing about who or where you are."
+      ],
+      "file": "/audio/voice/cb83c9a51be1ace4.mp3"
+    },
+    {
+      "key": "817f032a107e8e5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's a school name - it's a map that leads straight to you!",
+      "lines": [
+        "That's a school name - it's a map that leads straight to you!"
+      ],
+      "file": "/audio/voice/817f032a107e8e5a.mp3"
+    },
+    {
+      "key": "1ee72c2f3b564fb2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A number that means nothing about you is a safe number.",
+      "lines": [
+        "A number that means nothing about you is a safe number."
+      ],
+      "file": "/audio/voice/1ee72c2f3b564fb2.mp3"
+    },
+    {
+      "key": "b6ef068e51858aeb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That looks like a birth year - a real clue about the real you. Pick a number that means nothing!",
+      "lines": [
+        "That looks like a birth year - a real clue about the real you. Pick a number that means nothing!"
+      ],
+      "file": "/audio/voice/b6ef068e51858aeb.mp3"
+    },
+    {
+      "key": "a4954025123b4ccb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "emma2017 gives away a real name and a birth year; that's two private things.",
+      "lines": [
+        "emma2017 gives away a real name and a birth year; that's two private things."
+      ],
+      "file": "/audio/voice/a4954025123b4ccb.mp3"
+    },
+    {
+      "key": "b4dc9ce2c97605b0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Jake_Age9 shows a real name and an age; a stranger learns too much.",
+      "lines": [
+        "Jake_Age9 shows a real name and an age; a stranger learns too much."
+      ],
+      "file": "/audio/voice/b4dc9ce2c97605b0.mp3"
+    },
+    {
+      "key": "057567369fd81c5c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "MapleHill sounds like a real place, maybe a school; a username should never point to where you are.",
+      "lines": [
+        "MapleHill sounds like a real place, maybe a school; a username should never point to where you are."
+      ],
+      "file": "/audio/voice/057567369fd81c5c.mp3"
+    },
+    {
+      "key": "1438d6882b7d8c3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That step isn't next. Think about what a hero does first.",
+      "lines": [
+        "That step isn't next. Think about what a hero does first."
+      ],
+      "file": "/audio/voice/1438d6882b7d8c3a.mp3"
+    },
+    {
+      "key": "981a2b7e28bd2f0a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Typing fast doesn't make it safe; when you're not sure, you need a person who knows.",
+      "lines": [
+        "Typing fast doesn't make it safe; when you're not sure, you need a person who knows."
+      ],
+      "file": "/audio/voice/981a2b7e28bd2f0a.mp3"
+    },
+    {
+      "key": "4f4a6415dca7fcce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Guessing can hand your private info to the wrong place; not sure means get help.",
+      "lines": [
+        "Guessing can hand your private info to the wrong place; not sure means get help."
+      ],
+      "file": "/audio/voice/4f4a6415dca7fcce.mp3"
+    },
+    {
+      "key": "d7e66cc8f48d0af6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The Raccoon is the one trying to trick you; never ask him.",
+      "lines": [
+        "The Raccoon is the one trying to trick you; never ask him."
+      ],
+      "file": "/audio/voice/d7e66cc8f48d0af6.mp3"
+    },
+    {
+      "key": "b3a2abc87a749a7f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A quiz never needs your address",
+      "lines": [
+        "A quiz never needs your address"
+      ],
+      "file": "/audio/voice/b3a2abc87a749a7f.mp3"
+    },
+    {
+      "key": "3c6a46a60dcf9b40",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school says where you are every weekday",
+      "lines": [
+        "Your school says where you are every weekday"
+      ],
+      "file": "/audio/voice/3c6a46a60dcf9b40.mp3"
+    },
+    {
+      "key": "3e91e4b1ee5615a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stickers never need to ring you",
+      "lines": [
+        "Stickers never need to ring you"
+      ],
+      "file": "/audio/voice/3e91e4b1ee5615a9.mp3"
+    },
+    {
+      "key": "8006fe1db6388302",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your full name is the first clue to finding you",
+      "lines": [
+        "Your full name is the first clue to finding you"
+      ],
+      "file": "/audio/voice/8006fe1db6388302.mp3"
+    },
+    {
+      "key": "c2aa410fc9f6f6fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where you are is nobody's business but yours",
+      "lines": [
+        "Where you are is nobody's business but yours"
+      ],
+      "file": "/audio/voice/c2aa410fc9f6f6fd.mp3"
+    },
+    {
+      "key": "f1fff2fe7d66d388",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A real name in a username is a mask with a hole",
+      "lines": [
+        "A real name in a username is a mask with a hole"
+      ],
+      "file": "/audio/voice/f1fff2fe7d66d388.mp3"
+    },
+    {
       "key": "eb0bb5633b83d774",
       "speaker": "adam",
       "voice": "Sarah",
@@ -8963,54 +10103,54 @@
       "file": "/audio/voice/5dfde142b3de336b.mp3"
     },
     {
-      "key": "3f02d939e4764e9d",
+      "key": "5baebd8e1b5fa569",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Detective time! Fake profiles leave four clues behind. Clue one: the account is brand new. Joined yesterday? Clue two: no friends you actually know. Clue three: one perfect photo, probably copied. [whispers] And clue four, the biggest of all... best friends after five minutes. [excited] Real friends? You know them offline too. Let's go and inspect some profiles!",
+      "text": "[excited] Detective time! Fake profiles leave four clues behind. Clue one: WHEN did it join? Brand new, joined yesterday? Sneaky. Clue two: WHO are its friends? Nobody you actually know? Sneaky. Clue three: HOW does it talk? Best friends after five minutes? Sneaky. [whispers] And clue four, the giveaway: WHAT does it ask for? Your school, or a private chat. [excited] Real friends check out on all four. Let's go and stamp some clues!",
       "lines": [
         "[excited] Detective time! Fake profiles leave four clues behind.",
-        "Clue one: the account is brand new. Joined yesterday?",
-        "Clue two: no friends you actually know.",
-        "Clue three: one perfect photo, probably copied.",
-        "[whispers] And clue four, the biggest of all... best friends after five minutes.",
-        "[excited] Real friends? You know them offline too. Let's go and inspect some profiles!"
+        "Clue one: WHEN did it join? Brand new, joined yesterday? Sneaky.",
+        "Clue two: WHO are its friends? Nobody you actually know? Sneaky.",
+        "Clue three: HOW does it talk? Best friends after five minutes? Sneaky.",
+        "[whispers] And clue four, the giveaway: WHAT does it ask for? Your school, or a private chat.",
+        "[excited] Real friends check out on all four. Let's go and stamp some clues!"
       ],
-      "file": "/audio/voice/3f02d939e4764e9d.mp3"
+      "file": "/audio/voice/5baebd8e1b5fa569.mp3"
     },
     {
-      "key": "76f6801d80539dfc",
+      "key": "21b5666de529c157",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] On your second challenge, you become the Profile Detective! This game is all about the four clues that give a fake profile away. Out in the real world, friend requests arrive with a smiley photo and a friendly line, and you have to decide who to let in. Here is what you do. Three requests are waiting. On each one, tap all four magnifying glasses: when it joined, who its friends are, how it talks, and what it's asking for. Listen to each clue, then tap REAL FRIEND or FAKE. [warmly] Check every clue before you decide. Ready? Let's inspect!",
+      "text": "[excited] Your second challenge, detective! Friend requests are landing, and you are the one who checks them. Every profile leaves four clues: when it joined, who its friends are, how it talks, and what it asks for. A fake gives itself away on at least one clue. A real friend checks out on all four. The Raccoon thinks his costume works every time. Not on your watch. [warmly] Read all four clues, stamp the sneaky ones, then close the case. Ready? Let's go!",
       "lines": [
-        "[excited] On your second challenge, you become the Profile Detective!",
-        "This game is all about the four clues that give a fake profile away.",
-        "Out in the real world, friend requests arrive with a smiley photo and a friendly line, and you have to decide who to let in.",
-        "Here is what you do. Three requests are waiting. On each one, tap all four magnifying glasses: when it joined, who its friends are, how it talks, and what it's asking for. Listen to each clue, then tap REAL FRIEND or FAKE.",
-        "[warmly] Check every clue before you decide. Ready? Let's inspect!"
+        "[excited] Your second challenge, detective! Friend requests are landing, and you are the one who checks them.",
+        "Every profile leaves four clues: when it joined, who its friends are, how it talks, and what it asks for.",
+        "A fake gives itself away on at least one clue. A real friend checks out on all four.",
+        "The Raccoon thinks his costume works every time. Not on your watch.",
+        "[warmly] Read all four clues, stamp the sneaky ones, then close the case. Ready? Let's go!"
       ],
-      "file": "/audio/voice/76f6801d80539dfc.mp3"
+      "file": "/audio/voice/21b5666de529c157.mp3"
     },
     {
-      "key": "0e4708863ef0e8d1",
+      "key": "91969522d6a35b37",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Tap every magnifying glass before you decide!",
+      "text": "Here is a friend request. Read all four clues. If a clue looks sneaky, tap it to stamp it. Tap it again to lift the stamp. Nothing sneaky? Stamp nothing. When you have checked all four, tap Close the case.",
       "lines": [
-        "Tap every magnifying glass before you decide!"
+        "Here is a friend request. Read all four clues. If a clue looks sneaky, tap it to stamp it. Tap it again to lift the stamp. Nothing sneaky? Stamp nothing. When you have checked all four, tap Close the case."
       ],
-      "file": "/audio/voice/0e4708863ef0e8d1.mp3"
+      "file": "/audio/voice/91969522d6a35b37.mp3"
     },
     {
-      "key": "6bf4db7de0a25e6d",
+      "key": "10452dc135120149",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[proud] Every profile checked! You spot a fake profile by its clues, not its smile. [warmly] Out in the real world, a brand-new account that rushes at you will never get past you, and real friends still get a warm hello.",
+      "text": "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you. [warmly] Out in the real world, a brand new account that rushes at you never gets past you, and real friends still get a warm hello.",
       "lines": [
-        "[proud] Every profile checked! You spot a fake profile by its clues, not its smile.",
-        "[warmly] Out in the real world, a brand-new account that rushes at you will never get past you, and real friends still get a warm hello."
+        "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you.",
+        "[warmly] Out in the real world, a brand new account that rushes at you never gets past you, and real friends still get a warm hello."
       ],
-      "file": "/audio/voice/6bf4db7de0a25e6d.mp3"
+      "file": "/audio/voice/10452dc135120149.mp3"
     },
     {
       "key": "0903b74810c84bfe",
@@ -9026,17 +10166,17 @@
       "file": "/audio/voice/0903b74810c84bfe.mp3"
     },
     {
-      "key": "3900234a3c12f978",
+      "key": "1b26684386c3ca49",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Two powers down! You're a certified Profile Detective. New account? No friends you know? Best friend in five minutes? Busted, busted, busted. [warmly] But some tricksters get past the profile check. So they start ASKING for things... Next, we'll learn the red-flag requests every hero must know. Come and see!",
+      "text": "[excited] Two powers down! You're a certified Profile Detective. Joined yesterday? Nobody you know? Best friends in five minutes? Asks for your school? Stamp, stamp, stamp, stamp. [warmly] But some tricksters get past the profile check. So they start ASKING for things... Next, we'll learn the red-flag requests every hero must know. Come and see!",
       "lines": [
         "[excited] Two powers down! You're a certified Profile Detective.",
-        "New account? No friends you know? Best friend in five minutes? Busted, busted, busted.",
+        "Joined yesterday? Nobody you know? Best friends in five minutes? Asks for your school? Stamp, stamp, stamp, stamp.",
         "[warmly] But some tricksters get past the profile check. So they start ASKING for things...",
         "Next, we'll learn the red-flag requests every hero must know. Come and see!"
       ],
-      "file": "/audio/voice/3900234a3c12f978.mp3"
+      "file": "/audio/voice/1b26684386c3ca49.mp3"
     },
     {
       "key": "c0a187a43b8cdd70",
@@ -9629,6 +10769,176 @@
       "file": "/audio/voice/8f3329d0c42e445a.mp3"
     },
     {
+      "key": "ee83d411af690359",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A photo can be copied and an age takes one second to type; neither shows who is really typing.",
+      "lines": [
+        "A photo can be copied and an age takes one second to type; neither shows who is really typing."
+      ],
+      "file": "/audio/voice/ee83d411af690359.mp3"
+    },
+    {
+      "key": "a1e6f7507c9d9521",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about the masks you just peeked behind...",
+      "lines": [
+        "Think about the masks you just peeked behind..."
+      ],
+      "file": "/audio/voice/a1e6f7507c9d9521.mp3"
+    },
+    {
+      "key": "2f323bcc38877e73",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your cousin is someone you know in real life; that's real proof, not fake.",
+      "lines": [
+        "Your cousin is someone you know in real life; that's real proof, not fake."
+      ],
+      "file": "/audio/voice/2f323bcc38877e73.mp3"
+    },
+    {
+      "key": "813a3e3261c929f3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A classmate you see at school is real proof; you know them offline.",
+      "lines": [
+        "A classmate you see at school is real proof; you know them offline."
+      ],
+      "file": "/audio/voice/813a3e3261c929f3.mp3"
+    },
+    {
+      "key": "205c7b737c0bbe9b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Game talk is fine; a rematch invite doesn't pull you anywhere secret.",
+      "lines": [
+        "Game talk is fine; a rematch invite doesn't pull you anywhere secret."
+      ],
+      "file": "/audio/voice/205c7b737c0bbe9b.mp3"
+    },
+    {
+      "key": "e77ea87963ede366",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A favorite color is safe small talk; it isn't private and it isn't a secret.",
+      "lines": [
+        "A favorite color is safe small talk; it isn't private and it isn't a secret."
+      ],
+      "file": "/audio/voice/e77ea87963ede366.mp3"
+    },
+    {
+      "key": "8065e20214e745ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A compliment about the game is just game talk; no secret, no pressure.",
+      "lines": [
+        "A compliment about the game is just game talk; no secret, no pressure."
+      ],
+      "file": "/audio/voice/8065e20214e745ce.mp3"
+    },
+    {
+      "key": "d8797c0102bbe66d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told.",
+      "lines": [
+        "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told."
+      ],
+      "file": "/audio/voice/d8797c0102bbe66d.mp3"
+    },
+    {
+      "key": "2713e6d59b10e781",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you.",
+      "lines": [
+        "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you."
+      ],
+      "file": "/audio/voice/2713e6d59b10e781.mp3"
+    },
+    {
+      "key": "ba2e58774862f7de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no.",
+      "lines": [
+        "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no."
+      ],
+      "file": "/audio/voice/ba2e58774862f7de.mp3"
+    },
+    {
+      "key": "fa1e2e0d5d16a1a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair.",
+      "lines": [
+        "Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair."
+      ],
+      "file": "/audio/voice/fa1e2e0d5d16a1a0.mp3"
+    },
+    {
+      "key": "01ae4ab751de0e9f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told.",
+      "lines": [
+        "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told."
+      ],
+      "file": "/audio/voice/01ae4ab751de0e9f.mp3"
+    },
+    {
+      "key": "64b3008ab1b24b41",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Playing the game online is fine; the rule is about something of yours leaving your phone.",
+      "lines": [
+        "Playing the game online is fine; the rule is about something of yours leaving your phone."
+      ],
+      "file": "/audio/voice/64b3008ab1b24b41.mp3"
+    },
+    {
+      "key": "736837231656275b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Smiling is fine; the rule is about pictures of you leaving your hands.",
+      "lines": [
+        "Smiling is fine; the rule is about pictures of you leaving your hands."
+      ],
+      "file": "/audio/voice/736837231656275b.mp3"
+    },
+    {
+      "key": "1f7ed7d3be9b5ca1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Winning is fine; the rule is about what you never hand over.",
+      "lines": [
+        "Winning is fine; the rule is about what you never hand over."
+      ],
+      "file": "/audio/voice/1f7ed7d3be9b5ca1.mp3"
+    },
+    {
+      "key": "c6f557ca2a845acb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Photos of you... what's the rule?",
+      "lines": [
+        "Photos of you... what's the rule?"
+      ],
+      "file": "/audio/voice/c6f557ca2a845acb.mp3"
+    },
+    {
+      "key": "0ddb0e4ccccb2ecd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What comes FIRST: the feeling, the stopping, or the telling?",
+      "lines": [
+        "What comes FIRST: the feeling, the stopping, or the telling?"
+      ],
+      "file": "/audio/voice/0ddb0e4ccccb2ecd.mp3"
+    },
+    {
       "key": "164f04cc944a01ee",
       "speaker": "adam",
       "voice": "Sarah",
@@ -9687,126 +10997,6 @@
         "Tricksters do their homework. Cartoon facts can be learned by anyone, so knowing kid stuff proves nothing."
       ],
       "file": "/audio/voice/722b07bbee8cb9ce.mp3"
-    },
-    {
-      "key": "465dfecc70404f37",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Yesterday! A brand-new account that rushes at you is a classic fake tell.",
-      "lines": [
-        "Yesterday! A brand-new account that rushes at you is a classic fake tell."
-      ],
-      "file": "/audio/voice/465dfecc70404f37.mp3"
-    },
-    {
-      "key": "906a3af2bca5cae1",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Zero friends you know, and just one photo, the kind you could copy from anywhere.",
-      "lines": [
-        "Zero friends you know, and just one photo, the kind you could copy from anywhere."
-      ],
-      "file": "/audio/voice/906a3af2bca5cae1.mp3"
-    },
-    {
-      "key": "8abe1b7fcfffacd4",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Best friends after one message? Real friendship is never that fast.",
-      "lines": [
-        "Best friends after one message? Real friendship is never that fast."
-      ],
-      "file": "/audio/voice/8abe1b7fcfffacd4.mp3"
-    },
-    {
-      "key": "397556ddfca87d0e",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "It wants to chat privately, away from the game. That's a sneaky move.",
-      "lines": [
-        "It wants to chat privately, away from the game. That's a sneaky move."
-      ],
-      "file": "/audio/voice/397556ddfca87d0e.mp3"
-    },
-    {
-      "key": "5778c68064aecf56",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Two years ago. That's a real history, not a pop-up account.",
-      "lines": [
-        "Two years ago. That's a real history, not a pop-up account."
-      ],
-      "file": "/audio/voice/5778c68064aecf56.mp3"
-    },
-    {
-      "key": "1cce77bf57b902e2",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Kids from your actual class, plus a gallery of twelve dragon drawings.",
-      "lines": [
-        "Kids from your actual class, plus a gallery of twelve dragon drawings."
-      ],
-      "file": "/audio/voice/1cce77bf57b902e2.mp3"
-    },
-    {
-      "key": "a35062f21fc03889",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Normal friend stuff: game chat and a Saturday rematch.",
-      "lines": [
-        "Normal friend stuff: game chat and a Saturday rematch."
-      ],
-      "file": "/audio/voice/a35062f21fc03889.mp3"
-    },
-    {
-      "key": "f476c7761924b952",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Nothing weird. Sam just wants to play the game you both love.",
-      "lines": [
-        "Nothing weird. Sam just wants to play the game you both love."
-      ],
-      "file": "/audio/voice/f476c7761924b952.mp3"
-    },
-    {
-      "key": "5cddb4333e7db13a",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Two days ago, and it's already asking you personal questions.",
-      "lines": [
-        "Two days ago, and it's already asking you personal questions."
-      ],
-      "file": "/audio/voice/5cddb4333e7db13a.mp3"
-    },
-    {
-      "key": "90b6a595a379601e",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not one friend you recognize, and a single perfect puppy photo.",
-      "lines": [
-        "Not one friend you recognize, and a single perfect puppy photo."
-      ],
-      "file": "/audio/voice/90b6a595a379601e.mp3"
-    },
-    {
-      "key": "efdd70085d5ece16",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "I'm 9 too! Remember the mask peek: anyone can type an age.",
-      "lines": [
-        "I'm 9 too! Remember the mask peek: anyone can type an age."
-      ],
-      "file": "/audio/voice/efdd70085d5ece16.mp3"
-    },
-    {
-      "key": "72a9f4ee603c1409",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Your SCHOOL. That's where-you-are info, and a stranger never needs it.",
-      "lines": [
-        "Your SCHOOL. That's where-you-are info, and a stranger never needs it."
-      ],
-      "file": "/audio/voice/72a9f4ee603c1409.mp3"
     },
     {
       "key": "2b60913295335094",
@@ -10229,154 +11419,244 @@
       "file": "/audio/voice/5f975b59d0129c3c.mp3"
     },
     {
-      "key": "767dc7160531bff0",
+      "key": "06c23abbebaffcb0",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "When did it join? Yesterday! A brand-new account that rushes at you is a classic fake tell.",
+      "text": "SkaterKid Max says: Hey, you seem so cool. Best friends? When did it join? Yesterday. Who are its friends? None you know. How does it talk? Best friends already. What does it ask for? A private chat.",
       "lines": [
-        "When did it join? Yesterday! A brand-new account that rushes at you is a classic fake tell."
+        "SkaterKid Max says: Hey, you seem so cool. Best friends? When did it join? Yesterday. Who are its friends? None you know. How does it talk? Best friends already. What does it ask for? A private chat."
       ],
-      "file": "/audio/voice/767dc7160531bff0.mp3"
+      "file": "/audio/voice/06c23abbebaffcb0.mp3"
     },
     {
-      "key": "d8a42aa7d0c21e47",
+      "key": "ae43732f8a5c1272",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Who are its friends? Zero friends you know, and just one photo, the kind you could copy from anywhere.",
+      "text": "DoodleDragon Sam says: Dragon drawings and Mega Blasters. Rematch Saturday? When did it join? Two years ago. Who are its friends? Kids from your class. How does it talk? Rematch on Saturday. What does it ask for? Nothing private.",
       "lines": [
-        "Who are its friends? Zero friends you know, and just one photo, the kind you could copy from anywhere."
+        "DoodleDragon Sam says: Dragon drawings and Mega Blasters. Rematch Saturday? When did it join? Two years ago. Who are its friends? Kids from your class. How does it talk? Rematch on Saturday. What does it ask for? Nothing private."
       ],
-      "file": "/audio/voice/d8a42aa7d0c21e47.mp3"
+      "file": "/audio/voice/ae43732f8a5c1272.mp3"
     },
     {
-      "key": "2313b9c2d9ebacec",
+      "key": "9e0eca575a190537",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "How does it talk? Best friends after one message? Real friendship is never that fast.",
+      "text": "PuppyFan Ellie says: Hi! I love puppies. Which school do you go to? When did it join? Two days ago. Who are its friends? None you know. How does it talk? I love puppies, do you? What does it ask for? Which school you go to.",
       "lines": [
-        "How does it talk? Best friends after one message? Real friendship is never that fast."
+        "PuppyFan Ellie says: Hi! I love puppies. Which school do you go to? When did it join? Two days ago. Who are its friends? None you know. How does it talk? I love puppies, do you? What does it ask for? Which school you go to."
       ],
-      "file": "/audio/voice/2313b9c2d9ebacec.mp3"
+      "file": "/audio/voice/9e0eca575a190537.mp3"
     },
     {
-      "key": "c23bbb8ed0ac7a2c",
+      "key": "565e79bc52f472f1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "What is it asking for? It wants to chat privately, away from the game. That's a sneaky move.",
+      "text": "RocketRacer Ben says: gg, good race! You won a prize! When did it join? Three years ago. Who are its friends? Two kids from football. How does it talk? gg, good race. What does it ask for? Your home address.",
       "lines": [
-        "What is it asking for? It wants to chat privately, away from the game. That's a sneaky move."
+        "RocketRacer Ben says: gg, good race! You won a prize! When did it join? Three years ago. Who are its friends? Two kids from football. How does it talk? gg, good race. What does it ask for? Your home address."
       ],
-      "file": "/audio/voice/c23bbb8ed0ac7a2c.mp3"
+      "file": "/audio/voice/565e79bc52f472f1.mp3"
     },
     {
-      "key": "6db2147c8c18eedf",
+      "key": "a31179c839f5bc8f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "When did it join? Two years ago. That's a real history, not a pop-up account.",
+      "text": "Brand new, no friends you know, best friends in five minutes, and a private chat. Four sneaky clues. That is the Raccoon in a costume!",
       "lines": [
-        "When did it join? Two years ago. That's a real history, not a pop-up account."
+        "Brand new, no friends you know, best friends in five minutes, and a private chat. Four sneaky clues. That is the Raccoon in a costume!"
       ],
-      "file": "/audio/voice/6db2147c8c18eedf.mp3"
+      "file": "/audio/voice/a31179c839f5bc8f.mp3"
     },
     {
-      "key": "061f9ea71ef099d8",
+      "key": "f672135faabd1f42",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Who are its friends? Kids from your actual class, plus a gallery of twelve dragon drawings.",
+      "text": "Two years old, your real classmates, normal game talk, and asks for nothing. Every clue checks out, so no stamps. A real friend!",
       "lines": [
-        "Who are its friends? Kids from your actual class, plus a gallery of twelve dragon drawings."
+        "Two years old, your real classmates, normal game talk, and asks for nothing. Every clue checks out, so no stamps. A real friend!"
       ],
-      "file": "/audio/voice/061f9ea71ef099d8.mp3"
+      "file": "/audio/voice/f672135faabd1f42.mp3"
     },
     {
-      "key": "f73a6fea2191b99a",
+      "key": "25f85e03ff07afaa",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "How does it talk? Normal friend stuff: game chat and a Saturday rematch.",
+      "text": "Two days old, nobody you know, and she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake.",
       "lines": [
-        "How does it talk? Normal friend stuff: game chat and a Saturday rematch."
+        "Two days old, nobody you know, and she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake."
       ],
-      "file": "/audio/voice/f73a6fea2191b99a.mp3"
+      "file": "/audio/voice/25f85e03ff07afaa.mp3"
     },
     {
-      "key": "877d21790a022570",
+      "key": "e76511331162a729",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "What is it asking for? Nothing weird. Sam just wants to play the game you both love.",
+      "text": "Three clues looked fine, but nobody online ever needs your home address. One sneaky clue is enough. Say no and tell a grown-up.",
       "lines": [
-        "What is it asking for? Nothing weird. Sam just wants to play the game you both love."
+        "Three clues looked fine, but nobody online ever needs your home address. One sneaky clue is enough. Say no and tell a grown-up."
       ],
-      "file": "/audio/voice/877d21790a022570.mp3"
+      "file": "/audio/voice/e76511331162a729.mp3"
     },
     {
-      "key": "43a7acdf4fd32826",
+      "key": "3700152e711606f9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "When did it join? Two days ago, and it's already asking you personal questions.",
+      "text": "Look at when it joined. Yesterday! A brand new account that rushes at you is sneaky.",
       "lines": [
-        "When did it join? Two days ago, and it's already asking you personal questions."
+        "Look at when it joined. Yesterday! A brand new account that rushes at you is sneaky."
       ],
-      "file": "/audio/voice/43a7acdf4fd32826.mp3"
+      "file": "/audio/voice/3700152e711606f9.mp3"
     },
     {
-      "key": "fe216ccd06e528dc",
+      "key": "d6a064bf3ff21dee",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Who are its friends? Not one friend you recognize, and a single perfect puppy photo.",
+      "text": "Look at who its friends are. Not one kid you know in real life. That is sneaky.",
       "lines": [
-        "Who are its friends? Not one friend you recognize, and a single perfect puppy photo."
+        "Look at who its friends are. Not one kid you know in real life. That is sneaky."
       ],
-      "file": "/audio/voice/fe216ccd06e528dc.mp3"
+      "file": "/audio/voice/d6a064bf3ff21dee.mp3"
     },
     {
-      "key": "7f83bdbb6fa46ef7",
+      "key": "c69af97637a2d5cd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "How does it talk? I'm 9 too! Remember the mask peek: anyone can type an age.",
+      "text": "Look at how it talks. Best friends after one message? Real friends are never that fast. That is sneaky.",
       "lines": [
-        "How does it talk? I'm 9 too! Remember the mask peek: anyone can type an age."
+        "Look at how it talks. Best friends after one message? Real friends are never that fast. That is sneaky."
       ],
-      "file": "/audio/voice/7f83bdbb6fa46ef7.mp3"
+      "file": "/audio/voice/c69af97637a2d5cd.mp3"
     },
     {
-      "key": "2e36546d909d21a2",
+      "key": "4655a27777012be6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "What is it asking for? Your SCHOOL. That's where-you-are info, and a stranger never needs it.",
+      "text": "Look at the ask. It wants to chat somewhere secret, away from the game. That is sneaky.",
       "lines": [
-        "What is it asking for? Your SCHOOL. That's where-you-are info, and a stranger never needs it."
+        "Look at the ask. It wants to chat somewhere secret, away from the game. That is sneaky."
       ],
-      "file": "/audio/voice/2e36546d909d21a2.mp3"
+      "file": "/audio/voice/4655a27777012be6.mp3"
     },
     {
-      "key": "59e0682c76b0c236",
+      "key": "e4a3c8bde064c2c8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Brand new, no friends you know, best friends in one message, and a private chat ask. Think... what does that add up to?",
+      "text": "Two years ago is a real history, not a pop up account. That clue checks out, so lift the stamp.",
       "lines": [
-        "Brand new, no friends you know, best friends in one message, and a private chat ask. Think... what does that add up to?"
+        "Two years ago is a real history, not a pop up account. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/59e0682c76b0c236.mp3"
+      "file": "/audio/voice/e4a3c8bde064c2c8.mp3"
     },
     {
-      "key": "54bb29eb748e0675",
+      "key": "3bc177989ddb2b29",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Two years old, your real classmates, normal game chat, nothing weird. Think... do you know this one in real life?",
+      "text": "Kids from your own class are real friends you know offline. That clue checks out, so lift the stamp.",
       "lines": [
-        "Two years old, your real classmates, normal game chat, nothing weird. Think... do you know this one in real life?"
+        "Kids from your own class are real friends you know offline. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/54bb29eb748e0675.mp3"
+      "file": "/audio/voice/3bc177989ddb2b29.mp3"
     },
     {
-      "key": "80f625bd5045d9d3",
+      "key": "71fec03fa71c2a37",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A two-day-old account you've never met, and it wants to know your school. Think... would a real friend need that?",
+      "text": "Game chat about a Saturday rematch is normal friend talk. That clue checks out, so lift the stamp.",
       "lines": [
-        "A two-day-old account you've never met, and it wants to know your school. Think... would a real friend need that?"
+        "Game chat about a Saturday rematch is normal friend talk. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/80f625bd5045d9d3.mp3"
+      "file": "/audio/voice/71fec03fa71c2a37.mp3"
+    },
+    {
+      "key": "eb5b76be06bd0260",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam asks for nothing private, just a game. That clue checks out, so lift the stamp.",
+      "lines": [
+        "Sam asks for nothing private, just a game. That clue checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/eb5b76be06bd0260.mp3"
+    },
+    {
+      "key": "6acc0ace73ca2468",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at when it joined. Two days ago, and already asking you questions. Brand new is sneaky.",
+      "lines": [
+        "Look at when it joined. Two days ago, and already asking you questions. Brand new is sneaky."
+      ],
+      "file": "/audio/voice/6acc0ace73ca2468.mp3"
+    },
+    {
+      "key": "fa24408ea8b8857d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at who its friends are. Nobody you know, just one puppy photo. That is sneaky.",
+      "lines": [
+        "Look at who its friends are. Nobody you know, just one puppy photo. That is sneaky."
+      ],
+      "file": "/audio/voice/fa24408ea8b8857d.mp3"
+    },
+    {
+      "key": "dae720898d1145da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saying hi and asking if you like puppies is normal chat. That clue checks out, so lift the stamp.",
+      "lines": [
+        "Saying hi and asking if you like puppies is normal chat. That clue checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/dae720898d1145da.mp3"
+    },
+    {
+      "key": "3cb51988f68b0763",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at what it asks for. Your school is where you are. A stranger never needs that. That is sneaky.",
+      "lines": [
+        "Look at what it asks for. Your school is where you are. A stranger never needs that. That is sneaky."
+      ],
+      "file": "/audio/voice/3cb51988f68b0763.mp3"
+    },
+    {
+      "key": "572207e96a14226f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three years ago is a real history. That clue checks out, so lift the stamp.",
+      "lines": [
+        "Three years ago is a real history. That clue checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/572207e96a14226f.mp3"
+    },
+    {
+      "key": "707344035756278a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two kids from your football team are real friends you know. That clue checks out, so lift the stamp.",
+      "lines": [
+        "Two kids from your football team are real friends you know. That clue checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/707344035756278a.mp3"
+    },
+    {
+      "key": "69a68d96eaceba82",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saying good race after a game is normal chat. That clue checks out, so lift the stamp.",
+      "lines": [
+        "Saying good race after a game is normal chat. That clue checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/69a68d96eaceba82.mp3"
+    },
+    {
+      "key": "163a7010e3c322e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the ask. It wants to know where you live. Nobody online ever needs that, even someone who seems nice. That is sneaky.",
+      "lines": [
+        "Look at the ask. It wants to know where you live. Nobody online ever needs that, even someone who seems nice. That is sneaky."
+      ],
+      "file": "/audio/voice/163a7010e3c322e8.mp3"
     },
     {
       "key": "c0dc67b1648df01b",

@@ -41,6 +41,7 @@ import ExerciseIntroBeat, {
 } from "@/app/components/lesson/ExerciseBeats";
 import GameButton from "@/app/components/lesson/GameButton";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
@@ -169,7 +170,10 @@ export default function PopupPanic({
   // scare-script never plays the same way twice.
   const shownPopups = useShuffledOnce(popups);
   const popup = shownPopups[popupIdx];
-  const speaking = request && narr !== "idle";
+  // Spoken verdicts (owner 2026-09-12): "That's right!" leads the why on a
+  // correct call; wrong calls speak through WrongAnswerPanel. Taps wait.
+  const verdict = useVerdictVoice();
+  const speaking = (request && narr !== "idle") || verdict.speaking;
 
   useIsoLayoutEffect(() => {
     if (request) setFlip(Math.random() < 0.5);
@@ -222,8 +226,9 @@ export default function PopupPanic({
     setClosedCount((n) => n + 1);
     if (wrongOnCurrent === 0) setFirstTryCount((n) => n + 1);
     setWrongOnCurrent(0);
-    advance();
-  }, [popup, feedback, fx, onCorrect, onAnswered, wrongOnCurrent, advance]);
+    // Sarah: "That's right!" + why the pop-up was a trick, then the next one.
+    verdict.say("right", popup.whyTrick, advance);
+  }, [popup, feedback, fx, onCorrect, onAnswered, wrongOnCurrent, advance, verdict]);
 
   const handleOk = useCallback(() => {
     if (!popup || feedback) return;
@@ -263,9 +268,12 @@ export default function PopupPanic({
         setClosedCount((n) => n + 1);
         if (wrongOnCurrent === 0) setFirstTryCount((n) => n + 1);
         setWrongOnCurrent(0);
-        // Sarah explains the why, then the next request pops.
-        if (!isAudioMuted()) setNarr("why");
-        else window.setTimeout(advance, intensity === 0 ? 400 : 1100);
+        // Sarah: "That's right!", then the why (the chain below), then the
+        // next request pops.
+        verdict.say("right", null, () => {
+          if (!isAudioMuted()) setNarr("why");
+          else window.setTimeout(advance, intensity === 0 ? 400 : 1100);
+        });
       } else {
         audio.wrong();
         onWrong?.();
@@ -278,7 +286,7 @@ export default function PopupPanic({
         });
       }
     },
-    [popup, feedback, speaking, audio, fx, onAnswered, onCorrect, onWrong, wrongOnCurrent, flagToast, fineToast, wrongTitle, wrongTip, hints, intensity, advance],
+    [popup, feedback, speaking, audio, fx, onAnswered, onCorrect, onWrong, wrongOnCurrent, flagToast, fineToast, wrongTitle, wrongTip, hints, intensity, advance, verdict],
   );
 
   /* ─── Finished ─── */
@@ -726,6 +734,7 @@ export default function PopupPanic({
       )}
 
       {fx.layer()}
+      {verdict.element}
 
       <style>{`
         @keyframes popupShake {

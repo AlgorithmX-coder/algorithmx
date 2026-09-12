@@ -24,6 +24,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
@@ -33,6 +34,8 @@ export interface VaultDropItem {
   icon: string;
   isPrivate: boolean;
   explanation: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
 }
 
 export interface VaultDropProps {
@@ -119,8 +122,11 @@ export default function VaultDrop({
     });
   };
 
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
   const sortCurrent = (toVault: boolean) => {
-    if (!item || feedback || finished) return;
+    if (!item || feedback || finished || verdict.speaking) return;
     setHasInteracted(true);
     const wasCorrect = toVault === item.isPrivate;
     onAnswered?.({
@@ -143,7 +149,7 @@ export default function VaultDrop({
         setPinned((p) => [...p, item]);
         fx.correct({ xp: 25, text: "PINNED!" });
       }
-      setIdx((i) => i + 1);
+      verdict.say("right", item.why ?? item.explanation, () => setIdx((i) => i + 1));
     } else {
       audio.wrong();
       onWrong?.();
@@ -202,6 +208,7 @@ export default function VaultDrop({
   return (
     <ExerciseFrame maxWidth={860} decor={false} background="transparent">
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat

@@ -108,6 +108,7 @@ export const WEEK_1: WeekContent = {
     // 4 - Game: MATCH (Cyber Words)
     {
       type: "memoryMatch",
+      whyWrong: "Those two don't go together. Turn them back and look for the pair that matches.",
       threat: {
         raccoonLine:
           "Heh heh! Most kids don't even know what a password really IS. They think a hiding spot keeps them safe. That's how I sneak right in!",
@@ -120,10 +121,10 @@ export const WEEK_1: WeekContent = {
       // "Only YOU know it" both said YOU, and "Keeps hackers out" mirrored
       // "Wants to break in" - so more than one card could plausibly match.
       pairs: [
-        { term: "Password", match: "Unlocks your account", colour: "#00e5ff" },
-        { term: "Strong", match: "Too hard to crack", colour: "#7eff97" },
-        { term: "Hacker", match: "A baddie who guesses", colour: "#ff5fb3" },
-        { term: "Secret", match: "You never tell anyone", colour: "#ffd158" },
+        { term: "Password", match: "Unlocks your account", why: "A password is the secret key that unlocks your account and proves it's really you.", colour: "#00e5ff" },
+        { term: "Strong", match: "Too hard to crack", why: "A strong password is so long and mixed up that a cracking machine gives up.", colour: "#7eff97" },
+        { term: "Hacker", match: "A baddie who guesses", why: "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs.", colour: "#ff5fb3" },
+        { term: "Secret", match: "You never tell anyone", why: "A secret password stays secret; the moment you tell someone, it isn't your key anymore.", colour: "#ffd158" },
       ],
       narration: {
         speaker: "adam",
@@ -160,9 +161,9 @@ export const WEEK_1: WeekContent = {
       prompt: "A password proves it's ___.",
       choices: [
         { text: "YOU", isCorrect: true },
-        { text: "a robot", isCorrect: false },
-        { text: "a hacker", isCorrect: false },
-        { text: "your friend", isCorrect: false },
+        { text: "a robot", isCorrect: false, why: "A password isn't for robots; it's the secret that shows who is really typing." },
+        { text: "a hacker", isCorrect: false, why: "A hacker is exactly who the password keeps out." },
+        { text: "your friend", isCorrect: false, why: "Your friend shouldn't know your password at all; it proves one person only." },
       ],
       praise: "Exactly - it proves it's YOU! ✓",
       teachNarration: {
@@ -227,6 +228,7 @@ export const WEEK_1: WeekContent = {
     // 7 - Game: BUILD (Three Random Words)
     {
       type: "threeRandomWords",
+      whyRight: "Three random words make a long passphrase: easy for you to remember, and years of guessing for the Raccoon.",
       threat: {
         raccoonLine:
           "My guessing machine chews through short little passwords in a blink! Go on, pick a nice SHORT one, make my job easy, heh heh!",
@@ -297,10 +299,10 @@ export const WEEK_1: WeekContent = {
       prompt: "Which password would take the Raccoon YEARS to crack?",
       speedMs: 5000,
       choices: [
-        { text: "cat", isCorrect: false },
-        { text: "Tiger7", isCorrect: false },
+        { text: "cat", isCorrect: false, why: "Cat is three little letters; a cracking machine guesses that in a blink." },
+        { text: "Tiger7", isCorrect: false, why: "One word and one number is still a quick guess; hackers try a name plus a number first." },
         { text: "dragon-taco-comet", isCorrect: true },
-        { text: "sun", isCorrect: false },
+        { text: "sun", isCorrect: false, why: "Sun is a tiny common word; it would be cracked in a second." },
       ],
       praise: "Fast AND right - long is strong! ✓",
       teachNarration: {
@@ -466,7 +468,7 @@ export const WEEK_1: WeekContent = {
       prompt: "Is that true?",
       raccoonLine: "a password made of small letters only is just as strong as a mixed-up one!",
       choices: [
-        { text: "TRUE", isCorrect: false },
+        { text: "TRUE", isCorrect: false, why: "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong." },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted! Mixing it up makes it MUCH stronger. ✓",
@@ -617,9 +619,9 @@ export const WEEK_1: WeekContent = {
       prompt: "Who should know your password?",
       choices: [
         { text: "Only me (and a parent)", isCorrect: true },
-        { text: "My best friend", isCorrect: false },
-        { text: "My whole class", isCorrect: false },
-        { text: "Anyone who asks", isCorrect: false },
+        { text: "My best friend", isCorrect: false, why: "Even a best friend shouldn't know it; a secret shared is a secret that can leak." },
+        { text: "My whole class", isCorrect: false, why: "A whole class is a lot of people; a password is for you alone." },
+        { text: "Anyone who asks", isCorrect: false, why: "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too." },
       ],
       praise: "Right - it stays your secret! ✓",
       teachNarration: {
@@ -734,9 +736,9 @@ export const WEEK_1: WeekContent = {
       prompt: "Which password would a hacker guess FIRST?",
       choices: [
         { text: "password", isCorrect: true },
-        { text: "Dragon-Pickle9!", isCorrect: false },
-        { text: "Comet$Turtle3", isCorrect: false },
-        { text: "Waffle!Ninja6", isCorrect: false },
+        { text: "Dragon-Pickle9!", isCorrect: false, why: "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess." },
+        { text: "Comet$Turtle3", isCorrect: false, why: "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess." },
+        { text: "Waffle!Ninja6", isCorrect: false, why: "Waffle!Ninja6 is long and mixed; a hacker would never start there." },
       ],
       praise: "Yep - 'password' is the #1 worst! ✓",
       teachNarration: {

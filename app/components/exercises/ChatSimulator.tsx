@@ -11,6 +11,7 @@ import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 
 // Audio-only narration (Sarah reads the bubbles that are already on screen).
 const AUDIO_ONLY_STYLE = {
@@ -124,7 +125,10 @@ export default function ChatSimulator({
   const [showIntro, setShowIntro] = useState(true);
   // Read-aloud: the bubble Sarah is reading (the queue and the choices wait).
   const [speak, setSpeak] = useState<null | { key: string; text: string }>(null);
-  const speaking = speak !== null;
+  // Spoken verdicts (owner 2026-09-12): each reply's feedback is fronted by
+  // "That's right!" / "Not quite."; the chat and the choices wait for her.
+  const verdict = useVerdictVoice();
+  const speaking = speak !== null || verdict.speaking;
   const [payoffSpeaking, setPayoffSpeaking] = useState(false);
   const [shown, setShown] = useState<ShownMsg[]>([]);
   const [cursor, setCursor] = useState(0);
@@ -320,7 +324,7 @@ export default function ChatSimulator({
         text: opt.feedback,
         tone: opt.isSafe ? "good" : "bad",
       });
-      speakLine(`fb-${triggerIdx}`, opt.feedback);
+      verdict.say(opt.isSafe ? "right" : "wrong", opt.feedback);
 
       if (opt.isSafe) {
         playSound("correct");
@@ -340,7 +344,7 @@ export default function ChatSimulator({
       });
       setWaitingChoice(null);
     },
-    [waitingChoice, pushShown, speakLine],
+    [waitingChoice, pushShown, verdict],
   );
 
   // The payoff is spoken on the summary; Continue waits for it.
@@ -635,6 +639,7 @@ export default function ChatSimulator({
           />
         </div>
       )}
+      {verdict.element}
       {phase === "complete" && completeNarration && payoffSpeaking && (
         <div aria-hidden style={AUDIO_ONLY_STYLE}>
           <InfoNarration

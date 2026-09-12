@@ -27,6 +27,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
@@ -45,6 +46,8 @@ export interface ClueBoardVerdictOption {
   text: string;
   isCorrect: boolean;
   explanation: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
 }
 
 export interface ClueBoardProps {
@@ -158,6 +161,9 @@ export default function ClueBoard({
     setFound((prev) => new Set(prev).add(clue.id));
   };
 
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const voice = useVerdictVoice();
   const decide = (i: number) => {
     if (!allFound || solved || feedback) return;
     const option = verdictOptions[i];
@@ -173,7 +179,7 @@ export default function ClueBoard({
       fx.correct({ xp: 25, text: stampText ?? "CASE CLOSED!" });
       onCorrect?.();
       setSolved(true);
-      window.setTimeout(() => setFinished(true), reduce ? 900 : 1700);
+      voice.say("right", option.why ?? option.explanation, () => setFinished(true));
     } else {
       audio.wrong();
       onWrong?.();
@@ -191,6 +197,7 @@ export default function ClueBoard({
   return (
     <ExerciseFrame maxWidth={780} decor>
       {fx.layer()}
+      {voice.element}
 
       {showIntro && (
         <ExerciseIntroBeat

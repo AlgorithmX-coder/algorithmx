@@ -22,6 +22,7 @@ import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
@@ -40,6 +41,8 @@ export interface LineupSender {
   isFake: boolean;
   /** Teach copy: why this one is fake / why it checks out. */
   note: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
 }
 
 export interface LineupRound {
@@ -151,6 +154,9 @@ export default function SenderLineup({
     }
   }, [wrongCount, onHintReached]);
 
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
   const pick = (senderIdx: number) => {
     if (!round || busted || showIntro || feedback) return;
     setHasInteracted(true);
@@ -168,7 +174,7 @@ export default function SenderLineup({
       onCorrect?.();
       setCorrectCount((n) => n + 1);
       setBusted(sender.id);
-      window.setTimeout(() => setIdx((i) => i + 1), reduce ? 800 : 1600);
+      verdict.say("right", sender.why ?? sender.note, () => setIdx((i) => i + 1));
     } else {
       audio.wrong();
       onWrong?.();
@@ -186,6 +192,7 @@ export default function SenderLineup({
   return (
     <ExerciseFrame maxWidth={860} decor>
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat

@@ -61,6 +61,7 @@ import RevealBoard from "@/app/components/exercises/RevealBoard";
 import ConveyorSort from "@/app/components/exercises/ConveyorSort";
 import RequestInspector from "@/app/components/exercises/RequestInspector";
 import ProfileInspector from "@/app/components/exercises/ProfileInspector";
+import ClueStamper from "@/app/components/exercises/ClueStamper";
 import ReplyCards from "@/app/components/exercises/ReplyCards";
 import ClueBoard from "@/app/components/exercises/ClueBoard";
 import TeamPoster from "@/app/components/exercises/TeamPoster";
@@ -159,6 +160,7 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "conveyorSort",
   "requestInspector",
   "profileInspector",
+  "clueStamper",
   "replyCards",
   "clueBoard",
   "teamPoster",
@@ -1801,6 +1803,48 @@ function DynamicLessonInner({
               introIcon={def.introIcon}
               realLabel={def.realLabel}
               fakeLabel={def.fakeLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "clueStamper":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0e1c3a 100%)">
+            <ClueStamper
+              cases={def.cases}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              stampLabel={def.stampLabel}
+              closeLabel={def.closeLabel}
+              realSeal={def.realSeal}
+              fakeSeal={def.fakeSeal}
+              realToast={def.realToast}
+              fakeToast={def.fakeToast}
+              wrongTitle={def.wrongTitle}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
               introNarration={def.narration}

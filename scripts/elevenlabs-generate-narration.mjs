@@ -140,6 +140,28 @@ const blocks = [];
 blocks.push({ speaker: "adam", lines: ["Can you fill in the missing word?"], source: "shared" });
 // SignBingo vault skin: the per-move prompt Sarah reads after each scene (W1 Vault Door bingo).
 blocks.push({ speaker: "adam", lines: ["Which power did that move use? Turn its dial."], source: "shared" });
+// VerdictVoice leads (owner 2026-09-12: Sarah speaks EVERY verdict with its reason):
+// the two shared leads play before the per-item reason on every exercise, all weeks.
+// Keep identical to VERDICT_LEADS in app/components/lesson/VerdictVoice.tsx.
+blocks.push({ speaker: "adam", lines: ["That's right!"], source: "shared" });
+blocks.push({ speaker: "adam", lines: ["Not quite."], source: "shared" });
+// ProofScale (W15 signature): its claims live in the component, not in a week
+// file. Sarah speaks each claim's `fact` on a right call (leadless: the fact is
+// already an affirmation) and "Not quite." + a per-claim nudge on a wrong one.
+// The two nudge templates MUST stay identical to nudgeBook / nudgeBuzz in
+// app/components/exercises/signatures/ProofScale.tsx.
+{
+  const ps = await readFile("app/components/exercises/signatures/ProofScale.tsx", "utf8");
+  const claimsBlock = ps.slice(ps.indexOf("const CLAIMS: Claim[] = ["), ps.indexOf("];", ps.indexOf("const CLAIMS: Claim[] = [")));
+  const psRe = /topic:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?fact:\s*"((?:[^"\\]|\\.)*)"/g;
+  let pm;
+  while ((pm = psRe.exec(claimsBlock)) !== null) {
+    const topic = pm[1].replace(/\\"/g, '"'), fact = pm[2].replace(/\\"/g, '"');
+    blocks.push({ speaker: "adam", lines: [fact], source: "ProofScale.tsx" });
+    blocks.push({ speaker: "adam", lines: [`Hmm, does that book really talk about ${topic}? Look for one that does!`], source: "ProofScale.tsx" });
+    blocks.push({ speaker: "adam", lines: [`Beep? Wait. I think one of those books DOES talk about ${topic}. Peek again!`], source: "ProofScale.tsx" });
+  }
+}
 
 for (const fname of weekFiles) {
   const src = await readFile(join(WEEK_CONTENT_DIR, fname), "utf8");
@@ -269,6 +291,50 @@ for (const fname of weekFiles) {
       fileBlocks += 2;
     }
   }
+  // Spoken verdicts (owner 2026-09-12): VerdictVoice plays the shared lead, then
+  // the per-item reason as a single-line block. Every reason field is named
+  // why / whyRight / whyWrong (or the quick-check nudge that stands in for one),
+  // so ONE generic scan records them for the Learn-Loop weeks; engines that use
+  // explanation / note are covered by the wrong-answer scan below.
+  if (learnLoop) {
+    // diagnosisExplanation (PasswordHospital) and verdictNote (Request/Profile
+    // Inspector) never matched the lower-case explanation|note scan below, so
+    // those panels were silent; they are verdict reasons and belong here.
+    const reasonRe = /\b(?:why|whyRight|whyWrong|nudge|diagnosisExplanation|verdictNote|trap):\s*"((?:[^"\\]|\\.)*)"/g;
+    const seenReason = new Set();
+    let rm;
+    while ((rm = reasonRe.exec(src)) !== null) {
+      const text = rm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+      if (!text || seenReason.has(text)) continue;
+      seenReason.add(text);
+      blocks.push({ speaker: "adam", lines: [text], source: fname });
+      fileBlocks++;
+    }
+  }
+  // SpamBlaster (Learn-Loop weeks): the wrong-answer panel fills a copy template
+  // per email ("{sender}" / "{subject}" / "{clue}"), so record each FILLED
+  // string exactly as the component builds it (fill() in SpamBlaster.tsx), plus
+  // the clue itself (spoken after "That's right!" on a zap).
+  if (learnLoop && /type:\s*"spamBlaster"/.test(src)) {
+    const comp = await readFile("app/components/exercises/SpamBlaster.tsx", "utf8");
+    const dflt = (k) => { const m = comp.match(new RegExp(k + ":\\s*\\n?\\s*(['\"])((?:[^'\"\\\\]|\\\\.)*)\\1")); return m ? m[2].replace(/\\"/g, '"').replace(/\\'/g, "'") : ""; };
+    const sbStart = src.search(/type:\s*"spamBlaster"/);
+    const sbEnd = src.slice(sbStart + 1).search(/^\s*\{?\s*type:\s*"/m);
+    const span = src.slice(sbStart, sbEnd < 0 ? src.length : sbStart + 1 + sbEnd);
+    const over = (k) => { const m = span.match(new RegExp("\\b" + k + ":\\s*\"((?:[^\"\\\\]|\\\\.)*)\"")); return m ? m[1].replace(/\\"/g, '"') : null; };
+    const safeTpl = over("safeWrongExplanation") ?? dflt("safeWrongExplanation");
+    const missTpl = over("missExplanation") ?? dflt("missExplanation");
+    const clueFallback = over("missClueFallback") ?? dflt("missClueFallback");
+    const emailRe = /sender:\s*"((?:[^"\\]|\\.)*)"\s*,\s*subject:\s*"((?:[^"\\]|\\.)*)"\s*,\s*isPhishing:\s*(true|false)\s*,\s*clue:\s*"((?:[^"\\]|\\.)*)"/g;
+    let em;
+    while ((em = emailRe.exec(span)) !== null) {
+      const e = { sender: em[1].replace(/\\"/g, '"'), subject: em[2].replace(/\\"/g, '"'), isPhishing: em[3] === "true", clue: em[4].replace(/\\"/g, '"') };
+      const fill = (tpl) => tpl.replace(/\{sender\}/g, e.sender).replace(/\{subject\}/g, e.subject).replace(/\{clue\}/g, e.clue || clueFallback);
+      const text = (e.isPhishing ? fill(missTpl) : fill(safeTpl)).trim();
+      if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
+      if (e.isPhishing && e.clue) { blocks.push({ speaker: "adam", lines: [e.clue.trim()], source: fname }); fileBlocks++; }
+    }
+  }
   // Wrong-answer teaching (owner 2026-09-09): Sarah reads the WrongAnswerPanel
   // explanation aloud on any wrong pick. The panel's `explanation` prop is a
   // verbatim content field — `explanation` (ClueBoard/ConveyorSort/quickCheck)
@@ -351,6 +417,13 @@ for (const fname of weekFiles) {
           if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
         }
         pushAll(span, /\bnudge:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "clueStamper") {
+        // The Clue Stamper: Sarah reads each case as it arrives, says the
+        // case's why on a correct lock, and each clue's teach on a wrong one.
+        pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\brightWhy:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\bteach:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       if (st.type === "popupPanic") {
         pushAll(span, /\bbody:\s*"((?:[^"\\]|\\.)*)"/g);

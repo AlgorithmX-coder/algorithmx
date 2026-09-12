@@ -30,6 +30,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
@@ -67,6 +68,8 @@ export interface InspectRequest {
   isNosy: boolean;
   zones: InspectZone[];
   verdictNote: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
   /** Optional "Think!" line Sarah says once every clue is open, before the
    *  verdict. Read aloud; the verdict buttons unlock when she finishes.
    *  Omit for today's behaviour (opt-in per request). */
@@ -163,7 +166,10 @@ export default function RequestInspector({
   // other). Opt-in per request: no `nudge` = today's behaviour.
   const showNudge = !!nudgeText && allInspected && !decided && !zoneSpeaking;
   // The verdict waits while Sarah reads a clue, and until the nudge is done.
-  const verdictHeld = zoneSpeaking || (!!nudgeText && !nudgeDone);
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
+  const verdictHeld = zoneSpeaking || (!!nudgeText && !nudgeDone) || verdict.speaking;
 
   // Reset per request when advancing (clues, verdict, hint, read-aloud, nudge).
   useEffect(() => {
@@ -214,11 +220,7 @@ export default function RequestInspector({
     if (inspected.has(zone.id) || decided || showIntro || zoneSpeaking) return;
     setHasInteracted(true);
     audio.tap();
-    fx.toast(
-      zone.isRedFlag
-        ? { text: "RED FLAG!", tone: "danger" }
-        : { text: "Looks ok", tone: "xp" },
-    );
+    fx.toast({ text: "Clue noted", tone: "xp" });
     setInspected((prev) => new Set(prev).add(zone.id));
     // Sarah reads the revealed clue aloud (owner: "read out the inspections
     // as you click"); the click-guard holds further taps until she finishes.
@@ -242,7 +244,7 @@ export default function RequestInspector({
       onCorrect?.();
       setCorrectCount((n) => n + 1);
       setDecided(refuse ? "nosy" : "fair");
-      window.setTimeout(() => setIdx((i) => i + 1), reduce ? 700 : 1400);
+      verdict.say("right", req.why ?? req.verdictNote, () => setIdx((i) => i + 1));
     } else {
       audio.wrong();
       onWrong?.();
@@ -262,15 +264,21 @@ export default function RequestInspector({
     () => (zone: InspectZone) =>
       !inspected.has(zone.id)
         ? { border: "#7df0ff55", text: "#7df0ff", bg: "rgba(0,179,255,0.08)" }
-        : zone.isRedFlag
-          ? { border: "#ff5fb3aa", text: "#ff9bcb", bg: "rgba(255,95,179,0.1)" }
-          : { border: "#34d399aa", text: "#a0ffb0", bg: "rgba(52,211,153,0.1)" },
-    [inspected],
+        // Owner 2026-09-12: an inspected clue stays NEUTRAL (violet) until the
+        // child commits, so red/green never gives the verdict away. The
+        // suspicious/safe colour is revealed only after `decided`.
+        : !decided
+          ? { border: "#9d7bff88", text: "#d7ccff", bg: "rgba(157,123,255,0.10)" }
+          : zone.isRedFlag
+            ? { border: "#ff5fb3aa", text: "#ff9bcb", bg: "rgba(255,95,179,0.1)" }
+            : { border: "#34d399aa", text: "#a0ffb0", bg: "rgba(52,211,153,0.1)" },
+    [inspected, decided],
   );
 
   return (
     <ExerciseFrame maxWidth={760} decor>
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat
@@ -433,7 +441,7 @@ export default function RequestInspector({
                     aria-label={open ? `${zone.label}: ${zone.note}` : `Inspect: ${zone.label}`}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13.5, fontWeight: 900 }}>
-                      <PixIcon emoji={open ? (zone.isRedFlag ? "🚫" : "✅") : "🔍"} size={18} />
+                      <PixIcon emoji={open && decided ? (zone.isRedFlag ? "🚫" : "✅") : "🔍"} size={18} />
                       {zone.label}
                     </div>
                     <div style={{ marginTop: 4, fontSize: 12.5, fontWeight: 700, lineHeight: 1.35, color: open ? undefined : "#7d8cc9" }}>

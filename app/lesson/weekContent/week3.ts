@@ -14,7 +14,7 @@ import { WEEK_INTROS } from "./weekIntros";
  *   (quickCheck + teachNarration) -> recap (praise, restate, cliffhanger AND
  *   the lesson bridge in one breath):
  *     1 MASKS    you can't see who's typing     | plaquePeek "The Mask Peek" (skin: mask)     | lie
- *     2 SPOT     spotting a fake profile        | profileInspector "The Profile Detective"  | speed
+ *     2 STAMP    spotting a fake profile        | clueStamper "The Clue Stamper"            | speed
  *     3 FLAGS    red-flag requests              | popupPanic "Red-Flag Requests" (skin: request) | recall
  *     4 NEVERS   never meet, never send         | cyberMaze "The Meet-Up Maze"              | finish
  *     5 TELL     uh-oh feeling -> stop -> tell  | chatSimulator "The Uh-Oh Chat"            | order
@@ -27,7 +27,7 @@ import { WEEK_INTROS } from "./weekIntros";
  *
  * ENGINE REUSE POLICY (owner, caps: "WE NEVER COPY AN EXERCISE"): a rebuilt week
  * never uses an engine already used by a previously rebuilt week (W15, W1, W2)
- * nor a neighbour week (W2, W4). W3 = plaquePeek / profileInspector / popupPanic
+ * nor a neighbour week (W2, W4). W3 = plaquePeek / clueStamper / popupPanic
  * / cyberMaze / chatSimulator / teamPoster: zero overlap, every reuse a genuine
  * re-theme (skin + copy). `node scripts/audit-engine-reuse.mjs --week=3`.
  *
@@ -229,7 +229,7 @@ export const WEEK_3: WeekContent = {
       prompt: "Is that true?",
       raccoonLine: "if a profile has a kid's photo and says AGE 9, that PROVES a kid is typing!",
       choices: [
-        { text: "TRUE", isCorrect: false },
+        { text: "TRUE", isCorrect: false, why: "A photo can be copied and an age takes one second to type; neither shows who is really typing." },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted! A photo and a typed age prove NOTHING. ✓",
@@ -272,127 +272,131 @@ export const WEEK_3: WeekContent = {
       conceptTotal: 5,
       title: "Spotting a Fake Profile",
       content:
-        "Fake profiles leave clues! A brand-new account. No friends you actually know. One suspiciously perfect photo. And the biggest tell of all: acting like your best friend after five minutes. Check the clues BEFORE you trust.",
+        "Fake profiles leave four clues! WHEN did it join: brand new is sneaky. WHO are its friends: nobody you know is sneaky. HOW does it talk: best friends in five minutes is sneaky. WHAT does it ask for: your school or a private chat is the giveaway. Check all four BEFORE you trust.",
       bullets: [
-        "Brand new account, joined yesterday?",
-        "No friends you know in real life",
-        "One perfect photo (probably copied)",
-        "Too friendly, too fast",
+        "WHEN did it join? Brand new is sneaky",
+        "WHO are its friends? Nobody you know",
+        "HOW does it talk? Best friends in five minutes",
+        "WHAT does it ask for? Your school, a private chat",
         "Real friends? You know them OFFLINE too",
       ],
-      bulletIcons: ["🔍", "👪", "🆔", "⭐", "✅"],
+      bulletIcons: ["🆔", "👪", "💬", "❓", "✅"],
       emblem: "🔍",
       narration: {
         speaker: "layla",
         lines: [
           "[excited] Detective time! Fake profiles leave four clues behind.",
-          "Clue one: the account is brand new. Joined yesterday?",
-          "Clue two: no friends you actually know.",
-          "Clue three: one perfect photo, probably copied.",
-          "[whispers] And clue four, the biggest of all... best friends after five minutes.",
-          "[excited] Real friends? You know them offline too. Let's go and inspect some profiles!",
+          "Clue one: WHEN did it join? Brand new, joined yesterday? Sneaky.",
+          "Clue two: WHO are its friends? Nobody you actually know? Sneaky.",
+          "Clue three: HOW does it talk? Best friends after five minutes? Sneaky.",
+          "[whispers] And clue four, the giveaway: WHAT does it ask for? Your school, or a private chat.",
+          "[excited] Real friends check out on all four. Let's go and stamp some clues!",
         ],
       },
     },
-    // 9 - Game: INSPECT "The Profile Detective" (profileInspector)
+    // 9 - Game: STAMP "The Clue Stamper" (clueStamper, first outing)
     {
-      type: "profileInspector",
+      type: "clueStamper",
       threat: {
         raccoonLine:
           "My newest account is ONE day old, has zero real friends and one perfect photo... and I call everyone best friend in the first message. Works every time!",
       },
-      introTitle: "The Profile Detective",
-      introSubtitle: "Three friend requests just landed. Tap all four magnifying glasses on each one, then decide: real friend, or FAKE?",
+      introTitle: "The Clue Stamper",
+      introSubtitle: "Four clues sit on every profile. Stamp the sneaky ones, then close the case.",
       introIcon: "🔍",
-      realLabel: "Real friend",
-      fakeLabel: "FAKE!",
-      completeTitle: "Every profile checked!",
+      stampLabel: "SNEAKY!",
+      closeLabel: "CLOSE THE CASE",
+      realSeal: "REAL FRIEND",
+      fakeSeal: "FAKE!",
+      realToast: "CASE CLOSED: REAL FRIEND!",
+      fakeToast: "CASE CLOSED: FAKE!",
+      wrongTitle: "Check your stamps again!",
+      completeTitle: "Every case closed!",
       completeLine: "Fakes unmasked, real friends welcomed.",
-      profiles: [
+      cases: [
         {
           id: "skater-max",
           handle: "SkaterKid_Max",
           avatar: "🎮",
-          bio: "Hey!! You seem SO cool, best friends??",
-          stats: [
-            { label: "Joined", value: "YESTERDAY" },
-            { label: "Friends", value: "0 you know" },
-            { label: "Photos", value: "just 1" },
+          pitch: "Hey!! You seem SO cool. Best friends??",
+          readAloud: "SkaterKid Max says: Hey, you seem so cool. Best friends? When did it join? Yesterday. Who are its friends? None you know. How does it talk? Best friends already. What does it ask for? A private chat.",
+          clues: [
+            { id: "when", evidence: "Joined: yesterday", isRedFlag: true, teach: "Look at when it joined. Yesterday! A brand new account that rushes at you is sneaky." },
+            { id: "who", evidence: "Friends you know: none", isRedFlag: true, teach: "Look at who its friends are. Not one kid you know in real life. That is sneaky." },
+            { id: "how", evidence: "Says: best friends already", isRedFlag: true, teach: "Look at how it talks. Best friends after one message? Real friends are never that fast. That is sneaky." },
+            { id: "what", evidence: "Asks: a private chat", isRedFlag: true, teach: "Look at the ask. It wants to chat somewhere secret, away from the game. That is sneaky." },
           ],
-          isFake: true,
-          zones: [
-            { id: "joined", label: "When did it join?", note: "Yesterday! A brand-new account that rushes at you is a classic fake tell.", isRedFlag: true },
-            { id: "friends", label: "Who are its friends?", note: "Zero friends you know, and just one photo, the kind you could copy from anywhere.", isRedFlag: true },
-            { id: "talk", label: "How does it talk?", note: "Best friends after one message? Real friendship is never that fast.", isRedFlag: true },
-            { id: "asking", label: "What is it asking for?", note: "It wants to chat privately, away from the game. That's a sneaky move.", isRedFlag: true },
-          ],
-          nudge: "Brand new, no friends you know, best friends in one message, and a private chat ask. Think... what does that add up to?",
-          verdictNote: "It adds up to FAKE. Brand new, no real friends, best friends in five minutes and a private chat ask is the Raccoon's textbook disguise.",
+          rightWhy: "Brand new, no friends you know, best friends in five minutes, and a private chat. Four sneaky clues. That is the Raccoon in a costume!",
         },
         {
           id: "dragon-sam",
           handle: "DoodleDragon_Sam",
           avatar: "🎨",
-          bio: "Dragon drawings + Mega Blasters. Rematch Saturday?",
-          stats: [
-            { label: "Joined", value: "2 years ago" },
-            { label: "Friends", value: "your class" },
-            { label: "Photos", value: "12 drawings" },
+          pitch: "Dragon drawings and Mega Blasters. Rematch Saturday?",
+          readAloud: "DoodleDragon Sam says: Dragon drawings and Mega Blasters. Rematch Saturday? When did it join? Two years ago. Who are its friends? Kids from your class. How does it talk? Rematch on Saturday. What does it ask for? Nothing private.",
+          clues: [
+            { id: "when", evidence: "Joined: 2 years ago", isRedFlag: false, teach: "Two years ago is a real history, not a pop up account. That clue checks out, so lift the stamp." },
+            { id: "who", evidence: "Friends: kids from your class", isRedFlag: false, teach: "Kids from your own class are real friends you know offline. That clue checks out, so lift the stamp." },
+            { id: "how", evidence: "Says: rematch on Saturday?", isRedFlag: false, teach: "Game chat about a Saturday rematch is normal friend talk. That clue checks out, so lift the stamp." },
+            { id: "what", evidence: "Asks: nothing private", isRedFlag: false, teach: "Sam asks for nothing private, just a game. That clue checks out, so lift the stamp." },
           ],
-          isFake: false,
-          zones: [
-            { id: "joined", label: "When did it join?", note: "Two years ago. That's a real history, not a pop-up account.", isRedFlag: false },
-            { id: "friends", label: "Who are its friends?", note: "Kids from your actual class, plus a gallery of twelve dragon drawings.", isRedFlag: false },
-            { id: "talk", label: "How does it talk?", note: "Normal friend stuff: game chat and a Saturday rematch.", isRedFlag: false },
-            { id: "asking", label: "What is it asking for?", note: "Nothing weird. Sam just wants to play the game you both love.", isRedFlag: false },
-          ],
-          nudge: "Two years old, your real classmates, normal game chat, nothing weird. Think... do you know this one in real life?",
-          verdictNote: "You do know Sam in real life, from school. Real friends online are great, and this one checks out on every clue.",
+          rightWhy: "Two years old, your real classmates, normal game talk, and asks for nothing. Every clue checks out, so no stamps. A real friend!",
         },
         {
           id: "puppy-ellie",
           handle: "PuppyFan_Ellie",
           avatar: "🐶",
-          bio: "I'm 9 too!! What school do u go to? Tell me EVERYTHING!",
-          stats: [
-            { label: "Joined", value: "2 days ago" },
-            { label: "Friends", value: "0 you know" },
-            { label: "Photos", value: "just 1" },
+          pitch: "Hi! I love puppies. Which school do you go to?",
+          readAloud: "PuppyFan Ellie says: Hi! I love puppies. Which school do you go to? When did it join? Two days ago. Who are its friends? None you know. How does it talk? I love puppies, do you? What does it ask for? Which school you go to.",
+          clues: [
+            { id: "when", evidence: "Joined: 2 days ago", isRedFlag: true, teach: "Look at when it joined. Two days ago, and already asking you questions. Brand new is sneaky." },
+            { id: "who", evidence: "Friends you know: none", isRedFlag: true, teach: "Look at who its friends are. Nobody you know, just one puppy photo. That is sneaky." },
+            { id: "how", evidence: "Says: I love puppies, do you?", isRedFlag: false, teach: "Saying hi and asking if you like puppies is normal chat. That clue checks out, so lift the stamp." },
+            { id: "what", evidence: "Asks: which school you go to", isRedFlag: true, teach: "Look at what it asks for. Your school is where you are. A stranger never needs that. That is sneaky." },
           ],
-          isFake: true,
-          zones: [
-            { id: "joined", label: "When did it join?", note: "Two days ago, and it's already asking you personal questions.", isRedFlag: true },
-            { id: "friends", label: "Who are its friends?", note: "Not one friend you recognize, and a single perfect puppy photo.", isRedFlag: true },
-            { id: "talk", label: "How does it talk?", note: "I'm 9 too! Remember the mask peek: anyone can type an age.", isRedFlag: true },
-            { id: "asking", label: "What is it asking for?", note: "Your SCHOOL. That's where-you-are info, and a stranger never needs it.", isRedFlag: true },
+          rightWhy: "Two days old, nobody you know, and she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake.",
+        },
+        {
+          id: "rocket-ben",
+          handle: "RocketRacer_Ben",
+          avatar: "🚀",
+          pitch: "gg, good race! You won a prize!",
+          readAloud: "RocketRacer Ben says: gg, good race! You won a prize! When did it join? Three years ago. Who are its friends? Two kids from football. How does it talk? gg, good race. What does it ask for? Your home address.",
+          clues: [
+            { id: "when", evidence: "Joined: 3 years ago", isRedFlag: false, teach: "Three years ago is a real history. That clue checks out, so lift the stamp." },
+            { id: "who", evidence: "Friends: 2 kids from football", isRedFlag: false, teach: "Two kids from your football team are real friends you know. That clue checks out, so lift the stamp." },
+            { id: "how", evidence: "Says: gg, good race!", isRedFlag: false, teach: "Saying good race after a game is normal chat. That clue checks out, so lift the stamp." },
+            { id: "what", evidence: "Asks: your home address", isRedFlag: true, teach: "Look at the ask. It wants to know where you live. Nobody online ever needs that, even someone who seems nice. That is sneaky." },
           ],
-          nudge: "A two-day-old account you've never met, and it wants to know your school. Think... would a real friend need that?",
-          verdictNote: "A real friend from school wouldn't need to ask which school. Asking where you are is the giveaway, so this one is FAKE.",
+          rightWhy: "Three clues looked fine, but nobody online ever needs your home address. One sneaky clue is enough. Say no and tell a grown-up.",
         },
       ],
       hints: {
-        tier1: "Tap all four magnifying glasses: when it joined, its friends, how it talks, what it asks for.",
-        tier2: "New account, no real friends, too friendly too fast, asking personal stuff: FAKE. Known in real life: real.",
+        tier1: "Check all four: when it joined, who its friends are, how it talks, what it asks for.",
+        tier2: "Sarah named a clue. Find that row. Sneaky means stamp it. Checks out means leave it clean.",
+        tier3: "Let me help. I fixed that one clue for you. Now close the case.",
       },
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] On your second challenge, you become the Profile Detective!",
-          "This game is all about the four clues that give a fake profile away.",
-          "Out in the real world, friend requests arrive with a smiley photo and a friendly line, and you have to decide who to let in.",
-          "Here is what you do. Three requests are waiting. On each one, tap all four magnifying glasses: when it joined, who its friends are, how it talks, and what it's asking for. Listen to each clue, then tap REAL FRIEND or FAKE.",
-          "[warmly] Check every clue before you decide. Ready? Let's inspect!",
+          "[excited] Your second challenge, detective! Friend requests are landing, and you are the one who checks them.",
+          "Every profile leaves four clues: when it joined, who its friends are, how it talks, and what it asks for.",
+          "A fake gives itself away on at least one clue. A real friend checks out on all four.",
+          "The Raccoon thinks his costume works every time. Not on your watch.",
+          "[warmly] Read all four clues, stamp the sneaky ones, then close the case. Ready? Let's go!",
         ],
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Tap every magnifying glass before you decide!"],
+        lines: [
+          "Here is a friend request. Read all four clues. If a clue looks sneaky, tap it to stamp it. Tap it again to lift the stamp. Nothing sneaky? Stamp nothing. When you have checked all four, tap Close the case.",
+        ],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every profile checked! You spot a fake profile by its clues, not its smile.",
-          "[warmly] Out in the real world, a brand-new account that rushes at you will never get past you, and real friends still get a warm hello.",
+          "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you.",
+          "[warmly] Out in the real world, a brand new account that rushes at you never gets past you, and real friends still get a warm hello.",
         ],
       },
     },
@@ -404,8 +408,8 @@ export const WEEK_3: WeekContent = {
       speedMs: 5000,
       choices: [
         { text: "Best friend after 1 day", isCorrect: true },
-        { text: "Your cousin from Sunday lunch", isCorrect: false },
-        { text: "Your classmate from school", isCorrect: false },
+        { text: "Your cousin from Sunday lunch", isCorrect: false, why: "Your cousin is someone you know in real life; that's real proof, not fake." },
+        { text: "Your classmate from school", isCorrect: false, why: "A classmate you see at school is real proof; you know them offline." },
       ],
       praise: "Spotted in seconds. Real detective work! ✓",
       teachNarration: {
@@ -424,14 +428,14 @@ export const WEEK_3: WeekContent = {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "Fake profiles leave clues: brand new, no friends you know, one copied photo, too friendly too fast.",
+      learned: "Fake profiles leave four clues: when it joined, who its friends are, how it talks, what it asks for. Read them, and the Raccoon's fake friends can't fool you.",
       next: "the red-flag requests every hero must know",
       emblem: "🔍",
       narration: {
         speaker: "adam",
         lines: [
           "[excited] Two powers down! You're a certified Profile Detective.",
-          "New account? No friends you know? Best friend in five minutes? Busted, busted, busted.",
+          "Joined yesterday? Nobody you know? Best friends in five minutes? Asks for your school? Stamp, stamp, stamp, stamp.",
           "[warmly] But some tricksters get past the profile check. So they start ASKING for things...",
           "Next, we'll learn the red-flag requests every hero must know. Come and see!",
         ],
@@ -586,9 +590,9 @@ export const WEEK_3: WeekContent = {
       prompt: "Which of these is a RED FLAG?",
       choices: [
         { text: "'Don't tell your parents about me'", isCorrect: true },
-        { text: "'Good game! Rematch?'", isCorrect: false },
-        { text: "'What's your favorite color?'", isCorrect: false },
-        { text: "'Nice move back there!'", isCorrect: false },
+        { text: "'Good game! Rematch?'", isCorrect: false, why: "Game talk is fine; a rematch invite doesn't pull you anywhere secret." },
+        { text: "'What's your favorite color?'", isCorrect: false, why: "A favorite color is safe small talk; it isn't private and it isn't a secret." },
+        { text: "'Nice move back there!'", isCorrect: false, why: "A compliment about the game is just game talk; no secret, no pressure." },
       ],
       praise: "Yes! That's the BIGGEST red flag there is. ✓",
       teachNarration: {
@@ -765,9 +769,9 @@ export const WEEK_3: WeekContent = {
       prompt: "Never meet. Never ___.",
       choices: [
         { text: "send", isCorrect: true },
-        { text: "play", isCorrect: false },
-        { text: "smile", isCorrect: false },
-        { text: "win", isCorrect: false },
+        { text: "play", isCorrect: false, why: "Playing the game online is fine; the rule is about something of yours leaving your phone." },
+        { text: "smile", isCorrect: false, why: "Smiling is fine; the rule is about pictures of you leaving your hands." },
+        { text: "win", isCorrect: false, why: "Winning is fine; the rule is about what you never hand over." },
       ],
       praise: "Never meet, never SEND. Armor on! ✓",
       nudge: "Photos of you... what's the rule?",
@@ -1007,7 +1011,7 @@ export const WEEK_3: WeekContent = {
       subtitle: "Here's everything you mastered this week.",
       concepts: [
         { id: "masks", label: "Disguise-Proof", accent: "#c084fc", icon: "🎭", summary: "Photos, ages and names can all be faked. You judge the proof, never the mask." },
-        { id: "detective", label: "Profile Detective", accent: "#00e5ff", icon: "🔍", summary: "New account, no real friends, copied photo, too-friendly-too-fast: busted." },
+        { id: "detective", label: "Profile Detective", accent: "#00e5ff", icon: "🔍", summary: "When it joined, who its friends are, how it talks, what it asks for: all four checked." },
         { id: "flags", label: "Red-Flag Radar", accent: "#ff5fb3", icon: "🚫", summary: "Secrets, photos, gifts-for-info and 'don't tell your parents': spotted instantly." },
         { id: "nevers", label: "The Two Nevers", accent: "#ffd158", icon: "✋", summary: "Never meet up. Never send photos. Zero exceptions, forever." },
         { id: "tell", label: "The Uh-Oh Power", accent: "#7eff97", icon: "💬", summary: "Icky feeling? Stop the chat and tell a trusted grown-up. Every time." },
@@ -1296,7 +1300,7 @@ export const WEEK_3: WeekContent = {
     6: { adam: { mood: "thumbsup", message: "Catch his lie!" }, layla: null }, // prove: lie
     7: { adam: null, layla: { mood: "excited", message: "One power down - four to go!" } }, // recap 1
     8: { adam: null, layla: { mood: "curious", message: "Fake profiles leave clues." } }, // learn: spot
-    9: { adam: { mood: "curious", message: "Inspect all four clues, detective." }, layla: null }, // game: profileInspector
+    9: { adam: { mood: "curious", message: "Stamp the sneaky clues, detective." }, layla: null }, // game: clueStamper
     10: { adam: null, layla: { mood: "excited", message: "Quick - spot the fake!" } }, // prove: speed
     11: { adam: { mood: "thumbsup", message: "Certified profile detective!" }, layla: null }, // recap 2
     12: { adam: { mood: "thinking", message: "Some asks are ALWAYS red flags." }, layla: null }, // learn: flags

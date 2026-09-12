@@ -27,6 +27,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
@@ -44,6 +45,8 @@ export interface ConveyorItem {
   icon?: string;
   categoryId: string;
   explanation: string;
+  /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
+  why?: string;
 }
 
 export interface ConveyorSortProps {
@@ -184,8 +187,11 @@ export default function ConveyorSort({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress]);
 
+  // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
+  // the next item waits for her; wrong picks speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice();
   const choose = (categoryId: string) => {
-    if (!runningRef.current || !item) return;
+    if (!runningRef.current || !item || verdict.speaking) return;
     setHasInteracted(true);
     const correctIdx = categories.findIndex((c) => c.id === item.categoryId);
     const chosenIdx = categories.findIndex((c) => c.id === categoryId);
@@ -202,11 +208,14 @@ export default function ConveyorSort({
       onCorrect?.();
       setCorrectCount((n) => n + 1);
       setStamp({ categoryId });
-      window.setTimeout(() => {
+      // The belt holds on the stamp while Sarah says why, then rolls on.
+      setPaused(true);
+      verdict.say("right", item.why ?? item.explanation, () => {
+        setPaused(false);
         setStamp(null);
         setProgress(0);
         setIdx((i) => i + 1);
-      }, reduce ? 350 : 700);
+      });
     } else {
       audio.wrong();
       onWrong?.();
@@ -240,6 +249,7 @@ export default function ConveyorSort({
   return (
     <ExerciseFrame maxWidth={760} decor>
       {fx.layer()}
+      {verdict.element}
 
       {showIntro && (
         <ExerciseIntroBeat

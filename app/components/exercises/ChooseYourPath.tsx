@@ -27,6 +27,7 @@ import {
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import VerdictVoice from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 
@@ -776,12 +777,7 @@ export default function ChooseYourPath({
               "Continue" until she finishes, so the child hears the correction.
               speaker "adam" = Sarah, matching the recorded consequence. */}
           {revealing && pickedChoice && (
-            <InfoNarration
-              key={`cyp-explain-${idx}`}
-              speaker="adam"
-              lines={[pickedChoice.consequence]}
-              accent={pickedChoice.isSafe ? "#7eff97" : "#ff9db0"}
-            />
+            <VerdictVoice key={`cyp-explain-${idx}`} verdict={pickedChoice.isSafe ? "right" : "wrong"} why={pickedChoice.consequence} />
           )}
         </div>
       )}
