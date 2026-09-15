@@ -846,12 +846,14 @@ export const WEEK_13: WeekContent = {
     },
     intro: {
       slug: "quiz-w13-intro",
-      text: "Yaaawn... who left the daylight on? Welcome to my garage, Keeper! Let's see if that famous battery of yours has any answer-juice left!",
+      text: "Yaaawn... who left the daylight on? Welcome to my garage, hero! Let's see if that famous battery of yours has any answer-juice left!",
     },
     victory: {
       slug: "quiz-w13-victory",
       text: "Still FULL bars?! I leeched and leeched and got zip! Take your batteries, take your bedtimes... I'm powering down out of pure embarrassment!",
     },
+    // 5 questions, one per skill, 4 right to pass (owner decision, UAT batch 2).
+    passMark: 4,
     questions: [
       {
         phaseId: "phase-w13-c1",
@@ -988,276 +990,7 @@ export const WEEK_13: WeekContent = {
           text: "Wait for 'done', keep waiting! The queue refills faster than you do!",
         },
       },
-      {
-        phaseId: "phase-w13-c1",
-        key: "quiz-w13-c1-2",
-        label: "Your Power Bar",
-        ask: {
-          slug: "quiz-w13-ask-c1-2",
-          text: "Kart racing for an hour was AWESOME. What did it do to your power bar?",
-        },
-        options: [
-          { text: "Used charge, fun isn't free power, it just needs balancing" },
-          { text: "Refilled it, fun always charges you up" },
-          { text: "Nothing, only boring stuff drains the bar" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Fun still uses charge!",
-          explanation: "Kart racing is awesome AND it spends power, both things are true. Fun isn't free energy, and that's fine, it just needs balancing with refills like moving, food and sleep.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c1-2",
-          text: "You knew the kart hour SPENDS?! Even the fun ones feed my hose!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c1-2",
-          text: "Fun charges you up! More fun! MORE! Says so on my hose!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c2",
-        key: "quiz-w13-c2-2",
-        label: "The Body-Bells",
-        ask: {
-          slug: "quiz-w13-ask-c2-2",
-          text: "Under the table, your legs are bouncing like they're full of bees. What are they asking for?",
-        },
-        options: [
-          { text: "A real run around, that's the jiggly-legs bell ringing" },
-          { text: "A comfier chair so they can settle down" },
-          { text: "More practice at sitting still" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Your legs want a run!",
-          explanation: "Jiggly legs aren't asking for a better chair or more sitting practice. They're a body-bell saying 'we've been still too long!' A real run around fills the bar right back up.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c2-2",
-          text: "The bees in your legs snitched?! Traitor bees!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c2-2",
-          text: "A comfier chair, perfect! Sit stiller, sit longer, drip, drip, drip!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c3",
-        key: "quiz-w13-c3-2",
-        label: "Sleep Guard",
-        ask: {
-          slug: "quiz-w13-ask-c3-2",
-          text: "You turn the brightness ALL the way down to scroll in bed. Does that fool your brain?",
-        },
-        options: [
-          { text: "No, dim screen light is still daytime-light to a brain" },
-          { text: "Yes, low brightness counts as moonlight" },
-          { text: "Yes, as long as the sound is off too" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Dim is still daytime!",
-          explanation: "Your brain reads screen light as sunshine, bright or dim, sound on or off. Only screen-off gives it real nighttime, which is why screens sleep in the garage.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c3-2",
-          text: "Even DIM light?! I turned that brightness down myself!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c3-2",
-          text: "Dim it and scroll on! Your brain can't tell the difference! Leech's honor!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c4",
-        key: "quiz-w13-c4-2",
-        label: "Plan It Together",
-        ask: {
-          slug: "quiz-w13-ask-c4-2",
-          text: "You're swapping the breakfast-cartoons block. Which swap is a REAL recharge, not a screen in disguise?",
-        },
-        options: [
-          { text: "Breakfast chat at the table" },
-          { text: "Cartoons with the sound turned off" },
-          { text: "The same show on the tiny phone instead" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Watch for screens in disguise!",
-          explanation: "Sound off and a smaller screen change nothing, your eyes are still on the glow. A real recharge has no screen in it at all: people, moving, stories, sleep.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c4-2",
-          text: "A breakfast CHAT?! No glow at all?! Where's my cut?!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c4-2",
-          text: "Muted, tiny, still a screen! My favorite swaps change absolutely nothing!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c5",
-        key: "quiz-w13-c5-2",
-        label: "The Power-Down Five",
-        ask: {
-          slug: "quiz-w13-ask-c5-2",
-          text: "The bedtime chime rings MID-LEVEL. What's the pro's first move?",
-        },
-        options: [
-          { text: "Finish the level, tidy endings come first" },
-          { text: "Screen off instantly, mid-jump if you have to" },
-          { text: "One more level, then all five moves at double speed" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Tidy beats instant!",
-          explanation: "Switching off mid-jump feels obedient but makes endings horrible, and 'one more level' is the trap talking. The pro move is finishing THIS level, then bye, off, park, pick what's next.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c5-2",
-          text: "Finish first?! Tidy endings leave me nothing to slurp!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c5-2",
-          text: "Mid-jump rage-quit or one more level! Both wobble, and wobbles are juicy!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c1",
-        key: "quiz-w13-c1-3",
-        label: "Your Power Bar",
-        ask: {
-          slug: "quiz-w13-ask-c1-3",
-          text: "Your friend says: 'to keep your battery full, give up screens completely.' What's the Keeper's answer?",
-        },
-        options: [
-          { text: "Balance means SOME screen fun plus real refills, not none" },
-          { text: "They're right, zero screens is the only safe amount" },
-          { text: "Backwards, screens refill you if they're learning apps" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Balance means some, not none!",
-          explanation: "Zero screens throws out the fun, and learning apps still use charge like any other glow. A Keeper's day has BOTH: some screen fun and real refills, sitting level like a see-saw.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c1-3",
-          text: "SOME screens, SOME sunshine?! Balanced batteries taste like cardboard!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c1-3",
-          text: "All or nothing! Extremes, lovely extremes! The hose approves!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c2",
-        key: "quiz-w13-c2-3",
-        label: "The Body-Bells",
-        ask: {
-          slug: "quiz-w13-ask-c2-3",
-          text: "Why is HEARING a body-bell good news, not bad news?",
-        },
-        options: [
-          { text: "It means I caught the Battery Thief early, break before empty" },
-          { text: "It isn't good news, bells mean I'm in trouble" },
-          { text: "It means I can play longer, the bell resets the battery" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Bells are early warnings!",
-          explanation: "A bell isn't trouble, and it never adds playtime. It rings while there's still charge left, which means you caught the Battery Thief EARLY. Hear it, break, refill.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c2-3",
-          text: "Caught EARLY?! Bells are supposed to ring when the tank's already empty!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c2-3",
-          text: "Bells mean bonus time! Ring ring, play on! Works every time!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c3",
-        key: "quiz-w13-c3-3",
-        label: "Sleep Guard",
-        ask: {
-          slug: "quiz-w13-ask-c3-3",
-          text: "Your friend whispers: 'phone under your pillow tonight, midnight chat!' What's the Keeper's call?",
-        },
-        options: [
-          { text: "Phones sleep in the garage, we chat tomorrow, messages keep" },
-          { text: "Say yes just this once, one night can't hurt" },
-          { text: "Set the phone to quiet mode and chat anyway" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "The messages will keep!",
-          explanation: "Quiet mode still pings your sleep full of holes, and 'just once' is how every midnight habit starts. Phones sleep in the garage, the chat waits till morning, and both friends stay charged.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c3-3",
-          text: "Parked AGAIN?! Midnight was my all-you-can-leech buffet!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c3-3",
-          text: "Secret pings all night! Two drained pals by Tuesday, a double serving!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c4",
-        key: "quiz-w13-c4-3",
-        label: "Plan It Together",
-        ask: {
-          slug: "quiz-w13-ask-c4-3",
-          text: "Your co-signed plan keeps Saturday cartoons AND the after-homework game hour. Is the plan broken?",
-        },
-        options: [
-          { text: "No, a good plan keeps some screen fun IN, that's balance" },
-          { text: "Yes, a proper plan swaps every screen block out" },
-          { text: "Yes, plans only count if they hurt a little" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "A good plan keeps fun in!",
-          explanation: "A plan that bans everything is just a rule wearing a plan costume, and nobody keeps those. Balance means SOME screen fun every day, agreed and signed by both of you.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c4-3",
-          text: "The plan KEEPS the cartoons?! You can't fight a plan kids actually like!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c4-3",
-          text: "Ban all the fun! Banned fun sneaks back at midnight, straight to me!",
-        },
-      },
-      {
-        phaseId: "phase-w13-c5",
-        key: "quiz-w13-c5-3",
-        label: "The Power-Down Five",
-        ask: {
-          slug: "quiz-w13-ask-c5-3",
-          text: "You have to leave the game RIGHT as your friends are mid-round. Vanish or not?",
-        },
-        options: [
-          { text: "Quick 'bye, gotta go!', heroes sign off" },
-          { text: "Just vanish, they'll work it out" },
-          { text: "Stay till the round ends, however long it takes" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Heroes sign off!",
-          explanation: "Vanishing mid-round leaves your friends wondering, and 'till the round ends' can stretch all night. A quick 'bye, gotta go!' takes two seconds and ends the game like a pro.",
-        },
-        villainRight: {
-          slug: "quiz-w13-right-c5-3",
-          text: "You said BYE?! Even your game friends wave at me now! Rude!",
-        },
-        villainWrong: {
-          slug: "quiz-w13-wrong-c5-3",
-          text: "Vanish or stay forever! Either way the ending picks itself, delicious!",
-        },
-      },
+    
     ],
   },
 
@@ -1322,7 +1055,7 @@ export const WEEK_13: WeekContent = {
     24: { adam: { mood: "worried", message: "His battery hoard - take it back!" }, layla: null }, // boss
     25: { adam: null, layla: { mood: "excited", message: "Watch your power come home!" } }, // outro video
     26: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
-    27: { adam: { mood: "excited", message: "Stickers earned, Keeper!" }, layla: null }, // stickers
+    27: { adam: { mood: "excited", message: "Stickers earned, Cyber Hero!" }, layla: null }, // stickers
     28: { adam: { mood: "thumbsup", message: "Battery Keeper badge earned!" }, layla: null }, // completion
   },
 };

@@ -490,7 +490,7 @@ export const WEEK_19: WeekContent = {
         lines: [
           "[excited] Power three - the quilt is sewn!",
           "Every patch signed, even Dad's.",
-          "[whispers] Now grab your flashlight, expert...",
+          "[whispers] Now grab your flashlight, Cyber Hero...",
           "it's time for the evening rounds.",
         ],
       },
@@ -586,7 +586,7 @@ export const WEEK_19: WeekContent = {
           "[whispers] The rounds begin - five windows on the wall.",
           "Grandma's, Dad's, your brother's, Mom's, the tablet's.",
           "Find the open ones...",
-          "[excited] and flip them shut - together. Go, expert!",
+          "[excited] and flip them shut - together. Go, Cyber Hero!",
         ],
       },
       coachLines: {
@@ -952,6 +952,8 @@ export const WEEK_19: WeekContent = {
       slug: "quiz-w19-victory",
       text: "Outsmarted by the kid, out-ruled by the quilt, and now the GRANDMA spots my tricks before I finish typing them?! This entire family is closed for raccoon business!",
     },
+    // 5 questions, one per skill, 4 right to pass (owner decision, UAT batch 2).
+    passMark: 4,
     questions: [
       {
         phaseId: "phase-w19-c1",
@@ -1088,276 +1090,7 @@ export const WEEK_19: WeekContent = {
           text: "Let the tap land! Lessons stick better AFTER the money's gone! Ask anyone! Ask me!",
         },
       },
-      {
-        phaseId: "phase-w19-c1",
-        key: "quiz-w19-c1-2",
-        label: "You're the Expert Now",
-        ask: {
-          slug: "quiz-w19-ask-c1-2",
-          text: "Your little brother almost tapped a fake prize, and you caught it just in time. How does the house expert tell him?",
-        },
-        options: [
-          { text: "Kindly, so he comes to show you the next one too" },
-          { text: "With a big laugh, so the lesson really sticks" },
-          { text: "Loudly at dinner, so the whole family learns at once" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Kind teachers keep students!",
-          explanation: "Laughing or announcing it at dinner might feel funny, but it teaches him to hide things from you instead. Kindness is what makes him bring you the NEXT trap, and that's the whole job.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c1-2",
-          text: "You were NICE about it?! Now he'll show you everything I send him! My beautiful traps, reviewed by an expert!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c1-2",
-          text: "Tease him! Roast him! Then next time he'll tell NOBODY, and nobody is my favorite audience!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c2",
-        key: "quiz-w19-c2-2",
-        label: "Same Tricks, Bigger Font",
-        ask: {
-          slug: "quiz-w19-ask-c2-2",
-          text: "A text on Mom's phone says: your bank account CLOSES in ONE HOUR unless you tap now! Which tell is flashing?",
-        },
-        options: [
-          { text: "The panic clock, a real bank never races you" },
-          { text: "The word account, real banks never mention accounts" },
-          { text: "The capital letters, real companies only type small letters" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Spot the panic clock!",
-          explanation: "Banks talk about accounts all the time, and capital letters alone prove nothing. The racing one-hour countdown is the tell, because real companies always give you time to think.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c2-2",
-          text: "Stop teaching moms about the clock! The clock is the whole ENGINE of this business!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c2-2",
-          text: "Tick tock, tick tock! While you studied the capital letters, my timer did all the work!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c3",
-        key: "quiz-w19-c3-2",
-        label: "Rules You Sew Together",
-        ask: {
-          slug: "quiz-w19-ask-c3-2",
-          text: "The family is making a new screen-time rule tonight. Which version will actually stick?",
-        },
-        options: [
-          { text: "The one everyone helps write and everyone follows, Dad included" },
-          { text: "The one Mom writes alone and pins up while everyone's asleep" },
-          { text: "The one kept secret so nobody can argue about it" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Sewn together, kept together!",
-          explanation: "Rules one person pins up get wriggled around, and secret rules can't be followed at all. When the whole family sews a rule together, everyone keeps it, because everyone made it.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c3-2",
-          text: "They ALL signed it?! Even the dad?! There's no wriggle room anywhere in this house!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c3-2",
-          text: "Secret midnight rules! Nobody follows those! I've built a whole career on nobody following those!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c4",
-        key: "quiz-w19-c4-2",
-        label: "The Evening Rounds",
-        ask: {
-          slug: "quiz-w19-ask-c4-2",
-          text: "Grandma's tablet is set so ANYONE can video-call her at suppertime. What does the expert flip it to?",
-        },
-        options: [
-          { text: "Contacts only, so just the faces she knows can ring through" },
-          { text: "Loudest ring, so she never misses a single caller" },
-          { text: "Airplane mode forever, so nobody can ever call again" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Real faces only!",
-          explanation: "Grandma shouldn't lose her calls with the family, and a louder ring just means louder strangers. Contacts-only means every call that rings through is a face she already knows and loves.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c4-2",
-          text: "Contacts only?! I had a POWDERED WIG ready for those suppertime calls!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c4-2",
-          text: "Ring louder, ring prouder! Suppertime is showtime, and I do a LOVELY fake nephew!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c5",
-        key: "quiz-w19-c5-2",
-        label: "Freeze the Moment",
-        ask: {
-          slug: "quiz-w19-ask-c5-2",
-          text: "Mom's rushing out the door when a text says: your package is stuck, pay here quick! Her thumb is already moving. What does the expert do?",
-        },
-        options: [
-          { text: "Say: wait, can I show you something? Right at that moment" },
-          { text: "Stay quiet, it's Mom's phone and Mom's choice" },
-          { text: "Snatch the phone away and run to another room" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Speak up at the moment!",
-          explanation: "Snatching would just start a chase, and staying quiet lets the trap spring. A kind wait-can-I-show-you-something freezes the moment long enough for Mom to look twice, and that's all she needs.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c5-2",
-          text: "She STOPPED mid-tap?! That package trick pays my rent, you know!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c5-2",
-          text: "Quiet as a mouse, excellent! Her thumb and my trap have a lovely appointment!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c1",
-        key: "quiz-w19-c1-3",
-        label: "You're the Expert Now",
-        ask: {
-          slug: "quiz-w19-ask-c1-3",
-          text: "Dad taps a joke ad, gets a screen full of nonsense, and turns a bit pink. What does the house expert say?",
-        },
-        options: [
-          { text: "These tricks fool everyone, want to hunt the tells together?" },
-          { text: "Grown-ups are supposed to know better, Dad" },
-          { text: "Maybe I should do all your tapping from now on" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Experts lift, never sting!",
-          explanation: "Dad already feels silly, and a sting or a takeover would just make him hide the next one. An expert says it happens to everyone, then shows the tells so Dad gets stronger too.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c1-3",
-          text: "You made the dad feel BETTER and get SMARTER?! Pick one! Preferably neither!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c1-3",
-          text: "Rub it in, take his taps away! A dad who hides his mistakes is a dad I can work with!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c2",
-        key: "quiz-w19-c2-3",
-        label: "Same Tricks, Bigger Font",
-        ask: {
-          slug: "quiz-w19-ask-c2-3",
-          text: "The text tells Grandma to fix everything fast at bank-fix.click. What do you show her?",
-        },
-        options: [
-          { text: "Strange side doors are the tell, her real bank says log in the normal way" },
-          { text: "The link is fine, because it has the word bank in it" },
-          { text: "She should tap it once just to see, since looking is free" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "No strange side doors!",
-          explanation: "Anyone can put the word bank in a made-up address, and just-looking walks you right through the trap door. Real companies never send strange links. Grandma logs in the way she always does.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c2-3",
-          text: "She used the FRONT door?! I built that lovely side door with my own paws!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c2-3",
-          text: "Looking is free! Says so on my sign! The charging happens AFTER the looking!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c3",
-        key: "quiz-w19-c3-3",
-        label: "Rules You Sew Together",
-        ask: {
-          slug: "quiz-w19-ask-c3-3",
-          text: "Layla tapped something she shouldn't have, and now the screen has gone weird. What does the family quilt's golden patch say she should do?",
-        },
-        options: [
-          { text: "Tell right away, nobody in this family gets in trouble for telling" },
-          { text: "Hide it and hope it fixes itself by dinnertime" },
-          { text: "Only mention it if a grown-up asks her about it first" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Tell, don't hide!",
-          explanation: "Weird screens grow weirder in the dark, and waiting to be asked can take forever. The golden patch means telling is always safe, so a trusted grown-up can help while the problem is still small.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c3-3",
-          text: "She told someone STRAIGHT AWAY?! My problems only work when they marinate in secret!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c3-3",
-          text: "Shhh, hide it! Problems love the dark! That's where I keep all of mine, growing big and strong!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c4",
-        key: "quiz-w19-c4-3",
-        label: "The Evening Rounds",
-        ask: {
-          slug: "quiz-w19-ask-c4-3",
-          text: "During the rounds you spot an open setting on Dad's phone. How does the expert close it?",
-        },
-        options: [
-          { text: "Show Dad and flip it together, so he knows it for next time" },
-          { text: "Fix it secretly, a good expert never needs to explain" },
-          { text: "Leave it alone, a grown-up's phone is none of a kid's business" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Rounds are done together!",
-          explanation: "Sneaking into Dad's phone, even to help, is snooping, and walking past leaves the window open. The evening rounds work because you knock, show, and flip it together. That's what makes it helping.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c4-3",
-          text: "They fixed it TOGETHER?! Now the dad can spot it himself! You're multiplying!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c4-3",
-          text: "Secret fixes, closed curtains, nobody learning anything! Keep the expert business mysterious, I always say!",
-        },
-      },
-      {
-        phaseId: "phase-w19-c5",
-        key: "quiz-w19-c5-3",
-        label: "Freeze the Moment",
-        ask: {
-          slug: "quiz-w19-ask-c5-3",
-          text: "You froze the moment and Grandma didn't tap the fake text. What's the last step that makes the save complete?",
-        },
-        options: [
-          { text: "Walk through the tells together, so she can catch the next one herself" },
-          { text: "Delete the text and never speak of it again" },
-          { text: "Tell her to hand you her phone whenever it buzzes from now on" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Fix it together!",
-          explanation: "Deleting hides the lesson, and taking over her phone doesn't make her stronger. Walking through the tells together turns one save into a hundred, because now Grandma can freeze moments too.",
-        },
-        villainRight: {
-          slug: "quiz-w19-right-c5-3",
-          text: "You TAUGHT her the tells?! Now there are TWO experts in this house and one very unemployed raccoon!",
-        },
-        villainWrong: {
-          slug: "quiz-w19-wrong-c5-3",
-          text: "Delete it, forget it! Then next week's version rings the doorbell fresh as a daisy!",
-        },
-      },
+    
     ],
   },
 

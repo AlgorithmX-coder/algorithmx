@@ -224,7 +224,20 @@ export const CARD_MATERIALS: Record<MissionCardMaterial, CardMaterial> = {
 };
 
 /** Small material details drawn inside a card face as real nodes. */
-export function CardDecoration({ deco, edge, tone = "card" }: { deco: CardDeco; edge: string; tone?: "card" | "chrome" }) {
+// Card decorations must never catch clicks: a full-card border frame sat on top
+// of the Week 15 intro's "I'm ready" button, so a real tap did nothing. Every
+// decoration renders inside this pass-through layer (pointer-events is
+// inherited); the layer is the same box the decorations were positioned
+// against, so nothing moves.
+export function CardDecoration(props: { deco: CardDeco; edge: string; tone?: "card" | "chrome" }) {
+  return (
+    <span aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", borderRadius: "inherit" }}>
+      <CardDecorationArt {...props} />
+    </span>
+  );
+}
+
+function CardDecorationArt({ deco, edge, tone = "card" }: { deco: CardDeco; edge: string; tone?: "card" | "chrome" }) {
   // "chrome" = the detail sits on a DARK translucent console (Learn, Spot the
   // Danger intro) instead of the briefing card's own light face, so the bright
   // paper/frost/photo details soften to accents. Owner polish pass 2026-09-12:
@@ -430,6 +443,14 @@ const GUTTER_MASK = "linear-gradient(90deg, #000 0%, #000 9%, transparent 19%, t
 
 /** The week's live scene behind a shared screen, dimmed to keep copy legible.
  *  Mount as the FIRST child of a container that has `isolation: isolate`. */
+// Centre calm (UAT 2026-09-15): the week scenes are composed around a centre
+// motif (Week 1's vault dial, rings, orbits) and the host's text panels sit on
+// top of that same spot, so the motif read through the copy. This mask keeps
+// the scene at a whisper behind the content column and at full strength in the
+// outer ring, where it is atmosphere rather than noise.
+const CENTRE_CALM_MASK =
+  "radial-gradient(ellipse 52% 58% at 50% 48%, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.7) 78%, #000 100%)";
+
 export function WorldBackdrop({
   intensity = 0.4,
   motes = false,
@@ -438,6 +459,7 @@ export function WorldBackdrop({
   zIndex = -1,
   moteOpacity = 0.85,
   moteMask = "none",
+  centreCalm = true,
 }: {
   /** 0..1 opacity of the live scene. */
   intensity?: number;
@@ -453,6 +475,9 @@ export function WorldBackdrop({
   /** "gutters" keeps the motes in the side margins of a narrow-column host
    *  (the concept recap) and out of its text panels. */
   moteMask?: "none" | "gutters";
+  /** Quiet the scene behind the content column (default). Pass false only on a
+   *  screen with nothing on top of the centre. */
+  centreCalm?: boolean;
 }) {
   const week = useLessonWeek();
   const theme = useLessonTheme();
@@ -460,7 +485,7 @@ export function WorldBackdrop({
   if (!world || week == null) return null;
   return (
     <div aria-hidden style={{ position: "absolute", inset: 0, zIndex, pointerEvents: "none", overflow: "hidden", borderRadius: "inherit" }}>
-      <div style={{ position: "absolute", inset: 0, opacity: intensity }}>
+      <div style={{ position: "absolute", inset: 0, opacity: intensity, ...(centreCalm ? { maskImage: CENTRE_CALM_MASK, WebkitMaskImage: CENTRE_CALM_MASK } : null) }}>
         <WeekIntroBackdrop weekNumber={week} accent={theme?.accent ?? "#e3b341"} />
       </div>
       {motes && (

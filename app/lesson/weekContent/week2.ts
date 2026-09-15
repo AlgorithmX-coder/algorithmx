@@ -19,7 +19,7 @@ import { WEEK_INTROS } from "./weekIntros";
  *     4 IDENTITY safe usernames           | usernameBuilder   | speed
  *     5 ASK      unsure? ask a grown-up   | stepOrder "The Hero Pause" (skin: hero) | finish
  *   -> consolidation "Grab-Bag Blaster" (spamBlaster, re-themed) -> bossBattle
- *      (QuizBoss, 7 Q / passMark 5) -> closing video -> debrief -> stickers ->
+ *      (QuizBoss, 5 Q / passMark 4) -> closing video -> debrief -> stickers ->
  *      completion.
  *
  * The Leak Torch signature was SCRAPPED (teach-before-test); its "find the
@@ -396,7 +396,7 @@ export const WEEK_2: WeekContent = {
           "A drawing app needs a nickname. Fair enough!",
           "[nervous] But a kitten quiz that wants your HOME ADDRESS?",
           "[laughs] A quiz doesn't visit your house! Too nosy!",
-          "[excited] Let's inspect some forms, detective.",
+          "[excited] Let's inspect some forms, Cyber Hero.",
         ],
       },
     },
@@ -478,7 +478,7 @@ export const WEEK_2: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Case closed, detective! Now you can ask WHY any app wants your info.",
+          "[proud] Case closed, Cyber Hero! Now you can ask WHY any app wants your info.",
           "[warmly] If it asks for more than it needs to work, it's too nosy, so you close it and tell a grown-up.",
         ],
       },
@@ -917,8 +917,8 @@ export const WEEK_2: WeekContent = {
       topic: "Private Info",
       motifs: ["🆔", "📍", "🏠", "🎭", "📱", "🌍", "🔒", "👤"],
     },
-    // Learn-Loop standard: 7 questions (5 concepts + 2 review), pass 5/7.
-    passMark: 5,
+    // Learn-Loop standard: 5 questions (one per concept), pass 4/5.
+    passMark: 4,
     intro: {
       slug: "quiz-w2-intro",
       text: "Ah, the little vault-keeper is back! You guarded your treasures all lesson, but one quiz with me and they'll come tumbling out!",
@@ -1064,60 +1064,7 @@ export const WEEK_2: WeekContent = {
           text: "Type first, think never! You're my favorite kind of quiz-taker!",
         },
       },
-      {
-        phaseId: "phase-w2-c1",
-        key: "quiz-w2-c1-2",
-        label: "Private Radar",
-        ask: {
-          slug: "quiz-w2-ask-c1-2",
-          text: "My scanner beeps when it finds private treasure. Adam typed three things in chat today. Which one made it beep?",
-        },
-        options: [
-          { text: "I ride the number 12 bus home" },
-          { text: "I beat level 12 this morning" },
-          { text: "My high score ends in 12" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Where-you-go is treasure too!",
-          explanation: "Levels and high scores say nothing about the real Adam. The bus he rides home shows where he goes every single day, and that's exactly the kind of treasure a scanner hunts.",
-        },
-        villainRight: {
-          slug: "quiz-w2-right-c1-2",
-          text: "The bus?! I waited at level 12 with a butterfly net and caught NOTHING!",
-        },
-        villainWrong: {
-          slug: "quiz-w2-wrong-c1-2",
-          text: "The number 12 bus! Time to buy myself a little raccoon bus pass, toot toot!",
-        },
-      },
-      {
-        phaseId: "phase-w2-c2",
-        key: "quiz-w2-c2-2",
-        label: "Share Smarts",
-        ask: {
-          slug: "quiz-w2-ask-c2-2",
-          text: "Layla won her swim race and wants to tell her game friends. Which message is the safe way to celebrate?",
-        },
-        options: [
-          { text: "I won my swim race today, best day ever!" },
-          { text: "I won my swim race at the pool on Oak Street!" },
-          { text: "I won my swim race for Maple Hill School!" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Share the win, not the where!",
-          explanation: "The happy news is hers to shout! It only turns private when a place gets attached: the pool's road or the name of her school tells strangers where to find her.",
-        },
-        villainRight: {
-          slug: "quiz-w2-right-c2-2",
-          text: "You shared the swim race WIN and kept the WHERE?! That's not how bragging is supposed to work!",
-        },
-        villainWrong: {
-          slug: "quiz-w2-wrong-c2-2",
-          text: "A trophy with a street or a school attached?! Best gift wrap I ever saw!",
-        },
-      },
+    
     ],
   },
 
@@ -1264,7 +1211,7 @@ export const WEEK_2: WeekContent = {
     10: { adam: null, layla: { mood: "excited", message: "Quick - which one stays locked?" } }, // C2 prove
     11: { adam: { mood: "thumbsup", message: "Best vault-guard I've ever met." }, layla: null }, // C2 recap
     12: { adam: { mood: "thinking", message: "One question beats the trick: WHY?" }, layla: null }, // C3 learn: why
-    13: { adam: { mood: "curious", message: "Inspect every clue, detective." }, layla: null }, // C3 game: inspector
+    13: { adam: { mood: "curious", message: "Inspect every clue, Cyber Hero." }, layla: null }, // C3 game: inspector
     14: { adam: null, layla: { mood: "worried", message: "He's fibbing again - catch him!" } }, // C3 prove: lie
     15: { adam: null, layla: { mood: "excited", message: "Form detective - certified!" } }, // C3 recap
     16: { adam: null, layla: { mood: "thinking", message: "Every hero needs a mask." } }, // C4 learn: identity

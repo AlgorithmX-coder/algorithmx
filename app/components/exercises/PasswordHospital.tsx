@@ -75,6 +75,8 @@ export interface HospitalPatient {
   diagnosisExplanation: string;
   /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
   why?: string;
+  /** Other diagnoses that are also honestly right (e.g. "123" is too short AND a keyboard run). */
+  alsoAccept?: string[];
   recommendedActions: string[];
 }
 
@@ -136,8 +138,11 @@ interface RepairAction {
 const RANDOM_LETTERS = "bdfghjklmnprstvwxz";
 const RANDOM_VOWELS = "aeiouy";
 const SYMBOL_POOL = ["!", "@", "#", "$", "%", "&", "*", "?"];
-const NAME_LIKE = /\b(sam|maya|john|alex|emma|leo|ben|noah|mia|amy|adam|layla|josh|sara|tom|liz)\b/i;
-const YEAR_LIKE = /\b(19\d{2}|20[0-3]\d)\b/;
+// Names and years are matched even when glued to digits or letters ("Sam2014"):
+// \b word boundaries never fire between "m" and "2", so the old patterns left
+// "Sam" in place and never scored the password as personal (UAT batch 2, item 7).
+const NAME_LIKE = /(?<![a-z])(sam|maya|john|alex|emma|leo|ben|noah|mia|amy|adam|layla|josh|sara|tom|liz)(?![a-z])/i;
+const YEAR_LIKE = /(?<!\d)(19\d{2}|20[0-3]\d)(?!\d)/;
 const SHORT_DATE_LIKE = /(?:\d{4}|\d{2}\/\d{2}|\d{2}-\d{2})/;
 const KEYBOARD_PATTERNS = [
   "qwerty",
@@ -195,10 +200,16 @@ const REPAIR_ACTIONS: Record<RepairActionId, RepairAction> = {
     applies: (pw) => !(/[a-z]/.test(pw) && /[A-Z]/.test(pw)),
     apply: (pw) => {
       // Capitalise every other letter starting from the second.
-      return pw
+      let out = pw
         .split("")
         .map((ch, i) => (/[a-z]/i.test(ch) && i % 2 === 1 ? ch.toUpperCase() : ch.toLowerCase()))
         .join("");
+      // Always leave BOTH cases behind (UAT batch 2, item 8): on a password with
+      // no letters ("123") or a single letter the old version changed nothing,
+      // so the meter could never fill however many fixes the child pressed.
+      if (!/[a-z]/.test(out)) out += randomChar(RANDOM_LETTERS);
+      if (!/[A-Z]/.test(out)) out += randomChar(RANDOM_LETTERS).toUpperCase();
+      return out;
     },
   },
   removePersonal: {
@@ -270,15 +281,21 @@ function scorePassword(pw: string): StrengthScore {
   const hasKeyboardPattern = KEYBOARD_PATTERNS.some((p) => lower.includes(p));
   const isCommonWord = COMMON_WORDS.some((w) => lower === w || lower.startsWith(w));
 
-  let score = 0;
-  score += Math.min(40, pw.length * 4); // length up to 40 pts
-  if (hasUpper) score += 12;
-  if (hasLower) score += 8;
-  if (hasDigit) score += 12;
-  if (hasSymbol) score += 14;
-  if (isCommonWord) score -= 25;
-  if (hasPersonal) score -= 18;
-  if (hasKeyboardPattern) score -= 22;
+  // The positives add up to at most 86, so the meter could never reach full
+  // (UAT batch 2, item 8). Scale everything to 100: a long, fully mixed password
+  // now fills the meter. Penalties and the healed threshold scale the same way,
+  // so how hard each patient is to heal is unchanged.
+  const SCALE = 100 / 86;
+  let raw = 0;
+  raw += Math.min(40, pw.length * 4); // length up to 40 pts
+  if (hasUpper) raw += 12;
+  if (hasLower) raw += 8;
+  if (hasDigit) raw += 12;
+  if (hasSymbol) raw += 14;
+  if (isCommonWord) raw -= 25;
+  if (hasPersonal) raw -= 18;
+  if (hasKeyboardPattern) raw -= 22;
+  let score = Math.round(raw * SCALE);
   score = Math.max(0, Math.min(100, score));
   return {
     score,
@@ -292,7 +309,8 @@ function scorePassword(pw: string): StrengthScore {
   };
 }
 
-const HEALED_THRESHOLD = 65;
+// 65 on the old 0-86 scale, expressed on the new 0-100 scale (same difficulty).
+const HEALED_THRESHOLD = Math.round((65 * 100) / 86);
 
 function strengthLabel(score: number): { text: string; colour: string } {
   if (score < 25) return { text: "VERY WEAK", colour: "#ef4444" };
@@ -367,11 +385,13 @@ export default function PasswordHospital({
   // Spoken verdicts (owner 2026-09-12): Sarah says "That's right!" + why and
   // the next item waits for her; wrong picks speak through WrongAnswerPanel.
   const verdict = useVerdictVoice();
+  const [diagnosedId, setDiagnosedId] = useState<string | null>(null);
   const handleDiagnosis = useCallback(
     (reasonId: string, index: number) => {
       if (!patient || feedback || verdict.speaking) return;
       const correctIndex = reasons.findIndex((r) => r.id === patient.primaryReason);
-      const wasCorrect = reasonId === patient.primaryReason;
+      const wasCorrect =
+        reasonId === patient.primaryReason || (patient.alsoAccept ?? []).includes(reasonId);
       onAnswered?.({
         questionKey: `hospital-${patient.id}-diagnosis`,
         selectedIndex: index,
@@ -381,8 +401,13 @@ export default function PasswordHospital({
       if (wasCorrect) {
         fx.correct({ xp: 10, text: "DIAGNOSED!" });
         onCorrect?.();
+        // The tapped button lights up green while Sarah explains (UAT batch 2, item 2).
+        setDiagnosedId(reasonId);
         // Sarah: "That's right!" + why, then the repair phase opens.
-        verdict.say("right", patient.why ?? patient.diagnosisExplanation, () => setPhase("repair"));
+        verdict.say("right", patient.why ?? patient.diagnosisExplanation, () => {
+          setDiagnosedId(null);
+          setPhase("repair");
+        });
       } else {
         audio.wrong();
         onWrong?.();
@@ -670,7 +695,8 @@ export default function PasswordHospital({
         <DiagnosisRow
           reasons={reasons}
           onPick={handleDiagnosis}
-          disabled={!!feedback}
+          disabled={!!feedback || !!diagnosedId}
+          correctId={diagnosedId}
           reshuffleKey={patientIdx}
         />
       )}
@@ -972,11 +998,14 @@ function DiagnosisRow({
   reasons,
   onPick,
   disabled,
+  correctId = null,
   reshuffleKey,
 }: {
   reasons: HospitalReason[];
   onPick: (reasonId: string, index: number) => void;
   disabled: boolean;
+  /** The diagnosis the child just got right: shown green until the repair phase opens. */
+  correctId?: string | null;
   reshuffleKey: number;
 }) {
   // Shuffle the button ORDER (re-rolled per patient via reshuffleKey) so the
@@ -1019,7 +1048,21 @@ function DiagnosisRow({
             size="lg"
             disabled={disabled}
             onClick={() => onPick(r.id, i)}
-            style={{ minHeight: 80, justifyContent: "flex-start", textAlign: "left", paddingLeft: 12 }}
+            style={{
+              minHeight: 80,
+              justifyContent: "flex-start",
+              textAlign: "left",
+              paddingLeft: 12,
+              ...(correctId === r.id
+                ? {
+                    background: "linear-gradient(180deg, rgba(34,197,94,0.42), rgba(21,128,61,0.42))",
+                    border: "2px solid #4ade80",
+                    boxShadow: "0 0 22px rgba(74,222,128,0.5)",
+                    color: "#ecfdf5",
+                    opacity: 1,
+                  }
+                : null),
+            }}
           >
             <span style={{ display: "flex", alignItems: "center", gap: 14, width: "100%" }}>
               {/* themed 3D icon chip */}

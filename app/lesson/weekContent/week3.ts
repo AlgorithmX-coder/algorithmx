@@ -19,7 +19,7 @@ import { WEEK_INTROS } from "./weekIntros";
  *     4 NEVERS   never meet, never send         | cyberMaze "The Meet-Up Maze"              | finish
  *     5 TELL     uh-oh feeling -> stop -> tell  | chatSimulator "The Uh-Oh Chat"            | order
  *   -> consolidation "The Case Board" (teamPoster, skin: case) -> bossBattle
- *      (QuizBoss, 7 Q / passMark 5) -> closing video -> debrief -> stickers ->
+ *      (QuizBoss, 5 Q / passMark 4) -> closing video -> debrief -> stickers ->
  *      completion.
  *
  * "The Mask Waltz" signature was CUT (teach-before-test, owner 2026-09-11):
@@ -379,7 +379,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Your second challenge, detective! Friend requests are landing, and you are the one who checks them.",
+          "[excited] Your second challenge, Cyber Hero! Friend requests are landing, and you are the one who checks them.",
           "Every profile leaves four clues: when it joined, who its friends are, how it talks, and what it asks for.",
           "A fake gives itself away on at least one clue. A real friend checks out on all four.",
           "The Raccoon thinks his costume works every time. Not on your watch.",
@@ -998,7 +998,7 @@ export const WEEK_3: WeekContent = {
       },
     },
 
-    // 25 - BOSS BATTLE: the Disguise Kit showdown (QuizBoss, 7 Q / pass 5)
+    // 25 - BOSS BATTLE: the Disguise Kit showdown (QuizBoss, 5 Q / pass 4)
     { type: "bossBattle" },
 
     // 26 - CLOSING VIDEO: the mask falls off
@@ -1051,7 +1051,7 @@ export const WEEK_3: WeekContent = {
   ],
   /* ──────────────── THE QUIZ BOSS (week-ending test) ────────────────
      Learn-Loop standard: 7 apply-the-skill questions (one per concept + two
-     review), pass 5/7, options shuffled at runtime with the seeded order the
+     review), now 5 questions / pass 4, options shuffled at runtime with the seeded order the
      narration generator shares. Every villain line is DISTINCT across the 20
      weeks; Callum's reactions name the answer the child gave; one kind teach
      then re-ask. Villain audio = Callum via the narration-audio pipeline
@@ -1063,7 +1063,7 @@ export const WEEK_3: WeekContent = {
       topic: "Stranger Danger",
       motifs: ["🎭", "👤", "💬", "🚫", "👀", "🔍", "🛡️", "❓"],
     },
-    passMark: 5,
+    passMark: 4,
     intro: {
       slug: "quiz-w3-intro",
       text: "A visitor! Or should I say... a new best friend? I've got a wig for every occasion and a name for every wig. Let's see if your lessons can keep up!",
@@ -1208,60 +1208,7 @@ export const WEEK_3: WeekContent = {
           text: "A wobbly tummy knows nothing! Keep chatting, little hero, keep chatting!",
         },
       },
-      {
-        phaseId: "phase-w3-c2",
-        key: "quiz-w3-c2-3",
-        label: "Profile Detective",
-        ask: {
-          slug: "quiz-w3-ask-c2-3",
-          text: "A new profile tells Adam: 'Look, I have 300 friends, I'm obviously real!' What should Adam check instead of the big number?",
-        },
-        options: [
-          { text: "Whether he knows any of them in real life" },
-          { text: "Whether the number is still going up" },
-          { text: "Whether they all play the same games" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Check the friends, not the number!",
-          explanation: "Friend numbers can be collected and even faked. The detective check is whether any of those friends are people YOU actually know offline, that's the clue that counts.",
-        },
-        villainRight: {
-          slug: "quiz-w3-right-c2-3",
-          text: "You checked the friends instead of the NUMBER?! I collected those in bulk!",
-        },
-        villainWrong: {
-          slug: "quiz-w3-wrong-c2-3",
-          text: "Three hundred friends can't be wrong! They're mostly me, but STILL!",
-        },
-      },
-      {
-        phaseId: "phase-w3-c4",
-        key: "quiz-w3-c4-3",
-        label: "The Two Nevers",
-        ask: {
-          slug: "quiz-w3-ask-c4-3",
-          text: "An online friend Adam has chatted with for a whole YEAR asks him to meet at the park. A year is a long time. Does the rule change?",
-        },
-        options: [
-          { text: "No, chat time never makes meeting safe" },
-          { text: "Yes, a year proves they're real" },
-          { text: "Yes, if Adam brings a friend along" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Zero exceptions, even after a year!",
-          explanation: "A year of chat is still only chat, you still can't see who's really typing. The never-rules don't wear out: never meet, and tell a trusted grown-up about the ask.",
-        },
-        villainRight: {
-          slug: "quiz-w3-right-c4-3",
-          text: "A whole YEAR of small talk, wasted! I asked about your weekend FIFTY-TWO TIMES!",
-        },
-        villainWrong: {
-          slug: "quiz-w3-wrong-c4-3",
-          text: "One year of chatting equals one park meet-up! That's friendship math, trust the math!",
-        },
-      },
+    
     ],
   },
 
@@ -1300,7 +1247,7 @@ export const WEEK_3: WeekContent = {
     6: { adam: { mood: "thumbsup", message: "Catch his lie!" }, layla: null }, // prove: lie
     7: { adam: null, layla: { mood: "excited", message: "One power down - four to go!" } }, // recap 1
     8: { adam: null, layla: { mood: "curious", message: "Fake profiles leave clues." } }, // learn: spot
-    9: { adam: { mood: "curious", message: "Stamp the sneaky clues, detective." }, layla: null }, // game: clueStamper
+    9: { adam: { mood: "curious", message: "Stamp the sneaky clues, Cyber Hero." }, layla: null }, // game: clueStamper
     10: { adam: null, layla: { mood: "excited", message: "Quick - spot the fake!" } }, // prove: speed
     11: { adam: { mood: "thumbsup", message: "Certified profile detective!" }, layla: null }, // recap 2
     12: { adam: { mood: "thinking", message: "Some asks are ALWAYS red flags." }, layla: null }, // learn: flags

@@ -90,6 +90,19 @@ export interface QuizBossProps {
 
 type Stage = "intro" | "ask" | "victory" | "failed";
 
+// A password, username or web address: no spaces, and a symbol, or letters mixed
+// with digits. Sarah never reads these aloud (UAT batch 2, item 11): symbols read
+// out sound unnatural, and a lookalike ("sch00l") cannot be spotted by ear.
+// KEEP IDENTICAL to isCodeLikeOption in scripts/elevenlabs-generate-narration.mjs.
+function isCodeLikeOption(text: string): boolean {
+  return !/\s/.test(text) && (/[$@#%&*^~+=<>|\\/_]/.test(text) || (/\d/.test(text) && /[A-Za-z]/.test(text)) || /[!?]./.test(text));
+}
+/** "A, B and C" / "A, B, C and D". KEEP IDENTICAL to the recorder. */
+function optionLetterList(count: number): string {
+  const letters = ["A", "B", "C", "D", "E"].slice(0, count);
+  return letters.length > 1 ? `${letters.slice(0, -1).join(", ")} and ${letters[letters.length - 1]}` : letters.join("");
+}
+
 /** Same-every-week how-to line (the whole format IS the instruction). */
 const HOW_TO_PLAY = "Tap the right answer to beat him!";
 
@@ -248,6 +261,10 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     if (!question) return [];
     const ordered = seededShuffle(question.options, qIdx * 47 + 5);
     const lines: string[] = [question.ask.text];
+    if (question.options.some((o) => isCodeLikeOption(o.text))) {
+      lines.push(`Take a close look at options ${optionLetterList(ordered.length)}.`, "So, what do you think?");
+      return lines;
+    }
     ordered.forEach((o, i) => {
       const last = i === ordered.length - 1;
       const lead = i === 0

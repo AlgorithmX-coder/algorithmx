@@ -181,6 +181,9 @@ export default function HookSort({
           icon={introIcon ?? "🪤"}
           narration={introNarration}
           character={introNarration?.speaker}
+          // Full-screen modal: in-frame, a long intro was clipped by this frame's
+          // overflow and "I'm ready" could not be tapped (UAT batch 3 sweep).
+          overlay
           onDismiss={() => setShowIntro(false)}
         />
       )}

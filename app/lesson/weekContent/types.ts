@@ -406,6 +406,8 @@ export type ScreenDef = (
       items: {
         text: string;
         reasonId: string;
+        /** Other reasons that are also honestly right (e.g. "123" is too short AND a keyboard run). */
+        alsoAccept?: string[];
         /** Sentence shown in the WrongAnswerPanel when the child mis-sorts this item. */
         explanation: string;
         /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
@@ -631,6 +633,8 @@ export type ScreenDef = (
         password: string;
         /** Which reason the child should pick in phase 1. */
         primaryReason: string;
+        /** Other diagnoses that are also honestly right (e.g. "123" is too short AND a keyboard run). */
+        alsoAccept?: string[];
         /**
          * Friendly one-line context shown above the patient card
          * during diagnosis. Optional; keep short.
@@ -1531,8 +1535,6 @@ export type ScreenDef = (
       introTitle?: string;
       introSubtitle?: string;
       introWelcome?: string;
-      /** Sarah's line on a mismatch ("Not quite." + whyWrong). */
-      whyWrong?: string;
       pairs: { term: string; match: string; colour: string; why?: string }[];
     }
   | {

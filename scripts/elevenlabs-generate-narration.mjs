@@ -16,7 +16,9 @@
 //   node --env-file=.env.local scripts/elevenlabs-generate-narration.mjs
 
 import { createHash } from "node:crypto";
-import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import ffmpegPath from "ffmpeg-static";
+import { mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const KEY = process.env.ELEVENLABS_API_KEY;
@@ -118,6 +120,18 @@ const bossAskRe = /ask:\s*\{\s*slug:\s*"[^"]*",\s*text:\s*"((?:[^"\\]|\\.)*)"\s*
 // MUST stay identical to seededShuffle in app/components/game/QuizBoss.tsx so
 // the recorded read matches the on-screen (shuffled) option order — Sarah never
 // gives the answer away by always reading the correct choice first.
+// A password, username or web address: no spaces, and a symbol, or letters mixed
+// with digits. Sarah never reads these aloud (UAT batch 2, item 11): symbols read
+// out sound unnatural, and a lookalike ("sch00l") cannot be spotted by ear.
+// KEEP IDENTICAL to isCodeLikeOption in app/components/game/QuizBoss.tsx.
+function isCodeLikeOption(text) {
+  return !/\s/.test(text) && (/[$@#%&*^~+=<>|\\/_]/.test(text) || (/\d/.test(text) && /[A-Za-z]/.test(text)) || /[!?]./.test(text));
+}
+function optionLetterList(count) {
+  const letters = ["A", "B", "C", "D", "E"].slice(0, count);
+  return letters.length > 1 ? `${letters.slice(0, -1).join(", ")} and ${letters[letters.length - 1]}` : letters.join("");
+}
+
 function seededShuffle(arr, seed) {
   const out = [...arr];
   let s = (seed * 9301 + 49297) % 233280;
@@ -139,7 +153,7 @@ const blocks = [];
 // quick-check. speaker "adam" = Sarah, matching QuickCheck's promptLines.
 blocks.push({ speaker: "adam", lines: ["Can you fill in the missing word?"], source: "shared" });
 // SignBingo vault skin: the per-move prompt Sarah reads after each scene (W1 Vault Door bingo).
-blocks.push({ speaker: "adam", lines: ["Which power did that move use? Turn its dial."], source: "shared" });
+blocks.push({ speaker: "adam", lines: ["Which power did that move use? Tap its dial."], source: "shared" });
 // VerdictVoice leads (owner 2026-09-12: Sarah speaks EVERY verdict with its reason):
 // the two shared leads play before the per-item reason on every exercise, all weeks.
 // Keep identical to VERDICT_LEADS in app/components/lesson/VerdictVoice.tsx.
@@ -160,6 +174,9 @@ blocks.push({ speaker: "adam", lines: ["Not quite."], source: "shared" });
     blocks.push({ speaker: "adam", lines: [fact], source: "ProofScale.tsx" });
     blocks.push({ speaker: "adam", lines: [`Hmm, does that book really talk about ${topic}? Look for one that does!`], source: "ProofScale.tsx" });
     blocks.push({ speaker: "adam", lines: [`Beep? Wait. I think one of those books DOES talk about ${topic}. Peek again!`], source: "ProofScale.tsx" });
+    // One-take verdicts (owner 2026-09-15): lead + nudge in a single generation.
+    blocks.push({ speaker: "adam", lines: ["Not quite.", `Hmm, does that book really talk about ${topic}? Look for one that does!`], source: "ProofScale.tsx" });
+    blocks.push({ speaker: "adam", lines: ["Not quite.", `Beep? Wait. I think one of those books DOES talk about ${topic}. Peek again!`], source: "ProofScale.tsx" });
   }
 }
 
@@ -235,11 +252,35 @@ for (const fname of weekFiles) {
       if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
     }
   }
+  // One-take chains (UAT batch 3, item 7c): Power Bingo's move + its prompt, and
+  // Choose Your Path's setup + "which do you think?" line, each recorded as ONE
+  // generation so Sarah keeps one tone. Players fall back to the two-step chain.
+  {
+    const sbStart = src.indexOf('type: "signBingo"');
+    if (sbStart >= 0 && /skin:\s*"vault"/.test(src.slice(sbStart, sbStart + 800))) {
+      const sbEnd = src.indexOf("completeNarration", sbStart);
+      const span = src.slice(sbStart, sbEnd > 0 ? sbEnd : src.length);
+      const pm = span.match(/roundPrompt:\s*"((?:[^"\\]|\\.)*)"/);
+      const promptText = pm ? pm[1].replace(/\\"/g, '"') : "Which power did that move use? Tap its dial.";
+      for (const sm of span.matchAll(/\bscene:\s*"((?:[^"\\]|\\.)*)"/g)) {
+        const scene = sm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+        if (scene) { blocks.push({ speaker: "adam", lines: [scene, promptText], source: fname }); fileBlocks++; }
+      }
+    }
+    const pnm = src.match(/promptNarration:\s*\{\s*speaker:\s*"[a-z]+",\s*lines:\s*\[([\s\S]*?)\]/);
+    if (pnm) {
+      const promptLines = [...pnm[1].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((x) => x[1].replace(/\\"/g, '"').trim()).filter(Boolean);
+      for (const sm of src.matchAll(/setup:\s*"((?:[^"\\]|\\.)*)"/g)) {
+        const setup = sm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
+        if (setup && promptLines.length) { blocks.push({ speaker: "adam", lines: [setup, ...promptLines], source: fname }); fileBlocks++; }
+      }
+    }
+  }
   // TEMP scope: only weeks 1 and 15 have trimmed, finalized bosses (7 Q /
   // pass 5). The other weeks still have 15 un-rewritten questions, so skip
   // recording their long read-outs until the learn-loop rollout trims them.
   // Add each week's filename here as it is finalized; drop the guard at the end.
-  // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 7 / pass 5, wrong
+  // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
   const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week15.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
@@ -260,6 +301,13 @@ for (const fname of weekFiles) {
       const ordered = seededShuffle(opts, bossQ * 47 + 5);
       const LETTERS = ["A", "B", "C", "D", "E"];
       const lines = [askText];
+      if (opts.some(isCodeLikeOption)) {
+        lines.push(`Take a close look at options ${optionLetterList(ordered.length)}.`, "So, what do you think?");
+        blocks.push({ speaker: "adam", lines, source: fname });
+        fileBlocks++;
+        bossQ++;
+        continue;
+      }
       ordered.forEach((text, i) => {
         const last = i === ordered.length - 1;
         const lead = i === 0
@@ -333,6 +381,9 @@ for (const fname of weekFiles) {
       const text = (e.isPhishing ? fill(missTpl) : fill(safeTpl)).trim();
       if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; }
       if (e.isPhishing && e.clue) { blocks.push({ speaker: "adam", lines: [e.clue.trim()], source: fname }); fileBlocks++; }
+      // One-take verdicts (owner 2026-09-15).
+      if (text) { blocks.push({ speaker: "adam", lines: ["Not quite.", text], source: fname }); fileBlocks++; }
+      if (e.isPhishing && e.clue) { blocks.push({ speaker: "adam", lines: ["That's right!", e.clue.trim()], source: fname }); fileBlocks++; }
     }
   }
   // Wrong-answer teaching (owner 2026-09-09): Sarah reads the WrongAnswerPanel
@@ -455,6 +506,40 @@ for (const fname of weekFiles) {
   }
 }
 
+// One-take verdicts (owner 2026-09-15): "Not quite." and its reason recorded as
+// two separate generations sound like two different people back to back, so
+// record each verdict the child can hear as ONE take. VerdictVoice plays the
+// one-take clip when it exists and falls back to lead-then-reason otherwise.
+// The pairs come from audit-verdict-voice.mjs, whose per-engine map mirrors
+// exactly which reason each component speaks after which lead. It runs over ALL
+// weeks and records a one-take for every pair whose reason is recorded in this
+// run: wherever Sarah would speak the reason, she speaks it in one take.
+{
+  const LEADS = { right: "That's right!", wrong: "Not quite." };
+  const r = spawnSync(
+    process.execPath,
+    ["scripts/audit-verdict-voice.mjs", "--pairs-json", "--all"],
+    { encoding: "utf8", maxBuffer: 32 * 1024 * 1024 },
+  );
+  const lastLine = (r.stdout || "").trim().split("\n").pop() || "[]";
+  let verdictPairs = [];
+  try {
+    verdictPairs = JSON.parse(lastLine);
+  } catch {
+    console.error("  (warning: could not read verdict pairs from audit-verdict-voice.mjs)");
+  }
+  // Only where the reason itself is recorded; an un-recorded reason is silent
+  // by design (recordedOnly), so there is no join to hear.
+  const recordedReasons = new Set(blocks.filter((b) => b.lines.length === 1).map((b) => joinBlock(b.lines)));
+  let oneTakes = 0;
+  for (const { verdict, why } of verdictPairs) {
+    if (!recordedReasons.has(joinBlock([why]))) continue;
+    blocks.push({ speaker: "adam", lines: [LEADS[verdict], why], source: "verdict-one-take" });
+    oneTakes++;
+  }
+  console.log(`  one-take verdicts: ${oneTakes} block(s) (of ${verdictPairs.length} audited pairs, all weeks)`);
+}
+
 console.log(`Found ${blocks.length} narration blocks (${blocks.reduce((n, b) => n + b.lines.length, 0)} lines)`);
 
 // Existing manifest for caching on re-runs.
@@ -482,6 +567,47 @@ async function fileExists(p) {
   }
 }
 
+// ── Clean endings (UAT 2026-09-15) ────────────────────────────────────────
+// A tester heard the last word "cut really fast". Measured across every clip:
+// eleven_v3 ends nearly every file within ~0.1s of the last word, and some
+// files stop while the voice is still sounding. So: retake a clip whose last
+// 60ms is still loud, and always append a short silence so the final word has
+// room to land before the host moves on.
+const CUT_OFF_DB = -45; // mean volume of the last 60ms above this = cut off
+const MAX_CUT_RETAKES = 4;
+const END_PAD_SEC = 0.3;
+// Transient API errors (rate limit, gateway) are retried with backoff so one
+// flaky response cannot end a long recording run.
+async function fetchWithRetry(url, init, attempts = 4) {
+  let resp;
+  for (let i = 0; i < attempts; i++) {
+    resp = await fetch(url, init);
+    if (resp.ok || !(resp.status === 429 || resp.status >= 500)) return resp;
+    const waitMs = [5000, 15000, 30000, 60000][i] ?? 60000;
+    process.stdout.write(`(HTTP ${resp.status}, retrying in ${waitMs / 1000}s) `);
+    await new Promise((r) => setTimeout(r, waitMs));
+  }
+  return resp;
+}
+
+function runFfmpeg(args) {
+  return spawnSync(ffmpegPath, args, { encoding: "utf8", maxBuffer: 32 * 1024 * 1024 });
+}
+function endingLoudnessDb(file) {
+  const r = runFfmpeg(["-hide_banner", "-sseof", "-0.06", "-i", file, "-af", "volumedetect", "-f", "null", "-"]);
+  const m = (r.stderr || "").match(/mean_volume: (-?[0-9.]+) dB/);
+  return m ? Number(m[1]) : -99;
+}
+function padEnding(inFile, outFile) {
+  const r = runFfmpeg([
+    "-hide_banner", "-y", "-i", inFile,
+    "-af", `apad=pad_dur=${END_PAD_SEC}`,
+    "-c:a", "libmp3lame", "-b:a", "128k", "-ar", "44100",
+    outFile,
+  ]);
+  return r.status === 0;
+}
+
 /**
  * Join the block's lines into a single TTS prompt. Lines already end
  * with punctuation (./!/?) so a space between them is enough - the
@@ -502,8 +628,9 @@ async function generateBlock(speaker, lines) {
   const filename = `${key}.mp3`;
   const filepath = join(OUT_DIR, filename);
 
-  const cached = existing.get(key);
-  if (cached && (await fileExists(filepath))) {
+  // A file named by this exact hash IS this block's recording, so it counts as
+  // cached even when an interrupted run never wrote its manifest entry.
+  if (await fileExists(filepath)) {
     return { key, filename, cached: true, speaker, blockText, lines };
   }
 
@@ -521,7 +648,7 @@ async function generateBlock(speaker, lines) {
       model_id: modelId,
       voice_settings: VOICE_SETTINGS,
     };
-    const resp = await fetch(url, {
+    const init = {
       method: "POST",
       headers: {
         "xi-api-key": KEY,
@@ -529,7 +656,8 @@ async function generateBlock(speaker, lines) {
         Accept: "audio/mpeg",
       },
       body: JSON.stringify(body),
-    });
+    };
+    const resp = await fetchWithRetry(url, init);
 
     if (resp.ok) {
       if (!acceptedModel) {
@@ -542,8 +670,29 @@ async function generateBlock(speaker, lines) {
           console.log(`  (using ${modelId})`);
         }
       }
-      const buf = Buffer.from(await resp.arrayBuffer());
-      await writeFile(filepath, buf);
+      const rawPath = `${filepath}.raw.mp3`;
+      let bestBuf = Buffer.from(await resp.arrayBuffer());
+      await writeFile(rawPath, bestBuf);
+      let bestDb = endingLoudnessDb(rawPath);
+      for (let retake = 1; bestDb > CUT_OFF_DB && retake <= MAX_CUT_RETAKES; retake++) {
+        const again = await fetchWithRetry(url, init);
+        if (!again.ok) break;
+        const b2 = Buffer.from(await again.arrayBuffer());
+        await writeFile(rawPath, b2);
+        const d2 = endingLoudnessDb(rawPath);
+        process.stdout.write(`(cut off at ${bestDb.toFixed(0)}dB, retake ${retake}: ${d2.toFixed(0)}dB) `);
+        if (d2 < bestDb) {
+          bestDb = d2;
+          bestBuf = b2;
+        }
+      }
+      if (bestDb > CUT_OFF_DB) {
+        process.stdout.write(`(WARNING: still cut off after ${MAX_CUT_RETAKES} retakes) `);
+      }
+      await writeFile(rawPath, bestBuf);
+      if (!padEnding(rawPath, filepath)) await writeFile(filepath, bestBuf);
+      await unlink(rawPath).catch(() => {});
+      const buf = await readFile(filepath);
       return {
         key,
         filename,
@@ -603,6 +752,12 @@ for (let i = 0; i < blocks.length; i++) {
   } catch (e) {
     console.log("FAILED");
     console.error(`  ${e.message}`);
+    // Keep everything recorded so far: merge finished entries into the old
+    // manifest before exiting, so a re-run resumes rather than starting over.
+    const merged = new Map(manifest.entries.map((x) => [x.key, x]));
+    for (const x of entries) merged.set(x.key, x);
+    await writeFile(MANIFEST_PATH, JSON.stringify({ ...manifest, entries: [...merged.values()] }, null, 2));
+    console.error(`  Saved ${entries.length} finished block(s) to the manifest before exiting.`);
     process.exit(3);
   }
 }

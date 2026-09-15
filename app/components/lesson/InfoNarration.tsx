@@ -88,6 +88,12 @@ export interface InfoNarrationProps {
    * classic behaviour: recorded → TTS → captions).
    */
   recordedOnly?: boolean;
+  /**
+   * Delay before autoplay starts (default 400ms, so a screen transition can
+   * settle). A verdict right after a tap passes 0: the old pause made every
+   * spoken verdict feel laggy (UAT batch 3, item 7b).
+   */
+  preRollMs?: number;
 }
 
 interface ManifestEntry {
@@ -121,6 +127,45 @@ let manifestPromise: Promise<Manifest | null> | null = null;
 // previous screen's clip bleeding into the next one (and any accidental double
 // of two mounted narrations). Holds the currently-playing instance's stop().
 let activeNarrationStop: (() => void) | null = null;
+
+/**
+ * Silence every spoken voice IMMEDIATELY.
+ *
+ * Owner decision 2026-09-14 (UAT W1-01): tapping on must advance at once and
+ * cut the current line dead, never let it trail into the next screen. Waiting
+ * for unmount is not enough, because the outgoing screen stays alive for the
+ * length of the cross-fade and its voice bleeds across meanwhile.
+ *
+ * Covers all three ways a voice can be sounding: the active InfoNarration, any
+ * raw <audio> voice element (the ATLAS week-intro briefing owns its own
+ * player), and the browser TTS fallback. Game sounds and the music bed run
+ * through SoundManager/Howler rather than <audio>, so they are untouched.
+ */
+export function stopAllSpokenAudio(): void {
+  try {
+    activeNarrationStop?.();
+  } catch {
+    /* noop */
+  }
+  activeNarrationStop = null;
+  if (typeof document !== "undefined") {
+    document.querySelectorAll("audio").forEach((el) => {
+      try {
+        el.pause();
+      } catch {
+        /* noop */
+      }
+    });
+  }
+  if (typeof window !== "undefined" && "speechSynthesis" in window) {
+    try {
+      window.speechSynthesis.cancel();
+    } catch {
+      /* noop */
+    }
+  }
+}
+
 async function loadManifest(): Promise<Manifest | null> {
   if (manifestCache) return manifestCache;
   if (manifestPromise) return manifestPromise;
@@ -170,6 +215,18 @@ function findBlockEntry(
   );
 }
 
+/**
+ * True when this exact block has a recorded clip. Lets a host choose between a
+ * single continuous take and a stitched sequence (VerdictVoice: one take of
+ * "Not quite. <reason>" sounds like one person; two separate clips do not).
+ */
+export async function hasRecordedBlock(
+  speaker: "adam" | "layla" | "narrator",
+  lines: string[],
+): Promise<boolean> {
+  return findBlockEntry(await loadManifest(), speaker, lines) !== null;
+}
+
 export default function InfoNarration({
   lines,
   speaker = "adam",
@@ -178,6 +235,7 @@ export default function InfoNarration({
   onDone,
   guard = true,
   recordedOnly = false,
+  preRollMs = 400,
 }: InfoNarrationProps) {
   // Themed accent (hex). An explicit `accent` prop wins; otherwise the week
   // theme's accent (so every narration box on a themed week is one colour);
@@ -258,7 +316,31 @@ export default function InfoNarration({
   // Per-instance stable handle to this instance's stop(), used for the global
   // single-narration registry (compared by identity).
   const stopRef = useRef<() => void>(() => {});
+  // Autoplay blocked by the browser (no tap on the page yet): instead of
+  // leaving the child a "Read aloud" button, start Sarah on their FIRST tap or
+  // key press anywhere. One pending retry at a time; stop() clears it.
+  const gestureRetryRef = useRef<(() => void) | null>(null);
+  const clearGestureRetry = useCallback(() => {
+    gestureRetryRef.current?.();
+    gestureRetryRef.current = null;
+  }, []);
+  const armGestureRetry = useCallback((retry: () => void) => {
+    clearGestureRetry();
+    const opts = { capture: true } as const;
+    const onGesture = () => {
+      clearGestureRetry();
+      if (!isAudioMuted()) retry();
+    };
+    window.addEventListener("pointerdown", onGesture, opts);
+    window.addEventListener("keydown", onGesture, opts);
+    gestureRetryRef.current = () => {
+      window.removeEventListener("pointerdown", onGesture, opts);
+      window.removeEventListener("keydown", onGesture, opts);
+    };
+  }, [clearGestureRetry]);
+
   const stop = useCallback(() => {
+    clearGestureRetry();
     playRunRef.current++; // invalidate any in-flight sequence
     // Recorded
     if (audioElRef.current) {
@@ -282,7 +364,7 @@ export default function InfoNarration({
     if (activeNarrationStop === stopRef.current) activeNarrationStop = null;
     setSpeaking(false);
     setActiveLine(-1);
-  }, [ttsSupported]);
+  }, [ttsSupported, clearGestureRetry]);
   stopRef.current = stop;
 
   /* ────── Recorded playback: one continuous block-level MP3 ────── */
@@ -325,17 +407,22 @@ export default function InfoNarration({
         },
         { once: true },
       );
-      // Browsers may reject autoplay without a user gesture; we
-      // swallow the rejection - the toggle button is the gesture
-      // path so the next user tap will succeed.
-      el.play().catch(() => {
+      // Browsers reject autoplay until the page has had a tap. That is NOT a
+      // failure: keep the host waiting and start Sarah on the child's first
+      // tap or key press. Any other error ends the block as before.
+      el.play().catch((err: unknown) => {
         if (runId !== playRunRef.current) return;
         setSpeaking(false);
         audioElRef.current = null;
+        const blocked = err instanceof DOMException && err.name === "NotAllowedError";
+        if (blocked && !isAudioMuted()) {
+          armGestureRetry(() => speakRef.current());
+          return;
+        }
         fireDone();
       });
     },
-    [stop],
+    [stop, armGestureRetry],
   );
 
   /* ────── TTS fallback (one utterance per block) ────── */
@@ -361,10 +448,14 @@ export default function InfoNarration({
       setActiveLine(-1);
       fireDone();
     };
-    utter.onerror = () => {
+    utter.onerror = (ev) => {
       if (runId !== playRunRef.current) return;
       setSpeaking(false);
       setActiveLine(-1);
+      if (ev.error === "not-allowed" && !isAudioMuted()) {
+        armGestureRetry(() => speakRef.current());
+        return;
+      }
       fireDone();
     };
     utteranceRef.current = utter;
@@ -373,7 +464,7 @@ export default function InfoNarration({
     } catch {
       setSpeaking(false);
     }
-  }, [ttsSupported, lines, comfort.enabled, speaker, stop]);
+  }, [ttsSupported, lines, comfort.enabled, speaker, stop, armGestureRetry]);
 
   const speak = useCallback(() => {
     if (mode === "recorded" && blockFile) {
@@ -407,12 +498,12 @@ export default function InfoNarration({
     // Choose-Your-Path typewriter re-rendering ~30x/s), `speak`'s identity
     // churns; had it been a dep, each re-run's cleanup would clear this 400ms
     // timer before it fired and the narration would never play.
-    const id = window.setTimeout(() => speakRef.current(), 400);
+    const id = window.setTimeout(() => speakRef.current(), preRollMs);
     return () => {
       window.clearTimeout(id);
       window.clearTimeout(armBackstop);
     };
-  }, [autoPlay, mode]);
+  }, [autoPlay, mode, preRollMs]);
 
   // Disarm the pre-roll guard once the audio is actually sounding — from here
   // `speaking` keeps the guard up until playback ends/errors/stops.
@@ -450,9 +541,6 @@ export default function InfoNarration({
     if (muted) stop();
   }), [stop]);
 
-  // Show the audio button whenever EITHER source is usable. In
-  // captions-only mode we hide it - there's nothing to play.
-  const audioAvailable = mode === "recorded" || mode === "tts";
 
   return (
     <>
@@ -521,29 +609,9 @@ export default function InfoNarration({
           >
             Narration
           </span>
-          {/* No manual STOP while speaking — the child can't skip the voice
-              (owner 2026-09-07). Only a "Read aloud" replay shows once the
-              voice has finished (also the recovery if autoplay was blocked). */}
-          {audioAvailable && !speaking && (
-            <button
-              type="button"
-              onClick={speak}
-              aria-label="Read aloud"
-              style={{
-                background: `linear-gradient(135deg, ${A}, ${A}bb)`,
-                color: "#04140f",
-                border: "none",
-                borderRadius: 999,
-                padding: "4px 12px",
-                fontSize: 12,
-                fontWeight: 800,
-                cursor: "pointer",
-                letterSpacing: "0.04em",
-              }}
-            >
-              ▶ Read aloud
-            </button>
-          )}
+          {/* No button at all (owner 2026-09-15): Sarah always starts by
+              herself, and if the browser blocked sound she starts on the
+              child's first tap anywhere. Nothing to press, nothing to skip. */}
         </div>
 
         <ul
