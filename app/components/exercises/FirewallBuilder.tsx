@@ -38,6 +38,7 @@ import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
 const AUDIO_ONLY_STYLE = {
   position: "absolute",
@@ -47,7 +48,7 @@ const AUDIO_ONLY_STYLE = {
   clip: "rect(0 0 0 0)",
   pointerEvents: "none",
 } as const;
-const SPOKEN_GATE_MAX_MS = 15000;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 const COLS = 3;
 
 export interface WallBrick {

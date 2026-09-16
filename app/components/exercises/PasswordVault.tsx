@@ -44,6 +44,7 @@ import {
   SHAKE_LG,
   TYPE,
 } from "@/app/lib/cinematic";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
 /* ────────────────────────────────────────────────────────────── */
 /* Props (unchanged)                                              */
@@ -121,7 +122,7 @@ const AUDIO_ONLY_STYLE = {
   clip: "rect(0 0 0 0)",
   pointerEvents: "none",
 } as const;
-const SPOKEN_GATE_MAX_MS = 15000;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 const DOOR_SIZE = 660; // gateway diameter (also the camera focus basis)
 const ZOOM_FACTOR = 1.75;

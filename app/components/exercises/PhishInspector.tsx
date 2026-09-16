@@ -42,6 +42,7 @@ import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
 // Audio-only narration (the text Sarah reads is already on screen).
 const AUDIO_ONLY_STYLE = {
@@ -52,7 +53,7 @@ const AUDIO_ONLY_STYLE = {
   clip: "rect(0 0 0 0)",
   pointerEvents: "none",
 } as const;
-const SPOKEN_GATE_MAX_MS = 15000;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 export interface PhishEmail {
   id: string;

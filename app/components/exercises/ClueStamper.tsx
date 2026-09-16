@@ -49,6 +49,7 @@ import InfoNarration from "@/app/components/lesson/InfoNarration";
 import GameButton from "@/app/components/lesson/GameButton";
 import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
 // Audio-only narration: Sarah's voice with no visible narration box (the text
 // she reads is already on screen), same recipe as PlaquePeek / ProfileInspector.
@@ -64,7 +65,7 @@ const AUDIO_ONLY_STYLE = {
 // A held gate can never stick: InfoNarration fires onDone on end / error /
 // blocked / no-recording, but not when the master mute stops it, so every hold
 // also releases on mute and after this max.
-const SPOKEN_GATE_MAX_MS = 15000;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 export type ClueId = "when" | "who" | "how" | "what";
 
@@ -406,8 +407,13 @@ export default function ClueStamper({
                 overflow: "hidden",
               }}
             >
-              <div style={{ position: "absolute", top: 12, right: -34, transform: "rotate(35deg)", background: "#e3b341", color: "#2a1a08", fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 900, letterSpacing: "0.14em", padding: "4px 44px", textTransform: "uppercase" }}>
-                Friend request
+              {/* A chip in its own row (was a rotated corner ribbon, which the
+                  card's overflow clipped and which ran over long handles such
+                  as SkaterKid_Max: UAT round 2, W3 item 3b). */}
+              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+                <span style={{ background: "#e3b341", color: "#2a1a08", fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 900, letterSpacing: "0.14em", padding: "4px 10px", borderRadius: 999, textTransform: "uppercase" }}>
+                  Friend request
+                </span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
                 <div style={{ position: "relative", width: 72, height: 72, flexShrink: 0 }}>

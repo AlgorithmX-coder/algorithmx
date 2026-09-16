@@ -41,6 +41,7 @@ import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
 const AUDIO_ONLY_STYLE = {
   position: "absolute",
@@ -52,7 +53,7 @@ const AUDIO_ONLY_STYLE = {
 } as const;
 
 // A held gate can never stick (see ClueStamper).
-const SPOKEN_GATE_MAX_MS = 15000;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 const PER_BOARD = 3;
 
 export type StringsWant = "password" | "money" | "tap" | "nothing";

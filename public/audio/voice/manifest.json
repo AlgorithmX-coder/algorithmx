@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T13:53:25.363Z",
+  "generatedAt": "2026-09-16T15:07:50.076Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -9921,18 +9921,18 @@
       "file": "/audio/voice/7fc478198b753ab5.mp3"
     },
     {
-      "key": "e0a01d40879a1ba1",
+      "key": "23ad01a9f4f9f90b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[nervous] Oh no, Cyber Hero, look at this! The Raccoon built a FAKE kid profile. A copied photo, a typed age, a made-up name... and a hero believed every word. [whispers] Right now, he's sending friend requests to more kids. [warmly] But YOU are about to see straight through every disguise he owns. Let's see what Mission Command has for us!",
+      "text": "[nervous] Oh no, Cyber Hero, look at this incident report! The Raccoon built a FAKE kid profile, with a copied photo, a typed age and a made-up name, and tricked a hero into telling him secrets. [whispers] He's sending friend requests right now, to more kids. [warmly] But YOU are about to see straight through every disguise he owns. Let's see what Mission Command has for us!",
       "lines": [
-        "[nervous] Oh no, Cyber Hero, look at this! The Raccoon built a FAKE kid profile.",
-        "A copied photo, a typed age, a made-up name... and a hero believed every word.",
-        "[whispers] Right now, he's sending friend requests to more kids.",
+        "[nervous] Oh no, Cyber Hero, look at this incident report!",
+        "The Raccoon built a FAKE kid profile, with a copied photo, a typed age and a made-up name, and tricked a hero into telling him secrets.",
+        "[whispers] He's sending friend requests right now, to more kids.",
         "[warmly] But YOU are about to see straight through every disguise he owns.",
         "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/e0a01d40879a1ba1.mp3"
+      "file": "/audio/voice/23ad01a9f4f9f90b.mp3"
     },
     {
       "key": "89b430f41899815b",
@@ -10404,10 +10404,10 @@
       "file": "/audio/voice/df62f32051f4fb72.mp3"
     },
     {
-      "key": "768bb8f714b3fcbf",
+      "key": "b5602367dd6bc1d6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing? Is it option A... Nothing, all three can be faked Option B... The photo proves it's a kid at least Or is it option C... The age proves it, games check ages So, what do you think?",
+      "text": "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing? Is it option A... Nothing, all three can be faked Option B... The photo proves it's a kid at least Or is it option C... The age proves it. Games check ages So, what do you think?",
       "lines": [
         "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing?",
         "Is it option A...",
@@ -10415,10 +10415,10 @@
         "Option B...",
         "The photo proves it's a kid at least",
         "Or is it option C...",
-        "The age proves it, games check ages",
+        "The age proves it. Games check ages",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/768bb8f714b3fcbf.mp3"
+      "file": "/audio/voice/b5602367dd6bc1d6.mp3"
     },
     {
       "key": "c124c51977a3d3a5",

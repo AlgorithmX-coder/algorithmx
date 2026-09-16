@@ -45,6 +45,7 @@ import {
   useGameAudio,
   useMotionIntensity,
 } from "@/app/lib/gameEngine";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
 const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -57,7 +58,7 @@ const AUDIO_ONLY_STYLE = {
   pointerEvents: "none",
 } as const;
 
-const SPOKEN_GATE_MAX_MS = 15000;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 export interface MazeQuestion {
   /** The gate's proposal / question ("Let's meet at the park after school!"). */
