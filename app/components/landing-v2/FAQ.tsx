@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp } from "./utilities";
 
@@ -16,6 +17,8 @@ interface QA {
   q: string;
   a: string;
   icon: FaqIcon;
+  /** Optional follow-on link rendered after the answer. */
+  link?: { href: string; label: string };
 }
 
 const FAQS: QA[] = [
@@ -47,7 +50,8 @@ const FAQS: QA[] = [
   {
     icon: "bank",
     q: "Do you offer school licensing?",
-    a: "Yes we do. Please get in contact to discuss licensing options, classroom-ready lesson plans, teacher dashboards, and volume discounts for your school.",
+    a: "Yes we do. Cyber Heroes for primary, Cyber Explorers and Cyber Ops for secondary, with pupils learning independently on school computers and a teacher view for every class. Get in touch to find out about the onboarding process.",
+    link: { href: "/schools", label: "See the schools page" },
   },
 ];
 
@@ -278,6 +282,22 @@ export default function FAQ() {
                           }}
                         >
                           {item.a}
+                          {item.link && (
+                            <>
+                              {" "}
+                              <Link
+                                href={item.link.href}
+                                style={{
+                                  color: "var(--lv2-cyan-soft)",
+                                  textDecoration: "underline",
+                                  textUnderlineOffset: 3,
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                {item.link.label} <span aria-hidden>→</span>
+                              </Link>
+                            </>
+                          )}
                         </p>
                       </motion.div>
                     )}

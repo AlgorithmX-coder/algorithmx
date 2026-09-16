@@ -28,7 +28,7 @@ const SIZES = [
 const WANTS = [
   ["pilot", "A free half-term pilot"],
   ["demo", "A demo"],
-  ["quote", "A quote"],
+  ["onboarding", "To find out about onboarding"],
 ] as const;
 
 type Form = {

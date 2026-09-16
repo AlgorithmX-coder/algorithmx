@@ -36,7 +36,7 @@ const SIZES: Record<string, string> = {
 const WANTS: Record<string, string> = {
   pilot: "A free half-term pilot",
   demo: "A demo",
-  quote: "A quote",
+  onboarding: "To find out about the onboarding process",
 };
 
 function esc(s: string): string {

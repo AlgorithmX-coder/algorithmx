@@ -323,14 +323,14 @@ export default function SchoolsLanding() {
         </section>
 
         {/* WHAT YOU RECEIVE ───────────────────────────────── */}
-        <section id="pricing" className="sch-section">
+        <section id="receive" className="sch-section">
           <div className="sch-grid-2" style={{ alignItems: "stretch" }}>
             <FadeUp>
               <div>
                 <p style={eyebrow}>{"// What your school receives"}</p>
-                <h2 style={h2}>One licence. One price a year. Nothing per pupil.</h2>
+                <h2 style={h2}>Everything your school receives.</h2>
                 <p style={lede}>
-                  Whole-school pricing depends on your size. Ask for a quote and we&rsquo;ll reply with a number, not a sales call.
+                  Please get in touch to find out about the onboarding process. We&rsquo;ll take you from the first conversation to the first lesson.
                 </p>
                 <ul className="sch-receive">
                   {RECEIVE.map((r) => <li key={r}>{r}</li>)}
@@ -363,7 +363,7 @@ export default function SchoolsLanding() {
                 <p style={eyebrow}>{"// Get in touch"}</p>
                 <h2 style={h2}>Tell us about your school.</h2>
                 <p style={lede}>
-                  Ask for a pilot, a demo or a quote. We reply within two working days, and we&rsquo;ll bring the processing agreement and a data-protection summary to the first conversation so your DPO has what they need.
+                  We&rsquo;ll explain the onboarding process, from the agreement to the first lesson, and reply within two working days. We bring the processing agreement and a data-protection summary to the first conversation so your DPO has what they need.
                 </p>
                 <p style={{ ...lede, fontSize: 14.5, color: "rgba(232,237,255,0.55)" }}>
                   Prefer email? <a href="mailto:support@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>support@algorithmx.co.uk</a>
