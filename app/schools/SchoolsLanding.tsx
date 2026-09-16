@@ -6,6 +6,7 @@ import Link from "next/link";
 import Nav from "@/app/components/landing-v2/Nav";
 import Footer from "@/app/components/landing-v2/Footer";
 import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
+import CyberEssentialsBadge from "@/app/components/landing-v2/CyberEssentialsBadge";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
 import CourseLockup from "./CourseLockup";
@@ -121,7 +122,7 @@ const PILLARS = [
     title: "Safe by default",
     accent: "#5fffa3",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></svg>,
-    points: ["A closed environment: pupils only ever interact with the lesson", "Data kept to a minimum: first name, class and progress", "Pupil data is never sent to AI services", "Deleted in full whenever you ask"],
+    points: ["Cyber Essentials certified, the NCSC-backed security standard", "A closed environment: pupils only ever interact with the lesson", "Data kept to a minimum: first name, class and progress", "Pupil data is never sent to AI services", "Deleted in full whenever you ask"],
   },
   {
     title: "Matched to the curriculum",
@@ -145,7 +146,7 @@ const FAQS = [
   { q: "How long is a lesson?", a: "About 45 minutes, which fits a standard slot with time to log in. Progress saves on every screen, so if the bell goes, the pupil picks up exactly where they left off next week." },
   { q: "Who teaches it?", a: "The class teacher, whatever their confidence with computing. The narrator carries every instruction, the games mark themselves, and the teacher view shows who needs a nudge." },
   { q: "What pupil data do you hold?", a: "First name, class and progress, and that is all. Pupil activity stays within the platform and is never sent to an AI service, and we delete a school's data in full whenever you ask." },
-  { q: "Is it safe?", a: "Yes. Pupils only ever interact with the lesson itself, inside a closed environment built for schools, and every reward is personal to the pupil." },
+  { q: "Is it safe?", a: "Yes. AlgorithmX is Cyber Essentials certified, the NCSC-backed standard for defending against common cyber attacks. Pupils only ever interact with the lesson itself, inside a closed environment built for schools, and every reward is personal to the pupil." },
   { q: "How does a school get started?", a: "Get in touch and we'll walk you through the onboarding process: the agreement, the class lists, the login cards and the first lesson. Most schools start with a free half-term pilot." },
 ];
 
@@ -246,6 +247,17 @@ export default function SchoolsLanding() {
                 <div className="sch-cta-row">
                   <a href="#enquiry" style={pillPrimary}>Request a free pilot</a>
                   <a href="#product" style={pillGhost}>See a real lesson</a>
+                </div>
+              </FadeUp>
+              <FadeUp delay={0.21}>
+                <div className="sch-certs">
+                  <CyberEssentialsBadge />
+                  <span className="sch-cert-pill">
+                    <span>Aligned with the NCSC</span>
+                    <i aria-hidden />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" />
+                  </span>
                 </div>
               </FadeUp>
               <FadeUp delay={0.24}>
@@ -481,7 +493,8 @@ export default function SchoolsLanding() {
           padding: calc(var(--lv2-rail) * 1.3) var(--lv2-rail);
           scroll-margin-top: 128px;
         }
-        .sch-hero-section { padding-top: max(calc(var(--lv2-rail) * 3.2), 112px); padding-bottom: calc(var(--lv2-rail) * 0.8); }
+        /* Fixed nav is 68px; keep the top row close under it at every width. */
+        .sch-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 0.8); }
         .sch-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
         .sch-glow-amber { width: 520px; height: 520px; right: -140px; top: -80px; background: radial-gradient(circle, rgba(255,179,71,0.35), transparent 65%); }
         .sch-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(0,229,255,0.28), transparent 65%); }
@@ -506,7 +519,7 @@ export default function SchoolsLanding() {
           font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.0; letter-spacing: -0.03em; font-weight: 400;
         }
 
-        .sch-toprow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 34px; }
+        .sch-toprow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 26px; }
         .sch-toplink {
           display: inline-flex; align-items: center; gap: 6px;
           font-family: var(--lv2-font-mono); font-size: 11.5px; font-weight: 700;
@@ -519,7 +532,17 @@ export default function SchoolsLanding() {
         /* hero */
         .sch-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 44px; align-items: center; }
         .sch-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
-        .sch-trust { list-style: none; padding: 0; margin: 30px 0 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
+        .sch-certs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+        .sch-cert-pill {
+          display: inline-flex; align-items: center; gap: 12px; padding: 9px 16px; border-radius: 999px;
+          background: rgba(13,15,24,0.55); border: 1px solid rgba(159,245,255,0.28);
+          box-shadow: 0 0 30px -16px rgba(159,245,255,0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+          font-family: var(--lv2-font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lv2-cyan-soft);
+          white-space: nowrap;
+        }
+        .sch-cert-pill i { width: 1px; height: 22px; background: rgba(232,237,255,0.18); }
+        .sch-cert-pill img { height: 26px; width: auto; display: block; }
+        .sch-trust { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
         .sch-trust li {
           position: relative; padding-left: 18px;
           font-family: var(--lv2-font-mono); font-size: 11.5px; font-weight: 600;
