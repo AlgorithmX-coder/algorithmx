@@ -48,6 +48,19 @@ const short = (s, n = 36) => s.replace(/\s+/g, " ").trim().slice(0, n);
 const browser = await chromium.launch({ channel: "msedge", headless: true });
 const ctx = await browser.newContext({ viewport: { width: 1414, height: 771 } });
 await ctx.addCookies([{ name: "site_auth", value: "true", domain: "localhost", path: "/" }]);
+// Recorded clips never fire `ended` in headless Edge (Build Standard gotcha), so
+// every hold would wait on a safety timer. Fake play() for VOICE clips only: the
+// clip "ends" after 300ms, the guard drops on cue, and the lesson video stays real.
+await ctx.addInitScript(() => {
+  const realPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function (...a) {
+    const src = this.currentSrc || this.src || "";
+    if (!src.includes("/audio/voice/") && !src.includes("/audio/atlas/")) return realPlay.apply(this, a);
+    // 700ms: long enough for the 80ms guard poll to see the hold, short enough to stay quick.
+    setTimeout(() => this.dispatchEvent(new Event("ended")), 700);
+    return Promise.resolve();
+  };
+});
 const page = await ctx.newPage();
 const pageErrors = [];
 page.on("pageerror", (e) => pageErrors.push(e.message));
@@ -116,7 +129,11 @@ const D = {
     const mode = fld(sc.span, "mode");
     const choices = objs(sc.span, "choices").map((o) => ({ text: fld(o, "text"), ok: flag(o, "isCorrect") }));
     const teach = /teachNarration:\s*\{/.test(sc.span);
-    await go(w, sc.i); await waitQuiet();
+    // A fresh browser context fetches the voice manifest on this very screen, so
+    // Sarah's prompt can start a second or two AFTER the buttons are enabled. Wait
+    // for the prompt to START (guard up) and finish, as a child listening would;
+    // a tap in that gap gets swallowed by the prompt's guard and reads as a false failure.
+    await go(w, sc.i); await waitGuard(8000); await waitQuiet();
     if (mode === "order") {
       const wrongTile = choices[1]; await clickBtn(wrongTile.text); const wr = await afterPick("wrong");
       for (const c of choices) { await clickBtn(c.text); await page.waitForTimeout(300); await waitQuiet(); }
@@ -302,6 +319,87 @@ const D = {
     await clickBtn(tiles.find((t) => t.team).label); const rt = await afterPick("right");
     rec(w, sc.i, "teamPoster", wr, rt);
   },
+  // ── Week 4 engines (2026-09-16) ──
+  async stringsAttached(w, sc) {
+    const TOKEN = { password: "Your password", money: "Your money", tap: "Your tap", nothing: "Nothing, it's real" };
+    const offers = objs(sc.span, "offers").map((o) => ({ text: fld(o, "text"), wants: fld(o, "wants") }));
+    await go(w, sc.i); await dismissIntro(); await waitQuiet();
+    const o = await visibleOf(offers, "text"); if (!o) return rec(w, sc.i, "stringsAttached", "no-offer", null);
+    await clickLabel(`Prize: ${o.text}`); await page.waitForTimeout(300); await waitQuiet();
+    const wrongWant = Object.keys(TOKEN).find((k) => k !== o.wants);
+    await clickLabel(`String leads to: ${TOKEN[wrongWant]}`); const wr = await afterPick("wrong");
+    await clickLabel(`String leads to: ${TOKEN[o.wants]}`); const rt = await afterPick("right");
+    rec(w, sc.i, "stringsAttached", wr, rt);
+  },
+  async believeOMeter(w, sc) {
+    const POS = { real: 0, hmm: 1, noway: 2 };
+    const offers = objs(sc.span, "offers").map((o) => ({ text: fld(o, "text"), answer: fld(o, "answer") }));
+    const lockLabel = fld(sc.span, "lockLabel") ?? "LOCK IT IN";
+    await go(w, sc.i); await dismissIntro(); await waitQuiet();
+    const o = await visibleOf(offers, "text"); if (!o) return rec(w, sc.i, "believeOMeter", "no-offer", null);
+    let needle = 1; // always starts on the middle stop
+    const turn = async (dir) => { await clickLabel(dir < 0 ? "Turn the needle left" : "Turn the needle right"); needle += dir; await page.waitForTimeout(250); };
+    // WRONG: lock anywhere that is not the answer
+    if (POS[o.answer] === needle) await turn(1);
+    await clickBtn(lockLabel); const wr = await afterPick("wrong");
+    // RIGHT: walk the needle to the answer, then lock
+    while (needle !== POS[o.answer]) await turn(POS[o.answer] > needle ? 1 : -1);
+    await clickBtn(lockLabel); const rt = await afterPick("right");
+    rec(w, sc.i, "believeOMeter", wr, rt);
+  },
+  async nameTagCheck(w, sc) {
+    const cases = objs(sc.span, "cases").map((o) => ({ id: fld(o, "id"), chunks: objs(o, "chunks").map((c) => ({ text: fld(c, "text"), wrong: flag(c, "isWrong") })) }));
+    const closeLabel = fld(sc.span, "closeLabel") ?? "CLOSE THE BOOTH";
+    await go(w, sc.i); await dismissIntro(); await waitQuiet();
+    // the case on screen = the one whose pieces are all tappable buttons (the real tag's pieces are plain divs)
+    let c = null;
+    for (const k of cases) { let all = true; for (const ch of k.chunks) if (!(await page.getByRole("button", { name: `Piece: ${ch.text}` }).first().isVisible().catch(() => false))) { all = false; break; } if (all) { c = k; break; } }
+    if (!c) return rec(w, sc.i, "nameTagCheck", "no-case", null);
+    // WRONG: mark exactly the opposite set (every matching piece marked, every swapped piece clean)
+    for (const ch of c.chunks) if (!ch.wrong) { await clickLabel(`Piece: ${ch.text}`); await page.waitForTimeout(250); }
+    await clickBtn(closeLabel); const wr = await afterPick("wrong");
+    // FIX: toggling every piece turns the opposite set into the exact swapped set
+    for (const ch of c.chunks) { await clickLabel(`Piece: ${ch.text}`); await page.waitForTimeout(250); }
+    await clickBtn(closeLabel); const rt = await afterPick("right");
+    rec(w, sc.i, "nameTagCheck", wr, rt);
+  },
+  async firewallBuilder(w, sc) {
+    const bricks = objs(sc.span, "bricks").map((o) => ({ text: fld(o, "text"), good: flag(o, "good") }));
+    const binLabel = fld(sc.span, "binLabel") ?? "THROW IT OUT";
+    await go(w, sc.i); await dismissIntro(); await waitQuiet();
+    const b = await visibleOf(bricks, "text"); if (!b) return rec(w, sc.i, "firewallBuilder", "no-brick", null);
+    const COL = "Lay the brick in column 1";
+    await clickLabel(b.good ? binLabel : COL); const wr = await afterPick("wrong");
+    await clickLabel(b.good ? COL : binLabel); const rt = await afterPick("right");
+    rec(w, sc.i, "firewallBuilder", wr, rt);
+  },
+  async phishInspector(w, sc) {
+    const emails = objs(sc.span, "emails").map((o) => ({ subject: fld(o, "subject"), phish: flag(o, "isPhishing") }));
+    const zl = objs(sc.span, "zoneLabels");
+    const zoneBlock = sc.span.match(/zoneLabels:\s*\{([\s\S]*?)\}/);
+    const labels = zoneBlock ? [...zoneBlock[1].matchAll(new RegExp(STR, "g"))].map((m) => un(m[1])) : ["Who sent it?", "What's the link?", "How does it sound?", "What's it promising?"];
+    const zap = fld(sc.span, "zapLabel") ?? "ZAP it!", safe = fld(sc.span, "safeLabel") ?? "Mark SAFE";
+    void zl;
+    await go(w, sc.i); await dismissIntro(); await waitQuiet();
+    const e = await visibleOf(emails, "subject"); if (!e) return rec(w, sc.i, "phishInspector", "no-email", null);
+    for (const l of labels) { await clickBtn(l); await page.waitForTimeout(300); await waitQuiet(); }
+    await waitQuiet();
+    await clickBtn(e.phish ? safe : zap); const wr = await afterPick("wrong");
+    await clickBtn(e.phish ? zap : safe); const rt = await afterPick("right");
+    rec(w, sc.i, "phishInspector", wr, rt);
+  },
+  async passwordVault(w, sc) {
+    const locks = objs(sc.span, "locks").map((l) => ({ label: fld(l, "ruleLabel"), choices: objs(l, "choices").map((c) => ({ text: fld(c, "text"), ok: flag(c, "isCorrect") })) }));
+    await go(w, sc.i); await dismissIntro(); await waitQuiet(); await page.waitForTimeout(1500);
+    const lock = locks[0];
+    const spot = page.getByRole("button", { name: new RegExp(esc(lock.label), "i") }).first();
+    if (!(await spot.isVisible().catch(() => false))) return rec(w, sc.i, "passwordVault", "no-hotspot", null, "no button named " + lock.label);
+    await spot.click({ force: true }); await page.waitForTimeout(600); await waitQuiet();
+    await clickBtn(lock.choices.find((c) => !c.ok).text); const wr = await afterPick("wrong");
+    if (!(await btn(lock.choices.find((c) => c.ok).text).isVisible().catch(() => false))) { await spot.click({ force: true }).catch(() => {}); await page.waitForTimeout(600); await waitQuiet(); }
+    await clickBtn(lock.choices.find((c) => c.ok).text); const rt = await afterPick("right");
+    rec(w, sc.i, "passwordVault", wr, rt);
+  },
   async threeRandomWords(w, sc) {
     const words = objs(sc.span, "words").map((o) => fld(o, "text")).slice(0, 3);
     await go(w, sc.i); await dismissIntro(); await waitQuiet();
@@ -313,10 +411,13 @@ const D = {
   },
 };
 
+// ONLY=13,17 limits a run to those screen indices (re-checks after a stall).
+const ONLY = process.env.ONLY ? new Set(process.env.ONLY.split(",").map(Number)) : null;
 for (const w of WEEKS) {
   const seen = new Set();
   for (const sc of screensOf(w)) {
     if (!D[sc.type]) continue;
+    if (ONLY && !ONLY.has(sc.i)) continue;
     if (sc.type !== "quickCheck" && seen.has(sc.type)) continue;
     seen.add(sc.type);
     const before = pageErrors.length;

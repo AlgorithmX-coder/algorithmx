@@ -358,6 +358,19 @@ export type ScreenDef = (
        * commercial-quality pattern this exercise proves out.
        */
       type: "passwordVault";
+      /** Visual skin: the W1 holographic vault (default) or W4's "Hall of
+       *  Mirrors" (magenta palette, mirror copy). */
+      skin?: "vault" | "mirrors";
+      /** Learn-Loop copy (Week 4). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** Big title on the final reveal ("VAULT MASTER!"). */
+      masterTitle?: string;
+      /** The continue button on the final reveal ("Claim your secrets"). */
+      claimLabel?: string;
+      /** Noun for the hotspots in the status copy ("lock" / "mirror"). */
+      hotspotNoun?: string;
       locks: {
         /** Stable id used in QuestionResponse keys (e.g. "length"). */
         id: string;
@@ -373,9 +386,16 @@ export type ScreenDef = (
           isCorrect: boolean;
           /** Shown in the WrongAnswerPanel when the child picks this. */
           explanation: string;
+          /** Sarah's reason on the correct pick ("That's right!" + why). */
+          why?: string;
         }[];
         /** Optional speaker hint for the WrongAnswerPanel ("layla"|"adam"). */
         speaker?: "adam" | "layla";
+        /** Sarah reads this as the hotspot opens (one clip). Never spells an
+         *  address: the on-screen prompt carries the code-like text. */
+        readAloud?: string;
+        /** The recap tile text in the final reveal (defaults to the W1 map). */
+        recap?: string;
       }[];
       /** Optional Adam/Layla guidance ribbon copy keyed by state. */
       guidance?: {
@@ -433,14 +453,34 @@ export type ScreenDef = (
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
+      introIcon?: string;
+      /** Learn-Loop copy (Week 4 "The Barker's Booth"): the header label above
+       *  the message, the two verdict buttons, their toasts, and the beats. */
+      headerLabel?: string;
+      zapLabel?: string;
+      safeLabel?: string;
+      zapToast?: string;
+      safeToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
       /** Zone label overrides (re-theme the 4 inspect zones). */
       zoneLabels?: Partial<Record<"sender" | "link" | "urgency" | "claim", string>>;
+      /** The sub-line under each closed zone ("Check the sender"). */
+      zoneQuestions?: Partial<Record<"sender" | "link" | "urgency" | "claim", string>>;
       emails: {
         id: string;
         sender: string;
         subject: string;
         body: string;
         isPhishing: boolean;
+        /** Sarah reads the message as it opens (one clip; Learn-Loop weeks). */
+        readAloud?: string;
+        /** Sarah's reason on a correct verdict ("That's right!" + why). */
+        why?: string;
+        /** The wrong-answer panel's explanation for this message (falls back
+         *  to the engine's generic line). */
+        whyWrong?: string;
         inspections: {
           senderNote: string;
           senderIsRedFlag: boolean;
@@ -1055,6 +1095,126 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Strings Attached (Week 4, "a scam always wants something back"). The
+       * CONNECT drill: three prize balloons float over a carnival counter, each
+       * on a string; four tokens sit on the counter (your password, your money,
+       * your tap, nothing). Tap a balloon, then tap the token its string really
+       * leads to. A real offer connects to "nothing". Every board holds at least
+       * one fair offer so "everything is a scam" is never a strategy. Boards
+       * and balloons are shuffled per play; round 1 is guided.
+       */
+      type: "stringsAttached";
+      offers: {
+        id: string;
+        /** The balloon's banner, two short lines at most. */
+        text: string;
+        /** Sarah reads the offer as its balloon floats up (one clip). */
+        readAloud: string;
+        /** What the string really leads to. "nothing" = a fair, real offer. */
+        wants: "password" | "money" | "tap" | "nothing";
+        /** Sarah's reason on a correct connection ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach on a wrong connection ("Not quite." + nudge). Names no token. */
+        nudge: string;
+      }[];
+      /** Copy overrides (defaults keep the W4 carnival skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** Labels on the four counter tokens. */
+      tokenLabels?: Partial<Record<"password" | "money" | "tap" | "nothing", string>>;
+      /** Toasts after a correct connection (a scam exposed / a fair offer kept). */
+      scamToast?: string;
+      fairToast?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Believe-o-Meter (Week 4, "too good to be true"). The DIALS drill:
+       * one offer poster at a time above a fairground dial with three stops
+       * (Could be real / Hmm, check first / No way). Tap the arrows to turn the
+       * needle, then tap LOCK IT IN. Nothing is judged before the lock; the
+       * needle always starts in the middle. Offers are shuffled per play and
+       * round 1 is guided (the right stop glows).
+       */
+      type: "believeOMeter";
+      offers: {
+        id: string;
+        /** The poster headline. */
+        text: string;
+        /** Who it claims to be from, shown as the poster's small print. */
+        from: string;
+        /** Sarah reads the poster as it hangs (one clip). */
+        readAloud: string;
+        /** Where the needle belongs. */
+        answer: "real" | "hmm" | "noway";
+        /** Sarah's reason on a correct lock ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach on a wrong lock ("Not quite." + whyWrong), any stop. */
+        whyWrong: string;
+      }[];
+      /** Copy overrides (defaults keep the W4 carnival skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      stopLabels?: Partial<Record<"real" | "hmm" | "noway", string>>;
+      /** Text on the commit button. Default "LOCK IT IN". */
+      lockLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Name Tag Check (Week 4, "the lookalike sender"). The MARK drill:
+       * the REAL sender's name tag sits on top, the sender to check underneath,
+       * both split into the same aligned pieces (name / address / ending). Tap
+       * a piece on the bottom tag that does not match the one above it to mark
+       * it SWAPPED (tap again to lift), then tap CLOSE THE BOOTH to commit the
+       * whole set. Zero marks is legal and sometimes right (the sender IS the
+       * real one). The verdict (real / copycat) is derived from the marks.
+       * Cases are shuffled per play.
+       */
+      type: "nameTagCheck";
+      cases: {
+        id: string;
+        /** The real sender's pieces, in display order. */
+        realChunks: string[];
+        /** The pieces to check, aligned by index with realChunks. */
+        chunks: {
+          text: string;
+          /** True when this piece differs from the real one above it. */
+          isWrong: boolean;
+          /** Sarah's teach when this piece is mismarked at the lock (missed
+           *  when isWrong, over-marked when not). */
+          teach: string;
+        }[];
+        /** Sarah reads the case as it arrives (one clip). Never spells an address. */
+        readAloud: string;
+        /** Sarah's reason on a correct lock ("That's right!" + rightWhy). */
+        rightWhy: string;
+      }[];
+      /** Copy overrides (defaults keep the W4 carnival skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** Text on the red mark. Default "SWAPPED!". */
+      stampLabel?: string;
+      /** Text on the commit button. Default "CLOSE THE BOOTH". */
+      closeLabel?: string;
+      realSeal?: string;
+      fakeSeal?: string;
+      realToast?: string;
+      fakeToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string; tier3?: string };
+    }
+  | {
+      /**
        * Reply Cards (Week 3). The SELECT drill: an incoming chat message
        * appears and three reply cards fan out. Tap the safe reply and it
        * slots into the chat with a green glow; tap a risky one and it
@@ -1538,9 +1698,39 @@ export type ScreenDef = (
       pairs: { term: string; match: string; colour: string; why?: string }[];
     }
   | {
+      /**
+       * The wall builder (rebuilt for Week 4 as "The No-Bite Wall"). The BUILD
+       * drill: bricks arrive one at a time in a tray; tap a column to lay a
+       * safe habit into the wall, or tap the bin to throw a bad one out. No
+       * timer, no lose state: a wrong move teaches and the same brick waits.
+       * The wall is complete when every good brick is laid. Bricks shuffle per
+       * play; round 1 is guided.
+       */
       type: "firewallBuilder";
-      goodBlocks?: string[];
-      badBlocks?: string[];
+      bricks: {
+        id: string;
+        /** The brick's text, five words or fewer. */
+        text: string;
+        /** True = belongs in the wall; false = goes in the bin. */
+        good: boolean;
+        /** Sarah reads the brick as it arrives (one clip). */
+        readAloud: string;
+        /** Sarah's reason on the right move ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach on the wrong move ("Not quite." + whyWrong). */
+        whyWrong: string;
+      }[];
+      /** Copy overrides (defaults keep the W4 no-bite skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      wallLabel?: string;
+      binLabel?: string;
+      layToast?: string;
+      binToast?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
     }
   | {
       type: "spamBlaster";

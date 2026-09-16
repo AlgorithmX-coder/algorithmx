@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T19:13:51.243Z",
+  "generatedAt": "2026-09-16T12:37:16.933Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -11819,361 +11819,448 @@
       "file": "/audio/voice/8b4489d4a5a850f6.mp3"
     },
     {
-      "key": "b59d1a1b061c3137",
+      "key": "6ffd09eb4048747b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Drag back and let go to flick rings onto the pegs! Watch closely, because one shiny booth never lets you win. Sniff out the hidden trick and shut that booth down!",
+      "text": "[nervous] Oh no, Cyber Hero, look at this! The Raccoon blasted out YOU WON ten thousand V-Bucks to every kid in the city. And someone clicked. There was no prize. There never is. [whispers] Right now, he's setting up a whole carnival of fakes. [warmly] But YOU are about to learn every trick in his book. Let's see what Mission Command has for us!",
       "lines": [
-        "[excited] Drag back and let go to flick rings onto the pegs!",
-        "Watch closely, because one shiny booth never lets you win.",
-        "Sniff out the hidden trick and shut that booth down!"
+        "[nervous] Oh no, Cyber Hero, look at this! The Raccoon blasted out YOU WON ten thousand V-Bucks to every kid in the city.",
+        "And someone clicked. There was no prize. There never is.",
+        "[whispers] Right now, he's setting up a whole carnival of fakes.",
+        "[warmly] But YOU are about to learn every trick in his book.",
+        "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/b59d1a1b061c3137.mp3"
+      "file": "/audio/voice/6ffd09eb4048747b.mp3"
     },
     {
-      "key": "561664db38eea8cb",
+      "key": "a182acd6b7a6ace1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Welcome back, Cyber Hero. New mission! This week we hunt SCAMS. A scam is a trick... wearing a costume. [whispers] It wants your info, your family's money, or your click - pressing is how the trick gets in. [excited] But here's the good news. Tricks follow patterns! Learn the patterns, and no scam can touch you.",
+      "text": "[warmly] Welcome back, Cyber Hero. This week we hunt SCAMS. A scam is a trick... wearing a costume. [whispers] Under the costume, it always wants something back: your password, your money, or your tap. [excited] And that is how you catch one. Real messages want NOTHING from you. Every prize at the Raccoon's fair has a string attached. Come and see where the strings lead!",
       "lines": [
-        "[warmly] Welcome back, Cyber Hero. New mission!",
-        "This week we hunt SCAMS.",
+        "[warmly] Welcome back, Cyber Hero. This week we hunt SCAMS.",
         "A scam is a trick... wearing a costume.",
-        "[whispers] It wants your info, your family's money, or your click - pressing is how the trick gets in.",
-        "[excited] But here's the good news. Tricks follow patterns!",
-        "Learn the patterns, and no scam can touch you."
+        "[whispers] Under the costume, it always wants something back: your password, your money, or your tap.",
+        "[excited] And that is how you catch one. Real messages want NOTHING from you.",
+        "Every prize at the Raccoon's fair has a string attached. Come and see where the strings lead!"
       ],
-      "file": "/audio/voice/561664db38eea8cb.mp3"
+      "file": "/audio/voice/a182acd6b7a6ace1.mp3"
     },
     {
-      "key": "ba3a8f3f910ada44",
+      "key": "fa2c51c84f9837ed",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Welcome to the Fishing Dock! The Raccoon's dangling baited hooks in the water - scams dressed up as treats. [warmly] Real messages float in like friendly mail. Reel those in safe. [whispers] Spot a baited hook? SNIP! Cut the line before anyone bites. [excited] Take your time. One line at a time!",
+      "text": "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string! This game is all about what a scam really WANTS from you. Out in the real world, a message that offers you something amazing is often fishing for your password, your money, or one quick tap. Here is what you do. Tap a prize balloon and I'll read its offer. Then tap the token on the counter that its string really leads to: your password, your money, your tap, or nothing at all, because some offers are real. [warmly] Follow every string and no prize can hook you. Ready? Let's follow the strings!",
       "lines": [
-        "[excited] Welcome to the Fishing Dock!",
-        "The Raccoon's dangling baited hooks in the water - scams dressed up as treats.",
-        "[warmly] Real messages float in like friendly mail. Reel those in safe.",
-        "[whispers] Spot a baited hook? SNIP! Cut the line before anyone bites.",
-        "[excited] Take your time. One line at a time!"
+        "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string!",
+        "This game is all about what a scam really WANTS from you.",
+        "Out in the real world, a message that offers you something amazing is often fishing for your password, your money, or one quick tap.",
+        "Here is what you do. Tap a prize balloon and I'll read its offer. Then tap the token on the counter that its string really leads to: your password, your money, your tap, or nothing at all, because some offers are real.",
+        "[warmly] Follow every string and no prize can hook you. Ready? Let's follow the strings!"
       ],
-      "file": "/audio/voice/ba3a8f3f910ada44.mp3"
+      "file": "/audio/voice/fa2c51c84f9837ed.mp3"
     },
     {
-      "key": "864734d3e1d8adf6",
+      "key": "37a324a2a02e1835",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Check the first line - real mail reels in, baited hooks get SNIPPED!",
+      "text": "Tap a prize balloon to hear its offer. Then tap the token its string really leads to. Some offers want nothing at all: those are the real ones.",
       "lines": [
-        "Check the first line - real mail reels in, baited hooks get SNIPPED!"
+        "Tap a prize balloon to hear its offer. Then tap the token its string really leads to. Some offers want nothing at all: those are the real ones."
       ],
-      "file": "/audio/voice/864734d3e1d8adf6.mp3"
+      "file": "/audio/voice/37a324a2a02e1835.mp3"
     },
     {
-      "key": "9c5fd11da272a10f",
+      "key": "feea97578b0effc8",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Great start, Cyber Hero! You sorted the whole dock - real ones kept, scams sunk. Remember: scams always WANT something. [excited] Next up - the shiniest bait of all!",
+      "text": "[proud] Every string followed! You can see what a scam really wants, so the Raccoon's prizes can't hook you. [warmly] Out in the real world, the moment a message asks for your password, your money or a quick tap, you'll spot the string. And a message with no strings? That one's real.",
+      "lines": [
+        "[proud] Every string followed! You can see what a scam really wants, so the Raccoon's prizes can't hook you.",
+        "[warmly] Out in the real world, the moment a message asks for your password, your money or a quick tap, you'll spot the string. And a message with no strings? That one's real."
+      ],
+      "file": "/audio/voice/feea97578b0effc8.mp3"
+    },
+    {
+      "key": "d3fd715df0d6b34a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Exactly. A trick in a costume. The costume is the shiny part: a prize, a warning, a friendly hello. Underneath, it always wants something back, and real messages don't. [excited] Spot the want, spot the trick. Nice work!",
+      "lines": [
+        "[warmly] Exactly. A trick in a costume.",
+        "The costume is the shiny part: a prize, a warning, a friendly hello.",
+        "Underneath, it always wants something back, and real messages don't.",
+        "[excited] Spot the want, spot the trick. Nice work!"
+      ],
+      "file": "/audio/voice/d3fd715df0d6b34a.mp3"
+    },
+    {
+      "key": "e6c80ef69ef3f6b8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Great start, Cyber Hero! You followed every string, and you saw what each prize really wanted. Real messages ask for nothing. Scams always want something back. [whispers] But the Raccoon's biggest booth is still open, and its prizes are ENORMOUS... Next, we'll learn the shiniest bait of all: too good to be true. Come and see!",
       "lines": [
         "[warmly] Great start, Cyber Hero!",
-        "You sorted the whole dock - real ones kept, scams sunk.",
-        "Remember: scams always WANT something.",
-        "[excited] Next up - the shiniest bait of all!"
+        "You followed every string, and you saw what each prize really wanted.",
+        "Real messages ask for nothing. Scams always want something back.",
+        "[whispers] But the Raccoon's biggest booth is still open, and its prizes are ENORMOUS...",
+        "Next, we'll learn the shiniest bait of all: too good to be true. Come and see!"
       ],
-      "file": "/audio/voice/9c5fd11da272a10f.mp3"
+      "file": "/audio/voice/e6c80ef69ef3f6b8.mp3"
     },
     {
-      "key": "8b1a8f1d412a3e5d",
+      "key": "0e37b75197e157fd",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Free iPhone! Ten thousand V-Bucks! A puppy! [laughs] Sounds amazing, right? [whispers] That's exactly the point. It's BAIT. Nobody gives away treasure to strangers. Nobody. [warmly] If it sounds too good to be true... it isn't true. [excited] Ready to blast some bait? Let's go!",
+      "text": "[excited] Free tablet! Ten thousand coins! A puppy for the millionth visitor! [laughs] Sounds amazing, right? That is exactly the point. It is BAIT. Nobody gives treasure to strangers. And you can't win a prize you never entered. [warmly] So here's the hero rule: if it sounds too good to be true, it isn't true. But not everything is a trick. A small prize you really earned can be real. Not sure? That means check with a grown-up first. [excited] A carnival dial will show you how believable each offer is. Let's go and measure some offers!",
       "lines": [
-        "[excited] Free iPhone! Ten thousand V-Bucks! A puppy!",
-        "[laughs] Sounds amazing, right?",
-        "[whispers] That's exactly the point. It's BAIT.",
-        "Nobody gives away treasure to strangers. Nobody.",
-        "[warmly] If it sounds too good to be true... it isn't true.",
-        "[excited] Ready to blast some bait? Let's go!"
+        "[excited] Free tablet! Ten thousand coins! A puppy for the millionth visitor!",
+        "[laughs] Sounds amazing, right? That is exactly the point. It is BAIT.",
+        "Nobody gives treasure to strangers. And you can't win a prize you never entered.",
+        "[warmly] So here's the hero rule: if it sounds too good to be true, it isn't true.",
+        "But not everything is a trick. A small prize you really earned can be real. Not sure? That means check with a grown-up first.",
+        "[excited] A carnival dial will show you how believable each offer is. Let's go and measure some offers!"
       ],
-      "file": "/audio/voice/8b1a8f1d412a3e5d.mp3"
+      "file": "/audio/voice/0e37b75197e157fd.mp3"
     },
     {
-      "key": "5feee7eb7197df14",
+      "key": "ed49dd3402bc5f93",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Bait incoming! Offers are flying at your screen. Free iPhones. Free V-Bucks. Free puppies! [laughs] All bait. ZAP every too-good offer! [warmly] But careful - normal messages fly through too. Let those pass!",
+      "text": "[excited] On your second challenge, you take charge of the Believe-o-Meter! This game is all about how believable an offer is: could be real, hmm, check first, or no way. Out in the real world, most offers land on one of those three, and the enormous ones from strangers are always no way. Here is what you do. A poster hangs above the dial and I'll read it. Tap the arrows to move the needle to Could be real, Hmm, check first, or No way. Then tap LOCK IT IN. [warmly] Get the needle right and no giant prize can dazzle you. Ready? Let's measure!",
       "lines": [
-        "[excited] Bait incoming! Offers are flying at your screen.",
-        "Free iPhones. Free V-Bucks. Free puppies!",
-        "[laughs] All bait. ZAP every too-good offer!",
-        "[warmly] But careful - normal messages fly through too. Let those pass!"
+        "[excited] On your second challenge, you take charge of the Believe-o-Meter!",
+        "This game is all about how believable an offer is: could be real, hmm, check first, or no way.",
+        "Out in the real world, most offers land on one of those three, and the enormous ones from strangers are always no way.",
+        "Here is what you do. A poster hangs above the dial and I'll read it. Tap the arrows to move the needle to Could be real, Hmm, check first, or No way. Then tap LOCK IT IN.",
+        "[warmly] Get the needle right and no giant prize can dazzle you. Ready? Let's measure!"
       ],
-      "file": "/audio/voice/5feee7eb7197df14.mp3"
+      "file": "/audio/voice/ed49dd3402bc5f93.mp3"
     },
     {
-      "key": "679b1f462cdab372",
+      "key": "b60fdf17fe293c90",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Two tricks down! Your bait-detector is gleaming. Free stuff from strangers? ZAPPED. [laughs] The Raccoon's puppy prize fooled nobody today. [whispers] But his next trick doesn't offer... it SCARES.",
+      "text": "Listen to the poster. Then tap the arrows to move the needle, and tap Lock it in when it points where you believe.",
       "lines": [
-        "[excited] Two tricks down! Your bait-detector is gleaming.",
-        "Free stuff from strangers? ZAPPED.",
-        "[laughs] The Raccoon's puppy prize fooled nobody today.",
-        "[whispers] But his next trick doesn't offer... it SCARES."
+        "Listen to the poster. Then tap the arrows to move the needle, and tap Lock it in when it points where you believe."
       ],
-      "file": "/audio/voice/679b1f462cdab372.mp3"
+      "file": "/audio/voice/b60fdf17fe293c90.mp3"
     },
     {
-      "key": "47679223101a5d4d",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[nervous] URGENT! Ten minutes left! Your account will be DELETED! [warmly] Feel your heart speed up? That's the trick working. Scams rush you and scare you on purpose... [whispers] because a racing heart doesn't stop to think. [excited] So here's your superpower: feeling rushed IS the red flag. Spot the rush, and the trick falls apart. Inspector time!",
-      "lines": [
-        "[nervous] URGENT! Ten minutes left! Your account will be DELETED!",
-        "[warmly] Feel your heart speed up? That's the trick working.",
-        "Scams rush you and scare you on purpose...",
-        "[whispers] because a racing heart doesn't stop to think.",
-        "[excited] So here's your superpower: feeling rushed IS the red flag.",
-        "Spot the rush, and the trick falls apart. Inspector time!"
-      ],
-      "file": "/audio/voice/47679223101a5d4d.mp3"
-    },
-    {
-      "key": "3a7883fc709fe9f8",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Inspector on duty! Messages are coming in. Check all four clues on each one... who sent it, what it wants you to press, how it sounds, and what it promises. [warmly] Rushed and scary... or calm and normal? You decide!",
-      "lines": [
-        "[excited] Inspector on duty! Messages are coming in.",
-        "Check all four clues on each one...",
-        "who sent it, what it wants you to press, how it sounds, and what it promises.",
-        "[warmly] Rushed and scary... or calm and normal? You decide!"
-      ],
-      "file": "/audio/voice/3a7883fc709fe9f8.mp3"
-    },
-    {
-      "key": "55f7167ffa66789c",
+      "key": "b983c4343d0d14e1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three tricks down! Countdowns, threats, panic buttons... [laughs] you inspected them all and never once got rushed. [whispers] But his sneakiest trick is next. The lookalike...",
+      "text": "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you. [warmly] Out in the real world, enormous prizes from strangers go straight to no way, and when you're not sure, you check with a grown-up first.",
       "lines": [
-        "[excited] Three tricks down!",
-        "Countdowns, threats, panic buttons...",
-        "[laughs] you inspected them all and never once got rushed.",
-        "[whispers] But his sneakiest trick is next. The lookalike..."
+        "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you.",
+        "[warmly] Out in the real world, enormous prizes from strangers go straight to no way, and when you're not sure, you check with a grown-up first."
       ],
-      "file": "/audio/voice/55f7167ffa66789c.mp3"
+      "file": "/audio/voice/b983c4343d0d14e1.mp3"
     },
     {
-      "key": "eab319bea4678f54",
+      "key": "3a88ff3c2033a942",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Now for the sneakiest trick of all. A message that LOOKS like it's from your game... or your school. [warmly] But look closely. A letter becomes a number. The address is weird. Something's just... off. [excited] Almost-right is ALL-WRONG. Time to line up some senders and bust the imposter!",
+      "text": "[excited] Spotted in seconds! A free tablet with only ten left is bait: a giant prize AND a hurry, from a stranger. Practice times and library books ask for nothing, so they're real. [warmly] Too good to be true means not true. Sharp eyes!",
+      "lines": [
+        "[excited] Spotted in seconds!",
+        "A free tablet with only ten left is bait: a giant prize AND a hurry, from a stranger.",
+        "Practice times and library books ask for nothing, so they're real.",
+        "[warmly] Too good to be true means not true. Sharp eyes!"
+      ],
+      "file": "/audio/voice/3a88ff3c2033a942.mp3"
+    },
+    {
+      "key": "73aea0609930ca7c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers down! Your believe-o-meter is perfectly tuned. Giant prizes from strangers? No way. A little prize you really earned? Could be real. Not sure? Check first. [whispers] But the Raccoon's next trick doesn't offer you anything. It SCARES you, and it makes you hurry... Next, we'll learn the trick that makes your heart race. Come and see!",
+      "lines": [
+        "[excited] Two powers down! Your believe-o-meter is perfectly tuned.",
+        "Giant prizes from strangers? No way. A little prize you really earned? Could be real. Not sure? Check first.",
+        "[whispers] But the Raccoon's next trick doesn't offer you anything. It SCARES you, and it makes you hurry...",
+        "Next, we'll learn the trick that makes your heart race. Come and see!"
+      ],
+      "file": "/audio/voice/73aea0609930ca7c.mp3"
+    },
+    {
+      "key": "75ac15668ac69751",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Urgent! Ten minutes left! Your account will be DELETED! [warmly] Feel your heart speed up? That is the trick working. Scams rush you and scare you on purpose, because a racing heart doesn't stop to think. [excited] So here is your superpower: feeling rushed IS the red flag. Real companies never give you scary countdowns. Ever. The loudest messages at the whole carnival are waiting at one booth. Let's go and inspect them, one clue at a time!",
+      "lines": [
+        "[nervous] Urgent! Ten minutes left! Your account will be DELETED!",
+        "[warmly] Feel your heart speed up? That is the trick working.",
+        "Scams rush you and scare you on purpose, because a racing heart doesn't stop to think.",
+        "[excited] So here is your superpower: feeling rushed IS the red flag.",
+        "Real companies never give you scary countdowns. Ever.",
+        "The loudest messages at the whole carnival are waiting at one booth. Let's go and inspect them, one clue at a time!"
+      ],
+      "file": "/audio/voice/75ac15668ac69751.mp3"
+    },
+    {
+      "key": "e1016a0aa4eb87b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING. This game is all about the hurry-up trick: countdowns, threats and big panic buttons. Out in the real world, a scary message wants you to act before you think, and slowing down is what beats it. Here is what you do. A message opens. Tap its four clues one at a time: who sent it, the button, the clock, and the promise. I'll read what each clue shows. When all four are open, tap TRICK to zap it, or tap REAL to keep it. [warmly] Slow down, check the clues, and no countdown can rush you. Ready? Let's inspect!",
+      "lines": [
+        "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING.",
+        "This game is all about the hurry-up trick: countdowns, threats and big panic buttons.",
+        "Out in the real world, a scary message wants you to act before you think, and slowing down is what beats it.",
+        "Here is what you do. A message opens. Tap its four clues one at a time: who sent it, the button, the clock, and the promise. I'll read what each clue shows. When all four are open, tap TRICK to zap it, or tap REAL to keep it.",
+        "[warmly] Slow down, check the clues, and no countdown can rush you. Ready? Let's inspect!"
+      ],
+      "file": "/audio/voice/e1016a0aa4eb87b2.mp3"
+    },
+    {
+      "key": "c43253534b7e8142",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap each of the four clues and listen to what it shows. When all four are open, tap Trick to zap it, or Real to keep it.",
+      "lines": [
+        "Tap each of the four clues and listen to what it shows. When all four are open, tap Trick to zap it, or Real to keep it."
+      ],
+      "file": "/audio/voice/c43253534b7e8142.mp3"
+    },
+    {
+      "key": "3d0b4d4bee6e4510",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every message inspected, and not one countdown rushed you! [warmly] Out in the real world, when a message makes your heart race, you'll know that racing feeling is the red flag. Slow down, check the four clues, and the trick falls apart.",
+      "lines": [
+        "[proud] Every message inspected, and not one countdown rushed you!",
+        "[warmly] Out in the real world, when a message makes your heart race, you'll know that racing feeling is the red flag. Slow down, check the four clues, and the trick falls apart."
+      ],
+      "file": "/audio/voice/3d0b4d4bee6e4510.mp3"
+    },
+    {
+      "key": "5c8a017845821def",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Busted! That was a fib. Real companies never give you a scary countdown, and nothing real disappears in sixty seconds. Tick tock is the rush trick talking, so you slow right down. [excited] Feeling rushed IS the red flag. Great catch!",
+      "lines": [
+        "[warmly] Busted! That was a fib.",
+        "Real companies never give you a scary countdown, and nothing real disappears in sixty seconds.",
+        "Tick tock is the rush trick talking, so you slow right down.",
+        "[excited] Feeling rushed IS the red flag. Great catch!"
+      ],
+      "file": "/audio/voice/5c8a017845821def.mp3"
+    },
+    {
+      "key": "895455c1db80a352",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers down! Countdowns, threats, panic buttons... you inspected them all and never once got rushed. [whispers] But the Raccoon has a costume that fools almost everyone. He dresses up as someone you TRUST... Next, we'll learn the sneakiest disguise: senders that look real but aren't. Come and see!",
+      "lines": [
+        "[excited] Three powers down!",
+        "Countdowns, threats, panic buttons... you inspected them all and never once got rushed.",
+        "[whispers] But the Raccoon has a costume that fools almost everyone. He dresses up as someone you TRUST...",
+        "Next, we'll learn the sneakiest disguise: senders that look real but aren't. Come and see!"
+      ],
+      "file": "/audio/voice/895455c1db80a352.mp3"
+    },
+    {
+      "key": "59d667987d545526",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Now for the sneakiest trick of all. A message that LOOKS like it's from your game, or your school, or even family. [warmly] But look closely. A letter becomes a number. A one where the L should be. A zero where the O should be. The address ends in something weird. Something is just... off. [excited] Almost-right is ALL-WRONG. You'll compare every sender with the real one, piece by piece. Let's go and catch some copycats!",
       "lines": [
         "[whispers] Now for the sneakiest trick of all.",
-        "A message that LOOKS like it's from your game... or your school.",
-        "[warmly] But look closely. A letter becomes a number.",
-        "The address is weird. Something's just... off.",
+        "A message that LOOKS like it's from your game, or your school, or even family.",
+        "[warmly] But look closely. A letter becomes a number. A one where the L should be. A zero where the O should be.",
+        "The address ends in something weird. Something is just... off.",
         "[excited] Almost-right is ALL-WRONG.",
-        "Time to line up some senders and bust the imposter!"
+        "You'll compare every sender with the real one, piece by piece. Let's go and catch some copycats!"
       ],
-      "file": "/audio/voice/eab319bea4678f54.mp3"
+      "file": "/audio/voice/59d667987d545526.mp3"
     },
     {
-      "key": "3e5c878aae06e0fb",
+      "key": "a0440547ac21fd4c",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The lineup is ready! Four senders on the podiums. Three are real. [whispers] One is a lookalike in disguise. [warmly] Read carefully, letter by letter... then bust the imposter!",
+      "text": "[excited] On your fourth challenge, you run the Name Tag Check! This game is all about lookalike senders, and the tiny swaps that give them away. Out in the real world, a copycat picks a name that is ALMOST right, hoping you never look closely. Here is what you do. The real sender's name tag is on top. The sender to check hangs underneath, split into the same pieces. Compare each piece with the one above it. If a piece doesn't match, tap it to mark it SWAPPED. Tap it again to lift the mark. Then tap CLOSE THE BOOTH. [warmly] Sometimes the sender is the real one, so no marks is a real answer too. Ready? Let's compare!",
       "lines": [
-        "[excited] The lineup is ready!",
-        "Four senders on the podiums. Three are real.",
-        "[whispers] One is a lookalike in disguise.",
-        "[warmly] Read carefully, letter by letter... then bust the imposter!"
+        "[excited] On your fourth challenge, you run the Name Tag Check!",
+        "This game is all about lookalike senders, and the tiny swaps that give them away.",
+        "Out in the real world, a copycat picks a name that is ALMOST right, hoping you never look closely.",
+        "Here is what you do. The real sender's name tag is on top. The sender to check hangs underneath, split into the same pieces. Compare each piece with the one above it. If a piece doesn't match, tap it to mark it SWAPPED. Tap it again to lift the mark. Then tap CLOSE THE BOOTH.",
+        "[warmly] Sometimes the sender is the real one, so no marks is a real answer too. Ready? Let's compare!"
       ],
-      "file": "/audio/voice/3e5c878aae06e0fb.mp3"
+      "file": "/audio/voice/a0440547ac21fd4c.mp3"
     },
     {
-      "key": "d39618ec2090f587",
+      "key": "540f21a11b034728",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Check each name AND its address - then tap the imposter!",
+      "text": "Compare each piece on the bottom tag with the piece above it. Tap a piece that doesn't match to mark it. Nothing swapped? Mark nothing. Then close the booth.",
       "lines": [
-        "Check each name AND its address - then tap the imposter!"
+        "Compare each piece on the bottom tag with the piece above it. Tap a piece that doesn't match to mark it. Nothing swapped? Mark nothing. Then close the booth."
       ],
-      "file": "/audio/voice/d39618ec2090f587.mp3"
+      "file": "/audio/voice/540f21a11b034728.mp3"
     },
     {
-      "key": "bf120116c761e4c8",
+      "key": "a85268da3a3fc2de",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Four tricks down! Nothing gets past you. Ones for L's, zeros for O's... [laughs] you read every disguise like a book. [warmly] One last move to learn. And it beats ALL of them.",
+      "text": "[proud] Every tag checked! You read names letter by letter, so the Raccoon's copycats can't fool you. [warmly] Out in the real world, a one where an L should be, or a strange ending, will jump out at you. Almost-right is all-wrong, and you'll know it.",
       "lines": [
-        "[excited] Four tricks down! Nothing gets past you.",
-        "Ones for L's, zeros for O's...",
-        "[laughs] you read every disguise like a book.",
-        "[warmly] One last move to learn. And it beats ALL of them."
+        "[proud] Every tag checked! You read names letter by letter, so the Raccoon's copycats can't fool you.",
+        "[warmly] Out in the real world, a one where an L should be, or a strange ending, will jump out at you. Almost-right is all-wrong, and you'll know it."
       ],
-      "file": "/audio/voice/bf120116c761e4c8.mp3"
+      "file": "/audio/voice/a85268da3a3fc2de.mp3"
     },
     {
-      "key": "b67b7436d3280ddb",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Last lesson - and it's the golden one. Every scam, every trick, every disguise... [excited] loses to the same three steps. STOP. Don't click, don't rush. CHECK. Read it slowly, like a detective. [whispers] And SHOW a grown-up. Every single time. [excited] A scam only works if you bite. So... don't bite!",
-      "lines": [
-        "[warmly] Last lesson - and it's the golden one.",
-        "Every scam, every trick, every disguise...",
-        "[excited] loses to the same three steps.",
-        "STOP. Don't click, don't rush.",
-        "CHECK. Read it slowly, like a detective.",
-        "[whispers] And SHOW a grown-up. Every single time.",
-        "[excited] A scam only works if you bite. So... don't bite!"
-      ],
-      "file": "/audio/voice/b67b7436d3280ddb.mp3"
-    },
-    {
-      "key": "451062f37fa22d00",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Practice time - the tricky moments are coming. Each one will push you to act FAST. [whispers] That push is your signal. [excited] Stop. Check. Show. Let's see you do it!",
-      "lines": [
-        "[warmly] Practice time - the tricky moments are coming.",
-        "Each one will push you to act FAST.",
-        "[whispers] That push is your signal.",
-        "[excited] Stop. Check. Show. Let's see you do it!"
-      ],
-      "file": "/audio/voice/451062f37fa22d00.mp3"
-    },
-    {
-      "key": "e46baa8538001d5e",
+      "key": "c80549b432f5b1f1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE trick-beating powers! You know what scams are, you smell the bait, you never rush, you bust every lookalike... [whispers] and you never, ever bite. [excited] Final drill - then let's empty his whole inbox of tricks!",
+      "text": "[excited] That sneaky one didn't fool you! A number one where the L should be, and a weird dot win ending. Almost-right is all-wrong. Grandma, your school, and a message from inside your own game are all senders you can check. [warmly] Letter by letter, every time. Brilliant!",
       "lines": [
-        "[excited] That's all FIVE trick-beating powers!",
-        "You know what scams are, you smell the bait,",
-        "you never rush, you bust every lookalike...",
+        "[excited] That sneaky one didn't fool you!",
+        "A number one where the L should be, and a weird dot win ending. Almost-right is all-wrong.",
+        "Grandma, your school, and a message from inside your own game are all senders you can check.",
+        "[warmly] Letter by letter, every time. Brilliant!"
+      ],
+      "file": "/audio/voice/c80549b432f5b1f1.mp3"
+    },
+    {
+      "key": "acba6caa8802e9d1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! Nothing gets past you. Ones for L's, zeros for O's, strange endings... you read every disguise like a book. [warmly] Now, what if a tricky message lands and you're just not sure? There's one move that works on EVERY scam ever made... Next, we'll learn the golden move that beats every scam at once. Come and see!",
+      "lines": [
+        "[excited] Four powers! Nothing gets past you.",
+        "Ones for L's, zeros for O's, strange endings... you read every disguise like a book.",
+        "[warmly] Now, what if a tricky message lands and you're just not sure? There's one move that works on EVERY scam ever made...",
+        "Next, we'll learn the golden move that beats every scam at once. Come and see!"
+      ],
+      "file": "/audio/voice/acba6caa8802e9d1.mp3"
+    },
+    {
+      "key": "f491030d5284939d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] The last power is the golden one, because it beats every scam ever made. Step one: STOP. Don't tap, don't reply, don't rush. Step two: CHECK. Read it slowly. Who sent it? What does it want? [whispers] Step three: SHOW a grown-up. Every single time. [excited] A scam only works if you bite. So... don't bite! Every safe habit is a brick. Let's go and lay them, one at a time!",
+      "lines": [
+        "[warmly] The last power is the golden one, because it beats every scam ever made.",
+        "Step one: STOP. Don't tap, don't reply, don't rush.",
+        "Step two: CHECK. Read it slowly. Who sent it? What does it want?",
+        "[whispers] Step three: SHOW a grown-up. Every single time.",
+        "[excited] A scam only works if you bite. So... don't bite!",
+        "Every safe habit is a brick. Let's go and lay them, one at a time!"
+      ],
+      "file": "/audio/voice/f491030d5284939d.mp3"
+    },
+    {
+      "key": "70f4bd3f7c837019",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] On your last challenge, you build the No-Bite Wall! This game is all about the three steps that beat every scam: stop, check, show. Out in the real world, a scam only works if you bite, so every safe habit you keep is another brick between you and the Raccoon. Here is what you do. A brick arrives in the tray and I'll read it. If it's a safe habit, tap a column of the wall to lay it in. If it's a bad habit, tap the bin to throw it out. [warmly] Lay every safe brick and nothing bites through. Ready? Let's build!",
+      "lines": [
+        "[excited] On your last challenge, you build the No-Bite Wall!",
+        "This game is all about the three steps that beat every scam: stop, check, show.",
+        "Out in the real world, a scam only works if you bite, so every safe habit you keep is another brick between you and the Raccoon.",
+        "Here is what you do. A brick arrives in the tray and I'll read it. If it's a safe habit, tap a column of the wall to lay it in. If it's a bad habit, tap the bin to throw it out.",
+        "[warmly] Lay every safe brick and nothing bites through. Ready? Let's build!"
+      ],
+      "file": "/audio/voice/70f4bd3f7c837019.mp3"
+    },
+    {
+      "key": "bfbd370793aa3f52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Listen to the brick. A safe habit? Tap a column to lay it in the wall. A bad habit? Tap the bin.",
+      "lines": [
+        "Listen to the brick. A safe habit? Tap a column to lay it in the wall. A bad habit? Tap the bin."
+      ],
+      "file": "/audio/voice/bfbd370793aa3f52.mp3"
+    },
+    {
+      "key": "89119f329580f931",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] The wall is built! Stop, check, show, and every safe habit is a brick the Raccoon can't get through. [warmly] Out in the real world, when a tricky message lands, you'll stop, you'll check, and you'll show a grown-up. No bite, no trick. That's the golden move.",
+      "lines": [
+        "[proud] The wall is built! Stop, check, show, and every safe habit is a brick the Raccoon can't get through.",
+        "[warmly] Out in the real world, when a tricky message lands, you'll stop, you'll check, and you'll show a grown-up. No bite, no trick. That's the golden move."
+      ],
+      "file": "/audio/voice/89119f329580f931.mp3"
+    },
+    {
+      "key": "ff36f96a52c2d519",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Stop. Check. Show. That's the order, every time. First you stop, so the trick can't get in. Then you check who sent it and what it wants. Then you show a grown-up. A scam only works if you bite. [warmly] Three steps, and the Raccoon's whole carnival goes quiet. Brilliant!",
+      "lines": [
+        "[excited] Stop. Check. Show. That's the order, every time.",
+        "First you stop, so the trick can't get in. Then you check who sent it and what it wants. Then you show a grown-up.",
+        "A scam only works if you bite.",
+        "[warmly] Three steps, and the Raccoon's whole carnival goes quiet. Brilliant!"
+      ],
+      "file": "/audio/voice/ff36f96a52c2d519.mp3"
+    },
+    {
+      "key": "69239af5755cb593",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE trick-beating powers, Cyber Hero! You follow the strings, you measure the bait, you never rush, you catch every copycat... [whispers] and you never, ever bite. [warmly] Now, the Raccoon has one last attraction: a hall of mirrors, with a fake hiding in every one. One quick final drill to make it all stick, then the Raccoon gets what's coming. Come on!",
+      "lines": [
+        "[excited] That's all FIVE trick-beating powers, Cyber Hero!",
+        "You follow the strings, you measure the bait, you never rush, you catch every copycat...",
         "[whispers] and you never, ever bite.",
-        "[excited] Final drill - then let's empty his whole inbox of tricks!"
+        "[warmly] Now, the Raccoon has one last attraction: a hall of mirrors, with a fake hiding in every one.",
+        "One quick final drill to make it all stick, then the Raccoon gets what's coming. Come on!"
       ],
-      "file": "/audio/voice/e46baa8538001d5e.mp3"
+      "file": "/audio/voice/69239af5755cb593.mp3"
     },
     {
-      "key": "d08da27b71747bc9",
+      "key": "3761aea73a64c8e5",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Final drill! Messages are drifting past. Tap REAL for the calm, normal ones... and TRICK for bait, panic and lookalikes. [warmly] Five powers. One scanner. Show me!",
+      "text": "[excited] Final drill, Cyber Hero! Every trick you beat this week is hiding in the Hall of Mirrors. This drill mixes up all five powers you learned about scams. Out in the real world, tricks don't come one at a time, so a hero keeps every power ready at once. Here is what you do. Tap a glowing mirror and it asks you a question. I'll read it. Tap the answer you believe. Get it right and the mirror clears. Clear all five, and the hall is yours. [warmly] Five mirrors, five powers. Ready? Let's clear the hall!",
       "lines": [
-        "[excited] Final drill! Messages are drifting past.",
-        "Tap REAL for the calm, normal ones...",
-        "and TRICK for bait, panic and lookalikes.",
-        "[warmly] Five powers. One scanner. Show me!"
+        "[excited] Final drill, Cyber Hero! Every trick you beat this week is hiding in the Hall of Mirrors.",
+        "This drill mixes up all five powers you learned about scams.",
+        "Out in the real world, tricks don't come one at a time, so a hero keeps every power ready at once.",
+        "Here is what you do. Tap a glowing mirror and it asks you a question. I'll read it. Tap the answer you believe. Get it right and the mirror clears. Clear all five, and the hall is yours.",
+        "[warmly] Five mirrors, five powers. Ready? Let's clear the hall!"
       ],
-      "file": "/audio/voice/d08da27b71747bc9.mp3"
+      "file": "/audio/voice/3761aea73a64c8e5.mp3"
     },
     {
-      "key": "b73cf36247e7e255",
+      "key": "61298216dcc23f56",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! You smell bait a mile away, no countdown can rush you, no lookalike can fool you... [laughs] and you never, ever bite! [excited] Every scam went straight back to sender. Sticker time!",
+      "text": "Tap a glowing mirror to hear its question, then tap the answer you believe.",
+      "lines": [
+        "Tap a glowing mirror to hear its question, then tap the answer you believe."
+      ],
+      "file": "/audio/voice/61298216dcc23f56.mp3"
+    },
+    {
+      "key": "9172fb910fe16407",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Hall cleared! Every mirror showed a fake, and you saw straight through all five. [warmly] You follow the strings, you measure the bait, you never rush, you catch the copycats and you never bite. The Raccoon's carnival is closed for good. Time for the final test!",
+      "lines": [
+        "[proud] Hall cleared! Every mirror showed a fake, and you saw straight through all five.",
+        "[warmly] You follow the strings, you measure the bait, you never rush, you catch the copycats and you never bite. The Raccoon's carnival is closed for good. Time for the final test!"
+      ],
+      "file": "/audio/voice/9172fb910fe16407.mp3"
+    },
+    {
+      "key": "56987733dba5f5f5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You follow every string, no giant prize can dazzle you, no countdown can rush you, no copycat can fool you... [laughs] and you never, ever bite! [excited] Every scam went straight back to sender. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You smell bait a mile away, no countdown can rush you,",
-        "no lookalike can fool you...",
+        "You follow every string, no giant prize can dazzle you, no countdown can rush you,",
+        "no copycat can fool you...",
         "[laughs] and you never, ever bite!",
         "[excited] Every scam went straight back to sender. Sticker time!"
       ],
-      "file": "/audio/voice/b73cf36247e7e255.mp3"
-    },
-    {
-      "key": "7e0a234d69eac9f3",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A message flashes: 'You WON 10,000 V-Bucks! Click in 10 seconds or lose them FOREVER!'",
-      "lines": [
-        "A message flashes: 'You WON 10,000 V-Bucks! Click in 10 seconds or lose them FOREVER!'"
-      ],
-      "file": "/audio/voice/7e0a234d69eac9f3.mp3"
-    },
-    {
-      "key": "1498906418ff20d9",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A text says: 'Your package is waiting! Enter a parent's card number to release it.'",
-      "lines": [
-        "A text says: 'Your package is waiting! Enter a parent's card number to release it.'"
-      ],
-      "file": "/audio/voice/1498906418ff20d9.mp3"
-    },
-    {
-      "key": "be4dfe480c2da5fc",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A pop-up screams: 'Your computer has 5 VIRUSES! Call this number NOW!'",
-      "lines": [
-        "A pop-up screams: 'Your computer has 5 VIRUSES! Call this number NOW!'"
-      ],
-      "file": "/audio/voice/be4dfe480c2da5fc.mp3"
-    },
-    {
-      "key": "0dfc412dcf8b9dc9",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "There were never any V-Bucks. Rushing you is HOW the trick works - and the click was all he wanted.",
-      "lines": [
-        "There were never any V-Bucks. Rushing you is HOW the trick works - and the click was all he wanted."
-      ],
-      "file": "/audio/voice/0dfc412dcf8b9dc9.mp3"
-    },
-    {
-      "key": "9081a263f9084452",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Hero move! You paused, and the 'prize' vanished... because it never existed. No bite, no trick.",
-      "lines": [
-        "Hero move! You paused, and the 'prize' vanished... because it never existed. No bite, no trick."
-      ],
-      "file": "/audio/voice/9081a263f9084452.mp3"
-    },
-    {
-      "key": "7e685d8c6e8b3776",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "There is no package - and now a stranger has the card number. Card numbers NEVER go into surprise messages.",
-      "lines": [
-        "There is no package - and now a stranger has the card number. Card numbers NEVER go into surprise messages."
-      ],
-      "file": "/audio/voice/7e685d8c6e8b3776.mp3"
-    },
-    {
-      "key": "87e37661028a6d4a",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Perfect! A grown-up checked: no package was ever coming. The 'stuck package' is one of the oldest tricks going.",
-      "lines": [
-        "Perfect! A grown-up checked: no package was ever coming. The 'stuck package' is one of the oldest tricks going."
-      ],
-      "file": "/audio/voice/87e37661028a6d4a.mp3"
-    },
-    {
-      "key": "bc8d163c27522d38",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The 'virus warning' WAS the trick - the people on that number are the tricksters themselves.",
-      "lines": [
-        "The 'virus warning' WAS the trick - the people on that number are the tricksters themselves."
-      ],
-      "file": "/audio/voice/bc8d163c27522d38.mp3"
-    },
-    {
-      "key": "7a8ff1c235141ce0",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Exactly right. Scary pop-ups are ads in monster costumes. A grown-up can check the computer properly.",
-      "lines": [
-        "Exactly right. Scary pop-ups are ads in monster costumes. A grown-up can check the computer properly."
-      ],
-      "file": "/audio/voice/7a8ff1c235141ce0.mp3"
+      "file": "/audio/voice/56987733dba5f5f5.mp3"
     },
     {
       "key": "48a3c9a2c6265042",
@@ -12186,14 +12273,14 @@
       "file": "/audio/voice/48a3c9a2c6265042.mp3"
     },
     {
-      "key": "d919b86ff3b4484b",
+      "key": "634d4d7cea9e34ab",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - which one is BAIT?",
+      "text": "Quick! Which one is BAIT?",
       "lines": [
-        "Quick - which one is BAIT?"
+        "Quick! Which one is BAIT?"
       ],
-      "file": "/audio/voice/d919b86ff3b4484b.mp3"
+      "file": "/audio/voice/634d4d7cea9e34ab.mp3"
     },
     {
       "key": "7f9176e7dd690d31",
@@ -12206,14 +12293,14 @@
       "file": "/audio/voice/7f9176e7dd690d31.mp3"
     },
     {
-      "key": "f01586934213ba5a",
+      "key": "9ed3c74f547f56e4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which sender is the FAKE?",
+      "text": "Which sender is the COPYCAT?",
       "lines": [
-        "Which sender is the FAKE?"
+        "Which sender is the COPYCAT?"
       ],
-      "file": "/audio/voice/f01586934213ba5a.mp3"
+      "file": "/audio/voice/9ed3c74f547f56e4.mp3"
     },
     {
       "key": "6d4be4f4062dad30",
@@ -12226,34 +12313,1821 @@
       "file": "/audio/voice/6d4be4f4062dad30.mp3"
     },
     {
-      "key": "ef7a239aa20f8615",
+      "key": "6a492b2523f91608",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Four messages say your game needs attention. One sender is wearing a disguise - bust it!",
+      "text": "Three quiet little messages land on Adam's tablet. A scam always wants something back. Which one is the scam? Is it option A... Game bag full! Type your password to make space Option B... Library: your dragon book is ready for pickup Or is it option C... Coach: practice moved to four o'clock today So, what do you think?",
       "lines": [
-        "Four messages say your game needs attention. One sender is wearing a disguise - bust it!"
+        "Three quiet little messages land on Adam's tablet. A scam always wants something back. Which one is the scam?",
+        "Is it option A...",
+        "Game bag full! Type your password to make space",
+        "Option B...",
+        "Library: your dragon book is ready for pickup",
+        "Or is it option C...",
+        "Coach: practice moved to four o'clock today",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/ef7a239aa20f8615.mp3"
+      "file": "/audio/voice/6a492b2523f91608.mp3"
     },
     {
-      "key": "74d0dc1592a386e6",
+      "key": "b6913429150f201b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Someone says you won a spelling prize. Who's the imposter?",
+      "text": "Three 'you won!' messages arrive on the same day. Which win could actually be REAL? Is it option A... LuckyMail: You won a family trip to the beach! Option B... PrizeZone: You won a brand-new game console! Or is it option C... Coach Lee: You won player of the match! So, what do you think?",
       "lines": [
-        "Someone says you won a spelling prize. Who's the imposter?"
+        "Three 'you won!' messages arrive on the same day. Which win could actually be REAL?",
+        "Is it option A...",
+        "LuckyMail: You won a family trip to the beach!",
+        "Option B...",
+        "PrizeZone: You won a brand-new game console!",
+        "Or is it option C...",
+        "Coach Lee: You won player of the match!",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/74d0dc1592a386e6.mp3"
+      "file": "/audio/voice/b6913429150f201b.mp3"
     },
     {
-      "key": "3ddcebc69950d23f",
+      "key": "d202ffe3ef563dca",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A gift card has arrived... apparently. Spot the disguise!",
+      "text": "A message tells Layla: 'Your account breaks in 5 minutes! Fix it NOW!' Her heart starts racing. What is her racing heart telling her? Is it option A... Fix it first and think about it after Option B... The rush trick is working, slow down Or is it option C... Something really is wrong, so hurry So, what do you think?",
       "lines": [
-        "A gift card has arrived... apparently. Spot the disguise!"
+        "A message tells Layla: 'Your account breaks in 5 minutes! Fix it NOW!' Her heart starts racing. What is her racing heart telling her?",
+        "Is it option A...",
+        "Fix it first and think about it after",
+        "Option B...",
+        "The rush trick is working, slow down",
+        "Or is it option C...",
+        "Something really is wrong, so hurry",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/3ddcebc69950d23f.mp3"
+      "file": "/audio/voice/d202ffe3ef563dca.mp3"
+    },
+    {
+      "key": "ac71553172b272a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla lines up four senders from her inbox. Which one is wearing a costume? Is it option A... PetPals, message center inside the app Option B... Petpa1s Club, gift@petpa1s.fun Option C... Grandpa, saved in the family phone Or is it option D... Maple Hill School, office@maplehill.edu So, what do you think?",
+      "lines": [
+        "Layla lines up four senders from her inbox. Which one is wearing a costume?",
+        "Is it option A...",
+        "PetPals, message center inside the app",
+        "Option B...",
+        "Petpa1s Club, gift@petpa1s.fun",
+        "Option C...",
+        "Grandpa, saved in the family phone",
+        "Or is it option D...",
+        "Maple Hill School, office@maplehill.edu",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/ac71553172b272a2.mp3"
+    },
+    {
+      "key": "62e18fd0f174774f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A scary message is sitting on Adam's screen, and his finger is hovering over its big red button. What's step one of the no-bite rule? Is it option A... Press it once, just to see what happens Option B... Delete it fast without reading anything Or is it option C... STOP, no clicking while he checks So, what do you think?",
+      "lines": [
+        "A scary message is sitting on Adam's screen, and his finger is hovering over its big red button. What's step one of the no-bite rule?",
+        "Is it option A...",
+        "Press it once, just to see what happens",
+        "Option B...",
+        "Delete it fast without reading anything",
+        "Or is it option C...",
+        "STOP, no clicking while he checks",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/62e18fd0f174774f.mp3"
+    },
+    {
+      "key": "dbb2f71cb0e42219",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The library and the coach just tell Adam things and ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds.",
+      "lines": [
+        "That's right!",
+        "The library and the coach just tell Adam things and ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds."
+      ],
+      "file": "/audio/voice/dbb2f71cb0e42219.mp3"
+    },
+    {
+      "key": "8724833b3d5be71a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The library and the coach just tell Adam things and ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds.",
+      "lines": [
+        "Not quite.",
+        "The library and the coach just tell Adam things and ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds."
+      ],
+      "file": "/audio/voice/8724833b3d5be71a.mp3"
+    },
+    {
+      "key": "c6f3174462737832",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Adam really played in that match, and Coach Lee is someone he knows and can check. Winning a contest you never entered, from a name you've never heard of, is bait wearing a bow.",
+      "lines": [
+        "That's right!",
+        "Adam really played in that match, and Coach Lee is someone he knows and can check. Winning a contest you never entered, from a name you've never heard of, is bait wearing a bow."
+      ],
+      "file": "/audio/voice/c6f3174462737832.mp3"
+    },
+    {
+      "key": "7dfd81f9547059f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Adam really played in that match, and Coach Lee is someone he knows and can check. Winning a contest you never entered, from a name you've never heard of, is bait wearing a bow.",
+      "lines": [
+        "Not quite.",
+        "Adam really played in that match, and Coach Lee is someone he knows and can check. Winning a contest you never entered, from a name you've never heard of, is bait wearing a bow."
+      ],
+      "file": "/audio/voice/7dfd81f9547059f9.mp3"
+    },
+    {
+      "key": "56d3bbebfb601593",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Scams squeeze your heart on purpose, because a racing heart doesn't stop to think. The rushed feeling is the alarm itself: breathe, slow right down, and show a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "Scams squeeze your heart on purpose, because a racing heart doesn't stop to think. The rushed feeling is the alarm itself: breathe, slow right down, and show a trusted grown-up."
+      ],
+      "file": "/audio/voice/56d3bbebfb601593.mp3"
+    },
+    {
+      "key": "6c61f684f65a4c9f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Scams squeeze your heart on purpose, because a racing heart doesn't stop to think. The rushed feeling is the alarm itself: breathe, slow right down, and show a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "Scams squeeze your heart on purpose, because a racing heart doesn't stop to think. The rushed feeling is the alarm itself: breathe, slow right down, and show a trusted grown-up."
+      ],
+      "file": "/audio/voice/6c61f684f65a4c9f.mp3"
+    },
+    {
+      "key": "e4cb4605556acaa7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!",
+      "lines": [
+        "That's right!",
+        "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!"
+      ],
+      "file": "/audio/voice/e4cb4605556acaa7.mp3"
+    },
+    {
+      "key": "785c9ae6bf1bbed2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!",
+      "lines": [
+        "Not quite.",
+        "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!"
+      ],
+      "file": "/audio/voice/785c9ae6bf1bbed2.mp3"
+    },
+    {
+      "key": "7ef840a3be69083d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! One press is a bite, and deleting skips the checking and the showing. Step one is STOP: no clicking, no replying, no rushing. Then check it slowly and show a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "One press is a bite, and deleting skips the checking and the showing. Step one is STOP: no clicking, no replying, no rushing. Then check it slowly and show a trusted grown-up."
+      ],
+      "file": "/audio/voice/7ef840a3be69083d.mp3"
+    },
+    {
+      "key": "3bcb37557542e145",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One press is a bite, and deleting skips the checking and the showing. Step one is STOP: no clicking, no replying, no rushing. Then check it slowly and show a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "One press is a bite, and deleting skips the checking and the showing. Step one is STOP: no clicking, no replying, no rushing. Then check it slowly and show a trusted grown-up."
+      ],
+      "file": "/audio/voice/3bcb37557542e145.mp3"
+    },
+    {
+      "key": "1d1bb034d6412745",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free coins that need your password are not free at all. The password is the whole prize, and it's YOURS.",
+      "lines": [
+        "Free coins that need your password are not free at all. The password is the whole prize, and it's YOURS."
+      ],
+      "file": "/audio/voice/1d1bb034d6412745.mp3"
+    },
+    {
+      "key": "e8eeb4a0ddd2fde8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at what this offer asks you to type. That is what its string is tied to.",
+      "lines": [
+        "Look at what this offer asks you to type. That is what its string is tied to."
+      ],
+      "file": "/audio/voice/e8eeb4a0ddd2fde8.mp3"
+    },
+    {
+      "key": "c525731ffc428946",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is no parcel. That one dollar is a doorway to a grown-up's card number, and the money is what it wants.",
+      "lines": [
+        "There is no parcel. That one dollar is a doorway to a grown-up's card number, and the money is what it wants."
+      ],
+      "file": "/audio/voice/c525731ffc428946.mp3"
+    },
+    {
+      "key": "3ea25ab880da3f41",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What does this message want you to PAY? Follow the string to that.",
+      "lines": [
+        "What does this message want you to PAY? Follow the string to that."
+      ],
+      "file": "/audio/voice/3ea25ab880da3f41.mp3"
+    },
+    {
+      "key": "f04234111211f84a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You never entered a puppy contest. The prize is bait, and the tap is the hook: pressing that button is how the trick gets in.",
+      "lines": [
+        "You never entered a puppy contest. The prize is bait, and the tap is the hook: pressing that button is how the trick gets in."
+      ],
+      "file": "/audio/voice/f04234111211f84a.mp3"
+    },
+    {
+      "key": "0d0c546bdc6a8908",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This prize doesn't ask for money or a password. So what is the one thing it wants you to DO?",
+      "lines": [
+        "This prize doesn't ask for money or a password. So what is the one thing it wants you to DO?"
+      ],
+      "file": "/audio/voice/0d0c546bdc6a8908.mp3"
+    },
+    {
+      "key": "26867d9e0e218afe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The library just tells you something useful and asks for nothing back. A message with no strings is a real one.",
+      "lines": [
+        "The library just tells you something useful and asks for nothing back. A message with no strings is a real one."
+      ],
+      "file": "/audio/voice/26867d9e0e218afe.mp3"
+    },
+    {
+      "key": "738a517f72a35709",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the library's message again. Does it ask you for anything at all?",
+      "lines": [
+        "Read the library's message again. Does it ask you for anything at all?"
+      ],
+      "file": "/audio/voice/738a517f72a35709.mp3"
+    },
+    {
+      "key": "ee1a4312241d9fd9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Billionaires don't message kids. The giveaway is the costume, and a card number is money, so money is what the string is tied to.",
+      "lines": [
+        "Billionaires don't message kids. The giveaway is the costume, and a card number is money, so money is what the string is tied to."
+      ],
+      "file": "/audio/voice/ee1a4312241d9fd9.mp3"
+    },
+    {
+      "key": "693daa4593b8fe53",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody gives money away to strangers. Look at what it wants you to send BACK.",
+      "lines": [
+        "Nobody gives money away to strangers. Look at what it wants you to send BACK."
+      ],
+      "file": "/audio/voice/693daa4593b8fe53.mp3"
+    },
+    {
+      "key": "869d6517f2639de5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your coach is someone you know, and the message asks for nothing. No strings, so it's real.",
+      "lines": [
+        "Your coach is someone you know, and the message asks for nothing. No strings, so it's real."
+      ],
+      "file": "/audio/voice/869d6517f2639de5.mp3"
+    },
+    {
+      "key": "33b3715206eef549",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Does your coach ask you for anything at all? Check for a string before you tie one.",
+      "lines": [
+        "Does your coach ask you for anything at all? Check for a string before you tie one."
+      ],
+      "file": "/audio/voice/33b3715206eef549.mp3"
+    },
+    {
+      "key": "337551f1d5b13940",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A game is something you play for fun; a scam is pretending to be nice to get something from you.",
+      "lines": [
+        "A game is something you play for fun; a scam is pretending to be nice to get something from you."
+      ],
+      "file": "/audio/voice/337551f1d5b13940.mp3"
+    },
+    {
+      "key": "1c969b072ab4fdab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The prize is the costume, not the thing hiding underneath it.",
+      "lines": [
+        "The prize is the costume, not the thing hiding underneath it."
+      ],
+      "file": "/audio/voice/1c969b072ab4fdab.mp3"
+    },
+    {
+      "key": "30d51c8e4e46b5a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A scam might act friendly, but a real friend wants nothing from you.",
+      "lines": [
+        "A scam might act friendly, but a real friend wants nothing from you."
+      ],
+      "file": "/audio/voice/30d51c8e4e46b5a1.mp3"
+    },
+    {
+      "key": "4232008819d032a4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about what's hiding under the costume...",
+      "lines": [
+        "Think about what's hiding under the costume..."
+      ],
+      "file": "/audio/voice/4232008819d032a4.mp3"
+    },
+    {
+      "key": "7fc2ce77b3ae65b6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A free tablet from a shop you've never heard of, for doing nothing, is too good to be true. That is bait.",
+      "lines": [
+        "A free tablet from a shop you've never heard of, for doing nothing, is too good to be true. That is bait."
+      ],
+      "file": "/audio/voice/7fc2ce77b3ae65b6.mp3"
+    },
+    {
+      "key": "e032b415cb66b4d2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask: would a real shop give tablets to strangers for free? A prize that big, from a stranger, is never real.",
+      "lines": [
+        "Ask: would a real shop give tablets to strangers for free? A prize that big, from a stranger, is never real."
+      ],
+      "file": "/audio/voice/e032b415cb66b4d2.mp3"
+    },
+    {
+      "key": "52d8328a3a872e2d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You really played in that match, and Coach Lee is someone you know. A small prize you earned, from a real person, can be real.",
+      "lines": [
+        "You really played in that match, and Coach Lee is someone you know. A small prize you earned, from a real person, can be real."
+      ],
+      "file": "/audio/voice/52d8328a3a872e2d.mp3"
+    },
+    {
+      "key": "7c9d285eef5d9eb3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about who this is from and what you did. You played the match, and Coach Lee is real. That changes the needle.",
+      "lines": [
+        "Think about who this is from and what you did. You played the match, and Coach Lee is real. That changes the needle."
+      ],
+      "file": "/audio/voice/7c9d285eef5d9eb3.mp3"
+    },
+    {
+      "key": "9a68806e18231882",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Games really do give away a free skin sometimes, so it could be real, but it could be a copycat too. Not sure means check with a grown-up first.",
+      "lines": [
+        "Games really do give away a free skin sometimes, so it could be real, but it could be a copycat too. Not sure means check with a grown-up first."
+      ],
+      "file": "/audio/voice/9a68806e18231882.mp3"
+    },
+    {
+      "key": "33015a9e453c4dd1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Games do give away a free skin sometimes, but you can't be sure this is really your game. When you can't tell, the needle points to check first.",
+      "lines": [
+        "Games do give away a free skin sometimes, but you can't be sure this is really your game. When you can't tell, the needle points to check first."
+      ],
+      "file": "/audio/voice/33015a9e453c4dd1.mp3"
+    },
+    {
+      "key": "2cad54f92fbc6f1f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No website counts visitors and hands out prizes. You never entered anything, so this is bait.",
+      "lines": [
+        "No website counts visitors and hands out prizes. You never entered anything, so this is bait."
+      ],
+      "file": "/audio/voice/2cad54f92fbc6f1f.mp3"
+    },
+    {
+      "key": "af2aab007d1a8fb0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You didn't enter anything, and a millionth visitor prize is enormous. Think about how big and how strange that is.",
+      "lines": [
+        "You didn't enter anything, and a millionth visitor prize is enormous. Think about how big and how strange that is."
+      ],
+      "file": "/audio/voice/af2aab007d1a8fb0.mp3"
+    },
+    {
+      "key": "be3806ec250766dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You really joined the reading challenge, the library is a place you know, and a bookmark is a tiny prize. That is believable.",
+      "lines": [
+        "You really joined the reading challenge, the library is a place you know, and a bookmark is a tiny prize. That is believable."
+      ],
+      "file": "/audio/voice/be3806ec250766dd.mp3"
+    },
+    {
+      "key": "8ee9a049b2951cd1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the prize and the sender. A tiny bookmark from your own library, for reading you actually did, is not bait.",
+      "lines": [
+        "Look at the prize and the sender. A tiny bookmark from your own library, for reading you actually did, is not bait."
+      ],
+      "file": "/audio/voice/8ee9a049b2951cd1.mp3"
+    },
+    {
+      "key": "adb6ff9b8a8b7495",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A small gift card could be real, but a survey often asks for private info, and you don't know this sender. Not sure means check first.",
+      "lines": [
+        "A small gift card could be real, but a survey often asks for private info, and you don't know this sender. Not sure means check first."
+      ],
+      "file": "/audio/voice/adb6ff9b8a8b7495.mp3"
+    },
+    {
+      "key": "4847c655aa492635",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's small, so it might be real, but you don't know this sender and a survey asks questions. When you can't be sure, the needle points to check first.",
+      "lines": [
+        "It's small, so it might be real, but you don't know this sender and a survey asks questions. When you can't be sure, the needle points to check first."
+      ],
+      "file": "/audio/voice/4847c655aa492635.mp3"
+    },
+    {
+      "key": "de5c6928305cdd1e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A time change from your coach asks for nothing and promises nothing; that's a normal message.",
+      "lines": [
+        "A time change from your coach asks for nothing and promises nothing; that's a normal message."
+      ],
+      "file": "/audio/voice/de5c6928305cdd1e.mp3"
+    },
+    {
+      "key": "5cd048bc221189d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The library is just telling you something; there's no prize and no rush.",
+      "lines": [
+        "The library is just telling you something; there's no prize and no rush."
+      ],
+      "file": "/audio/voice/5cd048bc221189d6.mp3"
+    },
+    {
+      "key": "af79fb7fe34ba507",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A countdown, a threat, a panic button and a sender you can't check. Four red flags shouting at once is a trick, every time.",
+      "lines": [
+        "A countdown, a threat, a panic button and a sender you can't check. Four red flags shouting at once is a trick, every time."
+      ],
+      "file": "/audio/voice/af79fb7fe34ba507.mp3"
+    },
+    {
+      "key": "becc478a7e2a7876",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the clock clue and the promise clue. A ten minute countdown and lose everything forever are the hurry-up trick, not a real warning.",
+      "lines": [
+        "Look at the clock clue and the promise clue. A ten minute countdown and lose everything forever are the hurry-up trick, not a real warning."
+      ],
+      "file": "/audio/voice/becc478a7e2a7876.mp3"
+    },
+    {
+      "key": "f093a69677d9cb4b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A teacher you know, a calm date, no button and no ask. Four calm clues means a real message you keep.",
+      "lines": [
+        "A teacher you know, a calm date, no button and no ask. Four calm clues means a real message you keep."
+      ],
+      "file": "/audio/voice/f093a69677d9cb4b.mp3"
+    },
+    {
+      "key": "7c708fc41d4056a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look again at the clock clue. Friday is a normal date, not a countdown, and Mrs. Patel is someone you can check with tomorrow.",
+      "lines": [
+        "Look again at the clock clue. Friday is a normal date, not a countdown, and Mrs. Patel is someone you can check with tomorrow."
+      ],
+      "file": "/audio/voice/7c708fc41d4056a9.mp3"
+    },
+    {
+      "key": "0bcf9e9d7643de02",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Expires tonight, claim now, a stranger who chose you and a free tablet: the hurry and the bait in one message. A trick.",
+      "lines": [
+        "Expires tonight, claim now, a stranger who chose you and a free tablet: the hurry and the bait in one message. A trick."
+      ],
+      "file": "/audio/voice/0bcf9e9d7643de02.mp3"
+    },
+    {
+      "key": "57bbf7830ad4702c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check the clock clue: expires tonight is a deadline built to rush you, and a free tablet from PrizeBot is bait on top.",
+      "lines": [
+        "Check the clock clue: expires tonight is a deadline built to rush you, and a free tablet from PrizeBot is bait on top."
+      ],
+      "file": "/audio/voice/57bbf7830ad4702c.mp3"
+    },
+    {
+      "key": "a4d8ff0a83a89bbc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A real dentist, a normal time, no button and nothing wanted. Calm clues all the way down means it's real.",
+      "lines": [
+        "A real dentist, a normal time, no button and nothing wanted. Calm clues all the way down means it's real."
+      ],
+      "file": "/audio/voice/a4d8ff0a83a89bbc.mp3"
+    },
+    {
+      "key": "90d12feae370a272",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the clock clue and the promise clue. Tuesday at four is a normal time, and nobody is threatening or promising anything.",
+      "lines": [
+        "Look at the clock clue and the promise clue. Tuesday at four is a normal time, and nobody is threatening or promising anything."
+      ],
+      "file": "/audio/voice/90d12feae370a272.mp3"
+    },
+    {
+      "key": "4efeb102d34ba92b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real companies never give you a scary countdown; a ticking clock is the rush trick talking.",
+      "lines": [
+        "Real companies never give you a scary countdown; a ticking clock is the rush trick talking."
+      ],
+      "file": "/audio/voice/4efeb102d34ba92b.mp3"
+    },
+    {
+      "key": "73f8504fefb568b5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who actually talks like that: a real company, or a trickster?",
+      "lines": [
+        "Who actually talks like that: a real company, or a trickster?"
+      ],
+      "file": "/audio/voice/73f8504fefb568b5.mp3"
+    },
+    {
+      "key": "6fb0d5f302b09d6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A saved family contact is as real as it gets; nothing is swapped.",
+      "lines": [
+        "A saved family contact is as real as it gets; nothing is swapped."
+      ],
+      "file": "/audio/voice/6fb0d5f302b09d6b.mp3"
+    },
+    {
+      "key": "c8c140afdadff5a7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The school's own address, spelled exactly right, checks out.",
+      "lines": [
+        "The school's own address, spelled exactly right, checks out."
+      ],
+      "file": "/audio/voice/c8c140afdadff5a7.mp3"
+    },
+    {
+      "key": "fda47905f178af55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Inside the game is the real channel your game uses to talk to you.",
+      "lines": [
+        "Inside the game is the real channel your game uses to talk to you."
+      ],
+      "file": "/audio/voice/fda47905f178af55.mp3"
+    },
+    {
+      "key": "458fdb952a534790",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stopping before you tap is step one. A scam can't work while your finger is still.",
+      "lines": [
+        "Stopping before you tap is step one. A scam can't work while your finger is still."
+      ],
+      "file": "/audio/voice/458fdb952a534790.mp3"
+    },
+    {
+      "key": "c33121f5acf35e21",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stopping before you tap is step one of the no-bite rule. That brick belongs in the wall, not the bin.",
+      "lines": [
+        "Stopping before you tap is step one of the no-bite rule. That brick belongs in the wall, not the bin."
+      ],
+      "file": "/audio/voice/c33121f5acf35e21.mp3"
+    },
+    {
+      "key": "eb310e77b706cc32",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Checking who sent it is step two. Copycats fall apart when you look.",
+      "lines": [
+        "Checking who sent it is step two. Copycats fall apart when you look."
+      ],
+      "file": "/audio/voice/eb310e77b706cc32.mp3"
+    },
+    {
+      "key": "7c4e68714600dacc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Checking who sent it is a safe habit from step two. Lay it in the wall.",
+      "lines": [
+        "Checking who sent it is a safe habit from step two. Lay it in the wall."
+      ],
+      "file": "/audio/voice/7c4e68714600dacc.mp3"
+    },
+    {
+      "key": "8d7690c2a855e5fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Checking what a message wants shows you the string. That's a safe habit.",
+      "lines": [
+        "Checking what a message wants shows you the string. That's a safe habit."
+      ],
+      "file": "/audio/voice/8d7690c2a855e5fb.mp3"
+    },
+    {
+      "key": "9d676c14aceee992",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Checking what it wants is how you spot a scam. That brick belongs in the wall.",
+      "lines": [
+        "Checking what it wants is how you spot a scam. That brick belongs in the wall."
+      ],
+      "file": "/audio/voice/9d676c14aceee992.mp3"
+    },
+    {
+      "key": "3a50691a0343730c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Showing a grown-up is step three, and it beats every trick you're not sure about.",
+      "lines": [
+        "Showing a grown-up is step three, and it beats every trick you're not sure about."
+      ],
+      "file": "/audio/voice/3a50691a0343730c.mp3"
+    },
+    {
+      "key": "30f97c856322a364",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Showing a grown-up is step three of the no-bite rule. It belongs in the wall.",
+      "lines": [
+        "Showing a grown-up is step three of the no-bite rule. It belongs in the wall."
+      ],
+      "file": "/audio/voice/30f97c856322a364.mp3"
+    },
+    {
+      "key": "8508f1c687f211fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Reading slowly is how you catch a swapped letter or a scary countdown. Safe habit.",
+      "lines": [
+        "Reading slowly is how you catch a swapped letter or a scary countdown. Safe habit."
+      ],
+      "file": "/audio/voice/8508f1c687f211fa.mp3"
+    },
+    {
+      "key": "9d435f9d99c5f4fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Reading slowly is a safe habit. A racing heart doesn't stop to think, but a slow reader does. Lay it in the wall.",
+      "lines": [
+        "Reading slowly is a safe habit. A racing heart doesn't stop to think, but a slow reader does. Lay it in the wall."
+      ],
+      "file": "/audio/voice/9d435f9d99c5f4fc.mp3"
+    },
+    {
+      "key": "9b099c11683b1ac7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Asking if a message is rushing you catches the hurry-up trick. That's a safe habit.",
+      "lines": [
+        "Asking if a message is rushing you catches the hurry-up trick. That's a safe habit."
+      ],
+      "file": "/audio/voice/9b099c11683b1ac7.mp3"
+    },
+    {
+      "key": "1d3b685e2e11f503",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Asking if it's rushing you is how you catch the hurry-up trick. It belongs in the wall.",
+      "lines": [
+        "Asking if it's rushing you is how you catch the hurry-up trick. It belongs in the wall."
+      ],
+      "file": "/audio/voice/1d3b685e2e11f503.mp3"
+    },
+    {
+      "key": "5c74a5701c9c30a7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tapping fast is exactly what a scam wants. Into the bin!",
+      "lines": [
+        "Tapping fast is exactly what a scam wants. Into the bin!"
+      ],
+      "file": "/audio/voice/5c74a5701c9c30a7.mp3"
+    },
+    {
+      "key": "1254128c09088987",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tapping fast is biting. That's the Raccoon's brick, not yours. It goes in the bin.",
+      "lines": [
+        "Tapping fast is biting. That's the Raccoon's brick, not yours. It goes in the bin."
+      ],
+      "file": "/audio/voice/1254128c09088987.mp3"
+    },
+    {
+      "key": "072cee095a8f3701",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Typing your password into a message is handing the Raccoon your key. Bin it.",
+      "lines": [
+        "Typing your password into a message is handing the Raccoon your key. Bin it."
+      ],
+      "file": "/audio/voice/072cee095a8f3701.mp3"
+    },
+    {
+      "key": "eadca2588d2b57f4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Typing your password into a message is never a check, it's a bite. That brick goes in the bin.",
+      "lines": [
+        "Typing your password into a message is never a check, it's a bite. That brick goes in the bin."
+      ],
+      "file": "/audio/voice/eadca2588d2b57f4.mp3"
+    },
+    {
+      "key": "de290af140a8962d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Card numbers never go into surprise messages. Straight into the bin.",
+      "lines": [
+        "Card numbers never go into surprise messages. Straight into the bin."
+      ],
+      "file": "/audio/voice/de290af140a8962d.mp3"
+    },
+    {
+      "key": "a745532751ec8b79",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sending a card number to a stranger is giving money away. That's a bad habit, so it goes in the bin.",
+      "lines": [
+        "Sending a card number to a stranger is giving money away. That's a bad habit, so it goes in the bin."
+      ],
+      "file": "/audio/voice/a745532751ec8b79.mp3"
+    },
+    {
+      "key": "9e259fe3f9f8d6d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What's the very FIRST thing, before any checking?",
+      "lines": [
+        "What's the very FIRST thing, before any checking?"
+      ],
+      "file": "/audio/voice/9e259fe3f9f8d6d3.mp3"
+    },
+    {
+      "key": "44b09e45488a6f47",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway.",
+      "lines": [
+        "Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway."
+      ],
+      "file": "/audio/voice/44b09e45488a6f47.mp3"
+    },
+    {
+      "key": "c2942dc1bc2cfb1c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way.",
+      "lines": [
+        "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way."
+      ],
+      "file": "/audio/voice/c2942dc1bc2cfb1c.mp3"
+    },
+    {
+      "key": "9f404d40ce95a007",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag.",
+      "lines": [
+        "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag."
+      ],
+      "file": "/audio/voice/9f404d40ce95a007.mp3"
+    },
+    {
+      "key": "f021f3beb394d897",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A one hiding where the L should be, and a weird dot win ending. Almost-right is all-wrong, so that's the copycat.",
+      "lines": [
+        "A one hiding where the L should be, and a weird dot win ending. Almost-right is all-wrong, so that's the copycat."
+      ],
+      "file": "/audio/voice/f021f3beb394d897.mp3"
+    },
+    {
+      "key": "8e6f52c11e2274fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stop, so nothing gets in. Check who sent it and what it wants. Show a grown-up. A scam only works if you bite.",
+      "lines": [
+        "Stop, so nothing gets in. Check who sent it and what it wants. Show a grown-up. A scam only works if you bite."
+      ],
+      "file": "/audio/voice/8e6f52c11e2274fd.mp3"
+    },
+    {
+      "key": "1d949ed02d5590c2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the giveaway.",
+      "lines": [
+        "That's the giveaway."
+      ],
+      "file": "/audio/voice/1d949ed02d5590c2.mp3"
+    },
+    {
+      "key": "59ac2a47973a6855",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Scams can be short and quiet. Look at what it WANTS, not how loud it is.",
+      "lines": [
+        "Scams can be short and quiet. Look at what it WANTS, not how loud it is."
+      ],
+      "file": "/audio/voice/59ac2a47973a6855.mp3"
+    },
+    {
+      "key": "5636682f07450591",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even if a bag was full, no real game asks you to type your password into a message to fix it.",
+      "lines": [
+        "Even if a bag was full, no real game asks you to type your password into a message to fix it."
+      ],
+      "file": "/audio/voice/5636682f07450591.mp3"
+    },
+    {
+      "key": "a61cc33ccc2231ee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Straight to no way.",
+      "lines": [
+        "Straight to no way."
+      ],
+      "file": "/audio/voice/a61cc33ccc2231ee.mp3"
+    },
+    {
+      "key": "7e094c1f1bfd63ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Beaches are real, but the prize isn't. Nobody hands a stranger a free holiday for a contest they never entered.",
+      "lines": [
+        "Beaches are real, but the prize isn't. Nobody hands a stranger a free holiday for a contest they never entered."
+      ],
+      "file": "/audio/voice/7e094c1f1bfd63ce.mp3"
+    },
+    {
+      "key": "3b43532f6205830a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One tap to see is the bite the trick is waiting for. An enormous prize from a stranger needs no checking: it's no way.",
+      "lines": [
+        "One tap to see is the bite the trick is waiting for. An enormous prize from a stranger needs no checking: it's no way."
+      ],
+      "file": "/audio/voice/3b43532f6205830a.mp3"
+    },
+    {
+      "key": "9c035466098123ee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Never.",
+      "lines": [
+        "Never."
+      ],
+      "file": "/audio/voice/9c035466098123ee.mp3"
+    },
+    {
+      "key": "95d24a7fb5c7f4c3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A countdown that scares you is never helpful. It exists to stop you thinking.",
+      "lines": [
+        "A countdown that scares you is never helpful. It exists to stop you thinking."
+      ],
+      "file": "/audio/voice/95d24a7fb5c7f4c3.mp3"
+    },
+    {
+      "key": "5641e85056a053c9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing real disappears because you took a minute. The threat is the trick.",
+      "lines": [
+        "Nothing real disappears because you took a minute. The threat is the trick."
+      ],
+      "file": "/audio/voice/5641e85056a053c9.mp3"
+    },
+    {
+      "key": "d25ab6ac6647a676",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Copycat.",
+      "lines": [
+        "Copycat."
+      ],
+      "file": "/audio/voice/d25ab6ac6647a676.mp3"
+    },
+    {
+      "key": "2b25bf00219e0ee4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Plain is good. The real address is spelled exactly right, with a normal ending.",
+      "lines": [
+        "Plain is good. The real address is spelled exactly right, with a normal ending."
+      ],
+      "file": "/audio/voice/2b25bf00219e0ee4.mp3"
+    },
+    {
+      "key": "9993b9c7bee84075",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the letters one by one. One address has a number one where the L should be. That's a swap, and a swap means a copycat.",
+      "lines": [
+        "Read the letters one by one. One address has a number one where the L should be. That's a swap, and a swap means a copycat."
+      ],
+      "file": "/audio/voice/9993b9c7bee84075.mp3"
+    },
+    {
+      "key": "975cb2a0fc37cf11",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stop. Check. Show.",
+      "lines": [
+        "Stop. Check. Show."
+      ],
+      "file": "/audio/voice/975cb2a0fc37cf11.mp3"
+    },
+    {
+      "key": "da6a5f9060445a63",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One tap is a bite, and a bite is all the trick needs. Stop comes first, before anything.",
+      "lines": [
+        "One tap is a bite, and a bite is all the trick needs. Stop comes first, before anything."
+      ],
+      "file": "/audio/voice/da6a5f9060445a63.mp3"
+    },
+    {
+      "key": "f4c5d9625f39876f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Deleting skips the checking and the showing. A grown-up can't help with a message they never see.",
+      "lines": [
+        "Deleting skips the checking and the showing. A grown-up can't help with a message they never see."
+      ],
+      "file": "/audio/voice/f4c5d9625f39876f.mp3"
+    },
+    {
+      "key": "4de4c8e849490595",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The library and the coach just tell Adam things and ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds.",
+      "lines": [
+        "The library and the coach just tell Adam things and ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds."
+      ],
+      "file": "/audio/voice/4de4c8e849490595.mp3"
+    },
+    {
+      "key": "3ba75ed99ec75c63",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Adam really played in that match, and Coach Lee is someone he knows and can check. Winning a contest you never entered, from a name you've never heard of, is bait wearing a bow.",
+      "lines": [
+        "Adam really played in that match, and Coach Lee is someone he knows and can check. Winning a contest you never entered, from a name you've never heard of, is bait wearing a bow."
+      ],
+      "file": "/audio/voice/3ba75ed99ec75c63.mp3"
+    },
+    {
+      "key": "1ba03db6685770e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Scams squeeze your heart on purpose, because a racing heart doesn't stop to think. The rushed feeling is the alarm itself: breathe, slow right down, and show a trusted grown-up.",
+      "lines": [
+        "Scams squeeze your heart on purpose, because a racing heart doesn't stop to think. The rushed feeling is the alarm itself: breathe, slow right down, and show a trusted grown-up."
+      ],
+      "file": "/audio/voice/1ba03db6685770e6.mp3"
+    },
+    {
+      "key": "6de9154d4de95702",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!",
+      "lines": [
+        "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!"
+      ],
+      "file": "/audio/voice/6de9154d4de95702.mp3"
+    },
+    {
+      "key": "1df00aebe6557123",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One press is a bite, and deleting skips the checking and the showing. Step one is STOP: no clicking, no replying, no rushing. Then check it slowly and show a trusted grown-up.",
+      "lines": [
+        "One press is a bite, and deleting skips the checking and the showing. Step one is STOP: no clicking, no replying, no rushing. Then check it slowly and show a trusted grown-up."
+      ],
+      "file": "/audio/voice/1df00aebe6557123.mp3"
+    },
+    {
+      "key": "059b9de749cb0eac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Scams always want something back. That's how you spot them.",
+      "lines": [
+        "Scams always want something back. That's how you spot them."
+      ],
+      "file": "/audio/voice/059b9de749cb0eac.mp3"
+    },
+    {
+      "key": "c7a3a3bb2a857119",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You can't win a draw you never entered. Amazing prizes are bait.",
+      "lines": [
+        "You can't win a draw you never entered. Amazing prizes are bait."
+      ],
+      "file": "/audio/voice/c7a3a3bb2a857119.mp3"
+    },
+    {
+      "key": "7d4ed085072010d5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Countdowns exist to stop you thinking. Feeling rushed IS the red flag.",
+      "lines": [
+        "Countdowns exist to stop you thinking. Feeling rushed IS the red flag."
+      ],
+      "file": "/audio/voice/7d4ed085072010d5.mp3"
+    },
+    {
+      "key": "69b5e2f697feeb79",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A zero for an O and a weird address. Almost-right is all-wrong.",
+      "lines": [
+        "A zero for an O and a weird address. Almost-right is all-wrong."
+      ],
+      "file": "/audio/voice/69b5e2f697feeb79.mp3"
+    },
+    {
+      "key": "270fa0a21f1ffc00",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Scary pop-ups are ads in monster costumes. The panic IS the trick.",
+      "lines": [
+        "Scary pop-ups are ads in monster costumes. The panic IS the trick."
+      ],
+      "file": "/audio/voice/270fa0a21f1ffc00.mp3"
+    },
+    {
+      "key": "4c503b0e3867bed6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stop. Check. Show. A scam only works if you bite.",
+      "lines": [
+        "Stop. Check. Show. A scam only works if you bite."
+      ],
+      "file": "/audio/voice/4c503b0e3867bed6.mp3"
+    },
+    {
+      "key": "9d8a1b49a2607f08",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The rush is built in on purpose. Slow down and the whole trick falls apart.",
+      "lines": [
+        "The rush is built in on purpose. Slow down and the whole trick falls apart."
+      ],
+      "file": "/audio/voice/9d8a1b49a2607f08.mp3"
+    },
+    {
+      "key": "f439f3730f70be98",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The $1 isn't the prize, the card number is. Cards never go into surprise messages.",
+      "lines": [
+        "The $1 isn't the prize, the card number is. Cards never go into surprise messages."
+      ],
+      "file": "/audio/voice/f439f3730f70be98.mp3"
+    },
+    {
+      "key": "0882614a1bcf9c1b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every trick needs a bite to work. No bite, no trick.",
+      "lines": [
+        "Every trick needs a bite to work. No bite, no trick."
+      ],
+      "file": "/audio/voice/0882614a1bcf9c1b.mp3"
+    },
+    {
+      "key": "096e362a96cf2aee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free mega coins! Just type your password to claim them.",
+      "lines": [
+        "Free mega coins! Just type your password to claim them."
+      ],
+      "file": "/audio/voice/096e362a96cf2aee.mp3"
+    },
+    {
+      "key": "beb8fab86dc92e5c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your parcel is stuck! Pay one dollar to release it.",
+      "lines": [
+        "Your parcel is stuck! Pay one dollar to release it."
+      ],
+      "file": "/audio/voice/beb8fab86dc92e5c.mp3"
+    },
+    {
+      "key": "efd848c356b9dedf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You won a puppy! Tap here to claim it.",
+      "lines": [
+        "You won a puppy! Tap here to claim it."
+      ],
+      "file": "/audio/voice/efd848c356b9dedf.mp3"
+    },
+    {
+      "key": "ba091a0394527cd6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Library: your dragon book is ready to pick up.",
+      "lines": [
+        "Library: your dragon book is ready to pick up."
+      ],
+      "file": "/audio/voice/ba091a0394527cd6.mp3"
+    },
+    {
+      "key": "5777a26f8eb60489",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A billionaire is giving away money! Reply with a card number to get yours.",
+      "lines": [
+        "A billionaire is giving away money! Reply with a card number to get yours."
+      ],
+      "file": "/audio/voice/5777a26f8eb60489.mp3"
+    },
+    {
+      "key": "19a3aa4590db9d4f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Coach Lee: practice moved to four p m today.",
+      "lines": [
+        "Coach Lee: practice moved to four p m today."
+      ],
+      "file": "/audio/voice/19a3aa4590db9d4f.mp3"
+    },
+    {
+      "key": "52aa10f7847374dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free tablet for the first ten kids! From: Mega Deals.",
+      "lines": [
+        "Free tablet for the first ten kids! From: Mega Deals."
+      ],
+      "file": "/audio/voice/52aa10f7847374dd.mp3"
+    },
+    {
+      "key": "620568ed2976cd55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You won player of the match! From: Coach Lee.",
+      "lines": [
+        "You won player of the match! From: Coach Lee."
+      ],
+      "file": "/audio/voice/620568ed2976cd55.mp3"
+    },
+    {
+      "key": "c6890a3d95c5bee2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free weekend skin! Log in to grab it. From: Mega Blasters.",
+      "lines": [
+        "Free weekend skin! Log in to grab it. From: Mega Blasters."
+      ],
+      "file": "/audio/voice/c6890a3d95c5bee2.mp3"
+    },
+    {
+      "key": "e4c078a55903b101",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You are our one millionth visitor! Collect your prize! From: Lucky Visitor.",
+      "lines": [
+        "You are our one millionth visitor! Collect your prize! From: Lucky Visitor."
+      ],
+      "file": "/audio/voice/e4c078a55903b101.mp3"
+    },
+    {
+      "key": "404e58fa6091de8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You finished ten books! A free bookmark is waiting for you. From: the Library.",
+      "lines": [
+        "You finished ten books! A free bookmark is waiting for you. From: the Library."
+      ],
+      "file": "/audio/voice/404e58fa6091de8f.mp3"
+    },
+    {
+      "key": "eb3f5bbe57f41970",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A five dollar gift card for filling in a quick survey. From: Game Rewards Team.",
+      "lines": [
+        "A five dollar gift card for filling in a quick survey. From: Game Rewards Team."
+      ],
+      "file": "/audio/voice/eb3f5bbe57f41970.mp3"
+    },
+    {
+      "key": "8c247a36ef4c8527",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "From Account Security. Urgent: your game account will be deleted in ten minutes! We found a problem. Press fix it now within ten minutes, or lose everything you own, forever!",
+      "lines": [
+        "From Account Security. Urgent: your game account will be deleted in ten minutes! We found a problem. Press fix it now within ten minutes, or lose everything you own, forever!"
+      ],
+      "file": "/audio/voice/8c247a36ef4c8527.mp3"
+    },
+    {
+      "key": "488564e386470b00",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "From Mrs. Patel at Maple Hill School. Library books due back Friday. Just a reminder that class four B's library books are due back this Friday. Thanks, Mrs. Patel.",
+      "lines": [
+        "From Mrs. Patel at Maple Hill School. Library books due back Friday. Just a reminder that class four B's library books are due back this Friday. Thanks, Mrs. Patel."
+      ],
+      "file": "/audio/voice/488564e386470b00.mp3"
+    },
+    {
+      "key": "af6629ece70e2a2f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "From PrizeBot three thousand. Last chance! Your free tablet expires tonight! You were chosen. Claim your free tablet before midnight or it goes to someone else. Hurry!",
+      "lines": [
+        "From PrizeBot three thousand. Last chance! Your free tablet expires tonight! You were chosen. Claim your free tablet before midnight or it goes to someone else. Hurry!"
+      ],
+      "file": "/audio/voice/af6629ece70e2a2f.mp3"
+    },
+    {
+      "key": "8dd862019bb6c228",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "From Smile Dental. Reminder: Adam's check-up is Tuesday at four. Hi! A friendly reminder that Adam's check-up is on Tuesday at four. See you then. Smile Dental.",
+      "lines": [
+        "From Smile Dental. Reminder: Adam's check-up is Tuesday at four. Hi! A friendly reminder that Adam's check-up is on Tuesday at four. See you then. Smile Dental."
+      ],
+      "file": "/audio/voice/8dd862019bb6c228.mp3"
+    },
+    {
+      "key": "b047f33477d55c0d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Account Security? Real games talk to you INSIDE the game, not with a shouting message like this.",
+      "lines": [
+        "Account Security? Real games talk to you INSIDE the game, not with a shouting message like this."
+      ],
+      "file": "/audio/voice/b047f33477d55c0d.mp3"
+    },
+    {
+      "key": "87ae1e2dbf28ee06",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One giant panic button begging for a press. We never press anything while we're checking.",
+      "lines": [
+        "One giant panic button begging for a press. We never press anything while we're checking."
+      ],
+      "file": "/audio/voice/87ae1e2dbf28ee06.mp3"
+    },
+    {
+      "key": "35c56d89808ebc43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ten minutes! Real companies never give you a scary countdown. Ever.",
+      "lines": [
+        "Ten minutes! Real companies never give you a scary countdown. Ever."
+      ],
+      "file": "/audio/voice/35c56d89808ebc43.mp3"
+    },
+    {
+      "key": "609c5d823c1cb185",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Lose everything forever? Big scary threats are the fear trick at full volume.",
+      "lines": [
+        "Lose everything forever? Big scary threats are the fear trick at full volume."
+      ],
+      "file": "/audio/voice/609c5d823c1cb185.mp3"
+    },
+    {
+      "key": "9950809ce877ec24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your actual teacher, from the school's own address. That checks out.",
+      "lines": [
+        "Your actual teacher, from the school's own address. That checks out."
+      ],
+      "file": "/audio/voice/9950809ce877ec24.mp3"
+    },
+    {
+      "key": "772eab4801bd1936",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing to press. It just tells you something useful.",
+      "lines": [
+        "Nothing to press. It just tells you something useful."
+      ],
+      "file": "/audio/voice/772eab4801bd1936.mp3"
+    },
+    {
+      "key": "26f8595c86473368",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A calm reminder with a normal date. No countdown, no panic.",
+      "lines": [
+        "A calm reminder with a normal date. No countdown, no panic."
+      ],
+      "file": "/audio/voice/26f8595c86473368.mp3"
+    },
+    {
+      "key": "1447fb7ad164363c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It promises nothing and asks for nothing. Real messages don't want anything back.",
+      "lines": [
+        "It promises nothing and asks for nothing. Real messages don't want anything back."
+      ],
+      "file": "/audio/voice/1447fb7ad164363c.mp3"
+    },
+    {
+      "key": "c6bcc38b761e6b54",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "PrizeBot 3000? You've never heard of it, and it chose you out of nowhere.",
+      "lines": [
+        "PrizeBot 3000? You've never heard of it, and it chose you out of nowhere."
+      ],
+      "file": "/audio/voice/c6bcc38b761e6b54.mp3"
+    },
+    {
+      "key": "93f6d2c20aa491b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The whole message exists to make you press this. That press is the goal of the trick.",
+      "lines": [
+        "The whole message exists to make you press this. That press is the goal of the trick."
+      ],
+      "file": "/audio/voice/93f6d2c20aa491b1.mp3"
+    },
+    {
+      "key": "6b8fbde7bdfc22a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Expires tonight! A deadline to stop you thinking. The rush trick again.",
+      "lines": [
+        "Expires tonight! A deadline to stop you thinking. The rush trick again."
+      ],
+      "file": "/audio/voice/6b8fbde7bdfc22a2.mp3"
+    },
+    {
+      "key": "61739544fbbe0a0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A free tablet for doing nothing? Too good to be true means not true.",
+      "lines": [
+        "A free tablet for doing nothing? Too good to be true means not true."
+      ],
+      "file": "/audio/voice/61739544fbbe0a0e.mp3"
+    },
+    {
+      "key": "dc421fad14295ecf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The dentist your family really goes to. A grown-up can check the appointment in one call.",
+      "lines": [
+        "The dentist your family really goes to. A grown-up can check the appointment in one call."
+      ],
+      "file": "/audio/voice/dc421fad14295ecf.mp3"
+    },
+    {
+      "key": "1f4078b575141ae2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing to press, nothing to type. Just a date to remember.",
+      "lines": [
+        "Nothing to press, nothing to type. Just a date to remember."
+      ],
+      "file": "/audio/voice/1f4078b575141ae2.mp3"
+    },
+    {
+      "key": "7efc8935e5eddebc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A normal appointment time. No countdown, no threat, no hurry.",
+      "lines": [
+        "A normal appointment time. No countdown, no threat, no hurry."
+      ],
+      "file": "/audio/voice/7efc8935e5eddebc.mp3"
+    },
+    {
+      "key": "e5a8517fb78e114c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No prize, no warning, nothing wanted. That's how real reminders sound.",
+      "lines": [
+        "No prize, no warning, nothing wanted. That's how real reminders sound."
+      ],
+      "file": "/audio/voice/e5a8517fb78e114c.mp3"
+    },
+    {
+      "key": "fd1e58abcc2a5260",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message says it's from Mega Blasters, your game. Compare its name, its address and its ending with the real tag above, piece by piece.",
+      "lines": [
+        "A message says it's from Mega Blasters, your game. Compare its name, its address and its ending with the real tag above, piece by piece."
+      ],
+      "file": "/audio/voice/fd1e58abcc2a5260.mp3"
+    },
+    {
+      "key": "5b5aadd7123d4446",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message says it's from Maple Hill School. Compare its name, its address and its ending with the real tag above, piece by piece.",
+      "lines": [
+        "A message says it's from Maple Hill School. Compare its name, its address and its ending with the real tag above, piece by piece."
+      ],
+      "file": "/audio/voice/5b5aadd7123d4446.mp3"
+    },
+    {
+      "key": "181453ef81de708c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message says it's from PetPals Club. Compare its name, its address and its ending with the real tag above, piece by piece. Look very closely.",
+      "lines": [
+        "A message says it's from PetPals Club. Compare its name, its address and its ending with the real tag above, piece by piece. Look very closely."
+      ],
+      "file": "/audio/voice/181453ef81de708c.mp3"
+    },
+    {
+      "key": "04f1a5735652704e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message says a gift is waiting from Roblox. Compare its name, its address and its ending with the real tag above, piece by piece.",
+      "lines": [
+        "A message says a gift is waiting from Roblox. Compare its name, its address and its ending with the real tag above, piece by piece."
+      ],
+      "file": "/audio/voice/04f1a5735652704e.mp3"
+    },
+    {
+      "key": "2ed7fde12998598c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every piece was swapped: a one for an L, a different address, and a weird dot win ending. Almost-right is all-wrong. Copycat caught!",
+      "lines": [
+        "Every piece was swapped: a one for an L, a different address, and a weird dot win ending. Almost-right is all-wrong. Copycat caught!"
+      ],
+      "file": "/audio/voice/2ed7fde12998598c.mp3"
+    },
+    {
+      "key": "0bf8f390d448e834",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every piece matched the real tag, letter for letter. No swaps means the real school. Some senders are exactly who they say!",
+      "lines": [
+        "Every piece matched the real tag, letter for letter. No swaps means the real school. Some senders are exactly who they say!"
+      ],
+      "file": "/audio/voice/0bf8f390d448e834.mp3"
+    },
+    {
+      "key": "44e5599d470b0e1a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Just one tiny swap, a one hiding where the L should be, and that's enough. One swapped piece makes the whole sender a copycat.",
+      "lines": [
+        "Just one tiny swap, a one hiding where the L should be, and that's enough. One swapped piece makes the whole sender a copycat."
+      ],
+      "file": "/audio/voice/44e5599d470b0e1a.mp3"
+    },
+    {
+      "key": "f7494a45080a1252",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A zero for an O, an extra word, a different address and a dot club ending. Every piece swapped. That gift was the Raccoon's costume!",
+      "lines": [
+        "A zero for an O, an extra word, a different address and a dot club ending. Every piece swapped. That gift was the Raccoon's costume!"
+      ],
+      "file": "/audio/voice/f7494a45080a1252.mp3"
+    },
+    {
+      "key": "2e08b6c6d2440ada",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the name. There's a number one where the letter L should be. A swapped letter means a copycat.",
+      "lines": [
+        "Look at the name. There's a number one where the letter L should be. A swapped letter means a copycat."
+      ],
+      "file": "/audio/voice/2e08b6c6d2440ada.mp3"
+    },
+    {
+      "key": "0ec300c265a6af2f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the address. It is not the real address above it: a different word, and a Z on the end. Different means swapped.",
+      "lines": [
+        "Look at the address. It is not the real address above it: a different word, and a Z on the end. Different means swapped."
+      ],
+      "file": "/audio/voice/0ec300c265a6af2f.mp3"
+    },
+    {
+      "key": "d023ce43da8c9717",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the ending. The real one ends dot com. Dot win is a weird ending, so it's swapped.",
+      "lines": [
+        "Look at the ending. The real one ends dot com. Dot win is a weird ending, so it's swapped."
+      ],
+      "file": "/audio/voice/d023ce43da8c9717.mp3"
+    },
+    {
+      "key": "9b8b46803b5563b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the name again. Maple Hill School matches the tag above it exactly, so lift that mark.",
+      "lines": [
+        "Look at the name again. Maple Hill School matches the tag above it exactly, so lift that mark."
+      ],
+      "file": "/audio/voice/9b8b46803b5563b2.mp3"
+    },
+    {
+      "key": "21a39c4548d1a1e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The address matches the real one letter for letter. Lift that mark.",
+      "lines": [
+        "The address matches the real one letter for letter. Lift that mark."
+      ],
+      "file": "/audio/voice/21a39c4548d1a1e8.mp3"
+    },
+    {
+      "key": "383f709358aaa628",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dot edu is the school's real ending, the same as above. Lift that mark.",
+      "lines": [
+        "Dot edu is the school's real ending, the same as above. Lift that mark."
+      ],
+      "file": "/audio/voice/383f709358aaa628.mp3"
+    },
+    {
+      "key": "bb20846c31fde754",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The name matches the real one exactly. Lift that mark.",
+      "lines": [
+        "The name matches the real one exactly. Lift that mark."
+      ],
+      "file": "/audio/voice/bb20846c31fde754.mp3"
+    },
+    {
+      "key": "cf8aaa28ef130d87",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look closely at the address. There's a number one where the letter L should be in pals. One tiny swap makes a copycat.",
+      "lines": [
+        "Look closely at the address. There's a number one where the letter L should be in pals. One tiny swap makes a copycat."
+      ],
+      "file": "/audio/voice/cf8aaa28ef130d87.mp3"
+    },
+    {
+      "key": "8c7300afb4412dce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dot com matches the real ending. Lift that mark.",
+      "lines": [
+        "Dot com matches the real ending. Lift that mark."
+      ],
+      "file": "/audio/voice/8c7300afb4412dce.mp3"
+    },
+    {
+      "key": "d26ba7223fb309f4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the name. A zero where the O should be, and an extra word. That is not the real name above it.",
+      "lines": [
+        "Look at the name. A zero where the O should be, and an extra word. That is not the real name above it."
+      ],
+      "file": "/audio/voice/d26ba7223fb309f4.mp3"
+    },
+    {
+      "key": "5c310abe0a333dec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the address. Gift at roblox rewards is not the real address above it. Different means swapped.",
+      "lines": [
+        "Look at the address. Gift at roblox rewards is not the real address above it. Different means swapped."
+      ],
+      "file": "/audio/voice/5c310abe0a333dec.mp3"
+    },
+    {
+      "key": "f38f52731defacff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the ending. The real one ends dot com. Dot club is a weird ending, so it's swapped.",
+      "lines": [
+        "Look at the ending. The real one ends dot com. Dot club is a weird ending, so it's swapped."
+      ],
+      "file": "/audio/voice/f38f52731defacff.mp3"
+    },
+    {
+      "key": "95ac150b76bba98f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stop before you tap.",
+      "lines": [
+        "Stop before you tap."
+      ],
+      "file": "/audio/voice/95ac150b76bba98f.mp3"
+    },
+    {
+      "key": "f84bb68f76f66df7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check who sent it.",
+      "lines": [
+        "Check who sent it."
+      ],
+      "file": "/audio/voice/f84bb68f76f66df7.mp3"
+    },
+    {
+      "key": "eb3dcaf778cb15c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check what it wants.",
+      "lines": [
+        "Check what it wants."
+      ],
+      "file": "/audio/voice/eb3dcaf778cb15c7.mp3"
+    },
+    {
+      "key": "c5b5201c357511c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Show a grown-up.",
+      "lines": [
+        "Show a grown-up."
+      ],
+      "file": "/audio/voice/c5b5201c357511c0.mp3"
+    },
+    {
+      "key": "f9153168e7031116",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read it slowly.",
+      "lines": [
+        "Read it slowly."
+      ],
+      "file": "/audio/voice/f9153168e7031116.mp3"
+    },
+    {
+      "key": "ad0e67ff38b4949b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask: is it rushing me?",
+      "lines": [
+        "Ask: is it rushing me?"
+      ],
+      "file": "/audio/voice/ad0e67ff38b4949b.mp3"
+    },
+    {
+      "key": "9b8d5117b8c77ba2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap fast before it's gone!",
+      "lines": [
+        "Tap fast before it's gone!"
+      ],
+      "file": "/audio/voice/9b8d5117b8c77ba2.mp3"
+    },
+    {
+      "key": "99368150862eff57",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Type your password to check.",
+      "lines": [
+        "Type your password to check."
+      ],
+      "file": "/audio/voice/99368150862eff57.mp3"
+    },
+    {
+      "key": "02de78ffdc179b64",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Reply with a card number.",
+      "lines": [
+        "Reply with a card number."
+      ],
+      "file": "/audio/voice/02de78ffdc179b64.mp3"
+    },
+    {
+      "key": "f2f4a594fede43c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A quiet message says: game bag full, type your password to make space. What gives it away as a scam?",
+      "lines": [
+        "A quiet message says: game bag full, type your password to make space. What gives it away as a scam?"
+      ],
+      "file": "/audio/voice/f2f4a594fede43c7.mp3"
+    },
+    {
+      "key": "4f4edb98d1caca3b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You won a family trip to the beach, says LuckyMail. You never entered anything. Where does the needle go?",
+      "lines": [
+        "You won a family trip to the beach, says LuckyMail. You never entered anything. Where does the needle go?"
+      ],
+      "file": "/audio/voice/4f4edb98d1caca3b.mp3"
+    },
+    {
+      "key": "f688bb1755329c5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A pop-up shouts: only two minutes left to keep your photos! What do real companies do?",
+      "lines": [
+        "A pop-up shouts: only two minutes left to keep your photos! What do real companies do?"
+      ],
+      "file": "/audio/voice/f688bb1755329c5a.mp3"
+    },
+    {
+      "key": "ac627a9c309a768b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two messages say they're from PetPals. Look closely at the two addresses in the mirror. Which one is the copycat?",
+      "lines": [
+        "Two messages say they're from PetPals. Look closely at the two addresses in the mirror. Which one is the copycat?"
+      ],
+      "file": "/audio/voice/ac627a9c309a768b.mp3"
+    },
+    {
+      "key": "2eb62325690a0d40",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A scary message sits on the screen, and your finger hovers over its big red button. What's the no-bite rule?",
+      "lines": [
+        "A scary message sits on the screen, and your finger hovers over its big red button. What's the no-bite rule?"
+      ],
+      "file": "/audio/voice/2eb62325690a0d40.mp3"
     },
     {
       "key": "765d97e4259c4b56",
@@ -16482,70 +18356,994 @@
       "file": "/audio/voice/9900102ca3275805.mp3"
     },
     {
-      "key": "d8daf5ba9fc92967",
+      "key": "98c272f68fb81fa8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. There were never any V-Bucks. Rushing you is HOW the trick works - and the click was all he wanted.",
-      "lines": [
-        "Not quite.",
-        "There were never any V-Bucks. Rushing you is HOW the trick works - and the click was all he wanted."
-      ],
-      "file": "/audio/voice/d8daf5ba9fc92967.mp3"
-    },
-    {
-      "key": "d5628323e5c4403f",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Hero move! You paused, and the 'prize' vanished... because it never existed. No bite, no trick.",
+      "text": "That's right! Free coins that need your password are not free at all. The password is the whole prize, and it's YOURS.",
       "lines": [
         "That's right!",
-        "Hero move! You paused, and the 'prize' vanished... because it never existed. No bite, no trick."
+        "Free coins that need your password are not free at all. The password is the whole prize, and it's YOURS."
       ],
-      "file": "/audio/voice/d5628323e5c4403f.mp3"
+      "file": "/audio/voice/98c272f68fb81fa8.mp3"
     },
     {
-      "key": "94baf6441871261d",
+      "key": "4cbd2a269fdc3b69",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. There is no package - and now a stranger has the card number. Card numbers NEVER go into surprise messages.",
+      "text": "Not quite. Look at what this offer asks you to type. That is what its string is tied to.",
       "lines": [
         "Not quite.",
-        "There is no package - and now a stranger has the card number. Card numbers NEVER go into surprise messages."
+        "Look at what this offer asks you to type. That is what its string is tied to."
       ],
-      "file": "/audio/voice/94baf6441871261d.mp3"
+      "file": "/audio/voice/4cbd2a269fdc3b69.mp3"
     },
     {
-      "key": "eb4124cbb813db4e",
+      "key": "780aab49647047ed",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Perfect! A grown-up checked: no package was ever coming. The 'stuck package' is one of the oldest tricks going.",
+      "text": "That's right! There is no parcel. That one dollar is a doorway to a grown-up's card number, and the money is what it wants.",
       "lines": [
         "That's right!",
-        "Perfect! A grown-up checked: no package was ever coming. The 'stuck package' is one of the oldest tricks going."
+        "There is no parcel. That one dollar is a doorway to a grown-up's card number, and the money is what it wants."
       ],
-      "file": "/audio/voice/eb4124cbb813db4e.mp3"
+      "file": "/audio/voice/780aab49647047ed.mp3"
     },
     {
-      "key": "54c289940325d208",
+      "key": "579e1cbd2249d72a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. The 'virus warning' WAS the trick - the people on that number are the tricksters themselves.",
+      "text": "Not quite. What does this message want you to PAY? Follow the string to that.",
       "lines": [
         "Not quite.",
-        "The 'virus warning' WAS the trick - the people on that number are the tricksters themselves."
+        "What does this message want you to PAY? Follow the string to that."
       ],
-      "file": "/audio/voice/54c289940325d208.mp3"
+      "file": "/audio/voice/579e1cbd2249d72a.mp3"
     },
     {
-      "key": "15c71dad9d76b41f",
+      "key": "2c02902d7b5c223f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Exactly right. Scary pop-ups are ads in monster costumes. A grown-up can check the computer properly.",
+      "text": "That's right! You never entered a puppy contest. The prize is bait, and the tap is the hook: pressing that button is how the trick gets in.",
       "lines": [
         "That's right!",
-        "Exactly right. Scary pop-ups are ads in monster costumes. A grown-up can check the computer properly."
+        "You never entered a puppy contest. The prize is bait, and the tap is the hook: pressing that button is how the trick gets in."
       ],
-      "file": "/audio/voice/15c71dad9d76b41f.mp3"
+      "file": "/audio/voice/2c02902d7b5c223f.mp3"
+    },
+    {
+      "key": "6acedaeb71c98dfa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This prize doesn't ask for money or a password. So what is the one thing it wants you to DO?",
+      "lines": [
+        "Not quite.",
+        "This prize doesn't ask for money or a password. So what is the one thing it wants you to DO?"
+      ],
+      "file": "/audio/voice/6acedaeb71c98dfa.mp3"
+    },
+    {
+      "key": "d5e937593b24d59d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The library just tells you something useful and asks for nothing back. A message with no strings is a real one.",
+      "lines": [
+        "That's right!",
+        "The library just tells you something useful and asks for nothing back. A message with no strings is a real one."
+      ],
+      "file": "/audio/voice/d5e937593b24d59d.mp3"
+    },
+    {
+      "key": "06adcebcb31594b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read the library's message again. Does it ask you for anything at all?",
+      "lines": [
+        "Not quite.",
+        "Read the library's message again. Does it ask you for anything at all?"
+      ],
+      "file": "/audio/voice/06adcebcb31594b1.mp3"
+    },
+    {
+      "key": "61e9d7b888a4ef9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Billionaires don't message kids. The giveaway is the costume, and a card number is money, so money is what the string is tied to.",
+      "lines": [
+        "That's right!",
+        "Billionaires don't message kids. The giveaway is the costume, and a card number is money, so money is what the string is tied to."
+      ],
+      "file": "/audio/voice/61e9d7b888a4ef9a.mp3"
+    },
+    {
+      "key": "e7d6a5799dde24d9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody gives money away to strangers. Look at what it wants you to send BACK.",
+      "lines": [
+        "Not quite.",
+        "Nobody gives money away to strangers. Look at what it wants you to send BACK."
+      ],
+      "file": "/audio/voice/e7d6a5799dde24d9.mp3"
+    },
+    {
+      "key": "20559dc89f848f78",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your coach is someone you know, and the message asks for nothing. No strings, so it's real.",
+      "lines": [
+        "That's right!",
+        "Your coach is someone you know, and the message asks for nothing. No strings, so it's real."
+      ],
+      "file": "/audio/voice/20559dc89f848f78.mp3"
+    },
+    {
+      "key": "b6d72aa16558a4cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Does your coach ask you for anything at all? Check for a string before you tie one.",
+      "lines": [
+        "Not quite.",
+        "Does your coach ask you for anything at all? Check for a string before you tie one."
+      ],
+      "file": "/audio/voice/b6d72aa16558a4cb.mp3"
+    },
+    {
+      "key": "ac61863b0443ac20",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A game is something you play for fun; a scam is pretending to be nice to get something from you.",
+      "lines": [
+        "Not quite.",
+        "A game is something you play for fun; a scam is pretending to be nice to get something from you."
+      ],
+      "file": "/audio/voice/ac61863b0443ac20.mp3"
+    },
+    {
+      "key": "7fc6f031b80c8c74",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The prize is the costume, not the thing hiding underneath it.",
+      "lines": [
+        "Not quite.",
+        "The prize is the costume, not the thing hiding underneath it."
+      ],
+      "file": "/audio/voice/7fc6f031b80c8c74.mp3"
+    },
+    {
+      "key": "e79b5d8279c6168a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A scam might act friendly, but a real friend wants nothing from you.",
+      "lines": [
+        "Not quite.",
+        "A scam might act friendly, but a real friend wants nothing from you."
+      ],
+      "file": "/audio/voice/e79b5d8279c6168a.mp3"
+    },
+    {
+      "key": "e327eb660fc2379d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A free tablet from a shop you've never heard of, for doing nothing, is too good to be true. That is bait.",
+      "lines": [
+        "That's right!",
+        "A free tablet from a shop you've never heard of, for doing nothing, is too good to be true. That is bait."
+      ],
+      "file": "/audio/voice/e327eb660fc2379d.mp3"
+    },
+    {
+      "key": "5ea7d048059c2cfc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ask: would a real shop give tablets to strangers for free? A prize that big, from a stranger, is never real.",
+      "lines": [
+        "Not quite.",
+        "Ask: would a real shop give tablets to strangers for free? A prize that big, from a stranger, is never real."
+      ],
+      "file": "/audio/voice/5ea7d048059c2cfc.mp3"
+    },
+    {
+      "key": "48fd7dca138196b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You really played in that match, and Coach Lee is someone you know. A small prize you earned, from a real person, can be real.",
+      "lines": [
+        "That's right!",
+        "You really played in that match, and Coach Lee is someone you know. A small prize you earned, from a real person, can be real."
+      ],
+      "file": "/audio/voice/48fd7dca138196b2.mp3"
+    },
+    {
+      "key": "7c57920a10344c22",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Think about who this is from and what you did. You played the match, and Coach Lee is real. That changes the needle.",
+      "lines": [
+        "Not quite.",
+        "Think about who this is from and what you did. You played the match, and Coach Lee is real. That changes the needle."
+      ],
+      "file": "/audio/voice/7c57920a10344c22.mp3"
+    },
+    {
+      "key": "a8efbe4293d549dc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Games really do give away a free skin sometimes, so it could be real, but it could be a copycat too. Not sure means check with a grown-up first.",
+      "lines": [
+        "That's right!",
+        "Games really do give away a free skin sometimes, so it could be real, but it could be a copycat too. Not sure means check with a grown-up first."
+      ],
+      "file": "/audio/voice/a8efbe4293d549dc.mp3"
+    },
+    {
+      "key": "38f8441e412a7380",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Games do give away a free skin sometimes, but you can't be sure this is really your game. When you can't tell, the needle points to check first.",
+      "lines": [
+        "Not quite.",
+        "Games do give away a free skin sometimes, but you can't be sure this is really your game. When you can't tell, the needle points to check first."
+      ],
+      "file": "/audio/voice/38f8441e412a7380.mp3"
+    },
+    {
+      "key": "34b9059e3189f29c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! No website counts visitors and hands out prizes. You never entered anything, so this is bait.",
+      "lines": [
+        "That's right!",
+        "No website counts visitors and hands out prizes. You never entered anything, so this is bait."
+      ],
+      "file": "/audio/voice/34b9059e3189f29c.mp3"
+    },
+    {
+      "key": "d0ec8cb5dd829ffb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You didn't enter anything, and a millionth visitor prize is enormous. Think about how big and how strange that is.",
+      "lines": [
+        "Not quite.",
+        "You didn't enter anything, and a millionth visitor prize is enormous. Think about how big and how strange that is."
+      ],
+      "file": "/audio/voice/d0ec8cb5dd829ffb.mp3"
+    },
+    {
+      "key": "57a97665f0a114fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You really joined the reading challenge, the library is a place you know, and a bookmark is a tiny prize. That is believable.",
+      "lines": [
+        "That's right!",
+        "You really joined the reading challenge, the library is a place you know, and a bookmark is a tiny prize. That is believable."
+      ],
+      "file": "/audio/voice/57a97665f0a114fd.mp3"
+    },
+    {
+      "key": "79d03dc897fa62c4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the prize and the sender. A tiny bookmark from your own library, for reading you actually did, is not bait.",
+      "lines": [
+        "Not quite.",
+        "Look at the prize and the sender. A tiny bookmark from your own library, for reading you actually did, is not bait."
+      ],
+      "file": "/audio/voice/79d03dc897fa62c4.mp3"
+    },
+    {
+      "key": "ff00fdf699edcace",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A small gift card could be real, but a survey often asks for private info, and you don't know this sender. Not sure means check first.",
+      "lines": [
+        "That's right!",
+        "A small gift card could be real, but a survey often asks for private info, and you don't know this sender. Not sure means check first."
+      ],
+      "file": "/audio/voice/ff00fdf699edcace.mp3"
+    },
+    {
+      "key": "19745355a4bbd505",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It's small, so it might be real, but you don't know this sender and a survey asks questions. When you can't be sure, the needle points to check first.",
+      "lines": [
+        "Not quite.",
+        "It's small, so it might be real, but you don't know this sender and a survey asks questions. When you can't be sure, the needle points to check first."
+      ],
+      "file": "/audio/voice/19745355a4bbd505.mp3"
+    },
+    {
+      "key": "c42ebcccc3ee79e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A time change from your coach asks for nothing and promises nothing; that's a normal message.",
+      "lines": [
+        "Not quite.",
+        "A time change from your coach asks for nothing and promises nothing; that's a normal message."
+      ],
+      "file": "/audio/voice/c42ebcccc3ee79e3.mp3"
+    },
+    {
+      "key": "71438aec98ab99e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The library is just telling you something; there's no prize and no rush.",
+      "lines": [
+        "Not quite.",
+        "The library is just telling you something; there's no prize and no rush."
+      ],
+      "file": "/audio/voice/71438aec98ab99e0.mp3"
+    },
+    {
+      "key": "99f1f2efeba6b853",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A countdown, a threat, a panic button and a sender you can't check. Four red flags shouting at once is a trick, every time.",
+      "lines": [
+        "That's right!",
+        "A countdown, a threat, a panic button and a sender you can't check. Four red flags shouting at once is a trick, every time."
+      ],
+      "file": "/audio/voice/99f1f2efeba6b853.mp3"
+    },
+    {
+      "key": "012b8ff26a7dd45e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the clock clue and the promise clue. A ten minute countdown and lose everything forever are the hurry-up trick, not a real warning.",
+      "lines": [
+        "Not quite.",
+        "Look at the clock clue and the promise clue. A ten minute countdown and lose everything forever are the hurry-up trick, not a real warning."
+      ],
+      "file": "/audio/voice/012b8ff26a7dd45e.mp3"
+    },
+    {
+      "key": "97d1d18a2474fbb6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A teacher you know, a calm date, no button and no ask. Four calm clues means a real message you keep.",
+      "lines": [
+        "That's right!",
+        "A teacher you know, a calm date, no button and no ask. Four calm clues means a real message you keep."
+      ],
+      "file": "/audio/voice/97d1d18a2474fbb6.mp3"
+    },
+    {
+      "key": "59b91e39e2f6909a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look again at the clock clue. Friday is a normal date, not a countdown, and Mrs. Patel is someone you can check with tomorrow.",
+      "lines": [
+        "Not quite.",
+        "Look again at the clock clue. Friday is a normal date, not a countdown, and Mrs. Patel is someone you can check with tomorrow."
+      ],
+      "file": "/audio/voice/59b91e39e2f6909a.mp3"
+    },
+    {
+      "key": "f8e4ae8539bed5c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Expires tonight, claim now, a stranger who chose you and a free tablet: the hurry and the bait in one message. A trick.",
+      "lines": [
+        "That's right!",
+        "Expires tonight, claim now, a stranger who chose you and a free tablet: the hurry and the bait in one message. A trick."
+      ],
+      "file": "/audio/voice/f8e4ae8539bed5c0.mp3"
+    },
+    {
+      "key": "ed7475437307bbeb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Check the clock clue: expires tonight is a deadline built to rush you, and a free tablet from PrizeBot is bait on top.",
+      "lines": [
+        "Not quite.",
+        "Check the clock clue: expires tonight is a deadline built to rush you, and a free tablet from PrizeBot is bait on top."
+      ],
+      "file": "/audio/voice/ed7475437307bbeb.mp3"
+    },
+    {
+      "key": "aba7f31f8bcbc0e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A real dentist, a normal time, no button and nothing wanted. Calm clues all the way down means it's real.",
+      "lines": [
+        "That's right!",
+        "A real dentist, a normal time, no button and nothing wanted. Calm clues all the way down means it's real."
+      ],
+      "file": "/audio/voice/aba7f31f8bcbc0e2.mp3"
+    },
+    {
+      "key": "d0c1ee53b3090bc2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the clock clue and the promise clue. Tuesday at four is a normal time, and nobody is threatening or promising anything.",
+      "lines": [
+        "Not quite.",
+        "Look at the clock clue and the promise clue. Tuesday at four is a normal time, and nobody is threatening or promising anything."
+      ],
+      "file": "/audio/voice/d0c1ee53b3090bc2.mp3"
+    },
+    {
+      "key": "88e54e0276aa8696",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Real companies never give you a scary countdown; a ticking clock is the rush trick talking.",
+      "lines": [
+        "Not quite.",
+        "Real companies never give you a scary countdown; a ticking clock is the rush trick talking."
+      ],
+      "file": "/audio/voice/88e54e0276aa8696.mp3"
+    },
+    {
+      "key": "92e39117a19e53bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every piece was swapped: a one for an L, a different address, and a weird dot win ending. Almost-right is all-wrong. Copycat caught!",
+      "lines": [
+        "That's right!",
+        "Every piece was swapped: a one for an L, a different address, and a weird dot win ending. Almost-right is all-wrong. Copycat caught!"
+      ],
+      "file": "/audio/voice/92e39117a19e53bc.mp3"
+    },
+    {
+      "key": "d80253830c22454f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the name. There's a number one where the letter L should be. A swapped letter means a copycat.",
+      "lines": [
+        "Not quite.",
+        "Look at the name. There's a number one where the letter L should be. A swapped letter means a copycat."
+      ],
+      "file": "/audio/voice/d80253830c22454f.mp3"
+    },
+    {
+      "key": "077bf536c85b68be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the address. It is not the real address above it: a different word, and a Z on the end. Different means swapped.",
+      "lines": [
+        "Not quite.",
+        "Look at the address. It is not the real address above it: a different word, and a Z on the end. Different means swapped."
+      ],
+      "file": "/audio/voice/077bf536c85b68be.mp3"
+    },
+    {
+      "key": "1d5d7a8234e5d6a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the ending. The real one ends dot com. Dot win is a weird ending, so it's swapped.",
+      "lines": [
+        "Not quite.",
+        "Look at the ending. The real one ends dot com. Dot win is a weird ending, so it's swapped."
+      ],
+      "file": "/audio/voice/1d5d7a8234e5d6a1.mp3"
+    },
+    {
+      "key": "3b041643bdd36ec7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every piece matched the real tag, letter for letter. No swaps means the real school. Some senders are exactly who they say!",
+      "lines": [
+        "That's right!",
+        "Every piece matched the real tag, letter for letter. No swaps means the real school. Some senders are exactly who they say!"
+      ],
+      "file": "/audio/voice/3b041643bdd36ec7.mp3"
+    },
+    {
+      "key": "35f137af80598c9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the name again. Maple Hill School matches the tag above it exactly, so lift that mark.",
+      "lines": [
+        "Not quite.",
+        "Look at the name again. Maple Hill School matches the tag above it exactly, so lift that mark."
+      ],
+      "file": "/audio/voice/35f137af80598c9a.mp3"
+    },
+    {
+      "key": "de4035c6b20b5b6f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The address matches the real one letter for letter. Lift that mark.",
+      "lines": [
+        "Not quite.",
+        "The address matches the real one letter for letter. Lift that mark."
+      ],
+      "file": "/audio/voice/de4035c6b20b5b6f.mp3"
+    },
+    {
+      "key": "59e0d7b4cc94d0e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Dot edu is the school's real ending, the same as above. Lift that mark.",
+      "lines": [
+        "Not quite.",
+        "Dot edu is the school's real ending, the same as above. Lift that mark."
+      ],
+      "file": "/audio/voice/59e0d7b4cc94d0e7.mp3"
+    },
+    {
+      "key": "f3e466d4766d139e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Just one tiny swap, a one hiding where the L should be, and that's enough. One swapped piece makes the whole sender a copycat.",
+      "lines": [
+        "That's right!",
+        "Just one tiny swap, a one hiding where the L should be, and that's enough. One swapped piece makes the whole sender a copycat."
+      ],
+      "file": "/audio/voice/f3e466d4766d139e.mp3"
+    },
+    {
+      "key": "a6e980e7225dcb0f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The name matches the real one exactly. Lift that mark.",
+      "lines": [
+        "Not quite.",
+        "The name matches the real one exactly. Lift that mark."
+      ],
+      "file": "/audio/voice/a6e980e7225dcb0f.mp3"
+    },
+    {
+      "key": "78decccb5aac8bf1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look closely at the address. There's a number one where the letter L should be in pals. One tiny swap makes a copycat.",
+      "lines": [
+        "Not quite.",
+        "Look closely at the address. There's a number one where the letter L should be in pals. One tiny swap makes a copycat."
+      ],
+      "file": "/audio/voice/78decccb5aac8bf1.mp3"
+    },
+    {
+      "key": "e79aac4ad6f259a3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Dot com matches the real ending. Lift that mark.",
+      "lines": [
+        "Not quite.",
+        "Dot com matches the real ending. Lift that mark."
+      ],
+      "file": "/audio/voice/e79aac4ad6f259a3.mp3"
+    },
+    {
+      "key": "bc3816db847fd992",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A zero for an O, an extra word, a different address and a dot club ending. Every piece swapped. That gift was the Raccoon's costume!",
+      "lines": [
+        "That's right!",
+        "A zero for an O, an extra word, a different address and a dot club ending. Every piece swapped. That gift was the Raccoon's costume!"
+      ],
+      "file": "/audio/voice/bc3816db847fd992.mp3"
+    },
+    {
+      "key": "872e8adb12de9168",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the name. A zero where the O should be, and an extra word. That is not the real name above it.",
+      "lines": [
+        "Not quite.",
+        "Look at the name. A zero where the O should be, and an extra word. That is not the real name above it."
+      ],
+      "file": "/audio/voice/872e8adb12de9168.mp3"
+    },
+    {
+      "key": "a951cbe092c2b8a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the address. Gift at roblox rewards is not the real address above it. Different means swapped.",
+      "lines": [
+        "Not quite.",
+        "Look at the address. Gift at roblox rewards is not the real address above it. Different means swapped."
+      ],
+      "file": "/audio/voice/a951cbe092c2b8a2.mp3"
+    },
+    {
+      "key": "61d90c4306ff927d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the ending. The real one ends dot com. Dot club is a weird ending, so it's swapped.",
+      "lines": [
+        "Not quite.",
+        "Look at the ending. The real one ends dot com. Dot club is a weird ending, so it's swapped."
+      ],
+      "file": "/audio/voice/61d90c4306ff927d.mp3"
+    },
+    {
+      "key": "c63697527318214d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A saved family contact is as real as it gets; nothing is swapped.",
+      "lines": [
+        "Not quite.",
+        "A saved family contact is as real as it gets; nothing is swapped."
+      ],
+      "file": "/audio/voice/c63697527318214d.mp3"
+    },
+    {
+      "key": "0df1138bea080592",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The school's own address, spelled exactly right, checks out.",
+      "lines": [
+        "Not quite.",
+        "The school's own address, spelled exactly right, checks out."
+      ],
+      "file": "/audio/voice/0df1138bea080592.mp3"
+    },
+    {
+      "key": "90d84269bcd338fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Inside the game is the real channel your game uses to talk to you.",
+      "lines": [
+        "Not quite.",
+        "Inside the game is the real channel your game uses to talk to you."
+      ],
+      "file": "/audio/voice/90d84269bcd338fd.mp3"
+    },
+    {
+      "key": "d8311cf82d1af715",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Stopping before you tap is step one. A scam can't work while your finger is still.",
+      "lines": [
+        "That's right!",
+        "Stopping before you tap is step one. A scam can't work while your finger is still."
+      ],
+      "file": "/audio/voice/d8311cf82d1af715.mp3"
+    },
+    {
+      "key": "db691cfef61e6876",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Stopping before you tap is step one of the no-bite rule. That brick belongs in the wall, not the bin.",
+      "lines": [
+        "Not quite.",
+        "Stopping before you tap is step one of the no-bite rule. That brick belongs in the wall, not the bin."
+      ],
+      "file": "/audio/voice/db691cfef61e6876.mp3"
+    },
+    {
+      "key": "719807bba639b49c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Checking who sent it is step two. Copycats fall apart when you look.",
+      "lines": [
+        "That's right!",
+        "Checking who sent it is step two. Copycats fall apart when you look."
+      ],
+      "file": "/audio/voice/719807bba639b49c.mp3"
+    },
+    {
+      "key": "77ec2faacbaacdd9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Checking who sent it is a safe habit from step two. Lay it in the wall.",
+      "lines": [
+        "Not quite.",
+        "Checking who sent it is a safe habit from step two. Lay it in the wall."
+      ],
+      "file": "/audio/voice/77ec2faacbaacdd9.mp3"
+    },
+    {
+      "key": "b06013896212de6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Checking what a message wants shows you the string. That's a safe habit.",
+      "lines": [
+        "That's right!",
+        "Checking what a message wants shows you the string. That's a safe habit."
+      ],
+      "file": "/audio/voice/b06013896212de6b.mp3"
+    },
+    {
+      "key": "1ea2758f5bfc001f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Checking what it wants is how you spot a scam. That brick belongs in the wall.",
+      "lines": [
+        "Not quite.",
+        "Checking what it wants is how you spot a scam. That brick belongs in the wall."
+      ],
+      "file": "/audio/voice/1ea2758f5bfc001f.mp3"
+    },
+    {
+      "key": "d32c03ac8727e77e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Showing a grown-up is step three, and it beats every trick you're not sure about.",
+      "lines": [
+        "That's right!",
+        "Showing a grown-up is step three, and it beats every trick you're not sure about."
+      ],
+      "file": "/audio/voice/d32c03ac8727e77e.mp3"
+    },
+    {
+      "key": "a1774e66d0a28601",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Showing a grown-up is step three of the no-bite rule. It belongs in the wall.",
+      "lines": [
+        "Not quite.",
+        "Showing a grown-up is step three of the no-bite rule. It belongs in the wall."
+      ],
+      "file": "/audio/voice/a1774e66d0a28601.mp3"
+    },
+    {
+      "key": "4479bb47a04d8f40",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Reading slowly is how you catch a swapped letter or a scary countdown. Safe habit.",
+      "lines": [
+        "That's right!",
+        "Reading slowly is how you catch a swapped letter or a scary countdown. Safe habit."
+      ],
+      "file": "/audio/voice/4479bb47a04d8f40.mp3"
+    },
+    {
+      "key": "911792e16f06dff0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Reading slowly is a safe habit. A racing heart doesn't stop to think, but a slow reader does. Lay it in the wall.",
+      "lines": [
+        "Not quite.",
+        "Reading slowly is a safe habit. A racing heart doesn't stop to think, but a slow reader does. Lay it in the wall."
+      ],
+      "file": "/audio/voice/911792e16f06dff0.mp3"
+    },
+    {
+      "key": "1506620d65fddf58",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Asking if a message is rushing you catches the hurry-up trick. That's a safe habit.",
+      "lines": [
+        "That's right!",
+        "Asking if a message is rushing you catches the hurry-up trick. That's a safe habit."
+      ],
+      "file": "/audio/voice/1506620d65fddf58.mp3"
+    },
+    {
+      "key": "871d0effd84628a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Asking if it's rushing you is how you catch the hurry-up trick. It belongs in the wall.",
+      "lines": [
+        "Not quite.",
+        "Asking if it's rushing you is how you catch the hurry-up trick. It belongs in the wall."
+      ],
+      "file": "/audio/voice/871d0effd84628a0.mp3"
+    },
+    {
+      "key": "a4574d3b77a1e96a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Tapping fast is exactly what a scam wants. Into the bin!",
+      "lines": [
+        "That's right!",
+        "Tapping fast is exactly what a scam wants. Into the bin!"
+      ],
+      "file": "/audio/voice/a4574d3b77a1e96a.mp3"
+    },
+    {
+      "key": "5f3d3c00debf23ae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Tapping fast is biting. That's the Raccoon's brick, not yours. It goes in the bin.",
+      "lines": [
+        "Not quite.",
+        "Tapping fast is biting. That's the Raccoon's brick, not yours. It goes in the bin."
+      ],
+      "file": "/audio/voice/5f3d3c00debf23ae.mp3"
+    },
+    {
+      "key": "558c93b6067ab947",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Typing your password into a message is handing the Raccoon your key. Bin it.",
+      "lines": [
+        "That's right!",
+        "Typing your password into a message is handing the Raccoon your key. Bin it."
+      ],
+      "file": "/audio/voice/558c93b6067ab947.mp3"
+    },
+    {
+      "key": "665ad6e91901b9c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Typing your password into a message is never a check, it's a bite. That brick goes in the bin.",
+      "lines": [
+        "Not quite.",
+        "Typing your password into a message is never a check, it's a bite. That brick goes in the bin."
+      ],
+      "file": "/audio/voice/665ad6e91901b9c6.mp3"
+    },
+    {
+      "key": "1b492d623349ff9b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Card numbers never go into surprise messages. Straight into the bin.",
+      "lines": [
+        "That's right!",
+        "Card numbers never go into surprise messages. Straight into the bin."
+      ],
+      "file": "/audio/voice/1b492d623349ff9b.mp3"
+    },
+    {
+      "key": "c6308aad595ab670",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Sending a card number to a stranger is giving money away. That's a bad habit, so it goes in the bin.",
+      "lines": [
+        "Not quite.",
+        "Sending a card number to a stranger is giving money away. That's a bad habit, so it goes in the bin."
+      ],
+      "file": "/audio/voice/c6308aad595ab670.mp3"
+    },
+    {
+      "key": "719cae05f1ae727c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway.",
+      "lines": [
+        "That's right!",
+        "Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway."
+      ],
+      "file": "/audio/voice/719cae05f1ae727c.mp3"
+    },
+    {
+      "key": "82693f40af5fdb2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Scams can be short and quiet. Look at what it WANTS, not how loud it is.",
+      "lines": [
+        "Not quite.",
+        "Scams can be short and quiet. Look at what it WANTS, not how loud it is."
+      ],
+      "file": "/audio/voice/82693f40af5fdb2a.mp3"
+    },
+    {
+      "key": "54a33166c21712e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Even if a bag was full, no real game asks you to type your password into a message to fix it.",
+      "lines": [
+        "Not quite.",
+        "Even if a bag was full, no real game asks you to type your password into a message to fix it."
+      ],
+      "file": "/audio/voice/54a33166c21712e3.mp3"
+    },
+    {
+      "key": "ac211694381e14f7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way.",
+      "lines": [
+        "That's right!",
+        "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way."
+      ],
+      "file": "/audio/voice/ac211694381e14f7.mp3"
+    },
+    {
+      "key": "fb63dfa41daa4567",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Beaches are real, but the prize isn't. Nobody hands a stranger a free holiday for a contest they never entered.",
+      "lines": [
+        "Not quite.",
+        "Beaches are real, but the prize isn't. Nobody hands a stranger a free holiday for a contest they never entered."
+      ],
+      "file": "/audio/voice/fb63dfa41daa4567.mp3"
+    },
+    {
+      "key": "395fcf8b1322ff48",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One tap to see is the bite the trick is waiting for. An enormous prize from a stranger needs no checking: it's no way.",
+      "lines": [
+        "Not quite.",
+        "One tap to see is the bite the trick is waiting for. An enormous prize from a stranger needs no checking: it's no way."
+      ],
+      "file": "/audio/voice/395fcf8b1322ff48.mp3"
+    },
+    {
+      "key": "25bc9b5b05b83460",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag.",
+      "lines": [
+        "That's right!",
+        "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag."
+      ],
+      "file": "/audio/voice/25bc9b5b05b83460.mp3"
+    },
+    {
+      "key": "65f33f5a5bba3b55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A countdown that scares you is never helpful. It exists to stop you thinking.",
+      "lines": [
+        "Not quite.",
+        "A countdown that scares you is never helpful. It exists to stop you thinking."
+      ],
+      "file": "/audio/voice/65f33f5a5bba3b55.mp3"
+    },
+    {
+      "key": "41e8a93e53b07f06",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing real disappears because you took a minute. The threat is the trick.",
+      "lines": [
+        "Not quite.",
+        "Nothing real disappears because you took a minute. The threat is the trick."
+      ],
+      "file": "/audio/voice/41e8a93e53b07f06.mp3"
+    },
+    {
+      "key": "2debe77f79f49af0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A one hiding where the L should be, and a weird dot win ending. Almost-right is all-wrong, so that's the copycat.",
+      "lines": [
+        "That's right!",
+        "A one hiding where the L should be, and a weird dot win ending. Almost-right is all-wrong, so that's the copycat."
+      ],
+      "file": "/audio/voice/2debe77f79f49af0.mp3"
+    },
+    {
+      "key": "4929296079012ca1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Plain is good. The real address is spelled exactly right, with a normal ending.",
+      "lines": [
+        "Not quite.",
+        "Plain is good. The real address is spelled exactly right, with a normal ending."
+      ],
+      "file": "/audio/voice/4929296079012ca1.mp3"
+    },
+    {
+      "key": "9db0298fb41cef3e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read the letters one by one. One address has a number one where the L should be. That's a swap, and a swap means a copycat.",
+      "lines": [
+        "Not quite.",
+        "Read the letters one by one. One address has a number one where the L should be. That's a swap, and a swap means a copycat."
+      ],
+      "file": "/audio/voice/9db0298fb41cef3e.mp3"
+    },
+    {
+      "key": "cea8f30babb3e6e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Stop, so nothing gets in. Check who sent it and what it wants. Show a grown-up. A scam only works if you bite.",
+      "lines": [
+        "That's right!",
+        "Stop, so nothing gets in. Check who sent it and what it wants. Show a grown-up. A scam only works if you bite."
+      ],
+      "file": "/audio/voice/cea8f30babb3e6e8.mp3"
+    },
+    {
+      "key": "067ce80ae8e910e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One tap is a bite, and a bite is all the trick needs. Stop comes first, before anything.",
+      "lines": [
+        "Not quite.",
+        "One tap is a bite, and a bite is all the trick needs. Stop comes first, before anything."
+      ],
+      "file": "/audio/voice/067ce80ae8e910e1.mp3"
+    },
+    {
+      "key": "c08d37d2c9743aff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Deleting skips the checking and the showing. A grown-up can't help with a message they never see.",
+      "lines": [
+        "Not quite.",
+        "Deleting skips the checking and the showing. A grown-up can't help with a message they never see."
+      ],
+      "file": "/audio/voice/c08d37d2c9743aff.mp3"
     },
     {
       "key": "69698deb04287a05",

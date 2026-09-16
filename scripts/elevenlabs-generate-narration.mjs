@@ -282,7 +282,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week15.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week15.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -425,7 +425,12 @@ for (const fname of weekFiles) {
   // Week 3 (2026-09-11) adds: PlaquePeek claim -> reveal, ProfileInspector
   // "label note" + nudge, PopupPanic request body -> why, CyberMaze gate
   // proposal -> why, ChatSimulator bubbles + feedback, TeamPoster pin notes.
-  if (fname === "week2.ts" || fname === "week3.ts") {
+  // Week 4 (2026-09-16) adds: every engine's per-item `readAloud` (Strings
+  // Attached offers, Believe-o-Meter posters, Name Tag cases, No-Bite bricks,
+  // Hall of Mirrors questions, Barker's Booth messages), the Name Tag teach
+  // lines and the Booth's four inspection notes. Their why / whyWrong / nudge /
+  // rightWhy reasons come from the generic reason scan above.
+  if (fname === "week2.ts" || fname === "week3.ts" || fname === "week4.ts") {
     const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
     const w2Starts = [];
     let w2m;
@@ -489,6 +494,19 @@ for (const fname of weekFiles) {
         const msgBlock = span.match(/messages:\s*\[([\s\S]*?)\]\s*,\s*choices:/);
         if (msgBlock) pushAll(msgBlock[1], /\btext:\s*"((?:[^"\\]|\\.)*)"/g);
         pushAll(span, /\bfeedback:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      // Week 4 engines: Sarah reads every item as it arrives (`readAloud`).
+      if (["stringsAttached", "believeOMeter", "nameTagCheck", "firewallBuilder", "passwordVault", "phishInspector"].includes(st.type)) {
+        pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "nameTagCheck") {
+        // a correct lock's why, and each piece's teach on a wrong lock
+        pushAll(span, /\brightWhy:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\bteach:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "phishInspector") {
+        // each inspection note is read as its zone opens
+        pushAll(span, /\b(?:senderNote|linkNote|urgencyNote|claimNote):\s*"((?:[^"\\]|\\.)*)"/g);
       }
       // teamPoster notes are already covered by the wrong-answer `note:` scan above
     });

@@ -99,6 +99,17 @@ const ENGINES = {
   cyberMaze: (span) => objs(span, "questions").map((o) => ({ label: (fld(o, "question") ?? "").slice(0, 50), right: fld(o, "why"), wrong: fld(o, "explanation") })),
   chatSimulator: (span) => objs(span, "choices").flatMap((g) => objs(g, "options").map((o) => { const safe = flag(o, "isSafe"); return safe ? { label: "SAFE " + fld(o, "text"), right: fld(o, "feedback"), wrong: null, only: "right" } : { label: "risky " + fld(o, "text"), right: null, wrong: fld(o, "feedback"), only: "wrong" }; })),
   teamPoster: (span) => objs(span, "tiles").map((o) => { const team = flag(o, "isTeam"); return team ? { label: "TEAM " + fld(o, "label"), right: fld(o, "note"), wrong: null, only: "right" } : { label: "decoy " + fld(o, "label"), right: null, wrong: fld(o, "note"), only: "wrong" }; }),
+  // Week 4 engines (2026-09-16).
+  stringsAttached: (span) => objs(span, "offers").map((o) => ({ label: (fld(o, "text") ?? "").slice(0, 50), right: fld(o, "why"), wrong: fld(o, "nudge") })),
+  believeOMeter: (span) => objs(span, "offers").map((o) => ({ label: (fld(o, "text") ?? "").slice(0, 50), right: fld(o, "why"), wrong: fld(o, "whyWrong") })),
+  nameTagCheck: (span) => objs(span, "cases").flatMap((o) => {
+    const rows = [{ label: "tag " + fld(o, "id"), right: fld(o, "rightWhy"), wrong: null, only: "right" }];
+    for (const c of objs(o, "chunks")) rows.push({ label: "  piece " + fld(c, "text") + (flag(c, "isWrong") ? " (swapped)" : " (same)"), right: null, wrong: fld(c, "teach"), only: "wrong" });
+    return rows;
+  }),
+  firewallBuilder: (span) => objs(span, "bricks").map((o) => ({ label: (flag(o, "good") ? "GOOD " : "bad  ") + fld(o, "text"), right: fld(o, "why"), wrong: fld(o, "whyWrong") })),
+  passwordVault: (span) => objs(span, "locks").flatMap((l) => objs(l, "choices").map((o) => { const ok = flag(o, "isCorrect"); return ok ? { label: fld(l, "ruleLabel") + " OK " + fld(o, "text"), right: fld(o, "why"), wrong: null, only: "right" } : { label: fld(l, "ruleLabel") + " X  " + fld(o, "text"), right: null, wrong: fld(o, "explanation"), only: "wrong" }; })),
+  phishInspector: (span) => objs(span, "emails").map((o) => ({ label: (flag(o, "isPhishing") ? "TRICK " : "real  ") + fld(o, "subject"), right: fld(o, "why"), wrong: fld(o, "whyWrong") })),
   signature: (span) => [{ label: "mechanic " + fld(span, "mechanic"), right: "(component: claim.fact)", wrong: "(component: nudge)" }],
   bossBattle: () => [{ label: "QuizBoss", right: "(teachOnWrong.explanation)", wrong: "(teachOnWrong.explanation)" }],
 };

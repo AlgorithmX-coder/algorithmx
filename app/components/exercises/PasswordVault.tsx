@@ -19,6 +19,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import GameButton from "@/app/components/lesson/GameButton";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import { useGameAudio, useExerciseFeedback } from "@/app/lib/gameEngine";
 import {
   SceneShell,
@@ -49,13 +54,29 @@ export interface PasswordVaultLock {
   ruleLabel: string;
   icon: string;
   prompt: string;
-  choices: { text: string; isCorrect: boolean; explanation: string }[];
+  choices: { text: string; isCorrect: boolean; explanation: string; why?: string }[];
   speaker?: "adam" | "layla";
+  /** Sarah reads this as the hotspot opens (Learn-Loop weeks). */
+  readAloud?: string;
+  /** Recap tile text in the final reveal (defaults to the W1 map). */
+  recap?: string;
 }
 
 export interface PasswordVaultProps {
   locks: PasswordVaultLock[];
   guidance?: { intro?: string; progress?: string; complete?: string };
+  /** "vault" (W1 holographic gateway) or "mirrors" (W4 Hall of Mirrors). */
+  skin?: "vault" | "mirrors";
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  masterTitle?: string;
+  claimLabel?: string;
+  hotspotNoun?: string;
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  threat?: { raccoonLine: string };
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -84,6 +105,23 @@ const LOCK_POSITIONS: Record<string, { x: number; y: number }> = {
   common:   { x: -16, y:  22 },
   secret:   { x: -26, y: -8 },
 };
+// Any other set of ids (a re-themed week) takes the same pentagon by index.
+const PENTAGON = [
+  { x: 0, y: -27 },
+  { x: 26, y: -8 },
+  { x: 16, y: 22 },
+  { x: -16, y: 22 },
+  { x: -26, y: -8 },
+];
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+const SPOKEN_GATE_MAX_MS = 15000;
 
 const DOOR_SIZE = 660; // gateway diameter (also the camera focus basis)
 const ZOOM_FACTOR = 1.75;
@@ -129,8 +167,19 @@ const ARTIFACT_LAYOUT: { x: number; y: number; accent: string }[] = [
 /* ────────────────────────────────────────────────────────────── */
 
 export default function PasswordVault({
-  locks,
+  locks: authoredLocks,
   guidance,
+  skin = "vault",
+  introTitle,
+  introSubtitle,
+  introIcon = "🔐",
+  masterTitle = "VAULT MASTER!",
+  claimLabel = "Claim your secrets",
+  hotspotNoun = "lock",
+  introNarration,
+  coachLines,
+  threat,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -140,6 +189,41 @@ export default function PasswordVault({
   const audio = useGameAudio();
   const fx = useExerciseFeedback();
   const { intensity, t, reduced } = useTimingScaler();
+  const mirrors = skin === "mirrors";
+  const voice = "adam" as const;
+
+  // Anti-sequence: every hotspot's choices are shuffled once per play (one
+  // shuffle of all (lock, choice) pairs after mount, so a ?screen= deep-link's
+  // server render matches), then regrouped per lock.
+  const pairs = useMemo(
+    () => authoredLocks.flatMap((l) => l.choices.map((_, idx) => ({ lockId: l.id, idx }))),
+    [authoredLocks],
+  );
+  const shuffledPairs = useShuffledOnce(pairs);
+  const locks = useMemo<PasswordVaultLock[]>(
+    () =>
+      authoredLocks.map((l) => {
+        const order = shuffledPairs.filter((p) => p.lockId === l.id).map((p) => l.choices[p.idx]).filter(Boolean);
+        return { ...l, choices: order.length === l.choices.length ? order : l.choices };
+      }),
+    [authoredLocks, shuffledPairs],
+  );
+
+  // Learn-Loop beats: the shared intro (with the Raccoon's boast), Sarah's
+  // how-to once, each hotspot read aloud as it opens, a spoken verdict on a
+  // correct pick (the WrongAnswerPanel speaks the wrong side itself), and the
+  // "you're protected" payoff before the claim button appears.
+  const [showIntro, setShowIntro] = useState(!!(introNarration || threat));
+  const [narr, setNarr] = useState<"howto" | "read" | "idle">("idle");
+  const [readId, setReadId] = useState<string | null>(null);
+  const [payoffDone, setPayoffDone] = useState(!completeNarration);
+  const verdict = useVerdictVoice(voice);
+  useEffect(() => {
+    if (narr === "idle") return;
+    const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [narr]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
 
   const [doorReject, setDoorReject] = useState(0);
   const [showRevealUI, setShowRevealUI] = useState(false);
@@ -171,8 +255,8 @@ export default function PasswordVault({
 
   const hotspotDefs: HotspotDef[] = useMemo(
     () =>
-      locks.map((l) => {
-        const pos = LOCK_POSITIONS[l.id] ?? { x: 0, y: 0 };
+      locks.map((l, i) => {
+        const pos = LOCK_POSITIONS[l.id] ?? PENTAGON[i % PENTAGON.length];
         return {
           id: l.id,
           x: pos.x,
@@ -230,7 +314,7 @@ export default function PasswordVault({
       durationMs: 0,
       onEnter: () => {
         setShowRevealUI(true);
-        fx.unlock({ xp: 100, text: "VAULT MASTER!" });
+        fx.unlock({ xp: 100, text: masterTitle });
       },
     },
   ]);
@@ -247,14 +331,29 @@ export default function PasswordVault({
     },
     onHintReached,
     onAnswered,
-    onFocus: (_id, already) => (already ? audio.tap() : audio.select()),
+    onFocus: (id, already) => {
+      if (already) {
+        audio.tap();
+        return;
+      }
+      audio.select();
+      // Sarah reads the hotspot's question as it opens (audio only, taps held).
+      const lock = locks.find((l) => l.id === id);
+      if (lock?.readAloud && !isAudioMuted()) {
+        setReadId(id);
+        setNarr("read");
+      }
+    },
     onClosePanel: () => audio.back(),
     onActivated: (id) => {
       const lock = locks.find((l) => l.id === id);
       fx.correct({ xp: 30, text: `${lock?.ruleLabel ?? ""} ✓` });
       audio.unlock();
+      // Spoken verdict: "That's right!" + the correct choice's why.
+      const why = lock?.choices.find((c) => c.isCorrect)?.why;
+      if (why) verdict.say("right", why);
     },
-    locked: climax.stage !== null || !established,
+    locked: climax.stage !== null || !established || showIntro || narr !== "idle",
   });
 
   useEffect(() => {
@@ -292,10 +391,10 @@ export default function PasswordVault({
         ? "ACCESS GRANTED"
         : "Opening..."
     : activeCount === 0
-      ? guidance?.intro ?? "Tap a glowing lock to begin."
+      ? guidance?.intro ?? `Tap a glowing ${hotspotNoun} to begin.`
       : activeCount === locks.length - 1
-        ? "One lock left!"
-        : guidance?.progress ?? `${activeCount} of ${locks.length} locks unlocked.`;
+        ? `One ${hotspotNoun} left!`
+        : guidance?.progress ?? `${activeCount} of ${locks.length} ${hotspotNoun}s ${mirrors ? "cleared" : "unlocked"}.`;
 
   /* ───────── Reveal artifacts ───────── */
   const artifacts: RevealArtifact[] = useMemo(
@@ -305,7 +404,7 @@ export default function PasswordVault({
         return {
           icon: l.icon,
           label: l.ruleLabel,
-          recap: ARTIFACT_RECAP[l.id] ?? "",
+          recap: l.recap ?? ARTIFACT_RECAP[l.id] ?? "",
           accent: slot.accent,
           x: slot.x,
           y: slot.y,
@@ -319,15 +418,18 @@ export default function PasswordVault({
       ? locks.find((l) => l.id === hotspot.focusedId) ?? null
       : null;
   const beamPositions = useMemo(
-    () => locks.map((l) => LOCK_POSITIONS[l.id] ?? { x: 0, y: 0 }),
+    () => locks.map((l, i) => LOCK_POSITIONS[l.id] ?? PENTAGON[i % PENTAGON.length]),
     [locks],
   );
   const charge = locks.length ? activeCount / locks.length : 0;
+  const readLock = readId ? locks.find((l) => l.id === readId) : null;
 
   return (
     <SceneShell
       aspectRatio={{ w: 16, h: 9 }}
-      background="radial-gradient(ellipse at 50% 36%, #141a44 0%, #0a0e28 45%, #04050f 100%)"
+      background={mirrors
+        ? "radial-gradient(ellipse at 50% 36%, #4a0c3e 0%, #260721 45%, #12030f 100%)"
+        : "radial-gradient(ellipse at 50% 36%, #141a44 0%, #0a0e28 45%, #04050f 100%)"}
       camera={camera}
       cameraTransitionMs={cameraTransitionMs}
       focusBasis={DOOR_SIZE}
@@ -337,6 +439,37 @@ export default function PasswordVault({
       reserve={140}
       overlay={
         <>
+          {verdict.element}
+          {/* Learn-Loop intro: the Raccoon's boast + Sarah's mission, one "I'm ready" gate. */}
+          {showIntro && (
+            <ExerciseIntroBeat
+              title={introTitle ?? (mirrors ? "The Hall of Mirrors" : "The Password Vault")}
+              subtitle={introSubtitle}
+              icon={introIcon}
+              narration={introNarration}
+              threat={threat}
+              overlay
+              character={introNarration?.speaker}
+              onDismiss={() => {
+                setShowIntro(false);
+                setNarr(isAudioMuted() ? "idle" : coachLines ? "howto" : "idle");
+              }}
+            />
+          )}
+          {/* Sarah's read-alouds (audio only): the how-to once, each hotspot as it opens, the payoff at the end. */}
+          {!showIntro && (
+            <div aria-hidden style={AUDIO_ONLY_STYLE}>
+              {narr === "howto" && coachLines && (
+                <InfoNarration key="pv-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent="#e3b341" recordedOnly onDone={() => setNarr("idle")} />
+              )}
+              {narr === "read" && readLock?.readAloud && (
+                <InfoNarration key={`pv-read-${readLock.id}`} speaker={voice} lines={[readLock.readAloud]} accent="#e3b341" recordedOnly onDone={() => setNarr("idle")} />
+              )}
+              {showRevealUI && completeNarration && !payoffDone && (
+                <InfoNarration key="pv-payoff" speaker={completeNarration.speaker ?? voice} lines={completeNarration.lines} accent="#7eff97" recordedOnly onDone={() => setPayoffDone(true)} />
+              )}
+            </div>
+          )}
           {/* Guidance ribbon (hidden during the final reveal) */}
           {!revealActive && (
           <div
@@ -566,13 +699,16 @@ export default function PasswordVault({
                     animation: intensity > 0 ? "v2TextSheen 2.6s ease-in-out infinite" : undefined,
                   }}
                 >
-                  VAULT MASTER!
+                  {masterTitle}
                 </motion.div>
-                <div style={{ pointerEvents: "auto" }}>
-                  <GameButton variant="primary" size="lg" icon="→" onClick={() => onComplete(activeCount)}>
-                    Claim your secrets
-                  </GameButton>
-                </div>
+                {/* The claim button waits for Sarah's payoff (never permanently: InfoNarration always fires onDone). */}
+                {payoffDone && (
+                  <div style={{ pointerEvents: "auto" }}>
+                    <GameButton variant="primary" size="lg" icon="→" onClick={() => onComplete(activeCount)}>
+                      {claimLabel}
+                    </GameButton>
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -585,9 +721,13 @@ export default function PasswordVault({
       <JuiceKeyframes />
       <VaultV2FX />
 
-      {/* Camera-transformed world */}
+      {/* Camera-transformed world. The mirrors skin turns the cyan gateway
+          magenta (the week's accent) with one hue shift on the world layer
+          only; the overlay's semantic greens and golds stay untouched. */}
+      <div style={{ position: "absolute", inset: 0, filter: mirrors ? "hue-rotate(108deg) saturate(1.1)" : undefined }}>
       <SpaceField intensity={intensity} />
       <DataStreams intensity={intensity} muted={vaultLocked} />
+      </div>
 
       <div
         style={{
@@ -597,6 +737,7 @@ export default function PasswordVault({
           width: DOOR_SIZE,
           height: DOOR_SIZE,
           transform: "translate(-50%, -50%)",
+          filter: mirrors ? "hue-rotate(108deg) saturate(1.1)" : undefined,
         }}
       >
         {/* Treasure chamber (engine) — revealed once the gateway dilates */}
@@ -615,6 +756,8 @@ export default function PasswordVault({
           open={gatewayOpen}
           armed={armed}
           statusStage={stage}
+          statusWord={mirrors ? "CLEARED" : "SECURED"}
+          openWord={mirrors ? "HALL CLEARED" : "VAULT OPEN"}
           activeCount={activeCount}
           totalLocks={locks.length}
           charge={charge}
@@ -635,6 +778,7 @@ export default function PasswordVault({
               activatedJustNow={hotspot.recentlyActivated === lock.id}
               disabled={!!hotspot.wrong || vaultLocked || !established}
               intensity={intensity}
+              iconFilter={mirrors ? "hue-rotate(-108deg) saturate(0.91)" : undefined}
               onTap={() => hotspot.focusHotspot(lock.id)}
             />
           ))}
@@ -772,6 +916,8 @@ function EnergyGateway({
   charge,
   doorReject,
   intensity,
+  statusWord,
+  openWord,
   children,
 }: {
   open: boolean;
@@ -782,6 +928,9 @@ function EnergyGateway({
   charge: number;
   doorReject: number;
   intensity: number;
+  /** HUD words for the idle count and the open state (skin copy). */
+  statusWord?: string;
+  openWord?: string;
   children: React.ReactNode;
 }) {
   const accent = armed ? "#fde047" : "#00e5ff";
@@ -841,7 +990,7 @@ function EnergyGateway({
       )}
 
       {/* HUD status readout */}
-      <GatewayStatus statusStage={statusStage} activeCount={activeCount} totalLocks={totalLocks} />
+      <GatewayStatus statusStage={statusStage} activeCount={activeCount} totalLocks={totalLocks} statusWord={statusWord} openWord={openWord} />
 
       {/* Sigils + beams — fade out as the gateway opens */}
       <div
@@ -1031,14 +1180,18 @@ function GatewayStatus({
   statusStage,
   activeCount,
   totalLocks,
+  statusWord = "SECURED",
+  openWord = "VAULT OPEN",
 }: {
   statusStage: string | null;
   activeCount: number;
   totalLocks: number;
+  statusWord?: string;
+  openWord?: string;
 }) {
   const text =
     statusStage === "revealed" || statusStage === "master"
-      ? "VAULT OPEN"
+      ? openWord
       : statusStage === "opening"
         ? "UNSEALING"
         : statusStage === "unlocking"
@@ -1047,7 +1200,7 @@ function GatewayStatus({
             ? "VERIFYING"
             : statusStage === "armed"
               ? "CHARGING"
-              : `SECURED ${activeCount.toString().padStart(2, "0")}/${totalLocks.toString().padStart(2, "0")}`;
+              : `${statusWord} ${activeCount.toString().padStart(2, "0")}/${totalLocks.toString().padStart(2, "0")}`;
   const color =
     statusStage === "revealed" || statusStage === "master"
       ? "#7eff97"
@@ -1100,6 +1253,7 @@ function HexSigil({
   activatedJustNow,
   disabled,
   intensity,
+  iconFilter,
   onTap,
 }: {
   lock: PasswordVaultLock;
@@ -1110,9 +1264,13 @@ function HexSigil({
   activatedJustNow: boolean;
   disabled: boolean;
   intensity: number;
+  /** Undoes a skin's world-layer hue shift on the icon so it keeps its true colours. */
+  iconFilter?: string;
   onTap: () => void;
 }) {
-  const pos = LOCK_POSITIONS[lock.id] ?? { x: 0, y: 0 };
+  // Re-themed weeks use other ids: fall back to the pentagon slot by index
+  // (the same fallback as hotspotDefs, or every sigil stacks at the centre).
+  const pos = LOCK_POSITIONS[lock.id] ?? PENTAGON[index % PENTAGON.length];
   const [hover, setHover] = useState(false);
   const lifted = hover && !active && !disabled && intensity > 0;
   const stroke = active ? "#7eff97" : "#00e5ff";
@@ -1205,9 +1363,9 @@ function HexSigil({
           display: "grid",
           placeItems: "center",
           fontSize: 27,
-          filter: active
+          filter: `${iconFilter ?? ""} ${active
             ? "drop-shadow(0 0 8px rgba(126,255,151,0.9))"
-            : "drop-shadow(0 0 6px rgba(0,229,255,0.7))",
+            : "drop-shadow(0 0 6px rgba(0,229,255,0.7))"}`.trim(),
         }}
       >
         {active ? "✓" : lock.icon}

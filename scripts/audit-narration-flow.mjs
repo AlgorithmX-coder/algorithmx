@@ -204,6 +204,53 @@ function chainsFor(type, span) {
     const tiles = [...span.matchAll(new RegExp("label:\\s*" + STR + "[\\s\\S]*?isTeam:\\s*(true|false)[\\s\\S]*?note:\\s*" + STR, "g"))].map((m) => ({ beat: un(m[3]), ctx: un(m[1]), team: m[2] === "true" }));
     if (prompt && tiles.length) chains.push({ name: "case board pins", mode: "branch", beats: [prompt], branches: tiles });
   }
+  // Week 4 engines (rebuilt 2026-09-16). Every item: the read-aloud as it arrives ->
+  // Sarah's why on the right move (chain); the wrong-move teach answers the read-aloud (branch).
+  if (type === "stringsAttached" || type === "believeOMeter" || type === "firewallBuilder") {
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    const noun = type === "stringsAttached" ? "prize" : type === "believeOMeter" ? "poster" : "brick";
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why"), wrong = field(p, "nudge") || field(p, "whyWrong");
+      if (why) chains.push({ name: noun + ": " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+      if (wrong) chains.push({ name: noun + " (wrong move): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: [wrong] });
+    }
+  }
+  if (type === "nameTagCheck") {
+    // each case: the read-aloud -> Sarah's why on the lock; each piece's teach answers the read-aloud
+    const parts = span.split(/\brealChunks:\s*/).slice(1);
+    for (const p of parts) {
+      const read = field(p, "readAloud"), right = field(p, "rightWhy");
+      const teaches = all(new RegExp("teach:\\s*" + STR, "g"), p);
+      if (read && right) chains.push({ name: "name tag: " + read.slice(0, 40) + "...", mode: "chain", beats: [read, right] });
+      if (read && teaches.length) chains.push({ name: "name tag (wrong mark): " + read.slice(0, 40) + "...", mode: "branch", beats: [read], branches: teaches });
+    }
+  }
+  if (type === "passwordVault") {
+    // each hotspot: the question read aloud -> the right choice's why; each wrong choice's explanation answers it
+    const parts = span.split(/\bruleLabel:\s*/).slice(1);
+    for (const p of parts) {
+      const nm = p.match(new RegExp("^" + STR)); if (!nm) continue;
+      const read = field(p, "readAloud") || field(p, "prompt");
+      const choices = [...p.matchAll(new RegExp("text:\\s*" + STR + "[^}]*?isCorrect:\\s*(true|false)[^}]*?explanation:\\s*" + STR + "(?:[^}]*?why:\\s*" + STR + ")?", "g"))];
+      const right = choices.find((m) => m[2] === "true");
+      const wrongs = choices.filter((m) => m[2] === "false").map((m) => ({ beat: un(m[3]), ctx: un(m[1]) }));
+      if (read && right && right[4]) chains.push({ name: "mirror: " + un(nm[1]), mode: "chain", beats: [read, un(right[4])], ctx: [un(right[1])] });
+      if (read && wrongs.length) chains.push({ name: "mirror (wrong pick): " + un(nm[1]), mode: "branch", beats: [read], branches: wrongs });
+    }
+  }
+  if (type === "phishInspector") {
+    // each message: read aloud -> the four notes (a fixed checklist) -> Sarah's why; whyWrong answers the read
+    const parts = span.split(/\bsender:\s*/).slice(1);
+    for (const p of parts) {
+      const nm = p.match(new RegExp("^" + STR)); if (!nm) continue;
+      const read = field(p, "readAloud"), why = field(p, "why"), wrong = field(p, "whyWrong");
+      const notes = ["senderNote", "linkNote", "urgencyNote", "claimNote"].map((k) => field(p, k)).filter(Boolean);
+      if (read && notes.length) chains.push({ name: "booth notes: " + un(nm[1]), mode: "checklist", beats: [read, ...notes] });
+      if (notes.length && why) chains.push({ name: "booth verdict: " + un(nm[1]), mode: "chain", beats: [notes[notes.length - 1], why] });
+      if (read && wrong) chains.push({ name: "booth (wrong call): " + un(nm[1]), mode: "branch", beats: [read], branches: [wrong] });
+    }
+  }
   return chains;
 }
 
