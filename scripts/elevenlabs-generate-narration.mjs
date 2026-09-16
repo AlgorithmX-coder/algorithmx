@@ -282,7 +282,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week15.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week15.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -434,7 +434,10 @@ for (const fname of weekFiles) {
   // Campfire Ring stones, the Stepping Stones rounds, the Kind Moves Board
   // moments, the Ember Chase start card and Don't Feed the Fire's sparks, plus
   // the fire's three teach bodies (spoken by WrongAnswerPanel).
-  if (fname === "week2.ts" || fname === "week3.ts" || fname === "week4.ts" || fname === "week5.ts") {
+  // Week 6 (2026-09-16) adds: the Chat Fixer messages, Lobby Doors players and
+  // settings card, Guard Count rounds and slots, Power Panel rounds (readAloud),
+  // plus the Power Panel's two wrong-order teach lines (stepTeach array).
+  if (["week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts"].includes(fname)) {
     const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
     const w2Starts = [];
     let w2m;
@@ -519,6 +522,18 @@ for (const fname of weekFiles) {
       if (st.type === "dontFeedTheFire") {
         // the three teach panels speak their body ("Not quite." + body)
         pushAll(span, /\bbody:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      // Week 6 engines: Sarah reads every message / player / round / slot as it arrives.
+      if (["chatFixer", "lobbyDoors", "guardCount", "powerPanel"].includes(st.type)) {
+        pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "powerPanel") {
+        // stepTeach: ["skipped step 1", "skipped step 2"] spoken by WrongAnswerPanel
+        let sm;
+        const stRe = /stepTeach:\s*\[\s*"((?:[^"\\]|\\.)*)"\s*,\s*"((?:[^"\\]|\\.)*)"\s*,?\s*\]/g;
+        while ((sm = stRe.exec(span)) !== null) {
+          for (const t of [sm[1], sm[2]]) { const text = t.replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim(); if (text) { blocks.push({ speaker: "adam", lines: [text], source: fname }); fileBlocks++; } }
+        }
       }
       // teamPoster notes are already covered by the wrong-answer `note:` scan above
     });

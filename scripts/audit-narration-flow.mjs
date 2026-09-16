@@ -290,6 +290,41 @@ function chainsFor(type, span) {
   }
   // snowballChase: a demonstration with one spoken start card and no answers;
   // its captions are HUD text, not speech, so there is no in-game chain.
+  // Week 6 engines (rebuilt 2026-09-16).
+  if (type === "chatFixer" || type === "lobbyDoors") {
+    // each item: the read-aloud -> Sarah's why on the right move; whyWrong answers the read-aloud
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    const noun = type === "chatFixer" ? "message" : "player";
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why"), wrong = field(p, "whyWrong");
+      if (why) chains.push({ name: noun + ": " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+      if (wrong) chains.push({ name: noun + " (wrong move): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: [wrong] });
+    }
+  }
+  if (type === "guardCount") {
+    // each round: the invite read aloud -> the slots (a checklist) -> Sarah's why; whyWrong answers the invite
+    const parts = span.split(/\bprompt:\s*/).slice(1);
+    for (const p of parts) {
+      const read = field(p, "readAloud"), why = field(p, "why"), wrong = field(p, "whyWrong");
+      const slots = all(new RegExp("present:\\s*(?:true|false),\\s*readAloud:\\s*" + STR, "g"), p);
+      if (read && slots.length) chains.push({ name: "guards: " + read.slice(0, 40) + "...", mode: "checklist", beats: [read, ...slots] });
+      if (slots.length && why) chains.push({ name: "guards verdict: " + read.slice(0, 40) + "...", mode: "chain", beats: [slots[slots.length - 1], why] });
+      if (read && wrong) chains.push({ name: "guards (wrong room): " + read.slice(0, 40) + "...", mode: "branch", beats: [read], branches: [wrong] });
+    }
+  }
+  if (type === "powerPanel") {
+    // each round: the message read aloud -> Sarah's why after the third button; teach lines answer it
+    const parts = span.split(/\bprompt:\s*/).slice(1);
+    for (const p of parts) {
+      const read = field(p, "readAloud"), why = field(p, "why");
+      const notes = all(new RegExp("note:\\s*" + STR, "g"), p);
+      const st = p.match(new RegExp("stepTeach:\\s*\\[\\s*" + STR + "\\s*,\\s*" + STR));
+      const teach = [...notes, ...(st ? [un(st[1]), un(st[2])] : [])];
+      if (read && why) chains.push({ name: "panel: " + read.slice(0, 40) + "...", mode: "chain", beats: [read, why] });
+      if (read && teach.length) chains.push({ name: "panel (wrong tap): " + read.slice(0, 40) + "...", mode: "branch", beats: [read], branches: teach });
+    }
+  }
   return chains;
 }
 
