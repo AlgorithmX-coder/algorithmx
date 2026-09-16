@@ -120,7 +120,7 @@ export const WEEK_4: WeekContent = {
           "A scam is a trick... wearing a costume.",
           "[whispers] Under the costume, it always wants something back: your password, your money, or your tap.",
           "[excited] And that is how you catch one. Real messages want NOTHING from you.",
-          "Every prize at his carnival has a string attached. Come and see where the strings lead!",
+          "Every prize at the Raccoon's fair has a string attached. Come and see where the strings lead!",
         ],
       },
     },
@@ -778,7 +778,7 @@ export const WEEK_4: WeekContent = {
         lines: [
           "[excited] That sneaky one didn't fool you!",
           "A number one where the L should be, and a weird dot win ending. Almost-right is all-wrong.",
-          "Grandma, your school and your game inside the game are all senders you can check.",
+          "Grandma, your school, and a message from inside your own game are all senders you can check.",
           "[warmly] Letter by letter, every time. Brilliant!",
         ],
       },

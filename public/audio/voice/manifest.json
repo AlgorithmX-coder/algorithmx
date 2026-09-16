@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T09:22:49.058Z",
+  "generatedAt": "2026-09-16T12:37:16.933Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -11833,18 +11833,18 @@
       "file": "/audio/voice/6ffd09eb4048747b.mp3"
     },
     {
-      "key": "2f52e98f7b339332",
+      "key": "a182acd6b7a6ace1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Welcome back, Cyber Hero. This week we hunt SCAMS. A scam is a trick... wearing a costume. [whispers] Under the costume, it always wants something back: your password, your money, or your tap. [excited] And that is how you catch one. Real messages want NOTHING from you. Every prize at his carnival has a string attached. Come and see where the strings lead!",
+      "text": "[warmly] Welcome back, Cyber Hero. This week we hunt SCAMS. A scam is a trick... wearing a costume. [whispers] Under the costume, it always wants something back: your password, your money, or your tap. [excited] And that is how you catch one. Real messages want NOTHING from you. Every prize at the Raccoon's fair has a string attached. Come and see where the strings lead!",
       "lines": [
         "[warmly] Welcome back, Cyber Hero. This week we hunt SCAMS.",
         "A scam is a trick... wearing a costume.",
         "[whispers] Under the costume, it always wants something back: your password, your money, or your tap.",
         "[excited] And that is how you catch one. Real messages want NOTHING from you.",
-        "Every prize at his carnival has a string attached. Come and see where the strings lead!"
+        "Every prize at the Raccoon's fair has a string attached. Come and see where the strings lead!"
       ],
-      "file": "/audio/voice/2f52e98f7b339332.mp3"
+      "file": "/audio/voice/a182acd6b7a6ace1.mp3"
     },
     {
       "key": "fa2c51c84f9837ed",
@@ -12111,17 +12111,17 @@
       "file": "/audio/voice/a85268da3a3fc2de.mp3"
     },
     {
-      "key": "8a2e6503f4d8dc3a",
+      "key": "c80549b432f5b1f1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That sneaky one didn't fool you! A number one where the L should be, and a weird dot win ending. Almost-right is all-wrong. Grandma, your school and your game inside the game are all senders you can check. [warmly] Letter by letter, every time. Brilliant!",
+      "text": "[excited] That sneaky one didn't fool you! A number one where the L should be, and a weird dot win ending. Almost-right is all-wrong. Grandma, your school, and a message from inside your own game are all senders you can check. [warmly] Letter by letter, every time. Brilliant!",
       "lines": [
         "[excited] That sneaky one didn't fool you!",
         "A number one where the L should be, and a weird dot win ending. Almost-right is all-wrong.",
-        "Grandma, your school and your game inside the game are all senders you can check.",
+        "Grandma, your school, and a message from inside your own game are all senders you can check.",
         "[warmly] Letter by letter, every time. Brilliant!"
       ],
-      "file": "/audio/voice/8a2e6503f4d8dc3a.mp3"
+      "file": "/audio/voice/c80549b432f5b1f1.mp3"
     },
     {
       "key": "acba6caa8802e9d1",
