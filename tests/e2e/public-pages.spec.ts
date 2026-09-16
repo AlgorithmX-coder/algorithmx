@@ -75,6 +75,8 @@ test.describe("Public pages render", () => {
       "/cyberexplorers",
       "/cyberstart",
       "/cyberstart-pro",
+      "/schools",
+      "/schools/login",
     ]) {
       const errors: string[] = [];
       page.on("pageerror", (e) => errors.push(`${path}: ${e.message}`));

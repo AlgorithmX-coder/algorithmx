@@ -76,9 +76,9 @@ const AUDIENCE_SUGGESTIONS: Record<Exclude<AudienceId, null>, Suggestion> = {
     stream: "SCHOOL PACKAGE",
     accent: "#ffd07a",
     status: "PILOT INTAKE",
-    project: "Six streams. KS2-KS4. Volume licensing for autumn 2026.",
-    href: "/cyberheroes",
-    cta: "Book a demo",
+    project: "Primary and secondary. Pupils learn on their own. Free half-term pilot.",
+    href: "/schools",
+    cta: "See the schools page",
   },
 };
 

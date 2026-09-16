@@ -132,6 +132,13 @@ export default function Nav() {
             Courses
           </a>
           <Link
+            className="lv2-nav-secondary"
+            href="/schools"
+            style={{ ...navLink, color: textColorMuted }}
+          >
+            Schools
+          </Link>
+          <Link
             className="lv2-nav-secondary lv2-nav-login"
             href="/login"
             style={{ ...navLink, color: textColorMuted }}
