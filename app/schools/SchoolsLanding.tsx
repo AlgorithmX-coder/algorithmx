@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import Nav from "@/app/components/landing-v2/Nav";
@@ -90,18 +90,18 @@ const pillGhost: React.CSSProperties = {
 const STACK = [
   { img: "heroes-learn", url: "algorithmx.io/lesson/1" },
   { img: "explorers-meter", url: "algorithmx.io/explorers" },
-  { img: "heroes-boss", url: "algorithmx.io/lesson/1" },
+  { img: "explorers-map", url: "algorithmx.io/explorers" },
 ];
 
-const SECTIONS = [
-  ["#phase", "Your phase"],
-  ["#product", "The screens"],
-  ["#how", "Set-up"],
-  ["#classroom", "Classroom"],
-  ["#receive", "What you get"],
-  ["#questions", "Questions"],
-  ["#enquiry", "Get in touch"],
-] as const;
+const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean]> = [
+  ["phase", "Your phase"],
+  ["product", "The screens"],
+  ["how", "Set-up"],
+  ["classroom", "Classroom"],
+  ["receive", "What you get"],
+  ["questions", "Questions"],
+  ["enquiry", "Get in touch", true],
+];
 
 const STEPS = [
   { n: "01", when: "Day 1", colour: "#7df0ff", title: "Send us first names", text: "Sign the processing agreement and send each class list: first names and year group. That is all we ever hold about a pupil." },
@@ -154,7 +154,39 @@ const isPhase = (v: unknown): v is Phase => v === "primary" || v === "secondary"
 
 export default function SchoolsLanding() {
   const [phase, setPhase] = useState<Phase>("primary");
+  const [activeSection, setActiveSection] = useState("");
+  const subnavRef = useRef<HTMLElement>(null);
   const info = PHASES[phase];
+
+  // Scroll-spy for the sticky section nav: the topmost section whose top
+  // has passed the sticky bars is "current"; the strip scrolls its chip
+  // into view on narrow screens.
+  useEffect(() => {
+    const els = SECTIONS.map(([id]) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+    if (!els.length || typeof IntersectionObserver === "undefined") return;
+    const visible = new Set<string>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) visible.add(e.target.id);
+          else visible.delete(e.target.id);
+        }
+        const first = SECTIONS.find(([id]) => visible.has(id));
+        if (first) setActiveSection(first[0]);
+      },
+      { rootMargin: "-130px 0px -60% 0px", threshold: 0 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const nav = subnavRef.current;
+    if (!nav || !activeSection) return;
+    const chip = nav.querySelector<HTMLElement>(`[data-target="${activeSection}"]`);
+    if (!chip || nav.scrollWidth <= nav.clientWidth) return;
+    nav.scrollTo({ left: chip.offsetLeft - (nav.clientWidth - chip.clientWidth) / 2, behavior: "smooth" });
+  }, [activeSection]);
 
   // Read ?phase= (shareable) or the remembered choice after mount, so server
   // and first client render agree.
@@ -198,7 +230,7 @@ export default function SchoolsLanding() {
           <div className="sch-hero-grid">
             <div className="sch-hero">
               <FadeUp>
-                <p style={eyebrow}>{"// For schools · Primary and secondary · UK and British schools worldwide"}</p>
+                <p style={eyebrow}>{"// For UK and British schools worldwide"}</p>
               </FadeUp>
               <FadeUp delay={0.06}>
                 <h1 className="sch-h1">
@@ -241,8 +273,18 @@ export default function SchoolsLanding() {
 
         {/* SECTION NAV ────────────────────────────────────── */}
         <div className="sch-subnav-wrap">
-          <nav className="sch-subnav" aria-label="On this page">
-            {SECTIONS.map(([href, label]) => <a key={href} href={href} className="sch-chip-link">{label}</a>)}
+          <nav ref={subnavRef} className="sch-subnav" aria-label="On this page">
+            {SECTIONS.map(([id, label, cta]) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                data-target={id}
+                aria-current={activeSection === id ? "location" : undefined}
+                className={`sch-chip-link${cta ? " sch-chip-cta" : ""}${activeSection === id ? " on" : ""}`}
+              >
+                {label}
+              </a>
+            ))}
           </nav>
         </div>
 
@@ -447,6 +489,14 @@ export default function SchoolsLanding() {
         .sch-glow-lime { width: 480px; height: 480px; left: -160px; top: 0; background: radial-gradient(circle, rgba(126,255,151,0.22), transparent 65%); }
         .sch-section > *:not(.sch-glow) { position: relative; z-index: 1; }
 
+        /* keyboard focus: every custom control on the page */
+        .sch-section :is(a, button, summary, input, select, textarea):focus-visible,
+        .sch-subnav a:focus-visible,
+        .sch-lightbox button:focus-visible {
+          outline: 2px solid var(--lv2-cyan); outline-offset: 3px;
+        }
+        .sch-phase:focus-visible { outline-offset: 4px; }
+
         .sch-grad {
           background: linear-gradient(92deg, #7df0ff 0%, #b98bff 55%, #ff8ad4 100%);
           -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -504,15 +554,23 @@ export default function SchoolsLanding() {
 
         /* section nav */
         .sch-subnav-wrap { position: sticky; top: 68px; z-index: 30; background: rgba(4,5,13,0.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,229,255,0.1); border-bottom: 1px solid rgba(0,229,255,0.1); }
-        .sch-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+        .sch-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .sch-subnav::-webkit-scrollbar { display: none; }
         .sch-chip-link {
-          flex: 0 0 auto; padding: 8px 14px; border-radius: 999px; text-decoration: none;
+          flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; text-decoration: none;
           border: 1px solid rgba(159,245,255,0.22); background: rgba(13,15,24,0.6);
           font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-          color: rgba(232,237,255,0.78); transition: border-color .2s ease, color .2s ease, background .2s ease;
+          color: rgba(232,237,255,0.78); transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
         }
         .sch-chip-link:hover { border-color: var(--lv2-cyan); color: #fff; background: rgba(0,229,255,0.1); }
+        .sch-chip-link.on { border-color: var(--lv2-cyan); color: #fff; background: rgba(0,229,255,0.16); box-shadow: 0 0 18px -6px var(--lv2-cyan); }
+        .sch-chip-cta { border-color: transparent; color: #04050d; background: linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%); margin-left: auto; }
+        .sch-chip-cta:hover, .sch-chip-cta.on { color: #04050d; background: linear-gradient(135deg, #5ff5ff 0%, #1fd8ff 55%, #14c2f8 100%); border-color: transparent; }
+        /* fade the trailing edge when the strip scrolls (narrow screens) */
+        @media (max-width: 1100px) {
+          .sch-subnav { -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); padding-right: calc(var(--lv2-rail) + 32px); }
+          .sch-chip-cta { margin-left: 0; }
+        }
 
         /* cards */
         .sch-card {
@@ -573,8 +631,9 @@ export default function SchoolsLanding() {
         .sch-phase-check {
           align-self: flex-start; margin-top: 4px;
           font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-          padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(232,237,255,0.3); color: rgba(232,237,255,0.78);
+          padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(232,237,255,0.5); color: #e8edff; background: rgba(8,10,22,0.6);
         }
+        .sch-phase:not(.sch-phase-on):hover .sch-phase-check { border-color: var(--sch-accent); color: var(--sch-accent); }
         .sch-phase-on .sch-phase-check { border-color: var(--sch-accent); color: #04050d; background: var(--sch-accent); }
         @media (max-width: 820px) {
           .sch-phase { min-height: 0; }
@@ -602,9 +661,12 @@ export default function SchoolsLanding() {
         .sch-tab:not(.sch-tab-on) .sch-tab-desc { display: none; }
         .sch-frame {
           border-radius: 16px; overflow: hidden; background: #0a0d18;
-          border: 1px solid color-mix(in srgb, var(--sch-accent) 45%, transparent);
+          border: 1px solid rgba(159,245,255,0.4);
+          border-color: color-mix(in srgb, var(--sch-accent) 45%, transparent);
           box-shadow: 0 40px 90px -40px var(--sch-accent), 0 0 0 1px rgba(255,255,255,0.03);
         }
+        .sch-frame-zoom { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+        .sch-frame-zoom img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
         .sch-frame-bar { display: flex; align-items: center; gap: 14px; height: 42px; padding: 0 14px; background: #12162a; border-bottom: 1px solid rgba(232,237,255,0.08); }
         .sch-frame-dots { display: inline-flex; gap: 6px; }
         .sch-frame-dots i { width: 10px; height: 10px; border-radius: 50%; display: block; }
@@ -623,16 +685,18 @@ export default function SchoolsLanding() {
         .sch-frame-caption { margin: 0; font-family: var(--lv2-font-display); font-size: 13.5px; line-height: 1.5; color: rgba(232,237,255,0.72); }
         .sch-frame-nav { display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto; }
         .sch-frame-nav button {
-          width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 20px; line-height: 1;
+          width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 22px; line-height: 1;
           border: 1px solid rgba(159,245,255,0.3); background: rgba(13,15,24,0.7); color: #e8edff; transition: background .2s ease, border-color .2s ease;
         }
+        @media (hover: none) { .sch-frame-nav button { width: 44px; height: 44px; } }
         .sch-frame-nav button:hover { background: rgba(0,229,255,0.16); border-color: var(--lv2-cyan); }
         .sch-frame-dotnav { display: inline-flex; gap: 5px; }
         .sch-frame-dotnav i { width: 6px; height: 6px; border-radius: 50%; background: rgba(232,237,255,0.25); }
         .sch-frame-dotnav i.on { background: var(--sch-accent); box-shadow: 0 0 8px var(--sch-accent); }
         @media (max-width: 900px) {
           .sch-tabs { grid-template-columns: 1fr; gap: 16px; }
-          .sch-tablist { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 6px; scrollbar-width: thin; }
+          .sch-tablist { flex-direction: row; overflow-x: auto; gap: 8px; padding: 4px 40px 6px 4px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); }
+          .sch-tablist::-webkit-scrollbar { display: none; }
           .sch-tab { flex: 0 0 auto; width: auto; min-width: 150px; padding: 12px 14px; border-left-width: 1px; border-bottom: 2px solid rgba(232,237,255,0.14); }
           .sch-tab-on { border-bottom-color: var(--sch-accent); border-left-color: rgba(159,245,255,0.24); }
           .sch-tab-desc { display: none !important; }
@@ -703,7 +767,10 @@ export default function SchoolsLanding() {
         .sch-step h3, .sch-pillar h3, .sch-pilot h3 { margin: 0; font-family: var(--lv2-font-display); font-size: 1.2rem; font-weight: 500; letter-spacing: -0.01em; }
         .sch-step p, .sch-pilot p { margin: 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(232,237,255,0.75); }
         .sch-pillar { border-top: 2px solid var(--sch-accent); }
-        .sch-pillar-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: center; color: var(--sch-accent); background: color-mix(in srgb, var(--sch-accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--sch-accent) 40%, transparent); }
+        .sch-pillar-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: center; color: var(--sch-accent); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); }
+        @supports (background: color-mix(in srgb, red 10%, transparent)) {
+          .sch-pillar-icon { background: color-mix(in srgb, var(--sch-accent) 14%, transparent); border-color: color-mix(in srgb, var(--sch-accent) 40%, transparent); }
+        }
         .sch-pillar-icon svg { width: 22px; height: 22px; }
         .sch-pillar ul, .sch-pilot ul, .sch-receive { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
         .sch-pillar li, .sch-pilot li, .sch-receive li { position: relative; padding-left: 24px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.5; color: rgba(232,237,255,0.84); }

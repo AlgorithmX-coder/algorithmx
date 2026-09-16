@@ -182,22 +182,23 @@ export default function ProductTabs({ phase }: { phase: Phase }) {
               style={{ position: "absolute", inset: 0 }}
             >
               {shot && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={shotSrc(shot.img)}
-                  srcSet={shotSet(shot.img)}
-                  sizes="(max-width: 900px) 100vw, 800px"
-                  alt={shot.caption}
-                  loading={active === 0 ? "eager" : "lazy"}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
-                />
+                <button type="button" className="sch-frame-zoom" onClick={() => setOpen(true)} aria-label={`Open full size: ${shot.caption}`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={shotSrc(shot.img)}
+                    srcSet={shotSet(shot.img)}
+                    sizes="(max-width: 900px) 100vw, 800px"
+                    alt={shot.caption}
+                    loading={active === 0 ? "eager" : "lazy"}
+                  />
+                </button>
               )}
               {tab.kind === "teacher" && <TeacherMock phase={phase} />}
               {tab.kind === "curriculum" && <CurriculumMock phase={phase} />}
             </motion.div>
           </AnimatePresence>
           {shot && (
-            <button type="button" className="sch-enlarge" onClick={() => setOpen(true)} aria-label="View this screen full size">
+            <button type="button" className="sch-enlarge" onClick={() => setOpen(true)} aria-hidden tabIndex={-1}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
               </svg>

@@ -20,8 +20,9 @@ const card: React.CSSProperties = {
   position: "relative",
   padding: "30px 28px 28px",
   borderRadius: 20,
-  background: "rgba(13,15,24,0.62)",
-  border: "1px solid rgba(159,245,255,0.18)",
+  background: "linear-gradient(180deg, rgba(24,29,56,0.82), rgba(14,17,34,0.82))",
+  border: "1px solid rgba(159,245,255,0.28)",
+  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 30px 70px -40px rgba(0,229,255,0.5)",
   backdropFilter: "blur(10px)",
   WebkitBackdropFilter: "blur(10px)",
   display: "flex",
@@ -126,7 +127,7 @@ export default function SchoolLogin() {
               lineHeight: 1.05,
             }}
           >
-            School login
+            School <span className="sch-grad">login</span>
           </h1>
           <p style={{ ...body, marginBottom: 30, maxWidth: 560 }}>
             Teachers sign in on the left. Pupils use the code on their login card on the right.
@@ -156,7 +157,7 @@ export default function SchoolLogin() {
             </section>
 
             {/* PUPILS */}
-            <section style={{ ...card, borderColor: "rgba(255,179,71,0.3)" }} aria-labelledby="sch-pupil-h">
+            <section style={{ ...card, borderColor: "rgba(255,179,71,0.4)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 30px 70px -40px rgba(255,179,71,0.55)" }} aria-labelledby="sch-pupil-h">
               <p style={{ ...eyebrow, color: "#ffb347" }}>Pupils</p>
               <h2 id="sch-pupil-h" style={h2}>Type your class code</h2>
               <p style={body}>It&rsquo;s the big code at the top of your login card.</p>
@@ -177,6 +178,8 @@ export default function SchoolLogin() {
                   spellCheck={false}
                   maxLength={13}
                   aria-describedby={msg ? "sch-class-msg" : undefined}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "#ffb347"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(255,179,71,0.18)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,179,71,0.4)"; e.currentTarget.style.boxShadow = "none"; }}
                   style={{
                     height: 58,
                     borderRadius: 14,
@@ -235,6 +238,11 @@ export default function SchoolLogin() {
         @media (max-width: 760px) {
           .sch-login-grid { grid-template-columns: 1fr; }
         }
+        .sch-grad {
+          background: linear-gradient(92deg, #7df0ff 0%, #b98bff 55%, #ff8ad4 100%);
+          -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        main :is(a, button):focus-visible { outline: 2px solid #00e5ff; outline-offset: 3px; }
       `}</style>
     </>
   );
