@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T12:37:16.933Z",
+  "generatedAt": "2026-09-16T13:53:25.363Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -7763,17 +7763,17 @@
       "file": "/audio/voice/f5db26c69cf28e31.mp3"
     },
     {
-      "key": "0bb9bf93eba99e39",
+      "key": "cf95bbbe9a42cdc4",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three down! You're a real form detective now. One little question beats the trick every time... [whispers] why are they asking? [excited] Next, we'll learn the coolest part of being a hero. Your SECRET IDENTITY!",
+      "text": "[excited] Three down! You're a real form detective now. One little question beats the trick every time... [whispers] WHY are they asking? [excited] Next, we'll learn the coolest part of being a hero. Your SECRET IDENTITY!",
       "lines": [
         "[excited] Three down! You're a real form detective now.",
         "One little question beats the trick every time...",
-        "[whispers] why are they asking?",
+        "[whispers] WHY are they asking?",
         "[excited] Next, we'll learn the coolest part of being a hero. Your SECRET IDENTITY!"
       ],
-      "file": "/audio/voice/0bb9bf93eba99e39.mp3"
+      "file": "/audio/voice/cf95bbbe9a42cdc4.mp3"
     },
     {
       "key": "87d8c5542ab83a72",
@@ -8746,14 +8746,14 @@
       "file": "/audio/voice/c0cb611b1722b375.mp3"
     },
     {
-      "key": "b4353662462955f8",
+      "key": "e9ff9f1e656bd380",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A drawing app your grown-up already installed with you.",
+      "text": "A drawing app you and your grown-up installed together.",
       "lines": [
-        "A drawing app your grown-up already installed with you."
+        "A drawing app you and your grown-up installed together."
       ],
-      "file": "/audio/voice/b4353662462955f8.mp3"
+      "file": "/audio/voice/e9ff9f1e656bd380.mp3"
     },
     {
       "key": "3d95c9d7691cb9fa",
@@ -9476,14 +9476,14 @@
       "file": "/audio/voice/60fbdbd5527f6002.mp3"
     },
     {
-      "key": "a55b1c113b45e804",
+      "key": "48d0b14fb94a53d8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Who's asking? A drawing app your grown-up already installed with you.",
+      "text": "Who's asking? A drawing app you and your grown-up installed together.",
       "lines": [
-        "Who's asking? A drawing app your grown-up already installed with you."
+        "Who's asking? A drawing app you and your grown-up installed together."
       ],
-      "file": "/audio/voice/a55b1c113b45e804.mp3"
+      "file": "/audio/voice/48d0b14fb94a53d8.mp3"
     },
     {
       "key": "6688afe041b9e62a",

@@ -525,8 +525,12 @@ export default function QuickCheck({
         style={{
           position: "relative",
           zIndex: 2,
-          display: "grid",
-          gridTemplateColumns: mode === "order" ? "1fr" : "repeat(2, 1fr)",
+          // Two-up flow that CENTRES an odd last row (a lone third option used to
+          // sit flush left under a two-column grid; Abdullah, W2 item 2a).
+          display: mode === "order" ? "grid" : "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gridTemplateColumns: mode === "order" ? "1fr" : undefined,
           gap: 14,
           maxWidth: mode === "order" ? 480 : 640,
           margin: "0 auto",
@@ -558,6 +562,8 @@ export default function QuickCheck({
               style={{
                 position: "relative",
                 minHeight: 72,
+                // Half the row minus the gap, so two fit per row and a lone one centres.
+                flex: mode === "order" ? undefined : "0 1 calc(50% - 7px)",
                 padding: "16px 18px",
                 borderRadius: 16,
                 border: `2px solid ${

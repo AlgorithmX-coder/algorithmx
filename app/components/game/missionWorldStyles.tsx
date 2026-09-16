@@ -260,7 +260,13 @@ function CardDecorationArt({ deco, edge, tone = "card" }: { deco: CardDeco; edge
         <span aria-hidden style={dot({ top: 7, right: 7 }, 7, "radial-gradient(circle at 40% 40%, #e8e0ff, #6b5aa8 60%, #2a2050)")} />
         <span aria-hidden style={dot({ bottom: 7, left: 7 }, 7, "radial-gradient(circle at 40% 40%, #e8e0ff, #6b5aa8 60%, #2a2050)")} />
         <span aria-hidden style={dot({ bottom: 7, right: 7 }, 7, "radial-gradient(circle at 40% 40%, #e8e0ff, #6b5aa8 60%, #2a2050)")} />
-        <span aria-hidden style={{ position: "absolute", inset: 4, borderRadius: 14, background: "linear-gradient(115deg, rgba(255,255,255,0) 45%, rgba(255,255,255,0.16) 50%, rgba(255,255,255,0) 55%)", pointerEvents: "none" }} />
+        {/* Glass glint: a diagonal highlight across the briefing card's face. Not
+            on chrome consoles: this layer sits ABOVE the copy, and across a
+            560px Learn / Spot-the-Danger card the band read as "a faded diagonal
+            line running across the card" (UAT round 2, W2 item 1f). */}
+        {!chrome && (
+          <span aria-hidden style={{ position: "absolute", inset: 4, borderRadius: 14, background: "linear-gradient(115deg, rgba(255,255,255,0) 45%, rgba(255,255,255,0.16) 50%, rgba(255,255,255,0) 55%)", pointerEvents: "none" }} />
+        )}
       </>);
     case "tab":
       return (<>

@@ -594,6 +594,7 @@ async function fileExists(p) {
 const CUT_OFF_DB = -45; // mean volume of the last 60ms above this = cut off
 const MAX_CUT_RETAKES = 4;
 const END_PAD_SEC = 0.3;
+const START_PAD_MS = 120;
 // Transient API errors (rate limit, gateway) are retried with backoff so one
 // flaky response cannot end a long recording run.
 async function fetchWithRetry(url, init, attempts = 4) {
@@ -619,7 +620,9 @@ function endingLoudnessDb(file) {
 function padEnding(inFile, outFile) {
   const r = runFfmpeg([
     "-hide_banner", "-y", "-i", inFile,
-    "-af", `apad=pad_dur=${END_PAD_SEC}`,
+    // A 120ms silent lead-in as well as the 0.3s tail: a clip that opens at full
+    // volume loses its first consonant when playback starts (UAT round 2, W2 1a-1d).
+    "-af", `adelay=${START_PAD_MS}:all=1,apad=pad_dur=${END_PAD_SEC}`,
     "-c:a", "libmp3lame", "-b:a", "128k", "-ar", "44100",
     outFile,
   ]);
