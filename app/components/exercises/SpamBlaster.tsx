@@ -855,13 +855,21 @@ export default function SpamBlaster({
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
       ctx.fillStyle = "#e8edff";
+      // Fit by MEASURED width, not character count: 22 upper-case characters
+      // ("type your HOME ADDRESS") overflow the card where 22 lower-case ones fit
+      // (Abdullah, W2 item 4a). Text may use the card up to 8px from its edge.
+      const textMaxW = EMAIL_W - 44 - 8;
+      const fitText = (text: string, maxW: number) => {
+        if (ctx.measureText(text).width <= maxW) return text;
+        let t = text;
+        while (t.length > 1 && ctx.measureText(t.trimEnd() + "…").width > maxW) t = t.slice(0, -1);
+        return t.trimEnd() + "…";
+      };
       ctx.font = "700 13px 'Space Grotesk', sans-serif";
-      const sender = em.sender.length > 20 ? em.sender.slice(0, 18) + "…" : em.sender;
-      ctx.fillText(sender, -EMAIL_W / 2 + 44, -8);
+      ctx.fillText(fitText(em.sender, textMaxW), -EMAIL_W / 2 + 44, -8);
       ctx.fillStyle = "rgba(197, 205, 240, 0.85)";
       ctx.font = "500 11px 'Space Grotesk', sans-serif";
-      const subj = em.subject.length > 24 ? em.subject.slice(0, 22) + "…" : em.subject;
-      ctx.fillText(subj, -EMAIL_W / 2 + 44, 8);
+      ctx.fillText(fitText(em.subject, textMaxW), -EMAIL_W / 2 + 44, 8);
 
       // Bottom-edge "scanning..." progress shimmer (animated thin bar)
       const scanLen = (Math.abs(Math.sin(phase * 0.6)) * (EMAIL_W - 16));

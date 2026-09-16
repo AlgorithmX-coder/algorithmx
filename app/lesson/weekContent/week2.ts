@@ -432,7 +432,7 @@ export const WEEK_2: WeekContent = {
           asksFor: ["A nickname", "Favorite color"],
           isNosy: false,
           zones: [
-            { id: "who", label: "Who's asking?", note: "A drawing app your grown-up already installed with you.", isRedFlag: false },
+            { id: "who", label: "Who's asking?", note: "A drawing app you and your grown-up installed together.", isRedFlag: false },
             { id: "want", label: "What do they want?", note: "Just a nickname and your favorite color.", isRedFlag: false },
             { id: "need", label: "Do they NEED it?", note: "The nickname labels your saved art. Makes sense!", isRedFlag: false },
             { id: "happens", label: "If I type it in?", note: "Nothing private leaves your device - a nickname isn't a secret.", isRedFlag: false },
@@ -519,7 +519,7 @@ export const WEEK_2: WeekContent = {
         lines: [
           "[excited] Three down! You're a real form detective now.",
           "One little question beats the trick every time...",
-          "[whispers] why are they asking?",
+          "[whispers] WHY are they asking?",
           "[excited] Next, we'll learn the coolest part of being a hero. Your SECRET IDENTITY!",
         ],
       },

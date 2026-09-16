@@ -36,6 +36,9 @@ import { weekCharacterSrc, fallbackToShared } from "@/app/lib/weekCharacters";
 
 import { useEffect, useState } from "react";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+
+/** Intro card fade-out length before it unmounts (see `dismiss`). */
+const OUT_MS = 260;
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
@@ -129,6 +132,19 @@ export default function ExerciseIntroBeat({
   // own safety-release, so this can't stick. Non-paced intros are ready at once.
   const [narrationDone, setNarrationDone] = useState(false);
   const canStart = !paced || narrationDone;
+  // Dismiss = a short fade OUT, then unmount. Before this the card vanished on
+  // the click frame and the game board underneath appeared as a hard cut (UAT
+  // round 2, W2 item 1g: "the next screen flashing before its time").
+  const [leaving, setLeaving] = useState(false);
+  const dismiss = () => {
+    if (leaving) return;
+    if (intensity === 0) {
+      onDismiss();
+      return;
+    }
+    setLeaving(true);
+    window.setTimeout(onDismiss, OUT_MS);
+  };
 
   useEffect(() => {
     audio.transition();
@@ -173,7 +189,13 @@ export default function ExerciseIntroBeat({
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         isolation: "isolate",
-        animation: intensity === 0 ? undefined : "exIntroFade 240ms ease-out",
+        pointerEvents: leaving ? "none" : undefined,
+        animation:
+          intensity === 0
+            ? undefined
+            : leaving
+              ? `exIntroOut ${OUT_MS}ms ease-in both`
+              : "exIntroFade 240ms ease-out",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
@@ -351,7 +373,7 @@ export default function ExerciseIntroBeat({
 
         {canStart ? (
           <div style={{ flexShrink: 0, textAlign: "center" }}>
-            <GameButton variant="primary" size="lg" onClick={onDismiss}>
+            <GameButton variant="primary" size="lg" onClick={dismiss}>
               {paced ? "I'm ready →" : "Let's go →"}
             </GameButton>
           </div>
@@ -361,6 +383,10 @@ export default function ExerciseIntroBeat({
         @keyframes exIntroFade {
           from { opacity: 0 }
           to { opacity: 1 }
+        }
+        @keyframes exIntroOut {
+          from { opacity: 1 }
+          to { opacity: 0 }
         }
         @keyframes exIntroIconPop {
           0%   { opacity: 0; transform: scale(0.4); }

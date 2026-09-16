@@ -74,6 +74,14 @@ export default function ScreenTransition({
   /** Which slot holds the CURRENT screen. The other holds the retiring one. */
   const [front, setFront] = useState<0 | 1>(0);
   const [animating, setAnimating] = useState(false);
+  // The container's height as it was the instant before a swap. Held for the
+  // whole transition so the retiring screen keeps the exact box it was laid out
+  // in: without this, the box shrinks to the INCOMING screen's height (a Learn
+  // screen starts as a short title sweep), the leaving card re-centres upward
+  // and is clipped, and the child sees a jump before the cross-fade (UAT round
+  // 2, W2 item 1g: "the next screen flashing before its time").
+  const [holdHeight, setHoldHeight] = useState<number | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const frontRef = useRef<0 | 1>(0);
   const firstRunRef = useRef(true);
@@ -109,6 +117,11 @@ export default function ScreenTransition({
     const retiring = frontRef.current;
     const incoming: 0 | 1 = retiring === 0 ? 1 : 0;
 
+    // Measured while the DOM still shows the outgoing screen (this effect runs
+    // before the slot swap below commits).
+    const h = wrapperRef.current?.offsetHeight ?? 0;
+    setHoldHeight(h > 0 ? h : null);
+
     setSlots((prev) => {
       const next: [Slot, Slot] = [prev[0], prev[1]];
       next[incoming] = { key: transitionKey, node: children };
@@ -128,6 +141,7 @@ export default function ScreenTransition({
         return next;
       });
       setAnimating(false);
+      setHoldHeight(null);
       retireTimerRef.current = null;
       endCbRef.current?.();
     }, duration);
@@ -164,9 +178,13 @@ export default function ScreenTransition({
 
   return (
     <div
+      ref={wrapperRef}
       style={{
         position: "relative",
         overflow: "hidden",
+        // Never shorter than the screen that is leaving, so its box (and the
+        // retiring slot below, which copies this height) cannot shrink mid-fade.
+        minHeight: animating && holdHeight ? holdHeight : undefined,
         // Kill all clicks mid-transition so a tap can't land on a screen that is
         // being retired: without this the parent fires navigate() again and the
         // click is silently dropped on a node React is removing.
@@ -185,7 +203,12 @@ export default function ScreenTransition({
               // The current screen is in flow and drives the container height.
               // The retiring one overlays the same box underneath it.
               position: isFront ? "relative" : "absolute",
-              inset: isFront ? undefined : 0,
+              // The retiring slot keeps the exact height it had in flow (top-anchored,
+              // not inset: 0), so its content is laid out identically while it fades.
+              top: isFront ? undefined : 0,
+              left: isFront ? undefined : 0,
+              right: isFront ? undefined : 0,
+              height: isFront ? undefined : holdHeight ?? "100%",
               zIndex: isFront ? 1 : 0,
               animation: isFront ? incomingAnim : undefined,
               pointerEvents: isFront ? undefined : "none",
