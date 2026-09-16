@@ -619,24 +619,94 @@ export type ScreenDef = (
        * new password. Practical uniqueness drill.
        */
       type: "accountRescue";
-      /** The shared starter password all accounts initially use. */
-      sharedPassword: string;
-      /** Which account in `accounts` the Raccoon has compromised (id). */
-      leakedAccountId: string;
+      /** Visual skin: W1 account rescue (default) or W5 "moves" (chat moments
+       *  on tiles, hero moves in the bank, every moment its OWN move). */
+      skin?: "rescue" | "moves";
+      /** The shared starter password all accounts initially use (rescue skin). */
+      sharedPassword?: string;
+      /** Which account the Raccoon compromised (rescue: LEAKED chip; moves:
+       *  the tile that pulses `needsLabel`). */
+      leakedAccountId?: string;
       accounts: {
         id: string;
-        /** Display name e.g. "Roblox". */
+        /** Display name e.g. "Roblox", or the chat moment in the moves skin. */
         label: string;
         /** Optional emoji icon. */
         icon?: string;
+        /** Sarah reads the moment when its tile becomes active. */
+        readAloud?: string;
+        /** The one bank item that fits this moment; other picks teach. */
+        correctMoveId?: string;
+        /** Sarah's reason on the right pick ("That's right!" + why). */
+        why?: string;
+        /** WrongAnswerPanel copy on a wrong pick ("Not quite." + whyWrong). */
+        whyWrong?: string;
       }[];
-      /** Bank of strong replacement password options. Need >= accounts.length. */
+      /** Bank of strong replacement passwords (or hero moves). Need >= accounts.length. */
       passwordBank: {
         id: string;
         /** The password text shown on the chip. */
         text: string;
+        /** Optional PixIcon emoji before the text (moves skin). Keep uniform. */
+        icon?: string;
       }[];
       hints?: { tier1: string; tier2: string };
+      /** Copy overrides (moves skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      headerLabel?: string;
+      storyLine?: string;
+      needsLabel?: string;
+      bankPrompt?: string;
+      bankIdle?: string;
+      finishLabel?: string;
+      finishReadyLabel?: string;
+      securedLabel?: string;
+      pickToast?: string;
+      allToast?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      wrongTitle?: string;
+    }
+  | {
+      /**
+       * Don't Feed the Fire (Week 5, "don't fight back"). The HOLD drill and
+       * the week's own signature, moved behind the lesson that teaches its
+       * move. Mean-message sparks land beside a campfire, each with a big
+       * REPLY button; the hero move is to press and HOLD the cool river stone
+       * until the spark starves. The last round flips the verb: a friend is
+       * picked on and the right move is to tap STAND UP. Nothing is timed,
+       * nothing fails; a REPLY tap teaches and the spark waits.
+       */
+      type: "dontFeedTheFire";
+      sparks: {
+        id: string;
+        from: string;
+        text: string;
+        /** Sarah reads the spark as it lands (framed, e.g. "A spark lands. It says: ..."). */
+        readAloud?: string;
+        /** Sarah's reason when the spark is starved ("That's right!" + why). */
+        why?: string;
+      }[];
+      friendRound: {
+        id: string;
+        from: string;
+        text: string;
+        readAloud?: string;
+        why?: string;
+      };
+      /** WrongAnswerPanel copy: REPLY tapped on a spark. */
+      teachSpark: { title: string; body: string; tip: string };
+      /** WrongAnswerPanel copy: REPLY tapped on the friend round. */
+      teachFriend: { title: string; body: string; tip: string };
+      /** WrongAnswerPanel copy: the stone held on the friend round. */
+      teachStoneOnFriend: { title: string; body: string; tip: string };
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      completeTitle?: string;
+      completeLine?: string;
     }
   | {
       /**
@@ -1340,6 +1410,14 @@ export type ScreenDef = (
        * and the complete beat names it out loud.
        */
       type: "snowballChase";
+      /** Field skin: W12 snowfield (default) or W5 "embers" (night ground, ember copies). */
+      skin?: "snow" | "embers";
+      /** Label at the field's edge (default "OVER THE HILL →"). */
+      edgeLabel?: string;
+      /** Optional opening card: the post about to be passed on, with ONE big
+       *  button. Nothing spawns until it is tapped; Sarah reads `readAloud`
+       *  first. (W5 Ember Chase: "one tap sends the message on".) */
+      startCard?: { text: string; buttonLabel: string; readAloud?: string };
       /** Copy overrides (defaults keep the W12 snowfield skin). */
       introTitle?: string;
       introSubtitle?: string;
@@ -1446,23 +1524,31 @@ export type ScreenDef = (
        * means SOME, not none) and a grown-up co-signs the plan.
        */
       type: "dayBalancer";
+      /** Visual skin: W13 day plan (default) or W5 "scales" (no co-sign line
+       *  unless `cosignLine` is given; every label from the copy props). */
+      skin?: "day" | "scales";
       /** Screen blocks that STAY on the plank (balance keeps the fun). */
       keptBlocks: { label: string; icon: string }[];
       swaps: {
         id: string;
         /** The highlighted screen block's story. */
         story: string;
+        /** Sarah reads the moment as it arrives (Learn-Loop weeks). */
+        readAloud?: string;
         /** Chip label/icon for the block on the screen side. */
         blockLabel: string;
         blockIcon: string;
         /** Three options; exactly one isBalancing. */
         options: {
           label: string;
-          /** Emoji rendered via PixIcon on the card. */
+          /** Emoji rendered via PixIcon on the card. Keep it UNIFORM across
+           *  the three cards so it never encodes the answer. */
           icon: string;
           isBalancing: boolean;
           /** Teach copy when a fake-recharge decoy is picked. */
           note: string;
+          /** Sarah's reason on a correct pick ("That's right!" + why). */
+          why?: string;
         }[];
       }[];
       /** Copy overrides (defaults keep the W13 day-plan skin). */
@@ -1490,6 +1576,15 @@ export type ScreenDef = (
        * order separates it from RevealBoard's any-order flips.
        */
       type: "growthRings";
+      /** Visual skin: W17 tree (default) or W5 "campfire" (ember ring
+       *  colours and centre glow; geometry identical). */
+      skin?: "tree" | "campfire";
+      /** What one ring is called in the board copy ("RING 2 OF 4"); default "ring". */
+      ringNoun?: string;
+      /** Placeholder shown before the first tap (default: the tree wording). */
+      placeholder?: string;
+      /** First stat line on the complete beat (default "n/n rings grown"). */
+      completeStat?: string;
       /** Rings in centre-outward order (4 recommended). */
       rings: {
         id: string;
@@ -1501,6 +1596,9 @@ export type ScreenDef = (
         title: string;
         /** Story card body - what grows in this ring. */
         text: string;
+        /** Sarah reads the story as the ring lights (the reveal IS the
+         *  payoff; taps are held while she speaks). */
+        readAloud?: string;
       }[];
       /** Copy overrides (defaults keep the W17 tree skin). */
       introTitle?: string;
@@ -1575,19 +1673,30 @@ export type ScreenDef = (
        * dayBalancer (swap-to-level).
        */
       type: "passcodeForge";
+      /** Visual skin: W18 forge (default) or W5 "stones" (the `digits` field
+       *  is a word label, the code bar shows the chosen labels, "Path:" stat). */
+      skin?: "forge" | "stones";
+      /** Emoji before the round prompt (default "🔨"). */
+      promptIcon?: string;
       rounds: {
         id: string;
         /** Round prompt, e.g. "Forge the FIRST pair". */
         prompt: string;
+        /** Sarah reads the round as it arrives (Learn-Loop weeks). */
+        readAloud?: string;
         /** 3 metal blanks; exactly one isStrong. */
         options: {
-          /** The digit pair on the blank, e.g. "58". */
+          /** The digit pair on the blank, e.g. "58" (a word label in the "stones" skin). */
           digits: string;
           /** Kid-readable tell under the digits. */
           tell: string;
           isStrong: boolean;
           /** WrongAnswerPanel copy when a guessable blank is hammered. */
           explanation: string;
+          /** Sarah's reason on a correct strike ("That's right!" + why). */
+          why?: string;
+          /** Optional PixIcon emoji on the blank. Keep uniform or omit. */
+          icon?: string;
         }[];
       }[];
       introTitle?: string;
@@ -1595,6 +1704,10 @@ export type ScreenDef = (
       introIcon?: string;
       /** Label over the quality meter (default GUESS-O-METER). */
       meterLabel?: string;
+      /** Meter status copy: "n/N {meterCountLabel}" while forging (default
+       *  FORGED), `meterDoneLabel` when complete (default GUESS-PROOF!). */
+      meterCountLabel?: string;
+      meterDoneLabel?: string;
       strikeToast?: string;
       wrongTitle?: string;
       completeTitle?: string;

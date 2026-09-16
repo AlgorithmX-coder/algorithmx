@@ -11,6 +11,14 @@
  *
  * There are no wrong answers here; it's a demonstration arcade. The
  * futility IS the lesson, so the child always earns full stars.
+ *
+ * Learn-Loop wiring: the Raccoon's boast folds into the intro (`threat`);
+ * an optional `startCard` shows the post about to be forwarded with ONE big
+ * button, Sarah reads it aloud (audio-only, the button held while she
+ * speaks) and nothing spawns until the child taps; the how-to (`coachLines`)
+ * is spoken as the field starts spawning (taps held while she speaks); the
+ * complete beat speaks the "you're protected" payoff (`completeNarration`).
+ * No verdicts: there are no wrong answers in this game.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -18,10 +26,26 @@ import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
 import CoachCaption from "@/app/components/lesson/CoachCaption";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
+
+// Audio-only narration: Sarah's voice with no visible narration box (the text
+// she reads is already on screen), same recipe as ClueStamper.
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 interface Ball {
   id: number;
@@ -32,6 +56,10 @@ interface Ball {
 }
 
 export interface SnowballChaseProps {
+  /** Field skin: W12 snowfield (default) or W5 "embers" (night ground, ember copies). */
+  skin?: "snow" | "embers";
+  /** Label at the field's edge. Default "OVER THE HILL →". */
+  edgeLabel?: string;
   /** Copy overrides (defaults keep the W12 snowfield skin). */
   introTitle?: string;
   introSubtitle?: string;
@@ -45,7 +73,18 @@ export interface SnowballChaseProps {
   completeTitle?: string;
   completeLine?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** The how-to, spoken once as the field starts spawning (audio only). */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /**
+   * Optional message card shown on the field after the intro: the post about
+   * to be forwarded, with ONE big button. Nothing spawns until it is tapped.
+   * Sarah reads `readAloud` first (audio only, the button held meanwhile).
+   */
+  startCard?: { text: string; buttonLabel: string; readAloud?: string };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken "you're protected" payoff on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
 }
@@ -56,6 +95,8 @@ const ROLL_AWAY_MS = 2700;
 const MAX_ON_FIELD = 8;
 
 export default function SnowballChase({
+  skin = "snow",
+  edgeLabel,
   introTitle,
   introSubtitle,
   introIcon,
@@ -67,6 +108,9 @@ export default function SnowballChase({
   completeLine,
   introNarration,
   coachLines,
+  startCard,
+  threat,
+  completeNarration,
   onComplete,
   onCorrect,
 }: SnowballChaseProps) {
@@ -74,22 +118,48 @@ export default function SnowballChase({
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  // Both content voices are Sarah; in-game read-alouds are recorded under
+  // "adam", so every manifest lookup here uses that key.
+  const voice = "adam" as const;
+  // Legacy mode (Week 12): none of the Learn-Loop props are present, so the
+  // pre-change behaviour stays intact: `coachLines` shows as the CoachCaption
+  // below the field (until the first sweep) and is NOT spoken through the
+  // audio-only chain. Learn-Loop mode (any of the three present) speaks the
+  // how-to as the field starts spawning instead.
+  const legacy = !startCard && !threat && !completeNarration;
 
   const [showIntro, setShowIntro] = useState(true);
+  // The spawn loop runs only once the field has started: at once after the
+  // intro (legacy), or after the start card's button is tapped.
+  const [started, setStarted] = useState(false);
   const [balls, setBalls] = useState<Ball[]>([]);
   const [swept, setSwept] = useState(0);
   const [rolled, setRolled] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [finished, setFinished] = useState(false);
+  // Legacy mode only: the CoachCaption hides after the first sweep.
   const [hasInteracted, setHasInteracted] = useState(false);
+  // Read-aloud chain: the start card as it appears ("read"), then the how-to
+  // as the field starts spawning ("howto"). Taps are held while she speaks.
+  // "idle" = nothing playing.
+  const [narr, setNarr] = useState<"howto" | "read" | "idle">("idle");
 
   const nextId = useRef(1);
   const duration = reduce ? REDUCED_DURATION_MS : DURATION_MS;
+  const speaking = narr !== "idle";
+
+  // Safety releases for the spoken gate (never leave the field held).
+  useEffect(() => {
+    if (narr === "idle") return;
+    const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [narr]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
 
   // Spawn + clock loop. Spawn accelerates over time; untapped balls roll
   // away on their own and feed the futility counter.
   useEffect(() => {
-    if (showIntro || finished) return;
+    if (showIntro || !started || finished) return;
     const start = performance.now();
     let spawnAt = 0;
     const tick = window.setInterval(() => {
@@ -122,7 +192,7 @@ export default function SnowballChase({
       }
     }, 120);
     return () => window.clearInterval(tick);
-  }, [showIntro, finished, duration]);
+  }, [showIntro, started, finished, duration]);
 
   // Balls that outstay their welcome roll off over the hill.
   useEffect(() => {
@@ -135,8 +205,31 @@ export default function SnowballChase({
     return () => window.clearTimeout(timer);
   }, [balls, showIntro, finished]);
 
+  // The field starts spawning; in Learn-Loop mode the how-to is spoken as it
+  // does (legacy mode keeps the caption and never enters the chain).
+  const startField = () => {
+    setStarted(true);
+    setNarr(legacy || isAudioMuted() ? "idle" : coachLines ? "howto" : "idle");
+  };
+
+  const dismissIntro = () => {
+    setShowIntro(false);
+    if (startCard) {
+      // The message card first: Sarah reads it, the button is held meanwhile.
+      setNarr(isAudioMuted() ? "idle" : startCard.readAloud ? "read" : "idle");
+    } else {
+      startField();
+    }
+  };
+
+  const tapStart = () => {
+    if (speaking || started) return;
+    audio.tap();
+    startField();
+  };
+
   const sweep = (ball: Ball) => {
-    if (finished) return;
+    if (finished || speaking) return;
     setHasInteracted(true);
     audio.correct();
     onCorrect?.();
@@ -169,9 +262,23 @@ export default function SnowballChase({
           subtitle={introSubtitle ?? "Copies of the post are rolling everywhere. Grab the broom - sweep as many as you can!"}
           icon={introIcon ?? "🌀"}
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
-          onDismiss={() => setShowIntro(false)}
+          onDismiss={dismissIntro}
         />
+      )}
+
+      {/* Sarah's read-alouds (audio only, Learn-Loop mode): the start card as
+          it appears, then the how-to as the field starts spawning. */}
+      {!legacy && !showIntro && !finished && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          {narr === "read" && startCard?.readAloud && (
+            <InfoNarration key="sc-read" speaker={voice} lines={[startCard.readAloud]} accent="#7df0ff" recordedOnly onDone={() => setNarr("idle")} />
+          )}
+          {narr === "howto" && coachLines && (
+            <InfoNarration key="sc-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent="#7df0ff" recordedOnly onDone={() => setNarr("idle")} />
+          )}
+        </div>
       )}
 
       {/* HUD */}
@@ -196,8 +303,11 @@ export default function SnowballChase({
           height: 400,
           borderRadius: 18,
           overflow: "hidden",
-          background: "linear-gradient(180deg, #1c2b52 0%, #33507e 55%, #dfeafc 56%, #f6faff 100%)",
-          border: "2px solid rgba(125,240,255,0.35)",
+          background:
+            skin === "embers"
+              ? "linear-gradient(180deg, #120a06 0%, #2a1509 55%, #3a1c0e 56%, #1a0d08 100%)"
+              : "linear-gradient(180deg, #1c2b52 0%, #33507e 55%, #dfeafc 56%, #f6faff 100%)",
+          border: skin === "embers" ? "2px solid rgba(255,157,77,0.4)" : "2px solid rgba(125,240,255,0.35)",
           boxShadow: "0 18px 44px -22px rgba(0,0,0,0.8)",
         }}
       >
@@ -214,11 +324,68 @@ export default function SnowballChase({
             fontSize: 11,
             fontWeight: 900,
             letterSpacing: "0.12em",
-            color: "#33507e",
+            color: skin === "embers" ? "#ffb347" : "#33507e",
           }}
         >
-          OVER THE HILL →
+          {edgeLabel ?? "OVER THE HILL →"}
         </div>
+
+        {/* The post about to be forwarded: ONE button, nothing spawns until it is tapped. */}
+        {startCard && !showIntro && !started && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 20,
+            }}
+          >
+            <motion.div
+              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={reduce ? { duration: 0.2 } : { type: "spring", stiffness: 260, damping: 22 }}
+              style={{
+                width: "100%",
+                maxWidth: 420,
+                borderRadius: 18,
+                padding: "18px 18px 20px",
+                background: "linear-gradient(180deg, rgba(18,24,58,0.94) 0%, rgba(10,14,36,0.96) 100%)",
+                border: "1px solid rgba(125,240,255,0.45)",
+                boxShadow: "0 18px 40px -22px rgba(0,0,0,0.8)",
+                color: "#fff7e6",
+                textAlign: "center",
+                fontFamily: "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 10 }}>
+                <PixIcon emoji={ballIcon ?? "✉️"} size={30} />
+                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#7df0ff" }}>
+                  The post
+                </span>
+              </div>
+              <div
+                style={{
+                  borderRadius: 14,
+                  background: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  padding: "12px 14px",
+                  fontSize: 16,
+                  fontWeight: 700,
+                  lineHeight: 1.4,
+                  marginBottom: 16,
+                }}
+              >
+                <span aria-hidden style={{ marginRight: 6 }}>💬</span>
+                {startCard.text}
+              </div>
+              <GameButton variant="primary" size="lg" clickSound={null} onClick={tapStart} disabled={speaking} style={{ minWidth: 220, cursor: speaking ? "wait" : "pointer" }}>
+                {startCard.buttonLabel}
+              </GameButton>
+            </motion.div>
+          </div>
+        )}
 
         <AnimatePresence>
           {balls.map((b) => (
@@ -226,8 +393,10 @@ export default function SnowballChase({
               key={b.id}
               type="button"
               onClick={() => sweep(b)}
+              disabled={speaking}
               initial={reduce ? { opacity: 0 } : { scale: 0.3, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+              // Motion owns opacity here, so the held look lives in `animate`.
+              animate={{ scale: 1, opacity: speaking ? 0.85 : 1 }}
               exit={reduce ? { opacity: 0 } : { scale: 1.5, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 18 }}
               style={{
@@ -239,12 +408,15 @@ export default function SnowballChase({
                 marginLeft: -b.size / 2,
                 marginTop: -b.size / 2,
                 borderRadius: "50%",
-                border: "3px solid #c9d8ee",
-                background: "radial-gradient(circle at 35% 30%, #ffffff, #dbe7f8 70%, #b9cbe8)",
+                border: skin === "embers" ? "3px solid #ff9d4d" : "3px solid #c9d8ee",
+                background:
+                  skin === "embers"
+                    ? "radial-gradient(circle at 35% 30%, #ffe0a8, #ff8e3c 70%, #b5471a)"
+                    : "radial-gradient(circle at 35% 30%, #ffffff, #dbe7f8 70%, #b9cbe8)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                cursor: "pointer",
+                cursor: speaking ? "wait" : "pointer",
                 boxShadow: "0 10px 22px -10px rgba(20,40,80,0.6)",
                 touchAction: "manipulation",
               }}
@@ -259,7 +431,8 @@ export default function SnowballChase({
         <div aria-hidden style={{ position: "absolute", left: 0, bottom: 0, height: 6, width: `${Math.min(100, phase * 100)}%`, background: "linear-gradient(90deg, #00e5ff, #7eff97)" }} />
       </div>
 
-      {coachLines && !showIntro && !hasInteracted && !finished && (
+      {/* Legacy mode (Week 12): the pre-change coach caption, exactly as before. */}
+      {legacy && coachLines && !showIntro && !hasInteracted && !finished && (
         <CoachCaption lines={coachLines.lines} speaker={coachLines.speaker} />
       )}
 
@@ -271,6 +444,7 @@ export default function SnowballChase({
             `You swept ${swept} - but ${rolledFinal} rolled over the hill`,
             completeLine ?? "Nobody can sweep every copy - heroes think BEFORE they roll.",
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(swept)}
         />
       )}

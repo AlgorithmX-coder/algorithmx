@@ -282,7 +282,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week15.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week15.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -430,7 +430,11 @@ for (const fname of weekFiles) {
   // Hall of Mirrors questions, Barker's Booth messages), the Name Tag teach
   // lines and the Booth's four inspection notes. Their why / whyWrong / nudge /
   // rightWhy reasons come from the generic reason scan above.
-  if (fname === "week2.ts" || fname === "week3.ts" || fname === "week4.ts") {
+  // Week 5 (2026-09-16) adds: readAloud on the Laughing Scales moments, the
+  // Campfire Ring stones, the Stepping Stones rounds, the Kind Moves Board
+  // moments, the Ember Chase start card and Don't Feed the Fire's sparks, plus
+  // the fire's three teach bodies (spoken by WrongAnswerPanel).
+  if (fname === "week2.ts" || fname === "week3.ts" || fname === "week4.ts" || fname === "week5.ts") {
     const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
     const w2Starts = [];
     let w2m;
@@ -507,6 +511,14 @@ for (const fname of weekFiles) {
       if (st.type === "phishInspector") {
         // each inspection note is read as its zone opens
         pushAll(span, /\b(?:senderNote|linkNote|urgencyNote|claimNote):\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      // Week 5 engines: Sarah reads every moment / stone / round / spark as it arrives.
+      if (["dayBalancer", "growthRings", "passcodeForge", "accountRescue", "dontFeedTheFire", "snowballChase"].includes(st.type)) {
+        pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "dontFeedTheFire") {
+        // the three teach panels speak their body ("Not quite." + body)
+        pushAll(span, /\bbody:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       // teamPoster notes are already covered by the wrong-answer `note:` scan above
     });
