@@ -34,11 +34,13 @@ import { weekCharacterSrc, fallbackToShared } from "@/app/lib/weekCharacters";
  *   )}
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 
 /** Intro card fade-out length before it unmounts (see `dismiss`). */
 const OUT_MS = 260;
+/** Smallest zoom a full-screen intro card may shrink to so it fits the viewport. */
+const MIN_FIT = 0.62;
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
@@ -136,6 +138,38 @@ export default function ExerciseIntroBeat({
   // the click frame and the game board underneath appeared as a hard cut (UAT
   // round 2, W2 item 1g: "the next screen flashing before its time").
   const [leaving, setLeaving] = useState(false);
+  // Fit-to-viewport (UAT round 2, W3 item 4b): a threat intro (Raccoon line +
+  // title + five narration lines + button) is taller than a 771px window, and
+  // the modal could not be wheel-scrolled while the narration click-guard was
+  // up, so the button sat below the fold with a dead scrollbar. Zoom the card
+  // down until it fits instead of relying on scroll. `zoom` changes layout
+  // (unlike transform), so the overlay never grows a scrollbar for a fitted card.
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const [fit, setFit] = useState(1);
+  useEffect(() => {
+    if (!fullScreen) return;
+    const el = cardRef.current;
+    if (!el) return;
+    let current = 1;
+    const measure = () => {
+      // getBoundingClientRect reflects zoom; divide it out for the natural height.
+      const natural = el.getBoundingClientRect().height / current;
+      const avail = window.innerHeight - 40;
+      if (natural <= 0 || avail <= 0) return;
+      const next = Math.max(MIN_FIT, Math.min(1, avail / natural));
+      if (Math.abs(next - current) < 0.01) return;
+      current = next;
+      setFit(next);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [fullScreen]);
   const dismiss = () => {
     if (leaving) return;
     if (intensity === 0) {
@@ -152,12 +186,17 @@ export default function ExerciseIntroBeat({
 
   // Final belt-and-suspenders: release the gate after a generous length-based
   // max even if onDone never fires, so the button is never permanently stuck.
+  // Sized from the TEXT, not the line count: a five-line threat intro reads
+  // for 35-40 s, and the old line-based max (30.5 s) showed the button while
+  // Sarah was still talking and the click-guard was still up, so a tap did
+  // nothing (UAT round 2, W3). ~110 ms per character is well above her pace.
+  const narrationChars = narration?.lines.join(" ").length ?? 0;
   useEffect(() => {
     if (!paced) return;
-    const maxMs = Math.min(60000, 8000 + (narration?.lines.length ?? 1) * 4500);
+    const maxMs = Math.min(90000, 8000 + narrationChars * 110);
     const id = window.setTimeout(() => setNarrationDone(true), maxMs);
     return () => window.clearTimeout(id);
-  }, [paced, narration?.lines.length]);
+  }, [paced, narrationChars]);
 
   // Non-paced auto-dismiss (legacy autoMs callers).
   useEffect(() => {
@@ -203,11 +242,13 @@ export default function ExerciseIntroBeat({
       {/* The week's world behind the card (world weeks only) */}
       <WorldBackdrop intensity={0.42} />
       <div
+        ref={cardRef}
         style={{
           position: "relative",
           width: "100%",
           maxWidth: threat ? 560 : paced ? 470 : 420,
           margin: "auto 0",
+          zoom: fullScreen && fit < 1 ? fit : undefined,
           // Card grows to fit ALL its content (danger + title + the FULL
           // narration + button) so nothing is squeezed into a scroll sliver.
           // The overlay itself (inset:0, overflowY:auto) scrolls if the whole

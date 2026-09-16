@@ -42,6 +42,7 @@ import HintBubble from "@/app/components/lesson/HintBubble";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
 // Audio-only narration: Sarah's voice with no visible narration box (the text
 // she reads is already on screen), same recipe as RequestInspector / SignBingo.
@@ -57,7 +58,7 @@ const AUDIO_ONLY_STYLE = {
 // A held gate can never stick: InfoNarration fires onDone on end / error /
 // blocked / no-recording, but not when the master mute stops it, so every hold
 // also releases on mute and after this max.
-const SPOKEN_GATE_MAX_MS = 15000;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 export type PlaquePeekSkin = "door" | "mask";
 

@@ -67,9 +67,13 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[nervous] Oh no, Cyber Hero, look at this! The Raccoon built a FAKE kid profile.",
-          "A copied photo, a typed age, a made-up name... and a hero believed every word.",
-          "[whispers] Right now, he's sending friend requests to more kids.",
+          // Sarah reads the incident report word for word, then reacts to it
+          // (UAT round 2, W3 item 1a: the tester followed the caption as a
+          // transcript). NB: no quoted words in comments inside this array,
+          // the narration generator scans the file for string literals.
+          "[nervous] Oh no, Cyber Hero, look at this incident report!",
+          "The Raccoon built a FAKE kid profile, with a copied photo, a typed age and a made-up name, and tricked a hero into telling him secrets.",
+          "[whispers] He's sending friend requests right now, to more kids.",
           "[warmly] But YOU are about to see straight through every disguise he owns.",
           "Let's see what Mission Command has for us!",
         ],
@@ -1084,7 +1088,7 @@ export const WEEK_3: WeekContent = {
         options: [
           { text: "Nothing, all three can be faked" },
           { text: "The photo proves it's a kid at least" },
-          { text: "The age proves it, games check ages" },
+          { text: "The age proves it. Games check ages" },
         ],
         correctIndex: 0,
         teachOnWrong: {

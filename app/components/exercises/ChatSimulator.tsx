@@ -12,6 +12,7 @@ import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
 // Audio-only narration (Sarah reads the bubbles that are already on screen).
 const AUDIO_ONLY_STYLE = {
@@ -24,7 +25,7 @@ const AUDIO_ONLY_STYLE = {
 } as const;
 
 // A held gate can never stick (see RequestInspector).
-const SPOKEN_GATE_MAX_MS = 15000;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 type Sender = "stranger" | "narrator";
 
@@ -268,9 +269,13 @@ export default function ChatSimulator({
     // showIntro MUST be here: the effect early-returns while the intro is up,
     // so it has to re-run when the intro is dismissed or the message queue
     // never starts (drill hangs on "Waiting for a message…"). `speaking` too:
-    // the queue resumes the moment Sarah finishes.
+    // the queue resumes the moment Sarah finishes. `shown.length` too: the
+    // wrap-up above pushes "Chat ended." and returns, and only a re-run flips
+    // the phase to complete. Without it nothing else changed after that push,
+    // so the Summary (and its Continue) never appeared: a dead end at the end
+    // of every chat (UAT round 2, W3 item 5b).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cursor, phase, waitingChoice, typing, showIntro, speaking]);
+  }, [cursor, phase, waitingChoice, typing, showIntro, speaking, shown.length]);
 
   // Step 2: reveal the message the indicator is typing.
   useEffect(() => {
@@ -392,8 +397,11 @@ export default function ChatSimulator({
         maxWidth: 420,
         margin: "0 auto",
         background: "#0a0e1a",
-        border: "2px solid",
-        borderImage: "linear-gradient(180deg, #3b4a6a, #1a2030) 1",
+        // A plain border follows the 36px radius. The previous border-image
+        // gradient is drawn as a sharp rectangle regardless of border-radius,
+        // which showed as a pale square frame INSIDE the rounded phone (UAT
+        // round 2, W3 item 5a).
+        border: "2px solid #34405e",
         borderRadius: 36,
         overflow: "hidden",
         minHeight: 560,
