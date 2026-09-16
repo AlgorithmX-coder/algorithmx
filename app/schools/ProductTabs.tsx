@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { PHASES, type Phase } from "./phases";
@@ -9,11 +10,18 @@ import { CURRICULUM } from "./curriculum";
 /**
  * "See the product, not a brochure." Numbered steps on the left, a browser
  * frame on the right showing the real screen for the chosen phase. Four of
- * the six steps are captured from the live product; the teacher view and
- * the curriculum map are previews of the pilot build and say so.
+ * the six steps are captured from the live product at 2x; the teacher view
+ * and the curriculum map are previews of the pilot build and say so.
+ * Previous / next controls step through the six, and any real screen can be
+ * opened full size.
  */
 
-type Shot = { src: string; caption: string };
+/** Product frames live at /schools/<img>.webp (1000w) + /schools/<img>@2x.webp (2000w). */
+export const shotSrc = (img: string) => `/schools/${img}.webp`;
+export const shotSet = (img: string) => `/schools/${img}.webp 1000w, /schools/${img}@2x.webp 2000w`;
+export const shotFull = (img: string) => `/schools/${img}@2x.webp`;
+
+type Shot = { img: string; caption: string };
 
 type Tab = {
   id: string;
@@ -32,14 +40,8 @@ const TABS: Tab[] = [
     desc: "Every idea is taught by doing, with a narrator and captions on screen. Nobody needs to read to keep up.",
     kind: "shot",
     shot: {
-      primary: {
-        src: "/schools/heroes-learn.jpg",
-        caption: "Password Hospital, Week 1. Diagnose a sick password, fix it, and watch the strength meter climb.",
-      },
-      secondary: {
-        src: "/schools/explorers-meter.jpg",
-        caption: "Case 3, The Guessing Game. Drag the password length and watch the rig's clock jump from an instant to centuries.",
-      },
+      primary: { img: "heroes-learn", caption: "Password Hospital, Week 1. Diagnose a sick password, fix it, and watch the strength meter climb." },
+      secondary: { img: "explorers-meter", caption: "Case 3, The Guessing Game. Drag the password length and watch the rig's clock jump from an instant to centuries." },
     },
   },
   {
@@ -49,14 +51,8 @@ const TABS: Tab[] = [
     desc: "A hands-on game for every idea. A wrong answer gets a spoken reason and another go.",
     kind: "shot",
     shot: {
-      primary: {
-        src: "/schools/heroes-play.jpg",
-        caption: "Passphrase Forge, Week 1. Three random words make a password the Raccoon's machine can't crack.",
-      },
-      secondary: {
-        src: "/schools/explorers-phone.jpg",
-        caption: "The Phone, Block 2. WREN briefs the pupil by text, then a scammer wearing a friend's account arrives.",
-      },
+      primary: { img: "heroes-play", caption: "Passphrase Forge, Week 1. Three random words make a password the Raccoon's machine can't crack." },
+      secondary: { img: "explorers-phone", caption: "The Phone, Block 2. WREN briefs the pupil by text, then a scammer wearing a friend's account arrives." },
     },
   },
   {
@@ -66,14 +62,8 @@ const TABS: Tab[] = [
     desc: "Every lesson ends in a boss battle or a must-pass test. There is no skipping to the end.",
     kind: "shot",
     shot: {
-      primary: {
-        src: "/schools/heroes-boss.jpg",
-        caption: "The Week 1 boss: the Hacker Raccoon's Quiz Showdown.",
-      },
-      secondary: {
-        src: "/schools/explorers-boss.jpg",
-        caption: "Case 2's boss, The Prize Factory. Three phases, no timer. Think, then act.",
-      },
+      primary: { img: "heroes-boss", caption: "The Week 1 boss: the Hacker Raccoon's Quiz Showdown." },
+      secondary: { img: "explorers-boss", caption: "Case 2's boss, The Prize Factory. Three phases, no timer. Think, then act." },
     },
   },
   {
@@ -83,14 +73,8 @@ const TABS: Tab[] = [
     desc: "Stickers, badges and personal bests. A pupil is measured against last week, never against the pupil next to them.",
     kind: "shot",
     shot: {
-      primary: {
-        src: "/schools/heroes-reward.jpg",
-        caption: "The Week 1 badge, Password Protector, on its way to the pupil's Cyber HQ.",
-      },
-      secondary: {
-        src: "/schools/explorers-map.jpg",
-        caption: "The mission map. Closed cases get a stamp. Nothing ranks pupils against each other.",
-      },
+      primary: { img: "heroes-reward", caption: "The Week 1 badge, Password Protector, on its way to the pupil's Cyber HQ." },
+      secondary: { img: "explorers-map", caption: "The mission map. Closed cases get a stamp. Nothing ranks pupils against each other." },
     },
   },
   {
@@ -111,34 +95,46 @@ const TABS: Tab[] = [
 
 export default function ProductTabs({ phase }: { phase: Phase }) {
   const [active, setActive] = useState(0);
+  const [open, setOpen] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const tab = TABS[active];
   const info = PHASES[phase];
+  const shot = tab.kind === "shot" && tab.shot ? tab.shot[phase] : null;
+
+  const go = (i: number) => setActive((i + TABS.length) % TABS.length);
 
   const onKeyDown = (e: React.KeyboardEvent) => {
-    const last = TABS.length - 1;
     let next: number | null = null;
-    if (e.key === "ArrowDown" || e.key === "ArrowRight") next = active === last ? 0 : active + 1;
-    if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = active === 0 ? last : active - 1;
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") next = active + 1;
+    if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = active - 1;
     if (e.key === "Home") next = 0;
-    if (e.key === "End") next = last;
+    if (e.key === "End") next = TABS.length - 1;
     if (next === null) return;
     e.preventDefault();
-    setActive(next);
-    const btn = listRef.current?.querySelectorAll<HTMLButtonElement>("[role=tab]")[next];
-    btn?.focus();
+    const idx = (next + TABS.length) % TABS.length;
+    setActive(idx);
+    listRef.current?.querySelectorAll<HTMLButtonElement>("[role=tab]")[idx]?.focus();
   };
 
+  // Lightbox: Esc closes, page scroll locks while open.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
+  }, [open]);
+
+  const caption = shot
+    ? shot.caption
+    : tab.kind === "teacher"
+      ? "What a class teacher sees during the block. Built with the pilot school."
+      : "One row per lesson, so the computing lead can evidence coverage in minutes.";
+
   return (
-    <div className="sch-tabs">
-      <div
-        ref={listRef}
-        role="tablist"
-        aria-label="Product screens"
-        aria-orientation="vertical"
-        className="sch-tablist"
-        onKeyDown={onKeyDown}
-      >
+    <div className="sch-tabs" style={{ ["--sch-accent" as string]: info.accent, ["--sch-accent2" as string]: info.accent2 }}>
+      <div ref={listRef} role="tablist" aria-label="Product screens" aria-orientation="vertical" className="sch-tablist" onKeyDown={onKeyDown}>
         {TABS.map((t, i) => {
           const on = i === active;
           return (
@@ -151,7 +147,6 @@ export default function ProductTabs({ phase }: { phase: Phase }) {
               tabIndex={on ? 0 : -1}
               onClick={() => setActive(i)}
               className={`sch-tab${on ? " sch-tab-on" : ""}`}
-              style={{ ["--sch-accent" as string]: info.accent }}
             >
               <span className="sch-tab-head">
                 <span className="sch-tab-n">{t.n}</span>
@@ -163,12 +158,7 @@ export default function ProductTabs({ phase }: { phase: Phase }) {
         })}
       </div>
 
-      <div
-        role="tabpanel"
-        id="sch-tabpanel"
-        aria-labelledby={`sch-tab-${tab.id}`}
-        className="sch-frame"
-      >
+      <div role="tabpanel" id="sch-tabpanel" aria-labelledby={`sch-tab-${tab.id}`} className="sch-frame">
         <div className="sch-frame-bar">
           <span className="sch-frame-dots" aria-hidden>
             <i style={{ background: "#ff5f57" }} />
@@ -176,28 +166,28 @@ export default function ProductTabs({ phase }: { phase: Phase }) {
             <i style={{ background: "#28c840" }} />
           </span>
           <span className="sch-frame-url">
-            <span aria-hidden style={{ color: "#5fffa3" }}>●</span> {tab.kind === "shot" ? info.frameUrl : "algorithmx.io/schools/teacher"}
+            <span aria-hidden style={{ color: "#5fffa3" }}>●</span> {shot ? info.frameUrl : "algorithmx.io/schools/teacher"}
           </span>
-          {tab.kind !== "shot" && (
-            <span className="sch-frame-chip">Pilot preview</span>
-          )}
+          {!shot && <span className="sch-frame-chip">Pilot preview</span>}
         </div>
 
         <div className="sch-frame-body">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={`${tab.id}-${phase}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 0.995 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.22 }}
               style={{ position: "absolute", inset: 0 }}
             >
-              {tab.kind === "shot" && tab.shot && (
+              {shot && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={tab.shot[phase].src}
-                  alt={tab.shot[phase].caption}
+                  src={shotSrc(shot.img)}
+                  srcSet={shotSet(shot.img)}
+                  sizes="(max-width: 900px) 100vw, 800px"
+                  alt={shot.caption}
                   loading={active === 0 ? "eager" : "lazy"}
                   style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
                 />
@@ -206,16 +196,41 @@ export default function ProductTabs({ phase }: { phase: Phase }) {
               {tab.kind === "curriculum" && <CurriculumMock phase={phase} />}
             </motion.div>
           </AnimatePresence>
+          {shot && (
+            <button type="button" className="sch-enlarge" onClick={() => setOpen(true)} aria-label="View this screen full size">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+              </svg>
+              Full size
+            </button>
+          )}
         </div>
 
-        <p className="sch-frame-caption">
-          {tab.kind === "shot" && tab.shot
-            ? tab.shot[phase].caption
-            : tab.kind === "teacher"
-              ? "What a class teacher sees during the block. Built with the pilot school."
-              : "One row per lesson, so the computing lead can evidence coverage in minutes."}
-        </p>
+        <div className="sch-frame-foot">
+          <p className="sch-frame-caption">{caption}</p>
+          <div className="sch-frame-nav" aria-label="Step through the screens">
+            <button type="button" onClick={() => go(active - 1)} aria-label="Previous screen">‹</button>
+            <span className="sch-frame-dotnav" aria-hidden>
+              {TABS.map((t, i) => <i key={t.id} className={i === active ? "on" : ""} />)}
+            </span>
+            <button type="button" onClick={() => go(active + 1)} aria-label="Next screen">›</button>
+          </div>
+        </div>
       </div>
+
+      {/* Portalled to <body>: the section's entrance animation leaves a
+          transform on an ancestor, which would trap position: fixed. */}
+      {open && shot && createPortal(
+        <div className="sch-lightbox" role="dialog" aria-modal="true" aria-label={shot.caption} onClick={() => setOpen(false)}>
+          <div className="sch-lightbox-inner" onClick={(e) => e.stopPropagation()}>
+            <button type="button" className="sch-lightbox-close" onClick={() => setOpen(false)} aria-label="Close">×</button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={shotFull(shot.img)} alt={shot.caption} />
+            <p>{shot.caption}</p>
+          </div>
+        </div>,
+        document.body,
+      )}
     </div>
   );
 }
