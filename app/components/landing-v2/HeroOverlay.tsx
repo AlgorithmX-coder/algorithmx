@@ -33,7 +33,7 @@ export default function HeroOverlay() {
   return (
     <>
       <div
-        className="lv2-hero-enter"
+        className="lv2-hero-enter lv2-hero-pad"
         style={{
           position: "absolute",
           inset: 0,
@@ -46,14 +46,12 @@ export default function HeroOverlay() {
            * shoved the eyebrow under the fixed Nav on short windows;
            * auto margins collapse to 0 instead, so the padding below is
            * a hard floor. */
-          /* Bottom padding is deliberately larger than the top so the
-           * auto-centred block sits a little above true centre (owner
-           * 2026-09-16: "push the main landing page up"), while the top
-           * value stays a hard floor under the fixed nav on short
-           * windows. */
-          padding:
-            "max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) " +
-            "calc(var(--lv2-rail) * 3.0)",
+          /* Padding lives in .lv2-hero-pad (below): the top value is a hard
+           * floor under the fixed nav; the bottom value grows only on tall
+           * windows so the auto-centred block sits a little above true
+           * centre (owner 2026-09-16: "push the main landing page up")
+           * without ever outgrowing the 100vh frame on short ones, where
+           * the next section would paint over the trust row. */
           color: "var(--lv2-paper)",
           pointerEvents: "none",
         }}
@@ -215,6 +213,12 @@ export default function HeroOverlay() {
      *  glow that intensifies on hover so it reads as premium rather
      *  than ghosted. */}
     <style jsx global>{`
+      .lv2-hero-pad {
+        padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
+      }
+      @media (min-height: 1100px) {
+        .lv2-hero-pad { padding-bottom: calc(var(--lv2-rail) * 3); }
+      }
       .lv2-hero-enter {
         animation: lv2HeroEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
       }

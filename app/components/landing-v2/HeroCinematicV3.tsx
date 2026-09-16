@@ -882,6 +882,11 @@ export default function HeroCinematicV3() {
         @media (max-width: 1100px) { .hv3-sceneScale { zoom: 0.82; } }
         @media (max-width: 1000px) { .hv3-sceneScale { zoom: 0.64; } }
         @media (max-width: 768px)  { .hv3-sceneScale { zoom: 0.56; } }
+        /* SCROLL HINT on short windows: the overlay copy (headline, CTA,
+         * trust row) fills the 100vh frame, so the hint drops to the
+         * frame edge, and disappears where even that would collide. */
+        @media (max-height: 1040px) { .hv3-scrollHint { bottom: 10px !important; } }
+        @media (max-height: 820px)  { .hv3-scrollHint { display: none !important; } }
         /* BOTTOM BLEND — feathers the hero's visual layers (nebula wash,
          * laptop scene, floor glow) to transparent over the last ~18% of
          * the frame, so the section hands off into the shared global
@@ -1432,6 +1437,7 @@ function ScrollHintV3({ progress }: { progress: MotionValue<number> }) {
   return (
     <motion.div
       aria-hidden
+      className="hv3-scrollHint"
       style={{
         opacity,
         position: "absolute",
