@@ -220,6 +220,17 @@ export default function HeroOverlay() {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
       }
       .lv2-trust-short { display: none; }
+      /* Tablets: the same idea as phones, gentler. The copy top-aligns
+       * under the nav instead of floating in the middle of the frame,
+       * and the trust pills take the short NCSC label so the pair stays
+       * on one row. Desktop (above 1100px) is untouched. */
+      @media (max-width: 1100px) {
+        .lv2-hero-copy { margin-top: 0 !important; }
+        .lv2-trust-pill { padding: 8px 14px !important; gap: 11px !important; }
+        .lv2-trust-pill img { height: 24px !important; }
+        .lv2-trust-long { display: none; }
+        .lv2-trust-short { display: inline; }
+      }
       /* Phones: top-align the copy under the nav instead of centring it,
        * and scale the trust pills down so neither label wraps. Desktop
        * and tablet rules above are untouched. */
