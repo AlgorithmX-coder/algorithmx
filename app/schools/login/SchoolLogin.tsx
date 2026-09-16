@@ -139,7 +139,7 @@ export default function SchoolLogin() {
               <p style={{ ...eyebrow, color: "var(--lv2-cyan-soft)" }}>Teachers</p>
               <h2 id="sch-teacher-h" style={h2}>Sign in with your school email</h2>
               <p style={body}>
-                Your account is set up during onboarding, so there is nothing to register. Sign in to see your classes and every pupil&rsquo;s progress.
+                Your account is ready from onboarding. Sign in to see your classes and every pupil&rsquo;s progress.
               </p>
               <div style={{ marginTop: "auto", paddingTop: 6 }}>
                 <Link
@@ -220,7 +220,7 @@ export default function SchoolLogin() {
           </div>
 
           <p style={{ ...body, marginTop: 28, fontSize: 14, color: "rgba(232,237,255,0.55)" }}>
-            Not set up yet?{" "}
+            New to AlgorithmX for Schools?{" "}
             <Link href="/schools#enquiry" style={{ color: "var(--lv2-cyan-soft)", textDecoration: "underline", textUnderlineOffset: 3 }}>
               Request a free pilot
             </Link>

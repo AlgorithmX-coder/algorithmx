@@ -38,7 +38,7 @@ export const PHASES: Record<Phase, PhaseInfo> = {
     ages: "Ages 6 to 11",
     accent: "#ffb347",
     accent2: "#ff6fb1",
-    headline: "Narrated lessons, so nobody needs to read to take part.",
+    headline: "Fully narrated lessons that every pupil can follow from the first minute.",
     courses: [
       {
         lockup: "heroes",

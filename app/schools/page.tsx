@@ -11,7 +11,7 @@ import SchoolsLanding from "./SchoolsLanding";
 export const metadata: Metadata = {
   title: "AlgorithmX for Schools | Cybersecurity lessons pupils teach themselves",
   description:
-    "Cyber Heroes for primary, Cyber Explorers and Cyber Ops for secondary. Pupils work independently on school computers. Teachers see everything and prepare nothing. Free half-term pilot for UK and British schools worldwide.",
+    "Cyber Heroes for primary, Cyber Explorers and Cyber Ops for secondary. Pupils work independently on school computers while teachers see every pupil's progress. Free half-term pilot for UK and British schools worldwide.",
   alternates: { canonical: "https://algorithmx.io/schools" },
   openGraph: {
     title: "AlgorithmX for Schools",

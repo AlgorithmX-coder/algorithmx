@@ -105,8 +105,8 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
 
 const STEPS = [
   { n: "01", when: "Day 1", colour: "#7df0ff", title: "Send us first names", text: "Sign the processing agreement and send each class list: first names and year group. That is all we ever hold about a pupil." },
-  { n: "02", when: "Day 2", colour: "#b98bff", title: "Print the login cards", text: "Every pupil gets a card with the class code and a three-picture password. No email addresses, nothing to type twice." },
-  { n: "03", when: "Weekly", colour: "#5fffa3", title: "Run the block", text: "Six lessons, 45 minutes each, one a week. Pupils work on their own with headphones or captions. Progress saves on every screen, so the bell never costs a lesson." },
+  { n: "02", when: "Day 2", colour: "#b98bff", title: "Print the login cards", text: "Every pupil gets a card with the class code and a three-picture password, so logging in takes seconds, even in Year 2." },
+  { n: "03", when: "Weekly", colour: "#5fffa3", title: "Run the block", text: "Six lessons, 45 minutes each, one a week. Pupils work on their own with headphones or captions, and progress saves on every screen, so each pupil picks up exactly where they left off." },
   { n: "04", when: "End of block", colour: "#ffb347", title: "Get the class report", text: "Who finished, what the class found hard, and a certificate for every pupil to take home." },
 ];
 
@@ -121,7 +121,7 @@ const PILLARS = [
     title: "Safe by default",
     accent: "#5fffa3",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></svg>,
-    points: ["No chat, no messaging, no social features", "First name, class and progress. Nothing else stored.", "No pupil data is sent to any AI service", "Deleted when you ask, in full"],
+    points: ["A closed environment: pupils only ever interact with the lesson", "Data kept to a minimum: first name, class and progress", "Pupil data is never sent to AI services", "Deleted in full whenever you ask"],
   },
   {
     title: "Matched to the curriculum",
@@ -141,11 +141,11 @@ const RECEIVE = [
 ];
 
 const FAQS = [
-  { q: "What do we need in the room?", a: "Any computer with a modern browser. Headphones help; captions cover the rest. Nothing to install and nothing for your network team to open up." },
+  { q: "What do we need in the room?", a: "Any computer with a modern browser. Headphones help, and captions cover the rest. It runs entirely in the browser, so your network team has nothing to set up." },
   { q: "How long is a lesson?", a: "About 45 minutes, which fits a standard slot with time to log in. Progress saves on every screen, so if the bell goes, the pupil picks up exactly where they left off next week." },
   { q: "Who teaches it?", a: "The class teacher, whatever their confidence with computing. The narrator carries every instruction, the games mark themselves, and the teacher view shows who needs a nudge." },
-  { q: "What pupil data do you hold?", a: "First name, class and progress. No email addresses, dates of birth or photos. Nothing a pupil does is sent to an AI service, and we delete a school's data in full when asked." },
-  { q: "Is it safe?", a: "There is no chat, no messaging and no social feature of any kind. Pupils only ever interact with the lesson. Rewards are personal, never a ranking." },
+  { q: "What pupil data do you hold?", a: "First name, class and progress, and that is all. Pupil activity stays within the platform and is never sent to an AI service, and we delete a school's data in full whenever you ask." },
+  { q: "Is it safe?", a: "Yes. Pupils only ever interact with the lesson itself, inside a closed environment built for schools, and every reward is personal to the pupil." },
   { q: "How does a school get started?", a: "Get in touch and we'll walk you through the onboarding process: the agreement, the class lists, the login cards and the first lesson. Most schools start with a free half-term pilot." },
 ];
 
@@ -251,7 +251,7 @@ export default function SchoolsLanding() {
               <FadeUp delay={0.24}>
                 <ul className="sch-trust">
                   <li>Mapped to Education for a Connected World</li>
-                  <li>No pupil data sent to AI services</li>
+                  <li>Pupil data never sent to AI services</li>
                   <li>Runs in the browser. Nothing to install.</li>
                 </ul>
               </FadeUp>
@@ -348,7 +348,7 @@ export default function SchoolsLanding() {
             <p style={eyebrow}>{"// Inside the platform · "}{info.label}</p>
             <h2 style={h2}>See the product, <span className="sch-grad">not a brochure.</span></h2>
             <p style={lede}>
-              Four of these screens are the live product, captured as a pupil sees it. The last two are previews of what teachers get in the pilot. Pick a step, or open any screen full size.
+              Four screens captured straight from the live product, as a pupil sees it, and two showing what teachers get with the pilot. Pick a step, or open any screen full size.
             </p>
           </FadeUp>
           <FadeUp delay={0.08}>
@@ -386,7 +386,7 @@ export default function SchoolsLanding() {
           <FadeUp>
             <p style={eyebrow}>{"// Built for a room of thirty"}</p>
             <h2 style={h2}>Independent by design. <span className="sch-grad">Safe by default.</span></h2>
-            <p style={lede}>Thirty pupils, one adult, fifty minutes. Every part of the platform is built around that room, not a living room.</p>
+            <p style={lede}>Thirty pupils, one adult, fifty minutes. Every part of the platform is built around that room.</p>
           </FadeUp>
           <div className="sch-grid-3" style={{ marginTop: 36 }}>
             {PILLARS.map((p, i) => (
@@ -416,7 +416,7 @@ export default function SchoolsLanding() {
               <div className="sch-card sch-pilot">
                 <span className="sch-chip sch-chip-live">Free</span>
                 <h3>A half-term pilot, on us.</h3>
-                <p>Six lessons with one class. If it works, license the whole school from the start of a term. If it doesn&rsquo;t, you owe nothing and we delete the data.</p>
+                <p>Six lessons with one class, with everything included. See the results for yourself, then license the whole school from the start of a term.</p>
                 <ul>
                   <li>One class, one course, six lessons</li>
                   <li>Login cards and the teacher view included</li>

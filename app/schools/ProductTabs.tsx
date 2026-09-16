@@ -37,7 +37,7 @@ const TABS: Tab[] = [
     id: "learn",
     n: "01",
     title: "Learn",
-    desc: "Every idea is taught by doing, with a narrator and captions on screen. Nobody needs to read to keep up.",
+    desc: "Every idea is taught by doing, with a narrator and captions on screen, so every pupil can follow along.",
     kind: "shot",
     shot: {
       primary: { img: "heroes-learn", caption: "Password Hospital, Week 1. Diagnose a sick password, fix it, and watch the strength meter climb." },
@@ -59,22 +59,22 @@ const TABS: Tab[] = [
     id: "prove",
     n: "03",
     title: "Prove it",
-    desc: "Every lesson ends in a boss battle or a must-pass test. There is no skipping to the end.",
+    desc: "Every lesson ends in a boss battle or a must-pass test, so pupils prove what they have learned before they move on.",
     kind: "shot",
     shot: {
       primary: { img: "heroes-boss", caption: "The Week 1 boss: the Hacker Raccoon's Quiz Showdown." },
-      secondary: { img: "explorers-boss", caption: "Case 2's boss, The Prize Factory. Three phases, no timer. Think, then act." },
+      secondary: { img: "explorers-boss", caption: "Case 2's boss, The Prize Factory. Three phases that reward thinking before acting." },
     },
   },
   {
     id: "progress",
     n: "04",
     title: "Their own progress",
-    desc: "Stickers, badges and personal bests. A pupil is measured against last week, never against the pupil next to them.",
+    desc: "Stickers, badges and personal bests that keep every pupil motivated from one week to the next.",
     kind: "shot",
     shot: {
       primary: { img: "heroes-reward", caption: "The Week 1 badge, Password Protector, on its way to the pupil's Cyber HQ." },
-      secondary: { img: "explorers-map", caption: "The mission map. Closed cases get a stamp. Nothing ranks pupils against each other." },
+      secondary: { img: "explorers-map", caption: "The mission map. Every closed case earns a stamp, so pupils see their progress build across the course." },
     },
   },
   {
@@ -129,7 +129,7 @@ export default function ProductTabs({ phase }: { phase: Phase }) {
   const caption = shot
     ? shot.caption
     : tab.kind === "teacher"
-      ? "What a class teacher sees during the block. Built with the pilot school."
+      ? "Who has finished, who needs a nudge and what the class found hard, on one screen for the class teacher."
       : "One row per lesson, so the computing lead can evidence coverage in minutes.";
 
   return (

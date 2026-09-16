@@ -252,7 +252,7 @@ export default function EnquiryForm({
           {state === "loading" ? "Sending…" : "Send enquiry"}
         </motion.button>
         <span style={{ fontFamily: "var(--lv2-font-display)", fontSize: 13.5, color: "rgba(232,237,255,0.55)" }}>
-          No newsletter, no sales calls unless you ask for one.
+          A real person replies within two working days.
         </span>
       </div>
 
