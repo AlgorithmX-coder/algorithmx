@@ -132,11 +132,11 @@ export default function Nav() {
             Courses
           </a>
           <Link
-            className="lv2-nav-secondary lv2-nav-login"
-            href="/login"
+            className="lv2-nav-secondary"
+            href="/schools"
             style={{ ...navLink, color: textColorMuted }}
           >
-            Log In
+            Schools
           </Link>
           <Link
             ref={ctaRef}
@@ -481,16 +481,12 @@ export default function Nav() {
           border-radius: 2px;
         }
 
-        /* Tablet: hide the anchor links so the bar never overflows —
-           but Log In stays (existing customers on iPad portrait must
-           always have a sign-in path; there is no hamburger). CTA pill
-           stays visible too. */
+        /* Tablet: hide the anchor links so the bar never overflows (there
+           is no hamburger). The CTA pill stays visible; existing customers
+           reach sign-in from the sign-up page it opens. */
         @media (max-width: 900px) {
           :global(.lv2-nav-secondary) {
             display: none !important;
-          }
-          :global(.lv2-nav-login) {
-            display: inline-block !important;
           }
         }
         /* Phone: shrink the CTA pill so it doesn't wrap or push the

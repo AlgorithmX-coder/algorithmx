@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import CyberEssentialsBadge from "./CyberEssentialsBadge";
 
 /**
  * HeroOverlay. The static brand UI over the cinematic: eyebrow +
@@ -45,9 +46,14 @@ export default function HeroOverlay() {
            * shoved the eyebrow under the fixed Nav on short windows;
            * auto margins collapse to 0 instead, so the padding below is
            * a hard floor. */
+          /* Bottom padding is deliberately larger than the top so the
+           * auto-centred block sits a little above true centre (owner
+           * 2026-09-16: "push the main landing page up"), while the top
+           * value stays a hard floor under the fixed nav on short
+           * windows. */
           padding:
             "max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) " +
-            "calc(var(--lv2-rail) * 1.6)",
+            "calc(var(--lv2-rail) * 3.0)",
           color: "var(--lv2-paper)",
           pointerEvents: "none",
         }}
@@ -162,10 +168,12 @@ export default function HeroOverlay() {
           </Link>
         </div>
 
-        {/* Aligned with the NCSC (alignment, not endorsement — the NCSC
-            runs no endorsement scheme). Above the fold so it's the first
-            trust mark a visitor sees, matching the course landings. */}
-        <div style={{ marginTop: "calc(var(--lv2-rail) * 0.45)" }}>
+        {/* Trust row: Cyber Essentials certification (2026-09) beside the
+            NCSC alignment mark (alignment, not endorsement — the NCSC runs
+            no endorsement scheme). Above the fold so they're the first
+            trust marks a visitor sees, matching the course landings. */}
+        <div style={{ marginTop: "calc(var(--lv2-rail) * 0.45)", display: "flex", flexWrap: "wrap", gap: 10, pointerEvents: "auto" }}>
+          <CyberEssentialsBadge />
           <span
             style={{
               display: "inline-flex",

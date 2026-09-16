@@ -99,6 +99,7 @@ export default function Footer() {
           <FooterColumn
             label="Company"
             links={[
+              { name: "For Schools", href: "/schools" },
               { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
             ]}
           />
