@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T17:40:14.789Z",
+  "generatedAt": "2026-09-16T18:55:24.819Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -15648,290 +15648,457 @@
       "file": "/audio/voice/df35597bad395ba4.mp3"
     },
     {
-      "key": "09fa351a5d655638",
+      "key": "0145d790e974fdb8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Game night! You are the keeper of this lobby. Slide Adam side to side, just like a goalie. High five the badge friends. No badge? Block them out!",
+      "text": "[nervous] Cyber Hero, grab your controller and read this incident report with me. The Raccoon slipped into a game lobby with a friendly username, fished for real names and schools - then asked kids to 'chat somewhere else'. Your game zone needs DEFENDING! [whispers] A friendly username. That is all it took to get in. [warmly] By the end of today, your lobby will have guards on every door. Let's see what Mission Command has for us!",
       "lines": [
-        "[excited] Game night! You are the keeper of this lobby.",
-        "Slide Adam side to side, just like a goalie.",
-        "High five the badge friends. No badge? Block them out!"
+        "[nervous] Cyber Hero, grab your controller and read this incident report with me.",
+        "The Raccoon slipped into a game lobby with a friendly username, fished for real names and schools - then asked kids to 'chat somewhere else'. Your game zone needs DEFENDING!",
+        "[whispers] A friendly username. That is all it took to get in.",
+        "[warmly] By the end of today, your lobby will have guards on every door.",
+        "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/09fa351a5d655638.mp3"
+      "file": "/audio/voice/0145d790e974fdb8.mp3"
     },
     {
-      "key": "1a3251262986c9c3",
+      "key": "cdd4ac1a72de1d3c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Welcome back, Cyber Hero. Grab your controller! Game chat is AWESOME for game talk. Tactics! Rematches! Nice shot! [whispers] But your real-life info never goes in there. Your name. Your age. Your school. Where you live. [excited] Game talk in - real-life info OUT. You're the goalie!",
+      "text": "[excited] Welcome back, Cyber Hero. Grab your controller! Game chat is brilliant for game talk. Tactics, rematches, nice shot! [whispers] But your real-life info never goes in there. Your name. Your age. Your school. Where you live. A lobby is full of people you have never met, even the friendly ones. [excited] Game talk in, real-life info out. Come and catch the leaks before you hit SEND!",
       "lines": [
         "[excited] Welcome back, Cyber Hero. Grab your controller!",
-        "Game chat is AWESOME for game talk.",
-        "Tactics! Rematches! Nice shot!",
+        "Game chat is brilliant for game talk. Tactics, rematches, nice shot!",
         "[whispers] But your real-life info never goes in there.",
         "Your name. Your age. Your school. Where you live.",
-        "[excited] Game talk in - real-life info OUT. You're the goalie!"
+        "A lobby is full of people you have never met, even the friendly ones.",
+        "[excited] Game talk in, real-life info out. Come and catch the leaks before you hit SEND!"
       ],
-      "file": "/audio/voice/1a3251262986c9c3.mp3"
+      "file": "/audio/voice/cdd4ac1a72de1d3c.mp3"
     },
     {
-      "key": "1c9c5afa335b2c2e",
+      "key": "b0adaf17c1fd0d9b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] You're in goal, hero! Chat lines are flying toward the send button. Game talk? Let it fly through - it's safe. [whispers] Real-life info? Name, school, address, home-alone times... [excited] PUNCH those away before they leak!",
+      "text": "[excited] On your first challenge, you fix chat messages before they fly! This game is all about keeping real-life info out of game chat. Out in the real world, a leak is usually one little word in a friendly message. Here is what you do. Your message appears as word tiles. Read it. If a word gives away who you are or where you are, tap it, then tap the safer swap. If it is all game talk, just tap SEND. [warmly] Send every message clean, and the lobby learns nothing about you. Ready? First message!",
       "lines": [
-        "[excited] You're in goal, hero!",
-        "Chat lines are flying toward the send button.",
-        "Game talk? Let it fly through - it's safe.",
-        "[whispers] Real-life info? Name, school, address, home-alone times...",
-        "[excited] PUNCH those away before they leak!"
+        "[excited] On your first challenge, you fix chat messages before they fly!",
+        "This game is all about keeping real-life info out of game chat.",
+        "Out in the real world, a leak is usually one little word in a friendly message.",
+        "Here is what you do. Your message appears as word tiles. Read it. If a word gives away who you are or where you are, tap it, then tap the safer swap. If it is all game talk, just tap SEND.",
+        "[warmly] Send every message clean, and the lobby learns nothing about you. Ready? First message!"
       ],
-      "file": "/audio/voice/1c9c5afa335b2c2e.mp3"
+      "file": "/audio/voice/b0adaf17c1fd0d9b.mp3"
     },
     {
-      "key": "d1cb62811e250cdf",
-      "speaker": "layla",
+      "key": "5bde6675664927e4",
+      "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] What a goalie! Not one leak got past you. Game talk flowed, real-life info bounced. [warmly] But guarding every message is hard work... [whispers] so next, we make the LOBBY do the guarding for you.",
+      "text": "Here is your first message. Tap the word that leaks, or SEND if it is all game talk.",
       "lines": [
-        "[excited] What a goalie! Not one leak got past you.",
-        "Game talk flowed, real-life info bounced.",
-        "[warmly] But guarding every message is hard work...",
-        "[whispers] so next, we make the LOBBY do the guarding for you."
+        "Here is your first message. Tap the word that leaks, or SEND if it is all game talk."
       ],
-      "file": "/audio/voice/d1cb62811e250cdf.mp3"
+      "file": "/audio/voice/5bde6675664927e4.mp3"
     },
     {
-      "key": "081a04e076bc12be",
+      "key": "ac5535258b330290",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every message sent safely, Cyber Hero! You caught every leak. [warmly] Out in the real world, read your message once before you send it. Game talk flies, real-life info stays home.",
+      "lines": [
+        "[proud] Every message sent safely, Cyber Hero! You caught every leak.",
+        "[warmly] Out in the real world, read your message once before you send it. Game talk flies, real-life info stays home."
+      ],
+      "file": "/audio/voice/ac5535258b330290.mp3"
+    },
+    {
+      "key": "5fc1ef581f7dd7fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Home alone tells a stranger there is no grown-up with you. Rematches and tactics are game talk, and game talk is safe. [warmly] One quick read before you send, every time.",
+      "lines": [
+        "[proud] Well done!",
+        "Home alone tells a stranger there is no grown-up with you.",
+        "Rematches and tactics are game talk, and game talk is safe.",
+        "[warmly] One quick read before you send, every time."
+      ],
+      "file": "/audio/voice/5fc1ef581f7dd7fb.mp3"
+    },
+    {
+      "key": "0b696e4816ff6243",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Want to hear a hero secret? Your game can guard you all by itself. [excited] Friends-only means only people you KNOW can join. A hero name keeps your real one hidden. And a friends-only mic? Strangers can't even hear you. [warmly] Set the settings once... and you're safe every game after. Let's flip them!",
+      "text": "[proud] What a fixer, Cyber Hero. Not one leak got past you. Game talk flew, real-life info stayed home. [whispers] But checking every message is hard work. What if the lobby could guard itself? Next, we'll learn the setting that does exactly that. Come and see!",
       "lines": [
-        "[whispers] Want to hear a hero secret?",
-        "Your game can guard you all by itself.",
-        "[excited] Friends-only means only people you KNOW can join.",
+        "[proud] What a fixer, Cyber Hero. Not one leak got past you.",
+        "Game talk flew, real-life info stayed home.",
+        "[whispers] But checking every message is hard work. What if the lobby could guard itself?",
+        "Next, we'll learn the setting that does exactly that. Come and see!"
+      ],
+      "file": "/audio/voice/0b696e4816ff6243.mp3"
+    },
+    {
+      "key": "c88d49dd2ef2bb04",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Here is the setting that guards your lobby all by itself. [excited] Friends only. It means only people you KNOW can join. A hero name keeps your real one hidden. And a friends-only mic? Strangers cannot even hear you. [warmly] Set them once with a grown-up, and you are safe every game after. [excited] Come and guard the door with me!",
+      "lines": [
+        "[whispers] Here is the setting that guards your lobby all by itself.",
+        "[excited] Friends only. It means only people you KNOW can join.",
         "A hero name keeps your real one hidden.",
-        "And a friends-only mic? Strangers can't even hear you.",
-        "[warmly] Set the settings once... and you're safe every game after. Let's flip them!"
+        "And a friends-only mic? Strangers cannot even hear you.",
+        "[warmly] Set them once with a grown-up, and you are safe every game after.",
+        "[excited] Come and guard the door with me!"
       ],
-      "file": "/audio/voice/081a04e076bc12be.mp3"
+      "file": "/audio/voice/c88d49dd2ef2bb04.mp3"
     },
     {
-      "key": "ec63af5cbb45aa44",
+      "key": "8db1670d7ab95e14",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Here's the lobby settings panel! Some rows are already safe and green. [whispers] But three are wide open to strangers... [excited] Find the risky ones and FLIP them safe!",
+      "text": "[excited] On your second challenge, you stand at the Lobby Doors! This game is all about letting friends in and keeping strangers out. Out in the real world, a lobby door with no lock lets anyone walk in with a friendly name. Here is what you do. A player comes to the door. I will tell you who it is. If they wear the team badge, tap LET IN. No badge? Tap DENY. After the first few players, a settings card appears. Tap it to switch the lobby to friends only, and watch what changes. [warmly] Guard the door, then let the setting guard it for you. Ready? First player!",
       "lines": [
-        "[excited] Here's the lobby settings panel!",
-        "Some rows are already safe and green.",
-        "[whispers] But three are wide open to strangers...",
-        "[excited] Find the risky ones and FLIP them safe!"
+        "[excited] On your second challenge, you stand at the Lobby Doors!",
+        "This game is all about letting friends in and keeping strangers out.",
+        "Out in the real world, a lobby door with no lock lets anyone walk in with a friendly name.",
+        "Here is what you do. A player comes to the door. I will tell you who it is. If they wear the team badge, tap LET IN. No badge? Tap DENY. After the first few players, a settings card appears. Tap it to switch the lobby to friends only, and watch what changes.",
+        "[warmly] Guard the door, then let the setting guard it for you. Ready? First player!"
       ],
-      "file": "/audio/voice/ec63af5cbb45aa44.mp3"
+      "file": "/audio/voice/8db1670d7ab95e14.mp3"
     },
     {
-      "key": "2600d776e3bbbc5f",
+      "key": "b141b090db2d1d94",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Red rows are leaking - tap one to flip it safe!",
+      "text": "Someone is at the door. Badge? LET IN. No badge? DENY.",
       "lines": [
-        "Red rows are leaking - tap one to flip it safe!"
+        "Someone is at the door. Badge? LET IN. No badge? DENY."
       ],
-      "file": "/audio/voice/2600d776e3bbbc5f.mp3"
+      "file": "/audio/voice/b141b090db2d1d94.mp3"
     },
     {
-      "key": "b4e83a1781883035",
+      "key": "112c408e79d3d24a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Lobby locked, Cyber Hero! Friends in, strangers out. [warmly] Out in the real world, ask a grown-up to flip friends only with you once. After that, the lobby does the checking for you, every game.",
+      "lines": [
+        "[proud] Lobby locked, Cyber Hero! Friends in, strangers out.",
+        "[warmly] Out in the real world, ask a grown-up to flip friends only with you once. After that, the lobby does the checking for you, every game."
+      ],
+      "file": "/audio/voice/112c408e79d3d24a.mp3"
+    },
+    {
+      "key": "b5e532db757d77fa",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Friends only is the lock on the lobby door. Only people you actually know can even reach it. [warmly] Set it once with a grown-up, and it guards every game after.",
+      "lines": [
+        "[proud] Well done!",
+        "Friends only is the lock on the lobby door.",
+        "Only people you actually know can even reach it.",
+        "[warmly] Set it once with a grown-up, and it guards every game after."
+      ],
+      "file": "/audio/voice/b5e532db757d77fa.mp3"
+    },
+    {
+      "key": "f4a7923d4f035dc6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Lobby: LOCKED. Beautiful work. Friends-only join, hero name, friends-only mic. [whispers] But some tricksters still get in... and they all try the same sneaky move. Listen closely.",
+      "text": "[proud] Lobby locked, Cyber Hero. Friends only, hero name, friends-only mic. The doors check the badges for you now. [whispers] But every so often a trickster still slips in, and they all try one sneaky move. Next, we'll learn what 'let's chat somewhere else' really means. Come and see!",
       "lines": [
-        "[excited] Lobby: LOCKED. Beautiful work.",
-        "Friends-only join, hero name, friends-only mic.",
-        "[whispers] But some tricksters still get in...",
-        "and they all try the same sneaky move. Listen closely."
+        "[proud] Lobby locked, Cyber Hero. Friends only, hero name, friends-only mic.",
+        "The doors check the badges for you now.",
+        "[whispers] But every so often a trickster still slips in, and they all try one sneaky move.",
+        "Next, we'll learn what 'let's chat somewhere else' really means. Come and see!"
       ],
-      "file": "/audio/voice/b4e83a1781883035.mp3"
+      "file": "/audio/voice/f4a7923d4f035dc6.mp3"
     },
     {
-      "key": "fa6ebcb91ad77440",
+      "key": "b88e9321a7ba4304",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Game chat is a guarded playground. Rules. Moderators. Report buttons. Guards everywhere! [whispers] So tricksters always try the same move... 'Hey, let's chat on a different app instead!' [nervous] Because over THERE... the guards can't see them. [excited] You know this one from Week 3. Moving the chat? Red flag!",
+      "text": "[warmly] So what does 'let's chat somewhere else' really mean? Game chat is a guarded playground. Rules. Moderators. Report buttons. Guards everywhere! [whispers] Over on another app, those guards cannot see a thing. That is exactly why tricksters want to move you. [excited] You know this one from Week 3. Moving the chat? Red flag! Come and count the guards with me!",
       "lines": [
-        "[warmly] Game chat is a guarded playground.",
-        "Rules. Moderators. Report buttons. Guards everywhere!",
-        "[whispers] So tricksters always try the same move...",
-        "'Hey, let's chat on a different app instead!'",
-        "[nervous] Because over THERE... the guards can't see them.",
-        "[excited] You know this one from Week 3. Moving the chat? Red flag!"
+        "[warmly] So what does 'let's chat somewhere else' really mean?",
+        "Game chat is a guarded playground. Rules. Moderators. Report buttons. Guards everywhere!",
+        "[whispers] Over on another app, those guards cannot see a thing.",
+        "That is exactly why tricksters want to move you.",
+        "[excited] You know this one from Week 3. Moving the chat? Red flag!",
+        "Come and count the guards with me!"
       ],
-      "file": "/audio/voice/fa6ebcb91ad77440.mp3"
+      "file": "/audio/voice/b88e9321a7ba4304.mp3"
     },
     {
-      "key": "a6cd8bf863e69cde",
+      "key": "befc0251b3210c49",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Time to practice, right inside a lobby chat. A player is about to get very friendly... [whispers] and then try to move you somewhere else. [excited] Watch the meter. Trust your training!",
+      "text": "[excited] On your third challenge, you count the guards in Guard Count! This game is all about spotting when a chat is trying to move you away from the guards. Out in the real world, the move always comes with a friendly reason: laggy chat, a secret trick, a private server. Here is what you do. A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in. [warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!",
       "lines": [
-        "[warmly] Time to practice, right inside a lobby chat.",
-        "A player is about to get very friendly...",
-        "[whispers] and then try to move you somewhere else.",
-        "[excited] Watch the meter. Trust your training!"
+        "[excited] On your third challenge, you count the guards in Guard Count!",
+        "This game is all about spotting when a chat is trying to move you away from the guards.",
+        "Out in the real world, the move always comes with a friendly reason: laggy chat, a secret trick, a private server.",
+        "Here is what you do. A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in.",
+        "[warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!"
       ],
-      "file": "/audio/voice/a6cd8bf863e69cde.mp3"
+      "file": "/audio/voice/befc0251b3210c49.mp3"
     },
     {
-      "key": "500ade47138a4b4a",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Three powers! The 'somewhere else' trick bounced right off you. Game chat has guards, and you stayed with them. [warmly] Speaking of guards... [excited] it's time you met the two mightiest buttons in any game!",
-      "lines": [
-        "[excited] Three powers! The 'somewhere else' trick bounced right off you.",
-        "Game chat has guards, and you stayed with them.",
-        "[warmly] Speaking of guards...",
-        "[excited] it's time you met the two mightiest buttons in any game!"
-      ],
-      "file": "/audio/voice/500ade47138a4b4a.mp3"
-    },
-    {
-      "key": "7c5d4e4d17af4066",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Meet the two mightiest buttons in any game! REPORT tells the game's guards: 'check this player!' BLOCK makes them vanish from YOUR game. Poof! No messages, no joining, they can't even see you. [warmly] Report first, then block. [excited] Using them isn't mean - it's exactly what they're for. Let's find them!",
-      "lines": [
-        "[excited] Meet the two mightiest buttons in any game!",
-        "REPORT tells the game's guards: 'check this player!'",
-        "BLOCK makes them vanish from YOUR game. Poof!",
-        "No messages, no joining, they can't even see you.",
-        "[warmly] Report first, then block.",
-        "[excited] Using them isn't mean - it's exactly what they're for. Let's find them!"
-      ],
-      "file": "/audio/voice/7c5d4e4d17af4066.mp3"
-    },
-    {
-      "key": "ceed8360bbffa250",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[warmly] There's the player menu - six buttons. Two of them are your power buttons. [whispers] Report first... it calls the guards. [excited] Then block. Find them both!",
-      "lines": [
-        "[warmly] There's the player menu - six buttons.",
-        "Two of them are your power buttons.",
-        "[whispers] Report first... it calls the guards.",
-        "[excited] Then block. Find them both!"
-      ],
-      "file": "/audio/voice/ceed8360bbffa250.mp3"
-    },
-    {
-      "key": "6e8f9efb6eb85e7b",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Which button calls the game's guards? Tap it first!",
-      "lines": [
-        "Which button calls the game's guards? Tap it first!"
-      ],
-      "file": "/audio/voice/6e8f9efb6eb85e7b.mp3"
-    },
-    {
-      "key": "9991ed15decef20c",
+      "key": "e9de3cbaa60b792c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Four powers! You found both buttons in seconds. Report. Block. Tell. [laughs] GoldRush_Gary never knew what hit him. [whispers] One last trap guards the game zone... the 'free' download.",
+      "text": "Tap every guard slot in both places. Then tap STAY HERE under the safer one.",
       "lines": [
-        "[excited] Four powers! You found both buttons in seconds.",
+        "Tap every guard slot in both places. Then tap STAY HERE under the safer one."
+      ],
+      "file": "/audio/voice/e9de3cbaa60b792c.mp3"
+    },
+    {
+      "key": "6efdf6edbe4dffde",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every guard counted, Cyber Hero! You stayed where they are, every time. [warmly] Out in the real world, when someone says let's chat somewhere else, count the guards. If they would be left behind, so would your safety.",
+      "lines": [
+        "[proud] Every guard counted, Cyber Hero! You stayed where they are, every time.",
+        "[warmly] Out in the real world, when someone says let's chat somewhere else, count the guards. If they would be left behind, so would your safety."
+      ],
+      "file": "/audio/voice/6efdf6edbe4dffde.mp3"
+    },
+    {
+      "key": "ac789dd2cede3ad1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Busted. Real gaming friends are happy right where the guards are. Only a trickster needs you somewhere the guards cannot see. [warmly] Count the guards, and stay with them.",
+      "lines": [
+        "[proud] Well done!",
+        "Busted. Real gaming friends are happy right where the guards are.",
+        "Only a trickster needs you somewhere the guards cannot see.",
+        "[warmly] Count the guards, and stay with them."
+      ],
+      "file": "/audio/voice/ac789dd2cede3ad1.mp3"
+    },
+    {
+      "key": "a05acae3251d0bc4",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Three powers, Cyber Hero. The somewhere-else trick bounced right off you. You counted the guards and you stayed with them. [whispers] Speaking of guards, two of them live in every game, hiding in a menu. Next, we'll learn where the report and block buttons live. Come and see!",
+      "lines": [
+        "[proud] Three powers, Cyber Hero. The somewhere-else trick bounced right off you.",
+        "You counted the guards and you stayed with them.",
+        "[whispers] Speaking of guards, two of them live in every game, hiding in a menu.",
+        "Next, we'll learn where the report and block buttons live. Come and see!"
+      ],
+      "file": "/audio/voice/a05acae3251d0bc4.mp3"
+    },
+    {
+      "key": "5ba73df279bbe08f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Here they are: the two mightiest buttons in any game. REPORT tells the game's guards: check this player! BLOCK makes them vanish from YOUR game. Poof! No messages, no joining, they cannot even see you. [warmly] Report first, then block, then tell a grown-up. Using them isn't mean. It is exactly what they are for. [excited] Come and find them in three tricky menus!",
+      "lines": [
+        "[excited] Here they are: the two mightiest buttons in any game.",
+        "REPORT tells the game's guards: check this player!",
+        "BLOCK makes them vanish from YOUR game. Poof! No messages, no joining, they cannot even see you.",
+        "[warmly] Report first, then block, then tell a grown-up.",
+        "Using them isn't mean. It is exactly what they are for.",
+        "[excited] Come and find them in three tricky menus!"
+      ],
+      "file": "/audio/voice/5ba73df279bbe08f.mp3"
+    },
+    {
+      "key": "f34a8ecfa85628cf",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] On your fourth challenge, you take on the Power Panel! This game is all about finding report and block, fast, in any game. Out in the real world, every game hides these buttons in a different spot, so you look for the WORD, not the place. Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again. [warmly] Three menus, three times report, block, tell. Ready? First menu!",
+      "lines": [
+        "[excited] On your fourth challenge, you take on the Power Panel!",
+        "This game is all about finding report and block, fast, in any game.",
+        "Out in the real world, every game hides these buttons in a different spot, so you look for the WORD, not the place.",
+        "Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again.",
+        "[warmly] Three menus, three times report, block, tell. Ready? First menu!"
+      ],
+      "file": "/audio/voice/f34a8ecfa85628cf.mp3"
+    },
+    {
+      "key": "262d18d0284faa6d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Find the button that calls the game's guards first. It says REPORT.",
+      "lines": [
+        "Find the button that calls the game's guards first. It says REPORT."
+      ],
+      "file": "/audio/voice/262d18d0284faa6d.mp3"
+    },
+    {
+      "key": "be72d31c4ce83e33",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every button found, Cyber Hero! Three menus, three times report, block, tell. [warmly] Out in the real world, the buttons move around but the words stay the same. Look for the word, and the order never changes.",
+      "lines": [
+        "[proud] Every button found, Cyber Hero! Three menus, three times report, block, tell.",
+        "[warmly] Out in the real world, the buttons move around but the words stay the same. Look for the word, and the order never changes."
+      ],
+      "file": "/audio/voice/be72d31c4ce83e33.mp3"
+    },
+    {
+      "key": "35a3fb358373a96c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Report. Block. Tell. That is the order. Report calls the guards for everyone, block clears your game, telling brings help. [warmly] Same order in every game you will ever play.",
+      "lines": [
+        "[proud] Well done!",
+        "Report. Block. Tell. That is the order.",
+        "Report calls the guards for everyone, block clears your game, telling brings help.",
+        "[warmly] Same order in every game you will ever play."
+      ],
+      "file": "/audio/voice/35a3fb358373a96c.mp3"
+    },
+    {
+      "key": "b4a0623859ad34f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Four powers, Cyber Hero. You found both buttons in every menu. Report. Block. Tell. [whispers] One last trap guards the game zone, and it comes wrapped as a gift. Next, we'll learn why a free download is never free. Come and see!",
+      "lines": [
+        "[proud] Four powers, Cyber Hero. You found both buttons in every menu.",
         "Report. Block. Tell.",
-        "[laughs] GoldRush_Gary never knew what hit him.",
-        "[whispers] One last trap guards the game zone... the 'free' download."
+        "[whispers] One last trap guards the game zone, and it comes wrapped as a gift.",
+        "Next, we'll learn why a free download is never free. Come and see!"
       ],
-      "file": "/audio/voice/9991ed15decef20c.mp3"
+      "file": "/audio/voice/b4a0623859ad34f9.mp3"
     },
     {
-      "key": "7f7bab560afe036c",
+      "key": "c02c639c12557371",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Free skins! Unlimited speed! Just download this mod! [warmly] Sounds amazing, right? Careful. [whispers] Downloads from OUTSIDE the real game can hide nasty surprises. Some steal accounts. Some break computers. Real games sell their stuff inside the game. [excited] Anything outside? Grown-up check first. Let's inspect some downloads!",
+      "text": "[excited] Free download, you say? Let's see what it really costs. Free skins! Unlimited speed! Just download this mod! Sounds amazing, right? [whispers] Downloads from OUTSIDE the real game can hide nasty surprises. Some steal accounts. Some break computers. Real games sell their stuff inside the game. Anything outside? Grown-up check first. [excited] Come and inspect a few downloads with me!",
       "lines": [
-        "[excited] Free skins! Unlimited speed! Just download this mod!",
-        "[warmly] Sounds amazing, right? Careful.",
+        "[excited] Free download, you say? Let's see what it really costs.",
+        "Free skins! Unlimited speed! Just download this mod! Sounds amazing, right?",
         "[whispers] Downloads from OUTSIDE the real game can hide nasty surprises.",
         "Some steal accounts. Some break computers.",
-        "Real games sell their stuff inside the game.",
-        "[excited] Anything outside? Grown-up check first. Let's inspect some downloads!"
+        "Real games sell their stuff inside the game. Anything outside? Grown-up check first.",
+        "[excited] Come and inspect a few downloads with me!"
       ],
-      "file": "/audio/voice/7f7bab560afe036c.mp3"
+      "file": "/audio/voice/c02c639c12557371.mp3"
     },
     {
-      "key": "5495d91adb3df342",
+      "key": "d6e1b3674ba2e5c7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Download pages incoming - inspect like a pro! Check who made it, what it wants, whether the REAL game would ever do this... [warmly] then make the call: safe... or trap?",
+      "text": "[excited] On your last challenge, downloads arrive at the Download Dock! This game is all about telling a real in-game shop from a free-download trap. Out in the real world, the trap always looks like the better deal, and it always asks for one thing too many. Here is what you do. A download page appears. Tap each magnifying glass to inspect a clue: who made it, what it wants, whether the real game would do this, and what happens if you install it. Then tap your verdict: looks safe, ask a grown-up first, or it's a trap, close it. [warmly] Inspect every clue before you decide, and no free skin will ever cost you your account. Ready? First download!",
       "lines": [
-        "[excited] Download pages incoming - inspect like a pro!",
-        "Check who made it, what it wants,",
-        "whether the REAL game would ever do this...",
-        "[warmly] then make the call: safe... or trap?"
+        "[excited] On your last challenge, downloads arrive at the Download Dock!",
+        "This game is all about telling a real in-game shop from a free-download trap.",
+        "Out in the real world, the trap always looks like the better deal, and it always asks for one thing too many.",
+        "Here is what you do. A download page appears. Tap each magnifying glass to inspect a clue: who made it, what it wants, whether the real game would do this, and what happens if you install it. Then tap your verdict: looks safe, ask a grown-up first, or it's a trap, close it.",
+        "[warmly] Inspect every clue before you decide, and no free skin will ever cost you your account. Ready? First download!"
       ],
-      "file": "/audio/voice/5495d91adb3df342.mp3"
+      "file": "/audio/voice/d6e1b3674ba2e5c7.mp3"
     },
     {
-      "key": "1b523a7b23ed6fb0",
+      "key": "7c4fdfcbc398e7c4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Tap every magnifying glass before you decide!",
+      "text": "Tap every magnifying glass before you decide.",
       "lines": [
-        "Tap every magnifying glass before you decide!"
+        "Tap every magnifying glass before you decide."
       ],
-      "file": "/audio/voice/1b523a7b23ed6fb0.mp3"
+      "file": "/audio/voice/7c4fdfcbc398e7c4.mp3"
     },
     {
-      "key": "b4c0eb8df7c0ac89",
+      "key": "8520d1dad52073da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every download inspected, Cyber Hero! Two traps closed, one real pack spotted. [warmly] Out in the real world, real games sell their stuff inside the game. Anything outside gets a grown-up check first, every time.",
+      "lines": [
+        "[proud] Every download inspected, Cyber Hero! Two traps closed, one real pack spotted.",
+        "[warmly] Out in the real world, real games sell their stuff inside the game. Anything outside gets a grown-up check first, every time."
+      ],
+      "file": "/audio/voice/8520d1dad52073da.mp3"
+    },
+    {
+      "key": "fa5968cc51172e35",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Inside the game. That is where real games sell their stuff. A download from outside needs a grown-up check first. [warmly] And a password box on a free-skin page is always a trap.",
+      "lines": [
+        "[proud] Well done!",
+        "Inside the game. That is where real games sell their stuff.",
+        "A download from outside needs a grown-up check first.",
+        "[warmly] And a password box on a free-skin page is always a trap."
+      ],
+      "file": "/audio/voice/fa5968cc51172e35.mp3"
+    },
+    {
+      "key": "1a3845b07f7bc2fa",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Cyber Hero! Chat guarded, lobby locked, 'somewhere else' refused, power buttons found, download traps closed. [whispers] Your game zone is a fortress now. [excited] Final drill - then he's coming to test it!",
+      "text": "[excited] That's all FIVE powers, Cyber Hero! Chat fixed, lobby locked, guards counted, buttons found, traps closed. [whispers] Your game zone is a fortress now. One quick review to make it all stick, then the Raccoon comes to test it. Come on!",
       "lines": [
         "[excited] That's all FIVE powers, Cyber Hero!",
-        "Chat guarded, lobby locked, 'somewhere else' refused,",
-        "power buttons found, download traps closed.",
+        "Chat fixed, lobby locked, guards counted, buttons found, traps closed.",
         "[whispers] Your game zone is a fortress now.",
-        "[excited] Final drill - then he's coming to test it!"
+        "One quick review to make it all stick, then the Raccoon comes to test it. Come on!"
       ],
-      "file": "/audio/voice/b4c0eb8df7c0ac89.mp3"
+      "file": "/audio/voice/1a3845b07f7bc2fa.mp3"
     },
     {
-      "key": "9aa571bde55eb9ec",
+      "key": "5a26e5f5c779ba4c",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Final drill! Game-zone moments are drifting past. Tap SAFE PLAY for the guarded moves... and DANGER ZONE for leaks and traps. [warmly] Your fortress, your rules. Show me!",
+      "text": "[excited] Time for your review: Game Zone Bingo! This game is all about matching each lobby moment to its hero move. Out in the real world, the moments come mixed up, so the moves have to be ready in any order. Here is what you do. A lobby moment appears above the bingo card. I will read it. Then tap the square with the hero move that answers it. Fill the card and it is bingo. [warmly] Six moments, six moves, one fortress. Ready? First moment!",
       "lines": [
-        "[excited] Final drill! Game-zone moments are drifting past.",
-        "Tap SAFE PLAY for the guarded moves...",
-        "and DANGER ZONE for leaks and traps.",
-        "[warmly] Your fortress, your rules. Show me!"
+        "[excited] Time for your review: Game Zone Bingo!",
+        "This game is all about matching each lobby moment to its hero move.",
+        "Out in the real world, the moments come mixed up, so the moves have to be ready in any order.",
+        "Here is what you do. A lobby moment appears above the bingo card. I will read it. Then tap the square with the hero move that answers it. Fill the card and it is bingo.",
+        "[warmly] Six moments, six moves, one fortress. Ready? First moment!"
       ],
-      "file": "/audio/voice/9aa571bde55eb9ec.mp3"
+      "file": "/audio/voice/5a26e5f5c779ba4c.mp3"
     },
     {
-      "key": "175d491d20a08065",
+      "key": "c46275182cb833e0",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! You guard the chat, you lock the lobby, you stay with the guards, you wield the power buttons... [laughs] and no 'free skin' trap will EVER fool you. [excited] The intruder got booted from the lobby. Sticker time!",
+      "text": "Here is a lobby moment. Tap the square with the hero move that answers it.",
+      "lines": [
+        "Here is a lobby moment. Tap the square with the hero move that answers it."
+      ],
+      "file": "/audio/voice/c46275182cb833e0.mp3"
+    },
+    {
+      "key": "dec5bdb6c6e89e34",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Bingo, Cyber Hero! Every lobby moment met its hero move. [warmly] Out in the real world, your game zone has a guard on every door now, and you know which one to call.",
+      "lines": [
+        "[proud] Bingo, Cyber Hero! Every lobby moment met its hero move.",
+        "[warmly] Out in the real world, your game zone has a guard on every door now, and you know which one to call."
+      ],
+      "file": "/audio/voice/dec5bdb6c6e89e34.mp3"
+    },
+    {
+      "key": "a066981fd688de9b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You fix the chat, you lock the lobby, you stay with the guards, you wield the power buttons... [warmly] and no free-skin trap will ever fool you. [excited] The intruder got booted from the lobby. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You guard the chat, you lock the lobby,",
+        "You fix the chat, you lock the lobby,",
         "you stay with the guards, you wield the power buttons...",
-        "[laughs] and no 'free skin' trap will EVER fool you.",
+        "[warmly] and no free-skin trap will ever fool you.",
         "[excited] The intruder got booted from the lobby. Sticker time!"
       ],
-      "file": "/audio/voice/175d491d20a08065.mp3"
+      "file": "/audio/voice/a066981fd688de9b.mp3"
     },
     {
-      "key": "2ce1c28264e6b400",
+      "key": "3dbcfb3d3403cc5c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - which one LEAKS?",
+      "text": "Quick! Which one LEAKS?",
       "lines": [
-        "Quick - which one LEAKS?"
+        "Quick! Which one LEAKS?"
       ],
-      "file": "/audio/voice/2ce1c28264e6b400.mp3"
+      "file": "/audio/voice/3dbcfb3d3403cc5c.mp3"
     },
     {
       "key": "fb88c990844d9878",
@@ -15964,14 +16131,1949 @@
       "file": "/audio/voice/c36564c5c50509c6.mp3"
     },
     {
-      "key": "18d0c42b9d4af370",
+      "key": "65045dbc62a7c2a2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which download is SAFE?",
+      "text": "Real games sell their stuff blank the game.",
       "lines": [
-        "Which download is SAFE?"
+        "Real games sell their stuff blank the game."
       ],
-      "file": "/audio/voice/18d0c42b9d4af370.mp3"
+      "file": "/audio/voice/65045dbc62a7c2a2.mp3"
+    },
+    {
+      "key": "4ec7eee7a70d7dfd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mid-match, a player Adam just met types: 'What school do you go to? I bet I know you!' What does Adam send back? Is it option A... 'Nice try! Game talk only', and he keeps playing Option B... Just the name of his town, not the school Or is it option C... The school's name, since they might really be neighbors So, what do you think?",
+      "lines": [
+        "Mid-match, a player Adam just met types: 'What school do you go to? I bet I know you!' What does Adam send back?",
+        "Is it option A...",
+        "'Nice try! Game talk only', and he keeps playing",
+        "Option B...",
+        "Just the name of his town, not the school",
+        "Or is it option C...",
+        "The school's name, since they might really be neighbors",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/4ec7eee7a70d7dfd.mp3"
+    },
+    {
+      "key": "452d945fb4cca165",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Strangers keep dropping into Layla's lobby mid-game. Which fix locks the door for good? Is it option A... Quit and start a fresh lobby every time one appears Option B... Pick a scarier hero name so strangers stay away Or is it option C... Flip 'who can join' to friends only So, what do you think?",
+      "lines": [
+        "Strangers keep dropping into Layla's lobby mid-game. Which fix locks the door for good?",
+        "Is it option A...",
+        "Quit and start a fresh lobby every time one appears",
+        "Option B...",
+        "Pick a scarier hero name so strangers stay away",
+        "Or is it option C...",
+        "Flip 'who can join' to friends only",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/452d945fb4cca165.mp3"
+    },
+    {
+      "key": "3fa10dd192d4d746",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A player Layla met tonight says: 'This chat is so laggy, message me on SnapTalk instead!' What's the hero answer? Is it option A... 'OK, since laggy chat is hard to read' Option B... 'No thanks, I chat where the guards are' Or is it option C... 'OK, but only to talk about the game' So, what do you think?",
+      "lines": [
+        "A player Layla met tonight says: 'This chat is so laggy, message me on SnapTalk instead!' What's the hero answer?",
+        "Is it option A...",
+        "'OK, since laggy chat is hard to read'",
+        "Option B...",
+        "'No thanks, I chat where the guards are'",
+        "Or is it option C...",
+        "'OK, but only to talk about the game'",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/3fa10dd192d4d746.mp3"
+    },
+    {
+      "key": "948c40cef8487e1b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A player calls Adam nasty names every single round. Which button does Adam press FIRST? Is it option A... REPORT, so the game's guards check the player Option B... BLOCK, so the player vanishes right away Or is it option C... MUTE, so the nasty names go quiet So, what do you think?",
+      "lines": [
+        "A player calls Adam nasty names every single round. Which button does Adam press FIRST?",
+        "Is it option A...",
+        "REPORT, so the game's guards check the player",
+        "Option B...",
+        "BLOCK, so the player vanishes right away",
+        "Or is it option C...",
+        "MUTE, so the nasty names go quiet",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/948c40cef8487e1b.mp3"
+    },
+    {
+      "key": "3ce7b8c287d60ef3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A website offers Adam a super-rare skin for FREE, it just needs his game login 'to deliver it'. What's really going on? Is it option A... It's real, deliveries always need a login Option B... It's safe as long as he changes his password right after Or is it option C... It's an account thief, close it and tell a trusted grown-up So, what do you think?",
+      "lines": [
+        "A website offers Adam a super-rare skin for FREE, it just needs his game login 'to deliver it'. What's really going on?",
+        "Is it option A...",
+        "It's real, deliveries always need a login",
+        "Option B...",
+        "It's safe as long as he changes his password right after",
+        "Or is it option C...",
+        "It's an account thief, close it and tell a trusted grown-up",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/3ce7b8c287d60ef3.mp3"
+    },
+    {
+      "key": "c9bfe57e647377bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your school, your town, your street, they all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out.",
+      "lines": [
+        "That's right!",
+        "Your school, your town, your street, they all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out."
+      ],
+      "file": "/audio/voice/c9bfe57e647377bc.mp3"
+    },
+    {
+      "key": "90dbbebd185591aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your school, your town, your street, they all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out.",
+      "lines": [
+        "Not quite.",
+        "Your school, your town, your street, they all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out."
+      ],
+      "file": "/audio/voice/90dbbebd185591aa.mp3"
+    },
+    {
+      "key": "cb57a8eff4f509f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A scary name and lobby-hopping can't stop the NEXT stranger from walking in. Flipping 'who can join' to friends only locks the door once, and it stays locked every game after.",
+      "lines": [
+        "That's right!",
+        "A scary name and lobby-hopping can't stop the NEXT stranger from walking in. Flipping 'who can join' to friends only locks the door once, and it stays locked every game after."
+      ],
+      "file": "/audio/voice/cb57a8eff4f509f0.mp3"
+    },
+    {
+      "key": "ffac070a6ab8e5df",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A scary name and lobby-hopping can't stop the NEXT stranger from walking in. Flipping 'who can join' to friends only locks the door once, and it stays locked every game after.",
+      "lines": [
+        "Not quite.",
+        "A scary name and lobby-hopping can't stop the NEXT stranger from walking in. Flipping 'who can join' to friends only locks the door once, and it stays locked every game after."
+      ],
+      "file": "/audio/voice/ffac070a6ab8e5df.mp3"
+    },
+    {
+      "key": "295034cf93f16344",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Game chat has rules, moderators and report buttons. 'Let's chat somewhere else' means leaving all of that behind, and that is exactly why tricksters ask. Red flag, every time.",
+      "lines": [
+        "That's right!",
+        "Game chat has rules, moderators and report buttons. 'Let's chat somewhere else' means leaving all of that behind, and that is exactly why tricksters ask. Red flag, every time."
+      ],
+      "file": "/audio/voice/295034cf93f16344.mp3"
+    },
+    {
+      "key": "63edc50f5db67415",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Game chat has rules, moderators and report buttons. 'Let's chat somewhere else' means leaving all of that behind, and that is exactly why tricksters ask. Red flag, every time.",
+      "lines": [
+        "Not quite.",
+        "Game chat has rules, moderators and report buttons. 'Let's chat somewhere else' means leaving all of that behind, and that is exactly why tricksters ask. Red flag, every time."
+      ],
+      "file": "/audio/voice/63edc50f5db67415.mp3"
+    },
+    {
+      "key": "c9d786599f637516",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Only report calls the game's guards so they can deal with the bully for everyone. Mute and block fix nothing but YOUR game. Report first, then block, then tell a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "Only report calls the game's guards so they can deal with the bully for everyone. Mute and block fix nothing but YOUR game. Report first, then block, then tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/c9d786599f637516.mp3"
+    },
+    {
+      "key": "806cea6d4ccdf982",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Only report calls the game's guards so they can deal with the bully for everyone. Mute and block fix nothing but YOUR game. Report first, then block, then tell a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "Only report calls the game's guards so they can deal with the bully for everyone. Mute and block fix nothing but YOUR game. Report first, then block, then tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/806cea6d4ccdf982.mp3"
+    },
+    {
+      "key": "f9be0b310daef04b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! No real site needs your password to give you a gift, and 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "No real site needs your password to give you a gift, and 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/f9be0b310daef04b.mp3"
+    },
+    {
+      "key": "ef5eb5a7604fe83f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. No real site needs your password to give you a gift, and 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "No real site needs your password to give you a gift, and 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/ef5eb5a7604fe83f.mp3"
+    },
+    {
+      "key": "6a12f3156d26518a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing in that message gives you away. Pure game talk, so it flies as it is.",
+      "lines": [
+        "Nothing in that message gives you away. Pure game talk, so it flies as it is."
+      ],
+      "file": "/audio/voice/6a12f3156d26518a.mp3"
+    },
+    {
+      "key": "14f255dd02dde07e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That message was already clean. Game talk can fly exactly as it is.",
+      "lines": [
+        "That message was already clean. Game talk can fly exactly as it is."
+      ],
+      "file": "/audio/voice/14f255dd02dde07e.mp3"
+    },
+    {
+      "key": "c47f63f2947ff910",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "My house still gives you away: it is where you live. Swap the school for something about the game.",
+      "lines": [
+        "My house still gives you away: it is where you live. Swap the school for something about the game."
+      ],
+      "file": "/audio/voice/c47f63f2947ff910.mp3"
+    },
+    {
+      "key": "ecd4dde79c91f763",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is still the school's name, just shorter. A stranger can look it up.",
+      "lines": [
+        "That is still the school's name, just shorter. A stranger can look it up."
+      ],
+      "file": "/audio/voice/ecd4dde79c91f763.mp3"
+    },
+    {
+      "key": "86d2814c754642f6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school says where you are every weekday. On my team keeps it about the game, and the message still works.",
+      "lines": [
+        "Your school says where you are every weekday. On my team keeps it about the game, and the message still works."
+      ],
+      "file": "/audio/voice/86d2814c754642f6.mp3"
+    },
+    {
+      "key": "4544c5a7b42712e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school is where you are. A stranger with your school can find you, so that word cannot fly.",
+      "lines": [
+        "Your school is where you are. A stranger with your school can find you, so that word cannot fly."
+      ],
+      "file": "/audio/voice/4544c5a7b42712e1.mp3"
+    },
+    {
+      "key": "0d8df0cb462107ae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "By myself means the same as home alone. Nobody online ever needs to know that.",
+      "lines": [
+        "By myself means the same as home alone. Nobody online ever needs to know that."
+      ],
+      "file": "/audio/voice/0d8df0cb462107ae.mp3"
+    },
+    {
+      "key": "34a66fbf9f6138c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now you have added your address. That is an even bigger leak.",
+      "lines": [
+        "Now you have added your address. That is an even bigger leak."
+      ],
+      "file": "/audio/voice/34a66fbf9f6138c7.mp3"
+    },
+    {
+      "key": "18054caa44273d7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you.",
+      "lines": [
+        "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you."
+      ],
+      "file": "/audio/voice/18054caa44273d7b.mp3"
+    },
+    {
+      "key": "ebaeb6cd9dec853e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Home alone tells a stranger there is no grown-up with you. That never goes in chat, not ever.",
+      "lines": [
+        "Home alone tells a stranger there is no grown-up with you. That never goes in chat, not ever."
+      ],
+      "file": "/audio/voice/ebaeb6cd9dec853e.mp3"
+    },
+    {
+      "key": "09c15b6300a990d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The left bridge is a tactic. Nothing in there gives you away, so it flies.",
+      "lines": [
+        "The left bridge is a tactic. Nothing in there gives you away, so it flies."
+      ],
+      "file": "/audio/voice/09c15b6300a990d7.mp3"
+    },
+    {
+      "key": "a81f243c6ebca71d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That was pure game talk. Swapping it changes nothing, so send it as it is.",
+      "lines": [
+        "That was pure game talk. Swapping it changes nothing, so send it as it is."
+      ],
+      "file": "/audio/voice/a81f243c6ebca71d.mp3"
+    },
+    {
+      "key": "7a960b6045387707",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The day is still your birthday. Keep the date to yourself.",
+      "lines": [
+        "The day is still your birthday. Keep the date to yourself."
+      ],
+      "file": "/audio/voice/7a960b6045387707.mp3"
+    },
+    {
+      "key": "be3a355c7aa45de4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now the date AND your age are in the chat. Two clues instead of one.",
+      "lines": [
+        "Now the date AND your age are in the chat. Two clues instead of one."
+      ],
+      "file": "/audio/voice/be3a355c7aa45de4.mp3"
+    },
+    {
+      "key": "c02c81fd58100ef2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date.",
+      "lines": [
+        "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date."
+      ],
+      "file": "/audio/voice/c02c81fd58100ef2.mp3"
+    },
+    {
+      "key": "2094e2e2853ee0a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The date of your birthday is real-life info. Strangers use it to guess passwords and pretend to know you.",
+      "lines": [
+        "The date of your birthday is real-life info. Strangers use it to guess passwords and pretend to know you."
+      ],
+      "file": "/audio/voice/2094e2e2853ee0a0.mp3"
+    },
+    {
+      "key": "7694efa8c168e1d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A phone number is a phone number, even a grown-up's. Plan it here in the game.",
+      "lines": [
+        "A phone number is a phone number, even a grown-up's. Plan it here in the game."
+      ],
+      "file": "/audio/voice/7694efa8c168e1d6.mp3"
+    },
+    {
+      "key": "51744ea41b5037f5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is the same number with a time added. Even more to give away.",
+      "lines": [
+        "That is the same number with a time added. Even more to give away."
+      ],
+      "file": "/audio/voice/51744ea41b5037f5.mp3"
+    },
+    {
+      "key": "ae0b698d24bcfb22",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards.",
+      "lines": [
+        "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards."
+      ],
+      "file": "/audio/voice/ae0b698d24bcfb22.mp3"
+    },
+    {
+      "key": "1199185557124be7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A phone number lets a stranger reach you anywhere. It never goes in chat.",
+      "lines": [
+        "A phone number lets a stranger reach you anywhere. It never goes in chat."
+      ],
+      "file": "/audio/voice/1199185557124be7.mp3"
+    },
+    {
+      "key": "2149c6b80423e5ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is game talk. Nothing about who you are or where you are.",
+      "lines": [
+        "That is game talk. Nothing about who you are or where you are."
+      ],
+      "file": "/audio/voice/2149c6b80423e5ef.mp3"
+    },
+    {
+      "key": "e0c4cc979d91504d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A tactic. It says nothing about you, so it is safe to send.",
+      "lines": [
+        "A tactic. It says nothing about you, so it is safe to send."
+      ],
+      "file": "/audio/voice/e0c4cc979d91504d.mp3"
+    },
+    {
+      "key": "b78d99b8afa1ea7f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The team badge means a friend you actually know. Let them in and play.",
+      "lines": [
+        "The team badge means a friend you actually know. Let them in and play."
+      ],
+      "file": "/audio/voice/b78d99b8afa1ea7f.mp3"
+    },
+    {
+      "key": "275d779c87feb6e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the badge. PixelPanda42 wears the team badge, so this is a friend you know.",
+      "lines": [
+        "Look at the badge. PixelPanda42 wears the team badge, so this is a friend you know."
+      ],
+      "file": "/audio/voice/275d779c87feb6e6.mp3"
+    },
+    {
+      "key": "277df605dfd21485",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A friendly name is not a badge. No badge means a stranger, however nice the name sounds.",
+      "lines": [
+        "A friendly name is not a badge. No badge means a stranger, however nice the name sounds."
+      ],
+      "file": "/audio/voice/277df605dfd21485.mp3"
+    },
+    {
+      "key": "b3d87c2871150dff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look for the badge, not the name. GoldRush Gary has no badge, so he is a stranger.",
+      "lines": [
+        "Look for the badge, not the name. GoldRush Gary has no badge, so he is a stranger."
+      ],
+      "file": "/audio/voice/b3d87c2871150dff.mp3"
+    },
+    {
+      "key": "84c76ba84f5b50cd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Badge on, friend in. That is what the doors are for.",
+      "lines": [
+        "Badge on, friend in. That is what the doors are for."
+      ],
+      "file": "/audio/voice/84c76ba84f5b50cd.mp3"
+    },
+    {
+      "key": "65cebc81c81ec27e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look again: the team badge is on. TurboFalcon is a friend, and friends with the badge come in.",
+      "lines": [
+        "Look again: the team badge is on. TurboFalcon is a friend, and friends with the badge come in."
+      ],
+      "file": "/audio/voice/65cebc81c81ec27e.mp3"
+    },
+    {
+      "key": "edae9fd51fd5d321",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody knows the name and there is no badge. Strangers stay outside the lobby.",
+      "lines": [
+        "Nobody knows the name and there is no badge. Strangers stay outside the lobby."
+      ],
+      "file": "/audio/voice/edae9fd51fd5d321.mp3"
+    },
+    {
+      "key": "ea91a5dca7910be1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No badge and nobody knows the name. That is a stranger, and strangers stay out.",
+      "lines": [
+        "No badge and nobody knows the name. That is a stranger, and strangers stay out."
+      ],
+      "file": "/audio/voice/ea91a5dca7910be1.mp3"
+    },
+    {
+      "key": "8e280e0709130033",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends only did the checking for you. Only badges reach the door now.",
+      "lines": [
+        "Friends only did the checking for you. Only badges reach the door now."
+      ],
+      "file": "/audio/voice/8e280e0709130033.mp3"
+    },
+    {
+      "key": "1bc64817ddf9d248",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "StarGazer wears the team badge, and friends only let only badges this far. Let them in.",
+      "lines": [
+        "StarGazer wears the team badge, and friends only let only badges this far. Let them in."
+      ],
+      "file": "/audio/voice/1bc64817ddf9d248.mp3"
+    },
+    {
+      "key": "38c55c9d9bfefeb5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Another badge, another friend. The setting keeps the strangers away before they even knock.",
+      "lines": [
+        "Another badge, another friend. The setting keeps the strangers away before they even knock."
+      ],
+      "file": "/audio/voice/38c55c9d9bfefeb5.mp3"
+    },
+    {
+      "key": "f08769ba330ba279",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "NightHawk has the team badge. With friends only on, everyone at the door is a friend.",
+      "lines": [
+        "NightHawk has the team badge. With friends only on, everyone at the door is a friend."
+      ],
+      "file": "/audio/voice/f08769ba330ba279.mp3"
+    },
+    {
+      "key": "8bd9911f59c1344a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends only. Now the lobby checks the badges for you, before anyone even reaches the door.",
+      "lines": [
+        "Friends only. Now the lobby checks the badges for you, before anyone even reaches the door."
+      ],
+      "file": "/audio/voice/8bd9911f59c1344a.mp3"
+    },
+    {
+      "key": "14733b8753261734",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your real name on screen shows strangers who you are. That is the opposite of a guard.",
+      "lines": [
+        "Your real name on screen shows strangers who you are. That is the opposite of a guard."
+      ],
+      "file": "/audio/voice/14733b8753261734.mp3"
+    },
+    {
+      "key": "27e772b33f8e628e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An open mic lets strangers listen in. Friends only is the safe mic too.",
+      "lines": [
+        "An open mic lets strangers listen in. Friends only is the safe mic too."
+      ],
+      "file": "/audio/voice/27e772b33f8e628e.mp3"
+    },
+    {
+      "key": "3b5b618f9cde358b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anyone can send means any stranger can knock. Friends only is the lock.",
+      "lines": [
+        "Anyone can send means any stranger can knock. Friends only is the lock."
+      ],
+      "file": "/audio/voice/3b5b618f9cde358b.mp3"
+    },
+    {
+      "key": "cae02f0f2b139d7a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four guards here, none over there. A laggy chat is not the real reason for the move. Stay where the guards are.",
+      "lines": [
+        "Four guards here, none over there. A laggy chat is not the real reason for the move. Stay where the guards are."
+      ],
+      "file": "/audio/voice/cae02f0f2b139d7a.mp3"
+    },
+    {
+      "key": "6fd6510a4e979192",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Count again. SnapTalk has no report button, no block button, no friends only and no grown-ups. Four guards here, zero there.",
+      "lines": [
+        "Count again. SnapTalk has no report button, no block button, no friends only and no grown-ups. Four guards here, zero there."
+      ],
+      "file": "/audio/voice/6fd6510a4e979192.mp3"
+    },
+    {
+      "key": "92df4dd717a9a211",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four guards here, three missing on the private server. A map trick that only works over there was never about the map. Stay here.",
+      "lines": [
+        "Four guards here, three missing on the private server. A map trick that only works over there was never about the map. Stay here."
+      ],
+      "file": "/audio/voice/92df4dd717a9a211.mp3"
+    },
+    {
+      "key": "e32778c7b2e3224e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the private server: no report button, no friends only, no grown-ups. A secret trick is not worth losing three guards.",
+      "lines": [
+        "Look at the private server: no report button, no friends only, no grown-ups. A secret trick is not worth losing three guards."
+      ],
+      "file": "/audio/voice/e32778c7b2e3224e.mp3"
+    },
+    {
+      "key": "de61280e34834317",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Party chat is still inside the game, with every guard in place. Moving rooms inside the game is fine. Leaving the game is the red flag.",
+      "lines": [
+        "Party chat is still inside the game, with every guard in place. Moving rooms inside the game is fine. Leaving the game is the red flag."
+      ],
+      "file": "/audio/voice/de61280e34834317.mp3"
+    },
+    {
+      "key": "91ea604917072093",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Both rooms have four guards. Party chat is inside the same game, so joining your team there is fine. Not every move is a trick.",
+      "lines": [
+        "Both rooms have four guards. Party chat is inside the same game, so joining your team there is fine. Not every move is a trick."
+      ],
+      "file": "/audio/voice/91ea604917072093.mp3"
+    },
+    {
+      "key": "cbd9c6764fecdf55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real gaming friends are happy where the guards are. Only tricksters need you to leave.",
+      "lines": [
+        "Real gaming friends are happy where the guards are. Only tricksters need you to leave."
+      ],
+      "file": "/audio/voice/cbd9c6764fecdf55.mp3"
+    },
+    {
+      "key": "dd4d084b5061b9d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who benefits when the chat leaves the guarded playground?",
+      "lines": [
+        "Who benefits when the chat leaves the guarded playground?"
+      ],
+      "file": "/audio/voice/dd4d084b5061b9d3.mp3"
+    },
+    {
+      "key": "41b06d48000f6cb2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report called the guards, block made him vanish, and a grown-up knows. Three taps and the lobby is yours again.",
+      "lines": [
+        "Report called the guards, block made him vanish, and a grown-up knows. Three taps and the lobby is yours again."
+      ],
+      "file": "/audio/voice/41b06d48000f6cb2.mp3"
+    },
+    {
+      "key": "abfbd341670a7706",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Asking a kid for a photo is a red flag from Week 3, and you answered it with report, block, tell. Perfect order.",
+      "lines": [
+        "Asking a kid for a photo is a red flag from Week 3, and you answered it with report, block, tell. Perfect order."
+      ],
+      "file": "/audio/voice/abfbd341670a7706.mp3"
+    },
+    {
+      "key": "674dfc20998f56fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three different menus, and you found the buttons in every one. Report calls the guards, block clears your game, tell brings help.",
+      "lines": [
+        "Three different menus, and you found the buttons in every one. Report calls the guards, block clears your game, tell brings help."
+      ],
+      "file": "/audio/voice/674dfc20998f56fa.mp3"
+    },
+    {
+      "key": "0bb871b62057fb11",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which button calls the game's guards FIRST?",
+      "lines": [
+        "Which button calls the game's guards FIRST?"
+      ],
+      "file": "/audio/voice/0bb871b62057fb11.mp3"
+    },
+    {
+      "key": "aa4e1b147be1945f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stolen account, sick computer. So who does a mod like this really help?",
+      "lines": [
+        "Stolen account, sick computer. So who does a mod like this really help?"
+      ],
+      "file": "/audio/voice/aa4e1b147be1945f.mp3"
+    },
+    {
+      "key": "420eb03faa647782",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A mod that wants your login and the virus checker off is a burglar asking you to unlock the door. Trap!",
+      "lines": [
+        "A mod that wants your login and the virus checker off is a burglar asking you to unlock the door. Trap!"
+      ],
+      "file": "/audio/voice/420eb03faa647782.mp3"
+    },
+    {
+      "key": "31bb581842bcac31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your login is the whole prize, and switching the virus checker off opens the door for the rest. Close it and tell a grown-up.",
+      "lines": [
+        "Your login is the whole prize, and switching the virus checker off opens the door for the rest. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/31bb581842bcac31.mp3"
+    },
+    {
+      "key": "ccbedc877eac9cd4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Inside the real game, and it only wants a grown-up's OK. Does that sound like a trap?",
+      "lines": [
+        "Inside the real game, and it only wants a grown-up's OK. Does that sound like a trap?"
+      ],
+      "file": "/audio/voice/ccbedc877eac9cd4.mp3"
+    },
+    {
+      "key": "214096abdbefd255",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The real game's own shop, and nothing but your family's OK. That is the safe way to get new stuff.",
+      "lines": [
+        "The real game's own shop, and nothing but your family's OK. That is the safe way to get new stuff."
+      ],
+      "file": "/audio/voice/214096abdbefd255.mp3"
+    },
+    {
+      "key": "c15a82cb35631f79",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It lives inside the real game and asks for nothing but a grown-up's OK. That is how real games sell things.",
+      "lines": [
+        "It lives inside the real game and asks for nothing but a grown-up's OK. That is how real games sell things."
+      ],
+      "file": "/audio/voice/c15a82cb35631f79.mp3"
+    },
+    {
+      "key": "1024e34012fcf157",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It promises free skins, but it asks for your password. What is it really after?",
+      "lines": [
+        "It promises free skins, but it asks for your password. What is it really after?"
+      ],
+      "file": "/audio/voice/1024e34012fcf157.mp3"
+    },
+    {
+      "key": "69e9dce40472d97d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Generators never work. They exist to steal passwords. Close it and tell a grown-up.",
+      "lines": [
+        "Generators never work. They exist to steal passwords. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/69e9dce40472d97d.mp3"
+    },
+    {
+      "key": "b8de77a6c08e09bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing can generate free skins, so the password box is the real reason the page exists. Close it and tell a grown-up.",
+      "lines": [
+        "Nothing can generate free skins, so the password box is the real reason the page exists. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/b8de77a6c08e09bf.mp3"
+    },
+    {
+      "key": "10b23d1039289a45",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Outside the game is where the traps live. Real games sell inside their own shop.",
+      "lines": [
+        "Outside the game is where the traps live. Real games sell inside their own shop."
+      ],
+      "file": "/audio/voice/10b23d1039289a45.mp3"
+    },
+    {
+      "key": "fff6d6551608a786",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not beside. Inside the real game's own shop, with a grown-up's OK.",
+      "lines": [
+        "Not beside. Inside the real game's own shop, with a grown-up's OK."
+      ],
+      "file": "/audio/voice/fff6d6551608a786.mp3"
+    },
+    {
+      "key": "2f518c3e7339e661",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not under. Inside the game is the only safe shop.",
+      "lines": [
+        "Not under. Inside the game is the only safe shop."
+      ],
+      "file": "/audio/voice/2f518c3e7339e661.mp3"
+    },
+    {
+      "key": "700476448b071056",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where does the real game's own shop live?",
+      "lines": [
+        "Where does the real game's own shop live?"
+      ],
+      "file": "/audio/voice/700476448b071056.mp3"
+    },
+    {
+      "key": "864c7b550d30b3f6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "School is real-life info, so the hero move is game talk only. Nice try, back to the game.",
+      "lines": [
+        "School is real-life info, so the hero move is game talk only. Nice try, back to the game."
+      ],
+      "file": "/audio/voice/864c7b550d30b3f6.mp3"
+    },
+    {
+      "key": "2f088442029bb586",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Strangers keep dropping into your lobby because the door is open. Flipping friends only locks it once, for every game after.",
+      "lines": [
+        "Strangers keep dropping into your lobby because the door is open. Flipping friends only locks it once, for every game after."
+      ],
+      "file": "/audio/voice/2f088442029bb586.mp3"
+    },
+    {
+      "key": "241ed699605d17fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "SnapTalk has none of the guards this chat has. The hero move is to stay right where they are.",
+      "lines": [
+        "SnapTalk has none of the guards this chat has. The hero move is to stay right where they are."
+      ],
+      "file": "/audio/voice/241ed699605d17fa.mp3"
+    },
+    {
+      "key": "31881c0acceef8cc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report calls the guards, block clears your game, and a grown-up hears about it. Report, block, tell.",
+      "lines": [
+        "Report calls the guards, block clears your game, and a grown-up hears about it. Report, block, tell."
+      ],
+      "file": "/audio/voice/31881c0acceef8cc.mp3"
+    },
+    {
+      "key": "34b2806ea55f5288",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your login is the loot on that free-skin page. Close it, tell a grown-up, and your account stays yours.",
+      "lines": [
+        "Your login is the loot on that free-skin page. Close it, tell a grown-up, and your account stays yours."
+      ],
+      "file": "/audio/voice/34b2806ea55f5288.mp3"
+    },
+    {
+      "key": "d9c1aa36e989de76",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Home alone tells strangers there is no grown-up with you. Swap it before SEND, and the message flies clean.",
+      "lines": [
+        "Home alone tells strangers there is no grown-up with you. Swap it before SEND, and the message flies clean."
+      ],
+      "file": "/audio/voice/d9c1aa36e989de76.mp3"
+    },
+    {
+      "key": "2e69f45b8acd8660",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Add friend invites GoldRush Gary closer. That is the opposite of what this moment needs. Find report.",
+      "lines": [
+        "Add friend invites GoldRush Gary closer. That is the opposite of what this moment needs. Find report."
+      ],
+      "file": "/audio/voice/2e69f45b8acd8660.mp3"
+    },
+    {
+      "key": "1128f1683b3d4528",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A dancing emote will not stop a bully. Look for the bell: report.",
+      "lines": [
+        "A dancing emote will not stop a bully. Look for the bell: report."
+      ],
+      "file": "/audio/voice/1128f1683b3d4528.mp3"
+    },
+    {
+      "key": "321d274d2aa21572",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The shop sells hats, not help. Keep looking for the report button.",
+      "lines": [
+        "The shop sells hats, not help. Keep looking for the report button."
+      ],
+      "file": "/audio/voice/321d274d2aa21572.mp3"
+    },
+    {
+      "key": "8792ea255d6715c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mute only quiets your game. The guards never hear about it. Report first.",
+      "lines": [
+        "Mute only quiets your game. The guards never hear about it. Report first."
+      ],
+      "file": "/audio/voice/8792ea255d6715c1.mp3"
+    },
+    {
+      "key": "ffc3c1839c94eda7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Their stats will not stop the asks. Keep looking for report.",
+      "lines": [
+        "Their stats will not stop the asks. Keep looking for report."
+      ],
+      "file": "/audio/voice/ffc3c1839c94eda7.mp3"
+    },
+    {
+      "key": "fa1927bf2a749e4a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sending anything is the last thing to do here. Find report.",
+      "lines": [
+        "Sending anything is the last thing to do here. Find report."
+      ],
+      "file": "/audio/voice/fa1927bf2a749e4a.mp3"
+    },
+    {
+      "key": "0503d28f61482bde",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Never open a stranger's link. That is how the trick gets in. Find report.",
+      "lines": [
+        "Never open a stranger's link. That is how the trick gets in. Find report."
+      ],
+      "file": "/audio/voice/0503d28f61482bde.mp3"
+    },
+    {
+      "key": "20da82695595ae1f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Inviting a spammer into your party? No. Look for report.",
+      "lines": [
+        "Inviting a spammer into your party? No. Look for report."
+      ],
+      "file": "/audio/voice/20da82695595ae1f.mp3"
+    },
+    {
+      "key": "1092045edf81a6b9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Settings can wait. The report button is what this moment needs.",
+      "lines": [
+        "Settings can wait. The report button is what this moment needs."
+      ],
+      "file": "/audio/voice/1092045edf81a6b9.mp3"
+    },
+    {
+      "key": "0da15c84744b0c2f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not the real game company. Some random site nobody can check.",
+      "lines": [
+        "Not the real game company. Some random site nobody can check."
+      ],
+      "file": "/audio/voice/0da15c84744b0c2f.mp3"
+    },
+    {
+      "key": "bd6da0f47507d7bb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your game LOGIN, and the virus checker switched OFF. Two alarm bells.",
+      "lines": [
+        "Your game LOGIN, and the virus checker switched OFF. Two alarm bells."
+      ],
+      "file": "/audio/voice/bd6da0f47507d7bb.mp3"
+    },
+    {
+      "key": "4b344004b36530fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real games sell their stuff INSIDE the game, never through secret downloads.",
+      "lines": [
+        "Real games sell their stuff INSIDE the game, never through secret downloads."
+      ],
+      "file": "/audio/voice/4b344004b36530fb.mp3"
+    },
+    {
+      "key": "76bb95a34ff1877e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Best case, nothing. Worst case, your account is stolen and the computer is sick.",
+      "lines": [
+        "Best case, nothing. Worst case, your account is stolen and the computer is sick."
+      ],
+      "file": "/audio/voice/76bb95a34ff1877e.mp3"
+    },
+    {
+      "key": "61a1cf246a9dad78",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The real game company, inside the real game's own shop.",
+      "lines": [
+        "The real game company, inside the real game's own shop."
+      ],
+      "file": "/audio/voice/61a1cf246a9dad78.mp3"
+    },
+    {
+      "key": "c9af503a29d8cc67",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Just a grown-up's OK. It never asks for your login somewhere weird.",
+      "lines": [
+        "Just a grown-up's OK. It never asks for your login somewhere weird."
+      ],
+      "file": "/audio/voice/c9af503a29d8cc67.mp3"
+    },
+    {
+      "key": "6f628d755a990140",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Yes. This IS the real game, selling its stuff the proper way.",
+      "lines": [
+        "Yes. This IS the real game, selling its stuff the proper way."
+      ],
+      "file": "/audio/voice/6f628d755a990140.mp3"
+    },
+    {
+      "key": "369cc9069a2df5f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The content appears in your game. No surprises, no tricks.",
+      "lines": [
+        "The content appears in your game. No surprises, no tricks."
+      ],
+      "file": "/audio/voice/369cc9069a2df5f0.mp3"
+    },
+    {
+      "key": "04cc69ea6d8a636e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'No virus we promise!!' Real companies never have to promise that.",
+      "lines": [
+        "'No virus we promise!!' Real companies never have to promise that."
+      ],
+      "file": "/audio/voice/04cc69ea6d8a636e.mp3"
+    },
+    {
+      "key": "e9c372f1d8c7cfe7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your USERNAME and PASSWORD. That is the whole trick, right there.",
+      "lines": [
+        "Your USERNAME and PASSWORD. That is the whole trick, right there."
+      ],
+      "file": "/audio/voice/e9c372f1d8c7cfe7.mp3"
+    },
+    {
+      "key": "6a4928aa61f5704e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free-anything generators do not exist. Skins cost the game company money.",
+      "lines": [
+        "Free-anything generators do not exist. Skins cost the game company money."
+      ],
+      "file": "/audio/voice/6a4928aa61f5704e.mp3"
+    },
+    {
+      "key": "e84361a1eb0c0457",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You type your password... and the account is not yours any more.",
+      "lines": [
+        "You type your password... and the account is not yours any more."
+      ],
+      "file": "/audio/voice/e84361a1eb0c0457.mp3"
+    },
+    {
+      "key": "0dbcfbcbf5a093ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school is real-life info. The move here is game talk only: nice try, back to the game.",
+      "lines": [
+        "Your school is real-life info. The move here is game talk only: nice try, back to the game."
+      ],
+      "file": "/audio/voice/0dbcfbcbf5a093ec.mp3"
+    },
+    {
+      "key": "302d02e57da93b34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Strangers reaching your lobby means the door is open. The move is the friends only lock.",
+      "lines": [
+        "Strangers reaching your lobby means the door is open. The move is the friends only lock."
+      ],
+      "file": "/audio/voice/302d02e57da93b34.mp3"
+    },
+    {
+      "key": "62a933d4144409a4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Moving the chat leaves the report button, the block button and your grown-ups behind. Stay with the guards.",
+      "lines": [
+        "Moving the chat leaves the report button, the block button and your grown-ups behind. Stay with the guards."
+      ],
+      "file": "/audio/voice/62a933d4144409a4.mp3"
+    },
+    {
+      "key": "8053eb853305af84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Names every round need the power buttons: report, block, then tell a grown-up.",
+      "lines": [
+        "Names every round need the power buttons: report, block, then tell a grown-up."
+      ],
+      "file": "/audio/voice/8053eb853305af84.mp3"
+    },
+    {
+      "key": "81127897a5ded2ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A password box on a free-skin page is a trap. The move is close it, tell a grown-up.",
+      "lines": [
+        "A password box on a free-skin page is a trap. The move is close it, tell a grown-up."
+      ],
+      "file": "/audio/voice/81127897a5ded2ef.mp3"
+    },
+    {
+      "key": "d8823078946135c2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Home alone is the one thing a lobby must never hear. The move is swap it before SEND.",
+      "lines": [
+        "Home alone is the one thing a lobby must never hear. The move is swap it before SEND."
+      ],
+      "file": "/audio/voice/d8823078946135c2.mp3"
+    },
+    {
+      "key": "a8be51d145a55ab5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school, your town, your street, they all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out.",
+      "lines": [
+        "Your school, your town, your street, they all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out."
+      ],
+      "file": "/audio/voice/a8be51d145a55ab5.mp3"
+    },
+    {
+      "key": "0ccaae5f5772cd36",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A scary name and lobby-hopping can't stop the NEXT stranger from walking in. Flipping 'who can join' to friends only locks the door once, and it stays locked every game after.",
+      "lines": [
+        "A scary name and lobby-hopping can't stop the NEXT stranger from walking in. Flipping 'who can join' to friends only locks the door once, and it stays locked every game after."
+      ],
+      "file": "/audio/voice/0ccaae5f5772cd36.mp3"
+    },
+    {
+      "key": "7bfe333ebb1469b7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Game chat has rules, moderators and report buttons. 'Let's chat somewhere else' means leaving all of that behind, and that is exactly why tricksters ask. Red flag, every time.",
+      "lines": [
+        "Game chat has rules, moderators and report buttons. 'Let's chat somewhere else' means leaving all of that behind, and that is exactly why tricksters ask. Red flag, every time."
+      ],
+      "file": "/audio/voice/7bfe333ebb1469b7.mp3"
+    },
+    {
+      "key": "d9f7b5038c18e00c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Only report calls the game's guards so they can deal with the bully for everyone. Mute and block fix nothing but YOUR game. Report first, then block, then tell a trusted grown-up.",
+      "lines": [
+        "Only report calls the game's guards so they can deal with the bully for everyone. Mute and block fix nothing but YOUR game. Report first, then block, then tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/d9f7b5038c18e00c.mp3"
+    },
+    {
+      "key": "408331fa01d39f8e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No real site needs your password to give you a gift, and 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up.",
+      "lines": [
+        "No real site needs your password to give you a gift, and 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/408331fa01d39f8e.mp3"
+    },
+    {
+      "key": "99b7dc7d8c359590",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Game talk in, real-life info out. Always.",
+      "lines": [
+        "Game talk in, real-life info out. Always."
+      ],
+      "file": "/audio/voice/99b7dc7d8c359590.mp3"
+    },
+    {
+      "key": "0d687c0e0b5fed53",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends-only joining is the lock on your lobby door.",
+      "lines": [
+        "Friends-only joining is the lock on your lobby door."
+      ],
+      "file": "/audio/voice/0d687c0e0b5fed53.mp3"
+    },
+    {
+      "key": "a1b5dca0653677e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Off-game, the moderators can't protect you. That's exactly why they ask.",
+      "lines": [
+        "Off-game, the moderators can't protect you. That's exactly why they ask."
+      ],
+      "file": "/audio/voice/a1b5dca0653677e1.mp3"
+    },
+    {
+      "key": "cd51f5a09ff0013f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report calls the guards first, block vanishes them, telling finishes the job.",
+      "lines": [
+        "Report calls the guards first, block vanishes them, telling finishes the job."
+      ],
+      "file": "/audio/voice/cd51f5a09ff0013f.mp3"
+    },
+    {
+      "key": "2a153afec363caf9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No messages, no joining, they can't even see you. Poof.",
+      "lines": [
+        "No messages, no joining, they can't even see you. Poof."
+      ],
+      "file": "/audio/voice/2a153afec363caf9.mp3"
+    },
+    {
+      "key": "db0ad02ed0df8760",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Asking to disable protection is a burglar asking you to unlock the door.",
+      "lines": [
+        "Asking to disable protection is a burglar asking you to unlock the door."
+      ],
+      "file": "/audio/voice/db0ad02ed0df8760.mp3"
+    },
+    {
+      "key": "bec2cdd7714dcac5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Off-game there are no guards. That's the whole point of the move.",
+      "lines": [
+        "Off-game there are no guards. That's the whole point of the move."
+      ],
+      "file": "/audio/voice/bec2cdd7714dcac5.mp3"
+    },
+    {
+      "key": "9ee33ec97f15cb7a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Generators never work. They exist to steal passwords.",
+      "lines": [
+        "Generators never work. They exist to steal passwords."
+      ],
+      "file": "/audio/voice/9ee33ec97f15cb7a.mp3"
+    },
+    {
+      "key": "9352dd641c262cff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Inside the game plus a grown-up's OK is the only safe way.",
+      "lines": [
+        "Inside the game plus a grown-up's OK is the only safe way."
+      ],
+      "file": "/audio/voice/9352dd641c262cff.mp3"
+    },
+    {
+      "key": "954077bd43e2dca6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your message says: gg! Rematch tomorrow? Is there anything in there that gives you away?",
+      "lines": [
+        "Your message says: gg! Rematch tomorrow? Is there anything in there that gives you away?"
+      ],
+      "file": "/audio/voice/954077bd43e2dca6.mp3"
+    },
+    {
+      "key": "190999f41120a3c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your message says: I'm at Maple Hill School, who's playing? Which word gives you away?",
+      "lines": [
+        "Your message says: I'm at Maple Hill School, who's playing? Which word gives you away?"
+      ],
+      "file": "/audio/voice/190999f41120a3c0.mp3"
+    },
+    {
+      "key": "d10c9f5b0b69c73d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your message says: I'm home alone till 6, voice chat? Which word gives you away?",
+      "lines": [
+        "Your message says: I'm home alone till 6, voice chat? Which word gives you away?"
+      ],
+      "file": "/audio/voice/d10c9f5b0b69c73d.mp3"
+    },
+    {
+      "key": "856c71784ed82443",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your message says: take the left bridge! Anything in there that gives you away?",
+      "lines": [
+        "Your message says: take the left bridge! Anything in there that gives you away?"
+      ],
+      "file": "/audio/voice/856c71784ed82443.mp3"
+    },
+    {
+      "key": "d03494ff7404cf60",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your message says: it's my birthday on June 12th! Which words give you away?",
+      "lines": [
+        "Your message says: it's my birthday on June 12th! Which words give you away?"
+      ],
+      "file": "/audio/voice/d03494ff7404cf60.mp3"
+    },
+    {
+      "key": "93e47304b2acb6d4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your message says: message me on 555-0123 to plan. Which word gives you away?",
+      "lines": [
+        "Your message says: message me on 555-0123 to plan. Which word gives you away?"
+      ],
+      "file": "/audio/voice/93e47304b2acb6d4.mp3"
+    },
+    {
+      "key": "ad87c29730e397d5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "PixelPanda42 is at the door, wearing the team badge. That is someone you know.",
+      "lines": [
+        "PixelPanda42 is at the door, wearing the team badge. That is someone you know."
+      ],
+      "file": "/audio/voice/ad87c29730e397d5.mp3"
+    },
+    {
+      "key": "f114e575ead2cc02",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "GoldRush Gary is at the door. Friendly name, no team badge.",
+      "lines": [
+        "GoldRush Gary is at the door. Friendly name, no team badge."
+      ],
+      "file": "/audio/voice/f114e575ead2cc02.mp3"
+    },
+    {
+      "key": "f44440d14ae5e37e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "TurboFalcon is at the door with the team badge on.",
+      "lines": [
+        "TurboFalcon is at the door with the team badge on."
+      ],
+      "file": "/audio/voice/f44440d14ae5e37e.mp3"
+    },
+    {
+      "key": "b56a646530230672",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "xX NewGuy Xx is at the door. No badge, and nobody on the team knows the name.",
+      "lines": [
+        "xX NewGuy Xx is at the door. No badge, and nobody on the team knows the name."
+      ],
+      "file": "/audio/voice/b56a646530230672.mp3"
+    },
+    {
+      "key": "0838016bd028daad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "With friends only on, StarGazer arrives, badge and all.",
+      "lines": [
+        "With friends only on, StarGazer arrives, badge and all."
+      ],
+      "file": "/audio/voice/0838016bd028daad.mp3"
+    },
+    {
+      "key": "c56e621bc11d331a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "NightHawk is here too, team badge shining.",
+      "lines": [
+        "NightHawk is here too, team badge shining."
+      ],
+      "file": "/audio/voice/c56e621bc11d331a.mp3"
+    },
+    {
+      "key": "6b3ec2180e11c3a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Checking every player one by one is hard work. Here is the setting: who can join my game. Right now it says anyone in the world. Tap the button to switch it to friends only.",
+      "lines": [
+        "Checking every player one by one is hard work. Here is the setting: who can join my game. Right now it says anyone in the world. Tap the button to switch it to friends only."
+      ],
+      "file": "/audio/voice/6b3ec2180e11c3a6.mp3"
+    },
+    {
+      "key": "eaaecf559790e915",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A player says: this chat is so laggy, message me on SnapTalk instead! Count the guards in each place before you decide.",
+      "lines": [
+        "A player says: this chat is so laggy, message me on SnapTalk instead! Count the guards in each place before you decide."
+      ],
+      "file": "/audio/voice/eaaecf559790e915.mp3"
+    },
+    {
+      "key": "43985a6a21b50fe6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report button: here. One tap calls the game's guards.",
+      "lines": [
+        "Report button: here. One tap calls the game's guards."
+      ],
+      "file": "/audio/voice/43985a6a21b50fe6.mp3"
+    },
+    {
+      "key": "ce14b347fef7020d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block button: here. Any player can vanish from your game.",
+      "lines": [
+        "Block button: here. Any player can vanish from your game."
+      ],
+      "file": "/audio/voice/ce14b347fef7020d.mp3"
+    },
+    {
+      "key": "688d26e407c274d2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends only: here. Only badges reach this room.",
+      "lines": [
+        "Friends only: here. Only badges reach this room."
+      ],
+      "file": "/audio/voice/688d26e407c274d2.mp3"
+    },
+    {
+      "key": "023a9ab6f3b587e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grown-ups can see: here. Your family can read this chat any time.",
+      "lines": [
+        "Grown-ups can see: here. Your family can read this chat any time."
+      ],
+      "file": "/audio/voice/023a9ab6f3b587e7.mp3"
+    },
+    {
+      "key": "9437ec5cd36e10b6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report button: missing. Nobody to call over there.",
+      "lines": [
+        "Report button: missing. Nobody to call over there."
+      ],
+      "file": "/audio/voice/9437ec5cd36e10b6.mp3"
+    },
+    {
+      "key": "bfd137c371a4e2f5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block button: missing.",
+      "lines": [
+        "Block button: missing."
+      ],
+      "file": "/audio/voice/bfd137c371a4e2f5.mp3"
+    },
+    {
+      "key": "f362fdc561e14115",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends only: missing. Anyone can message you there.",
+      "lines": [
+        "Friends only: missing. Anyone can message you there."
+      ],
+      "file": "/audio/voice/f362fdc561e14115.mp3"
+    },
+    {
+      "key": "83320cd93828d321",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grown-ups can see: missing. That is the whole point of the move.",
+      "lines": [
+        "Grown-ups can see: missing. That is the whole point of the move."
+      ],
+      "file": "/audio/voice/83320cd93828d321.mp3"
+    },
+    {
+      "key": "01dcbb10119e3dfe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A player says: come to my private server, I'll send you the secret map trick there. Count the guards before you decide.",
+      "lines": [
+        "A player says: come to my private server, I'll send you the secret map trick there. Count the guards before you decide."
+      ],
+      "file": "/audio/voice/01dcbb10119e3dfe.mp3"
+    },
+    {
+      "key": "d25616ee56d82249",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report button: missing. It is their server, their rules.",
+      "lines": [
+        "Report button: missing. It is their server, their rules."
+      ],
+      "file": "/audio/voice/d25616ee56d82249.mp3"
+    },
+    {
+      "key": "ad361b93e5a776e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block button: here, but blocking is all you could do.",
+      "lines": [
+        "Block button: here, but blocking is all you could do."
+      ],
+      "file": "/audio/voice/ad361b93e5a776e8.mp3"
+    },
+    {
+      "key": "ebb033f087954749",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends only: missing. Whoever they invite is in.",
+      "lines": [
+        "Friends only: missing. Whoever they invite is in."
+      ],
+      "file": "/audio/voice/ebb033f087954749.mp3"
+    },
+    {
+      "key": "58bfa4fb70993f31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grown-ups can see: missing. Your family would never know you were there.",
+      "lines": [
+        "Grown-ups can see: missing. Your family would never know you were there."
+      ],
+      "file": "/audio/voice/58bfa4fb70993f31.mp3"
+    },
+    {
+      "key": "ed5e433e9242814a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report button: here.",
+      "lines": [
+        "Report button: here."
+      ],
+      "file": "/audio/voice/ed5e433e9242814a.mp3"
+    },
+    {
+      "key": "671a8cf25896c53c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block button: here.",
+      "lines": [
+        "Block button: here."
+      ],
+      "file": "/audio/voice/671a8cf25896c53c.mp3"
+    },
+    {
+      "key": "cb54043cd37ddd6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends only: here.",
+      "lines": [
+        "Friends only: here."
+      ],
+      "file": "/audio/voice/cb54043cd37ddd6d.mp3"
+    },
+    {
+      "key": "8fb36ce0b7858aac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grown-ups can see: here. That is all four guards, right here in the lobby.",
+      "lines": [
+        "Grown-ups can see: here. That is all four guards, right here in the lobby."
+      ],
+      "file": "/audio/voice/8fb36ce0b7858aac.mp3"
+    },
+    {
+      "key": "4314694e31d16584",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A teammate says: join my party chat in the game so we can plan the raid! Count the guards before you decide.",
+      "lines": [
+        "A teammate says: join my party chat in the game so we can plan the raid! Count the guards before you decide."
+      ],
+      "file": "/audio/voice/4314694e31d16584.mp3"
+    },
+    {
+      "key": "ed5e433e9242814a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report button: here.",
+      "lines": [
+        "Report button: here."
+      ],
+      "file": "/audio/voice/ed5e433e9242814a.mp3"
+    },
+    {
+      "key": "671a8cf25896c53c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block button: here.",
+      "lines": [
+        "Block button: here."
+      ],
+      "file": "/audio/voice/671a8cf25896c53c.mp3"
+    },
+    {
+      "key": "cb54043cd37ddd6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends only: here.",
+      "lines": [
+        "Friends only: here."
+      ],
+      "file": "/audio/voice/cb54043cd37ddd6d.mp3"
+    },
+    {
+      "key": "a7b8f28f5cc57873",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grown-ups can see: here.",
+      "lines": [
+        "Grown-ups can see: here."
+      ],
+      "file": "/audio/voice/a7b8f28f5cc57873.mp3"
+    },
+    {
+      "key": "73d6d9574ccbb9bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report button: here. Party chat is still inside the game.",
+      "lines": [
+        "Report button: here. Party chat is still inside the game."
+      ],
+      "file": "/audio/voice/73d6d9574ccbb9bf.mp3"
+    },
+    {
+      "key": "671a8cf25896c53c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block button: here.",
+      "lines": [
+        "Block button: here."
+      ],
+      "file": "/audio/voice/671a8cf25896c53c.mp3"
+    },
+    {
+      "key": "75ee0686905a51b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends only: here. Only your team is in the party.",
+      "lines": [
+        "Friends only: here. Only your team is in the party."
+      ],
+      "file": "/audio/voice/75ee0686905a51b2.mp3"
+    },
+    {
+      "key": "82dc494118ee1729",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grown-ups can see: here. Same game, same guards.",
+      "lines": [
+        "Grown-ups can see: here. Same game, same guards."
+      ],
+      "file": "/audio/voice/82dc494118ee1729.mp3"
+    },
+    {
+      "key": "644af6bf2a1c63f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "GoldRush Gary keeps typing nasty names at you. The player menu is open. Find report, then block, then tell.",
+      "lines": [
+        "GoldRush Gary keeps typing nasty names at you. The player menu is open. Find report, then block, then tell."
+      ],
+      "file": "/audio/voice/644af6bf2a1c63f0.mp3"
+    },
+    {
+      "key": "047f45eb9846b564",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "SkinDealer99 wants a photo of you for a free skin. This menu looks different. Find report, then block, then tell.",
+      "lines": [
+        "SkinDealer99 wants a photo of you for a free skin. This menu looks different. Find report, then block, then tell."
+      ],
+      "file": "/audio/voice/047f45eb9846b564.mp3"
+    },
+    {
+      "key": "4380f764d8dca0b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "FreeCoinz Bot is spamming the lobby with a free coins link. A different menu again. Find report, then block, then tell.",
+      "lines": [
+        "FreeCoinz Bot is spamming the lobby with a free coins link. A different menu again. Find report, then block, then tell."
+      ],
+      "file": "/audio/voice/4380f764d8dca0b8.mp3"
+    },
+    {
+      "key": "4bb5ed4b1abb1402",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report comes first. It calls the game's guards so they can deal with the bully for everyone.",
+      "lines": [
+        "Report comes first. It calls the game's guards so they can deal with the bully for everyone."
+      ],
+      "file": "/audio/voice/4bb5ed4b1abb1402.mp3"
+    },
+    {
+      "key": "7f3e513b2f852e64",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block comes before tell. Make them vanish from your game, then tell a grown-up what happened.",
+      "lines": [
+        "Block comes before tell. Make them vanish from your game, then tell a grown-up what happened."
+      ],
+      "file": "/audio/voice/7f3e513b2f852e64.mp3"
+    },
+    {
+      "key": "e677703a21c3b84c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report first, always. Asking for a photo is exactly what the game's guards need to hear about.",
+      "lines": [
+        "Report first, always. Asking for a photo is exactly what the game's guards need to hear about."
+      ],
+      "file": "/audio/voice/e677703a21c3b84c.mp3"
+    },
+    {
+      "key": "624c095ddbff1c22",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block before you tell. Once they have vanished, a grown-up hears the whole story.",
+      "lines": [
+        "Block before you tell. Once they have vanished, a grown-up hears the whole story."
+      ],
+      "file": "/audio/voice/624c095ddbff1c22.mp3"
+    },
+    {
+      "key": "250594d644252e24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Report first. A spam bot bothers everyone in the lobby, and only the guards can remove it for everyone.",
+      "lines": [
+        "Report first. A spam bot bothers everyone in the lobby, and only the guards can remove it for everyone."
+      ],
+      "file": "/audio/voice/250594d644252e24.mp3"
+    },
+    {
+      "key": "6b2f3916cb98dd50",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Block comes next, then tell. Vanish the bot from your game, then tell a grown-up about the free coins trick.",
+      "lines": [
+        "Block comes next, then tell. Vanish the bot from your game, then tell a grown-up about the free coins trick."
+      ],
+      "file": "/audio/voice/6b2f3916cb98dd50.mp3"
+    },
+    {
+      "key": "84b4956b91abc7ed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who made it? Not the real game company. Some random site nobody can check.",
+      "lines": [
+        "Who made it? Not the real game company. Some random site nobody can check."
+      ],
+      "file": "/audio/voice/84b4956b91abc7ed.mp3"
+    },
+    {
+      "key": "458e36ddfc1e520e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What does it want? Your game LOGIN, and the virus checker switched OFF. Two alarm bells.",
+      "lines": [
+        "What does it want? Your game LOGIN, and the virus checker switched OFF. Two alarm bells."
+      ],
+      "file": "/audio/voice/458e36ddfc1e520e.mp3"
+    },
+    {
+      "key": "81e490e55a997e91",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Would the real game do this? Real games sell their stuff INSIDE the game, never through secret downloads.",
+      "lines": [
+        "Would the real game do this? Real games sell their stuff INSIDE the game, never through secret downloads."
+      ],
+      "file": "/audio/voice/81e490e55a997e91.mp3"
+    },
+    {
+      "key": "da75588513bd197c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If you install it? Best case, nothing. Worst case, your account is stolen and the computer is sick.",
+      "lines": [
+        "If you install it? Best case, nothing. Worst case, your account is stolen and the computer is sick."
+      ],
+      "file": "/audio/voice/da75588513bd197c.mp3"
+    },
+    {
+      "key": "ee02ed15ab1d1667",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who made it? The real game company, inside the real game's own shop.",
+      "lines": [
+        "Who made it? The real game company, inside the real game's own shop."
+      ],
+      "file": "/audio/voice/ee02ed15ab1d1667.mp3"
+    },
+    {
+      "key": "a167003abd9c3117",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What does it want? Just a grown-up's OK. It never asks for your login somewhere weird.",
+      "lines": [
+        "What does it want? Just a grown-up's OK. It never asks for your login somewhere weird."
+      ],
+      "file": "/audio/voice/a167003abd9c3117.mp3"
+    },
+    {
+      "key": "0528438a015381e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Would the real game do this? Yes. This IS the real game, selling its stuff the proper way.",
+      "lines": [
+        "Would the real game do this? Yes. This IS the real game, selling its stuff the proper way."
+      ],
+      "file": "/audio/voice/0528438a015381e8.mp3"
+    },
+    {
+      "key": "06725aea83eafef6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If you get it? The content appears in your game. No surprises, no tricks.",
+      "lines": [
+        "If you get it? The content appears in your game. No surprises, no tricks."
+      ],
+      "file": "/audio/voice/06725aea83eafef6.mp3"
+    },
+    {
+      "key": "38bc02869120cfad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who made it? 'No virus we promise!!' Real companies never have to promise that.",
+      "lines": [
+        "Who made it? 'No virus we promise!!' Real companies never have to promise that."
+      ],
+      "file": "/audio/voice/38bc02869120cfad.mp3"
+    },
+    {
+      "key": "d37ac88ad2982381",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What does it want? Your USERNAME and PASSWORD. That is the whole trick, right there.",
+      "lines": [
+        "What does it want? Your USERNAME and PASSWORD. That is the whole trick, right there."
+      ],
+      "file": "/audio/voice/d37ac88ad2982381.mp3"
+    },
+    {
+      "key": "3d8f5cd247333dbe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Would the real game do this? Free-anything generators do not exist. Skins cost the game company money.",
+      "lines": [
+        "Would the real game do this? Free-anything generators do not exist. Skins cost the game company money."
+      ],
+      "file": "/audio/voice/3d8f5cd247333dbe.mp3"
+    },
+    {
+      "key": "6a2ad712ad715e28",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If you use it? You type your password... and the account is not yours any more.",
+      "lines": [
+        "If you use it? You type your password... and the account is not yours any more."
+      ],
+      "file": "/audio/voice/6a2ad712ad715e28.mp3"
+    },
+    {
+      "key": "aa4e1b147be1945f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stolen account, sick computer. So who does a mod like this really help?",
+      "lines": [
+        "Stolen account, sick computer. So who does a mod like this really help?"
+      ],
+      "file": "/audio/voice/aa4e1b147be1945f.mp3"
+    },
+    {
+      "key": "ccbedc877eac9cd4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Inside the real game, and it only wants a grown-up's OK. Does that sound like a trap?",
+      "lines": [
+        "Inside the real game, and it only wants a grown-up's OK. Does that sound like a trap?"
+      ],
+      "file": "/audio/voice/ccbedc877eac9cd4.mp3"
+    },
+    {
+      "key": "1024e34012fcf157",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It promises free skins, but it asks for your password. What is it really after?",
+      "lines": [
+        "It promises free skins, but it asks for your password. What is it really after?"
+      ],
+      "file": "/audio/voice/1024e34012fcf157.mp3"
     },
     {
       "key": "0274e1f635c136c1",
@@ -20942,6 +23044,930 @@
         "This one asks you to forward it. Which move stops the chain?"
       ],
       "file": "/audio/voice/108cad6c0a6ac236.mp3"
+    },
+    {
+      "key": "806610bfbeaf0ff3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nothing in that message gives you away. Pure game talk, so it flies as it is.",
+      "lines": [
+        "That's right!",
+        "Nothing in that message gives you away. Pure game talk, so it flies as it is."
+      ],
+      "file": "/audio/voice/806610bfbeaf0ff3.mp3"
+    },
+    {
+      "key": "b4e1a63f8cfbc34f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That message was already clean. Game talk can fly exactly as it is.",
+      "lines": [
+        "Not quite.",
+        "That message was already clean. Game talk can fly exactly as it is."
+      ],
+      "file": "/audio/voice/b4e1a63f8cfbc34f.mp3"
+    },
+    {
+      "key": "3c4b2edee2d18e3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your school says where you are every weekday. On my team keeps it about the game, and the message still works.",
+      "lines": [
+        "That's right!",
+        "Your school says where you are every weekday. On my team keeps it about the game, and the message still works."
+      ],
+      "file": "/audio/voice/3c4b2edee2d18e3a.mp3"
+    },
+    {
+      "key": "5b9d6dc9af688f52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your school is where you are. A stranger with your school can find you, so that word cannot fly.",
+      "lines": [
+        "Not quite.",
+        "Your school is where you are. A stranger with your school can find you, so that word cannot fly."
+      ],
+      "file": "/audio/voice/5b9d6dc9af688f52.mp3"
+    },
+    {
+      "key": "215139332a9125a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. My house still gives you away: it is where you live. Swap the school for something about the game.",
+      "lines": [
+        "Not quite.",
+        "My house still gives you away: it is where you live. Swap the school for something about the game."
+      ],
+      "file": "/audio/voice/215139332a9125a6.mp3"
+    },
+    {
+      "key": "15a9e97683797f37",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is still the school's name, just shorter. A stranger can look it up.",
+      "lines": [
+        "Not quite.",
+        "That is still the school's name, just shorter. A stranger can look it up."
+      ],
+      "file": "/audio/voice/15a9e97683797f37.mp3"
+    },
+    {
+      "key": "f3ec9a0424727db4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you.",
+      "lines": [
+        "That's right!",
+        "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you."
+      ],
+      "file": "/audio/voice/f3ec9a0424727db4.mp3"
+    },
+    {
+      "key": "7a0c08bfaaa9da7a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Home alone tells a stranger there is no grown-up with you. That never goes in chat, not ever.",
+      "lines": [
+        "Not quite.",
+        "Home alone tells a stranger there is no grown-up with you. That never goes in chat, not ever."
+      ],
+      "file": "/audio/voice/7a0c08bfaaa9da7a.mp3"
+    },
+    {
+      "key": "06b2d258599abf2e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. By myself means the same as home alone. Nobody online ever needs to know that.",
+      "lines": [
+        "Not quite.",
+        "By myself means the same as home alone. Nobody online ever needs to know that."
+      ],
+      "file": "/audio/voice/06b2d258599abf2e.mp3"
+    },
+    {
+      "key": "a119fef79a23a655",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Now you have added your address. That is an even bigger leak.",
+      "lines": [
+        "Not quite.",
+        "Now you have added your address. That is an even bigger leak."
+      ],
+      "file": "/audio/voice/a119fef79a23a655.mp3"
+    },
+    {
+      "key": "2635166e532f5746",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The left bridge is a tactic. Nothing in there gives you away, so it flies.",
+      "lines": [
+        "That's right!",
+        "The left bridge is a tactic. Nothing in there gives you away, so it flies."
+      ],
+      "file": "/audio/voice/2635166e532f5746.mp3"
+    },
+    {
+      "key": "494cc938710d5763",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That was pure game talk. Swapping it changes nothing, so send it as it is.",
+      "lines": [
+        "Not quite.",
+        "That was pure game talk. Swapping it changes nothing, so send it as it is."
+      ],
+      "file": "/audio/voice/494cc938710d5763.mp3"
+    },
+    {
+      "key": "51f3f108a7ed31c3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date.",
+      "lines": [
+        "That's right!",
+        "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date."
+      ],
+      "file": "/audio/voice/51f3f108a7ed31c3.mp3"
+    },
+    {
+      "key": "1fd3bae7b2e41a3f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The date of your birthday is real-life info. Strangers use it to guess passwords and pretend to know you.",
+      "lines": [
+        "Not quite.",
+        "The date of your birthday is real-life info. Strangers use it to guess passwords and pretend to know you."
+      ],
+      "file": "/audio/voice/1fd3bae7b2e41a3f.mp3"
+    },
+    {
+      "key": "938ae8504d4265b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The day is still your birthday. Keep the date to yourself.",
+      "lines": [
+        "Not quite.",
+        "The day is still your birthday. Keep the date to yourself."
+      ],
+      "file": "/audio/voice/938ae8504d4265b4.mp3"
+    },
+    {
+      "key": "873bdc03dae5e907",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Now the date AND your age are in the chat. Two clues instead of one.",
+      "lines": [
+        "Not quite.",
+        "Now the date AND your age are in the chat. Two clues instead of one."
+      ],
+      "file": "/audio/voice/873bdc03dae5e907.mp3"
+    },
+    {
+      "key": "5496294d65e77fce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards.",
+      "lines": [
+        "That's right!",
+        "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards."
+      ],
+      "file": "/audio/voice/5496294d65e77fce.mp3"
+    },
+    {
+      "key": "9b84dc157d9ce62d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A phone number lets a stranger reach you anywhere. It never goes in chat.",
+      "lines": [
+        "Not quite.",
+        "A phone number lets a stranger reach you anywhere. It never goes in chat."
+      ],
+      "file": "/audio/voice/9b84dc157d9ce62d.mp3"
+    },
+    {
+      "key": "4a8385524bb9f131",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A phone number is a phone number, even a grown-up's. Plan it here in the game.",
+      "lines": [
+        "Not quite.",
+        "A phone number is a phone number, even a grown-up's. Plan it here in the game."
+      ],
+      "file": "/audio/voice/4a8385524bb9f131.mp3"
+    },
+    {
+      "key": "55b660ebac0bb173",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is the same number with a time added. Even more to give away.",
+      "lines": [
+        "Not quite.",
+        "That is the same number with a time added. Even more to give away."
+      ],
+      "file": "/audio/voice/55b660ebac0bb173.mp3"
+    },
+    {
+      "key": "e415ae312a042e8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is game talk. Nothing about who you are or where you are.",
+      "lines": [
+        "Not quite.",
+        "That is game talk. Nothing about who you are or where you are."
+      ],
+      "file": "/audio/voice/e415ae312a042e8f.mp3"
+    },
+    {
+      "key": "4123727dcbc07a91",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A tactic. It says nothing about you, so it is safe to send.",
+      "lines": [
+        "Not quite.",
+        "A tactic. It says nothing about you, so it is safe to send."
+      ],
+      "file": "/audio/voice/4123727dcbc07a91.mp3"
+    },
+    {
+      "key": "fc4dec0212ad0fa4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The team badge means a friend you actually know. Let them in and play.",
+      "lines": [
+        "That's right!",
+        "The team badge means a friend you actually know. Let them in and play."
+      ],
+      "file": "/audio/voice/fc4dec0212ad0fa4.mp3"
+    },
+    {
+      "key": "81c59e14f232b3e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the badge. PixelPanda42 wears the team badge, so this is a friend you know.",
+      "lines": [
+        "Not quite.",
+        "Look at the badge. PixelPanda42 wears the team badge, so this is a friend you know."
+      ],
+      "file": "/audio/voice/81c59e14f232b3e0.mp3"
+    },
+    {
+      "key": "1bcdbc229fd13f20",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A friendly name is not a badge. No badge means a stranger, however nice the name sounds.",
+      "lines": [
+        "That's right!",
+        "A friendly name is not a badge. No badge means a stranger, however nice the name sounds."
+      ],
+      "file": "/audio/voice/1bcdbc229fd13f20.mp3"
+    },
+    {
+      "key": "a82adfd41c14aa1b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look for the badge, not the name. GoldRush Gary has no badge, so he is a stranger.",
+      "lines": [
+        "Not quite.",
+        "Look for the badge, not the name. GoldRush Gary has no badge, so he is a stranger."
+      ],
+      "file": "/audio/voice/a82adfd41c14aa1b.mp3"
+    },
+    {
+      "key": "c9ee36834609a776",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Badge on, friend in. That is what the doors are for.",
+      "lines": [
+        "That's right!",
+        "Badge on, friend in. That is what the doors are for."
+      ],
+      "file": "/audio/voice/c9ee36834609a776.mp3"
+    },
+    {
+      "key": "c51dd53c17b831e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look again: the team badge is on. TurboFalcon is a friend, and friends with the badge come in.",
+      "lines": [
+        "Not quite.",
+        "Look again: the team badge is on. TurboFalcon is a friend, and friends with the badge come in."
+      ],
+      "file": "/audio/voice/c51dd53c17b831e8.mp3"
+    },
+    {
+      "key": "5e4ca6ff3f746754",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nobody knows the name and there is no badge. Strangers stay outside the lobby.",
+      "lines": [
+        "That's right!",
+        "Nobody knows the name and there is no badge. Strangers stay outside the lobby."
+      ],
+      "file": "/audio/voice/5e4ca6ff3f746754.mp3"
+    },
+    {
+      "key": "2ef7766f266da1ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. No badge and nobody knows the name. That is a stranger, and strangers stay out.",
+      "lines": [
+        "Not quite.",
+        "No badge and nobody knows the name. That is a stranger, and strangers stay out."
+      ],
+      "file": "/audio/voice/2ef7766f266da1ec.mp3"
+    },
+    {
+      "key": "391c1eb17143f120",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Friends only did the checking for you. Only badges reach the door now.",
+      "lines": [
+        "That's right!",
+        "Friends only did the checking for you. Only badges reach the door now."
+      ],
+      "file": "/audio/voice/391c1eb17143f120.mp3"
+    },
+    {
+      "key": "41eb2f637362730b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. StarGazer wears the team badge, and friends only let only badges this far. Let them in.",
+      "lines": [
+        "Not quite.",
+        "StarGazer wears the team badge, and friends only let only badges this far. Let them in."
+      ],
+      "file": "/audio/voice/41eb2f637362730b.mp3"
+    },
+    {
+      "key": "3167dbef4d4f1817",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Another badge, another friend. The setting keeps the strangers away before they even knock.",
+      "lines": [
+        "That's right!",
+        "Another badge, another friend. The setting keeps the strangers away before they even knock."
+      ],
+      "file": "/audio/voice/3167dbef4d4f1817.mp3"
+    },
+    {
+      "key": "53dbc56be89eb71b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. NightHawk has the team badge. With friends only on, everyone at the door is a friend.",
+      "lines": [
+        "Not quite.",
+        "NightHawk has the team badge. With friends only on, everyone at the door is a friend."
+      ],
+      "file": "/audio/voice/53dbc56be89eb71b.mp3"
+    },
+    {
+      "key": "119e7620925b4f96",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Friends only. Now the lobby checks the badges for you, before anyone even reaches the door.",
+      "lines": [
+        "That's right!",
+        "Friends only. Now the lobby checks the badges for you, before anyone even reaches the door."
+      ],
+      "file": "/audio/voice/119e7620925b4f96.mp3"
+    },
+    {
+      "key": "23c5705a1f929753",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your real name on screen shows strangers who you are. That is the opposite of a guard.",
+      "lines": [
+        "Not quite.",
+        "Your real name on screen shows strangers who you are. That is the opposite of a guard."
+      ],
+      "file": "/audio/voice/23c5705a1f929753.mp3"
+    },
+    {
+      "key": "46384d950cf14f39",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. An open mic lets strangers listen in. Friends only is the safe mic too.",
+      "lines": [
+        "Not quite.",
+        "An open mic lets strangers listen in. Friends only is the safe mic too."
+      ],
+      "file": "/audio/voice/46384d950cf14f39.mp3"
+    },
+    {
+      "key": "2c1e9211a0f48bed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Anyone can send means any stranger can knock. Friends only is the lock.",
+      "lines": [
+        "Not quite.",
+        "Anyone can send means any stranger can knock. Friends only is the lock."
+      ],
+      "file": "/audio/voice/2c1e9211a0f48bed.mp3"
+    },
+    {
+      "key": "b8d6310e20a3e77f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Four guards here, none over there. A laggy chat is not the real reason for the move. Stay where the guards are.",
+      "lines": [
+        "That's right!",
+        "Four guards here, none over there. A laggy chat is not the real reason for the move. Stay where the guards are."
+      ],
+      "file": "/audio/voice/b8d6310e20a3e77f.mp3"
+    },
+    {
+      "key": "9b1b48b2d7c1f7f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Count again. SnapTalk has no report button, no block button, no friends only and no grown-ups. Four guards here, zero there.",
+      "lines": [
+        "Not quite.",
+        "Count again. SnapTalk has no report button, no block button, no friends only and no grown-ups. Four guards here, zero there."
+      ],
+      "file": "/audio/voice/9b1b48b2d7c1f7f0.mp3"
+    },
+    {
+      "key": "1bbfc6460dd0486e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Four guards here, three missing on the private server. A map trick that only works over there was never about the map. Stay here.",
+      "lines": [
+        "That's right!",
+        "Four guards here, three missing on the private server. A map trick that only works over there was never about the map. Stay here."
+      ],
+      "file": "/audio/voice/1bbfc6460dd0486e.mp3"
+    },
+    {
+      "key": "866069b59aa8f16d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the private server: no report button, no friends only, no grown-ups. A secret trick is not worth losing three guards.",
+      "lines": [
+        "Not quite.",
+        "Look at the private server: no report button, no friends only, no grown-ups. A secret trick is not worth losing three guards."
+      ],
+      "file": "/audio/voice/866069b59aa8f16d.mp3"
+    },
+    {
+      "key": "6f0a95d6e44e6651",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Party chat is still inside the game, with every guard in place. Moving rooms inside the game is fine. Leaving the game is the red flag.",
+      "lines": [
+        "That's right!",
+        "Party chat is still inside the game, with every guard in place. Moving rooms inside the game is fine. Leaving the game is the red flag."
+      ],
+      "file": "/audio/voice/6f0a95d6e44e6651.mp3"
+    },
+    {
+      "key": "c7991bab8bd5d9da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Both rooms have four guards. Party chat is inside the same game, so joining your team there is fine. Not every move is a trick.",
+      "lines": [
+        "Not quite.",
+        "Both rooms have four guards. Party chat is inside the same game, so joining your team there is fine. Not every move is a trick."
+      ],
+      "file": "/audio/voice/c7991bab8bd5d9da.mp3"
+    },
+    {
+      "key": "7715339219fc04e5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Real gaming friends are happy where the guards are. Only tricksters need you to leave.",
+      "lines": [
+        "Not quite.",
+        "Real gaming friends are happy where the guards are. Only tricksters need you to leave."
+      ],
+      "file": "/audio/voice/7715339219fc04e5.mp3"
+    },
+    {
+      "key": "fa0e2ea2c6ec81f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Report called the guards, block made him vanish, and a grown-up knows. Three taps and the lobby is yours again.",
+      "lines": [
+        "That's right!",
+        "Report called the guards, block made him vanish, and a grown-up knows. Three taps and the lobby is yours again."
+      ],
+      "file": "/audio/voice/fa0e2ea2c6ec81f9.mp3"
+    },
+    {
+      "key": "9939a7f75a9d21d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Report comes first. It calls the game's guards so they can deal with the bully for everyone.",
+      "lines": [
+        "Not quite.",
+        "Report comes first. It calls the game's guards so they can deal with the bully for everyone."
+      ],
+      "file": "/audio/voice/9939a7f75a9d21d3.mp3"
+    },
+    {
+      "key": "769ee9c7d883d887",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Block comes before tell. Make them vanish from your game, then tell a grown-up what happened.",
+      "lines": [
+        "Not quite.",
+        "Block comes before tell. Make them vanish from your game, then tell a grown-up what happened."
+      ],
+      "file": "/audio/voice/769ee9c7d883d887.mp3"
+    },
+    {
+      "key": "d63dcd5e1a98ec56",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Add friend invites GoldRush Gary closer. That is the opposite of what this moment needs. Find report.",
+      "lines": [
+        "Not quite.",
+        "Add friend invites GoldRush Gary closer. That is the opposite of what this moment needs. Find report."
+      ],
+      "file": "/audio/voice/d63dcd5e1a98ec56.mp3"
+    },
+    {
+      "key": "7c63bf79ea9baea2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A dancing emote will not stop a bully. Look for the bell: report.",
+      "lines": [
+        "Not quite.",
+        "A dancing emote will not stop a bully. Look for the bell: report."
+      ],
+      "file": "/audio/voice/7c63bf79ea9baea2.mp3"
+    },
+    {
+      "key": "f2eee31fdd79f69a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The shop sells hats, not help. Keep looking for the report button.",
+      "lines": [
+        "Not quite.",
+        "The shop sells hats, not help. Keep looking for the report button."
+      ],
+      "file": "/audio/voice/f2eee31fdd79f69a.mp3"
+    },
+    {
+      "key": "2e8d87a464cb4c93",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Asking a kid for a photo is a red flag from Week 3, and you answered it with report, block, tell. Perfect order.",
+      "lines": [
+        "That's right!",
+        "Asking a kid for a photo is a red flag from Week 3, and you answered it with report, block, tell. Perfect order."
+      ],
+      "file": "/audio/voice/2e8d87a464cb4c93.mp3"
+    },
+    {
+      "key": "39f53814a88a7293",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Report first, always. Asking for a photo is exactly what the game's guards need to hear about.",
+      "lines": [
+        "Not quite.",
+        "Report first, always. Asking for a photo is exactly what the game's guards need to hear about."
+      ],
+      "file": "/audio/voice/39f53814a88a7293.mp3"
+    },
+    {
+      "key": "97d4629bb537d5cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Block before you tell. Once they have vanished, a grown-up hears the whole story.",
+      "lines": [
+        "Not quite.",
+        "Block before you tell. Once they have vanished, a grown-up hears the whole story."
+      ],
+      "file": "/audio/voice/97d4629bb537d5cb.mp3"
+    },
+    {
+      "key": "899fef646b8ce5ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Mute only quiets your game. The guards never hear about it. Report first.",
+      "lines": [
+        "Not quite.",
+        "Mute only quiets your game. The guards never hear about it. Report first."
+      ],
+      "file": "/audio/voice/899fef646b8ce5ce.mp3"
+    },
+    {
+      "key": "cd8bbb5c9c8a4b73",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Their stats will not stop the asks. Keep looking for report.",
+      "lines": [
+        "Not quite.",
+        "Their stats will not stop the asks. Keep looking for report."
+      ],
+      "file": "/audio/voice/cd8bbb5c9c8a4b73.mp3"
+    },
+    {
+      "key": "4b966274343def99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Sending anything is the last thing to do here. Find report.",
+      "lines": [
+        "Not quite.",
+        "Sending anything is the last thing to do here. Find report."
+      ],
+      "file": "/audio/voice/4b966274343def99.mp3"
+    },
+    {
+      "key": "61dbe4b80ad8e5fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Three different menus, and you found the buttons in every one. Report calls the guards, block clears your game, tell brings help.",
+      "lines": [
+        "That's right!",
+        "Three different menus, and you found the buttons in every one. Report calls the guards, block clears your game, tell brings help."
+      ],
+      "file": "/audio/voice/61dbe4b80ad8e5fc.mp3"
+    },
+    {
+      "key": "77ba6746025877bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Report first. A spam bot bothers everyone in the lobby, and only the guards can remove it for everyone.",
+      "lines": [
+        "Not quite.",
+        "Report first. A spam bot bothers everyone in the lobby, and only the guards can remove it for everyone."
+      ],
+      "file": "/audio/voice/77ba6746025877bc.mp3"
+    },
+    {
+      "key": "5c5227f4eea17f19",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Block comes next, then tell. Vanish the bot from your game, then tell a grown-up about the free coins trick.",
+      "lines": [
+        "Not quite.",
+        "Block comes next, then tell. Vanish the bot from your game, then tell a grown-up about the free coins trick."
+      ],
+      "file": "/audio/voice/5c5227f4eea17f19.mp3"
+    },
+    {
+      "key": "a41b814efc29ea66",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Never open a stranger's link. That is how the trick gets in. Find report.",
+      "lines": [
+        "Not quite.",
+        "Never open a stranger's link. That is how the trick gets in. Find report."
+      ],
+      "file": "/audio/voice/a41b814efc29ea66.mp3"
+    },
+    {
+      "key": "bf61bed89dd4fcc0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Inviting a spammer into your party? No. Look for report.",
+      "lines": [
+        "Not quite.",
+        "Inviting a spammer into your party? No. Look for report."
+      ],
+      "file": "/audio/voice/bf61bed89dd4fcc0.mp3"
+    },
+    {
+      "key": "5283bd6039b8acad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Settings can wait. The report button is what this moment needs.",
+      "lines": [
+        "Not quite.",
+        "Settings can wait. The report button is what this moment needs."
+      ],
+      "file": "/audio/voice/5283bd6039b8acad.mp3"
+    },
+    {
+      "key": "f2f457561466c997",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your login is the whole prize, and switching the virus checker off opens the door for the rest. Close it and tell a grown-up.",
+      "lines": [
+        "That's right!",
+        "Your login is the whole prize, and switching the virus checker off opens the door for the rest. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/f2f457561466c997.mp3"
+    },
+    {
+      "key": "14f2ad05aabe34c3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A mod that wants your login and the virus checker off is a burglar asking you to unlock the door. Trap!",
+      "lines": [
+        "Not quite.",
+        "A mod that wants your login and the virus checker off is a burglar asking you to unlock the door. Trap!"
+      ],
+      "file": "/audio/voice/14f2ad05aabe34c3.mp3"
+    },
+    {
+      "key": "10d14f1692ec39de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It lives inside the real game and asks for nothing but a grown-up's OK. That is how real games sell things.",
+      "lines": [
+        "That's right!",
+        "It lives inside the real game and asks for nothing but a grown-up's OK. That is how real games sell things."
+      ],
+      "file": "/audio/voice/10d14f1692ec39de.mp3"
+    },
+    {
+      "key": "c99837e8f92cfa08",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The real game's own shop, and nothing but your family's OK. That is the safe way to get new stuff.",
+      "lines": [
+        "Not quite.",
+        "The real game's own shop, and nothing but your family's OK. That is the safe way to get new stuff."
+      ],
+      "file": "/audio/voice/c99837e8f92cfa08.mp3"
+    },
+    {
+      "key": "95e21416ffadd465",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nothing can generate free skins, so the password box is the real reason the page exists. Close it and tell a grown-up.",
+      "lines": [
+        "That's right!",
+        "Nothing can generate free skins, so the password box is the real reason the page exists. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/95e21416ffadd465.mp3"
+    },
+    {
+      "key": "130a57de901a583f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Generators never work. They exist to steal passwords. Close it and tell a grown-up.",
+      "lines": [
+        "Not quite.",
+        "Generators never work. They exist to steal passwords. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/130a57de901a583f.mp3"
+    },
+    {
+      "key": "6a2ed18fcc3e392a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Outside the game is where the traps live. Real games sell inside their own shop.",
+      "lines": [
+        "Not quite.",
+        "Outside the game is where the traps live. Real games sell inside their own shop."
+      ],
+      "file": "/audio/voice/6a2ed18fcc3e392a.mp3"
+    },
+    {
+      "key": "8281f2c0d3cc2b4f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Not beside. Inside the real game's own shop, with a grown-up's OK.",
+      "lines": [
+        "Not quite.",
+        "Not beside. Inside the real game's own shop, with a grown-up's OK."
+      ],
+      "file": "/audio/voice/8281f2c0d3cc2b4f.mp3"
+    },
+    {
+      "key": "de88d19940a7fdfd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Not under. Inside the game is the only safe shop.",
+      "lines": [
+        "Not quite.",
+        "Not under. Inside the game is the only safe shop."
+      ],
+      "file": "/audio/voice/de88d19940a7fdfd.mp3"
+    },
+    {
+      "key": "ac184595dc2e81ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! School is real-life info, so the hero move is game talk only. Nice try, back to the game.",
+      "lines": [
+        "That's right!",
+        "School is real-life info, so the hero move is game talk only. Nice try, back to the game."
+      ],
+      "file": "/audio/voice/ac184595dc2e81ef.mp3"
+    },
+    {
+      "key": "ba7858ccbb312a21",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your school is real-life info. The move here is game talk only: nice try, back to the game.",
+      "lines": [
+        "Not quite.",
+        "Your school is real-life info. The move here is game talk only: nice try, back to the game."
+      ],
+      "file": "/audio/voice/ba7858ccbb312a21.mp3"
+    },
+    {
+      "key": "1dbd41cba5e7cbed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Strangers keep dropping into your lobby because the door is open. Flipping friends only locks it once, for every game after.",
+      "lines": [
+        "That's right!",
+        "Strangers keep dropping into your lobby because the door is open. Flipping friends only locks it once, for every game after."
+      ],
+      "file": "/audio/voice/1dbd41cba5e7cbed.mp3"
+    },
+    {
+      "key": "eece2be0911cfc3c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Strangers reaching your lobby means the door is open. The move is the friends only lock.",
+      "lines": [
+        "Not quite.",
+        "Strangers reaching your lobby means the door is open. The move is the friends only lock."
+      ],
+      "file": "/audio/voice/eece2be0911cfc3c.mp3"
+    },
+    {
+      "key": "81dc716967a03f92",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! SnapTalk has none of the guards this chat has. The hero move is to stay right where they are.",
+      "lines": [
+        "That's right!",
+        "SnapTalk has none of the guards this chat has. The hero move is to stay right where they are."
+      ],
+      "file": "/audio/voice/81dc716967a03f92.mp3"
+    },
+    {
+      "key": "9c06acf31feb2f3f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Moving the chat leaves the report button, the block button and your grown-ups behind. Stay with the guards.",
+      "lines": [
+        "Not quite.",
+        "Moving the chat leaves the report button, the block button and your grown-ups behind. Stay with the guards."
+      ],
+      "file": "/audio/voice/9c06acf31feb2f3f.mp3"
+    },
+    {
+      "key": "1cb45656741f3fe7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Report calls the guards, block clears your game, and a grown-up hears about it. Report, block, tell.",
+      "lines": [
+        "That's right!",
+        "Report calls the guards, block clears your game, and a grown-up hears about it. Report, block, tell."
+      ],
+      "file": "/audio/voice/1cb45656741f3fe7.mp3"
+    },
+    {
+      "key": "a79c897f2e041a45",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Names every round need the power buttons: report, block, then tell a grown-up.",
+      "lines": [
+        "Not quite.",
+        "Names every round need the power buttons: report, block, then tell a grown-up."
+      ],
+      "file": "/audio/voice/a79c897f2e041a45.mp3"
+    },
+    {
+      "key": "33434c2bbac4b64e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your login is the loot on that free-skin page. Close it, tell a grown-up, and your account stays yours.",
+      "lines": [
+        "That's right!",
+        "Your login is the loot on that free-skin page. Close it, tell a grown-up, and your account stays yours."
+      ],
+      "file": "/audio/voice/33434c2bbac4b64e.mp3"
+    },
+    {
+      "key": "1ba52c4c31c7d75a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A password box on a free-skin page is a trap. The move is close it, tell a grown-up.",
+      "lines": [
+        "Not quite.",
+        "A password box on a free-skin page is a trap. The move is close it, tell a grown-up."
+      ],
+      "file": "/audio/voice/1ba52c4c31c7d75a.mp3"
+    },
+    {
+      "key": "50286ec916cc9d3e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Home alone tells strangers there is no grown-up with you. Swap it before SEND, and the message flies clean.",
+      "lines": [
+        "That's right!",
+        "Home alone tells strangers there is no grown-up with you. Swap it before SEND, and the message flies clean."
+      ],
+      "file": "/audio/voice/50286ec916cc9d3e.mp3"
+    },
+    {
+      "key": "eb33e76d99868827",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Home alone is the one thing a lobby must never hear. The move is swap it before SEND.",
+      "lines": [
+        "Not quite.",
+        "Home alone is the one thing a lobby must never hear. The move is swap it before SEND."
+      ],
+      "file": "/audio/voice/eb33e76d99868827.mp3"
     },
     {
       "key": "514ceb6018c69909",

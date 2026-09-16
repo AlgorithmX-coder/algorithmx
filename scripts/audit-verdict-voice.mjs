@@ -126,6 +126,30 @@ const ENGINES = {
     return rows;
   },
   snowballChase: () => [{ label: "(no answers by design: a demonstration)", right: "n/a", wrong: "n/a" }],
+  // Week 6 engines (2026-09-16).
+  chatFixer: (span) => objs(span, "messages").flatMap((m) => {
+    // The message's own why / whyWrong live outside the chips array (a safe chip
+    // carries an empty whyWrong that is never spoken), so read them with the
+    // chips stripped out.
+    const base = m.replace(/chips:\s*\[[\s\S]*?\],?/, "");
+    const rows = [{ label: "message " + fld(base, "id"), right: fld(base, "why"), wrong: fld(base, "whyWrong") }];
+    for (const c of objs(m, "chips")) if (!flag(c, "isSafe")) rows.push({ label: "  chip " + fld(c, "text"), right: null, wrong: fld(c, "whyWrong"), only: "wrong" });
+    return rows;
+  }),
+  lobbyDoors: (span) => {
+    const rows = objs(span, "waves").flatMap((w) => objs(w, "players").map((p) => ({ label: (flag(p, "hasBadge") ? "badge " : "no-badge ") + fld(p, "name"), right: fld(p, "why"), wrong: fld(p, "whyWrong") })));
+    const t = span.match(/toggleCard:\s*\{[\s\S]*?\}/);
+    if (t) rows.push({ label: "settings card", right: fld(t[0], "why"), wrong: null, only: "right" });
+    return rows;
+  },
+  guardCount: (span) => objs(span, "rounds").map((r) => ({ label: (fld(r, "prompt") ?? "").slice(0, 50), right: fld(r, "why"), wrong: fld(r, "whyWrong") })),
+  powerPanel: (span) => objs(span, "rounds").flatMap((r) => {
+    const rows = [{ label: (fld(r, "prompt") ?? "").slice(0, 50), right: fld(r, "why"), wrong: null, only: "right" }];
+    const st = r.match(/stepTeach:\s*\[\s*"((?:[^"\\]|\\.)*)"\s*,\s*"((?:[^"\\]|\\.)*)"/);
+    if (st) { rows.push({ label: "  skipped step 1", right: null, wrong: st[1], only: "wrong" }); rows.push({ label: "  skipped step 2", right: null, wrong: st[2], only: "wrong" }); }
+    for (const b of objs(r, "buttons")) if (!/\bstep:/.test(b)) rows.push({ label: "  decoy " + fld(b, "label"), right: null, wrong: fld(b, "note"), only: "wrong" });
+    return rows;
+  }),
   signature: (span) => [{ label: "mechanic " + fld(span, "mechanic"), right: "(component: claim.fact)", wrong: "(component: nudge)" }],
   bossBattle: () => [{ label: "QuizBoss", right: "(teachOnWrong.explanation)", wrong: "(teachOnWrong.explanation)" }],
 };
