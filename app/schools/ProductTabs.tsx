@@ -29,16 +29,16 @@ const TABS: Tab[] = [
     id: "learn",
     n: "01",
     title: "Learn",
-    desc: "A narrated lesson, one idea per screen, with captions. Nobody needs to read to keep up.",
+    desc: "Every idea is taught by doing, with a narrator and captions on screen. Nobody needs to read to keep up.",
     kind: "shot",
     shot: {
       primary: {
         src: "/schools/heroes-learn.jpg",
-        caption: "Cyber Heroes, Week 1. Sarah teaches what a password is, one clue at a time.",
+        caption: "Password Hospital, Week 1. Diagnose a sick password, fix it, and watch the strength meter climb.",
       },
       secondary: {
-        src: "/schools/explorers-signal.jpg",
-        caption: "Cyber Explorers, Case 2. WREN teaches on a real scam message in the Signal Room.",
+        src: "/schools/explorers-meter.jpg",
+        caption: "Case 3, The Guessing Game. Drag the password length and watch the rig's clock jump from an instant to centuries.",
       },
     },
   },
@@ -51,7 +51,7 @@ const TABS: Tab[] = [
     shot: {
       primary: {
         src: "/schools/heroes-play.jpg",
-        caption: "A Week 1 speed round. Which password would take the Raccoon years to crack?",
+        caption: "Passphrase Forge, Week 1. Three random words make a password the Raccoon's machine can't crack.",
       },
       secondary: {
         src: "/schools/explorers-phone.jpg",
