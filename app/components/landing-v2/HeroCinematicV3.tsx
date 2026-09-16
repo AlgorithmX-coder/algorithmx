@@ -887,6 +887,7 @@ export default function HeroCinematicV3() {
          * frame edge, and disappears where even that would collide. */
         @media (max-height: 1040px) { .hv3-scrollHint { bottom: 10px !important; } }
         @media (max-height: 820px)  { .hv3-scrollHint { display: none !important; } }
+        @media (max-width: 640px)   { .hv3-scrollHint { display: none !important; } }
         /* BOTTOM BLEND — feathers the hero's visual layers (nebula wash,
          * laptop scene, floor glow) to transparent over the last ~18% of
          * the frame, so the section hands off into the shared global

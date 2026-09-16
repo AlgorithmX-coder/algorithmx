@@ -80,11 +80,12 @@ export default function HeroOverlay() {
        *  slabs live. Pointer events are re-enabled on the actual
        *  interactive elements: the CTA row below. */}
       <div
+        className="lv2-hero-copy"
         style={{
           maxWidth: 1180,
           /* auto top/bottom = safe vertical centering (see container
            * comment); auto left/right = the same horizontal centering
-           * as before. */
+           * as before. Phones top-align instead (.lv2-hero-copy rule). */
           margin: "auto",
           width: "100%",
           display: "flex",
@@ -170,9 +171,10 @@ export default function HeroOverlay() {
             NCSC alignment mark (alignment, not endorsement — the NCSC runs
             no endorsement scheme). Above the fold so they're the first
             trust marks a visitor sees, matching the course landings. */}
-        <div style={{ marginTop: "calc(var(--lv2-rail) * 0.45)", display: "flex", flexWrap: "wrap", gap: 10, pointerEvents: "auto" }}>
+        <div className="lv2-trust-row" style={{ marginTop: "calc(var(--lv2-rail) * 0.45)", display: "flex", flexWrap: "wrap", gap: 10, pointerEvents: "auto" }}>
           <CyberEssentialsBadge />
           <span
+            className="lv2-trust-pill"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -196,7 +198,8 @@ export default function HeroOverlay() {
                 color: "var(--lv2-cyan-soft)",
               }}
             >
-              Aligned with UK&rsquo;s National Cyber Security Centre
+              <span className="lv2-trust-long">Aligned with UK&rsquo;s National Cyber Security Centre</span>
+              <span className="lv2-trust-short">Aligned with the NCSC</span>
             </span>
             <span aria-hidden style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)" }} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -215,6 +218,20 @@ export default function HeroOverlay() {
     <style jsx global>{`
       .lv2-hero-pad {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
+      }
+      .lv2-trust-short { display: none; }
+      /* Phones: top-align the copy under the nav instead of centring it,
+       * and scale the trust pills down so neither label wraps. Desktop
+       * and tablet rules above are untouched. */
+      @media (max-width: 640px) {
+        .lv2-hero-pad { padding-top: 88px; }
+        .lv2-hero-copy { margin-top: 0 !important; }
+        .lv2-trust-row { gap: 8px !important; }
+        .lv2-trust-pill { padding: 7px 12px !important; gap: 10px !important; }
+        .lv2-trust-pill > span:first-child { font-size: 9px !important; letter-spacing: 0.12em !important; }
+        .lv2-trust-pill img { height: 22px !important; }
+        .lv2-trust-long { display: none; }
+        .lv2-trust-short { display: inline; }
       }
       @media (min-height: 1100px) {
         .lv2-hero-pad { padding-bottom: calc(var(--lv2-rail) * 3); }
