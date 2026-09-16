@@ -33,12 +33,6 @@ const SIZES: Record<string, string> = {
   "300-600": "300 to 600 pupils",
   "600+": "600+ pupils",
 };
-const WANTS: Record<string, string> = {
-  pilot: "A free half-term pilot",
-  demo: "A demo",
-  onboarding: "To find out about the onboarding process",
-};
-
 function esc(s: string): string {
   return s.replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c,
@@ -65,7 +59,6 @@ export async function POST(req: Request) {
   const role = str("role");
   const phase = str("phase");
   const size = str("size");
-  const want = str("want");
   const message = str("message", 2000);
 
   if (name.length < 2) {
@@ -80,10 +73,6 @@ export async function POST(req: Request) {
   if (!(phase in PHASES)) {
     return NextResponse.json({ error: "Please choose primary, secondary or both." }, { status: 400 });
   }
-  if (!(want in WANTS)) {
-    return NextResponse.json({ error: "Please tell us what you would like." }, { status: 400 });
-  }
-
   const record = {
     name,
     email,
@@ -91,7 +80,6 @@ export async function POST(req: Request) {
     role: ROLES[role] ?? "Not given",
     phase: PHASES[phase],
     size: SIZES[size] ?? "Not given",
-    want: WANTS[want],
     message,
     at: new Date().toISOString(),
   };
@@ -99,7 +87,7 @@ export async function POST(req: Request) {
   console.log("[schools-enquiry]", JSON.stringify(record));
 
   const to = process.env.SCHOOLS_ENQUIRY_TO ?? "support@algorithmx.co.uk";
-  const subject = `School enquiry: ${school} (${record.phase}, ${record.want.toLowerCase()})`;
+  const subject = `School enquiry: ${school} (${record.phase})`;
   const rows: Array<[string, string]> = [
     ["Name", name],
     ["Email", email],
@@ -107,7 +95,6 @@ export async function POST(req: Request) {
     ["Role", record.role],
     ["Phase", record.phase],
     ["Size", record.size],
-    ["Wants", record.want],
     ["Message", message || "(none)"],
   ];
   const text = rows.map(([k, v]) => `${k}: ${v}`).join("\n");

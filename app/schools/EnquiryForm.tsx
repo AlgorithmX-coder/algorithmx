@@ -25,12 +25,6 @@ const SIZES = [
   ["600+", "600+ pupils"],
 ] as const;
 
-const WANTS = [
-  ["pilot", "A free half-term pilot"],
-  ["demo", "A demo"],
-  ["onboarding", "To find out about onboarding"],
-] as const;
-
 type Form = {
   name: string;
   email: string;
@@ -38,7 +32,6 @@ type Form = {
   role: string;
   phase: "primary" | "secondary" | "both";
   size: string;
-  want: string;
   message: string;
   website: string;
 };
@@ -95,7 +88,6 @@ export default function EnquiryForm({
     role: "",
     phase: defaultPhase,
     size: "",
-    want: "pilot",
     message: "",
     website: "",
   });
@@ -222,12 +214,6 @@ export default function EnquiryForm({
           <select id="sch-size" style={field} value={f.size} onChange={(e) => set("size", e.target.value)} onFocus={focus} onBlur={blur}>
             <option value="">Choose one</option>
             {SIZES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="sch-want" style={label}>I would like</label>
-          <select id="sch-want" style={field} value={f.want} onChange={(e) => set("want", e.target.value)} onFocus={focus} onBlur={blur}>
-            {WANTS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </div>
         <div className="sch-form-span">
