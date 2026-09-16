@@ -31,6 +31,8 @@ import {
   useMotionIntensity,
 } from "@/app/lib/gameEngine";
 import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat, {
   ExerciseCompleteBeat,
@@ -38,6 +40,19 @@ import ExerciseIntroBeat, {
 import GameButton from "@/app/components/lesson/GameButton";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
+
+// Audio-only narration (the text Sarah reads is already on screen).
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+const SPOKEN_GATE_MAX_MS = 15000;
 
 export interface PhishEmail {
   id: string;
@@ -45,6 +60,12 @@ export interface PhishEmail {
   subject: string;
   body: string;
   isPhishing: boolean;
+  /** Learn-Loop weeks: Sarah reads the message as it opens (one clip). */
+  readAloud?: string;
+  /** Sarah's reason on a correct verdict ("That's right!" + why). */
+  why?: string;
+  /** The wrong-answer panel's explanation (falls back to the generic line). */
+  whyWrong?: string;
   inspections: {
     senderNote: string;
     senderIsRedFlag: boolean;
@@ -64,10 +85,29 @@ export interface PhishInspectorProps {
   /** Intro copy overrides + spoken paced narration (week re-dress). */
   introTitle?: string;
   introSubtitle?: string;
+  introIcon?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Zone label overrides so a re-dress can rename the 4 inspect zones
    *  (e.g. banner ads: "Who's selling?" / "What's the button?"). */
   zoneLabels?: Partial<Record<"sender" | "link" | "urgency" | "claim", string>>;
+  /** The sub-line under each closed zone ("Check the sender"); a re-dress
+   *  overrides these alongside the labels. */
+  zoneQuestions?: Partial<Record<"sender" | "link" | "urgency" | "claim", string>>;
+  /** Learn-Loop copy (Week 4 "The Barker's Booth"). */
+  headerLabel?: string;
+  zapLabel?: string;
+  safeLabel?: string;
+  zapToast?: string;
+  safeToast?: string;
+  wrongTitle?: string;
+  completeTitle?: string;
+  completeLine?: string;
+  /** The how-to, spoken once as the first message opens (audio only). */
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken "you're protected" payoff on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -95,8 +135,21 @@ export default function PhishInspector({
   hints,
   introTitle,
   introSubtitle,
+  introIcon = "🔍",
   introNarration,
   zoneLabels,
+  zoneQuestions,
+  headerLabel = "🔍 Phish Inspector",
+  zapLabel = "ZAP it!",
+  safeLabel = "Mark SAFE",
+  zapToast = "ZAPPED!",
+  safeToast = "STAYED SAFE!",
+  wrongTitle,
+  completeTitle = "Inspector training complete!",
+  completeLine,
+  coachLines,
+  threat,
+  completeNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -106,8 +159,25 @@ export default function PhishInspector({
   const intensity = useMotionIntensity();
   const fx = useExerciseFeedback();
   const audio = useGameAudio();
+  const accent = useLessonTheme()?.accent ?? "#7df0ff";
+  // Both content voices are Sarah; in-game read-alouds are recorded under "adam".
+  const voice = "adam" as const;
 
   const [phase, setPhase] = useState<Phase>("intro");
+  // Read-aloud chain (Learn-Loop): the how-to once, the message as it opens,
+  // then each inspection note as its zone is tapped. Taps are held meanwhile.
+  const [narr, setNarr] = useState<"howto" | "read" | "zone" | "idle">("idle");
+  const [zoneLine, setZoneLine] = useState<string | null>(null);
+  // Spoken verdicts (owner 2026-09-12): "That's right!" + why on a correct
+  // verdict, and the next message waits for Sarah. Wrong verdicts speak
+  // through the WrongAnswerPanel.
+  const verdict = useVerdictVoice(voice);
+  useEffect(() => {
+    if (narr === "idle") return;
+    const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [narr]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
   const [emailIdx, setEmailIdx] = useState(0);
   const [inspected, setInspected] = useState<Record<ZoneId, boolean>>({
     sender: false,
@@ -135,19 +205,37 @@ export default function PhishInspector({
     [inspected]
   );
 
-  // Reset per-email state when advancing.
-  useEffect(() => {
+  // Move to the next message: reset the per-message state in the same event
+  // (never in an effect), and Sarah reads the new message as it opens.
+  const openEmail = useCallback((next: number) => {
+    setEmailIdx(next);
     setInspected({ sender: false, link: false, urgency: false, claim: false });
     setDecided(false);
     setWrongOnCurrent(0);
-  }, [emailIdx]);
+    if (!isAudioMuted()) setNarr("read");
+  }, []);
+
+  const speaking = narr !== "idle" || verdict.speaking;
 
   const handleInspect = useCallback(
     (zone: ZoneId) => {
-      if (!email || feedback || decided) return;
+      if (!email || feedback || decided || speaking) return;
       if (inspected[zone]) return;
       audio.tap();
       setInspected((prev) => ({ ...prev, [zone]: true }));
+      // Sarah reads the note that opens (audio only, taps held).
+      const note =
+        zone === "sender"
+          ? email.inspections.senderNote
+          : zone === "link"
+            ? email.inspections.linkNote
+            : zone === "urgency"
+              ? email.inspections.urgencyNote
+              : email.inspections.claimNote;
+      if (note && !isAudioMuted()) {
+        setZoneLine(note);
+        setNarr("zone");
+      }
       // Subtle juice: red-flag reveals get a danger toast, green reveals
       // get a soft xp toast.
       const isRedFlag =
@@ -172,12 +260,12 @@ export default function PhishInspector({
         });
       }
     },
-    [email, feedback, decided, inspected, audio, fx]
+    [email, feedback, decided, inspected, audio, fx, speaking]
   );
 
   const handleDecision = useCallback(
     (zapped: boolean) => {
-      if (!email || feedback || decided) return;
+      if (!email || feedback || decided || speaking) return;
       const wasCorrect = zapped === email.isPhishing;
       // correctIndex: 0 for ZAP if phishing, 1 for SAFE if legit.
       const correctIndex = email.isPhishing ? 0 : 1;
@@ -193,37 +281,43 @@ export default function PhishInspector({
         onCorrect?.();
         fx.correct({
           xp: 15,
-          text: zapped ? "ZAPPED!" : "STAYED SAFE!",
+          text: zapped ? zapToast : safeToast,
           tone: zapped ? "danger" : "xp",
         });
         setDecided(true);
-        // Brief hold, then next email.
-        window.setTimeout(
-          () => {
-            const next = emailIdx + 1;
-            if (next >= shownEmails.length) {
-              setPhase("finished");
-            } else {
-              setEmailIdx(next);
-            }
-          },
-          intensity === 0 ? 600 : 1100
-        );
+        // Sarah says "That's right!" + why; the next message waits for her
+        // (instant when there is no reason or the week is un-recorded).
+        const advance = () => {
+          window.setTimeout(
+            () => {
+              const next = emailIdx + 1;
+              if (next >= shownEmails.length) {
+                setPhase("finished");
+              } else {
+                openEmail(next);
+              }
+            },
+            intensity === 0 ? 400 : 900
+          );
+        };
+        if (email.why) verdict.say("right", email.why, advance);
+        else advance();
       } else {
         onWrong?.();
         audio.wrong();
         setWrongTotal((n) => n + 1);
         const nextWrong = wrongOnCurrent + 1;
         setWrongOnCurrent(nextWrong);
-        const correctChoice = email.isPhishing ? "ZAP" : "SAFE";
+        const correctChoice = email.isPhishing ? zapLabel : safeLabel;
+        // WrongAnswerPanel speaks "Not quite." + this explanation itself.
         setFeedback({
-          title: email.isPhishing
+          title: wrongTitle ?? (email.isPhishing
             ? "That was a phishing trick"
-            : "That was a real email!",
-          explanation: email.isPhishing
+            : "That was a real email!"),
+          explanation: email.whyWrong ?? (email.isPhishing
             ? "You inspected the red flags - the right call was ZAP. The Raccoon would have got your password."
-            : `"${email.sender}" was a normal email. You'd want to keep it - the answer was SAFE.`,
-          tip: `Look at all 4 inspections together. Multiple red flags = ${correctChoice}.`,
+            : `"${email.sender}" was a normal email. You'd want to keep it - the answer was SAFE.`),
+          tip: `Look at all 4 clues together. Red flags mean ${correctChoice}.`,
         });
         if (nextWrong === 1) onHintReached?.(1);
         if (nextWrong >= 2) onHintReached?.(2);
@@ -243,6 +337,14 @@ export default function PhishInspector({
       onWrong,
       onAnswered,
       onHintReached,
+      speaking,
+      verdict,
+      openEmail,
+      zapToast,
+      safeToast,
+      zapLabel,
+      safeLabel,
+      wrongTitle,
     ]
   );
 
@@ -252,14 +354,15 @@ export default function PhishInspector({
     return (
       <ExerciseFrame maxWidth={900} padding={28}>
         <ExerciseCompleteBeat
-          title="Inspector training complete!"
+          title={completeTitle}
           stars={stars}
           statLines={[
-            `${correctCount} of ${shownEmails.length} emails decided correctly`,
-            wrongTotal === 0
+            `${correctCount} of ${shownEmails.length} messages decided correctly`,
+            completeLine ?? (wrongTotal === 0
               ? "Spotted every trick first time!"
-              : `${wrongTotal} wrong decision${wrongTotal === 1 ? "" : "s"} along the way.`,
+              : `${wrongTotal} wrong decision${wrongTotal === 1 ? "" : "s"} along the way.`),
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(correctCount)}
         />
       </ExerciseFrame>
@@ -275,6 +378,22 @@ export default function PhishInspector({
       padding={24}
       background="linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)"
     >
+      {verdict.element}
+      {/* Sarah's read-alouds (audio only): the how-to once, the message as it
+          opens, each inspection note as its zone is tapped. */}
+      {phase === "active" && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          {narr === "howto" && coachLines && (
+            <InfoNarration key="pi-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent={accent} recordedOnly onDone={() => setNarr(email.readAloud ? "read" : "idle")} />
+          )}
+          {narr === "read" && email.readAloud && (
+            <InfoNarration key={`pi-read-${email.id}`} speaker={voice} lines={[email.readAloud]} accent={accent} recordedOnly onDone={() => setNarr("idle")} />
+          )}
+          {narr === "zone" && zoneLine && (
+            <InfoNarration key={`pi-zone-${email.id}-${zoneLine.slice(0, 24)}`} speaker={voice} lines={[zoneLine]} accent={accent} recordedOnly onDone={() => setNarr("idle")} />
+          )}
+        </div>
+      )}
       {/* Header */}
       <div
         style={{
@@ -289,12 +408,12 @@ export default function PhishInspector({
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: 11,
             letterSpacing: "0.16em",
-            color: "#7df0ff",
+            color: accent,
             textTransform: "uppercase",
             fontWeight: 800,
           }}
         >
-          🔍 Phish Inspector
+          {headerLabel}
         </span>
         <span
           style={{
@@ -303,7 +422,7 @@ export default function PhishInspector({
             color: "#cbd5e1",
           }}
         >
-          Email {emailIdx + 1} / {shownEmails.length}
+          Message {emailIdx + 1} / {shownEmails.length}
         </span>
       </div>
 
@@ -356,6 +475,7 @@ export default function PhishInspector({
           const meta = {
             ...ZONE_META[zone],
             label: zoneLabels?.[zone] ?? ZONE_META[zone].label,
+            question: zoneQuestions?.[zone] ?? ZONE_META[zone].question,
           };
           const isOpen = inspected[zone];
           const isRedFlag =
@@ -384,7 +504,7 @@ export default function PhishInspector({
               key={zone}
               type="button"
               onClick={() => handleInspect(zone)}
-              disabled={isOpen || decided || phase !== "active"}
+              disabled={isOpen || decided || phase !== "active" || speaking}
               initial={false}
               animate={
                 isOpen
@@ -486,21 +606,21 @@ export default function PhishInspector({
           variant="danger"
           size="lg"
           icon="⚡"
-          disabled={!allInspected || decided || phase !== "active"}
+          disabled={!allInspected || decided || phase !== "active" || speaking}
           onClick={() => handleDecision(true)}
           style={{ minWidth: 160 }}
         >
-          ZAP it!
+          {zapLabel}
         </GameButton>
         <GameButton
           variant="success"
           size="lg"
           icon="✅"
-          disabled={!allInspected || decided || phase !== "active"}
+          disabled={!allInspected || decided || phase !== "active" || speaking}
           onClick={() => handleDecision(false)}
           style={{ minWidth: 160 }}
         >
-          Mark SAFE
+          {safeLabel}
         </GameButton>
       </div>
 
@@ -509,13 +629,15 @@ export default function PhishInspector({
           style={{
             textAlign: "center",
             fontSize: 12,
-            color: "#64748b",
+            color: "#94a3b8",
             marginTop: 8,
-            fontFamily: "'JetBrains Mono', monospace",
-            letterSpacing: "0.06em",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 800,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
           }}
         >
-          Inspect all 4 zones to unlock
+          Tap all 4 clues to open the buttons
         </div>
       )}
 
@@ -526,10 +648,15 @@ export default function PhishInspector({
             introSubtitle ??
             "Don't just react - INSPECT. Tap each of the 4 zones, then decide if it's safe or a trick."
           }
-          icon="🔍"
+          icon={introIcon}
           narration={introNarration}
+          threat={threat}
+          overlay
           character={introNarration?.speaker}
-          onDismiss={() => setPhase("active")}
+          onDismiss={() => {
+            setPhase("active");
+            setNarr(isAudioMuted() ? "idle" : coachLines ? "howto" : email.readAloud ? "read" : "idle");
+          }}
         />
       )}
 

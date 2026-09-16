@@ -44,13 +44,13 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
   },
   4: {
     title: "Scams and Tricks: Real or Fake?",
-    tagline: "If it seems too good to be true, it usually is.",
+    tagline: "Spot the trick, and the trick can't touch you.",
     audioSrc: "/audio/atlas/heroes-week-04.mp3",
     accent: "#e84dff",
     points: [
-      { icon: "🎁", label: "Spot the fake prize" },
-      { icon: "🔍", label: "Find the clues" },
-      { icon: "🚫", label: "Don't get tricked" },
+      { icon: "🎁", label: "Follow the string, measure the bait" },
+      { icon: "🔔", label: "Feel the rush, then slow down" },
+      { icon: "✋", label: "Stop, check, show a grown-up" },
     ],
   },
   5: {

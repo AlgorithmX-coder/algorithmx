@@ -62,6 +62,9 @@ import ConveyorSort from "@/app/components/exercises/ConveyorSort";
 import RequestInspector from "@/app/components/exercises/RequestInspector";
 import ProfileInspector from "@/app/components/exercises/ProfileInspector";
 import ClueStamper from "@/app/components/exercises/ClueStamper";
+import StringsAttached from "@/app/components/exercises/StringsAttached";
+import BelieveOMeter from "@/app/components/exercises/BelieveOMeter";
+import NameTagCheck from "@/app/components/exercises/NameTagCheck";
 import { stopAllSpokenAudio } from "@/app/components/lesson/InfoNarration";
 import { resetVerdictMemory } from "@/app/components/lesson/VerdictVoice";
 import ReplyCards from "@/app/components/exercises/ReplyCards";
@@ -163,6 +166,9 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "requestInspector",
   "profileInspector",
   "clueStamper",
+  "stringsAttached",
+  "believeOMeter",
+  "nameTagCheck",
   "replyCards",
   "clueBoard",
   "teamPoster",
@@ -1906,6 +1912,123 @@ function DynamicLessonInner({
           </FullScene>
         );
 
+      case "stringsAttached":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1c0418 0%, #33082b 100%)">
+            <StringsAttached
+              offers={def.offers}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              tokenLabels={def.tokenLabels}
+              scamToast={def.scamToast}
+              fairToast={def.fairToast}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "believeOMeter":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1c0418 0%, #33082b 100%)">
+            <BelieveOMeter
+              offers={def.offers}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              stopLabels={def.stopLabels}
+              lockLabel={def.lockLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "nameTagCheck":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1c0418 0%, #33082b 100%)">
+            <NameTagCheck
+              cases={def.cases}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              stampLabel={def.stampLabel}
+              closeLabel={def.closeLabel}
+              realSeal={def.realSeal}
+              fakeSeal={def.fakeSeal}
+              realToast={def.realToast}
+              fakeToast={def.fakeToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
       case "replyCards":
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #131033 100%)">
@@ -2496,9 +2619,37 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <FirewallBuilder
+              bricks={def.bricks}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              wallLabel={def.wallLabel}
+              binLabel={def.binLabel}
+              layToast={def.layToast}
+              binToast={def.binToast}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
-              onCorrect={() => awardXp(25)}
+              onCorrect={() => awardXp(20)}
               onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
             />
           </FullScene>
         );
@@ -2651,6 +2802,17 @@ function DynamicLessonInner({
             <PasswordVault
               locks={def.locks}
               guidance={def.guidance}
+              skin={def.skin}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              masterTitle={def.masterTitle}
+              claimLabel={def.claimLabel}
+              hotspotNoun={def.hotspotNoun}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(30)}
               onWrong={() => addWrong(screen)}
@@ -2679,8 +2841,21 @@ function DynamicLessonInner({
               hints={def.hints}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
               introNarration={def.narration}
               zoneLabels={def.zoneLabels}
+              zoneQuestions={def.zoneQuestions}
+              headerLabel={def.headerLabel}
+              zapLabel={def.zapLabel}
+              safeLabel={def.safeLabel}
+              zapToast={def.zapToast}
+              safeToast={def.safeToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(30)}
               onWrong={() => addWrong(screen)}
