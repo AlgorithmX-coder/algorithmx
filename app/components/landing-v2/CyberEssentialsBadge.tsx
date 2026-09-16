@@ -9,6 +9,7 @@
 export default function CyberEssentialsBadge({ logoHeight = 26 }: { logoHeight?: number }) {
   return (
     <span
+      className="lv2-ce-badge"
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -41,6 +42,7 @@ export default function CyberEssentialsBadge({ logoHeight = 26 }: { logoHeight?:
         />
       </span>
       <span
+        className="lv2-ce-label"
         style={{
           fontFamily: "var(--lv2-font-mono)",
           fontSize: 10,
@@ -52,6 +54,14 @@ export default function CyberEssentialsBadge({ logoHeight = 26 }: { logoHeight?:
       >
         Cyber Essentials certified
       </span>
+      {/* Phones: same pill, smaller. Scoped so desktop is untouched. */}
+      <style>{`
+        @media (max-width: 640px) {
+          .lv2-ce-badge { padding: 5px 12px 5px 5px !important; gap: 9px !important; }
+          .lv2-ce-badge img { height: 20px !important; }
+          .lv2-ce-label { font-size: 9px !important; letter-spacing: 0.12em !important; }
+        }
+      `}</style>
     </span>
   );
 }
