@@ -637,7 +637,7 @@ export const WEEK_15: WeekContent = {
           "But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues.",
           "Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters.",
           "[warmly] So when a photo looks amazing, we don't just believe it. We look twice.",
-          "[excited] Come on, detective, let's line up the photos!",
+          "[excited] Come on, Cyber Hero, let's line up the photos!",
         ],
       },
     },
@@ -1039,10 +1039,10 @@ export const WEEK_15: WeekContent = {
   bossQuiz: {
     villain: { name: "HACKER RACCOON", sprite: "raccoon" },
     accent: "#3dffc4",
-    // 7 questions, each fully read aloud by Sarah - pass 5/7. One per concept
+    // 5 questions, each fully read aloud by Sarah - pass 4/5. One per concept
     // (5), plus a second for the two core "don't be fooled" skills (check the
     // source / spot the fake), which appear again at the end as a review pair.
-    passMark: 5,
+    passMark: 4,
     theme: {
       topic: "AI & Chatbots",
       motifs: ["🤖", "🧠", "💬", "✅", "❓", "⚙️", "🔍", "⚡"],
@@ -1191,60 +1191,7 @@ export const WEEK_15: WeekContent = {
           text: "Tease-bots and fake snore-photos! Plant the prickles, I'll bring the watering can!",
         },
       },
-      {
-        phaseId: "phase-w15-c2",
-        key: "quiz-w15-c2-2",
-        label: "Sure Isn't True",
-        ask: {
-          slug: "quiz-w15-ask-c2-2",
-          text: "A chatbot says, super confidently: 'The moon is made of cheese!' Is it right just because it sounds so sure?",
-        },
-        options: [
-          { text: "No, sounding sure doesn't make it true." },
-          { text: "Yes, it sounded far too sure to be wrong." },
-          { text: "Yes, a clever computer is never wrong." },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Sure isn't true!",
-          explanation: "A confident voice can still be wrong, and computers guess just like people do. Only a real book or a grown-up can settle what is actually true.",
-        },
-        villainRight: {
-          slug: "quiz-w15-right-c2-2",
-          text: "You didn't fall for my VERY confident voice?! I practised that certainty for hours!",
-        },
-        villainWrong: {
-          slug: "quiz-w15-wrong-c2-2",
-          text: "So sure means so correct! The moon's basically a giant snack, write it down!",
-        },
-      },
-      {
-        phaseId: "phase-w15-c4",
-        key: "quiz-w15-c4-2",
-        label: "Spot the Fakes",
-        ask: {
-          slug: "quiz-w15-ask-c4-2",
-          text: "A photo shows your teacher swimming with a giant shark, smiling. It looks real! What is the best clue it might be AI-made?",
-        },
-        options: [
-          { text: "It shows something that could never really happen." },
-          { text: "The colours in the photo look really bright." },
-          { text: "Lots of people have already shared it." },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Amazing but impossible!",
-          explanation: "Bright colours and lots of shares don't make a photo real. 'Could this really happen?' is the first question to ask, and teachers don't swim with sharks.",
-        },
-        villainRight: {
-          slug: "quiz-w15-right-c4-2",
-          text: "You spotted my impossible shark selfie?! It took me all night to fake!",
-        },
-        villainWrong: {
-          slug: "quiz-w15-wrong-c4-2",
-          text: "Look at those colours! Look at those shares! Definitely, absolutely, one-hundred-percent real!",
-        },
-      },
+    
     ],
   },
 

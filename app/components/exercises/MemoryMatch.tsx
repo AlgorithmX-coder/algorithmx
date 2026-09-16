@@ -13,6 +13,7 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 // playSound KEPT for the three sounds with no useGameAudio facade
 // equivalent: "pop", "sortCorrect", "confetti". Flagged in report.
@@ -53,8 +54,6 @@ export interface MemoryMatchProps {
   introTitle?: string;
   introSubtitle?: string;
   introWelcome?: string;
-  /** Sarah's line on a mismatch ("Not quite." + whyWrong). */
-  whyWrong?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
   threat?: { raccoonLine: string };
@@ -165,7 +164,6 @@ export default function MemoryMatch({
   introTitle,
   introSubtitle,
   introWelcome,
-  whyWrong,
   introNarration,
   threat,
   coachLines,
@@ -179,7 +177,10 @@ export default function MemoryMatch({
 
   const pairList = useMemo(() => pairs ?? DEFAULT_PAIRS, [pairs]);
   // Spoken verdicts (owner 2026-09-12): a match = "That's right!" + the pair's
-  // why; a mismatch = "Not quite." + whyWrong. The board stays locked meanwhile.
+  // why. A MISMATCH IS SILENT (owner 2026-09-14): turning over two cards that
+  // don't pair is how the child gathers information in a memory game, not a
+  // wrong answer, so Sarah never comments on it. The board still shakes, buzzes
+  // and flips the cards back.
   const verdict = useVerdictVoice();
 
   const [cards, setCards] = useState<Card[]>(() => buildDeck(pairList));
@@ -342,14 +343,15 @@ export default function MemoryMatch({
         });
         setPopIdxs([aIdx, bIdx]);
         window.setTimeout(() => setPopIdxs([]), 450);
-        setMatchedPairIds((prev) => {
-          if (prev.includes(a.pairId)) return prev;
-          const nn = [...prev, a.pairId];
-          if (nn.length >= pairList.length && !completedRef.current) {
-            triggerFinish();
-          }
-          return nn;
-        });
+        // Whether this match completes the board, computed OUTSIDE the state
+        // updater: React may replay updaters, so firing the finish in there
+        // could run it twice (and did run it before Sarah had spoken).
+        const completesBoard =
+          !matchedPairIds.includes(a.pairId) &&
+          matchedPairIds.length + 1 >= pairList.length;
+        setMatchedPairIds((prev) =>
+          prev.includes(a.pairId) ? prev : [...prev, a.pairId]
+        );
         setStreak((s) => {
           const ns = s + 1;
           setBestStreak((bb) => Math.max(bb, ns));
@@ -357,18 +359,26 @@ export default function MemoryMatch({
         });
         setFlippedIdxs([]);
         onCorrect?.();
-        verdict.say("right", pairList[a.pairId]?.why ?? null, () => { lockRef.current = false; });
+        // The last pair's explanation used to be chopped off mid-sentence by the
+        // jump into the memorise phase (owner 2026-09-14). The board now waits
+        // for Sarah to finish before the game moves on.
+        verdict.say("right", pairList[a.pairId]?.why ?? null, () => {
+          lockRef.current = false;
+          if (completesBoard && !completedRef.current) triggerFinish();
+        });
       }, 320);
     } else {
-      audio.wrong();
+      // Owner 2026-09-14: the buzzer, the card shake and the whole-screen
+      // shake (fired via onWrong -> addWrong -> ScreenShake) were "annoying and
+      // repetitive" here, because in a concentration game a mismatch is a
+      // necessary probe rather than a mistake. The only feedback now is the
+      // soft flip of the cards turning back, which is the signal a memory game
+      // is supposed to give. onWrong is deliberately NOT called, so a mismatch
+      // no longer shakes the screen or counts against the screen's stars; the
+      // game still tracks mismatchCount for its own star rating.
+      playSound("cardFlip");
       setStreak(0);
-      setShakeIdxs([aIdx, bIdx]);
       setMismatchCount((n) => n + 1);
-      onWrong?.();
-      // The board unlocks once the cards have flipped back AND Sarah is done.
-      let pending = 2;
-      const release = () => { if (--pending === 0) lockRef.current = false; };
-      verdict.say("wrong", whyWrong ?? null, release);
       window.setTimeout(() => {
         setShakeIdxs([]);
         setCards((prev) => {
@@ -378,7 +388,7 @@ export default function MemoryMatch({
           return next;
         });
         setFlippedIdxs([]);
-        release();
+        lockRef.current = false;
       }, 1200);
     }
   };
@@ -416,6 +426,12 @@ export default function MemoryMatch({
    *  cards flip down for the recall test. */
   const startMemorise = () => {
     audio.tap();
+    // Owner 2026-09-14: phase B used to reuse the exact positions from the
+    // matching game, so a child could coast on leftover position memory instead
+    // of actually memorising. Deal the board again HERE, before the memorise
+    // window, so what they study is a fresh arrangement. (Shuffling at
+    // startRebuild instead would make the memorise window pointless.)
+    setCards((prev) => shuffle(prev));
     setMemoriseSecs(10);
     setPhase("memorise");
   };
@@ -490,8 +506,10 @@ export default function MemoryMatch({
         onCorrect?.();
 
         const nextPrompt = rebuildPromptIdx + 1;
-        // Sarah: "That's right!" + the pair's why, then the next prompt.
-        verdict.say("right", promptPair.why ?? null, () => {
+        // Owner 2026-09-15: Sarah stays SILENT on a correct recall. She already
+        // explained every pair in phase 1; here the child just wants to keep
+        // going. A short beat lets the card pop land, then the next prompt.
+        window.setTimeout(() => {
           if (nextPrompt >= pairList.length) {
             // Phase B complete - celebrate, then open the FinishOverlay
             setPhase("done");
@@ -502,7 +520,7 @@ export default function MemoryMatch({
             setRebuildPromptIdx(nextPrompt);
           }
           rebuildLockRef.current = false;
-        });
+        }, 700);
       }, 280);
     } else {
       // Wrong card - let the kid see what it actually was for ~1.1s,
@@ -510,9 +528,7 @@ export default function MemoryMatch({
       audio.wrong();
       setShakeIdxs([idx]);
       onWrong?.();
-      let pending = 2;
-      const release = () => { if (--pending === 0) rebuildLockRef.current = false; };
-      verdict.say("wrong", whyWrong ?? null, release);
+      // Silent on a wrong card, same reason as the pair mismatch above.
       window.setTimeout(() => {
         setShakeIdxs([]);
         setCards((prev) => {
@@ -520,7 +536,7 @@ export default function MemoryMatch({
           next[idx] = { ...next[idx], flipped: false };
           return next;
         });
-        release();
+        rebuildLockRef.current = false;
       }, 1200);
     }
   };
@@ -935,35 +951,54 @@ export default function MemoryMatch({
  * can memorise the layout before it flips down for the recall test. A
  * non-blocking top banner — the cards MUST stay visible behind it. */
 function MemoriseCountdown({ secs }: { secs: number }) {
-  return (
+  // Portalled to document.body and fixed to the viewport, exactly like the
+  // narration guard's pill. The old version was absolutely positioned at the
+  // top of the exercise frame, which is TALLER than the window: the child
+  // either saw the whole board with the timer hidden behind the fixed HUD, or
+  // saw the timer with the bottom row of cards cut off, and its translucent
+  // gradient let the "how to play" chips bleed through the number either way.
+  // A single compact strip under the HUD is always visible and never overlaps
+  // the board it is asking the child to study.
+  // No mounted-state dance is needed: the memorise phase can only begin
+  // after the child taps, so this never renders during SSR or hydration.
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <div
       aria-live="polite"
       style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 22,
-        padding: "16px 16px 26px",
-        textAlign: "center",
+        position: "fixed",
+        top: 76, // LessonHUD is fixed, 64px tall
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 60, // above lesson content, below the narration guard (88)
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "8px 20px",
+        borderRadius: 999,
+        background: "rgba(8,12,30,0.96)",
+        border: "1px solid rgba(125,240,255,0.5)",
+        boxShadow:
+          "0 14px 34px -10px rgba(0,0,0,0.75), 0 0 22px rgba(0,229,255,0.22)",
         pointerEvents: "none",
-        background:
-          "linear-gradient(180deg, rgba(8,10,22,0.95) 0%, rgba(8,10,22,0.55) 60%, transparent 100%)",
+        whiteSpace: "nowrap",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
-      <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "#7df0ff" }}>
-        <PixIcon emoji="🧠" size={18} style={{ marginRight: 6 }} />
+      <span style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 14, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#7df0ff" }}>
+        <PixIcon emoji="🧠" size={18} />
         Memorise where the cards are!
-      </div>
-      <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.15, color: "#ffd158", textShadow: "0 0 20px rgba(255,209,88,0.65)" }}>
+      </span>
+      <span style={{ fontSize: 30, fontWeight: 900, lineHeight: 1, color: "#ffd158", textShadow: "0 0 18px rgba(255,209,88,0.6)", fontVariantNumeric: "tabular-nums", minWidth: 26, textAlign: "center" }}>
         {secs}
-      </div>
-      <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(231,236,255,0.7)" }}>
+      </span>
+      <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(231,236,255,0.72)" }}>
         Then they flip over for the test…
-      </div>
-    </div>
+      </span>
+    </div>,
+    document.body
   );
 }
 

@@ -13,6 +13,8 @@
  * Usage: node scripts/audit-verdict-voice.mjs --week=3 [--week=15] [--all] [--strict] [--quiet]
  * --strict exits 1 on any MISSING (UNRECORDED is a warning until the clips are
  * generated with scripts/elevenlabs-generate-narration.mjs).
+ * --pairs-json prints ONLY a JSON array of { verdict, why } for every real
+ * reason, which the narration recorder uses to record each verdict as one take.
  */
 import { readFileSync, existsSync } from "node:fs";
 
@@ -21,6 +23,10 @@ const weeks = args.filter((a) => a.startsWith("--week=")).map((a) => Number(a.sl
 const all = args.includes("--all");
 const strict = args.includes("--strict");
 const quiet = args.includes("--quiet");
+const pairsJson = args.includes("--pairs-json");
+const printLine = console.log;
+if (pairsJson) console.log = () => {};
+const pairs = new Map();
 const WEEKS = all ? Array.from({ length: 20 }, (_, i) => i + 1) : weeks.length ? weeks : [3];
 
 const STR = '"((?:[^"\\\\]|\\\\.)*)"';
@@ -67,7 +73,10 @@ const ENGINES = {
   trailStamper: (span) => objs(span, "spots").flatMap((sp) => objs(sp, "options").map((o) => { const proud = flag(o, "isProud"); return proud ? { label: "PROUD " + fld(o, "label"), right: first(o, ["why", "note"]), wrong: null, only: "right" } : { label: "regret " + fld(o, "label"), right: null, wrong: fld(o, "note"), only: "wrong" }; })),
   cyberScanner: (span) => objs(span, "items").map((o) => ({ label: fld(o, "text"), right: first(o, ["why", "explanation"]), wrong: fld(o, "explanation") })),
   chooseYourPath: (span) => objs(span, "scenarios").flatMap((sc) => objs(sc, "choices").map((o) => { const safe = flag(o, "isSafe"); return safe ? { label: "SAFE " + fld(o, "text"), right: fld(o, "consequence"), wrong: null, only: "right" } : { label: "risky " + fld(o, "text"), right: null, wrong: fld(o, "consequence"), only: "wrong" }; })),
-  memoryMatch: (span) => { const ww = fld(span, "whyWrong"); return objs(span, "pairs").map((o) => ({ label: fld(o, "term") + " = " + fld(o, "match"), right: fld(o, "why"), wrong: ww })); },
+  // Mismatches are SILENT by owner decision 2026-09-14: turning over two cards
+  // that don't pair is information gathering in a memory game, not a wrong
+  // answer. Only the match side speaks.
+  memoryMatch: (span) => objs(span, "pairs").map((o) => ({ label: fld(o, "term") + " = " + fld(o, "match"), right: fld(o, "why"), wrong: "n/a" })),
   threeRandomWords: (span) => [{ label: "the build", right: fld(span, "whyRight"), wrong: null, only: "right" }],
   passwordHospital: (span) => objs(span, "patients").map((o) => ({ label: fld(o, "password"), right: first(o, ["why", "diagnosisExplanation"]), wrong: fld(o, "diagnosisExplanation") })),
   weakSorter: (span) => objs(span, "items").map((o) => ({ label: fld(o, "text"), right: first(o, ["why", "explanation"]), wrong: fld(o, "explanation") })),
@@ -119,15 +128,17 @@ for (const w of WEEKS) {
         if (r.only && r.only !== kind) return "·";
         if (txt == null) { missing++; return "MISSING (lead only)"; }
         if (txt.startsWith("(")) return txt;
+        pairs.set(`${kind}::${txt}`, { verdict: kind, why: txt });
         const rec = isRecorded(txt) ? "" : (unrecorded++, " [UNRECORDED]");
         return (quiet ? txt.slice(0, 60) : txt) + rec;
       };
       const right = cell(r.right, "right"), wrong = cell(r.wrong, "wrong");
       console.log(`  - ${r.label}`);
-      if (right !== "·") console.log(`      right: "That's right!" + ${right}`);
-      if (wrong !== "·") console.log(`      wrong: "Not quite." + ${wrong}`);
+      if (right !== "·") console.log(right === "n/a" ? "      right: (silent by design)" : `      right: "That's right!" + ${right}`);
+      if (wrong !== "·") console.log(wrong === "n/a" ? "      wrong: (silent by design)" : `      wrong: "Not quite." + ${wrong}`);
     }
   });
 }
 console.log(`\n${items} items · ${missing} MISSING reason(s) · ${unrecorded} unrecorded text(s)`);
+if (pairsJson) printLine(JSON.stringify([...pairs.values()]));
 if (strict && missing) process.exit(1);

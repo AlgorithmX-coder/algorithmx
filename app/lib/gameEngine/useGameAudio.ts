@@ -228,6 +228,11 @@ const SIGNATURE_SFX_MANIFEST_URL = "/audio/sfx-signature/manifest.json";
 // Nudge to taste.
 const SIGNATURE_SFX_VOLUME = 0.4;
 
+// Buffered signature elements, created as soon as the manifest loads, so a cue
+// plays instantly instead of fetching + decoding on the spot (UAT batch 2, item
+// 13: the week-complete fanfare lagged behind the badge).
+const signatureEls = new Map<string, HTMLAudioElement>();
+
 // Module-level cache - one fetch per session.
 let signatureSfxManifest: SignatureSfxManifest | null = null;
 let signatureSfxManifestPromise: Promise<SignatureSfxManifest | null> | null = null;
@@ -241,6 +246,21 @@ function loadSignatureSfxManifest(): Promise<SignatureSfxManifest | null> {
       if (!r.ok) return null;
       const m = (await r.json()) as SignatureSfxManifest;
       signatureSfxManifest = m;
+      for (const e of m.entries) {
+        if (signatureEls.has(e.id)) continue;
+        // Warm the HTTP cache with a real fetch (a bare preload often stops at
+        // metadata), then point a buffered element at the cached file.
+        void fetch(e.file, { cache: "force-cache" }).catch(() => {});
+        const el = new Audio(e.file);
+        el.preload = "auto";
+        el.volume = SIGNATURE_SFX_VOLUME;
+        try {
+          el.load();
+        } catch {
+          /* noop */
+        }
+        signatureEls.set(e.id, el);
+      }
       return m;
     } catch {
       return null;
@@ -249,13 +269,18 @@ function loadSignatureSfxManifest(): Promise<SignatureSfxManifest | null> {
   return signatureSfxManifestPromise;
 }
 
+// Start buffering signature sounds as soon as a lesson loads this module.
+if (typeof window !== "undefined") void loadSignatureSfxManifest();
+
 // One signature SFX at a time so spammed triggers don't pile up.
 let currentSignatureEl: HTMLAudioElement | null = null;
 function stopCurrentSignature() {
   if (currentSignatureEl) {
     try {
       currentSignatureEl.pause();
-      currentSignatureEl.src = "";
+      // A buffered element is reused, so rewind it instead of dropping its data.
+      if ([...signatureEls.values()].includes(currentSignatureEl)) currentSignatureEl.currentTime = 0;
+      else currentSignatureEl.src = "";
     } catch {
       /* noop */
     }
@@ -275,9 +300,15 @@ function playSignature(id: string) {
     const entry = manifest.entries.find((e) => e.id === id);
     if (!entry) return;
     stopCurrentSignature();
-    const el = new Audio(entry.file);
-    el.preload = "auto";
+    const buffered = signatureEls.get(id);
+    const el = buffered ?? new Audio(entry.file);
+    if (!buffered) el.preload = "auto";
     el.volume = SIGNATURE_SFX_VOLUME; // never the 1.0 default - see constant
+    try {
+      el.currentTime = 0;
+    } catch {
+      /* noop */
+    }
     currentSignatureEl = el;
     el.addEventListener(
       "ended",

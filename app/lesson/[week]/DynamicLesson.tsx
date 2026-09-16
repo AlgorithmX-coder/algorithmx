@@ -62,6 +62,8 @@ import ConveyorSort from "@/app/components/exercises/ConveyorSort";
 import RequestInspector from "@/app/components/exercises/RequestInspector";
 import ProfileInspector from "@/app/components/exercises/ProfileInspector";
 import ClueStamper from "@/app/components/exercises/ClueStamper";
+import { stopAllSpokenAudio } from "@/app/components/lesson/InfoNarration";
+import { resetVerdictMemory } from "@/app/components/lesson/VerdictVoice";
 import ReplyCards from "@/app/components/exercises/ReplyCards";
 import ClueBoard from "@/app/components/exercises/ClueBoard";
 import TeamPoster from "@/app/components/exercises/TeamPoster";
@@ -730,6 +732,27 @@ function LessonLoading() {
   );
 }
 
+// Optical centring for the week badge on the completion screen (UAT batch 2,
+// item 14). The icon box is centred in the circle, but some art carries its
+// weight off-centre (the padlock sits low-right), which reads as misaligned.
+// Per-icon nudge in % of the icon size, measured from each icon's alpha mass
+// (60% of the offset, only where it exceeds 3%). Icons not listed are centred.
+const BADGE_OPTICAL_NUDGE: Record<string, [number, number]> = {
+  "🔐": [-4.4, -2.9],
+  "⭐": [0, -2.5],
+  "🔒": [0, -2.4],
+  "🕵️": [0, -4],
+  "🎯": [2.9, 0],
+  "👑": [0, -2.8],
+  "📍": [0, 4.1],
+  "🧠": [0, 4.1],
+  "🚪": [0, -2.6],
+  "🔰": [0, 2.7],
+  "🗝️": [-5.7, 3.5],
+  "🏠": [0, -2.9],
+  "🏆": [0, 4.1],
+};
+
 export default function DynamicLesson({
   qaEnabled = false,
   ownerPreview = false,
@@ -1097,7 +1120,19 @@ function DynamicLessonInner({
   const navigate = useCallback(
     (to: number) => {
       if (!content) return;
-      playSFX("transition");
+      // Owner decision 2026-09-14 (UAT W1-01): advancing cuts the current voice
+      // dead. The outgoing screen stays mounted for the length of the
+      // cross-fade, so waiting for its unmount would let ATLAS (or any coach
+      // line) trail over the next screen before being chopped off.
+      stopAllSpokenAudio();
+      // A remembered wrong reason belongs to the screen it was given on.
+      resetVerdictMemory();
+      // NB: the transition "swish" is NOT played here. ScreenTransition's
+      // onTransitionStart already fires it once the screen key actually
+      // changes, and playing it here too gave every advance a DOUBLE swish a
+      // few ms apart (UAT W1-03). Owning it in one place also means a
+      // navigate() that doesn't move (clamped to the same screen) or a
+      // double-fired button can never produce a stray or doubled sound.
       // Side effects live OUTSIDE the state updater: React may replay
       // updaters during render (and does at the boss-end state batch),
       // and an impure updater fires server actions mid-render ("Cannot
@@ -2851,7 +2886,15 @@ function DynamicLessonInner({
                   fontSize: 72,
                 }}
               >
-                <PixIcon emoji={content.badgeIcon} size={84} />
+                <span
+                  style={{
+                    display: "grid",
+                    placeItems: "center",
+                    transform: `translate(${BADGE_OPTICAL_NUDGE[content.badgeIcon]?.[0] ?? 0}%, ${BADGE_OPTICAL_NUDGE[content.badgeIcon]?.[1] ?? 0}%)`,
+                  }}
+                >
+                  <PixIcon emoji={content.badgeIcon} size={84} />
+                </span>
               </motion.div>
               {/* "Week N badge unlocked" tag */}
               <div

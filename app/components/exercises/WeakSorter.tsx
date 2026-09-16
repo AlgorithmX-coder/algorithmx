@@ -47,6 +47,8 @@ export interface WeakReason {
 export interface WeakItem {
   text: string;
   reasonId: string;
+  /** Other reasons that are also honestly right (e.g. "123" is too short AND a keyboard run). */
+  alsoAccept?: string[];
   explanation: string;
   /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
   why?: string;
@@ -175,7 +177,7 @@ export default function WeakSorter({
   const verdict = useVerdictVoice();
   const handleTap = (reasonId: string) => {
     if (feedback || !current || verdict.speaking) return;
-    const correct = reasonId === current.reasonId;
+    const correct = reasonId === current.reasonId || (current.alsoAccept ?? []).includes(reasonId);
     if (correct) {
       audio.correct();
       audio.drop(); // tactile stamp as the answer locks into place
@@ -431,6 +433,13 @@ export default function WeakSorter({
                 textTransform: "uppercase",
                 boxShadow: "0 0 18px rgba(126, 255, 151, 0.45)",
                 transform: "rotate(-6deg)",
+                // Long labels ("Has your name or birthday") used to run past the
+                // card's edges (UAT batch 2, item 5): wrap inside the card instead.
+                maxWidth: "calc(100% - 36px)",
+                whiteSpace: "normal",
+                textAlign: "center",
+                lineHeight: 1.25,
+                boxSizing: "border-box",
               }}
             >
               ✓ {stamp.label}

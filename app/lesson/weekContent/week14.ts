@@ -121,7 +121,7 @@ export const WEEK_14: WeekContent = {
       cutToast: "EARS SPOTTED!",
       wrongScamTitle: "That one was LISTENING!",
       wrongRealTitle: "That one really is asleep",
-      completeTitle: "House checked, Scout!",
+      completeTitle: "House checked, Cyber Hero!",
       completeLine: "Now you know exactly who's got ears - that's the whole first power.",
       items: [
         {
@@ -384,7 +384,7 @@ export const WEEK_14: WeekContent = {
           "Doorbells watch the front step. That's their job.",
           "But bedrooms? Lens-free zones. Always.",
           "[excited] The living room's gone dusky - and two glass eyes are hiding in it.",
-          "Find them both, Scout!",
+          "Find them both, Cyber Hero!",
         ],
       },
     },
@@ -555,7 +555,7 @@ export const WEEK_14: WeekContent = {
             {
               text: "Write it in the club notebook tomorrow",
               isSafe: true,
-              consequence: "The club stays secret because the password never touched the air. Proper spy work, agent.",
+              consequence: "The club stays secret because the password never touched the air. Proper spy work, Cyber Hero.",
             },
             {
               text: "Shout it across the room",
@@ -698,7 +698,7 @@ export const WEEK_14: WeekContent = {
           "[excited] The Mute Safari - five settings on patrol!",
           "Hunt the always-on ears and flip them.",
           "[whispers] But careful - some settings are already doing their job right.",
-          "Patrol, point, flip. Go, Scout!",
+          "Patrol, point, flip. Go, Cyber Hero!",
         ],
       },
       coachLines: {
@@ -857,6 +857,8 @@ export const WEEK_14: WeekContent = {
       slug: "quiz-w14-victory",
       text: "Muted?! By a kid with a checklist?! Fine! I'm taking my big brass ears somewhere folks appreciate good eavesdropping!",
     },
+    // 5 questions, one per skill, 4 right to pass (owner decision, UAT batch 2).
+    passMark: 4,
     questions: [
       {
         phaseId: "phase-w14-c1",
@@ -993,276 +995,7 @@ export const WEEK_14: WeekContent = {
           text: "Always on, always listening, alllways sharing with me! Greatest setting ever invented!",
         },
       },
-      {
-        phaseId: "phase-w14-c1",
-        key: "quiz-w14-c1-2",
-        label: "The House That Listens",
-        ask: {
-          slug: "quiz-w14-ask-c1-2",
-          text: "Adam's little brother got three new toys. Which one has EARS?",
-        },
-        options: [
-          { text: "The robot dino that roars back when you ask it to" },
-          { text: "The plush dragon that squeaks when you squeeze it" },
-          { text: "The race car that zooms when you pull it backwards" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Toys can listen too!",
-          explanation: "Squeezes and pulls are hand tricks, no microphones needed. But a toy that answers your VOICE has a microphone inside. That's the Scout surprise: some toys are smart devices too.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c1-2",
-          text: "Ouch! You found my dino spy in a whole toy box of decoys!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c1-2",
-          text: "Squeeze the dragon all you like! Meanwhile my roaring little dino hears every bedtime secret!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c2",
-        key: "quiz-w14-c2-2",
-        label: "Why They Listen",
-        ask: {
-          slug: "quiz-w14-ask-c2-2",
-          text: "Layla asked the speaker for a dinosaur song yesterday. Where could a COPY of her words still be today?",
-        },
-        options: [
-          { text: "In the speaker's app, where grown-ups can check and delete it" },
-          { text: "Written on the back of the speaker, easy to wipe off" },
-          { text: "Nowhere, speakers forget everything the moment you stop talking" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "The diary lives in the app!",
-          explanation: "Nothing gets written on the speaker itself, and smart ears don't always forget. Sometimes they RECORD, and the copies live in an app, where a grown-up can read them and delete them.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c2-2",
-          text: "You know about the diary app?! That was my number-one bedtime reading!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c2-2",
-          text: "Forget? Wipe off? Ha! The recordings pile up in the app, and I do love a chunky pile!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c3",
-        key: "quiz-w14-c3-2",
-        label: "Little Glass Eyes",
-        ask: {
-          slug: "quiz-w14-ask-c3-2",
-          text: "Adam's family has two cameras at home. Which one is exactly where it BELONGS?",
-        },
-        options: [
-          { text: "The doorbell camera watching the front step" },
-          { text: "The shelf camera pointing at Adam's bed" },
-          { text: "The hallway camera nobody has ever asked about" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Jobs, not bedrooms!",
-          explanation: "Watching the front step is the doorbell's actual job, the family put it there on purpose. A lens aimed at a bed, or a camera nobody explained, is different: bedrooms are lens-free zones, and mystery cameras get a trusted grown-up told right away.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c3-2",
-          text: "Front step only?! Who guards a doorstep THAT carefully?!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c3-2",
-          text: "Ooh yes, cameras everywhere are fiiiine! Especially the ones nobody asks questions about!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c4",
-        key: "quiz-w14-c4-2",
-        label: "The Megaphone Rule",
-        ask: {
-          slug: "quiz-w14-ask-c4-2",
-          text: "You and Mom are planning Grandma's surprise party, and Robo-Pup the talking toy is switched ON nearby. How does the plan stay a real surprise?",
-        },
-        options: [
-          { text: "Carry the planning out to the backyard" },
-          { text: "Keep going, a toy is too small to be a real listener" },
-          { text: "Whisper the whole plan right into Robo-Pup's ear" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Ears are ears, even cute ones!",
-          explanation: "A toy with a microphone is a real listener however small it is, and whispering INTO it is delivering the secret by hand. Moving to a spot with no smart ears keeps the surprise a surprise.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c4-2",
-          text: "The backyard?! I can't plant a listening toy in every bush! ...Yet!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c4-2",
-          text: "Tell the puppy everything! Robo-Pup works for ME, and he's SUCH a good boy!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c5",
-        key: "quiz-w14-c5-2",
-        label: "Flip It Together",
-        ask: {
-          slug: "quiz-w14-ask-c5-2",
-          text: "Adam just found the mute switch on the kitchen speaker all by himself. What is the FULL Settings Scout move?",
-        },
-        options: [
-          { text: "Show a trusted grown-up and flip it together" },
-          { text: "Flip it quickly himself before anyone notices" },
-          { text: "Leave it alone forever, switches are not for kids" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Patrol, point, flip together!",
-          explanation: "Flipping alone can mix up settings the family needs, and never touching switches leaves the ears always on. Scouts find the switch, show a trusted grown-up, and flip it together, so it's right AND it stays right.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c5-2",
-          text: "Together?! One kid I can out-sneak, but a kid AND a grown-up is just unfair!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c5-2",
-          text: "Secret solo flipping, or no flipping at all! Either way the settings end up MY way!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c1",
-        key: "quiz-w14-c1-3",
-        label: "The House That Listens",
-        ask: {
-          slug: "quiz-w14-ask-c1-3",
-          text: "Dad says one thing in the kitchen is always ready to hear its name. Which one is it?",
-        },
-        options: [
-          { text: "The counter speaker that starts a timer when you ask it" },
-          { text: "The microwave that beeps when the timer runs out" },
-          { text: "The kettle that clicks when the water gets hot" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Beeping isn't listening!",
-          explanation: "The microwave and the kettle make sounds, but they can't hear any, there's no microphone inside either one. The speaker you can ASK is the one with ears, waiting for its name.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c1-3",
-          text: "Straight past the beepers and right to the listener! Nothing in that kitchen fools you!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c1-3",
-          text: "Interrogate the kettle, go on! While you do, the REAL ears on the counter hear it all!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c2",
-        key: "quiz-w14-c2-3",
-        label: "Why They Listen",
-        ask: {
-          slug: "quiz-w14-ask-c2-3",
-          text: "Layla told a silly joke near the awake speaker and wonders if it got recorded. Who can open the speaker's diary to check, and delete it?",
-        },
-        options: [
-          { text: "A trusted grown-up at home, using the speaker's app" },
-          { text: "Only the speaker company, nobody at home can look" },
-          { text: "Nobody anywhere, recordings can never be found again" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Grown-ups hold the diary key!",
-          explanation: "The recordings aren't locked away forever or lost, they sit in the speaker's app. A trusted grown-up at home can open it, listen, and delete, which is exactly why Scouts tell them.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c2-3",
-          text: "Checked AND deleted?! Somebody erased my whole joke collection!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c2-3",
-          text: "No one can check it, noooo one can delete it! The diary just grows and grows, marvelous!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c3",
-        key: "quiz-w14-c3-3",
-        label: "Little Glass Eyes",
-        ask: {
-          slug: "quiz-w14-ask-c3-3",
-          text: "The lights are low in the den. Which of these could actually WATCH you?",
-        },
-        options: [
-          { text: "The tiny dark glass circle on top of the tablet" },
-          { text: "The shiny sequins on the throw pillow" },
-          { text: "The glow-in-the-dark stars on the ceiling" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Hunt the little glass eye!",
-          explanation: "Sequins and glow-stars shine and sparkle, but they're flat and empty, nothing behind them. A small round GLASS circle is a lens, and a lens is the little eye that can see.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c3-3",
-          text: "You spotted the one real eye in a room FULL of sparkles?! Unbelievable!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c3-3",
-          text: "Stare at the sparkly pillow, hero! The real little eye watches quietly from the tablet. Blink blink!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c4",
-        key: "quiz-w14-c4-3",
-        label: "The Megaphone Rule",
-        ask: {
-          slug: "quiz-w14-ask-c4-3",
-          text: "Oops! Layla said her password out loud near the awake speaker. What is the Scout move NOW?",
-        },
-        options: [
-          { text: "Tell a trusted grown-up and change the password" },
-          { text: "Say a fake password out loud to confuse the recording" },
-          { text: "Whisper that same password from now on and keep it" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Heard once is heard!",
-          explanation: "A fake password doesn't un-say the real one, and whispering later doesn't fix what's already in a recording. A password that touched the air gets changed, with a trusted grown-up helping.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c4-3",
-          text: "Changed already?! I finally hear one good password and it expires in MINUTES!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c4-3",
-          text: "Decoys and whispers, how adorable! The first recording is the one I keep, and it still works!",
-        },
-      },
-      {
-        phaseId: "phase-w14-c5",
-        key: "quiz-w14-c5-3",
-        label: "Flip It Together",
-        ask: {
-          slug: "quiz-w14-ask-c5-3",
-          text: "Robo-Pup has a setting called 'Keeps recordings', and it is ON. What do a Scout and a trusted grown-up do with it?",
-        },
-        options: [
-          { text: "Flip it OFF, a toy doesn't need recordings to play fetch" },
-          { text: "Leave it ON, recordings help the toy learn your games" },
-          { text: "Turn the volume DOWN instead, quiet counts as off" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Fetch needs no diary!",
-          explanation: "Volume changes what the toy SAYS, not what it hears, and a toy can play perfectly well without keeping a single recording. Off it goes, flipped together.",
-        },
-        villainRight: {
-          slug: "quiz-w14-right-c5-3",
-          text: "You flipped my puppy's recorder OFF?! Who taught this kid about toy settings?!",
-        },
-        villainWrong: {
-          slug: "quiz-w14-wrong-c5-3",
-          text: "Leave it on, turn it down, either way Robo-Pup keeps taping! Goooood puppy!",
-        },
-      },
+    
     ],
   },
 
@@ -1327,7 +1060,7 @@ export const WEEK_14: WeekContent = {
     24: { adam: { mood: "worried", message: "His listening post - unplug it!" }, layla: null }, // boss
     25: { adam: null, layla: { mood: "excited", message: "Listen... beautiful quiet!" } }, // outro video
     26: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
-    27: { adam: null, layla: { mood: "excited", message: "Stickers earned, Scout!" }, }, // stickers
+    27: { adam: null, layla: { mood: "excited", message: "Stickers earned, Cyber Hero!" }, }, // stickers
     28: { adam: { mood: "thumbsup", message: "Settings Scout badge earned!" }, layla: null }, // completion
   },
 };

@@ -26,7 +26,7 @@ import {
 } from "@/app/lib/celebrations";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
-import InfoNarration from "@/app/components/lesson/InfoNarration";
+import InfoNarration, { hasRecordedBlock } from "@/app/components/lesson/InfoNarration";
 import VerdictVoice from "@/app/components/lesson/VerdictVoice";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
@@ -231,6 +231,25 @@ export default function ChooseYourPath({
     () => (rawScenario ? [rawScenario.setup] : []),
     [rawScenario],
   );
+  // One recorded take of [setup, "which do you think?"] when it exists (two
+  // separate clips back to back sound like two tones of Sarah; UAT batch 3).
+  const setupPromptLines = useMemo(
+    () => (rawScenario && promptNarration && promptNarration.lines.length > 0 ? [rawScenario.setup, ...promptNarration.lines] : null),
+    [rawScenario, promptNarration],
+  );
+  const setupPromptKey = setupPromptLines ? setupPromptLines.join(" ") : "";
+  const [setupOneTakeFor, setSetupOneTakeFor] = useState<{ key: string; ok: boolean } | null>(null);
+  useEffect(() => {
+    if (!setupPromptLines) return;
+    let cancelled = false;
+    void hasRecordedBlock("adam", setupPromptLines).then((ok) => {
+      if (!cancelled) setSetupOneTakeFor({ key: setupPromptKey, ok });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [setupPromptLines, setupPromptKey]);
+  const setupOneTake = !setupPromptLines ? false : setupOneTakeFor?.key === setupPromptKey ? setupOneTakeFor.ok : null;
 
   // Type out setup text
   useEffect(() => {
@@ -756,14 +775,25 @@ export default function ChooseYourPath({
           aria-hidden
           style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}
         >
-          <InfoNarration
-            key={`cyp-narr-${idx}`}
-            speaker="adam"
-            lines={setupLines}
-            accent="#7df0ff"
-            onDone={() => setNarratorDone(true)}
-          />
-          {narratorDone && promptNarration && promptNarration.lines.length > 0 && (
+          {setupOneTake === true && setupPromptLines && (
+            <InfoNarration
+              key={`cyp-narr1-${idx}`}
+              speaker="adam"
+              lines={setupPromptLines}
+              accent="#7df0ff"
+              onDone={() => setNarratorDone(true)}
+            />
+          )}
+          {setupOneTake === false && (
+            <InfoNarration
+              key={`cyp-narr-${idx}`}
+              speaker="adam"
+              lines={setupLines}
+              accent="#7df0ff"
+              onDone={() => setNarratorDone(true)}
+            />
+          )}
+          {narratorDone && setupOneTake === false && promptNarration && promptNarration.lines.length > 0 && (
             <InfoNarration
               key={`cyp-prompt-${idx}`}
               speaker={promptNarration.speaker}

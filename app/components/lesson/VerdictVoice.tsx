@@ -28,7 +28,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import InfoNarration from "@/app/components/lesson/InfoNarration";
+import InfoNarration, { hasRecordedBlock } from "@/app/components/lesson/InfoNarration";
 import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 
 export type VerdictKind = "right" | "wrong";
@@ -61,9 +61,33 @@ export interface VerdictVoiceProps {
   leadless?: boolean;
 }
 
+// The reason Sarah gave on the most recent WRONG verdict on this screen (UAT
+// batch 2, items 3-4). When the child then gets the same item right, repeating
+// that exact sentence is tedious, so the right verdict speaks its lead only.
+// Cleared by a right verdict and by resetVerdictMemory() on every screen change.
+let lastWrongReason: string | null = null;
+
+/** Forget the last wrong reason. Called on every screen change. */
+export function resetVerdictMemory(): void {
+  lastWrongReason = null;
+}
+
 export default function VerdictVoice({ verdict, why, onDone, speaker = "adam", leadless = false }: VerdictVoiceProps) {
-  const whyText = (why ?? "").trim();
-  const [stage, setStage] = useState<"lead" | "why" | "done">(leadless ? (whyText ? "why" : "done") : "lead");
+  const rawWhy = (why ?? "").trim();
+  // Decided once per verdict (a fresh key mounts a fresh VerdictVoice).
+  const [whyText] = useState(() =>
+    verdict === "right" && rawWhy !== "" && rawWhy === lastWrongReason ? "" : rawWhy,
+  );
+  useEffect(() => {
+    if (verdict === "wrong" && rawWhy) lastWrongReason = rawWhy;
+    else if (verdict === "right") lastWrongReason = null;
+  }, [verdict, rawWhy]);
+  // "resolve": check for ONE recorded take of lead + reason (owner 2026-09-15:
+  // two separate generations of Sarah sound like two different people back to
+  // back). "combined" plays that take; otherwise fall back to lead, then why.
+  const [stage, setStage] = useState<"resolve" | "combined" | "lead" | "why" | "done">(
+    leadless ? (whyText ? "why" : "done") : whyText ? "resolve" : "lead",
+  );
   const onDoneRef = useRef(onDone);
   useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
   const firedRef = useRef(false);
@@ -75,11 +99,23 @@ export default function VerdictVoice({ verdict, why, onDone, speaker = "adam", l
 
   // Stable line arrays so InfoNarration does not re-resolve on every render.
   const leadLines = useMemo(() => [VERDICT_LEADS[verdict]], [verdict]);
+  const combinedLines = useMemo(() => [VERDICT_LEADS[verdict], whyText], [verdict, whyText]);
   const whyLines = useMemo(() => (whyText ? [whyText] : []), [whyText]);
 
   useEffect(() => {
     if (stage === "done") finish();
   }, [stage, finish]);
+
+  useEffect(() => {
+    if (stage !== "resolve") return;
+    let cancelled = false;
+    void hasRecordedBlock(speaker, combinedLines).then((recorded) => {
+      if (!cancelled) setStage(recorded ? "combined" : "lead");
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [stage, speaker, combinedLines]);
 
   // Muted: there is no voice to wait for, and InfoNarration never fires onDone
   // when the master mute holds it back. Finish after a short beat so the host
@@ -101,11 +137,14 @@ export default function VerdictVoice({ verdict, why, onDone, speaker = "adam", l
 
   return (
     <div aria-hidden style={HIDDEN} data-verdict-voice={verdict}>
+      {stage === "combined" && (
+        <InfoNarration speaker={speaker} lines={combinedLines} recordedOnly preRollMs={0} onDone={() => setStage("done")} />
+      )}
       {stage === "lead" && (
-        <InfoNarration speaker={speaker} lines={leadLines} recordedOnly onDone={() => setStage(whyLines.length ? "why" : "done")} />
+        <InfoNarration speaker={speaker} lines={leadLines} recordedOnly preRollMs={0} onDone={() => setStage(whyLines.length ? "why" : "done")} />
       )}
       {stage === "why" && (
-        <InfoNarration speaker={speaker} lines={whyLines} recordedOnly onDone={() => setStage("done")} />
+        <InfoNarration speaker={speaker} lines={whyLines} recordedOnly preRollMs={0} onDone={() => setStage("done")} />
       )}
     </div>
   );

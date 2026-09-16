@@ -97,7 +97,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[warmly] Hey there, Cyber Hero! I've got a secret... just for you.",
           "[whispers] Come a little closer.",
-          "Your password is like a magic key, and it's all yours.",
+          "Your password is like a magic key, and it's all YOURS.",
           "It's how the computer knows it's really YOU.",
           "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
           "[excited] But a big, strong one? [laughs] He doesn't stand a chance!",
@@ -108,7 +108,6 @@ export const WEEK_1: WeekContent = {
     // 4 - Game: MATCH (Cyber Words)
     {
       type: "memoryMatch",
-      whyWrong: "Those two don't go together. Turn them back and look for the pair that matches.",
       threat: {
         raccoonLine:
           "Heh heh! Most kids don't even know what a password really IS. They think a hiding spot keeps them safe. That's how I sneak right in!",
@@ -170,9 +169,10 @@ export const WEEK_1: WeekContent = {
         speaker: "adam",
         lines: [
           "[warmly] Exactly right. A password proves it's YOU.",
-          "It's like showing a secret key that only you have.",
-          "So the computer knows the real you is logging in, not a sneaky Raccoon.",
-          "[excited] That is what keeps your stuff yours. Well done!",
+          "It's like showing a secret key that only YOU have.",
+          "So the computer knows the REAL you is logging in, not a sneaky Raccoon.",
+          "[excited] That is what keeps your stuff yours...",
+          "[proud] Well done!",
         ],
       },
     },
@@ -311,7 +311,8 @@ export const WEEK_1: WeekContent = {
           "[warmly] Yes! The long one, dragon-taco-comet, is the winner.",
           "The more letters there are, the longer the Raccoon's machine has to guess.",
           "Three random words make it so long he simply runs out of time.",
-          "[excited] Long really is strong. Well done!",
+          "[excited] Long really is strong...",
+          "[proud] Well done!",
         ],
       },
     },
@@ -329,7 +330,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[excited] That's your second power!",
           "You make your password nice and long with three random words.",
-          "[warmly] So the Raccoon's guessing machine runs and runs and never cracks it. Your stuff stays locked up tight.",
+          "[warmly] So the Raccoon's guessing machine runs and runs and NEVER cracks it. Your stuff stays locked up tight.",
           "Next, we'll mix it up so there's nothing plain left for him to grab. Come on!",
         ],
       },
@@ -427,6 +428,7 @@ export const WEEK_1: WeekContent = {
           id: "pat-123",
           password: "123",
           primaryReason: "too-short",
+          alsoAccept: ["keyboard"],
           chartNote: "Patient #6 - tiny, and just numbers",
           diagnosisExplanation:
             "Only 3 characters, and they're numbers in a row. Cracked in less than a second.",
@@ -446,7 +448,7 @@ export const WEEK_1: WeekContent = {
           "This game is all about MIXING a password up, so there's no plain word left inside.",
           "Out in the real world, a mixed-up password gives the Raccoon nothing to guess.",
           "Here is what you do. Look at each sick password, tap what is WRONG with it, then use your tools to make it strong. Watch the strength meter climb.",
-          "[excited] Heal them all and the Raccoon is stumped. Ready? Let's go, Doctor!",
+          "[excited] Heal them all and the Raccoon is stumped. Ready? Let's go, Cyber Hero!",
         ],
       },
       coachLines: {
@@ -479,7 +481,8 @@ export const WEEK_1: WeekContent = {
           "[warmly] Busted! That was a fib.",
           "A password that's all small letters is easy pickings. Mix in capitals, numbers and symbols and it turns into a jumble.",
           "The Raccoon's machine has to try WAY more guesses, so it gives up.",
-          "[excited] Mix it up every time. Nice catch!",
+          "[excited] Mix it up every time...",
+          "[proud] Nice catch!",
         ],
       },
     },
@@ -526,9 +529,9 @@ export const WEEK_1: WeekContent = {
         speaker: "layla",
         lines: [
           "[warmly] Okay, this is the MOST important part. Lean in close...",
-          "[whispers] A password only works if you keep it secret.",
+          "[whispers] A password only works if you keep it SECRET.",
           "Don't tell your best friend. Don't leave it where anyone can peek!",
-          "[warmly] The only place you ever type it is your own real login screen, and the only person who ever helps is a grown-up you really trust. Deal?",
+          "[warmly] The ONLY place you ever type it is your own real login screen, and the ONLY person who ever helps is a grown-up you really trust. Deal?",
           "[excited] Let's practise saying no to the sneaky pop-ups!",
         ],
       },
@@ -607,7 +610,7 @@ export const WEEK_1: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] You kept your secret every single time! Now you know exactly who gets your password: only you, and a trusted grown-up.",
+          "[proud] You kept your secret every single time! Now you know exactly who gets your password: only YOU, and a trusted grown-up.",
           "[warmly] Out in the real world, when a stranger, a pop-up or a friend asks for it, you pause, and the Raccoon gets nothing.",
         ],
       },
@@ -627,10 +630,11 @@ export const WEEK_1: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] That is right. Only you, and a trusted grown-up at home.",
+          "[warmly] That is right. Only YOU, and a trusted grown-up at home.",
           "Not your best friend, not your class, not anyone who asks.",
-          "A password only stays safe while it stays your secret.",
-          "[excited] Keep it zipped, and the Raccoon gets nothing. Well done!",
+          "A password only stays safe while it stays YOUR secret.",
+          "[excited] Keep it zipped, and the Raccoon gets nothing...",
+          "[proud] Well done!",
         ],
       },
     },
@@ -647,7 +651,7 @@ export const WEEK_1: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] That's your fourth power!",
-          "You keep your password secret. You never share it, not even with a best friend.",
+          "You keep your password secret. You never share it, not EVEN with a best friend.",
           "[warmly] So no one can ever be tricked into handing it over to the Raccoon.",
           "One last power to master. Next, we'll learn which passwords the Raccoon guesses FIRST, so you never pick one. Come on, Cyber Hero!",
         ],
@@ -679,7 +683,7 @@ export const WEEK_1: WeekContent = {
           "[whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday?",
           "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
           "[excited] So pick something he'd NEVER guess, and outsmart him!",
-          "[warmly] Come on, detective, let's find out WHY weak passwords are weak!",
+          "[warmly] Let's find out WHY weak passwords are weak!",
         ],
       },
     },
@@ -701,7 +705,7 @@ export const WEEK_1: WeekContent = {
         { text: "football", reasonId: "common-word", explanation: "A word from the dictionary - hackers try common words first." },
         { text: "OliviaSmith2016", reasonId: "personal", explanation: "A name and a birthday - the easiest things to guess about you." },
         { text: "qwerty", reasonId: "keyboard", explanation: "These letters sit in a row on the keyboard - the FIRST pattern hackers try." },
-        { text: "123", reasonId: "too-short", explanation: "Only 3 characters, and numbers in order - cracked in under a second." },
+        { text: "123", reasonId: "too-short", alsoAccept: ["keyboard"], explanation: "Only 3 characters, and numbers in order - cracked in under a second." },
         { text: "dragon", reasonId: "common-word", explanation: "A popular word - 'dragon' is in every hacker's top-100 list." },
         { text: "JacobSmith0511", reasonId: "personal", explanation: "A name plus what looks like a date - quick to guess if someone knows you." },
         { text: "asdfgh", reasonId: "keyboard", explanation: "Another row of keys in order - just like qwerty." },
@@ -724,7 +728,7 @@ export const WEEK_1: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Case closed, detective! Now you can spot WHY a password is weak before the Raccoon ever tries it.",
+          "[proud] Case closed, Cyber Hero! Now you can spot WHY a password is weak before the Raccoon ever tries it.",
           "[warmly] Out in the real world, no names, no birthdays, no one-two-three-four-five-six. Just words nobody could guess.",
         ],
       },
@@ -747,7 +751,8 @@ export const WEEK_1: WeekContent = {
           "[warmly] Yes! 'password' is the number-one password people pick.",
           "So it is the very FIRST thing the Raccoon tries.",
           "The safe ones are random words that have nothing to do with you.",
-          "[excited] Pick something he would never guess. Well done!",
+          "[excited] Pick something he would NEVER guess...",
+          "[proud] Well done!",
         ],
       },
     },
@@ -785,13 +790,13 @@ export const WEEK_1: WeekContent = {
       // Sarah's instructions ON the board (owner: "I need instructions from Sarah"):
       // the how-to once as the board appears (coachLines), then after every move the
       // prompt below, plus the visible action strip the component renders.
-      roundPrompt: "Which power did that move use? Turn its dial.",
+      roundPrompt: "Which power did that move use? Tap its dial.",
       coachLines: {
         speaker: "adam",
-        lines: ["Listen to the move, then turn the dial for the power it used. Get it right and the bolt slides home!"],
+        lines: ["Listen to the move, then tap the dial for the power it used. Get it right and the bolt slides home!"],
       },
       introTitle: "Hero Power Bingo",
-      introSubtitle: "Watch each move, then turn the dial for the password power it used. Four bolts home seals the vault!",
+      introSubtitle: "Watch each move, then tap the dial for the password power it used. Four bolts home seals the vault!",
       introIcon: "🔒",
       cardTitle: "Hero Power Bingo",
       stampToast: "BOLTED!",
@@ -839,7 +844,7 @@ export const WEEK_1: WeekContent = {
         },
       ],
       hints: {
-        tier1: "Which of your four powers does this move show? Turn that dial.",
+        tier1: "Which of your four powers does this move show? Tap that dial.",
         tier2: "Listen to what they DID: made it long, mixed it up, kept it secret, or picked nothing obvious?",
       },
       narration: {
@@ -847,7 +852,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[excited] Final drill, Cyber Hero - it's Power Bingo!",
           "You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action.",
-          "Here is what you do. I'll read out a move someone made, and you turn the dial for the power it used. Its bolt slides home into the vault door.",
+          "Here is what you do. I'll read out a move someone made, and you tap the dial for the power it used. Its bolt slides home into the vault door.",
           "[warmly] Then I'll tell you WHY it works. Bolt all four powers home to seal the vault - that's BINGO!",
         ],
       },
@@ -906,7 +911,7 @@ export const WEEK_1: WeekContent = {
   bossQuiz: {
     villain: { name: "HACKER RACCOON", sprite: "raccoon" },
     accent: "#e3b341",
-    passMark: 5,
+    passMark: 4,
     theme: {
       topic: "Passwords",
       motifs: ["🔑", "🔒", "🛡️", "🔢", "🔣", "🗝️", "🔐", "⭐"],
@@ -1059,65 +1064,9 @@ export const WEEK_1: WeekContent = {
 
 
 
-      {
-        phaseId: "phase-secret",
-        key: "quiz-secret-2",
-        label: "Keep It Secret",
-        ask: {
-          slug: "quiz-w1-ask-secret-2",
-          text: "A player in game chat says: I'm a pro helper, give me your password and I'll level up your account tonight! What do you do?",
-        },
-        options: [
-          { text: "Say no thanks and keep it secret" },
-          { text: "Share it, then change it after the level-up" },
-          { text: "Trade: he tells his password, you tell yours" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Helpers never need your password!",
-          explanation: "Changing it later can be too late, and trading just means two secrets get stolen. No player in chat ever needs your real password. If you want help with your account, ask a trusted grown-up at home.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-secret-2",
-          text: "No thanks?! I ironed my PRO HELPER shirt for nothing!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-secret-2",
-          text: "Level-up service, coming right up! Step one: this account belongs to ME now!",
-        },
-      },
-      {
-        phaseId: "phase-obvious",
-        key: "quiz-obvious-2",
-        label: "Don't Pick the Obvious",
-        ask: {
-          slug: "quiz-w1-ask-obvious-2",
-          text: "Adam's dog is named Rocket and his birthday is in May. Which password should he pick for his new account?",
-        },
-        options: [
-          { text: "Marble-Tuba-Frost4!" },
-          { text: "Rocket-May-2018!" },
-          { text: "Adam-Rocket-99!" },
-        ],
-        correctIndex: 0,
-        teachOnWrong: {
-          title: "Nothing about YOU in it!",
-          explanation: "His dog, his name, and his birthday are the first things a guesser tries, even dressed up with numbers and a symbol. Random words that have nothing to do with Adam are the ones nobody can figure out.",
-        },
-        villainRight: {
-          slug: "quiz-w1-right-obvious-2",
-          text: "Marble? Tuba? FROST?! I studied that kid all year and none of this is in my notes!",
-        },
-        villainWrong: {
-          slug: "quiz-w1-wrong-obvious-2",
-          text: "The dog, the birthday, the name! One peek at a party invitation and I'm typing it in!",
-        },
-      },
 
 
-
-
-
+    
     ],
   },
   badgeArt: "/cyberheroes/badges/week-01-password-protector.png",

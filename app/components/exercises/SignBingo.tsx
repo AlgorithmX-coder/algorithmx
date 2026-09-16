@@ -34,7 +34,7 @@ import CoachCaption from "@/app/components/lesson/CoachCaption";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import PixIcon from "@/app/components/lesson/PixIcon";
-import InfoNarration from "@/app/components/lesson/InfoNarration";
+import InfoNarration, { hasRecordedBlock } from "@/app/components/lesson/InfoNarration";
 import VerdictVoice from "@/app/components/lesson/VerdictVoice";
 import GameButton from "@/app/components/lesson/GameButton";
 
@@ -159,7 +159,22 @@ export default function SignBingo({
   const finished = roundIdx >= shownRounds.length;
   const round = shownRounds[roundIdx];
   const vault = skin === "vault";
-  const prompt = roundPrompt ?? (vault ? "Which power did that move use? Turn its dial." : undefined);
+  const prompt = roundPrompt ?? (vault ? "Which power did that move use? Tap its dial." : undefined);
+  // 7c: one recorded take of [move, prompt] when it exists (two separate clips
+  // back to back sounded like two different tones of Sarah). Resolved per round.
+  const [oneTakeFor, setOneTakeFor] = useState<{ id: string; ok: boolean } | null>(null);
+  useEffect(() => {
+    if (!vault || !round || !prompt) return;
+    let cancelled = false;
+    const id = round.id;
+    void hasRecordedBlock("adam", [round.scene, prompt]).then((ok) => {
+      if (!cancelled) setOneTakeFor({ id, ok });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [vault, round, prompt]);
+  const sceneOneTake = !vault || !round || !prompt ? false : oneTakeFor?.id === round.id ? oneTakeFor.ok : null;
   const hasCoach = !!coachLines;
   useEffect(() => {
     if (!vault) return;
@@ -182,6 +197,10 @@ export default function SignBingo({
       onHintReached?.(tier as 1 | 2);
     }
   };
+
+  // 7d: the first round teaches the move by doing it: once Sarah has read the
+  // move and the prompt, the right dial glows until the child taps.
+  const guided = vault && !!round && roundIdx === 0 && stamped.size === 0 && !wrongOnCurrent && narr === "done" && !showIntro;
 
   const tap = (sign: BingoSign, idx: number) => {
     if (!round || showIntro || feedback || finished || bolting) return;
@@ -348,7 +367,10 @@ export default function SignBingo({
           {narr === "howto" && coachLines && (
             <InfoNarration key="sb-howto" speaker={coachLines.speaker ?? "adam"} lines={coachLines.lines} accent="#e3b341" recordedOnly onDone={() => setNarr("scene")} />
           )}
-          {narr === "scene" && (
+          {narr === "scene" && sceneOneTake === true && prompt && (
+            <InfoNarration key={`sb-scene1-${round.id}`} speaker="adam" lines={[round.scene, prompt]} accent="#e3b341" recordedOnly onDone={() => setNarr("done")} />
+          )}
+          {narr === "scene" && sceneOneTake === false && (
             <InfoNarration key={`sb-scene-${round.id}`} speaker="adam" lines={[round.scene]} accent="#e3b341" recordedOnly onDone={() => setNarr(prompt ? "prompt" : "done")} />
           )}
           {narr === "prompt" && prompt && (
@@ -361,13 +383,14 @@ export default function SignBingo({
       {vault && round && !finished && (
         <div style={{ textAlign: "center", margin: "-2px auto 12px", fontSize: 11.5, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#cfd6e6", opacity: 0.85 }}>
           <PixIcon emoji="👆" size={15} style={{ verticalAlign: "-3px", marginRight: 6 }} />
-          Tap the dial for the power this move used
+          {guided ? "Round 1: the glowing dial is the power this move used. Tap it!" : "Tap the dial for the power this move used"}
         </div>
       )}
 
       {/* ── VAULT skin: four brass dials around the door, bolts slide home ── */}
       {vault && (
         <div style={{ overflowX: "auto", margin: "0 auto" }}>
+          <style>{`@keyframes sbGuide { 0%, 100% { box-shadow: 0 0 0 0 rgba(126,255,151,0.0), 0 16px 30px -14px rgba(0,0,0,0.9); } 50% { box-shadow: 0 0 0 8px rgba(126,255,151,0.55), 0 0 38px 10px rgba(126,255,151,0.45); } }`}</style>
           <div style={{ position: "relative", width: 760, height: 350, margin: "0 auto" }}>
             {/* door */}
             <motion.svg
@@ -491,6 +514,8 @@ export default function SignBingo({
                       : "0 16px 30px -14px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.5)",
                     cursor: isStamped ? "default" : "pointer",
                     fontFamily: "inherit",
+                    ...(guided && s.id === round?.signId && !reduce ? { animation: "sbGuide 1.1s ease-in-out infinite" } : null),
+                    ...(guided && s.id === round?.signId && reduce ? { outline: "4px solid #7eff97", outlineOffset: 3 } : null),
                     touchAction: "manipulation",
                   }}
                 >
@@ -498,7 +523,7 @@ export default function SignBingo({
                   <motion.span
                     aria-hidden
                     initial={false}
-                    animate={{ rotate: isStamped ? 90 : 0 }}
+                    animate={{ rotate: isStamped ? (slot.side === "left" ? 90 : -90) : 0 }}
                     transition={{ duration: reduce ? 0.2 : 0.8, ease: "easeOut" }}
                     style={{ position: "absolute", left: "50%", top: 3, width: 6, height: 16, marginLeft: -3, borderRadius: 3, background: isStamped ? "#ffe08a" : "#2b1d02", transformOrigin: `3px ${DIAL / 2 - 3}px`, boxShadow: "0 0 0 1.5px rgba(255,241,194,0.6)" }}
                   />
