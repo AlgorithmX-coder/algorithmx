@@ -252,7 +252,11 @@ export default function CyberMaze({
     () => (questions.length > 0 ? questions : DEFAULT_QUESTIONS),
     [questions]
   );
-  const voice = introNarration?.speaker ?? "adam";
+  // In-game read-alouds, verdict reasons and teach lines are recorded under
+  // "adam" (both content voices are Sarah), so every manifest lookup here uses
+  // that key. Keying them to the intro's speaker ("layla" on Week 3) found no
+  // clip, and the gate questions, reasons and teaches played silent.
+  const voice = "adam" as const;
 
   const audio = useGameAudio();
   const fx = useExerciseFeedback();
@@ -319,11 +323,10 @@ export default function CyberMaze({
     tip?: string;
   }>(null);
   const [wrongOnGate, setWrongOnGate] = useState<Record<number, number>>({});
-  // Read-aloud chain: the how-to once as the maze appears, each gate's
-  // proposal as its card opens, the why after the hero reply. Taps are held
-  // while Sarah speaks. "idle" = nothing playing.
-  const [narr, setNarr] = useState<"howto" | "ask" | "why" | "idle">("idle");
-  const [whyText, setWhyText] = useState<string | null>(null);
+  // Read-aloud chain: the how-to once as the maze appears, then each gate's
+  // proposal as its card opens (the why after the hero reply is the verdict's
+  // one take). Taps are held while Sarah speaks. "idle" = nothing playing.
+  const [narr, setNarr] = useState<"howto" | "ask" | "idle">("idle");
   // NO SEQUENCE (owner rule): each gate's replies show in a random order every
   // play (authored data leads with the hero reply). Shuffled after mount so the
   // server and first client render agree.
@@ -486,13 +489,8 @@ export default function CyberMaze({
       s.tweenStart = performance.now();
       s.activeGateIdx = null;
       setActiveQuestion(null);
-      // Sarah: "That's right!", then why that was the hero reply (audio only).
-      verdict.say("right", null, () => {
-        if (q.why && !isAudioMuted()) {
-          setWhyText(q.why);
-          setNarr("why");
-        }
-      });
+      // Sarah: "That's right!" + why that was the hero reply, in one take.
+      verdict.say("right", q.why ?? null);
     } else {
       s.wrongCount += 1;
       gate.flashUntil = performance.now() + 500;
@@ -1050,9 +1048,6 @@ export default function CyberMaze({
           )}
           {narr === "ask" && activeQ && (
             <InfoNarration key={`cm-ask-${activeQuestion}`} speaker={voice} lines={[activeQ.question]} accent="#ffd158" recordedOnly onDone={() => setNarr("idle")} />
-          )}
-          {narr === "why" && whyText && (
-            <InfoNarration key={`cm-why-${s.questionsAnswered}`} speaker={voice} lines={[whyText]} accent="#ffd158" recordedOnly onDone={() => setNarr("idle")} />
           )}
         </div>
       )}
