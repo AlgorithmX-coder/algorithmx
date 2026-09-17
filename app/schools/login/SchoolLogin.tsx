@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
+import SchoolsBackdrop from "@/app/schools/SchoolsBackdrop";
 
 /**
  * /schools/login - the front door for schools. Two doors:
@@ -91,7 +91,7 @@ export default function SchoolLogin() {
 
   return (
     <>
-      <GlobalBackdrop />
+      <SchoolsBackdrop />
       <main
         style={{
           position: "relative",

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import Nav from "@/app/components/landing-v2/Nav";
 import Footer from "@/app/components/landing-v2/Footer";
-import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
+import SchoolsBackdrop from "@/app/schools/SchoolsBackdrop";
 import CyberEssentialsBadge from "@/app/components/landing-v2/CyberEssentialsBadge";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
@@ -216,7 +216,7 @@ export default function SchoolsLanding() {
 
   return (
     <>
-      <GlobalBackdrop />
+      <SchoolsBackdrop />
       <Nav />
       {/* overflow-x: clip keeps the decorative section glows (negative right
           offsets) from widening the page, which let phones pan sideways by
@@ -487,7 +487,7 @@ export default function SchoolsLanding() {
         </section>
       </main>
 
-      <Footer />
+      <Footer bed="dusk" />
 
       <style>{`
         .sch-section {
