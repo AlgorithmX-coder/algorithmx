@@ -30,6 +30,14 @@
  * checking procedure and stay in place (same precedent as the inspectors'
  * zones). No colour, icon, side, order or count reveals anything before the
  * lock.
+ *
+ * Skins (`skin` prop): "profile" is Week 3's friend-request card (default,
+ * unchanged). "photo" is Week 8's "The Photo Detective": the case card is a
+ * darkroom photo print (white border, taped corners, the case's `avatar` as
+ * the photo, its `handle` as the caption, its `pitch` under it), the rows wear
+ * photo icons, and a KEEP verdict locks the print instead of unmasking the
+ * Raccoon. `rowLabels` re-words the four fixed questions on either skin.
+ * Rows, stamping, closing, judging, narration and verdict voice are identical.
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -98,6 +106,9 @@ export interface ClueStamperCase {
 
 export interface ClueStamperProps {
   cases: ClueStamperCase[];
+  /** Visual skin: "profile" (Week 3 friend-request card, default) or "photo"
+   *  (Week 8 darkroom photo print). Paint only. */
+  skin?: "profile" | "photo";
   introTitle?: string;
   introSubtitle?: string;
   introIcon?: string;
@@ -113,6 +124,16 @@ export interface ClueStamperProps {
   fakeToast?: string;
   /** WrongAnswerPanel title. */
   wrongTitle?: string;
+  /** The four fixed rows' questions, per row id (either skin). A row with no
+   *  entry keeps its default ("WHEN did it join?" and so on). Used for the
+   *  row's visible question and its aria-label. */
+  rowLabels?: Partial<Record<"when" | "who" | "how" | "what", string>>;
+  /** The instruction strip above the commit button. Default "Read all four ·
+   *  tap a sneaky clue to stamp it · tap again to lift it · then close the case". */
+  boardPrompt?: string;
+  /** Complete-beat count of cases with a flagged clue (the fakeSeal verdict),
+   *  shown as "<n> <one|many>". Default { one: "fake unmasked", many: "fakes unmasked" }. */
+  caughtLabel?: { one: string; many: string };
   completeTitle?: string;
   completeLine?: string;
   hints?: { tier1: string; tier2: string; tier3?: string };
@@ -147,10 +168,30 @@ const CLUE_ROWS: { id: ClueId; icon: string; label: string }[] = [
 const BIT: Record<ClueId, number> = { when: 1, who: 2, how: 4, what: 8 };
 const mask = (ids: Iterable<ClueId>) => { let m = 0; for (const id of ids) m |= BIT[id]; return m; };
 
+/** Photo skin: the row icons for Week 8's photo questions on the same ids
+ *  (when: who is in it, who: what is behind them, how: where is it going,
+ *  what: did they say yes). Same on every case. */
+const PHOTO_ROW_ICONS: Record<ClueId, string> = { when: "👪", who: "📍", how: "🌍", what: "👍" };
+
+/** Photo skin: a strip of tape over a print's top corner. */
+const TAPE_STYLE = {
+  position: "absolute",
+  top: 8,
+  width: 64,
+  height: 16,
+  background: "rgba(255,226,170,0.78)",
+  boxShadow: "0 1px 2px rgba(0,0,0,0.18)",
+  zIndex: 2,
+  pointerEvents: "none",
+} as const;
+
 const DEFAULT_TIER3 = "Let me help. I fixed that one clue for you. Now close the case.";
+const DEFAULT_BOARD_PROMPT = "Read all four · tap a sneaky clue to stamp it · tap again to lift it · then close the case";
+const DEFAULT_CAUGHT = { one: "fake unmasked", many: "fakes unmasked" };
 
 export default function ClueStamper({
   cases,
+  skin = "profile",
   introTitle = "The Clue Stamper",
   introSubtitle = "Stamp the sneaky clues, then close the case.",
   introIcon = "🔍",
@@ -161,6 +202,9 @@ export default function ClueStamper({
   realToast = "CASE CLOSED: REAL FRIEND!",
   fakeToast = "CASE CLOSED: FAKE!",
   wrongTitle = "Check your stamps again!",
+  rowLabels,
+  boardPrompt = DEFAULT_BOARD_PROMPT,
+  caughtLabel = DEFAULT_CAUGHT,
   completeTitle = "Every case closed!",
   completeLine = "Fakes unmasked, real friends welcomed.",
   hints,
@@ -183,6 +227,7 @@ export default function ClueStamper({
   // recorded under "adam", so every manifest lookup here uses that key (the
   // intro / how-to / complete blocks keep their own authored speaker).
   const voice = "adam" as const;
+  const photo = skin === "photo";
 
   const [showIntro, setShowIntro] = useState(true);
   const [idx, setIdx] = useState(0);
@@ -208,9 +253,17 @@ export default function ClueStamper({
   const shownCases = useShuffledOnce(cases);
   const finished = idx >= shownCases.length;
   const c = shownCases[idx];
+  // The fixed rows for this case: order and ids never change; the question
+  // text takes a `rowLabels` override and the icon follows the skin.
   const rows = useMemo(
-    () => CLUE_ROWS.map((r) => ({ ...r, clue: c?.clues.find((x) => x.id === r.id) })),
-    [c],
+    () =>
+      CLUE_ROWS.map((r) => ({
+        ...r,
+        icon: photo ? PHOTO_ROW_ICONS[r.id] : r.icon,
+        label: rowLabels?.[r.id] ?? r.label,
+        clue: c?.clues.find((x) => x.id === r.id),
+      })),
+    [c, photo, rowLabels],
   );
   const wantIds = useMemo(() => new Set((c?.clues ?? []).filter((x) => x.isRedFlag).map((x) => x.id)), [c]);
   const isFake = wantIds.size > 0;
@@ -374,9 +427,12 @@ export default function ClueStamper({
                     fontWeight: 800,
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
-                    background: open ? "linear-gradient(180deg, #f0dcae, #d7bc84)" : "linear-gradient(180deg, #b89a64, #96793f)",
-                    color: open ? "#3a2a08" : "#f6ecd2",
-                    border: `1px solid ${open ? "#b8945a" : "#7a6130"}`,
+                    // Photo skin: the same folder tabs in warm darkroom amber.
+                    background: photo
+                      ? open ? "linear-gradient(180deg, #ffe7c7, #f2c28a)" : "linear-gradient(180deg, #a8683a, #7a4524)"
+                      : open ? "linear-gradient(180deg, #f0dcae, #d7bc84)" : "linear-gradient(180deg, #b89a64, #96793f)",
+                    color: open ? (photo ? "#3a1a08" : "#3a2a08") : "#f6ecd2",
+                    border: `1px solid ${photo ? (open ? "#c98a4a" : "#5a3018") : open ? "#b8945a" : "#7a6130"}`,
                     boxShadow: open ? "0 4px 12px rgba(0,0,0,0.35)" : "none",
                     opacity: closed || open ? 1 : 0.7,
                     display: "flex",
@@ -385,14 +441,119 @@ export default function ClueStamper({
                   }}
                 >
                   Case {i + 1}
-                  {closed && <span style={{ fontSize: 13 }}>{kFake ? "🐾" : "✅"}</span>}
+                  {closed && (photo
+                    ? <PixIcon emoji={kFake ? "🔒" : "✅"} size={14} />
+                    : <span style={{ fontSize: 13 }}>{kFake ? "🐾" : "✅"}</span>)}
                 </div>
               );
             })}
           </div>
 
           <div style={{ display: "flex", gap: 16, alignItems: "stretch", flexWrap: "wrap" }}>
-            {/* The friend-request card */}
+            {photo ? (
+            /* The photo print: white border, taped corners, the case's art as
+               the photo, its handle as the caption. Same print on every case. */
+            <div
+              style={{
+                position: "relative",
+                flex: "1 1 260px",
+                minWidth: 240,
+                borderRadius: 8,
+                background: "linear-gradient(180deg, #fffdf8 0%, #f3eadb 100%)",
+                border: "1px solid rgba(120,70,30,0.3)",
+                boxShadow: "0 18px 40px -22px rgba(0,0,0,0.8), 0 0 46px -14px rgba(255,107,61,0.55)",
+                padding: "16px 14px 14px",
+                color: "#2a130b",
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <span aria-hidden style={{ ...TAPE_STYLE, left: -18, transform: "rotate(-38deg)" }} />
+              <span aria-hidden style={{ ...TAPE_STYLE, right: -18, transform: "rotate(38deg)" }} />
+              {/* The photo: the case's art under a warm darkroom wash. */}
+              <div
+                style={{
+                  position: "relative",
+                  flex: "1 1 auto",
+                  minHeight: 150,
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  display: "grid",
+                  placeItems: "center",
+                  background: "radial-gradient(circle at 50% 38%, #8a5230 0%, #4a2412 58%, #1f0d06 100%)",
+                  boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.4), inset 0 0 30px rgba(255,107,61,0.32)",
+                }}
+              >
+                <motion.div
+                  animate={phase === "sealed" && isFake && !reduce ? { scale: 0.82, opacity: 0.35 } : { scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                  style={{ display: "grid", placeItems: "center" }}
+                >
+                  <PixIcon emoji={c.avatar} size={84} />
+                </motion.div>
+                {/* A KEEP verdict locks the print (only after a correct lock). */}
+                <AnimatePresence>
+                  {phase === "sealed" && isFake && (
+                    <motion.div
+                      key="keep-lock"
+                      aria-hidden
+                      initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.4 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 16 }}
+                      style={{ position: "absolute", top: 8, right: 8, pointerEvents: "none" }}
+                    >
+                      <PixIcon emoji="🔒" size={38} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              {/* The caption: the case's title, then its one-line situation. */}
+              <div style={{ textAlign: "center", padding: "0 4px" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: 18, lineHeight: 1.2, wordBreak: "break-word" }}>{c.handle}</div>
+                <div style={{ marginTop: 6, fontSize: 14, fontWeight: 650, lineHeight: 1.35, color: "#5a3418" }}>{c.pitch}</div>
+              </div>
+              {/* The verdict seal lands on the photo only after a correct lock (never before). */}
+              <AnimatePresence>
+                {phase === "sealed" && (
+                  <motion.div
+                    key="seal"
+                    // Centring lives in the motion values (x), not a CSS transform (see the profile seal).
+                    initial={reduce ? { opacity: 0, x: "-50%" } : { opacity: 0, x: "-50%", scale: 1.8, rotate: -20 }}
+                    animate={{ opacity: 1, x: "-50%", scale: 1, rotate: -8 }}
+                    exit={{ opacity: 0, x: "-50%" }}
+                    transition={reduce ? { duration: 0.2 } : { type: "spring", stiffness: 380, damping: 14, delay: 0.15 }}
+                    style={{
+                      position: "absolute",
+                      left: "50%",
+                      top: "30%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "8px 16px",
+                      borderRadius: 10,
+                      border: `4px double ${isFake ? "#ffb347" : "#34d399"}`,
+                      color: isFake ? "#ffd9a0" : "#a0ffb0",
+                      background: "rgba(28,12,6,0.85)",
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontWeight: 900,
+                      fontSize: 18,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      whiteSpace: "nowrap",
+                      boxShadow: `0 0 18px ${isFake ? "rgba(255,157,46,0.55)" : "rgba(52,211,153,0.5)"}`,
+                    }}
+                  >
+                    <PixIcon emoji={isFake ? "🔒" : "✅"} size={20} />
+                    {isFake ? fakeSeal : realSeal}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            ) : (
+            /* The friend-request card */
             <div
               style={{
                 position: "relative",
@@ -507,6 +668,7 @@ export default function ClueStamper({
                 )}
               </AnimatePresence>
             </div>
+            )}
 
             {/* The detective notebook: four identical rows, fixed order, nothing hidden. */}
             <div
@@ -569,10 +731,15 @@ export default function ClueStamper({
                       <span style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, fontWeight: 900, letterSpacing: "0.06em", color: "#8a5a12" }}>{r.label}</span>
                       <span style={{ display: "block", fontSize: 16, fontWeight: 700, lineHeight: 1.25 }}>{r.clue?.evidence ?? ""}</span>
                     </span>
-                    {/* Post-commit only: the per-clue why (paw on a sneaky row, tick on a clean one). */}
-                    {sealed && (
+                    {/* Post-commit only: the per-clue why (paw on a sneaky row, tick on a clean one;
+                        photo skin: a warning sign on a risky row). */}
+                    {sealed && (photo ? (
+                      <span aria-hidden style={{ flexShrink: 0, display: "grid", placeItems: "center" }}>
+                        <PixIcon emoji={red ? "⚠️" : "✅"} size={22} />
+                      </span>
+                    ) : (
                       <span aria-hidden style={{ fontSize: 20, flexShrink: 0 }}>{red ? "🐾" : "✅"}</span>
-                    )}
+                    ))}
                     {/* The child's own stamp: identical red on whichever row they tap. */}
                     <AnimatePresence>
                       {on && (
@@ -615,13 +782,13 @@ export default function ClueStamper({
 
           {/* On-board instructions + the one commit button (always enabled once Sarah is done, even with zero stamps). */}
           <div style={{ textAlign: "center", marginTop: 14 }}>
-            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#e3b341", marginBottom: 10 }}>
-              Read all four · tap a sneaky clue to stamp it · tap again to lift it · then close the case
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: photo ? "#ffb35c" : "#e3b341", marginBottom: 10 }}>
+              {boardPrompt}
             </div>
             <GameButton variant="primary" size="lg" icon="📌" onClick={closeCase} disabled={speaking}>
               {closeLabel}
             </GameButton>
-            <div style={{ marginTop: 8, fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9b8ff" }}>
+            <div style={{ marginTop: 8, fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: photo ? "#ffc49b" : "#c9b8ff" }}>
               Case {Math.min(idx + 1, shownCases.length)} of {shownCases.length}
             </div>
           </div>
@@ -645,7 +812,7 @@ export default function ClueStamper({
         <ExerciseCompleteBeat
           title={completeTitle}
           stars={stars}
-          statLines={[`${shownCases.length}/${shownCases.length} cases closed`, `${fakesCaught} fake${fakesCaught === 1 ? "" : "s"} unmasked`, completeLine]}
+          statLines={[`${shownCases.length}/${shownCases.length} cases closed`, `${fakesCaught} ${fakesCaught === 1 ? caughtLabel.one : caughtLabel.many}`, completeLine]}
           narration={completeNarration}
           onContinue={() => onComplete(stars === 3 ? 100 : stars === 2 ? 70 : 40)}
         />

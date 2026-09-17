@@ -85,6 +85,9 @@ import PowerPanel from "@/app/components/exercises/PowerPanel";
 import CoinCounter from "@/app/components/exercises/CoinCounter";
 import OddsJar from "@/app/components/exercises/OddsJar";
 import TruePriceLever from "@/app/components/exercises/signatures/TruePriceLever";
+import UndoTest from "@/app/components/exercises/UndoTest";
+import AskRing from "@/app/components/exercises/AskRing";
+import DevelopingTray from "@/app/components/exercises/signatures/DevelopingTray";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -1903,6 +1906,8 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0e1c3a 100%)">
             <ClueStamper
+              skin={def.skin}
+              rowLabels={def.rowLabels}
               cases={def.cases}
               hints={def.hints}
               introTitle={def.introTitle}
@@ -1910,6 +1915,8 @@ function DynamicLessonInner({
               introIcon={def.introIcon}
               stampLabel={def.stampLabel}
               closeLabel={def.closeLabel}
+              boardPrompt={def.boardPrompt}
+              caughtLabel={def.caughtLabel}
               realSeal={def.realSeal}
               fakeSeal={def.fakeSeal}
               realToast={def.realToast}
@@ -1984,6 +1991,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #1c0418 0%, #33082b 100%)">
             <BelieveOMeter
+              skin={def.skin}
               offers={def.offers}
               hints={def.hints}
               introTitle={def.introTitle}
@@ -1991,6 +1999,10 @@ function DynamicLessonInner({
               introIcon={def.introIcon}
               stopLabels={def.stopLabels}
               lockLabel={def.lockLabel}
+              itemLabel={def.itemLabel}
+              fromLabel={def.fromLabel}
+              doneLabel={def.doneLabel}
+              dialNote={def.dialNote}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
               introNarration={def.narration}
@@ -2376,6 +2388,115 @@ function DynamicLessonInner({
               completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "undoTest":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a0d05 0%, #2e1808 100%)">
+            <UndoTest
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              shareLabel={def.shareLabel}
+              deleteLabel={def.deleteLabel}
+              goneChip={def.goneChip}
+              theirCopyChip={def.theirCopyChip}
+              youLabel={def.youLabel}
+              trueToast={def.trueToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "askRing":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a0d05 0%, #2e1808 100%)">
+            <AskRing
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              postLabel={def.postLabel}
+              leaveOutLabel={def.leaveOutLabel}
+              dontPostLabel={def.dontPostLabel}
+              yesChip={def.yesChip}
+              noChip={def.noChip}
+              leftOutChip={def.leftOutChip}
+              postToast={def.postToast}
+              keptToast={def.keptToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "developingTray":
+        // Week 8's signature as a concept game: tap-only, Learn-Loop wired,
+        // copy from the week file (see types.ts).
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a0d05 0%, #2e1808 100%)">
+            <DevelopingTray
+              leakCopy={def.leakCopy}
+              developPrompt={def.developPrompt}
+              developReadAloud={def.developReadAloud}
+              spotPrompt={def.spotPrompt}
+              spotReadAloud={def.spotReadAloud}
+              decidePrompt={def.decidePrompt}
+              decideReadAloud={def.decideReadAloud}
+              shareLabel={def.shareLabel}
+              keepLabel={def.keepLabel}
+              why={def.why}
+              teach={def.teach}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              narration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
               onHintReached={(tier) => progress.reportHint(screen, tier)}
               onAnswered={(o) => {
@@ -3081,6 +3202,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <CyberMaze
+              skin={def.skin}
               questions={def.questions}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
@@ -3092,6 +3214,9 @@ function DynamicLessonInner({
               gateToast={def.gateToast}
               wrongTitle={def.wrongTitle}
               wrongTip={def.wrongTip}
+              pickPrompt={def.pickPrompt}
+              replyPrompt={def.replyPrompt}
+              gatesDoneLabel={def.gatesDoneLabel}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
               hints={def.hints}

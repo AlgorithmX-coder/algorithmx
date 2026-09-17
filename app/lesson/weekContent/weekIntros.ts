@@ -93,8 +93,8 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     accent: "#ff6b3d",
     points: [
       { icon: "📸", label: "Think before you share" },
-      { icon: "🔒", label: "Keep pics private" },
-      { icon: "👀", label: "Protect others" },
+      { icon: "🔍", label: "Check every corner" },
+      { icon: "💬", label: "Ask every face" },
     ],
   },
   9: {

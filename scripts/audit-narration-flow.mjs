@@ -356,6 +356,44 @@ function chainsFor(type, span) {
       if (body) chains.push({ name: "deal (wrong move): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: [body] });
     }
   }
+  // Week 8 engines (rebuilt 2026-09-17).
+  if (type === "undoTest") {
+    // each round: the photo read-aloud -> Sarah's why on the true rule card; each fib's whyWrong answers the read-aloud
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why");
+      const fibs = all(new RegExp("isTrue:\\s*false,\\s*whyWrong:\\s*" + STR, "g"), p);
+      if (why) chains.push({ name: "undo: " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+      if (fibs.length) chains.push({ name: "undo (fib tapped): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: fibs });
+    }
+  }
+  if (type === "askRing") {
+    // each friend: their spoken answer -> Sarah's why on the right hero move; whyWrong answers the answer.
+    // each round: the photo read-aloud -> Sarah's why when POST is tapped (the round's LAST why).
+    for (const round of span.split(/\bcaption:\s*/).slice(1)) {
+      const read = field(round, "readAloud");
+      const whys = all(new RegExp("\\bwhy:\\s*" + STR, "g"), round);
+      if (read && whys.length) chains.push({ name: "ask ring: " + read.slice(0, 40) + "...", mode: "chain", beats: [read, whys[whys.length - 1]] });
+      // split on the `says: "` property only; the read-alouds themselves contain "Maya says: Yes..."
+      for (const part of round.split(/\bsays:\s*(?=")/).slice(1)) {
+        // only this friend's own fields: stop at the next friend object or the end of the friends array
+        const f = part.split(/\{\s*id:|\]\s*,/)[0];
+        const fread = field(f, "readAloud"), fwhy = field(f, "why"), fwrong = field(f, "whyWrong");
+        if (fread && fwhy) chains.push({ name: "friend: " + fread.slice(0, 40) + "...", mode: "chain", beats: [fread, fwhy] });
+        if (fread && fwrong) chains.push({ name: "friend (wrong move): " + fread.slice(0, 40) + "...", mode: "branch", beats: [fread], branches: [fwrong] });
+      }
+    }
+  }
+  if (type === "developingTray") {
+    // develop -> spot -> each leak -> decide -> why; the SHARE teach answers the decide line
+    const dev = field(span, "developReadAloud"), spot = field(span, "spotReadAloud"), decide = field(span, "decideReadAloud");
+    const leaks = all(new RegExp("\\breadAloud:\\s*" + STR, "g"), span);
+    const why = field(span, "why"), body = field(span, "body");
+    const beats = [dev, spot, ...leaks, decide, why].filter(Boolean);
+    if (beats.length > 1) chains.push({ name: "developing tray", mode: "chain", beats });
+    if (decide && body) chains.push({ name: "developing tray (shared it)", mode: "branch", beats: [decide], branches: [body] });
+  }
   return chains;
 }
 

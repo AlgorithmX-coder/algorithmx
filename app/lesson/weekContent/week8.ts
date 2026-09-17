@@ -2,29 +2,36 @@ import type { WeekContent } from "./types";
 import { WEEK_INTROS } from "./weekIntros";
 
 /**
- * Week 8 - Photos & Videos: Think Before You Share.
+ * Week 8 - Photos & Videos: Think Before You Share. REBUILT to the Learn-Loop
+ * Build Standard v0.10 (2026-09-17, the ninth rebuilt week). World: the
+ * Darkroom (amber safelight, photo prints on a line, developing trays, the
+ * cast as photographers). The week where a photo stops being "just a photo"
+ * and becomes copies, faces, clues and doors.
  *
- * Built to the locked Cyber Heroes template (docs/cyberheroes/curriculum-buildsheet.md
- * + docs/cyberheroes/content-plans/weeks-03-20-content-plan.md):
+ *   0 video · 1 alert · 2 ATLAS briefing · 3 mission
+ *   5 x (Learn -> Game -> Prove -> Recap):
+ *     1 COPIES   delete only deletes your copy       | undoTest       The Undo Test (ACT AND SEE)       | finish
+ *     2 CONSENT  their face, their call               | askRing        The Ask Ring (ASK AND RESPECT)    | recall
+ *     3 CLUES    photos talk                          | developingTray The Developing Tray (DEVELOP, SPOT)| speed
+ *     4 DOORS    pick the door that fits              | believeOMeter  The Door Dial (doors skin)        | lie
+ *     5 RITUAL   look, think, ask                     | clueStamper    The Photo Detective (photo skin)  | order
+ *   24 review: cyberMaze "The Share Maze" (darkroom skin) · 25 quiz boss (5 questions, pass 4)
+ *   26 video · 27 debrief · 28 stickers · 29 completion. 30 screens; the old
+ *   screen-4 signature (the tray) now lives behind its lesson as concept 3.
  *
- *   Opening video  -> alert -> mission brief
- *   5 BEATS, each = Learn (info) -> Game -> Prove (quickCheck) -> recap:
- *     1 OUT      shared means out forever          | reveal (✉️)     | finish
- *     2 CONSENT  ask before posting people         | chooseYourPath  | recall
- *     3 CLUES    what a photo gives away           | clueBoard       | speed
- *     4 DOORS    who can actually see it           | conveyorSort ×3 | lie
- *     5 THINK    look -> think -> ask              | replyCards levers| order
- *   Consolidation (cyberScanner, Case Closed skin) -> boss
- *   (placeholder quiz boss - the bespoke W8 COMBAT is designed with the
- *   boss batch) -> closing video -> debrief -> stickers -> completion.
+ * Engine reuse (audit-engine-reuse): undoTest and askRing are NEW; the tray is
+ * the week's own signature made tap-only and data-driven. BelieveOMeter (W4),
+ * ClueStamper (W3) and CyberMaze (W3, review) are re-themes under the amended
+ * reuse rule (owner decided option B): different skill, non-neighbouring
+ * weeks, under cap, at most two concept-game re-themes.
  *
- * Game freshness: clueBoard DEBUTS here (detective corkboard, the film's
- * red-string board); conveyorSort returns 3 weeks after W5 wearing a
- * three-DOOR theatre skin (its first 3-category outing); replyCards
- * returns as brass share LEVERS (new skin, 2 choices per photo).
- * Lane-clean: photo/video sharing only - the friend-or-foe judgement was
- * W3, message scams W4, and the full footprint trail is W12's lane
- * (this week's clue lesson feeds it).
+ * Content fixes carried in: no game before Learn 1, the paper-pigeon metaphor
+ * replaced by the copies the child can see on the phones, the body-privacy
+ * item moved out of a timed sort into a calm Learn and an untimed dial item,
+ * every item has a readAloud, verdicts are one take with the reason, a teach
+ * on every Prove-it, a spoken payoff on every complete beat, and no dash-style
+ * punctuation in child-facing copy. Dialogue audited to 0 flags on both layers
+ * with `node scripts/audit-narration-flow.mjs --week=8`.
  */
 export const WEEK_8: WeekContent = {
   weekNumber: 8,
@@ -41,517 +48,716 @@ export const WEEK_8: WeekContent = {
     // 0 - OPENING VIDEO: the photo that ran away
     { type: "video", videoPlaceholder: "Week 8: The Runaway Photo", videoSrc: "/videos/module-08-intro.mp4" },
 
-    // 1 - ALERT: incident report
+    // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
     {
       type: "alert",
       photoSrc: "/cyberheroes/alerts/week-08.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "A kid shared one photo with one friend. The Raccoon grabbed it and passed it on - and the school crest and street sign in the background showed strangers her school and her street, way more than she ever meant to share. This week you become a Picture Detective.",
+      caption: "A kid shared one photo with one friend. The Raccoon grabbed a copy and passed it on, and the school crest and street sign in the background showed strangers her school and her street. This week you become a Photo Detective.",
       photoCaption: "Wk 8 - Think Before You Share",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, grab your magnifying glass and read this incident report with me.",
+          "A kid shared one photo with one friend. The Raccoon grabbed a copy and passed it on, and the school crest and street sign in the background showed strangers her school and her street. This week you become a Photo Detective.",
+          "[whispers] One photo, one friend. And a crest and a sign told strangers the rest.",
+          "[warmly] By the end of today, no photo leaves your hands until you have checked every corner.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    // 2 - WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
     { type: "weekIntro", ...WEEK_INTROS[8] },
 
-    // 2 - Mission brief
+    // 3 - Mission brief (learn this, so you're protected from that)
     {
       type: "mission",
       objectives: [
-        "Learn why a shared photo never really comes home",
-        "X-ray photos for the secret clues they leak",
-        "Master the hero ritual: look, think, ask",
+        "Learn that delete only deletes your copy, so you do your thinking before a photo ever goes",
+        "Learn to ask every face and check every corner, so no friend and no clue gets shared by accident",
+        "Learn to pick the door that fits and run look, think, ask, so strangers never see what is not for them",
       ],
     },
 
-      // SIGNATURE: The Developing Tray (bespoke mini-game unique to this week)
-      {
-        type: "signature",
-        mechanic: "developingTray",
-        title: "The Developing Tray",
-        narration: {
-          speaker: "adam",
-          lines: [
-            "[excited] A secret picture is hiding in this tray!",
-            "Rub it all over with your finger to develop it.",
-            "Look at the whole photo, then choose share or keep.",
-          ],
-        },
-      },
-
-    /* ─────────── BEAT 1 · SHARED MEANS OUT FOREVER ─────────── */
-    // 3 - Learn
+    /* ─────────── BEAT 1 · DELETE ONLY DELETES YOUR COPY ─────────── */
+    // 4 - Learn
     {
       type: "info",
-      title: "Once It's Out, It's OUT",
+      conceptNumber: 1,
+      conceptTotal: 5,
+      title: "Once It's Out, It's Out",
       content:
-        "Here's the biggest photo secret: DELETE only deletes YOUR copy. The moment you share a photo, copies fly off like paper pigeons - to your friend's phone, to the group chat, to the app's computers. You can't call pigeons home. That's not scary if you remember it BEFORE you share.",
+        "Here is the biggest photo secret: DELETE only deletes YOUR copy. The moment you share a photo, copies land on your friend's phone, in the group chat and on the app's computers. A friend can screenshot it or send it on. You cannot reach into their phones and take it back. That is not scary if you remember it BEFORE you share.",
       bullets: [
         "Delete only deletes YOUR copy",
         "Every share makes NEW copies",
-        "Screenshots are copies you can't see",
+        "A screenshot is a copy you can't see",
         "The app keeps a copy too",
-        "Remember the pigeons BEFORE you share",
+        "Remember it BEFORE you share",
       ],
-      bulletIcons: ["🗑️", "✉️", "📱", "⚙️", "💡"],
-      emblem: "✉️",
+      bulletIcons: ["🗑️", "📱", "📸", "⚙️", "💡"],
+      emblem: "📸",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] Welcome back, Cyber Hero! Big photo secret today.",
-          "You share a picture... and it flies off like a paper pigeon.",
-          "To your friend's phone. The group chat. The app's computers.",
-          "[whispers] Then you press DELETE... but only YOUR copy disappears.",
-          "The pigeons are already on every rooftop.",
-          "[warmly] Let's watch it happen - tap and see!",
+          "[excited] Welcome back, Cyber Hero. Today we step into the darkroom, where photos are made!",
+          "And here is the biggest photo secret of all.",
+          "[whispers] When you share a photo, copies land on other phones. And DELETE only deletes YOUR copy.",
+          "Your friend's copy stays on your friend's phone. The app keeps one too.",
+          "[warmly] So the time to think is before you share, not after.",
+          "[excited] Come and put delete to the Undo Test, and see what it really does!",
         ],
       },
     },
-    // 4 - Game: REVEAL (the Copy Pigeons - ✉️ board)
+    // 5 - Game: ACT AND SEE "The Undo Test" (undoTest, new engine)
     {
-      type: "reveal",
-      title: "The Copy Pigeons",
-      subtitle: "Tap each moment to see where the copies REALLY go.",
-      boardIcon: "✉️",
-      items: [
+      type: "undoTest",
+      threat: {
+        raccoonLine:
+          "Post it, delete it, done? Ha! By the time a kid taps delete, I have already saved my copy. Delete is my favourite button. It never touches mine!",
+      },
+      introTitle: "The Undo Test",
+      introSubtitle: "Share a photo with three friends, tap DELETE, then check every friend's phone. Then tap the card that is true.",
+      introIcon: "🗑️",
+      shareLabel: "SHARE",
+      deleteLabel: "DELETE",
+      goneChip: "Gone from your phone",
+      theirCopyChip: "Still on their phone",
+      youLabel: "You",
+      trueToast: "TRUE!",
+      wrongTitle: "That's the fib",
+      completeTitle: "Undo Test passed!",
+      completeLine: "Delete only ever deletes your copy.",
+      rounds: [
         {
-          id: "delete",
-          label: "The DELETE Button",
-          icon: "🗑️",
-          steps: [
-            { icon: "📱", text: "You post a silly photo... then think better of it. DELETE!" },
-            { icon: "✨", text: "Phew - it's gone! ...Isn't it?" },
-            { icon: "✉️", text: "Only YOUR copy vanished. Every copy that flew off is still flying." },
+          id: "silly-face",
+          caption: "Your silliest face, mid-giggle",
+          photoIcon: "😂",
+          readAloud: "Your silliest face photo, mid-giggle. Tap SHARE, then tap DELETE, then check every friend's phone.",
+          friends: [
+            { id: "maya", name: "Maya", reaction: "Saved it!" },
+            { id: "leo", name: "Leo", reaction: "So funny!" },
+            { id: "sam", name: "Sam", reaction: "Keeping this one!" },
           ],
-          counter: "Delete empties YOUR nest - not the sky.",
+          cardPrompt: "So what is true?",
+          cards: [
+            { text: "Your copy is gone. Their copies are still there.", isTrue: true, whyWrong: "" },
+            { text: "Delete took it back from every phone.", isTrue: false, whyWrong: "Look at the three phones. Delete only emptied yours, and their copies never moved." },
+            { text: "It was only shared for a second, so it doesn't count.", isTrue: false, whyWrong: "A second is plenty. The moment it landed, each friend had a copy of their own." },
+          ],
+          why: "Delete emptied your phone, and three copies stayed on three phones. That is what once it's out, it's out means.",
         },
         {
-          id: "screenshot",
-          label: "The Screenshot",
-          icon: "📱",
-          steps: [
-            { icon: "💬", text: "Your friend giggles and screenshots your photo - just to keep it." },
-            { icon: "✉️", text: "CLICK. A brand-new pigeon hatches... on HER phone." },
-            { icon: "👀", text: "You can't see it, reach it, or delete it. It's hers now." },
+          id: "vanishing",
+          caption: "A vanishing photo: gone in 10 seconds",
+          photoIcon: "⏱️",
+          readAloud: "A vanishing photo that disappears in ten seconds. Share it, delete it, and check what each friend's phone still has.",
+          friends: [
+            { id: "zara", name: "Zara", reaction: "Screenshot!" },
+            { id: "kai", name: "Kai", reaction: "Snapped it in time!" },
+            { id: "ava", name: "Ava", reaction: "Screenshot too!" },
           ],
-          counter: "A screenshot is a copy you can never call back.",
+          cardPrompt: "So what is true?",
+          cards: [
+            { text: "A screenshot beats the timer, so copies still exist.", isTrue: true, whyWrong: "" },
+            { text: "Vanishing photos always vanish for everyone.", isTrue: false, whyWrong: "A screenshot is a brand new copy that the timer never touches. Look at the friends' phones." },
+            { text: "The app deletes their screenshots too.", isTrue: false, whyWrong: "A screenshot lives in your friend's own pictures. The app cannot reach in and delete it." },
+          ],
+          why: "The timer only cleared the app. Each screenshot is a new copy on a friend's phone, so vanishing never means gone.",
         },
         {
-          id: "groupchat",
-          label: "The Group Chat",
-          icon: "💬",
-          steps: [
-            { icon: "✉️", text: "One tap sends your photo to the class chat - 8 friends." },
-            { icon: "🌀", text: "That's not ONE copy. That's EIGHT pigeons, on eight phones." },
-            { icon: "🚪", text: "And any of those eight can forward it on. And on. And on..." },
+          id: "sent-on",
+          caption: "Your drawing, sent to the group chat",
+          photoIcon: "🎨",
+          readAloud: "Your drawing, sent to the group chat. Share it, delete it, and check where the copies went next.",
+          friends: [
+            { id: "leo", name: "Leo", reaction: "Sent it to my cousin!" },
+            { id: "maya", name: "Maya", reaction: "Saved it!" },
+            { id: "sam", name: "Sam", reaction: "Posted it on my page!" },
           ],
-          counter: "One send = a whole flock.",
-        },
-        {
-          id: "theapp",
-          label: "The App Itself",
-          icon: "⚙️",
-          steps: [
-            { icon: "⚙️", text: "Even the app keeps a copy on its big computers far away." },
-            { icon: "🎭", text: "'Disappearing' photos too - a quick screenshot beats the timer." },
-            { icon: "💡", text: "So the real power isn't delete... it's THINKING before you send." },
+          cardPrompt: "So what is true?",
+          cards: [
+            { text: "Copies can make more copies you never sent.", isTrue: true, whyWrong: "" },
+            { text: "Only the people you sent it to can ever have it.", isTrue: false, whyWrong: "Look at Leo's phone. He sent it to his cousin, so someone you never picked has a copy too." },
+            { text: "The app throws its copy away when you delete yours.", isTrue: false, whyWrong: "The app keeps its own copy on its own computers. Your delete button cannot reach them." },
           ],
-          counter: "The app remembers - so think first.",
+          why: "One share, and the copies made more copies, all the way to people you never picked. That is why the thinking happens before you share.",
         },
       ],
-      finale: "Now you see every pigeon - BEFORE it flies.",
+      hints: {
+        tier1: "Watch the phones after you tap DELETE. Which copy disappeared?",
+        tier2: "Delete only empties YOUR phone. Every friend's copy, screenshot and send-on stays where it landed.",
+      },
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[whispers] Ready to see where photos REALLY go?",
-          "Tap each moment on the board...",
-          "and watch the copy pigeons take off.",
-          "[excited] Once you see them, you'll never unsee them!",
+          "[excited] On your first challenge, you run the Undo Test!",
+          "This game is all about what the delete button really does.",
+          "Out in the real world, a photo lands on other phones the instant you share it.",
+          "Here is what you do. A photo sits on your phone. Tap SHARE, and watch it land on three friends' phones. Then tap DELETE on your phone. Then tap each friend's phone to check what is on it. Last, three cards appear. Tap the one that is TRUE.",
+          "[warmly] Keep your eyes on all the phones, not just yours. Ready? First photo!",
         ],
       },
       coachLines: {
-        speaker: "layla",
-        lines: ["Tap the DELETE button first - watch what it really does!"],
+        speaker: "adam",
+        lines: ["Here is your phone, with a photo on it, and your friends' phones all around."],
+      },
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Undo Test passed, Cyber Hero! You watched the copies stay put.",
+          "[warmly] Out in the real world, delete only ever deletes your copy. So you do your thinking before you share.",
+        ],
       },
     },
-    // 5 - Prove: FINISH
+    // 6 - Prove: FINISH
     {
       type: "quickCheck",
       mode: "finish",
-      prompt: "Once a photo is shared, it's ___.",
+      prompt: "Delete only deletes ___ copy.",
       choices: [
-        { text: "out", isCorrect: true },
-        { text: "secret", isCorrect: false },
-        { text: "only yours", isCorrect: false },
-        { text: "easy to delete", isCorrect: false },
+        { text: "your", isCorrect: true },
+        { text: "every", isCorrect: false, why: "Every copy? Think back to the phones. Their copies stayed right where they landed." },
+        { text: "the app's", isCorrect: false, why: "The app keeps its own copy on its own computers. Your delete never reaches it." },
+        { text: "your friend's", isCorrect: false, why: "Your friend's copy lives on your friend's phone. Only they can delete it." },
       ],
-      praise: "Out - like pigeons off the rooftop. You've got it! ✓",
+      praise: "Only YOUR copy. Now you know the secret! ✓",
+      nudge: "When you tapped DELETE, which phone went empty?",
+      teachNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Well done!",
+          "Delete only deletes your copy.",
+          "Every other copy stays where it landed.",
+          "[warmly] So the thinking happens before you share.",
+        ],
+      },
     },
-
-    // 6 - Recap · Concept 1 of 5
+    // 7 - Recap · Concept 1 of 5
     {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "Delete only deletes YOUR copy - a shared photo is out forever, so think before it flies.",
-      next: "whose photo is it anyway? Ask before you post people",
-      emblem: "✉️",
+      learned: "Delete only deletes YOUR copy. A shared photo is out for good, so think before you share.",
+      next: "whose photo it really is when a friend is in it",
+      emblem: "📸",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] Power one - unlocked!",
-          "You watched the pigeons fly and DELETE grab at empty air.",
-          "[warmly] Shared means out. Forever.",
-          "[whispers] But what if the photo isn't just... yours?",
+          "[proud] What a test, Cyber Hero. Delete got caught out.",
+          "Your copy gone, every other copy still there.",
+          "[whispers] But some photos have more than your face in them. What about your friends' faces?",
+          "Next, we'll learn whose photo it really is when a friend is in it. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 2 · ASK BEFORE YOU POST PEOPLE ─────────── */
-    // 7 - Learn
+    /* ─────────── BEAT 2 · THEIR FACE, THEIR CALL ─────────── */
+    // 8 - Learn
     {
       type: "info",
+      conceptNumber: 2,
+      conceptTotal: 5,
       title: "Their Face, Their Call",
       content:
-        "A photo with your friend in it isn't only YOUR photo - it's their face, so it's their call too. Before you post or forward a picture of ANYONE, ask them first. And here's the flip side: if a photo of YOU goes up and you don't like it, you're allowed to say 'please take it down.' Heroes ask both ways.",
+        "When a friend is in your photo, whose photo is it? It is their face, so it is their call too. Before you post or send a picture of ANYONE, ask them first. If they say no, you listen: leave them out, or don't post it. And the flip side: if a photo of YOU goes up and you don't like it, you can ask for it to come down. Heroes ask both ways.",
       bullets: [
         "A photo of a friend is THEIR face too",
         "Ask before you post ANYONE",
-        "Sent 'just to you' is NOT yours to forward",
-        "You can say 'take mine down' too",
-        "Asking first is what heroes do",
+        "A no means leave them out, or don't post",
+        "Sent just to you is NOT yours to send on",
+        "You can ask for yours to come down too",
       ],
-      bulletIcons: ["🎭", "💬", "🤫", "✋", "⭐"],
-      emblem: "👪",
+      bulletIcons: ["👤", "💬", "✋", "🤫", "⭐"],
+      emblem: "💬",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[warmly] Quick question, hero. Your friend's face in a photo...",
-          "whose is it? Theirs! So posting it is THEIR call too.",
-          "Before you post or forward anyone - you ask.",
-          "[whispers] Even when it's hilarious. ESPECIALLY when it's hilarious.",
-          "And if a photo of YOU goes up? You can ask for it down.",
-          "[excited] Three tricky moments coming - show me the ask!",
+          "[warmly] So, Cyber Hero, when your friend is in a photo, whose face is it?",
+          "Theirs! So posting it is their call too.",
+          "Before you post or send anyone's picture, you ask them first.",
+          "[whispers] If they say no, you listen. Leave them out, or don't post it at all.",
+          "And if a photo of you goes up that you don't like? You can ask for it to come down.",
+          "[excited] Come and ask every face in the Ask Ring!",
         ],
       },
     },
-    // 8 - Game: DECIDE (chooseYourPath - the Ask-First Moments)
+    // 9 - Game: ASK AND RESPECT "The Ask Ring" (askRing, new engine)
     {
-      type: "chooseYourPath",
-      scenarios: [
+      type: "askRing",
+      threat: {
+        raccoonLine:
+          "Nobody asks! A funny face, a quick post, and the whole class is laughing. And if they wanted to say no? Too late, it's already out there. My kind of photo!",
+      },
+      introTitle: "The Ask Ring",
+      introSubtitle: "Everyone in the photo gets asked. Tap each friend to hear their answer. A yes glows. A no needs your hero move. Then POST lights up.",
+      introIcon: "💬",
+      postLabel: "POST",
+      leaveOutLabel: "Leave them out",
+      dontPostLabel: "Don't post it",
+      yesChip: "Yes!",
+      noChip: "No thanks",
+      leftOutChip: "Left out",
+      postToast: "POSTED WITH A YES!",
+      keptToast: "KEPT OFF THE INTERNET!",
+      wrongTitle: "Listen to that no again",
+      completeTitle: "Every face asked!",
+      completeLine: "Their face, their call. Every time.",
+      rounds: [
         {
-          setup: "You catch your best friend mid-sneeze - the FUNNIEST photo ever taken. Your finger hovers over 'post'...",
-          choices: [
-            { text: "Post it - she'll laugh... probably!", isSafe: false, consequence: "She didn't laugh. Everyone else did. 'Probably fine' isn't a yes - and now the pigeons have flown with her face." },
-            { text: "Show HER first and ask", isSafe: true, consequence: "Hero move! She cracks up - and picks her superhero pose for the photo you post instead. Asking first kept it funny for BOTH of you." },
+          id: "park",
+          caption: "You, Maya and Leo on the climbing frame",
+          photoIcon: "📸",
+          readAloud: "A sunny photo from the park: you, Maya and Leo on the climbing frame. Tap each friend to ask before you post.",
+          friends: [
+            { id: "maya", name: "Maya", answer: "yes", says: "Yes! I look so cool!", readAloud: "Maya says: Yes, post it! I look so cool!" },
+            { id: "leo", name: "Leo", answer: "yes", says: "Sure, it's a great one!", readAloud: "Leo says: Sure, post it. It's a great one!" },
           ],
+          why: "Two friends, two yeses, and you asked before posting. That is exactly how a hero posts a photo.",
         },
         {
-          setup: "Your little brother faceplants off the sofa mid-dance. You filmed it. It would get SO many laughs in the class chat.",
-          choices: [
-            { text: "Send it - he's just my little brother!", isSafe: false, consequence: "Little brothers have faces too! He felt laughed AT by kids he's never met. Family counts - the ask comes first, every time." },
-            { text: "Ask him (and a grown-up) before sharing", isSafe: true, consequence: "Exactly right. He said 'nooo!' - so it stayed a family giggle instead of becoming the whole class's joke about him." },
+          id: "sleepover",
+          caption: "Sleepover: you, Zara in her pyjamas, and Sam",
+          photoIcon: "🎉",
+          readAloud: "A sleepover photo: you, Zara in her pyjamas, and Sam pulling a funny face. Tap each friend to ask before you post.",
+          friends: [
+            {
+              id: "zara",
+              name: "Zara",
+              answer: "no",
+              says: "Not me in my pyjamas! Crop me out, please.",
+              readAloud: "Zara says: Not me in my pyjamas! Crop me out, please.",
+              noMove: "leaveOut",
+              why: "Zara asked to be cropped out, so out she goes. Her no was about her own face, so the rest of the photo can still be posted.",
+              whyWrong: "Zara asked to be cropped out, not for the whole photo to stay hidden. Leave her out, and Sam's yes still counts.",
+            },
+            { id: "sam", name: "Sam", answer: "yes", says: "Post it! My silly face is famous!", readAloud: "Sam says: Post it! My silly face is famous!" },
           ],
+          why: "Zara left out, Sam said yes. Everyone in that photo had a say before it went anywhere.",
         },
         {
-          setup: "A friend sends you a silly just-for-you selfie. It's gold. The group chat would LOVE it.",
-          choices: [
-            { text: "Forward it - she sent it to me, so it's mine!", isSafe: false, consequence: "Sent TO you isn't yours to send ON. She trusted you with it - forwarding it breaks the trust and frees the pigeons." },
-            { text: "Keep it - just-for-me means just-for-me", isSafe: true, consequence: "That's a real friend. A just-for-you photo stays just-for-you - HER face, HER call, always." },
+          id: "birthday",
+          caption: "Ava's birthday: you, Ava and Kai with the cake",
+          photoIcon: "🎂",
+          readAloud: "Ava's birthday photo: you, Ava and Kai around the cake. Tap each friend to ask before you post.",
+          friends: [
+            {
+              id: "ava",
+              name: "Ava",
+              answer: "no",
+              says: "Don't post it anywhere, please. Mum says no party photos online.",
+              readAloud: "Ava says: Don't post it anywhere, please. Mum says no party photos online.",
+              noMove: "dontPost",
+              why: "Her no was for the whole photo, so it stays off the internet. One no can keep a photo private, even when Kai says yes.",
+              whyWrong: "Her no was about the whole photo, not just her face. Cropping her out would still post her party, so this one stays off the internet.",
+            },
+            { id: "kai", name: "Kai", answer: "yes", says: "Fine by me!", readAloud: "Kai says: Fine by me! Post it." },
           ],
+          // A don't-post round ends on Ava's move and never reaches POST, so the
+          // round's why repeats her line (same text = one recording).
+          why: "Her no was for the whole photo, so it stays off the internet. One no can keep a photo private, even when Kai says yes.",
         },
       ],
+      hints: {
+        tier1: "Tap every friend in the photo and listen to exactly what they say.",
+        tier2: "A yes glows. For a no, listen: crop me out means LEAVE THEM OUT. Don't post it anywhere means DON'T POST IT.",
+      },
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[warmly] Three moments. Three faces that aren't yours.",
-          "Each time, something will whisper 'just post it!'",
-          "[whispers] That whisper is your signal to ask first.",
-          "[excited] Their face, their call - show me!",
+          "[excited] On your second challenge, you step into the Ask Ring!",
+          "This game is all about asking everyone in a photo before it goes anywhere.",
+          "Out in the real world, it only takes one quick question, and it keeps everyone's face safe.",
+          "Here is what you do. A photo appears with your friends in it. Tap each friend to ask, and listen to their answer. A yes glows. For a no, tap the hero move: leave them out, or don't post it. When every face is settled, tap POST.",
+          "[warmly] Listen to exactly what each friend says. Ready? First photo!",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Tap a friend in the photo to ask them."],
+      },
+      completeNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Every face asked, Cyber Hero! Yeses posted, and every no respected.",
+          "[warmly] Out in the real world, their face is their call. One quick ask before you post keeps everyone smiling.",
         ],
       },
     },
-    // 9 - Prove: RECALL
+    // 10 - Prove: RECALL
     {
       type: "quickCheck",
       mode: "recall",
       prompt: "Before posting a photo of your friend, what comes FIRST?",
       choices: [
         { text: "Ask them", isCorrect: true },
-        { text: "Pick a funny caption", isCorrect: false },
-        { text: "Tag the whole class", isCorrect: false },
-        { text: "Post fast before they see", isCorrect: false },
+        { text: "Pick a funny caption", isCorrect: false, why: "A caption can wait. Their face needs their yes before anything else." },
+        { text: "Tag the whole class", isCorrect: false, why: "Tagging spreads it even further. Nobody gets tagged or posted before they say yes." },
+        { text: "Post fast before they see", isCorrect: false, why: "Posting fast skips their say completely. Their face, their call, so you ask first." },
       ],
-      praise: "Ask first - their face, their call. ✓",
+      praise: "Ask first. Their face, their call. ✓",
+      nudge: "What did you do with every friend in the Ask Ring?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Well done!",
+          "You ask them first.",
+          "Their face, their call, before any caption or tag.",
+          "[warmly] And if they say no, you listen.",
+        ],
+      },
     },
-
-    // 10 - Recap · Concept 2 of 5
+    // 11 - Recap · Concept 2 of 5
     {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "A photo of someone else is their face and their call - ask before you post, every time.",
-      next: "the secret clues hiding inside every photo",
-      emblem: "👪",
+      learned: "A photo of someone else is their face and their call. Ask before you post, and respect a no.",
+      next: "the secret clues hiding in the corners of a photo",
+      emblem: "💬",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] Two powers! The ask-first rule is locked in.",
-          "Sneezes, faceplants, just-for-you selfies...",
-          "[laughs] not one pigeon escaped on your watch.",
-          "[whispers] Now grab your magnifying glass, Cyber Hero...",
+          "[proud] Two powers, Cyber Hero. Every friend got a say.",
+          "Yeses posted, and every no respected.",
+          "[whispers] But even a photo with a yes can talk. It can tell strangers things you never said out loud.",
+          "Next, we'll learn the secret clues hiding in the corners of a photo. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 3 · WHAT A PHOTO GIVES AWAY ─────────── */
-    // 11 - Learn
+    /* ─────────── BEAT 3 · PHOTOS TALK ─────────── */
+    // 12 - Learn
     {
       type: "info",
+      conceptNumber: 3,
+      conceptTotal: 5,
       title: "Photos Talk",
       content:
-        "Every photo says more than 'cheese!' A school crest whispers WHICH school you go to. A street sign points AT your front door. A birthday banner shouts your exact birthday. Strangers can read all of it. Real detectives check the background BEFORE the photo goes anywhere.",
+        "Every photo says more than cheese! A house number points at your front door. A school name on a wall or a jumper tells strangers where you are all day. A friend peeking in who never said yes is a face that is not yours to share. Real detectives check the corners of a photo BEFORE it goes anywhere.",
       bullets: [
-        "A school crest names your school",
-        "A street sign points at your home",
-        "A banner can shout your birthday",
+        "A house number points at your home",
+        "A school name tells where you are all day",
+        "A friend in the corner still needs their yes",
         "Backgrounds talk to strangers too",
-        "Detectives check BEFORE they share",
+        "Detectives check every corner first",
       ],
-      bulletIcons: ["🏫", "📍", "🎂", "👀", "🔍"],
+      bulletIcons: ["🏠", "🏫", "👤", "👀", "🔍"],
       emblem: "🔍",
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] Lean in close. Photos... talk.",
-          "A school crest whispers which school is yours.",
-          "A street sign points right at your front door.",
-          "[nervous] And strangers can read every word.",
-          "[warmly] So we check the background BEFORE it flies.",
-          "[excited] One photo. Four clues. Pin them all to the board!",
+          "[whispers] Now lean in close, Cyber Hero. Photos talk.",
+          "A house number points right at your front door.",
+          "A school name tells a stranger where you are all day.",
+          "[nervous] And strangers can read every word of it.",
+          "[warmly] So detectives check every corner before a photo goes anywhere.",
+          "[excited] Come and develop a photo in the tray, and find what it gives away!",
         ],
       },
     },
-    // 12 - Game: INSPECT (clueBoard DEBUT - the Picture Detective)
+    // 13 - Game: DEVELOP AND SPOT "The Developing Tray" (the week's signature, tap-only)
     {
-      type: "clueBoard",
-      introTitle: "The Picture Detective",
-      introSubtitle: "One photo, four hidden clues. Pin every clue to the evidence board, then make the call.",
-      introIcon: "🔍",
-      photoTitle: "'Just a normal Saturday photo'... or is it?",
-      photoIcon: "🏠",
-      clues: [
-        {
-          id: "crest",
-          icon: "🏫",
-          label: "The sweater crest",
-          evidence: "That school crest tells any stranger exactly WHICH school to wait outside.",
-        },
-        {
-          id: "sign",
-          icon: "📍",
-          label: "The street sign",
-          evidence: "'Maple Road' + the house behind you = a map straight to your front door.",
-        },
-        {
-          id: "banner",
-          icon: "🎂",
-          label: "The birthday banner",
-          evidence: "'HAPPY 9th BIRTHDAY!' hands over your age AND your exact birthday.",
-        },
-        {
-          id: "nametag",
-          icon: "🆔",
-          label: "The name label",
-          evidence: "Your name on the party bag finishes the set: name, age, school, street.",
-        },
-      ],
-      verdict: {
-        prompt: "Case check, detective: is this photo safe to share as-is?",
-        options: [
-          {
-            text: "Share it - it's just a birthday pic!",
-            isCorrect: false,
-            explanation: "Look at the board: name, age, school AND street - this photo tells a stranger everything. Crop or cover the clues first.",
-          },
-          {
-            text: "Not as-is - scrub the clues first!",
-            isCorrect: true,
-            explanation: "Exactly - crop the crest and sign out, then it's just a happy birthday photo.",
-          },
-        ],
+      type: "developingTray",
+      threat: {
+        raccoonLine:
+          "Kids look at the big smile in the middle and never at the corners. A door number here, a school name there. I read the corners. That's where the good stuff is!",
       },
-      stampText: "CASE CLOSED!",
-      completeLine: "Photos talk - now you hear every word.",
+      introTitle: "The Developing Tray",
+      introSubtitle: "A photo is hiding in the tray. Tap every square to develop it, tap everything it gives away, then decide: SHARE or KEEP.",
+      introIcon: "📸",
+      developPrompt: "Tap every square to develop the photo",
+      developReadAloud: "A photo is hiding in the developing tray. Tap every square of film, and watch the photo appear.",
+      spotPrompt: "Tap everything this photo gives away",
+      spotReadAloud: "There it is: a party, a trophy and a big smile. Now check every corner of the photo, the door, the wall and the edges. Tap everything it gives away.",
+      leakCopy: {
+        house: {
+          chip: "House number 42!",
+          bullet: "The house number 42 is right there on the front door",
+          readAloud: "The door says forty-two. That number points a stranger straight to your home.",
+        },
+        school: {
+          chip: "Oakwood School!",
+          bullet: "The school name is on the pennant on the wall",
+          readAloud: "And the pennant on the wall says Oakwood School. Now a stranger knows where you are all day.",
+        },
+        friend: {
+          chip: "Never said yes!",
+          bullet: "Your friend is peeking in from the corner, and never said yes",
+          readAloud: "And in the bottom corner, your friend is peeking in. They never said yes to being in it.",
+        },
+      },
+      decidePrompt: "Three clues found. SHARE it, or KEEP it?",
+      decideReadAloud: "So, three clues in one happy photo. Share it, or keep it?",
+      shareLabel: "SHARE",
+      keepLabel: "KEEP",
+      why: "A home, a school and a friend with no yes. A happy photo can still say far too much, so this one stays with you.",
+      teach: {
+        title: "That photo talks too much",
+        body: "Look at the three clues again: the house number, the school name, and a friend who never said yes. Sharing it hands all three to anyone who sees it.",
+        tip: "Clues in the corners? Keep it, or crop them out first.",
+      },
+      completeTitle: "Photo developed, clues found!",
+      completeLine: "Every corner checked before anything goes.",
       hints: {
-        tier1: "Count what the board knows: name... age... school... street. Is that a safe parcel to post?",
-        tier2: "Four clues = a stranger's treasure map. Scrub the clues BEFORE sharing.",
+        tier1: "Tap every square of film until the whole photo shows.",
+        tier2: "Check the edges: the door on the left, the wall at the top right, and the bottom corner.",
       },
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Your first case, Picture Detective!",
-          "One happy birthday photo... four leaky clues.",
-          "Tap each clue to pin its evidence to the board.",
-          "[whispers] Then make the call: share it... or scrub it?",
+          "[excited] On your third challenge, you work the Developing Tray!",
+          "This game is all about finding what a photo gives away before it goes anywhere.",
+          "Out in the real world, everyone looks at the smile in the middle, and the clues hide in the corners.",
+          "Here is what you do. A photo is hiding under squares of film. Tap every square to develop it. Then tap everything the photo gives away. When you have found them all, tap SHARE or KEEP.",
+          "[warmly] Check every corner, not just the middle. Ready? Start developing!",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Start anywhere - tap a clue on the photo to pin it!"],
+        lines: ["Here is the developing tray, with a photo waiting under the film."],
+      },
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Photo developed and every clue found, Cyber Hero!",
+          "[warmly] Out in the real world, you check the corners before the smile. A house number or a school name never slips past you.",
+        ],
       },
     },
-    // 13 - Prove: SPEED
+    // 14 - Prove: SPEED
     {
       type: "quickCheck",
       mode: "speed",
-      prompt: "Quick - which clue tells strangers where you LIVE?",
+      prompt: "Quick! Which clue tells strangers where you LIVE?",
       speedMs: 5000,
       choices: [
-        { text: "The street sign behind you", isCorrect: true },
-        { text: "The birthday banner", isCorrect: false },
-        { text: "The sunny sky", isCorrect: false },
+        { text: "The house number on the door", isCorrect: true },
+        { text: "The balloons behind you", isCorrect: false, why: "Balloons look the same at every party. They point nowhere." },
+        { text: "The sunny sky", isCorrect: false, why: "The sky looks the same over every town. It tells a stranger nothing." },
       ],
-      praise: "Spotted in a flash - the street sign talks loudest! ✓",
+      praise: "Spotted in a flash. The house number talks loudest! ✓",
+      teachNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Well done!",
+          "The house number points straight at your home.",
+          "Balloons and sky tell a stranger nothing.",
+          "[warmly] Check every corner, and no clue can hide.",
+        ],
+      },
     },
-
-    // 14 - Recap · Concept 3 of 5
+    // 15 - Recap · Concept 3 of 5
     {
       type: "recap",
       concept: 3,
       total: 5,
-      learned: "Photos talk - crests, signs, banners and labels leak your school, home and birthday to strangers.",
-      next: "the three doors every photo walks through",
+      learned: "Photos talk. House numbers, school names and faces without a yes give away more than you meant to share.",
+      next: "who can actually see a photo once it is shared",
       emblem: "🔍",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Three powers, Cyber Hero!",
-          "Crest, sign, banner, name tag - all pinned and busted.",
-          "[warmly] Backgrounds can't sneak past you now.",
-          "[whispers] Next: even a CLEAN photo needs the right door...",
+          "[proud] Three powers, Cyber Hero. Not one corner got past you.",
+          "House numbers, school names, friends with no yes. All found.",
+          "[whispers] But even a clean photo leaves one question. Who is going to see it?",
+          "Next, we'll learn who can actually see a photo once it is shared. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 4 · WHO CAN ACTUALLY SEE IT ─────────── */
-    // 15 - Learn
+    /* ─────────── BEAT 4 · PICK THE DOOR THAT FITS ─────────── */
+    // 16 - Learn (the calm home of the body-privacy rule)
     {
       type: "info",
-      title: "Pick the Smallest Door",
+      conceptNumber: 4,
+      conceptTotal: 5,
+      title: "Pick the Door That Fits",
       content:
-        "Before a photo goes anywhere, ask: who ACTUALLY gets to see this? 'Whole World' means everyone, forever - including strangers. 'Friends' sounds safe... but friends can screenshot and reshare. So heroes pick the SMALLEST door that fits the photo. And some photos are PRIVATE - ones that show your body, your secrets, or anything you'd hate strangers to see. Private photos are JUST FOR ME: they go through no door at all.",
+        "Before a photo goes anywhere, ask: who can actually see this? Think of four doors. EVERYONE means the whole world, forever, strangers too. SCHOOL means the whole school, not just your class. FRIENDS sounds safe, but friends can screenshot and send it on. So faces and clues get the smallest door that fits, and a photo with no faces and no clues can go to everyone. Some photos are JUST ME: pictures of your body, like bath time or getting changed, and your secrets. They go through no door at all.",
       bullets: [
-        "'Whole World' = everyone, forever",
-        "Friends can reshare - doors leak",
-        "Pick the SMALLEST door that fits",
-        "No clues in it? Bigger door is OK",
-        "Private photos = JUST FOR ME, no door",
+        "Everyone = the whole world, forever",
+        "School = the whole school, not just your class",
+        "Friends can still screenshot and send on",
+        "Faces and clues get the smallest door",
+        "Body photos are JUST ME: no door at all",
       ],
-      bulletIcons: ["🌍", "🚪", "🔒", "✅", "🤫"],
+      bulletIcons: ["🌍", "🏫", "📱", "🚪", "🤫"],
       emblem: "🚪",
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Picture a theater with three doors.",
-          "A little door for friends. A middle door for school.",
-          "And a HUGE door marked... whole world.",
+          "[warmly] Picture four doors, Cyber Hero.",
+          "A tiny door marked Just Me. A small door for friends. A bigger door for school. And a HUGE door marked Everyone.",
           "[whispers] Whatever walks through a door can't walk back out.",
-          "Heroes pick the smallest door - and private photos get NO door at all.",
-          "[excited] The photos are lining up - be the door keeper!",
+          "So faces and clues get the smallest door that fits, and a photo with no faces and no clues can go to everyone.",
+          "[warmly] And photos of your body, like bath time or getting changed, are Just Me photos. They get no door at all. If anyone ever asks you for one, tell a trusted grown-up.",
+          "[excited] Come and find the door that fits on the Door Dial!",
         ],
       },
     },
-    // 16 - Game: SORT (conveyorSort's first 3-door outing - the Theatre of Doors)
+    // 17 - Game: DIALS "The Door Dial" (believeOMeter re-theme, doors skin, W4 engine; untimed)
     {
-      type: "conveyorSort",
-      introTitle: "The Theater of Doors",
-      introSubtitle: "Each photo walks toward the doors. Send it through the SMALLEST door that fits - and remember, JUST FOR ME photos get no door at all!",
+      type: "believeOMeter",
+      skin: "doors",
+      threat: {
+        raccoonLine:
+          "Big doors, big audiences! Every photo through the Everyone door lands right in my paws. Nobody ever turns the dial down to a smaller door!",
+      },
+      introTitle: "The Door Dial",
+      introSubtitle: "Four doors on one dial: Just Me, Friends, School and Everyone. Turn the needle to the door that fits each photo, then lock it in.",
       introIcon: "🚪",
-      machineLabel: "THE THEATER OF DOORS",
-      chuteWord: "DOOR",
+      lockLabel: "LOCK IT IN",
+      itemLabel: "Photo",
+      fromLabel: "",
+      doneLabel: "photos through the right door",
+      dialNote: "Faces and clues: a small door. Your body and your secrets: Just me.",
+      stopLabels: {
+        justMe: "Just me",
+        friends: "Friends",
+        school: "School",
+        everyone: "Everyone",
+      },
       completeTitle: "Every photo through the right door!",
-      completeLine: "Smallest door that fits - and some photos get no door at all.",
-      categories: [
-        { id: "friends", label: "FRIENDS ONLY", icon: "👪", tone: "safe" },
-        { id: "school", label: "SCHOOL ONLY", icon: "🏫", tone: "lock" },
-        { id: "world", label: "WHOLE WORLD", icon: "🌍", tone: "flag" },
-        { id: "justforme", label: "JUST FOR ME - no door", icon: "🤫", tone: "lock" },
-      ],
-      items: [
-        { id: "dragon", text: "Your dragon drawing - no names, no faces", icon: "🎨", categoryId: "world", explanation: "No faces, no clues - pure art can meet the whole world!" },
-        { id: "party", text: "Party photo - three friends' faces in it", icon: "🎂", categoryId: "friends", explanation: "Their faces = their call. Friends-only, and only after they said yes." },
-        { id: "classproject", text: "Class volcano project - everyone in uniform", icon: "🏫", categoryId: "school", explanation: "Uniforms name your school - keep school photos inside school walls." },
-        { id: "pyjamas", text: "You in pajamas doing a victory dance", icon: "🎭", categoryId: "friends", explanation: "Silly stays with friends - the whole world doesn't need your pajamas." },
-        { id: "trophy", text: "Your football trophy on a plain shelf", icon: "🏆", categoryId: "world", explanation: "Just a shiny trophy - no clues, no faces. Shine on, Cyber Hero!" },
-        { id: "planner", text: "Homework snap - your school planner's name showing", icon: "📋", categoryId: "school", explanation: "The planner names your school - that clue stays in school." },
-        { id: "sunset", text: "A sunset over the park - nobody in it", icon: "⭐", categoryId: "world", explanation: "Clouds and colors belong to everyone - share away!" },
-        { id: "bedroom", text: "Silly selfie in your bedroom", icon: "🤫", categoryId: "friends", explanation: "Your bedroom is your private castle - friends-only at the very most." },
-        { id: "bathtime", text: "A bath-time photo from when you were tiny", icon: "🤫", categoryId: "justforme", explanation: "Photos that show your body are private - they get NO door at all. Just for you." },
-        { id: "diary", text: "A snap of your secret diary page", icon: "📋", categoryId: "justforme", explanation: "Secrets aren't for ANY door - some photos stay just for you." },
+      completeLine: "The door that fits, and some photos get no door at all.",
+      offers: [
+        {
+          id: "dragon",
+          text: "Dragon drawing for the online art show",
+          from: "No faces, no names",
+          readAloud: "Your dragon drawing, for the online art show. No faces, no names, no clues.",
+          answer: "everyone",
+          why: "No faces, no names, no clues, and it's made for an art show. A drawing like that is safe to go through the Everyone door.",
+          whyWrong: "The art show is for everyone, and this drawing has no faces and no clues at all. It is safe for the biggest door.",
+        },
+        {
+          id: "volcano",
+          text: "Class volcano project, everyone in uniform",
+          from: "For the school newsletter",
+          readAloud: "Your class volcano project, with everyone in school uniform. It's for the school newsletter.",
+          answer: "school",
+          why: "Uniforms name your school, and your school already knows that. The School door fits, and no stranger learns where you are.",
+          whyWrong: "The uniforms name your school, so strangers should not see it, but the newsletter is for your school. The School door fits.",
+        },
+        {
+          id: "party",
+          text: "Party photo: three friends who said yes",
+          from: "For the friends' group chat",
+          readAloud: "A party photo with three friends in it. All three said yes to the friends' group chat.",
+          answer: "friends",
+          why: "Three faces, three yeses, for friends. Their faces are still not for strangers, so the Friends door fits.",
+          whyWrong: "They said yes to friends seeing it. Everyone is too big a door, and Just Me would hide it from the friends it's for. The Friends door fits.",
+        },
+        {
+          id: "bath",
+          text: "Bath time photo from when you were tiny",
+          from: "The family album",
+          readAloud: "A bath time photo from when you were tiny, from the family album.",
+          answer: "justMe",
+          why: "Photos of your body are private. This is a Just Me photo, and it goes through no door at all.",
+          whyWrong: "This photo shows your body, so it is private. It gets no door, not even a small one. It stays Just Me.",
+        },
+        {
+          id: "brick-castle",
+          text: "Brick castle for the building contest",
+          from: "Just bricks, no clues",
+          readAloud: "Your brick castle, for the online building contest. Just bricks on a plain table, no faces and no clues.",
+          answer: "everyone",
+          why: "Nothing but bricks, and no faces or clues anywhere. It was built to be shown off, so the Everyone door fits.",
+          whyWrong: "Look for faces or clues. There are none, just bricks, and the contest is for everyone. The biggest door is safe for this one.",
+        },
+        {
+          id: "diary",
+          text: "Your secret diary page",
+          from: "Your bedroom",
+          readAloud: "A photo of your secret diary page.",
+          answer: "justMe",
+          why: "A secret diary is just for you, and so is a photo of it. It's a Just Me photo, with no door at all.",
+          whyWrong: "Secrets are for you alone. A photo of a secret diary page stays Just Me, with no door at all.",
+        },
       ],
       hints: {
-        tier1: "Check the photo for faces and clues first - THEN pick the smallest door that fits.",
-        tier2: "Faces or private places = FRIENDS. School stuff = SCHOOL. Zero clues and zero faces = the world can see. Body photos and secrets = JUST FOR ME, no door.",
+        tier1: "Ask: are there faces or clues? Who is the photo for?",
+        tier2: "No faces, no clues, made to show off: Everyone. For your school: School. Friends who said yes: Friends. Your body or your secrets: Just Me.",
       },
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Places, everyone - the photos are walking!",
-          "Faces go friends-only. School things, school door.",
-          "No clues at all? The world door's fine.",
-          "[warmly] And private photos? NO door - just for you. Go!",
+          "[excited] On your fourth challenge, you turn the Door Dial!",
+          "This game is all about picking the door that fits each photo: Just Me, Friends, School or Everyone.",
+          "Out in the real world, every share goes through one of those doors, so the door you choose decides who sees it.",
+          "Here is what you do. A photo appears above the dial and I'll read it. Tap the arrows to move the needle to the door that fits. Then tap LOCK IT IN. Take your time. There is no clock.",
+          "[warmly] Faces and clues get small doors, and private photos get none. Ready? First photo!",
         ],
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Check it for faces and clues - then tap its smallest door!"],
+        lines: ["Listen to the photo. Then tap the arrows to move the needle, and tap Lock it in when it points at the door that fits."],
+      },
+      completeNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Every photo through the right door, Cyber Hero!",
+          "[warmly] Out in the real world, you ask who will see it before you share. Faces and clues get small doors, and Just Me photos get none.",
+        ],
       },
     },
-    // 17 - Prove: LIE
+    // 18 - Prove: LIE
     {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
       raccoonLine: "your account is PRIVATE, so your photos can NEVER escape!",
       choices: [
-        { text: "TRUE", isCorrect: false },
+        { text: "TRUE", isCorrect: false, why: "Private makes the door smaller, but anyone inside can still screenshot a photo and send it on." },
         { text: "FALSE", isCorrect: true },
       ],
-      praise: "Busted! Private slows pigeons down - screenshots still fly. ✓",
-      nudge: "Can a friend inside your 'private' door still screenshot?",
+      praise: "Busted! Private shrinks the door. Screenshots still get out. ✓",
+      nudge: "Can a friend inside your private door still take a screenshot?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Well done!",
+          "Busted. Private makes the door smaller, not locked.",
+          "Anyone inside can still screenshot a photo and send it on.",
+          "[warmly] So even behind a small door, you still think first.",
+        ],
+      },
     },
-
-    // 18 - Recap · Concept 4 of 5
+    // 19 - Recap · Concept 4 of 5
     {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "Pick the smallest door that fits - and remember even 'private' doors leak through screenshots.",
-      next: "the one ritual that makes you share-proof",
+      learned: "Pick the door that fits. Faces and clues get small doors, body photos get no door, and private can still leak.",
+      next: "the three-second ritual that uses every photo power at once",
       emblem: "🚪",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Four powers! You kept every door, door keeper.",
-          "Faces to friends, school stuff to school...",
-          "[laughs] and the Raccoon's 'private is magic' fib? Busted.",
-          "[whispers] One last power. The biggest one.",
+          "[proud] Four powers, Cyber Hero. Every photo found its door.",
+          "Small doors for faces, no door for private photos, and his private-is-magic fib, busted.",
+          "[whispers] One power is left, and it puts all the others together in three seconds.",
+          "Next, we'll learn the ritual that uses every photo power at once. Come and see!",
         ],
       },
     },
 
     /* ─────────── BEAT 5 · LOOK, THINK, ASK ─────────── */
-    // 19 - Learn
+    // 20 - Learn
     {
       type: "info",
+      conceptNumber: 5,
+      conceptTotal: 5,
       title: "Look. Think. Ask.",
       content:
-        "Here's the whole week in one hero ritual, three seconds long. LOOK at every corner of the photo - who's in it, what's behind them? THINK - happy for ANYONE to see this, forever? ASK - the people in it, and a grown-up if you're not sure. Look, think, ask... and only THEN let the pigeon fly.",
+        "Here is the whole week in one hero ritual, three seconds long. LOOK at every corner: who is in it, and what is behind them? THINK: where is it going, and would I be happy for anyone to see it, forever? ASK: the people in it, and a grown-up if you are not sure. Look, think, ask, and only THEN does a photo go anywhere.",
       bullets: [
-        "LOOK at every corner first",
-        "THINK: happy for anyone, forever?",
+        "LOOK: who is in it, what is behind?",
+        "THINK: where is it going, forever?",
         "ASK the people in it",
         "Not sure? Ask a grown-up",
         "Three seconds saves a photo",
@@ -559,214 +765,334 @@ export const WEEK_8: WeekContent = {
       bulletIcons: ["👀", "🧠", "💬", "👪", "⚡"],
       emblem: "🧠",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[warmly] Time for the ritual that makes you share-proof.",
-          "LOOK - every corner, every background.",
-          "THINK - happy for anyone to see it, forever?",
-          "ASK - the people in it, and a grown-up if unsure.",
+          "[warmly] Time for the ritual that puts it all together, Cyber Hero.",
+          "LOOK. Who is in it, and what is behind them?",
+          "THINK. Where is it going, and would you be happy for anyone to see it, forever?",
+          "ASK. The people in it, and a grown-up if you're not sure.",
           "[whispers] Look. Think. Ask. Three seconds.",
-          "[excited] Now take the lever room - one photo at a time!",
+          "[excited] Come and be the Photo Detective, and run the ritual on real prints!",
         ],
       },
     },
-    // 20 - Game: SELECT (replyCards LEVERS skin - the Share Lever)
+    // 21 - Game: STAMP "The Photo Detective" (clueStamper re-theme, photo skin, W3 engine)
     {
-      type: "replyCards",
-      skin: "levers",
-      introTitle: "The Share Lever",
-      introSubtitle: "One photo at a time. Run the ritual - look, think, ask - then pull SHARE IT or HOLD IT.",
-      introIcon: "✋",
-      pickLabel: "Pull a lever",
-      roundNoun: "Photo",
-      correctToast: "GOOD CALL!",
-      wrongTitle: "Hold on - run the ritual again",
-      completeTitle: "Lever room mastered!",
-      completeLine: "Look. Think. Ask. Then - and only then - share.",
-      scoreNoun: "good calls",
-      rounds: [
+      type: "clueStamper",
+      skin: "photo",
+      rowLabels: {
+        when: "WHO is in it?",
+        who: "WHAT is behind them?",
+        how: "WHERE is it going?",
+        what: "Did they say YES?",
+      },
+      boardPrompt: "Read all four · tap a leaking row to stamp it · tap again to lift it · then finish the check",
+      caughtLabel: { one: "leaky photo kept back", many: "leaky photos kept back" },
+      threat: {
+        raccoonLine:
+          "Three seconds? Nobody has three seconds! Kids see a good photo and tap share before the looking even starts. Every skipped corner is a present for me!",
+      },
+      introTitle: "The Photo Detective",
+      introSubtitle: "Every print has four questions: who is in it, what is behind them, where is it going, did they say yes. Stamp every LEAK, then finish the check.",
+      introIcon: "🕵️",
+      stampLabel: "LEAK!",
+      closeLabel: "FINISH CHECK",
+      realSeal: "SAFE TO SHARE",
+      fakeSeal: "KEEP IT",
+      realToast: "SAFE TO SHARE!",
+      fakeToast: "KEEP IT: LEAK FOUND!",
+      wrongTitle: "Check your stamps again!",
+      completeTitle: "Every print checked!",
+      completeLine: "Look, think, ask. Then share, or keep.",
+      cases: [
         {
-          id: "sunset",
-          from: "The photo tray",
-          fromIcon: "👀",
-          message: "A golden sunset over the park. No people, no signs - just sky.",
-          replies: [
-            { text: "SHARE IT", isSafe: true, explanation: "Good call! No faces, no places, no clues - this pigeon is safe to fly." },
-            { text: "HOLD IT", isSafe: false, explanation: "Look again - no faces, no places, no clues. A pure sky photo is exactly the kind that CAN fly!" },
+          id: "brick-castle",
+          handle: "Brick castle photo",
+          avatar: "🧱",
+          pitch: "My brick castle is finished! Share it?",
+          readAloud: "Brick castle photo: my brick castle is finished! Share it? Who is in it? Nobody, just bricks. What is behind them? A plain table. Where is it going? The family chat. Did they say yes? Nobody else is in it.",
+          clues: [
+            { id: "when", evidence: "Nobody, just bricks", isRedFlag: false, teach: "Nobody is in this photo, just bricks. That row checks out, so lift the stamp." },
+            { id: "who", evidence: "A plain table", isRedFlag: false, teach: "A plain table tells nobody anything. That row checks out, so lift the stamp." },
+            { id: "how", evidence: "The family chat", isRedFlag: false, teach: "The family chat is a small door full of people you know. That row checks out, so lift the stamp." },
+            { id: "what", evidence: "Nobody else in it", isRedFlag: false, teach: "With nobody else in the photo, there is nobody to ask. That row checks out, so lift the stamp." },
           ],
+          rightWhy: "Nobody in it, nothing behind it, a small door, and nobody to ask. Every row checks out, so this one is safe to share!",
         },
         {
           id: "sneeze",
-          from: "The photo tray",
-          fromIcon: "👀",
-          message: "Your friend mid-sneeze - hilarious! She hasn't seen it yet.",
-          replies: [
-            { text: "SHARE IT", isSafe: false, explanation: "The ritual says ASK - and she hasn't even SEEN it. Her face, her call: hold it until she says yes." },
-            { text: "HOLD IT", isSafe: true, explanation: "Held! Her face, her call - nothing flies until she says yes." },
+          handle: "Sneeze photo",
+          avatar: "😂",
+          pitch: "Maya mid-sneeze! Funniest photo ever!",
+          readAloud: "Sneeze photo: Maya mid-sneeze, the funniest photo ever! Who is in it? Maya. What is behind them? A plain wall. Where is it going? The class chat. Did they say yes? Not asked yet.",
+          clues: [
+            { id: "when", evidence: "Maya, mid-sneeze", isRedFlag: false, teach: "Maya being in it is fine on its own. The ask has its own row. That row checks out, so lift the stamp." },
+            { id: "who", evidence: "A plain wall", isRedFlag: false, teach: "A plain wall gives nothing away. That row checks out, so lift the stamp." },
+            { id: "how", evidence: "The class chat", isRedFlag: false, teach: "The class chat is kids you know, a small door. That row is fine on its own, so lift the stamp." },
+            { id: "what", evidence: "Not asked yet", isRedFlag: true, teach: "Look at the ask. Maya hasn't said yes yet, and it's her face. That is a leak." },
           ],
+          rightWhy: "Everything else looked fine, but Maya never said yes. One missing yes is enough to keep it. Ask her first!",
         },
         {
-          id: "frontdoor",
-          from: "The photo tray",
-          fromIcon: "👀",
-          message: "The new family bike - parked by your front door, house number 42 in view.",
-          replies: [
-            { text: "SHARE IT", isSafe: false, explanation: "LOOK caught it: house number 42 points every stranger straight home. Crop the door out first - then maybe." },
-            { text: "HOLD IT", isSafe: true, explanation: "Held! That house number points straight home - crop it out before this one ever flies." },
+          id: "snowman",
+          handle: "Snowman photo",
+          avatar: "🏠",
+          pitch: "Our snowman in the front garden!",
+          readAloud: "Snowman photo: our snowman in the front garden! Who is in it? Just you. What is behind them? House number 7. Where is it going? Everyone online. Did they say yes? Nobody else is in it.",
+          clues: [
+            { id: "when", evidence: "Just you", isRedFlag: false, teach: "It's just you, and it's your own photo. That row checks out, so lift the stamp." },
+            { id: "who", evidence: "House number 7", isRedFlag: true, teach: "Look behind the snowman. House number seven points straight to your home. That is a leak." },
+            { id: "how", evidence: "Everyone online", isRedFlag: true, teach: "Look where it's going. Everyone online means strangers, forever, through the biggest door. That is a leak." },
+            { id: "what", evidence: "Nobody else in it", isRedFlag: false, teach: "With just you in the photo, there's no one to ask. That row checks out, so lift the stamp." },
           ],
+          rightWhy: "A house number, heading through the biggest door. Two leaks. Keep it, or crop the number and pick a smaller door first.",
         },
         {
-          id: "lego",
-          from: "The photo tray",
-          fromIcon: "👀",
-          message: "Your finished LEGO castle on the kitchen table - just bricks and glory.",
-          replies: [
-            { text: "SHARE IT", isSafe: true, explanation: "Good call! Bricks, table, zero clues, zero faces - this one was built to be shown off." },
-            { text: "HOLD IT", isSafe: false, explanation: "Think it through - bricks, table, zero clues, zero faces. This one's built to be shown off!" },
+          id: "team",
+          handle: "Team photo",
+          avatar: "🏆",
+          pitch: "We won! The whole team with the cup!",
+          readAloud: "Team photo: we won, the whole team with the cup! Who is in it? Your whole team. What is behind them? A plain green pitch. Where is it going? The team families chat. Did they say yes? Yes, every player.",
+          clues: [
+            { id: "when", evidence: "Your whole team", isRedFlag: false, teach: "Your team being in it is fine, because the ask has its own row. That row checks out, so lift the stamp." },
+            { id: "who", evidence: "A plain green pitch", isRedFlag: false, teach: "Grass looks the same at every pitch. That row checks out, so lift the stamp." },
+            { id: "how", evidence: "Team families chat", isRedFlag: false, teach: "That chat is a small door, full of grown-ups who know the team. That row checks out, so lift the stamp." },
+            { id: "what", evidence: "Yes, every player", isRedFlag: false, teach: "Every player said yes. That row checks out, so lift the stamp." },
           ],
-        },
-        {
-          id: "uniform",
-          from: "The photo tray",
-          fromIcon: "👀",
-          message: "First-day-of-school pic - big smile, full uniform, school sign behind you.",
-          replies: [
-            { text: "SHARE IT", isSafe: false, explanation: "Uniform + school sign = your school, handed to strangers. That one's for family eyes, not the open internet." },
-            { text: "HOLD IT", isSafe: true, explanation: "Held! Uniform and school sign name your school - family eyes only, not the open internet." },
-          ],
+          rightWhy: "Every player said yes, nothing leaks from behind, and it's going through a small door. Every row checks out, so share away!",
         },
       ],
       hints: {
-        tier1: "Run the ritual out loud: LOOK for faces and clues... THINK forever... ASK if it's someone else's face.",
-        tier2: "Faces that haven't said yes, house numbers, school signs = HOLD IT. No clues, no faces = SHARE IT.",
+        tier1: "Run the ritual on every row: who is in it, what is behind them, where is it going, did they say yes.",
+        tier2: "Sarah named a row. Find that row. A leak means stamp it. Checks out means leave it clean.",
+        tier3: "Let me help. I fixed that one row for you. Now finish the check.",
       },
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] The lever room! Photos on the tray.",
-          "Look at every corner. Think: anyone, forever?",
-          "[whispers] Ask - if it's not just your face.",
-          "[excited] Then pull the lever. Show me your calls!",
+          "[excited] On your last challenge, you become the Photo Detective!",
+          "This game is all about running look, think, ask on real photos.",
+          "Out in the real world, it takes three seconds, and it catches every leak before a photo goes.",
+          "Here is what you do. A photo print lands with four rows: who is in it, what is behind them, where is it going, and did they say yes. If a row leaks, tap it to stamp it. Tap it again to lift the stamp. Nothing leaking? Stamp nothing. Then tap FINISH CHECK.",
+          "[warmly] Look, think, ask on every single row. Ready? First print!",
         ],
       },
       coachLines: {
-        speaker: "layla",
-        lines: ["Run look-think-ask on the first photo, then pull a lever!"],
+        speaker: "adam",
+        lines: [
+          "Here is your first print. Read all four rows. If a row leaks, tap it to stamp it. Tap it again to lift the stamp. When you have checked all four, tap Finish check.",
+        ],
+      },
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Every print checked, Cyber Hero! Leaks kept back, safe photos shared.",
+          "[warmly] Out in the real world, look, think, ask takes three seconds, and it's yours for every photo from now on.",
+        ],
       },
     },
-    // 21 - Prove: ORDER
+    // 22 - Prove: PUT-IN-ORDER
     {
       type: "quickCheck",
       mode: "order",
-      prompt: "A photo's ready to fly. Tap the hero ritual IN ORDER:",
+      prompt: "A photo is ready to go. Tap the hero ritual IN ORDER:",
       choices: [
         { text: "LOOK at every corner", isCorrect: true },
         { text: "THINK: anyone, forever?", isCorrect: true },
-        { text: "ASK before it flies", isCorrect: true },
+        { text: "ASK before it goes", isCorrect: true },
       ],
       praise: "Look. Think. Ask. The ritual is yours! ✓",
       nudge: "What do your EYES do before your brain gets a turn?",
+      teachNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Well done!",
+          "Look at every corner. Think: anyone, forever? Ask before it goes.",
+          "Eyes first, because you can't think about a clue you haven't seen.",
+          "[warmly] Three seconds, every photo.",
+        ],
+      },
     },
-
-    // 22 - Recap · Concept 5 of 5
+    // 23 - Recap · Concept 5 of 5 (promises the review, never the boss)
     {
       type: "recap",
       concept: 5,
       total: 5,
-      learned: "Look at every corner, think 'anyone, forever?', ask the people in it - then share.",
-      next: "one final case file, then the Raccoon's photo heist",
+      learned: "Look at every corner, think 'anyone, forever?', ask the people in it. Then share, or keep.",
+      next: "one quick review to make it all stick",
       emblem: "🧠",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
           "[excited] That's all FIVE photo powers, Cyber Hero!",
-          "Pigeons watched, asks made, clues pinned,",
-          "doors kept... and the ritual runs itself now.",
-          "[whispers] One last case file to close...",
-          "[excited] then we crash his photo heist for good!",
+          "Delete tested, faces asked, corners checked, doors picked, and the ritual runs itself.",
+          "[whispers] The Raccoon can't sneak a single photo past you now.",
+          "One quick review to make it all stick, then he brings out his photo quiz. Come on!",
         ],
       },
     },
 
-    // 23 - Consolidation: Case Closed (W1 scanner engine, W8 content)
+    // 24 - Consolidation: "The Share Maze" (cyberMaze re-theme, darkroom skin, W3 engine)
     {
-      type: "cyberScanner",
-      labels: {
-        positive: "SHARE-SMART",
-        negative: "PHOTO LEAK",
-        positiveHint: "Tap SHARE-SMART for the look-think-ask moves",
-        negativeHint: "Tap PHOTO LEAK for flying pigeons and leaking clues",
-        tipWhenPositive: "Asking first, checking corners, picking small doors - a detective's share, every one.",
-        tipWhenNegative: "No-ask posts, street signs, 'delete fixes it' - those pigeons are already flying.",
-        hint1: "Ask: did they LOOK, THINK and ASK... or did the photo just fly?",
-        hint2: "SMART = asked first, clues checked, smallest door. LEAK = faces without a yes, home/school clues, trusting delete.",
-        hint2Example: "SMART: 'She said yes to the party pic'   LEAK: 'Posted it - I can always delete!'",
-        hint3: "Quick rule card: delete isn't magic · their face their call · photos talk · smallest door · look-think-ask.",
-        hint3Example: "Ask first ✅    'It's just my street sign' ❌",
+      type: "cyberMaze",
+      skin: "darkroom",
+      threat: {
+        raccoonLine:
+          "Five gates in my darkroom, and a photo moment waiting behind every one. One wrong share and the prints are mine!",
       },
-      items: [
-        { text: "Showing your friend the photo BEFORE posting it", isStrong: true, explanation: "Their face, their call - the ask-first rule in action." },
-        { text: "'I'll post it now and delete it later if she minds'", isStrong: false, explanation: "Delete only catches YOUR copy - the pigeons will already be flying." },
-        { text: "Cropping the street sign out before sharing", isStrong: true, explanation: "A true Picture Detective - scrub the clue, save the photo." },
-        { text: "Posting your first-day uniform pic for the whole world", isStrong: false, explanation: "The crest and sign hand your school to strangers - small door only." },
-        { text: "Keeping a friend's just-for-you selfie to yourself", isStrong: true, explanation: "Sent to you isn't yours to send on - trust kept, pigeons grounded." },
-        { text: "Forwarding the class chat a photo nobody said yes to", isStrong: false, explanation: "Eight phones, zero asks - that's a whole flock of leaks at once." },
+      introTitle: "The Share Maze",
+      introSubtitle: "Find your way through the darkroom. Every gate holds a photo moment. Pick the hero move to open it, and reach the exit.",
+      introIcon: "📸",
+      gateLabel: "PHOTO MOMENT",
+      gatesLabel: "GATES OPENED",
+      tokensLabel: "FILM ROLLS",
+      movePrompt: "Tap a glowing square next to your hero to move",
+      gateToast: "GATE OPEN!",
+      wrongTitle: "That move lets the photo slip out",
+      wrongTip: "Delete only clears yours, faces need a yes, corners talk, pick the door that fits, and look, think, ask.",
+      pickPrompt: "Pick the hero move to open the gate",
+      replyPrompt: "WHAT DOES A HERO DO?",
+      gatesDoneLabel: "gates opened with a hero move",
+      completeTitle: "Out of the darkroom!",
+      completeLine: "Five gates, five photo powers.",
+      hints: {
+        tier2: "The hero move always thinks before the photo goes: ask the faces, check the corners, or pick a smaller door.",
+        tier3: "Delete only clears your copy. Their face, their call. Corners talk. Body photos get no door. Look, think, ask.",
+      },
+      questions: [
+        {
+          from: "Leo",
+          question: "Oops, you posted a silly photo! Just delete it, and it's gone from everyone's phone.",
+          answers: [
+            "Delete only clears MY copy. Next time I'll think first.",
+            "Phew! Delete fixes everything.",
+            "I'll delete it twice, just to be sure.",
+          ],
+          correctIndex: 0,
+          why: "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post.",
+          explanation: "Delete, once or twice, only empties your own phone. The copies that landed on other phones are still there.",
+        },
+        {
+          from: "Sam",
+          question: "I got a funny photo of Zara asleep at the sleepover. Let's post it before she wakes up!",
+          answers: [
+            "No. It's her face, so we ask her first.",
+            "Yes! She'll think it's funny later.",
+            "Post it, and delete it if she gets upset.",
+          ],
+          correctIndex: 0,
+          why: "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes.",
+          explanation: "Zara hasn't said yes, and deleting later can't call the copies back. Ask her first, every time.",
+        },
+        {
+          from: "Ava",
+          question: "Take a selfie in front of your house! The big door number looks so cool.",
+          answers: [
+            "I'll move, so the house number isn't in it.",
+            "OK, the number makes it look cool!",
+            "I'll post it just for my friends.",
+          ],
+          correctIndex: 0,
+          why: "The house number points straight to your home. Move, or crop it out, and the photo stops talking.",
+          explanation: "Friends can screenshot and send it on, so the house number could still reach strangers. Keep the number out of the photo.",
+        },
+        {
+          from: "Kai",
+          question: "Show the group chat your bath time baby photo. It's so cute!",
+          answers: [
+            "No. Body photos are Just Me photos, with no door at all.",
+            "OK, it's only the group chat.",
+            "Only if everyone promises not to share it.",
+          ],
+          correctIndex: 0,
+          why: "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one.",
+          explanation: "A small chat and a promise are still doors. A photo of your body stays Just Me.",
+        },
+        {
+          from: "Maya",
+          question: "Quick, the whole class is online right now! Post our class trip photo this second!",
+          answers: [
+            "Wait. Look, think, ask first. It takes three seconds.",
+            "Post it fast before everyone logs off!",
+            "Post it now, and check the photo later.",
+          ],
+          correctIndex: 0,
+          why: "Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush.",
+          explanation: "Rushing skips the ritual. Look, think and ask first, then decide. Three seconds is always worth it.",
+        },
       ],
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] Final case file! Sharing moments are drifting past.",
-          "Tap SHARE-SMART for the look-think-ask moves...",
-          "and PHOTO LEAK for flying pigeons and leaky clues.",
-          "[warmly] Close the case, detective - show me!",
+          "[excited] Time for your review: the Share Maze!",
+          "This game is all about using every photo power, one gate at a time.",
+          "Out in the real world, photo moments come in any order, so every power has to be ready.",
+          "Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, a friend brings a photo moment, and three replies appear. Tap the hero move to open the gate. Collect the film rolls, and find the exit.",
+          "[warmly] Five gates, five powers. Ready? Into the darkroom!",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Tap a glowing square beside your hero to move. Head for the exit!"],
+      },
+      completeNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Out of the darkroom, Cyber Hero! Every gate opened with a hero move.",
+          "[warmly] Out in the real world, every photo moment gets the same care: think first, ask the faces, check the corners, pick the door.",
         ],
       },
     },
 
-    // 24 - BOSS BATTLE (placeholder quiz boss - the bespoke W8 COMBAT comes with the boss batch)
+    // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 25 - CLOSING VIDEO: the heist that fell apart
+    // 26 - CLOSING VIDEO: the darkroom heist falls apart
     { type: "video", videoPlaceholder: "Week 8: Case Closed", videoSrc: "/videos/module-08-outro.mp4" },
 
-    // 26 - Mission Debrief
+    // 27 - Mission Debrief (ids kept from the legacy week so saved progress still lines up)
     {
       type: "missionDebrief",
       title: "Mission Complete!",
       subtitle: "Here's everything you mastered this week.",
       concepts: [
-        { id: "pigeons", label: "Pigeon Eyes", accent: "#7df0ff", icon: "✉️", summary: "Shared means out forever - delete only empties YOUR nest." },
-        { id: "consent", label: "Ask-First Poster", accent: "#7eff97", icon: "👪", summary: "Their face, their call - nobody gets posted without a yes." },
-        { id: "clues", label: "Clue Spotter", accent: "#ffd158", icon: "🔍", summary: "Crests, signs and banners talk - you pin every leak before it flies." },
-        { id: "doors", label: "Door Keeper", accent: "#c084fc", icon: "🚪", summary: "Smallest door that fits - and 'private' still leaks screenshots." },
-        { id: "ritual", label: "Look-Think-Ask", accent: "#ff5fb3", icon: "🧠", summary: "Three seconds before every share - the ritual that runs itself." },
+        { id: "pigeons", label: "Copy Watcher", accent: "#7df0ff", icon: "🗑️", summary: "Delete only deletes your copy, so you think before you share." },
+        { id: "consent", label: "Ask-First Poster", accent: "#7eff97", icon: "💬", summary: "Their face, their call. Every friend gets asked, and a no is respected." },
+        { id: "clues", label: "Corner Checker", accent: "#ffd158", icon: "🔍", summary: "House numbers and school names talk. You find them first." },
+        { id: "doors", label: "Door Picker", accent: "#c084fc", icon: "🚪", summary: "The door that fits, and no door at all for Just Me photos." },
+        { id: "ritual", label: "Look-Think-Ask", accent: "#ff5fb3", icon: "🧠", summary: "Three seconds before every share. The ritual runs itself." },
       ],
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Look at EVERYTHING you mastered, Cyber Hero!",
-          "You see every pigeon before it flies,",
-          "you ask before faces fly, you pin every clue,",
-          "you keep the doors... and the ritual is automatic.",
-          "[excited] His photo heist is CLOSED. Sticker time!",
+          "[excited] Look at EVERYTHING you mastered this week!",
+          "You know delete only deletes your copy, you ask every face,",
+          "you check every corner, you pick the door that fits...",
+          "[warmly] and look, think, ask runs before every photo.",
+          "[excited] The Raccoon's darkroom heist is OVER. Sticker time!",
         ],
       },
     },
 
-    // 27 - Sticker Unlock
+    // 28 - Sticker Unlock (ids kept from the legacy week)
     {
       type: "stickerUnlock",
       title: "Stickers Unlocked!",
       stickers: [
-        { id: "pigeon-watcher", name: "Pigeon Watcher", icon: "✉️", description: "Sees every copy before it flies." },
-        { id: "clue-spotter", name: "Clue Spotter", icon: "🔍", description: "Pins every leaky clue to the board." },
-        { id: "door-keeper", name: "Door Keeper", icon: "🚪", description: "Always picks the smallest door." },
+        { id: "pigeon-watcher", name: "Copy Watcher", icon: "🗑️", description: "Knows delete only deletes your copy." },
+        { id: "clue-spotter", name: "Clue Spotter", icon: "🔍", description: "Finds every clue before a photo goes." },
+        { id: "door-keeper", name: "Door Keeper", icon: "🚪", description: "Always picks the door that fits." },
       ],
     },
 
-    // 28 - Completion
+    // 29 - Completion
     { type: "completion" },
   ],
+  /* ──────────────── THE STANDARD QUIZ BOSS (week-ending test) ────────────────
+     5 apply-the-skill questions, one per taught concept, 4 right to pass
+     (owner decision, UAT batch 2). Every scenario is new (none repeats a game
+     item) and every villain line is distinct. Recorded via the narration
+     generator (week8.ts is in LEARN_LOOP_WEEKS). */
   bossQuiz: {
     villain: { name: "HACKER RACCOON", sprite: "raccoon" },
     accent: "#ff6b3d",
@@ -780,36 +1106,35 @@ export const WEEK_8: WeekContent = {
     },
     victory: {
       slug: "quiz-w8-victory",
-      text: "Not one clue?! Not one loose pigeon?! What am I supposed to steal, MEMORIES?! I'm going back to blurry trash-can selfies!",
+      text: "Not one clue?! Not one loose copy?! What am I supposed to steal, MEMORIES?! I'm going back to blurry trash-can selfies!",
     },
-    // 5 questions, one per skill, 4 right to pass (owner decision, UAT batch 2).
     passMark: 4,
     questions: [
       {
         phaseId: "phase-w8-c1",
         key: "quiz-w8-c1-1",
-        label: "Once It's Out, It's OUT",
+        label: "Once It's Out, It's Out",
         ask: {
           slug: "quiz-w8-ask-c1-1",
-          text: "Adam posts a silly photo, thinks better of it, and deletes it two minutes later. What did DELETE actually do?",
+          text: "Layla sent a funny video to her cousin, then deleted it from the chat. Her cousin had already saved it. Where is the video now?",
         },
         options: [
-          { text: "Erased only HIS copy, the copies that flew are still out" },
-          { text: "Erased every copy everywhere, crisis over" },
-          { text: "Erased all the copies except the app's one" },
+          { text: "Still on her cousin's phone, delete only cleared Layla's copy" },
+          { text: "Gone from every phone, delete reaches everywhere" },
+          { text: "Nowhere, videos can't be saved by cousins" },
         ],
         correctIndex: 0,
         teachOnWrong: {
-          title: "Delete empties your nest!",
-          explanation: "In two minutes a photo can be saved, screenshotted and forwarded. Delete only clears YOUR copy. The pigeons that already flew are on rooftops you can't reach.",
+          title: "Delete only clears your copy!",
+          explanation: "The moment the video landed, her cousin had a copy of their own. Layla's delete only emptied Layla's phone. That's why the thinking happens before you send.",
         },
         villainRight: {
           slug: "quiz-w8-right-c1-1",
-          text: "Two minutes was PLENTY for me! Wait, you KNEW that?! Who's teaching you kids?!",
+          text: "Still on the cousin's phone?! You're not supposed to KNOW that!",
         },
         villainWrong: {
           slug: "quiz-w8-wrong-c1-1",
-          text: "Delete away! I saved my copy the second it landed, it's on my fridge!",
+          text: "Gone everywhere? Ha! The cousin has a copy, and SO DO I!",
         },
       },
       {
@@ -818,25 +1143,25 @@ export const WEEK_8: WeekContent = {
         label: "Their Face, Their Call",
         ask: {
           slug: "quiz-w8-ask-c2-1",
-          text: "Layla catches her friend mid-sneeze, the funniest photo in history. Her finger hovers over POST. What comes first?",
+          text: "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first?",
         },
         options: [
-          { text: "Show her friend and ask before anything flies" },
-          { text: "Post it, best friends laugh about this stuff" },
-          { text: "Post it, but take it down if her friend minds" },
+          { text: "Ask his brother if he's happy for it to be shared" },
+          { text: "Send it, family chats don't count" },
+          { text: "Send just the funniest wobbly bit" },
         ],
         correctIndex: 0,
         teachOnWrong: {
           title: "Their face, their call!",
-          explanation: "'Take it down later' can't unfly a pigeon, and 'she'll probably laugh' isn't a yes. A photo of someone else gets their yes BEFORE it goes anywhere. Every face, every time.",
+          explanation: "Little brothers have faces too, and a family chat still makes copies. Adam asks his brother first, and if the answer is no, the video stays put.",
         },
         villainRight: {
           slug: "quiz-w8-right-c2-1",
-          text: "She got to say no?! That sneeze was my ticket to comedy gold!",
+          text: "You ASKED the little brother?! Now I'll never see the wobble!",
         },
         villainWrong: {
           slug: "quiz-w8-wrong-c2-1",
-          text: "Post the sneeze! Post it! Embarrassing photos are my favorite currency!",
+          text: "Send the wobble! Family chats leak like a bucket full of holes!",
         },
       },
       {
@@ -845,52 +1170,52 @@ export const WEEK_8: WeekContent = {
         label: "Photos Talk",
         ask: {
           slug: "quiz-w8-ask-c3-1",
-          text: "Adam photographs his new puppy in the front yard: the puppy, some grass, and the house number on the door behind. Which one talks to strangers?",
+          text: "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers?",
         },
         options: [
-          { text: "The house number, it points straight at his home" },
-          { text: "The puppy's collar tag with its name, Biscuit" },
-          { text: "The bright green grass all around them" },
+          { text: "The pool's name on the wall, it shows where she swims every week" },
+          { text: "The shiny medal around her neck" },
+          { text: "The stripy towel over her shoulder" },
         ],
         correctIndex: 0,
         teachOnWrong: {
           title: "Backgrounds talk!",
-          explanation: "'Biscuit' and grass tell a stranger nothing useful. The house number behind the puppy turns a cute photo into a map. Detectives check what's BEHIND the smile before sharing.",
+          explanation: "A medal and a towel tell a stranger nothing useful. The pool's name on the wall tells them where Layla swims every week. Detectives check what's behind the smile.",
         },
         villainRight: {
           slug: "quiz-w8-right-c3-1",
-          text: "You spotted the number?! I already had my walking shoes on!",
+          text: "You read the WALL?! I had my swimming goggles all packed!",
         },
         villainWrong: {
           slug: "quiz-w8-wrong-c3-1",
-          text: "Number 12, lovely door, adorable dog! See you around dinner time!",
+          text: "Same pool every week? Lovely! I'll bring my rubber ring!",
         },
       },
       {
         phaseId: "phase-w8-c4",
         key: "quiz-w8-c4-1",
-        label: "Pick the Smallest Door",
+        label: "Pick the Door That Fits",
         ask: {
           slug: "quiz-w8-ask-c4-1",
-          text: "Layla's party photo shows three friends' faces. Which door does it get?",
+          text: "Adam filmed the class play for the school's families. It shows every kid's face and the school hall. Which door fits?",
         },
         options: [
-          { text: "Friends only, and only after all three say yes" },
-          { text: "Whole world, parties are happy public things" },
-          { text: "School only, since they're all school friends" },
+          { text: "School, it was made for the school's families" },
+          { text: "Everyone, the play was brilliant" },
+          { text: "Just Me, nobody should ever watch a play" },
         ],
         correctIndex: 0,
         teachOnWrong: {
-          title: "Small door, asked faces!",
-          explanation: "Three faces means three yeses first, then the smallest door that fits. The school door shows the WHOLE school, and the world door shows everyone forever. Friends only.",
+          title: "Pick the door that fits!",
+          explanation: "Lots of faces and the school hall make Everyone far too big a door. Just Me would hide it from the families it was made for. The School door fits.",
         },
         villainRight: {
           slug: "quiz-w8-right-c4-1",
-          text: "A tiny door AND permission slips?! How is a raccoon supposed to work like this?!",
+          text: "The School door?! And I bought popcorn for the world premiere!",
         },
         villainWrong: {
           slug: "quiz-w8-wrong-c4-1",
-          text: "Fling the big doors open! More eyeballs! More screenshots! More ME!",
+          text: "Fling the big doors open! Every face, every name, and a front row seat for ME!",
         },
       },
       {
@@ -899,90 +1224,91 @@ export const WEEK_8: WeekContent = {
         label: "Look. Think. Ask.",
         ask: {
           slug: "quiz-w8-ask-c5-1",
-          text: "Adam's about to post the new family bike parked by the front door. He runs the hero ritual. What does LOOK catch?",
+          text: "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual?",
         },
         options: [
-          { text: "The house number glowing on the door behind the bike" },
-          { text: "That the bike isn't centered nicely in the shot" },
-          { text: "That the photo is a bit too dark to get likes" },
+          { text: "THINK: where is it going, and is it OK for anyone, forever?" },
+          { text: "Post it now, looking was enough" },
+          { text: "Add music first so it gets more likes" },
         ],
         correctIndex: 0,
         teachOnWrong: {
-          title: "LOOK means every corner!",
-          explanation: "LOOK isn't about framing or brightness, it's a clue hunt. Faces, signs, numbers, crests, anything in any corner that talks. The house number was sitting right there, ready to fly.",
+          title: "Look, then THINK, then ask!",
+          explanation: "Looking is only step one. Next she thinks about where it's going and who could see it forever, then she asks every friend in the dance. Three steps, three seconds.",
         },
         villainRight: {
           slug: "quiz-w8-right-c5-1",
-          text: "You checked the CORNERS?! Nobody checks the corners, that's where I LIVE!",
+          text: "THINK comes next?! You kids have a ritual for EVERYTHING now!",
         },
         villainWrong: {
           slug: "quiz-w8-wrong-c5-1",
-          text: "Center the bike, perfect the shot, and post that gorgeous house number to the sky!",
+          text: "Looked once? Good enough! Post it, post it, POST IT!",
         },
       },
-    
     ],
   },
   badgeArt: "/cyberheroes/badges/week-08-photo-detective.png",
 
+  // Week-lane attack theatre: photo and video sharing only (people tricks = W3,
+  // message scams = W4, the full footprint trail = W12).
   bossAttacks: [
-    { name: "COPY PIGEONS", icon: "✉️", color: "#7df0ff", glow: "rgba(125, 240, 255, 0.55)", tag: "Delete can't catch them", emblemColor: 0x7df0ff },
-    { name: "CLUE LEAK",    icon: "📍", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)",  tag: "Photos talk",             emblemColor: 0xffd158 },
-    { name: "SNEAKY SNAP",  icon: "👀", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Their face, their call",  emblemColor: 0xff5fb3 },
+    { name: "RUNAWAY COPIES", icon: "📱", color: "#7df0ff", glow: "rgba(125, 240, 255, 0.55)", tag: "Delete can't catch them", emblemColor: 0x7df0ff },
+    { name: "CLUE LEAK",      icon: "📍", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)",  tag: "Photos talk",             emblemColor: 0xffd158 },
+    { name: "SNEAKY SNAP",    icon: "👀", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Their face, their call",  emblemColor: 0xff5fb3 },
   ],
 
-  // Placeholder quiz boss (the bespoke W8 COMBAT - crash the photo
-  // heist - is designed separately with the boss batch).
+  // Legacy question pool, required by the WeekContent type; the quiz boss above
+  // is what renders.
   bossQuestions: {
     easy: [
-      { question: "You DELETE a photo you shared. What happens?", answers: ["Only YOUR copy disappears", "Every copy everywhere vanishes", "The internet forgets it", "Screenshots delete too"], correctIndex: 0, explanation: "Delete empties your nest - the copy pigeons are already flying." },
-      { question: "Before posting a photo of your friend, you...", answers: ["Ask them first", "Add a funny caption", "Tag everyone fast", "Post it - friends don't mind"], correctIndex: 0, explanation: "Their face, their call - every single time." },
-      { question: "What can a school crest in your photo tell a stranger?", answers: ["Which school you go to", "Your favorite color", "Nothing at all", "Just that you go to SOME school"], correctIndex: 0, explanation: "Crests, signs and banners talk - check the background before sharing." },
+      { question: "You DELETE a photo you shared. What happens?", answers: ["Only YOUR copy disappears", "Every copy everywhere vanishes", "The internet forgets it", "Screenshots delete too"], correctIndex: 0, explanation: "Delete only empties your phone. The copies on other phones stay put." },
+      { question: "Before posting a photo of your friend, you...", answers: ["Ask them first", "Add a funny caption", "Tag everyone fast", "Post it, friends don't mind"], correctIndex: 0, explanation: "Their face, their call, every single time." },
+      { question: "What can a school name in your photo tell a stranger?", answers: ["Where you are all day", "Your favourite colour", "Nothing at all", "Just that you go to SOME school"], correctIndex: 0, explanation: "School names, house numbers and signs talk. Check the corners before sharing." },
     ],
     medium: [
-      { question: "A friend screenshots your 'disappearing' photo. Now what?", answers: ["A copy exists that you can't reach", "It still disappears on time", "Screenshots don't work on photos", "The app deletes her copy"], correctIndex: 0, explanation: "A screenshot is a brand-new pigeon - the timer can't call it back." },
-      { question: "Which photo fits the WHOLE WORLD door?", answers: ["A sunset with nobody in it", "Your first-day uniform pic", "A party pic of three friends", "Your bedroom selfie"], correctIndex: 0, explanation: "No faces, no clues = the only kind that meets the world safely." },
-      { question: "A friend sends a just-for-you selfie. The group chat would love it. You...", answers: ["Keep it - just-for-me means just-for-me", "Forward it - she sent it to me!", "Post it but say sorry after", "Crop her face and send it"], correctIndex: 0, explanation: "Sent TO you isn't yours to send ON - that's her trust in your hands." },
+      { question: "A friend screenshots your vanishing photo. Now what?", answers: ["A copy exists that you can't reach", "It still vanishes on time", "Screenshots don't work on photos", "The app deletes her copy"], correctIndex: 0, explanation: "A screenshot is a brand new copy, and the timer can't touch it." },
+      { question: "Which photo fits the EVERYONE door?", answers: ["A drawing with no faces and no clues", "Your first-day uniform photo", "A party photo of three friends", "Your bedroom selfie"], correctIndex: 0, explanation: "No faces and no clues is the only kind that meets the whole world safely." },
+      { question: "A friend sends you a just-for-you selfie. The group chat would love it. You...", answers: ["Keep it, just for you means just for you", "Forward it, she sent it to me!", "Post it and say sorry after", "Crop her face and send it"], correctIndex: 0, explanation: "Sent to you isn't yours to send on. That's her trust in your hands." },
     ],
     hard: [
-      { question: "Why isn't a PRIVATE account total protection for photos?", answers: ["People inside can still screenshot and reshare", "Private only works on photos, not videos", "Strangers can see private posts anyway", "It is total protection"], correctIndex: 0, explanation: "Private shrinks the door - it doesn't stop the pigeons inside it." },
+      { question: "Why isn't a PRIVATE account total protection for photos?", answers: ["People inside can still screenshot and send on", "Private only works on photos, not videos", "Strangers can see private posts anyway", "It is total protection"], correctIndex: 0, explanation: "Private shrinks the door. It doesn't stop the copies made inside it." },
       { question: "What's the full hero ritual before any share?", answers: ["Look, think, ask", "Post, check, delete", "Crop, filter, tag", "Ask, post, forget"], correctIndex: 0, explanation: "Look at every corner, think 'anyone, forever?', ask the people in it." },
-      { question: "One photo shows your name, age, school AND street. Why is that a big deal?", answers: ["Together they're a stranger's map to you", "It just looks untidy", "It's only a problem if you're famous", "Names aren't private"], correctIndex: 0, explanation: "Each clue is small - together they tell a stranger everything they need." },
+      { question: "One photo shows your name, age, school AND street. Why is that a big deal?", answers: ["Together they're a stranger's map to you", "It just looks untidy", "It's only a problem if you're famous", "Names aren't private"], correctIndex: 0, explanation: "Each clue is small. Together they tell a stranger everything they need." },
     ],
   },
 
-  // Keyed by SCREEN INDEX (0-28). Must stay in lock-step with `screens` above -
-  // if a screen is inserted/removed, shift these too (the trailing labels help).
-  // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
+  // Keyed by SCREEN INDEX (0-29), in lock-step with `screens` above.
+  // The 5 recap checkpoints are 7 / 11 / 15 / 19 / 23.
   reactions: {
-    0: { adam: { mood: "excited", message: "Mission 8 - the runaway photo!" }, layla: null }, // intro video
-    1: { adam: { mood: "worried", message: "One photo told strangers everything..." }, layla: null }, // alert
-    2: { adam: null, layla: { mood: "curious", message: "Here's the plan, Cyber Hero." } }, // mission brief
-    3: { adam: null, layla: { mood: "thinking", message: "Delete isn't magic. Watch." } }, // learn: out forever
-    4: { adam: null, layla: { mood: "curious", message: "Follow those pigeons!" } }, // game: reveal
-    5: { adam: { mood: "thumbsup", message: "Finish the photo rule!" }, layla: null }, // prove: finish
-    6: { adam: { mood: "excited", message: "One power down - four to go!" }, layla: null }, // recap 1
-    7: { adam: { mood: "thinking", message: "Whose face is it? Their call." }, layla: null }, // learn: consent
-    8: { adam: { mood: "curious", message: "Feel the 'just post it'? Ask first." }, layla: null }, // game: decide
-    9: { adam: null, layla: { mood: "thumbsup", message: "What comes first?" } }, // prove: recall
-    10: { adam: null, layla: { mood: "excited", message: "Ask-first: locked in!" } }, // recap 2
-    11: { adam: { mood: "thinking", message: "Shhh... the photo is talking." }, layla: null }, // learn: clues
-    12: { adam: { mood: "curious", message: "Pin every clue, Cyber Hero!" }, layla: null }, // game: clueBoard
-    13: { adam: null, layla: { mood: "excited", message: "Quick - which clue leaks home?" } }, // prove: speed
-    14: { adam: null, layla: { mood: "thumbsup", message: "Magnifying glass: earned." } }, // recap 3
-    15: { adam: null, layla: { mood: "thinking", message: "Smallest door that fits." } }, // learn: doors
-    16: { adam: null, layla: { mood: "excited", message: "Be the door keeper!" } }, // game: conveyorSort
-    17: { adam: { mood: "worried", message: "He's fibbing about 'private' - catch him!" }, layla: null }, // prove: lie
-    18: { adam: { mood: "thumbsup", message: "Doors kept. Fib busted." }, layla: null }, // recap 4
-    19: { adam: null, layla: { mood: "thinking", message: "Look. Think. Ask. Three seconds." } }, // learn: ritual
-    20: { adam: null, layla: { mood: "curious", message: "Run the ritual - pull the lever!" } }, // game: levers
-    21: { adam: { mood: "thumbsup", message: "Put the ritual in order!" }, layla: null }, // prove: order
-    22: { adam: { mood: "excited", message: "All five powers - boss time soon!" }, layla: null }, // recap 5
-    23: { adam: { mood: "excited", message: "Share-smart or photo leak - scan!" }, layla: null }, // consolidation
-    24: { adam: null, layla: { mood: "worried", message: "His photo heist is ON - crash it!" } }, // boss
-    25: { adam: { mood: "excited", message: "Watch the heist fall apart!" }, layla: null }, // outro video
-    26: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
-    27: { adam: { mood: "excited", message: "Stickers earned - off to Cyber HQ!" }, layla: null }, // stickers
-    28: { adam: null, layla: { mood: "thumbsup", message: "Photo Detective badge earned!" } }, // completion
+    0: { adam: { mood: "excited", message: "Mission 8: the runaway photo!" }, layla: null }, // intro video
+    1: { adam: { mood: "worried", message: "One photo told strangers everything." }, layla: null }, // alert
+    2: { adam: null, layla: { mood: "curious", message: "Mission Command is calling." } }, // ATLAS briefing
+    3: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } }, // mission brief
+    4: { adam: { mood: "thinking", message: "Delete isn't magic. Watch." }, layla: null }, // learn: copies
+    5: { adam: { mood: "excited", message: "Share it, delete it, watch the phones!" }, layla: null }, // game: Undo Test
+    6: { adam: null, layla: { mood: "thumbsup", message: "Finish the photo rule!" } }, // prove: finish
+    7: { adam: null, layla: { mood: "excited", message: "One power down, four to go!" } }, // recap 1
+    8: { adam: null, layla: { mood: "thinking", message: "Whose face is it? Their call." } }, // learn: consent
+    9: { adam: { mood: "curious", message: "Ask every face in the photo." }, layla: null }, // game: Ask Ring
+    10: { adam: null, layla: { mood: "thumbsup", message: "What comes first?" } }, // prove: recall
+    11: { adam: { mood: "thumbsup", message: "Ask-first: locked in!" }, layla: null }, // recap 2
+    12: { adam: { mood: "thinking", message: "Shhh. The photo is talking." }, layla: null }, // learn: clues
+    13: { adam: { mood: "excited", message: "Develop it, then check the corners!" }, layla: null }, // game: Developing Tray
+    14: { adam: null, layla: { mood: "excited", message: "Quick! Which clue leaks home?" } }, // prove: speed
+    15: { adam: null, layla: { mood: "thumbsup", message: "Magnifying glass: earned." } }, // recap 3
+    16: { adam: null, layla: { mood: "thinking", message: "Which door fits this photo?" } }, // learn: doors
+    17: { adam: { mood: "curious", message: "Turn the dial. No rush." }, layla: null }, // game: Door Dial
+    18: { adam: { mood: "worried", message: "He's fibbing about private. Catch him!" }, layla: null }, // prove: lie
+    19: { adam: { mood: "thumbsup", message: "Doors picked. Fib busted." }, layla: null }, // recap 4
+    20: { adam: { mood: "thinking", message: "Look. Think. Ask. Three seconds." }, layla: null }, // learn: ritual
+    21: { adam: { mood: "curious", message: "Check every row, detective." }, layla: null }, // game: Photo Detective
+    22: { adam: null, layla: { mood: "thumbsup", message: "Put the ritual in order!" } }, // prove: order
+    23: { adam: null, layla: { mood: "excited", message: "All five powers. Review time!" } }, // recap 5
+    24: { adam: null, layla: { mood: "excited", message: "Find the way out of the darkroom!" } }, // review: Share Maze
+    25: { adam: { mood: "worried", message: "His photo heist is ON. Crash it!" }, layla: null }, // boss
+    26: { adam: null, layla: { mood: "excited", message: "Watch the heist fall apart!" } }, // outro video
+    27: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
+    28: { adam: null, layla: { mood: "excited", message: "Stickers earned, off to Cyber HQ!" } }, // stickers
+    29: { adam: { mood: "thumbsup", message: "Photo Detective badge earned!" }, layla: null }, // completion
   },
 };
