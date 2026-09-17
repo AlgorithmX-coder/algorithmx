@@ -1,96 +1,142 @@
 "use client";
 
 /**
- * TruePriceLever - Week 7 (In-Game Spending) signature exercise.
+ * TruePriceLever: Week 7 (In-Game Spending) signature exercise, rebuilt as a
+ * data-driven concept game to the Learn-Loop standard.
  *
- * A glittery loot shop. The child gets a pouch of 5 golden coins for the
- * WHOLE shop, always visible. Four shiny deals appear one at a time; each
- * has a brass TRUTH LEVER the child pulls down and HOLDS while a paper
- * receipt physically unspools showing the REAL total. Drip traps ("1 coin
- * a DAY!") print +1 +1 +1 in red adding up huge; honest deals print one
- * calm green line. Only after the receipt is fully printed can the child
- * choose BUY or WALK AWAY. The Star Cape costs more than 2 coins, so its
- * choices stay locked until the ASK A GROWN-UP bell is rung. Buying a trap
- * drains the pouch red, then a teach beat refunds it ("Lucky this is just
- * practice!") and play continues; there is no hard fail. Win = a fair item
- * bought, the bell used, and coins still left in the pouch.
+ * A glittery loot shop. The child gets a pouch of golden coins for the WHOLE
+ * shop, always visible. Shiny deals appear one at a time; each has a brass
+ * TRUTH LEVER the child pulls down and HOLDS while a paper receipt physically
+ * unspools showing the REAL total. Drip traps ("1 coin a DAY!") print +1 +1 +1
+ * in red adding up huge; honest deals print calm green lines. A deal may
+ * carry a flashing pressure banner and a fake countdown clock: the clock is
+ * display only, freezes the moment the lever is first pulled, and is stamped
+ * FAKE once the receipt is out. Only after the receipt is fully printed do two
+ * IDENTICAL buttons appear, BUY and WALK AWAY (same style, no colour hint),
+ * and the child decides. A right BUY spends the advertised coins; a wrong BUY
+ * drains the TRUE cost red, the teach panel explains, the coins refund, and
+ * the SAME deal stays on screen for the retry. There is no hard fail.
  *
- * Self-contained by design: deps are react + framer-motion + ExerciseFrame
- * + PixIcon + inline SVG/CSS only.
+ * Content is data-driven (every deal, its receipt, stamp, right move, spoken
+ * read-aloud, verdict reason and teach panel are props); the defaults below
+ * keep the legacy signature mount unchanged. Deals play in authored order.
+ *
+ * Learn-Loop wiring: the Raccoon's boast folds into the shared intro
+ * (`threat`), Sarah speaks the how-to once as the shop opens (`coachLines`)
+ * and reads each deal aloud as it appears (audio-only, `recordedOnly`, the
+ * lever and buttons held while she speaks), a right move gets a spoken
+ * verdict with its reason ("That's right!" + `why` via the shared
+ * VerdictVoice), a wrong move speaks through WrongAnswerPanel, and the
+ * complete beat speaks the payoff (`completeNarration`). Hold is the one
+ * non-tap verb here; BUY and WALK AWAY are plain taps; nothing drags.
+ *
+ * Self-contained visuals: react + framer-motion + ExerciseFrame + PixIcon +
+ * inline SVG/CSS only.
  */
 
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties, ReactNode } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useTransform,
-  useReducedMotion,
-} from "framer-motion";
+import type { KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent, ReactNode } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import type { Variants } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
+import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
+import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
+import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
+
+// Audio-only narration: Sarah's voice with no visible narration box (the text
+// she reads is already on screen), same recipe as the Clue Stamper.
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 /* ------------------------------------------------------------------ */
-/* Content                                                            */
+/* Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface LeverReceiptLine { label: string; amount: string; bad: boolean; note?: boolean }
+export interface LeverDeal {
+  id: string; name: string; art: "hat" | "box" | "pass" | "cape";
+  priceTag: string;
+  pressure?: string;
+  countdown?: boolean;
+  advertised: number;
+  trueCost: number;
+  receipt: LeverReceiptLine[];
+  totalLabel: string;
+  stamp: "FAIR!" | "TRICK!";
+  rightMove: "buy" | "walk";
+  readAloud: string;
+  why: string;
+  teach: { title: string; body: string; tip: string };
+}
+export interface TruePriceLeverProps {
+  deals?: LeverDeal[];
+  startCoins?: number;
+  introTitle?: string; introSubtitle?: string; introIcon?: string;
+  shopLabel?: string; leverHint?: string; buyLabel?: string; walkLabel?: string; fakeStamp?: string;
+  completeTitle?: string; completeLine?: string;
+  hints?: { tier1: string; tier2: string };
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  threat?: { raccoonLine: string };
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+  onComplete: (score?: number) => void;
+  onCorrect?: () => void; onWrong?: () => void;
+  onHintReached?: (tier: 1 | 2 | 3) => void;
+  onAnswered?: (o: { questionKey: string; selectedIndex: number; correctIndex: number; wasCorrect: boolean }) => void;
+}
+
+/* ------------------------------------------------------------------ */
+/* Default content (the legacy signature mount)                       */
 /* ------------------------------------------------------------------ */
 
 const START_COINS = 5;
 
-interface ReceiptLine {
-  label: string;
-  amount: string;
-  bad: boolean;
-  note?: boolean;
-}
-
-interface Deal {
-  id: string;
-  name: string;
-  art: "hat" | "box" | "pass" | "cape";
-  priceTag: string;
-  advertised: number;
-  honest: boolean;
-  trueCost: number;
-  needsGrownUp: boolean;
-  mustBuy?: boolean;
-  receipt: ReceiptLine[];
-  totalLabel: string;
-  stamp: "FAIR!" | "TRICK!";
-  teachTitle?: string;
-  teachBody?: string;
-  teachTip?: string;
-}
-
-const DEALS: Deal[] = [
+const DEALS: LeverDeal[] = [
   {
     id: "hat",
     name: "Cool Hat",
     art: "hat",
     priceTag: "2 coins",
     advertised: 2,
-    honest: true,
     trueCost: 2,
-    needsGrownUp: false,
     receipt: [
       { label: "Cool Hat", amount: "2 coins", bad: false },
       { label: "Hidden tricks", amount: "none!", bad: false },
     ],
     totalLabel: "TRUE PRICE: 2 coins",
     stamp: "FAIR!",
+    rightMove: "buy",
+    readAloud: "A Cool Hat for two coins. Pull the lever and check the real price.",
+    why: "The receipt matched the tag. Two coins and no hidden tricks, so this deal is fair.",
+    teach: {
+      title: "That hat was a fair deal!",
+      body: "The receipt showed two coins and no hidden tricks. When the true price matches the tag, buying is fine.",
+      tip: "Walk away from tricks, not from fair deals. Trust the receipt.",
+    },
   },
   {
     id: "box",
     name: "Mystery Box",
     art: "box",
     priceTag: "1 coin!!",
+    pressure: "Rare dragon inside?!",
     advertised: 1,
-    honest: false,
     trueCost: 5,
-    needsGrownUp: false,
     receipt: [
       { label: "Mystery Box", amount: "1 coin", bad: true },
       { label: "No dragon! Try again", amount: "+1", bad: true },
@@ -100,20 +146,24 @@ const DEALS: Deal[] = [
     ],
     totalLabel: "TRUE PRICE: 5 coins (no dragon!)",
     stamp: "TRICK!",
-    teachTitle: "The box gobbled your pouch!",
-    teachBody:
-      "Mystery boxes keep whispering ONE more try. That is how a 1-coin box empties a whole pouch.",
-    teachTip: "Lucky this is just practice! Take the refund, and next time trust the receipt.",
+    rightMove: "walk",
+    readAloud: "A Mystery Box for one coin. Pull the lever and see what it really costs.",
+    why: "The receipt kept printing plus one, plus one. One coin became five, so walking away was smart.",
+    teach: {
+      title: "The box gobbled your pouch!",
+      body: "Mystery boxes keep whispering ONE more try. That is how a 1-coin box empties a whole pouch.",
+      tip: "Lucky this is just practice! Take the refund, and next time trust the receipt.",
+    },
   },
   {
     id: "pass",
     name: "Mega Pass",
     art: "pass",
     priceTag: "only 1 coin a DAY!",
+    pressure: "Offer ends soon!",
+    countdown: true,
     advertised: 1,
-    honest: false,
     trueCost: 7,
-    needsGrownUp: false,
     receipt: [
       { label: "Day 1", amount: "1 coin", bad: true },
       { label: "Day 2", amount: "+1", bad: true },
@@ -124,10 +174,14 @@ const DEALS: Deal[] = [
     ],
     totalLabel: "TRUE PRICE: 7 coins in week ONE",
     stamp: "TRICK!",
-    teachTitle: "Tiny prices grow HUGE!",
-    teachBody:
-      "One coin a day sounds tiny, but the drip never stops. In one week it costs more than your whole pouch.",
-    teachTip: "Lucky this is just practice! When a price repeats every day, pull the lever and add it up.",
+    rightMove: "walk",
+    readAloud: "A Mega Pass for only one coin a day. Pull the lever and add it up.",
+    why: "One coin a day never stops. Seven coins in one week is more than your whole pouch.",
+    teach: {
+      title: "Tiny prices grow HUGE!",
+      body: "One coin a day sounds tiny, but the drip never stops. In one week it costs more than your whole pouch.",
+      tip: "Lucky this is just practice! When a price repeats every day, pull the lever and add it up.",
+    },
   },
   {
     id: "cape",
@@ -135,30 +189,29 @@ const DEALS: Deal[] = [
     art: "cape",
     priceTag: "3 coins",
     advertised: 3,
-    honest: true,
     trueCost: 3,
-    needsGrownUp: true,
     receipt: [
       { label: "Star Cape", amount: "3 coins", bad: false },
       { label: "Hidden tricks", amount: "none!", bad: false },
-      { label: "Over 2 coins", amount: "ask a grown-up", bad: false, note: true },
+      { label: "Big price, no drip", amount: "fair", bad: false, note: true },
     ],
     totalLabel: "TRUE PRICE: 3 coins",
     stamp: "FAIR!",
+    rightMove: "buy",
+    readAloud: "A Star Cape for three coins. Pull the lever and check the real price.",
+    why: "Three coins on the tag and three coins on the receipt. No drip and no tricks, so it is a fair deal.",
+    teach: {
+      title: "The cape was fair!",
+      body: "Big is not the same as tricky. The receipt showed three coins and nothing hidden.",
+      tip: "A fair price can be big. Look for hidden lines, not just the number.",
+    },
   },
 ];
 
-const HAT_AGAIN: Deal = {
-  ...DEALS[0],
-  id: "hat-again",
-  name: "Cool Hat (back on the shelf!)",
-  mustBuy: true,
-};
-
-const GROWN_UP_YES =
-  "I checked the lever with you. Three coins is a fair price, and you would still have coins left. Your choice, hero!";
-const GROWN_UP_NO =
-  "It is a fair price, but it would take your LAST coins. A smart shopper always keeps some in the pouch. Let's skip it today.";
+const DEFAULT_INTRO_SUBTITLE =
+  "A deal flashes. Pull and hold the lever, read the real total, then BUY or WALK AWAY.";
+const DEFAULT_LEVER_HINT = "Pull the TRUTH LEVER and HOLD it to print the real price!";
+const DEFAULT_COMPLETE_LINE = "The receipt never lies. The countdown always does.";
 
 /* Palette */
 const GOLD = "#ffd75e";
@@ -173,8 +226,14 @@ const INK_BAD = "#d92d2d";
 const INK_NOTE = "#b45309";
 const INK_FAINT = "#8a7f63";
 
-type Phase = "intro" | "shop" | "celebrate";
 type SpendKind = "fair" | "trap" | "refund";
+
+/* The fake clock starts here (display only, never gates anything). */
+const FAKE_CLOCK_START_S = 180;
+
+// "read" is only ever entered for a deal that has something to read, so the
+// spoken gate can never wait on a clip that does not exist (mute-aware).
+const readOrIdle = (text?: string): "read" | "idle" => (!isAudioMuted() && text ? "read" : "idle");
 
 /* Sawtooth bottom edge for the receipt paper */
 const SAW_CLIP = (() => {
@@ -212,40 +271,62 @@ const coinVariants: Variants = {
 /* ------------------------------------------------------------------ */
 
 export default function TruePriceLever({
-  onComplete,
+  deals = DEALS,
+  startCoins = START_COINS,
+  introTitle = "The True-Price Lever",
+  introSubtitle = DEFAULT_INTRO_SUBTITLE,
+  introIcon = "🧾",
+  shopLabel = "THE LOOT SHOP",
+  leverHint = DEFAULT_LEVER_HINT,
+  buyLabel = "BUY",
+  walkLabel = "WALK AWAY",
+  fakeStamp = "FAKE",
+  completeTitle = "Every true price printed!",
+  completeLine = DEFAULT_COMPLETE_LINE,
+  hints,
   narration,
+  coachLines,
+  threat,
+  completeNarration,
   accent,
-}: {
-  onComplete: () => void;
-  narration?: { speaker?: "adam" | "layla"; lines: string[] };
-  accent?: string;
-}) {
-  const reduce = !!useReducedMotion();
+  onComplete,
+  onCorrect,
+  onWrong,
+  onHintReached,
+  onAnswered,
+}: TruePriceLeverProps) {
   const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+  const reduce = intensity < 1;
+  // Both content voices are Sarah; in-game read-alouds and verdict reasons are
+  // recorded under "adam", so every manifest lookup here uses that key.
+  const voice = "adam" as const;
 
-  const [phase, setPhase] = useState<Phase>("intro");
-  const [dealIdx, setDealIdx] = useState(0);
-  const [bonusBeat, setBonusBeat] = useState(false);
-  const [coins, setCoins] = useState(START_COINS);
+  const [showIntro, setShowIntro] = useState(true);
+  const [idx, setIdx] = useState(0);
+  const [coins, setCoins] = useState(startCoins);
   const [owned, setOwned] = useState<string[]>([]);
+  // The receipt is fully printed for the current deal (choices appear).
   const [revealed, setRevealed] = useState(false);
-  const [bellRung, setBellRung] = useState(false);
-  const [grownUp, setGrownUp] = useState<null | { text: string; allowBuy: boolean }>(null);
-  const [bellUsed, setBellUsed] = useState(false);
-  const [teach, setTeach] = useState<null | {
-    title: string;
-    body: string;
-    tip: string;
-    drained: number;
-    refundTo: number;
-  }>(null);
+  // The lever has been pulled at least once on this deal: the guide glow
+  // drops and the fake clock freezes.
+  const [pulled, setPulled] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [toast, setToast] = useState<null | { text: string; tone: "good" | "warm" }>(null);
+  const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
+  const [dealWrongs, setDealWrongs] = useState(0);
+  const [totalWrongs, setTotalWrongs] = useState(0);
   const [spendKind, setSpendKind] = useState<SpendKind>("fair");
   const [drainFlash, setDrainFlash] = useState(false);
+  // Read-aloud chain: the how-to once as the shop opens, then each deal as it
+  // appears. The lever and buttons are held while she speaks. "idle" = nothing
+  // playing.
+  const [narr, setNarr] = useState<"howto" | "read" | "idle">("idle");
 
   const completedRef = useRef(false);
   const timersRef = useRef<number[]>([]);
+  // Coins drained by a wrong BUY, refunded when the teach panel closes.
+  const refundRef = useRef<null | { drained: number; refundTo: number }>(null);
 
   const later = (fn: () => void, ms: number) => {
     timersRef.current.push(window.setTimeout(fn, ms));
@@ -255,129 +336,166 @@ export default function TruePriceLever({
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, []);
 
-  const deal = bonusBeat ? HAT_AGAIN : DEALS[Math.min(dealIdx, DEALS.length - 1)];
+  const finished = idx >= deals.length;
+  const deal: LeverDeal | undefined = deals[Math.min(idx, deals.length - 1)];
 
-  /* Fresh lever + bell for every beat (LeverStation remounts via key) */
-  const resetBeat = () => {
-    setRevealed(false);
-    setBellRung(false);
-    setGrownUp(null);
-  };
+  // Spoken verdicts: Sarah says "That's right!" + why on a right move and the
+  // next deal waits for her. Wrong moves speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice(voice);
+  const speaking = narr !== "idle" || verdict.speaking || !!feedback || busy;
+  // Round 1 teaches itself: the lever glows until it is first pulled.
+  const guided = idx === 0 && !pulled && !revealed;
 
-  const showToast = (text: string, tone: "good" | "warm") => {
-    setToast({ text, tone });
-    later(() => setToast(null), 2400);
-  };
+  // Safety releases for the spoken gate (never leave the shop held).
+  useEffect(() => {
+    if (narr === "idle") return;
+    const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [narr]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
 
-  const finish = () => {
-    if (completedRef.current) return;
-    completedRef.current = true;
-    onComplete();
-  };
-
-  const advance = (ownedAfter: number) => {
-    if (!bonusBeat && dealIdx < DEALS.length - 1) {
-      resetBeat();
-      setDealIdx((i) => i + 1);
-      setBusy(false);
-    } else if (ownedAfter > 0) {
-      later(() => {
-        audio.unlock();
-        setPhase("celebrate");
-      }, 300);
-    } else {
-      resetBeat();
-      setBonusBeat(true);
-      setBusy(false);
-      showToast("The shopkeeper waves you back. One fair treat is smart too!", "warm");
+  // Hint tiers reported once each (for the parent dashboard).
+  const reportedTier = useRef(0);
+  useEffect(() => {
+    const tier = totalWrongs >= 2 ? 2 : totalWrongs >= 1 ? 1 : 0;
+    if (tier > reportedTier.current) {
+      reportedTier.current = tier;
+      onHintReached?.(tier as 1 | 2);
     }
+  }, [totalWrongs, onHintReached]);
+
+  /* ---------------- beats ---------------- */
+
+  const startBoard = () => {
+    setShowIntro(false);
+    setNarr(isAudioMuted() ? "idle" : coachLines ? "howto" : readOrIdle(deals[0]?.readAloud));
   };
 
-  const buyFair = () => {
-    if (busy || teach) return;
-    setBusy(true);
-    audio.correct();
-    setSpendKind("fair");
-    setCoins((c) => c - deal.advertised);
-    setOwned((o) => [...o, deal.id]);
-    const ownedAfter = owned.length + 1;
-    showToast("Fair deal! It is yours.", "good");
-    later(() => advance(ownedAfter), 1300);
+  const advance = () => {
+    const next = idx + 1;
+    setIdx(next);
+    setRevealed(false);
+    setPulled(false);
+    setDealWrongs(0);
+    setBusy(false);
+    setNarr(next < deals.length ? readOrIdle(deals[next]?.readAloud) : "idle");
   };
 
-  const buyTrap = () => {
-    if (busy || teach) return;
-    setBusy(true);
+  /* ---------------- the decision ---------------- */
+
+  const choose = (buy: boolean) => {
+    if (!deal || !revealed || speaking) return;
+    const correctIndex = deal.rightMove === "buy" ? 0 : 1;
+    const selectedIndex = buy ? 0 : 1;
+    const right = selectedIndex === correctIndex;
+    onAnswered?.({ questionKey: `lever-${deal.id}`, selectedIndex, correctIndex, wasCorrect: right });
+
+    if (right) {
+      setBusy(true);
+      // fx.correct plays its own chime (no audio.correct() here).
+      fx.correct({ xp: 25, text: deal.stamp === "TRICK!" ? "TRAP DODGED!" : "FAIR DEAL!" });
+      onCorrect?.();
+      if (buy) {
+        // A fair buy: the advertised coins float out green.
+        setSpendKind("fair");
+        setCoins((c) => Math.max(0, c - deal.advertised));
+        setOwned((o) => [...o, deal.name]);
+      }
+      // Sarah: "That's right!" + the deal's why, one take; the next deal waits.
+      verdict.say("right", deal.why, () => later(advance, reduce ? 200 : 900));
+      return;
+    }
+
     audio.wrong();
+    onWrong?.();
+    setTotalWrongs((n) => n + 1);
+    const prior = dealWrongs;
+    setDealWrongs(prior + 1);
+    const panel = {
+      title: deal.teach.title,
+      explanation: deal.teach.body,
+      tip: hints ? (prior >= 1 ? hints.tier2 : hints.tier1) : deal.teach.tip,
+    };
+
+    if (!buy) {
+      // Walked away from a fair deal: teach, no coin change, same deal stays.
+      refundRef.current = null;
+      setFeedback(panel);
+      return;
+    }
+
+    // Bought a trap: the TRUE cost drains red, then the teach panel opens.
+    setBusy(true);
     setSpendKind("trap");
     setDrainFlash(true);
     const have = coins;
     const drained = Math.min(have, deal.trueCost);
-    const openTeach = () => {
+    refundRef.current = { drained, refundTo: have };
+    const openPanel = () => {
       setDrainFlash(false);
-      setTeach({
-        title: deal.teachTitle ?? "That was a trap!",
-        body: deal.teachBody ?? "The true price was much bigger than the tag.",
-        tip: deal.teachTip ?? "Lucky this is just practice!",
-        drained,
-        refundTo: have,
-      });
+      setFeedback(panel);
     };
-    if (reduce) {
+    if (reduce || drained === 0) {
       setCoins(have - drained);
-      later(openTeach, 500);
+      later(openPanel, drained === 0 ? 150 : 500);
     } else {
       for (let i = 0; i < drained; i++) {
         later(() => setCoins((c) => Math.max(0, c - 1)), 250 + i * 270);
       }
-      later(openTeach, 250 + drained * 270 + 500);
+      later(openPanel, 250 + drained * 270 + 500);
     }
   };
 
-  const takeRefund = () => {
-    if (!teach) return;
-    const { drained, refundTo } = teach;
-    const ownedNow = owned.length;
-    setTeach(null);
+  // The teach panel closes: refund any drained coins and keep the SAME deal
+  // (receipt still printed) so the retry is one tap.
+  const closePanel = () => {
+    const pending = refundRef.current;
+    refundRef.current = null;
+    setFeedback(null);
+    if (!pending || pending.drained === 0) {
+      setBusy(false);
+      return;
+    }
     audio.tap();
     setSpendKind("refund");
-    showToast("Coins refunded. Phew!", "good");
     if (reduce) {
-      setCoins(refundTo);
-      later(() => advance(ownedNow), 700);
+      setCoins(pending.refundTo);
+      later(() => setBusy(false), 500);
     } else {
-      for (let i = 0; i < drained; i++) {
-        later(() => setCoins((c) => Math.min(refundTo, c + 1)), 200 + i * 150);
+      for (let i = 0; i < pending.drained; i++) {
+        later(() => setCoins((c) => Math.min(pending.refundTo, c + 1)), 200 + i * 150);
       }
-      later(() => advance(ownedNow), 200 + drained * 150 + 700);
+      later(() => setBusy(false), 200 + pending.drained * 150 + 400);
     }
   };
 
-  const walkAway = () => {
-    if (busy || teach) return;
-    setBusy(true);
-    audio.correct();
-    showToast(
-      deal.honest ? "Saving is smart too!" : "Smart move! You dodged a coin trap.",
-      "good",
-    );
-    later(() => advance(owned.length), 1100);
+  const stars = totalWrongs === 0 ? 3 : totalWrongs <= 1 ? 2 : 1;
+  const score = stars === 3 ? 100 : stars === 2 ? 70 : 40;
+  const finish = () => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    onComplete(score);
   };
 
-  const ringBell = () => {
-    if (bellRung || busy || teach) return;
-    audio.tap();
-    setBellRung(true);
-    setBellUsed(true);
-    const allowBuy = coins - deal.advertised >= 1;
-    later(() => setGrownUp({ text: allowBuy ? GROWN_UP_YES : GROWN_UP_NO, allowBuy }), 750);
-  };
-
-  const beatNumber = bonusBeat ? DEALS.length : dealIdx + 1;
-  const choicesLocked = deal.needsGrownUp && !grownUp;
+  const honest = deal?.stamp === "FAIR!";
 
   return (
-    <ExerciseFrame padding={24} maxWidth={880}>
+    <ExerciseFrame maxWidth={880} padding={24} decor>
+      {fx.layer()}
+      {verdict.element}
+
+      {/* Sarah's read-alouds (audio only): the how-to once, then each deal as it appears. */}
+      {!showIntro && !finished && deal && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          {narr === "howto" && coachLines && (
+            <InfoNarration key="tpl-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent={accent ?? GOLD} recordedOnly onDone={() => setNarr(readOrIdle(deal.readAloud))} />
+          )}
+          {narr === "read" && deal.readAloud && (
+            <InfoNarration key={`tpl-read-${deal.id}`} speaker={voice} lines={[deal.readAloud]} accent={accent ?? GOLD} recordedOnly onDone={() => setNarr("idle")} />
+          )}
+        </div>
+      )}
+
       <div
         style={{
           position: "relative",
@@ -386,9 +504,11 @@ export default function TruePriceLever({
           flexDirection: "column",
           gap: 14,
           minHeight: 500,
+          userSelect: "none",
+          WebkitUserSelect: "none",
         }}
       >
-        {/* ------------ header: shop sign + pouch + my stuff ------------ */}
+        {/* ------------ header: shop sign + pouch ------------ */}
         <div
           style={{
             display: "flex",
@@ -414,9 +534,9 @@ export default function TruePriceLever({
             }}
           >
             <PixIcon emoji="✨" size={22} />
-            THE LOOT SHOP
+            {shopLabel}
           </div>
-          <Pouch coins={coins} spendKind={spendKind} flash={drainFlash} />
+          <Pouch coins={coins} total={startCoins} spendKind={spendKind} flash={drainFlash} />
         </div>
 
         {owned.length > 0 && (
@@ -432,9 +552,9 @@ export default function TruePriceLever({
             }}
           >
             <span style={{ opacity: 0.8, letterSpacing: 1 }}>MY STUFF:</span>
-            {owned.map((id) => (
+            {owned.map((name, i) => (
               <span
-                key={id}
+                key={`${name}-${i}`}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -442,21 +562,21 @@ export default function TruePriceLever({
                   padding: "4px 10px",
                   borderRadius: 999,
                   background: "rgba(52, 211, 153, 0.14)",
-                  border: `1px solid rgba(52, 211, 153, 0.5)`,
+                  border: "1px solid rgba(52, 211, 153, 0.5)",
                 }}
               >
                 <PixIcon emoji="✅" size={16} />
-                {id.startsWith("hat") ? "Cool Hat" : "Star Cape"}
+                {name}
               </span>
             ))}
           </div>
         )}
 
-        {/* ------------ beat chips ------------ */}
+        {/* ------------ beat chips + counter ------------ */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {DEALS.map((d, i) => {
-            const done = bonusBeat || i < dealIdx || phase === "celebrate";
-            const current = !bonusBeat && i === dealIdx && phase === "shop";
+          {deals.map((d, i) => {
+            const done = i < idx;
+            const current = i === idx && !finished;
             return (
               <div
                 key={d.id}
@@ -470,41 +590,55 @@ export default function TruePriceLever({
                     : current
                       ? GOLD
                       : "rgba(231, 236, 255, 0.18)",
-                  boxShadow: current ? `0 0 12px rgba(255, 215, 94, 0.6)` : undefined,
+                  boxShadow: current ? "0 0 12px rgba(255, 215, 94, 0.6)" : undefined,
                 }}
               />
             );
           })}
           <span style={{ fontSize: 13, fontWeight: 800, opacity: 0.7, marginLeft: 4 }}>
-            Deal {beatNumber} of {DEALS.length}
+            Deal {Math.min(idx + 1, deals.length)} of {deals.length}
           </span>
         </div>
 
         {/* ------------ main board ------------ */}
-        <div
-          style={{
-            display: "flex",
-            gap: 20,
-            justifyContent: "center",
-            alignItems: "stretch",
-            flexWrap: "wrap",
-          }}
-        >
-          <DealCard key={`card-${deal.id}`} deal={deal} reduce={reduce} />
-          <LeverStation
-            key={`lever-${deal.id}`}
-            deal={deal}
-            done={revealed}
-            reduce={reduce}
-            onRevealed={() => {
-              audio.drop(); // the receipt's stamp-thunk payoff
-              setRevealed(true);
+        {deal && (
+          <div
+            style={{
+              display: "flex",
+              gap: 20,
+              justifyContent: "center",
+              alignItems: "stretch",
+              flexWrap: "wrap",
             }}
-          />
-        </div>
+          >
+            <DealCard
+              key={`card-${deal.id}`}
+              deal={deal}
+              reduce={reduce}
+              ticking={!showIntro && !finished}
+              frozen={pulled}
+              stamped={revealed}
+              fakeStamp={fakeStamp}
+            />
+            <LeverStation
+              key={`lever-${deal.id}`}
+              deal={deal}
+              honest={honest}
+              done={revealed}
+              reduce={reduce}
+              disabled={speaking}
+              glow={guided && !speaking}
+              onFirstPull={() => setPulled(true)}
+              onRevealed={() => {
+                audio.drop(); // the receipt's stamp-thunk payoff
+                setRevealed(true);
+              }}
+            />
+          </div>
+        )}
 
         {/* ------------ action area ------------ */}
-        <div style={{ minHeight: 118, display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ minHeight: 96, display: "flex", flexDirection: "column", gap: 10 }}>
           <AnimatePresence mode="wait">
             {!revealed && (
               <motion.div
@@ -526,347 +660,67 @@ export default function TruePriceLever({
                 }}
               >
                 <PixIcon emoji="👆" size={26} />
-                Pull the TRUTH LEVER and HOLD it to print the real price!
+                {leverHint}
               </motion.div>
             )}
 
-            {revealed && choicesLocked && (
-              <motion.div
-                key="bell"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                style={{
-                  alignSelf: "center",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 8,
-                }}
-              >
-                <div style={{ fontSize: 16, fontWeight: 800, color: GOLD }}>
-                  This deal is over 2 coins! Ring the bell before you choose.
-                </div>
-                <motion.button
-                  onClick={ringBell}
-                  whileTap={{ scale: 0.92 }}
-                  animate={
-                    bellRung
-                      ? { rotate: [0, -20, 16, -10, 6, 0] }
-                      : reduce
-                        ? {}
-                        : { rotate: [0, -6, 6, 0] }
-                  }
-                  transition={
-                    bellRung
-                      ? { duration: 0.7 }
-                      : { repeat: Infinity, duration: 1.6, repeatDelay: 0.6 }
-                  }
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 4,
-                    padding: "12px 26px",
-                    borderRadius: 18,
-                    border: `2px solid ${GOLD}`,
-                    background: "linear-gradient(180deg, rgba(255,215,94,0.25), rgba(255,165,40,0.15))",
-                    color: "#ffe9b0",
-                    fontWeight: 900,
-                    fontSize: 17,
-                    cursor: bellRung ? "default" : "pointer",
-                    letterSpacing: 0.5,
-                  }}
-                >
-                  <PixIcon emoji="🔔" size={44} />
-                  {bellRung ? "DING!" : "ASK A GROWN-UP"}
-                </motion.button>
-              </motion.div>
-            )}
-
-            {revealed && !choicesLocked && (
+            {revealed && (
               <motion.div
                 key="choices"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center" }}
+                style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center" }}
               >
-                {grownUp && (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 10,
-                      maxWidth: 560,
-                      padding: "10px 14px",
-                      borderRadius: 16,
-                      background: "rgba(231, 236, 255, 0.08)",
-                      border: "1px solid rgba(231, 236, 255, 0.25)",
-                      fontSize: 15,
-                      fontWeight: 700,
-                      lineHeight: 1.45,
-                    }}
-                  >
-                    <PixIcon emoji="👪" size={34} />
-                    <span>{grownUp.text}</span>
-                  </div>
-                )}
-                <div style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center" }}>
-                  {(!deal.needsGrownUp || (grownUp && grownUp.allowBuy)) && (
-                    <BigButton
-                      onClick={deal.honest ? buyFair : buyTrap}
-                      disabled={busy}
-                      kind="buy"
-                    >
-                      <CoinSvg size={22} />
-                      BUY for {deal.advertised} {deal.advertised === 1 ? "coin" : "coins"}
-                    </BigButton>
-                  )}
-                  {!deal.mustBuy && (
-                    <BigButton onClick={walkAway} disabled={busy} kind="walk">
-                      {deal.needsGrownUp && grownUp && !grownUp.allowBuy
-                        ? "SAVE MY COINS"
-                        : "WALK AWAY"}
-                    </BigButton>
-                  )}
-                </div>
+                {/* Two IDENTICAL neutral buttons: nothing here hints at the answer. */}
+                <ChoiceButton onClick={() => choose(true)} disabled={speaking}>
+                  {buyLabel}
+                </ChoiceButton>
+                <ChoiceButton onClick={() => choose(false)} disabled={speaking}>
+                  {walkLabel}
+                </ChoiceButton>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
+
+        <style>{`@keyframes tplGuide { 0%,100% { box-shadow: 0 0 0 3px rgba(255,215,94,0.35), 0 0 16px rgba(255,215,94,0.5) } 50% { box-shadow: 0 0 0 7px rgba(255,215,94,0.14), 0 0 30px rgba(255,215,94,0.9) } }`}</style>
       </div>
 
-      {/* ------------ toast ------------ */}
-      <AnimatePresence>
-        {toast && (
-          <motion.div
-            key={toast.text}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            style={{
-              position: "absolute",
-              bottom: 18,
-              left: 0,
-              right: 0,
-              display: "flex",
-              justifyContent: "center",
-              pointerEvents: "none",
-              zIndex: 6,
-            }}
-          >
-            <div
-              style={{
-                padding: "10px 20px",
-                borderRadius: 999,
-                fontSize: 16,
-                fontWeight: 900,
-                color: "#08221a",
-                background: toast.tone === "good" ? GOOD_GREEN : GOLD,
-                boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
-              }}
-            >
-              {toast.text}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ------------ trap teach overlay ------------ */}
-      <AnimatePresence>
-        {teach && (
-          <motion.div
-            key="teach"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 8,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 24,
-              background: "rgba(10, 12, 28, 0.78)",
-            }}
-          >
-            <motion.div
-              initial={{ scale: reduce ? 1 : 0.85, y: reduce ? 0 : 16 }}
-              animate={{ scale: 1, y: 0 }}
-              style={{
-                maxWidth: 480,
-                width: "100%",
-                borderRadius: 22,
-                padding: "22px 24px",
-                background: "linear-gradient(180deg, #2a1a2e, #1d1430)",
-                border: `2px solid ${BAD_RED}`,
-                display: "flex",
-                flexDirection: "column",
-                gap: 10,
-                textAlign: "center",
-                alignItems: "center",
-              }}
-            >
-              <PixIcon emoji="💡" size={48} />
-              <div style={{ fontSize: 22, fontWeight: 900, color: BAD_RED }}>{teach.title}</div>
-              <div style={{ fontSize: 16, fontWeight: 700, lineHeight: 1.5 }}>
-                {teach.drained} {teach.drained === 1 ? "coin" : "coins"} vanished! {teach.body}
-              </div>
-              <div
-                style={{
-                  fontSize: 15,
-                  fontWeight: 800,
-                  color: GOOD_GREEN,
-                  background: "rgba(52, 211, 153, 0.12)",
-                  border: "1px solid rgba(52, 211, 153, 0.4)",
-                  borderRadius: 12,
-                  padding: "8px 12px",
-                  lineHeight: 1.45,
-                }}
-              >
-                {teach.tip}
-              </div>
-              <BigButton onClick={takeRefund} kind="buy">
-                <CoinSvg size={22} />
-                REFUND MY COINS
-              </BigButton>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ------------ intro overlay ------------ */}
-      {phase === "intro" && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 9,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 24,
-            background: "rgba(10, 12, 28, 0.86)",
-          }}
-        >
-          <motion.div
-            initial={{ scale: reduce ? 1 : 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            style={{
-              maxWidth: 520,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 14,
-              textAlign: "center",
-              // The spoken-instruction block makes the intro taller; on short
-              // viewports the card scrolls internally so the start button is
-              // always reachable (never clipped by the centered overlay).
-              maxHeight: "100%",
-              overflowY: "auto",
-            }}
-          >
-            <div style={{ display: "flex", gap: 6 }}>
-              {Array.from({ length: START_COINS }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ y: reduce ? 0 : -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: reduce ? 0 : 0.12 * i }}
-                >
-                  <CoinSvg size={34} />
-                </motion.div>
-              ))}
-            </div>
-            <div style={{ fontSize: 30, fontWeight: 900, color: GOLD, letterSpacing: 1 }}>
-              THE TRUE-PRICE LEVER
-            </div>
-            <div style={{ fontSize: 17, fontWeight: 700, lineHeight: 1.55 }}>
-              Welcome to the Loot Shop! You have 5 golden coins for the WHOLE shop.
-              Some shiny deals hide their true price. Pull the brass TRUTH LEVER on
-              every deal and HOLD it: a paper receipt prints the REAL total. And if
-              anything costs more than 2 coins, ring the ASK A GROWN-UP bell first!
-            </div>
-            {narration && narration.lines.length > 0 && (
-              <div style={{ width: "100%", textAlign: "left" }}>
-                <InfoNarration lines={narration.lines} accent={accent ?? "#ff4e6a"} />
-              </div>
-            )}
-            <BigButton onClick={() => setPhase("shop")} kind="buy">
-              OPEN THE SHOP
-            </BigButton>
-          </motion.div>
-        </div>
+      {/* ------------ overlays ------------ */}
+      {showIntro && (
+        <ExerciseIntroBeat
+          title={introTitle}
+          subtitle={introSubtitle}
+          icon={introIcon}
+          narration={narration}
+          threat={threat}
+          character={narration?.speaker}
+          onDismiss={startBoard}
+        />
       )}
 
-      {/* ------------ win overlay ------------ */}
-      {phase === "celebrate" && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 9,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 24,
-            background: "rgba(8, 22, 16, 0.88)",
-          }}
-        >
-          <motion.div
-            initial={{ scale: reduce ? 1 : 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            style={{
-              maxWidth: 520,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 12,
-              textAlign: "center",
-              // Scroll-safe like the intro: on short viewports the card
-              // scrolls internally so COLLECT MY STARS is never clipped.
-              maxHeight: "100%",
-              overflowY: "auto",
-            }}
-          >
-            <div style={{ display: "flex", gap: 10 }}>
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  initial={{ scale: 0, rotate: reduce ? 0 : -30 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ delay: reduce ? 0 : 0.18 * i, type: "spring", stiffness: 300 }}
-                >
-                  <PixIcon emoji="⭐" size={54} />
-                </motion.div>
-              ))}
-            </div>
-            <div style={{ fontSize: 34, fontWeight: 900, color: GOOD_GREEN, letterSpacing: 1 }}>
-              SMART SHOPPER!
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-              <WinChip>
-                <PixIcon emoji="✅" size={20} /> You checked every TRUE price
-              </WinChip>
-              {bellUsed && (
-                <WinChip>
-                  <PixIcon emoji="🔔" size={20} /> You asked a grown-up on the big deal
-                </WinChip>
-              )}
-              <WinChip>
-                {Array.from({ length: coins }).map((_, i) => (
-                  <CoinSvg key={i} size={20} />
-                ))}
-                {coins} {coins === 1 ? "coin" : "coins"} still in your pouch
-              </WinChip>
-            </div>
-            <BigButton onClick={finish} kind="buy">
-              COLLECT MY STARS
-            </BigButton>
-          </motion.div>
-        </div>
+      {feedback && (
+        <WrongAnswerPanel
+          title={feedback.title}
+          explanation={feedback.explanation}
+          tip={feedback.tip}
+          onContinue={closePanel}
+        />
+      )}
+
+      {finished && (
+        <ExerciseCompleteBeat
+          title={completeTitle}
+          stars={stars}
+          statLines={[
+            `${deals.length} true price${deals.length === 1 ? "" : "s"} printed`,
+            `${coins} coin${coins === 1 ? "" : "s"} still in your pouch`,
+            completeLine,
+          ]}
+          narration={completeNarration}
+          onContinue={finish}
+        />
       )}
     </ExerciseFrame>
   );
@@ -878,15 +732,18 @@ export default function TruePriceLever({
 
 function Pouch({
   coins,
+  total,
   spendKind,
   flash,
 }: {
   coins: number;
+  total: number;
   spendKind: SpendKind;
   flash: boolean;
 }) {
   return (
     <div
+      aria-label={`Pouch: ${coins} of ${total} coins`}
       style={{
         display: "flex",
         alignItems: "center",
@@ -895,7 +752,7 @@ function Pouch({
         borderRadius: 16,
         background: flash ? "rgba(255, 93, 93, 0.16)" : "rgba(255, 215, 94, 0.08)",
         border: `2px solid ${flash ? BAD_RED : "rgba(255, 215, 94, 0.45)"}`,
-        boxShadow: flash ? `0 0 18px rgba(255, 93, 93, 0.5)` : undefined,
+        boxShadow: flash ? "0 0 18px rgba(255, 93, 93, 0.5)" : undefined,
         transition: "all 0.3s ease",
       }}
     >
@@ -903,7 +760,7 @@ function Pouch({
         POUCH
       </span>
       <div style={{ display: "flex", gap: 5 }}>
-        {Array.from({ length: START_COINS }).map((_, i) => (
+        {Array.from({ length: Math.max(total, coins) }).map((_, i) => (
           <div
             key={i}
             style={{
@@ -941,10 +798,27 @@ function Pouch({
 }
 
 /* ------------------------------------------------------------------ */
-/* Deal card                                                          */
+/* Deal card (art + price tag + optional pressure banner + fake clock) */
 /* ------------------------------------------------------------------ */
 
-function DealCard({ deal, reduce }: { deal: Deal; reduce: boolean }) {
+function DealCard({
+  deal,
+  reduce,
+  ticking,
+  frozen,
+  stamped,
+  fakeStamp,
+}: {
+  deal: LeverDeal;
+  reduce: boolean;
+  /** The fake clock only runs while the shop is open (not under the intro). */
+  ticking: boolean;
+  /** Frozen the moment the lever is first pulled. */
+  frozen: boolean;
+  /** The receipt is out: the clock gets its FAKE label. */
+  stamped: boolean;
+  fakeStamp: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, x: reduce ? 0 : -24 }}
@@ -982,6 +856,30 @@ function DealCard({ deal, reduce }: { deal: Deal; reduce: boolean }) {
       <div style={{ position: "absolute", top: 8, right: 10 }}>
         <PixIcon emoji="✨" size={20} />
       </div>
+
+      {/* Pressure banner: flashes, means nothing. */}
+      {deal.pressure && (
+        <motion.div
+          animate={reduce ? { opacity: 1 } : { opacity: [1, 0.45, 1], scale: [1, 1.03, 1] }}
+          transition={reduce ? undefined : { repeat: Infinity, duration: 0.9, ease: "easeInOut" }}
+          style={{
+            alignSelf: "stretch",
+            textAlign: "center",
+            padding: "5px 10px",
+            borderRadius: 10,
+            background: `linear-gradient(180deg, ${BAD_RED}, #c92a2a)`,
+            color: "#fff",
+            fontWeight: 900,
+            fontSize: 13,
+            letterSpacing: 1.2,
+            textTransform: "uppercase",
+            boxShadow: "0 4px 14px rgba(255, 93, 93, 0.45)",
+          }}
+        >
+          {deal.pressure}
+        </motion.div>
+      )}
+
       <ItemArt kind={deal.art} />
       <div style={{ fontSize: 20, fontWeight: 900, textAlign: "center" }}>{deal.name}</div>
       <motion.div
@@ -999,11 +897,111 @@ function DealCard({ deal, reduce }: { deal: Deal; reduce: boolean }) {
       >
         {deal.priceTag}
       </motion.div>
+
+      {deal.countdown && (
+        <FakeClock ticking={ticking} frozen={frozen} stamped={stamped} label={fakeStamp} reduce={reduce} />
+      )}
     </motion.div>
   );
 }
 
-function ItemArt({ kind }: { kind: Deal["art"] }) {
+/**
+ * The shop's countdown: display only. It ticks down from 3:00, freezes the
+ * moment the lever is first pulled, never gates anything and never expires
+ * into a lose state (it simply parks at 0:00).
+ */
+function FakeClock({
+  ticking,
+  frozen,
+  stamped,
+  label,
+  reduce,
+}: {
+  ticking: boolean;
+  frozen: boolean;
+  stamped: boolean;
+  label: string;
+  reduce: boolean;
+}) {
+  const [secs, setSecs] = useState(FAKE_CLOCK_START_S);
+  useEffect(() => {
+    if (!ticking || frozen) return;
+    const id = window.setInterval(() => setSecs((s) => Math.max(0, s - 1)), 1000);
+    return () => window.clearInterval(id);
+  }, [ticking, frozen]);
+  const mm = Math.floor(secs / 60);
+  const ss = String(secs % 60).padStart(2, "0");
+  const live = !frozen && !reduce;
+
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "relative",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "5px 12px",
+        borderRadius: 999,
+        background: frozen ? "rgba(231, 236, 255, 0.08)" : "rgba(255, 93, 93, 0.16)",
+        border: `1px solid ${frozen ? "rgba(231, 236, 255, 0.3)" : `${BAD_RED}99`}`,
+        color: frozen ? "#cfd6f6" : "#ffd0d0",
+        fontWeight: 900,
+        fontSize: 15,
+        fontFamily: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+        transition: "all 0.3s ease",
+      }}
+    >
+      <motion.span
+        animate={live ? { opacity: [1, 0.35, 1] } : { opacity: 1 }}
+        transition={live ? { repeat: Infinity, duration: 1, ease: "easeInOut" } : undefined}
+        style={{ display: "inline-flex" }}
+      >
+        <PixIcon emoji="⏱" size={18} />
+      </motion.span>
+      <span>
+        {mm}:{ss}
+      </span>
+      {!frozen && (
+        <motion.span
+          animate={live ? { opacity: [1, 0.4, 1] } : { opacity: 1 }}
+          transition={live ? { repeat: Infinity, duration: 0.7, ease: "easeInOut" } : undefined}
+          style={{ fontSize: 10, letterSpacing: 1.4, fontFamily: "inherit" }}
+        >
+          HURRY!
+        </motion.span>
+      )}
+      <AnimatePresence>
+        {stamped && (
+          <motion.span
+            key="fake"
+            initial={{ scale: reduce ? 1 : 2, opacity: 0, rotate: -12 }}
+            animate={{ scale: 1, opacity: 1, rotate: -12 }}
+            transition={{ type: "spring", stiffness: 340, damping: 18 }}
+            style={{
+              position: "absolute",
+              right: -10,
+              top: -13,
+              padding: "1px 7px",
+              border: `3px double ${INK_BAD}`,
+              borderRadius: 6,
+              background: "rgba(255, 253, 242, 0.92)",
+              color: INK_BAD,
+              fontWeight: 900,
+              fontSize: 12,
+              letterSpacing: 1,
+              fontFamily: "inherit",
+            }}
+          >
+            {label}
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function ItemArt({ kind }: { kind: LeverDeal["art"] }) {
   return (
     <svg width={130} height={100} viewBox="0 0 130 100" aria-hidden>
       <defs>
@@ -1096,13 +1094,23 @@ const UNSPOOL_MS_REDUCED = 1000;
 
 function LeverStation({
   deal,
+  honest,
   done,
   reduce,
+  disabled,
+  glow,
+  onFirstPull,
   onRevealed,
 }: {
-  deal: Deal;
+  deal: LeverDeal;
+  honest: boolean;
   done: boolean;
   reduce: boolean;
+  /** Held while Sarah speaks or a beat is settling: visible, not pullable. */
+  disabled: boolean;
+  /** Round-1 guide: the lever breathes gold until it is first pulled. */
+  glow: boolean;
+  onFirstPull: () => void;
   onRevealed: () => void;
 }) {
   const [holding, setHolding] = useState(false);
@@ -1114,12 +1122,25 @@ function LeverStation({
 
   const holdingRef = useRef(false);
   const doneRef = useRef(false);
+  const pulledRef = useRef(false);
+  // Read by the unspool tick so a hold never prints while the lever is held
+  // back (Sarah speaking, a beat settling).
+  const disabledRef = useRef(disabled);
   const revealCbRef = useRef(onRevealed);
+  const firstPullCbRef = useRef(onFirstPull);
   useEffect(() => {
+    disabledRef.current = disabled;
     revealCbRef.current = onRevealed;
-  }, [onRevealed]);
+    firstPullCbRef.current = onFirstPull;
+  }, [disabled, onRevealed, onFirstPull]);
 
-  /* stop holding when the pointer lifts anywhere */
+  const endHold = () => {
+    holdingRef.current = false;
+    setHolding(false);
+  };
+
+  /* Backstop: stop holding when the pointer lifts anywhere (pointer capture
+     already routes the up to the lever, this covers a lost capture). */
   useEffect(() => {
     if (!holding) return;
     const stop = () => {
@@ -1128,9 +1149,11 @@ function LeverStation({
     };
     window.addEventListener("pointerup", stop);
     window.addEventListener("pointercancel", stop);
+    window.addEventListener("blur", stop);
     return () => {
       window.removeEventListener("pointerup", stop);
       window.removeEventListener("pointercancel", stop);
+      window.removeEventListener("blur", stop);
     };
   }, [holding]);
 
@@ -1143,11 +1166,19 @@ function LeverStation({
     const tick = (now: number) => {
       const dt = now - last;
       last = now;
+      if (disabledRef.current) {
+        // The lever was held back mid-pull: let go, keep the progress.
+        holdingRef.current = false;
+        setHolding(false);
+        return;
+      }
       if (holdingRef.current && !doneRef.current) {
         const next = Math.min(1, progress.get() + dt / speed);
         progress.set(next);
         if (next >= 1) {
           doneRef.current = true;
+          holdingRef.current = false;
+          setHolding(false);
           revealCbRef.current();
           return;
         }
@@ -1158,11 +1189,42 @@ function LeverStation({
     return () => cancelAnimationFrame(raf);
   }, [holding, reduce, progress]);
 
-  const startHold = () => {
-    if (doneRef.current) return;
+  const beginHold = () => {
+    if (doneRef.current || disabled) return;
+    if (!pulledRef.current) {
+      pulledRef.current = true;
+      firstPullCbRef.current();
+    }
     holdingRef.current = true;
     setHolding(true);
   };
+
+  const startHold = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    if (doneRef.current || disabled) return;
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      /* pointer capture is best-effort */
+    }
+    beginHold();
+  };
+
+  // Keyboard hold: Space or Enter down = pull, up = release.
+  const keyDown = (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+    if (e.key !== " " && e.key !== "Enter") return;
+    e.preventDefault();
+    if (e.repeat) return;
+    beginHold();
+  };
+  const keyUp = (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+    if (e.key !== " " && e.key !== "Enter") return;
+    e.preventDefault();
+    endHold();
+  };
+
+  const label = done
+    ? "Truth lever. The true price is printed."
+    : "Truth lever. Press and hold to print the true price.";
 
   return (
     <div
@@ -1186,16 +1248,37 @@ function LeverStation({
           userSelect: "none",
         }}
       >
-        <div
-          role="button"
-          aria-label="Truth lever. Press and hold to print the true price."
+        <button
+          type="button"
+          aria-label={label}
+          aria-pressed={holding}
+          disabled={done || disabled}
           onPointerDown={startHold}
+          onPointerUp={endHold}
+          onPointerCancel={endHold}
+          onLostPointerCapture={endHold}
+          onKeyDown={keyDown}
+          onKeyUp={keyUp}
+          onContextMenu={(e) => e.preventDefault()}
           style={{
             position: "relative",
             width: 120,
             height: 148,
-            cursor: done ? "default" : "pointer",
+            padding: 0,
+            border: "none",
+            background: "transparent",
+            borderRadius: 18,
+            color: "inherit",
+            fontFamily: "inherit",
+            cursor: done ? "default" : disabled ? "wait" : "pointer",
             touchAction: "none",
+            userSelect: "none",
+            WebkitUserSelect: "none",
+            WebkitTouchCallout: "none",
+            opacity: disabled && !done ? 0.85 : 1,
+            boxShadow: glow ? "0 0 0 3px rgba(255,215,94,0.35), 0 0 16px rgba(255,215,94,0.5)" : undefined,
+            animation: glow && !reduce ? "tplGuide 1.4s ease-in-out infinite" : undefined,
+            transition: "box-shadow 220ms ease-out",
           }}
         >
           {/* base plate */}
@@ -1284,7 +1367,7 @@ function LeverStation({
           >
             TRUTH LEVER
           </div>
-        </div>
+        </button>
         {/* progress bar */}
         <div
           style={{
@@ -1308,13 +1391,14 @@ function LeverStation({
         </div>
         {!done && (
           <motion.div
-            animate={reduce ? {} : { scale: [1, 1.08, 1] }}
+            aria-hidden
+            animate={reduce || disabled ? {} : { scale: [1, 1.08, 1] }}
             transition={{ repeat: Infinity, duration: 1.1 }}
             style={{
               fontSize: 13,
               fontWeight: 900,
               letterSpacing: 1,
-              color: holding ? GOLD : "rgba(231,236,255,0.75)",
+              color: holding ? GOLD : disabled ? "rgba(231,236,255,0.45)" : "rgba(231,236,255,0.75)",
             }}
           >
             {holding ? "PRINTING..." : "HOLD ME!"}
@@ -1386,7 +1470,7 @@ function LeverStation({
                   borderTop: "2px dashed #b8ad8d",
                   fontSize: 15,
                   fontWeight: 900,
-                  color: deal.honest ? INK_GOOD : INK_BAD,
+                  color: honest ? INK_GOOD : INK_BAD,
                 }}
               >
                 {deal.totalLabel}
@@ -1406,9 +1490,9 @@ function LeverStation({
                   right: 6,
                   bottom: 10,
                   padding: "4px 12px",
-                  border: `4px double ${deal.honest ? INK_GOOD : INK_BAD}`,
+                  border: `4px double ${honest ? INK_GOOD : INK_BAD}`,
                   borderRadius: 8,
-                  color: deal.honest ? INK_GOOD : INK_BAD,
+                  color: honest ? INK_GOOD : INK_BAD,
                   fontWeight: 900,
                   fontSize: 20,
                   letterSpacing: 1,
@@ -1429,29 +1513,19 @@ function LeverStation({
 /* Small shared bits                                                  */
 /* ------------------------------------------------------------------ */
 
-function BigButton({
+/** The decision button: BUY and WALK AWAY share this exact look. */
+function ChoiceButton({
   children,
   onClick,
   disabled,
-  kind,
 }: {
   children: ReactNode;
   onClick: () => void;
   disabled?: boolean;
-  kind: "buy" | "walk";
 }) {
-  const buyStyle: CSSProperties = {
-    background: `linear-gradient(180deg, ${GOLD}, ${GOLD_DEEP})`,
-    color: "#5b3a05",
-    border: "2px solid rgba(255, 240, 190, 0.8)",
-  };
-  const walkStyle: CSSProperties = {
-    background: "linear-gradient(180deg, #4a5aa8, #35418a)",
-    color: "#e7ecff",
-    border: "2px solid rgba(160, 180, 255, 0.6)",
-  };
   return (
     <motion.button
+      type="button"
       onClick={onClick}
       disabled={disabled}
       whileTap={disabled ? undefined : { scale: 0.94 }}
@@ -1467,35 +1541,17 @@ function BigButton({
         fontSize: 18,
         fontWeight: 900,
         letterSpacing: 0.5,
-        cursor: disabled ? "default" : "pointer",
+        cursor: disabled ? "wait" : "pointer",
         opacity: disabled ? 0.55 : 1,
         boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
         fontFamily: "inherit",
-        ...(kind === "buy" ? buyStyle : walkStyle),
+        background: "linear-gradient(180deg, #3d4a8c, #2b3670)",
+        color: "#f4efdc",
+        border: `2px solid ${BRASS_HI}b3`,
       }}
     >
       {children}
     </motion.button>
-  );
-}
-
-function WinChip({ children }: { children: ReactNode }) {
-  return (
-    <div
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 8,
-        padding: "8px 16px",
-        borderRadius: 999,
-        background: "rgba(52, 211, 153, 0.12)",
-        border: "1px solid rgba(52, 211, 153, 0.45)",
-        fontSize: 16,
-        fontWeight: 800,
-      }}
-    >
-      {children}
-    </div>
   );
 }
 

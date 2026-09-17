@@ -82,6 +82,9 @@ import ChatFixer from "@/app/components/exercises/ChatFixer";
 import LobbyDoors from "@/app/components/exercises/LobbyDoors";
 import GuardCount from "@/app/components/exercises/GuardCount";
 import PowerPanel from "@/app/components/exercises/PowerPanel";
+import CoinCounter from "@/app/components/exercises/CoinCounter";
+import OddsJar from "@/app/components/exercises/OddsJar";
+import TruePriceLever from "@/app/components/exercises/signatures/TruePriceLever";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -1942,6 +1945,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #1c0418 0%, #33082b 100%)">
             <StringsAttached
+              skin={def.skin}
               offers={def.offers}
               hints={def.hints}
               introTitle={def.introTitle}
@@ -2300,6 +2304,113 @@ function DynamicLessonInner({
               completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "coinCounter":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a0a2e 0%, #2d1245 100%)">
+            <CoinCounter
+              packs={def.packs}
+              startBank={def.startBank}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              shopLabel={def.shopLabel}
+              tillLabel={def.tillLabel}
+              bankLabel={def.bankLabel}
+              coinWord={def.coinWord}
+              stopLabel={def.stopLabel}
+              paidToast={def.paidToast}
+              stopToast={def.stopToast}
+              fullNote={def.fullNote}
+              shortNote={def.shortNote}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "oddsJar":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a0a2e 0%, #2d1245 100%)">
+            <OddsJar
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              openLabel={def.openLabel}
+              spentLabel={def.spentLabel}
+              costPerOpen={def.costPerOpen}
+              coinWord={def.coinWord}
+              marbleTotal={def.marbleTotal}
+              jarNote={def.jarNote}
+              trueToast={def.trueToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "truePriceLever":
+        // Week 7's signature as a concept game: Learn-Loop wired, content
+        // from the week file (see types.ts).
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a0a2e 0%, #2d1245 100%)">
+            <TruePriceLever
+              deals={def.deals}
+              startCoins={def.startCoins}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              shopLabel={def.shopLabel}
+              leverHint={def.leverHint}
+              buyLabel={def.buyLabel}
+              walkLabel={def.walkLabel}
+              fakeStamp={def.fakeStamp}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              narration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
               onHintReached={(tier) => progress.reportHint(screen, tier)}
               onAnswered={(o) => {
@@ -2778,6 +2889,9 @@ function DynamicLessonInner({
             <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #12163a 100%)">
               <PauseDecide
                 scenarios={def.scenarios}
+                introTitle={def.introTitle}
+                introSubtitle={def.introSubtitle}
+                introIcon={def.introIcon}
                 introNarration={def.narration}
                 threat={def.threat}
                 speakScenarios={def.speakScenarios}

@@ -21,19 +21,23 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, 2026-09-16, option B, OWNER DECISION
 // PENDING): once the wired library is exhausted, a rebuilt week may re-theme
 // an engine another rebuilt week used, if it teaches a DIFFERENT skill, the
 // weeks are not neighbours, the engine stays under CAP, and the week carries
-// at most RETHEME_MAX such re-themes. Each entry is explicit so the allowance
-// is auditable and reversible: under option A (strict), delete the week's
-// entry and the listed engines must become new builds.
+// at most RETHEME_MAX such re-themes among its five concept games; the review
+// slot (screen 24, marked "(review)") is allowed on top, as the design page
+// allocates it. Each entry is explicit so the allowance is auditable and
+// reversible: under option A (strict), delete the week's entry and the listed
+// engines must become new builds.
 const RETHEME_ALLOWED = {
-  6: ["RequestInspector", "SignBingo"], // Download Dock (W2 engine), Game Zone Bingo (W1 engine)
+  6: ["RequestInspector", "SignBingo (review)"], // Download Dock (W2 engine), Game Zone Bingo (W1 engine)
+  7: ["PauseDecide", "StringsAttached", "MemoryMatch (review)"], // Buy Button (W1/W2 engine), Free-Coin Strings (W4), Till Match (W1)
 };
 const RETHEME_MAX = 2;
+const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));
 
 // Screen types that are the spine, not exercises.
 const SPINE = new Set([
@@ -95,7 +99,7 @@ for (const [engine, uses] of rows) {
   // RETHEME_ALLOWED for this engine does not count as a collision, provided the
   // engine is under CAP and the weeks are not neighbours).
   const rebuiltHits = REBUILT.filter((w) => weeks.includes(w));
-  const allowed = rebuiltHits.filter((w) => (RETHEME_ALLOWED[w] || []).includes(engine));
+  const allowed = rebuiltHits.filter((w) => allowedEngines(w).includes(engine));
   const counted = rebuiltHits.filter((w) => !allowed.includes(w));
   const neighbourly = allowed.some((w) => weeks.some((o) => o !== w && Math.abs(o - w) === 1));
   if (counted.length > 1 || (allowed.length && (uses.length > CAP || neighbourly))) {
@@ -105,7 +109,8 @@ for (const [engine, uses] of rows) {
   }
 }
 for (const [wk, list] of Object.entries(RETHEME_ALLOWED)) {
-  if (list.length > RETHEME_MAX) flags.push({ sev: "REBUILT-COLLISION", msg: `W${wk} lists ${list.length} re-themes (max ${RETHEME_MAX}): ${list.join(", ")}` });
+  const games = list.filter((e) => !/\(review\)$/.test(e));
+  if (games.length > RETHEME_MAX) flags.push({ sev: "REBUILT-COLLISION", msg: `W${wk} lists ${games.length} concept-game re-themes (max ${RETHEME_MAX}): ${games.join(", ")}` });
 }
 const unused = [...wired].filter((e) => !usage.has(e)).sort();
 console.log("\nwired but UNUSED (draw on these first): " + (unused.join(", ") || "none"));
