@@ -39,6 +39,8 @@ import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import VerdictVoice from "@/app/components/lesson/VerdictVoice";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 
 const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -52,12 +54,20 @@ export interface PauseScenario {
    *  password into your OWN real login screen). Varying this stops the drill
    *  being "always tap PAUSE" and makes it a real decision. */
   safeKind?: "pause" | "ask" | "go";
+  /** WrongAnswerPanel header / tip for this moment (defaults are Week 2's
+   *  password wording; Week 7's buy moments override them). */
+  wrongTitle?: string;
+  wrongTip?: string;
 }
 
 type PauseChoice = PauseScenario["choices"][number];
 
 export interface PauseDecideProps {
   scenarios: PauseScenario[];
+  /** Intro copy overrides (defaults keep Week 2's "The Pause Button"). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
   threat?: { raccoonLine: string };
@@ -104,6 +114,9 @@ const CARD_BAD: CSSProperties = {
 
 export default function PauseDecide({
   scenarios,
+  introTitle = "The Pause Button",
+  introSubtitle = "Feel the 'hmm, not sure' tingle? Hit PAUSE and ask first.",
+  introIcon = "⏸️",
   introNarration,
   threat,
   speakScenarios = false,
@@ -141,6 +154,11 @@ export default function PauseDecide({
   const [wrongPanel, setWrongPanel] = useState<null | string>(null);
   const [wrongCount, setWrongCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
+  // NO-SKIP GUARD (Learn-Loop standard): the two cards wait while Sarah reads
+  // the moment aloud, so a tap can never cut her off mid-sentence. Only weeks
+  // that opt into `speakScenarios` are gated, and a muted player never waits.
+  const [gateOn, setGateOn] = useState(false);
+  const [readDone, setReadDone] = useState<Record<number, boolean>>({});
 
   // Reveal timers die with the component.
   const timersRef = useRef<number[]>([]);
@@ -176,19 +194,31 @@ export default function PauseDecide({
   // The wrong-pick teach header/tip must match what the safe move WAS here:
   // a child who paused on a "go" moment did not press the Raccoon's button.
   const wrongTitle =
-    safeKind === "go"
+    sc?.wrongTitle ??
+    (safeKind === "go"
       ? "Hmm - that one was actually safe"
       : safeKind === "ask"
         ? "Hmm - not the safe helper"
-        : "Ooh - that was the Raccoon's favourite button";
+        : "Ooh - that was the Raccoon's favourite button");
   const wrongTip =
-    safeKind === "go"
+    sc?.wrongTip ??
+    (safeKind === "go"
       ? "Typing your password into YOUR OWN real login is fine. PAUSE when someone ELSE asks for it."
       : safeKind === "ask"
         ? "Stuck with a password? The ONE safe person to ask is a parent or a grown-up you trust."
-        : "When something online is exciting AND asks for your info - that's exactly the moment to PAUSE.";
+        : "When something online is exciting AND asks for your info - that's exactly the moment to PAUSE.");
 
-  const locked = !!picked || !!safeCard || !!wrongPanel || showIntro;
+  const reading = gateOn && !showIntro && !finished && !readDone[idx];
+  const locked = !!picked || !!safeCard || !!wrongPanel || showIntro || reading;
+
+  // A held gate can never stick (see SPOKEN_GATE_MAX_MS), and muting frees the
+  // cards at once.
+  useEffect(() => {
+    if (!reading) return;
+    const id = window.setTimeout(() => setReadDone((m) => ({ ...m, [idx]: true })), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [reading, idx]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) setGateOn(false); }), []);
 
   const advance = () => {
     setSafeCard(null);
@@ -235,13 +265,16 @@ export default function PauseDecide({
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="The Pause Button"
-          subtitle="Feel the 'hmm, not sure' tingle? Hit PAUSE and ask first."
-          icon="⏸️"
+          title={introTitle}
+          subtitle={introSubtitle}
+          icon={introIcon}
           narration={introNarration}
           threat={threat}
           character={introNarration?.speaker}
-          onDismiss={() => setShowIntro(false)}
+          onDismiss={() => {
+            setShowIntro(false);
+            setGateOn(speakScenarios && !isAudioMuted());
+          }}
         />
       )}
 
@@ -258,7 +291,14 @@ export default function PauseDecide({
           style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}
         >
           {!safeCard && !wrongPanel && (
-            <InfoNarration key={`pd-setup-${idx}`} speaker="adam" lines={[sc.setup]} accent="#7df0ff" recordedOnly />
+            <InfoNarration
+              key={`pd-setup-${idx}`}
+              speaker="adam"
+              lines={[sc.setup]}
+              accent="#7df0ff"
+              recordedOnly
+              onDone={() => setReadDone((m) => ({ ...m, [idx]: true }))}
+            />
           )}
           {safeCard && <VerdictVoice key={`pd-safe-${idx}`} verdict="right" why={safeCard} />}
           {/* wrong: WrongAnswerPanel speaks "Not quite." + the consequence itself */}

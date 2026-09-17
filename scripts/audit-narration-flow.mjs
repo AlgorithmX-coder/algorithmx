@@ -325,6 +325,37 @@ function chainsFor(type, span) {
       if (read && teach.length) chains.push({ name: "panel (wrong tap): " + read.slice(0, 40) + "...", mode: "branch", beats: [read], branches: teach });
     }
   }
+  // Week 7 engines (rebuilt 2026-09-16).
+  if (type === "coinCounter") {
+    // each pack: the read-aloud -> Sarah's why when the till is paid or the bank runs dry (no wrong path)
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why");
+      if (why) chains.push({ name: "pack: " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+    }
+  }
+  if (type === "oddsJar") {
+    // each round: the read-aloud -> Sarah's why on the true card; each fib's whyWrong answers the read-aloud
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why");
+      const fibs = all(new RegExp("isTrue:\\s*false,\\s*whyWrong:\\s*" + STR, "g"), p);
+      if (why) chains.push({ name: "jar: " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+      if (fibs.length) chains.push({ name: "jar (fib tapped): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: fibs });
+    }
+  }
+  if (type === "truePriceLever") {
+    // each deal: the read-aloud -> Sarah's why on the right move; the teach body answers the read-aloud
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why"), body = field(p, "body");
+      if (why) chains.push({ name: "deal: " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+      if (body) chains.push({ name: "deal (wrong move): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: [body] });
+    }
+  }
   return chains;
 }
 

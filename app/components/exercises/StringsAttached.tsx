@@ -25,6 +25,12 @@
  * hint tiers escalate per board, and the complete beat speaks the payoff.
  * Boards are dealt so each holds at least one fair offer (so "everything is a
  * scam" never wins), then shuffled per play; icons are uniform (no giveaway).
+ *
+ * Skins (`skin` prop): "balloons" is Week 4's carnival (default, unchanged);
+ * "coins" is Week 7's "Free-Coin Strings": three FREE game-money coins over a
+ * shop till on velvet. The skin only changes paint. Buttons, aria-labels,
+ * geometry, logic, narration and verdicts are identical, so the QA drivers
+ * for both weeks share selectors.
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -69,6 +75,9 @@ export interface StringsOffer {
 
 export interface StringsAttachedProps {
   offers: StringsOffer[];
+  /** Visual skin only: "balloons" (Week 4 carnival, default) or "coins"
+   *  (Week 7 Free-Coin Strings). Logic, DOM shape and aria-labels are identical. */
+  skin?: "balloons" | "coins";
   introTitle?: string;
   introSubtitle?: string;
   introIcon?: string;
@@ -106,6 +115,122 @@ const TOKEN_TOP = 74;
 const balloonX = (i: number, n: number) => ((i + 0.5) / n) * 100;
 const tokenX = (j: number) => ((j + 0.5) / TOKENS.length) * 100;
 
+// Coins skin: the disc's diameter (px) and the velvet's glinting motes as
+// fixed [x%, y%, size px] triples (all above the till; no Math.random in render).
+const COIN_SIZE = 76;
+const MOTES: readonly (readonly [number, number, number])[] = [
+  [6, 10, 3], [15, 34, 2], [24, 8, 2], [33, 52, 3], [41, 20, 2], [50, 60, 2],
+  [58, 12, 3], [66, 40, 2], [74, 6, 2], [83, 30, 3], [91, 56, 2], [12, 62, 2],
+  [47, 36, 2], [88, 14, 2], [70, 58, 3], [28, 28, 2],
+];
+
+/** The coins skin's floating offer: a gold coin disc over a paper price tag,
+ *  the string attaching at the bottom of the tag. Every coin is the same size
+ *  and paint (nothing hints which is fair). Once its string is followed, a
+ *  scam cracks grey with the Raccoon's paw behind it and its tag turns to the
+ *  popped-balloon paint; a fair offer keeps its gold and gets a green ribbon. */
+function CoinOffer({ text, state, isSel, glow, reduce, accent }: {
+  text: string;
+  state?: "scam" | "fair";
+  isSel: boolean;
+  glow: boolean;
+  reduce: boolean;
+  accent: string;
+}) {
+  const scam = state === "scam";
+  const fair = state === "fair";
+  return (
+    <>
+      {/* The coin */}
+      <span
+        aria-hidden
+        style={{
+          position: "relative",
+          flex: "none",
+          width: COIN_SIZE,
+          height: COIN_SIZE,
+          borderRadius: "50%",
+          background: scam
+            ? "radial-gradient(circle at 35% 30%, #d4d4da 0%, #9d9da6 45%, #6a6a73 80%, #45454d 100%)"
+            : "radial-gradient(circle at 35% 30%, #fff5c2 0%, #ffd964 35%, #e2a62c 72%, #b77a17 100%)",
+          border: `3px solid ${scam ? "#33333a" : "#8f5f10"}`,
+          boxShadow: glow
+            ? `0 0 0 4px ${accent}aa, 0 0 26px ${accent}`
+            : isSel
+              ? "0 0 0 3px rgba(255,255,255,0.7), 0 14px 30px -14px rgba(0,0,0,0.8)"
+              : "0 14px 30px -14px rgba(0,0,0,0.8)",
+          display: "grid",
+          placeItems: "center",
+          animation: glow && !reduce ? "saGuide 1.4s ease-in-out infinite" : undefined,
+          transition: "background 300ms ease, border-color 300ms ease",
+        }}
+      >
+        {/* Engraved inner rim */}
+        <span
+          style={{
+            position: "absolute",
+            inset: 4,
+            borderRadius: "50%",
+            border: `2px solid ${scam ? "rgba(210,210,220,0.45)" : "rgba(255,240,180,0.85)"}`,
+            boxShadow: scam ? "inset 0 -6px 10px rgba(0,0,0,0.35)" : "inset 0 -6px 10px rgba(120,70,0,0.35)",
+          }}
+        />
+        {/* Soft glint */}
+        <span
+          style={{
+            position: "absolute",
+            left: "16%",
+            top: "10%",
+            width: "34%",
+            height: "20%",
+            borderRadius: "50%",
+            background: "radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%)",
+            transform: "rotate(-28deg)",
+            opacity: scam ? 0.35 : 1,
+          }}
+        />
+        {scam ? (
+          <span style={{ position: "relative", fontSize: 34, lineHeight: 1 }}>🐾</span>
+        ) : (
+          <span style={{ position: "relative", fontSize: 30, lineHeight: 1, fontWeight: 900, color: "#b07a16", textShadow: "0 1px 0 #ffe9a8, 0 -1px 0 #7d4f08" }}>★</span>
+        )}
+        {scam && (
+          <svg viewBox="0 0 100 100" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+            <path d="M55 1 L46 27 L61 42 L43 61 L56 79 L47 99" fill="none" stroke="#25252c" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M61 42 L80 34" fill="none" stroke="#25252c" strokeWidth={2.5} strokeLinecap="round" />
+            <path d="M43 61 L24 68" fill="none" stroke="#25252c" strokeWidth={2.5} strokeLinecap="round" />
+          </svg>
+        )}
+      </span>
+      {/* The tag's hook */}
+      <span aria-hidden style={{ flex: "none", width: 2, height: 10, background: fair ? "#7eff97" : "rgba(255,255,255,0.6)" }} />
+      {/* Paper price tag carrying the offer's text; the string hangs from its bottom edge. */}
+      <span
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          maxWidth: "96%",
+          borderRadius: 8,
+          padding: "6px 10px 6px 16px",
+          background: scam ? "linear-gradient(180deg, #3b1236 0%, #24081f 100%)" : "linear-gradient(180deg, #fffaf0 0%, #f2e4c8 100%)",
+          border: `2px solid ${fair ? "#7eff97" : scam ? "#ff9bcb" : isSel ? "#ffffff" : "#c9a86a"}`,
+          color: scam ? "#ff9bcb" : "#3a2a10",
+          boxShadow: "0 8px 18px -10px rgba(0,0,0,0.8)",
+          transition: "border-color 200ms ease",
+        }}
+      >
+        <span aria-hidden style={{ position: "absolute", left: 5, top: "50%", width: 5, height: 5, marginTop: -2.5, borderRadius: "50%", background: "rgba(90,60,10,0.55)", boxShadow: "inset 0 1px 1px rgba(0,0,0,0.5)" }} />
+        {fair && <span aria-hidden style={{ position: "absolute", top: 3, right: -18, width: 56, height: 8, background: "linear-gradient(90deg, #3ddc6a, #7eff97)", transform: "rotate(45deg)" }} />}
+        {scam ? (
+          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase" }}>The Raccoon!</span>
+        ) : (
+          <span style={{ display: "block", fontSize: 13, fontWeight: 800, lineHeight: 1.25, textAlign: "center" }}>{text}</span>
+        )}
+      </span>
+    </>
+  );
+}
+
 /** Deal boards of three with at least one fair offer on each. The two pools
  *  arrive already shuffled (useShuffledOnce, once per play, hydration-safe),
  *  so the fair offer's slot rotates per board and the scams fill the rest:
@@ -135,6 +260,7 @@ function dealBoards(fair: StringsOffer[], scams: StringsOffer[], total: number):
 
 export default function StringsAttached({
   offers,
+  skin = "balloons",
   introTitle = "Strings Attached",
   introSubtitle = "Every prize has a string. Follow it to what the offer really wants.",
   introIcon = "🎈",
@@ -160,6 +286,7 @@ export default function StringsAttached({
   const reduce = intensity < 1;
   const accent = useLessonTheme()?.accent ?? "#e84dff";
   const voice = "adam" as const;
+  const coins = skin === "coins";
 
   const [showIntro, setShowIntro] = useState(true);
   // Anti-sequence: both pools shuffle once per play (after mount, so a
@@ -314,25 +441,51 @@ export default function StringsAttached({
           {/* Side padding keeps the header clear of the frame's corner ornaments. */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, padding: "2px 22px 0" }}>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
-              🎈 Strings Attached
+              {introIcon} {introTitle}
             </span>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9b8ff" }}>
               Board {Math.min(boardIdx + 1, boards.length)} of {boards.length}
             </span>
           </div>
 
-          {/* The board: balloons above, strings between, the counter below. */}
+          {/* The board: balloons (or coins) above, strings between, the counter (or till) below. */}
           <div
             style={{
               position: "relative",
               height: BOARD_H,
               borderRadius: 20,
               overflow: "hidden",
-              background: "linear-gradient(180deg, rgba(60,10,51,0.85) 0%, rgba(30,5,25,0.92) 70%, rgba(90,40,20,0.9) 70.5%, rgba(60,26,12,0.95) 100%)",
+              // Coins: velvet purple, then the till's brass top edge over a dark wood body.
+              background: coins
+                ? "radial-gradient(ellipse at 50% 18%, rgba(150,80,220,0.35) 0%, rgba(150,80,220,0) 60%), linear-gradient(180deg, #3a1454 0%, #24093d 70%, #f3d27a 70%, #d9a441 71%, #8a5a1a 71.6%, #4a2a12 71.9%, #2e1a0c 100%)"
+                : "linear-gradient(180deg, rgba(60,10,51,0.85) 0%, rgba(30,5,25,0.92) 70%, rgba(90,40,20,0.9) 70.5%, rgba(60,26,12,0.95) 100%)",
               border: `1px solid ${accent}55`,
               boxShadow: "0 18px 40px -22px rgba(0,0,0,0.7)",
             }}
           >
+            {/* Coins: faint glinting motes on the velvet (fixed positions). */}
+            {coins && (
+              <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
+                {MOTES.map(([x, y, s], k) => (
+                  <span
+                    key={k}
+                    style={{
+                      position: "absolute",
+                      left: `${x}%`,
+                      top: `${y}%`,
+                      width: s,
+                      height: s,
+                      borderRadius: "50%",
+                      background: "rgba(255,230,160,0.75)",
+                      boxShadow: "0 0 6px 2px rgba(255,220,140,0.35)",
+                      opacity: 0.5,
+                      animation: reduce ? undefined : `saMote ${2.6 + (k % 4) * 0.7}s ease-in-out ${(k % 5) * 0.4}s infinite`,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+
             {/* Strings */}
             <svg aria-hidden viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1 }}>
               {board.map((o, i) => {
@@ -389,7 +542,29 @@ export default function StringsAttached({
                           : { y: [0, -5, 0], scale: 1 }
                   }
                   transition={state || isSel || reduce ? { type: "spring", stiffness: 240, damping: 18 } : { duration: 3 + i * 0.4, repeat: Infinity, ease: "easeInOut" }}
-                  style={{
+                  style={coins ? {
+                    // Coins: the button is a clear column; the disc and tag inside carry the paint
+                    // (glow and selection ring sit on the disc). Same box as the balloon, so the
+                    // string still attaches at the bottom edge (the tag's bottom).
+                    position: "absolute",
+                    left: `calc(${balloonX(i, board.length)}% - ${100 / board.length / 2 - 2}%)`,
+                    width: `${100 / board.length - 4}%`,
+                    top: `${BALLOON_TOP}%`,
+                    height: `${BALLOON_H}%`,
+                    background: "transparent",
+                    border: "none",
+                    boxShadow: "none",
+                    color: "#3a2a10",
+                    padding: "0 4px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    gap: 0,
+                    cursor: speaking || state ? "default" : "pointer",
+                    fontFamily: "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+                    zIndex: 2,
+                  } : {
                     position: "absolute",
                     left: `calc(${balloonX(i, board.length)}% - ${100 / board.length / 2 - 2}%)`,
                     width: `${100 / board.length - 4}%`,
@@ -419,7 +594,9 @@ export default function StringsAttached({
                     animation: glow && !reduce ? "saGuide 1.4s ease-in-out infinite" : undefined,
                   }}
                 >
-                  {state === "scam" ? (
+                  {coins ? (
+                    <CoinOffer text={o.text} state={state} isSel={isSel} glow={glow} reduce={reduce} accent={accent} />
+                  ) : state === "scam" ? (
                     <>
                       <span aria-hidden style={{ fontSize: 30 }}>🐾</span>
                       <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase" }}>The Raccoon!</span>
@@ -462,9 +639,9 @@ export default function StringsAttached({
                     whileTap={armed && !reduce ? { scale: 0.96 } : undefined}
                     style={{
                       borderRadius: 14,
-                      // Identical tokens on every board: same wood, same rim.
+                      // Identical tokens on every board: same wood, same rim (brass rim on the till).
                       background: "linear-gradient(180deg, #fff6e6 0%, #f1dfc2 100%)",
-                      border: `2px solid ${armed ? accent : "rgba(138,90,18,0.35)"}`,
+                      border: `2px solid ${armed ? accent : coins ? "rgba(217,164,65,0.6)" : "rgba(138,90,18,0.35)"}`,
                       boxShadow: armed ? `0 0 14px ${accent}66` : "none",
                       color: "#2a1a08",
                       padding: "6px 6px",
@@ -503,7 +680,8 @@ export default function StringsAttached({
           <div style={{ maxWidth: 560, margin: "8px auto 0" }}>
             {hintText && <HintBubble tier={boardWrongs >= 2 ? 2 : 1} speaker={voice} text={hintText} />}
           </div>
-          <style>{`@keyframes saGuide { 0%,100% { box-shadow: 0 0 0 4px ${accent}66, 0 0 18px ${accent}88 } 50% { box-shadow: 0 0 0 7px ${accent}22, 0 0 30px ${accent} } }`}</style>
+          <style>{`@keyframes saGuide { 0%,100% { box-shadow: 0 0 0 4px ${accent}66, 0 0 18px ${accent}88 } 50% { box-shadow: 0 0 0 7px ${accent}22, 0 0 30px ${accent} } }
+@keyframes saMote { 0%,100% { opacity: 0.25; transform: scale(0.8) } 50% { opacity: 0.9; transform: scale(1.3) } }`}</style>
         </div>
       )}
 

@@ -913,6 +913,10 @@ export type ScreenDef = (
         /** `device` presentation: how the SAFE move reads - "pause" (default,
          *  red don't-share) or "ask" (green "ask a grown-up"). */
         safeKind?: "pause" | "ask" | "go";
+        /** `device` presentation: WrongAnswerPanel header/tip overrides for
+         *  this moment (the defaults are Week 2's password wording). */
+        wrongTitle?: string;
+        wrongTip?: string;
       }[];
       /**
        * Presentation variant. `device` stages each scenario as an in-world
@@ -929,6 +933,121 @@ export type ScreenDef = (
        * speaker "adam").
        */
       speakScenarios?: boolean;
+      /** `device` presentation only: intro copy overrides (Week 7 "The Buy Button"). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+    }
+  | {
+      /**
+       * The Coin Counter (Week 7, concept 1). The COUNT drill: a gem pack, a
+       * till and a piggy bank of real coins that carries over between packs.
+       * Tap coins into the till until the price is paid and the receipt prints
+       * what it really cost; when the bank cannot cover a pack, the right move
+       * is the single stop button. No wrong path (a demonstration of counting).
+       */
+      type: "coinCounter";
+      startBank: number;
+      packs: {
+        id: string;
+        name: string;
+        gems: number;
+        /** Whole real coins the pack costs. */
+        price: number;
+        /** Sarah reads the pack as it lands on the counter. */
+        readAloud: string;
+        /** The till's receipt line when the pack is paid (or refused). */
+        receipt: string;
+        /** Sarah's reason ("That's right!" + why). */
+        why: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      shopLabel?: string;
+      tillLabel?: string;
+      bankLabel?: string;
+      coinWord?: string;
+      stopLabel?: string;
+      paidToast?: string;
+      stopToast?: string;
+      fullNote?: string;
+      shortNote?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Odds Jar (Week 7, concept 2). OPEN AND TALLY: a jar of a hundred
+       * marbles with one gold one, a loot box, a spent counter. Tap OPEN the
+       * authored number of times (grey every time, the gold never leaves), then
+       * tap the true card about the odds. Cards shuffle per play.
+       */
+      type: "oddsJar";
+      rounds: {
+        id: string;
+        prize: string;
+        oddsLine: string;
+        readAloud: string;
+        opens: number;
+        cards: { text: string; isTrue: boolean; whyWrong: string }[];
+        why: string;
+        cardPrompt?: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      openLabel?: string;
+      spentLabel?: string;
+      costPerOpen?: number;
+      coinWord?: string;
+      marbleTotal?: number;
+      jarNote?: string;
+      trueToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The True-Price Lever (Week 7, concept 3): the week's signature as a
+       * concept game, data-driven. A deal flashes with a pressure banner and a
+       * fake countdown; pull and HOLD the lever to print the real receipt, then
+       * BUY or WALK AWAY. Wrong buys drain and refund the pouch while Sarah
+       * teaches. Deals play in authored order.
+       */
+      type: "truePriceLever";
+      startCoins?: number;
+      deals: {
+        id: string;
+        name: string;
+        art: "hat" | "box" | "pass" | "cape";
+        priceTag: string;
+        pressure?: string;
+        countdown?: boolean;
+        advertised: number;
+        trueCost: number;
+        receipt: { label: string; amount: string; bad: boolean; note?: boolean }[];
+        totalLabel: string;
+        stamp: "FAIR!" | "TRICK!";
+        rightMove: "buy" | "walk";
+        readAloud: string;
+        why: string;
+        teach: { title: string; body: string; tip: string };
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      shopLabel?: string;
+      leverHint?: string;
+      buyLabel?: string;
+      walkLabel?: string;
+      fakeStamp?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
     }
   | {
       /**
@@ -1306,6 +1425,8 @@ export type ScreenDef = (
        * and balloons are shuffled per play; round 1 is guided.
        */
       type: "stringsAttached";
+      /** Visual skin: "balloons" (Week 4 carnival, default) or "coins" (Week 7 shop till). */
+      skin?: "balloons" | "coins";
       offers: {
         id: string;
         /** The balloon's banner, two short lines at most. */

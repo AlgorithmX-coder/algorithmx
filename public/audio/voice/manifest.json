@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T18:55:24.819Z",
+  "generatedAt": "2026-09-16T19:58:06.243Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -18076,359 +18076,557 @@
       "file": "/audio/voice/1024e34012fcf157.mp3"
     },
     {
-      "key": "0274e1f635c136c1",
+      "key": "8295cf7ae52fab3b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Pull the truth lever and hold it down tight. Watch the real price print out. See how big it grows! Before spending real money, always ask a grown-up first.",
+      "text": "[nervous] Cyber Hero, keep your coins close and read this incident report with me. The Raccoon's 'LIMITED-TIME bundle!' and 'FREE Gem Bucks generator!' drained a family's account. Real money, gone. This week you learn what game coins REALLY cost. [whispers] A bundle and a generator. That is all it took to empty a wallet. [warmly] By the end of today, every shiny pack will show you its real price. Let's see what Mission Command has for us!",
       "lines": [
-        "[warmly] Pull the truth lever and hold it down tight.",
-        "Watch the real price print out. See how big it grows!",
-        "Before spending real money, always ask a grown-up first."
+        "[nervous] Cyber Hero, keep your coins close and read this incident report with me.",
+        "The Raccoon's 'LIMITED-TIME bundle!' and 'FREE Gem Bucks generator!' drained a family's account. Real money, gone. This week you learn what game coins REALLY cost.",
+        "[whispers] A bundle and a generator. That is all it took to empty a wallet.",
+        "[warmly] By the end of today, every shiny pack will show you its real price.",
+        "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/0274e1f635c136c1.mp3"
+      "file": "/audio/voice/8295cf7ae52fab3b.mp3"
     },
     {
-      "key": "c631330de36c383c",
+      "key": "408d75972b338883",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Welcome back, Cyber Hero. Today we open the game shop... [whispers] and see what's REALLY inside. V-Bucks. Robux. Blast Coins. Fun names, bright colors! [warmly] But every single coin is bought with real dollars. Real money someone in your family worked for. [excited] Match each card to the money truth it's hiding - and see the trick!",
+      "text": "[excited] Welcome back, Cyber Hero. Today we open the game shop! Gem Bucks. Robo Coins. Blast Coins. Fun names, bright colours! [whispers] But every single coin is bought with real money. Money someone in your family worked for. [warmly] Fun names are a costume, and counting takes the costume off. [excited] Come and pay for a pack with real coins, one tap at a time!",
       "lines": [
-        "[excited] Welcome back, Cyber Hero. Today we open the game shop...",
-        "[whispers] and see what's REALLY inside.",
-        "V-Bucks. Robux. Blast Coins. Fun names, bright colors!",
-        "[warmly] But every single coin is bought with real dollars.",
-        "Real money someone in your family worked for.",
-        "[excited] Match each card to the money truth it's hiding - and see the trick!"
+        "[excited] Welcome back, Cyber Hero. Today we open the game shop!",
+        "Gem Bucks. Robo Coins. Blast Coins. Fun names, bright colours!",
+        "[whispers] But every single coin is bought with real money.",
+        "Money someone in your family worked for.",
+        "[warmly] Fun names are a costume, and counting takes the costume off.",
+        "[excited] Come and pay for a pack with real coins, one tap at a time!"
       ],
-      "file": "/audio/voice/c631330de36c383c.mp3"
+      "file": "/audio/voice/408d75972b338883.mp3"
     },
     {
-      "key": "de9abc0abd944e24",
+      "key": "46686bdeff77ee4c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Welcome to the Coin Till! Every card hides a money truth. [warmly] Flip the cards and match each one... to the truth it's hiding. Ring it up!",
+      "text": "[excited] On your first challenge, you count real coins at the Coin Counter! This game is all about seeing what a gem pack really costs. Out in the real world, the shop shows you gems and hides the coins. Here is what you do. A gem pack lands on the counter. Tap coins from the piggy bank into the till, one at a time, until the pack is paid. The receipt prints what it really cost. If the bank runs out before the price, tap I CAN'T AFFORD IT. [warmly] Count every pack, and the costume falls off for good. Ready? First pack!",
       "lines": [
-        "[excited] Welcome to the Coin Till!",
-        "Every card hides a money truth.",
-        "[warmly] Flip the cards and match each one...",
-        "to the truth it's hiding. Ring it up!"
+        "[excited] On your first challenge, you count real coins at the Coin Counter!",
+        "This game is all about seeing what a gem pack really costs.",
+        "Out in the real world, the shop shows you gems and hides the coins.",
+        "Here is what you do. A gem pack lands on the counter. Tap coins from the piggy bank into the till, one at a time, until the pack is paid. The receipt prints what it really cost. If the bank runs out before the price, tap I CAN'T AFFORD IT.",
+        "[warmly] Count every pack, and the costume falls off for good. Ready? First pack!"
       ],
-      "file": "/audio/voice/de9abc0abd944e24.mp3"
+      "file": "/audio/voice/46686bdeff77ee4c.mp3"
     },
     {
-      "key": "42473caee2e2c68e",
+      "key": "95c11d1d8a0d8db0",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Flip any card to start - then find its matching truth!",
+      "text": "Here is your first pack. Tap a coin to pay it into the till.",
       "lines": [
-        "Flip any card to start - then find its matching truth!"
+        "Here is your first pack. Tap a coin to pay it into the till."
       ],
-      "file": "/audio/voice/42473caee2e2c68e.mp3"
+      "file": "/audio/voice/95c11d1d8a0d8db0.mp3"
     },
     {
-      "key": "729133a6c0bc24cd",
+      "key": "bf5cb97a5acc7da1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every pack counted, Cyber Hero! You saw the real coins behind every gem. [warmly] Out in the real world, when a shop shows you gems, count them back into coins in your head. The price is always real money.",
+      "lines": [
+        "[proud] Every pack counted, Cyber Hero! You saw the real coins behind every gem.",
+        "[warmly] Out in the real world, when a shop shows you gems, count them back into coins in your head. The price is always real money."
+      ],
+      "file": "/audio/voice/bf5cb97a5acc7da1.mp3"
+    },
+    {
+      "key": "0cbd326fbeb378aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Game coins are really money. Fun names and bright colours are the costume. [warmly] Count them out, and the costume falls off.",
+      "lines": [
+        "[proud] Well done!",
+        "Game coins are really money.",
+        "Fun names and bright colours are the costume.",
+        "[warmly] Count them out, and the costume falls off."
+      ],
+      "file": "/audio/voice/0cbd326fbeb378aa.mp3"
+    },
+    {
+      "key": "76989ae26debdce3",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Great start, Cyber Hero! You rang up every coin pack at its REAL price. Fun names, bright colors... real dollars underneath. [excited] Next - let's turn a loot box into glass!",
+      "text": "[proud] What a counter, Cyber Hero. Every pack rang up at its real price. Fun names, bright colours, real coins underneath. [whispers] But the shop has a box it will not let you count. It is a mystery, on purpose. Next, we'll learn what is really hiding inside a loot box. Come and see!",
       "lines": [
-        "[warmly] Great start, Cyber Hero!",
-        "You rang up every coin pack at its REAL price.",
-        "Fun names, bright colors... real dollars underneath.",
-        "[excited] Next - let's turn a loot box into glass!"
+        "[proud] What a counter, Cyber Hero. Every pack rang up at its real price.",
+        "Fun names, bright colours, real coins underneath.",
+        "[whispers] But the shop has a box it will not let you count. It is a mystery, on purpose.",
+        "Next, we'll learn what is really hiding inside a loot box. Come and see!"
       ],
-      "file": "/audio/voice/729133a6c0bc24cd.mp3"
+      "file": "/audio/voice/76989ae26debdce3.mp3"
     },
     {
-      "key": "91d528d5af8ac452",
+      "key": "b98e745f932f9736",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Loot boxes! So shiny. So mysterious. [whispers] Here's what the shine is hiding. You pay real money... for a mystery. The super-rare prize? Usually about one in a HUNDRED. [warmly] And that 'SO close!' feeling? Designed on purpose. [excited] Let's make some boxes turn to glass and SEE inside!",
+      "text": "[excited] Open a loot box, and what do you find? Not a prize. A jar of marbles! A hundred marbles. Ninety-nine grey. ONE gold. [whispers] You pay real money to pull one out, and you do not know which. That 'SO close!' feeling? Designed on purpose. [warmly] And box number ten has the same tiny chance as box number one. Boxes have no memory. [excited] Come and open the jar with me, and count what it costs!",
       "lines": [
-        "[excited] Loot boxes! So shiny. So mysterious.",
-        "[whispers] Here's what the shine is hiding.",
-        "You pay real money... for a mystery.",
-        "The super-rare prize? Usually about one in a HUNDRED.",
-        "[warmly] And that 'SO close!' feeling? Designed on purpose.",
-        "[excited] Let's make some boxes turn to glass and SEE inside!"
+        "[excited] Open a loot box, and what do you find? Not a prize. A jar of marbles!",
+        "A hundred marbles. Ninety-nine grey. ONE gold.",
+        "[whispers] You pay real money to pull one out, and you do not know which.",
+        "That 'SO close!' feeling? Designed on purpose.",
+        "[warmly] And box number ten has the same tiny chance as box number one. Boxes have no memory.",
+        "[excited] Come and open the jar with me, and count what it costs!"
       ],
-      "file": "/audio/voice/91d528d5af8ac452.mp3"
+      "file": "/audio/voice/b98e745f932f9736.mp3"
     },
     {
-      "key": "63a71f767c23fe09",
+      "key": "e07d2d67f98e30f7",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Here they are... the famous shiny boxes. [excited] But YOU have x-ray eyes today. Tap each box and it turns to glass. See the marbles. See the trick. See everything!",
+      "text": "[excited] On your second challenge, you open the Odds Jar! This game is all about seeing that the odds never move, however many boxes you open. Out in the real world, the jar is hidden inside the box, so the spent counter is the only thing you see growing. Here is what you do. Tap OPEN. A marble rolls out and the spent counter climbs. Keep tapping until the OPEN button stops. Then three cards appear. Tap the one that is TRUE. [warmly] Watch the gold marble the whole time. Ready? First jar!",
       "lines": [
-        "[whispers] Here they are... the famous shiny boxes.",
-        "[excited] But YOU have x-ray eyes today.",
-        "Tap each box and it turns to glass.",
-        "See the marbles. See the trick. See everything!"
+        "[excited] On your second challenge, you open the Odds Jar!",
+        "This game is all about seeing that the odds never move, however many boxes you open.",
+        "Out in the real world, the jar is hidden inside the box, so the spent counter is the only thing you see growing.",
+        "Here is what you do. Tap OPEN. A marble rolls out and the spent counter climbs. Keep tapping until the OPEN button stops. Then three cards appear. Tap the one that is TRUE.",
+        "[warmly] Watch the gold marble the whole time. Ready? First jar!"
       ],
-      "file": "/audio/voice/63a71f767c23fe09.mp3"
+      "file": "/audio/voice/e07d2d67f98e30f7.mp3"
     },
     {
-      "key": "cd4e6d5ebae3fb38",
+      "key": "32e0e433c0e937b2",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Tap any box - let's see what the sparkle is hiding!",
+      "text": "Tap OPEN and watch the marble roll out.",
       "lines": [
-        "Tap any box - let's see what the sparkle is hiding!"
+        "Tap OPEN and watch the marble roll out."
       ],
-      "file": "/audio/voice/cd4e6d5ebae3fb38.mp3"
+      "file": "/audio/voice/32e0e433c0e937b2.mp3"
     },
     {
-      "key": "ae2b9942ce098820",
+      "key": "a78c26846dac4b07",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] The odds never moved, Cyber Hero! Sixteen opens, and the gold marble stayed home. [warmly] Out in the real world, a loot box is a jar you cannot see. Remember the one gold marble, and the next one is never due.",
+      "lines": [
+        "[proud] The odds never moved, Cyber Hero! Sixteen opens, and the gold marble stayed home.",
+        "[warmly] Out in the real world, a loot box is a jar you cannot see. Remember the one gold marble, and the next one is never due."
+      ],
+      "file": "/audio/voice/a78c26846dac4b07.mp3"
+    },
+    {
+      "key": "bf60f16e4a314bb4",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Busted. Boxes have no memory. Ten boxes or a hundred, the jar is the same every time. [warmly] Nothing is ever due, and nothing is ever guaranteed.",
+      "lines": [
+        "[proud] Well done!",
+        "Busted. Boxes have no memory.",
+        "Ten boxes or a hundred, the jar is the same every time.",
+        "[warmly] Nothing is ever due, and nothing is ever guaranteed."
+      ],
+      "file": "/audio/voice/bf60f16e4a314bb4.mp3"
+    },
+    {
+      "key": "1fc41b50e51e37c6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Two powers! You've got x-ray eyes now. One gold marble. Ninety-nine gray. [laughs] The sparkle will never fool you again. [whispers] But the shop has more tricks than boxes...",
+      "text": "[proud] Two powers, Cyber Hero. You saw through the shine to the jar. One gold marble. Ninety-nine grey. No memory. [whispers] But the shop does not only hide things. Sometimes it shouts. Countdowns. Only four left! Next, we'll learn the shop tricks that make your heart race. Come and see!",
       "lines": [
-        "[excited] Two powers! You've got x-ray eyes now.",
-        "One gold marble. Ninety-nine gray.",
-        "[laughs] The sparkle will never fool you again.",
-        "[whispers] But the shop has more tricks than boxes..."
+        "[proud] Two powers, Cyber Hero. You saw through the shine to the jar.",
+        "One gold marble. Ninety-nine grey. No memory.",
+        "[whispers] But the shop does not only hide things. Sometimes it shouts. Countdowns. Only four left!",
+        "Next, we'll learn the shop tricks that make your heart race. Come and see!"
       ],
-      "file": "/audio/voice/ae2b9942ce098820.mp3"
+      "file": "/audio/voice/1fc41b50e51e37c6.mp3"
     },
     {
-      "key": "6dfa20fa0311ebad",
+      "key": "0ccce7a659ed5b88",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[nervous] LIMITED TIME! Only FOUR left! Everyone already has it! [warmly] Feel your heart speed up? The shop did that on purpose. Fast buyers don't stop to think. [whispers] But here's the truth: 'limited' skins almost always come back. And 'everyone has it'? Never true. [excited] X-ray time - let's see through some banners!",
+      "text": "[nervous] Here they come, the tricks that set your heart racing. LIMITED TIME! Only FOUR left! Everyone already has it! [warmly] Feel your heart speed up? The shop did that on purpose. Fast buyers do not stop to think. [whispers] But 'limited' things come back, and 'everyone has it' is never true. Freeze the clock, read the real price, then decide. [excited] Come and pull the lever that prints the truth!",
       "lines": [
-        "[nervous] LIMITED TIME! Only FOUR left! Everyone already has it!",
+        "[nervous] Here they come, the tricks that set your heart racing. LIMITED TIME! Only FOUR left! Everyone already has it!",
         "[warmly] Feel your heart speed up? The shop did that on purpose.",
-        "Fast buyers don't stop to think.",
-        "[whispers] But here's the truth: 'limited' skins almost always come back.",
-        "And 'everyone has it'? Never true.",
-        "[excited] X-ray time - let's see through some banners!"
+        "Fast buyers do not stop to think.",
+        "[whispers] But 'limited' things come back, and 'everyone has it' is never true.",
+        "Freeze the clock, read the real price, then decide.",
+        "[excited] Come and pull the lever that prints the truth!"
       ],
-      "file": "/audio/voice/6dfa20fa0311ebad.mp3"
+      "file": "/audio/voice/0ccce7a659ed5b88.mp3"
     },
     {
-      "key": "019ae89cbd59358e",
+      "key": "2a60ac8d8c872cda",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Shop banners incoming - x-ray goggles ON! Check who's selling, what the button wants, how it rushes you, and what it promises. [warmly] Pressure trick... or fair offer? You decide!",
+      "text": "[excited] On your third challenge, you work the True-Price Lever! This game is all about freezing the rush and reading what a deal really costs. Out in the real world, the sign flashes and the clock ticks so you buy before you read. Here is what you do. A deal appears with its shiny tag. Pull the brass lever down and HOLD it. The receipt prints the real total, line by line, and any countdown freezes. Then tap BUY or WALK AWAY. [warmly] Hold the lever until the stamp lands, every time. Ready? First deal!",
       "lines": [
-        "[excited] Shop banners incoming - x-ray goggles ON!",
-        "Check who's selling, what the button wants,",
-        "how it rushes you, and what it promises.",
-        "[warmly] Pressure trick... or fair offer? You decide!"
+        "[excited] On your third challenge, you work the True-Price Lever!",
+        "This game is all about freezing the rush and reading what a deal really costs.",
+        "Out in the real world, the sign flashes and the clock ticks so you buy before you read.",
+        "Here is what you do. A deal appears with its shiny tag. Pull the brass lever down and HOLD it. The receipt prints the real total, line by line, and any countdown freezes. Then tap BUY or WALK AWAY.",
+        "[warmly] Hold the lever until the stamp lands, every time. Ready? First deal!"
       ],
-      "file": "/audio/voice/019ae89cbd59358e.mp3"
+      "file": "/audio/voice/2a60ac8d8c872cda.mp3"
     },
     {
-      "key": "3de0283ac382982c",
-      "speaker": "layla",
+      "key": "9c9c58416ec4e73f",
+      "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Three powers! Your x-ray eyes see every trick. Countdowns, 'gone forever', left-out panic... [laughs] all glowing through the paint. [warmly] Now for the rule that makes you unbeatable.",
+      "text": "Pull the lever down and hold it until the receipt is printed.",
       "lines": [
-        "[excited] Three powers! Your x-ray eyes see every trick.",
-        "Countdowns, 'gone forever', left-out panic...",
-        "[laughs] all glowing through the paint.",
-        "[warmly] Now for the rule that makes you unbeatable."
+        "Pull the lever down and hold it until the receipt is printed."
       ],
-      "file": "/audio/voice/3de0283ac382982c.mp3"
+      "file": "/audio/voice/9c9c58416ec4e73f.mp3"
     },
     {
-      "key": "2a9541a549428709",
+      "key": "231794ca92a3ea4e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every true price printed, Cyber Hero! The clock never rushed you once. [warmly] Out in the real world, when a shop counts down at you, that is your signal to slow down and read the real price.",
+      "lines": [
+        "[proud] Every true price printed, Cyber Hero! The clock never rushed you once.",
+        "[warmly] Out in the real world, when a shop counts down at you, that is your signal to slow down and read the real price."
+      ],
+      "file": "/audio/voice/231794ca92a3ea4e.mp3"
+    },
+    {
+      "key": "fa0c25a981a60418",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! A countdown with BUY NOW is the rush trick. Fair offers can wait for you. [warmly] Racing heart at the shop? Freeze the clock and read the price.",
+      "lines": [
+        "[proud] Well done!",
+        "A countdown with BUY NOW is the rush trick.",
+        "Fair offers can wait for you.",
+        "[warmly] Racing heart at the shop? Freeze the clock and read the price."
+      ],
+      "file": "/audio/voice/fa0c25a981a60418.mp3"
+    },
+    {
+      "key": "7f6a669d99def6bf",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Time for the golden wallet rule. It's not your money... so it's not your call alone. Before ANY buy - coins, skins, boxes - you ask the grown-up whose money it is. [whispers] Every time. Even the tiny ones. [excited] Asking first is what heroes do. Let's practice!",
+      "text": "[proud] Three powers, Cyber Hero. Every clock froze, every receipt printed. Countdowns, gone forever, only four left. All paint. [whispers] Even a fair deal has one more step before you tap BUY. Whose money is it? Next, we'll learn the golden rule that guards every wallet. Come and see!",
       "lines": [
-        "[warmly] Time for the golden wallet rule.",
-        "It's not your money... so it's not your call alone.",
-        "Before ANY buy - coins, skins, boxes -",
-        "you ask the grown-up whose money it is.",
+        "[proud] Three powers, Cyber Hero. Every clock froze, every receipt printed.",
+        "Countdowns, gone forever, only four left. All paint.",
+        "[whispers] Even a fair deal has one more step before you tap BUY. Whose money is it?",
+        "Next, we'll learn the golden rule that guards every wallet. Come and see!"
+      ],
+      "file": "/audio/voice/7f6a669d99def6bf.mp3"
+    },
+    {
+      "key": "41ea06580678483b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Time for the golden wallet rule, the one that guards everything. It is not your money, so it is not your call alone. Before ANY buy, coins, skins, boxes, you ask the grown-up whose money it is. [whispers] Every time. Even the tiny ones. And when they say yes? Then buying is fine! [excited] Come and decide some buy moments with me!",
+      "lines": [
+        "[warmly] Time for the golden wallet rule, the one that guards everything.",
+        "It is not your money, so it is not your call alone.",
+        "Before ANY buy, coins, skins, boxes, you ask the grown-up whose money it is.",
         "[whispers] Every time. Even the tiny ones.",
-        "[excited] Asking first is what heroes do. Let's practice!"
+        "And when they say yes? Then buying is fine!",
+        "[excited] Come and decide some buy moments with me!"
       ],
-      "file": "/audio/voice/2a9541a549428709.mp3"
+      "file": "/audio/voice/41ea06580678483b.mp3"
     },
     {
-      "key": "e199a6aed2e3cad6",
+      "key": "e82b9cdbc9fc0387",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Practice time - three till moments are coming. Each one will push you to buy fast or buy quiet. [whispers] Feel the push? That's your signal. [excited] Ask first, every time. Show me!",
+      "text": "[excited] On your fourth challenge, you face the Buy Button! This game is all about asking before you buy, and knowing when a yes has already been given. Out in the real world, the buy button is always big, bright and one tap away. Here is what you do. A buy moment appears on the screen. Below it, two cards that look the same. Read both. Tap the hero move. Sometimes that is asking first, and sometimes it is buying, because a grown-up already said yes. [warmly] Feel the push to tap fast? That is your signal to read the cards. Ready? First moment!",
       "lines": [
-        "[warmly] Practice time - three till moments are coming.",
-        "Each one will push you to buy fast or buy quiet.",
-        "[whispers] Feel the push? That's your signal.",
-        "[excited] Ask first, every time. Show me!"
+        "[excited] On your fourth challenge, you face the Buy Button!",
+        "This game is all about asking before you buy, and knowing when a yes has already been given.",
+        "Out in the real world, the buy button is always big, bright and one tap away.",
+        "Here is what you do. A buy moment appears on the screen. Below it, two cards that look the same. Read both. Tap the hero move. Sometimes that is asking first, and sometimes it is buying, because a grown-up already said yes.",
+        "[warmly] Feel the push to tap fast? That is your signal to read the cards. Ready? First moment!"
       ],
-      "file": "/audio/voice/e199a6aed2e3cad6.mp3"
+      "file": "/audio/voice/e82b9cdbc9fc0387.mp3"
     },
     {
-      "key": "4ab3a1bb1d0c5e31",
+      "key": "7b28d015050b3ae0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every buy moment decided, Cyber Hero! You asked first, and you knew a real yes when you saw one. [warmly] Out in the real world, the ask takes ten seconds and keeps the shop fun for everyone. Their money, their call, every time.",
+      "lines": [
+        "[proud] Every buy moment decided, Cyber Hero! You asked first, and you knew a real yes when you saw one.",
+        "[warmly] Out in the real world, the ask takes ten seconds and keeps the shop fun for everyone. Their money, their call, every time."
+      ],
+      "file": "/audio/voice/7b28d015050b3ae0.mp3"
+    },
+    {
+      "key": "f0c45476a0430546",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! You ask the grown-up whose money it is. Not a friend, not the shop, and not nobody. [warmly] Every buy, every time, even the tiny ones.",
+      "lines": [
+        "[proud] Well done!",
+        "You ask the grown-up whose money it is.",
+        "Not a friend, not the shop, and not nobody.",
+        "[warmly] Every buy, every time, even the tiny ones."
+      ],
+      "file": "/audio/voice/f0c45476a0430546.mp3"
+    },
+    {
+      "key": "6668c75e110b90c8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Four powers! The golden rule is locked in. Ask first. Every buy. Even the tiny ones. [laughs] Not even a pushy best friend could budge you. [whispers] One trap left. And it's the greediest one...",
+      "text": "[proud] Four powers, Cyber Hero. The golden rule is locked in. Ask first. Every buy. Even the tiny ones. [whispers] One trap is left, and it does not even ask for money. It says the word FREE. Next, we'll learn why free game money does not exist. Come and see!",
       "lines": [
-        "[excited] Four powers! The golden rule is locked in.",
+        "[proud] Four powers, Cyber Hero. The golden rule is locked in.",
         "Ask first. Every buy. Even the tiny ones.",
-        "[laughs] Not even a pushy best friend could budge you.",
-        "[whispers] One trap left. And it's the greediest one..."
+        "[whispers] One trap is left, and it does not even ask for money. It says the word FREE.",
+        "Next, we'll learn why free game money does not exist. Come and see!"
       ],
-      "file": "/audio/voice/4ab3a1bb1d0c5e31.mp3"
+      "file": "/audio/voice/6668c75e110b90c8.mp3"
     },
     {
-      "key": "769236823dba9a34",
+      "key": "38a2949b7d648edb",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] FREE V-Bucks! FREE Robux! Just log in here! [warmly] Listen carefully, hero. Free game money does not exist. Coins cost the game company real money. Nobody gives them away. [whispers] Every 'free coins' pop-up wants ONE thing... your account. [excited] Your best friend? The little X button. Close it. Don't touch the shiny button. Tell a grown-up. Let's drill it!",
+      "text": "[excited] Does free game money exist? Let's find out. FREE Gem Bucks! FREE Robo Coins! Just log in here! [warmly] Listen carefully, Cyber Hero. There is no such thing as free game money. Coins cost the game company real money. Nobody gives them away. [whispers] Every free coins pop-up wants one thing: your account, or a grown-up's card. Real rewards come from inside the game, and they ask for nothing. [excited] Come and follow the strings on some free offers!",
       "lines": [
-        "[excited] FREE V-Bucks! FREE Robux! Just log in here!",
-        "[warmly] Listen carefully, hero. Free game money does not exist.",
+        "[excited] Does free game money exist? Let's find out. FREE Gem Bucks! FREE Robo Coins! Just log in here!",
+        "[warmly] Listen carefully, Cyber Hero. There is no such thing as free game money.",
         "Coins cost the game company real money. Nobody gives them away.",
-        "[whispers] Every 'free coins' pop-up wants ONE thing... your account.",
-        "[excited] Your best friend? The little X button.",
-        "Close it. Don't touch the shiny button. Tell a grown-up. Let's drill it!"
+        "[whispers] Every free coins pop-up wants one thing: your account, or a grown-up's card.",
+        "Real rewards come from inside the game, and they ask for nothing.",
+        "[excited] Come and follow the strings on some free offers!"
       ],
-      "file": "/audio/voice/769236823dba9a34.mp3"
+      "file": "/audio/voice/38a2949b7d648edb.mp3"
     },
     {
-      "key": "81ea7014b660bef4",
+      "key": "60ad37dc47824abd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Incoming! Fake free-coin pop-ups! Each one has a big shiny trap button... [whispers] and a little X hiding in a corner. [excited] Find the X. Close them all. Never touch CLAIM!",
+      "text": "[excited] On your last challenge, you follow the Free-Coin Strings! This game is all about seeing what a free offer really wants. Out in the real world, the word FREE is printed big and the string is printed small. Here is what you do. Three offers float over the counter. Tap one, and I will read it. Then tap the token its string really leads to: your password, a grown-up's card, your tap, or nothing because it is real. Right, and the string snaps to the truth. Wrong, and I help you look again. [warmly] Follow every string, and free will never fool you. Ready? First offer!",
       "lines": [
-        "[excited] Incoming! Fake free-coin pop-ups!",
-        "Each one has a big shiny trap button...",
-        "[whispers] and a little X hiding in a corner.",
-        "[excited] Find the X. Close them all. Never touch CLAIM!"
+        "[excited] On your last challenge, you follow the Free-Coin Strings!",
+        "This game is all about seeing what a free offer really wants.",
+        "Out in the real world, the word FREE is printed big and the string is printed small.",
+        "Here is what you do. Three offers float over the counter. Tap one, and I will read it. Then tap the token its string really leads to: your password, a grown-up's card, your tap, or nothing because it is real. Right, and the string snaps to the truth. Wrong, and I help you look again.",
+        "[warmly] Follow every string, and free will never fool you. Ready? First offer!"
       ],
-      "file": "/audio/voice/81ea7014b660bef4.mp3"
+      "file": "/audio/voice/60ad37dc47824abd.mp3"
     },
     {
-      "key": "0f38c5a6c8dc5e8d",
+      "key": "a8b9e9811bdf2386",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap an offer, then tap what its string really leads to.",
+      "lines": [
+        "Tap an offer, then tap what its string really leads to."
+      ],
+      "file": "/audio/voice/a8b9e9811bdf2386.mp3"
+    },
+    {
+      "key": "16da633766c60d79",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every string followed, Cyber Hero! Four tricks exposed, two real rewards kept. [warmly] Out in the real world, free game money does not exist, but real rewards inside the game do. Follow the string before you tap.",
+      "lines": [
+        "[proud] Every string followed, Cyber Hero! Four tricks exposed, two real rewards kept.",
+        "[warmly] Out in the real world, free game money does not exist, but real rewards inside the game do. Follow the string before you tap."
+      ],
+      "file": "/audio/voice/16da633766c60d79.mp3"
+    },
+    {
+      "key": "94836fbe1316c74b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Don't tap CLAIM. Close the pop-up. Tell a grown-up. Hands off first, because the shiny button is the trap. [warmly] Then close it, and let a grown-up know.",
+      "lines": [
+        "[proud] Well done!",
+        "Don't tap CLAIM. Close the pop-up. Tell a grown-up.",
+        "Hands off first, because the shiny button is the trap.",
+        "[warmly] Then close it, and let a grown-up know."
+      ],
+      "file": "/audio/voice/94836fbe1316c74b.mp3"
+    },
+    {
+      "key": "c058dbf5df158b7b",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE wallet powers, Cyber Hero! You see real prices, x-ray loot boxes, shrug off pressure, ask before every buy... [whispers] and free-coin fakes get X'd instantly. [excited] Final drill - then let's close his whole trap shop!",
+      "text": "[excited] That's all FIVE wallet powers, Cyber Hero! Coins counted, odds seen, clocks frozen, asks made, strings followed. [whispers] The Raccoon's whole shop is glass to you now. One quick review to make it all stick, then he opens his quiz counter. Come on!",
       "lines": [
         "[excited] That's all FIVE wallet powers, Cyber Hero!",
-        "You see real prices, x-ray loot boxes,",
-        "shrug off pressure, ask before every buy...",
-        "[whispers] and free-coin fakes get X'd instantly.",
-        "[excited] Final drill - then let's close his whole trap shop!"
+        "Coins counted, odds seen, clocks frozen, asks made, strings followed.",
+        "[whispers] The Raccoon's whole shop is glass to you now.",
+        "One quick review to make it all stick, then he opens his quiz counter. Come on!"
       ],
-      "file": "/audio/voice/0f38c5a6c8dc5e8d.mp3"
+      "file": "/audio/voice/c058dbf5df158b7b.mp3"
     },
     {
-      "key": "75f3783b4cb2ff02",
+      "key": "6885857168cadb2e",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Final drill! Spending moments are drifting past. Tap SMART SPEND for the ask-first moves... and WALLET TRAP for pressure, gambles and bait. [warmly] Guard that wallet - show me!",
+      "text": "[excited] Time for your review: the Till Match! This game is all about pairing each shop trick with its hero move. Out in the real world, the tricks come one at a time, so the moves have to be ready in any order. Here is what you do. The cards are face down. Flip two. If a shop trick meets its hero move, they stay up and I tell you why. If not, they flip back and you try again. Fewer flips, more stars. [warmly] Six pairs, one till, one fortress. Ready? Flip a card!",
       "lines": [
-        "[excited] Final drill! Spending moments are drifting past.",
-        "Tap SMART SPEND for the ask-first moves...",
-        "and WALLET TRAP for pressure, gambles and bait.",
-        "[warmly] Guard that wallet - show me!"
+        "[excited] Time for your review: the Till Match!",
+        "This game is all about pairing each shop trick with its hero move.",
+        "Out in the real world, the tricks come one at a time, so the moves have to be ready in any order.",
+        "Here is what you do. The cards are face down. Flip two. If a shop trick meets its hero move, they stay up and I tell you why. If not, they flip back and you try again. Fewer flips, more stars.",
+        "[warmly] Six pairs, one till, one fortress. Ready? Flip a card!"
       ],
-      "file": "/audio/voice/75f3783b4cb2ff02.mp3"
+      "file": "/audio/voice/6885857168cadb2e.mp3"
     },
     {
-      "key": "9d320e28348ce869",
+      "key": "a5d5e67852d22325",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! You see real prices, you x-ray every loot box, no countdown can rush you, you ask before every buy... [laughs] and free-coin fakes get closed on sight! [excited] The trap shop is OUT of business. Sticker time!",
+      "text": "Flip any card to start, then find its matching move.",
+      "lines": [
+        "Flip any card to start, then find its matching move."
+      ],
+      "file": "/audio/voice/a5d5e67852d22325.mp3"
+    },
+    {
+      "key": "0c241981d69ef781",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Till matched, Cyber Hero! Every shop trick met its hero move. [warmly] Out in the real world, your wallet has a guard on every trick now, and you know which move to make.",
+      "lines": [
+        "[proud] Till matched, Cyber Hero! Every shop trick met its hero move.",
+        "[warmly] Out in the real world, your wallet has a guard on every trick now, and you know which move to make."
+      ],
+      "file": "/audio/voice/0c241981d69ef781.mp3"
+    },
+    {
+      "key": "97b3992eb4f6420c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You count the real coins, you see the odds in the jar, no countdown can rush you, you ask before every buy... [warmly] and free-coin strings lead you straight to the trick. [excited] The trap shop is OUT of business. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You see real prices, you x-ray every loot box,",
+        "You count the real coins, you see the odds in the jar,",
         "no countdown can rush you, you ask before every buy...",
-        "[laughs] and free-coin fakes get closed on sight!",
+        "[warmly] and free-coin strings lead you straight to the trick.",
         "[excited] The trap shop is OUT of business. Sticker time!"
       ],
-      "file": "/audio/voice/9d320e28348ce869.mp3"
+      "file": "/audio/voice/97b3992eb4f6420c.mp3"
     },
     {
-      "key": "461928535cc6ffb2",
+      "key": "07890feaaec31b43",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Mid-game, a prompt pops up: 'Unlock the GOLDEN BLASTER - $7.99. Card already saved - just tap YES!'",
+      "text": "Mid-game, a box pops up: 'Unlock the GOLDEN BLASTER for 7.99. Card already saved, just tap YES!'",
       "lines": [
-        "Mid-game, a prompt pops up: 'Unlock the GOLDEN BLASTER - $7.99. Card already saved - just tap YES!'"
+        "Mid-game, a box pops up: 'Unlock the GOLDEN BLASTER for 7.99. Card already saved, just tap YES!'"
       ],
-      "file": "/audio/voice/461928535cc6ffb2.mp3"
+      "file": "/audio/voice/07890feaaec31b43.mp3"
     },
     {
-      "key": "2a392fabb683daee",
+      "key": "c32f5b5795e87348",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The shop flashes: 'MEGA DEAL ends in 5 minutes! Ask later and you'll LOSE it!'",
+      "text": "The shop flashes: 'MEGA DEAL ends in 5 minutes! Ask later and you LOSE it!'",
       "lines": [
-        "The shop flashes: 'MEGA DEAL ends in 5 minutes! Ask later and you'll LOSE it!'"
+        "The shop flashes: 'MEGA DEAL ends in 5 minutes! Ask later and you LOSE it!'"
       ],
-      "file": "/audio/voice/2a392fabb683daee.mp3"
+      "file": "/audio/voice/c32f5b5795e87348.mp3"
     },
     {
-      "key": "6c222c87359b229a",
+      "key": "35c048aab9b0d92b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your best friend says: 'Just buy the coins - my parents never notice small ones!'",
+      "text": "Your best friend says: 'Just buy the coins, my parents never notice small ones!'",
       "lines": [
-        "Your best friend says: 'Just buy the coins - my parents never notice small ones!'"
+        "Your best friend says: 'Just buy the coins, my parents never notice small ones!'"
       ],
-      "file": "/audio/voice/6c222c87359b229a.mp3"
+      "file": "/audio/voice/35c048aab9b0d92b.mp3"
     },
     {
-      "key": "27e08bb40de0e7ee",
+      "key": "1dd4850dbc2cfa26",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That 'saved card' is a real person's real $7.99 - and they didn't get a say. Saved doesn't mean allowed.",
+      "text": "Mum is sitting right next to you. She says: 'Yes, you can get the season pass, go ahead.' The shop asks: Buy season pass?",
       "lines": [
-        "That 'saved card' is a real person's real $7.99 - and they didn't get a say. Saved doesn't mean allowed."
+        "Mum is sitting right next to you. She says: 'Yes, you can get the season pass, go ahead.' The shop asks: Buy season pass?"
       ],
-      "file": "/audio/voice/27e08bb40de0e7ee.mp3"
+      "file": "/audio/voice/1dd4850dbc2cfa26.mp3"
     },
     {
-      "key": "2924e04c063ca98f",
+      "key": "3d6845c72ea57ec9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Hero move! Maybe they say yes, maybe no - but it was THEIR call, and the shop stays fun.",
+      "text": "That saved card is a real person's real money, and they did not get a say. Saved does not mean allowed.",
       "lines": [
-        "Hero move! Maybe they say yes, maybe no - but it was THEIR call, and the shop stays fun."
+        "That saved card is a real person's real money, and they did not get a say. Saved does not mean allowed."
       ],
-      "file": "/audio/voice/2924e04c063ca98f.mp3"
+      "file": "/audio/voice/3d6845c72ea57ec9.mp3"
     },
     {
-      "key": "f92b2837450427e0",
+      "key": "6c0eab74c7ee6485",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The countdown made the choice, not you. And guess what? That 'mega deal' was back the very next week.",
+      "text": "Hero move! Maybe they say yes, maybe no, but it was THEIR call, and the shop stays fun.",
       "lines": [
-        "The countdown made the choice, not you. And guess what? That 'mega deal' was back the very next week."
+        "Hero move! Maybe they say yes, maybe no, but it was THEIR call, and the shop stays fun."
       ],
-      "file": "/audio/voice/f92b2837450427e0.mp3"
+      "file": "/audio/voice/6c0eab74c7ee6485.mp3"
     },
     {
-      "key": "0dfdfd43e4be1089",
+      "key": "7b8bb6da2bc99f0e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Exactly. Rush + money = double-check. Any deal that can't wait for a grown-up isn't a deal - it's a trick.",
+      "text": "The countdown made the choice, not you. And that mega deal was back the very next week.",
       "lines": [
-        "Exactly. Rush + money = double-check. Any deal that can't wait for a grown-up isn't a deal - it's a trick."
+        "The countdown made the choice, not you. And that mega deal was back the very next week."
       ],
-      "file": "/audio/voice/0dfdfd43e4be1089.mp3"
+      "file": "/audio/voice/7b8bb6da2bc99f0e.mp3"
     },
     {
-      "key": "191743924a662d46",
+      "key": "1c4b2965a3152085",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Small ones still count - they add up in secret until someone gets a shock. Not noticing isn't the same as saying yes.",
+      "text": "Exactly. Rush plus money means double-check. Any deal that cannot wait for a grown-up is a trick.",
       "lines": [
-        "Small ones still count - they add up in secret until someone gets a shock. Not noticing isn't the same as saying yes."
+        "Exactly. Rush plus money means double-check. Any deal that cannot wait for a grown-up is a trick."
       ],
-      "file": "/audio/voice/191743924a662d46.mp3"
+      "file": "/audio/voice/1c4b2965a3152085.mp3"
     },
     {
-      "key": "f6fdd84a14900456",
+      "key": "2779b1e08e6edef6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Rule held, even with a friend pushing. THAT'S a Wallet Guard. Every buy gets an ask - tiny ones too.",
+      "text": "Small ones still count. They add up in secret until someone gets a shock. Not noticing is not the same as saying yes.",
       "lines": [
-        "Rule held, even with a friend pushing. THAT'S a Wallet Guard. Every buy gets an ask - tiny ones too."
+        "Small ones still count. They add up in secret until someone gets a shock. Not noticing is not the same as saying yes."
       ],
-      "file": "/audio/voice/f6fdd84a14900456.mp3"
+      "file": "/audio/voice/2779b1e08e6edef6.mp3"
+    },
+    {
+      "key": "e620d087c740ade8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Rule held, even with a friend pushing. THAT is a Wallet Guard. Every buy gets an ask, tiny ones too.",
+      "lines": [
+        "Rule held, even with a friend pushing. THAT is a Wallet Guard. Every buy gets an ask, tiny ones too."
+      ],
+      "file": "/audio/voice/e620d087c740ade8.mp3"
+    },
+    {
+      "key": "3e3bfdb88c0d18e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Perfect. She said yes, she is right there, and it is her money. Asking first is what makes buying fine.",
+      "lines": [
+        "Perfect. She said yes, she is right there, and it is her money. Asking first is what makes buying fine."
+      ],
+      "file": "/audio/voice/3e3bfdb88c0d18e2.mp3"
+    },
+    {
+      "key": "fd62af90dfc56578",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "She said yes to the season pass, not to a gem pack. One yes covers one buy. Anything extra needs its own ask.",
+      "lines": [
+        "She said yes to the season pass, not to a gem pack. One yes covers one buy. Anything extra needs its own ask."
+      ],
+      "file": "/audio/voice/fd62af90dfc56578.mp3"
     },
     {
       "key": "6be06bf81bba4a0b",
@@ -18451,14 +18649,14 @@
       "file": "/audio/voice/7f9176e7dd690d31.mp3"
     },
     {
-      "key": "25db57e2f284e711",
+      "key": "4fbb7499e2ad9445",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - which one is a PRESSURE trick?",
+      "text": "Quick! Which one is a PRESSURE trick?",
       "lines": [
-        "Quick - which one is a PRESSURE trick?"
+        "Quick! Which one is a PRESSURE trick?"
       ],
-      "file": "/audio/voice/25db57e2f284e711.mp3"
+      "file": "/audio/voice/4fbb7499e2ad9445.mp3"
     },
     {
       "key": "2055904f2736a6b1",
@@ -18471,14 +18669,969 @@
       "file": "/audio/voice/2055904f2736a6b1.mp3"
     },
     {
-      "key": "4774e76371850cac",
+      "key": "fdb674e9fd49a7a2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which one is the REAL way to get coins?",
+      "text": "A 'FREE coins' pop-up appears. Tap the hero steps IN ORDER:",
       "lines": [
-        "Which one is the REAL way to get coins?"
+        "A 'FREE coins' pop-up appears. Tap the hero steps IN ORDER:"
       ],
-      "file": "/audio/voice/4774e76371850cac.mp3"
+      "file": "/audio/voice/fdb674e9fd49a7a2.mp3"
+    },
+    {
+      "key": "65ec529f0ce910dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth? Is it option A... Real money bought them, so they're real money in a costume Option B... He's right, money stops being real once it turns into coins Or is it option C... Only the giant coin packs count as real money So, what do you think?",
+      "lines": [
+        "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth?",
+        "Is it option A...",
+        "Real money bought them, so they're real money in a costume",
+        "Option B...",
+        "He's right, money stops being real once it turns into coins",
+        "Or is it option C...",
+        "Only the giant coin packs count as real money",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/65ec529f0ce910dd.mp3"
+    },
+    {
+      "key": "ba7922b50f7a916b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla opened nine loot boxes chasing the dragon pet. Her friend says the tenth HAS to win. What's true? Is it option A... The chance doubles with every box she opens Option B... Her friend is right, ten tries earns the prize Or is it option C... Box ten has the exact same tiny chance as box one So, what do you think?",
+      "lines": [
+        "Layla opened nine loot boxes chasing the dragon pet. Her friend says the tenth HAS to win. What's true?",
+        "Is it option A...",
+        "The chance doubles with every box she opens",
+        "Option B...",
+        "Her friend is right, ten tries earns the prize",
+        "Or is it option C...",
+        "Box ten has the exact same tiny chance as box one",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/ba7922b50f7a916b.mp3"
+    },
+    {
+      "key": "5a4ed0102aa9e25b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The shop flashes: 'GOLDEN CAPE, gone FOREVER in 3 minutes!' Layla loves it. What should she know? Is it option A... She can buy it now and return it if she changes her mind Option B... 'Gone forever' deals almost always come back, real deals can wait Or is it option C... The timer is real, forever really means forever So, what do you think?",
+      "lines": [
+        "The shop flashes: 'GOLDEN CAPE, gone FOREVER in 3 minutes!' Layla loves it. What should she know?",
+        "Is it option A...",
+        "She can buy it now and return it if she changes her mind",
+        "Option B...",
+        "'Gone forever' deals almost always come back, real deals can wait",
+        "Or is it option C...",
+        "The timer is real, forever really means forever",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/5a4ed0102aa9e25b.mp3"
+    },
+    {
+      "key": "4478ae99295f9cd9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mid-game, a box pops up: 'GOLDEN BLASTER, 7.99, card already saved, just tap YES!' What's the hero move? Is it option A... Pause the game and ask the grown-up whose money it is Option B... Tap YES, a saved card means it's already allowed Or is it option C... Buy it now and pay it back from his piggy bank later So, what do you think?",
+      "lines": [
+        "Mid-game, a box pops up: 'GOLDEN BLASTER, 7.99, card already saved, just tap YES!' What's the hero move?",
+        "Is it option A...",
+        "Pause the game and ask the grown-up whose money it is",
+        "Option B...",
+        "Tap YES, a saved card means it's already allowed",
+        "Or is it option C...",
+        "Buy it now and pay it back from his piggy bank later",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/4478ae99295f9cd9.mp3"
+    },
+    {
+      "key": "9de961f31fae64c3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A site promises Layla 10,000 free Gem Bucks if she types her username and password. What is the site really for? Is it option A... Sharing leftover coins the game company didn't sell Option B... Real coins, they just take a few weeks to arrive Or is it option C... Stealing accounts, free game money doesn't exist So, what do you think?",
+      "lines": [
+        "A site promises Layla 10,000 free Gem Bucks if she types her username and password. What is the site really for?",
+        "Is it option A...",
+        "Sharing leftover coins the game company didn't sell",
+        "Option B...",
+        "Real coins, they just take a few weeks to arrive",
+        "Or is it option C...",
+        "Stealing accounts, free game money doesn't exist",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/9de961f31fae64c3.mp3"
+    },
+    {
+      "key": "975e48dc991f608a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every coin pack, big or small, is bought with real money someone in your family worked for. The fun name and bright colours are just the costume. Count the coins out, every time.",
+      "lines": [
+        "That's right!",
+        "Every coin pack, big or small, is bought with real money someone in your family worked for. The fun name and bright colours are just the costume. Count the coins out, every time."
+      ],
+      "file": "/audio/voice/975e48dc991f608a.mp3"
+    },
+    {
+      "key": "7498d7dcac2baee8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Every coin pack, big or small, is bought with real money someone in your family worked for. The fun name and bright colours are just the costume. Count the coins out, every time.",
+      "lines": [
+        "Not quite.",
+        "Every coin pack, big or small, is bought with real money someone in your family worked for. The fun name and bright colours are just the costume. Count the coins out, every time."
+      ],
+      "file": "/audio/voice/7498d7dcac2baee8.mp3"
+    },
+    {
+      "key": "1c481b139012c04e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Box ten doesn't know the other nine ever happened. Same jar, same ninety-nine grey marbles, same one gold, every single time. Nobody 'earns' the rare prize by opening more boxes.",
+      "lines": [
+        "That's right!",
+        "Box ten doesn't know the other nine ever happened. Same jar, same ninety-nine grey marbles, same one gold, every single time. Nobody 'earns' the rare prize by opening more boxes."
+      ],
+      "file": "/audio/voice/1c481b139012c04e.mp3"
+    },
+    {
+      "key": "78b4f0a9c6289d33",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Box ten doesn't know the other nine ever happened. Same jar, same ninety-nine grey marbles, same one gold, every single time. Nobody 'earns' the rare prize by opening more boxes.",
+      "lines": [
+        "Not quite.",
+        "Box ten doesn't know the other nine ever happened. Same jar, same ninety-nine grey marbles, same one gold, every single time. Nobody 'earns' the rare prize by opening more boxes."
+      ],
+      "file": "/audio/voice/78b4f0a9c6289d33.mp3"
+    },
+    {
+      "key": "b63387f34a6f90ed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Shops put clocks on things so you buy before you think, and 'forever gone' capes come back all the time. A deal that can't wait for you was never a real deal.",
+      "lines": [
+        "That's right!",
+        "Shops put clocks on things so you buy before you think, and 'forever gone' capes come back all the time. A deal that can't wait for you was never a real deal."
+      ],
+      "file": "/audio/voice/b63387f34a6f90ed.mp3"
+    },
+    {
+      "key": "8195a58cb8c1af24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Shops put clocks on things so you buy before you think, and 'forever gone' capes come back all the time. A deal that can't wait for you was never a real deal.",
+      "lines": [
+        "Not quite.",
+        "Shops put clocks on things so you buy before you think, and 'forever gone' capes come back all the time. A deal that can't wait for you was never a real deal."
+      ],
+      "file": "/audio/voice/8195a58cb8c1af24.mp3"
+    },
+    {
+      "key": "2572e923bdcfe074",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A saved card is real money with a shortcut button, and nobody said yes to THIS buy. Piggy-bank paybacks skip the ask too. Every buy starts with asking the grown-up whose money it is.",
+      "lines": [
+        "That's right!",
+        "A saved card is real money with a shortcut button, and nobody said yes to THIS buy. Piggy-bank paybacks skip the ask too. Every buy starts with asking the grown-up whose money it is."
+      ],
+      "file": "/audio/voice/2572e923bdcfe074.mp3"
+    },
+    {
+      "key": "edb8b8e295bc9345",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A saved card is real money with a shortcut button, and nobody said yes to THIS buy. Piggy-bank paybacks skip the ask too. Every buy starts with asking the grown-up whose money it is.",
+      "lines": [
+        "Not quite.",
+        "A saved card is real money with a shortcut button, and nobody said yes to THIS buy. Piggy-bank paybacks skip the ask too. Every buy starts with asking the grown-up whose money it is."
+      ],
+      "file": "/audio/voice/edb8b8e295bc9345.mp3"
+    },
+    {
+      "key": "0f916d1e645228a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Coins cost the game company real money, so nobody hands out ten thousand for free. The 'prize' is your password. Close the page and tell a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "Coins cost the game company real money, so nobody hands out ten thousand for free. The 'prize' is your password. Close the page and tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/0f916d1e645228a1.mp3"
+    },
+    {
+      "key": "9ec07d44acd3ffa6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Coins cost the game company real money, so nobody hands out ten thousand for free. The 'prize' is your password. Close the page and tell a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "Coins cost the game company real money, so nobody hands out ten thousand for free. The 'prize' is your password. Close the page and tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/9ec07d44acd3ffa6.mp3"
+    },
+    {
+      "key": "47da8234afdb3a7d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Five real coins left the piggy bank for five hundred pretend gems. The costume came off the moment you counted.",
+      "lines": [
+        "Five real coins left the piggy bank for five hundred pretend gems. The costume came off the moment you counted."
+      ],
+      "file": "/audio/voice/47da8234afdb3a7d.mp3"
+    },
+    {
+      "key": "0240f33aa3c2065d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Eight more coins gone. Two packs in, and the piggy bank is already looking thin.",
+      "lines": [
+        "Eight more coins gone. Two packs in, and the piggy bank is already looking thin."
+      ],
+      "file": "/audio/voice/0240f33aa3c2065d.mp3"
+    },
+    {
+      "key": "8590b769872b8e20",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The bank ran dry before the price. When the real coins run out, the answer is to stop, not to find more.",
+      "lines": [
+        "The bank ran dry before the price. When the real coins run out, the answer is to stop, not to find more."
+      ],
+      "file": "/audio/voice/8590b769872b8e20.mp3"
+    },
+    {
+      "key": "0007e18739400f34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Points are earned by playing. Coins are bought with real money.",
+      "lines": [
+        "Points are earned by playing. Coins are bought with real money."
+      ],
+      "file": "/audio/voice/0007e18739400f34.mp3"
+    },
+    {
+      "key": "c4c06db8753bae4a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stickers are free fun. Coin packs cost someone real money.",
+      "lines": [
+        "Stickers are free fun. Coin packs cost someone real money."
+      ],
+      "file": "/audio/voice/c4c06db8753bae4a.mp3"
+    },
+    {
+      "key": "0d497fc8062c7de1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing about a coin pack is free. Every one is paid for with real money.",
+      "lines": [
+        "Nothing about a coin pack is free. Every one is paid for with real money."
+      ],
+      "file": "/audio/voice/0d497fc8062c7de1.mp3"
+    },
+    {
+      "key": "9046b8dcf7fc796a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What left the piggy bank when you paid for the packs?",
+      "lines": [
+        "What left the piggy bank when you paid for the packs?"
+      ],
+      "file": "/audio/voice/9046b8dcf7fc796a.mp3"
+    },
+    {
+      "key": "6438ceb66e49655f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Boxes have no memory. Box eleven does not know about the other ten. Same jar, same odds.",
+      "lines": [
+        "Boxes have no memory. Box eleven does not know about the other ten. Same jar, same odds."
+      ],
+      "file": "/audio/voice/6438ceb66e49655f.mp3"
+    },
+    {
+      "key": "50d89e0946099f9c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Close is a feeling the box is built to give you. A grey marble is a grey marble.",
+      "lines": [
+        "Close is a feeling the box is built to give you. A grey marble is a grey marble."
+      ],
+      "file": "/audio/voice/50d89e0946099f9c.mp3"
+    },
+    {
+      "key": "c52e8ce7825246ee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ten coins spent, ten grey marbles, and the gold one never moved. The odds are built in, and opening more does not change them.",
+      "lines": [
+        "Ten coins spent, ten grey marbles, and the gold one never moved. The odds are built in, and opening more does not change them."
+      ],
+      "file": "/audio/voice/c52e8ce7825246ee.mp3"
+    },
+    {
+      "key": "654d5a4da2909305",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing is ever due. Every open is the same jar with the same ninety-nine grey marbles.",
+      "lines": [
+        "Nothing is ever due. Every open is the same jar with the same ninety-nine grey marbles."
+      ],
+      "file": "/audio/voice/654d5a4da2909305.mp3"
+    },
+    {
+      "key": "9d98f245fe610622",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Speed changes nothing. The odds live in the jar, not in your fingers.",
+      "lines": [
+        "Speed changes nothing. The odds live in the jar, not in your fingers."
+      ],
+      "file": "/audio/voice/9d98f245fe610622.mp3"
+    },
+    {
+      "key": "c0a967f11be3db1e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sixteen coins across two boxes, and the gold marble is still in the jar. That is a gamble, built that way on purpose.",
+      "lines": [
+        "Sixteen coins across two boxes, and the gold marble is still in the jar. That is a gamble, built that way on purpose."
+      ],
+      "file": "/audio/voice/c0a967f11be3db1e.mp3"
+    },
+    {
+      "key": "e8e6a048471a28cd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Boxes have no memory. Every open is the same jar with the same one gold marble in a hundred.",
+      "lines": [
+        "Boxes have no memory. Every open is the same jar with the same one gold marble in a hundred."
+      ],
+      "file": "/audio/voice/e8e6a048471a28cd.mp3"
+    },
+    {
+      "key": "98310bb7c2ebe4bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Did the gold marble move when you opened ten boxes?",
+      "lines": [
+        "Did the gold marble move when you opened ten boxes?"
+      ],
+      "file": "/audio/voice/98310bb7c2ebe4bc.mp3"
+    },
+    {
+      "key": "636cc210b1fbacbd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A calm price, no tricks, and coins to spare. That is what a fair deal looks like, so a hero can say yes.",
+      "lines": [
+        "A calm price, no tricks, and coins to spare. That is what a fair deal looks like, so a hero can say yes."
+      ],
+      "file": "/audio/voice/636cc210b1fbacbd.mp3"
+    },
+    {
+      "key": "175b4ddfdd2f7f72",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The clock was paint. Gone forever capes come back all the time, and a deal that cannot wait for you was never a real deal.",
+      "lines": [
+        "The clock was paint. Gone forever capes come back all the time, and a deal that cannot wait for you was never a real deal."
+      ],
+      "file": "/audio/voice/175b4ddfdd2f7f72.mp3"
+    },
+    {
+      "key": "2bb8c5f2e5869db7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One coin became five, and no shop can know what everyone has. The receipt showed the trap before it could gobble the pouch.",
+      "lines": [
+        "One coin became five, and no shop can know what everyone has. The receipt showed the trap before it could gobble the pouch."
+      ],
+      "file": "/audio/voice/2bb8c5f2e5869db7.mp3"
+    },
+    {
+      "key": "c4885d8c06075f2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tiny prices grow huge. A coin every day is seven coins in a week, and the four left sign is just the rush trick in new paint.",
+      "lines": [
+        "Tiny prices grow huge. A coin every day is seven coins in a week, and the four left sign is just the rush trick in new paint."
+      ],
+      "file": "/audio/voice/c4885d8c06075f2a.mp3"
+    },
+    {
+      "key": "a4b62fbfa70fffa8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Whenever you're ready is zero rush. A fair offer can wait for you.",
+      "lines": [
+        "Whenever you're ready is zero rush. A fair offer can wait for you."
+      ],
+      "file": "/audio/voice/a4b62fbfa70fffa8.mp3"
+    },
+    {
+      "key": "47f4780f05ac21f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Take your time is the opposite of a rush. That is what honest looks like.",
+      "lines": [
+        "Take your time is the opposite of a rush. That is what honest looks like."
+      ],
+      "file": "/audio/voice/47f4780f05ac21f2.mp3"
+    },
+    {
+      "key": "90e12000290eaff2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A friend cannot say yes to someone else's money. Only the grown-up whose money it is can.",
+      "lines": [
+        "A friend cannot say yes to someone else's money. Only the grown-up whose money it is can."
+      ],
+      "file": "/audio/voice/90e12000290eaff2.mp3"
+    },
+    {
+      "key": "2581fabf607e07bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The shop wants the sale. It will always say yes. That is not an ask.",
+      "lines": [
+        "The shop wants the sale. It will always say yes. That is not an ask."
+      ],
+      "file": "/audio/voice/2581fabf607e07bc.mp3"
+    },
+    {
+      "key": "22fb9a3bbf14466e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Small buys add up in secret. Every buy gets an ask, tiny ones too.",
+      "lines": [
+        "Small buys add up in secret. Every buy gets an ask, tiny ones too."
+      ],
+      "file": "/audio/voice/22fb9a3bbf14466e.mp3"
+    },
+    {
+      "key": "9023cb6e536ae23d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Log in here is the whole trick. The coins are bait, and your password is the catch. Nobody hands out ten thousand of anything.",
+      "lines": [
+        "Log in here is the whole trick. The coins are bait, and your password is the catch. Nobody hands out ten thousand of anything."
+      ],
+      "file": "/audio/voice/9023cb6e536ae23d.mp3"
+    },
+    {
+      "key": "232ccdcf03ddf49e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the small words on that coin. What does log in here want you to type before the Gem Bucks arrive?",
+      "lines": [
+        "Read the small words on that coin. What does log in here want you to type before the Gem Bucks arrive?"
+      ],
+      "file": "/audio/voice/232ccdcf03ddf49e.mp3"
+    },
+    {
+      "key": "3d9426af257ab545",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It lives inside the real game, it asks for nothing, and fifty coins a day is the kind of small reward real games give. That one is real.",
+      "lines": [
+        "It lives inside the real game, it asks for nothing, and fifty coins a day is the kind of small reward real games give. That one is real."
+      ],
+      "file": "/audio/voice/3d9426af257ab545.mp3"
+    },
+    {
+      "key": "cf826d4d0707c16a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A daily reward that lives inside the game and pays you for logging in. Does it ask you for anything before you get it?",
+      "lines": [
+        "A daily reward that lives inside the game and pays you for logging in. Does it ask you for anything before you get it?"
+      ],
+      "file": "/audio/voice/cf826d4d0707c16a.mp3"
+    },
+    {
+      "key": "b469938161b9a7d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing can double game coins from outside the game. Install this is the string, and the tap lets the thief in.",
+      "lines": [
+        "Nothing can double game coins from outside the game. Install this is the string, and the tap lets the thief in."
+      ],
+      "file": "/audio/voice/b469938161b9a7d7.mp3"
+    },
+    {
+      "key": "e53023743a8c9fb8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Install this, says the doubler. What is the one thing it needs you to do before your balance grows?",
+      "lines": [
+        "Install this, says the doubler. What is the one thing it needs you to do before your balance grows?"
+      ],
+      "file": "/audio/voice/e53023743a8c9fb8.mp3"
+    },
+    {
+      "key": "93de9d7069c10bf0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free, then add a card. Every spin wins means every spin costs, and the card is what the spinner was fishing for.",
+      "lines": [
+        "Free, then add a card. Every spin wins means every spin costs, and the card is what the spinner was fishing for."
+      ],
+      "file": "/audio/voice/93de9d7069c10bf0.mp3"
+    },
+    {
+      "key": "54fdd4a558d7d32e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It says free. Then what does it ask you to add?",
+      "lines": [
+        "It says free. Then what does it ask you to add?"
+      ],
+      "file": "/audio/voice/54fdd4a558d7d32e.mp3"
+    },
+    {
+      "key": "4752232630e84b82",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You earned it by playing, the game handed it over, and it asks for nothing. Real rewards feel exactly like that.",
+      "lines": [
+        "You earned it by playing, the game handed it over, and it asks for nothing. Real rewards feel exactly like that."
+      ],
+      "file": "/audio/voice/4752232630e84b82.mp3"
+    },
+    {
+      "key": "849b9756301a982f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A level ten bonus, straight out of the game. You earned it by playing. Does it ask you for anything at all?",
+      "lines": [
+        "A level ten bonus, straight out of the game. You earned it by playing. Does it ask you for anything at all?"
+      ],
+      "file": "/audio/voice/849b9756301a982f.mp3"
+    },
+    {
+      "key": "eaf531f95f60d3bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Lucky player is the flattery, and the password box is the trap. The coins were never going to arrive.",
+      "lines": [
+        "Lucky player is the flattery, and the password box is the trap. The coins were never going to arrive."
+      ],
+      "file": "/audio/voice/eaf531f95f60d3bc.mp3"
+    },
+    {
+      "key": "ec50d9c83789f36e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Why would a prize need your password before it can be given?",
+      "lines": [
+        "Why would a prize need your password before it can be given?"
+      ],
+      "file": "/audio/voice/ec50d9c83789f36e.mp3"
+    },
+    {
+      "key": "46edc454b21f6f1d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What must you NOT do first, before anything else?",
+      "lines": [
+        "What must you NOT do first, before anything else?"
+      ],
+      "file": "/audio/voice/46edc454b21f6f1d.mp3"
+    },
+    {
+      "key": "1b3f0b6bb5013eb6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gems are coins with a costume on. Five hundred gems is real money, every time.",
+      "lines": [
+        "Gems are coins with a costume on. Five hundred gems is real money, every time."
+      ],
+      "file": "/audio/voice/1b3f0b6bb5013eb6.mp3"
+    },
+    {
+      "key": "9bcdc3d7a934e693",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Boxes have no memory. The next one has the same one-in-a-hundred chance as the last.",
+      "lines": [
+        "Boxes have no memory. The next one has the same one-in-a-hundred chance as the last."
+      ],
+      "file": "/audio/voice/9bcdc3d7a934e693.mp3"
+    },
+    {
+      "key": "3faa116d1e3246c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A countdown on a shop is paint. Freeze it, read the price, walk away.",
+      "lines": [
+        "A countdown on a shop is paint. Freeze it, read the price, walk away."
+      ],
+      "file": "/audio/voice/3faa116d1e3246c5.mp3"
+    },
+    {
+      "key": "7bec2523e0a31491",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saved is not allowed. Nobody said yes to this buy, so you ask the grown-up whose money it is.",
+      "lines": [
+        "Saved is not allowed. Nobody said yes to this buy, so you ask the grown-up whose money it is."
+      ],
+      "file": "/audio/voice/7bec2523e0a31491.mp3"
+    },
+    {
+      "key": "fcbf396bede343b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free game money does not exist. Log in here is fishing for your password.",
+      "lines": [
+        "Free game money does not exist. Log in here is fishing for your password."
+      ],
+      "file": "/audio/voice/fcbf396bede343b4.mp3"
+    },
+    {
+      "key": "dbcd5e204c3347b5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way.",
+      "lines": [
+        "Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way."
+      ],
+      "file": "/audio/voice/dbcd5e204c3347b5.mp3"
+    },
+    {
+      "key": "7755bf1a045923d0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every coin pack, big or small, is bought with real money someone in your family worked for. The fun name and bright colours are just the costume. Count the coins out, every time.",
+      "lines": [
+        "Every coin pack, big or small, is bought with real money someone in your family worked for. The fun name and bright colours are just the costume. Count the coins out, every time."
+      ],
+      "file": "/audio/voice/7755bf1a045923d0.mp3"
+    },
+    {
+      "key": "f8bc456d9e36c508",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Box ten doesn't know the other nine ever happened. Same jar, same ninety-nine grey marbles, same one gold, every single time. Nobody 'earns' the rare prize by opening more boxes.",
+      "lines": [
+        "Box ten doesn't know the other nine ever happened. Same jar, same ninety-nine grey marbles, same one gold, every single time. Nobody 'earns' the rare prize by opening more boxes."
+      ],
+      "file": "/audio/voice/f8bc456d9e36c508.mp3"
+    },
+    {
+      "key": "865d051c40d8a811",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Shops put clocks on things so you buy before you think, and 'forever gone' capes come back all the time. A deal that can't wait for you was never a real deal.",
+      "lines": [
+        "Shops put clocks on things so you buy before you think, and 'forever gone' capes come back all the time. A deal that can't wait for you was never a real deal."
+      ],
+      "file": "/audio/voice/865d051c40d8a811.mp3"
+    },
+    {
+      "key": "cc9a4a9d50ca9e90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A saved card is real money with a shortcut button, and nobody said yes to THIS buy. Piggy-bank paybacks skip the ask too. Every buy starts with asking the grown-up whose money it is.",
+      "lines": [
+        "A saved card is real money with a shortcut button, and nobody said yes to THIS buy. Piggy-bank paybacks skip the ask too. Every buy starts with asking the grown-up whose money it is."
+      ],
+      "file": "/audio/voice/cc9a4a9d50ca9e90.mp3"
+    },
+    {
+      "key": "23a64cd527123bba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Coins cost the game company real money, so nobody hands out ten thousand for free. The 'prize' is your password. Close the page and tell a trusted grown-up.",
+      "lines": [
+        "Coins cost the game company real money, so nobody hands out ten thousand for free. The 'prize' is your password. Close the page and tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/23a64cd527123bba.mp3"
+    },
+    {
+      "key": "4066edc7dd0eed57",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every coin pack is bought with real money someone worked for.",
+      "lines": [
+        "Every coin pack is bought with real money someone worked for."
+      ],
+      "file": "/audio/voice/4066edc7dd0eed57.mp3"
+    },
+    {
+      "key": "42ce1725a85b3fc3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One gold marble, ninety-nine grey, designed that way on purpose.",
+      "lines": [
+        "One gold marble, ninety-nine grey, designed that way on purpose."
+      ],
+      "file": "/audio/voice/42ce1725a85b3fc3.mp3"
+    },
+    {
+      "key": "66c48b14ad55a4d9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not your money, not your call alone. Every buy gets an ask.",
+      "lines": [
+        "Not your money, not your call alone. Every buy gets an ask."
+      ],
+      "file": "/audio/voice/66c48b14ad55a4d9.mp3"
+    },
+    {
+      "key": "b235dbe9a4ab8593",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Countdowns exist to stop your thinking. Real deals can wait.",
+      "lines": [
+        "Countdowns exist to stop your thinking. Real deals can wait."
+      ],
+      "file": "/audio/voice/b235dbe9a4ab8593.mp3"
+    },
+    {
+      "key": "667083caac985674",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Boxes have no memory. The jar resets every single time.",
+      "lines": [
+        "Boxes have no memory. The jar resets every single time."
+      ],
+      "file": "/audio/voice/667083caac985674.mp3"
+    },
+    {
+      "key": "5a520c8fff94a9f7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free game money doesn't exist. The password IS the prize they're after.",
+      "lines": [
+        "Free game money doesn't exist. The password IS the prize they're after."
+      ],
+      "file": "/audio/voice/5a520c8fff94a9f7.mp3"
+    },
+    {
+      "key": "3f60fadbbc9c511e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fun names hide the real money. Counting the coins out is your superpower.",
+      "lines": [
+        "Fun names hide the real money. Counting the coins out is your superpower."
+      ],
+      "file": "/audio/voice/3f60fadbbc9c511e.mp3"
+    },
+    {
+      "key": "92a2f43a49cccf59",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not noticing isn't the same as saying yes. Tiny buys need asks too.",
+      "lines": [
+        "Not noticing isn't the same as saying yes. Tiny buys need asks too."
+      ],
+      "file": "/audio/voice/92a2f43a49cccf59.mp3"
+    },
+    {
+      "key": "2aa9116d7b7852f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'Almost' is part of the machine. It's how they sell the next box.",
+      "lines": [
+        "'Almost' is part of the machine. It's how they sell the next box."
+      ],
+      "file": "/audio/voice/2aa9116d7b7852f0.mp3"
+    },
+    {
+      "key": "be1750588d9e4d08",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First pack on the counter: the Starter Gem Pack, five hundred gems. Tap coins into the till until it is paid.",
+      "lines": [
+        "First pack on the counter: the Starter Gem Pack, five hundred gems. Tap coins into the till until it is paid."
+      ],
+      "file": "/audio/voice/be1750588d9e4d08.mp3"
+    },
+    {
+      "key": "4a2c4e4ef078d0d2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Next: the Mega Gem Chest, one thousand gems. Count the coins in, and keep an eye on the piggy bank.",
+      "lines": [
+        "Next: the Mega Gem Chest, one thousand gems. Count the coins in, and keep an eye on the piggy bank."
+      ],
+      "file": "/audio/voice/4a2c4e4ef078d0d2.mp3"
+    },
+    {
+      "key": "141e86e9a16bd947",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last: the Legendary Vault, two and a half thousand gems. Count it out, and see if the bank can even pay.",
+      "lines": [
+        "Last: the Legendary Vault, two and a half thousand gems. Count it out, and see if the bank can even pay."
+      ],
+      "file": "/audio/voice/141e86e9a16bd947.mp3"
+    },
+    {
+      "key": "17ca07bb3b09ee42",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The Dragon Pet box. One gold marble in a hundred. Tap OPEN ten times, and count what you spend.",
+      "lines": [
+        "The Dragon Pet box. One gold marble in a hundred. Tap OPEN ten times, and count what you spend."
+      ],
+      "file": "/audio/voice/17ca07bb3b09ee42.mp3"
+    },
+    {
+      "key": "34a61e73bebe9313",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The Golden Blaster box. Same jar, same one gold marble. Six more opens. Watch the spent counter climb.",
+      "lines": [
+        "The Golden Blaster box. Same jar, same one gold marble. Six more opens. Watch the spent counter climb."
+      ],
+      "file": "/audio/voice/34a61e73bebe9313.mp3"
+    },
+    {
+      "key": "d2b81e05bc36081c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First deal: a Cool Hat, two coins, sitting calmly on the shelf. Pull the lever and hold it.",
+      "lines": [
+        "First deal: a Cool Hat, two coins, sitting calmly on the shelf. Pull the lever and hold it."
+      ],
+      "file": "/audio/voice/d2b81e05bc36081c.mp3"
+    },
+    {
+      "key": "c01942c289955529",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Next: a Golden Cape, gone forever in three minutes, says the sign. Pull the lever and see if the clock is real.",
+      "lines": [
+        "Next: a Golden Cape, gone forever in three minutes, says the sign. Pull the lever and see if the clock is real."
+      ],
+      "file": "/audio/voice/c01942c289955529.mp3"
+    },
+    {
+      "key": "ec09987f4ae807d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A Mystery Box for one coin, and everyone has one, says the sign. Pull the lever and print the real total.",
+      "lines": [
+        "A Mystery Box for one coin, and everyone has one, says the sign. Pull the lever and print the real total."
+      ],
+      "file": "/audio/voice/ec09987f4ae807d6.mp3"
+    },
+    {
+      "key": "9c98c25ba7b53123",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last deal: the Mega Pass, only one coin a day, and only four left. Pull the lever and add up the days.",
+      "lines": [
+        "Last deal: the Mega Pass, only one coin a day, and only four left. Pull the lever and add up the days."
+      ],
+      "file": "/audio/voice/9c98c25ba7b53123.mp3"
+    },
+    {
+      "key": "05b05f251d790f9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Walking away is never a disaster. But look at the receipt: no tricks, no rush, coins to spare. A calm, fair deal is one a hero can take.",
+      "lines": [
+        "Walking away is never a disaster. But look at the receipt: no tricks, no rush, coins to spare. A calm, fair deal is one a hero can take."
+      ],
+      "file": "/audio/voice/05b05f251d790f9a.mp3"
+    },
+    {
+      "key": "521e86ee0ee9bc41",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A countdown on a shop is there to stop your thinking. The receipt showed it was fake and the cape comes back. Buying under a rush is the trick working.",
+      "lines": [
+        "A countdown on a shop is there to stop your thinking. The receipt showed it was fake and the cape comes back. Buying under a rush is the trick working."
+      ],
+      "file": "/audio/voice/521e86ee0ee9bc41.mp3"
+    },
+    {
+      "key": "9a6fb0cdf79cc948",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mystery boxes keep whispering one more try. That is how a one-coin box empties a whole pouch, and no shop can know what everyone has.",
+      "lines": [
+        "Mystery boxes keep whispering one more try. That is how a one-coin box empties a whole pouch, and no shop can know what everyone has."
+      ],
+      "file": "/audio/voice/9a6fb0cdf79cc948.mp3"
+    },
+    {
+      "key": "33e51cc2458de082",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A coin every day sounds tiny, but the drip never stops. In one week it costs more than your whole pouch, and the four left sign is there to hurry you.",
+      "lines": [
+        "A coin every day sounds tiny, but the drip never stops. In one week it costs more than your whole pouch, and the four left sign is there to hurry you."
+      ],
+      "file": "/audio/voice/33e51cc2458de082.mp3"
+    },
+    {
+      "key": "7e31de7e4805229f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A gold coin floats up: FREE ten thousand Gem Bucks! Log in here to claim. Where does its string lead?",
+      "lines": [
+        "A gold coin floats up: FREE ten thousand Gem Bucks! Log in here to claim. Where does its string lead?"
+      ],
+      "file": "/audio/voice/7e31de7e4805229f.mp3"
+    },
+    {
+      "key": "1235fa34eb80a479",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A gold coin floats up: daily reward, fifty coins for logging in, inside the game. Where does its string lead?",
+      "lines": [
+        "A gold coin floats up: daily reward, fifty coins for logging in, inside the game. Where does its string lead?"
+      ],
+      "file": "/audio/voice/1235fa34eb80a479.mp3"
+    },
+    {
+      "key": "ffa7295f90b68c5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A gold coin floats up: coin doubler, install this and watch your balance grow. Where does its string lead?",
+      "lines": [
+        "A gold coin floats up: coin doubler, install this and watch your balance grow. Where does its string lead?"
+      ],
+      "file": "/audio/voice/ffa7295f90b68c5a.mp3"
+    },
+    {
+      "key": "207ba8cf4493c726",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A gold coin floats up: free skin spinner, every spin wins, add a grown-up's card to unlock. Where does its string lead?",
+      "lines": [
+        "A gold coin floats up: free skin spinner, every spin wins, add a grown-up's card to unlock. Where does its string lead?"
+      ],
+      "file": "/audio/voice/207ba8cf4493c726.mp3"
+    },
+    {
+      "key": "9cc130e1f47b4f15",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A gold coin floats up: level ten bonus, one hundred coins, from the game itself. Where does its string lead?",
+      "lines": [
+        "A gold coin floats up: level ten bonus, one hundred coins, from the game itself. Where does its string lead?"
+      ],
+      "file": "/audio/voice/9cc130e1f47b4f15.mp3"
+    },
+    {
+      "key": "f34d0100add11efc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A gold coin floats up: lucky player! Enter your username and password for five thousand coins. Where does its string lead?",
+      "lines": [
+        "A gold coin floats up: lucky player! Enter your username and password for five thousand coins. Where does its string lead?"
+      ],
+      "file": "/audio/voice/f34d0100add11efc.mp3"
     },
     {
       "key": "ff45ceea45ec3ff5",
@@ -23970,70 +25123,576 @@
       "file": "/audio/voice/eb33e76d99868827.mp3"
     },
     {
-      "key": "514ceb6018c69909",
+      "key": "6b5ff6e0ceffe732",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. That 'saved card' is a real person's real $7.99 - and they didn't get a say. Saved doesn't mean allowed.",
-      "lines": [
-        "Not quite.",
-        "That 'saved card' is a real person's real $7.99 - and they didn't get a say. Saved doesn't mean allowed."
-      ],
-      "file": "/audio/voice/514ceb6018c69909.mp3"
-    },
-    {
-      "key": "2a65870e0da25766",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Hero move! Maybe they say yes, maybe no - but it was THEIR call, and the shop stays fun.",
+      "text": "That's right! Five real coins left the piggy bank for five hundred pretend gems. The costume came off the moment you counted.",
       "lines": [
         "That's right!",
-        "Hero move! Maybe they say yes, maybe no - but it was THEIR call, and the shop stays fun."
+        "Five real coins left the piggy bank for five hundred pretend gems. The costume came off the moment you counted."
       ],
-      "file": "/audio/voice/2a65870e0da25766.mp3"
+      "file": "/audio/voice/6b5ff6e0ceffe732.mp3"
     },
     {
-      "key": "67f7c9761477fa62",
+      "key": "5af71e18be8383e2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. The countdown made the choice, not you. And guess what? That 'mega deal' was back the very next week.",
-      "lines": [
-        "Not quite.",
-        "The countdown made the choice, not you. And guess what? That 'mega deal' was back the very next week."
-      ],
-      "file": "/audio/voice/67f7c9761477fa62.mp3"
-    },
-    {
-      "key": "f6a9f934a7d644f9",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Exactly. Rush + money = double-check. Any deal that can't wait for a grown-up isn't a deal - it's a trick.",
+      "text": "That's right! Eight more coins gone. Two packs in, and the piggy bank is already looking thin.",
       "lines": [
         "That's right!",
-        "Exactly. Rush + money = double-check. Any deal that can't wait for a grown-up isn't a deal - it's a trick."
+        "Eight more coins gone. Two packs in, and the piggy bank is already looking thin."
       ],
-      "file": "/audio/voice/f6a9f934a7d644f9.mp3"
+      "file": "/audio/voice/5af71e18be8383e2.mp3"
     },
     {
-      "key": "d11c45328f6e9cff",
+      "key": "c76152ba8c89aea4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Small ones still count - they add up in secret until someone gets a shock. Not noticing isn't the same as saying yes.",
-      "lines": [
-        "Not quite.",
-        "Small ones still count - they add up in secret until someone gets a shock. Not noticing isn't the same as saying yes."
-      ],
-      "file": "/audio/voice/d11c45328f6e9cff.mp3"
-    },
-    {
-      "key": "5353ffec59e9c551",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Rule held, even with a friend pushing. THAT'S a Wallet Guard. Every buy gets an ask - tiny ones too.",
+      "text": "That's right! The bank ran dry before the price. When the real coins run out, the answer is to stop, not to find more.",
       "lines": [
         "That's right!",
-        "Rule held, even with a friend pushing. THAT'S a Wallet Guard. Every buy gets an ask - tiny ones too."
+        "The bank ran dry before the price. When the real coins run out, the answer is to stop, not to find more."
       ],
-      "file": "/audio/voice/5353ffec59e9c551.mp3"
+      "file": "/audio/voice/c76152ba8c89aea4.mp3"
+    },
+    {
+      "key": "423521754bb1310b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Points are earned by playing. Coins are bought with real money.",
+      "lines": [
+        "Not quite.",
+        "Points are earned by playing. Coins are bought with real money."
+      ],
+      "file": "/audio/voice/423521754bb1310b.mp3"
+    },
+    {
+      "key": "91cbf004e5abbe12",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Stickers are free fun. Coin packs cost someone real money.",
+      "lines": [
+        "Not quite.",
+        "Stickers are free fun. Coin packs cost someone real money."
+      ],
+      "file": "/audio/voice/91cbf004e5abbe12.mp3"
+    },
+    {
+      "key": "05cb4da3361b02c9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing about a coin pack is free. Every one is paid for with real money.",
+      "lines": [
+        "Not quite.",
+        "Nothing about a coin pack is free. Every one is paid for with real money."
+      ],
+      "file": "/audio/voice/05cb4da3361b02c9.mp3"
+    },
+    {
+      "key": "252e8ca5c6738399",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Ten coins spent, ten grey marbles, and the gold one never moved. The odds are built in, and opening more does not change them.",
+      "lines": [
+        "That's right!",
+        "Ten coins spent, ten grey marbles, and the gold one never moved. The odds are built in, and opening more does not change them."
+      ],
+      "file": "/audio/voice/252e8ca5c6738399.mp3"
+    },
+    {
+      "key": "a08204dc43ba3a6c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Boxes have no memory. Box eleven does not know about the other ten. Same jar, same odds.",
+      "lines": [
+        "Not quite.",
+        "Boxes have no memory. Box eleven does not know about the other ten. Same jar, same odds."
+      ],
+      "file": "/audio/voice/a08204dc43ba3a6c.mp3"
+    },
+    {
+      "key": "e47f0ec4d2b40269",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Close is a feeling the box is built to give you. A grey marble is a grey marble.",
+      "lines": [
+        "Not quite.",
+        "Close is a feeling the box is built to give you. A grey marble is a grey marble."
+      ],
+      "file": "/audio/voice/e47f0ec4d2b40269.mp3"
+    },
+    {
+      "key": "42026033f759eb23",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Sixteen coins across two boxes, and the gold marble is still in the jar. That is a gamble, built that way on purpose.",
+      "lines": [
+        "That's right!",
+        "Sixteen coins across two boxes, and the gold marble is still in the jar. That is a gamble, built that way on purpose."
+      ],
+      "file": "/audio/voice/42026033f759eb23.mp3"
+    },
+    {
+      "key": "5b2269807f7008e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing is ever due. Every open is the same jar with the same ninety-nine grey marbles.",
+      "lines": [
+        "Not quite.",
+        "Nothing is ever due. Every open is the same jar with the same ninety-nine grey marbles."
+      ],
+      "file": "/audio/voice/5b2269807f7008e9.mp3"
+    },
+    {
+      "key": "17ab61db0ffffbc0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Speed changes nothing. The odds live in the jar, not in your fingers.",
+      "lines": [
+        "Not quite.",
+        "Speed changes nothing. The odds live in the jar, not in your fingers."
+      ],
+      "file": "/audio/voice/17ab61db0ffffbc0.mp3"
+    },
+    {
+      "key": "8c515a35c3678df8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Boxes have no memory. Every open is the same jar with the same one gold marble in a hundred.",
+      "lines": [
+        "Not quite.",
+        "Boxes have no memory. Every open is the same jar with the same one gold marble in a hundred."
+      ],
+      "file": "/audio/voice/8c515a35c3678df8.mp3"
+    },
+    {
+      "key": "52045bb0e54e1304",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A calm price, no tricks, and coins to spare. That is what a fair deal looks like, so a hero can say yes.",
+      "lines": [
+        "That's right!",
+        "A calm price, no tricks, and coins to spare. That is what a fair deal looks like, so a hero can say yes."
+      ],
+      "file": "/audio/voice/52045bb0e54e1304.mp3"
+    },
+    {
+      "key": "4244aa2785362249",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Walking away is never a disaster. But look at the receipt: no tricks, no rush, coins to spare. A calm, fair deal is one a hero can take.",
+      "lines": [
+        "Not quite.",
+        "Walking away is never a disaster. But look at the receipt: no tricks, no rush, coins to spare. A calm, fair deal is one a hero can take."
+      ],
+      "file": "/audio/voice/4244aa2785362249.mp3"
+    },
+    {
+      "key": "ac47a16755ace0e5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The clock was paint. Gone forever capes come back all the time, and a deal that cannot wait for you was never a real deal.",
+      "lines": [
+        "That's right!",
+        "The clock was paint. Gone forever capes come back all the time, and a deal that cannot wait for you was never a real deal."
+      ],
+      "file": "/audio/voice/ac47a16755ace0e5.mp3"
+    },
+    {
+      "key": "2fa5d6eaaecda50e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A countdown on a shop is there to stop your thinking. The receipt showed it was fake and the cape comes back. Buying under a rush is the trick working.",
+      "lines": [
+        "Not quite.",
+        "A countdown on a shop is there to stop your thinking. The receipt showed it was fake and the cape comes back. Buying under a rush is the trick working."
+      ],
+      "file": "/audio/voice/2fa5d6eaaecda50e.mp3"
+    },
+    {
+      "key": "d187a3662f35a32e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! One coin became five, and no shop can know what everyone has. The receipt showed the trap before it could gobble the pouch.",
+      "lines": [
+        "That's right!",
+        "One coin became five, and no shop can know what everyone has. The receipt showed the trap before it could gobble the pouch."
+      ],
+      "file": "/audio/voice/d187a3662f35a32e.mp3"
+    },
+    {
+      "key": "741e7123b5102365",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Mystery boxes keep whispering one more try. That is how a one-coin box empties a whole pouch, and no shop can know what everyone has.",
+      "lines": [
+        "Not quite.",
+        "Mystery boxes keep whispering one more try. That is how a one-coin box empties a whole pouch, and no shop can know what everyone has."
+      ],
+      "file": "/audio/voice/741e7123b5102365.mp3"
+    },
+    {
+      "key": "e69a63465f469024",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Tiny prices grow huge. A coin every day is seven coins in a week, and the four left sign is just the rush trick in new paint.",
+      "lines": [
+        "That's right!",
+        "Tiny prices grow huge. A coin every day is seven coins in a week, and the four left sign is just the rush trick in new paint."
+      ],
+      "file": "/audio/voice/e69a63465f469024.mp3"
+    },
+    {
+      "key": "47566cd579fabd21",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A coin every day sounds tiny, but the drip never stops. In one week it costs more than your whole pouch, and the four left sign is there to hurry you.",
+      "lines": [
+        "Not quite.",
+        "A coin every day sounds tiny, but the drip never stops. In one week it costs more than your whole pouch, and the four left sign is there to hurry you."
+      ],
+      "file": "/audio/voice/47566cd579fabd21.mp3"
+    },
+    {
+      "key": "d3c6a3e0f77f091a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Whenever you're ready is zero rush. A fair offer can wait for you.",
+      "lines": [
+        "Not quite.",
+        "Whenever you're ready is zero rush. A fair offer can wait for you."
+      ],
+      "file": "/audio/voice/d3c6a3e0f77f091a.mp3"
+    },
+    {
+      "key": "ac1e1065dc2b9768",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Take your time is the opposite of a rush. That is what honest looks like.",
+      "lines": [
+        "Not quite.",
+        "Take your time is the opposite of a rush. That is what honest looks like."
+      ],
+      "file": "/audio/voice/ac1e1065dc2b9768.mp3"
+    },
+    {
+      "key": "06517b8389ca1bfe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That saved card is a real person's real money, and they did not get a say. Saved does not mean allowed.",
+      "lines": [
+        "Not quite.",
+        "That saved card is a real person's real money, and they did not get a say. Saved does not mean allowed."
+      ],
+      "file": "/audio/voice/06517b8389ca1bfe.mp3"
+    },
+    {
+      "key": "1f9306f04d0b0e1f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Hero move! Maybe they say yes, maybe no, but it was THEIR call, and the shop stays fun.",
+      "lines": [
+        "That's right!",
+        "Hero move! Maybe they say yes, maybe no, but it was THEIR call, and the shop stays fun."
+      ],
+      "file": "/audio/voice/1f9306f04d0b0e1f.mp3"
+    },
+    {
+      "key": "31224ae36858fcb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The countdown made the choice, not you. And that mega deal was back the very next week.",
+      "lines": [
+        "Not quite.",
+        "The countdown made the choice, not you. And that mega deal was back the very next week."
+      ],
+      "file": "/audio/voice/31224ae36858fcb7.mp3"
+    },
+    {
+      "key": "771e259d38d615ae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Exactly. Rush plus money means double-check. Any deal that cannot wait for a grown-up is a trick.",
+      "lines": [
+        "That's right!",
+        "Exactly. Rush plus money means double-check. Any deal that cannot wait for a grown-up is a trick."
+      ],
+      "file": "/audio/voice/771e259d38d615ae.mp3"
+    },
+    {
+      "key": "75df351ea0c0174a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Small ones still count. They add up in secret until someone gets a shock. Not noticing is not the same as saying yes.",
+      "lines": [
+        "Not quite.",
+        "Small ones still count. They add up in secret until someone gets a shock. Not noticing is not the same as saying yes."
+      ],
+      "file": "/audio/voice/75df351ea0c0174a.mp3"
+    },
+    {
+      "key": "07c6760458e91a83",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Rule held, even with a friend pushing. THAT is a Wallet Guard. Every buy gets an ask, tiny ones too.",
+      "lines": [
+        "That's right!",
+        "Rule held, even with a friend pushing. THAT is a Wallet Guard. Every buy gets an ask, tiny ones too."
+      ],
+      "file": "/audio/voice/07c6760458e91a83.mp3"
+    },
+    {
+      "key": "70556d74a8d16474",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Perfect. She said yes, she is right there, and it is her money. Asking first is what makes buying fine.",
+      "lines": [
+        "That's right!",
+        "Perfect. She said yes, she is right there, and it is her money. Asking first is what makes buying fine."
+      ],
+      "file": "/audio/voice/70556d74a8d16474.mp3"
+    },
+    {
+      "key": "5e7563cde4a81b67",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. She said yes to the season pass, not to a gem pack. One yes covers one buy. Anything extra needs its own ask.",
+      "lines": [
+        "Not quite.",
+        "She said yes to the season pass, not to a gem pack. One yes covers one buy. Anything extra needs its own ask."
+      ],
+      "file": "/audio/voice/5e7563cde4a81b67.mp3"
+    },
+    {
+      "key": "d15a4bab8c1d8a72",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A friend cannot say yes to someone else's money. Only the grown-up whose money it is can.",
+      "lines": [
+        "Not quite.",
+        "A friend cannot say yes to someone else's money. Only the grown-up whose money it is can."
+      ],
+      "file": "/audio/voice/d15a4bab8c1d8a72.mp3"
+    },
+    {
+      "key": "3789f8807fa64d17",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The shop wants the sale. It will always say yes. That is not an ask.",
+      "lines": [
+        "Not quite.",
+        "The shop wants the sale. It will always say yes. That is not an ask."
+      ],
+      "file": "/audio/voice/3789f8807fa64d17.mp3"
+    },
+    {
+      "key": "578db51f124f88a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Small buys add up in secret. Every buy gets an ask, tiny ones too.",
+      "lines": [
+        "Not quite.",
+        "Small buys add up in secret. Every buy gets an ask, tiny ones too."
+      ],
+      "file": "/audio/voice/578db51f124f88a5.mp3"
+    },
+    {
+      "key": "bcd0cc706dc066a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Log in here is the whole trick. The coins are bait, and your password is the catch. Nobody hands out ten thousand of anything.",
+      "lines": [
+        "That's right!",
+        "Log in here is the whole trick. The coins are bait, and your password is the catch. Nobody hands out ten thousand of anything."
+      ],
+      "file": "/audio/voice/bcd0cc706dc066a6.mp3"
+    },
+    {
+      "key": "70d934891119e91f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read the small words on that coin. What does log in here want you to type before the Gem Bucks arrive?",
+      "lines": [
+        "Not quite.",
+        "Read the small words on that coin. What does log in here want you to type before the Gem Bucks arrive?"
+      ],
+      "file": "/audio/voice/70d934891119e91f.mp3"
+    },
+    {
+      "key": "eed2bbc5f1315601",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It lives inside the real game, it asks for nothing, and fifty coins a day is the kind of small reward real games give. That one is real.",
+      "lines": [
+        "That's right!",
+        "It lives inside the real game, it asks for nothing, and fifty coins a day is the kind of small reward real games give. That one is real."
+      ],
+      "file": "/audio/voice/eed2bbc5f1315601.mp3"
+    },
+    {
+      "key": "339e6883bfab6afa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A daily reward that lives inside the game and pays you for logging in. Does it ask you for anything before you get it?",
+      "lines": [
+        "Not quite.",
+        "A daily reward that lives inside the game and pays you for logging in. Does it ask you for anything before you get it?"
+      ],
+      "file": "/audio/voice/339e6883bfab6afa.mp3"
+    },
+    {
+      "key": "b2ff93ec973f898c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nothing can double game coins from outside the game. Install this is the string, and the tap lets the thief in.",
+      "lines": [
+        "That's right!",
+        "Nothing can double game coins from outside the game. Install this is the string, and the tap lets the thief in."
+      ],
+      "file": "/audio/voice/b2ff93ec973f898c.mp3"
+    },
+    {
+      "key": "4b6fc279518d3195",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Install this, says the doubler. What is the one thing it needs you to do before your balance grows?",
+      "lines": [
+        "Not quite.",
+        "Install this, says the doubler. What is the one thing it needs you to do before your balance grows?"
+      ],
+      "file": "/audio/voice/4b6fc279518d3195.mp3"
+    },
+    {
+      "key": "c01bfa8491e00c2c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Free, then add a card. Every spin wins means every spin costs, and the card is what the spinner was fishing for.",
+      "lines": [
+        "That's right!",
+        "Free, then add a card. Every spin wins means every spin costs, and the card is what the spinner was fishing for."
+      ],
+      "file": "/audio/voice/c01bfa8491e00c2c.mp3"
+    },
+    {
+      "key": "b8821b88e9d672ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It says free. Then what does it ask you to add?",
+      "lines": [
+        "Not quite.",
+        "It says free. Then what does it ask you to add?"
+      ],
+      "file": "/audio/voice/b8821b88e9d672ef.mp3"
+    },
+    {
+      "key": "aeccc095f66db262",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You earned it by playing, the game handed it over, and it asks for nothing. Real rewards feel exactly like that.",
+      "lines": [
+        "That's right!",
+        "You earned it by playing, the game handed it over, and it asks for nothing. Real rewards feel exactly like that."
+      ],
+      "file": "/audio/voice/aeccc095f66db262.mp3"
+    },
+    {
+      "key": "b4cc23e5241590be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A level ten bonus, straight out of the game. You earned it by playing. Does it ask you for anything at all?",
+      "lines": [
+        "Not quite.",
+        "A level ten bonus, straight out of the game. You earned it by playing. Does it ask you for anything at all?"
+      ],
+      "file": "/audio/voice/b4cc23e5241590be.mp3"
+    },
+    {
+      "key": "016ff959003aecfe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Lucky player is the flattery, and the password box is the trap. The coins were never going to arrive.",
+      "lines": [
+        "That's right!",
+        "Lucky player is the flattery, and the password box is the trap. The coins were never going to arrive."
+      ],
+      "file": "/audio/voice/016ff959003aecfe.mp3"
+    },
+    {
+      "key": "77c95af95e346e88",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Why would a prize need your password before it can be given?",
+      "lines": [
+        "Not quite.",
+        "Why would a prize need your password before it can be given?"
+      ],
+      "file": "/audio/voice/77c95af95e346e88.mp3"
+    },
+    {
+      "key": "51478a776c7b6ecb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Gems are coins with a costume on. Five hundred gems is real money, every time.",
+      "lines": [
+        "That's right!",
+        "Gems are coins with a costume on. Five hundred gems is real money, every time."
+      ],
+      "file": "/audio/voice/51478a776c7b6ecb.mp3"
+    },
+    {
+      "key": "c8aa4d1b381f141a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Boxes have no memory. The next one has the same one-in-a-hundred chance as the last.",
+      "lines": [
+        "That's right!",
+        "Boxes have no memory. The next one has the same one-in-a-hundred chance as the last."
+      ],
+      "file": "/audio/voice/c8aa4d1b381f141a.mp3"
+    },
+    {
+      "key": "477bfcb445f55be5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A countdown on a shop is paint. Freeze it, read the price, walk away.",
+      "lines": [
+        "That's right!",
+        "A countdown on a shop is paint. Freeze it, read the price, walk away."
+      ],
+      "file": "/audio/voice/477bfcb445f55be5.mp3"
+    },
+    {
+      "key": "41c6715856525b52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Saved is not allowed. Nobody said yes to this buy, so you ask the grown-up whose money it is.",
+      "lines": [
+        "That's right!",
+        "Saved is not allowed. Nobody said yes to this buy, so you ask the grown-up whose money it is."
+      ],
+      "file": "/audio/voice/41c6715856525b52.mp3"
+    },
+    {
+      "key": "815dd92954e1e04f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Free game money does not exist. Log in here is fishing for your password.",
+      "lines": [
+        "That's right!",
+        "Free game money does not exist. Log in here is fishing for your password."
+      ],
+      "file": "/audio/voice/815dd92954e1e04f.mp3"
+    },
+    {
+      "key": "a78326e9b766d97f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way.",
+      "lines": [
+        "That's right!",
+        "Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way."
+      ],
+      "file": "/audio/voice/a78326e9b766d97f.mp3"
     },
     {
       "key": "1ca75ee1b7584c2b",
