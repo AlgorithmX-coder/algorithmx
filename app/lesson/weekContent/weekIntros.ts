@@ -76,14 +76,14 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     ],
   },
   7: {
-    title: "In-Game Spending: The V-Bucks Trap",
+    title: "In-Game Spending: The Gem Bucks Trap",
     tagline: "Every shiny coin costs real money.",
     audioSrc: "/audio/atlas/heroes-week-07.mp3",
     accent: "#ff4e6a",
     points: [
-      { icon: "💎", label: "Spot the spending trap" },
-      { icon: "⏸️", label: "Don't tap buy" },
-      { icon: "👪", label: "Ask a grown-up" },
+      { icon: "💎", label: "Count coins as real money" },
+      { icon: "⏸️", label: "Freeze the countdown" },
+      { icon: "👪", label: "Ask before you buy" },
     ],
   },
   8: {
