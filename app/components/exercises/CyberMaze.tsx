@@ -23,6 +23,12 @@
  * naming the next move; shared complete beat with a spoken payoff
  * (`completeNarration`). Legacy weeks that never used the engine are
  * unaffected (this is its first outing).
+ *
+ * Skins (`skin` prop): "default" is the glowing cyber maze (Week 3, unchanged).
+ * "darkroom" is Week 8's review "The Share Maze": the same maze, gates, moves,
+ * narration and verdicts re-painted as a darkroom (amber safelight glow, a
+ * tiled darkroom floor, gates hung as little photo prints on the board and a
+ * photo-print gate card). Paint only: nothing about play changes.
  */
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -76,6 +82,9 @@ export interface MazeQuestion {
 
 export interface CyberMazeProps {
   questions: MazeQuestion[];
+  /** Visual skin: "default" (the cyber maze, Week 3) or "darkroom" (Week 8's
+   *  Share Maze: amber safelight, photo-print gates). Paint only. */
+  skin?: "default" | "darkroom";
   /** Copy overrides (defaults keep the generic cyber-maze skin). */
   introTitle?: string;
   introSubtitle?: string;
@@ -87,6 +96,12 @@ export interface CyberMazeProps {
   tokensLabel?: string;
   /** Visible action strip under the maze. */
   movePrompt?: string;
+  /** Action strip while a gate card is open. Default "Pick the hero reply to open the gate". */
+  pickPrompt?: string;
+  /** Gate card line above the replies. Default "WHAT DOES A HERO REPLY?". */
+  replyPrompt?: string;
+  /** Complete-beat line after "5/5". Default "gates opened with a hero reply". */
+  gatesDoneLabel?: string;
   gateToast?: string;
   wrongTitle?: string;
   wrongTip?: string;
@@ -209,6 +224,219 @@ const DEFAULT_QUESTIONS: MazeQuestion[] = [
   },
 ];
 
+/** Every colour the maze paints, per skin. The skin swaps paint only. */
+interface MazePaint {
+  // Frame, HUD, canvas element and action strip (DOM)
+  frameBg: string;
+  frameShadow: string;
+  frameInk: string;
+  hudGates: string;
+  hudTokens: string;
+  canvasBg: string;
+  pillBorder: string;
+  pillBg: string;
+  pillInk: string;
+  pill2Border: string;
+  pill2Ink: string;
+  // Board (canvas)
+  base: readonly [string, string, string];
+  /** A warm safelight wash from the top of the board (null = none). */
+  lamp: string | null;
+  scan: string;
+  scanAlpha: number;
+  filament: string;
+  floorTint: readonly [string, string];
+  floorLineRGB: string;
+  floorTick: string;
+  wall: readonly [string, string, string];
+  wallRivet: string;
+  /** [edge, middle] of the light stripe sweeping the walls. */
+  wallStripe: readonly [string, string];
+  wallStroke: string;
+  wallGlow: string;
+  exitHaloRGB: string;
+  exitHaloMid: string;
+  exitHaloEdge: string;
+  exitRings: readonly [string, string, string];
+  exitGlow: string;
+  /** Gates drawn as little photo prints instead of spinning hexagons. */
+  printGates: boolean;
+  gateBase: string;
+  gateFlash: string;
+  gateAccent: string;
+  gateFlashAccent: string;
+  gateGlow: string;
+  gateFlashGlow: string;
+  /** Hexagon fill (default) or print paper (printGates). */
+  gateFill: string;
+  gateGlyph: string;
+  token: readonly [string, string, string];
+  tokenStroke: string;
+  tokenGlow: string;
+  trail: string;
+  player: readonly [string, string, string];
+  playerGlow: string;
+  playerRing: string;
+  sparkle: readonly [string, string, string];
+  burst: readonly [string, string, string];
+  fog: string;
+  // Gate card (DOM)
+  overlayBg: string;
+  cardBg: string;
+  cardBorder: string;
+  cardShadow: string;
+  eyebrow: string;
+  fromInk: string;
+  questionInk: string;
+  promptInk: string;
+  answerBg: string;
+  answerBorder: string;
+  answerInk: string;
+  answerHoverBg: string;
+  answerHoverBorder: string;
+}
+
+/** The cyber maze as it has always been painted (Week 3). */
+const DEFAULT_PAINT: MazePaint = {
+  frameBg: "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
+  frameShadow: "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
+  frameInk: "#e8edff",
+  hudGates: "#a0ffb0",
+  hudTokens: "#00e5ff",
+  canvasBg: "#0a0e1a",
+  pillBorder: "#ffd158",
+  pillBg: "rgba(255,209,88,0.14)",
+  pillInk: "#ffe9b8",
+  pill2Border: "rgba(125,240,255,0.4)",
+  pill2Ink: "#9fd8ff",
+  base: ["#1a2147", "#0f1530", "#080a16"],
+  lamp: null,
+  scan: "#00e5ff",
+  scanAlpha: 0.1,
+  filament: "rgba(124, 92, 255, 0.22)",
+  floorTint: ["rgba(255, 200, 130, 0.08)", "rgba(255, 95, 179, 0.06)"],
+  floorLineRGB: "124, 92, 255",
+  floorTick: "rgba(125, 240, 255, 0.3)",
+  wall: ["#6b3818", "#4a2818", "#2a1208"],
+  wallRivet: "rgba(125, 240, 255, 0.4)",
+  wallStripe: ["rgba(124, 92, 255, 0)", "rgba(124, 92, 255, 0.28)"],
+  wallStroke: "rgba(124, 92, 255, 0.7)",
+  wallGlow: "#00e5ff",
+  exitHaloRGB: "255, 220, 130",
+  exitHaloMid: "rgba(124, 92, 255, 0.32)",
+  exitHaloEdge: "rgba(212, 115, 58, 0)",
+  exitRings: ["#7df0ff", "#ffd158", "#7c5cff"],
+  exitGlow: "#ffd158",
+  printGates: false,
+  gateBase: "#ffd158",
+  gateFlash: "#ff7a59",
+  gateAccent: "#ffe9b8",
+  gateFlashAccent: "#f4a89a",
+  gateGlow: "rgba(255, 220, 130, 0.5)",
+  gateFlashGlow: "rgba(255, 95, 179, 0.55)",
+  gateFill: "rgba(15, 21, 48, 0.85)",
+  gateGlyph: "#e8edff",
+  token: ["#fef3c7", "#00e5ff", "#b45309"],
+  tokenStroke: "#fbbf24",
+  tokenGlow: "#00e5ff",
+  trail: "#ffd158",
+  player: ["#7df0ff", "#ffd158", "#7c5cff"],
+  playerGlow: "#7c5cff",
+  playerRing: "#e8edff",
+  sparkle: ["#00e5ff", "#fbbf24", "#f97316"],
+  burst: ["#7eff97", "#00e5ff", "#00e5ff"],
+  fog: "rgba(0,0,0,0.45)",
+  overlayBg: "rgba(5,8,18,0.88)",
+  cardBg: "linear-gradient(180deg, rgba(15,23,42,0.98), rgba(5,8,18,0.98))",
+  cardBorder: "2px solid rgba(255,209,88,0.55)",
+  cardShadow: "0 0 30px rgba(124,92,255,0.35)",
+  eyebrow: "#ffd158",
+  fromInk: "#c9b8ff",
+  questionInk: "#f1f5f9",
+  promptInk: "#9fd8ff",
+  answerBg: "rgba(30,41,59,0.8)",
+  answerBorder: "rgba(255,209,88,0.4)",
+  answerInk: "#e8edff",
+  answerHoverBg: "rgba(124,92,255,0.2)",
+  answerHoverBorder: "#ffd158",
+};
+
+/** Week 8's darkroom: amber safelight over a dark tiled floor, photo-print gates. */
+const DARKROOM_PAINT: MazePaint = {
+  frameBg: "linear-gradient(180deg, #241009 0%, #38160c 52%, #140805 100%)",
+  frameShadow: "0 40px 90px -30px rgba(40, 14, 6, 0.6), 0 0 0 1px rgba(255,157,110,0.3) inset",
+  frameInk: "#fff1e0",
+  hudGates: "#ffd9a0",
+  hudTokens: "#ff9d6e",
+  canvasBg: "#120705",
+  pillBorder: "#ff9d2e",
+  pillBg: "rgba(255,157,46,0.14)",
+  pillInk: "#ffe2c4",
+  pill2Border: "rgba(255,196,155,0.4)",
+  pill2Ink: "#ffc49b",
+  base: ["#2e140a", "#1f0d06", "#0f0503"],
+  lamp: "rgba(255, 107, 61, 0.3)",
+  scan: "#ff9d2e",
+  scanAlpha: 0.05,
+  filament: "rgba(255, 140, 70, 0.2)",
+  floorTint: ["rgba(255, 170, 110, 0.07)", "rgba(224, 80, 46, 0.05)"],
+  floorLineRGB: "255, 140, 80",
+  floorTick: "rgba(255, 196, 155, 0.22)",
+  wall: ["#3a1a0c", "#2a1208", "#160904"],
+  wallRivet: "rgba(255, 179, 71, 0.35)",
+  wallStripe: ["rgba(255, 107, 61, 0)", "rgba(255, 107, 61, 0.2)"],
+  wallStroke: "rgba(255, 140, 70, 0.55)",
+  wallGlow: "#ff6b3d",
+  exitHaloRGB: "255, 196, 120",
+  exitHaloMid: "rgba(255, 107, 61, 0.3)",
+  exitHaloEdge: "rgba(138, 58, 20, 0)",
+  exitRings: ["#ffe0b8", "#ff9d2e", "#e0502e"],
+  exitGlow: "#ffb347",
+  printGates: true,
+  gateBase: "#ff9d2e",
+  gateFlash: "#ff5f5f",
+  gateAccent: "#ffe2aa",
+  gateFlashAccent: "#ffb4a8",
+  gateGlow: "rgba(255, 157, 46, 0.5)",
+  gateFlashGlow: "rgba(255, 95, 95, 0.55)",
+  gateFill: "#fbf3e4",
+  gateGlyph: "#ffe2b8",
+  token: ["#fff3e0", "#ffb347", "#8a3a14"],
+  tokenStroke: "#ffd9a0",
+  tokenGlow: "#ff9d2e",
+  trail: "#ffb347",
+  player: ["#ffe9c4", "#ffb347", "#e0502e"],
+  playerGlow: "#ff6b3d",
+  playerRing: "#fff1e0",
+  sparkle: ["#ffb347", "#ffe0b8", "#ff6b3d"],
+  burst: ["#7eff97", "#ffb347", "#ffe0b8"],
+  fog: "rgba(8,3,1,0.5)",
+  overlayBg: "rgba(18,7,5,0.88)",
+  cardBg: "radial-gradient(ellipse at 50% 18%, rgba(255,107,61,0.22) 0%, rgba(255,107,61,0) 60%), linear-gradient(180deg, #3a1a0c 0%, #1c0c07 100%)",
+  cardBorder: "none",
+  cardShadow: "inset 0 0 0 1px rgba(0,0,0,0.45)",
+  eyebrow: "#ffb347",
+  fromInk: "#ffc49b",
+  questionInk: "#fff6ea",
+  promptInk: "#ffc49b",
+  answerBg: "rgba(58,26,12,0.85)",
+  answerBorder: "rgba(255,157,46,0.45)",
+  answerInk: "#fff1e0",
+  answerHoverBg: "rgba(255,107,61,0.22)",
+  answerHoverBorder: "#ff9d2e",
+};
+
+/** Darkroom gate card: a strip of tape over a print's top corner. */
+const TAPE_STYLE = {
+  position: "absolute",
+  top: -2,
+  width: 70,
+  height: 18,
+  background: "rgba(255,226,170,0.8)",
+  boxShadow: "0 1px 2px rgba(0,0,0,0.2)",
+  pointerEvents: "none",
+} as const;
+
 interface Token {
   row: number;
   col: number;
@@ -225,6 +453,7 @@ interface GateState {
 
 export default function CyberMaze({
   questions,
+  skin,
   introTitle,
   introSubtitle,
   introIcon,
@@ -232,6 +461,9 @@ export default function CyberMaze({
   gatesLabel,
   tokensLabel,
   movePrompt,
+  pickPrompt,
+  replyPrompt,
+  gatesDoneLabel,
   gateToast,
   wrongTitle,
   wrongTip,
@@ -257,6 +489,10 @@ export default function CyberMaze({
   // that key. Keying them to the intro's speaker ("layla" on Week 3) found no
   // clip, and the gate questions, reasons and teaches played silent.
   const voice = "adam" as const;
+  // Paint only: a module constant per skin, so the board's render loop (which
+  // depends on it) still starts exactly once.
+  const darkroom = skin === "darkroom";
+  const pal = darkroom ? DARKROOM_PAINT : DEFAULT_PAINT;
 
   const audio = useGameAudio();
   const fx = useExerciseFeedback();
@@ -429,7 +665,7 @@ export default function CyberMaze({
           vx: Math.cos(a) * sp,
           vy: Math.sin(a) * sp,
           life: 600,
-          colour: ["#00e5ff", "#fbbf24", "#f97316"][i % 3],
+          colour: pal.sparkle[i % 3],
         });
       }
     }
@@ -476,7 +712,7 @@ export default function CyberMaze({
           vx: Math.cos(a) * sp,
           vy: Math.sin(a) * sp,
           life: 700,
-          colour: ["#7eff97", "#00e5ff", "#00e5ff"][i % 3],
+          colour: pal.burst[i % 3],
         });
       }
       // Move into the gate cell
@@ -634,16 +870,25 @@ export default function CyberMaze({
       // DRAW
       ctx.clearRect(0, 0, BOARD_W, BOARD_H);
       const baseGrad = ctx.createRadialGradient(BOARD_W / 2, BOARD_H / 2, 0, BOARD_W / 2, BOARD_H / 2, Math.max(BOARD_W, BOARD_H));
-      baseGrad.addColorStop(0, "#1a2147");
-      baseGrad.addColorStop(0.55, "#0f1530");
-      baseGrad.addColorStop(1, "#080a16");
+      baseGrad.addColorStop(0, pal.base[0]);
+      baseGrad.addColorStop(0.55, pal.base[1]);
+      baseGrad.addColorStop(1, pal.base[2]);
       ctx.fillStyle = baseGrad;
       ctx.fillRect(0, 0, BOARD_W, BOARD_H);
 
+      // Darkroom: the safelight, a warm wash spilling down from the top edge.
+      if (pal.lamp) {
+        const lamp = ctx.createRadialGradient(BOARD_W / 2, -CELL, 0, BOARD_W / 2, -CELL, BOARD_H);
+        lamp.addColorStop(0, pal.lamp);
+        lamp.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = lamp;
+        ctx.fillRect(0, 0, BOARD_W, BOARD_H);
+      }
+
       // Diagonal scan-line streaks drifting across the floor
       ctx.save();
-      ctx.globalAlpha = 0.1;
-      ctx.strokeStyle = "#00e5ff";
+      ctx.globalAlpha = pal.scanAlpha;
+      ctx.strokeStyle = pal.scan;
       ctx.lineWidth = 1;
       const scanOffset = (now / 18) % 30;
       for (let i = -BOARD_H; i < BOARD_W + BOARD_H; i += 30) {
@@ -656,7 +901,7 @@ export default function CyberMaze({
 
       // Animated data-flow filaments around the perimeter
       ctx.save();
-      ctx.strokeStyle = "rgba(124, 92, 255, 0.22)";
+      ctx.strokeStyle = pal.filament;
       ctx.lineWidth = 1.4;
       for (let i = 0; i < 4; i++) {
         const phase = (now / 4000 + i * 0.25) % 1;
@@ -680,14 +925,14 @@ export default function CyberMaze({
           const x = c * CELL;
           const y = r * CELL;
           const tint = ctx.createLinearGradient(x, y, x, y + CELL);
-          tint.addColorStop(0, "rgba(255, 200, 130, 0.08)");
-          tint.addColorStop(1, "rgba(255, 95, 179, 0.06)");
+          tint.addColorStop(0, pal.floorTint[0]);
+          tint.addColorStop(1, pal.floorTint[1]);
           ctx.fillStyle = tint;
           ctx.fillRect(x + 4, y + 4, CELL - 8, CELL - 8);
-          ctx.strokeStyle = `rgba(124, 92, 255, ${0.14 * cellPulse + 0.08})`;
+          ctx.strokeStyle = `rgba(${pal.floorLineRGB}, ${0.14 * cellPulse + 0.08})`;
           ctx.lineWidth = 1;
           ctx.strokeRect(x + 3, y + 3, CELL - 6, CELL - 6);
-          ctx.strokeStyle = "rgba(125, 240, 255, 0.3)";
+          ctx.strokeStyle = pal.floorTick;
           ctx.lineWidth = 1.2;
           const tick = 5;
           ctx.beginPath();
@@ -706,12 +951,12 @@ export default function CyberMaze({
           const x = c * CELL;
           const y = r * CELL;
           const grad = ctx.createLinearGradient(x, y, x + CELL, y + CELL);
-          grad.addColorStop(0, "#6b3818");
-          grad.addColorStop(0.5, "#4a2818");
-          grad.addColorStop(1, "#2a1208");
+          grad.addColorStop(0, pal.wall[0]);
+          grad.addColorStop(0.5, pal.wall[1]);
+          grad.addColorStop(1, pal.wall[2]);
           ctx.fillStyle = grad;
           ctx.fillRect(x + 2, y + 2, CELL - 4, CELL - 4);
-          ctx.fillStyle = "rgba(125, 240, 255, 0.4)";
+          ctx.fillStyle = pal.wallRivet;
           ctx.fillRect(x + CELL / 2 - 1, y + 8, 2, 2);
           ctx.fillRect(x + 8, y + CELL / 2 - 1, 2, 2);
           ctx.fillRect(x + CELL - 10, y + CELL / 2 - 1, 2, 2);
@@ -722,14 +967,14 @@ export default function CyberMaze({
           ctx.clip();
           const stripe = ((now / 8) % (CELL * 2)) - CELL;
           const sg = ctx.createLinearGradient(x + stripe, y, x + stripe + CELL, y + CELL);
-          sg.addColorStop(0, "rgba(124, 92, 255, 0)");
-          sg.addColorStop(0.5, "rgba(124, 92, 255, 0.28)");
-          sg.addColorStop(1, "rgba(124, 92, 255, 0)");
+          sg.addColorStop(0, pal.wallStripe[0]);
+          sg.addColorStop(0.5, pal.wallStripe[1]);
+          sg.addColorStop(1, pal.wallStripe[0]);
           ctx.fillStyle = sg;
           ctx.fillRect(x, y, CELL, CELL);
           ctx.restore();
-          ctx.strokeStyle = "rgba(124, 92, 255, 0.7)";
-          ctx.shadowColor = "#00e5ff";
+          ctx.strokeStyle = pal.wallStroke;
+          ctx.shadowColor = pal.wallGlow;
           ctx.shadowBlur = 8;
           ctx.lineWidth = 1.4;
           ctx.strokeRect(x + 2.5, y + 2.5, CELL - 5, CELL - 5);
@@ -742,9 +987,9 @@ export default function CyberMaze({
       const exitY = (ROWS - 1) * CELL + CELL / 2;
       const portalPulse = 0.7 + 0.3 * Math.sin(now / 350);
       const halo = ctx.createRadialGradient(exitX, exitY, 0, exitX, exitY, CELL);
-      halo.addColorStop(0, `rgba(255, 220, 130, ${0.65 * portalPulse})`);
-      halo.addColorStop(0.5, "rgba(124, 92, 255, 0.32)");
-      halo.addColorStop(1, "rgba(212, 115, 58, 0)");
+      halo.addColorStop(0, `rgba(${pal.exitHaloRGB}, ${0.65 * portalPulse})`);
+      halo.addColorStop(0.5, pal.exitHaloMid);
+      halo.addColorStop(1, pal.exitHaloEdge);
       ctx.fillStyle = halo;
       ctx.fillRect(exitX - CELL, exitY - CELL, CELL * 2, CELL * 2);
       for (let k = 0; k < 3; k++) {
@@ -753,9 +998,9 @@ export default function CyberMaze({
         ctx.save();
         ctx.translate(exitX, exitY);
         ctx.rotate((now / (450 + k * 120)) * (k % 2 === 0 ? 1 : -1));
-        ctx.strokeStyle = k === 0 ? "#7df0ff" : k === 1 ? "#ffd158" : "#7c5cff";
+        ctx.strokeStyle = pal.exitRings[k];
         ctx.lineWidth = 2;
-        ctx.shadowColor = "#ffd158";
+        ctx.shadowColor = pal.exitGlow;
         ctx.shadowBlur = 12;
         ctx.setLineDash([10, 6]);
         ctx.beginPath();
@@ -778,19 +1023,55 @@ export default function CyberMaze({
         const cxg = gx + CELL / 2;
         const cyg = gy + CELL / 2;
         const flashing = now < g.flashUntil;
-        const baseCol = flashing ? "#ff7a59" : "#ffd158";
-        const accent = flashing ? "#f4a89a" : "#ffe9b8";
+        const baseCol = flashing ? pal.gateFlash : pal.gateBase;
+        const accent = flashing ? pal.gateFlashAccent : pal.gateAccent;
         const pulse = 0.6 + 0.4 * Math.sin(now / 280);
         const gateGlow = ctx.createRadialGradient(cxg, cyg, 0, cxg, cyg, CELL / 2 + 4);
-        gateGlow.addColorStop(0, flashing ? "rgba(255, 95, 179, 0.55)" : "rgba(255, 220, 130, 0.5)");
+        gateGlow.addColorStop(0, flashing ? pal.gateFlashGlow : pal.gateGlow);
         gateGlow.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = gateGlow;
         ctx.fillRect(gx, gy, CELL, CELL);
+        if (pal.printGates) {
+          // Darkroom: a little photo print hung in the gate cell, swaying
+          // gently under the safelight, a "?" developing in its dark photo.
+          const pw = CELL - 18;
+          const ph = CELL - 12;
+          const edge = 3.5;
+          const photoH = ph - edge - 9;
+          ctx.save();
+          ctx.translate(cxg, cyg);
+          ctx.rotate(Math.sin(now / 700 + g.col + g.row) * 0.09);
+          ctx.shadowColor = baseCol;
+          ctx.shadowBlur = 14 * pulse;
+          ctx.fillStyle = pal.gateFill;
+          ctx.fillRect(-pw / 2, -ph / 2, pw, ph);
+          ctx.shadowBlur = 0;
+          const photoGrad = ctx.createLinearGradient(0, -ph / 2 + edge, 0, -ph / 2 + edge + photoH);
+          photoGrad.addColorStop(0, "#7a4526");
+          photoGrad.addColorStop(1, "#24100a");
+          ctx.fillStyle = photoGrad;
+          ctx.fillRect(-pw / 2 + edge, -ph / 2 + edge, pw - edge * 2, photoH);
+          // The tape holding it up
+          ctx.globalAlpha = 0.85;
+          ctx.fillStyle = accent;
+          ctx.fillRect(-7, -ph / 2 - 3, 14, 6);
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = pal.gateGlyph;
+          ctx.font = "900 18px ui-rounded, 'Fredoka', system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.shadowColor = baseCol;
+          ctx.shadowBlur = 8;
+          ctx.fillText("?", 0, -ph / 2 + edge + photoH / 2 + 1);
+          ctx.shadowBlur = 0;
+          ctx.restore();
+          continue;
+        }
         ctx.save();
         ctx.translate(cxg, cyg);
         ctx.rotate(now / 1200);
         const hr = CELL / 2 - 9;
-        ctx.fillStyle = "rgba(15, 21, 48, 0.85)";
+        ctx.fillStyle = pal.gateFill;
         ctx.beginPath();
         for (let i = 0; i < 6; i++) {
           const a = (Math.PI / 3) * i;
@@ -820,7 +1101,7 @@ export default function CyberMaze({
         ctx.stroke();
         ctx.restore();
         ctx.setLineDash([]);
-        ctx.fillStyle = "#e8edff";
+        ctx.fillStyle = pal.gateGlyph;
         ctx.font = "900 20px ui-rounded, 'Fredoka', system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -837,35 +1118,81 @@ export default function CyberMaze({
         const ty = t.row * CELL + CELL / 2 + Math.sin(now / 280 + t.col + t.row) * 2;
         ctx.save();
         ctx.translate(tx, ty);
-        ctx.rotate(now / 500);
-        const crystGrad = ctx.createLinearGradient(0, -12, 0, 12);
-        crystGrad.addColorStop(0, "#fef3c7");
-        crystGrad.addColorStop(0.45, "#00e5ff");
-        crystGrad.addColorStop(1, "#b45309");
-        ctx.fillStyle = crystGrad;
-        ctx.strokeStyle = "#fbbf24";
-        ctx.lineWidth = 2;
-        ctx.shadowColor = "#00e5ff";
-        ctx.shadowBlur = 14;
-        ctx.beginPath();
-        ctx.moveTo(0, -12);
-        ctx.lineTo(10, -7);
-        ctx.lineTo(10, 5);
-        ctx.lineTo(0, 12);
-        ctx.lineTo(-10, 5);
-        ctx.lineTo(-10, -7);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = "rgba(255,255,255,0.45)";
-        ctx.beginPath();
-        ctx.moveTo(-4, -7);
-        ctx.lineTo(0, -10);
-        ctx.lineTo(2, -2);
-        ctx.lineTo(-3, 0);
-        ctx.closePath();
-        ctx.fill();
+        if (pal.printGates) {
+          // Darkroom (Week 8): a roll of film, a canister with its sprocketed
+          // leader strip poking out, swaying gently. Week 3's shield gem spins.
+          ctx.rotate(Math.sin(now / 420 + t.col + t.row) * 0.2);
+          ctx.shadowColor = pal.tokenGlow;
+          ctx.shadowBlur = 12;
+          ctx.fillStyle = "#4a2c16";
+          ctx.fillRect(2, -5, 14, 10);
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = "rgba(255, 226, 170, 0.9)";
+          for (const px of [6, 10, 14]) {
+            ctx.fillRect(px - 1, -4, 2, 2);
+            ctx.fillRect(px - 1, 2, 2, 2);
+          }
+          const body = ctx.createLinearGradient(-11, 0, 5, 0);
+          body.addColorStop(0, pal.token[2]);
+          body.addColorStop(0.5, pal.token[0]);
+          body.addColorStop(1, pal.token[1]);
+          ctx.fillStyle = body;
+          ctx.strokeStyle = pal.tokenStroke;
+          ctx.lineWidth = 1.5;
+          ctx.shadowColor = pal.tokenGlow;
+          ctx.shadowBlur = 12;
+          ctx.beginPath();
+          ctx.moveTo(-8, -10);
+          ctx.lineTo(2, -10);
+          ctx.quadraticCurveTo(5, -10, 5, -7);
+          ctx.lineTo(5, 7);
+          ctx.quadraticCurveTo(5, 10, 2, 10);
+          ctx.lineTo(-8, 10);
+          ctx.quadraticCurveTo(-11, 10, -11, 7);
+          ctx.lineTo(-11, -7);
+          ctx.quadraticCurveTo(-11, -10, -8, -10);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = "#2a160b";
+          ctx.fillRect(-12, -13, 18, 3);
+          ctx.fillRect(-12, 10, 18, 3);
+          ctx.fillStyle = pal.tokenStroke;
+          ctx.fillRect(-5, -16, 5, 3);
+          ctx.fillStyle = "rgba(255,255,255,0.35)";
+          ctx.fillRect(-10, -3, 14, 5);
+        } else {
+          ctx.rotate(now / 500);
+          const crystGrad = ctx.createLinearGradient(0, -12, 0, 12);
+          crystGrad.addColorStop(0, pal.token[0]);
+          crystGrad.addColorStop(0.45, pal.token[1]);
+          crystGrad.addColorStop(1, pal.token[2]);
+          ctx.fillStyle = crystGrad;
+          ctx.strokeStyle = pal.tokenStroke;
+          ctx.lineWidth = 2;
+          ctx.shadowColor = pal.tokenGlow;
+          ctx.shadowBlur = 14;
+          ctx.beginPath();
+          ctx.moveTo(0, -12);
+          ctx.lineTo(10, -7);
+          ctx.lineTo(10, 5);
+          ctx.lineTo(0, 12);
+          ctx.lineTo(-10, 5);
+          ctx.lineTo(-10, -7);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = "rgba(255,255,255,0.45)";
+          ctx.beginPath();
+          ctx.moveTo(-4, -7);
+          ctx.lineTo(0, -10);
+          ctx.lineTo(2, -2);
+          ctx.lineTo(-3, 0);
+          ctx.closePath();
+          ctx.fill();
+        }
         ctx.restore();
         const spkA = 0.4 + 0.6 * Math.abs(Math.sin(now / 200 + t.col));
         ctx.fillStyle = `rgba(255,255,255,${spkA})`;
@@ -879,7 +1206,7 @@ export default function CyberMaze({
         const p = s.trail[i];
         const alpha = (1 - p.age / 350) * 0.45 * (i / s.trail.length);
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = "#ffd158";
+        ctx.fillStyle = pal.trail;
         ctx.beginPath();
         ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
         ctx.fill();
@@ -888,17 +1215,17 @@ export default function CyberMaze({
 
       // Player
       const pGrad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 14);
-      pGrad.addColorStop(0, "#7df0ff");
-      pGrad.addColorStop(0.5, "#ffd158");
-      pGrad.addColorStop(1, "#7c5cff");
+      pGrad.addColorStop(0, pal.player[0]);
+      pGrad.addColorStop(0.5, pal.player[1]);
+      pGrad.addColorStop(1, pal.player[2]);
       ctx.fillStyle = pGrad;
-      ctx.shadowColor = "#7c5cff";
+      ctx.shadowColor = pal.playerGlow;
       ctx.shadowBlur = 16;
       ctx.beginPath();
       ctx.arc(s.x, s.y, 11, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
-      ctx.strokeStyle = "#e8edff";
+      ctx.strokeStyle = pal.playerRing;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(s.x, s.y, 11, 0, Math.PI * 2);
@@ -940,7 +1267,7 @@ export default function CyberMaze({
       // Fog of war (lighter than before so the next squares always read)
       const fog = ctx.createRadialGradient(s.x, s.y, CELL * 1.6, s.x, s.y, CELL * 4.2);
       fog.addColorStop(0, "rgba(0,0,0,0)");
-      fog.addColorStop(1, "rgba(0,0,0,0.45)");
+      fog.addColorStop(1, pal.fog);
       ctx.fillStyle = fog;
       ctx.fillRect(0, 0, BOARD_W, BOARD_H);
 
@@ -954,7 +1281,7 @@ export default function CyberMaze({
       document.removeEventListener("visibilitychange", onVis);
       ctx.clearRect(0, 0, BOARD_W, BOARD_H);
     };
-  }, [walls]);
+  }, [walls, pal]);
 
   const s = state.current;
   const stars = s.wrongCount === 0 ? 3 : s.wrongCount <= 2 ? 2 : 1;
@@ -962,17 +1289,102 @@ export default function CyberMaze({
   const activeOrder = activeQuestion !== null ? answerOrder[activeQuestion] ?? activeQ?.answers.map((_, i) => i) ?? [] : [];
   const gatesLeft = s.gates.length - s.questionsAnswered;
 
+  // The gate card's contents: the same on both skins (only the paint and the
+  // card around it change).
+  const gateCardBody = activeQ ? (
+    <>
+      <div
+        style={{
+          fontSize: 11,
+          letterSpacing: 3,
+          color: pal.eyebrow,
+          fontWeight: 900,
+          marginBottom: 8,
+        }}
+      >
+        {gateLabel ?? "SECURITY GATE"}
+      </div>
+      {activeQ.from && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8, color: pal.fromInk, fontSize: 13, fontWeight: 800 }}>
+          <PixIcon emoji="💬" size={18} />
+          {activeQ.from} says:
+        </div>
+      )}
+      <div
+        style={{
+          fontSize: 18,
+          fontWeight: 800,
+          color: pal.questionInk,
+          marginBottom: 18,
+          lineHeight: 1.4,
+          padding: activeQ.from ? "12px 16px" : 0,
+          borderRadius: activeQ.from ? "16px 16px 16px 4px" : 0,
+          background: activeQ.from ? "rgba(255,255,255,0.08)" : "transparent",
+          border: activeQ.from ? "1.5px solid rgba(255,255,255,0.25)" : "none",
+          textAlign: activeQ.from ? "left" : "center",
+        }}
+      >
+        {activeQ.question}
+      </div>
+      <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: "0.1em", color: pal.promptInk, marginBottom: 10 }}>
+        {replyPrompt ?? "WHAT DOES A HERO REPLY?"}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+        }}
+      >
+        {activeOrder.map((ai) => (
+          <button
+            key={ai}
+            type="button"
+            disabled={speaking || !!feedback}
+            onClick={() => answerQuestion(ai)}
+            style={{
+              padding: "13px 14px",
+              borderRadius: 12,
+              background: pal.answerBg,
+              border: `1.5px solid ${pal.answerBorder}`,
+              color: pal.answerInk,
+              fontSize: 14.5,
+              fontWeight: 700,
+              cursor: speaking ? "wait" : "pointer",
+              opacity: speaking ? 0.7 : 1,
+              textAlign: "left",
+              transition: "all 0.15s ease",
+              fontFamily: "inherit",
+              touchAction: "manipulation",
+            }}
+            onMouseEnter={(e) => {
+              const t = e.currentTarget;
+              t.style.background = pal.answerHoverBg;
+              t.style.borderColor = pal.answerHoverBorder;
+            }}
+            onMouseLeave={(e) => {
+              const t = e.currentTarget;
+              t.style.background = pal.answerBg;
+              t.style.borderColor = pal.answerBorder;
+            }}
+          >
+            {activeQ.answers[ai]}
+          </button>
+        ))}
+      </div>
+    </>
+  ) : null;
+
   return (
     <ExerciseFrame
       maxWidth={1000}
       aspectRatio={{ w: 486, h: 378 }}
       reserve={220}
       padding={14}
-      background="linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)"
+      background={pal.frameBg}
       style={{
-        boxShadow:
-          "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
-        color: "#e8edff",
+        boxShadow: pal.frameShadow,
+        color: pal.frameInk,
       }}
     >
       <div tabIndex={0} style={{ outline: "none" }}>
@@ -986,10 +1398,10 @@ export default function CyberMaze({
           letterSpacing: 1.5,
         }}
       >
-        <span style={{ color: "#a0ffb0" }}>
+        <span style={{ color: pal.hudGates }}>
           {gatesLabel ?? "GATES"} {s.questionsAnswered}/{s.gates.length}
         </span>
-        <span style={{ color: "#00e5ff" }}>
+        <span style={{ color: pal.hudTokens }}>
           {tokensLabel ?? "TOKENS"} {s.tokensCollected}/{s.tokens.length}
         </span>
       </div>
@@ -1002,7 +1414,7 @@ export default function CyberMaze({
           height: "auto",
           display: "block",
           borderRadius: 14,
-          background: "#0a0e1a",
+          background: pal.canvasBg,
           cursor: speaking ? "wait" : "pointer",
           touchAction: "manipulation",
         }}
@@ -1024,15 +1436,15 @@ export default function CyberMaze({
           flexWrap: "wrap",
         }}
       >
-        <span style={{ padding: "6px 12px", borderRadius: 999, border: "1.5px solid #ffd158", background: "rgba(255,209,88,0.14)", color: "#ffe9b8" }}>
+        <span style={{ padding: "6px 12px", borderRadius: 999, border: `1.5px solid ${pal.pillBorder}`, background: pal.pillBg, color: pal.pillInk }}>
           {activeQ
-            ? "Pick the hero reply to open the gate"
+            ? pickPrompt ?? "Pick the hero reply to open the gate"
             : s.complete
               ? "You made it out!"
               : movePrompt ?? "Tap a glowing square next to your hero to move"}
         </span>
         {!activeQ && !s.complete && (
-          <span style={{ padding: "6px 12px", borderRadius: 999, border: "1.5px solid rgba(125,240,255,0.4)", color: "#9fd8ff" }}>
+          <span style={{ padding: "6px 12px", borderRadius: 999, border: `1.5px solid ${pal.pill2Border}`, color: pal.pill2Ink }}>
             {gatesLeft > 0
               ? `Find the ${gatesLeft} glowing ? gate${gatesLeft === 1 ? "" : "s"}, then the exit at the bottom right`
               : "Every gate open! Head for the exit at the bottom right"}
@@ -1058,7 +1470,7 @@ export default function CyberMaze({
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(5,8,18,0.88)",
+            background: pal.overlayBg,
             backdropFilter: "blur(8px)",
             display: "flex",
             alignItems: "center",
@@ -1067,99 +1479,44 @@ export default function CyberMaze({
             zIndex: 10,
           }}
         >
+          {darkroom ? (
+            // Darkroom: the gate card is a photo print (white border, taped
+            // corners) with the proposal and the replies on its dark photo.
+            // Same total padding as the default card, so it fits the same frame.
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                maxWidth: 520,
+                padding: "8px 8px 14px",
+                borderRadius: 6,
+                background: "linear-gradient(180deg, #fffdf8 0%, #f1e6d3 100%)",
+                boxShadow: "0 24px 60px -24px rgba(0,0,0,0.85), 0 0 60px -12px rgba(255,107,61,0.55)",
+                textAlign: "center",
+              }}
+            >
+              <span aria-hidden style={{ ...TAPE_STYLE, left: -20, transform: "rotate(-32deg)" }} />
+              <span aria-hidden style={{ ...TAPE_STYLE, right: -20, transform: "rotate(32deg)" }} />
+              <div style={{ padding: "12px 16px", borderRadius: 3, background: pal.cardBg, border: pal.cardBorder, boxShadow: pal.cardShadow }}>
+                {gateCardBody}
+              </div>
+            </div>
+          ) : (
           <div
             style={{
               width: "100%",
               maxWidth: 520,
               padding: 22,
               borderRadius: 18,
-              background:
-                "linear-gradient(180deg, rgba(15,23,42,0.98), rgba(5,8,18,0.98))",
-              border: "2px solid rgba(255,209,88,0.55)",
-              boxShadow: "0 0 30px rgba(124,92,255,0.35)",
+              background: pal.cardBg,
+              border: pal.cardBorder,
+              boxShadow: pal.cardShadow,
               textAlign: "center",
             }}
           >
-            <div
-              style={{
-                fontSize: 11,
-                letterSpacing: 3,
-                color: "#ffd158",
-                fontWeight: 900,
-                marginBottom: 8,
-              }}
-            >
-              {gateLabel ?? "SECURITY GATE"}
-            </div>
-            {activeQ.from && (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8, color: "#c9b8ff", fontSize: 13, fontWeight: 800 }}>
-                <PixIcon emoji="💬" size={18} />
-                {activeQ.from} says:
-              </div>
-            )}
-            <div
-              style={{
-                fontSize: 18,
-                fontWeight: 800,
-                color: "#f1f5f9",
-                marginBottom: 18,
-                lineHeight: 1.4,
-                padding: activeQ.from ? "12px 16px" : 0,
-                borderRadius: activeQ.from ? "16px 16px 16px 4px" : 0,
-                background: activeQ.from ? "rgba(255,255,255,0.08)" : "transparent",
-                border: activeQ.from ? "1.5px solid rgba(255,255,255,0.25)" : "none",
-                textAlign: activeQ.from ? "left" : "center",
-              }}
-            >
-              {activeQ.question}
-            </div>
-            <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: "0.1em", color: "#9fd8ff", marginBottom: 10 }}>
-              WHAT DOES A HERO REPLY?
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 10,
-              }}
-            >
-              {activeOrder.map((ai) => (
-                <button
-                  key={ai}
-                  type="button"
-                  disabled={speaking || !!feedback}
-                  onClick={() => answerQuestion(ai)}
-                  style={{
-                    padding: "13px 14px",
-                    borderRadius: 12,
-                    background: "rgba(30,41,59,0.8)",
-                    border: "1.5px solid rgba(255,209,88,0.4)",
-                    color: "#e8edff",
-                    fontSize: 14.5,
-                    fontWeight: 700,
-                    cursor: speaking ? "wait" : "pointer",
-                    opacity: speaking ? 0.7 : 1,
-                    textAlign: "left",
-                    transition: "all 0.15s ease",
-                    fontFamily: "inherit",
-                    touchAction: "manipulation",
-                  }}
-                  onMouseEnter={(e) => {
-                    const t = e.currentTarget;
-                    t.style.background = "rgba(124,92,255,0.2)";
-                    t.style.borderColor = "#ffd158";
-                  }}
-                  onMouseLeave={(e) => {
-                    const t = e.currentTarget;
-                    t.style.background = "rgba(30,41,59,0.8)";
-                    t.style.borderColor = "rgba(255,209,88,0.4)";
-                  }}
-                >
-                  {activeQ.answers[ai]}
-                </button>
-              ))}
-            </div>
+            {gateCardBody}
           </div>
+          )}
         </div>
       )}
 
@@ -1168,7 +1525,7 @@ export default function CyberMaze({
           title={completeTitle ?? "Maze cleared!"}
           stars={stars}
           statLines={[
-            `${s.questionsAnswered}/${s.gates.length} gates opened with a hero reply`,
+            `${s.questionsAnswered}/${s.gates.length} ${gatesDoneLabel ?? "gates opened with a hero reply"}`,
             completeLine ?? `${s.tokensCollected}/${s.tokens.length} tokens collected along the way.`,
           ]}
           narration={completeNarration}

@@ -1,73 +1,122 @@
 "use client";
 
-/*
- * THE DEVELOPING TRAY - Week 8 signature exercise (Photos & Videos).
+/**
+ * THE DEVELOPING TRAY: Week 8 (Photos & Videos) signature exercise, rebuilt as
+ * a data-driven, tap-only concept game to the Learn-Loop standard.
  *
- * Darkroom fantasy: a blank photo sits in a developer tray. The child
- * RUBS it (drag) and the picture is revealed under their fingertip via
- * a scratch-off (destination-out) cover layer over a canvas-drawn
- * illustration. SHARE and KEEP stay locked until the photo is fully
- * developed - "you can't share what you haven't looked at" is the whole
- * lesson. The drawn photo hides three leaks around the edges (house
- * number, school pennant, a friend who never said yes), so the right
- * verdict is KEEP. Choosing SHARE triggers a forgiving red-wash teach
- * beat, then the child keeps it anyway. No timer, no losable state.
+ * Darkroom fantasy: a blank photo sits in a developer tray under a grid of
+ * film tiles. Three steps, each one only after the last is done:
+ *
+ *   1. DEVELOP: the child taps every tile; each tap clears that part of the
+ *      developer film with a short fade. The WHOLE photo has to be developed
+ *      (every corner) before anything else happens: you can't judge a photo
+ *      you haven't looked at.
+ *   2. SPOT THE LEAKS: the child taps the photo where it gives something away.
+ *      The drawn photo hides three leaks around the edges (house number,
+ *      school pennant, a friend who never said yes). A found leak gets its red
+ *      ring and chip, Sarah reads it, and it stays marked. A tap anywhere else
+ *      only wobbles the photo: no penalty, no voice. After 8 s without a find,
+ *      the nearest unfound leak softly pulses.
+ *   3. DECIDE: two IDENTICAL neutral buttons, SHARE and KEEP, their sides
+ *      shuffled once as the step starts. KEEP is right (this photo leaks).
+ *      SHARE runs the red-wash teach visuals, then the shared teach panel, and
+ *      the two buttons stay for the retry. No timer, no lose state.
+ *
+ * Content is data-driven (per-leak chip / bullet / read-aloud, every prompt,
+ * label, verdict reason and the teach panel are props); the defaults keep the
+ * legacy signature mount (`{ onComplete, narration, accent }`) working.
+ *
+ * Learn-Loop wiring: the Raccoon's boast folds into the shared intro
+ * (`threat`), Sarah speaks the how-to once as the tray opens (`coachLines`),
+ * then each step's read-aloud as it starts and each leak's read-aloud as it is
+ * found (audio-only, `recordedOnly`, the board held while she speaks). A right
+ * KEEP gets a spoken verdict with its reason ("That's right!" + `why` via the
+ * shared VerdictVoice) under the confetti, SHARE speaks through
+ * WrongAnswerPanel, and the complete beat speaks the payoff
+ * (`completeNarration`). Taps only; nothing drags.
  *
  * Canvas stack (all hi-DPI via setupHiDpiCanvas, logical 720x460):
- *   photo  (bottom)  - the illustration, drawn once
- *   cover  (middle)  - developer film, erased by scrub stamps
- *   fx     (top)     - flash / red leak rings / confetti, rAF loop
+ *   photo  (bottom)  the illustration, drawn once per size
+ *   cover  (middle)  developer film, cleared tile by tile
+ *   fx     (top)     found-leak rings / red wash / flash / confetti, rAF loop
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
+import { motion, useAnimationControls } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
+import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
-import {
-  setupHiDpiCanvas,
-  getPointerLogicalPos,
-} from "@/app/lib/gameEngine/canvas";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { setupHiDpiCanvas, getPointerLogicalPos } from "@/app/lib/gameEngine/canvas";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
+import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
+import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { fisherYates } from "@/app/lib/gameEngine/useShuffledOnce";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
-/* ────────────────────────── constants ────────────────────────── */
+// Audio-only narration: Sarah's voice with no visible narration box (the text
+// she reads is already on screen), same recipe as the True-Price Lever.
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
-const CANVAS_W = 720;
-const CANVAS_H = 460;
-const PHOTO_MARGIN = 12; // white photo-paper border inside the canvas
+/* ------------------------------------------------------------------ */
+/* Types                                                              */
+/* ------------------------------------------------------------------ */
 
-const BRUSH_R = 46; // generous fingertip for small hands
-const STAMP_STEP = BRUSH_R * 0.35; // stroke interpolation step
+export interface TrayLeakCopy { chip: string; bullet: string; readAloud: string }
+export interface DevelopingTrayProps {
+  leakCopy?: Partial<Record<string, TrayLeakCopy>>;
+  developPrompt?: string; developReadAloud?: string;
+  spotPrompt?: string; spotReadAloud?: string;
+  decidePrompt?: string; decideReadAloud?: string;
+  shareLabel?: string; keepLabel?: string;
+  why?: string;
+  teach?: { title: string; body: string; tip: string };
+  introTitle?: string; introSubtitle?: string; introIcon?: string;
+  completeTitle?: string; completeLine?: string;
+  hints?: { tier1: string; tier2: string };
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  threat?: { raccoonLine: string };
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+  onComplete: (score?: number) => void;
+  onCorrect?: () => void; onWrong?: () => void;
+  onHintReached?: (tier: 1 | 2 | 3) => void;
+  onAnswered?: (o: { questionKey: string; selectedIndex: number; correctIndex: number; wasCorrect: boolean }) => void;
+}
 
-// Coverage grid for the "how developed is it" percentage.
-const GRID_X = 30;
-const GRID_Y = 20;
-const CELL_W = CANVAS_W / GRID_X;
-const CELL_H = CANVAS_H / GRID_Y;
-const TOTAL_CELLS = GRID_X * GRID_Y;
-// Forgiving: at 95% real coverage a warm "developing surge" clears the
-// last slivers so kids never grind the final corners.
-const SURGE_AT = 0.95;
+type Step = "develop" | "spot" | "decide";
+type Choice = "share" | "keep";
 
-const WIN_DELAY_MS = 2600;
-
-const CONFETTI_COLORS = [
-  "#ffd166",
-  "#7df0ff",
-  "#ff6b6b",
-  "#8bffb0",
-  "#c9a7ff",
-  "#fff3d6",
-];
-
-const FONT_STACK = "'Fredoka', 'Quicksand', ui-rounded, system-ui, sans-serif";
-
-type Phase = "intro" | "develop" | "verdict" | "teach" | "win";
-
-interface Stamp {
+interface Ring {
   x: number;
   y: number;
-  r: number;
+  w: number;
+  h: number;
+}
+
+interface TrayLeak extends TrayLeakCopy {
+  id: string;
+  /** Ring box in logical photo px: marked when found, pulsed by the red wash. */
+  ring: Ring;
+  /** Callout chip placement over the photo (percent of the photo). */
+  chipLeftPct: number;
+  chipTopPct: number;
+  /** PixIcon beside the bullet once the leak is found. */
+  icon: string;
 }
 
 interface Particle {
@@ -82,58 +131,173 @@ interface Particle {
   life: number;
 }
 
-type FxMode = "none" | "flash" | "leaks" | "confetti";
-
-interface FxState {
-  mode: FxMode;
-  modeStart: number;
+/**
+ * Everything the rAF loop draws, mutated only by handlers and the loop.
+ * Handlers queue timed effects with a null start; the loop stamps the start on
+ * the first frame that draws them (so no handler ever reads the clock).
+ */
+interface SceneState {
+  /** How far each tile's film has cleared, 0..1. */
+  clear: Float32Array;
+  /** Tiles mid-fade: tile index -> fade start + length. */
+  fades: Map<number, { start: number | null; ms: number }>;
+  /** Every tile tapped: the film layer retires once the last fade ends. */
+  developed: boolean;
+  /** Found leaks, in find order, with their ring pop-in timing. */
+  found: { id: string; at: number | null; ms: number }[];
+  /** The red wash (a SHARE teach) is showing. */
+  wash: boolean;
+  washPulse: boolean;
+  /** The warm developer flash as the last tile clears. */
+  flashQueued: boolean;
+  flashStart: number | null;
   particles: Particle[];
 }
 
-interface Leak {
-  id: string;
-  /** Ring drawn on the fx canvas during the red-wash teach beat. */
-  ring: { x: number; y: number; w: number; h: number };
-  /** DOM callout chip over the photo (percent coords + placement). */
-  chip: string;
-  chipLeftPct: number;
-  chipTopPct: number;
-  /** Bullet line in the teach panel. */
-  bullet: string;
-  icon: string;
-}
+/* ------------------------------------------------------------------ */
+/* Constants + default content (the legacy signature mount)           */
+/* ------------------------------------------------------------------ */
 
-const LEAKS: Leak[] = [
+const CANVAS_W = 720;
+const CANVAS_H = 460;
+const PHOTO_MARGIN = 12; // white photo-paper border inside the canvas
+
+// Tap-to-develop tiles: 4 x 3 over the photo (180 x 153 logical px each).
+const TILE_COLS = 4;
+const TILE_ROWS = 3;
+const TOTAL_TILES = TILE_COLS * TILE_ROWS;
+const TILE_W = CANVAS_W / TILE_COLS;
+const TILE_H = CANVAS_H / TILE_ROWS;
+/** Each tile's clear bleeds this far into its neighbours so no seam is left. */
+const TILE_OVERLAP = 1.5;
+const TILE_FADE_MS = 280;
+/** Round 1 teaches the mechanic: this tile (top-left corner, clear of the
+ *  film's stamped hint) breathes until the first tap. */
+const GUIDE_TILE = 0;
+
+/** Invisible tap target padding around each leak's ring box (logical px). */
+const LEAK_PAD = 20;
+const RING_POP_MS = 320;
+/** Spot step: this long without a find softly pulses the nearest unfound leak. */
+const IDLE_GUIDE_MS = 8000;
+
+/** The red wash plays this long before the teach panel covers it. */
+const WASH_MS = 1300;
+const WASH_MS_REDUCED = 500;
+/** A right KEEP holds the confetti on screen at least this long. */
+const MIN_WIN_MS = 1800;
+const CONFETTI_COUNT = 110;
+
+/**
+ * Viewport height everything but the photo needs (HUD, stage and frame
+ * padding, header, meter, prompt, buttons). On a short window the photo
+ * shrinks to fit instead of pushing the decision below the fold.
+ */
+const PHOTO_RESERVE_PX = 440;
+const TRAY_MAX_W = `calc(max(320px, calc((100dvh - ${PHOTO_RESERVE_PX}px) * ${CANVAS_W} / ${CANVAS_H})) + 24px)`;
+
+const SAFELIGHT = "#ff9d7a";
+const GOOD_GREEN = "#34d399";
+
+const CONFETTI_COLORS = [
+  "#ffd166",
+  "#7df0ff",
+  "#ff6b6b",
+  "#8bffb0",
+  "#c9a7ff",
+  "#fff3d6",
+];
+
+const FONT_STACK = "'Fredoka', 'Quicksand', ui-rounded, system-ui, sans-serif";
+
+const CANVAS_STYLE = {
+  position: "absolute",
+  inset: 0,
+  width: "100%",
+  height: "100%",
+  display: "block",
+} as const;
+
+const LEAKS: readonly TrayLeak[] = [
   {
     id: "house",
     ring: { x: 38, y: 184, w: 92, h: 66 },
-    chip: "Your house number!",
     chipLeftPct: ((38 + 46) / CANVAS_W) * 100,
     chipTopPct: ((184 + 66 + 10) / CANVAS_H) * 100,
-    bullet: "Your house number 42 is right there on the door",
     icon: "🏠",
+    chip: "Your house number!",
+    bullet: "Your house number 42 is right there on the door",
+    readAloud: "",
   },
   {
     id: "school",
     ring: { x: 534, y: 22, w: 180, h: 92 },
-    chip: "Your school name!",
     chipLeftPct: ((534 + 90) / CANVAS_W) * 100,
     chipTopPct: ((22 + 92 + 10) / CANVAS_H) * 100,
-    bullet: "Your school name is on the wall pennant",
     icon: "🏫",
+    chip: "Your school name!",
+    bullet: "Your school name is on the wall pennant",
+    readAloud: "",
   },
   {
     id: "friend",
     ring: { x: 572, y: 302, w: 140, h: 150 },
-    chip: "No YES from your friend!",
     chipLeftPct: ((572 + 70) / CANVAS_W) * 100,
     chipTopPct: ((302 - 34) / CANVAS_H) * 100,
+    icon: "👤",
+    chip: "No YES from your friend!",
     bullet: "Your friend is in the photo, and they never said YES",
-    icon: "🙋",
+    readAloud: "",
   },
 ];
 
-/* ────────────────────── canvas draw helpers ───────────────────── */
+const RING_BY_ID = new Map(LEAKS.map((leak) => [leak.id, leak.ring] as const));
+const NO_TILES: readonly boolean[] = Array.from({ length: TOTAL_TILES }, () => false);
+const NO_LEAKS: readonly string[] = [];
+const CHOICES: readonly Choice[] = ["share", "keep"];
+
+const DEFAULT_INTRO_SUBTITLE =
+  "Tap every tile to develop the photo, spot what it gives away, then decide: SHARE or KEEP.";
+const DEFAULT_DEVELOP_PROMPT = "Tap every tile to develop the photo";
+const DEFAULT_SPOT_PROMPT = "Now tap everything this photo gives away";
+const DEFAULT_DECIDE_PROMPT = "SHARE it, or KEEP it?";
+const DEFAULT_WHY =
+  "This photo shows your house number, your school name and a friend who never said YES, so keeping it private keeps everyone safe.";
+const DEFAULT_TEACH = {
+  title: "Whoa, hold on!",
+  body: "You almost shared your house number, your school name and a friend who never said YES.",
+  tip: "A photo with clues like these should stay private.",
+};
+const DEFAULT_COMPLETE_LINE = "Look at every corner before a photo goes anywhere.";
+
+// "read" is only ever entered for a step that has something to read, so the
+// spoken gate can never wait on a clip that does not exist (mute-aware).
+const readOrIdle = (text?: string): "read" | "idle" => (!isAudioMuted() && text ? "read" : "idle");
+
+const tileCenter = (i: number) => ({
+  x: ((i % TILE_COLS) + 0.5) * TILE_W,
+  y: (Math.floor(i / TILE_COLS) + 0.5) * TILE_H,
+});
+
+const ringCenter = (r: Ring) => ({ x: r.x + r.w / 2, y: r.y + r.h / 2 });
+
+/** A leak's generous tap target: its ring box padded, kept inside the photo. */
+function targetPlacement(r: Ring) {
+  const x0 = Math.max(0, r.x - LEAK_PAD);
+  const y0 = Math.max(0, r.y - LEAK_PAD);
+  const x1 = Math.min(CANVAS_W, r.x + r.w + LEAK_PAD);
+  const y1 = Math.min(CANVAS_H, r.y + r.h + LEAK_PAD);
+  return {
+    left: `${(x0 / CANVAS_W) * 100}%`,
+    top: `${(y0 / CANVAS_H) * 100}%`,
+    width: `${((x1 - x0) / CANVAS_W) * 100}%`,
+    height: `${((y1 - y0) / CANVAS_H) * 100}%`,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas draw helpers                                                */
+/* ------------------------------------------------------------------ */
 
 function roundRectPath(
   ctx: CanvasRenderingContext2D,
@@ -195,7 +359,7 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   roundRectPath(ctx, M, M, W - M * 2, H - M * 2, 10);
   ctx.clip();
 
-  // ── Party wall + floor ──
+  // Party wall + floor.
   const wall = ctx.createLinearGradient(0, M, 0, H);
   wall.addColorStop(0, "#ffe9c6");
   wall.addColorStop(1, "#ffd8a2");
@@ -214,7 +378,7 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
     ctx.stroke();
   }
 
-  // ── Bunting across the top ──
+  // Bunting across the top.
   ctx.strokeStyle = "rgba(122, 76, 40, 0.55)";
   ctx.lineWidth = 2.5;
   ctx.beginPath();
@@ -236,7 +400,7 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
     ctx.fill();
   }
 
-  // ── LEAK 1: front door with the house number 42 (left edge) ──
+  // LEAK 1: front door with the house number 42 (left edge).
   ctx.fillStyle = "#7a5230";
   ctx.fillRect(24, 134, 122, 300);
   ctx.fillStyle = "#3f5f8f";
@@ -255,7 +419,7 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.beginPath();
   ctx.arc(124, 306, 5.5, 0, Math.PI * 2);
   ctx.fill();
-  // Brass number plaque - the readable leak.
+  // Brass number plaque: the readable leak.
   roundRectPath(ctx, 52, 194, 66, 46, 8);
   ctx.fillStyle = "#f9e9b5";
   ctx.fill();
@@ -268,7 +432,7 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.textBaseline = "middle";
   ctx.fillText("42", 85, 219);
 
-  // ── LEAK 2: school pennant (top-right wall) ──
+  // LEAK 2: school pennant (top-right wall).
   ctx.strokeStyle = "#8a6a4a";
   ctx.lineWidth = 5;
   ctx.beginPath();
@@ -292,7 +456,7 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.font = `700 13px ${FONT_STACK}`;
   ctx.fillText("SCHOOL", 562, 82);
 
-  // ── LEAK 3: friend peeking in the bottom-right corner ──
+  // LEAK 3: friend peeking in the bottom-right corner.
   // Jumper (school green, matching the pennant).
   roundRectPath(ctx, 582, 392, 130, 62, 26);
   ctx.fillStyle = "#2e8b57";
@@ -351,7 +515,7 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.font = `700 10px ${FONT_STACK}`;
   ctx.fillText("OAKWOOD", 685, 448);
 
-  // ── Center: the kid with the trophy (the fun bit, revealed first) ──
+  // Center: the kid with the trophy (the fun bit).
   // Trophy glow.
   const glow = ctx.createRadialGradient(360, 108, 8, 360, 108, 86);
   glow.addColorStop(0, "rgba(255, 210, 80, 0.4)");
@@ -529,167 +693,290 @@ function drawCoverScene(ctx: CanvasRenderingContext2D) {
   ctx.font = `800 27px ${FONT_STACK}`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("RUB TO DEVELOP", W / 2, H / 2 - 12);
+  ctx.fillText("TAP TO DEVELOP", W / 2, H / 2 - 12);
   ctx.font = `700 16px ${FONT_STACK}`;
   ctx.fillStyle = "rgba(90, 75, 55, 0.32)";
   ctx.fillText("every corner counts", W / 2, H / 2 + 22);
 }
 
-/** Soft-edged eraser stamp on the cover layer. */
-function drawStamp(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  r: number
-) {
+/** Repaint the film, then clear each tile by how far it has developed. */
+function paintCover(ctx: CanvasRenderingContext2D, clear: Float32Array) {
+  drawCoverScene(ctx);
   ctx.save();
   ctx.globalCompositeOperation = "destination-out";
-  const g = ctx.createRadialGradient(x, y, r * 0.35, x, y, r);
-  g.addColorStop(0, "rgba(0, 0, 0, 1)");
-  g.addColorStop(1, "rgba(0, 0, 0, 0)");
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.fillStyle = "#000000";
+  for (let i = 0; i < TOTAL_TILES; i++) {
+    const a = clear[i];
+    if (a <= 0) continue;
+    ctx.globalAlpha = Math.min(1, a);
+    const col = i % TILE_COLS;
+    const row = Math.floor(i / TILE_COLS);
+    ctx.fillRect(
+      col * TILE_W - TILE_OVERLAP,
+      row * TILE_H - TILE_OVERLAP,
+      TILE_W + TILE_OVERLAP * 2,
+      TILE_H + TILE_OVERLAP * 2
+    );
+  }
   ctx.restore();
 }
 
-/* ─────────────────────────── component ────────────────────────── */
+/* ------------------------------------------------------------------ */
+/* Component                                                          */
+/* ------------------------------------------------------------------ */
 
 export default function DevelopingTray({
-  onComplete,
+  leakCopy,
+  developPrompt = DEFAULT_DEVELOP_PROMPT,
+  developReadAloud = "",
+  spotPrompt = DEFAULT_SPOT_PROMPT,
+  spotReadAloud = "",
+  decidePrompt = DEFAULT_DECIDE_PROMPT,
+  decideReadAloud = "",
+  shareLabel = "SHARE",
+  keepLabel = "KEEP",
+  why = DEFAULT_WHY,
+  teach = DEFAULT_TEACH,
+  introTitle = "The Developing Tray",
+  introSubtitle = DEFAULT_INTRO_SUBTITLE,
+  introIcon = "🔍",
+  completeTitle = "Photo developed, leaks spotted!",
+  completeLine = DEFAULT_COMPLETE_LINE,
+  hints,
   narration,
+  coachLines,
+  threat,
+  completeNarration,
   accent,
-}: {
-  onComplete: () => void;
-  narration?: { speaker?: "adam" | "layla"; lines: string[] };
-  accent?: string;
-}) {
+  onComplete,
+  onCorrect,
+  onWrong,
+  onHintReached,
+  onAnswered,
+}: DevelopingTrayProps) {
   const audio = useGameAudio();
-  const [phase, setPhase] = useState<Phase>("intro");
-  const [percent, setPercent] = useState(0);
-  const [nudge, setNudge] = useState(0);
-  const [showLockTip, setShowLockTip] = useState(false);
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+  const reduce = intensity < 1;
+  const themeAccent = useLessonTheme()?.accent;
+  const tint = accent ?? themeAccent ?? SAFELIGHT;
+  // Both content voices are Sarah; in-game read-alouds and verdict reasons are
+  // recorded under "adam", so every manifest lookup here uses that key.
+  const voice = "adam" as const;
+  const photoControls = useAnimationControls();
+
+  // The built-in leaks, with any per-leak copy from the week file on top.
+  const leaks = useMemo<TrayLeak[]>(
+    () =>
+      LEAKS.map((leak) => {
+        const copy = leakCopy?.[leak.id];
+        return copy ? { ...leak, chip: copy.chip, bullet: copy.bullet, readAloud: copy.readAloud } : leak;
+      }),
+    [leakCopy]
+  );
+
+  const [showIntro, setShowIntro] = useState(true);
+  const [developed, setDeveloped] = useState<readonly boolean[]>(NO_TILES);
+  const [found, setFound] = useState<readonly string[]>(NO_LEAKS);
+  // SHARE / KEEP sides, shuffled once as the decide step starts.
+  const [order, setOrder] = useState<readonly Choice[]>(CHOICES);
+  // Read-aloud chain: the how-to once as the tray opens, each step as it
+  // starts ("read"), each leak as it is found ("leak"). The board is held
+  // while she speaks. "idle" = nothing playing.
+  const [narr, setNarr] = useState<"howto" | "read" | "leak" | "idle">("idle");
+  const [readLeakId, setReadLeakId] = useState<string | null>(null);
+  // Spot step guide: the unfound leak that softly pulses after an idle spell.
+  const [guideId, setGuideId] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
+  // SHARE's red wash is playing (before and under the teach panel).
+  const [washing, setWashing] = useState(false);
+  // KEEP was chosen: the verdict plays, then the complete beat once she has
+  // finished AND the confetti has had its moment.
+  const [sealed, setSealed] = useState(false);
+  const [verdictHeard, setVerdictHeard] = useState(false);
+  const [confettiShown, setConfettiShown] = useState(false);
+  const [wrongs, setWrongs] = useState(0);
+  const finished = verdictHeard && confettiShown;
 
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const photoRef = useRef<HTMLCanvasElement | null>(null);
   const coverRef = useRef<HTMLCanvasElement | null>(null);
-  const fxRef = useRef<HTMLCanvasElement | null>(null);
+  const fxCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const coverCtxRef = useRef<CanvasRenderingContext2D | null>(null);
   const fxCtxRef = useRef<CanvasRenderingContext2D | null>(null);
-
-  const stampsRef = useRef<Stamp[]>([]);
-  const cellsRef = useRef<Uint8Array>(new Uint8Array(TOTAL_CELLS));
-  const scrubCountRef = useRef(0);
-  const lastPctRef = useRef(0);
-  const surgedRef = useRef(false);
-  const scrubbingRef = useRef(false);
-  const lastPosRef = useRef<{ x: number; y: number } | null>(null);
-
-  const fxStateRef = useRef<FxState>({
-    mode: "none",
-    modeStart: 0,
+  const sceneRef = useRef<SceneState>({
+    clear: new Float32Array(TOTAL_TILES),
+    fades: new Map(),
+    developed: false,
+    found: [],
+    wash: false,
+    washPulse: true,
+    flashQueued: false,
+    flashStart: null,
     particles: [],
   });
-
+  // Where the child last looked (logical px): "nearest" for the leak guide.
+  const lastTapRef = useRef({ x: CANVAS_W / 2, y: CANVAS_H / 2 });
   const completedRef = useRef(false);
-  const surgeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const winTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const tipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timersRef = useRef<number[]>([]);
 
-  /* ── canvas setup (and re-setup on resize, replaying scrub strokes) ── */
-  const setupCanvases = useCallback(() => {
-    const photo = photoRef.current;
-    const cover = coverRef.current;
-    const fx = fxRef.current;
-    if (!photo || !cover || !fx) return;
-
-    const ps = setupHiDpiCanvas(photo, {
-      logicalWidth: CANVAS_W,
-      logicalHeight: CANVAS_H,
-      maxDpr: 2,
-    });
-    const cs = setupHiDpiCanvas(cover, {
-      logicalWidth: CANVAS_W,
-      logicalHeight: CANVAS_H,
-      maxDpr: 2,
-    });
-    const fs = setupHiDpiCanvas(fx, {
-      logicalWidth: CANVAS_W,
-      logicalHeight: CANVAS_H,
-      maxDpr: 2,
-    });
-    if (!ps || !cs || !fs) return;
-
-    coverCtxRef.current = cs.ctx;
-    fxCtxRef.current = fs.ctx;
-
-    drawPhotoScene(ps.ctx);
-    if (surgedRef.current) {
-      // Fully developed: the cover stays cleared (its element opacity is 0).
-      cs.ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-    } else {
-      drawCoverScene(cs.ctx);
-      for (const s of stampsRef.current) drawStamp(cs.ctx, s.x, s.y, s.r);
-    }
+  const later = (fn: () => void, ms: number) => {
+    timersRef.current.push(window.setTimeout(fn, ms));
+  };
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => timers.forEach((t) => window.clearTimeout(t));
   }, []);
 
+  const developedCount = developed.filter(Boolean).length;
+  const allDeveloped = developedCount >= TOTAL_TILES;
+  const allFound = found.length >= leaks.length;
+  // The decision appears once the last leak has been read out.
+  const step: Step = !allDeveloped ? "develop" : !allFound || narr === "leak" ? "spot" : "decide";
+  // Round 1 teaches the mechanic only: one tile breathes until the first tap.
+  const guided = developedCount === 0;
+
+  // Spoken verdicts: Sarah says "That's right!" + why on KEEP and the complete
+  // beat waits for her. SHARE speaks through WrongAnswerPanel.
+  const verdict = useVerdictVoice(voice);
+  const speaking = narr !== "idle" || verdict.speaking || !!feedback;
+
+  // Safety releases for the spoken gate (never leave the tray held).
   useEffect(() => {
+    if (narr === "idle") return;
+    const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [narr]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
+
+  // Hint tiers reported once each (for the parent dashboard).
+  const reportedTier = useRef(0);
+  useEffect(() => {
+    const tier = wrongs >= 2 ? 2 : wrongs >= 1 ? 1 : 0;
+    if (tier > reportedTier.current) {
+      reportedTier.current = tier;
+      onHintReached?.(tier as 1 | 2);
+    }
+  }, [wrongs, onHintReached]);
+
+  /* ---------------- canvases ---------------- */
+
+  // Set up (and re-set up on resize) all three layers, replaying the film.
+  useEffect(() => {
+    const setup = () => {
+      const photo = photoRef.current;
+      const cover = coverRef.current;
+      const fxCanvas = fxCanvasRef.current;
+      if (!photo || !cover || !fxCanvas) return;
+      const opts = { logicalWidth: CANVAS_W, logicalHeight: CANVAS_H, maxDpr: 2 };
+      const ps = setupHiDpiCanvas(photo, opts);
+      const cs = setupHiDpiCanvas(cover, opts);
+      const fs = setupHiDpiCanvas(fxCanvas, opts);
+      if (!ps || !cs || !fs) return;
+      coverCtxRef.current = cs.ctx;
+      fxCtxRef.current = fs.ctx;
+      drawPhotoScene(ps.ctx);
+      const scene = sceneRef.current;
+      if (scene.developed && scene.fades.size === 0) cs.ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+      else paintCover(cs.ctx, scene.clear);
+    };
     let lastW = -1;
     const wrap = wrapRef.current;
     const ro = new ResizeObserver((entries) => {
       const w = entries[0]?.contentRect.width ?? 0;
       if (Math.abs(w - lastW) < 2) return;
       lastW = w;
-      setupCanvases();
+      setup();
     });
     if (wrap) ro.observe(wrap);
     return () => ro.disconnect();
-  }, [setupCanvases]);
+  }, []);
 
-  /* ── fx render loop (flash / leak rings / confetti) ── */
+  // One rAF loop: tile fades on the film, then rings / wash / flash / confetti.
   useEffect(() => {
     let raf = 0;
-    let running = true;
     let lastNow = performance.now();
-
     const loop = (now: number) => {
-      if (!running) return;
-      const dt = Math.min(0.05, (now - lastNow) / 1000);
+      const dt = Math.min(0.05, Math.max(0, now - lastNow) / 1000);
       lastNow = now;
+      const scene = sceneRef.current;
+
+      // The developer film: each tapped tile fades clear.
+      if (scene.fades.size > 0) {
+        for (const [i, f] of scene.fades) {
+          if (f.start === null) f.start = now;
+          const k = f.ms <= 0 ? 1 : Math.min(1, Math.max(0, now - f.start) / f.ms);
+          scene.clear[i] = k;
+          if (k >= 1) scene.fades.delete(i);
+        }
+        const cctx = coverCtxRef.current;
+        if (cctx) paintCover(cctx, scene.clear);
+        if (scene.fades.size === 0 && scene.developed) {
+          // Every tile clear: retire the film layer entirely.
+          const cover = coverRef.current;
+          if (cover) {
+            cover.style.transition = "opacity 300ms ease";
+            cover.style.opacity = "0";
+          }
+        }
+      }
+
       const ctx = fxCtxRef.current;
-      const st = fxStateRef.current;
       if (ctx) {
         ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-        if (st.mode === "flash") {
-          const t = now - st.modeStart;
-          if (t > 750) {
-            st.mode = "none";
-          } else {
-            const a = 0.55 * (1 - t / 750);
-            ctx.fillStyle = `rgba(255, 243, 214, ${a.toFixed(3)})`;
-            ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-          }
-        } else if (st.mode === "leaks") {
-          const pulse = Math.sin(now / 280);
+
+        // Found leaks stay marked: each ring pops in, then holds.
+        for (const mark of scene.found) {
+          const ring = RING_BY_ID.get(mark.id);
+          if (!ring) continue;
+          if (mark.at === null) mark.at = now;
+          const k = mark.ms <= 0 ? 1 : Math.min(1, Math.max(0, now - mark.at) / mark.ms);
+          const ease = 1 - (1 - k) * (1 - k);
+          const grow = (1 - ease) * 16;
+          ctx.save();
+          ctx.globalAlpha = 0.2 + 0.8 * ease;
+          roundRectPath(ctx, ring.x - grow, ring.y - grow, ring.w + grow * 2, ring.h + grow * 2, 14);
+          ctx.strokeStyle = "rgba(70, 14, 14, 0.4)";
+          ctx.lineWidth = 9;
+          ctx.stroke();
+          ctx.strokeStyle = "rgba(255, 82, 82, 0.95)";
+          ctx.lineWidth = 5;
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // The red wash (a SHARE teach): the photo tints and every leak ring pulses.
+        if (scene.wash) {
+          const pulse = scene.washPulse ? Math.sin(now / 280) : 0;
           ctx.fillStyle = `rgba(255, 60, 60, ${(0.14 + 0.06 * pulse).toFixed(3)})`;
           ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
           ctx.strokeStyle = "rgba(255, 82, 82, 0.95)";
           ctx.lineWidth = 4.5 + 1.5 * pulse;
           for (const leak of LEAKS) {
-            roundRectPath(
-              ctx,
-              leak.ring.x,
-              leak.ring.y,
-              leak.ring.w,
-              leak.ring.h,
-              14
-            );
+            roundRectPath(ctx, leak.ring.x, leak.ring.y, leak.ring.w, leak.ring.h, 14);
             ctx.stroke();
           }
-        } else if (st.mode === "confetti") {
+        }
+
+        // The warm developer flash as the last tile clears.
+        if (scene.flashQueued) {
+          scene.flashQueued = false;
+          scene.flashStart = now;
+        }
+        if (scene.flashStart !== null) {
+          const t = now - scene.flashStart;
+          if (t > 750) {
+            scene.flashStart = null;
+          } else {
+            ctx.fillStyle = `rgba(255, 243, 214, ${(0.55 * (1 - t / 750)).toFixed(3)})`;
+            ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+          }
+        }
+
+        // Confetti over the kept photo.
+        if (scene.particles.length > 0) {
           const alive: Particle[] = [];
-          for (const p of st.particles) {
+          for (const p of scene.particles) {
             p.life -= dt;
             if (p.life <= 0 || p.y > CANVAS_H + 30) continue;
             p.vy += 300 * dt;
@@ -703,154 +990,103 @@ export default function DevelopingTray({
             ctx.fillStyle = p.color;
             ctx.fillRect(-p.size / 2, -p.size / 3, p.size, p.size * 0.66);
             ctx.restore();
+            alive.push(p);
           }
-          for (const p of st.particles) {
-            if (p.life > 0 && p.y <= CANVAS_H + 30) alive.push(p);
-          }
-          st.particles = alive;
-          if (alive.length === 0) st.mode = "none";
+          scene.particles = alive;
         }
       }
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
-    return () => {
-      running = false;
-      cancelAnimationFrame(raf);
-    };
+    return () => cancelAnimationFrame(raf);
   }, []);
 
-  /* ── timers cleanup ── */
+  // Spot step guide: after an idle spell with no new find (Sarah not
+  // speaking), softly pulse the unfound leak nearest to where the child last
+  // looked. Every find restarts the wait.
   useEffect(() => {
-    return () => {
-      if (surgeTimerRef.current) clearTimeout(surgeTimerRef.current);
-      if (winTimerRef.current) clearTimeout(winTimerRef.current);
-      if (tipTimerRef.current) clearTimeout(tipTimerRef.current);
-    };
-  }, []);
-
-  /* ── scrub mechanics ── */
-  const markCells = useCallback((x: number, y: number, r: number) => {
-    const reach = r * 0.8;
-    const minI = Math.max(0, Math.floor((x - reach) / CELL_W));
-    const maxI = Math.min(GRID_X - 1, Math.floor((x + reach) / CELL_W));
-    const minJ = Math.max(0, Math.floor((y - reach) / CELL_H));
-    const maxJ = Math.min(GRID_Y - 1, Math.floor((y + reach) / CELL_H));
-    const cells = cellsRef.current;
-    for (let j = minJ; j <= maxJ; j++) {
-      for (let i = minI; i <= maxI; i++) {
-        const idx = j * GRID_X + i;
-        if (cells[idx]) continue;
-        const cx = (i + 0.5) * CELL_W;
-        const cy = (j + 0.5) * CELL_H;
-        const dx = cx - x;
-        const dy = cy - y;
-        if (dx * dx + dy * dy <= reach * reach) {
-          cells[idx] = 1;
-          scrubCountRef.current++;
+    if (showIntro || step !== "spot" || speaking) return;
+    const id = window.setTimeout(() => {
+      const from = lastTapRef.current;
+      let best: string | null = null;
+      let bestDist = Number.POSITIVE_INFINITY;
+      for (const leak of LEAKS) {
+        if (found.includes(leak.id)) continue;
+        const c = ringCenter(leak.ring);
+        const dist = Math.hypot(c.x - from.x, c.y - from.y);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = leak.id;
         }
       }
+      setGuideId(best);
+    }, IDLE_GUIDE_MS);
+    return () => window.clearTimeout(id);
+  }, [showIntro, step, speaking, found]);
+
+  /* ---------------- beats ---------------- */
+
+  const startBoard = () => {
+    setShowIntro(false);
+    setNarr(isAudioMuted() ? "idle" : coachLines ? "howto" : readOrIdle(developReadAloud));
+  };
+
+  /* Step 1: develop, one tile per tap. */
+  const tapTile = (i: number) => {
+    if (showIntro || speaking || developed[i]) return;
+    audio.tap();
+    const next = developed.map((done, k) => done || k === i);
+    setDeveloped(next);
+    const scene = sceneRef.current;
+    scene.fades.set(i, { start: null, ms: reduce ? 0 : TILE_FADE_MS });
+    lastTapRef.current = tileCenter(i);
+    if (next.every(Boolean)) {
+      // Every corner developed: a warm developer flash, then spot the leaks.
+      scene.developed = true;
+      if (!reduce) scene.flashQueued = true;
+      audio.heal();
+      setNarr(readOrIdle(spotReadAloud));
     }
-  }, []);
+  };
 
-  const triggerSurge = useCallback(() => {
-    if (surgedRef.current) return;
-    surgedRef.current = true;
-    audio.correct(); // fully developed - the mid-game success beat
-    setPercent(100);
-    // Warm developer flash while the last slivers fade out.
-    fxStateRef.current.mode = "flash";
-    fxStateRef.current.modeStart = performance.now();
-    const cover = coverRef.current;
-    if (cover) {
-      cover.style.transition = "opacity 750ms ease";
-      cover.style.opacity = "0";
+  /* Step 2: spot the leaks. */
+  const tapLeak = (leak: TrayLeak) => {
+    if (showIntro || step !== "spot" || speaking || found.includes(leak.id)) return;
+    audio.correct();
+    const next = [...found, leak.id];
+    setFound(next);
+    setGuideId(null);
+    lastTapRef.current = ringCenter(leak.ring);
+    sceneRef.current.found.push({ id: leak.id, at: null, ms: reduce ? 0 : RING_POP_MS });
+    const last = next.length >= leaks.length;
+    // The last find starts the decide step: its two sides are chosen here, once.
+    if (last) setOrder(fisherYates(CHOICES));
+    if (readOrIdle(leak.readAloud) === "read") {
+      setReadLeakId(leak.id);
+      setNarr("leak");
+    } else if (last) {
+      setNarr(readOrIdle(decideReadAloud));
     }
-    surgeTimerRef.current = setTimeout(() => {
-      setPhase("verdict");
-    }, 800);
-  }, [audio]);
-
-  const stampAt = useCallback(
-    (x: number, y: number) => {
-      const ctx = coverCtxRef.current;
-      if (!ctx || surgedRef.current) return;
-      drawStamp(ctx, x, y, BRUSH_R);
-      stampsRef.current.push({ x, y, r: BRUSH_R });
-      markCells(x, y, BRUSH_R);
-      const p = scrubCountRef.current / TOTAL_CELLS;
-      // Display caps at 99 until the surge declares 100.
-      const shown = Math.min(99, Math.round(p * 100));
-      if (shown !== lastPctRef.current) {
-        lastPctRef.current = shown;
-        setPercent(shown);
-      }
-      if (p >= SURGE_AT) triggerSurge();
-    },
-    [markCells, triggerSurge]
-  );
-
-  const pointerToLogical = useCallback(
-    (e: { clientX: number; clientY: number }) => {
-      const cover = coverRef.current;
-      if (!cover) return null;
-      return getPointerLogicalPos(cover, e, CANVAS_W, CANVAS_H);
-    },
-    []
-  );
-
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (phase !== "develop") return;
-    const pos = pointerToLogical(e);
-    if (!pos) return;
-    e.currentTarget.setPointerCapture(e.pointerId);
-    scrubbingRef.current = true;
-    audio.tap(); // one cue per scrub stroke - never on pointer move
-    lastPosRef.current = pos;
-    stampAt(pos.x, pos.y);
   };
 
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!scrubbingRef.current || phase !== "develop") return;
-    const pos = pointerToLogical(e);
-    if (!pos) return;
-    const last = lastPosRef.current ?? pos;
-    const dx = pos.x - last.x;
-    const dy = pos.y - last.y;
-    const dist = Math.hypot(dx, dy);
-    const steps = Math.max(1, Math.floor(dist / STAMP_STEP));
-    for (let s = 1; s <= steps; s++) {
-      stampAt(last.x + (dx * s) / steps, last.y + (dy * s) / steps);
-      if (surgedRef.current) break;
-    }
-    lastPosRef.current = pos;
+  // A leak's read-aloud ended: after the last one, Sarah reads the decision.
+  const afterLeak = () => setNarr(found.length >= leaks.length ? readOrIdle(decideReadAloud) : "idle");
+
+  // A tap that is not on a leak: a tiny wobble, no penalty, no voice.
+  const missTap = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (showIntro || step !== "spot" || speaking) return;
+    audio.hover();
+    const photo = photoRef.current;
+    if (photo) lastTapRef.current = getPointerLogicalPos(photo, e, CANVAS_W, CANVAS_H);
+    if (!reduce) void photoControls.start({ x: [0, -5, 5, -3, 3, 0], transition: { duration: 0.35 } });
   };
 
-  const endScrub = () => {
-    scrubbingRef.current = false;
-    lastPosRef.current = null;
-  };
-
-  /* ── verdict mechanics ── */
-  const unlocked = phase === "verdict" || phase === "teach";
-
-  const handleLockedPress = () => {
-    audio.wrong();
-    setNudge((n) => n + 1);
-    setShowLockTip(true);
-    if (tipTimerRef.current) clearTimeout(tipTimerRef.current);
-    tipTimerRef.current = setTimeout(() => setShowLockTip(false), 1600);
-  };
-
-  const win = useCallback(() => {
-    audio.unlock();
-    setPhase("win");
-    const st = fxStateRef.current;
-    st.mode = "confetti";
-    st.modeStart = performance.now();
-    st.particles = [];
-    for (let i = 0; i < 110; i++) {
-      st.particles.push({
+  /* Step 3: decide. */
+  const launchConfetti = () => {
+    const count = Math.round(CONFETTI_COUNT * intensity);
+    const particles: Particle[] = [];
+    for (let i = 0; i < count; i++) {
+      particles.push({
         x: CANVAS_W * (0.15 + 0.7 * Math.random()),
         y: -20 - Math.random() * 60,
         vx: (Math.random() - 0.5) * 170,
@@ -862,446 +1098,336 @@ export default function DevelopingTray({
         life: 2 + Math.random() * 1.3,
       });
     }
-    winTimerRef.current = setTimeout(() => {
-      if (!completedRef.current) {
-        completedRef.current = true;
-        onComplete();
-      }
-    }, WIN_DELAY_MS);
-  }, [audio, onComplete]);
+    sceneRef.current.particles = particles;
+  };
 
-  const handleShare = () => {
-    if (phase !== "verdict") return;
+  const stars = wrongs === 0 ? 3 : wrongs === 1 ? 2 : 1;
+  const score = stars === 3 ? 100 : stars === 2 ? 70 : 40;
+
+  // The verdict has been heard: a short beat, then the complete beat (which
+  // also waits for the confetti's minimum time on screen).
+  const finish = () => {
+    later(() => setVerdictHeard(true), reduce ? 200 : 900);
+  };
+
+  const complete = () => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    onComplete(score);
+  };
+
+  const choose = (share: boolean) => {
+    if (step !== "decide" || speaking || washing || sealed) return;
+    const wasCorrect = !share;
+    onAnswered?.({ questionKey: "tray-decide", selectedIndex: share ? 0 : 1, correctIndex: 1, wasCorrect });
+
+    if (wasCorrect) {
+      setSealed(true);
+      // fx.correct plays its own chime (no audio.correct() here).
+      fx.correct({ xp: 25, text: "GOOD CALL!" });
+      onCorrect?.();
+      launchConfetti();
+      later(() => setConfettiShown(true), reduce ? 400 : MIN_WIN_MS);
+      // Sarah: "That's right!" + why, one take; the complete beat waits.
+      verdict.say("right", why, finish);
+      return;
+    }
+
+    // SHARE: the red wash shows what would have gone out, then the teach
+    // panel. Both buttons stay for the retry.
     audio.wrong();
-    setPhase("teach");
-    fxStateRef.current.mode = "leaks";
-    fxStateRef.current.modeStart = performance.now();
+    onWrong?.();
+    const prior = wrongs;
+    setWrongs(prior + 1);
+    setWashing(true);
+    const scene = sceneRef.current;
+    scene.wash = true;
+    scene.washPulse = !reduce;
+    const panel = {
+      title: teach.title,
+      explanation: teach.body,
+      tip: hints ? (prior >= 1 ? hints.tier2 : hints.tier1) : teach.tip,
+    };
+    later(() => setFeedback(panel), reduce ? WASH_MS_REDUCED : WASH_MS);
   };
 
-  const handleKeep = () => {
-    if (phase !== "verdict" && phase !== "teach") return;
-    win();
+  const closePanel = () => {
+    setFeedback(null);
+    setWashing(false);
+    sceneRef.current.wash = false;
   };
 
-  /* ── copy per phase ── */
-  const hintText =
-    phase === "develop"
-      ? percent < 55
-        ? "Rub the photo with your finger to develop it!"
-        : "Great rubbing! Now get the edges and corners."
-      : phase === "verdict"
-        ? "Fully developed! LOOK at the whole photo, then choose."
-        : phase === "teach"
-          ? "Look at everything the photo gives away..."
-          : phase === "win"
-            ? "Photo kept safe. Hero move!"
-            : "A fresh photo is in the tray.";
+  /* ---------------- per-step copy ---------------- */
 
-  /* ────────────────────────── render ────────────────────────── */
+  const stepName = step === "develop" ? "Develop" : step === "spot" ? "Spot the leaks" : "Decide";
+  const prompt = step === "develop" ? developPrompt : step === "spot" ? spotPrompt : decidePrompt;
+  const promptIcon = step === "develop" ? "👆" : step === "spot" ? "🔍" : "👀";
+  const stepRead = step === "develop" ? developReadAloud : step === "spot" ? spotReadAloud : decideReadAloud;
+  const readingLeak = narr === "leak" ? leaks.find((l) => l.id === readLeakId) : undefined;
+
+  const meterLabel = step === "develop" ? "DEVELOPING" : "LEAKS FOUND";
+  const meterDone = step === "develop" ? developedCount : found.length;
+  const meterTotal = step === "develop" ? TOTAL_TILES : leaks.length;
+  const meterFull = meterDone >= meterTotal;
+
+  /* ---------------- render ---------------- */
+
   return (
-    <ExerciseFrame padding={24} touchActionNone>
+    <ExerciseFrame maxWidth={880} padding={24} decor>
+      {fx.layer()}
+      {verdict.element}
+
+      {/* Sarah's read-alouds (audio only): the how-to once, each step as it starts, each leak as it is found. */}
+      {!showIntro && !finished && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          {narr === "howto" && coachLines && (
+            <InfoNarration key="dt-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent={tint} recordedOnly onDone={() => setNarr(readOrIdle(developReadAloud))} />
+          )}
+          {narr === "read" && stepRead && (
+            <InfoNarration key={`dt-read-${step}`} speaker={voice} lines={[stepRead]} accent={tint} recordedOnly onDone={() => setNarr("idle")} />
+          )}
+          {narr === "leak" && readingLeak?.readAloud && (
+            <InfoNarration key={`dt-leak-${readingLeak.id}`} speaker={voice} lines={[readingLeak.readAloud]} accent={tint} recordedOnly onDone={afterLeak} />
+          )}
+        </div>
+      )}
+
       <div
         style={{
+          position: "relative",
+          zIndex: 1,
           display: "flex",
           flexDirection: "column",
-          gap: 14,
-          maxWidth: 860,
-          margin: "0 auto",
+          gap: 12,
+          userSelect: "none",
+          WebkitUserSelect: "none",
         }}
       >
-        {/* ── Darkroom header ── */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <motion.div
-            aria-hidden
-            animate={{ opacity: [0.55, 1, 0.55] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+        {/* ------------ header: the game, and the step the child is on ------------ */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
+            flexWrap: "wrap",
+            // Side padding keeps the header clear of the frame's corner ornaments.
+            padding: "2px 22px 0",
+          }}
+        >
+          <span
             style={{
-              width: 16,
-              height: 16,
-              borderRadius: "50%",
-              background: "radial-gradient(circle, #ff5a5a 0%, #a11515 70%)",
-              boxShadow: "0 0 16px 5px rgba(255, 70, 70, 0.5)",
-              flexShrink: 0,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              fontSize: 13,
+              fontWeight: 900,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "#ffd9c4",
             }}
-          />
-          <div>
-            <div
+          >
+            {/* The darkroom safelight */}
+            <motion.span
+              aria-hidden
+              animate={reduce ? { opacity: 1 } : { opacity: [0.55, 1, 0.55] }}
+              transition={reduce ? undefined : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
               style={{
-                fontSize: 22,
-                fontWeight: 800,
-                letterSpacing: 1.5,
-                color: "#ffd9c4",
-                textShadow: "0 0 18px rgba(255, 90, 90, 0.35)",
+                display: "inline-block",
+                width: 12,
+                height: 12,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, #ff5a5a 0%, #a11515 70%)",
+                boxShadow: "0 0 12px 4px rgba(255, 70, 70, 0.45)",
+                flexShrink: 0,
               }}
-            >
-              THE DEVELOPING TRAY
-            </div>
-            <div style={{ fontSize: 13, opacity: 0.75 }}>
-              Darkroom rule: look at the WHOLE photo before you decide.
-            </div>
-          </div>
+            />
+            {introTitle}
+          </span>
+          <span
+            aria-live="polite"
+            style={{
+              fontSize: 12,
+              fontWeight: 900,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: tint,
+            }}
+          >
+            {stepName}
+          </span>
         </div>
 
-        {/* ── The tray ── */}
+        {/* ------------ the tray ------------ */}
         <div
           style={{
             position: "relative",
+            width: "100%",
+            maxWidth: TRAY_MAX_W,
+            margin: "0 auto",
             borderRadius: 20,
-            padding: 14,
-            background:
-              "linear-gradient(180deg, #34161a 0%, #23090d 60%, #1a070a 100%)",
+            padding: 12,
+            background: "linear-gradient(180deg, #34161a 0%, #23090d 60%, #1a070a 100%)",
             boxShadow:
               "inset 0 4px 14px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 0 2px rgba(255, 120, 90, 0.14)",
           }}
         >
-          {/* Canvas stack */}
-          <div
+          {/* The photo: canvas stack + the step's tap layer */}
+          <motion.div
             ref={wrapRef}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={endScrub}
-            onPointerCancel={endScrub}
+            animate={photoControls}
             style={{
               position: "relative",
               width: "100%",
               aspectRatio: `${CANVAS_W} / ${CANVAS_H}`,
               borderRadius: 12,
               overflow: "hidden",
-              touchAction: "none",
-              cursor: phase === "develop" ? "pointer" : "default",
               boxShadow: "inset 0 0 22px rgba(0, 0, 0, 0.45)",
+              // Chips size with the photo (cqw), so they keep their placement.
+              containerType: "inline-size",
+              touchAction: "manipulation",
             }}
           >
-            <canvas
-              ref={photoRef}
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                display: "block",
-              }}
-            />
-            <canvas
-              ref={coverRef}
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                display: "block",
-              }}
-            />
-            <canvas
-              ref={fxRef}
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                display: "block",
-                pointerEvents: "none",
-              }}
-            />
+            <canvas ref={photoRef} role="img" aria-label="A photo in the developing tray" style={CANVAS_STYLE} />
+            <canvas ref={coverRef} aria-hidden style={CANVAS_STYLE} />
+            <canvas ref={fxCanvasRef} aria-hidden style={{ ...CANVAS_STYLE, pointerEvents: "none" }} />
 
-            {/* Pulsing "rub here" pointer until the first strokes land */}
-            <AnimatePresence>
-              {phase === "develop" && percent < 4 && (
-                <motion.div
-                  key="rub-hint"
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: 1,
-                    x: [0, 42, -42, 0],
-                    y: [0, -26, 26, 0],
-                  }}
-                  exit={{ opacity: 0 }}
-                  transition={{
-                    duration: 2.6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  style={{
-                    position: "absolute",
-                    left: "50%",
-                    top: "56%",
-                    marginLeft: -34,
-                    marginTop: -34,
-                    width: 68,
-                    height: 68,
-                    borderRadius: "50%",
-                    background: "rgba(255, 214, 110, 0.28)",
-                    border: "3px dashed rgba(255, 214, 110, 0.8)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    pointerEvents: "none",
-                  }}
-                >
-                  <PixIcon emoji="👆" size={38} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Leak callout chips during the red-wash teach beat */}
-            <AnimatePresence>
-              {phase === "teach" &&
-                LEAKS.map((leak, i) => (
-                  <motion.div
-                    key={leak.id}
-                    initial={{ opacity: 0, scale: 0.6 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ delay: 0.15 + i * 0.18, type: "spring" }}
-                    style={{
-                      position: "absolute",
-                      left: `${leak.chipLeftPct}%`,
-                      top: `${leak.chipTopPct}%`,
-                      transform: "translateX(-50%)",
-                      background: "#c92a2a",
-                      color: "#fff",
-                      fontSize: 12.5,
-                      fontWeight: 800,
-                      padding: "5px 10px",
-                      borderRadius: 999,
-                      whiteSpace: "nowrap",
-                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)",
-                      pointerEvents: "none",
-                    }}
-                  >
-                    {leak.chip}
-                  </motion.div>
-                ))}
-            </AnimatePresence>
-
-            {/* Intro overlay */}
-            <AnimatePresence>
-              {phase === "intro" && (
-                <motion.div
-                  key="intro"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    // "safe center" + internal scrolling: the spoken-instruction
-                    // block makes the intro taller, so on short viewports the
-                    // overlay scrolls and the start button stays reachable
-                    // (never clipped by a centered overflow).
-                    justifyContent: "safe center",
-                    overflowY: "auto",
-                    gap: 14,
-                    textAlign: "center",
-                    padding: 24,
-                    background:
-                      "radial-gradient(circle at 50% 30%, rgba(90, 20, 20, 0.88) 0%, rgba(26, 7, 10, 0.94) 75%)",
-                  }}
-                >
-                  <PixIcon emoji="👆" size={54} />
-                  <div
-                    style={{
-                      fontSize: 24,
-                      fontWeight: 800,
-                      color: "#ffd9c4",
-                    }}
-                  >
-                    Develop the photo!
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 15,
-                      lineHeight: 1.5,
-                      maxWidth: 420,
-                      opacity: 0.9,
-                    }}
-                  >
-                    A new photo is in the tray. RUB it with your finger to
-                    reveal the picture. A cyber hero looks at the WHOLE photo
-                    before deciding what to do with it.
-                  </div>
-                  {narration && narration.lines.length > 0 && (
-                    <div
-                      style={{ width: "100%", maxWidth: 480, textAlign: "left" }}
-                    >
-                      <InfoNarration
-                        lines={narration.lines}
-                        accent={accent ?? "#ff6b3d"}
-                      />
-                    </div>
-                  )}
-                  <motion.button
-                    type="button"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setPhase("develop")}
-                    style={{
-                      marginTop: 6,
-                      padding: "14px 30px",
-                      fontSize: 19,
-                      fontWeight: 800,
-                      fontFamily: "inherit",
-                      color: "#3a2200",
-                      background:
-                        "linear-gradient(180deg, #ffd166 0%, #ffb347 100%)",
-                      border: "none",
-                      borderRadius: 999,
-                      cursor: "pointer",
-                      boxShadow: "0 6px 18px rgba(255, 180, 70, 0.4)",
-                    }}
-                  >
-                    Start developing
-                  </motion.button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Win overlay: photo drops into the green private drawer */}
-            <AnimatePresence>
-              {phase === "win" && (
-                <motion.div
-                  key="win"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    pointerEvents: "none",
-                  }}
-                >
-                  {/* SAFE badge pop */}
-                  <motion.div
-                    initial={{ scale: 0, rotate: -12 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 420,
-                      damping: 18,
-                      delay: 0.5,
-                    }}
-                    style={{
-                      position: "absolute",
-                      left: "50%",
-                      top: "26%",
-                      transform: "translate(-50%, -50%)",
-                      marginLeft: -70,
-                      width: 140,
-                      textAlign: "center",
-                      background:
-                        "linear-gradient(180deg, #2ecc71 0%, #1f8a4c 100%)",
-                      color: "#ffffff",
-                      fontSize: 30,
-                      fontWeight: 900,
-                      letterSpacing: 2,
-                      padding: "12px 0",
-                      borderRadius: 20,
-                      boxShadow: "0 10px 26px rgba(20, 90, 50, 0.55)",
-                      border: "3px solid rgba(255, 255, 255, 0.75)",
-                    }}
-                  >
-                    SAFE!
-                  </motion.div>
-
-                  {/* Drawer slides up and clunks shut over the lower photo */}
-                  <motion.div
-                    initial={{ y: "120%" }}
-                    animate={{ y: 0 }}
-                    transition={{ type: "spring", stiffness: 480, damping: 26 }}
-                    style={{
-                      position: "absolute",
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      height: "42%",
-                      background:
-                        "linear-gradient(180deg, #1f8a4c 0%, #14663a 100%)",
-                      borderTop: "5px solid #2ecc71",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 6,
-                    }}
-                  >
-                    <motion.div
-                      animate={{ x: [0, -6, 6, -4, 4, 0] }}
-                      transition={{ delay: 0.32, duration: 0.4 }}
+            {/* Step 1: the film tiles. A developed tile leaves an inert gap. */}
+            {step === "develop" && (
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "grid",
+                  gridTemplateColumns: `repeat(${TILE_COLS}, 1fr)`,
+                  gridTemplateRows: `repeat(${TILE_ROWS}, 1fr)`,
+                }}
+              >
+                {developed.map((done, i) => {
+                  if (done) return <div key={i} aria-hidden />;
+                  const held = showIntro || speaking;
+                  const glow = guided && i === GUIDE_TILE && !held;
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      aria-label="Develop this part of the photo"
+                      disabled={held}
+                      onClick={() => tapTile(i)}
                       style={{
                         display: "flex",
-                        flexDirection: "column",
                         alignItems: "center",
-                        gap: 6,
+                        justifyContent: "center",
+                        margin: 0,
+                        padding: 0,
+                        border: "none",
+                        borderRadius: 0,
+                        background: "transparent",
+                        color: "inherit",
+                        fontFamily: "inherit",
+                        cursor: held ? "wait" : "pointer",
+                        boxShadow: glow
+                          ? "inset 0 0 0 3px rgba(255, 170, 60, 0.95), inset 0 0 18px rgba(255, 200, 90, 0.35)"
+                          : "inset 0 0 0 1px rgba(90, 75, 55, 0.3)",
+                        animation: glow && !reduce ? "dtTileGuide 1.4s ease-in-out infinite" : undefined,
+                        WebkitTapHighlightColor: "transparent",
                       }}
                     >
-                      {/* Drawer handle */}
-                      <div
-                        style={{
-                          width: 84,
-                          height: 10,
-                          borderRadius: 999,
-                          background: "rgba(255, 255, 255, 0.55)",
-                          boxShadow: "inset 0 2px 3px rgba(0, 0, 0, 0.3)",
-                        }}
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 10,
-                          fontSize: 21,
-                          fontWeight: 900,
-                          letterSpacing: 1.5,
-                          color: "#ffffff",
-                        }}
-                      >
-                        <PixIcon emoji="🔒" size={26} />
-                        KEPT PRIVATE!
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 13.5,
-                          maxWidth: 460,
-                          textAlign: "center",
-                          color: "rgba(255, 255, 255, 0.92)",
-                          lineHeight: 1.45,
-                          padding: "0 16px",
-                        }}
-                      >
-                        House number, school name, and a friend without a YES.
-                        Keeping this photo private was the hero move!
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                      {glow && <PixIcon emoji="👆" size={40} />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
-          {/* Developing meter (darkroom footer) */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              marginTop: 12,
-              padding: "0 4px",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 12,
-                fontWeight: 800,
-                letterSpacing: 2,
-                color: "#ff9d7a",
-                flexShrink: 0,
-              }}
-            >
-              DEVELOPING
+            {/* Step 2: generous invisible targets over each leak; a miss only wobbles. */}
+            {step === "spot" && (
+              <>
+                {/* Same cursor as the targets, so hovering never reveals where a leak is. */}
+                <div
+                  aria-hidden
+                  onClick={missTap}
+                  style={{ position: "absolute", inset: 0, cursor: speaking ? "wait" : "pointer" }}
+                />
+                {leaks.map((leak) => {
+                  const place = targetPlacement(leak.ring);
+                  // A found leak stays marked; re-tapping it does nothing.
+                  if (found.includes(leak.id)) {
+                    return (
+                      <div
+                        key={leak.id}
+                        aria-hidden
+                        style={{ position: "absolute", ...place, cursor: speaking ? "wait" : "pointer" }}
+                      />
+                    );
+                  }
+                  const glow = guideId === leak.id && !speaking;
+                  return (
+                    <button
+                      key={leak.id}
+                      type="button"
+                      aria-label="Look closer here"
+                      disabled={speaking}
+                      onClick={() => tapLeak(leak)}
+                      style={{
+                        position: "absolute",
+                        ...place,
+                        margin: 0,
+                        padding: 0,
+                        border: "none",
+                        borderRadius: 16,
+                        background: glow ? "rgba(255, 214, 110, 0.16)" : "transparent",
+                        cursor: speaking ? "wait" : "pointer",
+                        boxShadow: glow ? "0 0 0 3px rgba(255, 150, 60, 0.9), 0 0 14px rgba(255, 150, 60, 0.45)" : "none",
+                        animation: glow && !reduce ? "dtLeakGuide 1.6s ease-in-out infinite" : undefined,
+                        WebkitTapHighlightColor: "transparent",
+                      }}
+                    />
+                  );
+                })}
+              </>
+            )}
+
+            {/* Found leaks: the callout chip at its spot, kept for the rest of the game. */}
+            {leaks.map((leak) =>
+              found.includes(leak.id) ? (
+                <motion.div
+                  key={`chip-${leak.id}`}
+                  initial={reduce ? { opacity: 0, x: "-50%" } : { opacity: 0, x: "-50%", scale: 0.6 }}
+                  animate={{ opacity: 1, x: "-50%", scale: 1 }}
+                  transition={reduce ? { duration: 0.2 } : { type: "spring", stiffness: 380, damping: 20, delay: 0.12 }}
+                  style={{
+                    position: "absolute",
+                    left: `${leak.chipLeftPct}%`,
+                    top: `${leak.chipTopPct}%`,
+                    background: "#c92a2a",
+                    color: "#ffffff",
+                    fontSize: "clamp(10px, 1.75cqw, 14px)",
+                    fontWeight: 800,
+                    padding: "0.4em 0.8em",
+                    borderRadius: 999,
+                    whiteSpace: "nowrap",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)",
+                    pointerEvents: "none",
+                  }}
+                >
+                  {leak.chip}
+                </motion.div>
+              ) : null
+            )}
+          </motion.div>
+
+          {/* Progress on the tray: tiles developed, then leaks found */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 10, padding: "0 4px" }}>
+            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, color: SAFELIGHT, flexShrink: 0 }}>
+              {meterLabel}
             </div>
             <div
+              role="progressbar"
+              aria-label={meterLabel}
+              aria-valuemin={0}
+              aria-valuemax={meterTotal}
+              aria-valuenow={meterDone}
               style={{
                 flex: 1,
                 height: 12,
@@ -1313,14 +1439,13 @@ export default function DevelopingTray({
             >
               <div
                 style={{
-                  width: `${percent}%`,
+                  width: `${meterTotal > 0 ? (meterDone / meterTotal) * 100 : 0}%`,
                   height: "100%",
                   borderRadius: 999,
-                  background:
-                    percent >= 100
-                      ? "linear-gradient(90deg, #2ecc71, #8bffb0)"
-                      : "linear-gradient(90deg, #ffb347, #ffd166)",
-                  transition: "width 140ms ease, background 400ms ease",
+                  background: meterFull
+                    ? "linear-gradient(90deg, #2ecc71, #8bffb0)"
+                    : "linear-gradient(90deg, #ffb347, #ffd166)",
+                  transition: "width 220ms ease, background 400ms ease",
                 }}
               />
             </div>
@@ -1328,294 +1453,197 @@ export default function DevelopingTray({
               style={{
                 fontSize: 15,
                 fontWeight: 800,
-                color: percent >= 100 ? "#8bffb0" : "#ffd166",
-                width: 48,
+                color: meterFull ? "#8bffb0" : "#ffd166",
+                minWidth: 52,
                 textAlign: "right",
                 flexShrink: 0,
                 fontVariantNumeric: "tabular-nums",
               }}
             >
-              {percent}%
+              {meterDone} / {meterTotal}
             </div>
           </div>
         </div>
 
-        {/* ── Hint line ── */}
+        {/* ------------ the step's prompt ------------ */}
+        <div style={{ display: "flex", justifyContent: "center", padding: "0 12px" }}>
+          <div
+            aria-live="polite"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "10px 18px",
+              borderRadius: 16,
+              background: `${tint}1a`,
+              border: `1px solid ${tint}59`,
+              color: "#fff3e8",
+              fontSize: 17,
+              fontWeight: 800,
+              lineHeight: 1.3,
+              textAlign: "center",
+            }}
+          >
+            <PixIcon emoji={promptIcon} size={24} />
+            {prompt}
+          </div>
+        </div>
+
+        {/* ------------ found leaks (spot) / the decision (decide) ------------ */}
         <div
           style={{
+            minHeight: 92,
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            fontSize: 15,
-            fontWeight: 700,
-            minHeight: 24,
-            color: phase === "teach" ? "#ff8a8a" : "#e7ecff",
-            textAlign: "center",
+            gap: 6,
+            padding: "0 16px",
           }}
         >
-          {phase === "verdict" && <PixIcon emoji="👀" size={22} />}
-          {hintText}
-        </div>
-
-        {/* ── Verdict zone: buttons / teach panel / win caption ── */}
-        <div style={{ minHeight: 128, position: "relative" }}>
-          <AnimatePresence mode="wait">
-            {(phase === "intro" ||
-              phase === "develop" ||
-              phase === "verdict") && (
-              <motion.div
-                key={`buttons-${nudge}`}
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  x: nudge > 0 && !unlocked ? [0, -8, 8, -5, 5, 0] : 0,
-                }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 8,
-                }}
-              >
-                <AnimatePresence>
-                  {showLockTip && !unlocked && (
-                    <motion.div
-                      key="lock-tip"
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      style={{
-                        background: "#4a3411",
-                        color: "#ffd166",
-                        fontSize: 14,
-                        fontWeight: 800,
-                        padding: "7px 16px",
-                        borderRadius: 999,
-                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.35)",
-                      }}
-                    >
-                      Not yet! Develop the WHOLE photo first.
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <div
+          {step === "spot" &&
+            found.map((id) => {
+              const leak = leaks.find((l) => l.id === id);
+              if (!leak) return null;
+              return (
+                <motion.div
+                  key={`found-${id}`}
+                  initial={reduce ? { opacity: 0 } : { opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25 }}
                   style={{
-                    display: "flex",
-                    gap: 16,
-                    width: "100%",
-                    justifyContent: "center",
-                  }}
-                >
-                  {/* SHARE */}
-                  <motion.button
-                    type="button"
-                    aria-disabled={!unlocked}
-                    aria-label={
-                      unlocked
-                        ? "Share the photo"
-                        : "Share is locked until the photo is fully developed"
-                    }
-                    animate={
-                      unlocked ? { scale: [1, 1.08, 1] } : { scale: 1 }
-                    }
-                    whileTap={unlocked ? { scale: 0.94 } : undefined}
-                    onClick={unlocked ? handleShare : handleLockedPress}
-                    style={{
-                      flex: 1,
-                      maxWidth: 250,
-                      minHeight: 64,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                      fontSize: 20,
-                      fontWeight: 800,
-                      fontFamily: "inherit",
-                      letterSpacing: 1,
-                      borderRadius: 18,
-                      border: "none",
-                      cursor: unlocked ? "pointer" : "not-allowed",
-                      color: unlocked ? "#08243a" : "rgba(231, 236, 255, 0.45)",
-                      background: unlocked
-                        ? "linear-gradient(180deg, #7dd9ff 0%, #45b1e8 100%)"
-                        : "rgba(120, 128, 160, 0.25)",
-                      boxShadow: unlocked
-                        ? "0 6px 18px rgba(70, 170, 230, 0.4)"
-                        : "none",
-                      filter: unlocked ? "none" : "grayscale(0.8)",
-                      transition: "background 300ms ease, color 300ms ease",
-                    }}
-                  >
-                    {!unlocked && <PixIcon emoji="🔒" size={20} />}
-                    <span aria-hidden>📤</span> SHARE
-                  </motion.button>
-
-                  {/* KEEP */}
-                  <motion.button
-                    type="button"
-                    aria-disabled={!unlocked}
-                    aria-label={
-                      unlocked
-                        ? "Keep the photo private"
-                        : "Keep is locked until the photo is fully developed"
-                    }
-                    animate={
-                      unlocked ? { scale: [1, 1.08, 1] } : { scale: 1 }
-                    }
-                    whileTap={unlocked ? { scale: 0.94 } : undefined}
-                    onClick={unlocked ? handleKeep : handleLockedPress}
-                    style={{
-                      flex: 1,
-                      maxWidth: 250,
-                      minHeight: 64,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                      fontSize: 20,
-                      fontWeight: 800,
-                      fontFamily: "inherit",
-                      letterSpacing: 1,
-                      borderRadius: 18,
-                      border: "none",
-                      cursor: unlocked ? "pointer" : "not-allowed",
-                      color: unlocked ? "#ffffff" : "rgba(231, 236, 255, 0.45)",
-                      background: unlocked
-                        ? "linear-gradient(180deg, #2ecc71 0%, #1f8a4c 100%)"
-                        : "rgba(120, 128, 160, 0.25)",
-                      boxShadow: unlocked
-                        ? "0 6px 18px rgba(40, 160, 90, 0.4)"
-                        : "none",
-                      filter: unlocked ? "none" : "grayscale(0.8)",
-                      transition: "background 300ms ease, color 300ms ease",
-                    }}
-                  >
-                    {!unlocked && <PixIcon emoji="🔒" size={20} />}
-                    <span aria-hidden>🔒</span> KEEP
-                  </motion.button>
-                </div>
-
-                {!unlocked && (
-                  <div style={{ fontSize: 12.5, opacity: 0.6 }}>
-                    Locked until the photo is 100% developed
-                  </div>
-                )}
-              </motion.div>
-            )}
-
-            {/* Teach panel after choosing SHARE */}
-            {phase === "teach" && (
-              <motion.div
-                key="teach"
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ type: "spring", stiffness: 320, damping: 26 }}
-                style={{
-                  background: "rgba(160, 30, 30, 0.28)",
-                  border: "2px solid rgba(255, 82, 82, 0.6)",
-                  borderRadius: 18,
-                  padding: "16px 20px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 900,
-                    color: "#ff9d9d",
-                  }}
-                >
-                  Whoa, hold on!
-                </div>
-                <div style={{ fontSize: 14.5, opacity: 0.95 }}>
-                  You almost shared secrets you rubbed right past:
-                </div>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 6 }}
-                >
-                  {LEAKS.map((leak) => (
-                    <div
-                      key={leak.id}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                        fontSize: 14.5,
-                        fontWeight: 700,
-                      }}
-                    >
-                      <PixIcon emoji={leak.icon} size={22} />
-                      {leak.bullet}
-                    </div>
-                  ))}
-                </div>
-                <div style={{ fontSize: 14, opacity: 0.85 }}>
-                  A photo with clues like these should stay private.
-                </div>
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleKeep}
-                  style={{
-                    alignSelf: "center",
-                    marginTop: 4,
-                    minHeight: 56,
-                    padding: "0 34px",
                     display: "flex",
                     alignItems: "center",
-                    gap: 10,
-                    fontSize: 18,
-                    fontWeight: 800,
-                    fontFamily: "inherit",
-                    letterSpacing: 1,
-                    color: "#ffffff",
-                    background:
-                      "linear-gradient(180deg, #2ecc71 0%, #1f8a4c 100%)",
-                    border: "none",
-                    borderRadius: 16,
-                    cursor: "pointer",
-                    boxShadow: "0 6px 18px rgba(40, 160, 90, 0.45)",
+                    gap: 8,
+                    fontSize: 15,
+                    fontWeight: 700,
+                    lineHeight: 1.3,
+                    color: "#ffe3d6",
                   }}
                 >
-                  <span aria-hidden>🔒</span> KEEP IT PRIVATE
-                </motion.button>
-              </motion.div>
-            )}
+                  <PixIcon emoji={leak.icon} size={22} />
+                  {leak.bullet}
+                </motion.div>
+              );
+            })}
 
-            {/* Win caption */}
-            {phase === "win" && (
-              <motion.div
-                key="win-caption"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
-                  fontSize: 19,
-                  fontWeight: 900,
-                  color: "#8bffb0",
-                  minHeight: 64,
-                }}
-              >
-                <PixIcon emoji="⭐" size={26} />
-                You made the right call!
-                <PixIcon emoji="⭐" size={26} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {step === "decide" && (
+            <motion.div
+              key="choices"
+              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25 }}
+              style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center" }}
+            >
+              {/* Two IDENTICAL neutral buttons: nothing here hints at the answer. */}
+              {order.map((choice) => (
+                <ChoiceButton
+                  key={choice}
+                  label={choice === "share" ? shareLabel : keepLabel}
+                  disabled={speaking || washing || sealed}
+                  sealed={sealed && choice === "keep"}
+                  reduce={reduce}
+                  onClick={() => choose(choice === "share")}
+                />
+              ))}
+            </motion.div>
+          )}
         </div>
+
+        <style>{`
+          @keyframes dtTileGuide { 0%,100% { box-shadow: inset 0 0 0 3px rgba(255,170,60,0.95), inset 0 0 18px rgba(255,200,90,0.35) } 50% { box-shadow: inset 0 0 0 5px rgba(255,170,60,0.55), inset 0 0 34px rgba(255,200,90,0.7) } }
+          @keyframes dtLeakGuide { 0%,100% { box-shadow: 0 0 0 3px rgba(255,150,60,0.9), 0 0 14px rgba(255,150,60,0.45); background: rgba(255,214,110,0.1) } 50% { box-shadow: 0 0 0 6px rgba(255,150,60,0.4), 0 0 28px rgba(255,150,60,0.8); background: rgba(255,214,110,0.26) } }
+        `}</style>
       </div>
+
+      {/* ------------ overlays ------------ */}
+      {showIntro && (
+        <ExerciseIntroBeat
+          title={introTitle}
+          subtitle={introSubtitle}
+          icon={introIcon}
+          narration={narration}
+          threat={threat}
+          character={narration?.speaker}
+          onDismiss={startBoard}
+        />
+      )}
+
+      {feedback && (
+        <WrongAnswerPanel
+          title={feedback.title}
+          explanation={feedback.explanation}
+          tip={feedback.tip}
+          onContinue={closePanel}
+        />
+      )}
+
+      {finished && (
+        <ExerciseCompleteBeat
+          title={completeTitle}
+          stars={stars}
+          statLines={[
+            `All ${TOTAL_TILES} tiles developed`,
+            `${leaks.length} leak${leaks.length === 1 ? "" : "s"} spotted`,
+            completeLine,
+          ]}
+          narration={completeNarration}
+          onContinue={complete}
+        />
+      )}
     </ExerciseFrame>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Small shared bits                                                  */
+/* ------------------------------------------------------------------ */
+
+/** The decision button: SHARE and KEEP share this exact look until the pick. */
+function ChoiceButton({
+  label,
+  onClick,
+  disabled,
+  sealed,
+  reduce,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled: boolean;
+  /** The right pick, shown only after it was made. */
+  sealed: boolean;
+  reduce: boolean;
+}) {
+  return (
+    <motion.button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      disabled={disabled}
+      whileTap={disabled || reduce ? undefined : { scale: 0.95 }}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 10,
+        minHeight: 64,
+        minWidth: 190,
+        padding: "12px 30px",
+        borderRadius: 18,
+        border: `2px solid ${sealed ? GOOD_GREEN : "rgba(255, 217, 196, 0.55)"}`,
+        background: "linear-gradient(180deg, #4a2328 0%, #321519 100%)",
+        color: "#fff3e8",
+        fontFamily: "inherit",
+        fontSize: 20,
+        fontWeight: 900,
+        letterSpacing: 1,
+        cursor: disabled ? "wait" : "pointer",
+        opacity: disabled && !sealed ? 0.6 : 1,
+        boxShadow: sealed ? "0 0 20px rgba(52, 211, 153, 0.55)" : "0 8px 20px rgba(0, 0, 0, 0.35)",
+        transition: "opacity 200ms ease, border-color 200ms ease, box-shadow 200ms ease",
+      }}
+    >
+      {sealed && <PixIcon emoji="✅" size={24} />}
+      {label}
+    </motion.button>
   );
 }

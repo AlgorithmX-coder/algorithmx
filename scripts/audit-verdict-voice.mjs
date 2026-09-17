@@ -140,6 +140,23 @@ const ENGINES = {
       { label: "  deal (wrong move) " + fld(d, "name"), right: null, wrong: t ? fld(t[0], "body") : null, only: "wrong" },
     ];
   }),
+  // Week 8 engines (2026-09-17).
+  undoTest: (span) => objs(span, "rounds").flatMap((r) => {
+    const rows = [{ label: "undo " + (fld(r, "caption") ?? "").slice(0, 40), right: fld(r, "why"), wrong: null, only: "right" }];
+    for (const c of objs(r, "cards")) if (!flag(c, "isTrue")) rows.push({ label: "  fib " + (fld(c, "text") ?? "").slice(0, 40), right: null, wrong: fld(c, "whyWrong"), only: "wrong" });
+    return rows;
+  }),
+  askRing: (span) => objs(span, "rounds").flatMap((r) => {
+    // the round's own why sits after its friends array, so read it with the friends stripped out
+    const base = r.replace(/friends:\s*\[[\s\S]*?\n\s{8,}\],?/, "");
+    const rows = [{ label: "post " + (fld(base, "caption") ?? "").slice(0, 40), right: fld(base, "why"), wrong: null, only: "right" }];
+    for (const f of objs(r, "friends")) if (fld(f, "answer") === "no") rows.push({ label: "  no from " + fld(f, "name"), right: fld(f, "why"), wrong: fld(f, "whyWrong") });
+    return rows;
+  }),
+  developingTray: (span) => {
+    const t = span.match(/teach:\s*\{[\s\S]*?\}/);
+    return [{ label: "tray decision (KEEP)", right: fld(span, "why"), wrong: t ? fld(t[0], "body") : null }];
+  },
   // Week 6 engines (2026-09-16).
   chatFixer: (span) => objs(span, "messages").flatMap((m) => {
     // The message's own why / whyWrong live outside the chips array (a safe chip

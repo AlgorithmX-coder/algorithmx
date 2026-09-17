@@ -1051,6 +1051,110 @@ export type ScreenDef = (
     }
   | {
       /**
+       * The Undo Test (Week 8, concept 1: once it's out, it's out). ACT AND
+       * SEE: SHARE copies the photo onto three friends' phones, DELETE empties
+       * only yours, each friend's phone shows "their copy, their phone", then
+       * the child taps the true rule card. Only the rule card is judged.
+       */
+      type: "undoTest";
+      rounds: {
+        id: string;
+        caption: string;
+        photoIcon: string;
+        /** Sarah reads the round's photo moment as it appears. */
+        readAloud: string;
+        friends: { id: string; name: string; reaction: string }[];
+        cards: { text: string; isTrue: boolean; whyWrong: string }[];
+        /** Sarah's reason on the true card ("That's right!" + why). */
+        why: string;
+        cardPrompt?: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      shareLabel?: string;
+      deleteLabel?: string;
+      goneChip?: string;
+      theirCopyChip?: string;
+      youLabel?: string;
+      trueToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Ask Ring (Week 8, concept 2: their face, their call). ASK and
+       * RESPECT: tap each friend in the photo to ask; a yes glows, a no needs
+       * the right hero move (leave them out, or don't post it at all); POST
+       * lights only once every face is settled. Friends shuffle per round.
+       */
+      type: "askRing";
+      rounds: {
+        id: string;
+        caption: string;
+        photoIcon: string;
+        readAloud: string;
+        friends: {
+          id: string;
+          name: string;
+          answer: "yes" | "no";
+          /** Their answer in their own words, shown in a speech bubble. */
+          says: string;
+          readAloud: string;
+          /** For a no: the right hero move. */
+          noMove?: "leaveOut" | "dontPost";
+          why?: string;
+          whyWrong?: string;
+        }[];
+        /** Sarah's reason when POST is tapped with every face settled. */
+        why: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      postLabel?: string;
+      leaveOutLabel?: string;
+      dontPostLabel?: string;
+      yesChip?: string;
+      noChip?: string;
+      leftOutChip?: string;
+      postToast?: string;
+      keptToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Developing Tray (Week 8, concept 3: photos talk), the week's
+       * signature as a concept game. Tap every tile to develop the built-in
+       * photo, tap each leak it gives away, then decide SHARE or KEEP (KEEP is
+       * right). `leakCopy` overrides the built-in copy per leak id.
+       */
+      type: "developingTray";
+      leakCopy?: Partial<Record<string, { chip: string; bullet: string; readAloud: string }>>;
+      developPrompt?: string;
+      developReadAloud?: string;
+      spotPrompt?: string;
+      spotReadAloud?: string;
+      decidePrompt?: string;
+      decideReadAloud?: string;
+      shareLabel?: string;
+      keepLabel?: string;
+      why?: string;
+      teach?: { title: string; body: string; tip: string };
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * REVEAL engine (Week 2+). A board of face-down cards; tapping one
        * flips it and plays a short cause→effect vignette (2-4 beats), then
        * closes on a counter-line ("…so it stays PRIVATE") and stamps the
@@ -1405,6 +1509,9 @@ export type ScreenDef = (
       stampLabel?: string;
       /** Text on the commit button. Default "CLOSE THE CASE". */
       closeLabel?: string;
+      /** The board's instruction strip, and the complete-beat count noun. */
+      boardPrompt?: string;
+      caughtLabel?: { one: string; many: string };
       realSeal?: string;
       fakeSeal?: string;
       realToast?: string;
@@ -1413,6 +1520,10 @@ export type ScreenDef = (
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier1: string; tier2: string; tier3?: string };
+      /** Visual skin: "profile" (Week 3, default) or "photo" (Week 8 photo prints). */
+      skin?: "profile" | "photo";
+      /** Row question per fixed id (Week 8 asks photo questions instead of profile ones). */
+      rowLabels?: Partial<Record<"when" | "who" | "how" | "what", string>>;
     }
   | {
       /**
@@ -1471,8 +1582,8 @@ export type ScreenDef = (
         from: string;
         /** Sarah reads the poster as it hangs (one clip). */
         readAloud: string;
-        /** Where the needle belongs. */
-        answer: "real" | "hmm" | "noway";
+        /** Where the needle belongs (the four door ids are for skin "doors"). */
+        answer: "real" | "hmm" | "noway" | "justMe" | "friends" | "school" | "everyone";
         /** Sarah's reason on a correct lock ("That's right!" + why). */
         why: string;
         /** Sarah's teach on a wrong lock ("Not quite." + whyWrong), any stop. */
@@ -1482,9 +1593,17 @@ export type ScreenDef = (
       introTitle?: string;
       introSubtitle?: string;
       introIcon?: string;
-      stopLabels?: Partial<Record<"real" | "hmm" | "noway", string>>;
+      stopLabels?: Partial<Record<"real" | "hmm" | "noway" | "justMe" | "friends" | "school" | "everyone", string>>;
+      /** Visual skin: "believe" (Week 4 three-stop dial, default) or "doors" (Week 8 four-stop door dial). */
+      skin?: "believe" | "doors";
       /** Text on the commit button. Default "LOCK IT IN". */
       lockLabel?: string;
+      /** Header noun ("Offer 2 of 6"), the small print before `from` ("" = just `from`),
+       *  the complete-beat count noun, and optional small print under the dial. */
+      itemLabel?: string;
+      fromLabel?: string;
+      doneLabel?: string;
+      dialNote?: string;
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier1: string; tier2: string };
@@ -2174,9 +2293,15 @@ export type ScreenDef = (
       gateToast?: string;
       wrongTitle?: string;
       wrongTip?: string;
+      /** Gate-card wording: the pick instruction, the reply heading, the complete-beat count noun. */
+      pickPrompt?: string;
+      replyPrompt?: string;
+      gatesDoneLabel?: string;
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier2: string; tier3: string };
+      /** Visual skin: "default" (Week 3) or "darkroom" (Week 8 amber safelight). */
+      skin?: "default" | "darkroom";
     }
   | {
       /**

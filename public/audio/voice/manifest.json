@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T19:58:06.243Z",
+  "generatedAt": "2026-09-17T15:53:55.836Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -19634,389 +19634,457 @@
       "file": "/audio/voice/f34d0100add11efc.mp3"
     },
     {
-      "key": "ff45ceea45ec3ff5",
+      "key": "08f98b4bbb6d2bf7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] A secret picture is hiding in this tray! Rub it all over with your finger to develop it. Look at the whole photo, then choose share or keep.",
+      "text": "[nervous] Cyber Hero, grab your magnifying glass and read this incident report with me. A kid shared one photo with one friend. The Raccoon grabbed a copy and passed it on, and the school crest and street sign in the background showed strangers her school and her street. This week you become a Photo Detective. [whispers] One photo, one friend. And a crest and a sign told strangers the rest. [warmly] By the end of today, no photo leaves your hands until you have checked every corner. Let's see what Mission Command has for us!",
       "lines": [
-        "[excited] A secret picture is hiding in this tray!",
-        "Rub it all over with your finger to develop it.",
-        "Look at the whole photo, then choose share or keep."
+        "[nervous] Cyber Hero, grab your magnifying glass and read this incident report with me.",
+        "A kid shared one photo with one friend. The Raccoon grabbed a copy and passed it on, and the school crest and street sign in the background showed strangers her school and her street. This week you become a Photo Detective.",
+        "[whispers] One photo, one friend. And a crest and a sign told strangers the rest.",
+        "[warmly] By the end of today, no photo leaves your hands until you have checked every corner.",
+        "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/ff45ceea45ec3ff5.mp3"
+      "file": "/audio/voice/08f98b4bbb6d2bf7.mp3"
     },
     {
-      "key": "249ce7f81443d7a6",
+      "key": "8013b0eeec9db239",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Welcome back, Cyber Hero. Today we step into the darkroom, where photos are made! And here is the biggest photo secret of all. [whispers] When you share a photo, copies land on other phones. And DELETE only deletes YOUR copy. Your friend's copy stays on your friend's phone. The app keeps one too. [warmly] So the time to think is before you share, not after. [excited] Come and put delete to the Undo Test, and see what it really does!",
+      "lines": [
+        "[excited] Welcome back, Cyber Hero. Today we step into the darkroom, where photos are made!",
+        "And here is the biggest photo secret of all.",
+        "[whispers] When you share a photo, copies land on other phones. And DELETE only deletes YOUR copy.",
+        "Your friend's copy stays on your friend's phone. The app keeps one too.",
+        "[warmly] So the time to think is before you share, not after.",
+        "[excited] Come and put delete to the Undo Test, and see what it really does!"
+      ],
+      "file": "/audio/voice/8013b0eeec9db239.mp3"
+    },
+    {
+      "key": "309f6e741fe7b06e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] On your first challenge, you run the Undo Test! This game is all about what the delete button really does. Out in the real world, a photo lands on other phones the instant you share it. Here is what you do. A photo sits on your phone. Tap SHARE, and watch it land on three friends' phones. Then tap DELETE on your phone. Then tap each friend's phone to check what is on it. Last, three cards appear. Tap the one that is TRUE. [warmly] Keep your eyes on all the phones, not just yours. Ready? First photo!",
+      "lines": [
+        "[excited] On your first challenge, you run the Undo Test!",
+        "This game is all about what the delete button really does.",
+        "Out in the real world, a photo lands on other phones the instant you share it.",
+        "Here is what you do. A photo sits on your phone. Tap SHARE, and watch it land on three friends' phones. Then tap DELETE on your phone. Then tap each friend's phone to check what is on it. Last, three cards appear. Tap the one that is TRUE.",
+        "[warmly] Keep your eyes on all the phones, not just yours. Ready? First photo!"
+      ],
+      "file": "/audio/voice/309f6e741fe7b06e.mp3"
+    },
+    {
+      "key": "8f3180ec715a1bdf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is your phone, with a photo on it, and your friends' phones all around.",
+      "lines": [
+        "Here is your phone, with a photo on it, and your friends' phones all around."
+      ],
+      "file": "/audio/voice/8f3180ec715a1bdf.mp3"
+    },
+    {
+      "key": "58323dcfdc615a74",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Undo Test passed, Cyber Hero! You watched the copies stay put. [warmly] Out in the real world, delete only ever deletes your copy. So you do your thinking before you share.",
+      "lines": [
+        "[proud] Undo Test passed, Cyber Hero! You watched the copies stay put.",
+        "[warmly] Out in the real world, delete only ever deletes your copy. So you do your thinking before you share."
+      ],
+      "file": "/audio/voice/58323dcfdc615a74.mp3"
+    },
+    {
+      "key": "ea191941a1954593",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Delete only deletes your copy. Every other copy stays where it landed. [warmly] So the thinking happens before you share.",
+      "lines": [
+        "[proud] Well done!",
+        "Delete only deletes your copy.",
+        "Every other copy stays where it landed.",
+        "[warmly] So the thinking happens before you share."
+      ],
+      "file": "/audio/voice/ea191941a1954593.mp3"
+    },
+    {
+      "key": "2bf84ff72e0cfc18",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Welcome back, Cyber Hero! Big photo secret today. You share a picture... and it flies off like a paper pigeon. To your friend's phone. The group chat. The app's computers. [whispers] Then you press DELETE... but only YOUR copy disappears. The pigeons are already on every rooftop. [warmly] Let's watch it happen - tap and see!",
+      "text": "[proud] What a test, Cyber Hero. Delete got caught out. Your copy gone, every other copy still there. [whispers] But some photos have more than your face in them. What about your friends' faces? Next, we'll learn whose photo it really is when a friend is in it. Come and see!",
       "lines": [
-        "[excited] Welcome back, Cyber Hero! Big photo secret today.",
-        "You share a picture... and it flies off like a paper pigeon.",
-        "To your friend's phone. The group chat. The app's computers.",
-        "[whispers] Then you press DELETE... but only YOUR copy disappears.",
-        "The pigeons are already on every rooftop.",
-        "[warmly] Let's watch it happen - tap and see!"
+        "[proud] What a test, Cyber Hero. Delete got caught out.",
+        "Your copy gone, every other copy still there.",
+        "[whispers] But some photos have more than your face in them. What about your friends' faces?",
+        "Next, we'll learn whose photo it really is when a friend is in it. Come and see!"
       ],
-      "file": "/audio/voice/249ce7f81443d7a6.mp3"
+      "file": "/audio/voice/2bf84ff72e0cfc18.mp3"
     },
     {
-      "key": "6f7ba12aaeb4bbe5",
+      "key": "4cc6cdc83d42c797",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Ready to see where photos REALLY go? Tap each moment on the board... and watch the copy pigeons take off. [excited] Once you see them, you'll never unsee them!",
+      "text": "[warmly] So, Cyber Hero, when your friend is in a photo, whose face is it? Theirs! So posting it is their call too. Before you post or send anyone's picture, you ask them first. [whispers] If they say no, you listen. Leave them out, or don't post it at all. And if a photo of you goes up that you don't like? You can ask for it to come down. [excited] Come and ask every face in the Ask Ring!",
       "lines": [
-        "[whispers] Ready to see where photos REALLY go?",
-        "Tap each moment on the board...",
-        "and watch the copy pigeons take off.",
-        "[excited] Once you see them, you'll never unsee them!"
+        "[warmly] So, Cyber Hero, when your friend is in a photo, whose face is it?",
+        "Theirs! So posting it is their call too.",
+        "Before you post or send anyone's picture, you ask them first.",
+        "[whispers] If they say no, you listen. Leave them out, or don't post it at all.",
+        "And if a photo of you goes up that you don't like? You can ask for it to come down.",
+        "[excited] Come and ask every face in the Ask Ring!"
       ],
-      "file": "/audio/voice/6f7ba12aaeb4bbe5.mp3"
+      "file": "/audio/voice/4cc6cdc83d42c797.mp3"
     },
     {
-      "key": "558abc53f6145952",
+      "key": "a43e5963134cdbae",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Tap the DELETE button first - watch what it really does!",
+      "text": "[excited] On your second challenge, you step into the Ask Ring! This game is all about asking everyone in a photo before it goes anywhere. Out in the real world, it only takes one quick question, and it keeps everyone's face safe. Here is what you do. A photo appears with your friends in it. Tap each friend to ask, and listen to their answer. A yes glows. For a no, tap the hero move: leave them out, or don't post it. When every face is settled, tap POST. [warmly] Listen to exactly what each friend says. Ready? First photo!",
       "lines": [
-        "Tap the DELETE button first - watch what it really does!"
+        "[excited] On your second challenge, you step into the Ask Ring!",
+        "This game is all about asking everyone in a photo before it goes anywhere.",
+        "Out in the real world, it only takes one quick question, and it keeps everyone's face safe.",
+        "Here is what you do. A photo appears with your friends in it. Tap each friend to ask, and listen to their answer. A yes glows. For a no, tap the hero move: leave them out, or don't post it. When every face is settled, tap POST.",
+        "[warmly] Listen to exactly what each friend says. Ready? First photo!"
       ],
-      "file": "/audio/voice/558abc53f6145952.mp3"
+      "file": "/audio/voice/a43e5963134cdbae.mp3"
     },
     {
-      "key": "19317427117287c5",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Power one - unlocked! You watched the pigeons fly and DELETE grab at empty air. [warmly] Shared means out. Forever. [whispers] But what if the photo isn't just... yours?",
-      "lines": [
-        "[excited] Power one - unlocked!",
-        "You watched the pigeons fly and DELETE grab at empty air.",
-        "[warmly] Shared means out. Forever.",
-        "[whispers] But what if the photo isn't just... yours?"
-      ],
-      "file": "/audio/voice/19317427117287c5.mp3"
-    },
-    {
-      "key": "cd4a49374992a96a",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Quick question, hero. Your friend's face in a photo... whose is it? Theirs! So posting it is THEIR call too. Before you post or forward anyone - you ask. [whispers] Even when it's hilarious. ESPECIALLY when it's hilarious. And if a photo of YOU goes up? You can ask for it down. [excited] Three tricky moments coming - show me the ask!",
-      "lines": [
-        "[warmly] Quick question, hero. Your friend's face in a photo...",
-        "whose is it? Theirs! So posting it is THEIR call too.",
-        "Before you post or forward anyone - you ask.",
-        "[whispers] Even when it's hilarious. ESPECIALLY when it's hilarious.",
-        "And if a photo of YOU goes up? You can ask for it down.",
-        "[excited] Three tricky moments coming - show me the ask!"
-      ],
-      "file": "/audio/voice/cd4a49374992a96a.mp3"
-    },
-    {
-      "key": "3391e3d2a6e5790c",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Three moments. Three faces that aren't yours. Each time, something will whisper 'just post it!' [whispers] That whisper is your signal to ask first. [excited] Their face, their call - show me!",
-      "lines": [
-        "[warmly] Three moments. Three faces that aren't yours.",
-        "Each time, something will whisper 'just post it!'",
-        "[whispers] That whisper is your signal to ask first.",
-        "[excited] Their face, their call - show me!"
-      ],
-      "file": "/audio/voice/3391e3d2a6e5790c.mp3"
-    },
-    {
-      "key": "a49d480cf0a32137",
+      "key": "094eb838ea5a9d54",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Two powers! The ask-first rule is locked in. Sneezes, faceplants, just-for-you selfies... [laughs] not one pigeon escaped on your watch. [whispers] Now grab your magnifying glass, Cyber Hero...",
+      "text": "Tap a friend in the photo to ask them.",
       "lines": [
-        "[excited] Two powers! The ask-first rule is locked in.",
-        "Sneezes, faceplants, just-for-you selfies...",
-        "[laughs] not one pigeon escaped on your watch.",
-        "[whispers] Now grab your magnifying glass, Cyber Hero..."
+        "Tap a friend in the photo to ask them."
       ],
-      "file": "/audio/voice/a49d480cf0a32137.mp3"
+      "file": "/audio/voice/094eb838ea5a9d54.mp3"
     },
     {
-      "key": "03ede859add81080",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[whispers] Lean in close. Photos... talk. A school crest whispers which school is yours. A street sign points right at your front door. [nervous] And strangers can read every word. [warmly] So we check the background BEFORE it flies. [excited] One photo. Four clues. Pin them all to the board!",
-      "lines": [
-        "[whispers] Lean in close. Photos... talk.",
-        "A school crest whispers which school is yours.",
-        "A street sign points right at your front door.",
-        "[nervous] And strangers can read every word.",
-        "[warmly] So we check the background BEFORE it flies.",
-        "[excited] One photo. Four clues. Pin them all to the board!"
-      ],
-      "file": "/audio/voice/03ede859add81080.mp3"
-    },
-    {
-      "key": "f35d33b8557e9497",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Your first case, Picture Detective! One happy birthday photo... four leaky clues. Tap each clue to pin its evidence to the board. [whispers] Then make the call: share it... or scrub it?",
-      "lines": [
-        "[excited] Your first case, Picture Detective!",
-        "One happy birthday photo... four leaky clues.",
-        "Tap each clue to pin its evidence to the board.",
-        "[whispers] Then make the call: share it... or scrub it?"
-      ],
-      "file": "/audio/voice/f35d33b8557e9497.mp3"
-    },
-    {
-      "key": "a33141f97095e355",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Start anywhere - tap a clue on the photo to pin it!",
-      "lines": [
-        "Start anywhere - tap a clue on the photo to pin it!"
-      ],
-      "file": "/audio/voice/a33141f97095e355.mp3"
-    },
-    {
-      "key": "4ba9c409b9b74b96",
+      "key": "e89f725dc7e8346c",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three powers, Cyber Hero! Crest, sign, banner, name tag - all pinned and busted. [warmly] Backgrounds can't sneak past you now. [whispers] Next: even a CLEAN photo needs the right door...",
+      "text": "[proud] Every face asked, Cyber Hero! Yeses posted, and every no respected. [warmly] Out in the real world, their face is their call. One quick ask before you post keeps everyone smiling.",
       "lines": [
-        "[excited] Three powers, Cyber Hero!",
-        "Crest, sign, banner, name tag - all pinned and busted.",
-        "[warmly] Backgrounds can't sneak past you now.",
-        "[whispers] Next: even a CLEAN photo needs the right door..."
+        "[proud] Every face asked, Cyber Hero! Yeses posted, and every no respected.",
+        "[warmly] Out in the real world, their face is their call. One quick ask before you post keeps everyone smiling."
       ],
-      "file": "/audio/voice/4ba9c409b9b74b96.mp3"
+      "file": "/audio/voice/e89f725dc7e8346c.mp3"
     },
     {
-      "key": "a741c94fdb07f84d",
+      "key": "a01115ec3156f522",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Picture a theater with three doors. A little door for friends. A middle door for school. And a HUGE door marked... whole world. [whispers] Whatever walks through a door can't walk back out. Heroes pick the smallest door - and private photos get NO door at all. [excited] The photos are lining up - be the door keeper!",
+      "text": "[proud] Well done! You ask them first. Their face, their call, before any caption or tag. [warmly] And if they say no, you listen.",
       "lines": [
-        "[warmly] Picture a theater with three doors.",
-        "A little door for friends. A middle door for school.",
-        "And a HUGE door marked... whole world.",
+        "[proud] Well done!",
+        "You ask them first.",
+        "Their face, their call, before any caption or tag.",
+        "[warmly] And if they say no, you listen."
+      ],
+      "file": "/audio/voice/a01115ec3156f522.mp3"
+    },
+    {
+      "key": "31b22fb49cd45225",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Two powers, Cyber Hero. Every friend got a say. Yeses posted, and every no respected. [whispers] But even a photo with a yes can talk. It can tell strangers things you never said out loud. Next, we'll learn the secret clues hiding in the corners of a photo. Come and see!",
+      "lines": [
+        "[proud] Two powers, Cyber Hero. Every friend got a say.",
+        "Yeses posted, and every no respected.",
+        "[whispers] But even a photo with a yes can talk. It can tell strangers things you never said out loud.",
+        "Next, we'll learn the secret clues hiding in the corners of a photo. Come and see!"
+      ],
+      "file": "/audio/voice/31b22fb49cd45225.mp3"
+    },
+    {
+      "key": "147bc3e8990ffaf9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Now lean in close, Cyber Hero. Photos talk. A house number points right at your front door. A school name tells a stranger where you are all day. [nervous] And strangers can read every word of it. [warmly] So detectives check every corner before a photo goes anywhere. [excited] Come and develop a photo in the tray, and find what it gives away!",
+      "lines": [
+        "[whispers] Now lean in close, Cyber Hero. Photos talk.",
+        "A house number points right at your front door.",
+        "A school name tells a stranger where you are all day.",
+        "[nervous] And strangers can read every word of it.",
+        "[warmly] So detectives check every corner before a photo goes anywhere.",
+        "[excited] Come and develop a photo in the tray, and find what it gives away!"
+      ],
+      "file": "/audio/voice/147bc3e8990ffaf9.mp3"
+    },
+    {
+      "key": "a9057e2810b3fc4e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] On your third challenge, you work the Developing Tray! This game is all about finding what a photo gives away before it goes anywhere. Out in the real world, everyone looks at the smile in the middle, and the clues hide in the corners. Here is what you do. A photo is hiding under squares of film. Tap every square to develop it. Then tap everything the photo gives away. When you have found them all, tap SHARE or KEEP. [warmly] Check every corner, not just the middle. Ready? Start developing!",
+      "lines": [
+        "[excited] On your third challenge, you work the Developing Tray!",
+        "This game is all about finding what a photo gives away before it goes anywhere.",
+        "Out in the real world, everyone looks at the smile in the middle, and the clues hide in the corners.",
+        "Here is what you do. A photo is hiding under squares of film. Tap every square to develop it. Then tap everything the photo gives away. When you have found them all, tap SHARE or KEEP.",
+        "[warmly] Check every corner, not just the middle. Ready? Start developing!"
+      ],
+      "file": "/audio/voice/a9057e2810b3fc4e.mp3"
+    },
+    {
+      "key": "2243cdd03c18c08a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is the developing tray, with a photo waiting under the film.",
+      "lines": [
+        "Here is the developing tray, with a photo waiting under the film."
+      ],
+      "file": "/audio/voice/2243cdd03c18c08a.mp3"
+    },
+    {
+      "key": "a28253e58deeb6fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Photo developed and every clue found, Cyber Hero! [warmly] Out in the real world, you check the corners before the smile. A house number or a school name never slips past you.",
+      "lines": [
+        "[proud] Photo developed and every clue found, Cyber Hero!",
+        "[warmly] Out in the real world, you check the corners before the smile. A house number or a school name never slips past you."
+      ],
+      "file": "/audio/voice/a28253e58deeb6fc.mp3"
+    },
+    {
+      "key": "fb54fb22749e81cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! The house number points straight at your home. Balloons and sky tell a stranger nothing. [warmly] Check every corner, and no clue can hide.",
+      "lines": [
+        "[proud] Well done!",
+        "The house number points straight at your home.",
+        "Balloons and sky tell a stranger nothing.",
+        "[warmly] Check every corner, and no clue can hide."
+      ],
+      "file": "/audio/voice/fb54fb22749e81cb.mp3"
+    },
+    {
+      "key": "a0625b3023537bc5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Three powers, Cyber Hero. Not one corner got past you. House numbers, school names, friends with no yes. All found. [whispers] But even a clean photo leaves one question. Who is going to see it? Next, we'll learn who can actually see a photo once it is shared. Come and see!",
+      "lines": [
+        "[proud] Three powers, Cyber Hero. Not one corner got past you.",
+        "House numbers, school names, friends with no yes. All found.",
+        "[whispers] But even a clean photo leaves one question. Who is going to see it?",
+        "Next, we'll learn who can actually see a photo once it is shared. Come and see!"
+      ],
+      "file": "/audio/voice/a0625b3023537bc5.mp3"
+    },
+    {
+      "key": "ec10a7357cf3515a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Picture four doors, Cyber Hero. A tiny door marked Just Me. A small door for friends. A bigger door for school. And a HUGE door marked Everyone. [whispers] Whatever walks through a door can't walk back out. So faces and clues get the smallest door that fits, and a photo with no faces and no clues can go to everyone. [warmly] And photos of your body, like bath time or getting changed, are Just Me photos. They get no door at all. If anyone ever asks you for one, tell a trusted grown-up. [excited] Come and find the door that fits on the Door Dial!",
+      "lines": [
+        "[warmly] Picture four doors, Cyber Hero.",
+        "A tiny door marked Just Me. A small door for friends. A bigger door for school. And a HUGE door marked Everyone.",
         "[whispers] Whatever walks through a door can't walk back out.",
-        "Heroes pick the smallest door - and private photos get NO door at all.",
-        "[excited] The photos are lining up - be the door keeper!"
+        "So faces and clues get the smallest door that fits, and a photo with no faces and no clues can go to everyone.",
+        "[warmly] And photos of your body, like bath time or getting changed, are Just Me photos. They get no door at all. If anyone ever asks you for one, tell a trusted grown-up.",
+        "[excited] Come and find the door that fits on the Door Dial!"
       ],
-      "file": "/audio/voice/a741c94fdb07f84d.mp3"
+      "file": "/audio/voice/ec10a7357cf3515a.mp3"
     },
     {
-      "key": "c2d94376ac502b83",
+      "key": "312e59829fd6b642",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Places, everyone - the photos are walking! Faces go friends-only. School things, school door. No clues at all? The world door's fine. [warmly] And private photos? NO door - just for you. Go!",
+      "text": "[excited] On your fourth challenge, you turn the Door Dial! This game is all about picking the door that fits each photo: Just Me, Friends, School or Everyone. Out in the real world, every share goes through one of those doors, so the door you choose decides who sees it. Here is what you do. A photo appears above the dial and I'll read it. Tap the arrows to move the needle to the door that fits. Then tap LOCK IT IN. Take your time. There is no clock. [warmly] Faces and clues get small doors, and private photos get none. Ready? First photo!",
       "lines": [
-        "[excited] Places, everyone - the photos are walking!",
-        "Faces go friends-only. School things, school door.",
-        "No clues at all? The world door's fine.",
-        "[warmly] And private photos? NO door - just for you. Go!"
+        "[excited] On your fourth challenge, you turn the Door Dial!",
+        "This game is all about picking the door that fits each photo: Just Me, Friends, School or Everyone.",
+        "Out in the real world, every share goes through one of those doors, so the door you choose decides who sees it.",
+        "Here is what you do. A photo appears above the dial and I'll read it. Tap the arrows to move the needle to the door that fits. Then tap LOCK IT IN. Take your time. There is no clock.",
+        "[warmly] Faces and clues get small doors, and private photos get none. Ready? First photo!"
       ],
-      "file": "/audio/voice/c2d94376ac502b83.mp3"
+      "file": "/audio/voice/312e59829fd6b642.mp3"
     },
     {
-      "key": "c41dbce5a6776a83",
+      "key": "f3aba837ef131e06",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Check it for faces and clues - then tap its smallest door!",
+      "text": "Listen to the photo. Then tap the arrows to move the needle, and tap Lock it in when it points at the door that fits.",
       "lines": [
-        "Check it for faces and clues - then tap its smallest door!"
+        "Listen to the photo. Then tap the arrows to move the needle, and tap Lock it in when it points at the door that fits."
       ],
-      "file": "/audio/voice/c41dbce5a6776a83.mp3"
+      "file": "/audio/voice/f3aba837ef131e06.mp3"
     },
     {
-      "key": "2aea5a323c21ea58",
+      "key": "43143ec54f740f5d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every photo through the right door, Cyber Hero! [warmly] Out in the real world, you ask who will see it before you share. Faces and clues get small doors, and Just Me photos get none.",
+      "lines": [
+        "[proud] Every photo through the right door, Cyber Hero!",
+        "[warmly] Out in the real world, you ask who will see it before you share. Faces and clues get small doors, and Just Me photos get none."
+      ],
+      "file": "/audio/voice/43143ec54f740f5d.mp3"
+    },
+    {
+      "key": "266e839149fbf716",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Busted. Private makes the door smaller, not locked. Anyone inside can still screenshot a photo and send it on. [warmly] So even behind a small door, you still think first.",
+      "lines": [
+        "[proud] Well done!",
+        "Busted. Private makes the door smaller, not locked.",
+        "Anyone inside can still screenshot a photo and send it on.",
+        "[warmly] So even behind a small door, you still think first."
+      ],
+      "file": "/audio/voice/266e839149fbf716.mp3"
+    },
+    {
+      "key": "43bfea0ade34066c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Four powers! You kept every door, door keeper. Faces to friends, school stuff to school... [laughs] and the Raccoon's 'private is magic' fib? Busted. [whispers] One last power. The biggest one.",
+      "text": "[proud] Four powers, Cyber Hero. Every photo found its door. Small doors for faces, no door for private photos, and his private-is-magic fib, busted. [whispers] One power is left, and it puts all the others together in three seconds. Next, we'll learn the ritual that uses every photo power at once. Come and see!",
       "lines": [
-        "[excited] Four powers! You kept every door, door keeper.",
-        "Faces to friends, school stuff to school...",
-        "[laughs] and the Raccoon's 'private is magic' fib? Busted.",
-        "[whispers] One last power. The biggest one."
+        "[proud] Four powers, Cyber Hero. Every photo found its door.",
+        "Small doors for faces, no door for private photos, and his private-is-magic fib, busted.",
+        "[whispers] One power is left, and it puts all the others together in three seconds.",
+        "Next, we'll learn the ritual that uses every photo power at once. Come and see!"
       ],
-      "file": "/audio/voice/2aea5a323c21ea58.mp3"
+      "file": "/audio/voice/43bfea0ade34066c.mp3"
     },
     {
-      "key": "dceb4fd6fb166495",
-      "speaker": "layla",
+      "key": "873df3a381caac7c",
+      "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Time for the ritual that makes you share-proof. LOOK - every corner, every background. THINK - happy for anyone to see it, forever? ASK - the people in it, and a grown-up if unsure. [whispers] Look. Think. Ask. Three seconds. [excited] Now take the lever room - one photo at a time!",
+      "text": "[warmly] Time for the ritual that puts it all together, Cyber Hero. LOOK. Who is in it, and what is behind them? THINK. Where is it going, and would you be happy for anyone to see it, forever? ASK. The people in it, and a grown-up if you're not sure. [whispers] Look. Think. Ask. Three seconds. [excited] Come and be the Photo Detective, and run the ritual on real prints!",
       "lines": [
-        "[warmly] Time for the ritual that makes you share-proof.",
-        "LOOK - every corner, every background.",
-        "THINK - happy for anyone to see it, forever?",
-        "ASK - the people in it, and a grown-up if unsure.",
+        "[warmly] Time for the ritual that puts it all together, Cyber Hero.",
+        "LOOK. Who is in it, and what is behind them?",
+        "THINK. Where is it going, and would you be happy for anyone to see it, forever?",
+        "ASK. The people in it, and a grown-up if you're not sure.",
         "[whispers] Look. Think. Ask. Three seconds.",
-        "[excited] Now take the lever room - one photo at a time!"
+        "[excited] Come and be the Photo Detective, and run the ritual on real prints!"
       ],
-      "file": "/audio/voice/dceb4fd6fb166495.mp3"
+      "file": "/audio/voice/873df3a381caac7c.mp3"
     },
     {
-      "key": "c29047bbadcf72bf",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] The lever room! Photos on the tray. Look at every corner. Think: anyone, forever? [whispers] Ask - if it's not just your face. [excited] Then pull the lever. Show me your calls!",
-      "lines": [
-        "[excited] The lever room! Photos on the tray.",
-        "Look at every corner. Think: anyone, forever?",
-        "[whispers] Ask - if it's not just your face.",
-        "[excited] Then pull the lever. Show me your calls!"
-      ],
-      "file": "/audio/voice/c29047bbadcf72bf.mp3"
-    },
-    {
-      "key": "fd8b119bf328edd5",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Run look-think-ask on the first photo, then pull a lever!",
-      "lines": [
-        "Run look-think-ask on the first photo, then pull a lever!"
-      ],
-      "file": "/audio/voice/fd8b119bf328edd5.mp3"
-    },
-    {
-      "key": "65009e98d47f6005",
+      "key": "7cd7f295f26ab981",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE photo powers, Cyber Hero! Pigeons watched, asks made, clues pinned, doors kept... and the ritual runs itself now. [whispers] One last case file to close... [excited] then we crash his photo heist for good!",
+      "text": "[excited] On your last challenge, you become the Photo Detective! This game is all about running look, think, ask on real photos. Out in the real world, it takes three seconds, and it catches every leak before a photo goes. Here is what you do. A photo print lands with four rows: who is in it, what is behind them, where is it going, and did they say yes. If a row leaks, tap it to stamp it. Tap it again to lift the stamp. Nothing leaking? Stamp nothing. Then tap FINISH CHECK. [warmly] Look, think, ask on every single row. Ready? First print!",
+      "lines": [
+        "[excited] On your last challenge, you become the Photo Detective!",
+        "This game is all about running look, think, ask on real photos.",
+        "Out in the real world, it takes three seconds, and it catches every leak before a photo goes.",
+        "Here is what you do. A photo print lands with four rows: who is in it, what is behind them, where is it going, and did they say yes. If a row leaks, tap it to stamp it. Tap it again to lift the stamp. Nothing leaking? Stamp nothing. Then tap FINISH CHECK.",
+        "[warmly] Look, think, ask on every single row. Ready? First print!"
+      ],
+      "file": "/audio/voice/7cd7f295f26ab981.mp3"
+    },
+    {
+      "key": "f7e7366552ac28a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is your first print. Read all four rows. If a row leaks, tap it to stamp it. Tap it again to lift the stamp. When you have checked all four, tap Finish check.",
+      "lines": [
+        "Here is your first print. Read all four rows. If a row leaks, tap it to stamp it. Tap it again to lift the stamp. When you have checked all four, tap Finish check."
+      ],
+      "file": "/audio/voice/f7e7366552ac28a6.mp3"
+    },
+    {
+      "key": "421e890a64d69415",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every print checked, Cyber Hero! Leaks kept back, safe photos shared. [warmly] Out in the real world, look, think, ask takes three seconds, and it's yours for every photo from now on.",
+      "lines": [
+        "[proud] Every print checked, Cyber Hero! Leaks kept back, safe photos shared.",
+        "[warmly] Out in the real world, look, think, ask takes three seconds, and it's yours for every photo from now on."
+      ],
+      "file": "/audio/voice/421e890a64d69415.mp3"
+    },
+    {
+      "key": "9d87a16539a3a974",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Look at every corner. Think: anyone, forever? Ask before it goes. Eyes first, because you can't think about a clue you haven't seen. [warmly] Three seconds, every photo.",
+      "lines": [
+        "[proud] Well done!",
+        "Look at every corner. Think: anyone, forever? Ask before it goes.",
+        "Eyes first, because you can't think about a clue you haven't seen.",
+        "[warmly] Three seconds, every photo."
+      ],
+      "file": "/audio/voice/9d87a16539a3a974.mp3"
+    },
+    {
+      "key": "fe59a4efeeab8f83",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE photo powers, Cyber Hero! Delete tested, faces asked, corners checked, doors picked, and the ritual runs itself. [whispers] The Raccoon can't sneak a single photo past you now. One quick review to make it all stick, then he brings out his photo quiz. Come on!",
       "lines": [
         "[excited] That's all FIVE photo powers, Cyber Hero!",
-        "Pigeons watched, asks made, clues pinned,",
-        "doors kept... and the ritual runs itself now.",
-        "[whispers] One last case file to close...",
-        "[excited] then we crash his photo heist for good!"
+        "Delete tested, faces asked, corners checked, doors picked, and the ritual runs itself.",
+        "[whispers] The Raccoon can't sneak a single photo past you now.",
+        "One quick review to make it all stick, then he brings out his photo quiz. Come on!"
       ],
-      "file": "/audio/voice/65009e98d47f6005.mp3"
+      "file": "/audio/voice/fe59a4efeeab8f83.mp3"
     },
     {
-      "key": "be4ff60e3f1572b1",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Final case file! Sharing moments are drifting past. Tap SHARE-SMART for the look-think-ask moves... and PHOTO LEAK for flying pigeons and leaky clues. [warmly] Close the case, detective - show me!",
-      "lines": [
-        "[excited] Final case file! Sharing moments are drifting past.",
-        "Tap SHARE-SMART for the look-think-ask moves...",
-        "and PHOTO LEAK for flying pigeons and leaky clues.",
-        "[warmly] Close the case, detective - show me!"
-      ],
-      "file": "/audio/voice/be4ff60e3f1572b1.mp3"
-    },
-    {
-      "key": "b5af7bda7208b31e",
+      "key": "b636c50a6a4913b5",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered, Cyber Hero! You see every pigeon before it flies, you ask before faces fly, you pin every clue, you keep the doors... and the ritual is automatic. [excited] His photo heist is CLOSED. Sticker time!",
+      "text": "[excited] Time for your review: the Share Maze! This game is all about using every photo power, one gate at a time. Out in the real world, photo moments come in any order, so every power has to be ready. Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, a friend brings a photo moment, and three replies appear. Tap the hero move to open the gate. Collect the film rolls, and find the exit. [warmly] Five gates, five powers. Ready? Into the darkroom!",
       "lines": [
-        "[excited] Look at EVERYTHING you mastered, Cyber Hero!",
-        "You see every pigeon before it flies,",
-        "you ask before faces fly, you pin every clue,",
-        "you keep the doors... and the ritual is automatic.",
-        "[excited] His photo heist is CLOSED. Sticker time!"
+        "[excited] Time for your review: the Share Maze!",
+        "This game is all about using every photo power, one gate at a time.",
+        "Out in the real world, photo moments come in any order, so every power has to be ready.",
+        "Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, a friend brings a photo moment, and three replies appear. Tap the hero move to open the gate. Collect the film rolls, and find the exit.",
+        "[warmly] Five gates, five powers. Ready? Into the darkroom!"
       ],
-      "file": "/audio/voice/b5af7bda7208b31e.mp3"
+      "file": "/audio/voice/b636c50a6a4913b5.mp3"
     },
     {
-      "key": "d16990dc3f7d5bea",
-      "speaker": "adam",
+      "key": "f040b385f157d056",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "You catch your best friend mid-sneeze - the FUNNIEST photo ever taken. Your finger hovers over 'post'...",
+      "text": "Tap a glowing square beside your hero to move. Head for the exit!",
       "lines": [
-        "You catch your best friend mid-sneeze - the FUNNIEST photo ever taken. Your finger hovers over 'post'..."
+        "Tap a glowing square beside your hero to move. Head for the exit!"
       ],
-      "file": "/audio/voice/d16990dc3f7d5bea.mp3"
+      "file": "/audio/voice/f040b385f157d056.mp3"
     },
     {
-      "key": "91835a37dcc18102",
-      "speaker": "adam",
+      "key": "9ef6e9445a91ee7d",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "Your little brother faceplants off the sofa mid-dance. You filmed it. It would get SO many laughs in the class chat.",
+      "text": "[proud] Out of the darkroom, Cyber Hero! Every gate opened with a hero move. [warmly] Out in the real world, every photo moment gets the same care: think first, ask the faces, check the corners, pick the door.",
       "lines": [
-        "Your little brother faceplants off the sofa mid-dance. You filmed it. It would get SO many laughs in the class chat."
+        "[proud] Out of the darkroom, Cyber Hero! Every gate opened with a hero move.",
+        "[warmly] Out in the real world, every photo moment gets the same care: think first, ask the faces, check the corners, pick the door."
       ],
-      "file": "/audio/voice/91835a37dcc18102.mp3"
+      "file": "/audio/voice/9ef6e9445a91ee7d.mp3"
     },
     {
-      "key": "00589b03a34a6a9a",
-      "speaker": "adam",
+      "key": "a439cfefe73dc644",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "A friend sends you a silly just-for-you selfie. It's gold. The group chat would LOVE it.",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You know delete only deletes your copy, you ask every face, you check every corner, you pick the door that fits... [warmly] and look, think, ask runs before every photo. [excited] The Raccoon's darkroom heist is OVER. Sticker time!",
       "lines": [
-        "A friend sends you a silly just-for-you selfie. It's gold. The group chat would LOVE it."
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "You know delete only deletes your copy, you ask every face,",
+        "you check every corner, you pick the door that fits...",
+        "[warmly] and look, think, ask runs before every photo.",
+        "[excited] The Raccoon's darkroom heist is OVER. Sticker time!"
       ],
-      "file": "/audio/voice/00589b03a34a6a9a.mp3"
+      "file": "/audio/voice/a439cfefe73dc644.mp3"
     },
     {
-      "key": "7f75d72684bd2c9e",
+      "key": "94e86a8b92015dfc",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "She didn't laugh. Everyone else did. 'Probably fine' isn't a yes - and now the pigeons have flown with her face.",
+      "text": "Delete only deletes blank copy.",
       "lines": [
-        "She didn't laugh. Everyone else did. 'Probably fine' isn't a yes - and now the pigeons have flown with her face."
+        "Delete only deletes blank copy."
       ],
-      "file": "/audio/voice/7f75d72684bd2c9e.mp3"
-    },
-    {
-      "key": "d98ec7ca851bde22",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Hero move! She cracks up - and picks her superhero pose for the photo you post instead. Asking first kept it funny for BOTH of you.",
-      "lines": [
-        "Hero move! She cracks up - and picks her superhero pose for the photo you post instead. Asking first kept it funny for BOTH of you."
-      ],
-      "file": "/audio/voice/d98ec7ca851bde22.mp3"
-    },
-    {
-      "key": "15aa6e27e659b8d4",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Little brothers have faces too! He felt laughed AT by kids he's never met. Family counts - the ask comes first, every time.",
-      "lines": [
-        "Little brothers have faces too! He felt laughed AT by kids he's never met. Family counts - the ask comes first, every time."
-      ],
-      "file": "/audio/voice/15aa6e27e659b8d4.mp3"
-    },
-    {
-      "key": "12165896f6eaca0c",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Exactly right. He said 'nooo!' - so it stayed a family giggle instead of becoming the whole class's joke about him.",
-      "lines": [
-        "Exactly right. He said 'nooo!' - so it stayed a family giggle instead of becoming the whole class's joke about him."
-      ],
-      "file": "/audio/voice/12165896f6eaca0c.mp3"
-    },
-    {
-      "key": "d7272b5969c3c8a3",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Sent TO you isn't yours to send ON. She trusted you with it - forwarding it breaks the trust and frees the pigeons.",
-      "lines": [
-        "Sent TO you isn't yours to send ON. She trusted you with it - forwarding it breaks the trust and frees the pigeons."
-      ],
-      "file": "/audio/voice/d7272b5969c3c8a3.mp3"
-    },
-    {
-      "key": "698f6d4079434646",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's a real friend. A just-for-you photo stays just-for-you - HER face, HER call, always.",
-      "lines": [
-        "That's a real friend. A just-for-you photo stays just-for-you - HER face, HER call, always."
-      ],
-      "file": "/audio/voice/698f6d4079434646.mp3"
-    },
-    {
-      "key": "071fb88a8e3dca39",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Once a photo is shared, it's blank.",
-      "lines": [
-        "Once a photo is shared, it's blank."
-      ],
-      "file": "/audio/voice/071fb88a8e3dca39.mp3"
+      "file": "/audio/voice/94e86a8b92015dfc.mp3"
     },
     {
       "key": "b31e35ab0ced4b02",
@@ -20029,14 +20097,14 @@
       "file": "/audio/voice/b31e35ab0ced4b02.mp3"
     },
     {
-      "key": "79cca29e3c08ee01",
+      "key": "a5cfb366327b140f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - which clue tells strangers where you LIVE?",
+      "text": "Quick! Which clue tells strangers where you LIVE?",
       "lines": [
-        "Quick - which clue tells strangers where you LIVE?"
+        "Quick! Which clue tells strangers where you LIVE?"
       ],
-      "file": "/audio/voice/79cca29e3c08ee01.mp3"
+      "file": "/audio/voice/a5cfb366327b140f.mp3"
     },
     {
       "key": "7f9176e7dd690d31",
@@ -20049,14 +20117,1449 @@
       "file": "/audio/voice/7f9176e7dd690d31.mp3"
     },
     {
-      "key": "5715f221c3a4c677",
+      "key": "d25104529cfb7972",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A photo's ready to fly. Tap the hero ritual IN ORDER:",
+      "text": "A photo is ready to go. Tap the hero ritual IN ORDER:",
       "lines": [
-        "A photo's ready to fly. Tap the hero ritual IN ORDER:"
+        "A photo is ready to go. Tap the hero ritual IN ORDER:"
       ],
-      "file": "/audio/voice/5715f221c3a4c677.mp3"
+      "file": "/audio/voice/d25104529cfb7972.mp3"
+    },
+    {
+      "key": "647a8888e4fa0646",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla sent a funny video to her cousin, then deleted it from the chat. Her cousin had already saved it. Where is the video now? Is it option A... Still on her cousin's phone, delete only cleared Layla's copy Option B... Gone from every phone, delete reaches everywhere Or is it option C... Nowhere, videos can't be saved by cousins So, what do you think?",
+      "lines": [
+        "Layla sent a funny video to her cousin, then deleted it from the chat. Her cousin had already saved it. Where is the video now?",
+        "Is it option A...",
+        "Still on her cousin's phone, delete only cleared Layla's copy",
+        "Option B...",
+        "Gone from every phone, delete reaches everywhere",
+        "Or is it option C...",
+        "Nowhere, videos can't be saved by cousins",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/647a8888e4fa0646.mp3"
+    },
+    {
+      "key": "f1759ea221d9e88a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first? Is it option A... Send just the funniest wobbly bit Option B... Send it, family chats don't count Or is it option C... Ask his brother if he's happy for it to be shared So, what do you think?",
+      "lines": [
+        "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first?",
+        "Is it option A...",
+        "Send just the funniest wobbly bit",
+        "Option B...",
+        "Send it, family chats don't count",
+        "Or is it option C...",
+        "Ask his brother if he's happy for it to be shared",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/f1759ea221d9e88a.mp3"
+    },
+    {
+      "key": "3f11f459d3e66b05",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers? Is it option A... The stripy towel over her shoulder Option B... The pool's name on the wall, it shows where she swims every week Or is it option C... The shiny medal around her neck So, what do you think?",
+      "lines": [
+        "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers?",
+        "Is it option A...",
+        "The stripy towel over her shoulder",
+        "Option B...",
+        "The pool's name on the wall, it shows where she swims every week",
+        "Or is it option C...",
+        "The shiny medal around her neck",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/3f11f459d3e66b05.mp3"
+    },
+    {
+      "key": "f71ebbfe70d186cc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Adam filmed the class play for the school's families. It shows every kid's face and the school hall. Which door fits? Is it option A... School, it was made for the school's families Option B... Everyone, the play was brilliant Or is it option C... Just Me, nobody should ever watch a play So, what do you think?",
+      "lines": [
+        "Adam filmed the class play for the school's families. It shows every kid's face and the school hall. Which door fits?",
+        "Is it option A...",
+        "School, it was made for the school's families",
+        "Option B...",
+        "Everyone, the play was brilliant",
+        "Or is it option C...",
+        "Just Me, nobody should ever watch a play",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/f71ebbfe70d186cc.mp3"
+    },
+    {
+      "key": "4945c41285ac8520",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual? Is it option A... Post it now, looking was enough Option B... Add music first so it gets more likes Or is it option C... THINK: where is it going, and is it OK for anyone, forever? So, what do you think?",
+      "lines": [
+        "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual?",
+        "Is it option A...",
+        "Post it now, looking was enough",
+        "Option B...",
+        "Add music first so it gets more likes",
+        "Or is it option C...",
+        "THINK: where is it going, and is it OK for anyone, forever?",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/4945c41285ac8520.mp3"
+    },
+    {
+      "key": "2737aa30cb782bb1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The moment the video landed, her cousin had a copy of their own. Layla's delete only emptied Layla's phone. That's why the thinking happens before you send.",
+      "lines": [
+        "That's right!",
+        "The moment the video landed, her cousin had a copy of their own. Layla's delete only emptied Layla's phone. That's why the thinking happens before you send."
+      ],
+      "file": "/audio/voice/2737aa30cb782bb1.mp3"
+    },
+    {
+      "key": "4d4f49bb1cb3d4a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The moment the video landed, her cousin had a copy of their own. Layla's delete only emptied Layla's phone. That's why the thinking happens before you send.",
+      "lines": [
+        "Not quite.",
+        "The moment the video landed, her cousin had a copy of their own. Layla's delete only emptied Layla's phone. That's why the thinking happens before you send."
+      ],
+      "file": "/audio/voice/4d4f49bb1cb3d4a9.mp3"
+    },
+    {
+      "key": "250952b2d719ff34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Little brothers have faces too, and a family chat still makes copies. Adam asks his brother first, and if the answer is no, the video stays put.",
+      "lines": [
+        "That's right!",
+        "Little brothers have faces too, and a family chat still makes copies. Adam asks his brother first, and if the answer is no, the video stays put."
+      ],
+      "file": "/audio/voice/250952b2d719ff34.mp3"
+    },
+    {
+      "key": "fa37c37ab5f5d069",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Little brothers have faces too, and a family chat still makes copies. Adam asks his brother first, and if the answer is no, the video stays put.",
+      "lines": [
+        "Not quite.",
+        "Little brothers have faces too, and a family chat still makes copies. Adam asks his brother first, and if the answer is no, the video stays put."
+      ],
+      "file": "/audio/voice/fa37c37ab5f5d069.mp3"
+    },
+    {
+      "key": "79c8f991fbad6a20",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A medal and a towel tell a stranger nothing useful. The pool's name on the wall tells them where Layla swims every week. Detectives check what's behind the smile.",
+      "lines": [
+        "That's right!",
+        "A medal and a towel tell a stranger nothing useful. The pool's name on the wall tells them where Layla swims every week. Detectives check what's behind the smile."
+      ],
+      "file": "/audio/voice/79c8f991fbad6a20.mp3"
+    },
+    {
+      "key": "87623342b30754d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A medal and a towel tell a stranger nothing useful. The pool's name on the wall tells them where Layla swims every week. Detectives check what's behind the smile.",
+      "lines": [
+        "Not quite.",
+        "A medal and a towel tell a stranger nothing useful. The pool's name on the wall tells them where Layla swims every week. Detectives check what's behind the smile."
+      ],
+      "file": "/audio/voice/87623342b30754d7.mp3"
+    },
+    {
+      "key": "96807e103f0b7e08",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Lots of faces and the school hall make Everyone far too big a door. Just Me would hide it from the families it was made for. The School door fits.",
+      "lines": [
+        "That's right!",
+        "Lots of faces and the school hall make Everyone far too big a door. Just Me would hide it from the families it was made for. The School door fits."
+      ],
+      "file": "/audio/voice/96807e103f0b7e08.mp3"
+    },
+    {
+      "key": "f513e224eb8597b0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Lots of faces and the school hall make Everyone far too big a door. Just Me would hide it from the families it was made for. The School door fits.",
+      "lines": [
+        "Not quite.",
+        "Lots of faces and the school hall make Everyone far too big a door. Just Me would hide it from the families it was made for. The School door fits."
+      ],
+      "file": "/audio/voice/f513e224eb8597b0.mp3"
+    },
+    {
+      "key": "b366f90f70777262",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Looking is only step one. Next she thinks about where it's going and who could see it forever, then she asks every friend in the dance. Three steps, three seconds.",
+      "lines": [
+        "That's right!",
+        "Looking is only step one. Next she thinks about where it's going and who could see it forever, then she asks every friend in the dance. Three steps, three seconds."
+      ],
+      "file": "/audio/voice/b366f90f70777262.mp3"
+    },
+    {
+      "key": "558902273aef86a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Looking is only step one. Next she thinks about where it's going and who could see it forever, then she asks every friend in the dance. Three steps, three seconds.",
+      "lines": [
+        "Not quite.",
+        "Looking is only step one. Next she thinks about where it's going and who could see it forever, then she asks every friend in the dance. Three steps, three seconds."
+      ],
+      "file": "/audio/voice/558902273aef86a2.mp3"
+    },
+    {
+      "key": "cb353829d2a61e0d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the three phones. Delete only emptied yours, and their copies never moved.",
+      "lines": [
+        "Look at the three phones. Delete only emptied yours, and their copies never moved."
+      ],
+      "file": "/audio/voice/cb353829d2a61e0d.mp3"
+    },
+    {
+      "key": "154876ca816ab203",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A second is plenty. The moment it landed, each friend had a copy of their own.",
+      "lines": [
+        "A second is plenty. The moment it landed, each friend had a copy of their own."
+      ],
+      "file": "/audio/voice/154876ca816ab203.mp3"
+    },
+    {
+      "key": "d19fcfe7e7f03032",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Delete emptied your phone, and three copies stayed on three phones. That is what once it's out, it's out means.",
+      "lines": [
+        "Delete emptied your phone, and three copies stayed on three phones. That is what once it's out, it's out means."
+      ],
+      "file": "/audio/voice/d19fcfe7e7f03032.mp3"
+    },
+    {
+      "key": "5f34875e5f5c8ba5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A screenshot is a brand new copy that the timer never touches. Look at the friends' phones.",
+      "lines": [
+        "A screenshot is a brand new copy that the timer never touches. Look at the friends' phones."
+      ],
+      "file": "/audio/voice/5f34875e5f5c8ba5.mp3"
+    },
+    {
+      "key": "d05939c001c0b561",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A screenshot lives in your friend's own pictures. The app cannot reach in and delete it.",
+      "lines": [
+        "A screenshot lives in your friend's own pictures. The app cannot reach in and delete it."
+      ],
+      "file": "/audio/voice/d05939c001c0b561.mp3"
+    },
+    {
+      "key": "3fed08ec9b76f141",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The timer only cleared the app. Each screenshot is a new copy on a friend's phone, so vanishing never means gone.",
+      "lines": [
+        "The timer only cleared the app. Each screenshot is a new copy on a friend's phone, so vanishing never means gone."
+      ],
+      "file": "/audio/voice/3fed08ec9b76f141.mp3"
+    },
+    {
+      "key": "996a1c41f32eeb3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at Leo's phone. He sent it to his cousin, so someone you never picked has a copy too.",
+      "lines": [
+        "Look at Leo's phone. He sent it to his cousin, so someone you never picked has a copy too."
+      ],
+      "file": "/audio/voice/996a1c41f32eeb3a.mp3"
+    },
+    {
+      "key": "debfaac96328b43c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The app keeps its own copy on its own computers. Your delete button cannot reach them.",
+      "lines": [
+        "The app keeps its own copy on its own computers. Your delete button cannot reach them."
+      ],
+      "file": "/audio/voice/debfaac96328b43c.mp3"
+    },
+    {
+      "key": "04efef4a85c50687",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One share, and the copies made more copies, all the way to people you never picked. That is why the thinking happens before you share.",
+      "lines": [
+        "One share, and the copies made more copies, all the way to people you never picked. That is why the thinking happens before you share."
+      ],
+      "file": "/audio/voice/04efef4a85c50687.mp3"
+    },
+    {
+      "key": "b928a54b3d7f9807",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every copy? Think back to the phones. Their copies stayed right where they landed.",
+      "lines": [
+        "Every copy? Think back to the phones. Their copies stayed right where they landed."
+      ],
+      "file": "/audio/voice/b928a54b3d7f9807.mp3"
+    },
+    {
+      "key": "6206ea47a219ea90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The app keeps its own copy on its own computers. Your delete never reaches it.",
+      "lines": [
+        "The app keeps its own copy on its own computers. Your delete never reaches it."
+      ],
+      "file": "/audio/voice/6206ea47a219ea90.mp3"
+    },
+    {
+      "key": "cbf497eb807d41ab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend's copy lives on your friend's phone. Only they can delete it.",
+      "lines": [
+        "Your friend's copy lives on your friend's phone. Only they can delete it."
+      ],
+      "file": "/audio/voice/cbf497eb807d41ab.mp3"
+    },
+    {
+      "key": "c4da90618199c670",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "When you tapped DELETE, which phone went empty?",
+      "lines": [
+        "When you tapped DELETE, which phone went empty?"
+      ],
+      "file": "/audio/voice/c4da90618199c670.mp3"
+    },
+    {
+      "key": "42ff629c7799248e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two friends, two yeses, and you asked before posting. That is exactly how a hero posts a photo.",
+      "lines": [
+        "Two friends, two yeses, and you asked before posting. That is exactly how a hero posts a photo."
+      ],
+      "file": "/audio/voice/42ff629c7799248e.mp3"
+    },
+    {
+      "key": "9f528a0de9f87d73",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Zara asked to be cropped out, so out she goes. Her no was about her own face, so the rest of the photo can still be posted.",
+      "lines": [
+        "Zara asked to be cropped out, so out she goes. Her no was about her own face, so the rest of the photo can still be posted."
+      ],
+      "file": "/audio/voice/9f528a0de9f87d73.mp3"
+    },
+    {
+      "key": "8a3d48bb317b786e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Zara asked to be cropped out, not for the whole photo to stay hidden. Leave her out, and Sam's yes still counts.",
+      "lines": [
+        "Zara asked to be cropped out, not for the whole photo to stay hidden. Leave her out, and Sam's yes still counts."
+      ],
+      "file": "/audio/voice/8a3d48bb317b786e.mp3"
+    },
+    {
+      "key": "d6627a203bca8956",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Zara left out, Sam said yes. Everyone in that photo had a say before it went anywhere.",
+      "lines": [
+        "Zara left out, Sam said yes. Everyone in that photo had a say before it went anywhere."
+      ],
+      "file": "/audio/voice/d6627a203bca8956.mp3"
+    },
+    {
+      "key": "b616541bfad36fea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Her no was for the whole photo, so it stays off the internet. One no can keep a photo private, even when Kai says yes.",
+      "lines": [
+        "Her no was for the whole photo, so it stays off the internet. One no can keep a photo private, even when Kai says yes."
+      ],
+      "file": "/audio/voice/b616541bfad36fea.mp3"
+    },
+    {
+      "key": "cafb7225475fff90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Her no was about the whole photo, not just her face. Cropping her out would still post her party, so this one stays off the internet.",
+      "lines": [
+        "Her no was about the whole photo, not just her face. Cropping her out would still post her party, so this one stays off the internet."
+      ],
+      "file": "/audio/voice/cafb7225475fff90.mp3"
+    },
+    {
+      "key": "aa2e67dc13eee357",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A caption can wait. Their face needs their yes before anything else.",
+      "lines": [
+        "A caption can wait. Their face needs their yes before anything else."
+      ],
+      "file": "/audio/voice/aa2e67dc13eee357.mp3"
+    },
+    {
+      "key": "d3a0ced5c43fe0db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tagging spreads it even further. Nobody gets tagged or posted before they say yes.",
+      "lines": [
+        "Tagging spreads it even further. Nobody gets tagged or posted before they say yes."
+      ],
+      "file": "/audio/voice/d3a0ced5c43fe0db.mp3"
+    },
+    {
+      "key": "f4f202199ace3bc0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Posting fast skips their say completely. Their face, their call, so you ask first.",
+      "lines": [
+        "Posting fast skips their say completely. Their face, their call, so you ask first."
+      ],
+      "file": "/audio/voice/f4f202199ace3bc0.mp3"
+    },
+    {
+      "key": "0e0249d62df8d782",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What did you do with every friend in the Ask Ring?",
+      "lines": [
+        "What did you do with every friend in the Ask Ring?"
+      ],
+      "file": "/audio/voice/0e0249d62df8d782.mp3"
+    },
+    {
+      "key": "80f685855698ce9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A home, a school and a friend with no yes. A happy photo can still say far too much, so this one stays with you.",
+      "lines": [
+        "A home, a school and a friend with no yes. A happy photo can still say far too much, so this one stays with you."
+      ],
+      "file": "/audio/voice/80f685855698ce9a.mp3"
+    },
+    {
+      "key": "d9bb32c8f68551fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Balloons look the same at every party. They point nowhere.",
+      "lines": [
+        "Balloons look the same at every party. They point nowhere."
+      ],
+      "file": "/audio/voice/d9bb32c8f68551fb.mp3"
+    },
+    {
+      "key": "6b17dba5ccd45c27",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The sky looks the same over every town. It tells a stranger nothing.",
+      "lines": [
+        "The sky looks the same over every town. It tells a stranger nothing."
+      ],
+      "file": "/audio/voice/6b17dba5ccd45c27.mp3"
+    },
+    {
+      "key": "091d0aa237feb4fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No faces, no names, no clues, and it's made for an art show. A drawing like that is safe to go through the Everyone door.",
+      "lines": [
+        "No faces, no names, no clues, and it's made for an art show. A drawing like that is safe to go through the Everyone door."
+      ],
+      "file": "/audio/voice/091d0aa237feb4fb.mp3"
+    },
+    {
+      "key": "0824421cbcf84e9b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The art show is for everyone, and this drawing has no faces and no clues at all. It is safe for the biggest door.",
+      "lines": [
+        "The art show is for everyone, and this drawing has no faces and no clues at all. It is safe for the biggest door."
+      ],
+      "file": "/audio/voice/0824421cbcf84e9b.mp3"
+    },
+    {
+      "key": "251fc21930e35b52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Uniforms name your school, and your school already knows that. The School door fits, and no stranger learns where you are.",
+      "lines": [
+        "Uniforms name your school, and your school already knows that. The School door fits, and no stranger learns where you are."
+      ],
+      "file": "/audio/voice/251fc21930e35b52.mp3"
+    },
+    {
+      "key": "ccb50391d366e4d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The uniforms name your school, so strangers should not see it, but the newsletter is for your school. The School door fits.",
+      "lines": [
+        "The uniforms name your school, so strangers should not see it, but the newsletter is for your school. The School door fits."
+      ],
+      "file": "/audio/voice/ccb50391d366e4d8.mp3"
+    },
+    {
+      "key": "68c050d11c47a33a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three faces, three yeses, for friends. Their faces are still not for strangers, so the Friends door fits.",
+      "lines": [
+        "Three faces, three yeses, for friends. Their faces are still not for strangers, so the Friends door fits."
+      ],
+      "file": "/audio/voice/68c050d11c47a33a.mp3"
+    },
+    {
+      "key": "2be9aec2cbfcd631",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They said yes to friends seeing it. Everyone is too big a door, and Just Me would hide it from the friends it's for. The Friends door fits.",
+      "lines": [
+        "They said yes to friends seeing it. Everyone is too big a door, and Just Me would hide it from the friends it's for. The Friends door fits."
+      ],
+      "file": "/audio/voice/2be9aec2cbfcd631.mp3"
+    },
+    {
+      "key": "ef6c19f49bec63c9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Photos of your body are private. This is a Just Me photo, and it goes through no door at all.",
+      "lines": [
+        "Photos of your body are private. This is a Just Me photo, and it goes through no door at all."
+      ],
+      "file": "/audio/voice/ef6c19f49bec63c9.mp3"
+    },
+    {
+      "key": "cf40dba0428ff8ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This photo shows your body, so it is private. It gets no door, not even a small one. It stays Just Me.",
+      "lines": [
+        "This photo shows your body, so it is private. It gets no door, not even a small one. It stays Just Me."
+      ],
+      "file": "/audio/voice/cf40dba0428ff8ce.mp3"
+    },
+    {
+      "key": "482ab359ddd950b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing but bricks, and no faces or clues anywhere. It was built to be shown off, so the Everyone door fits.",
+      "lines": [
+        "Nothing but bricks, and no faces or clues anywhere. It was built to be shown off, so the Everyone door fits."
+      ],
+      "file": "/audio/voice/482ab359ddd950b3.mp3"
+    },
+    {
+      "key": "cd6894172b9f348e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look for faces or clues. There are none, just bricks, and the contest is for everyone. The biggest door is safe for this one.",
+      "lines": [
+        "Look for faces or clues. There are none, just bricks, and the contest is for everyone. The biggest door is safe for this one."
+      ],
+      "file": "/audio/voice/cd6894172b9f348e.mp3"
+    },
+    {
+      "key": "291cb2632ecc1524",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A secret diary is just for you, and so is a photo of it. It's a Just Me photo, with no door at all.",
+      "lines": [
+        "A secret diary is just for you, and so is a photo of it. It's a Just Me photo, with no door at all."
+      ],
+      "file": "/audio/voice/291cb2632ecc1524.mp3"
+    },
+    {
+      "key": "5179231d98e91507",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Secrets are for you alone. A photo of a secret diary page stays Just Me, with no door at all.",
+      "lines": [
+        "Secrets are for you alone. A photo of a secret diary page stays Just Me, with no door at all."
+      ],
+      "file": "/audio/voice/5179231d98e91507.mp3"
+    },
+    {
+      "key": "cf2e2f7444a1d469",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Private makes the door smaller, but anyone inside can still screenshot a photo and send it on.",
+      "lines": [
+        "Private makes the door smaller, but anyone inside can still screenshot a photo and send it on."
+      ],
+      "file": "/audio/voice/cf2e2f7444a1d469.mp3"
+    },
+    {
+      "key": "b0bf34ee201ce080",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Can a friend inside your private door still take a screenshot?",
+      "lines": [
+        "Can a friend inside your private door still take a screenshot?"
+      ],
+      "file": "/audio/voice/b0bf34ee201ce080.mp3"
+    },
+    {
+      "key": "292c63dfe06de559",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What do your EYES do before your brain gets a turn?",
+      "lines": [
+        "What do your EYES do before your brain gets a turn?"
+      ],
+      "file": "/audio/voice/292c63dfe06de559.mp3"
+    },
+    {
+      "key": "1e889d0bfa78b429",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post.",
+      "lines": [
+        "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post."
+      ],
+      "file": "/audio/voice/1e889d0bfa78b429.mp3"
+    },
+    {
+      "key": "fb9ea75fe10ac668",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes.",
+      "lines": [
+        "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes."
+      ],
+      "file": "/audio/voice/fb9ea75fe10ac668.mp3"
+    },
+    {
+      "key": "aed6784c99f59917",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The house number points straight to your home. Move, or crop it out, and the photo stops talking.",
+      "lines": [
+        "The house number points straight to your home. Move, or crop it out, and the photo stops talking."
+      ],
+      "file": "/audio/voice/aed6784c99f59917.mp3"
+    },
+    {
+      "key": "0d88a3e2f461910a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one.",
+      "lines": [
+        "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one."
+      ],
+      "file": "/audio/voice/0d88a3e2f461910a.mp3"
+    },
+    {
+      "key": "a7d1ea56f11ec84d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush.",
+      "lines": [
+        "Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush."
+      ],
+      "file": "/audio/voice/a7d1ea56f11ec84d.mp3"
+    },
+    {
+      "key": "31519145efe882c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Delete, once or twice, only empties your own phone. The copies that landed on other phones are still there.",
+      "lines": [
+        "Delete, once or twice, only empties your own phone. The copies that landed on other phones are still there."
+      ],
+      "file": "/audio/voice/31519145efe882c1.mp3"
+    },
+    {
+      "key": "a1f2d31cad23b514",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Zara hasn't said yes, and deleting later can't call the copies back. Ask her first, every time.",
+      "lines": [
+        "Zara hasn't said yes, and deleting later can't call the copies back. Ask her first, every time."
+      ],
+      "file": "/audio/voice/a1f2d31cad23b514.mp3"
+    },
+    {
+      "key": "a19bf38b0712de26",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends can screenshot and send it on, so the house number could still reach strangers. Keep the number out of the photo.",
+      "lines": [
+        "Friends can screenshot and send it on, so the house number could still reach strangers. Keep the number out of the photo."
+      ],
+      "file": "/audio/voice/a19bf38b0712de26.mp3"
+    },
+    {
+      "key": "fbcf81af64316f95",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A small chat and a promise are still doors. A photo of your body stays Just Me.",
+      "lines": [
+        "A small chat and a promise are still doors. A photo of your body stays Just Me."
+      ],
+      "file": "/audio/voice/fbcf81af64316f95.mp3"
+    },
+    {
+      "key": "aada8934665f853b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Rushing skips the ritual. Look, think and ask first, then decide. Three seconds is always worth it.",
+      "lines": [
+        "Rushing skips the ritual. Look, think and ask first, then decide. Three seconds is always worth it."
+      ],
+      "file": "/audio/voice/aada8934665f853b.mp3"
+    },
+    {
+      "key": "7ef27f800c524b37",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The moment the video landed, her cousin had a copy of their own. Layla's delete only emptied Layla's phone. That's why the thinking happens before you send.",
+      "lines": [
+        "The moment the video landed, her cousin had a copy of their own. Layla's delete only emptied Layla's phone. That's why the thinking happens before you send."
+      ],
+      "file": "/audio/voice/7ef27f800c524b37.mp3"
+    },
+    {
+      "key": "634635bfbe355a40",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Little brothers have faces too, and a family chat still makes copies. Adam asks his brother first, and if the answer is no, the video stays put.",
+      "lines": [
+        "Little brothers have faces too, and a family chat still makes copies. Adam asks his brother first, and if the answer is no, the video stays put."
+      ],
+      "file": "/audio/voice/634635bfbe355a40.mp3"
+    },
+    {
+      "key": "83d4cc94822c1fce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A medal and a towel tell a stranger nothing useful. The pool's name on the wall tells them where Layla swims every week. Detectives check what's behind the smile.",
+      "lines": [
+        "A medal and a towel tell a stranger nothing useful. The pool's name on the wall tells them where Layla swims every week. Detectives check what's behind the smile."
+      ],
+      "file": "/audio/voice/83d4cc94822c1fce.mp3"
+    },
+    {
+      "key": "6eaac0cdb988d83f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Lots of faces and the school hall make Everyone far too big a door. Just Me would hide it from the families it was made for. The School door fits.",
+      "lines": [
+        "Lots of faces and the school hall make Everyone far too big a door. Just Me would hide it from the families it was made for. The School door fits."
+      ],
+      "file": "/audio/voice/6eaac0cdb988d83f.mp3"
+    },
+    {
+      "key": "73521e142c90da0f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Looking is only step one. Next she thinks about where it's going and who could see it forever, then she asks every friend in the dance. Three steps, three seconds.",
+      "lines": [
+        "Looking is only step one. Next she thinks about where it's going and who could see it forever, then she asks every friend in the dance. Three steps, three seconds."
+      ],
+      "file": "/audio/voice/73521e142c90da0f.mp3"
+    },
+    {
+      "key": "a74f2d352c9f2023",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Delete only empties your phone. The copies on other phones stay put.",
+      "lines": [
+        "Delete only empties your phone. The copies on other phones stay put."
+      ],
+      "file": "/audio/voice/a74f2d352c9f2023.mp3"
+    },
+    {
+      "key": "03c69565489e7640",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Their face, their call, every single time.",
+      "lines": [
+        "Their face, their call, every single time."
+      ],
+      "file": "/audio/voice/03c69565489e7640.mp3"
+    },
+    {
+      "key": "69cff13e0202bf83",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "School names, house numbers and signs talk. Check the corners before sharing.",
+      "lines": [
+        "School names, house numbers and signs talk. Check the corners before sharing."
+      ],
+      "file": "/audio/voice/69cff13e0202bf83.mp3"
+    },
+    {
+      "key": "f7944a996d5a0d8c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A screenshot is a brand new copy, and the timer can't touch it.",
+      "lines": [
+        "A screenshot is a brand new copy, and the timer can't touch it."
+      ],
+      "file": "/audio/voice/f7944a996d5a0d8c.mp3"
+    },
+    {
+      "key": "e4cbe37a26a8ba71",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No faces and no clues is the only kind that meets the whole world safely.",
+      "lines": [
+        "No faces and no clues is the only kind that meets the whole world safely."
+      ],
+      "file": "/audio/voice/e4cbe37a26a8ba71.mp3"
+    },
+    {
+      "key": "6b0cd95fb4bb6c4e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sent to you isn't yours to send on. That's her trust in your hands.",
+      "lines": [
+        "Sent to you isn't yours to send on. That's her trust in your hands."
+      ],
+      "file": "/audio/voice/6b0cd95fb4bb6c4e.mp3"
+    },
+    {
+      "key": "d3eae5e8b4f486a4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Private shrinks the door. It doesn't stop the copies made inside it.",
+      "lines": [
+        "Private shrinks the door. It doesn't stop the copies made inside it."
+      ],
+      "file": "/audio/voice/d3eae5e8b4f486a4.mp3"
+    },
+    {
+      "key": "7fbaad0ef3c3adca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at every corner, think 'anyone, forever?', ask the people in it.",
+      "lines": [
+        "Look at every corner, think 'anyone, forever?', ask the people in it."
+      ],
+      "file": "/audio/voice/7fbaad0ef3c3adca.mp3"
+    },
+    {
+      "key": "3e69ac48ebd6b14a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Each clue is small. Together they tell a stranger everything they need.",
+      "lines": [
+        "Each clue is small. Together they tell a stranger everything they need."
+      ],
+      "file": "/audio/voice/3e69ac48ebd6b14a.mp3"
+    },
+    {
+      "key": "422fe34e3e2a98d0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your silliest face photo, mid-giggle. Tap SHARE, then tap DELETE, then check every friend's phone.",
+      "lines": [
+        "Your silliest face photo, mid-giggle. Tap SHARE, then tap DELETE, then check every friend's phone."
+      ],
+      "file": "/audio/voice/422fe34e3e2a98d0.mp3"
+    },
+    {
+      "key": "1e684ae7fafaedc9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A vanishing photo that disappears in ten seconds. Share it, delete it, and check what each friend's phone still has.",
+      "lines": [
+        "A vanishing photo that disappears in ten seconds. Share it, delete it, and check what each friend's phone still has."
+      ],
+      "file": "/audio/voice/1e684ae7fafaedc9.mp3"
+    },
+    {
+      "key": "5b3dae238986673d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your drawing, sent to the group chat. Share it, delete it, and check where the copies went next.",
+      "lines": [
+        "Your drawing, sent to the group chat. Share it, delete it, and check where the copies went next."
+      ],
+      "file": "/audio/voice/5b3dae238986673d.mp3"
+    },
+    {
+      "key": "20abb1ac063b1e0f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A sunny photo from the park: you, Maya and Leo on the climbing frame. Tap each friend to ask before you post.",
+      "lines": [
+        "A sunny photo from the park: you, Maya and Leo on the climbing frame. Tap each friend to ask before you post."
+      ],
+      "file": "/audio/voice/20abb1ac063b1e0f.mp3"
+    },
+    {
+      "key": "992130da2deec949",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Maya says: Yes, post it! I look so cool!",
+      "lines": [
+        "Maya says: Yes, post it! I look so cool!"
+      ],
+      "file": "/audio/voice/992130da2deec949.mp3"
+    },
+    {
+      "key": "81517da404a970c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Leo says: Sure, post it. It's a great one!",
+      "lines": [
+        "Leo says: Sure, post it. It's a great one!"
+      ],
+      "file": "/audio/voice/81517da404a970c7.mp3"
+    },
+    {
+      "key": "206900226515c27b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A sleepover photo: you, Zara in her pyjamas, and Sam pulling a funny face. Tap each friend to ask before you post.",
+      "lines": [
+        "A sleepover photo: you, Zara in her pyjamas, and Sam pulling a funny face. Tap each friend to ask before you post."
+      ],
+      "file": "/audio/voice/206900226515c27b.mp3"
+    },
+    {
+      "key": "cdf559f1fc14c640",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Zara says: Not me in my pyjamas! Crop me out, please.",
+      "lines": [
+        "Zara says: Not me in my pyjamas! Crop me out, please."
+      ],
+      "file": "/audio/voice/cdf559f1fc14c640.mp3"
+    },
+    {
+      "key": "0b85b1b45cf73ad0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam says: Post it! My silly face is famous!",
+      "lines": [
+        "Sam says: Post it! My silly face is famous!"
+      ],
+      "file": "/audio/voice/0b85b1b45cf73ad0.mp3"
+    },
+    {
+      "key": "0b61227633ccb538",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ava's birthday photo: you, Ava and Kai around the cake. Tap each friend to ask before you post.",
+      "lines": [
+        "Ava's birthday photo: you, Ava and Kai around the cake. Tap each friend to ask before you post."
+      ],
+      "file": "/audio/voice/0b61227633ccb538.mp3"
+    },
+    {
+      "key": "c8a741e53f36925e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ava says: Don't post it anywhere, please. Mum says no party photos online.",
+      "lines": [
+        "Ava says: Don't post it anywhere, please. Mum says no party photos online."
+      ],
+      "file": "/audio/voice/c8a741e53f36925e.mp3"
+    },
+    {
+      "key": "0ab2a1b3cd7c27de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Kai says: Fine by me! Post it.",
+      "lines": [
+        "Kai says: Fine by me! Post it."
+      ],
+      "file": "/audio/voice/0ab2a1b3cd7c27de.mp3"
+    },
+    {
+      "key": "7e1eeab180c77dcc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The door says forty-two. That number points a stranger straight to your home.",
+      "lines": [
+        "The door says forty-two. That number points a stranger straight to your home."
+      ],
+      "file": "/audio/voice/7e1eeab180c77dcc.mp3"
+    },
+    {
+      "key": "dd8d28b0c7ecd238",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And the pennant on the wall says Oakwood School. Now a stranger knows where you are all day.",
+      "lines": [
+        "And the pennant on the wall says Oakwood School. Now a stranger knows where you are all day."
+      ],
+      "file": "/audio/voice/dd8d28b0c7ecd238.mp3"
+    },
+    {
+      "key": "a61369bd838b03df",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And in the bottom corner, your friend is peeking in. They never said yes to being in it.",
+      "lines": [
+        "And in the bottom corner, your friend is peeking in. They never said yes to being in it."
+      ],
+      "file": "/audio/voice/a61369bd838b03df.mp3"
+    },
+    {
+      "key": "281e3b25b12d9a0d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A photo is hiding in the developing tray. Tap every square of film, and watch the photo appear.",
+      "lines": [
+        "A photo is hiding in the developing tray. Tap every square of film, and watch the photo appear."
+      ],
+      "file": "/audio/voice/281e3b25b12d9a0d.mp3"
+    },
+    {
+      "key": "124d23b9bcee144c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There it is: a party, a trophy and a big smile. Now check every corner of the photo, the door, the wall and the edges. Tap everything it gives away.",
+      "lines": [
+        "There it is: a party, a trophy and a big smile. Now check every corner of the photo, the door, the wall and the edges. Tap everything it gives away."
+      ],
+      "file": "/audio/voice/124d23b9bcee144c.mp3"
+    },
+    {
+      "key": "8c16a486907e9507",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "So, three clues in one happy photo. Share it, or keep it?",
+      "lines": [
+        "So, three clues in one happy photo. Share it, or keep it?"
+      ],
+      "file": "/audio/voice/8c16a486907e9507.mp3"
+    },
+    {
+      "key": "1ce347a411f93b8b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the three clues again: the house number, the school name, and a friend who never said yes. Sharing it hands all three to anyone who sees it.",
+      "lines": [
+        "Look at the three clues again: the house number, the school name, and a friend who never said yes. Sharing it hands all three to anyone who sees it."
+      ],
+      "file": "/audio/voice/1ce347a411f93b8b.mp3"
+    },
+    {
+      "key": "36c9e5e20750961b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your dragon drawing, for the online art show. No faces, no names, no clues.",
+      "lines": [
+        "Your dragon drawing, for the online art show. No faces, no names, no clues."
+      ],
+      "file": "/audio/voice/36c9e5e20750961b.mp3"
+    },
+    {
+      "key": "4a192dbe4eac1bd1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your class volcano project, with everyone in school uniform. It's for the school newsletter.",
+      "lines": [
+        "Your class volcano project, with everyone in school uniform. It's for the school newsletter."
+      ],
+      "file": "/audio/voice/4a192dbe4eac1bd1.mp3"
+    },
+    {
+      "key": "484134bfee81bd71",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A party photo with three friends in it. All three said yes to the friends' group chat.",
+      "lines": [
+        "A party photo with three friends in it. All three said yes to the friends' group chat."
+      ],
+      "file": "/audio/voice/484134bfee81bd71.mp3"
+    },
+    {
+      "key": "f8116a9768817af6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A bath time photo from when you were tiny, from the family album.",
+      "lines": [
+        "A bath time photo from when you were tiny, from the family album."
+      ],
+      "file": "/audio/voice/f8116a9768817af6.mp3"
+    },
+    {
+      "key": "8c14979a92343fcb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your brick castle, for the online building contest. Just bricks on a plain table, no faces and no clues.",
+      "lines": [
+        "Your brick castle, for the online building contest. Just bricks on a plain table, no faces and no clues."
+      ],
+      "file": "/audio/voice/8c14979a92343fcb.mp3"
+    },
+    {
+      "key": "758aa0c7d0a67c0b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A photo of your secret diary page.",
+      "lines": [
+        "A photo of your secret diary page."
+      ],
+      "file": "/audio/voice/758aa0c7d0a67c0b.mp3"
+    },
+    {
+      "key": "a876c378b2d6fe03",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Brick castle photo: my brick castle is finished! Share it? Who is in it? Nobody, just bricks. What is behind them? A plain table. Where is it going? The family chat. Did they say yes? Nobody else is in it.",
+      "lines": [
+        "Brick castle photo: my brick castle is finished! Share it? Who is in it? Nobody, just bricks. What is behind them? A plain table. Where is it going? The family chat. Did they say yes? Nobody else is in it."
+      ],
+      "file": "/audio/voice/a876c378b2d6fe03.mp3"
+    },
+    {
+      "key": "937bfe93dcee379a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sneeze photo: Maya mid-sneeze, the funniest photo ever! Who is in it? Maya. What is behind them? A plain wall. Where is it going? The class chat. Did they say yes? Not asked yet.",
+      "lines": [
+        "Sneeze photo: Maya mid-sneeze, the funniest photo ever! Who is in it? Maya. What is behind them? A plain wall. Where is it going? The class chat. Did they say yes? Not asked yet."
+      ],
+      "file": "/audio/voice/937bfe93dcee379a.mp3"
+    },
+    {
+      "key": "ba33961d9121f02b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Snowman photo: our snowman in the front garden! Who is in it? Just you. What is behind them? House number 7. Where is it going? Everyone online. Did they say yes? Nobody else is in it.",
+      "lines": [
+        "Snowman photo: our snowman in the front garden! Who is in it? Just you. What is behind them? House number 7. Where is it going? Everyone online. Did they say yes? Nobody else is in it."
+      ],
+      "file": "/audio/voice/ba33961d9121f02b.mp3"
+    },
+    {
+      "key": "ceccdca45048b633",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Team photo: we won, the whole team with the cup! Who is in it? Your whole team. What is behind them? A plain green pitch. Where is it going? The team families chat. Did they say yes? Yes, every player.",
+      "lines": [
+        "Team photo: we won, the whole team with the cup! Who is in it? Your whole team. What is behind them? A plain green pitch. Where is it going? The team families chat. Did they say yes? Yes, every player."
+      ],
+      "file": "/audio/voice/ceccdca45048b633.mp3"
+    },
+    {
+      "key": "2c4a03967ad383de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody in it, nothing behind it, a small door, and nobody to ask. Every row checks out, so this one is safe to share!",
+      "lines": [
+        "Nobody in it, nothing behind it, a small door, and nobody to ask. Every row checks out, so this one is safe to share!"
+      ],
+      "file": "/audio/voice/2c4a03967ad383de.mp3"
+    },
+    {
+      "key": "e08151a0911ea1a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Everything else looked fine, but Maya never said yes. One missing yes is enough to keep it. Ask her first!",
+      "lines": [
+        "Everything else looked fine, but Maya never said yes. One missing yes is enough to keep it. Ask her first!"
+      ],
+      "file": "/audio/voice/e08151a0911ea1a5.mp3"
+    },
+    {
+      "key": "e93b267bd8fd4897",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A house number, heading through the biggest door. Two leaks. Keep it, or crop the number and pick a smaller door first.",
+      "lines": [
+        "A house number, heading through the biggest door. Two leaks. Keep it, or crop the number and pick a smaller door first."
+      ],
+      "file": "/audio/voice/e93b267bd8fd4897.mp3"
+    },
+    {
+      "key": "06fc6b69fed212f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every player said yes, nothing leaks from behind, and it's going through a small door. Every row checks out, so share away!",
+      "lines": [
+        "Every player said yes, nothing leaks from behind, and it's going through a small door. Every row checks out, so share away!"
+      ],
+      "file": "/audio/voice/06fc6b69fed212f2.mp3"
+    },
+    {
+      "key": "d3928123dec313e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody is in this photo, just bricks. That row checks out, so lift the stamp.",
+      "lines": [
+        "Nobody is in this photo, just bricks. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/d3928123dec313e3.mp3"
+    },
+    {
+      "key": "7eb88b9dafa42c8a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A plain table tells nobody anything. That row checks out, so lift the stamp.",
+      "lines": [
+        "A plain table tells nobody anything. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/7eb88b9dafa42c8a.mp3"
+    },
+    {
+      "key": "071fdd8e9c8761b6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The family chat is a small door full of people you know. That row checks out, so lift the stamp.",
+      "lines": [
+        "The family chat is a small door full of people you know. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/071fdd8e9c8761b6.mp3"
+    },
+    {
+      "key": "4ff98cc3e265939a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "With nobody else in the photo, there is nobody to ask. That row checks out, so lift the stamp.",
+      "lines": [
+        "With nobody else in the photo, there is nobody to ask. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/4ff98cc3e265939a.mp3"
+    },
+    {
+      "key": "6d93dcbf63061966",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Maya being in it is fine on its own. The ask has its own row. That row checks out, so lift the stamp.",
+      "lines": [
+        "Maya being in it is fine on its own. The ask has its own row. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/6d93dcbf63061966.mp3"
+    },
+    {
+      "key": "c0f13261e57f904c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A plain wall gives nothing away. That row checks out, so lift the stamp.",
+      "lines": [
+        "A plain wall gives nothing away. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/c0f13261e57f904c.mp3"
+    },
+    {
+      "key": "98c116841e4b062d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The class chat is kids you know, a small door. That row is fine on its own, so lift the stamp.",
+      "lines": [
+        "The class chat is kids you know, a small door. That row is fine on its own, so lift the stamp."
+      ],
+      "file": "/audio/voice/98c116841e4b062d.mp3"
+    },
+    {
+      "key": "d8097ca88135af93",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the ask. Maya hasn't said yes yet, and it's her face. That is a leak.",
+      "lines": [
+        "Look at the ask. Maya hasn't said yes yet, and it's her face. That is a leak."
+      ],
+      "file": "/audio/voice/d8097ca88135af93.mp3"
+    },
+    {
+      "key": "a566c03514541c31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's just you, and it's your own photo. That row checks out, so lift the stamp.",
+      "lines": [
+        "It's just you, and it's your own photo. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/a566c03514541c31.mp3"
+    },
+    {
+      "key": "e747ab5d56a180e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look behind the snowman. House number seven points straight to your home. That is a leak.",
+      "lines": [
+        "Look behind the snowman. House number seven points straight to your home. That is a leak."
+      ],
+      "file": "/audio/voice/e747ab5d56a180e9.mp3"
+    },
+    {
+      "key": "d45fb83bbbe20fa8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look where it's going. Everyone online means strangers, forever, through the biggest door. That is a leak.",
+      "lines": [
+        "Look where it's going. Everyone online means strangers, forever, through the biggest door. That is a leak."
+      ],
+      "file": "/audio/voice/d45fb83bbbe20fa8.mp3"
+    },
+    {
+      "key": "5085a9be36c02a56",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "With just you in the photo, there's no one to ask. That row checks out, so lift the stamp.",
+      "lines": [
+        "With just you in the photo, there's no one to ask. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/5085a9be36c02a56.mp3"
+    },
+    {
+      "key": "dce0ec5639a7fa6a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your team being in it is fine, because the ask has its own row. That row checks out, so lift the stamp.",
+      "lines": [
+        "Your team being in it is fine, because the ask has its own row. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/dce0ec5639a7fa6a.mp3"
+    },
+    {
+      "key": "f3309ff4833e2fd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grass looks the same at every pitch. That row checks out, so lift the stamp.",
+      "lines": [
+        "Grass looks the same at every pitch. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/f3309ff4833e2fd0.mp3"
+    },
+    {
+      "key": "05adc9bb24cca2bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That chat is a small door, full of grown-ups who know the team. That row checks out, so lift the stamp.",
+      "lines": [
+        "That chat is a small door, full of grown-ups who know the team. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/05adc9bb24cca2bf.mp3"
+    },
+    {
+      "key": "67a1014c9191549d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every player said yes. That row checks out, so lift the stamp.",
+      "lines": [
+        "Every player said yes. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/67a1014c9191549d.mp3"
+    },
+    {
+      "key": "fd0729a5eabdf7f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Oops, you posted a silly photo! Just delete it, and it's gone from everyone's phone.",
+      "lines": [
+        "Oops, you posted a silly photo! Just delete it, and it's gone from everyone's phone."
+      ],
+      "file": "/audio/voice/fd0729a5eabdf7f9.mp3"
+    },
+    {
+      "key": "29a918284163b1a8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I got a funny photo of Zara asleep at the sleepover. Let's post it before she wakes up!",
+      "lines": [
+        "I got a funny photo of Zara asleep at the sleepover. Let's post it before she wakes up!"
+      ],
+      "file": "/audio/voice/29a918284163b1a8.mp3"
+    },
+    {
+      "key": "eb1b7a5a2c587dc1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Take a selfie in front of your house! The big door number looks so cool.",
+      "lines": [
+        "Take a selfie in front of your house! The big door number looks so cool."
+      ],
+      "file": "/audio/voice/eb1b7a5a2c587dc1.mp3"
+    },
+    {
+      "key": "fb9eeab10b63154c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Show the group chat your bath time baby photo. It's so cute!",
+      "lines": [
+        "Show the group chat your bath time baby photo. It's so cute!"
+      ],
+      "file": "/audio/voice/fb9eeab10b63154c.mp3"
+    },
+    {
+      "key": "271a2ff6fd1cfb30",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick, the whole class is online right now! Post our class trip photo this second!",
+      "lines": [
+        "Quick, the whole class is online right now! Post our class trip photo this second!"
+      ],
+      "file": "/audio/voice/271a2ff6fd1cfb30.mp3"
+    },
+    {
+      "key": "1e889d0bfa78b429",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post.",
+      "lines": [
+        "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post."
+      ],
+      "file": "/audio/voice/1e889d0bfa78b429.mp3"
+    },
+    {
+      "key": "fb9ea75fe10ac668",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes.",
+      "lines": [
+        "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes."
+      ],
+      "file": "/audio/voice/fb9ea75fe10ac668.mp3"
+    },
+    {
+      "key": "aed6784c99f59917",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The house number points straight to your home. Move, or crop it out, and the photo stops talking.",
+      "lines": [
+        "The house number points straight to your home. Move, or crop it out, and the photo stops talking."
+      ],
+      "file": "/audio/voice/aed6784c99f59917.mp3"
+    },
+    {
+      "key": "0d88a3e2f461910a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one.",
+      "lines": [
+        "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one."
+      ],
+      "file": "/audio/voice/0d88a3e2f461910a.mp3"
+    },
+    {
+      "key": "a7d1ea56f11ec84d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush.",
+      "lines": [
+        "Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush."
+      ],
+      "file": "/audio/voice/a7d1ea56f11ec84d.mp3"
     },
     {
       "key": "592262b18d344d9b",
@@ -25695,70 +27198,752 @@
       "file": "/audio/voice/a78326e9b766d97f.mp3"
     },
     {
-      "key": "1ca75ee1b7584c2b",
+      "key": "3912b34b1f2098f9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. She didn't laugh. Everyone else did. 'Probably fine' isn't a yes - and now the pigeons have flown with her face.",
-      "lines": [
-        "Not quite.",
-        "She didn't laugh. Everyone else did. 'Probably fine' isn't a yes - and now the pigeons have flown with her face."
-      ],
-      "file": "/audio/voice/1ca75ee1b7584c2b.mp3"
-    },
-    {
-      "key": "da1af6d9812e9818",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Hero move! She cracks up - and picks her superhero pose for the photo you post instead. Asking first kept it funny for BOTH of you.",
+      "text": "That's right! Delete emptied your phone, and three copies stayed on three phones. That is what once it's out, it's out means.",
       "lines": [
         "That's right!",
-        "Hero move! She cracks up - and picks her superhero pose for the photo you post instead. Asking first kept it funny for BOTH of you."
+        "Delete emptied your phone, and three copies stayed on three phones. That is what once it's out, it's out means."
       ],
-      "file": "/audio/voice/da1af6d9812e9818.mp3"
+      "file": "/audio/voice/3912b34b1f2098f9.mp3"
     },
     {
-      "key": "207873b11ff7612d",
+      "key": "d4a2eda595d38576",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Little brothers have faces too! He felt laughed AT by kids he's never met. Family counts - the ask comes first, every time.",
+      "text": "Not quite. Look at the three phones. Delete only emptied yours, and their copies never moved.",
       "lines": [
         "Not quite.",
-        "Little brothers have faces too! He felt laughed AT by kids he's never met. Family counts - the ask comes first, every time."
+        "Look at the three phones. Delete only emptied yours, and their copies never moved."
       ],
-      "file": "/audio/voice/207873b11ff7612d.mp3"
+      "file": "/audio/voice/d4a2eda595d38576.mp3"
     },
     {
-      "key": "5306a7c218bceb66",
+      "key": "0cd4110b40d01cfc",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Exactly right. He said 'nooo!' - so it stayed a family giggle instead of becoming the whole class's joke about him.",
-      "lines": [
-        "That's right!",
-        "Exactly right. He said 'nooo!' - so it stayed a family giggle instead of becoming the whole class's joke about him."
-      ],
-      "file": "/audio/voice/5306a7c218bceb66.mp3"
-    },
-    {
-      "key": "56ed35c4dde27cc6",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. Sent TO you isn't yours to send ON. She trusted you with it - forwarding it breaks the trust and frees the pigeons.",
+      "text": "Not quite. A second is plenty. The moment it landed, each friend had a copy of their own.",
       "lines": [
         "Not quite.",
-        "Sent TO you isn't yours to send ON. She trusted you with it - forwarding it breaks the trust and frees the pigeons."
+        "A second is plenty. The moment it landed, each friend had a copy of their own."
       ],
-      "file": "/audio/voice/56ed35c4dde27cc6.mp3"
+      "file": "/audio/voice/0cd4110b40d01cfc.mp3"
     },
     {
-      "key": "48a2ce92e4deac75",
+      "key": "7dd04fff6e16d74e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! That's a real friend. A just-for-you photo stays just-for-you - HER face, HER call, always.",
+      "text": "That's right! The timer only cleared the app. Each screenshot is a new copy on a friend's phone, so vanishing never means gone.",
       "lines": [
         "That's right!",
-        "That's a real friend. A just-for-you photo stays just-for-you - HER face, HER call, always."
+        "The timer only cleared the app. Each screenshot is a new copy on a friend's phone, so vanishing never means gone."
       ],
-      "file": "/audio/voice/48a2ce92e4deac75.mp3"
+      "file": "/audio/voice/7dd04fff6e16d74e.mp3"
+    },
+    {
+      "key": "b5691f02e73beaf7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A screenshot is a brand new copy that the timer never touches. Look at the friends' phones.",
+      "lines": [
+        "Not quite.",
+        "A screenshot is a brand new copy that the timer never touches. Look at the friends' phones."
+      ],
+      "file": "/audio/voice/b5691f02e73beaf7.mp3"
+    },
+    {
+      "key": "83fdbeb50ad18345",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A screenshot lives in your friend's own pictures. The app cannot reach in and delete it.",
+      "lines": [
+        "Not quite.",
+        "A screenshot lives in your friend's own pictures. The app cannot reach in and delete it."
+      ],
+      "file": "/audio/voice/83fdbeb50ad18345.mp3"
+    },
+    {
+      "key": "5e878c0743b03db3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! One share, and the copies made more copies, all the way to people you never picked. That is why the thinking happens before you share.",
+      "lines": [
+        "That's right!",
+        "One share, and the copies made more copies, all the way to people you never picked. That is why the thinking happens before you share."
+      ],
+      "file": "/audio/voice/5e878c0743b03db3.mp3"
+    },
+    {
+      "key": "e91ae9cb9d295018",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at Leo's phone. He sent it to his cousin, so someone you never picked has a copy too.",
+      "lines": [
+        "Not quite.",
+        "Look at Leo's phone. He sent it to his cousin, so someone you never picked has a copy too."
+      ],
+      "file": "/audio/voice/e91ae9cb9d295018.mp3"
+    },
+    {
+      "key": "4420878fd0564b21",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The app keeps its own copy on its own computers. Your delete button cannot reach them.",
+      "lines": [
+        "Not quite.",
+        "The app keeps its own copy on its own computers. Your delete button cannot reach them."
+      ],
+      "file": "/audio/voice/4420878fd0564b21.mp3"
+    },
+    {
+      "key": "89b8f02e5c2d4145",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Every copy? Think back to the phones. Their copies stayed right where they landed.",
+      "lines": [
+        "Not quite.",
+        "Every copy? Think back to the phones. Their copies stayed right where they landed."
+      ],
+      "file": "/audio/voice/89b8f02e5c2d4145.mp3"
+    },
+    {
+      "key": "52f6ca4befa25a57",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The app keeps its own copy on its own computers. Your delete never reaches it.",
+      "lines": [
+        "Not quite.",
+        "The app keeps its own copy on its own computers. Your delete never reaches it."
+      ],
+      "file": "/audio/voice/52f6ca4befa25a57.mp3"
+    },
+    {
+      "key": "6f694a707441a652",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your friend's copy lives on your friend's phone. Only they can delete it.",
+      "lines": [
+        "Not quite.",
+        "Your friend's copy lives on your friend's phone. Only they can delete it."
+      ],
+      "file": "/audio/voice/6f694a707441a652.mp3"
+    },
+    {
+      "key": "f0920ae0645a97e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Two friends, two yeses, and you asked before posting. That is exactly how a hero posts a photo.",
+      "lines": [
+        "That's right!",
+        "Two friends, two yeses, and you asked before posting. That is exactly how a hero posts a photo."
+      ],
+      "file": "/audio/voice/f0920ae0645a97e1.mp3"
+    },
+    {
+      "key": "862c59c703eccf8a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Zara left out, Sam said yes. Everyone in that photo had a say before it went anywhere.",
+      "lines": [
+        "That's right!",
+        "Zara left out, Sam said yes. Everyone in that photo had a say before it went anywhere."
+      ],
+      "file": "/audio/voice/862c59c703eccf8a.mp3"
+    },
+    {
+      "key": "e28ecbe347f9027f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Zara asked to be cropped out, so out she goes. Her no was about her own face, so the rest of the photo can still be posted.",
+      "lines": [
+        "That's right!",
+        "Zara asked to be cropped out, so out she goes. Her no was about her own face, so the rest of the photo can still be posted."
+      ],
+      "file": "/audio/voice/e28ecbe347f9027f.mp3"
+    },
+    {
+      "key": "37f5a59f09c9a8ae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Zara asked to be cropped out, not for the whole photo to stay hidden. Leave her out, and Sam's yes still counts.",
+      "lines": [
+        "Not quite.",
+        "Zara asked to be cropped out, not for the whole photo to stay hidden. Leave her out, and Sam's yes still counts."
+      ],
+      "file": "/audio/voice/37f5a59f09c9a8ae.mp3"
+    },
+    {
+      "key": "383f5cd62a4e5e5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Her no was for the whole photo, so it stays off the internet. One no can keep a photo private, even when Kai says yes.",
+      "lines": [
+        "That's right!",
+        "Her no was for the whole photo, so it stays off the internet. One no can keep a photo private, even when Kai says yes."
+      ],
+      "file": "/audio/voice/383f5cd62a4e5e5e.mp3"
+    },
+    {
+      "key": "2f253ba745381bdd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Her no was about the whole photo, not just her face. Cropping her out would still post her party, so this one stays off the internet.",
+      "lines": [
+        "Not quite.",
+        "Her no was about the whole photo, not just her face. Cropping her out would still post her party, so this one stays off the internet."
+      ],
+      "file": "/audio/voice/2f253ba745381bdd.mp3"
+    },
+    {
+      "key": "b181b9eb66de4cc7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A caption can wait. Their face needs their yes before anything else.",
+      "lines": [
+        "Not quite.",
+        "A caption can wait. Their face needs their yes before anything else."
+      ],
+      "file": "/audio/voice/b181b9eb66de4cc7.mp3"
+    },
+    {
+      "key": "f27930a2e45a592a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Tagging spreads it even further. Nobody gets tagged or posted before they say yes.",
+      "lines": [
+        "Not quite.",
+        "Tagging spreads it even further. Nobody gets tagged or posted before they say yes."
+      ],
+      "file": "/audio/voice/f27930a2e45a592a.mp3"
+    },
+    {
+      "key": "4411f6c8163e7124",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Posting fast skips their say completely. Their face, their call, so you ask first.",
+      "lines": [
+        "Not quite.",
+        "Posting fast skips their say completely. Their face, their call, so you ask first."
+      ],
+      "file": "/audio/voice/4411f6c8163e7124.mp3"
+    },
+    {
+      "key": "181b20d4dc1c6ee8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A home, a school and a friend with no yes. A happy photo can still say far too much, so this one stays with you.",
+      "lines": [
+        "That's right!",
+        "A home, a school and a friend with no yes. A happy photo can still say far too much, so this one stays with you."
+      ],
+      "file": "/audio/voice/181b20d4dc1c6ee8.mp3"
+    },
+    {
+      "key": "3d61ca77c9fd96d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the three clues again: the house number, the school name, and a friend who never said yes. Sharing it hands all three to anyone who sees it.",
+      "lines": [
+        "Not quite.",
+        "Look at the three clues again: the house number, the school name, and a friend who never said yes. Sharing it hands all three to anyone who sees it."
+      ],
+      "file": "/audio/voice/3d61ca77c9fd96d8.mp3"
+    },
+    {
+      "key": "82ecb617e862c6cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Balloons look the same at every party. They point nowhere.",
+      "lines": [
+        "Not quite.",
+        "Balloons look the same at every party. They point nowhere."
+      ],
+      "file": "/audio/voice/82ecb617e862c6cb.mp3"
+    },
+    {
+      "key": "78cc50128c6f7083",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The sky looks the same over every town. It tells a stranger nothing.",
+      "lines": [
+        "Not quite.",
+        "The sky looks the same over every town. It tells a stranger nothing."
+      ],
+      "file": "/audio/voice/78cc50128c6f7083.mp3"
+    },
+    {
+      "key": "bed0f46b06db22cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! No faces, no names, no clues, and it's made for an art show. A drawing like that is safe to go through the Everyone door.",
+      "lines": [
+        "That's right!",
+        "No faces, no names, no clues, and it's made for an art show. A drawing like that is safe to go through the Everyone door."
+      ],
+      "file": "/audio/voice/bed0f46b06db22cb.mp3"
+    },
+    {
+      "key": "311c8e911e1689c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The art show is for everyone, and this drawing has no faces and no clues at all. It is safe for the biggest door.",
+      "lines": [
+        "Not quite.",
+        "The art show is for everyone, and this drawing has no faces and no clues at all. It is safe for the biggest door."
+      ],
+      "file": "/audio/voice/311c8e911e1689c6.mp3"
+    },
+    {
+      "key": "23fa29198b1ee18a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Uniforms name your school, and your school already knows that. The School door fits, and no stranger learns where you are.",
+      "lines": [
+        "That's right!",
+        "Uniforms name your school, and your school already knows that. The School door fits, and no stranger learns where you are."
+      ],
+      "file": "/audio/voice/23fa29198b1ee18a.mp3"
+    },
+    {
+      "key": "a820d01e3cb991d2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The uniforms name your school, so strangers should not see it, but the newsletter is for your school. The School door fits.",
+      "lines": [
+        "Not quite.",
+        "The uniforms name your school, so strangers should not see it, but the newsletter is for your school. The School door fits."
+      ],
+      "file": "/audio/voice/a820d01e3cb991d2.mp3"
+    },
+    {
+      "key": "a6fb90fdbf4cbf4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Three faces, three yeses, for friends. Their faces are still not for strangers, so the Friends door fits.",
+      "lines": [
+        "That's right!",
+        "Three faces, three yeses, for friends. Their faces are still not for strangers, so the Friends door fits."
+      ],
+      "file": "/audio/voice/a6fb90fdbf4cbf4c.mp3"
+    },
+    {
+      "key": "3bd86cbf954201b6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. They said yes to friends seeing it. Everyone is too big a door, and Just Me would hide it from the friends it's for. The Friends door fits.",
+      "lines": [
+        "Not quite.",
+        "They said yes to friends seeing it. Everyone is too big a door, and Just Me would hide it from the friends it's for. The Friends door fits."
+      ],
+      "file": "/audio/voice/3bd86cbf954201b6.mp3"
+    },
+    {
+      "key": "99ccecdb28f7c49d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Photos of your body are private. This is a Just Me photo, and it goes through no door at all.",
+      "lines": [
+        "That's right!",
+        "Photos of your body are private. This is a Just Me photo, and it goes through no door at all."
+      ],
+      "file": "/audio/voice/99ccecdb28f7c49d.mp3"
+    },
+    {
+      "key": "ee1dd5729b318f6a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This photo shows your body, so it is private. It gets no door, not even a small one. It stays Just Me.",
+      "lines": [
+        "Not quite.",
+        "This photo shows your body, so it is private. It gets no door, not even a small one. It stays Just Me."
+      ],
+      "file": "/audio/voice/ee1dd5729b318f6a.mp3"
+    },
+    {
+      "key": "b5603f36ba2521ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nothing but bricks, and no faces or clues anywhere. It was built to be shown off, so the Everyone door fits.",
+      "lines": [
+        "That's right!",
+        "Nothing but bricks, and no faces or clues anywhere. It was built to be shown off, so the Everyone door fits."
+      ],
+      "file": "/audio/voice/b5603f36ba2521ac.mp3"
+    },
+    {
+      "key": "8acb2d52e841bcda",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look for faces or clues. There are none, just bricks, and the contest is for everyone. The biggest door is safe for this one.",
+      "lines": [
+        "Not quite.",
+        "Look for faces or clues. There are none, just bricks, and the contest is for everyone. The biggest door is safe for this one."
+      ],
+      "file": "/audio/voice/8acb2d52e841bcda.mp3"
+    },
+    {
+      "key": "4ab7e7e33c00a79b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A secret diary is just for you, and so is a photo of it. It's a Just Me photo, with no door at all.",
+      "lines": [
+        "That's right!",
+        "A secret diary is just for you, and so is a photo of it. It's a Just Me photo, with no door at all."
+      ],
+      "file": "/audio/voice/4ab7e7e33c00a79b.mp3"
+    },
+    {
+      "key": "ef384fd78b2b0eb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Secrets are for you alone. A photo of a secret diary page stays Just Me, with no door at all.",
+      "lines": [
+        "Not quite.",
+        "Secrets are for you alone. A photo of a secret diary page stays Just Me, with no door at all."
+      ],
+      "file": "/audio/voice/ef384fd78b2b0eb7.mp3"
+    },
+    {
+      "key": "5c17f34485cffbd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Private makes the door smaller, but anyone inside can still screenshot a photo and send it on.",
+      "lines": [
+        "Not quite.",
+        "Private makes the door smaller, but anyone inside can still screenshot a photo and send it on."
+      ],
+      "file": "/audio/voice/5c17f34485cffbd0.mp3"
+    },
+    {
+      "key": "8349dbd288a170e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nobody in it, nothing behind it, a small door, and nobody to ask. Every row checks out, so this one is safe to share!",
+      "lines": [
+        "That's right!",
+        "Nobody in it, nothing behind it, a small door, and nobody to ask. Every row checks out, so this one is safe to share!"
+      ],
+      "file": "/audio/voice/8349dbd288a170e3.mp3"
+    },
+    {
+      "key": "23061810ec8360f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody is in this photo, just bricks. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "Nobody is in this photo, just bricks. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/23061810ec8360f2.mp3"
+    },
+    {
+      "key": "3b070ef1659daf95",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A plain table tells nobody anything. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "A plain table tells nobody anything. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/3b070ef1659daf95.mp3"
+    },
+    {
+      "key": "85f74f770a51c352",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The family chat is a small door full of people you know. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "The family chat is a small door full of people you know. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/85f74f770a51c352.mp3"
+    },
+    {
+      "key": "c8dcb91a9ca90838",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. With nobody else in the photo, there is nobody to ask. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "With nobody else in the photo, there is nobody to ask. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/c8dcb91a9ca90838.mp3"
+    },
+    {
+      "key": "6c55ee40c9d8b124",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Everything else looked fine, but Maya never said yes. One missing yes is enough to keep it. Ask her first!",
+      "lines": [
+        "That's right!",
+        "Everything else looked fine, but Maya never said yes. One missing yes is enough to keep it. Ask her first!"
+      ],
+      "file": "/audio/voice/6c55ee40c9d8b124.mp3"
+    },
+    {
+      "key": "afc6c5e9f8d01f26",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Maya being in it is fine on its own. The ask has its own row. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "Maya being in it is fine on its own. The ask has its own row. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/afc6c5e9f8d01f26.mp3"
+    },
+    {
+      "key": "5c4f93e545f3c4bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A plain wall gives nothing away. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "A plain wall gives nothing away. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/5c4f93e545f3c4bc.mp3"
+    },
+    {
+      "key": "5377bbdefe207ded",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The class chat is kids you know, a small door. That row is fine on its own, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "The class chat is kids you know, a small door. That row is fine on its own, so lift the stamp."
+      ],
+      "file": "/audio/voice/5377bbdefe207ded.mp3"
+    },
+    {
+      "key": "e643c45c36e217e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the ask. Maya hasn't said yes yet, and it's her face. That is a leak.",
+      "lines": [
+        "Not quite.",
+        "Look at the ask. Maya hasn't said yes yet, and it's her face. That is a leak."
+      ],
+      "file": "/audio/voice/e643c45c36e217e6.mp3"
+    },
+    {
+      "key": "a891e74c04ee2913",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A house number, heading through the biggest door. Two leaks. Keep it, or crop the number and pick a smaller door first.",
+      "lines": [
+        "That's right!",
+        "A house number, heading through the biggest door. Two leaks. Keep it, or crop the number and pick a smaller door first."
+      ],
+      "file": "/audio/voice/a891e74c04ee2913.mp3"
+    },
+    {
+      "key": "c7b805780a8b1ddf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It's just you, and it's your own photo. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "It's just you, and it's your own photo. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/c7b805780a8b1ddf.mp3"
+    },
+    {
+      "key": "6fbc0fbaec2e94a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look behind the snowman. House number seven points straight to your home. That is a leak.",
+      "lines": [
+        "Not quite.",
+        "Look behind the snowman. House number seven points straight to your home. That is a leak."
+      ],
+      "file": "/audio/voice/6fbc0fbaec2e94a1.mp3"
+    },
+    {
+      "key": "b2d8371e7fbaecc3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look where it's going. Everyone online means strangers, forever, through the biggest door. That is a leak.",
+      "lines": [
+        "Not quite.",
+        "Look where it's going. Everyone online means strangers, forever, through the biggest door. That is a leak."
+      ],
+      "file": "/audio/voice/b2d8371e7fbaecc3.mp3"
+    },
+    {
+      "key": "aa3b8c490c673dd3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. With just you in the photo, there's no one to ask. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "With just you in the photo, there's no one to ask. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/aa3b8c490c673dd3.mp3"
+    },
+    {
+      "key": "02e284e880e43e19",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every player said yes, nothing leaks from behind, and it's going through a small door. Every row checks out, so share away!",
+      "lines": [
+        "That's right!",
+        "Every player said yes, nothing leaks from behind, and it's going through a small door. Every row checks out, so share away!"
+      ],
+      "file": "/audio/voice/02e284e880e43e19.mp3"
+    },
+    {
+      "key": "788f44149dc48862",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your team being in it is fine, because the ask has its own row. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "Your team being in it is fine, because the ask has its own row. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/788f44149dc48862.mp3"
+    },
+    {
+      "key": "18caf02a07774bbd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Grass looks the same at every pitch. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "Grass looks the same at every pitch. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/18caf02a07774bbd.mp3"
+    },
+    {
+      "key": "10420e3f3dcaff2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That chat is a small door, full of grown-ups who know the team. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "That chat is a small door, full of grown-ups who know the team. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/10420e3f3dcaff2a.mp3"
+    },
+    {
+      "key": "24a1df7ee5bd8381",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Every player said yes. That row checks out, so lift the stamp.",
+      "lines": [
+        "Not quite.",
+        "Every player said yes. That row checks out, so lift the stamp."
+      ],
+      "file": "/audio/voice/24a1df7ee5bd8381.mp3"
+    },
+    {
+      "key": "9b2ba6eb3470eea0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post.",
+      "lines": [
+        "That's right!",
+        "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post."
+      ],
+      "file": "/audio/voice/9b2ba6eb3470eea0.mp3"
+    },
+    {
+      "key": "2ed7fd3c16cee2a4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Delete, once or twice, only empties your own phone. The copies that landed on other phones are still there.",
+      "lines": [
+        "Not quite.",
+        "Delete, once or twice, only empties your own phone. The copies that landed on other phones are still there."
+      ],
+      "file": "/audio/voice/2ed7fd3c16cee2a4.mp3"
+    },
+    {
+      "key": "6c6fa60a73747be9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes.",
+      "lines": [
+        "That's right!",
+        "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes."
+      ],
+      "file": "/audio/voice/6c6fa60a73747be9.mp3"
+    },
+    {
+      "key": "d131c78b5fab9cfc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Zara hasn't said yes, and deleting later can't call the copies back. Ask her first, every time.",
+      "lines": [
+        "Not quite.",
+        "Zara hasn't said yes, and deleting later can't call the copies back. Ask her first, every time."
+      ],
+      "file": "/audio/voice/d131c78b5fab9cfc.mp3"
+    },
+    {
+      "key": "75f8be8f15f11fb0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The house number points straight to your home. Move, or crop it out, and the photo stops talking.",
+      "lines": [
+        "That's right!",
+        "The house number points straight to your home. Move, or crop it out, and the photo stops talking."
+      ],
+      "file": "/audio/voice/75f8be8f15f11fb0.mp3"
+    },
+    {
+      "key": "8e8e0ca49edd2133",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Friends can screenshot and send it on, so the house number could still reach strangers. Keep the number out of the photo.",
+      "lines": [
+        "Not quite.",
+        "Friends can screenshot and send it on, so the house number could still reach strangers. Keep the number out of the photo."
+      ],
+      "file": "/audio/voice/8e8e0ca49edd2133.mp3"
+    },
+    {
+      "key": "f190a4350d6ce2d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one.",
+      "lines": [
+        "That's right!",
+        "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one."
+      ],
+      "file": "/audio/voice/f190a4350d6ce2d6.mp3"
+    },
+    {
+      "key": "dd32c754ccee2bdc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A small chat and a promise are still doors. A photo of your body stays Just Me.",
+      "lines": [
+        "Not quite.",
+        "A small chat and a promise are still doors. A photo of your body stays Just Me."
+      ],
+      "file": "/audio/voice/dd32c754ccee2bdc.mp3"
+    },
+    {
+      "key": "4adfb506c3eee3ed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush.",
+      "lines": [
+        "That's right!",
+        "Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush."
+      ],
+      "file": "/audio/voice/4adfb506c3eee3ed.mp3"
+    },
+    {
+      "key": "1b6e10ff22bdbb4a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Rushing skips the ritual. Look, think and ask first, then decide. Three seconds is always worth it.",
+      "lines": [
+        "Not quite.",
+        "Rushing skips the ritual. Look, think and ask first, then decide. Three seconds is always worth it."
+      ],
+      "file": "/audio/voice/1b6e10ff22bdbb4a.mp3"
     },
     {
       "key": "20aedf92f3a5e38f",

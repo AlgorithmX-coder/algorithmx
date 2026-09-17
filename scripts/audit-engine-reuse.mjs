@@ -21,10 +21,10 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8];
 const CAP = 3;
-// Re-theme allowance (Weeks 5-10 design, 2026-09-16, option B, OWNER DECISION
-// PENDING): once the wired library is exhausted, a rebuilt week may re-theme
+// Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
+// for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
 // an engine another rebuilt week used, if it teaches a DIFFERENT skill, the
 // weeks are not neighbours, the engine stays under CAP, and the week carries
 // at most RETHEME_MAX such re-themes among its five concept games; the review
@@ -35,6 +35,9 @@ const CAP = 3;
 const RETHEME_ALLOWED = {
   6: ["RequestInspector", "SignBingo (review)"], // Download Dock (W2 engine), Game Zone Bingo (W1 engine)
   7: ["PauseDecide", "StringsAttached", "MemoryMatch (review)"], // Buy Button (W1/W2 engine), Free-Coin Strings (W4), Till Match (W1)
+  // The design table listed a third concept re-theme (Ask Ring = GrowthRings, W5);
+  // it was built as the new AskRing engine to stay within RETHEME_MAX.
+  8: ["BelieveOMeter", "ClueStamper", "CyberMaze (review)"], // Smallest Door (W4 dial), Photo Detective (W3 stamper), Share Maze (W3 maze)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));
@@ -105,7 +108,7 @@ for (const [engine, uses] of rows) {
   if (counted.length > 1 || (allowed.length && (uses.length > CAP || neighbourly))) {
     flags.push({ sev: "REBUILT-COLLISION", msg: `${engine} used by more than one rebuilt week: ${rebuiltHits.map((w) => "W" + w).join(" ")} (rebuilt order ${REBUILT.map((w) => "W" + w).join(" > ")})${allowed.length ? " - re-theme allowance void (cap or neighbour week)" : ""}` });
   } else if (allowed.length) {
-    console.log(`  ^ re-theme allowed for ${allowed.map((w) => "W" + w).join(" ")} (RETHEME_ALLOWED, owner decision pending)`);
+    console.log(`  ^ re-theme allowed for ${allowed.map((w) => "W" + w).join(" ")} (RETHEME_ALLOWED, owner decided option B)`);
   }
 }
 for (const [wk, list] of Object.entries(RETHEME_ALLOWED)) {
