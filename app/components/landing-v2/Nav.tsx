@@ -481,31 +481,44 @@ export default function Nav() {
           border-radius: 2px;
         }
 
-        /* Tablet: hide the anchor links so the bar never overflows (there
-           is no hamburger). The CTA pill stays visible; existing customers
-           reach sign-in from the sign-up page it opens. */
-        @media (max-width: 900px) {
-          :global(.lv2-nav-secondary) {
-            display: none !important;
+        /* Phones: Courses, Schools and Get Started all stay in the bar
+           (owner 2026-09-17; there is no hamburger). The bar tightens
+           instead: side padding, gaps, a smaller wordmark and labels, and
+           the CTA drops its arrow. Vertical padding on the links and the
+           pill keeps each tap target near 40px without changing how they
+           look. From 641px up the desktop sizes fit, so nothing hides at
+           any width. */
+        @media (max-width: 640px) {
+          .lv2-nav-inner {
+            padding: 0 12px !important;
+            gap: 8px !important;
           }
-        }
-        /* Phone: shrink the CTA pill so it doesn't wrap or push the
-           wordmark off-screen. */
-        @media (max-width: 540px) {
-          :global(.lv2-nav-cta) {
-            padding: 9px 14px !important;
-            font-size: 11px !important;
-            letter-spacing: 0.14em !important;
+          :global(.lv2-brand) {
             gap: 6px !important;
           }
           .lv2-wordmark {
-            font-size: 14px;
-            letter-spacing: 0.24em;
+            font-size: 11px;
+            letter-spacing: 0.12em;
           }
-        }
-        @media (max-width: 380px) {
+          .lv2-nav-links {
+            gap: 10px;
+          }
+          :global(.lv2-nav-secondary) {
+            font-size: 10px !important;
+            letter-spacing: 0.06em !important;
+            padding: 12px 0 !important;
+          }
+          :global(.lv2-nav-secondary)::after {
+            bottom: 6px;
+          }
           :global(.lv2-nav-cta) {
-            padding: 9px 12px !important;
+            padding: 11px 12px !important;
+            font-size: 10px !important;
+            letter-spacing: 0.06em !important;
+            gap: 0 !important;
+          }
+          :global(.lv2-nav-cta-inner svg) {
+            display: none !important;
           }
         }
 
