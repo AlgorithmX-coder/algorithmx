@@ -238,9 +238,10 @@ export default function HeroOverlay() {
         .lv2-hero-pad { padding-top: 88px; }
         .lv2-hero-copy { margin-top: 0 !important; }
         /* Phones: a fixed gap under Explore courses. The inline rail-based
-         * margin shrinks with the viewport and left only ~12px here
-         * (owner 2026-09-17: move the badges down a little). */
-        .lv2-trust-row { gap: 8px !important; margin-top: 24px !important; }
+         * margin shrinks with the viewport and left only ~12px here. Owner
+         * 2026-09-17: move the badges down; a 30px gap read as unchanged on
+         * a real phone, so it is now ~60px. */
+        .lv2-trust-row { gap: 8px !important; margin-top: 54px !important; }
         .lv2-trust-pill { padding: 7px 12px !important; gap: 10px !important; }
         .lv2-trust-pill > span:first-child { font-size: 9px !important; letter-spacing: 0.12em !important; }
         .lv2-trust-pill img { height: 22px !important; }
