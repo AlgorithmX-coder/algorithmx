@@ -88,6 +88,9 @@ import TruePriceLever from "@/app/components/exercises/signatures/TruePriceLever
 import UndoTest from "@/app/components/exercises/UndoTest";
 import AskRing from "@/app/components/exercises/AskRing";
 import DevelopingTray from "@/app/components/exercises/signatures/DevelopingTray";
+import FlipTheBox from "@/app/components/exercises/signatures/FlipTheBox";
+import TestDrive from "@/app/components/exercises/TestDrive";
+import FourEyes from "@/app/components/exercises/FourEyes";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -1767,6 +1770,16 @@ function DynamicLessonInner({
             <VaultDrop
               items={def.items}
               hints={def.hints}
+              skin={def.skin}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              destinationLabels={def.destinationLabels}
+              motto={def.motto}
+              rightToast={def.rightToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               introNarration={def.narration}
               coachLines={def.coachLines}
               threat={def.threat}
@@ -2035,6 +2048,14 @@ function DynamicLessonInner({
             <NameTagCheck
               cases={def.cases}
               hints={def.hints}
+              skin={def.skin}
+              pieceLabels={def.pieceLabels}
+              realLabel={def.realLabel}
+              checkLabel={def.checkLabel}
+              itemLabel={def.itemLabel}
+              boardPrompt={def.boardPrompt}
+              doneLabel={def.doneLabel}
+              caughtLabel={def.caughtLabel}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
@@ -2388,6 +2409,118 @@ function DynamicLessonInner({
               completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "flipTheBox":
+        // Week 9's signature as a concept game: tap-only, Learn-Loop wired,
+        // boxes and copy from the week file (see types.ts).
+        return (
+          <FullScene bg="linear-gradient(180deg, #081222 0%, #12213d 100%)">
+            <FlipTheBox
+              boxes={def.boxes}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              faceLabels={def.faceLabels}
+              installLabel={def.installLabel}
+              binLabel={def.binLabel}
+              installToast={def.installToast}
+              binToast={def.binToast}
+              wrongTitle={def.wrongTitle}
+              wrongStamp={def.wrongStamp}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              turnPrompt={def.turnPrompt}
+              decidePrompt={def.decidePrompt}
+              narration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "testDrive":
+        return (
+          <FullScene bg="linear-gradient(180deg, #081222 0%, #12213d 100%)">
+            <TestDrive
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              freeTag={def.freeTag}
+              playLabel={def.playLabel}
+              flipLabel={def.flipLabel}
+              realPriceLabel={def.realPriceLabel}
+              metersTitle={def.metersTitle}
+              meterLabels={def.meterLabels}
+              priceLabels={def.priceLabels}
+              rightToast={def.rightToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "fourEyes":
+        return (
+          <FullScene bg="linear-gradient(180deg, #081222 0%, #12213d 100%)">
+            <FourEyes
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              yourEyesLabel={def.yourEyesLabel}
+              grownUpEyesLabel={def.grownUpEyesLabel}
+              callLabel={def.callLabel}
+              installLabel={def.installLabel}
+              skipLabel={def.skipLabel}
+              getLabel={def.getLabel}
+              fishyChip={def.fishyChip}
+              fineChip={def.fineChip}
+              installToast={def.installToast}
+              skipToast={def.skipToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
               onHintReached={(tier) => progress.reportHint(screen, tier)}
               onAnswered={(o) => {

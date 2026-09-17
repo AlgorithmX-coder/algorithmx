@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T15:53:55.836Z",
+  "generatedAt": "2026-09-17T17:43:43.922Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -21562,379 +21562,447 @@
       "file": "/audio/voice/a7d1ea56f11ec84d.mp3"
     },
     {
-      "key": "592262b18d344d9b",
+      "key": "059baf19e3afaba1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] A new app is rolling in, and the front looks perfect. Flip the box over. Check who made it and the reviews. If every side looks safe, install it. If not, bin it!",
+      "text": "[nervous] Cyber Hero, something fishy just arrived at the warehouse. Read this incident report with me. The Raccoon built a COPYCAT of the most popular game: same icon, one letter different. Kids who grabbed it got endless ads, coin traps and a sneaky camera permission. This week you learn to spot the fakes. [whispers] Same icon. One letter different. That was all it took. [warmly] By the end of today, no copycat gets past your checks. Let's see what Mission Command has for us!",
       "lines": [
-        "[excited] A new app is rolling in, and the front looks perfect.",
-        "Flip the box over. Check who made it and the reviews.",
-        "If every side looks safe, install it. If not, bin it!"
+        "[nervous] Cyber Hero, something fishy just arrived at the warehouse. Read this incident report with me.",
+        "The Raccoon built a COPYCAT of the most popular game: same icon, one letter different. Kids who grabbed it got endless ads, coin traps and a sneaky camera permission. This week you learn to spot the fakes.",
+        "[whispers] Same icon. One letter different. That was all it took.",
+        "[warmly] By the end of today, no copycat gets past your checks.",
+        "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/592262b18d344d9b.mp3"
+      "file": "/audio/voice/059baf19e3afaba1.mp3"
     },
     {
-      "key": "06bac7e1bdb9b86c",
+      "key": "e7736b398a26e4b1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Welcome back, Cyber Hero! New week, new mission: apps. Here's rule one, and it's a big one. New apps come from ONE real shop - the official app store. [warmly] That shop checks every app before it hits the shelf. [whispers] Random websites, pop-ups, comment links? Nobody checked those. [excited] Deliveries incoming - sort the real from the sketchy!",
+      "text": "[excited] Welcome back, Cyber Hero! This week we run the app warehouse. And here is rule one, a big one. New apps come from ONE real shop: the official app store on your device. [warmly] That shop checks every app before it goes on the shelf. [whispers] Random websites, pop-ups, comment links? Nobody checked those. [excited] Come and work the Delivery Dock, and send back anything sketchy!",
       "lines": [
-        "[excited] Welcome back, Cyber Hero! New week, new mission: apps.",
-        "Here's rule one, and it's a big one.",
-        "New apps come from ONE real shop - the official app store.",
-        "[warmly] That shop checks every app before it hits the shelf.",
+        "[excited] Welcome back, Cyber Hero! This week we run the app warehouse.",
+        "And here is rule one, a big one.",
+        "New apps come from ONE real shop: the official app store on your device.",
+        "[warmly] That shop checks every app before it goes on the shelf.",
         "[whispers] Random websites, pop-ups, comment links? Nobody checked those.",
-        "[excited] Deliveries incoming - sort the real from the sketchy!"
+        "[excited] Come and work the Delivery Dock, and send back anything sketchy!"
       ],
-      "file": "/audio/voice/06bac7e1bdb9b86c.mp3"
+      "file": "/audio/voice/e7736b398a26e4b1.mp3"
     },
     {
-      "key": "a1bbe9ae951dd965",
+      "key": "e544f2c6f6f74c1e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The delivery lines are moving! Check where each app is coming FROM. The official shop? Reel it in. [whispers] Anywhere else... snip. Go!",
+      "text": "[excited] On your first challenge, you run the Delivery Dock! This game is all about where an app comes from. Out in the real world, apps turn up from everywhere: shops, websites, pop-ups and comment links. Here is what you do. A parcel rolls onto the dock, and I read its label. If it came from the official app store, tap REAL SHOP SHELF. If it came from anywhere else, tap SEND IT BACK. [warmly] Read every label before you choose. Ready? First parcel!",
       "lines": [
-        "[excited] The delivery lines are moving!",
-        "Check where each app is coming FROM.",
-        "The official shop? Reel it in.",
-        "[whispers] Anywhere else... snip. Go!"
+        "[excited] On your first challenge, you run the Delivery Dock!",
+        "This game is all about where an app comes from.",
+        "Out in the real world, apps turn up from everywhere: shops, websites, pop-ups and comment links.",
+        "Here is what you do. A parcel rolls onto the dock, and I read its label. If it came from the official app store, tap REAL SHOP SHELF. If it came from anywhere else, tap SEND IT BACK.",
+        "[warmly] Read every label before you choose. Ready? First parcel!"
       ],
-      "file": "/audio/voice/a1bbe9ae951dd965.mp3"
+      "file": "/audio/voice/e544f2c6f6f74c1e.mp3"
     },
     {
-      "key": "5c3d1c05d6372574",
+      "key": "f86c42e4292dc35e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Check the source - real shop reels in, anything else gets cut!",
+      "text": "Here comes the first parcel, with its label on top.",
       "lines": [
-        "Check the source - real shop reels in, anything else gets cut!"
+        "Here comes the first parcel, with its label on top."
       ],
-      "file": "/audio/voice/5c3d1c05d6372574.mp3"
+      "file": "/audio/voice/f86c42e4292dc35e.mp3"
     },
     {
-      "key": "db39f4ecb4fba7b5",
-      "speaker": "layla",
+      "key": "09b0e309002373a5",
+      "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Power one - locked in! Real deliveries shelved, sketchy ones snipped. [whispers] But here's the twist, hero... some fakes sneak INTO the real shop. Wearing costumes.",
+      "text": "[proud] Every parcel sorted, Cyber Hero! Only official store apps made the shelf. [warmly] Out in the real world, new apps come from the official app store, and anything else goes straight back.",
       "lines": [
-        "[excited] Power one - locked in!",
-        "Real deliveries shelved, sketchy ones snipped.",
-        "[whispers] But here's the twist, hero...",
-        "some fakes sneak INTO the real shop. Wearing costumes."
+        "[proud] Every parcel sorted, Cyber Hero! Only official store apps made the shelf.",
+        "[warmly] Out in the real world, new apps come from the official app store, and anything else goes straight back."
       ],
-      "file": "/audio/voice/db39f4ecb4fba7b5.mp3"
+      "file": "/audio/voice/09b0e309002373a5.mp3"
     },
     {
-      "key": "2ed96da60a4c6466",
+      "key": "262812bff99e134b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! The official app store is the one safe place. It checks every app before the shelf. [warmly] Anywhere else, nobody checked.",
+      "lines": [
+        "[proud] Well done!",
+        "The official app store is the one safe place.",
+        "It checks every app before the shelf.",
+        "[warmly] Anywhere else, nobody checked."
+      ],
+      "file": "/audio/voice/262812bff99e134b.mp3"
+    },
+    {
+      "key": "f5eca8803a54e88c",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Copycat apps wear costumes. Same icon. Almost the same name. But a copycat always misses a whisker! Check the name - letter by letter. Check the stars. Check the downloads. [warmly] Five million downloads... or twelve, since yesterday? [excited] The parade is starting - catch every copycat!",
+      "text": "[proud] What a dock, Cyber Hero. Every label read, every sketchy parcel sent back. Official store in, everything else out. [whispers] But here's the twist. Some fakes sneak into the real shop itself, wearing a costume. Next, we'll learn how to catch the copycats that sneak into the real shop. Come and see!",
       "lines": [
-        "[whispers] Copycat apps wear costumes. Same icon. Almost the same name.",
+        "[proud] What a dock, Cyber Hero. Every label read, every sketchy parcel sent back.",
+        "Official store in, everything else out.",
+        "[whispers] But here's the twist. Some fakes sneak into the real shop itself, wearing a costume.",
+        "Next, we'll learn how to catch the copycats that sneak into the real shop. Come and see!"
+      ],
+      "file": "/audio/voice/f5eca8803a54e88c.mp3"
+    },
+    {
+      "key": "8b66e662e76d6646",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] So, Cyber Hero, copycat apps wear costumes. Same icon, almost the same name. But a copycat always misses a whisker! Check the name, letter by letter. Check who made it. And check the downloads. Five million, or twelve since yesterday? [warmly] Real apps have a history. Copycats are brand new and a little bit wrong. [excited] Come and catch every copycat in the Whisker Check!",
+      "lines": [
+        "[whispers] So, Cyber Hero, copycat apps wear costumes. Same icon, almost the same name.",
         "But a copycat always misses a whisker!",
-        "Check the name - letter by letter.",
-        "Check the stars. Check the downloads.",
-        "[warmly] Five million downloads... or twelve, since yesterday?",
-        "[excited] The parade is starting - catch every copycat!"
+        "Check the name, letter by letter. Check who made it.",
+        "And check the downloads. Five million, or twelve since yesterday?",
+        "[warmly] Real apps have a history. Copycats are brand new and a little bit wrong.",
+        "[excited] Come and catch every copycat in the Whisker Check!"
       ],
-      "file": "/audio/voice/2ed96da60a4c6466.mp3"
+      "file": "/audio/voice/8b66e662e76d6646.mp3"
     },
     {
-      "key": "978578d666d1506e",
+      "key": "8b8ac1677d36a6f6",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Here comes the parade - same icons, four badges! One of them is a copycat in costume. Name. Stars. Downloads. Count the whiskers... [whispers] then tap the fake. Catch them all!",
+      "text": "[excited] On your second challenge, you run the Whisker Check! This game is all about spotting a copycat app, piece by piece. Out in the real world, copycats sit right next to the real app, wearing the same icon. Here is what you do. The real app is on top. The app to check is underneath, split into its name, its maker and its downloads. If a piece doesn't match the real one, tap it to mark it SWAPPED. Tap again to lift the mark. When you've checked every piece, tap CHECK DONE. [warmly] Some apps are the real thing, so only mark what's really swapped. Ready? First app!",
       "lines": [
-        "[excited] Here comes the parade - same icons, four badges!",
-        "One of them is a copycat in costume.",
-        "Name. Stars. Downloads. Count the whiskers...",
-        "[whispers] then tap the fake. Catch them all!"
+        "[excited] On your second challenge, you run the Whisker Check!",
+        "This game is all about spotting a copycat app, piece by piece.",
+        "Out in the real world, copycats sit right next to the real app, wearing the same icon.",
+        "Here is what you do. The real app is on top. The app to check is underneath, split into its name, its maker and its downloads. If a piece doesn't match the real one, tap it to mark it SWAPPED. Tap again to lift the mark. When you've checked every piece, tap CHECK DONE.",
+        "[warmly] Some apps are the real thing, so only mark what's really swapped. Ready? First app!"
       ],
-      "file": "/audio/voice/978578d666d1506e.mp3"
+      "file": "/audio/voice/8b8ac1677d36a6f6.mp3"
     },
     {
-      "key": "32ceef3eec971bd5",
+      "key": "2996725671b39b3b",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Read the names LETTER BY LETTER - then tap the copycat!",
+      "text": "Compare the app underneath with the real one on top, piece by piece.",
       "lines": [
-        "Read the names LETTER BY LETTER - then tap the copycat!"
+        "Compare the app underneath with the real one on top, piece by piece."
       ],
-      "file": "/audio/voice/32ceef3eec971bd5.mp3"
+      "file": "/audio/voice/2996725671b39b3b.mp3"
     },
     {
-      "key": "ab54640c1b66d003",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Two powers! Your copycat eyes are sharp. Wrong-ish names, sad stars, empty downloads... [laughs] no costume gets past you now. [whispers] But even REAL apps can get greedy. Listen...",
-      "lines": [
-        "[excited] Two powers! Your copycat eyes are sharp.",
-        "Wrong-ish names, sad stars, empty downloads...",
-        "[laughs] no costume gets past you now.",
-        "[whispers] But even REAL apps can get greedy. Listen..."
-      ],
-      "file": "/audio/voice/ab54640c1b66d003.mp3"
-    },
-    {
-      "key": "1418fce5d070bda0",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Apps ask for permissions - little keys to your device. Here's the only question that matters: does it need that key... for its JOB? A flashlight app needs the light. Obviously! [nervous] But your contacts? Your microphone? Your photos? [excited] A flashlight needs NONE of that. Guard the gate - let's go!",
-      "lines": [
-        "[warmly] Apps ask for permissions - little keys to your device.",
-        "Here's the only question that matters:",
-        "does it need that key... for its JOB?",
-        "A flashlight app needs the light. Obviously!",
-        "[nervous] But your contacts? Your microphone? Your photos?",
-        "[excited] A flashlight needs NONE of that. Guard the gate - let's go!"
-      ],
-      "file": "/audio/voice/1418fce5d070bda0.mp3"
-    },
-    {
-      "key": "0669af29d3732452",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Torchy's at the gate, asking for six keys! Its whole job... is making light. Leave the keys the job needs... [whispers] and flip every greedy grab to BLOCKED. Go!",
-      "lines": [
-        "[excited] Torchy's at the gate, asking for six keys!",
-        "Its whole job... is making light.",
-        "Leave the keys the job needs...",
-        "[whispers] and flip every greedy grab to BLOCKED. Go!"
-      ],
-      "file": "/audio/voice/0669af29d3732452.mp3"
-    },
-    {
-      "key": "784d6041b3b2bb11",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Its job is LIGHT - flip anything the job doesn't need!",
-      "lines": [
-        "Its job is LIGHT - flip anything the job doesn't need!"
-      ],
-      "file": "/audio/voice/784d6041b3b2bb11.mp3"
-    },
-    {
-      "key": "17bb3455dfcaed4b",
+      "key": "bfc3eb770c3889c6",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three powers! The gate held. Torchy got its light and its button... [laughs] and not one greedy key more. [whispers] Now for the trickiest word in the whole shop: FREE.",
+      "text": "[proud] Every copycat caught, Cyber Hero! And every real app cleared. [warmly] Out in the real world, you check the name, the maker and the downloads, and a copycat's missing whisker never slips past you.",
       "lines": [
-        "[excited] Three powers! The gate held.",
-        "Torchy got its light and its button...",
-        "[laughs] and not one greedy key more.",
-        "[whispers] Now for the trickiest word in the whole shop: FREE."
+        "[proud] Every copycat caught, Cyber Hero! And every real app cleared.",
+        "[warmly] Out in the real world, you check the name, the maker and the downloads, and a copycat's missing whisker never slips past you."
       ],
-      "file": "/audio/voice/17bb3455dfcaed4b.mp3"
+      "file": "/audio/voice/bfc3eb770c3889c6.mp3"
     },
     {
-      "key": "d6bbd1d9d58f79cf",
+      "key": "153064b7a671ad84",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] FREE! The shop's favorite sparkly word. [whispers] But apps cost money to make. Always. So 'free' apps get paid another way... Your time - with ads. Your dollars - with coin shops. [warmly] Or your info - collected and sold on. [excited] Four FREE tags on the board - flip every one!",
+      "text": "[proud] Well done! Moon Jumpz with twenty downloads is the copycat. A swapped letter and no history give it away. [warmly] Name, maker, downloads. Count the whiskers every time.",
       "lines": [
-        "[excited] FREE! The shop's favorite sparkly word.",
+        "[proud] Well done!",
+        "Moon Jumpz with twenty downloads is the copycat.",
+        "A swapped letter and no history give it away.",
+        "[warmly] Name, maker, downloads. Count the whiskers every time."
+      ],
+      "file": "/audio/voice/153064b7a671ad84.mp3"
+    },
+    {
+      "key": "7597e0b2f565bcdd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Two powers, Cyber Hero. Your copycat eyes are sharp. Swapped letters, missing letters, tiny downloads. No costume gets past you. [whispers] But even a real app can get greedy. Once it's on your device, it starts asking for keys. Next, we'll learn which keys an app really needs. Come and see!",
+      "lines": [
+        "[proud] Two powers, Cyber Hero. Your copycat eyes are sharp.",
+        "Swapped letters, missing letters, tiny downloads. No costume gets past you.",
+        "[whispers] But even a real app can get greedy. Once it's on your device, it starts asking for keys.",
+        "Next, we'll learn which keys an app really needs. Come and see!"
+      ],
+      "file": "/audio/voice/7597e0b2f565bcdd.mp3"
+    },
+    {
+      "key": "70abb28d21501238",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Now, Cyber Hero, apps ask for permissions: little keys to your device. Here's the only question that matters. Does it need that key for its JOB? A flashlight app needs the light. Of course! [nervous] But your contacts? Your microphone? Your photos? A flashlight needs none of that. [excited] Come and flip the app boxes, and check every key they ask for!",
+      "lines": [
+        "[warmly] Now, Cyber Hero, apps ask for permissions: little keys to your device.",
+        "Here's the only question that matters.",
+        "Does it need that key for its JOB?",
+        "A flashlight app needs the light. Of course!",
+        "[nervous] But your contacts? Your microphone? Your photos? A flashlight needs none of that.",
+        "[excited] Come and flip the app boxes, and check every key they ask for!"
+      ],
+      "file": "/audio/voice/70abb28d21501238.mp3"
+    },
+    {
+      "key": "f94f7987421850eb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] On your third challenge, you work the Flip the Box belt! This game is all about checking every side of an app, especially the keys it asks for. Out in the real world, the front of an app always looks perfect. The truth is on the other sides. Here is what you do. An app box rolls in. Tap the arrows to turn it, and read every side: the front, the maker, the reviews and the keys it asks for. When you've seen all four, tap SAFE APP or BIN IT. [warmly] Check every key against the app's job. Ready? First box!",
+      "lines": [
+        "[excited] On your third challenge, you work the Flip the Box belt!",
+        "This game is all about checking every side of an app, especially the keys it asks for.",
+        "Out in the real world, the front of an app always looks perfect. The truth is on the other sides.",
+        "Here is what you do. An app box rolls in. Tap the arrows to turn it, and read every side: the front, the maker, the reviews and the keys it asks for. When you've seen all four, tap SAFE APP or BIN IT.",
+        "[warmly] Check every key against the app's job. Ready? First box!"
+      ],
+      "file": "/audio/voice/f94f7987421850eb.mp3"
+    },
+    {
+      "key": "aafc1d852188d777",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The belt is rolling, with the first box front side up.",
+      "lines": [
+        "The belt is rolling, with the first box front side up."
+      ],
+      "file": "/audio/voice/aafc1d852188d777.mp3"
+    },
+    {
+      "key": "57af7bfef7258353",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every box checked, Cyber Hero! Job keys kept, greedy apps binned. [warmly] Out in the real world, you ask why does it need that, and no greedy app gets a key it doesn't need.",
+      "lines": [
+        "[proud] Every box checked, Cyber Hero! Job keys kept, greedy apps binned.",
+        "[warmly] Out in the real world, you ask why does it need that, and no greedy app gets a key it doesn't need."
+      ],
+      "file": "/audio/voice/57af7bfef7258353.mp3"
+    },
+    {
+      "key": "8f6dbd35cca157c9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Busted. A pet game doesn't need your contacts or your microphone. An app only needs the keys its job uses. [warmly] Job keys yes, greedy keys no.",
+      "lines": [
+        "[proud] Well done!",
+        "Busted. A pet game doesn't need your contacts or your microphone.",
+        "An app only needs the keys its job uses.",
+        "[warmly] Job keys yes, greedy keys no."
+      ],
+      "file": "/audio/voice/8f6dbd35cca157c9.mp3"
+    },
+    {
+      "key": "584fa68eecad3521",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Three powers, Cyber Hero. Not one greedy key got through. Light for the flashlight, saving for the drawing app, and nothing extra. [whispers] Now for the trickiest word in the whole warehouse. FREE. Next, we'll learn what FREE really costs. Come and see!",
+      "lines": [
+        "[proud] Three powers, Cyber Hero. Not one greedy key got through.",
+        "Light for the flashlight, saving for the drawing app, and nothing extra.",
+        "[whispers] Now for the trickiest word in the whole warehouse. FREE.",
+        "Next, we'll learn what FREE really costs. Come and see!"
+      ],
+      "file": "/audio/voice/584fa68eecad3521.mp3"
+    },
+    {
+      "key": "52f1536e3d466848",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] FREE! The shop's favourite sparkly word. [whispers] But apps cost money to make. Always. So a FREE app gets paid another way. With your time, watching ads. With coins, in a shop inside. Or with your info, collected and sold. [warmly] And some apps, like the library's, really are free. [excited] Come and see what FREE really costs, on a Test Drive!",
+      "lines": [
+        "[excited] FREE! The shop's favourite sparkly word.",
         "[whispers] But apps cost money to make. Always.",
-        "So 'free' apps get paid another way...",
-        "Your time - with ads. Your dollars - with coin shops.",
-        "[warmly] Or your info - collected and sold on.",
-        "[excited] Four FREE tags on the board - flip every one!"
+        "So a FREE app gets paid another way.",
+        "With your time, watching ads. With coins, in a shop inside. Or with your info, collected and sold.",
+        "[warmly] And some apps, like the library's, really are free.",
+        "[excited] Come and see what FREE really costs, on a Test Drive!"
       ],
-      "file": "/audio/voice/d6bbd1d9d58f79cf.mp3"
+      "file": "/audio/voice/52f1536e3d466848.mp3"
     },
     {
-      "key": "448ac8eed6d43f8e",
+      "key": "ef2eefacaddf7e6c",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Four apps. Four shiny FREE tags. But every tag has a back side... [excited] Flip each one and read the REAL price. Time, dollars, info... or truly free!",
+      "text": "[excited] On your fourth challenge, you take FREE apps for a Test Drive! This game is all about finding out what FREE really costs. Out in the real world, the price hides inside the app, so you only see it by playing. Here is what you do. Tap PLAY ONE MINUTE, and watch what happens on the screen. The meters show what each minute cost. When every minute is played, tap FLIP THE TAG, and pick the real price. [warmly] Watch the meters the whole time. Ready? First app!",
       "lines": [
-        "[whispers] Four apps. Four shiny FREE tags.",
-        "But every tag has a back side...",
-        "[excited] Flip each one and read the REAL price.",
-        "Time, dollars, info... or truly free!"
+        "[excited] On your fourth challenge, you take FREE apps for a Test Drive!",
+        "This game is all about finding out what FREE really costs.",
+        "Out in the real world, the price hides inside the app, so you only see it by playing.",
+        "Here is what you do. Tap PLAY ONE MINUTE, and watch what happens on the screen. The meters show what each minute cost. When every minute is played, tap FLIP THE TAG, and pick the real price.",
+        "[warmly] Watch the meters the whole time. Ready? First app!"
       ],
-      "file": "/audio/voice/448ac8eed6d43f8e.mp3"
+      "file": "/audio/voice/ef2eefacaddf7e6c.mp3"
     },
     {
-      "key": "28cfbb8467c4f0a7",
+      "key": "ae9afa1001c546b4",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Flip the first FREE tag - let's see what it really costs!",
+      "text": "Here is the first FREE app, ready for a test drive.",
       "lines": [
-        "Flip the first FREE tag - let's see what it really costs!"
+        "Here is the first FREE app, ready for a test drive."
       ],
-      "file": "/audio/voice/28cfbb8467c4f0a7.mp3"
+      "file": "/audio/voice/ae9afa1001c546b4.mp3"
     },
     {
-      "key": "48abd97da7838a8f",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Four powers! No FREE tag fools you now. Ads, coin shops, info collectors... [laughs] all flipped over and read out loud. [warmly] One power left - and it's the easiest one of all.",
-      "lines": [
-        "[excited] Four powers! No FREE tag fools you now.",
-        "Ads, coin shops, info collectors...",
-        "[laughs] all flipped over and read out loud.",
-        "[warmly] One power left - and it's the easiest one of all."
-      ],
-      "file": "/audio/voice/48abd97da7838a8f.mp3"
-    },
-    {
-      "key": "cef7f50d44b8fc16",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Last power - and it catches everything else. Every new app gets installed TOGETHER with a grown-up. That's the install handshake. Four eyes catch what two miss - a whisker, a greedy key... [whispers] It's not babyish. It's what smart teams do. [excited] Three install moments coming - shake on it!",
-      "lines": [
-        "[warmly] Last power - and it catches everything else.",
-        "Every new app gets installed TOGETHER with a grown-up.",
-        "That's the install handshake.",
-        "Four eyes catch what two miss - a whisker, a greedy key...",
-        "[whispers] It's not babyish. It's what smart teams do.",
-        "[excited] Three install moments coming - shake on it!"
-      ],
-      "file": "/audio/voice/cef7f50d44b8fc16.mp3"
-    },
-    {
-      "key": "4036f3662444c1f6",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Three install moments. Three glowing buttons. Each one will whisper 'just tap it - it's fine!' [whispers] That whisper is your handshake signal. [excited] Together, every time. Show me!",
-      "lines": [
-        "[warmly] Three install moments. Three glowing buttons.",
-        "Each one will whisper 'just tap it - it's fine!'",
-        "[whispers] That whisper is your handshake signal.",
-        "[excited] Together, every time. Show me!"
-      ],
-      "file": "/audio/voice/4036f3662444c1f6.mp3"
-    },
-    {
-      "key": "b97d9b6c2f508664",
+      "key": "8c7500d63cc67b36",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE app powers, Cyber Hero! Real shop only, copycats caught, greedy keys blocked, FREE tags flipped... and every install is a handshake. [whispers] One last whisker count... [excited] then we shut his copycat shop DOWN!",
+      "text": "[proud] Every FREE tag flipped, Cyber Hero! Time, coins, info, and one that was truly free. [warmly] Out in the real world, you know apps get paid somehow, and a FREE tag can't hide its real price from you.",
+      "lines": [
+        "[proud] Every FREE tag flipped, Cyber Hero! Time, coins, info, and one that was truly free.",
+        "[warmly] Out in the real world, you know apps get paid somehow, and a FREE tag can't hide its real price from you."
+      ],
+      "file": "/audio/voice/8c7500d63cc67b36.mp3"
+    },
+    {
+      "key": "71fde95bea9e23ca",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! An app with ads every minute costs you your time. The ads are how it gets paid. [warmly] Flip the FREE tag, and the real price shows.",
+      "lines": [
+        "[proud] Well done!",
+        "An app with ads every minute costs you your time.",
+        "The ads are how it gets paid.",
+        "[warmly] Flip the FREE tag, and the real price shows."
+      ],
+      "file": "/audio/voice/71fde95bea9e23ca.mp3"
+    },
+    {
+      "key": "57809425633ac916",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Four powers, Cyber Hero. No FREE tag fools you now. Ads, coin shops and nosy questions, all caught on the meters. [whispers] One power is left, and it catches anything the others might miss. Next, we'll learn the rule that catches everything else. Come and see!",
+      "lines": [
+        "[proud] Four powers, Cyber Hero. No FREE tag fools you now.",
+        "Ads, coin shops and nosy questions, all caught on the meters.",
+        "[whispers] One power is left, and it catches anything the others might miss.",
+        "Next, we'll learn the rule that catches everything else. Come and see!"
+      ],
+      "file": "/audio/voice/57809425633ac916.mp3"
+    },
+    {
+      "key": "f227e7bd2d686b99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last power, Cyber Hero, and it catches everything else. Every new app gets installed together with a grown-up. Four eyes catch what two miss. A whisker, a greedy key, a coin shop. [whispers] It isn't babyish. It's what smart teams do. And when you both check and it's fine, installing is fine. [excited] Come and play Four Eyes, and call in your grown-up!",
+      "lines": [
+        "[warmly] Last power, Cyber Hero, and it catches everything else.",
+        "Every new app gets installed together with a grown-up.",
+        "Four eyes catch what two miss. A whisker, a greedy key, a coin shop.",
+        "[whispers] It isn't babyish. It's what smart teams do.",
+        "And when you both check and it's fine, installing is fine.",
+        "[excited] Come and play Four Eyes, and call in your grown-up!"
+      ],
+      "file": "/audio/voice/f227e7bd2d686b99.mp3"
+    },
+    {
+      "key": "524705f53778fb6e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] On your last challenge, you play Four Eyes! This game is all about checking a new app together with a grown-up. Out in the real world, a shiny app page shows you the good bits and hides the rest. Here is what you do. An app page appears on your side. Tap CALL MY GROWN-UP, and their side opens. Tap everything they spot, and I'll read it. Then decide together: install it, or skip it. [warmly] Four eyes catch what two miss. Ready? First app!",
+      "lines": [
+        "[excited] On your last challenge, you play Four Eyes!",
+        "This game is all about checking a new app together with a grown-up.",
+        "Out in the real world, a shiny app page shows you the good bits and hides the rest.",
+        "Here is what you do. An app page appears on your side. Tap CALL MY GROWN-UP, and their side opens. Tap everything they spot, and I'll read it. Then decide together: install it, or skip it.",
+        "[warmly] Four eyes catch what two miss. Ready? First app!"
+      ],
+      "file": "/audio/voice/524705f53778fb6e.mp3"
+    },
+    {
+      "key": "9e1a24f4f5f534df",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is an app you might want. Look at your side first.",
+      "lines": [
+        "Here is an app you might want. Look at your side first."
+      ],
+      "file": "/audio/voice/9e1a24f4f5f534df.mp3"
+    },
+    {
+      "key": "68c41775f2d77888",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Four eyes every time, Cyber Hero! You caught what one pair of eyes would miss, and you installed the good ones together. [warmly] Out in the real world, every new app is a team job, and checking together keeps your device safe.",
+      "lines": [
+        "[proud] Four eyes every time, Cyber Hero! You caught what one pair of eyes would miss, and you installed the good ones together.",
+        "[warmly] Out in the real world, every new app is a team job, and checking together keeps your device safe."
+      ],
+      "file": "/audio/voice/68c41775f2d77888.mp3"
+    },
+    {
+      "key": "3f21140c3219b4b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Find it in the official app store. Check it together. Install it together. The real shop comes first, because nothing else gets checked. [warmly] Then four eyes, every time.",
+      "lines": [
+        "[proud] Well done!",
+        "Find it in the official app store. Check it together. Install it together.",
+        "The real shop comes first, because nothing else gets checked.",
+        "[warmly] Then four eyes, every time."
+      ],
+      "file": "/audio/voice/3f21140c3219b4b2.mp3"
+    },
+    {
+      "key": "8255e8688da69b75",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE app powers, Cyber Hero! Real shop only, whiskers counted, keys checked, FREE tags flipped, and every install together. [whispers] The Raccoon's copycat warehouse doesn't stand a chance. One quick review to make it all stick, then he opens his quiz stall. Come on!",
       "lines": [
         "[excited] That's all FIVE app powers, Cyber Hero!",
-        "Real shop only, copycats caught, greedy keys blocked,",
-        "FREE tags flipped... and every install is a handshake.",
-        "[whispers] One last whisker count...",
-        "[excited] then we shut his copycat shop DOWN!"
+        "Real shop only, whiskers counted, keys checked, FREE tags flipped, and every install together.",
+        "[whispers] The Raccoon's copycat warehouse doesn't stand a chance.",
+        "One quick review to make it all stick, then he opens his quiz stall. Come on!"
       ],
-      "file": "/audio/voice/b97d9b6c2f508664.mp3"
+      "file": "/audio/voice/8255e8688da69b75.mp3"
     },
     {
-      "key": "6d8baf818bde7afb",
+      "key": "b9b42a3b0282e58f",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Final whisker count! App moments drifting past. Tap REAL DEAL for the checked and official... and COPYCAT TRICK for costumes and grabs. [warmly] Count every whisker - show me!",
+      "text": "[excited] Time for your review: the Warehouse! This game is all about using every app power, one crate at a time. Out in the real world, app tricks turn up in any order, so every power has to be ready. Here is what you do. Tap a crate to open it. I'll read its question, and you tap the hero answer. A checked crate slides onto the real shop shelf. Check all five, and the big door rolls up. [warmly] Five crates, five powers. Ready? Pick a crate!",
       "lines": [
-        "[excited] Final whisker count! App moments drifting past.",
-        "Tap REAL DEAL for the checked and official...",
-        "and COPYCAT TRICK for costumes and grabs.",
-        "[warmly] Count every whisker - show me!"
+        "[excited] Time for your review: the Warehouse!",
+        "This game is all about using every app power, one crate at a time.",
+        "Out in the real world, app tricks turn up in any order, so every power has to be ready.",
+        "Here is what you do. Tap a crate to open it. I'll read its question, and you tap the hero answer. A checked crate slides onto the real shop shelf. Check all five, and the big door rolls up.",
+        "[warmly] Five crates, five powers. Ready? Pick a crate!"
       ],
-      "file": "/audio/voice/6d8baf818bde7afb.mp3"
+      "file": "/audio/voice/b9b42a3b0282e58f.mp3"
     },
     {
-      "key": "848c14df9e5bbbac",
+      "key": "2898422bc60037a2",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap any crate to open it and hear its question.",
+      "lines": [
+        "Tap any crate to open it and hear its question."
+      ],
+      "file": "/audio/voice/2898422bc60037a2.mp3"
+    },
+    {
+      "key": "4f17f5a07a91e01d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Warehouse cleared, Cyber Hero! Every crate checked. [warmly] Out in the real world, the real shop, the whiskers, the keys, the real price and four eyes keep every copycat off your device.",
+      "lines": [
+        "[proud] Warehouse cleared, Cyber Hero! Every crate checked.",
+        "[warmly] Out in the real world, the real shop, the whiskers, the keys, the real price and four eyes keep every copycat off your device."
+      ],
+      "file": "/audio/voice/4f17f5a07a91e01d.mp3"
+    },
+    {
+      "key": "082acd7261fa7b93",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! One real shop, whiskers counted, keys guarded, tags flipped... and every install a handshake. [laughs] His copycat shop just lost its last customer. [excited] Sticker time!",
+      "text": "[excited] Look at EVERYTHING you mastered this week! One real shop, whiskers counted, keys checked, FREE tags flipped, and every install done together. [warmly] His copycat warehouse just lost its last customer. [excited] Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "One real shop, whiskers counted, keys guarded,",
-        "tags flipped... and every install a handshake.",
-        "[laughs] His copycat shop just lost its last customer.",
+        "One real shop, whiskers counted, keys checked,",
+        "FREE tags flipped, and every install done together.",
+        "[warmly] His copycat warehouse just lost its last customer.",
         "[excited] Sticker time!"
       ],
-      "file": "/audio/voice/848c14df9e5bbbac.mp3"
-    },
-    {
-      "key": "e0e904afa7e08efe",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "You found the PERFECT drawing app! The INSTALL button glows under your finger...",
-      "lines": [
-        "You found the PERFECT drawing app! The INSTALL button glows under your finger..."
-      ],
-      "file": "/audio/voice/e0e904afa7e08efe.mp3"
-    },
-    {
-      "key": "e455286f58137378",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Your friend scoffs: 'You ASK before installing? Just do it yourself - asking is for babies!'",
-      "lines": [
-        "Your friend scoffs: 'You ASK before installing? Just do it yourself - asking is for babies!'"
-      ],
-      "file": "/audio/voice/e455286f58137378.mp3"
-    },
-    {
-      "key": "efd904fae9184f72",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A pop-up flashes: 'Your game needs an UPDATE! Tap here NOW to update!' It's not from the app store...",
-      "lines": [
-        "A pop-up flashes: 'Your game needs an UPDATE! Tap here NOW to update!' It's not from the app store..."
-      ],
-      "file": "/audio/voice/efd904fae9184f72.mp3"
-    },
-    {
-      "key": "3b543fab100ba95e",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "It was a copycat - ads everywhere, and it wanted your photos. A ten-second check with a grown-up would have caught the whiskers.",
-      "lines": [
-        "It was a copycat - ads everywhere, and it wanted your photos. A ten-second check with a grown-up would have caught the whiskers."
-      ],
-      "file": "/audio/voice/3b543fab100ba95e.mp3"
-    },
-    {
-      "key": "d5629b3ee55fe53b",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Handshake! She spotted the copycat in ten seconds and found the REAL one - clean, safe, just as fun. That's teamwork.",
-      "lines": [
-        "Handshake! She spotted the copycat in ten seconds and found the REAL one - clean, safe, just as fun. That's teamwork."
-      ],
-      "file": "/audio/voice/d5629b3ee55fe53b.mp3"
-    },
-    {
-      "key": "cab1a4d63149a613",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "You installed it alone - and missed the coin shop hiding inside. A week later your coins were gone. Asking isn't babyish - it's how you keep your stuff.",
-      "lines": [
-        "You installed it alone - and missed the coin shop hiding inside. A week later your coins were gone. Asking isn't babyish - it's how you keep your stuff."
-      ],
-      "file": "/audio/voice/cab1a4d63149a613.mp3"
-    },
-    {
-      "key": "047fc7c5c604e5a6",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Exactly. Even grown-ups double-check with each other. Four eyes beat two - every single time.",
-      "lines": [
-        "Exactly. Even grown-ups double-check with each other. Four eyes beat two - every single time."
-      ],
-      "file": "/audio/voice/047fc7c5c604e5a6.mp3"
-    },
-    {
-      "key": "1ec918980406249e",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That wasn't an update - it was a fake in an update costume. Real updates only ever come from inside the real store.",
-      "lines": [
-        "That wasn't an update - it was a fake in an update costume. Real updates only ever come from inside the real store."
-      ],
-      "file": "/audio/voice/1ec918980406249e.mp3"
-    },
-    {
-      "key": "b2ec100051b7c80c",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Sharp! Real updates come from the app store itself, never from shouty pop-ups. Closed, checked, safe.",
-      "lines": [
-        "Sharp! Real updates come from the app store itself, never from shouty pop-ups. Closed, checked, safe."
-      ],
-      "file": "/audio/voice/b2ec100051b7c80c.mp3"
+      "file": "/audio/voice/082acd7261fa7b93.mp3"
     },
     {
       "key": "9d572bd25c7f5af8",
@@ -21947,14 +22015,14 @@
       "file": "/audio/voice/9d572bd25c7f5af8.mp3"
     },
     {
-      "key": "e82017494ef20cfa",
+      "key": "7c4722465ba8a9b0",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - tap the COPYCAT!",
+      "text": "Quick! Which one is the COPYCAT?",
       "lines": [
-        "Quick - tap the COPYCAT!"
+        "Quick! Which one is the COPYCAT?"
       ],
-      "file": "/audio/voice/e82017494ef20cfa.mp3"
+      "file": "/audio/voice/7c4722465ba8a9b0.mp3"
     },
     {
       "key": "7f9176e7dd690d31",
@@ -21967,54 +22035,1839 @@
       "file": "/audio/voice/7f9176e7dd690d31.mp3"
     },
     {
-      "key": "84b16805eee6a1a4",
+      "key": "2452aa4d2e45b660",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which one is TRULY free?",
+      "text": "An app with ads every minute costs you your blank.",
       "lines": [
-        "Which one is TRULY free?"
+        "An app with ads every minute costs you your blank."
       ],
-      "file": "/audio/voice/84b16805eee6a1a4.mp3"
+      "file": "/audio/voice/2452aa4d2e45b660.mp3"
     },
     {
-      "key": "0ad100f255552671",
+      "key": "dc7fb8428ac93f7a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Install blank a grown-up.",
+      "text": "A new app looks great. Tap the hero steps IN ORDER:",
       "lines": [
-        "Install blank a grown-up."
+        "A new app looks great. Tap the hero steps IN ORDER:"
       ],
-      "file": "/audio/voice/0ad100f255552671.mp3"
+      "file": "/audio/voice/dc7fb8428ac93f7a.mp3"
     },
     {
-      "key": "cc9b20ee8a1c5e3a",
+      "key": "b8a20855917f9df9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You search 'Blast Birds'. Four results appear - which one is the copycat?",
+      "text": "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move? Is it option A... Say no thanks, new apps come from the official app store only Option B... Download it, links from family are family-checked Or is it option C... Download it, then run a free virus scan right after So, what do you think?",
       "lines": [
-        "You search 'Blast Birds'. Four results appear - which one is the copycat?"
+        "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move?",
+        "Is it option A...",
+        "Say no thanks, new apps come from the official app store only",
+        "Option B...",
+        "Download it, links from family are family-checked",
+        "Or is it option C...",
+        "Download it, then run a free virus scan right after",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/cc9b20ee8a1c5e3a.mp3"
+      "file": "/audio/voice/b8a20855917f9df9.mp3"
     },
     {
-      "key": "238da1ad991c2b31",
+      "key": "ee630c5cad9a5d05",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Now 'Pixel Pets'. The costume is better this time - count the whiskers!",
+      "text": "Layla wants Maze Mates. One result is by Tiny Tower Games with 2 million downloads. The other is by Tiny Tower Gamez with 40 downloads. Which is the copycat? Is it option A... Neither, both are called Maze Mates Option B... The one with 2 million downloads Or is it option C... The one by Tiny Tower Gamez, with 40 downloads So, what do you think?",
       "lines": [
-        "Now 'Pixel Pets'. The costume is better this time - count the whiskers!"
+        "Layla wants Maze Mates. One result is by Tiny Tower Games with 2 million downloads. The other is by Tiny Tower Gamez with 40 downloads. Which is the copycat?",
+        "Is it option A...",
+        "Neither, both are called Maze Mates",
+        "Option B...",
+        "The one with 2 million downloads",
+        "Or is it option C...",
+        "The one by Tiny Tower Gamez, with 40 downloads",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/238da1ad991c2b31.mp3"
+      "file": "/audio/voice/ee630c5cad9a5d05.mp3"
     },
     {
-      "key": "5b908d361b8c995b",
+      "key": "669e8b812ab768da",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Last one: 'Robo Racers'. This copycat hid a trick INSIDE its name...",
+      "text": "Adam's new calculator app asks for his microphone and his contacts. What's the hero move? Is it option A... Allow the contacts, so he can share his answers Option B... Block them, a calculator's job is doing sums Or is it option C... Allow them, it asked politely So, what do you think?",
       "lines": [
-        "Last one: 'Robo Racers'. This copycat hid a trick INSIDE its name..."
+        "Adam's new calculator app asks for his microphone and his contacts. What's the hero move?",
+        "Is it option A...",
+        "Allow the contacts, so he can share his answers",
+        "Option B...",
+        "Block them, a calculator's job is doing sums",
+        "Or is it option C...",
+        "Allow them, it asked politely",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/5b908d361b8c995b.mp3"
+      "file": "/audio/voice/669e8b812ab768da.mp3"
+    },
+    {
+      "key": "d5c289a8751886cc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla's FREE colouring app stops after two pictures: 'Unlock more pictures for 300 coins!' What is the real price? Is it option A... Coins, it's free to start but not free to play Option B... Nothing, pictures are always free Or is it option C... Her time, because colouring takes a while So, what do you think?",
+      "lines": [
+        "Layla's FREE colouring app stops after two pictures: 'Unlock more pictures for 300 coins!' What is the real price?",
+        "Is it option A...",
+        "Coins, it's free to start but not free to play",
+        "Option B...",
+        "Nothing, pictures are always free",
+        "Or is it option C...",
+        "Her time, because colouring takes a while",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/d5c289a8751886cc.mp3"
+    },
+    {
+      "key": "7f17bd1ccb17ea24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move? Is it option A... Tap it quickly, updates keep games safe Option B... Tap it, but only because it's his favourite game Or is it option C... Close it, and check for updates in the real app store with a grown-up So, what do you think?",
+      "lines": [
+        "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move?",
+        "Is it option A...",
+        "Tap it quickly, updates keep games safe",
+        "Option B...",
+        "Tap it, but only because it's his favourite game",
+        "Or is it option C...",
+        "Close it, and check for updates in the real app store with a grown-up",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/7f17bd1ccb17ea24.mp3"
+    },
+    {
+      "key": "4c436917bfab3892",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
+      "lines": [
+        "That's right!",
+        "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
+      ],
+      "file": "/audio/voice/4c436917bfab3892.mp3"
+    },
+    {
+      "key": "6d3891fac4393d2f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
+      "lines": [
+        "Not quite.",
+        "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
+      ],
+      "file": "/audio/voice/6d3891fac4393d2f.mp3"
+    },
+    {
+      "key": "15362e2e21300e8c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The app names match, but one maker's name ends in a z, and it only has 40 downloads. A copycat always misses a whisker somewhere, so check every piece, not just the name.",
+      "lines": [
+        "That's right!",
+        "The app names match, but one maker's name ends in a z, and it only has 40 downloads. A copycat always misses a whisker somewhere, so check every piece, not just the name."
+      ],
+      "file": "/audio/voice/15362e2e21300e8c.mp3"
+    },
+    {
+      "key": "2e1cfc34741e8d57",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The app names match, but one maker's name ends in a z, and it only has 40 downloads. A copycat always misses a whisker somewhere, so check every piece, not just the name.",
+      "lines": [
+        "Not quite.",
+        "The app names match, but one maker's name ends in a z, and it only has 40 downloads. A copycat always misses a whisker somewhere, so check every piece, not just the name."
+      ],
+      "file": "/audio/voice/2e1cfc34741e8d57.mp3"
+    },
+    {
+      "key": "d4f16f00b6a5c7a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A calculator's job is doing sums. A microphone and contacts have nothing to do with that job, so those greedy keys get blocked.",
+      "lines": [
+        "That's right!",
+        "A calculator's job is doing sums. A microphone and contacts have nothing to do with that job, so those greedy keys get blocked."
+      ],
+      "file": "/audio/voice/d4f16f00b6a5c7a9.mp3"
+    },
+    {
+      "key": "071843856b81ddf5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A calculator's job is doing sums. A microphone and contacts have nothing to do with that job, so those greedy keys get blocked.",
+      "lines": [
+        "Not quite.",
+        "A calculator's job is doing sums. A microphone and contacts have nothing to do with that job, so those greedy keys get blocked."
+      ],
+      "file": "/audio/voice/071843856b81ddf5.mp3"
+    },
+    {
+      "key": "4d804b24cad81842",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Locked pictures that need coins mean this app gets paid through a coin shop, and coins cost real money. Colouring time is just fun, not a price.",
+      "lines": [
+        "That's right!",
+        "Locked pictures that need coins mean this app gets paid through a coin shop, and coins cost real money. Colouring time is just fun, not a price."
+      ],
+      "file": "/audio/voice/4d804b24cad81842.mp3"
+    },
+    {
+      "key": "d5d043911d30a372",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Locked pictures that need coins mean this app gets paid through a coin shop, and coins cost real money. Colouring time is just fun, not a price.",
+      "lines": [
+        "Not quite.",
+        "Locked pictures that need coins mean this app gets paid through a coin shop, and coins cost real money. Colouring time is just fun, not a price."
+      ],
+      "file": "/audio/voice/d5d043911d30a372.mp3"
+    },
+    {
+      "key": "4250a298f0751bb3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
+      "lines": [
+        "That's right!",
+        "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
+      ],
+      "file": "/audio/voice/4250a298f0751bb3.mp3"
+    },
+    {
+      "key": "55121c34010309e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
+      "lines": [
+        "Not quite.",
+        "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
+      ],
+      "file": "/audio/voice/55121c34010309e2.mp3"
+    },
+    {
+      "key": "65b47c7ca028450c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The official store checked Blast Birds before the shelf, so on the shelf it goes.",
+      "lines": [
+        "The official store checked Blast Birds before the shelf, so on the shelf it goes."
+      ],
+      "file": "/audio/voice/65b47c7ca028450c.mp3"
+    },
+    {
+      "key": "d9d9968f26e6df44",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A random website checks nothing, and that FREE game is bait. Back it goes.",
+      "lines": [
+        "A random website checks nothing, and that FREE game is bait. Back it goes."
+      ],
+      "file": "/audio/voice/d9d9968f26e6df44.mp3"
+    },
+    {
+      "key": "d9fd534d13467b2b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Official store, checked before the shelf. Pixel Pets goes on the shelf.",
+      "lines": [
+        "Official store, checked before the shelf. Pixel Pets goes on the shelf."
+      ],
+      "file": "/audio/voice/d9fd534d13467b2b.mp3"
+    },
+    {
+      "key": "f9b66f86f81345de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pop-up download buttons are traps. The real shop never pops up, so send it back.",
+      "lines": [
+        "Pop-up download buttons are traps. The real shop never pops up, so send it back."
+      ],
+      "file": "/audio/voice/f9b66f86f81345de.mp3"
+    },
+    {
+      "key": "770121a85210f77b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "School picked it, and the real shop checked it. Double checked, so it goes on the shelf.",
+      "lines": [
+        "School picked it, and the real shop checked it. Double checked, so it goes on the shelf."
+      ],
+      "file": "/audio/voice/770121a85210f77b.mp3"
+    },
+    {
+      "key": "cdfabec44735f07e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not in shops yet means nobody has checked it yet. Send it back.",
+      "lines": [
+        "Not in shops yet means nobody has checked it yet. Send it back."
+      ],
+      "file": "/audio/voice/cdfabec44735f07e.mp3"
+    },
+    {
+      "key": "92ac73c65f49371b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real updates live inside the real shop, so on the shelf it goes.",
+      "lines": [
+        "Real updates live inside the real shop, so on the shelf it goes."
+      ],
+      "file": "/audio/voice/92ac73c65f49371b.mp3"
+    },
+    {
+      "key": "36041be641cc476d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A link down in the comments is a stranger's parcel. Nobody checked it, so send it back.",
+      "lines": [
+        "A link down in the comments is a stranger's parcel. Nobody checked it, so send it back."
+      ],
+      "file": "/audio/voice/36041be641cc476d.mp3"
+    },
+    {
+      "key": "928b996af5259280",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pop-ups aren't shops. Nobody checked what's behind that button.",
+      "lines": [
+        "Pop-ups aren't shops. Nobody checked what's behind that button."
+      ],
+      "file": "/audio/voice/928b996af5259280.mp3"
+    },
+    {
+      "key": "cee36446b4b05898",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Websites don't check apps. The official app store does.",
+      "lines": [
+        "Websites don't check apps. The official app store does."
+      ],
+      "file": "/audio/voice/cee36446b4b05898.mp3"
+    },
+    {
+      "key": "847da84fd213ad3e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Comments aren't shops. A link down there could lead anywhere.",
+      "lines": [
+        "Comments aren't shops. A link down there could lead anywhere."
+      ],
+      "file": "/audio/voice/847da84fd213ad3e.mp3"
+    },
+    {
+      "key": "059e94eef989e1f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which shop checked every parcel before the shelf?",
+      "lines": [
+        "Which shop checked every parcel before the shelf?"
+      ],
+      "file": "/audio/voice/059e94eef989e1f2.mp3"
+    },
+    {
+      "key": "de1a21217c899ea6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the real Moon Jump: the right name and a huge history.",
+      "lines": [
+        "That's the real Moon Jump: the right name and a huge history."
+      ],
+      "file": "/audio/voice/de1a21217c899ea6.mp3"
+    },
+    {
+      "key": "665528e28ddfb694",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A sequel from the same maker is a real app, not a copycat.",
+      "lines": [
+        "A sequel from the same maker is a real app, not a copycat."
+      ],
+      "file": "/audio/voice/665528e28ddfb694.mp3"
+    },
+    {
+      "key": "f6173e00fecdfda3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The maker and reviews looked fine, but a flashlight asking for your contacts and your microphone wants keys its job never needs. In the bin it goes.",
+      "lines": [
+        "The maker and reviews looked fine, but a flashlight asking for your contacts and your microphone wants keys its job never needs. In the bin it goes."
+      ],
+      "file": "/audio/voice/f6173e00fecdfda3.mp3"
+    },
+    {
+      "key": "8addf62b8b22603a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the keys side again. A flashlight's job is light. Contacts and a microphone are greedy keys, so this box goes in the bin.",
+      "lines": [
+        "Look at the keys side again. A flashlight's job is light. Contacts and a microphone are greedy keys, so this box goes in the bin."
+      ],
+      "file": "/audio/voice/8addf62b8b22603a.mp3"
+    },
+    {
+      "key": "c9e2916cda96d21b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A drawing app asking to save your drawings: every key fits its job, and the maker and reviews check out. That's a safe app.",
+      "lines": [
+        "A drawing app asking to save your drawings: every key fits its job, and the maker and reviews check out. That's a safe app."
+      ],
+      "file": "/audio/voice/c9e2916cda96d21b.mp3"
+    },
+    {
+      "key": "f4981bdcbfa0589b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check every side again. The maker is real, the reviews are happy, and saving drawings is a drawing app's job. This one is safe.",
+      "lines": [
+        "Check every side again. The maker is real, the reviews are happy, and saving drawings is a drawing app's job. This one is safe."
+      ],
+      "file": "/audio/voice/f4981bdcbfa0589b.mp3"
+    },
+    {
+      "key": "0208a0d8556b7d82",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An unknown maker from today, copied reviews, and a puzzle game that wants your location. Every side said bin it.",
+      "lines": [
+        "An unknown maker from today, copied reviews, and a puzzle game that wants your location. Every side said bin it."
+      ],
+      "file": "/audio/voice/0208a0d8556b7d82.mp3"
+    },
+    {
+      "key": "e2ca068cd5197e4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Turn to the maker side again: an unknown maker that only appeared today. And puzzles never need your location. Bin it.",
+      "lines": [
+        "Turn to the maker side again: an unknown maker that only appeared today. And puzzles never need your location. Bin it."
+      ],
+      "file": "/audio/voice/e2ca068cd5197e4c.mp3"
+    },
+    {
+      "key": "4c44e2f64a34e4b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Feeding a pretend pet needs taps and sounds. Your contacts and your microphone are greedy keys.",
+      "lines": [
+        "Feeding a pretend pet needs taps and sounds. Your contacts and your microphone are greedy keys."
+      ],
+      "file": "/audio/voice/4c44e2f64a34e4b2.mp3"
+    },
+    {
+      "key": "89ae1dbc1508881c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Does feeding a pretend kitten use your contacts?",
+      "lines": [
+        "Does feeding a pretend kitten use your contacts?"
+      ],
+      "file": "/audio/voice/89ae1dbc1508881c.mp3"
+    },
+    {
+      "key": "fd07cd623ec690c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even the extra life cost another ad. Ad after ad filled the time meter, so this FREE app gets paid with your time.",
+      "lines": [
+        "Even the extra life cost another ad. Ad after ad filled the time meter, so this FREE app gets paid with your time."
+      ],
+      "file": "/audio/voice/fd07cd623ec690c6.mp3"
+    },
+    {
+      "key": "a5aeceab57b36004",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the meters. Every ad, even the extra-life one, filled up the time meter. This app gets paid with your time.",
+      "lines": [
+        "Look at the meters. Every ad, even the extra-life one, filled up the time meter. This app gets paid with your time."
+      ],
+      "file": "/audio/voice/a5aeceab57b36004.mp3"
+    },
+    {
+      "key": "00767a655c3b77bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Locked levels and coin offers filled the coin meter. Free to start, but not free to play.",
+      "lines": [
+        "Locked levels and coin offers filled the coin meter. Free to start, but not free to play."
+      ],
+      "file": "/audio/voice/00767a655c3b77bc.mp3"
+    },
+    {
+      "key": "bf692d3f7009378d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check the meters. Locked levels and coin offers filled up the coin meter, so this app gets paid with coins.",
+      "lines": [
+        "Check the meters. Locked levels and coin offers filled up the coin meter, so this app gets paid with coins."
+      ],
+      "file": "/audio/voice/bf692d3f7009378d.mp3"
+    },
+    {
+      "key": "610f7e521515ca19",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Before the quiz even started, your name, your age and your school filled the info meter. Your info was the price.",
+      "lines": [
+        "Before the quiz even started, your name, your age and your school filled the info meter. Your info was the price."
+      ],
+      "file": "/audio/voice/610f7e521515ca19.mp3"
+    },
+    {
+      "key": "ae1c669865a75016",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at what the quiz asked for first: your name, your age and your school. That filled the info meter, so you'd pay with your info.",
+      "lines": [
+        "Look at what the quiz asked for first: your name, your age and your school. That filled the info meter, so you'd pay with your info."
+      ],
+      "file": "/audio/voice/ae1c669865a75016.mp3"
+    },
+    {
+      "key": "2b6c6d1607dcc9fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No ads, no coins and no questions about you. Every meter stayed empty, because the library already paid. This one is truly free.",
+      "lines": [
+        "No ads, no coins and no questions about you. Every meter stayed empty, because the library already paid. This one is truly free."
+      ],
+      "file": "/audio/voice/2b6c6d1607dcc9fa.mp3"
+    },
+    {
+      "key": "d11e3e69f3021715",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the meters. Story after story, every one stayed empty: no ads, no coins, no info. This one really is free.",
+      "lines": [
+        "Look at the meters. Story after story, every one stayed empty: no ads, no coins, no info. This one really is free."
+      ],
+      "file": "/audio/voice/d11e3e69f3021715.mp3"
+    },
+    {
+      "key": "2cd618b16ae09cf1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ads every minute are never nothing. Each one takes a piece of your time.",
+      "lines": [
+        "Ads every minute are never nothing. Each one takes a piece of your time."
+      ],
+      "file": "/audio/voice/2cd618b16ae09cf1.mp3"
+    },
+    {
+      "key": "95e404bdbd3e59fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ads don't take coins. They take minutes of your time.",
+      "lines": [
+        "Ads don't take coins. They take minutes of your time."
+      ],
+      "file": "/audio/voice/95e404bdbd3e59fd.mp3"
+    },
+    {
+      "key": "96e52210d5a2cf90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ads don't take your photos. They take your time and your attention.",
+      "lines": [
+        "Ads don't take your photos. They take your time and your attention."
+      ],
+      "file": "/audio/voice/96e52210d5a2cf90.mp3"
+    },
+    {
+      "key": "f986c3c113be7669",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What filled up on the meter while the ads played?",
+      "lines": [
+        "What filled up on the meter while the ads played?"
+      ],
+      "file": "/audio/voice/f986c3c113be7669.mp3"
+    },
+    {
+      "key": "13596674932f2ca6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your grown-up spotted an unknown new maker and a greedy key you couldn't see. Four eyes caught it, so you skipped it together.",
+      "lines": [
+        "Your grown-up spotted an unknown new maker and a greedy key you couldn't see. Four eyes caught it, so you skipped it together."
+      ],
+      "file": "/audio/voice/13596674932f2ca6.mp3"
+    },
+    {
+      "key": "268fde4e3d3de5e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at what your grown-up spotted: an unknown new maker and a greedy key. That's one to skip, together.",
+      "lines": [
+        "Look at what your grown-up spotted: an unknown new maker and a greedy key. That's one to skip, together."
+      ],
+      "file": "/audio/voice/268fde4e3d3de5e6.mp3"
+    },
+    {
+      "key": "3ee2ac4a3dbae645",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You both checked, and everything was fine: your real library, and no extra keys. So you installed it together.",
+      "lines": [
+        "You both checked, and everything was fine: your real library, and no extra keys. So you installed it together."
+      ],
+      "file": "/audio/voice/3ee2ac4a3dbae645.mp3"
+    },
+    {
+      "key": "591bdd0082712c30",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look again at what your grown-up found: your real library, and no extra keys. Checked together and fine means install together.",
+      "lines": [
+        "Look again at what your grown-up found: your real library, and no extra keys. Checked together and fine means install together."
+      ],
+      "file": "/audio/voice/591bdd0082712c30.mp3"
+    },
+    {
+      "key": "215fc4b489911133",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A coin shop with real-money packs was hiding inside. Your grown-up spotted it, so you skipped it together.",
+      "lines": [
+        "A coin shop with real-money packs was hiding inside. Your grown-up spotted it, so you skipped it together."
+      ],
+      "file": "/audio/voice/215fc4b489911133.mp3"
+    },
+    {
+      "key": "8b42fdc50baeef8c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That coin shop, with its real-money packs, means this one gets skipped, together.",
+      "lines": [
+        "That coin shop, with its real-money packs, means this one gets skipped, together."
+      ],
+      "file": "/audio/voice/8b42fdc50baeef8c.mp3"
+    },
+    {
+      "key": "154d5e858122ff9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A real maker, a key that fits the job, and the real shop. You both checked, so installing it together is fine.",
+      "lines": [
+        "A real maker, a key that fits the job, and the real shop. You both checked, so installing it together is fine."
+      ],
+      "file": "/audio/voice/154d5e858122ff9a.mp3"
+    },
+    {
+      "key": "0a33843ee6467962",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check what your grown-up found: a real maker, a fair key and the real shop. That's a safe one to install together.",
+      "lines": [
+        "Check what your grown-up found: a real maker, a fair key and the real shop. That's a safe one to install together."
+      ],
+      "file": "/audio/voice/0a33843ee6467962.mp3"
+    },
+    {
+      "key": "7a144638370843a7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where does a new app always come from first?",
+      "lines": [
+        "Where does a new app always come from first?"
+      ],
+      "file": "/audio/voice/7a144638370843a7.mp3"
+    },
+    {
+      "key": "00c0cc93276051d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Only the official app store checks apps before the shelf. A website button skips that check.",
+      "lines": [
+        "Only the official app store checks apps before the shelf. A website button skips that check."
+      ],
+      "file": "/audio/voice/00c0cc93276051d8.mp3"
+    },
+    {
+      "key": "032923d6aecabd97",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A number one where the l should be, and only nine downloads. Almost right is all wrong, so that's the copycat.",
+      "lines": [
+        "A number one where the l should be, and only nine downloads. Almost right is all wrong, so that's the copycat."
+      ],
+      "file": "/audio/voice/032923d6aecabd97.mp3"
+    },
+    {
+      "key": "f4c797e444acf068",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Playing sounds is exactly a music player's job. Your photos aren't, so that key stays locked.",
+      "lines": [
+        "Playing sounds is exactly a music player's job. Your photos aren't, so that key stays locked."
+      ],
+      "file": "/audio/voice/f4c797e444acf068.mp3"
+    },
+    {
+      "key": "73c6b8003fb7db9e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That shop inside means the game gets paid with coins, and coins cost real money. Free to start isn't free to play.",
+      "lines": [
+        "That shop inside means the game gets paid with coins, and coins cost real money. Free to start isn't free to play."
+      ],
+      "file": "/audio/voice/73c6b8003fb7db9e.mp3"
+    },
+    {
+      "key": "06ad7ddfc188f7d4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four eyes catch what two miss. Check it together, and if it's fine, install it together.",
+      "lines": [
+        "Four eyes catch what two miss. Check it together, and if it's fine, install it together."
+      ],
+      "file": "/audio/voice/06ad7ddfc188f7d4.mp3"
+    },
+    {
+      "key": "d7f1c0fb278a1a99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one came from the official app store, which checks every app first. It belongs on the real shop shelf.",
+      "lines": [
+        "This one came from the official app store, which checks every app first. It belongs on the real shop shelf."
+      ],
+      "file": "/audio/voice/d7f1c0fb278a1a99.mp3"
+    },
+    {
+      "key": "2483e26733384eac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look where it came from: a random website. Nobody checked that app, so it gets sent back.",
+      "lines": [
+        "Look where it came from: a random website. Nobody checked that app, so it gets sent back."
+      ],
+      "file": "/audio/voice/2483e26733384eac.mp3"
+    },
+    {
+      "key": "ed1a0e325341d0b5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pixel Pets came from the one shop that checks apps first. It belongs on the shelf.",
+      "lines": [
+        "Pixel Pets came from the one shop that checks apps first. It belongs on the shelf."
+      ],
+      "file": "/audio/voice/ed1a0e325341d0b5.mp3"
+    },
+    {
+      "key": "58dcbc39d8d7f5e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That parcel came from a pop-up, and nobody checked what's inside. Pop-ups aren't shops, so it goes back.",
+      "lines": [
+        "That parcel came from a pop-up, and nobody checked what's inside. Pop-ups aren't shops, so it goes back."
+      ],
+      "file": "/audio/voice/58dcbc39d8d7f5e7.mp3"
+    },
+    {
+      "key": "665eed8c3a809bca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school chose it, and the real shop checked it. That parcel belongs on the shelf.",
+      "lines": [
+        "Your school chose it, and the real shop checked it. That parcel belongs on the shelf."
+      ],
+      "file": "/audio/voice/665eed8c3a809bca.mp3"
+    },
+    {
+      "key": "2b33103605dd5472",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not in shops yet means no shop has checked it. A parcel from a forum goes back.",
+      "lines": [
+        "Not in shops yet means no shop has checked it. A parcel from a forum goes back."
+      ],
+      "file": "/audio/voice/2b33103605dd5472.mp3"
+    },
+    {
+      "key": "fc81577ea4022d6a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This update came from inside the real shop, where real updates live. It goes on the shelf.",
+      "lines": [
+        "This update came from inside the real shop, where real updates live. It goes on the shelf."
+      ],
+      "file": "/audio/voice/fc81577ea4022d6a.mp3"
+    },
+    {
+      "key": "7b681aa2f91f001b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That parcel came from a comment link. Nobody checked it, so it goes back.",
+      "lines": [
+        "That parcel came from a comment link. Nobody checked it, so it goes back."
+      ],
+      "file": "/audio/voice/7b681aa2f91f001b.mp3"
+    },
+    {
+      "key": "d680f081436ca0b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The official app store.",
+      "lines": [
+        "The official app store."
+      ],
+      "file": "/audio/voice/d680f081436ca0b3.mp3"
+    },
+    {
+      "key": "d6f33cca4e767038",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Faster isn't safer. Nobody checked the app behind that button.",
+      "lines": [
+        "Faster isn't safer. Nobody checked the app behind that button."
+      ],
+      "file": "/audio/voice/d6f33cca4e767038.mp3"
+    },
+    {
+      "key": "0fbc12237f2e8fef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A button can say anything. Only the official app store checks what's behind it.",
+      "lines": [
+        "A button can say anything. Only the official app store checks what's behind it."
+      ],
+      "file": "/audio/voice/0fbc12237f2e8fef.mp3"
+    },
+    {
+      "key": "6a47e59dc8bd0f1d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the copycat.",
+      "lines": [
+        "That's the copycat."
+      ],
+      "file": "/audio/voice/6a47e59dc8bd0f1d.mp3"
+    },
+    {
+      "key": "a7f6f4dae8ee7c5d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four million downloads and a maker spelled right is a real history. Look at the other maker's name.",
+      "lines": [
+        "Four million downloads and a maker spelled right is a real history. Look at the other maker's name."
+      ],
+      "file": "/audio/voice/a7f6f4dae8ee7c5d.mp3"
+    },
+    {
+      "key": "a07c9e3ab6f9ca52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The app names match, but check every piece. One maker has a number one where the l should be.",
+      "lines": [
+        "The app names match, but check every piece. One maker has a number one where the l should be."
+      ],
+      "file": "/audio/voice/a07c9e3ab6f9ca52.mp3"
+    },
+    {
+      "key": "f1c485933f0926ba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Playing sounds.",
+      "lines": [
+        "Playing sounds."
+      ],
+      "file": "/audio/voice/f1c485933f0926ba.mp3"
+    },
+    {
+      "key": "c90cec69c0304fa9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Songs play without anyone looking at your photos. That's a greedy key.",
+      "lines": [
+        "Songs play without anyone looking at your photos. That's a greedy key."
+      ],
+      "file": "/audio/voice/c90cec69c0304fa9.mp3"
+    },
+    {
+      "key": "b1f31f469f3b88b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Apps only need the keys their job uses. Your photos aren't part of playing music.",
+      "lines": [
+        "Apps only need the keys their job uses. Your photos aren't part of playing music."
+      ],
+      "file": "/audio/voice/b1f31f469f3b88b3.mp3"
+    },
+    {
+      "key": "e02b78e1391009b0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free to start, not free to play.",
+      "lines": [
+        "Free to start, not free to play."
+      ],
+      "file": "/audio/voice/e02b78e1391009b0.mp3"
+    },
+    {
+      "key": "c7f3bc3c18fd8077",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Apps always get paid somehow, and the shop inside is how this one gets paid.",
+      "lines": [
+        "Apps always get paid somehow, and the shop inside is how this one gets paid."
+      ],
+      "file": "/audio/voice/c7f3bc3c18fd8077.mp3"
+    },
+    {
+      "key": "f190eb8e676bc32b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Remember the Loot Shop? Game coins are bought with real money, every time.",
+      "lines": [
+        "Remember the Loot Shop? Game coins are bought with real money, every time."
+      ],
+      "file": "/audio/voice/f190eb8e676bc32b.mp3"
+    },
+    {
+      "key": "27de5cbdc63ce8fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check it together.",
+      "lines": [
+        "Check it together."
+      ],
+      "file": "/audio/voice/27de5cbdc63ce8fd.mp3"
+    },
+    {
+      "key": "6a5967f7b350d7ab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That glowing button isn't going anywhere. A quick check together keeps copycats and greedy keys out.",
+      "lines": [
+        "That glowing button isn't going anywhere. A quick check together keeps copycats and greedy keys out."
+      ],
+      "file": "/audio/voice/6a5967f7b350d7ab.mp3"
+    },
+    {
+      "key": "69e505b6eb04b780",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Later is too late for a greedy key. Check together before you install.",
+      "lines": [
+        "Later is too late for a greedy key. Check together before you install."
+      ],
+      "file": "/audio/voice/69e505b6eb04b780.mp3"
+    },
+    {
+      "key": "3e70baf59e6ba3a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
+      "lines": [
+        "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
+      ],
+      "file": "/audio/voice/3e70baf59e6ba3a2.mp3"
+    },
+    {
+      "key": "e490356aba4554f7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The app names match, but one maker's name ends in a z, and it only has 40 downloads. A copycat always misses a whisker somewhere, so check every piece, not just the name.",
+      "lines": [
+        "The app names match, but one maker's name ends in a z, and it only has 40 downloads. A copycat always misses a whisker somewhere, so check every piece, not just the name."
+      ],
+      "file": "/audio/voice/e490356aba4554f7.mp3"
+    },
+    {
+      "key": "97e2a094caffeae1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A calculator's job is doing sums. A microphone and contacts have nothing to do with that job, so those greedy keys get blocked.",
+      "lines": [
+        "A calculator's job is doing sums. A microphone and contacts have nothing to do with that job, so those greedy keys get blocked."
+      ],
+      "file": "/audio/voice/97e2a094caffeae1.mp3"
+    },
+    {
+      "key": "9bb07638d61f34e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Locked pictures that need coins mean this app gets paid through a coin shop, and coins cost real money. Colouring time is just fun, not a price.",
+      "lines": [
+        "Locked pictures that need coins mean this app gets paid through a coin shop, and coins cost real money. Colouring time is just fun, not a price."
+      ],
+      "file": "/audio/voice/9bb07638d61f34e9.mp3"
+    },
+    {
+      "key": "e146fa4b53555591",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
+      "lines": [
+        "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
+      ],
+      "file": "/audio/voice/e146fa4b53555591.mp3"
+    },
+    {
+      "key": "4558775413ff6336",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The official store checks apps before the shelf. Nowhere else does.",
+      "lines": [
+        "The official store checks apps before the shelf. Nowhere else does."
+      ],
+      "file": "/audio/voice/4558775413ff6336.mp3"
+    },
+    {
+      "key": "3c73141c9593f018",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A swapped letter and no history. The whiskers don't add up.",
+      "lines": [
+        "A swapped letter and no history. The whiskers don't add up."
+      ],
+      "file": "/audio/voice/3c73141c9593f018.mp3"
+    },
+    {
+      "key": "a7d3e314f439dc1d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four eyes catch what two miss.",
+      "lines": [
+        "Four eyes catch what two miss."
+      ],
+      "file": "/audio/voice/a7d3e314f439dc1d.mp3"
+    },
+    {
+      "key": "079b9426e29c6d7e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Job keys yes, greedy keys no. A light never needs your friends.",
+      "lines": [
+        "Job keys yes, greedy keys no. A light never needs your friends."
+      ],
+      "file": "/audio/voice/079b9426e29c6d7e.mp3"
+    },
+    {
+      "key": "40c983451d10448f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "FREE apps get paid another way, and ads sell your time.",
+      "lines": [
+        "FREE apps get paid another way, and ads sell your time."
+      ],
+      "file": "/audio/voice/40c983451d10448f.mp3"
+    },
+    {
+      "key": "c46a4ce2166e7e4d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Updates come from the app store itself, never from shouty pop-ups.",
+      "lines": [
+        "Updates come from the app store itself, never from shouty pop-ups."
+      ],
+      "file": "/audio/voice/c46a4ce2166e7e4d.mp3"
+    },
+    {
+      "key": "1d200b2c0c358680",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The icon IS the disguise, so you check the name, the maker and the downloads.",
+      "lines": [
+        "The icon IS the disguise, so you check the name, the maker and the downloads."
+      ],
+      "file": "/audio/voice/1d200b2c0c358680.mp3"
+    },
+    {
+      "key": "e4b1949976d0a05e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Copycats add FREE to real names to look tempting. The missing history gives them away.",
+      "lines": [
+        "Copycats add FREE to real names to look tempting. The missing history gives them away."
+      ],
+      "file": "/audio/voice/e4b1949976d0a05e.mp3"
+    },
+    {
+      "key": "5ee9e4517cbe1a5d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every check is stronger with a second checker. That's the whole trick.",
+      "lines": [
+        "Every check is stronger with a second checker. That's the whole trick."
+      ],
+      "file": "/audio/voice/5ee9e4517cbe1a5d.mp3"
+    },
+    {
+      "key": "0e5914c26d205b0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A parcel from the official app store: Blast Birds.",
+      "lines": [
+        "A parcel from the official app store: Blast Birds."
+      ],
+      "file": "/audio/voice/0e5914c26d205b0e.mp3"
+    },
+    {
+      "key": "37d9fad82cc82117",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A parcel from a website called freegames four u: FREE Blast Birds.",
+      "lines": [
+        "A parcel from a website called freegames four u: FREE Blast Birds."
+      ],
+      "file": "/audio/voice/37d9fad82cc82117.mp3"
+    },
+    {
+      "key": "d3c59be13467ddb0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A parcel from the official app store: Pixel Pets.",
+      "lines": [
+        "A parcel from the official app store: Pixel Pets."
+      ],
+      "file": "/audio/voice/d3c59be13467ddb0.mp3"
+    },
+    {
+      "key": "53fd82cd8f8f1be3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A parcel from a pop-up that says: download the game here, it's faster!",
+      "lines": [
+        "A parcel from a pop-up that says: download the game here, it's faster!"
+      ],
+      "file": "/audio/voice/53fd82cd8f8f1be3.mp3"
+    },
+    {
+      "key": "f4121e4388705dd1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A parcel from the official app store: the reading app your school picked.",
+      "lines": [
+        "A parcel from the official app store: the reading app your school picked."
+      ],
+      "file": "/audio/voice/f4121e4388705dd1.mp3"
+    },
+    {
+      "key": "ace3084debadc0b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A parcel from a forum that says: get it early, it's not in shops yet!",
+      "lines": [
+        "A parcel from a forum that says: get it early, it's not in shops yet!"
+      ],
+      "file": "/audio/voice/ace3084debadc0b4.mp3"
+    },
+    {
+      "key": "5fe49174a4015a96",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A parcel from inside the official app store: an update for your game.",
+      "lines": [
+        "A parcel from inside the official app store: an update for your game."
+      ],
+      "file": "/audio/voice/5fe49174a4015a96.mp3"
+    },
+    {
+      "key": "3c6bfc79075412ee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A parcel from a link in a video's comments.",
+      "lines": [
+        "A parcel from a link in a video's comments."
+      ],
+      "file": "/audio/voice/3c6bfc79075412ee.mp3"
+    },
+    {
+      "key": "2dd509120516e79e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The real Blast Birds is on top. Check the Blast Birds underneath: its name, its maker and its downloads, piece by piece.",
+      "lines": [
+        "The real Blast Birds is on top. Check the Blast Birds underneath: its name, its maker and its downloads, piece by piece."
+      ],
+      "file": "/audio/voice/2dd509120516e79e.mp3"
+    },
+    {
+      "key": "87ffa7aff83cdd94",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pixel Pets, on both cards this time. Check the one underneath against the one on top, piece by piece.",
+      "lines": [
+        "Pixel Pets, on both cards this time. Check the one underneath against the one on top, piece by piece."
+      ],
+      "file": "/audio/voice/87ffa7aff83cdd94.mp3"
+    },
+    {
+      "key": "dbf571a1a7938a8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The real Robo Racers is on top. Check the Robo Racers underneath, piece by piece. Look very closely.",
+      "lines": [
+        "The real Robo Racers is on top. Check the Robo Racers underneath, piece by piece. Look very closely."
+      ],
+      "file": "/audio/voice/dbf571a1a7938a8f.mp3"
+    },
+    {
+      "key": "2b4a9f31cf7ab97c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Torchy Light, the flashlight app. Check its name, its maker and its downloads against the real one, all the way to the last letter.",
+      "lines": [
+        "Torchy Light, the flashlight app. Check its name, its maker and its downloads against the real one, all the way to the last letter."
+      ],
+      "file": "/audio/voice/2b4a9f31cf7ab97c.mp3"
+    },
+    {
+      "key": "01e036f1df2ad1ba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A z for an s, and only twelve downloads. Two swaps, so this Blast Birds is a copycat.",
+      "lines": [
+        "A z for an s, and only twelve downloads. Two swaps, so this Blast Birds is a copycat."
+      ],
+      "file": "/audio/voice/01e036f1df2ad1ba.mp3"
+    },
+    {
+      "key": "8945b13b044a537b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every piece matches the real Pixel Pets, letter for letter. No swaps, so this one is the real app.",
+      "lines": [
+        "Every piece matches the real Pixel Pets, letter for letter. No swaps, so this one is the real app."
+      ],
+      "file": "/audio/voice/8945b13b044a537b.mp3"
+    },
+    {
+      "key": "4d57ef5d88752758",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One sneaky zero hiding in the name. One swap is enough, so this Robo Racers is a copycat.",
+      "lines": [
+        "One sneaky zero hiding in the name. One swap is enough, so this Robo Racers is a copycat."
+      ],
+      "file": "/audio/voice/4d57ef5d88752758.mp3"
+    },
+    {
+      "key": "fca491eeca39a78a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The name looked perfect, but the maker's name is missing a letter. Copycats hide in the small print too.",
+      "lines": [
+        "The name looked perfect, but the maker's name is missing a letter. Copycats hide in the small print too."
+      ],
+      "file": "/audio/voice/fca491eeca39a78a.mp3"
+    },
+    {
+      "key": "5cc47b3ab0b84379",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the last letter of the name. Birdz with a z is not Blast Birds. That's a swap.",
+      "lines": [
+        "Look at the last letter of the name. Birdz with a z is not Blast Birds. That's a swap."
+      ],
+      "file": "/audio/voice/5cc47b3ab0b84379.mp3"
+    },
+    {
+      "key": "8da92b54aa95742c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The maker's name matches the real one exactly. That piece checks out, so leave it clean.",
+      "lines": [
+        "The maker's name matches the real one exactly. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/8da92b54aa95742c.mp3"
+    },
+    {
+      "key": "83e6af8e2f2ec452",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Twelve downloads is not five million. A real hit has a history. That's a swap.",
+      "lines": [
+        "Twelve downloads is not five million. A real hit has a history. That's a swap."
+      ],
+      "file": "/audio/voice/83e6af8e2f2ec452.mp3"
+    },
+    {
+      "key": "497fdba450a67f1a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The name matches the real Pixel Pets letter for letter. That piece checks out, so leave it clean.",
+      "lines": [
+        "The name matches the real Pixel Pets letter for letter. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/497fdba450a67f1a.mp3"
+    },
+    {
+      "key": "b187287f0bc20fbf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Brightbox Studio is spelled exactly like the real maker. That piece checks out, so leave it clean.",
+      "lines": [
+        "Brightbox Studio is spelled exactly like the real maker. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/b187287f0bc20fbf.mp3"
+    },
+    {
+      "key": "ace4c1e6fabeb375",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Eight million downloads matches the real history. That piece checks out, so leave it clean.",
+      "lines": [
+        "Eight million downloads matches the real history. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/ace4c1e6fabeb375.mp3"
+    },
+    {
+      "key": "d76a23de1936e661",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look closely at the first o in the name. It's a zero! That's a swap.",
+      "lines": [
+        "Look closely at the first o in the name. It's a zero! That's a swap."
+      ],
+      "file": "/audio/voice/d76a23de1936e661.mp3"
+    },
+    {
+      "key": "c44ec77e7991e7d0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Zoomtrack matches the real maker exactly. That piece checks out, so leave it clean.",
+      "lines": [
+        "Zoomtrack matches the real maker exactly. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/c44ec77e7991e7d0.mp3"
+    },
+    {
+      "key": "fde2bc6000ec85fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Twelve million downloads matches the real history. That piece checks out, so leave it clean.",
+      "lines": [
+        "Twelve million downloads matches the real history. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/fde2bc6000ec85fa.mp3"
+    },
+    {
+      "key": "abc1b5e0a95bacda",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The name matches the real Torchy Light exactly. That piece checks out, so leave it clean.",
+      "lines": [
+        "The name matches the real Torchy Light exactly. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/abc1b5e0a95bacda.mp3"
+    },
+    {
+      "key": "e312cea1d912a6ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the end of the maker's name. Beacon App is missing its s. That's a swap.",
+      "lines": [
+        "Look at the end of the maker's name. Beacon App is missing its s. That's a swap."
+      ],
+      "file": "/audio/voice/e312cea1d912a6ac.mp3"
+    },
+    {
+      "key": "1c54511d56397d89",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three million downloads matches the real history. That piece checks out, so leave it clean.",
+      "lines": [
+        "Three million downloads matches the real history. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/1c54511d56397d89.mp3"
+    },
+    {
+      "key": "2a12634fe98f2c9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here comes Torchy Light, the brightest light app. Turn the box and read every side.",
+      "lines": [
+        "Here comes Torchy Light, the brightest light app. Turn the box and read every side."
+      ],
+      "file": "/audio/voice/2a12634fe98f2c9a.mp3"
+    },
+    {
+      "key": "41e8928c439bc9b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The maker side: made by Beacon Apps, with three million downloads.",
+      "lines": [
+        "The maker side: made by Beacon Apps, with three million downloads."
+      ],
+      "file": "/audio/voice/41e8928c439bc9b3.mp3"
+    },
+    {
+      "key": "1484fe87be904e63",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The reviews side: bright and simple, four point seven stars.",
+      "lines": [
+        "The reviews side: bright and simple, four point seven stars."
+      ],
+      "file": "/audio/voice/1484fe87be904e63.mp3"
+    },
+    {
+      "key": "e235153d5d21c740",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The keys side: use the light, see your contacts, and use your microphone.",
+      "lines": [
+        "The keys side: use the light, see your contacts, and use your microphone."
+      ],
+      "file": "/audio/voice/e235153d5d21c740.mp3"
+    },
+    {
+      "key": "56f3fceadb6c823d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here comes Doodle Pad: draw, colour and save your art. Turn the box and read every side.",
+      "lines": [
+        "Here comes Doodle Pad: draw, colour and save your art. Turn the box and read every side."
+      ],
+      "file": "/audio/voice/56f3fceadb6c823d.mp3"
+    },
+    {
+      "key": "f8da616407cca9a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The maker side: made by Brightbox Studio, with eight million downloads.",
+      "lines": [
+        "The maker side: made by Brightbox Studio, with eight million downloads."
+      ],
+      "file": "/audio/voice/f8da616407cca9a0.mp3"
+    },
+    {
+      "key": "8b85b4733e63a05b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The reviews side: my kids love the colours, four point eight stars.",
+      "lines": [
+        "The reviews side: my kids love the colours, four point eight stars."
+      ],
+      "file": "/audio/voice/8b85b4733e63a05b.mp3"
+    },
+    {
+      "key": "bf24f3392c835ad2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The keys side: save your drawings, and use the touch screen.",
+      "lines": [
+        "The keys side: save your drawings, and use the touch screen."
+      ],
+      "file": "/audio/voice/bf24f3392c835ad2.mp3"
+    },
+    {
+      "key": "bbf3bf92b5cb42f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here comes Puzzle Planet: a thousand puzzles, free. Turn the box and read every side.",
+      "lines": [
+        "Here comes Puzzle Planet: a thousand puzzles, free. Turn the box and read every side."
+      ],
+      "file": "/audio/voice/bbf3bf92b5cb42f2.mp3"
+    },
+    {
+      "key": "8cbe47d68a2384a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The maker side: made by Unknown Dev four four one two, and it only appeared today.",
+      "lines": [
+        "The maker side: made by Unknown Dev four four one two, and it only appeared today."
+      ],
+      "file": "/audio/voice/8cbe47d68a2384a0.mp3"
+    },
+    {
+      "key": "c6c9decfcda75e17",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The reviews side: only three reviews, and they all use the same words.",
+      "lines": [
+        "The reviews side: only three reviews, and they all use the same words."
+      ],
+      "file": "/audio/voice/c6c9decfcda75e17.mp3"
+    },
+    {
+      "key": "38e75d669f52474f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The keys side: play sounds, and know where you are.",
+      "lines": [
+        "The keys side: play sounds, and know where you are."
+      ],
+      "file": "/audio/voice/38e75d669f52474f.mp3"
+    },
+    {
+      "key": "8900199fc27a3f0f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bubble Pop Party, and it's FREE! Play it one minute at a time, and watch the meters.",
+      "lines": [
+        "Bubble Pop Party, and it's FREE! Play it one minute at a time, and watch the meters."
+      ],
+      "file": "/audio/voice/8900199fc27a3f0f.mp3"
+    },
+    {
+      "key": "af9984bea719604f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute one: pop, pop, pop! So much fun.",
+      "lines": [
+        "Minute one: pop, pop, pop! So much fun."
+      ],
+      "file": "/audio/voice/af9984bea719604f.mp3"
+    },
+    {
+      "key": "1d598a271822912c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute two: an ad. Thirty seconds of waiting.",
+      "lines": [
+        "Minute two: an ad. Thirty seconds of waiting."
+      ],
+      "file": "/audio/voice/1d598a271822912c.mp3"
+    },
+    {
+      "key": "8778286614bf489a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute three: another ad. Thirty more seconds.",
+      "lines": [
+        "Minute three: another ad. Thirty more seconds."
+      ],
+      "file": "/audio/voice/8778286614bf489a.mp3"
+    },
+    {
+      "key": "8115e18c33639de9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute four: watch one more ad for an extra life?",
+      "lines": [
+        "Minute four: watch one more ad for an extra life?"
+      ],
+      "file": "/audio/voice/8115e18c33639de9.mp3"
+    },
+    {
+      "key": "cd6a1f233cfd30b7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Rocket Dash, and it's FREE too! Play it one minute at a time, and watch the meters.",
+      "lines": [
+        "Rocket Dash, and it's FREE too! Play it one minute at a time, and watch the meters."
+      ],
+      "file": "/audio/voice/cd6a1f233cfd30b7.mp3"
+    },
+    {
+      "key": "641cd2cb7228cc48",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute one: zoom through the stars!",
+      "lines": [
+        "Minute one: zoom through the stars!"
+      ],
+      "file": "/audio/voice/641cd2cb7228cc48.mp3"
+    },
+    {
+      "key": "595512b86fb8fecc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute two: level two is locked. It costs five hundred coins.",
+      "lines": [
+        "Minute two: level two is locked. It costs five hundred coins."
+      ],
+      "file": "/audio/voice/595512b86fb8fecc.mp3"
+    },
+    {
+      "key": "a01d7b1a9cc6a69e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute three: buy five hundred coins with real money?",
+      "lines": [
+        "Minute three: buy five hundred coins with real money?"
+      ],
+      "file": "/audio/voice/a01d7b1a9cc6a69e.mp3"
+    },
+    {
+      "key": "47504b3a73eeb910",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute four: a special offer, a bigger coin pack!",
+      "lines": [
+        "Minute four: a special offer, a bigger coin pack!"
+      ],
+      "file": "/audio/voice/47504b3a73eeb910.mp3"
+    },
+    {
+      "key": "d9ed53fcbccb3b15",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quiz Buddy, FREE as well. Play it one minute at a time, and watch the meters.",
+      "lines": [
+        "Quiz Buddy, FREE as well. Play it one minute at a time, and watch the meters."
+      ],
+      "file": "/audio/voice/d9ed53fcbccb3b15.mp3"
+    },
+    {
+      "key": "a51f208a8da54087",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute one: before you play, what's your full name?",
+      "lines": [
+        "Minute one: before you play, what's your full name?"
+      ],
+      "file": "/audio/voice/a51f208a8da54087.mp3"
+    },
+    {
+      "key": "e6f4a85ce7b5ddc6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute two: how old are you?",
+      "lines": [
+        "Minute two: how old are you?"
+      ],
+      "file": "/audio/voice/e6f4a85ce7b5ddc6.mp3"
+    },
+    {
+      "key": "4c444b7c7b056a5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute three: which school do you go to?",
+      "lines": [
+        "Minute three: which school do you go to?"
+      ],
+      "file": "/audio/voice/4c444b7c7b056a5a.mp3"
+    },
+    {
+      "key": "006b1a61670db8f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute four: quiz time, question one.",
+      "lines": [
+        "Minute four: quiz time, question one."
+      ],
+      "file": "/audio/voice/006b1a61670db8f1.mp3"
+    },
+    {
+      "key": "999c0f940ec9f869",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Story Library, and it says FREE. Play it one minute at a time, and watch the meters.",
+      "lines": [
+        "Story Library, and it says FREE. Play it one minute at a time, and watch the meters."
+      ],
+      "file": "/audio/voice/999c0f940ec9f869.mp3"
+    },
+    {
+      "key": "f1bfc5a826cdd4d1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute one: a new story to read!",
+      "lines": [
+        "Minute one: a new story to read!"
+      ],
+      "file": "/audio/voice/f1bfc5a826cdd4d1.mp3"
+    },
+    {
+      "key": "f39d80c1564e50db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute two: no ads, just the next chapter.",
+      "lines": [
+        "Minute two: no ads, just the next chapter."
+      ],
+      "file": "/audio/voice/f39d80c1564e50db.mp3"
+    },
+    {
+      "key": "6fa3000f380e72d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute three: borrow a book, no coins needed.",
+      "lines": [
+        "Minute three: borrow a book, no coins needed."
+      ],
+      "file": "/audio/voice/6fa3000f380e72d8.mp3"
+    },
+    {
+      "key": "ab0ce56cd8c36806",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Minute four: the end, pick your next story.",
+      "lines": [
+        "Minute four: the end, pick your next story."
+      ],
+      "file": "/audio/voice/ab0ce56cd8c36806.mp3"
+    },
+    {
+      "key": "e36026c8c4747386",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Doodle Star: draw anything, with a hundred colours and magic brushes. Before you tap GET, call your grown-up.",
+      "lines": [
+        "Doodle Star: draw anything, with a hundred colours and magic brushes. Before you tap GET, call your grown-up."
+      ],
+      "file": "/audio/voice/e36026c8c4747386.mp3"
+    },
+    {
+      "key": "fd18d2caf457996e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your grown-up spots the maker: Unknown Dev four four one two, and it only appeared today.",
+      "lines": [
+        "Your grown-up spots the maker: Unknown Dev four four one two, and it only appeared today."
+      ],
+      "file": "/audio/voice/fd18d2caf457996e.mp3"
+    },
+    {
+      "key": "a1aff56c99ba05dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They spot a key it wants: your contacts. A drawing app doesn't need those.",
+      "lines": [
+        "They spot a key it wants: your contacts. A drawing app doesn't need those."
+      ],
+      "file": "/audio/voice/a1aff56c99ba05dd.mp3"
+    },
+    {
+      "key": "faebd2b578e00494",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Story Time: a new story every day, read along, and no ads. Call your grown-up to check it with you.",
+      "lines": [
+        "Story Time: a new story every day, read along, and no ads. Call your grown-up to check it with you."
+      ],
+      "file": "/audio/voice/faebd2b578e00494.mp3"
+    },
+    {
+      "key": "45bf02e43fbef25f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your grown-up checks the maker: it's your own town library.",
+      "lines": [
+        "Your grown-up checks the maker: it's your own town library."
+      ],
+      "file": "/audio/voice/45bf02e43fbef25f.mp3"
+    },
+    {
+      "key": "33e63ef694e7b4a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They check the keys: it doesn't ask for anything extra.",
+      "lines": [
+        "They check the keys: it doesn't ask for anything extra."
+      ],
+      "file": "/audio/voice/33e63ef694e7b4a1.mp3"
+    },
+    {
+      "key": "8ef012883c18dd18",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Star Racer: race to the stars, free to play, with ten rockets. Call your grown-up before you tap GET.",
+      "lines": [
+        "Star Racer: race to the stars, free to play, with ten rockets. Call your grown-up before you tap GET."
+      ],
+      "file": "/audio/voice/8ef012883c18dd18.mp3"
+    },
+    {
+      "key": "be2cee95624ed637",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your grown-up spots a coin shop inside, with packs that cost real money.",
+      "lines": [
+        "Your grown-up spots a coin shop inside, with packs that cost real money."
+      ],
+      "file": "/audio/voice/be2cee95624ed637.mp3"
+    },
+    {
+      "key": "a48a3002a1015b07",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Puzzle Town: hundreds of puzzles, easy to hard, and you can play offline. Call your grown-up to check it with you.",
+      "lines": [
+        "Puzzle Town: hundreds of puzzles, easy to hard, and you can play offline. Call your grown-up to check it with you."
+      ],
+      "file": "/audio/voice/a48a3002a1015b07.mp3"
+    },
+    {
+      "key": "514d0ec201e5e899",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your grown-up checks the maker: Brightbox Studio, with eight million downloads.",
+      "lines": [
+        "Your grown-up checks the maker: Brightbox Studio, with eight million downloads."
+      ],
+      "file": "/audio/voice/514d0ec201e5e899.mp3"
+    },
+    {
+      "key": "07d4749e8295b6cc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They check the keys: it only wants to play sounds.",
+      "lines": [
+        "They check the keys: it only wants to play sounds."
+      ],
+      "file": "/audio/voice/07d4749e8295b6cc.mp3"
+    },
+    {
+      "key": "576b160bfbee9ace",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And they check the shop: it's in the official app store.",
+      "lines": [
+        "And they check the shop: it's in the official app store."
+      ],
+      "file": "/audio/voice/576b160bfbee9ace.mp3"
+    },
+    {
+      "key": "b9f02cbe34aece01",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A game website shows a big download now button for Pixel Pets. Where should you get Pixel Pets?",
+      "lines": [
+        "A game website shows a big download now button for Pixel Pets. Where should you get Pixel Pets?"
+      ],
+      "file": "/audio/voice/b9f02cbe34aece01.mp3"
+    },
+    {
+      "key": "631f4dc7eaafb814",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two apps called Moon Jump. Look closely at who made each one, and how many downloads they have. Which one is the copycat?",
+      "lines": [
+        "Two apps called Moon Jump. Look closely at who made each one, and how many downloads they have. Which one is the copycat?"
+      ],
+      "file": "/audio/voice/631f4dc7eaafb814.mp3"
+    },
+    {
+      "key": "4b12e727107252dc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A music player app asks to play sounds, and to see your photos. Which key does its job need?",
+      "lines": [
+        "A music player app asks to play sounds, and to see your photos. Which key does its job need?"
+      ],
+      "file": "/audio/voice/4b12e727107252dc.mp3"
+    },
+    {
+      "key": "ef69ad2adeb5cefe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend says a game is FREE, so it can't cost anything. But it has a coin shop inside. What's true?",
+      "lines": [
+        "Your friend says a game is FREE, so it can't cost anything. But it has a coin shop inside. What's true?"
+      ],
+      "file": "/audio/voice/ef69ad2adeb5cefe.mp3"
+    },
+    {
+      "key": "6b6cbfac811266e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You found a brilliant new app, and the get button is glowing. What's the hero move?",
+      "lines": [
+        "You found a brilliant new app, and the get button is glowing. What's the hero move?"
+      ],
+      "file": "/audio/voice/6b6cbfac811266e7.mp3"
     },
     {
       "key": "15bfea59642cb624",
@@ -27946,70 +29799,862 @@
       "file": "/audio/voice/1b6e10ff22bdbb4a.mp3"
     },
     {
-      "key": "20aedf92f3a5e38f",
+      "key": "e877b8719efb1345",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. It was a copycat - ads everywhere, and it wanted your photos. A ten-second check with a grown-up would have caught the whiskers.",
-      "lines": [
-        "Not quite.",
-        "It was a copycat - ads everywhere, and it wanted your photos. A ten-second check with a grown-up would have caught the whiskers."
-      ],
-      "file": "/audio/voice/20aedf92f3a5e38f.mp3"
-    },
-    {
-      "key": "b70c453dc8677a93",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Handshake! She spotted the copycat in ten seconds and found the REAL one - clean, safe, just as fun. That's teamwork.",
+      "text": "That's right! The official store checked Blast Birds before the shelf, so on the shelf it goes.",
       "lines": [
         "That's right!",
-        "Handshake! She spotted the copycat in ten seconds and found the REAL one - clean, safe, just as fun. That's teamwork."
+        "The official store checked Blast Birds before the shelf, so on the shelf it goes."
       ],
-      "file": "/audio/voice/b70c453dc8677a93.mp3"
+      "file": "/audio/voice/e877b8719efb1345.mp3"
     },
     {
-      "key": "f9c5735ab1338822",
+      "key": "72bb1d6e24c73a09",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. You installed it alone - and missed the coin shop hiding inside. A week later your coins were gone. Asking isn't babyish - it's how you keep your stuff.",
+      "text": "Not quite. This one came from the official app store, which checks every app first. It belongs on the real shop shelf.",
       "lines": [
         "Not quite.",
-        "You installed it alone - and missed the coin shop hiding inside. A week later your coins were gone. Asking isn't babyish - it's how you keep your stuff."
+        "This one came from the official app store, which checks every app first. It belongs on the real shop shelf."
       ],
-      "file": "/audio/voice/f9c5735ab1338822.mp3"
+      "file": "/audio/voice/72bb1d6e24c73a09.mp3"
     },
     {
-      "key": "f98979a49670ffd1",
+      "key": "25e94bbe50760f26",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Exactly. Even grown-ups double-check with each other. Four eyes beat two - every single time.",
+      "text": "That's right! A random website checks nothing, and that FREE game is bait. Back it goes.",
       "lines": [
         "That's right!",
-        "Exactly. Even grown-ups double-check with each other. Four eyes beat two - every single time."
+        "A random website checks nothing, and that FREE game is bait. Back it goes."
       ],
-      "file": "/audio/voice/f98979a49670ffd1.mp3"
+      "file": "/audio/voice/25e94bbe50760f26.mp3"
     },
     {
-      "key": "d9990e367ca37018",
+      "key": "9075f359ccf80558",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. That wasn't an update - it was a fake in an update costume. Real updates only ever come from inside the real store.",
+      "text": "Not quite. Look where it came from: a random website. Nobody checked that app, so it gets sent back.",
       "lines": [
         "Not quite.",
-        "That wasn't an update - it was a fake in an update costume. Real updates only ever come from inside the real store."
+        "Look where it came from: a random website. Nobody checked that app, so it gets sent back."
       ],
-      "file": "/audio/voice/d9990e367ca37018.mp3"
+      "file": "/audio/voice/9075f359ccf80558.mp3"
     },
     {
-      "key": "c0d88da9f8ebbe6f",
+      "key": "b0c2d1e418d1244a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Sharp! Real updates come from the app store itself, never from shouty pop-ups. Closed, checked, safe.",
+      "text": "That's right! Official store, checked before the shelf. Pixel Pets goes on the shelf.",
       "lines": [
         "That's right!",
-        "Sharp! Real updates come from the app store itself, never from shouty pop-ups. Closed, checked, safe."
+        "Official store, checked before the shelf. Pixel Pets goes on the shelf."
       ],
-      "file": "/audio/voice/c0d88da9f8ebbe6f.mp3"
+      "file": "/audio/voice/b0c2d1e418d1244a.mp3"
+    },
+    {
+      "key": "a884bc941ae061cd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Pixel Pets came from the one shop that checks apps first. It belongs on the shelf.",
+      "lines": [
+        "Not quite.",
+        "Pixel Pets came from the one shop that checks apps first. It belongs on the shelf."
+      ],
+      "file": "/audio/voice/a884bc941ae061cd.mp3"
+    },
+    {
+      "key": "b95b878da8c64c8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Pop-up download buttons are traps. The real shop never pops up, so send it back.",
+      "lines": [
+        "That's right!",
+        "Pop-up download buttons are traps. The real shop never pops up, so send it back."
+      ],
+      "file": "/audio/voice/b95b878da8c64c8f.mp3"
+    },
+    {
+      "key": "7e0daf2541087b7c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That parcel came from a pop-up, and nobody checked what's inside. Pop-ups aren't shops, so it goes back.",
+      "lines": [
+        "Not quite.",
+        "That parcel came from a pop-up, and nobody checked what's inside. Pop-ups aren't shops, so it goes back."
+      ],
+      "file": "/audio/voice/7e0daf2541087b7c.mp3"
+    },
+    {
+      "key": "fc41fec6231a24d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! School picked it, and the real shop checked it. Double checked, so it goes on the shelf.",
+      "lines": [
+        "That's right!",
+        "School picked it, and the real shop checked it. Double checked, so it goes on the shelf."
+      ],
+      "file": "/audio/voice/fc41fec6231a24d3.mp3"
+    },
+    {
+      "key": "ebda15c84be0a2d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your school chose it, and the real shop checked it. That parcel belongs on the shelf.",
+      "lines": [
+        "Not quite.",
+        "Your school chose it, and the real shop checked it. That parcel belongs on the shelf."
+      ],
+      "file": "/audio/voice/ebda15c84be0a2d8.mp3"
+    },
+    {
+      "key": "d396c22c40980784",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Not in shops yet means nobody has checked it yet. Send it back.",
+      "lines": [
+        "That's right!",
+        "Not in shops yet means nobody has checked it yet. Send it back."
+      ],
+      "file": "/audio/voice/d396c22c40980784.mp3"
+    },
+    {
+      "key": "932ba27317b2ba51",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Not in shops yet means no shop has checked it. A parcel from a forum goes back.",
+      "lines": [
+        "Not quite.",
+        "Not in shops yet means no shop has checked it. A parcel from a forum goes back."
+      ],
+      "file": "/audio/voice/932ba27317b2ba51.mp3"
+    },
+    {
+      "key": "6de0c500709be875",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Real updates live inside the real shop, so on the shelf it goes.",
+      "lines": [
+        "That's right!",
+        "Real updates live inside the real shop, so on the shelf it goes."
+      ],
+      "file": "/audio/voice/6de0c500709be875.mp3"
+    },
+    {
+      "key": "c4734dc22b6d7d0b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This update came from inside the real shop, where real updates live. It goes on the shelf.",
+      "lines": [
+        "Not quite.",
+        "This update came from inside the real shop, where real updates live. It goes on the shelf."
+      ],
+      "file": "/audio/voice/c4734dc22b6d7d0b.mp3"
+    },
+    {
+      "key": "43f0bc9943058114",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A link down in the comments is a stranger's parcel. Nobody checked it, so send it back.",
+      "lines": [
+        "That's right!",
+        "A link down in the comments is a stranger's parcel. Nobody checked it, so send it back."
+      ],
+      "file": "/audio/voice/43f0bc9943058114.mp3"
+    },
+    {
+      "key": "4487ecf6f42fcc2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That parcel came from a comment link. Nobody checked it, so it goes back.",
+      "lines": [
+        "Not quite.",
+        "That parcel came from a comment link. Nobody checked it, so it goes back."
+      ],
+      "file": "/audio/voice/4487ecf6f42fcc2a.mp3"
+    },
+    {
+      "key": "683848991e63da11",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Pop-ups aren't shops. Nobody checked what's behind that button.",
+      "lines": [
+        "Not quite.",
+        "Pop-ups aren't shops. Nobody checked what's behind that button."
+      ],
+      "file": "/audio/voice/683848991e63da11.mp3"
+    },
+    {
+      "key": "e00236738aa37424",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Websites don't check apps. The official app store does.",
+      "lines": [
+        "Not quite.",
+        "Websites don't check apps. The official app store does."
+      ],
+      "file": "/audio/voice/e00236738aa37424.mp3"
+    },
+    {
+      "key": "feb274e3e2f30c04",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Comments aren't shops. A link down there could lead anywhere.",
+      "lines": [
+        "Not quite.",
+        "Comments aren't shops. A link down there could lead anywhere."
+      ],
+      "file": "/audio/voice/feb274e3e2f30c04.mp3"
+    },
+    {
+      "key": "16f0ef0ecfb2877f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A z for an s, and only twelve downloads. Two swaps, so this Blast Birds is a copycat.",
+      "lines": [
+        "That's right!",
+        "A z for an s, and only twelve downloads. Two swaps, so this Blast Birds is a copycat."
+      ],
+      "file": "/audio/voice/16f0ef0ecfb2877f.mp3"
+    },
+    {
+      "key": "170c9f462407a16f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the last letter of the name. Birdz with a z is not Blast Birds. That's a swap.",
+      "lines": [
+        "Not quite.",
+        "Look at the last letter of the name. Birdz with a z is not Blast Birds. That's a swap."
+      ],
+      "file": "/audio/voice/170c9f462407a16f.mp3"
+    },
+    {
+      "key": "3da1dfcd900d4a77",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The maker's name matches the real one exactly. That piece checks out, so leave it clean.",
+      "lines": [
+        "Not quite.",
+        "The maker's name matches the real one exactly. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/3da1dfcd900d4a77.mp3"
+    },
+    {
+      "key": "46eac8e8619b5298",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Twelve downloads is not five million. A real hit has a history. That's a swap.",
+      "lines": [
+        "Not quite.",
+        "Twelve downloads is not five million. A real hit has a history. That's a swap."
+      ],
+      "file": "/audio/voice/46eac8e8619b5298.mp3"
+    },
+    {
+      "key": "df489885d0b67074",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every piece matches the real Pixel Pets, letter for letter. No swaps, so this one is the real app.",
+      "lines": [
+        "That's right!",
+        "Every piece matches the real Pixel Pets, letter for letter. No swaps, so this one is the real app."
+      ],
+      "file": "/audio/voice/df489885d0b67074.mp3"
+    },
+    {
+      "key": "7d6d307106149e30",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The name matches the real Pixel Pets letter for letter. That piece checks out, so leave it clean.",
+      "lines": [
+        "Not quite.",
+        "The name matches the real Pixel Pets letter for letter. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/7d6d307106149e30.mp3"
+    },
+    {
+      "key": "976f486adaf41ba4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Brightbox Studio is spelled exactly like the real maker. That piece checks out, so leave it clean.",
+      "lines": [
+        "Not quite.",
+        "Brightbox Studio is spelled exactly like the real maker. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/976f486adaf41ba4.mp3"
+    },
+    {
+      "key": "e2f0609f10eb3880",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Eight million downloads matches the real history. That piece checks out, so leave it clean.",
+      "lines": [
+        "Not quite.",
+        "Eight million downloads matches the real history. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/e2f0609f10eb3880.mp3"
+    },
+    {
+      "key": "944f7bd8640d8a45",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! One sneaky zero hiding in the name. One swap is enough, so this Robo Racers is a copycat.",
+      "lines": [
+        "That's right!",
+        "One sneaky zero hiding in the name. One swap is enough, so this Robo Racers is a copycat."
+      ],
+      "file": "/audio/voice/944f7bd8640d8a45.mp3"
+    },
+    {
+      "key": "058abe56bc651a29",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look closely at the first o in the name. It's a zero! That's a swap.",
+      "lines": [
+        "Not quite.",
+        "Look closely at the first o in the name. It's a zero! That's a swap."
+      ],
+      "file": "/audio/voice/058abe56bc651a29.mp3"
+    },
+    {
+      "key": "80a2aabd6925328a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Zoomtrack matches the real maker exactly. That piece checks out, so leave it clean.",
+      "lines": [
+        "Not quite.",
+        "Zoomtrack matches the real maker exactly. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/80a2aabd6925328a.mp3"
+    },
+    {
+      "key": "16a541133a703682",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Twelve million downloads matches the real history. That piece checks out, so leave it clean.",
+      "lines": [
+        "Not quite.",
+        "Twelve million downloads matches the real history. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/16a541133a703682.mp3"
+    },
+    {
+      "key": "7e8a81bba41ec12d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The name looked perfect, but the maker's name is missing a letter. Copycats hide in the small print too.",
+      "lines": [
+        "That's right!",
+        "The name looked perfect, but the maker's name is missing a letter. Copycats hide in the small print too."
+      ],
+      "file": "/audio/voice/7e8a81bba41ec12d.mp3"
+    },
+    {
+      "key": "949424b05cd5fbca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The name matches the real Torchy Light exactly. That piece checks out, so leave it clean.",
+      "lines": [
+        "Not quite.",
+        "The name matches the real Torchy Light exactly. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/949424b05cd5fbca.mp3"
+    },
+    {
+      "key": "b2045a17cb234d5f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the end of the maker's name. Beacon App is missing its s. That's a swap.",
+      "lines": [
+        "Not quite.",
+        "Look at the end of the maker's name. Beacon App is missing its s. That's a swap."
+      ],
+      "file": "/audio/voice/b2045a17cb234d5f.mp3"
+    },
+    {
+      "key": "2aaa2e7a15906fb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Three million downloads matches the real history. That piece checks out, so leave it clean.",
+      "lines": [
+        "Not quite.",
+        "Three million downloads matches the real history. That piece checks out, so leave it clean."
+      ],
+      "file": "/audio/voice/2aaa2e7a15906fb7.mp3"
+    },
+    {
+      "key": "315152697ba8d86e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That's the real Moon Jump: the right name and a huge history.",
+      "lines": [
+        "Not quite.",
+        "That's the real Moon Jump: the right name and a huge history."
+      ],
+      "file": "/audio/voice/315152697ba8d86e.mp3"
+    },
+    {
+      "key": "c130e2b7e075f315",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A sequel from the same maker is a real app, not a copycat.",
+      "lines": [
+        "Not quite.",
+        "A sequel from the same maker is a real app, not a copycat."
+      ],
+      "file": "/audio/voice/c130e2b7e075f315.mp3"
+    },
+    {
+      "key": "d60855c0cd82b84f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The maker and reviews looked fine, but a flashlight asking for your contacts and your microphone wants keys its job never needs. In the bin it goes.",
+      "lines": [
+        "That's right!",
+        "The maker and reviews looked fine, but a flashlight asking for your contacts and your microphone wants keys its job never needs. In the bin it goes."
+      ],
+      "file": "/audio/voice/d60855c0cd82b84f.mp3"
+    },
+    {
+      "key": "1695d6d2da23fdcb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the keys side again. A flashlight's job is light. Contacts and a microphone are greedy keys, so this box goes in the bin.",
+      "lines": [
+        "Not quite.",
+        "Look at the keys side again. A flashlight's job is light. Contacts and a microphone are greedy keys, so this box goes in the bin."
+      ],
+      "file": "/audio/voice/1695d6d2da23fdcb.mp3"
+    },
+    {
+      "key": "80f08f2a97480ed6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A drawing app asking to save your drawings: every key fits its job, and the maker and reviews check out. That's a safe app.",
+      "lines": [
+        "That's right!",
+        "A drawing app asking to save your drawings: every key fits its job, and the maker and reviews check out. That's a safe app."
+      ],
+      "file": "/audio/voice/80f08f2a97480ed6.mp3"
+    },
+    {
+      "key": "f1679f9955d6442a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Check every side again. The maker is real, the reviews are happy, and saving drawings is a drawing app's job. This one is safe.",
+      "lines": [
+        "Not quite.",
+        "Check every side again. The maker is real, the reviews are happy, and saving drawings is a drawing app's job. This one is safe."
+      ],
+      "file": "/audio/voice/f1679f9955d6442a.mp3"
+    },
+    {
+      "key": "de3647437be913a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! An unknown maker from today, copied reviews, and a puzzle game that wants your location. Every side said bin it.",
+      "lines": [
+        "That's right!",
+        "An unknown maker from today, copied reviews, and a puzzle game that wants your location. Every side said bin it."
+      ],
+      "file": "/audio/voice/de3647437be913a1.mp3"
+    },
+    {
+      "key": "07a93a251e162587",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Turn to the maker side again: an unknown maker that only appeared today. And puzzles never need your location. Bin it.",
+      "lines": [
+        "Not quite.",
+        "Turn to the maker side again: an unknown maker that only appeared today. And puzzles never need your location. Bin it."
+      ],
+      "file": "/audio/voice/07a93a251e162587.mp3"
+    },
+    {
+      "key": "bd69259c05dab722",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Feeding a pretend pet needs taps and sounds. Your contacts and your microphone are greedy keys.",
+      "lines": [
+        "Not quite.",
+        "Feeding a pretend pet needs taps and sounds. Your contacts and your microphone are greedy keys."
+      ],
+      "file": "/audio/voice/bd69259c05dab722.mp3"
+    },
+    {
+      "key": "e7168992b08a52de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Even the extra life cost another ad. Ad after ad filled the time meter, so this FREE app gets paid with your time.",
+      "lines": [
+        "That's right!",
+        "Even the extra life cost another ad. Ad after ad filled the time meter, so this FREE app gets paid with your time."
+      ],
+      "file": "/audio/voice/e7168992b08a52de.mp3"
+    },
+    {
+      "key": "611ac67027536e16",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the meters. Every ad, even the extra-life one, filled up the time meter. This app gets paid with your time.",
+      "lines": [
+        "Not quite.",
+        "Look at the meters. Every ad, even the extra-life one, filled up the time meter. This app gets paid with your time."
+      ],
+      "file": "/audio/voice/611ac67027536e16.mp3"
+    },
+    {
+      "key": "47c135e20dcdf3fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Locked levels and coin offers filled the coin meter. Free to start, but not free to play.",
+      "lines": [
+        "That's right!",
+        "Locked levels and coin offers filled the coin meter. Free to start, but not free to play."
+      ],
+      "file": "/audio/voice/47c135e20dcdf3fa.mp3"
+    },
+    {
+      "key": "1d6bbad9f4b23f5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Check the meters. Locked levels and coin offers filled up the coin meter, so this app gets paid with coins.",
+      "lines": [
+        "Not quite.",
+        "Check the meters. Locked levels and coin offers filled up the coin meter, so this app gets paid with coins."
+      ],
+      "file": "/audio/voice/1d6bbad9f4b23f5a.mp3"
+    },
+    {
+      "key": "115574502c187b71",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Before the quiz even started, your name, your age and your school filled the info meter. Your info was the price.",
+      "lines": [
+        "That's right!",
+        "Before the quiz even started, your name, your age and your school filled the info meter. Your info was the price."
+      ],
+      "file": "/audio/voice/115574502c187b71.mp3"
+    },
+    {
+      "key": "905a6dd550e7bc87",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at what the quiz asked for first: your name, your age and your school. That filled the info meter, so you'd pay with your info.",
+      "lines": [
+        "Not quite.",
+        "Look at what the quiz asked for first: your name, your age and your school. That filled the info meter, so you'd pay with your info."
+      ],
+      "file": "/audio/voice/905a6dd550e7bc87.mp3"
+    },
+    {
+      "key": "0660f5a9deaac758",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! No ads, no coins and no questions about you. Every meter stayed empty, because the library already paid. This one is truly free.",
+      "lines": [
+        "That's right!",
+        "No ads, no coins and no questions about you. Every meter stayed empty, because the library already paid. This one is truly free."
+      ],
+      "file": "/audio/voice/0660f5a9deaac758.mp3"
+    },
+    {
+      "key": "1381ed600e6d3c0f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the meters. Story after story, every one stayed empty: no ads, no coins, no info. This one really is free.",
+      "lines": [
+        "Not quite.",
+        "Look at the meters. Story after story, every one stayed empty: no ads, no coins, no info. This one really is free."
+      ],
+      "file": "/audio/voice/1381ed600e6d3c0f.mp3"
+    },
+    {
+      "key": "ee2b01710730d962",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ads every minute are never nothing. Each one takes a piece of your time.",
+      "lines": [
+        "Not quite.",
+        "Ads every minute are never nothing. Each one takes a piece of your time."
+      ],
+      "file": "/audio/voice/ee2b01710730d962.mp3"
+    },
+    {
+      "key": "f174cc08c40fc0a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ads don't take coins. They take minutes of your time.",
+      "lines": [
+        "Not quite.",
+        "Ads don't take coins. They take minutes of your time."
+      ],
+      "file": "/audio/voice/f174cc08c40fc0a2.mp3"
+    },
+    {
+      "key": "c17ccdf20129f12d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ads don't take your photos. They take your time and your attention.",
+      "lines": [
+        "Not quite.",
+        "Ads don't take your photos. They take your time and your attention."
+      ],
+      "file": "/audio/voice/c17ccdf20129f12d.mp3"
+    },
+    {
+      "key": "62687a71817c967c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your grown-up spotted an unknown new maker and a greedy key you couldn't see. Four eyes caught it, so you skipped it together.",
+      "lines": [
+        "That's right!",
+        "Your grown-up spotted an unknown new maker and a greedy key you couldn't see. Four eyes caught it, so you skipped it together."
+      ],
+      "file": "/audio/voice/62687a71817c967c.mp3"
+    },
+    {
+      "key": "72a4f6c26aa1d1c3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at what your grown-up spotted: an unknown new maker and a greedy key. That's one to skip, together.",
+      "lines": [
+        "Not quite.",
+        "Look at what your grown-up spotted: an unknown new maker and a greedy key. That's one to skip, together."
+      ],
+      "file": "/audio/voice/72a4f6c26aa1d1c3.mp3"
+    },
+    {
+      "key": "7611b4b92ce7da10",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You both checked, and everything was fine: your real library, and no extra keys. So you installed it together.",
+      "lines": [
+        "That's right!",
+        "You both checked, and everything was fine: your real library, and no extra keys. So you installed it together."
+      ],
+      "file": "/audio/voice/7611b4b92ce7da10.mp3"
+    },
+    {
+      "key": "bc13e4bf2576e1f5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look again at what your grown-up found: your real library, and no extra keys. Checked together and fine means install together.",
+      "lines": [
+        "Not quite.",
+        "Look again at what your grown-up found: your real library, and no extra keys. Checked together and fine means install together."
+      ],
+      "file": "/audio/voice/bc13e4bf2576e1f5.mp3"
+    },
+    {
+      "key": "b4c95580fc8f7587",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A coin shop with real-money packs was hiding inside. Your grown-up spotted it, so you skipped it together.",
+      "lines": [
+        "That's right!",
+        "A coin shop with real-money packs was hiding inside. Your grown-up spotted it, so you skipped it together."
+      ],
+      "file": "/audio/voice/b4c95580fc8f7587.mp3"
+    },
+    {
+      "key": "9097aed6b6b01c01",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That coin shop, with its real-money packs, means this one gets skipped, together.",
+      "lines": [
+        "Not quite.",
+        "That coin shop, with its real-money packs, means this one gets skipped, together."
+      ],
+      "file": "/audio/voice/9097aed6b6b01c01.mp3"
+    },
+    {
+      "key": "3dd2a9d43fd23abb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A real maker, a key that fits the job, and the real shop. You both checked, so installing it together is fine.",
+      "lines": [
+        "That's right!",
+        "A real maker, a key that fits the job, and the real shop. You both checked, so installing it together is fine."
+      ],
+      "file": "/audio/voice/3dd2a9d43fd23abb.mp3"
+    },
+    {
+      "key": "5c9c40e97821d3b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Check what your grown-up found: a real maker, a fair key and the real shop. That's a safe one to install together.",
+      "lines": [
+        "Not quite.",
+        "Check what your grown-up found: a real maker, a fair key and the real shop. That's a safe one to install together."
+      ],
+      "file": "/audio/voice/5c9c40e97821d3b2.mp3"
+    },
+    {
+      "key": "1742537bf0989319",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Only the official app store checks apps before the shelf. A website button skips that check.",
+      "lines": [
+        "That's right!",
+        "Only the official app store checks apps before the shelf. A website button skips that check."
+      ],
+      "file": "/audio/voice/1742537bf0989319.mp3"
+    },
+    {
+      "key": "a232d0736e4f790d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Faster isn't safer. Nobody checked the app behind that button.",
+      "lines": [
+        "Not quite.",
+        "Faster isn't safer. Nobody checked the app behind that button."
+      ],
+      "file": "/audio/voice/a232d0736e4f790d.mp3"
+    },
+    {
+      "key": "d844571e9b2d2726",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A button can say anything. Only the official app store checks what's behind it.",
+      "lines": [
+        "Not quite.",
+        "A button can say anything. Only the official app store checks what's behind it."
+      ],
+      "file": "/audio/voice/d844571e9b2d2726.mp3"
+    },
+    {
+      "key": "57303d182f5b365c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A number one where the l should be, and only nine downloads. Almost right is all wrong, so that's the copycat.",
+      "lines": [
+        "That's right!",
+        "A number one where the l should be, and only nine downloads. Almost right is all wrong, so that's the copycat."
+      ],
+      "file": "/audio/voice/57303d182f5b365c.mp3"
+    },
+    {
+      "key": "224961ee8c497e99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Four million downloads and a maker spelled right is a real history. Look at the other maker's name.",
+      "lines": [
+        "Not quite.",
+        "Four million downloads and a maker spelled right is a real history. Look at the other maker's name."
+      ],
+      "file": "/audio/voice/224961ee8c497e99.mp3"
+    },
+    {
+      "key": "7186411601823116",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The app names match, but check every piece. One maker has a number one where the l should be.",
+      "lines": [
+        "Not quite.",
+        "The app names match, but check every piece. One maker has a number one where the l should be."
+      ],
+      "file": "/audio/voice/7186411601823116.mp3"
+    },
+    {
+      "key": "f2eb6cff05e547f7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Playing sounds is exactly a music player's job. Your photos aren't, so that key stays locked.",
+      "lines": [
+        "That's right!",
+        "Playing sounds is exactly a music player's job. Your photos aren't, so that key stays locked."
+      ],
+      "file": "/audio/voice/f2eb6cff05e547f7.mp3"
+    },
+    {
+      "key": "eb437c91d6e347c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Songs play without anyone looking at your photos. That's a greedy key.",
+      "lines": [
+        "Not quite.",
+        "Songs play without anyone looking at your photos. That's a greedy key."
+      ],
+      "file": "/audio/voice/eb437c91d6e347c7.mp3"
+    },
+    {
+      "key": "94e0335a8197cfaa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Apps only need the keys their job uses. Your photos aren't part of playing music.",
+      "lines": [
+        "Not quite.",
+        "Apps only need the keys their job uses. Your photos aren't part of playing music."
+      ],
+      "file": "/audio/voice/94e0335a8197cfaa.mp3"
+    },
+    {
+      "key": "7d4f0cf28ddea3b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That shop inside means the game gets paid with coins, and coins cost real money. Free to start isn't free to play.",
+      "lines": [
+        "That's right!",
+        "That shop inside means the game gets paid with coins, and coins cost real money. Free to start isn't free to play."
+      ],
+      "file": "/audio/voice/7d4f0cf28ddea3b3.mp3"
+    },
+    {
+      "key": "ce2f6ed606318a3b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Apps always get paid somehow, and the shop inside is how this one gets paid.",
+      "lines": [
+        "Not quite.",
+        "Apps always get paid somehow, and the shop inside is how this one gets paid."
+      ],
+      "file": "/audio/voice/ce2f6ed606318a3b.mp3"
+    },
+    {
+      "key": "dd409d76cd616981",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Remember the Loot Shop? Game coins are bought with real money, every time.",
+      "lines": [
+        "Not quite.",
+        "Remember the Loot Shop? Game coins are bought with real money, every time."
+      ],
+      "file": "/audio/voice/dd409d76cd616981.mp3"
+    },
+    {
+      "key": "5d04c2cb522bb925",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Four eyes catch what two miss. Check it together, and if it's fine, install it together.",
+      "lines": [
+        "That's right!",
+        "Four eyes catch what two miss. Check it together, and if it's fine, install it together."
+      ],
+      "file": "/audio/voice/5d04c2cb522bb925.mp3"
+    },
+    {
+      "key": "b9e20733eaa1eb4f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That glowing button isn't going anywhere. A quick check together keeps copycats and greedy keys out.",
+      "lines": [
+        "Not quite.",
+        "That glowing button isn't going anywhere. A quick check together keeps copycats and greedy keys out."
+      ],
+      "file": "/audio/voice/b9e20733eaa1eb4f.mp3"
+    },
+    {
+      "key": "7175f1584fe7e945",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Later is too late for a greedy key. Check together before you install.",
+      "lines": [
+        "Not quite.",
+        "Later is too late for a greedy key. Check together before you install."
+      ],
+      "file": "/audio/voice/7175f1584fe7e945.mp3"
     },
     {
       "key": "87a6f8b5fd067db2",

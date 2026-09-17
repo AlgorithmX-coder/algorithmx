@@ -157,6 +157,17 @@ const ENGINES = {
     const t = span.match(/teach:\s*\{[\s\S]*?\}/);
     return [{ label: "tray decision (KEEP)", right: fld(span, "why"), wrong: t ? fld(t[0], "body") : null }];
   },
+  // Week 9 engines (2026-09-17). Each round's why / whyWrong sit after its
+  // minutes or spots array, so read them with that array stripped out.
+  flipTheBox: (span) => objs(span, "boxes").map((b) => ({ label: "box " + (fld(b, "name") ?? ""), right: fld(b, "why"), wrong: fld(b, "whyWrong") })),
+  testDrive: (span) => objs(span, "rounds").map((r) => {
+    const base = r.replace(/minutes:\s*\[[\s\S]*?\n\s{10,}\],?/, "");
+    return { label: "price " + (fld(base, "appName") ?? ""), right: fld(base, "why"), wrong: fld(base, "whyWrong") };
+  }),
+  fourEyes: (span) => objs(span, "rounds").map((r) => {
+    const base = r.replace(/spots:\s*\[[\s\S]*?\n\s{10,}\],?/, "");
+    return { label: "decide " + (fld(base, "appName") ?? ""), right: fld(base, "why"), wrong: fld(base, "whyWrong") };
+  }),
   // Week 6 engines (2026-09-16).
   chatFixer: (span) => objs(span, "messages").flatMap((m) => {
     // The message's own why / whyWrong live outside the chips array (a safe chip

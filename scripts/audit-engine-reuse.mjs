@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -38,6 +38,11 @@ const RETHEME_ALLOWED = {
   // The design table listed a third concept re-theme (Ask Ring = GrowthRings, W5);
   // it was built as the new AskRing engine to stay within RETHEME_MAX.
   8: ["BelieveOMeter", "ClueStamper", "CyberMaze (review)"], // Smallest Door (W4 dial), Photo Detective (W3 stamper), Share Maze (W3 maze)
+  // The design table listed three concept re-themes for W9 (Delivery Dock =
+  // VaultDrop, Whisker Check = NameTagCheck, Install Handshake = GuardCount).
+  // The handshake was built as the new FourEyes engine instead, to stay within
+  // RETHEME_MAX and to keep it from repeating Flip the Box's reveal-then-decide.
+  9: ["VaultDrop", "NameTagCheck", "PasswordVault (review)"], // Delivery Dock (W2 table), Whisker Check (W4 name tags), The Warehouse (W4 vault)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));
