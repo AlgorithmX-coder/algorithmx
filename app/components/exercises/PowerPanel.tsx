@@ -98,6 +98,9 @@ export interface PowerPanelProps {
   introIcon?: string;
   /** The label on the panel chrome. Defaults "Player menu" / "Video player". */
   panelTitle?: string;
+  /** The board's own header, beside the round counter. Default "Power Panel"
+   *  (Week 6); Week 10's re-theme names itself "Back-Out Panel" here. */
+  boardTitle?: string;
   /** The three progress pips, in order. Default ["REPORT", "BLOCK", "TELL"]. */
   stepLabels?: [string, string, string];
   wrongTitle?: string;
@@ -133,6 +136,7 @@ export default function PowerPanel({
   introSubtitle,
   introIcon = "⚡",
   panelTitle,
+  boardTitle = "Power Panel",
   stepLabels = DEFAULT_STEPS,
   wrongTitle = "Find the power buttons in order!",
   completeTitle = "Every button found!",
@@ -436,7 +440,7 @@ export default function PowerPanel({
           {/* Side padding keeps the header clear of the frame's corner ornaments. */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 22px 0" }}>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
-              ⚡ Power Panel
+              ⚡ {boardTitle}
             </span>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9b8ff" }}>
               Round {Math.min(idx + 1, shown.length)} of {shown.length}

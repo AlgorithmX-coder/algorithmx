@@ -22,6 +22,15 @@
  * columns for a good brick, the bin for a bad one) with a one-line strip, hint
  * tiers, spoken payoff on the complete beat, bricks shuffled per play, and the
  * tray brick always wears the same paint (no giveaway).
+ *
+ * SKINS. `skin` re-dresses the same game for a second world without touching a
+ * verb. "wall" (the default) is Week 4's No-Bite Wall exactly as it shipped.
+ * "ladder" is Week 10's "The Ladder Out": the three columns read as ladder
+ * rails, a laid piece is a wooden rung stacking upward toward a daylight disc
+ * that brightens with every rung, and the bin is the burrow floor a trick is
+ * dropped down. Every string the skin changes is a prop; when no prop is
+ * passed the value comes from SKIN_COPY, whose `wall` column holds the exact
+ * literal this engine has always rendered, so the default path is unchanged.
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -72,9 +81,52 @@ const DEFAULT_BRICKS: WallBrick[] = [
   { id: "p123", text: "Use password123", good: false, readAloud: "Use password one two three.", why: "Password one two three is the first guess anyone tries. Bin it.", whyWrong: "Password one two three is the easiest guess in the world. That brick goes in the bin." },
 ];
 
+/**
+ * Every user-visible string (and chrome emoji) the ladder skin has to change,
+ * with the `wall` column holding the EXACT literal this engine shipped with.
+ * A prop always wins; with no prop the value comes from this table, so a
+ * default `skin: "wall"` mount renders precisely what it rendered before.
+ */
+const SKIN_COPY = {
+  wall: {
+    boardIcon: "🧱",
+    pieceIcon: "🧱",
+    binIcon: "🗑️",
+    trayLabel: "The tray",
+    pieceNoun: "Brick",
+    slotAriaLabel: "Lay the brick in column",
+    doneBanner: "✋ NO BITE!",
+    guideGoodLine: "Round 1: this brick is a safe habit. Tap a glowing column to lay it in the wall",
+    guideBadLine: "Round 1: this brick is a bad habit. Tap the glowing bin to throw it out",
+    playLine: "Listen to the brick · safe habit? tap a column · bad habit? tap the bin",
+    goodNoun: "safe habit",
+    badNoun: "bad habit",
+    laidPlace: "in the wall",
+    binnedVerb: "thrown out",
+  },
+  ladder: {
+    boardIcon: "⬆️",
+    pieceIcon: "🔨",
+    binIcon: "⬇️",
+    trayLabel: "The next rung",
+    pieceNoun: "Rung",
+    slotAriaLabel: "Lay the rung on rail",
+    doneBanner: "☀️ DAYLIGHT!",
+    guideGoodLine: "Round 1: this rung is a hero move. Tap a glowing rail to lay it in the ladder",
+    guideBadLine: "Round 1: this rung is one of his tricks. Tap the glowing burrow floor to drop it",
+    playLine: "Listen to the rung · hero move? tap a rail · his trick? tap the burrow floor",
+    goodNoun: "hero move",
+    badNoun: "trick",
+    laidPlace: "in the ladder",
+    binnedVerb: "dropped",
+  },
+} as const;
+
 export interface FirewallBuilderProps {
   /** Optional only for the legacy previews; week content always sets it. */
   bricks?: WallBrick[];
+  /** Which world the same game wears: Week 4's wall, or Week 10's ladder out of the burrow. */
+  skin?: "wall" | "ladder";
   introTitle?: string;
   introSubtitle?: string;
   introIcon?: string;
@@ -84,6 +136,34 @@ export interface FirewallBuilderProps {
   binToast?: string;
   completeTitle?: string;
   completeLine?: string;
+  /** Emoji beside the board title in the header. */
+  boardIcon?: string;
+  /** Emoji on the piece waiting in the tray. */
+  pieceIcon?: string;
+  /** Emoji on the throw-it-out button. */
+  binIcon?: string;
+  /** Eyebrow over the tray that holds the next piece. */
+  trayLabel?: string;
+  /** What one piece is called in the header counter ("Brick 3 of 9"). */
+  pieceNoun?: string;
+  /** Screen-reader label for a place a piece is laid; the slot number is appended. */
+  slotAriaLabel?: string;
+  /** Banner that lights up on the board once every good piece is laid. */
+  doneBanner?: string;
+  /** Round-1 strip when the piece in the tray is a good one. */
+  guideGoodLine?: string;
+  /** Round-1 strip when the piece in the tray is a bad one. */
+  guideBadLine?: string;
+  /** The strip from round 2 on, once the mechanic has been taught. */
+  playLine?: string;
+  /** What a good piece is called on the complete beat ("4 safe habits in the wall"). */
+  goodNoun?: string;
+  /** What a bad piece is called on the complete beat ("2 bad habits thrown out"). */
+  badNoun?: string;
+  /** Where laid pieces end up, on the complete beat ("in the wall"). */
+  laidPlace?: string;
+  /** What happened to binned pieces, on the bin button and the complete beat ("thrown out"). */
+  binnedVerb?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -98,6 +178,7 @@ export interface FirewallBuilderProps {
 
 export default function FirewallBuilder({
   bricks = DEFAULT_BRICKS,
+  skin = "wall",
   introTitle = "The No-Bite Wall",
   introSubtitle = "Lay every safe habit into the wall. Throw the bad ones in the bin.",
   introIcon = "🧱",
@@ -107,6 +188,20 @@ export default function FirewallBuilder({
   binToast = "BINNED!",
   completeTitle = "The wall is built!",
   completeLine = "Nothing bites through a wall like that.",
+  boardIcon,
+  pieceIcon,
+  binIcon,
+  trayLabel,
+  pieceNoun,
+  slotAriaLabel,
+  doneBanner,
+  guideGoodLine,
+  guideBadLine,
+  playLine,
+  goodNoun,
+  badNoun,
+  laidPlace,
+  binnedVerb,
   hints,
   introNarration,
   coachLines,
@@ -122,8 +217,27 @@ export default function FirewallBuilder({
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  const ladder = skin === "ladder";
   const accent = useLessonTheme()?.accent ?? "#e84dff";
   const voice = "adam" as const;
+
+  // Skin copy: a prop wins, otherwise the skin's own word. On "wall" with no
+  // props these resolve to the literals the engine has always rendered.
+  const copy = SKIN_COPY[skin];
+  const cBoardIcon = boardIcon ?? copy.boardIcon;
+  const cPieceIcon = pieceIcon ?? copy.pieceIcon;
+  const cBinIcon = binIcon ?? copy.binIcon;
+  const cTrayLabel = trayLabel ?? copy.trayLabel;
+  const cPieceNoun = pieceNoun ?? copy.pieceNoun;
+  const cSlotAria = slotAriaLabel ?? copy.slotAriaLabel;
+  const cDoneBanner = doneBanner ?? copy.doneBanner;
+  const cGuideGood = guideGoodLine ?? copy.guideGoodLine;
+  const cGuideBad = guideBadLine ?? copy.guideBadLine;
+  const cPlayLine = playLine ?? copy.playLine;
+  const cGoodNoun = goodNoun ?? copy.goodNoun;
+  const cBadNoun = badNoun ?? copy.badNoun;
+  const cLaidPlace = laidPlace ?? copy.laidPlace;
+  const cBinnedVerb = binnedVerb ?? copy.binnedVerb;
 
   const [showIntro, setShowIntro] = useState(true);
   const [idx, setIdx] = useState(0);
@@ -147,6 +261,9 @@ export default function FirewallBuilder({
   const speaking = narr !== "idle" || verdict.speaking;
   const guided = moves === 0;
   const laid = wall.reduce((n, col) => n + col.length, 0);
+  // How far up the build is (0 to 1). Only the ladder skin reads it, to open
+  // the daylight above the burrow as the rungs go in.
+  const climb = goodCount > 0 ? Math.min(1, laid / goodCount) : 0;
 
   useEffect(() => {
     if (narr === "idle") return;
@@ -242,11 +359,13 @@ export default function FirewallBuilder({
         <div style={{ position: "relative", zIndex: 1 }}>
           {/* Side padding keeps the header clear of the frame's corner ornaments. */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 22px 0" }}>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
-              🧱 {wallLabel}
+            <span style={{ display: ladder ? "inline-flex" : undefined, alignItems: ladder ? "center" : undefined, gap: ladder ? 6 : undefined, fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
+              {/* The wall keeps its plain text glyph; the ladder gets the 3D icon. */}
+              {ladder ? <PixIcon emoji={cBoardIcon} size={16} /> : `${cBoardIcon} `}
+              {wallLabel}
             </span>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9b8ff" }}>
-              Brick {Math.min(idx + 1, order.length)} of {order.length}
+              {cPieceNoun} {Math.min(idx + 1, order.length)} of {order.length}
             </span>
           </div>
 
@@ -257,7 +376,9 @@ export default function FirewallBuilder({
                 flex: "2 1 400px",
                 minWidth: 300,
                 borderRadius: 18,
-                background: "linear-gradient(180deg, rgba(60,10,51,0.85) 0%, rgba(30,5,25,0.95) 100%)",
+                background: ladder
+                  ? "linear-gradient(180deg, rgba(58,40,18,0.9) 0%, rgba(14,9,5,0.96) 100%)"
+                  : "linear-gradient(180deg, rgba(60,10,51,0.85) 0%, rgba(30,5,25,0.95) 100%)",
                 border: `1px solid ${accent}55`,
                 boxShadow: "0 18px 40px -22px rgba(0,0,0,0.7)",
                 padding: 12,
@@ -266,15 +387,48 @@ export default function FirewallBuilder({
                 gap: 8,
               }}
             >
+              {/* Daylight over the burrow: it brightens with every rung laid,
+                  so the climb has somewhere to go. Ladder skin only. */}
+              {ladder && (
+                <div
+                  aria-hidden
+                  style={{
+                    position: "relative",
+                    height: 40,
+                    flexShrink: 0,
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    background: `radial-gradient(60% 150% at 50% 135%, rgba(255,226,150,${(0.3 + 0.45 * climb).toFixed(2)}) 0%, rgba(255,226,150,0) 72%)`,
+                    transition: "background 500ms ease",
+                  }}
+                >
+                  <span
+                    style={{
+                      // A wide, soft band of sky, not a disc: a hard circle read
+                      // as a wooden ball sitting on top of the burrow.
+                      position: "absolute",
+                      left: "50%",
+                      bottom: -30,
+                      marginLeft: -140,
+                      width: 280,
+                      height: 90,
+                      borderRadius: "50%",
+                      background: `radial-gradient(ellipse at 50% 100%, rgba(255,250,228,${(0.62 + 0.35 * climb).toFixed(2)}) 0%, rgba(255,214,126,${(0.34 + 0.4 * climb).toFixed(2)}) 42%, rgba(255,206,110,0) 74%)`,
+                      boxShadow: wallDone ? "0 0 40px rgba(255,224,150,0.75)" : "none",
+                      transition: "background 500ms ease, box-shadow 500ms ease",
+                    }}
+                  />
+                </div>
+              )}
               <AnimatePresence>
                 {wallDone && (
                   <motion.div
                     key="banner"
                     initial={reduce ? { opacity: 0 } : { opacity: 0, y: -10, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    style={{ textAlign: "center", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: 18, letterSpacing: "0.14em", color: "#7eff97", textShadow: "0 0 18px rgba(126,255,151,0.6)" }}
+                    style={{ textAlign: "center", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 900, fontSize: 18, letterSpacing: "0.14em", color: ladder ? "#ffe08a" : "#7eff97", textShadow: ladder ? "0 0 18px rgba(255,224,138,0.6)" : "0 0 18px rgba(126,255,151,0.6)" }}
                   >
-                    ✋ NO BITE!
+                    {cDoneBanner}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -287,7 +441,7 @@ export default function FirewallBuilder({
                     <motion.button
                       key={ci}
                       type="button"
-                      aria-label={`Lay the brick in column ${ci + 1}${full ? " (full)" : ""}`}
+                      aria-label={`${cSlotAria} ${ci + 1}${full ? " (full)" : ""}`}
                       onClick={() => move(ci)}
                       disabled={!armed}
                       animate={fx2?.kind === "crack" && fx2.col === ci && !reduce ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
@@ -300,7 +454,11 @@ export default function FirewallBuilder({
                         minHeight: rows * 74 + 12,
                         padding: 6,
                         borderRadius: 12,
-                        background: "rgba(255,255,255,0.05)",
+                        // Ladder: two rails run the height of the slot, with the
+                        // burrow dark behind them. Wall: the plain tap target.
+                        background: ladder
+                          ? "linear-gradient(90deg, transparent 0 2px, #a0703a 2px 14px, transparent 14px calc(100% - 14px), #a0703a calc(100% - 14px) calc(100% - 2px), transparent calc(100% - 2px) 100%), linear-gradient(180deg, rgba(24,15,7,0.55) 0%, rgba(8,5,3,0.8) 100%)"
+                          : "rgba(255,255,255,0.05)",
                         border: `2px dashed ${glow ? accent : armed ? "rgba(255,255,255,0.28)" : "rgba(255,255,255,0.12)"}`,
                         boxShadow: glow ? `0 0 0 3px ${accent}66, 0 0 22px ${accent}88` : "none",
                         cursor: armed ? "pointer" : "default",
@@ -314,10 +472,19 @@ export default function FirewallBuilder({
                           animate={{ opacity: 1, y: 0 }}
                           transition={reduce ? { duration: 0.15 } : { type: "spring", stiffness: 200, damping: 16 }}
                           style={{
-                            borderRadius: 8,
-                            background: ri % 2 ? "linear-gradient(180deg, #d9905a 0%, #b56a3a 100%)" : "linear-gradient(180deg, #e0a06a 0%, #bf7645 100%)",
-                            border: "2px solid #7a3f1c",
-                            boxShadow: "inset 0 -4px 0 rgba(0,0,0,0.18)",
+                            borderRadius: ladder ? 6 : 8,
+                            // Ladder: a wooden rung, its ends sunk into the rails.
+                            background: ladder
+                              ? ri % 2
+                                ? "linear-gradient(180deg, #c98c4e 0%, #8d5a2b 100%)"
+                                : "linear-gradient(180deg, #d79a58 0%, #9a6531 100%)"
+                              : ri % 2
+                                ? "linear-gradient(180deg, #d9905a 0%, #b56a3a 100%)"
+                                : "linear-gradient(180deg, #e0a06a 0%, #bf7645 100%)",
+                            border: ladder ? "2px solid #4a2d12" : "2px solid #7a3f1c",
+                            borderLeftWidth: ladder ? 7 : undefined,
+                            borderRightWidth: ladder ? 7 : undefined,
+                            boxShadow: ladder ? "inset 0 -4px 0 rgba(0,0,0,0.22), inset 0 2px 0 rgba(255,255,255,0.16)" : "inset 0 -4px 0 rgba(0,0,0,0.18)",
                             color: "#fff7e6",
                             fontFamily: "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
                             fontSize: 12.5,
@@ -353,7 +520,8 @@ export default function FirewallBuilder({
                   );
                 })}
               </div>
-              <div aria-hidden style={{ height: 8, borderRadius: 4, background: "linear-gradient(90deg, #5c3a1e, #8a5a32, #5c3a1e)" }} />
+              {/* The ground the build stands on: a footing, or the burrow floor. */}
+              <div aria-hidden style={{ height: 8, borderRadius: 4, background: ladder ? "linear-gradient(90deg, #1a1008, #402a14, #1a1008)" : "linear-gradient(90deg, #5c3a1e, #8a5a32, #5c3a1e)" }} />
             </div>
 
             {/* The tray with the current brick, and the bin */}
@@ -370,18 +538,20 @@ export default function FirewallBuilder({
                   color: "#2a1a08",
                 }}
               >
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 800, letterSpacing: "0.22em", textTransform: "uppercase", color: "#8a5a12", marginBottom: 8 }}>The tray</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 800, letterSpacing: "0.22em", textTransform: "uppercase", color: "#8a5a12", marginBottom: 8 }}>{cTrayLabel}</div>
                 <motion.div
                   key={brick.id + (fx2?.kind === "bounce" ? fx2.key : "")}
                   initial={reduce ? { opacity: 0 } : { opacity: 0, y: -14 }}
                   animate={fx2?.kind === "bounce" && !reduce ? { opacity: 1, y: [0, -18, 0, -8, 0] } : { opacity: 1, y: 0 }}
                   transition={{ duration: reduce ? 0.15 : 0.5 }}
                   style={{
-                    // The tray brick wears one paint for good and bad alike: nothing hints at the answer.
-                    borderRadius: 10,
-                    background: "linear-gradient(180deg, #e0a06a 0%, #bf7645 100%)",
-                    border: "2px solid #7a3f1c",
-                    boxShadow: "inset 0 -4px 0 rgba(0,0,0,0.18), 0 8px 16px -10px rgba(0,0,0,0.7)",
+                    // The tray piece wears one paint for good and bad alike: nothing hints at the answer.
+                    borderRadius: ladder ? 8 : 10,
+                    background: ladder ? "linear-gradient(180deg, #d79a58 0%, #9a6531 100%)" : "linear-gradient(180deg, #e0a06a 0%, #bf7645 100%)",
+                    border: ladder ? "2px solid #4a2d12" : "2px solid #7a3f1c",
+                    borderLeftWidth: ladder ? 7 : undefined,
+                    borderRightWidth: ladder ? 7 : undefined,
+                    boxShadow: ladder ? "inset 0 -4px 0 rgba(0,0,0,0.22), inset 0 2px 0 rgba(255,255,255,0.16), 0 8px 16px -10px rgba(0,0,0,0.7)" : "inset 0 -4px 0 rgba(0,0,0,0.18), 0 8px 16px -10px rgba(0,0,0,0.7)",
                     color: "#fff7e6",
                     fontSize: 15,
                     fontWeight: 800,
@@ -393,7 +563,7 @@ export default function FirewallBuilder({
                     textShadow: "0 1px 0 rgba(0,0,0,0.35)",
                   }}
                 >
-                  <span><PixIcon emoji="🧱" size={18} /> {brick.text}</span>
+                  <span><PixIcon emoji={cPieceIcon} size={18} /> {brick.text}</span>
                 </motion.div>
               </div>
 
@@ -405,8 +575,11 @@ export default function FirewallBuilder({
                 whileTap={speaking || reduce ? undefined : { scale: 0.97 }}
                 style={{
                   borderRadius: 16,
-                  background: "linear-gradient(180deg, #3b4252 0%, #232a38 100%)",
-                  border: `2px solid ${guided && !brick.good && !speaking ? accent : "rgba(255,255,255,0.25)"}`,
+                  // Ladder: the mouth of the burrow, dark all the way down.
+                  background: ladder
+                    ? "radial-gradient(85% 70% at 50% 24%, #2b1b0d 0%, #0a0603 78%)"
+                    : "linear-gradient(180deg, #3b4252 0%, #232a38 100%)",
+                  border: `2px solid ${guided && !brick.good && !speaking ? accent : ladder ? "rgba(160,120,70,0.4)" : "rgba(255,255,255,0.25)"}`,
                   boxShadow: guided && !brick.good && !speaking ? `0 0 0 3px ${accent}66, 0 0 22px ${accent}88` : "0 14px 30px -18px rgba(0,0,0,0.7)",
                   color: "#fff7e6",
                   padding: "14px 12px",
@@ -424,20 +597,17 @@ export default function FirewallBuilder({
                   animation: guided && !brick.good && !speaking && !reduce ? "fwGuide 1.4s ease-in-out infinite" : undefined,
                 }}
               >
-                <span aria-hidden style={{ fontSize: 34 }}>🗑️</span>
+                {/* The wall keeps its plain text glyph; the ladder gets the 3D icon. */}
+                {ladder ? <PixIcon emoji={cBinIcon} size={34} /> : <span aria-hidden style={{ fontSize: 34 }}>{cBinIcon}</span>}
                 {binLabel}
-                {binned.length > 0 && <span style={{ fontSize: 11, opacity: 0.8, letterSpacing: "0.06em" }}>{binned.length} thrown out</span>}
+                {binned.length > 0 && <span style={{ fontSize: 11, opacity: 0.8, letterSpacing: "0.06em" }}>{binned.length} {cBinnedVerb}</span>}
               </motion.button>
             </div>
           </div>
 
           <div style={{ textAlign: "center", marginTop: 12 }}>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent }}>
-              {guided
-                ? brick.good
-                  ? "Round 1: this brick is a safe habit. Tap a glowing column to lay it in the wall"
-                  : "Round 1: this brick is a bad habit. Tap the glowing bin to throw it out"
-                : "Listen to the brick · safe habit? tap a column · bad habit? tap the bin"}
+              {guided ? (brick.good ? cGuideGood : cGuideBad) : cPlayLine}
             </div>
           </div>
 
@@ -452,7 +622,7 @@ export default function FirewallBuilder({
         <ExerciseCompleteBeat
           title={completeTitle}
           stars={stars}
-          statLines={[`${laid} safe habit${laid === 1 ? "" : "s"} in the wall`, `${binned.length} bad habit${binned.length === 1 ? "" : "s"} thrown out`, completeLine]}
+          statLines={[`${laid} ${cGoodNoun}${laid === 1 ? "" : "s"} ${cLaidPlace}`, `${binned.length} ${cBadNoun}${binned.length === 1 ? "" : "s"} ${cBinnedVerb}`, completeLine]}
           narration={completeNarration}
           onContinue={() => onComplete(stars === 3 ? 100 : stars === 2 ? 70 : 40)}
         />

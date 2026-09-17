@@ -834,6 +834,8 @@ export type ScreenDef = (
       introSubtitle?: string;
       introIcon?: string;
       panelTitle?: string;
+      /** The board header beside the round counter. Default "Power Panel". */
+      boardTitle?: string;
       stepLabels?: [string, string, string];
       wrongTitle?: string;
       completeTitle?: string;
@@ -1263,6 +1265,150 @@ export type ScreenDef = (
       installToast?: string;
       skipToast?: string;
       wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Great Climb-Out (Week 10, concept 1: autoplay is a machine that
+       * picks for you). This week's old screen-4 signature, now tap-only and
+       * data-driven: the child is deep in a video burrow and climbs a ladder
+       * toward daylight. Each rung floats three tokens past; the one GRIP is a
+       * hero move and climbs a rung, the belt's shouts slip one rung back
+       * (never below the start) and teach. No drift, no rhythm, no timer.
+       */
+      type: "climbOut";
+      rungs: {
+        id: string;
+        /** The moment this rung stands on, read aloud as it slides in. */
+        prompt: string;
+        /** Exactly one token has isGrip: true. */
+        tokens: {
+          id: string;
+          label: string;
+          icon: string;
+          isGrip: boolean;
+          /** Sarah's reason on the grip ("That's right!" + why). */
+          why: string;
+          /** Sarah's teach on a bait token ("Not quite." + explanation). */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** The daylight circle at the top of the burrow. Default "DAYLIGHT". */
+      surfaceLabel?: string;
+      /** The banner on reaching the surface. Default "YOU CLIMBED OUT!". */
+      bannerLine?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Who Would Know? (Week 10, concept 2: "a video said so" isn't proof).
+       * A shouty video card plays a wild claim; three uniform source cards sit
+       * below it and the child taps the one who could REALLY check it. The
+       * right source answers the claim; a wrong one teaches why it cannot.
+       */
+      type: "whoKnows";
+      rounds: {
+        id: string;
+        /** The claim the video shouts, read aloud as the round opens. */
+        claim: string;
+        /** The poster's handle (invented, never a real channel). */
+        poster: string;
+        /** The view count shown under the handle ("2.1 million views"). */
+        views: string;
+        /** Exactly one option has isRight: true. */
+        options: {
+          id: string;
+          label: string;
+          icon: string;
+          isRight: boolean;
+          /** Sarah's reason on the right source ("That's right!" + why). */
+          why: string;
+          /** Sarah's teach on a wrong source ("Not quite." + explanation). */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      claimLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Comment Pond (Week 10, concept 4: comments are strangers). One
+       * comment at a time rises out of the pond; a fixed tray names the things
+       * a comment can be after. The child taps what THIS one wants: a private
+       * thing gets a lid, "nothing" swims past. There is no reply affordance
+       * anywhere in the game, by design.
+       */
+      type: "commentPond";
+      comments: {
+        id: string;
+        /** Invented handle, never a real account. */
+        author: string;
+        /** The comment, read aloud as it surfaces. */
+        text: string;
+        /** Which tray token this comment is fishing for (a wants[].id). */
+        wantId: string;
+        /** Sarah's reason on the right token ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach on a wrong token ("Not quite." + explanation). */
+        explanation: string;
+      }[];
+      /** The fixed tray, identical for every comment. */
+      wants: { id: string; label: string; icon: string; isPrivate: boolean }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      trayLabel?: string;
+      pondLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Pause Power (Week 10, concept 5: your body rings a bell). Two stages a
+       * round: press and HOLD the pause until the belt bar drains (forgiving,
+       * refills on release, no countdown and no fail), then pick what happens
+       * next from three cards. The belt's card teaches; the child's own cards
+       * are right.
+       */
+      type: "pausePower";
+      rounds: {
+        id: string;
+        /** The watching moment, read aloud as the round opens. */
+        setup: string;
+        /** The body sign shown on the player chrome ("dry, blinky eyes"). */
+        bell: string;
+        /** At least one card has isMine: true; exactly one is the belt's. */
+        cards: {
+          id: string;
+          label: string;
+          icon: string;
+          isMine: boolean;
+          /** Sarah's reason on the child's own card ("That's right!" + why). */
+          why: string;
+          /** Sarah's teach on the belt's card ("Not quite." + explanation). */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      holdLabel?: string;
+      pausedLabel?: string;
+      nextPrompt?: string;
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier1: string; tier2: string };
@@ -2332,6 +2478,9 @@ export type ScreenDef = (
        * play; round 1 is guided.
        */
       type: "firewallBuilder";
+      /** "wall" = Week 4's No-Bite Wall (default). "ladder" = Week 10's Ladder
+       *  Out: rungs climb toward daylight and the bin is the burrow floor. */
+      skin?: "wall" | "ladder";
       bricks: {
         id: string;
         /** The brick's text, five words or fewer. */

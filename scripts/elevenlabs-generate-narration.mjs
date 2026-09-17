@@ -282,7 +282,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week15.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week15.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -437,7 +437,7 @@ for (const fname of weekFiles) {
   // Week 6 (2026-09-16) adds: the Chat Fixer messages, Lobby Doors players and
   // settings card, Guard Count rounds and slots, Power Panel rounds (readAloud),
   // plus the Power Panel's two wrong-order teach lines (stepTeach array).
-  if (["week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts"].includes(fname)) {
+  if (["week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts"].includes(fname)) {
     const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
     const w2Starts = [];
     let w2m;
@@ -558,6 +558,17 @@ for (const fname of weekFiles) {
       if (["vaultDrop", "flipTheBox", "testDrive", "fourEyes"].includes(st.type)) {
         pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
       }
+      // Week 10 engines: Sarah reads the moment each round opens on (the rung
+      // the climb is standing on, the shouted claim, the comment surfacing from
+      // the pond, the watching moment), plus the Great Climb-Out's token labels
+      // (the child picks a grip out of three, and the labels are the choice).
+      if (st.type === "climbOut") {
+        pushAll(span, /\bprompt:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\blabel:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      if (st.type === "whoKnows") pushAll(span, /\bclaim:\s*"((?:[^"\\]|\\.)*)"/g);
+      if (st.type === "commentPond") pushAll(span, /\btext:\s*"((?:[^"\\]|\\.)*)"/g);
+      if (st.type === "pausePower") pushAll(span, /\bsetup:\s*"((?:[^"\\]|\\.)*)"/g);
       // teamPoster notes are already covered by the wrong-answer `note:` scan above
     });
   }

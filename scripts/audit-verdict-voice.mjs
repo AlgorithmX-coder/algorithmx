@@ -168,6 +168,35 @@ const ENGINES = {
     const base = r.replace(/spots:\s*\[[\s\S]*?\n\s{10,}\],?/, "");
     return { label: "decide " + (fld(base, "appName") ?? ""), right: fld(base, "why"), wrong: fld(base, "whyWrong") };
   }),
+  // Week 10 engines (2026-09-17). Each item carries both sides: the grip / the
+  // right source / the named want / the child's own card speak `why` on a
+  // correct tap, and every other token speaks its `explanation` on a wrong one.
+  climbOut: (span) => objs(span, "rungs").flatMap((r) =>
+    objs(r, "tokens").map((t) =>
+      flag(t, "isGrip")
+        ? { label: "grip " + (fld(t, "label") ?? ""), right: fld(t, "why"), wrong: null, only: "right" }
+        : { label: "  bait " + (fld(t, "label") ?? ""), right: null, wrong: fld(t, "explanation"), only: "wrong" },
+    ),
+  ),
+  whoKnows: (span) => objs(span, "rounds").flatMap((r) =>
+    objs(r, "options").map((o) =>
+      flag(o, "isRight")
+        ? { label: "source " + (fld(o, "label") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  wrong source " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
+  commentPond: (span) => objs(span, "comments").map((c) => ({
+    label: "comment " + (fld(c, "author") ?? ""),
+    right: fld(c, "why"),
+    wrong: fld(c, "explanation"),
+  })),
+  pausePower: (span) => objs(span, "rounds").flatMap((r) =>
+    objs(r, "cards").map((c) =>
+      flag(c, "isMine")
+        ? { label: "my choice " + (fld(c, "label") ?? ""), right: fld(c, "why"), wrong: null, only: "right" }
+        : { label: "  belt's pick " + (fld(c, "label") ?? ""), right: null, wrong: fld(c, "explanation"), only: "wrong" },
+    ),
+  ),
   // Week 6 engines (2026-09-16).
   chatFixer: (span) => objs(span, "messages").flatMap((m) => {
     // The message's own why / whyWrong live outside the chips array (a safe chip

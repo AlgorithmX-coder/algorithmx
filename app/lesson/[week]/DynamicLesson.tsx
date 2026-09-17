@@ -91,6 +91,10 @@ import DevelopingTray from "@/app/components/exercises/signatures/DevelopingTray
 import FlipTheBox from "@/app/components/exercises/signatures/FlipTheBox";
 import TestDrive from "@/app/components/exercises/TestDrive";
 import FourEyes from "@/app/components/exercises/FourEyes";
+import GreatClimbOut from "@/app/components/exercises/signatures/GreatClimbOut";
+import WhoKnows from "@/app/components/exercises/WhoKnows";
+import CommentPond from "@/app/components/exercises/CommentPond";
+import PausePower from "@/app/components/exercises/PausePower";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -2327,6 +2331,7 @@ function DynamicLessonInner({
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
               panelTitle={def.panelTitle}
+              boardTitle={def.boardTitle}
               stepLabels={def.stepLabels}
               wrongTitle={def.wrongTitle}
               completeTitle={def.completeTitle}
@@ -2513,6 +2518,125 @@ function DynamicLessonInner({
               installToast={def.installToast}
               skipToast={def.skipToast}
               wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      // Week 10 (The Burrow): a dark mossy hole with daylight somewhere above.
+      case "climbOut":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0d1408 0%, #1d2a12 100%)">
+            <GreatClimbOut
+              rungs={def.rungs}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              surfaceLabel={def.surfaceLabel}
+              bannerLine={def.bannerLine}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "whoKnows":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0d1408 0%, #1d2a12 100%)">
+            <WhoKnows
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              claimLabel={def.claimLabel}
+              askPrompt={def.askPrompt}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "commentPond":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0d1408 0%, #1d2a12 100%)">
+            <CommentPond
+              comments={def.comments}
+              wants={def.wants}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              trayLabel={def.trayLabel}
+              pondLabel={def.pondLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "pausePower":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0d1408 0%, #1d2a12 100%)">
+            <PausePower
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              holdLabel={def.holdLabel}
+              pausedLabel={def.pausedLabel}
+              nextPrompt={def.nextPrompt}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
               introNarration={def.narration}
@@ -3196,6 +3320,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <FirewallBuilder
+              skin={def.skin}
               bricks={def.bricks}
               hints={def.hints}
               introTitle={def.introTitle}
