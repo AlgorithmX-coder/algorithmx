@@ -32,6 +32,8 @@ export interface ChallengePanelProps {
   label?: string;
   /** When true the choices are disabled and an "already done" note shows. */
   alreadyActive?: boolean;
+  /** When true the choices are held because the host is speaking (no note). */
+  busy?: boolean;
   /** Bottom-sheet (narrow) vs side-card (wide). */
   isNarrow: boolean;
   /** Motion intensity (0 disables enter/exit motion). */
@@ -50,6 +52,7 @@ export default function ChallengePanel({
   icon,
   label,
   alreadyActive = false,
+  busy = false,
   isNarrow,
   intensity,
   onChoose,
@@ -190,9 +193,9 @@ export default function ChallengePanel({
           <button
             key={i}
             type="button"
-            disabled={alreadyActive}
+            disabled={alreadyActive || busy}
             onClick={() => {
-              if (alreadyActive) return;
+              if (alreadyActive || busy) return;
               onChoiceSound?.();
               onChoose(i);
             }}

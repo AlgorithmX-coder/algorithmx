@@ -354,7 +354,8 @@ export default function PasswordVault({
       const why = lock?.choices.find((c) => c.isCorrect)?.why;
       if (why) verdict.say("right", why);
     },
-    locked: climax.stage !== null || !established || showIntro || narr !== "idle",
+    // Taps are held while Sarah reads a question or says a verdict.
+    locked: climax.stage !== null || !established || showIntro || narr !== "idle" || verdict.speaking,
   });
 
   useEffect(() => {
@@ -466,7 +467,8 @@ export default function PasswordVault({
               {narr === "read" && readLock?.readAloud && (
                 <InfoNarration key={`pv-read-${readLock.id}`} speaker={voice} lines={[readLock.readAloud]} accent="#e3b341" recordedOnly onDone={() => setNarr("idle")} />
               )}
-              {showRevealUI && completeNarration && !payoffDone && (
+              {/* The payoff waits for the last verdict, or it stops Sarah mid-reason. */}
+              {showRevealUI && completeNarration && !payoffDone && !verdict.speaking && (
                 <InfoNarration key="pv-payoff" speaker={completeNarration.speaker ?? voice} lines={completeNarration.lines} accent="#7eff97" recordedOnly onDone={() => setPayoffDone(true)} />
               )}
             </div>
@@ -618,6 +620,7 @@ export default function PasswordVault({
                 icon={focusedLock.icon}
                 label={focusedLock.ruleLabel}
                 alreadyActive={hotspot.isActive(focusedLock.id)}
+                busy={narr !== "idle" || verdict.speaking}
                 isNarrow={isNarrow}
                 intensity={intensity}
                 onChoose={(idx) => hotspot.answer(focusedLock.id, idx)}
