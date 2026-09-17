@@ -151,6 +151,7 @@ export default function LessonHUD({
           </div>
         </div>
         <span
+          className="hud-duo-label"
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 700,
@@ -164,7 +165,7 @@ export default function LessonHUD({
       </div>
 
       {/* Rank badge + rank progress */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+      <div className="hud-rank" style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
           <div
             style={{
@@ -248,6 +249,7 @@ export default function LessonHUD({
         }}
       >
         <div
+          className="hud-title-row"
           style={{
             display: "flex",
             alignItems: "center",
@@ -256,6 +258,7 @@ export default function LessonHUD({
           }}
         >
           <div
+            className="hud-title"
             style={{
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 600,
@@ -389,6 +392,23 @@ export default function LessonHUD({
           0% { opacity: 0; transform: translateX(-6px) scale(0.92); }
           60% { opacity: 1; transform: translateX(2px) scale(1.04); }
           100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        /* Narrow screens (owner UAT 2026-09-17): the left group's children
+           cannot shrink, so below these widths they spilled under the week
+           title and the XP counter, and the title itself never truncated
+           (a flex item's default min-width). Drop the secondary rank block
+           first, then the ADAM & LAYLA label (the avatars stay), and let the
+           title truncate with its ellipsis. Thresholds measured against the
+           longest week title; 900px and wider is untouched. */
+        @media (max-width: 899px) {
+          .hud-rank { display: none !important; }
+        }
+        @media (max-width: 760px) {
+          .hud-duo-label { display: none !important; }
+          .hud-title { min-width: 0 !important; }
+          /* The title row is centred in its column, and a centred flex item
+             keeps its full natural width; cap it so the title can shrink. */
+          .hud-title-row { max-width: 100% !important; }
         }
       `}</style>
     </div>
