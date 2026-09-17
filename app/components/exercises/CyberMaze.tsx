@@ -272,10 +272,14 @@ export default function CyberMaze({
   const state = useRef({
     cellCol: 0,
     cellRow: 0,
-    fromX: 0,
-    fromY: 0,
-    toX: 0,
-    toY: 0,
+    // The hero rests at the centre of its start cell. The frame loop snaps
+    // x/y to toX/toY whenever no move is running, so the move target must
+    // start there too, or the hero sits in the canvas corner until the
+    // first move.
+    fromX: CELL / 2,
+    fromY: CELL / 2,
+    toX: CELL / 2,
+    toY: CELL / 2,
     tweenStart: 0,
     tweenDuration: 150,
     x: CELL / 2,
