@@ -4,8 +4,28 @@ import Link from "next/link";
 
 /**
  * Footer - dark 4-column. Brand / Subjects / Company / Legal.
+ *
+ * `bed`: "ink" (default) deepens to near-opaque ink behind the columns.
+ * "dusk" keeps a lighter, translucent bed so a backdrop with a horizon
+ * (the schools dawn skyline) still shows at the end of the page, and adds
+ * room below the columns so the copyright line sits above the rooftops.
  */
-export default function Footer() {
+const BEDS = {
+  ink:
+    "linear-gradient(to bottom, " +
+    "rgba(2,3,8,0) 0%, " +
+    "rgba(2,3,8,0.5) 10%, " +
+    "rgba(2,3,8,0.88) 26%, " +
+    "rgba(2,3,8,0.97) 100%)",
+  dusk:
+    "linear-gradient(to bottom, " +
+    "rgba(5,6,18,0) 0%, " +
+    "rgba(5,6,18,0.4) 16%, " +
+    "rgba(5,6,18,0.58) 48%, " +
+    "rgba(5,6,18,0.3) 100%)",
+} as const;
+
+export default function Footer({ bed = "ink" }: { bed?: keyof typeof BEDS } = {}) {
   return (
     <footer
       style={{
@@ -20,18 +40,15 @@ export default function Footer() {
          * and deepens to near-opaque ink by ~26% down, well before the
          * footer columns, so the text keeps its dark, legible bed. The
          * hard border is gone; the fade IS the divider. */
-        background:
-          "linear-gradient(to bottom, " +
-          "rgba(2,3,8,0) 0%, " +
-          "rgba(2,3,8,0.5) 10%, " +
-          "rgba(2,3,8,0.88) 26%, " +
-          "rgba(2,3,8,0.97) 100%)",
+        background: BEDS[bed],
         color: "rgba(232,237,255,0.7)",
         /* Extra bottom clearance (+72px) so the fixed Algo chip
          * (bottom-right of the viewport) floats over empty space at
          * page end instead of covering the copyright line. */
         padding:
-          "calc(var(--lv2-rail) * 2.4) var(--lv2-rail) calc(var(--lv2-rail) * 1 + 72px)",
+          bed === "dusk"
+            ? "calc(var(--lv2-rail) * 2.4) var(--lv2-rail) calc(var(--lv2-rail) + 48px + clamp(132px, 20vh, 210px))"
+            : "calc(var(--lv2-rail) * 2.4) var(--lv2-rail) calc(var(--lv2-rail) * 1 + 72px)",
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
