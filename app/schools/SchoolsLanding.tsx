@@ -218,7 +218,11 @@ export default function SchoolsLanding() {
     <>
       <GlobalBackdrop />
       <Nav />
-      <main style={{ position: "relative", color: "var(--lv2-paper)", minHeight: "100vh" }}>
+      {/* overflow-x: clip keeps the decorative section glows (negative right
+          offsets) from widening the page, which let phones pan sideways by
+          160px. clip, unlike hidden, is not a scroll container, so the
+          sticky section bar inside still sticks. */}
+      <main style={{ position: "relative", color: "var(--lv2-paper)", minHeight: "100vh", overflowX: "clip" }}>
         {/* HERO ────────────────────────────────────────────── */}
         <section className="sch-section sch-hero-section">
           <FadeUp>
