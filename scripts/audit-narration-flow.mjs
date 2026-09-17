@@ -226,6 +226,16 @@ function chainsFor(type, span) {
       if (read && teaches.length) chains.push({ name: "name tag (wrong mark): " + read.slice(0, 40) + "...", mode: "branch", beats: [read], branches: teaches });
     }
   }
+  if (type === "vaultDrop") {
+    // Week 9 dock skin: each parcel's label read aloud -> Sarah's why on the right shelf; the explanation answers a wrong one.
+    // (Week 2's treasures carry no readAloud, so this adds nothing there.)
+    for (const p of span.split(/\{\s*\n?\s*id:\s*(?=")/).slice(1)) {
+      const read = field(p, "readAloud"); if (!read) continue;
+      const why = field(p, "why"), wrong = field(p, "explanation"), label = field(p, "text") || "";
+      if (why) chains.push({ name: "parcel: " + read.slice(0, 40) + "...", mode: "chain", beats: [read, why], ctx: [label] });
+      if (wrong) chains.push({ name: "parcel (wrong shelf): " + read.slice(0, 40) + "...", mode: "branch", beats: [read], branches: [{ beat: wrong, ctx: label }] });
+    }
+  }
   if (type === "passwordVault") {
     // each hotspot: the question read aloud -> the right choice's why; each wrong choice's explanation answers it
     const parts = span.split(/\bruleLabel:\s*/).slice(1);
@@ -393,6 +403,35 @@ function chainsFor(type, span) {
     const beats = [dev, spot, ...leaks, decide, why].filter(Boolean);
     if (beats.length > 1) chains.push({ name: "developing tray", mode: "chain", beats });
     if (decide && body) chains.push({ name: "developing tray (shared it)", mode: "branch", beats: [decide], branches: [body] });
+  }
+  // Week 9 engines (rebuilt 2026-09-17).
+  if (type === "flipTheBox") {
+    // each box: the front read-aloud -> maker -> reviews -> asks (turning right) -> Sarah's why on the right call;
+    // whyWrong answers the asks side, the last one read before the call.
+    for (const p of span.split(/\bname:\s*(?=")/).slice(1)) {
+      const name = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      const reads = all(new RegExp("\\breadAloud:\\s*" + STR, "g"), p);
+      const why = field(p, "why"), wrong = field(p, "whyWrong");
+      if (reads.length && why) chains.push({ name: "flip the box: " + un(name), mode: "chain", beats: [...reads, why] });
+      if (reads.length && wrong) chains.push({ name: "flip the box: " + un(name) + " (wrong call)", mode: "branch", beats: [reads[reads.length - 1]], branches: [wrong] });
+    }
+  }
+  if (type === "testDrive" || type === "fourEyes") {
+    // testDrive: the app's read-aloud -> each minute as it is played -> Sarah's why on the right sticker.
+    // fourEyes:  the app's read-aloud -> each spot the grown-up finds -> Sarah's why on the right decision.
+    // In both, whyWrong answers the last thing Sarah read before the choice.
+    const listKey = type === "testDrive" ? "minutes" : "spots";
+    const endKey = type === "testDrive" ? "answer" : "rightMove";
+    for (const p of span.split(/\bappName:\s*/).slice(1)) {
+      const name = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      const read = field(p, "readAloud");
+      const a = p.indexOf(listKey + ":"), b = p.indexOf(endKey + ":", a);
+      const items = a >= 0 && b > a ? all(new RegExp("\\breadAloud:\\s*" + STR, "g"), p.slice(a, b)) : [];
+      const why = field(p, "why"), wrong = field(p, "whyWrong");
+      const label = (type === "testDrive" ? "test drive: " : "four eyes: ") + un(name);
+      if (read && why) chains.push({ name: label, mode: "chain", beats: [read, ...items, why] });
+      if (wrong) chains.push({ name: label + " (wrong choice)", mode: "branch", beats: [items.length ? items[items.length - 1] : read], branches: [wrong] });
+    }
   }
   return chains;
 }

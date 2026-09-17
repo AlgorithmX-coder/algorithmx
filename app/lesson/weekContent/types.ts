@@ -360,7 +360,7 @@ export type ScreenDef = (
       type: "passwordVault";
       /** Visual skin: the W1 holographic vault (default) or W4's "Hall of
        *  Mirrors" (magenta palette, mirror copy). */
-      skin?: "vault" | "mirrors";
+      skin?: "vault" | "mirrors" | "warehouse";
       /** Learn-Loop copy (Week 4). */
       introTitle?: string;
       introSubtitle?: string;
@@ -1155,6 +1155,120 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Flip the Box (Week 9, concept 3: why does it need that?), the week's
+       * signature as a concept game. Tap the arrows to turn an app box through
+       * its front, maker, reviews and asks sides; SAFE APP / BIN IT unlock once
+       * all four are seen. A wrong call turns the box to the side that gave it away.
+       */
+      type: "flipTheBox";
+      boxes: {
+        id: string;
+        name: string;
+        icon: string;
+        tagline: string;
+        stars?: number;
+        /** Sarah reads the front as the box rolls in. */
+        readAloud: string;
+        maker: { title?: string; text: string; readAloud: string; fishy: boolean };
+        reviews: { title?: string; text: string; readAloud: string; fishy: boolean };
+        asks: { job?: string; items: { label: string; icon: string; fishy: boolean }[]; readAloud: string };
+        rightMove: "install" | "bin";
+        why: string;
+        whyWrong: string;
+        wrongFace?: "maker" | "reviews" | "asks";
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      faceLabels?: Partial<Record<"front" | "maker" | "reviews" | "asks", string>>;
+      installLabel?: string;
+      binLabel?: string;
+      installToast?: string;
+      binToast?: string;
+      wrongTitle?: string;
+      wrongStamp?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      turnPrompt?: string;
+      decidePrompt?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Test Drive (Week 9, concept 4: FREE isn't free). TEST-DRIVE then
+       * FLIP: PLAY ONE MINUTE reveals each minute of a FREE app, the TIME /
+       * COINS / INFO meters fill with what it cost, then the FREE tag flips to
+       * four identical price stickers and the child taps the real price.
+       */
+      type: "testDrive";
+      rounds: {
+        id: string;
+        appName: string;
+        appIcon: string;
+        /** Sarah reads the app as it arrives. */
+        readAloud: string;
+        minutes: { id: string; text: string; icon: string; cost: "time" | "coins" | "info" | "none"; readAloud: string }[];
+        answer: "time" | "coins" | "info" | "free";
+        /** Sarah's reason on the right sticker ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach on a wrong sticker ("Not quite." + whyWrong). */
+        whyWrong: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      freeTag?: string;
+      playLabel?: string;
+      flipLabel?: string;
+      realPriceLabel?: string;
+      metersTitle?: string;
+      meterLabels?: Partial<Record<"time" | "coins" | "info", string>>;
+      priceLabels?: Partial<Record<"time" | "coins" | "info" | "free", string>>;
+      rightToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Four Eyes (Week 9, concept 5: install together with a grown-up). CALL
+       * then DECIDE TOGETHER: the child's view shows the shiny side of an app;
+       * CALL MY GROWN-UP opens a second view whose spotted details the child
+       * taps to read; INSTALL TOGETHER / SKIP IT TOGETHER unlock only after.
+       */
+      type: "fourEyes";
+      rounds: {
+        id: string;
+        appName: string;
+        appIcon: string;
+        kidView: { tagline: string; stars: string; perks: string[] };
+        readAloud: string;
+        spots: { id: string; label: string; icon: string; fishy: boolean; readAloud: string }[];
+        rightMove: "install" | "skip";
+        why: string;
+        whyWrong: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      yourEyesLabel?: string;
+      grownUpEyesLabel?: string;
+      callLabel?: string;
+      installLabel?: string;
+      skipLabel?: string;
+      getLabel?: string;
+      fishyChip?: string;
+      fineChip?: string;
+      installToast?: string;
+      skipToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * REVEAL engine (Week 2+). A board of face-down cards; tapping one
        * flips it and plays a short cause→effect vignette (2-4 beats), then
        * closes on a counter-line ("…so it stays PRIVATE") and stamps the
@@ -1205,8 +1319,22 @@ export type ScreenDef = (
         explanation: string;
         /** Sarah's reason on a RIGHT answer ("That's right!" + why); defaults to the wrong-side text. */
         why?: string;
+        /** Dock skin: Sarah reads the parcel label as it arrives (audio only). */
+        readAloud?: string;
       }[];
       hints?: { tier1: string; tier2: string };
+      /** "treasure" (Week 2, default) or "dock" (Week 9 Delivery Dock: isPrivate true = SEND IT BACK). */
+      skin?: "treasure" | "dock";
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** Dock skin: the two destination names (keep = first, away = second). */
+      destinationLabels?: { keep?: string; away?: string };
+      motto?: string;
+      rightToast?: string | { keep?: string; away?: string };
+      wrongTitle?: string | { keep?: string; away?: string };
+      completeTitle?: string;
+      completeLine?: string;
     }
   | {
       /**
@@ -1637,7 +1765,19 @@ export type ScreenDef = (
         readAloud: string;
         /** Sarah's reason on a correct lock ("That's right!" + rightWhy). */
         rightWhy: string;
+        /** App skin: the app's icon tile (a PixIcon emoji). */
+        appIcon?: string;
       }[];
+      /** "tag" (Week 4 name tags, default) or "app" (Week 9 app-store listing cards). */
+      skin?: "tag" | "app";
+      /** App skin: a small caption per piece row ("Name", "Maker", "Downloads"). */
+      pieceLabels?: string[];
+      realLabel?: string;
+      checkLabel?: string;
+      itemLabel?: string;
+      boardPrompt?: string;
+      doneLabel?: string;
+      caughtLabel?: { one: string; many: string };
       /** Copy overrides (defaults keep the W4 carnival skin). */
       introTitle?: string;
       introSubtitle?: string;

@@ -103,9 +103,9 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     audioSrc: "/audio/atlas/heroes-week-09.mp3",
     accent: "#2b7fff",
     points: [
-      { icon: "📱", label: "Spot fake apps" },
-      { icon: "🔍", label: "Check first" },
-      { icon: "👪", label: "Ask before you download" },
+      { icon: "📱", label: "Real shop only" },
+      { icon: "🔍", label: "Count the whiskers" },
+      { icon: "👪", label: "Install together" },
     ],
   },
   10: {

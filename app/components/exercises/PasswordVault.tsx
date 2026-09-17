@@ -13,6 +13,15 @@
  * / ChallengePanel / useClimaxSequence / useTimingScaler / RevealStage /
  * juice). Callback contract and questionKeys are `vault-{id}` +
  * `vault-opened`. Every flourish has a reduced-motion path.
+ *
+ * Skins (`skin` prop): "vault" is Week 1's holographic gateway (default),
+ * "mirrors" is Week 4's Hall of Mirrors (the same gateway, hue-shifted), and
+ * "warehouse" is Week 9's review "The Warehouse": a loading bay with five
+ * cardboard crates waiting on a conveyor under a big roller door. Tapping a
+ * crate opens its challenge; a checked crate gets a CHECKED stamp and slides
+ * up onto the real shop shelf; all five roll the door up into the reveal.
+ * Every mechanic, callback, questionKey, sound, narration beat and aria-label
+ * is shared by all three skins.
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -21,6 +30,7 @@ import GameButton from "@/app/components/lesson/GameButton";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import PixIcon from "@/app/components/lesson/PixIcon";
 import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
@@ -66,13 +76,20 @@ export interface PasswordVaultLock {
 export interface PasswordVaultProps {
   locks: PasswordVaultLock[];
   guidance?: { intro?: string; progress?: string; complete?: string };
-  /** "vault" (W1 holographic gateway) or "mirrors" (W4 Hall of Mirrors). */
-  skin?: "vault" | "mirrors";
+  /** "vault" (W1 holographic gateway, default), "mirrors" (W4 Hall of
+   *  Mirrors) or "warehouse" (W9 loading bay: five crates, a conveyor, the
+   *  real shop shelf and a roller door). */
+  skin?: "vault" | "mirrors" | "warehouse";
+  /** Default "The Password Vault" / "The Hall of Mirrors" (mirrors) / "The Warehouse" (warehouse). */
   introTitle?: string;
   introSubtitle?: string;
+  /** Default "🔐"; warehouse "🎁". */
   introIcon?: string;
+  /** Default "VAULT MASTER!"; warehouse "WAREHOUSE CLEARED!". */
   masterTitle?: string;
+  /** Default "Claim your secrets"; warehouse "Leave the warehouse". */
   claimLabel?: string;
+  /** Default "lock"; warehouse "crate". */
   hotspotNoun?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -163,6 +180,43 @@ const ARTIFACT_LAYOUT: { x: number; y: number; accent: string }[] = [
   { x:  42, y: -28, accent: "#a855f7" }, // secret (right)
 ];
 
+/* ── Warehouse skin (Week 9) ─────────────────────────────────────
+ * Everything is laid out inside the same DOOR_SIZE box as the gateway, so a
+ * crate's % offset feeds the camera exactly like a sigil's. Module constants
+ * only: nothing here changes between renders. */
+
+/** A crate's size (px). */
+const CRATE_W = 84;
+const CRATE_H = 80;
+/** Crate centres (% offsets from the bay centre), by lock index: waiting on
+ *  the conveyor, then up on the real shop shelf once checked. */
+const CRATE_BELT: { x: number; y: number }[] = [
+  { x: -36, y: 27 },
+  { x: -18, y: 27 },
+  { x: 0, y: 27 },
+  { x: 18, y: 27 },
+  { x: 36, y: 27 },
+];
+const CRATE_SHELF: { x: number; y: number }[] = CRATE_BELT.map((p) => ({ x: p.x, y: -33 }));
+/** px from the box top for a % offset from its centre. */
+const boxY = (pct: number) => DOOR_SIZE / 2 + (pct / 100) * DOOR_SIZE;
+/** The shelf plank runs under the checked crates; the belt under the waiting ones. */
+const SHELF_TOP = boxY(CRATE_SHELF[0].y) + CRATE_H / 2;
+const BELT_TOP = boxY(CRATE_BELT[0].y) + CRATE_H / 2;
+/** The roller door's frame (px in the box), between the shelf and the belt. */
+const BAY_DOOR = { left: 178, top: 200, width: 304, height: 250 };
+const BAY_DOOR_HEADER_H = 40;
+/** GatewayStatus sits at 13% of its container: this wrapper offset lands it on the door header. */
+const BAY_HUD_WRAP_TOP = BAY_DOOR.top + 14 - DOOR_SIZE * 0.13;
+/** Recap tile accents in the warehouse reveal. */
+const WAREHOUSE_ACCENTS = ["#66a9ff", "#ffb35c", "#7eff97", "#ffd166", "#c9a0ff"];
+const HAZARD_STRIPES = "repeating-linear-gradient(-45deg, #ffb020 0 10px, #1a1d24 10px 20px)";
+/** The same cardboard stock for every crate (no crate ever looks different before it is checked). */
+const CARDBOARD = "linear-gradient(180deg, #e2b27a 0%, #cf9a5e 55%, #b98145 100%)";
+/** Where a warehouse crate stands: on the belt, or on the shelf once checked. */
+const crateSpot = (index: number, shelved: boolean) =>
+  (shelved ? CRATE_SHELF : CRATE_BELT)[index % CRATE_BELT.length];
+
 /* ────────────────────────────────────────────────────────────── */
 /* Component                                                      */
 /* ────────────────────────────────────────────────────────────── */
@@ -173,10 +227,10 @@ export default function PasswordVault({
   skin = "vault",
   introTitle,
   introSubtitle,
-  introIcon = "🔐",
-  masterTitle = "VAULT MASTER!",
-  claimLabel = "Claim your secrets",
-  hotspotNoun = "lock",
+  introIcon: introIconProp,
+  masterTitle: masterTitleProp,
+  claimLabel: claimLabelProp,
+  hotspotNoun: hotspotNounProp,
   introNarration,
   coachLines,
   threat,
@@ -191,7 +245,17 @@ export default function PasswordVault({
   const fx = useExerciseFeedback();
   const { intensity, t, reduced } = useTimingScaler();
   const mirrors = skin === "mirrors";
+  const warehouse = skin === "warehouse";
+  // Copy defaults: the vault's words on "vault" and "mirrors" (exactly as
+  // before), the warehouse's own words on "warehouse". A prop always wins.
+  const introIcon = introIconProp ?? (warehouse ? "🎁" : "🔐");
+  const masterTitle = masterTitleProp ?? (warehouse ? "WAREHOUSE CLEARED!" : "VAULT MASTER!");
+  const claimLabel = claimLabelProp ?? (warehouse ? "Leave the warehouse" : "Claim your secrets");
+  const hotspotNoun = hotspotNounProp ?? (warehouse ? "crate" : "lock");
   const voice = "adam" as const;
+  // Warehouse: the crates already checked (they stand on the shelf, and the
+  // camera finds them there). Never changes on the other skins.
+  const [shelved, setShelved] = useState<Set<string>>(() => new Set());
 
   // Anti-sequence: every hotspot's choices are shuffled once per play (one
   // shuffle of all (lock, choice) pairs after mount, so a ?screen= deep-link's
@@ -257,7 +321,7 @@ export default function PasswordVault({
   const hotspotDefs: HotspotDef[] = useMemo(
     () =>
       locks.map((l, i) => {
-        const pos = LOCK_POSITIONS[l.id] ?? PENTAGON[i % PENTAGON.length];
+        const pos = warehouse ? crateSpot(i, shelved.has(l.id)) : LOCK_POSITIONS[l.id] ?? PENTAGON[i % PENTAGON.length];
         return {
           id: l.id,
           x: pos.x,
@@ -269,7 +333,7 @@ export default function PasswordVault({
           speaker: l.speaker,
         };
       }),
-    [locks],
+    [locks, warehouse, shelved],
   );
 
   /* ───────── Climax (engine) ───────── */
@@ -350,6 +414,8 @@ export default function PasswordVault({
       const lock = locks.find((l) => l.id === id);
       fx.correct({ xp: 30, text: `${lock?.ruleLabel ?? ""} ✓` });
       audio.unlock();
+      // Warehouse: the checked crate slides up onto the real shop shelf.
+      if (warehouse) setShelved((prev) => new Set(prev).add(id));
       // Spoken verdict: "That's right!" + the correct choice's why.
       const why = lock?.choices.find((c) => c.isCorrect)?.why;
       if (why) verdict.say("right", why);
@@ -388,15 +454,15 @@ export default function PasswordVault({
   const activeCount = hotspot.activeCount;
   const guidanceMessage = vaultLocked
     ? stage === "revealed" || stage === "master"
-      ? guidance?.complete ?? "VAULT OPEN - the Raccoon can't get in!"
+      ? guidance?.complete ?? (warehouse ? "DOOR OPEN! Every crate checked." : "VAULT OPEN - the Raccoon can't get in!")
       : stage === "unlocking"
-        ? "ACCESS GRANTED"
+        ? warehouse ? "ALL CHECKED" : "ACCESS GRANTED"
         : "Opening..."
     : activeCount === 0
       ? guidance?.intro ?? `Tap a glowing ${hotspotNoun} to begin.`
       : activeCount === locks.length - 1
         ? `One ${hotspotNoun} left!`
-        : guidance?.progress ?? `${activeCount} of ${locks.length} ${hotspotNoun}s ${mirrors ? "cleared" : "unlocked"}.`;
+        : guidance?.progress ?? `${activeCount} of ${locks.length} ${hotspotNoun}s ${mirrors ? "cleared" : warehouse ? "checked" : "unlocked"}.`;
 
   /* ───────── Reveal artifacts ───────── */
   const artifacts: RevealArtifact[] = useMemo(
@@ -407,21 +473,23 @@ export default function PasswordVault({
           icon: l.icon,
           label: l.ruleLabel,
           recap: l.recap ?? ARTIFACT_RECAP[l.id] ?? "",
-          accent: slot.accent,
+          accent: warehouse ? WAREHOUSE_ACCENTS[i % WAREHOUSE_ACCENTS.length] : slot.accent,
           x: slot.x,
           y: slot.y,
         };
       }),
-    [locks],
+    [locks, warehouse],
   );
 
   const focusedLock =
     hotspot.focusedId != null
       ? locks.find((l) => l.id === hotspot.focusedId) ?? null
       : null;
+  // Beams charge from each sigil into the core; in the warehouse, from each
+  // crate on the shelf down into the roller door.
   const beamPositions = useMemo(
-    () => locks.map((l, i) => LOCK_POSITIONS[l.id] ?? PENTAGON[i % PENTAGON.length]),
-    [locks],
+    () => locks.map((l, i) => (warehouse ? crateSpot(i, true) : LOCK_POSITIONS[l.id] ?? PENTAGON[i % PENTAGON.length])),
+    [locks, warehouse],
   );
   const charge = locks.length ? activeCount / locks.length : 0;
   const readLock = readId ? locks.find((l) => l.id === readId) : null;
@@ -431,7 +499,9 @@ export default function PasswordVault({
       aspectRatio={{ w: 16, h: 9 }}
       background={mirrors
         ? "radial-gradient(ellipse at 50% 36%, #4a0c3e 0%, #260721 45%, #12030f 100%)"
-        : "radial-gradient(ellipse at 50% 36%, #141a44 0%, #0a0e28 45%, #04050f 100%)"}
+        : warehouse
+          ? "radial-gradient(ellipse at 50% 36%, #12346a 0%, #0a2248 45%, #051228 100%)"
+          : "radial-gradient(ellipse at 50% 36%, #141a44 0%, #0a0e28 45%, #04050f 100%)"}
       camera={camera}
       cameraTransitionMs={cameraTransitionMs}
       focusBasis={DOOR_SIZE}
@@ -445,7 +515,7 @@ export default function PasswordVault({
           {/* Learn-Loop intro: the Raccoon's boast + Sarah's mission, one "I'm ready" gate. */}
           {showIntro && (
             <ExerciseIntroBeat
-              title={introTitle ?? (mirrors ? "The Hall of Mirrors" : "The Password Vault")}
+              title={introTitle ?? (mirrors ? "The Hall of Mirrors" : warehouse ? "The Warehouse" : "The Password Vault")}
               subtitle={introSubtitle}
               icon={introIcon}
               narration={introNarration}
@@ -484,16 +554,18 @@ export default function PasswordVault({
               zIndex: 30,
               padding: "8px 18px",
               borderRadius: 999,
-              background: vaultLocked ? "rgba(35, 24, 9, 0.8)" : "rgba(12, 17, 42, 0.72)",
+              background: vaultLocked ? "rgba(35, 24, 9, 0.8)" : warehouse ? "rgba(6, 22, 48, 0.82)" : "rgba(12, 17, 42, 0.72)",
               border: vaultLocked
                 ? "1px solid rgba(253, 224, 71, 0.55)"
-                : "1px solid rgba(125, 240, 255, 0.3)",
+                : warehouse
+                  ? "1px solid rgba(255, 176, 92, 0.45)"
+                  : "1px solid rgba(125, 240, 255, 0.3)",
               backdropFilter: "blur(8px)",
               fontFamily: TYPE.display,
               fontSize: 13,
               fontWeight: 700,
               letterSpacing: "0.02em",
-              color: vaultLocked ? "#fde047" : "#bfeaff",
+              color: vaultLocked ? "#fde047" : warehouse ? "#ffe2bf" : "#bfeaff",
               textShadow: vaultLocked ? "0 0 14px rgba(253,224,71,0.65)" : undefined,
               maxWidth: "92%",
               textAlign: "center",
@@ -575,8 +647,10 @@ export default function PasswordVault({
                   width: 240,
                   height: 240,
                   borderRadius: "50%",
-                  border: "4px solid rgba(125,240,255,0.95)",
-                  boxShadow: "0 0 34px rgba(0,229,255,0.7), inset 0 0 24px rgba(0,229,255,0.4)",
+                  border: warehouse ? "4px solid rgba(255,196,120,0.95)" : "4px solid rgba(125,240,255,0.95)",
+                  boxShadow: warehouse
+                    ? "0 0 34px rgba(255,176,92,0.7), inset 0 0 24px rgba(255,176,92,0.4)"
+                    : "0 0 34px rgba(0,229,255,0.7), inset 0 0 24px rgba(0,229,255,0.4)",
                   animation: "v2Ring 640ms cubic-bezier(0.2,0.8,0.2,1) forwards",
                 }}
               />
@@ -600,8 +674,9 @@ export default function PasswordVault({
                   width: 780,
                   height: 780,
                   transform: "translate(-50%, -50%)",
-                  background:
-                    "radial-gradient(circle at center, #ffffff 0%, rgba(125,240,255,0.7) 20%, rgba(124,92,255,0.4) 48%, transparent 74%)",
+                  background: warehouse
+                    ? "radial-gradient(circle at center, #ffffff 0%, rgba(255,226,176,0.75) 20%, rgba(102,169,255,0.4) 48%, transparent 74%)"
+                    : "radial-gradient(circle at center, #ffffff 0%, rgba(125,240,255,0.7) 20%, rgba(124,92,255,0.4) 48%, transparent 74%)",
                   filter: "blur(34px)",
                   pointerEvents: "none",
                   zIndex: 15,
@@ -724,16 +799,24 @@ export default function PasswordVault({
       {/* Keyframe libraries (mounted once) */}
       <JuiceKeyframes />
       <VaultV2FX />
+      {warehouse && <WarehouseFX />}
 
       {/* Camera-transformed world. The mirrors skin turns the cyan gateway
           magenta (the week's accent) with one hue shift on the world layer
-          only; the overlay's semantic greens and golds stay untouched. */}
+          only; the overlay's semantic greens and golds stay untouched. The
+          warehouse skin paints its own loading bay instead. */}
+      {warehouse ? (
+      <WarehouseBackdrop />
+      ) : (
       <div style={{ position: "absolute", inset: 0, filter: mirrors ? "hue-rotate(108deg) saturate(1.1)" : undefined }}>
       <SpaceField intensity={intensity} />
       <DataStreams intensity={intensity} muted={vaultLocked} />
       </div>
+      )}
 
       <div
+        // Warehouse: a hook for WarehouseFX's reveal-chamber repaint (steel blue, not cosmic purple).
+        className={warehouse ? "pv-wh-box" : undefined}
         style={{
           position: "absolute",
           top: "50%",
@@ -748,7 +831,7 @@ export default function PasswordVault({
         <RevealStage
           visible={revealVisible}
           active={revealActive}
-          centrepiece={<RelicCore intensity={intensity} />}
+          centrepiece={warehouse ? <CrateRelic intensity={intensity} /> : <RelicCore intensity={intensity} />}
           artifacts={artifacts}
           onCentrepieceReveal={() => audio.starEarned()}
           onArtifactReveal={() => audio.starEarned()}
@@ -756,6 +839,36 @@ export default function PasswordVault({
         {revealActive && <SparkleField intensity={intensity} />}
         {revealActive && <ChamberDust intensity={intensity} />}
 
+        {warehouse ? (
+          <WarehouseBay
+            open={gatewayOpen}
+            statusStage={stage}
+            activeCount={activeCount}
+            totalLocks={locks.length}
+            doorReject={doorReject}
+            intensity={intensity}
+          >
+            {(stage === "anticipation" || stage === "unlocking") && (
+              <Beams positions={beamPositions} intensity={intensity} />
+            )}
+            {locks.map((lock, i) => (
+              <CrateLock
+                key={lock.id}
+                lock={lock}
+                index={i}
+                shelved={shelved.has(lock.id)}
+                entered={established}
+                active={hotspot.isActive(lock.id)}
+                focused={hotspot.focusedId === lock.id}
+                activatedJustNow={hotspot.recentlyActivated === lock.id}
+                disabled={!!hotspot.wrong || vaultLocked || !established}
+                glowing={armed || stage === "anticipation" || stage === "unlocking"}
+                intensity={intensity}
+                onTap={() => hotspot.focusHotspot(lock.id)}
+              />
+            ))}
+          </WarehouseBay>
+        ) : (
         <EnergyGateway
           open={gatewayOpen}
           armed={armed}
@@ -787,6 +900,7 @@ export default function PasswordVault({
             />
           ))}
         </EnergyGateway>
+        )}
       </div>
     </SceneShell>
   );
@@ -1592,5 +1706,606 @@ function VaultV2FX() {
         100% { transform: scale(1); }
       }
     `}</style>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────── */
+/* Warehouse art (Week 9 skin)                                    */
+/* ────────────────────────────────────────────────────────────── */
+
+/**
+ * Warehouse keyframes, plus the reveal chamber repainted steel blue. The shared
+ * RevealStage paints its chamber and its floor as its first two children; these
+ * rules override only that paint, and only inside the warehouse box, so the
+ * artifacts, the relic and every other skin stay untouched.
+ */
+function WarehouseFX() {
+  return (
+    <style>{`
+      .pv-wh-box > div:first-child > div:nth-child(1) {
+        background: radial-gradient(ellipse at 50% 32%, #1d4a86 0%, #0d2a55 45%, #041022 100%) !important;
+        box-shadow: inset 0 0 70px rgba(0,0,0,0.9), inset 0 0 0 2px rgba(255,176,92,0.28) !important;
+      }
+      .pv-wh-box > div:first-child > div:nth-child(2) {
+        background: linear-gradient(180deg, transparent 0%, rgba(13,42,85,0.55) 35%, rgba(4,16,34,0.95) 100%), repeating-linear-gradient(90deg, transparent 0 39px, rgba(255,176,92,0.16) 39px 40px), repeating-linear-gradient(0deg, transparent 0 39px, rgba(102,194,255,0.1) 39px 40px) !important;
+        border-top-color: rgba(255,176,92,0.3) !important;
+        box-shadow: inset 0 12px 24px rgba(43,127,255,0.25), 0 -1px 14px rgba(255,176,92,0.18) !important;
+      }
+      @keyframes whBelt {
+        from { background-position: 0 0; }
+        to   { background-position: 20px 0; }
+      }
+      @keyframes whLamp {
+        0%, 100% { opacity: 1; }
+        50%      { opacity: 0.35; }
+      }
+    `}</style>
+  );
+}
+
+/** The loading bay's walls: corrugated steel, the roof beam and its hanging lamps, far pallet racks and the floor. */
+function WarehouseBackdrop() {
+  // The floor line sits just under the conveyor's feet. The world layer is
+  // centred on the bay box, so a px offset from 50% lines up with the box.
+  const floorBelowCentre = BELT_TOP + 22 + 14 + 32 - DOOR_SIZE / 2;
+  const rackEdge = `calc(50% + ${DOOR_SIZE / 2 + 24}px)`;
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        background: "linear-gradient(180deg, #10305f 0%, #0b2550 52%, #081c3c 100%)",
+      }}
+    >
+      {/* Corrugated steel wall */}
+      <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(90deg, rgba(255,255,255,0.055) 0 3px, rgba(0,0,0,0.14) 3px 6px, transparent 6px 30px)" }} />
+
+      {/* Pallet racks along the far walls: dim, and plain wrapped pallets (never cardboard crates) */}
+      {[-1, 1].map((side) => (
+        <div
+          key={side}
+          style={{
+            position: "absolute",
+            top: "16%",
+            bottom: 0,
+            left: side > 0 ? rackEdge : undefined,
+            right: side < 0 ? rackEdge : undefined,
+            width: 260,
+            opacity: 0.3,
+          }}
+        >
+          <span style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 8, background: "#5877a8" }} />
+          <span style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 8, background: "#5877a8" }} />
+          {[30, 60, 90].map((top) => (
+            <span key={top} style={{ position: "absolute", left: 0, right: 0, top: `${top}%`, height: 8, background: "#d9822b" }} />
+          ))}
+          {[[14, 30], [132, 30], [70, 60], [22, 90], [150, 90]].map(([left, top]) => (
+            <span
+              key={`${left}-${top}`}
+              style={{
+                position: "absolute",
+                left,
+                top: `calc(${top}% - 52px)`,
+                width: 88,
+                height: 52,
+                borderRadius: 4,
+                background: "linear-gradient(180deg, #3d5d8a 0%, #263f66 100%)",
+                boxShadow: "inset 0 2px 0 rgba(255,255,255,0.14)",
+              }}
+            />
+          ))}
+        </div>
+      ))}
+
+      {/* Roof beam and three hanging lamps with warm light cones */}
+      <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 18, background: "linear-gradient(180deg, #34507c 0%, #1f3354 100%)", boxShadow: "0 6px 14px rgba(0,0,0,0.45)" }} />
+      {[18, 50, 82].map((left) => (
+        <div key={left} style={{ position: "absolute", top: 0, left: `${left}%`, width: 0, height: 0 }}>
+          <span style={{ position: "absolute", left: -1, top: 0, width: 2, height: 22, background: "#2c3e5c" }} />
+          <span style={{ position: "absolute", left: -20, top: 20, width: 40, height: 14, borderRadius: "20px 20px 4px 4px", background: "linear-gradient(180deg, #3b5078 0%, #22324d 100%)" }} />
+          <span style={{ position: "absolute", left: -8, top: 30, width: 16, height: 8, borderRadius: "50%", background: "#ffe6bd", boxShadow: "0 0 18px 6px rgba(255,200,120,0.55)" }} />
+          <span
+            style={{
+              position: "absolute",
+              left: -160,
+              top: 34,
+              width: 320,
+              height: 380,
+              background: "radial-gradient(ellipse at 50% 0%, rgba(255,200,130,0.2) 0%, rgba(255,200,130,0.06) 45%, transparent 72%)",
+              clipPath: "polygon(44% 0, 56% 0, 100% 100%, 0 100%)",
+            }}
+          />
+        </div>
+      ))}
+
+      {/* Concrete floor with a safety stripe along its edge */}
+      <div style={{ position: "absolute", left: 0, right: 0, top: `calc(50% + ${floorBelowCentre}px)`, bottom: 0, background: "linear-gradient(180deg, #1d2838 0%, #111925 100%)", borderTop: "3px solid #33455f" }} />
+      <div style={{ position: "absolute", left: 0, right: 0, top: `calc(50% + ${floorBelowCentre - 9}px)`, height: 9, background: HAZARD_STRIPES, opacity: 0.75 }} />
+    </div>
+  );
+}
+
+/**
+ * The loading bay inside the gateway box: the real shop shelf up top, the big
+ * roller door in the middle (its header carries the HUD readout and one lamp
+ * per crate), the conveyor underneath. The crates (children) stand on top.
+ */
+function WarehouseBay({
+  open,
+  statusStage,
+  activeCount,
+  totalLocks,
+  doorReject,
+  intensity,
+  children,
+}: {
+  open: boolean;
+  statusStage: string | null;
+  activeCount: number;
+  totalLocks: number;
+  doorReject: number;
+  intensity: number;
+  children: React.ReactNode;
+}) {
+  const hot = statusStage === "armed" || statusStage === "anticipation" || statusStage === "unlocking";
+  // The door teases open on "unlocking", then rolls all the way up.
+  const lift = open ? "translateY(-102%)" : statusStage === "unlocking" ? "translateY(-8%)" : "translateY(0)";
+  // The belt runs while crates are still waiting on it.
+  const beltMoving = intensity > 0 && statusStage === null;
+  const post: React.CSSProperties = {
+    position: "absolute",
+    top: SHELF_TOP - 150,
+    width: 10,
+    height: 190,
+    borderRadius: 3,
+    background: "linear-gradient(90deg, #8fb0de, #5b7aa8)",
+  };
+  return (
+    <>
+      {/* Fixtures: they hold while the door rolls up, then fade into the reveal. */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          opacity: open ? 0 : 1,
+          transition: open ? "opacity 520ms ease 480ms" : "opacity 300ms ease",
+        }}
+      >
+        {/* The real shop shelf */}
+        <span style={{ ...post, left: 20 }} />
+        <span style={{ ...post, right: 20 }} />
+        <div
+          style={{
+            position: "absolute",
+            left: 14,
+            right: 14,
+            top: SHELF_TOP,
+            height: 24,
+            borderRadius: 4,
+            display: "grid",
+            placeItems: "center",
+            background: "linear-gradient(180deg, #b9cff0 0%, #7896c4 50%, #56729e 100%)",
+            boxShadow: "0 10px 16px rgba(0,0,0,0.5)",
+          }}
+        >
+          <span style={{ fontFamily: TYPE.mono, fontSize: 10, fontWeight: 800, letterSpacing: "0.3em", color: "#0b1f3d" }}>REAL SHOP SHELF</span>
+        </div>
+
+        {/* The big roller door, in a striped frame */}
+        <div
+          style={{
+            position: "absolute",
+            left: BAY_DOOR.left,
+            top: BAY_DOOR.top,
+            width: BAY_DOOR.width,
+            height: BAY_DOOR.height,
+            padding: 8,
+            borderRadius: 10,
+            background: HAZARD_STRIPES,
+            boxShadow: "0 16px 30px rgba(0,0,0,0.6)",
+          }}
+        >
+          <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: 5, overflow: "hidden" }}>
+            {/* Header: the status readout's panel and one lamp per crate */}
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: 0,
+                height: BAY_DOOR_HEADER_H,
+                zIndex: 2,
+                background: "linear-gradient(180deg, #23344f 0%, #16223a 100%)",
+                borderBottom: "2px solid #0a1322",
+              }}
+            >
+              <div style={{ position: "absolute", left: 0, right: 0, bottom: 6, display: "flex", justifyContent: "center", gap: 9 }}>
+                {Array.from({ length: totalLocks }, (_, i) => {
+                  const lit = i < activeCount;
+                  return (
+                    <span
+                      key={i}
+                      style={{
+                        width: 9,
+                        height: 9,
+                        borderRadius: "50%",
+                        background: hot ? "#ffd166" : lit ? "#7eff97" : "#33445f",
+                        boxShadow: hot ? "0 0 10px #ffb020" : lit ? "0 0 8px rgba(126,255,151,0.8)" : "inset 0 1px 2px rgba(0,0,0,0.6)",
+                        transition: "background 240ms ease",
+                        animation: hot && intensity > 0 ? "whLamp 0.6s ease-in-out infinite" : undefined,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+            {/* The slats */}
+            <div style={{ position: "absolute", left: 0, right: 0, top: BAY_DOOR_HEADER_H, bottom: 0, overflow: "hidden" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  transform: lift,
+                  transition: `transform ${intensity === 0 ? 0 : open ? 760 : 420}ms cubic-bezier(0.5, 0, 0.2, 1)`,
+                  background: "repeating-linear-gradient(180deg, #6887b3 0 17px, #4d6a95 17px 19px, #34507a 19px 22px)",
+                  boxShadow: "inset 0 -10px 18px rgba(0,0,0,0.35)",
+                }}
+              >
+                <span style={{ position: "absolute", left: "50%", bottom: 12, width: 54, height: 8, marginLeft: -27, borderRadius: 4, background: "#23344f", boxShadow: "inset 0 2px 0 rgba(255,255,255,0.2)" }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* The conveyor the crates wait on: belt, striped side panel, legs */}
+        <div
+          style={{
+            position: "absolute",
+            left: 24,
+            right: 24,
+            top: BELT_TOP,
+            height: 22,
+            borderRadius: 11,
+            background: "repeating-linear-gradient(90deg, #2c374b 0 16px, #1b2332 16px 20px)",
+            boxShadow: "inset 0 3px 4px rgba(255,255,255,0.12), 0 6px 10px rgba(0,0,0,0.55)",
+            animation: beltMoving ? "whBelt 1.4s linear infinite" : undefined,
+          }}
+        />
+        <div style={{ position: "absolute", left: 34, right: 34, top: BELT_TOP + 22, height: 14, background: HAZARD_STRIPES, boxShadow: "0 6px 10px rgba(0,0,0,0.45)" }} />
+        {[64, DOOR_SIZE / 2 - 5, DOOR_SIZE - 74].map((left) => (
+          <span key={left} style={{ position: "absolute", left, top: BELT_TOP + 36, width: 10, height: 32, background: "linear-gradient(90deg, #6f86aa, #465a7c)" }} />
+        ))}
+      </div>
+
+      {/* HUD readout on the door header (the gateway's words, warehouse copy) */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: BAY_HUD_WRAP_TOP,
+          height: DOOR_SIZE,
+          pointerEvents: "none",
+          opacity: open ? 0 : 1,
+          transition: "opacity 300ms ease",
+        }}
+      >
+        <GatewayStatus statusStage={statusStage} activeCount={activeCount} totalLocks={totalLocks} statusWord="CHECKED" openWord="DOOR OPEN" />
+      </div>
+
+      {/* Wrong-answer reject pulse */}
+      {doorReject > 0 && (
+        <span
+          key={doorReject}
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: -10,
+            borderRadius: "50%",
+            background: "radial-gradient(circle at center, rgba(239,68,68,0.5), transparent 68%)",
+            pointerEvents: "none",
+            mixBlendMode: "screen",
+            animation: "cineReject 480ms ease-out",
+            zIndex: 4,
+          }}
+        />
+      )}
+
+      {/* Crates + beams: fade once the door has rolled up */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: open ? 0 : 1,
+          pointerEvents: open ? "none" : "auto",
+          transition: open ? "opacity 480ms ease 420ms" : "opacity 420ms ease",
+        }}
+      >
+        {children}
+      </div>
+    </>
+  );
+}
+
+/** A cardboard shipping crate: the warehouse skin's lock. Same aria contract as HexSigil. */
+function CrateLock({
+  lock,
+  index,
+  shelved,
+  entered,
+  active,
+  focused,
+  activatedJustNow,
+  disabled,
+  glowing,
+  intensity,
+  onTap,
+}: {
+  lock: PasswordVaultLock;
+  index: number;
+  /** Checked: it stands on the real shop shelf instead of the conveyor. */
+  shelved: boolean;
+  entered: boolean;
+  active: boolean;
+  focused: boolean;
+  activatedJustNow: boolean;
+  disabled: boolean;
+  /** The climax is charging (every crate glows amber). */
+  glowing: boolean;
+  intensity: number;
+  onTap: () => void;
+}) {
+  const pos = crateSpot(index, shelved);
+  const [hover, setHover] = useState(false);
+  const lifted = hover && !active && !disabled && intensity > 0;
+  const slideMs = intensity === 0 ? 0 : 760;
+
+  return (
+    <button
+      type="button"
+      onClick={onTap}
+      disabled={disabled}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      aria-label={`${lock.ruleLabel} lock - ${active ? "unlocked" : "tap to try"}`}
+      style={{
+        position: "absolute",
+        top: `${50 + pos.y}%`,
+        left: `${50 + pos.x}%`,
+        transform: "translate(-50%, -50%)",
+        width: CRATE_W,
+        height: CRATE_H,
+        minWidth: 44,
+        minHeight: 44,
+        border: "none",
+        background: "transparent",
+        padding: 0,
+        cursor: disabled ? "default" : "pointer",
+        WebkitTapHighlightColor: "transparent",
+        opacity: entered || intensity === 0 ? 1 : 0,
+        // The slide up to the shelf waits for the CHECKED stamp to land.
+        transition: `opacity 460ms ease ${index * 90}ms, top ${slideMs}ms cubic-bezier(0.22, 1, 0.36, 1) ${slideMs ? 380 : 0}ms`,
+        outline: "none",
+      }}
+    >
+      {/* Glow under the crate: blue while it waits, green once checked, amber while the door charges */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: -14,
+          right: -14,
+          top: -10,
+          bottom: -14,
+          borderRadius: 20,
+          background: glowing
+            ? "radial-gradient(ellipse, rgba(255,196,120,0.55) 0%, transparent 70%)"
+            : active
+              ? "radial-gradient(ellipse, rgba(126,255,151,0.42) 0%, transparent 70%)"
+              : "radial-gradient(ellipse, rgba(102,169,255,0.5) 0%, transparent 70%)",
+          filter: lifted ? "blur(11px) brightness(1.35)" : "blur(9px)",
+          transition: "filter 180ms ease",
+          animation: !active && !focused && !hover && intensity > 0 ? "cineLockPulse 2.4s ease-in-out infinite" : undefined,
+        }}
+      />
+      <motion.span
+        aria-hidden
+        animate={
+          activatedJustNow && intensity > 0
+            ? { scale: [1, 1.18, 0.96, 1], rotate: [0, -5, 3, 0] }
+            : { scale: lifted ? 1.07 : 1, rotate: 0 }
+        }
+        transition={activatedJustNow ? { duration: 0.55 } : { type: "spring", stiffness: 360, damping: 22 }}
+        style={{ position: "absolute", inset: 0, display: "block" }}
+      >
+        {/* The box: the same cardboard, tape and label paper on every crate */}
+        <span
+          style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: 7,
+            background: CARDBOARD,
+            border: `2px solid ${focused ? "#66c2ff" : "#9a6a36"}`,
+            boxShadow: focused
+              ? "0 0 0 3px rgba(102,194,255,0.55), 0 0 18px rgba(102,194,255,0.7)"
+              : "inset 0 -6px 0 rgba(0,0,0,0.12), 0 12px 16px -8px rgba(0,0,0,0.75)",
+            overflow: "hidden",
+          }}
+        >
+          <span style={{ position: "absolute", left: 0, right: 0, top: 18, height: 2, background: "rgba(90,55,20,0.4)" }} />
+          <span style={{ position: "absolute", left: "50%", top: 0, width: 16, height: 20, marginLeft: -8, background: "rgba(43,127,255,0.55)" }} />
+          <span style={{ position: "absolute", left: 0, right: 0, top: 21, display: "grid", placeItems: "center" }}>
+            <PixIcon emoji={lock.icon} size={28} />
+          </span>
+          {/* The shipping label: the crate's power */}
+          <span
+            style={{
+              position: "absolute",
+              left: 5,
+              right: 5,
+              bottom: 5,
+              minHeight: 20,
+              padding: "2px 3px",
+              borderRadius: 3,
+              display: "grid",
+              placeItems: "center",
+              background: "#fffdf7",
+              boxShadow: "0 1px 2px rgba(0,0,0,0.3)",
+              fontFamily: TYPE.display,
+              fontSize: 8.5,
+              fontWeight: 800,
+              lineHeight: 1.05,
+              letterSpacing: "0.03em",
+              color: "#2a1a08",
+              textAlign: "center",
+            }}
+          >
+            {lock.ruleLabel}
+          </span>
+        </span>
+        {/* CHECKED stamp: lands on a crate the moment its question is answered right */}
+        {active && (
+          <motion.span
+            initial={intensity > 0 ? { opacity: 0, scale: 1.9, rotate: -26 } : { opacity: 0 }}
+            animate={{ opacity: 1, scale: 1, rotate: -14 }}
+            transition={intensity > 0 ? { type: "spring", stiffness: 420, damping: 16 } : { duration: 0.15 }}
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "46%",
+              x: "-50%",
+              y: "-50%",
+              padding: "2px 7px",
+              border: "3px solid #1f9d55",
+              borderRadius: 5,
+              color: "#15803d",
+              background: "rgba(255,255,255,0.86)",
+              fontFamily: TYPE.display,
+              fontSize: 12.5,
+              fontWeight: 900,
+              letterSpacing: "0.1em",
+              whiteSpace: "nowrap",
+              pointerEvents: "none",
+            }}
+          >
+            CHECKED
+          </motion.span>
+        )}
+      </motion.span>
+
+      {/* Activation shockwave */}
+      {activatedJustNow && intensity > 0 && (
+        <span aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", pointerEvents: "none" }}>
+          <span
+            style={{
+              display: "block",
+              width: 100,
+              height: 100,
+              borderRadius: "50%",
+              border: "3px solid rgba(126,255,151,0.9)",
+              boxShadow: "0 0 16px rgba(126,255,151,0.6)",
+              animation: "v2Ring 680ms cubic-bezier(0.2,0.8,0.2,1) forwards",
+            }}
+          />
+        </span>
+      )}
+    </button>
+  );
+}
+
+/** The warehouse reveal's relic: a steel-blue shield with a checked crate on it. */
+function CrateRelic({ intensity }: { intensity: number }) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: 168,
+        height: 193,
+        animation: intensity > 0 ? "cineShieldFloat 4.5s ease-in-out infinite" : undefined,
+        filter: "drop-shadow(0 14px 28px rgba(255,176,92,0.35)) drop-shadow(0 0 22px rgba(43,127,255,0.45))",
+      }}
+    >
+      {intensity > 0 && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: -46,
+            borderRadius: "50%",
+            background:
+              "conic-gradient(from 0deg, rgba(255,196,120,0.55) 0deg, transparent 16deg, rgba(102,169,255,0.4) 60deg, transparent 78deg, rgba(255,196,120,0.55) 120deg, transparent 138deg, rgba(126,255,151,0.35) 200deg, transparent 220deg, rgba(255,196,120,0.55) 280deg, transparent 300deg)",
+            filter: "blur(7px)",
+            opacity: 0.5,
+            mixBlendMode: "screen",
+            animation: "v2HaloSpin 16s linear infinite",
+          }}
+        />
+      )}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: -12,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255,196,120,0.45) 0%, rgba(43,127,255,0.22) 45%, transparent 68%)",
+          filter: "blur(10px)",
+          animation: intensity > 0 ? "cineCoreAura 4s ease-in-out infinite" : undefined,
+        }}
+      />
+      <svg viewBox="0 0 200 230" width="168" height="193" style={{ display: "block", position: "relative" }}>
+        <defs>
+          <linearGradient id="whRelicFill" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#7db6ff" />
+            <stop offset="55%" stopColor="#2b7fff" />
+            <stop offset="100%" stopColor="#1a4fb8" />
+          </linearGradient>
+          <linearGradient id="whRelicRim" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffe7c2" />
+            <stop offset="50%" stopColor="#ffb35c" />
+            <stop offset="100%" stopColor="#d9731a" />
+          </linearGradient>
+        </defs>
+        <path d="M100 8 L184 38 V120 C184 168 148 200 100 220 C52 200 16 168 16 120 V38 Z" fill="url(#whRelicFill)" stroke="url(#whRelicRim)" strokeWidth="5" />
+        <path d="M100 30 L162 53 V118 C162 156 134 184 100 200 C66 184 38 156 38 118 V53 Z" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.5" />
+        {/* A cardboard crate with blue packing tape */}
+        <rect x="64" y="56" width="72" height="62" rx="5" fill="#d9a066" stroke="#9a6a36" strokeWidth="3" />
+        <rect x="65.5" y="57.5" width="69" height="13" fill="#c28a4f" />
+        <rect x="93" y="57.5" width="14" height="59" fill="rgba(43,127,255,0.55)" />
+        {/* The big green check */}
+        <path d="M 76 90 L 94 106 L 126 72" stroke="#14532d" strokeWidth="12" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M 76 90 L 94 106 L 126 72" stroke="#7eff97" strokeWidth="6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <text x="100" y="148" textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight="900" fontSize="11" fill="#ffffff" letterSpacing="2">EVERY CRATE</text>
+        <text x="100" y="166" textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight="900" fontSize="13" fill="#ffffff" letterSpacing="2.5">CHECKED</text>
+      </svg>
+      {intensity > 0 && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            overflow: "hidden",
+            clipPath: "polygon(50% 3%, 92% 17%, 92% 52%, 50% 96%, 8% 52%, 8% 17%)",
+            pointerEvents: "none",
+          }}
+        >
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              width: "45%",
+              background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)",
+              mixBlendMode: "screen",
+              animation: "v2Shine 3.4s ease-in-out infinite",
+            }}
+          />
+        </span>
+      )}
+    </div>
   );
 }
