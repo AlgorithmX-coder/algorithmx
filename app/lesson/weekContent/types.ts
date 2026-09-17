@@ -710,6 +710,138 @@ export type ScreenDef = (
     }
   | {
       /**
+       * The Chat Fixer (Week 6, "game chat is for game talk"). The SWAP drill:
+       * an outgoing chat message as word tiles; tap the tile that leaks
+       * real-life info, pick the safe swap chip, then SEND. Clean messages are
+       * sent as they stand (zero fixes is a legal, sometimes right, answer).
+       */
+      type: "chatFixer";
+      messages: {
+        id: string;
+        /** Word tiles in order. */
+        tiles: string[];
+        /** Index of the leaking tile; omit when the message is already clean. */
+        leakIndex?: number;
+        /** Sarah reads the message as it appears. */
+        readAloud: string;
+        /** Three swap chips for the leaky tile; exactly one isSafe. */
+        chips?: { text: string; isSafe: boolean; whyWrong: string }[];
+        /** Sarah's reason on a correct SEND ("That's right!" + why). */
+        why: string;
+        /** WrongAnswerPanel when SEND is tapped with the leak still in. */
+        whyWrong: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      chatTitle?: string;
+      sendLabel?: string;
+      tileHint?: string;
+      cleanToast?: string;
+      fixedToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Lobby Doors (Week 6, "lock your lobby"). The GATEKEEP drill and the
+       * tap-only remake of the old Lobby Keeper: players wait at the lobby
+       * doors one at a time; LET IN anyone wearing the team badge, DENY
+       * anyone without one. Between waves a settings card flips Friends only
+       * ON, and the second wave shows only badge friends reach the door.
+       */
+      type: "lobbyDoors";
+      waves: {
+        id: string;
+        friendsOnly: boolean;
+        players: { id: string; name: string; hasBadge: boolean; readAloud: string; why: string; whyWrong: string }[];
+      }[];
+      toggleCard?: { title: string; text: string; buttonLabel: string; readAloud: string; why: string };
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      letInLabel?: string;
+      denyLabel?: string;
+      badgeLabel?: string;
+      toggleLabel?: string;
+      letInToast?: string;
+      denyToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Guard Count (Week 6, "let's chat somewhere else"; Week 9 skin
+       * "install"). The CHECKLIST drill: tap each guard slot on each panel to
+       * see whether it is there, then tap the room to stay in (or INSTALL /
+       * NOT THIS ONE in the install skin).
+       */
+      type: "guardCount";
+      skin?: "rooms" | "install";
+      rounds: {
+        id: string;
+        prompt: string;
+        readAloud: string;
+        panels: {
+          id: string;
+          title: string;
+          icon?: string;
+          slots: { id: string; label: string; present: boolean; readAloud: string }[];
+          isSafe: boolean;
+        }[];
+        why: string;
+        whyWrong: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      slotHint?: string;
+      chooseHint?: string;
+      stayLabel?: string;
+      installLabel?: string;
+      refuseLabel?: string;
+      presentWord?: string;
+      missingWord?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Power Panel (Week 6, "report and block"; Week 10 skin "player").
+       * The FIND IN ORDER drill: a menu crowded with buttons whose layout
+       * changes every round; tap the three hero buttons in order (REPORT,
+       * BLOCK, TELL). Decoys and wrong-order taps teach and wait.
+       */
+      type: "powerPanel";
+      skin?: "menu" | "player";
+      rounds: {
+        id: string;
+        prompt: string;
+        readAloud: string;
+        layout: "grid" | "list" | "sidebar";
+        buttons: { id: string; label: string; step?: 1 | 2 | 3; note?: string }[];
+        /** Teach for skipping step 1 / skipping step 2. */
+        stepTeach: [string, string];
+        why: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      panelTitle?: string;
+      stepLabels?: [string, string, string];
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * Password Hospital - the construction (vs recognition) exercise.
        *
        * Each "patient" is a weak password. The child:

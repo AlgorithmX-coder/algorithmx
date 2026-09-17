@@ -78,6 +78,10 @@ import PlaquePeek from "@/app/components/exercises/PlaquePeek";
 import GrowthRings from "@/app/components/exercises/GrowthRings";
 import PasscodeForge from "@/app/components/exercises/PasscodeForge";
 import DontFeedTheFire from "@/app/components/exercises/signatures/DontFeedTheFire";
+import ChatFixer from "@/app/components/exercises/ChatFixer";
+import LobbyDoors from "@/app/components/exercises/LobbyDoors";
+import GuardCount from "@/app/components/exercises/GuardCount";
+import PowerPanel from "@/app/components/exercises/PowerPanel";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -2166,6 +2170,141 @@ function DynamicLessonInner({
                 if (!o.wasCorrect) {
                   progress.reportWrong(screen, o.questionKey);
                 }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "chatFixer":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0618 0%, #1c0c34 100%)">
+            <ChatFixer
+              messages={def.messages}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              chatTitle={def.chatTitle}
+              sendLabel={def.sendLabel}
+              tileHint={def.tileHint}
+              cleanToast={def.cleanToast}
+              fixedToast={def.fixedToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "lobbyDoors":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0618 0%, #1c0c34 100%)">
+            <LobbyDoors
+              waves={def.waves}
+              toggleCard={def.toggleCard}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              letInLabel={def.letInLabel}
+              denyLabel={def.denyLabel}
+              badgeLabel={def.badgeLabel}
+              toggleLabel={def.toggleLabel}
+              letInToast={def.letInToast}
+              denyToast={def.denyToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "guardCount":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0618 0%, #1c0c34 100%)">
+            <GuardCount
+              skin={def.skin}
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              slotHint={def.slotHint}
+              chooseHint={def.chooseHint}
+              stayLabel={def.stayLabel}
+              installLabel={def.installLabel}
+              refuseLabel={def.refuseLabel}
+              presentWord={def.presentWord}
+              missingWord={def.missingWord}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "powerPanel":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0618 0%, #1c0c34 100%)">
+            <PowerPanel
+              skin={def.skin}
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              panelTitle={def.panelTitle}
+              stepLabels={def.stepLabels}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(20)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
               }}
             />
           </FullScene>

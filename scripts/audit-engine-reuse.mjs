@@ -21,8 +21,19 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6];
 const CAP = 3;
+// Re-theme allowance (Weeks 5-10 design, 2026-09-16, option B, OWNER DECISION
+// PENDING): once the wired library is exhausted, a rebuilt week may re-theme
+// an engine another rebuilt week used, if it teaches a DIFFERENT skill, the
+// weeks are not neighbours, the engine stays under CAP, and the week carries
+// at most RETHEME_MAX such re-themes. Each entry is explicit so the allowance
+// is auditable and reversible: under option A (strict), delete the week's
+// entry and the listed engines must become new builds.
+const RETHEME_ALLOWED = {
+  6: ["RequestInspector", "SignBingo"], // Download Dock (W2 engine), Game Zone Bingo (W1 engine)
+};
+const RETHEME_MAX = 2;
 
 // Screen types that are the spine, not exercises.
 const SPINE = new Set([
@@ -80,9 +91,21 @@ for (const [engine, uses] of rows) {
   if (uses.length > CAP) flags.push({ sev: "CAP", msg: `${engine} used ${uses.length}x (cap ${CAP}): ${weeks.map((w) => "W" + w).join(" ")}` });
   // rule 2
   for (let i = 1; i < weeks.length; i++) if (weeks[i] === weeks[i - 1] + 1) flags.push({ sev: "CONSECUTIVE", msg: `${engine} in consecutive weeks W${weeks[i - 1]} -> W${weeks[i]}` });
-  // rule 1
+  // rule 1 (with the explicit re-theme allowance: a later rebuilt week listed in
+  // RETHEME_ALLOWED for this engine does not count as a collision, provided the
+  // engine is under CAP and the weeks are not neighbours).
   const rebuiltHits = REBUILT.filter((w) => weeks.includes(w));
-  if (rebuiltHits.length > 1) flags.push({ sev: "REBUILT-COLLISION", msg: `${engine} used by more than one rebuilt week: ${rebuiltHits.map((w) => "W" + w).join(" ")} (rebuilt order ${REBUILT.map((w) => "W" + w).join(" > ")})` });
+  const allowed = rebuiltHits.filter((w) => (RETHEME_ALLOWED[w] || []).includes(engine));
+  const counted = rebuiltHits.filter((w) => !allowed.includes(w));
+  const neighbourly = allowed.some((w) => weeks.some((o) => o !== w && Math.abs(o - w) === 1));
+  if (counted.length > 1 || (allowed.length && (uses.length > CAP || neighbourly))) {
+    flags.push({ sev: "REBUILT-COLLISION", msg: `${engine} used by more than one rebuilt week: ${rebuiltHits.map((w) => "W" + w).join(" ")} (rebuilt order ${REBUILT.map((w) => "W" + w).join(" > ")})${allowed.length ? " - re-theme allowance void (cap or neighbour week)" : ""}` });
+  } else if (allowed.length) {
+    console.log(`  ^ re-theme allowed for ${allowed.map((w) => "W" + w).join(" ")} (RETHEME_ALLOWED, owner decision pending)`);
+  }
+}
+for (const [wk, list] of Object.entries(RETHEME_ALLOWED)) {
+  if (list.length > RETHEME_MAX) flags.push({ sev: "REBUILT-COLLISION", msg: `W${wk} lists ${list.length} re-themes (max ${RETHEME_MAX}): ${list.join(", ")}` });
 }
 const unused = [...wired].filter((e) => !usage.has(e)).sort();
 console.log("\nwired but UNUSED (draw on these first): " + (unused.join(", ") || "none"));
