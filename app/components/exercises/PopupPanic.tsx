@@ -145,7 +145,11 @@ export default function PopupPanic({
   const fx = useExerciseFeedback();
   const audio = useGameAudio();
   const request = skin === "request";
-  const voice = introNarration?.speaker ?? "adam";
+  // In-game read-alouds, verdict reasons and teach lines are recorded under
+  // "adam" (both content voices are Sarah), so every manifest lookup here uses
+  // that key. Keying them to the intro's speaker found no clip whenever a
+  // week's intro was "layla", and those lines played silent.
+  const voice = "adam" as const;
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [popupIdx, setPopupIdx] = useState(0);

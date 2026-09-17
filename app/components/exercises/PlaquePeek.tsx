@@ -208,7 +208,11 @@ export default function PlaquePeek({
   const reduce = intensity < 1;
   const sk = SKINS[skin];
   const mask = skin === "mask";
-  const voice = introNarration?.speaker ?? "adam";
+  // In-game read-alouds, verdict reasons and teach lines are recorded under
+  // "adam" (both content voices are Sarah), so every manifest lookup here uses
+  // that key. Keying them to the intro's speaker found no clip whenever a
+  // week's intro was "layla", and those lines played silent.
+  const voice = "adam" as const;
 
   const [showIntro, setShowIntro] = useState(true);
   const [doorIdx, setDoorIdx] = useState(0);

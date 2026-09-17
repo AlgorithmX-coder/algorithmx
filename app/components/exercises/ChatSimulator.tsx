@@ -122,7 +122,11 @@ export default function ChatSimulator({
   speakMessages = true,
   onComplete,
 }: ChatSimulatorProps) {
-  const voice = introNarration?.speaker ?? "adam";
+  // In-game read-alouds, verdict reasons and teach lines are recorded under
+  // "adam" (both content voices are Sarah), so every manifest lookup here uses
+  // that key. Keying them to the intro's speaker found no clip whenever a
+  // week's intro was "layla", and those lines played silent.
+  const voice = "adam" as const;
   const [showIntro, setShowIntro] = useState(true);
   // Read-aloud: the bubble Sarah is reading (the queue and the choices wait).
   const [speak, setSpeak] = useState<null | { key: string; text: string }>(null);
