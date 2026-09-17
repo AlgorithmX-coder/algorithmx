@@ -575,9 +575,19 @@ export default function Nav() {
  *
  * Falls back to a static, lit, angled cube under prefers-reduced-motion.
  */
+/* Bracket Core brand mark (owner pick 2026-09-17, from the Cube Concepts
+ * page): a neon wire-frame cube with binary etched into the glass and the
+ * coder's </> glowing at its centre. The frame turns every 14 s; every 7 s
+ * the edges flare, the symbol pulses and the slash retypes itself.
+ *
+ * Sizing: every measurement is in --u (one design pixel of a 20 px cube),
+ * so the mark scales from a single --s. Desktop (wider than 1100px) is
+ * 24 px; tablets and phones keep 20 px, sized separately later (owner
+ * parked phone/tablet dimension work). */
+const CUBE_BITS = "01101001110100110010111010010111011000101101001101100100";
+const CUBE_FACES = ["f1", "f2", "f3", "f4", "f5", "f6"] as const;
+
 function BrandCube() {
-  const S = 20; // cube edge (px)
-  const T = S / 2; // translateZ to each face
   const wrapRef = useRef<HTMLSpanElement>(null);
   const sceneRef = useRef<HTMLSpanElement>(null);
 
@@ -650,129 +660,135 @@ function BrandCube() {
     };
   }, []);
 
-  const face: React.CSSProperties = {
-    position: "absolute",
-    inset: 0,
-    width: S,
-    height: S,
-    background:
-      "linear-gradient(135deg, rgba(0,229,255,0.24), rgba(124,92,255,0.10))",
-    border: "1px solid rgba(120,240,255,0.72)",
-    boxShadow:
-      "inset 0 0 8px rgba(0,229,255,0.45), inset 0 0 2px rgba(255,255,255,0.5)",
-    borderRadius: 3,
-  };
-
   return (
-    <span
-      ref={wrapRef}
-      aria-hidden
-      className="lv2-cube-wrap"
-      style={{
-        width: S,
-        height: S,
-        flexShrink: 0,
-        display: "inline-block",
-        perspective: 460,
-      }}
-    >
+    <span ref={wrapRef} aria-hidden className="lv2-cube-wrap">
       <span ref={sceneRef} className="lv2-cube-scene">
         <span className="lv2-cube">
-          <span style={{ ...face, transform: `rotateY(0deg) translateZ(${T}px)` }} />
-          <span style={{ ...face, transform: `rotateY(90deg) translateZ(${T}px)` }} />
-          <span style={{ ...face, transform: `rotateY(180deg) translateZ(${T}px)` }} />
-          <span style={{ ...face, transform: `rotateY(270deg) translateZ(${T}px)` }} />
-          <span style={{ ...face, transform: `rotateX(90deg) translateZ(${T}px)` }} />
-          <span style={{ ...face, transform: `rotateX(-90deg) translateZ(${T}px)` }} />
-          {/* Inner energy core */}
-          <span className="lv2-cube-core" />
+          {CUBE_FACES.map((f, i) => (
+            <span key={f} className={`lv2-cube-face lv2-cube-${f}`}>
+              <span className="lv2-cube-bits">
+                {CUBE_BITS.slice(i * 3) + CUBE_BITS.slice(0, i * 3)}
+              </span>
+            </span>
+          ))}
         </span>
-        {/* Orbiting light spark on a tilted ring */}
-        <span className="lv2-cube-orbit">
-          <span className="lv2-cube-orbit-ring" />
-          <span className="lv2-cube-orbit-spin">
-            <span className="lv2-cube-orbit-dot" />
-          </span>
+        <span className="lv2-cube-glyph">
+          &lt;<span className="lv2-cube-slash">/</span>&gt;
         </span>
       </span>
 
       <style jsx>{`
-        /* Wrapper carries the slow float + breathing bloom. */
         .lv2-cube-wrap {
+          --s: 20px;
+          --u: calc(var(--s) / 20);
+          position: relative;
+          display: inline-block;
+          flex-shrink: 0;
+          width: var(--s);
+          height: var(--s);
+          perspective: calc(var(--s) * 23);
+          filter: drop-shadow(0 0 calc(var(--u) * 4) rgba(0, 229, 255, 0.55))
+            drop-shadow(0 0 calc(var(--u) * 8) rgba(124, 92, 255, 0.4));
           animation: lv2CubeFloat 6s ease-in-out infinite,
-            lv2CubeGlow 4.5s ease-in-out infinite;
+            lv2CubeGlow 7s ease-in-out infinite;
+        }
+        @media (min-width: 1101px) {
+          .lv2-cube-wrap {
+            --s: 24px;
+          }
         }
         /* Scene applies hover-parallax tilt (CSS vars), eased back on leave. */
         .lv2-cube-scene {
-          position: relative;
-          display: block;
-          width: ${S}px;
-          height: ${S}px;
+          position: absolute;
+          inset: 0;
           transform-style: preserve-3d;
           transform: rotateX(var(--lv2-cube-rx, 0deg))
             rotateY(var(--lv2-cube-ry, 0deg));
           transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        /* Inner cube spins continuously around Y with a constant tilt. */
+        /* The neon frame turns once every 14 s at a constant tilt. */
         .lv2-cube {
           position: absolute;
           inset: 0;
           transform-style: preserve-3d;
-          animation: lv2CubeSpin 9s linear infinite;
+          transform: rotateX(-18deg) rotateY(-28deg);
+          animation: lv2CubeSpin 14s linear infinite;
         }
-        .lv2-cube-core {
+        .lv2-cube-face {
+          position: absolute;
+          inset: 0;
+          box-sizing: border-box;
+          overflow: hidden;
+          background: rgba(0, 229, 255, 0.04);
+          border: var(--u) solid rgba(170, 248, 255, 0.9);
+          border-radius: calc(var(--u) * 1.2);
+          box-shadow: 0 0 calc(var(--u) * 3) rgba(0, 229, 255, 0.35),
+            inset 0 0 calc(var(--u) * 3) rgba(0, 229, 255, 0.22);
+          animation: lv2CubeEdge 7s ease-in-out infinite;
+        }
+        .lv2-cube-f1 {
+          transform: rotateY(0deg) translateZ(calc(var(--s) / 2));
+        }
+        .lv2-cube-f2 {
+          transform: rotateY(90deg) translateZ(calc(var(--s) / 2));
+        }
+        .lv2-cube-f3 {
+          transform: rotateY(180deg) translateZ(calc(var(--s) / 2));
+        }
+        .lv2-cube-f4 {
+          transform: rotateY(-90deg) translateZ(calc(var(--s) / 2));
+        }
+        .lv2-cube-f5 {
+          transform: rotateX(90deg) translateZ(calc(var(--s) / 2));
+        }
+        .lv2-cube-f6 {
+          transform: rotateX(-90deg) translateZ(calc(var(--s) / 2));
+        }
+        /* Binary etched into the glass: a texture in the bar, legible up close. */
+        .lv2-cube-bits {
+          display: block;
+          padding: calc(var(--u) * 1.3);
+          font: 600 calc(var(--u) * 1.5) / calc(var(--u) * 2.1)
+            var(--lv2-font-mono);
+          letter-spacing: calc(var(--u) * 0.12);
+          color: rgba(125, 240, 255, 0.34);
+          word-break: break-all;
+        }
+        /* The </> core. Sits in the scene (not the turning frame) so it
+           always faces the viewer. */
+        .lv2-cube-glyph {
           position: absolute;
           left: 50%;
           top: 50%;
-          width: 9px;
-          height: 9px;
-          margin: -4.5px 0 0 -4.5px;
-          border-radius: 50%;
-          background: radial-gradient(
-            circle,
-            #ffffff 0%,
-            var(--lv2-cyan-soft) 38%,
-            rgba(0, 229, 255, 0) 72%
-          );
-          box-shadow: 0 0 10px 2px rgba(0, 229, 255, 0.85);
-          transform: translateZ(0);
-          animation: lv2CorePulse 2.8s ease-in-out infinite;
+          white-space: nowrap;
+          font: 700 calc(var(--u) * 8) / 1 var(--lv2-font-mono);
+          letter-spacing: calc(var(--u) * -0.6);
+          color: #aaf6ff;
+          filter: drop-shadow(0 0 calc(var(--u) * 2.2) rgba(0, 229, 255, 0.9));
+          transform: translate(-50%, -54%);
+          animation: lv2GlyphPulse 7s ease-in-out infinite;
         }
-        /* Tilted orbit plane around the cube. */
-        .lv2-cube-orbit {
-          position: absolute;
-          inset: -4px;
-          transform-style: preserve-3d;
-          transform: rotateX(72deg);
-        }
-        .lv2-cube-orbit-ring {
-          position: absolute;
-          inset: 0;
-          border-radius: 50%;
-          border: 1px solid rgba(0, 229, 255, 0.22);
-        }
-        .lv2-cube-orbit-spin {
-          position: absolute;
-          inset: 0;
-          animation: lv2OrbitSpin 4.5s linear infinite;
-        }
-        .lv2-cube-orbit-dot {
-          position: absolute;
-          top: -2px;
-          left: 50%;
-          width: 4px;
-          height: 4px;
-          margin-left: -2px;
-          border-radius: 50%;
-          background: #c7f7ff;
-          box-shadow: 0 0 7px 1.5px rgba(0, 229, 255, 0.95);
+        .lv2-cube-slash {
+          display: inline-block;
+          color: #d2c3ff;
+          transform-origin: 50% 100%;
+          animation: lv2SlashType 7s ease-in-out infinite;
         }
         @keyframes lv2CubeSpin {
           from {
-            transform: rotateX(-12deg) rotateY(0deg);
+            transform: rotateX(-18deg) rotateY(0deg);
           }
           to {
-            transform: rotateX(-12deg) rotateY(360deg);
+            transform: rotateX(-18deg) rotateY(360deg);
+          }
+        }
+        @keyframes lv2CubeEdge {
+          0%,
+          100% {
+            border-color: rgba(150, 240, 255, 0.6);
+          }
+          50% {
+            border-color: rgba(255, 255, 255, 1);
           }
         }
         @keyframes lv2CubeFloat {
@@ -781,52 +797,48 @@ function BrandCube() {
             transform: translateY(0);
           }
           50% {
-            transform: translateY(-2.5px);
+            transform: translateY(calc(var(--u) * -2.5));
           }
         }
         @keyframes lv2CubeGlow {
           0%,
           100% {
-            filter: drop-shadow(0 0 4px rgba(0, 229, 255, 0.4));
+            filter: drop-shadow(0 0 calc(var(--u) * 3) rgba(0, 229, 255, 0.45))
+              drop-shadow(0 0 calc(var(--u) * 6) rgba(124, 92, 255, 0.35));
           }
           50% {
-            filter: drop-shadow(0 0 9px rgba(0, 229, 255, 0.75));
+            filter: drop-shadow(0 0 calc(var(--u) * 5) rgba(0, 229, 255, 0.85))
+              drop-shadow(0 0 calc(var(--u) * 12) rgba(124, 92, 255, 0.65));
           }
         }
-        @keyframes lv2CorePulse {
+        @keyframes lv2GlyphPulse {
           0%,
           100% {
-            opacity: 0.85;
-            transform: translateZ(0) scale(0.85);
+            transform: translate(-50%, -54%) scale(0.9);
           }
           50% {
-            opacity: 1;
-            transform: translateZ(0) scale(1.12);
+            transform: translate(-50%, -54%) scale(1.08);
           }
         }
-        @keyframes lv2OrbitSpin {
-          from {
-            transform: rotate(0deg);
+        @keyframes lv2SlashType {
+          0%,
+          3% {
+            transform: scaleY(0);
+            opacity: 0;
           }
-          to {
-            transform: rotate(360deg);
+          12%,
+          100% {
+            transform: scaleY(1);
+            opacity: 1;
           }
         }
         @media (prefers-reduced-motion: reduce) {
-          .lv2-cube-wrap {
+          .lv2-cube-wrap,
+          .lv2-cube,
+          .lv2-cube-face,
+          .lv2-cube-glyph,
+          .lv2-cube-slash {
             animation: none;
-            filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.5));
-          }
-          .lv2-cube {
-            animation: none;
-            transform: rotateX(-14deg) rotateY(-30deg);
-          }
-          .lv2-cube-orbit-spin {
-            animation: none;
-          }
-          .lv2-cube-core {
-            animation: none;
-            opacity: 1;
           }
         }
       `}</style>
