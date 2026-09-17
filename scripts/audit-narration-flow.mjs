@@ -251,6 +251,45 @@ function chainsFor(type, span) {
       if (read && wrong) chains.push({ name: "booth (wrong call): " + un(nm[1]), mode: "branch", beats: [read], branches: [wrong] });
     }
   }
+  // Week 5 engines (rebuilt 2026-09-16). Every item: the read-aloud as it arrives ->
+  // Sarah's why on the right move (chain); each wrong move's teach answers the read-aloud.
+  if (type === "dayBalancer" || type === "passcodeForge") {
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    const noun = type === "dayBalancer" ? "moment" : "stone";
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why");
+      const wrongs = all(new RegExp("(?:note|explanation):\\s*" + STR, "g"), p).filter(Boolean);
+      if (why) chains.push({ name: noun + ": " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+      if (wrongs.length) chains.push({ name: noun + " (wrong pick): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: wrongs });
+    }
+  }
+  if (type === "growthRings") {
+    // the stones light in a fixed order: their read-alouds are one chain
+    const beats = all(new RegExp("readAloud:\\s*" + STR, "g"), span);
+    if (beats.length) chains.push({ name: "ring stones", mode: "chain", beats });
+  }
+  if (type === "accountRescue") {
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why"), wrong = field(p, "whyWrong");
+      if (why) chains.push({ name: "moment: " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+      if (wrong) chains.push({ name: "moment (wrong move): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: [wrong] });
+    }
+  }
+  if (type === "dontFeedTheFire") {
+    const parts = span.split(/\breadAloud:\s*/).slice(1);
+    const teach = all(new RegExp("body:\\s*" + STR, "g"), span);
+    for (const p of parts) {
+      const r = p.match(new RegExp("^" + STR)); if (!r) continue;
+      const why = field(p, "why");
+      if (why) chains.push({ name: "spark: " + un(r[1]).slice(0, 40) + "...", mode: "chain", beats: [un(r[1]), why] });
+      if (teach.length) chains.push({ name: "spark (reply tapped): " + un(r[1]).slice(0, 40) + "...", mode: "branch", beats: [un(r[1])], branches: teach });
+    }
+  }
+  // snowballChase: a demonstration with one spoken start card and no answers;
+  // its captions are HUD text, not speech, so there is no in-game chain.
   return chains;
 }
 

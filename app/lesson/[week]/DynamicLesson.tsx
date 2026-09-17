@@ -77,6 +77,7 @@ import DayBalancer from "@/app/components/exercises/DayBalancer";
 import PlaquePeek from "@/app/components/exercises/PlaquePeek";
 import GrowthRings from "@/app/components/exercises/GrowthRings";
 import PasscodeForge from "@/app/components/exercises/PasscodeForge";
+import DontFeedTheFire from "@/app/components/exercises/signatures/DontFeedTheFire";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -1674,11 +1675,32 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)">
             <AccountRescue
+              skin={def.skin}
               sharedPassword={def.sharedPassword}
               leakedAccountId={def.leakedAccountId}
               accounts={def.accounts}
               passwordBank={def.passwordBank}
               hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              headerLabel={def.headerLabel}
+              storyLine={def.storyLine}
+              needsLabel={def.needsLabel}
+              bankPrompt={def.bankPrompt}
+              bankIdle={def.bankIdle}
+              finishLabel={def.finishLabel}
+              finishReadyLabel={def.finishReadyLabel}
+              securedLabel={def.securedLabel}
+              pickToast={def.pickToast}
+              allToast={def.allToast}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              wrongTitle={def.wrongTitle}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -2149,13 +2171,44 @@ function DynamicLessonInner({
           </FullScene>
         );
 
+      case "dontFeedTheFire":
+        // Week 5's signature as a concept game: Learn-Loop wired, content
+        // from the week file (see types.ts).
+        return (
+          <FullScene bg="linear-gradient(180deg, #1c0f06 0%, #2a1a0c 100%)">
+            <DontFeedTheFire
+              sparks={def.sparks}
+              friendRound={def.friendRound}
+              teachSpark={def.teachSpark}
+              teachFriend={def.teachFriend}
+              teachStoneOnFriend={def.teachStoneOnFriend}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              narration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => {
+                awardXp(25);
+                navigate(screen + 1);
+              }}
+            />
+          </FullScene>
+        );
+
       case "snowballChase":
         return (
           <FullScene bg="linear-gradient(180deg, #0a1030 0%, #1c2b52 100%)">
             <SnowballChase
+              skin={def.skin}
+              edgeLabel={def.edgeLabel}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
+              startCard={def.startCard}
               ballIcon={def.ballIcon}
               sweptLabel={def.sweptLabel}
               rolledLabel={def.rolledLabel}
@@ -2164,6 +2217,8 @@ function DynamicLessonInner({
               completeLine={def.completeLine}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(5)}
             />
@@ -2252,8 +2307,11 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #0a1030 0%, #1a2a1e 100%)">
             <DayBalancer
+              skin={def.skin}
               keptBlocks={def.keptBlocks}
               swaps={def.swaps}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
@@ -2336,7 +2394,13 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #140b2e 0%, #1e1440 100%)">
             <GrowthRings
+              skin={def.skin}
+              ringNoun={def.ringNoun}
+              placeholder={def.placeholder}
+              completeStat={def.completeStat}
               rings={def.rings}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
@@ -2368,7 +2432,13 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #1c0f06 0%, #33200d 100%)">
             <PasscodeForge
+              skin={def.skin}
+              promptIcon={def.promptIcon}
               rounds={def.rounds}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              meterCountLabel={def.meterCountLabel}
+              meterDoneLabel={def.meterDoneLabel}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}

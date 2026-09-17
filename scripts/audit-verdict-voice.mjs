@@ -110,6 +110,22 @@ const ENGINES = {
   firewallBuilder: (span) => objs(span, "bricks").map((o) => ({ label: (flag(o, "good") ? "GOOD " : "bad  ") + fld(o, "text"), right: fld(o, "why"), wrong: fld(o, "whyWrong") })),
   passwordVault: (span) => objs(span, "locks").flatMap((l) => objs(l, "choices").map((o) => { const ok = flag(o, "isCorrect"); return ok ? { label: fld(l, "ruleLabel") + " OK " + fld(o, "text"), right: fld(o, "why"), wrong: null, only: "right" } : { label: fld(l, "ruleLabel") + " X  " + fld(o, "text"), right: null, wrong: fld(o, "explanation"), only: "wrong" }; })),
   phishInspector: (span) => objs(span, "emails").map((o) => ({ label: (flag(o, "isPhishing") ? "TRICK " : "real  ") + fld(o, "subject"), right: fld(o, "why"), wrong: fld(o, "whyWrong") })),
+  // Week 5 engines (2026-09-16).
+  dayBalancer: (span) => objs(span, "swaps").flatMap((s) => objs(s, "options").map((o) => { const ok = flag(o, "isBalancing"); return ok ? { label: "OK " + fld(o, "label"), right: fld(o, "why"), wrong: null, only: "right" } : { label: "X  " + fld(o, "label"), right: null, wrong: fld(o, "note"), only: "wrong" }; })),
+  growthRings: () => [{ label: "(no answers by design: the read-aloud is the payoff)", right: "n/a", wrong: "n/a" }],
+  passcodeForge: (span) => objs(span, "rounds").flatMap((r) => objs(r, "options").map((o) => { const ok = flag(o, "isStrong"); return ok ? { label: "OK " + fld(o, "digits"), right: fld(o, "why"), wrong: null, only: "right" } : { label: "X  " + fld(o, "digits"), right: null, wrong: fld(o, "explanation"), only: "wrong" }; })),
+  accountRescue: (span) => objs(span, "accounts").map((o) => ({ label: fld(o, "label"), right: fld(o, "why"), wrong: fld(o, "whyWrong") })),
+  dontFeedTheFire: (span) => {
+    const rows = objs(span, "sparks").map((o) => ({ label: "spark " + fld(o, "from"), right: fld(o, "why"), wrong: null, only: "right" }));
+    const fr = span.match(/friendRound:\s*\{[\s\S]*?\}/);
+    if (fr) rows.push({ label: "friend " + fld(fr[0], "from"), right: fld(fr[0], "why"), wrong: null, only: "right" });
+    for (const k of ["teachSpark", "teachFriend", "teachStoneOnFriend"]) {
+      const t = span.match(new RegExp(k + ":\\s*\\{[\\s\\S]*?\\}"));
+      if (t) rows.push({ label: "  " + k, right: null, wrong: fld(t[0], "body"), only: "wrong" });
+    }
+    return rows;
+  },
+  snowballChase: () => [{ label: "(no answers by design: a demonstration)", right: "n/a", wrong: "n/a" }],
   signature: (span) => [{ label: "mechanic " + fld(span, "mechanic"), right: "(component: claim.fact)", wrong: "(component: nudge)" }],
   bossBattle: () => [{ label: "QuizBoss", right: "(teachOnWrong.explanation)", wrong: "(teachOnWrong.explanation)" }],
 };

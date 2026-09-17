@@ -11,10 +11,23 @@
  * drill is forgiving. Tapping REPLY flares the flame and teaches ("your
  * reply is firewood") with no score loss. The final beat INVERTS the verb:
  * a friend is being picked on, and the right move is to TAP the green
- * STAND UP button. Win = 3 sparks starved + 1 friend supported.
+ * STAND UP button. Win = every spark starved + 1 friend supported.
  *
- * Self-contained by design: all copy lives here, deps are react +
- * framer-motion + ExerciseFrame + PixIcon + inline SVG only.
+ * Content is data-driven (sparks, the friend round, the three teach panels
+ * and every beat's copy are props); the defaults below keep the legacy
+ * signature mount unchanged. Visuals: react + framer-motion + ExerciseFrame
+ * + PixIcon + inline SVG.
+ *
+ * Learn-Loop wiring: the Raccoon's boast folds into the shared intro
+ * (`threat`), Sarah speaks the how-to once as the campfire appears
+ * (`coachLines`) and reads each spark aloud as it lands (audio-only,
+ * `recordedOnly`, the stone and REPLY held while she speaks), a starved
+ * spark gets a spoken verdict with its reason ("That's right!" + `why` via
+ * the shared VerdictVoice, the ash puff playing under her voice), STAND UP
+ * likewise, the REPLY / stone-on-friend teaches speak through
+ * WrongAnswerPanel, and the complete beat speaks the payoff
+ * (`completeNarration`). Press-and-hold is the only input on a spark; STAND
+ * UP is a plain tap; nothing drags.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -26,15 +39,78 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
+import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
+
+// Audio-only narration: Sarah's voice with no visible narration box (the text
+// she reads is already on screen), same recipe as ClueStamper.
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
 /* ------------------------------------------------------------------ */
-/* Content                                                            */
+/* Types                                                              */
 /* ------------------------------------------------------------------ */
 
-const SPARKS = [
+export interface FireSpark {
+  id: string;
+  from: string;
+  text: string;
+  /** Sarah's read-aloud as the spark lands (audio only). */
+  readAloud?: string;
+  /** Sarah's reason on the spoken verdict ("That's right!" + why). */
+  why?: string;
+}
+
+export interface FireTeach {
+  title: string;
+  body: string;
+  tip: string;
+}
+
+export interface DontFeedTheFireProps {
+  onComplete: () => void;
+  /** Spoken intro (the signature registry passes this as `narration`). */
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+  /** The mean sparks, in order. Default: the three legacy sparks. */
+  sparks?: FireSpark[];
+  /** The final "a friend is picked on" round. Default: the legacy round. */
+  friendRound?: FireSpark;
+  /** Teach panels (WrongAnswerPanel): REPLY on a spark / REPLY on the friend / the stone on the friend. */
+  teachSpark?: FireTeach;
+  teachFriend?: FireTeach;
+  teachStoneOnFriend?: FireTeach;
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** Optional spoken payoff on the complete screen. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  completeTitle?: string;
+  completeLine?: string;
+  /** The how-to, spoken once as the campfire appears (audio only). */
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+}
+
+/* ------------------------------------------------------------------ */
+/* Default content (the legacy signature mount)                       */
+/* ------------------------------------------------------------------ */
+
+const SPARKS: FireSpark[] = [
   {
     id: "spark-1",
     from: "grumbler_77",
@@ -50,36 +126,42 @@ const SPARKS = [
     from: "mega_meanie",
     text: "That was SO silly. Just log off!",
   },
-] as const;
+];
 
-const FRIEND_ROUND = {
+const FRIEND_ROUND: FireSpark = {
   id: "friend-1",
   from: "loud_larry",
   text: "Look at Maya's drawing. It's SO bad! Everyone laugh at her!",
-} as const;
+};
 
-const TEACH_SPARK = {
+const TEACH_SPARK: FireTeach = {
   title: "Whoa! That's firewood!",
   body: "Your reply is firewood. It makes the fire bigger. A hero starves it.",
   tip: "Press and HOLD the blue river stone instead. No firewood, no fire.",
 };
 
-const TEACH_FRIEND = {
+const TEACH_FRIEND: FireTeach = {
   title: "Mean words back are still firewood!",
   body: "Firing back at the bully feeds the fire, even for a friend.",
   tip: "Stand up the kind way. Tap the green STAND UP button.",
 };
 
-const TEACH_STONE_ON_FRIEND = {
+const TEACH_STONE_ON_FRIEND: FireTeach = {
   title: "This spark isn't aimed at you!",
   body: "Maya needs you. Staying quiet leaves a friend all alone.",
   tip: "Tap the green STAND UP button to help her and tell a grown-up.",
 };
 
+const DEFAULT_INTRO_SUBTITLE =
+  "Mean messages are sparks. A reply is firewood, it makes the fire bigger. Press and HOLD the cool river stone to starve each spark until it fizzles out.";
+const DEFAULT_COMPLETE_LINE =
+  "No firewood, no fire. And when a friend is picked on, heroes stand up and tell a grown-up.";
+
 /* Timing (ms) */
 const HOLD_MS = 2200; // full hold to starve a spark
 const DECAY_MS = 2600; // re-inflate speed after releasing early
 const REINFLATE = 0.16; // how much progress a release can give back, max
+const ASH_MS = 1350; // the ash puff stays at least this long before the next beat
 
 /* Palette */
 const EMBER = "#ff9d4d";
@@ -91,6 +173,10 @@ const BAD_RED = "#ff5d5d";
 type Phase = "intro" | "play" | "friend" | "celebrate";
 type SparkState = "burning" | "ash";
 
+// "read" is only ever entered for an item that has something to read, so the
+// spoken gate can never wait on a clip that does not exist (mute-aware).
+const readOrIdle = (text?: string): "read" | "idle" => (!isAudioMuted() && text ? "read" : "idle");
+
 /* ------------------------------------------------------------------ */
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
@@ -99,26 +185,38 @@ export default function DontFeedTheFire({
   onComplete,
   narration,
   accent,
-}: {
-  onComplete: () => void;
-  narration?: { speaker?: "adam" | "layla"; lines: string[] };
-  accent?: string;
-}) {
+  sparks = SPARKS,
+  friendRound = FRIEND_ROUND,
+  teachSpark = TEACH_SPARK,
+  teachFriend = TEACH_FRIEND,
+  teachStoneOnFriend = TEACH_STONE_ON_FRIEND,
+  introTitle = "Don't Feed the Fire",
+  introSubtitle = DEFAULT_INTRO_SUBTITLE,
+  introIcon = "⚡",
+  threat,
+  completeNarration,
+  completeTitle = "The fire went out!",
+  completeLine = DEFAULT_COMPLETE_LINE,
+  coachLines,
+}: DontFeedTheFireProps) {
   const reduce = !!useReducedMotion();
   const audio = useGameAudio();
+  // Both content voices are Sarah; in-game read-alouds and verdict reasons are
+  // recorded under "adam", so every manifest lookup here uses that key.
+  const voice = "adam" as const;
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [sparkIdx, setSparkIdx] = useState(0);
   const [sparkState, setSparkState] = useState<SparkState>("burning");
   const [progress, setProgress] = useState(0);
   const [holding, setHolding] = useState(false);
-  const [teach, setTeach] = useState<null | {
-    title: string;
-    body: string;
-    tip: string;
-  }>(null);
+  const [teach, setTeach] = useState<null | FireTeach>(null);
   const [stood, setStood] = useState(false);
   const [starvedCount, setStarvedCount] = useState(0);
+  // Read-aloud chain: the how-to once as the campfire appears, then each
+  // spark (and the friend round) as it lands. The stone and REPLY are held
+  // while she speaks. "idle" = nothing playing.
+  const [narr, setNarr] = useState<"howto" | "read" | "idle">("idle");
 
   const holdingRef = useRef(false);
   const teachOpenRef = useRef(false);
@@ -126,6 +224,8 @@ export default function DontFeedTheFire({
   const floorRef = useRef(0); // decay never drops below this
   const completedRef = useRef(false);
   const timersRef = useRef<number[]>([]);
+  const ashAtRef = useRef(0);
+  const stoodAtRef = useRef(0);
 
   const later = (fn: () => void, ms: number) => {
     timersRef.current.push(window.setTimeout(fn, ms));
@@ -139,6 +239,52 @@ export default function DontFeedTheFire({
   const sceneControls = useAnimationControls();
 
   teachOpenRef.current = teach !== null;
+
+  // Spoken verdicts: Sarah says "That's right!" + why when a spark starves and
+  // when the child stands up; the next beat waits for her. The REPLY and
+  // stone-on-friend teaches speak through WrongAnswerPanel.
+  const verdict = useVerdictVoice(voice);
+  const speaking = narr !== "idle" || verdict.speaking || !!teach;
+
+  // Safety releases for the spoken gate (never leave the campfire held).
+  useEffect(() => {
+    if (narr === "idle") return;
+    const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [narr]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
+
+  /* ---------------- derived ---------------- */
+
+  const calm = stood || phase === "celebrate";
+  const spark = sparks[Math.min(sparkIdx, sparks.length - 1)];
+  const flameSettle = 1 - starvedCount * 0.07; // fire calms as sparks starve
+  // What Sarah reads for the current item (a burning spark, or the friend round).
+  const currentRead =
+    phase === "friend" ? friendRound.readAloud : phase === "play" && sparkState === "burning" ? spark?.readAloud : undefined;
+  const currentReadId = phase === "friend" ? friendRound.id : spark?.id ?? "none";
+
+  /* ---------------- beats ---------------- */
+
+  const start = () => {
+    setPhase("play");
+    setNarr(isAudioMuted() ? "idle" : coachLines ? "howto" : readOrIdle(sparks[0]?.readAloud));
+  };
+
+  const advanceToNextSpark = () => {
+    progressRef.current = 0;
+    floorRef.current = 0;
+    setProgress(0);
+    if (sparkIdx >= sparks.length - 1) {
+      setPhase("friend");
+      setNarr(readOrIdle(friendRound.readAloud));
+    } else {
+      const next = sparks[sparkIdx + 1];
+      setSparkIdx((i) => i + 1);
+      setSparkState("burning");
+      setNarr(readOrIdle(next?.readAloud));
+    }
+  };
 
   /* ---------------- hold-to-starve loop ---------------- */
 
@@ -162,23 +308,19 @@ export default function DontFeedTheFire({
         setProgress(p);
       }
       if (p >= 1) {
-        // Spark starved: fizzle to ash, then bring on the next beat.
+        // Spark starved: fizzle to ash while Sarah says why, then the next beat.
         holdingRef.current = false;
         setHolding(false);
         audio.correct();
         setSparkState("ash");
         setStarvedCount((n) => n + 1);
-        later(() => {
-          progressRef.current = 0;
-          floorRef.current = 0;
-          setProgress(0);
-          if (sparkIdx >= SPARKS.length - 1) {
-            setPhase("friend");
-          } else {
-            setSparkIdx((i) => i + 1);
-            setSparkState("burning");
-          }
-        }, 1350);
+        ashAtRef.current = performance.now();
+        // The ash puff keeps its legacy minimum on screen even when the verdict
+        // is instant (muted / nothing recorded); otherwise it waits for her.
+        verdict.say("right", sparks[sparkIdx]?.why ?? null, () => {
+          const wait = Math.max(0, ASH_MS - (performance.now() - ashAtRef.current));
+          later(advanceToNextSpark, wait);
+        });
         return;
       }
       raf = requestAnimationFrame(tick);
@@ -191,7 +333,7 @@ export default function DontFeedTheFire({
   /* ---------------- interactions ---------------- */
 
   const startHold = (e: ReactPointerEvent<HTMLButtonElement>) => {
-    if (phase !== "play" || sparkState !== "burning" || teach) return;
+    if (phase !== "play" || sparkState !== "burning" || speaking) return;
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {
@@ -207,7 +349,7 @@ export default function DontFeedTheFire({
     setHolding(false);
   };
 
-  const flareAndTeach = (lesson: typeof TEACH_SPARK) => {
+  const flareAndTeach = (lesson: FireTeach) => {
     endHold();
     if (!reduce) {
       flameControls.start({
@@ -223,25 +365,32 @@ export default function DontFeedTheFire({
   };
 
   const tapReply = () => {
-    if (teach) return;
+    if (speaking) return;
     audio.wrong();
-    flareAndTeach(phase === "friend" ? TEACH_FRIEND : TEACH_SPARK);
+    flareAndTeach(phase === "friend" ? teachFriend : teachSpark);
   };
 
   const tapStoneOnFriend = () => {
-    if (teach) return;
+    if (speaking) return;
     audio.wrong();
-    setTeach(TEACH_STONE_ON_FRIEND);
+    setTeach(teachStoneOnFriend);
   };
 
   const tapStandUp = () => {
-    if (stood || teach) return;
+    if (stood || speaking) return;
     audio.correct();
     setStood(true);
-    later(() => {
-      audio.unlock();
-      setPhase("celebrate");
-    }, reduce ? 900 : 2000);
+    stoodAtRef.current = performance.now();
+    const reveal = reduce ? 900 : 2000;
+    // Sarah: "That's right!" + why; the supportive message plays under her,
+    // and the celebration waits for both her and the legacy reveal time.
+    verdict.say("right", friendRound.why ?? null, () => {
+      const wait = Math.max(0, reveal - (performance.now() - stoodAtRef.current));
+      later(() => {
+        audio.unlock();
+        setPhase("celebrate");
+      }, wait);
+    });
   };
 
   const finish = () => {
@@ -250,14 +399,22 @@ export default function DontFeedTheFire({
     onComplete();
   };
 
-  /* ---------------- derived ---------------- */
-
-  const calm = stood || phase === "celebrate";
-  const spark = SPARKS[Math.min(sparkIdx, SPARKS.length - 1)];
-  const flameSettle = 1 - starvedCount * 0.07; // fire calms as sparks starve
-
   return (
     <ExerciseFrame maxWidth={780} padding={24}>
+      {verdict.element}
+
+      {/* Sarah's read-alouds (audio only): the how-to once, then each spark / the friend round as it lands. */}
+      {(phase === "play" || phase === "friend") && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          {narr === "howto" && coachLines && (
+            <InfoNarration key="dff-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent={accent ?? "#ff8e6e"} recordedOnly onDone={() => setNarr(readOrIdle(currentRead))} />
+          )}
+          {narr === "read" && currentRead && (
+            <InfoNarration key={`dff-read-${currentReadId}`} speaker={voice} lines={[currentRead]} accent={accent ?? "#ff8e6e"} recordedOnly onDone={() => setNarr("idle")} />
+          )}
+        </div>
+      )}
+
       <motion.div
         animate={sceneControls}
         style={{
@@ -279,7 +436,7 @@ export default function DontFeedTheFire({
               color: "#ffc38a",
             }}
           >
-            Don&apos;t Feed the Fire
+            {introTitle}
           </div>
           <div
             style={{
@@ -296,6 +453,7 @@ export default function DontFeedTheFire({
               : "Mean messages are sparks. Don't give them firewood."}
           </div>
           <ProgressChips
+            sparks={sparks}
             starved={starvedCount}
             current={phase === "play" ? sparkIdx : -1}
             friendActive={phase === "friend" || phase === "celebrate"}
@@ -323,7 +481,7 @@ export default function DontFeedTheFire({
 
           <div style={{ width: 300, maxWidth: "100%" }}>
             <AnimatePresence mode="wait">
-              {phase === "play" && sparkState === "burning" && (
+              {phase === "play" && sparkState === "burning" && spark && (
                 <SparkCard
                   key={spark.id}
                   from={spark.from}
@@ -333,12 +491,14 @@ export default function DontFeedTheFire({
                   reduce={reduce}
                 />
               )}
-              {phase === "play" && sparkState === "ash" && (
+              {phase === "play" && sparkState === "ash" && spark && (
                 <AshPuff key={`${spark.id}-ash`} reduce={reduce} />
               )}
               {(phase === "friend" || phase === "celebrate") && (
                 <FriendScene
                   key="friend"
+                  from={friendRound.from}
+                  text={friendRound.text}
                   stood={stood}
                   reduce={reduce}
                 />
@@ -359,7 +519,7 @@ export default function DontFeedTheFire({
           }}
         >
           {(phase === "play" || (phase === "friend" && !stood)) && (
-            <ReplyButton onTap={tapReply} reduce={reduce} />
+            <ReplyButton onTap={tapReply} reduce={reduce} disabled={speaking} />
           )}
 
           {phase === "play" && (
@@ -367,6 +527,7 @@ export default function DontFeedTheFire({
               progress={progress}
               holding={holding}
               disabled={sparkState !== "burning"}
+              held={speaking}
               onDown={startHold}
               onUp={endHold}
             />
@@ -374,8 +535,8 @@ export default function DontFeedTheFire({
 
           {phase === "friend" && !stood && (
             <>
-              <StandUpButton onTap={tapStandUp} reduce={reduce} />
-              <SmallStone onTap={tapStoneOnFriend} />
+              <StandUpButton onTap={tapStandUp} reduce={reduce} disabled={speaking} />
+              <SmallStone onTap={tapStoneOnFriend} disabled={speaking} />
             </>
           )}
         </div>
@@ -403,42 +564,52 @@ export default function DontFeedTheFire({
 
       {/* ---------- overlays ---------- */}
       {phase === "intro" && (
-        <IntroOverlay
-          onStart={() => setPhase("play")}
-          reduce={reduce}
+        <ExerciseIntroBeat
+          title={introTitle}
+          subtitle={introSubtitle}
+          icon={introIcon}
           narration={narration}
+          character={narration?.speaker}
+          threat={threat}
           accent={accent}
+          onDismiss={start}
         />
       )}
 
-      <AnimatePresence>
-        {teach && (
-          <TeachOverlay
-            key="teach"
-            title={teach.title}
-            body={teach.body}
-            tip={teach.tip}
-            onClose={() => setTeach(null)}
-            reduce={reduce}
-          />
-        )}
-      </AnimatePresence>
+      {teach && (
+        <WrongAnswerPanel
+          title={teach.title}
+          explanation={teach.body}
+          tip={teach.tip}
+          onContinue={() => setTeach(null)}
+        />
+      )}
 
-      {phase === "celebrate" && <WinOverlay onContinue={finish} reduce={reduce} />}
+      {phase === "celebrate" && (
+        <ExerciseCompleteBeat
+          title={completeTitle}
+          stars={3}
+          statLines={[`${starvedCount} spark${starvedCount === 1 ? "" : "s"} starved`, completeLine]}
+          narration={completeNarration}
+          onContinue={finish}
+        />
+      )}
     </ExerciseFrame>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* Header progress chips: 3 spark slots + 1 friend heart              */
+/* Header progress chips: one slot per spark + 1 friend heart          */
 /* ------------------------------------------------------------------ */
 
 function ProgressChips({
+  sparks,
   starved,
   current,
   friendActive,
   friendDone,
 }: {
+  sparks: FireSpark[];
   starved: number;
   current: number;
   friendActive: boolean;
@@ -503,7 +674,7 @@ function ProgressChips({
         marginTop: 10,
       }}
     >
-      {SPARKS.map((s, i) => chip(i === current, i < starved, s.id, "flame"))}
+      {sparks.map((s, i) => chip(i === current, i < starved, s.id, "flame"))}
       {chip(friendActive && !friendDone, friendDone, "friend-chip", "heart")}
     </div>
   );
@@ -909,7 +1080,17 @@ function AshPuff({ reduce }: { reduce: boolean }) {
 /* Friend beat: Maya is picked on; STAND UP is the hero move          */
 /* ------------------------------------------------------------------ */
 
-function FriendScene({ stood, reduce }: { stood: boolean; reduce: boolean }) {
+function FriendScene({
+  from,
+  text,
+  stood,
+  reduce,
+}: {
+  from: string;
+  text: string;
+  stood: boolean;
+  reduce: boolean;
+}) {
   return (
     <motion.div
       initial={reduce ? { opacity: 0 } : { x: 70, opacity: 0, scale: 0.85 }}
@@ -941,11 +1122,11 @@ function FriendScene({ stood, reduce }: { stood: boolean; reduce: boolean }) {
         >
           <PixIcon emoji="💬" size={20} />
           <span style={{ fontSize: 12, fontWeight: 900, color: "#ff9d9d" }}>
-            {FRIEND_ROUND.from}
+            {from}
           </span>
         </div>
         <div style={{ fontSize: 15.5, fontWeight: 800, lineHeight: 1.4 }}>
-          {FRIEND_ROUND.text}
+          {text}
         </div>
       </div>
 
@@ -1013,7 +1194,7 @@ function FriendScene({ stood, reduce }: { stood: boolean; reduce: boolean }) {
               lineHeight: 1.4,
             }}
           >
-            Maya's drawing is awesome! Be kind. I'm telling a grown-up too.
+            Maya&apos;s drawing is awesome! Be kind. I&apos;m telling a grown-up too.
           </motion.div>
         )}
       </AnimatePresence>
@@ -1073,15 +1254,16 @@ function FriendFace({ beaming }: { beaming: boolean }) {
 /* Buttons                                                            */
 /* ------------------------------------------------------------------ */
 
-function ReplyButton({ onTap, reduce }: { onTap: () => void; reduce: boolean }) {
+function ReplyButton({ onTap, reduce, disabled }: { onTap: () => void; reduce: boolean; disabled?: boolean }) {
   return (
     <motion.button
       type="button"
       onClick={onTap}
+      disabled={disabled}
       aria-label="Reply to the mean message"
       animate={reduce ? undefined : { rotate: [-2.5, 2.5, -2.5], scale: [1, 1.06, 1] }}
       transition={reduce ? undefined : { repeat: Infinity, duration: 0.85, ease: "easeInOut" }}
-      whileTap={{ scale: 0.93 }}
+      whileTap={disabled ? undefined : { scale: 0.93 }}
       style={{
         minWidth: 156,
         minHeight: 68,
@@ -1093,7 +1275,8 @@ function ReplyButton({ onTap, reduce }: { onTap: () => void; reduce: boolean }) 
         fontSize: 21,
         fontWeight: 900,
         letterSpacing: "0.06em",
-        cursor: "pointer",
+        cursor: disabled ? "wait" : "pointer",
+        opacity: disabled ? 0.85 : undefined,
         fontFamily: "inherit",
         boxShadow: "0 12px 30px -10px rgba(255,93,93,0.9), 0 0 22px rgba(255,93,93,0.35)",
         touchAction: "manipulation",
@@ -1119,12 +1302,15 @@ function RiverStone({
   progress,
   holding,
   disabled,
+  held,
   onDown,
   onUp,
 }: {
   progress: number;
   holding: boolean;
   disabled: boolean;
+  /** Held while Sarah speaks: still visible, not yet pressable. */
+  held?: boolean;
   onDown: (e: ReactPointerEvent<HTMLButtonElement>) => void;
   onUp: () => void;
 }) {
@@ -1177,14 +1363,19 @@ function RiverStone({
           onPointerCancel={onUp}
           onLostPointerCapture={onUp}
           onContextMenu={(e) => e.preventDefault()}
-          disabled={disabled}
+          disabled={disabled || held}
           animate={{ scale: holding ? 0.94 : 1 }}
           transition={{ type: "spring", stiffness: 400, damping: 24 }}
           style={{
             position: "absolute",
             top: "50%",
             left: "50%",
-            transform: "translate(-50%, -50%)",
+            // Centred with margins, NOT translate(-50%,-50%): framer-motion's
+            // `scale` animation replaces the transform wholesale, which dropped
+            // the centring and left the stone sitting bottom-right of its ring
+            // over the STAY COOL label (seen in the Week 5 rebuild screenshots).
+            marginLeft: -53,
+            marginTop: -53,
             width: 106,
             height: 106,
             borderRadius: "48% 52% 50% 50% / 52% 48% 52% 48%",
@@ -1195,7 +1386,7 @@ function RiverStone({
             fontSize: 17,
             fontWeight: 900,
             letterSpacing: "0.08em",
-            cursor: disabled ? "default" : "pointer",
+            cursor: disabled ? "default" : held ? "wait" : "pointer",
             fontFamily: "inherit",
             boxShadow: holding
               ? `0 0 34px rgba(125,211,252,${0.35 + progress * 0.45}), 0 10px 24px -10px rgba(0,0,0,0.6)`
@@ -1204,7 +1395,7 @@ function RiverStone({
             userSelect: "none",
             WebkitUserSelect: "none",
             WebkitTouchCallout: "none",
-            opacity: disabled ? 0.5 : 1,
+            opacity: disabled ? 0.5 : held ? 0.85 : 1,
           }}
         >
           HOLD
@@ -1238,14 +1429,15 @@ function RiverStone({
 }
 
 /** The stone in the friend round: pressing it teaches gently. */
-function SmallStone({ onTap }: { onTap: () => void }) {
+function SmallStone({ onTap, disabled }: { onTap: () => void; disabled?: boolean }) {
   return (
     <motion.button
       type="button"
       aria-label="Hold the river stone"
       onPointerDown={onTap}
       onContextMenu={(e) => e.preventDefault()}
-      whileTap={{ scale: 0.94 }}
+      disabled={disabled}
+      whileTap={disabled ? undefined : { scale: 0.94 }}
       style={{
         width: 86,
         height: 86,
@@ -1257,13 +1449,13 @@ function SmallStone({ onTap }: { onTap: () => void }) {
         fontSize: 13,
         fontWeight: 900,
         letterSpacing: "0.08em",
-        cursor: "pointer",
+        cursor: disabled ? "wait" : "pointer",
         fontFamily: "inherit",
         boxShadow: "0 8px 20px -10px rgba(0,0,0,0.6)",
         touchAction: "none",
         userSelect: "none",
         WebkitUserSelect: "none",
-        opacity: 0.85,
+        opacity: disabled ? 0.7 : 0.85,
       }}
     >
       HOLD
@@ -1271,24 +1463,27 @@ function SmallStone({ onTap }: { onTap: () => void }) {
   );
 }
 
-function StandUpButton({ onTap, reduce }: { onTap: () => void; reduce: boolean }) {
+function StandUpButton({ onTap, reduce, disabled }: { onTap: () => void; reduce: boolean; disabled?: boolean }) {
+  // Motion owns opacity here (the entrance fade), so the held look lives in `animate`.
+  const idle = disabled ? 0.85 : 1;
   return (
     <motion.button
       type="button"
       onClick={onTap}
+      disabled={disabled}
       aria-label="Stand up for your friend"
       initial={reduce ? { opacity: 0 } : { scale: 0.6, opacity: 0 }}
       animate={
         reduce
-          ? { opacity: 1 }
-          : { scale: [1, 1.06, 1], opacity: 1 }
+          ? { opacity: idle }
+          : { scale: [1, 1.06, 1], opacity: idle }
       }
       transition={
         reduce
           ? { duration: 0.2 }
           : { scale: { repeat: Infinity, duration: 1.4, ease: "easeInOut" }, opacity: { duration: 0.3 } }
       }
-      whileTap={{ scale: 0.93 }}
+      whileTap={disabled ? undefined : { scale: 0.93 }}
       style={{
         display: "flex",
         alignItems: "center",
@@ -1303,7 +1498,7 @@ function StandUpButton({ onTap, reduce }: { onTap: () => void; reduce: boolean }
         fontSize: 20,
         fontWeight: 900,
         letterSpacing: "0.05em",
-        cursor: "pointer",
+        cursor: disabled ? "wait" : "pointer",
         fontFamily: "inherit",
         boxShadow: "0 14px 34px -10px rgba(52,211,153,0.95), 0 0 26px rgba(52,211,153,0.4)",
         touchAction: "manipulation",
@@ -1324,328 +1519,5 @@ function StandUpButton({ onTap, reduce }: { onTap: () => void; reduce: boolean }
         </span>
       </span>
     </motion.button>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Overlays                                                           */
-/* ------------------------------------------------------------------ */
-
-const overlayBase: CSSProperties = {
-  position: "absolute",
-  inset: 0,
-  zIndex: 6,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: 24,
-  background: "rgba(10, 8, 6, 0.78)",
-  backdropFilter: "blur(4px)",
-  WebkitBackdropFilter: "blur(4px)",
-};
-
-function IntroOverlay({
-  onStart,
-  reduce,
-  narration,
-  accent,
-}: {
-  onStart: () => void;
-  reduce: boolean;
-  narration?: { speaker?: "adam" | "layla"; lines: string[] };
-  accent?: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      style={overlayBase}
-    >
-      <motion.div
-        initial={reduce ? { opacity: 0 } : { y: 24, opacity: 0, scale: 0.95 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        transition={{ type: "spring", stiffness: 240, damping: 22 }}
-        style={{
-          maxWidth: 440,
-          textAlign: "center",
-          padding: "28px 26px",
-          borderRadius: 24,
-          border: "2px solid rgba(255,157,77,0.5)",
-          background: "linear-gradient(180deg, rgba(56,28,12,0.96) 0%, rgba(30,16,8,0.98) 100%)",
-          boxShadow: "0 30px 70px -20px rgba(0,0,0,0.8)",
-          // The spoken-instruction block makes the card taller; on short
-          // viewports the card scrolls internally so the start button is
-          // always reachable (never clipped by the centered overlay).
-          maxHeight: "100%",
-          overflowY: "auto",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
-          <FlameGlyph size={54} />
-        </div>
-        <div
-          style={{
-            fontSize: 26,
-            fontWeight: 900,
-            color: "#ffd9ad",
-            marginBottom: 12,
-          }}
-        >
-          Don&apos;t Feed the Fire
-        </div>
-        <div
-          style={{
-            fontSize: 15.5,
-            fontWeight: 700,
-            lineHeight: 1.55,
-            color: "#e8d8c6",
-            marginBottom: 6,
-          }}
-        >
-          Mean messages are sparks. A reply is firewood, it makes the fire bigger.
-        </div>
-        <div
-          style={{
-            fontSize: 15.5,
-            fontWeight: 800,
-            lineHeight: 1.55,
-            color: "#bfe8ff",
-            marginBottom: 20,
-          }}
-        >
-          Press and HOLD the cool river stone to starve each spark until it fizzles out.
-        </div>
-        {narration && narration.lines.length > 0 && (
-          <div style={{ textAlign: "left" }}>
-            <InfoNarration lines={narration.lines} accent={accent ?? "#ff8e6e"} />
-          </div>
-        )}
-        <motion.button
-          type="button"
-          onClick={onStart}
-          whileTap={{ scale: 0.95 }}
-          whileHover={reduce ? undefined : { scale: 1.04 }}
-          style={{
-            minWidth: 180,
-            minHeight: 58,
-            padding: "14px 32px",
-            borderRadius: 16,
-            border: "3px solid #ffd158",
-            background: "linear-gradient(180deg, #ffb347 0%, #f08c1a 100%)",
-            color: "#3a2408",
-            fontSize: 18,
-            fontWeight: 900,
-            letterSpacing: "0.05em",
-            cursor: "pointer",
-            fontFamily: "inherit",
-            boxShadow: "0 12px 30px -10px rgba(255,179,71,0.9)",
-            touchAction: "manipulation",
-          }}
-        >
-          I&apos;m ready!
-        </motion.button>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function TeachOverlay({
-  title,
-  body,
-  tip,
-  onClose,
-  reduce,
-}: {
-  title: string;
-  body: string;
-  tip: string;
-  onClose: () => void;
-  reduce: boolean;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={overlayBase}
-    >
-      <motion.div
-        initial={reduce ? { opacity: 0 } : { y: 28, opacity: 0, scale: 0.94 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        exit={reduce ? { opacity: 0 } : { y: 16, opacity: 0, scale: 0.96 }}
-        transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        style={{
-          maxWidth: 420,
-          textAlign: "center",
-          padding: "24px 24px 26px",
-          borderRadius: 22,
-          border: "2.5px solid rgba(255,125,60,0.65)",
-          background: "linear-gradient(180deg, rgba(66,26,10,0.97) 0%, rgba(34,14,8,0.98) 100%)",
-          boxShadow: "0 30px 70px -20px rgba(0,0,0,0.85), 0 0 40px -10px rgba(255,120,50,0.5)",
-          // Scrolls internally on short viewports so the "Got it!" button
-          // is always reachable (same pattern as the intro card).
-          maxHeight: "100%",
-          overflowY: "auto",
-        }}
-      >
-        {/* firewood illustration */}
-        <svg viewBox="0 0 120 44" width={110} aria-hidden style={{ display: "block", margin: "0 auto 8px" }}>
-          <rect x={12} y={16} width={96} height={13} rx={6.5} fill="#8f5827" transform="rotate(-7 60 22)" />
-          <rect x={12} y={16} width={96} height={13} rx={6.5} fill="#7a4a21" transform="rotate(7 60 22)" />
-          <circle cx={60} cy={9} r={6} fill={EMBER} />
-          <circle cx={46} cy={13} r={4} fill="#ffe27a" />
-          <circle cx={74} cy={12} r={4} fill={EMBER_DEEP} />
-        </svg>
-        <div style={{ fontSize: 21, fontWeight: 900, color: "#ffc9a1", marginBottom: 10 }}>
-          {title}
-        </div>
-        <div
-          style={{
-            fontSize: 15.5,
-            fontWeight: 700,
-            lineHeight: 1.55,
-            color: "#f3e2d2",
-            marginBottom: 8,
-          }}
-        >
-          {body}
-        </div>
-        <div
-          style={{
-            fontSize: 14.5,
-            fontWeight: 800,
-            lineHeight: 1.5,
-            color: "#bfe8ff",
-            marginBottom: 18,
-          }}
-        >
-          {tip}
-        </div>
-        <motion.button
-          type="button"
-          onClick={onClose}
-          whileTap={{ scale: 0.95 }}
-          style={{
-            minWidth: 150,
-            minHeight: 54,
-            padding: "12px 30px",
-            borderRadius: 15,
-            border: `3px solid ${GOOD_GREEN}`,
-            background: "rgba(52,211,153,0.16)",
-            color: "#a7f3d0",
-            fontSize: 17,
-            fontWeight: 900,
-            letterSpacing: "0.05em",
-            cursor: "pointer",
-            fontFamily: "inherit",
-            touchAction: "manipulation",
-          }}
-        >
-          Got it!
-        </motion.button>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function WinOverlay({ onContinue, reduce }: { onContinue: () => void; reduce: boolean }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: reduce ? 0 : 0.15 }}
-      style={{
-        ...overlayBase,
-        background: "rgba(6, 20, 14, 0.82)",
-      }}
-    >
-      <motion.div
-        initial={reduce ? { opacity: 0 } : { y: 30, opacity: 0, scale: 0.92 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        transition={{ type: "spring", stiffness: 230, damping: 20 }}
-        style={{
-          maxWidth: 440,
-          textAlign: "center",
-          padding: "28px 26px",
-          borderRadius: 24,
-          border: `2.5px solid ${GOOD_GREEN}`,
-          background: "linear-gradient(180deg, rgba(10,46,32,0.97) 0%, rgba(6,26,18,0.98) 100%)",
-          boxShadow: "0 30px 70px -20px rgba(0,0,0,0.85), 0 0 50px -8px rgba(52,211,153,0.55)",
-          // Scrolls internally on short viewports so the Continue button
-          // is always reachable (same pattern as the intro card).
-          maxHeight: "100%",
-          overflowY: "auto",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 12 }}>
-          {[0, 1, 2].map((i) => (
-            <motion.span
-              key={i}
-              initial={reduce ? { opacity: 0 } : { scale: 0, rotate: -30 }}
-              animate={reduce ? { opacity: 1 } : { scale: 1, rotate: 0 }}
-              transition={
-                reduce
-                  ? { delay: 0.1 * i }
-                  : { delay: 0.25 + 0.18 * i, type: "spring", stiffness: 300, damping: 14 }
-              }
-              style={{ display: "inline-flex" }}
-            >
-              <PixIcon emoji="⭐" size={44} />
-            </motion.span>
-          ))}
-        </div>
-        <div style={{ fontSize: 25, fontWeight: 900, color: "#a7f3d0", marginBottom: 12 }}>
-          You starved the fire!
-        </div>
-        <div
-          style={{
-            fontSize: 15.5,
-            fontWeight: 800,
-            lineHeight: 1.7,
-            color: "#d3f5e6",
-            marginBottom: 6,
-          }}
-        >
-          3 mean sparks fizzled to ash.
-          <br />
-          1 friend feels brave again.
-        </div>
-        <div
-          style={{
-            fontSize: 14.5,
-            fontWeight: 700,
-            lineHeight: 1.55,
-            color: "#9ad9bd",
-            marginBottom: 20,
-          }}
-        >
-          Mean sparks die when you don&apos;t feed them. And when a friend is picked on, heroes stand up and tell a grown-up.
-        </div>
-        <motion.button
-          type="button"
-          onClick={onContinue}
-          whileTap={{ scale: 0.95 }}
-          whileHover={reduce ? undefined : { scale: 1.04 }}
-          style={{
-            minWidth: 190,
-            minHeight: 58,
-            padding: "14px 34px",
-            borderRadius: 16,
-            border: "3px solid #7dffb0",
-            background: `linear-gradient(180deg, ${GOOD_GREEN} 0%, #0e9f6e 100%)`,
-            color: "#053b2a",
-            fontSize: 18,
-            fontWeight: 900,
-            letterSpacing: "0.05em",
-            cursor: "pointer",
-            fontFamily: "inherit",
-            boxShadow: "0 12px 30px -10px rgba(52,211,153,0.95)",
-            touchAction: "manipulation",
-          }}
-        >
-          Continue
-        </motion.button>
-      </motion.div>
-    </motion.div>
   );
 }

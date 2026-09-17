@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T15:07:50.076Z",
+  "generatedAt": "2026-09-16T17:40:14.789Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -14130,380 +14130,447 @@
       "file": "/audio/voice/2eb62325690a0d40.mp3"
     },
     {
-      "key": "765d97e4259c4b56",
+      "key": "ddb2de349fd72935",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] A mean message is a spark that wants to grow. Don't tap reply. Your reply is firewood for the fire. Hold the cool river stone until the spark fizzles out.",
+      "text": "[warmly] Cyber Hero, come and read this incident report with me. The Raccoon stirred up a group chat and got kids piling on ONE kid with mean messages. Words can really, really hurt - but this week, YOUR words become a superpower. [whispers] Somewhere, that kid is still reading those messages. [warmly] By the end of today you will know exactly what to do, for yourself and for a friend. Let's see what Mission Command has for us!",
       "lines": [
-        "[warmly] A mean message is a spark that wants to grow.",
-        "Don't tap reply. Your reply is firewood for the fire.",
-        "Hold the cool river stone until the spark fizzles out."
+        "[warmly] Cyber Hero, come and read this incident report with me.",
+        "The Raccoon stirred up a group chat and got kids piling on ONE kid with mean messages. Words can really, really hurt - but this week, YOUR words become a superpower.",
+        "[whispers] Somewhere, that kid is still reading those messages.",
+        "[warmly] By the end of today you will know exactly what to do, for yourself and for a friend.",
+        "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/765d97e4259c4b56.mp3"
+      "file": "/audio/voice/ddb2de349fd72935.mp3"
     },
     {
-      "key": "53bc12f7578a6ca4",
+      "key": "b31a25146257bde4",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Welcome back, Cyber Hero. This week is a big-hearted one. Friends joke around. And when BOTH of you are laughing... that's just fun! [whispers] But bullying is different. It's mean on purpose. And it happens again and again. Here's the test: is everyone laughing... or is someone hurting? [excited] Let's practice telling them apart!",
+      "text": "[warmly] Welcome back, Cyber Hero. This week is a big-hearted one. Friends joke around. When BOTH of you are laughing, that is just fun. [whispers] Bullying is different. It is mean on purpose, and it happens again and again. Here is your test: is everyone laughing, or is someone hurting? That one question works on every chat moment you will ever see. [excited] Come and put that test to work on some real chat moments!",
       "lines": [
         "[warmly] Welcome back, Cyber Hero. This week is a big-hearted one.",
-        "Friends joke around. And when BOTH of you are laughing... that's just fun!",
-        "[whispers] But bullying is different.",
-        "It's mean on purpose. And it happens again and again.",
-        "Here's the test: is everyone laughing... or is someone hurting?",
-        "[excited] Let's practice telling them apart!"
+        "Friends joke around. When BOTH of you are laughing, that is just fun.",
+        "[whispers] Bullying is different. It is mean on purpose, and it happens again and again.",
+        "Here is your test: is everyone laughing, or is someone hurting?",
+        "That one question works on every chat moment you will ever see.",
+        "[excited] Come and put that test to work on some real chat moments!"
       ],
-      "file": "/audio/voice/53bc12f7578a6ca4.mp3"
+      "file": "/audio/voice/b31a25146257bde4.mp3"
     },
     {
-      "key": "b08146886e24ac81",
+      "key": "b3a9bf7c9cba48ed",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The sorting machine is back - with a heart upgrade! Chat moments are riding the belt. [warmly] Both laughing? Send it to the fun chute. [whispers] Mean on purpose? That chute stops it cold. [excited] Trust the test - is someone hurting?",
+      "text": "[excited] On your first challenge, we weigh chat moments on the Laughing Scales! This game is all about telling a joke from bullying. Out in the real world, a mean message often hides behind the word joke, and the test tells you the truth. Here is what you do. A chat moment appears in the gold card. Read it, and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is. [warmly] Weigh all five, and nobody will ever fool you with the word joke. Ready? Let's weigh!",
       "lines": [
-        "[excited] The sorting machine is back - with a heart upgrade!",
-        "Chat moments are riding the belt.",
-        "[warmly] Both laughing? Send it to the fun chute.",
-        "[whispers] Mean on purpose? That chute stops it cold.",
-        "[excited] Trust the test - is someone hurting?"
+        "[excited] On your first challenge, we weigh chat moments on the Laughing Scales!",
+        "This game is all about telling a joke from bullying.",
+        "Out in the real world, a mean message often hides behind the word joke, and the test tells you the truth.",
+        "Here is what you do. A chat moment appears in the gold card. Read it, and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is.",
+        "[warmly] Weigh all five, and nobody will ever fool you with the word joke. Ready? Let's weigh!"
       ],
-      "file": "/audio/voice/b08146886e24ac81.mp3"
+      "file": "/audio/voice/b3a9bf7c9cba48ed.mp3"
     },
     {
-      "key": "6d73a258bfeb08e2",
+      "key": "627f5efdab545404",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Here comes the first one - both laughing, or mean on purpose?",
+      "text": "Here is the first moment. Read it, then tap the card that says what it really is.",
       "lines": [
-        "Here comes the first one - both laughing, or mean on purpose?"
+        "Here is the first moment. Read it, then tap the card that says what it really is."
       ],
-      "file": "/audio/voice/6d73a258bfeb08e2.mp3"
+      "file": "/audio/voice/627f5efdab545404.mp3"
     },
     {
-      "key": "3543926a0a41b01d",
-      "speaker": "adam",
+      "key": "b5cb336315e027bf",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Great start, Cyber Hero. You know the test now: is everyone laughing... or is someone hurting? [whispers] Now lean in close. Because the next one is the most important thing we will EVER tell you.",
+      "text": "[proud] Every moment weighed! Joke or bullying, you can tell them apart now. [warmly] Out in the real world, when someone says it was just a joke, you know the test: is everyone laughing, or is someone hurting?",
       "lines": [
-        "[warmly] Great start, Cyber Hero.",
-        "You know the test now: is everyone laughing... or is someone hurting?",
-        "[whispers] Now lean in close.",
-        "Because the next one is the most important thing we will EVER tell you."
+        "[proud] Every moment weighed! Joke or bullying, you can tell them apart now.",
+        "[warmly] Out in the real world, when someone says it was just a joke, you know the test: is everyone laughing, or is someone hurting?"
       ],
-      "file": "/audio/voice/3543926a0a41b01d.mp3"
+      "file": "/audio/voice/b5cb336315e027bf.mp3"
     },
     {
-      "key": "53b6798b2f1d84ff",
+      "key": "f455f0213bff1c08",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Mean, on purpose, again and again. That is bullying. The others had everyone laughing, so they were just fun. [warmly] Keep asking your test question: is someone hurting?",
+      "lines": [
+        "[proud] Well done!",
+        "Mean, on purpose, again and again. That is bullying.",
+        "The others had everyone laughing, so they were just fun.",
+        "[warmly] Keep asking your test question: is someone hurting?"
+      ],
+      "file": "/audio/voice/f455f0213bff1c08.mp3"
+    },
+    {
+      "key": "e43f385432f58d4a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Come close. This is the big one. If anyone is ever mean to you online... it is NOT. YOUR. FAULT. Not because of what you posted. Not because of anything about you. [whispers] Mean words only describe the person typing them. [warmly] You never deserve it. Full stop. Let's make that feeling strong.",
+      "text": "[proud] Great start, Cyber Hero. You can weigh a chat moment now. Joke or bullying: is everyone laughing, or is someone hurting? [whispers] Now lean in close, because the next lesson is the most important truth in this whole course. Come and hear it.",
       "lines": [
-        "[warmly] Come close. This is the big one.",
-        "If anyone is ever mean to you online...",
-        "it is NOT. YOUR. FAULT.",
+        "[proud] Great start, Cyber Hero. You can weigh a chat moment now.",
+        "Joke or bullying: is everyone laughing, or is someone hurting?",
+        "[whispers] Now lean in close, because the next lesson is the most important truth in this whole course.",
+        "Come and hear it."
+      ],
+      "file": "/audio/voice/e43f385432f58d4a.mp3"
+    },
+    {
+      "key": "6392e98402c82a16",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Ready for the most important truth in this whole course? Come close. If anyone is ever mean to you online, it is NOT your fault. Not because of what you posted. Not because of anything about you. [whispers] Mean words only describe the person typing them. You never deserve it. Full stop. [excited] Let's make that feeling strong. Come and sit by the fire with me!",
+      "lines": [
+        "[warmly] Ready for the most important truth in this whole course? Come close.",
+        "If anyone is ever mean to you online, it is NOT your fault.",
         "Not because of what you posted. Not because of anything about you.",
         "[whispers] Mean words only describe the person typing them.",
-        "[warmly] You never deserve it. Full stop. Let's make that feeling strong."
+        "You never deserve it. Full stop.",
+        "[excited] Let's make that feeling strong. Come and sit by the fire with me!"
       ],
-      "file": "/audio/voice/53b6798b2f1d84ff.mp3"
+      "file": "/audio/voice/6392e98402c82a16.mp3"
     },
     {
-      "key": "6f813be889136486",
+      "key": "9c57ac4eecfad833",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] When mean words land, gray little doubt clouds show up. 'Maybe it's my fault.' 'Maybe something's wrong with me.' [whispers] Every single one of those clouds is WRONG. [excited] Tap each cloud and pop it with the truth!",
+      "text": "[warmly] On your second challenge, four stones wait for you around the campfire. This game is all about one truth: mean words are never your fault. Out in the real world, after a mean message, a gray little doubt can sneak in. This ring is how you answer it. Here is what you do. Four stones sit around the fire. Tap the glowing one nearest the middle, and I will read the true thing written on it. Then the next stone lights up. There are no wrong taps in this game. [warmly] Light all four, and the doubt has nowhere left to hide. Ready? Tap the first stone.",
       "lines": [
-        "[warmly] When mean words land, gray little doubt clouds show up.",
-        "'Maybe it's my fault.' 'Maybe something's wrong with me.'",
-        "[whispers] Every single one of those clouds is WRONG.",
-        "[excited] Tap each cloud and pop it with the truth!"
+        "[warmly] On your second challenge, four stones wait for you around the campfire.",
+        "This game is all about one truth: mean words are never your fault.",
+        "Out in the real world, after a mean message, a gray little doubt can sneak in. This ring is how you answer it.",
+        "Here is what you do. Four stones sit around the fire. Tap the glowing one nearest the middle, and I will read the true thing written on it. Then the next stone lights up. There are no wrong taps in this game.",
+        "[warmly] Light all four, and the doubt has nowhere left to hide. Ready? Tap the first stone."
       ],
-      "file": "/audio/voice/6f813be889136486.mp3"
+      "file": "/audio/voice/9c57ac4eecfad833.mp3"
     },
     {
-      "key": "7a942c4c19f6a630",
+      "key": "4171fecbfd9d7289",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Tap any gray cloud - the truth is waiting inside!",
+      "text": "Tap the glowing stone in the middle, and I will read what it says.",
       "lines": [
-        "Tap any gray cloud - the truth is waiting inside!"
+        "Tap the glowing stone in the middle, and I will read what it says."
       ],
-      "file": "/audio/voice/7a942c4c19f6a630.mp3"
+      "file": "/audio/voice/4171fecbfd9d7289.mp3"
     },
     {
-      "key": "360bf34adec47d86",
+      "key": "0d8f1568ce15b14e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] The whole ring is glowing, Cyber Hero. Every stone told the truth. [warmly] Out in the real world, if a gray thought whispers that it was your fault, you know four true things that say it never was.",
+      "lines": [
+        "[proud] The whole ring is glowing, Cyber Hero. Every stone told the truth.",
+        "[warmly] Out in the real world, if a gray thought whispers that it was your fault, you know four true things that say it never was."
+      ],
+      "file": "/audio/voice/0d8f1568ce15b14e.mp3"
+    },
+    {
+      "key": "cde550efdec4dfb8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Never. Say it like you mean it. Mean words describe the person typing them, not you. [warmly] Keep that truth somewhere safe. It is your armour.",
+      "lines": [
+        "[proud] Well done!",
+        "Never. Say it like you mean it.",
+        "Mean words describe the person typing them, not you.",
+        "[warmly] Keep that truth somewhere safe. It is your armour."
+      ],
+      "file": "/audio/voice/cde550efdec4dfb8.mp3"
+    },
+    {
+      "key": "aa1bfc69e4413f20",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] That truth is your armor now. Not your fault. Not ever. [whispers] Keep it somewhere safe - you might need it one day. [excited] Next: the clever move when mean words actually land.",
+      "text": "[proud] That truth is your armour now, Cyber Hero. Not your fault. Not ever. [whispers] But what do you actually DO when mean words land and your face goes hot? Next, we'll learn the clever move for that exact moment. Come and see!",
       "lines": [
-        "[warmly] That truth is your armor now.",
+        "[proud] That truth is your armour now, Cyber Hero.",
         "Not your fault. Not ever.",
-        "[whispers] Keep it somewhere safe - you might need it one day.",
-        "[excited] Next: the clever move when mean words actually land."
+        "[whispers] But what do you actually DO when mean words land and your face goes hot?",
+        "Next, we'll learn the clever move for that exact moment. Come and see!"
       ],
-      "file": "/audio/voice/360bf34adec47d86.mp3"
+      "file": "/audio/voice/aa1bfc69e4413f20.mp3"
     },
     {
-      "key": "ae668d3985c0ae72",
+      "key": "03256232e6b3fd99",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] When mean words land, your tummy goes hot. Everything in you wants to fire back something MEANER. [whispers] But mean messages are a fire... and angry replies? They're wood. [excited] Don't feed the fire, and it can't grow. Then TELLING a grown-up puts it out for good. Staying calm isn't weak. It's the strongest move there is.",
+      "text": "[warmly] Here it is: the move that keeps you calm when mean words land. Your face goes hot, and your fingers itch to fire back. [whispers] But a mean message is a fire, and an angry reply is wood. Fight back, and the fire grows. Stay calm, and it cannot grow. Then telling a grown-up puts it out for good. [excited] Staying calm is the strongest move there is. Come to the campfire and starve some sparks!",
       "lines": [
-        "[warmly] When mean words land, your tummy goes hot.",
-        "Everything in you wants to fire back something MEANER.",
-        "[whispers] But mean messages are a fire...",
-        "and angry replies? They're wood.",
-        "[excited] Don't feed the fire, and it can't grow. Then TELLING a grown-up puts it out for good.",
-        "Staying calm isn't weak. It's the strongest move there is."
+        "[warmly] Here it is: the move that keeps you calm when mean words land.",
+        "Your face goes hot, and your fingers itch to fire back.",
+        "[whispers] But a mean message is a fire, and an angry reply is wood.",
+        "Fight back, and the fire grows. Stay calm, and it cannot grow.",
+        "Then telling a grown-up puts it out for good.",
+        "[excited] Staying calm is the strongest move there is. Come to the campfire and starve some sparks!"
       ],
-      "file": "/audio/voice/ae668d3985c0ae72.mp3"
+      "file": "/audio/voice/03256232e6b3fd99.mp3"
     },
     {
-      "key": "1ba6a3a65b437619",
+      "key": "27a7cd94880b6042",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Practice time - and these moments feel HOT. Your face burns, your fingers itch to fire back. [whispers] That heat is the fire asking for wood. [excited] Show it who's boss. Stay calm!",
+      "text": "[excited] On your third challenge, mean sparks are landing by our campfire! This game is all about not feeding the fire. Out in the real world, the itch to fire back is the fire asking for wood, and you can say no. Here is what you do. A spark lands with a big red REPLY button. Do not tap it. Press and HOLD the cool blue river stone until the spark fizzles into ash. On the last round a friend is picked on, so tap the green STAND UP button instead. [warmly] Starve three sparks and stand up for one friend, and you are the calm one. Ready? Here comes the first spark.",
       "lines": [
-        "[warmly] Practice time - and these moments feel HOT.",
-        "Your face burns, your fingers itch to fire back.",
-        "[whispers] That heat is the fire asking for wood.",
-        "[excited] Show it who's boss. Stay calm!"
+        "[excited] On your third challenge, mean sparks are landing by our campfire!",
+        "This game is all about not feeding the fire.",
+        "Out in the real world, the itch to fire back is the fire asking for wood, and you can say no.",
+        "Here is what you do. A spark lands with a big red REPLY button. Do not tap it. Press and HOLD the cool blue river stone until the spark fizzles into ash. On the last round a friend is picked on, so tap the green STAND UP button instead.",
+        "[warmly] Starve three sparks and stand up for one friend, and you are the calm one. Ready? Here comes the first spark."
       ],
-      "file": "/audio/voice/1ba6a3a65b437619.mp3"
+      "file": "/audio/voice/27a7cd94880b6042.mp3"
     },
     {
-      "key": "1bd40246989298ec",
+      "key": "3001d77b98a6eaf0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Here comes a spark. Press and hold the blue stone until it fizzles out.",
+      "lines": [
+        "Here comes a spark. Press and hold the blue stone until it fizzles out."
+      ],
+      "file": "/audio/voice/3001d77b98a6eaf0.mp3"
+    },
+    {
+      "key": "266d7188d9b8c330",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] The fire went quiet, Cyber Hero. Three sparks, no firewood, and a friend who is not alone. [warmly] Out in the real world, when your face goes hot, remember the stone. Stay calm, and then tell a grown-up.",
+      "lines": [
+        "[proud] The fire went quiet, Cyber Hero. Three sparks, no firewood, and a friend who is not alone.",
+        "[warmly] Out in the real world, when your face goes hot, remember the stone. Stay calm, and then tell a grown-up."
+      ],
+      "file": "/audio/voice/266d7188d9b8c330.mp3"
+    },
+    {
+      "key": "462f73b1e7ecdaee",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Busted. Fighting back feeds the fire. Staying calm stops it growing, and telling a grown-up puts it out. [warmly] Cool head, warm heart. That is a hero.",
+      "lines": [
+        "[proud] Well done!",
+        "Busted. Fighting back feeds the fire.",
+        "Staying calm stops it growing, and telling a grown-up puts it out.",
+        "[warmly] Cool head, warm heart. That is a hero."
+      ],
+      "file": "/audio/voice/462f73b1e7ecdaee.mp3"
+    },
+    {
+      "key": "32463cce93fddf58",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Three powers! You kept your cool in the hottest moments. No wood for the fire. Not one stick. [warmly] Now for my favorite part of this whole week... the moment YOU get to be the hero of the story.",
+      "text": "[proud] Three powers, Cyber Hero. You kept your cool in the hottest moments. No wood for the fire. Not one stick. [whispers] Now, here is something huge: you can join a pile-on without typing a single word. Next, we'll learn why passing a message on is joining in. Come and see!",
       "lines": [
-        "[excited] Three powers! You kept your cool in the hottest moments.",
+        "[proud] Three powers, Cyber Hero. You kept your cool in the hottest moments.",
         "No wood for the fire. Not one stick.",
-        "[warmly] Now for my favorite part of this whole week...",
-        "the moment YOU get to be the hero of the story."
+        "[whispers] Now, here is something huge: you can join a pile-on without typing a single word.",
+        "Next, we'll learn why passing a message on is joining in. Come and see!"
       ],
-      "file": "/audio/voice/1bd40246989298ec.mp3"
+      "file": "/audio/voice/32463cce93fddf58.mp3"
     },
     {
-      "key": "f85e8624dc67609c",
+      "key": "a3b1886a9f5f2b3f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Here's something huge. You don't have to WRITE a mean message to spread one. Forwarding it... laughing at it... even one little laughing emoji... [whispers] that all tells the bully: 'more, please.' [excited] But flip it around! ONE kind message can turn a whole chat. Four doors are coming up. Only one is the kind one!",
+      "text": "[warmly] Here's the huge thing: you don't have to WRITE a mean message to spread one. Forwarding it, laughing at it, even one little laughing emoji. [whispers] Every one of those tells the bully: more, please. But flip it around. One kind message can turn a whole chat. That is your superpower this week. [excited] Come and see what happens when one message gets passed on!",
       "lines": [
-        "[warmly] Here's something huge.",
-        "You don't have to WRITE a mean message to spread one.",
-        "Forwarding it... laughing at it... even one little laughing emoji...",
-        "[whispers] that all tells the bully: 'more, please.'",
-        "[excited] But flip it around! ONE kind message can turn a whole chat.",
-        "Four doors are coming up. Only one is the kind one!"
+        "[warmly] Here's the huge thing: you don't have to WRITE a mean message to spread one.",
+        "Forwarding it, laughing at it, even one little laughing emoji.",
+        "[whispers] Every one of those tells the bully: more, please.",
+        "But flip it around. One kind message can turn a whole chat.",
+        "That is your superpower this week.",
+        "[excited] Come and see what happens when one message gets passed on!"
       ],
-      "file": "/audio/voice/f85e8624dc67609c.mp3"
+      "file": "/audio/voice/a3b1886a9f5f2b3f.mp3"
     },
     {
-      "key": "c4a8bf2ad04c1213",
+      "key": "aaa3c07618543ea5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] A mean post just landed in the chat. Four doors swing open in front of you. [whispers] Three of them join the meanness - some sneakily. [excited] Find the hero's door. It's the KIND one!",
+      "text": "[excited] On your fourth challenge, we watch one message fly in the Ember Chase. This game is all about what happens when a mean message gets passed on. Out in the real world, one forward makes copies you can never get back. Here is what you do. A mean message sits in the card with a PASS IT ON button. Tap it once, just this once, to see what happens. Embers scatter across the field. Tap every ember you can to catch it back. [warmly] Try your hardest, and watch what the embers do. Ready? Tap the button.",
       "lines": [
-        "[warmly] A mean post just landed in the chat.",
-        "Four doors swing open in front of you.",
-        "[whispers] Three of them join the meanness - some sneakily.",
-        "[excited] Find the hero's door. It's the KIND one!"
+        "[excited] On your fourth challenge, we watch one message fly in the Ember Chase.",
+        "This game is all about what happens when a mean message gets passed on.",
+        "Out in the real world, one forward makes copies you can never get back.",
+        "Here is what you do. A mean message sits in the card with a PASS IT ON button. Tap it once, just this once, to see what happens. Embers scatter across the field. Tap every ember you can to catch it back.",
+        "[warmly] Try your hardest, and watch what the embers do. Ready? Tap the button."
       ],
-      "file": "/audio/voice/c4a8bf2ad04c1213.mp3"
+      "file": "/audio/voice/aaa3c07618543ea5.mp3"
     },
     {
-      "key": "bf521c0854dddeaa",
+      "key": "d2da058bcc4f3985",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Read all four doors - then walk through the kind one!",
+      "text": "The embers are flying! Tap every ember you can to catch it back.",
       "lines": [
-        "Read all four doors - then walk through the kind one!"
+        "The embers are flying! Tap every ember you can to catch it back."
       ],
-      "file": "/audio/voice/bf521c0854dddeaa.mp3"
+      "file": "/audio/voice/d2da058bcc4f3985.mp3"
     },
     {
-      "key": "6ceefe3ec98cc4f8",
+      "key": "9356ee18192220ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] You tried so hard, Cyber Hero, and the embers still got away. That is not your fault. That is how copies work. Out in the real world, the only time you can stop a message is BEFORE you pass it on. So you don't. You check on the person instead.",
+      "lines": [
+        "[warmly] You tried so hard, Cyber Hero, and the embers still got away. That is not your fault. That is how copies work.",
+        "Out in the real world, the only time you can stop a message is BEFORE you pass it on. So you don't. You check on the person instead."
+      ],
+      "file": "/audio/voice/9356ee18192220ce.mp3"
+    },
+    {
+      "key": "76d5572afe888676",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Checking on the person helps. Everything else joins in. One kind message can flip a whole chat. [warmly] That is the kind door, and you found it.",
+      "lines": [
+        "[proud] Well done!",
+        "Checking on the person helps. Everything else joins in.",
+        "One kind message can flip a whole chat.",
+        "[warmly] That is the kind door, and you found it."
+      ],
+      "file": "/audio/voice/76d5572afe888676.mp3"
+    },
+    {
+      "key": "5147a6ab0a09e243",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Four powers! You found the kind door every time. No forwards. No laughing along. [warmly] Just one hero, being kind, out loud. One last power now - and it's a warm one.",
+      "text": "[proud] Four powers, Cyber Hero. You know what one forward really does. No forwards, no laughing along. One kind message instead. [whispers] There is one more power, and it is the warmest one of all. Next, we'll learn how heroes never carry heavy words alone. Come and see!",
       "lines": [
-        "[excited] Four powers! You found the kind door every time.",
-        "No forwards. No laughing along.",
-        "[warmly] Just one hero, being kind, out loud.",
-        "One last power now - and it's a warm one."
+        "[proud] Four powers, Cyber Hero. You know what one forward really does.",
+        "No forwards, no laughing along. One kind message instead.",
+        "[whispers] There is one more power, and it is the warmest one of all.",
+        "Next, we'll learn how heroes never carry heavy words alone. Come and see!"
       ],
-      "file": "/audio/voice/6ceefe3ec98cc4f8.mp3"
+      "file": "/audio/voice/5147a6ab0a09e243.mp3"
     },
     {
-      "key": "761012192dd73763",
+      "key": "c0589bdf8d0e978c",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Last power. And it might be the warmest one. Mean words are heavy. Too heavy for one hero to carry. [whispers] So heroes don't carry them alone. Don't reply. Keep the message so a grown-up can see it. Then tell someone you trust. [excited] Telling isn't snitching - it's how the hurting STOPS. Let's walk the path!",
+      "text": "[warmly] Here's the warmest power of all. Heroes share the weight. Mean words are heavy. Too heavy for one hero to carry. So there is a calm path across, three steps long. [whispers] Don't reply. Keep the message, so a grown-up can see it. Then tell someone you trust. Telling isn't snitching. It is how the hurting STOPS. [excited] Come and cross the stream with me!",
       "lines": [
-        "[warmly] Last power. And it might be the warmest one.",
+        "[warmly] Here's the warmest power of all. Heroes share the weight.",
         "Mean words are heavy. Too heavy for one hero to carry.",
-        "[whispers] So heroes don't carry them alone.",
-        "Don't reply. Keep the message so a grown-up can see it.",
-        "Then tell someone you trust.",
-        "[excited] Telling isn't snitching - it's how the hurting STOPS. Let's walk the path!"
+        "So there is a calm path across, three steps long.",
+        "[whispers] Don't reply. Keep the message, so a grown-up can see it. Then tell someone you trust.",
+        "Telling isn't snitching. It is how the hurting STOPS.",
+        "[excited] Come and cross the stream with me!"
       ],
-      "file": "/audio/voice/761012192dd73763.mp3"
+      "file": "/audio/voice/c0589bdf8d0e978c.mp3"
     },
     {
-      "key": "ffe1513c9d1aa0ee",
+      "key": "95737f22a515d72a",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] See the river? Mean words are on this side. Feeling better is on the other. [whispers] Three stepping stones take you across. [excited] Tap the steps in the order a hero would take them!",
+      "text": "[excited] On your last challenge, we cross the stream on the Stepping Stones! This game is all about the three hero steps when mean words land. Out in the real world, the steps go in order, and each one makes the next one easier. Here is what you do. Three stones are offered for each step across the stream. Read all three, then tap the safe one. A wobbly stone teaches you why, and you try again. [warmly] Cross all three, and you never carry it alone. Ready? First stone!",
       "lines": [
-        "[warmly] See the river? Mean words are on this side.",
-        "Feeling better is on the other.",
-        "[whispers] Three stepping stones take you across.",
-        "[excited] Tap the steps in the order a hero would take them!"
+        "[excited] On your last challenge, we cross the stream on the Stepping Stones!",
+        "This game is all about the three hero steps when mean words land.",
+        "Out in the real world, the steps go in order, and each one makes the next one easier.",
+        "Here is what you do. Three stones are offered for each step across the stream. Read all three, then tap the safe one. A wobbly stone teaches you why, and you try again.",
+        "[warmly] Cross all three, and you never carry it alone. Ready? First stone!"
       ],
-      "file": "/audio/voice/ffe1513c9d1aa0ee.mp3"
+      "file": "/audio/voice/95737f22a515d72a.mp3"
     },
     {
-      "key": "356594e17d3000c1",
+      "key": "2999b1034eb051fc",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Which step comes first? Tap it and hop on!",
+      "text": "Here are three stones for the first step. Tap the safe one.",
       "lines": [
-        "Which step comes first? Tap it and hop on!"
+        "Here are three stones for the first step. Tap the safe one."
       ],
-      "file": "/audio/voice/356594e17d3000c1.mp3"
+      "file": "/audio/voice/2999b1034eb051fc.mp3"
     },
     {
-      "key": "96a2a046fb0f513c",
+      "key": "64c1531ebf86a270",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] You're across, Cyber Hero! Don't reply, keep it, tell. [warmly] Out in the real world, those three stones are always there. Step on them in order, and you never carry heavy words alone.",
+      "lines": [
+        "[proud] You're across, Cyber Hero! Don't reply, keep it, tell.",
+        "[warmly] Out in the real world, those three stones are always there. Step on them in order, and you never carry heavy words alone."
+      ],
+      "file": "/audio/voice/64c1531ebf86a270.mp3"
+    },
+    {
+      "key": "318fb5922b58a3e9",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! Don't reply. Keep it. Tell. That is the path. First you starve the fire, then you keep the proof, then you share the weight. [warmly] Three steps, and you are never alone.",
+      "lines": [
+        "[proud] Well done!",
+        "Don't reply. Keep it. Tell. That is the path.",
+        "First you starve the fire, then you keep the proof, then you share the weight.",
+        "[warmly] Three steps, and you are never alone."
+      ],
+      "file": "/audio/voice/318fb5922b58a3e9.mp3"
+    },
+    {
+      "key": "6bf09521c9a41ea2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Cyber Hero! You know what bullying is, you know it's never your fault, you stay calm, you choose the kind door... [warmly] and you never, ever carry it alone. [excited] Quick final drill - then let's make a whole chat kind again!",
+      "text": "[excited] That's all FIVE powers, Cyber Hero! You can weigh a moment, you know it is never your fault, you starve the fire, you stop the chain... [warmly] and you never carry heavy words alone. One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy. Come on!",
       "lines": [
         "[excited] That's all FIVE powers, Cyber Hero!",
-        "You know what bullying is, you know it's never your fault,",
-        "you stay calm, you choose the kind door...",
-        "[warmly] and you never, ever carry it alone.",
-        "[excited] Quick final drill - then let's make a whole chat kind again!"
+        "You can weigh a moment, you know it is never your fault, you starve the fire, you stop the chain...",
+        "[warmly] and you never carry heavy words alone.",
+        "One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy. Come on!"
       ],
-      "file": "/audio/voice/96a2a046fb0f513c.mp3"
+      "file": "/audio/voice/6bf09521c9a41ea2.mp3"
     },
     {
-      "key": "b494e567dde3bcdb",
+      "key": "949f60ee5c85746f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Final drill! Choices are drifting past. Tap HERO MOVE for the kind and calm ones... and FEEDS IT for anything that helps meanness grow. [warmly] Five powers. One big heart. Show me!",
+      "text": "[excited] Time for your review: the Kind Moves Board! This game is all about picking the right hero move for each moment. Out in the real world, moments are different, and so are the moves. Here is what you do. Three chat moments sit on the board. Tap a moment, and I will read it. Then tap the hero move that fits it from the moves below. Every moment needs its OWN move, so no move can be used twice. [warmly] Match all three and the board is complete. Ready? Tap the first moment.",
       "lines": [
-        "[excited] Final drill! Choices are drifting past.",
-        "Tap HERO MOVE for the kind and calm ones...",
-        "and FEEDS IT for anything that helps meanness grow.",
-        "[warmly] Five powers. One big heart. Show me!"
+        "[excited] Time for your review: the Kind Moves Board!",
+        "This game is all about picking the right hero move for each moment.",
+        "Out in the real world, moments are different, and so are the moves.",
+        "Here is what you do. Three chat moments sit on the board. Tap a moment, and I will read it. Then tap the hero move that fits it from the moves below. Every moment needs its OWN move, so no move can be used twice.",
+        "[warmly] Match all three and the board is complete. Ready? Tap the first moment."
       ],
-      "file": "/audio/voice/b494e567dde3bcdb.mp3"
+      "file": "/audio/voice/949f60ee5c85746f.mp3"
     },
     {
-      "key": "b9a8fc5183cb945e",
+      "key": "2818bd8ed8d0ab32",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap a moment on the board, and I will read it out.",
+      "lines": [
+        "Tap a moment on the board, and I will read it out."
+      ],
+      "file": "/audio/voice/2818bd8ed8d0ab32.mp3"
+    },
+    {
+      "key": "367896f904f2758f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every moment answered, Cyber Hero. Three moments, three different hero moves. [warmly] Out in the real world, you will meet all three. Now you know which move each one needs, and the Raccoon's echo has nothing to copy.",
+      "lines": [
+        "[proud] Every moment answered, Cyber Hero. Three moments, three different hero moves.",
+        "[warmly] Out in the real world, you will meet all three. Now you know which move each one needs, and the Raccoon's echo has nothing to copy."
+      ],
+      "file": "/audio/voice/367896f904f2758f.mp3"
+    },
+    {
+      "key": "01a0595675a86039",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! You know the laugh test, you know it's never your fault, you starve the fire, you open the kind door... [warmly] and you never carry heavy words alone. [excited] The whole chat turned kind - because of YOU. Sticker time!",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You know the laugh test, you know it's never your fault, you starve the fire, you stop the chain... [warmly] and you never carry heavy words alone. [excited] The whole chat turned kind, because of YOU. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
         "You know the laugh test, you know it's never your fault,",
-        "you starve the fire, you open the kind door...",
+        "you starve the fire, you stop the chain...",
         "[warmly] and you never carry heavy words alone.",
-        "[excited] The whole chat turned kind - because of YOU. Sticker time!"
+        "[excited] The whole chat turned kind, because of YOU. Sticker time!"
       ],
-      "file": "/audio/voice/b9a8fc5183cb945e.mp3"
-    },
-    {
-      "key": "b8c72a8620f172cf",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Someone posts: 'Your drawing is the WORST in the class 😂' Your face goes hot. Your fingers hover over the keyboard...",
-      "lines": [
-        "Someone posts: 'Your drawing is the WORST in the class 😂' Your face goes hot. Your fingers hover over the keyboard..."
-      ],
-      "file": "/audio/voice/b8c72a8620f172cf.mp3"
-    },
-    {
-      "key": "8dec9ae6c474d32f",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "After you win a race, a player types: 'You only won because you CHEAT.' Everyone in the lobby can see it.",
-      "lines": [
-        "After you win a race, a player types: 'You only won because you CHEAT.' Everyone in the lobby can see it."
-      ],
-      "file": "/audio/voice/8dec9ae6c474d32f.mp3"
-    },
-    {
-      "key": "c346f5d485e4fd9b",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A mean message about your best friend appears. You're SO angry your hands are shaking.",
-      "lines": [
-        "A mean message about your best friend appears. You're SO angry your hands are shaking."
-      ],
-      "file": "/audio/voice/c346f5d485e4fd9b.mp3"
-    },
-    {
-      "key": "89fdf8bfcb6faecc",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Now there are TWO mean messages, the fire is bigger, and you feel worse - not better. Fighting back always feeds it.",
-      "lines": [
-        "Now there are TWO mean messages, the fire is bigger, and you feel worse - not better. Fighting back always feeds it."
-      ],
-      "file": "/audio/voice/89fdf8bfcb6faecc.mp3"
-    },
-    {
-      "key": "06669590b4c414c8",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The fire got NOTHING to burn. You stayed the calm one - and calm is what heroes look like.",
-      "lines": [
-        "The fire got NOTHING to burn. You stayed the calm one - and calm is what heroes look like."
-      ],
-      "file": "/audio/voice/06669590b4c414c8.mp3"
-    },
-    {
-      "key": "a91b28914bec6d5c",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The lobby turns into a shouting match and the fun is gone for everyone. Wood, meet fire.",
-      "lines": [
-        "The lobby turns into a shouting match and the fun is gone for everyone. Wood, meet fire."
-      ],
-      "file": "/audio/voice/a91b28914bec6d5c.mp3"
-    },
-    {
-      "key": "fa9ca7c3605cdbbf",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "You won the race AND the moment. The sore loser's words just... fizzled out.",
-      "lines": [
-        "You won the race AND the moment. The sore loser's words just... fizzled out."
-      ],
-      "file": "/audio/voice/fa9ca7c3605cdbbf.mp3"
-    },
-    {
-      "key": "cb260deb1d06489c",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Now the chat's about YOUR angry message - and your friend still needs real help. Anger fed the fire again.",
-      "lines": [
-        "Now the chat's about YOUR angry message - and your friend still needs real help. Anger fed the fire again."
-      ],
-      "file": "/audio/voice/cb260deb1d06489c.mp3"
-    },
-    {
-      "key": "d73d72d6abb2ce88",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "THAT'S the move. Calm on the outside, hero on the inside - and real help is on the way for your friend.",
-      "lines": [
-        "THAT'S the move. Calm on the outside, hero on the inside - and real help is on the way for your friend."
-      ],
-      "file": "/audio/voice/d73d72d6abb2ce88.mp3"
+      "file": "/audio/voice/01a0595675a86039.mp3"
     },
     {
       "key": "84664cee72a824df",
@@ -14536,14 +14603,14 @@
       "file": "/audio/voice/7f9176e7dd690d31.mp3"
     },
     {
-      "key": "16c55b6bdc8234c5",
+      "key": "1d3e8d42d5af50d9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which of these HELPS?",
+      "text": "Quick! Which one HELPS?",
       "lines": [
-        "Which of these HELPS?"
+        "Quick! Which one HELPS?"
       ],
-      "file": "/audio/voice/16c55b6bdc8234c5.mp3"
+      "file": "/audio/voice/1d3e8d42d5af50d9.mp3"
     },
     {
       "key": "682829adf0033446",
@@ -14554,6 +14621,1031 @@
         "Mean words landed. Tap the hero steps IN ORDER:"
       ],
       "file": "/audio/voice/682829adf0033446.mp3"
+    },
+    {
+      "key": "c453d073dfe0010f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Adam teases his friend Leo about a typo in the class chat, and Leo posts three laughing faces back. What's the verdict? Is it option A... A shared joke, both of them are laughing Option B... Bullying, teasing always counts as mean Or is it option C... Bullying, because it happened in the chat So, what do you think?",
+      "lines": [
+        "Adam teases his friend Leo about a typo in the class chat, and Leo posts three laughing faces back. What's the verdict?",
+        "Is it option A...",
+        "A shared joke, both of them are laughing",
+        "Option B...",
+        "Bullying, teasing always counts as mean",
+        "Or is it option C...",
+        "Bullying, because it happened in the chat",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/c453d073dfe0010f.mp3"
+    },
+    {
+      "key": "2c119a1676caa9ed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A mean comment lands on Adam's dinosaur drawing, and he thinks: 'I shouldn't have posted it.' What's the truth? Is it option A... It's a little bit his fault for posting in public Option B... He should wait to post until he draws better Or is it option C... Posting was fine, the meanness is the typer's choice So, what do you think?",
+      "lines": [
+        "A mean comment lands on Adam's dinosaur drawing, and he thinks: 'I shouldn't have posted it.' What's the truth?",
+        "Is it option A...",
+        "It's a little bit his fault for posting in public",
+        "Option B...",
+        "He should wait to post until he draws better",
+        "Or is it option C...",
+        "Posting was fine, the meanness is the typer's choice",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/2c119a1676caa9ed.mp3"
+    },
+    {
+      "key": "5db86560eb28dfe8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'You're the WORST goalie ever' pops up after Layla's game, and her fingers are already typing something meaner back. What happens if she sends it? Is it option A... Nothing much, they started it first Option B... The fire grows, now there are two mean messages Or is it option C... The bully learns a lesson and stops So, what do you think?",
+      "lines": [
+        "'You're the WORST goalie ever' pops up after Layla's game, and her fingers are already typing something meaner back. What happens if she sends it?",
+        "Is it option A...",
+        "Nothing much, they started it first",
+        "Option B...",
+        "The fire grows, now there are two mean messages",
+        "Or is it option C...",
+        "The bully learns a lesson and stops",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/5db86560eb28dfe8.mp3"
+    },
+    {
+      "key": "cc266f092fd7dea9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An embarrassing photo of Sam is going around with 'pass it on lol', and it lands on Adam's screen. Adam didn't write anything mean. Does forwarding still join in? Is it option A... Yes, every forward spreads the hurt Option B... No, joining in needs mean words Or is it option C... Only if he adds a laughing face to it So, what do you think?",
+      "lines": [
+        "An embarrassing photo of Sam is going around with 'pass it on lol', and it lands on Adam's screen. Adam didn't write anything mean. Does forwarding still join in?",
+        "Is it option A...",
+        "Yes, every forward spreads the hurt",
+        "Option B...",
+        "No, joining in needs mean words",
+        "Or is it option C...",
+        "Only if he adds a laughing face to it",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/cc266f092fd7dea9.mp3"
+    },
+    {
+      "key": "913ac4db87bdfe3b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A mean message about Adam is sitting in his chat, and his first thought is to delete it so he never sees it again. Why keep it instead? Is it option A... Deleting messages breaks the chat rules Option B... He might want to answer it later on Or is it option C... A trusted grown-up needs to see it to help So, what do you think?",
+      "lines": [
+        "A mean message about Adam is sitting in his chat, and his first thought is to delete it so he never sees it again. Why keep it instead?",
+        "Is it option A...",
+        "Deleting messages breaks the chat rules",
+        "Option B...",
+        "He might want to answer it later on",
+        "Or is it option C...",
+        "A trusted grown-up needs to see it to help",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/913ac4db87bdfe3b.mp3"
+    },
+    {
+      "key": "b1c81d34161c9120",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The test is simple: is everyone laughing, or is someone hurting? When both friends are cracking up, that's shared fun. Chats and teasing aren't the problem by themselves.",
+      "lines": [
+        "That's right!",
+        "The test is simple: is everyone laughing, or is someone hurting? When both friends are cracking up, that's shared fun. Chats and teasing aren't the problem by themselves."
+      ],
+      "file": "/audio/voice/b1c81d34161c9120.mp3"
+    },
+    {
+      "key": "0031b379101642c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The test is simple: is everyone laughing, or is someone hurting? When both friends are cracking up, that's shared fun. Chats and teasing aren't the problem by themselves.",
+      "lines": [
+        "Not quite.",
+        "The test is simple: is everyone laughing, or is someone hurting? When both friends are cracking up, that's shared fun. Chats and teasing aren't the problem by themselves."
+      ],
+      "file": "/audio/voice/0031b379101642c5.mp3"
+    },
+    {
+      "key": "2bb6966906e78fe4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! His drawing made kind people smile, sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam.",
+      "lines": [
+        "That's right!",
+        "His drawing made kind people smile, sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam."
+      ],
+      "file": "/audio/voice/2bb6966906e78fe4.mp3"
+    },
+    {
+      "key": "6555f0310f6cecd4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. His drawing made kind people smile, sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam.",
+      "lines": [
+        "Not quite.",
+        "His drawing made kind people smile, sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam."
+      ],
+      "file": "/audio/voice/6555f0310f6cecd4.mp3"
+    },
+    {
+      "key": "d31345cf5a330a7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Mean messages are a fire, and firing back is wood: the chat just gets hotter and Layla feels worse, not better. Don't reply, that's what stops the fire growing.",
+      "lines": [
+        "That's right!",
+        "Mean messages are a fire, and firing back is wood: the chat just gets hotter and Layla feels worse, not better. Don't reply, that's what stops the fire growing."
+      ],
+      "file": "/audio/voice/d31345cf5a330a7b.mp3"
+    },
+    {
+      "key": "ce62e7099d5363f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Mean messages are a fire, and firing back is wood: the chat just gets hotter and Layla feels worse, not better. Don't reply, that's what stops the fire growing.",
+      "lines": [
+        "Not quite.",
+        "Mean messages are a fire, and firing back is wood: the chat just gets hotter and Layla feels worse, not better. Don't reply, that's what stops the fire growing."
+      ],
+      "file": "/audio/voice/ce62e7099d5363f1.mp3"
+    },
+    {
+      "key": "f7417eebe1babd32",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You don't have to write a word to join a pile-on. Forwarding, laughing along, even one little emoji all tell the bully 'more please'. Heroes stop the chain instead.",
+      "lines": [
+        "That's right!",
+        "You don't have to write a word to join a pile-on. Forwarding, laughing along, even one little emoji all tell the bully 'more please'. Heroes stop the chain instead."
+      ],
+      "file": "/audio/voice/f7417eebe1babd32.mp3"
+    },
+    {
+      "key": "ed40ca3c74e9d6c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You don't have to write a word to join a pile-on. Forwarding, laughing along, even one little emoji all tell the bully 'more please'. Heroes stop the chain instead.",
+      "lines": [
+        "Not quite.",
+        "You don't have to write a word to join a pile-on. Forwarding, laughing along, even one little emoji all tell the bully 'more please'. Heroes stop the chain instead."
+      ],
+      "file": "/audio/voice/ed40ca3c74e9d6c0.mp3"
+    },
+    {
+      "key": "eecff83050494754",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Deleting feels better for a second, but the proof vanishes with it. Keep the message, don't reply, and show it to a trusted grown-up, that's how real help arrives.",
+      "lines": [
+        "That's right!",
+        "Deleting feels better for a second, but the proof vanishes with it. Keep the message, don't reply, and show it to a trusted grown-up, that's how real help arrives."
+      ],
+      "file": "/audio/voice/eecff83050494754.mp3"
+    },
+    {
+      "key": "c3e571f03e4574b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Deleting feels better for a second, but the proof vanishes with it. Keep the message, don't reply, and show it to a trusted grown-up, that's how real help arrives.",
+      "lines": [
+        "Not quite.",
+        "Deleting feels better for a second, but the proof vanishes with it. Keep the message, don't reply, and show it to a trusted grown-up, that's how real help arrives."
+      ],
+      "file": "/audio/voice/c3e571f03e4574b2.mp3"
+    },
+    {
+      "key": "634ae7d1edd440a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You are both laughing, so nobody is hurting. That is two friends having fun.",
+      "lines": [
+        "You are both laughing, so nobody is hurting. That is two friends having fun."
+      ],
+      "file": "/audio/voice/634ae7d1edd440a5.mp3"
+    },
+    {
+      "key": "85789c13b8f3ca81",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Getting a whole class to laugh AT one kid is mean on purpose. Sam is not laughing.",
+      "lines": [
+        "Getting a whole class to laugh AT one kid is mean on purpose. Sam is not laughing."
+      ],
+      "file": "/audio/voice/85789c13b8f3ca81.mp3"
+    },
+    {
+      "key": "6093e0e05d266a80",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You picked that nickname yourself and you love it. Nobody is hurting, so it is fun, not bullying.",
+      "lines": [
+        "You picked that nickname yourself and you love it. Nobody is hurting, so it is fun, not bullying."
+      ],
+      "file": "/audio/voice/6093e0e05d266a80.mp3"
+    },
+    {
+      "key": "24a254d85cc3f9c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That kid hears it every day, and it is mean on purpose. Mean, again and again: that is the pattern, and it is bullying.",
+      "lines": [
+        "That kid hears it every day, and it is mean on purpose. Mean, again and again: that is the pattern, and it is bullying."
+      ],
+      "file": "/audio/voice/24a254d85cc3f9c7.mp3"
+    },
+    {
+      "key": "cfe1c4cfbbee7ec2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Shutting Maya out on purpose hurts, even with no rude words. That is a bullying move.",
+      "lines": [
+        "Shutting Maya out on purpose hurts, even with no rude words. That is a bullying move."
+      ],
+      "file": "/audio/voice/cfe1c4cfbbee7ec2.mp3"
+    },
+    {
+      "key": "90e857aec6a2c776",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You are both laughing. That is a shared joke, not bullying.",
+      "lines": [
+        "You are both laughing. That is a shared joke, not bullying."
+      ],
+      "file": "/audio/voice/90e857aec6a2c776.mp3"
+    },
+    {
+      "key": "769a5b61aa6321fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You chose it and you like it. Nobody is hurting.",
+      "lines": [
+        "You chose it and you like it. Nobody is hurting."
+      ],
+      "file": "/audio/voice/769a5b61aa6321fb.mp3"
+    },
+    {
+      "key": "14faff5b143db88b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is game talk with everyone smiling. Nobody is hurting.",
+      "lines": [
+        "That is game talk with everyone smiling. Nobody is hurting."
+      ],
+      "file": "/audio/voice/14faff5b143db88b.mp3"
+    },
+    {
+      "key": "d691554327b00c04",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not sometimes. Mean words are always the typer's choice.",
+      "lines": [
+        "Not sometimes. Mean words are always the typer's choice."
+      ],
+      "file": "/audio/voice/d691554327b00c04.mp3"
+    },
+    {
+      "key": "60d9afd4eb4669a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not probably. Being mean is a choice, and the choice is theirs.",
+      "lines": [
+        "Not probably. Being mean is a choice, and the choice is theirs."
+      ],
+      "file": "/audio/voice/60d9afd4eb4669a5.mp3"
+    },
+    {
+      "key": "a37997c4f34a8d49",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No maybe about it. It is their choice, every time.",
+      "lines": [
+        "No maybe about it. It is their choice, every time."
+      ],
+      "file": "/audio/voice/a37997c4f34a8d49.mp3"
+    },
+    {
+      "key": "b115e0c1b125c663",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The truest word in the whole course...",
+      "lines": [
+        "The truest word in the whole course..."
+      ],
+      "file": "/audio/voice/b115e0c1b125c663.mp3"
+    },
+    {
+      "key": "ae389fe73fcf846a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No firewood, no fire. You stayed calm and the spark had nothing to burn.",
+      "lines": [
+        "No firewood, no fire. You stayed calm and the spark had nothing to burn."
+      ],
+      "file": "/audio/voice/ae389fe73fcf846a.mp3"
+    },
+    {
+      "key": "8466731ade25240e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That spark wanted a reply and got a cool stone instead. It fizzled out.",
+      "lines": [
+        "That spark wanted a reply and got a cool stone instead. It fizzled out."
+      ],
+      "file": "/audio/voice/8466731ade25240e.mp3"
+    },
+    {
+      "key": "f8ec248516148afe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three sparks, zero firewood. Calm on the outside is the strongest move there is.",
+      "lines": [
+        "Three sparks, zero firewood. Calm on the outside is the strongest move there is."
+      ],
+      "file": "/audio/voice/f8ec248516148afe.mp3"
+    },
+    {
+      "key": "50590c67e2b0638b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You stood up for Maya the kind way, with no firewood. Now she is not alone, and a grown-up will hear about it.",
+      "lines": [
+        "You stood up for Maya the kind way, with no firewood. Now she is not alone, and a grown-up will hear about it."
+      ],
+      "file": "/audio/voice/50590c67e2b0638b.mp3"
+    },
+    {
+      "key": "1ca9fadd34ddd16d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hitting back is wood on the fire. Now there are two mean messages, and it grows.",
+      "lines": [
+        "Hitting back is wood on the fire. Now there are two mean messages, and it grows."
+      ],
+      "file": "/audio/voice/1ca9fadd34ddd16d.mp3"
+    },
+    {
+      "key": "36ac7ee3ba40bdf3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What happens to a fire when you add wood?",
+      "lines": [
+        "What happens to a fire when you add wood?"
+      ],
+      "file": "/audio/voice/36ac7ee3ba40bdf3.mp3"
+    },
+    {
+      "key": "1bc26947912259bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even one emoji joins in. It tells the bully: more, please.",
+      "lines": [
+        "Even one emoji joins in. It tells the bully: more, please."
+      ],
+      "file": "/audio/voice/1bc26947912259bd.mp3"
+    },
+    {
+      "key": "e94418dfdd95fcbd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One forward is one more copy, and you can never catch it back.",
+      "lines": [
+        "One forward is one more copy, and you can never catch it back."
+      ],
+      "file": "/audio/voice/e94418dfdd95fcbd.mp3"
+    },
+    {
+      "key": "6275d781b6de6947",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not replying is the first step, every time. The fire gets nothing to burn.",
+      "lines": [
+        "Not replying is the first step, every time. The fire gets nothing to burn."
+      ],
+      "file": "/audio/voice/6275d781b6de6947.mp3"
+    },
+    {
+      "key": "1124fa49994c1884",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Keeping it means a grown-up can see exactly what happened, and help properly.",
+      "lines": [
+        "Keeping it means a grown-up can see exactly what happened, and help properly."
+      ],
+      "file": "/audio/voice/1124fa49994c1884.mp3"
+    },
+    {
+      "key": "7a0652387abee878",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Telling someone you trust is how the hurting stops. The message is kept, a grown-up sees it, and you never carry it alone.",
+      "lines": [
+        "Telling someone you trust is how the hurting stops. The message is kept, a grown-up sees it, and you never carry it alone."
+      ],
+      "file": "/audio/voice/7a0652387abee878.mp3"
+    },
+    {
+      "key": "edee1cc5419a5cbb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What's the very FIRST thing, before keeping or telling?",
+      "lines": [
+        "What's the very FIRST thing, before keeping or telling?"
+      ],
+      "file": "/audio/voice/edee1cc5419a5cbb.mp3"
+    },
+    {
+      "key": "be41d51d8ca23ee3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mean words aimed at you: don't reply, keep the message, tell someone you trust. That is the calm path.",
+      "lines": [
+        "Mean words aimed at you: don't reply, keep the message, tell someone you trust. That is the calm path."
+      ],
+      "file": "/audio/voice/be41d51d8ca23ee3.mp3"
+    },
+    {
+      "key": "f1783f37c97e0730",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one is aimed at you. Think about the three stones: don't reply, keep it, tell.",
+      "lines": [
+        "This one is aimed at you. Think about the three stones: don't reply, keep it, tell."
+      ],
+      "file": "/audio/voice/f1783f37c97e0730.mp3"
+    },
+    {
+      "key": "9aec27e55a3de9f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One kind message straight to Sam flips the moment. Sam knows they are not alone.",
+      "lines": [
+        "One kind message straight to Sam flips the moment. Sam knows they are not alone."
+      ],
+      "file": "/audio/voice/9aec27e55a3de9f2.mp3"
+    },
+    {
+      "key": "ce8a29f214e1787b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam is the one hurting here. Which move helps the person who is hurting?",
+      "lines": [
+        "Sam is the one hurting here. Which move helps the person who is hurting?"
+      ],
+      "file": "/audio/voice/ce8a29f214e1787b.mp3"
+    },
+    {
+      "key": "ef116aad50156eb6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That photo goes no further. The chain stops with you, and the friend in it gets checked on.",
+      "lines": [
+        "That photo goes no further. The chain stops with you, and the friend in it gets checked on."
+      ],
+      "file": "/audio/voice/ef116aad50156eb6.mp3"
+    },
+    {
+      "key": "e6f64f2a56b24d35",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one asks you to forward it. Which move stops the chain?",
+      "lines": [
+        "This one asks you to forward it. Which move stops the chain?"
+      ],
+      "file": "/audio/voice/e6f64f2a56b24d35.mp3"
+    },
+    {
+      "key": "106a3dd278dbec02",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look again: both of you are laughing. When nobody is hurting, it is a joke, not bullying.",
+      "lines": [
+        "Look again: both of you are laughing. When nobody is hurting, it is a joke, not bullying."
+      ],
+      "file": "/audio/voice/106a3dd278dbec02.mp3"
+    },
+    {
+      "key": "cbef3e9fee015a14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where it happens never decides it. The test is who is laughing and who is hurting.",
+      "lines": [
+        "Where it happens never decides it. The test is who is laughing and who is hurting."
+      ],
+      "file": "/audio/voice/cbef3e9fee015a14.mp3"
+    },
+    {
+      "key": "bb12584689e8b2a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask who is laughing. The class might be, but Sam is hurting. One side laughing is not a joke.",
+      "lines": [
+        "Ask who is laughing. The class might be, but Sam is hurting. One side laughing is not a joke."
+      ],
+      "file": "/audio/voice/bb12584689e8b2a5.mp3"
+    },
+    {
+      "key": "cecc4b9fd276e2b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is not about the drawing. Someone is hurting on purpose, and that is what makes it bullying.",
+      "lines": [
+        "It is not about the drawing. Someone is hurting on purpose, and that is what makes it bullying."
+      ],
+      "file": "/audio/voice/cecc4b9fd276e2b8.mp3"
+    },
+    {
+      "key": "63d93e5b7b102137",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody meant to hurt you with that nickname, and you love it. Mean on purpose is missing, so it is not bullying.",
+      "lines": [
+        "Nobody meant to hurt you with that nickname, and you love it. Mean on purpose is missing, so it is not bullying."
+      ],
+      "file": "/audio/voice/63d93e5b7b102137.mp3"
+    },
+    {
+      "key": "619b879d90b446ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A nickname is only mean when it is used to hurt. You picked this one yourself.",
+      "lines": [
+        "A nickname is only mean when it is used to hurt. You picked this one yourself."
+      ],
+      "file": "/audio/voice/619b879d90b446ac.mp3"
+    },
+    {
+      "key": "4771dccdec20f5e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Is that kid laughing at being called loser? No. Only one side is, and it keeps happening every day.",
+      "lines": [
+        "Is that kid laughing at being called loser? No. Only one side is, and it keeps happening every day."
+      ],
+      "file": "/audio/voice/4771dccdec20f5e8.mp3"
+    },
+    {
+      "key": "b1c69346db56319a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hurting someone every single day is never a game. That is exactly what bullying looks like.",
+      "lines": [
+        "Hurting someone every single day is never a game. That is exactly what bullying looks like."
+      ],
+      "file": "/audio/voice/b1c69346db56319a.mp3"
+    },
+    {
+      "key": "e8572dcdb5930fbc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Maya is not laughing. Being left out on purpose hurts, so it fails the test.",
+      "lines": [
+        "Maya is not laughing. Being left out on purpose hurts, so it fails the test."
+      ],
+      "file": "/audio/voice/e8572dcdb5930fbc.mp3"
+    },
+    {
+      "key": "f4e3a54025d889c2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bullying does not need rude words. Shutting Maya out on purpose is enough.",
+      "lines": [
+        "Bullying does not need rude words. Shutting Maya out on purpose is enough."
+      ],
+      "file": "/audio/voice/f4e3a54025d889c2.mp3"
+    },
+    {
+      "key": "e291f540a384159c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even a calm reply is still a reply to those mean words. The bully learns you are listening, and the fire gets wood.",
+      "lines": [
+        "Even a calm reply is still a reply to those mean words. The bully learns you are listening, and the fire gets wood."
+      ],
+      "file": "/audio/voice/e291f540a384159c.mp3"
+    },
+    {
+      "key": "f73b87709d48d42b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Deleting feels better for a second, but the proof vanishes with it. First, don't reply.",
+      "lines": [
+        "Deleting feels better for a second, but the proof vanishes with it. First, don't reply."
+      ],
+      "file": "/audio/voice/f73b87709d48d42b.mp3"
+    },
+    {
+      "key": "67cb2d2ef84ed994",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Forwarding the message makes a copy, and copies fly. Keep it, don't spread it.",
+      "lines": [
+        "Forwarding the message makes a copy, and copies fly. Keep it, don't spread it."
+      ],
+      "file": "/audio/voice/67cb2d2ef84ed994.mp3"
+    },
+    {
+      "key": "c10ea87c5c703ded",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If the message is gone, nobody can help with it. Keep it, so a grown-up can see.",
+      "lines": [
+        "If the message is gone, nobody can help with it. Keep it, so a grown-up can see."
+      ],
+      "file": "/audio/voice/c10ea87c5c703ded.mp3"
+    },
+    {
+      "key": "98869ed0e996e7e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Keeping the message to yourself is too heavy for one hero. Telling isn't snitching, it's how it stops.",
+      "lines": [
+        "Keeping the message to yourself is too heavy for one hero. Telling isn't snitching, it's how it stops."
+      ],
+      "file": "/audio/voice/98869ed0e996e7e0.mp3"
+    },
+    {
+      "key": "afa34500f1ceec69",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Waiting means nobody hears about it, and the fire gets time to grow. Tell someone you trust today.",
+      "lines": [
+        "Waiting means nobody hears about it, and the fire gets time to grow. Tell someone you trust today."
+      ],
+      "file": "/audio/voice/afa34500f1ceec69.mp3"
+    },
+    {
+      "key": "e8dbed063052b868",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The test is simple: is everyone laughing, or is someone hurting? When both friends are cracking up, that's shared fun. Chats and teasing aren't the problem by themselves.",
+      "lines": [
+        "The test is simple: is everyone laughing, or is someone hurting? When both friends are cracking up, that's shared fun. Chats and teasing aren't the problem by themselves."
+      ],
+      "file": "/audio/voice/e8dbed063052b868.mp3"
+    },
+    {
+      "key": "045a8c8aeb01aa33",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "His drawing made kind people smile, sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam.",
+      "lines": [
+        "His drawing made kind people smile, sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam."
+      ],
+      "file": "/audio/voice/045a8c8aeb01aa33.mp3"
+    },
+    {
+      "key": "5123aad26465c72b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mean messages are a fire, and firing back is wood: the chat just gets hotter and Layla feels worse, not better. Don't reply, that's what stops the fire growing.",
+      "lines": [
+        "Mean messages are a fire, and firing back is wood: the chat just gets hotter and Layla feels worse, not better. Don't reply, that's what stops the fire growing."
+      ],
+      "file": "/audio/voice/5123aad26465c72b.mp3"
+    },
+    {
+      "key": "bc2eeed91806b2e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You don't have to write a word to join a pile-on. Forwarding, laughing along, even one little emoji all tell the bully 'more please'. Heroes stop the chain instead.",
+      "lines": [
+        "You don't have to write a word to join a pile-on. Forwarding, laughing along, even one little emoji all tell the bully 'more please'. Heroes stop the chain instead."
+      ],
+      "file": "/audio/voice/bc2eeed91806b2e2.mp3"
+    },
+    {
+      "key": "7b576e8c39cf3b19",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Deleting feels better for a second, but the proof vanishes with it. Keep the message, don't reply, and show it to a trusted grown-up, that's how real help arrives.",
+      "lines": [
+        "Deleting feels better for a second, but the proof vanishes with it. Keep the message, don't reply, and show it to a trusted grown-up, that's how real help arrives."
+      ],
+      "file": "/audio/voice/7b576e8c39cf3b19.mp3"
+    },
+    {
+      "key": "04fdf861bf3bb11f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The test: is everyone laughing, or is someone hurting, over and over?",
+      "lines": [
+        "The test: is everyone laughing, or is someone hurting, over and over?"
+      ],
+      "file": "/audio/voice/04fdf861bf3bb11f.mp3"
+    },
+    {
+      "key": "3b29408599661114",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mean words describe the person typing them. Never your fault.",
+      "lines": [
+        "Mean words describe the person typing them. Never your fault."
+      ],
+      "file": "/audio/voice/3b29408599661114.mp3"
+    },
+    {
+      "key": "890600db886ec499",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No wood for the fire: don't reply, keep it, then tell.",
+      "lines": [
+        "No wood for the fire: don't reply, keep it, then tell."
+      ],
+      "file": "/audio/voice/890600db886ec499.mp3"
+    },
+    {
+      "key": "4da75339127a1b4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Angry replies are wood, the fire grows. Calm stops it growing.",
+      "lines": [
+        "Angry replies are wood, the fire grows. Calm stops it growing."
+      ],
+      "file": "/audio/voice/4da75339127a1b4c.mp3"
+    },
+    {
+      "key": "77ced04caf3190d2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even one emoji tells the bully 'more please', and the hurt kid sees it.",
+      "lines": [
+        "Even one emoji tells the bully 'more please', and the hurt kid sees it."
+      ],
+      "file": "/audio/voice/77ced04caf3190d2.mp3"
+    },
+    {
+      "key": "2a33e28970ff4f0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Proof helps grown-ups stop it. Keep it, don't delete it.",
+      "lines": [
+        "Proof helps grown-ups stop it. Keep it, don't delete it."
+      ],
+      "file": "/audio/voice/2a33e28970ff4f0c.mp3"
+    },
+    {
+      "key": "7bf7fbe1735bf1ad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Kindness out loud plus real help on the way: that's the upstander move.",
+      "lines": [
+        "Kindness out loud plus real help on the way: that's the upstander move."
+      ],
+      "file": "/audio/voice/7bf7fbe1735bf1ad.mp3"
+    },
+    {
+      "key": "a83f51cd1466cb27",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Snitching gets someone IN trouble. Telling gets someone OUT of it.",
+      "lines": [
+        "Snitching gets someone IN trouble. Telling gets someone OUT of it."
+      ],
+      "file": "/audio/voice/a83f51cd1466cb27.mp3"
+    },
+    {
+      "key": "463a5602818e6501",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pile-ons starve when nobody joins. Your NO is powerful.",
+      "lines": [
+        "Pile-ons starve when nobody joins. Your NO is powerful."
+      ],
+      "file": "/audio/voice/463a5602818e6501.mp3"
+    },
+    {
+      "key": "546414c92013ffcc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Haha, you fell in the lava again! And you both crack up laughing.",
+      "lines": [
+        "Haha, you fell in the lava again! And you both crack up laughing."
+      ],
+      "file": "/audio/voice/546414c92013ffcc.mp3"
+    },
+    {
+      "key": "1890418f277462f4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Everyone laugh at Sam's drawing! Posted to the whole class chat.",
+      "lines": [
+        "Everyone laugh at Sam's drawing! Posted to the whole class chat."
+      ],
+      "file": "/audio/voice/1890418f277462f4.mp3"
+    },
+    {
+      "key": "2f6c37cd336ea6ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A silly team nickname you picked for yourself, and everyone uses it.",
+      "lines": [
+        "A silly team nickname you picked for yourself, and everyone uses it."
+      ],
+      "file": "/audio/voice/2f6c37cd336ea6ec.mp3"
+    },
+    {
+      "key": "1b8881b04c15dcdb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The same kid gets called loser, every single day.",
+      "lines": [
+        "The same kid gets called loser, every single day."
+      ],
+      "file": "/audio/voice/1b8881b04c15dcdb.mp3"
+    },
+    {
+      "key": "0699a5f5c7538a72",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Don't let Maya join. Nobody likes her.",
+      "lines": [
+        "Don't let Maya join. Nobody likes her."
+      ],
+      "file": "/audio/voice/0699a5f5c7538a72.mp3"
+    },
+    {
+      "key": "d3986db6baf26c1a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Someone chose to be mean. Being mean was their choice, made with their fingers. Their choice is their fault, never yours.",
+      "lines": [
+        "Someone chose to be mean. Being mean was their choice, made with their fingers. Their choice is their fault, never yours."
+      ],
+      "file": "/audio/voice/d3986db6baf26c1a.mp3"
+    },
+    {
+      "key": "e8801846999fa40a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sharing was a kind thing to do. You shared a drawing, a game clip, a thought. Kind people smiled. One person chose meanness, and that is about them.",
+      "lines": [
+        "Sharing was a kind thing to do. You shared a drawing, a game clip, a thought. Kind people smiled. One person chose meanness, and that is about them."
+      ],
+      "file": "/audio/voice/e8801846999fa40a.mp3"
+    },
+    {
+      "key": "de4cbf4d451a1684",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is nothing wrong with you. The kindest, funniest, best kids get picked on too. Being picked on says zero about you.",
+      "lines": [
+        "There is nothing wrong with you. The kindest, funniest, best kids get picked on too. Being picked on says zero about you."
+      ],
+      "file": "/audio/voice/de4cbf4d451a1684.mp3"
+    },
+    {
+      "key": "35032b83cd68ffa1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And you are never alone with it. Grown-ups you trust were picked on too, once. They can help you carry it, so you never carry it alone.",
+      "lines": [
+        "And you are never alone with it. Grown-ups you trust were picked on too, once. They can help you carry it, so you never carry it alone."
+      ],
+      "file": "/audio/voice/35032b83cd68ffa1.mp3"
+    },
+    {
+      "key": "cf2739ef43e2f7bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A spark lands. It says: you're the worst at this game.",
+      "lines": [
+        "A spark lands. It says: you're the worst at this game."
+      ],
+      "file": "/audio/voice/cf2739ef43e2f7bc.mp3"
+    },
+    {
+      "key": "9603318b1ef8f9ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Another spark. It says: nobody wants you on this team.",
+      "lines": [
+        "Another spark. It says: nobody wants you on this team."
+      ],
+      "file": "/audio/voice/9603318b1ef8f9ff.mp3"
+    },
+    {
+      "key": "1d4eab9c84dfa676",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One more spark. It says: that was so silly, just log off.",
+      "lines": [
+        "One more spark. It says: that was so silly, just log off."
+      ],
+      "file": "/audio/voice/1d4eab9c84dfa676.mp3"
+    },
+    {
+      "key": "c692348b92ca69b9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This spark is not aimed at you. It says: look at Maya's drawing, it's so bad, everyone laugh at her.",
+      "lines": [
+        "This spark is not aimed at you. It says: look at Maya's drawing, it's so bad, everyone laugh at her."
+      ],
+      "file": "/audio/voice/c692348b92ca69b9.mp3"
+    },
+    {
+      "key": "fce0286adea10789",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your reply is firewood for that spark. It makes the fire bigger. A hero starves it instead.",
+      "lines": [
+        "Your reply is firewood for that spark. It makes the fire bigger. A hero starves it instead."
+      ],
+      "file": "/audio/voice/fce0286adea10789.mp3"
+    },
+    {
+      "key": "f32175fa343ee249",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Firing back at that spark still feeds the fire, even when you are helping a friend.",
+      "lines": [
+        "Firing back at that spark still feeds the fire, even when you are helping a friend."
+      ],
+      "file": "/audio/voice/f32175fa343ee249.mp3"
+    },
+    {
+      "key": "77925adffe37cb3c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That spark is aimed at Maya, and she needs you. Staying quiet leaves a friend all alone.",
+      "lines": [
+        "That spark is aimed at Maya, and she needs you. Staying quiet leaves a friend all alone."
+      ],
+      "file": "/audio/voice/77925adffe37cb3c.mp3"
+    },
+    {
+      "key": "d17efe2bf77e9d42",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is the message: pass it on, Maya still sleeps with a teddy bear, lol. Tap PASS IT ON once, and watch what happens.",
+      "lines": [
+        "Here is the message: pass it on, Maya still sleeps with a teddy bear, lol. Tap PASS IT ON once, and watch what happens."
+      ],
+      "file": "/audio/voice/d17efe2bf77e9d42.mp3"
+    },
+    {
+      "key": "c4337a714bca1490",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The first stone. Mean words just landed. What do you do first?",
+      "lines": [
+        "The first stone. Mean words just landed. What do you do first?"
+      ],
+      "file": "/audio/voice/c4337a714bca1490.mp3"
+    },
+    {
+      "key": "59c552568bba28f6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The second stone. You didn't reply. Now, what happens to the message?",
+      "lines": [
+        "The second stone. You didn't reply. Now, what happens to the message?"
+      ],
+      "file": "/audio/voice/59c552568bba28f6.mp3"
+    },
+    {
+      "key": "d12ba4bd8850cae6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The third stone. You kept the message. Who hears about it?",
+      "lines": [
+        "The third stone. You kept the message. Who hears about it?"
+      ],
+      "file": "/audio/voice/d12ba4bd8850cae6.mp3"
+    },
+    {
+      "key": "6a17f9f163f64eaa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First moment: a mean message lands on you. It says you're rubbish at the game.",
+      "lines": [
+        "First moment: a mean message lands on you. It says you're rubbish at the game."
+      ],
+      "file": "/audio/voice/6a17f9f163f64eaa.mp3"
+    },
+    {
+      "key": "fb50828d68cbfea6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second moment: kids are piling on your friend Sam in the class chat.",
+      "lines": [
+        "Second moment: kids are piling on your friend Sam in the class chat."
+      ],
+      "file": "/audio/voice/fb50828d68cbfea6.mp3"
+    },
+    {
+      "key": "df35597bad395ba4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Third moment: an embarrassing photo arrives with pass it on, lol.",
+      "lines": [
+        "Third moment: an embarrassing photo arrives with pass it on, lol."
+      ],
+      "file": "/audio/voice/df35597bad395ba4.mp3"
     },
     {
       "key": "09fa351a5d655638",
@@ -19346,70 +20438,510 @@
       "file": "/audio/voice/c08d37d2c9743aff.mp3"
     },
     {
-      "key": "69698deb04287a05",
+      "key": "b86f26e06914314c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Now there are TWO mean messages, the fire is bigger, and you feel worse - not better. Fighting back always feeds it.",
-      "lines": [
-        "Not quite.",
-        "Now there are TWO mean messages, the fire is bigger, and you feel worse - not better. Fighting back always feeds it."
-      ],
-      "file": "/audio/voice/69698deb04287a05.mp3"
-    },
-    {
-      "key": "a817ce14761da9ba",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! The fire got NOTHING to burn. You stayed the calm one - and calm is what heroes look like.",
+      "text": "That's right! You are both laughing, so nobody is hurting. That is two friends having fun.",
       "lines": [
         "That's right!",
-        "The fire got NOTHING to burn. You stayed the calm one - and calm is what heroes look like."
+        "You are both laughing, so nobody is hurting. That is two friends having fun."
       ],
-      "file": "/audio/voice/a817ce14761da9ba.mp3"
+      "file": "/audio/voice/b86f26e06914314c.mp3"
     },
     {
-      "key": "662c6422d48a6669",
+      "key": "3b8e8d7aa3def30e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. The lobby turns into a shouting match and the fun is gone for everyone. Wood, meet fire.",
+      "text": "Not quite. Look again: both of you are laughing. When nobody is hurting, it is a joke, not bullying.",
       "lines": [
         "Not quite.",
-        "The lobby turns into a shouting match and the fun is gone for everyone. Wood, meet fire."
+        "Look again: both of you are laughing. When nobody is hurting, it is a joke, not bullying."
       ],
-      "file": "/audio/voice/662c6422d48a6669.mp3"
+      "file": "/audio/voice/3b8e8d7aa3def30e.mp3"
     },
     {
-      "key": "406be105f772576a",
+      "key": "30721a08d9d2e697",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! You won the race AND the moment. The sore loser's words just... fizzled out.",
-      "lines": [
-        "That's right!",
-        "You won the race AND the moment. The sore loser's words just... fizzled out."
-      ],
-      "file": "/audio/voice/406be105f772576a.mp3"
-    },
-    {
-      "key": "0e8a754c95ced051",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. Now the chat's about YOUR angry message - and your friend still needs real help. Anger fed the fire again.",
+      "text": "Not quite. Where it happens never decides it. The test is who is laughing and who is hurting.",
       "lines": [
         "Not quite.",
-        "Now the chat's about YOUR angry message - and your friend still needs real help. Anger fed the fire again."
+        "Where it happens never decides it. The test is who is laughing and who is hurting."
       ],
-      "file": "/audio/voice/0e8a754c95ced051.mp3"
+      "file": "/audio/voice/30721a08d9d2e697.mp3"
     },
     {
-      "key": "7f90d5723a12c710",
+      "key": "d0d665e98d8e0234",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! THAT'S the move. Calm on the outside, hero on the inside - and real help is on the way for your friend.",
+      "text": "That's right! Getting a whole class to laugh AT one kid is mean on purpose. Sam is not laughing.",
       "lines": [
         "That's right!",
-        "THAT'S the move. Calm on the outside, hero on the inside - and real help is on the way for your friend."
+        "Getting a whole class to laugh AT one kid is mean on purpose. Sam is not laughing."
       ],
-      "file": "/audio/voice/7f90d5723a12c710.mp3"
+      "file": "/audio/voice/d0d665e98d8e0234.mp3"
+    },
+    {
+      "key": "415dfe28f91a077b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ask who is laughing. The class might be, but Sam is hurting. One side laughing is not a joke.",
+      "lines": [
+        "Not quite.",
+        "Ask who is laughing. The class might be, but Sam is hurting. One side laughing is not a joke."
+      ],
+      "file": "/audio/voice/415dfe28f91a077b.mp3"
+    },
+    {
+      "key": "c9b7fce244bbc5bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It is not about the drawing. Someone is hurting on purpose, and that is what makes it bullying.",
+      "lines": [
+        "Not quite.",
+        "It is not about the drawing. Someone is hurting on purpose, and that is what makes it bullying."
+      ],
+      "file": "/audio/voice/c9b7fce244bbc5bc.mp3"
+    },
+    {
+      "key": "75ce0346b66a9c6a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You picked that nickname yourself and you love it. Nobody is hurting, so it is fun, not bullying.",
+      "lines": [
+        "That's right!",
+        "You picked that nickname yourself and you love it. Nobody is hurting, so it is fun, not bullying."
+      ],
+      "file": "/audio/voice/75ce0346b66a9c6a.mp3"
+    },
+    {
+      "key": "d0fa1c6603a70b8d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody meant to hurt you with that nickname, and you love it. Mean on purpose is missing, so it is not bullying.",
+      "lines": [
+        "Not quite.",
+        "Nobody meant to hurt you with that nickname, and you love it. Mean on purpose is missing, so it is not bullying."
+      ],
+      "file": "/audio/voice/d0fa1c6603a70b8d.mp3"
+    },
+    {
+      "key": "d37c5f73e26696f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A nickname is only mean when it is used to hurt. You picked this one yourself.",
+      "lines": [
+        "Not quite.",
+        "A nickname is only mean when it is used to hurt. You picked this one yourself."
+      ],
+      "file": "/audio/voice/d37c5f73e26696f8.mp3"
+    },
+    {
+      "key": "8c17492f59c65564",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That kid hears it every day, and it is mean on purpose. Mean, again and again: that is the pattern, and it is bullying.",
+      "lines": [
+        "That's right!",
+        "That kid hears it every day, and it is mean on purpose. Mean, again and again: that is the pattern, and it is bullying."
+      ],
+      "file": "/audio/voice/8c17492f59c65564.mp3"
+    },
+    {
+      "key": "8c1a85bfa0838b03",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Is that kid laughing at being called loser? No. Only one side is, and it keeps happening every day.",
+      "lines": [
+        "Not quite.",
+        "Is that kid laughing at being called loser? No. Only one side is, and it keeps happening every day."
+      ],
+      "file": "/audio/voice/8c1a85bfa0838b03.mp3"
+    },
+    {
+      "key": "b76029e0ff88fb86",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Hurting someone every single day is never a game. That is exactly what bullying looks like.",
+      "lines": [
+        "Not quite.",
+        "Hurting someone every single day is never a game. That is exactly what bullying looks like."
+      ],
+      "file": "/audio/voice/b76029e0ff88fb86.mp3"
+    },
+    {
+      "key": "73a93a89a3ff2cc8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Shutting Maya out on purpose hurts, even with no rude words. That is a bullying move.",
+      "lines": [
+        "That's right!",
+        "Shutting Maya out on purpose hurts, even with no rude words. That is a bullying move."
+      ],
+      "file": "/audio/voice/73a93a89a3ff2cc8.mp3"
+    },
+    {
+      "key": "7503680df9524184",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Maya is not laughing. Being left out on purpose hurts, so it fails the test.",
+      "lines": [
+        "Not quite.",
+        "Maya is not laughing. Being left out on purpose hurts, so it fails the test."
+      ],
+      "file": "/audio/voice/7503680df9524184.mp3"
+    },
+    {
+      "key": "c67c8fdb41fb7f0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Bullying does not need rude words. Shutting Maya out on purpose is enough.",
+      "lines": [
+        "Not quite.",
+        "Bullying does not need rude words. Shutting Maya out on purpose is enough."
+      ],
+      "file": "/audio/voice/c67c8fdb41fb7f0c.mp3"
+    },
+    {
+      "key": "dc05c6e463e6f0f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You are both laughing. That is a shared joke, not bullying.",
+      "lines": [
+        "Not quite.",
+        "You are both laughing. That is a shared joke, not bullying."
+      ],
+      "file": "/audio/voice/dc05c6e463e6f0f1.mp3"
+    },
+    {
+      "key": "69cfca0286184a39",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You chose it and you like it. Nobody is hurting.",
+      "lines": [
+        "Not quite.",
+        "You chose it and you like it. Nobody is hurting."
+      ],
+      "file": "/audio/voice/69cfca0286184a39.mp3"
+    },
+    {
+      "key": "8d95c80e87b16dce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is game talk with everyone smiling. Nobody is hurting.",
+      "lines": [
+        "Not quite.",
+        "That is game talk with everyone smiling. Nobody is hurting."
+      ],
+      "file": "/audio/voice/8d95c80e87b16dce.mp3"
+    },
+    {
+      "key": "92bff8f992b79ad8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Not sometimes. Mean words are always the typer's choice.",
+      "lines": [
+        "Not quite.",
+        "Not sometimes. Mean words are always the typer's choice."
+      ],
+      "file": "/audio/voice/92bff8f992b79ad8.mp3"
+    },
+    {
+      "key": "cb143e10540f4659",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Not probably. Being mean is a choice, and the choice is theirs.",
+      "lines": [
+        "Not quite.",
+        "Not probably. Being mean is a choice, and the choice is theirs."
+      ],
+      "file": "/audio/voice/cb143e10540f4659.mp3"
+    },
+    {
+      "key": "5e7d0b3c4a937481",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. No maybe about it. It is their choice, every time.",
+      "lines": [
+        "Not quite.",
+        "No maybe about it. It is their choice, every time."
+      ],
+      "file": "/audio/voice/5e7d0b3c4a937481.mp3"
+    },
+    {
+      "key": "599abe0ae72bce6a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! No firewood, no fire. You stayed calm and the spark had nothing to burn.",
+      "lines": [
+        "That's right!",
+        "No firewood, no fire. You stayed calm and the spark had nothing to burn."
+      ],
+      "file": "/audio/voice/599abe0ae72bce6a.mp3"
+    },
+    {
+      "key": "5e2add73f5494097",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That spark wanted a reply and got a cool stone instead. It fizzled out.",
+      "lines": [
+        "That's right!",
+        "That spark wanted a reply and got a cool stone instead. It fizzled out."
+      ],
+      "file": "/audio/voice/5e2add73f5494097.mp3"
+    },
+    {
+      "key": "c3b3b729f7099d54",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Three sparks, zero firewood. Calm on the outside is the strongest move there is.",
+      "lines": [
+        "That's right!",
+        "Three sparks, zero firewood. Calm on the outside is the strongest move there is."
+      ],
+      "file": "/audio/voice/c3b3b729f7099d54.mp3"
+    },
+    {
+      "key": "3d4dc67115bf4dfc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You stood up for Maya the kind way, with no firewood. Now she is not alone, and a grown-up will hear about it.",
+      "lines": [
+        "That's right!",
+        "You stood up for Maya the kind way, with no firewood. Now she is not alone, and a grown-up will hear about it."
+      ],
+      "file": "/audio/voice/3d4dc67115bf4dfc.mp3"
+    },
+    {
+      "key": "ae48bdcaefd2752c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your reply is firewood for that spark. It makes the fire bigger. A hero starves it instead.",
+      "lines": [
+        "Not quite.",
+        "Your reply is firewood for that spark. It makes the fire bigger. A hero starves it instead."
+      ],
+      "file": "/audio/voice/ae48bdcaefd2752c.mp3"
+    },
+    {
+      "key": "14e4457025831d3e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Firing back at that spark still feeds the fire, even when you are helping a friend.",
+      "lines": [
+        "Not quite.",
+        "Firing back at that spark still feeds the fire, even when you are helping a friend."
+      ],
+      "file": "/audio/voice/14e4457025831d3e.mp3"
+    },
+    {
+      "key": "d2e918a900dbce7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That spark is aimed at Maya, and she needs you. Staying quiet leaves a friend all alone.",
+      "lines": [
+        "Not quite.",
+        "That spark is aimed at Maya, and she needs you. Staying quiet leaves a friend all alone."
+      ],
+      "file": "/audio/voice/d2e918a900dbce7b.mp3"
+    },
+    {
+      "key": "3537e4948ccd1e5d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Hitting back is wood on the fire. Now there are two mean messages, and it grows.",
+      "lines": [
+        "Not quite.",
+        "Hitting back is wood on the fire. Now there are two mean messages, and it grows."
+      ],
+      "file": "/audio/voice/3537e4948ccd1e5d.mp3"
+    },
+    {
+      "key": "ed83b8b81a43176d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Even one emoji joins in. It tells the bully: more, please.",
+      "lines": [
+        "Not quite.",
+        "Even one emoji joins in. It tells the bully: more, please."
+      ],
+      "file": "/audio/voice/ed83b8b81a43176d.mp3"
+    },
+    {
+      "key": "660d8a2c8602df23",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One forward is one more copy, and you can never catch it back.",
+      "lines": [
+        "Not quite.",
+        "One forward is one more copy, and you can never catch it back."
+      ],
+      "file": "/audio/voice/660d8a2c8602df23.mp3"
+    },
+    {
+      "key": "08161f6a9526fc53",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Not replying is the first step, every time. The fire gets nothing to burn.",
+      "lines": [
+        "That's right!",
+        "Not replying is the first step, every time. The fire gets nothing to burn."
+      ],
+      "file": "/audio/voice/08161f6a9526fc53.mp3"
+    },
+    {
+      "key": "4353bcf85feb99f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Even a calm reply is still a reply to those mean words. The bully learns you are listening, and the fire gets wood.",
+      "lines": [
+        "Not quite.",
+        "Even a calm reply is still a reply to those mean words. The bully learns you are listening, and the fire gets wood."
+      ],
+      "file": "/audio/voice/4353bcf85feb99f0.mp3"
+    },
+    {
+      "key": "80f7fed5b7b3475a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Deleting feels better for a second, but the proof vanishes with it. First, don't reply.",
+      "lines": [
+        "Not quite.",
+        "Deleting feels better for a second, but the proof vanishes with it. First, don't reply."
+      ],
+      "file": "/audio/voice/80f7fed5b7b3475a.mp3"
+    },
+    {
+      "key": "f4905e01d0f776cc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Keeping it means a grown-up can see exactly what happened, and help properly.",
+      "lines": [
+        "That's right!",
+        "Keeping it means a grown-up can see exactly what happened, and help properly."
+      ],
+      "file": "/audio/voice/f4905e01d0f776cc.mp3"
+    },
+    {
+      "key": "a9823fceccb5d25b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Forwarding the message makes a copy, and copies fly. Keep it, don't spread it.",
+      "lines": [
+        "Not quite.",
+        "Forwarding the message makes a copy, and copies fly. Keep it, don't spread it."
+      ],
+      "file": "/audio/voice/a9823fceccb5d25b.mp3"
+    },
+    {
+      "key": "91ad55ade27a8494",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. If the message is gone, nobody can help with it. Keep it, so a grown-up can see.",
+      "lines": [
+        "Not quite.",
+        "If the message is gone, nobody can help with it. Keep it, so a grown-up can see."
+      ],
+      "file": "/audio/voice/91ad55ade27a8494.mp3"
+    },
+    {
+      "key": "445eea7193a3e724",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Telling someone you trust is how the hurting stops. The message is kept, a grown-up sees it, and you never carry it alone.",
+      "lines": [
+        "That's right!",
+        "Telling someone you trust is how the hurting stops. The message is kept, a grown-up sees it, and you never carry it alone."
+      ],
+      "file": "/audio/voice/445eea7193a3e724.mp3"
+    },
+    {
+      "key": "2de2324145e64283",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Keeping the message to yourself is too heavy for one hero. Telling isn't snitching, it's how it stops.",
+      "lines": [
+        "Not quite.",
+        "Keeping the message to yourself is too heavy for one hero. Telling isn't snitching, it's how it stops."
+      ],
+      "file": "/audio/voice/2de2324145e64283.mp3"
+    },
+    {
+      "key": "c47d9ba7c5d1217f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Waiting means nobody hears about it, and the fire gets time to grow. Tell someone you trust today.",
+      "lines": [
+        "Not quite.",
+        "Waiting means nobody hears about it, and the fire gets time to grow. Tell someone you trust today."
+      ],
+      "file": "/audio/voice/c47d9ba7c5d1217f.mp3"
+    },
+    {
+      "key": "5c14fcfda85f814f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Mean words aimed at you: don't reply, keep the message, tell someone you trust. That is the calm path.",
+      "lines": [
+        "That's right!",
+        "Mean words aimed at you: don't reply, keep the message, tell someone you trust. That is the calm path."
+      ],
+      "file": "/audio/voice/5c14fcfda85f814f.mp3"
+    },
+    {
+      "key": "c945be04542e4dff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This one is aimed at you. Think about the three stones: don't reply, keep it, tell.",
+      "lines": [
+        "Not quite.",
+        "This one is aimed at you. Think about the three stones: don't reply, keep it, tell."
+      ],
+      "file": "/audio/voice/c945be04542e4dff.mp3"
+    },
+    {
+      "key": "f7f48a98f2b4936d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! One kind message straight to Sam flips the moment. Sam knows they are not alone.",
+      "lines": [
+        "That's right!",
+        "One kind message straight to Sam flips the moment. Sam knows they are not alone."
+      ],
+      "file": "/audio/voice/f7f48a98f2b4936d.mp3"
+    },
+    {
+      "key": "8e272789632e7cb6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Sam is the one hurting here. Which move helps the person who is hurting?",
+      "lines": [
+        "Not quite.",
+        "Sam is the one hurting here. Which move helps the person who is hurting?"
+      ],
+      "file": "/audio/voice/8e272789632e7cb6.mp3"
+    },
+    {
+      "key": "96979efb16428d1d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That photo goes no further. The chain stops with you, and the friend in it gets checked on.",
+      "lines": [
+        "That's right!",
+        "That photo goes no further. The chain stops with you, and the friend in it gets checked on."
+      ],
+      "file": "/audio/voice/96979efb16428d1d.mp3"
+    },
+    {
+      "key": "108cad6c0a6ac236",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This one asks you to forward it. Which move stops the chain?",
+      "lines": [
+        "Not quite.",
+        "This one asks you to forward it. Which move stops the chain?"
+      ],
+      "file": "/audio/voice/108cad6c0a6ac236.mp3"
     },
     {
       "key": "514ceb6018c69909",
