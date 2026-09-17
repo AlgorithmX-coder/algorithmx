@@ -29,11 +29,13 @@ import { buildSkyline, paintSkyline, skylineHeight, type Skyline } from "./schoo
  * and auto-update and is remembered across visits; it starts paused under
  * prefers-reduced-motion. Moving parts stay in the margins, never behind text.
  *
- * School hardware: the network draws into two margin-sized canvases (not a
- * full-screen one) at 30 fps with devicePixelRatio capped at 1.5, glows are
- * pre-rendered sprites (no shadowBlur, no CSS blur), the skyline repaints only
- * when a light changes, and everything stops on hidden tabs. Tablets and
- * phones have no margin, so they get the sky, paper and school with no loop.
+ * School hardware: the network draws into two canvases sized to its band in
+ * the margins (not a full-screen one) at 30 fps with devicePixelRatio capped
+ * at 1.5, glows are pre-rendered sprites (no shadowBlur, no CSS blur), the
+ * sky glows are static (no screen-sized layer animating on a 4K whiteboard),
+ * the skyline repaints only when a light changes, and everything stops on
+ * hidden tabs. Tablets and phones have no margin, so they get the sky, paper
+ * and school with no loop.
  *
  * Fixed, pointer-events: none, z-index: -1. Styles use a plain <style> tag
  * so the sky paints with the server HTML, before hydration.
@@ -190,6 +192,7 @@ export default function SchoolsBackdrop() {
     let tileH = 1440;
     let marginX = 0;
     let netW = 0;
+    let netX = 0; // left edge of the left canvas (the right one mirrors it)
     let enabled = false;
     let nodes: NetNode[] = [];
     let edges: Edge[] = [];
@@ -234,7 +237,10 @@ export default function SchoolsBackdrop() {
       const inner = marginX - 16;
       const outer = Math.max(GRID, inner - MAX_BAND);
       enabled = inner - outer >= MIN_BAND;
-      netW = enabled ? marginX + 20 : 0;
+      // Glows reach 32px beyond a node, so the canvas starts just outside
+      // the band and ends just past the margin line.
+      netX = enabled ? Math.max(0, Math.floor(outer - 40)) : 0;
+      netW = enabled ? marginX + 20 - netX : 0;
 
       for (const [cv, c] of [
         [netL, ctxL],
@@ -243,6 +249,7 @@ export default function SchoolsBackdrop() {
         cv.width = Math.max(1, Math.round(netW * dpr));
         cv.height = enabled ? Math.round(h * dpr) : 1;
         cv.style.width = `${netW}px`;
+        cv.style[cv === netL ? "left" : "right"] = `${netX}px`;
         c.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
       if (!enabled) return;
@@ -497,8 +504,9 @@ export default function SchoolsBackdrop() {
         const c = side === 0 ? ctxL : ctxR;
         c.clearRect(0, 0, netW, h);
         c.save();
-        if (side === 1) c.translate(-(w - netW), 0);
+        if (side === 1) c.translate(-(w - netX - netW), 0);
         else {
+          c.translate(-netX, 0);
           // The exercise book's red margin line.
           const mg = c.createLinearGradient(0, 0, 0, h);
           mg.addColorStop(0, "rgba(255,122,89,0)");
@@ -782,7 +790,6 @@ export default function SchoolsBackdrop() {
         .sb-glow {
           position: absolute;
           border-radius: 50%;
-          will-change: transform;
         }
         .sb-glow-teal {
           left: -24vmax;
@@ -790,7 +797,6 @@ export default function SchoolsBackdrop() {
           width: 62vmax;
           height: 62vmax;
           background: radial-gradient(circle, rgba(46,230,197,0.14) 0%, rgba(0,229,255,0.06) 34%, rgba(0,229,255,0) 64%);
-          animation: sbDriftA 86s ease-in-out infinite alternate;
         }
         .sb-glow-blue {
           right: -22vmax;
@@ -798,10 +804,6 @@ export default function SchoolsBackdrop() {
           width: 66vmax;
           height: 66vmax;
           background: radial-gradient(circle, rgba(70,124,255,0.18) 0%, rgba(70,124,255,0.07) 38%, rgba(70,124,255,0) 66%);
-          animation: sbDriftB 102s ease-in-out infinite alternate;
-        }
-        .sb-root.is-paused .sb-glow {
-          animation-play-state: paused;
         }
         .sb-dawn {
           position: absolute;
@@ -878,14 +880,6 @@ export default function SchoolsBackdrop() {
           inset: 0;
           background: radial-gradient(ellipse 46% 60% at 50% 42%, rgba(4,8,24,0.46) 0%, rgba(4,8,24,0.18) 56%, rgba(4,8,24,0) 82%);
         }
-        @keyframes sbDriftA {
-          from { transform: translate3d(0, 0, 0) scale(1); }
-          to { transform: translate3d(5vw, -5vh, 0) scale(1.08); }
-        }
-        @keyframes sbDriftB {
-          from { transform: translate3d(0, 0, 0) scale(1.05); }
-          to { transform: translate3d(-4vw, 5vh, 0) scale(1); }
-        }
 
         .sb-motion {
           position: fixed;
@@ -940,7 +934,6 @@ export default function SchoolsBackdrop() {
           }
         }
         @media (prefers-reduced-motion: reduce) {
-          .sb-glow { animation: none; }
           .sb-skyline { transition: none; }
         }
       `}</style>
