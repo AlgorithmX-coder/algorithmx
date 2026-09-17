@@ -56,6 +56,10 @@ export default function CyberEssentialsBadge({ logoHeight = 26 }: { logoHeight?:
       </span>
       {/* Phones: same pill, smaller. Scoped so desktop is untouched. */}
       <style>{`
+        @media (max-width: 1100px) {
+          .lv2-ce-badge { padding: 6px 14px 6px 6px !important; gap: 10px !important; }
+          .lv2-ce-badge img { height: 24px !important; }
+        }
         @media (max-width: 640px) {
           .lv2-ce-badge { padding: 5px 12px 5px 5px !important; gap: 9px !important; }
           .lv2-ce-badge img { height: 20px !important; }
