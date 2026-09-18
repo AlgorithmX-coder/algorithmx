@@ -89,9 +89,9 @@ const pillGhost: React.CSSProperties = {
 
 /* Real screens fanned in the hero: front, middle, back. */
 const STACK = [
+  { img: "explorers-map", url: "algorithmx.io/explorers" },
   { img: "heroes-learn", url: "algorithmx.io/lesson/1" },
   { img: "explorers-meter", url: "algorithmx.io/explorers" },
-  { img: "explorers-map", url: "algorithmx.io/explorers" },
 ];
 
 const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean]> = [
