@@ -584,7 +584,6 @@ export default function Nav() {
  * so the mark scales from a single --s. Desktop (wider than 1100px) is
  * 24 px; tablets and phones keep 20 px, sized separately later (owner
  * parked phone/tablet dimension work). */
-const CUBE_BITS = "01101001110100110010111010010111011000101101001101100100";
 const CUBE_FACES = ["f1", "f2", "f3", "f4", "f5", "f6"] as const;
 
 function BrandCube() {
@@ -664,12 +663,8 @@ function BrandCube() {
     <span ref={wrapRef} aria-hidden className="lv2-cube-wrap">
       <span ref={sceneRef} className="lv2-cube-scene">
         <span className="lv2-cube">
-          {CUBE_FACES.map((f, i) => (
-            <span key={f} className={`lv2-cube-face lv2-cube-${f}`}>
-              <span className="lv2-cube-bits">
-                {CUBE_BITS.slice(i * 3) + CUBE_BITS.slice(0, i * 3)}
-              </span>
-            </span>
+          {CUBE_FACES.map((f) => (
+            <span key={f} className={`lv2-cube-face lv2-cube-${f}`} />
           ))}
         </span>
         <span className="lv2-cube-glyph">
@@ -687,8 +682,7 @@ function BrandCube() {
           width: var(--s);
           height: var(--s);
           perspective: calc(var(--s) * 23);
-          filter: drop-shadow(0 0 calc(var(--u) * 4) rgba(0, 229, 255, 0.55))
-            drop-shadow(0 0 calc(var(--u) * 8) rgba(124, 92, 255, 0.4));
+          filter: drop-shadow(0 0 calc(var(--u) * 2.4) rgba(0, 229, 255, 0.5));
           animation: lv2CubeFloat 6s ease-in-out infinite,
             lv2CubeGlow 7s ease-in-out infinite;
         }
@@ -719,11 +713,17 @@ function BrandCube() {
           inset: 0;
           box-sizing: border-box;
           overflow: hidden;
-          background: rgba(0, 229, 255, 0.04);
-          border: var(--u) solid rgba(170, 248, 255, 0.9);
+          background: linear-gradient(
+              rgba(125, 240, 255, 0.06) 1px,
+              rgba(0, 229, 255, 0.03) 1px
+            )
+            0 0 / 100% calc(var(--u) * 2.2);
+          border-style: solid;
+          border-width: max(1px, calc(var(--u) * 0.9));
+          border-color: rgba(186, 250, 255, 0.92);
           border-radius: calc(var(--u) * 1.2);
-          box-shadow: 0 0 calc(var(--u) * 3) rgba(0, 229, 255, 0.35),
-            inset 0 0 calc(var(--u) * 3) rgba(0, 229, 255, 0.22);
+          box-shadow: 0 0 calc(var(--u) * 2) rgba(0, 229, 255, 0.28),
+            inset 0 0 calc(var(--u) * 2) rgba(0, 229, 255, 0.16);
           animation: lv2CubeEdge 7s ease-in-out infinite;
         }
         .lv2-cube-f1 {
@@ -744,16 +744,6 @@ function BrandCube() {
         .lv2-cube-f6 {
           transform: rotateX(-90deg) translateZ(calc(var(--s) / 2));
         }
-        /* Binary etched into the glass: a texture in the bar, legible up close. */
-        .lv2-cube-bits {
-          display: block;
-          padding: calc(var(--u) * 1.3);
-          font: 600 calc(var(--u) * 1.5) / calc(var(--u) * 2.1)
-            var(--lv2-font-mono);
-          letter-spacing: calc(var(--u) * 0.12);
-          color: rgba(125, 240, 255, 0.34);
-          word-break: break-all;
-        }
         /* The </> core. Sits in the scene (not the turning frame) so it
            always faces the viewer. */
         .lv2-cube-glyph {
@@ -761,18 +751,16 @@ function BrandCube() {
           left: 50%;
           top: 50%;
           white-space: nowrap;
-          font: 700 calc(var(--u) * 8) / 1 var(--lv2-font-mono);
-          letter-spacing: calc(var(--u) * -0.6);
-          color: #aaf6ff;
-          filter: drop-shadow(0 0 calc(var(--u) * 2.2) rgba(0, 229, 255, 0.9));
+          font: 700 calc(var(--u) * 9.4) / 1 var(--lv2-font-mono);
+          letter-spacing: calc(var(--u) * -0.2);
+          color: #f2fdff;
+          filter: drop-shadow(0 0 calc(var(--u) * 1.6) rgba(0, 229, 255, 0.95));
           transform: translate(-50%, -54%);
           animation: lv2GlyphPulse 7s ease-in-out infinite;
         }
         .lv2-cube-slash {
           display: inline-block;
-          color: #d2c3ff;
-          transform-origin: 50% 100%;
-          animation: lv2SlashType 7s ease-in-out infinite;
+          color: #ffffff;
         }
         @keyframes lv2CubeSpin {
           from {
@@ -785,10 +773,10 @@ function BrandCube() {
         @keyframes lv2CubeEdge {
           0%,
           100% {
-            border-color: rgba(150, 240, 255, 0.6);
+            border-color: rgba(176, 246, 255, 0.82);
           }
           50% {
-            border-color: rgba(255, 255, 255, 1);
+            border-color: rgba(255, 255, 255, 0.98);
           }
         }
         @keyframes lv2CubeFloat {
@@ -803,41 +791,27 @@ function BrandCube() {
         @keyframes lv2CubeGlow {
           0%,
           100% {
-            filter: drop-shadow(0 0 calc(var(--u) * 3) rgba(0, 229, 255, 0.45))
-              drop-shadow(0 0 calc(var(--u) * 6) rgba(124, 92, 255, 0.35));
+            filter: drop-shadow(0 0 calc(var(--u) * 2) rgba(0, 229, 255, 0.4));
           }
           50% {
-            filter: drop-shadow(0 0 calc(var(--u) * 5) rgba(0, 229, 255, 0.85))
-              drop-shadow(0 0 calc(var(--u) * 12) rgba(124, 92, 255, 0.65));
+            filter: drop-shadow(0 0 calc(var(--u) * 3.4) rgba(0, 229, 255, 0.7))
+              drop-shadow(0 0 calc(var(--u) * 7) rgba(124, 92, 255, 0.28));
           }
         }
         @keyframes lv2GlyphPulse {
           0%,
           100% {
-            transform: translate(-50%, -54%) scale(0.9);
+            transform: translate(-50%, -52%) scale(0.98);
           }
           50% {
-            transform: translate(-50%, -54%) scale(1.08);
-          }
-        }
-        @keyframes lv2SlashType {
-          0%,
-          3% {
-            transform: scaleY(0);
-            opacity: 0;
-          }
-          12%,
-          100% {
-            transform: scaleY(1);
-            opacity: 1;
+            transform: translate(-50%, -52%) scale(1.06);
           }
         }
         @media (prefers-reduced-motion: reduce) {
           .lv2-cube-wrap,
           .lv2-cube,
           .lv2-cube-face,
-          .lv2-cube-glyph,
-          .lv2-cube-slash {
+          .lv2-cube-glyph {
             animation: none;
           }
         }
