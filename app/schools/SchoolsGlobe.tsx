@@ -740,7 +740,8 @@ export default function SchoolsGlobe() {
           // Britain travels as the globe turns, so the label is pinned to the
           // globe instead of to the pin, and a leader reaches across to it.
           const ukX = Math.max(bx + 10, Math.min(bx + bw - labelW - 10, cx - R * 0.6));
-          const ukY = cy - R * 0.86;
+          // Clear of the top vignette, which would otherwise mute the label.
+          const ukY = cy - R * 0.62;
           const subY = ukY + ukAtlas.ch * 1.16;
           labelBox = [ukX - 6, ukY - 4, ukX + labelW + 6, subY + dimAtlas.ch + 4];
           text(ukAtlas, head, ukX, ukY, 0.98);
@@ -1005,7 +1006,7 @@ export default function SchoolsGlobe() {
           position: absolute;
           inset: 0;
           background:
-            linear-gradient(180deg, rgba(3,7,26,0.92) 0px, rgba(3,7,26,0.72) 110px, rgba(3,7,26,0.18) 210px, rgba(3,7,26,0) 300px),
+            linear-gradient(180deg, rgba(3,7,26,0.93) 0px, rgba(3,7,26,0.88) 130px, rgba(3,7,26,0.64) 205px, rgba(3,7,26,0.22) 310px, rgba(3,7,26,0) 420px),
             radial-gradient(ellipse 52% 62% at 26% 50%, rgba(3,7,26,0.86) 0%, rgba(3,7,26,0.46) 58%, rgba(3,7,26,0) 84%);
         }
         @media (max-width: 699px) {
