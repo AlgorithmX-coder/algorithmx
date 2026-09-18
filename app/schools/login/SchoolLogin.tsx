@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import SchoolsBackdrop from "@/app/schools/SchoolsBackdrop";
+import SchoolsGlobe from "@/app/schools/SchoolsGlobe";
 
 /**
  * /schools/login - the front door for schools. Two doors:
@@ -91,7 +91,7 @@ export default function SchoolLogin() {
 
   return (
     <>
-      <SchoolsBackdrop />
+      <SchoolsGlobe />
       <main
         style={{
           position: "relative",
