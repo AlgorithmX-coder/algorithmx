@@ -203,6 +203,9 @@ export default function SchoolsGlobe() {
     let land: Vec[] = [];
     let uk: Vec[] = [];
     let stars: { x: number; y: number; r: number; p: number }[] = [];
+    let dotX = new Float32Array(0);
+    let dotY = new Float32Array(0);
+    let dotBucket = new Uint8Array(0);
     let arcs: Arc[] = [];
     let flashes: Flash[] = [];
     let cityAtlas: Atlas | null = null;
@@ -280,6 +283,9 @@ export default function SchoolsGlobe() {
           if (inPoly(lat, lon, UK)) uk.push(vec(lat, lon));
         }
       }
+      dotX = new Float32Array(land.length);
+      dotY = new Float32Array(land.length);
+      dotBucket = new Uint8Array(land.length);
       stars = [];
       for (let i = 0; i < 46; i++) {
         stars.push({ x: bx + Math.random() * bw, y: by + Math.random() * bh, r: 0.6 + Math.random() * 1.2, p: Math.random() * 6 });
@@ -351,14 +357,26 @@ export default function SchoolsGlobe() {
       // Land, then Britain lit on top of it.
       const dot = Math.max(1.1, R / 105);
       ctx.fillStyle = "#67b6e6";
-      for (const v of land) {
+      let visible = 0;
+      for (let i = 0; i < land.length; i++) {
+        const v = land[i];
         const x = v[0] * cr + v[2] * sr;
         const z0 = -v[0] * sr + v[2] * cr;
         const y = v[1] * ct - z0 * st;
         const z = v[1] * st + z0 * ct;
         if (z < 0.04) continue;
-        ctx.globalAlpha = 0.24 + z * 0.58;
-        ctx.fillRect(cx + x * R, cy - y * R, dot, dot);
+        dotX[visible] = cx + x * R;
+        dotY[visible] = cy - y * R;
+        dotBucket[visible] = z < 0.3 ? 0 : z < 0.6 ? 1 : z < 0.85 ? 2 : 3;
+        visible++;
+      }
+      const BUCKET_ALPHA = [0.32, 0.5, 0.67, 0.81];
+      for (let b = 0; b < 4; b++) {
+        ctx.globalAlpha = BUCKET_ALPHA[b];
+        for (let i = 0; i < visible; i++) {
+          if (dotBucket[i] !== b) continue;
+          ctx.fillRect(dotX[i], dotY[i], dot, dot);
+        }
       }
       ctx.fillStyle = "#ffd88f";
       for (const v of uk) {
