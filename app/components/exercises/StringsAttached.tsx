@@ -109,7 +109,9 @@ const TOKEN_INDEX: Record<StringsWant, number> = { password: 0, money: 1, tap: 2
 
 // Board geometry in percent (the string overlay is a 0-100 viewBox).
 const BOARD_H = 400;
-const BALLOON_TOP = 4;
+// 6, not 4: a selected balloon lifts and grows, and at 4 it had only 5px left
+// above it, so it read as touching the frame (UAT W4 1a).
+const BALLOON_TOP = 6;
 const BALLOON_H = 44; // % of board height
 const TOKEN_TOP = 74;
 const balloonX = (i: number, n: number) => ((i + 0.5) / n) * 100;
@@ -536,7 +538,7 @@ export default function StringsAttached({
                     state
                       ? { y: state === "fair" ? -6 : 0, scale: state === "scam" ? 0.92 : 1 }
                       : isSel
-                        ? { y: -8, scale: 1.04 }
+                        ? { y: -6, scale: 1.03 }
                         : reduce
                           ? { y: 0, scale: 1 }
                           : { y: [0, -5, 0], scale: 1 }

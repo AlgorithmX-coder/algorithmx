@@ -435,7 +435,7 @@ export default function NameTagCheck({
   };
 
   return (
-    <ExerciseFrame maxWidth={820} decor>
+    <ExerciseFrame maxWidth={900} decor>
       {fx.layer()}
       {verdict.element}
 
@@ -463,9 +463,10 @@ export default function NameTagCheck({
       )}
 
       {!showIntro && !finished && c && !app && (
-        <div style={{ position: "relative", zIndex: 1 }}>
-          {/* Side padding keeps the header clear of the frame's corner ornaments. */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 22px 0" }}>
+        <div style={{ position: "relative", zIndex: 1, padding: "0 22px" }}>
+          {/* The whole board is inset: flush content collided with the frame's
+              28px rounded corners and its corner ornaments. */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 0 0" }}>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
               🔍 Name Tag Check
             </span>
@@ -601,20 +602,6 @@ export default function NameTagCheck({
                   {isCopycat ? fakeSeal : realSeal}
                 </motion.div>
               )}
-              {phase === "sealed" && isCopycat && (
-                <motion.img
-                  key="raccoon"
-                  src={weekCharacterSrc(week ?? undefined, "raccoon", "taunt")}
-                  onError={fallbackToShared("raccoon", "taunt")}
-                  alt=""
-                  aria-hidden
-                  initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.4, y: 30 }}
-                  animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 16 }}
-                  style={{ position: "absolute", right: -10, top: -40, height: 110, objectFit: "contain", filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.6))", pointerEvents: "none", zIndex: 3 }}
-                />
-              )}
             </AnimatePresence>
           </div>
 
@@ -630,14 +617,35 @@ export default function NameTagCheck({
           <div style={{ maxWidth: 560, margin: "8px auto 0" }}>
             {hintText && <HintBubble tier={hintTier} speaker={voice} text={hintText} />}
           </div>
+
+          {/* The Raccoon pops out of a copycat in the board's empty bottom-right
+              corner. He used to hang off the card, where he covered the third
+              piece and its stamp (UAT W4 4a). */}
+          <AnimatePresence>
+            {phase === "sealed" && isCopycat && (
+              <motion.img
+                key="raccoon"
+                src={weekCharacterSrc(week ?? undefined, "raccoon", "taunt")}
+                onError={fallbackToShared("raccoon", "taunt")}
+                alt=""
+                aria-hidden
+                initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.4, y: 30 }}
+                animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ type: "spring", stiffness: 260, damping: 16 }}
+                style={{ position: "absolute", right: 0, bottom: -40, height: 104, objectFit: "contain", filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.6))", pointerEvents: "none", zIndex: 3 }}
+              />
+            )}
+          </AnimatePresence>
         </div>
       )}
 
       {/* App skin (Week 9): the same drill on two app-store listing cards. */}
       {!showIntro && !finished && c && app && (
-        <div style={{ position: "relative", zIndex: 1 }}>
-          {/* Side padding keeps the header clear of the frame's corner ornaments. */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, padding: "2px 22px 0" }}>
+        <div style={{ position: "relative", zIndex: 1, padding: "0 22px" }}>
+          {/* The whole board is inset: flush content collided with the frame's
+              28px rounded corners and its corner ornaments. */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, padding: "2px 0 0" }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
               <PixIcon emoji={introIcon} size={16} />
               {introTitle}

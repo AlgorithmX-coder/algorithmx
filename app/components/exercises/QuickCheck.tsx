@@ -195,7 +195,14 @@ export default function QuickCheck({
     audio.wrong();
     setWrongIdx(i);
     setWrongKey((k) => k + 1);
-    const nudgeLine = nudge ?? defaultNudge(mode);
+    // Order mode: the authored nudge only describes the FIRST step, so once a
+    // step is placed it misleads ("what is the very FIRST thing?" when the child
+    // has already done it). Name the step they just landed and ask for the next.
+    // Text-only by design: a line built at runtime can never be a recorded clip.
+    const nudgeLine =
+      mode === "order" && placed.length > 0
+        ? `"${choices[placed.length - 1].text}" is done. What comes next?`
+        : nudge ?? defaultNudge(mode);
     setNudgeText(nudgeLine);
     onWrong?.();
     // Only an AUTHORED nudge is spoken as the fallback (the default nudges

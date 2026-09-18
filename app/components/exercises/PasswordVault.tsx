@@ -172,13 +172,26 @@ const ARTIFACT_RECAP: Record<string, string> = {
 };
 
 // Crown arc ABOVE the shield, spread wide so no tile touches the relic.
-const ARTIFACT_LAYOUT: { x: number; y: number; accent: string }[] = [
-  { x: -42, y: -28, accent: "#00e5ff" }, // length (left)
-  { x: -23, y: -46, accent: "#7eff97" }, // mix (upper-left)
-  { x:   0, y: -52, accent: "#fde047" }, // personal (top)
-  { x:  23, y: -46, accent: "#ff5fb3" }, // common (upper-right)
-  { x:  42, y: -28, accent: "#a855f7" }, // secret (right)
-];
+/* The rule sigils ring the badge. They used to be a hand-written table of % 
+ * offsets: x measured the stage WIDTH and y its HEIGHT, so the ring came out as
+ * a squashed ellipse, and it hung off 50% while the badge sits at 54%. Measured,
+ * the five sat between 273px and 391px from the badge (UAT W4 5b). Polar px
+ * offsets on one radius put them on a real circle, concentric with the badge. */
+const ARTIFACT_ACCENTS = ["#00e5ff", "#7eff97", "#fde047", "#ff5fb3", "#a855f7"];
+const ARTIFACT_RADIUS = 225; // px from the centrepiece: any wider and the top
+// sigil reaches the status caption, any tighter and the inner two sit on the badge.
+// 160 degrees: five 130px pedestals need at least 34 degrees between them at this
+// radius or their caption chips touch, and the inner two need to clear the badge.
+const ARTIFACT_SPAN = 160; // degrees swept, centred on straight up
+function artifactSlot(i: number, n: number): { x: number; y: number; accent: string } {
+  const frac = n <= 1 ? 0.5 : i / (n - 1);
+  const rad = ((90 + ARTIFACT_SPAN / 2 - frac * ARTIFACT_SPAN) * Math.PI) / 180;
+  return {
+    x: Math.cos(rad) * ARTIFACT_RADIUS,
+    y: -Math.sin(rad) * ARTIFACT_RADIUS,
+    accent: ARTIFACT_ACCENTS[i % ARTIFACT_ACCENTS.length],
+  };
+}
 
 /* ── Warehouse skin (Week 9) ─────────────────────────────────────
  * Everything is laid out inside the same DOOR_SIZE box as the gateway, so a
@@ -468,7 +481,7 @@ export default function PasswordVault({
   const artifacts: RevealArtifact[] = useMemo(
     () =>
       locks.map((l, i) => {
-        const slot = ARTIFACT_LAYOUT[i] ?? { x: 0, y: -20, accent: "#00e5ff" };
+        const slot = artifactSlot(i, locks.length);
         return {
           icon: l.icon,
           label: l.ruleLabel,
@@ -1330,7 +1343,9 @@ function GatewayStatus({
       aria-hidden
       style={{
         position: "absolute",
-        top: "13%",
+        // 9%, not 13%: the sigil ring now reaches higher, so the caption moves up
+        // into the empty top of the chamber to keep clear of it.
+        top: "9%",
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 6,
