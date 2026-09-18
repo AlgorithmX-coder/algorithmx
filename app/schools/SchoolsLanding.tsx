@@ -159,6 +159,19 @@ export default function SchoolsLanding() {
   const subnavRef = useRef<HTMLElement>(null);
   const info = PHASES[phase];
 
+  // One chip, rendered either in the nav or in the strip below it.
+  const sectionChip = ([id, label, cta]: (typeof SECTIONS)[number]) => (
+    <a
+      key={id}
+      href={`#${id}`}
+      data-target={id}
+      aria-current={activeSection === id ? "location" : undefined}
+      className={`sch-chip-link${cta ? " sch-chip-cta" : ""}${activeSection === id ? " on" : ""}`}
+    >
+      {label}
+    </a>
+  );
+
   // Scroll-spy for the sticky section nav: the topmost section whose top
   // has passed the sticky bars is "current"; the strip scrolls its chip
   // into view on narrow screens.
@@ -217,7 +230,19 @@ export default function SchoolsLanding() {
   return (
     <>
       <SchoolsGlobe />
-      <Nav />
+      {/* The page's own chrome: no telemetry, no site links. The brand cube
+          is the way back home, and the section links ride in the bar itself
+          wherever there is room for them. */}
+      <Nav
+        showTelemetry={false}
+        showSiteLinks={false}
+        cta={{ label: "Get in touch", href: "#enquiry" }}
+        centre={
+          <nav className="sch-navsections" aria-label="On this page">
+            {SECTIONS.filter(([, , cta]) => !cta).map(sectionChip)}
+          </nav>
+        }
+      />
       {/* overflow-x: clip keeps the decorative section glows (negative right
           offsets) from widening the page, which let phones pan sideways by
           160px. clip, unlike hidden, is not a scroll container, so the
@@ -226,17 +251,7 @@ export default function SchoolsLanding() {
         {/* SECTION NAV ────────────────────────────────────── */}
         <div className="sch-subnav-wrap">
           <nav ref={subnavRef} className="sch-subnav" aria-label="On this page">
-            {SECTIONS.map(([id, label, cta]) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                data-target={id}
-                aria-current={activeSection === id ? "location" : undefined}
-                className={`sch-chip-link${cta ? " sch-chip-cta" : ""}${activeSection === id ? " on" : ""}`}
-              >
-                {label}
-              </a>
-            ))}
+            {SECTIONS.map(sectionChip)}
           </nav>
         </div>
 
@@ -583,6 +598,17 @@ export default function SchoolsLanding() {
         .sch-subnav-wrap { margin-top: 68px; position: sticky; top: 68px; z-index: 30; background: rgba(4,5,13,0.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,229,255,0.1); border-bottom: 1px solid rgba(0,229,255,0.1); }
         .sch-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .sch-subnav::-webkit-scrollbar { display: none; }
+        /* One bar wherever the nav has room for the section links: they ride
+           in the nav itself and the strip below it goes away. Narrower than
+           that, the nav keeps only the brand and the CTA and the strip stays,
+           because six chips plus both of those cannot be read side by side. */
+        .sch-navsections { display: none; }
+        @media (min-width: 1180px) {
+          .sch-navsections { display: flex; align-items: center; gap: 6px; min-width: 0; }
+          .sch-subnav-wrap { display: none; }
+          .sch-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); }
+          .sch-section { scroll-margin-top: 88px; }
+        }
         .sch-chip-link {
           flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; text-decoration: none;
           border: 1px solid rgba(159,245,255,0.22); background: rgba(13,15,24,0.6);

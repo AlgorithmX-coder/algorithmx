@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Ico, useMagnetic, useMediaQuery } from "./utilities";
 
 /**
@@ -21,7 +21,18 @@ import { Ico, useMagnetic, useMediaQuery } from "./utilities";
  * The signup + login paths are always visible/clickable so they're never
  * gated out by the hero cinematic. Magnetic CTA → /signup, "Log In" → /login.
  */
-export default function Nav() {
+type NavProps = {
+  /** Page-owned content where the telemetry console normally sits. */
+  centre?: ReactNode;
+  /** Replaces the "Get Started" pill. A "#id" href stays on the page. */
+  cta?: { label: string; href: string };
+  /** The live telemetry console. */
+  showTelemetry?: boolean;
+  /** The Courses and Schools links. */
+  showSiteLinks?: boolean;
+};
+
+export default function Nav({ centre, cta, showTelemetry = true, showSiteLinks = true }: NavProps) {
   /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
    * Under Lenis, scroll events fire every rAF — storing the pixel value
    * re-rendered the entire Nav subtree at 60fps for the whole page.
@@ -56,6 +67,15 @@ export default function Nav() {
 
   const ctaRef = useRef<HTMLAnchorElement>(null);
   useMagnetic(ctaRef, { strength: 0.28, radius: 80 });
+  const ctaHref = cta?.href ?? "/signup";
+  /* Inner wrapper carries the hover lift + arrow nudge. The lift can't live
+     on the <a> itself because useMagnetic owns its transform every frame. */
+  const ctaInner = (
+    <span className="lv2-nav-cta-inner">
+      <span className="lv2-nav-cta-label">{cta?.label ?? "Get Started"}</span>
+      <Ico name="arrow" size={14} sw={2.4} />
+    </span>
+  );
 
   return (
     <nav
@@ -116,43 +136,43 @@ export default function Nav() {
           </span>
         </Link>
 
-        <LiveTelemetry isLight={isLight} />
+        {showTelemetry ? <LiveTelemetry isLight={isLight} /> : null}
+        {centre}
 
         <div className="lv2-nav-links">
-          {/* Root-relative on purpose: this Nav also renders on
-           *  /cybersecurity, where a bare "#subjects" points at nothing
-           *  (0 matching ids -> dead click). "/#subjects" keeps the
-           *  same-document scroll on the homepage and navigates home to
-           *  the section from anywhere else. */}
-          <a
-            className="lv2-nav-secondary"
-            href="/#subjects"
-            style={{ ...navLink, color: textColorMuted }}
-          >
-            Courses
-          </a>
-          <Link
-            className="lv2-nav-secondary"
-            href="/schools"
-            style={{ ...navLink, color: textColorMuted }}
-          >
-            Schools
-          </Link>
-          <Link
-            ref={ctaRef}
-            href="/signup"
-            data-cta
-            className="lv2-nav-cta"
-            style={ctaPill}
-          >
-            {/* Inner wrapper carries the hover lift + arrow nudge. The lift
-                can't live on the <a> itself because useMagnetic owns its
-                transform every frame. */}
-            <span className="lv2-nav-cta-inner">
-              <span className="lv2-nav-cta-label">Get Started</span>
-              <Ico name="arrow" size={14} sw={2.4} />
-            </span>
-          </Link>
+          {showSiteLinks ? (
+            <>
+              {/* Root-relative on purpose: this Nav also renders on
+               *  /cybersecurity, where a bare "#subjects" points at nothing
+               *  (0 matching ids -> dead click). "/#subjects" keeps the
+               *  same-document scroll on the homepage and navigates home to
+               *  the section from anywhere else. */}
+              <a
+                className="lv2-nav-secondary"
+                href="/#subjects"
+                style={{ ...navLink, color: textColorMuted }}
+              >
+                Courses
+              </a>
+              <Link
+                className="lv2-nav-secondary"
+                href="/schools"
+                style={{ ...navLink, color: textColorMuted }}
+              >
+                Schools
+              </Link>
+            </>
+          ) : null}
+          {ctaHref.startsWith("#") ? (
+            /* Same-page anchor: a plain <a> scrolls without a route change. */
+            <a ref={ctaRef} href={ctaHref} data-cta className="lv2-nav-cta" style={ctaPill}>
+              {ctaInner}
+            </a>
+          ) : (
+            <Link ref={ctaRef} href={ctaHref} data-cta className="lv2-nav-cta" style={ctaPill}>
+              {ctaInner}
+            </Link>
+          )}
         </div>
       </div>
 
