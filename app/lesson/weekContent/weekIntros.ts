@@ -109,14 +109,14 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     ],
   },
   10: {
-    title: "YouTube & Videos: Escape the Rabbit Hole",
+    title: "Videos & Channels: Escape the Rabbit Hole",
     tagline: "You choose when to stop, not the screen.",
     audioSrc: "/audio/atlas/heroes-week-10.mp3",
     accent: "#b8e34b",
     points: [
-      { icon: "🌀", label: "Spot the rabbit hole" },
-      { icon: "⏸️", label: "Choose to stop" },
-      { icon: "⏱️", label: "Watch the time" },
+      { icon: "🔀", label: "Spot the belt" },
+      { icon: "📏", label: "Weigh the claim" },
+      { icon: "⏸️", label: "Hold the pause" },
     ],
   },
   11: {

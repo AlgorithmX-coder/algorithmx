@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import type { ComponentType } from "react";
+import { createElement, type ComponentType } from "react";
 
 /**
  * Per-week SIGNATURE mini-games — one bespoke activity unique to a week (the
@@ -54,7 +54,26 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
   // Week 9 · Apps — flip the box to check maker/reviews/permissions.
   flipTheBox: dynamic(() => import("./FlipTheBox"), { ssr: false }),
   // Week 10 · YouTube — climb the ladder out of the autoplay rabbit-hole.
-  greatClimbOut: dynamic(() => import("./GreatClimbOut"), { ssr: false }),
+  // The Learn-Loop rebuild is data-driven and reports a score, so its
+  // `onComplete(score)` does not fit this registry's score-less `onComplete()`.
+  // This adapter keeps the legacy mount compiling and playable on the game's
+  // built-in default rungs, and passes the screen's spoken intro and payoff
+  // through to the beats that speak them.
+  greatClimbOut: dynamic(
+    async () => {
+      const { default: GreatClimbOut } = await import("./GreatClimbOut");
+      function GreatClimbOutSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(GreatClimbOut, {
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      GreatClimbOutSignature.displayName = "GreatClimbOutSignature";
+      return GreatClimbOutSignature;
+    },
+    { ssr: false },
+  ),
   // Week 4 · Scams — the rigged carnival booth you can't win; spot & close it.
   riggedRingToss: dynamic(() => import("./RiggedRingToss"), { ssr: false }),
   // Week 11 · Emergency — paced breathing calms the alert centre, then tell.

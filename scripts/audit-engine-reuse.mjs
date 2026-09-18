@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -43,6 +43,12 @@ const RETHEME_ALLOWED = {
   // The handshake was built as the new FourEyes engine instead, to stay within
   // RETHEME_MAX and to keep it from repeating Flip the Box's reveal-then-decide.
   9: ["VaultDrop", "NameTagCheck", "PasswordVault (review)"], // Delivery Dock (W2 table), Whisker Check (W4 name tags), The Warehouse (W4 vault)
+  // The design table listed two concept re-themes for W10 (Back Out =
+  // PowerPanel, Comment Stamper = ClueStamper). The stamper was dropped: W8
+  // shipped the Clue Stamper two weeks earlier and a second stamping board
+  // would read as the same game, so beat 4 became the new CommentPond engine
+  // (it names what a comment WANTS, which no other engine does).
+  10: ["PowerPanel", "FirewallBuilder (review)"], // Back-Out Panel (W6 panel, player skin), The Ladder Out (W4 wall)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

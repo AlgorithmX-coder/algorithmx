@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T17:43:43.922Z",
+  "generatedAt": "2026-09-17T19:33:40.434Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -2172,379 +2172,482 @@
       "file": "/audio/voice/5c449a3b21f85e9b.mp3"
     },
     {
-      "key": "62419cfac55e517b",
+      "key": "28ee10c3c59be7e7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Those videos pulled you deep, but you can climb out. Tap left, then right, up the ladder to the daylight. Don't tap the shiny bubbles. You choose when to stop!",
+      "text": "[excited] Welcome back, Cyber Hero! Week ten, the rabbit hole. Ever notice how the next video just... starts? You didn't pick it. Nobody picked it. [whispers] Something under the screen picked it FOR you. It's called autoplay, and it's a machine with one job: keep you watching. [excited] Come on. Grab the ladder, and let's make the Great Climb-Out!",
       "lines": [
-        "[warmly] Those videos pulled you deep, but you can climb out.",
-        "Tap left, then right, up the ladder to the daylight.",
-        "Don't tap the shiny bubbles. You choose when to stop!"
-      ],
-      "file": "/audio/voice/62419cfac55e517b.mp3"
-    },
-    {
-      "key": "e199acb449b56ecf",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Welcome back, Cyber Hero! Week ten - the rabbit hole. Ever notice how the next video just... starts? You didn't pick it. Nobody picked it. [whispers] Something under the screen picked it FOR you. It's called autoplay - and it's a machine with one job: keep you watching. [excited] Come on - let's pull the curtain and see it!",
-      "lines": [
-        "[excited] Welcome back, Cyber Hero! Week ten - the rabbit hole.",
+        "[excited] Welcome back, Cyber Hero! Week ten, the rabbit hole.",
         "Ever notice how the next video just... starts?",
         "You didn't pick it. Nobody picked it.",
         "[whispers] Something under the screen picked it FOR you.",
-        "It's called autoplay - and it's a machine with one job: keep you watching.",
-        "[excited] Come on - let's pull the curtain and see it!"
+        "It's called autoplay, and it's a machine with one job: keep you watching.",
+        "[excited] Come on. Grab the ladder, and let's make the Great Climb-Out!"
       ],
-      "file": "/audio/voice/e199acb449b56ecf.mp3"
+      "file": "/audio/voice/28ee10c3c59be7e7.mp3"
     },
     {
-      "key": "ffffc5629bbb6f14",
+      "key": "8aa3738884b2d3dd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Hear that hum? That's the watching machine. Four curtains hide its four tricks. [excited] Pull every one and see what's really pulling YOU. Machine-spotters can't be caught. Go!",
+      "text": "[whispers] Look down, Cyber Hero. That's how deep the belt rolled you. Now look UP. Daylight, five rungs away. Every rung, three things float past. One is your grip. [excited] Tap the hero move and climb. Let's go!",
       "lines": [
-        "[whispers] Hear that hum? That's the watching machine.",
-        "Four curtains hide its four tricks.",
-        "[excited] Pull every one and see what's really pulling YOU.",
-        "Machine-spotters can't be caught. Go!"
+        "[whispers] Look down, Cyber Hero. That's how deep the belt rolled you.",
+        "Now look UP. Daylight, five rungs away.",
+        "Every rung, three things float past. One is your grip.",
+        "[excited] Tap the hero move and climb. Let's go!"
       ],
-      "file": "/audio/voice/ffffc5629bbb6f14.mp3"
+      "file": "/audio/voice/8aa3738884b2d3dd.mp3"
     },
     {
-      "key": "825778a7ef54f2d9",
+      "key": "6cc62d1884895777",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Pull the first curtain - let's see what's doing the pulling!",
+      "text": "Pick the grip, not the shout. Take the first rung!",
       "lines": [
-        "Pull the first curtain - let's see what's doing the pulling!"
+        "Pick the grip, not the shout. Take the first rung!"
       ],
-      "file": "/audio/voice/825778a7ef54f2d9.mp3"
+      "file": "/audio/voice/6cc62d1884895777.mp3"
     },
     {
-      "key": "d5ec1769d100aa8b",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Power one - the curtain is DOWN! Belt, countdown, hungry thumbnails... all spotted. [whispers] But the hole hides something else, hero... videos that say things that just aren't true.",
-      "lines": [
-        "[excited] Power one - the curtain is DOWN!",
-        "Belt, countdown, hungry thumbnails... all spotted.",
-        "[whispers] But the hole hides something else, hero...",
-        "videos that say things that just aren't true."
-      ],
-      "file": "/audio/voice/d5ec1769d100aa8b.mp3"
-    },
-    {
-      "key": "e3bf59f9fe175a74",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Next power: the truth scales! Videos can say anything at all. Anyone can film anything. [whispers] 'The moon is cheese!' 'Grow taller overnight!' Saying it loudly doesn't make it TRUE. [warmly] So we weigh it - against a real book, a teacher, a grown-up. [excited] The claims are rolling in - to the scales!",
-      "lines": [
-        "[excited] Next power: the truth scales!",
-        "Videos can say anything at all. Anyone can film anything.",
-        "[whispers] 'The moon is cheese!' 'Grow taller overnight!'",
-        "Saying it loudly doesn't make it TRUE.",
-        "[warmly] So we weigh it - against a real book, a teacher, a grown-up.",
-        "[excited] The claims are rolling in - to the scales!"
-      ],
-      "file": "/audio/voice/e3bf59f9fe175a74.mp3"
-    },
-    {
-      "key": "6e93d2f6ab5f91c2",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Claim cards on the belt! Weigh each one: does a real source agree? Facts settle gently into the CHECKS OUT pan... [laughs] and wild ones FLING right off. Go!",
-      "lines": [
-        "[excited] Claim cards on the belt!",
-        "Weigh each one: does a real source agree?",
-        "Facts settle gently into the CHECKS OUT pan...",
-        "[laughs] and wild ones FLING right off. Go!"
-      ],
-      "file": "/audio/voice/6e93d2f6ab5f91c2.mp3"
-    },
-    {
-      "key": "18a599f39ed6f231",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Would a real book agree? That's the whole test!",
-      "lines": [
-        "Would a real book agree? That's the whole test!"
-      ],
-      "file": "/audio/voice/18a599f39ed6f231.mp3"
-    },
-    {
-      "key": "29439fb80be979d9",
+      "key": "545e5793694139fe",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Two powers! The scales don't lie. Cheese-moons and canceled school - flung! [warmly] Now for a power every hero needs... the calm way OUT when a video isn't for you.",
+      "text": "[proud] Daylight! Look at you. Five rungs, and every single one was YOUR choice. The belt is still rolling down there... without you on it.",
       "lines": [
-        "[excited] Two powers! The scales don't lie.",
-        "Cheese-moons and canceled school - flung!",
-        "[warmly] Now for a power every hero needs...",
-        "the calm way OUT when a video isn't for you."
+        "[proud] Daylight! Look at you.",
+        "Five rungs, and every single one was YOUR choice.",
+        "The belt is still rolling down there... without you on it."
       ],
-      "file": "/audio/voice/29439fb80be979d9.mp3"
+      "file": "/audio/voice/545e5793694139fe.mp3"
     },
     {
-      "key": "761fec223dff3c8f",
+      "key": "8890bca6dc231cb0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Well done! When the next video starts by itself, that's autoplay. A machine, with one job: keep you watching.",
+      "lines": [
+        "[proud] Well done!",
+        "When the next video starts by itself, that's autoplay.",
+        "A machine, with one job: keep you watching."
+      ],
+      "file": "/audio/voice/8890bca6dc231cb0.mp3"
+    },
+    {
+      "key": "93402d94cfac315c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] One power down, Cyber Hero! You can see the belt now. But the burrow has another trick, and this one is loud. [whispers] Videos that shout things that simply aren't true... Next, we learn how to weigh a wild claim. Come and see!",
+      "lines": [
+        "[excited] One power down, Cyber Hero! You can see the belt now.",
+        "But the burrow has another trick, and this one is loud.",
+        "[whispers] Videos that shout things that simply aren't true...",
+        "Next, we learn how to weigh a wild claim. Come and see!"
+      ],
+      "file": "/audio/voice/93402d94cfac315c.mp3"
+    },
+    {
+      "key": "b6c2dee8a59e7aa8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[curious] Here's a wild one, Cyber Hero. A video shouts that carrots give you cat eyes. Two million views! Everyone is sharing it! [whispers] But hang on. Who actually CHECKED that? Anyone can film anything. Saying it doesn't make it so. Heroes ask one calm question first: who would really know? [excited] Come and try it. The game is called Who Would Know!",
+      "lines": [
+        "[curious] Here's a wild one, Cyber Hero. A video shouts that carrots give you cat eyes.",
+        "Two million views! Everyone is sharing it!",
+        "[whispers] But hang on. Who actually CHECKED that?",
+        "Anyone can film anything. Saying it doesn't make it so.",
+        "Heroes ask one calm question first: who would really know?",
+        "[excited] Come and try it. The game is called Who Would Know!"
+      ],
+      "file": "/audio/voice/b6c2dee8a59e7aa8.mp3"
+    },
+    {
+      "key": "5c808a4839c759aa",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Four wild claims, shouting their loudest. Under each one, three faces. [whispers] Only one of them could actually check it. [excited] Pick the one who would really know. Weigh it!",
+      "lines": [
+        "[excited] Four wild claims, shouting their loudest.",
+        "Under each one, three faces.",
+        "[whispers] Only one of them could actually check it.",
+        "[excited] Pick the one who would really know. Weigh it!"
+      ],
+      "file": "/audio/voice/5c808a4839c759aa.mp3"
+    },
+    {
+      "key": "ecfd166642c1f31b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Read the claim, then pick who could really check it.",
+      "lines": [
+        "Read the claim, then pick who could really check it."
+      ],
+      "file": "/audio/voice/ecfd166642c1f31b.mp3"
+    },
+    {
+      "key": "0a494b94ccfe68b1",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Four claims weighed, four times loud lost. Two million views couldn't beat one science book. That's the question that does it: who would really know?",
+      "lines": [
+        "[proud] Four claims weighed, four times loud lost.",
+        "Two million views couldn't beat one science book.",
+        "That's the question that does it: who would really know?"
+      ],
+      "file": "/audio/voice/0a494b94ccfe68b1.mp3"
+    },
+    {
+      "key": "385d759a69fc0363",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] This one's important, hero, so I'll say it gently. Sometimes the belt rolls in a video that is NOT for kids. If that happens - it is never, ever your fault. And leaving? Leaving is STRONG, not scared. [whispers] Notice it... back out... tell a grown-up if it felt icky. [excited] Let's practice finding that exit - calm and quick!",
+      "text": "[proud] Well spotted! He watched a video. He never checked a single thing. Who would really know about the moon? Not a raccoon with a camera.",
       "lines": [
-        "[warmly] This one's important, hero, so I'll say it gently.",
+        "[proud] Well spotted!",
+        "He watched a video. He never checked a single thing.",
+        "Who would really know about the moon? Not a raccoon with a camera."
+      ],
+      "file": "/audio/voice/385d759a69fc0363.mp3"
+    },
+    {
+      "key": "407061abcfb97eea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers! Cheese moons and cancelled schools, both weighed and both flung. [warmly] Now for the gentlest power of the week. [whispers] Because sometimes the belt rolls in a video that isn't for kids at all... Next, we learn the calm way out. Come and see.",
+      "lines": [
+        "[excited] Two powers! Cheese moons and cancelled schools, both weighed and both flung.",
+        "[warmly] Now for the gentlest power of the week.",
+        "[whispers] Because sometimes the belt rolls in a video that isn't for kids at all...",
+        "Next, we learn the calm way out. Come and see."
+      ],
+      "file": "/audio/voice/407061abcfb97eea.mp3"
+    },
+    {
+      "key": "08e71d99a590eaee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] This one matters, Cyber Hero, so I'll say it gently. Sometimes the belt rolls in a video that is NOT for kids. If that happens, it is never, ever your fault. And leaving? Leaving is STRONG, not scared. [whispers] You notice it. Then three calm taps: pause... back... tell. [excited] Let's find those three in the Back-Out Panel!",
+      "lines": [
+        "[warmly] This one matters, Cyber Hero, so I'll say it gently.",
         "Sometimes the belt rolls in a video that is NOT for kids.",
-        "If that happens - it is never, ever your fault.",
+        "If that happens, it is never, ever your fault.",
         "And leaving? Leaving is STRONG, not scared.",
-        "[whispers] Notice it... back out... tell a grown-up if it felt icky.",
-        "[excited] Let's practice finding that exit - calm and quick!"
+        "[whispers] You notice it. Then three calm taps: pause... back... tell.",
+        "[excited] Let's find those three in the Back-Out Panel!"
       ],
-      "file": "/audio/voice/761fec223dff3c8f.mp3"
+      "file": "/audio/voice/08e71d99a590eaee.mp3"
     },
     {
-      "key": "76fb0750afd2ccf6",
+      "key": "b67712c68be1d11e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Deep breath. You've got this. Six buttons - only two make the escape. BACK gets you out. TELL gets you backup. [excited] Calm and quick - find them in order!",
+      "text": "[warmly] Deep breath, Cyber Hero. You've got this. The player is crowded, and only three buttons make the escape. Pause stops it. Back gets you out. Tell gets you backup. [excited] Calm and quick. Find them in order!",
       "lines": [
-        "[warmly] Deep breath. You've got this.",
-        "Six buttons - only two make the escape.",
-        "BACK gets you out. TELL gets you backup.",
-        "[excited] Calm and quick - find them in order!"
+        "[warmly] Deep breath, Cyber Hero. You've got this.",
+        "The player is crowded, and only three buttons make the escape.",
+        "Pause stops it. Back gets you out. Tell gets you backup.",
+        "[excited] Calm and quick. Find them in order!"
       ],
-      "file": "/audio/voice/76fb0750afd2ccf6.mp3"
+      "file": "/audio/voice/b67712c68be1d11e.mp3"
     },
     {
-      "key": "e6102f60fed30874",
+      "key": "2e340d0f9bfd13f2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Out first, backup second - find the BACK button!",
+      "text": "Pause first, every time. Find it in the panel.",
       "lines": [
-        "Out first, backup second - find the BACK button!"
+        "Pause first, every time. Find it in the panel."
       ],
-      "file": "/audio/voice/e6102f60fed30874.mp3"
+      "file": "/audio/voice/2e340d0f9bfd13f2.mp3"
     },
     {
-      "key": "5713613ccaf4b39f",
-      "speaker": "layla",
+      "key": "a5d202e5cf3a8f21",
+      "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Three powers - and that one makes me proud. Notice. Back out. Tell. [whispers] Now look UNDER the video... see all those comments? Time to meet who really lives down there.",
+      "text": "[proud] Three screens, three calm escapes. You never froze, and you never blamed yourself once. Pause, back, tell. That's yours now, wherever you're watching.",
       "lines": [
-        "[warmly] Three powers - and that one makes me proud.",
-        "Notice. Back out. Tell.",
-        "[whispers] Now look UNDER the video... see all those comments?",
-        "Time to meet who really lives down there."
+        "[proud] Three screens, three calm escapes.",
+        "You never froze, and you never blamed yourself once.",
+        "Pause, back, tell. That's yours now, wherever you're watching."
       ],
-      "file": "/audio/voice/5713613ccaf4b39f.mp3"
+      "file": "/audio/voice/a5d202e5cf3a8f21.mp3"
     },
     {
-      "key": "ab70f4c4fabe4d31",
+      "key": "2fe90565855de6d4",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Look under the video... see the comment pond? Everyone down there is a STRANGER. Remember week three? Same rule, new place. [nervous] Some comments are fishing - for your name, your school, a reply. [warmly] You don't bite. You watch, you smile, you move on. [excited] Grab the net - the fishers are coming!",
+      "text": "[proud] Perfect order! Pause it, back out of it, tell a trusted grown-up. Stop it, leave it, then get your backup.",
       "lines": [
-        "[whispers] Look under the video... see the comment pond?",
-        "Everyone down there is a STRANGER.",
+        "[proud] Perfect order!",
+        "Pause it, back out of it, tell a trusted grown-up.",
+        "Stop it, leave it, then get your backup."
+      ],
+      "file": "/audio/voice/2fe90565855de6d4.mp3"
+    },
+    {
+      "key": "a4df020146f75b4f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Three powers, and that one makes me proud of you. Pause. Back. Tell. [whispers] Now look UNDER the video. See all those comments bubbling up? Next, we find out who is really typing them. Come and see!",
+      "lines": [
+        "[warmly] Three powers, and that one makes me proud of you.",
+        "Pause. Back. Tell.",
+        "[whispers] Now look UNDER the video. See all those comments bubbling up?",
+        "Next, we find out who is really typing them. Come and see!"
+      ],
+      "file": "/audio/voice/a4df020146f75b4f.mp3"
+    },
+    {
+      "key": "4ed9c2d5223a452e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Look under the video, Cyber Hero. See the comment pond? Every single person down there is a STRANGER. Remember week three? Same rule, new place. [nervous] And some of them are fishing. For your name. Your school. A tap on a link. [warmly] You never have to reply. Not once. [excited] Come to the Comment Pond, and let's see what they're really after!",
+      "lines": [
+        "[whispers] Look under the video, Cyber Hero. See the comment pond?",
+        "Every single person down there is a STRANGER.",
         "Remember week three? Same rule, new place.",
-        "[nervous] Some comments are fishing - for your name, your school, a reply.",
-        "[warmly] You don't bite. You watch, you smile, you move on.",
-        "[excited] Grab the net - the fishers are coming!"
+        "[nervous] And some of them are fishing. For your name. Your school. A tap on a link.",
+        "[warmly] You never have to reply. Not once.",
+        "[excited] Come to the Comment Pond, and let's see what they're really after!"
       ],
-      "file": "/audio/voice/ab70f4c4fabe4d31.mp3"
+      "file": "/audio/voice/4ed9c2d5223a452e.mp3"
     },
     {
-      "key": "bb80676f31c4244a",
+      "key": "45ae986484eb4146",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The pond is bubbling - comments incoming! Friendly chatter about the video? Let it swim past. [whispers] Fishing for YOU - your school, your name, a reply? [excited] NET IT! Ready... go!",
+      "text": "[excited] The pond is bubbling. Comments coming up! Read each one and ask: what does it actually want? [whispers] Your name? Your school? A photo? A tap on a link? [excited] Tap what it's after, and it can't have it. Go!",
       "lines": [
-        "[excited] The pond is bubbling - comments incoming!",
-        "Friendly chatter about the video? Let it swim past.",
-        "[whispers] Fishing for YOU - your school, your name, a reply?",
-        "[excited] NET IT! Ready... go!"
+        "[excited] The pond is bubbling. Comments coming up!",
+        "Read each one and ask: what does it actually want?",
+        "[whispers] Your name? Your school? A photo? A tap on a link?",
+        "[excited] Tap what it's after, and it can't have it. Go!"
       ],
-      "file": "/audio/voice/bb80676f31c4244a.mp3"
+      "file": "/audio/voice/45ae986484eb4146.mp3"
     },
     {
-      "key": "49beaf800795ad98",
-      "speaker": "adam",
+      "key": "7330c9af8ffae932",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Four powers! The pond can't catch you. School questions, dare bait, free-stuff hooks... [laughs] all netted, none bitten. [warmly] Last power - and this one lives in your own body.",
+      "text": "Read the comment, then tap what it wants from the tray.",
       "lines": [
-        "[excited] Four powers! The pond can't catch you.",
-        "School questions, dare bait, free-stuff hooks...",
-        "[laughs] all netted, none bitten.",
-        "[warmly] Last power - and this one lives in your own body."
+        "Read the comment, then tap what it wants from the tray."
       ],
-      "file": "/audio/voice/49beaf800795ad98.mp3"
+      "file": "/audio/voice/7330c9af8ffae932.mp3"
     },
     {
-      "key": "6fd2595534470d0f",
+      "key": "49a5414b9e7a5766",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Six comments, and not one of them caught anything. You never typed back once, and you didn't need to. Kind ones swim past. Fishing ones go home empty.",
+      "lines": [
+        "[proud] Six comments, and not one of them caught anything.",
+        "You never typed back once, and you didn't need to.",
+        "Kind ones swim past. Fishing ones go home empty."
+      ],
+      "file": "/audio/voice/49a5414b9e7a5766.mp3"
+    },
+    {
+      "key": "e5310a2037e6f322",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Last power, hero - and it's already inside you. When you've watched a while, your body rings a little bell. Dry blinky eyes. A jiggly leg. A stiff neck. [whispers] Outside, the sky changed color... and you missed it. That bell isn't bad news - it's your signal. [excited] Notice it, pause the belt, and YOU pick what's next!",
+      "text": "[proud] Exactly right! Everyone in the comment pond is a stranger. Week three rules, brand new place.",
       "lines": [
-        "[warmly] Last power, hero - and it's already inside you.",
+        "[proud] Exactly right!",
+        "Everyone in the comment pond is a stranger.",
+        "Week three rules, brand new place."
+      ],
+      "file": "/audio/voice/e5310a2037e6f322.mp3"
+    },
+    {
+      "key": "3be1d4e317a006c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! The pond went home with nothing. [laughs] School questions, wizard names, free coins... all named, none taken. [warmly] The last power isn't on the screen at all, Cyber Hero. Next, we learn the little bell that rings inside your own body. Come and see!",
+      "lines": [
+        "[excited] Four powers! The pond went home with nothing.",
+        "[laughs] School questions, wizard names, free coins... all named, none taken.",
+        "[warmly] The last power isn't on the screen at all, Cyber Hero.",
+        "Next, we learn the little bell that rings inside your own body. Come and see!"
+      ],
+      "file": "/audio/voice/3be1d4e317a006c5.mp3"
+    },
+    {
+      "key": "90749d90a7b5a68d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last power, Cyber Hero, and it's already inside you. When you've watched a while, your body rings a little bell. Dry blinky eyes. A jiggly leg. A stiff neck. [whispers] Outside, the sky changed colour... and you missed it. That bell isn't bad news. It's your signal. [excited] Let's use it. Time for Pause Power!",
+      "lines": [
+        "[warmly] Last power, Cyber Hero, and it's already inside you.",
         "When you've watched a while, your body rings a little bell.",
         "Dry blinky eyes. A jiggly leg. A stiff neck.",
-        "[whispers] Outside, the sky changed color... and you missed it.",
-        "That bell isn't bad news - it's your signal.",
-        "[excited] Notice it, pause the belt, and YOU pick what's next!"
+        "[whispers] Outside, the sky changed colour... and you missed it.",
+        "That bell isn't bad news. It's your signal.",
+        "[excited] Let's use it. Time for Pause Power!"
       ],
-      "file": "/audio/voice/6fd2595534470d0f.mp3"
+      "file": "/audio/voice/90749d90a7b5a68d.mp3"
     },
     {
-      "key": "8c143ac12e271d65",
+      "key": "b2c299249087ae46",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Three watching moments. Three little bells. The belt will whisper 'just one more'... [whispers] but you know whose choice it really is. [excited] Notice the bell - show me the hero move!",
+      "text": "[warmly] Three watching moments, Cyber Hero. Three little bells. Press the big pause and HOLD it until the belt stops. [whispers] Then the screen goes quiet, and the choosing is yours. [excited] Hear the bell, hold the pause, pick what's next!",
       "lines": [
-        "[warmly] Three watching moments. Three little bells.",
-        "The belt will whisper 'just one more'...",
-        "[whispers] but you know whose choice it really is.",
-        "[excited] Notice the bell - show me the hero move!"
+        "[warmly] Three watching moments, Cyber Hero. Three little bells.",
+        "Press the big pause and HOLD it until the belt stops.",
+        "[whispers] Then the screen goes quiet, and the choosing is yours.",
+        "[excited] Hear the bell, hold the pause, pick what's next!"
       ],
-      "file": "/audio/voice/8c143ac12e271d65.mp3"
+      "file": "/audio/voice/b2c299249087ae46.mp3"
     },
     {
-      "key": "113464a851407e79",
+      "key": "794c8d279c888301",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Press the pause and hold it until the belt stops.",
+      "lines": [
+        "Press the pause and hold it until the belt stops."
+      ],
+      "file": "/audio/voice/794c8d279c888301.mp3"
+    },
+    {
+      "key": "6f6b78c51eed085a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Three bells, and you heard every one. The belt was still rolling, and you stopped it with your own thumb. Trampolines, dinners, daylight. All picked by you.",
+      "lines": [
+        "[proud] Three bells, and you heard every one.",
+        "The belt was still rolling, and you stopped it with your own thumb.",
+        "Trampolines, dinners, daylight. All picked by you."
+      ],
+      "file": "/audio/voice/6f6b78c51eed085a.mp3"
+    },
+    {
+      "key": "d1fc5b2220f3ae43",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE rabbit-hole powers, Cyber Hero! Machine spotted, claims weighed, exit found, pond netted... and your own bell noticed. [whispers] Now - one last climb... [excited] then we unplug his conveyor for GOOD!",
+      "text": "[proud] Fast AND right! Dry eyes and a jiggly leg are your body's bell. Hear it, hold the pause, and choose.",
+      "lines": [
+        "[proud] Fast AND right!",
+        "Dry eyes and a jiggly leg are your body's bell.",
+        "Hear it, hold the pause, and choose."
+      ],
+      "file": "/audio/voice/d1fc5b2220f3ae43.mp3"
+    },
+    {
+      "key": "6470276010d6b3e8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE rabbit-hole powers, Cyber Hero! Belt spotted, claims weighed, exit found, pond emptied... and your own bell heard. [whispers] Now let's put them together. Every power is a rung... [excited] and we're building the Ladder Out. Come and build it!",
       "lines": [
         "[excited] That's all FIVE rabbit-hole powers, Cyber Hero!",
-        "Machine spotted, claims weighed, exit found,",
-        "pond netted... and your own bell noticed.",
-        "[whispers] Now - one last climb...",
-        "[excited] then we unplug his conveyor for GOOD!"
+        "Belt spotted, claims weighed, exit found,",
+        "pond emptied... and your own bell heard.",
+        "[whispers] Now let's put them together. Every power is a rung...",
+        "[excited] and we're building the Ladder Out. Come and build it!"
       ],
-      "file": "/audio/voice/113464a851407e79.mp3"
+      "file": "/audio/voice/6470276010d6b3e8.mp3"
     },
     {
-      "key": "b3c7ae358f13aed8",
+      "key": "4bbc67e2226cab91",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The ladder out of the hole - final climb! Watching moments are floating past. MY CHOICE for the hero moves... [warmly] THE PULL for the belt's tricks. Climb!",
+      "text": "[excited] Here it is, Cyber Hero. The ladder out of the burrow. Rungs are coming up one at a time. Every hero move goes into the ladder. [whispers] Every one of HIS tricks goes down the burrow. Build it!",
       "lines": [
-        "[excited] The ladder out of the hole - final climb!",
-        "Watching moments are floating past.",
-        "MY CHOICE for the hero moves...",
-        "[warmly] THE PULL for the belt's tricks. Climb!"
+        "[excited] Here it is, Cyber Hero. The ladder out of the burrow.",
+        "Rungs are coming up one at a time.",
+        "Every hero move goes into the ladder.",
+        "[whispers] Every one of HIS tricks goes down the burrow. Build it!"
       ],
-      "file": "/audio/voice/b3c7ae358f13aed8.mp3"
+      "file": "/audio/voice/4bbc67e2226cab91.mp3"
     },
     {
-      "key": "2ffaa84deb741ae0",
+      "key": "27ec815734906e0c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Read the rung, then lay it in the ladder or drop it down the burrow.",
+      "lines": [
+        "Read the rung, then lay it in the ladder or drop it down the burrow."
+      ],
+      "file": "/audio/voice/27ec815734906e0c.mp3"
+    },
+    {
+      "key": "623161621cdca558",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Look at that ladder. It goes all the way to daylight. Six hero moves, and three of his tricks dropped. [excited] You're ready for him now. Let's go and unplug that conveyor!",
+      "lines": [
+        "[proud] Look at that ladder. It goes all the way to daylight.",
+        "Six hero moves, and three of his tricks dropped.",
+        "[excited] You're ready for him now. Let's go and unplug that conveyor!"
+      ],
+      "file": "/audio/voice/623161621cdca558.mp3"
+    },
+    {
+      "key": "dd536e8a1659f312",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! The machine spotted, wild claims flung, the exit found, the pond netted... and your bell heard. [laughs] His conveyor is unplugged and squeaking. [excited] Sticker time!",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The belt spotted, wild claims weighed, the exit found, the pond emptied... and your bell heard. [laughs] His conveyor is unplugged and squeaking. [excited] Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "The machine spotted, wild claims flung,",
-        "the exit found, the pond netted... and your bell heard.",
+        "The belt spotted, wild claims weighed,",
+        "the exit found, the pond emptied... and your bell heard.",
         "[laughs] His conveyor is unplugged and squeaking.",
         "[excited] Sticker time!"
       ],
-      "file": "/audio/voice/2ffaa84deb741ae0.mp3"
+      "file": "/audio/voice/dd536e8a1659f312.mp3"
     },
     {
-      "key": "e4735a65c00d48e1",
-      "speaker": "adam",
+      "key": "49186606201c5229",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "You said 'just one more' three videos ago. The next one is loading all by itself...",
+      "text": "[excited] Five stickers, straight up the ladder! Machine Spotter. Claim Weigher. Calm Escaper. Pond Watcher... and Bell Noticer. [proud] Out of the burrow and into the daylight, Cyber Hero.",
       "lines": [
-        "You said 'just one more' three videos ago. The next one is loading all by itself..."
+        "[excited] Five stickers, straight up the ladder!",
+        "Machine Spotter. Claim Weigher. Calm Escaper.",
+        "Pond Watcher... and Bell Noticer.",
+        "[proud] Out of the burrow and into the daylight, Cyber Hero."
       ],
-      "file": "/audio/voice/e4735a65c00d48e1.mp3"
+      "file": "/audio/voice/49186606201c5229.mp3"
     },
     {
-      "key": "f6000af3c50f2a0e",
+      "key": "f440ae63ce4022f8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You catch your reflection in the screen: dry blinky eyes, a jiggly leg... and outside the sun is shining.",
+      "text": "You said \"just one more\" three videos ago, and the next one is loading all by itself.",
       "lines": [
-        "You catch your reflection in the screen: dry blinky eyes, a jiggly leg... and outside the sun is shining."
+        "You said \"just one more\" three videos ago, and the next one is loading all by itself."
       ],
-      "file": "/audio/voice/f6000af3c50f2a0e.mp3"
+      "file": "/audio/voice/f440ae63ce4022f8.mp3"
     },
     {
-      "key": "2f2061bafbf8c778",
+      "key": "e46994c349ac3d4e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Dinner's ready! But the screen flashes: NEXT EPISODE IN 3... 2...",
+      "text": "You catch your reflection in the dark screen: a jiggly leg and a neck that has gone stiff.",
       "lines": [
-        "Dinner's ready! But the screen flashes: NEXT EPISODE IN 3... 2..."
+        "You catch your reflection in the dark screen: a jiggly leg and a neck that has gone stiff."
       ],
-      "file": "/audio/voice/2f2061bafbf8c778.mp3"
+      "file": "/audio/voice/e46994c349ac3d4e.mp3"
     },
     {
-      "key": "623c4b45cf782a5f",
+      "key": "d61c9e4d7a4485c0",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's the belt choosing FOR you. 'One more' became five more, and the whole afternoon slid down the hole.",
+      "text": "Dinner is on the table, and the screen flashes NEXT EPISODE.",
       "lines": [
-        "That's the belt choosing FOR you. 'One more' became five more, and the whole afternoon slid down the hole."
+        "Dinner is on the table, and the screen flashes NEXT EPISODE."
       ],
-      "file": "/audio/voice/623c4b45cf782a5f.mp3"
+      "file": "/audio/voice/d61c9e4d7a4485c0.mp3"
     },
     {
-      "key": "208054743c55fcdf",
+      "key": "a91008078c63988e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You grabbed the controls back! Pausing the belt is the strongest button on the whole player.",
+      "text": "When the next video starts all by itself, the thing that picked it is called blank.",
       "lines": [
-        "You grabbed the controls back! Pausing the belt is the strongest button on the whole player."
+        "When the next video starts all by itself, the thing that picked it is called blank."
       ],
-      "file": "/audio/voice/208054743c55fcdf.mp3"
-    },
-    {
-      "key": "74a89a6564ccc2a2",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Your body was ringing its bell - and the bell doesn't stop, it just rings louder. Dry eyes don't fix themselves on video six.",
-      "lines": [
-        "Your body was ringing its bell - and the bell doesn't stop, it just rings louder. Dry eyes don't fix themselves on video six."
-      ],
-      "file": "/audio/voice/74a89a6564ccc2a2.mp3"
-    },
-    {
-      "key": "5bb88ff470debf92",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "You NOTICED! Trampoline, snack, drawing, calling a friend - your eyes and legs said thank you in about two minutes.",
-      "lines": [
-        "You NOTICED! Trampoline, snack, drawing, calling a friend - your eyes and legs said thank you in about two minutes."
-      ],
-      "file": "/audio/voice/5bb88ff470debf92.mp3"
-    },
-    {
-      "key": "8b2292a95c677962",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The start became the middle, dinner went cold, and everyone waited. Episodes keep forever - hot dinners don't.",
-      "lines": [
-        "The start became the middle, dinner went cold, and everyone waited. Episodes keep forever - hot dinners don't."
-      ],
-      "file": "/audio/voice/8b2292a95c677962.mp3"
-    },
-    {
-      "key": "1ce542fdb49f6922",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "You beat the countdown! The episode will wait patiently all night. Hot dinner and family jokes won't.",
-      "lines": [
-        "You beat the countdown! The episode will wait patiently all night. Hot dinner and family jokes won't."
-      ],
-      "file": "/audio/voice/1ce542fdb49f6922.mp3"
-    },
-    {
-      "key": "7dc25245fd6cec54",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Autoplay is built to keep me blank.",
-      "lines": [
-        "Autoplay is built to keep me blank."
-      ],
-      "file": "/audio/voice/7dc25245fd6cec54.mp3"
+      "file": "/audio/voice/a91008078c63988e.mp3"
     },
     {
       "key": "7f9176e7dd690d31",
@@ -2557,34 +2660,1769 @@
       "file": "/audio/voice/7f9176e7dd690d31.mp3"
     },
     {
-      "key": "7ce74a0c6a28250a",
+      "key": "8cb49ec5e74694cd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Put the escape plan in order:",
+      "text": "Put the calm escape in order:",
       "lines": [
-        "Put the escape plan in order:"
+        "Put the calm escape in order:"
       ],
-      "file": "/audio/voice/7ce74a0c6a28250a.mp3"
+      "file": "/audio/voice/8cb49ec5e74694cd.mp3"
     },
     {
-      "key": "3842d68c5413d8a3",
+      "key": "8a55d938a44fd6cc",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Who lives in the comments?",
+      "text": "Who lives in the comments under a video?",
       "lines": [
-        "Who lives in the comments?"
+        "Who lives in the comments under a video?"
       ],
-      "file": "/audio/voice/3842d68c5413d8a3.mp3"
+      "file": "/audio/voice/8a55d938a44fd6cc.mp3"
     },
     {
-      "key": "49405c007953208d",
+      "key": "da4151b0ca4c6b32",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - tap the 'been watching a while' sign!",
+      "text": "Quick! Tap your body's \"been watching a while\" bell:",
       "lines": [
-        "Quick - tap the 'been watching a while' sign!"
+        "Quick! Tap your body's \"been watching a while\" bell:"
       ],
-      "file": "/audio/voice/49405c007953208d.mp3"
+      "file": "/audio/voice/da4151b0ca4c6b32.mp3"
+    },
+    {
+      "key": "ce93fdbec913ed38",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your puppy video ends and BAM, a new one is already playing. You never tapped a thing. Who picked it? Is it option A... The app's next-video machine picked it for me Option B... I picked it without noticing when I tapped play Or is it option C... The puppy video's maker lined it up for me So, what do you think?",
+      "lines": [
+        "Your puppy video ends and BAM, a new one is already playing. You never tapped a thing. Who picked it?",
+        "Is it option A...",
+        "The app's next-video machine picked it for me",
+        "Option B...",
+        "I picked it without noticing when I tapped play",
+        "Or is it option C...",
+        "The puppy video's maker lined it up for me",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/ce93fdbec913ed38.mp3"
+    },
+    {
+      "key": "616309f56b1166af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A video says eating carrots lets you see in the dark like a cat! What's the smart first move? Is it option A... Try it tonight and see if it works Option B... Watch the video again to make sure I heard right Or is it option C... Check it against my science book before believing it So, what do you think?",
+      "lines": [
+        "A video says eating carrots lets you see in the dark like a cat! What's the smart first move?",
+        "Is it option A...",
+        "Try it tonight and see if it works",
+        "Option B...",
+        "Watch the video again to make sure I heard right",
+        "Or is it option C...",
+        "Check it against my science book before believing it",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/616309f56b1166af.mp3"
+    },
+    {
+      "key": "d6cbfd9c56f9ef88",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The belt rolls in a video that's way too scary and your tummy drops. Whose fault is it on your screen? Is it option A... Mine, because I didn't skip it fast enough Option B... Not mine, the belt rolled it in, so I back out and tell Or is it option C... Mine a little, I should have picked more carefully So, what do you think?",
+      "lines": [
+        "The belt rolls in a video that's way too scary and your tummy drops. Whose fault is it on your screen?",
+        "Is it option A...",
+        "Mine, because I didn't skip it fast enough",
+        "Option B...",
+        "Not mine, the belt rolled it in, so I back out and tell",
+        "Or is it option C...",
+        "Mine a little, I should have picked more carefully",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/d6cbfd9c56f9ef88.mp3"
+    },
+    {
+      "key": "2b9a4ff0605dc874",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Under a video, a comment asks: 'Which school do you go to? Just curious!' What do you do? Is it option A... Scroll past, a stranger never needs my school Option B... Answer with just my town, not the school name Or is it option C... Ask them which school THEY go to first So, what do you think?",
+      "lines": [
+        "Under a video, a comment asks: 'Which school do you go to? Just curious!' What do you do?",
+        "Is it option A...",
+        "Scroll past, a stranger never needs my school",
+        "Option B...",
+        "Answer with just my town, not the school name",
+        "Or is it option C...",
+        "Ask them which school THEY go to first",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/2b9a4ff0605dc874.mp3"
+    },
+    {
+      "key": "295318073f5963a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You look up from the screen and the sky outside has gone dark, and you never noticed. What just happened? Is it option A... Nothing, the sun just set extra early today Option B... The bright screen made the window look darker than it is Or is it option C... My body's bell rang: been watching a while, time to pause So, what do you think?",
+      "lines": [
+        "You look up from the screen and the sky outside has gone dark, and you never noticed. What just happened?",
+        "Is it option A...",
+        "Nothing, the sun just set extra early today",
+        "Option B...",
+        "The bright screen made the window look darker than it is",
+        "Or is it option C...",
+        "My body's bell rang: been watching a while, time to pause",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/295318073f5963a6.mp3"
+    },
+    {
+      "key": "7bc6800926809f68",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You only tapped play on the FIRST video, and video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching.",
+      "lines": [
+        "That's right!",
+        "You only tapped play on the FIRST video, and video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching."
+      ],
+      "file": "/audio/voice/7bc6800926809f68.mp3"
+    },
+    {
+      "key": "9c32305a523d9897",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You only tapped play on the FIRST video, and video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching.",
+      "lines": [
+        "Not quite.",
+        "You only tapped play on the FIRST video, and video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching."
+      ],
+      "file": "/audio/voice/9c32305a523d9897.mp3"
+    },
+    {
+      "key": "5a814936db8de02f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up, is what can actually check it.",
+      "lines": [
+        "That's right!",
+        "Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up, is what can actually check it."
+      ],
+      "file": "/audio/voice/5a814936db8de02f.mp3"
+    },
+    {
+      "key": "1b48d119d4e4c32d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up, is what can actually check it.",
+      "lines": [
+        "Not quite.",
+        "Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up, is what can actually check it."
+      ],
+      "file": "/audio/voice/1b48d119d4e4c32d.mp3"
+    },
+    {
+      "key": "09ff9a588ed35880",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The belt rolled that video in, you never asked for it, and there's no 'picking carefully' when a machine chooses. Pause it, back out with one calm tap, and tell a trusted grown-up if it felt icky.",
+      "lines": [
+        "That's right!",
+        "The belt rolled that video in, you never asked for it, and there's no 'picking carefully' when a machine chooses. Pause it, back out with one calm tap, and tell a trusted grown-up if it felt icky."
+      ],
+      "file": "/audio/voice/09ff9a588ed35880.mp3"
+    },
+    {
+      "key": "95fbdaa19de508f7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The belt rolled that video in, you never asked for it, and there's no 'picking carefully' when a machine chooses. Pause it, back out with one calm tap, and tell a trusted grown-up if it felt icky.",
+      "lines": [
+        "Not quite.",
+        "The belt rolled that video in, you never asked for it, and there's no 'picking carefully' when a machine chooses. Pause it, back out with one calm tap, and tell a trusted grown-up if it felt icky."
+      ],
+      "file": "/audio/voice/95fbdaa19de508f7.mp3"
+    },
+    {
+      "key": "508faecea0dc5e01",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Even just your town points a stranger toward you, and asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no information.",
+      "lines": [
+        "That's right!",
+        "Even just your town points a stranger toward you, and asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no information."
+      ],
+      "file": "/audio/voice/508faecea0dc5e01.mp3"
+    },
+    {
+      "key": "47b153b76e6f9729",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Even just your town points a stranger toward you, and asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no information.",
+      "lines": [
+        "Not quite.",
+        "Even just your town points a stranger toward you, and asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no information."
+      ],
+      "file": "/audio/voice/47b153b76e6f9729.mp3"
+    },
+    {
+      "key": "365e960c5ddf93cf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The sky doesn't sneak, and screen brightness can't change what's outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself.",
+      "lines": [
+        "That's right!",
+        "The sky doesn't sneak, and screen brightness can't change what's outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself."
+      ],
+      "file": "/audio/voice/365e960c5ddf93cf.mp3"
+    },
+    {
+      "key": "fdfb97d59350d39c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The sky doesn't sneak, and screen brightness can't change what's outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself.",
+      "lines": [
+        "Not quite.",
+        "The sky doesn't sneak, and screen brightness can't change what's outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself."
+      ],
+      "file": "/audio/voice/fdfb97d59350d39c.mp3"
+    },
+    {
+      "key": "7b8a82f6b70ad746",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the question the belt hopes you skip. Ask it and the choosing comes straight back to you.",
+      "lines": [
+        "That's the question the belt hopes you skip. Ask it and the choosing comes straight back to you."
+      ],
+      "file": "/audio/voice/7b8a82f6b70ad746.mp3"
+    },
+    {
+      "key": "2eeb3f64590c5f8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The loudest picture isn't the best video. Picking your own beats whatever shouts hardest.",
+      "lines": [
+        "The loudest picture isn't the best video. Picking your own beats whatever shouts hardest."
+      ],
+      "file": "/audio/voice/2eeb3f64590c5f8f.mp3"
+    },
+    {
+      "key": "6a5302bb73fe47ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Searching puts your hands back on the wheel. You came for one of those videos, so go and get that one.",
+      "lines": [
+        "Searching puts your hands back on the wheel. You came for one of those videos, so go and get that one."
+      ],
+      "file": "/audio/voice/6a5302bb73fe47ff.mp3"
+    },
+    {
+      "key": "ab20e40efe23b824",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The belt knows what keeps you watching. Only you know what you actually wanted.",
+      "lines": [
+        "The belt knows what keeps you watching. Only you know what you actually wanted."
+      ],
+      "file": "/audio/voice/ab20e40efe23b824.mp3"
+    },
+    {
+      "key": "d0c2b81e73b2742b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Turning it off is the strongest tap on the whole screen, because the belt can't roll without you.",
+      "lines": [
+        "Turning it off is the strongest tap on the whole screen, because the belt can't roll without you."
+      ],
+      "file": "/audio/voice/d0c2b81e73b2742b.mp3"
+    },
+    {
+      "key": "2a7f992c905fa822",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing magic about it. Autoplay is a machine, and machines can be switched off.",
+      "lines": [
+        "Nothing magic about it. Autoplay is a machine, and machines can be switched off."
+      ],
+      "file": "/audio/voice/2a7f992c905fa822.mp3"
+    },
+    {
+      "key": "825c393772a0c302",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Video makers can't choose what plays after theirs. Autoplay does that.",
+      "lines": [
+        "Video makers can't choose what plays after theirs. Autoplay does that."
+      ],
+      "file": "/audio/voice/825c393772a0c302.mp3"
+    },
+    {
+      "key": "b83562309a7e02ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your last tap started the video you picked. Autoplay started the one after it.",
+      "lines": [
+        "Your last tap started the video you picked. Autoplay started the one after it."
+      ],
+      "file": "/audio/voice/b83562309a7e02ef.mp3"
+    },
+    {
+      "key": "2ed9e86bb37cc41f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What did we call the belt under the screen?",
+      "lines": [
+        "What did we call the belt under the screen?"
+      ],
+      "file": "/audio/voice/2ed9e86bb37cc41f.mp3"
+    },
+    {
+      "key": "3f202c320b407a1e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A science book has been checked by people who study eyes and carrots for a living. That beats two million views every time.",
+      "lines": [
+        "A science book has been checked by people who study eyes and carrots for a living. That beats two million views every time."
+      ],
+      "file": "/audio/voice/3f202c320b407a1e.mp3"
+    },
+    {
+      "key": "eeef399f264b1150",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The school is the only one who decides if the school is open. Go straight to the people who know.",
+      "lines": [
+        "The school is the only one who decides if the school is open. Go straight to the people who know."
+      ],
+      "file": "/audio/voice/eeef399f264b1150.mp3"
+    },
+    {
+      "key": "eeaeb1d503023c50",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A vet spends all day learning what animals need. If anyone can check what a lizard eats, it's them.",
+      "lines": [
+        "A vet spends all day learning what animals need. If anyone can check what a lizard eats, it's them."
+      ],
+      "file": "/audio/voice/eeaeb1d503023c50.mp3"
+    },
+    {
+      "key": "47d6058888a2dbcc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A doctor knows how bodies actually grow, and they have nothing to sell you.",
+      "lines": [
+        "A doctor knows how bodies actually grow, and they have nothing to sell you."
+      ],
+      "file": "/audio/voice/47d6058888a2dbcc.mp3"
+    },
+    {
+      "key": "a845a0ac5a20e038",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A video is not proof. Ask who would really know: an astronomer, or your science book.",
+      "lines": [
+        "A video is not proof. Ask who would really know: an astronomer, or your science book."
+      ],
+      "file": "/audio/voice/a845a0ac5a20e038.mp3"
+    },
+    {
+      "key": "53e440325256374e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Would a science book agree with him?",
+      "lines": [
+        "Would a science book agree with him?"
+      ],
+      "file": "/audio/voice/53e440325256374e.mp3"
+    },
+    {
+      "key": "cf23fcfd1a46f1eb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Paused it, backed out of it, and told a grown-up. That's the whole calm escape, and none of it was your fault.",
+      "lines": [
+        "Paused it, backed out of it, and told a grown-up. That's the whole calm escape, and none of it was your fault."
+      ],
+      "file": "/audio/voice/cf23fcfd1a46f1eb.mp3"
+    },
+    {
+      "key": "6e019c15f39a6781",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That funny tummy feeling was right, and you listened to it. Paused, out, and told.",
+      "lines": [
+        "That funny tummy feeling was right, and you listened to it. Paused, out, and told."
+      ],
+      "file": "/audio/voice/6e019c15f39a6781.mp3"
+    },
+    {
+      "key": "a8401994256d707a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Feeling horrible is exactly when a grown-up should know. You paused, you left, and you told.",
+      "lines": [
+        "Feeling horrible is exactly when a grown-up should know. You paused, you left, and you told."
+      ],
+      "file": "/audio/voice/a8401994256d707a.mp3"
+    },
+    {
+      "key": "ff0fc6c37c36993e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That one just liked the puppy. A kind comment about the VIDEO wants nothing from you, so let it swim past.",
+      "lines": [
+        "That one just liked the puppy. A kind comment about the VIDEO wants nothing from you, so let it swim past."
+      ],
+      "file": "/audio/voice/ff0fc6c37c36993e.mp3"
+    },
+    {
+      "key": "de758e2d22519ca7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's fishing for your school. \"Just curious\" is the friendly wrapper, and a stranger never needs to know where you are every weekday.",
+      "lines": [
+        "It's fishing for your school. \"Just curious\" is the friendly wrapper, and a stranger never needs to know where you are every weekday."
+      ],
+      "file": "/audio/voice/de758e2d22519ca7.mp3"
+    },
+    {
+      "key": "b729e2700b30c94e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's after a tap on its link. Free piles of anything are the bait, and the link is the hook.",
+      "lines": [
+        "It's after a tap on its link. Free piles of anything are the bait, and the link is the hook."
+      ],
+      "file": "/audio/voice/b729e2700b30c94e.mp3"
+    },
+    {
+      "key": "0c83e24936bf67db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing at all. That one is chatting about the set it built, and a friendly stranger still gets no reply and no information.",
+      "lines": [
+        "Nothing at all. That one is chatting about the set it built, and a friendly stranger still gets no reply and no information."
+      ],
+      "file": "/audio/voice/0c83e24936bf67db.mp3"
+    },
+    {
+      "key": "db07d5140db90931",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's fishing for a photo of you. Once a picture of you leaves your screen, you can never get it back.",
+      "lines": [
+        "It's fishing for a photo of you. Once a picture of you leaves your screen, you can never get it back."
+      ],
+      "file": "/audio/voice/db07d5140db90931.mp3"
+    },
+    {
+      "key": "e6c4be87eb5f34f7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's fishing for your name. Your name isn't a game token, and a wizard name is a very cheap price for it.",
+      "lines": [
+        "It's fishing for your name. Your name isn't a game token, and a wizard name is a very cheap price for it."
+      ],
+      "file": "/audio/voice/e6c4be87eb5f34f7.mp3"
+    },
+    {
+      "key": "7841cf31a43cc523",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody down there has to say who they really are. A friendly name is easy to type.",
+      "lines": [
+        "Nobody down there has to say who they really are. A friendly name is easy to type."
+      ],
+      "file": "/audio/voice/7841cf31a43cc523.mp3"
+    },
+    {
+      "key": "3689aa6c76a7964a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anyone can comment on a video. The maker never picked a single one of them.",
+      "lines": [
+        "Anyone can comment on a video. The maker never picked a single one of them."
+      ],
+      "file": "/audio/voice/3689aa6c76a7964a.mp3"
+    },
+    {
+      "key": "52dfa98168a9e972",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Liking the video doesn't stop someone being a stranger, and fishing comments often start with a compliment.",
+      "lines": [
+        "Liking the video doesn't stop someone being a stranger, and fishing comments often start with a compliment."
+      ],
+      "file": "/audio/voice/52dfa98168a9e972.mp3"
+    },
+    {
+      "key": "e0aa90cc2a7e526d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three videos in, your eyes and legs have earned a turn. That's a choice the belt would never load for you.",
+      "lines": [
+        "Three videos in, your eyes and legs have earned a turn. That's a choice the belt would never load for you."
+      ],
+      "file": "/audio/voice/e0aa90cc2a7e526d.mp3"
+    },
+    {
+      "key": "5be0a7fca00aa28c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Picking the last one yourself beats letting the next one load itself. You decide where this ends.",
+      "lines": [
+        "Picking the last one yourself beats letting the next one load itself. You decide where this ends."
+      ],
+      "file": "/audio/voice/5be0a7fca00aa28c.mp3"
+    },
+    {
+      "key": "bf3bef3056b189bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A stretch and some daylight is exactly what a jiggly leg is asking for, and it takes about two minutes.",
+      "lines": [
+        "A stretch and some daylight is exactly what a jiggly leg is asking for, and it takes about two minutes."
+      ],
+      "file": "/audio/voice/bf3bef3056b189bf.mp3"
+    },
+    {
+      "key": "5c1c4ffceeabc304",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Standing up for a snack gives that jiggly leg and stiff neck what they're asking for, and you decide properly once you've moved.",
+      "lines": [
+        "Standing up for a snack gives that jiggly leg and stiff neck what they're asking for, and you decide properly once you've moved."
+      ],
+      "file": "/audio/voice/5c1c4ffceeabc304.mp3"
+    },
+    {
+      "key": "e467001b6e594117",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The episode will wait all night without complaining. Hot dinner and family jokes won't.",
+      "lines": [
+        "The episode will wait all night without complaining. Hot dinner and family jokes won't."
+      ],
+      "file": "/audio/voice/e467001b6e594117.mp3"
+    },
+    {
+      "key": "5fd3664888c7eb36",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saving it on purpose is still your choice, and now the episode has to fit around you.",
+      "lines": [
+        "Saving it on purpose is still your choice, and now the episode has to fit around you."
+      ],
+      "file": "/audio/voice/5fd3664888c7eb36.mp3"
+    },
+    {
+      "key": "5cf241f3524bde97",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Laughing is just laughing. The bell is what your body does when it has been sitting too long.",
+      "lines": [
+        "Laughing is just laughing. The bell is what your body does when it has been sitting too long."
+      ],
+      "file": "/audio/voice/5cf241f3524bde97.mp3"
+    },
+    {
+      "key": "b139a032cdf64afb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the hero move, not the bell. The bell is the signal that comes first.",
+      "lines": [
+        "That's the hero move, not the bell. The bell is the signal that comes first."
+      ],
+      "file": "/audio/voice/b139a032cdf64afb.mp3"
+    },
+    {
+      "key": "b2b14dc9bbf807e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the question the belt hopes you skip, so it's the strongest rung on the ladder.",
+      "lines": [
+        "That's the question the belt hopes you skip, so it's the strongest rung on the ladder."
+      ],
+      "file": "/audio/voice/b2b14dc9bbf807e9.mp3"
+    },
+    {
+      "key": "7e61b5c47f589ad1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That question takes the choosing back from the belt, so the rung belongs in the ladder.",
+      "lines": [
+        "That question takes the choosing back from the belt, so the rung belongs in the ladder."
+      ],
+      "file": "/audio/voice/7e61b5c47f589ad1.mp3"
+    },
+    {
+      "key": "b7687ee8a9a17940",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Weighing a claim against someone who would really know is how loud loses to real.",
+      "lines": [
+        "Weighing a claim against someone who would really know is how loud loses to real."
+      ],
+      "file": "/audio/voice/b7687ee8a9a17940.mp3"
+    },
+    {
+      "key": "d6e7dea72d3bbc37",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Weighing a claim before you believe it is a hero move. Lay it in the ladder.",
+      "lines": [
+        "Weighing a claim before you believe it is a hero move. Lay it in the ladder."
+      ],
+      "file": "/audio/voice/d6e7dea72d3bbc37.mp3"
+    },
+    {
+      "key": "fdc345bd0a088257",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pause it, leave it, then tell. That's the escape in the right order.",
+      "lines": [
+        "Pause it, leave it, then tell. That's the escape in the right order."
+      ],
+      "file": "/audio/voice/fdc345bd0a088257.mp3"
+    },
+    {
+      "key": "9e1d485b589ceb80",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the calm escape in the right order, so the rung goes in the ladder, not down the burrow.",
+      "lines": [
+        "That's the calm escape in the right order, so the rung goes in the ladder, not down the burrow."
+      ],
+      "file": "/audio/voice/9e1d485b589ceb80.mp3"
+    },
+    {
+      "key": "415cd5a6be56fd97",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Naming what a comment wants and handing it over anyway is the only way it wins. You did neither.",
+      "lines": [
+        "Naming what a comment wants and handing it over anyway is the only way it wins. You did neither."
+      ],
+      "file": "/audio/voice/415cd5a6be56fd97.mp3"
+    },
+    {
+      "key": "b3ef061c4aa683c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A fishing comment that gets nothing goes home empty, so that rung climbs into the ladder.",
+      "lines": [
+        "A fishing comment that gets nothing goes home empty, so that rung climbs into the ladder."
+      ],
+      "file": "/audio/voice/b3ef061c4aa683c0.mp3"
+    },
+    {
+      "key": "83347a8d220c99e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dry eyes and a jiggly leg are your signal, and noticing it is where every pause starts.",
+      "lines": [
+        "Dry eyes and a jiggly leg are your signal, and noticing it is where every pause starts."
+      ],
+      "file": "/audio/voice/83347a8d220c99e0.mp3"
+    },
+    {
+      "key": "f0a17ad95a44ab03",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Noticing that bell is the fifth power of the week, so lay it in the ladder.",
+      "lines": [
+        "Noticing that bell is the fifth power of the week, so lay it in the ladder."
+      ],
+      "file": "/audio/voice/f0a17ad95a44ab03.mp3"
+    },
+    {
+      "key": "d55e5975db50cd14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Holding the pause stops the belt, and choosing what's next is the bit that's yours.",
+      "lines": [
+        "Holding the pause stops the belt, and choosing what's next is the bit that's yours."
+      ],
+      "file": "/audio/voice/d55e5975db50cd14.mp3"
+    },
+    {
+      "key": "a10e0d1b18e4ea3d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Holding the pause and choosing what's next is a hero move. It belongs in the ladder.",
+      "lines": [
+        "Holding the pause and choosing what's next is a hero move. It belongs in the ladder."
+      ],
+      "file": "/audio/voice/a10e0d1b18e4ea3d.mp3"
+    },
+    {
+      "key": "58e6d35e382d10e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the belt choosing for you, all night long. Straight down the burrow.",
+      "lines": [
+        "That's the belt choosing for you, all night long. Straight down the burrow."
+      ],
+      "file": "/audio/voice/58e6d35e382d10e7.mp3"
+    },
+    {
+      "key": "0320cbb2a820ed62",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Letting autoplay pick is the machine in charge, not you. That one goes down the burrow.",
+      "lines": [
+        "Letting autoplay pick is the machine in charge, not you. That one goes down the burrow."
+      ],
+      "file": "/audio/voice/0320cbb2a820ed62.mp3"
+    },
+    {
+      "key": "2b730f45ce0ad4c9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Millions of views count taps, not truth. Down it goes.",
+      "lines": [
+        "Millions of views count taps, not truth. Down it goes."
+      ],
+      "file": "/audio/voice/2b730f45ce0ad4c9.mp3"
+    },
+    {
+      "key": "ee751809af663b83",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Those millions of views never checked a single thing. That's the Raccoon's rung, so drop it.",
+      "lines": [
+        "Those millions of views never checked a single thing. That's the Raccoon's rung, so drop it."
+      ],
+      "file": "/audio/voice/ee751809af663b83.mp3"
+    },
+    {
+      "key": "3f875dd6138e50a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school is where you are every weekday, and strangers never need it. Drop it.",
+      "lines": [
+        "Your school is where you are every weekday, and strangers never need it. Drop it."
+      ],
+      "file": "/audio/voice/3f875dd6138e50a2.mp3"
+    },
+    {
+      "key": "e86a0de71a62db6e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Replying with your school hands a stranger the one thing they were fishing for. Down the burrow.",
+      "lines": [
+        "Replying with your school hands a stranger the one thing they were fishing for. Down the burrow."
+      ],
+      "file": "/audio/voice/e86a0de71a62db6e.mp3"
+    },
+    {
+      "key": "6687a13d9e02d6e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the belt shouting, not you choosing. Tapping it rolls you one video deeper.",
+      "lines": [
+        "That's the belt shouting, not you choosing. Tapping it rolls you one video deeper."
+      ],
+      "file": "/audio/voice/6687a13d9e02d6e9.mp3"
+    },
+    {
+      "key": "5f11bf8ce49418cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A countdown is a rush, not a decision. Let it tick and the belt keeps rolling the next video in without you.",
+      "lines": [
+        "A countdown is a rush, not a decision. Let it tick and the belt keeps rolling the next video in without you."
+      ],
+      "file": "/audio/voice/5f11bf8ce49418cb.mp3"
+    },
+    {
+      "key": "c5a078978d3b4b82",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A computer chose that picture for your eyes, like candy stacked at the checkout. Shouting isn't the same as good.",
+      "lines": [
+        "A computer chose that picture for your eyes, like candy stacked at the checkout. Shouting isn't the same as good."
+      ],
+      "file": "/audio/voice/c5a078978d3b4b82.mp3"
+    },
+    {
+      "key": "2183b9c1d3a57754",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Everyone watching it says nothing about whether the video is for YOU. That giant face is bait, and so are the other kids.",
+      "lines": [
+        "Everyone watching it says nothing about whether the video is for YOU. That giant face is bait, and so are the other kids."
+      ],
+      "file": "/audio/voice/2183b9c1d3a57754.mp3"
+    },
+    {
+      "key": "83dffcd36c99ab47",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Easy is exactly how the belt wins. Six videos rolled past while it did all the choosing.",
+      "lines": [
+        "Easy is exactly how the belt wins. Six videos rolled past while it did all the choosing."
+      ],
+      "file": "/audio/voice/83dffcd36c99ab47.mp3"
+    },
+    {
+      "key": "c79099919f6e7908",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One more after six is the belt's favourite sentence, because it never means one.",
+      "lines": [
+        "One more after six is the belt's favourite sentence, because it never means one."
+      ],
+      "file": "/audio/voice/c79099919f6e7908.mp3"
+    },
+    {
+      "key": "4b233d0a2ca466cf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A surprise from the belt is still the belt choosing. Surprises are more fun when you opened the box.",
+      "lines": [
+        "A surprise from the belt is still the belt choosing. Surprises are more fun when you opened the box."
+      ],
+      "file": "/audio/voice/4b233d0a2ca466cf.mp3"
+    },
+    {
+      "key": "b09e7150315f56d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It knows what keeps you sitting there, which isn't the same as knowing you. That's the machine talking.",
+      "lines": [
+        "It knows what keeps you sitting there, which isn't the same as knowing you. That's the machine talking."
+      ],
+      "file": "/audio/voice/b09e7150315f56d3.mp3"
+    },
+    {
+      "key": "e8c859ed106112e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One more from the top rung is still one more, and the burrow is always happy to have you back.",
+      "lines": [
+        "One more from the top rung is still one more, and the burrow is always happy to have you back."
+      ],
+      "file": "/audio/voice/e8c859ed106112e9.mp3"
+    },
+    {
+      "key": "f75b9cb753e3b5c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It never stops by itself. Stopping is the one thing the belt was built to never do.",
+      "lines": [
+        "It never stops by itself. Stopping is the one thing the belt was built to never do."
+      ],
+      "file": "/audio/voice/f75b9cb753e3b5c1.mp3"
+    },
+    {
+      "key": "15cf696a2f4d4155",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The top comment is another stranger typing about carrots. Lots of agreeing never checked a thing.",
+      "lines": [
+        "The top comment is another stranger typing about carrots. Lots of agreeing never checked a thing."
+      ],
+      "file": "/audio/voice/15cf696a2f4d4155.mp3"
+    },
+    {
+      "key": "c3f60213c1d27f6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Watching it twice plays the same carrot claim twice. Nobody checked it in between.",
+      "lines": [
+        "Watching it twice plays the same carrot claim twice. Nobody checked it in between."
+      ],
+      "file": "/audio/voice/c3f60213c1d27f6b.mp3"
+    },
+    {
+      "key": "ed20f28df4a07c4e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anyone can stick a photo of a school on a video. The photo proves nothing about tomorrow.",
+      "lines": [
+        "Anyone can stick a photo of a school on a video. The photo proves nothing about tomorrow."
+      ],
+      "file": "/audio/voice/ed20f28df4a07c4e.mp3"
+    },
+    {
+      "key": "12d50dae45ac32de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend watched the same video about school closing. Two people believing it is still nobody checking it.",
+      "lines": [
+        "Your friend watched the same video about school closing. Two people believing it is still nobody checking it."
+      ],
+      "file": "/audio/voice/12d50dae45ac32de.mp3"
+    },
+    {
+      "key": "9f671ac6a4f58a13",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The shop wants to sell sweets. Never ask the seller whether you should buy.",
+      "lines": [
+        "The shop wants to sell sweets. Never ask the seller whether you should buy."
+      ],
+      "file": "/audio/voice/9f671ac6a4f58a13.mp3"
+    },
+    {
+      "key": "6fa7680e0a6b7bf3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A big fan loves the lizard videos, which is lovely, but loving them isn't the same as knowing what a lizard eats.",
+      "lines": [
+        "A big fan loves the lizard videos, which is lovely, but loving them isn't the same as knowing what a lizard eats."
+      ],
+      "file": "/audio/voice/6fa7680e0a6b7bf3.mp3"
+    },
+    {
+      "key": "5a0d90e7d5e295af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An advert is paid for by the people selling the pop. Of course it says lovely things.",
+      "lines": [
+        "An advert is paid for by the people selling the pop. Of course it says lovely things."
+      ],
+      "file": "/audio/voice/5a0d90e7d5e295af.mp3"
+    },
+    {
+      "key": "ba9c5c0f0a8e34b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Likes count how many people tapped the fizzy pop video, not whether anybody grows taller.",
+      "lines": [
+        "Likes count how many people tapped the fizzy pop video, not whether anybody grows taller."
+      ],
+      "file": "/audio/voice/ba9c5c0f0a8e34b2.mp3"
+    },
+    {
+      "key": "d8330d150fa598de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Next rolls you further down the burrow. The exit is the other way.",
+      "lines": [
+        "Next rolls you further down the burrow. The exit is the other way."
+      ],
+      "file": "/audio/voice/d8330d150fa598de.mp3"
+    },
+    {
+      "key": "ef311ccde54a3d28",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Liking a scary video tells the app to send more like it, which is the opposite of leaving.",
+      "lines": [
+        "Liking a scary video tells the app to send more like it, which is the opposite of leaving."
+      ],
+      "file": "/audio/voice/ef311ccde54a3d28.mp3"
+    },
+    {
+      "key": "134685dc125881b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Full screen makes the scary video bigger, and nothing here needs to be bigger right now.",
+      "lines": [
+        "Full screen makes the scary video bigger, and nothing here needs to be bigger right now."
+      ],
+      "file": "/audio/voice/134685dc125881b3.mp3"
+    },
+    {
+      "key": "347b4130b7fd8c61",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sharing it puts a grown-ups video on a friend's screen too. Now two of you have seen it.",
+      "lines": [
+        "Sharing it puts a grown-ups video on a friend's screen too. Now two of you have seen it."
+      ],
+      "file": "/audio/voice/347b4130b7fd8c61.mp3"
+    },
+    {
+      "key": "ac5666e8e493ac80",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Subscribing asks for MORE videos like this one, and your funny tummy already said no.",
+      "lines": [
+        "Subscribing asks for MORE videos like this one, and your funny tummy already said no."
+      ],
+      "file": "/audio/voice/ac5666e8e493ac80.mp3"
+    },
+    {
+      "key": "80bc20337ead09cf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Faster or slower, it's still playing. Pause stops it properly.",
+      "lines": [
+        "Faster or slower, it's still playing. Pause stops it properly."
+      ],
+      "file": "/audio/voice/80bc20337ead09cf.mp3"
+    },
+    {
+      "key": "26753b60b8e78a11",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Typing back at an icky video puts you in a chat with strangers. The exit is much quieter.",
+      "lines": [
+        "Typing back at an icky video puts you in a chat with strangers. The exit is much quieter."
+      ],
+      "file": "/audio/voice/26753b60b8e78a11.mp3"
+    },
+    {
+      "key": "5d935258d2d0ff08",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saving it keeps it. This is a video you want gone, not kept.",
+      "lines": [
+        "Saving it keeps it. This is a video you want gone, not kept."
+      ],
+      "file": "/audio/voice/5d935258d2d0ff08.mp3"
+    },
+    {
+      "key": "673d8ae0d2965bce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quiet is not the same as gone. Pause it properly.",
+      "lines": [
+        "Quiet is not the same as gone. Pause it properly."
+      ],
+      "file": "/audio/voice/673d8ae0d2965bce.mp3"
+    },
+    {
+      "key": "e5e247ccd21e795a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read it again. It talks about the puppy, not about you, and it asks for nothing. That one is just being kind.",
+      "lines": [
+        "Read it again. It talks about the puppy, not about you, and it asks for nothing. That one is just being kind."
+      ],
+      "file": "/audio/voice/e5e247ccd21e795a.mp3"
+    },
+    {
+      "key": "050e7ebc4c02a66c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at what it's asking for: your school. \"Just curious\" is only the wrapper. A stranger never needs to know where you are every weekday.",
+      "lines": [
+        "Look at what it's asking for: your school. \"Just curious\" is only the wrapper. A stranger never needs to know where you are every weekday."
+      ],
+      "file": "/audio/voice/050e7ebc4c02a66c.mp3"
+    },
+    {
+      "key": "52f4df6c14336fa0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Follow what it wants you to DO: tap the link. The free coins are only the bait on the end of it.",
+      "lines": [
+        "Follow what it wants you to DO: tap the link. The free coins are only the bait on the end of it."
+      ],
+      "file": "/audio/voice/52f4df6c14336fa0.mp3"
+    },
+    {
+      "key": "a719334cbd696adb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check what it asks for: nothing. It's chatting about the set in the video, not about you.",
+      "lines": [
+        "Check what it asks for: nothing. It's chatting about the set in the video, not about you."
+      ],
+      "file": "/audio/voice/a719334cbd696adb.mp3"
+    },
+    {
+      "key": "f5ca1444cc3682c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look past the word famous. The thing it actually asks you to send is a photo of you, and photos never come back.",
+      "lines": [
+        "Look past the word famous. The thing it actually asks you to send is a photo of you, and photos never come back."
+      ],
+      "file": "/audio/voice/f5ca1444cc3682c0.mp3"
+    },
+    {
+      "key": "6d83bb3a47eb541c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The game is the wrapper. What it actually collects is your full name, typed out where every stranger can read it.",
+      "lines": [
+        "The game is the wrapper. What it actually collects is your full name, typed out where every stranger can read it."
+      ],
+      "file": "/audio/voice/6d83bb3a47eb541c.mp3"
+    },
+    {
+      "key": "a5b9606276d82ef9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the belt choosing again, not you. \"Just one more\" has already become three.",
+      "lines": [
+        "That's the belt choosing again, not you. \"Just one more\" has already become three."
+      ],
+      "file": "/audio/voice/a5b9606276d82ef9.mp3"
+    },
+    {
+      "key": "0a7220320ee24993",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The jiggle doesn't stop on video six, it just gets louder. Your body already told you what it needs.",
+      "lines": [
+        "The jiggle doesn't stop on video six, it just gets louder. Your body already told you what it needs."
+      ],
+      "file": "/audio/voice/0a7220320ee24993.mp3"
+    },
+    {
+      "key": "6babf55677577051",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The start becomes the middle, dinner goes cold, and everyone waits. Episodes keep forever, hot dinners don't.",
+      "lines": [
+        "The start becomes the middle, dinner goes cold, and everyone waits. Episodes keep forever, hot dinners don't."
+      ],
+      "file": "/audio/voice/6babf55677577051.mp3"
+    },
+    {
+      "key": "6e98d79c99f416e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You only tapped play on the FIRST video, and video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching.",
+      "lines": [
+        "You only tapped play on the FIRST video, and video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching."
+      ],
+      "file": "/audio/voice/6e98d79c99f416e9.mp3"
+    },
+    {
+      "key": "0937932143c55f6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up, is what can actually check it.",
+      "lines": [
+        "Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up, is what can actually check it."
+      ],
+      "file": "/audio/voice/0937932143c55f6d.mp3"
+    },
+    {
+      "key": "1857332c882a8f63",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The belt rolled that video in, you never asked for it, and there's no 'picking carefully' when a machine chooses. Pause it, back out with one calm tap, and tell a trusted grown-up if it felt icky.",
+      "lines": [
+        "The belt rolled that video in, you never asked for it, and there's no 'picking carefully' when a machine chooses. Pause it, back out with one calm tap, and tell a trusted grown-up if it felt icky."
+      ],
+      "file": "/audio/voice/1857332c882a8f63.mp3"
+    },
+    {
+      "key": "a92b5f58e190981b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even just your town points a stranger toward you, and asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no information.",
+      "lines": [
+        "Even just your town points a stranger toward you, and asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no information."
+      ],
+      "file": "/audio/voice/a92b5f58e190981b.mp3"
+    },
+    {
+      "key": "fa890978e207e297",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The sky doesn't sneak, and screen brightness can't change what's outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself.",
+      "lines": [
+        "The sky doesn't sneak, and screen brightness can't change what's outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself."
+      ],
+      "file": "/audio/voice/fa890978e207e297.mp3"
+    },
+    {
+      "key": "ebdd7ab693b13f65",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the belt, a machine built to keep you watching.",
+      "lines": [
+        "That's the belt, a machine built to keep you watching."
+      ],
+      "file": "/audio/voice/ebdd7ab693b13f65.mp3"
+    },
+    {
+      "key": "f46465ea6cfa9c87",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A video saying it doesn't make it true. Books, teachers and grown-ups can check.",
+      "lines": [
+        "A video saying it doesn't make it true. Books, teachers and grown-ups can check."
+      ],
+      "file": "/audio/voice/f46465ea6cfa9c87.mp3"
+    },
+    {
+      "key": "a1accd531beff552",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Week 3 rules apply. No information, and no reply you didn't want to send.",
+      "lines": [
+        "Week 3 rules apply. No information, and no reply you didn't want to send."
+      ],
+      "file": "/audio/voice/a1accd531beff552.mp3"
+    },
+    {
+      "key": "95003673eb6dc1af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stop it, leave it, then get your backup. Leaving is strong, not scared.",
+      "lines": [
+        "Stop it, leave it, then get your backup. Leaving is strong, not scared."
+      ],
+      "file": "/audio/voice/95003673eb6dc1af.mp3"
+    },
+    {
+      "key": "688117ae58edbd1d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Name what it wants and it can't have it. Your school stays yours.",
+      "lines": [
+        "Name what it wants and it can't have it. Your school stays yours."
+      ],
+      "file": "/audio/voice/688117ae58edbd1d.mp3"
+    },
+    {
+      "key": "4e3fd5804b41778d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the bell. Notice it, hold the pause, choose what's next yourself.",
+      "lines": [
+        "That's the bell. Notice it, hold the pause, choose what's next yourself."
+      ],
+      "file": "/audio/voice/4e3fd5804b41778d.mp3"
+    },
+    {
+      "key": "6669b6dfae3c071b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The rush is designed. No thinking time means the belt keeps winning.",
+      "lines": [
+        "The rush is designed. No thinking time means the belt keeps winning."
+      ],
+      "file": "/audio/voice/6669b6dfae3c071b.mp3"
+    },
+    {
+      "key": "118973d1461af007",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The machine rewards exciting, not true. That's why heroes weigh before believing.",
+      "lines": [
+        "The machine rewards exciting, not true. That's why heroes weigh before believing."
+      ],
+      "file": "/audio/voice/118973d1461af007.mp3"
+    },
+    {
+      "key": "f5d61e05b457f5e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dares fish for a REPLY, and any bite tells a stranger you're listening.",
+      "lines": [
+        "Dares fish for a REPLY, and any bite tells a stranger you're listening."
+      ],
+      "file": "/audio/voice/f5d61e05b457f5e7.mp3"
+    },
+    {
+      "key": "969d3293a3cb3955",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The video you actually picked has ended, and the belt is already rolling the next one in.",
+      "lines": [
+        "The video you actually picked has ended, and the belt is already rolling the next one in."
+      ],
+      "file": "/audio/voice/969d3293a3cb3955.mp3"
+    },
+    {
+      "key": "4abecbbfc9c3be79",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A thumbnail fills the screen: a giant face, a huge red arrow, and shouty yellow letters.",
+      "lines": [
+        "A thumbnail fills the screen: a giant face, a huge red arrow, and shouty yellow letters."
+      ],
+      "file": "/audio/voice/4abecbbfc9c3be79.mp3"
+    },
+    {
+      "key": "c81435f1b9e0866a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Six videos have rolled past and you can't remember choosing a single one.",
+      "lines": [
+        "Six videos have rolled past and you can't remember choosing a single one."
+      ],
+      "file": "/audio/voice/c81435f1b9e0866a.mp3"
+    },
+    {
+      "key": "cae2edf081d31bfa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The burrow whispers that the belt knows exactly what you like.",
+      "lines": [
+        "The burrow whispers that the belt knows exactly what you like."
+      ],
+      "file": "/audio/voice/cae2edf081d31bfa.mp3"
+    },
+    {
+      "key": "01f90d18f3f27758",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Daylight is one rung away, and the belt gives its biggest tug yet.",
+      "lines": [
+        "Daylight is one rung away, and the belt gives its biggest tug yet."
+      ],
+      "file": "/audio/voice/01f90d18f3f27758.mp3"
+    },
+    {
+      "key": "448176ddca99b9e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "ASK: DO I WANT THIS?",
+      "lines": [
+        "ASK: DO I WANT THIS?"
+      ],
+      "file": "/audio/voice/448176ddca99b9e8.mp3"
+    },
+    {
+      "key": "ac785d564291f09c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "NEXT: 100 SLIME PRANKS",
+      "lines": [
+        "NEXT: 100 SLIME PRANKS"
+      ],
+      "file": "/audio/voice/ac785d564291f09c.mp3"
+    },
+    {
+      "key": "b3e9950e74787f99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "3... 2... PLAYING NEXT",
+      "lines": [
+        "3... 2... PLAYING NEXT"
+      ],
+      "file": "/audio/voice/b3e9950e74787f99.mp3"
+    },
+    {
+      "key": "270931e0d87c5af0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "PICK MY OWN INSTEAD",
+      "lines": [
+        "PICK MY OWN INSTEAD"
+      ],
+      "file": "/audio/voice/270931e0d87c5af0.mp3"
+    },
+    {
+      "key": "bb01327cd75f399b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "YOU WON'T BELIEVE THIS!",
+      "lines": [
+        "YOU WON'T BELIEVE THIS!"
+      ],
+      "file": "/audio/voice/bb01327cd75f399b.mp3"
+    },
+    {
+      "key": "b337b6e4a5f61fb0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "EVERYONE IS WATCHING IT",
+      "lines": [
+        "EVERYONE IS WATCHING IT"
+      ],
+      "file": "/audio/voice/b337b6e4a5f61fb0.mp3"
+    },
+    {
+      "key": "a28c2f9aecabc4f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "SEARCH FOR WHAT I CAME FOR",
+      "lines": [
+        "SEARCH FOR WHAT I CAME FOR"
+      ],
+      "file": "/audio/voice/a28c2f9aecabc4f9.mp3"
+    },
+    {
+      "key": "adb56670d1752280",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "KEEP ROLLING, IT'S EASIER",
+      "lines": [
+        "KEEP ROLLING, IT'S EASIER"
+      ],
+      "file": "/audio/voice/adb56670d1752280.mp3"
+    },
+    {
+      "key": "ed5faea2be8432f7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "JUST ONE MORE, THEN I STOP",
+      "lines": [
+        "JUST ONE MORE, THEN I STOP"
+      ],
+      "file": "/audio/voice/ed5faea2be8432f7.mp3"
+    },
+    {
+      "key": "936b9700502aa90c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I PICK WHAT I WATCH",
+      "lines": [
+        "I PICK WHAT I WATCH"
+      ],
+      "file": "/audio/voice/936b9700502aa90c.mp3"
+    },
+    {
+      "key": "d7296b8745c60e89",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "LET IT SURPRISE ME AGAIN",
+      "lines": [
+        "LET IT SURPRISE ME AGAIN"
+      ],
+      "file": "/audio/voice/d7296b8745c60e89.mp3"
+    },
+    {
+      "key": "1f305912830a5b30",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "IT KNOWS ME BETTER THAN I DO",
+      "lines": [
+        "IT KNOWS ME BETTER THAN I DO"
+      ],
+      "file": "/audio/voice/1f305912830a5b30.mp3"
+    },
+    {
+      "key": "86473dd69d234349",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "TURN IT OFF AND CLIMB",
+      "lines": [
+        "TURN IT OFF AND CLIMB"
+      ],
+      "file": "/audio/voice/86473dd69d234349.mp3"
+    },
+    {
+      "key": "3da5e38e856b7871",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "ONE MORE FROM UP HERE",
+      "lines": [
+        "ONE MORE FROM UP HERE"
+      ],
+      "file": "/audio/voice/3da5e38e856b7871.mp3"
+    },
+    {
+      "key": "bddfd5bd9775c2dc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "IT WILL STOP BY ITSELF",
+      "lines": [
+        "IT WILL STOP BY ITSELF"
+      ],
+      "file": "/audio/voice/bddfd5bd9775c2dc.mp3"
+    },
+    {
+      "key": "b87abd21f49476c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Eat enough carrots and you'll see in the dark, just like a cat!",
+      "lines": [
+        "Eat enough carrots and you'll see in the dark, just like a cat!"
+      ],
+      "file": "/audio/voice/b87abd21f49476c5.mp3"
+    },
+    {
+      "key": "3107de5211595a17",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "School is cancelled tomorrow! Tell everyone before they set their alarm!",
+      "lines": [
+        "School is cancelled tomorrow! Tell everyone before they set their alarm!"
+      ],
+      "file": "/audio/voice/3107de5211595a17.mp3"
+    },
+    {
+      "key": "6d5f04fc717e10e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This lizard lives on nothing but sweets, and he's the happiest pet alive!",
+      "lines": [
+        "This lizard lives on nothing but sweets, and he's the happiest pet alive!"
+      ],
+      "file": "/audio/voice/6d5f04fc717e10e8.mp3"
+    },
+    {
+      "key": "c90004ef86b13b30",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Drink this fizzy pop every day and you'll grow taller than your big brother!",
+      "lines": [
+        "Drink this fizzy pop every day and you'll grow taller than your big brother!"
+      ],
+      "file": "/audio/voice/c90004ef86b13b30.mp3"
+    },
+    {
+      "key": "6260703f0681b044",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The belt rolled in a scary video you never picked. The player is open. Find pause, then back, then tell a grown-up.",
+      "lines": [
+        "The belt rolled in a scary video you never picked. The player is open. Find pause, then back, then tell a grown-up."
+      ],
+      "file": "/audio/voice/6260703f0681b044.mp3"
+    },
+    {
+      "key": "b3d05c07735c419f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The belt rolled in a video made for grown-ups. Your tummy feels funny. Find pause, then back, then tell a grown-up.",
+      "lines": [
+        "The belt rolled in a video made for grown-ups. Your tummy feels funny. Find pause, then back, then tell a grown-up."
+      ],
+      "file": "/audio/voice/b3d05c07735c419f.mp3"
+    },
+    {
+      "key": "d5a8812498535288",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A video starts saying icky things and it makes you feel horrible. Find pause, then back, then tell a grown-up.",
+      "lines": [
+        "A video starts saying icky things and it makes you feel horrible. Find pause, then back, then tell a grown-up."
+      ],
+      "file": "/audio/voice/d5a8812498535288.mp3"
+    },
+    {
+      "key": "751118123eb14179",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pause comes first. It stops the scary part playing while you decide anything else.",
+      "lines": [
+        "Pause comes first. It stops the scary part playing while you decide anything else."
+      ],
+      "file": "/audio/voice/751118123eb14179.mp3"
+    },
+    {
+      "key": "1c7195eb20f57fdc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Back comes before tell. Get yourself out of the video first, then go and get your grown-up.",
+      "lines": [
+        "Back comes before tell. Get yourself out of the video first, then go and get your grown-up."
+      ],
+      "file": "/audio/voice/1c7195eb20f57fdc.mp3"
+    },
+    {
+      "key": "4c01705b6198d645",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pause first. A paused video can't show you one more thing while you think.",
+      "lines": [
+        "Pause first. A paused video can't show you one more thing while you think."
+      ],
+      "file": "/audio/voice/4c01705b6198d645.mp3"
+    },
+    {
+      "key": "2385b7c5ad442d39",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Back before tell. Out of the video, then off to your grown-up.",
+      "lines": [
+        "Back before tell. Out of the video, then off to your grown-up."
+      ],
+      "file": "/audio/voice/2385b7c5ad442d39.mp3"
+    },
+    {
+      "key": "03f69cb218ac9541",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pause is step one. Stop it first, and the horrible feeling stops growing.",
+      "lines": [
+        "Pause is step one. Stop it first, and the horrible feeling stops growing."
+      ],
+      "file": "/audio/voice/03f69cb218ac9541.mp3"
+    },
+    {
+      "key": "50c00dfe76bdd693",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Back, then tell. Leave the video behind you before you go and find your grown-up.",
+      "lines": [
+        "Back, then tell. Leave the video behind you before you go and find your grown-up."
+      ],
+      "file": "/audio/voice/50c00dfe76bdd693.mp3"
+    },
+    {
+      "key": "53c53b82e04fdf71",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The puppy at the start is SO cute, I watched it three times!",
+      "lines": [
+        "The puppy at the start is SO cute, I watched it three times!"
+      ],
+      "file": "/audio/voice/53c53b82e04fdf71.mp3"
+    },
+    {
+      "key": "7214688300024097",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What school do you go to? Just curious!",
+      "lines": [
+        "What school do you go to? Just curious!"
+      ],
+      "file": "/audio/voice/7214688300024097.mp3"
+    },
+    {
+      "key": "7e4ddf9b9959afec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "FREE GEM COINS for the first 50 kids! Tap the link in my bio!",
+      "lines": [
+        "FREE GEM COINS for the first 50 kids! Tap the link in my bio!"
+      ],
+      "file": "/audio/voice/7e4ddf9b9959afec.mp3"
+    },
+    {
+      "key": "3f52b41452a8d001",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I built this set too! Took me two whole days and a lost piece.",
+      "lines": [
+        "I built this set too! Took me two whole days and a lost piece."
+      ],
+      "file": "/audio/voice/3f52b41452a8d001.mp3"
+    },
+    {
+      "key": "72bade0d2daedc5c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You seem so cool! Send a photo and I'll make you famous!",
+      "lines": [
+        "You seem so cool! Send a photo and I'll make you famous!"
+      ],
+      "file": "/audio/voice/72bade0d2daedc5c.mp3"
+    },
+    {
+      "key": "b80242ff0111fc33",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Comment your FULL NAME and I'll tell you your wizard name!",
+      "lines": [
+        "Comment your FULL NAME and I'll tell you your wizard name!"
+      ],
+      "file": "/audio/voice/b80242ff0111fc33.mp3"
+    },
+    {
+      "key": "f440ae63ce4022f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You said \"just one more\" three videos ago, and the next one is loading all by itself.",
+      "lines": [
+        "You said \"just one more\" three videos ago, and the next one is loading all by itself."
+      ],
+      "file": "/audio/voice/f440ae63ce4022f8.mp3"
+    },
+    {
+      "key": "e46994c349ac3d4e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You catch your reflection in the dark screen: a jiggly leg and a neck that has gone stiff.",
+      "lines": [
+        "You catch your reflection in the dark screen: a jiggly leg and a neck that has gone stiff."
+      ],
+      "file": "/audio/voice/e46994c349ac3d4e.mp3"
+    },
+    {
+      "key": "d61c9e4d7a4485c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dinner is on the table, and the screen flashes NEXT EPISODE.",
+      "lines": [
+        "Dinner is on the table, and the screen flashes NEXT EPISODE."
+      ],
+      "file": "/audio/voice/d61c9e4d7a4485c0.mp3"
+    },
+    {
+      "key": "ad7ab251db7b1d38",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask: do I want this?",
+      "lines": [
+        "Ask: do I want this?"
+      ],
+      "file": "/audio/voice/ad7ab251db7b1d38.mp3"
+    },
+    {
+      "key": "3167b1a0c190e975",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Weigh a wild claim.",
+      "lines": [
+        "Weigh a wild claim."
+      ],
+      "file": "/audio/voice/3167b1a0c190e975.mp3"
+    },
+    {
+      "key": "6cfa65b6c5f71045",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pause, back out, tell.",
+      "lines": [
+        "Pause, back out, tell."
+      ],
+      "file": "/audio/voice/6cfa65b6c5f71045.mp3"
+    },
+    {
+      "key": "91e0ed5f8fc704f4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Give a fishing comment nothing.",
+      "lines": [
+        "Give a fishing comment nothing."
+      ],
+      "file": "/audio/voice/91e0ed5f8fc704f4.mp3"
+    },
+    {
+      "key": "c1cd5d2d4ea2bc37",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Notice your body's bell.",
+      "lines": [
+        "Notice your body's bell."
+      ],
+      "file": "/audio/voice/c1cd5d2d4ea2bc37.mp3"
+    },
+    {
+      "key": "53bc953a0480cadb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hold the pause and choose.",
+      "lines": [
+        "Hold the pause and choose."
+      ],
+      "file": "/audio/voice/53bc953a0480cadb.mp3"
+    },
+    {
+      "key": "277fbb46d900592e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Let autoplay pick all night.",
+      "lines": [
+        "Let autoplay pick all night."
+      ],
+      "file": "/audio/voice/277fbb46d900592e.mp3"
+    },
+    {
+      "key": "af58e8bd5805a56f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Believe it because it had millions of views.",
+      "lines": [
+        "Believe it because it had millions of views."
+      ],
+      "file": "/audio/voice/af58e8bd5805a56f.mp3"
+    },
+    {
+      "key": "e401eb8045246333",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Reply with your school name.",
+      "lines": [
+        "Reply with your school name."
+      ],
+      "file": "/audio/voice/e401eb8045246333.mp3"
     },
     {
       "key": "f676498e0146ebf5",
@@ -30657,70 +32495,1027 @@
       "file": "/audio/voice/7175f1584fe7e945.mp3"
     },
     {
-      "key": "87a6f8b5fd067db2",
+      "key": "c4f3b8dc927fe73c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. That's the belt choosing FOR you. 'One more' became five more, and the whole afternoon slid down the hole.",
-      "lines": [
-        "Not quite.",
-        "That's the belt choosing FOR you. 'One more' became five more, and the whole afternoon slid down the hole."
-      ],
-      "file": "/audio/voice/87a6f8b5fd067db2.mp3"
-    },
-    {
-      "key": "36dba9f53ac7c697",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! You grabbed the controls back! Pausing the belt is the strongest button on the whole player.",
+      "text": "That's right! That's the question the belt hopes you skip. Ask it and the choosing comes straight back to you.",
       "lines": [
         "That's right!",
-        "You grabbed the controls back! Pausing the belt is the strongest button on the whole player."
+        "That's the question the belt hopes you skip. Ask it and the choosing comes straight back to you."
       ],
-      "file": "/audio/voice/36dba9f53ac7c697.mp3"
+      "file": "/audio/voice/c4f3b8dc927fe73c.mp3"
     },
     {
-      "key": "2ff3dff98d42c465",
+      "key": "7bdb8672f49b1da5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Your body was ringing its bell - and the bell doesn't stop, it just rings louder. Dry eyes don't fix themselves on video six.",
+      "text": "Not quite. That's the belt shouting, not you choosing. Tapping it rolls you one video deeper.",
       "lines": [
         "Not quite.",
-        "Your body was ringing its bell - and the bell doesn't stop, it just rings louder. Dry eyes don't fix themselves on video six."
+        "That's the belt shouting, not you choosing. Tapping it rolls you one video deeper."
       ],
-      "file": "/audio/voice/2ff3dff98d42c465.mp3"
+      "file": "/audio/voice/7bdb8672f49b1da5.mp3"
     },
     {
-      "key": "d85a716425ca73d0",
+      "key": "466ac02080c3cb4d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! You NOTICED! Trampoline, snack, drawing, calling a friend - your eyes and legs said thank you in about two minutes.",
-      "lines": [
-        "That's right!",
-        "You NOTICED! Trampoline, snack, drawing, calling a friend - your eyes and legs said thank you in about two minutes."
-      ],
-      "file": "/audio/voice/d85a716425ca73d0.mp3"
-    },
-    {
-      "key": "2a8fdca156ff9bac",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. The start became the middle, dinner went cold, and everyone waited. Episodes keep forever - hot dinners don't.",
+      "text": "Not quite. A countdown is a rush, not a decision. Let it tick and the belt keeps rolling the next video in without you.",
       "lines": [
         "Not quite.",
-        "The start became the middle, dinner went cold, and everyone waited. Episodes keep forever - hot dinners don't."
+        "A countdown is a rush, not a decision. Let it tick and the belt keeps rolling the next video in without you."
       ],
-      "file": "/audio/voice/2a8fdca156ff9bac.mp3"
+      "file": "/audio/voice/466ac02080c3cb4d.mp3"
     },
     {
-      "key": "8c333b2d631504a1",
+      "key": "a32a43bd94ec691b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! You beat the countdown! The episode will wait patiently all night. Hot dinner and family jokes won't.",
+      "text": "That's right! The loudest picture isn't the best video. Picking your own beats whatever shouts hardest.",
       "lines": [
         "That's right!",
-        "You beat the countdown! The episode will wait patiently all night. Hot dinner and family jokes won't."
+        "The loudest picture isn't the best video. Picking your own beats whatever shouts hardest."
       ],
-      "file": "/audio/voice/8c333b2d631504a1.mp3"
+      "file": "/audio/voice/a32a43bd94ec691b.mp3"
+    },
+    {
+      "key": "9a82e2934fb1eb9c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A computer chose that picture for your eyes, like candy stacked at the checkout. Shouting isn't the same as good.",
+      "lines": [
+        "Not quite.",
+        "A computer chose that picture for your eyes, like candy stacked at the checkout. Shouting isn't the same as good."
+      ],
+      "file": "/audio/voice/9a82e2934fb1eb9c.mp3"
+    },
+    {
+      "key": "054ffa265cbb0694",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Everyone watching it says nothing about whether the video is for YOU. That giant face is bait, and so are the other kids.",
+      "lines": [
+        "Not quite.",
+        "Everyone watching it says nothing about whether the video is for YOU. That giant face is bait, and so are the other kids."
+      ],
+      "file": "/audio/voice/054ffa265cbb0694.mp3"
+    },
+    {
+      "key": "6db46a5cafd16dc4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Searching puts your hands back on the wheel. You came for one of those videos, so go and get that one.",
+      "lines": [
+        "That's right!",
+        "Searching puts your hands back on the wheel. You came for one of those videos, so go and get that one."
+      ],
+      "file": "/audio/voice/6db46a5cafd16dc4.mp3"
+    },
+    {
+      "key": "2df8a4accde71500",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Easy is exactly how the belt wins. Six videos rolled past while it did all the choosing.",
+      "lines": [
+        "Not quite.",
+        "Easy is exactly how the belt wins. Six videos rolled past while it did all the choosing."
+      ],
+      "file": "/audio/voice/2df8a4accde71500.mp3"
+    },
+    {
+      "key": "12b9f524066fb8d0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One more after six is the belt's favourite sentence, because it never means one.",
+      "lines": [
+        "Not quite.",
+        "One more after six is the belt's favourite sentence, because it never means one."
+      ],
+      "file": "/audio/voice/12b9f524066fb8d0.mp3"
+    },
+    {
+      "key": "6a516318fc1c326d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The belt knows what keeps you watching. Only you know what you actually wanted.",
+      "lines": [
+        "That's right!",
+        "The belt knows what keeps you watching. Only you know what you actually wanted."
+      ],
+      "file": "/audio/voice/6a516318fc1c326d.mp3"
+    },
+    {
+      "key": "5391ba19109e6fd3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A surprise from the belt is still the belt choosing. Surprises are more fun when you opened the box.",
+      "lines": [
+        "Not quite.",
+        "A surprise from the belt is still the belt choosing. Surprises are more fun when you opened the box."
+      ],
+      "file": "/audio/voice/5391ba19109e6fd3.mp3"
+    },
+    {
+      "key": "330fea6ce1bb9434",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It knows what keeps you sitting there, which isn't the same as knowing you. That's the machine talking.",
+      "lines": [
+        "Not quite.",
+        "It knows what keeps you sitting there, which isn't the same as knowing you. That's the machine talking."
+      ],
+      "file": "/audio/voice/330fea6ce1bb9434.mp3"
+    },
+    {
+      "key": "8b736fe06f5c9296",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Turning it off is the strongest tap on the whole screen, because the belt can't roll without you.",
+      "lines": [
+        "That's right!",
+        "Turning it off is the strongest tap on the whole screen, because the belt can't roll without you."
+      ],
+      "file": "/audio/voice/8b736fe06f5c9296.mp3"
+    },
+    {
+      "key": "6c18b7994c9c3728",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One more from the top rung is still one more, and the burrow is always happy to have you back.",
+      "lines": [
+        "Not quite.",
+        "One more from the top rung is still one more, and the burrow is always happy to have you back."
+      ],
+      "file": "/audio/voice/6c18b7994c9c3728.mp3"
+    },
+    {
+      "key": "18f075886ca22167",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It never stops by itself. Stopping is the one thing the belt was built to never do.",
+      "lines": [
+        "Not quite.",
+        "It never stops by itself. Stopping is the one thing the belt was built to never do."
+      ],
+      "file": "/audio/voice/18f075886ca22167.mp3"
+    },
+    {
+      "key": "59629853182d1e99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing magic about it. Autoplay is a machine, and machines can be switched off.",
+      "lines": [
+        "Not quite.",
+        "Nothing magic about it. Autoplay is a machine, and machines can be switched off."
+      ],
+      "file": "/audio/voice/59629853182d1e99.mp3"
+    },
+    {
+      "key": "2a384f7aba5f1710",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Video makers can't choose what plays after theirs. Autoplay does that.",
+      "lines": [
+        "Not quite.",
+        "Video makers can't choose what plays after theirs. Autoplay does that."
+      ],
+      "file": "/audio/voice/2a384f7aba5f1710.mp3"
+    },
+    {
+      "key": "a6b39748c20790c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your last tap started the video you picked. Autoplay started the one after it.",
+      "lines": [
+        "Not quite.",
+        "Your last tap started the video you picked. Autoplay started the one after it."
+      ],
+      "file": "/audio/voice/a6b39748c20790c7.mp3"
+    },
+    {
+      "key": "322dce50f1371dc8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A science book has been checked by people who study eyes and carrots for a living. That beats two million views every time.",
+      "lines": [
+        "That's right!",
+        "A science book has been checked by people who study eyes and carrots for a living. That beats two million views every time."
+      ],
+      "file": "/audio/voice/322dce50f1371dc8.mp3"
+    },
+    {
+      "key": "61040926e5077d0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The top comment is another stranger typing about carrots. Lots of agreeing never checked a thing.",
+      "lines": [
+        "Not quite.",
+        "The top comment is another stranger typing about carrots. Lots of agreeing never checked a thing."
+      ],
+      "file": "/audio/voice/61040926e5077d0e.mp3"
+    },
+    {
+      "key": "8f6951d8ccad976d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Watching it twice plays the same carrot claim twice. Nobody checked it in between.",
+      "lines": [
+        "Not quite.",
+        "Watching it twice plays the same carrot claim twice. Nobody checked it in between."
+      ],
+      "file": "/audio/voice/8f6951d8ccad976d.mp3"
+    },
+    {
+      "key": "25c0dbc8f67fce17",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The school is the only one who decides if the school is open. Go straight to the people who know.",
+      "lines": [
+        "That's right!",
+        "The school is the only one who decides if the school is open. Go straight to the people who know."
+      ],
+      "file": "/audio/voice/25c0dbc8f67fce17.mp3"
+    },
+    {
+      "key": "385249592891db2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Anyone can stick a photo of a school on a video. The photo proves nothing about tomorrow.",
+      "lines": [
+        "Not quite.",
+        "Anyone can stick a photo of a school on a video. The photo proves nothing about tomorrow."
+      ],
+      "file": "/audio/voice/385249592891db2a.mp3"
+    },
+    {
+      "key": "7da8c00dff39b38f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your friend watched the same video about school closing. Two people believing it is still nobody checking it.",
+      "lines": [
+        "Not quite.",
+        "Your friend watched the same video about school closing. Two people believing it is still nobody checking it."
+      ],
+      "file": "/audio/voice/7da8c00dff39b38f.mp3"
+    },
+    {
+      "key": "2744665208a31d90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A vet spends all day learning what animals need. If anyone can check what a lizard eats, it's them.",
+      "lines": [
+        "That's right!",
+        "A vet spends all day learning what animals need. If anyone can check what a lizard eats, it's them."
+      ],
+      "file": "/audio/voice/2744665208a31d90.mp3"
+    },
+    {
+      "key": "d32970a3c0120edb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The shop wants to sell sweets. Never ask the seller whether you should buy.",
+      "lines": [
+        "Not quite.",
+        "The shop wants to sell sweets. Never ask the seller whether you should buy."
+      ],
+      "file": "/audio/voice/d32970a3c0120edb.mp3"
+    },
+    {
+      "key": "0c529cb5218473b7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A big fan loves the lizard videos, which is lovely, but loving them isn't the same as knowing what a lizard eats.",
+      "lines": [
+        "Not quite.",
+        "A big fan loves the lizard videos, which is lovely, but loving them isn't the same as knowing what a lizard eats."
+      ],
+      "file": "/audio/voice/0c529cb5218473b7.mp3"
+    },
+    {
+      "key": "0992b7002f164c31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A doctor knows how bodies actually grow, and they have nothing to sell you.",
+      "lines": [
+        "That's right!",
+        "A doctor knows how bodies actually grow, and they have nothing to sell you."
+      ],
+      "file": "/audio/voice/0992b7002f164c31.mp3"
+    },
+    {
+      "key": "649e78cd8cecc672",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. An advert is paid for by the people selling the pop. Of course it says lovely things.",
+      "lines": [
+        "Not quite.",
+        "An advert is paid for by the people selling the pop. Of course it says lovely things."
+      ],
+      "file": "/audio/voice/649e78cd8cecc672.mp3"
+    },
+    {
+      "key": "21edb14e0d818a35",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Likes count how many people tapped the fizzy pop video, not whether anybody grows taller.",
+      "lines": [
+        "Not quite.",
+        "Likes count how many people tapped the fizzy pop video, not whether anybody grows taller."
+      ],
+      "file": "/audio/voice/21edb14e0d818a35.mp3"
+    },
+    {
+      "key": "bc1366958c396424",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A video is not proof. Ask who would really know: an astronomer, or your science book.",
+      "lines": [
+        "Not quite.",
+        "A video is not proof. Ask who would really know: an astronomer, or your science book."
+      ],
+      "file": "/audio/voice/bc1366958c396424.mp3"
+    },
+    {
+      "key": "fafa64af2df8ead2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Paused it, backed out of it, and told a grown-up. That's the whole calm escape, and none of it was your fault.",
+      "lines": [
+        "That's right!",
+        "Paused it, backed out of it, and told a grown-up. That's the whole calm escape, and none of it was your fault."
+      ],
+      "file": "/audio/voice/fafa64af2df8ead2.mp3"
+    },
+    {
+      "key": "2b85ce7d222dcd0a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Pause comes first. It stops the scary part playing while you decide anything else.",
+      "lines": [
+        "Not quite.",
+        "Pause comes first. It stops the scary part playing while you decide anything else."
+      ],
+      "file": "/audio/voice/2b85ce7d222dcd0a.mp3"
+    },
+    {
+      "key": "a28b18b6f978161b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Back comes before tell. Get yourself out of the video first, then go and get your grown-up.",
+      "lines": [
+        "Not quite.",
+        "Back comes before tell. Get yourself out of the video first, then go and get your grown-up."
+      ],
+      "file": "/audio/voice/a28b18b6f978161b.mp3"
+    },
+    {
+      "key": "1313871882a4ed52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Next rolls you further down the burrow. The exit is the other way.",
+      "lines": [
+        "Not quite.",
+        "Next rolls you further down the burrow. The exit is the other way."
+      ],
+      "file": "/audio/voice/1313871882a4ed52.mp3"
+    },
+    {
+      "key": "fa426efcd2e18294",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Liking a scary video tells the app to send more like it, which is the opposite of leaving.",
+      "lines": [
+        "Not quite.",
+        "Liking a scary video tells the app to send more like it, which is the opposite of leaving."
+      ],
+      "file": "/audio/voice/fa426efcd2e18294.mp3"
+    },
+    {
+      "key": "e1875523ff19d726",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Full screen makes the scary video bigger, and nothing here needs to be bigger right now.",
+      "lines": [
+        "Not quite.",
+        "Full screen makes the scary video bigger, and nothing here needs to be bigger right now."
+      ],
+      "file": "/audio/voice/e1875523ff19d726.mp3"
+    },
+    {
+      "key": "7ee55ce85b88eb42",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That funny tummy feeling was right, and you listened to it. Paused, out, and told.",
+      "lines": [
+        "That's right!",
+        "That funny tummy feeling was right, and you listened to it. Paused, out, and told."
+      ],
+      "file": "/audio/voice/7ee55ce85b88eb42.mp3"
+    },
+    {
+      "key": "6346b03802f842f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Pause first. A paused video can't show you one more thing while you think.",
+      "lines": [
+        "Not quite.",
+        "Pause first. A paused video can't show you one more thing while you think."
+      ],
+      "file": "/audio/voice/6346b03802f842f2.mp3"
+    },
+    {
+      "key": "f355575fa4dbea7e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Back before tell. Out of the video, then off to your grown-up.",
+      "lines": [
+        "Not quite.",
+        "Back before tell. Out of the video, then off to your grown-up."
+      ],
+      "file": "/audio/voice/f355575fa4dbea7e.mp3"
+    },
+    {
+      "key": "6c8e2fd3183d72d5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Sharing it puts a grown-ups video on a friend's screen too. Now two of you have seen it.",
+      "lines": [
+        "Not quite.",
+        "Sharing it puts a grown-ups video on a friend's screen too. Now two of you have seen it."
+      ],
+      "file": "/audio/voice/6c8e2fd3183d72d5.mp3"
+    },
+    {
+      "key": "c0ad107517409315",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Subscribing asks for MORE videos like this one, and your funny tummy already said no.",
+      "lines": [
+        "Not quite.",
+        "Subscribing asks for MORE videos like this one, and your funny tummy already said no."
+      ],
+      "file": "/audio/voice/c0ad107517409315.mp3"
+    },
+    {
+      "key": "fccc7642d10cfb67",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Faster or slower, it's still playing. Pause stops it properly.",
+      "lines": [
+        "Not quite.",
+        "Faster or slower, it's still playing. Pause stops it properly."
+      ],
+      "file": "/audio/voice/fccc7642d10cfb67.mp3"
+    },
+    {
+      "key": "97d70ce3f0b80dcb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Feeling horrible is exactly when a grown-up should know. You paused, you left, and you told.",
+      "lines": [
+        "That's right!",
+        "Feeling horrible is exactly when a grown-up should know. You paused, you left, and you told."
+      ],
+      "file": "/audio/voice/97d70ce3f0b80dcb.mp3"
+    },
+    {
+      "key": "0ca1ec1ad8169c6e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Pause is step one. Stop it first, and the horrible feeling stops growing.",
+      "lines": [
+        "Not quite.",
+        "Pause is step one. Stop it first, and the horrible feeling stops growing."
+      ],
+      "file": "/audio/voice/0ca1ec1ad8169c6e.mp3"
+    },
+    {
+      "key": "144df923192719a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Back, then tell. Leave the video behind you before you go and find your grown-up.",
+      "lines": [
+        "Not quite.",
+        "Back, then tell. Leave the video behind you before you go and find your grown-up."
+      ],
+      "file": "/audio/voice/144df923192719a9.mp3"
+    },
+    {
+      "key": "9395399d5ad5dee8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Typing back at an icky video puts you in a chat with strangers. The exit is much quieter.",
+      "lines": [
+        "Not quite.",
+        "Typing back at an icky video puts you in a chat with strangers. The exit is much quieter."
+      ],
+      "file": "/audio/voice/9395399d5ad5dee8.mp3"
+    },
+    {
+      "key": "a0a7a23006f8c041",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Saving it keeps it. This is a video you want gone, not kept.",
+      "lines": [
+        "Not quite.",
+        "Saving it keeps it. This is a video you want gone, not kept."
+      ],
+      "file": "/audio/voice/a0a7a23006f8c041.mp3"
+    },
+    {
+      "key": "e525f9bceafd2152",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Quiet is not the same as gone. Pause it properly.",
+      "lines": [
+        "Not quite.",
+        "Quiet is not the same as gone. Pause it properly."
+      ],
+      "file": "/audio/voice/e525f9bceafd2152.mp3"
+    },
+    {
+      "key": "61c2b577578fd528",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That one just liked the puppy. A kind comment about the VIDEO wants nothing from you, so let it swim past.",
+      "lines": [
+        "That's right!",
+        "That one just liked the puppy. A kind comment about the VIDEO wants nothing from you, so let it swim past."
+      ],
+      "file": "/audio/voice/61c2b577578fd528.mp3"
+    },
+    {
+      "key": "316362fac12bd858",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read it again. It talks about the puppy, not about you, and it asks for nothing. That one is just being kind.",
+      "lines": [
+        "Not quite.",
+        "Read it again. It talks about the puppy, not about you, and it asks for nothing. That one is just being kind."
+      ],
+      "file": "/audio/voice/316362fac12bd858.mp3"
+    },
+    {
+      "key": "4db6fe7d7a8515c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It's fishing for your school. \"Just curious\" is the friendly wrapper, and a stranger never needs to know where you are every weekday.",
+      "lines": [
+        "That's right!",
+        "It's fishing for your school. \"Just curious\" is the friendly wrapper, and a stranger never needs to know where you are every weekday."
+      ],
+      "file": "/audio/voice/4db6fe7d7a8515c7.mp3"
+    },
+    {
+      "key": "33c7ce469d846272",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at what it's asking for: your school. \"Just curious\" is only the wrapper. A stranger never needs to know where you are every weekday.",
+      "lines": [
+        "Not quite.",
+        "Look at what it's asking for: your school. \"Just curious\" is only the wrapper. A stranger never needs to know where you are every weekday."
+      ],
+      "file": "/audio/voice/33c7ce469d846272.mp3"
+    },
+    {
+      "key": "43efb359c3001c5b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It's after a tap on its link. Free piles of anything are the bait, and the link is the hook.",
+      "lines": [
+        "That's right!",
+        "It's after a tap on its link. Free piles of anything are the bait, and the link is the hook."
+      ],
+      "file": "/audio/voice/43efb359c3001c5b.mp3"
+    },
+    {
+      "key": "bcdfa49a19f457f5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Follow what it wants you to DO: tap the link. The free coins are only the bait on the end of it.",
+      "lines": [
+        "Not quite.",
+        "Follow what it wants you to DO: tap the link. The free coins are only the bait on the end of it."
+      ],
+      "file": "/audio/voice/bcdfa49a19f457f5.mp3"
+    },
+    {
+      "key": "713369d9c2dec176",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nothing at all. That one is chatting about the set it built, and a friendly stranger still gets no reply and no information.",
+      "lines": [
+        "That's right!",
+        "Nothing at all. That one is chatting about the set it built, and a friendly stranger still gets no reply and no information."
+      ],
+      "file": "/audio/voice/713369d9c2dec176.mp3"
+    },
+    {
+      "key": "812c6e3120ebc4a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Check what it asks for: nothing. It's chatting about the set in the video, not about you.",
+      "lines": [
+        "Not quite.",
+        "Check what it asks for: nothing. It's chatting about the set in the video, not about you."
+      ],
+      "file": "/audio/voice/812c6e3120ebc4a0.mp3"
+    },
+    {
+      "key": "188dd3bb132c3454",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It's fishing for a photo of you. Once a picture of you leaves your screen, you can never get it back.",
+      "lines": [
+        "That's right!",
+        "It's fishing for a photo of you. Once a picture of you leaves your screen, you can never get it back."
+      ],
+      "file": "/audio/voice/188dd3bb132c3454.mp3"
+    },
+    {
+      "key": "c98d2c73469f4065",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look past the word famous. The thing it actually asks you to send is a photo of you, and photos never come back.",
+      "lines": [
+        "Not quite.",
+        "Look past the word famous. The thing it actually asks you to send is a photo of you, and photos never come back."
+      ],
+      "file": "/audio/voice/c98d2c73469f4065.mp3"
+    },
+    {
+      "key": "148d7b428f2b920e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It's fishing for your name. Your name isn't a game token, and a wizard name is a very cheap price for it.",
+      "lines": [
+        "That's right!",
+        "It's fishing for your name. Your name isn't a game token, and a wizard name is a very cheap price for it."
+      ],
+      "file": "/audio/voice/148d7b428f2b920e.mp3"
+    },
+    {
+      "key": "fcd3fe5027c66a5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The game is the wrapper. What it actually collects is your full name, typed out where every stranger can read it.",
+      "lines": [
+        "Not quite.",
+        "The game is the wrapper. What it actually collects is your full name, typed out where every stranger can read it."
+      ],
+      "file": "/audio/voice/fcd3fe5027c66a5e.mp3"
+    },
+    {
+      "key": "2b5b8f6254b10ff7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody down there has to say who they really are. A friendly name is easy to type.",
+      "lines": [
+        "Not quite.",
+        "Nobody down there has to say who they really are. A friendly name is easy to type."
+      ],
+      "file": "/audio/voice/2b5b8f6254b10ff7.mp3"
+    },
+    {
+      "key": "04d2b677a12cda70",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Anyone can comment on a video. The maker never picked a single one of them.",
+      "lines": [
+        "Not quite.",
+        "Anyone can comment on a video. The maker never picked a single one of them."
+      ],
+      "file": "/audio/voice/04d2b677a12cda70.mp3"
+    },
+    {
+      "key": "7f7922c9b6a720ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Liking the video doesn't stop someone being a stranger, and fishing comments often start with a compliment.",
+      "lines": [
+        "Not quite.",
+        "Liking the video doesn't stop someone being a stranger, and fishing comments often start with a compliment."
+      ],
+      "file": "/audio/voice/7f7922c9b6a720ac.mp3"
+    },
+    {
+      "key": "0731dcb827ca39ad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That's the belt choosing again, not you. \"Just one more\" has already become three.",
+      "lines": [
+        "Not quite.",
+        "That's the belt choosing again, not you. \"Just one more\" has already become three."
+      ],
+      "file": "/audio/voice/0731dcb827ca39ad.mp3"
+    },
+    {
+      "key": "c33f03c9b0da1212",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Three videos in, your eyes and legs have earned a turn. That's a choice the belt would never load for you.",
+      "lines": [
+        "That's right!",
+        "Three videos in, your eyes and legs have earned a turn. That's a choice the belt would never load for you."
+      ],
+      "file": "/audio/voice/c33f03c9b0da1212.mp3"
+    },
+    {
+      "key": "3a3bb9f78a64eca4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Picking the last one yourself beats letting the next one load itself. You decide where this ends.",
+      "lines": [
+        "That's right!",
+        "Picking the last one yourself beats letting the next one load itself. You decide where this ends."
+      ],
+      "file": "/audio/voice/3a3bb9f78a64eca4.mp3"
+    },
+    {
+      "key": "54df733c0c6b7584",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The jiggle doesn't stop on video six, it just gets louder. Your body already told you what it needs.",
+      "lines": [
+        "Not quite.",
+        "The jiggle doesn't stop on video six, it just gets louder. Your body already told you what it needs."
+      ],
+      "file": "/audio/voice/54df733c0c6b7584.mp3"
+    },
+    {
+      "key": "63dc81089eb3a598",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A stretch and some daylight is exactly what a jiggly leg is asking for, and it takes about two minutes.",
+      "lines": [
+        "That's right!",
+        "A stretch and some daylight is exactly what a jiggly leg is asking for, and it takes about two minutes."
+      ],
+      "file": "/audio/voice/63dc81089eb3a598.mp3"
+    },
+    {
+      "key": "a92419e2a2994627",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Standing up for a snack gives that jiggly leg and stiff neck what they're asking for, and you decide properly once you've moved.",
+      "lines": [
+        "That's right!",
+        "Standing up for a snack gives that jiggly leg and stiff neck what they're asking for, and you decide properly once you've moved."
+      ],
+      "file": "/audio/voice/a92419e2a2994627.mp3"
+    },
+    {
+      "key": "7cdd669f9b76db27",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The start becomes the middle, dinner goes cold, and everyone waits. Episodes keep forever, hot dinners don't.",
+      "lines": [
+        "Not quite.",
+        "The start becomes the middle, dinner goes cold, and everyone waits. Episodes keep forever, hot dinners don't."
+      ],
+      "file": "/audio/voice/7cdd669f9b76db27.mp3"
+    },
+    {
+      "key": "115ecff85c95a2f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The episode will wait all night without complaining. Hot dinner and family jokes won't.",
+      "lines": [
+        "That's right!",
+        "The episode will wait all night without complaining. Hot dinner and family jokes won't."
+      ],
+      "file": "/audio/voice/115ecff85c95a2f9.mp3"
+    },
+    {
+      "key": "04efd82be335b723",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Saving it on purpose is still your choice, and now the episode has to fit around you.",
+      "lines": [
+        "That's right!",
+        "Saving it on purpose is still your choice, and now the episode has to fit around you."
+      ],
+      "file": "/audio/voice/04efd82be335b723.mp3"
+    },
+    {
+      "key": "7665ce3d89428dff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Laughing is just laughing. The bell is what your body does when it has been sitting too long.",
+      "lines": [
+        "Not quite.",
+        "Laughing is just laughing. The bell is what your body does when it has been sitting too long."
+      ],
+      "file": "/audio/voice/7665ce3d89428dff.mp3"
+    },
+    {
+      "key": "76e56496361fc2e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That's the hero move, not the bell. The bell is the signal that comes first.",
+      "lines": [
+        "Not quite.",
+        "That's the hero move, not the bell. The bell is the signal that comes first."
+      ],
+      "file": "/audio/voice/76e56496361fc2e3.mp3"
+    },
+    {
+      "key": "760f42ee14efc0c4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That's the question the belt hopes you skip, so it's the strongest rung on the ladder.",
+      "lines": [
+        "That's right!",
+        "That's the question the belt hopes you skip, so it's the strongest rung on the ladder."
+      ],
+      "file": "/audio/voice/760f42ee14efc0c4.mp3"
+    },
+    {
+      "key": "fb904dde36ecd0c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That question takes the choosing back from the belt, so the rung belongs in the ladder.",
+      "lines": [
+        "Not quite.",
+        "That question takes the choosing back from the belt, so the rung belongs in the ladder."
+      ],
+      "file": "/audio/voice/fb904dde36ecd0c0.mp3"
+    },
+    {
+      "key": "d4b5987f1e87cf9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Weighing a claim against someone who would really know is how loud loses to real.",
+      "lines": [
+        "That's right!",
+        "Weighing a claim against someone who would really know is how loud loses to real."
+      ],
+      "file": "/audio/voice/d4b5987f1e87cf9a.mp3"
+    },
+    {
+      "key": "2befc675dd52383d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Weighing a claim before you believe it is a hero move. Lay it in the ladder.",
+      "lines": [
+        "Not quite.",
+        "Weighing a claim before you believe it is a hero move. Lay it in the ladder."
+      ],
+      "file": "/audio/voice/2befc675dd52383d.mp3"
+    },
+    {
+      "key": "dc3a34a67d15011d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Pause it, leave it, then tell. That's the escape in the right order.",
+      "lines": [
+        "That's right!",
+        "Pause it, leave it, then tell. That's the escape in the right order."
+      ],
+      "file": "/audio/voice/dc3a34a67d15011d.mp3"
+    },
+    {
+      "key": "d174d7c630774496",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That's the calm escape in the right order, so the rung goes in the ladder, not down the burrow.",
+      "lines": [
+        "Not quite.",
+        "That's the calm escape in the right order, so the rung goes in the ladder, not down the burrow."
+      ],
+      "file": "/audio/voice/d174d7c630774496.mp3"
+    },
+    {
+      "key": "901c09d6d22efb75",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Naming what a comment wants and handing it over anyway is the only way it wins. You did neither.",
+      "lines": [
+        "That's right!",
+        "Naming what a comment wants and handing it over anyway is the only way it wins. You did neither."
+      ],
+      "file": "/audio/voice/901c09d6d22efb75.mp3"
+    },
+    {
+      "key": "94ed9073fc02e5e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A fishing comment that gets nothing goes home empty, so that rung climbs into the ladder.",
+      "lines": [
+        "Not quite.",
+        "A fishing comment that gets nothing goes home empty, so that rung climbs into the ladder."
+      ],
+      "file": "/audio/voice/94ed9073fc02e5e3.mp3"
+    },
+    {
+      "key": "3f77d15a31e597b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Dry eyes and a jiggly leg are your signal, and noticing it is where every pause starts.",
+      "lines": [
+        "That's right!",
+        "Dry eyes and a jiggly leg are your signal, and noticing it is where every pause starts."
+      ],
+      "file": "/audio/voice/3f77d15a31e597b4.mp3"
+    },
+    {
+      "key": "adf43aa6a8850713",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Noticing that bell is the fifth power of the week, so lay it in the ladder.",
+      "lines": [
+        "Not quite.",
+        "Noticing that bell is the fifth power of the week, so lay it in the ladder."
+      ],
+      "file": "/audio/voice/adf43aa6a8850713.mp3"
+    },
+    {
+      "key": "81b2a9d57a171faf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Holding the pause stops the belt, and choosing what's next is the bit that's yours.",
+      "lines": [
+        "That's right!",
+        "Holding the pause stops the belt, and choosing what's next is the bit that's yours."
+      ],
+      "file": "/audio/voice/81b2a9d57a171faf.mp3"
+    },
+    {
+      "key": "84889aa21b38b235",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Holding the pause and choosing what's next is a hero move. It belongs in the ladder.",
+      "lines": [
+        "Not quite.",
+        "Holding the pause and choosing what's next is a hero move. It belongs in the ladder."
+      ],
+      "file": "/audio/voice/84889aa21b38b235.mp3"
+    },
+    {
+      "key": "962c2aace4ca246d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That's the belt choosing for you, all night long. Straight down the burrow.",
+      "lines": [
+        "That's right!",
+        "That's the belt choosing for you, all night long. Straight down the burrow."
+      ],
+      "file": "/audio/voice/962c2aace4ca246d.mp3"
+    },
+    {
+      "key": "16e193c4eade435b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Letting autoplay pick is the machine in charge, not you. That one goes down the burrow.",
+      "lines": [
+        "Not quite.",
+        "Letting autoplay pick is the machine in charge, not you. That one goes down the burrow."
+      ],
+      "file": "/audio/voice/16e193c4eade435b.mp3"
+    },
+    {
+      "key": "13e554d290eef366",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Millions of views count taps, not truth. Down it goes.",
+      "lines": [
+        "That's right!",
+        "Millions of views count taps, not truth. Down it goes."
+      ],
+      "file": "/audio/voice/13e554d290eef366.mp3"
+    },
+    {
+      "key": "dae8173f0f3a79d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Those millions of views never checked a single thing. That's the Raccoon's rung, so drop it.",
+      "lines": [
+        "Not quite.",
+        "Those millions of views never checked a single thing. That's the Raccoon's rung, so drop it."
+      ],
+      "file": "/audio/voice/dae8173f0f3a79d8.mp3"
+    },
+    {
+      "key": "66791346b5e468cc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your school is where you are every weekday, and strangers never need it. Drop it.",
+      "lines": [
+        "That's right!",
+        "Your school is where you are every weekday, and strangers never need it. Drop it."
+      ],
+      "file": "/audio/voice/66791346b5e468cc.mp3"
+    },
+    {
+      "key": "21605d128ffd0318",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Replying with your school hands a stranger the one thing they were fishing for. Down the burrow.",
+      "lines": [
+        "Not quite.",
+        "Replying with your school hands a stranger the one thing they were fishing for. Down the burrow."
+      ],
+      "file": "/audio/voice/21605d128ffd0318.mp3"
     },
     {
       "key": "7f307ae0a7a50fcc",

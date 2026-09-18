@@ -433,6 +433,69 @@ function chainsFor(type, span) {
       if (wrong) chains.push({ name: label + " (wrong choice)", mode: "branch", beats: [items.length ? items[items.length - 1] : read], branches: [wrong] });
     }
   }
+  // Week 10 engines (rebuilt 2026-09-17).
+  if (type === "climbOut") {
+    // each rung: the moment Sarah reads as it slides in -> the grip's why on the
+    // climb; a bait's explanation answers that same moment when the belt pulls.
+    for (const p of span.split(/\bprompt:\s*(?=")/).slice(1)) {
+      const prompt = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!prompt) continue;
+      for (const t of p.split(/\{\s*id:\s*(?=")/).slice(1)) {
+        const label = field(t, "label"), why = field(t, "why"), expl = field(t, "explanation");
+        if (!label) continue;
+        if (/isGrip:\s*true/.test(t)) {
+          if (why) chains.push({ name: "climb out: " + un(label), mode: "chain", beats: [prompt, why] });
+        } else if (expl) {
+          chains.push({ name: "climb out: " + un(label) + " (bait)", mode: "branch", beats: [prompt], branches: [expl] });
+        }
+      }
+    }
+  }
+  if (type === "whoKnows") {
+    // each round: the claim the video shouts -> the right source's why; a wrong
+    // source's explanation answers the same claim.
+    for (const p of span.split(/\bclaim:\s*(?=")/).slice(1)) {
+      const claim = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!claim) continue;
+      for (const o of p.split(/\{\s*id:\s*(?=")/).slice(1)) {
+        const label = field(o, "label"), why = field(o, "why"), expl = field(o, "explanation");
+        if (!label) continue;
+        if (/isRight:\s*true/.test(o)) {
+          if (why) chains.push({ name: "who knows: " + un(label), mode: "chain", beats: [claim, why] });
+        } else if (expl) {
+          chains.push({ name: "who knows: " + un(label) + " (wrong source)", mode: "branch", beats: [claim], branches: [expl] });
+        }
+      }
+    }
+  }
+  if (type === "commentPond") {
+    // each comment: the comment Sarah reads as it surfaces -> her why when the
+    // child names what it wants; the explanation answers a wrong name.
+    for (const p of span.split(/\bauthor:\s*(?=")/).slice(1)) {
+      const author = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      const text = field(p, "text"), why = field(p, "why"), expl = field(p, "explanation");
+      if (!text) continue;
+      if (why) chains.push({ name: "comment pond: " + un(author), mode: "chain", beats: [text, why] });
+      if (expl) chains.push({ name: "comment pond: " + un(author) + " (wrong want)", mode: "branch", beats: [text], branches: [expl] });
+    }
+  }
+  if (type === "pausePower") {
+    // each round: the watching moment -> the why on a card the child picked for
+    // themselves; the belt's card explains itself against the same moment.
+    for (const p of span.split(/\bsetup:\s*(?=")/).slice(1)) {
+      const setup = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!setup) continue;
+      for (const c of p.split(/\{\s*id:\s*(?=")/).slice(1)) {
+        const label = field(c, "label"), why = field(c, "why"), expl = field(c, "explanation");
+        if (!label) continue;
+        if (/isMine:\s*true/.test(c)) {
+          if (why) chains.push({ name: "pause power: " + un(label), mode: "chain", beats: [setup, why] });
+        } else if (expl) {
+          chains.push({ name: "pause power: " + un(label) + " (the belt's pick)", mode: "branch", beats: [setup], branches: [expl] });
+        }
+      }
+    }
+  }
   return chains;
 }
 
