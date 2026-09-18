@@ -223,6 +223,23 @@ export default function SchoolsLanding() {
           160px. clip, unlike hidden, is not a scroll container, so the
           sticky section bar inside still sticks. */}
       <main style={{ position: "relative", color: "var(--lv2-paper)", minHeight: "100vh", overflowX: "clip" }}>
+        {/* SECTION NAV ────────────────────────────────────── */}
+        <div className="sch-subnav-wrap">
+          <nav ref={subnavRef} className="sch-subnav" aria-label="On this page">
+            {SECTIONS.map(([id, label, cta]) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                data-target={id}
+                aria-current={activeSection === id ? "location" : undefined}
+                className={`sch-chip-link${cta ? " sch-chip-cta" : ""}${activeSection === id ? " on" : ""}`}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+        </div>
+
         {/* HERO ────────────────────────────────────────────── */}
         <section className="sch-section sch-hero-section">
           <FadeUp>
@@ -286,23 +303,6 @@ export default function SchoolsLanding() {
             </FadeUp>
           </div>
         </section>
-
-        {/* SECTION NAV ────────────────────────────────────── */}
-        <div className="sch-subnav-wrap">
-          <nav ref={subnavRef} className="sch-subnav" aria-label="On this page">
-            {SECTIONS.map(([id, label, cta]) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                data-target={id}
-                aria-current={activeSection === id ? "location" : undefined}
-                className={`sch-chip-link${cta ? " sch-chip-cta" : ""}${activeSection === id ? " on" : ""}`}
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-        </div>
 
         {/* PHASE PICKER ───────────────────────────────────── */}
         <section id="phase" className="sch-section">
@@ -498,7 +498,7 @@ export default function SchoolsLanding() {
           scroll-margin-top: 128px;
         }
         /* Fixed nav is 68px; keep the top row close under it at every width. */
-        .sch-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 0.8); }
+        .sch-hero-section { padding-top: clamp(26px, 2.2vw, 44px); padding-bottom: calc(var(--lv2-rail) * 0.8); }
         .sch-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
         .sch-glow-amber { width: 520px; height: 520px; right: -140px; top: -80px; background: radial-gradient(circle, rgba(255,179,71,0.35), transparent 65%); }
         .sch-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(0,229,255,0.28), transparent 65%); }
@@ -580,7 +580,7 @@ export default function SchoolsLanding() {
         .sch-stack:hover .sch-stack-1 { transform: rotate(5deg) scale(0.96) translateY(-4px); }
 
         /* section nav */
-        .sch-subnav-wrap { position: sticky; top: 68px; z-index: 30; background: rgba(4,5,13,0.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,229,255,0.1); border-bottom: 1px solid rgba(0,229,255,0.1); }
+        .sch-subnav-wrap { margin-top: 68px; position: sticky; top: 68px; z-index: 30; background: rgba(4,5,13,0.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,229,255,0.1); border-bottom: 1px solid rgba(0,229,255,0.1); }
         .sch-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .sch-subnav::-webkit-scrollbar { display: none; }
         .sch-chip-link {
