@@ -545,6 +545,9 @@ export default function SchoolsGlobe() {
     let labelY = 0;
     let labelW = 0;
     let labelH = 0;
+    // The label annotates the first screen. Once the page scrolls, content
+    // passes over it, so it stands down rather than sitting behind the copy.
+    let labelOn = true;
 
     const blit = (a: Atlas, code: number, x: number, y: number, alpha: number) => {
       const i = (code | 0) - 32;
@@ -791,7 +794,7 @@ export default function SchoolsGlobe() {
         // The label itself is DOM, above the scrim. All that is left here is
         // its leader, reaching from the words to Britain wherever the turn has
         // carried it, and keeping city names off the words.
-        if (w >= 1100 && labelW > 0) {
+        if (w >= 1100 && labelW > 0 && labelOn) {
           taken.push([labelX - 6, labelY - 4, labelX + labelW + 6, labelY + labelH + 4]);
           const tipX = ukP[0] > labelX + labelW * 0.5 ? labelX + labelW + 9 : labelX - 9;
           const tipY = labelY + labelH * 0.72;
@@ -874,7 +877,9 @@ export default function SchoolsGlobe() {
           ctx.globalAlpha = 1;
           ctx.fillStyle = hot ? "#9cff8a" : "#7df0ff";
           ctx.fillRect(pin[0] - 1.6, pin[1] - 1.6, 3.2, 3.2);
-          if (hot) {
+          // Names only where the globe has a column of its own: narrower, the
+          // page's copy runs full width and a lit name lands behind it.
+          if (hot && w >= 1100) {
             const nameW = arc.name.length * cityAtlas.cw;
             const flip = pin[0] > w - nameW - 24;
             const lx = flip ? pin[0] - 7 - nameW : pin[0] + 7;
@@ -955,6 +960,20 @@ export default function SchoolsGlobe() {
         else start();
       }, 150);
     };
+    let dimmed = false;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const show = y < 140;
+      if (show !== labelOn) {
+        labelOn = show;
+        labelRef.current?.classList.toggle("sg-label-gone", !show);
+      }
+      const dim = y > 220;
+      if (dim !== dimmed) {
+        dimmed = dim;
+        root.classList.toggle("sg-root-dim", dim);
+      }
+    };
     const onVisibility = () => {
       if (document.hidden) stop();
       else start();
@@ -972,6 +991,8 @@ export default function SchoolsGlobe() {
     }
     const labelTimer = isPaused ? window.setTimeout(() => setPaused(true), 0) : 0;
     window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
@@ -981,6 +1002,7 @@ export default function SchoolsGlobe() {
       window.clearTimeout(rt);
       window.clearTimeout(labelTimer);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
@@ -1000,6 +1022,10 @@ export default function SchoolsGlobe() {
         <div className="sg-sky" />
         <canvas ref={canvasRef} className="sg-canvas" />
         <div className="sg-scrim" />
+        {/* Past the hero the page's own copy runs over the globe wherever a
+            section puts it, so the backdrop recedes rather than trusting the
+            layout to keep clear of the bright side. */}
+        <div className="sg-veil" aria-hidden />
         <div className="sg-label" ref={labelRef} aria-hidden>
           <span className="sg-label-head">UNITED KINGDOM</span>
           <span className="sg-label-sub">
@@ -1049,7 +1075,17 @@ export default function SchoolsGlobe() {
         }
         /* Keeps the reading column calm and legible over the globe, and gives
            the nav and the top row a dark bed wherever the globe reaches. */
+        .sg-veil {
+          position: absolute;
+          inset: 0;
+          background: rgba(3,7,26,0.55);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+        }
+        .sg-root-dim .sg-veil { opacity: 1; }
+
         .sg-label {
+          transition: opacity 0.35s ease;
           position: absolute;
           display: none;
           flex-direction: column;
@@ -1064,6 +1100,7 @@ export default function SchoolsGlobe() {
         @media (min-width: 1100px) {
           .sg-label { display: flex; }
         }
+        .sg-label-gone { opacity: 0; }
         .sg-label-head {
           font-size: var(--sg-label-px, 18px);
           font-weight: 700;
@@ -1097,9 +1134,12 @@ export default function SchoolsGlobe() {
             linear-gradient(180deg, rgba(3,7,26,0.93) 0px, rgba(3,7,26,0.88) 130px, rgba(3,7,26,0.64) 205px, rgba(3,7,26,0.22) 310px, rgba(3,7,26,0) 420px),
             radial-gradient(ellipse 52% 62% at 26% 50%, rgba(3,7,26,0.86) 0%, rgba(3,7,26,0.46) 58%, rgba(3,7,26,0) 84%);
         }
-        @media (max-width: 699px) {
+        /* Below 1100 the page's copy runs the full width over the globe, so
+           the veil is even rather than a column: the same width at which the
+           labels and city names stand down. */
+        @media (max-width: 1099px) {
           .sg-scrim {
-            background: linear-gradient(180deg, rgba(3,7,26,0.88) 0%, rgba(3,7,26,0.62) 46%, rgba(3,7,26,0.3) 72%, rgba(3,7,26,0.2) 100%);
+            background: linear-gradient(180deg, rgba(3,7,26,0.9) 0%, rgba(3,7,26,0.76) 38%, rgba(3,7,26,0.62) 70%, rgba(3,7,26,0.58) 100%);
           }
         }
 

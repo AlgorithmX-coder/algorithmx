@@ -319,6 +319,28 @@ export default function SchoolsLanding() {
           </div>
         </section>
 
+        {/* REACH ──────────────────────────────────────────── */}
+        <section className="sch-section sch-reach-section">
+          <FadeUp>
+            <div className="sch-reach">
+              <div>
+                <p style={eyebrow}>{"// One build, every time zone"}</p>
+                <h2 style={h2}>
+                  Teach it in Dundee. <span className="sch-grad">Teach it in Dubai.</span>
+                </h2>
+                <p style={{ ...lede, maxWidth: 620 }}>
+                  British schools teach far beyond Britain, and this curriculum travels with them. One build serves every site from the edge, so the same week, the same safeguarding and the same teacher dashboard open in a browser tab wherever your classroom is.
+                </p>
+              </div>
+              <ul className="sch-reach-chips">
+                <li>One build, every site</li>
+                <li>Served from the edge</li>
+                <li>Any time zone</li>
+              </ul>
+            </div>
+          </FadeUp>
+        </section>
+
         {/* PHASE PICKER ───────────────────────────────────── */}
         <section id="phase" className="sch-section">
           <span className="sch-glow sch-glow-amber" aria-hidden />
@@ -528,6 +550,53 @@ export default function SchoolsLanding() {
           outline: 2px solid var(--lv2-cyan); outline-offset: 3px;
         }
         .sch-phase:focus-visible { outline-offset: 4px; }
+
+        .sch-reach-section {
+          padding-top: calc(var(--lv2-rail) * 0.5);
+          padding-bottom: calc(var(--lv2-rail) * 0.5);
+        }
+        .sch-reach {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: clamp(22px, 4vw, 60px);
+          align-items: end;
+        }
+        .sch-reach-chips {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .sch-reach-chips li {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 9px 16px;
+          border-radius: 999px;
+          border: 1px solid rgba(0,229,255,0.22);
+          background: rgba(4,8,22,0.74);
+          font-family: var(--lv2-font-mono);
+          font-size: 11.5px;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(232,237,255,0.84);
+          white-space: nowrap;
+        }
+        .sch-reach-chips li::before {
+          content: "";
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #7df0ff;
+          box-shadow: 0 0 10px rgba(125,240,255,0.8);
+        }
+        @media (max-width: 900px) {
+          .sch-reach { grid-template-columns: minmax(0, 1fr); }
+          .sch-reach-chips { flex-direction: row; flex-wrap: wrap; }
+        }
 
         .sch-grad {
           background: linear-gradient(92deg, #7df0ff 0%, #b98bff 55%, #ff8ad4 100%);
