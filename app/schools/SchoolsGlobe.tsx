@@ -34,6 +34,7 @@ const MOTION_KEY = "ax-schools-motion";
 const TILT = 20 * D2R; // camera latitude with Britain facing us
 const LIFT = 50 * D2R; // how far the camera climbs as Britain swings away
 const SPIN = (2 * Math.PI) / 100; // one revolution, in radians per second
+const FLIGHT = 0.28; // arc progress per second: a lesson crosses in ~3.6s
 
 /** Real lines from this codebase: the cargo on every arc. */
 const CODE =
@@ -322,10 +323,13 @@ function bounds(poly: number[][]) {
 }
 
 const CITIES: [string, number, number][] = [
-  ["DUBAI", 25.2, 55.3], ["SINGAPORE", 1.3, 103.8], ["HONG KONG", 22.3, 114.2],
-  ["MADRID", 40.4, -3.7], ["NAIROBI", -1.3, 36.8], ["SYDNEY", -33.9, 151.2],
-  ["NEW YORK", 40.7, -74], ["DOHA", 25.3, 51.5], ["MUMBAI", 19.1, 72.9],
-  ["CAPE TOWN", -33.9, 18.4], ["KUALA LUMPUR", 3.1, 101.7], ["TORONTO", 43.7, -79.4],
+  ["DUBAI", 25.2, 55.3], ["ABU DHABI", 24.5, 54.4], ["DOHA", 25.3, 51.5],
+  ["RIYADH", 24.7, 46.7], ["CAIRO", 30, 31.2], ["NAIROBI", -1.3, 36.8],
+  ["LAGOS", 6.5, 3.4], ["CAPE TOWN", -33.9, 18.4], ["MADRID", 40.4, -3.7],
+  ["GENEVA", 46.2, 6.1], ["MUMBAI", 19.1, 72.9], ["BANGKOK", 13.8, 100.5],
+  ["SINGAPORE", 1.3, 103.8], ["KUALA LUMPUR", 3.1, 101.7], ["HONG KONG", 22.3, 114.2],
+  ["SHANGHAI", 31.2, 121.5], ["TOKYO", 35.7, 139.7], ["SYDNEY", -33.9, 151.2],
+  ["AUCKLAND", -36.8, 174.8], ["TORONTO", 43.7, -79.4], ["NEW YORK", 40.7, -74],
 ];
 const LONDON: [number, number] = [51.5, -0.12];
 
@@ -370,6 +374,24 @@ function slerp(a: Vec, b: Vec, t: number): Vec {
   const k1 = Math.sin((1 - t) * o) / s;
   const k2 = Math.sin(t * o) / s;
   return [a[0] * k1 + b[0] * k2, a[1] * k1 + b[1] * k2, a[2] * k1 + b[2] * k2];
+}
+
+/**
+ * Where the camera is at a moment. The globe turns steadily; the camera
+ * climbs towards the pole only as Britain swings behind, and the squared ease
+ * keeps it low (and the equator wide open) for most of the revolution.
+ */
+function cameraAt(time: number) {
+  const away = time * SPIN;
+  const climb = (1 - Math.cos(away)) / 2;
+  return { away, rot: -LONDON[1] * D2R + away, tilt: TILT + LIFT * climb * climb };
+}
+
+/** Depth of a point at a moment: positive is the half facing the viewer. */
+function depthAt(v: Vec, time: number) {
+  const { rot, tilt } = cameraAt(time);
+  const behind = -v[0] * Math.sin(rot) + v[2] * Math.cos(rot);
+  return v[1] * Math.sin(tilt) + behind * Math.cos(tilt);
 }
 
 function glowSprite(rgb: string, size: number) {
@@ -620,11 +642,29 @@ export default function SchoolsGlobe() {
         name: c[0],
         a: src,
         b: vec(c[1], c[2]),
-        t: -i * 1.1,
+        t: 1.6, // relaunch() plans the first departure on the first frame
         lit: 0,
         landed: false,
       }));
       flashes = [];
+    };
+
+    /**
+     * Hold a lesson back until its city will be facing us when it arrives.
+     * Without this, most of every revolution lands on the far side of the
+     * globe and the page looks idle however many routes are running.
+     */
+    const relaunch = (arc: Arc, now: number) => {
+      const travel = 1 / FLIGHT;
+      for (let wait = 0; wait < 34; wait += 0.5) {
+        if (depthAt(arc.b, now + wait + travel) > 0.2) {
+          arc.t = -FLIGHT * (wait + Math.random() * 2.2);
+          return;
+        }
+      }
+      // Never in view within the next half minute (the far south, while the
+      // camera is lifted north): send it anyway, so the route still reads.
+      arc.t = -FLIGHT * (4 + Math.random() * 10);
     };
 
     const draw = (t: number, dt: number) => {
@@ -635,9 +675,7 @@ export default function SchoolsGlobe() {
       // Britain behind the limb for half of it, so the camera climbs towards
       // the pole as Britain swings away and drops back as it returns: London
       // stays within about 60 degrees of the centre the whole way round.
-      const away = t * SPIN;
-      const rot = -LONDON[1] * D2R + away;
-      const tilt = TILT + LIFT * (1 - Math.cos(away)) * 0.5;
+      const { rot, tilt } = cameraAt(t);
       const cr = Math.cos(rot);
       const sr = Math.sin(rot);
       const ct = Math.cos(tilt);
@@ -718,7 +756,8 @@ export default function SchoolsGlobe() {
       }
       ctx.globalAlpha = 1;
 
-      let labelBox: [number, number, number, number] | null = null;
+      // Every name drawn this frame, so the next one can avoid them.
+      const taken: [number, number, number, number][] = [];
       const pulse = 0.72 + 0.28 * Math.sin(t * 1.5);
       const ukP = project(vec(LONDON[0], LONDON[1]));
       if (ukP[2] > 0) {
@@ -743,7 +782,7 @@ export default function SchoolsGlobe() {
           // Clear of the top vignette, which would otherwise mute the label.
           const ukY = cy - R * 0.62;
           const subY = ukY + ukAtlas.ch * 1.16;
-          labelBox = [ukX - 6, ukY - 4, ukX + labelW + 6, subY + dimAtlas.ch + 4];
+          taken.push([ukX - 6, ukY - 4, ukX + labelW + 6, subY + dimAtlas.ch + 4]);
           text(ukAtlas, head, ukX, ukY, 0.98);
           text(dimAtlas, lead, ukX, subY, 0.92);
           text(brandAtlas, "ALGORITHMX", ukX + brandX, subY, 1);
@@ -772,10 +811,10 @@ export default function SchoolsGlobe() {
 
       // Lessons on their way out of the UK.
       for (const arc of arcs) {
-        arc.t += dt * 0.2;
-        if (arc.t > 1.8) arc.t = -0.2 - Math.random() * 0.6;
+        arc.t += dt * FLIGHT;
+        if (arc.t > 1.5) relaunch(arc, t);
         const p = Math.max(0, Math.min(1, arc.t));
-        const steps = 44;
+        const steps = 36;
         const span = (from: number, to: number, style: string, width: number) => {
           ctx.beginPath();
           let started = false;
@@ -824,7 +863,7 @@ export default function SchoolsGlobe() {
           flashes.push({ v: arc.b, t: 0 });
         }
         if (arc.t < 0.05) arc.landed = false;
-        if (arc.lit > 0) arc.lit = Math.max(0, arc.lit - dt * 0.35);
+        if (arc.lit > 0) arc.lit = Math.max(0, arc.lit - dt * 0.26);
 
         const pin = project(arc.b);
         if (pin[2] > 0.02) {
@@ -839,13 +878,12 @@ export default function SchoolsGlobe() {
             const flip = pin[0] > w - nameW - 24;
             const lx = flip ? pin[0] - 7 - nameW : pin[0] + 7;
             const ly = pin[1] - cityAtlas.ch * 0.4;
-            const clash =
-              labelBox !== null &&
-              lx < labelBox[2] &&
-              lx + nameW > labelBox[0] &&
-              ly < labelBox[3] &&
-              ly + cityAtlas.ch > labelBox[1];
-            if (!clash) text(cityAtlas, arc.name, lx, ly, 1);
+            const box: [number, number, number, number] = [lx - 4, ly - 2, lx + nameW + 4, ly + cityAtlas.ch + 2];
+            const clash = taken.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]);
+            if (!clash) {
+              taken.push(box);
+              text(cityAtlas, arc.name, lx, ly, 1);
+            }
           }
         }
       }
