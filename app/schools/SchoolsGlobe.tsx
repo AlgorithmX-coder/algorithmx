@@ -35,7 +35,7 @@ const TILT = 20 * D2R;
 
 /** Real lines from this codebase: the cargo on every arc. */
 const CODE =
-  'const lesson = await loadWeek(5); if (safe) award("phishing-spotter"); teacher.sync({ class: "OAK-4" }); ';
+  'const lesson = await loadWeek(5); if (safe) award("phishing-spotter"); teacher.sync(classroom); ';
 
 /* Coarse coastlines. Accurate enough to read as Earth at dot resolution. */
 const LAND: number[][][] = [
@@ -134,29 +134,82 @@ function glowSprite(rgb: string, size: number) {
   return c;
 }
 
-/** Monospace sprite sheet: characters are stamped, never re-rendered. */
-function makeAtlas(px: number, color: string, weight: string) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const font = `${weight} ${px}px var(--lv2-font-mono, ui-monospace, monospace)`;
+/**
+ * The site's mono family, resolved for canvas.
+ *
+ * ctx.font is parsed without an element, so a var() reference is REJECTED and
+ * the context silently keeps 10px sans-serif. Read the custom property first,
+ * then check the assignment actually took.
+ */
+const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace';
+function monoFont(px: number, weight: string) {
+  let family = "";
+  try {
+    family = getComputedStyle(document.documentElement).getPropertyValue("--lv2-font-mono").trim();
+  } catch {}
+  return `${weight} ${px}px ${family ? family + ", " : ""}${MONO}`;
+}
+
+type AtlasOpts = { glow?: string; track?: number };
+
+/**
+ * Monospace sprite sheet: characters are stamped, never re-rendered.
+ *
+ * Each cell bakes its own halo (a dark plate, then a coloured bloom), so a
+ * label holds over the lit side of the globe with no blur at draw time. The
+ * halo lives in `pad` either side of the glyph; layout still steps by `cw`.
+ */
+function makeAtlas(px: number, color: string, weight: string, opts: AtlasOpts = {}) {
+  const dpr = Math.max(1, Math.round(Math.min(window.devicePixelRatio || 1, 2)));
   const probe = document.createElement("canvas").getContext("2d");
-  let cw = Math.ceil(px * 0.6);
+  let font = monoFont(px, weight);
+  let adv = px * 0.6;
   if (probe) {
     probe.font = font;
-    cw = Math.max(1, Math.ceil(probe.measureText("M").width));
+    const took = probe.font.toLowerCase().includes("mono") && probe.font.includes(`${px}px`);
+    if (!took) {
+      font = `${weight} ${px}px ${MONO}`;
+      probe.font = font;
+    }
+    adv = probe.measureText("M").width || adv;
   }
+  const cw = Math.max(1, Math.ceil(adv + (opts.track ?? 0)));
   const ch = Math.ceil(px * 1.34);
+  const pad = opts.glow ? Math.ceil(px * 0.72) : 0;
+  const dw = cw + pad * 2;
+  const dh = ch + pad * 2;
   const c = document.createElement("canvas");
-  c.width = Math.ceil(cw * 95 * dpr);
-  c.height = Math.ceil(ch * dpr);
+  c.width = dw * 95 * dpr;
+  c.height = dh * dpr;
   const g = c.getContext("2d");
   if (g) {
     g.scale(dpr, dpr);
     g.font = font;
     g.textBaseline = "alphabetic";
-    g.fillStyle = color;
-    for (let i = 0; i < 95; i++) g.fillText(String.fromCharCode(32 + i), i * cw, px);
+    for (let i = 0; i < 95; i++) {
+      const glyph = String.fromCharCode(32 + i);
+      const x = i * dw + pad;
+      const y = pad + px;
+      if (opts.glow) {
+        g.shadowColor = "rgba(3,8,26,0.92)";
+        g.shadowBlur = px * 0.55;
+        g.fillStyle = "rgba(3,8,26,0.92)";
+        g.fillText(glyph, x, y);
+        g.fillText(glyph, x, y);
+        g.shadowColor = opts.glow;
+        g.shadowBlur = px * 0.7;
+        g.fillStyle = color;
+        g.fillText(glyph, x, y);
+        g.fillText(glyph, x, y);
+        g.shadowBlur = 0;
+        g.shadowColor = "transparent";
+      }
+      g.fillStyle = color;
+      g.fillText(glyph, x, y);
+    }
   }
-  return { c, cw, ch, sw: cw * dpr, sh: ch * dpr };
+  // cw/ch are the layout box; dw/dh include the halo, drawn back by pad.
+  return { c, cw, ch, pad, dw, dh, sw: dw * dpr, sh: dh * dpr };
 }
 type Atlas = ReturnType<typeof makeAtlas>;
 
@@ -211,17 +264,31 @@ export default function SchoolsGlobe() {
     let cityAtlas: Atlas | null = null;
     let ukAtlas: Atlas | null = null;
     let dimAtlas: Atlas | null = null;
+    let brandAtlas: Atlas | null = null;
     let codeAtlas: Atlas | null = null;
 
     const blit = (a: Atlas, code: number, x: number, y: number, alpha: number) => {
       const i = (code | 0) - 32;
       if (i < 0 || i > 94 || alpha <= 0.01) return;
       ctx.globalAlpha = alpha;
-      ctx.drawImage(a.c, i * a.sw, 0, a.sw, a.sh, x, y, a.cw, a.ch);
+      ctx.drawImage(a.c, i * a.sw, 0, a.sw, a.sh, x - a.pad, y - a.pad, a.dw, a.dh);
       ctx.globalAlpha = 1;
     };
+    // x, y is the top left of the first layout cell; runs land on whole pixels.
     const text = (a: Atlas, str: string, x: number, y: number, alpha: number) => {
-      for (let i = 0; i < str.length; i++) blit(a, str.charCodeAt(i), x + i * a.cw, y, alpha);
+      const left = Math.round(x);
+      const top = Math.round(y);
+      for (let i = 0; i < str.length; i++) blit(a, str.charCodeAt(i), left + i * a.cw, top, alpha);
+    };
+
+    const buildAtlases = () => {
+      const px = Math.max(12, Math.min(19, Math.round(R / 20)));
+      const sub = Math.max(11, Math.round(px * 0.78));
+      ukAtlas = makeAtlas(px, "#ffd9a2", "700", { glow: "rgba(255,181,84,0.9)", track: px * 0.12 });
+      brandAtlas = makeAtlas(sub, "#e8fbff", "700", { glow: "rgba(110,230,255,0.95)", track: sub * 0.14 });
+      dimAtlas = makeAtlas(sub, "#8fb6dc", "600", { glow: "rgba(70,130,190,0.45)", track: sub * 0.14 });
+      cityAtlas = makeAtlas(sub, "#c2ffb2", "700", { glow: "rgba(120,255,130,0.8)", track: sub * 0.1 });
+      codeAtlas = makeAtlas(Math.max(9, Math.round(R / 26)), "#eafcff", "600");
     };
 
     const build = () => {
@@ -259,11 +326,7 @@ export default function SchoolsGlobe() {
       // Drawing stays in page coordinates; the transform does the offset.
       ctx.setTransform(dpr, 0, 0, dpr, -bx * dpr, -by * dpr);
 
-      const px = Math.max(8, Math.round(R / 15));
-      cityAtlas = makeAtlas(px, "#9cff8a", "600");
-      ukAtlas = makeAtlas(px, "#ffc46b", "600");
-      dimAtlas = makeAtlas(px, "#5c86b8", "500");
-      codeAtlas = makeAtlas(Math.max(8, Math.round(R / 16)), "#eafcff", "600");
+      buildAtlases();
 
       const step = w < 700 ? 3 : 2;
       land = [];
@@ -304,7 +367,7 @@ export default function SchoolsGlobe() {
 
     const draw = (t: number, dt: number) => {
       ctx.clearRect(bx, by, bw, bh);
-      if (!cityAtlas || !ukAtlas || !dimAtlas || !codeAtlas) return;
+      if (!cityAtlas || !ukAtlas || !dimAtlas || !brandAtlas || !codeAtlas) return;
 
       const rot = -LONDON[1] * D2R + Math.sin(t * 0.06) * 0.5;
       const cr = Math.cos(rot);
@@ -398,10 +461,38 @@ export default function SchoolsGlobe() {
         ctx.beginPath();
         ctx.arc(ukP[0], ukP[1], R * 0.1 * (1 + 0.25 * Math.sin(t * 1.5)), 0, Math.PI * 2);
         ctx.stroke();
-        const ukFlip = ukP[0] > w * 0.7;
-        const ukX = ukFlip ? ukP[0] - R * 0.12 - 14 * ukAtlas.cw : ukP[0] + R * 0.12;
-        text(ukAtlas, "UNITED KINGDOM", ukX, ukP[1] - R * 0.17, 0.95);
-        text(dimAtlas, "SOURCE . ALGORITHMX", ukX, ukP[1] - R * 0.17 + ukAtlas.ch * 1.4, 0.7);
+        // Only a wide layout gives the globe a column of its own; narrower, the
+        // page's copy runs full width and an annotation would sit on top of it.
+        if (w >= 1100) {
+          const head = "UNITED KINGDOM";
+          const lead = "SOURCE";
+          const brandX = (lead.length + 2) * dimAtlas.cw; // the gap holds the dot
+          const labelW = Math.max(head.length * ukAtlas.cw, brandX + 10 * brandAtlas.cw);
+          const ukFlip = ukP[0] > w * 0.7;
+          const want = ukFlip ? ukP[0] - R * 0.12 - labelW : ukP[0] + R * 0.12;
+          const ukX = Math.max(bx + 10, Math.min(bx + bw - labelW - 10, want));
+          const ukY = ukP[1] - R * 0.17;
+          const subY = ukY + ukAtlas.ch * 1.16;
+          text(ukAtlas, head, ukX, ukY, 0.98);
+          text(dimAtlas, lead, ukX, subY, 0.92);
+          text(brandAtlas, "ALGORITHMX", ukX + brandX, subY, 1);
+          const sep = Math.max(2, Math.round(dimAtlas.ch * 0.14));
+          ctx.fillStyle = "rgba(125,240,255,0.6)";
+          ctx.fillRect(Math.round(ukX + (lead.length + 0.7) * dimAtlas.cw), Math.round(subY + dimAtlas.ch * 0.45), sep, sep);
+          // A leader back to the ring, so the words read as a label on Britain.
+          const tipX = ukFlip ? ukX + labelW + 9 : ukX - 9;
+          const tipY = subY + dimAtlas.ch * 0.5;
+          const dx = ukP[0] - tipX;
+          const dy = ukP[1] - tipY;
+          const len = Math.hypot(dx, dy) || 1;
+          const run = Math.max(0, len - R * 0.15);
+          ctx.strokeStyle = "rgba(255,206,140,0.34)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(tipX, tipY);
+          ctx.lineTo(tipX + (dx / len) * run, tipY + (dy / len) * run);
+          ctx.stroke();
+        }
       }
 
       // Lessons on their way out of the UK.
@@ -448,7 +539,8 @@ export default function SchoolsGlobe() {
               ctx.drawImage(GLOW.cyan, pt[0] - 16, pt[1] - 16, 32, 32);
               ctx.globalAlpha = 1;
             }
-            blit(codeAtlas, CODE.charCodeAt((Math.floor(t * 12) + k * 5) % CODE.length), pt[0] - 3, pt[1] - 5, 1 - k * 0.22);
+            const cargo = CODE.charCodeAt((Math.floor(t * 12) + k * 5) % CODE.length);
+            blit(codeAtlas, cargo, pt[0] - codeAtlas.cw * 0.5, pt[1] - codeAtlas.ch * 0.48, 1 - k * 0.22);
           }
         }
         if (arc.t > 1 && !arc.landed) {
@@ -548,6 +640,14 @@ export default function SchoolsGlobe() {
 
     build();
     applyMotion(isPaused);
+    // The mono webfont lands after first paint: restamp the sheets when it does.
+    if (document.fonts && document.fonts.status !== "loaded") {
+      document.fonts.ready.then(() => {
+        if (disposed) return;
+        buildAtlases();
+        if (isPaused) draw(performance.now() / 1000, 0);
+      });
+    }
     const labelTimer = isPaused ? window.setTimeout(() => setPaused(true), 0) : 0;
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", onVisibility);
@@ -560,7 +660,6 @@ export default function SchoolsGlobe() {
       window.clearTimeout(labelTimer);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
-      void disposed;
     };
   }, []);
 
