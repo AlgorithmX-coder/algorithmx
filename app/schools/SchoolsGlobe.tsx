@@ -492,6 +492,7 @@ type Atlas = ReturnType<typeof makeAtlas>;
 export default function SchoolsGlobe() {
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
   const setMotionRef = useRef<((paused: boolean) => void) | null>(null);
   const [paused, setPaused] = useState(false);
 
@@ -538,10 +539,12 @@ export default function SchoolsGlobe() {
     let arcs: Arc[] = [];
     let flashes: Flash[] = [];
     let cityAtlas: Atlas | null = null;
-    let ukAtlas: Atlas | null = null;
-    let dimAtlas: Atlas | null = null;
-    let brandAtlas: Atlas | null = null;
     let codeAtlas: Atlas | null = null;
+    // Where the label element ended up, so the leader can reach out of it.
+    let labelX = 0;
+    let labelY = 0;
+    let labelW = 0;
+    let labelH = 0;
 
     const blit = (a: Atlas, code: number, x: number, y: number, alpha: number) => {
       const i = (code | 0) - 32;
@@ -558,12 +561,8 @@ export default function SchoolsGlobe() {
     };
 
     const buildAtlases = () => {
-      const px = Math.max(12, Math.min(19, Math.round(R / 20)));
-      const sub = Math.max(11, Math.round(px * 0.78));
-      ukAtlas = makeAtlas(px, "#ffd9a2", "700", { glow: "rgba(255,181,84,0.9)", track: px * 0.12 });
-      brandAtlas = makeAtlas(sub, "#e8fbff", "700", { glow: "rgba(110,230,255,0.95)", track: sub * 0.14 });
-      dimAtlas = makeAtlas(sub, "#8fb6dc", "600", { glow: "rgba(70,130,190,0.45)", track: sub * 0.14 });
-      cityAtlas = makeAtlas(sub, "#c2ffb2", "700", { glow: "rgba(120,255,130,0.8)", track: sub * 0.1 });
+      const px = Math.max(11, Math.min(15, Math.round(R / 26)));
+      cityAtlas = makeAtlas(px, "#c2ffb2", "700", { glow: "rgba(120,255,130,0.8)", track: px * 0.1 });
       codeAtlas = makeAtlas(Math.max(9, Math.round(R / 26)), "#eafcff", "600");
     };
 
@@ -637,6 +636,26 @@ export default function SchoolsGlobe() {
       for (let i = 0; i < 46; i++) {
         stars.push({ x: bx + Math.random() * bw, y: by + Math.random() * bh, r: 0.6 + Math.random() * 1.2, p: Math.random() * 6 });
       }
+      // The label is a DOM element ABOVE the scrim: drawn on the canvas it
+      // sat under the vignette that keeps the page's own text readable, which
+      // muted the one thing up there meant to be read. Placed here because
+      // this is where the globe's size is known.
+      const label = labelRef.current;
+      if (label) {
+        label.style.setProperty("--sg-label-px", `${Math.max(13, Math.min(20, Math.round(R / 19)))}px`);
+        // High on the globe: clear of the page's top row above it and of the
+        // hero's screens below it, both of which it used to run into.
+        const ly = cy - R * 0.8;
+        label.style.top = `${Math.round(ly)}px`;
+        label.style.left = "0px";
+        const box = label.getBoundingClientRect();
+        labelW = box.width;
+        labelH = box.height;
+        labelY = ly;
+        labelX = Math.max(bx + 10, Math.min(bx + bw - labelW - 10, cx - R * 0.6));
+        label.style.left = `${Math.round(labelX)}px`;
+      }
+
       const src = vec(LONDON[0], LONDON[1]);
       arcs = CITIES.map((c, i) => ({
         name: c[0],
@@ -669,7 +688,7 @@ export default function SchoolsGlobe() {
 
     const draw = (t: number, dt: number) => {
       ctx.clearRect(bx, by, bw, bh);
-      if (!cityAtlas || !ukAtlas || !dimAtlas || !brandAtlas || !codeAtlas) return;
+      if (!cityAtlas || !codeAtlas) return;
 
       // One steady revolution, never reversing. A full spin would carry
       // Britain behind the limb for half of it, so the camera climbs towards
@@ -769,31 +788,13 @@ export default function SchoolsGlobe() {
         ctx.beginPath();
         ctx.arc(ukP[0], ukP[1], R * 0.1 * (1 + 0.25 * Math.sin(t * 1.5)), 0, Math.PI * 2);
         ctx.stroke();
-        // Only a wide layout gives the globe a column of its own; narrower, the
-        // page's copy runs full width and an annotation would sit on top of it.
-        if (w >= 1100) {
-          const head = "UNITED KINGDOM";
-          const lead = "SOURCE";
-          const brandX = (lead.length + 2) * dimAtlas.cw; // the gap holds the dot
-          const labelW = Math.max(head.length * ukAtlas.cw, brandX + 10 * brandAtlas.cw);
-          // Britain travels as the globe turns, so the label is pinned to the
-          // globe instead of to the pin, and a leader reaches across to it.
-          const ukX = Math.max(bx + 10, Math.min(bx + bw - labelW - 10, cx - R * 0.6));
-          // Clear of the top vignette, which would otherwise mute the label.
-          const ukY = cy - R * 0.62;
-          const subY = ukY + ukAtlas.ch * 1.16;
-          taken.push([ukX - 6, ukY - 4, ukX + labelW + 6, subY + dimAtlas.ch + 4]);
-          text(ukAtlas, head, ukX, ukY, 0.98);
-          text(dimAtlas, lead, ukX, subY, 0.92);
-          text(brandAtlas, "ALGORITHMX", ukX + brandX, subY, 1);
-          const sep = Math.max(2, Math.round(dimAtlas.ch * 0.14));
-          ctx.fillStyle = "rgba(125,240,255,0.6)";
-          ctx.fillRect(Math.round(ukX + (lead.length + 0.7) * dimAtlas.cw), Math.round(subY + dimAtlas.ch * 0.45), sep, sep);
-          // A leader across to the ring, so the words read as a label on
-          // Britain wherever the turn has carried it. Dropped when Britain is
-          // close enough that a line would only clutter the two.
-          const tipX = ukP[0] > ukX + labelW * 0.5 ? ukX + labelW + 9 : ukX - 9;
-          const tipY = subY + dimAtlas.ch * 0.5;
+        // The label itself is DOM, above the scrim. All that is left here is
+        // its leader, reaching from the words to Britain wherever the turn has
+        // carried it, and keeping city names off the words.
+        if (w >= 1100 && labelW > 0) {
+          taken.push([labelX - 6, labelY - 4, labelX + labelW + 6, labelY + labelH + 4]);
+          const tipX = ukP[0] > labelX + labelW * 0.5 ? labelX + labelW + 9 : labelX - 9;
+          const tipY = labelY + labelH * 0.72;
           const dx = ukP[0] - tipX;
           const dy = ukP[1] - tipY;
           const len = Math.hypot(dx, dy) || 1;
@@ -999,6 +1000,14 @@ export default function SchoolsGlobe() {
         <div className="sg-sky" />
         <canvas ref={canvasRef} className="sg-canvas" />
         <div className="sg-scrim" />
+        <div className="sg-label" ref={labelRef} aria-hidden>
+          <span className="sg-label-head">UNITED KINGDOM</span>
+          <span className="sg-label-sub">
+            <span className="sg-label-lead">SOURCE</span>
+            <span className="sg-label-dot" />
+            <span className="sg-label-brand">ALGORITHMX</span>
+          </span>
+        </div>
       </div>
 
       <button type="button" className="sg-motion" onClick={toggleMotion}>
@@ -1040,6 +1049,47 @@ export default function SchoolsGlobe() {
         }
         /* Keeps the reading column calm and legible over the globe, and gives
            the nav and the top row a dark bed wherever the globe reaches. */
+        .sg-label {
+          position: absolute;
+          display: none;
+          flex-direction: column;
+          gap: calc(var(--sg-label-px, 18px) * 0.34);
+          font-family: var(--lv2-font-mono, ui-monospace, monospace);
+          line-height: 1;
+          white-space: nowrap;
+          pointer-events: none;
+        }
+        /* Same rule as the leader: only where the globe has a column of its
+           own does an annotation have anywhere to sit. */
+        @media (min-width: 1100px) {
+          .sg-label { display: flex; }
+        }
+        .sg-label-head {
+          font-size: var(--sg-label-px, 18px);
+          font-weight: 700;
+          letter-spacing: 0.13em;
+          color: #ffd9a2;
+          text-shadow: 0 0 calc(var(--sg-label-px, 18px) * 0.75) rgba(255,181,84,0.7), 0 0 2px rgba(3,8,26,0.95);
+        }
+        .sg-label-sub {
+          display: flex;
+          align-items: center;
+          gap: calc(var(--sg-label-px, 18px) * 0.44);
+          font-size: calc(var(--sg-label-px, 18px) * 0.78);
+          font-weight: 700;
+          letter-spacing: 0.15em;
+        }
+        .sg-label-lead { color: #8fb6dc; }
+        .sg-label-dot {
+          width: calc(var(--sg-label-px, 18px) * 0.16);
+          height: calc(var(--sg-label-px, 18px) * 0.16);
+          background: rgba(125,240,255,0.7);
+        }
+        .sg-label-brand {
+          color: #e8fbff;
+          text-shadow: 0 0 calc(var(--sg-label-px, 18px) * 0.62) rgba(110,230,255,0.85), 0 0 2px rgba(3,8,26,0.95);
+        }
+
         .sg-scrim {
           position: absolute;
           inset: 0;
