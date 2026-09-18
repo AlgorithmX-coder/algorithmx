@@ -689,6 +689,42 @@ export default function SchoolsGlobe() {
       arc.t = -FLIGHT * (4 + Math.random() * 10);
     };
 
+    /**
+     * A classroom screen coming on at a city: a browser window in miniature,
+     * three dots on its bar and code on its page, matching the screenshots
+     * fanned in the hero. Drawn, not stamped, because it is a handful of
+     * rectangles and it has to scale with the globe.
+     */
+    const classroom = (x: number, y: number, scale: number, alpha: number, seed: number) => {
+      const cw2 = 34 * scale;
+      const ch2 = 24 * scale;
+      const left = Math.round(x - cw2 / 2);
+      const top = Math.round(y - ch2 - 11);
+      const bar = Math.max(3, 5 * scale);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = "rgba(5,16,40,0.94)";
+      ctx.fillRect(left, top, cw2, ch2);
+      ctx.fillStyle = "rgba(156,255,138,0.22)";
+      ctx.fillRect(left, top, cw2, bar);
+      // the window's three dots
+      ctx.fillStyle = "rgba(200,255,205,0.8)";
+      for (let i = 0; i < 3; i++) ctx.fillRect(left + 3 + i * 3.4, top + bar * 0.3, 1.6, 1.6);
+      // lines of code, ragged like real ones
+      for (let i = 0; i < 3; i++) {
+        const n = (seed + i * 7) % 5;
+        ctx.fillStyle = i === 1 ? "rgba(125,240,255,0.85)" : "rgba(196,255,206,0.8)";
+        ctx.fillRect(left + 3, top + bar + 3 + i * 5 * scale, (0.3 + n * 0.14) * (cw2 - 6), Math.max(1, 1.6 * scale));
+      }
+      ctx.strokeStyle = "rgba(156,255,138,0.8)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(left + 0.5, top + 0.5, cw2 - 1, ch2 - 1);
+      // stand and desk, so it reads as a room rather than a floating card
+      ctx.fillStyle = "rgba(156,255,138,0.6)";
+      ctx.fillRect(x - 1.5, top + ch2, 3, 3 * scale);
+      ctx.fillRect(x - 8 * scale, top + ch2 + 3 * scale, 16 * scale, Math.max(1, 1.4 * scale));
+      ctx.globalAlpha = 1;
+    };
+
     const draw = (t: number, dt: number) => {
       ctx.clearRect(bx, by, bw, bh);
       if (!cityAtlas || !codeAtlas) return;
@@ -877,17 +913,27 @@ export default function SchoolsGlobe() {
           ctx.globalAlpha = 1;
           ctx.fillStyle = hot ? "#9cff8a" : "#7df0ff";
           ctx.fillRect(pin[0] - 1.6, pin[1] - 1.6, 3.2, 3.2);
-          // Names only where the globe has a column of its own: narrower, the
-          // page's copy runs full width and a lit name lands behind it.
+          // Screens and names only where the globe has a column of its own:
+          // narrower, the page's copy runs full width and they land behind it.
           if (hot && w >= 1100) {
+            const free = (b: [number, number, number, number]) =>
+              !taken.some((o) => b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]);
+            // The screen grows as the lesson arrives and sits above the pin.
+            const grow = Math.min(1, (1 - arc.lit) * 7);
+            const k = (0.55 + 0.45 * grow) * Math.max(0.7, Math.min(1.25, R / 340));
+            const screenBox: [number, number, number, number] = [pin[0] - 20 * k, pin[1] - 38 * k, pin[0] + 20 * k, pin[1] - 6];
+            if (free(screenBox)) {
+              taken.push(screenBox);
+              classroom(pin[0], pin[1], k, Math.min(1, arc.lit * 2.4), arc.name.length);
+            }
+            // The name goes BELOW the pin, since the screen has the space above.
             const nameW = arc.name.length * cityAtlas.cw;
             const flip = pin[0] > w - nameW - 24;
             const lx = flip ? pin[0] - 7 - nameW : pin[0] + 7;
-            const ly = pin[1] - cityAtlas.ch * 0.4;
-            const box: [number, number, number, number] = [lx - 4, ly - 2, lx + nameW + 4, ly + cityAtlas.ch + 2];
-            const clash = taken.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]);
-            if (!clash) {
-              taken.push(box);
+            const ly = pin[1] + 5;
+            const nameBox: [number, number, number, number] = [lx - 4, ly - 2, lx + nameW + 4, ly + cityAtlas.ch + 2];
+            if (free(nameBox)) {
+              taken.push(nameBox);
               text(cityAtlas, arc.name, lx, ly, 1);
             }
           }
