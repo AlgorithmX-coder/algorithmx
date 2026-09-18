@@ -310,7 +310,7 @@ export default function BelieveOMeter({
   );
 
   return (
-    <ExerciseFrame maxWidth={820} decor>
+    <ExerciseFrame maxWidth={900} decor>
       {fx.layer()}
       {verdict.element}
 
@@ -338,9 +338,10 @@ export default function BelieveOMeter({
       )}
 
       {!showIntro && !finished && o && (
-        <div style={{ position: "relative", zIndex: 1 }}>
-          {/* Side padding keeps the header clear of the frame's corner ornaments. */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 22px 0" }}>
+        <div style={{ position: "relative", zIndex: 1, padding: "0 22px" }}>
+          {/* The whole board is inset: flush content collided with the frame's
+              28px rounded corners and its corner ornaments. */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 0 0" }}>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
               {doors ? (
                 <>
@@ -550,7 +551,10 @@ export default function BelieveOMeter({
                     animate={reduce ? { rotate: angle } : wobble ? { rotate: [angle, angle - 7, angle + 7, angle - 4, angle + 4, angle] } : { rotate: angle }}
                     // A keyframe array must tween: a spring on more than two keyframes crashes Motion (Build Standard gotcha).
                     transition={reduce ? { duration: 0 } : wobble ? { duration: 0.45, ease: "easeInOut" } : { type: "spring", stiffness: 160, damping: 14 }}
-                    style={{ originX: "100px", originY: "105px" } as never}
+                    // Motion defaults an SVG transform-box to fill-box, which measures a pixel
+                    // origin from the NEEDLE's own bounding box, not the dial: any turn swung it
+                    // clean off the face. view-box pins the pivot to the hub in viewBox units.
+                    style={{ transformBox: "view-box", originX: "100px", originY: "105px" } as never}
                   >
                     {doors ? (
                       // Shorter on the doors dial, so its tip points at a door instead of covering it.

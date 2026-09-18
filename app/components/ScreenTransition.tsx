@@ -27,7 +27,9 @@ const KEYFRAMES = `
 @keyframes st-slideRight-in { 0% { opacity: 0; transform: translateX(64px) scale(0.985); } 100% { opacity: 1; transform: translateX(0) scale(1); } }
 @keyframes st-slideLeft-in  { 0% { opacity: 0; transform: translateX(-64px) scale(0.985); } 100% { opacity: 1; transform: translateX(0) scale(1); } }
 @keyframes st-fadeScale-in  { 0% { opacity: 0; transform: scale(1.03); } 100% { opacity: 1; transform: scale(1); } }
-@keyframes st-wipeDown-curtain { 0% { transform: translateY(-100%); } 45%, 55% { transform: translateY(0); } 100% { transform: translateY(100%); } }
+/* The curtain used to sit still from 45% to 55%, which read as a blocky stall
+   halfway down (UAT W4 4b). It now sweeps through without stopping. */
+@keyframes st-wipeDown-curtain { 0% { transform: translateY(-100%); } 50% { transform: translateY(0); } 100% { transform: translateY(100%); } }
 `;
 
 function ensureKeyframes() {

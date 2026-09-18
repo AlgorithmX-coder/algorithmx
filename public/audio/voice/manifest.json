@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T19:33:40.434Z",
+  "generatedAt": "2026-09-18T16:07:24.570Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -13685,18 +13685,20 @@
       "file": "/audio/voice/a182acd6b7a6ace1.mp3"
     },
     {
-      "key": "fa2c51c84f9837ed",
+      "key": "3e7a8c0318d43579",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string! This game is all about what a scam really WANTS from you. Out in the real world, a message that offers you something amazing is often fishing for your password, your money, or one quick tap. Here is what you do. Tap a prize balloon and I'll read its offer. Then tap the token on the counter that its string really leads to: your password, your money, your tap, or nothing at all, because some offers are real. [warmly] Follow every string and no prize can hook you. Ready? Let's follow the strings!",
+      "text": "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string! This game is all about what a scam really WANTS from you. Out in the real world, a message that offers you something amazing is often fishing for your password, your money, or one quick tap. Here is what you do. Tap a prize balloon and I'll read its offer. Then tap the token on the counter that its string really leads to. Your password... your money... your tap... or nothing at all, because some offers are real. [warmly] Follow every string and no prize can hook you. Ready? Let's follow the strings!",
       "lines": [
         "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string!",
         "This game is all about what a scam really WANTS from you.",
         "Out in the real world, a message that offers you something amazing is often fishing for your password, your money, or one quick tap.",
-        "Here is what you do. Tap a prize balloon and I'll read its offer. Then tap the token on the counter that its string really leads to: your password, your money, your tap, or nothing at all, because some offers are real.",
+        "Here is what you do. Tap a prize balloon and I'll read its offer.",
+        "Then tap the token on the counter that its string really leads to.",
+        "Your password... your money... your tap... or nothing at all, because some offers are real.",
         "[warmly] Follow every string and no prize can hook you. Ready? Let's follow the strings!"
       ],
-      "file": "/audio/voice/fa2c51c84f9837ed.mp3"
+      "file": "/audio/voice/3e7a8c0318d43579.mp3"
     },
     {
       "key": "37a324a2a02e1835",
@@ -13762,18 +13764,20 @@
       "file": "/audio/voice/0e37b75197e157fd.mp3"
     },
     {
-      "key": "ed49dd3402bc5f93",
+      "key": "3728330f1b732596",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] On your second challenge, you take charge of the Believe-o-Meter! This game is all about how believable an offer is: could be real, hmm, check first, or no way. Out in the real world, most offers land on one of those three, and the enormous ones from strangers are always no way. Here is what you do. A poster hangs above the dial and I'll read it. Tap the arrows to move the needle to Could be real, Hmm, check first, or No way. Then tap LOCK IT IN. [warmly] Get the needle right and no giant prize can dazzle you. Ready? Let's measure!",
+      "text": "[excited] On your second challenge, you take charge of the Believe-o-Meter! This game is all about how believable an offer is: could be real, hmm, check first, or no way. Out in the real world, most offers land on one of those three, and the enormous ones from strangers are always no way. Here is what you do. A poster hangs above the dial and I'll read it. Tap the arrows to move the needle to one of three stops... Could be real... Hmm, check first... or No way. Then tap LOCK IT IN. [warmly] Get the needle right and no giant prize can dazzle you. Ready? Let's measure!",
       "lines": [
         "[excited] On your second challenge, you take charge of the Believe-o-Meter!",
         "This game is all about how believable an offer is: could be real, hmm, check first, or no way.",
         "Out in the real world, most offers land on one of those three, and the enormous ones from strangers are always no way.",
-        "Here is what you do. A poster hangs above the dial and I'll read it. Tap the arrows to move the needle to Could be real, Hmm, check first, or No way. Then tap LOCK IT IN.",
+        "Here is what you do. A poster hangs above the dial and I'll read it.",
+        "Tap the arrows to move the needle to one of three stops... Could be real... Hmm, check first... or No way.",
+        "Then tap LOCK IT IN.",
         "[warmly] Get the needle right and no giant prize can dazzle you. Ready? Let's measure!"
       ],
-      "file": "/audio/voice/ed49dd3402bc5f93.mp3"
+      "file": "/audio/voice/3728330f1b732596.mp3"
     },
     {
       "key": "b60fdf17fe293c90",
@@ -13838,18 +13842,21 @@
       "file": "/audio/voice/75ac15668ac69751.mp3"
     },
     {
-      "key": "e1016a0aa4eb87b2",
+      "key": "360a6b97eb75f5a3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING. This game is all about the hurry-up trick: countdowns, threats and big panic buttons. Out in the real world, a scary message wants you to act before you think, and slowing down is what beats it. Here is what you do. A message opens. Tap its four clues one at a time: who sent it, the button, the clock, and the promise. I'll read what each clue shows. When all four are open, tap TRICK to zap it, or tap REAL to keep it. [warmly] Slow down, check the clues, and no countdown can rush you. Ready? Let's inspect!",
+      "text": "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING. This game is all about the hurry-up trick: countdowns, threats and big panic buttons. Out in the real world, a scary message wants you to act before you think, and slowing down is what beats it. Here is what you do. A message opens. Tap its four clues one at a time... who sent it... the button... the clock... and the promise. I'll read what each clue shows. When all four are open, tap TRICK to zap it, or tap REAL to keep it. [warmly] Slow down, check the clues, and no countdown can rush you. Ready? Let's inspect!",
       "lines": [
         "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING.",
         "This game is all about the hurry-up trick: countdowns, threats and big panic buttons.",
         "Out in the real world, a scary message wants you to act before you think, and slowing down is what beats it.",
-        "Here is what you do. A message opens. Tap its four clues one at a time: who sent it, the button, the clock, and the promise. I'll read what each clue shows. When all four are open, tap TRICK to zap it, or tap REAL to keep it.",
+        "Here is what you do. A message opens.",
+        "Tap its four clues one at a time... who sent it... the button... the clock... and the promise.",
+        "I'll read what each clue shows.",
+        "When all four are open, tap TRICK to zap it, or tap REAL to keep it.",
         "[warmly] Slow down, check the clues, and no countdown can rush you. Ready? Let's inspect!"
       ],
-      "file": "/audio/voice/e1016a0aa4eb87b2.mp3"
+      "file": "/audio/voice/360a6b97eb75f5a3.mp3"
     },
     {
       "key": "c43253534b7e8142",
@@ -13922,7 +13929,11 @@
         "[excited] On your fourth challenge, you run the Name Tag Check!",
         "This game is all about lookalike senders, and the tiny swaps that give them away.",
         "Out in the real world, a copycat picks a name that is ALMOST right, hoping you never look closely.",
-        "Here is what you do. The real sender's name tag is on top. The sender to check hangs underneath, split into the same pieces. Compare each piece with the one above it. If a piece doesn't match, tap it to mark it SWAPPED. Tap it again to lift the mark. Then tap CLOSE THE BOOTH.",
+        "Here is what you do. The real sender's name tag is on top.",
+        "The sender to check hangs underneath, split into the same pieces.",
+        "Compare each piece with the one above it.",
+        "If a piece doesn't match, tap it to mark it SWAPPED. Tap it again to lift the mark.",
+        "Then tap CLOSE THE BOOTH.",
         "[warmly] Sometimes the sender is the real one, so no marks is a real answer too. Ready? Let's compare!"
       ],
       "file": "/audio/voice/a0440547ac21fd4c.mp3"
@@ -13998,7 +14009,9 @@
         "[excited] On your last challenge, you build the No-Bite Wall!",
         "This game is all about the three steps that beat every scam: stop, check, show.",
         "Out in the real world, a scam only works if you bite, so every safe habit you keep is another brick between you and the Raccoon.",
-        "Here is what you do. A brick arrives in the tray and I'll read it. If it's a safe habit, tap a column of the wall to lay it in. If it's a bad habit, tap the bin to throw it out.",
+        "Here is what you do. A brick arrives in the tray and I'll read it.",
+        "If it's a safe habit, tap a column of the wall to lay it in.",
+        "If it's a bad habit, tap the bin to throw it out.",
         "[warmly] Lay every safe brick and nothing bites through. Ready? Let's build!"
       ],
       "file": "/audio/voice/70f4bd3f7c837019.mp3"
@@ -14060,7 +14073,9 @@
         "[excited] Final drill, Cyber Hero! Every trick you beat this week is hiding in the Hall of Mirrors.",
         "This drill mixes up all five powers you learned about scams.",
         "Out in the real world, tricks don't come one at a time, so a hero keeps every power ready at once.",
-        "Here is what you do. Tap a glowing mirror and it asks you a question. I'll read it. Tap the answer you believe. Get it right and the mirror clears. Clear all five, and the hall is yours.",
+        "Here is what you do. Tap a glowing mirror and it asks you a question. I'll read it.",
+        "Tap the answer you believe.",
+        "Get it right and the mirror clears. Clear all five, and the hall is yours.",
         "[warmly] Five mirrors, five powers. Ready? Let's clear the hall!"
       ],
       "file": "/audio/voice/3761aea73a64c8e5.mp3"
@@ -15438,14 +15453,14 @@
       "file": "/audio/voice/8c247a36ef4c8527.mp3"
     },
     {
-      "key": "488564e386470b00",
+      "key": "f9702c7eaf1265ac",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "From Mrs. Patel at Maple Hill School. Library books due back Friday. Just a reminder that class four B's library books are due back this Friday. Thanks, Mrs. Patel.",
+      "text": "From Mrs. Patel at Maple Hill School. Library books due back Friday. Just a reminder that class four B's library books are due back this Friday. Thanks! Signed, Mrs. Patel.",
       "lines": [
-        "From Mrs. Patel at Maple Hill School. Library books due back Friday. Just a reminder that class four B's library books are due back this Friday. Thanks, Mrs. Patel."
+        "From Mrs. Patel at Maple Hill School. Library books due back Friday. Just a reminder that class four B's library books are due back this Friday. Thanks! Signed, Mrs. Patel."
       ],
-      "file": "/audio/voice/488564e386470b00.mp3"
+      "file": "/audio/voice/f9702c7eaf1265ac.mp3"
     },
     {
       "key": "af6629ece70e2a2f",

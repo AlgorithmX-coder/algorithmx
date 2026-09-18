@@ -31,7 +31,8 @@ export interface RevealArtifact {
   recap: string;
   /** Accent hex for this artifact's glow/tile. */
   accent: string;
-  /** Optional explicit position (% offset from centre). Auto-arced if omitted. */
+  /** Optional explicit position (PX offset from the centrepiece, so a ring of
+   *  them stays circular at any stage size). Auto-arced if omitted. */
   x?: number;
   y?: number;
 }
@@ -57,12 +58,18 @@ export interface RevealStageProps {
   onCascadeComplete?: () => void;
 }
 
-/** Auto-arc N artifacts across the upper half when explicit positions are omitted. */
+/** The arc the artifacts sit on, as PIXEL offsets from the centrepiece.
+ *  It used to move x linearly and y on a sine, which is a flattened hump, not
+ *  a circle: the badges landed between 273px and 391px from the centre (UAT W4
+ *  5b, "not a semicircle concentric to the middle badge"). Polar coordinates in
+ *  px put every badge on one true circle, whatever the stage aspect ratio. */
+const ARC_RADIUS = 320;
+const ARC_SPAN = 130; // degrees swept, centred on straight up
 function autoArc(i: number, n: number): { x: number; y: number } {
   const frac = n <= 1 ? 0.5 : i / (n - 1);
-  const x = -32 + frac * 64;
-  const y = -16 - Math.sin(frac * Math.PI) * 26;
-  return { x, y };
+  const deg = 90 + ARC_SPAN / 2 - frac * ARC_SPAN;
+  const rad = (deg * Math.PI) / 180;
+  return { x: Math.cos(rad) * ARC_RADIUS, y: -Math.sin(rad) * ARC_RADIUS };
 }
 
 export function RevealStage({
@@ -360,7 +367,24 @@ function ArtifactPedestal({
   visible: boolean;
   intensity: number;
 }) {
+  // The pedestal animates scale and y, so Motion owns its `transform` and a
+  // static translate(-50%, -50%) on it is dropped: it used to hang off its own
+  // top-left corner instead of sitting on its point. A plain zero-size anchor
+  // does the centring (grid + placeItems) so the ring really is concentric.
   return (
+    <div
+      style={{
+        position: "absolute",
+        top: "54%", // the centrepiece's own anchor
+        left: "50%",
+        marginLeft: x,
+        marginTop: y,
+        width: 0,
+        height: 0,
+        display: "grid",
+        placeItems: "center",
+      }}
+    >
     <motion.div
       initial={intensity === 0 ? { opacity: 0 } : { opacity: 0, scale: 0.35, y: -10 }}
       animate={
@@ -378,10 +402,6 @@ function ArtifactPedestal({
           : { type: "spring", stiffness: 320, damping: 16 }
       }
       style={{
-        position: "absolute",
-        top: `${50 + y}%`,
-        left: `${50 + x}%`,
-        transform: "translate(-50%, -50%)",
         width: 130,
         display: "flex",
         flexDirection: "column",
@@ -457,6 +477,7 @@ function ArtifactPedestal({
         }}
       />
     </motion.div>
+    </div>
   );
 }
 
