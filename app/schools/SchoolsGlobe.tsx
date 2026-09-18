@@ -196,6 +196,10 @@ export default function SchoolsGlobe() {
     let R = 0;
     let cx = 0;
     let cy = 0;
+    let bx = 0; // canvas origin in page coordinates
+    let by = 0;
+    let bw = 0;
+    let bh = 0;
     let land: Vec[] = [];
     let uk: Vec[] = [];
     let stars: { x: number; y: number; r: number; p: number }[] = [];
@@ -220,9 +224,6 @@ export default function SchoolsGlobe() {
     const build = () => {
       w = window.innerWidth;
       h = window.innerHeight;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       // The globe sits right of the reading column on wide screens, and drops
       // low and centred on phones so it never sits behind the copy.
@@ -239,6 +240,21 @@ export default function SchoolsGlobe() {
         cx = w * 0.56;
         cy = h * 0.72;
       }
+
+      // Size the canvas to the globe plus its halo, clamped to the viewport.
+      const reach = R * 1.8;
+      bx = Math.max(0, Math.floor(cx - reach));
+      by = Math.max(0, Math.floor(cy - reach));
+      bw = Math.min(w, Math.ceil(cx + reach)) - bx;
+      bh = Math.min(h, Math.ceil(cy + reach)) - by;
+      canvas.style.left = `${bx}px`;
+      canvas.style.top = `${by}px`;
+      canvas.style.width = `${bw}px`;
+      canvas.style.height = `${bh}px`;
+      canvas.width = Math.max(1, Math.round(bw * dpr));
+      canvas.height = Math.max(1, Math.round(bh * dpr));
+      // Drawing stays in page coordinates; the transform does the offset.
+      ctx.setTransform(dpr, 0, 0, dpr, -bx * dpr, -by * dpr);
 
       const px = Math.max(8, Math.round(R / 15));
       cityAtlas = makeAtlas(px, "#9cff8a", "600");
@@ -265,8 +281,8 @@ export default function SchoolsGlobe() {
         }
       }
       stars = [];
-      for (let i = 0; i < 70; i++) {
-        stars.push({ x: Math.random() * w, y: Math.random() * h, r: 0.6 + Math.random() * 1.2, p: Math.random() * 6 });
+      for (let i = 0; i < 46; i++) {
+        stars.push({ x: bx + Math.random() * bw, y: by + Math.random() * bh, r: 0.6 + Math.random() * 1.2, p: Math.random() * 6 });
       }
       const src = vec(LONDON[0], LONDON[1]);
       arcs = CITIES.map((c, i) => ({
@@ -281,7 +297,7 @@ export default function SchoolsGlobe() {
     };
 
     const draw = (t: number, dt: number) => {
-      ctx.clearRect(0, 0, w, h);
+      ctx.clearRect(bx, by, bw, bh);
       if (!cityAtlas || !ukAtlas || !dimAtlas || !codeAtlas) return;
 
       const rot = -LONDON[1] * D2R + Math.sin(t * 0.06) * 0.5;
@@ -578,11 +594,11 @@ export default function SchoolsGlobe() {
             radial-gradient(ellipse 70% 60% at 72% 46%, rgba(18,52,104,0.85) 0%, rgba(8,20,54,0.5) 45%, rgba(3,7,26,0) 72%),
             linear-gradient(180deg, #071231 0%, #040a20 55%, #02050f 100%);
         }
+        /* Sized and placed in script: it covers the globe, not the screen. */
         .sg-canvas {
           position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
+          left: 0;
+          top: 0;
         }
         /* Keeps the reading column calm and legible over the globe, and gives
            the nav and the top row a dark bed wherever the globe reaches. */
