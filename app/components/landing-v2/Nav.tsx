@@ -167,9 +167,9 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           ) : null}
           {aside ? (
             <Link
-              className="lv2-nav-secondary"
+              className="lv2-nav-secondary lv2-nav-aside"
               href={aside.href}
-              style={{ ...navLink, color: textColorMuted }}
+              style={navLink}
             >
               {aside.label}
             </Link>
@@ -470,6 +470,19 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
            a 1px lift and a brighten on hover/focus. The underline doubles
            as the keyboard focus indicator and is absolutely positioned, so
            there's no layout shift. */
+        /* The page's own link: warm against the cyan chips, so a returning
+           school finds its way in without competing with the CTA. */
+        :global(.lv2-nav-aside) {
+          color: #ffca82;
+          text-shadow: 0 0 14px rgba(255,180,90,0.55);
+        }
+        :global(.lv2-nav-aside)::after { background: #ffca82 !important; }
+        :global(.lv2-nav-aside):hover,
+        :global(.lv2-nav-aside):focus-visible {
+          color: #ffe2b8;
+          text-shadow: 0 0 20px rgba(255,190,110,0.85);
+        }
+
         :global(.lv2-nav-secondary) {
           position: relative;
           display: inline-block;
