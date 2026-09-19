@@ -1110,8 +1110,11 @@ export default function SchoolsGlobe() {
           position: absolute;
           inset: 0;
           background:
-            radial-gradient(ellipse 70% 60% at 72% 46%, rgba(18,52,104,0.85) 0%, rgba(8,20,54,0.5) 45%, rgba(3,7,26,0) 72%),
-            linear-gradient(180deg, #071231 0%, #040a20 55%, #02050f 100%);
+            /* dusk at the foot of the sky, the homepage's sunset in a
+               quieter key: this page has copy over it at every width. */
+            radial-gradient(ellipse 78% 44% at 56% 112%, rgba(255,150,96,0.16) 0%, rgba(214,92,118,0.09) 44%, rgba(3,7,26,0) 74%),
+            radial-gradient(ellipse 70% 60% at 72% 46%, rgba(26,68,128,0.88) 0%, rgba(12,30,72,0.54) 45%, rgba(4,10,32,0) 72%),
+            linear-gradient(180deg, #0b1940 0%, #081231 52%, #060c22 100%);
         }
         /* Sized and placed in script: it covers the globe, not the screen. */
         .sg-canvas {

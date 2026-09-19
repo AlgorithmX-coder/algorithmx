@@ -62,7 +62,11 @@ export default function HeroOverlay() {
        *  reads with maximum contrast against the dark backdrop, plus a
        *  faster falloff on the right (60% -> 52%) so the laptop sits
        *  in completely clean dark space - no scrim penumbra at all.
-       *  Static now that the text is present from scroll 0. */}
+       *  Static now that the text is present from scroll 0.
+       *  2026-09-15 sunset backdrop: tinted from near-black ink to deep
+       *  dusk violet and eased (0.92 -> 0.8 core) so it reads as shade
+       *  in the sunset sky instead of a black smudge behind the
+       *  headline; the headline's own text-shadow keeps the contrast. */}
       <div
         aria-hidden
         style={{
@@ -70,8 +74,8 @@ export default function HeroOverlay() {
           inset: 0,
           background:
             "radial-gradient(ellipse 46% 52% at 20% 52%, " +
-            "rgba(4,5,13,0.92) 0%, rgba(4,5,13,0.5) 26%, " +
-            "rgba(4,5,13,0) 50%)",
+            "rgba(24,15,36,0.8) 0%, rgba(24,15,36,0.42) 26%, " +
+            "rgba(24,15,36,0) 50%)",
           pointerEvents: "none",
         }}
       />
