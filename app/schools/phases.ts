@@ -1,4 +1,4 @@
-import type { LockupId } from "./CourseLockup";
+import type { LockupId } from "@/app/components/CourseLockup";
 
 /**
  * The two school phases the /schools page sells to. Everything phase-specific

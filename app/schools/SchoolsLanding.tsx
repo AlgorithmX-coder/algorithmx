@@ -11,7 +11,7 @@ import SchoolsGlobe from "@/app/schools/SchoolsGlobe";
 import CyberEssentialsBadge from "@/app/components/landing-v2/CyberEssentialsBadge";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
-import CourseLockup, { type LockupId } from "./CourseLockup";
+import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
 import EnquiryForm from "./EnquiryForm";
 import ProductTabs, { shotSet, shotSrc } from "./ProductTabs";
 import { PHASES, type Phase } from "./phases";

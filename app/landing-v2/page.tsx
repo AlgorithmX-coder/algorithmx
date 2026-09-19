@@ -1,3 +1,5 @@
+import { Fredoka, Chakra_Petch } from "next/font/google";
+
 import HeroCinematic from "@/app/components/landing-v2/HeroCinematicV3";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
@@ -37,8 +39,16 @@ import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBack
  * and the 3D scroll-tied animations glide.
  */
 
+/* The course lockups inside the Cybersecurity card are set in each course's
+   own face. Loaded here rather than in the root layout so only this page
+   carries them, and unpreloaded because they sit well below the fold and
+   must not compete with the hero. */
+const fredoka = Fredoka({ variable: "--font-fredoka", weight: ["700"], subsets: ["latin"], display: "swap", preload: false });
+const chakra = Chakra_Petch({ variable: "--font-chakra", weight: ["700"], subsets: ["latin"], display: "swap", preload: false });
+
 export default function LandingV2() {
   return (
+    <div className={`${fredoka.variable} ${chakra.variable}`} style={{ display: "contents" }}>
     <SmoothScroll>
       <CosmicNetworkBackground />
       <ScrollFormObjects />
@@ -57,5 +67,6 @@ export default function LandingV2() {
       <Footer />
       <Algo />
     </SmoothScroll>
+    </div>
   );
 }

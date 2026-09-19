@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+
+import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { FadeUp } from "./utilities";
@@ -39,6 +41,14 @@ interface Stream {
   /** Countdown label for encrypted roadmap cards, e.g. "3 months". */
   unlockIn?: string;
 }
+
+/* Ages match the course landings; live matches the card's own count. */
+const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string; live: boolean }> = [
+  { id: "heroes", ages: "6 to 9", accent: "#ffb347", live: true },
+  { id: "explorers", ages: "10 to 13", accent: "#22D3EE", live: true },
+  { id: "ops", ages: "14 to 17", accent: "#8B7BFF", live: false },
+  { id: "pro", ages: "18+", accent: "#ff7a3d", live: false },
+];
 
 const STREAMS: Stream[] = [
   {
@@ -274,6 +284,7 @@ export default function SubjectShowcase() {
       </div>
 
       <style jsx>{`
+
         .lv2-roadmap-grid {
           display: grid;
           grid-template-columns: repeat(5, 1fr);
@@ -679,6 +690,19 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 26, width: "auto" }} />
               </span>
+
+              <ul className="lv2-course-marks">
+                {CYBER_COURSES.map((c) => (
+                  <li
+                    key={c.id}
+                    className={c.live ? "lv2-course-mark" : "lv2-course-mark lv2-course-mark-soon"}
+                    style={{ ["--lv2-mark" as string]: c.accent }}
+                  >
+                    <CourseLockup id={c.id} size={0.74} />
+                    <span>{c.live ? `Ages ${c.ages}` : `Ages ${c.ages} · soon`}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
@@ -735,6 +759,35 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
       </div>
 
       <style jsx>{`
+        .lv2-course-marks {
+          list-style: none;
+          margin: 16px 0 0;
+          padding: 0;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .lv2-course-mark {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          padding: 10px 13px;
+          border-radius: 12px;
+          background: rgba(6,10,24,0.55);
+          border: 1px solid rgba(159,245,255,0.12);
+          border-left: 2px solid var(--lv2-mark);
+        }
+        .lv2-course-mark span {
+          font-family: var(--lv2-font-mono);
+          font-size: 9.5px;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(232,237,255,0.6);
+        }
+        /* Two of the four are not open yet, and the card says so above. */
+        .lv2-course-mark-soon { opacity: 0.55; }
+
         .lv2-featured-card {
           will-change: transform;
         }
