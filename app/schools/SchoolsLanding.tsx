@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
+import MsStartupsBadge from "@/app/components/MsStartupsBadge";
 import Nav from "@/app/components/landing-v2/Nav";
 import Footer from "@/app/components/landing-v2/Footer";
 import SchoolsGlobe from "@/app/schools/SchoolsGlobe";
@@ -294,6 +295,7 @@ export default function SchoolsLanding() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" />
                   </span>
+                  <MsStartupsBadge />
                 </div>
               </FadeUp>
               <FadeUp delay={0.24}>
@@ -620,7 +622,7 @@ export default function SchoolsLanding() {
         /* hero */
         .sch-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 44px; align-items: center; }
         .sch-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
-        .sch-certs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+        .sch-certs { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 26px; }
         .sch-cert-pill {
           display: inline-flex; align-items: center; gap: 12px; padding: 9px 16px; border-radius: 999px;
           background: rgba(13,15,24,0.55); border: 1px solid rgba(159,245,255,0.28);

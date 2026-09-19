@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import CyberEssentialsBadge from "./CyberEssentialsBadge";
+import MsStartupsBadge from "@/app/components/MsStartupsBadge";
 
 /**
  * HeroOverlay. The static brand UI over the cinematic: eyebrow +
@@ -171,7 +172,7 @@ export default function HeroOverlay() {
             NCSC alignment mark (alignment, not endorsement — the NCSC runs
             no endorsement scheme). Above the fold so they're the first
             trust marks a visitor sees, matching the course landings. */}
-        <div className="lv2-trust-row" style={{ marginTop: "calc(var(--lv2-rail) * 0.45)", display: "flex", flexWrap: "wrap", gap: 10, pointerEvents: "auto" }}>
+        <div className="lv2-trust-row" style={{ marginTop: "calc(var(--lv2-rail) * 0.45)", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, pointerEvents: "auto" }}>
           <CyberEssentialsBadge />
           <span
             className="lv2-trust-pill"
@@ -205,6 +206,7 @@ export default function HeroOverlay() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 28, width: "auto" }} />
           </span>
+          <MsStartupsBadge />
         </div>
       </div>
     </div>
