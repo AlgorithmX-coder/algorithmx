@@ -155,6 +155,7 @@ export default function HeroOverlay() {
         </p>
 
         <div
+          className="lv2-hero-cta-row"
           style={{
             display: "flex",
             gap: 12,
@@ -263,6 +264,25 @@ export default function HeroOverlay() {
         .lv2-trust-row .asdan-mark { padding: 4px 14px 4px 5px !important; }
         .lv2-trust-row .asdan-mark-plate { padding: 4px 8px !important; }
         .lv2-trust-row .asdan-mark-plate img { width: 68px !important; }
+      }
+      /* A laptop window is not tall enough for the hero at its full rhythm
+         and four marks under it: on a 771px window the marks fell past the
+         fold, which is what the owner kept reporting. Short windows take a
+         tighter hero (less air under the nav, less before the buttons) and
+         a smaller stack, which brings all four into the first screen down
+         to about a 760px window. Taller windows are untouched. */
+      @media (min-width: 1100px) and (max-height: 880px) {
+        .lv2-hero-pad { padding-top: 46px !important; }
+        .lv2-hero-cta-row { margin-top: calc(var(--lv2-rail) * 0.34) !important; }
+        .lv2-trust-row { margin-top: calc(var(--lv2-rail) * 0.1) !important; gap: 5px !important; }
+        .lv2-trust-row .lv2-trust-pill { padding: 3px 12px !important; }
+        .lv2-trust-row .lv2-trust-pill img { height: 21px !important; }
+        .lv2-trust-row .lv2-ce-badge { padding: 3px 12px 3px 3px !important; }
+        .lv2-trust-row .lv2-ce-badge img { height: 21px !important; }
+        .lv2-trust-row .ms-startups { padding: 3px 12px 3px 4px !important; }
+        .lv2-trust-row .ms-startups-plate img { width: 92px !important; }
+        .lv2-trust-row .asdan-mark { padding: 3px 12px 3px 4px !important; }
+        .lv2-trust-row .asdan-mark-plate img { width: 62px !important; }
       }
       /* Tablets: the same idea as phones, gentler. The copy top-aligns
        * under the nav instead of floating in the middle of the frame,
