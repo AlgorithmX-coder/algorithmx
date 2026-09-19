@@ -26,13 +26,15 @@ type NavProps = {
   centre?: ReactNode;
   /** Replaces the "Get Started" pill. A "#id" href stays on the page. */
   cta?: { label: string; href: string };
+  /** One page-owned link, in the bar beside the CTA. */
+  aside?: { label: string; href: string };
   /** The live telemetry console. */
   showTelemetry?: boolean;
   /** The Courses and Schools links. */
   showSiteLinks?: boolean;
 };
 
-export default function Nav({ centre, cta, showTelemetry = true, showSiteLinks = true }: NavProps) {
+export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true }: NavProps) {
   /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
    * Under Lenis, scroll events fire every rAF — storing the pixel value
    * re-rendered the entire Nav subtree at 60fps for the whole page.
@@ -162,6 +164,15 @@ export default function Nav({ centre, cta, showTelemetry = true, showSiteLinks =
                 Schools
               </Link>
             </>
+          ) : null}
+          {aside ? (
+            <Link
+              className="lv2-nav-secondary"
+              href={aside.href}
+              style={{ ...navLink, color: textColorMuted }}
+            >
+              {aside.label}
+            </Link>
           ) : null}
           {ctaHref.startsWith("#") ? (
             /* Same-page anchor: a plain <a> scrolls without a route change. */

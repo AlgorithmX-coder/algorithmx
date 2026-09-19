@@ -1196,13 +1196,18 @@ export default function SchoolsGlobe() {
           z-index: 40;
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          height: 32px;
-          padding: 0 13px 0 11px;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          padding: 0;
           border-radius: 999px;
           border: 1px solid rgba(125,240,255,0.26);
           background: rgba(5,12,32,0.88);
           color: rgba(233,242,255,0.82);
+          /* A pause control is required for anything that moves on its own
+             (WCAG 2.2.2), but it does not have to announce itself: it sits as
+             a faint dot and comes up on hover, focus or keyboard. */
+          opacity: 0.26;
           font-family: var(--lv2-font-mono, ui-monospace, monospace);
           font-size: 10px;
           font-weight: 700;
@@ -1210,11 +1215,13 @@ export default function SchoolsGlobe() {
           text-transform: uppercase;
           line-height: 1;
           cursor: pointer;
-          transition: border-color 0.2s ease, color 0.2s ease;
+          transition: border-color 0.2s ease, color 0.2s ease, opacity 0.25s ease;
         }
-        .sg-motion:hover {
+        .sg-motion:hover,
+        .sg-motion:focus-visible {
           border-color: rgba(125,240,255,0.6);
           color: #fff;
+          opacity: 1;
         }
         .sg-motion:focus-visible {
           outline: 2px solid #7df0ff;
@@ -1225,21 +1232,14 @@ export default function SchoolsGlobe() {
           height: 11px;
           flex: none;
         }
-        @media (max-width: 1099px) {
-          .sg-motion {
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            justify-content: center;
-          }
-          .sg-motion-label {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            clip-path: inset(50%);
-            white-space: nowrap;
-          }
+        /* The words are for assistive tech only, at every width. */
+        .sg-motion-label {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          clip-path: inset(50%);
+          white-space: nowrap;
         }
       `}</style>
     </>

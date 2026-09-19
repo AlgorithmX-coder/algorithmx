@@ -237,6 +237,7 @@ export default function SchoolsLanding() {
         showTelemetry={false}
         showSiteLinks={false}
         cta={{ label: "Get in touch", href: "#enquiry" }}
+        aside={{ label: "School login", href: "/schools/login" }}
         centre={
           <nav className="sch-navsections" aria-label="On this page">
             {SECTIONS.filter(([, , cta]) => !cta).map(sectionChip)}
@@ -260,7 +261,6 @@ export default function SchoolsLanding() {
           <FadeUp>
             <div className="sch-toprow">
               <Link href="/" className="sch-toplink"><span aria-hidden>←</span> Back to home</Link>
-              <Link href="/schools/login" className="sch-toplink sch-toplink-login">School login <span aria-hidden>→</span></Link>
             </div>
           </FadeUp>
 
@@ -281,8 +281,8 @@ export default function SchoolsLanding() {
               </FadeUp>
               <FadeUp delay={0.18}>
                 <div className="sch-cta-row">
-                  <a href="#enquiry" style={pillPrimary}>Request a free pilot</a>
-                  <a href="#product" style={pillGhost}>See a real lesson</a>
+                  <a href="#enquiry" style={pillPrimary}>Register your interest</a>
+                  <a href="#product" style={pillGhost}>Look inside the product</a>
                 </div>
               </FadeUp>
               <FadeUp delay={0.21}>
