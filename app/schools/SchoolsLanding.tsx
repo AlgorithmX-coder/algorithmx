@@ -10,7 +10,7 @@ import SchoolsGlobe from "@/app/schools/SchoolsGlobe";
 import CyberEssentialsBadge from "@/app/components/landing-v2/CyberEssentialsBadge";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
-import CourseLockup from "./CourseLockup";
+import CourseLockup, { type LockupId } from "./CourseLockup";
 import EnquiryForm from "./EnquiryForm";
 import ProductTabs, { shotSet, shotSrc } from "./ProductTabs";
 import { PHASES, type Phase } from "./phases";
@@ -110,6 +110,15 @@ const STEPS = [
   { n: "02", when: "Day 2", colour: "#b98bff", title: "Print the login cards", text: "Every pupil gets a card with the class code and a three-picture password, so logging in takes seconds, even in Year 2." },
   { n: "03", when: "Weekly", colour: "#5fffa3", title: "Run the block", text: "Six lessons, 45 minutes each, one a week. Pupils work on their own with headphones or captions, and progress saves on every screen, so each pupil picks up exactly where they left off." },
   { n: "04", when: "End of block", colour: "#ffb347", title: "Get the class report", text: "Who finished, what the class found hard, and a certificate for every pupil to take home." },
+];
+
+/* The four courses, in the order a school meets them. Ages match the
+   course landings; nothing here is a claim we cannot show on those pages. */
+const COURSE_MARKS: ReadonlyArray<{ id: LockupId; ages: string; accent: string }> = [
+  { id: "heroes", ages: "Ages 6 to 9", accent: "#ffb347" },
+  { id: "explorers", ages: "Ages 10 to 13", accent: "#22D3EE" },
+  { id: "ops", ages: "Ages 14 to 17", accent: "#8B7BFF" },
+  { id: "pro", ages: "Ages 18+", accent: "#ff7a3d" },
 ];
 
 const PILLARS = [
@@ -454,6 +463,34 @@ export default function SchoolsLanding() {
               </FadeUp>
             ))}
           </div>
+
+          {/* The range the room gets, and the mark it is aligned to. Wording
+              follows /cyberheroes: ASDAN is an alignment, not an award. */}
+          <FadeUp delay={0.2}>
+            <div className="sch-marks">
+              <div className="sch-marks-courses">
+                <p className="sch-marks-label">{"// One platform, four courses"}</p>
+                <ul className="sch-marks-row">
+                  {COURSE_MARKS.map((m) => (
+                    <li key={m.id} className="sch-mark" style={{ ["--sch-accent" as string]: m.accent }}>
+                      <CourseLockup id={m.id} size={0.82} />
+                      <span className="sch-mark-age">{m.ages}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="sch-marks-accred">
+                <span className="sch-marks-plate">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/logos/asdan.jpg" alt="ASDAN" loading="lazy" />
+                </span>
+                <span className="sch-marks-accred-text">
+                  <strong>ASDAN</strong>
+                  <span>Accreditation aligned</span>
+                </span>
+              </div>
+            </div>
+          </FadeUp>
         </section>
 
         {/* WHAT YOU RECEIVE ───────────────────────────────── */}
@@ -890,6 +927,90 @@ export default function SchoolsLanding() {
         }
         .sch-step h3, .sch-pillar h3, .sch-pilot h3 { margin: 0; font-family: var(--lv2-font-display); font-size: 1.2rem; font-weight: 500; letter-spacing: -0.01em; }
         .sch-step p, .sch-pilot p { margin: 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(232,237,255,0.75); }
+        /* the course + accreditation band */
+        .sch-marks {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px clamp(20px, 3vw, 40px);
+          margin-top: 30px;
+          padding: 24px clamp(20px, 2.4vw, 30px);
+          border-radius: 18px;
+          border: 1px solid rgba(159,245,255,0.18);
+          background: linear-gradient(180deg, rgba(20,25,48,0.6), rgba(10,13,28,0.6));
+        }
+        .sch-marks-courses { flex: 1 1 540px; min-width: 0; }
+        .sch-marks-label {
+          margin: 0 0 16px;
+          font-family: var(--lv2-font-mono);
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.28em;
+          text-transform: uppercase;
+          color: rgba(125,240,255,0.75);
+        }
+        .sch-marks-row {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .sch-mark {
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+          padding: 12px 15px;
+          border-radius: 12px;
+          background: rgba(6,10,24,0.66);
+          border: 1px solid rgba(159,245,255,0.14);
+          border-left: 2px solid var(--sch-accent);
+        }
+        .sch-mark-age {
+          font-family: var(--lv2-font-mono);
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(232,237,255,0.5);
+        }
+        .sch-marks-accred {
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding-left: clamp(0px, 2vw, 28px);
+          border-left: 1px solid rgba(159,245,255,0.16);
+        }
+        .sch-marks-plate {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 9px 13px;
+          border-radius: 12px;
+          background: #fff;
+          flex-shrink: 0;
+        }
+        .sch-marks-plate img { display: block; width: 96px; height: auto; }
+        .sch-marks-accred-text { display: flex; flex-direction: column; gap: 3px; }
+        .sch-marks-accred-text strong {
+          font-family: var(--lv2-font-mono);
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.2em;
+          color: #c7b6ff;
+        }
+        .sch-marks-accred-text span {
+          font-family: var(--lv2-font-display);
+          font-size: 13px;
+          color: rgba(232,237,255,0.66);
+        }
+        @media (max-width: 1100px) {
+          .sch-marks-accred { padding-left: 0; padding-top: 20px; border-left: 0; border-top: 1px solid rgba(159,245,255,0.16); }
+        }
+
         .sch-pillar { border-top: 2px solid var(--sch-accent); }
         .sch-pillar-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: center; color: var(--sch-accent); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); }
         @supports (background: color-mix(in srgb, red 10%, transparent)) {
