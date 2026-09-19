@@ -3,7 +3,7 @@
  * course landings and the /cybersecurity cards use, sized for the
  * schools page. Fonts come from app/schools/layout.tsx.
  */
-export type LockupId = "heroes" | "explorers" | "ops";
+export type LockupId = "heroes" | "explorers" | "ops" | "pro";
 
 const ROW: React.CSSProperties = {
   display: "inline-flex",
@@ -41,11 +41,26 @@ export default function CourseLockup({ id, size = 1 }: { id: LockupId; size?: nu
       </span>
     );
   }
+  if (id === "ops") {
+    return (
+      <span style={ROW}>
+        <span aria-hidden style={{ width: 11 * size, height: 11 * size, borderRadius: 3, background: "#8B7BFF", boxShadow: "0 0 12px rgba(139,123,255,0.45)", flexShrink: 0 }} />
+        <span style={{ fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif", fontWeight: 700, fontSize: `${1.05 * size}rem`, letterSpacing: "0.16em", color: "#eaf6ff" }}>
+          CYBER OPS
+        </span>
+      </span>
+    );
+  }
+  // Pro: the notched terminal chip from the /cybersecurity cards, static here.
   return (
     <span style={ROW}>
-      <span aria-hidden style={{ width: 11 * size, height: 11 * size, borderRadius: 3, background: "#8B7BFF", boxShadow: "0 0 12px rgba(139,123,255,0.45)", flexShrink: 0 }} />
-      <span style={{ fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif", fontWeight: 700, fontSize: `${1.05 * size}rem`, letterSpacing: "0.16em", color: "#eaf6ff" }}>
-        CYBER OPS
+      <svg width={18 * size} height={18 * size} viewBox="0 0 24 24" fill="none" stroke="#ff7a3d" strokeWidth="2" aria-hidden style={{ filter: "drop-shadow(0 0 8px rgba(255,122,61,0.38))", flexShrink: 0 }}>
+        <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
+        <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M13 15.5 H16.2" strokeLinecap="round" />
+      </svg>
+      <span style={{ fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif", fontWeight: 700, fontSize: `${1.05 * size}rem`, letterSpacing: "0.07em", color: "#eaf6ff" }}>
+        CYBER PRO
       </span>
     </span>
   );
