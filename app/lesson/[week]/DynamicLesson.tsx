@@ -161,6 +161,14 @@ const RaccoonThreatScene = dynamic(
  * completion / cutscene screens still get them since those screens
  * ARE the narration.
  */
+/**
+ * Screens whose own game drives with the arrow keys, so the page must not also
+ * treat those keys as "next screen" / "previous screen". Both listeners live on
+ * window, so without this a child walking the maze with the arrow keys was
+ * thrown off the board and onto the next screen on the first press.
+ */
+const ARROW_KEY_SCREENS = new Set<ScreenDef["type"]>(["cyberMaze"]);
+
 const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "signature",
   "cyberScanner",
@@ -1209,7 +1217,8 @@ function DynamicLessonInner({
     [content, totalScreens, wrongCounts, lessonXp, progress]
   );
 
-  // Arrow-key navigation (disabled during boss overlay)
+  // Arrow-key navigation (disabled during boss overlay, and on any screen whose
+  // own game drives with the arrow keys)
   useEffect(() => {
     if (!content) return;
     const onKey = (e: KeyboardEvent) => {
@@ -1217,6 +1226,10 @@ function DynamicLessonInner({
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
       if (!cutsceneDone) return;
       if (showBoss) return;
+      // The maze walks its hero with the arrow keys and both listeners sit on
+      // window, so page-level arrow navigation threw the child clean off the
+      // board mid-game. The screen that owns the arrows keeps them.
+      if (ARROW_KEY_SCREENS.has(content.screens[screen]?.type)) return;
       if (e.key === "ArrowRight" && screen < totalScreens - 1) {
         e.preventDefault();
         navigate(screen + 1);
