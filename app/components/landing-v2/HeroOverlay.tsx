@@ -115,6 +115,7 @@ export default function HeroOverlay() {
         </span>
 
         <h1
+          className="lv2-hero-title"
           style={{
             fontFamily: "var(--lv2-font-display)",
             /* Slightly reduced (6vw -> 5.4vw, cap 6rem -> 5.25rem) for
@@ -138,6 +139,7 @@ export default function HeroOverlay() {
         </h1>
 
         <p
+          className="lv2-hero-sub"
           style={{
             fontFamily: "var(--lv2-font-display)",
             fontSize: "clamp(0.95rem, 1.2vw, 1.0625rem)",
@@ -272,17 +274,26 @@ export default function HeroOverlay() {
          a smaller stack, which brings all four into the first screen down
          to about a 760px window. Taller windows are untouched. */
       @media (min-width: 1100px) and (max-height: 880px) {
-        .lv2-hero-pad { padding-top: 46px !important; }
-        .lv2-hero-cta-row { margin-top: calc(var(--lv2-rail) * 0.34) !important; }
-        .lv2-trust-row { margin-top: calc(var(--lv2-rail) * 0.1) !important; gap: 5px !important; }
-        .lv2-trust-row .lv2-trust-pill { padding: 3px 12px !important; }
-        .lv2-trust-row .lv2-trust-pill img { height: 21px !important; }
-        .lv2-trust-row .lv2-ce-badge { padding: 3px 12px 3px 3px !important; }
-        .lv2-trust-row .lv2-ce-badge img { height: 21px !important; }
-        .lv2-trust-row .ms-startups { padding: 3px 12px 3px 4px !important; }
-        .lv2-trust-row .ms-startups-plate img { width: 92px !important; }
-        .lv2-trust-row .asdan-mark { padding: 3px 12px 3px 4px !important; }
-        .lv2-trust-row .asdan-mark-plate img { width: 62px !important; }
+        /* 84px keeps the eyebrow clear of the 69px nav. Cutting it to 46
+           did fit the marks, and hid the eyebrow behind the bar. */
+        .lv2-hero-pad { padding-top: 84px !important; }
+        .lv2-hero-sub { margin-top: calc(var(--lv2-rail) * 0.12) !important; }
+        .lv2-hero-cta-row { margin-top: calc(var(--lv2-rail) * 0.2) !important; }
+        .lv2-trust-row { margin-top: calc(var(--lv2-rail) * 0.02) !important; gap: 5px !important; }
+        .lv2-trust-row .lv2-trust-pill { padding: 2px 12px !important; }
+        .lv2-trust-row .lv2-trust-pill img { height: 20px !important; }
+        .lv2-trust-row .lv2-ce-badge { padding: 2px 12px 2px 3px !important; }
+        .lv2-trust-row .lv2-ce-badge img { height: 20px !important; }
+        .lv2-trust-row .ms-startups { padding: 2px 12px 2px 4px !important; }
+        .lv2-trust-row .ms-startups-plate img { width: 90px !important; }
+        .lv2-trust-row .asdan-mark { padding: 2px 12px 2px 4px !important; }
+        .lv2-trust-row .asdan-mark-plate img { width: 60px !important; }
+      }
+      /* Under 800px of window the headline alone is 300px of the screen.
+         A slightly smaller cap there is what lets the fourth mark sit
+         above the fold on a 768px laptop; the headline still leads. */
+      @media (min-width: 1100px) and (max-height: 800px) {
+        .lv2-hero-title { font-size: clamp(2.25rem, 4.8vw, 4.5rem) !important; }
       }
       /* Tablets: the same idea as phones, gentler. The copy top-aligns
        * under the nav instead of floating in the middle of the frame,
