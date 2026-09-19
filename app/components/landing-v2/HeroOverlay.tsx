@@ -234,19 +234,35 @@ export default function HeroOverlay() {
       /* Desktop shows the full NCSC name; the short form is for narrow
          screens, where the media queries below swap them. */
       .lv2-trust-short { display: none !important; }
-      /* Owner wants the four marks in a single column (2026-09-19), told
-         that the bottom of the stack can fall below the fold on a laptop.
-         The gap and the space above are tightened to claw some of that back:
-         the column is about 200px rather than 230px tall. */
-      .lv2-trust-row {
-        display: grid !important;
-        grid-template-columns: max-content;
-        gap: 8px !important;
-        width: max-content;
-        margin-top: calc(var(--lv2-rail) * 0.3) !important;
-      }
-      @media (max-width: 1099px) {
-        .lv2-trust-row { display: flex !important; grid-template-columns: none; width: auto; }
+      /* Owner asked for the four marks one per row (2026-09-19). Four of
+         them at full size is 220px of column, and with the hero above them
+         that puts the bottom two off a laptop screen, which is the very
+         thing they complained about. So the stacked layout uses a compact
+         form of each mark: short NCSC label, tighter padding, smaller
+         logos, 6px between. That is about 150px, and all four sit in the
+         first screen down to a 900px window. Phones and tablets keep the
+         wrapping flex row they already had. */
+      @media (min-width: 1100px) {
+        .lv2-trust-row {
+          display: grid !important;
+          grid-template-columns: max-content;
+          justify-items: start;
+          gap: 6px !important;
+          width: max-content;
+          margin-top: calc(var(--lv2-rail) * 0.22) !important;
+        }
+        .lv2-trust-row .lv2-trust-long { display: none !important; }
+        .lv2-trust-row .lv2-trust-short { display: inline !important; }
+        .lv2-trust-row .lv2-trust-pill { padding: 5px 14px !important; gap: 10px !important; }
+        .lv2-trust-row .lv2-trust-pill img { height: 23px !important; }
+        .lv2-trust-row .lv2-ce-badge { padding: 4px 14px 4px 4px !important; gap: 10px !important; }
+        .lv2-trust-row .lv2-ce-badge img { height: 23px !important; }
+        .lv2-trust-row .ms-startups { padding: 4px 14px 4px 5px !important; }
+        .lv2-trust-row .ms-startups-plate { padding: 4px 8px !important; }
+        .lv2-trust-row .ms-startups-plate img { width: 100px !important; }
+        .lv2-trust-row .asdan-mark { padding: 4px 14px 4px 5px !important; }
+        .lv2-trust-row .asdan-mark-plate { padding: 4px 8px !important; }
+        .lv2-trust-row .asdan-mark-plate img { width: 68px !important; }
       }
       /* Tablets: the same idea as phones, gentler. The copy top-aligns
        * under the nav instead of floating in the middle of the frame,
