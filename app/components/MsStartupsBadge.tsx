@@ -8,11 +8,12 @@
  * Essentials treatment: a white plate inside the cyan-outlined pill, because
  * the artwork is dark on white and would vanish on a dark ground.
  *
- * The line beside it reads "Microsoft for Startups member", NOT "partnered
- * with Microsoft". Microsoft ask startups to keep "partner" and
- * "partnership" out of public messaging unless a Microsoft contact has
- * cleared it, and membership of the programme is not a partnership in the
- * sense their legal guidance means. Change it only with that clearance.
+ * The line beside it reads "Partnered with Microsoft" on the owner's
+ * instruction (2026-09-19), given twice after being shown Microsoft's own
+ * guidance: they ask startups to keep "partner" and "partnership" out of
+ * public messaging unless a Microsoft contact has cleared it, and reserve
+ * "partnership" for legally binding agreements with shared liability. If
+ * Microsoft ever query it, that is the history.
  *
  * Used unmodified apart from trimming its white margin. Do not recolour it,
  * do not knock it out to white, and do not retype the words as HTML.
@@ -31,7 +32,7 @@ export default function MsStartupsBadge({ style }: { style?: React.CSSProperties
           decoding="async"
         />
       </span>
-      <span className="ms-startups-text">Microsoft for Startups member</span>
+      <span className="ms-startups-text">Partnered with Microsoft</span>
       <style>{`
         .ms-startups {
           display: inline-flex;
