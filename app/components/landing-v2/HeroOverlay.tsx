@@ -231,18 +231,20 @@ export default function HeroOverlay() {
       .lv2-hero-pad {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
       }
-      /* The long label costs 250px, which is the difference between one
-         line of marks and two. */
-      .lv2-trust-long { display: none; }
-      .lv2-trust-short { display: inline; }
-      /* Four marks measure about 1375px and the reading column is 1180, so
-         they wrapped onto a second line that fell below the fold on a laptop:
-         half the accreditations were never seen. Zoom shrinks the whole row,
-         layout included, which inline-styled children cannot be talked out of
-         any other way, and keeps all four on one line from 1180 up. */
-      .lv2-trust-row { zoom: 0.8; }
+      /* Desktop shows the full NCSC name; the short form is for narrow
+         screens, where the media queries below swap them. */
+      .lv2-trust-short { display: none !important; }
+      /* Four marks in one line had to be shrunk to 0.8 to fit the 1180
+         reading column, and four in a single column put the bottom two below
+         the fold on a laptop. Two rows of two: full size, and the whole block
+         stays in the first screen. */
+      .lv2-trust-row {
+        display: grid !important;
+        grid-template-columns: repeat(2, max-content);
+        width: max-content;
+      }
       @media (max-width: 1099px) {
-        .lv2-trust-row { zoom: 1; }
+        .lv2-trust-row { display: flex !important; grid-template-columns: none; width: auto; }
       }
       /* Tablets: the same idea as phones, gentler. The copy top-aligns
        * under the nav instead of floating in the middle of the frame,
@@ -252,8 +254,8 @@ export default function HeroOverlay() {
         .lv2-hero-copy { margin-top: 0 !important; }
         .lv2-trust-pill { padding: 8px 14px !important; gap: 11px !important; }
         .lv2-trust-pill img { height: 24px !important; }
-        .lv2-trust-long { display: none; }
-        .lv2-trust-short { display: inline; }
+        .lv2-trust-long { display: none !important; }
+        .lv2-trust-short { display: inline !important; }
       }
       /* Phones: top-align the copy under the nav instead of centring it,
        * and scale the trust pills down so neither label wraps. Desktop
@@ -269,8 +271,8 @@ export default function HeroOverlay() {
         .lv2-trust-pill { padding: 7px 12px !important; gap: 10px !important; }
         .lv2-trust-pill > span:first-child { font-size: 9px !important; letter-spacing: 0.12em !important; }
         .lv2-trust-pill img { height: 22px !important; }
-        .lv2-trust-long { display: none; }
-        .lv2-trust-short { display: inline; }
+        .lv2-trust-long { display: none !important; }
+        .lv2-trust-short { display: inline !important; }
       }
       @media (min-height: 1100px) {
         .lv2-hero-pad { padding-bottom: calc(var(--lv2-rail) * 3); }
