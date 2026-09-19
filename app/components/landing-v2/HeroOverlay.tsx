@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import CyberEssentialsBadge from "./CyberEssentialsBadge";
+import AsdanBadge from "@/app/components/AsdanBadge";
 import MsStartupsBadge from "@/app/components/MsStartupsBadge";
 
 /**
@@ -189,6 +190,9 @@ export default function HeroOverlay() {
               WebkitBackdropFilter: "blur(8px)",
             }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 28, width: "auto" }} />
+            <span aria-hidden style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)" }} />
             <span
               style={{
                 fontFamily: "var(--lv2-font-mono)",
@@ -202,11 +206,9 @@ export default function HeroOverlay() {
               <span className="lv2-trust-long">Aligned with UK&rsquo;s National Cyber Security Centre</span>
               <span className="lv2-trust-short">Aligned with the NCSC</span>
             </span>
-            <span aria-hidden style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)" }} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 28, width: "auto" }} />
           </span>
           <MsStartupsBadge />
+          <AsdanBadge />
         </div>
       </div>
     </div>

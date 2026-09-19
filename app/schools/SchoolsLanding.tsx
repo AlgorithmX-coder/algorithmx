@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
+import AsdanBadge from "@/app/components/AsdanBadge";
 import MsStartupsBadge from "@/app/components/MsStartupsBadge";
 import Nav from "@/app/components/landing-v2/Nav";
 import Footer from "@/app/components/landing-v2/Footer";
@@ -299,12 +300,13 @@ export default function SchoolsLanding() {
                 <div className="sch-certs">
                   <CyberEssentialsBadge />
                   <span className="sch-cert-pill">
-                    <span>Aligned with the NCSC</span>
-                    <i aria-hidden />
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" />
+                    <i aria-hidden />
+                    <span>Aligned with the NCSC</span>
                   </span>
                   <MsStartupsBadge />
+                  <AsdanBadge />
                 </div>
               </FadeUp>
               <FadeUp delay={0.24}>
