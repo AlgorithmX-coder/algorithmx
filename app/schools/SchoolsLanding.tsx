@@ -109,8 +109,8 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
 const STEPS = [
   { n: "01", when: "Day 1", colour: "#7df0ff", title: "We create your licence", text: "We set up the school licence and your teacher logins. There is nothing to install: it runs in the browser your school already has." },
   { n: "02", when: "Day 1", colour: "#b98bff", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
-  { n: "03", when: "Weekly", colour: "#5fffa3", title: "Run the block", text: "Six lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
-  { n: "04", when: "End of block", colour: "#ffb347", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
+  { n: "03", when: "Weekly", colour: "#5fffa3", title: "Run the lessons", text: "Twenty weeks of lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
+  { n: "04", when: "End of course", colour: "#ffb347", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
 ];
 
 /* The four courses, in the order a school meets them. Ages match the
@@ -145,9 +145,8 @@ const PILLARS = [
 
 const RECEIVE = [
   "A whole-school licence for your phase",
-  "Printable login cards for every pupil",
   "The teacher view for every class",
-  "An end-of-block class report",
+  "An end-of-course class report",
   "Certificates for every pupil",
   "The curriculum mapping sheet",
 ];
@@ -158,7 +157,7 @@ const FAQS = [
   { q: "Who teaches it?", a: "The class teacher, whatever their confidence with computing. The narrator carries every instruction, the games mark themselves, and the teacher view shows who needs a nudge." },
   { q: "What pupil data do you hold?", a: "First name, class and progress, and that is all. Pupil activity stays within the platform and is never sent to an AI service, and we delete a school's data in full whenever you ask." },
   { q: "Is it safe?", a: "Yes. AlgorithmX is Cyber Essentials certified, the NCSC-backed standard for defending against common cyber attacks. Pupils only ever interact with the lesson itself, inside a closed environment built for schools, and every reward is personal to the pupil." },
-  { q: "How does a school get started?", a: "Get in touch and we'll walk you through the onboarding process: the agreement, your licence, building your classes and the first lesson. Most schools start with a free half-term pilot." },
+  { q: "How does a school get started?", a: "Get in touch and we'll walk you through the onboarding process: the agreement, your licence, building your classes and the first lesson. Most schools start with a walkthrough so they can see the lessons before they commit." },
 ];
 
 const PHASE_KEY = "ax-schools-phase";
@@ -311,9 +310,9 @@ export default function SchoolsLanding() {
               </FadeUp>
               <FadeUp delay={0.24}>
                 <ul className="sch-trust">
-                  <li>Mapped to Education for a Connected World</li>
-                  <li>Pupil data never sent to AI services</li>
-                  <li>Runs in the browser. Nothing to install.</li>
+                  <li>Cyber skills that keep pace with the threats</li>
+                  <li>One platform, ages 6 to 18</li>
+                  <li>Certified and curriculum mapped</li>
                 </ul>
               </FadeUp>
             </div>
@@ -339,17 +338,12 @@ export default function SchoolsLanding() {
               <div>
                 <p style={eyebrow}>{"// One build, every time zone"}</p>
                 <h2 style={h2}>
-                  Teach it in London. <span className="sch-grad">Teach it in Dubai.</span>
+                  Teach it in London. <span className="sch-grad">Teach it worldwide.</span>
                 </h2>
                 <p style={{ ...lede, maxWidth: 620 }}>
                   British schools teach far beyond Britain, and this curriculum travels with them. One build serves every site from the edge, so the same week, the same safeguarding and the same teacher dashboard open in a browser tab wherever your classroom is.
                 </p>
               </div>
-              <ul className="sch-reach-chips">
-                <li>One build, every site</li>
-                <li>Served from the edge</li>
-                <li>Any time zone</li>
-              </ul>
             </div>
           </FadeUp>
         </section>
@@ -414,7 +408,7 @@ export default function SchoolsLanding() {
             <p style={eyebrow}>{"// Inside the platform · "}{info.label}</p>
             <h2 style={h2}>See the learning platform, <span className="sch-grad">not a brochure.</span></h2>
             <p style={lede}>
-              Four screens captured straight from the live product, as a pupil sees it, and two showing what teachers get with the pilot. Pick a step, or open any screen full size.
+              Four screens captured straight from the live product, as a pupil sees it, and two showing what teachers get. Pick a step, or open any screen full size.
             </p>
           </FadeUp>
           <FadeUp delay={0.08}>
@@ -508,15 +502,15 @@ export default function SchoolsLanding() {
             </FadeUp>
             <FadeUp delay={0.08}>
               <div className="sch-card sch-pilot">
-                <span className="sch-chip sch-chip-live">Free</span>
-                <h3>A half-term pilot, on us.</h3>
-                <p>Six lessons with one class, with everything included. See the results for yourself, then license the whole school from the start of a term.</p>
+                <span className="sch-chip sch-chip-live">No cost</span>
+                <h3>See it with a real class first.</h3>
+                <p>Book a walkthrough and we will show you the lessons, the teacher view and the reporting, on your screen, with time for your questions.</p>
                 <ul>
-                  <li>One class, one course, six lessons</li>
-                  <li>Login cards and the teacher view included</li>
-                  <li>A class report at the end to show your head</li>
+                  <li>A run through a real lesson, start to finish</li>
+                  <li>The teacher view and the class report</li>
+                  <li>Straight answers on data, set-up and cost</li>
                 </ul>
-                <a href="#enquiry" style={{ ...pillPrimary, marginTop: "auto" }}>Request a pilot</a>
+                <a href="#enquiry" style={{ ...pillPrimary, marginTop: "auto" }}>Book a walkthrough</a>
               </div>
             </FadeUp>
           </div>
@@ -547,12 +541,12 @@ export default function SchoolsLanding() {
             <FadeUp>
               <div>
                 <p style={eyebrow}>{"// Get in touch"}</p>
-                <h2 style={h2}>Tell us about <span className="sch-grad">your school.</span></h2>
+                <h2 style={h2}>Thinking of <span className="sch-grad">registering?</span></h2>
                 <p style={lede}>
                   We&rsquo;ll explain the onboarding process, from the agreement to the first lesson, and reply within two working days. We bring the processing agreement and a data-protection summary to the first conversation so your DPO has what they need.
                 </p>
                 <p style={{ ...lede, fontSize: 14.5, color: "rgba(232,237,255,0.6)" }}>
-                  Prefer email? <a href="mailto:support@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>support@algorithmx.co.uk</a>
+                  Prefer email? <a href="mailto:admissions@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>admissions@algorithmx.co.uk</a>
                 </p>
               </div>
             </FadeUp>

@@ -40,28 +40,30 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ACCENT = "#7df0ff";
 
+/* Labels were 10.5px at 62% white, which is faint against this panel and
+   under the contrast line a school's accessibility check would apply. */
 const label: React.CSSProperties = {
   display: "block",
   fontFamily: "var(--lv2-font-mono)",
-  fontSize: 10.5,
+  fontSize: 12,
   fontWeight: 700,
-  letterSpacing: "0.2em",
+  letterSpacing: "0.16em",
   textTransform: "uppercase",
-  color: "rgba(232,237,255,0.62)",
-  marginBottom: 8,
+  color: "rgba(232,237,255,0.92)",
+  marginBottom: 9,
 };
 
 const field: React.CSSProperties = {
   width: "100%",
-  height: 50,
+  height: 54,
   borderRadius: 12,
-  padding: "0 14px",
+  padding: "0 16px",
   fontFamily: "var(--lv2-font-display)",
-  fontSize: 16,
+  fontSize: 16.5,
   fontWeight: 500,
-  color: "#e8edff",
-  background: "rgba(8,10,22,0.78)",
-  border: "1.5px solid rgba(125,240,255,0.28)",
+  color: "#f2f6ff",
+  background: "rgba(6,9,20,0.86)",
+  border: "1.5px solid rgba(125,240,255,0.4)",
   outline: "none",
   boxSizing: "border-box",
   transition: "border-color .2s ease, box-shadow .2s ease",
@@ -72,7 +74,7 @@ function focus(e: React.FocusEvent<HTMLElement>) {
   e.currentTarget.style.boxShadow = `0 0 0 3px rgba(125,240,255,0.14)`;
 }
 function blur(e: React.FocusEvent<HTMLElement>) {
-  e.currentTarget.style.borderColor = "rgba(125,240,255,0.28)";
+  e.currentTarget.style.borderColor = "rgba(125,240,255,0.4)";
   e.currentTarget.style.boxShadow = "none";
 }
 

@@ -2,9 +2,12 @@
  * The ASDAN mark, in the same pill as the other trust marks.
  *
  * White plate because the supplied artwork is dark on light, then the claim
- * to its right, the way Cyber Essentials reads. "Aligned with ASDAN" matches
- * how /cyberheroes already describes it: an alignment, not an award we hold.
- * Do not upgrade the wording to "accredited by" without something in writing.
+ * to its right, the way Cyber Essentials reads.
+ *
+ * It reads "ASDAN accredited courses" on the owner's instruction (2026-09-19),
+ * after being shown that /cyberheroes says "Accreditation - aligned" and that
+ * accredited is the stronger claim. If ASDAN ever query it, that is the
+ * history. Do not strengthen it further.
  */
 export default function AsdanBadge({ style }: { style?: React.CSSProperties }) {
   return (
@@ -13,7 +16,7 @@ export default function AsdanBadge({ style }: { style?: React.CSSProperties }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logos/asdan.jpg" width={263} height={61} alt="ASDAN" loading="lazy" decoding="async" />
       </span>
-      <span className="asdan-mark-text">Aligned with ASDAN</span>
+      <span className="asdan-mark-text">ASDAN accredited courses</span>
       <style>{`
         .asdan-mark {
           display: inline-flex;

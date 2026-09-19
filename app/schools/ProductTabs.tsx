@@ -36,7 +36,7 @@ const TABS: Tab[] = [
   {
     id: "learn",
     n: "01",
-    title: "Learn",
+    title: "Students learn",
     desc: "Every idea is taught by doing, with a narrator and captions on screen, so every pupil can follow along.",
     kind: "shot",
     shot: {
@@ -47,7 +47,7 @@ const TABS: Tab[] = [
   {
     id: "play",
     n: "02",
-    title: "Practise",
+    title: "Practise every module",
     desc: "A hands-on game for every idea. A wrong answer gets a spoken reason and another go.",
     kind: "shot",
     shot: {
@@ -58,7 +58,7 @@ const TABS: Tab[] = [
   {
     id: "prove",
     n: "03",
-    title: "Prove it",
+    title: "Test after every module",
     desc: "Every lesson ends in a boss battle or a must-pass test, so pupils prove what they have learned before they move on.",
     kind: "shot",
     shot: {
@@ -69,7 +69,7 @@ const TABS: Tab[] = [
   {
     id: "progress",
     n: "04",
-    title: "Their own progress",
+    title: "Track their own progress",
     desc: "Stickers, badges and personal bests that keep every pupil motivated from one week to the next.",
     kind: "shot",
     shot: {
@@ -80,7 +80,7 @@ const TABS: Tab[] = [
   {
     id: "teacher",
     n: "05",
-    title: "The teacher view",
+    title: "Teacher class review",
     desc: "Who has finished, who is stuck, and which question the class got wrong. Three answers on one screen.",
     kind: "teacher",
   },
