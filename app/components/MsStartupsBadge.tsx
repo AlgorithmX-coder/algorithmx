@@ -8,6 +8,12 @@
  * Essentials treatment: a white plate inside the cyan-outlined pill, because
  * the artwork is dark on white and would vanish on a dark ground.
  *
+ * The line beside it reads "Microsoft for Startups member", NOT "partnered
+ * with Microsoft". Microsoft ask startups to keep "partner" and
+ * "partnership" out of public messaging unless a Microsoft contact has
+ * cleared it, and membership of the programme is not a partnership in the
+ * sense their legal guidance means. Change it only with that clearance.
+ *
  * Used unmodified apart from trimming its white margin. Do not recolour it,
  * do not knock it out to white, and do not retype the words as HTML.
  */
@@ -25,12 +31,14 @@ export default function MsStartupsBadge({ style }: { style?: React.CSSProperties
           decoding="async"
         />
       </span>
+      <span className="ms-startups-text">Microsoft for Startups member</span>
       <style>{`
         .ms-startups {
           display: inline-flex;
           align-items: center;
+          gap: 12px;
           flex: 0 0 auto;
-          padding: 6px 13px;
+          padding: 6px 16px 6px 7px;
           border-radius: 999px;
           background: rgba(13,15,24,0.55);
           border: 1px solid rgba(159,245,255,0.28);
@@ -41,9 +49,18 @@ export default function MsStartupsBadge({ style }: { style?: React.CSSProperties
         .ms-startups-plate {
           display: inline-flex;
           align-items: center;
-          padding: 6px 12px;
+          padding: 6px 10px;
           border-radius: 999px;
           background: #fff;
+        }
+        .ms-startups-text {
+          font-family: var(--lv2-font-mono);
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--lv2-cyan-soft, #9ff5ff);
+          white-space: nowrap;
         }
         .ms-startups-plate img {
           display: block;
