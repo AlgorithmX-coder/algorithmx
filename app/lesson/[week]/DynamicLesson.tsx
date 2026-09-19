@@ -94,6 +94,9 @@ import FourEyes from "@/app/components/exercises/FourEyes";
 import GreatClimbOut from "@/app/components/exercises/signatures/GreatClimbOut";
 import WhoKnows from "@/app/components/exercises/WhoKnows";
 import CommentPond from "@/app/components/exercises/CommentPond";
+import CalmDownConsole from "@/app/components/exercises/signatures/CalmDownConsole";
+import RadioRoll from "@/app/components/exercises/RadioRoll";
+import DrillRun from "@/app/components/exercises/DrillRun";
 import PausePower from "@/app/components/exercises/PausePower";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
@@ -1693,6 +1696,9 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)">
             <AccountRescue
               skin={def.skin}
+              tileLayout={def.tileLayout}
+              duplicateToast={def.duplicateToast}
+              countLabel={def.countLabel}
               sharedPassword={def.sharedPassword}
               leakedAccountId={def.leakedAccountId}
               accounts={def.accounts}
@@ -2536,6 +2542,95 @@ function DynamicLessonInner({
           </FullScene>
         );
 
+      // Week 11 (The Lighthouse): a warm rescue station on a dark coast.
+      case "calmConsole":
+        return (
+          <FullScene bg="linear-gradient(180deg, #071019 0%, #0e2030 100%)">
+            <CalmDownConsole
+              stones={def.stones}
+              breathsPerStone={def.breathsPerStone}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              inLabel={def.inLabel}
+              outLabel={def.outLabel}
+              stonesLabel={def.stonesLabel}
+              truthLine={def.truthLine}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+              }}
+            />
+          </FullScene>
+        );
+
+      case "radioRoll":
+        return (
+          <FullScene bg="linear-gradient(180deg, #071019 0%, #0e2030 100%)">
+            <RadioRoll
+              channels={def.channels}
+              teamSize={def.teamSize}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              dialLabel={def.dialLabel}
+              callLabel={def.callLabel}
+              teamLabel={def.teamLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "drillRun":
+        return (
+          <FullScene bg="linear-gradient(180deg, #071019 0%, #0e2030 100%)">
+            <DrillRun
+              steps={def.steps}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              railLabel={def.railLabel}
+              situationLabel={def.situationLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
       // Week 10 (The Burrow): a dark mossy hole with daylight somewhere above.
       case "climbOut":
         return (
@@ -2731,6 +2826,7 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #1a0d05 0%, #2e1808 100%)">
             <DevelopingTray
+              skin={def.skin}
               leakCopy={def.leakCopy}
               developPrompt={def.developPrompt}
               developReadAloud={def.developReadAloud}
@@ -2805,6 +2901,9 @@ function DynamicLessonInner({
         return (
           <FullScene bg="linear-gradient(180deg, #1c0f06 0%, #2a1a0c 100%)">
             <DontFeedTheFire
+              skin={def.skin}
+              friendName={def.friendName}
+              friendSupportLine={def.friendSupportLine}
               sparks={def.sparks}
               friendRound={def.friendRound}
               teachSpark={def.teachSpark}

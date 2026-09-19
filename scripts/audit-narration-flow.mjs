@@ -433,6 +433,45 @@ function chainsFor(type, span) {
       if (wrong) chains.push({ name: label + " (wrong choice)", mode: "branch", beats: [items.length ? items[items.length - 1] : read], branches: [wrong] });
     }
   }
+  // Week 11 engines (rebuilt 2026-09-19).
+  if (type === "calmConsole") {
+    // each stone: the heavy thought Sarah reads as it is lifted -> her reason why
+    // it was never the child's to carry. There is no wrong path in this beat.
+    for (const t of span.split(/\{\s*id:\s*(?=")/).slice(1)) {
+      const label = field(t, "label"), why = field(t, "why");
+      if (label && why) chains.push({ name: "calm console: " + un(label), mode: "chain", beats: [label, why] });
+    }
+  }
+  if (type === "radioRoll") {
+    // each channel: the label Sarah reads as the dial lands -> her why when they
+    // join the team; a channel that cannot help explains itself against the same line.
+    for (const c of span.split(/\{\s*id:\s*(?=")/).slice(1)) {
+      const label = field(c, "label"), why = field(c, "why"), expl = field(c, "explanation");
+      if (!label) continue;
+      if (/isTeam:\s*true/.test(c)) {
+        if (why) chains.push({ name: "radio roll: " + un(label), mode: "chain", beats: [label, why] });
+      } else if (expl) {
+        chains.push({ name: "radio roll: " + un(label) + " (no help)", mode: "branch", beats: [label], branches: [expl] });
+      }
+    }
+  }
+  if (type === "drillRun") {
+    // each step: the situation Sarah reads as it opens -> the why on the move that
+    // advances the drill; a wrong move answers the same situation.
+    for (const p of span.split(/\bsituation:\s*(?=")/).slice(1)) {
+      const situation = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!situation) continue;
+      for (const o of p.split(/\{\s*id:\s*(?=")/).slice(1)) {
+        const label = field(o, "label"), why = field(o, "why"), expl = field(o, "explanation");
+        if (!label) continue;
+        if (/isRight:\s*true/.test(o)) {
+          if (why) chains.push({ name: "drill run: " + un(label), mode: "chain", beats: [situation, why] });
+        } else if (expl) {
+          chains.push({ name: "drill run: " + un(label) + " (wrong move)", mode: "branch", beats: [situation], branches: [expl] });
+        }
+      }
+    }
+  }
   // Week 10 engines (rebuilt 2026-09-17).
   if (type === "climbOut") {
     // each rung: the moment Sarah reads as it slides in -> the grip's why on the

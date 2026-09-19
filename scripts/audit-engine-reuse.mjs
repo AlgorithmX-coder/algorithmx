@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -49,6 +49,10 @@ const RETHEME_ALLOWED = {
   // would read as the same game, so beat 4 became the new CommentPond engine
   // (it names what a comment WANTS, which no other engine does).
   10: ["PowerPanel", "FirewallBuilder (review)"], // Back-Out Panel (W6 panel, player skin), The Ladder Out (W4 wall)
+  // W11 is a sensitive week: both concept re-themes were picked because their
+  // mechanics already carry the right feeling (a fire that dies when you stop
+  // feeding it; a tray that develops only what you kept), not to save a build.
+  11: ["DontFeedTheFire", "DevelopingTray", "AccountRescue (review)"], // Starve the Signal (W5 fire), The Evidence Tray (W8 darkroom), The Rescue Board (W5)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

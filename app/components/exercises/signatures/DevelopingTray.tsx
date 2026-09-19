@@ -39,6 +39,16 @@
  *   photo  (bottom)  the illustration, drawn once per size
  *   cover  (middle)  developer film, cleared tile by tile
  *   fx     (top)     found-leak rings / red wash / flash / confetti, rAF loop
+ *
+ * SKINS. `skin="darkroom"` (the default) is the shipped Week 8 board, byte for
+ * byte. `skin="evidence"` keeps every step and repaints the tray as Week 11's
+ * EVIDENCE TRAY: what develops is the screenshot the child kept of a mean
+ * message (the sender already deleted the original, so it comes up blank on
+ * the chat), the three things to spot are what make it good PROOF (who sent
+ * it, when it came, what it said, ringed in green rather than alarm red), and
+ * the decision is SHOW A GROWN-UP versus DELETE IT. Deleting washes the
+ * screenshot blank instead of red: the proof is simply gone. Nothing here
+ * blames the child.
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -76,7 +86,11 @@ const AUDIO_ONLY_STYLE = {
 /* ------------------------------------------------------------------ */
 
 export interface TrayLeakCopy { chip: string; bullet: string; readAloud: string }
+/** Which world the tray is painted in. "darkroom" = the shipped Week 8 look. */
+export type TraySkin = "darkroom" | "evidence";
 export interface DevelopingTrayProps {
+  /** World paint + board wording. Default "darkroom" = the shipped Week 8 board. */
+  skin?: TraySkin;
   leakCopy?: Partial<Record<string, TrayLeakCopy>>;
   developPrompt?: string; developReadAloud?: string;
   spotPrompt?: string; spotReadAloud?: string;
@@ -269,6 +283,192 @@ const DEFAULT_TEACH = {
   tip: "A photo with clues like these should stay private.",
 };
 const DEFAULT_COMPLETE_LINE = "Look at every corner before a photo goes anywhere.";
+
+/* ------------------------------------------------------------------ */
+/* Default content for the "evidence" skin (Week 11, the Lighthouse)  */
+/* ------------------------------------------------------------------ */
+
+/** The three things that make the kept screenshot good proof. */
+const EVIDENCE_LEAKS: readonly TrayLeak[] = [
+  {
+    id: "sender",
+    ring: { x: 70, y: 18, w: 220, h: 46 },
+    chipLeftPct: ((70 + 110) / CANVAS_W) * 100,
+    chipTopPct: ((18 + 46 + 8) / CANVAS_H) * 100,
+    icon: "👤",
+    chip: "Who sent it!",
+    bullet: "The sender's name is right there at the top",
+    readAloud: "",
+  },
+  {
+    id: "time",
+    ring: { x: 280, y: 78, w: 180, h: 34 },
+    // Chips sit clear of the message bubble, out to the right of the stamp.
+    chipLeftPct: ((280 + 230) / CANVAS_W) * 100,
+    chipTopPct: ((78 + 34 + 8) / CANVAS_H) * 100,
+    icon: "⏱️",
+    chip: "When it came!",
+    bullet: "The day and the time are stamped on it",
+    readAloud: "",
+  },
+  {
+    id: "words",
+    ring: { x: 48, y: 130, w: 372, h: 92 },
+    chipLeftPct: ((48 + 492) / CANVAS_W) * 100,
+    chipTopPct: ((130 + 45) / CANVAS_H) * 100,
+    icon: "💬",
+    chip: "What they said!",
+    bullet: "The exact words are saved, word for word",
+    readAloud: "",
+  },
+];
+
+const EVIDENCE_INTRO_SUBTITLE =
+  "Tap every tile to develop the screenshot you kept, tap the three things that make it good proof, then decide: show a grown-up, or delete it?";
+const EVIDENCE_DEVELOP_PROMPT = "Tap every tile to develop the screenshot";
+const EVIDENCE_SPOT_PROMPT = "Now tap everything that makes this good proof";
+const EVIDENCE_DECIDE_PROMPT = "SHOW A GROWN-UP, or DELETE IT?";
+const EVIDENCE_WHY =
+  "Your screenshot shows who sent it, when it came and exactly what it said, so a grown-up can help you straight away.";
+const EVIDENCE_TEACH = {
+  title: "Wait, keep that!",
+  body: "The sender already deleted their message, so it comes up blank. Your screenshot is the only proof left.",
+  tip: "Keep the proof and show a grown-up you trust.",
+};
+const EVIDENCE_COMPLETE_LINE = "A screenshot is proof a grown-up can act on.";
+
+/* ------------------------------------------------------------------ */
+/* Board wording + paint per skin (the darkroom column is today's)    */
+/* ------------------------------------------------------------------ */
+
+interface TraySkinCopy {
+  stepDevelop: string; // the step chip, top right
+  stepSpot: string;
+  stepDecide: string;
+  meterDevelop: string; // the meter label per step
+  meterSpot: string;
+  photoAria: string; // the picture canvas
+  tileAria: string; // one film tile
+  leakAria: string; // one spot-step target
+  coverStamp: string; // the words stamped on the undeveloped film
+  coverStampSub: string;
+  statTiles: (n: number) => string; // complete-beat stat lines
+  statLeaks: (n: number) => string;
+}
+
+const TRAY_COPY: Record<TraySkin, TraySkinCopy> = {
+  darkroom: {
+    stepDevelop: "Develop",
+    stepSpot: "Spot the leaks",
+    stepDecide: "Decide",
+    meterDevelop: "DEVELOPING",
+    meterSpot: "LEAKS FOUND",
+    photoAria: "A photo in the developing tray",
+    tileAria: "Develop this part of the photo",
+    leakAria: "Look closer here",
+    coverStamp: "TAP TO DEVELOP",
+    coverStampSub: "every corner counts",
+    statTiles: (n) => `All ${n} tiles developed`,
+    statLeaks: (n) => `${n} leak${n === 1 ? "" : "s"} spotted`,
+  },
+  evidence: {
+    stepDevelop: "Develop",
+    stepSpot: "Spot the proof",
+    stepDecide: "Decide",
+    meterDevelop: "DEVELOPING",
+    meterSpot: "PROOF FOUND",
+    photoAria: "A screenshot in the evidence tray",
+    tileAria: "Develop this part of the screenshot",
+    leakAria: "Look closer here",
+    coverStamp: "TAP TO DEVELOP",
+    coverStampSub: "the whole screenshot counts",
+    statTiles: (n) => `All ${n} tiles developed`,
+    statLeaks: (n) => `${n} proof mark${n === 1 ? "" : "s"} spotted`,
+  },
+};
+
+interface TraySkinPaint {
+  /** The persistent ring around a found mark: shadow pass, then the bright pass. */
+  ringShadow: string;
+  ringStroke: string;
+  /** The callout chip pinned over the picture. */
+  chipBg: string;
+  /** The wrong-choice wash: "r, g, b" plus its resting and pulse alpha. */
+  washRgb: string;
+  washAlpha: number;
+  washPulseAlpha: number;
+  /** The rings pulsed by that wash. */
+  washRing: string;
+  /** The tray the picture sits in. */
+  trayBg: string;
+  trayShadow: string;
+  /** The little lamp beside the title (darkroom safelight / lighthouse lamp). */
+  lampDot: string;
+  lampGlow: string;
+  titleColor: string;
+  meterColor: string;
+  promptColor: string;
+  bulletColor: string;
+  /** The two decision buttons, identical to each other until the pick. */
+  choiceBorder: string;
+  choiceBg: string;
+  choiceColor: string;
+}
+
+const TRAY_PAINT: Record<TraySkin, TraySkinPaint> = {
+  darkroom: {
+    ringShadow: "rgba(70, 14, 14, 0.4)",
+    ringStroke: "rgba(255, 82, 82, 0.95)",
+    chipBg: "#c92a2a",
+    washRgb: "255, 60, 60",
+    washAlpha: 0.14,
+    washPulseAlpha: 0.06,
+    washRing: "rgba(255, 82, 82, 0.95)",
+    trayBg: "linear-gradient(180deg, #34161a 0%, #23090d 60%, #1a070a 100%)",
+    trayShadow:
+      "inset 0 4px 14px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 0 2px rgba(255, 120, 90, 0.14)",
+    lampDot: "radial-gradient(circle, #ff5a5a 0%, #a11515 70%)",
+    lampGlow: "0 0 12px 4px rgba(255, 70, 70, 0.45)",
+    titleColor: "#ffd9c4",
+    meterColor: SAFELIGHT,
+    promptColor: "#fff3e8",
+    bulletColor: "#ffe3d6",
+    choiceBorder: "rgba(255, 217, 196, 0.55)",
+    choiceBg: "linear-gradient(180deg, #4a2328 0%, #321519 100%)",
+    choiceColor: "#fff3e8",
+  },
+  evidence: {
+    // Proof is a good thing: green rings, and DELETE washes the sheet blank.
+    ringShadow: "rgba(6, 58, 40, 0.4)",
+    ringStroke: "rgba(52, 211, 153, 0.95)",
+    chipBg: "#1f8f63",
+    washRgb: "238, 240, 245",
+    washAlpha: 0.72,
+    washPulseAlpha: 0.08,
+    washRing: "rgba(148, 163, 184, 0.85)",
+    trayBg: "linear-gradient(180deg, #16263a 0%, #0d1928 60%, #091320 100%)",
+    trayShadow:
+      "inset 0 4px 14px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 0 2px rgba(120, 170, 255, 0.16)",
+    lampDot: "radial-gradient(circle, #ffd166 0%, #b57e12 70%)",
+    lampGlow: "0 0 12px 4px rgba(255, 200, 80, 0.45)",
+    titleColor: "#ffe7bd",
+    meterColor: "#ffc978",
+    promptColor: "#eef4ff",
+    bulletColor: "#e2ecff",
+    choiceBorder: "rgba(200, 224, 255, 0.55)",
+    choiceBg: "linear-gradient(180deg, #1e3550 0%, #14243a 100%)",
+    choiceColor: "#eef4ff",
+  },
+};
+
+const LEAKS_BY_SKIN: Record<TraySkin, readonly TrayLeak[]> = {
+  darkroom: LEAKS,
+  evidence: EVIDENCE_LEAKS,
+};
+const RINGS_BY_SKIN: Record<TraySkin, Map<string, Ring>> = {
+  darkroom: RING_BY_ID,
+  evidence: new Map(EVIDENCE_LEAKS.map((leak) => [leak.id, leak.ring] as const)),
+};
 
 // "read" is only ever entered for a step that has something to read, so the
 // spoken gate can never wait on a clip that does not exist (mute-aware).
@@ -650,8 +850,156 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.restore();
 }
 
+/**
+ * The "evidence" skin's picture: the screenshot the child kept of a mean
+ * message. The proof marks are the sender at the top, the time stamp under it
+ * and the words themselves; the sender's own message below has already been
+ * deleted, so it comes up blank.
+ */
+function drawEvidenceScene(ctx: CanvasRenderingContext2D) {
+  const W = CANVAS_W;
+  const H = CANVAS_H;
+  const M = PHOTO_MARGIN;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Photo paper (white border all around), same as the darkroom print.
+  ctx.fillStyle = "#f7f3ea";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.save();
+  roundRectPath(ctx, M, M, W - M * 2, H - M * 2, 10);
+  ctx.clip();
+
+  // The chat app behind everything.
+  ctx.fillStyle = "#eef2f8";
+  ctx.fillRect(M, M, W - M * 2, H - M * 2);
+
+  // PROOF 1: the app header with who sent it.
+  ctx.fillStyle = "#2c4a7a";
+  ctx.fillRect(M, M, W - M * 2, 70 - M);
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+  ctx.lineWidth = 4;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(48, 32);
+  ctx.lineTo(36, 42);
+  ctx.lineTo(48, 52);
+  ctx.stroke();
+  ctx.fillStyle = "#9fb6d6";
+  ctx.beginPath();
+  ctx.arc(92, 42, 17, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#2c4a7a";
+  ctx.beginPath();
+  ctx.arc(92, 37, 6.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(92, 58, 12, Math.PI * 1.15, Math.PI * 1.85);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = "#ffffff";
+  ctx.font = `800 22px ${FONT_STACK}`;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText("buzzkid_99", 118, 42);
+
+  // PROOF 2: the day and time stamp.
+  roundRectPath(ctx, 288, 80, 164, 30, 15);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+  ctx.strokeStyle = "#d8e0ec";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = "#4a5a72";
+  ctx.font = `700 16px ${FONT_STACK}`;
+  ctx.textAlign = "center";
+  ctx.fillText("Today 7:42 pm", 370, 96);
+
+  // PROOF 3: the message itself, word for word.
+  roundRectPath(ctx, 52, 134, 364, 84, 18);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+  ctx.strokeStyle = "#d8e0ec";
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.fillStyle = "#2a3446";
+  ctx.font = `700 20px ${FONT_STACK}`;
+  ctx.textAlign = "left";
+  ctx.fillText("You can't play with us any more.", 72, 163);
+  ctx.fillText("Don't tell anyone.", 72, 193);
+
+  // The sender's next message: already deleted, so it comes up blank.
+  ctx.save();
+  ctx.setLineDash([9, 8]);
+  roundRectPath(ctx, 52, 246, 320, 70, 18);
+  ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+  ctx.fill();
+  ctx.strokeStyle = "#b9c3d3";
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.restore();
+  ctx.fillStyle = "#94a2b8";
+  ctx.font = `700 17px ${FONT_STACK}`;
+  ctx.fillText("This message was deleted", 74, 281);
+
+  // A little "this is a screenshot" badge in the corner.
+  roundRectPath(ctx, 512, 330, 188, 44, 14);
+  ctx.fillStyle = "#dfe6f2";
+  ctx.fill();
+  ctx.strokeStyle = "#b9c3d3";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  roundRectPath(ctx, 528, 342, 30, 22, 5);
+  ctx.fillStyle = "#4a5a72";
+  ctx.fill();
+  ctx.fillStyle = "#dfe6f2";
+  ctx.beginPath();
+  ctx.arc(543, 353, 6, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#4a5a72";
+  ctx.font = `800 15px ${FONT_STACK}`;
+  ctx.fillText("SCREENSHOT", 570, 353);
+
+  // The message box at the bottom, so it reads as a real chat.
+  roundRectPath(ctx, 52, 392, 596, 46, 23);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+  ctx.strokeStyle = "#d8e0ec";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = "#a9b4c6";
+  ctx.font = `700 17px ${FONT_STACK}`;
+  ctx.fillText("Message", 74, 415);
+  ctx.fillStyle = "#2c4a7a";
+  ctx.beginPath();
+  ctx.arc(672, 415, 20, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.moveTo(664, 405);
+  ctx.lineTo(683, 415);
+  ctx.lineTo(664, 425);
+  ctx.closePath();
+  ctx.fill();
+
+  // The same soft vignette, so it still reads as paper in the tray.
+  const vig = ctx.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, H * 0.72);
+  vig.addColorStop(0, "rgba(40, 50, 70, 0)");
+  vig.addColorStop(1, "rgba(40, 50, 70, 0.16)");
+  ctx.fillStyle = vig;
+  ctx.fillRect(M, M, W - M * 2, H - M * 2);
+
+  ctx.restore();
+}
+
 /** The undeveloped "film": milky chemical wash hiding the photo. */
-function drawCoverScene(ctx: CanvasRenderingContext2D) {
+function drawCoverScene(
+  ctx: CanvasRenderingContext2D,
+  /** The words stamped on the film. Defaults: the shipped darkroom stamp. */
+  stamp = "TAP TO DEVELOP",
+  stampSub = "every corner counts"
+) {
   const W = CANVAS_W;
   const H = CANVAS_H;
 
@@ -693,15 +1041,20 @@ function drawCoverScene(ctx: CanvasRenderingContext2D) {
   ctx.font = `800 27px ${FONT_STACK}`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("TAP TO DEVELOP", W / 2, H / 2 - 12);
+  ctx.fillText(stamp, W / 2, H / 2 - 12);
   ctx.font = `700 16px ${FONT_STACK}`;
   ctx.fillStyle = "rgba(90, 75, 55, 0.32)";
-  ctx.fillText("every corner counts", W / 2, H / 2 + 22);
+  ctx.fillText(stampSub, W / 2, H / 2 + 22);
 }
 
 /** Repaint the film, then clear each tile by how far it has developed. */
-function paintCover(ctx: CanvasRenderingContext2D, clear: Float32Array) {
-  drawCoverScene(ctx);
+function paintCover(
+  ctx: CanvasRenderingContext2D,
+  clear: Float32Array,
+  stamp?: string,
+  stampSub?: string
+) {
+  drawCoverScene(ctx, stamp, stampSub);
   ctx.save();
   ctx.globalCompositeOperation = "destination-out";
   ctx.fillStyle = "#000000";
@@ -726,22 +1079,23 @@ function paintCover(ctx: CanvasRenderingContext2D, clear: Float32Array) {
 /* ------------------------------------------------------------------ */
 
 export default function DevelopingTray({
+  skin = "darkroom",
   leakCopy,
-  developPrompt = DEFAULT_DEVELOP_PROMPT,
+  developPrompt = skin === "evidence" ? EVIDENCE_DEVELOP_PROMPT : DEFAULT_DEVELOP_PROMPT,
   developReadAloud = "",
-  spotPrompt = DEFAULT_SPOT_PROMPT,
+  spotPrompt = skin === "evidence" ? EVIDENCE_SPOT_PROMPT : DEFAULT_SPOT_PROMPT,
   spotReadAloud = "",
-  decidePrompt = DEFAULT_DECIDE_PROMPT,
+  decidePrompt = skin === "evidence" ? EVIDENCE_DECIDE_PROMPT : DEFAULT_DECIDE_PROMPT,
   decideReadAloud = "",
-  shareLabel = "SHARE",
-  keepLabel = "KEEP",
-  why = DEFAULT_WHY,
-  teach = DEFAULT_TEACH,
-  introTitle = "The Developing Tray",
-  introSubtitle = DEFAULT_INTRO_SUBTITLE,
-  introIcon = "🔍",
-  completeTitle = "Photo developed, leaks spotted!",
-  completeLine = DEFAULT_COMPLETE_LINE,
+  shareLabel = skin === "evidence" ? "DELETE IT" : "SHARE",
+  keepLabel = skin === "evidence" ? "SHOW A GROWN-UP" : "KEEP",
+  why = skin === "evidence" ? EVIDENCE_WHY : DEFAULT_WHY,
+  teach = skin === "evidence" ? EVIDENCE_TEACH : DEFAULT_TEACH,
+  introTitle = skin === "evidence" ? "The Evidence Tray" : "The Developing Tray",
+  introSubtitle = skin === "evidence" ? EVIDENCE_INTRO_SUBTITLE : DEFAULT_INTRO_SUBTITLE,
+  introIcon = skin === "evidence" ? "📸" : "🔍",
+  completeTitle = skin === "evidence" ? "Proof developed and saved!" : "Photo developed, leaks spotted!",
+  completeLine = skin === "evidence" ? EVIDENCE_COMPLETE_LINE : DEFAULT_COMPLETE_LINE,
   hints,
   narration,
   coachLines,
@@ -764,15 +1118,20 @@ export default function DevelopingTray({
   // recorded under "adam", so every manifest lookup here uses that key.
   const voice = "adam" as const;
   const photoControls = useAnimationControls();
+  // Board wording, paint and marks for this skin; the darkroom column is the
+  // shipped copy and the shipped LEAKS array itself.
+  const t = TRAY_COPY[skin];
+  const paint = TRAY_PAINT[skin];
+  const skinLeaks = LEAKS_BY_SKIN[skin];
 
   // The built-in leaks, with any per-leak copy from the week file on top.
   const leaks = useMemo<TrayLeak[]>(
     () =>
-      LEAKS.map((leak) => {
+      skinLeaks.map((leak) => {
         const copy = leakCopy?.[leak.id];
         return copy ? { ...leak, chip: copy.chip, bullet: copy.bullet, readAloud: copy.readAloud } : leak;
       }),
-    [leakCopy]
+    [leakCopy, skinLeaks]
   );
 
   const [showIntro, setShowIntro] = useState(true);
@@ -875,10 +1234,11 @@ export default function DevelopingTray({
       if (!ps || !cs || !fs) return;
       coverCtxRef.current = cs.ctx;
       fxCtxRef.current = fs.ctx;
-      drawPhotoScene(ps.ctx);
+      if (skin === "evidence") drawEvidenceScene(ps.ctx);
+      else drawPhotoScene(ps.ctx);
       const scene = sceneRef.current;
       if (scene.developed && scene.fades.size === 0) cs.ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-      else paintCover(cs.ctx, scene.clear);
+      else paintCover(cs.ctx, scene.clear, TRAY_COPY[skin].coverStamp, TRAY_COPY[skin].coverStampSub);
     };
     let lastW = -1;
     const wrap = wrapRef.current;
@@ -890,12 +1250,17 @@ export default function DevelopingTray({
     });
     if (wrap) ro.observe(wrap);
     return () => ro.disconnect();
-  }, []);
+  }, [skin]);
 
   // One rAF loop: tile fades on the film, then rings / wash / flash / confetti.
   useEffect(() => {
     let raf = 0;
     let lastNow = performance.now();
+    // Resolved once per mount: the skin never changes under a live board.
+    const copy = TRAY_COPY[skin];
+    const skinPaint = TRAY_PAINT[skin];
+    const rings = RINGS_BY_SKIN[skin];
+    const marks = LEAKS_BY_SKIN[skin];
     const loop = (now: number) => {
       const dt = Math.min(0.05, Math.max(0, now - lastNow) / 1000);
       lastNow = now;
@@ -910,7 +1275,7 @@ export default function DevelopingTray({
           if (k >= 1) scene.fades.delete(i);
         }
         const cctx = coverCtxRef.current;
-        if (cctx) paintCover(cctx, scene.clear);
+        if (cctx) paintCover(cctx, scene.clear, copy.coverStamp, copy.coverStampSub);
         if (scene.fades.size === 0 && scene.developed) {
           // Every tile clear: retire the film layer entirely.
           const cover = coverRef.current;
@@ -927,7 +1292,7 @@ export default function DevelopingTray({
 
         // Found leaks stay marked: each ring pops in, then holds.
         for (const mark of scene.found) {
-          const ring = RING_BY_ID.get(mark.id);
+          const ring = rings.get(mark.id);
           if (!ring) continue;
           if (mark.at === null) mark.at = now;
           const k = mark.ms <= 0 ? 1 : Math.min(1, Math.max(0, now - mark.at) / mark.ms);
@@ -936,23 +1301,23 @@ export default function DevelopingTray({
           ctx.save();
           ctx.globalAlpha = 0.2 + 0.8 * ease;
           roundRectPath(ctx, ring.x - grow, ring.y - grow, ring.w + grow * 2, ring.h + grow * 2, 14);
-          ctx.strokeStyle = "rgba(70, 14, 14, 0.4)";
+          ctx.strokeStyle = skinPaint.ringShadow;
           ctx.lineWidth = 9;
           ctx.stroke();
-          ctx.strokeStyle = "rgba(255, 82, 82, 0.95)";
+          ctx.strokeStyle = skinPaint.ringStroke;
           ctx.lineWidth = 5;
           ctx.stroke();
           ctx.restore();
         }
 
-        // The red wash (a SHARE teach): the photo tints and every leak ring pulses.
+        // The wrong-choice wash: the picture tints and every mark's ring pulses.
         if (scene.wash) {
           const pulse = scene.washPulse ? Math.sin(now / 280) : 0;
-          ctx.fillStyle = `rgba(255, 60, 60, ${(0.14 + 0.06 * pulse).toFixed(3)})`;
+          ctx.fillStyle = `rgba(${skinPaint.washRgb}, ${(skinPaint.washAlpha + skinPaint.washPulseAlpha * pulse).toFixed(3)})`;
           ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-          ctx.strokeStyle = "rgba(255, 82, 82, 0.95)";
+          ctx.strokeStyle = skinPaint.washRing;
           ctx.lineWidth = 4.5 + 1.5 * pulse;
-          for (const leak of LEAKS) {
+          for (const leak of marks) {
             roundRectPath(ctx, leak.ring.x, leak.ring.y, leak.ring.w, leak.ring.h, 14);
             ctx.stroke();
           }
@@ -999,7 +1364,7 @@ export default function DevelopingTray({
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [skin]);
 
   // Spot step guide: after an idle spell with no new find (Sarah not
   // speaking), softly pulse the unfound leak nearest to where the child last
@@ -1010,7 +1375,7 @@ export default function DevelopingTray({
       const from = lastTapRef.current;
       let best: string | null = null;
       let bestDist = Number.POSITIVE_INFINITY;
-      for (const leak of LEAKS) {
+      for (const leak of skinLeaks) {
         if (found.includes(leak.id)) continue;
         const c = ringCenter(leak.ring);
         const dist = Math.hypot(c.x - from.x, c.y - from.y);
@@ -1022,7 +1387,7 @@ export default function DevelopingTray({
       setGuideId(best);
     }, IDLE_GUIDE_MS);
     return () => window.clearTimeout(id);
-  }, [showIntro, step, speaking, found]);
+  }, [showIntro, step, speaking, found, skinLeaks]);
 
   /* ---------------- beats ---------------- */
 
@@ -1159,13 +1524,13 @@ export default function DevelopingTray({
 
   /* ---------------- per-step copy ---------------- */
 
-  const stepName = step === "develop" ? "Develop" : step === "spot" ? "Spot the leaks" : "Decide";
+  const stepName = step === "develop" ? t.stepDevelop : step === "spot" ? t.stepSpot : t.stepDecide;
   const prompt = step === "develop" ? developPrompt : step === "spot" ? spotPrompt : decidePrompt;
   const promptIcon = step === "develop" ? "👆" : step === "spot" ? "🔍" : "👀";
   const stepRead = step === "develop" ? developReadAloud : step === "spot" ? spotReadAloud : decideReadAloud;
   const readingLeak = narr === "leak" ? leaks.find((l) => l.id === readLeakId) : undefined;
 
-  const meterLabel = step === "develop" ? "DEVELOPING" : "LEAKS FOUND";
+  const meterLabel = step === "develop" ? t.meterDevelop : t.meterSpot;
   const meterDone = step === "develop" ? developedCount : found.length;
   const meterTotal = step === "develop" ? TOTAL_TILES : leaks.length;
   const meterFull = meterDone >= meterTotal;
@@ -1224,7 +1589,7 @@ export default function DevelopingTray({
               fontWeight: 900,
               letterSpacing: "0.16em",
               textTransform: "uppercase",
-              color: "#ffd9c4",
+              color: paint.titleColor,
             }}
           >
             {/* The darkroom safelight */}
@@ -1237,8 +1602,8 @@ export default function DevelopingTray({
                 width: 12,
                 height: 12,
                 borderRadius: "50%",
-                background: "radial-gradient(circle, #ff5a5a 0%, #a11515 70%)",
-                boxShadow: "0 0 12px 4px rgba(255, 70, 70, 0.45)",
+                background: paint.lampDot,
+                boxShadow: paint.lampGlow,
                 flexShrink: 0,
               }}
             />
@@ -1267,9 +1632,8 @@ export default function DevelopingTray({
             margin: "0 auto",
             borderRadius: 20,
             padding: 12,
-            background: "linear-gradient(180deg, #34161a 0%, #23090d 60%, #1a070a 100%)",
-            boxShadow:
-              "inset 0 4px 14px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 0 2px rgba(255, 120, 90, 0.14)",
+            background: paint.trayBg,
+            boxShadow: paint.trayShadow,
           }}
         >
           {/* The photo: canvas stack + the step's tap layer */}
@@ -1288,7 +1652,7 @@ export default function DevelopingTray({
               touchAction: "manipulation",
             }}
           >
-            <canvas ref={photoRef} role="img" aria-label="A photo in the developing tray" style={CANVAS_STYLE} />
+            <canvas ref={photoRef} role="img" aria-label={t.photoAria} style={CANVAS_STYLE} />
             <canvas ref={coverRef} aria-hidden style={CANVAS_STYLE} />
             <canvas ref={fxCanvasRef} aria-hidden style={{ ...CANVAS_STYLE, pointerEvents: "none" }} />
 
@@ -1311,7 +1675,7 @@ export default function DevelopingTray({
                     <button
                       key={i}
                       type="button"
-                      aria-label="Develop this part of the photo"
+                      aria-label={t.tileAria}
                       disabled={held}
                       onClick={() => tapTile(i)}
                       style={{
@@ -1366,7 +1730,7 @@ export default function DevelopingTray({
                     <button
                       key={leak.id}
                       type="button"
-                      aria-label="Look closer here"
+                      aria-label={t.leakAria}
                       disabled={speaking}
                       onClick={() => tapLeak(leak)}
                       style={{
@@ -1400,7 +1764,7 @@ export default function DevelopingTray({
                     position: "absolute",
                     left: `${leak.chipLeftPct}%`,
                     top: `${leak.chipTopPct}%`,
-                    background: "#c92a2a",
+                    background: paint.chipBg,
                     color: "#ffffff",
                     fontSize: "clamp(10px, 1.75cqw, 14px)",
                     fontWeight: 800,
@@ -1419,7 +1783,7 @@ export default function DevelopingTray({
 
           {/* Progress on the tray: tiles developed, then leaks found */}
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 10, padding: "0 4px" }}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, color: SAFELIGHT, flexShrink: 0 }}>
+            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, color: paint.meterColor, flexShrink: 0 }}>
               {meterLabel}
             </div>
             <div
@@ -1477,7 +1841,7 @@ export default function DevelopingTray({
               borderRadius: 16,
               background: `${tint}1a`,
               border: `1px solid ${tint}59`,
-              color: "#fff3e8",
+              color: paint.promptColor,
               fontSize: 17,
               fontWeight: 800,
               lineHeight: 1.3,
@@ -1517,7 +1881,7 @@ export default function DevelopingTray({
                     fontSize: 15,
                     fontWeight: 700,
                     lineHeight: 1.3,
-                    color: "#ffe3d6",
+                    color: paint.bulletColor,
                   }}
                 >
                   <PixIcon emoji={leak.icon} size={22} />
@@ -1542,6 +1906,7 @@ export default function DevelopingTray({
                   disabled={speaking || washing || sealed}
                   sealed={sealed && choice === "keep"}
                   reduce={reduce}
+                  tone={paint}
                   onClick={() => choose(choice === "share")}
                 />
               ))}
@@ -1581,11 +1946,7 @@ export default function DevelopingTray({
         <ExerciseCompleteBeat
           title={completeTitle}
           stars={stars}
-          statLines={[
-            `All ${TOTAL_TILES} tiles developed`,
-            `${leaks.length} leak${leaks.length === 1 ? "" : "s"} spotted`,
-            completeLine,
-          ]}
+          statLines={[t.statTiles(TOTAL_TILES), t.statLeaks(leaks.length), completeLine]}
           narration={completeNarration}
           onContinue={complete}
         />
@@ -1605,6 +1966,7 @@ function ChoiceButton({
   disabled,
   sealed,
   reduce,
+  tone,
 }: {
   label: string;
   onClick: () => void;
@@ -1612,6 +1974,8 @@ function ChoiceButton({
   /** The right pick, shown only after it was made. */
   sealed: boolean;
   reduce: boolean;
+  /** Skin paint for the button; both buttons always share it. */
+  tone: Pick<TraySkinPaint, "choiceBorder" | "choiceBg" | "choiceColor">;
 }) {
   return (
     <motion.button
@@ -1629,9 +1993,9 @@ function ChoiceButton({
         minWidth: 190,
         padding: "12px 30px",
         borderRadius: 18,
-        border: `2px solid ${sealed ? GOOD_GREEN : "rgba(255, 217, 196, 0.55)"}`,
-        background: "linear-gradient(180deg, #4a2328 0%, #321519 100%)",
-        color: "#fff3e8",
+        border: `2px solid ${sealed ? GOOD_GREEN : tone.choiceBorder}`,
+        background: tone.choiceBg,
+        color: tone.choiceColor,
         fontFamily: "inherit",
         fontSize: 20,
         fontWeight: 900,

@@ -76,8 +76,27 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
   ),
   // Week 4 · Scams — the rigged carnival booth you can't win; spot & close it.
   riggedRingToss: dynamic(() => import("./RiggedRingToss"), { ssr: false }),
-  // Week 11 · Emergency — paced breathing calms the alert centre, then tell.
-  calmDownConsole: dynamic(() => import("./CalmDownConsole"), { ssr: false }),
+  // Week 11 · Emergency — tap-paced breaths, then lift the blame-stones off.
+  // Rebuilt to the Learn-Loop standard (data-driven, tap-only, untimed), so its
+  // `onComplete(score)` does not fit this registry's score-less `onComplete()`.
+  // This adapter keeps the legacy mount compiling and playable on the game's
+  // built-in default stones, and passes the screen's spoken intro and payoff
+  // through to the beats that speak them.
+  calmDownConsole: dynamic(
+    async () => {
+      const { default: CalmDownConsole } = await import("./CalmDownConsole");
+      function CalmDownConsoleSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(CalmDownConsole, {
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      CalmDownConsoleSignature.displayName = "CalmDownConsoleSignature";
+      return CalmDownConsoleSignature;
+    },
+    { ssr: false },
+  ),
   // Week 12 · Footprint — draw a trail; the Track Hound reads what you left.
   trailPlanner: dynamic(() => import("./TrailPlanner"), { ssr: false }),
   // Week 13 · Screen time — pour the finite day-jug across four cups.

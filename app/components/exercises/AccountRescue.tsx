@@ -20,7 +20,12 @@
  * Skins: "rescue" (default, the password drill above, byte-identical to the
  * original) and "moves" (Week 5): each tile is a MOMENT, the bank holds HERO
  * MOVES, and a moment with `correctMoveId` accepts only its own move (a wrong
- * move teaches through WrongAnswerPanel and is never assigned).
+ * move teaches through WrongAnswerPanel and is never assigned). The "moves"
+ * skin is also what a five-case review board wants: five call-outs, five
+ * powers, one each (the uniqueness rule makes the pairing a bijection). Give
+ * such a board `tileLayout="wrap"` so five tiles wrap instead of crushing to
+ * five columns on a phone, plus its own `duplicateToast` and `countLabel` so
+ * no password wording leaks into it.
  *
  * Learn-Loop wiring: the Raccoon's boast folds into the intro (`threat`),
  * Sarah speaks the how-to once as the board appears (`coachLines`) and reads
@@ -105,6 +110,12 @@ export interface AccountRescueProps {
   storyLine?: string;
   /** "moves" skin: the pulsing chip on the `leakedAccountId` tile. Default "NEEDS YOU". */
   needsLabel?: string;
+  /** Tile grid: "row" (default) = one column per tile; "wrap" = wrap at narrow widths (5+ tiles). */
+  tileLayout?: "row" | "wrap";
+  /** The toast when a bank entry is already used elsewhere. Default: the password wording. */
+  duplicateToast?: string;
+  /** The word after the header count ("3 / 5 secured"). Default "secured". */
+  countLabel?: string;
   introTitle?: string;
   introSubtitle?: string;
   introIcon?: string;
@@ -156,6 +167,9 @@ export default function AccountRescue({
   hints,
   storyLine,
   needsLabel = "NEEDS YOU",
+  tileLayout = "row",
+  duplicateToast = "That one's already in use - pick a different password",
+  countLabel = "secured",
   introTitle = "Account Rescue Mission",
   introSubtitle = "The Raccoon hacked one account - and you used the same password on others! Give every account a different new one.",
   introIcon = "🛡",
@@ -270,7 +284,7 @@ export default function AccountRescue({
         const newDup = duplicateAttempts + 1;
         setDuplicateAttempts(newDup);
         fx.toast({
-          text: "That one's already in use - pick a different password",
+          text: duplicateToast,
           tone: "danger",
           durationMs: 1100,
         });
@@ -349,6 +363,7 @@ export default function AccountRescue({
       accounts,
       passwordBank,
       pickToast,
+      duplicateToast,
       wrongTitle,
       hints,
       verdict,
@@ -451,7 +466,7 @@ export default function AccountRescue({
             color: "#cbd5e1",
           }}
         >
-          {securedCount} / {accounts.length} secured
+          {securedCount} / {accounts.length} {countLabel}
         </span>
       </div>
 
@@ -514,7 +529,10 @@ export default function AccountRescue({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${accounts.length}, 1fr)`,
+          gridTemplateColumns:
+            tileLayout === "wrap"
+              ? "repeat(auto-fit, minmax(150px, 1fr))"
+              : `repeat(${accounts.length}, 1fr)`,
           gap: 10,
           marginBottom: 16,
         }}
