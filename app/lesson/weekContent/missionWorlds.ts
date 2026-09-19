@@ -53,7 +53,7 @@ export const MISSION_WORLDS: Record<number, MissionWorld> = {
   9: { name: "The Conveyor", floor: "belt", motes: "code", card: { material: "tile", backIcon: "🧩" } },
   10: { name: "The Glowing Burrow", floor: "earth", motes: "spores", card: { material: "stone", backIcon: "🔔" } },
   11: { name: "Calm Alert Centre", floor: "grating", motes: "blips", card: { material: "monitor", backIcon: "📣" } },
-  12: { name: "The Snowfield", floor: "snow", motes: "snow", card: { material: "frost", backIcon: "🔗" } },
+  12: { name: "The Snowfield", floor: "snow", motes: "snow", card: { material: "frost", backIcon: "📍" } },
   13: { name: "Sunrise Balance", floor: "grass", motes: "pollen", card: { material: "paper", backIcon: "📱" } },
   14: { name: "The Smart Home", floor: "rug", motes: "pulses", card: { material: "speaker", backIcon: "🏠" } },
   15: { name: "The Robot Lab", floor: "circuit", motes: "code", card: { material: "module", backIcon: "🤖" } },

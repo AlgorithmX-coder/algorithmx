@@ -132,13 +132,13 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
   },
   12: {
     title: "Digital Footprint: Tracks in the Snow",
-    tagline: "Everywhere you go online, you leave little tracks.",
+    tagline: "Out here the snow keeps every print you leave.",
     audioSrc: "/audio/atlas/heroes-week-12.mp3",
     accent: "#a8e4ff",
     points: [
-      { icon: "📍", label: "See your tracks" },
-      { icon: "🔒", label: "Keep them clean" },
-      { icon: "👀", label: "Who can see?" },
+      { icon: "💡", label: "See the print behind every tap" },
+      { icon: "👀", label: "Ask what older you would think" },
+      { icon: "🥇", label: "Stamp the trail you want found" },
     ],
   },
   13: {
