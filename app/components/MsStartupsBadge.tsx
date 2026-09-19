@@ -65,7 +65,7 @@ export default function MsStartupsBadge({ style }: { style?: React.CSSProperties
         }
         .ms-startups-plate img {
           display: block;
-          width: clamp(128px, 13vw, 158px);
+          width: clamp(112px, 11vw, 132px);
           height: auto;
         }
       `}</style>

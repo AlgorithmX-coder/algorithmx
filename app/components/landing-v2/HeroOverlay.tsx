@@ -177,6 +177,10 @@ export default function HeroOverlay() {
             NCSC alignment mark (alignment, not endorsement — the NCSC runs
             no endorsement scheme). Above the fold so they're the first
             trust marks a visitor sees, matching the course landings. */}
+        {/* Four marks need more room than the 1180 reading column: at that
+            width they wrapped to a second line that sat below the fold, so
+            half of them were never seen. The row alone breaks out to the
+            viewport, and the NCSC label takes its short form. */}
         <div className="lv2-trust-row" style={{ marginTop: "calc(var(--lv2-rail) * 0.45)", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, pointerEvents: "auto" }}>
           <CyberEssentialsBadge />
           <span
@@ -227,7 +231,19 @@ export default function HeroOverlay() {
       .lv2-hero-pad {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
       }
-      .lv2-trust-short { display: none; }
+      /* The long label costs 250px, which is the difference between one
+         line of marks and two. */
+      .lv2-trust-long { display: none; }
+      .lv2-trust-short { display: inline; }
+      /* Four marks measure about 1375px and the reading column is 1180, so
+         they wrapped onto a second line that fell below the fold on a laptop:
+         half the accreditations were never seen. Zoom shrinks the whole row,
+         layout included, which inline-styled children cannot be talked out of
+         any other way, and keeps all four on one line from 1180 up. */
+      .lv2-trust-row { zoom: 0.8; }
+      @media (max-width: 1099px) {
+        .lv2-trust-row { zoom: 1; }
+      }
       /* Tablets: the same idea as phones, gentler. The copy top-aligns
        * under the nav instead of floating in the middle of the frame,
        * and the trust pills take the short NCSC label so the pair stays
