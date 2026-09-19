@@ -472,6 +472,36 @@ function chainsFor(type, span) {
       }
     }
   }
+  // Week 12 engines (rebuilt 2026-09-19).
+  if (type === "trackBack" || type === "trailPlanner") {
+    // each print / stretch: the read-aloud Sarah speaks as it thaws or lights up
+    // -> the right card's why; a wrong card answers that same read-aloud.
+    const noun = type === "trackBack" ? "track back" : "trail planner";
+    for (const p of span.split(/\breadAloud:\s*(?=")/).slice(1)) {
+      const readAloud = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!readAloud) continue;
+      for (const o of p.split(/\{\s*id:\s*(?=")/).slice(1)) {
+        const label = field(o, "label"), why = field(o, "why"), expl = field(o, "explanation");
+        if (!label) continue;
+        if (/isRight:\s*true/.test(o)) {
+          if (why) chains.push({ name: noun + ": " + un(label), mode: "chain", beats: [readAloud, why] });
+        } else if (expl) {
+          chains.push({ name: noun + ": " + un(label) + " (wrong)", mode: "branch", beats: [readAloud], branches: [expl] });
+        }
+      }
+    }
+  }
+  if (type === "futureMirror") {
+    // each post: the read-aloud as it rises to the mirror -> the why on the right
+    // call; the explanation answers that same post when the call goes the other way.
+    for (const p of span.split(/\breadAloud:\s*(?=")/).slice(1)) {
+      const readAloud = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!readAloud) continue;
+      const why = field(p, "why"), expl = field(p, "explanation");
+      if (why) chains.push({ name: "future mirror: " + un(readAloud).slice(0, 40), mode: "chain", beats: [readAloud, why] });
+      if (expl) chains.push({ name: "future mirror: " + un(readAloud).slice(0, 40) + " (wrong call)", mode: "branch", beats: [readAloud], branches: [expl] });
+    }
+  }
   // Week 10 engines (rebuilt 2026-09-17).
   if (type === "climbOut") {
     // each rung: the moment Sarah reads as it slides in -> the grip's why on the

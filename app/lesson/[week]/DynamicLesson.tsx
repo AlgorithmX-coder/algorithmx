@@ -97,6 +97,9 @@ import CommentPond from "@/app/components/exercises/CommentPond";
 import CalmDownConsole from "@/app/components/exercises/signatures/CalmDownConsole";
 import RadioRoll from "@/app/components/exercises/RadioRoll";
 import DrillRun from "@/app/components/exercises/DrillRun";
+import TrackBack from "@/app/components/exercises/TrackBack";
+import FutureMirror from "@/app/components/exercises/FutureMirror";
+import TrailPlanner from "@/app/components/exercises/signatures/TrailPlanner";
 import PausePower from "@/app/components/exercises/PausePower";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
@@ -2644,6 +2647,97 @@ function DynamicLessonInner({
           </FullScene>
         );
 
+      // Week 12 (The Snowfield): fresh snow under a low sun, every print showing.
+      case "trackBack":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1826 0%, #16334a 100%)">
+            <TrackBack
+              prints={def.prints}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              trailLabel={def.trailLabel}
+              saysLabel={def.saysLabel}
+              askPrompt={def.askPrompt}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "futureMirror":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1826 0%, #16334a 100%)">
+            <FutureMirror
+              posts={def.posts}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              mirrorLabel={def.mirrorLabel}
+              proudLabel={def.proudLabel}
+              rubLabel={def.rubLabel}
+              viewerPrefix={def.viewerPrefix}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "trailPlanner":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1826 0%, #16334a 100%)">
+            <TrailPlanner
+              stops={def.stops}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              trailLabel={def.trailLabel}
+              askPrompt={def.askPrompt}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
       // Week 10 (The Burrow): a dark mossy hole with daylight somewhere above.
       case "climbOut":
         return (
@@ -2945,6 +3039,7 @@ function DynamicLessonInner({
             <SnowballChase
               skin={def.skin}
               edgeLabel={def.edgeLabel}
+              noReturnLabel={def.noReturnLabel}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
@@ -3095,6 +3190,8 @@ function DynamicLessonInner({
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
+              trailLabel={def.trailLabel}
+              stampChipLabel={def.stampChipLabel}
               peekPrompt={def.peekPrompt}
               revealLabel={def.revealLabel}
               cardNoun={def.cardNoun}

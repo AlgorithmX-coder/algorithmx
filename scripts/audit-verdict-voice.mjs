@@ -189,6 +189,28 @@ const ENGINES = {
         : { label: "  wrong move " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
     ),
   ),
+  // Week 12 engines (2026-09-19). Track Back and the Trail Planner both put
+  // three uniform cards up per round; the Future Mirror is a two-way call, so
+  // each post carries both sides (PROUD and RUB IT OUT are the same two taps).
+  trackBack: (span) => objs(span, "prints").flatMap((p) =>
+    objs(p, "options").map((o) =>
+      flag(o, "isRight")
+        ? { label: "track " + (fld(o, "label") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  wrong read " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
+  futureMirror: (span) => objs(span, "posts").map((p) => ({
+    label: "post " + (fld(p, "id") ?? ""),
+    right: fld(p, "why"),
+    wrong: fld(p, "explanation"),
+  })),
+  trailPlanner: (span) => objs(span, "stops").flatMap((t) =>
+    objs(t, "options").map((o) =>
+      flag(o, "isRight")
+        ? { label: "move " + (fld(o, "label") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  wrong move " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
   // Week 10 engines (2026-09-17). Each item carries both sides: the grip / the
   // right source / the named want / the child's own card speak `why` on a
   // correct tap, and every other token speaks its `explanation` on a wrong one.

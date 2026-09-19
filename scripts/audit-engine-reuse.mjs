@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -33,6 +33,12 @@ const CAP = 3;
 // reversible: under option A (strict), delete the week's entry and the listed
 // engines must become new builds.
 const RETHEME_ALLOWED = {
+  // W12's two concept re-themes both change the QUESTION, not just the paint:
+  // Week 5 chased embers of a mean message and this hill rolls an ordinary,
+  // perfectly nice post (the lesson is arithmetic, not kindness); Week 3 peeked
+  // behind a claim to judge PROOF and this peek shows a year ahead to judge
+  // whether a post earns the gold stamp. CyberMaze takes its third and final
+  // use of the twenty weeks in the review slot.
   6: ["RequestInspector", "SignBingo (review)"], // Download Dock (W2 engine), Game Zone Bingo (W1 engine)
   7: ["PauseDecide", "StringsAttached", "MemoryMatch (review)"], // Buy Button (W1/W2 engine), Free-Coin Strings (W4), Till Match (W1)
   // The design table listed a third concept re-theme (Ask Ring = GrowthRings, W5);
@@ -53,6 +59,7 @@ const RETHEME_ALLOWED = {
   // mechanics already carry the right feeling (a fire that dies when you stop
   // feeding it; a tray that develops only what you kept), not to save a build.
   11: ["DontFeedTheFire", "DevelopingTray", "AccountRescue (review)"], // Starve the Signal (W5 fire), The Evidence Tray (W8 darkroom), The Rescue Board (W5)
+  12: ["SnowballChase", "PlaquePeek", "CyberMaze (review)"], // The Snowball Problem (legacy W12 engine, new snowbank skin), Stamp It Gold (W3 masks), The Snow Maze (W3/W8 maze)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

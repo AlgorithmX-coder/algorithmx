@@ -14,6 +14,12 @@
  * calls it: real proof, or proves nothing. The forced peek is the lesson -
  * you can't see who's typing, so you judge the proof, never the mask.
  *
+ * Skin "gold" (Week 12, "Stamp It Gold"): the cards are posts pegged along a
+ * snow trail on a frosted white card. The peek is a look AHEAD - lift the flap
+ * to see the track that post leaves behind - and the call becomes a judgement:
+ * stamp it gold, or brush it out? Same lift-then-judge rhythm, same two
+ * buttons, new world and new paint.
+ *
  * Wrong calls teach gently and allow another go. Distinct from clueBoard
  * (many clues, one verdict) and the zone inspectors (zones on one artefact):
  * this is a two-step lift-then-judge rhythm repeated per card.
@@ -60,7 +66,7 @@ const AUDIO_ONLY_STYLE = {
 // also releases on mute and after this max.
 // SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
-export type PlaquePeekSkin = "door" | "mask";
+export type PlaquePeekSkin = "door" | "mask" | "gold";
 
 export interface PeekDoor {
   id: string;
@@ -68,21 +74,24 @@ export interface PeekDoor {
   claim: string;
   /** Emoji rendered via PixIcon on the plaque (mask skin: the friend's avatar). */
   icon: string;
-  /** The real address revealed under the plaque (mask skin: what the claim proves). */
+  /** The real address revealed under the plaque (mask skin: what the claim proves;
+   *  gold skin: the track that post leaves in the snow). */
   address: string;
-  /** True = the address matches the claim (an honest door / real proof). */
+  /** True = the address matches the claim (an honest door / real proof / a
+   *  track worth a gold stamp). */
   matches: boolean;
   /** Teach copy shown on a wrong verdict for this door (Sarah: "Not quite." + note). */
   note: string;
   /** Sarah's reason on a RIGHT verdict ("That's right!" + why). Defaults to `note`. */
   why?: string;
-  /** Mask skin: the "friend's" display name shown on the card. */
+  /** Mask skin: the "friend's" display name shown on the card.
+   *  Gold skin: where on the trail this post sits ("Tuesday, after school"). */
   name?: string;
 }
 
 export interface PlaquePeekProps {
   doors: PeekDoor[];
-  /** Visual skin: W16 link doors (default) or W3 masked friends. */
+  /** Visual skin: W16 link doors (default), W3 masked friends, or W12 snow-trail posts. */
   skin?: PlaquePeekSkin;
   /** Copy overrides (defaults keep the W16 doorway skin). */
   introTitle?: string;
@@ -101,6 +110,10 @@ export interface PlaquePeekProps {
   completeLine?: string;
   /** Noun for the progress line ("DOOR 2 OF 6"). */
   cardNoun?: string;
+  /** Gold skin only: eyebrow above the post's spot on the trail. Default "ON YOUR TRAIL". */
+  trailLabel?: string;
+  /** Gold skin only: the chip on the card showing the stamp waiting to be pressed. Default "GOLD STAMP". */
+  stampChipLabel?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -173,6 +186,36 @@ const SKINS = {
     matchIcon: "🔍",
     sneakyIcon: "🎭",
   },
+  // Week 12's snow trail: a frosted white card pegged out in the snowfield,
+  // gold for the tracks worth keeping. Visible labels only - every spoken
+  // line on this engine comes from the week file (claim, address, why, note,
+  // coachLines, introNarration, completeNarration), never from this table.
+  gold: {
+    accent: "#ffd76a",
+    frameMax: 820,
+    cardBg: "linear-gradient(180deg, #fbfdff 0%, #e7f0fb 62%, #f6faff 100%)",
+    cardBorder: "rgba(255,215,106,0.85)",
+    cardShadow: "0 22px 48px -20px rgba(120,160,220,0.6)",
+    cardRadius: 20,
+    claimBg: "linear-gradient(165deg, rgba(255,255,255,0.96), rgba(223,235,250,0.96))",
+    claimBorder: "rgba(120,150,200,0.5)",
+    claimColor: "#17243f",
+    peekPrompt: "LOOK AHEAD AT THE TRACK IT LEAVES",
+    revealLabel: "THE TRACK IT LEAVES",
+    matchLabel: "STAMP IT GOLD",
+    sneakyLabel: "BRUSH IT OUT",
+    matchToast: "GOLD STAMP!",
+    sneakyToast: "BRUSHED OUT!",
+    wrongTitle: "Look at that track again!",
+    completeTitle: "The whole trail is stamped!",
+    completeLine: "Every track left standing is one future-you would grin at.",
+    cardNoun: "POST",
+    introTitle: "Stamp It Gold",
+    introSubtitle: "Posts are pegged out along your snow trail. Look ahead at the track each one leaves, then call it: stamp it gold, or brush it out?",
+    introIcon: "🏅",
+    matchIcon: "⭐",
+    sneakyIcon: "🚫",
+  },
 } as const;
 
 export default function PlaquePeek({
@@ -191,6 +234,8 @@ export default function PlaquePeek({
   completeTitle,
   completeLine,
   cardNoun,
+  trailLabel,
+  stampChipLabel,
   hints,
   introNarration,
   coachLines,
@@ -208,6 +253,9 @@ export default function PlaquePeek({
   const reduce = intensity < 1;
   const sk = SKINS[skin];
   const mask = skin === "mask";
+  // Paint + layout only: the W12 snow-trail skin. Nothing about the peek, the
+  // two-button call, scoring or the spoken chain's content reads this flag.
+  const gold = skin === "gold";
   // In-game read-alouds, verdict reasons and teach lines are recorded under
   // "adam" (both content voices are Sarah), so every manifest lookup here uses
   // that key. Keying them to the intro's speaker found no clip whenever a
@@ -232,7 +280,9 @@ export default function PlaquePeek({
   const shownDoors = useShuffledOnce(doors);
   const finished = doorIdx >= shownDoors.length;
   const door = shownDoors[doorIdx];
-  const chain = mask;
+  // The Learn-Loop read-aloud chain: the mask and gold skins speak their
+  // beats; the legacy door skin keeps its caption coach.
+  const chain = mask || gold;
   // Spoken verdicts (owner 2026-09-12): Sarah says right AND why; the next
   // card waits for her and taps are held meanwhile (wrong = the panel below).
   const verdict = useVerdictVoice();
@@ -330,7 +380,7 @@ export default function PlaquePeek({
           threat={threat}
           character={introNarration?.speaker}
           // Wide frame: a threat-less intro would render as an empty box.
-          overlay={mask}
+          overlay={mask || gold}
           onDismiss={() => setShowIntro(false)}
         />
       )}
@@ -356,9 +406,10 @@ export default function PlaquePeek({
           <div
             key={d.id}
             style={{
-              width: mask ? 30 : 26,
-              height: mask ? 30 : 34,
-              borderRadius: mask ? "50%" : "10px 10px 4px 4px",
+              // Gold skin: the progress pips are boot prints pressed in snow.
+              width: gold ? 24 : mask ? 30 : 26,
+              height: gold ? 32 : mask ? 30 : 34,
+              borderRadius: gold ? "14px 14px 9px 9px" : mask ? "50%" : "10px 10px 4px 4px",
               border: i < doorIdx ? `2px solid ${mask ? sk.accent : "#ffd158"}` : i === doorIdx ? `2px dashed ${sk.accent}` : "2px dashed rgba(125,140,201,0.4)",
               background: i < doorIdx ? (mask ? "linear-gradient(180deg, #ffe0a3, #f5a623)" : "linear-gradient(180deg, #ffe9ad, #e8a413)") : "rgba(255,255,255,0.05)",
               boxShadow: i < doorIdx ? `0 0 14px -2px ${mask ? "rgba(245,166,35,0.8)" : "rgba(255,209,88,0.8)"}` : "none",
@@ -370,7 +421,7 @@ export default function PlaquePeek({
               color: i < doorIdx ? "#3a2a08" : i === doorIdx ? sk.accent : "rgba(125,140,201,0.7)",
             }}
           >
-            {i < doorIdx ? "✓" : i + 1}
+            {i < doorIdx ? (gold ? "★" : "✓") : i + 1}
           </div>
         ))}
       </div>
@@ -386,9 +437,9 @@ export default function PlaquePeek({
             {/* The door / friend card */}
             <div
               style={{
-                maxWidth: mask ? 520 : 460,
+                maxWidth: gold ? 540 : mask ? 520 : 460,
                 margin: "0 auto",
-                padding: mask ? "18px 20px 18px" : "22px 20px 18px",
+                padding: gold ? "16px 18px 20px" : mask ? "18px 20px 18px" : "22px 20px 18px",
                 borderRadius: sk.cardRadius,
                 background: sk.cardBg,
                 border: `2.5px solid ${sk.cardBorder}`,
@@ -400,7 +451,7 @@ export default function PlaquePeek({
                 position: "relative",
               }}
             >
-              {!mask && (
+              {!mask && !gold && (
                 /* doorknob */
                 <span
                   aria-hidden
@@ -415,6 +466,28 @@ export default function PlaquePeek({
                     boxShadow: "0 0 10px rgba(255,209,88,0.7)",
                   }}
                 />
+              )}
+
+              {gold && (
+                /* trail header: the post's peg in the snow + where it sits + the
+                   gold stamp waiting to be pressed (or already pressed). */
+                <div style={{ width: "100%", display: "flex", alignItems: "center", gap: 12 }}>
+                  <span style={{ display: "inline-flex", padding: 7, borderRadius: 14, background: "rgba(120,160,220,0.14)", border: `2px solid ${peeked ? sk.accent : "rgba(120,150,200,0.45)"}`, transition: "border-color 0.4s" }}>
+                    <PixIcon emoji={door.icon} size={34} />
+                  </span>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: "0.16em", color: "#5a6da8" }}>{trailLabel ?? "ON YOUR TRAIL"}</div>
+                    <div style={{ fontSize: 15.5, fontWeight: 900, color: "#17243f" }}>{door.name ?? "A post you made"}</div>
+                  </div>
+                  <motion.span
+                    aria-hidden
+                    animate={peeked ? { rotate: -8, scale: 1 } : { rotate: 0, scale: 0.86 }}
+                    transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 220, damping: 15 }}
+                    style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "5px 10px", borderRadius: 999, border: `2px dashed ${sk.accent}`, background: "rgba(255,215,106,0.18)", color: "#7a5a10", fontSize: 10.5, fontWeight: 900, letterSpacing: "0.1em", whiteSpace: "nowrap" }}
+                  >
+                    <PixIcon emoji="⭐" size={16} /> {stampChipLabel ?? "GOLD STAMP"}
+                  </motion.span>
+                </div>
               )}
 
               {mask && (
@@ -447,20 +520,20 @@ export default function PlaquePeek({
                   display: "flex",
                   alignItems: "center",
                   gap: 10,
-                  padding: mask ? "12px 18px" : "10px 18px",
-                  borderRadius: mask ? "16px 16px 16px 4px" : 12,
-                  alignSelf: mask ? "stretch" : "auto",
+                  padding: gold ? "14px 16px" : mask ? "12px 18px" : "10px 18px",
+                  borderRadius: gold ? "4px 16px 16px 16px" : mask ? "16px 16px 16px 4px" : 12,
+                  alignSelf: gold || mask ? "stretch" : "auto",
                   background: sk.claimBg,
                   border: `1.5px solid ${sk.claimBorder}`,
                   color: sk.claimColor,
                   fontSize: 16.5,
                   fontWeight: 900,
-                  textAlign: mask ? "left" : "center",
+                  textAlign: gold || mask ? "left" : "center",
                   lineHeight: 1.35,
                 }}
               >
-                {!mask && <PixIcon emoji={door.icon} size={30} />}
-                {mask && <PixIcon emoji="💬" size={24} />}
+                {!mask && !gold && <PixIcon emoji={door.icon} size={30} />}
+                {(mask || gold) && <PixIcon emoji="💬" size={24} />}
                 <span style={{ flex: 1 }}>{door.claim}</span>
               </div>
 
@@ -478,9 +551,9 @@ export default function PlaquePeek({
                     width: "100%",
                     padding: "14px 16px",
                     borderRadius: 12,
-                    border: `2px dashed ${mask ? sk.accent : "rgba(125,240,255,0.55)"}`,
-                    background: mask ? "rgba(245,166,35,0.1)" : "rgba(0,229,255,0.08)",
-                    color: mask ? "#ffd58a" : "#7df0ff",
+                    border: gold ? "2px dashed rgba(122,90,16,0.55)" : `2px dashed ${mask ? sk.accent : "rgba(125,240,255,0.55)"}`,
+                    background: gold ? "rgba(255,215,106,0.28)" : mask ? "rgba(245,166,35,0.1)" : "rgba(0,229,255,0.08)",
+                    color: gold ? "#6b4c08" : mask ? "#ffd58a" : "#7df0ff",
                     fontSize: 13.5,
                     fontWeight: 900,
                     letterSpacing: "0.08em",
@@ -494,7 +567,7 @@ export default function PlaquePeek({
                     gap: 8,
                   }}
                 >
-                  {mask ? <PixIcon emoji="🎭" size={20} /> : <span aria-hidden>👆</span>}
+                  {gold ? <PixIcon emoji="👀" size={20} /> : mask ? <PixIcon emoji="🎭" size={20} /> : <span aria-hidden>👆</span>}
                   {peekPrompt ?? sk.peekPrompt}
                 </motion.button>
               ) : (
@@ -506,13 +579,15 @@ export default function PlaquePeek({
                     width: "100%",
                     padding: "12px 16px",
                     borderRadius: 12,
-                    background: mask ? "linear-gradient(180deg, #fff7e6, #ffe6b8)" : "linear-gradient(180deg, #f5f9ff, #dde9fb)",
-                    border: `2px solid ${mask ? sk.accent : "rgba(125,240,255,0.6)"}`,
-                    color: mask ? "#3a2a08" : "#1e2a52",
+                    // Gold skin: the track it leaves reads as a shadow pressed
+                    // into the snow, dark under the frosted card.
+                    background: gold ? "linear-gradient(180deg, #16294d, #0d1b36)" : mask ? "linear-gradient(180deg, #fff7e6, #ffe6b8)" : "linear-gradient(180deg, #f5f9ff, #dde9fb)",
+                    border: gold ? "2px solid rgba(255,215,106,0.7)" : `2px solid ${mask ? sk.accent : "rgba(125,240,255,0.6)"}`,
+                    color: gold ? "#eaf3ff" : mask ? "#3a2a08" : "#1e2a52",
                     textAlign: "center",
                   }}
                 >
-                  <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: "0.14em", color: mask ? "#9a6410" : "#5a6da8", marginBottom: 4 }}>
+                  <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: "0.14em", color: gold ? "#ffd76a" : mask ? "#9a6410" : "#5a6da8", marginBottom: 4 }}>
                     {revealLabel ?? sk.revealLabel}
                   </div>
                   <div style={{ fontSize: 15.5, fontWeight: 900, lineHeight: 1.35, overflowWrap: "anywhere" }}>
@@ -534,9 +609,11 @@ export default function PlaquePeek({
                 style={{
                   padding: "16px 12px",
                   borderRadius: 14,
-                  border: "2px solid rgba(126,255,151,0.55)",
-                  background: peeked ? "linear-gradient(165deg, rgba(126,255,151,0.14), rgba(12,18,48,0.92))" : "rgba(255,255,255,0.04)",
-                  color: peeked ? "#b9ffc9" : "rgba(185,255,201,0.35)",
+                  border: gold ? "2px solid rgba(255,215,106,0.75)" : "2px solid rgba(126,255,151,0.55)",
+                  background: gold
+                    ? (peeked ? "linear-gradient(165deg, rgba(255,215,106,0.22), rgba(12,18,48,0.92))" : "rgba(255,255,255,0.04)")
+                    : peeked ? "linear-gradient(165deg, rgba(126,255,151,0.14), rgba(12,18,48,0.92))" : "rgba(255,255,255,0.04)",
+                  color: gold ? (peeked ? "#ffe6a8" : "rgba(255,230,168,0.35)") : peeked ? "#b9ffc9" : "rgba(185,255,201,0.35)",
                   fontSize: 14.5,
                   fontWeight: 900,
                   fontFamily: "inherit",
@@ -548,7 +625,7 @@ export default function PlaquePeek({
                   gap: 8,
                 }}
               >
-                {mask ? <PixIcon emoji={sk.matchIcon} size={20} /> : <span aria-hidden>✅</span>} {matchLabel ?? sk.matchLabel}
+                {mask || gold ? <PixIcon emoji={sk.matchIcon} size={20} /> : <span aria-hidden>✅</span>} {matchLabel ?? sk.matchLabel}
               </motion.button>
               <motion.button
                 type="button"
@@ -560,9 +637,11 @@ export default function PlaquePeek({
                 style={{
                   padding: "16px 12px",
                   borderRadius: 14,
-                  border: "2px solid rgba(255,95,179,0.55)",
-                  background: peeked ? "linear-gradient(165deg, rgba(255,95,179,0.14), rgba(12,18,48,0.92))" : "rgba(255,255,255,0.04)",
-                  color: peeked ? "#ffc9e3" : "rgba(255,201,227,0.35)",
+                  border: gold ? "2px solid rgba(159,216,255,0.6)" : "2px solid rgba(255,95,179,0.55)",
+                  background: gold
+                    ? (peeked ? "linear-gradient(165deg, rgba(159,216,255,0.18), rgba(12,18,48,0.92))" : "rgba(255,255,255,0.04)")
+                    : peeked ? "linear-gradient(165deg, rgba(255,95,179,0.14), rgba(12,18,48,0.92))" : "rgba(255,255,255,0.04)",
+                  color: gold ? (peeked ? "#cfe8ff" : "rgba(207,232,255,0.35)") : peeked ? "#ffc9e3" : "rgba(255,201,227,0.35)",
                   fontSize: 14.5,
                   fontWeight: 900,
                   fontFamily: "inherit",
@@ -574,7 +653,7 @@ export default function PlaquePeek({
                   gap: 8,
                 }}
               >
-                {mask ? <PixIcon emoji={sk.sneakyIcon} size={20} /> : <span aria-hidden>🚫</span>} {sneakyLabel ?? sk.sneakyLabel}
+                {mask || gold ? <PixIcon emoji={sk.sneakyIcon} size={20} /> : <span aria-hidden>🚫</span>} {sneakyLabel ?? sk.sneakyLabel}
               </motion.button>
             </div>
 
@@ -599,6 +678,33 @@ export default function PlaquePeek({
                 </span>
                 <span style={{ padding: "6px 12px", borderRadius: 999, border: `1.5px solid ${peeked ? sk.accent : "rgba(125,140,201,0.35)"}`, background: peeked ? "rgba(245,166,35,0.14)" : "transparent", color: peeked ? "#ffd58a" : "rgba(125,140,201,0.8)" }}>
                   2 · Real proof, or proves nothing?
+                </span>
+              </div>
+            )}
+
+            {/* On-board action strip (gold skin): built from the labels this
+                skin already carries, so it always says what the buttons say. */}
+            {gold && (
+              <div
+                role="status"
+                style={{
+                  maxWidth: 560,
+                  margin: "12px auto 0",
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: 8,
+                  flexWrap: "wrap",
+                  fontSize: 12,
+                  fontWeight: 900,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                }}
+              >
+                <span style={{ padding: "6px 12px", borderRadius: 999, border: `1.5px solid ${!peeked ? sk.accent : "rgba(125,140,201,0.35)"}`, background: !peeked ? "rgba(255,215,106,0.14)" : "transparent", color: !peeked ? "#ffe6a8" : "rgba(125,140,201,0.8)" }}>
+                  1 · {peekPrompt ?? sk.peekPrompt}
+                </span>
+                <span style={{ padding: "6px 12px", borderRadius: 999, border: `1.5px solid ${peeked ? sk.accent : "rgba(125,140,201,0.35)"}`, background: peeked ? "rgba(255,215,106,0.14)" : "transparent", color: peeked ? "#ffe6a8" : "rgba(125,140,201,0.8)" }}>
+                  2 · {matchLabel ?? sk.matchLabel}, or {sneakyLabel ?? sk.sneakyLabel}?
                 </span>
               </div>
             )}
