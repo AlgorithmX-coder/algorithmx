@@ -38,7 +38,7 @@ export default function AsdanBadge({ style }: { style?: React.CSSProperties }) {
           border-radius: 999px;
           background: #fff;
         }
-        .asdan-mark-plate img { display: block; width: 94px; height: auto; }
+        .asdan-mark-plate img { display: block; width: 82px; height: auto; }
         .asdan-mark-text {
           font-family: var(--lv2-font-mono);
           font-size: 10px;
