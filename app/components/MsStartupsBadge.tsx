@@ -46,9 +46,27 @@ export default function MsStartupsBadge({ style }: { style?: React.CSSProperties
              badge as issued. */
           opacity: 0.48;
           transition: opacity 0.35s ease;
+          /* The card is a rectangle of pale gradient on a near-black page, so
+             its edge reads as a seam. This dissolves it towards the side that
+             is purely decorative: the logo and the words sit in the left two
+             thirds and stay fully opaque, the artwork is never recoloured. */
+          -webkit-mask-image:
+            linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.72) 3.4%, #000 6%, #000 52%, rgba(0,0,0,0.55) 78%, transparent 99%),
+            linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+          -webkit-mask-composite: source-in;
+          mask-image:
+            linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.72) 3.4%, #000 6%, #000 52%, rgba(0,0,0,0.55) 78%, transparent 99%),
+            linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+          mask-composite: intersect;
         }
         .ms-startups:hover img,
-        .ms-startups:focus-within img { opacity: 1; }
+        .ms-startups:focus-within img {
+          opacity: 1;
+          /* Look at it and you get the badge whole: full strength, square
+             edges, exactly the file Microsoft supplies. */
+          -webkit-mask-image: none;
+          mask-image: none;
+        }
         @media (prefers-reduced-motion: reduce) {
           .ms-startups img { transition: none; }
         }
