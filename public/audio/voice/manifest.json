@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T08:50:09.760Z",
+  "generatedAt": "2026-09-19T12:51:17.198Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -6145,429 +6145,2255 @@
       "file": "/audio/voice/23c07a12bb69dfd9.mp3"
     },
     {
-      "key": "e9796d60e381f39f",
+      "key": "b5faadc9195c1cbf",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Use your finger to draw a trail in the snow. Then watch the hound read every track you left. Keep your trail small and safe, hero.",
+      "text": "[warmly] Welcome to the snowfield, Cyber Hero. Fresh snow, all the way to the hills. Walk across it and you leave prints. You know that already. Here is the part almost nobody knows. The internet is snow too. Every search, every like, every comment presses a print. You cannot feel it happen... but the print is there. [excited] Grab the lamp. Let's go and read some tracks together!",
       "lines": [
-        "[warmly] Use your finger to draw a trail in the snow.",
-        "Then watch the hound read every track you left.",
-        "Keep your trail small and safe, hero."
+        "[warmly] Welcome to the snowfield, Cyber Hero. Fresh snow, all the way to the hills.",
+        "Walk across it and you leave prints. You know that already.",
+        "Here is the part almost nobody knows.",
+        "The internet is snow too. Every search, every like, every comment presses a print.",
+        "You cannot feel it happen... but the print is there.",
+        "[excited] Grab the lamp. Let's go and read some tracks together!"
       ],
-      "file": "/audio/voice/e9796d60e381f39f.mp3"
+      "file": "/audio/voice/b5faadc9195c1cbf.mp3"
     },
     {
-      "key": "670d33b9b922ffa5",
+      "key": "a658abf2bfbc5e14",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Welcome back, Cyber Hero - week twelve! Picture the internet as a field of fresh, white snow. Every tap you make presses a footprint into it. A like. A search. A tiny comment. Press, press, press. [whispers] Most tracks look invisible... until you shine a lamp. [excited] So let's shine one. Four everyday moments - light them up!",
+      "text": "[excited] Here is your first challenge, Cyber Hero. Track Back! This game is all about seeing what an ordinary tap leaves behind. Out in the real world, nobody tells a stranger where they go. The trail does it for them. So here is what you do. Tap the next print in the snow, and it thaws to show what somebody did. Then three cards appear. Tap the one that says what that track tells a stranger. [warmly] Five prints, and a lamp to read them by. Ready? Tap the first one.",
       "lines": [
-        "[excited] Welcome back, Cyber Hero - week twelve!",
-        "Picture the internet as a field of fresh, white snow.",
-        "Every tap you make presses a footprint into it.",
-        "A like. A search. A tiny comment. Press, press, press.",
-        "[whispers] Most tracks look invisible... until you shine a lamp.",
-        "[excited] So let's shine one. Four everyday moments - light them up!"
+        "[excited] Here is your first challenge, Cyber Hero. Track Back!",
+        "This game is all about seeing what an ordinary tap leaves behind.",
+        "Out in the real world, nobody tells a stranger where they go. The trail does it for them.",
+        "So here is what you do.",
+        "Tap the next print in the snow, and it thaws to show what somebody did.",
+        "Then three cards appear. Tap the one that says what that track tells a stranger.",
+        "[warmly] Five prints, and a lamp to read them by. Ready? Tap the first one."
       ],
-      "file": "/audio/voice/670d33b9b922ffa5.mp3"
+      "file": "/audio/voice/a658abf2bfbc5e14.mp3"
     },
     {
-      "key": "e1277d6ab8b5920b",
+      "key": "671c42d89b8867a1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Four tiny taps from an ordinary day. Each one looks like nothing at all... [excited] until the lamp comes on. Shine it on every moment - and watch the hidden tracks glow!",
+      "text": "Tap the next print in the snow to thaw it.",
       "lines": [
-        "[whispers] Four tiny taps from an ordinary day.",
-        "Each one looks like nothing at all...",
-        "[excited] until the lamp comes on. Shine it on every moment -",
-        "and watch the hidden tracks glow!"
+        "Tap the next print in the snow to thaw it."
       ],
-      "file": "/audio/voice/e1277d6ab8b5920b.mp3"
+      "file": "/audio/voice/671c42d89b8867a1.mp3"
     },
     {
-      "key": "f00fa7143eb19fde",
+      "key": "dbbbfafabf753db9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Shine the lamp on the first moment - see what glows!",
+      "text": "[proud] Look at that, Cyber Hero. Nobody introduced themselves, and you know their game, their team, their Saturday, their class and their street. Not one of those taps felt like telling anybody anything. [warmly] That is what a trail does. It adds up.",
       "lines": [
-        "Shine the lamp on the first moment - see what glows!"
+        "[proud] Look at that, Cyber Hero. Nobody introduced themselves, and you know their game, their team, their Saturday, their class and their street.",
+        "Not one of those taps felt like telling anybody anything.",
+        "[warmly] That is what a trail does. It adds up."
       ],
-      "file": "/audio/voice/f00fa7143eb19fde.mp3"
+      "file": "/audio/voice/dbbbfafabf753db9.mp3"
     },
     {
-      "key": "f526bc76723fef80",
+      "key": "e268ca690f02a862",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Power one - lamp lit! Likes, searches, comments... all glowing. [whispers] But some tracks don't just sit in the snow, hero. Some of them roll. And grow. Grab a broom...",
+      "text": "[proud] That's it exactly! Posting is not the only thing that prints. Searches, likes and comments all press into the snow. [warmly] And out here, the snow never melts.",
       "lines": [
-        "[excited] Power one - lamp lit!",
-        "Likes, searches, comments... all glowing.",
-        "[whispers] But some tracks don't just sit in the snow, hero.",
-        "Some of them roll. And grow. Grab a broom..."
+        "[proud] That's it exactly!",
+        "Posting is not the only thing that prints.",
+        "Searches, likes and comments all press into the snow.",
+        "[warmly] And out here, the snow never melts."
       ],
-      "file": "/audio/voice/f526bc76723fef80.mp3"
+      "file": "/audio/voice/e268ca690f02a862.mp3"
     },
     {
-      "key": "38d844d10ccdbbfd",
+      "key": "0e0d77812f78f973",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Ready for the tricky part? Online snow doesn't melt. Ever. And shared things turn into SNOWBALLS - copies rolling onto other screens, making copies of their own. [whispers] Your broom can't reach snow on someone else's hill. [excited] Don't believe me? Grab the broom and TRY. Go!",
+      "text": "[proud] One power down, Cyber Hero. You can see the prints now, and you will never stop seeing them. Searches, likes, comments, bios. All of them press in. [whispers] Now, there is something out here that is worse than a print... Next, we'll learn why a copy cannot be gathered back in. Come and see!",
       "lines": [
-        "[warmly] Ready for the tricky part?",
-        "Online snow doesn't melt. Ever.",
-        "And shared things turn into SNOWBALLS -",
-        "copies rolling onto other screens, making copies of their own.",
-        "[whispers] Your broom can't reach snow on someone else's hill.",
-        "[excited] Don't believe me? Grab the broom and TRY. Go!"
+        "[proud] One power down, Cyber Hero. You can see the prints now, and you will never stop seeing them.",
+        "Searches, likes, comments, bios. All of them press in.",
+        "[whispers] Now, there is something out here that is worse than a print...",
+        "Next, we'll learn why a copy cannot be gathered back in. Come and see!"
       ],
-      "file": "/audio/voice/38d844d10ccdbbfd.mp3"
+      "file": "/audio/voice/0e0d77812f78f973.mp3"
     },
     {
-      "key": "80994406b3decb2d",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] There they go - copies on the loose! Sweep them! Tap-tap-tap! [laughs] Faster! More are coming over the hill! Sweep like the wind, hero!",
-      "lines": [
-        "[excited] There they go - copies on the loose!",
-        "Sweep them! Tap-tap-tap!",
-        "[laughs] Faster! More are coming over the hill!",
-        "Sweep like the wind, hero!"
-      ],
-      "file": "/audio/voice/80994406b3decb2d.mp3"
-    },
-    {
-      "key": "26d99f2c83fb4130",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Tap every snowball you can - quick, before they roll away!",
-      "lines": [
-        "Tap every snowball you can - quick, before they roll away!"
-      ],
-      "file": "/audio/voice/26d99f2c83fb4130.mp3"
-    },
-    {
-      "key": "19a38f52497e194e",
+      "key": "03cd66b1619bb682",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[laughs] You swept like a CHAMPION - and it still wasn't enough. That was the whole point, hero. Copies can't be caught. Posts can only be chosen. [warmly] And guess who cares most about what you choose? Come meet them.",
+      "text": "[warmly] So a copy, Cyber Hero. Let's talk about what one really does. When you send something, it does not walk over to your friend and leave your side. It copies. Yours stays, theirs arrives, and the app keeps one as well. That is three, from one tap, before anybody has passed it on. [excited] Come and stand at the top of the hill with me. I want you to see this for yourself!",
       "lines": [
-        "[laughs] You swept like a CHAMPION - and it still wasn't enough.",
-        "That was the whole point, hero.",
-        "Copies can't be caught. Posts can only be chosen.",
-        "[warmly] And guess who cares most about what you choose? Come meet them."
+        "[warmly] So a copy, Cyber Hero. Let's talk about what one really does.",
+        "When you send something, it does not walk over to your friend and leave your side.",
+        "It copies. Yours stays, theirs arrives, and the app keeps one as well.",
+        "That is three, from one tap, before anybody has passed it on.",
+        "[excited] Come and stand at the top of the hill with me. I want you to see this for yourself!"
       ],
-      "file": "/audio/voice/19a38f52497e194e.mp3"
+      "file": "/audio/voice/03cd66b1619bb682.mp3"
     },
     {
-      "key": "9c669c3032ccc39b",
+      "key": "4be2e182035760fe",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Want to meet someone amazing? Future you. Taller. Cooler. Starting middle school. One day, future-you walks past the tracks you're pressing TODAY. Angry tracks can trip them right over... [excited] but proud tracks make them GRIN. Three posting moments coming - check the mirror before each one!",
+      "text": "[excited] Here is your second challenge. The Snowball Problem! This game is all about what one share really costs. Out in the real world, people share a thing and then wish they could gather it back. So here is what you do. A post sits in the card with a SHARE IT button. Tap it once, just this once, and watch. Copies roll off down the hill. Tap every copy you can to gather it back in. [warmly] Try your hardest, Cyber Hero, and watch what the hill does. Ready? Tap the button.",
       "lines": [
-        "[warmly] Want to meet someone amazing?",
-        "Future you. Taller. Cooler. Starting middle school.",
-        "One day, future-you walks past the tracks you're pressing TODAY.",
-        "Angry tracks can trip them right over...",
-        "[excited] but proud tracks make them GRIN.",
-        "Three posting moments coming - check the mirror before each one!"
+        "[excited] Here is your second challenge. The Snowball Problem!",
+        "This game is all about what one share really costs.",
+        "Out in the real world, people share a thing and then wish they could gather it back.",
+        "So here is what you do.",
+        "A post sits in the card with a SHARE IT button. Tap it once, just this once, and watch.",
+        "Copies roll off down the hill. Tap every copy you can to gather it back in.",
+        "[warmly] Try your hardest, Cyber Hero, and watch what the hill does. Ready? Tap the button."
       ],
-      "file": "/audio/voice/9c669c3032ccc39b.mp3"
+      "file": "/audio/voice/4be2e182035760fe.mp3"
     },
     {
-      "key": "24c05ef22ba355c4",
+      "key": "2b2fd3edab215e08",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Three posting moments. One mirror. Before each choice, take the look: [whispers] 'will future-me smile at this track?' [excited] Show me the ranger moves!",
+      "text": "The copies are rolling! Tap every one you can to gather it back.",
       "lines": [
-        "[warmly] Three posting moments. One mirror.",
-        "Before each choice, take the look:",
-        "[whispers] 'will future-me smile at this track?'",
-        "[excited] Show me the ranger moves!"
+        "The copies are rolling! Tap every one you can to gather it back."
       ],
-      "file": "/audio/voice/24c05ef22ba355c4.mp3"
+      "file": "/audio/voice/2b2fd3edab215e08.mp3"
     },
     {
-      "key": "8b16e8def635c2f9",
+      "key": "58b60ec3d7ecde5f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] You were quick, Cyber Hero, and the copies still got away. That is not your fault. That is how copies work. There is nothing wrong with that bike post. That is the whole point of this one. Even a lovely thing cannot be gathered back up once it rolls. So the moment you are in charge of is the tap at the top of the hill.",
+      "lines": [
+        "[warmly] You were quick, Cyber Hero, and the copies still got away. That is not your fault. That is how copies work.",
+        "There is nothing wrong with that bike post. That is the whole point of this one.",
+        "Even a lovely thing cannot be gathered back up once it rolls.",
+        "So the moment you are in charge of is the tap at the top of the hill."
+      ],
+      "file": "/audio/voice/58b60ec3d7ecde5f.mp3"
+    },
+    {
+      "key": "682397b30fea12cd",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three powers! Future-you is beaming already. Rage-post skipped, cringe-trend dodged... and the marble-run posted PROUDLY. [warmly] Which brings us to the happiest power of all...",
+      "text": "[proud] Caught him! Delete is a real button, and it reaches exactly one place: your own pocket. Everything already rolling keeps rolling. [warmly] Which is why the thinking happens first.",
       "lines": [
-        "[excited] Three powers! Future-you is beaming already.",
-        "Rage-post skipped, cringe-trend dodged...",
-        "and the marble-run posted PROUDLY.",
-        "[warmly] Which brings us to the happiest power of all..."
+        "[proud] Caught him!",
+        "Delete is a real button, and it reaches exactly one place: your own pocket.",
+        "Everything already rolling keeps rolling.",
+        "[warmly] Which is why the thinking happens first."
       ],
-      "file": "/audio/voice/8b16e8def635c2f9.mp3"
+      "file": "/audio/voice/682397b30fea12cd.mp3"
     },
     {
-      "key": "15b50ca5cd19d6aa",
+      "key": "8778da995aef969e",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Now for my favorite power! The snow isn't scary - it's YOURS to decorate. Kind words. Amazing builds. Standing up for a friend. Those tracks glow gold - and they last just as long. [warmly] So don't tiptoe through the internet, hero. [excited] Stomp a trail you're PROUD of. Five footprints - let's go!",
+      "text": "[proud] Two powers, Cyber Hero. You know what one share really costs now. Copies roll, and no broom is fast enough. So you choose at the top of the hill. [whispers] And there is somebody out here who reads every trail, years later... Next, we'll meet the one person who walks this snow after you. Come and see!",
       "lines": [
-        "[excited] Now for my favorite power!",
-        "The snow isn't scary - it's YOURS to decorate.",
-        "Kind words. Amazing builds. Standing up for a friend.",
-        "Those tracks glow gold - and they last just as long.",
-        "[warmly] So don't tiptoe through the internet, hero.",
-        "[excited] Stomp a trail you're PROUD of. Five footprints - let's go!"
+        "[proud] Two powers, Cyber Hero. You know what one share really costs now.",
+        "Copies roll, and no broom is fast enough. So you choose at the top of the hill.",
+        "[whispers] And there is somebody out here who reads every trail, years later...",
+        "Next, we'll meet the one person who walks this snow after you. Come and see!"
       ],
-      "file": "/audio/voice/15b50ca5cd19d6aa.mp3"
+      "file": "/audio/voice/8778da995aef969e.mp3"
     },
     {
-      "key": "1d5fa20a69762df9",
+      "key": "3637ad8d2b44ca34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] So who actually reads your trail, Cyber Hero? Here is the honest answer. You do. Older you. The one who turns up for a team, or a new school, or a first job. [thinking] And nothing melts out here. So today's prints are still lying there when older you walks past. That is why a ranger carries a mirror. One look before posting, and the question is a kind one. Would older me be glad this is still here? [excited] The mirror is set up on the ridge. Let's go and try it!",
+      "lines": [
+        "[warmly] So who actually reads your trail, Cyber Hero? Here is the honest answer.",
+        "You do. Older you. The one who turns up for a team, or a new school, or a first job.",
+        "[thinking] And nothing melts out here. So today's prints are still lying there when older you walks past.",
+        "That is why a ranger carries a mirror.",
+        "One look before posting, and the question is a kind one. Would older me be glad this is still here?",
+        "[excited] The mirror is set up on the ridge. Let's go and try it!"
+      ],
+      "file": "/audio/voice/3637ad8d2b44ca34.mp3"
+    },
+    {
+      "key": "d4b6ff8dc70b9735",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Your third challenge, Cyber Hero. The Future Mirror! This game is all about checking a post against the person who reads it later. Out in the real world, that person is you, a few years further on. So here is what you do. A post comes up, and beside the mirror you will see who is looking you up. Tap PROUD OF IT to leave the print, or RUB IT OUT to take it back. [warmly] Six posts, one mirror. Ready when you are.",
+      "lines": [
+        "[excited] Your third challenge, Cyber Hero. The Future Mirror!",
+        "This game is all about checking a post against the person who reads it later.",
+        "Out in the real world, that person is you, a few years further on.",
+        "So here is what you do.",
+        "A post comes up, and beside the mirror you will see who is looking you up.",
+        "Tap PROUD OF IT to leave the print, or RUB IT OUT to take it back.",
+        "[warmly] Six posts, one mirror. Ready when you are."
+      ],
+      "file": "/audio/voice/d4b6ff8dc70b9735.mp3"
+    },
+    {
+      "key": "0d1889eeb6c2e677",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read who is looking, then tap PROUD OF IT or RUB IT OUT.",
+      "lines": [
+        "Read who is looking, then tap PROUD OF IT or RUB IT OUT."
+      ],
+      "file": "/audio/voice/0d1889eeb6c2e677.mp3"
+    },
+    {
+      "key": "b8e643c0ccace47d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Beautifully done, Cyber Hero. You did not ask whether those posts were funny. You asked whether older you would be glad, and that is a different question with a much better answer. [warmly] The mirror takes one second. Prints last a great deal longer.",
+      "lines": [
+        "[proud] Beautifully done, Cyber Hero. You did not ask whether those posts were funny.",
+        "You asked whether older you would be glad, and that is a different question with a much better answer.",
+        "[warmly] The mirror takes one second. Prints last a great deal longer."
+      ],
+      "file": "/audio/voice/b8e643c0ccace47d.mp3"
+    },
+    {
+      "key": "fdb2f93db18bfda9",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Five footprint spots on fresh snow! Two stamps at every spot - one gold, one stain. [whispers] Press only what future-you would grin at... [excited] and light this trail UP!",
+      "text": "[proud] That's the rule, word for word! Not would anybody see it, and not can I take it back. Would older me be glad it is still here. [warmly] One second, every time.",
       "lines": [
-        "[excited] Five footprint spots on fresh snow!",
-        "Two stamps at every spot - one gold, one stain.",
-        "[whispers] Press only what future-you would grin at...",
-        "[excited] and light this trail UP!"
+        "[proud] That's the rule, word for word!",
+        "Not would anybody see it, and not can I take it back.",
+        "Would older me be glad it is still here.",
+        "[warmly] One second, every time."
       ],
-      "file": "/audio/voice/1d5fa20a69762df9.mp3"
+      "file": "/audio/voice/fdb2f93db18bfda9.mp3"
     },
     {
-      "key": "d869a982f7ca228f",
+      "key": "8e11d372719b358d",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Which stamp would future-you grin at? Press that one!",
+      "text": "[proud] Three powers, Cyber Hero, and older you says thank you. Glad, not scared. One second in the mirror, every time. [whispers] Which brings us to the best part of the whole week... Next, we'll learn how to leave prints you actually want found. Come and see!",
       "lines": [
-        "Which stamp would future-you grin at? Press that one!"
+        "[proud] Three powers, Cyber Hero, and older you says thank you.",
+        "Glad, not scared. One second in the mirror, every time.",
+        "[whispers] Which brings us to the best part of the whole week...",
+        "Next, we'll learn how to leave prints you actually want found. Come and see!"
       ],
-      "file": "/audio/voice/d869a982f7ca228f.mp3"
+      "file": "/audio/voice/8e11d372719b358d.mp3"
     },
     {
-      "key": "e201f0a1b113442f",
+      "key": "e715323ac57e9dc8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Four powers - and what a trail! Kind words, proud builds, a hero stand for Sam. [warmly] One skill left in the ranger kit: climbing the hill and reading your OWN tracks.",
+      "text": "[warmly] Now for the happy half of the week, Cyber Hero. Prints lasting is only bad news if the print was a bad one. A ranger does not creep about trying to touch nothing. A ranger stamps. [thinking] Because the same moment can go into the snow two different ways. One of them still reads beautifully a year later, and you get to pick which. [excited] I've got the gold stamp warmed up. Come and use it!",
       "lines": [
-        "[excited] Four powers - and what a trail!",
-        "Kind words, proud builds, a hero stand for Sam.",
-        "[warmly] One skill left in the ranger kit:",
-        "climbing the hill and reading your OWN tracks."
+        "[warmly] Now for the happy half of the week, Cyber Hero.",
+        "Prints lasting is only bad news if the print was a bad one.",
+        "A ranger does not creep about trying to touch nothing. A ranger stamps.",
+        "[thinking] Because the same moment can go into the snow two different ways.",
+        "One of them still reads beautifully a year later, and you get to pick which.",
+        "[excited] I've got the gold stamp warmed up. Come and use it!"
       ],
-      "file": "/audio/voice/e201f0a1b113442f.mp3"
+      "file": "/audio/voice/e715323ac57e9dc8.mp3"
     },
     {
-      "key": "e6d8d1fad4f056da",
+      "key": "c70434547880ac6b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Last ranger skill - and it's a good one. Real rangers climb the hill and read their own tracks. Grab a grown-up and look at what's already out there. [whispers] Hunt for POINTY tracks - name, school, where-and-when. Tidy those together. Keep the golden ones gleaming. [excited] The telescope's on the hill - let's read a trail!",
+      "text": "[excited] Your fourth challenge, Cyber Hero. Stamp It Gold! This game is all about choosing which version of a moment goes into the snow. Out in the real world, the same brilliant day can be posted two completely different ways. So here is what you do. A post comes up on a plaque. Tap PEEK A YEAR AHEAD to see how it reads once the day is long gone. Then tap STAMP IT GOLD, or NOT THIS ONE. [warmly] Six posts, one gold stamp. Off you go.",
       "lines": [
-        "[warmly] Last ranger skill - and it's a good one.",
-        "Real rangers climb the hill and read their own tracks.",
-        "Grab a grown-up and look at what's already out there.",
-        "[whispers] Hunt for POINTY tracks - name, school, where-and-when.",
-        "Tidy those together. Keep the golden ones gleaming.",
-        "[excited] The telescope's on the hill - let's read a trail!"
+        "[excited] Your fourth challenge, Cyber Hero. Stamp It Gold!",
+        "This game is all about choosing which version of a moment goes into the snow.",
+        "Out in the real world, the same brilliant day can be posted two completely different ways.",
+        "So here is what you do.",
+        "A post comes up on a plaque. Tap PEEK A YEAR AHEAD to see how it reads once the day is long gone.",
+        "Then tap STAMP IT GOLD, or NOT THIS ONE.",
+        "[warmly] Six posts, one gold stamp. Off you go."
       ],
-      "file": "/audio/voice/e6d8d1fad4f056da.mp3"
+      "file": "/audio/voice/c70434547880ac6b.mp3"
     },
     {
-      "key": "c937517d51af4fd3",
+      "key": "48f4c6651032ee0d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Up the hill, telescope out! A whole week of one hero's tracks below. Check every glowing print... [whispers] then make the ranger's call. Go!",
+      "text": "Tap PEEK A YEAR AHEAD first, then make the call.",
       "lines": [
-        "[excited] Up the hill, telescope out!",
-        "A whole week of one hero's tracks below.",
-        "Check every glowing print...",
-        "[whispers] then make the ranger's call. Go!"
+        "Tap PEEK A YEAR AHEAD first, then make the call."
       ],
-      "file": "/audio/voice/c937517d51af4fd3.mp3"
+      "file": "/audio/voice/48f4c6651032ee0d.mp3"
     },
     {
-      "key": "9a296d8c37492c67",
+      "key": "f4c521be16f0e952",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Check every print first - then make the call!",
+      "text": "[proud] Every single one judged, Cyber Hero, and look at what you stamped. A win with a name in it. A thing you built. A kind afternoon with a burnt tray. [warmly] That is a trail worth having. Lasting is a gift when the print is a good one.",
       "lines": [
-        "Check every print first - then make the call!"
+        "[proud] Every single one judged, Cyber Hero, and look at what you stamped.",
+        "A win with a name in it. A thing you built. A kind afternoon with a burnt tray.",
+        "[warmly] That is a trail worth having. Lasting is a gift when the print is a good one."
       ],
-      "file": "/audio/voice/9a296d8c37492c67.mp3"
+      "file": "/audio/voice/f4c521be16f0e952.mp3"
     },
     {
-      "key": "2aab4928f80c1a69",
+      "key": "eeb6ed6d707d94bf",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE ranger powers, Trail Ranger! Lamp lit, snowballs understood, mirror checked, gold stamped... and the telescope mastered. [whispers] One final ranger report... [excited] then we burn his trail map for GOOD!",
+      "text": "[proud] Perfect order! Other people first, because they did not choose to be on your trail. Then older you. Then the friend who helped gets their name in it. [warmly] And then you stamp it, and you enjoy it.",
       "lines": [
-        "[excited] That's all FIVE ranger powers, Trail Ranger!",
-        "Lamp lit, snowballs understood, mirror checked,",
-        "gold stamped... and the telescope mastered.",
-        "[whispers] One final ranger report...",
-        "[excited] then we burn his trail map for GOOD!"
+        "[proud] Perfect order!",
+        "Other people first, because they did not choose to be on your trail.",
+        "Then older you. Then the friend who helped gets their name in it.",
+        "[warmly] And then you stamp it, and you enjoy it."
       ],
-      "file": "/audio/voice/2aab4928f80c1a69.mp3"
+      "file": "/audio/voice/eeb6ed6d707d94bf.mp3"
     },
     {
-      "key": "810b566358a35411",
+      "key": "edc53dbc3aa2e609",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Ranger report - final sweep of the field! Tracks are drifting past the telescope. GOLDEN TRACK for the keepers... [warmly] RISKY TRACK for the pointy ones. Scan!",
+      "text": "[proud] Four powers, Cyber Hero, and that stamp suits you. Proud and kind, with the helper named. That is the golden version. [whispers] There is one power left, and it looks backwards instead of forwards... Next, we'll learn how to walk back along the trail you already left. Come and see!",
       "lines": [
-        "[excited] Ranger report - final sweep of the field!",
-        "Tracks are drifting past the telescope.",
-        "GOLDEN TRACK for the keepers...",
-        "[warmly] RISKY TRACK for the pointy ones. Scan!"
+        "[proud] Four powers, Cyber Hero, and that stamp suits you.",
+        "Proud and kind, with the helper named. That is the golden version.",
+        "[whispers] There is one power left, and it looks backwards instead of forwards...",
+        "Next, we'll learn how to walk back along the trail you already left. Come and see!"
       ],
-      "file": "/audio/voice/810b566358a35411.mp3"
+      "file": "/audio/voice/edc53dbc3aa2e609.mp3"
     },
     {
-      "key": "2816dc69cd5a707c",
+      "key": "703f5036e9b8ec4c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! Tracks seen, snowballs understood, the mirror checked, gold stamped... and your own trail read like a ranger. [laughs] His map room just became useless. [excited] Sticker time, Trail Ranger!",
+      "text": "[warmly] Last power of the week, Cyber Hero, and this one looks backwards. Every so often, a ranger walks their own trail the way a stranger would read it. Not to panic about it. Not to delete everything either. [thinking] Just to find the pointy prints. A school in a bio. A where and a when in a caption. And you do it next to a trusted grown-up, because some prints are on other people's phones. [excited] Your own trail is out there waiting. Let's walk it together!",
+      "lines": [
+        "[warmly] Last power of the week, Cyber Hero, and this one looks backwards.",
+        "Every so often, a ranger walks their own trail the way a stranger would read it.",
+        "Not to panic about it. Not to delete everything either.",
+        "[thinking] Just to find the pointy prints. A school in a bio. A where and a when in a caption.",
+        "And you do it next to a trusted grown-up, because some prints are on other people's phones.",
+        "[excited] Your own trail is out there waiting. Let's walk it together!"
+      ],
+      "file": "/audio/voice/703f5036e9b8ec4c.mp3"
+    },
+    {
+      "key": "5d197908db36bcf7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Last challenge of the week, Cyber Hero. The Trail Planner! This game is all about reading your own trail the way a stranger would. Out in the real world, this is the ten minutes you spend with a trusted grown-up every now and then. So here is what you do. A stretch of your trail lights up, and I will read what is on it. Then three cards appear. Tap the one that says what you would do with it. [warmly] Five stretches, all the way home. Off you go.",
+      "lines": [
+        "[excited] Last challenge of the week, Cyber Hero. The Trail Planner!",
+        "This game is all about reading your own trail the way a stranger would.",
+        "Out in the real world, this is the ten minutes you spend with a trusted grown-up every now and then.",
+        "So here is what you do.",
+        "A stretch of your trail lights up, and I will read what is on it.",
+        "Then three cards appear. Tap the one that says what you would do with it.",
+        "[warmly] Five stretches, all the way home. Off you go."
+      ],
+      "file": "/audio/voice/5d197908db36bcf7.mp3"
+    },
+    {
+      "key": "8caf6f7e72d8c0f4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the stretch, then tap what you would do with it.",
+      "lines": [
+        "Read the stretch, then tap what you would do with it."
+      ],
+      "file": "/audio/voice/8caf6f7e72d8c0f4.mp3"
+    },
+    {
+      "key": "3917ed5cf586b976",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] All the way home, Cyber Hero, and look at what you did NOT do. You did not panic, and you did not wipe the whole field clean. You tidied the pointy prints, handed over the one on somebody else's page, and left the golden ones shining. [warmly] Ten calm minutes. That is a trail check.",
+      "lines": [
+        "[proud] All the way home, Cyber Hero, and look at what you did NOT do.",
+        "You did not panic, and you did not wipe the whole field clean.",
+        "You tidied the pointy prints, handed over the one on somebody else's page, and left the golden ones shining.",
+        "[warmly] Ten calm minutes. That is a trail check."
+      ],
+      "file": "/audio/voice/3917ed5cf586b976.mp3"
+    },
+    {
+      "key": "970166ffda77e8a2",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Straight away! A where and a when together, happening every week. That is the pointiest print there is. [warmly] Tidy that one, and keep the dragon.",
+      "lines": [
+        "[proud] Straight away!",
+        "A where and a when together, happening every week. That is the pointiest print there is.",
+        "[warmly] Tidy that one, and keep the dragon."
+      ],
+      "file": "/audio/voice/970166ffda77e8a2.mp3"
+    },
+    {
+      "key": "0e1c508d480392c4",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Five powers, Cyber Hero. Every single one of them. Seen, counted, mirrored, stamped, and read back. [whispers] So there is only one thing left to find out... Next comes the Snow Maze, where you need all five at once. Come and see!",
+      "lines": [
+        "[proud] Five powers, Cyber Hero. Every single one of them.",
+        "Seen, counted, mirrored, stamped, and read back.",
+        "[whispers] So there is only one thing left to find out...",
+        "Next comes the Snow Maze, where you need all five at once. Come and see!"
+      ],
+      "file": "/audio/voice/0e1c508d480392c4.mp3"
+    },
+    {
+      "key": "307c5864071ca118",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Time for your review, Cyber Hero. The Snow Maze! This game is all about using every ranger power, one gate at a time. Out in the real world, trail choices turn up in any order, so all five have to be ready. So here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, a friend brings a trail choice and three replies appear. Tap the ranger move to open it. [warmly] Collect the lanterns, and find the hut. Five gates, five powers. Off you go!",
+      "lines": [
+        "[excited] Time for your review, Cyber Hero. The Snow Maze!",
+        "This game is all about using every ranger power, one gate at a time.",
+        "Out in the real world, trail choices turn up in any order, so all five have to be ready.",
+        "So here is what you do.",
+        "Tap a glowing square next to your hero to move.",
+        "When a gate blocks the way, a friend brings a trail choice and three replies appear. Tap the ranger move to open it.",
+        "[warmly] Collect the lanterns, and find the hut. Five gates, five powers. Off you go!"
+      ],
+      "file": "/audio/voice/307c5864071ca118.mp3"
+    },
+    {
+      "key": "1a91f384c4e6f259",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap a glowing square beside your hero to move. Head for the hut!",
+      "lines": [
+        "Tap a glowing square beside your hero to move. Head for the hut!"
+      ],
+      "file": "/audio/voice/1a91f384c4e6f259.mp3"
+    },
+    {
+      "key": "fb973353f78e2653",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Across the whole snowfield, Cyber Hero, and every gate opened with a ranger move. [warmly] Out in the real world, every trail choice gets the same care. See the print, count the copies, check the mirror, stamp the good one, and tidy the pointy ones with a grown-up.",
+      "lines": [
+        "[proud] Across the whole snowfield, Cyber Hero, and every gate opened with a ranger move.",
+        "[warmly] Out in the real world, every trail choice gets the same care. See the print, count the copies, check the mirror, stamp the good one, and tidy the pointy ones with a grown-up."
+      ],
+      "file": "/audio/voice/fb973353f78e2653.mp3"
+    },
+    {
+      "key": "7e2ee494fb901e55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Prints seen, copies counted, the mirror checked, gold stamped... and your own trail walked all the way home. [laughs] His map room just became completely useless. [excited] Sticker time, Cyber Hero!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Tracks seen, snowballs understood, the mirror checked,",
-        "gold stamped... and your own trail read like a ranger.",
-        "[laughs] His map room just became useless.",
-        "[excited] Sticker time, Trail Ranger!"
+        "Prints seen, copies counted, the mirror checked,",
+        "gold stamped... and your own trail walked all the way home.",
+        "[laughs] His map room just became completely useless.",
+        "[excited] Sticker time, Cyber Hero!"
       ],
-      "file": "/audio/voice/2816dc69cd5a707c.mp3"
+      "file": "/audio/voice/7e2ee494fb901e55.mp3"
     },
     {
-      "key": "a9ea6b319f1a5012",
+      "key": "8289cb7c29731951",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You lost the final and you're FUMING. Your thumbs are already typing a rage-post about the ref...",
+      "text": "You searched for dinosaur jokes, giggled, and closed the tab without posting a thing. Track or no track?",
       "lines": [
-        "You lost the final and you're FUMING. Your thumbs are already typing a rage-post about the ref..."
+        "You searched for dinosaur jokes, giggled, and closed the tab without posting a thing. Track or no track?"
       ],
-      "file": "/audio/voice/a9ea6b319f1a5012.mp3"
+      "file": "/audio/voice/8289cb7c29731951.mp3"
     },
     {
-      "key": "63200daa3128157e",
+      "key": "7d57532ba6a81112",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The CRINGE CHALLENGE is everywhere: 'post your most embarrassing moment!' Everyone in class is doing it...",
+      "text": "The Raccoon is fibbing about delete. Which bit is the lie?",
       "lines": [
-        "The CRINGE CHALLENGE is everywhere: 'post your most embarrassing moment!' Everyone in class is doing it..."
+        "The Raccoon is fibbing about delete. Which bit is the lie?"
       ],
-      "file": "/audio/voice/63200daa3128157e.mp3"
+      "file": "/audio/voice/7d57532ba6a81112.mp3"
     },
     {
-      "key": "c8e571ead0133898",
+      "key": "b7bdb2b62356e37c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You built an unbelievable marble-run - three floors, a lift, a loop! You filmed the whole thing. Post it?",
+      "text": "Finish the ranger rule: one look in the mirror before I post, and I ask...",
       "lines": [
-        "You built an unbelievable marble-run - three floors, a lift, a loop! You filmed the whole thing. Post it?"
+        "Finish the ranger rule: one look in the mirror before I post, and I ask..."
       ],
-      "file": "/audio/voice/c8e571ead0133898.mp3"
+      "file": "/audio/voice/b7bdb2b62356e37c.mp3"
     },
     {
-      "key": "fce08510b466310a",
+      "key": "1c8098d8a302c247",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "By breakfast you didn't mean it anymore... but the track stayed pressed in the snow. Future-you gets to explain it every time they join a new team.",
+      "text": "Put the golden-post check in order.",
       "lines": [
-        "By breakfast you didn't mean it anymore... but the track stayed pressed in the snow. Future-you gets to explain it every time they join a new team."
+        "Put the golden-post check in order."
       ],
-      "file": "/audio/voice/fce08510b466310a.mp3"
+      "file": "/audio/voice/1c8098d8a302c247.mp3"
     },
     {
-      "key": "372431aec8591ac6",
+      "key": "517724fa5884729a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You put the phone down and kicked a ball at the fence instead. The fume melted, no track was pressed, and future-you never has to explain a thing.",
+      "text": "Quick! Which one is a POINTY print?",
       "lines": [
-        "You put the phone down and kicked a ball at the fence instead. The fume melted, no track was pressed, and future-you never has to explain a thing."
+        "Quick! Which one is a POINTY print?"
       ],
-      "file": "/audio/voice/372431aec8591ac6.mp3"
+      "file": "/audio/voice/517724fa5884729a.mp3"
     },
     {
-      "key": "9cef6b63eecdbb52",
+      "key": "30de3e602f2dd77d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Today's laugh became next year's nickname. The challenge melted by Friday - the track didn't. Trends melt; snow doesn't.",
+      "text": "You searched 'best dinosaur jokes', giggled twice, and closed the tab without posting a thing. Track or no track? Is it option A... Track, searches print even when I post nothing Option B... No track, closing the tab wipes it clean Or is it option C... Half a track, it fades away by tomorrow So, what do you think?",
       "lines": [
-        "Today's laugh became next year's nickname. The challenge melted by Friday - the track didn't. Trends melt; snow doesn't."
+        "You searched 'best dinosaur jokes', giggled twice, and closed the tab without posting a thing. Track or no track?",
+        "Is it option A...",
+        "Track, searches print even when I post nothing",
+        "Option B...",
+        "No track, closing the tab wipes it clean",
+        "Or is it option C...",
+        "Half a track, it fades away by tomorrow",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/9cef6b63eecdbb52.mp3"
+      "file": "/audio/voice/30de3e602f2dd77d.mp3"
     },
     {
-      "key": "68cc1c3c0581c0af",
+      "key": "78de82b49c2c8b66",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "By Friday nobody remembered the challenge existed. Your snow stayed clean, and future-you keeps the nickname YOU chose.",
+      "text": "You sent ONE photo to just ONE friend. How many copies of it exist now? Is it option A... Zero, sending moves a photo instead of copying it Option B... Exactly one, on my friend's phone Or is it option C... More than one: mine, my friend's, and the app kept one too So, what do you think?",
       "lines": [
-        "By Friday nobody remembered the challenge existed. Your snow stayed clean, and future-you keeps the nickname YOU chose."
+        "You sent ONE photo to just ONE friend. How many copies of it exist now?",
+        "Is it option A...",
+        "Zero, sending moves a photo instead of copying it",
+        "Option B...",
+        "Exactly one, on my friend's phone",
+        "Or is it option C...",
+        "More than one: mine, my friend's, and the app kept one too",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/68cc1c3c0581c0af.mp3"
+      "file": "/audio/voice/78de82b49c2c8b66.mp3"
     },
     {
-      "key": "f81ddd9345f45447",
+      "key": "f57347a055b401e4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Future-you scrolls back one day and grins: 'I built THAT at eight?!' Some tracks you WANT in the snow - that's the whole point.",
+      "text": "You lost the final and your thumbs are already typing a rage-post about the ref. Mirror check: what does future-you say? Is it option A... Post it, being right makes it a golden track Option B... Skip it, the anger melts by morning, the track stays Or is it option C... Post it, you can delete it once you calm down So, what do you think?",
       "lines": [
-        "Future-you scrolls back one day and grins: 'I built THAT at eight?!' Some tracks you WANT in the snow - that's the whole point."
+        "You lost the final and your thumbs are already typing a rage-post about the ref. Mirror check: what does future-you say?",
+        "Is it option A...",
+        "Post it, being right makes it a golden track",
+        "Option B...",
+        "Skip it, the anger melts by morning, the track stays",
+        "Or is it option C...",
+        "Post it, you can delete it once you calm down",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/f81ddd9345f45447.mp3"
+      "file": "/audio/voice/f57347a055b401e4.mp3"
     },
     {
-      "key": "f74c8a3994256c42",
+      "key": "f8419ecb6770013a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Whoa - too far the other way! The snow isn't lava. Proud tracks are GOOD tracks. Skip the rage-posts, keep the marble-runs.",
+      "text": "Your team won on penalties! Which post stamps the win GOLD? Is it option A... 'What a save, Jaya, champions!' Option B... 'We won! Their goalie is terrible, ha!' Or is it option C... 'We won, no thanks to our slowpoke defenders' So, what do you think?",
       "lines": [
-        "Whoa - too far the other way! The snow isn't lava. Proud tracks are GOOD tracks. Skip the rage-posts, keep the marble-runs."
+        "Your team won on penalties! Which post stamps the win GOLD?",
+        "Is it option A...",
+        "'What a save, Jaya, champions!'",
+        "Option B...",
+        "'We won! Their goalie is terrible, ha!'",
+        "Or is it option C...",
+        "'We won, no thanks to our slowpoke defenders'",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/f74c8a3994256c42.mp3"
+      "file": "/audio/voice/f8419ecb6770013a.mp3"
     },
     {
-      "key": "43f15c7f10aa9ea8",
+      "key": "17409bba1a0af81f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Lamp quiz: which of those moments left a track?",
+      "text": "A trail check with your grown-up finds a bio: 'Age 8, Northside Elementary, class 3B.' What kind of track is that? Is it option A... Golden, it helps real friends find me Option B... Neither, bios don't count as tracks Or is it option C... Pointy, it aims a stranger straight at me, tidy it So, what do you think?",
       "lines": [
-        "Lamp quiz: which of those moments left a track?"
+        "A trail check with your grown-up finds a bio: 'Age 8, Northside Elementary, class 3B.' What kind of track is that?",
+        "Is it option A...",
+        "Golden, it helps real friends find me",
+        "Option B...",
+        "Neither, bios don't count as tracks",
+        "Or is it option C...",
+        "Pointy, it aims a stranger straight at me, tidy it",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/43f15c7f10aa9ea8.mp3"
+      "file": "/audio/voice/17409bba1a0af81f.mp3"
     },
     {
-      "key": "7f9176e7dd690d31",
+      "key": "9c2ecdfc9e9ca82f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Is that true?",
+      "text": "That's right! Closing the tab puts the jokes away, but the search engine kept your question, plus when you asked it, and tracks don't fade by tomorrow. Every search presses a print, posted or not.",
       "lines": [
-        "Is that true?"
+        "That's right!",
+        "Closing the tab puts the jokes away, but the search engine kept your question, plus when you asked it, and tracks don't fade by tomorrow. Every search presses a print, posted or not."
       ],
-      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+      "file": "/audio/voice/9c2ecdfc9e9ca82f.mp3"
     },
     {
-      "key": "75af3c8c410fb8ac",
+      "key": "12c0b52c9dc60302",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Old tracks can trip the blank you.",
+      "text": "Not quite. Closing the tab puts the jokes away, but the search engine kept your question, plus when you asked it, and tracks don't fade by tomorrow. Every search presses a print, posted or not.",
       "lines": [
-        "Old tracks can trip the blank you."
+        "Not quite.",
+        "Closing the tab puts the jokes away, but the search engine kept your question, plus when you asked it, and tracks don't fade by tomorrow. Every search presses a print, posted or not."
       ],
-      "file": "/audio/voice/75af3c8c410fb8ac.mp3"
+      "file": "/audio/voice/12c0b52c9dc60302.mp3"
     },
     {
-      "key": "486daf4f9df7d5f9",
+      "key": "450c8320ceca8a40",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which track belongs on a GOLDEN trail?",
+      "text": "That's right! Sending doesn't move a photo, it copies it. One stays at your end, one lands at your friend's end, and the app kept one too. Shared once means stored more than once.",
       "lines": [
-        "Which track belongs on a GOLDEN trail?"
+        "That's right!",
+        "Sending doesn't move a photo, it copies it. One stays at your end, one lands at your friend's end, and the app kept one too. Shared once means stored more than once."
       ],
-      "file": "/audio/voice/486daf4f9df7d5f9.mp3"
+      "file": "/audio/voice/450c8320ceca8a40.mp3"
     },
     {
-      "key": "f4af76656412781e",
+      "key": "b12a6b3e96672021",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - tap the POINTY track!",
+      "text": "Not quite. Sending doesn't move a photo, it copies it. One stays at your end, one lands at your friend's end, and the app kept one too. Shared once means stored more than once.",
       "lines": [
-        "Quick - tap the POINTY track!"
+        "Not quite.",
+        "Sending doesn't move a photo, it copies it. One stays at your end, one lands at your friend's end, and the app kept one too. Shared once means stored more than once."
       ],
-      "file": "/audio/voice/f4af76656412781e.mp3"
+      "file": "/audio/voice/b12a6b3e96672021.mp3"
+    },
+    {
+      "key": "e4445508fb68b6f6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! By breakfast you won't even mean it anymore, but deleting later only cleans YOUR snow, and being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?",
+      "lines": [
+        "That's right!",
+        "By breakfast you won't even mean it anymore, but deleting later only cleans YOUR snow, and being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?"
+      ],
+      "file": "/audio/voice/e4445508fb68b6f6.mp3"
+    },
+    {
+      "key": "0f079fa3fee6d352",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. By breakfast you won't even mean it anymore, but deleting later only cleans YOUR snow, and being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?",
+      "lines": [
+        "Not quite.",
+        "By breakfast you won't even mean it anymore, but deleting later only cleans YOUR snow, and being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?"
+      ],
+      "file": "/audio/voice/0f079fa3fee6d352.mp3"
+    },
+    {
+      "key": "6944d76adf0efc86",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A win posted loud and mean, at the other team or your own, turns a golden day into a stain. Proud AND kind is the champion stamp, and it gleams for years.",
+      "lines": [
+        "That's right!",
+        "A win posted loud and mean, at the other team or your own, turns a golden day into a stain. Proud AND kind is the champion stamp, and it gleams for years."
+      ],
+      "file": "/audio/voice/6944d76adf0efc86.mp3"
+    },
+    {
+      "key": "f04962c15e2a63de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A win posted loud and mean, at the other team or your own, turns a golden day into a stain. Proud AND kind is the champion stamp, and it gleams for years.",
+      "lines": [
+        "Not quite.",
+        "A win posted loud and mean, at the other team or your own, turns a golden day into a stain. Proud AND kind is the champion stamp, and it gleams for years."
+      ],
+      "file": "/audio/voice/f04962c15e2a63de.mp3"
+    },
+    {
+      "key": "1357ee5a827fcff7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Real friends already know where to find you, so a bio doesn't need your school, and bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "Real friends already know where to find you, so a bio doesn't need your school, and bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up."
+      ],
+      "file": "/audio/voice/1357ee5a827fcff7.mp3"
+    },
+    {
+      "key": "b76b9d7050210bb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Real friends already know where to find you, so a bio doesn't need your school, and bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "Real friends already know where to find you, so a bio doesn't need your school, and bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up."
+      ],
+      "file": "/audio/voice/b76b9d7050210bb7.mp3"
+    },
+    {
+      "key": "8803526368ab540c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing was posted, and the search still named the game. Searches press prints exactly like posts do.",
+      "lines": [
+        "Nothing was posted, and the search still named the game. Searches press prints exactly like posts do."
+      ],
+      "file": "/audio/voice/8803526368ab540c.mp3"
+    },
+    {
+      "key": "0e0c9c85a4bd39c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A like is a tap, and a tap is a print. This one says which team they turn up for.",
+      "lines": [
+        "A like is a tap, and a tap is a print. This one says which team they turn up for."
+      ],
+      "file": "/audio/voice/0e0c9c85a4bd39c0.mp3"
+    },
+    {
+      "key": "bf1310dd2b8843f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saturday and club, in one short comment. A when is a print a stranger can plan around.",
+      "lines": [
+        "Saturday and club, in one short comment. A when is a print a stranger can plan around."
+      ],
+      "file": "/audio/voice/bf1310dd2b8843f0.mp3"
+    },
+    {
+      "key": "21148d0eef85e849",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Age plus school plus class is a room and a timetable. That is the deepest print on the trail.",
+      "lines": [
+        "Age plus school plus class is a room and a timetable. That is the deepest print on the trail."
+      ],
+      "file": "/audio/voice/21148d0eef85e849.mp3"
+    },
+    {
+      "key": "cb0299b8377dc4b5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A doorway in the background and a bike worth taking. Together they are a place and a reason.",
+      "lines": [
+        "A doorway in the background and a bike worth taking. Together they are a place and a reason."
+      ],
+      "file": "/audio/voice/cb0299b8377dc4b5.mp3"
+    },
+    {
+      "key": "2f1356319cd8d734",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Closing a tab puts the jokes away on your screen. The search box kept the question.",
+      "lines": [
+        "Closing a tab puts the jokes away on your screen. The search box kept the question."
+      ],
+      "file": "/audio/voice/2f1356319cd8d734.mp3"
+    },
+    {
+      "key": "01b2589c1850ba51",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Snow out here does not melt. A print from today is still a print next year.",
+      "lines": [
+        "Snow out here does not melt. A print from today is still a print next year."
+      ],
+      "file": "/audio/voice/01b2589c1850ba51.mp3"
+    },
+    {
+      "key": "62894463284ecf8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A print does not need an audience to exist. It only needs somebody to come along with a lamp.",
+      "lines": [
+        "A print does not need an audience to exist. It only needs somebody to come along with a lamp."
+      ],
+      "file": "/audio/voice/62894463284ecf8f.mp3"
+    },
+    {
+      "key": "d2245f1c8c2c092c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Did the search box keep the question, or did closing the tab take it away?",
+      "lines": [
+        "Did the search box keep the question, or did closing the tab take it away?"
+      ],
+      "file": "/audio/voice/d2245f1c8c2c092c.mp3"
+    },
+    {
+      "key": "ed4b1e47da9c854a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Twice empties the same pocket twice. It cannot reach across to anybody else's phone.",
+      "lines": [
+        "Twice empties the same pocket twice. It cannot reach across to anybody else's phone."
+      ],
+      "file": "/audio/voice/ed4b1e47da9c854a.mp3"
+    },
+    {
+      "key": "3c396e50f4eb08dc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Speed helps a little and it is not a rule. The copies that landed are already landed.",
+      "lines": [
+        "Speed helps a little and it is not a rule. The copies that landed are already landed."
+      ],
+      "file": "/audio/voice/3c396e50f4eb08dc.mp3"
+    },
+    {
+      "key": "24d509d2c71db098",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Words copy exactly like photos do. It is not the kind of thing that decides, it is the copying.",
+      "lines": [
+        "Words copy exactly like photos do. It is not the kind of thing that decides, it is the copying."
+      ],
+      "file": "/audio/voice/24d509d2c71db098.mp3"
+    },
+    {
+      "key": "b4448ef84a7f833f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Whose snow does that button actually clear?",
+      "lines": [
+        "Whose snow does that button actually clear?"
+      ],
+      "file": "/audio/voice/b4448ef84a7f833f.mp3"
+    },
+    {
+      "key": "367f102626fe092b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It shows somebody who sticks at a hard thing all afternoon. That is a print worth leaving.",
+      "lines": [
+        "It shows somebody who sticks at a hard thing all afternoon. That is a print worth leaving."
+      ],
+      "file": "/audio/voice/367f102626fe092b.mp3"
+    },
+    {
+      "key": "3244771c53f10964",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The ref may well have been hopeless, and the fury fades by breakfast. The print does not fade with it, and a coach reads it cold.",
+      "lines": [
+        "The ref may well have been hopeless, and the fury fades by breakfast. The print does not fade with it, and a coach reads it cold."
+      ],
+      "file": "/audio/voice/3244771c53f10964.mp3"
+    },
+    {
+      "key": "06940546184635b6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Showing your little brother something is a small kind thing, written down plainly. Those are the prints that make a trail worth walking.",
+      "lines": [
+        "Showing your little brother something is a small kind thing, written down plainly. Those are the prints that make a trail worth walking."
+      ],
+      "file": "/audio/voice/06940546184635b6.mp3"
+    },
+    {
+      "key": "ecd97d0f519f33cf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The dare will be over by next week. The print is still there, still daring people, long after everybody forgot why.",
+      "lines": [
+        "The dare will be over by next week. The print is still there, still daring people, long after everybody forgot why."
+      ],
+      "file": "/audio/voice/ecd97d0f519f33cf.mp3"
+    },
+    {
+      "key": "7ce074dc9f1afa08",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one has somebody else standing in it. Priya did not choose to be on your trail, and she will read it.",
+      "lines": [
+        "This one has somebody else standing in it. Priya did not choose to be on your trail, and she will read it."
+      ],
+      "file": "/audio/voice/7ce074dc9f1afa08.mp3"
+    },
+    {
+      "key": "8ab7bb85df605032",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A bake sale for the shelter still reads well years from now, and that is exactly what a lasting print should do.",
+      "lines": [
+        "A bake sale for the shelter still reads well years from now, and that is exactly what a lasting print should do."
+      ],
+      "file": "/audio/voice/8ab7bb85df605032.mp3"
+    },
+    {
+      "key": "2a2ca232281d126e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Likes arrive today and leave by the weekend. The print is the part that stays.",
+      "lines": [
+        "Likes arrive today and leave by the weekend. The print is the part that stays."
+      ],
+      "file": "/audio/voice/2a2ca232281d126e.mp3"
+    },
+    {
+      "key": "98f8c1afb999feef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Later only reaches your own copy, and you already know what the hill does with the rest.",
+      "lines": [
+        "Later only reaches your own copy, and you already know what the hill does with the rest."
+      ],
+      "file": "/audio/voice/98f8c1afb999feef.mp3"
+    },
+    {
+      "key": "1a5e71d7ca74887e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A print does not need anybody watching today. It only needs somebody walking past one day.",
+      "lines": [
+        "A print does not need anybody watching today. It only needs somebody walking past one day."
+      ],
+      "file": "/audio/voice/1a5e71d7ca74887e.mp3"
+    },
+    {
+      "key": "cee7917c287b6e10",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The mirror shows a person, not a number. What does it ask about them?",
+      "lines": [
+        "The mirror shows a person, not a number. What does it ask about them?"
+      ],
+      "file": "/audio/voice/cee7917c287b6e10.mp3"
+    },
+    {
+      "key": "3e35f4f4d9542352",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Other people first, then older you, then the credit, then the stamp.",
+      "lines": [
+        "Other people first, then older you, then the credit, then the stamp."
+      ],
+      "file": "/audio/voice/3e35f4f4d9542352.mp3"
+    },
+    {
+      "key": "a646c9d432be321b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real friends already know where you go. The school line is only useful to somebody who does not.",
+      "lines": [
+        "Real friends already know where you go. The school line is only useful to somebody who does not."
+      ],
+      "file": "/audio/voice/a646c9d432be321b.mp3"
+    },
+    {
+      "key": "1f5085e5eba4a6ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The park on its own is a moment. The park plus every Saturday, on repeat, is a plan somebody else can join.",
+      "lines": [
+        "The park on its own is a moment. The park plus every Saturday, on repeat, is a plan somebody else can join."
+      ],
+      "file": "/audio/voice/1f5085e5eba4a6ef.mp3"
+    },
+    {
+      "key": "c8c44c61b3df3826",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Taking the post down clears your snow. Saying sorry is the part that reaches Priya, who was standing in it.",
+      "lines": [
+        "Taking the post down clears your snow. Saying sorry is the part that reaches Priya, who was standing in it."
+      ],
+      "file": "/audio/voice/c8c44c61b3df3826.mp3"
+    },
+    {
+      "key": "583c4c5a186386da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A trail check is not a clear-out, and that jump is the reason you have a trail at all.",
+      "lines": [
+        "A trail check is not a clear-out, and that jump is the reason you have a trail at all."
+      ],
+      "file": "/audio/voice/583c4c5a186386da.mp3"
+    },
+    {
+      "key": "79fb1f168c48e6dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This print is on somebody else's page, which is exactly the kind a ranger hands over.",
+      "lines": [
+        "This print is on somebody else's page, which is exactly the kind a ranger hands over."
+      ],
+      "file": "/audio/voice/79fb1f168c48e6dd.mp3"
+    },
+    {
+      "key": "336cea1527ae86da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A drawing and an initial point at nobody. That print is yours to enjoy.",
+      "lines": [
+        "A drawing and an initial point at nobody. That print is yours to enjoy."
+      ],
+      "file": "/audio/voice/336cea1527ae86da.mp3"
+    },
+    {
+      "key": "fc78aa101d64bc43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is a golden print. It names a friend for a good thing, and it keeps reading well.",
+      "lines": [
+        "That is a golden print. It names a friend for a good thing, and it keeps reading well."
+      ],
+      "file": "/audio/voice/fc78aa101d64bc43.mp3"
+    },
+    {
+      "key": "c97e6bd1e5fb3f5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A search goes into a box that keeps it, so the print is there whether or not anything was posted.",
+      "lines": [
+        "A search goes into a box that keeps it, so the print is there whether or not anything was posted."
+      ],
+      "file": "/audio/voice/c97e6bd1e5fb3f5e.mp3"
+    },
+    {
+      "key": "f1d53f1c35d16dd9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sending copies a thing instead of moving it, so one send already makes three before anybody passes it on.",
+      "lines": [
+        "Sending copies a thing instead of moving it, so one send already makes three before anybody passes it on."
+      ],
+      "file": "/audio/voice/f1d53f1c35d16dd9.mp3"
+    },
+    {
+      "key": "45c1c5d184f9d02c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The fury fades by breakfast and the print does not, so the mirror question comes before the post, not after.",
+      "lines": [
+        "The fury fades by breakfast and the print does not, so the mirror question comes before the post, not after."
+      ],
+      "file": "/audio/voice/45c1c5d184f9d02c.mp3"
+    },
+    {
+      "key": "3ddc897cbeb36a59",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Proud and kind, with the person who made the save named, is the post that still reads beautifully a year from now.",
+      "lines": [
+        "Proud and kind, with the person who made the save named, is the post that still reads beautifully a year from now."
+      ],
+      "file": "/audio/voice/3ddc897cbeb36a59.mp3"
+    },
+    {
+      "key": "d3b8cca6b8ae5c1f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A print you cannot reach, on a page that is not yours, is exactly the one a ranger hands to a trusted grown-up.",
+      "lines": [
+        "A print you cannot reach, on a page that is not yours, is exactly the one a ranger hands to a trusted grown-up."
+      ],
+      "file": "/audio/voice/d3b8cca6b8ae5c1f.mp3"
+    },
+    {
+      "key": "2ac8a0a443d1fbb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing was posted, and the print is still there. A search names the game somebody plays, and the search box keeps it.",
+      "lines": [
+        "Nothing was posted, and the print is still there. A search names the game somebody plays, and the search box keeps it."
+      ],
+      "file": "/audio/voice/2ac8a0a443d1fbb7.mp3"
+    },
+    {
+      "key": "52ee43ff1c26237b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Posting is not the only thing that prints. The question went into a box that kept it, so the print is there either way.",
+      "lines": [
+        "Posting is not the only thing that prints. The question went into a box that kept it, so the print is there either way."
+      ],
+      "file": "/audio/voice/52ee43ff1c26237b.mp3"
+    },
+    {
+      "key": "9d0bedb08c55ba2f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A level number cannot point at a house. This print names the game, and that is all it names.",
+      "lines": [
+        "A level number cannot point at a house. This print names the game, and that is all it names."
+      ],
+      "file": "/audio/voice/9d0bedb08c55ba2f.mp3"
+    },
+    {
+      "key": "1136d3d2719b4354",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A like looks like the smallest thing you can do online, and it still prints. This one says which team they follow.",
+      "lines": [
+        "A like looks like the smallest thing you can do online, and it still prints. This one says which team they follow."
+      ],
+      "file": "/audio/voice/1136d3d2719b4354.mp3"
+    },
+    {
+      "key": "fade193690756316",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quiet is not the same as invisible. That like sits on the photo where anybody can count it.",
+      "lines": [
+        "Quiet is not the same as invisible. That like sits on the photo where anybody can count it."
+      ],
+      "file": "/audio/voice/fade193690756316.mp3"
+    },
+    {
+      "key": "7f659c82703cf122",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A match photo carries no birthday in it. What this print gives away is the team, not the age.",
+      "lines": [
+        "A match photo carries no birthday in it. What this print gives away is the team, not the age."
+      ],
+      "file": "/audio/voice/7f659c82703cf122.mp3"
+    },
+    {
+      "key": "6dae2ddf6f600e67",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Five friendly words, and one of them is a day. A when is the most useful print a stranger can find.",
+      "lines": [
+        "Five friendly words, and one of them is a day. A when is the most useful print a stranger can find."
+      ],
+      "file": "/audio/voice/6dae2ddf6f600e67.mp3"
+    },
+    {
+      "key": "47fc5e6ed6dd974b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They are friendly, and the comment still carries a day of the week inside it. That day is the part a stranger reads.",
+      "lines": [
+        "They are friendly, and the comment still carries a day of the week inside it. That day is the part a stranger reads."
+      ],
+      "file": "/audio/voice/47fc5e6ed6dd974b.mp3"
+    },
+    {
+      "key": "6d6a94cc3f7c3715",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody types a password into a comment. What this one gives away is the day.",
+      "lines": [
+        "Nobody types a password into a comment. What this one gives away is the day."
+      ],
+      "file": "/audio/voice/6d6a94cc3f7c3715.mp3"
+    },
+    {
+      "key": "66e2e857fd08b2da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Age plus school plus class narrows it down to one room, on a timetable anybody can look up. That is a print a ranger tidies.",
+      "lines": [
+        "Age plus school plus class narrows it down to one room, on a timetable anybody can look up. That is a print a ranger tidies."
+      ],
+      "file": "/audio/voice/66e2e857fd08b2da.mp3"
+    },
+    {
+      "key": "a164d87775bc156e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A school is big, and a class is not. Three B on a Tuesday morning is one room.",
+      "lines": [
+        "A school is big, and a class is not. Three B on a Tuesday morning is one room."
+      ],
+      "file": "/audio/voice/a164d87775bc156e.mp3"
+    },
+    {
+      "key": "aa43f98c75b6d594",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It may well be true, and it is not what this print gives away. This one gives away where they sit all day.",
+      "lines": [
+        "It may well be true, and it is not what this print gives away. This one gives away where they sit all day."
+      ],
+      "file": "/audio/voice/aa43f98c75b6d594.mp3"
+    },
+    {
+      "key": "3b47418600cf1a24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The bike is the reason and the doorway is the place. Either one on its own is small, and a stranger reads them together.",
+      "lines": [
+        "The bike is the reason and the doorway is the place. Either one on its own is small, and a stranger reads them together."
+      ],
+      "file": "/audio/voice/3b47418600cf1a24.mp3"
+    },
+    {
+      "key": "a248b29f674e51d1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They do like their bike, and the photo carries their front door as well. The background is a print of its own.",
+      "lines": [
+        "They do like their bike, and the photo carries their front door as well. The background is a print of its own."
+      ],
+      "file": "/audio/voice/a248b29f674e51d1.mp3"
+    },
+    {
+      "key": "b02b14f913f51256",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The class came from the bio, not from the bike. This print is about the street.",
+      "lines": [
+        "The class came from the bio, not from the bike. This print is about the street."
+      ],
+      "file": "/audio/voice/b02b14f913f51256.mp3"
+    },
+    {
+      "key": "7fdc7ddaf4e86322",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is nothing here to hide. It shows somebody who sticks at a hard thing, and that is exactly what a coach hopes to find.",
+      "lines": [
+        "There is nothing here to hide. It shows somebody who sticks at a hard thing, and that is exactly what a coach hopes to find."
+      ],
+      "file": "/audio/voice/7fdc7ddaf4e86322.mp3"
+    },
+    {
+      "key": "51abf261ef108aeb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Losing a final hurts, and nobody blames you for the feeling. By breakfast you will not mean it, and the print stays exactly as angry as it was.",
+      "lines": [
+        "Losing a final hurts, and nobody blames you for the feeling. By breakfast you will not mean it, and the print stays exactly as angry as it was."
+      ],
+      "file": "/audio/voice/51abf261ef108aeb.mp3"
+    },
+    {
+      "key": "340d9457dfb8644c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is small and it is kind, and a trail made of those reads beautifully. Leave it right where it is.",
+      "lines": [
+        "It is small and it is kind, and a trail made of those reads beautifully. Leave it right where it is."
+      ],
+      "file": "/audio/voice/340d9457dfb8644c.mp3"
+    },
+    {
+      "key": "c85598d3925b23f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The pepper dare will race through school and then vanish. The print does not vanish with it, and it names you as the one still handing it on.",
+      "lines": [
+        "The pepper dare will race through school and then vanish. The print does not vanish with it, and it names you as the one still handing it on."
+      ],
+      "file": "/audio/voice/c85598d3925b23f2.mp3"
+    },
+    {
+      "key": "18aad916493fc3c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You can see how it felt funny in the moment. Priya is the one who has to walk past it, and she never said yes to being there.",
+      "lines": [
+        "You can see how it felt funny in the moment. Priya is the one who has to walk past it, and she never said yes to being there."
+      ],
+      "file": "/audio/voice/18aad916493fc3c8.mp3"
+    },
+    {
+      "key": "967c087dd3131f81",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This is what permanence is FOR. A print like this one keeps working for you years after you press it.",
+      "lines": [
+        "This is what permanence is FOR. A print like this one keeps working for you years after you press it."
+      ],
+      "file": "/audio/voice/967c087dd3131f81.mp3"
+    },
+    {
+      "key": "2eb34b487dadf884",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Proud AND kind, with Jaya named. A print like this one only gets better with age.",
+      "lines": [
+        "Proud AND kind, with Jaya named. A print like this one only gets better with age."
+      ],
+      "file": "/audio/voice/2eb34b487dadf884.mp3"
+    },
+    {
+      "key": "54720381169a7707",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The same brilliant win, stained by three words about their goalie. Nothing golden survives being aimed at somebody.",
+      "lines": [
+        "The same brilliant win, stained by three words about their goalie. Nothing golden survives being aimed at somebody."
+      ],
+      "file": "/audio/voice/54720381169a7707.mp3"
+    },
+    {
+      "key": "18bf3d79b956efce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That took four goes, and it is your own work, shown off plainly. Stamp that one every time.",
+      "lines": [
+        "That took four goes, and it is your own work, shown off plainly. Stamp that one every time."
+      ],
+      "file": "/audio/voice/18bf3d79b956efce.mp3"
+    },
+    {
+      "key": "4678a8d18b433e3c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Calling your own defenders slowpokes is not gentler than aiming at theirs, it is closer. The gold stamp never goes on a post that names somebody to laugh at.",
+      "lines": [
+        "Calling your own defenders slowpokes is not gentler than aiming at theirs, it is closer. The gold stamp never goes on a post that names somebody to laugh at."
+      ],
+      "file": "/audio/voice/4678a8d18b433e3c.mp3"
+    },
+    {
+      "key": "61f2886e94da34a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Kind and funny at the same time, and the only one taking a knock is the tray. That is the best combination there is.",
+      "lines": [
+        "Kind and funny at the same time, and the only one taking a knock is the tray. That is the best combination there is."
+      ],
+      "file": "/audio/voice/61f2886e94da34a1.mp3"
+    },
+    {
+      "key": "e299be151b82fe89",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The dare will be over by half term. The print carries on daring people long after everybody moved on.",
+      "lines": [
+        "The dare will be over by half term. The print carries on daring people long after everybody moved on."
+      ],
+      "file": "/audio/voice/e299be151b82fe89.mp3"
+    },
+    {
+      "key": "0992592136a88bae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody who actually knows you needs that line, and it hands a stranger a building and a timetable. Take it out.",
+      "lines": [
+        "Nobody who actually knows you needs that line, and it hands a stranger a building and a timetable. Take it out."
+      ],
+      "file": "/audio/voice/0992592136a88bae.mp3"
+    },
+    {
+      "key": "9b0791864f2a272c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anybody who needs to find you already knows your school without the bio. That line only works for somebody who does not know you.",
+      "lines": [
+        "Anybody who needs to find you already knows your school without the bio. That line only works for somebody who does not know you."
+      ],
+      "file": "/audio/voice/9b0791864f2a272c.mp3"
+    },
+    {
+      "key": "5512847c8c1c7744",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That swaps one pointy print for a pointier one. Where you sleep is more, not less.",
+      "lines": [
+        "That swaps one pointy print for a pointier one. Where you sleep is more, not less."
+      ],
+      "file": "/audio/voice/5512847c8c1c7744.mp3"
+    },
+    {
+      "key": "cb86004f72f711d1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The photo is lovely and the repeat is the problem. Every Saturday turns a moment into a timetable, so take the when out.",
+      "lines": [
+        "The photo is lovely and the repeat is the problem. Every Saturday turns a moment into a timetable, so take the when out."
+      ],
+      "file": "/audio/voice/cb86004f72f711d1.mp3"
+    },
+    {
+      "key": "68139a6f9c146aa2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You do not have to lose the photo to fix this. The pointy part is the repeat, not the park.",
+      "lines": [
+        "You do not have to lose the photo to fix this. The pointy part is the repeat, not the park."
+      ],
+      "file": "/audio/voice/68139a6f9c146aa2.mp3"
+    },
+    {
+      "key": "865e242508618cf4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Plenty of people use that park, and only one of them posted exactly when they will be there.",
+      "lines": [
+        "Plenty of people use that park, and only one of them posted exactly when they will be there."
+      ],
+      "file": "/audio/voice/865e242508618cf4.mp3"
+    },
+    {
+      "key": "3496954c0d53f749",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Both halves matter. Taking it down stops it being read, and the apology reaches Priya, who never chose to be on your trail.",
+      "lines": [
+        "Both halves matter. Taking it down stops it being read, and the apology reaches Priya, who never chose to be on your trail."
+      ],
+      "file": "/audio/voice/3496954c0d53f749.mp3"
+    },
+    {
+      "key": "8725c852b0978252",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Taking it down is the right first move, and it only cleans your snow. Priya still remembers it, so she gets the apology too.",
+      "lines": [
+        "Taking it down is the right first move, and it only cleans your snow. Priya still remembers it, so she gets the apology too."
+      ],
+      "file": "/audio/voice/8725c852b0978252.mp3"
+    },
+    {
+      "key": "3406fc4a388f449e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last year is exactly how long that joke has been sitting there being read. Snow out here does not melt.",
+      "lines": [
+        "Last year is exactly how long that joke has been sitting there being read. Snow out here does not melt."
+      ],
+      "file": "/audio/voice/3406fc4a388f449e.mp3"
+    },
+    {
+      "key": "040d8a881d0afe77",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A trail check is not a clear-out. This print shows somebody who kept going, and it should still be there in ten years.",
+      "lines": [
+        "A trail check is not a clear-out. This print shows somebody who kept going, and it should still be there in ten years."
+      ],
+      "file": "/audio/voice/040d8a881d0afe77.mp3"
+    },
+    {
+      "key": "2795a72149860500",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing about that marble run is pointy. Taking the good prints down too would leave you an empty field and nothing to be proud of.",
+      "lines": [
+        "Nothing about that marble run is pointy. Taking the good prints down too would leave you an empty field and nothing to be proud of."
+      ],
+      "file": "/audio/voice/2795a72149860500.mp3"
+    },
+    {
+      "key": "bfb166bdf7879877",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The video already speaks for itself. Adding the school would press a pointy print onto a golden one.",
+      "lines": [
+        "The video already speaks for itself. Adding the school would press a pointy print onto a golden one."
+      ],
+      "file": "/audio/voice/bfb166bdf7879877.mp3"
+    },
+    {
+      "key": "0aac122d87b25df1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You cannot tidy a print that is not on your page, and you should not have to do it alone. This is the one you take to a trusted grown-up.",
+      "lines": [
+        "You cannot tidy a print that is not on your page, and you should not have to do it alone. This is the one you take to a trusted grown-up."
+      ],
+      "file": "/audio/voice/0aac122d87b25df1.mp3"
+    },
+    {
+      "key": "360fb3a5fa017cd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is not your page and it is your street. Not-mine is a reason to ask for help, never a reason to ignore it.",
+      "lines": [
+        "It is not your page and it is your street. Not-mine is a reason to ask for help, never a reason to ignore it."
+      ],
+      "file": "/audio/voice/360fb3a5fa017cd0.mp3"
+    },
+    {
+      "key": "d0a9b93099770f16",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better.",
+      "lines": [
+        "An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better."
+      ],
+      "file": "/audio/voice/d0a9b93099770f16.mp3"
+    },
+    {
+      "key": "210105b4f62645d5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Closing a tab tidies your screen and nothing else. The question you typed was kept the moment you typed it.",
+      "lines": [
+        "Closing a tab tidies your screen and nothing else. The question you typed was kept the moment you typed it."
+      ],
+      "file": "/audio/voice/210105b4f62645d5.mp3"
+    },
+    {
+      "key": "188e357707294b8b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing left your side when you sent it. Yours stayed, theirs arrived, and the app kept one of its own.",
+      "lines": [
+        "Nothing left your side when you sent it. Yours stayed, theirs arrived, and the app kept one of its own."
+      ],
+      "file": "/audio/voice/188e357707294b8b.mp3"
+    },
+    {
+      "key": "acd82d7934e5c4b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Being right does not make it golden, and deleting tomorrow only reaches your own copy. One look in the mirror first.",
+      "lines": [
+        "Being right does not make it golden, and deleting tomorrow only reaches your own copy. One look in the mirror first."
+      ],
+      "file": "/audio/voice/acd82d7934e5c4b4.mp3"
+    },
+    {
+      "key": "0ac0d229af339e24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The win is brilliant either way. Aimed at somebody, at their team or at your own, it goes into the snow stained.",
+      "lines": [
+        "The win is brilliant either way. Aimed at somebody, at their team or at your own, it goes into the snow stained."
+      ],
+      "file": "/audio/voice/0ac0d229af339e24.mp3"
+    },
+    {
+      "key": "4e0d4c1a7a12cf60",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You cannot reach that print yourself, and arguing in the comments only sends more people to look at it.",
+      "lines": [
+        "You cannot reach that print yourself, and arguing in the comments only sends more people to look at it."
+      ],
+      "file": "/audio/voice/4e0d4c1a7a12cf60.mp3"
+    },
+    {
+      "key": "dd2dc3fd985419b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Closing the tab puts the jokes away, but the search engine kept your question, plus when you asked it, and tracks don't fade by tomorrow. Every search presses a print, posted or not.",
+      "lines": [
+        "Closing the tab puts the jokes away, but the search engine kept your question, plus when you asked it, and tracks don't fade by tomorrow. Every search presses a print, posted or not."
+      ],
+      "file": "/audio/voice/dd2dc3fd985419b2.mp3"
+    },
+    {
+      "key": "e85a2525d107f015",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sending doesn't move a photo, it copies it. One stays at your end, one lands at your friend's end, and the app kept one too. Shared once means stored more than once.",
+      "lines": [
+        "Sending doesn't move a photo, it copies it. One stays at your end, one lands at your friend's end, and the app kept one too. Shared once means stored more than once."
+      ],
+      "file": "/audio/voice/e85a2525d107f015.mp3"
+    },
+    {
+      "key": "2e589d97d3c0b538",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "By breakfast you won't even mean it anymore, but deleting later only cleans YOUR snow, and being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?",
+      "lines": [
+        "By breakfast you won't even mean it anymore, but deleting later only cleans YOUR snow, and being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?"
+      ],
+      "file": "/audio/voice/2e589d97d3c0b538.mp3"
+    },
+    {
+      "key": "d1beec7e9826577c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A win posted loud and mean, at the other team or your own, turns a golden day into a stain. Proud AND kind is the champion stamp, and it gleams for years.",
+      "lines": [
+        "A win posted loud and mean, at the other team or your own, turns a golden day into a stain. Proud AND kind is the champion stamp, and it gleams for years."
+      ],
+      "file": "/audio/voice/d1beec7e9826577c.mp3"
+    },
+    {
+      "key": "bcbf2e2422e522c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real friends already know where to find you, so a bio doesn't need your school, and bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up.",
+      "lines": [
+        "Real friends already know where to find you, so a bio doesn't need your school, and bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up."
+      ],
+      "file": "/audio/voice/bcbf2e2422e522c8.mp3"
+    },
+    {
+      "key": "0c7e8d19d36d80a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Likes, searches, shares, comments - every single one prints in the snow.",
+      "lines": [
+        "Likes, searches, shares, comments - every single one prints in the snow."
+      ],
+      "file": "/audio/voice/0c7e8d19d36d80a5.mp3"
+    },
+    {
+      "key": "23e33e68a10ed040",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's the snowball problem - which is why heroes think before they roll.",
+      "lines": [
+        "That's the snowball problem - which is why heroes think before they roll."
+      ],
+      "file": "/audio/voice/23e33e68a10ed040.mp3"
+    },
+    {
+      "key": "990d6e84343db08e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One look at future-you catches the rage-posts and cringe-trends in time.",
+      "lines": [
+        "One look at future-you catches the rage-posts and cringe-trends in time."
+      ],
+      "file": "/audio/voice/990d6e84343db08e.mp3"
+    },
+    {
+      "key": "ea144deded875327",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pointy tracks point AT you - name, age, school, where-and-when.",
+      "lines": [
+        "Pointy tracks point AT you - name, age, school, where-and-when."
+      ],
+      "file": "/audio/voice/ea144deded875327.mp3"
+    },
+    {
+      "key": "6003c32a2ea05f54",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody can catch every copy - the game's whole point, and the Raccoon's least favorite lesson.",
+      "lines": [
+        "Nobody can catch every copy - the game's whole point, and the Raccoon's least favorite lesson."
+      ],
+      "file": "/audio/voice/6003c32a2ea05f54.mp3"
+    },
+    {
+      "key": "ad6f37080c487ef3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Proud and kind prints gold; loud and mean prints a stain - and the snow keeps both.",
+      "lines": [
+        "Proud and kind prints gold; loud and mean prints a stain - and the snow keeps both."
+      ],
+      "file": "/audio/voice/ad6f37080c487ef3.mp3"
+    },
+    {
+      "key": "0395e7373293a0bb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One photo is a moment; a repeated where-and-when is a map.",
+      "lines": [
+        "One photo is a moment; a repeated where-and-when is a map."
+      ],
+      "file": "/audio/voice/0395e7373293a0bb.mp3"
+    },
+    {
+      "key": "d853b5c9fc019881",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's why the mirror check happens BEFORE the post, not after.",
+      "lines": [
+        "That's why the mirror check happens BEFORE the post, not after."
+      ],
+      "file": "/audio/voice/d853b5c9fc019881.mp3"
+    },
+    {
+      "key": "5f133c440344b31b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The lesson isn't 'never post' - it's 'choose tracks future-you will grin at'.",
+      "lines": [
+        "The lesson isn't 'never post' - it's 'choose tracks future-you will grin at'."
+      ],
+      "file": "/audio/voice/5f133c440344b31b.mp3"
+    },
+    {
+      "key": "7c6fc5f54ee8e04f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Print number one. Somebody searched: how do I beat level twelve. They did not post a word about it.",
+      "lines": [
+        "Print number one. Somebody searched: how do I beat level twelve. They did not post a word about it."
+      ],
+      "file": "/audio/voice/7c6fc5f54ee8e04f.mp3"
+    },
+    {
+      "key": "9dc7260269ba5924",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Print number two. They tapped like on a photo from the Northside Owls match.",
+      "lines": [
+        "Print number two. They tapped like on a photo from the Northside Owls match."
+      ],
+      "file": "/audio/voice/9dc7260269ba5924.mp3"
+    },
+    {
+      "key": "3396776f6aa4df39",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Print number three. They left a comment: see you at Saturday club!",
+      "lines": [
+        "Print number three. They left a comment: see you at Saturday club!"
+      ],
+      "file": "/audio/voice/3396776f6aa4df39.mp3"
+    },
+    {
+      "key": "3e631d6e4c4bccb2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Print number four, and this one is deep. Their bio reads: age eight, Northside Elementary, class three B.",
+      "lines": [
+        "Print number four, and this one is deep. Their bio reads: age eight, Northside Elementary, class three B."
+      ],
+      "file": "/audio/voice/3e631d6e4c4bccb2.mp3"
+    },
+    {
+      "key": "0cc512757a1b5c6c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last print. They posted a photo of a brand new bike, taken outside their own front door.",
+      "lines": [
+        "Last print. They posted a photo of a brand new bike, taken outside their own front door."
+      ],
+      "file": "/audio/voice/0cc512757a1b5c6c.mp3"
+    },
+    {
+      "key": "bf9bf0a366d1f5cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is your post: look at my new bike, best birthday ever. There is nothing wrong with it at all. Tap SHARE IT once, and watch what the hill does.",
+      "lines": [
+        "Here is your post: look at my new bike, best birthday ever. There is nothing wrong with it at all. Tap SHARE IT once, and watch what the hill does."
+      ],
+      "file": "/audio/voice/bf9bf0a366d1f5cb.mp3"
+    },
+    {
+      "key": "8049291dbb616c4a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First post. Took me all afternoon, watch the last bit, with a video of a marble run you built.",
+      "lines": [
+        "First post. Took me all afternoon, watch the last bit, with a video of a marble run you built."
+      ],
+      "file": "/audio/voice/8049291dbb616c4a.mp3"
+    },
+    {
+      "key": "44d492fe8b006b38",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second post. The ref is blind, worst official in the league, sent about ten minutes after losing the final.",
+      "lines": [
+        "Second post. The ref is blind, worst official in the league, sent about ten minutes after losing the final."
+      ],
+      "file": "/audio/voice/44d492fe8b006b38.mp3"
+    },
+    {
+      "key": "90fc7ad109adfeac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Third post. Showed my little brother how to tie his laces today.",
+      "lines": [
+        "Third post. Showed my little brother how to tie his laces today."
+      ],
+      "file": "/audio/voice/90fc7ad109adfeac.mp3"
+    },
+    {
+      "key": "18c0b98a277b2c68",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fourth post. Doing the pepper dare, tag three people or you are a chicken.",
+      "lines": [
+        "Fourth post. Doing the pepper dare, tag three people or you are a chicken."
+      ],
+      "file": "/audio/voice/18c0b98a277b2c68.mp3"
+    },
+    {
+      "key": "33ea4a4dd1ca916f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fifth post. Look what Priya wore to the disco, lol, with a photo of Priya.",
+      "lines": [
+        "Fifth post. Look what Priya wore to the disco, lol, with a photo of Priya."
+      ],
+      "file": "/audio/voice/33ea4a4dd1ca916f.mp3"
+    },
+    {
+      "key": "75886d98913cc8e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last post. Raised forty pounds for the shelter with my bake sale.",
+      "lines": [
+        "Last post. Raised forty pounds for the shelter with my bake sale."
+      ],
+      "file": "/audio/voice/75886d98913cc8e9.mp3"
+    },
+    {
+      "key": "ec96c1c19beaee80",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What a save, Jaya. Champions!",
+      "lines": [
+        "What a save, Jaya. Champions!"
+      ],
+      "file": "/audio/voice/ec96c1c19beaee80.mp3"
+    },
+    {
+      "key": "6aaf5ec2f25a121c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "We won! Their goalie is terrible, ha!",
+      "lines": [
+        "We won! Their goalie is terrible, ha!"
+      ],
+      "file": "/audio/voice/6aaf5ec2f25a121c.mp3"
+    },
+    {
+      "key": "663d1f68911ebb85",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four goes to get the last jump right. Watch!",
+      "lines": [
+        "Four goes to get the last jump right. Watch!"
+      ],
+      "file": "/audio/voice/663d1f68911ebb85.mp3"
+    },
+    {
+      "key": "e69613b1476e53b6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "We won, no thanks to our slowpoke defenders",
+      "lines": [
+        "We won, no thanks to our slowpoke defenders"
+      ],
+      "file": "/audio/voice/e69613b1476e53b6.mp3"
+    },
+    {
+      "key": "2b4a4d30d42d9e7c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Forty pounds for the shelter, and Mum only burnt one tray",
+      "lines": [
+        "Forty pounds for the shelter, and Mum only burnt one tray"
+      ],
+      "file": "/audio/voice/2b4a4d30d42d9e7c.mp3"
+    },
+    {
+      "key": "826c5ccd875536a3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Did the pepper dare! Tag 3 people or you're a chicken",
+      "lines": [
+        "Did the pepper dare! Tag 3 people or you're a chicken"
+      ],
+      "file": "/audio/voice/826c5ccd875536a3.mp3"
+    },
+    {
+      "key": "f6638b6d29246d58",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A year later this still reads as a win, and it still names the person who made it. Nobody has to wince at it, including Jaya.",
+      "lines": [
+        "A year later this still reads as a win, and it still names the person who made it. Nobody has to wince at it, including Jaya."
+      ],
+      "file": "/audio/voice/f6638b6d29246d58.mp3"
+    },
+    {
+      "key": "c3706eb54f1d1746",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A year later the score is forgotten and calling their goalie terrible is not. It reads as somebody who needed another team to be bad.",
+      "lines": [
+        "A year later the score is forgotten and calling their goalie terrible is not. It reads as somebody who needed another team to be bad."
+      ],
+      "file": "/audio/voice/c3706eb54f1d1746.mp3"
+    },
+    {
+      "key": "56689077107e4a3f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A year later it shows somebody who kept going until that jump worked. That is worth having on a trail.",
+      "lines": [
+        "A year later it shows somebody who kept going until that jump worked. That is worth having on a trail."
+      ],
+      "file": "/audio/voice/56689077107e4a3f.mp3"
+    },
+    {
+      "key": "05dbefabfdc89b04",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A year later your own teammates are still slowpokes in the snow, and they can all still read it.",
+      "lines": [
+        "A year later your own teammates are still slowpokes in the snow, and they can all still read it."
+      ],
+      "file": "/audio/voice/05dbefabfdc89b04.mp3"
+    },
+    {
+      "key": "56dfc020da0b10fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A year later it is still a kind thing that happened, with a joke aimed at nobody but the tray.",
+      "lines": [
+        "A year later it is still a kind thing that happened, with a joke aimed at nobody but the tray."
+      ],
+      "file": "/audio/voice/56dfc020da0b10fa.mp3"
+    },
+    {
+      "key": "7b8083a5db7f416b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A year later nobody remembers the dare, and the print still stands there handing it to three more people.",
+      "lines": [
+        "A year later nobody remembers the dare, and the print still stands there handing it to three more people."
+      ],
+      "file": "/audio/voice/7b8083a5db7f416b.mp3"
+    },
+    {
+      "key": "21d0b376bec1e6ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First stretch of your trail. Your bio says age eight, Northside Elementary, class three B.",
+      "lines": [
+        "First stretch of your trail. Your bio says age eight, Northside Elementary, class three B."
+      ],
+      "file": "/audio/voice/21d0b376bec1e6ac.mp3"
+    },
+    {
+      "key": "858deeb31032032e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Next stretch. A caption on a photo of you and your friends: park, same time every Saturday!",
+      "lines": [
+        "Next stretch. A caption on a photo of you and your friends: park, same time every Saturday!"
+      ],
+      "file": "/audio/voice/858deeb31032032e.mp3"
+    },
+    {
+      "key": "5ad6223ac801e456",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Further back now. An old post from last year, a mean joke about Priya, with her photo on it.",
+      "lines": [
+        "Further back now. An old post from last year, a mean joke about Priya, with her photo on it."
+      ],
+      "file": "/audio/voice/5ad6223ac801e456.mp3"
+    },
+    {
+      "key": "4e19c7d703bba591",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Almost home. Your marble run video from last summer, with the jump that took four goes.",
+      "lines": [
+        "Almost home. Your marble run video from last summer, with the jump that took four goes."
+      ],
+      "file": "/audio/voice/4e19c7d703bba591.mp3"
+    },
+    {
+      "key": "eaa16e3e7d6e62be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last stretch, and this one is not on your page. A friend posted a photo of you, and your street sign is right behind your head.",
+      "lines": [
+        "Last stretch, and this one is not on your page. A friend posted a photo of you, and your street sign is right behind your head."
+      ],
+      "file": "/audio/voice/eaa16e3e7d6e62be.mp3"
+    },
+    {
+      "key": "78e00226d7e1c956",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your bio: age 8, Northside Elementary, 3B",
+      "lines": [
+        "Your bio: age 8, Northside Elementary, 3B"
+      ],
+      "file": "/audio/voice/78e00226d7e1c956.mp3"
+    },
+    {
+      "key": "e7d3f7694eda2158",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Take the school and class out",
+      "lines": [
+        "Take the school and class out"
+      ],
+      "file": "/audio/voice/e7d3f7694eda2158.mp3"
+    },
+    {
+      "key": "ce7e0a2ce128e592",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Leave it, friends need to find me",
+      "lines": [
+        "Leave it, friends need to find me"
+      ],
+      "file": "/audio/voice/ce7e0a2ce128e592.mp3"
+    },
+    {
+      "key": "ca250bb5596b1243",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Swap the class for your street",
+      "lines": [
+        "Swap the class for your street"
+      ],
+      "file": "/audio/voice/ca250bb5596b1243.mp3"
+    },
+    {
+      "key": "9da5efd21f5d4acb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your caption: park, same time every Saturday!",
+      "lines": [
+        "Your caption: park, same time every Saturday!"
+      ],
+      "file": "/audio/voice/9da5efd21f5d4acb.mp3"
+    },
+    {
+      "key": "4f50750f566a9360",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Take the when out, keep the photo",
+      "lines": [
+        "Take the when out, keep the photo"
+      ],
+      "file": "/audio/voice/4f50750f566a9360.mp3"
+    },
+    {
+      "key": "a080f224c6f13c4f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Delete the whole photo",
+      "lines": [
+        "Delete the whole photo"
+      ],
+      "file": "/audio/voice/a080f224c6f13c4f.mp3"
+    },
+    {
+      "key": "8f6320a109689d90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Leave it, loads of people use that park",
+      "lines": [
+        "Leave it, loads of people use that park"
+      ],
+      "file": "/audio/voice/8f6320a109689d90.mp3"
+    },
+    {
+      "key": "953d2f86dd45b27a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An old post: a mean joke about Priya",
+      "lines": [
+        "An old post: a mean joke about Priya"
+      ],
+      "file": "/audio/voice/953d2f86dd45b27a.mp3"
+    },
+    {
+      "key": "8460e9a933c95817",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Take it down, and say sorry to Priya",
+      "lines": [
+        "Take it down, and say sorry to Priya"
+      ],
+      "file": "/audio/voice/8460e9a933c95817.mp3"
+    },
+    {
+      "key": "aa0ed3d6d3903741",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Just take it down quietly",
+      "lines": [
+        "Just take it down quietly"
+      ],
+      "file": "/audio/voice/aa0ed3d6d3903741.mp3"
+    },
+    {
+      "key": "a555b5cdd5aab2aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Leave it, it was ages ago",
+      "lines": [
+        "Leave it, it was ages ago"
+      ],
+      "file": "/audio/voice/a555b5cdd5aab2aa.mp3"
+    },
+    {
+      "key": "23b9d6bd4b200e98",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your marble-run video from last summer",
+      "lines": [
+        "Your marble-run video from last summer"
+      ],
+      "file": "/audio/voice/23b9d6bd4b200e98.mp3"
+    },
+    {
+      "key": "425f8c9133cc9c7d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Leave it. That one is golden",
+      "lines": [
+        "Leave it. That one is golden"
+      ],
+      "file": "/audio/voice/425f8c9133cc9c7d.mp3"
+    },
+    {
+      "key": "275f1e7bb8bf5173",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Take it down with the rest",
+      "lines": [
+        "Take it down with the rest"
+      ],
+      "file": "/audio/voice/275f1e7bb8bf5173.mp3"
+    },
+    {
+      "key": "59c536a62c169d3b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Add your school name so people know",
+      "lines": [
+        "Add your school name so people know"
+      ],
+      "file": "/audio/voice/59c536a62c169d3b.mp3"
+    },
+    {
+      "key": "49048efc52570840",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A photo of you on a friend's page, with your street sign in it",
+      "lines": [
+        "A photo of you on a friend's page, with your street sign in it"
+      ],
+      "file": "/audio/voice/49048efc52570840.mp3"
+    },
+    {
+      "key": "dc1e2698a3a26805",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask a grown-up to help you sort it out",
+      "lines": [
+        "Ask a grown-up to help you sort it out"
+      ],
+      "file": "/audio/voice/dc1e2698a3a26805.mp3"
+    },
+    {
+      "key": "bc5e830a87fdd8e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Leave it, it is not your page",
+      "lines": [
+        "Leave it, it is not your page"
+      ],
+      "file": "/audio/voice/bc5e830a87fdd8e3.mp3"
+    },
+    {
+      "key": "5a8fee89cc930027",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Argue with your friend in the comments",
+      "lines": [
+        "Argue with your friend in the comments"
+      ],
+      "file": "/audio/voice/5a8fee89cc930027.mp3"
+    },
+    {
+      "key": "caa3919acafbf81d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I looked up something daft last night, then closed the tab. That means nothing happened, right?",
+      "lines": [
+        "I looked up something daft last night, then closed the tab. That means nothing happened, right?"
+      ],
+      "file": "/audio/voice/caa3919acafbf81d.mp3"
+    },
+    {
+      "key": "0bc021c14a699d89",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I sent one photo to one friend. So there is one copy out there, and that is that.",
+      "lines": [
+        "I sent one photo to one friend. So there is one copy out there, and that is that."
+      ],
+      "file": "/audio/voice/0bc021c14a699d89.mp3"
+    },
+    {
+      "key": "03fa0b0adb29e540",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "We lost the final and the ref was hopeless. I'm posting exactly what I think of him, right now.",
+      "lines": [
+        "We lost the final and the ref was hopeless. I'm posting exactly what I think of him, right now."
+      ],
+      "file": "/audio/voice/03fa0b0adb29e540.mp3"
+    },
+    {
+      "key": "0712f1c0898b126b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "We won on penalties! Help me write the post.",
+      "lines": [
+        "We won on penalties! Help me write the post."
+      ],
+      "file": "/audio/voice/0712f1c0898b126b.mp3"
+    },
+    {
+      "key": "8fb8a350e554b820",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There's a photo of me on somebody else's page with my street sign in it. Nothing I can do, is there?",
+      "lines": [
+        "There's a photo of me on somebody else's page with my street sign in it. Nothing I can do, is there?"
+      ],
+      "file": "/audio/voice/8fb8a350e554b820.mp3"
+    },
+    {
+      "key": "c97e6bd1e5fb3f5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A search goes into a box that keeps it, so the print is there whether or not anything was posted.",
+      "lines": [
+        "A search goes into a box that keeps it, so the print is there whether or not anything was posted."
+      ],
+      "file": "/audio/voice/c97e6bd1e5fb3f5e.mp3"
+    },
+    {
+      "key": "f1d53f1c35d16dd9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sending copies a thing instead of moving it, so one send already makes three before anybody passes it on.",
+      "lines": [
+        "Sending copies a thing instead of moving it, so one send already makes three before anybody passes it on."
+      ],
+      "file": "/audio/voice/f1d53f1c35d16dd9.mp3"
+    },
+    {
+      "key": "45c1c5d184f9d02c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The fury fades by breakfast and the print does not, so the mirror question comes before the post, not after.",
+      "lines": [
+        "The fury fades by breakfast and the print does not, so the mirror question comes before the post, not after."
+      ],
+      "file": "/audio/voice/45c1c5d184f9d02c.mp3"
+    },
+    {
+      "key": "3ddc897cbeb36a59",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Proud and kind, with the person who made the save named, is the post that still reads beautifully a year from now.",
+      "lines": [
+        "Proud and kind, with the person who made the save named, is the post that still reads beautifully a year from now."
+      ],
+      "file": "/audio/voice/3ddc897cbeb36a59.mp3"
+    },
+    {
+      "key": "d3b8cca6b8ae5c1f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A print you cannot reach, on a page that is not yours, is exactly the one a ranger hands to a trusted grown-up.",
+      "lines": [
+        "A print you cannot reach, on a page that is not yours, is exactly the one a ranger hands to a trusted grown-up."
+      ],
+      "file": "/audio/voice/d3b8cca6b8ae5c1f.mp3"
     },
     {
       "key": "3b22d6cfba590733",
@@ -35513,70 +37339,829 @@
       "file": "/audio/voice/3773222f39cee303.mp3"
     },
     {
-      "key": "7f307ae0a7a50fcc",
+      "key": "c8ca1864ed053baa",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. By breakfast you didn't mean it anymore... but the track stayed pressed in the snow. Future-you gets to explain it every time they join a new team.",
-      "lines": [
-        "Not quite.",
-        "By breakfast you didn't mean it anymore... but the track stayed pressed in the snow. Future-you gets to explain it every time they join a new team."
-      ],
-      "file": "/audio/voice/7f307ae0a7a50fcc.mp3"
-    },
-    {
-      "key": "3be13191f587f29b",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! You put the phone down and kicked a ball at the fence instead. The fume melted, no track was pressed, and future-you never has to explain a thing.",
+      "text": "That's right! Nothing was posted, and the search still named the game. Searches press prints exactly like posts do.",
       "lines": [
         "That's right!",
-        "You put the phone down and kicked a ball at the fence instead. The fume melted, no track was pressed, and future-you never has to explain a thing."
+        "Nothing was posted, and the search still named the game. Searches press prints exactly like posts do."
       ],
-      "file": "/audio/voice/3be13191f587f29b.mp3"
+      "file": "/audio/voice/c8ca1864ed053baa.mp3"
     },
     {
-      "key": "93540b0b7333ccfc",
+      "key": "5b8050c0d0079db4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Today's laugh became next year's nickname. The challenge melted by Friday - the track didn't. Trends melt; snow doesn't.",
+      "text": "Not quite. Posting is not the only thing that prints. The question went into a box that kept it, so the print is there either way.",
       "lines": [
         "Not quite.",
-        "Today's laugh became next year's nickname. The challenge melted by Friday - the track didn't. Trends melt; snow doesn't."
+        "Posting is not the only thing that prints. The question went into a box that kept it, so the print is there either way."
       ],
-      "file": "/audio/voice/93540b0b7333ccfc.mp3"
+      "file": "/audio/voice/5b8050c0d0079db4.mp3"
     },
     {
-      "key": "ca895d6e16c80df0",
+      "key": "78ce0e7cd5e08f1b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! By Friday nobody remembered the challenge existed. Your snow stayed clean, and future-you keeps the nickname YOU chose.",
-      "lines": [
-        "That's right!",
-        "By Friday nobody remembered the challenge existed. Your snow stayed clean, and future-you keeps the nickname YOU chose."
-      ],
-      "file": "/audio/voice/ca895d6e16c80df0.mp3"
-    },
-    {
-      "key": "410ea9bff6d48988",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Future-you scrolls back one day and grins: 'I built THAT at eight?!' Some tracks you WANT in the snow - that's the whole point.",
-      "lines": [
-        "That's right!",
-        "Future-you scrolls back one day and grins: 'I built THAT at eight?!' Some tracks you WANT in the snow - that's the whole point."
-      ],
-      "file": "/audio/voice/410ea9bff6d48988.mp3"
-    },
-    {
-      "key": "256758e423ff33eb",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. Whoa - too far the other way! The snow isn't lava. Proud tracks are GOOD tracks. Skip the rage-posts, keep the marble-runs.",
+      "text": "Not quite. A level number cannot point at a house. This print names the game, and that is all it names.",
       "lines": [
         "Not quite.",
-        "Whoa - too far the other way! The snow isn't lava. Proud tracks are GOOD tracks. Skip the rage-posts, keep the marble-runs."
+        "A level number cannot point at a house. This print names the game, and that is all it names."
       ],
-      "file": "/audio/voice/256758e423ff33eb.mp3"
+      "file": "/audio/voice/78ce0e7cd5e08f1b.mp3"
+    },
+    {
+      "key": "37929e2c815ff5db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A like is a tap, and a tap is a print. This one says which team they turn up for.",
+      "lines": [
+        "That's right!",
+        "A like is a tap, and a tap is a print. This one says which team they turn up for."
+      ],
+      "file": "/audio/voice/37929e2c815ff5db.mp3"
+    },
+    {
+      "key": "6e0f2a561e4f306e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Quiet is not the same as invisible. That like sits on the photo where anybody can count it.",
+      "lines": [
+        "Not quite.",
+        "Quiet is not the same as invisible. That like sits on the photo where anybody can count it."
+      ],
+      "file": "/audio/voice/6e0f2a561e4f306e.mp3"
+    },
+    {
+      "key": "6c955d41c73fb6b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A match photo carries no birthday in it. What this print gives away is the team, not the age.",
+      "lines": [
+        "Not quite.",
+        "A match photo carries no birthday in it. What this print gives away is the team, not the age."
+      ],
+      "file": "/audio/voice/6c955d41c73fb6b1.mp3"
+    },
+    {
+      "key": "2e7a81bbe2be59c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Saturday and club, in one short comment. A when is a print a stranger can plan around.",
+      "lines": [
+        "That's right!",
+        "Saturday and club, in one short comment. A when is a print a stranger can plan around."
+      ],
+      "file": "/audio/voice/2e7a81bbe2be59c7.mp3"
+    },
+    {
+      "key": "3bdfd8ece1270816",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. They are friendly, and the comment still carries a day of the week inside it. That day is the part a stranger reads.",
+      "lines": [
+        "Not quite.",
+        "They are friendly, and the comment still carries a day of the week inside it. That day is the part a stranger reads."
+      ],
+      "file": "/audio/voice/3bdfd8ece1270816.mp3"
+    },
+    {
+      "key": "823a69e42f00a39d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody types a password into a comment. What this one gives away is the day.",
+      "lines": [
+        "Not quite.",
+        "Nobody types a password into a comment. What this one gives away is the day."
+      ],
+      "file": "/audio/voice/823a69e42f00a39d.mp3"
+    },
+    {
+      "key": "307f0fe8d0d35bb8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Age plus school plus class is a room and a timetable. That is the deepest print on the trail.",
+      "lines": [
+        "That's right!",
+        "Age plus school plus class is a room and a timetable. That is the deepest print on the trail."
+      ],
+      "file": "/audio/voice/307f0fe8d0d35bb8.mp3"
+    },
+    {
+      "key": "cccf338bef553125",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A school is big, and a class is not. Three B on a Tuesday morning is one room.",
+      "lines": [
+        "Not quite.",
+        "A school is big, and a class is not. Three B on a Tuesday morning is one room."
+      ],
+      "file": "/audio/voice/cccf338bef553125.mp3"
+    },
+    {
+      "key": "6510a48e6f76590f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It may well be true, and it is not what this print gives away. This one gives away where they sit all day.",
+      "lines": [
+        "Not quite.",
+        "It may well be true, and it is not what this print gives away. This one gives away where they sit all day."
+      ],
+      "file": "/audio/voice/6510a48e6f76590f.mp3"
+    },
+    {
+      "key": "860d7d86a97b684b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A doorway in the background and a bike worth taking. Together they are a place and a reason.",
+      "lines": [
+        "That's right!",
+        "A doorway in the background and a bike worth taking. Together they are a place and a reason."
+      ],
+      "file": "/audio/voice/860d7d86a97b684b.mp3"
+    },
+    {
+      "key": "31b0fc76050ffebb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. They do like their bike, and the photo carries their front door as well. The background is a print of its own.",
+      "lines": [
+        "Not quite.",
+        "They do like their bike, and the photo carries their front door as well. The background is a print of its own."
+      ],
+      "file": "/audio/voice/31b0fc76050ffebb.mp3"
+    },
+    {
+      "key": "08fe7a15d45c5471",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The class came from the bio, not from the bike. This print is about the street.",
+      "lines": [
+        "Not quite.",
+        "The class came from the bio, not from the bike. This print is about the street."
+      ],
+      "file": "/audio/voice/08fe7a15d45c5471.mp3"
+    },
+    {
+      "key": "52a5a6a495ed1e2d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Closing a tab puts the jokes away on your screen. The search box kept the question.",
+      "lines": [
+        "Not quite.",
+        "Closing a tab puts the jokes away on your screen. The search box kept the question."
+      ],
+      "file": "/audio/voice/52a5a6a495ed1e2d.mp3"
+    },
+    {
+      "key": "0df8ace0dd9c7c78",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Snow out here does not melt. A print from today is still a print next year.",
+      "lines": [
+        "Not quite.",
+        "Snow out here does not melt. A print from today is still a print next year."
+      ],
+      "file": "/audio/voice/0df8ace0dd9c7c78.mp3"
+    },
+    {
+      "key": "a6ff185dd1d51145",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A print does not need an audience to exist. It only needs somebody to come along with a lamp.",
+      "lines": [
+        "Not quite.",
+        "A print does not need an audience to exist. It only needs somebody to come along with a lamp."
+      ],
+      "file": "/audio/voice/a6ff185dd1d51145.mp3"
+    },
+    {
+      "key": "01a9b9cf40d193e5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Twice empties the same pocket twice. It cannot reach across to anybody else's phone.",
+      "lines": [
+        "Not quite.",
+        "Twice empties the same pocket twice. It cannot reach across to anybody else's phone."
+      ],
+      "file": "/audio/voice/01a9b9cf40d193e5.mp3"
+    },
+    {
+      "key": "cda4b6fbf569eb2b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Speed helps a little and it is not a rule. The copies that landed are already landed.",
+      "lines": [
+        "Not quite.",
+        "Speed helps a little and it is not a rule. The copies that landed are already landed."
+      ],
+      "file": "/audio/voice/cda4b6fbf569eb2b.mp3"
+    },
+    {
+      "key": "f1d115782eae72f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Words copy exactly like photos do. It is not the kind of thing that decides, it is the copying.",
+      "lines": [
+        "Not quite.",
+        "Words copy exactly like photos do. It is not the kind of thing that decides, it is the copying."
+      ],
+      "file": "/audio/voice/f1d115782eae72f2.mp3"
+    },
+    {
+      "key": "1f564e034c389e24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It shows somebody who sticks at a hard thing all afternoon. That is a print worth leaving.",
+      "lines": [
+        "That's right!",
+        "It shows somebody who sticks at a hard thing all afternoon. That is a print worth leaving."
+      ],
+      "file": "/audio/voice/1f564e034c389e24.mp3"
+    },
+    {
+      "key": "05f264da968ee4f5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. There is nothing here to hide. It shows somebody who sticks at a hard thing, and that is exactly what a coach hopes to find.",
+      "lines": [
+        "Not quite.",
+        "There is nothing here to hide. It shows somebody who sticks at a hard thing, and that is exactly what a coach hopes to find."
+      ],
+      "file": "/audio/voice/05f264da968ee4f5.mp3"
+    },
+    {
+      "key": "a1565db3905d665e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The ref may well have been hopeless, and the fury fades by breakfast. The print does not fade with it, and a coach reads it cold.",
+      "lines": [
+        "That's right!",
+        "The ref may well have been hopeless, and the fury fades by breakfast. The print does not fade with it, and a coach reads it cold."
+      ],
+      "file": "/audio/voice/a1565db3905d665e.mp3"
+    },
+    {
+      "key": "76ee723bc06e0004",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Losing a final hurts, and nobody blames you for the feeling. By breakfast you will not mean it, and the print stays exactly as angry as it was.",
+      "lines": [
+        "Not quite.",
+        "Losing a final hurts, and nobody blames you for the feeling. By breakfast you will not mean it, and the print stays exactly as angry as it was."
+      ],
+      "file": "/audio/voice/76ee723bc06e0004.mp3"
+    },
+    {
+      "key": "2aec62b13153ed76",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Showing your little brother something is a small kind thing, written down plainly. Those are the prints that make a trail worth walking.",
+      "lines": [
+        "That's right!",
+        "Showing your little brother something is a small kind thing, written down plainly. Those are the prints that make a trail worth walking."
+      ],
+      "file": "/audio/voice/2aec62b13153ed76.mp3"
+    },
+    {
+      "key": "0823814d0ebad48f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It is small and it is kind, and a trail made of those reads beautifully. Leave it right where it is.",
+      "lines": [
+        "Not quite.",
+        "It is small and it is kind, and a trail made of those reads beautifully. Leave it right where it is."
+      ],
+      "file": "/audio/voice/0823814d0ebad48f.mp3"
+    },
+    {
+      "key": "c496a166b2225eb8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The dare will be over by next week. The print is still there, still daring people, long after everybody forgot why.",
+      "lines": [
+        "That's right!",
+        "The dare will be over by next week. The print is still there, still daring people, long after everybody forgot why."
+      ],
+      "file": "/audio/voice/c496a166b2225eb8.mp3"
+    },
+    {
+      "key": "f67c89b694264509",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The pepper dare will race through school and then vanish. The print does not vanish with it, and it names you as the one still handing it on.",
+      "lines": [
+        "Not quite.",
+        "The pepper dare will race through school and then vanish. The print does not vanish with it, and it names you as the one still handing it on."
+      ],
+      "file": "/audio/voice/f67c89b694264509.mp3"
+    },
+    {
+      "key": "8c5aea6d10ff4dda",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! This one has somebody else standing in it. Priya did not choose to be on your trail, and she will read it.",
+      "lines": [
+        "That's right!",
+        "This one has somebody else standing in it. Priya did not choose to be on your trail, and she will read it."
+      ],
+      "file": "/audio/voice/8c5aea6d10ff4dda.mp3"
+    },
+    {
+      "key": "9c7f8b126b510c9f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You can see how it felt funny in the moment. Priya is the one who has to walk past it, and she never said yes to being there.",
+      "lines": [
+        "Not quite.",
+        "You can see how it felt funny in the moment. Priya is the one who has to walk past it, and she never said yes to being there."
+      ],
+      "file": "/audio/voice/9c7f8b126b510c9f.mp3"
+    },
+    {
+      "key": "c80ba1c740c25637",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A bake sale for the shelter still reads well years from now, and that is exactly what a lasting print should do.",
+      "lines": [
+        "That's right!",
+        "A bake sale for the shelter still reads well years from now, and that is exactly what a lasting print should do."
+      ],
+      "file": "/audio/voice/c80ba1c740c25637.mp3"
+    },
+    {
+      "key": "6f426ffc3987c260",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This is what permanence is FOR. A print like this one keeps working for you years after you press it.",
+      "lines": [
+        "Not quite.",
+        "This is what permanence is FOR. A print like this one keeps working for you years after you press it."
+      ],
+      "file": "/audio/voice/6f426ffc3987c260.mp3"
+    },
+    {
+      "key": "e1559a86dd5e6893",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Likes arrive today and leave by the weekend. The print is the part that stays.",
+      "lines": [
+        "Not quite.",
+        "Likes arrive today and leave by the weekend. The print is the part that stays."
+      ],
+      "file": "/audio/voice/e1559a86dd5e6893.mp3"
+    },
+    {
+      "key": "39e7740eac7783c3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Later only reaches your own copy, and you already know what the hill does with the rest.",
+      "lines": [
+        "Not quite.",
+        "Later only reaches your own copy, and you already know what the hill does with the rest."
+      ],
+      "file": "/audio/voice/39e7740eac7783c3.mp3"
+    },
+    {
+      "key": "b8be4dc8fcb4f9d5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A print does not need anybody watching today. It only needs somebody walking past one day.",
+      "lines": [
+        "Not quite.",
+        "A print does not need anybody watching today. It only needs somebody walking past one day."
+      ],
+      "file": "/audio/voice/b8be4dc8fcb4f9d5.mp3"
+    },
+    {
+      "key": "9467852218affbea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Proud AND kind, with Jaya named. A print like this one only gets better with age.",
+      "lines": [
+        "That's right!",
+        "Proud AND kind, with Jaya named. A print like this one only gets better with age."
+      ],
+      "file": "/audio/voice/9467852218affbea.mp3"
+    },
+    {
+      "key": "56e855ddbac6a9ea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Proud AND kind, with Jaya named. A print like this one only gets better with age.",
+      "lines": [
+        "Not quite.",
+        "Proud AND kind, with Jaya named. A print like this one only gets better with age."
+      ],
+      "file": "/audio/voice/56e855ddbac6a9ea.mp3"
+    },
+    {
+      "key": "21e764585f64bb3c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The same brilliant win, stained by three words about their goalie. Nothing golden survives being aimed at somebody.",
+      "lines": [
+        "That's right!",
+        "The same brilliant win, stained by three words about their goalie. Nothing golden survives being aimed at somebody."
+      ],
+      "file": "/audio/voice/21e764585f64bb3c.mp3"
+    },
+    {
+      "key": "457568b29e5eae1a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The same brilliant win, stained by three words about their goalie. Nothing golden survives being aimed at somebody.",
+      "lines": [
+        "Not quite.",
+        "The same brilliant win, stained by three words about their goalie. Nothing golden survives being aimed at somebody."
+      ],
+      "file": "/audio/voice/457568b29e5eae1a.mp3"
+    },
+    {
+      "key": "899e74e2d0877dd6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That took four goes, and it is your own work, shown off plainly. Stamp that one every time.",
+      "lines": [
+        "That's right!",
+        "That took four goes, and it is your own work, shown off plainly. Stamp that one every time."
+      ],
+      "file": "/audio/voice/899e74e2d0877dd6.mp3"
+    },
+    {
+      "key": "d8e142b30d24be0f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That took four goes, and it is your own work, shown off plainly. Stamp that one every time.",
+      "lines": [
+        "Not quite.",
+        "That took four goes, and it is your own work, shown off plainly. Stamp that one every time."
+      ],
+      "file": "/audio/voice/d8e142b30d24be0f.mp3"
+    },
+    {
+      "key": "30810be5ad2cc5fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Calling your own defenders slowpokes is not gentler than aiming at theirs, it is closer. The gold stamp never goes on a post that names somebody to laugh at.",
+      "lines": [
+        "That's right!",
+        "Calling your own defenders slowpokes is not gentler than aiming at theirs, it is closer. The gold stamp never goes on a post that names somebody to laugh at."
+      ],
+      "file": "/audio/voice/30810be5ad2cc5fd.mp3"
+    },
+    {
+      "key": "eb9aad68da373248",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Calling your own defenders slowpokes is not gentler than aiming at theirs, it is closer. The gold stamp never goes on a post that names somebody to laugh at.",
+      "lines": [
+        "Not quite.",
+        "Calling your own defenders slowpokes is not gentler than aiming at theirs, it is closer. The gold stamp never goes on a post that names somebody to laugh at."
+      ],
+      "file": "/audio/voice/eb9aad68da373248.mp3"
+    },
+    {
+      "key": "a715a905345568b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Kind and funny at the same time, and the only one taking a knock is the tray. That is the best combination there is.",
+      "lines": [
+        "That's right!",
+        "Kind and funny at the same time, and the only one taking a knock is the tray. That is the best combination there is."
+      ],
+      "file": "/audio/voice/a715a905345568b8.mp3"
+    },
+    {
+      "key": "c5c07a2be6db0cec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Kind and funny at the same time, and the only one taking a knock is the tray. That is the best combination there is.",
+      "lines": [
+        "Not quite.",
+        "Kind and funny at the same time, and the only one taking a knock is the tray. That is the best combination there is."
+      ],
+      "file": "/audio/voice/c5c07a2be6db0cec.mp3"
+    },
+    {
+      "key": "539c3f5cd5aaadce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The dare will be over by half term. The print carries on daring people long after everybody moved on.",
+      "lines": [
+        "That's right!",
+        "The dare will be over by half term. The print carries on daring people long after everybody moved on."
+      ],
+      "file": "/audio/voice/539c3f5cd5aaadce.mp3"
+    },
+    {
+      "key": "745438cefa68a309",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The dare will be over by half term. The print carries on daring people long after everybody moved on.",
+      "lines": [
+        "Not quite.",
+        "The dare will be over by half term. The print carries on daring people long after everybody moved on."
+      ],
+      "file": "/audio/voice/745438cefa68a309.mp3"
+    },
+    {
+      "key": "f26715f01a7a5d65",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Real friends already know where you go. The school line is only useful to somebody who does not.",
+      "lines": [
+        "That's right!",
+        "Real friends already know where you go. The school line is only useful to somebody who does not."
+      ],
+      "file": "/audio/voice/f26715f01a7a5d65.mp3"
+    },
+    {
+      "key": "715fa02017099a5d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Anybody who needs to find you already knows your school without the bio. That line only works for somebody who does not know you.",
+      "lines": [
+        "Not quite.",
+        "Anybody who needs to find you already knows your school without the bio. That line only works for somebody who does not know you."
+      ],
+      "file": "/audio/voice/715fa02017099a5d.mp3"
+    },
+    {
+      "key": "76b8a0b99b67ca0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That swaps one pointy print for a pointier one. Where you sleep is more, not less.",
+      "lines": [
+        "Not quite.",
+        "That swaps one pointy print for a pointier one. Where you sleep is more, not less."
+      ],
+      "file": "/audio/voice/76b8a0b99b67ca0c.mp3"
+    },
+    {
+      "key": "7444b55ecc0f1eae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The park on its own is a moment. The park plus every Saturday, on repeat, is a plan somebody else can join.",
+      "lines": [
+        "That's right!",
+        "The park on its own is a moment. The park plus every Saturday, on repeat, is a plan somebody else can join."
+      ],
+      "file": "/audio/voice/7444b55ecc0f1eae.mp3"
+    },
+    {
+      "key": "a488340b75fbacac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You do not have to lose the photo to fix this. The pointy part is the repeat, not the park.",
+      "lines": [
+        "Not quite.",
+        "You do not have to lose the photo to fix this. The pointy part is the repeat, not the park."
+      ],
+      "file": "/audio/voice/a488340b75fbacac.mp3"
+    },
+    {
+      "key": "50bbd190bfe62978",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Plenty of people use that park, and only one of them posted exactly when they will be there.",
+      "lines": [
+        "Not quite.",
+        "Plenty of people use that park, and only one of them posted exactly when they will be there."
+      ],
+      "file": "/audio/voice/50bbd190bfe62978.mp3"
+    },
+    {
+      "key": "77563cec8906d8f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Taking the post down clears your snow. Saying sorry is the part that reaches Priya, who was standing in it.",
+      "lines": [
+        "That's right!",
+        "Taking the post down clears your snow. Saying sorry is the part that reaches Priya, who was standing in it."
+      ],
+      "file": "/audio/voice/77563cec8906d8f9.mp3"
+    },
+    {
+      "key": "f99a22957ebfe9c4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Taking it down is the right first move, and it only cleans your snow. Priya still remembers it, so she gets the apology too.",
+      "lines": [
+        "Not quite.",
+        "Taking it down is the right first move, and it only cleans your snow. Priya still remembers it, so she gets the apology too."
+      ],
+      "file": "/audio/voice/f99a22957ebfe9c4.mp3"
+    },
+    {
+      "key": "deac29e116b08227",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Last year is exactly how long that joke has been sitting there being read. Snow out here does not melt.",
+      "lines": [
+        "Not quite.",
+        "Last year is exactly how long that joke has been sitting there being read. Snow out here does not melt."
+      ],
+      "file": "/audio/voice/deac29e116b08227.mp3"
+    },
+    {
+      "key": "349d5ee1c4490446",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A trail check is not a clear-out, and that jump is the reason you have a trail at all.",
+      "lines": [
+        "That's right!",
+        "A trail check is not a clear-out, and that jump is the reason you have a trail at all."
+      ],
+      "file": "/audio/voice/349d5ee1c4490446.mp3"
+    },
+    {
+      "key": "d555c8246f30c00f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing about that marble run is pointy. Taking the good prints down too would leave you an empty field and nothing to be proud of.",
+      "lines": [
+        "Not quite.",
+        "Nothing about that marble run is pointy. Taking the good prints down too would leave you an empty field and nothing to be proud of."
+      ],
+      "file": "/audio/voice/d555c8246f30c00f.mp3"
+    },
+    {
+      "key": "97a0e2e5bf30aa1d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The video already speaks for itself. Adding the school would press a pointy print onto a golden one.",
+      "lines": [
+        "Not quite.",
+        "The video already speaks for itself. Adding the school would press a pointy print onto a golden one."
+      ],
+      "file": "/audio/voice/97a0e2e5bf30aa1d.mp3"
+    },
+    {
+      "key": "c4743749a0a8758e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! This print is on somebody else's page, which is exactly the kind a ranger hands over.",
+      "lines": [
+        "That's right!",
+        "This print is on somebody else's page, which is exactly the kind a ranger hands over."
+      ],
+      "file": "/audio/voice/c4743749a0a8758e.mp3"
+    },
+    {
+      "key": "9f45de43579fac66",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It is not your page and it is your street. Not-mine is a reason to ask for help, never a reason to ignore it.",
+      "lines": [
+        "Not quite.",
+        "It is not your page and it is your street. Not-mine is a reason to ask for help, never a reason to ignore it."
+      ],
+      "file": "/audio/voice/9f45de43579fac66.mp3"
+    },
+    {
+      "key": "11915b65382b5e93",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better.",
+      "lines": [
+        "Not quite.",
+        "An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better."
+      ],
+      "file": "/audio/voice/11915b65382b5e93.mp3"
+    },
+    {
+      "key": "cbda8fdd9b902087",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A drawing and an initial point at nobody. That print is yours to enjoy.",
+      "lines": [
+        "Not quite.",
+        "A drawing and an initial point at nobody. That print is yours to enjoy."
+      ],
+      "file": "/audio/voice/cbda8fdd9b902087.mp3"
+    },
+    {
+      "key": "8fcf2aa66ffcc3ad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is a golden print. It names a friend for a good thing, and it keeps reading well.",
+      "lines": [
+        "Not quite.",
+        "That is a golden print. It names a friend for a good thing, and it keeps reading well."
+      ],
+      "file": "/audio/voice/8fcf2aa66ffcc3ad.mp3"
+    },
+    {
+      "key": "95e827bf8c11b7fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A search goes into a box that keeps it, so the print is there whether or not anything was posted.",
+      "lines": [
+        "That's right!",
+        "A search goes into a box that keeps it, so the print is there whether or not anything was posted."
+      ],
+      "file": "/audio/voice/95e827bf8c11b7fd.mp3"
+    },
+    {
+      "key": "6d897306b4568d8a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Closing a tab tidies your screen and nothing else. The question you typed was kept the moment you typed it.",
+      "lines": [
+        "Not quite.",
+        "Closing a tab tidies your screen and nothing else. The question you typed was kept the moment you typed it."
+      ],
+      "file": "/audio/voice/6d897306b4568d8a.mp3"
+    },
+    {
+      "key": "51cef0f09001f943",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Sending copies a thing instead of moving it, so one send already makes three before anybody passes it on.",
+      "lines": [
+        "That's right!",
+        "Sending copies a thing instead of moving it, so one send already makes three before anybody passes it on."
+      ],
+      "file": "/audio/voice/51cef0f09001f943.mp3"
+    },
+    {
+      "key": "5a772b52a2d34fab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing left your side when you sent it. Yours stayed, theirs arrived, and the app kept one of its own.",
+      "lines": [
+        "Not quite.",
+        "Nothing left your side when you sent it. Yours stayed, theirs arrived, and the app kept one of its own."
+      ],
+      "file": "/audio/voice/5a772b52a2d34fab.mp3"
+    },
+    {
+      "key": "1b409eeb0cdc070a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The fury fades by breakfast and the print does not, so the mirror question comes before the post, not after.",
+      "lines": [
+        "That's right!",
+        "The fury fades by breakfast and the print does not, so the mirror question comes before the post, not after."
+      ],
+      "file": "/audio/voice/1b409eeb0cdc070a.mp3"
+    },
+    {
+      "key": "b6219d8d7d13c5fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Being right does not make it golden, and deleting tomorrow only reaches your own copy. One look in the mirror first.",
+      "lines": [
+        "Not quite.",
+        "Being right does not make it golden, and deleting tomorrow only reaches your own copy. One look in the mirror first."
+      ],
+      "file": "/audio/voice/b6219d8d7d13c5fb.mp3"
+    },
+    {
+      "key": "3382870118f89612",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Proud and kind, with the person who made the save named, is the post that still reads beautifully a year from now.",
+      "lines": [
+        "That's right!",
+        "Proud and kind, with the person who made the save named, is the post that still reads beautifully a year from now."
+      ],
+      "file": "/audio/voice/3382870118f89612.mp3"
+    },
+    {
+      "key": "78ea266e5681fc1d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The win is brilliant either way. Aimed at somebody, at their team or at your own, it goes into the snow stained.",
+      "lines": [
+        "Not quite.",
+        "The win is brilliant either way. Aimed at somebody, at their team or at your own, it goes into the snow stained."
+      ],
+      "file": "/audio/voice/78ea266e5681fc1d.mp3"
+    },
+    {
+      "key": "fa36c32f338e9f9b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A print you cannot reach, on a page that is not yours, is exactly the one a ranger hands to a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "A print you cannot reach, on a page that is not yours, is exactly the one a ranger hands to a trusted grown-up."
+      ],
+      "file": "/audio/voice/fa36c32f338e9f9b.mp3"
+    },
+    {
+      "key": "84390aa0f4ba81a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You cannot reach that print yourself, and arguing in the comments only sends more people to look at it.",
+      "lines": [
+        "Not quite.",
+        "You cannot reach that print yourself, and arguing in the comments only sends more people to look at it."
+      ],
+      "file": "/audio/voice/84390aa0f4ba81a0.mp3"
     },
     {
       "key": "5c5d866dd5563dce",

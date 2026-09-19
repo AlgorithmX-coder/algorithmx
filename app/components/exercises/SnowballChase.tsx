@@ -12,6 +12,13 @@
  * There are no wrong answers here; it's a demonstration arcade. The
  * futility IS the lesson, so the child always earns full stars.
  *
+ * Skins (`skin` prop, paint only): "snow" is the flat snowfield it was born
+ * with; "embers" is Week 5's night ground with ember copies; "snowball" is
+ * Week 12's re-theme, a moonlit snowbank with sled ruts where the post rolls
+ * away growing as it goes, the copies land as tumbling share-cards, and a
+ * dashed line marks where nobody gathers them back in. Spawning, sweeping,
+ * timing, counters and scoring are identical on all three.
+ *
  * Learn-Loop wiring: the Raccoon's boast folds into the intro (`threat`);
  * an optional `startCard` shows the post about to be forwarded with ONE big
  * button, Sarah reads it aloud (audio-only, the button held while she
@@ -56,10 +63,17 @@ interface Ball {
 }
 
 export interface SnowballChaseProps {
-  /** Field skin: W12 snowfield (default) or W5 "embers" (night ground, ember copies). */
-  skin?: "snow" | "embers";
+  /**
+   * Field skin: W12 snowfield (default), W5 "embers" (night ground, ember
+   * copies), or "snowball" (a moonlit slope: the post rolls away from the top
+   * of the hill growing as it goes, share-cards tumbling with it, and a dashed
+   * line past which nobody gathers the copies back in). Paint only.
+   */
+  skin?: "snow" | "embers" | "snowball";
   /** Label at the field's edge. Default "OVER THE HILL →". */
   edgeLabel?: string;
+  /** "snowball" skin only: label on the dashed line copies never come back over. */
+  noReturnLabel?: string;
   /** Copy overrides (defaults keep the W12 snowfield skin). */
   introTitle?: string;
   introSubtitle?: string;
@@ -97,6 +111,7 @@ const MAX_ON_FIELD = 8;
 export default function SnowballChase({
   skin = "snow",
   edgeLabel,
+  noReturnLabel,
   introTitle,
   introSubtitle,
   introIcon,
@@ -121,6 +136,9 @@ export default function SnowballChase({
   // Both content voices are Sarah; in-game read-alouds are recorded under
   // "adam", so every manifest lookup here uses that key.
   const voice = "adam" as const;
+  // Paint only: the W12 slope. Nothing about spawning, sweeping, timing or
+  // scoring reads this flag.
+  const snowball = skin === "snowball";
   // Legacy mode (Week 12): none of the Learn-Loop props are present, so the
   // pre-change behaviour stays intact: `coachLines` shows as the CoachCaption
   // below the field (until the first sweep) and is NOT spoken through the
@@ -303,15 +321,102 @@ export default function SnowballChase({
           height: 400,
           borderRadius: 18,
           overflow: "hidden",
-          background:
-            skin === "embers"
+          background: snowball
+            ? "linear-gradient(180deg, #050b1e 0%, #0c1834 40%, #17305e 100%)"
+            : skin === "embers"
               ? "linear-gradient(180deg, #120a06 0%, #2a1509 55%, #3a1c0e 56%, #1a0d08 100%)"
               : "linear-gradient(180deg, #1c2b52 0%, #33507e 55%, #dfeafc 56%, #f6faff 100%)",
-          border: skin === "embers" ? "2px solid rgba(255,157,77,0.4)" : "2px solid rgba(125,240,255,0.35)",
+          border: snowball ? "2px solid rgba(191,230,255,0.45)" : skin === "embers" ? "2px solid rgba(255,157,77,0.4)" : "2px solid rgba(125,240,255,0.35)",
           boxShadow: "0 18px 44px -22px rgba(0,0,0,0.8)",
         }}
       >
         {/* hill line */}
+        {snowball ? (
+          <>
+            {/* The slope: a moonlit snowbank falling away to the right. */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(180deg, #e9f2ff 0%, #c2d7f2 60%, #aac4e6 100%)",
+                clipPath: "polygon(0 26%, 100% 66%, 100% 100%, 0 100%)",
+              }}
+            />
+            {/* Sled ruts running down the snowbank. */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: 0,
+                clipPath: "polygon(0 26%, 100% 66%, 100% 100%, 0 100%)",
+                background:
+                  "repeating-linear-gradient(21deg, rgba(120,150,195,0.16) 0 2px, rgba(120,150,195,0) 2px 34px)",
+              }}
+            />
+            {/* Past this line the copies are gone for good: the tint marks the far side. */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: "62%",
+                right: 0,
+                background: "linear-gradient(90deg, rgba(255,95,179,0.16), rgba(255,95,179,0.05))",
+                borderLeft: "3px dashed rgba(255,155,203,0.9)",
+              }}
+            />
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                top: 10,
+                left: "63.5%",
+                fontSize: 10.5,
+                fontWeight: 900,
+                letterSpacing: "0.12em",
+                color: "#ff9bcb",
+                textShadow: "0 2px 6px rgba(5,11,30,0.95)",
+              }}
+            >
+              {noReturnLabel ?? "POINT OF NO RETURN"}
+            </span>
+            {/* The post itself, rolling down and fattening as it collects shares. */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                left: `${6 + Math.min(1, phase) * 80}%`,
+                top: `${34 + Math.min(1, phase) * 44}%`,
+                width: 26 + Math.min(1, phase) * 44,
+                height: 26 + Math.min(1, phase) * 44,
+                marginLeft: -(13 + Math.min(1, phase) * 22),
+                marginTop: -(13 + Math.min(1, phase) * 22),
+                borderRadius: "50%",
+                background: "radial-gradient(circle at 34% 28%, #ffffff, #e4edfb 65%, #b9cbe8)",
+                border: "3px solid #ffffff",
+                boxShadow: "0 12px 26px -10px rgba(10,20,45,0.75)",
+                transition: reduce ? "none" : "left 0.2s linear, top 0.2s linear, width 0.2s linear, height 0.2s linear",
+                pointerEvents: "none",
+              }}
+            />
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                right: 14,
+                bottom: 12,
+                fontSize: 11,
+                fontWeight: 900,
+                letterSpacing: "0.12em",
+                color: "#33507e",
+              }}
+            >
+              {edgeLabel ?? "OVER THE HILL →"}
+            </span>
+          </>
+        ) : (
         <div
           aria-hidden
           style={{
@@ -329,6 +434,7 @@ export default function SnowballChase({
         >
           {edgeLabel ?? "OVER THE HILL →"}
         </div>
+        )}
 
         {/* The post about to be forwarded: ONE button, nothing spawns until it is tapped. */}
         {startCard && !showIntro && !started && (
@@ -396,7 +502,12 @@ export default function SnowballChase({
               disabled={speaking}
               initial={reduce ? { opacity: 0 } : { scale: 0.3, opacity: 0 }}
               // Motion owns opacity here, so the held look lives in `animate`.
-              animate={{ scale: 1, opacity: speaking ? 0.85 : 1 }}
+              // Downhill: each share-card lands at its own tumbling angle.
+              animate={
+                snowball
+                  ? { scale: 1, opacity: speaking ? 0.85 : 1, rotate: ((b.id * 37) % 25) - 12 }
+                  : { scale: 1, opacity: speaking ? 0.85 : 1 }
+              }
               exit={reduce ? { opacity: 0 } : { scale: 1.5, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 18 }}
               style={{
@@ -407,10 +518,11 @@ export default function SnowballChase({
                 height: b.size,
                 marginLeft: -b.size / 2,
                 marginTop: -b.size / 2,
-                borderRadius: "50%",
-                border: skin === "embers" ? "3px solid #ff9d4d" : "3px solid #c9d8ee",
-                background:
-                  skin === "embers"
+                borderRadius: snowball ? 14 : "50%",
+                border: snowball ? "3px solid #ffffff" : skin === "embers" ? "3px solid #ff9d4d" : "3px solid #c9d8ee",
+                background: snowball
+                  ? "linear-gradient(160deg, #ffffff 0%, #e6effc 58%, #c4d6ef 100%)"
+                  : skin === "embers"
                     ? "radial-gradient(circle at 35% 30%, #ffe0a8, #ff8e3c 70%, #b5471a)"
                     : "radial-gradient(circle at 35% 30%, #ffffff, #dbe7f8 70%, #b9cbe8)",
                 display: "flex",
@@ -428,7 +540,7 @@ export default function SnowballChase({
         </AnimatePresence>
 
         {/* progress bar */}
-        <div aria-hidden style={{ position: "absolute", left: 0, bottom: 0, height: 6, width: `${Math.min(100, phase * 100)}%`, background: "linear-gradient(90deg, #00e5ff, #7eff97)" }} />
+        <div aria-hidden style={{ position: "absolute", left: 0, bottom: 0, height: 6, width: `${Math.min(100, phase * 100)}%`, background: snowball ? "linear-gradient(90deg, #7df0ff, #ffffff)" : "linear-gradient(90deg, #00e5ff, #7eff97)" }} />
       </div>
 
       {/* Legacy mode (Week 12): the pre-change coach caption, exactly as before. */}

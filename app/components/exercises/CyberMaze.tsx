@@ -28,7 +28,11 @@
  * "darkroom" is Week 8's review "The Share Maze": the same maze, gates, moves,
  * narration and verdicts re-painted as a darkroom (amber safelight glow, a
  * tiled darkroom floor, gates hung as little photo prints on the board and a
- * photo-print gate card). Paint only: nothing about play changes.
+ * photo-print gate card). "snow" is Week 12's review "The Snow Maze": the
+ * board's first daylight world, packed snow and drifts under a low winter sun
+ * with flakes falling, wooden signposts for gates, storm lanterns for tokens,
+ * boot prints behind the hero and a whiteout haze for fog. Paint only:
+ * nothing about play changes on any skin.
  */
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -82,9 +86,10 @@ export interface MazeQuestion {
 
 export interface CyberMazeProps {
   questions: MazeQuestion[];
-  /** Visual skin: "default" (the cyber maze, Week 3) or "darkroom" (Week 8's
-   *  Share Maze: amber safelight, photo-print gates). Paint only. */
-  skin?: "default" | "darkroom";
+  /** Visual skin: "default" (the cyber maze, Week 3), "darkroom" (Week 8's
+   *  Share Maze: amber safelight, photo-print gates) or "snow" (Week 12's Snow
+   *  Maze: a daylight snowfield, signpost gates, lanterns). Paint only. */
+  skin?: "default" | "darkroom" | "snow";
   /** Copy overrides (defaults keep the generic cyber-maze skin). */
   introTitle?: string;
   introSubtitle?: string;
@@ -261,6 +266,18 @@ interface MazePaint {
   exitGlow: string;
   /** Gates drawn as little photo prints instead of spinning hexagons. */
   printGates: boolean;
+  /** Snow skin: gates drawn as wooden trail signposts planted in the snow. */
+  signGates?: boolean;
+  /** Snow skin: tokens drawn as little storm lanterns instead of gems. */
+  lanternTokens?: boolean;
+  /** Snow skin: floor cells drawn as soft packed-snow pads, not tech tiles. */
+  snowFloor?: boolean;
+  /** Snow skin: the hero's trail is pressed boot prints, not glow blobs. */
+  bootTrail?: boolean;
+  /** Snow skin: flakes drifting down over the whole board. */
+  snowfall?: boolean;
+  /** "R, G, B" of the "tap me" rings on the open neighbour cells (default white). */
+  tapRingRGB?: string;
   gateBase: string;
   gateFlash: string;
   gateAccent: string;
@@ -426,6 +443,108 @@ const DARKROOM_PAINT: MazePaint = {
   answerHoverBorder: "#ff9d2e",
 };
 
+/**
+ * Week 12's snowfield: the only DAYLIGHT board the maze has ever had. Packed
+ * snow underfoot, drifts for walls, a low winter sun from the top, flakes
+ * drifting over everything and a whiteout haze instead of a black fog. The
+ * gates are wooden trail signposts, the tokens are storm lanterns and the
+ * hero leaves boot prints behind. Paint only: nothing about play changes.
+ */
+const SNOW_PAINT: MazePaint = {
+  frameBg: "linear-gradient(180deg, #dbe9fb 0%, #b9d2ef 46%, #8fb3dd 100%)",
+  frameShadow: "0 40px 90px -30px rgba(28, 56, 104, 0.45), 0 0 0 1px rgba(255,255,255,0.65) inset",
+  frameInk: "#17243f",
+  hudGates: "#0f6b3a",
+  hudTokens: "#8a5a12",
+  // The board is the library's only DAYLIGHT world, so the dark skins' trick of
+  // a bright rim on a dark ground had to be inverted rather than recoloured: the
+  // drifts are the sunlit white blocks and the trodden snow between them is in
+  // shadow. Painted pale-on-pale it measured 7 luminance levels between floor
+  // and wall against the shipped skins' 41 to 48, and a child could not tell a
+  // path from a drift. These values put the gap back at roughly 60.
+  canvasBg: "#9db8d6",
+  pillBorder: "#2f5c9e",
+  pillBg: "rgba(47,92,158,0.12)",
+  pillInk: "#17314f",
+  pill2Border: "rgba(47,92,158,0.4)",
+  pill2Ink: "#2a4a74",
+  base: ["#c4d9f0", "#a3c0de", "#87a8ca"],
+  lamp: "rgba(255, 246, 214, 0.5)",
+  scan: "#ffffff",
+  scanAlpha: 0.14,
+  filament: "rgba(70, 105, 155, 0.28)",
+  floorTint: ["rgba(126, 158, 198, 0.34)", "rgba(88, 122, 168, 0.30)"],
+  floorLineRGB: "62, 96, 145",
+  floorTick: "rgba(52, 84, 130, 0.38)",
+  wall: ["#ffffff", "#f3f9ff", "#dceaf9"],
+  wallRivet: "rgba(255, 255, 255, 0.95)",
+  wallStripe: ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.6)"],
+  wallStroke: "rgba(46, 84, 134, 0.92)",
+  wallGlow: "#ffffff",
+  exitHaloRGB: "255, 226, 150",
+  exitHaloMid: "rgba(255, 190, 90, 0.32)",
+  exitHaloEdge: "rgba(255, 190, 90, 0)",
+  exitRings: ["#ffcf6b", "#ffffff", "#8fbfe8"],
+  exitGlow: "#ffcf6b",
+  printGates: false,
+  signGates: true,
+  lanternTokens: true,
+  snowFloor: true,
+  bootTrail: true,
+  snowfall: true,
+  tapRingRGB: "47, 92, 158",
+  gateBase: "#8a5f2e",
+  gateFlash: "#d64545",
+  gateAccent: "#f6e7c9",
+  gateFlashAccent: "#ffd7d7",
+  gateGlow: "rgba(120, 160, 215, 0.45)",
+  gateFlashGlow: "rgba(214, 69, 69, 0.45)",
+  gateFill: "#a3762f",
+  gateGlyph: "#fff6e6",
+  token: ["#fff6d8", "#ffd067", "#b06f16"],
+  tokenStroke: "#8a5a12",
+  tokenGlow: "#ffce5e",
+  trail: "#8fa9cd",
+  player: ["#ffffff", "#9fd8ff", "#3a7bff"],
+  playerGlow: "#3a7bff",
+  playerRing: "#1e3a6b",
+  sparkle: ["#ffffff", "#bfe6ff", "#ffd067"],
+  burst: ["#7eff97", "#ffffff", "#bfe6ff"],
+  fog: "rgba(226, 240, 255, 0.62)",
+  overlayBg: "rgba(226,242,255,0.88)",
+  cardBg: "linear-gradient(180deg, #ffffff 0%, #e8f1fd 100%)",
+  cardBorder: "2px solid rgba(47,92,158,0.35)",
+  cardShadow: "0 24px 60px -24px rgba(28,56,104,0.55)",
+  eyebrow: "#2f5c9e",
+  fromInk: "#4a6da0",
+  questionInk: "#17243f",
+  promptInk: "#2f5c9e",
+  answerBg: "rgba(255,255,255,0.92)",
+  answerBorder: "rgba(47,92,158,0.35)",
+  answerInk: "#17243f",
+  answerHoverBg: "rgba(47,92,158,0.14)",
+  answerHoverBorder: "#2f5c9e",
+};
+
+/** Rounded-rect path helper (the snow skin's soft pads and lantern bodies). */
+function roundRectPath(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
+  const rad = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rad, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rad);
+  ctx.arcTo(x + w, y + h, x, y + h, rad);
+  ctx.arcTo(x, y + h, x, y, rad);
+  ctx.arcTo(x, y, x + w, y, rad);
+  ctx.closePath();
+}
+
 /** Darkroom gate card: a strip of tape over a print's top corner. */
 const TAPE_STYLE = {
   position: "absolute",
@@ -492,7 +611,7 @@ export default function CyberMaze({
   // Paint only: a module constant per skin, so the board's render loop (which
   // depends on it) still starts exactly once.
   const darkroom = skin === "darkroom";
-  const pal = darkroom ? DARKROOM_PAINT : DEFAULT_PAINT;
+  const pal = skin === "snow" ? SNOW_PAINT : darkroom ? DARKROOM_PAINT : DEFAULT_PAINT;
 
   const audio = useGameAudio();
   const fx = useExerciseFeedback();
@@ -924,6 +1043,23 @@ export default function CyberMaze({
           if (walls[r][c]) continue;
           const x = c * CELL;
           const y = r * CELL;
+          if (pal.snowFloor) {
+            // Snow: a soft pad of packed snow with a crusted speckle or two,
+            // instead of the tech tile's ruled corners.
+            const pad = ctx.createLinearGradient(x, y, x, y + CELL);
+            pad.addColorStop(0, pal.floorTint[0]);
+            pad.addColorStop(1, pal.floorTint[1]);
+            roundRectPath(ctx, x + 3, y + 3, CELL - 6, CELL - 6, 11);
+            ctx.fillStyle = pad;
+            ctx.fill();
+            ctx.strokeStyle = `rgba(${pal.floorLineRGB}, ${0.1 * cellPulse + 0.06})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.fillStyle = pal.floorTick;
+            ctx.fillRect(x + 12 + ((r * 7 + c * 5) % 9), y + 13, 2, 2);
+            ctx.fillRect(x + CELL - 17 - ((r * 3 + c * 11) % 9), y + CELL - 15, 2, 2);
+            continue;
+          }
           const tint = ctx.createLinearGradient(x, y, x, y + CELL);
           tint.addColorStop(0, pal.floorTint[0]);
           tint.addColorStop(1, pal.floorTint[1]);
@@ -1067,6 +1203,45 @@ export default function CyberMaze({
           ctx.restore();
           continue;
         }
+        if (pal.signGates) {
+          // Snow: a wooden trail signpost planted in the drift, its arm
+          // creaking in the wind under a cap of snow, a "?" burnt into it.
+          const armW = CELL - 20;
+          const armH = 19;
+          ctx.save();
+          ctx.translate(cxg, cyg + 6);
+          ctx.rotate(Math.sin(now / 900 + g.col + g.row) * 0.05);
+          ctx.fillStyle = "#6b4a24";
+          ctx.fillRect(-3, -6, 6, CELL / 2 - 6);
+          ctx.shadowColor = baseCol;
+          ctx.shadowBlur = 14 * pulse;
+          ctx.fillStyle = pal.gateFill;
+          roundRectPath(ctx, -armW / 2, -armH - 4, armW, armH, 4);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          ctx.strokeStyle = baseCol;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          // the pointing tip of the plank
+          ctx.beginPath();
+          ctx.moveTo(armW / 2 - 1, -armH - 4);
+          ctx.lineTo(armW / 2 + 7, -armH / 2 - 4);
+          ctx.lineTo(armW / 2 - 1, -4);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          // a cap of snow along the top edge
+          ctx.fillStyle = accent;
+          roundRectPath(ctx, -armW / 2 - 1, -armH - 8, armW + 3, 5, 2.5);
+          ctx.fill();
+          ctx.fillStyle = pal.gateGlyph;
+          ctx.font = "900 15px ui-rounded, 'Fredoka', system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("?", 0, -armH / 2 - 3.5);
+          ctx.restore();
+          continue;
+        }
         ctx.save();
         ctx.translate(cxg, cyg);
         ctx.rotate(now / 1200);
@@ -1118,7 +1293,33 @@ export default function CyberMaze({
         const ty = t.row * CELL + CELL / 2 + Math.sin(now / 280 + t.col + t.row) * 2;
         ctx.save();
         ctx.translate(tx, ty);
-        if (pal.printGates) {
+        if (pal.lanternTokens) {
+          // Snow (Week 12): a little storm lantern swinging on its handle.
+          ctx.rotate(Math.sin(now / 520 + t.col + t.row) * 0.16);
+          ctx.shadowColor = pal.tokenGlow;
+          ctx.shadowBlur = 16;
+          ctx.strokeStyle = pal.tokenStroke;
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.arc(0, -10, 5.5, Math.PI, 0);
+          ctx.stroke();
+          const glass = ctx.createLinearGradient(0, -8, 0, 10);
+          glass.addColorStop(0, pal.token[0]);
+          glass.addColorStop(0.5, pal.token[1]);
+          glass.addColorStop(1, pal.token[2]);
+          ctx.fillStyle = glass;
+          roundRectPath(ctx, -7, -8, 14, 17, 4);
+          ctx.fill();
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = pal.tokenStroke;
+          ctx.fillRect(-8, -11, 16, 3.5);
+          ctx.fillRect(-8, 9, 16, 3.5);
+          ctx.fillStyle = "rgba(255,255,255,0.75)";
+          ctx.beginPath();
+          ctx.ellipse(0, 1, 2.4, 4.2, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (pal.printGates) {
           // Darkroom (Week 8): a roll of film, a canister with its sprocketed
           // leader strip poking out, swaying gently. Week 3's shield gem spins.
           ctx.rotate(Math.sin(now / 420 + t.col + t.row) * 0.2);
@@ -1207,6 +1408,21 @@ export default function CyberMaze({
         const alpha = (1 - p.age / 350) * 0.45 * (i / s.trail.length);
         ctx.globalAlpha = alpha;
         ctx.fillStyle = pal.trail;
+        if (pal.bootTrail) {
+          // Snow: every step presses a boot print, sole and heel, instead of
+          // a glow blob. The week's whole point, drawn under the hero.
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(i % 2 === 0 ? 0.22 : -0.22);
+          ctx.beginPath();
+          ctx.ellipse(0, 1, 4.4, 6.8, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.ellipse(0, -7.5, 3.3, 2.9, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+          continue;
+        }
         ctx.beginPath();
         ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
         ctx.fill();
@@ -1244,7 +1460,7 @@ export default function CyberMaze({
           const nx = nc * CELL;
           const ny = nr * CELL;
           ctx.save();
-          ctx.strokeStyle = `rgba(255, 255, 255, ${0.35 + 0.45 * ringPulse})`;
+          ctx.strokeStyle = `rgba(${pal.tapRingRGB ?? "255, 255, 255"}, ${0.35 + 0.45 * ringPulse})`;
           ctx.lineWidth = 2.5;
           ctx.setLineDash([6, 5]);
           ctx.lineDashOffset = -(now / 40) % 22;
@@ -1263,6 +1479,23 @@ export default function CyberMaze({
         ctx.fill();
       }
       ctx.globalAlpha = 1;
+
+      // Snow: flakes drifting down over the whole snowfield.
+      if (pal.snowfall) {
+        const flakes = scaledParticleCount(44);
+        ctx.save();
+        ctx.fillStyle = "#ffffff";
+        for (let i = 0; i < flakes; i++) {
+          const seed = i * 97.3;
+          const x = (seed * 7.1 + Math.sin(now / 1700 + i) * 16 + BOARD_W) % BOARD_W;
+          const y = (seed * 3.7 + now / (14 + (i % 7))) % BOARD_H;
+          ctx.globalAlpha = 0.3 + 0.45 * ((i % 5) / 5);
+          ctx.beginPath();
+          ctx.arc(x, y, 1 + (i % 3) * 0.7, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
 
       // Fog of war (lighter than before so the next squares always read)
       const fog = ctx.createRadialGradient(s.x, s.y, CELL * 1.6, s.x, s.y, CELL * 4.2);

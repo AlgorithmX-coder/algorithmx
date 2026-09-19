@@ -1385,6 +1385,116 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Track Back (Week 12, concept 1: everything leaves a track). A line of
+       * prints crosses the snow; each one thaws to show an ordinary action, and
+       * the child names what that track TELLS a stranger. The answers stack up
+       * in a panel, so by the last print the trail has spelled out a profile.
+       * Distinct from Week 10's Comment Pond, which names what a comment WANTS
+       * from you rather than what a track gives away about you.
+       */
+      type: "trackBack";
+      prints: {
+        id: string;
+        /** The action, shown on the print once it thaws. */
+        label: string;
+        icon: string;
+        /** Read aloud as the print thaws. */
+        readAloud: string;
+        /** Exactly one option has isRight: true. */
+        options: {
+          id: string;
+          label: string;
+          icon: string;
+          isRight: boolean;
+          /** Sarah's reason on the right card ("That's right!" + why). */
+          why: string;
+          /** Sarah's teach on a wrong card ("Not quite." + explanation). */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      trailLabel?: string;
+      saysLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Future Mirror (Week 12, concept 3: the future-self test). A post is
+       * held up to a mirror with ONE named future viewer beside it, and the
+       * child decides PROUD OF IT or RUB IT OUT. Two choices only, so the posts
+       * shuffle and the buttons stay in a fixed, learnable place.
+       */
+      type: "futureMirror";
+      posts: {
+        id: string;
+        /** The post itself, shown on the card. */
+        text: string;
+        icon: string;
+        /** Read aloud as the post rises to the mirror. */
+        readAloud: string;
+        /** Who is looking the child up, e.g. "a coach picking a team". */
+        viewer: string;
+        /** true = PROUD OF IT is the right call. */
+        proud: boolean;
+        /** Sarah's reason on the right call ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach on a wrong call ("Not quite." + explanation). */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      mirrorLabel?: string;
+      proudLabel?: string;
+      rubLabel?: string;
+      viewerPrefix?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Trail Planner (Week 12, concept 5: read your own trail). This week's
+       * old screen-4 signature, now tap-only and data-driven: the child walks
+       * their own trail back the way a stranger would read it and decides what
+       * to do with each stretch. Tidy it, leave it, or hand it to a grown-up.
+       */
+      type: "trailPlanner";
+      stops: {
+        id: string;
+        /** The stretch of trail, shown on the board. */
+        label: string;
+        icon: string;
+        /** Read aloud as the stretch lights up. */
+        readAloud: string;
+        /** Exactly one option has isRight: true. */
+        options: {
+          id: string;
+          label: string;
+          icon: string;
+          isRight: boolean;
+          /** Sarah's reason on the right move ("That's right!" + why). */
+          why: string;
+          /** Sarah's teach on a wrong move ("Not quite." + explanation). */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      trailLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * The Great Climb-Out (Week 10, concept 1: autoplay is a machine that
        * picks for you). This week's old screen-4 signature, now tap-only and
        * data-driven: the child is deep in a video burrow and climbs a ladder
@@ -2182,8 +2292,14 @@ export type ScreenDef = (
        * and the complete beat names it out loud.
        */
       type: "snowballChase";
-      /** Field skin: W12 snowfield (default) or W5 "embers" (night ground, ember copies). */
-      skin?: "snow" | "embers";
+      /** Field skin: the original W12 snowfield (default), W5 "embers" (night
+       *  ground, ember copies), or W12's rebuilt "snowball" (a moonlit snowbank
+       *  with sled ruts, share-cards for copies, and a point-of-no-return line).
+       *  The rebuild does NOT reuse "snow": that is the paint it replaces. */
+      skin?: "snow" | "embers" | "snowball";
+      /** "snowball" skin: the dashed line past which nothing can be gathered
+       *  back in (default "POINT OF NO RETURN"). */
+      noReturnLabel?: string;
       /** Label at the field's edge (default "OVER THE HILL →"). */
       edgeLabel?: string;
       /** Optional opening card: the post about to be passed on, with ONE big
@@ -2394,9 +2510,15 @@ export type ScreenDef = (
        * (many clues, one verdict) and the zone inspectors.
        */
       type: "plaquePeek";
-      /** Visual skin: W16 link doors (default) or W3 masked friends ("The Mask
-       *  Peek": peek behind the claim to see what it really proves). */
-      skin?: "door" | "mask";
+      /** Visual skin: W16 link doors (default), W3 masked friends ("The Mask
+       *  Peek": peek behind the claim to see what it really proves), or W12
+       *  "gold" ("Stamp It Gold": a frosted card pegged on the snow trail,
+       *  peeked a year ahead to see how the post reads once the day is gone). */
+      skin?: "door" | "mask" | "gold";
+      /** "gold" skin: the eyebrow above each card (default "ON YOUR TRAIL"). */
+      trailLabel?: string;
+      /** "gold" skin: the dashed chip that tilts on a peek (default "GOLD STAMP"). */
+      stampChipLabel?: string;
       doors: {
         id: string;
         /** The shiny sign's claim, e.g. "FREE GAME COINS!" (mask skin: what the
@@ -2703,8 +2825,10 @@ export type ScreenDef = (
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier2: string; tier3: string };
-      /** Visual skin: "default" (Week 3) or "darkroom" (Week 8 amber safelight). */
-      skin?: "default" | "darkroom";
+      /** Visual skin: "default" (Week 3), "darkroom" (Week 8 amber safelight)
+       *  or "snow" (Week 12: packed-snow pads, drifts, signpost gates, storm
+       *  lanterns and boot prints under falling flakes). Third and final use. */
+      skin?: "default" | "darkroom" | "snow";
     }
   | {
       /**

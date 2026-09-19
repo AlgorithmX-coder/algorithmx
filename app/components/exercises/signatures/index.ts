@@ -97,8 +97,27 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
     },
     { ssr: false },
   ),
-  // Week 12 · Footprint — draw a trail; the Track Hound reads what you left.
-  trailPlanner: dynamic(() => import("./TrailPlanner"), { ssr: false }),
+  // Week 12 · Footprint — walk your own trail back and read it like a stranger.
+  // Rebuilt to the Learn-Loop standard (data-driven, tap-only, untimed), so its
+  // `onComplete(score)` does not fit this registry's score-less `onComplete()`.
+  // This adapter keeps the legacy mount compiling and playable on the game's
+  // built-in default stretches, and passes the screen's spoken intro and payoff
+  // through to the beats that speak them.
+  trailPlanner: dynamic(
+    async () => {
+      const { default: TrailPlanner } = await import("./TrailPlanner");
+      function TrailPlannerSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(TrailPlanner, {
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      TrailPlannerSignature.displayName = "TrailPlannerSignature";
+      return TrailPlannerSignature;
+    },
+    { ssr: false },
+  ),
   // Week 13 · Screen time — pour the finite day-jug across four cups.
   dayJug: dynamic(() => import("./DayJug"), { ssr: false }),
   // Week 14 · Smart devices — put each sensing gadget to sleep its own way.
