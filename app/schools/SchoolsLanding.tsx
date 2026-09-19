@@ -106,10 +106,10 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
 ];
 
 const STEPS = [
-  { n: "01", when: "Day 1", colour: "#7df0ff", title: "Send us first names", text: "Sign the processing agreement and send each class list: first names and year group. That is all we ever hold about a pupil." },
-  { n: "02", when: "Day 2", colour: "#b98bff", title: "Print the login cards", text: "Every pupil gets a card with the class code and a three-picture password, so logging in takes seconds, even in Year 2." },
-  { n: "03", when: "Weekly", colour: "#5fffa3", title: "Run the block", text: "Six lessons, 45 minutes each, one a week. Pupils work on their own with headphones or captions, and progress saves on every screen, so each pupil picks up exactly where they left off." },
-  { n: "04", when: "End of block", colour: "#ffb347", title: "Get the class report", text: "Who finished, what the class found hard, and a certificate for every pupil to take home." },
+  { n: "01", when: "Day 1", colour: "#7df0ff", title: "We create your licence", text: "We set up the school licence and your teacher logins. There is nothing to install: it runs in the browser your school already has." },
+  { n: "02", when: "Day 1", colour: "#b98bff", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
+  { n: "03", when: "Weekly", colour: "#5fffa3", title: "Run the block", text: "Six lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
+  { n: "04", when: "End of block", colour: "#ffb347", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
 ];
 
 /* The four courses, in the order a school meets them. Ages match the
@@ -153,11 +153,11 @@ const RECEIVE = [
 
 const FAQS = [
   { q: "What do we need in the room?", a: "Any computer with a modern browser. Headphones help, and captions cover the rest. It runs entirely in the browser, so your network team has nothing to set up." },
-  { q: "How long is a lesson?", a: "About 45 minutes, which fits a standard slot with time to log in. Progress saves on every screen, so if the bell goes, the pupil picks up exactly where they left off next week." },
+  { q: "How long is a lesson?", a: "About 50 minutes, which fits an hour slot with time to log in and log out. Progress saves on every screen, so if the bell goes, the pupil picks up exactly where they left off next week." },
   { q: "Who teaches it?", a: "The class teacher, whatever their confidence with computing. The narrator carries every instruction, the games mark themselves, and the teacher view shows who needs a nudge." },
   { q: "What pupil data do you hold?", a: "First name, class and progress, and that is all. Pupil activity stays within the platform and is never sent to an AI service, and we delete a school's data in full whenever you ask." },
   { q: "Is it safe?", a: "Yes. AlgorithmX is Cyber Essentials certified, the NCSC-backed standard for defending against common cyber attacks. Pupils only ever interact with the lesson itself, inside a closed environment built for schools, and every reward is personal to the pupil." },
-  { q: "How does a school get started?", a: "Get in touch and we'll walk you through the onboarding process: the agreement, the class lists, the login cards and the first lesson. Most schools start with a free half-term pilot." },
+  { q: "How does a school get started?", a: "Get in touch and we'll walk you through the onboarding process: the agreement, your licence, building your classes and the first lesson. Most schools start with a free half-term pilot." },
 ];
 
 const PHASE_KEY = "ax-schools-phase";
@@ -286,7 +286,7 @@ export default function SchoolsLanding() {
               </FadeUp>
               <FadeUp delay={0.12}>
                 <p style={{ ...lede, fontSize: "clamp(1.05rem, 1.35vw, 1.2rem)", maxWidth: 560 }}>
-                  Cyber Heroes for primary. Cyber Explorers and Cyber Ops for secondary. Pupils work on their own on the school&rsquo;s computers, one 45-minute lesson a week. Teachers see everything and prepare nothing.
+                  Cyber Heroes for primary. Cyber Explorers and Cyber Ops for secondary. Pupils work on their own on the school&rsquo;s computers, one 50-minute lesson a week. Teachers see everything and prepare nothing.
                 </p>
               </FadeUp>
               <FadeUp delay={0.18}>
@@ -337,7 +337,7 @@ export default function SchoolsLanding() {
               <div>
                 <p style={eyebrow}>{"// One build, every time zone"}</p>
                 <h2 style={h2}>
-                  Teach it in Dundee. <span className="sch-grad">Teach it in Dubai.</span>
+                  Teach it in London. <span className="sch-grad">Teach it in Dubai.</span>
                 </h2>
                 <p style={{ ...lede, maxWidth: 620 }}>
                   British schools teach far beyond Britain, and this curriculum travels with them. One build serves every site from the edge, so the same week, the same safeguarding and the same teacher dashboard open in a browser tab wherever your classroom is.
@@ -410,7 +410,7 @@ export default function SchoolsLanding() {
           <span className="sch-glow sch-glow-cyan" aria-hidden />
           <FadeUp>
             <p style={eyebrow}>{"// Inside the platform · "}{info.label}</p>
-            <h2 style={h2}>See the product, <span className="sch-grad">not a brochure.</span></h2>
+            <h2 style={h2}>See the learning platform, <span className="sch-grad">not a brochure.</span></h2>
             <p style={lede}>
               Four screens captured straight from the live product, as a pupil sees it, and two showing what teachers get with the pilot. Pick a step, or open any screen full size.
             </p>
@@ -426,7 +426,7 @@ export default function SchoolsLanding() {
         <section id="how" className="sch-section">
           <FadeUp>
             <p style={eyebrow}>{"// Running in your school within a week"}</p>
-            <h2 style={h2}>Four steps. <span className="sch-grad">Most of them are ours.</span></h2>
+            <h2 style={h2}>Four steps. <span className="sch-grad">Half of them are ours.</span></h2>
           </FadeUp>
           <div className="sch-grid-4" style={{ marginTop: 36 }}>
             {STEPS.map((s, i) => (
