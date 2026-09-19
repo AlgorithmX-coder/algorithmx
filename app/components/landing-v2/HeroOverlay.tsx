@@ -234,14 +234,16 @@ export default function HeroOverlay() {
       /* Desktop shows the full NCSC name; the short form is for narrow
          screens, where the media queries below swap them. */
       .lv2-trust-short { display: none !important; }
-      /* Four marks in one line had to be shrunk to 0.8 to fit the 1180
-         reading column, and four in a single column put the bottom two below
-         the fold on a laptop. Two rows of two: full size, and the whole block
-         stays in the first screen. */
+      /* Owner wants the four marks in a single column (2026-09-19), told
+         that the bottom of the stack can fall below the fold on a laptop.
+         The gap and the space above are tightened to claw some of that back:
+         the column is about 200px rather than 230px tall. */
       .lv2-trust-row {
         display: grid !important;
-        grid-template-columns: repeat(2, max-content);
+        grid-template-columns: max-content;
+        gap: 8px !important;
         width: max-content;
+        margin-top: calc(var(--lv2-rail) * 0.3) !important;
       }
       @media (max-width: 1099px) {
         .lv2-trust-row { display: flex !important; grid-template-columns: none; width: auto; }
