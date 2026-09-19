@@ -19,13 +19,17 @@ export default function Footer() {
          * the cosmic bg / code panel read straight THROUGH the seam —
          * and deepens to near-opaque ink by ~26% down, well before the
          * footer columns, so the text keeps its dark, legible bed. The
-         * hard border is gone; the fade IS the divider. */
+         * hard border is gone; the fade IS the divider.
+         * 2026-09-15 sunset backdrop: the bed is now a dusk-violet shade
+         * that stops well short of opaque (0.97 -> 0.7), so the sunset
+         * horizon carries on under the footer instead of the page
+         * ending on a black slab; the footer text keeps a darker bed. */
         background:
           "linear-gradient(to bottom, " +
-          "rgba(2,3,8,0) 0%, " +
-          "rgba(2,3,8,0.5) 10%, " +
-          "rgba(2,3,8,0.88) 26%, " +
-          "rgba(2,3,8,0.97) 100%)",
+          "rgba(20,12,30,0) 0%, " +
+          "rgba(20,12,30,0.36) 10%, " +
+          "rgba(20,12,30,0.62) 26%, " +
+          "rgba(20,12,30,0.7) 100%)",
         color: "rgba(232,237,255,0.7)",
         /* Extra bottom clearance (+72px) so the fixed Algo chip
          * (bottom-right of the viewport) floats over empty space at

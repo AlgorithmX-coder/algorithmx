@@ -20,6 +20,7 @@ import { motion, useMotionValue, useTransform, type MotionValue } from "framer-m
  *   Layer  FormationField     particle galaxy/nebula/stars that assemble (canvas)
  *   Layer  ConstellationNet   sparse HUD link network that draws in with formP
  *   Layer  BackgroundScrim    readability dim + navy gradient
+ *   Layer  SunsetGlow         warm dusk horizon, screen-blended on top
  *
  * Fixed at z-index -1, pointer-events:none, aria-hidden. One rAF loop (the
  * field). Honours prefers-reduced-motion (renders the fully-formed scene,
@@ -200,6 +201,7 @@ export default function CosmicNetworkBackground({
       />
       <ConstellationNetwork tier={caps.tier} reducedMotion={caps.reducedMotion} intensity={intensity} formP={formP} />
       <BackgroundScrim dimCenter={dimCenter} overlayDarkness={overlayDarkness} />
+      <SunsetGlow />
     </div>
   );
 }
@@ -1032,5 +1034,41 @@ function BackgroundScrim({ dimCenter, overlayDarkness }: { dimCenter: boolean; o
         }}
       />
     </>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Sunset glow — warms and gently brightens the deep-space void (owner
+ * 2026-09-15: "just brighten the background up a little bit, maybe a
+ * sunset colour"; everything built in the background must stay visible).
+ *
+ * One static layer painted LAST with mix-blend-mode: screen. Screen can
+ * only ever brighten (1 - (1-a)(1-b)), so the galaxy, particles, nebula
+ * glows, constellation net and shooting stars all stay fully visible;
+ * only the near-black between them picks up the dusk colour. Reads as a
+ * dusk rather than a sunset: amber along the bottom edge of the screen,
+ * rose into violet mid-sky, a faint dusk lift everywhere so the top is
+ * no longer pure black. The code panel (ScrollFormObjects), the WebGL
+ * ambient scenes and the page content are separate fixed/stacked layers
+ * above this backdrop and are untouched. Static = zero per-frame cost,
+ * nothing to gate for reduced motion or mobile.
+ * ────────────────────────────────────────────────────────────────────── */
+function SunsetGlow() {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        pointerEvents: "none",
+        mixBlendMode: "screen",
+        background:
+          /* sun sinking just below the horizon, slightly right of centre */
+          "radial-gradient(ellipse 62% 38% at 58% 108%, rgba(255,164,92,0.2) 0%, rgba(255,110,84,0.09) 42%, transparent 72%), " +
+          /* horizon band: amber -> coral -> rose -> violet, fading up the sky */
+          "linear-gradient(to top, rgba(255,128,70,0.15) 0%, rgba(236,88,112,0.1) 20%, rgba(168,70,150,0.06) 44%, rgba(92,56,150,0.035) 70%, rgba(60,44,120,0.02) 100%), " +
+          /* overall dusk lift so the top of the sky is not pure black */
+          "linear-gradient(rgba(46,28,62,0.2), rgba(46,28,62,0.2))",
+      }}
+    />
   );
 }
