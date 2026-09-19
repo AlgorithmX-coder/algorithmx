@@ -115,6 +115,7 @@ export default function HeroOverlay() {
         </span>
 
         <h1
+          className="lv2-hero-title"
           style={{
             fontFamily: "var(--lv2-font-display)",
             /* Slightly reduced (6vw -> 5.4vw, cap 6rem -> 5.25rem) for
@@ -138,6 +139,7 @@ export default function HeroOverlay() {
         </h1>
 
         <p
+          className="lv2-hero-sub"
           style={{
             fontFamily: "var(--lv2-font-display)",
             fontSize: "clamp(0.95rem, 1.2vw, 1.0625rem)",
@@ -155,6 +157,7 @@ export default function HeroOverlay() {
         </p>
 
         <div
+          className="lv2-hero-cta-row"
           style={{
             display: "flex",
             gap: 12,
@@ -231,18 +234,66 @@ export default function HeroOverlay() {
       .lv2-hero-pad {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
       }
-      /* The long label costs 250px, which is the difference between one
-         line of marks and two. */
-      .lv2-trust-long { display: none; }
-      .lv2-trust-short { display: inline; }
-      /* Four marks measure about 1375px and the reading column is 1180, so
-         they wrapped onto a second line that fell below the fold on a laptop:
-         half the accreditations were never seen. Zoom shrinks the whole row,
-         layout included, which inline-styled children cannot be talked out of
-         any other way, and keeps all four on one line from 1180 up. */
-      .lv2-trust-row { zoom: 0.8; }
-      @media (max-width: 1099px) {
-        .lv2-trust-row { zoom: 1; }
+      /* Desktop shows the full NCSC name; the short form is for narrow
+         screens, where the media queries below swap them. */
+      .lv2-trust-short { display: none !important; }
+      /* Owner asked for the four marks one per row (2026-09-19). Four of
+         them at full size is 220px of column, and with the hero above them
+         that puts the bottom two off a laptop screen, which is the very
+         thing they complained about. So the stacked layout uses a compact
+         form of each mark: short NCSC label, tighter padding, smaller
+         logos, 6px between. That is about 150px, and all four sit in the
+         first screen down to a 900px window. Phones and tablets keep the
+         wrapping flex row they already had. */
+      @media (min-width: 1100px) {
+        .lv2-trust-row {
+          display: grid !important;
+          grid-template-columns: max-content;
+          justify-items: start;
+          gap: 6px !important;
+          width: max-content;
+          margin-top: calc(var(--lv2-rail) * 0.22) !important;
+        }
+        .lv2-trust-row .lv2-trust-long { display: none !important; }
+        .lv2-trust-row .lv2-trust-short { display: inline !important; }
+        .lv2-trust-row .lv2-trust-pill { padding: 5px 14px !important; gap: 10px !important; }
+        .lv2-trust-row .lv2-trust-pill img { height: 23px !important; }
+        .lv2-trust-row .lv2-ce-badge { padding: 4px 14px 4px 4px !important; gap: 10px !important; }
+        .lv2-trust-row .lv2-ce-badge img { height: 23px !important; }
+        .lv2-trust-row .ms-startups { padding: 4px 14px 4px 5px !important; }
+        .lv2-trust-row .ms-startups-plate { padding: 4px 8px !important; }
+        .lv2-trust-row .ms-startups-plate img { width: 100px !important; }
+        .lv2-trust-row .asdan-mark { padding: 4px 14px 4px 5px !important; }
+        .lv2-trust-row .asdan-mark-plate { padding: 4px 8px !important; }
+        .lv2-trust-row .asdan-mark-plate img { width: 68px !important; }
+      }
+      /* A laptop window is not tall enough for the hero at its full rhythm
+         and four marks under it: on a 771px window the marks fell past the
+         fold, which is what the owner kept reporting. Short windows take a
+         tighter hero (less air under the nav, less before the buttons) and
+         a smaller stack, which brings all four into the first screen down
+         to about a 760px window. Taller windows are untouched. */
+      @media (min-width: 1100px) and (max-height: 880px) {
+        /* 84px keeps the eyebrow clear of the 69px nav. Cutting it to 46
+           did fit the marks, and hid the eyebrow behind the bar. */
+        .lv2-hero-pad { padding-top: 84px !important; }
+        .lv2-hero-sub { margin-top: calc(var(--lv2-rail) * 0.12) !important; }
+        .lv2-hero-cta-row { margin-top: calc(var(--lv2-rail) * 0.2) !important; }
+        .lv2-trust-row { margin-top: calc(var(--lv2-rail) * 0.02) !important; gap: 5px !important; }
+        .lv2-trust-row .lv2-trust-pill { padding: 2px 12px !important; }
+        .lv2-trust-row .lv2-trust-pill img { height: 20px !important; }
+        .lv2-trust-row .lv2-ce-badge { padding: 2px 12px 2px 3px !important; }
+        .lv2-trust-row .lv2-ce-badge img { height: 20px !important; }
+        .lv2-trust-row .ms-startups { padding: 2px 12px 2px 4px !important; }
+        .lv2-trust-row .ms-startups-plate img { width: 90px !important; }
+        .lv2-trust-row .asdan-mark { padding: 2px 12px 2px 4px !important; }
+        .lv2-trust-row .asdan-mark-plate img { width: 60px !important; }
+      }
+      /* Under 800px of window the headline alone is 300px of the screen.
+         A slightly smaller cap there is what lets the fourth mark sit
+         above the fold on a 768px laptop; the headline still leads. */
+      @media (min-width: 1100px) and (max-height: 800px) {
+        .lv2-hero-title { font-size: clamp(2.25rem, 4.8vw, 4.5rem) !important; }
       }
       /* Tablets: the same idea as phones, gentler. The copy top-aligns
        * under the nav instead of floating in the middle of the frame,
@@ -252,8 +303,8 @@ export default function HeroOverlay() {
         .lv2-hero-copy { margin-top: 0 !important; }
         .lv2-trust-pill { padding: 8px 14px !important; gap: 11px !important; }
         .lv2-trust-pill img { height: 24px !important; }
-        .lv2-trust-long { display: none; }
-        .lv2-trust-short { display: inline; }
+        .lv2-trust-long { display: none !important; }
+        .lv2-trust-short { display: inline !important; }
       }
       /* Phones: top-align the copy under the nav instead of centring it,
        * and scale the trust pills down so neither label wraps. Desktop
@@ -269,8 +320,8 @@ export default function HeroOverlay() {
         .lv2-trust-pill { padding: 7px 12px !important; gap: 10px !important; }
         .lv2-trust-pill > span:first-child { font-size: 9px !important; letter-spacing: 0.12em !important; }
         .lv2-trust-pill img { height: 22px !important; }
-        .lv2-trust-long { display: none; }
-        .lv2-trust-short { display: inline; }
+        .lv2-trust-long { display: none !important; }
+        .lv2-trust-short { display: inline !important; }
       }
       @media (min-height: 1100px) {
         .lv2-hero-pad { padding-bottom: calc(var(--lv2-rail) * 3); }
