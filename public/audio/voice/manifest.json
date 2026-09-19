@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T16:07:24.570Z",
+  "generatedAt": "2026-09-19T08:50:09.760Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -4425,329 +4425,459 @@
       "file": "/audio/voice/e401eb8045246333.mp3"
     },
     {
-      "key": "f676498e0146ebf5",
+      "key": "79b3945ef4ca607f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Something feels wrong, so let's take slow hero breaths. Breathe in and out with the ring until you feel calm. Then tell a trusted grown-up right away.",
+      "text": "[warmly] Come in, Cyber Hero. This is the lighthouse, and the light stays on all night. Sometimes a message lands and your tummy drops. So here is the biggest truth I know. When somebody is unkind to you, that was THEIR choice. [warmly] Not yours. Not ever. [excited] Let's go to the Calm-Down Console and put the heavy things down together!",
       "lines": [
-        "[warmly] Something feels wrong, so let's take slow hero breaths.",
-        "Breathe in and out with the ring until you feel calm.",
-        "Then tell a trusted grown-up right away."
+        "[warmly] Come in, Cyber Hero. This is the lighthouse, and the light stays on all night.",
+        "Sometimes a message lands and your tummy drops.",
+        "So here is the biggest truth I know.",
+        "When somebody is unkind to you, that was THEIR choice.",
+        "[warmly] Not yours. Not ever.",
+        "[excited] Let's go to the Calm-Down Console and put the heavy things down together!"
       ],
-      "file": "/audio/voice/f676498e0146ebf5.mp3"
+      "file": "/audio/voice/79b3945ef4ca607f.mp3"
     },
     {
-      "key": "5ae1b9e6625a0175",
+      "key": "93699942adbe59df",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Hey, Cyber Hero. This week is a gentle one - and a mighty one. Sometimes something lands on your screen that feels horrid. And a heavy thought lands with it: 'this is my fault.' Here's the biggest truth in the whole academy: when someone is unkind, THEY made that choice. Not you. [excited] Four heavy boulders ahead - let's lift every one!",
+      "text": "[warmly] This is the calm-down console. Nothing here is a test. Tap IN while the ring grows. Tap OUT while it shrinks. Slow as you like. The ring waits for you. [whispers] Then lift a stone off, and I'll tell you who it really belonged to.",
       "lines": [
-        "[warmly] Hey, Cyber Hero. This week is a gentle one - and a mighty one.",
-        "Sometimes something lands on your screen that feels horrid.",
-        "And a heavy thought lands with it: 'this is my fault.'",
-        "Here's the biggest truth in the whole academy:",
-        "when someone is unkind, THEY made that choice. Not you.",
-        "[excited] Four heavy boulders ahead - let's lift every one!"
+        "[warmly] This is the calm-down console. Nothing here is a test.",
+        "Tap IN while the ring grows. Tap OUT while it shrinks.",
+        "Slow as you like. The ring waits for you.",
+        "[whispers] Then lift a stone off, and I'll tell you who it really belonged to."
       ],
-      "file": "/audio/voice/5ae1b9e6625a0175.mp3"
+      "file": "/audio/voice/93699942adbe59df.mp3"
     },
     {
-      "key": "6671a137b3daf754",
+      "key": "5858840dc8213904",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] See those four gray boulders? They're heavy thoughts. Every single one of them is lying to you. Lift each one and look underneath... [excited] and watch it float away like a balloon. Go!",
+      "text": "Breathe in with the ring, then out. Then lift a stone.",
       "lines": [
-        "[warmly] See those four gray boulders? They're heavy thoughts.",
-        "Every single one of them is lying to you.",
-        "Lift each one and look underneath...",
-        "[excited] and watch it float away like a balloon. Go!"
+        "Breathe in with the ring, then out. Then lift a stone."
       ],
-      "file": "/audio/voice/6671a137b3daf754.mp3"
+      "file": "/audio/voice/5858840dc8213904.mp3"
     },
     {
-      "key": "7fa72021a59339c5",
+      "key": "3ee974b41c0561c2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Lift the first boulder - it's lighter than it looks!",
+      "text": "[proud] Look how straight you're standing. Every one of those stones was somebody else's choice. [warmly] You were carrying them for nothing, Cyber Hero.",
       "lines": [
-        "Lift the first boulder - it's lighter than it looks!"
+        "[proud] Look how straight you're standing.",
+        "Every one of those stones was somebody else's choice.",
+        "[warmly] You were carrying them for nothing, Cyber Hero."
       ],
-      "file": "/audio/voice/7fa72021a59339c5.mp3"
+      "file": "/audio/voice/3ee974b41c0561c2.mp3"
     },
     {
-      "key": "49c928168c78eb73",
+      "key": "abb941765b72c663",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Power one - and it's the mightiest of all. Never your fault. Say it like you mean it! [excited] Now, every captain needs a team... and it's time to put YOURS on a poster.",
+      "text": "[proud] That's the one! The person who chose to send it owns it. You just happened to be the one holding the screen.",
       "lines": [
-        "[warmly] Power one - and it's the mightiest of all.",
-        "Never your fault. Say it like you mean it!",
-        "[excited] Now, every captain needs a team...",
-        "and it's time to put YOURS on a poster."
+        "[proud] That's the one!",
+        "The person who chose to send it owns it.",
+        "You just happened to be the one holding the screen."
       ],
-      "file": "/audio/voice/49c928168c78eb73.mp3"
+      "file": "/audio/voice/abb941765b72c663.mp3"
     },
     {
-      "key": "54825650d6aadcca",
+      "key": "70ab28109d27a2df",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Every captain has a team - and here's the secret: you pick your team BEFORE you ever need it. A parent. A teacher. A grandparent. Someone you'd tell anything. Name them in your head... right now. Got them? [excited] And one goes on EVERY kid's poster: Childhelp! One, eight hundred, four two two, four four five three. Free. Always awake. Let's build!",
+      "text": "[warmly] One power down, Cyber Hero, and it's the biggest one. The stones are on the floor where they belong. [whispers] Now, a lighthouse keeper never works alone... Next, we name the people who come running. Come and meet them!",
       "lines": [
-        "[warmly] Every captain has a team - and here's the secret:",
-        "you pick your team BEFORE you ever need it.",
-        "A parent. A teacher. A grandparent. Someone you'd tell anything.",
-        "Name them in your head... right now. Got them?",
-        "[excited] And one goes on EVERY kid's poster: Childhelp!",
-        "One, eight hundred, four two two, four four five three. Free. Always awake. Let's build!"
+        "[warmly] One power down, Cyber Hero, and it's the biggest one.",
+        "The stones are on the floor where they belong.",
+        "[whispers] Now, a lighthouse keeper never works alone...",
+        "Next, we name the people who come running. Come and meet them!"
       ],
-      "file": "/audio/voice/54825650d6aadcca.mp3"
+      "file": "/audio/voice/70ab28109d27a2df.mp3"
     },
     {
-      "key": "d2069e0355805beb",
+      "key": "6a41ef1ed6698289",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Here's your poster - four empty spots! Tap the people who truly belong on your team. [whispers] Careful - a couple of tiles don't belong at all. [warmly] Fill it up, Cyber Hero. This poster is forever.",
+      "text": "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you. Your team is the grown-ups who come running. A parent. A teacher. A grandparent. Somebody you'd shout for. Name them NOW, while everything is calm and easy. [warmly] And if they're all asleep, Childhelp is awake. One, eight hundred, four two two, four four five three. [excited] Come to the radio. Let's call your crew in!",
       "lines": [
-        "[excited] Here's your poster - four empty spots!",
-        "Tap the people who truly belong on your team.",
-        "[whispers] Careful - a couple of tiles don't belong at all.",
-        "[warmly] Fill it up, Cyber Hero. This poster is forever."
+        "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you.",
+        "Your team is the grown-ups who come running.",
+        "A parent. A teacher. A grandparent. Somebody you'd shout for.",
+        "Name them NOW, while everything is calm and easy.",
+        "[warmly] And if they're all asleep, Childhelp is awake. One, eight hundred, four two two, four four five three.",
+        "[excited] Come to the radio. Let's call your crew in!"
       ],
-      "file": "/audio/voice/d2069e0355805beb.mp3"
+      "file": "/audio/voice/6a41ef1ed6698289.mp3"
     },
     {
-      "key": "a9672771ab7e0efd",
+      "key": "4cb47d4a58c3d334",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Real-life grown-ups you trust - tap them onto the poster!",
+      "text": "[excited] Here's the lighthouse radio. Every channel is somebody you could call. Turn the dial, and tap CALL. [warmly] The ones who come running join your board. Let's find three, Cyber Hero!",
       "lines": [
-        "Real-life grown-ups you trust - tap them onto the poster!"
+        "[excited] Here's the lighthouse radio. Every channel is somebody you could call.",
+        "Turn the dial, and tap CALL.",
+        "[warmly] The ones who come running join your board.",
+        "Let's find three, Cyber Hero!"
       ],
-      "file": "/audio/voice/a9672771ab7e0efd.mp3"
+      "file": "/audio/voice/4cb47d4a58c3d334.mp3"
     },
     {
-      "key": "8003790bf2bd9390",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Two powers! Your poster is GLOWING. Parent, teacher, grandparent... and the golden number. [warmly] Now let's learn what your fingers do... when the mean messages are still coming in.",
-      "lines": [
-        "[excited] Two powers! Your poster is GLOWING.",
-        "Parent, teacher, grandparent... and the golden number.",
-        "[warmly] Now let's learn what your fingers do...",
-        "when the mean messages are still coming in."
-      ],
-      "file": "/audio/voice/8003790bf2bd9390.mp3"
-    },
-    {
-      "key": "dd2e4f183f37d5e9",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] When mean messages land, your fingers itch to fire back. Don't feed it! A reply is exactly what the sender wants. Heroes starve it instead. Stop - hands off. Snap the proof. THEN block - the door shuts. [whispers] Then close the app and breathe. [excited] Camera, then block - let's find the buttons fast!",
-      "lines": [
-        "[warmly] When mean messages land, your fingers itch to fire back.",
-        "Don't feed it! A reply is exactly what the sender wants.",
-        "Heroes starve it instead.",
-        "Stop - hands off. Snap the proof. THEN block - the door shuts.",
-        "[whispers] Then close the app and breathe.",
-        "[excited] Camera, then block - let's find the buttons fast!"
-      ],
-      "file": "/audio/voice/dd2e4f183f37d5e9.mp3"
-    },
-    {
-      "key": "0f1f17f8ec62d61e",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Deep breath. Calm fingers. Six buttons - only three are hero moves. Camera freezes the proof. Block shuts the door. Close App gives you air. [excited] Find them in order - go!",
-      "lines": [
-        "[warmly] Deep breath. Calm fingers.",
-        "Six buttons - only three are hero moves.",
-        "Camera freezes the proof. Block shuts the door. Close App gives you air.",
-        "[excited] Find them in order - go!"
-      ],
-      "file": "/audio/voice/0f1f17f8ec62d61e.mp3"
-    },
-    {
-      "key": "192ec8b33ac028e5",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Freeze the proof first - find SCREENSHOT!",
-      "lines": [
-        "Freeze the proof first - find SCREENSHOT!"
-      ],
-      "file": "/audio/voice/192ec8b33ac028e5.mp3"
-    },
-    {
-      "key": "cd39b2b5e5098adf",
+      "key": "555540d6a53eb986",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three powers! Proof snapped, block found, door shut. And did you spot the trick button? [whispers] DELETE looked helpful... but it wasn't. Here's why the camera always beats the trash.",
+      "text": "Turn the dial to a channel, then tap CALL.",
       "lines": [
-        "[excited] Three powers! Proof snapped, block found, door shut.",
-        "And did you spot the trick button?",
-        "[whispers] DELETE looked helpful... but it wasn't.",
-        "Here's why the camera always beats the trash."
+        "Turn the dial to a channel, then tap CALL."
       ],
-      "file": "/audio/voice/cd39b2b5e5098adf.mp3"
+      "file": "/audio/voice/555540d6a53eb986.mp3"
     },
     {
-      "key": "9db814355ac0f2bb",
+      "key": "fadaaf637ed3c3b8",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] When something horrid lands, your thumb hovers over delete. Poof - gone - pretend it never happened? [whispers] But if it's gone... what do you show your team? Heroes freeze it first. Screenshot. Click. Evidence saved - NOW a grown-up can see exactly what happened. [excited] Camera or trash - let's practice the call!",
+      "text": "[proud] Look at that board. Three people who come running. You named them while everything was calm. [warmly] That's the trick, Cyber Hero. Now you'll never have to think of one in a hurry.",
       "lines": [
-        "[warmly] When something horrid lands, your thumb hovers over delete.",
-        "Poof - gone - pretend it never happened?",
-        "[whispers] But if it's gone... what do you show your team?",
-        "Heroes freeze it first. Screenshot. Click.",
-        "Evidence saved - NOW a grown-up can see exactly what happened.",
-        "[excited] Camera or trash - let's practice the call!"
+        "[proud] Look at that board. Three people who come running.",
+        "You named them while everything was calm.",
+        "[warmly] That's the trick, Cyber Hero. Now you'll never have to think of one in a hurry."
       ],
-      "file": "/audio/voice/9db814355ac0f2bb.mp3"
+      "file": "/audio/voice/fadaaf637ed3c3b8.mp3"
     },
     {
-      "key": "75e7a2050dda19a4",
+      "key": "01692140f242acb6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Exactly! You name your team while everything is calm. Then, on a bad day, the name is already waiting for you.",
+      "lines": [
+        "[proud] Exactly!",
+        "You name your team while everything is calm.",
+        "Then, on a bad day, the name is already waiting for you."
+      ],
+      "file": "/audio/voice/01692140f242acb6.mp3"
+    },
+    {
+      "key": "8c47c43a00db6cc6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers! Your crew is named and on the board. [whispers] But what about the sender, still tapping away out there? Next, we learn how their signal runs out of fuel. Come and see, Cyber Hero!",
+      "lines": [
+        "[excited] Two powers! Your crew is named and on the board.",
+        "[whispers] But what about the sender, still tapping away out there?",
+        "Next, we learn how their signal runs out of fuel.",
+        "Come and see, Cyber Hero!"
+      ],
+      "file": "/audio/voice/8c47c43a00db6cc6.mp3"
+    },
+    {
+      "key": "16ce6ca0e2c22614",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Here's something the sender hopes you never work out. They're running on your replies. [whispers] Every answer you send is fuel. Even a clever one. Even an angry one. So we do the opposite. We stop feeding it. [excited] Come and watch a signal starve, Cyber Hero!",
+      "lines": [
+        "[warmly] Here's something the sender hopes you never work out.",
+        "They're running on your replies.",
+        "[whispers] Every answer you send is fuel. Even a clever one. Even an angry one.",
+        "So we do the opposite. We stop feeding it.",
+        "[excited] Come and watch a signal starve, Cyber Hero!"
+      ],
+      "file": "/audio/voice/16ce6ca0e2c22614.mp3"
+    },
+    {
+      "key": "2175d67ed1f824bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The sender's signal is blinking away out on the mast. Every reply you send is power for it. [whispers] So give it nothing at all... [excited] and watch what happens. Go on!",
+      "lines": [
+        "[excited] The sender's signal is blinking away out on the mast.",
+        "Every reply you send is power for it.",
+        "[whispers] So give it nothing at all...",
+        "[excited] and watch what happens. Go on!"
+      ],
+      "file": "/audio/voice/2175d67ed1f824bf.mp3"
+    },
+    {
+      "key": "26280139922a6a1c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Press and hold the quiet dial to starve a ping aimed at you.",
+      "lines": [
+        "Press and hold the quiet dial to starve a ping aimed at you."
+      ],
+      "file": "/audio/voice/26280139922a6a1c.mp3"
+    },
+    {
+      "key": "c34f57f9e6e51138",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Look at the mast. Not a flicker left on it. You never sent a single word back. [warmly] That's not running away, Cyber Hero. That's you choosing who reaches you.",
+      "lines": [
+        "[proud] Look at the mast. Not a flicker left on it.",
+        "You never sent a single word back.",
+        "[warmly] That's not running away, Cyber Hero. That's you choosing who reaches you."
+      ],
+      "file": "/audio/voice/c34f57f9e6e51138.mp3"
+    },
+    {
+      "key": "9819174603362315",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Four horrid moments - all pretend, all practice. For each one: freeze it... or lose it? [whispers] Remember: your team helps best when they can SEE. [excited] Camera at the ready - go!",
+      "text": "[proud] Nicely caught! He says blocking is fear because blocking is the one thing that stops him. The person pressing the button is the person in charge.",
       "lines": [
-        "[warmly] Four horrid moments - all pretend, all practice.",
-        "For each one: freeze it... or lose it?",
-        "[whispers] Remember: your team helps best when they can SEE.",
-        "[excited] Camera at the ready - go!"
+        "[proud] Nicely caught!",
+        "He says blocking is fear because blocking is the one thing that stops him.",
+        "The person pressing the button is the person in charge."
       ],
-      "file": "/audio/voice/75e7a2050dda19a4.mp3"
+      "file": "/audio/voice/9819174603362315.mp3"
     },
     {
-      "key": "8100df47e01d0919",
+      "key": "98c275a3f815d4c0",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Can your team still SEE the proof? Pick the camera!",
+      "text": "[excited] Three powers, and the mast has gone dark. [warmly] Now, one thing heroes almost always want to do is delete it. [whispers] Wait until you hear why we keep it instead... Next, the camera. Come and see!",
       "lines": [
-        "Can your team still SEE the proof? Pick the camera!"
+        "[excited] Three powers, and the mast has gone dark.",
+        "[warmly] Now, one thing heroes almost always want to do is delete it.",
+        "[whispers] Wait until you hear why we keep it instead...",
+        "Next, the camera. Come and see!"
       ],
-      "file": "/audio/voice/8100df47e01d0919.mp3"
+      "file": "/audio/voice/98c275a3f815d4c0.mp3"
     },
     {
-      "key": "64357ddf08f71136",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Four powers! Camera beats trash, every time. Frozen proof means real help, fast. [warmly] Now let's stack everything you've learned... into one calm countdown you'll never forget.",
-      "lines": [
-        "[excited] Four powers! Camera beats trash, every time.",
-        "Frozen proof means real help, fast.",
-        "[warmly] Now let's stack everything you've learned...",
-        "into one calm countdown you'll never forget."
-      ],
-      "file": "/audio/voice/64357ddf08f71136.mp3"
-    },
-    {
-      "key": "f7f0aae7b5236405",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Time to stack the whole week into one launchpad! Stop - hands off the keyboard. Screenshot - freeze the proof FIRST. THEN block - the door shuts. Tell - your team jumps in. [warmly] And if you ever need more: Childhelp. One, eight hundred, four two two, four four five three. [excited] Five stages... stack them and LAUNCH!",
-      "lines": [
-        "[excited] Time to stack the whole week into one launchpad!",
-        "Stop - hands off the keyboard.",
-        "Screenshot - freeze the proof FIRST.",
-        "THEN block - the door shuts. Tell - your team jumps in.",
-        "[warmly] And if you ever need more: Childhelp. One, eight hundred, four two two, four four five three.",
-        "[excited] Five stages... stack them and LAUNCH!"
-      ],
-      "file": "/audio/voice/f7f0aae7b5236405.mp3"
-    },
-    {
-      "key": "524148ab23247c1a",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Five stages on the launchpad - all shuffled! Tap them in the order you'd really do them. Fingers... camera... door... team... phone. [warmly] Stack it right and LAUNCH, Cyber Hero!",
-      "lines": [
-        "[excited] Five stages on the launchpad - all shuffled!",
-        "Tap them in the order you'd really do them.",
-        "Fingers... camera... door... team... phone.",
-        "[warmly] Stack it right and LAUNCH, Cyber Hero!"
-      ],
-      "file": "/audio/voice/524148ab23247c1a.mp3"
-    },
-    {
-      "key": "05b6f557183e8e44",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "What comes FIRST? Calm your own fingers - find STOP!",
-      "lines": [
-        "What comes FIRST? Calm your own fingers - find STOP!"
-      ],
-      "file": "/audio/voice/05b6f557183e8e44.mp3"
-    },
-    {
-      "key": "aa465976fa172491",
+      "key": "2995d0dc5812407c",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE protocol powers, Team Captain! Never your fault, team named, block found, proof frozen... and the launchpad stacked. [warmly] One calm drill run... [excited] then we pop his blame balloon for GOOD!",
+      "text": "[warmly] I know exactly what you want to do with a horrible message. Delete it. Make it vanish. [whispers] But when it vanishes, so does the proof. A picture freezes it: who sent it, what it said, when. [warmly] Then you hand it over, and you never have to look at it again. [excited] Into the tray, Cyber Hero. Let's develop some proof!",
       "lines": [
-        "[excited] That's all FIVE protocol powers, Team Captain!",
-        "Never your fault, team named, block found,",
-        "proof frozen... and the launchpad stacked.",
-        "[warmly] One calm drill run...",
-        "[excited] then we pop his blame balloon for GOOD!"
+        "[warmly] I know exactly what you want to do with a horrible message.",
+        "Delete it. Make it vanish.",
+        "[whispers] But when it vanishes, so does the proof.",
+        "A picture freezes it: who sent it, what it said, when.",
+        "[warmly] Then you hand it over, and you never have to look at it again.",
+        "[excited] Into the tray, Cyber Hero. Let's develop some proof!"
       ],
-      "file": "/audio/voice/aa465976fa172491.mp3"
+      "file": "/audio/voice/2995d0dc5812407c.mp3"
     },
     {
-      "key": "bc686d906cbc11e6",
+      "key": "0c83e4509a7999f1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Drill run - nice and calm, Cyber Hero! Moments are floating past. PROTOCOL for the hero steps... [warmly] PANIC MOVE for the ones that make it heavier. Go!",
+      "text": "[excited] This is the evidence tray. Slide a screen in and it develops. [whispers] If you kept it, the proof comes up clear... and if you deleted it, there is nothing to develop at all. [excited] Let's see what your team can work with!",
       "lines": [
-        "[excited] Drill run - nice and calm, Cyber Hero!",
-        "Moments are floating past.",
-        "PROTOCOL for the hero steps...",
-        "[warmly] PANIC MOVE for the ones that make it heavier. Go!"
+        "[excited] This is the evidence tray. Slide a screen in and it develops.",
+        "[whispers] If you kept it, the proof comes up clear...",
+        "and if you deleted it, there is nothing to develop at all.",
+        "[excited] Let's see what your team can work with!"
       ],
-      "file": "/audio/voice/bc686d906cbc11e6.mp3"
+      "file": "/audio/voice/0c83e4509a7999f1.mp3"
     },
     {
-      "key": "52b87eaccd41254c",
+      "key": "ec7125bacd94edfa",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap the sheet to develop it, then find what a grown-up needs.",
+      "lines": [
+        "Tap the sheet to develop it, then find what a grown-up needs."
+      ],
+      "file": "/audio/voice/ec7125bacd94edfa.mp3"
+    },
+    {
+      "key": "1792182068231ea6",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every piece of proof, clear as day. Who sent it, when it came, and what it said. [warmly] Your team can take it from here, Cyber Hero. You're done carrying it.",
+      "lines": [
+        "[proud] Every piece of proof, clear as day.",
+        "Who sent it, when it came, and what it said.",
+        "[warmly] Your team can take it from here, Cyber Hero. You're done carrying it."
+      ],
+      "file": "/audio/voice/1792182068231ea6.mp3"
+    },
+    {
+      "key": "531a416566f6cad1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! The boulders lifted, the team named, the proof frozen, the block found... and the protocol launched. [warmly] Whatever lands on your screen - you know exactly what to do. [excited] Sticker time, Team Captain!",
+      "text": "[proud] Perfect order! Snap it first, because blocking can take the message with it. Then block, then show your team what you kept.",
+      "lines": [
+        "[proud] Perfect order!",
+        "Snap it first, because blocking can take the message with it.",
+        "Then block, then show your team what you kept."
+      ],
+      "file": "/audio/voice/531a416566f6cad1.mp3"
+    },
+    {
+      "key": "f98137f24e8ffd51",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers, Cyber Hero! The proof is safe and so are you. [warmly] Now let's put them together, the way firefighters practise. [whispers] Not because anything is wrong... but so your hands know what to do. To the drill!",
+      "lines": [
+        "[excited] Four powers, Cyber Hero! The proof is safe and so are you.",
+        "[warmly] Now let's put them together, the way firefighters practise.",
+        "[whispers] Not because anything is wrong...",
+        "but so your hands know what to do. To the drill!"
+      ],
+      "file": "/audio/voice/f98137f24e8ffd51.mp3"
+    },
+    {
+      "key": "24724ee4621f4f4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Five steps, Cyber Hero, and you already know every one. Breathe. Snap. Stop. Block. Tell. Firefighters practise on calm days so their hands know the way. [whispers] That's all this is. A practice run. [excited] Take the drill!",
+      "lines": [
+        "[warmly] Five steps, Cyber Hero, and you already know every one.",
+        "Breathe. Snap. Stop. Block. Tell.",
+        "Firefighters practise on calm days so their hands know the way.",
+        "[whispers] That's all this is. A practice run.",
+        "[excited] Take the drill!"
+      ],
+      "file": "/audio/voice/24724ee4621f4f4c.mp3"
+    },
+    {
+      "key": "856d0f261d9209cf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Practice run, Cyber Hero. Nothing here is real. A call-out comes in and you pick the next move. [whispers] Get it right and the drill rolls on. [excited] Breathe, snap, stop, block, tell. Off we go!",
+      "lines": [
+        "[warmly] Practice run, Cyber Hero. Nothing here is real.",
+        "A call-out comes in and you pick the next move.",
+        "[whispers] Get it right and the drill rolls on.",
+        "[excited] Breathe, snap, stop, block, tell. Off we go!"
+      ],
+      "file": "/audio/voice/856d0f261d9209cf.mp3"
+    },
+    {
+      "key": "ea49ac9c38d8fca9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read what's happening, then pick the calm next move.",
+      "lines": [
+        "Read what's happening, then pick the calm next move."
+      ],
+      "file": "/audio/voice/ea49ac9c38d8fca9.mp3"
+    },
+    {
+      "key": "59e3e602adf7fde3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Drill complete, and you never once rushed. Breathe. Snap. Stop. Block. Tell. [warmly] Your hands know the way now, and that's the whole point of practising.",
+      "lines": [
+        "[proud] Drill complete, and you never once rushed.",
+        "Breathe. Snap. Stop. Block. Tell.",
+        "[warmly] Your hands know the way now, and that's the whole point of practising."
+      ],
+      "file": "/audio/voice/59e3e602adf7fde3.mp3"
+    },
+    {
+      "key": "2c5b40924acd269c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] First time! Breathe comes first, every single time. A calm head makes the other four steps easy.",
+      "lines": [
+        "[proud] First time!",
+        "Breathe comes first, every single time.",
+        "A calm head makes the other four steps easy."
+      ],
+      "file": "/audio/voice/2c5b40924acd269c.mp3"
+    },
+    {
+      "key": "0b8d51638f7831bd",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Cyber Hero! Never your fault. Your team named. The signal starved, the proof developed... and the drill run clean. [whispers] One last shift in the lighthouse... [excited] and real call-outs coming in. Come on!",
+      "lines": [
+        "[excited] That's all FIVE powers, Cyber Hero!",
+        "Never your fault. Your team named. The signal starved,",
+        "the proof developed... and the drill run clean.",
+        "[whispers] One last shift in the lighthouse...",
+        "[excited] and real call-outs coming in. Come on!"
+      ],
+      "file": "/audio/voice/0b8d51638f7831bd.mp3"
+    },
+    {
+      "key": "9f60cc01924478a0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Your last shift, Cyber Hero. The board is lighting up. Every call-out is a hero who needs one of your five powers. [warmly] Read each one, then send the right help. [excited] The light's on you!",
+      "lines": [
+        "[excited] Your last shift, Cyber Hero. The board is lighting up.",
+        "Every call-out is a hero who needs one of your five powers.",
+        "[warmly] Read each one, then send the right help.",
+        "[excited] The light's on you!"
+      ],
+      "file": "/audio/voice/9f60cc01924478a0.mp3"
+    },
+    {
+      "key": "bb5b165ad143860d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap a call-out, then send the power that hero needs.",
+      "lines": [
+        "Tap a call-out, then send the power that hero needs."
+      ],
+      "file": "/audio/voice/bb5b165ad143860d.mp3"
+    },
+    {
+      "key": "936bf68be8bbd13b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every light on the board answered. Five heroes, five powers, and not one of them carrying it alone now. [excited] You're ready for him, Team Captain. Let's go!",
+      "lines": [
+        "[proud] Every light on the board answered.",
+        "Five heroes, five powers, and not one of them carrying it alone now.",
+        "[excited] You're ready for him, Team Captain. Let's go!"
+      ],
+      "file": "/audio/voice/936bf68be8bbd13b.mp3"
+    },
+    {
+      "key": "641a238d27bbcac6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The stones put down, the crew named, the signal starved, the proof developed... and the drill run clean. [warmly] Whatever lands on your screen, you know exactly what to do. [excited] Sticker time, Team Captain!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "The boulders lifted, the team named,",
-        "the proof frozen, the block found... and the protocol launched.",
-        "[warmly] Whatever lands on your screen - you know exactly what to do.",
+        "The stones put down, the crew named,",
+        "the signal starved, the proof developed... and the drill run clean.",
+        "[warmly] Whatever lands on your screen, you know exactly what to do.",
         "[excited] Sticker time, Team Captain!"
       ],
-      "file": "/audio/voice/52b87eaccd41254c.mp3"
+      "file": "/audio/voice/641a238d27bbcac6.mp3"
     },
     {
-      "key": "c7f98643bdca21c6",
-      "speaker": "adam",
+      "key": "7b9f5d39b6ff3a8c",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "It's never blank fault.",
+      "text": "[excited] Three stickers, Team Captain! Stone Lifter. Team Namer. Evidence Freezer. [warmly] And a lighthouse that never goes dark, Cyber Hero.",
       "lines": [
-        "It's never blank fault."
+        "[excited] Three stickers, Team Captain!",
+        "Stone Lifter. Team Namer. Evidence Freezer.",
+        "[warmly] And a lighthouse that never goes dark, Cyber Hero."
       ],
-      "file": "/audio/voice/c7f98643bdca21c6.mp3"
+      "file": "/audio/voice/7b9f5d39b6ff3a8c.mp3"
     },
     {
-      "key": "a029b1a8944d5ade",
+      "key": "79cfa957acb23a2b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Who belongs on your MY TEAM poster?",
+      "text": "Someone sends you something unkind. Whose fault is it?",
       "lines": [
-        "Who belongs on your MY TEAM poster?"
+        "Someone sends you something unkind. Whose fault is it?"
       ],
-      "file": "/audio/voice/a029b1a8944d5ade.mp3"
+      "file": "/audio/voice/79cfa957acb23a2b.mp3"
     },
     {
-      "key": "6ce5a9fc358df438",
+      "key": "439a8c888ebf555d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - tap the button that stops the sender!",
+      "text": "The best time to name your team is blank.",
       "lines": [
-        "Quick - tap the button that stops the sender!"
+        "The best time to name your team is blank."
       ],
-      "file": "/audio/voice/6ce5a9fc358df438.mp3"
+      "file": "/audio/voice/439a8c888ebf555d.mp3"
     },
     {
       "key": "7f9176e7dd690d31",
@@ -4760,14 +4890,1259 @@
       "file": "/audio/voice/7f9176e7dd690d31.mp3"
     },
     {
-      "key": "4c055b146e4749e9",
+      "key": "7a0b2b79e5cead6a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Put the protocol in order:",
+      "text": "Put the evidence steps in order:",
       "lines": [
-        "Put the protocol in order:"
+        "Put the evidence steps in order:"
       ],
-      "file": "/audio/voice/4c055b146e4749e9.mp3"
+      "file": "/audio/voice/7a0b2b79e5cead6a.mp3"
+    },
+    {
+      "key": "e4cef10e0756041d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quick! What is the very FIRST step of the protocol?",
+      "lines": [
+        "Quick! What is the very FIRST step of the protocol?"
+      ],
+      "file": "/audio/voice/e4cef10e0756041d.mp3"
+    },
+    {
+      "key": "e4c109290f853fd1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A kid sends a horrid message, then says 'you MADE me do it, your drawing was silly.' What's true? Is it option A... Being unkind was their choice, it is never my fault Option B... It's a little bit my fault for posting the drawing Or is it option C... It's only my fault if I reply back So, what do you think?",
+      "lines": [
+        "A kid sends a horrid message, then says 'you MADE me do it, your drawing was silly.' What's true?",
+        "Is it option A...",
+        "Being unkind was their choice, it is never my fault",
+        "Option B...",
+        "It's a little bit my fault for posting the drawing",
+        "Or is it option C...",
+        "It's only my fault if I reply back",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/e4c109290f853fd1.mp3"
+    },
+    {
+      "key": "60d87508d82e35d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach? Is it option A... A friendly player from my game, they're online all night Option B... Nobody until morning, worries have to wait Or is it option C... Childhelp, 1-800-422-4453, free and always awake So, what do you think?",
+      "lines": [
+        "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach?",
+        "Is it option A...",
+        "A friendly player from my game, they're online all night",
+        "Option B...",
+        "Nobody until morning, worries have to wait",
+        "Or is it option C...",
+        "Childhelp, 1-800-422-4453, free and always awake",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/60d87508d82e35d8.mp3"
+    },
+    {
+      "key": "243ef510dc1d99c3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend says 'just reply STOP and the meanie will quit.' What's the better move? Is it option A... Reply STOP in capitals so they know you mean it Option B... Don't reply at all, block instead, even STOP feeds them Or is it option C... Reply STOP once, politely, then wait and see So, what do you think?",
+      "lines": [
+        "Your friend says 'just reply STOP and the meanie will quit.' What's the better move?",
+        "Is it option A...",
+        "Reply STOP in capitals so they know you mean it",
+        "Option B...",
+        "Don't reply at all, block instead, even STOP feeds them",
+        "Or is it option C...",
+        "Reply STOP once, politely, then wait and see",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/243ef510dc1d99c3.mp3"
+    },
+    {
+      "key": "9c66203f55e7d461",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first? Is it option A... Camera, freeze the proof, then show a trusted grown-up Option B... Delete it fast so it can't scare me again Or is it option C... Beg them not to ban me, just in case So, what do you think?",
+      "lines": [
+        "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first?",
+        "Is it option A...",
+        "Camera, freeze the proof, then show a trusted grown-up",
+        "Option B...",
+        "Delete it fast so it can't scare me again",
+        "Or is it option C...",
+        "Beg them not to ban me, just in case",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/9c66203f55e7d461.mp3"
+    },
+    {
+      "key": "8de0734dd2037188",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one? Is it option A... Screenshot it before anything else Option B... Block the sender before they send more Or is it option C... STOP, hands off, send nothing back So, what do you think?",
+      "lines": [
+        "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one?",
+        "Is it option A...",
+        "Screenshot it before anything else",
+        "Option B...",
+        "Block the sender before they send more",
+        "Or is it option C...",
+        "STOP, hands off, send nothing back",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/8de0734dd2037188.mp3"
+    },
+    {
+      "key": "30da96d7bb520ab4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! 'You made me' is a trick, nobody can make someone be unkind. Not posting, not replying, nothing you did. The person who chose the mean words is the only one at fault.",
+      "lines": [
+        "That's right!",
+        "'You made me' is a trick, nobody can make someone be unkind. Not posting, not replying, nothing you did. The person who chose the mean words is the only one at fault."
+      ],
+      "file": "/audio/voice/30da96d7bb520ab4.mp3"
+    },
+    {
+      "key": "0a5d07b29c7b9a2d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. 'You made me' is a trick, nobody can make someone be unkind. Not posting, not replying, nothing you did. The person who chose the mean words is the only one at fault.",
+      "lines": [
+        "Not quite.",
+        "'You made me' is a trick, nobody can make someone be unkind. Not posting, not replying, nothing you did. The person who chose the mean words is the only one at fault."
+      ],
+      "file": "/audio/voice/0a5d07b29c7b9a2d.mp3"
+    },
+    {
+      "key": "6a335130a39bae60",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps.",
+      "lines": [
+        "That's right!",
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps."
+      ],
+      "file": "/audio/voice/6a335130a39bae60.mp3"
+    },
+    {
+      "key": "91b584d0c4c4f569",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps.",
+      "lines": [
+        "Not quite.",
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps."
+      ],
+      "file": "/audio/voice/91b584d0c4c4f569.mp3"
+    },
+    {
+      "key": "4049726e6ca56d73",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Even a polite 'stop' is a reply, and a reply is what the sender is fishing for. Block shuts the door without giving them a single thing, then tell a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "Even a polite 'stop' is a reply, and a reply is what the sender is fishing for. Block shuts the door without giving them a single thing, then tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/4049726e6ca56d73.mp3"
+    },
+    {
+      "key": "7d946889a853d793",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Even a polite 'stop' is a reply, and a reply is what the sender is fishing for. Block shuts the door without giving them a single thing, then tell a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "Even a polite 'stop' is a reply, and a reply is what the sender is fishing for. Block shuts the door without giving them a single thing, then tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/7d946889a853d793.mp3"
+    },
+    {
+      "key": "5dd3ecda76db4648",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Deleting makes it feel gone, but then there's nothing to show your team, and begging tells the trickster the trick is working. Screenshot first, then a trusted grown-up can see exactly what happened and help fast.",
+      "lines": [
+        "That's right!",
+        "Deleting makes it feel gone, but then there's nothing to show your team, and begging tells the trickster the trick is working. Screenshot first, then a trusted grown-up can see exactly what happened and help fast."
+      ],
+      "file": "/audio/voice/5dd3ecda76db4648.mp3"
+    },
+    {
+      "key": "10cc803a81411815",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Deleting makes it feel gone, but then there's nothing to show your team, and begging tells the trickster the trick is working. Screenshot first, then a trusted grown-up can see exactly what happened and help fast.",
+      "lines": [
+        "Not quite.",
+        "Deleting makes it feel gone, but then there's nothing to show your team, and begging tells the trickster the trick is working. Screenshot first, then a trusted grown-up can see exactly what happened and help fast."
+      ],
+      "file": "/audio/voice/10cc803a81411815.mp3"
+    },
+    {
+      "key": "519a6b2ab326edde",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door.",
+      "lines": [
+        "That's right!",
+        "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door."
+      ],
+      "file": "/audio/voice/519a6b2ab326edde.mp3"
+    },
+    {
+      "key": "5318405804eb4b13",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door.",
+      "lines": [
+        "Not quite.",
+        "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door."
+      ],
+      "file": "/audio/voice/5318405804eb4b13.mp3"
+    },
+    {
+      "key": "596c4199b4705761",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You opened it, and opening a message is only reading it. You cannot know what is inside until you look, and looking has never made anybody the bad guy.",
+      "lines": [
+        "You opened it, and opening a message is only reading it. You cannot know what is inside until you look, and looking has never made anybody the bad guy."
+      ],
+      "file": "/audio/voice/596c4199b4705761.mp3"
+    },
+    {
+      "key": "cfa3be200edfeb85",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You replied once, and replying usually means you wanted it to stop. That is a kind instinct, and it hands nothing back to you.",
+      "lines": [
+        "You replied once, and replying usually means you wanted it to stop. That is a kind instinct, and it hands nothing back to you."
+      ],
+      "file": "/audio/voice/cfa3be200edfeb85.mp3"
+    },
+    {
+      "key": "ac0c4bc6315aa0a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You waited, and waiting usually means you were scared, or hoping it would go away on its own. Telling late is still telling, and it still counts.",
+      "lines": [
+        "You waited, and waiting usually means you were scared, or hoping it would go away on its own. Telling late is still telling, and it still counts."
+      ],
+      "file": "/audio/voice/ac0c4bc6315aa0a0.mp3"
+    },
+    {
+      "key": "22e48cec7b5372bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Laughing when you are uncomfortable is something bodies do all by themselves. It was never you agreeing.",
+      "lines": [
+        "Laughing when you are uncomfortable is something bodies do all by themselves. It was never you agreeing."
+      ],
+      "file": "/audio/voice/22e48cec7b5372bf.mp3"
+    },
+    {
+      "key": "1663c865ff05f6fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A link that hides what it really is was built to be clicked. Falling for a trap is the trap working, not you failing.",
+      "lines": [
+        "A link that hides what it really is was built to be clicked. Falling for a trap is the trap working, not you failing."
+      ],
+      "file": "/audio/voice/1663c865ff05f6fc.mp3"
+    },
+    {
+      "key": "e0ab021399c183e5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Opening a message is only reading it. You cannot know what is inside until you look.",
+      "lines": [
+        "Opening a message is only reading it. You cannot know what is inside until you look."
+      ],
+      "file": "/audio/voice/e0ab021399c183e5.mp3"
+    },
+    {
+      "key": "af8a18f5a5741c83",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Replying usually means you wanted it to stop. That never makes their words yours.",
+      "lines": [
+        "Replying usually means you wanted it to stop. That never makes their words yours."
+      ],
+      "file": "/audio/voice/af8a18f5a5741c83.mp3"
+    },
+    {
+      "key": "bb3d3f49e4f2707b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Only one person chose to be unkind, and it was not you.",
+      "lines": [
+        "Only one person chose to be unkind, and it was not you."
+      ],
+      "file": "/audio/voice/bb3d3f49e4f2707b.mp3"
+    },
+    {
+      "key": "484f7c6ab42b1f85",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who actually chose to press send?",
+      "lines": [
+        "Who actually chose to press send?"
+      ],
+      "file": "/audio/voice/484f7c6ab42b1f85.mp3"
+    },
+    {
+      "key": "bcbe30216e161fbd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The people at home come running first, and they would rather know at midnight than find out next week.",
+      "lines": [
+        "The people at home come running first, and they would rather know at midnight than find out next week."
+      ],
+      "file": "/audio/voice/bcbe30216e161fbd.mp3"
+    },
+    {
+      "key": "3d5e232793eafac9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A teacher you like can sort out things that happen with people at school, and they have done it many times before.",
+      "lines": [
+        "A teacher you like can sort out things that happen with people at school, and they have done it many times before."
+      ],
+      "file": "/audio/voice/3d5e232793eafac9.mp3"
+    },
+    {
+      "key": "c7a80f046d8f0c78",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran is a brilliant pick. Two streets away is close enough to come round, and a grandparent is never too busy for you.",
+      "lines": [
+        "Gran is a brilliant pick. Two streets away is close enough to come round, and a grandparent is never too busy for you."
+      ],
+      "file": "/audio/voice/c7a80f046d8f0c78.mp3"
+    },
+    {
+      "key": "7b36132fd850c32d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you.",
+      "lines": [
+        "Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you."
+      ],
+      "file": "/audio/voice/7b36132fd850c32d.mp3"
+    },
+    {
+      "key": "4e9c6cdd200fb21e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is exactly when it is hardest to think. Names you already know come much faster.",
+      "lines": [
+        "That is exactly when it is hardest to think. Names you already know come much faster."
+      ],
+      "file": "/audio/voice/4e9c6cdd200fb21e.mp3"
+    },
+    {
+      "key": "6e5cb2c617e9bd4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You never have to fix it yourself first. Your team wants to hear from you straight away.",
+      "lines": [
+        "You never have to fix it yourself first. Your team wants to hear from you straight away."
+      ],
+      "file": "/audio/voice/6e5cb2c617e9bd4c.mp3"
+    },
+    {
+      "key": "b2ec8a1e37f65c07",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Once is enough. Your team would rather hear about one message than ten.",
+      "lines": [
+        "Once is enough. Your team would rather hear about one message than ten."
+      ],
+      "file": "/audio/voice/b2ec8a1e37f65c07.mp3"
+    },
+    {
+      "key": "318823655602eb7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "When is it easiest to think of a name?",
+      "lines": [
+        "When is it easiest to think of a name?"
+      ],
+      "file": "/audio/voice/318823655602eb7b.mp3"
+    },
+    {
+      "key": "d67ad4037e547c5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You gave it nothing, so there was nothing to burn. Notice how it ends with a demand: answer me. That is the whole trick.",
+      "lines": [
+        "You gave it nothing, so there was nothing to burn. Notice how it ends with a demand: answer me. That is the whole trick."
+      ],
+      "file": "/audio/voice/d67ad4037e547c5e.mp3"
+    },
+    {
+      "key": "eaa1ca8747e36f5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Starved again. That caller will not even say who they are, and a name-less caller is hoping you answer before you notice.",
+      "lines": [
+        "Starved again. That caller will not even say who they are, and a name-less caller is hoping you answer before you notice."
+      ],
+      "file": "/audio/voice/eaa1ca8747e36f5e.mp3"
+    },
+    {
+      "key": "ad0e18f964afb5d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That one asked out loud for the very thing that keeps it going, and you still gave it nothing. The signal is nearly out.",
+      "lines": [
+        "That one asked out loud for the very thing that keeps it going, and you still gave it nothing. The signal is nearly out."
+      ],
+      "file": "/audio/voice/ad0e18f964afb5d8.mp3"
+    },
+    {
+      "key": "430aaf4179dd78bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That ping was not aimed at you, so staying quiet would have left Priya on her own. You sent help and told a grown-up, which is the kind way to be loud.",
+      "lines": [
+        "That ping was not aimed at you, so staying quiet would have left Priya on her own. You sent help and told a grown-up, which is the kind way to be loud."
+      ],
+      "file": "/audio/voice/430aaf4179dd78bc.mp3"
+    },
+    {
+      "key": "362ca35eea4e4b55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Blocking is a choice, not a fright. It means somebody decided you were finished talking.",
+      "lines": [
+        "Blocking is a choice, not a fright. It means somebody decided you were finished talking."
+      ],
+      "file": "/audio/voice/362ca35eea4e4b55.mp3"
+    },
+    {
+      "key": "102cf5eb33bc96de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who is actually in charge when the block button gets pressed?",
+      "lines": [
+        "Who is actually in charge when the block button gets pressed?"
+      ],
+      "file": "/audio/voice/102cf5eb33bc96de.mp3"
+    },
+    {
+      "key": "f30e2046177c71d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You showed it. The proof does the talking now, a grown-up can act on it, and you never have to read it again.",
+      "lines": [
+        "You showed it. The proof does the talking now, a grown-up can act on it, and you never have to read it again."
+      ],
+      "file": "/audio/voice/f30e2046177c71d7.mp3"
+    },
+    {
+      "key": "b6da50d73608d408",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A fast heart makes everything look worse. Three slow breaths and your thinking comes back online.",
+      "lines": [
+        "A fast heart makes everything look worse. Three slow breaths and your thinking comes back online."
+      ],
+      "file": "/audio/voice/b6da50d73608d408.mp3"
+    },
+    {
+      "key": "68e089fe4e666e35",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now the proof is frozen: who sent it, what it said, when it came. That is what lets a grown-up act fast.",
+      "lines": [
+        "Now the proof is frozen: who sent it, what it said, when it came. That is what lets a grown-up act fast."
+      ],
+      "file": "/audio/voice/68e089fe4e666e35.mp3"
+    },
+    {
+      "key": "8eb6dee82d0232d0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Those itching thumbs are exactly what the sender is waiting for. Send nothing and there is nothing to burn.",
+      "lines": [
+        "Those itching thumbs are exactly what the sender is waiting for. Send nothing and there is nothing to burn."
+      ],
+      "file": "/audio/voice/8eb6dee82d0232d0.mp3"
+    },
+    {
+      "key": "37eb0dad958e5ebc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Blocking takes that sender out of your app for good. It is not rude and it is not fear, it is you choosing who reaches you.",
+      "lines": [
+        "Blocking takes that sender out of your app for good. It is not rude and it is not fear, it is you choosing who reaches you."
+      ],
+      "file": "/audio/voice/37eb0dad958e5ebc.mp3"
+    },
+    {
+      "key": "efb39e4aaa99d5b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This is the step that ends it. You hand over the whole thing and stop carrying it by yourself.",
+      "lines": [
+        "This is the step that ends it. You hand over the whole thing and stop carrying it by yourself."
+      ],
+      "file": "/audio/voice/efb39e4aaa99d5b1.mp3"
+    },
+    {
+      "key": "68c840905978f969",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Blocking comes later. A calm head comes first, so the rest goes right.",
+      "lines": [
+        "Blocking comes later. A calm head comes first, so the rest goes right."
+      ],
+      "file": "/audio/voice/68c840905978f969.mp3"
+    },
+    {
+      "key": "ebeac1f25c3df154",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Replying is never a step. It is the fuel the sender wants.",
+      "lines": [
+        "Replying is never a step. It is the fuel the sender wants."
+      ],
+      "file": "/audio/voice/ebeac1f25c3df154.mp3"
+    },
+    {
+      "key": "9d3a54cb9bc2baea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Breathing is always the first move. A racing heart cannot think, and everything else works better once Sam is calm.",
+      "lines": [
+        "Breathing is always the first move. A racing heart cannot think, and everything else works better once Sam is calm."
+      ],
+      "file": "/audio/voice/9d3a54cb9bc2baea.mp3"
+    },
+    {
+      "key": "9dbfd6fdb8b18367",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam is frozen, so nothing else will happen yet. The very first step of the protocol comes before all the others.",
+      "lines": [
+        "Sam is frozen, so nothing else will happen yet. The very first step of the protocol comes before all the others."
+      ],
+      "file": "/audio/voice/9dbfd6fdb8b18367.mp3"
+    },
+    {
+      "key": "be077da925a0942c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every reply was fuel, however clever it was. Sending nothing and blocking takes the sender's signal off Ali's screen.",
+      "lines": [
+        "Every reply was fuel, however clever it was. Sending nothing and blocking takes the sender's signal off Ali's screen."
+      ],
+      "file": "/audio/voice/be077da925a0942c.mp3"
+    },
+    {
+      "key": "60b99072b5b337fe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ali is still typing, so this one is about the replies first. What keeps a mean sender going?",
+      "lines": [
+        "Ali is still typing, so this one is about the replies first. What keeps a mean sender going?"
+      ],
+      "file": "/audio/voice/60b99072b5b337fe.mp3"
+    },
+    {
+      "key": "0f5b226dac7ca096",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Posting a photo is not the same as choosing to be unkind about it. The person who wrote the words owns them, not Nia.",
+      "lines": [
+        "Posting a photo is not the same as choosing to be unkind about it. The person who wrote the words owns them, not Nia."
+      ],
+      "file": "/audio/voice/0f5b226dac7ca096.mp3"
+    },
+    {
+      "key": "a499b4cc6ddfa16a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nia is carrying a stone that was never hers. Before anything practical, she needs the biggest truth of the week.",
+      "lines": [
+        "Nia is carrying a stone that was never hers. Before anything practical, she needs the biggest truth of the week."
+      ],
+      "file": "/audio/voice/a499b4cc6ddfa16a.mp3"
+    },
+    {
+      "key": "bd015ebd8b9c9dd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A screenshot would have frozen who sent it, what it said and when. Next time Theo snaps it before anything else disappears.",
+      "lines": [
+        "A screenshot would have frozen who sent it, what it said and when. Next time Theo snaps it before anything else disappears."
+      ],
+      "file": "/audio/voice/bd015ebd8b9c9dd0.mp3"
+    },
+    {
+      "key": "96597ff830b70bd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Theo has nothing left to show anybody. Think about what a delete takes with it.",
+      "lines": [
+        "Theo has nothing left to show anybody. Think about what a delete takes with it."
+      ],
+      "file": "/audio/voice/96597ff830b70bd0.mp3"
+    },
+    {
+      "key": "29080292765bb4ad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A week is a long time to carry something alone. Kai's team can do things Kai cannot, and telling late still counts.",
+      "lines": [
+        "A week is a long time to carry something alone. Kai's team can do things Kai cannot, and telling late still counts."
+      ],
+      "file": "/audio/voice/29080292765bb4ad.mp3"
+    },
+    {
+      "key": "b3abe6e76ec37db6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Coping alone that long is the hard part, and Kai has already done it. What is missing is other people.",
+      "lines": [
+        "Coping alone that long is the hard part, and Kai has already done it. What is missing is other people."
+      ],
+      "file": "/audio/voice/b3abe6e76ec37db6.mp3"
+    },
+    {
+      "key": "b6073a25534f341a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That channel is just hiss. When you really need somebody, pick a person you could name out loud instead.",
+      "lines": [
+        "That channel is just hiss. When you really need somebody, pick a person you could name out loud instead."
+      ],
+      "file": "/audio/voice/b6073a25534f341a.mp3"
+    },
+    {
+      "key": "a9ba5146d5261363",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Somebody from your game cannot come round, cannot ring your school, and might not be who they say they are. Your team stands in the same room as you.",
+      "lines": [
+        "Somebody from your game cannot come round, cannot ring your school, and might not be who they say they are. Your team stands in the same room as you."
+      ],
+      "file": "/audio/voice/a9ba5146d5261363.mp3"
+    },
+    {
+      "key": "51d9227f9fb43405",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A streamer does not know your name and never will. Your team is people who know you back.",
+      "lines": [
+        "A streamer does not know your name and never will. Your team is people who know you back."
+      ],
+      "file": "/audio/voice/51d9227f9fb43405.mp3"
+    },
+    {
+      "key": "24894ceb2088ea56",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is the one thing the sender is hoping for. Nothing good gets typed by a racing heart.",
+      "lines": [
+        "That is the one thing the sender is hoping for. Nothing good gets typed by a racing heart."
+      ],
+      "file": "/audio/voice/24894ceb2088ea56.mp3"
+    },
+    {
+      "key": "3490e6e5bb1c25e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hiding the message does not un-send it, and your heart is still going fast under that cushion.",
+      "lines": [
+        "Hiding the message does not un-send it, and your heart is still going fast under that cushion."
+      ],
+      "file": "/audio/voice/3490e6e5bb1c25e2.mp3"
+    },
+    {
+      "key": "5de4391e485a9cdd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It feels wonderful for about four seconds, and then the proof is gone too. Snap it first.",
+      "lines": [
+        "It feels wonderful for about four seconds, and then the proof is gone too. Snap it first."
+      ],
+      "file": "/audio/voice/5de4391e485a9cdd.mp3"
+    },
+    {
+      "key": "d243fd3be8e71890",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Reading the message again only hurts you twice, and it is still there on the screen either way. One picture is all anybody needs.",
+      "lines": [
+        "Reading the message again only hurts you twice, and it is still there on the screen either way. One picture is all anybody needs."
+      ],
+      "file": "/audio/voice/d243fd3be8e71890.mp3"
+    },
+    {
+      "key": "575bb9d56287c26e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Clever or not, it is still an answer, and answering is what those itching thumbs want to do. The sender does not mind which kind they get.",
+      "lines": [
+        "Clever or not, it is still an answer, and answering is what those itching thumbs want to do. The sender does not mind which kind they get."
+      ],
+      "file": "/audio/voice/575bb9d56287c26e.mp3"
+    },
+    {
+      "key": "458b6305fc9d36e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now it is on more screens than before, and the sender got an audience out of it.",
+      "lines": [
+        "Now it is on more screens than before, and the sender got an audience out of it."
+      ],
+      "file": "/audio/voice/458b6305fc9d36e8.mp3"
+    },
+    {
+      "key": "3c08004569a934e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Muting leaves the sender in your app, still sending, just where you cannot see it. Blocking is the one that closes the door.",
+      "lines": [
+        "Muting leaves the sender in your app, still sending, just where you cannot see it. Blocking is the one that closes the door."
+      ],
+      "file": "/audio/voice/3c08004569a934e9.mp3"
+    },
+    {
+      "key": "518d79ab794325c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is a lot of work to avoid one button, and everything you built goes with it. Block them instead.",
+      "lines": [
+        "That is a lot of work to avoid one button, and everything you built goes with it. Block them instead."
+      ],
+      "file": "/audio/voice/518d79ab794325c5.mp3"
+    },
+    {
+      "key": "7960e06e6484dd75",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You are brave enough, but the proof you saved is exactly what a grown-up can act on. They can do things you cannot, like ring a school.",
+      "lines": [
+        "You are brave enough, but the proof you saved is exactly what a grown-up can act on. They can do things you cannot, like ring a school."
+      ],
+      "file": "/audio/voice/7960e06e6484dd75.mp3"
+    },
+    {
+      "key": "888ee663753e4a35",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Once is already enough, and that proof is safe now either way. Waiting just means carrying it longer.",
+      "lines": [
+        "Once is already enough, and that proof is safe now either way. Waiting just means carrying it longer."
+      ],
+      "file": "/audio/voice/888ee663753e4a35.mp3"
+    },
+    {
+      "key": "041e79a3babb6d4b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "'You made me' is a trick, nobody can make someone be unkind. Not posting, not replying, nothing you did. The person who chose the mean words is the only one at fault.",
+      "lines": [
+        "'You made me' is a trick, nobody can make someone be unkind. Not posting, not replying, nothing you did. The person who chose the mean words is the only one at fault."
+      ],
+      "file": "/audio/voice/041e79a3babb6d4b.mp3"
+    },
+    {
+      "key": "b19916ce3106244a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps.",
+      "lines": [
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps."
+      ],
+      "file": "/audio/voice/b19916ce3106244a.mp3"
+    },
+    {
+      "key": "5570e8eb7927c5f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even a polite 'stop' is a reply, and a reply is what the sender is fishing for. Block shuts the door without giving them a single thing, then tell a trusted grown-up.",
+      "lines": [
+        "Even a polite 'stop' is a reply, and a reply is what the sender is fishing for. Block shuts the door without giving them a single thing, then tell a trusted grown-up."
+      ],
+      "file": "/audio/voice/5570e8eb7927c5f8.mp3"
+    },
+    {
+      "key": "3f2c64cbb9603417",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Deleting makes it feel gone, but then there's nothing to show your team, and begging tells the trickster the trick is working. Screenshot first, then a trusted grown-up can see exactly what happened and help fast.",
+      "lines": [
+        "Deleting makes it feel gone, but then there's nothing to show your team, and begging tells the trickster the trick is working. Screenshot first, then a trusted grown-up can see exactly what happened and help fast."
+      ],
+      "file": "/audio/voice/3f2c64cbb9603417.mp3"
+    },
+    {
+      "key": "5bb2ec11056ff439",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door.",
+      "lines": [
+        "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door."
+      ],
+      "file": "/audio/voice/5bb2ec11056ff439.mp3"
+    },
+    {
+      "key": "832f04ea8cfdf0e4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The sender made the choice - it is never your fault.",
+      "lines": [
+        "The sender made the choice - it is never your fault."
+      ],
+      "file": "/audio/voice/832f04ea8cfdf0e4.mp3"
+    },
+    {
+      "key": "977b5a617442e1e5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Childhelp - free, just for kids, always awake.",
+      "lines": [
+        "Childhelp - free, just for kids, always awake."
+      ],
+      "file": "/audio/voice/977b5a617442e1e5.mp3"
+    },
+    {
+      "key": "00524d9ebc0bb7cf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Camera, not trash - your team helps best when they can see.",
+      "lines": [
+        "Camera, not trash - your team helps best when they can see."
+      ],
+      "file": "/audio/voice/00524d9ebc0bb7cf.mp3"
+    },
+    {
+      "key": "ff1bdcf251ee6f86",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Starve it, don't feed it - block instead.",
+      "lines": [
+        "Starve it, don't feed it - block instead."
+      ],
+      "file": "/audio/voice/ff1bdcf251ee6f86.mp3"
+    },
+    {
+      "key": "064a67abfb1acdca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Seeing the evidence is how grown-ups help fast - freeze it first.",
+      "lines": [
+        "Seeing the evidence is how grown-ups help fast - freeze it first."
+      ],
+      "file": "/audio/voice/064a67abfb1acdca.mp3"
+    },
+    {
+      "key": "84ec765a8e622cc6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Captains pick their team early - then help is one tell away.",
+      "lines": [
+        "Captains pick their team early - then help is one tell away."
+      ],
+      "file": "/audio/voice/84ec765a8e622cc6.mp3"
+    },
+    {
+      "key": "6bc60ee66e92b0f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Telling someone starts making it lighter right away - that's the whole trick.",
+      "lines": [
+        "Telling someone starts making it lighter right away - that's the whole trick."
+      ],
+      "file": "/audio/voice/6bc60ee66e92b0f0.mp3"
+    },
+    {
+      "key": "c868b611b38bb761",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fingers, camera, door, team, phone - freeze the proof BEFORE the door shuts.",
+      "lines": [
+        "Fingers, camera, door, team, phone - freeze the proof BEFORE the door shuts."
+      ],
+      "file": "/audio/voice/c868b611b38bb761.mp3"
+    },
+    {
+      "key": "85711fffda7bddcc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Safety secrets are the kind you SHARE with a grown-up - that's real friendship.",
+      "lines": [
+        "Safety secrets are the kind you SHARE with a grown-up - that's real friendship."
+      ],
+      "file": "/audio/voice/85711fffda7bddcc.mp3"
+    },
+    {
+      "key": "b907da5a8d8d5833",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I opened it",
+      "lines": [
+        "I opened it"
+      ],
+      "file": "/audio/voice/b907da5a8d8d5833.mp3"
+    },
+    {
+      "key": "dbb962f628d6423b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I replied once",
+      "lines": [
+        "I replied once"
+      ],
+      "file": "/audio/voice/dbb962f628d6423b.mp3"
+    },
+    {
+      "key": "db2c48e001f18761",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I waited to tell",
+      "lines": [
+        "I waited to tell"
+      ],
+      "file": "/audio/voice/db2c48e001f18761.mp3"
+    },
+    {
+      "key": "3d75ea02cfba2120",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I laughed along",
+      "lines": [
+        "I laughed along"
+      ],
+      "file": "/audio/voice/3d75ea02cfba2120.mp3"
+    },
+    {
+      "key": "a52d25f207c1e637",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "I clicked their link",
+      "lines": [
+        "I clicked their link"
+      ],
+      "file": "/audio/voice/a52d25f207c1e637.mp3"
+    },
+    {
+      "key": "e8a38df09737fbbe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mum or Dad at home",
+      "lines": [
+        "Mum or Dad at home"
+      ],
+      "file": "/audio/voice/e8a38df09737fbbe.mp3"
+    },
+    {
+      "key": "7682bb0e25a3a64f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mrs Okafor, my teacher",
+      "lines": [
+        "Mrs Okafor, my teacher"
+      ],
+      "file": "/audio/voice/7682bb0e25a3a64f.mp3"
+    },
+    {
+      "key": "962be73a3144ebed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran, two streets away",
+      "lines": [
+        "Gran, two streets away"
+      ],
+      "file": "/audio/voice/962be73a3144ebed.mp3"
+    },
+    {
+      "key": "5d7c81dea497157e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Childhelp, 1-800-422-4453",
+      "lines": [
+        "Childhelp, 1-800-422-4453"
+      ],
+      "file": "/audio/voice/5d7c81dea497157e.mp3"
+    },
+    {
+      "key": "666dda81eed6d985",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Static, nobody there",
+      "lines": [
+        "Static, nobody there"
+      ],
+      "file": "/audio/voice/666dda81eed6d985.mp3"
+    },
+    {
+      "key": "ffe718e18876b858",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "ShadowFox99, from my game",
+      "lines": [
+        "ShadowFox99, from my game"
+      ],
+      "file": "/audio/voice/ffe718e18876b858.mp3"
+    },
+    {
+      "key": "79c8592942c19b90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "My favourite streamer",
+      "lines": [
+        "My favourite streamer"
+      ],
+      "file": "/audio/voice/79c8592942c19b90.mp3"
+    },
+    {
+      "key": "6289b14cbdb5bd7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A ping from grumble gull. You're rubbish at this game. Answer me!",
+      "lines": [
+        "A ping from grumble gull. You're rubbish at this game. Answer me!"
+      ],
+      "file": "/audio/voice/6289b14cbdb5bd7b.mp3"
+    },
+    {
+      "key": "e5da0a47e86ed6b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A ping from no name caller. Nobody on this coast wants you around.",
+      "lines": [
+        "A ping from no name caller. Nobody on this coast wants you around."
+      ],
+      "file": "/audio/voice/e5da0a47e86ed6b4.mp3"
+    },
+    {
+      "key": "7c52021a31236112",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A ping from buzz bother. Say something back. I'm waiting!",
+      "lines": [
+        "A ping from buzz bother. Say something back. I'm waiting!"
+      ],
+      "file": "/audio/voice/7c52021a31236112.mp3"
+    },
+    {
+      "key": "ef29c594dff7c533",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A ping from loudhailer lou. Look at Priya's painting. It's so wobbly! Everyone laugh at her!",
+      "lines": [
+        "A ping from loudhailer lou. Look at Priya's painting. It's so wobbly! Everyone laugh at her!"
+      ],
+      "file": "/audio/voice/ef29c594dff7c533.mp3"
+    },
+    {
+      "key": "9dd28efec51cfe17",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That reply is power for their signal, and it makes it stronger however clever the words are. A hero starves it instead.",
+      "lines": [
+        "That reply is power for their signal, and it makes it stronger however clever the words are. A hero starves it instead."
+      ],
+      "file": "/audio/voice/9dd28efec51cfe17.mp3"
+    },
+    {
+      "key": "21209de51fdc4868",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "But sending mean words back keeps their signal strong, even when you are sticking up for a friend. Priya needs help, not a bigger argument.",
+      "lines": [
+        "But sending mean words back keeps their signal strong, even when you are sticking up for a friend. Priya needs help, not a bigger argument."
+      ],
+      "file": "/audio/voice/21209de51fdc4868.mp3"
+    },
+    {
+      "key": "62c70b14126bc66b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That ping was aimed at Priya, not at you. Going quiet is right when it is about you, but here it would leave her all alone.",
+      "lines": [
+        "That ping was aimed at Priya, not at you. Going quiet is right when it is about you, but here it would leave her all alone."
+      ],
+      "file": "/audio/voice/62c70b14126bc66b.mp3"
+    },
+    {
+      "key": "81597abacb8582b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The name at the top. That is who sent it, and it is the first thing anybody will ask you.",
+      "lines": [
+        "The name at the top. That is who sent it, and it is the first thing anybody will ask you."
+      ],
+      "file": "/audio/voice/81597abacb8582b2.mp3"
+    },
+    {
+      "key": "5a9e84dafd626290",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And the time stamp, which shows exactly when it landed. That matters when there has been more than one.",
+      "lines": [
+        "And the time stamp, which shows exactly when it landed. That matters when there has been more than one."
+      ],
+      "file": "/audio/voice/5a9e84dafd626290.mp3"
+    },
+    {
+      "key": "0ae705c89e652786",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Then the words themselves, frozen exactly as they were sent. Now nobody can say it never happened.",
+      "lines": [
+        "Then the words themselves, frozen exactly as they were sent. Now nobody can say it never happened."
+      ],
+      "file": "/audio/voice/0ae705c89e652786.mp3"
+    },
+    {
+      "key": "c43fe48ab41ea260",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is the screenshot, still blank. Tap the sheet and let's see what you kept.",
+      "lines": [
+        "Here is the screenshot, still blank. Tap the sheet and let's see what you kept."
+      ],
+      "file": "/audio/voice/c43fe48ab41ea260.mp3"
+    },
+    {
+      "key": "948776fa174ead86",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There it is. Now find the three things that make this useful: who sent it, when it came, and what it actually said.",
+      "lines": [
+        "There it is. Now find the three things that make this useful: who sent it, when it came, and what it actually said."
+      ],
+      "file": "/audio/voice/948776fa174ead86.mp3"
+    },
+    {
+      "key": "14b8864a75d98807",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You have the proof. So what happens to it now: delete it, or show a grown-up?",
+      "lines": [
+        "You have the proof. So what happens to it now: delete it, or show a grown-up?"
+      ],
+      "file": "/audio/voice/14b8864a75d98807.mp3"
+    },
+    {
+      "key": "7cff0a4d95f00b75",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Deleting feels wonderful for about four seconds. Then the message is gone, and so is the only thing that shows a grown-up who sent it, what it said and when it came. Keep it, show it once, and let them carry it from there.",
+      "lines": [
+        "Deleting feels wonderful for about four seconds. Then the message is gone, and so is the only thing that shows a grown-up who sent it, what it said and when it came. Keep it, show it once, and let them carry it from there."
+      ],
+      "file": "/audio/voice/7cff0a4d95f00b75.mp3"
+    },
+    {
+      "key": "fc9a66995bc8c0ba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A message lands and your tummy drops. Your heart is going fast.",
+      "lines": [
+        "A message lands and your tummy drops. Your heart is going fast."
+      ],
+      "file": "/audio/voice/fc9a66995bc8c0ba.mp3"
+    },
+    {
+      "key": "2f8cf4d90074a9d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You are calmer. The message is still on the screen.",
+      "lines": [
+        "You are calmer. The message is still on the screen."
+      ],
+      "file": "/audio/voice/2f8cf4d90074a9d6.mp3"
+    },
+    {
+      "key": "54ba83f701a5b07e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The proof is safe. Your thumbs are itching to answer.",
+      "lines": [
+        "The proof is safe. Your thumbs are itching to answer."
+      ],
+      "file": "/audio/voice/54ba83f701a5b07e.mp3"
+    },
+    {
+      "key": "0edd8866ca451e45",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You have not replied. The sender is still there in your app.",
+      "lines": [
+        "You have not replied. The sender is still there in your app."
+      ],
+      "file": "/audio/voice/0edd8866ca451e45.mp3"
+    },
+    {
+      "key": "f660666445e9d568",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Blocked, and the proof is in your camera roll.",
+      "lines": [
+        "Blocked, and the proof is in your camera roll."
+      ],
+      "file": "/audio/voice/f660666445e9d568.mp3"
+    },
+    {
+      "key": "ccf7577b1fcc0059",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam's tummy dropped when a mean message landed, and now Sam is just staring at the screen.",
+      "lines": [
+        "Sam's tummy dropped when a mean message landed, and now Sam is just staring at the screen."
+      ],
+      "file": "/audio/voice/ccf7577b1fcc0059.mp3"
+    },
+    {
+      "key": "14bed6b2c6f52b6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ali has sent eleven messages back, and every reply is cleverer than the last one.",
+      "lines": [
+        "Ali has sent eleven messages back, and every reply is cleverer than the last one."
+      ],
+      "file": "/audio/voice/14bed6b2c6f52b6d.mp3"
+    },
+    {
+      "key": "59b5b230e256b881",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nia thinks the whole thing is her fault because she posted the photo in the first place.",
+      "lines": [
+        "Nia thinks the whole thing is her fault because she posted the photo in the first place."
+      ],
+      "file": "/audio/voice/59b5b230e256b881.mp3"
+    },
+    {
+      "key": "1a957162670313a3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Theo deleted the message straight away, and now a grown-up is asking what it actually said.",
+      "lines": [
+        "Theo deleted the message straight away, and now a grown-up is asking what it actually said."
+      ],
+      "file": "/audio/voice/1a957162670313a3.mp3"
+    },
+    {
+      "key": "23c07a12bb69dfd9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Kai has been carrying this on their own for a whole week, and has not told a single grown-up.",
+      "lines": [
+        "Kai has been carrying this on their own for a whole week, and has not told a single grown-up."
+      ],
+      "file": "/audio/voice/23c07a12bb69dfd9.mp3"
     },
     {
       "key": "e9796d60e381f39f",
@@ -33531,6 +34906,611 @@
         "Replying with your school hands a stranger the one thing they were fishing for. Down the burrow."
       ],
       "file": "/audio/voice/21605d128ffd0318.mp3"
+    },
+    {
+      "key": "f1ff5b2d9ed4a773",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You opened it, and opening a message is only reading it. You cannot know what is inside until you look, and looking has never made anybody the bad guy.",
+      "lines": [
+        "That's right!",
+        "You opened it, and opening a message is only reading it. You cannot know what is inside until you look, and looking has never made anybody the bad guy."
+      ],
+      "file": "/audio/voice/f1ff5b2d9ed4a773.mp3"
+    },
+    {
+      "key": "cb757d2c0c6532f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You replied once, and replying usually means you wanted it to stop. That is a kind instinct, and it hands nothing back to you.",
+      "lines": [
+        "That's right!",
+        "You replied once, and replying usually means you wanted it to stop. That is a kind instinct, and it hands nothing back to you."
+      ],
+      "file": "/audio/voice/cb757d2c0c6532f9.mp3"
+    },
+    {
+      "key": "2d4aad3402930e8c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You waited, and waiting usually means you were scared, or hoping it would go away on its own. Telling late is still telling, and it still counts.",
+      "lines": [
+        "That's right!",
+        "You waited, and waiting usually means you were scared, or hoping it would go away on its own. Telling late is still telling, and it still counts."
+      ],
+      "file": "/audio/voice/2d4aad3402930e8c.mp3"
+    },
+    {
+      "key": "7df7abf21a6b5e49",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Laughing when you are uncomfortable is something bodies do all by themselves. It was never you agreeing.",
+      "lines": [
+        "That's right!",
+        "Laughing when you are uncomfortable is something bodies do all by themselves. It was never you agreeing."
+      ],
+      "file": "/audio/voice/7df7abf21a6b5e49.mp3"
+    },
+    {
+      "key": "78c624bd775b43a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A link that hides what it really is was built to be clicked. Falling for a trap is the trap working, not you failing.",
+      "lines": [
+        "That's right!",
+        "A link that hides what it really is was built to be clicked. Falling for a trap is the trap working, not you failing."
+      ],
+      "file": "/audio/voice/78c624bd775b43a9.mp3"
+    },
+    {
+      "key": "f07ca7b4f807366c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Opening a message is only reading it. You cannot know what is inside until you look.",
+      "lines": [
+        "Not quite.",
+        "Opening a message is only reading it. You cannot know what is inside until you look."
+      ],
+      "file": "/audio/voice/f07ca7b4f807366c.mp3"
+    },
+    {
+      "key": "94ab8df910b276a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Replying usually means you wanted it to stop. That never makes their words yours.",
+      "lines": [
+        "Not quite.",
+        "Replying usually means you wanted it to stop. That never makes their words yours."
+      ],
+      "file": "/audio/voice/94ab8df910b276a6.mp3"
+    },
+    {
+      "key": "ffc45099b2a6c2d0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Only one person chose to be unkind, and it was not you.",
+      "lines": [
+        "Not quite.",
+        "Only one person chose to be unkind, and it was not you."
+      ],
+      "file": "/audio/voice/ffc45099b2a6c2d0.mp3"
+    },
+    {
+      "key": "0ab889573de6f804",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The people at home come running first, and they would rather know at midnight than find out next week.",
+      "lines": [
+        "That's right!",
+        "The people at home come running first, and they would rather know at midnight than find out next week."
+      ],
+      "file": "/audio/voice/0ab889573de6f804.mp3"
+    },
+    {
+      "key": "3c78a6de7016e188",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A teacher you like can sort out things that happen with people at school, and they have done it many times before.",
+      "lines": [
+        "That's right!",
+        "A teacher you like can sort out things that happen with people at school, and they have done it many times before."
+      ],
+      "file": "/audio/voice/3c78a6de7016e188.mp3"
+    },
+    {
+      "key": "fd5caad82af9fa2b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Gran is a brilliant pick. Two streets away is close enough to come round, and a grandparent is never too busy for you.",
+      "lines": [
+        "That's right!",
+        "Gran is a brilliant pick. Two streets away is close enough to come round, and a grandparent is never too busy for you."
+      ],
+      "file": "/audio/voice/fd5caad82af9fa2b.mp3"
+    },
+    {
+      "key": "81775a59417b0e61",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you.",
+      "lines": [
+        "That's right!",
+        "Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you."
+      ],
+      "file": "/audio/voice/81775a59417b0e61.mp3"
+    },
+    {
+      "key": "6fa87793519ef606",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That channel is just hiss. When you really need somebody, pick a person you could name out loud instead.",
+      "lines": [
+        "Not quite.",
+        "That channel is just hiss. When you really need somebody, pick a person you could name out loud instead."
+      ],
+      "file": "/audio/voice/6fa87793519ef606.mp3"
+    },
+    {
+      "key": "3e4ed3fba269b08a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Somebody from your game cannot come round, cannot ring your school, and might not be who they say they are. Your team stands in the same room as you.",
+      "lines": [
+        "Not quite.",
+        "Somebody from your game cannot come round, cannot ring your school, and might not be who they say they are. Your team stands in the same room as you."
+      ],
+      "file": "/audio/voice/3e4ed3fba269b08a.mp3"
+    },
+    {
+      "key": "a195ba0e9974b500",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A streamer does not know your name and never will. Your team is people who know you back.",
+      "lines": [
+        "Not quite.",
+        "A streamer does not know your name and never will. Your team is people who know you back."
+      ],
+      "file": "/audio/voice/a195ba0e9974b500.mp3"
+    },
+    {
+      "key": "94b62e5436f05fc9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is exactly when it is hardest to think. Names you already know come much faster.",
+      "lines": [
+        "Not quite.",
+        "That is exactly when it is hardest to think. Names you already know come much faster."
+      ],
+      "file": "/audio/voice/94b62e5436f05fc9.mp3"
+    },
+    {
+      "key": "089bbd5db1156d78",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You never have to fix it yourself first. Your team wants to hear from you straight away.",
+      "lines": [
+        "Not quite.",
+        "You never have to fix it yourself first. Your team wants to hear from you straight away."
+      ],
+      "file": "/audio/voice/089bbd5db1156d78.mp3"
+    },
+    {
+      "key": "50dede4ba18556aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Once is enough. Your team would rather hear about one message than ten.",
+      "lines": [
+        "Not quite.",
+        "Once is enough. Your team would rather hear about one message than ten."
+      ],
+      "file": "/audio/voice/50dede4ba18556aa.mp3"
+    },
+    {
+      "key": "4bddb91ab7fbe515",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You gave it nothing, so there was nothing to burn. Notice how it ends with a demand: answer me. That is the whole trick.",
+      "lines": [
+        "That's right!",
+        "You gave it nothing, so there was nothing to burn. Notice how it ends with a demand: answer me. That is the whole trick."
+      ],
+      "file": "/audio/voice/4bddb91ab7fbe515.mp3"
+    },
+    {
+      "key": "30d25d3a2ab9e174",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Starved again. That caller will not even say who they are, and a name-less caller is hoping you answer before you notice.",
+      "lines": [
+        "That's right!",
+        "Starved again. That caller will not even say who they are, and a name-less caller is hoping you answer before you notice."
+      ],
+      "file": "/audio/voice/30d25d3a2ab9e174.mp3"
+    },
+    {
+      "key": "8c5e47f6e7f3df3d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That one asked out loud for the very thing that keeps it going, and you still gave it nothing. The signal is nearly out.",
+      "lines": [
+        "That's right!",
+        "That one asked out loud for the very thing that keeps it going, and you still gave it nothing. The signal is nearly out."
+      ],
+      "file": "/audio/voice/8c5e47f6e7f3df3d.mp3"
+    },
+    {
+      "key": "2146e1f4412a6e92",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That ping was not aimed at you, so staying quiet would have left Priya on her own. You sent help and told a grown-up, which is the kind way to be loud.",
+      "lines": [
+        "That's right!",
+        "That ping was not aimed at you, so staying quiet would have left Priya on her own. You sent help and told a grown-up, which is the kind way to be loud."
+      ],
+      "file": "/audio/voice/2146e1f4412a6e92.mp3"
+    },
+    {
+      "key": "b884ece60f86fbbc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That reply is power for their signal, and it makes it stronger however clever the words are. A hero starves it instead.",
+      "lines": [
+        "Not quite.",
+        "That reply is power for their signal, and it makes it stronger however clever the words are. A hero starves it instead."
+      ],
+      "file": "/audio/voice/b884ece60f86fbbc.mp3"
+    },
+    {
+      "key": "08045a3f9c9dd297",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. But sending mean words back keeps their signal strong, even when you are sticking up for a friend. Priya needs help, not a bigger argument.",
+      "lines": [
+        "Not quite.",
+        "But sending mean words back keeps their signal strong, even when you are sticking up for a friend. Priya needs help, not a bigger argument."
+      ],
+      "file": "/audio/voice/08045a3f9c9dd297.mp3"
+    },
+    {
+      "key": "553c505e92bc47ea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That ping was aimed at Priya, not at you. Going quiet is right when it is about you, but here it would leave her all alone.",
+      "lines": [
+        "Not quite.",
+        "That ping was aimed at Priya, not at you. Going quiet is right when it is about you, but here it would leave her all alone."
+      ],
+      "file": "/audio/voice/553c505e92bc47ea.mp3"
+    },
+    {
+      "key": "fd784fd5b96ca817",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Blocking is a choice, not a fright. It means somebody decided you were finished talking.",
+      "lines": [
+        "Not quite.",
+        "Blocking is a choice, not a fright. It means somebody decided you were finished talking."
+      ],
+      "file": "/audio/voice/fd784fd5b96ca817.mp3"
+    },
+    {
+      "key": "646c8e1c59ac398e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You showed it. The proof does the talking now, a grown-up can act on it, and you never have to read it again.",
+      "lines": [
+        "That's right!",
+        "You showed it. The proof does the talking now, a grown-up can act on it, and you never have to read it again."
+      ],
+      "file": "/audio/voice/646c8e1c59ac398e.mp3"
+    },
+    {
+      "key": "ebb74ca9ffdfe98e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Deleting feels wonderful for about four seconds. Then the message is gone, and so is the only thing that shows a grown-up who sent it, what it said and when it came. Keep it, show it once, and let them carry it from there.",
+      "lines": [
+        "Not quite.",
+        "Deleting feels wonderful for about four seconds. Then the message is gone, and so is the only thing that shows a grown-up who sent it, what it said and when it came. Keep it, show it once, and let them carry it from there."
+      ],
+      "file": "/audio/voice/ebb74ca9ffdfe98e.mp3"
+    },
+    {
+      "key": "ac6c2e96e35394af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A fast heart makes everything look worse. Three slow breaths and your thinking comes back online.",
+      "lines": [
+        "That's right!",
+        "A fast heart makes everything look worse. Three slow breaths and your thinking comes back online."
+      ],
+      "file": "/audio/voice/ac6c2e96e35394af.mp3"
+    },
+    {
+      "key": "6ece6557399d25a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is the one thing the sender is hoping for. Nothing good gets typed by a racing heart.",
+      "lines": [
+        "Not quite.",
+        "That is the one thing the sender is hoping for. Nothing good gets typed by a racing heart."
+      ],
+      "file": "/audio/voice/6ece6557399d25a9.mp3"
+    },
+    {
+      "key": "8f061b06a1d141ed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Hiding the message does not un-send it, and your heart is still going fast under that cushion.",
+      "lines": [
+        "Not quite.",
+        "Hiding the message does not un-send it, and your heart is still going fast under that cushion."
+      ],
+      "file": "/audio/voice/8f061b06a1d141ed.mp3"
+    },
+    {
+      "key": "08c03c01cbcff7a7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Now the proof is frozen: who sent it, what it said, when it came. That is what lets a grown-up act fast.",
+      "lines": [
+        "That's right!",
+        "Now the proof is frozen: who sent it, what it said, when it came. That is what lets a grown-up act fast."
+      ],
+      "file": "/audio/voice/08c03c01cbcff7a7.mp3"
+    },
+    {
+      "key": "18cba080b2357913",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It feels wonderful for about four seconds, and then the proof is gone too. Snap it first.",
+      "lines": [
+        "Not quite.",
+        "It feels wonderful for about four seconds, and then the proof is gone too. Snap it first."
+      ],
+      "file": "/audio/voice/18cba080b2357913.mp3"
+    },
+    {
+      "key": "c95441a8e8162f44",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Reading the message again only hurts you twice, and it is still there on the screen either way. One picture is all anybody needs.",
+      "lines": [
+        "Not quite.",
+        "Reading the message again only hurts you twice, and it is still there on the screen either way. One picture is all anybody needs."
+      ],
+      "file": "/audio/voice/c95441a8e8162f44.mp3"
+    },
+    {
+      "key": "bcfb5dc8ea095f91",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Those itching thumbs are exactly what the sender is waiting for. Send nothing and there is nothing to burn.",
+      "lines": [
+        "That's right!",
+        "Those itching thumbs are exactly what the sender is waiting for. Send nothing and there is nothing to burn."
+      ],
+      "file": "/audio/voice/bcfb5dc8ea095f91.mp3"
+    },
+    {
+      "key": "18bf2bc227dd0e73",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Clever or not, it is still an answer, and answering is what those itching thumbs want to do. The sender does not mind which kind they get.",
+      "lines": [
+        "Not quite.",
+        "Clever or not, it is still an answer, and answering is what those itching thumbs want to do. The sender does not mind which kind they get."
+      ],
+      "file": "/audio/voice/18bf2bc227dd0e73.mp3"
+    },
+    {
+      "key": "6e416ef059dc593d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Now it is on more screens than before, and the sender got an audience out of it.",
+      "lines": [
+        "Not quite.",
+        "Now it is on more screens than before, and the sender got an audience out of it."
+      ],
+      "file": "/audio/voice/6e416ef059dc593d.mp3"
+    },
+    {
+      "key": "2dac4e560c2b6fb8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Blocking takes that sender out of your app for good. It is not rude and it is not fear, it is you choosing who reaches you.",
+      "lines": [
+        "That's right!",
+        "Blocking takes that sender out of your app for good. It is not rude and it is not fear, it is you choosing who reaches you."
+      ],
+      "file": "/audio/voice/2dac4e560c2b6fb8.mp3"
+    },
+    {
+      "key": "5e9cb2abc6106326",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Muting leaves the sender in your app, still sending, just where you cannot see it. Blocking is the one that closes the door.",
+      "lines": [
+        "Not quite.",
+        "Muting leaves the sender in your app, still sending, just where you cannot see it. Blocking is the one that closes the door."
+      ],
+      "file": "/audio/voice/5e9cb2abc6106326.mp3"
+    },
+    {
+      "key": "87caae5803c0d6b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is a lot of work to avoid one button, and everything you built goes with it. Block them instead.",
+      "lines": [
+        "Not quite.",
+        "That is a lot of work to avoid one button, and everything you built goes with it. Block them instead."
+      ],
+      "file": "/audio/voice/87caae5803c0d6b8.mp3"
+    },
+    {
+      "key": "f3e8dbb5e78ef9ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! This is the step that ends it. You hand over the whole thing and stop carrying it by yourself.",
+      "lines": [
+        "That's right!",
+        "This is the step that ends it. You hand over the whole thing and stop carrying it by yourself."
+      ],
+      "file": "/audio/voice/f3e8dbb5e78ef9ca.mp3"
+    },
+    {
+      "key": "40a52f27163b6ce0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You are brave enough, but the proof you saved is exactly what a grown-up can act on. They can do things you cannot, like ring a school.",
+      "lines": [
+        "Not quite.",
+        "You are brave enough, but the proof you saved is exactly what a grown-up can act on. They can do things you cannot, like ring a school."
+      ],
+      "file": "/audio/voice/40a52f27163b6ce0.mp3"
+    },
+    {
+      "key": "66511b0aba7532eb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Once is already enough, and that proof is safe now either way. Waiting just means carrying it longer.",
+      "lines": [
+        "Not quite.",
+        "Once is already enough, and that proof is safe now either way. Waiting just means carrying it longer."
+      ],
+      "file": "/audio/voice/66511b0aba7532eb.mp3"
+    },
+    {
+      "key": "763b14d2fa5352bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Blocking comes later. A calm head comes first, so the rest goes right.",
+      "lines": [
+        "Not quite.",
+        "Blocking comes later. A calm head comes first, so the rest goes right."
+      ],
+      "file": "/audio/voice/763b14d2fa5352bf.mp3"
+    },
+    {
+      "key": "55cb5273850f7137",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Replying is never a step. It is the fuel the sender wants.",
+      "lines": [
+        "Not quite.",
+        "Replying is never a step. It is the fuel the sender wants."
+      ],
+      "file": "/audio/voice/55cb5273850f7137.mp3"
+    },
+    {
+      "key": "c96c56e0f8bb209a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Breathing is always the first move. A racing heart cannot think, and everything else works better once Sam is calm.",
+      "lines": [
+        "That's right!",
+        "Breathing is always the first move. A racing heart cannot think, and everything else works better once Sam is calm."
+      ],
+      "file": "/audio/voice/c96c56e0f8bb209a.mp3"
+    },
+    {
+      "key": "12bc34d09b4d6a9c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Sam is frozen, so nothing else will happen yet. The very first step of the protocol comes before all the others.",
+      "lines": [
+        "Not quite.",
+        "Sam is frozen, so nothing else will happen yet. The very first step of the protocol comes before all the others."
+      ],
+      "file": "/audio/voice/12bc34d09b4d6a9c.mp3"
+    },
+    {
+      "key": "b6989b438c4a4c7c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every reply was fuel, however clever it was. Sending nothing and blocking takes the sender's signal off Ali's screen.",
+      "lines": [
+        "That's right!",
+        "Every reply was fuel, however clever it was. Sending nothing and blocking takes the sender's signal off Ali's screen."
+      ],
+      "file": "/audio/voice/b6989b438c4a4c7c.mp3"
+    },
+    {
+      "key": "7258828741331de8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ali is still typing, so this one is about the replies first. What keeps a mean sender going?",
+      "lines": [
+        "Not quite.",
+        "Ali is still typing, so this one is about the replies first. What keeps a mean sender going?"
+      ],
+      "file": "/audio/voice/7258828741331de8.mp3"
+    },
+    {
+      "key": "d0a5111635af923b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Posting a photo is not the same as choosing to be unkind about it. The person who wrote the words owns them, not Nia.",
+      "lines": [
+        "That's right!",
+        "Posting a photo is not the same as choosing to be unkind about it. The person who wrote the words owns them, not Nia."
+      ],
+      "file": "/audio/voice/d0a5111635af923b.mp3"
+    },
+    {
+      "key": "3e203717ca48dab7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nia is carrying a stone that was never hers. Before anything practical, she needs the biggest truth of the week.",
+      "lines": [
+        "Not quite.",
+        "Nia is carrying a stone that was never hers. Before anything practical, she needs the biggest truth of the week."
+      ],
+      "file": "/audio/voice/3e203717ca48dab7.mp3"
+    },
+    {
+      "key": "a7dc8fb239ed39fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A screenshot would have frozen who sent it, what it said and when. Next time Theo snaps it before anything else disappears.",
+      "lines": [
+        "That's right!",
+        "A screenshot would have frozen who sent it, what it said and when. Next time Theo snaps it before anything else disappears."
+      ],
+      "file": "/audio/voice/a7dc8fb239ed39fa.mp3"
+    },
+    {
+      "key": "71186a9814d1b910",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Theo has nothing left to show anybody. Think about what a delete takes with it.",
+      "lines": [
+        "Not quite.",
+        "Theo has nothing left to show anybody. Think about what a delete takes with it."
+      ],
+      "file": "/audio/voice/71186a9814d1b910.mp3"
+    },
+    {
+      "key": "2c5e59f3e64b5f6f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A week is a long time to carry something alone. Kai's team can do things Kai cannot, and telling late still counts.",
+      "lines": [
+        "That's right!",
+        "A week is a long time to carry something alone. Kai's team can do things Kai cannot, and telling late still counts."
+      ],
+      "file": "/audio/voice/2c5e59f3e64b5f6f.mp3"
+    },
+    {
+      "key": "3773222f39cee303",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Coping alone that long is the hard part, and Kai has already done it. What is missing is other people.",
+      "lines": [
+        "Not quite.",
+        "Coping alone that long is the hard part, and Kai has already done it. What is missing is other people."
+      ],
+      "file": "/audio/voice/3773222f39cee303.mp3"
     },
     {
       "key": "7f307ae0a7a50fcc",

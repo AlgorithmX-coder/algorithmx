@@ -168,6 +168,27 @@ const ENGINES = {
     const base = r.replace(/spots:\s*\[[\s\S]*?\n\s{10,}\],?/, "");
     return { label: "decide " + (fld(base, "appName") ?? ""), right: fld(base, "why"), wrong: fld(base, "whyWrong") };
   }),
+  // Week 11 engines (2026-09-19). The console has no wrong path by design: a
+  // mistimed breath is never reported as a child's mistake, so every stone is a
+  // right-only row.
+  calmConsole: (span) => objs(span, "stones").map((t) => ({
+    label: "stone " + (fld(t, "label") ?? ""),
+    right: fld(t, "why"),
+    wrong: null,
+    only: "right",
+  })),
+  radioRoll: (span) => objs(span, "channels").map((c) =>
+    flag(c, "isTeam")
+      ? { label: "team " + (fld(c, "label") ?? ""), right: fld(c, "why"), wrong: null, only: "right" }
+      : { label: "  no help " + (fld(c, "label") ?? ""), right: null, wrong: fld(c, "explanation"), only: "wrong" },
+  ),
+  drillRun: (span) => objs(span, "steps").flatMap((s) =>
+    objs(s, "options").map((o) =>
+      flag(o, "isRight")
+        ? { label: "step " + (fld(o, "label") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  wrong move " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
   // Week 10 engines (2026-09-17). Each item carries both sides: the grip / the
   // right source / the named want / the child's own card speak `why` on a
   // correct tap, and every other token speaks its `explanation` on a wrong one.

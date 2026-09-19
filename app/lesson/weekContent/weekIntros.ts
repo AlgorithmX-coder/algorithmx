@@ -125,9 +125,9 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
     audioSrc: "/audio/atlas/heroes-week-11.mp3",
     accent: "#ff9528",
     points: [
-      { icon: "✋", label: "Stay calm" },
-      { icon: "🚫", label: "Don't reply" },
-      { icon: "🔔", label: "Tell a grown-up" },
+      { icon: "💪", label: "Never your fault" },
+      { icon: "👪", label: "Name your team" },
+      { icon: "🚀", label: "Run the drill" },
     ],
   },
   12: {

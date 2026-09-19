@@ -627,6 +627,12 @@ export type ScreenDef = (
       /** Which account the Raccoon compromised (rescue: LEAKED chip; moves:
        *  the tile that pulses `needsLabel`). */
       leakedAccountId?: string;
+      /** Tile grid: "row" (default) = one column per tile; "wrap" for 5+ tiles. */
+      tileLayout?: "row" | "wrap";
+      /** Toast when a bank entry is already used elsewhere. Default: the password wording. */
+      duplicateToast?: string;
+      /** The word after the header count ("3 / 5 helped"). Default "secured". */
+      countLabel?: string;
       accounts: {
         id: string;
         /** Display name e.g. "Roblox", or the chat moment in the moves skin. */
@@ -680,7 +686,14 @@ export type ScreenDef = (
        * nothing fails; a REPLY tap teaches and the spark waits.
        */
       type: "dontFeedTheFire";
-      sparks: {
+      /** "campfire" = Week 5. "signal" = Week 11: a rogue transmitter that fades as it is starved. */
+      skin?: "campfire" | "signal";
+      /** The friend who gets stood up for. Default Maya (campfire) / Priya (signal). */
+      friendName?: string;
+      /** What the friend says back once the child stands up for them. */
+      friendSupportLine?: string;
+      /** Omit to take the skin's built-in set (the "signal" skin ships its own). */
+      sparks?: {
         id: string;
         from: string;
         text: string;
@@ -689,7 +702,7 @@ export type ScreenDef = (
         /** Sarah's reason when the spark is starved ("That's right!" + why). */
         why?: string;
       }[];
-      friendRound: {
+      friendRound?: {
         id: string;
         from: string;
         text: string;
@@ -697,16 +710,17 @@ export type ScreenDef = (
         why?: string;
       };
       /** WrongAnswerPanel copy: REPLY tapped on a spark. */
-      teachSpark: { title: string; body: string; tip: string };
+      teachSpark?: { title: string; body: string; tip: string };
       /** WrongAnswerPanel copy: REPLY tapped on the friend round. */
-      teachFriend: { title: string; body: string; tip: string };
+      teachFriend?: { title: string; body: string; tip: string };
       /** WrongAnswerPanel copy: the stone held on the friend round. */
-      teachStoneOnFriend: { title: string; body: string; tip: string };
+      teachStoneOnFriend?: { title: string; body: string; tip: string };
       introTitle?: string;
       introSubtitle?: string;
       introIcon?: string;
       completeTitle?: string;
       completeLine?: string;
+      hints?: { tier1: string; tier2: string };
     }
   | {
       /**
@@ -1137,6 +1151,8 @@ export type ScreenDef = (
        * right). `leakCopy` overrides the built-in copy per leak id.
        */
       type: "developingTray";
+      /** "darkroom" = Week 8. "evidence" = Week 11: the kept screenshot develops, a deleted one comes up blank. */
+      skin?: "darkroom" | "evidence";
       leakCopy?: Partial<Record<string, { chip: string; bullet: string; readAloud: string }>>;
       developPrompt?: string;
       developReadAloud?: string;
@@ -1265,6 +1281,104 @@ export type ScreenDef = (
       installToast?: string;
       skipToast?: string;
       wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Calm-Down Console (Week 11, concept 1: it is never your fault).
+       * This week's own screen-4 signature, converted to tap-only. The breathing
+       * ring is TAP-PACED, never held: tap IN as it grows and OUT as it shrinks,
+       * at any speed. After each breath the child lifts one blame-stone off and
+       * hears why it was never theirs. Nothing here can be wrong, and no Raccoon
+       * appears in this beat (sensitive week).
+       */
+      type: "calmConsole";
+      stones: {
+        id: string;
+        /** The heavy thought on the stone, read aloud as it is lifted. */
+        label: string;
+        icon: string;
+        /** Sarah's one-take reason why it was never the child's to carry. */
+        why: string;
+      }[];
+      /** Breaths before a stone can be lifted. Default 1. */
+      breathsPerStone?: number;
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      inLabel?: string;
+      outLabel?: string;
+      stonesLabel?: string;
+      /** Shown once every stone is off. */
+      truthLine?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Radio Roll (Week 11, concept 2: name your team). Turn the dial to a
+       * channel and CALL: the grown-ups who come running join the team board.
+       * Wrong channels are never frightening, just no help (static, someone the
+       * child only knows online, a streamer who does not know them back).
+       */
+      type: "radioRoll";
+      channels: {
+        id: string;
+        /** Read aloud as the dial lands on it. */
+        label: string;
+        icon: string;
+        isTeam: boolean;
+        /** Sarah's reason on a team member ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach on a channel that cannot help ("Not quite." + explanation). */
+        explanation: string;
+      }[];
+      /** How many must be found. Default 3. */
+      teamSize?: number;
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      dialLabel?: string;
+      callLabel?: string;
+      teamLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Drill Run (Week 11, concept 5: the emergency protocol). A practice
+       * call-out: the situation moves on only when the right next move is taken,
+       * so the five steps are LIVED in sequence rather than sorted onto a board
+       * (StepOrder is at its cap) or hunted among look-alikes (PowerPanel is
+       * Week 10's, one week back).
+       */
+      type: "drillRun";
+      steps: {
+        id: string;
+        /** Read aloud as the step opens. */
+        situation: string;
+        /** The short name on the progress rail ("Breathe"). */
+        stepLabel: string;
+        options: {
+          id: string;
+          label: string;
+          icon: string;
+          isRight: boolean;
+          /** Sarah's reason on the right move ("That's right!" + why). */
+          why: string;
+          /** Sarah's teach on a wrong move ("Not quite." + explanation). */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      railLabel?: string;
+      situationLabel?: string;
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier1: string; tier2: string };
