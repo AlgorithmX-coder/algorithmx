@@ -3,10 +3,17 @@
 import { FadeUp } from "./utilities";
 
 /**
- * ParentTrust. Specifically addresses the parent decision: "is this safe,
- * is this real, and is it worth my child's time?". Six trust pillars +
- * two parent quotes. Lives between the project showcase and testimonials
- * so the reassurance comes before the broader social proof.
+ * "Why AlgorithmX" — the six promises, rewritten by the owner 2026-09-20.
+ *
+ * It used to speak only to parents of young children. It now speaks to
+ * every learner the platform takes, adults included, and answers the
+ * question the whole category now raises: what does this look like in a
+ * world being reshaped by AI. Copy is the owner's own wording.
+ *
+ * NOTE: this copy states the age bands as 7 to 9, 10 to 13, 14 to 16 and
+ * adults. The hero, the track chips and the stream data still say 6 to 9
+ * and 14 to 17. Raised with the owner on delivery; do not "fix" either
+ * side without their call.
  */
 
 type PillarIcon = "shield" | "person" | "gradcap" | "code" | "tag" | "globe";
@@ -20,44 +27,44 @@ interface Pillar {
 
 const PILLARS: Pillar[] = [
   {
-    title: "Safety-first by design",
+    title: "Safe by design",
     copy:
-      "Every lesson is screened by educators. No ads, no in-platform purchases, no third-party trackers, no dark patterns.",
+      "No ads, no third-party trackers and no tricks designed to keep you hooked. Your data is never sold or used to train AI models.",
     accent: "#5fffa3",
     icon: "shield",
   },
   {
-    title: "Age-appropriate, always",
+    title: "Right for every stage",
     copy:
-      "Content is staged for ages 6-9, 10-13, 14-17 and adults. We meet your child where they are. Never push, never patronise.",
+      "Pathways for ages 7 to 9, 10 to 13, 14 to 16 and adults, from first steps to career-ready skills. We meet every learner where they are. Never push, never patronise.",
     accent: "#9ff5ff",
     icon: "person",
   },
   {
-    title: "Built by UK educators",
+    title: "Built by educators and tech professionals",
     copy:
-      "Curriculum aligned with KS2-KS4 expectations and reviewed by teachers from UK state and independent schools.",
+      "Created by the team behind an Ofsted-registered STEM provider, with input from people working in tech every day. Aligned with KS2 to KS4 computing for schools and grounded in real industry practice for adults.",
     accent: "#cba8ff",
     icon: "gradcap",
   },
   {
-    title: "No passive watching",
+    title: "Learn by doing",
     copy:
-      "Your child builds things. Real tools, real code, real artefacts they can show off.",
+      "Build real things with real tools, including the AI tools shaping every industry. Projects you can proudly show off, not videos you half watch.",
     accent: "#ffd07a",
     icon: "code",
   },
   {
-    title: "Transparent pricing",
+    title: "Clear, honest pricing",
     copy:
-      "One clear price per course, shown up front. Pay once, keep lifetime access. No subscriptions, no surprise upgrades.",
+      "Simple pricing for individuals and families, straightforward licensing for schools. No hidden fees and no surprise upgrades.",
     accent: "#ffc94a",
     icon: "tag",
   },
   {
-    title: "Real-world relevance",
+    title: "Ready for an AI world",
     copy:
-      "Skills that matter outside the screen: spotting scams, evaluating sources, building something useful.",
+      "Technology is changing fast, and so are our lessons. Learn to spot deepfakes and AI-powered scams, question what chatbots tell you, and use AI as a tool rather than a shortcut.",
     accent: "#ff3ad6",
     icon: "globe",
   },
@@ -112,7 +119,7 @@ export default function ParentTrust() {
               textAlign: "center",
             }}
           >
-            // FOR PARENTS
+            // WHY ALGORITHMX
           </p>
         </FadeUp>
 
@@ -130,7 +137,7 @@ export default function ParentTrust() {
               textAlign: "center",
             }}
           >
-            Why families trust AlgorithmX.
+            Our promises to every learner.
           </h2>
         </FadeUp>
 
@@ -146,8 +153,9 @@ export default function ParentTrust() {
               textAlign: "center",
             }}
           >
-            Six promises we make to every parent who puts a screen in their
-            child&apos;s hands.
+            Whether you&rsquo;re 7 or 47, a parent, a teacher or learning for
+            yourself, here&rsquo;s what you can count on in a world being
+            reshaped by AI.
           </p>
         </FadeUp>
 
