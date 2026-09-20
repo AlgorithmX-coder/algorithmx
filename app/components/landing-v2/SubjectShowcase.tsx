@@ -50,6 +50,57 @@ const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string;
   { id: "pro", ages: "18+", accent: "#ff7a3d", live: false },
 ];
 
+/**
+ * The one moment worth advertising from each track (owner 2026-09-20:
+ * "the best case, week or module, the one that makes them go wow").
+ *
+ * Every line below describes something that exists in this repo. Keep it
+ * that way: if a claim here stops matching what a learner can actually
+ * reach, change the claim, not the course.
+ *
+ *   heroes     week 20 "Graduation Day", five missions then the final
+ *              exam, and app/lib/certificates.ts really does generate
+ *              the "Certified Cyber Hero" PDF.
+ *   explorers  case 020 "Signal Zero": five breadcrumbs gathered across
+ *              the season resolve to one coordinator, and the case is
+ *              handed over rather than hacked back.
+ *   ops        the range engine's first capture, Northwind E-05: the
+ *              payload runs against a real in-browser database and the
+ *              finding is drafted at CVSS 9.8. Prototype today, hence
+ *              the soon mark on the track.
+ *   pro        module 9 web attacks: a real injection against a live
+ *              database, then the parameterised fix that defeats it.
+ *              The old claim here said "ship the security report", and
+ *              the report is still a written prompt rather than a built
+ *              artefact, so the line stops where the build stops.
+ */
+const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; tag: string; line: string; accent: string }> = [
+  {
+    id: "heroes",
+    tag: "Cyber Heroes · Week 20",
+    line: "Beat the Hacker Raccoon at his own playbook and take home a Certified Cyber Hero certificate",
+    accent: "#ffb347",
+  },
+  {
+    id: "explorers",
+    tag: "Cyber Explorers · Case 020",
+    line: "Unmask the coordinator behind twenty cases, then hand the finished dossier to the grown-ups",
+    accent: "#22D3EE",
+  },
+  {
+    id: "ops",
+    tag: "Cyber Ops · First capture",
+    line: "Break into a live target on the range and write up the critical finding like a professional",
+    accent: "#8B7BFF",
+  },
+  {
+    id: "pro",
+    tag: "Cyber Pro · Module 9",
+    line: "Empty a real database with one line of SQL, then ship the fix that stops it cold",
+    accent: "#ff7a3d",
+  },
+];
+
 const STREAMS: Stream[] = [
   {
     id: "cybersecurity",
@@ -731,19 +782,34 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               color: a,
             }}
           >
-            // FLAGSHIP PROJECT
+            {stream.id === "cybersecurity" ? "// FLAGSHIP PROJECTS" : "// FLAGSHIP PROJECT"}
           </span>
-          <span
-            style={{
-              fontFamily: "var(--lv2-font-display)",
-              fontSize: "clamp(1.15rem, 1.7vw, 1.45rem)",
-              fontWeight: 500,
-              color: "var(--lv2-paper)",
-              lineHeight: 1.32,
-            }}
-          >
-            {stream.project}
-          </span>
+
+          {stream.id === "cybersecurity" ? (
+            /* One per track, so the panel answers "what will I actually
+               do" four times over instead of once. */
+            <ul className="lv2-flagships">
+              {CYBER_FLAGSHIPS.map((f) => (
+                <li key={f.id} style={{ ["--lv2-flag" as string]: f.accent }}>
+                  <span className="lv2-flagship-tag">{f.tag}</span>
+                  <span className="lv2-flagship-line">{f.line}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <span
+              style={{
+                fontFamily: "var(--lv2-font-display)",
+                fontSize: "clamp(1.15rem, 1.7vw, 1.45rem)",
+                fontWeight: 500,
+                color: "var(--lv2-paper)",
+                lineHeight: 1.32,
+              }}
+            >
+              {stream.project}
+            </span>
+          )}
+
           <span
             style={{
               fontFamily: "var(--lv2-font-mono)",
@@ -785,8 +851,46 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           text-transform: uppercase;
           color: rgba(232,237,255,0.6);
         }
-        /* Two of the four are not open yet, and the card says so above. */
-        .lv2-course-mark-soon { opacity: 0.55; }
+        /* Ops and Pro used to sit at 0.55 opacity, which the owner read
+           as the lighting failing on that half of the row. They are lit
+           like the other two now; the word "soon" in each chip is what
+           says they are not open yet. */
+        .lv2-course-mark-soon { opacity: 1; }
+
+        .lv2-flagships {
+          list-style: none;
+          margin: 4px 0 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .lv2-flagships li {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding-left: 13px;
+          border-left: 2px solid var(--lv2-flag);
+        }
+        .lv2-flagship-tag {
+          font-family: var(--lv2-font-mono);
+          font-size: 9.5px;
+          font-weight: 700;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--lv2-flag);
+        }
+        .lv2-flagship-line {
+          font-family: var(--lv2-font-display);
+          font-size: 0.9375rem;
+          font-weight: 500;
+          line-height: 1.4;
+          color: var(--lv2-paper);
+        }
+        @media (max-width: 900px) {
+          .lv2-flagships { gap: 12px; }
+          .lv2-flagship-line { font-size: 0.875rem; }
+        }
 
         .lv2-featured-card {
           will-change: transform;
