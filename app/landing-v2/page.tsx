@@ -2,6 +2,7 @@ import { Fredoka, Chakra_Petch } from "next/font/google";
 
 import HeroCinematic from "@/app/components/landing-v2/HeroCinematicV3";
 import Nav from "@/app/components/landing-v2/Nav";
+import ProofBand from "@/app/components/landing-v2/ProofBand";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
 import SubjectShowcase from "@/app/components/landing-v2/SubjectShowcase";
 import ParentTrust from "@/app/components/landing-v2/ParentTrust";
@@ -23,13 +24,14 @@ import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBack
  *
  *   1. Top nav (sticky, glassmorphic dark)
  *   2. HeroCinematic - scroll-pinned 3D laptop scene + headline
- *   3. ProblemStats - 3 stat cards
- *   4. SubjectShowcase - 6 subject tabs + course cards
- *   5. ParentTrust - safety + safeguarding messaging
- *   6. Testimonials + trust logos marquee
- *   7. FAQ
- *   8. FinalCTA - rotating-gradient ring around primary CTA
- *   9. Footer - 4-col dark
+ *   3. ProofBand - the four accreditations, one line of copy each
+ *   4. ProblemStats - 3 stat cards
+ *   5. SubjectShowcase - 6 subject tabs + course cards
+ *   6. ParentTrust - safety + safeguarding messaging
+ *   7. Testimonials + trust logos marquee
+ *   8. FAQ
+ *   9. FinalCTA - rotating-gradient ring around primary CTA
+ *  10. Footer - 4-col dark
  *
  * Previous batches removed four sections: "Who is this for?", "One
  * platform, four stages of growth", "What you'll actually build", and
@@ -57,6 +59,7 @@ export default function LandingV2() {
       <Nav />
       <main>
         <HeroCinematic />
+        <ProofBand />
         <ProblemStats />
         <SubjectShowcase />
         <ParentTrust />
