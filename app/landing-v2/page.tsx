@@ -9,7 +9,6 @@ import ParentTrust from "@/app/components/landing-v2/ParentTrust";
 import Testimonials from "@/app/components/landing-v2/Testimonials";
 import FAQ from "@/app/components/landing-v2/FAQ";
 import Footer from "@/app/components/landing-v2/Footer";
-import Algo from "@/app/components/landing-v2/Algo";
 import SmoothScroll from "@/app/components/SmoothScroll";
 import SpotlightCursor from "@/app/components/landing-v2/SpotlightCursor";
 import CosmicNetworkBackground from "@/app/components/backgrounds/CosmicNetworkBackground";
@@ -34,6 +33,10 @@ import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBack
  * Previous batches removed four sections: "Who is this for?", "One
  * platform, four stages of growth", "What you'll actually build", and
  * "HowItWorks" (owner call 2026-07-26; component kept on disk).
+ *
+ * The ALGO pill (bottom right, "standing by") removed 2026-09-20 on
+ * the owner's call, along with the hero's chapter counter. Algo.tsx is
+ * kept on disk.
  *
  * "Ready to start?" (FinalCTA) removed 2026-09-20 on the owner's call.
  * The page now ends on the FAQ, and the only standing calls to action
@@ -70,7 +73,6 @@ export default function LandingV2() {
         <FAQ />
       </main>
       <Footer />
-      <Algo />
     </SmoothScroll>
     </div>
   );

@@ -87,13 +87,6 @@ const KEY_LEGENDS: ReadonlyArray<ReadonlyArray<string>> = [
   ["fn", "ctrl", "alt", "⌘", "", "⌘", "alt", "←", "↑", "→"],
 ];
 
-const CHAPTERS_V3 = [
-  { id: "01", title: "System dormant", range: [0.0, 0.1] as const },
-  { id: "02", title: "Platform activating", range: [0.1, 0.4] as const },
-  { id: "03", title: "Systems igniting", range: [0.4, 0.62] as const },
-  { id: "04", title: "Start your journey", range: [0.62, 1.0] as const },
-];
-
 function smoothstep(a: number, b: number, x: number): number {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
@@ -869,9 +862,6 @@ export default function HeroCinematicV3() {
          *  with no message until p=0.68) */}
         <HeroOverlay />
 
-        {/* chapter label rail */}
-        <ChapterRailV3 progress={progress} />
-
         {/* scroll hint */}
       </div>
 
@@ -1359,78 +1349,9 @@ function StreamRow({
   );
 }
 
-function ChapterRailV3({ progress }: { progress: MotionValue<number> }) {
-  return (
-    <div
-      aria-hidden
-      style={{
-        position: "absolute",
-        bottom: "calc(var(--lv2-rail) * 1.0)",
-        right: "var(--lv2-rail)",
-        zIndex: 4,
-        pointerEvents: "none",
-      }}
-    >
-      {CHAPTERS_V3.map((ch, i) => (
-        <ChapterLabelV3 key={ch.id} progress={progress} idx={i} chapter={ch} />
-      ))}
-    </div>
-  );
-}
-
-function ChapterLabelV3({
-  progress,
-  chapter,
-  idx,
-}: {
-  progress: MotionValue<number>;
-  chapter: (typeof CHAPTERS_V3)[number];
-  idx: number;
-}) {
-  const [lo, hi] = chapter.range;
-  const opacity = useTransform(
-    progress,
-    [lo - 0.03, lo + 0.01, hi - 0.02, hi + 0.03],
-    [0, 1, 1, 0],
-  );
-  return (
-    <motion.div
-      style={{
-        opacity,
-        position: "absolute",
-        bottom: 0,
-        right: 0,
-        display: "flex",
-        alignItems: "center",
-        gap: 14,
-        color: "var(--lv2-paper)",
-        fontFamily: "var(--lv2-font-mono)",
-        fontSize: 12,
-        fontWeight: 600,
-        letterSpacing: "0.32em",
-        textTransform: "uppercase",
-        textShadow: "0 2px 18px rgba(4,5,13,0.95)",
-        whiteSpace: "nowrap",
-      }}
-    >
-      <span style={{ color: "rgba(232,237,255,0.45)" }}>
-        {String(idx + 1).padStart(2, "0")}
-        <span style={{ opacity: 0.45, margin: "0 6px" }}>/</span>
-        {String(CHAPTERS_V3.length).padStart(2, "0")}
-      </span>
-      <span
-        style={{
-          display: "inline-block",
-          width: 22,
-          height: 1,
-          background: "var(--lv2-cyan)",
-          boxShadow: "0 0 8px rgba(0,229,255,0.65)",
-        }}
-      />
-      <span>{chapter.title}</span>
-    </motion.div>
-  );
-}
+/* ChapterRailV3 and ChapterLabelV3 removed 2026-09-20 (owner call):
+   the "04 / 04 · START YOUR JOURNEY" counter in the corner of the hero.
+   It narrated the scroll animation to itself; nobody was reading it. */
 
 /* ScrollHintV3 removed 2026-09-20: the hero button now carries the
    "scroll to continue" wording itself, and two of them in one screen
