@@ -183,6 +183,13 @@ export default function HeroOverlay() {
     <style jsx global>{`
       .lv2-hero-eyebrow {
         display: inline-flex;
+        /* The copy column is a flex column, so an inline-flex child is
+           blockified and stretched to the full 1180px reading width: the
+           pill read as a banner across the page. These three lines make it
+           hug its own text again. */
+        align-self: flex-start;
+        width: max-content;
+        max-width: 100%;
         align-items: center;
         gap: 10px;
         padding: 7px 16px 7px 13px;
