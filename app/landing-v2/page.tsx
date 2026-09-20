@@ -8,7 +8,6 @@ import SubjectShowcase from "@/app/components/landing-v2/SubjectShowcase";
 import ParentTrust from "@/app/components/landing-v2/ParentTrust";
 import Testimonials from "@/app/components/landing-v2/Testimonials";
 import FAQ from "@/app/components/landing-v2/FAQ";
-import FinalCTA from "@/app/components/landing-v2/FinalCTA";
 import Footer from "@/app/components/landing-v2/Footer";
 import Algo from "@/app/components/landing-v2/Algo";
 import SmoothScroll from "@/app/components/SmoothScroll";
@@ -30,12 +29,16 @@ import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBack
  *   6. ParentTrust - safety + safeguarding messaging
  *   7. Testimonials + trust logos marquee
  *   8. FAQ
- *   9. FinalCTA - rotating-gradient ring around primary CTA
- *  10. Footer - 4-col dark
+ *   9. Footer - 4-col dark
  *
  * Previous batches removed four sections: "Who is this for?", "One
  * platform, four stages of growth", "What you'll actually build", and
  * "HowItWorks" (owner call 2026-07-26; component kept on disk).
+ *
+ * "Ready to start?" (FinalCTA) removed 2026-09-20 on the owner's call.
+ * The page now ends on the FAQ, and the only standing calls to action
+ * are the nav's Get started and the per-stream View course buttons.
+ * FinalCTA.tsx is kept on disk like the others.
  *
  * Wrapped in SmoothScroll (Lenis) so wheel events advance scroll smoothly
  * and the 3D scroll-tied animations glide.
@@ -65,7 +68,6 @@ export default function LandingV2() {
         <ParentTrust />
         <Testimonials />
         <FAQ />
-        <FinalCTA />
       </main>
       <Footer />
       <Algo />
