@@ -74,32 +74,36 @@ const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string;
  *              the report is still a written prompt rather than a built
  *              artefact, so the line stops where the build stops.
  */
-const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; tag: string; line: string; accent: string }> = [
+const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; accent: string }> = [
   {
     id: "heroes",
-    tag: "Cyber Heroes · Week 20",
-    line: "Beat the Hacker Raccoon at his own playbook and take home a Certified Cyber Hero certificate",
+    take: "A Certified Cyber Hero certificate",
+    how: "Earned by beating the Hacker Raccoon at his own playbook in week 20.",
     accent: "#ffb347",
   },
   {
     id: "explorers",
-    tag: "Cyber Explorers · Case 020",
-    line: "Unmask the coordinator behind twenty cases, then hand the finished dossier to the grown-ups",
+    take: "A closed case file",
+    how: "Twenty cases of breadcrumbs, one coordinator unmasked, the dossier handed over.",
     accent: "#22D3EE",
   },
   {
     id: "ops",
-    tag: "Cyber Ops · First capture",
-    line: "Break into a live target on the range and write up the critical finding like a professional",
+    take: "A written critical finding",
+    how: "A real break-in on the range, reported the way a professional reports it.",
     accent: "#8B7BFF",
   },
   {
     id: "pro",
-    tag: "Cyber Pro · Module 9",
-    line: "Empty a real database with one line of SQL, then ship the fix that stops it cold",
+    take: "A database you broke and fixed",
+    how: "One line of SQL empties it, then you ship the fix that stops it cold.",
     accent: "#ff7a3d",
   },
 ];
+
+/* The ages come from CYBER_COURSES rather than being typed twice, so the
+   panel and the track chips in the same card can never drift apart. */
+const AGES_BY_ID = Object.fromEntries(CYBER_COURSES.map((c) => [c.id, c.ages])) as Record<string, string>;
 
 const STREAMS: Stream[] = [
   {
@@ -782,7 +786,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               color: a,
             }}
           >
-            {stream.id === "cybersecurity" ? "// FLAGSHIP PROJECTS" : "// FLAGSHIP PROJECT"}
+            {stream.id === "cybersecurity" ? "// What you walk away with" : "// FLAGSHIP PROJECT"}
           </span>
 
           {stream.id === "cybersecurity" ? (
@@ -791,8 +795,11 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
             <ul className="lv2-flagships">
               {CYBER_FLAGSHIPS.map((f) => (
                 <li key={f.id} style={{ ["--lv2-flag" as string]: f.accent }}>
-                  <span className="lv2-flagship-tag">{f.tag}</span>
-                  <span className="lv2-flagship-line">{f.line}</span>
+                  <span className="lv2-flagship-take">{f.take}</span>
+                  <span className="lv2-flagship-how">{f.how}</span>
+                  <span className="lv2-flagship-who">
+                    {`Cyber ${f.id[0].toUpperCase()}${f.id.slice(1)} · Ages ${AGES_BY_ID[f.id]}`}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -810,17 +817,19 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
             </span>
           )}
 
-          <span
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 11.5,
-              lineHeight: 1.6,
-              color: "rgba(232,237,255,0.5)",
-              marginTop: 2,
-            }}
-          >
-            Every stream ends in a real, shippable project.
-          </span>
+          {stream.id !== "cybersecurity" && (
+            <span
+              style={{
+                fontFamily: "var(--lv2-font-mono)",
+                fontSize: 11.5,
+                lineHeight: 1.6,
+                color: "rgba(232,237,255,0.5)",
+                marginTop: 2,
+              }}
+            >
+              Every stream ends in a real, shippable project.
+            </span>
+          )}
         </div>
       </div>
 
@@ -857,39 +866,57 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
            says they are not open yet. */
         .lv2-course-mark-soon { opacity: 1; }
 
+        /* Owner picked this treatment from a board of ten (2026-09-20):
+           the artefact leads and the activity supports it, because what a
+           buyer is buying is the certificate, the case file, the finding
+           and the fixed database. Hairlines rather than coloured bars, so
+           the four read as one list with the colour carried by the name of
+           the thing you get. */
         .lv2-flagships {
           list-style: none;
           margin: 4px 0 0;
           padding: 0;
           display: flex;
           flex-direction: column;
-          gap: 14px;
+          gap: 13px;
         }
         .lv2-flagships li {
           display: flex;
           flex-direction: column;
-          gap: 5px;
-          padding-left: 13px;
-          border-left: 2px solid var(--lv2-flag);
+          gap: 4px;
+          padding-bottom: 13px;
+          border-bottom: 1px solid rgba(159,245,255,0.09);
         }
-        .lv2-flagship-tag {
-          font-family: var(--lv2-font-mono);
-          font-size: 9.5px;
-          font-weight: 700;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
+        .lv2-flagships li:last-child {
+          padding-bottom: 0;
+          border-bottom: 0;
+        }
+        .lv2-flagship-take {
+          font-family: var(--lv2-font-display);
+          font-size: 1rem;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+          line-height: 1.3;
           color: var(--lv2-flag);
         }
-        .lv2-flagship-line {
+        .lv2-flagship-how {
           font-family: var(--lv2-font-display);
-          font-size: 0.9375rem;
-          font-weight: 500;
-          line-height: 1.4;
-          color: var(--lv2-paper);
+          font-size: 0.8125rem;
+          line-height: 1.45;
+          color: rgba(232,237,255,0.72);
+        }
+        .lv2-flagship-who {
+          font-family: var(--lv2-font-mono);
+          font-size: 7.5px;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(232,237,255,0.34);
         }
         @media (max-width: 900px) {
-          .lv2-flagships { gap: 12px; }
-          .lv2-flagship-line { font-size: 0.875rem; }
+          .lv2-flagships { gap: 11px; }
+          .lv2-flagships li { padding-bottom: 11px; }
+          .lv2-flagship-take { font-size: 0.9375rem; }
         }
 
         .lv2-featured-card {
