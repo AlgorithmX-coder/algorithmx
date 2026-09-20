@@ -873,7 +873,6 @@ export default function HeroCinematicV3() {
         <ChapterRailV3 progress={progress} />
 
         {/* scroll hint */}
-        <ScrollHintV3 progress={smoothScroll} />
       </div>
 
       {/* scoped styles: ambient keyframes + responsive scale + a11y */}
@@ -1433,67 +1432,6 @@ function ChapterLabelV3({
   );
 }
 
-function ScrollHintV3({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0, 0.24, 0.34], [1, 1, 0]);
-  return (
-    <motion.div
-      aria-hidden
-      className="hv3-scrollHint"
-      style={{
-        opacity,
-        position: "absolute",
-        bottom: "calc(var(--lv2-rail) * 1.2)",
-        left: "50%",
-        x: "-50%",
-        zIndex: 3,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 12,
-        pointerEvents: "none",
-        fontFamily: "var(--lv2-font-mono)",
-        fontSize: 12,
-        fontWeight: 600,
-        letterSpacing: "0.28em",
-        textTransform: "uppercase",
-        color: "var(--lv2-paper)",
-      }}
-    >
-      <span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 12,
-          padding: "9px 20px",
-          borderRadius: 999,
-          border: "1px solid rgba(0,229,255,0.28)",
-          background: "rgba(4,5,13,0.58)",
-          backdropFilter: "blur(14px) saturate(1.4)",
-          WebkitBackdropFilter: "blur(14px) saturate(1.4)",
-          boxShadow:
-            "inset 0 1px 0 rgba(232,237,255,0.06), 0 8px 26px rgba(0,229,255,0.16)",
-        }}
-      >
-        <span
-          style={{
-            width: 7,
-            height: 7,
-            borderRadius: 999,
-            background: "var(--lv2-cyan)",
-            boxShadow: "0 0 10px rgba(0,229,255,0.8)",
-          }}
-        />
-        Scroll to continue
-      </span>
-      <svg width="22" height="11" viewBox="0 0 22 11" fill="none" aria-hidden>
-        <path
-          d="M2 2L11 9L20 2"
-          stroke="var(--lv2-cyan)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </motion.div>
-  );
-}
+/* ScrollHintV3 removed 2026-09-20: the hero button now carries the
+   "scroll to continue" wording itself, and two of them in one screen
+   read as a mistake. */
