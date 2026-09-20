@@ -19,7 +19,7 @@ import Link from "next/link";
  * brochure spec sheet (and was redundant with the headline's "every
  * stage of life"). Replaced with a mission-grade line that signals
  * the platform's ambition before the headline lands. */
-const EYEBROW = "// SIX FIELDS  ·  BUILT FOR THE FUTURE";
+const EYEBROW = "// SIX TRACKS  ·  SKILLS THE AI ERA NEEDS";
 const HEADLINE = "Technology education for every stage of life.";
 const SUBLINE =
   "Six technology streams, from age 6 all the way through to adulthood. Cyber Security is live today. The other five are classified until launch, unlocking over the coming months.";
@@ -97,16 +97,12 @@ export default function HeroOverlay() {
           position: "relative",
         }}
       >
-        <span
-          style={{
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: "0.6875rem",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "var(--lv2-cyan-soft)",
-            textShadow: "0 0 12px rgba(0,229,255,0.45)",
-          }}
-        >
+        {/* Owner 2026-09-20: "make that stand out". It was flat mono
+            text at 11px; it now takes the same lit-pill chrome as the nav
+            telemetry and the LIVE NOW mark, which is the loudest the page
+            gets without competing with the headline. */}
+        <span className="lv2-hero-eyebrow">
+          <span aria-hidden className="lv2-hero-eyebrow-dot" />
           {EYEBROW}
         </span>
 
@@ -159,13 +155,20 @@ export default function HeroOverlay() {
             pointerEvents: "auto",
           }}
         >
+          {/* The button already scrolled to the streams rather than
+              navigating away, so the label now says what it does. The
+              separate scroll pill in HeroCinematicV3 went with this
+              change: two things saying "scroll to continue" in one
+              screen read as a mistake.
+              data-plausible is deliberately unchanged so the click
+              history stays comparable across the rename. */}
           <Link
             href="#subjects"
             data-plausible="landing-v2-hero-primary"
             className="lv2-hero-cta lv2-hero-cta-primary"
           >
-            Explore courses
-            <span aria-hidden style={{ marginLeft: 8 }}>→</span>
+            Scroll to continue
+            <span aria-hidden style={{ marginLeft: 8 }}>↓</span>
           </Link>
         </div>
       </div>
@@ -178,6 +181,35 @@ export default function HeroOverlay() {
      *  glow that intensifies on hover so it reads as premium rather
      *  than ghosted. */}
     <style jsx global>{`
+      .lv2-hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 16px 7px 13px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 229, 255, 0.34);
+        background: rgba(0, 229, 255, 0.07);
+        box-shadow: inset 0 1px 0 rgba(232, 237, 255, 0.07), 0 0 34px -12px rgba(0, 229, 255, 0.9);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        font-family: var(--lv2-font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #b8f4ff;
+        text-shadow: 0 0 14px rgba(0, 229, 255, 0.55);
+      }
+      .lv2-hero-eyebrow-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--lv2-cyan);
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.9);
+      }
+      @media (max-width: 640px) {
+        .lv2-hero-eyebrow { font-size: 0.6875rem; letter-spacing: 0.16em; padding: 6px 13px 6px 11px; }
+      }
       .lv2-hero-pad {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
       }
