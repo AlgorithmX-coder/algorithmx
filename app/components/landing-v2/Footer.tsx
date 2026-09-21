@@ -26,10 +26,10 @@ export default function Footer() {
          * ending on a black slab; the footer text keeps a darker bed. */
         background:
           "linear-gradient(to bottom, " +
-          "rgba(20,12,30,0) 0%, " +
-          "rgba(20,12,30,0.36) 10%, " +
-          "rgba(20,12,30,0.62) 26%, " +
-          "rgba(20,12,30,0.7) 100%)",
+          "rgba(255,253,250,0) 0%, " +
+          "rgba(255,253,250,0.36) 10%, " +
+          "rgba(255,253,250,0.62) 26%, " +
+          "rgba(255,253,250,0.7) 100%)",
         color: "rgba(17,22,38,0.73)",
         /* Extra bottom clearance (+72px) so the fixed Algo chip
          * (bottom-right of the viewport) floats over empty space at

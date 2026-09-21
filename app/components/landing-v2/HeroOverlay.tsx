@@ -71,8 +71,8 @@ export default function HeroOverlay() {
           inset: 0,
           background:
             "radial-gradient(ellipse 46% 52% at 20% 52%, " +
-            "rgba(24,15,36,0.8) 0%, rgba(24,15,36,0.42) 26%, " +
-            "rgba(24,15,36,0) 50%)",
+            "rgba(244,239,231,0.8) 0%, rgba(244,239,231,0.42) 26%, " +
+            "rgba(244,239,231,0) 50%)",
           pointerEvents: "none",
         }}
       />
@@ -296,7 +296,7 @@ export default function HeroOverlay() {
          * cyan is held back to 0.30 and the ambient glow trimmed
          * (0.14 → 0.10) so the secondary doesn't compete with the
          * primary cyan CTA — it reads as a confident dark companion. */
-        background: rgba(11, 16, 28, 0.72);
+        background: rgba(255,253,250,0.72);
         color: var(--lv2-ink);
         border: 1px solid rgba(0, 229, 255, 0.3);
         backdrop-filter: blur(14px) saturate(1.35);
@@ -309,7 +309,7 @@ export default function HeroOverlay() {
       .lv2-hero-cta-secondary:hover,
       .lv2-hero-cta-secondary:focus-visible {
         transform: translateY(-1px);
-        background: rgba(15, 22, 38, 0.82);
+        background: rgba(244,239,231,0.82);
         border-color: rgba(0, 229, 255, 0.55);
         box-shadow:
           inset 0 1px 0 rgba(17,22,38,0.15),

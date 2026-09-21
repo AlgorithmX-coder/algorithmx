@@ -44,10 +44,10 @@ interface Stream {
 
 /* Ages match the course landings; live matches the card's own count. */
 const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string; live: boolean }> = [
-  { id: "heroes", ages: "6 to 9", accent: "#ffb347", live: true },
-  { id: "explorers", ages: "10 to 13", accent: "#22D3EE", live: true },
-  { id: "ops", ages: "14 to 17", accent: "#8B7BFF", live: false },
-  { id: "pro", ages: "18+", accent: "#ff7a3d", live: false },
+  { id: "heroes", ages: "6 to 9", accent: "#9a5f00", live: true },
+  { id: "explorers", ages: "10 to 13", accent: "#0b7183", live: true },
+  { id: "ops", ages: "14 to 17", accent: "#5744c9", live: false },
+  { id: "pro", ages: "18+", accent: "#b8430c", live: false },
 ];
 
 /**
@@ -79,25 +79,25 @@ const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; 
     id: "heroes",
     take: "A Certified Cyber Hero certificate",
     how: "Earned by beating the Hacker Raccoon at his own playbook in week 20.",
-    accent: "#ffb347",
+    accent: "#9a5f00",
   },
   {
     id: "explorers",
     take: "A closed case file",
     how: "Twenty cases of breadcrumbs, one coordinator unmasked, the dossier handed over.",
-    accent: "#22D3EE",
+    accent: "#0b7183",
   },
   {
     id: "ops",
     take: "A written critical finding",
     how: "A real break-in on the range, reported the way a professional reports it.",
-    accent: "#8B7BFF",
+    accent: "#5744c9",
   },
   {
     id: "pro",
     take: "A database you broke and fixed",
     how: "One line of SQL empties it, then you ship the fix that stops it cold.",
-    accent: "#ff7a3d",
+    accent: "#b8430c",
   },
 ];
 
@@ -115,7 +115,7 @@ const STREAMS: Stream[] = [
     blurb:
       "From spotting scams at age 6 to real security skills that keep growing into adulthood. Online safety is the gateway skill.",
     project: "Pen-test a live web app & ship the security report",
-    accent: "#3ee88f",
+    accent: "#0e7a45",
     icon: "M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z",
     href: "/cybersecurity",
     cta: "View course",
@@ -129,7 +129,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Pixel art, physics, state machines, and what makes a jump feel good. Scratch through Unity through Unreal.",
     project: "Ship a Pixel Platformer level",
-    accent: "#4aa8ff",
+    accent: "#1565a8",
     icon: "M7 8h10a4 4 0 014 4 4 4 0 01-4 4H7a4 4 0 01-4-4 4 4 0 014-4z M8 12h3 M9.5 10.5v3 M15.5 11.5h.01 M17.5 13h.01",
     href: null,
     cta: "Coming 2026",
@@ -144,7 +144,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Train a real model, inspect its bias, deploy it. Cuts through hype with hands-on intuition for how AI actually works.",
     project: "Train an Image Classifier",
-    accent: "#a472ff",
+    accent: "#5744c9",
     icon: "M8 8h8v8H8z M5 10V8h2 M5 14v2h2 M17 8h2v2 M17 16h2v-2 M10 5V3h2 M14 5V3h-2 M10 21v-2 M14 19v2",
     href: null,
     cta: "Coming 2026",
@@ -159,7 +159,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Real apps on real phones. State, persistence, notifications, design. Build something your friends actually install.",
     project: "Ship a Habit Tracker",
-    accent: "#ffae4d",
+    accent: "#9a5f00",
     icon: "M7 2h10a1 1 0 011 1v18a1 1 0 01-1 1H7a1 1 0 01-1-1V3a1 1 0 011-1z M11 18h2",
     href: null,
     cta: "Coming 2027",
@@ -174,7 +174,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Discovery interviews, market sizing, MVP design, pitch craft. The non-coding half of building a tech business.",
     project: "Pitch a 10-slide deck to a real VC panel",
-    accent: "#ffc94a",
+    accent: "#8a5a00",
     icon: "M13 2L3 14h7l-1 8 10-12h-7l1-8z",
     href: null,
     cta: "Coming 2027",
@@ -189,7 +189,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Sensors, pathfinding, motor control, autonomy. Code virtual robots first, then graduate to physical kits.",
     project: "Code a Maze-Solver Bot",
-    accent: "#ff5b7a",
+    accent: "#b3123d",
     icon: "M12 2v3 M5 8h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V9a1 1 0 011-1z M9 13h.01 M15 13h.01 M2 12v3 M22 12v3",
     href: null,
     cta: "Coming 2027",
@@ -627,7 +627,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         {
           "--accent": a,
           position: "relative",
-          background: `radial-gradient(110% 130% at 12% -20%, ${a}24, transparent 55%), linear-gradient(180deg, rgba(11,15,26,0.94), rgba(4,7,14,0.96))`,
+          background: `radial-gradient(110% 130% at 12% -20%, ${a}24, transparent 55%), linear-gradient(180deg, rgba(255,253,250,0.94), rgba(255,253,250,0.96))`,
           border: `1px solid ${a}66`,
           borderRadius: 20,
           overflow: "hidden",
@@ -741,7 +741,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                 >
                   Aligned with UK&rsquo;s National Cyber Security Centre
                 </span>
-                <span aria-hidden style={{ width: 1, height: 20, background: "rgba(17,22,38,0.19)" }} />
+                <span aria-hidden style={{ width: 1, height: 20, background: "rgba(244,239,231,0.19)" }} />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 26, width: "auto" }} />
               </span>
@@ -915,7 +915,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           margin-top: 2px;
           padding: 3px 8px;
           border-radius: 6px;
-          background: rgba(17,22,38,0.08);
+          background: rgba(244,239,231,0.08);
           border: 1px solid rgba(17,22,38,0.07);
           font-family: var(--lv2-font-mono);
           font-size: 7.5px;
@@ -980,7 +980,7 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
           /* Near-opaque (was 0.6/0.72): the global typed-code backdrop
            * showed through the glass and cut across the ciphertext. */
           background:
-            "linear-gradient(180deg, rgba(11,15,26,0.88), rgba(4,7,14,0.94))",
+            "linear-gradient(180deg, rgba(255,253,250,0.88), rgba(255,253,250,0.94))",
           border: `1px solid ${a}2e`,
           borderRadius: 14,
           padding: "22px 20px",

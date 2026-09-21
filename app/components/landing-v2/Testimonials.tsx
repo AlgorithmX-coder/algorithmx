@@ -152,7 +152,7 @@ export default function Testimonials() {
           letter-spacing: 0.14em;
           text-transform: uppercase;
           white-space: nowrap;
-          color: #7df0ff;
+          color: #0a7085;
           background: rgba(255,255,255,0.81);
           border: 1px solid rgba(0, 229, 255, 0.3);
           border-radius: 999px;

@@ -141,7 +141,7 @@ export default function FAQ() {
             Before you{" "}
             <span
               style={{
-                background: "linear-gradient(90deg,#36d6ff,#a98bff)",
+                background: "linear-gradient(90deg,#0a7085,#5744c9)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 color: "transparent",
@@ -176,7 +176,7 @@ export default function FAQ() {
                     position: "relative",
                     overflow: "hidden",
                     background: isOpen
-                      ? "rgba(15,18,30,0.9)"
+                      ? "rgba(255,253,250,0.9)"
                       : "rgba(255,255,255,0.52)",
                     border: isOpen
                       ? "1px solid rgba(0,229,255,0.45)"
@@ -199,7 +199,7 @@ export default function FAQ() {
                         top: 0,
                         bottom: 0,
                         width: 3,
-                        background: "linear-gradient(180deg,#36d6ff,#a98bff)",
+                        background: "linear-gradient(180deg,#0a7085,#5744c9)",
                       }}
                     />
                   )}
@@ -244,7 +244,7 @@ export default function FAQ() {
                     {isOpen && (
                       <span
                         aria-hidden
-                        style={{ width: 1, height: 22, background: "rgba(17,22,38,0.19)", flexShrink: 0 }}
+                        style={{ width: 1, height: 22, background: "rgba(244,239,231,0.19)", flexShrink: 0 }}
                       />
                     )}
                     <span

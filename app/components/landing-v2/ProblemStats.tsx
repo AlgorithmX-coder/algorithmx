@@ -31,7 +31,7 @@ const STATS = [
   {
     value: 72,
     suffix: "%",
-    color: "#ff3ad6",
+    color: "#a5117f",
     icon: "shield" as const,
     label: "of UK children have experienced harm online",
     badgeTop: "9–17s",
@@ -43,7 +43,7 @@ const STATS = [
   {
     value: 82,
     suffix: "%",
-    color: "#00f5ff",
+    color: "#0a7085",
     icon: "brain" as const,
     label: "of UK job openings require digital skills",
     badgeTop: "9M+",
@@ -60,7 +60,7 @@ const STATS = [
     value: 60,
     prefix: "£",
     suffix: "K",
-    color: "#ffc94a",
+    color: "#8a5a00",
     icon: "trend" as const,
     label: "median advertised UK cyber security salary",
     badgeTop: "↑ +6%",

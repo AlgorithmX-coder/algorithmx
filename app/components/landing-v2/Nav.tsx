@@ -283,7 +283,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             90deg,
             transparent,
             var(--lv2-cyan),
-            #7c5cff,
+            #5744c9,
             transparent
           );
           filter: blur(0.5px);
@@ -345,7 +345,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             150deg,
             var(--lv2-cyan-soft),
             var(--lv2-cyan) 45%,
-            #7c5cff
+            #5744c9
           );
           -webkit-background-clip: text;
           background-clip: text;
@@ -471,10 +471,10 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         /* The page's own link: warm against the cyan chips, so a returning
            school finds its way in without competing with the CTA. */
         :global(.lv2-nav-aside) {
-          color: #ffca82;
+          color: #9a5f00;
           text-shadow: 0 0 14px rgba(255,180,90,0.55);
         }
-        :global(.lv2-nav-aside)::after { background: #ffca82 !important; }
+        :global(.lv2-nav-aside)::after { background: #9a5f00 !important; }
         :global(.lv2-nav-aside):hover,
         :global(.lv2-nav-aside):focus-visible {
           color: #ffe2b8;
@@ -1096,7 +1096,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           font-weight: 600;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #7dffb0;
+          color: #0e7a45;
           text-shadow: 0 0 10px rgba(95, 255, 163, 0.45);
         }
 
@@ -1106,8 +1106,8 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           width: 8px;
           height: 8px;
           border-radius: 999px;
-          background: #5fffa3;
-          box-shadow: 0 0 12px #5fffa3, 0 0 4px #ffffff inset;
+          background: #0e7a45;
+          box-shadow: 0 0 12px #0e7a45, 0 0 4px #ffffff inset;
           animation: lv2TelPulse 2.2s ease-in-out infinite;
         }
         .lv2-tel-dot::after {
@@ -1115,7 +1115,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           position: absolute;
           inset: -2px;
           border-radius: 999px;
-          border: 1px solid #5fffa3;
+          border: 1px solid #0e7a45;
           opacity: 0;
           animation: lv2TelRing 2.2s ease-out infinite;
         }
@@ -1207,7 +1207,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           color: #ff9d6e;
         }
         .lv2-tel-trend-down {
-          color: #5fffa3;
+          color: #0e7a45;
         }
         @keyframes lv2TelBlip {
           from {

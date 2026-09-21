@@ -55,12 +55,12 @@ import HeroOverlay from "./HeroOverlay";
  * names live in SubjectShowcase's STREAMS and return when a stream
  * flips live. */
 const STREAMS = [
-  { name: "CYBERSECURITY", age: "6-18+", status: "LIVE", color: "#5fffa3", href: "/cyberheroes", live: true },
-  { name: "7F#02$AE49BD1C8", age: "", status: "T-3 MO", color: "#9ff5ff", href: "#subjects", live: false },
-  { name: "C4&9E0#B7$2A6F1D3", age: "", status: "T-6 MO", color: "#cba8ff", href: "#subjects", live: false },
-  { name: "0B$8D3F#A5E92C", age: "", status: "T-12 MO", color: "#ffd07a", href: "#subjects", live: false },
-  { name: "E2%7C1&F8B#04A9D", age: "", status: "T-15 MO", color: "#ffc94a", href: "#subjects", live: false },
-  { name: "5A#D6$1E3C&B0", age: "", status: "T-18 MO", color: "#ff3ad6", href: "#subjects", live: false },
+  { name: "CYBERSECURITY", age: "6-18+", status: "LIVE", color: "#0e7a45", href: "/cyberheroes", live: true },
+  { name: "7F#02$AE49BD1C8", age: "", status: "T-3 MO", color: "#0a7085", href: "#subjects", live: false },
+  { name: "C4&9E0#B7$2A6F1D3", age: "", status: "T-6 MO", color: "#5744c9", href: "#subjects", live: false },
+  { name: "0B$8D3F#A5E92C", age: "", status: "T-12 MO", color: "#8a5a00", href: "#subjects", live: false },
+  { name: "E2%7C1&F8B#04A9D", age: "", status: "T-15 MO", color: "#8a5a00", href: "#subjects", live: false },
+  { name: "5A#D6$1E3C&B0", age: "", status: "T-18 MO", color: "#a5117f", href: "#subjects", live: false },
 ] as const;
 
 /* Deterministic per-row activity sparklines (viewBox 0 0 30 10). */
@@ -75,7 +75,7 @@ const SPARKS = [
 
 /* Per-column key glow hues — the curated luxe palette from the brand
  * keyboard (not a raw rainbow). */
-const KEY_COLS = ["#00e5ff", "#7df0ff", "#cba8ff", "#ff3ad6", "#ff7a9f", "#ffd07a", "#5fffa3"];
+const KEY_COLS = ["#0a7085", "#0a7085", "#5744c9", "#a5117f", "#ff7a9f", "#8a5a00", "#0e7a45"];
 
 /* Keyboard rows — real legends (static DOM text; rasterized once, free
  * during the lid animation). Wide==true stretches modifier keys. */
@@ -345,7 +345,7 @@ export default function HeroCinematicV3() {
                 transform: "translate(-50%, -48%)",
                 borderRadius: "50%",
                 background:
-                  "radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, transparent 70%)",
+                  "radial-gradient(ellipse at 50% 50%, rgba(242,241,238,0.55) 0%, rgba(242,241,238,0.25) 45%, transparent 70%)",
               }}
             />
 
@@ -366,7 +366,7 @@ export default function HeroCinematicV3() {
                   borderRadius: 16,
                   transformStyle: "preserve-3d",
                   background:
-                    "linear-gradient(145deg, #343a48 0%, #262b37 45%, #1d212c 100%)",
+                    "linear-gradient(145deg, #c9c5bd 0%, #dedbd5 45%, #dedbd5 100%)",
                   boxShadow:
                     "inset 0 1px 0 rgba(190,205,235,0.28), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12)",
                 }}
@@ -383,7 +383,7 @@ export default function HeroCinematicV3() {
                       height: 9,
                       borderRadius: 5,
                       background:
-                        "linear-gradient(180deg, #0c0e15 0%, #2e3442 40%, #171b26 100%)",
+                        "linear-gradient(180deg, #f2f1ee 0%, #c9c5bd 40%, #dedbd5 100%)",
                       boxShadow:
                         "inset 0 1px 1px rgba(180,200,235,0.22), 0 1px 3px rgba(0,0,0,0.7)",
                     }}
@@ -400,7 +400,7 @@ export default function HeroCinematicV3() {
                     height: 10,
                     borderRadius: 5,
                     backgroundImage:
-                      "radial-gradient(circle at 2px 50%, rgba(0,0,0,0.85) 1.1px, transparent 1.4px)",
+                      "radial-gradient(circle at 2px 50%, rgba(242,241,238,0.85) 1.1px, transparent 1.4px)",
                     backgroundSize: "6px 10px",
                     boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)",
                     opacity: 0.85,
@@ -416,7 +416,7 @@ export default function HeroCinematicV3() {
                     top: 34,
                     height: 208,
                     borderRadius: 10,
-                    background: "linear-gradient(160deg, #0a0c13, #070910)",
+                    background: "linear-gradient(160deg, #f2f1ee, #f2f1ee)",
                     boxShadow:
                       "inset 0 2px 8px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(120,140,180,0.10)",
                     padding: "12px 14px",
@@ -458,7 +458,7 @@ export default function HeroCinematicV3() {
                               flex: wide,
                               borderRadius: 5,
                               background:
-                                "linear-gradient(180deg, #171b25 0%, #0d1019 100%)",
+                                "linear-gradient(180deg, #dedbd5 0%, #f2f1ee 100%)",
                               boxShadow: `inset 0 1px 0 rgba(170,190,225,0.13), 0 1px 2px rgba(0,0,0,0.6), 0 0 6px ${hue}14`,
                               display: "flex",
                               alignItems: "center",
@@ -466,7 +466,7 @@ export default function HeroCinematicV3() {
                               fontFamily: "var(--lv2-font-mono)",
                               fontSize: legend.length > 1 ? 6.5 : 8.5,
                               fontWeight: 600,
-                              color: "rgba(215,232,255,0.6)",
+                              color: "rgba(32,36,45,0.6)",
                               textShadow: `0 0 5px ${hue}66`,
                               userSelect: "none",
                             }}
@@ -490,7 +490,7 @@ export default function HeroCinematicV3() {
                     transform: "translateX(-58%)",
                     borderRadius: 12,
                     background:
-                      "linear-gradient(155deg, rgba(24,28,40,0.95), rgba(10,12,20,0.98))",
+                      "linear-gradient(155deg, rgba(222,219,213,0.95), rgba(242,241,238,0.98))",
                     boxShadow:
                       "inset 0 1px 0 rgba(190,210,240,0.18), inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 -8px 22px rgba(0,0,0,0.4)",
                   }}
@@ -501,7 +501,7 @@ export default function HeroCinematicV3() {
                       inset: 0,
                       borderRadius: 12,
                       background:
-                        "linear-gradient(115deg, transparent 30%, rgba(160,200,255,0.07) 46%, transparent 62%)",
+                        "linear-gradient(115deg, transparent 30%, rgba(32,36,45,0.07) 46%, transparent 62%)",
                     }}
                   />
                 </div>
@@ -578,7 +578,7 @@ export default function HeroCinematicV3() {
                     width: 26,
                     height: 3,
                     borderRadius: 2,
-                    background: "#00e5ff",
+                    background: "#0a7085",
                     boxShadow: "0 0 8px rgba(0,229,255,0.9)",
                     opacity: ledOpacity,
                   }}
@@ -597,7 +597,7 @@ export default function HeroCinematicV3() {
                   transformOrigin: "50% 0%",
                   transform: "rotateX(-84deg)",
                   borderRadius: "0 0 10px 10px",
-                  background: "linear-gradient(180deg, #232836, #12151e)",
+                  background: "linear-gradient(180deg, #dedbd5, #f2f1ee)",
                   boxShadow: "inset 0 1px 0 rgba(150,170,205,0.14)",
                 }}
               >
@@ -612,7 +612,7 @@ export default function HeroCinematicV3() {
                       width: 24,
                       height: 4.5,
                       borderRadius: 3,
-                      background: "#04060b",
+                      background: "#f2f1ee",
                       boxShadow:
                         "inset 0 1px 2px rgba(0,0,0,0.95), 0 1px 0 rgba(160,182,215,0.1)",
                     }}
@@ -627,7 +627,7 @@ export default function HeroCinematicV3() {
                     width: 6.5,
                     height: 6.5,
                     borderRadius: 99,
-                    background: "#04060b",
+                    background: "#f2f1ee",
                     boxShadow:
                       "inset 0 1px 2px rgba(0,0,0,0.95), 0 1px 0 rgba(160,182,215,0.1)",
                   }}
@@ -655,7 +655,7 @@ export default function HeroCinematicV3() {
                     backfaceVisibility: "hidden",
                     transform: "translateZ(1.2px)",
                     background:
-                      "linear-gradient(150deg, #3a4152 0%, #272c39 50%, #1c202b 100%)",
+                      "linear-gradient(150deg, #c9c5bd 0%, #dedbd5 50%, #dedbd5 100%)",
                     boxShadow:
                       "inset 0 1px 0 rgba(200,215,245,0.3), inset 0 -1px 0 rgba(0,0,0,0.45)",
                     display: "flex",
@@ -690,7 +690,7 @@ export default function HeroCinematicV3() {
                       x: sweepX,
                       opacity: sweepOpacity,
                       background:
-                        "linear-gradient(105deg, transparent 0%, rgba(185,220,255,0.14) 32%, rgba(225,242,255,0.3) 50%, rgba(185,220,255,0.14) 68%, transparent 100%)",
+                        "linear-gradient(105deg, transparent 0%, rgba(32,36,45,0.14) 32%, rgba(32,36,45,0.3) 50%, rgba(32,36,45,0.14) 68%, transparent 100%)",
                       pointerEvents: "none",
                     }}
                   />
@@ -704,7 +704,7 @@ export default function HeroCinematicV3() {
                     borderRadius: 16,
                     backfaceVisibility: "hidden",
                     transform: "rotateX(180deg) translateZ(1.2px)",
-                    background: "linear-gradient(160deg, #1a1e29, #10131c)",
+                    background: "linear-gradient(160deg, #dedbd5, #f2f1ee)",
                     boxShadow: "inset 0 0 0 1px rgba(130,150,185,0.14)",
                     padding: 12,
                   }}
@@ -723,7 +723,7 @@ export default function HeroCinematicV3() {
                       marginLeft: -2.5,
                       borderRadius: 99,
                       background:
-                        "radial-gradient(circle at 40% 35%, #33465e 0%, #0a0f18 70%)",
+                        "radial-gradient(circle at 40% 35%, #33465e 0%, #f2f1ee 70%)",
                       boxShadow: "0 0 0 1.5px rgba(90,110,145,0.35)",
                     }}
                   />
@@ -734,7 +734,7 @@ export default function HeroCinematicV3() {
                       height: "100%",
                       borderRadius: 8,
                       overflow: "hidden",
-                      background: "#02030a",
+                      background: "#f2f1ee",
                     }}
                   >
                     {/* dormant wallpaper — cosmic core + tilted orbit
@@ -745,7 +745,7 @@ export default function HeroCinematicV3() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(14,52,98,0.32) 34%, rgba(5,20,44,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(224,250,255,0.5) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
+                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(201,197,189,0.32) 34%, rgba(242,241,238,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(224,250,255,0.5) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
                         opacity: 0.55,
                       }}
                     />
@@ -781,7 +781,7 @@ export default function HeroCinematicV3() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "linear-gradient(112deg, transparent 42%, rgba(170,210,255,0.05) 52%, transparent 60%)",
+                          "linear-gradient(112deg, transparent 42%, rgba(32,36,45,0.05) 52%, transparent 60%)",
                         zIndex: 3,
                         pointerEvents: "none",
                       }}
@@ -797,7 +797,7 @@ export default function HeroCinematicV3() {
                         padding: "14px 18px 12px",
                         fontFamily: "var(--lv2-font-mono)",
                         background:
-                          "linear-gradient(180deg, rgba(7,12,24,0.92), rgba(4,7,15,0.95))",
+                          "linear-gradient(180deg, rgba(242,241,238,0.92), rgba(242,241,238,0.95))",
                         zIndex: 2,
                       }}
                     >
@@ -931,7 +931,7 @@ export default function HeroCinematicV3() {
  * parameter strip. Everything is static except the scroll-cascading
  * stream rows — rasterized once, free during the lid animation. */
 const PANEL: CSSProperties = {
-  background: "rgba(9,15,28,0.66)",
+  background: "rgba(242,241,238,0.66)",
   border: "1px solid rgba(90,150,220,0.2)",
   borderRadius: 7,
 };
@@ -956,11 +956,11 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
               width: 6,
               height: 6,
               borderRadius: 99,
-              background: "#00e5ff",
+              background: "#0a7085",
               boxShadow: "0 0 8px rgba(0,229,255,0.9)",
             }}
           />
-          <span style={{ color: "#9ff5ff", fontWeight: 700, fontSize: 10.5, letterSpacing: "0.1em" }}>
+          <span style={{ color: "#0a7085", fontWeight: 700, fontSize: 10.5, letterSpacing: "0.1em" }}>
             ALGORITHMX_OS
           </span>
         </span>
@@ -973,7 +973,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                 letterSpacing: "0.14em",
                 fontWeight: 600,
                 color: i === 1 ? "#e9f0ff" : DIM,
-                borderBottom: i === 1 ? "1.5px solid #3fd0ff" : "1.5px solid transparent",
+                borderBottom: i === 1 ? "1.5px solid #0a7085" : "1.5px solid transparent",
                 paddingBottom: 2,
               }}
             >
@@ -995,17 +995,17 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
           <svg viewBox="0 0 12 9" style={{ width: 10, height: 8 }} aria-hidden>
             <path
               d="M1.2 3.8a7 7 0 0 1 9.6 0M3.2 5.8a4.2 4.2 0 0 1 5.6 0"
-              stroke="#9ff5ff"
+              stroke="#0a7085"
               strokeWidth="1.1"
               strokeLinecap="round"
               fill="none"
               opacity="0.75"
             />
-            <circle cx="6" cy="7.6" r="0.9" fill="#9ff5ff" opacity="0.9" />
+            <circle cx="6" cy="7.6" r="0.9" fill="#0a7085" opacity="0.9" />
           </svg>
           <span>23:47</span>
           <span>
-            SYS-07 · <span style={{ color: "#5fffa3" }}>ONLINE</span>
+            SYS-07 · <span style={{ color: "#0e7a45" }}>ONLINE</span>
           </span>
         </span>
       </div>
@@ -1029,7 +1029,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
               fontFamily: "var(--font-geist-sans, ui-sans-serif), system-ui, sans-serif",
               fontSize: 21,
               fontWeight: 750,
-              color: "#3fd0ff",
+              color: "#0a7085",
               lineHeight: 1,
             }}
           >
@@ -1041,7 +1041,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             <polyline
               points="0,9 8,9 12,4 16,13 22,9 34,9 38,6 42,12 48,9 60,9 64,3 68,14 74,9 86,9 90,6 94,11 100,9"
               fill="none"
-              stroke="#3fd0ff"
+              stroke="#0a7085"
               strokeWidth="1.1"
               opacity="0.8"
             />
@@ -1056,7 +1056,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                   fontWeight: 600,
                   color: i === 1 ? "#e9f0ff" : DIM,
                   background: i === 1 ? "rgba(63,208,255,0.12)" : "transparent",
-                  borderLeft: i === 1 ? "2px solid #3fd0ff" : "2px solid transparent",
+                  borderLeft: i === 1 ? "2px solid #0a7085" : "2px solid transparent",
                   borderRadius: 3,
                   padding: "3px 5px",
                 }}
@@ -1066,7 +1066,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             ))}
           </div>
           <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
-            UPTIME <span style={{ color: "#9ff5ff" }}>23:47:12</span>
+            UPTIME <span style={{ color: "#0a7085" }}>23:47:12</span>
           </span>
         </div>
 
@@ -1078,7 +1078,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             padding: "7px 9px",
             display: "flex",
             flexDirection: "column",
-            background: "rgba(7,12,24,0.45)",
+            background: "rgba(242,241,238,0.45)",
             minWidth: 0,
           }}
         >
@@ -1101,7 +1101,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             >
               LEARNING STREAMS
             </span>
-            <span style={{ fontSize: 6.5, letterSpacing: "0.15em", color: "#3fd0ff" }}>
+            <span style={{ fontSize: 6.5, letterSpacing: "0.15em", color: "#0a7085" }}>
               ● REAL-TIME VIEW
             </span>
           </div>
@@ -1138,7 +1138,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                 borderRadius: 99,
                 flexShrink: 0,
                 background:
-                  "conic-gradient(#3fd0ff 0deg 356deg, rgba(90,150,220,0.25) 356deg 360deg)",
+                  "conic-gradient(#0a7085 0deg 356deg, rgba(90,150,220,0.25) 356deg 360deg)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1149,7 +1149,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                   width: 26,
                   height: 26,
                   borderRadius: 99,
-                  background: "#0a1020",
+                  background: "#f2f1ee",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -1177,7 +1177,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                     gap: 6,
                   }}
                 >
-                  {m} <span style={{ color: "#5fffa3" }}>100%</span>
+                  {m} <span style={{ color: "#0e7a45" }}>100%</span>
                 </span>
               ))}
             </div>
@@ -1195,13 +1195,13 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                     width: 4,
                     height: 4,
                     borderRadius: 99,
-                    background: "#5fffa3",
+                    background: "#0e7a45",
                     flexShrink: 0,
                     transform: "translateY(-1px)",
                   }}
                 />
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 6, color: "#3fd0ff", letterSpacing: "0.1em" }}>{time}</div>
+                  <div style={{ fontSize: 6, color: "#0a7085", letterSpacing: "0.1em" }}>{time}</div>
                   <div
                     style={{
                       fontSize: 7,
@@ -1218,7 +1218,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             ))}
             {/* live terminal prompt — blinking caret (CSS steps keyframe,
              *  its own tiny layer; killed under reduced motion) */}
-            <div style={{ marginTop: 5, fontSize: 6.5, color: "#3fd0ff", letterSpacing: "0.1em" }}>
+            <div style={{ marginTop: 5, fontSize: 6.5, color: "#0a7085", letterSpacing: "0.1em" }}>
               &gt; <span className="hv3-blink">▍</span>
             </div>
           </div>
@@ -1235,7 +1235,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
           borderTop: "1px solid rgba(63,208,255,0.16)",
         }}
       >
-        <span style={{ fontSize: 7.5, letterSpacing: "0.18em", color: "#5fffa3", fontWeight: 700 }}>
+        <span style={{ fontSize: 7.5, letterSpacing: "0.18em", color: "#0e7a45", fontWeight: 700 }}>
           ● READY
         </span>
         {[

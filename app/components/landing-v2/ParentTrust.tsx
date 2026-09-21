@@ -30,42 +30,42 @@ const PILLARS: Pillar[] = [
     title: "Safe by design",
     copy:
       "No ads, no third-party trackers and no tricks designed to keep you hooked. Your data is never sold or used to train AI models.",
-    accent: "#5fffa3",
+    accent: "#0e7a45",
     icon: "shield",
   },
   {
     title: "Right for every stage",
     copy:
       "Pathways for ages 7 to 9, 10 to 13, 14 to 16 and adults, from first steps to career-ready skills. We meet every learner where they are. Never push, never patronise.",
-    accent: "#9ff5ff",
+    accent: "#0a7085",
     icon: "person",
   },
   {
     title: "Built by educators and tech professionals",
     copy:
       "Created by the team behind an Ofsted-registered STEM provider, with input from people working in tech every day. Aligned with KS2 to KS4 computing for schools and grounded in real industry practice for adults.",
-    accent: "#cba8ff",
+    accent: "#5744c9",
     icon: "gradcap",
   },
   {
     title: "Learn by doing",
     copy:
       "Build real things with real tools, including the AI tools shaping every industry. Projects you can proudly show off, not videos you half watch.",
-    accent: "#ffd07a",
+    accent: "#8a5a00",
     icon: "code",
   },
   {
     title: "Clear, honest pricing",
     copy:
       "Simple pricing for individuals and families, straightforward licensing for schools. No hidden fees and no surprise upgrades.",
-    accent: "#ffc94a",
+    accent: "#8a5a00",
     icon: "tag",
   },
   {
     title: "Ready for an AI world",
     copy:
       "Technology is changing fast, and so are our lessons. Learn to spot deepfakes and AI-powered scams, question what chatbots tell you, and use AI as a tool rather than a shortcut.",
-    accent: "#ff3ad6",
+    accent: "#a5117f",
     icon: "globe",
   },
 ];
@@ -191,7 +191,7 @@ export default function ParentTrust() {
                       height: 52,
                       borderRadius: "50%",
                       border: `1.5px solid ${p.accent}66`,
-                      background: `radial-gradient(circle at 50% 38%, ${p.accent}1f, rgba(10,12,20,0.6))`,
+                      background: `radial-gradient(circle at 50% 38%, ${p.accent}1f, rgba(255,253,250,0.6))`,
                       boxShadow: `0 0 22px ${p.accent}33, inset 0 0 12px ${p.accent}1a`,
                       display: "flex",
                       alignItems: "center",
