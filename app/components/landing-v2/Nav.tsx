@@ -167,14 +167,14 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
               <a
                 className="lv2-nav-secondary"
                 href="/#subjects"
-                style={navLink}
+                style={onSand ? { ...navLink, color: "#075a6b" } : navLink}
               >
                 Courses
               </a>
               <Link
                 className="lv2-nav-secondary"
                 href="/schools"
-                style={navLink}
+                style={onSand ? { ...navLink, color: "#075a6b" } : navLink}
               >
                 Schools
               </Link>
