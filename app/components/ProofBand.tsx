@@ -1,9 +1,13 @@
 "use client";
 
-import { FadeUp } from "./utilities";
+import { FadeUp } from "./landing-v2/utilities";
 
 /**
  * ProofBand — the four accreditations, given a section of their own.
+ *
+ * Used by the homepage and by /schools (owner 2026-09-21: "the same way
+ * on the schools page"). One component, so the wording and the artwork
+ * rules cannot drift between the two.
  *
  * Chosen by the owner from a board of twenty presentations (2026-09-20,
  * option 19). The marks used to sit under the hero CTA, where four full
@@ -77,11 +81,12 @@ export default function ProofBand() {
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <FadeUp>
           <div className="lv2-proof">
-            <p className="lv2-proof-kicker">// Accredited, certified and backed</p>
+            <p className="lv2-proof-kicker">{"// Accredited, certified and backed"}</p>
             <ul className="lv2-proof-cols">
               {MARKS.map((m) => (
                 <li key={m.name} className="lv2-proof-col">
                   <span className={m.dark ? "lv2-proof-plate lv2-proof-plate-dark" : "lv2-proof-plate"}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={m.src}
                       alt={m.alt}
