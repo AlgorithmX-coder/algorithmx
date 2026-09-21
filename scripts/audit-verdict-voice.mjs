@@ -189,6 +189,28 @@ const ENGINES = {
         : { label: "  wrong move " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
     ),
   ),
+  // Week 13 engines (2026-09-21). The jug and the room are one-sided per item;
+  // the plan desk judges the WHOLE plan, so a round carries both sides.
+  dayJug: (span) => objs(span, "pours").flatMap((p) =>
+    objs(p, "options").map((o) =>
+      flag(o, "isRight")
+        ? { label: "pour " + (fld(o, "label") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  wrong pour " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
+  setTheDial: (span) => objs(span, "rounds").map((r) => ({
+    label: "plan " + (fld(r, "id") ?? ""),
+    right: fld(r, "why"),
+    wrong: fld(r, "explanation"),
+  })),
+  // NightFall speaks `why` only on a thing that goes out and `explanation`
+  // only on one that stays, so each thing carries exactly one side. Mapping
+  // both hid an empty teach on every "stays" thing behind a filled `why`.
+  nightFall: (span) => objs(span, "things").map((t) =>
+    flag(t, "moveOut")
+      ? { label: "out " + (fld(t, "label") ?? ""), right: fld(t, "why"), wrong: null, only: "right" }
+      : { label: "  stays " + (fld(t, "label") ?? ""), right: null, wrong: fld(t, "explanation"), only: "wrong" },
+  ),
   // Week 12 engines (2026-09-19). Track Back and the Trail Planner both put
   // three uniform cards up per round; the Future Mirror is a two-way call, so
   // each post carries both sides (PROUD and RUB IT OUT are the same two taps).

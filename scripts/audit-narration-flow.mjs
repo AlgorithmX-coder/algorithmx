@@ -472,6 +472,36 @@ function chainsFor(type, span) {
       }
     }
   }
+  // Week 13 engines (rebuilt 2026-09-21).
+  if (type === "dayJug") {
+    // each day: the read-aloud as the jug fills -> the right pour's why; a
+    // wrong pour answers that same day.
+    for (const p of span.split(/\breadAloud:\s*(?=")/).slice(1)) {
+      const readAloud = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!readAloud) continue;
+      for (const o of p.split(/\{\s*id:\s*(?=")/).slice(1)) {
+        const label = field(o, "label"), why = field(o, "why"), expl = field(o, "explanation");
+        if (!label) continue;
+        if (/isRight:\s*true/.test(o)) {
+          if (why) chains.push({ name: "day jug: " + un(label), mode: "chain", beats: [readAloud, why] });
+        } else if (expl) {
+          chains.push({ name: "day jug: " + un(label) + " (wrong pour)", mode: "branch", beats: [readAloud], branches: [expl] });
+        }
+      }
+    }
+  }
+  if (type === "setTheDial" || type === "nightFall") {
+    // the plan desk and the room both answer their own read-aloud: a good plan /
+    // a right move speaks why, and the teach answers the same line.
+    const noun = type === "setTheDial" ? "plan desk" : "night fall";
+    for (const p of span.split(/\breadAloud:\s*(?=")/).slice(1)) {
+      const readAloud = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!readAloud) continue;
+      const why = field(p, "why"), expl = field(p, "explanation");
+      if (why) chains.push({ name: noun + ": " + un(readAloud).slice(0, 40), mode: "chain", beats: [readAloud, why] });
+      if (expl) chains.push({ name: noun + ": " + un(readAloud).slice(0, 40) + " (teach)", mode: "branch", beats: [readAloud], branches: [expl] });
+    }
+  }
   // Week 12 engines (rebuilt 2026-09-19).
   if (type === "trackBack" || type === "trailPlanner") {
     // each print / stretch: the read-aloud Sarah speaks as it thaws or lights up

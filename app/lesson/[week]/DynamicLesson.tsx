@@ -100,6 +100,9 @@ import DrillRun from "@/app/components/exercises/DrillRun";
 import TrackBack from "@/app/components/exercises/TrackBack";
 import FutureMirror from "@/app/components/exercises/FutureMirror";
 import TrailPlanner from "@/app/components/exercises/signatures/TrailPlanner";
+import DayJug from "@/app/components/exercises/signatures/DayJug";
+import SetTheDial from "@/app/components/exercises/SetTheDial";
+import NightFall from "@/app/components/exercises/NightFall";
 import PausePower from "@/app/components/exercises/PausePower";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
@@ -2719,6 +2722,99 @@ function DynamicLessonInner({
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
               trailLabel={def.trailLabel}
+              askPrompt={def.askPrompt}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      // Week 13 (The Power Station): a warm plant where a hero's charge is made.
+      case "dayJug":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0d1522 0%, #1b2f47 100%)">
+            <DayJug
+              pours={def.pours}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              jugLabel={def.jugLabel}
+              askPrompt={def.askPrompt}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "setTheDial":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0d1522 0%, #1b2f47 100%)">
+            <SetTheDial
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              deskLabel={def.deskLabel}
+              howLongLabel={def.howLongLabel}
+              whatAfterLabel={def.whatAfterLabel}
+              whoKnowsLabel={def.whoKnowsLabel}
+              agreeLabel={def.agreeLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "nightFall":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #16203a 100%)">
+            <NightFall
+              things={def.things}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              roomLabel={def.roomLabel}
+              outLabel={def.outLabel}
+              stayLabel={def.stayLabel}
               askPrompt={def.askPrompt}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
