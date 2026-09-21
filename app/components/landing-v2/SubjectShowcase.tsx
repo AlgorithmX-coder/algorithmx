@@ -755,7 +755,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                     className={c.live ? "lv2-course-mark" : "lv2-course-mark lv2-course-mark-soon"}
                     style={{ ["--lv2-mark" as string]: c.accent }}
                   >
-                    <CourseLockup id={c.id} size={0.74} />
+                    <CourseLockup id={c.id} size={0.74} tone="sand" />
                     <span>{c.live ? `Ages ${c.ages}` : `Ages ${c.ages} · soon`}</span>
                   </li>
                 ))}
