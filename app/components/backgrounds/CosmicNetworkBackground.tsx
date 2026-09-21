@@ -121,6 +121,9 @@ type SkyPalette = {
   star: (a: number) => string;
   starAlt: (a: number) => string;
   core: [string, string, string];
+  /* multiply takes far less weight than lighter to read the same */
+  cloudScale: number;
+  glowScale: number;
 };
 
 const NIGHT_SKY: SkyPalette = {
@@ -132,6 +135,8 @@ const NIGHT_SKY: SkyPalette = {
   star: (a) => `rgba(208,226,255,${a})`,
   starAlt: (a) => `rgba(186,158,255,${a})`,
   core: ["rgba(245,248,255,1)", "rgba(190,205,255,0.4)", "rgba(150,180,255,0)"],
+  cloudScale: 1,
+  glowScale: 1,
 };
 
 const SAND_SKY: SkyPalette = {
@@ -144,6 +149,8 @@ const SAND_SKY: SkyPalette = {
   star: (a) => `rgba(38,46,62,${a})`,
   starAlt: (a) => `rgba(84,66,140,${a})`,
   core: ["rgba(26,64,82,0.6)", "rgba(60,92,128,0.22)", "rgba(120,150,190,0)"],
+  cloudScale: 0.4,
+  glowScale: 0.3,
 };
 
 let SKY: SkyPalette = NIGHT_SKY;
@@ -286,8 +293,9 @@ function paintCosmicBase(ctx: CanvasRenderingContext2D, w: number, h: number, ti
       const rr = c.r * (0.4 + rnd() * 0.6);
       const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, rr);
       const [r, gn, b] = c.col;
-      g.addColorStop(0, `rgba(${r},${gn},${b},${(c.a * (0.5 + rnd() * 0.5)) / 5})`);
-      g.addColorStop(0.5, `rgba(${r},${gn},${b},${(c.a * 0.1) / 1})`);
+      const ca = c.a * SKY.cloudScale;
+      g.addColorStop(0, `rgba(${r},${gn},${b},${(ca * (0.5 + rnd() * 0.5)) / 5})`);
+      g.addColorStop(0.5, `rgba(${r},${gn},${b},${(ca * 0.1) / 1})`);
       g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
@@ -467,7 +475,7 @@ function NebulaGlows({
           right: "-8vmax",
           width: "54vmax",
           height: "54vmax",
-          background: `radial-gradient(circle, rgba(140,95,240,${0.4 * intensity}), transparent 62%)`,
+          background: `radial-gradient(circle, rgba(140,95,240,${0.4 * intensity * SKY.glowScale}), transparent 62%)`,
           animation: anim("cnbDrift1", 64),
         }}
       />
@@ -478,7 +486,7 @@ function NebulaGlows({
           left: "-12vmax",
           width: "52vmax",
           height: "52vmax",
-          background: `radial-gradient(circle, rgba(45,150,240,${0.36 * intensity}), transparent 62%)`,
+          background: `radial-gradient(circle, rgba(45,150,240,${0.36 * intensity * SKY.glowScale}), transparent 62%)`,
           animation: anim("cnbDrift2", 82),
         }}
       />
@@ -489,7 +497,7 @@ function NebulaGlows({
           right: "26vmax",
           width: "38vmax",
           height: "38vmax",
-          background: `radial-gradient(circle, rgba(220,70,190,${0.18 * intensity}), transparent 60%)`,
+          background: `radial-gradient(circle, rgba(220,70,190,${0.18 * intensity * SKY.glowScale}), transparent 60%)`,
           animation: anim("cnbDrift3", 96),
         }}
       />
@@ -1106,12 +1114,18 @@ function SunsetGlow() {
         pointerEvents: "none",
         mixBlendMode: "var(--cnb-blend, screen)" as React.CSSProperties["mixBlendMode"],
         background:
-          /* sun sinking just below the horizon, slightly right of centre */
-          "radial-gradient(ellipse 62% 38% at 58% 108%, rgba(255,164,92,0.2) 0%, rgba(255,110,84,0.09) 42%, transparent 72%), " +
-          /* horizon band: amber -> coral -> rose -> violet, fading up the sky */
-          "linear-gradient(to top, rgba(255,128,70,0.15) 0%, rgba(236,88,112,0.1) 20%, rgba(168,70,150,0.06) 44%, rgba(92,56,150,0.035) 70%, rgba(60,44,120,0.02) 100%), " +
-          /* overall dusk lift so the top of the sky is not pure black */
-          "linear-gradient(rgba(46,28,62,0.2), rgba(46,28,62,0.2))",
+          SKY.glowScale < 1
+            ? /* On paper the same dusk has to be subtracted, so it is a
+                 warm horizon only: the flat violet lift that keeps a black
+                 sky from going pure black turns the whole page grey here. */
+              "radial-gradient(ellipse 62% 34% at 58% 108%, rgba(214,132,72,0.16) 0%, rgba(206,110,96,0.07) 44%, transparent 74%), " +
+              "linear-gradient(to top, rgba(206,132,86,0.09) 0%, rgba(186,116,124,0.05) 22%, transparent 56%)"
+            : /* sun sinking just below the horizon, slightly right of centre */
+              "radial-gradient(ellipse 62% 38% at 58% 108%, rgba(255,164,92,0.2) 0%, rgba(255,110,84,0.09) 42%, transparent 72%), " +
+              /* horizon band: amber -> coral -> rose -> violet, fading up the sky */
+              "linear-gradient(to top, rgba(255,128,70,0.15) 0%, rgba(236,88,112,0.1) 20%, rgba(168,70,150,0.06) 44%, rgba(92,56,150,0.035) 70%, rgba(60,44,120,0.02) 100%), " +
+              /* overall dusk lift so the top of the sky is not pure black */
+              "linear-gradient(rgba(46,28,62,0.2), rgba(46,28,62,0.2))",
       }}
     />
   );
