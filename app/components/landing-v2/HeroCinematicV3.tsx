@@ -590,19 +590,22 @@ export default function HeroCinematicV3() {
               <div
                 style={{
                   position: "absolute",
-                  left: 20,
-                  /* Inset past the deck's 16px corner radius. At 4px the
-                   * ends of this strip poked out under the curve as a
-                   * square tab, which was invisible on a black machine and
-                   * obvious on a silver one. */
-                  right: 20,
-                  bottom: -13,
-                  height: 14,
+                  /* The port strip, not a tray. Inset 20px still left its
+                   * flat ends outside the machine's silhouette once the
+                   * whole scene is rotated in 3D: in screen space the strip
+                   * ran past the bottom-left corner as a white slab. It now
+                   * sits well inside both corners and is rounded on every
+                   * side, so it reads as a recessed edge rather than a plate
+                   * under the machine. */
+                  left: 58,
+                  right: 58,
+                  bottom: -11,
+                  height: 12,
                   transformOrigin: "50% 0%",
                   transform: "rotateX(-84deg)",
-                  borderRadius: "0 0 10px 10px",
+                  borderRadius: 8,
                   /* an edge in shadow, a shade under the deck it belongs to */
-                  background: "linear-gradient(180deg, #b9c0ca, #d6dae0)",
+                  background: "linear-gradient(180deg, #a8b0bc, #c6ccd5)",
                   boxShadow: "inset 0 1px 0 rgba(150,170,205,0.14)",
                 }}
               >
