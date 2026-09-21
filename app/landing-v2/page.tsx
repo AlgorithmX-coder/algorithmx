@@ -205,7 +205,7 @@ export default function LandingV2() {
       <CosmicNetworkBackground tone="sand" />
       <ScrollFormObjects tone="sand" />
       <SpotlightCursor />
-      <Nav />
+      <Nav tone="sand" />
       <main>
         <HeroCinematic />
         <ProofBand />

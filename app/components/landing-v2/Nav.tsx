@@ -32,9 +32,12 @@ type NavProps = {
   showTelemetry?: boolean;
   /** The Courses and Schools links. */
   showSiteLinks?: boolean;
+  /** Which page the bar is sitting on. */
+  tone?: "night" | "sand";
 };
 
-export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true }: NavProps) {
+export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night" }: NavProps) {
+  const onSand = tone === "sand";
   /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
    * Under Lenis, scroll events fire every rAF — storing the pixel value
    * re-rendered the entire Nav subtree at 60fps for the whole page.
@@ -54,17 +57,30 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
   const isLight = false;
 
   /* Layered gradient glass (gives the bar internal depth vs. a flat fill). */
-  const bg = scrolled
-    ? "linear-gradient(180deg, rgba(8,13,30,0.84) 0%, rgba(255,255,255,0.63) 100%)"
-    : "linear-gradient(180deg, rgba(8,13,30,0.42) 0%, rgba(255,255,255,0.19) 100%)";
-  const border = scrolled
-    ? "1px solid rgba(0,229,255,0.18)"
-    : "1px solid rgba(0,229,255,0.06)";
+  const bg = onSand
+    ? scrolled
+      ? "linear-gradient(180deg, rgba(255,253,248,0.96) 0%, rgba(250,245,236,0.9) 100%)"
+      : "linear-gradient(180deg, rgba(255,253,248,0.8) 0%, rgba(250,245,236,0.66) 100%)"
+    : scrolled
+      ? "linear-gradient(180deg, rgba(8,13,30,0.84) 0%, rgba(255,255,255,0.63) 100%)"
+      : "linear-gradient(180deg, rgba(8,13,30,0.42) 0%, rgba(255,255,255,0.19) 100%)";
+  const border = onSand
+    ? scrolled
+      ? "1px solid rgba(70,58,44,0.18)"
+      : "1px solid rgba(70,58,44,0.09)"
+    : scrolled
+      ? "1px solid rgba(0,229,255,0.18)"
+      : "1px solid rgba(0,229,255,0.06)";
   /* Glassy at the very top → settles onto a lifted shadow once scrolled,
    * so the strip reads as a layer lifting off the page. No layout change. */
-  const shadow = scrolled
-    ? "0 14px 44px rgba(2,4,12,0.5), 0 1px 0 rgba(0,229,255,0.06) inset"
-    : "0 0 0 rgba(0,0,0,0)";
+  /* On paper a bar stands out by lifting, not by darkening. */
+  const shadow = onSand
+    ? scrolled
+      ? "0 10px 30px -14px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.9)"
+      : "0 4px 18px -14px rgba(86,68,45,0.4)"
+    : scrolled
+      ? "0 14px 44px rgba(2,4,12,0.5), 0 1px 0 rgba(0,229,255,0.06) inset"
+      : "0 0 0 rgba(0,0,0,0)";
   const ctaRef = useRef<HTMLAnchorElement>(null);
   useMagnetic(ctaRef, { strength: 0.28, radius: 80 });
   const ctaHref = cta?.href ?? "/signup";
@@ -79,6 +95,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
 
   return (
     <nav
+      data-tone={tone}
       style={{
         position: "fixed",
         top: 0,
@@ -326,7 +343,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             110deg,
             var(--lv2-ink) 0%,
             var(--lv2-ink) 42%,
-            #ffffff 48%,
+            var(--lv2-word-flash, #ffffff) 48%,
             var(--lv2-cyan-soft) 51%,
             var(--lv2-ink) 58%,
             var(--lv2-ink) 100%
@@ -481,6 +498,21 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           text-shadow: 0 0 20px rgba(255,190,110,0.85);
         }
 
+        /* Sand: the shimmer lightens the ink instead of punching a hole in
+           it, and the secondary links carry a heavier edge because a
+           hairline that reads on black disappears on paper. */
+        nav[data-tone="sand"] {
+          --lv2-word-flash: rgba(20, 22, 29, 0.32);
+        }
+        nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
+          border-color: rgba(70, 58, 44, 0.3) !important;
+          background: rgba(10, 112, 133, 0.09) !important;
+          font-weight: 700;
+        }
+        nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover) {
+          border-color: rgba(10, 112, 133, 0.6) !important;
+          background: rgba(10, 112, 133, 0.17) !important;
+        }
         :global(.lv2-nav-secondary) {
           position: relative;
           display: inline-block;
