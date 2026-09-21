@@ -115,16 +115,8 @@ export default function LandingV2() {
       }
       .lv2-nav-cta *, .lv2-hero-cta-primary * { color: #fffdfa !important; }
 
-      /* The nav chips were drawn as a cyan hairline on black. */
-      .lv2-nav-secondary:not(.lv2-nav-aside) {
-        border-color: rgba(20,22,29,0.2) !important;
-        background: rgba(10,112,133,0.07) !important;
-        color: #22262f !important;
-      }
-      .lv2-nav-secondary:not(.lv2-nav-aside):hover {
-        border-color: rgba(10,112,133,0.55) !important;
-        background: rgba(10,112,133,0.14) !important;
-      }
+      /* The nav chips are the nav component's business now: it takes a
+         tone, and these page-scoped rules were fighting it. */
       .lv2-nav-aside { color: #8a5a00 !important; text-shadow: none !important; }
 
       /* The accreditations band is shared with /schools, which stays dark,
