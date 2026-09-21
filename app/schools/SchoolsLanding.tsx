@@ -60,8 +60,9 @@ const pillPrimary: React.CSSProperties = {
   height: 54,
   padding: "0 30px",
   borderRadius: 999,
-  background: "linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%)",
-  color: "#04050d",
+  /* the same deep teal the homepage primary carries, with paper on it */
+  background: "linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%)",
+  color: "#fffdfa",
   fontFamily: "var(--lv2-font-display)",
   fontSize: 15.5,
   fontWeight: 700,

@@ -628,8 +628,11 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
 
     const buildAtlases = () => {
       const px = Math.max(11, Math.min(15, Math.round(R / 26)));
-      cityAtlas = makeAtlas(px, "#c2ffb2", "700", { glow: "rgba(120,255,130,0.8)", track: px * 0.1 });
-      codeAtlas = makeAtlas(Math.max(9, Math.round(R / 26)), "#eafcff", "600");
+      /* The city names and the drifting code were light glyphs with a
+         green halo, built to sit on a black sphere. On paper they are ink
+         with no halo at all. */
+      cityAtlas = makeAtlas(px, onSand ? "#0e5c37" : "#c2ffb2", "700", onSand ? { track: px * 0.1 } : { glow: "rgba(120,255,130,0.8)", track: px * 0.1 });
+      codeAtlas = makeAtlas(Math.max(9, Math.round(R / 26)), onSand ? "#3f5a78" : "#eafcff", "600");
     };
 
     const build = () => {
@@ -1280,7 +1283,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           border-radius: 999px;
           border: 1px solid rgba(10,112,133,0.26);
           background: rgba(5,12,32,0.88);
-          color: rgba(233,242,255,0.82);
+          color: rgba(52,62,74,0.86);
           /* A pause control is required for anything that moves on its own
              (WCAG 2.2.2), but it does not have to announce itself: it sits as
              a faint dot and comes up on hover, focus or keyboard. */
