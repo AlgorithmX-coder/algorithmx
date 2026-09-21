@@ -368,7 +368,7 @@ export default function HeroCinematicV3() {
                   background:
                     "linear-gradient(145deg, #c9c5bd 0%, #dedbd5 45%, #dedbd5 100%)",
                   boxShadow:
-                    "inset 0 1px 0 rgba(32,36,45,0.28), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12)",
+                    "inset 0 1px 0 rgba(32,36,45,0.82), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12)",
                 }}
               >
                 {/* hinge barrels along the back edge */}
@@ -385,7 +385,7 @@ export default function HeroCinematicV3() {
                       background:
                         "linear-gradient(180deg, #f2f1ee 0%, #c9c5bd 40%, #dedbd5 100%)",
                       boxShadow:
-                        "inset 0 1px 1px rgba(32,36,45,0.22), 0 1px 3px rgba(0,0,0,0.7)",
+                        "inset 0 1px 1px rgba(32,36,45,0.82), 0 1px 3px rgba(0,0,0,0.7)",
                     }}
                   />
                 ))}
@@ -466,7 +466,7 @@ export default function HeroCinematicV3() {
                               fontFamily: "var(--lv2-font-mono)",
                               fontSize: legend.length > 1 ? 6.5 : 8.5,
                               fontWeight: 600,
-                              color: "rgba(32,36,45,0.6)",
+                              color: "rgba(32,36,45,0.82)",
                               textShadow: `0 0 5px ${hue}66`,
                               userSelect: "none",
                             }}
@@ -492,7 +492,7 @@ export default function HeroCinematicV3() {
                     background:
                       "linear-gradient(155deg, rgba(222,219,213,0.95), rgba(242,241,238,0.98))",
                     boxShadow:
-                      "inset 0 1px 0 rgba(32,36,45,0.18), inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 -8px 22px rgba(0,0,0,0.4)",
+                      "inset 0 1px 0 rgba(32,36,45,0.82), inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 -8px 22px rgba(0,0,0,0.4)",
                   }}
                 >
                   <div
@@ -501,7 +501,7 @@ export default function HeroCinematicV3() {
                       inset: 0,
                       borderRadius: 12,
                       background:
-                        "linear-gradient(115deg, transparent 30%, rgba(32,36,45,0.07) 46%, transparent 62%)",
+                        "linear-gradient(115deg, transparent 30%, rgba(32,36,45,0.82) 46%, transparent 62%)",
                     }}
                   />
                 </div>
@@ -517,7 +517,7 @@ export default function HeroCinematicV3() {
                     fontWeight: 800,
                     fontSize: 15,
                     letterSpacing: "0.01em",
-                    background: "linear-gradient(180deg, #f2f5fa, #9aa2b0)",
+                    background: "linear-gradient(180deg, #20242d, #9aa2b0)",
                     WebkitBackgroundClip: "text",
                     backgroundClip: "text",
                     color: "transparent",
@@ -657,7 +657,7 @@ export default function HeroCinematicV3() {
                     background:
                       "linear-gradient(150deg, #c9c5bd 0%, #dedbd5 50%, #dedbd5 100%)",
                     boxShadow:
-                      "inset 0 1px 0 rgba(32,36,45,0.3), inset 0 -1px 0 rgba(0,0,0,0.45)",
+                      "inset 0 1px 0 rgba(32,36,45,0.82), inset 0 -1px 0 rgba(0,0,0,0.45)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -690,7 +690,7 @@ export default function HeroCinematicV3() {
                       x: sweepX,
                       opacity: sweepOpacity,
                       background:
-                        "linear-gradient(105deg, transparent 0%, rgba(32,36,45,0.14) 32%, rgba(32,36,45,0.3) 50%, rgba(32,36,45,0.14) 68%, transparent 100%)",
+                        "linear-gradient(105deg, transparent 0%, rgba(32,36,45,0.82) 32%, rgba(32,36,45,0.82) 50%, rgba(32,36,45,0.82) 68%, transparent 100%)",
                       pointerEvents: "none",
                     }}
                   />
@@ -745,7 +745,7 @@ export default function HeroCinematicV3() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(201,197,189,0.32) 34%, rgba(242,241,238,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(32,36,45,0.5) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
+                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(201,197,189,0.32) 34%, rgba(242,241,238,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(32,36,45,0.82) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
                         opacity: 0.55,
                       }}
                     />
@@ -781,7 +781,7 @@ export default function HeroCinematicV3() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "linear-gradient(112deg, transparent 42%, rgba(32,36,45,0.05) 52%, transparent 60%)",
+                          "linear-gradient(112deg, transparent 42%, rgba(32,36,45,0.82) 52%, transparent 60%)",
                         zIndex: 3,
                         pointerEvents: "none",
                       }}
@@ -935,7 +935,7 @@ const PANEL: CSSProperties = {
   border: "1px solid rgba(90,150,220,0.2)",
   borderRadius: 7,
 };
-const DIM = "rgba(32,36,45,0.52)";
+const DIM = "rgba(32,36,45,0.82)";
 
 function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
   return (
@@ -972,7 +972,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                 fontSize: 7.5,
                 letterSpacing: "0.14em",
                 fontWeight: 600,
-                color: i === 1 ? "#e9f0ff" : DIM,
+                color: i === 1 ? "#20242d" : DIM,
                 borderBottom: i === 1 ? "1.5px solid #0a7085" : "1.5px solid transparent",
                 paddingBottom: 2,
               }}
@@ -1054,7 +1054,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                   fontSize: 7,
                   letterSpacing: "0.13em",
                   fontWeight: 600,
-                  color: i === 1 ? "#e9f0ff" : DIM,
+                  color: i === 1 ? "#20242d" : DIM,
                   background: i === 1 ? "rgba(63,208,255,0.12)" : "transparent",
                   borderLeft: i === 1 ? "2px solid #0a7085" : "2px solid transparent",
                   borderRadius: 3,
@@ -1095,7 +1095,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                 fontFamily: "var(--font-geist-sans, ui-sans-serif), system-ui, sans-serif",
                 fontSize: 11,
                 fontWeight: 750,
-                color: "#e9f0ff",
+                color: "#20242d",
                 letterSpacing: "0.02em",
               }}
             >
@@ -1155,7 +1155,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                   justifyContent: "center",
                   fontSize: 7.5,
                   fontWeight: 700,
-                  color: "#e9f0ff",
+                  color: "#20242d",
                 }}
               >
                 100%
@@ -1244,7 +1244,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
           ["FORMAT", "PROJECT-BASED"],
         ].map(([k, v]) => (
           <span key={k} style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
-            {k} <span style={{ color: "#e9f0ff", fontWeight: 700 }}>{v}</span>
+            {k} <span style={{ color: "#20242d", fontWeight: 700 }}>{v}</span>
           </span>
         ))}
         <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>

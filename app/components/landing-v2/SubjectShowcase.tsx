@@ -1060,7 +1060,7 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
             fontWeight: 700,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
-            color: `${a}cc`,
+            color: a,
           }}
         >
           {"// CLASSIFIED"}
