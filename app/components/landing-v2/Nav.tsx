@@ -65,8 +65,6 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
   const shadow = scrolled
     ? "0 14px 44px rgba(2,4,12,0.5), 0 1px 0 rgba(0,229,255,0.06) inset"
     : "0 0 0 rgba(0,0,0,0)";
-  const textColorMuted = "rgba(232,237,255,0.82)";
-
   const ctaRef = useRef<HTMLAnchorElement>(null);
   useMagnetic(ctaRef, { strength: 0.28, radius: 80 });
   const ctaHref = cta?.href ?? "/signup";
@@ -152,14 +150,14 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
               <a
                 className="lv2-nav-secondary"
                 href="/#subjects"
-                style={{ ...navLink, color: textColorMuted }}
+                style={navLink}
               >
                 Courses
               </a>
               <Link
                 className="lv2-nav-secondary"
                 href="/schools"
-                style={{ ...navLink, color: textColorMuted }}
+                style={navLink}
               >
                 Schools
               </Link>
@@ -487,7 +485,43 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           position: relative;
           display: inline-block;
           transition: color 0.25s ease, text-shadow 0.25s ease,
+            border-color 0.25s ease, background 0.25s ease,
+            box-shadow 0.25s ease,
             transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        /* Not on the aside: it is the same class but its own amber, and
+           this rule sits after the amber one, so it would win. */
+        :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
+          color: rgba(232, 237, 255, 0.82);
+        }
+        /* Owner 2026-09-21: "highlight these". Courses and Schools sat as
+           plain grey text next to a solid cyan CTA and read as furniture.
+           They now sit in lit chips at rest: outline chips for the
+           secondary links, the solid pill for the primary one, so the bar
+           has a hierarchy rather than three weights of the same thing.
+           The page's own amber link keeps the underline treatment, and
+           phones keep plain text because three chips plus a CTA do not fit
+           a 390px bar. */
+        @media (min-width: 641px) {
+          :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
+            padding: 7px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(159, 245, 255, 0.24);
+            background: rgba(0, 229, 255, 0.06);
+            box-shadow: inset 0 1px 0 rgba(232, 237, 255, 0.05);
+            color: var(--lv2-paper);
+          }
+          /* the chip does the job the scanning underline used to do */
+          :global(.lv2-nav-secondary:not(.lv2-nav-aside))::after {
+            display: none;
+          }
+          :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover),
+          :global(.lv2-nav-secondary:not(.lv2-nav-aside):focus-visible) {
+            border-color: rgba(0, 229, 255, 0.55);
+            background: rgba(0, 229, 255, 0.14);
+            box-shadow: 0 0 22px -8px rgba(0, 229, 255, 0.9),
+              inset 0 1px 0 rgba(232, 237, 255, 0.08);
+          }
         }
         :global(.lv2-nav-secondary)::after {
           content: "";
