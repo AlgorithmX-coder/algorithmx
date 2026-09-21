@@ -104,6 +104,7 @@ export default function LandingV2() {
          ff7a3d to b8430c, violet 8b7bff to 5744c9, pink ff3ad6 to a5117f. */
       .trial-sand,
       .trial-sand :is(section, div, nav, header, footer, main) {
+        --lv2-cyan: #0a7085;
         --lv2-cyan-soft: #0a7085;
         --lv2-lime: #0e7a45;
         --lv2-cosmic: #5744c9;
@@ -156,6 +157,22 @@ export default function LandingV2() {
       .trial-sand [style*="rgba(17,22,38,0.5"] { color: #4d5462 !important; }
       .trial-sand [style*="rgba(17, 22, 38, 0.58"],
       .trial-sand [style*="rgba(17,22,38,0.58"] { color: #454c5a !important; }
+
+      /* The course lockups are shared with /schools, so they are corrected
+         here by their own inline colours rather than edited: the wordmarks
+         were paper-white and the marks were neon. */
+      .trial-sand [style*="#eaf6ff"] { color: #14161d !important; }
+      .trial-sand [style*="color: #ffb347"],
+      .trial-sand [style*="color:#ffb347"] { color: #9a5f00 !important; }
+      .trial-sand svg[stroke="#22D3EE"] { stroke: #0b7183 !important; filter: none !important; }
+      .trial-sand svg[stroke="#ff7a3d"] { stroke: #b8430c !important; filter: none !important; }
+      .trial-sand svg[stroke="#8b7bff"] { stroke: #5744c9 !important; filter: none !important; }
+      .trial-sand path[fill="#ffb347"] { fill: #9a5f00 !important; }
+      .trial-sand path[fill="#22D3EE"], .trial-sand circle[fill="#22D3EE"] { fill: #0b7183 !important; }
+
+      /* The CTA keeps the bright cyan token for its fill, so it is restated
+         after the token override above. */
+      .lv2-nav-cta, .lv2-hero-cta-primary { background: #0a7085 !important; }
     `}</style>
     <SmoothScroll>
       {/* <CosmicNetworkBackground /> <ScrollFormObjects /> <AmbientFutureBackdrop /> */}

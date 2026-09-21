@@ -368,7 +368,7 @@ export default function HeroCinematicV3() {
                   background:
                     "linear-gradient(145deg, #c9c5bd 0%, #dedbd5 45%, #dedbd5 100%)",
                   boxShadow:
-                    "inset 0 1px 0 rgba(190,205,235,0.28), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12)",
+                    "inset 0 1px 0 rgba(32,36,45,0.28), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12)",
                 }}
               >
                 {/* hinge barrels along the back edge */}
@@ -385,7 +385,7 @@ export default function HeroCinematicV3() {
                       background:
                         "linear-gradient(180deg, #f2f1ee 0%, #c9c5bd 40%, #dedbd5 100%)",
                       boxShadow:
-                        "inset 0 1px 1px rgba(180,200,235,0.22), 0 1px 3px rgba(0,0,0,0.7)",
+                        "inset 0 1px 1px rgba(32,36,45,0.22), 0 1px 3px rgba(0,0,0,0.7)",
                     }}
                   />
                 ))}
@@ -492,7 +492,7 @@ export default function HeroCinematicV3() {
                     background:
                       "linear-gradient(155deg, rgba(222,219,213,0.95), rgba(242,241,238,0.98))",
                     boxShadow:
-                      "inset 0 1px 0 rgba(190,210,240,0.18), inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 -8px 22px rgba(0,0,0,0.4)",
+                      "inset 0 1px 0 rgba(32,36,45,0.18), inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 -8px 22px rgba(0,0,0,0.4)",
                   }}
                 >
                   <div
@@ -562,7 +562,7 @@ export default function HeroCinematicV3() {
                     fontFamily: "var(--lv2-font-mono)",
                     fontSize: 5.5,
                     letterSpacing: "0.12em",
-                    color: "rgba(17,22,38,0.15)",
+                    color: "rgba(17,22,38,0.42)",
                     userSelect: "none",
                   }}
                 >
@@ -657,7 +657,7 @@ export default function HeroCinematicV3() {
                     background:
                       "linear-gradient(150deg, #c9c5bd 0%, #dedbd5 50%, #dedbd5 100%)",
                     boxShadow:
-                      "inset 0 1px 0 rgba(200,215,245,0.3), inset 0 -1px 0 rgba(0,0,0,0.45)",
+                      "inset 0 1px 0 rgba(32,36,45,0.3), inset 0 -1px 0 rgba(0,0,0,0.45)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -671,7 +671,7 @@ export default function HeroCinematicV3() {
                       fontSize: 30,
                       letterSpacing: "0.34em",
                       paddingLeft: "0.34em",
-                      color: "#b8faff",
+                      color: "#0a7085",
                       textShadow:
                         "0 0 14px rgba(0,229,255,0.75), 0 0 40px rgba(0,229,255,0.35)",
                     }}
@@ -745,7 +745,7 @@ export default function HeroCinematicV3() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(201,197,189,0.32) 34%, rgba(242,241,238,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(224,250,255,0.5) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
+                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(201,197,189,0.32) 34%, rgba(242,241,238,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(32,36,45,0.5) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
                         opacity: 0.55,
                       }}
                     />
@@ -935,7 +935,7 @@ const PANEL: CSSProperties = {
   border: "1px solid rgba(90,150,220,0.2)",
   borderRadius: 7,
 };
-const DIM = "rgba(205,218,242,0.52)";
+const DIM = "rgba(32,36,45,0.52)";
 
 function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
   return (
@@ -1205,7 +1205,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                   <div
                     style={{
                       fontSize: 7,
-                      color: "rgba(225,233,250,0.8)",
+                      color: "rgba(32,36,45,0.8)",
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
