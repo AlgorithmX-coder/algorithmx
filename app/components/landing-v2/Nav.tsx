@@ -484,11 +484,15 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         :global(.lv2-nav-secondary) {
           position: relative;
           display: inline-block;
-          color: rgba(232, 237, 255, 0.82);
           transition: color 0.25s ease, text-shadow 0.25s ease,
             border-color 0.25s ease, background 0.25s ease,
             box-shadow 0.25s ease,
             transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        /* Not on the aside: it is the same class but its own amber, and
+           this rule sits after the amber one, so it would win. */
+        :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
+          color: rgba(232, 237, 255, 0.82);
         }
         /* Owner 2026-09-21: "highlight these". Courses and Schools sat as
            plain grey text next to a solid cyan CTA and read as furniture.
