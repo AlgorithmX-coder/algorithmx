@@ -31,7 +31,7 @@ const eyebrow: React.CSSProperties = {
   fontWeight: 700,
   letterSpacing: "0.3em",
   textTransform: "uppercase",
-  color: "rgba(125,240,255,0.82)",
+  color: "rgba(10,112,133,0.82)",
 };
 
 const h2: React.CSSProperties = {
@@ -66,7 +66,7 @@ const pillPrimary: React.CSSProperties = {
   fontSize: 15.5,
   fontWeight: 700,
   textDecoration: "none",
-  boxShadow: "0 14px 34px -14px rgba(0,229,255,0.85)",
+  boxShadow: "0 14px 34px -14px rgba(10,112,133,0.85)",
   whiteSpace: "nowrap",
 };
 
@@ -77,8 +77,8 @@ const pillGhost: React.CSSProperties = {
   height: 54,
   padding: "0 24px",
   borderRadius: 999,
-  border: "1px solid rgba(159,245,255,0.45)",
-  background: "rgba(0,229,255,0.06)",
+  border: "1px solid rgba(20,22,29,0.45)",
+  background: "rgba(10,112,133,0.06)",
   color: "var(--lv2-ink)",
   fontFamily: "var(--lv2-font-display)",
   fontSize: 15.5,
@@ -106,7 +106,7 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
 
 const STEPS = [
   { n: "01", when: "Day 1", colour: "#0a7085", title: "We create your licence", text: "We set up the school licence and your teacher logins. There is nothing to install: it runs in the browser your school already has." },
-  { n: "02", when: "Day 1", colour: "#b98bff", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
+  { n: "02", when: "Day 1", colour: "#5744c9", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
   { n: "03", when: "Weekly", colour: "#0e7a45", title: "Run the lessons", text: "Twenty weeks of lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
   { n: "04", when: "End of course", colour: "#8a5400", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
 ];
@@ -565,7 +565,7 @@ export default function SchoolsLanding() {
         .sch-hero-section { padding-top: clamp(26px, 2.2vw, 44px); padding-bottom: calc(var(--lv2-rail) * 0.8); }
         .sch-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
         .sch-glow-amber { width: 520px; height: 520px; right: -140px; top: -80px; background: radial-gradient(circle, rgba(255,179,71,0.35), transparent 65%); }
-        .sch-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(0,229,255,0.28), transparent 65%); }
+        .sch-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(10,112,133,0.28), transparent 65%); }
         .sch-glow-violet { width: 560px; height: 560px; right: -160px; top: 40px; background: radial-gradient(circle, rgba(124,92,255,0.38), transparent 65%); }
         .sch-glow-lime { width: 480px; height: 480px; left: -160px; top: 0; background: radial-gradient(circle, rgba(126,255,151,0.22), transparent 65%); }
         .sch-section > *:not(.sch-glow) { position: relative; z-index: 1; }
@@ -602,7 +602,7 @@ export default function SchoolsLanding() {
           gap: 10px;
           padding: 9px 16px;
           border-radius: 999px;
-          border: 1px solid rgba(0,229,255,0.22);
+          border: 1px solid rgba(10,112,133,0.22);
           background: rgba(255,253,248,0.74);
           font-family: var(--lv2-font-mono);
           font-size: 11.5px;
@@ -618,7 +618,7 @@ export default function SchoolsLanding() {
           height: 6px;
           border-radius: 50%;
           background: #0a7085;
-          box-shadow: 0 0 10px rgba(125,240,255,0.8);
+          box-shadow: 0 0 10px rgba(10,112,133,0.8);
         }
         @media (max-width: 900px) {
           .sch-reach { grid-template-columns: minmax(0, 1fr); }
@@ -626,7 +626,7 @@ export default function SchoolsLanding() {
         }
 
         .sch-grad {
-          background: linear-gradient(92deg, #0a7085 0%, #b98bff 55%, #ff8ad4 100%);
+          background: linear-gradient(92deg, #0a7085 0%, #5744c9 55%, #a5117f 100%);
           -webkit-background-clip: text; background-clip: text; color: transparent;
         }
         .sch-h1 {
@@ -642,7 +642,7 @@ export default function SchoolsLanding() {
           color: var(--lv2-cyan-soft); white-space: nowrap; transition: opacity .2s ease;
         }
         .sch-toplink:hover { opacity: .8; }
-        .sch-toplink-login { padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(159,245,255,0.4); background: rgba(0,229,255,0.08); }
+        .sch-toplink-login { padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(20,22,29,0.4); background: rgba(10,112,133,0.08); }
 
         /* hero */
         .sch-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 44px; align-items: center; }
@@ -658,15 +658,15 @@ export default function SchoolsLanding() {
         .sch-stack { position: relative; width: 100%; aspect-ratio: 5 / 4; }
         .sch-stack::before {
           content: ""; position: absolute; inset: -6%; z-index: 0; border-radius: 40%;
-          background: radial-gradient(closest-side at 35% 35%, rgba(0,229,255,0.32), transparent 70%),
+          background: radial-gradient(closest-side at 35% 35%, rgba(10,112,133,0.32), transparent 70%),
                       radial-gradient(closest-side at 75% 75%, rgba(185,139,255,0.36), transparent 70%),
                       radial-gradient(closest-side at 70% 20%, rgba(255,138,212,0.2), transparent 70%);
           filter: blur(18px);
         }
         .sch-stack-card {
           position: absolute; width: 72%; border-radius: 14px; overflow: hidden; background: #fffdf8;
-          border: 1px solid rgba(159,245,255,0.35);
-          box-shadow: 0 30px 70px -30px rgba(0,229,255,0.55), 0 30px 60px -20px rgba(0,0,0,0.85);
+          border: 1px solid rgba(20,22,29,0.35);
+          box-shadow: 0 30px 70px -30px rgba(10,112,133,0.55), 0 30px 60px -20px rgba(0,0,0,0.85);
           transition: transform .5s var(--lv2-ease-soft);
         }
         .sch-stack-bar { height: 24px; display: flex; align-items: center; gap: 5px; padding: 0 10px; background: #f4efe7; font-family: var(--lv2-font-mono); font-size: 9.5px; color: rgba(17,22,38,0.65); }
@@ -676,12 +676,12 @@ export default function SchoolsLanding() {
         .sch-stack-card img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
         .sch-stack-2 { left: 0; top: 0; z-index: 1; transform: rotate(-7deg) scale(0.92); opacity: 0.92; }
         .sch-stack-1 { right: 0; top: 10%; z-index: 2; transform: rotate(4deg) scale(0.96); }
-        .sch-stack-0 { left: 9%; top: 28%; z-index: 3; transform: rotate(-2deg); border-color: rgba(159,245,255,0.55); }
+        .sch-stack-0 { left: 9%; top: 28%; z-index: 3; transform: rotate(-2deg); border-color: rgba(20,22,29,0.55); }
         .sch-stack:hover .sch-stack-0 { transform: rotate(-1deg) translateY(-6px); }
         .sch-stack:hover .sch-stack-1 { transform: rotate(5deg) scale(0.96) translateY(-4px); }
 
         /* section nav */
-        .sch-subnav-wrap { margin-top: 68px; position: sticky; top: 68px; z-index: 30; background: rgba(255,253,248,0.68); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,229,255,0.1); border-bottom: 1px solid rgba(0,229,255,0.1); }
+        .sch-subnav-wrap { margin-top: 68px; position: sticky; top: 68px; z-index: 30; background: rgba(255,253,248,0.68); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(10,112,133,0.1); border-bottom: 1px solid rgba(10,112,133,0.1); }
         .sch-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .sch-subnav::-webkit-scrollbar { display: none; }
         /* One bar wherever the nav has room for the section links: they ride
@@ -697,12 +697,12 @@ export default function SchoolsLanding() {
         }
         .sch-chip-link {
           flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; text-decoration: none;
-          border: 1px solid rgba(159,245,255,0.22); background: rgba(255,253,248,0.57);
+          border: 1px solid rgba(20,22,29,0.22); background: rgba(255,253,248,0.57);
           font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
           color: rgba(17,22,38,0.82); transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
         }
-        .sch-chip-link:hover { border-color: var(--lv2-cyan); color: #fff; background: rgba(0,229,255,0.1); }
-        .sch-chip-link.on { border-color: var(--lv2-cyan); color: #fff; background: rgba(0,229,255,0.16); box-shadow: 0 0 18px -6px var(--lv2-cyan); }
+        .sch-chip-link:hover { border-color: var(--lv2-cyan); color: #fff; background: rgba(10,112,133,0.1); }
+        .sch-chip-link.on { border-color: var(--lv2-cyan); color: #fff; background: rgba(10,112,133,0.16); box-shadow: 0 0 18px -6px var(--lv2-cyan); }
         .sch-chip-cta { border-color: transparent; color: #04050d; background: linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%); margin-left: auto; }
         .sch-chip-cta:hover, .sch-chip-cta.on { color: #04050d; background: linear-gradient(135deg, #5ff5ff 0%, #1fd8ff 55%, #14c2f8 100%); border-color: transparent; }
         /* fade the trailing edge when the strip scrolls (narrow screens) */
@@ -716,8 +716,8 @@ export default function SchoolsLanding() {
           position: relative; height: 100%; box-sizing: border-box;
           padding: 26px 24px; border-radius: 18px;
           background: linear-gradient(180deg, rgba(244,239,231,0.78), rgba(255,253,248,0.78));
-          border: 1px solid rgba(159,245,255,0.24);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 50px -30px rgba(0,229,255,0.35);
+          border: 1px solid rgba(20,22,29,0.24);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 50px -30px rgba(10,112,133,0.35);
           backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         }
         .sch-chip {
@@ -748,11 +748,11 @@ export default function SchoolsLanding() {
         .sch-phase {
           position: relative; overflow: hidden; text-align: left; cursor: pointer; width: 100%; min-height: 420px;
           padding: 0; border-radius: 22px; color: var(--lv2-ink); background: #fffdf8;
-          border: 1px solid rgba(159,245,255,0.22); font-family: var(--lv2-font-display);
+          border: 1px solid rgba(20,22,29,0.22); font-family: var(--lv2-font-display);
           transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
           box-shadow: 0 30px 60px -40px rgba(0,0,0,0.9);
         }
-        .sch-phase:hover { transform: translateY(-3px); border-color: rgba(159,245,255,0.45); }
+        .sch-phase:hover { transform: translateY(-3px); border-color: rgba(20,22,29,0.45); }
         .sch-phase-on { border-color: var(--sch-accent); box-shadow: 0 0 0 1.5px var(--sch-accent), 0 40px 90px -40px var(--sch-accent2), 0 0 60px -20px var(--sch-accent); }
         .sch-phase-art { position: absolute; inset: 0; background-repeat: no-repeat; filter: saturate(1.15) brightness(1.02); transition: transform .6s var(--lv2-ease-soft); }
         .sch-phase:hover .sch-phase-art { transform: scale(1.03); }
@@ -792,7 +792,7 @@ export default function SchoolsLanding() {
           font-family: var(--lv2-font-display); transition: background .2s ease, border-color .2s ease;
         }
         .sch-tab:hover { background: rgba(244,239,231,0.6); }
-        .sch-tab-on { background: linear-gradient(180deg, rgba(244,239,231,0.9), rgba(255,253,248,0.9)); border-color: rgba(159,245,255,0.24); border-left-color: var(--sch-accent); box-shadow: 0 16px 40px -28px var(--sch-accent); }
+        .sch-tab-on { background: linear-gradient(180deg, rgba(244,239,231,0.9), rgba(255,253,248,0.9)); border-color: rgba(20,22,29,0.24); border-left-color: var(--sch-accent); box-shadow: 0 16px 40px -28px var(--sch-accent); }
         .sch-tab-head { display: flex; align-items: baseline; gap: 12px; }
         .sch-tab-n { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--sch-accent); }
         .sch-tab-title { font-size: 1.25rem; letter-spacing: -0.01em; }
@@ -800,7 +800,7 @@ export default function SchoolsLanding() {
         .sch-tab:not(.sch-tab-on) .sch-tab-desc { display: none; }
         .sch-frame {
           border-radius: 16px; overflow: hidden; background: #fffdf8;
-          border: 1px solid rgba(159,245,255,0.4);
+          border: 1px solid rgba(20,22,29,0.4);
           border-color: color-mix(in srgb, var(--sch-accent) 45%, transparent);
           box-shadow: 0 40px 90px -40px var(--sch-accent), 0 0 0 1px rgba(255,255,255,0.03);
         }
@@ -819,16 +819,16 @@ export default function SchoolsLanding() {
           font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
           backdrop-filter: blur(6px); transition: background .2s ease, border-color .2s ease;
         }
-        .sch-enlarge:hover { background: rgba(0,229,255,0.18); border-color: var(--lv2-cyan); }
+        .sch-enlarge:hover { background: rgba(10,112,133,0.18); border-color: var(--lv2-cyan); }
         .sch-frame-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 12px 10px 16px; border-top: 1px solid rgba(17,22,38,0.08); }
         .sch-frame-caption { margin: 0; font-family: var(--lv2-font-display); font-size: 13.5px; line-height: 1.5; color: rgba(17,22,38,0.76); }
         .sch-frame-nav { display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto; }
         .sch-frame-nav button {
           width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 22px; line-height: 1;
-          border: 1px solid rgba(159,245,255,0.3); background: rgba(255,253,248,0.66); color: #14161d; transition: background .2s ease, border-color .2s ease;
+          border: 1px solid rgba(20,22,29,0.3); background: rgba(255,253,248,0.66); color: #14161d; transition: background .2s ease, border-color .2s ease;
         }
         @media (hover: none) { .sch-frame-nav button { width: 44px; height: 44px; } }
-        .sch-frame-nav button:hover { background: rgba(0,229,255,0.16); border-color: var(--lv2-cyan); }
+        .sch-frame-nav button:hover { background: rgba(10,112,133,0.16); border-color: var(--lv2-cyan); }
         .sch-frame-dotnav { display: inline-flex; gap: 5px; }
         .sch-frame-dotnav i { width: 6px; height: 6px; border-radius: 50%; background: rgba(244,239,231,0.26); }
         .sch-frame-dotnav i.on { background: var(--sch-accent); box-shadow: 0 0 8px var(--sch-accent); }
@@ -837,7 +837,7 @@ export default function SchoolsLanding() {
           .sch-tablist { flex-direction: row; overflow-x: auto; gap: 8px; padding: 4px 40px 6px 4px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); }
           .sch-tablist::-webkit-scrollbar { display: none; }
           .sch-tab { flex: 0 0 auto; width: auto; min-width: 150px; padding: 12px 14px; border-left-width: 1px; border-bottom: 2px solid rgba(17,22,38,0.15); }
-          .sch-tab-on { border-bottom-color: var(--sch-accent); border-left-color: rgba(159,245,255,0.24); }
+          .sch-tab-on { border-bottom-color: var(--sch-accent); border-left-color: rgba(20,22,29,0.24); }
           .sch-tab-desc { display: none !important; }
           .sch-tab-title { font-size: 1.05rem; }
           .sch-frame-foot { flex-direction: column; align-items: flex-start; }
@@ -846,7 +846,7 @@ export default function SchoolsLanding() {
         /* lightbox */
         .sch-lightbox { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,253,248,0.84); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .sch-lightbox-inner { position: relative; max-width: min(96vw, 1600px); max-height: 94vh; display: flex; flex-direction: column; gap: 10px; }
-        .sch-lightbox-inner img { display: block; max-width: 100%; max-height: calc(94vh - 60px); object-fit: contain; border-radius: 12px; border: 1px solid rgba(159,245,255,0.35); box-shadow: 0 40px 100px -30px rgba(0,229,255,0.5); }
+        .sch-lightbox-inner img { display: block; max-width: 100%; max-height: calc(94vh - 60px); object-fit: contain; border-radius: 12px; border: 1px solid rgba(20,22,29,0.35); box-shadow: 0 40px 100px -30px rgba(10,112,133,0.5); }
         .sch-lightbox-inner p { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; color: rgba(17,22,38,0.84); text-align: center; }
         .sch-lightbox-close { position: absolute; top: -14px; right: -14px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 26px; line-height: 1; border: 1px solid rgba(255,255,255,0.3); background: #f4efe7; color: #fff; }
 
@@ -856,7 +856,7 @@ export default function SchoolsLanding() {
         .sch-mock-brand { font-family: var(--lv2-font-mono); font-weight: 800; letter-spacing: 0.12em; font-size: 11px; margin-bottom: 18px; }
         .sch-mock-side ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
         .sch-mock-side li { padding: 7px 9px; border-radius: 8px; color: rgba(17,22,38,0.63); }
-        .sch-mock-side li.on { background: rgba(125,240,255,0.14); color: #14161d; font-weight: 600; }
+        .sch-mock-side li.on { background: rgba(10,112,133,0.14); color: #14161d; font-weight: 600; }
         .sch-mock-school { margin-top: auto; display: flex; flex-direction: column; gap: 3px; }
         .sch-mock-school span { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.47); }
         .sch-mock-school strong { font-size: 12px; font-weight: 600; }
@@ -915,7 +915,7 @@ export default function SchoolsLanding() {
           margin-top: 30px;
           padding: 24px clamp(20px, 2.4vw, 30px);
           border-radius: 18px;
-          border: 1px solid rgba(159,245,255,0.18);
+          border: 1px solid rgba(20,22,29,0.18);
           background: linear-gradient(180deg, rgba(244,239,231,0.6), rgba(255,253,248,0.6));
         }
         .sch-marks-courses { flex: 1 1 540px; min-width: 0; }
@@ -926,7 +926,7 @@ export default function SchoolsLanding() {
           font-weight: 700;
           letter-spacing: 0.28em;
           text-transform: uppercase;
-          color: rgba(125,240,255,0.75);
+          color: rgba(10,112,133,0.75);
         }
         .sch-marks-row {
           list-style: none;
@@ -943,7 +943,7 @@ export default function SchoolsLanding() {
           padding: 12px 15px;
           border-radius: 12px;
           background: rgba(255,253,248,0.63);
-          border: 1px solid rgba(159,245,255,0.14);
+          border: 1px solid rgba(20,22,29,0.14);
           border-left: 2px solid var(--sch-accent);
         }
         .sch-mark-age {
@@ -960,7 +960,7 @@ export default function SchoolsLanding() {
           align-items: center;
           gap: 14px;
           padding-left: clamp(0px, 2vw, 28px);
-          border-left: 1px solid rgba(159,245,255,0.16);
+          border-left: 1px solid rgba(20,22,29,0.16);
         }
         .sch-marks-plate {
           display: inline-flex;
@@ -986,7 +986,7 @@ export default function SchoolsLanding() {
           color: rgba(17,22,38,0.69);
         }
         @media (max-width: 1100px) {
-          .sch-marks-accred { padding-left: 0; padding-top: 20px; border-left: 0; border-top: 1px solid rgba(159,245,255,0.16); }
+          .sch-marks-accred { padding-left: 0; padding-top: 20px; border-left: 0; border-top: 1px solid rgba(20,22,29,0.16); }
         }
 
         .sch-pillar { border-top: 2px solid var(--sch-accent); }
@@ -1007,8 +1007,8 @@ export default function SchoolsLanding() {
         /* faq */
         .sch-faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; margin-top: 30px; }
         @media (max-width: 820px) { .sch-faq-grid { grid-template-columns: 1fr; } }
-        .sch-faq { border-radius: 14px; border: 1px solid rgba(159,245,255,0.2); background: linear-gradient(180deg, rgba(244,239,231,0.7), rgba(255,253,248,0.7)); padding: 0 18px; }
-        .sch-faq[open] { border-color: rgba(159,245,255,0.45); }
+        .sch-faq { border-radius: 14px; border: 1px solid rgba(20,22,29,0.2); background: linear-gradient(180deg, rgba(244,239,231,0.7), rgba(255,253,248,0.7)); padding: 0 18px; }
+        .sch-faq[open] { border-color: rgba(20,22,29,0.45); }
         .sch-faq summary { cursor: pointer; list-style: none; padding: 16px 28px 16px 0; position: relative; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; color: #14161d; }
         .sch-faq summary::-webkit-details-marker { display: none; }
         .sch-faq summary::after { content: "+"; position: absolute; right: 2px; top: 12px; font-size: 22px; color: var(--lv2-cyan-soft); transition: transform .2s ease; }

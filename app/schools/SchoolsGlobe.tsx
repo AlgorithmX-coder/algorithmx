@@ -515,18 +515,18 @@ type GlobePalette = {
 const NIGHT_GLOBE: GlobePalette = {
   ocean: "rgba(6,20,48,0.72)",
   land: "rgba(3,8,26,0.92)",
-  landLine: "rgba(125,240,255,0.22)",
+  landLine: "rgba(10,112,133,0.22)",
   city: "#7df0ff",
   cityHot: "#9cff8a",
   britain: "#ffd88f",
   britainRing: (a) => `rgba(255,216,143,${a})`,
-  arc: "rgba(125,240,255,0.1)",
-  arcHot: "rgba(156,255,138,0.8)",
+  arc: "rgba(10,112,133,0.1)",
+  arcHot: "rgba(14,122,69,0.8)",
   spark: (a) => `rgba(156,255,138,${a})`,
   classroomShell: "rgba(5,16,40,0.94)",
-  classroomBar: "rgba(156,255,138,0.22)",
+  classroomBar: "rgba(14,122,69,0.22)",
   classroomText: "rgba(200,255,205,0.8)",
-  classroomDot: (i) => (i === 1 ? "rgba(125,240,255,0.85)" : "rgba(196,255,206,0.8)"),
+  classroomDot: (i) => (i === 1 ? "rgba(10,112,133,0.85)" : "rgba(196,255,206,0.8)"),
   screen: "#cfe6ff",
 };
 
@@ -940,7 +940,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           ctx.lineWidth = width;
           ctx.stroke();
         };
-        span(0, 1, "rgba(125,240,255,0.16)", 1);
+        span(0, 1, "rgba(10,112,133,0.16)", 1);
         if (p > 0.002) span(0, p, "rgba(160,245,255,0.62)", 1.2);
         if (arc.lit > 0.05) span(0, 1, `rgba(156,255,138,${arc.lit * 0.5})`, 1.4);
 
@@ -1224,7 +1224,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           font-size: var(--sg-label-px, 18px);
           font-weight: 700;
           letter-spacing: 0.13em;
-          color: #ffd9a2;
+          color: #8a5400;
           text-shadow: 0 0 calc(var(--sg-label-px, 18px) * 0.75) rgba(255,181,84,0.7), 0 0 2px rgba(3,8,26,0.95);
         }
         .sg-label-sub {
@@ -1239,10 +1239,10 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
         .sg-label-dot {
           width: calc(var(--sg-label-px, 18px) * 0.16);
           height: calc(var(--sg-label-px, 18px) * 0.16);
-          background: rgba(125,240,255,0.7);
+          background: rgba(10,112,133,0.7);
         }
         .sg-label-brand {
-          color: #e8fbff;
+          color: #14161d;
           text-shadow: 0 0 calc(var(--sg-label-px, 18px) * 0.62) rgba(110,230,255,0.85), 0 0 2px rgba(3,8,26,0.95);
         }
 
@@ -1278,7 +1278,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           height: 30px;
           padding: 0;
           border-radius: 999px;
-          border: 1px solid rgba(125,240,255,0.26);
+          border: 1px solid rgba(10,112,133,0.26);
           background: rgba(5,12,32,0.88);
           color: rgba(233,242,255,0.82);
           /* A pause control is required for anything that moves on its own
@@ -1296,7 +1296,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
         }
         .sg-motion:hover,
         .sg-motion:focus-visible {
-          border-color: rgba(125,240,255,0.6);
+          border-color: rgba(10,112,133,0.6);
           color: #fff;
           opacity: 1;
         }

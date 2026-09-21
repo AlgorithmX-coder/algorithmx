@@ -38,7 +38,7 @@ type Form = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const ACCENT = "#7df0ff";
+const ACCENT = "#0a7085";
 
 /* Labels were 10.5px at 62% white, which is faint against this panel and
    under the contrast line a school's accessibility check would apply. */
@@ -49,7 +49,7 @@ const label: React.CSSProperties = {
   fontWeight: 700,
   letterSpacing: "0.16em",
   textTransform: "uppercase",
-  color: "rgba(232,237,255,0.92)",
+  color: "rgba(17,22,38,0.97)",
   marginBottom: 9,
 };
 
@@ -63,7 +63,7 @@ const field: React.CSSProperties = {
   fontWeight: 500,
   color: "#f2f6ff",
   background: "rgba(6,9,20,0.86)",
-  border: "1.5px solid rgba(125,240,255,0.4)",
+  border: "1.5px solid rgba(10,112,133,0.4)",
   outline: "none",
   boxSizing: "border-box",
   transition: "border-color .2s ease, box-shadow .2s ease",
@@ -71,10 +71,10 @@ const field: React.CSSProperties = {
 
 function focus(e: React.FocusEvent<HTMLElement>) {
   e.currentTarget.style.borderColor = ACCENT;
-  e.currentTarget.style.boxShadow = `0 0 0 3px rgba(125,240,255,0.14)`;
+  e.currentTarget.style.boxShadow = `0 0 0 3px rgba(10,112,133,0.14)`;
 }
 function blur(e: React.FocusEvent<HTMLElement>) {
-  e.currentTarget.style.borderColor = "rgba(125,240,255,0.4)";
+  e.currentTarget.style.borderColor = "rgba(10,112,133,0.4)";
   e.currentTarget.style.boxShadow = "none";
 }
 
@@ -139,18 +139,18 @@ export default function EnquiryForm({
         style={{
           padding: "28px 26px",
           borderRadius: 18,
-          background: "rgba(125,240,255,0.08)",
-          border: "1px solid rgba(125,240,255,0.4)",
-          boxShadow: "0 0 40px -18px rgba(125,240,255,0.9)",
+          background: "rgba(10,112,133,0.08)",
+          border: "1px solid rgba(10,112,133,0.4)",
+          boxShadow: "0 0 40px -18px rgba(10,112,133,0.9)",
         }}
       >
         <p style={{ margin: 0, fontFamily: "var(--lv2-font-mono)", fontSize: 11, letterSpacing: "0.24em", textTransform: "uppercase", color: ACCENT, fontWeight: 700 }}>
           Received
         </p>
-        <h3 style={{ margin: "10px 0 8px", fontFamily: "var(--lv2-font-display)", fontSize: "1.5rem", fontWeight: 500, color: "#e8edff", letterSpacing: "-0.01em" }}>
+        <h3 style={{ margin: "10px 0 8px", fontFamily: "var(--lv2-font-display)", fontSize: "1.5rem", fontWeight: 500, color: "#14161d", letterSpacing: "-0.01em" }}>
           Thanks, {f.name.trim().split(" ")[0]}.
         </h3>
-        <p style={{ margin: 0, fontFamily: "var(--lv2-font-display)", fontSize: 15.5, lineHeight: 1.6, color: "rgba(232,237,255,0.78)" }}>
+        <p style={{ margin: 0, fontFamily: "var(--lv2-font-display)", fontSize: 15.5, lineHeight: 1.6, color: "rgba(17,22,38,0.82)" }}>
           We&rsquo;ll reply to {f.email} within two working days with next steps for {f.school.trim()}.
         </p>
       </motion.div>
@@ -195,9 +195,9 @@ export default function EnquiryForm({
                     flex: 1,
                     height: 50,
                     borderRadius: 12,
-                    border: `1.5px solid ${on ? ACCENT : "rgba(125,240,255,0.28)"}`,
-                    background: on ? "rgba(125,240,255,0.14)" : "rgba(8,10,22,0.78)",
-                    color: on ? "#e8edff" : "rgba(232,237,255,0.72)",
+                    border: `1.5px solid ${on ? ACCENT : "rgba(10,112,133,0.28)"}`,
+                    background: on ? "rgba(10,112,133,0.14)" : "rgba(8,10,22,0.78)",
+                    color: on ? "#14161d" : "rgba(17,22,38,0.76)",
                     fontFamily: "var(--lv2-font-display)",
                     fontSize: 14.5,
                     fontWeight: 600,
@@ -247,13 +247,13 @@ export default function EnquiryForm({
             fontSize: 15,
             fontWeight: 700,
             letterSpacing: "0.01em",
-            boxShadow: "0 12px 30px -12px rgba(0,229,255,0.7)",
+            boxShadow: "0 12px 30px -12px rgba(10,112,133,0.7)",
             opacity: state === "loading" ? 0.7 : 1,
           }}
         >
           {state === "loading" ? "Sending…" : "Send enquiry"}
         </motion.button>
-        <span style={{ fontFamily: "var(--lv2-font-display)", fontSize: 13.5, color: "rgba(232,237,255,0.55)" }}>
+        <span style={{ fontFamily: "var(--lv2-font-display)", fontSize: 13.5, color: "rgba(17,22,38,0.58)" }}>
           A real person replies within two working days.
         </span>
       </div>
