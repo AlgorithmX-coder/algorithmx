@@ -236,7 +236,7 @@ export default function SchoolsLanding() {
   };
 
   return (
-    <>
+    <div className="sch-page" style={{ display: "contents" }}>
       <SchoolsGlobe tone="sand" />
       {/* The page's own chrome: no telemetry, no site links. The brand cube
           is the way back home, and the section links ride in the bar itself
@@ -376,7 +376,7 @@ export default function SchoolsLanding() {
                         {ph.courses.map((c) => (
                           <span key={c.name} className="sch-course">
                             <span className="sch-course-top">
-                              <CourseLockup id={c.lockup} size={0.95} />
+                              <CourseLockup id={c.lockup} size={0.95} tone="sand" />
                               <span className="sch-course-years">{c.years}</span>
                               <span className={`sch-chip${c.status === "Live" ? " sch-chip-live" : ""}`}>{c.status}</span>
                             </span>
@@ -554,6 +554,19 @@ export default function SchoolsLanding() {
       <Footer />
 
       <style>{`
+        /* The sand token layer. Without it the page keeps reading the
+           neon values straight out of globals.css: --lv2-cyan-soft is
+           still #7df0ff, which is 1.1:1 on paper. */
+        .sch-page, .sch-page :is(section, div, nav, header, footer, main, span, p, li, a) {
+          --lv2-cyan: #0a7085;
+          --lv2-cyan-soft: #0a7085;
+          --lv2-lime: #0e7a45;
+          --lv2-cosmic: #5744c9;
+          --lv2-text-muted: #5d6472;
+          --lv2-ink: #14161d;
+        }
+        html, .sch-page { background: #f3ede4; }
+
         .sch-section {
           position: relative;
           max-width: 1180px;
@@ -1020,6 +1033,6 @@ export default function SchoolsLanding() {
         @media (max-width: 640px) { .sch-form-grid { grid-template-columns: 1fr; } }
         @media (prefers-reduced-motion: reduce) { .sch-stack-card, .sch-phase-art { transition: none; } }
       `}</style>
-    </>
+    </div>
   );
 }
