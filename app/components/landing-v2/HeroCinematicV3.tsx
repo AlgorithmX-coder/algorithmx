@@ -590,14 +590,19 @@ export default function HeroCinematicV3() {
               <div
                 style={{
                   position: "absolute",
-                  left: 4,
-                  right: 4,
+                  left: 20,
+                  /* Inset past the deck's 16px corner radius. At 4px the
+                   * ends of this strip poked out under the curve as a
+                   * square tab, which was invisible on a black machine and
+                   * obvious on a silver one. */
+                  right: 20,
                   bottom: -13,
                   height: 14,
                   transformOrigin: "50% 0%",
                   transform: "rotateX(-84deg)",
                   borderRadius: "0 0 10px 10px",
-                  background: "linear-gradient(180deg, #d2d7de, #eef0f3)",
+                  /* an edge in shadow, a shade under the deck it belongs to */
+                  background: "linear-gradient(180deg, #b9c0ca, #d6dae0)",
                   boxShadow: "inset 0 1px 0 rgba(150,170,205,0.14)",
                 }}
               >

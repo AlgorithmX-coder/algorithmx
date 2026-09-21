@@ -115,6 +115,32 @@ export default function LandingV2() {
       }
       .lv2-nav-cta *, .lv2-hero-cta-primary * { color: #fffdfa !important; }
 
+      /* Glow, for paper. A halo works on black by adding light; sand has no
+         darkness to bloom into, so the same idea becomes a saturated colour
+         cast under the element and a lit inner edge above it. */
+      .lv2-hero-cta-primary {
+        box-shadow:
+          0 14px 34px -12px rgba(10,112,133,0.75),
+          0 0 0 1px rgba(10,112,133,0.25),
+          inset 0 1px 0 rgba(255,255,255,0.45) !important;
+      }
+      .lv2-hero-cta-primary:hover {
+        box-shadow:
+          0 18px 42px -12px rgba(10,112,133,0.9),
+          0 0 0 1px rgba(10,112,133,0.4),
+          inset 0 1px 0 rgba(255,255,255,0.55) !important;
+      }
+      .lv2-nav-cta {
+        box-shadow:
+          0 10px 26px -12px rgba(10,112,133,0.8),
+          inset 0 1px 0 rgba(255,255,255,0.4) !important;
+      }
+      .lv2-hero-eyebrow {
+        box-shadow:
+          0 10px 26px -16px rgba(10,112,133,0.9),
+          inset 0 1px 0 rgba(255,255,255,0.8) !important;
+      }
+
       /* The nav chips are the nav component's business now: it takes a
          tone, and these page-scoped rules were fighting it. */
       .lv2-nav-aside { color: #8a5a00 !important; text-shadow: none !important; }
