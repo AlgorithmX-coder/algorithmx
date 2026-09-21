@@ -181,14 +181,21 @@ export default function LandingV2() {
       /* The partner logo wall is a mix of white-only and full-colour marks,
          drawn for a black page. Greyscale at weight is the usual answer on
          a light one, and it stops nine brands fighting each other. */
+      /* Owner asked for colour on the partner wall. Nine of the eleven
+         marks are already full brand colour in the file; only Apple and
+         Unity are drawn as white-only artwork, which is invisible on
+         paper. Those two render black, which is the presentation their
+         own guidelines give for a light ground. */
       .trial-sand .lv2-logo-cell img {
-        filter: grayscale(1) brightness(0.42) !important;
-        opacity: 0.9 !important;
-      }
-      .trial-sand .lv2-logo-cell:hover img {
-        filter: grayscale(0.15) brightness(0.75) !important;
+        filter: none !important;
         opacity: 1 !important;
       }
+      .trial-sand .lv2-logo-cell img[src*="apple"],
+      .trial-sand .lv2-logo-cell img[src*="unity"] {
+        filter: brightness(0) !important;
+        opacity: 0.88 !important;
+      }
+      .trial-sand .lv2-logo-cell:hover img { opacity: 1 !important; }
     `}</style>
     <SmoothScroll>
       {/* The galaxy and the typing IDE come back in sand tone: the same
