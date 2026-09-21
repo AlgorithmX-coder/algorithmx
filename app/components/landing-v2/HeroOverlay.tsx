@@ -50,7 +50,7 @@ export default function HeroOverlay() {
            * windows so the auto-centred block sits a little above true
            * centre (owner 2026-09-16: "push the main landing page up")
            * without ever outgrowing the 100vh frame on short ones. */
-          color: "var(--lv2-paper)",
+          color: "var(--lv2-ink)",
           pointerEvents: "none",
         }}
       >
@@ -118,10 +118,10 @@ export default function HeroOverlay() {
             letterSpacing: "-0.028em",
             fontWeight: 400,
             margin: 0,
-            color: "var(--lv2-paper)",
+            color: "var(--lv2-ink)",
             maxWidth: "13ch",
             textShadow:
-              "0 1px 6px rgba(4,5,13,0.9), 0 4px 24px rgba(4,5,13,0.7)",
+              "0 1px 6px rgba(255,255,255,0.85), 0 4px 24px rgba(255,255,255,0.66)",
             WebkitFontSmoothing: "antialiased",
             MozOsxFontSmoothing: "grayscale",
           }}
@@ -134,11 +134,11 @@ export default function HeroOverlay() {
             fontFamily: "var(--lv2-font-display)",
             fontSize: "clamp(0.95rem, 1.2vw, 1.0625rem)",
             lineHeight: 1.55,
-            color: "rgba(232, 237, 255, 0.92)",
+            color: "rgba(17,22,38,0.97)",
             maxWidth: "42ch",
             margin: "calc(var(--lv2-rail) * 0.25) 0 0",
             textShadow:
-              "0 1px 4px rgba(4,5,13,0.9), 0 2px 14px rgba(4,5,13,0.6)",
+              "0 1px 4px rgba(255,255,255,0.85), 0 2px 14px rgba(255,255,255,0.57)",
             WebkitFontSmoothing: "antialiased",
             MozOsxFontSmoothing: "grayscale",
           }}
@@ -196,7 +196,7 @@ export default function HeroOverlay() {
         border-radius: 999px;
         border: 1px solid rgba(0, 229, 255, 0.34);
         background: rgba(0, 229, 255, 0.07);
-        box-shadow: inset 0 1px 0 rgba(232, 237, 255, 0.07), 0 0 34px -12px rgba(0, 229, 255, 0.9);
+        box-shadow: inset 0 1px 0 rgba(17,22,38,0.07), 0 0 34px -12px rgba(0, 229, 255, 0.9);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         font-family: var(--lv2-font-mono);
@@ -296,12 +296,12 @@ export default function HeroOverlay() {
          * (0.14 → 0.10) so the secondary doesn't compete with the
          * primary cyan CTA — it reads as a confident dark companion. */
         background: rgba(11, 16, 28, 0.72);
-        color: var(--lv2-paper);
+        color: var(--lv2-ink);
         border: 1px solid rgba(0, 229, 255, 0.3);
         backdrop-filter: blur(14px) saturate(1.35);
         -webkit-backdrop-filter: blur(14px) saturate(1.35);
         box-shadow:
-          inset 0 1px 0 rgba(232, 237, 255, 0.08),
+          inset 0 1px 0 rgba(17,22,38,0.08),
           inset 0 0 0 1px rgba(0, 229, 255, 0.05),
           0 8px 26px rgba(0, 229, 255, 0.1);
       }
@@ -311,7 +311,7 @@ export default function HeroOverlay() {
         background: rgba(15, 22, 38, 0.82);
         border-color: rgba(0, 229, 255, 0.55);
         box-shadow:
-          inset 0 1px 0 rgba(232, 237, 255, 0.14),
+          inset 0 1px 0 rgba(17,22,38,0.15),
           inset 0 0 0 1px rgba(0, 229, 255, 0.16),
           0 12px 34px rgba(0, 229, 255, 0.22);
       }

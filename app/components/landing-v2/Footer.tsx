@@ -30,7 +30,7 @@ export default function Footer() {
           "rgba(20,12,30,0.36) 10%, " +
           "rgba(20,12,30,0.62) 26%, " +
           "rgba(20,12,30,0.7) 100%)",
-        color: "rgba(232,237,255,0.7)",
+        color: "rgba(17,22,38,0.73)",
         /* Extra bottom clearance (+72px) so the fixed Algo chip
          * (bottom-right of the viewport) floats over empty space at
          * page end instead of covering the copyright line. */
@@ -66,7 +66,7 @@ export default function Footer() {
                   fontWeight: 700,
                   letterSpacing: "0.28em",
                   textTransform: "uppercase",
-                  color: "var(--lv2-paper)",
+                  color: "var(--lv2-ink)",
                 }}
               >
                 ALGORITHMX
@@ -74,7 +74,7 @@ export default function Footer() {
             </div>
             <p
               style={{
-                color: "rgba(232,237,255,0.55)",
+                color: "rgba(17,22,38,0.58)",
                 fontSize: 13,
                 lineHeight: 1.6,
                 maxWidth: 260,
@@ -122,7 +122,7 @@ export default function Footer() {
             style={{
               /* Bumped from 0.45 -> 0.7 alpha so the support email
                * meets WCAG AA contrast (~4.5:1) on the dark backdrop. */
-              color: "rgba(232,237,255,0.7)",
+              color: "rgba(17,22,38,0.73)",
               fontSize: 12,
               fontFamily: "var(--lv2-font-mono)",
               letterSpacing: "0.06em",
@@ -135,7 +135,7 @@ export default function Footer() {
             style={{
               /* Bumped from 0.4 -> 0.65 alpha so the copyright line
                * meets WCAG AA contrast on the dark backdrop. */
-              color: "rgba(232,237,255,0.65)",
+              color: "rgba(17,22,38,0.68)",
               fontSize: 11,
               fontFamily: "var(--lv2-font-mono)",
               letterSpacing: "0.06em",
@@ -192,7 +192,7 @@ function FooterColumn({
           fontWeight: 700,
           letterSpacing: "0.22em",
           textTransform: "uppercase",
-          color: "rgba(232,237,255,0.55)",
+          color: "rgba(17,22,38,0.58)",
           marginBottom: 14,
         }}
       >
@@ -219,7 +219,7 @@ function FooterColumn({
             fontFamily: "var(--lv2-font-mono)",
             fontSize: 11.5,
             letterSpacing: "0.04em",
-            color: "rgba(232,237,255,0.42)",
+            color: "rgba(17,22,38,0.44)",
             marginTop: 4,
           }}
         >
@@ -232,7 +232,7 @@ function FooterColumn({
 
 const footerLink: React.CSSProperties = {
   display: "block",
-  color: "rgba(232,237,255,0.72)",
+  color: "rgba(17,22,38,0.76)",
   fontSize: 13.5,
   textDecoration: "none",
   marginBottom: 9,

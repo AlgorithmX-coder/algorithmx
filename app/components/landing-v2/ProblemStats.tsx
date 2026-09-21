@@ -78,7 +78,7 @@ export default function ProblemStats() {
       style={{
         position: "relative",
         padding: "calc(var(--lv2-rail) * 2.2) var(--lv2-rail)",
-        color: "var(--lv2-paper)",
+        color: "var(--lv2-ink)",
       }}
     >
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
@@ -90,7 +90,7 @@ export default function ProblemStats() {
               fontWeight: 600,
               letterSpacing: "0.32em",
               textTransform: "uppercase",
-              color: "rgba(232,237,255,0.55)",
+              color: "rgba(17,22,38,0.58)",
               textAlign: "center",
               marginBottom: 30,
             }}
@@ -116,7 +116,7 @@ export default function ProblemStats() {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(20px, 2.4vw, 28px)",
               fontWeight: 500,
-              color: "var(--lv2-paper)",
+              color: "var(--lv2-ink)",
               maxWidth: 760,
               margin: "calc(var(--lv2-rail) * 1.3) auto calc(var(--lv2-rail) * 1.1)",
               lineHeight: 1.4,
@@ -186,10 +186,10 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       onMouseEnter={inView ? counter.bind.onMouseEnter : undefined}
       style={{
         position: "relative",
-        background: "rgba(13,15,24,0.72)",
+        background: "rgba(255,255,255,0.68)",
         backdropFilter: "blur(14px) saturate(1.4)",
         WebkitBackdropFilter: "blur(14px) saturate(1.4)",
-        border: "1px solid rgba(232,237,255,0.08)",
+        border: "1px solid rgba(17,22,38,0.08)",
         borderTop: `2px solid ${stat.color}`,
         borderRadius: 18,
         padding: "26px 26px 22px",
@@ -270,7 +270,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       {/* Label */}
       <p
         style={{
-          color: "rgba(232,237,255,0.74)",
+          color: "rgba(17,22,38,0.78)",
           fontSize: 14.5,
           lineHeight: 1.55,
           marginTop: 14,
@@ -318,7 +318,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
             style={{
               fontFamily: "var(--lv2-font-mono)",
               fontSize: 10,
-              color: "rgba(232,237,255,0.5)",
+              color: "rgba(17,22,38,0.53)",
               whiteSpace: "nowrap",
             }}
           >
@@ -335,7 +335,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           fontWeight: 600,
           letterSpacing: "0.14em",
           textTransform: "uppercase",
-          color: "rgba(232,237,255,0.38)",
+          color: "rgba(17,22,38,0.40)",
           margin: "14px 0 0",
         }}
       >

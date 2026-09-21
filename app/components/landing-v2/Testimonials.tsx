@@ -22,7 +22,7 @@ export default function Testimonials() {
       style={{
         position: "relative",
         padding: "calc(var(--lv2-rail) * 2.2) 0",
-        color: "var(--lv2-paper)",
+        color: "var(--lv2-ink)",
       }}
     >
       <div
@@ -53,7 +53,7 @@ export default function Testimonials() {
               fontWeight: 600,
               letterSpacing: "0.32em",
               textTransform: "uppercase",
-              color: "rgba(232,237,255,0.55)",
+              color: "rgba(17,22,38,0.58)",
               marginBottom: 12,
             }}
           >
@@ -67,7 +67,7 @@ export default function Testimonials() {
               fontSize: "clamp(28px, 4vw, 44px)",
               fontWeight: 700,
               letterSpacing: "-0.03em",
-              color: "var(--lv2-paper)",
+              color: "var(--lv2-ink)",
               margin: 0,
             }}
           >
@@ -87,7 +87,7 @@ export default function Testimonials() {
             /* Alpha 0.5 -> 0.7 so the label meets WCAG AA contrast on
              * the dark backdrop (was the only remaining Lighthouse
              * accessibility issue). */
-            color: "rgba(232,237,255,0.7)",
+            color: "rgba(17,22,38,0.73)",
             marginBottom: 28,
           }}
         >
@@ -153,7 +153,7 @@ export default function Testimonials() {
           text-transform: uppercase;
           white-space: nowrap;
           color: #7df0ff;
-          background: rgba(4, 5, 13, 0.85);
+          background: rgba(255,255,255,0.81);
           border: 1px solid rgba(0, 229, 255, 0.3);
           border-radius: 999px;
           padding: 4px 11px;

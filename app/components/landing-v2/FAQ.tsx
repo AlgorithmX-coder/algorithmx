@@ -104,7 +104,7 @@ export default function FAQ() {
         position: "relative",
         padding:
           "calc(var(--lv2-rail) * 2.2) var(--lv2-rail) calc(var(--lv2-rail) * 2.0)",
-        color: "var(--lv2-paper)",
+        color: "var(--lv2-ink)",
       }}
     >
       <div style={{ position: "relative", maxWidth: 880, margin: "0 auto" }}>
@@ -134,7 +134,7 @@ export default function FAQ() {
               letterSpacing: "-0.03em",
               fontWeight: 800,
               margin: "0 auto 14px",
-              color: "var(--lv2-paper)",
+              color: "var(--lv2-ink)",
               textAlign: "center",
             }}
           >
@@ -156,7 +156,7 @@ export default function FAQ() {
           <p
             style={{
               textAlign: "center",
-              color: "rgba(232,237,255,0.58)",
+              color: "rgba(17,22,38,0.61)",
               fontSize: 17,
               margin: "0 auto 44px",
               maxWidth: 540,
@@ -177,10 +177,10 @@ export default function FAQ() {
                     overflow: "hidden",
                     background: isOpen
                       ? "rgba(15,18,30,0.9)"
-                      : "rgba(13,15,24,0.55)",
+                      : "rgba(255,255,255,0.52)",
                     border: isOpen
                       ? "1px solid rgba(0,229,255,0.45)"
-                      : "1px solid rgba(232,237,255,0.08)",
+                      : "1px solid rgba(17,22,38,0.08)",
                     borderRadius: 16,
                     boxShadow: isOpen
                       ? "0 0 0 1px rgba(124,92,255,0.22), 0 16px 50px rgba(0,0,0,0.4), 0 0 34px rgba(0,229,255,0.12)"
@@ -215,7 +215,7 @@ export default function FAQ() {
                       alignItems: "center",
                       gap: 16,
                       cursor: "pointer",
-                      color: "var(--lv2-paper)",
+                      color: "var(--lv2-ink)",
                       textAlign: "left",
                     }}
                   >
@@ -244,7 +244,7 @@ export default function FAQ() {
                     {isOpen && (
                       <span
                         aria-hidden
-                        style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)", flexShrink: 0 }}
+                        style={{ width: 1, height: 22, background: "rgba(17,22,38,0.19)", flexShrink: 0 }}
                       />
                     )}
                     <span
@@ -253,7 +253,7 @@ export default function FAQ() {
                         fontFamily: "var(--lv2-font-display)",
                         fontSize: "clamp(1.02rem, 1.5vw, 1.2rem)",
                         fontWeight: 700,
-                        color: "var(--lv2-paper)",
+                        color: "var(--lv2-ink)",
                         letterSpacing: "-0.01em",
                       }}
                     >
@@ -269,14 +269,14 @@ export default function FAQ() {
                         borderRadius: "50%",
                         border: isOpen
                           ? "1px solid rgba(0,229,255,0.55)"
-                          : "1px solid rgba(232,237,255,0.18)",
+                          : "1px solid rgba(17,22,38,0.19)",
                         background: isOpen ? "rgba(0,229,255,0.1)" : "transparent",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         fontSize: 20,
                         lineHeight: 1,
-                        color: isOpen ? "var(--lv2-cyan)" : "rgba(232,237,255,0.6)",
+                        color: isOpen ? "var(--lv2-cyan)" : "rgba(17,22,38,0.63)",
                         transition: "color .25s ease, border-color .25s ease",
                       }}
                     >
@@ -297,7 +297,7 @@ export default function FAQ() {
                             fontFamily: "var(--lv2-font-display)",
                             fontSize: 15.5,
                             lineHeight: 1.65,
-                            color: "rgba(232,237,255,0.8)",
+                            color: "rgba(17,22,38,0.84)",
                             margin: 0,
                             padding: "0 24px 24px 62px",
                           }}

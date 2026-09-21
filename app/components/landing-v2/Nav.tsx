@@ -55,8 +55,8 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
 
   /* Layered gradient glass (gives the bar internal depth vs. a flat fill). */
   const bg = scrolled
-    ? "linear-gradient(180deg, rgba(8,13,30,0.84) 0%, rgba(4,5,13,0.66) 100%)"
-    : "linear-gradient(180deg, rgba(8,13,30,0.42) 0%, rgba(4,5,13,0.20) 100%)";
+    ? "linear-gradient(180deg, rgba(8,13,30,0.84) 0%, rgba(255,255,255,0.63) 100%)"
+    : "linear-gradient(180deg, rgba(8,13,30,0.42) 0%, rgba(255,255,255,0.19) 100%)";
   const border = scrolled
     ? "1px solid rgba(0,229,255,0.18)"
     : "1px solid rgba(0,229,255,0.06)";
@@ -321,15 +321,15 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           line-height: 1;
         }
         .lv2-wordmark-main {
-          color: var(--lv2-paper);
+          color: var(--lv2-ink);
           background-image: linear-gradient(
             110deg,
-            var(--lv2-paper) 0%,
-            var(--lv2-paper) 42%,
+            var(--lv2-ink) 0%,
+            var(--lv2-ink) 42%,
             #ffffff 48%,
             var(--lv2-cyan-soft) 51%,
-            var(--lv2-paper) 58%,
-            var(--lv2-paper) 100%
+            var(--lv2-ink) 58%,
+            var(--lv2-ink) 100%
           );
           background-size: 260% 100%;
           background-position: 100% 0;
@@ -492,7 +492,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         /* Not on the aside: it is the same class but its own amber, and
            this rule sits after the amber one, so it would win. */
         :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
-          color: rgba(232, 237, 255, 0.82);
+          color: rgba(17,22,38,0.86);
         }
         /* Owner 2026-09-21: "highlight these". Courses and Schools sat as
            plain grey text next to a solid cyan CTA and read as furniture.
@@ -508,8 +508,8 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             border-radius: 999px;
             border: 1px solid rgba(159, 245, 255, 0.24);
             background: rgba(0, 229, 255, 0.06);
-            box-shadow: inset 0 1px 0 rgba(232, 237, 255, 0.05);
-            color: var(--lv2-paper);
+            box-shadow: inset 0 1px 0 rgba(17,22,38,0.05);
+            color: var(--lv2-ink);
           }
           /* the chip does the job the scanning underline used to do */
           :global(.lv2-nav-secondary:not(.lv2-nav-aside))::after {
@@ -520,7 +520,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             border-color: rgba(0, 229, 255, 0.55);
             background: rgba(0, 229, 255, 0.14);
             box-shadow: 0 0 22px -8px rgba(0, 229, 255, 0.9),
-              inset 0 1px 0 rgba(232, 237, 255, 0.08);
+              inset 0 1px 0 rgba(17,22,38,0.08);
           }
         }
         :global(.lv2-nav-secondary)::after {
@@ -544,7 +544,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         }
         :global(.lv2-nav-secondary:hover),
         :global(.lv2-nav-secondary:focus-visible) {
-          color: var(--lv2-paper);
+          color: var(--lv2-ink);
           text-shadow: 0 0 12px rgba(0, 229, 255, 0.55);
           transform: translateY(-1px);
         }
@@ -616,8 +616,8 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           .lv2-wordmark-main {
             animation: none;
             background-image: none;
-            -webkit-text-fill-color: var(--lv2-paper);
-            color: var(--lv2-paper);
+            -webkit-text-fill-color: var(--lv2-ink);
+            color: var(--lv2-ink);
           }
           .lv2-wordmark-x {
             animation: none;
@@ -930,7 +930,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
     return () => clearInterval(i);
   }, [reduceMotion]);
 
-  const baseColor = isLight ? "rgba(10,15,28,0.78)" : "rgba(232,237,255,0.82)";
+  const baseColor = isLight ? "rgba(10,15,28,0.78)" : "rgba(17,22,38,0.86)";
 
   return (
     <div
@@ -1082,7 +1082,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           font-size: 10px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(232, 237, 255, 0.58);
+          color: rgba(17,22,38,0.61);
         }
         .lv2-tel-num {
           font-size: 13px;

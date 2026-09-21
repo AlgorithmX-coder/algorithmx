@@ -208,7 +208,7 @@ export default function SubjectShowcase() {
         position: "relative",
         padding: "calc(var(--lv2-rail) * 2.4) var(--lv2-rail)",
         overflow: "hidden",
-        color: "var(--lv2-paper)",
+        color: "var(--lv2-ink)",
       }}
     >
       <div
@@ -235,7 +235,7 @@ export default function SubjectShowcase() {
                 fontWeight: 600,
                 letterSpacing: "0.32em",
                 textTransform: "uppercase",
-                color: "rgba(232,237,255,0.55)",
+                color: "rgba(17,22,38,0.58)",
                 marginBottom: 14,
               }}
             >
@@ -251,7 +251,7 @@ export default function SubjectShowcase() {
                 letterSpacing: "-0.025em",
                 fontWeight: 400,
                 margin: 0,
-                color: "var(--lv2-paper)",
+                color: "var(--lv2-ink)",
               }}
             >
               Pick your stream.
@@ -263,7 +263,7 @@ export default function SubjectShowcase() {
                 fontFamily: "var(--lv2-font-display)",
                 fontSize: "clamp(1rem, 1.2vw, 1.0625rem)",
                 lineHeight: 1.55,
-                color: "rgba(232,237,255,0.7)",
+                color: "rgba(17,22,38,0.73)",
                 maxWidth: 640,
                 margin: "18px auto 0",
               }}
@@ -305,9 +305,9 @@ export default function SubjectShowcase() {
                   fontWeight: 500,
                   letterSpacing: "-0.018em",
                   lineHeight: 1.15,
-                  color: "var(--lv2-paper)",
+                  color: "var(--lv2-ink)",
                   margin: "12px 0 0",
-                  textShadow: "0 2px 18px rgba(4,5,13,0.95), 0 0 6px rgba(4,5,13,0.8)",
+                  textShadow: "0 2px 18px rgba(255,255,255,0.90), 0 0 6px rgba(255,255,255,0.76)",
                 }}
               >
                 Five new courses. Releasing soon.
@@ -317,10 +317,10 @@ export default function SubjectShowcase() {
                   fontFamily: "var(--lv2-font-display)",
                   fontSize: "clamp(0.9rem, 1.05vw, 1rem)",
                   lineHeight: 1.55,
-                  color: "rgba(232,237,255,0.62)",
+                  color: "rgba(17,22,38,0.65)",
                   maxWidth: 620,
                   margin: "10px 0 0",
-                  textShadow: "0 2px 14px rgba(4,5,13,0.95), 0 0 5px rgba(4,5,13,0.8)",
+                  textShadow: "0 2px 14px rgba(255,255,255,0.90), 0 0 5px rgba(255,255,255,0.76)",
                 }}
               >
                 Every card below is a real course, locked and encrypted until
@@ -377,7 +377,7 @@ export default function SubjectShowcase() {
           letter-spacing: 0.1em;
           white-space: nowrap;
           overflow: hidden;
-          color: rgba(232, 237, 255, 0.34);
+          color: rgba(17,22,38,0.36);
         }
         .lv2-cipher-hot {
           color: var(--accent);
@@ -593,9 +593,9 @@ function StatusPill({ accent, status, live }: { accent: string; status: string; 
         fontWeight: 700,
         letterSpacing: "0.16em",
         textTransform: "uppercase",
-        color: live ? accent : "rgba(232,237,255,0.6)",
+        color: live ? accent : "rgba(17,22,38,0.63)",
         background: live ? `${accent}1f` : "transparent",
-        border: `1px solid ${live ? `${accent}77` : "rgba(232,237,255,0.22)"}`,
+        border: `1px solid ${live ? `${accent}77` : "rgba(17,22,38,0.23)"}`,
         padding: "5px 12px",
         borderRadius: 999,
       }}
@@ -670,7 +670,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(2rem, 3.4vw, 2.7rem)",
               fontWeight: 500,
-              color: "var(--lv2-paper)",
+              color: "var(--lv2-ink)",
               margin: "18px 0 0",
               letterSpacing: "-0.022em",
               lineHeight: 1.05,
@@ -686,7 +686,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               fontWeight: 600,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "rgba(232,237,255,0.55)",
+              color: "rgba(17,22,38,0.58)",
               marginTop: 10,
             }}
           >
@@ -698,7 +698,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(0.95rem, 1.15vw, 1.0625rem)",
               lineHeight: 1.6,
-              color: "rgba(232,237,255,0.78)",
+              color: "rgba(17,22,38,0.82)",
               margin: "18px 0 0",
               maxWidth: 460,
             }}
@@ -741,7 +741,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                 >
                   Aligned with UK&rsquo;s National Cyber Security Centre
                 </span>
-                <span aria-hidden style={{ width: 1, height: 20, background: "rgba(232,237,255,0.18)" }} />
+                <span aria-hidden style={{ width: 1, height: 20, background: "rgba(17,22,38,0.19)" }} />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 26, width: "auto" }} />
               </span>
@@ -809,7 +809,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                 fontFamily: "var(--lv2-font-display)",
                 fontSize: "clamp(1.15rem, 1.7vw, 1.45rem)",
                 fontWeight: 500,
-                color: "var(--lv2-paper)",
+                color: "var(--lv2-ink)",
                 lineHeight: 1.32,
               }}
             >
@@ -823,7 +823,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                 fontFamily: "var(--lv2-font-mono)",
                 fontSize: 11.5,
                 lineHeight: 1.6,
-                color: "rgba(232,237,255,0.5)",
+                color: "rgba(17,22,38,0.53)",
                 marginTop: 2,
               }}
             >
@@ -848,7 +848,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           gap: 6px;
           padding: 10px 13px;
           border-radius: 12px;
-          background: rgba(6,10,24,0.55);
+          background: rgba(255,255,255,0.52);
           border: 1px solid rgba(159,245,255,0.12);
           border-left: 2px solid var(--lv2-mark);
         }
@@ -858,7 +858,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(232,237,255,0.6);
+          color: rgba(17,22,38,0.63);
         }
         /* Ops and Pro used to sit at 0.55 opacity, which the owner read
            as the lighting failing on that half of the row. They are lit
@@ -903,7 +903,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-family: var(--lv2-font-display);
           font-size: 0.8125rem;
           line-height: 1.45;
-          color: rgba(232,237,255,0.72);
+          color: rgba(17,22,38,0.76);
         }
         /* Owner 2026-09-21: highlight the course name a little, in grey.
            A grey plate rather than a brighter colour, so the track colour
@@ -915,14 +915,14 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           margin-top: 2px;
           padding: 3px 8px;
           border-radius: 6px;
-          background: rgba(232,237,255,0.075);
-          border: 1px solid rgba(232,237,255,0.07);
+          background: rgba(17,22,38,0.08);
+          border: 1px solid rgba(17,22,38,0.07);
           font-family: var(--lv2-font-mono);
           font-size: 7.5px;
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(232,237,255,0.62);
+          color: rgba(17,22,38,0.65);
         }
         @media (max-width: 900px) {
           .lv2-flagships { gap: 11px; }

@@ -56,11 +56,33 @@ const chakra = Chakra_Petch({ variable: "--font-chakra", weight: ["700"], subset
 
 export default function LandingV2() {
   return (
-    <div className={`${fredoka.variable} ${chakra.variable}`} style={{ display: "contents" }}>
+    <div className={`${fredoka.variable} ${chakra.variable} trial-sand`} style={{ display: "contents" }}>
+    {/* WARM SAND TRIAL — throwaway branch, not for merge.
+        Option 37 from the lighter backdrops board. The three dark canvases
+        are switched off rather than deleted, the ground is painted sand,
+        and the components' own palette was swapped mechanically (light
+        text to ink at the same alpha, dark panel fills to white). Anything
+        that looks half-done here is half-done: a real light page means
+        re-colouring the glass, the glows and the 3D machine by hand. */}
+    <style>{`
+      html, body { background: #f3ede4 !important; }
+      .trial-sand ~ * canvas, body > canvas { display: none !important; }
+      body::before, body::after { display: none !important; }
+      /* the sand ground, with the warm glow low and left as on the board */
+      body::after {
+        content: "" !important;
+        display: block !important;
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: -1 !important;
+        background:
+          radial-gradient(ellipse 70% 56% at 30% 88%, rgba(230,150,90,0.22), transparent 70%),
+          linear-gradient(180deg, #f8f4ec 0%, #f3ede4 100%) !important;
+        pointer-events: none !important;
+      }
+    `}</style>
     <SmoothScroll>
-      <CosmicNetworkBackground />
-      <ScrollFormObjects />
-      <AmbientFutureBackdrop />
+      {/* <CosmicNetworkBackground /> <ScrollFormObjects /> <AmbientFutureBackdrop /> */}
       <SpotlightCursor />
       <Nav />
       <main>

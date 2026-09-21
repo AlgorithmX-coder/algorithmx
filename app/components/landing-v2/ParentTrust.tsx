@@ -96,7 +96,7 @@ export default function ParentTrust() {
         position: "relative",
         padding:
           "calc(var(--lv2-rail) * 2.2) var(--lv2-rail) calc(var(--lv2-rail) * 2.0)",
-        color: "var(--lv2-paper)",
+        color: "var(--lv2-ink)",
       }}
     >
       <div
@@ -114,7 +114,7 @@ export default function ParentTrust() {
               fontWeight: 600,
               letterSpacing: "0.32em",
               textTransform: "uppercase",
-              color: "rgba(232,237,255,0.55)",
+              color: "rgba(17,22,38,0.58)",
               marginBottom: 18,
               textAlign: "center",
             }}
@@ -133,7 +133,7 @@ export default function ParentTrust() {
               fontWeight: 800,
               margin: "0 auto 16px",
               maxWidth: 880,
-              color: "var(--lv2-paper)",
+              color: "var(--lv2-ink)",
               textAlign: "center",
             }}
           >
@@ -147,7 +147,7 @@ export default function ParentTrust() {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(1rem, 1.2vw, 1.0625rem)",
               lineHeight: 1.55,
-              color: "rgba(232,237,255,0.7)",
+              color: "rgba(17,22,38,0.73)",
               maxWidth: 640,
               margin: "0 auto 56px",
               textAlign: "center",
@@ -164,10 +164,10 @@ export default function ParentTrust() {
             <FadeUp key={p.title} delay={0.05 * i + 0.18}>
               <article
                 style={{
-                  background: "rgba(13,15,24,0.62)",
+                  background: "rgba(255,255,255,0.59)",
                   backdropFilter: "blur(12px) saturate(1.3)",
                   WebkitBackdropFilter: "blur(12px) saturate(1.3)",
-                  border: "1px solid rgba(232,237,255,0.08)",
+                  border: "1px solid rgba(17,22,38,0.08)",
                   borderRadius: 14,
                   padding: "22px 22px 20px",
                   display: "flex",
@@ -205,7 +205,7 @@ export default function ParentTrust() {
                       fontFamily: "var(--lv2-font-display)",
                       fontSize: "1.15rem",
                       fontWeight: 600,
-                      color: "var(--lv2-paper)",
+                      color: "var(--lv2-ink)",
                       margin: 0,
                       letterSpacing: "-0.01em",
                     }}
@@ -218,7 +218,7 @@ export default function ParentTrust() {
                     fontFamily: "var(--lv2-font-display)",
                     fontSize: 14,
                     lineHeight: 1.55,
-                    color: "rgba(232,237,255,0.74)",
+                    color: "rgba(17,22,38,0.78)",
                     margin: 0,
                   }}
                 >

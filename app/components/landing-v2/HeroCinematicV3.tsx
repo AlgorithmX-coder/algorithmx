@@ -562,7 +562,7 @@ export default function HeroCinematicV3() {
                     fontFamily: "var(--lv2-font-mono)",
                     fontSize: 5.5,
                     letterSpacing: "0.12em",
-                    color: "rgba(232,237,255,0.14)",
+                    color: "rgba(17,22,38,0.15)",
                     userSelect: "none",
                   }}
                 >
@@ -1312,7 +1312,7 @@ function StreamRow({
       >
         {stream.name}
       </span>
-      <span style={{ color: "rgba(232,237,255,0.42)", fontSize: 7, whiteSpace: "nowrap" }}>
+      <span style={{ color: "rgba(17,22,38,0.44)", fontSize: 7, whiteSpace: "nowrap" }}>
         {stream.live ? `AGES ${stream.age}` : "ENCRYPTED"}
       </span>
       <span style={{ flex: 1 }} />
