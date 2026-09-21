@@ -501,7 +501,7 @@ export default function HeroCinematicV3() {
                       inset: 0,
                       borderRadius: 12,
                       background:
-                        "linear-gradient(115deg, transparent 30%, rgba(32,36,45,0.82) 46%, transparent 62%)",
+                        "none",
                     }}
                   />
                 </div>
@@ -690,7 +690,7 @@ export default function HeroCinematicV3() {
                       x: sweepX,
                       opacity: sweepOpacity,
                       background:
-                        "linear-gradient(105deg, transparent 0%, rgba(32,36,45,0.82) 32%, rgba(32,36,45,0.82) 50%, rgba(32,36,45,0.82) 68%, transparent 100%)",
+                        "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.4) 46%, transparent 78%)",
                       pointerEvents: "none",
                     }}
                   />
@@ -745,7 +745,7 @@ export default function HeroCinematicV3() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(179,186,196,0.32) 34%, rgba(238,240,243,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(32,36,45,0.82) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
+                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(179,186,196,0.32) 34%, rgba(238,240,243,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.14) 7%, transparent 16%)",
                         opacity: 0.55,
                       }}
                     />
@@ -781,7 +781,7 @@ export default function HeroCinematicV3() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "linear-gradient(112deg, transparent 42%, rgba(32,36,45,0.82) 52%, transparent 60%)",
+                          "none",
                         zIndex: 3,
                         pointerEvents: "none",
                       }}
