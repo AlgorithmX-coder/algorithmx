@@ -122,7 +122,9 @@ export default function ScrollFormObjects({ tone = "night" }: { tone?: "night" |
        * (roadmap explainer, journey steps, footer brand) and read as
        * double-exposure; 0.30 keeps it alive in the voids without
        * fighting foreground text. */
-      const codeOp = clamp01((P - 0.12) / 0.06) * 0.3;
+      /* ink on paper needs more weight than light on black to read as
+         the same whisper */
+      const codeOp = clamp01((P - 0.12) / 0.06) * (onSand ? 0.52 : 0.3);
       codeWrap.style.opacity = String(codeOp);
       codeWrap.style.transform = `translateY(-50%) translateX(${(1 - smooth(clamp01((P - 0.12) / 0.07))) * -26}px)`;
       const shown = codeP * lines.length;
