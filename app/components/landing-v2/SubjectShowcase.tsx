@@ -45,9 +45,9 @@ interface Stream {
 /* Ages match the course landings; live matches the card's own count. */
 const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string; live: boolean }> = [
   { id: "heroes", ages: "6 to 9", accent: "#8a5400", live: true },
-  { id: "explorers", ages: "10 to 13", accent: "#0b7183", live: true },
+  { id: "explorers", ages: "10 to 13", accent: "#0a6675", live: true },
   { id: "ops", ages: "14 to 17", accent: "#5744c9", live: false },
-  { id: "pro", ages: "18+", accent: "#b8430c", live: false },
+  { id: "pro", ages: "18+", accent: "#a63a08", live: false },
 ];
 
 /**
@@ -85,7 +85,7 @@ const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; 
     id: "explorers",
     take: "A closed case file",
     how: "Twenty cases of breadcrumbs, one coordinator unmasked, the dossier handed over.",
-    accent: "#0b7183",
+    accent: "#0a6675",
   },
   {
     id: "ops",
@@ -97,7 +97,7 @@ const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; 
     id: "pro",
     take: "A database you broke and fixed",
     how: "One line of SQL empties it, then you ship the fix that stops it cold.",
-    accent: "#b8430c",
+    accent: "#a63a08",
   },
 ];
 
@@ -377,7 +377,7 @@ export default function SubjectShowcase() {
           letter-spacing: 0.1em;
           white-space: nowrap;
           overflow: hidden;
-          color: rgba(52,42,28,0.62);
+          color: rgba(52,42,28,0.72);
         }
         .lv2-cipher-hot {
           color: var(--accent);
@@ -985,7 +985,7 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
           /* Classified cards are pressed into the paper rather than
            * raised out of it: locked reads as recessed, live reads as
            * lifted, and the shade alone tells you which is which. */
-          background: "linear-gradient(180deg, #ece4d6, #e5dccb)",
+          background: "linear-gradient(180deg, #e8dfd0, #e1d7c4)",
           border: `1px solid ${a}44`,
           boxShadow: "inset 0 2px 5px -2px rgba(70,58,44,0.3), inset 0 0 0 1px rgba(255,255,255,0.35)",
           borderRadius: 14,

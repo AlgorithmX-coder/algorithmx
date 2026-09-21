@@ -158,11 +158,11 @@ export default function LandingV2() {
       .trial-sand [style*="#eaf6ff"] { color: #14161d !important; }
       .trial-sand [style*="color: #ffb347"],
       .trial-sand [style*="color:#ffb347"] { color: #9a5f00 !important; }
-      .trial-sand svg[stroke="#22D3EE"] { stroke: #0b7183 !important; filter: none !important; }
-      .trial-sand svg[stroke="#ff7a3d"] { stroke: #b8430c !important; filter: none !important; }
+      .trial-sand svg[stroke="#22D3EE"] { stroke: #0a6675 !important; filter: none !important; }
+      .trial-sand svg[stroke="#ff7a3d"] { stroke: #a63a08 !important; filter: none !important; }
       .trial-sand svg[stroke="#8b7bff"] { stroke: #5744c9 !important; filter: none !important; }
       .trial-sand path[fill="#ffb347"] { fill: #9a5f00 !important; }
-      .trial-sand path[fill="#22D3EE"], .trial-sand circle[fill="#22D3EE"] { fill: #0b7183 !important; }
+      .trial-sand path[fill="#22D3EE"], .trial-sand circle[fill="#22D3EE"] { fill: #0a6675 !important; }
 
       /* The CTA keeps the bright cyan token for its fill, so it is restated
          after the token override above. */
