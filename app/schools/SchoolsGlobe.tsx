@@ -469,7 +469,7 @@ function makeAtlas(px: number, color: string, weight: string, opts: AtlasOpts = 
       if (opts.glow) {
         g.shadowColor = "rgba(3,8,26,0.92)";
         g.shadowBlur = px * 0.55;
-        g.fillStyle = "rgba(3,8,26,0.92)";
+        g.fillStyle = GL.land;
         g.fillText(glyph, x, y);
         g.fillText(glyph, x, y);
         g.shadowColor = opts.glow;
@@ -489,7 +489,70 @@ function makeAtlas(px: number, color: string, weight: string, opts: AtlasOpts = 
 }
 type Atlas = ReturnType<typeof makeAtlas>;
 
-export default function SchoolsGlobe() {
+/* ── two skies ───────────────────────────────────────────────────────
+ * Night builds a lit globe out of black. Sand has to build the same
+ * globe out of paper, so every value that was a light on darkness
+ * becomes ink on light, and the veil lifts instead of deepening.
+ * ──────────────────────────────────────────────────────────────────── */
+type GlobePalette = {
+  ocean: string;      /* the sphere itself */
+  land: string;       /* coastlines and fill */
+  landLine: string;
+  city: string;
+  cityHot: string;
+  britain: string;
+  britainRing: (a: number) => string;
+  arc: string;
+  arcHot: string;
+  spark: (a: number) => string;
+  classroomShell: string;
+  classroomBar: string;
+  classroomText: string;
+  classroomDot: (i: number) => string;
+  screen: string;
+};
+
+const NIGHT_GLOBE: GlobePalette = {
+  ocean: "rgba(6,20,48,0.72)",
+  land: "rgba(3,8,26,0.92)",
+  landLine: "rgba(125,240,255,0.22)",
+  city: "#7df0ff",
+  cityHot: "#9cff8a",
+  britain: "#ffd88f",
+  britainRing: (a) => `rgba(255,216,143,${a})`,
+  arc: "rgba(125,240,255,0.1)",
+  arcHot: "rgba(156,255,138,0.8)",
+  spark: (a) => `rgba(156,255,138,${a})`,
+  classroomShell: "rgba(5,16,40,0.94)",
+  classroomBar: "rgba(156,255,138,0.22)",
+  classroomText: "rgba(200,255,205,0.8)",
+  classroomDot: (i) => (i === 1 ? "rgba(125,240,255,0.85)" : "rgba(196,255,206,0.8)"),
+  screen: "#cfe6ff",
+};
+
+const SAND_GLOBE: GlobePalette = {
+  ocean: "rgba(214,224,230,0.66)",
+  land: "rgba(58,74,88,0.9)",
+  landLine: "rgba(10,112,133,0.3)",
+  city: "#0a7085",
+  cityHot: "#0e7a45",
+  britain: "#8a5400",
+  britainRing: (a) => `rgba(138,84,0,${a})`,
+  arc: "rgba(10,112,133,0.16)",
+  arcHot: "rgba(14,122,69,0.7)",
+  spark: (a) => `rgba(14,122,69,${a})`,
+  classroomShell: "rgba(255,253,248,0.96)",
+  classroomBar: "rgba(14,122,69,0.3)",
+  classroomText: "rgba(52,62,74,0.85)",
+  classroomDot: (i) => (i === 1 ? "rgba(10,112,133,0.9)" : "rgba(14,122,69,0.75)"),
+  screen: "#2f3a4d",
+};
+
+let GL: GlobePalette = NIGHT_GLOBE;
+
+export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "sand" } = {}) {
+  GL = tone === "sand" ? SAND_GLOBE : NIGHT_GLOBE;
+  const onSand = tone === "sand";
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
@@ -702,24 +765,24 @@ export default function SchoolsGlobe() {
       const top = Math.round(y - ch2 - 11);
       const bar = Math.max(3, 5 * scale);
       ctx.globalAlpha = alpha;
-      ctx.fillStyle = "rgba(5,16,40,0.94)";
+      ctx.fillStyle = GL.classroomShell;
       ctx.fillRect(left, top, cw2, ch2);
-      ctx.fillStyle = "rgba(156,255,138,0.22)";
+      ctx.fillStyle = GL.classroomBar;
       ctx.fillRect(left, top, cw2, bar);
       // the window's three dots
-      ctx.fillStyle = "rgba(200,255,205,0.8)";
+      ctx.fillStyle = GL.classroomText;
       for (let i = 0; i < 3; i++) ctx.fillRect(left + 3 + i * 3.4, top + bar * 0.3, 1.6, 1.6);
       // lines of code, ragged like real ones
       for (let i = 0; i < 3; i++) {
         const n = (seed + i * 7) % 5;
-        ctx.fillStyle = i === 1 ? "rgba(125,240,255,0.85)" : "rgba(196,255,206,0.8)";
+        ctx.fillStyle = GL.classroomDot(i);
         ctx.fillRect(left + 3, top + bar + 3 + i * 5 * scale, (0.3 + n * 0.14) * (cw2 - 6), Math.max(1, 1.6 * scale));
       }
-      ctx.strokeStyle = "rgba(156,255,138,0.8)";
+      ctx.strokeStyle = GL.arcHot;
       ctx.lineWidth = 1;
       ctx.strokeRect(left + 0.5, top + 0.5, cw2 - 1, ch2 - 1);
       // stand and desk, so it reads as a room rather than a floating card
-      ctx.fillStyle = "rgba(156,255,138,0.6)";
+      ctx.fillStyle = GL.spark(0.6);
       ctx.fillRect(x - 1.5, top + ch2, 3, 3 * scale);
       ctx.fillRect(x - 8 * scale, top + ch2 + 3 * scale, 16 * scale, Math.max(1, 1.4 * scale));
       ctx.globalAlpha = 1;
@@ -750,7 +813,7 @@ export default function SchoolsGlobe() {
       for (const s of stars) {
         const tw = 0.4 + 0.35 * Math.sin(t * 0.7 + s.p);
         ctx.globalAlpha = tw * 0.6;
-        ctx.fillStyle = "#cfe6ff";
+        ctx.fillStyle = GL.screen;
         ctx.fillRect(s.x, s.y, s.r, s.r);
       }
       ctx.globalAlpha = 1;
@@ -759,14 +822,14 @@ export default function SchoolsGlobe() {
       ctx.drawImage(GLOW.cyan, cx - R * 1.7, cy - R * 1.7, R * 3.4, R * 3.4);
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(6,20,48,0.72)";
+      ctx.fillStyle = GL.ocean;
       ctx.fill();
-      ctx.strokeStyle = "rgba(125,240,255,0.22)";
+      ctx.strokeStyle = GL.landLine;
       ctx.lineWidth = 1;
       ctx.stroke();
 
       // Graticule.
-      ctx.strokeStyle = "rgba(125,240,255,0.1)";
+      ctx.strokeStyle = GL.arc;
       for (let lat = -60; lat <= 60; lat += 30) {
         ctx.beginPath();
         for (let lon = -180; lon <= 180; lon += 6) {
@@ -805,7 +868,7 @@ export default function SchoolsGlobe() {
           ctx.fillRect(dotX[i], dotY[i], dot, dot);
         }
       }
-      ctx.fillStyle = "#ffd88f";
+      ctx.fillStyle = GL.britain;
       for (const v of uk) {
         const p = project(v);
         if (p[2] < 0.04) continue;
@@ -822,7 +885,7 @@ export default function SchoolsGlobe() {
         ctx.globalAlpha = 0.55 * pulse;
         ctx.drawImage(GLOW.amber, ukP[0] - R * 0.36, ukP[1] - R * 0.36, R * 0.72, R * 0.72);
         ctx.globalAlpha = 1;
-        ctx.strokeStyle = `rgba(255,216,143,${0.5 * pulse})`;
+        ctx.strokeStyle = GL.britainRing(0.5 * pulse);
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.arc(ukP[0], ukP[1], R * 0.1 * (1 + 0.25 * Math.sin(t * 1.5)), 0, Math.PI * 2);
@@ -839,7 +902,7 @@ export default function SchoolsGlobe() {
           const len = Math.hypot(dx, dy) || 1;
           if (len > R * 0.42) {
             const run = len - R * 0.16;
-            ctx.strokeStyle = "rgba(255,206,140,0.34)";
+            ctx.strokeStyle = GL.britainRing(0.34);
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(tipX, tipY);
@@ -911,7 +974,7 @@ export default function SchoolsGlobe() {
           ctx.globalAlpha = hot ? 0.9 : 0.3;
           ctx.drawImage(hot ? GLOW.mint : GLOW.cyan, pin[0] - 13, pin[1] - 13, 26, 26);
           ctx.globalAlpha = 1;
-          ctx.fillStyle = hot ? "#9cff8a" : "#7df0ff";
+          ctx.fillStyle = hot ? GL.cityHot : GL.city;
           ctx.fillRect(pin[0] - 1.6, pin[1] - 1.6, 3.2, 3.2);
           // Screens and names only where the globe has a column of its own:
           // narrower, the page's copy runs full width and they land behind it.
@@ -949,7 +1012,7 @@ export default function SchoolsGlobe() {
         }
         const p = project(f.v);
         if (p[2] < 0) continue;
-        ctx.strokeStyle = `rgba(156,255,138,${(1 - f.t) * 0.85})`;
+        ctx.strokeStyle = GL.spark((1 - f.t) * 0.85);
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.arc(p[0], p[1], 6 + f.t * R * 0.16, 0, Math.PI * 2);
@@ -1103,7 +1166,7 @@ export default function SchoolsGlobe() {
           z-index: -1;
           pointer-events: none;
           overflow: hidden;
-          background: #03071a;
+          background: ${onSand ? "#f3ede4" : "#03071a"};
         }
         /* The sky is CSS, so it paints with the server HTML. */
         .sg-sky {
@@ -1112,9 +1175,13 @@ export default function SchoolsGlobe() {
           background:
             /* dusk at the foot of the sky, the homepage's sunset in a
                quieter key: this page has copy over it at every width. */
-            radial-gradient(ellipse 78% 44% at 56% 112%, rgba(255,150,96,0.16) 0%, rgba(214,92,118,0.09) 44%, rgba(3,7,26,0) 74%),
+            ${onSand
+              ? `radial-gradient(ellipse 78% 44% at 56% 112%, rgba(214,132,72,0.16) 0%, rgba(206,110,96,0.07) 44%, rgba(243,237,228,0) 74%),
+            radial-gradient(ellipse 70% 60% at 72% 46%, rgba(120,150,190,0.22) 0%, rgba(150,170,200,0.12) 45%, rgba(243,237,228,0) 72%),
+            linear-gradient(180deg, #f8f4ec 0%, #f3ede4 52%, #efe8dd 100%)`
+              : `radial-gradient(ellipse 78% 44% at 56% 112%, rgba(255,150,96,0.16) 0%, rgba(214,92,118,0.09) 44%, rgba(3,7,26,0) 74%),
             radial-gradient(ellipse 70% 60% at 72% 46%, rgba(26,68,128,0.88) 0%, rgba(12,30,72,0.54) 45%, rgba(4,10,32,0) 72%),
-            linear-gradient(180deg, #0b1940 0%, #081231 52%, #060c22 100%);
+            linear-gradient(180deg, #0b1940 0%, #081231 52%, #060c22 100%)`};
         }
         /* Sized and placed in script: it covers the globe, not the screen. */
         .sg-canvas {
@@ -1124,10 +1191,13 @@ export default function SchoolsGlobe() {
         }
         /* Keeps the reading column calm and legible over the globe, and gives
            the nav and the top row a dark bed wherever the globe reaches. */
+        /* On a night sky this darkens the globe so the copy reads over it.
+           On paper it has to do the opposite: a dark veil would put the
+           reading column on top of a grey disc. */
         .sg-veil {
           position: absolute;
           inset: 0;
-          background: rgba(3,7,26,0.55);
+          background: ${onSand ? "rgba(248,244,236,0.62)" : "rgba(3,7,26,0.55)"};
           opacity: 0;
           transition: opacity 0.4s ease;
         }
@@ -1179,16 +1249,20 @@ export default function SchoolsGlobe() {
         .sg-scrim {
           position: absolute;
           inset: 0;
-          background:
-            linear-gradient(180deg, rgba(3,7,26,0.93) 0px, rgba(3,7,26,0.88) 130px, rgba(3,7,26,0.64) 205px, rgba(3,7,26,0.22) 310px, rgba(3,7,26,0) 420px),
-            radial-gradient(ellipse 52% 62% at 26% 50%, rgba(3,7,26,0.86) 0%, rgba(3,7,26,0.46) 58%, rgba(3,7,26,0) 84%);
+          background: ${onSand
+            ? `linear-gradient(180deg, rgba(248,244,236,0.94) 0px, rgba(248,244,236,0.9) 130px, rgba(248,244,236,0.66) 205px, rgba(248,244,236,0.24) 310px, rgba(248,244,236,0) 420px),
+            radial-gradient(ellipse 52% 62% at 26% 50%, rgba(248,244,236,0.88) 0%, rgba(248,244,236,0.48) 58%, rgba(248,244,236,0) 84%)`
+            : `linear-gradient(180deg, rgba(3,7,26,0.93) 0px, rgba(3,7,26,0.88) 130px, rgba(3,7,26,0.64) 205px, rgba(3,7,26,0.22) 310px, rgba(3,7,26,0) 420px),
+            radial-gradient(ellipse 52% 62% at 26% 50%, rgba(3,7,26,0.86) 0%, rgba(3,7,26,0.46) 58%, rgba(3,7,26,0) 84%)`};
         }
         /* Below 1100 the page's copy runs the full width over the globe, so
            the veil is even rather than a column: the same width at which the
            labels and city names stand down. */
         @media (max-width: 1099px) {
           .sg-scrim {
-            background: linear-gradient(180deg, rgba(3,7,26,0.9) 0%, rgba(3,7,26,0.76) 38%, rgba(3,7,26,0.62) 70%, rgba(3,7,26,0.58) 100%);
+            background: ${onSand
+              ? "linear-gradient(180deg, rgba(248,244,236,0.92) 0%, rgba(248,244,236,0.8) 38%, rgba(248,244,236,0.66) 70%, rgba(248,244,236,0.62) 100%)"
+              : "linear-gradient(180deg, rgba(3,7,26,0.9) 0%, rgba(3,7,26,0.76) 38%, rgba(3,7,26,0.62) 70%, rgba(3,7,26,0.58) 100%)"};
           }
         }
 
