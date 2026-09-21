@@ -44,7 +44,7 @@ interface Stream {
 
 /* Ages match the course landings; live matches the card's own count. */
 const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string; live: boolean }> = [
-  { id: "heroes", ages: "6 to 9", accent: "#9a5f00", live: true },
+  { id: "heroes", ages: "6 to 9", accent: "#8a5400", live: true },
   { id: "explorers", ages: "10 to 13", accent: "#0b7183", live: true },
   { id: "ops", ages: "14 to 17", accent: "#5744c9", live: false },
   { id: "pro", ages: "18+", accent: "#b8430c", live: false },
@@ -79,7 +79,7 @@ const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; 
     id: "heroes",
     take: "A Certified Cyber Hero certificate",
     how: "Earned by beating the Hacker Raccoon at his own playbook in week 20.",
-    accent: "#9a5f00",
+    accent: "#8a5400",
   },
   {
     id: "explorers",
@@ -159,7 +159,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Real apps on real phones. State, persistence, notifications, design. Build something your friends actually install.",
     project: "Ship a Habit Tracker",
-    accent: "#9a5f00",
+    accent: "#8a5400",
     icon: "M7 2h10a1 1 0 011 1v18a1 1 0 01-1 1H7a1 1 0 01-1-1V3a1 1 0 011-1z M11 18h2",
     href: null,
     cta: "Coming 2027",
