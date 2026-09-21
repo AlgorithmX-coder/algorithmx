@@ -1099,7 +1099,8 @@ function ctaStyle(a: string): React.CSSProperties {
     justifyContent: "center",
     gap: 8,
     background: a,
-    color: "var(--lv2-ink)",
+    /* the accents are dark on sand, so the label is paper */
+    color: "#fffdfa",
     border: "none",
     boxShadow: `0 8px 26px ${a}55, 0 0 18px ${a}66`,
     cursor: "pointer",

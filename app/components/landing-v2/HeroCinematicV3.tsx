@@ -345,7 +345,7 @@ export default function HeroCinematicV3() {
                 transform: "translate(-50%, -48%)",
                 borderRadius: "50%",
                 background:
-                  "radial-gradient(ellipse at 50% 50%, rgba(242,241,238,0.55) 0%, rgba(242,241,238,0.25) 45%, transparent 70%)",
+                  "radial-gradient(ellipse at 50% 50%, rgba(238,240,243,0.55) 0%, rgba(238,240,243,0.25) 45%, transparent 70%)",
               }}
             />
 
@@ -366,7 +366,7 @@ export default function HeroCinematicV3() {
                   borderRadius: 16,
                   transformStyle: "preserve-3d",
                   background:
-                    "linear-gradient(145deg, #c9c5bd 0%, #dedbd5 45%, #dedbd5 100%)",
+                    "linear-gradient(145deg, #b3bac4 0%, #d2d7de 45%, #d2d7de 100%)",
                   boxShadow:
                     "inset 0 1px 0 rgba(32,36,45,0.82), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12)",
                 }}
@@ -383,7 +383,7 @@ export default function HeroCinematicV3() {
                       height: 9,
                       borderRadius: 5,
                       background:
-                        "linear-gradient(180deg, #f2f1ee 0%, #c9c5bd 40%, #dedbd5 100%)",
+                        "linear-gradient(180deg, #eef0f3 0%, #b3bac4 40%, #d2d7de 100%)",
                       boxShadow:
                         "inset 0 1px 1px rgba(32,36,45,0.82), 0 1px 3px rgba(0,0,0,0.7)",
                     }}
@@ -400,7 +400,7 @@ export default function HeroCinematicV3() {
                     height: 10,
                     borderRadius: 5,
                     backgroundImage:
-                      "radial-gradient(circle at 2px 50%, rgba(242,241,238,0.85) 1.1px, transparent 1.4px)",
+                      "radial-gradient(circle at 2px 50%, rgba(238,240,243,0.85) 1.1px, transparent 1.4px)",
                     backgroundSize: "6px 10px",
                     boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)",
                     opacity: 0.85,
@@ -416,7 +416,7 @@ export default function HeroCinematicV3() {
                     top: 34,
                     height: 208,
                     borderRadius: 10,
-                    background: "linear-gradient(160deg, #f2f1ee, #f2f1ee)",
+                    background: "linear-gradient(160deg, #eef0f3, #eef0f3)",
                     boxShadow:
                       "inset 0 2px 8px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(120,140,180,0.10)",
                     padding: "12px 14px",
@@ -458,7 +458,7 @@ export default function HeroCinematicV3() {
                               flex: wide,
                               borderRadius: 5,
                               background:
-                                "linear-gradient(180deg, #dedbd5 0%, #f2f1ee 100%)",
+                                "linear-gradient(180deg, #d2d7de 0%, #eef0f3 100%)",
                               boxShadow: `inset 0 1px 0 rgba(170,190,225,0.13), 0 1px 2px rgba(0,0,0,0.6), 0 0 6px ${hue}14`,
                               display: "flex",
                               alignItems: "center",
@@ -490,7 +490,7 @@ export default function HeroCinematicV3() {
                     transform: "translateX(-58%)",
                     borderRadius: 12,
                     background:
-                      "linear-gradient(155deg, rgba(222,219,213,0.95), rgba(242,241,238,0.98))",
+                      "linear-gradient(155deg, rgba(210,215,222,0.95), rgba(238,240,243,0.98))",
                     boxShadow:
                       "inset 0 1px 0 rgba(32,36,45,0.82), inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 -8px 22px rgba(0,0,0,0.4)",
                   }}
@@ -597,7 +597,7 @@ export default function HeroCinematicV3() {
                   transformOrigin: "50% 0%",
                   transform: "rotateX(-84deg)",
                   borderRadius: "0 0 10px 10px",
-                  background: "linear-gradient(180deg, #dedbd5, #f2f1ee)",
+                  background: "linear-gradient(180deg, #d2d7de, #eef0f3)",
                   boxShadow: "inset 0 1px 0 rgba(150,170,205,0.14)",
                 }}
               >
@@ -612,7 +612,7 @@ export default function HeroCinematicV3() {
                       width: 24,
                       height: 4.5,
                       borderRadius: 3,
-                      background: "#f2f1ee",
+                      background: "#eef0f3",
                       boxShadow:
                         "inset 0 1px 2px rgba(0,0,0,0.95), 0 1px 0 rgba(160,182,215,0.1)",
                     }}
@@ -627,7 +627,7 @@ export default function HeroCinematicV3() {
                     width: 6.5,
                     height: 6.5,
                     borderRadius: 99,
-                    background: "#f2f1ee",
+                    background: "#eef0f3",
                     boxShadow:
                       "inset 0 1px 2px rgba(0,0,0,0.95), 0 1px 0 rgba(160,182,215,0.1)",
                   }}
@@ -655,7 +655,7 @@ export default function HeroCinematicV3() {
                     backfaceVisibility: "hidden",
                     transform: "translateZ(1.2px)",
                     background:
-                      "linear-gradient(150deg, #c9c5bd 0%, #dedbd5 50%, #dedbd5 100%)",
+                      "linear-gradient(150deg, #b3bac4 0%, #d2d7de 50%, #d2d7de 100%)",
                     boxShadow:
                       "inset 0 1px 0 rgba(32,36,45,0.82), inset 0 -1px 0 rgba(0,0,0,0.45)",
                     display: "flex",
@@ -704,7 +704,7 @@ export default function HeroCinematicV3() {
                     borderRadius: 16,
                     backfaceVisibility: "hidden",
                     transform: "rotateX(180deg) translateZ(1.2px)",
-                    background: "linear-gradient(160deg, #dedbd5, #f2f1ee)",
+                    background: "linear-gradient(160deg, #d2d7de, #eef0f3)",
                     boxShadow: "inset 0 0 0 1px rgba(130,150,185,0.14)",
                     padding: 12,
                   }}
@@ -723,7 +723,7 @@ export default function HeroCinematicV3() {
                       marginLeft: -2.5,
                       borderRadius: 99,
                       background:
-                        "radial-gradient(circle at 40% 35%, #33465e 0%, #f2f1ee 70%)",
+                        "radial-gradient(circle at 40% 35%, #33465e 0%, #eef0f3 70%)",
                       boxShadow: "0 0 0 1.5px rgba(90,110,145,0.35)",
                     }}
                   />
@@ -734,7 +734,7 @@ export default function HeroCinematicV3() {
                       height: "100%",
                       borderRadius: 8,
                       overflow: "hidden",
-                      background: "#f2f1ee",
+                      background: "#eef0f3",
                     }}
                   >
                     {/* dormant wallpaper — cosmic core + tilted orbit
@@ -745,7 +745,7 @@ export default function HeroCinematicV3() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(201,197,189,0.32) 34%, rgba(242,241,238,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(32,36,45,0.82) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
+                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(179,186,196,0.32) 34%, rgba(238,240,243,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(32,36,45,0.82) 0%, rgba(124,212,255,0.14) 7%, transparent 16%)",
                         opacity: 0.55,
                       }}
                     />
@@ -797,7 +797,7 @@ export default function HeroCinematicV3() {
                         padding: "14px 18px 12px",
                         fontFamily: "var(--lv2-font-mono)",
                         background:
-                          "linear-gradient(180deg, rgba(242,241,238,0.92), rgba(242,241,238,0.95))",
+                          "linear-gradient(180deg, rgba(238,240,243,0.92), rgba(238,240,243,0.95))",
                         zIndex: 2,
                       }}
                     >
@@ -931,7 +931,7 @@ export default function HeroCinematicV3() {
  * parameter strip. Everything is static except the scroll-cascading
  * stream rows — rasterized once, free during the lid animation. */
 const PANEL: CSSProperties = {
-  background: "rgba(242,241,238,0.66)",
+  background: "rgba(238,240,243,0.66)",
   border: "1px solid rgba(90,150,220,0.2)",
   borderRadius: 7,
 };
@@ -1078,7 +1078,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             padding: "7px 9px",
             display: "flex",
             flexDirection: "column",
-            background: "rgba(242,241,238,0.45)",
+            background: "rgba(238,240,243,0.45)",
             minWidth: 0,
           }}
         >
@@ -1149,7 +1149,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                   width: 26,
                   height: 26,
                   borderRadius: 99,
-                  background: "#f2f1ee",
+                  background: "#eef0f3",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",

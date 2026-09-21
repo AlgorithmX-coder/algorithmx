@@ -223,7 +223,7 @@ export default function FAQ() {
                     {!isOpen && (
                       <span
                         aria-hidden
-                        style={{ color: "rgba(120,200,255,0.7)", display: "flex", flexShrink: 0 }}
+                        style={{ color: "rgba(10,112,133,0.85)", display: "flex", flexShrink: 0 }}
                       >
                         <FaqIconSvg name={item.icon} />
                       </span>
@@ -234,7 +234,7 @@ export default function FAQ() {
                         fontSize: 13,
                         fontWeight: 700,
                         letterSpacing: "0.12em",
-                        color: isOpen ? "var(--lv2-cyan)" : "rgba(120,200,255,0.75)",
+                        color: isOpen ? "var(--lv2-cyan)" : "rgba(10,112,133,0.85)",
                         flexShrink: 0,
                       }}
                     >

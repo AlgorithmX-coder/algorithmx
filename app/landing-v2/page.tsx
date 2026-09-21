@@ -173,6 +173,28 @@ export default function LandingV2() {
       /* The CTA keeps the bright cyan token for its fill, so it is restated
          after the token override above. */
       .lv2-nav-cta, .lv2-hero-cta-primary { background: #0a7085 !important; }
+
+      /* The NCSC crest is white artwork. On a dark page it needed nothing;
+         on sand it disappeared entirely, so it gets its own dark plate
+         wherever it appears. Recolouring it is not allowed. */
+      .trial-sand img[src="/logos/ncsc.svg"] {
+        background: #14161d !important;
+        padding: 5px 9px !important;
+        border-radius: 8px !important;
+        box-sizing: content-box !important;
+      }
+
+      /* The partner logo wall is a mix of white-only and full-colour marks,
+         drawn for a black page. Greyscale at weight is the usual answer on
+         a light one, and it stops nine brands fighting each other. */
+      .trial-sand .lv2-logo-cell img {
+        filter: grayscale(1) brightness(0.42) !important;
+        opacity: 0.9 !important;
+      }
+      .trial-sand .lv2-logo-cell:hover img {
+        filter: grayscale(0.15) brightness(0.75) !important;
+        opacity: 1 !important;
+      }
     `}</style>
     <SmoothScroll>
       {/* <CosmicNetworkBackground /> <ScrollFormObjects /> <AmbientFutureBackdrop /> */}
