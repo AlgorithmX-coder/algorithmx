@@ -74,7 +74,7 @@ export default function Footer() {
             </div>
             <p
               style={{
-                color: "rgba(17,22,38,0.58)",
+                color: "rgba(17,22,38,0.72)",
                 fontSize: 13,
                 lineHeight: 1.6,
                 maxWidth: 260,
@@ -192,7 +192,7 @@ function FooterColumn({
           fontWeight: 700,
           letterSpacing: "0.22em",
           textTransform: "uppercase",
-          color: "rgba(17,22,38,0.58)",
+          color: "rgba(17,22,38,0.72)",
           marginBottom: 14,
         }}
       >
@@ -219,7 +219,7 @@ function FooterColumn({
             fontFamily: "var(--lv2-font-mono)",
             fontSize: 11.5,
             letterSpacing: "0.04em",
-            color: "rgba(17,22,38,0.44)",
+            color: "rgba(17,22,38,0.68)",
             marginTop: 4,
           }}
         >

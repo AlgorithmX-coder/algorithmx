@@ -34,7 +34,7 @@ const NIGHT_SYNTAX = {
   def: "#cdd8ff",
 };
 const SAND_SYNTAX = {
-  com: "#8a8676",
+  com: "#6f6a5c",
   kw: "#7c3aad",
   fn: "#2f5fc4",
   str: "#1a7f37",
