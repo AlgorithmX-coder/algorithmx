@@ -80,6 +80,17 @@ export default function LandingV2() {
           linear-gradient(180deg, #f8f4ec 0%, #f3ede4 100%) !important;
         pointer-events: none !important;
       }
+      /* Two artefacts of the mechanical swap, fixed so the trial shows the
+         idea rather than my script: the eyebrow kept its pale cyan and
+         vanished on sand, and the headline kept the dark halo it wore to
+         stand off a night sky. */
+      .lv2-hero-eyebrow {
+        color: #0a6c8e !important;
+        border-color: rgba(10,126,164,0.34) !important;
+        background: rgba(10,126,164,0.08) !important;
+        text-shadow: none !important;
+      }
+      .lv2-hero-copy h1, .lv2-hero-copy p { text-shadow: none !important; }
     `}</style>
     <SmoothScroll>
       {/* <CosmicNetworkBackground /> <ScrollFormObjects /> <AmbientFutureBackdrop /> */}
