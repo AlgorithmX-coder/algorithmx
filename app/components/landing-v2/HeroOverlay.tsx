@@ -65,6 +65,7 @@ export default function HeroOverlay() {
        *  headline; the headline's own text-shadow keeps the contrast. */}
       <div
         aria-hidden
+        className="lv2-hero-scrim"
         style={{
           position: "absolute",
           inset: 0,

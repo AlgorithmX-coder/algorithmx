@@ -91,6 +91,10 @@ export default function LandingV2() {
         text-shadow: none !important;
       }
       .lv2-hero-copy h1, .lv2-hero-copy p { text-shadow: none !important; }
+      /* The scrim exists so the headline reads against a sunset sky. Its
+         own comment warns it would otherwise be a black smudge behind the
+         headline, which is exactly what it becomes on sand. */
+      .lv2-hero-scrim { display: none !important; }
     `}</style>
     <SmoothScroll>
       {/* <CosmicNetworkBackground /> <ScrollFormObjects /> <AmbientFutureBackdrop /> */}
