@@ -2,7 +2,7 @@ import { Fredoka, Chakra_Petch } from "next/font/google";
 
 import HeroCinematic from "@/app/components/landing-v2/HeroCinematicV3";
 import Nav from "@/app/components/landing-v2/Nav";
-import ProofBand from "@/app/components/landing-v2/ProofBand";
+import ProofBand from "@/app/components/ProofBand";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
 import SubjectShowcase from "@/app/components/landing-v2/SubjectShowcase";
 import ParentTrust from "@/app/components/landing-v2/ParentTrust";

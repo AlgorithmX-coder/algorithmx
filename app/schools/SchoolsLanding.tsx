@@ -3,12 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
-import AsdanBadge from "@/app/components/AsdanBadge";
-import MsStartupsBadge from "@/app/components/MsStartupsBadge";
 import Nav from "@/app/components/landing-v2/Nav";
 import Footer from "@/app/components/landing-v2/Footer";
 import SchoolsGlobe from "@/app/schools/SchoolsGlobe";
-import CyberEssentialsBadge from "@/app/components/landing-v2/CyberEssentialsBadge";
+import ProofBand from "@/app/components/ProofBand";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
 import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
@@ -295,19 +293,6 @@ export default function SchoolsLanding() {
                   <a href="#product" style={pillGhost}>Look inside the product</a>
                 </div>
               </FadeUp>
-              <FadeUp delay={0.21}>
-                <div className="sch-certs">
-                  <CyberEssentialsBadge />
-                  <span className="sch-cert-pill">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" />
-                    <i aria-hidden />
-                    <span>Aligned with the NCSC</span>
-                  </span>
-                  <MsStartupsBadge />
-                  <AsdanBadge />
-                </div>
-              </FadeUp>
               <FadeUp delay={0.24}>
                 <ul className="sch-trust">
                   <li>Cyber skills that keep pace with the threats</li>
@@ -330,6 +315,12 @@ export default function SchoolsLanding() {
             </FadeUp>
           </div>
         </section>
+
+        {/* ACCREDITATIONS ─────────────────────────────────── */}
+        {/* The same band as the homepage, in the same place: straight
+            after the hero, where its height does not depend on the
+            window. It used to be four pills inside the hero here too. */}
+        <ProofBand />
 
         {/* REACH ──────────────────────────────────────────── */}
         <section className="sch-section sch-reach-section">
@@ -655,16 +646,6 @@ export default function SchoolsLanding() {
         /* hero */
         .sch-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 44px; align-items: center; }
         .sch-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
-        .sch-certs { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 26px; }
-        .sch-cert-pill {
-          display: inline-flex; align-items: center; gap: 12px; padding: 9px 16px; border-radius: 999px;
-          background: rgba(13,15,24,0.55); border: 1px solid rgba(159,245,255,0.28);
-          box-shadow: 0 0 30px -16px rgba(159,245,255,0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-          font-family: var(--lv2-font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lv2-cyan-soft);
-          white-space: nowrap;
-        }
-        .sch-cert-pill i { width: 1px; height: 22px; background: rgba(232,237,255,0.18); }
-        .sch-cert-pill img { height: 26px; width: auto; display: block; }
         .sch-trust { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
         .sch-trust li {
           position: relative; padding-left: 18px;
