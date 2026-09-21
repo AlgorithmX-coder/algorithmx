@@ -66,7 +66,8 @@ export default function LandingV2() {
         re-colouring the glass, the glows and the 3D machine by hand. */}
     <style>{`
       html, body { background: #f3ede4 !important; }
-      .trial-sand ~ * canvas, body > canvas { display: none !important; }
+      /* the galaxy bloom layers screen on black and must multiply on paper */
+      :root { --cnb-blend: multiply; }
       body::before, body::after { display: none !important; }
       /* the sand ground, with the warm glow low and left as on the board */
       body::after {
@@ -197,7 +198,12 @@ export default function LandingV2() {
       }
     `}</style>
     <SmoothScroll>
-      {/* <CosmicNetworkBackground /> <ScrollFormObjects /> <AmbientFutureBackdrop /> */}
+      {/* The galaxy and the typing IDE come back in sand tone: the same
+          formation, built out of ink on paper instead of light on black.
+          AmbientFutureBackdrop stays off; it is a night scene with no
+          light equivalent. */}
+      <CosmicNetworkBackground tone="sand" />
+      <ScrollFormObjects tone="sand" />
       <SpotlightCursor />
       <Nav />
       <main>
