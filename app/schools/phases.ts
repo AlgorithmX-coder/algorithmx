@@ -36,8 +36,8 @@ export const PHASES: Record<Phase, PhaseInfo> = {
     label: "Primary",
     years: "Years 2 to 6 (Grades 1 to 5)",
     ages: "Ages 6 to 11",
-    accent: "#ffb347",
-    accent2: "#ff6fb1",
+    accent: "#8a5400",
+    accent2: "#a5117f",
     headline: "Fully narrated lessons that every pupil can follow from the first minute.",
     courses: [
       {
@@ -67,8 +67,8 @@ export const PHASES: Record<Phase, PhaseInfo> = {
     label: "Secondary",
     years: "Years 7 to 13 (Grades 6 to 12)",
     ages: "Ages 11 to 18",
-    accent: "#7df0ff",
-    accent2: "#b98bff",
+    accent: "#0a7085",
+    accent2: "#5744c9",
     headline: "Real scams, real judgement, in four different worlds.",
     courses: [
       {

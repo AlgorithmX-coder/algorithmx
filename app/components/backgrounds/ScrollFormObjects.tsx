@@ -227,7 +227,7 @@ export default function ScrollFormObjects({ tone = "night" }: { tone?: "night" |
               </span>
               <span>
                 {line.map((seg, j) => (
-                  <span key={j} style={{ color: seg.c }}>
+                  <span key={j} style={{ color: paintTok(seg.c) }}>
                     {seg.t}
                   </span>
                 ))}
