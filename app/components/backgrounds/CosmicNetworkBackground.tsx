@@ -124,6 +124,8 @@ type SkyPalette = {
   /* multiply takes far less weight than lighter to read the same */
   cloudScale: number;
   glowScale: number;
+  /* the scrim deepens a night sky and has to lift a paper one */
+  scrim: { centre: [string, string]; top: string };
 };
 
 const NIGHT_SKY: SkyPalette = {
@@ -137,6 +139,7 @@ const NIGHT_SKY: SkyPalette = {
   core: ["rgba(245,248,255,1)", "rgba(190,205,255,0.4)", "rgba(150,180,255,0)"],
   cloudScale: 1,
   glowScale: 1,
+  scrim: { centre: ["rgba(3,4,10,0.6)", "rgba(3,4,10,0.3)"], top: "3,4,10" },
 };
 
 const SAND_SKY: SkyPalette = {
@@ -149,8 +152,9 @@ const SAND_SKY: SkyPalette = {
   star: (a) => `rgba(38,46,62,${a})`,
   starAlt: (a) => `rgba(84,66,140,${a})`,
   core: ["rgba(26,64,82,0.6)", "rgba(60,92,128,0.22)", "rgba(120,150,190,0)"],
-  cloudScale: 0.4,
-  glowScale: 0.3,
+  cloudScale: 0.3,
+  glowScale: 0.28,
+  scrim: { centre: ["rgba(255,251,244,0.76)", "rgba(255,251,244,0.44)"], top: "255,251,244" },
 };
 
 let SKY: SkyPalette = NIGHT_SKY;
@@ -1074,7 +1078,7 @@ function BackgroundScrim({ dimCenter, overlayDarkness }: { dimCenter: boolean; o
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse 70% 55% at 50% 48%, rgba(3,4,10,0.6) 0%, rgba(3,4,10,0.3) 42%, rgba(3,4,10,0) 72%)",
+              `radial-gradient(ellipse 70% 55% at 50% 48%, ${SKY.scrim.centre[0]} 0%, ${SKY.scrim.centre[1]} 42%, rgba(${SKY.scrim.top},0) 72%)`,
           }}
         />
       )}
@@ -1082,7 +1086,7 @@ function BackgroundScrim({ dimCenter, overlayDarkness }: { dimCenter: boolean; o
         style={{
           position: "absolute",
           inset: 0,
-          background: `linear-gradient(to bottom, rgba(3,4,10,${Math.min(0.8, overlayDarkness + 0.2)}) 0%, rgba(3,4,10,0) 24%, rgba(3,4,10,0) 100%)`,
+          background: `linear-gradient(to bottom, rgba(${SKY.scrim.top},${Math.min(0.8, overlayDarkness + 0.2)}) 0%, rgba(${SKY.scrim.top},0) 24%, rgba(${SKY.scrim.top},0) 100%)`,
         }}
       />
     </>
