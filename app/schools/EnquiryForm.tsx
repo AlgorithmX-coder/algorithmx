@@ -247,13 +247,13 @@ export default function EnquiryForm({
             fontSize: 15,
             fontWeight: 700,
             letterSpacing: "0.01em",
-            boxShadow: "0 12px 30px -12px rgba(10,112,133,0.7)",
+            boxShadow: "0 12px 30px -12px rgb(10,112,133)",
             opacity: state === "loading" ? 0.7 : 1,
           }}
         >
           {state === "loading" ? "Sending…" : "Send enquiry"}
         </motion.button>
-        <span style={{ fontFamily: "var(--lv2-font-display)", fontSize: 13.5, color: "rgba(17,22,38,0.58)" }}>
+        <span style={{ fontFamily: "var(--lv2-font-display)", fontSize: 13.5, color: "rgba(17,22,38,0.66)" }}>
           A real person replies within two working days.
         </span>
       </div>

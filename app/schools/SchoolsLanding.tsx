@@ -31,7 +31,7 @@ const eyebrow: React.CSSProperties = {
   fontWeight: 700,
   letterSpacing: "0.3em",
   textTransform: "uppercase",
-  color: "rgba(10,112,133,0.82)",
+  color: "rgb(10,112,133)",
 };
 
 const h2: React.CSSProperties = {
@@ -66,7 +66,7 @@ const pillPrimary: React.CSSProperties = {
   fontSize: 15.5,
   fontWeight: 700,
   textDecoration: "none",
-  boxShadow: "0 14px 34px -14px rgba(10,112,133,0.85)",
+  boxShadow: "0 14px 34px -14px rgb(10,112,133)",
   whiteSpace: "nowrap",
 };
 
@@ -556,7 +556,7 @@ export default function SchoolsLanding() {
       <style>{`
         /* The sand token layer. Without it the page keeps reading the
            neon values straight out of globals.css: --lv2-cyan-soft is
-           still #7df0ff, which is 1.1:1 on paper. */
+           still #0a7085, which is 1.1:1 on paper. */
         .sch-page, .sch-page :is(section, div, nav, header, footer, main, span, p, li, a) {
           --lv2-cyan: #0a7085;
           --lv2-cyan-soft: #0a7085;
@@ -631,7 +631,7 @@ export default function SchoolsLanding() {
           height: 6px;
           border-radius: 50%;
           background: #0a7085;
-          box-shadow: 0 0 10px rgba(10,112,133,0.8);
+          box-shadow: 0 0 10px rgb(10,112,133);
         }
         @media (max-width: 900px) {
           .sch-reach { grid-template-columns: minmax(0, 1fr); }
@@ -783,7 +783,7 @@ export default function SchoolsLanding() {
         .sch-phase-check {
           align-self: flex-start; margin-top: 4px;
           font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-          padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(17,22,38,0.53); color: #14161d; background: rgba(255,253,248,0.6);
+          padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(17,22,38,0.66); color: #14161d; background: rgba(255,253,248,0.6);
         }
         .sch-phase:not(.sch-phase-on):hover .sch-phase-check { border-color: var(--sch-accent); color: var(--sch-accent); }
         .sch-phase-on .sch-phase-check { border-color: var(--sch-accent); color: #04050d; background: var(--sch-accent); }
@@ -871,12 +871,12 @@ export default function SchoolsLanding() {
         .sch-mock-side li { padding: 7px 9px; border-radius: 8px; color: rgba(17,22,38,0.63); }
         .sch-mock-side li.on { background: rgba(10,112,133,0.14); color: #14161d; font-weight: 600; }
         .sch-mock-school { margin-top: auto; display: flex; flex-direction: column; gap: 3px; }
-        .sch-mock-school span { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.47); }
+        .sch-mock-school span { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
         .sch-mock-school strong { font-size: 12px; font-weight: 600; }
         .sch-mock-main { flex: 1; min-width: 0; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
         .sch-mock-title { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
         .sch-mock-title h4 { margin: 4px 0 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
-        .sch-mock-eyebrow { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.53); }
+        .sch-mock-eyebrow { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
         .sch-mock-btn { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
         .sch-mock-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .sch-mock-stats div { background: rgba(244,239,231,0.05); border: 1px solid rgba(17,22,38,0.08); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
@@ -896,10 +896,10 @@ export default function SchoolsLanding() {
         .sch-mock-why { margin: 0; font-size: 11.5px; line-height: 1.45; color: rgba(17,22,38,0.65); }
         .sch-mock-missed .sch-mock-btn { margin-top: 4px; align-self: flex-start; }
         .sch-mock-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
-        .sch-mock-table th { text-align: left; font-family: var(--lv2-font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(17,22,38,0.53); padding: 4px 8px 6px; border-bottom: 1px solid rgba(17,22,38,0.13); white-space: nowrap; }
+        .sch-mock-table th { text-align: left; font-family: var(--lv2-font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(17,22,38,0.66); padding: 4px 8px 6px; border-bottom: 1px solid rgba(17,22,38,0.13); white-space: nowrap; }
         .sch-mock-table td { padding: 5px 8px; border-bottom: 1px solid rgba(17,22,38,0.07); vertical-align: top; color: rgba(17,22,38,0.86); line-height: 1.35; }
         .sch-mock-table td b { display: block; font-weight: 600; color: #14161d; }
-        .sch-mock-table td span { font-size: 11px; color: rgba(17,22,38,0.58); }
+        .sch-mock-table td span { font-size: 11px; color: rgba(17,22,38,0.66); }
         .sch-mock-table td i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; }
         @media (max-width: 640px) {
           .sch-mock-side { display: none; }
@@ -939,7 +939,7 @@ export default function SchoolsLanding() {
           font-weight: 700;
           letter-spacing: 0.28em;
           text-transform: uppercase;
-          color: rgba(10,112,133,0.75);
+          color: rgb(10,112,133);
         }
         .sch-marks-row {
           list-style: none;
@@ -965,7 +965,7 @@ export default function SchoolsLanding() {
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(17,22,38,0.53);
+          color: rgba(17,22,38,0.66);
         }
         .sch-marks-accred {
           flex: 0 0 auto;

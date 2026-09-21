@@ -516,7 +516,7 @@ const NIGHT_GLOBE: GlobePalette = {
   ocean: "rgba(6,20,48,0.72)",
   land: "rgba(3,8,26,0.92)",
   landLine: "rgba(10,112,133,0.22)",
-  city: "#7df0ff",
+  city: "#0a7085",
   cityHot: "#9cff8a",
   britain: "#ffd88f",
   britainRing: (a) => `rgba(255,216,143,${a})`,
@@ -526,7 +526,7 @@ const NIGHT_GLOBE: GlobePalette = {
   classroomShell: "rgba(5,16,40,0.94)",
   classroomBar: "rgba(14,122,69,0.22)",
   classroomText: "rgba(200,255,205,0.8)",
-  classroomDot: (i) => (i === 1 ? "rgba(10,112,133,0.85)" : "rgba(196,255,206,0.8)"),
+  classroomDot: (i) => (i === 1 ? "rgb(10,112,133)" : "rgba(196,255,206,0.8)"),
   screen: "#cfe6ff",
 };
 
@@ -1235,11 +1235,11 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           font-weight: 700;
           letter-spacing: 0.15em;
         }
-        .sg-label-lead { color: #8fb6dc; }
+        .sg-label-lead { color: #3f5a78; }
         .sg-label-dot {
           width: calc(var(--sg-label-px, 18px) * 0.16);
           height: calc(var(--sg-label-px, 18px) * 0.16);
-          background: rgba(10,112,133,0.7);
+          background: rgb(10,112,133);
         }
         .sg-label-brand {
           color: #14161d;
@@ -1301,7 +1301,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           opacity: 1;
         }
         .sg-motion:focus-visible {
-          outline: 2px solid #7df0ff;
+          outline: 2px solid #0a7085;
           outline-offset: 3px;
         }
         .sg-motion svg {
