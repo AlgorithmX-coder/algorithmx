@@ -931,8 +931,11 @@ export default function HeroCinematicV3() {
  * parameter strip. Everything is static except the scroll-cascading
  * stream rows — rasterized once, free during the lid animation. */
 const PANEL: CSSProperties = {
-  background: "rgba(238,240,243,0.66)",
-  border: "1px solid rgba(90,150,220,0.2)",
+  /* Panels on the screen: on a black display a faint light fill lifted
+   * them off the glass. On a silver one they have to sit INTO it, so the
+   * fill goes a shade under the screen and the edge gains weight. */
+  background: "rgba(226,230,238,0.92)",
+  border: "1px solid rgba(52,68,94,0.22)",
   borderRadius: 7,
 };
 const DIM = "rgba(32,36,45,0.82)";
