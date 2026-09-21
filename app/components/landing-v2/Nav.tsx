@@ -504,14 +504,25 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         nav[data-tone="sand"] {
           --lv2-word-flash: rgba(20, 22, 29, 0.32);
         }
+        /* Owner: make these stand out. A grey outline pill reads as
+           furniture next to a solid primary, so they become tinted
+           secondary buttons: a teal wash, a teal edge, a teal label and
+           the same lift the cards get. Hierarchy is then tinted for
+           secondary, solid for primary, rather than three weights of
+           outline. Label #075a6b on the 0.16 wash measures 6.1:1. */
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
-          border-color: rgba(70, 58, 44, 0.3) !important;
-          background: rgba(10, 112, 133, 0.09) !important;
+          border-color: rgba(10, 112, 133, 0.42) !important;
+          background: rgba(10, 112, 133, 0.16) !important;
+          color: #075a6b !important;
           font-weight: 700;
+          box-shadow: 0 6px 16px -12px rgba(10, 112, 133, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
         }
-        nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover) {
-          border-color: rgba(10, 112, 133, 0.6) !important;
-          background: rgba(10, 112, 133, 0.17) !important;
+        nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover),
+        nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):focus-visible) {
+          border-color: rgba(10, 112, 133, 0.75) !important;
+          background: rgba(10, 112, 133, 0.26) !important;
+          color: #05454f !important;
+          box-shadow: 0 8px 20px -12px rgba(10, 112, 133, 1), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
         }
         :global(.lv2-nav-secondary) {
           position: relative;
