@@ -66,7 +66,11 @@ export default function LandingV2() {
         real light theme: shared components corrected by CSS instead of a
         tone prop, and a machine recoloured rather than re-lit. */}
     <style>{`
-      html, body { background: #f3ede4 !important; }
+      /* The ground goes on html, not body. Both backdrops sit at
+         z-index -1, and a background on body paints in front of them: it
+         was hiding the galaxy and the typing IDE completely. */
+      html { background: #f3ede4 !important; }
+      body { background: transparent !important; }
       /* the galaxy bloom layers screen on black and must multiply on paper */
       :root { --cnb-blend: multiply; }
       /* The galaxy canvas paints the sand ground itself now, so the
