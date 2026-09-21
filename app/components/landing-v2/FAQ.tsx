@@ -176,11 +176,11 @@ export default function FAQ() {
                     position: "relative",
                     overflow: "hidden",
                     background: isOpen
-                      ? "rgba(255,253,250,0.9)"
-                      : "rgba(255,255,255,0.52)",
+                      ? "linear-gradient(180deg, #fffdf8, #fdf9f2)"
+                      : "linear-gradient(180deg, #fffdf8, #fbf7ef)",
                     border: isOpen
-                      ? "1px solid rgba(0,229,255,0.45)"
-                      : "1px solid rgba(17,22,38,0.08)",
+                      ? "1px solid rgba(10,112,133,0.45)"
+                      : "1px solid rgba(70,58,44,0.14)",
                     borderRadius: 16,
                     boxShadow: isOpen
                       ? "0 0 0 1px rgba(124,92,255,0.22), 0 16px 50px rgba(0,0,0,0.4), 0 0 34px rgba(0,229,255,0.12)"

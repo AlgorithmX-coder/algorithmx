@@ -377,11 +377,13 @@ export default function SubjectShowcase() {
           letter-spacing: 0.1em;
           white-space: nowrap;
           overflow: hidden;
-          color: rgba(17,22,38,0.36);
+          color: rgba(52,42,28,0.62);
         }
         .lv2-cipher-hot {
           color: var(--accent);
-          text-shadow: 0 0 9px var(--accent);
+          /* a glow reads as a smudge on paper */
+          text-shadow: none;
+          font-weight: 700;
         }
         .lv2-scanline {
           position: absolute;
@@ -848,8 +850,9 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           gap: 6px;
           padding: 10px 13px;
           border-radius: 12px;
-          background: rgba(255,255,255,0.52);
-          border: 1px solid rgba(159,245,255,0.12);
+          background: linear-gradient(180deg, #fffdf8, #fdf9f2);
+          box-shadow: 0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85);
+          border: 1px solid rgba(70,58,44,0.14);
           border-left: 2px solid var(--lv2-mark);
         }
         .lv2-course-mark span {
@@ -979,16 +982,19 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
           position: "relative",
           /* Near-opaque (was 0.6/0.72): the global typed-code backdrop
            * showed through the glass and cut across the ciphertext. */
-          background:
-            "linear-gradient(180deg, rgba(255,253,250,0.88), rgba(255,253,250,0.94))",
-          border: `1px solid ${a}2e`,
+          /* Classified cards are pressed into the paper rather than
+           * raised out of it: locked reads as recessed, live reads as
+           * lifted, and the shade alone tells you which is which. */
+          background: "linear-gradient(180deg, #ece4d6, #e5dccb)",
+          border: `1px solid ${a}44`,
+          boxShadow: "inset 0 2px 5px -2px rgba(70,58,44,0.3), inset 0 0 0 1px rgba(255,255,255,0.35)",
           borderRadius: 14,
           padding: "22px 20px",
           display: "flex",
           flexDirection: "column",
           gap: 12,
           height: "100%",
-          opacity: 0.9,
+          opacity: 1,
           overflow: "hidden",
           transition:
             "transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1), border-color .3s, opacity .3s",

@@ -164,10 +164,11 @@ export default function ParentTrust() {
             <FadeUp key={p.title} delay={0.05 * i + 0.18}>
               <article
                 style={{
-                  background: "rgba(255,255,255,0.59)",
+                  background: "linear-gradient(180deg, #fffdf8, #fdf9f2)",
+                  boxShadow: "0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85)",
                   backdropFilter: "blur(12px) saturate(1.3)",
                   WebkitBackdropFilter: "blur(12px) saturate(1.3)",
-                  border: "1px solid rgba(17,22,38,0.08)",
+                  border: "1px solid rgba(70,58,44,0.14)",
                   borderRadius: 14,
                   padding: "22px 22px 20px",
                   display: "flex",

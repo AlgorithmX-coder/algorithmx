@@ -186,14 +186,14 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       onMouseEnter={inView ? counter.bind.onMouseEnter : undefined}
       style={{
         position: "relative",
-        background: "rgba(255,255,255,0.68)",
+        background: "linear-gradient(180deg, #fffdf8, #fdf9f2)",
+        border: "1px solid rgba(70,58,44,0.14)",
+        boxShadow: "0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85)",
         backdropFilter: "blur(14px) saturate(1.4)",
         WebkitBackdropFilter: "blur(14px) saturate(1.4)",
-        border: "1px solid rgba(17,22,38,0.08)",
         borderTop: `2px solid ${stat.color}`,
         borderRadius: 18,
         padding: "26px 26px 22px",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 12px 36px rgba(0,0,0,0.25)",
         transition:
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
         cursor: "default",
