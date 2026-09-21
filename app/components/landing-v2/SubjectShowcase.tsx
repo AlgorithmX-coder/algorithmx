@@ -905,13 +905,24 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           line-height: 1.45;
           color: rgba(232,237,255,0.72);
         }
+        /* Owner 2026-09-21: highlight the course name a little, in grey.
+           A grey plate rather than a brighter colour, so the track colour
+           stays on the artefact and this stays a label. align-self keeps
+           it hugging its text: the row is a flex column, which would
+           otherwise stretch the plate the full width. */
         .lv2-flagship-who {
+          align-self: flex-start;
+          margin-top: 2px;
+          padding: 3px 8px;
+          border-radius: 6px;
+          background: rgba(232,237,255,0.075);
+          border: 1px solid rgba(232,237,255,0.07);
           font-family: var(--lv2-font-mono);
           font-size: 7.5px;
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(232,237,255,0.34);
+          color: rgba(232,237,255,0.62);
         }
         @media (max-width: 900px) {
           .lv2-flagships { gap: 11px; }
