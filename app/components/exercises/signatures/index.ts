@@ -118,8 +118,27 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
     },
     { ssr: false },
   ),
-  // Week 13 · Screen time — pour the finite day-jug across four cups.
-  dayJug: dynamic(() => import("./DayJug"), { ssr: false }),
+  // Week 13 · Screen time — trade the finite day-jug across the cups below it.
+  // Rebuilt to the Learn-Loop standard (data-driven, tap-only, untimed), so its
+  // `onComplete(score)` does not fit this registry's score-less `onComplete()`.
+  // This adapter keeps the legacy mount compiling and playable on the game's
+  // built-in default pours, and passes the screen's spoken intro and payoff
+  // through to the beats that speak them.
+  dayJug: dynamic(
+    async () => {
+      const { default: DayJug } = await import("./DayJug");
+      function DayJugSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(DayJug, {
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      DayJugSignature.displayName = "DayJugSignature";
+      return DayJugSignature;
+    },
+    { ssr: false },
+  ),
   // Week 14 · Smart devices — put each sensing gadget to sleep its own way.
   goodnightGadgets: dynamic(() => import("./GoodnightGadgets"), { ssr: false }),
   // Week 15 · AI — weigh each robot claim against real evidence.

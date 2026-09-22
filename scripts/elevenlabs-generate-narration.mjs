@@ -282,7 +282,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week15.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week15.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -437,7 +437,7 @@ for (const fname of weekFiles) {
   // Week 6 (2026-09-16) adds: the Chat Fixer messages, Lobby Doors players and
   // settings card, Guard Count rounds and slots, Power Panel rounds (readAloud),
   // plus the Power Panel's two wrong-order teach lines (stepTeach array).
-  if (["week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts"].includes(fname)) {
+  if (["week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts"].includes(fname)) {
     const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
     const w2Starts = [];
     let w2m;
@@ -582,6 +582,15 @@ for (const fname of weekFiles) {
         pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       if (st.type === "trailPlanner") pushAll(span, /\blabel:\s*"((?:[^"\\]|\\.)*)"/g);
+      if (st.type === "dayJug") pushAll(span, /\blabel:\s*"((?:[^"\\]|\\.)*)"/g);
+      // Week 13 engines: Sarah reads each pour as the day opens, each plan
+      // situation as it lands on the desk, and each thing in the room as it is
+      // tapped. The See-Saw Day's swap stories are read too.
+      // The Day Jug reads every option label aloud too (the child picks a pour
+      // out of three, and the labels are the choice). The other two do not.
+      if (["dayJug", "setTheDial", "nightFall"].includes(st.type)) {
+        pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
       // teamPoster notes are already covered by the wrong-answer `note:` scan above
     });
   }

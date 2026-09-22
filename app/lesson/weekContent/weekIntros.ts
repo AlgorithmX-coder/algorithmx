@@ -143,13 +143,13 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
   },
   13: {
     title: "Screen Time: Balance Your Power",
-    tagline: "Even heroes need to recharge.",
+    tagline: "Screens stay. You get to say how big they are.",
     audioSrc: "/audio/atlas/heroes-week-13.mp3",
     accent: "#2ec4b6",
     points: [
-      { icon: "⚡", label: "Recharge your power" },
-      { icon: "⏱️", label: "Know when to stop" },
-      { icon: "💪", label: "Find balance" },
+      { icon: "📏", label: "Keep the day level" },
+      { icon: "⏸️", label: "Set it before you start" },
+      { icon: "🌠", label: "Give the night back" },
     ],
   },
   14: {
