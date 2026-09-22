@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { PHASES, type Phase } from "./phases";
-import { CURRICULUM } from "./curriculum";
+import { CURRICULUM, STRAND_COLOUR } from "./curriculum";
 
 /**
  * "See the product, not a brochure." Numbered steps on the left, a browser
@@ -254,6 +254,10 @@ function TeacherMock({ phase }: { phase: Phase }) {
   const cls = primary ? "4 Oak" : "8B";
   const course = primary ? "Cyber Heroes" : "Cyber Explorers";
   const unit = primary ? "Week 3: Spot the Scam" : "Case 2: Too Good To Be True";
+  /* Owner: say where in the course this is. A class review with no
+     position in it could be week 1 or week 19. */
+  const unitN = primary ? 3 : 2;
+  const unitOf = 20;
   const missed = primary
     ? { q: "Which message is the scam?", n: 6, why: "Most picked the one with the school logo. The tell was the link." }
     : { q: "Which address is the real shop?", n: 5, why: "Most trusted the display name. The tell was the domain." };
@@ -282,6 +286,14 @@ function TeacherMock({ phase }: { phase: Phase }) {
           <div>
             <span className="sch-mock-eyebrow">{course} · {unit}</span>
             <h4>Class {cls}</h4>
+            <span className="sch-mock-course">
+              <span className="sch-mock-course-track" aria-hidden>
+                <i style={{ width: `${(unitN / unitOf) * 100}%`, background: accent }} />
+              </span>
+              <span className="sch-mock-course-txt">
+                {primary ? "Week" : "Case"} {unitN} of {unitOf}
+              </span>
+            </span>
           </div>
           <span className="sch-mock-btn" style={{ borderColor: accent, color: accent }}>Lock screens</span>
         </div>
@@ -295,7 +307,11 @@ function TeacherMock({ phase }: { phase: Phase }) {
             {pupils.map(([name, pct]) => (
               <li key={name}>
                 <span className="sch-mock-name">{name}</span>
-                <span className="sch-mock-bar"><i style={{ width: `${pct}%`, background: pct === 100 ? "#5fffa3" : accent }} /></span>
+                {/* Done green, in progress amber: state reads without the
+                    label. The mint this used to use was invisible on paper,
+                    and both clear 3:1 on the track, the bar for a UI
+                    element rather than text. */}
+                <span className="sch-mock-bar"><i style={{ width: `${pct}%`, background: pct === 100 ? "#0e7a45" : "#b8730a" }} /></span>
                 <span className="sch-mock-pct">{pct === 100 ? "Done" : pct === 0 ? "Not started" : `${pct}%`}</span>
               </li>
             ))}
@@ -305,7 +321,8 @@ function TeacherMock({ phase }: { phase: Phase }) {
             <p className="sch-mock-q">&ldquo;{missed.q}&rdquo;</p>
             <p className="sch-mock-n"><b>{missed.n}</b> of {pupils.length} got it wrong</p>
             <p className="sch-mock-why">{missed.why}</p>
-            <span className="sch-mock-btn" style={{ borderColor: "rgba(232,237,255,0.3)", color: "#e8edff" }}>Replay this on the board</span>
+            {/* was near-white ink on a near-white card */}
+            <span className="sch-mock-btn" style={{ borderColor: "rgba(138,84,0,0.45)", background: "#fffdf8", color: "#8a5400" }}>Replay this on the board</span>
           </div>
         </div>
       </div>
@@ -318,6 +335,8 @@ function TeacherMock({ phase }: { phase: Phase }) {
 function CurriculumMock({ phase }: { phase: Phase }) {
   const rows = CURRICULUM[phase];
   const accent = PHASES[phase].accent;
+  /* in the order they first appear, so the chips read down the table */
+  const strands = [...new Set(rows.map((r) => r.strand))];
   return (
     <div className="sch-mock sch-mock-cur">
       <div className="sch-mock-main" style={{ padding: "18px 20px" }}>
@@ -326,7 +345,10 @@ function CurriculumMock({ phase }: { phase: Phase }) {
             <span className="sch-mock-eyebrow">{PHASES[phase].courses[0].name} · {phase === "primary" ? "Lessons 1 to 6" : "Cases 1 to 6"}</span>
             <h4>Curriculum map</h4>
           </div>
-          <span className="sch-mock-btn" style={{ borderColor: accent, color: accent }}>Download PDF</span>
+          {/* the one thing a head of computing came to this screen for */}
+          <span className="sch-mock-btn" style={{ borderColor: accent, background: accent, color: "#fffdfa", fontWeight: 700 }}>
+            <span aria-hidden style={{ marginRight: 6 }}>&darr;</span>Download PDF
+          </span>
         </div>
         <table className="sch-mock-table">
           <thead>
@@ -340,12 +362,28 @@ function CurriculumMock({ phase }: { phase: Phase }) {
             {rows.map((r) => (
               <tr key={r.lesson}>
                 <td><b>{r.lesson}</b><span>{r.title}</span></td>
-                <td><i style={{ background: accent }} />{r.strand}</td>
+                <td><i style={{ background: STRAND_COLOUR[r.strand] ?? accent }} />{r.strand}</td>
                 <td>{r.computing}</td>
               </tr>
             ))}
           </tbody>
         </table>
+        {/* Owner: the space under the table was dead. The strands these six
+            lessons cover is the question the table is being scanned for, so
+            it answers it once, in the same colours as the column. */}
+        <div className="sch-mock-cover">
+          <span className="sch-mock-eyebrow">
+            Covers {strands.length} of the 8 Education for a Connected World strands
+          </span>
+          <span className="sch-mock-cover-row">
+            {strands.map((st) => (
+              <span key={st} className="sch-mock-cover-chip">
+                <i style={{ background: STRAND_COLOUR[st] ?? accent }} />
+                {st}
+              </span>
+            ))}
+          </span>
+        </div>
       </div>
     </div>
   );

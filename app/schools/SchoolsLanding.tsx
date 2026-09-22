@@ -52,17 +52,20 @@ const pillPrimary: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  height: 54,
-  padding: "0 30px",
+  height: 58,
+  padding: "0 34px",
   borderRadius: 999,
   /* the same deep teal the homepage primary carries, with paper on it */
   background: "linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%)",
   color: "#fffdfa",
   fontFamily: "var(--lv2-font-display)",
-  fontSize: 15.5,
+  fontSize: 16.5,
   fontWeight: 700,
+  letterSpacing: "0.005em",
   textDecoration: "none",
-  boxShadow: "0 14px 34px -14px rgb(10,112,133)",
+  /* a saturated cast under it and a lit top edge: the paper equivalent of
+     the glow this button had on the dark page */
+  boxShadow: "0 16px 38px -12px rgba(10,112,133,0.9), 0 0 0 1px rgba(10,112,133,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
   whiteSpace: "nowrap",
 };
 
@@ -70,11 +73,11 @@ const pillGhost: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  height: 54,
-  padding: "0 24px",
+  height: 58,
+  padding: "0 26px",
   borderRadius: 999,
-  border: "1px solid rgba(20,22,29,0.45)",
-  background: "rgba(10,112,133,0.06)",
+  border: "1px solid rgba(20,22,29,0.22)",
+  background: "rgba(255,253,248,0.8)",
   color: "var(--lv2-ink)",
   fontFamily: "var(--lv2-font-display)",
   fontSize: 15.5,
@@ -101,10 +104,10 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
 ];
 
 const STEPS = [
-  { n: "01", when: "Day 1", colour: "#0a7085", title: "We create your licence", text: "We set up the school licence and your teacher logins. There is nothing to install: it runs in the browser your school already has." },
-  { n: "02", when: "Day 1", colour: "#5744c9", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
-  { n: "03", when: "Weekly", colour: "#0e7a45", title: "Run the lessons", text: "Twenty weeks of lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
-  { n: "04", when: "End of course", colour: "#8a5400", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
+  { n: "01", colour: "#0a7085", title: "We create your licence", text: "We set up the school licence and your teacher logins. There is nothing to install: it runs in the browser your school already has." },
+  { n: "02", colour: "#5744c9", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
+  { n: "03", colour: "#0e7a45", title: "Run the lessons", text: "Twenty weeks of lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
+  { n: "04", colour: "#8a5400", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
 ];
 
 /* The four courses, in the order a school meets them. Ages match the
@@ -127,7 +130,9 @@ const PILLARS = [
     title: "Safe by default",
     accent: "#0e7a45",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></svg>,
-    points: ["Cyber Essentials certified, the NCSC-backed security standard", "A closed environment: pupils only ever interact with the lesson", "Data kept to a minimum: first name, class and progress", "Pupil data is never sent to AI services", "Deleted in full whenever you ask"],
+    /* Four points each, so the three cards carry the same weight. The
+       two data lines read better as one anyway. */
+    points: ["Cyber Essentials certified, the NCSC-backed security standard", "A closed environment: pupils only ever interact with the lesson", "Pupil data is never sent to AI services", "First name, class and progress only, deleted whenever you ask"],
   },
   {
     title: "Matched to the curriculum",
@@ -286,14 +291,23 @@ export default function SchoolsLanding() {
               </FadeUp>
               <FadeUp delay={0.18}>
                 <div className="sch-cta-row">
-                  <a href="#enquiry" style={pillPrimary}>Register your interest</a>
-                  <a href="#product" style={pillGhost}>Look inside the product</a>
+                  {/* Owner: make Register your interest stand out more, and
+                      "look inside the product" should be educational, about
+                      the curriculum. The second button also gets quieter, so
+                      the first wins on contrast rather than on size alone. */}
+                  <a href="#enquiry" style={pillPrimary}>
+                    Register your interest
+                    <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
+                  </a>
+                  <a href="#product" style={pillGhost}>Explore the curriculum</a>
                 </div>
               </FadeUp>
               <FadeUp delay={0.24}>
                 <ul className="sch-trust">
-                  <li>Cyber skills that keep pace with the threats</li>
-                  <li>One platform, ages 6 to 18</li>
+                  {/* Owner: 6 to 18 plus, and the first line should sell the
+                      fact that the course keeps up with new attack methods. */}
+                  <li>Cyber skills that outpace the newest attacks</li>
+                  <li>One platform, ages 6 to 18+</li>
                   <li>Certified and curriculum mapped</li>
                 </ul>
               </FadeUp>
@@ -416,9 +430,10 @@ export default function SchoolsLanding() {
             {STEPS.map((s, i) => (
               <FadeUp key={s.n} delay={0.06 * i}>
                 <div className="sch-card sch-step" style={{ ["--sch-accent" as string]: s.colour }}>
+                  {/* Owner 2026-09-22: the Day 1 / Weekly / End of course
+                      pills came off. Nothing else about these changed. */}
                   <span className="sch-step-top">
                     <span className="sch-step-n">{s.n}</span>
-                    <span className="sch-chip">{s.when}</span>
                   </span>
                   <h3>{s.title}</h3>
                   <p>{s.text}</p>
@@ -442,6 +457,7 @@ export default function SchoolsLanding() {
                 <div className="sch-card sch-pillar" style={{ ["--sch-accent" as string]: p.accent }}>
                   <span className="sch-pillar-icon">{p.icon}</span>
                   <h3>{p.title}</h3>
+                  <span className="sch-rule" aria-hidden />
                   <ul>{p.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
                 </div>
               </FadeUp>
@@ -864,7 +880,7 @@ export default function SchoolsLanding() {
 
         /* mock app (teacher view + curriculum map) */
         .sch-mock { position: absolute; inset: 0; display: flex; font-family: var(--lv2-font-display); color: #14161d; font-size: 12.5px; overflow: hidden; }
-        .sch-mock-side { width: 150px; flex: 0 0 150px; background: #fffdf8; border-right: 1px solid rgba(17,22,38,0.08); padding: 16px 14px; display: flex; flex-direction: column; }
+        .sch-mock-side { width: 150px; flex: 0 0 150px; background: #fffdf8; border-right: 1px solid rgba(70,58,44,0.14); padding: 16px 14px; display: flex; flex-direction: column; }
         .sch-mock-brand { font-family: var(--lv2-font-mono); font-weight: 800; letter-spacing: 0.12em; font-size: 11px; margin-bottom: 18px; }
         .sch-mock-side ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
         .sch-mock-side li { padding: 7px 9px; border-radius: 8px; color: rgba(17,22,38,0.63); }
@@ -872,34 +888,52 @@ export default function SchoolsLanding() {
         .sch-mock-school { margin-top: auto; display: flex; flex-direction: column; gap: 3px; }
         .sch-mock-school span { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
         .sch-mock-school strong { font-size: 12px; font-weight: 600; }
-        .sch-mock-main { flex: 1; min-width: 0; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+        /* Three surfaces inside the mock, the same ones the page uses: the
+           app canvas is the recessed ground, its panels are raised paper.
+           Before this everything was one flat white and the panels were
+           washes at 5% of a colour the light page does not have. */
+        .sch-mock-main { flex: 1; min-width: 0; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; background: #f4efe6; }
         .sch-mock-title { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
         .sch-mock-title h4 { margin: 4px 0 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
         .sch-mock-eyebrow { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
         .sch-mock-btn { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
         .sch-mock-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .sch-mock-stats div { background: rgba(244,239,231,0.05); border: 1px solid rgba(17,22,38,0.08); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+        .sch-mock-stats div { background: #fffdf8; border: 1px solid rgba(70,58,44,0.14); box-shadow: 0 2px 6px -4px rgba(86,68,45,0.5); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
         .sch-mock-stats b { font-size: 22px; font-weight: 600; line-height: 1; }
         .sch-mock-stats span { font-size: 11px; color: rgba(17,22,38,0.63); }
         .sch-mock-cols { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 14px; min-height: 0; flex: 1; }
-        .sch-mock-pupils { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .sch-mock-pupils { list-style: none; margin: 0; padding: 12px 14px; background: #fffdf8; border: 1px solid rgba(70,58,44,0.14); border-radius: 12px; display: flex; flex-direction: column; gap: 6px; align-self: start; }
         .sch-mock-pupils li { display: grid; grid-template-columns: 62px 1fr 64px; align-items: center; gap: 10px; }
         .sch-mock-name { font-weight: 600; }
-        .sch-mock-bar { height: 7px; border-radius: 999px; background: rgba(244,239,231,0.11); overflow: hidden; display: block; }
+        .sch-mock-bar { height: 7px; border-radius: 999px; background: #e7e0d2; overflow: hidden; display: block; }
         .sch-mock-bar i { display: block; height: 100%; border-radius: 999px; }
         .sch-mock-pct { font-family: var(--lv2-font-mono); font-size: 10.5px; color: rgba(17,22,38,0.63); text-align: right; }
-        .sch-mock-missed { background: rgba(255,179,71,0.07); border: 1px solid rgba(255,179,71,0.3); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; align-self: start; }
+        .sch-mock-missed { background: #fffdf8; border: 1px solid rgba(138,84,0,0.34); border-left: 3px solid #8a5400; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; align-self: start; }
         .sch-mock-q { margin: 2px 0 0; font-size: 14px; font-weight: 600; line-height: 1.35; }
         .sch-mock-n { margin: 0; font-size: 12px; color: rgba(17,22,38,0.79); }
         .sch-mock-n b { font-size: 18px; color: #8a5400; }
         .sch-mock-why { margin: 0; font-size: 11.5px; line-height: 1.45; color: rgba(17,22,38,0.65); }
         .sch-mock-missed .sch-mock-btn { margin-top: 4px; align-self: flex-start; }
+        /* how far through the course this class is */
+        .sch-mock-course { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
+        .sch-mock-course-track { display: block; width: 92px; height: 5px; border-radius: 999px; background: #e7e0d2; overflow: hidden; }
+        .sch-mock-course-track i { display: block; height: 100%; border-radius: 999px; }
+        .sch-mock-course-txt { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
+
+        /* the curriculum map's coverage summary */
+        .sch-mock-cover { margin-top: 12px; padding-top: 11px; border-top: 1px solid rgba(70,58,44,0.16); display: flex; flex-direction: column; gap: 8px; }
+        .sch-mock-cover-row { display: flex; flex-wrap: wrap; gap: 6px; }
+        .sch-mock-cover-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #fffdf8; border: 1px solid rgba(70,58,44,0.16); font-size: 10.5px; color: rgba(17,22,38,0.82); }
+        .sch-mock-cover-chip i { width: 6px; height: 6px; border-radius: 999px; display: block; }
+
         .sch-mock-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
         .sch-mock-table th { text-align: left; font-family: var(--lv2-font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(17,22,38,0.66); padding: 4px 8px 6px; border-bottom: 1px solid rgba(17,22,38,0.13); white-space: nowrap; }
         .sch-mock-table td { padding: 5px 8px; border-bottom: 1px solid rgba(17,22,38,0.07); vertical-align: top; color: rgba(17,22,38,0.86); line-height: 1.35; }
         .sch-mock-table td b { display: block; font-weight: 600; color: #14161d; }
         .sch-mock-table td span { font-size: 11px; color: rgba(17,22,38,0.66); }
-        .sch-mock-table td i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; }
+        .sch-mock-table td i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }
+        /* the map is a document, not a dashboard: it keeps the paper ground */
+        .sch-mock-cur .sch-mock-main { background: #fffdf8; }
         @media (max-width: 640px) {
           .sch-mock-side { display: none; }
           .sch-mock-cols { grid-template-columns: 1fr; }
@@ -1017,9 +1051,52 @@ export default function SchoolsLanding() {
           .sch-pillar-icon { background: color-mix(in srgb, var(--sch-accent) 14%, transparent); border-color: color-mix(in srgb, var(--sch-accent) 40%, transparent); }
         }
         .sch-pillar-icon svg { width: 22px; height: 22px; }
-        .sch-pillar ul, .sch-pilot ul, .sch-receive { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-        .sch-pillar li, .sch-pilot li, .sch-receive li { position: relative; padding-left: 24px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.5; color: rgba(17,22,38,0.88); }
-        .sch-pillar li::before, .sch-pilot li::before, .sch-receive li::before { content: "✓"; position: absolute; left: 0; top: 0; font-weight: 800; color: var(--sch-accent, #0e7a45); }
+        .sch-pillar ul, .sch-pilot ul, .sch-receive { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+        /* Owner 2026-09-22: drop the ticks, keep the simplicity, and give
+           the cards something. A tick claims each line is a feature being
+           checked off; these are just what the thing is. So each point
+           becomes a row with a hairline above it and a small accent dot,
+           which is the same list treatment the homepage flagship panel
+           uses. Nothing else added: the owner asked for better, not more. */
+        .sch-pillar li, .sch-pilot li, .sch-receive li {
+          position: relative;
+          padding: 9px 0 0 22px;
+          border-top: 1px solid rgba(86,68,45,0.14);
+          font-family: var(--lv2-font-display);
+          font-size: 14.5px;
+          line-height: 1.5;
+          color: rgba(17,22,38,0.88);
+        }
+        .sch-pillar li:first-child, .sch-pilot li:first-child, .sch-receive li:first-child {
+          border-top: 0;
+          padding-top: 0;
+        }
+        .sch-pillar li::before, .sch-pilot li::before, .sch-receive li::before {
+          content: "";
+          position: absolute;
+          left: 2px;
+          top: 16px;
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          background: var(--sch-accent, #0e7a45);
+        }
+        .sch-pillar li:first-child::before, .sch-pilot li:first-child::before, .sch-receive li:first-child::before {
+          top: 7px;
+        }
+        /* the short accent rule under each card title */
+        .sch-rule {
+          display: block;
+          width: 30px;
+          height: 2px;
+          margin: 12px 0 2px;
+          border-radius: 2px;
+          background: var(--sch-accent, #0e7a45);
+        }
+        /* equal-height cards, so three ragged point counts do not leave
+           three different card bottoms */
+        .sch-grid-3 > *, .sch-grid-4 > * { height: 100%; }
+        .sch-pillar, .sch-step { height: 100%; }
         .sch-receive { margin-top: 26px; }
         .sch-receive li { font-size: 15.5px; }
         .sch-pilot { display: flex; flex-direction: column; gap: 14px; border-color: rgba(95,255,163,0.5); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 30px 70px -40px rgba(95,255,163,0.6); }

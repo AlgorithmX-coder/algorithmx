@@ -506,6 +506,9 @@ type GlobePalette = {
   arcHot: string;
   spark: (a: number) => string;
   classroomShell: string;
+  /* The glass itself. Dark in both tones: a screen that is on reads as a
+     lit panel, and a pale rectangle on a pale page reads as a card. */
+  classroomWell: string;
   classroomBar: string;
   classroomText: string;
   classroomDot: (i: number) => string;
@@ -524,6 +527,7 @@ const NIGHT_GLOBE: GlobePalette = {
   arcHot: "rgba(14,122,69,0.8)",
   spark: (a) => `rgba(156,255,138,${a})`,
   classroomShell: "rgba(5,16,40,0.94)",
+  classroomWell: "rgba(2,8,20,0.96)",
   classroomBar: "rgba(14,122,69,0.22)",
   classroomText: "rgba(200,255,205,0.8)",
   classroomDot: (i) => (i === 1 ? "rgb(10,112,133)" : "rgba(196,255,206,0.8)"),
@@ -542,6 +546,7 @@ const SAND_GLOBE: GlobePalette = {
   arcHot: "rgba(14,122,69,0.7)",
   spark: (a) => `rgba(14,122,69,${a})`,
   classroomShell: "rgba(255,253,248,0.96)",
+  classroomWell: "rgba(14,26,34,0.95)",
   classroomBar: "rgba(14,122,69,0.3)",
   classroomText: "rgba(52,62,74,0.85)",
   classroomDot: (i) => (i === 1 ? "rgba(10,112,133,0.9)" : "rgba(14,122,69,0.75)"),
@@ -755,39 +760,138 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       arc.t = -FLIGHT * (4 + Math.random() * 10);
     };
 
+    /** rounded rect that degrades to a square one where roundRect is missing */
+    const rr = (rx: number, ry: number, rw: number, rh: number, rad: number) => {
+      ctx.beginPath();
+      if (typeof ctx.roundRect === "function") ctx.roundRect(rx, ry, rw, rh, rad);
+      else ctx.rect(rx, ry, rw, rh);
+    };
+
     /**
-     * A classroom screen coming on at a city: a browser window in miniature,
-     * three dots on its bar and code on its page, matching the screenshots
-     * fanned in the hero. Drawn, not stamped, because it is a handful of
-     * rectangles and it has to scale with the globe.
+     * A school machine coming on at a city.
+     *
+     * Owner 2026-09-22: the old one was a pale rectangle with three dots on
+     * a stick and read as a sticky note. It is now a monitor: a bezel with
+     * a lit dark screen inside it, on a neck and a foot, inside HUD
+     * brackets, with a scan line crossing the glass and a caret working at
+     * the end of the last line. A ring pulses off the pin as the lesson
+     * touches down.
+     *
+     * Everything here is silhouette, contrast or motion, because at 36 by
+     * 26 physical pixels nothing else survives. The glass stays dark in
+     * both tones for the same reason: it is the only way a screen reads as
+     * switched on.
      */
-    const classroom = (x: number, y: number, scale: number, alpha: number, seed: number) => {
-      const cw2 = 34 * scale;
-      const ch2 = 24 * scale;
+    const classroom = (
+      x: number,
+      y: number,
+      scale: number,
+      alpha: number,
+      seed: number,
+      grow: number,
+      time: number,
+    ) => {
+      const cw2 = 36 * scale;
+      const ch2 = 26 * scale;
       const left = Math.round(x - cw2 / 2);
-      const top = Math.round(y - ch2 - 11);
-      const bar = Math.max(3, 5 * scale);
+      const top = Math.round(y - ch2 - 13 * scale);
+      const rad = Math.max(1.4, 2.4 * scale);
+      ctx.save();
       ctx.globalAlpha = alpha;
+      ctx.lineWidth = 1;
+
+      /* the lesson landing: one ring off the pin, gone in a moment */
+      const pulse = 1 - Math.min(1, grow * 1.3);
+      if (pulse > 0.03) {
+        ctx.beginPath();
+        ctx.arc(x, y, (1 - pulse) * 24 * scale + 3, 0, Math.PI * 2);
+        ctx.strokeStyle = GL.spark(pulse * 0.8);
+        ctx.lineWidth = 1.3;
+        ctx.stroke();
+        ctx.lineWidth = 1;
+      }
+
+      /* stand: a splayed neck and a foot, so it stands on something */
+      const neckH = 5.5 * scale;
       ctx.fillStyle = GL.classroomShell;
-      ctx.fillRect(left, top, cw2, ch2);
-      ctx.fillStyle = GL.classroomBar;
-      ctx.fillRect(left, top, cw2, bar);
-      // the window's three dots
-      ctx.fillStyle = GL.classroomText;
-      for (let i = 0; i < 3; i++) ctx.fillRect(left + 3 + i * 3.4, top + bar * 0.3, 1.6, 1.6);
-      // lines of code, ragged like real ones
+      ctx.strokeStyle = GL.arcHot;
+      ctx.beginPath();
+      ctx.moveTo(x - 2.6 * scale, top + ch2);
+      ctx.lineTo(x + 2.6 * scale, top + ch2);
+      ctx.lineTo(x + 4.6 * scale, top + ch2 + neckH);
+      ctx.lineTo(x - 4.6 * scale, top + ch2 + neckH);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      rr(x - 9 * scale, top + ch2 + neckH, 18 * scale, Math.max(1.6, 2.1 * scale), 1);
+      ctx.fill();
+      ctx.stroke();
+
+      /* bezel */
+      ctx.fillStyle = GL.classroomShell;
+      rr(left, top, cw2, ch2, rad);
+      ctx.fill();
+      ctx.stroke();
+
+      /* the glass */
+      const pad = Math.max(1.6, 2.4 * scale);
+      const sx = left + pad;
+      const sy = top + pad;
+      const sw = cw2 - pad * 2;
+      const sh = ch2 - pad * 2;
+      ctx.fillStyle = GL.classroomWell;
+      rr(sx, sy, sw, sh, rad * 0.6);
+      ctx.fill();
+
+      ctx.save();
+      ctx.clip();
+
+      /* a status strip: one live dot and two read-outs */
+      const u = Math.max(0.6, scale);
+      ctx.fillStyle = "rgba(110,255,180,0.95)";
+      ctx.fillRect(sx + 2 * u, sy + 2.4 * u, 1.7 * u, 1.7 * u);
+      ctx.fillStyle = "rgba(170,205,225,0.4)";
+      ctx.fillRect(sx + 5 * u, sy + 2.8 * u, 6.5 * u, 1 * u);
+      ctx.fillRect(sx + sw - 7.5 * u, sy + 2.8 * u, 5 * u, 1 * u);
+
+      /* three ragged lines of code and a caret working the last one */
+      const lineY = (i: number) => sy + 7.4 * u + i * 4.2 * u;
       for (let i = 0; i < 3; i++) {
         const n = (seed + i * 7) % 5;
+        const wid = (0.26 + n * 0.15) * (sw - 5 * u);
         ctx.fillStyle = GL.classroomDot(i);
-        ctx.fillRect(left + 3, top + bar + 3 + i * 5 * scale, (0.3 + n * 0.14) * (cw2 - 6), Math.max(1, 1.6 * scale));
+        ctx.fillRect(sx + 2 * u, lineY(i), wid, Math.max(1, 1.5 * u));
+        if (i === 2 && Math.sin(time * 6 + seed) > 0) {
+          ctx.fillStyle = "rgba(150,255,200,0.9)";
+          ctx.fillRect(sx + 2 * u + wid + 1.2 * u, lineY(i) - 0.5 * u, 1.4 * u, 2.4 * u);
+        }
       }
+
+      /* the scan line, the cheapest thing that says "running" */
+      const sweep = ((time * 0.45 + seed * 0.13) % 1) * sh;
+      ctx.fillStyle = "rgba(120,255,195,0.13)";
+      ctx.fillRect(sx, sy + sweep, sw, Math.max(1, 2 * u));
+      ctx.restore();
+
+      /* HUD brackets, drawn last so they sit over the bezel edge */
+      const b = 5 * scale;
+      const o = 1.6;
       ctx.strokeStyle = GL.arcHot;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(left + 0.5, top + 0.5, cw2 - 1, ch2 - 1);
-      // stand and desk, so it reads as a room rather than a floating card
-      ctx.fillStyle = GL.spark(0.6);
-      ctx.fillRect(x - 1.5, top + ch2, 3, 3 * scale);
-      ctx.fillRect(x - 8 * scale, top + ch2 + 3 * scale, 16 * scale, Math.max(1, 1.4 * scale));
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      for (const [cx, cy, dx, dy] of [
+        [left - o, top - o, 1, 1],
+        [left + cw2 + o, top - o, -1, 1],
+        [left - o, top + ch2 + o, 1, -1],
+        [left + cw2 + o, top + ch2 + o, -1, -1],
+      ] as Array<[number, number, number, number]>) {
+        ctx.moveTo(cx + dx * b, cy);
+        ctx.lineTo(cx, cy);
+        ctx.lineTo(cx, cy + dy * b);
+      }
+      ctx.stroke();
+
+      ctx.restore();
       ctx.globalAlpha = 1;
     };
 
@@ -990,7 +1094,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
             const screenBox: [number, number, number, number] = [pin[0] - 20 * k, pin[1] - 38 * k, pin[0] + 20 * k, pin[1] - 6];
             if (free(screenBox)) {
               taken.push(screenBox);
-              classroom(pin[0], pin[1], k, Math.min(1, arc.lit * 2.4), arc.name.length);
+              classroom(pin[0], pin[1], k, Math.min(1, arc.lit * 2.4), arc.name.length, grow, t);
             }
             // The name goes BELOW the pin, since the screen has the space above.
             const nameW = arc.name.length * cityAtlas.cw;
