@@ -24,6 +24,14 @@
  * WrongAnswerPanel (which speaks "Not quite." + the note itself), and the
  * complete beat can speak the "you're protected" payoff. The "scales" skin
  * drops the default grown-up co-sign stat line unless one is given.
+ *
+ * Skins are PAINT ONLY (the clip generator reads the week file, so no skin
+ * ever supplies a spoken word): "day" is the original day plan, "scales" the
+ * Week 5 Laughing Scales, and "seesaw" the Week 13 Power Station playground
+ * beam - timber-and-steel plank on a bolted A-frame trestle, friendly blue
+ * screen chips (screen fun is never painted as danger), a dashed level line
+ * under the beam and a level badge at the pivot that lights the moment it
+ * sits flat, so LEVEL reads as the win and an emptied screen side never does.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -102,8 +110,12 @@ export interface DayBalancerProps {
   completeLine?: string;
   /** Visual skin. "day" (default) = the W13 day plan, with the default
    *  co-sign stat line; "scales" = no co-sign stat line unless `cosignLine`
-   *  is given. Every label still comes from the copy props above. */
-  skin?: "day" | "scales";
+   *  is given; "seesaw" = the Power Station playground see-saw (paint only,
+   *  and no co-sign stat line unless `cosignLine` is given). Every label
+   *  still comes from the copy props above. */
+  skin?: "day" | "scales" | "seesaw";
+  /** "seesaw" skin only: the word on the level-line badge at the pivot. */
+  levelLabel?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** The how-to, spoken once as the board appears (audio only). */
@@ -130,7 +142,7 @@ export interface DayBalancerProps {
 const TILT_START = -6;
 const EMPTY_OPTIONS: BalancerOption[] = [];
 
-function Chip({ label, icon, tone, pulse }: { label: string; icon: string; tone: "screen" | "recharge"; pulse?: boolean }) {
+function Chip({ label, icon, tone, pulse, seesaw }: { label: string; icon: string; tone: "screen" | "recharge"; pulse?: boolean; seesaw?: boolean }) {
   return (
     <motion.div
       layout
@@ -143,12 +155,16 @@ function Chip({ label, icon, tone, pulse }: { label: string; icon: string; tone:
         gap: 5,
         padding: "5px 8px",
         borderRadius: 9,
+        // "seesaw": the screen side is FRIENDLY blue, never danger-red - screen
+        // fun is meant to stay aboard. Every other skin keeps its own paint.
         border: pulse
-          ? "2px solid #ffd158"
+          ? (seesaw ? "2px solid #ffe6a8" : "2px solid #ffd158")
           : tone === "screen"
-            ? "1.5px solid rgba(255,143,143,0.6)"
-            : "1.5px solid rgba(126,255,151,0.65)",
-        background: tone === "screen" ? "rgba(80,20,40,0.75)" : "rgba(16,64,44,0.8)",
+            ? (seesaw ? "1.5px solid rgba(124,204,255,0.75)" : "1.5px solid rgba(255,143,143,0.6)")
+            : (seesaw ? "1.5px solid rgba(150,236,180,0.8)" : "1.5px solid rgba(126,255,151,0.65)"),
+        background: seesaw
+          ? (tone === "screen" ? "rgba(18,54,96,0.88)" : "rgba(20,66,48,0.88)")
+          : tone === "screen" ? "rgba(80,20,40,0.75)" : "rgba(16,64,44,0.8)",
         color: "#eaf9ff",
         fontSize: 10.5,
         fontWeight: 800,
@@ -178,6 +194,7 @@ export default function DayBalancer({
   completeTitle,
   completeLine,
   skin = "day",
+  levelLabel,
   hints,
   introNarration,
   coachLines,
@@ -198,6 +215,9 @@ export default function DayBalancer({
   // recorded under "adam", so every manifest lookup here uses that key (the
   // intro / how-to / complete blocks keep their own authored speaker).
   const voice = "adam" as const;
+  // "seesaw" skin (Week 13): the Power Station playground see-saw. Paint and
+  // layout only - every word on the board still arrives as a prop.
+  const isSeesaw = skin === "seesaw";
   // Legacy mode (W13-style data: default skin and no read-aloud on any swap):
   // the how-to is the on-screen CoachCaption exactly as before the Learn-Loop
   // wiring, and is NOT also spoken through the audio-only chain.
@@ -224,6 +244,8 @@ export default function DayBalancer({
   const swapOptions = useShuffledOnce(swap?.options ?? EMPTY_OPTIONS, { key: swap?.id ?? "done" });
   const balance = Math.round((swapIdx / shownSwaps.length) * 100);
   const angle = TILT_START * (1 - swapIdx / shownSwaps.length);
+  // "seesaw" skin only: the beam is sitting flat (the win state the paint points at).
+  const level = Math.abs(angle) < 0.001;
 
   // Spoken verdicts: Sarah says "That's right!" + why and the next swap waits
   // for her. Wrong picks speak through WrongAnswerPanel.
@@ -311,9 +333,10 @@ export default function DayBalancer({
   });
 
   const completeStat = completeLine ?? "Screen fun stayed aboard - balance means SOME, not none.";
-  // "scales" skin: no grown-up co-sign line unless the week authored one.
+  // "scales" and "seesaw" skins: no grown-up co-sign line unless the week
+  // authored one (neither is the co-planning beat).
   const statLines =
-    skin === "scales" && !cosignLine
+    (skin === "scales" || isSeesaw) && !cosignLine
       ? [completeStat]
       : [cosignLine ?? "👪 CO-SIGNED! This plan belongs to both of you now.", completeStat];
 
@@ -348,15 +371,15 @@ export default function DayBalancer({
 
       {/* Balance meter */}
       <div style={{ maxWidth: 660, margin: "0 auto 10px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, fontWeight: 900, letterSpacing: "0.1em", color: "#7eff97", marginBottom: 4 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, fontWeight: 900, letterSpacing: "0.1em", color: isSeesaw ? "#ffd166" : "#7eff97", marginBottom: 4 }}>
           <span>{meterLabel ?? "BALANCE"}</span>
           <span>{balance}%</span>
         </div>
-        <div style={{ height: 10, borderRadius: 999, background: "rgba(126,255,151,0.14)", border: "1px solid rgba(126,255,151,0.35)", overflow: "hidden" }}>
+        <div style={{ height: isSeesaw ? 12 : 10, borderRadius: 999, background: isSeesaw ? "rgba(10,16,30,0.85)" : "rgba(126,255,151,0.14)", border: isSeesaw ? "2px solid rgba(255,209,102,0.55)" : "1px solid rgba(126,255,151,0.35)", overflow: "hidden" }}>
           <motion.div
             animate={{ width: `${balance}%` }}
             transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 120, damping: 20 }}
-            style={{ height: "100%", background: "linear-gradient(90deg, #7eff97, #34d399)", boxShadow: "0 0 14px rgba(126,255,151,0.8)" }}
+            style={{ height: "100%", background: isSeesaw ? "linear-gradient(90deg, #ffb347, #7eff97)" : "linear-gradient(90deg, #7eff97, #34d399)", boxShadow: isSeesaw ? "0 0 14px rgba(255,179,71,0.75)" : "0 0 14px rgba(126,255,151,0.8)" }}
           />
         </div>
       </div>
@@ -364,8 +387,8 @@ export default function DayBalancer({
       {/* The see-saw */}
       <div style={{ maxWidth: 660, margin: "0 auto 10px", padding: "6px 4px 0" }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5, fontWeight: 900, letterSpacing: "0.12em", color: "#7d8cc9", padding: "0 8px 4px" }}>
-          <span style={{ color: "#ff9bcb" }}>{leftLabel ?? "SCREEN SIDE"}</span>
-          <span style={{ color: "#7eff97" }}>{rightLabel ?? "RECHARGE SIDE"}</span>
+          <span style={{ color: isSeesaw ? "#7cccff" : "#ff9bcb" }}>{leftLabel ?? "SCREEN SIDE"}</span>
+          <span style={{ color: isSeesaw ? "#96ecb4" : "#7eff97" }}>{rightLabel ?? "RECHARGE SIDE"}</span>
         </div>
         {/* Clearance band: absorbs the rotated plank's vertical overflow so
             the tilt never covers the labels above or the story card below. */}
@@ -375,34 +398,80 @@ export default function DayBalancer({
           transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 60, damping: 14 }}
           style={{
             minHeight: 64,
-            borderRadius: 14,
-            border: "2px solid rgba(125,240,255,0.4)",
-            background: "linear-gradient(180deg, rgba(18,48,92,0.9), rgba(12,30,66,0.9))",
+            borderRadius: isSeesaw ? 10 : 14,
+            border: isSeesaw ? "2px solid rgba(255,209,102,0.7)" : "2px solid rgba(125,240,255,0.4)",
+            // Playground beam: warm timber over a steel underside, hazard-yellow
+            // rim and bolt heads at the ends.
+            background: isSeesaw
+              ? "linear-gradient(180deg, #6b4a2c 0%, #4a3220 55%, #2b1d13 100%)"
+              : "linear-gradient(180deg, rgba(18,48,92,0.9), rgba(12,30,66,0.9))",
+            boxShadow: isSeesaw ? "0 14px 26px -16px rgba(0,0,0,0.9), inset 0 2px 0 rgba(255,225,170,0.35)" : undefined,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             gap: 12,
             padding: "8px 10px",
             transformOrigin: "50% 50%",
+            position: isSeesaw ? "relative" : undefined,
           }}
         >
+          {isSeesaw && (
+            <>
+              <span aria-hidden style={{ position: "absolute", left: 6, top: "50%", marginTop: -4, width: 8, height: 8, borderRadius: "50%", background: "rgba(255,225,170,0.55)", boxShadow: "inset 0 -1px 0 rgba(0,0,0,0.5)" }} />
+              <span aria-hidden style={{ position: "absolute", right: 6, top: "50%", marginTop: -4, width: 8, height: 8, borderRadius: "50%", background: "rgba(255,225,170,0.55)", boxShadow: "inset 0 -1px 0 rgba(0,0,0,0.5)" }} />
+            </>
+          )}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, flex: 1 }}>
             <AnimatePresence>
               {leftChips.map((c) => (
-                <Chip key={c.key} label={c.label} icon={c.icon} tone="screen" pulse={c.pulse} />
+                <Chip key={c.key} label={c.label} icon={c.icon} tone="screen" pulse={c.pulse} seesaw={isSeesaw} />
               ))}
             </AnimatePresence>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, flex: 1, justifyContent: "flex-end" }}>
             <AnimatePresence>
               {rightChips.map((c) => (
-                <Chip key={c.key} label={c.label} icon={c.icon} tone="recharge" />
+                <Chip key={c.key} label={c.label} icon={c.icon} tone="recharge" seesaw={isSeesaw} />
               ))}
             </AnimatePresence>
           </div>
         </motion.div>
         {/* pivot */}
-        <div aria-hidden style={{ width: 0, height: 0, margin: "0 auto", borderLeft: "16px solid transparent", borderRight: "16px solid transparent", borderBottom: "18px solid rgba(125,240,255,0.45)" }} />
+        {isSeesaw ? (
+          <>
+            {/* The dashed line the beam is aiming for: LEVEL is the win, never
+                an emptied screen side. It greens the moment the beam sits flat. */}
+            <div aria-hidden style={{ height: 0, margin: "10px 0 8px", borderTop: `2px dashed ${level ? "rgba(126,255,151,0.85)" : "rgba(255,209,102,0.4)"}`, transition: "border-color 300ms ease-out" }} />
+            {/* Steel A-frame trestle bolted to the yard, with the level badge
+                lighting the moment the beam sits flat. */}
+            <div aria-hidden style={{ width: 0, height: 0, margin: "0 auto", borderLeft: "22px solid transparent", borderRight: "22px solid transparent", borderBottom: "26px solid #8d94a8" }} />
+            <div style={{ width: 96, height: 7, margin: "0 auto", borderRadius: 4, background: "linear-gradient(180deg, #9aa2b6, #5b6274)" }} />
+            <div style={{ display: "flex", justifyContent: "center", marginTop: 8 }}>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "4px 12px",
+                  borderRadius: 999,
+                  fontSize: 10.5,
+                  fontWeight: 900,
+                  letterSpacing: "0.14em",
+                  border: level ? "2px solid #7eff97" : "2px solid rgba(255,209,102,0.45)",
+                  background: level ? "rgba(20,66,48,0.9)" : "rgba(10,16,30,0.8)",
+                  color: level ? "#c7ffd6" : "#ffd166",
+                  boxShadow: level ? "0 0 18px -2px rgba(126,255,151,0.8)" : "none",
+                  transition: "all 300ms ease-out",
+                }}
+              >
+                <PixIcon emoji="⚡" size={14} />
+                {levelLabel ?? "LEVEL"}
+              </span>
+            </div>
+          </>
+        ) : (
+          <div aria-hidden style={{ width: 0, height: 0, margin: "0 auto", borderLeft: "16px solid transparent", borderRight: "16px solid transparent", borderBottom: "18px solid rgba(125,240,255,0.45)" }} />
+        )}
         </div>
       </div>
 
@@ -421,10 +490,11 @@ export default function DayBalancer({
                 maxWidth: 640,
                 margin: "0 auto 12px",
                 padding: "12px 18px",
-                borderRadius: 14,
-                background: "rgba(255,209,88,0.09)",
-                border: "1px solid rgba(255,209,88,0.4)",
-                color: "#ffe9b8",
+                borderRadius: isSeesaw ? 10 : 14,
+                // "seesaw": a yard noticeboard slate, not a glowing panel.
+                background: isSeesaw ? "rgba(12,20,36,0.92)" : "rgba(255,209,88,0.09)",
+                border: isSeesaw ? "2px solid rgba(255,209,102,0.55)" : "1px solid rgba(255,209,88,0.4)",
+                color: isSeesaw ? "#ffeccc" : "#ffe9b8",
                 fontSize: 15,
                 fontWeight: 800,
                 lineHeight: 1.4,
@@ -450,17 +520,21 @@ export default function DayBalancer({
                     gap: 8,
                     minHeight: 108,
                     padding: "14px 10px",
-                    borderRadius: 16,
-                    border: "2px solid rgba(125,240,255,0.4)",
-                    background: "linear-gradient(165deg, rgba(0,229,255,0.1), rgba(12,18,48,0.92))",
-                    color: "#eaf9ff",
+                    borderRadius: isSeesaw ? 12 : 16,
+                    // "seesaw": chunky painted yard blocks - a warm steel face
+                    // well clear of the dark ground behind them.
+                    border: isSeesaw ? "2px solid rgba(255,209,102,0.6)" : "2px solid rgba(125,240,255,0.4)",
+                    background: isSeesaw
+                      ? "linear-gradient(180deg, #3c4a67 0%, #232e4b 100%)"
+                      : "linear-gradient(165deg, rgba(0,229,255,0.1), rgba(12,18,48,0.92))",
+                    color: isSeesaw ? "#fff3dd" : "#eaf9ff",
                     fontSize: 13.5,
                     fontWeight: 800,
                     lineHeight: 1.35,
                     fontFamily: "inherit",
                     cursor: speaking ? "wait" : "pointer",
                     opacity: speaking ? 0.85 : 1,
-                    boxShadow: "0 14px 30px -18px rgba(0,229,255,0.7)",
+                    boxShadow: isSeesaw ? "0 10px 0 -4px rgba(6,10,20,0.85), inset 0 2px 0 rgba(255,255,255,0.14)" : "0 14px 30px -18px rgba(0,229,255,0.7)",
                     touchAction: "manipulation",
                   }}
                 >

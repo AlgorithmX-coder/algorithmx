@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T12:51:17.198Z",
+  "generatedAt": "2026-09-21T07:44:26.053Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -8396,429 +8396,1924 @@
       "file": "/audio/voice/d3b8cca6b8ae5c1f.mp3"
     },
     {
-      "key": "3b22d6cfba590733",
+      "key": "2759f91c4f36f0b9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Time to pour your whole day into the cups! There is only so much to go around. Keep it balanced so nothing runs dry!",
+      "text": "[warmly] Welcome to the Power Station, Cyber Hero. This is where a hero's charge gets made. And before we start, let's get one thing straight. [excited] Screens are BRILLIANT. Nobody here is taking them off you. But your day is a bit like a rucksack. It holds a lot... and it does not hold everything. So the goal is not an empty screen. The goal is LEVEL. [excited] There's a see-saw out the back. Come and get it level with me!",
       "lines": [
-        "[excited] Time to pour your whole day into the cups!",
-        "There is only so much to go around.",
-        "Keep it balanced so nothing runs dry!"
+        "[warmly] Welcome to the Power Station, Cyber Hero. This is where a hero's charge gets made.",
+        "And before we start, let's get one thing straight.",
+        "[excited] Screens are BRILLIANT. Nobody here is taking them off you.",
+        "But your day is a bit like a rucksack. It holds a lot... and it does not hold everything.",
+        "So the goal is not an empty screen. The goal is LEVEL.",
+        "[excited] There's a see-saw out the back. Come and get it level with me!"
       ],
-      "file": "/audio/voice/3b22d6cfba590733.mp3"
+      "file": "/audio/voice/2759f91c4f36f0b9.mp3"
     },
     {
-      "key": "dad3c802eefac579",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Week thirteen, hero - power week! Imagine a power bar floating over your head. Screen fun is awesome... and it USES your charge. Sleep, snacks, running around, your people - those REFILL it. [warmly] Keepers don't pick one. They balance both. [excited] Day-moments are rolling in - let's sort them!",
-      "lines": [
-        "[excited] Week thirteen, hero - power week!",
-        "Imagine a power bar floating over your head.",
-        "Screen fun is awesome... and it USES your charge.",
-        "Sleep, snacks, running around, your people - those REFILL it.",
-        "[warmly] Keepers don't pick one. They balance both.",
-        "[excited] Day-moments are rolling in - let's sort them!"
-      ],
-      "file": "/audio/voice/dad3c802eefac579.mp3"
-    },
-    {
-      "key": "b94c7da9f8215426",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] The Power Sorter is humming! Day-moments on the belt - sort every one. REFILLS to the left, USES CHARGE to the right. [warmly] Remember: using charge is fine. Heroes just keep it balanced!",
-      "lines": [
-        "[excited] The Power Sorter is humming!",
-        "Day-moments on the belt - sort every one.",
-        "REFILLS to the left, USES CHARGE to the right.",
-        "[warmly] Remember: using charge is fine. Heroes just keep it balanced!"
-      ],
-      "file": "/audio/voice/b94c7da9f8215426.mp3"
-    },
-    {
-      "key": "72a3bb9f48f11b34",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Here comes the first moment - which slot does it belong in?",
-      "lines": [
-        "Here comes the first moment - which slot does it belong in?"
-      ],
-      "file": "/audio/voice/72a3bb9f48f11b34.mp3"
-    },
-    {
-      "key": "edd92a82abcf7571",
+      "key": "94c21359fa6eefd3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Power one - you can READ a day now! Refills on one side, charge-users on the other. [whispers] But how do you know when the bar runs low? Your body rings little bells. Come listen...",
+      "text": "[excited] Here is your first challenge, Cyber Hero. The See-Saw Day! This game is all about getting a day to sit level. Out in the real world, a day tips over when one thing quietly takes the lot. So here is what you do. A heavy block sits on the screen side, and I will read you what is going on. Then three swaps appear. Tap the one that is a REAL recharge, with no screen hiding in it. [warmly] And watch the two blocks we keep. Level is the goal, not empty. Off you go.",
       "lines": [
-        "[excited] Power one - you can READ a day now!",
-        "Refills on one side, charge-users on the other.",
-        "[whispers] But how do you know when the bar runs low?",
-        "Your body rings little bells. Come listen..."
+        "[excited] Here is your first challenge, Cyber Hero. The See-Saw Day!",
+        "This game is all about getting a day to sit level.",
+        "Out in the real world, a day tips over when one thing quietly takes the lot.",
+        "So here is what you do.",
+        "A heavy block sits on the screen side, and I will read you what is going on.",
+        "Then three swaps appear. Tap the one that is a REAL recharge, with no screen hiding in it.",
+        "[warmly] And watch the two blocks we keep. Level is the goal, not empty. Off you go."
       ],
-      "file": "/audio/voice/edd92a82abcf7571.mp3"
+      "file": "/audio/voice/94c21359fa6eefd3.mp3"
     },
     {
-      "key": "7ca92163acde6748",
+      "key": "98e0e23ee3a30ad2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Here's a secret: your body TALKS to you. When the battery runs low, it rings little bells. Scratchy eyes. Jiggly legs. A snappy voice. A forgotten tummy. [whispers] Only you can hear them... [excited] and hearing one means you caught the Thief EARLY. Four scenes coming up - spot the bell in each one!",
+      "text": "Tap the swap that is a real recharge, with no screen in it.",
       "lines": [
-        "[warmly] Here's a secret: your body TALKS to you.",
-        "When the battery runs low, it rings little bells.",
-        "Scratchy eyes. Jiggly legs. A snappy voice. A forgotten tummy.",
-        "[whispers] Only you can hear them...",
-        "[excited] and hearing one means you caught the Thief EARLY.",
-        "Four scenes coming up - spot the bell in each one!"
+        "Tap the swap that is a real recharge, with no screen in it."
       ],
-      "file": "/audio/voice/7ca92163acde6748.mp3"
+      "file": "/audio/voice/98e0e23ee3a30ad2.mp3"
     },
     {
-      "key": "eee7c8149f33ab43",
+      "key": "a5dd0a531029c768",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Bingo card ready - four bells on it! A scene plays... somebody's body is ringing. Tap the sign you spot, [excited] and fill the whole card. Go!",
+      "text": "[proud] Look at that plank, Cyber Hero. Dead level. And look what is still aboard. Saturday cartoons. The game hour after homework. [warmly] Nobody took your screens away. You just gave them a size.",
       "lines": [
-        "[excited] Bingo card ready - four bells on it!",
-        "A scene plays... somebody's body is ringing.",
-        "Tap the sign you spot,",
-        "[excited] and fill the whole card. Go!"
+        "[proud] Look at that plank, Cyber Hero. Dead level.",
+        "And look what is still aboard. Saturday cartoons. The game hour after homework.",
+        "[warmly] Nobody took your screens away. You just gave them a size."
       ],
-      "file": "/audio/voice/eee7c8149f33ab43.mp3"
+      "file": "/audio/voice/a5dd0a531029c768.mp3"
     },
     {
-      "key": "ff5682f1a5b04960",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Read Maya's scene - which body-bell is ringing? Tap it on the card!",
-      "lines": [
-        "Read Maya's scene - which body-bell is ringing? Tap it on the card!"
-      ],
-      "file": "/audio/voice/ff5682f1a5b04960.mp3"
-    },
-    {
-      "key": "814c7381aa4ab8f3",
+      "key": "b42d27ae36d9bf74",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Two powers - you can HEAR your battery now! Four bells, four early warnings. [whispers] But the Thief's biggest steal happens after dark... He's after the biggest recharge of all. Your sleep.",
+      "text": "[proud] That's it! Level keeps the good stuff in. Cartoons, games, calls with Gran, all still there. [warmly] Just sharing the day with everything else.",
       "lines": [
-        "[excited] Two powers - you can HEAR your battery now!",
-        "Four bells, four early warnings.",
-        "[whispers] But the Thief's biggest steal happens after dark...",
-        "He's after the biggest recharge of all. Your sleep."
+        "[proud] That's it!",
+        "Level keeps the good stuff in.",
+        "Cartoons, games, calls with Gran, all still there.",
+        "[warmly] Just sharing the day with everything else."
       ],
-      "file": "/audio/voice/814c7381aa4ab8f3.mp3"
+      "file": "/audio/voice/b42d27ae36d9bf74.mp3"
     },
     {
-      "key": "88cc908b48ffbcf8",
+      "key": "339837009bb43161",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Now for the biggest recharge of all: sleep. Screen light is like a tiny sun. Show it to your brain at bedtime and it shouts: [excited] 'It's DAYTIME! Stay awake!' [whispers] So the screen sleeps in the garage... and the moon does the rest. Three bedtime moments - make the Keeper's call!",
+      "text": "[proud] One power down, Cyber Hero, and it is the friendliest one. Level, not empty. Your cartoons are safe. [whispers] But there is a reason that plank creaks... Next, we'll learn why a day only holds so much. Come and see!",
       "lines": [
-        "[warmly] Now for the biggest recharge of all: sleep.",
-        "Screen light is like a tiny sun.",
-        "Show it to your brain at bedtime and it shouts:",
-        "[excited] 'It's DAYTIME! Stay awake!'",
-        "[whispers] So the screen sleeps in the garage... and the moon does the rest.",
-        "Three bedtime moments - make the Keeper's call!"
+        "[proud] One power down, Cyber Hero, and it is the friendliest one.",
+        "Level, not empty. Your cartoons are safe.",
+        "[whispers] But there is a reason that plank creaks...",
+        "Next, we'll learn why a day only holds so much. Come and see!"
       ],
-      "file": "/audio/voice/88cc908b48ffbcf8.mp3"
+      "file": "/audio/voice/339837009bb43161.mp3"
     },
     {
-      "key": "24e8bb0440ef3e69",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[warmly] Three bedtime moments. One golden rule. Screens sleep in the garage - [whispers] so the moon can do its work. [excited] Show me the Keeper's moves!",
-      "lines": [
-        "[warmly] Three bedtime moments. One golden rule.",
-        "Screens sleep in the garage -",
-        "[whispers] so the moon can do its work.",
-        "[excited] Show me the Keeper's moves!"
-      ],
-      "file": "/audio/voice/24e8bb0440ef3e69.mp3"
-    },
-    {
-      "key": "70cbbf96e041c564",
+      "key": "5a91e82ed9e96f8e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Three powers - your sleep is GUARDED! Chime rings, tablet parks, moon works. [warmly] Now, who helps you plan the whole day? Not a boss. A teammate. Come and meet the see-saw...",
+      "text": "[warmly] So why does that plank creak, Cyber Hero? Here is the honest reason. Your day is a jug. And the jug does not get bigger just because you would like it to. Sleep, school, food, football, the game, the film. All of it pours from the same jug. [thinking] Which means every hour you pour into one cup... is an hour not going into another. That is not me telling you off. That is just how much a jug holds. [excited] Come and pour one with me. You'll see it straight away!",
       "lines": [
-        "[excited] Three powers - your sleep is GUARDED!",
-        "Chime rings, tablet parks, moon works.",
-        "[warmly] Now, who helps you plan the whole day?",
-        "Not a boss. A teammate. Come and meet the see-saw..."
+        "[warmly] So why does that plank creak, Cyber Hero? Here is the honest reason.",
+        "Your day is a jug. And the jug does not get bigger just because you would like it to.",
+        "Sleep, school, food, football, the game, the film. All of it pours from the same jug.",
+        "[thinking] Which means every hour you pour into one cup... is an hour not going into another.",
+        "That is not me telling you off. That is just how much a jug holds.",
+        "[excited] Come and pour one with me. You'll see it straight away!"
       ],
-      "file": "/audio/voice/70cbbf96e041c564.mp3"
+      "file": "/audio/voice/5a91e82ed9e96f8e.mp3"
     },
     {
-      "key": "687981d5a3dd3c2a",
+      "key": "d3dff746cad81ccf",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Nobody likes rules dumped on them. So Keepers don't get rules. They BUILD plans. You and a grown-up, agreeing it together - screen time AND recharge time. Then you both sign. [excited] And the fun stays in! Balance means some, not none. One day is tipping over with screens - let's fix it together!",
+      "text": "[excited] Your second challenge, Cyber Hero. The Day Jug! This game is all about noticing what an hour costs. Out in the real world, nobody announces the trade. It just happens while you are busy. So here is what you do. A day comes up and I will read you what is in it. Then three pours appear. Tap the one that shares the jug best. [warmly] Four days to pour. Take your time.",
       "lines": [
-        "[warmly] Nobody likes rules dumped on them.",
-        "So Keepers don't get rules. They BUILD plans.",
-        "You and a grown-up, agreeing it together -",
-        "screen time AND recharge time. Then you both sign.",
-        "[excited] And the fun stays in! Balance means some, not none.",
-        "One day is tipping over with screens - let's fix it together!"
+        "[excited] Your second challenge, Cyber Hero. The Day Jug!",
+        "This game is all about noticing what an hour costs.",
+        "Out in the real world, nobody announces the trade. It just happens while you are busy.",
+        "So here is what you do.",
+        "A day comes up and I will read you what is in it.",
+        "Then three pours appear. Tap the one that shares the jug best.",
+        "[warmly] Four days to pour. Take your time."
       ],
-      "file": "/audio/voice/687981d5a3dd3c2a.mp3"
+      "file": "/audio/voice/d3dff746cad81ccf.mp3"
     },
     {
-      "key": "60720de3541026e1",
+      "key": "b9d96021f821d3b6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at this day - the see-saw's tipping right over! One screen block at a time will light up. Swap it for a REAL recharge... [whispers] but watch out. Some swaps are screens in disguise!",
+      "text": "Read the day, then tap the pour that shares the jug best.",
       "lines": [
-        "[excited] Look at this day - the see-saw's tipping right over!",
-        "One screen block at a time will light up.",
-        "Swap it for a REAL recharge...",
-        "[whispers] but watch out. Some swaps are screens in disguise!"
+        "Read the day, then tap the pour that shares the jug best."
       ],
-      "file": "/audio/voice/60720de3541026e1.mp3"
+      "file": "/audio/voice/b9d96021f821d3b6.mp3"
     },
     {
-      "key": "c423e8fa52f81f43",
+      "key": "d0221816e840309b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Read the glowing block's story - then pick the swap with NO screen hiding in it!",
+      "text": "[proud] Four days poured, Cyber Hero, and not one of them tipped over. You kept the game AND the football. The film AND the homework. [warmly] That is what knowing the jug gets you. Not less fun. Better aim.",
       "lines": [
-        "Read the glowing block's story - then pick the swap with NO screen hiding in it!"
+        "[proud] Four days poured, Cyber Hero, and not one of them tipped over.",
+        "You kept the game AND the football. The film AND the homework.",
+        "[warmly] That is what knowing the jug gets you. Not less fun. Better aim."
       ],
-      "file": "/audio/voice/c423e8fa52f81f43.mp3"
+      "file": "/audio/voice/d0221816e840309b.mp3"
     },
     {
-      "key": "99667f85b4693ce6",
+      "key": "2d0dce1a228efb23",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Four powers - and a co-signed plan! The see-saw sits level, fun still aboard. [warmly] One skill left, and it's the trickiest: actually STOPPING. Pros make it look easy. Let's learn how.",
+      "text": "[proud] Word for word! That is the whole trade, and it is not a scary one. It just means YOU get to aim the hours. [warmly] Which is much better than finding them gone.",
       "lines": [
-        "[excited] Four powers - and a co-signed plan!",
-        "The see-saw sits level, fun still aboard.",
-        "[warmly] One skill left, and it's the trickiest:",
-        "actually STOPPING. Pros make it look easy. Let's learn how."
+        "[proud] Word for word!",
+        "That is the whole trade, and it is not a scary one.",
+        "It just means YOU get to aim the hours.",
+        "[warmly] Which is much better than finding them gone."
       ],
-      "file": "/audio/voice/99667f85b4693ce6.mp3"
+      "file": "/audio/voice/2d0dce1a228efb23.mp3"
     },
     {
-      "key": "b7f174d53d7e8014",
+      "key": "79ea360aae5ea71a",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Last power - and it's the one pros brag about. Anyone can be dragged off a screen, moaning. A pro powers OFF. Five smooth moves: finish, say bye, screen off, park it, pick what's next. [excited] Same five every time - till it's easy. The launchpad's ready. Show me the Power-Down Five!",
+      "text": "[proud] Two powers, Cyber Hero. You can see the trade now. One jug, and you are the one aiming it. [whispers] Although... there is one moment when aiming is easy, and one when it is nearly impossible... Next, we'll find the easy moment. Come and see!",
       "lines": [
-        "[warmly] Last power - and it's the one pros brag about.",
-        "Anyone can be dragged off a screen, moaning.",
-        "A pro powers OFF. Five smooth moves:",
-        "finish, say bye, screen off, park it, pick what's next.",
-        "[excited] Same five every time - till it's easy.",
-        "The launchpad's ready. Show me the Power-Down Five!"
+        "[proud] Two powers, Cyber Hero. You can see the trade now.",
+        "One jug, and you are the one aiming it.",
+        "[whispers] Although... there is one moment when aiming is easy, and one when it is nearly impossible...",
+        "Next, we'll find the easy moment. Come and see!"
       ],
-      "file": "/audio/voice/b7f174d53d7e8014.mp3"
+      "file": "/audio/voice/79ea360aae5ea71a.mp3"
     },
     {
-      "key": "73370a6746176e28",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] The Power-Down Five, all shuffled up! Tap the moves in a pro's order. Where does a smooth ending START? [whispers] Think it through... then go!",
-      "lines": [
-        "[excited] The Power-Down Five, all shuffled up!",
-        "Tap the moves in a pro's order.",
-        "Where does a smooth ending START?",
-        "[whispers] Think it through... then go!"
-      ],
-      "file": "/audio/voice/73370a6746176e28.mp3"
-    },
-    {
-      "key": "ce50da37ed8cbe20",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "What's a pro's FIRST move when the chime rings? Tap it!",
-      "lines": [
-        "What's a pro's FIRST move when the chime rings? Tap it!"
-      ],
-      "file": "/audio/voice/ce50da37ed8cbe20.mp3"
-    },
-    {
-      "key": "be3a808d914cc658",
+      "key": "c0b9a3b7499fa6a1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Battery Keeper! Bar read, bells heard, sleep guarded, plan co-signed... and endings YOU choose. [whispers] One final battery check... [excited] then we take back every drop he stole!",
+      "text": "[warmly] So when is aiming easy, Cyber Hero? It is right now. Before. Before you press play, you are standing outside the game. [thinking] Thirty seconds in there and it is a completely different story. Inside, every part of you wants one more. And a game never FEELS finished, because they are built that way. So heroes decide outside. How long, what happens after, and who else knows. [excited] There is a plan desk at the Power Station. Come and set one!",
       "lines": [
-        "[excited] That's all FIVE powers, Battery Keeper!",
-        "Bar read, bells heard, sleep guarded,",
-        "plan co-signed... and endings YOU choose.",
-        "[whispers] One final battery check...",
-        "[excited] then we take back every drop he stole!"
+        "[warmly] So when is aiming easy, Cyber Hero? It is right now. Before.",
+        "Before you press play, you are standing outside the game.",
+        "[thinking] Thirty seconds in there and it is a completely different story.",
+        "Inside, every part of you wants one more. And a game never FEELS finished, because they are built that way.",
+        "So heroes decide outside. How long, what happens after, and who else knows.",
+        "[excited] There is a plan desk at the Power Station. Come and set one!"
       ],
-      "file": "/audio/voice/be3a808d914cc658.mp3"
+      "file": "/audio/voice/c0b9a3b7499fa6a1.mp3"
     },
     {
-      "key": "cd933b753ed8958b",
+      "key": "08166cbdab1bcce6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Final check - the Recharge Race! Choices are drifting past the scanner. POWER UP for the green-bar moves... [warmly] POWER DRAIN for the Thief's tricks. Scan!",
+      "text": "[excited] Third challenge, Cyber Hero. The Plan Desk! This game is all about setting the plan while you are still outside the game. Out in the real world, this is the thirty seconds before you press play. So here is what you do. A situation comes up on the desk, and three dials sit under it. Tap a dial to turn it. How long, what after, and who knows. [warmly] When all three look right to you, press AGREE IT. Off you go.",
       "lines": [
-        "[excited] Final check - the Recharge Race!",
-        "Choices are drifting past the scanner.",
-        "POWER UP for the green-bar moves...",
-        "[warmly] POWER DRAIN for the Thief's tricks. Scan!"
+        "[excited] Third challenge, Cyber Hero. The Plan Desk!",
+        "This game is all about setting the plan while you are still outside the game.",
+        "Out in the real world, this is the thirty seconds before you press play.",
+        "So here is what you do.",
+        "A situation comes up on the desk, and three dials sit under it.",
+        "Tap a dial to turn it. How long, what after, and who knows.",
+        "[warmly] When all three look right to you, press AGREE IT. Off you go."
       ],
-      "file": "/audio/voice/cd933b753ed8958b.mp3"
+      "file": "/audio/voice/08166cbdab1bcce6.mp3"
     },
     {
-      "key": "a64391893edefce7",
+      "key": "47b01a6f5c9a2f43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Turn all three dials, then press AGREE IT.",
+      "lines": [
+        "Turn all three dials, then press AGREE IT."
+      ],
+      "file": "/audio/voice/47b01a6f5c9a2f43.mp3"
+    },
+    {
+      "key": "2ff6946edcd0c757",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Three plans, all agreed, Cyber Hero, and every one took about ten seconds. That is the trick nobody tells you. The deciding is easy out here. [warmly] Do it out here, and the you who is deep in a game does not have to.",
+      "lines": [
+        "[proud] Three plans, all agreed, Cyber Hero, and every one took about ten seconds.",
+        "That is the trick nobody tells you. The deciding is easy out here.",
+        "[warmly] Do it out here, and the you who is deep in a game does not have to."
+      ],
+      "file": "/audio/voice/2ff6946edcd0c757.mp3"
+    },
+    {
+      "key": "3287b443179120aa",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! The bar, the bells, the garage, the co-signed plan... and the Power-Down Five. [laughs] The Battery Thief just went hungry. [excited] Sticker time, Battery Keeper!",
+      "text": "[proud] Got him! Waiting for a game to feel finished is waiting forever. There is always one more level, and that is on purpose. [warmly] So the ending is yours to pick, and you pick it early.",
+      "lines": [
+        "[proud] Got him!",
+        "Waiting for a game to feel finished is waiting forever.",
+        "There is always one more level, and that is on purpose.",
+        "[warmly] So the ending is yours to pick, and you pick it early."
+      ],
+      "file": "/audio/voice/3287b443179120aa.mp3"
+    },
+    {
+      "key": "7476e1b3dee2f97c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Three powers, Cyber Hero. Your plan is set before you even start. How long, what after, who knows. Ten seconds, out here. [whispers] Now for the bit everyone finds hard. The moment the time actually arrives... Next, we'll learn how to stop like a pro. Come and see!",
+      "lines": [
+        "[proud] Three powers, Cyber Hero. Your plan is set before you even start.",
+        "How long, what after, who knows. Ten seconds, out here.",
+        "[whispers] Now for the bit everyone finds hard. The moment the time actually arrives...",
+        "Next, we'll learn how to stop like a pro. Come and see!"
+      ],
+      "file": "/audio/voice/7476e1b3dee2f97c.mp3"
+    },
+    {
+      "key": "e6a2382aa41068de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] So the time arrives, Cyber Hero. And here is what nobody admits. Stopping BADLY is what makes stopping feel horrible. Screen yanked off mid-level. Friends left staring at an empty space. Flat controller tomorrow. [thinking] Of course that hurts. Anybody would hate that. So pros do not just stop. They land. Save it, say bye, plug it in. [excited] There is a shutdown panel down in the station. Let's land one!",
+      "lines": [
+        "[warmly] So the time arrives, Cyber Hero. And here is what nobody admits.",
+        "Stopping BADLY is what makes stopping feel horrible.",
+        "Screen yanked off mid-level. Friends left staring at an empty space. Flat controller tomorrow.",
+        "[thinking] Of course that hurts. Anybody would hate that.",
+        "So pros do not just stop. They land. Save it, say bye, plug it in.",
+        "[excited] There is a shutdown panel down in the station. Let's land one!"
+      ],
+      "file": "/audio/voice/e6a2382aa41068de.mp3"
+    },
+    {
+      "key": "2fc24f2a32462aa0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Fourth challenge, Cyber Hero. The Shutdown Panel! This game is all about landing instead of crashing. Out in the real world, the panel is crowded and only three buttons end things well. So here is what you do. A moment comes up and I will read it to you. Then find SAVE, then SAY BYE, then PLUG IN. In that order, on a crowded panel. [warmly] Three landings to make. You've got this.",
+      "lines": [
+        "[excited] Fourth challenge, Cyber Hero. The Shutdown Panel!",
+        "This game is all about landing instead of crashing.",
+        "Out in the real world, the panel is crowded and only three buttons end things well.",
+        "So here is what you do.",
+        "A moment comes up and I will read it to you.",
+        "Then find SAVE, then SAY BYE, then PLUG IN. In that order, on a crowded panel.",
+        "[warmly] Three landings to make. You've got this."
+      ],
+      "file": "/audio/voice/2fc24f2a32462aa0.mp3"
+    },
+    {
+      "key": "66d0e12e29399ad7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Find SAVE first, then SAY BYE, then PLUG IN.",
+      "lines": [
+        "Find SAVE first, then SAY BYE, then PLUG IN."
+      ],
+      "file": "/audio/voice/66d0e12e29399ad7.mp3"
+    },
+    {
+      "key": "07f589636823c076",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Three landings, Cyber Hero, and not one crash. Nothing lost, nobody left hanging, and a full battery in the morning. [warmly] Stopping only feels bad when it is done badly. You just did it well three times.",
+      "lines": [
+        "[proud] Three landings, Cyber Hero, and not one crash.",
+        "Nothing lost, nobody left hanging, and a full battery in the morning.",
+        "[warmly] Stopping only feels bad when it is done badly. You just did it well three times."
+      ],
+      "file": "/audio/voice/07f589636823c076.mp3"
+    },
+    {
+      "key": "decc0cebde30a011",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Perfect landing! Save first, because it is the only one that cannot wait. Then the people. Then the plug. [warmly] And then you walk away, actually pleased with yourself.",
+      "lines": [
+        "[proud] Perfect landing!",
+        "Save first, because it is the only one that cannot wait.",
+        "Then the people. Then the plug.",
+        "[warmly] And then you walk away, actually pleased with yourself."
+      ],
+      "file": "/audio/voice/decc0cebde30a011.mp3"
+    },
+    {
+      "key": "90558409fe123012",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Four powers, Cyber Hero, and that landing was smooth. Save, say bye, plug in. Twenty seconds, no fight. [whispers] There is one hour left in the day, and it does not belong to the screen... Next, we'll learn who the last hour really belongs to. Come and see!",
+      "lines": [
+        "[proud] Four powers, Cyber Hero, and that landing was smooth.",
+        "Save, say bye, plug in. Twenty seconds, no fight.",
+        "[whispers] There is one hour left in the day, and it does not belong to the screen...",
+        "Next, we'll learn who the last hour really belongs to. Come and see!"
+      ],
+      "file": "/audio/voice/90558409fe123012.mp3"
+    },
+    {
+      "key": "7e686ed1b9eae29f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last power of the week, Cyber Hero, and it is the calmest one. The last hour before bed belongs to your body. It has been waiting all day for it. [thinking] And here is why screens make that hard. A screen shines light right into your eyes, and your brain reads bright light as daytime. So it hides the sleepy feeling, and you lie there wide awake, wondering why. [excited] Come up to the room with me. Let's get the night back.",
+      "lines": [
+        "[warmly] Last power of the week, Cyber Hero, and it is the calmest one.",
+        "The last hour before bed belongs to your body. It has been waiting all day for it.",
+        "[thinking] And here is why screens make that hard.",
+        "A screen shines light right into your eyes, and your brain reads bright light as daytime.",
+        "So it hides the sleepy feeling, and you lie there wide awake, wondering why.",
+        "[excited] Come up to the room with me. Let's get the night back."
+      ],
+      "file": "/audio/voice/7e686ed1b9eae29f.mp3"
+    },
+    {
+      "key": "d43d3fffca5fb5d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last challenge of the week, Cyber Hero. Night Fall. This game is all about giving the night a clear run at you. Out in the real world, this is a two minute job you do once, and then it is just how your room works. So here is what you do. Your room is up on the board, with things dotted around it. Tap anything that should go out for the night, and the sky gets a little darker. [warmly] Some things belong in there, mind. Leave those be.",
+      "lines": [
+        "[warmly] Last challenge of the week, Cyber Hero. Night Fall.",
+        "This game is all about giving the night a clear run at you.",
+        "Out in the real world, this is a two minute job you do once, and then it is just how your room works.",
+        "So here is what you do.",
+        "Your room is up on the board, with things dotted around it.",
+        "Tap anything that should go out for the night, and the sky gets a little darker.",
+        "[warmly] Some things belong in there, mind. Leave those be."
+      ],
+      "file": "/audio/voice/d43d3fffca5fb5d6.mp3"
+    },
+    {
+      "key": "990be0ae4db2ff32",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap what goes out for the night. Some things stay.",
+      "lines": [
+        "Tap what goes out for the night. Some things stay."
+      ],
+      "file": "/audio/voice/990be0ae4db2ff32.mp3"
+    },
+    {
+      "key": "f6c3591964885826",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Look at that sky, Cyber Hero. Full dark, stars and all. Screens on charge by the door. Book, lamp and water right where they should be. [warmly] That room is not empty. It is just quiet. And quiet is what the night needed.",
+      "lines": [
+        "[proud] Look at that sky, Cyber Hero. Full dark, stars and all.",
+        "Screens on charge by the door. Book, lamp and water right where they should be.",
+        "[warmly] That room is not empty. It is just quiet. And quiet is what the night needed."
+      ],
+      "file": "/audio/voice/f6c3591964885826.mp3"
+    },
+    {
+      "key": "30c099b758175b7c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Straight away! Face down, silent, within reach. Still one more look away. [warmly] Out of the room and on charge, and the whole problem goes away.",
+      "lines": [
+        "[proud] Straight away!",
+        "Face down, silent, within reach. Still one more look away.",
+        "[warmly] Out of the room and on charge, and the whole problem goes away."
+      ],
+      "file": "/audio/voice/30c099b758175b7c.mp3"
+    },
+    {
+      "key": "9421eab6f6729d67",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Five powers, Cyber Hero. Every one of them. Level, the jug, the plan, the landing, and the night. [whispers] So there is one thing left to find out... Next, you take all five of them down to the station floor at once. Come and see!",
+      "lines": [
+        "[proud] Five powers, Cyber Hero. Every one of them.",
+        "Level, the jug, the plan, the landing, and the night.",
+        "[whispers] So there is one thing left to find out...",
+        "Next, you take all five of them down to the station floor at once. Come and see!"
+      ],
+      "file": "/audio/voice/9421eab6f6729d67.mp3"
+    },
+    {
+      "key": "9aa166935bd887b0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Time for your review, Cyber Hero. The Power Station Match! This game is all about using every Battery Keeper power at once. Out in the real world, the Thief's tricks turn up in any order, so all five have to be ready. So here is what you do. Tap a card to flip it, then find the card that goes with it. Each trick has one hero move hiding somewhere on the board. [warmly] Fewer flips earn more stars. Off you go!",
+      "lines": [
+        "[excited] Time for your review, Cyber Hero. The Power Station Match!",
+        "This game is all about using every Battery Keeper power at once.",
+        "Out in the real world, the Thief's tricks turn up in any order, so all five have to be ready.",
+        "So here is what you do.",
+        "Tap a card to flip it, then find the card that goes with it.",
+        "Each trick has one hero move hiding somewhere on the board.",
+        "[warmly] Fewer flips earn more stars. Off you go!"
+      ],
+      "file": "/audio/voice/9aa166935bd887b0.mp3"
+    },
+    {
+      "key": "38b67692706752d8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap a card to flip it, then find its pair.",
+      "lines": [
+        "Tap a card to flip it, then find its pair."
+      ],
+      "file": "/audio/voice/38b67692706752d8.mp3"
+    },
+    {
+      "key": "f18361530f7a87bb",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every pair matched, Cyber Hero, and every one of them was a trick you can now name. [warmly] Out in the real world, the Thief does not announce himself. He just hopes you never gave your day a size. And you have.",
+      "lines": [
+        "[proud] Every pair matched, Cyber Hero, and every one of them was a trick you can now name.",
+        "[warmly] Out in the real world, the Thief does not announce himself. He just hopes you never gave your day a size. And you have."
+      ],
+      "file": "/audio/voice/f18361530f7a87bb.mp3"
+    },
+    {
+      "key": "ae9a5dbdba212e96",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The see-saw level, the jug read, the plan set, the landing smooth... and the night handed back to your body. [laughs] The Battery Thief did not get a single drop. [excited] Sticker time, Cyber Hero!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "The bar, the bells, the garage,",
-        "the co-signed plan... and the Power-Down Five.",
-        "[laughs] The Battery Thief just went hungry.",
-        "[excited] Sticker time, Battery Keeper!"
+        "The see-saw level, the jug read, the plan set,",
+        "the landing smooth... and the night handed back to your body.",
+        "[laughs] The Battery Thief did not get a single drop.",
+        "[excited] Sticker time, Cyber Hero!"
       ],
-      "file": "/audio/voice/a64391893edefce7.mp3"
+      "file": "/audio/voice/ae9a5dbdba212e96.mp3"
     },
     {
-      "key": "9b7da3a3beda6c94",
+      "key": "4d809eab6b37a677",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The bedtime chime rings right in the MIDDLE of an episode...",
+      "text": "A Battery Keeper's day sits level. What does level mean?",
       "lines": [
-        "The bedtime chime rings right in the MIDDLE of an episode..."
+        "A Battery Keeper's day sits level. What does level mean?"
       ],
-      "file": "/audio/voice/9b7da3a3beda6c94.mp3"
+      "file": "/audio/voice/4d809eab6b37a677.mp3"
     },
     {
-      "key": "d7cd00af06d05519",
+      "key": "b43261f14eedeb14",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "'Just one more level and THEN I'll sleep,' you promise yourself. But the level ends at a shiny NEW level...",
+      "text": "Finish the rule: every hour I pour into one thing...",
       "lines": [
-        "'Just one more level and THEN I'll sleep,' you promise yourself. But the level ends at a shiny NEW level..."
+        "Finish the rule: every hour I pour into one thing..."
       ],
-      "file": "/audio/voice/d7cd00af06d05519.mp3"
+      "file": "/audio/voice/b43261f14eedeb14.mp3"
     },
     {
-      "key": "9427fa3aea9add8b",
+      "key": "196b7cc6597ce206",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your friend whispers: 'Keep your phone under your pillow tonight - we can chat at MIDNIGHT!'",
+      "text": "The Raccoon is fibbing about stopping. Which bit is the lie?",
       "lines": [
-        "Your friend whispers: 'Keep your phone under your pillow tonight - we can chat at MIDNIGHT!'"
+        "The Raccoon is fibbing about stopping. Which bit is the lie?"
       ],
-      "file": "/audio/voice/9427fa3aea9add8b.mp3"
+      "file": "/audio/voice/196b7cc6597ce206.mp3"
     },
     {
-      "key": "1d1a6104276c066b",
+      "key": "5540e4e2e5e1ffb7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The episode waits all night without moving a single pixel - stories are patient like that. You sleep like a champion and catch the ending tomorrow.",
+      "text": "Put the landing in order.",
       "lines": [
-        "The episode waits all night without moving a single pixel - stories are patient like that. You sleep like a champion and catch the ending tomorrow."
+        "Put the landing in order."
       ],
-      "file": "/audio/voice/1d1a6104276c066b.mp3"
+      "file": "/audio/voice/5540e4e2e5e1ffb7.mp3"
     },
     {
-      "key": "c6216e9fc8e88c90",
+      "key": "6802ba8941efd671",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The little sun shouts 'DAYTIME!' at your brain till way past ten. Morning-you stumbles about like a grumpy zombie with sandpaper eyes.",
+      "text": "Quick! Which one still keeps you awake?",
       "lines": [
-        "The little sun shouts 'DAYTIME!' at your brain till way past ten. Morning-you stumbles about like a grumpy zombie with sandpaper eyes."
+        "Quick! Which one still keeps you awake?"
       ],
-      "file": "/audio/voice/c6216e9fc8e88c90.mp3"
+      "file": "/audio/voice/6802ba8941efd671.mp3"
     },
     {
-      "key": "8527533eb02a91ec",
+      "key": "87e27154e09edaa3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Here's the pro secret: games are built to never feel finished. YOU chose the ending anyway - and tomorrow-you plays better on a full battery.",
+      "text": "Your battery feels totally drained after a long screen morning. What's the FASTEST way to fill it back up? Is it option A... Get outside and move, then eat something real Option B... Switch to a calmer, quieter show to rest Or is it option C... Play a different game so my brain gets a change So, what do you think?",
       "lines": [
-        "Here's the pro secret: games are built to never feel finished. YOU chose the ending anyway - and tomorrow-you plays better on a full battery."
+        "Your battery feels totally drained after a long screen morning. What's the FASTEST way to fill it back up?",
+        "Is it option A...",
+        "Get outside and move, then eat something real",
+        "Option B...",
+        "Switch to a calmer, quieter show to rest",
+        "Or is it option C...",
+        "Play a different game so my brain gets a change",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/8527533eb02a91ec.mp3"
+      "file": "/audio/voice/87e27154e09edaa3.mp3"
     },
     {
-      "key": "ffd14d88d5947e81",
+      "key": "697b72a491ceaf83",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Games are built to NEVER feel finished - that's the trap. The Battery Thief giggles while your big recharge shrinks hour by hour.",
+      "text": "Saturday morning, and you are about to start a game. When is the EASIEST moment to decide how long you will play? Is it option A... When the game starts to feel finished Option B... Nothing, that's just how voices work mid-game Or is it option C... Right now, before I start, out loud with a grown-up So, what do you think?",
       "lines": [
-        "Games are built to NEVER feel finished - that's the trap. The Battery Thief giggles while your big recharge shrinks hour by hour."
+        "Saturday morning, and you are about to start a game. When is the EASIEST moment to decide how long you will play?",
+        "Is it option A...",
+        "When the game starts to feel finished",
+        "Option B...",
+        "Nothing, that's just how voices work mid-game",
+        "Or is it option C...",
+        "Right now, before I start, out loud with a grown-up",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/ffd14d88d5947e81.mp3"
+      "file": "/audio/voice/697b72a491ceaf83.mp3"
     },
     {
-      "key": "6d9af2716138e65b",
+      "key": "53fc8f0245d9b7d9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The messages are all still there in the morning - and you've got the battery to actually enjoy them. Best of both!",
+      "text": "Sleepover at Gran's, and there's no charging garage anywhere. Where does the tablet spend the night? Is it option A... Inside my sleeping bag to keep it warm Option B... Out of the room I sleep in, like on the kitchen side Or is it option C... Under my pillow so it can't get lost So, what do you think?",
       "lines": [
-        "The messages are all still there in the morning - and you've got the battery to actually enjoy them. Best of both!"
+        "Sleepover at Gran's, and there's no charging garage anywhere. Where does the tablet spend the night?",
+        "Is it option A...",
+        "Inside my sleeping bag to keep it warm",
+        "Option B...",
+        "Out of the room I sleep in, like on the kitchen side",
+        "Or is it option C...",
+        "Under my pillow so it can't get lost",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/6d9af2716138e65b.mp3"
+      "file": "/audio/voice/53fc8f0245d9b7d9.mp3"
     },
     {
-      "key": "7e7410b5ca5ec3af",
+      "key": "36bdc589b81555f5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Ping! Ping! Every buzz pokes a hole in your sleep. By Tuesday there are two drained, grumpy friends - the Battery Thief's favorite double steal.",
+      "text": "Mom hands you a screen-time rule she wrote all by herself. What actually makes a plan WORK? Is it option A... Building it together and both signing it, like teammates Option B... A grown-up writing it alone, they know best Or is it option C... No plan at all, I can feel when I've had enough So, what do you think?",
       "lines": [
-        "Ping! Ping! Every buzz pokes a hole in your sleep. By Tuesday there are two drained, grumpy friends - the Battery Thief's favorite double steal."
+        "Mom hands you a screen-time rule she wrote all by herself. What actually makes a plan WORK?",
+        "Is it option A...",
+        "Building it together and both signing it, like teammates",
+        "Option B...",
+        "A grown-up writing it alone, they know best",
+        "Or is it option C...",
+        "No plan at all, I can feel when I've had enough",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/7e7410b5ca5ec3af.mp3"
+      "file": "/audio/voice/36bdc589b81555f5.mp3"
     },
     {
-      "key": "03acb32cff86c551",
+      "key": "8a53a9d90a45819b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "What REFILLS your power bar?",
+      "text": "You keep telling yourself you'll stop 'when the game feels done.' Why does that never work? Is it option A... It works fine if the game is short enough Option B... Because grown-ups always interrupt before then Or is it option C... Games are built to never feel done, so I pick the ending So, what do you think?",
       "lines": [
-        "What REFILLS your power bar?"
+        "You keep telling yourself you'll stop 'when the game feels done.' Why does that never work?",
+        "Is it option A...",
+        "It works fine if the game is short enough",
+        "Option B...",
+        "Because grown-ups always interrupt before then",
+        "Or is it option C...",
+        "Games are built to never feel done, so I pick the ending",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/03acb32cff86c551.mp3"
+      "file": "/audio/voice/8a53a9d90a45819b.mp3"
     },
     {
-      "key": "b5a8e29917012cc6",
+      "key": "aedc765bb74629bd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - your eyes have gone dry and scratchy! What are they saying?",
+      "text": "That's right! A calmer show and a different game still glow, so they keep sipping charge. The recharge kit is moving, real food, rest and your people. That's what fills the bar back up.",
       "lines": [
-        "Quick - your eyes have gone dry and scratchy! What are they saying?"
+        "That's right!",
+        "A calmer show and a different game still glow, so they keep sipping charge. The recharge kit is moving, real food, rest and your people. That's what fills the bar back up."
       ],
-      "file": "/audio/voice/b5a8e29917012cc6.mp3"
+      "file": "/audio/voice/aedc765bb74629bd.mp3"
     },
     {
-      "key": "7f9176e7dd690d31",
+      "key": "ca5ed8a071130ae4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Is that true?",
+      "text": "Not quite. A calmer show and a different game still glow, so they keep sipping charge. The recharge kit is moving, real food, rest and your people. That's what fills the bar back up.",
       "lines": [
-        "Is that true?"
+        "Not quite.",
+        "A calmer show and a different game still glow, so they keep sipping charge. The recharge kit is moving, real food, rest and your people. That's what fills the bar back up."
       ],
-      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+      "file": "/audio/voice/ca5ed8a071130ae4.mp3"
     },
     {
-      "key": "eeac2e46f7245ca4",
+      "key": "8b5310d25f9e7cba",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Who makes the screen plan work best?",
+      "text": "That's right! Once you are inside a game, stopping is the hardest decision there is, and a game never feels finished, because that is how they are built. The easy moment is before you start, out loud, with a grown-up.",
       "lines": [
-        "Who makes the screen plan work best?"
+        "That's right!",
+        "Once you are inside a game, stopping is the hardest decision there is, and a game never feels finished, because that is how they are built. The easy moment is before you start, out loud, with a grown-up."
       ],
-      "file": "/audio/voice/eeac2e46f7245ca4.mp3"
+      "file": "/audio/voice/8b5310d25f9e7cba.mp3"
     },
     {
-      "key": "1c6eec04d2660124",
+      "key": "98cca60eb0605fa2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The bedtime chime rings mid-level! Tap your pro moves in order:",
+      "text": "Not quite. Once you are inside a game, stopping is the hardest decision there is, and a game never feels finished, because that is how they are built. The easy moment is before you start, out loud, with a grown-up.",
       "lines": [
-        "The bedtime chime rings mid-level! Tap your pro moves in order:"
+        "Not quite.",
+        "Once you are inside a game, stopping is the hardest decision there is, and a game never feels finished, because that is how they are built. The easy moment is before you start, out loud, with a grown-up."
       ],
-      "file": "/audio/voice/1c6eec04d2660124.mp3"
+      "file": "/audio/voice/98cca60eb0605fa2.mp3"
+    },
+    {
+      "key": "8b1ed20a21130e79",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A screen tucked that close puts a tiny sun right beside your brain all night. No charging spot at Gran's? The rule still works: the screen sleeps in another room, and the moon does the rest.",
+      "lines": [
+        "That's right!",
+        "A screen tucked that close puts a tiny sun right beside your brain all night. No charging spot at Gran's? The rule still works: the screen sleeps in another room, and the moon does the rest."
+      ],
+      "file": "/audio/voice/8b1ed20a21130e79.mp3"
+    },
+    {
+      "key": "de51638ab0a39620",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A screen tucked that close puts a tiny sun right beside your brain all night. No charging spot at Gran's? The rule still works: the screen sleeps in another room, and the moon does the rest.",
+      "lines": [
+        "Not quite.",
+        "A screen tucked that close puts a tiny sun right beside your brain all night. No charging spot at Gran's? The rule still works: the screen sleeps in another room, and the moon does the rest."
+      ],
+      "file": "/audio/voice/de51638ab0a39620.mp3"
+    },
+    {
+      "key": "55cd80a74e094a62",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A rule dropped on you feels unfair, and 'I can feel it' usually notices AFTER the battery is empty. A plan you build and sign WITH a grown-up is yours, and plans you own actually work.",
+      "lines": [
+        "That's right!",
+        "A rule dropped on you feels unfair, and 'I can feel it' usually notices AFTER the battery is empty. A plan you build and sign WITH a grown-up is yours, and plans you own actually work."
+      ],
+      "file": "/audio/voice/55cd80a74e094a62.mp3"
+    },
+    {
+      "key": "a3fb785d06eb9aa8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A rule dropped on you feels unfair, and 'I can feel it' usually notices AFTER the battery is empty. A plan you build and sign WITH a grown-up is yours, and plans you own actually work.",
+      "lines": [
+        "Not quite.",
+        "A rule dropped on you feels unfair, and 'I can feel it' usually notices AFTER the battery is empty. A plan you build and sign WITH a grown-up is yours, and plans you own actually work."
+      ],
+      "file": "/audio/voice/a3fb785d06eb9aa8.mp3"
+    },
+    {
+      "key": "a6bd7248286aec92",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every level ends at a shiny new level, that's how games are built, short ones too. Waiting for 'done' waits forever. A Battery Keeper decides the ending on purpose.",
+      "lines": [
+        "That's right!",
+        "Every level ends at a shiny new level, that's how games are built, short ones too. Waiting for 'done' waits forever. A Battery Keeper decides the ending on purpose."
+      ],
+      "file": "/audio/voice/a6bd7248286aec92.mp3"
+    },
+    {
+      "key": "2dfc63db660ab461",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Every level ends at a shiny new level, that's how games are built, short ones too. Waiting for 'done' waits forever. A Battery Keeper decides the ending on purpose.",
+      "lines": [
+        "Not quite.",
+        "Every level ends at a shiny new level, that's how games are built, short ones too. Waiting for 'done' waits forever. A Battery Keeper decides the ending on purpose."
+      ],
+      "file": "/audio/voice/2dfc63db660ab461.mp3"
+    },
+    {
+      "key": "b7a56bf182409b16",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Talking to your people over toast costs nothing and fills you right up. That is a real recharge.",
+      "lines": [
+        "Talking to your people over toast costs nothing and fills you right up. That is a real recharge."
+      ],
+      "file": "/audio/voice/b7a56bf182409b16.mp3"
+    },
+    {
+      "key": "d7eeb00141fec82c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Moving about outside is the fastest refill there is, and the console is still there afterwards.",
+      "lines": [
+        "Moving about outside is the fastest refill there is, and the console is still there afterwards."
+      ],
+      "file": "/audio/voice/d7eeb00141fec82c.mp3"
+    },
+    {
+      "key": "778de72efe67d42d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A story at half past eight winds you down instead of winding you up, and the night gets its full run at you.",
+      "lines": [
+        "A story at half past eight winds you down instead of winding you up, and the night gets its full run at you."
+      ],
+      "file": "/audio/voice/778de72efe67d42d.mp3"
+    },
+    {
+      "key": "d49293c1f1bfa99f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody is taking your screens away. An empty side is not level, it is tipped the other way.",
+      "lines": [
+        "Nobody is taking your screens away. An empty side is not level, it is tipped the other way."
+      ],
+      "file": "/audio/voice/d49293c1f1bfa99f.mp3"
+    },
+    {
+      "key": "234c2a353c995473",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A day can tip over with useful things in it too. The size is what matters, not the subject.",
+      "lines": [
+        "A day can tip over with useful things in it too. The size is what matters, not the subject."
+      ],
+      "file": "/audio/voice/234c2a353c995473.mp3"
+    },
+    {
+      "key": "d3735f49ddb89194",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is a rule about days, not about balance. A tipped-over Saturday is still tipped over.",
+      "lines": [
+        "That is a rule about days, not about balance. A tipped-over Saturday is still tipped over."
+      ],
+      "file": "/audio/voice/d3735f49ddb89194.mp3"
+    },
+    {
+      "key": "6dcbc3fcc97815fe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one still has the fun in it?",
+      "lines": [
+        "Which one still has the fun in it?"
+      ],
+      "file": "/audio/voice/6dcbc3fcc97815fe.mp3"
+    },
+    {
+      "key": "8c6efb59feb7fd4d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The game still gets a proper go, and football still happens. The jug stretched to both because you poured on purpose.",
+      "lines": [
+        "The game still gets a proper go, and football still happens. The jug stretched to both because you poured on purpose."
+      ],
+      "file": "/audio/voice/8c6efb59feb7fd4d.mp3"
+    },
+    {
+      "key": "1e2e6b736ae1b127",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The film is at seven whatever you do, so the hour before it is the only one homework can have.",
+      "lines": [
+        "The film is at seven whatever you do, so the hour before it is the only one homework can have."
+      ],
+      "file": "/audio/voice/1e2e6b736ae1b127.mp3"
+    },
+    {
+      "key": "7a6227165d1b2546",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One hour only pours one way, so you choose it, and the others get a real time instead of a maybe.",
+      "lines": [
+        "One hour only pours one way, so you choose it, and the others get a real time instead of a maybe."
+      ],
+      "file": "/audio/voice/7a6227165d1b2546.mp3"
+    },
+    {
+      "key": "6fd2f76ea7dd99e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An hour borrowed from tonight comes straight out of tomorrow, and you are the one who pays it back.",
+      "lines": [
+        "An hour borrowed from tonight comes straight out of tomorrow, and you are the one who pays it back."
+      ],
+      "file": "/audio/voice/6fd2f76ea7dd99e8.mp3"
+    },
+    {
+      "key": "37d8ac06ff53e33d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The jug is the jug. Wanting more day has never once made more day.",
+      "lines": [
+        "The jug is the jug. Wanting more day has never once made more day."
+      ],
+      "file": "/audio/voice/37d8ac06ff53e33d.mp3"
+    },
+    {
+      "key": "f106f2162e558e5d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Football pours from the same jug as the game does. Every hour comes out of it.",
+      "lines": [
+        "Football pours from the same jug as the game does. Every hour comes out of it."
+      ],
+      "file": "/audio/voice/f106f2162e558e5d.mp3"
+    },
+    {
+      "key": "e334571fa276c4ab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Borrowing is real, and tomorrow is the one who pays. That makes tomorrow's jug smaller, not tonight's bigger.",
+      "lines": [
+        "Borrowing is real, and tomorrow is the one who pays. That makes tomorrow's jug smaller, not tonight's bigger."
+      ],
+      "file": "/audio/voice/e334571fa276c4ab.mp3"
+    },
+    {
+      "key": "dd79f833b339c289",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If the jug never gets bigger, where does the hour come from?",
+      "lines": [
+        "If the jug never gets bigger, where does the hour come from?"
+      ],
+      "file": "/audio/voice/dd79f833b339c289.mp3"
+    },
+    {
+      "key": "9b7e4cf46854fba0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An hour, then swimming, and Dad knows. Every dial has a real answer in it, so there is nothing left to argue about later.",
+      "lines": [
+        "An hour, then swimming, and Dad knows. Every dial has a real answer in it, so there is nothing left to argue about later."
+      ],
+      "file": "/audio/voice/9b7e4cf46854fba0.mp3"
+    },
+    {
+      "key": "613360ce531a5615",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Half an hour, then homework at the table, and Mum heard it first. That plan survives the moment you do not feel like stopping.",
+      "lines": [
+        "Half an hour, then homework at the table, and Mum heard it first. That plan survives the moment you do not feel like stopping."
+      ],
+      "file": "/audio/voice/613360ce531a5615.mp3"
+    },
+    {
+      "key": "0dd4028842f3c182",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A real stopping time, something good to do after, and the grown-up who is actually in the house knows it. That is a plan that works away from home.",
+      "lines": [
+        "A real stopping time, something good to do after, and the grown-up who is actually in the house knows it. That is a plan that works away from home."
+      ],
+      "file": "/audio/voice/0dd4028842f3c182.mp3"
+    },
+    {
+      "key": "b028fae56b93074f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Being good at it makes it more fun to carry on, not easier to stop. That is the opposite of a finish line.",
+      "lines": [
+        "Being good at it makes it more fun to carry on, not easier to stop. That is the opposite of a finish line."
+      ],
+      "file": "/audio/voice/b028fae56b93074f.mp3"
+    },
+    {
+      "key": "8db87d0519d500f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Short games just start again. The one that ends by itself is very rare indeed.",
+      "lines": [
+        "Short games just start again. The one that ends by itself is very rare indeed."
+      ],
+      "file": "/audio/voice/8db87d0519d500f0.mp3"
+    },
+    {
+      "key": "c26c0546c4a1b860",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ten seconds outside the game saves the whole argument later. That is a very good trade.",
+      "lines": [
+        "Ten seconds outside the game saves the whole argument later. That is a very good trade."
+      ],
+      "file": "/audio/voice/c26c0546c4a1b860.mp3"
+    },
+    {
+      "key": "51514b6bbf6dfbe7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "When was the last time a game told you it was over?",
+      "lines": [
+        "When was the last time a game told you it was over?"
+      ],
+      "file": "/audio/voice/51514b6bbf6dfbe7.mp3"
+    },
+    {
+      "key": "b47eb4b04f2a694b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery.",
+      "lines": [
+        "Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery."
+      ],
+      "file": "/audio/voice/b47eb4b04f2a694b.mp3"
+    },
+    {
+      "key": "6de243a12156bae0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saved, said a proper goodbye, plugged in. Your three friends know you left, and the tea is still hot.",
+      "lines": [
+        "Saved, said a proper goodbye, plugged in. Your three friends know you left, and the tea is still hot."
+      ],
+      "file": "/audio/voice/6de243a12156bae0.mp3"
+    },
+    {
+      "key": "d1ed97ff8f9b749f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saved, said bye, and on charge outside the bedroom. Tomorrow-you wakes up to a full battery and no argument.",
+      "lines": [
+        "Saved, said bye, and on charge outside the bedroom. Tomorrow-you wakes up to a full battery and no argument."
+      ],
+      "file": "/audio/voice/d1ed97ff8f9b749f.mp3"
+    },
+    {
+      "key": "3dbe53d0c062491a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one cannot wait even twenty seconds?",
+      "lines": [
+        "Which one cannot wait even twenty seconds?"
+      ],
+      "file": "/audio/voice/3dbe53d0c062491a.mp3"
+    },
+    {
+      "key": "d5af3bada6ce0d3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Face down still means within reach, and within reach means one more look. It charges by the door instead.",
+      "lines": [
+        "Face down still means within reach, and within reach means one more look. It charges by the door instead."
+      ],
+      "file": "/audio/voice/d5af3bada6ce0d3a.mp3"
+    },
+    {
+      "key": "62840bb108886efe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Still warm means recently played, and a console by the bed is an invitation. Out it goes, on charge.",
+      "lines": [
+        "Still warm means recently played, and a console by the bed is an invitation. Out it goes, on charge."
+      ],
+      "file": "/audio/voice/62840bb108886efe.mp3"
+    },
+    {
+      "key": "99760acbaa5a465f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Charging is the right idea in the wrong room. Every buzz lands next to your ear all night.",
+      "lines": [
+        "Charging is the right idea in the wrong room. Every buzz lands next to your ear all night."
+      ],
+      "file": "/audio/voice/99760acbaa5a465f.mp3"
+    },
+    {
+      "key": "4a73c432d13bb0e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A blinking light in a dark room keeps catching your eye, and standby is not off. Properly off, for the night.",
+      "lines": [
+        "A blinking light in a dark room keeps catching your eye, and standby is not off. Properly off, for the night."
+      ],
+      "file": "/audio/voice/4a73c432d13bb0e2.mp3"
+    },
+    {
+      "key": "e0535e2a9a21580f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A book makes no light and no noise. It is on the settling side, every time.",
+      "lines": [
+        "A book makes no light and no noise. It is on the settling side, every time."
+      ],
+      "file": "/audio/voice/e0535e2a9a21580f.mp3"
+    },
+    {
+      "key": "85c8a55de31337cd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A low warm lamp helps you wind down. It is bright screens your brain argues with.",
+      "lines": [
+        "A low warm lamp helps you wind down. It is bright screens your brain argues with."
+      ],
+      "file": "/audio/voice/85c8a55de31337cd.mp3"
+    },
+    {
+      "key": "6e48726dbe67a4e5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Level is the goal, never empty. Two screen blocks stayed on that see-saw and it still balanced.",
+      "lines": [
+        "Level is the goal, never empty. Two screen blocks stayed on that see-saw and it still balanced."
+      ],
+      "file": "/audio/voice/6e48726dbe67a4e5.mp3"
+    },
+    {
+      "key": "85e9ca8c0eeefea2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every hour you pour into one thing is an hour not going into another. That is just how much a jug holds.",
+      "lines": [
+        "Every hour you pour into one thing is an hour not going into another. That is just how much a jug holds."
+      ],
+      "file": "/audio/voice/85e9ca8c0eeefea2.mp3"
+    },
+    {
+      "key": "e763283f8c3d6e01",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A game never feels finished, because they are built that way. So you decide how long while you are still outside it.",
+      "lines": [
+        "A game never feels finished, because they are built that way. So you decide how long while you are still outside it."
+      ],
+      "file": "/audio/voice/e763283f8c3d6e01.mp3"
+    },
+    {
+      "key": "16fdc3443a03c866",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stopping badly is what makes stopping hurt. Landing it takes twenty seconds and there is no fight.",
+      "lines": [
+        "Stopping badly is what makes stopping hurt. Landing it takes twenty seconds and there is no fight."
+      ],
+      "file": "/audio/voice/16fdc3443a03c866.mp3"
+    },
+    {
+      "key": "e836500b2beae46c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Face down and silent is still one more look away, and screen light tells your brain it is daytime.",
+      "lines": [
+        "Face down and silent is still one more look away, and screen light tells your brain it is daytime."
+      ],
+      "file": "/audio/voice/e836500b2beae46c.mp3"
+    },
+    {
+      "key": "be962a7e52c66ab9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody is taking your screens away. A hero with a level day gets the game AND the park AND the sleep.",
+      "lines": [
+        "Nobody is taking your screens away. A hero with a level day gets the game AND the park AND the sleep."
+      ],
+      "file": "/audio/voice/be962a7e52c66ab9.mp3"
+    },
+    {
+      "key": "8ed25793b1f5785f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sneaky, but silent cartoons are still a screen. Your eyes do not care about the volume.",
+      "lines": [
+        "Sneaky, but silent cartoons are still a screen. Your eyes do not care about the volume."
+      ],
+      "file": "/audio/voice/8ed25793b1f5785f.mp3"
+    },
+    {
+      "key": "5c2b12caf0ded312",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A smaller screen is still a screen. Shrinking it does not take it off the plank.",
+      "lines": [
+        "A smaller screen is still a screen. Shrinking it does not take it off the plank."
+      ],
+      "file": "/audio/voice/5c2b12caf0ded312.mp3"
+    },
+    {
+      "key": "489570ca4baaa5b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is a screen swapped for a screen. The plank feels exactly the same weight.",
+      "lines": [
+        "That is a screen swapped for a screen. The plank feels exactly the same weight."
+      ],
+      "file": "/audio/voice/489570ca4baaa5b3.mp3"
+    },
+    {
+      "key": "789c6a070c2ca982",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Crisps at the controller is not a recharge and it is not dinner. The block has not moved.",
+      "lines": [
+        "Crisps at the controller is not a recharge and it is not dinner. The block has not moved."
+      ],
+      "file": "/audio/voice/789c6a070c2ca982.mp3"
+    },
+    {
+      "key": "f41620e7354adcd7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dimmer is still light, and your brain still reads it as daytime. The block stays put.",
+      "lines": [
+        "Dimmer is still light, and your brain still reads it as daytime. The block stays put."
+      ],
+      "file": "/audio/voice/f41620e7354adcd7.mp3"
+    },
+    {
+      "key": "ebdbd79da18f7549",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Autoplay keeps going long after you stop watching. That is the heaviest block on the plank.",
+      "lines": [
+        "Autoplay keeps going long after you stop watching. That is the heaviest block on the plank."
+      ],
+      "file": "/audio/voice/ebdbd79da18f7549.mp3"
+    },
+    {
+      "key": "8a314b7db2de4db2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Five hours is a lovely idea and the jug is the jug. That pour empties football out of the day, and the team notices.",
+      "lines": [
+        "Five hours is a lovely idea and the jug is the jug. That pour empties football out of the day, and the team notices."
+      ],
+      "file": "/audio/voice/8a314b7db2de4db2.mp3"
+    },
+    {
+      "key": "d8fed8fd810b105f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You do not have to give it up to fit football in. Emptying the cup is not the same as sharing the jug.",
+      "lines": [
+        "You do not have to give it up to fit football in. Emptying the cup is not the same as sharing the jug."
+      ],
+      "file": "/audio/voice/d8fed8fd810b105f.mp3"
+    },
+    {
+      "key": "8f6af798521af95d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "After the film it is bedtime, so that pour quietly empties the homework cup and borrows from sleep as well.",
+      "lines": [
+        "After the film it is bedtime, so that pour quietly empties the homework cup and borrows from sleep as well."
+      ],
+      "file": "/audio/voice/8f6af798521af95d.mp3"
+    },
+    {
+      "key": "b6cf84605ca69436",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Doing two things at once pours into both cups badly. You end up with half a film and half a homework.",
+      "lines": [
+        "Doing two things at once pours into both cups badly. You end up with half a film and half a homework."
+      ],
+      "file": "/audio/voice/b6cf84605ca69436.mp3"
+    },
+    {
+      "key": "8db7051dd528204e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three things in one hour gives everybody twenty rushed minutes. The jug does not get bigger for being hurried.",
+      "lines": [
+        "Three things in one hour gives everybody twenty rushed minutes. The jug does not get bigger for being hurried."
+      ],
+      "file": "/audio/voice/8db7051dd528204e.mp3"
+    },
+    {
+      "key": "64b8243b854ecbe1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That still pours the hour out, it just pours it where nobody chose. The jug empties either way.",
+      "lines": [
+        "That still pours the hour out, it just pours it where nobody chose. The jug empties either way."
+      ],
+      "file": "/audio/voice/64b8243b854ecbe1.mp3"
+    },
+    {
+      "key": "e0a3562717d36a94",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sleep is the cup that refills all the others, so borrowing from it makes tomorrow's whole jug smaller.",
+      "lines": [
+        "Sleep is the cup that refills all the others, so borrowing from it makes tomorrow's whole jug smaller."
+      ],
+      "file": "/audio/voice/e0a3562717d36a94.mp3"
+    },
+    {
+      "key": "cffb2abdf5d46495",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A lie-in pours tomorrow morning away to pay for tonight. The hour still came out of the jug, just later.",
+      "lines": [
+        "A lie-in pours tomorrow morning away to pay for tonight. The hour still came out of the jug, just later."
+      ],
+      "file": "/audio/voice/cffb2abdf5d46495.mp3"
+    },
+    {
+      "key": "86d7ba66aba1a581",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A plan needs all three. See how it goes is not a how long, not thought about it is not a what after, and a plan nobody else heard is just a thought.",
+      "lines": [
+        "A plan needs all three. See how it goes is not a how long, not thought about it is not a what after, and a plan nobody else heard is just a thought."
+      ],
+      "file": "/audio/voice/86d7ba66aba1a581.mp3"
+    },
+    {
+      "key": "b53e5fb526318e6e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Until it feels done never arrives, telly after a game is a screen after a screen, and telling her afterwards is not a plan, it is a report.",
+      "lines": [
+        "Until it feels done never arrives, telly after a game is a screen after a screen, and telling her afterwards is not a plan, it is a report."
+      ],
+      "file": "/audio/voice/b53e5fb526318e6e.mp3"
+    },
+    {
+      "key": "70da7eb926c2260f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Until we get tired always means later than you think, a film after a game is still a screen, and the grown-up who can help is the one in THIS house, not the one at home.",
+      "lines": [
+        "Until we get tired always means later than you think, a film after a game is still a screen, and the grown-up who can help is the one in THIS house, not the one at home."
+      ],
+      "file": "/audio/voice/70da7eb926c2260f.mp3"
+    },
+    {
+      "key": "4abddbf3cd0e428b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quitting now throws the half-finished level away. Save it first and it is still there tomorrow.",
+      "lines": [
+        "Quitting now throws the half-finished level away. Save it first and it is still there tomorrow."
+      ],
+      "file": "/audio/voice/4abddbf3cd0e428b.mp3"
+    },
+    {
+      "key": "1a59dbf0de3ad020",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One more level is the exact thing your plan already answered. The plan was made out here, where thinking is easy.",
+      "lines": [
+        "One more level is the exact thing your plan already answered. The plan was made out here, where thinking is easy."
+      ],
+      "file": "/audio/voice/1a59dbf0de3ad020.mp3"
+    },
+    {
+      "key": "fcf18e0054b895f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing on this panel needs to be brighter. You are landing, not taking off again.",
+      "lines": [
+        "Nothing on this panel needs to be brighter. You are landing, not taking off again."
+      ],
+      "file": "/audio/voice/fcf18e0054b895f2.mp3"
+    },
+    {
+      "key": "4912cbd1f2dc96ad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Vanishing mid-game leaves three friends wondering what happened. Ten seconds of goodbye saves all of that.",
+      "lines": [
+        "Vanishing mid-game leaves three friends wondering what happened. Ten seconds of goodbye saves all of that."
+      ],
+      "file": "/audio/voice/4912cbd1f2dc96ad.mp3"
+    },
+    {
+      "key": "54bd964ad92188bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Muting hides the room, it does not stop the game. The tea goes cold and you are still in it.",
+      "lines": [
+        "Muting hides the room, it does not stop the game. The tea goes cold and you are still in it."
+      ],
+      "file": "/audio/voice/54bd964ad92188bd.mp3"
+    },
+    {
+      "key": "114094b11fb1ad3d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Inviting somebody now starts a whole new game just as you are trying to end this one.",
+      "lines": [
+        "Inviting somebody now starts a whole new game just as you are trying to end this one."
+      ],
+      "file": "/audio/voice/114094b11fb1ad3d.mp3"
+    },
+    {
+      "key": "0105e3a5769fe5d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A tablet in the bed is the Battery Thief's favourite place in the house. It goes on charge instead.",
+      "lines": [
+        "A tablet in the bed is the Battery Thief's favourite place in the house. It goes on charge instead."
+      ],
+      "file": "/audio/voice/0105e3a5769fe5d7.mp3"
+    },
+    {
+      "key": "e364d6593137b91e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Low power mode just makes a flat tablet last a bit longer. It does not end anything.",
+      "lines": [
+        "Low power mode just makes a flat tablet last a bit longer. It does not end anything."
+      ],
+      "file": "/audio/voice/e364d6593137b91e.mp3"
+    },
+    {
+      "key": "70e6bbd1179abba9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Setting an alarm keeps the tablet in your hand and in your room. The clock can do that job.",
+      "lines": [
+        "Setting an alarm keeps the tablet in your hand and in your room. The clock can do that job."
+      ],
+      "file": "/audio/voice/70e6bbd1179abba9.mp3"
+    },
+    {
+      "key": "407c3a1b5be19545",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That book winds you down instead of winding you up, and it shines no light at all. It stays.",
+      "lines": [
+        "That book winds you down instead of winding you up, and it shines no light at all. It stays."
+      ],
+      "file": "/audio/voice/407c3a1b5be19545.mp3"
+    },
+    {
+      "key": "f8155c1cb8a27cf5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A low warm lamp helps you settle. It is the bright blue-white screens your brain argues with, not this.",
+      "lines": [
+        "A low warm lamp helps you settle. It is the bright blue-white screens your brain argues with, not this."
+      ],
+      "file": "/audio/voice/f8155c1cb8a27cf5.mp3"
+    },
+    {
+      "key": "12e44116a5141115",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is not a screen and it never wakes anybody. It stays exactly where it is.",
+      "lines": [
+        "That is not a screen and it never wakes anybody. It stays exactly where it is."
+      ],
+      "file": "/audio/voice/12e44116a5141115.mp3"
+    },
+    {
+      "key": "ccd47e02a0f49402",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A calmer show and a different game still glow, so they keep sipping charge. The recharge kit is moving, real food, rest and your people. That's what fills the bar back up.",
+      "lines": [
+        "A calmer show and a different game still glow, so they keep sipping charge. The recharge kit is moving, real food, rest and your people. That's what fills the bar back up."
+      ],
+      "file": "/audio/voice/ccd47e02a0f49402.mp3"
+    },
+    {
+      "key": "5aa2ff87ef5c144a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Once you are inside a game, stopping is the hardest decision there is, and a game never feels finished, because that is how they are built. The easy moment is before you start, out loud, with a grown-up.",
+      "lines": [
+        "Once you are inside a game, stopping is the hardest decision there is, and a game never feels finished, because that is how they are built. The easy moment is before you start, out loud, with a grown-up."
+      ],
+      "file": "/audio/voice/5aa2ff87ef5c144a.mp3"
+    },
+    {
+      "key": "e80ea791cab42332",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A screen tucked that close puts a tiny sun right beside your brain all night. No charging spot at Gran's? The rule still works: the screen sleeps in another room, and the moon does the rest.",
+      "lines": [
+        "A screen tucked that close puts a tiny sun right beside your brain all night. No charging spot at Gran's? The rule still works: the screen sleeps in another room, and the moon does the rest."
+      ],
+      "file": "/audio/voice/e80ea791cab42332.mp3"
+    },
+    {
+      "key": "5b4984c3f839ebc1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A rule dropped on you feels unfair, and 'I can feel it' usually notices AFTER the battery is empty. A plan you build and sign WITH a grown-up is yours, and plans you own actually work.",
+      "lines": [
+        "A rule dropped on you feels unfair, and 'I can feel it' usually notices AFTER the battery is empty. A plan you build and sign WITH a grown-up is yours, and plans you own actually work."
+      ],
+      "file": "/audio/voice/5b4984c3f839ebc1.mp3"
+    },
+    {
+      "key": "0bcaeabf495ca38a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every level ends at a shiny new level, that's how games are built, short ones too. Waiting for 'done' waits forever. A Battery Keeper decides the ending on purpose.",
+      "lines": [
+        "Every level ends at a shiny new level, that's how games are built, short ones too. Waiting for 'done' waits forever. A Battery Keeper decides the ending on purpose."
+      ],
+      "file": "/audio/voice/0bcaeabf495ca38a.mp3"
+    },
+    {
+      "key": "4157baea36ab931e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Deciding is easy outside a game and hardest inside one, so Keepers set it before they start.",
+      "lines": [
+        "Deciding is easy outside a game and hardest inside one, so Keepers set it before they start."
+      ],
+      "file": "/audio/voice/4157baea36ab931e.mp3"
+    },
+    {
+      "key": "4c872f9e2946a22f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Park the screen, and the moon handles the biggest recharge of all.",
+      "lines": [
+        "Park the screen, and the moon handles the biggest recharge of all."
+      ],
+      "file": "/audio/voice/4c872f9e2946a22f.mp3"
+    },
+    {
+      "key": "a604a2a560bce542",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Screens are fun and they USE charge - the refills come from everywhere else.",
+      "lines": [
+        "Screens are fun and they USE charge - the refills come from everywhere else."
+      ],
+      "file": "/audio/voice/a604a2a560bce542.mp3"
+    },
+    {
+      "key": "049b6fcd9dd77475",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Waiting for a game to feel finished is waiting forever - pros pick their own ending.",
+      "lines": [
+        "Waiting for a game to feel finished is waiting forever - pros pick their own ending."
+      ],
+      "file": "/audio/voice/049b6fcd9dd77475.mp3"
+    },
+    {
+      "key": "9844e7b50bb391ba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A plan you helped build is a plan you own - and plans you own actually work.",
+      "lines": [
+        "A plan you helped build is a plan you own - and plans you own actually work."
+      ],
+      "file": "/audio/voice/9844e7b50bb391ba.mp3"
+    },
+    {
+      "key": "a01a47a9aed1aaad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quieter, smaller and dimmer are still screens - real recharges have no glow at all.",
+      "lines": [
+        "Quieter, smaller and dimmer are still screens - real recharges have no glow at all."
+      ],
+      "file": "/audio/voice/a01a47a9aed1aaad.mp3"
+    },
+    {
+      "key": "b769cbec186ebb8e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Screen light works like a tiny sun - and brains don't sleep in 'daytime'.",
+      "lines": [
+        "Screen light works like a tiny sun - and brains don't sleep in 'daytime'."
+      ],
+      "file": "/audio/voice/b769cbec186ebb8e.mp3"
+    },
+    {
+      "key": "f4b833590504b613",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Finish first - endings feel great when they're tidy and YOURS.",
+      "lines": [
+        "Finish first - endings feel great when they're tidy and YOURS."
+      ],
+      "file": "/audio/voice/f4b833590504b613.mp3"
+    },
+    {
+      "key": "a7437ca7c34bb05d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The see-saw kept two screen blocks aboard - balance keeps the fun IN.",
+      "lines": [
+        "The see-saw kept two screen blocks aboard - balance keeps the fun IN."
+      ],
+      "file": "/audio/voice/a7437ca7c34bb05d.mp3"
+    },
+    {
+      "key": "c31fa86df85bea2f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Seven in the morning. Cartoons at breakfast, cartoons brushing teeth, cartoons in the car. The plank is creaking. Swap this block for a real recharge.",
+      "lines": [
+        "Seven in the morning. Cartoons at breakfast, cartoons brushing teeth, cartoons in the car. The plank is creaking. Swap this block for a real recharge."
+      ],
+      "file": "/audio/voice/c31fa86df85bea2f.mp3"
+    },
+    {
+      "key": "7ed655ff4fdfdae0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Home from school, bag still on, straight onto the console until tea. That block is heavy. Swap it.",
+      "lines": [
+        "Home from school, bag still on, straight onto the console until tea. That block is heavy. Swap it."
+      ],
+      "file": "/audio/voice/7ed655ff4fdfdae0.mp3"
+    },
+    {
+      "key": "154d5d3b3b4965fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Half past eight, and one more episode is running with the light off. Swap the last block and the see-saw might just sit level.",
+      "lines": [
+        "Half past eight, and one more episode is running with the light off. Swap the last block and the see-saw might just sit level."
+      ],
+      "file": "/audio/voice/154d5d3b3b4965fc.mp3"
+    },
+    {
+      "key": "1060c4acbc724d28",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saturday: the new game arrived",
+      "lines": [
+        "Saturday: the new game arrived"
+      ],
+      "file": "/audio/voice/1060c4acbc724d28.mp3"
+    },
+    {
+      "key": "08d5af7bf4bcfce5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two hours now, football, more after",
+      "lines": [
+        "Two hours now, football, more after"
+      ],
+      "file": "/audio/voice/08d5af7bf4bcfce5.mp3"
+    },
+    {
+      "key": "d5ea041e634efb55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Five hours now, skip football",
+      "lines": [
+        "Five hours now, skip football"
+      ],
+      "file": "/audio/voice/d5ea041e634efb55.mp3"
+    },
+    {
+      "key": "042678a923f95357",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No game at all today",
+      "lines": [
+        "No game at all today"
+      ],
+      "file": "/audio/voice/042678a923f95357.mp3"
+    },
+    {
+      "key": "43778cd9e6e32bcc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Thursday: homework and a film night",
+      "lines": [
+        "Thursday: homework and a film night"
+      ],
+      "file": "/audio/voice/43778cd9e6e32bcc.mp3"
+    },
+    {
+      "key": "ed7c78fdbbf1f43a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Homework now, film at seven",
+      "lines": [
+        "Homework now, film at seven"
+      ],
+      "file": "/audio/voice/ed7c78fdbbf1f43a.mp3"
+    },
+    {
+      "key": "4853bb251392747d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Film first, homework after",
+      "lines": [
+        "Film first, homework after"
+      ],
+      "file": "/audio/voice/4853bb251392747d.mp3"
+    },
+    {
+      "key": "2756c397407283ba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Homework during the film",
+      "lines": [
+        "Homework during the film"
+      ],
+      "file": "/audio/voice/2756c397407283ba.mp3"
+    },
+    {
+      "key": "b5f8ca1b34d20f4e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sunday: everybody wants an hour",
+      "lines": [
+        "Sunday: everybody wants an hour"
+      ],
+      "file": "/audio/voice/b5f8ca1b34d20f4e.mp3"
+    },
+    {
+      "key": "0cd2526098d7ae7d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pick one, and say when for the others",
+      "lines": [
+        "Pick one, and say when for the others"
+      ],
+      "file": "/audio/voice/0cd2526098d7ae7d.mp3"
+    },
+    {
+      "key": "0d7378de1642b7b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Squeeze all three into the hour",
+      "lines": [
+        "Squeeze all three into the hour"
+      ],
+      "file": "/audio/voice/0d7378de1642b7b3.mp3"
+    },
+    {
+      "key": "16b60e386c00344b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Do none of them and scroll",
+      "lines": [
+        "Do none of them and scroll"
+      ],
+      "file": "/audio/voice/16b60e386c00344b.mp3"
+    },
+    {
+      "key": "84885576f397a021",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The hour that borrows from tomorrow",
+      "lines": [
+        "The hour that borrows from tomorrow"
+      ],
+      "file": "/audio/voice/84885576f397a021.mp3"
+    },
+    {
+      "key": "54235fe2e343a0e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Stop. Tomorrow's jug is not mine to spend",
+      "lines": [
+        "Stop. Tomorrow's jug is not mine to spend"
+      ],
+      "file": "/audio/voice/54235fe2e343a0e6.mp3"
+    },
+    {
+      "key": "abf5ba39281c94bb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Borrow it from sleep, just tonight",
+      "lines": [
+        "Borrow it from sleep, just tonight"
+      ],
+      "file": "/audio/voice/abf5ba39281c94bb.mp3"
+    },
+    {
+      "key": "226b0b2afa34aca0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Borrow it and lie in tomorrow",
+      "lines": [
+        "Borrow it and lie in tomorrow"
+      ],
+      "file": "/audio/voice/226b0b2afa34aca0.mp3"
+    },
+    {
+      "key": "6c6e18541b610d0a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saturday, and the new game arrived. You want five hours on it. The jug holds the day, and football training is at eleven.",
+      "lines": [
+        "Saturday, and the new game arrived. You want five hours on it. The jug holds the day, and football training is at eleven."
+      ],
+      "file": "/audio/voice/6c6e18541b610d0a.mp3"
+    },
+    {
+      "key": "0167311e3249071b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Thursday. There is homework, and the family film starts at seven. It is six o'clock now.",
+      "lines": [
+        "Thursday. There is homework, and the family film starts at seven. It is six o'clock now."
+      ],
+      "file": "/audio/voice/0167311e3249071b.mp3"
+    },
+    {
+      "key": "23ab1bf4bfed0708",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sunday. Gran wants a video call, your friend wants you online, and you want to finish your model. There is one hour left in the jug.",
+      "lines": [
+        "Sunday. Gran wants a video call, your friend wants you online, and you want to finish your model. There is one hour left in the jug."
+      ],
+      "file": "/audio/voice/23ab1bf4bfed0708.mp3"
+    },
+    {
+      "key": "ed186492a21df7ad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is late. You are enjoying yourself and the jug is empty, so this hour has to come from somewhere else.",
+      "lines": [
+        "It is late. You are enjoying yourself and the jug is empty, so this hour has to come from somewhere else."
+      ],
+      "file": "/audio/voice/ed186492a21df7ad.mp3"
+    },
+    {
+      "key": "46e567315e094e2d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saturday morning, and swimming is at half past eleven. Set your plan before you press play.",
+      "lines": [
+        "Saturday morning, and swimming is at half past eleven. Set your plan before you press play."
+      ],
+      "file": "/audio/voice/46e567315e094e2d.mp3"
+    },
+    {
+      "key": "632525395d877c80",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tuesday after school. Tea is at six and the homework is not done. It is four o'clock.",
+      "lines": [
+        "Tuesday after school. Tea is at six and the homework is not done. It is four o'clock."
+      ],
+      "file": "/audio/voice/632525395d877c80.mp3"
+    },
+    {
+      "key": "09bc630e210eee85",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A sleepover at your friend's house, and there is a console right there in the room. It is nearly nine.",
+      "lines": [
+        "A sleepover at your friend's house, and there is a console right there in the room. It is nearly nine."
+      ],
+      "file": "/audio/voice/09bc630e210eee85.mp3"
+    },
+    {
+      "key": "d3ec80aea3e02d6c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your half hour is up and you are halfway through a level. The panel is open. Find save, then say bye, then plug in.",
+      "lines": [
+        "Your half hour is up and you are halfway through a level. The panel is open. Find save, then say bye, then plug in."
+      ],
+      "file": "/audio/voice/d3ec80aea3e02d6c.mp3"
+    },
+    {
+      "key": "084aa8f522211169",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tea is ready, and you are in a team game with three friends. Find save, then say bye, then plug in.",
+      "lines": [
+        "Tea is ready, and you are in a team game with three friends. Find save, then say bye, then plug in."
+      ],
+      "file": "/audio/voice/084aa8f522211169.mp3"
+    },
+    {
+      "key": "137e61368cfc972f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is bedtime and the tablet is nearly flat. Find save, then say bye, then plug in.",
+      "lines": [
+        "It is bedtime and the tablet is nearly flat. Find save, then say bye, then plug in."
+      ],
+      "file": "/audio/voice/137e61368cfc972f.mp3"
+    },
+    {
+      "key": "02362b23ff05becd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Save comes first. Everything else can wait twenty seconds, but an unsaved level cannot.",
+      "lines": [
+        "Save comes first. Everything else can wait twenty seconds, but an unsaved level cannot."
+      ],
+      "file": "/audio/voice/02362b23ff05becd.mp3"
+    },
+    {
+      "key": "a4ae81f4a576624f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Say bye before you plug in. Your friends are still standing there waiting for you.",
+      "lines": [
+        "Say bye before you plug in. Your friends are still standing there waiting for you."
+      ],
+      "file": "/audio/voice/a4ae81f4a576624f.mp3"
+    },
+    {
+      "key": "1684dad649cb3028",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Save first, even with a team waiting on you. Your own progress is yours to keep.",
+      "lines": [
+        "Save first, even with a team waiting on you. Your own progress is yours to keep."
+      ],
+      "file": "/audio/voice/1684dad649cb3028.mp3"
+    },
+    {
+      "key": "601768854417bb79",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now say bye. Leaving without a word is the bit friends actually mind.",
+      "lines": [
+        "Now say bye. Leaving without a word is the bit friends actually mind."
+      ],
+      "file": "/audio/voice/601768854417bb79.mp3"
+    },
+    {
+      "key": "dc1ff9543c559188",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Save first. Even at bedtime, whatever you were doing gets to survive the night.",
+      "lines": [
+        "Save first. Even at bedtime, whatever you were doing gets to survive the night."
+      ],
+      "file": "/audio/voice/dc1ff9543c559188.mp3"
+    },
+    {
+      "key": "357c5ac4531ab893",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Say bye before it goes on charge, so nobody is left mid-conversation.",
+      "lines": [
+        "Say bye before it goes on charge, so nobody is left mid-conversation."
+      ],
+      "file": "/audio/voice/357c5ac4531ab893.mp3"
+    },
+    {
+      "key": "d2baa7a576ed495e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The tablet, face down on the pillow.",
+      "lines": [
+        "The tablet, face down on the pillow."
+      ],
+      "file": "/audio/voice/d2baa7a576ed495e.mp3"
+    },
+    {
+      "key": "d668205035d89a42",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A book, with a bookmark about halfway through.",
+      "lines": [
+        "A book, with a bookmark about halfway through."
+      ],
+      "file": "/audio/voice/d668205035d89a42.mp3"
+    },
+    {
+      "key": "02a6f7af2f53f99c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The handheld console, still warm.",
+      "lines": [
+        "The handheld console, still warm."
+      ],
+      "file": "/audio/voice/02a6f7af2f53f99c.mp3"
+    },
+    {
+      "key": "ed39841892b7a180",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The little bedside lamp, turned down low.",
+      "lines": [
+        "The little bedside lamp, turned down low."
+      ],
+      "file": "/audio/voice/ed39841892b7a180.mp3"
+    },
+    {
+      "key": "1e86e7fe7d18eb87",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A phone on charge, right beside your head.",
+      "lines": [
+        "A phone on charge, right beside your head."
+      ],
+      "file": "/audio/voice/1e86e7fe7d18eb87.mp3"
+    },
+    {
+      "key": "afdf6f161cf81759",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A glass of water on the bedside table.",
+      "lines": [
+        "A glass of water on the bedside table."
+      ],
+      "file": "/audio/voice/afdf6f161cf81759.mp3"
+    },
+    {
+      "key": "ee30f207e0e76e83",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The telly in the corner, blinking on standby.",
+      "lines": [
+        "The telly in the corner, blinking on standby."
+      ],
+      "file": "/audio/voice/ee30f207e0e76e83.mp3"
     },
     {
       "key": "9955f7034839d5ea",
@@ -38164,70 +39659,763 @@
       "file": "/audio/voice/84390aa0f4ba81a0.mp3"
     },
     {
-      "key": "5c5d866dd5563dce",
+      "key": "779048bddceacb69",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! The episode waits all night without moving a single pixel - stories are patient like that. You sleep like a champion and catch the ending tomorrow.",
+      "text": "That's right! Talking to your people over toast costs nothing and fills you right up. That is a real recharge.",
       "lines": [
         "That's right!",
-        "The episode waits all night without moving a single pixel - stories are patient like that. You sleep like a champion and catch the ending tomorrow."
+        "Talking to your people over toast costs nothing and fills you right up. That is a real recharge."
       ],
-      "file": "/audio/voice/5c5d866dd5563dce.mp3"
+      "file": "/audio/voice/779048bddceacb69.mp3"
     },
     {
-      "key": "0d627eb76e9424e9",
+      "key": "505704235c5e8cda",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. The little sun shouts 'DAYTIME!' at your brain till way past ten. Morning-you stumbles about like a grumpy zombie with sandpaper eyes.",
+      "text": "Not quite. Sneaky, but silent cartoons are still a screen. Your eyes do not care about the volume.",
       "lines": [
         "Not quite.",
-        "The little sun shouts 'DAYTIME!' at your brain till way past ten. Morning-you stumbles about like a grumpy zombie with sandpaper eyes."
+        "Sneaky, but silent cartoons are still a screen. Your eyes do not care about the volume."
       ],
-      "file": "/audio/voice/0d627eb76e9424e9.mp3"
+      "file": "/audio/voice/505704235c5e8cda.mp3"
     },
     {
-      "key": "e29ef690feba1e16",
+      "key": "83da3b4a6220e190",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Here's the pro secret: games are built to never feel finished. YOU chose the ending anyway - and tomorrow-you plays better on a full battery.",
+      "text": "Not quite. A smaller screen is still a screen. Shrinking it does not take it off the plank.",
+      "lines": [
+        "Not quite.",
+        "A smaller screen is still a screen. Shrinking it does not take it off the plank."
+      ],
+      "file": "/audio/voice/83da3b4a6220e190.mp3"
+    },
+    {
+      "key": "13ee666dd0ef07e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Moving about outside is the fastest refill there is, and the console is still there afterwards.",
       "lines": [
         "That's right!",
-        "Here's the pro secret: games are built to never feel finished. YOU chose the ending anyway - and tomorrow-you plays better on a full battery."
+        "Moving about outside is the fastest refill there is, and the console is still there afterwards."
       ],
-      "file": "/audio/voice/e29ef690feba1e16.mp3"
+      "file": "/audio/voice/13ee666dd0ef07e6.mp3"
     },
     {
-      "key": "2c184e0fbc13860d",
+      "key": "e99f8df3045e0ea2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Games are built to NEVER feel finished - that's the trap. The Battery Thief giggles while your big recharge shrinks hour by hour.",
+      "text": "Not quite. That is a screen swapped for a screen. The plank feels exactly the same weight.",
       "lines": [
         "Not quite.",
-        "Games are built to NEVER feel finished - that's the trap. The Battery Thief giggles while your big recharge shrinks hour by hour."
+        "That is a screen swapped for a screen. The plank feels exactly the same weight."
       ],
-      "file": "/audio/voice/2c184e0fbc13860d.mp3"
+      "file": "/audio/voice/e99f8df3045e0ea2.mp3"
     },
     {
-      "key": "e216e613252b0179",
+      "key": "00432dbda9d217b1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! The messages are all still there in the morning - and you've got the battery to actually enjoy them. Best of both!",
+      "text": "Not quite. Crisps at the controller is not a recharge and it is not dinner. The block has not moved.",
+      "lines": [
+        "Not quite.",
+        "Crisps at the controller is not a recharge and it is not dinner. The block has not moved."
+      ],
+      "file": "/audio/voice/00432dbda9d217b1.mp3"
+    },
+    {
+      "key": "d7e67e9d23249de6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A story at half past eight winds you down instead of winding you up, and the night gets its full run at you.",
       "lines": [
         "That's right!",
-        "The messages are all still there in the morning - and you've got the battery to actually enjoy them. Best of both!"
+        "A story at half past eight winds you down instead of winding you up, and the night gets its full run at you."
       ],
-      "file": "/audio/voice/e216e613252b0179.mp3"
+      "file": "/audio/voice/d7e67e9d23249de6.mp3"
     },
     {
-      "key": "a49c4280af3013c6",
+      "key": "72ad8f391d337995",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Ping! Ping! Every buzz pokes a hole in your sleep. By Tuesday there are two drained, grumpy friends - the Battery Thief's favorite double steal.",
+      "text": "Not quite. Dimmer is still light, and your brain still reads it as daytime. The block stays put.",
       "lines": [
         "Not quite.",
-        "Ping! Ping! Every buzz pokes a hole in your sleep. By Tuesday there are two drained, grumpy friends - the Battery Thief's favorite double steal."
+        "Dimmer is still light, and your brain still reads it as daytime. The block stays put."
       ],
-      "file": "/audio/voice/a49c4280af3013c6.mp3"
+      "file": "/audio/voice/72ad8f391d337995.mp3"
+    },
+    {
+      "key": "90d59ef0c72ed452",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Autoplay keeps going long after you stop watching. That is the heaviest block on the plank.",
+      "lines": [
+        "Not quite.",
+        "Autoplay keeps going long after you stop watching. That is the heaviest block on the plank."
+      ],
+      "file": "/audio/voice/90d59ef0c72ed452.mp3"
+    },
+    {
+      "key": "71e466ac82e6cd2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody is taking your screens away. An empty side is not level, it is tipped the other way.",
+      "lines": [
+        "Not quite.",
+        "Nobody is taking your screens away. An empty side is not level, it is tipped the other way."
+      ],
+      "file": "/audio/voice/71e466ac82e6cd2a.mp3"
+    },
+    {
+      "key": "37dbe8fc66470244",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A day can tip over with useful things in it too. The size is what matters, not the subject.",
+      "lines": [
+        "Not quite.",
+        "A day can tip over with useful things in it too. The size is what matters, not the subject."
+      ],
+      "file": "/audio/voice/37dbe8fc66470244.mp3"
+    },
+    {
+      "key": "b9514d36cc181841",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is a rule about days, not about balance. A tipped-over Saturday is still tipped over.",
+      "lines": [
+        "Not quite.",
+        "That is a rule about days, not about balance. A tipped-over Saturday is still tipped over."
+      ],
+      "file": "/audio/voice/b9514d36cc181841.mp3"
+    },
+    {
+      "key": "11eff7232e891808",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The game still gets a proper go, and football still happens. The jug stretched to both because you poured on purpose.",
+      "lines": [
+        "That's right!",
+        "The game still gets a proper go, and football still happens. The jug stretched to both because you poured on purpose."
+      ],
+      "file": "/audio/voice/11eff7232e891808.mp3"
+    },
+    {
+      "key": "8aa9701531863af6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Five hours is a lovely idea and the jug is the jug. That pour empties football out of the day, and the team notices.",
+      "lines": [
+        "Not quite.",
+        "Five hours is a lovely idea and the jug is the jug. That pour empties football out of the day, and the team notices."
+      ],
+      "file": "/audio/voice/8aa9701531863af6.mp3"
+    },
+    {
+      "key": "6f72fef3c8eabc8e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You do not have to give it up to fit football in. Emptying the cup is not the same as sharing the jug.",
+      "lines": [
+        "Not quite.",
+        "You do not have to give it up to fit football in. Emptying the cup is not the same as sharing the jug."
+      ],
+      "file": "/audio/voice/6f72fef3c8eabc8e.mp3"
+    },
+    {
+      "key": "34fd4d97d6d024c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The film is at seven whatever you do, so the hour before it is the only one homework can have.",
+      "lines": [
+        "That's right!",
+        "The film is at seven whatever you do, so the hour before it is the only one homework can have."
+      ],
+      "file": "/audio/voice/34fd4d97d6d024c7.mp3"
+    },
+    {
+      "key": "d00d09939ddae995",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. After the film it is bedtime, so that pour quietly empties the homework cup and borrows from sleep as well.",
+      "lines": [
+        "Not quite.",
+        "After the film it is bedtime, so that pour quietly empties the homework cup and borrows from sleep as well."
+      ],
+      "file": "/audio/voice/d00d09939ddae995.mp3"
+    },
+    {
+      "key": "ebfbeaf0e028bf88",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Doing two things at once pours into both cups badly. You end up with half a film and half a homework.",
+      "lines": [
+        "Not quite.",
+        "Doing two things at once pours into both cups badly. You end up with half a film and half a homework."
+      ],
+      "file": "/audio/voice/ebfbeaf0e028bf88.mp3"
+    },
+    {
+      "key": "ea08c5dd0b4947b0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! One hour only pours one way, so you choose it, and the others get a real time instead of a maybe.",
+      "lines": [
+        "That's right!",
+        "One hour only pours one way, so you choose it, and the others get a real time instead of a maybe."
+      ],
+      "file": "/audio/voice/ea08c5dd0b4947b0.mp3"
+    },
+    {
+      "key": "3529097b7d6b2a84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Three things in one hour gives everybody twenty rushed minutes. The jug does not get bigger for being hurried.",
+      "lines": [
+        "Not quite.",
+        "Three things in one hour gives everybody twenty rushed minutes. The jug does not get bigger for being hurried."
+      ],
+      "file": "/audio/voice/3529097b7d6b2a84.mp3"
+    },
+    {
+      "key": "2352ba752e30db14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That still pours the hour out, it just pours it where nobody chose. The jug empties either way.",
+      "lines": [
+        "Not quite.",
+        "That still pours the hour out, it just pours it where nobody chose. The jug empties either way."
+      ],
+      "file": "/audio/voice/2352ba752e30db14.mp3"
+    },
+    {
+      "key": "ca2004906f02d300",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! An hour borrowed from tonight comes straight out of tomorrow, and you are the one who pays it back.",
+      "lines": [
+        "That's right!",
+        "An hour borrowed from tonight comes straight out of tomorrow, and you are the one who pays it back."
+      ],
+      "file": "/audio/voice/ca2004906f02d300.mp3"
+    },
+    {
+      "key": "76b26bdb499b207f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Sleep is the cup that refills all the others, so borrowing from it makes tomorrow's whole jug smaller.",
+      "lines": [
+        "Not quite.",
+        "Sleep is the cup that refills all the others, so borrowing from it makes tomorrow's whole jug smaller."
+      ],
+      "file": "/audio/voice/76b26bdb499b207f.mp3"
+    },
+    {
+      "key": "567e4c57bca49e81",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A lie-in pours tomorrow morning away to pay for tonight. The hour still came out of the jug, just later.",
+      "lines": [
+        "Not quite.",
+        "A lie-in pours tomorrow morning away to pay for tonight. The hour still came out of the jug, just later."
+      ],
+      "file": "/audio/voice/567e4c57bca49e81.mp3"
+    },
+    {
+      "key": "138f8a18eeea1caf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The jug is the jug. Wanting more day has never once made more day.",
+      "lines": [
+        "Not quite.",
+        "The jug is the jug. Wanting more day has never once made more day."
+      ],
+      "file": "/audio/voice/138f8a18eeea1caf.mp3"
+    },
+    {
+      "key": "2acfa7ec63a25eb1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Football pours from the same jug as the game does. Every hour comes out of it.",
+      "lines": [
+        "Not quite.",
+        "Football pours from the same jug as the game does. Every hour comes out of it."
+      ],
+      "file": "/audio/voice/2acfa7ec63a25eb1.mp3"
+    },
+    {
+      "key": "9b402ddcff9473ab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Borrowing is real, and tomorrow is the one who pays. That makes tomorrow's jug smaller, not tonight's bigger.",
+      "lines": [
+        "Not quite.",
+        "Borrowing is real, and tomorrow is the one who pays. That makes tomorrow's jug smaller, not tonight's bigger."
+      ],
+      "file": "/audio/voice/9b402ddcff9473ab.mp3"
+    },
+    {
+      "key": "8431d8bec0a1a80c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! An hour, then swimming, and Dad knows. Every dial has a real answer in it, so there is nothing left to argue about later.",
+      "lines": [
+        "That's right!",
+        "An hour, then swimming, and Dad knows. Every dial has a real answer in it, so there is nothing left to argue about later."
+      ],
+      "file": "/audio/voice/8431d8bec0a1a80c.mp3"
+    },
+    {
+      "key": "e7e2838d2cd673d4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A plan needs all three. See how it goes is not a how long, not thought about it is not a what after, and a plan nobody else heard is just a thought.",
+      "lines": [
+        "Not quite.",
+        "A plan needs all three. See how it goes is not a how long, not thought about it is not a what after, and a plan nobody else heard is just a thought."
+      ],
+      "file": "/audio/voice/e7e2838d2cd673d4.mp3"
+    },
+    {
+      "key": "4a048edad724a49f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Half an hour, then homework at the table, and Mum heard it first. That plan survives the moment you do not feel like stopping.",
+      "lines": [
+        "That's right!",
+        "Half an hour, then homework at the table, and Mum heard it first. That plan survives the moment you do not feel like stopping."
+      ],
+      "file": "/audio/voice/4a048edad724a49f.mp3"
+    },
+    {
+      "key": "56240e0481cc4812",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Until it feels done never arrives, telly after a game is a screen after a screen, and telling her afterwards is not a plan, it is a report.",
+      "lines": [
+        "Not quite.",
+        "Until it feels done never arrives, telly after a game is a screen after a screen, and telling her afterwards is not a plan, it is a report."
+      ],
+      "file": "/audio/voice/56240e0481cc4812.mp3"
+    },
+    {
+      "key": "d583b578a43d86ae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A real stopping time, something good to do after, and the grown-up who is actually in the house knows it. That is a plan that works away from home.",
+      "lines": [
+        "That's right!",
+        "A real stopping time, something good to do after, and the grown-up who is actually in the house knows it. That is a plan that works away from home."
+      ],
+      "file": "/audio/voice/d583b578a43d86ae.mp3"
+    },
+    {
+      "key": "04c075c79d0ec9ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Until we get tired always means later than you think, a film after a game is still a screen, and the grown-up who can help is the one in THIS house, not the one at home.",
+      "lines": [
+        "Not quite.",
+        "Until we get tired always means later than you think, a film after a game is still a screen, and the grown-up who can help is the one in THIS house, not the one at home."
+      ],
+      "file": "/audio/voice/04c075c79d0ec9ff.mp3"
+    },
+    {
+      "key": "af4c0aa799f75208",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Being good at it makes it more fun to carry on, not easier to stop. That is the opposite of a finish line.",
+      "lines": [
+        "Not quite.",
+        "Being good at it makes it more fun to carry on, not easier to stop. That is the opposite of a finish line."
+      ],
+      "file": "/audio/voice/af4c0aa799f75208.mp3"
+    },
+    {
+      "key": "3366a28c685a1350",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Short games just start again. The one that ends by itself is very rare indeed.",
+      "lines": [
+        "Not quite.",
+        "Short games just start again. The one that ends by itself is very rare indeed."
+      ],
+      "file": "/audio/voice/3366a28c685a1350.mp3"
+    },
+    {
+      "key": "066559d77e6cf77b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ten seconds outside the game saves the whole argument later. That is a very good trade.",
+      "lines": [
+        "Not quite.",
+        "Ten seconds outside the game saves the whole argument later. That is a very good trade."
+      ],
+      "file": "/audio/voice/066559d77e6cf77b.mp3"
+    },
+    {
+      "key": "fc4ce96be3ee34c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery.",
+      "lines": [
+        "That's right!",
+        "Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery."
+      ],
+      "file": "/audio/voice/fc4ce96be3ee34c0.mp3"
+    },
+    {
+      "key": "7a3d6f72575ede6f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Save comes first. Everything else can wait twenty seconds, but an unsaved level cannot.",
+      "lines": [
+        "Not quite.",
+        "Save comes first. Everything else can wait twenty seconds, but an unsaved level cannot."
+      ],
+      "file": "/audio/voice/7a3d6f72575ede6f.mp3"
+    },
+    {
+      "key": "164091867018ae52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Say bye before you plug in. Your friends are still standing there waiting for you.",
+      "lines": [
+        "Not quite.",
+        "Say bye before you plug in. Your friends are still standing there waiting for you."
+      ],
+      "file": "/audio/voice/164091867018ae52.mp3"
+    },
+    {
+      "key": "89f069eef280515c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Quitting now throws the half-finished level away. Save it first and it is still there tomorrow.",
+      "lines": [
+        "Not quite.",
+        "Quitting now throws the half-finished level away. Save it first and it is still there tomorrow."
+      ],
+      "file": "/audio/voice/89f069eef280515c.mp3"
+    },
+    {
+      "key": "6b8ccdcf286a6ea3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One more level is the exact thing your plan already answered. The plan was made out here, where thinking is easy.",
+      "lines": [
+        "Not quite.",
+        "One more level is the exact thing your plan already answered. The plan was made out here, where thinking is easy."
+      ],
+      "file": "/audio/voice/6b8ccdcf286a6ea3.mp3"
+    },
+    {
+      "key": "700900c5b201258a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing on this panel needs to be brighter. You are landing, not taking off again.",
+      "lines": [
+        "Not quite.",
+        "Nothing on this panel needs to be brighter. You are landing, not taking off again."
+      ],
+      "file": "/audio/voice/700900c5b201258a.mp3"
+    },
+    {
+      "key": "2e72f6418ec9cbf4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Saved, said a proper goodbye, plugged in. Your three friends know you left, and the tea is still hot.",
+      "lines": [
+        "That's right!",
+        "Saved, said a proper goodbye, plugged in. Your three friends know you left, and the tea is still hot."
+      ],
+      "file": "/audio/voice/2e72f6418ec9cbf4.mp3"
+    },
+    {
+      "key": "7e3b12e98c108a64",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Save first, even with a team waiting on you. Your own progress is yours to keep.",
+      "lines": [
+        "Not quite.",
+        "Save first, even with a team waiting on you. Your own progress is yours to keep."
+      ],
+      "file": "/audio/voice/7e3b12e98c108a64.mp3"
+    },
+    {
+      "key": "e25e8a083bae1da6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Now say bye. Leaving without a word is the bit friends actually mind.",
+      "lines": [
+        "Not quite.",
+        "Now say bye. Leaving without a word is the bit friends actually mind."
+      ],
+      "file": "/audio/voice/e25e8a083bae1da6.mp3"
+    },
+    {
+      "key": "47c97393c89fdca0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Vanishing mid-game leaves three friends wondering what happened. Ten seconds of goodbye saves all of that.",
+      "lines": [
+        "Not quite.",
+        "Vanishing mid-game leaves three friends wondering what happened. Ten seconds of goodbye saves all of that."
+      ],
+      "file": "/audio/voice/47c97393c89fdca0.mp3"
+    },
+    {
+      "key": "dc4dd6adaddd13b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Muting hides the room, it does not stop the game. The tea goes cold and you are still in it.",
+      "lines": [
+        "Not quite.",
+        "Muting hides the room, it does not stop the game. The tea goes cold and you are still in it."
+      ],
+      "file": "/audio/voice/dc4dd6adaddd13b4.mp3"
+    },
+    {
+      "key": "20dad53f1195179a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Inviting somebody now starts a whole new game just as you are trying to end this one.",
+      "lines": [
+        "Not quite.",
+        "Inviting somebody now starts a whole new game just as you are trying to end this one."
+      ],
+      "file": "/audio/voice/20dad53f1195179a.mp3"
+    },
+    {
+      "key": "19df1ebbced65ef0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Saved, said bye, and on charge outside the bedroom. Tomorrow-you wakes up to a full battery and no argument.",
+      "lines": [
+        "That's right!",
+        "Saved, said bye, and on charge outside the bedroom. Tomorrow-you wakes up to a full battery and no argument."
+      ],
+      "file": "/audio/voice/19df1ebbced65ef0.mp3"
+    },
+    {
+      "key": "f536f210d2f152a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Save first. Even at bedtime, whatever you were doing gets to survive the night.",
+      "lines": [
+        "Not quite.",
+        "Save first. Even at bedtime, whatever you were doing gets to survive the night."
+      ],
+      "file": "/audio/voice/f536f210d2f152a1.mp3"
+    },
+    {
+      "key": "f7fc1921c00edc6f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Say bye before it goes on charge, so nobody is left mid-conversation.",
+      "lines": [
+        "Not quite.",
+        "Say bye before it goes on charge, so nobody is left mid-conversation."
+      ],
+      "file": "/audio/voice/f7fc1921c00edc6f.mp3"
+    },
+    {
+      "key": "5d7089c243ba0d8a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A tablet in the bed is the Battery Thief's favourite place in the house. It goes on charge instead.",
+      "lines": [
+        "Not quite.",
+        "A tablet in the bed is the Battery Thief's favourite place in the house. It goes on charge instead."
+      ],
+      "file": "/audio/voice/5d7089c243ba0d8a.mp3"
+    },
+    {
+      "key": "b652714f60b8df9e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Low power mode just makes a flat tablet last a bit longer. It does not end anything.",
+      "lines": [
+        "Not quite.",
+        "Low power mode just makes a flat tablet last a bit longer. It does not end anything."
+      ],
+      "file": "/audio/voice/b652714f60b8df9e.mp3"
+    },
+    {
+      "key": "811daa1060797894",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Setting an alarm keeps the tablet in your hand and in your room. The clock can do that job.",
+      "lines": [
+        "Not quite.",
+        "Setting an alarm keeps the tablet in your hand and in your room. The clock can do that job."
+      ],
+      "file": "/audio/voice/811daa1060797894.mp3"
+    },
+    {
+      "key": "87042bda88b60e6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Face down still means within reach, and within reach means one more look. It charges by the door instead.",
+      "lines": [
+        "That's right!",
+        "Face down still means within reach, and within reach means one more look. It charges by the door instead."
+      ],
+      "file": "/audio/voice/87042bda88b60e6d.mp3"
+    },
+    {
+      "key": "96671b4eec8e1d06",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That book winds you down instead of winding you up, and it shines no light at all. It stays.",
+      "lines": [
+        "Not quite.",
+        "That book winds you down instead of winding you up, and it shines no light at all. It stays."
+      ],
+      "file": "/audio/voice/96671b4eec8e1d06.mp3"
+    },
+    {
+      "key": "9aa771b828d16d90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Still warm means recently played, and a console by the bed is an invitation. Out it goes, on charge.",
+      "lines": [
+        "That's right!",
+        "Still warm means recently played, and a console by the bed is an invitation. Out it goes, on charge."
+      ],
+      "file": "/audio/voice/9aa771b828d16d90.mp3"
+    },
+    {
+      "key": "9dfaeba273510d4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A low warm lamp helps you settle. It is the bright blue-white screens your brain argues with, not this.",
+      "lines": [
+        "Not quite.",
+        "A low warm lamp helps you settle. It is the bright blue-white screens your brain argues with, not this."
+      ],
+      "file": "/audio/voice/9dfaeba273510d4c.mp3"
+    },
+    {
+      "key": "045b25d0d4e6476a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Charging is the right idea in the wrong room. Every buzz lands next to your ear all night.",
+      "lines": [
+        "That's right!",
+        "Charging is the right idea in the wrong room. Every buzz lands next to your ear all night."
+      ],
+      "file": "/audio/voice/045b25d0d4e6476a.mp3"
+    },
+    {
+      "key": "ffd17da87ccc5397",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is not a screen and it never wakes anybody. It stays exactly where it is.",
+      "lines": [
+        "Not quite.",
+        "That is not a screen and it never wakes anybody. It stays exactly where it is."
+      ],
+      "file": "/audio/voice/ffd17da87ccc5397.mp3"
+    },
+    {
+      "key": "8732b9a1550b4b2e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A blinking light in a dark room keeps catching your eye, and standby is not off. Properly off, for the night.",
+      "lines": [
+        "That's right!",
+        "A blinking light in a dark room keeps catching your eye, and standby is not off. Properly off, for the night."
+      ],
+      "file": "/audio/voice/8732b9a1550b4b2e.mp3"
+    },
+    {
+      "key": "d15f370874118794",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A book makes no light and no noise. It is on the settling side, every time.",
+      "lines": [
+        "Not quite.",
+        "A book makes no light and no noise. It is on the settling side, every time."
+      ],
+      "file": "/audio/voice/d15f370874118794.mp3"
+    },
+    {
+      "key": "5c8a61a7278fab9d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A low warm lamp helps you wind down. It is bright screens your brain argues with.",
+      "lines": [
+        "Not quite.",
+        "A low warm lamp helps you wind down. It is bright screens your brain argues with."
+      ],
+      "file": "/audio/voice/5c8a61a7278fab9d.mp3"
+    },
+    {
+      "key": "73f8f3610a80ce38",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Level is the goal, never empty. Two screen blocks stayed on that see-saw and it still balanced.",
+      "lines": [
+        "That's right!",
+        "Level is the goal, never empty. Two screen blocks stayed on that see-saw and it still balanced."
+      ],
+      "file": "/audio/voice/73f8f3610a80ce38.mp3"
+    },
+    {
+      "key": "34f99f6852289f1e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every hour you pour into one thing is an hour not going into another. That is just how much a jug holds.",
+      "lines": [
+        "That's right!",
+        "Every hour you pour into one thing is an hour not going into another. That is just how much a jug holds."
+      ],
+      "file": "/audio/voice/34f99f6852289f1e.mp3"
+    },
+    {
+      "key": "a412da05f3edfac1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A game never feels finished, because they are built that way. So you decide how long while you are still outside it.",
+      "lines": [
+        "That's right!",
+        "A game never feels finished, because they are built that way. So you decide how long while you are still outside it."
+      ],
+      "file": "/audio/voice/a412da05f3edfac1.mp3"
+    },
+    {
+      "key": "a5785968942704dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Stopping badly is what makes stopping hurt. Landing it takes twenty seconds and there is no fight.",
+      "lines": [
+        "That's right!",
+        "Stopping badly is what makes stopping hurt. Landing it takes twenty seconds and there is no fight."
+      ],
+      "file": "/audio/voice/a5785968942704dd.mp3"
+    },
+    {
+      "key": "379aa96cc9eb4bd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Face down and silent is still one more look away, and screen light tells your brain it is daytime.",
+      "lines": [
+        "That's right!",
+        "Face down and silent is still one more look away, and screen light tells your brain it is daytime."
+      ],
+      "file": "/audio/voice/379aa96cc9eb4bd0.mp3"
+    },
+    {
+      "key": "709f6bf4041713fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nobody is taking your screens away. A hero with a level day gets the game AND the park AND the sleep.",
+      "lines": [
+        "That's right!",
+        "Nobody is taking your screens away. A hero with a level day gets the game AND the park AND the sleep."
+      ],
+      "file": "/audio/voice/709f6bf4041713fc.mp3"
     },
     {
       "key": "edcaefa81754c0af",

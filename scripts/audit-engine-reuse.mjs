@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -60,6 +60,11 @@ const RETHEME_ALLOWED = {
   // feeding it; a tray that develops only what you kept), not to save a build.
   11: ["DontFeedTheFire", "DevelopingTray", "AccountRescue (review)"], // Starve the Signal (W5 fire), The Evidence Tray (W8 darkroom), The Rescue Board (W5)
   12: ["SnowballChase", "PlaquePeek", "CyberMaze (review)"], // The Snowball Problem (legacy W12 engine, new snowbank skin), Stamp It Gold (W3 masks), The Snow Maze (W3/W8 maze)
+  // W13's Four Body-Bells were CUT (2026-09-19): Week 10's Pause Power, live
+  // since 2026-09-18, already teaches the same four signs with the same verb.
+  // The slot became "Set It Before You Start", which is proactive where W10 is
+  // reactive, so no engine here re-teaches a shipped lesson.
+  13: ["DayBalancer", "PowerPanel", "MemoryMatch (review)"], // The See-Saw Day (W5 scales), The Shutdown Panel (W6/W10 panel), The Power Station Match (W1/W7 match)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

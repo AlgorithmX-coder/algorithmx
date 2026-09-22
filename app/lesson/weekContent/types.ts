@@ -833,7 +833,10 @@ export type ScreenDef = (
        * BLOCK, TELL). Decoys and wrong-order taps teach and wait.
        */
       type: "powerPanel";
-      skin?: "menu" | "player";
+      /** Visual skin: W6 menu, W10 player, or W13 "powerdown" (a console shutdown
+       *  panel: finding the right controls in order IS the stopping ritual).
+       *  Third and final use of the twenty weeks. */
+      skin?: "menu" | "player" | "powerdown";
       rounds: {
         id: string;
         prompt: string;
@@ -1488,6 +1491,111 @@ export type ScreenDef = (
       introSubtitle?: string;
       introIcon?: string;
       trailLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Day Jug (Week 13, concept 2: the trade). This week's old screen-4
+       * signature, now tap-only and data-driven: a day holds only so much, so
+       * every hour poured into one cup is an hour not going into another. Not a
+       * telling-off, arithmetic.
+       */
+      type: "dayJug";
+      pours: {
+        id: string;
+        /** The day, shown on the jug's card. */
+        label: string;
+        icon: string;
+        /** Read aloud as the day opens. */
+        readAloud: string;
+        /** Exactly one option has isRight: true. */
+        options: {
+          id: string;
+          label: string;
+          icon: string;
+          isRight: boolean;
+          /** Sarah's reason on the right pour ("That's right!" + why). */
+          why: string;
+          /** Sarah's teach on a wrong pour ("Not quite." + explanation). */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      jugLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Plan Desk (Week 13, concept 3: set it before you start). The child
+       * COMPOSES a plan on three dials and commits it, rather than picking one
+       * card of three, which four engines already do. Nothing is judged until
+       * AGREE, and then the whole plan is judged at once.
+       */
+      type: "setTheDial";
+      rounds: {
+        id: string;
+        /** The moment the plan is for, shown on the desk. */
+        situation: string;
+        /** Read aloud as the round opens. */
+        readAloud: string;
+        /** A plan is right only when all three dials sit on an isGood choice. */
+        dials: {
+          howLong: { id: string; label: string; icon: string; isGood: boolean }[];
+          whatAfter: { id: string; label: string; icon: string; isGood: boolean }[];
+          whoKnows: { id: string; label: string; icon: string; isGood: boolean }[];
+        };
+        /** Sarah's reason when the whole plan is good ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach when something is missing ("Not quite." + explanation). */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      deskLabel?: string;
+      howLongLabel?: string;
+      whatAfterLabel?: string;
+      whoKnowsLabel?: string;
+      agreeLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Night Fall (Week 13, concept 5: the last hour). A bedroom at dusk with a
+       * strip of sky above it. Screens go out for the night and the sky darkens a
+       * step each time; a book, a lamp and a glass of water stay, so the room ends
+       * quiet rather than empty. Warm and calming, never a telling-off.
+       */
+      type: "nightFall";
+      things: {
+        id: string;
+        label: string;
+        icon: string;
+        /** Read aloud as the thing is tapped. */
+        readAloud: string;
+        /** true = it goes out for the night; false = it belongs in the room. */
+        moveOut: boolean;
+        /** Sarah's reason on a right call ("That's right!" + why). */
+        why: string;
+        /** Sarah's teach on a wrong call ("Not quite." + explanation). */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      roomLabel?: string;
+      outLabel?: string;
+      stayLabel?: string;
       askPrompt?: string;
       completeTitle?: string;
       completeLine?: string;
@@ -2414,7 +2522,10 @@ export type ScreenDef = (
       type: "dayBalancer";
       /** Visual skin: W13 day plan (default) or W5 "scales" (no co-sign line
        *  unless `cosignLine` is given; every label from the copy props). */
-      skin?: "day" | "scales";
+      /** Visual skin: the original day board, W5 "scales", or W13 "seesaw" (a
+       *  playground see-saw: screen things one side, real life the other, and
+       *  LEVEL is the win, never an empty screen side). */
+      skin?: "day" | "scales" | "seesaw";
       /** Screen blocks that STAY on the plank (balance keeps the fun). */
       keptBlocks: { label: string; icon: string }[];
       swaps: {
@@ -2698,6 +2809,9 @@ export type ScreenDef = (
     }
   | {
       type: "memoryMatch";
+      /** Visual skin: the original board (W1, W7) or W13 "station" (the Power
+       *  Station floor). Third and final use of the twenty weeks. */
+      skin?: "station";
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
