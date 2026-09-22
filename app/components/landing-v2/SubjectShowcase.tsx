@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 
-import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
-import { useEffect, useRef, useState } from "react";
+import CourseLockup, { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
+import { sectionMark } from "@/app/components/sectionMark";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useInView } from "framer-motion";
 import { FadeUp } from "./utilities";
 
@@ -44,10 +45,10 @@ interface Stream {
 
 /* Ages match the course landings; live matches the card's own count. */
 const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string; live: boolean }> = [
-  { id: "heroes", ages: "6 to 9", accent: "#ffb347", live: true },
-  { id: "explorers", ages: "10 to 13", accent: "#22D3EE", live: true },
-  { id: "ops", ages: "14 to 17", accent: "#8B7BFF", live: false },
-  { id: "pro", ages: "18+", accent: "#ff7a3d", live: false },
+  { id: "heroes", ages: "6 to 9", accent: "#8a5400", live: true },
+  { id: "explorers", ages: "10 to 13", accent: "#0a6675", live: true },
+  { id: "ops", ages: "14 to 17", accent: "#5744c9", live: false },
+  { id: "pro", ages: "18+", accent: "#a63a08", live: false },
 ];
 
 /**
@@ -79,30 +80,40 @@ const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; 
     id: "heroes",
     take: "A Certified Cyber Hero certificate",
     how: "Earned by beating the Hacker Raccoon at his own playbook in week 20.",
-    accent: "#ffb347",
+    accent: "#8a5400",
   },
   {
     id: "explorers",
     take: "A closed case file",
     how: "Twenty cases of breadcrumbs, one coordinator unmasked, the dossier handed over.",
-    accent: "#22D3EE",
+    accent: "#0a6675",
   },
   {
     id: "ops",
     take: "A written critical finding",
     how: "A real break-in on the range, reported the way a professional reports it.",
-    accent: "#8B7BFF",
+    accent: "#5744c9",
   },
   {
     id: "pro",
     take: "A database you broke and fixed",
     how: "One line of SQL empties it, then you ship the fix that stops it cold.",
-    accent: "#ff7a3d",
+    accent: "#a63a08",
   },
 ];
 
 /* The ages come from CYBER_COURSES rather than being typed twice, so the
    panel and the track chips in the same card can never drift apart. */
+/* Inline, because styled-jsx cannot reach inside next/link. */
+const COURSE_CHIP_LINK: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 6,
+  padding: "10px 13px",
+  textDecoration: "none",
+  color: "inherit",
+};
+
 const AGES_BY_ID = Object.fromEntries(CYBER_COURSES.map((c) => [c.id, c.ages])) as Record<string, string>;
 
 const STREAMS: Stream[] = [
@@ -115,7 +126,7 @@ const STREAMS: Stream[] = [
     blurb:
       "From spotting scams at age 6 to real security skills that keep growing into adulthood. Online safety is the gateway skill.",
     project: "Pen-test a live web app & ship the security report",
-    accent: "#3ee88f",
+    accent: "#0e7a45",
     icon: "M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z",
     href: "/cybersecurity",
     cta: "View course",
@@ -129,7 +140,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Pixel art, physics, state machines, and what makes a jump feel good. Scratch through Unity through Unreal.",
     project: "Ship a Pixel Platformer level",
-    accent: "#4aa8ff",
+    accent: "#1565a8",
     icon: "M7 8h10a4 4 0 014 4 4 4 0 01-4 4H7a4 4 0 01-4-4 4 4 0 014-4z M8 12h3 M9.5 10.5v3 M15.5 11.5h.01 M17.5 13h.01",
     href: null,
     cta: "Coming 2026",
@@ -144,7 +155,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Train a real model, inspect its bias, deploy it. Cuts through hype with hands-on intuition for how AI actually works.",
     project: "Train an Image Classifier",
-    accent: "#a472ff",
+    accent: "#5744c9",
     icon: "M8 8h8v8H8z M5 10V8h2 M5 14v2h2 M17 8h2v2 M17 16h2v-2 M10 5V3h2 M14 5V3h-2 M10 21v-2 M14 19v2",
     href: null,
     cta: "Coming 2026",
@@ -159,7 +170,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Real apps on real phones. State, persistence, notifications, design. Build something your friends actually install.",
     project: "Ship a Habit Tracker",
-    accent: "#ffae4d",
+    accent: "#8a5400",
     icon: "M7 2h10a1 1 0 011 1v18a1 1 0 01-1 1H7a1 1 0 01-1-1V3a1 1 0 011-1z M11 18h2",
     href: null,
     cta: "Coming 2027",
@@ -174,7 +185,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Discovery interviews, market sizing, MVP design, pitch craft. The non-coding half of building a tech business.",
     project: "Pitch a 10-slide deck to a real VC panel",
-    accent: "#ffc94a",
+    accent: "#8a5a00",
     icon: "M13 2L3 14h7l-1 8 10-12h-7l1-8z",
     href: null,
     cta: "Coming 2027",
@@ -189,7 +200,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Sensors, pathfinding, motor control, autonomy. Code virtual robots first, then graduate to physical kits.",
     project: "Code a Maze-Solver Bot",
-    accent: "#ff5b7a",
+    accent: "#b3123d",
     icon: "M12 2v3 M5 8h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V9a1 1 0 011-1z M9 13h.01 M15 13h.01 M2 12v3 M22 12v3",
     href: null,
     cta: "Coming 2027",
@@ -208,7 +219,7 @@ export default function SubjectShowcase() {
         position: "relative",
         padding: "calc(var(--lv2-rail) * 2.4) var(--lv2-rail)",
         overflow: "hidden",
-        color: "var(--lv2-paper)",
+        color: "var(--lv2-ink)",
       }}
     >
       <div
@@ -228,18 +239,8 @@ export default function SubjectShowcase() {
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <FadeUp>
-            <p
-              style={{
-                fontFamily: "var(--lv2-font-mono)",
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: "0.32em",
-                textTransform: "uppercase",
-                color: "rgba(232,237,255,0.55)",
-                marginBottom: 14,
-              }}
-            >
-              // SIX STREAMS //
+            <p style={{ margin: "0 0 18px", textAlign: "center" }}>
+              <span style={sectionMark}>{"// SIX STREAMS //"}</span>
             </p>
           </FadeUp>
           <FadeUp delay={0.05}>
@@ -251,7 +252,7 @@ export default function SubjectShowcase() {
                 letterSpacing: "-0.025em",
                 fontWeight: 400,
                 margin: 0,
-                color: "var(--lv2-paper)",
+                color: "var(--lv2-ink)",
               }}
             >
               Pick your stream.
@@ -263,7 +264,7 @@ export default function SubjectShowcase() {
                 fontFamily: "var(--lv2-font-display)",
                 fontSize: "clamp(1rem, 1.2vw, 1.0625rem)",
                 lineHeight: 1.55,
-                color: "rgba(232,237,255,0.7)",
+                color: "rgba(17,22,38,0.73)",
                 maxWidth: 640,
                 margin: "18px auto 0",
               }}
@@ -284,19 +285,8 @@ export default function SubjectShowcase() {
            *  are: new courses, releasing soon, decrypting on launch day. */}
           <FadeUp delay={0.22}>
             <div style={{ margin: "0 0 26px" }}>
-              <p
-                style={{
-                  fontFamily: "var(--lv2-font-mono)",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.26em",
-                  textTransform: "uppercase",
-                  color: "var(--lv2-cyan)",
-                  margin: 0,
-                  textShadow: "0 0 18px rgba(0,229,255,0.35)",
-                }}
-              >
-                {"// INCOMING · NEW STREAMS DETECTED"}
+              <p style={{ margin: "0 0 18px", textAlign: "left" }}>
+                <span style={sectionMark}>{"// INCOMING · NEW STREAMS DETECTED"}</span>
               </p>
               <h3
                 style={{
@@ -305,9 +295,9 @@ export default function SubjectShowcase() {
                   fontWeight: 500,
                   letterSpacing: "-0.018em",
                   lineHeight: 1.15,
-                  color: "var(--lv2-paper)",
+                  color: "var(--lv2-ink)",
                   margin: "12px 0 0",
-                  textShadow: "0 2px 18px rgba(4,5,13,0.95), 0 0 6px rgba(4,5,13,0.8)",
+                  textShadow: "0 2px 18px rgba(255,255,255,0.90), 0 0 6px rgba(255,255,255,0.76)",
                 }}
               >
                 Five new courses. Releasing soon.
@@ -317,10 +307,10 @@ export default function SubjectShowcase() {
                   fontFamily: "var(--lv2-font-display)",
                   fontSize: "clamp(0.9rem, 1.05vw, 1rem)",
                   lineHeight: 1.55,
-                  color: "rgba(232,237,255,0.62)",
+                  color: "rgba(17,22,38,0.65)",
                   maxWidth: 620,
                   margin: "10px 0 0",
-                  textShadow: "0 2px 14px rgba(4,5,13,0.95), 0 0 5px rgba(4,5,13,0.8)",
+                  textShadow: "0 2px 14px rgba(255,255,255,0.90), 0 0 5px rgba(255,255,255,0.76)",
                 }}
               >
                 Every card below is a real course, locked and encrypted until
@@ -377,11 +367,13 @@ export default function SubjectShowcase() {
           letter-spacing: 0.1em;
           white-space: nowrap;
           overflow: hidden;
-          color: rgba(232, 237, 255, 0.34);
+          color: rgba(52,42,28,0.72);
         }
         .lv2-cipher-hot {
           color: var(--accent);
-          text-shadow: 0 0 9px var(--accent);
+          /* a glow reads as a smudge on paper */
+          text-shadow: none;
+          font-weight: 700;
         }
         .lv2-scanline {
           position: absolute;
@@ -593,9 +585,9 @@ function StatusPill({ accent, status, live }: { accent: string; status: string; 
         fontWeight: 700,
         letterSpacing: "0.16em",
         textTransform: "uppercase",
-        color: live ? accent : "rgba(232,237,255,0.6)",
+        color: live ? accent : "rgba(17,22,38,0.63)",
         background: live ? `${accent}1f` : "transparent",
-        border: `1px solid ${live ? `${accent}77` : "rgba(232,237,255,0.22)"}`,
+        border: `1px solid ${live ? `${accent}77` : "rgba(17,22,38,0.23)"}`,
         padding: "5px 12px",
         borderRadius: 999,
       }}
@@ -627,7 +619,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         {
           "--accent": a,
           position: "relative",
-          background: `radial-gradient(110% 130% at 12% -20%, ${a}24, transparent 55%), linear-gradient(180deg, rgba(11,15,26,0.94), rgba(4,7,14,0.96))`,
+          background: `radial-gradient(110% 130% at 12% -20%, ${a}24, transparent 55%), linear-gradient(180deg, rgba(255,253,250,0.94), rgba(255,253,250,0.96))`,
           border: `1px solid ${a}66`,
           borderRadius: 20,
           overflow: "hidden",
@@ -670,7 +662,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(2rem, 3.4vw, 2.7rem)",
               fontWeight: 500,
-              color: "var(--lv2-paper)",
+              color: "var(--lv2-ink)",
               margin: "18px 0 0",
               letterSpacing: "-0.022em",
               lineHeight: 1.05,
@@ -686,7 +678,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               fontWeight: 600,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "rgba(232,237,255,0.55)",
+              color: "rgba(17,22,38,0.58)",
               marginTop: 10,
             }}
           >
@@ -698,7 +690,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(0.95rem, 1.15vw, 1.0625rem)",
               lineHeight: 1.6,
-              color: "rgba(232,237,255,0.78)",
+              color: "rgba(17,22,38,0.82)",
               margin: "18px 0 0",
               maxWidth: 460,
             }}
@@ -741,20 +733,31 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                 >
                   Aligned with UK&rsquo;s National Cyber Security Centre
                 </span>
-                <span aria-hidden style={{ width: 1, height: 20, background: "rgba(232,237,255,0.18)" }} />
+                <span aria-hidden style={{ width: 1, height: 20, background: "rgba(244,239,231,0.19)" }} />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 26, width: "auto" }} />
               </span>
 
               <ul className="lv2-course-marks">
                 {CYBER_COURSES.map((c) => (
+                  /* Owner: put the actual links to these courses' landing
+                     pages on the chips.
+
+                     The class stays on the li. styled-jsx scopes its rules
+                     to elements it can stamp, and next/link renders its own
+                     anchor, so a class handed to Link matches nothing: the
+                     chips came out as bare inline text. The li keeps the
+                     styling and the anchor fills it, so the whole chip is
+                     still the click target. */
                   <li
                     key={c.id}
                     className={c.live ? "lv2-course-mark" : "lv2-course-mark lv2-course-mark-soon"}
                     style={{ ["--lv2-mark" as string]: c.accent }}
                   >
-                    <CourseLockup id={c.id} size={0.74} />
-                    <span>{c.live ? `Ages ${c.ages}` : `Ages ${c.ages} · soon`}</span>
+                    <Link href={COURSE_HREF[c.id]} style={COURSE_CHIP_LINK}>
+                      <CourseLockup id={c.id} size={0.74} tone="sand" />
+                      <span>{c.live ? `Ages ${c.ages}` : `Ages ${c.ages} · soon`}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -766,27 +769,24 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         <div
           className="lv2-featured-project"
           style={{
-            border: `1px solid ${a}3a`,
-            background: `linear-gradient(180deg, ${a}14, transparent 90%)`,
+            /* Owner: it all seems too white and it is not clear. An 8%
+               accent wash on a near-white card is not a second surface, so
+               the panel is cut into the card instead: recessed ground, a
+               real edge, and an inner shadow at the top so it reads as
+               depth rather than another tint. */
+            border: `1px solid ${a}33`,
+            background: "linear-gradient(180deg, #f1e9dc, #ede4d4)",
+            boxShadow: `inset 0 2px 5px -2px rgba(86,68,45,0.3), inset 0 0 0 1px rgba(255,255,255,0.5)`,
             borderRadius: 16,
-            padding: "28px 26px",
+            padding: "26px 24px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             gap: 14,
           }}
         >
-          <span
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: "0.24em",
-              textTransform: "uppercase",
-              color: a,
-            }}
-          >
-            {stream.id === "cybersecurity" ? "// What you walk away with" : "// FLAGSHIP PROJECT"}
+          <span style={{ ...sectionMark, alignSelf: "flex-start", background: a }}>
+            {stream.id === "cybersecurity" ? "// Proof you can show" : "// Flagship project"}
           </span>
 
           {stream.id === "cybersecurity" ? (
@@ -809,7 +809,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                 fontFamily: "var(--lv2-font-display)",
                 fontSize: "clamp(1.15rem, 1.7vw, 1.45rem)",
                 fontWeight: 500,
-                color: "var(--lv2-paper)",
+                color: "var(--lv2-ink)",
                 lineHeight: 1.32,
               }}
             >
@@ -823,7 +823,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                 fontFamily: "var(--lv2-font-mono)",
                 fontSize: 11.5,
                 lineHeight: 1.6,
-                color: "rgba(232,237,255,0.5)",
+                color: "rgba(17,22,38,0.53)",
                 marginTop: 2,
               }}
             >
@@ -843,13 +843,15 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           gap: 8px;
         }
         .lv2-course-mark {
+          cursor: pointer;
+          transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.2s ease, border-color 0.2s ease;
           display: flex;
-          flex-direction: column;
-          gap: 6px;
-          padding: 10px 13px;
+          /* the padding lives on the anchor, so the whole chip is clickable */
           border-radius: 12px;
-          background: rgba(6,10,24,0.55);
-          border: 1px solid rgba(159,245,255,0.12);
+          background: linear-gradient(180deg, #fffdf8, #fdf9f2);
+          box-shadow: 0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85);
+          border: 1px solid rgba(70,58,44,0.14);
           border-left: 2px solid var(--lv2-mark);
         }
         .lv2-course-mark span {
@@ -858,12 +860,22 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(232,237,255,0.6);
+          color: rgba(17,22,38,0.63);
         }
         /* Ops and Pro used to sit at 0.55 opacity, which the owner read
            as the lighting failing on that half of the row. They are lit
            like the other two now; the word "soon" in each chip is what
            says they are not open yet. */
+        .lv2-course-mark:hover {
+          transform: translateY(-2px);
+          border-color: var(--lv2-mark);
+          box-shadow: 0 16px 34px -20px rgba(86,68,45,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
+        }
+        .lv2-course-mark :global(a:focus-visible) {
+          outline: 2px solid var(--lv2-mark);
+          outline-offset: 3px;
+          border-radius: 12px;
+        }
         .lv2-course-mark-soon { opacity: 1; }
 
         /* Owner picked this treatment from a board of ten (2026-09-20):
@@ -885,7 +897,8 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           flex-direction: column;
           gap: 4px;
           padding-bottom: 13px;
-          border-bottom: 1px solid rgba(159,245,255,0.09);
+          /* was a neon hairline at 9%, which is nothing on paper */
+          border-bottom: 1px solid rgba(86,68,45,0.18);
         }
         .lv2-flagships li:last-child {
           padding-bottom: 0;
@@ -903,7 +916,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-family: var(--lv2-font-display);
           font-size: 0.8125rem;
           line-height: 1.45;
-          color: rgba(232,237,255,0.72);
+          color: rgba(17,22,38,0.76);
         }
         /* Owner 2026-09-21: highlight the course name a little, in grey.
            A grey plate rather than a brighter colour, so the track colour
@@ -915,14 +928,18 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           margin-top: 2px;
           padding: 3px 8px;
           border-radius: 6px;
-          background: rgba(232,237,255,0.075);
-          border: 1px solid rgba(232,237,255,0.07);
+          /* The plate was a pale wash at 8%, built to sit on black. On
+             the recessed panel it needs to come the other way: paper
+             raised off the cut-in ground, with an edge to prove it. */
+          background: #fffdf8;
+          border: 1px solid rgba(86,68,45,0.2);
+          box-shadow: 0 1px 2px rgba(86,68,45,0.12);
           font-family: var(--lv2-font-mono);
           font-size: 7.5px;
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(232,237,255,0.62);
+          color: rgba(17,22,38,0.65);
         }
         @media (max-width: 900px) {
           .lv2-flagships { gap: 11px; }
@@ -979,16 +996,19 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
           position: "relative",
           /* Near-opaque (was 0.6/0.72): the global typed-code backdrop
            * showed through the glass and cut across the ciphertext. */
-          background:
-            "linear-gradient(180deg, rgba(11,15,26,0.88), rgba(4,7,14,0.94))",
-          border: `1px solid ${a}2e`,
+          /* Classified cards are pressed into the paper rather than
+           * raised out of it: locked reads as recessed, live reads as
+           * lifted, and the shade alone tells you which is which. */
+          background: "linear-gradient(180deg, #e8dfd0, #e1d7c4)",
+          border: `1px solid ${a}44`,
+          boxShadow: "inset 0 2px 5px -2px rgba(70,58,44,0.3), inset 0 0 0 1px rgba(255,255,255,0.35)",
           borderRadius: 14,
           padding: "22px 20px",
           display: "flex",
           flexDirection: "column",
           gap: 12,
           height: "100%",
-          opacity: 0.9,
+          opacity: 1,
           overflow: "hidden",
           transition:
             "transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1), border-color .3s, opacity .3s",
@@ -1015,7 +1035,9 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
 
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
         <HexIcon accent={a} icon={LOCK_ICON} size={38} />
-        <StatusPill accent={a} status="ENCRYPTED" live={false} />
+        {/* Owner: put unlocks soon. "ENCRYPTED" described the graphic;
+            this says what it means for the reader. */}
+        <StatusPill accent={a} status="UNLOCKS SOON" live={false} />
       </div>
 
       {/* Ciphertext where the course name used to be. */}
@@ -1060,7 +1082,7 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
             fontWeight: 700,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
-            color: `${a}cc`,
+            color: a,
           }}
         >
           {"// CLASSIFIED"}
@@ -1099,7 +1121,8 @@ function ctaStyle(a: string): React.CSSProperties {
     justifyContent: "center",
     gap: 8,
     background: a,
-    color: "var(--lv2-ink)",
+    /* the accents are dark on sand, so the label is paper */
+    color: "#fffdfa",
     border: "none",
     boxShadow: `0 8px 26px ${a}55, 0 0 18px ${a}66`,
     cursor: "pointer",

@@ -21,7 +21,10 @@ const smooth = (x: number) => {
 
 /* the code that types itself out (syntax-coloured tokens per line) */
 type Tok = { t: string; c: string };
-const C = {
+/* The dark-editor palette, and the light-editor one that replaces it on
+   sand. Same roles, same code, legible on paper: every token measured
+   against the ground before it went in. */
+const NIGHT_SYNTAX = {
   com: "#5f6e94",
   kw: "#c792ea",
   fn: "#82aaff",
@@ -30,6 +33,19 @@ const C = {
   cls: "#ffcb6b",
   def: "#cdd8ff",
 };
+const SAND_SYNTAX = {
+  com: "#6f6a5c",
+  kw: "#7c3aad",
+  fn: "#2f5fc4",
+  str: "#1a7f37",
+  num: "#b8430c",
+  cls: "#8a5400",
+  def: "#3c4351",
+};
+const C = NIGHT_SYNTAX;
+const SAND_BY_NIGHT: Record<string, string> = Object.fromEntries(
+  (Object.keys(NIGHT_SYNTAX) as Array<keyof typeof NIGHT_SYNTAX>).map((k) => [NIGHT_SYNTAX[k], SAND_SYNTAX[k]]),
+);
 const CODE: Tok[][] = [
   [{ t: "// AlgorithmX · from first line to real skill", c: C.com }],
   [{ t: "import ", c: C.kw }, { t: "{ Brain } ", c: C.def }, { t: "from ", c: C.kw }, { t: '"@algorithmx/core"', c: C.str }, { t: ";", c: C.def }],
@@ -71,7 +87,10 @@ function useGate() {
   return hidden;
 }
 
-export default function ScrollFormObjects() {
+export default function ScrollFormObjects({ tone = "night" }: { tone?: "night" | "sand" } = {}) {
+  const SY = tone === "sand" ? SAND_SYNTAX : NIGHT_SYNTAX;
+  const onSand = tone === "sand";
+  const paintTok = (c: string) => (onSand ? SAND_BY_NIGHT[c] ?? c : c);
   const hidden = useGate();
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -103,7 +122,9 @@ export default function ScrollFormObjects() {
        * (roadmap explainer, journey steps, footer brand) and read as
        * double-exposure; 0.30 keeps it alive in the voids without
        * fighting foreground text. */
-      const codeOp = clamp01((P - 0.12) / 0.06) * 0.3;
+      /* ink on paper needs more weight than light on black to read as
+         the same whisper */
+      const codeOp = clamp01((P - 0.12) / 0.06) * (onSand ? 0.38 : 0.3);
       codeWrap.style.opacity = String(codeOp);
       codeWrap.style.transform = `translateY(-50%) translateX(${(1 - smooth(clamp01((P - 0.12) / 0.07))) * -26}px)`;
       const shown = codeP * lines.length;
@@ -167,7 +188,22 @@ export default function ScrollFormObjects() {
           fontFamily: "var(--lv2-font-mono, monospace)",
           fontSize: 13.5,
           lineHeight: "1.62em",
-          textShadow: "0 1px 12px rgba(2,4,10,0.95), 0 0 2px rgba(2,4,10,0.9)",
+          textShadow: onSand ? "none" : "0 1px 12px rgba(2,4,10,0.95), 0 0 2px rgba(2,4,10,0.9)",
+          /* Owner: things are not clear enough. On black the typed code
+             sat behind copy as a glow and read as depth; as ink on paper
+             the same lines read as a second column of text through the
+             first. The panel starts in the left gutter and runs under the
+             content column, so it is masked away across that overlap: it
+             stays legible where there is nothing over it and thins to
+             nothing where section copy begins. */
+          ...(onSand
+            ? {
+                maskImage:
+                  "linear-gradient(90deg, #000 0%, #000 26%, rgba(0,0,0,0.28) 56%, transparent 80%)",
+                WebkitMaskImage:
+                  "linear-gradient(90deg, #000 0%, #000 26%, rgba(0,0,0,0.28) 56%, transparent 80%)",
+              }
+            : null),
         }}
       >
         {/* glowing left accent rule (replaces the panel) */}
@@ -178,8 +214,8 @@ export default function ScrollFormObjects() {
             flexShrink: 0,
             marginRight: 16,
             borderRadius: 2,
-            background: "linear-gradient(180deg, #36d6ff, #a98bff)",
-            boxShadow: "0 0 12px rgba(80,170,255,0.5)",
+            background: onSand ? "linear-gradient(180deg, #0a7085, #5744c9)" : "linear-gradient(180deg, #36d6ff, #a98bff)",
+            boxShadow: onSand ? "none" : "0 0 12px rgba(80,170,255,0.5)",
             opacity: 0.7,
           }}
         />
@@ -193,10 +229,10 @@ export default function ScrollFormObjects() {
               fontSize: 11,
               letterSpacing: "0.16em",
               textTransform: "uppercase",
-              color: "rgba(150,200,255,0.7)",
+              color: onSand ? "rgba(60,67,81,0.9)" : "rgba(150,200,255,0.7)",
             }}
           >
-            <span style={{ width: 6, height: 6, borderRadius: 6, background: "#5fffb0", boxShadow: "0 0 8px #5fffb0" }} />
+            <span style={{ width: 6, height: 6, borderRadius: 6, background: onSand ? "#1a7f37" : "#5fffb0", boxShadow: onSand ? "none" : "0 0 8px #5fffb0" }} />
             learn.js
           </div>
           {CODE.map((line, i) => (
@@ -206,7 +242,7 @@ export default function ScrollFormObjects() {
               </span>
               <span>
                 {line.map((seg, j) => (
-                  <span key={j} style={{ color: seg.c }}>
+                  <span key={j} style={{ color: paintTok(seg.c) }}>
                     {seg.t}
                   </span>
                 ))}

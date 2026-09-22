@@ -107,7 +107,70 @@ function useCapabilities(): Capabilities {
   return caps;
 }
 
+/* ── two skies ─────────────────────────────────────────────────────────
+ * The night sky builds light out of black with additive blending. A sand
+ * sky has to build dark out of paper, so the same layers multiply instead.
+ * Everything else about the formation is identical.
+ * ─────────────────────────────────────────────────────────────────────── */
+type SkyPalette = {
+  base: [string, string, string];
+  clouds: Array<[number, number, number]>;
+  /* One alpha per cloud, so a tone can add colour without the other tone
+     inheriting the weight change. /cybersecurity shares this backdrop. */
+  cloudAlpha: number[];
+  blend: GlobalCompositeOperation;
+  hud: (a: number) => string;
+  mote: (a: number) => string;
+  star: (a: number) => string;
+  starAlt: (a: number) => string;
+  core: [string, string, string];
+  /* multiply takes far less weight than lighter to read the same */
+  cloudScale: number;
+  glowScale: number;
+  /* the scrim deepens a night sky and has to lift a paper one */
+  scrim: { centre: [string, string]; top: string };
+};
+
+const NIGHT_SKY: SkyPalette = {
+  base: ["#060a16", "#05070f", "#03040a"],
+  clouds: [[150, 95, 235], [60, 150, 245], [195, 80, 205], [70, 120, 235], [40, 70, 170]],
+  cloudAlpha: [0.3, 0.3, 0.16, 0.16, 0.08],
+  blend: "lighter",
+  hud: (a) => `rgba(130,185,255,${a})`,
+  mote: (a) => `rgba(200,220,255,${a})`,
+  star: (a) => `rgba(208,226,255,${a})`,
+  starAlt: (a) => `rgba(186,158,255,${a})`,
+  core: ["rgba(245,248,255,1)", "rgba(190,205,255,0.4)", "rgba(150,180,255,0)"],
+  cloudScale: 1,
+  glowScale: 1,
+  scrim: { centre: ["rgba(3,4,10,0.6)", "rgba(3,4,10,0.3)"], top: "3,4,10" },
+};
+
+const SAND_SKY: SkyPalette = {
+  base: ["#f8f4ec", "#f3ede4", "#eee7db"],
+  /* Owner: more colours in this galaxy. Four of the five were a blue,
+     which is why it read as one wash. These are seven jewel hues spread
+     round the wheel (violet, teal, plum, indigo, navy, emerald, amber),
+     each taken down far enough to read as ink rather than light, and
+     their mean darkness held at the old set's so the page does not get
+     heavier for having more in it. */
+  clouds: [[96, 70, 150], [16, 92, 106], [130, 42, 104], [44, 74, 140], [30, 48, 96], [20, 100, 74], [142, 88, 26]],
+  cloudAlpha: [0.22, 0.22, 0.15, 0.14, 0.07, 0.11, 0.09],
+  blend: "multiply",
+  hud: (a) => `rgba(26,64,82,${a})`,
+  mote: (a) => `rgba(44,52,68,${a})`,
+  star: (a) => `rgba(38,46,62,${a})`,
+  starAlt: (a) => `rgba(84,66,140,${a})`,
+  core: ["rgba(26,64,82,0.6)", "rgba(60,92,128,0.22)", "rgba(120,150,190,0)"],
+  cloudScale: 0.3,
+  glowScale: 0.28,
+  scrim: { centre: ["rgba(255,251,244,0.76)", "rgba(255,251,244,0.44)"], top: "255,251,244" },
+};
+
+let SKY: SkyPalette = NIGHT_SKY;
+
 export default function CosmicNetworkBackground({
+  tone = "night",
   intensity = 1,
   enableParallax = true,
   enableShootingStars = true,
@@ -116,7 +179,9 @@ export default function CosmicNetworkBackground({
   overlayDarkness = 0.3,
   formationViewports = 1.6,
   className,
-}: CosmicNetworkBackgroundProps) {
+}: CosmicNetworkBackgroundProps & { tone?: "night" | "sand" }) {
+  /* set before any paint: the painters read the module palette */
+  SKY = tone === "sand" ? SAND_SKY : NIGHT_SKY;
   const caps = useCapabilities();
 
   /* scroll → formation progress (0..1). Reduced motion: lock fully formed. */
@@ -216,9 +281,9 @@ function paintCosmicBase(ctx: CanvasRenderingContext2D, w: number, h: number, ti
   ctx.clearRect(0, 0, w, h);
 
   const base = ctx.createLinearGradient(0, 0, 0, h);
-  base.addColorStop(0, "#060a16");
-  base.addColorStop(0.5, "#05070f");
-  base.addColorStop(1, "#03040a");
+  base.addColorStop(0, SKY.base[0]);
+  base.addColorStop(0.5, SKY.base[1]);
+  base.addColorStop(1, SKY.base[2]);
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, w, h);
 
@@ -228,13 +293,22 @@ function paintCosmicBase(ctx: CanvasRenderingContext2D, w: number, h: number, ti
    * the CSS NebulaGlows + the particle knots) */
   type Cloud = { x: number; y: number; r: number; col: [number, number, number]; a: number };
   const clouds: Cloud[] = [
-    { x: w * 0.82, y: h * 0.15, r: min * 0.34, col: [150, 95, 235], a: 0.3 },
-    { x: w * 0.15, y: h * 0.64, r: min * 0.34, col: [60, 150, 245], a: 0.3 },
-    { x: w * 0.52, y: h * 0.74, r: min * 0.22, col: [195, 80, 205], a: 0.16 },
-    { x: w * 0.8, y: h * 0.62, r: min * 0.4, col: [70, 120, 235], a: 0.16 },
-    { x: w * 0.45, y: h * 0.45, r: min * 0.55, col: [40, 70, 170], a: 0.08 },
-  ];
-  ctx.globalCompositeOperation = "lighter";
+    /* The first five are where they have always been. The last two are
+       the sand tone's extra hues, dropped where the canvas was empty so
+       more colour reads as more of the sky lit rather than a denser
+       middle; the night palette has no sixth or seventh, so night is
+       exactly the sky it was. */
+    { x: w * 0.82, y: h * 0.15, r: min * 0.34 },
+    { x: w * 0.15, y: h * 0.64, r: min * 0.34 },
+    { x: w * 0.52, y: h * 0.74, r: min * 0.22 },
+    { x: w * 0.8, y: h * 0.62, r: min * 0.4 },
+    { x: w * 0.45, y: h * 0.45, r: min * 0.55 },
+    { x: w * 0.12, y: h * 0.16, r: min * 0.3 },
+    { x: w * 0.68, y: h * 0.38, r: min * 0.26 },
+  ]
+    .slice(0, SKY.clouds.length)
+    .map((c, i) => ({ ...c, col: SKY.clouds[i], a: SKY.cloudAlpha[i] }));
+  ctx.globalCompositeOperation = SKY.blend;
   for (const c of clouds) {
     for (let i = 0; i < 5; i++) {
       const ox = c.x + (rnd() - 0.5) * c.r * 0.8;
@@ -242,8 +316,9 @@ function paintCosmicBase(ctx: CanvasRenderingContext2D, w: number, h: number, ti
       const rr = c.r * (0.4 + rnd() * 0.6);
       const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, rr);
       const [r, gn, b] = c.col;
-      g.addColorStop(0, `rgba(${r},${gn},${b},${(c.a * (0.5 + rnd() * 0.5)) / 5})`);
-      g.addColorStop(0.5, `rgba(${r},${gn},${b},${(c.a * 0.1) / 1})`);
+      const ca = c.a * SKY.cloudScale;
+      g.addColorStop(0, `rgba(${r},${gn},${b},${(ca * (0.5 + rnd() * 0.5)) / 5})`);
+      g.addColorStop(0.5, `rgba(${r},${gn},${b},${(ca * 0.1) / 1})`);
       g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
@@ -252,7 +327,7 @@ function paintCosmicBase(ctx: CanvasRenderingContext2D, w: number, h: number, ti
 
   /* ── faint futuristic HUD overlay ─────────────────────────────────────── */
   const PI2 = Math.PI * 2;
-  const hud = (a: number) => `rgba(130,185,255,${a})`;
+  const hud = SKY.hud;
   ctx.lineWidth = 1;
   const rx = w * 0.1;
   const ry = h * 0.22;
@@ -423,7 +498,7 @@ function NebulaGlows({
           right: "-8vmax",
           width: "54vmax",
           height: "54vmax",
-          background: `radial-gradient(circle, rgba(140,95,240,${0.4 * intensity}), transparent 62%)`,
+          background: `radial-gradient(circle, rgba(140,95,240,${0.4 * intensity * SKY.glowScale}), transparent 62%)`,
           animation: anim("cnbDrift1", 64),
         }}
       />
@@ -434,7 +509,7 @@ function NebulaGlows({
           left: "-12vmax",
           width: "52vmax",
           height: "52vmax",
-          background: `radial-gradient(circle, rgba(45,150,240,${0.36 * intensity}), transparent 62%)`,
+          background: `radial-gradient(circle, rgba(45,150,240,${0.36 * intensity * SKY.glowScale}), transparent 62%)`,
           animation: anim("cnbDrift2", 82),
         }}
       />
@@ -445,7 +520,7 @@ function NebulaGlows({
           right: "26vmax",
           width: "38vmax",
           height: "38vmax",
-          background: `radial-gradient(circle, rgba(220,70,190,${0.18 * intensity}), transparent 60%)`,
+          background: `radial-gradient(circle, rgba(220,70,190,${0.18 * intensity * SKY.glowScale}), transparent 60%)`,
           animation: anim("cnbDrift3", 96),
         }}
       />
@@ -454,7 +529,7 @@ function NebulaGlows({
           position: absolute;
           border-radius: 50%;
           filter: blur(58px);
-          mix-blend-mode: screen;
+          mix-blend-mode: var(--cnb-blend, screen);
           will-change: transform, opacity;
         }
         @keyframes cnbDrift1 {
@@ -655,9 +730,9 @@ function FormationField({
       /* hoist the galaxy-core gradient (geometry only changes on resize) so
        * it isn't reallocated every animation frame */
       coreGrad = ctx.createRadialGradient(GCX * w, GCY * h, 0, GCX * w, GCY * h, Math.min(w, h) * 0.12);
-      coreGrad.addColorStop(0, "rgba(245,248,255,1)");
-      coreGrad.addColorStop(0.35, "rgba(190,205,255,0.4)");
-      coreGrad.addColorStop(1, "rgba(150,180,255,0)");
+      coreGrad.addColorStop(0, SKY.core[0]);
+      coreGrad.addColorStop(0.35, SKY.core[1]);
+      coreGrad.addColorStop(1, SKY.core[2]);
       const rnd = mulberry32(404);
       const mc = tier === "mobile" ? 18 : 40;
       motes = Array.from({ length: mc }, () => ({
@@ -705,7 +780,7 @@ function FormationField({
 
     const renderParticles = (p: number, ts: number, motion: number) => {
       ctx.clearRect(0, 0, w, h);
-      ctx.globalCompositeOperation = "lighter";
+      ctx.globalCompositeOperation = SKY.blend;
 
       const gmin = Math.min(w, h);
       const gfx = gmin / w;
@@ -722,7 +797,7 @@ function FormationField({
       for (const m of motes) {
         const tw = motion ? 1 + Math.sin(ts * 0.6 + m.ph) * 0.4 : 1;
         const a = m.a * tw * intensity;
-        ctx.fillStyle = `rgba(200,220,255,${a})`;
+        ctx.fillStyle = SKY.mote(a);
         ctx.beginPath();
         ctx.arc(m.x * w, m.y * h + parY, m.s, 0, TWO_PI);
         ctx.fill();
@@ -757,7 +832,7 @@ function FormationField({
         const alpha = clamp01(s.baseA * lp * twk * intensity);
         if (alpha < 0.02) continue;
         const size = lerp(s.size * 0.5, s.size, lp);
-        ctx.fillStyle = s.hue === 1 ? `rgba(186,158,255,${alpha})` : `rgba(208,226,255,${alpha})`;
+        ctx.fillStyle = s.hue === 1 ? SKY.starAlt(alpha) : SKY.star(alpha);
         ctx.beginPath();
         ctx.arc(x, y, size, 0, TWO_PI);
         ctx.fill();
@@ -1022,7 +1097,7 @@ function BackgroundScrim({ dimCenter, overlayDarkness }: { dimCenter: boolean; o
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse 70% 55% at 50% 48%, rgba(3,4,10,0.6) 0%, rgba(3,4,10,0.3) 42%, rgba(3,4,10,0) 72%)",
+              `radial-gradient(ellipse 70% 55% at 50% 48%, ${SKY.scrim.centre[0]} 0%, ${SKY.scrim.centre[1]} 42%, rgba(${SKY.scrim.top},0) 72%)`,
           }}
         />
       )}
@@ -1030,7 +1105,7 @@ function BackgroundScrim({ dimCenter, overlayDarkness }: { dimCenter: boolean; o
         style={{
           position: "absolute",
           inset: 0,
-          background: `linear-gradient(to bottom, rgba(3,4,10,${Math.min(0.8, overlayDarkness + 0.2)}) 0%, rgba(3,4,10,0) 24%, rgba(3,4,10,0) 100%)`,
+          background: `linear-gradient(to bottom, rgba(${SKY.scrim.top},${Math.min(0.8, overlayDarkness + 0.2)}) 0%, rgba(${SKY.scrim.top},0) 24%, rgba(${SKY.scrim.top},0) 100%)`,
         }}
       />
     </>
@@ -1060,14 +1135,20 @@ function SunsetGlow() {
         position: "absolute",
         inset: 0,
         pointerEvents: "none",
-        mixBlendMode: "screen",
+        mixBlendMode: "var(--cnb-blend, screen)" as React.CSSProperties["mixBlendMode"],
         background:
-          /* sun sinking just below the horizon, slightly right of centre */
-          "radial-gradient(ellipse 62% 38% at 58% 108%, rgba(255,164,92,0.2) 0%, rgba(255,110,84,0.09) 42%, transparent 72%), " +
-          /* horizon band: amber -> coral -> rose -> violet, fading up the sky */
-          "linear-gradient(to top, rgba(255,128,70,0.15) 0%, rgba(236,88,112,0.1) 20%, rgba(168,70,150,0.06) 44%, rgba(92,56,150,0.035) 70%, rgba(60,44,120,0.02) 100%), " +
-          /* overall dusk lift so the top of the sky is not pure black */
-          "linear-gradient(rgba(46,28,62,0.2), rgba(46,28,62,0.2))",
+          SKY.glowScale < 1
+            ? /* On paper the same dusk has to be subtracted, so it is a
+                 warm horizon only: the flat violet lift that keeps a black
+                 sky from going pure black turns the whole page grey here. */
+              "radial-gradient(ellipse 62% 34% at 58% 108%, rgba(214,132,72,0.16) 0%, rgba(206,110,96,0.07) 44%, transparent 74%), " +
+              "linear-gradient(to top, rgba(206,132,86,0.09) 0%, rgba(186,116,124,0.05) 22%, transparent 56%)"
+            : /* sun sinking just below the horizon, slightly right of centre */
+              "radial-gradient(ellipse 62% 38% at 58% 108%, rgba(255,164,92,0.2) 0%, rgba(255,110,84,0.09) 42%, transparent 72%), " +
+              /* horizon band: amber -> coral -> rose -> violet, fading up the sky */
+              "linear-gradient(to top, rgba(255,128,70,0.15) 0%, rgba(236,88,112,0.1) 20%, rgba(168,70,150,0.06) 44%, rgba(92,56,150,0.035) 70%, rgba(60,44,120,0.02) 100%), " +
+              /* overall dusk lift so the top of the sky is not pure black */
+              "linear-gradient(rgba(46,28,62,0.2), rgba(46,28,62,0.2))",
       }}
     />
   );

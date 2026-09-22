@@ -32,9 +32,12 @@ type NavProps = {
   showTelemetry?: boolean;
   /** The Courses and Schools links. */
   showSiteLinks?: boolean;
+  /** Which page the bar is sitting on. */
+  tone?: "night" | "sand";
 };
 
-export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true }: NavProps) {
+export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night" }: NavProps) {
+  const onSand = tone === "sand";
   /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
    * Under Lenis, scroll events fire every rAF — storing the pixel value
    * re-rendered the entire Nav subtree at 60fps for the whole page.
@@ -48,23 +51,36 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* The whole page sits on the unified dark backdrop, so the nav stays
-   * dark throughout. The only state change is "barely-there at the top
-   * vs. a lifted glass panel once scrolled" — to mark the page is alive. */
-  const isLight = false;
+  /* The console's wrapper colour is an inline style, so no stylesheet can
+   * reach it: the tone has to arrive as this flag. Everything else about
+   * the bar changes through data-tone. */
+  const isLight = onSand;
 
   /* Layered gradient glass (gives the bar internal depth vs. a flat fill). */
-  const bg = scrolled
-    ? "linear-gradient(180deg, rgba(8,13,30,0.84) 0%, rgba(4,5,13,0.66) 100%)"
-    : "linear-gradient(180deg, rgba(8,13,30,0.42) 0%, rgba(4,5,13,0.20) 100%)";
-  const border = scrolled
-    ? "1px solid rgba(0,229,255,0.18)"
-    : "1px solid rgba(0,229,255,0.06)";
+  const bg = onSand
+    ? scrolled
+      ? "linear-gradient(180deg, rgba(255,253,248,0.96) 0%, rgba(250,245,236,0.9) 100%)"
+      : "linear-gradient(180deg, rgba(255,253,248,0.8) 0%, rgba(250,245,236,0.66) 100%)"
+    : scrolled
+      ? "linear-gradient(180deg, rgba(8,13,30,0.84) 0%, rgba(4,5,13,0.66) 100%)"
+      : "linear-gradient(180deg, rgba(8,13,30,0.42) 0%, rgba(4,5,13,0.20) 100%)";
+  const border = onSand
+    ? scrolled
+      ? "1px solid rgba(70,58,44,0.18)"
+      : "1px solid rgba(70,58,44,0.09)"
+    : scrolled
+      ? "1px solid rgba(0,229,255,0.18)"
+      : "1px solid rgba(0,229,255,0.06)";
   /* Glassy at the very top → settles onto a lifted shadow once scrolled,
    * so the strip reads as a layer lifting off the page. No layout change. */
-  const shadow = scrolled
-    ? "0 14px 44px rgba(2,4,12,0.5), 0 1px 0 rgba(0,229,255,0.06) inset"
-    : "0 0 0 rgba(0,0,0,0)";
+  /* On paper a bar stands out by lifting, not by darkening. */
+  const shadow = onSand
+    ? scrolled
+      ? "0 10px 30px -14px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.9)"
+      : "0 4px 18px -14px rgba(86,68,45,0.4)"
+    : scrolled
+      ? "0 14px 44px rgba(2,4,12,0.5), 0 1px 0 rgba(0,229,255,0.06) inset"
+      : "0 0 0 rgba(0,0,0,0)";
   const ctaRef = useRef<HTMLAnchorElement>(null);
   useMagnetic(ctaRef, { strength: 0.28, radius: 80 });
   const ctaHref = cta?.href ?? "/signup";
@@ -79,6 +95,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
 
   return (
     <nav
+      data-tone={tone}
       style={{
         position: "fixed",
         top: 0,
@@ -150,14 +167,14 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
               <a
                 className="lv2-nav-secondary"
                 href="/#subjects"
-                style={navLink}
+                style={onSand ? { ...navLink, color: "#075a6b" } : navLink}
               >
                 Courses
               </a>
               <Link
                 className="lv2-nav-secondary"
                 href="/schools"
-                style={navLink}
+                style={onSand ? { ...navLink, color: "#075a6b" } : navLink}
               >
                 Schools
               </Link>
@@ -283,7 +300,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             90deg,
             transparent,
             var(--lv2-cyan),
-            #7c5cff,
+            var(--lv2-brand-violet, #7c5cff),
             transparent
           );
           filter: blur(0.5px);
@@ -321,15 +338,15 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           line-height: 1;
         }
         .lv2-wordmark-main {
-          color: var(--lv2-paper);
+          color: var(--lv2-word-mark, var(--lv2-paper));
           background-image: linear-gradient(
             110deg,
-            var(--lv2-paper) 0%,
-            var(--lv2-paper) 42%,
-            #ffffff 48%,
+            var(--lv2-word-mark, var(--lv2-paper)) 0%,
+            var(--lv2-word-mark, var(--lv2-paper)) 42%,
+            var(--lv2-word-flash, #ffffff) 48%,
             var(--lv2-cyan-soft) 51%,
-            var(--lv2-paper) 58%,
-            var(--lv2-paper) 100%
+            var(--lv2-word-mark, var(--lv2-paper)) 58%,
+            var(--lv2-word-mark, var(--lv2-paper)) 100%
           );
           background-size: 260% 100%;
           background-position: 100% 0;
@@ -345,7 +362,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             150deg,
             var(--lv2-cyan-soft),
             var(--lv2-cyan) 45%,
-            #7c5cff
+            var(--lv2-brand-violet, #7c5cff)
           );
           -webkit-background-clip: text;
           background-clip: text;
@@ -471,16 +488,145 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         /* The page's own link: warm against the cyan chips, so a returning
            school finds its way in without competing with the CTA. */
         :global(.lv2-nav-aside) {
-          color: #ffca82;
+          color: var(--lv2-aside-ink, #ffca82);
           text-shadow: 0 0 14px rgba(255,180,90,0.55);
         }
-        :global(.lv2-nav-aside)::after { background: #ffca82 !important; }
+        :global(.lv2-nav-aside)::after { background: var(--lv2-aside-ink, #ffca82) !important; }
         :global(.lv2-nav-aside):hover,
         :global(.lv2-nav-aside):focus-visible {
           color: #ffe2b8;
           text-shadow: 0 0 20px rgba(255,190,110,0.85);
         }
 
+        /* Sand: the shimmer lightens the ink instead of punching a hole in
+           it, and the secondary links carry a heavier edge because a
+           hairline that reads on black disappears on paper. */
+        nav[data-tone="sand"] {
+          /* The shimmer lightens the ink instead of punching a hole in it,
+             and the three brand colours come down to their sand values.
+             Tokens rather than rules, because the wordmark's gradient and
+             the aside's underline each read theirs more than once. */
+          --lv2-word-flash: rgba(20, 22, 29, 0.32);
+          --lv2-word-mark: var(--lv2-ink);
+          --lv2-brand-violet: #5744c9;
+          --lv2-aside-ink: #9a5f00;
+        }
+        /* The console on paper. Its night half stays in the base rules, so
+           /cybersecurity keeps the bar it has always had. */
+        nav[data-tone="sand"] :global(.lv2-tel-online) {
+          color: #0e7a45 !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-dot) {
+          background: #0e7a45 !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-dot)::after {
+          border-color: #0e7a45 !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-trend-down) {
+          color: #0e7a45 !important;
+        }
+        /* The CTA was being recoloured by the homepage's own page-scoped
+           CSS, which is why /schools still showed the old bright cyan. It
+           belongs to the tone, so both pages get it from one place. */
+        nav[data-tone="sand"] :global(.lv2-nav-cta) {
+          background: #0a7085 !important;
+          color: #fffdfa !important;
+          box-shadow: 0 10px 26px -12px rgba(10, 112, 133, 0.85),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-nav-cta *) {
+          color: #fffdfa !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-nav-cta):hover {
+          box-shadow: 0 14px 32px -12px rgba(10, 112, 133, 1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+        }
+
+        /* Owner: the telemetry needs to stand out more. It was glass over
+           glass with no edge anywhere, and its dividers, glows and bars
+           were still neon values that vanish on paper. It gets a real
+           housing and darker labels, but no extra colour: this is ambient
+           status, and the CTA beside it has to stay the loudest thing. */
+        nav[data-tone="sand"] :global(.lv2-tel-shell) {
+          border: 1px solid rgba(70, 58, 44, 0.18) !important;
+          background: linear-gradient(180deg, #fffdf8, #f7f2e8) !important;
+          box-shadow: 0 6px 16px -12px rgba(86, 68, 45, 0.55),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-label) {
+          color: rgba(43, 35, 24, 0.72) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-num),
+        nav[data-tone="sand"] :global(.lv2-tel-latency) {
+          color: #0a7085 !important;
+          text-shadow: none !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-online) {
+          text-shadow: none !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-dot) {
+          box-shadow: 0 0 0 3px rgba(14, 122, 69, 0.16) !important;
+        }
+        /* The scan shimmer was white light sweeping a dark capsule; on a
+           near-white one it is invisible, so it sweeps a shadow instead. */
+        nav[data-tone="sand"] :global(.lv2-tel-scan) {
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(70, 58, 44, 0.07),
+            transparent
+          ) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-div) {
+          background: linear-gradient(
+            180deg,
+            transparent,
+            rgba(70, 58, 44, 0.3),
+            transparent
+          ) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-bars i) {
+          background: #0a7085 !important;
+          box-shadow: none !important;
+        }
+        /* Owner: make these stand out. A grey outline pill reads as
+           furniture next to a solid primary, so they become tinted
+           secondary buttons: a teal wash, a teal edge, a teal label and
+           the same lift the cards get. Hierarchy is then tinted for
+           secondary, solid for primary, rather than three weights of
+           outline. Label #075a6b on the 0.16 wash measures 6.1:1. */
+        /* Behind the same 641px breakpoint as the chip shape itself: the
+           padding and the pill radius only exist above it, so tinting at
+           every width gave phones a square teal slab behind plain text.
+           Below it these are plain links and only need their ink. */
+        @media (max-width: 640px) {
+          nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
+            color: #075a6b !important;
+            text-shadow: none !important;
+          }
+        }
+        @media (min-width: 641px) {
+        nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
+          border-color: rgba(10, 112, 133, 0.42) !important;
+          background: rgba(10, 112, 133, 0.16) !important;
+          color: #075a6b !important;
+          font-weight: 700;
+          /* Owner: put these in glowing fonts. A halo works on black by
+             adding light; sand has no darkness to bloom into, so the glow
+             is a teal bloom carried by the letterforms themselves, over a
+             thin white lift that keeps them crisp on the wash. */
+          text-shadow: 0 0 10px rgba(10, 112, 133, 0.55), 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+          box-shadow: 0 6px 16px -12px rgba(10, 112, 133, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover),
+        nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):focus-visible) {
+          border-color: rgba(10, 112, 133, 0.75) !important;
+          background: rgba(10, 112, 133, 0.26) !important;
+          color: #05454f !important;
+          text-shadow: 0 0 14px rgba(10, 112, 133, 0.85), 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+          box-shadow: 0 8px 20px -12px rgba(10, 112, 133, 1), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+        }
+        }
         :global(.lv2-nav-secondary) {
           position: relative;
           display: inline-block;
@@ -509,7 +655,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             border: 1px solid rgba(159, 245, 255, 0.24);
             background: rgba(0, 229, 255, 0.06);
             box-shadow: inset 0 1px 0 rgba(232, 237, 255, 0.05);
-            color: var(--lv2-paper);
+            color: var(--lv2-word-mark, var(--lv2-paper));
           }
           /* the chip does the job the scanning underline used to do */
           :global(.lv2-nav-secondary:not(.lv2-nav-aside))::after {
@@ -544,7 +690,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         }
         :global(.lv2-nav-secondary:hover),
         :global(.lv2-nav-secondary:focus-visible) {
-          color: var(--lv2-paper);
+          color: var(--lv2-word-mark, var(--lv2-paper));
           text-shadow: 0 0 12px rgba(0, 229, 255, 0.55);
           transform: translateY(-1px);
         }
@@ -616,8 +762,8 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           .lv2-wordmark-main {
             animation: none;
             background-image: none;
-            -webkit-text-fill-color: var(--lv2-paper);
-            color: var(--lv2-paper);
+            -webkit-text-fill-color: var(--lv2-word-mark, var(--lv2-paper));
+            color: var(--lv2-word-mark, var(--lv2-paper));
           }
           .lv2-wordmark-x {
             animation: none;
@@ -930,7 +1076,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
     return () => clearInterval(i);
   }, [reduceMotion]);
 
-  const baseColor = isLight ? "rgba(10,15,28,0.78)" : "rgba(232,237,255,0.82)";
+  const baseColor = isLight ? "rgba(10,15,28,0.78)" : "rgba(232, 237, 255, 0.82)";
 
   return (
     <div

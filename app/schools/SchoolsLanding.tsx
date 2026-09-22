@@ -9,7 +9,8 @@ import SchoolsGlobe from "@/app/schools/SchoolsGlobe";
 import ProofBand from "@/app/components/ProofBand";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
-import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
+import CourseLockup, { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
+import { sectionMark } from "@/app/components/sectionMark";
 import EnquiryForm from "./EnquiryForm";
 import ProductTabs, { shotSet, shotSrc } from "./ProductTabs";
 import { PHASES, type Phase } from "./phases";
@@ -24,15 +25,9 @@ import { PHASES, type Phase } from "./phases";
  * remembered per browser.
  */
 
-const eyebrow: React.CSSProperties = {
-  margin: 0,
-  fontFamily: "var(--lv2-font-mono)",
-  fontSize: 12,
-  fontWeight: 700,
-  letterSpacing: "0.3em",
-  textTransform: "uppercase",
-  color: "rgba(125,240,255,0.82)",
-};
+/* Every eyebrow on this page takes the shared section mark, the same one
+   the homepage uses. Ten of them come from this constant. */
+const eyebrow: React.CSSProperties = sectionMark;
 
 const h2: React.CSSProperties = {
   margin: "14px 0 0",
@@ -41,7 +36,7 @@ const h2: React.CSSProperties = {
   lineHeight: 1.06,
   letterSpacing: "-0.025em",
   fontWeight: 400,
-  color: "var(--lv2-paper)",
+  color: "var(--lv2-ink)",
 };
 
 const lede: React.CSSProperties = {
@@ -49,7 +44,7 @@ const lede: React.CSSProperties = {
   fontFamily: "var(--lv2-font-display)",
   fontSize: "clamp(1rem, 1.2vw, 1.1rem)",
   lineHeight: 1.6,
-  color: "rgba(232,237,255,0.78)",
+  color: "rgba(17,22,38,0.82)",
   maxWidth: 640,
 };
 
@@ -57,16 +52,20 @@ const pillPrimary: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  height: 54,
-  padding: "0 30px",
+  height: 58,
+  padding: "0 34px",
   borderRadius: 999,
-  background: "linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%)",
-  color: "#04050d",
+  /* the same deep teal the homepage primary carries, with paper on it */
+  background: "linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%)",
+  color: "#fffdfa",
   fontFamily: "var(--lv2-font-display)",
-  fontSize: 15.5,
+  fontSize: 16.5,
   fontWeight: 700,
+  letterSpacing: "0.005em",
   textDecoration: "none",
-  boxShadow: "0 14px 34px -14px rgba(0,229,255,0.85)",
+  /* a saturated cast under it and a lit top edge: the paper equivalent of
+     the glow this button had on the dark page */
+  boxShadow: "0 16px 38px -12px rgba(10,112,133,0.9), 0 0 0 1px rgba(10,112,133,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
   whiteSpace: "nowrap",
 };
 
@@ -74,12 +73,12 @@ const pillGhost: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  height: 54,
-  padding: "0 24px",
+  height: 58,
+  padding: "0 26px",
   borderRadius: 999,
-  border: "1px solid rgba(159,245,255,0.45)",
-  background: "rgba(0,229,255,0.06)",
-  color: "var(--lv2-paper)",
+  border: "1px solid rgba(20,22,29,0.22)",
+  background: "rgba(255,253,248,0.8)",
+  color: "var(--lv2-ink)",
   fontFamily: "var(--lv2-font-display)",
   fontSize: 15.5,
   fontWeight: 600,
@@ -105,37 +104,39 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
 ];
 
 const STEPS = [
-  { n: "01", when: "Day 1", colour: "#7df0ff", title: "We create your licence", text: "We set up the school licence and your teacher logins. There is nothing to install: it runs in the browser your school already has." },
-  { n: "02", when: "Day 1", colour: "#b98bff", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
-  { n: "03", when: "Weekly", colour: "#5fffa3", title: "Run the lessons", text: "Twenty weeks of lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
-  { n: "04", when: "End of course", colour: "#ffb347", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
+  { n: "01", colour: "#0a7085", title: "We create your licence", text: "We set up the school licence and your teacher logins. There is nothing to install: it runs in the browser your school already has." },
+  { n: "02", colour: "#5744c9", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
+  { n: "03", colour: "#0e7a45", title: "Run the lessons", text: "Twenty weeks of lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
+  { n: "04", colour: "#8a5400", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
 ];
 
 /* The four courses, in the order a school meets them. Ages match the
    course landings; nothing here is a claim we cannot show on those pages. */
 const COURSE_MARKS: ReadonlyArray<{ id: LockupId; ages: string; accent: string }> = [
-  { id: "heroes", ages: "Ages 6 to 9", accent: "#ffb347" },
-  { id: "explorers", ages: "Ages 10 to 13", accent: "#22D3EE" },
-  { id: "ops", ages: "Ages 14 to 17", accent: "#8B7BFF" },
-  { id: "pro", ages: "Ages 18+", accent: "#ff7a3d" },
+  { id: "heroes", ages: "Ages 6 to 9", accent: "#8a5400" },
+  { id: "explorers", ages: "Ages 10 to 13", accent: "#0a6675" },
+  { id: "ops", ages: "Ages 14 to 17", accent: "#5744c9" },
+  { id: "pro", ages: "Ages 18+", accent: "#a63a08" },
 ];
 
 const PILLARS = [
   {
     title: "Independent by design",
-    accent: "#7df0ff",
+    accent: "#0a7085",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 14v-3a8 8 0 0 1 16 0v3" /><rect x="3" y="13" width="4" height="7" rx="1.5" /><rect x="17" y="13" width="4" height="7" rx="1.5" /></svg>,
     points: ["Every instruction is spoken and captioned", "Pupils resume from the exact screen they left", "Wrong answers get a reason and another go", "Zero lesson prep. Zero marking."],
   },
   {
     title: "Safe by default",
-    accent: "#5fffa3",
+    accent: "#0e7a45",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></svg>,
-    points: ["Cyber Essentials certified, the NCSC-backed security standard", "A closed environment: pupils only ever interact with the lesson", "Data kept to a minimum: first name, class and progress", "Pupil data is never sent to AI services", "Deleted in full whenever you ask"],
+    /* Four points each, so the three cards carry the same weight. The
+       two data lines read better as one anyway. */
+    points: ["Cyber Essentials certified, the NCSC-backed security standard", "A closed environment: pupils only ever interact with the lesson", "Pupil data is never sent to AI services", "First name, class and progress only, deleted whenever you ask"],
   },
   {
     title: "Matched to the curriculum",
-    accent: "#ffb347",
+    accent: "#8a5400",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" /><path d="M4 20.5V5.5M8 7h8M8 10.5h8" /></svg>,
     points: ["Education for a Connected World strands", "The computing programme of study", "Online safety within RSHE", "A mapping sheet for every lesson"],
   },
@@ -236,12 +237,13 @@ export default function SchoolsLanding() {
   };
 
   return (
-    <>
-      <SchoolsGlobe />
+    <div className="sch-page" style={{ display: "contents" }}>
+      <SchoolsGlobe tone="sand" />
       {/* The page's own chrome: no telemetry, no site links. The brand cube
           is the way back home, and the section links ride in the bar itself
           wherever there is room for them. */}
       <Nav
+        tone="sand"
         showTelemetry={false}
         showSiteLinks={false}
         cta={{ label: "Get in touch", href: "#enquiry" }}
@@ -256,7 +258,7 @@ export default function SchoolsLanding() {
           offsets) from widening the page, which let phones pan sideways by
           160px. clip, unlike hidden, is not a scroll container, so the
           sticky section bar inside still sticks. */}
-      <main style={{ position: "relative", color: "var(--lv2-paper)", minHeight: "100vh", overflowX: "clip" }}>
+      <main style={{ position: "relative", color: "var(--lv2-ink)", minHeight: "100vh", overflowX: "clip" }}>
         {/* SECTION NAV ────────────────────────────────────── */}
         <div className="sch-subnav-wrap">
           <nav ref={subnavRef} className="sch-subnav" aria-label="On this page">
@@ -289,14 +291,23 @@ export default function SchoolsLanding() {
               </FadeUp>
               <FadeUp delay={0.18}>
                 <div className="sch-cta-row">
-                  <a href="#enquiry" style={pillPrimary}>Register your interest</a>
-                  <a href="#product" style={pillGhost}>Look inside the product</a>
+                  {/* Owner: make Register your interest stand out more, and
+                      "look inside the product" should be educational, about
+                      the curriculum. The second button also gets quieter, so
+                      the first wins on contrast rather than on size alone. */}
+                  <a href="#enquiry" style={pillPrimary}>
+                    Register your interest
+                    <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
+                  </a>
+                  <a href="#product" style={pillGhost}>Explore the curriculum</a>
                 </div>
               </FadeUp>
               <FadeUp delay={0.24}>
                 <ul className="sch-trust">
-                  <li>Cyber skills that keep pace with the threats</li>
-                  <li>One platform, ages 6 to 18</li>
+                  {/* Owner: 6 to 18 plus, and the first line should sell the
+                      fact that the course keeps up with new attack methods. */}
+                  <li>Cyber skills that outpace the newest attacks</li>
+                  <li>One platform, ages 6 to 18+</li>
                   <li>Certified and curriculum mapped</li>
                 </ul>
               </FadeUp>
@@ -320,7 +331,7 @@ export default function SchoolsLanding() {
         {/* The same band as the homepage, in the same place: straight
             after the hero, where its height does not depend on the
             window. It used to be four pills inside the hero here too. */}
-        <ProofBand />
+        <ProofBand tone="sand" />
 
         {/* REACH ──────────────────────────────────────────── */}
         <section className="sch-section sch-reach-section">
@@ -375,7 +386,7 @@ export default function SchoolsLanding() {
                         {ph.courses.map((c) => (
                           <span key={c.name} className="sch-course">
                             <span className="sch-course-top">
-                              <CourseLockup id={c.lockup} size={0.95} />
+                              <CourseLockup id={c.lockup} size={0.95} tone="sand" />
                               <span className="sch-course-years">{c.years}</span>
                               <span className={`sch-chip${c.status === "Live" ? " sch-chip-live" : ""}`}>{c.status}</span>
                             </span>
@@ -419,9 +430,10 @@ export default function SchoolsLanding() {
             {STEPS.map((s, i) => (
               <FadeUp key={s.n} delay={0.06 * i}>
                 <div className="sch-card sch-step" style={{ ["--sch-accent" as string]: s.colour }}>
+                  {/* Owner 2026-09-22: the Day 1 / Weekly / End of course
+                      pills came off. Nothing else about these changed. */}
                   <span className="sch-step-top">
                     <span className="sch-step-n">{s.n}</span>
-                    <span className="sch-chip">{s.when}</span>
                   </span>
                   <h3>{s.title}</h3>
                   <p>{s.text}</p>
@@ -445,6 +457,7 @@ export default function SchoolsLanding() {
                 <div className="sch-card sch-pillar" style={{ ["--sch-accent" as string]: p.accent }}>
                   <span className="sch-pillar-icon">{p.icon}</span>
                   <h3>{p.title}</h3>
+                  <span className="sch-rule" aria-hidden />
                   <ul>{p.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
                 </div>
               </FadeUp>
@@ -459,9 +472,12 @@ export default function SchoolsLanding() {
                 <p className="sch-marks-label">{"// One platform, four courses"}</p>
                 <ul className="sch-marks-row">
                   {COURSE_MARKS.map((m) => (
-                    <li key={m.id} className="sch-mark" style={{ ["--sch-accent" as string]: m.accent }}>
-                      <CourseLockup id={m.id} size={0.82} />
-                      <span className="sch-mark-age">{m.ages}</span>
+                    /* Same links as the homepage chips, from the same map. */
+                    <li key={m.id} style={{ ["--sch-accent" as string]: m.accent }}>
+                      <Link href={COURSE_HREF[m.id]} className="sch-mark">
+                        <CourseLockup id={m.id} size={0.82} tone="sand" />
+                        <span className="sch-mark-age">{m.ages}</span>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -536,7 +552,7 @@ export default function SchoolsLanding() {
                 <p style={lede}>
                   We&rsquo;ll explain the onboarding process, from the agreement to the first lesson, and reply within two working days. We bring the processing agreement and a data-protection summary to the first conversation so your DPO has what they need.
                 </p>
-                <p style={{ ...lede, fontSize: 14.5, color: "rgba(232,237,255,0.6)" }}>
+                <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)" }}>
                   Prefer email? <a href="mailto:admissions@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>admissions@algorithmx.co.uk</a>
                 </p>
               </div>
@@ -550,9 +566,22 @@ export default function SchoolsLanding() {
         </section>
       </main>
 
-      <Footer />
+      <Footer tone="sand" />
 
       <style>{`
+        /* The sand token layer. Without it the page keeps reading the
+           neon values straight out of globals.css: --lv2-cyan-soft is
+           still #0a7085, which is 1.1:1 on paper. */
+        .sch-page, .sch-page :is(section, div, nav, header, footer, main, span, p, li, a) {
+          --lv2-cyan: #0a7085;
+          --lv2-cyan-soft: #0a7085;
+          --lv2-lime: #0e7a45;
+          --lv2-cosmic: #5744c9;
+          --lv2-text-muted: #5d6472;
+          --lv2-ink: #14161d;
+        }
+        html, .sch-page { background: #f3ede4; }
+
         .sch-section {
           position: relative;
           max-width: 1180px;
@@ -564,7 +593,7 @@ export default function SchoolsLanding() {
         .sch-hero-section { padding-top: clamp(26px, 2.2vw, 44px); padding-bottom: calc(var(--lv2-rail) * 0.8); }
         .sch-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
         .sch-glow-amber { width: 520px; height: 520px; right: -140px; top: -80px; background: radial-gradient(circle, rgba(255,179,71,0.35), transparent 65%); }
-        .sch-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(0,229,255,0.28), transparent 65%); }
+        .sch-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(10,112,133,0.28), transparent 65%); }
         .sch-glow-violet { width: 560px; height: 560px; right: -160px; top: 40px; background: radial-gradient(circle, rgba(124,92,255,0.38), transparent 65%); }
         .sch-glow-lime { width: 480px; height: 480px; left: -160px; top: 0; background: radial-gradient(circle, rgba(126,255,151,0.22), transparent 65%); }
         .sch-section > *:not(.sch-glow) { position: relative; z-index: 1; }
@@ -601,14 +630,14 @@ export default function SchoolsLanding() {
           gap: 10px;
           padding: 9px 16px;
           border-radius: 999px;
-          border: 1px solid rgba(0,229,255,0.22);
-          background: rgba(4,8,22,0.74);
+          border: 1px solid rgba(10,112,133,0.22);
+          background: rgba(255,253,248,0.74);
           font-family: var(--lv2-font-mono);
           font-size: 11.5px;
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(232,237,255,0.84);
+          color: rgba(17,22,38,0.88);
           white-space: nowrap;
         }
         .sch-reach-chips li::before {
@@ -616,8 +645,8 @@ export default function SchoolsLanding() {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #7df0ff;
-          box-shadow: 0 0 10px rgba(125,240,255,0.8);
+          background: #0a7085;
+          box-shadow: 0 0 10px rgb(10,112,133);
         }
         @media (max-width: 900px) {
           .sch-reach { grid-template-columns: minmax(0, 1fr); }
@@ -625,7 +654,7 @@ export default function SchoolsLanding() {
         }
 
         .sch-grad {
-          background: linear-gradient(92deg, #7df0ff 0%, #b98bff 55%, #ff8ad4 100%);
+          background: linear-gradient(92deg, #0a7085 0%, #5744c9 55%, #a5117f 100%);
           -webkit-background-clip: text; background-clip: text; color: transparent;
         }
         .sch-h1 {
@@ -641,7 +670,7 @@ export default function SchoolsLanding() {
           color: var(--lv2-cyan-soft); white-space: nowrap; transition: opacity .2s ease;
         }
         .sch-toplink:hover { opacity: .8; }
-        .sch-toplink-login { padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(159,245,255,0.4); background: rgba(0,229,255,0.08); }
+        .sch-toplink-login { padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(20,22,29,0.4); background: rgba(10,112,133,0.08); }
 
         /* hero */
         .sch-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 44px; align-items: center; }
@@ -650,37 +679,37 @@ export default function SchoolsLanding() {
         .sch-trust li {
           position: relative; padding-left: 18px;
           font-family: var(--lv2-font-mono); font-size: 11.5px; font-weight: 600;
-          letter-spacing: 0.12em; text-transform: uppercase; color: rgba(232,237,255,0.7);
+          letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.73);
         }
-        .sch-trust li::before { content: ""; position: absolute; left: 0; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #5fffa3; box-shadow: 0 0 10px #5fffa3; }
+        .sch-trust li::before { content: ""; position: absolute; left: 0; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #0e7a45; box-shadow: 0 0 10px #0e7a45; }
 
         .sch-stack { position: relative; width: 100%; aspect-ratio: 5 / 4; }
         .sch-stack::before {
           content: ""; position: absolute; inset: -6%; z-index: 0; border-radius: 40%;
-          background: radial-gradient(closest-side at 35% 35%, rgba(0,229,255,0.32), transparent 70%),
+          background: radial-gradient(closest-side at 35% 35%, rgba(10,112,133,0.32), transparent 70%),
                       radial-gradient(closest-side at 75% 75%, rgba(185,139,255,0.36), transparent 70%),
                       radial-gradient(closest-side at 70% 20%, rgba(255,138,212,0.2), transparent 70%);
           filter: blur(18px);
         }
         .sch-stack-card {
-          position: absolute; width: 72%; border-radius: 14px; overflow: hidden; background: #0a0d18;
-          border: 1px solid rgba(159,245,255,0.35);
-          box-shadow: 0 30px 70px -30px rgba(0,229,255,0.55), 0 30px 60px -20px rgba(0,0,0,0.85);
+          position: absolute; width: 72%; border-radius: 14px; overflow: hidden; background: #fffdf8;
+          border: 1px solid rgba(20,22,29,0.35);
+          box-shadow: 0 30px 70px -30px rgba(10,112,133,0.55), 0 30px 60px -20px rgba(0,0,0,0.85);
           transition: transform .5s var(--lv2-ease-soft);
         }
-        .sch-stack-bar { height: 24px; display: flex; align-items: center; gap: 5px; padding: 0 10px; background: #12162a; font-family: var(--lv2-font-mono); font-size: 9.5px; color: rgba(232,237,255,0.62); }
-        .sch-stack-bar i { width: 7px; height: 7px; border-radius: 50%; background: rgba(232,237,255,0.25); }
+        .sch-stack-bar { height: 24px; display: flex; align-items: center; gap: 5px; padding: 0 10px; background: #f4efe7; font-family: var(--lv2-font-mono); font-size: 9.5px; color: rgba(17,22,38,0.65); }
+        .sch-stack-bar i { width: 7px; height: 7px; border-radius: 50%; background: rgba(244,239,231,0.26); }
         .sch-stack-bar i:nth-child(1) { background: #ff5f57; } .sch-stack-bar i:nth-child(2) { background: #febc2e; } .sch-stack-bar i:nth-child(3) { background: #28c840; }
         .sch-stack-bar span { margin-left: 6px; }
         .sch-stack-card img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
         .sch-stack-2 { left: 0; top: 0; z-index: 1; transform: rotate(-7deg) scale(0.92); opacity: 0.92; }
         .sch-stack-1 { right: 0; top: 10%; z-index: 2; transform: rotate(4deg) scale(0.96); }
-        .sch-stack-0 { left: 9%; top: 28%; z-index: 3; transform: rotate(-2deg); border-color: rgba(159,245,255,0.55); }
+        .sch-stack-0 { left: 9%; top: 28%; z-index: 3; transform: rotate(-2deg); border-color: rgba(20,22,29,0.55); }
         .sch-stack:hover .sch-stack-0 { transform: rotate(-1deg) translateY(-6px); }
         .sch-stack:hover .sch-stack-1 { transform: rotate(5deg) scale(0.96) translateY(-4px); }
 
         /* section nav */
-        .sch-subnav-wrap { margin-top: 68px; position: sticky; top: 68px; z-index: 30; background: rgba(4,5,13,0.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,229,255,0.1); border-bottom: 1px solid rgba(0,229,255,0.1); }
+        .sch-subnav-wrap { margin-top: 68px; position: sticky; top: 68px; z-index: 30; background: rgba(255,253,248,0.68); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(10,112,133,0.1); border-bottom: 1px solid rgba(10,112,133,0.1); }
         .sch-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .sch-subnav::-webkit-scrollbar { display: none; }
         /* One bar wherever the nav has room for the section links: they ride
@@ -694,14 +723,23 @@ export default function SchoolsLanding() {
           .sch-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); }
           .sch-section { scroll-margin-top: 88px; }
         }
+        /* Owner: make these stand out, the same as the landing page. They
+           are the same thing as the homepage's Courses and Schools chips, so
+           they take the same treatment: a teal wash, a teal edge, teal ink
+           and a glow off the letterforms. The white ink these used on hover
+           and when current was a dark-page value and disappeared entirely on
+           a pale wash, which is why the current section read as blank. */
         .sch-chip-link {
           flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; text-decoration: none;
-          border: 1px solid rgba(159,245,255,0.22); background: rgba(13,15,24,0.6);
+          border: 1px solid rgba(10,112,133,0.42); background: rgba(10,112,133,0.16);
           font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-          color: rgba(232,237,255,0.78); transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
+          color: #075a6b;
+          text-shadow: 0 0 10px rgba(10,112,133,0.55), 0 1px 0 rgba(255,255,255,0.6);
+          box-shadow: 0 6px 16px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.7);
+          transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
         }
-        .sch-chip-link:hover { border-color: var(--lv2-cyan); color: #fff; background: rgba(0,229,255,0.1); }
-        .sch-chip-link.on { border-color: var(--lv2-cyan); color: #fff; background: rgba(0,229,255,0.16); box-shadow: 0 0 18px -6px var(--lv2-cyan); }
+        .sch-chip-link:hover { border-color: rgba(10,112,133,0.75); color: #05454f; background: rgba(10,112,133,0.26); text-shadow: 0 0 14px rgba(10,112,133,0.85), 0 1px 0 rgba(255,255,255,0.6); }
+        .sch-chip-link.on { border-color: #0a7085; color: #fffdfa; background: #0a7085; text-shadow: none; box-shadow: 0 8px 20px -12px rgba(10,112,133,1), inset 0 1px 0 rgba(255,255,255,0.28); }
         .sch-chip-cta { border-color: transparent; color: #04050d; background: linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%); margin-left: auto; }
         .sch-chip-cta:hover, .sch-chip-cta.on { color: #04050d; background: linear-gradient(135deg, #5ff5ff 0%, #1fd8ff 55%, #14c2f8 100%); border-color: transparent; }
         /* fade the trailing edge when the strip scrolls (narrow screens) */
@@ -714,18 +752,18 @@ export default function SchoolsLanding() {
         .sch-card {
           position: relative; height: 100%; box-sizing: border-box;
           padding: 26px 24px; border-radius: 18px;
-          background: linear-gradient(180deg, rgba(24,29,56,0.78), rgba(14,17,34,0.78));
-          border: 1px solid rgba(159,245,255,0.24);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 50px -30px rgba(0,229,255,0.35);
+          background: linear-gradient(180deg, rgba(244,239,231,0.78), rgba(255,253,248,0.78));
+          border: 1px solid rgba(20,22,29,0.24);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 50px -30px rgba(10,112,133,0.35);
           backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         }
         .sch-chip {
           display: inline-flex; align-items: center; height: 22px; padding: 0 9px;
-          border-radius: 999px; border: 1px solid rgba(232,237,255,0.28);
+          border-radius: 999px; border: 1px solid rgba(17,22,38,0.29);
           font-family: var(--lv2-font-mono); font-size: 10px; font-weight: 700;
-          letter-spacing: 0.16em; text-transform: uppercase; color: rgba(232,237,255,0.8); white-space: nowrap;
+          letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.84); white-space: nowrap;
         }
-        .sch-chip-live { border-color: rgba(95,255,163,0.6); color: #5fffa3; background: rgba(95,255,163,0.12); box-shadow: 0 0 14px -4px rgba(95,255,163,0.6); }
+        .sch-chip-live { border-color: rgba(95,255,163,0.6); color: #0e7a45; background: rgba(95,255,163,0.12); box-shadow: 0 0 14px -4px rgba(95,255,163,0.6); }
 
         /* grids */
         .sch-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; }
@@ -746,37 +784,37 @@ export default function SchoolsLanding() {
         @media (max-width: 820px) { .sch-phase-grid { grid-template-columns: 1fr; } }
         .sch-phase {
           position: relative; overflow: hidden; text-align: left; cursor: pointer; width: 100%; min-height: 420px;
-          padding: 0; border-radius: 22px; color: var(--lv2-paper); background: #0b0e1c;
-          border: 1px solid rgba(159,245,255,0.22); font-family: var(--lv2-font-display);
+          padding: 0; border-radius: 22px; color: var(--lv2-ink); background: #fffdf8;
+          border: 1px solid rgba(20,22,29,0.22); font-family: var(--lv2-font-display);
           transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
           box-shadow: 0 30px 60px -40px rgba(0,0,0,0.9);
         }
-        .sch-phase:hover { transform: translateY(-3px); border-color: rgba(159,245,255,0.45); }
+        .sch-phase:hover { transform: translateY(-3px); border-color: rgba(20,22,29,0.45); }
         .sch-phase-on { border-color: var(--sch-accent); box-shadow: 0 0 0 1.5px var(--sch-accent), 0 40px 90px -40px var(--sch-accent2), 0 0 60px -20px var(--sch-accent); }
         .sch-phase-art { position: absolute; inset: 0; background-repeat: no-repeat; filter: saturate(1.15) brightness(1.02); transition: transform .6s var(--lv2-ease-soft); }
         .sch-phase:hover .sch-phase-art { transform: scale(1.03); }
-        .sch-phase-scrim { position: absolute; inset: 0; background: linear-gradient(100deg, rgba(6,8,20,0.96) 0%, rgba(6,8,20,0.9) 40%, rgba(6,8,20,0.5) 68%, rgba(6,8,20,0.22) 100%); }
+        .sch-phase-scrim { position: absolute; inset: 0; background: linear-gradient(100deg, rgba(255,253,248,0.96) 0%, rgba(255,253,248,0.9) 40%, rgba(255,253,248,0.5) 68%, rgba(255,253,248,0.22) 100%); }
         .sch-phase-body { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 14px; padding: 26px 26px 24px; max-width: 74%; }
         .sch-phase-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
         .sch-phase-label { font-size: clamp(1.8rem, 2.8vw, 2.4rem); letter-spacing: -0.02em; line-height: 1; }
         .sch-phase-years { font-family: var(--lv2-font-mono); font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sch-accent); font-weight: 700; }
-        .sch-phase-headline { font-size: 15.5px; line-height: 1.5; color: rgba(232,237,255,0.85); }
+        .sch-phase-headline { font-size: 15.5px; line-height: 1.5; color: rgba(17,22,38,0.89); }
         .sch-phase-courses { display: flex; flex-direction: column; gap: 10px; }
-        .sch-course { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: 12px; background: rgba(8,10,22,0.72); border: 1px solid rgba(232,237,255,0.12); backdrop-filter: blur(6px); }
+        .sch-course { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: 12px; background: rgba(255,253,248,0.72); border: 1px solid rgba(17,22,38,0.13); backdrop-filter: blur(6px); }
         .sch-course-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .sch-course-years { font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(232,237,255,0.65); }
-        .sch-course-note { font-size: 13.5px; line-height: 1.5; color: rgba(232,237,255,0.72); }
+        .sch-course-years { font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.68); }
+        .sch-course-note { font-size: 13.5px; line-height: 1.5; color: rgba(17,22,38,0.76); }
         .sch-phase-check {
           align-self: flex-start; margin-top: 4px;
           font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-          padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(232,237,255,0.5); color: #e8edff; background: rgba(8,10,22,0.6);
+          padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(17,22,38,0.66); color: #14161d; background: rgba(255,253,248,0.6);
         }
         .sch-phase:not(.sch-phase-on):hover .sch-phase-check { border-color: var(--sch-accent); color: var(--sch-accent); }
         .sch-phase-on .sch-phase-check { border-color: var(--sch-accent); color: #04050d; background: var(--sch-accent); }
         @media (max-width: 820px) {
           .sch-phase { min-height: 0; }
           .sch-phase-body { max-width: 100%; }
-          .sch-phase-scrim { background: linear-gradient(180deg, rgba(6,8,20,0.9) 0%, rgba(6,8,20,0.9) 100%); }
+          .sch-phase-scrim { background: linear-gradient(180deg, rgba(255,253,248,0.9) 0%, rgba(255,253,248,0.9) 100%); }
         }
 
         /* product tabs */
@@ -786,107 +824,129 @@ export default function SchoolsLanding() {
           text-align: left; cursor: pointer; width: 100%;
           display: flex; flex-direction: column; gap: 6px;
           padding: 16px 18px 16px 20px; border-radius: 14px;
-          background: transparent; color: var(--lv2-paper);
-          border: 1px solid transparent; border-left: 2px solid rgba(232,237,255,0.14);
+          background: transparent; color: var(--lv2-ink);
+          border: 1px solid transparent; border-left: 2px solid rgba(17,22,38,0.15);
           font-family: var(--lv2-font-display); transition: background .2s ease, border-color .2s ease;
         }
-        .sch-tab:hover { background: rgba(20,24,46,0.6); }
-        .sch-tab-on { background: linear-gradient(180deg, rgba(24,29,56,0.9), rgba(14,17,34,0.9)); border-color: rgba(159,245,255,0.24); border-left-color: var(--sch-accent); box-shadow: 0 16px 40px -28px var(--sch-accent); }
+        .sch-tab:hover { background: rgba(244,239,231,0.6); }
+        .sch-tab-on { background: linear-gradient(180deg, rgba(244,239,231,0.9), rgba(255,253,248,0.9)); border-color: rgba(20,22,29,0.24); border-left-color: var(--sch-accent); box-shadow: 0 16px 40px -28px var(--sch-accent); }
         .sch-tab-head { display: flex; align-items: baseline; gap: 12px; }
         .sch-tab-n { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--sch-accent); }
         .sch-tab-title { font-size: 1.25rem; letter-spacing: -0.01em; }
-        .sch-tab-desc { font-size: 13.5px; line-height: 1.5; color: rgba(232,237,255,0.68); }
+        .sch-tab-desc { font-size: 13.5px; line-height: 1.5; color: rgba(17,22,38,0.71); }
         .sch-tab:not(.sch-tab-on) .sch-tab-desc { display: none; }
         .sch-frame {
-          border-radius: 16px; overflow: hidden; background: #0a0d18;
-          border: 1px solid rgba(159,245,255,0.4);
+          border-radius: 16px; overflow: hidden; background: #fffdf8;
+          border: 1px solid rgba(20,22,29,0.4);
           border-color: color-mix(in srgb, var(--sch-accent) 45%, transparent);
           box-shadow: 0 40px 90px -40px var(--sch-accent), 0 0 0 1px rgba(255,255,255,0.03);
         }
         .sch-frame-zoom { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
         .sch-frame-zoom img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
-        .sch-frame-bar { display: flex; align-items: center; gap: 14px; height: 42px; padding: 0 14px; background: #12162a; border-bottom: 1px solid rgba(232,237,255,0.08); }
+        .sch-frame-bar { display: flex; align-items: center; gap: 14px; height: 42px; padding: 0 14px; background: #f4efe7; border-bottom: 1px solid rgba(17,22,38,0.08); }
         .sch-frame-dots { display: inline-flex; gap: 6px; }
         .sch-frame-dots i { width: 10px; height: 10px; border-radius: 50%; display: block; }
-        .sch-frame-url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--lv2-font-mono); font-size: 12px; color: rgba(232,237,255,0.72); background: rgba(8,10,22,0.7); border-radius: 8px; padding: 6px 12px; }
-        .sch-frame-chip { font-family: var(--lv2-font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #ffb347; border: 1px solid rgba(255,179,71,0.5); border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
-        .sch-frame-body { position: relative; width: 100%; aspect-ratio: 16 / 10; background: #070a14; }
+        .sch-frame-url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--lv2-font-mono); font-size: 12px; color: rgba(17,22,38,0.76); background: rgba(255,253,248,0.7); border-radius: 8px; padding: 6px 12px; }
+        .sch-frame-chip { font-family: var(--lv2-font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #8a5400; border: 1px solid rgba(255,179,71,0.5); border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
+        .sch-frame-body { position: relative; width: 100%; aspect-ratio: 16 / 10; background: #fffdf8; }
         .sch-enlarge {
           position: absolute; right: 12px; bottom: 12px; z-index: 2; cursor: pointer;
           display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.28); background: rgba(8,10,22,0.72); color: #e8edff;
+          border: 1px solid rgba(255,255,255,0.28); background: rgba(255,253,248,0.72); color: #14161d;
           font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
           backdrop-filter: blur(6px); transition: background .2s ease, border-color .2s ease;
         }
-        .sch-enlarge:hover { background: rgba(0,229,255,0.18); border-color: var(--lv2-cyan); }
-        .sch-frame-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 12px 10px 16px; border-top: 1px solid rgba(232,237,255,0.08); }
-        .sch-frame-caption { margin: 0; font-family: var(--lv2-font-display); font-size: 13.5px; line-height: 1.5; color: rgba(232,237,255,0.72); }
+        .sch-enlarge:hover { background: rgba(10,112,133,0.18); border-color: var(--lv2-cyan); }
+        .sch-frame-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 12px 10px 16px; border-top: 1px solid rgba(17,22,38,0.08); }
+        .sch-frame-caption { margin: 0; font-family: var(--lv2-font-display); font-size: 13.5px; line-height: 1.5; color: rgba(17,22,38,0.76); }
         .sch-frame-nav { display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto; }
         .sch-frame-nav button {
           width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 22px; line-height: 1;
-          border: 1px solid rgba(159,245,255,0.3); background: rgba(13,15,24,0.7); color: #e8edff; transition: background .2s ease, border-color .2s ease;
+          border: 1px solid rgba(20,22,29,0.3); background: rgba(255,253,248,0.66); color: #14161d; transition: background .2s ease, border-color .2s ease;
         }
         @media (hover: none) { .sch-frame-nav button { width: 44px; height: 44px; } }
-        .sch-frame-nav button:hover { background: rgba(0,229,255,0.16); border-color: var(--lv2-cyan); }
+        .sch-frame-nav button:hover { background: rgba(10,112,133,0.16); border-color: var(--lv2-cyan); }
         .sch-frame-dotnav { display: inline-flex; gap: 5px; }
-        .sch-frame-dotnav i { width: 6px; height: 6px; border-radius: 50%; background: rgba(232,237,255,0.25); }
+        .sch-frame-dotnav i { width: 6px; height: 6px; border-radius: 50%; background: rgba(244,239,231,0.26); }
         .sch-frame-dotnav i.on { background: var(--sch-accent); box-shadow: 0 0 8px var(--sch-accent); }
         @media (max-width: 900px) {
           .sch-tabs { grid-template-columns: 1fr; gap: 16px; }
           .sch-tablist { flex-direction: row; overflow-x: auto; gap: 8px; padding: 4px 40px 6px 4px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); }
           .sch-tablist::-webkit-scrollbar { display: none; }
-          .sch-tab { flex: 0 0 auto; width: auto; min-width: 150px; padding: 12px 14px; border-left-width: 1px; border-bottom: 2px solid rgba(232,237,255,0.14); }
-          .sch-tab-on { border-bottom-color: var(--sch-accent); border-left-color: rgba(159,245,255,0.24); }
+          .sch-tab { flex: 0 0 auto; width: auto; min-width: 150px; padding: 12px 14px; border-left-width: 1px; border-bottom: 2px solid rgba(17,22,38,0.15); }
+          .sch-tab-on { border-bottom-color: var(--sch-accent); border-left-color: rgba(20,22,29,0.24); }
           .sch-tab-desc { display: none !important; }
           .sch-tab-title { font-size: 1.05rem; }
           .sch-frame-foot { flex-direction: column; align-items: flex-start; }
         }
 
         /* lightbox */
-        .sch-lightbox { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(4,5,13,0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .sch-lightbox { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(255,253,248,0.84); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .sch-lightbox-inner { position: relative; max-width: min(96vw, 1600px); max-height: 94vh; display: flex; flex-direction: column; gap: 10px; }
-        .sch-lightbox-inner img { display: block; max-width: 100%; max-height: calc(94vh - 60px); object-fit: contain; border-radius: 12px; border: 1px solid rgba(159,245,255,0.35); box-shadow: 0 40px 100px -30px rgba(0,229,255,0.5); }
-        .sch-lightbox-inner p { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; color: rgba(232,237,255,0.8); text-align: center; }
-        .sch-lightbox-close { position: absolute; top: -14px; right: -14px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 26px; line-height: 1; border: 1px solid rgba(255,255,255,0.3); background: #0f1530; color: #fff; }
+        .sch-lightbox-inner img { display: block; max-width: 100%; max-height: calc(94vh - 60px); object-fit: contain; border-radius: 12px; border: 1px solid rgba(20,22,29,0.35); box-shadow: 0 40px 100px -30px rgba(10,112,133,0.5); }
+        .sch-lightbox-inner p { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; color: rgba(17,22,38,0.84); text-align: center; }
+        .sch-lightbox-close { position: absolute; top: -14px; right: -14px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 26px; line-height: 1; border: 1px solid rgba(255,255,255,0.3); background: #f4efe7; color: #fff; }
 
         /* mock app (teacher view + curriculum map) */
-        .sch-mock { position: absolute; inset: 0; display: flex; font-family: var(--lv2-font-display); color: #e8edff; font-size: 12.5px; overflow: hidden; }
-        .sch-mock-side { width: 150px; flex: 0 0 150px; background: #0d1122; border-right: 1px solid rgba(232,237,255,0.08); padding: 16px 14px; display: flex; flex-direction: column; }
+        .sch-mock { position: absolute; inset: 0; display: flex; font-family: var(--lv2-font-display); color: #14161d; font-size: 12.5px; overflow: hidden; }
+        .sch-mock-side { width: 150px; flex: 0 0 150px; background: #fffdf8; border-right: 1px solid rgba(70,58,44,0.14); padding: 16px 14px; display: flex; flex-direction: column; }
         .sch-mock-brand { font-family: var(--lv2-font-mono); font-weight: 800; letter-spacing: 0.12em; font-size: 11px; margin-bottom: 18px; }
         .sch-mock-side ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-        .sch-mock-side li { padding: 7px 9px; border-radius: 8px; color: rgba(232,237,255,0.6); }
-        .sch-mock-side li.on { background: rgba(125,240,255,0.14); color: #e8edff; font-weight: 600; }
+        .sch-mock-side li { padding: 7px 9px; border-radius: 8px; color: rgba(17,22,38,0.63); }
+        .sch-mock-side li.on { background: rgba(10,112,133,0.14); color: #14161d; font-weight: 600; }
         .sch-mock-school { margin-top: auto; display: flex; flex-direction: column; gap: 3px; }
-        .sch-mock-school span { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(232,237,255,0.45); }
+        .sch-mock-school span { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
         .sch-mock-school strong { font-size: 12px; font-weight: 600; }
-        .sch-mock-main { flex: 1; min-width: 0; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+        /* Three surfaces inside the mock, the same ones the page uses: the
+           app canvas is the recessed ground, its panels are raised paper.
+           Before this everything was one flat white and the panels were
+           washes at 5% of a colour the light page does not have. */
+        .sch-mock-main { flex: 1; min-width: 0; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; background: #f4efe6; }
         .sch-mock-title { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
         .sch-mock-title h4 { margin: 4px 0 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
-        .sch-mock-eyebrow { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(232,237,255,0.5); }
+        .sch-mock-eyebrow { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
         .sch-mock-btn { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
         .sch-mock-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .sch-mock-stats div { background: rgba(232,237,255,0.05); border: 1px solid rgba(232,237,255,0.08); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+        .sch-mock-stats div { background: #fffdf8; border: 1px solid rgba(70,58,44,0.14); box-shadow: 0 2px 6px -4px rgba(86,68,45,0.5); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
         .sch-mock-stats b { font-size: 22px; font-weight: 600; line-height: 1; }
-        .sch-mock-stats span { font-size: 11px; color: rgba(232,237,255,0.6); }
+        .sch-mock-stats span { font-size: 11px; color: rgba(17,22,38,0.63); }
         .sch-mock-cols { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 14px; min-height: 0; flex: 1; }
-        .sch-mock-pupils { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .sch-mock-pupils { list-style: none; margin: 0; padding: 12px 14px; background: #fffdf8; border: 1px solid rgba(70,58,44,0.14); border-radius: 12px; display: flex; flex-direction: column; gap: 6px; align-self: start; }
         .sch-mock-pupils li { display: grid; grid-template-columns: 62px 1fr 64px; align-items: center; gap: 10px; }
         .sch-mock-name { font-weight: 600; }
-        .sch-mock-bar { height: 7px; border-radius: 999px; background: rgba(232,237,255,0.1); overflow: hidden; display: block; }
+        .sch-mock-bar { height: 7px; border-radius: 999px; background: #e7e0d2; overflow: hidden; display: block; }
         .sch-mock-bar i { display: block; height: 100%; border-radius: 999px; }
-        .sch-mock-pct { font-family: var(--lv2-font-mono); font-size: 10.5px; color: rgba(232,237,255,0.6); text-align: right; }
-        .sch-mock-missed { background: rgba(255,179,71,0.07); border: 1px solid rgba(255,179,71,0.3); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; align-self: start; }
+        .sch-mock-pct { font-family: var(--lv2-font-mono); font-size: 10.5px; color: rgba(17,22,38,0.63); text-align: right; }
+        .sch-mock-missed { background: #fffdf8; border: 1px solid rgba(138,84,0,0.34); border-left: 3px solid #8a5400; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; align-self: start; }
         .sch-mock-q { margin: 2px 0 0; font-size: 14px; font-weight: 600; line-height: 1.35; }
-        .sch-mock-n { margin: 0; font-size: 12px; color: rgba(232,237,255,0.75); }
-        .sch-mock-n b { font-size: 18px; color: #ffb347; }
-        .sch-mock-why { margin: 0; font-size: 11.5px; line-height: 1.45; color: rgba(232,237,255,0.62); }
+        .sch-mock-n { margin: 0; font-size: 12px; color: rgba(17,22,38,0.79); }
+        .sch-mock-n b { font-size: 18px; color: #8a5400; }
+        .sch-mock-why { margin: 0; font-size: 11.5px; line-height: 1.45; color: rgba(17,22,38,0.65); }
         .sch-mock-missed .sch-mock-btn { margin-top: 4px; align-self: flex-start; }
+        /* how far through the course this class is */
+        .sch-mock-course { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
+        .sch-mock-course-track { display: block; width: 92px; height: 5px; border-radius: 999px; background: #e7e0d2; overflow: hidden; }
+        .sch-mock-course-track i { display: block; height: 100%; border-radius: 999px; }
+        .sch-mock-course-txt { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
+
+        /* the curriculum map's coverage summary */
+        /* The frame is a fixed 16/10 box, so everything here has to fit
+           inside it: the summary was being cut in half by the browser
+           chrome's bottom edge. */
+        .sch-mock-cover { margin-top: 9px; padding-top: 8px; border-top: 1px solid rgba(70,58,44,0.16); display: flex; flex-direction: column; gap: 6px; }
+        .sch-mock-cover-row { display: flex; flex-wrap: wrap; gap: 5px; }
+        .sch-mock-cover-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 999px; background: #fffdf8; border: 1px solid rgba(70,58,44,0.16); font-size: 9.5px; color: rgba(17,22,38,0.82); }
+        .sch-mock-cover-chip i { width: 6px; height: 6px; border-radius: 999px; display: block; }
+
         .sch-mock-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
-        .sch-mock-table th { text-align: left; font-family: var(--lv2-font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(232,237,255,0.5); padding: 4px 8px 6px; border-bottom: 1px solid rgba(232,237,255,0.12); white-space: nowrap; }
-        .sch-mock-table td { padding: 5px 8px; border-bottom: 1px solid rgba(232,237,255,0.07); vertical-align: top; color: rgba(232,237,255,0.82); line-height: 1.35; }
-        .sch-mock-table td b { display: block; font-weight: 600; color: #e8edff; }
-        .sch-mock-table td span { font-size: 11px; color: rgba(232,237,255,0.55); }
-        .sch-mock-table td i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; }
+        .sch-mock-table th { text-align: left; font-family: var(--lv2-font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(17,22,38,0.66); padding: 4px 8px 6px; border-bottom: 1px solid rgba(17,22,38,0.13); white-space: nowrap; }
+        .sch-mock-table td { padding: 3.5px 8px; border-bottom: 1px solid rgba(17,22,38,0.07); vertical-align: top; color: rgba(17,22,38,0.86); line-height: 1.32; }
+        .sch-mock-table td b { display: block; font-weight: 600; color: #14161d; }
+        .sch-mock-table td span { font-size: 11px; color: rgba(17,22,38,0.66); }
+        .sch-mock-table td i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }
+        /* the map is a document, not a dashboard: it keeps the paper ground */
+        .sch-mock-cur .sch-mock-main { background: #fffdf8; gap: 10px; }
+        .sch-mock-cur .sch-mock-title h4 { font-size: 18px; }
         @media (max-width: 640px) {
           .sch-mock-side { display: none; }
           .sch-mock-cols { grid-template-columns: 1fr; }
@@ -903,7 +963,7 @@ export default function SchoolsLanding() {
           font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
         }
         .sch-step h3, .sch-pillar h3, .sch-pilot h3 { margin: 0; font-family: var(--lv2-font-display); font-size: 1.2rem; font-weight: 500; letter-spacing: -0.01em; }
-        .sch-step p, .sch-pilot p { margin: 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(232,237,255,0.75); }
+        .sch-step p, .sch-pilot p { margin: 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.79); }
         /* the course + accreditation band */
         .sch-marks {
           display: flex;
@@ -914,8 +974,8 @@ export default function SchoolsLanding() {
           margin-top: 30px;
           padding: 24px clamp(20px, 2.4vw, 30px);
           border-radius: 18px;
-          border: 1px solid rgba(159,245,255,0.18);
-          background: linear-gradient(180deg, rgba(20,25,48,0.6), rgba(10,13,28,0.6));
+          border: 1px solid rgba(20,22,29,0.18);
+          background: linear-gradient(180deg, rgba(244,239,231,0.6), rgba(255,253,248,0.6));
         }
         .sch-marks-courses { flex: 1 1 540px; min-width: 0; }
         .sch-marks-label {
@@ -925,7 +985,7 @@ export default function SchoolsLanding() {
           font-weight: 700;
           letter-spacing: 0.28em;
           text-transform: uppercase;
-          color: rgba(125,240,255,0.75);
+          color: rgb(10,112,133);
         }
         .sch-marks-row {
           list-style: none;
@@ -936,22 +996,32 @@ export default function SchoolsLanding() {
           gap: 10px;
         }
         .sch-mark {
+          text-decoration: none;
+          color: inherit;
+          cursor: pointer;
+          transition: transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s ease, border-color .2s ease;
           display: flex;
           flex-direction: column;
           gap: 7px;
           padding: 12px 15px;
           border-radius: 12px;
-          background: rgba(6,10,24,0.66);
-          border: 1px solid rgba(159,245,255,0.14);
+          background: rgba(255,253,248,0.63);
+          border: 1px solid rgba(20,22,29,0.14);
           border-left: 2px solid var(--sch-accent);
         }
+        .sch-mark:hover {
+          transform: translateY(-2px);
+          border-color: var(--sch-accent);
+          box-shadow: 0 16px 34px -20px rgba(86,68,45,0.7);
+        }
+        .sch-mark:focus-visible { outline: 2px solid var(--sch-accent); outline-offset: 3px; }
         .sch-mark-age {
           font-family: var(--lv2-font-mono);
           font-size: 10px;
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(232,237,255,0.5);
+          color: rgba(17,22,38,0.66);
         }
         .sch-marks-accred {
           flex: 0 0 auto;
@@ -959,7 +1029,7 @@ export default function SchoolsLanding() {
           align-items: center;
           gap: 14px;
           padding-left: clamp(0px, 2vw, 28px);
-          border-left: 1px solid rgba(159,245,255,0.16);
+          border-left: 1px solid rgba(20,22,29,0.16);
         }
         .sch-marks-plate {
           display: inline-flex;
@@ -982,10 +1052,10 @@ export default function SchoolsLanding() {
         .sch-marks-accred-text span {
           font-family: var(--lv2-font-display);
           font-size: 13px;
-          color: rgba(232,237,255,0.66);
+          color: rgba(17,22,38,0.69);
         }
         @media (max-width: 1100px) {
-          .sch-marks-accred { padding-left: 0; padding-top: 20px; border-left: 0; border-top: 1px solid rgba(159,245,255,0.16); }
+          .sch-marks-accred { padding-left: 0; padding-top: 20px; border-left: 0; border-top: 1px solid rgba(20,22,29,0.16); }
         }
 
         .sch-pillar { border-top: 2px solid var(--sch-accent); }
@@ -994,9 +1064,52 @@ export default function SchoolsLanding() {
           .sch-pillar-icon { background: color-mix(in srgb, var(--sch-accent) 14%, transparent); border-color: color-mix(in srgb, var(--sch-accent) 40%, transparent); }
         }
         .sch-pillar-icon svg { width: 22px; height: 22px; }
-        .sch-pillar ul, .sch-pilot ul, .sch-receive { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-        .sch-pillar li, .sch-pilot li, .sch-receive li { position: relative; padding-left: 24px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.5; color: rgba(232,237,255,0.84); }
-        .sch-pillar li::before, .sch-pilot li::before, .sch-receive li::before { content: "✓"; position: absolute; left: 0; top: 0; font-weight: 800; color: var(--sch-accent, #5fffa3); }
+        .sch-pillar ul, .sch-pilot ul, .sch-receive { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+        /* Owner 2026-09-22: drop the ticks, keep the simplicity, and give
+           the cards something. A tick claims each line is a feature being
+           checked off; these are just what the thing is. So each point
+           becomes a row with a hairline above it and a small accent dot,
+           which is the same list treatment the homepage flagship panel
+           uses. Nothing else added: the owner asked for better, not more. */
+        .sch-pillar li, .sch-pilot li, .sch-receive li {
+          position: relative;
+          padding: 9px 0 0 22px;
+          border-top: 1px solid rgba(86,68,45,0.14);
+          font-family: var(--lv2-font-display);
+          font-size: 14.5px;
+          line-height: 1.5;
+          color: rgba(17,22,38,0.88);
+        }
+        .sch-pillar li:first-child, .sch-pilot li:first-child, .sch-receive li:first-child {
+          border-top: 0;
+          padding-top: 0;
+        }
+        .sch-pillar li::before, .sch-pilot li::before, .sch-receive li::before {
+          content: "";
+          position: absolute;
+          left: 2px;
+          top: 16px;
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          background: var(--sch-accent, #0e7a45);
+        }
+        .sch-pillar li:first-child::before, .sch-pilot li:first-child::before, .sch-receive li:first-child::before {
+          top: 7px;
+        }
+        /* the short accent rule under each card title */
+        .sch-rule {
+          display: block;
+          width: 30px;
+          height: 2px;
+          margin: 12px 0 2px;
+          border-radius: 2px;
+          background: var(--sch-accent, #0e7a45);
+        }
+        /* equal-height cards, so three ragged point counts do not leave
+           three different card bottoms */
+        .sch-grid-3 > *, .sch-grid-4 > * { height: 100%; }
+        .sch-pillar, .sch-step { height: 100%; }
         .sch-receive { margin-top: 26px; }
         .sch-receive li { font-size: 15.5px; }
         .sch-pilot { display: flex; flex-direction: column; gap: 14px; border-color: rgba(95,255,163,0.5); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 30px 70px -40px rgba(95,255,163,0.6); }
@@ -1006,19 +1119,19 @@ export default function SchoolsLanding() {
         /* faq */
         .sch-faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; margin-top: 30px; }
         @media (max-width: 820px) { .sch-faq-grid { grid-template-columns: 1fr; } }
-        .sch-faq { border-radius: 14px; border: 1px solid rgba(159,245,255,0.2); background: linear-gradient(180deg, rgba(24,29,56,0.7), rgba(14,17,34,0.7)); padding: 0 18px; }
-        .sch-faq[open] { border-color: rgba(159,245,255,0.45); }
-        .sch-faq summary { cursor: pointer; list-style: none; padding: 16px 28px 16px 0; position: relative; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; color: #e8edff; }
+        .sch-faq { border-radius: 14px; border: 1px solid rgba(20,22,29,0.2); background: linear-gradient(180deg, rgba(244,239,231,0.7), rgba(255,253,248,0.7)); padding: 0 18px; }
+        .sch-faq[open] { border-color: rgba(20,22,29,0.45); }
+        .sch-faq summary { cursor: pointer; list-style: none; padding: 16px 28px 16px 0; position: relative; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; color: #14161d; }
         .sch-faq summary::-webkit-details-marker { display: none; }
         .sch-faq summary::after { content: "+"; position: absolute; right: 2px; top: 12px; font-size: 22px; color: var(--lv2-cyan-soft); transition: transform .2s ease; }
         .sch-faq[open] summary::after { transform: rotate(45deg); }
-        .sch-faq p { margin: 0; padding: 0 0 16px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(232,237,255,0.78); }
+        .sch-faq p { margin: 0; padding: 0 0 16px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.82); }
 
         .sch-form-grid { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; }
         .sch-form-span { grid-column: 1 / -1; }
         @media (max-width: 640px) { .sch-form-grid { grid-template-columns: 1fr; } }
         @media (prefers-reduced-motion: reduce) { .sch-stack-card, .sch-phase-art { transition: none; } }
       `}</style>
-    </>
+    </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { useInView } from "framer-motion";
+import { sectionMark } from "@/app/components/sectionMark";
 import { FadeUp, useHoverCount } from "./utilities";
 
 /**
@@ -31,7 +32,7 @@ const STATS = [
   {
     value: 72,
     suffix: "%",
-    color: "#ff3ad6",
+    color: "#a5117f",
     icon: "shield" as const,
     label: "of UK children have experienced harm online",
     badgeTop: "9–17s",
@@ -43,7 +44,7 @@ const STATS = [
   {
     value: 82,
     suffix: "%",
-    color: "#00f5ff",
+    color: "#0a7085",
     icon: "brain" as const,
     label: "of UK job openings require digital skills",
     badgeTop: "9M+",
@@ -60,7 +61,7 @@ const STATS = [
     value: 60,
     prefix: "£",
     suffix: "K",
-    color: "#ffc94a",
+    color: "#8a5a00",
     icon: "trend" as const,
     label: "median advertised UK cyber security salary",
     badgeTop: "↑ +6%",
@@ -78,24 +79,13 @@ export default function ProblemStats() {
       style={{
         position: "relative",
         padding: "calc(var(--lv2-rail) * 2.2) var(--lv2-rail)",
-        color: "var(--lv2-paper)",
+        color: "var(--lv2-ink)",
       }}
     >
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <FadeUp>
-          <p
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: "0.32em",
-              textTransform: "uppercase",
-              color: "rgba(232,237,255,0.55)",
-              textAlign: "center",
-              marginBottom: 30,
-            }}
-          >
-            // THE STATE OF PLAY
+          <p style={{ textAlign: "center", margin: "0 0 30px" }}>
+            <span style={sectionMark}>{"// Today's risks, tomorrow's jobs"}</span>
           </p>
         </FadeUp>
 
@@ -116,7 +106,7 @@ export default function ProblemStats() {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(20px, 2.4vw, 28px)",
               fontWeight: 500,
-              color: "var(--lv2-paper)",
+              color: "var(--lv2-ink)",
               maxWidth: 760,
               margin: "calc(var(--lv2-rail) * 1.3) auto calc(var(--lv2-rail) * 1.1)",
               lineHeight: 1.4,
@@ -186,14 +176,14 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       onMouseEnter={inView ? counter.bind.onMouseEnter : undefined}
       style={{
         position: "relative",
-        background: "rgba(13,15,24,0.72)",
+        background: "linear-gradient(180deg, #fffdf8, #fdf9f2)",
+        border: "1px solid rgba(70,58,44,0.14)",
+        boxShadow: "0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85)",
         backdropFilter: "blur(14px) saturate(1.4)",
         WebkitBackdropFilter: "blur(14px) saturate(1.4)",
-        border: "1px solid rgba(232,237,255,0.08)",
         borderTop: `2px solid ${stat.color}`,
         borderRadius: 18,
         padding: "26px 26px 22px",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.4), 0 12px 36px rgba(0,0,0,0.25)",
         transition:
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
         cursor: "default",
@@ -259,7 +249,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           lineHeight: 1,
           letterSpacing: "-0.03em",
           marginTop: 14,
-          textShadow: `0 0 36px ${stat.color}66`,
+          textShadow: `0 6px 26px ${stat.color}3d`,
         }}
       >
         {stat.prefix}
@@ -270,7 +260,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       {/* Label */}
       <p
         style={{
-          color: "rgba(232,237,255,0.74)",
+          color: "rgba(17,22,38,0.78)",
           fontSize: 14.5,
           lineHeight: 1.55,
           marginTop: 14,
@@ -318,7 +308,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
             style={{
               fontFamily: "var(--lv2-font-mono)",
               fontSize: 10,
-              color: "rgba(232,237,255,0.5)",
+              color: "rgba(17,22,38,0.53)",
               whiteSpace: "nowrap",
             }}
           >
@@ -335,7 +325,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           fontWeight: 600,
           letterSpacing: "0.14em",
           textTransform: "uppercase",
-          color: "rgba(232,237,255,0.38)",
+          color: "rgba(17,22,38,0.40)",
           margin: "14px 0 0",
         }}
       >

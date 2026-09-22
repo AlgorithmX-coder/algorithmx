@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeUp } from "./landing-v2/utilities";
+import { sectionMark } from "@/app/components/sectionMark";
 
 /**
  * ProofBand — the four accreditations, given a section of their own.
@@ -52,7 +53,10 @@ const MARKS: Mark[] = [
     dark: true,
   },
   {
-    name: "Partnered with Microsoft",
+    /* Microsoft own guidance: say collaborate, not partner. "Partner"
+       is a defined commercial status in their programme and we are not
+       one. This is live on main too and wants its own fix there. */
+    name: "Collaborating with Microsoft",
     copy: "AlgorithmX is part of the Microsoft for Startups programme.",
     src: "/logos/microsoft-for-startups.webp",
     alt: "Microsoft for Startups",
@@ -67,7 +71,8 @@ const MARKS: Mark[] = [
   },
 ];
 
-export default function ProofBand() {
+export default function ProofBand({ tone = "night" }: { tone?: "night" | "sand" } = {}) {
+  const onSand = tone === "sand";
   return (
     <section
       id="accreditations"
@@ -81,7 +86,9 @@ export default function ProofBand() {
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <FadeUp>
           <div className="lv2-proof">
-            <p className="lv2-proof-kicker">{"// Accredited, certified and backed"}</p>
+            <p style={{ margin: "0 0 18px", textAlign: "left" }}>
+              <span style={sectionMark}>{"// Accredited, certified and backed"}</span>
+            </p>
             <ul className="lv2-proof-cols">
               {MARKS.map((m) => (
                 <li key={m.name} className="lv2-proof-col">
@@ -107,10 +114,9 @@ export default function ProofBand() {
       <style jsx>{`
         .lv2-proof {
           border-radius: 18px;
-          border: 1px solid rgba(159, 245, 255, 0.14);
-          background:
-            linear-gradient(180deg, rgba(14, 26, 58, 0.72) 0%, rgba(6, 11, 28, 0.72) 100%);
-          box-shadow: 0 0 90px -50px rgba(159, 245, 255, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+          border: 1px solid ${onSand ? "rgba(70,58,44,0.14)" : "rgba(159, 245, 255, 0.14)"};
+          background: ${onSand ? "linear-gradient(180deg, #fffdf8, #fdf9f2)" : "linear-gradient(180deg, rgba(14, 26, 58, 0.72) 0%, rgba(6, 11, 28, 0.72) 100%)"};
+          box-shadow: ${onSand ? "0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85)" : "0 0 90px -50px rgba(159, 245, 255, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05)"};
           backdrop-filter: blur(8px);
           -webkit-backdrop-filter: blur(8px);
           padding: 26px 26px 28px;
@@ -121,7 +127,7 @@ export default function ProofBand() {
           font-weight: 700;
           letter-spacing: 0.26em;
           text-transform: uppercase;
-          color: var(--lv2-cyan-soft);
+          color: ${onSand ? "#0a7085" : "var(--lv2-cyan-soft)"};
           margin: 0 0 22px;
         }
         .lv2-proof-cols {
@@ -159,13 +165,13 @@ export default function ProofBand() {
           font-weight: 600;
           letter-spacing: -0.005em;
           line-height: 1.3;
-          color: var(--lv2-paper);
+          color: ${onSand ? "#14161d" : "var(--lv2-paper)"};
         }
         .lv2-proof-copy {
           font-family: var(--lv2-font-display);
           font-size: 0.8125rem;
           line-height: 1.55;
-          color: rgba(232, 237, 255, 0.62);
+          color: ${onSand ? "#3c4351" : "rgba(232, 237, 255, 0.62)"};
         }
         @media (max-width: 900px) {
           .lv2-proof { padding: 22px 20px 24px; }

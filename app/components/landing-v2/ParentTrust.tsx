@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeUp } from "./utilities";
+import { sectionMark } from "@/app/components/sectionMark";
 
 /**
  * "Why AlgorithmX" — the six promises, rewritten by the owner 2026-09-20.
@@ -30,42 +31,42 @@ const PILLARS: Pillar[] = [
     title: "Safe by design",
     copy:
       "No ads, no third-party trackers and no tricks designed to keep you hooked. Your data is never sold or used to train AI models.",
-    accent: "#5fffa3",
+    accent: "#0e7a45",
     icon: "shield",
   },
   {
     title: "Right for every stage",
     copy:
       "Pathways for ages 7 to 9, 10 to 13, 14 to 16 and adults, from first steps to career-ready skills. We meet every learner where they are. Never push, never patronise.",
-    accent: "#9ff5ff",
+    accent: "#0a7085",
     icon: "person",
   },
   {
     title: "Built by educators and tech professionals",
     copy:
       "Created by the team behind an Ofsted-registered STEM provider, with input from people working in tech every day. Aligned with KS2 to KS4 computing for schools and grounded in real industry practice for adults.",
-    accent: "#cba8ff",
+    accent: "#5744c9",
     icon: "gradcap",
   },
   {
     title: "Learn by doing",
     copy:
       "Build real things with real tools, including the AI tools shaping every industry. Projects you can proudly show off, not videos you half watch.",
-    accent: "#ffd07a",
+    accent: "#8a5a00",
     icon: "code",
   },
   {
     title: "Clear, honest pricing",
     copy:
       "Simple pricing for individuals and families, straightforward licensing for schools. No hidden fees and no surprise upgrades.",
-    accent: "#ffc94a",
+    accent: "#8a5a00",
     icon: "tag",
   },
   {
     title: "Ready for an AI world",
     copy:
       "Technology is changing fast, and so are our lessons. Learn to spot deepfakes and AI-powered scams, question what chatbots tell you, and use AI as a tool rather than a shortcut.",
-    accent: "#ff3ad6",
+    accent: "#a5117f",
     icon: "globe",
   },
 ];
@@ -96,7 +97,7 @@ export default function ParentTrust() {
         position: "relative",
         padding:
           "calc(var(--lv2-rail) * 2.2) var(--lv2-rail) calc(var(--lv2-rail) * 2.0)",
-        color: "var(--lv2-paper)",
+        color: "var(--lv2-ink)",
       }}
     >
       <div
@@ -107,19 +108,8 @@ export default function ParentTrust() {
         }}
       >
         <FadeUp>
-          <p
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: "0.32em",
-              textTransform: "uppercase",
-              color: "rgba(232,237,255,0.55)",
-              marginBottom: 18,
-              textAlign: "center",
-            }}
-          >
-            // WHY ALGORITHMX
+          <p style={{ margin: "0 0 18px", textAlign: "center" }}>
+            <span style={sectionMark}>// WHY ALGORITHMX</span>
           </p>
         </FadeUp>
 
@@ -133,7 +123,7 @@ export default function ParentTrust() {
               fontWeight: 800,
               margin: "0 auto 16px",
               maxWidth: 880,
-              color: "var(--lv2-paper)",
+              color: "var(--lv2-ink)",
               textAlign: "center",
             }}
           >
@@ -147,7 +137,7 @@ export default function ParentTrust() {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(1rem, 1.2vw, 1.0625rem)",
               lineHeight: 1.55,
-              color: "rgba(232,237,255,0.7)",
+              color: "rgba(17,22,38,0.73)",
               maxWidth: 640,
               margin: "0 auto 56px",
               textAlign: "center",
@@ -164,10 +154,11 @@ export default function ParentTrust() {
             <FadeUp key={p.title} delay={0.05 * i + 0.18}>
               <article
                 style={{
-                  background: "rgba(13,15,24,0.62)",
+                  background: "linear-gradient(180deg, #fffdf8, #fdf9f2)",
+                  boxShadow: "0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85)",
                   backdropFilter: "blur(12px) saturate(1.3)",
                   WebkitBackdropFilter: "blur(12px) saturate(1.3)",
-                  border: "1px solid rgba(232,237,255,0.08)",
+                  border: "1px solid rgba(70,58,44,0.14)",
                   borderRadius: 14,
                   padding: "22px 22px 20px",
                   display: "flex",
@@ -191,7 +182,7 @@ export default function ParentTrust() {
                       height: 52,
                       borderRadius: "50%",
                       border: `1.5px solid ${p.accent}66`,
-                      background: `radial-gradient(circle at 50% 38%, ${p.accent}1f, rgba(10,12,20,0.6))`,
+                      background: `radial-gradient(circle at 50% 38%, ${p.accent}1f, rgba(255,253,250,0.6))`,
                       boxShadow: `0 0 22px ${p.accent}33, inset 0 0 12px ${p.accent}1a`,
                       display: "flex",
                       alignItems: "center",
@@ -205,7 +196,7 @@ export default function ParentTrust() {
                       fontFamily: "var(--lv2-font-display)",
                       fontSize: "1.15rem",
                       fontWeight: 600,
-                      color: "var(--lv2-paper)",
+                      color: "var(--lv2-ink)",
                       margin: 0,
                       letterSpacing: "-0.01em",
                     }}
@@ -218,7 +209,7 @@ export default function ParentTrust() {
                     fontFamily: "var(--lv2-font-display)",
                     fontSize: 14,
                     lineHeight: 1.55,
-                    color: "rgba(232,237,255,0.74)",
+                    color: "rgba(17,22,38,0.78)",
                     margin: 0,
                   }}
                 >
