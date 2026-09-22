@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import CourseLockup, { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
 import { sectionMark } from "@/app/components/sectionMark";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useInView } from "framer-motion";
 import { FadeUp } from "./utilities";
 
@@ -105,7 +105,7 @@ const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; 
 /* The ages come from CYBER_COURSES rather than being typed twice, so the
    panel and the track chips in the same card can never drift apart. */
 /* Inline, because styled-jsx cannot reach inside next/link. */
-const COURSE_CHIP_LINK: React.CSSProperties = {
+const COURSE_CHIP_LINK: CSSProperties = {
   display: "flex",
   flexDirection: "column",
   gap: 6,
@@ -240,7 +240,7 @@ export default function SubjectShowcase() {
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <FadeUp>
             <p style={{ margin: "0 0 18px", textAlign: "center" }}>
-              <span style={sectionMark}>// SIX STREAMS //</span>
+              <span style={sectionMark}>{"// SIX STREAMS //"}</span>
             </p>
           </FadeUp>
           <FadeUp delay={0.05}>
@@ -871,9 +871,10 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           border-color: var(--lv2-mark);
           box-shadow: 0 16px 34px -20px rgba(86,68,45,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
         }
-        .lv2-course-mark:has(a:focus-visible) {
+        .lv2-course-mark :global(a:focus-visible) {
           outline: 2px solid var(--lv2-mark);
           outline-offset: 3px;
+          border-radius: 12px;
         }
         .lv2-course-mark-soon { opacity: 1; }
 

@@ -74,5 +74,22 @@ if (which === "schools" || which === "both") {
   }
 }
 
+/* Close crops. The globe's school machines are 36 by 26 CSS pixels and the
+   homepage chips are not much bigger, so neither survives a full-page shot
+   well enough to judge. */
+const crop = async (name, url, y, box) => {
+  await page.goto(origin + url, { waitUntil: "domcontentloaded", timeout: 90000 });
+  await page.waitForTimeout(3200);
+  await page.evaluate((yy) => window.scrollTo(0, yy), y);
+  await page.waitForTimeout(1800);
+  await page.screenshot({ path: `${outDir}/${name}.png`, clip: box });
+  console.log("  crop:", name);
+};
+await crop("crop-hero", "/", 0, { x: 120, y: 90, width: 700, height: 200 });
+await crop("crop-chips", "/", 3300, { x: 150, y: 430, width: 800, height: 260 });
+for (const n of [1, 2, 3]) {
+  await crop(`crop-globe-${n}`, "/schools", 200 + n * 60, { x: 900, y: 110, width: 500, height: 400 });
+}
+
 await browser.close();
 console.log("done ->", outDir);

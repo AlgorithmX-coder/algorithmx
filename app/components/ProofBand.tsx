@@ -53,7 +53,10 @@ const MARKS: Mark[] = [
     dark: true,
   },
   {
-    name: "Partnered with Microsoft",
+    /* Microsoft own guidance: say collaborate, not partner. "Partner"
+       is a defined commercial status in their programme and we are not
+       one. This is live on main too and wants its own fix there. */
+    name: "Collaborating with Microsoft",
     copy: "AlgorithmX is part of the Microsoft for Startups programme.",
     src: "/logos/microsoft-for-startups.webp",
     alt: "Microsoft for Startups",
