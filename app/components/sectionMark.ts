@@ -27,14 +27,18 @@ export const sectionMark: React.CSSProperties = {
   fontWeight: 700,
   letterSpacing: "0.2em",
   textTransform: "uppercase",
-  whiteSpace: "nowrap",
+  /* Wraps rather than clips. The hero's label is 38 characters and at
+     390px nowrap cut it off mid-word inside a pill that could not scroll:
+     the page has no horizontal scroll, so the end was simply gone. Every
+     label fits one line at desktop widths, so this only ever engages on a
+     phone. */
+  whiteSpace: "normal",
   boxShadow:
     "0 10px 24px -14px rgba(10,112,133,0.95), inset 0 1px 0 rgba(255,255,255,0.28)",
 };
 
-/** The same mark where the label has to wrap on a phone. */
+/** Left-aligned, for a mark that sits in a column rather than centred. */
 export const sectionMarkWrap: React.CSSProperties = {
   ...sectionMark,
-  whiteSpace: "normal",
   textAlign: "left",
 };

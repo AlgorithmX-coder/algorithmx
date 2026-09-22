@@ -595,6 +595,17 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
            the same lift the cards get. Hierarchy is then tinted for
            secondary, solid for primary, rather than three weights of
            outline. Label #075a6b on the 0.16 wash measures 6.1:1. */
+        /* Behind the same 641px breakpoint as the chip shape itself: the
+           padding and the pill radius only exist above it, so tinting at
+           every width gave phones a square teal slab behind plain text.
+           Below it these are plain links and only need their ink. */
+        @media (max-width: 640px) {
+          nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
+            color: #075a6b !important;
+            text-shadow: none !important;
+          }
+        }
+        @media (min-width: 641px) {
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
           border-color: rgba(10, 112, 133, 0.42) !important;
           background: rgba(10, 112, 133, 0.16) !important;
@@ -614,6 +625,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           color: #05454f !important;
           text-shadow: 0 0 14px rgba(10, 112, 133, 0.85), 0 1px 0 rgba(255, 255, 255, 0.6) !important;
           box-shadow: 0 8px 20px -12px rgba(10, 112, 133, 1), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+        }
         }
         :global(.lv2-nav-secondary) {
           position: relative;
