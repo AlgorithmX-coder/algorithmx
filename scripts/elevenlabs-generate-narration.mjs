@@ -239,7 +239,11 @@ for (const fname of weekFiles) {
   // correct tap. Week 1 only for now (like the boss scans) so shipped weeks
   // (e.g. W13) don't gain voice unexpectedly; `scene:`/`why:` are SignBingo
   // keys. Recorded as "adam" (both content speakers = Sarah).
-  if (fname === "week1.ts") {
+  // W14 opted in 2026-09-22: its review is a SignBingo and the scene is the
+  // moment Sarah reads to the child. W6 is deliberately NOT here: it is live and
+  // its six scenes are currently silent, so opting it in would add voice to a
+  // shipped week. That is the owner's call, not a side effect of this run.
+  if (fname === "week1.ts" || fname === "week14.ts") {
     const sbSceneRe = /\bscene:\s*"((?:[^"\\]|\\.)*)"/g;
     const sbWhyRe = /\bwhy:\s*"((?:[^"\\]|\\.)*)"/g;
     let sbm;
@@ -282,7 +286,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week15.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts", "week15.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -437,7 +441,7 @@ for (const fname of weekFiles) {
   // Week 6 (2026-09-16) adds: the Chat Fixer messages, Lobby Doors players and
   // settings card, Guard Count rounds and slots, Power Panel rounds (readAloud),
   // plus the Power Panel's two wrong-order teach lines (stepTeach array).
-  if (["week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts"].includes(fname)) {
+  if (["week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts"].includes(fname)) {
     const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
     const w2Starts = [];
     let w2m;
@@ -589,6 +593,12 @@ for (const fname of weekFiles) {
       // The Day Jug reads every option label aloud too (the child picks a pour
       // out of three, and the labels are the choice). The other two do not.
       if (["dayJug", "setTheDial", "nightFall"].includes(st.type)) {
+        pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      // Week 14 engines: Sarah reads each diary entry as its seal is lifted and
+      // each corner of the house as the two pictures come up. LensCheck's `teach`
+      // is display-only by design, so it is deliberately NOT scanned.
+      if (["speakerDiary", "lensCheck"].includes(st.type)) {
         pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       // teamPoster notes are already covered by the wrong-answer `note:` scan above

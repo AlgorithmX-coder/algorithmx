@@ -1603,6 +1603,90 @@ export type ScreenDef = (
     }
   | {
       /**
+       * The Speaker Diary (Week 14, concept 2: they listen to help, AND they
+       * keep a copy). A smart speaker keeps a diary. Some entries are there
+       * because the child asked for something, some because it woke on its name
+       * by mistake, some because it is always half-listening for that name. The
+       * child lifts each seal to read what it actually wrote, then stamps WHY it
+       * is there. Curious, never creepy.
+       */
+      type: "speakerDiary";
+      entries: {
+        id: string;
+        /** What happened in the room, on the page. */
+        moment: string;
+        icon: string;
+        /** Read aloud as the entry's seal is lifted. */
+        readAloud: string;
+        /** What the diary actually wrote down; the reveal, before any judgement. */
+        wrote: string;
+        /** Exactly one option has isRight: true. */
+        options: {
+          id: string;
+          label: string;
+          icon: string;
+          isRight: boolean;
+          /** SPOKEN on the right stamp ("That's right!" + why). Silent if put in explanation. */
+          why: string;
+          /** SPOKEN on a wrong stamp ("Not quite." + explanation). Silent if put in why. */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      diaryLabel?: string;
+      wroteLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Little Glass Eyes (Week 14, concept 3: a lens that is awake usually
+       * shows it). The same corner of a room twice, a moment apart, and exactly
+       * one thing has woken up: a light on, a cover slid back. The child compares
+       * the two pictures and taps what changed. The verb is COMPARE TWO STATES,
+       * which nothing else in the library does.
+       */
+      type: "lensCheck";
+      rounds: {
+        id: string;
+        /** Where in the house this corner is. Never spoken. */
+        place: string;
+        /** Read aloud as the two pictures come up. */
+        readAloud: string;
+        /** Exactly one spot has woke: true; the rest simply did not change. */
+        spots: {
+          id: string;
+          label: string;
+          icon: string;
+          woke: boolean;
+          /** SPOKEN on the thing that woke ("That's right!" + why). */
+          why: string;
+          /** SPOKEN on a thing that did not change ("Not quite." + explanation). */
+          explanation: string;
+        }[];
+        /**
+         * The one-line takeaway shown once the round is solved. DISPLAY ONLY:
+         * it is deliberately never spoken, because it would land on top of the
+         * verdict. Put the spoken sentence in the winning spot's `why`.
+         */
+        teach: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      beforeLabel?: string;
+      afterLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * The Great Climb-Out (Week 10, concept 1: autoplay is a machine that
        * picks for you). This week's old screen-4 signature, now tap-only and
        * data-driven: the child is deep in a video burrow and climbs a ladder
@@ -1901,6 +1985,24 @@ export type ScreenDef = (
        * devices, W17 profile, W19 family rounds).
        */
       type: "settingsSwitch";
+      /** Visual skin: the shipped W6/W17/W19 indigo panel (default) or W14's
+       *  Listening House wall plate (warm oak console, cream device cards, a
+       *  sliding paddle switch). DEVICE switches only: account privacy is
+       *  Week 17's lane. */
+      skin?: "panel" | "house";
+      /** "house" chrome, none of it spoken. */
+      panelIcon?: string;
+      securedLabel?: string;
+      flipToast?: string;
+      wrongTitle?: string;
+      askPrompt?: string;
+      /** The round-1 strip: the MECHANIC only, never which row. */
+      guidedPrompt?: string;
+      awakeLabel?: string;
+      settledLabel?: string;
+      fineLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
       panelTitle: string;
       rows: {
         id: string;
@@ -1909,7 +2011,24 @@ export type ScreenDef = (
         safeValue?: string;
         icon: string;
         isRisky: boolean;
-        note: string;
+        /**
+         * LEGACY (Weeks 17 and 19, not yet rebuilt): the teach copy for a row
+         * that was already fine. Superseded by `explanation`, which is read
+         * first. Optional since W14, which authors the spoken fields below.
+         */
+        note?: string;
+        /** SPOKEN as the row is tapped. Week file only, or it plays as silence. */
+        readAloud?: string;
+        /**
+         * SPOKEN on a RISKY row after the flip ("That's right!" + why).
+         * Putting this line in `explanation` instead makes it silent.
+         */
+        why?: string;
+        /**
+         * SPOKEN on a SAFE row ("Not quite." + explanation): the gentle "this
+         * one is already doing its job" teach. Silent if put in `why`.
+         */
+        explanation?: string;
       }[];
       introTitle: string;
       introSubtitle?: string;
@@ -1948,6 +2067,16 @@ export type ScreenDef = (
        * Calm binary sort - no belt, no timer, one catch in play.
        */
       type: "hookSort";
+      /** Visual skin: the W4 fishing dock (default) or W14's listening house
+       *  (one house thing at a time: EARS ON, or FAST ASLEEP). */
+      skin?: "dock" | "house";
+      /** "house": the board's question row. Never spoken. */
+      askPrompt?: string;
+      /** "house": the two nooks the calls fill up. Never spoken. */
+      cutBinLabel?: string;
+      reelBinLabel?: string;
+      /** Counter noun in the progress line ("CATCH 3 of 8"). Never spoken. */
+      progressNoun?: string;
       /** Copy overrides (re-theme per week; defaults keep the W4 dock skin). */
       introTitle?: string;
       introSubtitle?: string;
@@ -1967,6 +2096,13 @@ export type ScreenDef = (
         icon?: string;
         /** True = a scam; the right call is CUT THE LINE. */
         isScam: boolean;
+        /** SPOKEN as the thing arrives. Week file only, or it plays as silence. */
+        readAloud?: string;
+        /**
+         * SPOKEN on a RIGHT call ("That's right!" + why). Putting this line
+         * in `explanation` instead makes it silent.
+         */
+        why?: string;
         /** Shown in the WrongAnswerPanel on a wrong call. */
         explanation: string;
       }[];
@@ -2284,7 +2420,12 @@ export type ScreenDef = (
        */
       type: "replyCards";
       /** Visual skin: fanned chat cards (default), tall kindness DOORS (W5), brass LEVERS (W8) or bobbing BALLOONS (W18). */
-      skin?: "cards" | "doors" | "levers" | "balloons";
+      skin?: "cards" | "doors" | "levers" | "balloons" | "speaker";
+      /** "speaker" chrome, never spoken: the device name plate, the moment's
+       *  eyebrow, and the shelf the safe picks fill up. */
+      deviceLabel?: string;
+      situationLabel?: string;
+      airLabel?: string;
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
@@ -2305,8 +2446,21 @@ export type ScreenDef = (
         fromIcon: string;
         /** The incoming message. */
         message: string;
+        /** SPOKEN as the moment lands. Week file only, or it plays as silence. */
+        readAloud?: string;
+        /** "speaker" skin: the short chip a safe pick puts on the shelf. Never spoken. */
+        keptLabel?: string;
         /** 3-4 reply cards; exactly one has isSafe: true. */
-        replies: { text: string; isSafe: boolean; explanation: string }[];
+        replies: {
+          text: string;
+          isSafe: boolean;
+          /**
+           * SPOKEN on a SAFE pick ("That's right!" + why). Putting this line in
+           * `explanation` instead makes it silent.
+           */
+          why?: string;
+          explanation: string;
+        }[];
       }[];
       hints?: { tier1: string; tier2: string };
     }
@@ -2474,10 +2628,13 @@ export type ScreenDef = (
       type: "signBingo";
       /** Board dressing: "card" (W13 2x2 card, default) or "vault" (W1 brass dials
        *  around a vault door; a correct tap bolts the door). Needs exactly 4 signs. */
-      skin?: "card" | "vault";
+      skin?: "card" | "vault" | "house";
       /** Vault skin: the short prompt Sarah reads after every move so the board
        *  always states the action ("Which power did that move use? Turn its dial."). */
       roundPrompt?: string;
+      /** "house" skin: the printed line under the check-card telling the child
+       *  what to do. VISUAL ONLY, never read aloud. */
+      actionLine?: string;
       /** The card squares (4 recommended). */
       signs: {
         id: string;

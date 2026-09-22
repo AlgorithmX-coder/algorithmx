@@ -154,13 +154,13 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
   },
   14: {
     title: "Smart Devices: Who's Listening?",
-    tagline: "Some gadgets have ears and eyes.",
+    tagline: "Know what listens, and flip the switches.",
     audioSrc: "/audio/atlas/heroes-week-14.mp3",
     accent: "#45e3ff",
     points: [
-      { icon: "🔔", label: "Who's listening?" },
-      { icon: "👀", label: "Who's watching?" },
-      { icon: "🤫", label: "Guard your secrets" },
+      { icon: "🏠", label: "Know what has ears" },
+      { icon: "👀", label: "Spot the little glass eye" },
+      { icon: "⚙️", label: "Flip it with a grown-up" },
     ],
   },
   15: {

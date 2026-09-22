@@ -9,16 +9,35 @@
  * replays. All four stamped → BINGO!
  *
  * SKINS (owner rule: a reuse must be a genuine re-theme, never a copy):
- *   - "card"  (W13 Break-Sign Bingo): a 2x2 bingo card that fills square by square.
+ *   - "card"  (W13 Break-Sign Bingo, W6 Game Zone Bingo): a bingo card that
+ *             fills square by square.
  *   - "vault" (W1 Hero Power Bingo): four brass dials around a vault door; a
  *             correct tap turns the dial, slides its bolt home into the door
  *             and lights the socket. Four bolts home = the vault is sealed and
  *             the Raccoon is locked out. Owner picked this board from three
  *             concept mocks (2026-09-11).
+ *   - "house" (W14 The Listening House): the hall table by lamplight. The
+ *             Scout's wooden check-card lies on the oak with a cream card of
+ *             the week's powers; a moment happens somewhere in the house and
+ *             the child presses the brass stamp onto the power that answers
+ *             it. Each pressed ticket goes brass, and the card fills up. No
+ *             arcade neon, no watchers, no red eyes: this is a warm, curious
+ *             room where the gadgets are helpers you KNOW about.
  *
  * Deliberately unlike buttonHunt (find controls among decoys) and
  * quickCheck recall (one question): this is a match-the-scene-to-the-
  * sign board that fills up piece by piece.
+ *
+ * CRITICAL for the week author: the clip generator reads the WEEK FILE, so a
+ * spoken string left to a component default is never recorded and plays as
+ * SILENCE with nothing erroring. Which field is spoken where (all skins):
+ *   - the moment arrives -> `round.scene` (audio-only, recordedOnly, taps held)
+ *   - a RIGHT press      -> `round.why`   (after the shared "That's right!")
+ *   - a WRONG press      -> `round.note`  (after the shared "Not quite.",
+ *                                          spoken by WrongAnswerPanel)
+ * A line in the wrong one of those three is silent even when it is full.
+ * Everything the "house" skin adds is PAINT AND LAYOUT only: no spoken string
+ * lives in a house default.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -37,6 +56,24 @@ import PixIcon from "@/app/components/lesson/PixIcon";
 import InfoNarration, { hasRecordedBlock } from "@/app/components/lesson/InfoNarration";
 import VerdictVoice from "@/app/components/lesson/VerdictVoice";
 import GameButton from "@/app/components/lesson/GameButton";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
+
+/* ── HOUSE skin paints (W14, The Listening House) ────────────────────────────
+ * A lamp-lit hall table: dark oak, warm brass, cream card stock. The luminance
+ * ladder is deliberate (a W12 board shipped with only 7 L* between its floor
+ * and its walls and a child could not read it):
+ *   table  #241608  L* ~11  |  oak frame #5a3818  L* ~27
+ *   stock  #e3cea4  L* ~84  |  ticket    #fffdf6  L* ~99   (15 apart)
+ *   pressed ticket  #8a5a1c L* ~43 with cream ink            (41 from stock)
+ * so a stampable ticket, a pressed one and the card behind them never blur. */
+const HOUSE_TABLE = "radial-gradient(ellipse at 50% -12%, rgba(255,215,154,0.30), transparent 56%), radial-gradient(ellipse at 50% 118%, rgba(107,66,31,0.36), transparent 62%), linear-gradient(180deg, #33200f 0%, #241608 58%, #170d05 100%)";
+const HOUSE_OAK = "linear-gradient(180deg, #7b4f28 0%, #5a3818 55%, #42280f 100%)";
+const HOUSE_STOCK = "#e3cea4";
+const HOUSE_TICKET = "#fffdf6";
+const HOUSE_PRESSED = "linear-gradient(165deg, #b9822f 0%, #8a5a1c 45%, #6b4310 100%)";
+const HOUSE_INK = "#3a2512";
+const HOUSE_BRASS = "#e7bd63";
+const HOUSE_LAMP = "#ffe6bd";
 
 export interface BingoSign {
   id: string;
@@ -62,17 +99,29 @@ export interface BingoRound {
   why?: string;
 }
 
-export type SignBingoSkin = "card" | "vault";
+export type SignBingoSkin = "card" | "vault" | "house";
 
 export interface SignBingoProps {
   signs: BingoSign[];
   rounds: BingoRound[];
-  /** Board dressing: "card" (W13 2x2 bingo card, default) or "vault" (W1 brass
-   *  dials around a vault door, bolts slide home). Needs exactly 4 signs. */
+  /** Board dressing: "card" (W13/W6 bingo card, default), "vault" (W1 brass
+   *  dials around a vault door, bolts slide home; needs exactly 4 signs) or
+   *  "house" (W14 the hall table: a wooden check-card of the powers, pressed
+   *  with a brass stamp; any number of signs, laid out on a wrapping grid). */
   skin?: SignBingoSkin;
-  /** Vault skin: the short prompt Sarah reads after every move ("Which power did that
-   *  move use? Turn its dial."), so the board always tells the child what to do. */
+  /** Vault skin ONLY: the short prompt Sarah reads after every move ("Which power did that
+   *  move use? Turn its dial."), so the board always tells the child what to do.
+   *  Ignored by the card and house skins - the generator only records this pairing
+   *  for a `skin: "vault"` board, so a value here would be silent anywhere else. */
   roundPrompt?: string;
+  /** House skin ONLY: the printed line under the check-card telling the child what
+   *  to do. VISUAL ONLY - never read aloud, so its default is safe. */
+  actionLine?: string;
+  /** House skin ONLY: the Raccoon's boast on the intro beat (shown as TEXT in
+   *  his voice, never spoken by Sarah). Deliberately house-gated: W1 and W6 are
+   *  LIVE and W6's week file already carries a `threat` that this engine has
+   *  never rendered, so honouring it everywhere would change a shipped week. */
+  threat?: { raccoonLine: string };
   /** Copy overrides (defaults keep the W13 body-bell skin). */
   introTitle?: string;
   introSubtitle?: string;
@@ -104,6 +153,8 @@ export default function SignBingo({
   rounds,
   skin = "card",
   roundPrompt,
+  actionLine,
+  threat,
   introTitle,
   introSubtitle,
   introIcon,
@@ -159,6 +210,7 @@ export default function SignBingo({
   const finished = roundIdx >= shownRounds.length;
   const round = shownRounds[roundIdx];
   const vault = skin === "vault";
+  const house = skin === "house";
   const prompt = roundPrompt ?? (vault ? "Which power did that move use? Tap its dial." : undefined);
   // 7c: one recorded take of [move, prompt] when it exists (two separate clips
   // back to back sounded like two different tones of Sarah). Resolved per round.
@@ -182,12 +234,15 @@ export default function SignBingo({
   }, [roundIdx, vault, hasCoach]);
 
   // Safety release: never leave the "why" beat's gated Next stuck behind a
-  // narration that fails to fire onDone.
+  // narration that fails to fire onDone. The house skin uses the shared
+  // SPOKEN_GATE_MAX_MS (45 s): at 12 s the release could hand a child the Next
+  // button while Sarah was still mid-`why`, which is how a verdict gets cut
+  // off. The vault and card skins keep their shipped 12 s exactly.
   useEffect(() => {
     if (!explain) return;
-    const id = window.setTimeout(() => setWhyDone(true), 12000);
+    const id = window.setTimeout(() => setWhyDone(true), house ? SPOKEN_GATE_MAX_MS : 12000);
     return () => window.clearTimeout(id);
-  }, [explain]);
+  }, [explain, house]);
 
   const reportedTier = useRef(0);
   const reportTier = (n: number) => {
@@ -202,6 +257,17 @@ export default function SignBingo({
   // move and the prompt, the right dial glows until the child taps.
   const guided = vault && !!round && roundIdx === 0 && stamped.size === 0 && !wrongOnCurrent && narr === "done" && !showIntro;
 
+  // A judged tap only closes the board once React has re-rendered (`feedback` /
+  // `explain` / `bolting` are state), so a fast second tap on a DIFFERENT square
+  // landed inside that window, was judged against the same round and restarted
+  // the verdict, cutting Sarah off mid-sentence. This latch shuts the handler
+  // synchronously. Cleared on advance (the roundIdx effect below, i.e. once the
+  // new round is on screen) and at once after a wrong press, so a retry is one tap.
+  const handlingRef = useRef(false);
+  useEffect(() => {
+    handlingRef.current = false;
+  }, [roundIdx]);
+
   const tap = (sign: BingoSign, idx: number) => {
     if (!round || showIntro || feedback || finished || bolting) return;
     setHasInteracted(true);
@@ -211,6 +277,9 @@ export default function SignBingo({
       window.setTimeout(() => setWobbleId(null), 420);
       return;
     }
+    // Synchronous: a second tap in the same frame must never reach the verdict.
+    if (handlingRef.current) return;
+    handlingRef.current = true;
     onAnswered?.({
       questionKey: `bingo-${round.id}`,
       selectedIndex: idx,
@@ -219,7 +288,7 @@ export default function SignBingo({
     });
     if (sign.id === round.signId) {
       audio.correct();
-      fx.correct({ xp: 25, text: stampToast ?? (skin === "vault" ? "BOLTED!" : "SIGN SPOTTED!") });
+      fx.correct({ xp: 25, text: stampToast ?? (skin === "house" ? "STAMPED!" : skin === "vault" ? "BOLTED!" : "SIGN SPOTTED!") });
       onCorrect?.();
       if (!wrongOnCurrent) setFirstTryCount((n) => n + 1);
       setWrongOnCurrent(false);
@@ -258,6 +327,9 @@ export default function SignBingo({
         explanation: round.note,
         tip: hints?.tier1,
       });
+      // WrongAnswerPanel holds the board and speaks "Not quite." + this note
+      // itself; release the latch at once so the retry is a single tap.
+      handlingRef.current = false;
     }
   };
 
@@ -279,9 +351,9 @@ export default function SignBingo({
   return (
     <ExerciseFrame
       maxWidth={820}
-      decor={!vault}
-      style={vault ? { position: "relative", overflow: "hidden" } : undefined}
-      background={vault ? "radial-gradient(ellipse at 50% -20%, rgba(227,179,65,0.28), transparent 55%), radial-gradient(ellipse at 8% 110%, rgba(143,163,192,0.22), transparent 50%), radial-gradient(ellipse at 92% 110%, rgba(255,217,122,0.16), transparent 50%), linear-gradient(180deg, #171c26 0%, #232a38 52%, #0c0f15 100%)" : undefined}
+      decor={!vault && !house}
+      style={vault || house ? { position: "relative", overflow: "hidden" } : undefined}
+      background={house ? HOUSE_TABLE : vault ? "radial-gradient(ellipse at 50% -20%, rgba(227,179,65,0.28), transparent 55%), radial-gradient(ellipse at 8% 110%, rgba(143,163,192,0.22), transparent 50%), radial-gradient(ellipse at 92% 110%, rgba(255,217,122,0.16), transparent 50%), linear-gradient(180deg, #171c26 0%, #232a38 52%, #0c0f15 100%)" : undefined}
     >
       {fx.layer()}
 
@@ -296,6 +368,22 @@ export default function SignBingo({
         </div>
       )}
 
+      {/* HOUSE skin: the hall-table plate. Inset 22px so nothing sits flush in
+          the ExerciseFrame corners. */}
+      {house && (
+        <div style={{ padding: "0 22px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", maxWidth: 620, margin: "0 auto 12px", gap: 8 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 11, fontWeight: 900, letterSpacing: "0.16em", color: HOUSE_LAMP, padding: "5px 11px", borderRadius: 999, border: `1px solid ${HOUSE_BRASS}66`, background: "rgba(0,0,0,0.3)" }}>
+              <PixIcon emoji="🏠" size={15} />
+              {(cardTitle ?? "THE SCOUT'S CHECK-CARD").toUpperCase()}
+            </span>
+            <span style={{ fontSize: 11, fontWeight: 900, letterSpacing: "0.16em", color: HOUSE_BRASS, padding: "5px 11px", borderRadius: 999, border: `1px solid ${HOUSE_BRASS}59`, background: "rgba(0,0,0,0.3)" }}>
+              {stamped.size} OF {signs.length} STAMPED
+            </span>
+          </div>
+        </div>
+      )}
+
       {showIntro && (
         <ExerciseIntroBeat
           title={introTitle ?? "Break-Sign Bingo"}
@@ -303,6 +391,7 @@ export default function SignBingo({
           icon={introIcon ?? "🔔"}
           narration={introNarration}
           character={introNarration?.speaker}
+          threat={house ? threat : undefined}
           // This game frame is wide (820px); without `overlay` the threat-less
           // intro renders as a big empty box inside it. overlay = clean modal.
           overlay
@@ -326,17 +415,22 @@ export default function SignBingo({
               margin: "0 auto 14px",
               padding: "13px 16px",
               borderRadius: 14,
-              background: vault
+              background: house
+                ? "linear-gradient(176deg, #fffaf0 0%, #f6e8cd 100%)"
+                : vault
                 ? "linear-gradient(180deg, rgba(28,34,46,0.96), rgba(14,18,25,0.96))"
                 : "rgba(0,229,255,0.08)",
-              border: vault ? "1.5px solid rgba(227,179,65,0.55)" : "1px solid rgba(125,240,255,0.35)",
-              boxShadow: vault ? "0 18px 40px -22px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.08)" : undefined,
-              color: vault ? "#f3f5ff" : "#dff6ff",
+              border: house ? "1.5px solid rgba(138,90,43,0.55)" : vault ? "1.5px solid rgba(227,179,65,0.55)" : "1px solid rgba(125,240,255,0.35)",
+              boxShadow: house ? "0 16px 34px -20px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,255,255,0.9)" : vault ? "0 18px 40px -22px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.08)" : undefined,
+              color: house ? HOUSE_INK : vault ? "#f3f5ff" : "#dff6ff",
               fontSize: 15,
               fontWeight: 800,
               lineHeight: 1.4,
             }}
           >
+            {house && (
+              <span aria-hidden style={{ flex: "none", display: "grid", placeItems: "center", width: 26, height: 26, borderRadius: "50%", background: "radial-gradient(circle at 36% 30%, #ffeec2, #c8912f 62%, #7a5312 100%)", boxShadow: "0 3px 6px -2px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.7)" }} />
+            )}
             {vault && (
               <span aria-hidden style={{ flex: "none", display: "grid", placeItems: "center", width: 40, height: 40, borderRadius: "50%", border: "2px solid #e3b341", background: "radial-gradient(circle at 40% 35%, #3a4356, #151a24)", fontSize: 18 }}>
                 <PixIcon emoji="🔊" size={20} />
@@ -344,6 +438,7 @@ export default function SignBingo({
             )}
             {round.sceneIcon && <PixIcon emoji={round.sceneIcon} size={34} />}
             <span style={{ flex: 1 }}>
+              {house && <span style={{ display: "block", fontSize: 10, letterSpacing: "0.16em", color: "#8a5a2b", fontWeight: 900, marginBottom: 3 }}>A MOMENT IN THE HOUSE</span>}
               {vault && <span style={{ display: "block", fontSize: 10, letterSpacing: "0.16em", color: "#e3b341", fontWeight: 900, marginBottom: 3 }}>SARAH READS</span>}
               {round.scene}
             </span>
@@ -353,8 +448,14 @@ export default function SignBingo({
 
       {/* Sarah reads the scene aloud (audio-only, visually hidden so it doesn't
           duplicate the scene card); the click-guard holds the squares until she
-          finishes. recordedOnly = silent on un-recorded weeks (no robotic TTS). */}
-      {!vault && round && !finished && !feedback && !explain && (
+          finishes. recordedOnly = silent on un-recorded weeks (no robotic TTS).
+          MUST wait for !showIntro, exactly as the vault path below does: the
+          intro's no-skip gate hides "I'm ready" until ITS narration fires onDone,
+          and a scene clip starting underneath the overlay clobbers that one, so
+          the gate falls through to its 45s safety release and the child stares at
+          a dead card. Latent on the card skin only because Week 6's scenes were
+          never recorded; it bit Week 14 the moment its scenes were. */}
+      {!vault && round && !showIntro && !finished && !feedback && !explain && (
         <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
           <InfoNarration key={`sb-scene-${round.id}`} speaker="adam" lines={[round.scene]} accent="#7df0ff" recordedOnly />
         </div>
@@ -568,8 +669,163 @@ export default function SignBingo({
         </div>
       )}
 
+      {/* ── HOUSE skin: the Scout's wooden check-card on the hall table ──
+          Oak tray, brass rail, cream card stock, one ivory ticket per power.
+          A pressed ticket goes brass and sinks into the stock, so the three
+          surfaces (stock / stampable ticket / pressed ticket) stay far apart
+          in luminance. Board inset 22px, grid wraps at phone width. */}
+      {house && (
+        <div style={{ padding: "0 22px" }}>
+          <div
+            style={{
+              maxWidth: 560,
+              margin: "0 auto",
+              padding: 10,
+              borderRadius: 20,
+              background: HOUSE_OAK,
+              border: "1px solid rgba(255,220,170,0.18)",
+              boxShadow: "0 24px 46px -26px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,225,180,0.32)",
+            }}
+          >
+            <div
+              aria-hidden
+              style={{
+                height: 3,
+                borderRadius: 2,
+                margin: "0 8px 9px",
+                background: "linear-gradient(90deg, rgba(231,189,99,0) 0%, #e7bd63 22%, #fff0cd 50%, #e7bd63 78%, rgba(231,189,99,0) 100%)",
+              }}
+            />
+            <div
+              style={{
+                borderRadius: 13,
+                padding: "14px 13px 13px",
+                background: `repeating-linear-gradient(0deg, rgba(138,90,43,0.07) 0 1px, transparent 1px 26px), linear-gradient(180deg, #ecd9b5 0%, ${HOUSE_STOCK} 100%)`,
+                boxShadow: "inset 0 2px 9px rgba(70,42,16,0.35)",
+              }}
+            >
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(142px, 1fr))", gap: 10 }}>
+                {shownSigns.map((s, i) => {
+                  const isStamped = stamped.has(s.id);
+                  return (
+                    <motion.button
+                      key={s.id}
+                      type="button"
+                      onClick={() => tap(s, i)}
+                      onPointerEnter={() => audio.hover()}
+                      disabled={!!feedback || !!explain || finished || bolting || sealing}
+                      aria-label={`${s.label}${isStamped ? ", stamped" : ""}`}
+                      animate={wobbleId === s.id && !reduce ? { rotate: [0, -4, 4, -2, 0] } : { rotate: 0 }}
+                      whileHover={reduce || isStamped ? undefined : { y: -3 }}
+                      whileTap={{ scale: 0.97 }}
+                      style={{
+                        position: "relative",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 7,
+                        minHeight: 104,
+                        padding: "13px 9px",
+                        borderRadius: 11,
+                        border: isStamped ? "2.5px solid #5a3810" : "2.5px solid #8a5a2b",
+                        background: isStamped ? HOUSE_PRESSED : HOUSE_TICKET,
+                        color: isStamped ? "#fff6e2" : HOUSE_INK,
+                        textShadow: isStamped ? "0 1px 2px rgba(48,28,4,0.75)" : undefined,
+                        fontSize: 13.5,
+                        fontWeight: 800,
+                        lineHeight: 1.25,
+                        fontFamily: "inherit",
+                        cursor: isStamped ? "default" : "pointer",
+                        boxShadow: isStamped
+                          ? "inset 0 3px 9px rgba(56,32,4,0.6), 0 4px 10px -7px rgba(0,0,0,0.75)"
+                          : "0 3px 0 #c9a16a, 0 13px 20px -14px rgba(0,0,0,0.75)",
+                        touchAction: "manipulation",
+                      }}
+                    >
+                      <PixIcon emoji={s.icon} size={34} />
+                      {s.label}
+                      {isStamped && (
+                        <motion.span
+                          initial={reduce ? false : { scale: 1.9, opacity: 0, rotate: -24 }}
+                          animate={{ scale: 1, opacity: 1, rotate: -11 }}
+                          transition={{ type: "spring", stiffness: 320, damping: 17 }}
+                          style={{
+                            position: "absolute",
+                            top: 6,
+                            right: 6,
+                            padding: "2px 8px",
+                            borderRadius: 999,
+                            border: "2px solid #fff0cd",
+                            background: "rgba(48,28,6,0.5)",
+                            color: "#fff6e2",
+                            fontSize: 9.5,
+                            fontWeight: 900,
+                            letterSpacing: "0.1em",
+                          }}
+                        >
+                          STAMPED
+                        </motion.span>
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </div>
+              {!finished && (
+                <div style={{ textAlign: "center", marginTop: 11, fontSize: 11, fontWeight: 900, color: "#8a5a2b", letterSpacing: "0.12em" }}>
+                  MOMENT {Math.min(roundIdx + 1, shownRounds.length)} OF {shownRounds.length}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* The brass stamp resting on the table: it dips each time a ticket
+              is pressed. Decoration only, and still when motion is reduced. */}
+          {round && !finished && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                gap: 9,
+                maxWidth: 560,
+                margin: "11px auto 0",
+                fontSize: 11.5,
+                fontWeight: 800,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: HOUSE_LAMP,
+                opacity: 0.9,
+                textAlign: "center",
+              }}
+            >
+              <motion.span
+                key={`sb-stamp-${stamped.size}`}
+                aria-hidden
+                initial={reduce ? false : { y: -9, rotate: -14 }}
+                animate={{ y: 0, rotate: 0 }}
+                transition={{ type: "spring", stiffness: 430, damping: 15 }}
+                style={{
+                  display: "inline-grid",
+                  placeItems: "center",
+                  width: 26,
+                  height: 26,
+                  borderRadius: 7,
+                  background: "linear-gradient(180deg, #f0c469 0%, #a9761f 100%)",
+                  boxShadow: "0 4px 8px -4px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,246,222,0.8)",
+                }}
+              >
+                <PixIcon emoji="👆" size={14} />
+              </motion.span>
+              <span>{actionLine ?? "Press the stamp on the power that answers it"}</span>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ── CARD skin: the 2x2 bingo card ── */}
-      {!vault && (
+      {!vault && !house && (
       <div
         style={{
           maxWidth: 560,
@@ -684,7 +940,21 @@ export default function SignBingo({
       {explain && (
         <div
           style={
-            vault
+            house
+              ? {
+                  // House skin: the check-card fills the frame, so the "why" beat
+                  // floats over it on a warm lamp-dim instead of falling below the fold.
+                  position: "absolute",
+                  inset: 0,
+                  zIndex: 20,
+                  display: "grid",
+                  placeItems: "center",
+                  padding: 22,
+                  background: "rgba(28,16,6,0.74)",
+                  backdropFilter: "blur(2px)",
+                  textAlign: "center",
+                }
+              : vault
               ? {
                   // Vault skin: the board is tall, so the "why" beat floats over the
                   // door (dimmed) instead of stacking below the fold.
@@ -701,7 +971,7 @@ export default function SignBingo({
               : { maxWidth: 560, margin: "14px auto 0", textAlign: "center" }
           }
         >
-          <div style={vault ? { width: "100%", maxWidth: 560, padding: "18px 20px", borderRadius: 18, background: "linear-gradient(180deg, rgba(28,34,46,0.98), rgba(14,18,25,0.98))", border: "1.5px solid rgba(227,179,65,0.55)", boxShadow: "0 24px 60px -24px rgba(0,0,0,0.9)" } : undefined}>
+          <div style={house ? { width: "100%", maxWidth: 560, padding: "18px 20px", borderRadius: 18, background: "linear-gradient(178deg, #fffaf0 0%, #f2e2c3 100%)", border: `2px solid ${HOUSE_BRASS}`, boxShadow: "0 24px 60px -24px rgba(0,0,0,0.9)", color: HOUSE_INK } : vault ? { width: "100%", maxWidth: 560, padding: "18px 20px", borderRadius: 18, background: "linear-gradient(180deg, rgba(28,34,46,0.98), rgba(14,18,25,0.98))", border: "1.5px solid rgba(227,179,65,0.55)", boxShadow: "0 24px 60px -24px rgba(0,0,0,0.9)" } : undefined}>
           <div
             style={{
               display: "inline-flex",
@@ -710,15 +980,15 @@ export default function SignBingo({
               marginBottom: 10,
               padding: "5px 14px",
               borderRadius: 999,
-              background: vault ? "rgba(227,179,65,0.16)" : "rgba(126,255,151,0.14)",
-              border: vault ? "1px solid rgba(227,179,65,0.6)" : "1px solid rgba(126,255,151,0.5)",
-              color: vault ? "#ffe08a" : "#a0ffb0",
+              background: house ? "rgba(138,90,43,0.12)" : vault ? "rgba(227,179,65,0.16)" : "rgba(126,255,151,0.14)",
+              border: house ? "1px solid rgba(138,90,43,0.55)" : vault ? "1px solid rgba(227,179,65,0.6)" : "1px solid rgba(126,255,151,0.5)",
+              color: house ? "#7a4d1f" : vault ? "#ffe08a" : "#a0ffb0",
               fontSize: 12,
               fontWeight: 900,
               letterSpacing: "0.14em",
             }}
           >
-            <PixIcon emoji="⭐" size={16} /> {vault ? "BOLT HOME!" : "SPOT ON!"}
+            <PixIcon emoji="⭐" size={16} /> {house ? "STAMPED!" : vault ? "BOLT HOME!" : "SPOT ON!"}
           </div>
           <div style={{ textAlign: "left" }}>
             {/* Text on screen; the voice is the shared verdict ("That's right!" + why). */}
@@ -726,7 +996,7 @@ export default function SignBingo({
               key={`sb-why-${explain.key}`}
               lines={[explain.why]}
               speaker="adam"
-              accent={vault ? "#e3b341" : "#7eff97"}
+              accent={house ? "#8a5a2b" : vault ? "#e3b341" : "#7eff97"}
               recordedOnly
               autoPlay={false}
               guard={false}
@@ -754,7 +1024,7 @@ export default function SignBingo({
                   }
                 }}
               >
-                {stamped.size >= signs.length ? (vault ? "Seal the vault →" : "See your bingo →") : "Next →"}
+                {stamped.size >= signs.length ? (house ? "See your check-card →" : vault ? "Seal the vault →" : "See your bingo →") : "Next →"}
               </GameButton>
             </div>
           )}
@@ -767,7 +1037,9 @@ export default function SignBingo({
           title={completeTitle ?? "BINGO! Full card!"}
           stars={stars}
           statLines={[
-            `${firstTryCount}/${shownRounds.length} signs spotted first try`,
+            house
+              ? `${firstTryCount}/${shownRounds.length} powers stamped first try`
+              : `${firstTryCount}/${shownRounds.length} signs spotted first try`,
             completeLine ?? "Four body-bells learned - when one rings, it's break time.",
           ]}
           narration={completeNarration}
