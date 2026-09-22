@@ -13,7 +13,6 @@ import SmoothScroll from "@/app/components/SmoothScroll";
 import SpotlightCursor from "@/app/components/landing-v2/SpotlightCursor";
 import CosmicNetworkBackground from "@/app/components/backgrounds/CosmicNetworkBackground";
 import ScrollFormObjects from "@/app/components/backgrounds/ScrollFormObjects";
-import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBackdrop";
 
 /**
  * /landing-v2 - production homepage (re-exported by /).
@@ -56,15 +55,21 @@ const chakra = Chakra_Petch({ variable: "--font-chakra", weight: ["700"], subset
 
 export default function LandingV2() {
   return (
-    <div className={`${fredoka.variable} ${chakra.variable} trial-sand`} style={{ display: "contents" }}>
-    {/* WARM SAND TRIAL — throwaway branch, not for merge.
-        Option 37 from the lighter backdrops board. The page palette was
-        repainted against a measured sand ground; the galaxy and the typing
-        IDE run in their sand tone; AmbientFutureBackdrop stays off because
-        it is a night scene with no light equivalent. What is page-scoped
-        here rather than fixed properly is the work between a trial and a
-        real light theme: shared components corrected by CSS instead of a
-        tone prop, and a machine recoloured rather than re-lit. */}
+    <div className={`${fredoka.variable} ${chakra.variable} lv2-sand`} style={{ display: "contents" }}>
+    {/* WARM SAND — the light homepage. Option 37 from the lighter
+        backdrops board, shipped 2026-09-22 after an owner review round.
+
+        Three surfaces carry the whole page: ground #f3ede4 (L* 94), raised
+        #fffdf8 (99.3), recessed #e8dfd0 (89.2), with live things raised and
+        locked things recessed. The neon accents kept their hue and came
+        down until each cleared 4.5:1 on the ground.
+
+        Shared components take a tone prop rather than being repainted,
+        because /cybersecurity uses the same nav, footer and galaxy and has
+        to stay dark: night is the default everywhere and a light page has
+        to ask. The CSS below is what is genuinely page-scoped, and the
+        laptop is recoloured rather than re-lit, which is the remaining
+        debt if this ever becomes a real theme rather than one page. */}
     <style>{`
       /* The ground goes on html, not body. Both backdrops sit at
          z-index -1, and a background on body paints in front of them: it
@@ -93,8 +98,8 @@ export default function LandingV2() {
          same hue and taken down until they cleared the line: cyan 00e5ff
          to 0a7085, green 3ee88f to 0e7a45, amber ffc94a to 8a5a00, orange
          ff7a3d to b8430c, violet 8b7bff to 5744c9, pink ff3ad6 to a5117f. */
-      .trial-sand,
-      .trial-sand :is(section, div, nav, header, footer, main) {
+      .lv2-sand,
+      .lv2-sand :is(section, div, nav, header, footer, main) {
         --lv2-cyan: #0a7085;
         --lv2-cyan-soft: #0a7085;
         --lv2-lime: #0e7a45;
@@ -136,40 +141,40 @@ export default function LandingV2() {
 
       /* The accreditations band is shared with /schools, which stays dark,
          so its light form is scoped to this page rather than edited. */
-      .trial-sand .lv2-proof {
+      .lv2-sand .lv2-proof {
         background: linear-gradient(180deg, rgba(255,253,250,0.96), rgba(250,246,240,0.96)) !important;
         border-color: rgba(20,22,29,0.12) !important;
         box-shadow: 0 18px 44px -30px rgba(60,50,38,0.55), inset 0 1px 0 rgba(255,255,255,0.9) !important;
       }
-      .trial-sand .lv2-proof-kicker { color: #0a7085 !important; }
-      .trial-sand .lv2-proof-name { color: #14161d !important; }
-      .trial-sand .lv2-proof-copy { color: #3c4351 !important; }
+      .lv2-sand .lv2-proof-kicker { color: #0a7085 !important; }
+      .lv2-sand .lv2-proof-name { color: #14161d !important; }
+      .lv2-sand .lv2-proof-copy { color: #3c4351 !important; }
       /* The NCSC crest is white artwork and may not be recoloured, so its
          plate is the one thing on the page that stays dark. */
-      .trial-sand .lv2-proof-plate-dark {
+      .lv2-sand .lv2-proof-plate-dark {
         background: #14161d !important;
         border-color: rgba(20,22,29,0.3) !important;
       }
 
       /* Small print that was legible on black and is not on sand. */
-      .trial-sand [style*="rgba(17, 22, 38, 0.4"],
-      .trial-sand [style*="rgba(17,22,38,0.4"] { color: #5d6472 !important; }
-      .trial-sand [style*="rgba(17, 22, 38, 0.5"],
-      .trial-sand [style*="rgba(17,22,38,0.5"] { color: #4d5462 !important; }
-      .trial-sand [style*="rgba(17, 22, 38, 0.58"],
-      .trial-sand [style*="rgba(17,22,38,0.58"] { color: #454c5a !important; }
+      .lv2-sand [style*="rgba(17, 22, 38, 0.4"],
+      .lv2-sand [style*="rgba(17,22,38,0.4"] { color: #5d6472 !important; }
+      .lv2-sand [style*="rgba(17, 22, 38, 0.5"],
+      .lv2-sand [style*="rgba(17,22,38,0.5"] { color: #4d5462 !important; }
+      .lv2-sand [style*="rgba(17, 22, 38, 0.58"],
+      .lv2-sand [style*="rgba(17,22,38,0.58"] { color: #454c5a !important; }
 
       /* The course lockups are shared with /schools, so they are corrected
          here by their own inline colours rather than edited: the wordmarks
          were paper-white and the marks were neon. */
-      .trial-sand [style*="#eaf6ff"] { color: #14161d !important; }
-      .trial-sand [style*="color: #ffb347"],
-      .trial-sand [style*="color:#ffb347"] { color: #9a5f00 !important; }
-      .trial-sand svg[stroke="#22D3EE"] { stroke: #0a6675 !important; filter: none !important; }
-      .trial-sand svg[stroke="#ff7a3d"] { stroke: #a63a08 !important; filter: none !important; }
-      .trial-sand svg[stroke="#8b7bff"] { stroke: #5744c9 !important; filter: none !important; }
-      .trial-sand path[fill="#ffb347"] { fill: #9a5f00 !important; }
-      .trial-sand path[fill="#22D3EE"], .trial-sand circle[fill="#22D3EE"] { fill: #0a6675 !important; }
+      .lv2-sand [style*="#eaf6ff"] { color: #14161d !important; }
+      .lv2-sand [style*="color: #ffb347"],
+      .lv2-sand [style*="color:#ffb347"] { color: #9a5f00 !important; }
+      .lv2-sand svg[stroke="#22D3EE"] { stroke: #0a6675 !important; filter: none !important; }
+      .lv2-sand svg[stroke="#ff7a3d"] { stroke: #a63a08 !important; filter: none !important; }
+      .lv2-sand svg[stroke="#8b7bff"] { stroke: #5744c9 !important; filter: none !important; }
+      .lv2-sand path[fill="#ffb347"] { fill: #9a5f00 !important; }
+      .lv2-sand path[fill="#22D3EE"], .lv2-sand circle[fill="#22D3EE"] { fill: #0a6675 !important; }
 
       /* The hero CTA keeps the bright cyan token for its fill, so it is
          restated after the token override above. */
@@ -178,7 +183,7 @@ export default function LandingV2() {
       /* The NCSC crest is white artwork. On a dark page it needed nothing;
          on sand it disappeared entirely, so it gets its own dark plate
          wherever it appears. Recolouring it is not allowed. */
-      .trial-sand img[src="/logos/ncsc.svg"] {
+      .lv2-sand img[src="/logos/ncsc.svg"] {
         background: #14161d !important;
         padding: 5px 9px !important;
         border-radius: 8px !important;
@@ -193,22 +198,22 @@ export default function LandingV2() {
          Unity are drawn as white-only artwork, which is invisible on
          paper. Those two render black, which is the presentation their
          own guidelines give for a light ground. */
-      .trial-sand .lv2-logo-cell img {
+      .lv2-sand .lv2-logo-cell img {
         filter: none !important;
         opacity: 1 !important;
       }
-      .trial-sand .lv2-logo-cell img[src*="apple"],
-      .trial-sand .lv2-logo-cell img[src*="unity"] {
+      .lv2-sand .lv2-logo-cell img[src*="apple"],
+      .lv2-sand .lv2-logo-cell img[src*="unity"] {
         filter: brightness(0) !important;
         opacity: 0.88 !important;
       }
-      .trial-sand .lv2-logo-cell:hover img { opacity: 1 !important; }
+      .lv2-sand .lv2-logo-cell:hover img { opacity: 1 !important; }
     `}</style>
     <SmoothScroll>
-      {/* The galaxy and the typing IDE come back in sand tone: the same
+      {/* The galaxy and the typing IDE run in sand tone: the same
           formation, built out of ink on paper instead of light on black.
-          AmbientFutureBackdrop stays off; it is a night scene with no
-          light equivalent. */}
+          AmbientFutureBackdrop is gone from this page; it is a night scene
+          with no light equivalent. The component is kept on disk. */}
       <CosmicNetworkBackground tone="sand" />
       <ScrollFormObjects tone="sand" />
       <SpotlightCursor />
@@ -222,7 +227,7 @@ export default function LandingV2() {
         <Testimonials />
         <FAQ />
       </main>
-      <Footer />
+      <Footer tone="sand" />
     </SmoothScroll>
     </div>
   );

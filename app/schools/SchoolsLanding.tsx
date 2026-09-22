@@ -566,7 +566,7 @@ export default function SchoolsLanding() {
         </section>
       </main>
 
-      <Footer />
+      <Footer tone="sand" />
 
       <style>{`
         /* The sand token layer. Without it the page keeps reading the

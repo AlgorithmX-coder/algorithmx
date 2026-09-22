@@ -51,10 +51,10 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* The whole page sits on the unified dark backdrop, so the nav stays
-   * dark throughout. The only state change is "barely-there at the top
-   * vs. a lifted glass panel once scrolled" — to mark the page is alive. */
-  const isLight = false;
+  /* The console's wrapper colour is an inline style, so no stylesheet can
+   * reach it: the tone has to arrive as this flag. Everything else about
+   * the bar changes through data-tone. */
+  const isLight = onSand;
 
   /* Layered gradient glass (gives the bar internal depth vs. a flat fill). */
   const bg = onSand
@@ -62,8 +62,8 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
       ? "linear-gradient(180deg, rgba(255,253,248,0.96) 0%, rgba(250,245,236,0.9) 100%)"
       : "linear-gradient(180deg, rgba(255,253,248,0.8) 0%, rgba(250,245,236,0.66) 100%)"
     : scrolled
-      ? "linear-gradient(180deg, rgba(8,13,30,0.84) 0%, rgba(255,255,255,0.63) 100%)"
-      : "linear-gradient(180deg, rgba(8,13,30,0.42) 0%, rgba(255,255,255,0.19) 100%)";
+      ? "linear-gradient(180deg, rgba(8,13,30,0.84) 0%, rgba(4,5,13,0.66) 100%)"
+      : "linear-gradient(180deg, rgba(8,13,30,0.42) 0%, rgba(4,5,13,0.20) 100%)";
   const border = onSand
     ? scrolled
       ? "1px solid rgba(70,58,44,0.18)"
@@ -300,7 +300,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             90deg,
             transparent,
             var(--lv2-cyan),
-            #5744c9,
+            var(--lv2-brand-violet, #7c5cff),
             transparent
           );
           filter: blur(0.5px);
@@ -338,15 +338,15 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           line-height: 1;
         }
         .lv2-wordmark-main {
-          color: var(--lv2-ink);
+          color: var(--lv2-word-mark, var(--lv2-paper));
           background-image: linear-gradient(
             110deg,
-            var(--lv2-ink) 0%,
-            var(--lv2-ink) 42%,
+            var(--lv2-word-mark, var(--lv2-paper)) 0%,
+            var(--lv2-word-mark, var(--lv2-paper)) 42%,
             var(--lv2-word-flash, #ffffff) 48%,
             var(--lv2-cyan-soft) 51%,
-            var(--lv2-ink) 58%,
-            var(--lv2-ink) 100%
+            var(--lv2-word-mark, var(--lv2-paper)) 58%,
+            var(--lv2-word-mark, var(--lv2-paper)) 100%
           );
           background-size: 260% 100%;
           background-position: 100% 0;
@@ -362,7 +362,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             150deg,
             var(--lv2-cyan-soft),
             var(--lv2-cyan) 45%,
-            #5744c9
+            var(--lv2-brand-violet, #7c5cff)
           );
           -webkit-background-clip: text;
           background-clip: text;
@@ -488,10 +488,10 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         /* The page's own link: warm against the cyan chips, so a returning
            school finds its way in without competing with the CTA. */
         :global(.lv2-nav-aside) {
-          color: #9a5f00;
+          color: var(--lv2-aside-ink, #ffca82);
           text-shadow: 0 0 14px rgba(255,180,90,0.55);
         }
-        :global(.lv2-nav-aside)::after { background: #9a5f00 !important; }
+        :global(.lv2-nav-aside)::after { background: var(--lv2-aside-ink, #ffca82) !important; }
         :global(.lv2-nav-aside):hover,
         :global(.lv2-nav-aside):focus-visible {
           color: #ffe2b8;
@@ -502,7 +502,28 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
            it, and the secondary links carry a heavier edge because a
            hairline that reads on black disappears on paper. */
         nav[data-tone="sand"] {
+          /* The shimmer lightens the ink instead of punching a hole in it,
+             and the three brand colours come down to their sand values.
+             Tokens rather than rules, because the wordmark's gradient and
+             the aside's underline each read theirs more than once. */
           --lv2-word-flash: rgba(20, 22, 29, 0.32);
+          --lv2-word-mark: var(--lv2-ink);
+          --lv2-brand-violet: #5744c9;
+          --lv2-aside-ink: #9a5f00;
+        }
+        /* The console on paper. Its night half stays in the base rules, so
+           /cybersecurity keeps the bar it has always had. */
+        nav[data-tone="sand"] :global(.lv2-tel-online) {
+          color: #0e7a45 !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-dot) {
+          background: #0e7a45 !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-dot)::after {
+          border-color: #0e7a45 !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-trend-down) {
+          color: #0e7a45 !important;
         }
         /* The CTA was being recoloured by the homepage's own page-scoped
            CSS, which is why /schools still showed the old bright cyan. It
@@ -605,7 +626,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         /* Not on the aside: it is the same class but its own amber, and
            this rule sits after the amber one, so it would win. */
         :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
-          color: rgba(17,22,38,0.86);
+          color: rgba(232, 237, 255, 0.82);
         }
         /* Owner 2026-09-21: "highlight these". Courses and Schools sat as
            plain grey text next to a solid cyan CTA and read as furniture.
@@ -621,8 +642,8 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             border-radius: 999px;
             border: 1px solid rgba(159, 245, 255, 0.24);
             background: rgba(0, 229, 255, 0.06);
-            box-shadow: inset 0 1px 0 rgba(17,22,38,0.05);
-            color: var(--lv2-ink);
+            box-shadow: inset 0 1px 0 rgba(232, 237, 255, 0.05);
+            color: var(--lv2-word-mark, var(--lv2-paper));
           }
           /* the chip does the job the scanning underline used to do */
           :global(.lv2-nav-secondary:not(.lv2-nav-aside))::after {
@@ -633,7 +654,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             border-color: rgba(0, 229, 255, 0.55);
             background: rgba(0, 229, 255, 0.14);
             box-shadow: 0 0 22px -8px rgba(0, 229, 255, 0.9),
-              inset 0 1px 0 rgba(17,22,38,0.08);
+              inset 0 1px 0 rgba(232, 237, 255, 0.08);
           }
         }
         :global(.lv2-nav-secondary)::after {
@@ -657,7 +678,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         }
         :global(.lv2-nav-secondary:hover),
         :global(.lv2-nav-secondary:focus-visible) {
-          color: var(--lv2-ink);
+          color: var(--lv2-word-mark, var(--lv2-paper));
           text-shadow: 0 0 12px rgba(0, 229, 255, 0.55);
           transform: translateY(-1px);
         }
@@ -729,8 +750,8 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           .lv2-wordmark-main {
             animation: none;
             background-image: none;
-            -webkit-text-fill-color: var(--lv2-ink);
-            color: var(--lv2-ink);
+            -webkit-text-fill-color: var(--lv2-word-mark, var(--lv2-paper));
+            color: var(--lv2-word-mark, var(--lv2-paper));
           }
           .lv2-wordmark-x {
             animation: none;
@@ -1043,7 +1064,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
     return () => clearInterval(i);
   }, [reduceMotion]);
 
-  const baseColor = isLight ? "rgba(10,15,28,0.78)" : "rgba(17,22,38,0.86)";
+  const baseColor = isLight ? "rgba(10,15,28,0.78)" : "rgba(232, 237, 255, 0.82)";
 
   return (
     <div
@@ -1195,7 +1216,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           font-size: 10px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(17,22,38,0.61);
+          color: rgba(232, 237, 255, 0.58);
         }
         .lv2-tel-num {
           font-size: 13px;
@@ -1209,7 +1230,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           font-weight: 600;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #0e7a45;
+          color: #7dffb0;
           text-shadow: 0 0 10px rgba(95, 255, 163, 0.45);
         }
 
@@ -1219,8 +1240,8 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           width: 8px;
           height: 8px;
           border-radius: 999px;
-          background: #0e7a45;
-          box-shadow: 0 0 12px #0e7a45, 0 0 4px #ffffff inset;
+          background: #5fffa3;
+          box-shadow: 0 0 12px #5fffa3, 0 0 4px #ffffff inset;
           animation: lv2TelPulse 2.2s ease-in-out infinite;
         }
         .lv2-tel-dot::after {
@@ -1228,7 +1249,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           position: absolute;
           inset: -2px;
           border-radius: 999px;
-          border: 1px solid #0e7a45;
+          border: 1px solid #5fffa3;
           opacity: 0;
           animation: lv2TelRing 2.2s ease-out infinite;
         }
@@ -1320,7 +1341,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           color: #ff9d6e;
         }
         .lv2-tel-trend-down {
-          color: #0e7a45;
+          color: #5fffa3;
         }
         @keyframes lv2TelBlip {
           from {

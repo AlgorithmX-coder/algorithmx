@@ -3,9 +3,41 @@
 import Link from "next/link";
 
 /**
- * Footer - dark 4-column. Brand / Subjects / Company / Legal.
+ * Footer - 4-column. Brand / Subjects / Company / Legal.
+ *
+ * Two tones. Night is the original and stays the DEFAULT, because this
+ * footer is shared with /cybersecurity and /pro, which are dark pages: a
+ * light footer has to be asked for, never inherited. Sand is the light
+ * landing pages, where the same gradient runs to paper and the ink
+ * inverts. Each pair was measured on its own ground.
  */
-export default function Footer() {
+export type FooterTone = "night" | "sand";
+
+const FOOTER_TONES = {
+  night: {
+    bed: "20,12,30",
+    body: "rgba(232,237,255,0.7)",
+    brand: "var(--lv2-paper)",
+    lede: "rgba(232,237,255,0.55)",
+    small: "rgba(232,237,255,0.65)",
+    colLabel: "rgba(232,237,255,0.55)",
+    colNote: "rgba(232,237,255,0.42)",
+    link: "rgba(232,237,255,0.72)",
+  },
+  sand: {
+    bed: "255,253,250",
+    body: "rgba(17,22,38,0.73)",
+    brand: "var(--lv2-ink)",
+    lede: "rgba(17,22,38,0.72)",
+    small: "rgba(17,22,38,0.68)",
+    colLabel: "rgba(17,22,38,0.72)",
+    colNote: "rgba(17,22,38,0.68)",
+    link: "rgba(17,22,38,0.76)",
+  },
+} as const;
+
+export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
+  const T = FOOTER_TONES[tone];
   return (
     <footer
       style={{
@@ -26,11 +58,11 @@ export default function Footer() {
          * ending on a black slab; the footer text keeps a darker bed. */
         background:
           "linear-gradient(to bottom, " +
-          "rgba(255,253,250,0) 0%, " +
-          "rgba(255,253,250,0.36) 10%, " +
-          "rgba(255,253,250,0.62) 26%, " +
-          "rgba(255,253,250,0.7) 100%)",
-        color: "rgba(17,22,38,0.73)",
+          `rgba(${T.bed},0) 0%, ` +
+          `rgba(${T.bed},0.36) 10%, ` +
+          `rgba(${T.bed},0.62) 26%, ` +
+          `rgba(${T.bed},0.7) 100%)`,
+        color: T.body,
         /* Extra bottom clearance (+72px) so the fixed Algo chip
          * (bottom-right of the viewport) floats over empty space at
          * page end instead of covering the copyright line. */
@@ -66,7 +98,7 @@ export default function Footer() {
                   fontWeight: 700,
                   letterSpacing: "0.28em",
                   textTransform: "uppercase",
-                  color: "var(--lv2-ink)",
+                  color: T.brand,
                 }}
               >
                 ALGORITHMX
@@ -74,7 +106,7 @@ export default function Footer() {
             </div>
             <p
               style={{
-                color: "rgba(17,22,38,0.72)",
+                color: T.lede,
                 fontSize: 13,
                 lineHeight: 1.6,
                 maxWidth: 260,
@@ -85,6 +117,7 @@ export default function Footer() {
           </div>
 
           <FooterColumn
+            tone={tone}
             label="Subjects"
             links={[
               { name: "Cybersecurity", href: "/cybersecurity" },
@@ -101,6 +134,7 @@ export default function Footer() {
            * are legally required for a UK company processing children's
            * data — SHIP THE REAL PAGES, then restore the links here. */}
           <FooterColumn
+            tone={tone}
             label="Company"
             links={[
               { name: "For Schools", href: "/schools" },
@@ -122,7 +156,7 @@ export default function Footer() {
             style={{
               /* Bumped from 0.45 -> 0.7 alpha so the support email
                * meets WCAG AA contrast (~4.5:1) on the dark backdrop. */
-              color: "rgba(17,22,38,0.73)",
+              color: T.body,
               fontSize: 12,
               fontFamily: "var(--lv2-font-mono)",
               letterSpacing: "0.06em",
@@ -135,7 +169,7 @@ export default function Footer() {
             style={{
               /* Bumped from 0.4 -> 0.65 alpha so the copyright line
                * meets WCAG AA contrast on the dark backdrop. */
-              color: "rgba(17,22,38,0.68)",
+              color: T.small,
               fontSize: 11,
               fontFamily: "var(--lv2-font-mono)",
               letterSpacing: "0.06em",
@@ -177,12 +211,15 @@ function FooterColumn({
   label,
   links,
   note,
+  tone,
 }: {
   label: string;
   links: Array<{ name: string; href: string }>;
   /** Muted, non-interactive line after the links (e.g. encrypted-streams hint). */
   note?: string;
+  tone: FooterTone;
 }) {
+  const T = FOOTER_TONES[tone];
   return (
     <div>
       <p
@@ -192,7 +229,7 @@ function FooterColumn({
           fontWeight: 700,
           letterSpacing: "0.22em",
           textTransform: "uppercase",
-          color: "rgba(17,22,38,0.72)",
+          color: T.colLabel,
           marginBottom: 14,
         }}
       >
@@ -203,12 +240,12 @@ function FooterColumn({
           <a
             key={l.name}
             href={l.href}
-            style={footerLink}
+            style={footerLink(tone)}
           >
             {l.name}
           </a>
         ) : (
-          <Link key={l.name} href={l.href} style={footerLink}>
+          <Link key={l.name} href={l.href} style={footerLink(tone)}>
             {l.name}
           </Link>
         ),
@@ -219,7 +256,7 @@ function FooterColumn({
             fontFamily: "var(--lv2-font-mono)",
             fontSize: 11.5,
             letterSpacing: "0.04em",
-            color: "rgba(17,22,38,0.68)",
+            color: T.colNote,
             marginTop: 4,
           }}
         >
@@ -230,11 +267,11 @@ function FooterColumn({
   );
 }
 
-const footerLink: React.CSSProperties = {
+const footerLink = (tone: FooterTone): React.CSSProperties => ({
   display: "block",
-  color: "rgba(17,22,38,0.76)",
+  color: FOOTER_TONES[tone].link,
   fontSize: 13.5,
   textDecoration: "none",
   marginBottom: 9,
   fontFamily: "var(--lv2-font-display)",
-};
+});
