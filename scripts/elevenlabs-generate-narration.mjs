@@ -243,7 +243,11 @@ for (const fname of weekFiles) {
   // moment Sarah reads to the child. W6 is deliberately NOT here: it is live and
   // its six scenes are currently silent, so opting it in would add voice to a
   // shipped week. That is the owner's call, not a side effect of this run.
-  if (fname === "week1.ts" || fname === "week14.ts") {
+  // W6 opted in 2026-09-22: its six review scenes were the only lines in the
+  // week Sarah never read, so a child who cannot yet read fluently saw the moment
+  // and heard nothing. Safe to record only now that SignBingo waits for
+  // !showIntro: before that fix, recording them made the start button take 45s.
+  if (fname === "week1.ts" || fname === "week6.ts" || fname === "week14.ts") {
     const sbSceneRe = /\bscene:\s*"((?:[^"\\]|\\.)*)"/g;
     const sbWhyRe = /\bwhy:\s*"((?:[^"\\]|\\.)*)"/g;
     let sbm;
