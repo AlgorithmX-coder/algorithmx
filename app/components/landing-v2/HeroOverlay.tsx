@@ -105,8 +105,15 @@ export default function HeroOverlay() {
             text at 11px; it now takes the same lit-pill chrome as the nav
             telemetry and the LIVE NOW mark, which is the loudest the page
             gets without competing with the headline. */}
-        <span className="lv2-hero-eyebrow" style={sectionMark}>
-          <span aria-hidden className="lv2-hero-eyebrow-dot" />
+        {/* border: none because the class carries an outline pill that the
+            solid mark replaces, and the dot has to be paper now that the
+            ground under it is the accent rather than the page. */}
+        <span className="lv2-hero-eyebrow" style={{ ...sectionMark, border: "none" }}>
+          <span
+            aria-hidden
+            className="lv2-hero-eyebrow-dot"
+            style={{ background: "#fffdfa", boxShadow: "none" }}
+          />
           {EYEBROW}
         </span>
 

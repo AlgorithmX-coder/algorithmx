@@ -199,9 +199,9 @@ export default function ScrollFormObjects({ tone = "night" }: { tone?: "night" |
           ...(onSand
             ? {
                 maskImage:
-                  "linear-gradient(90deg, #000 0%, #000 34%, rgba(0,0,0,0.35) 66%, transparent 94%)",
+                  "linear-gradient(90deg, #000 0%, #000 26%, rgba(0,0,0,0.28) 56%, transparent 80%)",
                 WebkitMaskImage:
-                  "linear-gradient(90deg, #000 0%, #000 34%, rgba(0,0,0,0.35) 66%, transparent 94%)",
+                  "linear-gradient(90deg, #000 0%, #000 26%, rgba(0,0,0,0.28) 56%, transparent 80%)",
               }
             : null),
         }}

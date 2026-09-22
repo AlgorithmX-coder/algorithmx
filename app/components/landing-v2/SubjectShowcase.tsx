@@ -104,6 +104,16 @@ const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; 
 
 /* The ages come from CYBER_COURSES rather than being typed twice, so the
    panel and the track chips in the same card can never drift apart. */
+/* Inline, because styled-jsx cannot reach inside next/link. */
+const COURSE_CHIP_LINK: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 6,
+  padding: "10px 13px",
+  textDecoration: "none",
+  color: "inherit",
+};
+
 const AGES_BY_ID = Object.fromEntries(CYBER_COURSES.map((c) => [c.id, c.ages])) as Record<string, string>;
 
 const STREAMS: Stream[] = [
@@ -731,14 +741,20 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               <ul className="lv2-course-marks">
                 {CYBER_COURSES.map((c) => (
                   /* Owner: put the actual links to these courses' landing
-                     pages on the chips. The anchor takes the whole chip
-                     rather than wrapping the wordmark, so the age line is
-                     part of the target too. */
-                  <li key={c.id} style={{ ["--lv2-mark" as string]: c.accent }}>
-                    <Link
-                      href={COURSE_HREF[c.id]}
-                      className={c.live ? "lv2-course-mark" : "lv2-course-mark lv2-course-mark-soon"}
-                    >
+                     pages on the chips.
+
+                     The class stays on the li. styled-jsx scopes its rules
+                     to elements it can stamp, and next/link renders its own
+                     anchor, so a class handed to Link matches nothing: the
+                     chips came out as bare inline text. The li keeps the
+                     styling and the anchor fills it, so the whole chip is
+                     still the click target. */
+                  <li
+                    key={c.id}
+                    className={c.live ? "lv2-course-mark" : "lv2-course-mark lv2-course-mark-soon"}
+                    style={{ ["--lv2-mark" as string]: c.accent }}
+                  >
+                    <Link href={COURSE_HREF[c.id]} style={COURSE_CHIP_LINK}>
                       <CourseLockup id={c.id} size={0.74} tone="sand" />
                       <span>{c.live ? `Ages ${c.ages}` : `Ages ${c.ages} · soon`}</span>
                     </Link>
@@ -827,15 +843,11 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           gap: 8px;
         }
         .lv2-course-mark {
-          text-decoration: none;
-          color: inherit;
           cursor: pointer;
           transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
             box-shadow 0.2s ease, border-color 0.2s ease;
           display: flex;
-          flex-direction: column;
-          gap: 6px;
-          padding: 10px 13px;
+          /* the padding lives on the anchor, so the whole chip is clickable */
           border-radius: 12px;
           background: linear-gradient(180deg, #fffdf8, #fdf9f2);
           box-shadow: 0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85);
@@ -859,7 +871,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           border-color: var(--lv2-mark);
           box-shadow: 0 16px 34px -20px rgba(86,68,45,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
         }
-        .lv2-course-mark:focus-visible {
+        .lv2-course-mark:has(a:focus-visible) {
           outline: 2px solid var(--lv2-mark);
           outline-offset: 3px;
         }

@@ -723,14 +723,23 @@ export default function SchoolsLanding() {
           .sch-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); }
           .sch-section { scroll-margin-top: 88px; }
         }
+        /* Owner: make these stand out, the same as the landing page. They
+           are the same thing as the homepage's Courses and Schools chips, so
+           they take the same treatment: a teal wash, a teal edge, teal ink
+           and a glow off the letterforms. The white ink these used on hover
+           and when current was a dark-page value and disappeared entirely on
+           a pale wash, which is why the current section read as blank. */
         .sch-chip-link {
           flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; text-decoration: none;
-          border: 1px solid rgba(20,22,29,0.22); background: rgba(255,253,248,0.57);
+          border: 1px solid rgba(10,112,133,0.42); background: rgba(10,112,133,0.16);
           font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-          color: rgba(17,22,38,0.82); transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
+          color: #075a6b;
+          text-shadow: 0 0 10px rgba(10,112,133,0.55), 0 1px 0 rgba(255,255,255,0.6);
+          box-shadow: 0 6px 16px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.7);
+          transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
         }
-        .sch-chip-link:hover { border-color: var(--lv2-cyan); color: #fff; background: rgba(10,112,133,0.1); }
-        .sch-chip-link.on { border-color: var(--lv2-cyan); color: #fff; background: rgba(10,112,133,0.16); box-shadow: 0 0 18px -6px var(--lv2-cyan); }
+        .sch-chip-link:hover { border-color: rgba(10,112,133,0.75); color: #05454f; background: rgba(10,112,133,0.26); text-shadow: 0 0 14px rgba(10,112,133,0.85), 0 1px 0 rgba(255,255,255,0.6); }
+        .sch-chip-link.on { border-color: #0a7085; color: #fffdfa; background: #0a7085; text-shadow: none; box-shadow: 0 8px 20px -12px rgba(10,112,133,1), inset 0 1px 0 rgba(255,255,255,0.28); }
         .sch-chip-cta { border-color: transparent; color: #04050d; background: linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%); margin-left: auto; }
         .sch-chip-cta:hover, .sch-chip-cta.on { color: #04050d; background: linear-gradient(135deg, #5ff5ff 0%, #1fd8ff 55%, #14c2f8 100%); border-color: transparent; }
         /* fade the trailing edge when the strip scrolls (narrow screens) */
@@ -921,19 +930,23 @@ export default function SchoolsLanding() {
         .sch-mock-course-txt { font-family: var(--lv2-font-mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.66); }
 
         /* the curriculum map's coverage summary */
-        .sch-mock-cover { margin-top: 12px; padding-top: 11px; border-top: 1px solid rgba(70,58,44,0.16); display: flex; flex-direction: column; gap: 8px; }
-        .sch-mock-cover-row { display: flex; flex-wrap: wrap; gap: 6px; }
-        .sch-mock-cover-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #fffdf8; border: 1px solid rgba(70,58,44,0.16); font-size: 10.5px; color: rgba(17,22,38,0.82); }
+        /* The frame is a fixed 16/10 box, so everything here has to fit
+           inside it: the summary was being cut in half by the browser
+           chrome's bottom edge. */
+        .sch-mock-cover { margin-top: 9px; padding-top: 8px; border-top: 1px solid rgba(70,58,44,0.16); display: flex; flex-direction: column; gap: 6px; }
+        .sch-mock-cover-row { display: flex; flex-wrap: wrap; gap: 5px; }
+        .sch-mock-cover-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 999px; background: #fffdf8; border: 1px solid rgba(70,58,44,0.16); font-size: 9.5px; color: rgba(17,22,38,0.82); }
         .sch-mock-cover-chip i { width: 6px; height: 6px; border-radius: 999px; display: block; }
 
         .sch-mock-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
         .sch-mock-table th { text-align: left; font-family: var(--lv2-font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(17,22,38,0.66); padding: 4px 8px 6px; border-bottom: 1px solid rgba(17,22,38,0.13); white-space: nowrap; }
-        .sch-mock-table td { padding: 5px 8px; border-bottom: 1px solid rgba(17,22,38,0.07); vertical-align: top; color: rgba(17,22,38,0.86); line-height: 1.35; }
+        .sch-mock-table td { padding: 3.5px 8px; border-bottom: 1px solid rgba(17,22,38,0.07); vertical-align: top; color: rgba(17,22,38,0.86); line-height: 1.32; }
         .sch-mock-table td b { display: block; font-weight: 600; color: #14161d; }
         .sch-mock-table td span { font-size: 11px; color: rgba(17,22,38,0.66); }
         .sch-mock-table td i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }
         /* the map is a document, not a dashboard: it keeps the paper ground */
-        .sch-mock-cur .sch-mock-main { background: #fffdf8; }
+        .sch-mock-cur .sch-mock-main { background: #fffdf8; gap: 10px; }
+        .sch-mock-cur .sch-mock-title h4 { font-size: 18px; }
         @media (max-width: 640px) {
           .sch-mock-side { display: none; }
           .sch-mock-cols { grid-template-columns: 1fr; }

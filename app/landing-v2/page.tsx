@@ -78,12 +78,9 @@ export default function LandingV2() {
          was painting over both of them. */
       body::before { display: none !important; }
 
-      .lv2-hero-eyebrow {
-        color: #0a6c8e !important;
-        border-color: rgba(10,126,164,0.34) !important;
-        background: rgba(10,126,164,0.08) !important;
-        text-shadow: none !important;
-      }
+      /* The hero eyebrow takes the shared section mark now (an inline
+         style), and these !important rules were beating it back to the old
+         outline pill. */
       .lv2-hero-copy h1, .lv2-hero-copy p { text-shadow: none !important; }
       /* The scrim exists so the headline reads against a sunset sky. Its
          own comment warns it would otherwise be a black smudge behind the
@@ -131,11 +128,6 @@ export default function LandingV2() {
           0 18px 42px -12px rgba(10,112,133,0.9),
           0 0 0 1px rgba(10,112,133,0.4),
           inset 0 1px 0 rgba(255,255,255,0.55) !important;
-      }
-      .lv2-hero-eyebrow {
-        box-shadow:
-          0 10px 26px -16px rgba(10,112,133,0.9),
-          inset 0 1px 0 rgba(255,255,255,0.8) !important;
       }
 
       /* The nav chips are the nav component's business now: it takes a
