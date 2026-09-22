@@ -189,6 +189,22 @@ const ENGINES = {
         : { label: "  wrong move " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
     ),
   ),
+  // Week 14 engines (2026-09-22). Each item speaks exactly ONE side, so map it
+  // that way: a reason in the wrong field is silent even when the field is full.
+  speakerDiary: (span) => objs(span, "entries").flatMap((e) =>
+    objs(e, "options").map((o) =>
+      flag(o, "isRight")
+        ? { label: "stamp " + (fld(o, "label") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  wrong stamp " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
+  lensCheck: (span) => objs(span, "rounds").flatMap((r) =>
+    objs(r, "spots").map((sp) =>
+      flag(sp, "woke")
+        ? { label: "woke " + (fld(sp, "label") ?? ""), right: fld(sp, "why"), wrong: null, only: "right" }
+        : { label: "  unchanged " + (fld(sp, "label") ?? ""), right: null, wrong: fld(sp, "explanation"), only: "wrong" },
+    ),
+  ),
   // Week 13 engines (2026-09-21). The jug and the room are one-sided per item;
   // the plan desk judges the WHOLE plan, so a round carries both sides.
   dayJug: (span) => objs(span, "pours").flatMap((p) =>

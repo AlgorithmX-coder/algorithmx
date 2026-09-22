@@ -26,6 +26,29 @@
  * the LET IN / DENY sides swap per player so position never encodes the
  * answer. Round 1 teaches itself: the right button breathes until tapped.
  * Nothing moves on a timer; nobody drifts; there is no lose state.
+ *
+ * Every spoken string already arrives through props, and nothing below is a
+ * component default that gets read aloud: each player's `readAloud`, `why`
+ * and `whyWrong`, the toggle card's `readAloud` and `why`, `introNarration`,
+ * `coachLines`, `threat.raccoonLine` and `completeNarration`. Which field is
+ * spoken in which branch:
+ *
+ *    RIGHT call on a player  -> `why`       (VerdictVoice: "That's right!" + it)
+ *    WRONG call on a player  -> `whyWrong`  (WrongAnswerPanel: "Not quite." + it)
+ *    the settings-card flip  -> `why`       (VerdictVoice)
+ *    each arrival, the card  -> `readAloud` (InfoNarration, audio only)
+ *
+ * A teach line put in the wrong one of those two per-player fields is SILENT
+ * even when it is not empty.
+ *
+ * Skins are PAINT ONLY (the clip generator reads the week file, so a skin can
+ * never carry a spoken word): "lobby" is Week 6's neon arcade lobby, shipped
+ * and untouched; "hall" is Week 14's Listening House hallway at bedtime, its
+ * second and final outing. Warm lamplight on oak instead of neon on black:
+ * panelled house doors with brass room plates and light spilling out of them,
+ * cream paper cards with a handwritten label, a brass wall switch instead of
+ * the glass pill, and a warm plaster hall over a wainscot instead of the
+ * arcade's dark glass. Same gatekeep mechanic on both; every word is a prop.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -61,6 +84,10 @@ const AUDIO_ONLY_STYLE = {
 export interface LobbyPlayer {
   id: string;
   name: string;
+  /** Optional per-arrival emoji on the avatar disc. Falls back to
+   *  `avatarEmoji`, then to the shared "🎮". Must be in PixIcon's MAP.
+   *  Paint only: never spoken. */
+  icon?: string;
   /** True for a real teammate (the child knows them): they wear the badge. */
   hasBadge: boolean;
   /** Sarah's read-aloud as the player steps up to the door. */
@@ -90,6 +117,13 @@ export interface LobbyToggleCard {
 }
 
 export interface LobbyDoorsProps {
+  /**
+   * Visual skin. "lobby" (default) = Week 6's neon arcade lobby, untouched.
+   * "hall" = Week 14's Listening House hallway at bedtime: panelled house
+   * doors with brass room plates, cream paper cards, a brass wall switch.
+   * Paint and layout only — every word still comes from the props below.
+   */
+  skin?: "lobby" | "hall";
   /** Usually 2: wave 1 friendsOnly=false (mixed), wave 2 friendsOnly=true. */
   waves: LobbyWave[];
   introTitle?: string;
@@ -99,6 +133,37 @@ export interface LobbyDoorsProps {
   denyLabel?: string;
   badgeLabel?: string;
   toggleLabel?: string;
+  /** The emoji beside the board header. Default "🚪". Never spoken. */
+  boardIcon?: string;
+  /** The emoji on every arrival's avatar disc, unless the arrival sets its
+   *  own `icon`. Default "🎮". Never spoken. */
+  avatarEmoji?: string;
+  /** The emoji inside the badge tag. Default "🏅". Never spoken. */
+  badgeEmoji?: string;
+  /** The three lane plates. Default ["Door 1", "Door 2", "Door 3"]. */
+  doorLabels?: [string, string, string];
+  /** The kicker over the settings card. Default "Lobby settings". */
+  settingsKicker?: string;
+  /** What a wave is called on the footer strip. Default "Wave". */
+  roundLabel?: string;
+  /** What one arrival is called in the counter. Default "Player". */
+  unitLabel?: string;
+  /** The footer strip before the setting is on. Default "Open lobby". */
+  openLabel?: string;
+  /** The footer strip once it is on. Default `${toggleLabel} lobby`. */
+  guardedLabel?: string;
+  /** The on-board strip once the setting is on and the card is still up.
+   *  Default `${toggleLabel} is ON. Your lobby is guarded.`. */
+  guardedStrip?: string;
+  /** The round-1 strip. Teaches the MECHANIC only, never which button. */
+  guidedStrip?: string;
+  /** Complete-beat tally wording: [singular, plural] and the verb for each
+   *  side. Defaults ["friend","friends"] / "welcomed" and
+   *  ["stranger","strangers"] / "kept out". Never spoken. */
+  welcomedNoun?: [string, string];
+  welcomedVerb?: string;
+  deniedNoun?: [string, string];
+  deniedVerb?: string;
   /** Shown between waves while Friends only is still OFF. */
   toggleCard?: LobbyToggleCard;
   /** fx.correct toasts. */
@@ -141,7 +206,22 @@ const KID_FONT = "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, 
 const LABEL_FONT = "'Space Grotesk', sans-serif";
 const PLATE_FONT = "'JetBrains Mono', 'Cascadia Mono', ui-monospace, Menlo, monospace";
 
+/* ── "hall" paints (Week 14). Warm lamplight on oak: a cream card that can be
+      tapped is never painted on a ground near its own shade. ── */
+/** Three lamplit doorways down the hall, the same three on every play. */
+const HALL_HUES = ["#ffc98a", "#f0b972", "#d9a463"];
+/** The calmer glow once the house switch is guarding. */
+const HALL_CALM = "#a8d8b0";
+/** The hall itself: warm plaster over an oak wainscot. */
+const HALL_WALL = "linear-gradient(180deg, #3a2b1d 0%, #2b1f14 62%, #1b130c 100%)";
+const HALL_FRAME = "linear-gradient(180deg, #2d2015 0%, #1d140c 55%, #120c07 100%)";
+const HALL_PAPER = "#fdf3e3";
+const HALL_INK = "#241c14";
+const HALL_BRASS = "#e6b877";
+const HALL_PLATE_FONT = KID_FONT;
+
 export default function LobbyDoors({
+  skin = "lobby",
   waves,
   introTitle = "The Lobby Doors",
   introSubtitle = "Check for the team badge, then let them in or keep them out.",
@@ -150,6 +230,21 @@ export default function LobbyDoors({
   denyLabel = "DENY",
   badgeLabel = "TEAM BADGE",
   toggleLabel = "Friends only",
+  boardIcon = "🚪",
+  avatarEmoji = AVATAR,
+  badgeEmoji = "🏅",
+  doorLabels,
+  settingsKicker = "Lobby settings",
+  roundLabel = "Wave",
+  unitLabel = "Player",
+  openLabel = "Open lobby",
+  guardedLabel,
+  guardedStrip,
+  guidedStrip = "Round 1: the glowing button is the right call. Tap it!",
+  welcomedNoun = ["friend", "friends"],
+  welcomedVerb = "welcomed",
+  deniedNoun = ["stranger", "strangers"],
+  deniedVerb = "kept out",
   toggleCard,
   letInToast = "WELCOME!",
   denyToast = "DENIED!",
@@ -175,6 +270,15 @@ export default function LobbyDoors({
   // Both content voices are Sarah; in-game read-alouds and verdict reasons are
   // recorded under "adam", so every manifest lookup here uses that key.
   const voice = "adam" as const;
+  // Week 14's Listening House hallway. Paint and layout only: the mechanic,
+  // the order of play and every spoken line are identical on both skins.
+  const isHall = skin === "hall";
+  const hues = isHall ? HALL_HUES : DOOR_HUES;
+  const calmHue = isHall ? HALL_CALM : CALM_HUE;
+  const plates = doorLabels ?? ["Door 1", "Door 2", "Door 3"];
+  // The one colour the board paints itself with: the theme accent on the
+  // arcade lobby, warm brass in the hall (a cyan rim on oak reads cold).
+  const tone = isHall ? HALL_BRASS : accent;
 
   const [showIntro, setShowIntro] = useState(true);
   const [pos, setPos] = useState({ w: 0, p: 0 });
@@ -316,13 +420,44 @@ export default function LobbyDoors({
   const strip =
     phase === "settings"
       ? friendsOn
-        ? `${toggleLabel} is ON. Your lobby is guarded.`
+        ? guardedStrip ?? `${toggleLabel} is ON. Your lobby is guarded.`
         : `Tap the button to turn ${toggleLabel} ON`
       : guided
-        ? "Round 1: the glowing button is the right call. Tap it!"
+        ? guidedStrip
         : `Look for the ${badgeLabel}, then tap ${letInLabel} or ${denyLabel}`;
 
-  const pill = (
+  /* The switch, on the board header and again on the settings card. "lobby":
+     a glass pill. "hall": a brass wall plate with a rocker that swings. */
+  const pill = isHall ? (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 7,
+        padding: "4px 10px 4px 6px",
+        borderRadius: 6,
+        border: `2px solid ${friendsOn ? HALL_CALM : "rgba(230,184,119,0.5)"}`,
+        background: friendsOn ? "rgba(168,216,176,0.16)" : "rgba(230,184,119,0.10)",
+        boxShadow: "inset 0 1px 0 rgba(255,236,200,0.3)",
+        color: friendsOn ? HALL_CALM : HALL_BRASS,
+        fontFamily: LABEL_FONT,
+        fontSize: 10,
+        fontWeight: 900,
+        letterSpacing: "0.14em",
+        textTransform: "uppercase",
+      }}
+    >
+      {/* The rocker on the plate: it swings, it does not slide. */}
+      <span style={{ position: "relative", width: 18, height: 26, borderRadius: 3, background: "linear-gradient(180deg, #f3e2c4, #cfae7d)", border: "1px solid rgba(63,44,24,0.45)", overflow: "hidden" }}>
+        <motion.span
+          animate={{ y: friendsOn ? 13 : 0 }}
+          transition={{ duration: reduce ? 0 : 0.2 }}
+          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 13, background: friendsOn ? HALL_CALM : "rgba(63,44,24,0.35)" }}
+        />
+      </span>
+      {toggleLabel}: {friendsOn ? "ON" : "OFF"}
+    </span>
+  ) : (
     <span
       style={{
         display: "inline-flex",
@@ -353,7 +488,7 @@ export default function LobbyDoors({
   );
 
   return (
-    <ExerciseFrame maxWidth={820} decor>
+    <ExerciseFrame maxWidth={820} decor background={isHall ? HALL_FRAME : undefined}>
       {fx.layer()}
       {verdict.element}
 
@@ -388,12 +523,12 @@ export default function LobbyDoors({
         <div style={{ position: "relative", zIndex: 1 }}>
           {/* Side padding keeps the header clear of the frame's corner ornaments. */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 10, padding: "2px 22px 0" }}>
-            <span style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
-              🚪 {introTitle}
+            <span style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: isHall ? HALL_BRASS : accent }}>
+              {boardIcon} {introTitle}
             </span>
             {pill}
-            <span style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9b8ff" }}>
-              Player {Math.min(served + 1, total)} of {total}
+            <span style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: isHall ? "#e8d6bb" : "#c9b8ff" }}>
+              {unitLabel} {Math.min(served + 1, total)} of {total}
             </span>
           </div>
 
@@ -403,18 +538,20 @@ export default function LobbyDoors({
               margin: "0 14px",
               padding: "12px 12px 14px",
               borderRadius: 18,
-              background: "linear-gradient(180deg, rgba(10,12,34,0.94) 0%, rgba(16,10,40,0.96) 100%)",
-              border: `1px solid ${(calm ? CALM_HUE : accent)}55`,
-              boxShadow: `0 18px 40px -22px rgba(0,0,0,0.8), 0 0 28px ${(calm ? CALM_HUE : accent)}22`,
-              color: "#fff7e6",
+              background: isHall ? HALL_WALL : "linear-gradient(180deg, rgba(10,12,34,0.94) 0%, rgba(16,10,40,0.96) 100%)",
+              border: `1px solid ${(calm ? calmHue : tone)}55`,
+              boxShadow: isHall
+                ? `0 18px 40px -22px rgba(0,0,0,0.85), inset 0 2px 0 rgba(255,236,200,0.14)`
+                : `0 18px 40px -22px rgba(0,0,0,0.8), 0 0 28px ${(calm ? CALM_HUE : accent)}22`,
+              color: isHall ? "#fff3df" : "#fff7e6",
             }}
           >
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 12 }}>
-              {DOOR_HUES.map((laneHue, i) => {
-                const hue = calm ? CALM_HUE : laneHue;
+              {hues.map((laneHue, i) => {
+                const hue = calm ? calmHue : laneHue;
                 const active = i === doorIdx && phase !== "settings";
                 const open = active && phase === "sealed" && choice === "in";
-                return <Door key={i} hue={hue} label={`Door ${i + 1}`} active={active} open={open} reduce={reduce} />;
+                return <Door key={i} hue={hue} label={plates[i]} active={active} open={open} reduce={reduce} hall={isHall} />;
               })}
 
               {phase === "settings" && toggleCard ? (
@@ -425,17 +562,17 @@ export default function LobbyDoors({
                     marginTop: 4,
                     padding: "14px 16px 16px",
                     borderRadius: 16,
-                    background: "rgba(255,255,255,0.06)",
-                    border: `1px solid ${CALM_HUE}66`,
-                    boxShadow: `0 0 24px ${CALM_HUE}22`,
+                    background: isHall ? "rgba(255,243,223,0.10)" : "rgba(255,255,255,0.06)",
+                    border: `1px solid ${calmHue}66`,
+                    boxShadow: isHall ? "inset 0 1px 0 rgba(255,236,200,0.22)" : `0 0 24px ${CALM_HUE}22`,
                     textAlign: "center",
                   }}
                 >
-                  <div style={{ fontFamily: LABEL_FONT, fontSize: 10, fontWeight: 900, letterSpacing: "0.22em", textTransform: "uppercase", color: CALM_HUE, marginBottom: 6 }}>
-                    <PixIcon emoji="⚙️" size={14} /> Lobby settings
+                  <div style={{ fontFamily: LABEL_FONT, fontSize: 10, fontWeight: 900, letterSpacing: "0.22em", textTransform: "uppercase", color: calmHue, marginBottom: 6 }}>
+                    <PixIcon emoji="⚙️" size={14} /> {settingsKicker}
                   </div>
                   <div style={{ fontFamily: KID_FONT, fontSize: 20, fontWeight: 900, marginBottom: 6 }}>{toggleCard.title}</div>
-                  <p style={{ margin: "0 auto 12px", maxWidth: 460, fontFamily: KID_FONT, fontSize: 15, fontWeight: 650, lineHeight: 1.4, color: "#e7ecff" }}>
+                  <p style={{ margin: "0 auto 12px", maxWidth: 460, fontFamily: KID_FONT, fontSize: 15, fontWeight: 650, lineHeight: 1.4, color: isHall ? "#f8ecd9" : "#e7ecff" }}>
                     {toggleCard.text}
                   </p>
                   <div style={{ marginBottom: 12 }}>{pill}</div>
@@ -461,27 +598,30 @@ export default function LobbyDoors({
                     marginTop: -6,
                     padding: "10px 10px 8px",
                     borderRadius: 14,
-                    background: "rgba(255,255,255,0.07)",
-                    border: "1px solid rgba(255,255,255,0.16)",
+                    // "hall": a cream paper card on the dark hall, so the thing
+                    // being judged is never near its ground in luminance.
+                    background: isHall ? HALL_PAPER : "rgba(255,255,255,0.07)",
+                    border: isHall ? "2px solid rgba(63,44,24,0.35)" : "1px solid rgba(255,255,255,0.16)",
                     boxShadow: "0 14px 30px -18px rgba(0,0,0,0.8)",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     gap: 6,
                     minWidth: 0,
+                    color: isHall ? HALL_INK : undefined,
                   }}
                 >
-                  <div style={{ width: 56, height: 56, borderRadius: "50%", display: "grid", placeItems: "center", background: "radial-gradient(circle at 50% 32%, #46508a 0%, #1a2150 70%)", border: "2px solid rgba(255,255,255,0.28)" }}>
-                    <PixIcon emoji={AVATAR} size={36} />
+                  <div style={{ width: 56, height: 56, borderRadius: "50%", display: "grid", placeItems: "center", background: isHall ? "radial-gradient(circle at 50% 32%, #fffaf0 0%, #e2cfae 72%)" : "radial-gradient(circle at 50% 32%, #46508a 0%, #1a2150 70%)", border: isHall ? "2px solid rgba(63,44,24,0.3)" : "2px solid rgba(255,255,255,0.28)" }}>
+                    <PixIcon emoji={player.icon ?? avatarEmoji} size={36} />
                   </div>
-                  <div style={{ padding: "4px 10px", borderRadius: 8, background: "rgba(8,10,22,0.7)", border: "1px solid rgba(255,255,255,0.18)", fontFamily: PLATE_FONT, fontSize: 14, fontWeight: 700, maxWidth: "100%", overflowWrap: "anywhere", textAlign: "center" }}>
+                  <div style={{ padding: "4px 10px", borderRadius: 8, background: isHall ? "rgba(63,44,24,0.10)" : "rgba(8,10,22,0.7)", border: isHall ? "1px solid rgba(63,44,24,0.28)" : "1px solid rgba(255,255,255,0.18)", fontFamily: isHall ? HALL_PLATE_FONT : PLATE_FONT, fontSize: 14, fontWeight: 700, maxWidth: "100%", overflowWrap: "anywhere", textAlign: "center" }}>
                     {player.name}
                   </div>
                   {/* The badge row keeps its height whether or not there is a badge, so the card never jumps. */}
                   <div style={{ minHeight: 26, display: "flex", alignItems: "center" }}>
                     {player.hasBadge && (
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 999, background: "linear-gradient(135deg, #ffe9a8, #f5c96b)", border: "1px solid #c99a4a", color: "#3a2a08", fontFamily: LABEL_FONT, fontSize: 10, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase", boxShadow: "0 0 12px rgba(245,201,107,0.55)" }}>
-                        <PixIcon emoji="🏅" size={14} /> {badgeLabel}
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: isHall ? 6 : 999, background: "linear-gradient(135deg, #ffe9a8, #f5c96b)", border: "1px solid #c99a4a", color: "#3a2a08", fontFamily: LABEL_FONT, fontSize: 10, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase", boxShadow: isHall ? "inset 0 1px 0 rgba(255,255,255,0.6)" : "0 0 12px rgba(245,201,107,0.55)" }}>
+                        <PixIcon emoji={badgeEmoji} size={14} /> {badgeLabel}
                       </span>
                     )}
                   </div>
@@ -489,14 +629,14 @@ export default function LobbyDoors({
               )}
             </div>
 
-            <div style={{ marginTop: 10, textAlign: "center", fontFamily: LABEL_FONT, fontSize: 10, fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: calm ? CALM_HUE : "rgba(255,247,230,0.5)" }}>
-              Wave {Math.min(pos.w + 1, waves.length)} of {waves.length} · {calm ? `${toggleLabel} lobby` : "Open lobby"}
+            <div style={{ marginTop: 10, textAlign: "center", fontFamily: LABEL_FONT, fontSize: 10, fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: calm ? calmHue : isHall ? "rgba(255,243,223,0.6)" : "rgba(255,247,230,0.5)" }}>
+              {roundLabel} {Math.min(pos.w + 1, waves.length)} of {waves.length} · {calm ? guardedLabel ?? `${toggleLabel} lobby` : openLabel}
             </div>
           </div>
 
           {/* On-board instructions + the two calls (identical buttons, sides swapped per player). */}
           <div style={{ textAlign: "center", marginTop: 14 }}>
-            <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, marginBottom: 10, padding: "0 16px" }}>
+            <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: tone, marginBottom: 10, padding: "0 16px" }}>
               {strip}
             </div>
             {phase !== "settings" && (
@@ -509,7 +649,7 @@ export default function LobbyDoors({
                       key={b.pick}
                       animate={glow && !reduce ? { scale: [1, 1.05, 1] } : { scale: 1 }}
                       transition={glow && !reduce ? { duration: 1.4, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 }}
-                      style={{ display: "inline-block", borderRadius: 14, boxShadow: glow ? `0 0 0 5px ${accent}55, 0 0 26px ${accent}99` : undefined }}
+                      style={{ display: "inline-block", borderRadius: 14, boxShadow: glow ? `0 0 0 5px ${tone}55, 0 0 26px ${tone}99` : undefined }}
                     >
                       <GameButton variant="primary" size="lg" onClick={() => decide(b.pick)} disabled={speaking} style={{ minWidth: 170 }}>
                         {b.label}
@@ -541,7 +681,7 @@ export default function LobbyDoors({
           title={completeTitle}
           stars={stars}
           statLines={[
-            `${welcomed} friend${welcomed === 1 ? "" : "s"} welcomed, ${denied} stranger${denied === 1 ? "" : "s"} kept out`,
+            `${welcomed} ${welcomed === 1 ? welcomedNoun[0] : welcomedNoun[1]} ${welcomedVerb}, ${denied} ${denied === 1 ? deniedNoun[0] : deniedNoun[1]} ${deniedVerb}`,
             completeLine,
           ]}
           narration={completeNarration}
@@ -554,9 +694,73 @@ export default function LobbyDoors({
 
 /** One neon lobby door: a marquee label and two panels that slide apart when
  *  a badged player is let in. Identical build on every lane; only the hue and
- *  the active glow change. */
-function Door({ hue, label, active, open, reduce }: { hue: string; label: string; active: boolean; open: boolean; reduce: boolean }) {
+ *  the active glow change.
+ *
+ *  `hall` (Week 14) draws the same lane as a panelled house door instead: a
+ *  brass room plate over an oak frame, two moulded panels with a rail
+ *  between them, and warm lamplight spilling out of the gap when it opens.
+ *  Same geometry, same open/active states, different joinery. */
+function Door({ hue, label, active, open, reduce, hall }: { hue: string; label: string; active: boolean; open: boolean; reduce: boolean; hall?: boolean }) {
   const slide = reduce ? { duration: 0.2 } : { type: "spring" as const, stiffness: 170, damping: 22 };
+  if (hall) {
+    return (
+      <div
+        aria-hidden
+        style={{
+          position: "relative",
+          height: 150,
+          borderRadius: "10px 10px 3px 3px",
+          border: `3px solid ${active ? "#7d5a36" : "#5a4026"}`,
+          background: "linear-gradient(180deg, #4a3520 0%, #33240f 100%)",
+          boxShadow: active
+            ? `0 0 0 3px ${hue}2e, 0 10px 26px -14px rgba(0,0,0,0.9)`
+            : "0 8px 20px -16px rgba(0,0,0,0.9)",
+          overflow: "hidden",
+          transition: "box-shadow 300ms ease, border-color 300ms ease",
+        }}
+      >
+        {/* The brass room plate, screwed to the frame above the door. */}
+        <div
+          style={{
+            position: "absolute",
+            top: 6,
+            left: "50%",
+            transform: "translateX(-50%)",
+            padding: "2px 9px",
+            borderRadius: 3,
+            background: "linear-gradient(180deg, #f0d3a0, #c79c5c)",
+            border: "1px solid rgba(63,44,24,0.5)",
+            fontFamily: LABEL_FONT,
+            fontSize: 9,
+            fontWeight: 900,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "#3a2a08",
+            opacity: active ? 1 : 0.72,
+            maxWidth: "88%",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {label}
+        </div>
+        {/* The doorway. The lamplight behind it shows through as the leaves part. */}
+        <div style={{ position: "absolute", left: "14%", right: "14%", top: 30, bottom: 0, borderRadius: "6px 6px 0 0", background: `linear-gradient(180deg, ${hue}cc, ${hue}55)`, border: "1px solid rgba(63,44,24,0.55)", borderBottom: "none", overflow: "hidden", display: "flex" }}>
+          <motion.div
+            animate={{ x: open ? "-100%" : "0%" }}
+            transition={slide}
+            style={{ flex: 1, background: "linear-gradient(90deg, #7a5730 0%, #5e4022 100%)", borderRight: "1px solid rgba(24,16,8,0.6)", boxShadow: "inset -2px 0 0 rgba(255,236,200,0.14), inset 0 0 0 3px rgba(0,0,0,0.12)" }}
+          />
+          <motion.div
+            animate={{ x: open ? "100%" : "0%" }}
+            transition={slide}
+            style={{ flex: 1, background: "linear-gradient(270deg, #7a5730 0%, #5e4022 100%)", borderLeft: "1px solid rgba(24,16,8,0.6)", boxShadow: "inset 2px 0 0 rgba(255,236,200,0.14), inset 0 0 0 3px rgba(0,0,0,0.12)" }}
+          />
+        </div>
+      </div>
+    );
+  }
   return (
     <div
       aria-hidden

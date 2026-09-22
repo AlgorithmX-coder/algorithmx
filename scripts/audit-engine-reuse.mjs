@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -65,6 +65,15 @@ const RETHEME_ALLOWED = {
   // The slot became "Set It Before You Start", which is proactive where W10 is
   // reactive, so no engine here re-teaches a shipped lesson.
   13: ["DayBalancer", "PowerPanel", "MemoryMatch (review)"], // The See-Saw Day (W5 scales), The Shutdown Panel (W6/W10 panel), The Power Station Match (W1/W7 match)
+  // W14 needs only the review slot: HookSort, ReplyCards and SettingsSwitch are
+  // used by legacy weeks only, so they are free rather than re-themes. Its own
+  // signature (goodnightGadgets) is RETIRED, not converted: it duplicates Week
+  // 13's shipped nightFall almost exactly. See the forward-collision map.
+  // The review is SignBingo, not LobbyDoors: a review has to make the child
+  // RETRIEVE the five powers, and LobbyDoors is decided by a visible badge, so it
+  // can be won without recalling one. SignBingo is W1 + W6, so this is its third
+  // and final use of the twenty weeks.
+  14: ["SignBingo (review)"], // The Scout's Check-Card (W1 vault, W6 arcade card)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

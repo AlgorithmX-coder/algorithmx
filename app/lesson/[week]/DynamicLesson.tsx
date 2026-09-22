@@ -103,6 +103,8 @@ import TrailPlanner from "@/app/components/exercises/signatures/TrailPlanner";
 import DayJug from "@/app/components/exercises/signatures/DayJug";
 import SetTheDial from "@/app/components/exercises/SetTheDial";
 import NightFall from "@/app/components/exercises/NightFall";
+import SpeakerDiary from "@/app/components/exercises/SpeakerDiary";
+import LensCheck from "@/app/components/exercises/LensCheck";
 import PausePower from "@/app/components/exercises/PausePower";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
@@ -2137,6 +2139,11 @@ function DynamicLessonInner({
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
               scoreNoun={def.scoreNoun}
+              deviceLabel={def.deviceLabel}
+              situationLabel={def.situationLabel}
+              airLabel={def.airLabel}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
@@ -2834,6 +2841,68 @@ function DynamicLessonInner({
           </FullScene>
         );
 
+      // Week 14 (The Listening House): a warm lamp-lit home where the gadgets
+      // are helpers to know about, never monsters to fear.
+      case "speakerDiary":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a1208 0%, #2e2013 100%)">
+            <SpeakerDiary
+              entries={def.entries}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              diaryLabel={def.diaryLabel}
+              wroteLabel={def.wroteLabel}
+              askPrompt={def.askPrompt}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "lensCheck":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a1208 0%, #2e2013 100%)">
+            <LensCheck
+              rounds={def.rounds}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              beforeLabel={def.beforeLabel}
+              afterLabel={def.afterLabel}
+              askPrompt={def.askPrompt}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
       // Week 10 (The Burrow): a dark mossy hole with daylight somewhere above.
       case "climbOut":
         return (
@@ -3199,6 +3268,7 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #0a1030 0%, #16294e 100%)">
             <SignBingo
               signs={def.signs}
+              threat={def.threat}
               rounds={def.rounds}
               skin={def.skin}
               roundPrompt={def.roundPrompt}
@@ -3433,6 +3503,20 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0e1c3a 100%)">
             <SettingsSwitch
               panelTitle={def.panelTitle}
+              skin={def.skin}
+              panelIcon={def.panelIcon}
+              securedLabel={def.securedLabel}
+              flipToast={def.flipToast}
+              wrongTitle={def.wrongTitle}
+              askPrompt={def.askPrompt}
+              guidedPrompt={def.guidedPrompt}
+              awakeLabel={def.awakeLabel}
+              settledLabel={def.settledLabel}
+              fineLabel={def.fineLabel}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               rows={def.rows}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
@@ -3689,6 +3773,13 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #06355c 100%)">
             <HookSort
               items={def.items}
+              skin={def.skin}
+              askPrompt={def.askPrompt}
+              cutBinLabel={def.cutBinLabel}
+              reelBinLabel={def.reelBinLabel}
+              progressNoun={def.progressNoun}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}

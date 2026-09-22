@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21T07:44:26.053Z",
+  "generatedAt": "2026-09-22T21:01:03.028Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -10316,429 +10316,2113 @@
       "file": "/audio/voice/ee30f207e0e76e83.mp3"
     },
     {
-      "key": "9955f7034839d5ea",
+      "key": "25c128f92a1c3e3d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Bedtime, hero! Some gadgets in this room can see and hear. Put each one to sleep: cover its camera or mute its mic. No eyes and no ears? Then it can stay up with you.",
+      "text": "[warmly] Welcome to the Listening House, Cyber Hero. Lamps on, curtains shut, everything cosy. And some of the things in this room have EARS. The speaker, obviously. But also the telly, the console, the tablet. Sometimes even a toy. [thinking] They are not spying on you. They are waiting for their name, like a dog by the door. But a Scout knows which ones can hear, and which ones really cannot. [excited] Let's do the ears check together. You'll be surprised by one or two!",
       "lines": [
-        "[warmly] Bedtime, hero! Some gadgets in this room can see and hear.",
-        "Put each one to sleep: cover its camera or mute its mic.",
-        "No eyes and no ears? Then it can stay up with you."
+        "[warmly] Welcome to the Listening House, Cyber Hero. Lamps on, curtains shut, everything cosy.",
+        "And some of the things in this room have EARS.",
+        "The speaker, obviously. But also the telly, the console, the tablet. Sometimes even a toy.",
+        "[thinking] They are not spying on you. They are waiting for their name, like a dog by the door.",
+        "But a Scout knows which ones can hear, and which ones really cannot.",
+        "[excited] Let's do the ears check together. You'll be surprised by one or two!"
       ],
-      "file": "/audio/voice/9955f7034839d5ea.mp3"
+      "file": "/audio/voice/25c128f92a1c3e3d.mp3"
     },
     {
-      "key": "1d77bac3766eccad",
+      "key": "83773b6756715ecc",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Week fourteen - and this mission starts AT HOME. Some things in your house are smart. That means tiny ears... and sometimes tiny eyes. Speakers. TVs. Watches. Doorbells. [whispers] And the surprise: even some toys. [excited] House things incoming - sort the ears from the sleepers!",
+      "text": "[excited] Here is your first challenge, Cyber Hero. The Ears Check! This game is all about knowing which things in a room can hear you. Out in the real world, most people only ever think of the speaker. So here is what you do. A thing from the house comes up on the mat, and I will read it out. Then tap EARS ON, or tap FAST ASLEEP. [warmly] Eight things to sort, and nothing here is scary. Off you go.",
       "lines": [
-        "[excited] Week fourteen - and this mission starts AT HOME.",
-        "Some things in your house are smart.",
-        "That means tiny ears... and sometimes tiny eyes.",
-        "Speakers. TVs. Watches. Doorbells.",
-        "[whispers] And the surprise: even some toys.",
-        "[excited] House things incoming - sort the ears from the sleepers!"
+        "[excited] Here is your first challenge, Cyber Hero. The Ears Check!",
+        "This game is all about knowing which things in a room can hear you.",
+        "Out in the real world, most people only ever think of the speaker.",
+        "So here is what you do.",
+        "A thing from the house comes up on the mat, and I will read it out.",
+        "Then tap EARS ON, or tap FAST ASLEEP.",
+        "[warmly] Eight things to sort, and nothing here is scary. Off you go."
       ],
-      "file": "/audio/voice/1d77bac3766eccad.mp3"
+      "file": "/audio/voice/83773b6756715ecc.mp3"
     },
     {
-      "key": "cb0dfbd739febca6",
+      "key": "d1ff0eb7cc507e6f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The Ears Check - house things incoming! One at a time, make the call: EARS ON for the listeners... [whispers] FAST ASLEEP for the quiet ones. Watch for surprises!",
+      "text": "Tap EARS ON, or FAST ASLEEP.",
       "lines": [
-        "[excited] The Ears Check - house things incoming!",
-        "One at a time, make the call:",
-        "EARS ON for the listeners...",
-        "[whispers] FAST ASLEEP for the quiet ones. Watch for surprises!"
+        "Tap EARS ON, or FAST ASLEEP."
       ],
-      "file": "/audio/voice/cb0dfbd739febca6.mp3"
+      "file": "/audio/voice/d1ff0eb7cc507e6f.mp3"
     },
     {
-      "key": "343a5b22a690bfad",
+      "key": "39d6d5d4d5ba08fd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "First one's here - can you talk to it and it answers? Make the call!",
+      "text": "[proud] The whole room mapped, Cyber Hero, and I bet the telly surprised you. Speaker, telly, console, talking toy. Ears. Kettle, teddy, lamp, clock. Nothing. [warmly] That is not a scary list. It is just a list, and now you know it.",
       "lines": [
-        "First one's here - can you talk to it and it answers? Make the call!"
+        "[proud] The whole room mapped, Cyber Hero, and I bet the telly surprised you.",
+        "Speaker, telly, console, talking toy. Ears. Kettle, teddy, lamp, clock. Nothing.",
+        "[warmly] That is not a scary list. It is just a list, and now you know it."
       ],
-      "file": "/audio/voice/343a5b22a690bfad.mp3"
+      "file": "/audio/voice/39d6d5d4d5ba08fd.mp3"
     },
     {
-      "key": "000522ad5293390c",
+      "key": "2f02fa62bc8609f0",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Power one - the house has no secrets from YOU now! Every ear in the place, spotted. [whispers] But what do those ears do with what they catch? One of them keeps a diary. Come and read it...",
+      "text": "[proud] That's the one! The telly catches people out every single time. If it has a voice button, it has a microphone. [warmly] And now you will never not notice it.",
       "lines": [
-        "[excited] Power one - the house has no secrets from YOU now!",
-        "Every ear in the place, spotted.",
-        "[whispers] But what do those ears do with what they catch?",
-        "One of them keeps a diary. Come and read it..."
+        "[proud] That's the one!",
+        "The telly catches people out every single time.",
+        "If it has a voice button, it has a microphone.",
+        "[warmly] And now you will never not notice it."
       ],
-      "file": "/audio/voice/000522ad5293390c.mp3"
+      "file": "/audio/voice/2f02fa62bc8609f0.mp3"
     },
     {
-      "key": "603e7f95610d37c9",
+      "key": "9b5880da2c14597f",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] So why do they listen? To HELP. Songs, questions, lights, Grandma calls. They wake when they hear their name... [whispers] but sometimes, they write down what they hear. That's the speaker's diary - and it lives in an app. [excited] Nova heard four things today. Let's read the diary!",
+      "text": "[proud] One power down, Cyber Hero. You can read a room now. Ears here, no ears there. Nothing spooky about it. [whispers] But when something DOES hear you... where does that go? Next, we'll open the diary and find out. Come and see!",
       "lines": [
-        "[warmly] So why do they listen? To HELP.",
-        "Songs, questions, lights, Grandma calls.",
-        "They wake when they hear their name...",
-        "[whispers] but sometimes, they write down what they hear.",
-        "That's the speaker's diary - and it lives in an app.",
-        "[excited] Nova heard four things today. Let's read the diary!"
+        "[proud] One power down, Cyber Hero. You can read a room now.",
+        "Ears here, no ears there. Nothing spooky about it.",
+        "[whispers] But when something DOES hear you... where does that go?",
+        "Next, we'll open the diary and find out. Come and see!"
       ],
-      "file": "/audio/voice/603e7f95610d37c9.mp3"
+      "file": "/audio/voice/9b5880da2c14597f.mp3"
     },
     {
-      "key": "e2bbf37e91d29697",
+      "key": "e3e2a95bbb685c9c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] So why does it listen at all, Cyber Hero? Here is the honest answer. It listens so it can help. You say its name, you ask for a song, you get the song. [thinking] And to catch its name, it has to stay half-awake all the time. When it does wake up, it writes down what came next. Every time. That is not a plot. That is a diary. And you are allowed to know about it. [excited] Let's go and read the Speaker Diary together. There are a couple of surprises in it!",
+      "lines": [
+        "[warmly] So why does it listen at all, Cyber Hero? Here is the honest answer.",
+        "It listens so it can help. You say its name, you ask for a song, you get the song.",
+        "[thinking] And to catch its name, it has to stay half-awake all the time.",
+        "When it does wake up, it writes down what came next. Every time.",
+        "That is not a plot. That is a diary. And you are allowed to know about it.",
+        "[excited] Let's go and read the Speaker Diary together. There are a couple of surprises in it!"
+      ],
+      "file": "/audio/voice/e3e2a95bbb685c9c.mp3"
+    },
+    {
+      "key": "a57444ede767d453",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Your second challenge, Cyber Hero. The Speaker Diary! This game is all about what a helpful gadget keeps a copy of. Out in the real world, that diary sits there all week and hardly anybody opens it. So here is what you do. Tap an entry to lift its seal, and you will see what the speaker actually wrote. Then three stamps come up. Press the one that says why it is in there. [warmly] Four entries, and the last one is good news. Off you go.",
+      "lines": [
+        "[excited] Your second challenge, Cyber Hero. The Speaker Diary!",
+        "This game is all about what a helpful gadget keeps a copy of.",
+        "Out in the real world, that diary sits there all week and hardly anybody opens it.",
+        "So here is what you do.",
+        "Tap an entry to lift its seal, and you will see what the speaker actually wrote.",
+        "Then three stamps come up. Press the one that says why it is in there.",
+        "[warmly] Four entries, and the last one is good news. Off you go."
+      ],
+      "file": "/audio/voice/a57444ede767d453.mp3"
+    },
+    {
+      "key": "5bb2527cb4a71497",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap an entry to lift the seal, then press a stamp.",
+      "lines": [
+        "Tap an entry to lift the seal, then press a stamp."
+      ],
+      "file": "/audio/voice/5bb2527cb4a71497.mp3"
+    },
+    {
+      "key": "1de1e6d08269350a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] The whole diary, Cyber Hero. And look what was in it. One thing you asked for. One mix-up off the telly. One row it never should have caught. [warmly] And one grown-up, clearing the lot in four taps. That is the bit to remember.",
+      "lines": [
+        "[proud] The whole diary, Cyber Hero. And look what was in it.",
+        "One thing you asked for. One mix-up off the telly. One row it never should have caught.",
+        "[warmly] And one grown-up, clearing the lot in four taps. That is the bit to remember."
+      ],
+      "file": "/audio/voice/1de1e6d08269350a.mp3"
+    },
+    {
+      "key": "eb69e38d55e5de3a",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Four moments from one ordinary day. Nova heard every single one. [excited] Tap each moment - and see what the diary wrote down!",
+      "text": "[proud] Got him! The diary is real, and it is not a locked box. A grown-up can open it, read it and empty it. [warmly] Knowing that is what takes the spooky right out of it.",
       "lines": [
-        "[whispers] Four moments from one ordinary day.",
-        "Nova heard every single one.",
-        "[excited] Tap each moment -",
-        "and see what the diary wrote down!"
+        "[proud] Got him!",
+        "The diary is real, and it is not a locked box.",
+        "A grown-up can open it, read it and empty it.",
+        "[warmly] Knowing that is what takes the spooky right out of it."
       ],
-      "file": "/audio/voice/e2bbf37e91d29697.mp3"
+      "file": "/audio/voice/eb69e38d55e5de3a.mp3"
     },
     {
-      "key": "1c977e6240ec0b1e",
+      "key": "ddabfdb77bf332b8",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Tap the first moment - let's see what Nova's diary says!",
+      "text": "[proud] Two powers, Cyber Hero. Ears, and the diary behind them. It helps, it keeps a copy, and a grown-up holds the key. [whispers] Now. Ears are not the only thing some of these gadgets have... Next, we'll go looking for little glass eyes. Come and see!",
       "lines": [
-        "Tap the first moment - let's see what Nova's diary says!"
+        "[proud] Two powers, Cyber Hero. Ears, and the diary behind them.",
+        "It helps, it keeps a copy, and a grown-up holds the key.",
+        "[whispers] Now. Ears are not the only thing some of these gadgets have...",
+        "Next, we'll go looking for little glass eyes. Come and see!"
       ],
-      "file": "/audio/voice/1c977e6240ec0b1e.mp3"
+      "file": "/audio/voice/ddabfdb77bf332b8.mp3"
     },
     {
-      "key": "023a166267f3a341",
+      "key": "5d861281aefe295e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Two powers - you've read the diary! Helpful ears, with a memory. [whispers] But some gadgets have more than ears... Some have little glass EYES. Lights down - let's hunt.",
+      "text": "[warmly] Ears are not the only thing, Cyber Hero. Some of these have eyes too. A little glass circle, small and shiny. That is a lens. The doorbell has one, watching the step. That is its job, and it keeps the house safe. [thinking] And here is the Scout's trick. A lens that is awake nearly always shows it. A tiny light, or a cover sliding back. [warmly] One rule above all the rest. A bedroom is a lens-free zone. A camera pointing at your bed gets told to a grown-up, every time. [excited] Let's go round the house and see what we can spot!",
       "lines": [
-        "[excited] Two powers - you've read the diary!",
-        "Helpful ears, with a memory.",
-        "[whispers] But some gadgets have more than ears...",
-        "Some have little glass EYES. Lights down - let's hunt."
+        "[warmly] Ears are not the only thing, Cyber Hero. Some of these have eyes too.",
+        "A little glass circle, small and shiny. That is a lens.",
+        "The doorbell has one, watching the step. That is its job, and it keeps the house safe.",
+        "[thinking] And here is the Scout's trick. A lens that is awake nearly always shows it. A tiny light, or a cover sliding back.",
+        "[warmly] One rule above all the rest. A bedroom is a lens-free zone. A camera pointing at your bed gets told to a grown-up, every time.",
+        "[excited] Let's go round the house and see what we can spot!"
       ],
-      "file": "/audio/voice/023a166267f3a341.mp3"
+      "file": "/audio/voice/5d861281aefe295e.mp3"
     },
     {
-      "key": "85f134e0f698214d",
+      "key": "681d1a0775c3c473",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Some gadgets don't just listen. They watch. The clue is a small, round, shiny lens - a little glass eye. Doorbells watch the front step. That's their job. But bedrooms? Lens-free zones. Always. [excited] The living room's gone dusky - and two glass eyes are hiding in it. Find them both, Cyber Hero!",
+      "text": "[excited] Your third challenge, Cyber Hero. Little Glass Eyes! This game is all about spotting a lens that has woken up. Out in the real world, a lens that is on nearly always shows you, if you look. So here is what you do. You get the same corner of the house twice. A moment ago, and right now. One thing has changed. Tap the thing that just woke up. [warmly] Four corners to check. Take your time and compare.",
       "lines": [
-        "[whispers] Some gadgets don't just listen. They watch.",
-        "The clue is a small, round, shiny lens - a little glass eye.",
-        "Doorbells watch the front step. That's their job.",
-        "But bedrooms? Lens-free zones. Always.",
-        "[excited] The living room's gone dusky - and two glass eyes are hiding in it.",
-        "Find them both, Cyber Hero!"
+        "[excited] Your third challenge, Cyber Hero. Little Glass Eyes!",
+        "This game is all about spotting a lens that has woken up.",
+        "Out in the real world, a lens that is on nearly always shows you, if you look.",
+        "So here is what you do.",
+        "You get the same corner of the house twice. A moment ago, and right now.",
+        "One thing has changed. Tap the thing that just woke up.",
+        "[warmly] Four corners to check. Take your time and compare."
       ],
-      "file": "/audio/voice/85f134e0f698214d.mp3"
+      "file": "/audio/voice/681d1a0775c3c473.mp3"
     },
     {
-      "key": "4aac3bb5dfd492a1",
+      "key": "67353a9dcd55a30d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Dusk in the living room... Two little glass eyes are out there somewhere. Doorbell first, then the TV. [excited] Eyes sharp, Scout - go!",
+      "text": "Compare the two pictures, then tap what woke up.",
       "lines": [
-        "[whispers] Dusk in the living room...",
-        "Two little glass eyes are out there somewhere.",
-        "Doorbell first, then the TV.",
-        "[excited] Eyes sharp, Scout - go!"
+        "Compare the two pictures, then tap what woke up."
       ],
-      "file": "/audio/voice/4aac3bb5dfd492a1.mp3"
+      "file": "/audio/voice/67353a9dcd55a30d.mp3"
     },
     {
-      "key": "6a3dd6d47936e7ac",
+      "key": "5420fbc26dc25734",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Where would a lens watch the front step from? Tap it!",
+      "text": "[proud] Every corner checked, Cyber Hero, and you did not miss one. A doorbell doing its job. A tablet on a call. A laptop cover sliding back. [warmly] And a lens in a bedroom, which you tell a grown-up about. Every time, no exceptions.",
       "lines": [
-        "Where would a lens watch the front step from? Tap it!"
+        "[proud] Every corner checked, Cyber Hero, and you did not miss one.",
+        "A doorbell doing its job. A tablet on a call. A laptop cover sliding back.",
+        "[warmly] And a lens in a bedroom, which you tell a grown-up about. Every time, no exceptions."
       ],
-      "file": "/audio/voice/6a3dd6d47936e7ac.mp3"
+      "file": "/audio/voice/5420fbc26dc25734.mp3"
     },
     {
-      "key": "23bfc1e0e65e3283",
+      "key": "1966b7d7caec37f2",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three powers - ears AND eyes, all spotted! The house can't surprise you anymore. [whispers] So now the big question: with all those ears about... where do SECRETS go?",
+      "text": "[proud] Exactly right. Everything else this week has a 'it depends' in it somewhere. [warmly] This one does not. A lens at a bed gets told, every single time.",
       "lines": [
-        "[excited] Three powers - ears AND eyes, all spotted!",
-        "The house can't surprise you anymore.",
-        "[whispers] So now the big question:",
-        "with all those ears about... where do SECRETS go?"
+        "[proud] Exactly right.",
+        "Everything else this week has a 'it depends' in it somewhere.",
+        "[warmly] This one does not. A lens at a bed gets told, every single time."
       ],
-      "file": "/audio/voice/23bfc1e0e65e3283.mp3"
+      "file": "/audio/voice/1966b7d7caec37f2.mp3"
     },
     {
-      "key": "800732ccacecb196",
+      "key": "529d16503b598f39",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Now for the rule that ties it all together. Near smart ears, out loud is a MEGAPHONE. Passwords? Never out loud. Surprises? Take them to another room. [warmly] Write it. Whisper it away. Move it. [excited] Three secret moments coming - keep them off the air!",
+      "text": "[proud] Three powers, Cyber Hero. Ears, the diary, and now the eyes. A light on, a cover back. You will spot those forever now. [whispers] So here is the question that changes everything... Next, we'll learn what you do when you KNOW something is listening. Come and see!",
       "lines": [
-        "[whispers] Now for the rule that ties it all together.",
-        "Near smart ears, out loud is a MEGAPHONE.",
-        "Passwords? Never out loud.",
-        "Surprises? Take them to another room.",
-        "[warmly] Write it. Whisper it away. Move it.",
-        "[excited] Three secret moments coming - keep them off the air!"
+        "[proud] Three powers, Cyber Hero. Ears, the diary, and now the eyes.",
+        "A light on, a cover back. You will spot those forever now.",
+        "[whispers] So here is the question that changes everything...",
+        "Next, we'll learn what you do when you KNOW something is listening. Come and see!"
       ],
-      "file": "/audio/voice/800732ccacecb196.mp3"
+      "file": "/audio/voice/529d16503b598f39.mp3"
     },
     {
-      "key": "a537d9b995ea725b",
+      "key": "e7e220cf86393a5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Now, you already know what is private, Cyber Hero. You learned that a long time ago. So here is the bit almost nobody thinks about. [thinking] You can be brilliant at never typing something... and then say the exact same thing out loud, in a room with ears. Saying it is still recording it. And this is not about being secretive in your own home. It is one small habit: move a room, write it, or wait. [excited] Let's go and practise the Megaphone Rule together. Nova is right there on the side table!",
+      "lines": [
+        "[warmly] Now, you already know what is private, Cyber Hero. You learned that a long time ago.",
+        "So here is the bit almost nobody thinks about.",
+        "[thinking] You can be brilliant at never typing something... and then say the exact same thing out loud, in a room with ears.",
+        "Saying it is still recording it.",
+        "And this is not about being secretive in your own home. It is one small habit: move a room, write it, or wait.",
+        "[excited] Let's go and practise the Megaphone Rule together. Nova is right there on the side table!"
+      ],
+      "file": "/audio/voice/e7e220cf86393a5e.mp3"
+    },
+    {
+      "key": "fc5cc7bb14915bb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Fourth challenge, Cyber Hero. The Megaphone Rule! This game is all about the moment you choose, not the thing you know. Out in the real world, people who would never type a thing announce it across the kitchen. So here is what you do. A moment happens, and Nova is sitting right there on the table. Three cards come up. Tap what you would actually say out loud, right here. [warmly] And watch the last one. Not everything needs moving. Off you go.",
+      "lines": [
+        "[excited] Fourth challenge, Cyber Hero. The Megaphone Rule!",
+        "This game is all about the moment you choose, not the thing you know.",
+        "Out in the real world, people who would never type a thing announce it across the kitchen.",
+        "So here is what you do.",
+        "A moment happens, and Nova is sitting right there on the table.",
+        "Three cards come up. Tap what you would actually say out loud, right here.",
+        "[warmly] And watch the last one. Not everything needs moving. Off you go."
+      ],
+      "file": "/audio/voice/fc5cc7bb14915bb7.mp3"
+    },
+    {
+      "key": "4ff17191ed3e38f3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap what you would say out loud, right here.",
+      "lines": [
+        "Tap what you would say out loud, right here."
+      ],
+      "file": "/audio/voice/4ff17191ed3e38f3.mp3"
+    },
+    {
+      "key": "ae0f44b3c4ffd9ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every moment handled, Cyber Hero, and you never once went quiet. A room changed. A message typed. A nod and a chat in the kitchen. [warmly] And Gran got her answer, because that one never needed moving at all.",
+      "lines": [
+        "[proud] Every moment handled, Cyber Hero, and you never once went quiet.",
+        "A room changed. A message typed. A nod and a chat in the kitchen.",
+        "[warmly] And Gran got her answer, because that one never needed moving at all."
+      ],
+      "file": "/audio/voice/ae0f44b3c4ffd9ef.mp3"
+    },
+    {
+      "key": "5b90d224ef6c9bee",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Three secret moments. Ears everywhere. Remember the megaphone rule: write it, whisper it away, or move rooms. [excited] Keep every secret off the air - go!",
+      "text": "[proud] Straight away! A password is the private sort, so it gets the quieter route. [warmly] And everything else carries on exactly as normal.",
       "lines": [
-        "[whispers] Three secret moments. Ears everywhere.",
-        "Remember the megaphone rule:",
-        "write it, whisper it away, or move rooms.",
-        "[excited] Keep every secret off the air - go!"
+        "[proud] Straight away!",
+        "A password is the private sort, so it gets the quieter route.",
+        "[warmly] And everything else carries on exactly as normal."
       ],
-      "file": "/audio/voice/a537d9b995ea725b.mp3"
+      "file": "/audio/voice/5b90d224ef6c9bee.mp3"
     },
     {
-      "key": "c197960ef52e0fe3",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Four powers - your secrets stay YOURS! Written, whispered, moved. Off the air. [warmly] And now the best news of the whole week: every one of those ears... has an OFF switch. Let's find them.",
-      "lines": [
-        "[excited] Four powers - your secrets stay YOURS!",
-        "Written, whispered, moved. Off the air.",
-        "[warmly] And now the best news of the whole week:",
-        "every one of those ears... has an OFF switch. Let's find them."
-      ],
-      "file": "/audio/voice/c197960ef52e0fe3.mp3"
-    },
-    {
-      "key": "dc7bb866092b0fe7",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Ready for the best news all week? Every ear in the house has an OFF switch. Mute buttons. Push-to-talk. Camera covers. You find them, show a grown-up, flip them TOGETHER. [excited] Patrol, point, flip - the Settings Scout way. The house settings panel is open - safari time!",
-      "lines": [
-        "[warmly] Ready for the best news all week?",
-        "Every ear in the house has an OFF switch.",
-        "Mute buttons. Push-to-talk. Camera covers.",
-        "You find them, show a grown-up, flip them TOGETHER.",
-        "[excited] Patrol, point, flip - the Settings Scout way.",
-        "The house settings panel is open - safari time!"
-      ],
-      "file": "/audio/voice/dc7bb866092b0fe7.mp3"
-    },
-    {
-      "key": "1742b0caea7f41be",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] The Mute Safari - five settings on patrol! Hunt the always-on ears and flip them. [whispers] But careful - some settings are already doing their job right. Patrol, point, flip. Go, Cyber Hero!",
-      "lines": [
-        "[excited] The Mute Safari - five settings on patrol!",
-        "Hunt the always-on ears and flip them.",
-        "[whispers] But careful - some settings are already doing their job right.",
-        "Patrol, point, flip. Go, Cyber Hero!"
-      ],
-      "file": "/audio/voice/1742b0caea7f41be.mp3"
-    },
-    {
-      "key": "5caa9420ecc2ae93",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Which setting never stops listening? That one needs the flip!",
-      "lines": [
-        "Which setting never stops listening? That one needs the flip!"
-      ],
-      "file": "/audio/voice/5caa9420ecc2ae93.mp3"
-    },
-    {
-      "key": "4d13df0635ed05c4",
+      "key": "c440dcc0b2e374dc",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE Scout powers! Ears known, diary read, lenses spotted, secrets off the air... and switches flipped together. [whispers] One final patrol of the house... [excited] then we unplug his listening post for GOOD!",
+      "text": "[proud] Four powers, Cyber Hero, and not a whisper among them. You just picked your moments. That is all it ever was. [whispers] There is one more thing a Scout can do, and it is the most useful of the lot... Next, we'll find the switches. Come and see!",
       "lines": [
-        "[excited] That's all FIVE Scout powers!",
-        "Ears known, diary read, lenses spotted,",
-        "secrets off the air... and switches flipped together.",
-        "[whispers] One final patrol of the house...",
-        "[excited] then we unplug his listening post for GOOD!"
+        "[proud] Four powers, Cyber Hero, and not a whisper among them.",
+        "You just picked your moments. That is all it ever was.",
+        "[whispers] There is one more thing a Scout can do, and it is the most useful of the lot...",
+        "Next, we'll find the switches. Come and see!"
       ],
-      "file": "/audio/voice/4d13df0635ed05c4.mp3"
+      "file": "/audio/voice/c440dcc0b2e374dc.mp3"
     },
     {
-      "key": "bd9d573d71ada171",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Final patrol - the Quiet House check! House moments drifting past the scanner. QUIET HOUSE for the Scout moves... [warmly] LEAKY HOUSE for his listening posts. Scan!",
-      "lines": [
-        "[excited] Final patrol - the Quiet House check!",
-        "House moments drifting past the scanner.",
-        "QUIET HOUSE for the Scout moves...",
-        "[warmly] LEAKY HOUSE for his listening posts. Scan!"
-      ],
-      "file": "/audio/voice/bd9d573d71ada171.mp3"
-    },
-    {
-      "key": "4b7a19db70e5ae59",
+      "key": "f957d5dc0ae7c069",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! Ears spotted, diary read, lenses found, secrets kept off the air... and every switch flipped together. [laughs] His listening post just went silent. [excited] Sticker time, Settings Scout!",
+      "text": "[warmly] Last power, Cyber Hero, and it is the best one. All of these gadgets have switches. And you are allowed to use them. The microphone turns off. The camera gets a cover. The diary can empty itself from now on. [thinking] Nothing breaks. Nothing is sneaky. It is just a job somebody has to actually do. And you do it WITH a grown-up. Ten minutes, on a rainy Sunday. [excited] The wall plate is right here. Let's flip some switches!",
+      "lines": [
+        "[warmly] Last power, Cyber Hero, and it is the best one.",
+        "All of these gadgets have switches. And you are allowed to use them.",
+        "The microphone turns off. The camera gets a cover. The diary can empty itself from now on.",
+        "[thinking] Nothing breaks. Nothing is sneaky. It is just a job somebody has to actually do.",
+        "And you do it WITH a grown-up. Ten minutes, on a rainy Sunday.",
+        "[excited] The wall plate is right here. Let's flip some switches!"
+      ],
+      "file": "/audio/voice/f957d5dc0ae7c069.mp3"
+    },
+    {
+      "key": "01e5f9a49a9fef4e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Last challenge of the week, Cyber Hero. Flip It Together! This game is all about the switches a Scout is allowed to use. Out in the real world, this is a ten minute job with a grown-up, and hardly anybody does it. So here is what you do. Six switches on the house plate, and I will read each one out as you tap it. Flip the ones that are still wide open. Leave the ones already doing their job. [warmly] Two of these are perfectly fine as they are. Off you go.",
+      "lines": [
+        "[excited] Last challenge of the week, Cyber Hero. Flip It Together!",
+        "This game is all about the switches a Scout is allowed to use.",
+        "Out in the real world, this is a ten minute job with a grown-up, and hardly anybody does it.",
+        "So here is what you do.",
+        "Six switches on the house plate, and I will read each one out as you tap it.",
+        "Flip the ones that are still wide open. Leave the ones already doing their job.",
+        "[warmly] Two of these are perfectly fine as they are. Off you go."
+      ],
+      "file": "/audio/voice/01e5f9a49a9fef4e.mp3"
+    },
+    {
+      "key": "1bf0b192cec9b985",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap a switch to look at it, then flip the ones still wide open.",
+      "lines": [
+        "Tap a switch to look at it, then flip the ones still wide open."
+      ],
+      "file": "/audio/voice/1bf0b192cec9b985.mp3"
+    },
+    {
+      "key": "98d45ad42fc4907c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every switch checked, Cyber Hero. Microphone muted, diary tidying itself, recordings off, telly quiet. And you left the doorbell and the night-light exactly alone, because they were already fine. [warmly] That is a Settings Scout. Ten minutes, a grown-up, and a house that behaves itself.",
+      "lines": [
+        "[proud] Every switch checked, Cyber Hero. Microphone muted, diary tidying itself, recordings off, telly quiet.",
+        "And you left the doorbell and the night-light exactly alone, because they were already fine.",
+        "[warmly] That is a Settings Scout. Ten minutes, a grown-up, and a house that behaves itself."
+      ],
+      "file": "/audio/voice/98d45ad42fc4907c.mp3"
+    },
+    {
+      "key": "e648dbfec315ba62",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Perfect order! The grown-up comes first, because this is a job you do together. Then you look, then you flip, then you leave the good ones alone. [warmly] Ten minutes, and it lasts for years.",
+      "lines": [
+        "[proud] Perfect order!",
+        "The grown-up comes first, because this is a job you do together.",
+        "Then you look, then you flip, then you leave the good ones alone.",
+        "[warmly] Ten minutes, and it lasts for years."
+      ],
+      "file": "/audio/voice/e648dbfec315ba62.mp3"
+    },
+    {
+      "key": "2aaa11c7b3151196",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Five powers, Cyber Hero. Every single one. Ears found, diary read, eyes spotted, moments picked, switches flipped. [whispers] So there is one thing left to find out... Next, every power at once, over on the hall table. Come and see!",
+      "lines": [
+        "[proud] Five powers, Cyber Hero. Every single one.",
+        "Ears found, diary read, eyes spotted, moments picked, switches flipped.",
+        "[whispers] So there is one thing left to find out...",
+        "Next, every power at once, over on the hall table. Come and see!"
+      ],
+      "file": "/audio/voice/2aaa11c7b3151196.mp3"
+    },
+    {
+      "key": "0a3cb3a8a1db86ae",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Time for your review, Cyber Hero. The Scout's Check-Card! This game is all about using every Scout power, one moment at a time. Out in the real world, these moments turn up in any order, so all five have to be ready. So here is what you do. A moment from somewhere in the house comes up on a paper note. Then press the brass stamp onto the power that answers it. [warmly] Five moments, five powers. Off you go!",
+      "lines": [
+        "[excited] Time for your review, Cyber Hero. The Scout's Check-Card!",
+        "This game is all about using every Scout power, one moment at a time.",
+        "Out in the real world, these moments turn up in any order, so all five have to be ready.",
+        "So here is what you do.",
+        "A moment from somewhere in the house comes up on a paper note.",
+        "Then press the brass stamp onto the power that answers it.",
+        "[warmly] Five moments, five powers. Off you go!"
+      ],
+      "file": "/audio/voice/0a3cb3a8a1db86ae.mp3"
+    },
+    {
+      "key": "eabb9f46d86eb3c9",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Read the moment, then press the stamp on the power that answers it.",
+      "lines": [
+        "Read the moment, then press the stamp on the power that answers it."
+      ],
+      "file": "/audio/voice/eabb9f46d86eb3c9.mp3"
+    },
+    {
+      "key": "c4c586fc6aba2b70",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Every moment stamped, Cyber Hero, and every power used. [warmly] Out in the real world, nobody announces which one you need. The house just carries on being a house, and now you know exactly what is in it.",
+      "lines": [
+        "[proud] Every moment stamped, Cyber Hero, and every power used.",
+        "[warmly] Out in the real world, nobody announces which one you need. The house just carries on being a house, and now you know exactly what is in it."
+      ],
+      "file": "/audio/voice/c4c586fc6aba2b70.mp3"
+    },
+    {
+      "key": "9f2c6864c4124742",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Ears found, the diary opened, the little glass eyes spotted, your moments picked... and every switch flipped. [laughs] His lazy listening trick just stopped working in your house. [excited] Sticker time, Cyber Hero!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Ears spotted, diary read, lenses found,",
-        "secrets kept off the air... and every switch flipped together.",
-        "[laughs] His listening post just went silent.",
-        "[excited] Sticker time, Settings Scout!"
+        "Ears found, the diary opened, the little glass eyes spotted,",
+        "your moments picked... and every switch flipped.",
+        "[laughs] His lazy listening trick just stopped working in your house.",
+        "[excited] Sticker time, Cyber Hero!"
       ],
-      "file": "/audio/voice/4b7a19db70e5ae59.mp3"
+      "file": "/audio/voice/9f2c6864c4124742.mp3"
     },
     {
-      "key": "2db2bffae0549fde",
+      "key": "a7aa58d94b3a1030",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Dad asks for the new tablet password. Nova the speaker sits right there on the counter, ear-light glowing...",
+      "text": "Which one of these has ears?",
       "lines": [
-        "Dad asks for the new tablet password. Nova the speaker sits right there on the counter, ear-light glowing..."
+        "Which one of these has ears?"
       ],
-      "file": "/audio/voice/2db2bffae0549fde.mp3"
+      "file": "/audio/voice/a7aa58d94b3a1030.mp3"
     },
     {
-      "key": "4ed0336edfc611fe",
+      "key": "6052a4fa6c387e19",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You and Mom are planning Grandma's SURPRISE party in the kitchen. Robo-Pup sits on the counter, switched on and listening...",
+      "text": "The Raccoon is fibbing about the speaker. Which bit is the lie?",
       "lines": [
-        "You and Mom are planning Grandma's SURPRISE party in the kitchen. Robo-Pup sits on the counter, switched on and listening..."
+        "The Raccoon is fibbing about the speaker. Which bit is the lie?"
       ],
-      "file": "/audio/voice/4ed0336edfc611fe.mp3"
+      "file": "/audio/voice/6052a4fa6c387e19.mp3"
     },
     {
-      "key": "9915b03acaeb8717",
+      "key": "8acec54cc7258a51",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your friend wants the secret club password over video chat - and the smart TV's mic is on in the same room...",
+      "text": "Finish the Scout's rule: a camera pointing at your bed means...",
       "lines": [
-        "Your friend wants the secret club password over video chat - and the smart TV's mic is on in the same room..."
+        "Finish the Scout's rule: a camera pointing at your bed means..."
       ],
-      "file": "/audio/voice/9915b03acaeb8717.mp3"
+      "file": "/audio/voice/8acec54cc7258a51.mp3"
     },
     {
-      "key": "c792dd37705afcff",
+      "key": "3dd2fe29e4edaae7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Dad grins, reads it, nods - and not one letter went out loud. Nova's diary caught nothing but the kettle boiling.",
+      "text": "Quick! Nova is listening. Which one do you move a room for?",
       "lines": [
-        "Dad grins, reads it, nods - and not one letter went out loud. Nova's diary caught nothing but the kettle boiling."
+        "Quick! Nova is listening. Which one do you move a room for?"
       ],
-      "file": "/audio/voice/c792dd37705afcff.mp3"
+      "file": "/audio/voice/3dd2fe29e4edaae7.mp3"
     },
     {
-      "key": "254e3c59ee26ae34",
+      "key": "768ba37b6468331a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Straight into the ears - maybe straight into the diary. A password inside a recording isn't fully yours anymore... time to change it.",
+      "text": "Put the Scout's ten minutes in order.",
       "lines": [
-        "Straight into the ears - maybe straight into the diary. A password inside a recording isn't fully yours anymore... time to change it."
+        "Put the Scout's ten minutes in order."
       ],
-      "file": "/audio/voice/254e3c59ee26ae34.mp3"
+      "file": "/audio/voice/768ba37b6468331a.mp3"
     },
     {
-      "key": "9d653e1be0dd232e",
+      "key": "a8ba92ff21930bf3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Party plans stay surprises when the only ears around are the people you invited. Grandma won't see it coming!",
+      "text": "Your cousin says the new talking robot toy definitely cannot hear anything, because it is just a toy.",
       "lines": [
-        "Party plans stay surprises when the only ears around are the people you invited. Grandma won't see it coming!"
+        "Your cousin says the new talking robot toy definitely cannot hear anything, because it is just a toy."
       ],
-      "file": "/audio/voice/9d653e1be0dd232e.mp3"
+      "file": "/audio/voice/a8ba92ff21930bf3.mp3"
     },
     {
-      "key": "01039a2e225f958a",
+      "key": "850644774f0c2278",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Robo-Pup's ears caught the whole plan - and saved it. Days later, the recording is sitting right there in the toy's app for anyone to play. Toys with ears make terrible secret-keepers.",
+      "text": "Somebody said the speaker's name in the middle of a row, and now there is a line about it saved on the app.",
       "lines": [
-        "Robo-Pup's ears caught the whole plan - and saved it. Days later, the recording is sitting right there in the toy's app for anyone to play. Toys with ears make terrible secret-keepers."
+        "Somebody said the speaker's name in the middle of a row, and now there is a line about it saved on the app."
       ],
-      "file": "/audio/voice/01039a2e225f958a.mp3"
+      "file": "/audio/voice/850644774f0c2278.mp3"
     },
     {
-      "key": "1f89ae18253ae6c2",
+      "key": "7ae6c2684f9ecc50",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The club stays secret because the password never touched the air. Proper spy work, Cyber Hero.",
+      "text": "The tablet on the sofa arm has a tiny green dot glowing beside the glass that was not there a minute ago.",
       "lines": [
-        "The club stays secret because the password never touched the air. Proper spy work, Cyber Hero."
+        "The tablet on the sofa arm has a tiny green dot glowing beside the glass that was not there a minute ago."
       ],
-      "file": "/audio/voice/1f89ae18253ae6c2.mp3"
+      "file": "/audio/voice/7ae6c2684f9ecc50.mp3"
     },
     {
-      "key": "38e78562422b1dec",
+      "key": "12e7dc3ba9992f21",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Now the TV heard it, the chat heard it, and half the street probably heard it too. A shouted secret isn't a secret - it's news.",
+      "text": "Mum shouts through for the wifi password and the speaker is right there in the middle of the kitchen.",
       "lines": [
-        "Now the TV heard it, the chat heard it, and half the street probably heard it too. A shouted secret isn't a secret - it's news."
+        "Mum shouts through for the wifi password and the speaker is right there in the middle of the kitchen."
       ],
-      "file": "/audio/voice/38e78562422b1dec.mp3"
+      "file": "/audio/voice/12e7dc3ba9992f21.mp3"
     },
     {
-      "key": "4a39836bee3106d5",
+      "key": "98161f25976e23ae",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Sneaky one: which of these was LISTENING?",
+      "text": "The speaker has kept every single voice note since the day it came out of the box, two years ago.",
       "lines": [
-        "Sneaky one: which of these was LISTENING?"
+        "The speaker has kept every single voice note since the day it came out of the box, two years ago."
       ],
-      "file": "/audio/voice/4a39836bee3106d5.mp3"
+      "file": "/audio/voice/98161f25976e23ae.mp3"
     },
     {
-      "key": "7f9176e7dd690d31",
+      "key": "efd040526b1b368c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Is that true?",
+      "text": "That is the easy one, and it is the one everybody thinks of. Ears, definitely.",
       "lines": [
-        "Is that true?"
+        "That is the easy one, and it is the one everybody thinks of. Ears, definitely."
       ],
-      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+      "file": "/audio/voice/efd040526b1b368c.mp3"
     },
     {
-      "key": "cb3b0b298fc69050",
+      "key": "be1eff2b8b58b947",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - tap the thing that can WATCH!",
+      "text": "That voice button is a microphone, so the telly has ears. Most people never think of the telly.",
       "lines": [
-        "Quick - tap the thing that can WATCH!"
+        "That voice button is a microphone, so the telly has ears. Most people never think of the telly."
       ],
-      "file": "/audio/voice/cb3b0b298fc69050.mp3"
+      "file": "/audio/voice/be1eff2b8b58b947.mp3"
     },
     {
-      "key": "aa447360d5f5adbf",
+      "key": "965f7904a4d3fc18",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Near smart ears, saying a secret out loud is like using a blank.",
+      "text": "The headset is a microphone, so the console can hear the room while you play.",
       "lines": [
-        "Near smart ears, saying a secret out loud is like using a blank."
+        "The headset is a microphone, so the console can hear the room while you play."
       ],
-      "file": "/audio/voice/aa447360d5f5adbf.mp3"
+      "file": "/audio/voice/965f7904a4d3fc18.mp3"
     },
     {
-      "key": "c9cadd578b5d400f",
+      "key": "f911c3a92d5bd81a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Put the Scout's three moves in order!",
+      "text": "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too.",
       "lines": [
-        "Put the Scout's three moves in order!"
+        "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too."
       ],
-      "file": "/audio/voice/c9cadd578b5d400f.mp3"
+      "file": "/audio/voice/f911c3a92d5bd81a.mp3"
+    },
+    {
+      "key": "86f5ae33c445bad7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A kettle boils water. There is no microphone anywhere in it.",
+      "lines": [
+        "A kettle boils water. There is no microphone anywhere in it."
+      ],
+      "file": "/audio/voice/86f5ae33c445bad7.mp3"
+    },
+    {
+      "key": "b574507bf2f20ce4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A lamp makes light and that is all. Nothing to hear with.",
+      "lines": [
+        "A lamp makes light and that is all. Nothing to hear with."
+      ],
+      "file": "/audio/voice/b574507bf2f20ce4.mp3"
+    },
+    {
+      "key": "3b87d72d63784b9e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You wind it up and it ticks. No microphone in there at all.",
+      "lines": [
+        "You wind it up and it ticks. No microphone in there at all."
+      ],
+      "file": "/audio/voice/3b87d72d63784b9e.mp3"
+    },
+    {
+      "key": "d501480bd1fbce16",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is the helping part working exactly as it should. You asked, it wrote it down, it played the song.",
+      "lines": [
+        "That is the helping part working exactly as it should. You asked, it wrote it down, it played the song."
+      ],
+      "file": "/audio/voice/d501480bd1fbce16.mp3"
+    },
+    {
+      "key": "d00674405771bdf4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A word on the telly sounded close enough to Nova's name, so it woke up and wrote down what came next.",
+      "lines": [
+        "A word on the telly sounded close enough to Nova's name, so it woke up and wrote down what came next."
+      ],
+      "file": "/audio/voice/d00674405771bdf4.mp3"
+    },
+    {
+      "key": "de06c9206dc0146d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Its name got said in the middle of the washing up row, so it woke and wrote the next bit down. It cannot tell what is private.",
+      "lines": [
+        "Its name got said in the middle of the washing up row, so it woke and wrote the next bit down. It cannot tell what is private."
+      ],
+      "file": "/audio/voice/de06c9206dc0146d.mp3"
+    },
+    {
+      "key": "6df087a44d307a2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing.",
+      "lines": [
+        "The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing."
+      ],
+      "file": "/audio/voice/6df087a44d307a2a.mp3"
+    },
+    {
+      "key": "18e673a32415357f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It does keep a copy once it wakes up. Pretending otherwise is not the fix.",
+      "lines": [
+        "It does keep a copy once it wakes up. Pretending otherwise is not the fix."
+      ],
+      "file": "/audio/voice/18e673a32415357f.mp3"
+    },
+    {
+      "key": "7a1b96e118c9f889",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is backwards. Without wifi it cannot do its job at all.",
+      "lines": [
+        "That is backwards. Without wifi it cannot do its job at all."
+      ],
+      "file": "/audio/voice/7a1b96e118c9f889.mp3"
+    },
+    {
+      "key": "daa2a9efe005b5e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is half-awake for its name, not taking down your whole day. The diary shows what it actually kept.",
+      "lines": [
+        "It is half-awake for its name, not taking down your whole day. The diary shows what it actually kept."
+      ],
+      "file": "/audio/voice/daa2a9efe005b5e7.mp3"
+    },
+    {
+      "key": "c2e6e03a6da5e110",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "In the hallway its little light has come on, so the doorbell lens is awake and watching the step. That is exactly its job.",
+      "lines": [
+        "In the hallway its little light has come on, so the doorbell lens is awake and watching the step. That is exactly its job."
+      ],
+      "file": "/audio/voice/c2e6e03a6da5e110.mp3"
+    },
+    {
+      "key": "3cf8aae7001791d9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Over on the living room sofa arm, the tablet has its little green dot on, which means its camera just woke up. Somebody started a video call.",
+      "lines": [
+        "Over on the living room sofa arm, the tablet has its little green dot on, which means its camera just woke up. Somebody started a video call."
+      ],
+      "file": "/audio/voice/3cf8aae7001791d9.mp3"
+    },
+    {
+      "key": "fea8f3c65c1f3b4b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "In the kitchen a little cover has slid back off the laptop's lens. A cover moving is the clearest sign there is.",
+      "lines": [
+        "In the kitchen a little cover has slid back off the laptop's lens. A cover moving is the clearest sign there is."
+      ],
+      "file": "/audio/voice/fea8f3c65c1f3b4b.mp3"
+    },
+    {
+      "key": "3c4c9a5dc984718d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is a lens in a bedroom, pointing at a bed with its light on. This is the one you tell a grown-up about, straight away, every time.",
+      "lines": [
+        "That is a lens in a bedroom, pointing at a bed with its light on. This is the one you tell a grown-up about, straight away, every time."
+      ],
+      "file": "/audio/voice/3c4c9a5dc984718d.mp3"
+    },
+    {
+      "key": "9bee2f151ea93b6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Covering it hides it from you, and the grown-up who can actually sort it never finds out.",
+      "lines": [
+        "Covering it hides it from you, and the grown-up who can actually sort it never finds out."
+      ],
+      "file": "/audio/voice/9bee2f151ea93b6b.mp3"
+    },
+    {
+      "key": "f4e473c83293feff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Unplugging it quietly leaves the same question unanswered: who put it there, and why?",
+      "lines": [
+        "Unplugging it quietly leaves the same question unanswered: who put it there, and why?"
+      ],
+      "file": "/audio/voice/f4e473c83293feff.mp3"
+    },
+    {
+      "key": "f4f26ebfe8b556d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This is the one thing in the week that is never a maybe. A lens at a bed always gets told.",
+      "lines": [
+        "This is the one thing in the week that is never a maybe. A lens at a bed always gets told."
+      ],
+      "file": "/audio/voice/f4f26ebfe8b556d7.mp3"
+    },
+    {
+      "key": "cb9d7c0abdcb8e14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Same answer, different room, and Nova never hears it. That is the whole habit in one move.",
+      "lines": [
+        "Same answer, different room, and Nova never hears it. That is the whole habit in one move."
+      ],
+      "file": "/audio/voice/cb9d7c0abdcb8e14.mp3"
+    },
+    {
+      "key": "4ec8bd9207672954",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route.",
+      "lines": [
+        "Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route."
+      ],
+      "file": "/audio/voice/4ec8bd9207672954.mp3"
+    },
+    {
+      "key": "78e83f2c14e02f84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An empty house and the dates for it is exactly the sort of thing that does not need saying near a diary.",
+      "lines": [
+        "An empty house and the dates for it is exactly the sort of thing that does not need saying near a diary."
+      ],
+      "file": "/audio/voice/78e83f2c14e02f84.mp3"
+    },
+    {
+      "key": "69af401d928854da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one is fine. Gran knows your school, the speaker is already on for the call, and not every answer needs moving.",
+      "lines": [
+        "This one is fine. Gran knows your school, the speaker is already on for the call, and not every answer needs moving."
+      ],
+      "file": "/audio/voice/69af401d928854da.mp3"
+    },
+    {
+      "key": "b9ea9634d3f81d71",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tea is not a secret. The rule is for the private sort, not for everything.",
+      "lines": [
+        "Tea is not a secret. The rule is for the private sort, not for everything."
+      ],
+      "file": "/audio/voice/b9ea9634d3f81d71.mp3"
+    },
+    {
+      "key": "7cb84fc62485ae3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran already knows, and she is on the call anyway. That one stays where it is.",
+      "lines": [
+        "Gran already knows, and she is on the call anyway. That one stays where it is."
+      ],
+      "file": "/audio/voice/7cb84fc62485ae3a.mp3"
+    },
+    {
+      "key": "003f096562e38be3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all.",
+      "lines": [
+        "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all."
+      ],
+      "file": "/audio/voice/003f096562e38be3.mp3"
+    },
+    {
+      "key": "d1f8f374affe5a99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary.",
+      "lines": [
+        "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary."
+      ],
+      "file": "/audio/voice/d1f8f374affe5a99.mp3"
+    },
+    {
+      "key": "afadfc8aa8c44bc5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice.",
+      "lines": [
+        "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice."
+      ],
+      "file": "/audio/voice/afadfc8aa8c44bc5.mp3"
+    },
+    {
+      "key": "f61b4049393386f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely.",
+      "lines": [
+        "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely."
+      ],
+      "file": "/audio/voice/f61b4049393386f1.mp3"
+    },
+    {
+      "key": "b2c17e1b42ebf6b7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anything that answers you has to hear you first, so a talking toy has ears. That is knowing what listens.",
+      "lines": [
+        "Anything that answers you has to hear you first, so a talking toy has ears. That is knowing what listens."
+      ],
+      "file": "/audio/voice/b2c17e1b42ebf6b7.mp3"
+    },
+    {
+      "key": "4eb41a79163d9ea9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It woke on its name and kept what came next, which is the diary doing what a diary does. And a grown-up can clear it.",
+      "lines": [
+        "It woke on its name and kept what came next, which is the diary doing what a diary does. And a grown-up can clear it."
+      ],
+      "file": "/audio/voice/4eb41a79163d9ea9.mp3"
+    },
+    {
+      "key": "cf088ce763d10fdf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A little light coming on beside a lens means a camera just woke up. Comparing a moment ago with right now is how you catch it.",
+      "lines": [
+        "A little light coming on beside a lens means a camera just woke up. Comparing a moment ago with right now is how you catch it."
+      ],
+      "file": "/audio/voice/cf088ce763d10fdf.mp3"
+    },
+    {
+      "key": "302865363db6a8b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saying it out loud records it just as surely as typing it, so you walk through and tell her in the other room.",
+      "lines": [
+        "Saying it out loud records it just as surely as typing it, so you walk through and tell her in the other room."
+      ],
+      "file": "/audio/voice/302865363db6a8b4.mp3"
+    },
+    {
+      "key": "850e2b2cf5e9bf6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One setting makes that speaker tidy its own diary every three months, and you flip it with a grown-up in about ten minutes.",
+      "lines": [
+        "One setting makes that speaker tidy its own diary every three months, and you flip it with a grown-up in about ten minutes."
+      ],
+      "file": "/audio/voice/850e2b2cf5e9bf6d.mp3"
+    },
+    {
+      "key": "400dad58251052c9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You want to tell your cousin a birthday-surprise secret at Grandma's house. Which thing in the room could actually HEAR it? Is it option A... The speaker that plays a song when you ask it Option B... The music box that plays when you wind the key Or is it option C... The radio that plays when you press its big button So, what do you think?",
+      "lines": [
+        "You want to tell your cousin a birthday-surprise secret at Grandma's house. Which thing in the room could actually HEAR it?",
+        "Is it option A...",
+        "The speaker that plays a song when you ask it",
+        "Option B...",
+        "The music box that plays when you wind the key",
+        "Or is it option C...",
+        "The radio that plays when you press its big button",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/400dad58251052c9.mp3"
+    },
+    {
+      "key": "2501472de0ab0022",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mom says 'Nova, call Grandma' and the kitchen speaker wakes right up. What actually woke it? Is it option A... Knowing the sound of Mom's voice only Option B... Hearing the word Grandma at the end Or is it option C... Hearing its own name at the start So, what do you think?",
+      "lines": [
+        "Mom says 'Nova, call Grandma' and the kitchen speaker wakes right up. What actually woke it?",
+        "Is it option A...",
+        "Knowing the sound of Mom's voice only",
+        "Option B...",
+        "Hearing the word Grandma at the end",
+        "Or is it option C...",
+        "Hearing its own name at the start",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/2501472de0ab0022.mp3"
+    },
+    {
+      "key": "4ed20f92032ccdc5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Layla's new talking doll has a small round shiny circle on its head that nobody mentioned. What is her first Scout move? Is it option A... Wave at it in case somebody nice is watching Option B... Show it to a trusted grown-up and ask what it is Or is it option C... Stick a sticker over it and tell nobody at all So, what do you think?",
+      "lines": [
+        "Layla's new talking doll has a small round shiny circle on its head that nobody mentioned. What is her first Scout move?",
+        "Is it option A...",
+        "Wave at it in case somebody nice is watching",
+        "Option B...",
+        "Show it to a trusted grown-up and ask what it is",
+        "Or is it option C...",
+        "Stick a sticker over it and tell nobody at all",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/4ed20f92032ccdc5.mp3"
+    },
+    {
+      "key": "e9815931937b045d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dad asks for the new tablet password and Nova the speaker is wide awake on the counter. What is the hero way to give it to him? Is it option A... Write it on paper and slide it across Option B... Say it extra fast so the speaker can't keep up Or is it option C... Spell it out letter by letter instead of saying it So, what do you think?",
+      "lines": [
+        "Dad asks for the new tablet password and Nova the speaker is wide awake on the counter. What is the hero way to give it to him?",
+        "Is it option A...",
+        "Write it on paper and slide it across",
+        "Option B...",
+        "Say it extra fast so the speaker can't keep up",
+        "Or is it option C...",
+        "Spell it out letter by letter instead of saying it",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/e9815931937b045d.mp3"
+    },
+    {
+      "key": "ed1d5d07a82caca5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The TV remote's microphone has two settings: 'always on' or 'push-to-talk'. Which one hands the ear's ON switch to YOU? Is it option A... Always on, it never misses a single word you say Option B... Extra loud, it can hear you from any room in the house Or is it option C... Push-to-talk, it hears only while the button is held So, what do you think?",
+      "lines": [
+        "The TV remote's microphone has two settings: 'always on' or 'push-to-talk'. Which one hands the ear's ON switch to YOU?",
+        "Is it option A...",
+        "Always on, it never misses a single word you say",
+        "Option B...",
+        "Extra loud, it can hear you from any room in the house",
+        "Or is it option C...",
+        "Push-to-talk, it hears only while the button is held",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/ed1d5d07a82caca5.mp3"
+    },
+    {
+      "key": "fb4eb95011a7cae3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The music box and the radio only work when your hands touch them, no microphones inside. The speaker answers when you TALK to it, and answering back means ears.",
+      "lines": [
+        "That's right!",
+        "The music box and the radio only work when your hands touch them, no microphones inside. The speaker answers when you TALK to it, and answering back means ears."
+      ],
+      "file": "/audio/voice/fb4eb95011a7cae3.mp3"
+    },
+    {
+      "key": "0432745763812011",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The music box and the radio only work when your hands touch them, no microphones inside. The speaker answers when you TALK to it, and answering back means ears.",
+      "lines": [
+        "Not quite.",
+        "The music box and the radio only work when your hands touch them, no microphones inside. The speaker answers when you TALK to it, and answering back means ears."
+      ],
+      "file": "/audio/voice/0432745763812011.mp3"
+    },
+    {
+      "key": "7c7911e31c5b4771",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Smart speakers doze until they hear their special name. It isn't Grandma's name and it isn't one person's voice, it's the wake word, and once awake, the speaker can hear everything that comes next.",
+      "lines": [
+        "That's right!",
+        "Smart speakers doze until they hear their special name. It isn't Grandma's name and it isn't one person's voice, it's the wake word, and once awake, the speaker can hear everything that comes next."
+      ],
+      "file": "/audio/voice/7c7911e31c5b4771.mp3"
+    },
+    {
+      "key": "fd256796d0762ca0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Smart speakers doze until they hear their special name. It isn't Grandma's name and it isn't one person's voice, it's the wake word, and once awake, the speaker can hear everything that comes next.",
+      "lines": [
+        "Not quite.",
+        "Smart speakers doze until they hear their special name. It isn't Grandma's name and it isn't one person's voice, it's the wake word, and once awake, the speaker can hear everything that comes next."
+      ],
+      "file": "/audio/voice/fd256796d0762ca0.mp3"
+    },
+    {
+      "key": "f3764cb4de508ea7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Covering it in secret or waving at it leaves the mystery a mystery. A little glass circle nobody explained might be a camera, and a trusted grown-up can find out for sure.",
+      "lines": [
+        "That's right!",
+        "Covering it in secret or waving at it leaves the mystery a mystery. A little glass circle nobody explained might be a camera, and a trusted grown-up can find out for sure."
+      ],
+      "file": "/audio/voice/f3764cb4de508ea7.mp3"
+    },
+    {
+      "key": "c047ab4f700366bb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Covering it in secret or waving at it leaves the mystery a mystery. A little glass circle nobody explained might be a camera, and a trusted grown-up can find out for sure.",
+      "lines": [
+        "Not quite.",
+        "Covering it in secret or waving at it leaves the mystery a mystery. A little glass circle nobody explained might be a camera, and a trusted grown-up can find out for sure."
+      ],
+      "file": "/audio/voice/c047ab4f700366bb.mp3"
+    },
+    {
+      "key": "a9f97201e3116fb1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Fast talking and spelling are still sounds, and microphones catch sounds however quick or lettery they are. Paper makes no sound at all, so the password never touches the air.",
+      "lines": [
+        "That's right!",
+        "Fast talking and spelling are still sounds, and microphones catch sounds however quick or lettery they are. Paper makes no sound at all, so the password never touches the air."
+      ],
+      "file": "/audio/voice/a9f97201e3116fb1.mp3"
+    },
+    {
+      "key": "1e3bffeadfe63651",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Fast talking and spelling are still sounds, and microphones catch sounds however quick or lettery they are. Paper makes no sound at all, so the password never touches the air.",
+      "lines": [
+        "Not quite.",
+        "Fast talking and spelling are still sounds, and microphones catch sounds however quick or lettery they are. Paper makes no sound at all, so the password never touches the air."
+      ],
+      "file": "/audio/voice/1e3bffeadfe63651.mp3"
+    },
+    {
+      "key": "0326a833e13dc34e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A setting that never sleeps is exactly the problem, and extra loud is about talking, not listening. Push-to-talk opens the ear only while YOUR finger holds the button, so you decide when it hears.",
+      "lines": [
+        "That's right!",
+        "A setting that never sleeps is exactly the problem, and extra loud is about talking, not listening. Push-to-talk opens the ear only while YOUR finger holds the button, so you decide when it hears."
+      ],
+      "file": "/audio/voice/0326a833e13dc34e.mp3"
+    },
+    {
+      "key": "3064884e0922ad1a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A setting that never sleeps is exactly the problem, and extra loud is about talking, not listening. Push-to-talk opens the ear only while YOUR finger holds the button, so you decide when it hears.",
+      "lines": [
+        "Not quite.",
+        "A setting that never sleeps is exactly the problem, and extra loud is about talking, not listening. Push-to-talk opens the ear only while YOUR finger holds the button, so you decide when it hears."
+      ],
+      "file": "/audio/voice/3064884e0922ad1a.mp3"
+    },
+    {
+      "key": "efd040526b1b368c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is the easy one, and it is the one everybody thinks of. Ears, definitely.",
+      "lines": [
+        "That is the easy one, and it is the one everybody thinks of. Ears, definitely."
+      ],
+      "file": "/audio/voice/efd040526b1b368c.mp3"
+    },
+    {
+      "key": "be1eff2b8b58b947",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That voice button is a microphone, so the telly has ears. Most people never think of the telly.",
+      "lines": [
+        "That voice button is a microphone, so the telly has ears. Most people never think of the telly."
+      ],
+      "file": "/audio/voice/be1eff2b8b58b947.mp3"
+    },
+    {
+      "key": "965f7904a4d3fc18",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The headset is a microphone, so the console can hear the room while you play.",
+      "lines": [
+        "The headset is a microphone, so the console can hear the room while you play."
+      ],
+      "file": "/audio/voice/965f7904a4d3fc18.mp3"
+    },
+    {
+      "key": "f911c3a92d5bd81a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too.",
+      "lines": [
+        "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too."
+      ],
+      "file": "/audio/voice/f911c3a92d5bd81a.mp3"
+    },
+    {
+      "key": "86f5ae33c445bad7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A kettle boils water. There is no microphone anywhere in it.",
+      "lines": [
+        "A kettle boils water. There is no microphone anywhere in it."
+      ],
+      "file": "/audio/voice/86f5ae33c445bad7.mp3"
+    },
+    {
+      "key": "b574507bf2f20ce4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A lamp makes light and that is all. Nothing to hear with.",
+      "lines": [
+        "A lamp makes light and that is all. Nothing to hear with."
+      ],
+      "file": "/audio/voice/b574507bf2f20ce4.mp3"
+    },
+    {
+      "key": "3b87d72d63784b9e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You wind it up and it ticks. No microphone in there at all.",
+      "lines": [
+        "You wind it up and it ticks. No microphone in there at all."
+      ],
+      "file": "/audio/voice/3b87d72d63784b9e.mp3"
+    },
+    {
+      "key": "ad41a4f858228894",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one can you talk TO and get an answer from?",
+      "lines": [
+        "Which one can you talk TO and get an answer from?"
+      ],
+      "file": "/audio/voice/ad41a4f858228894.mp3"
+    },
+    {
+      "key": "d501480bd1fbce16",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is the helping part working exactly as it should. You asked, it wrote it down, it played the song.",
+      "lines": [
+        "That is the helping part working exactly as it should. You asked, it wrote it down, it played the song."
+      ],
+      "file": "/audio/voice/d501480bd1fbce16.mp3"
+    },
+    {
+      "key": "d00674405771bdf4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A word on the telly sounded close enough to Nova's name, so it woke up and wrote down what came next.",
+      "lines": [
+        "A word on the telly sounded close enough to Nova's name, so it woke up and wrote down what came next."
+      ],
+      "file": "/audio/voice/d00674405771bdf4.mp3"
+    },
+    {
+      "key": "de06c9206dc0146d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Its name got said in the middle of the washing up row, so it woke and wrote the next bit down. It cannot tell what is private.",
+      "lines": [
+        "Its name got said in the middle of the washing up row, so it woke and wrote the next bit down. It cannot tell what is private."
+      ],
+      "file": "/audio/voice/de06c9206dc0146d.mp3"
+    },
+    {
+      "key": "6df087a44d307a2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing.",
+      "lines": [
+        "The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing."
+      ],
+      "file": "/audio/voice/6df087a44d307a2a.mp3"
+    },
+    {
+      "key": "18e673a32415357f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It does keep a copy once it wakes up. Pretending otherwise is not the fix.",
+      "lines": [
+        "It does keep a copy once it wakes up. Pretending otherwise is not the fix."
+      ],
+      "file": "/audio/voice/18e673a32415357f.mp3"
+    },
+    {
+      "key": "7a1b96e118c9f889",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is backwards. Without wifi it cannot do its job at all.",
+      "lines": [
+        "That is backwards. Without wifi it cannot do its job at all."
+      ],
+      "file": "/audio/voice/7a1b96e118c9f889.mp3"
+    },
+    {
+      "key": "daa2a9efe005b5e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is half-awake for its name, not taking down your whole day. The diary shows what it actually kept.",
+      "lines": [
+        "It is half-awake for its name, not taking down your whole day. The diary shows what it actually kept."
+      ],
+      "file": "/audio/voice/daa2a9efe005b5e7.mp3"
+    },
+    {
+      "key": "5ec552b17b6f0ad5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which part of his boast did Dad disprove in four taps?",
+      "lines": [
+        "Which part of his boast did Dad disprove in four taps?"
+      ],
+      "file": "/audio/voice/5ec552b17b6f0ad5.mp3"
+    },
+    {
+      "key": "c2e6e03a6da5e110",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "In the hallway its little light has come on, so the doorbell lens is awake and watching the step. That is exactly its job.",
+      "lines": [
+        "In the hallway its little light has come on, so the doorbell lens is awake and watching the step. That is exactly its job."
+      ],
+      "file": "/audio/voice/c2e6e03a6da5e110.mp3"
+    },
+    {
+      "key": "3cf8aae7001791d9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Over on the living room sofa arm, the tablet has its little green dot on, which means its camera just woke up. Somebody started a video call.",
+      "lines": [
+        "Over on the living room sofa arm, the tablet has its little green dot on, which means its camera just woke up. Somebody started a video call."
+      ],
+      "file": "/audio/voice/3cf8aae7001791d9.mp3"
+    },
+    {
+      "key": "fea8f3c65c1f3b4b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "In the kitchen a little cover has slid back off the laptop's lens. A cover moving is the clearest sign there is.",
+      "lines": [
+        "In the kitchen a little cover has slid back off the laptop's lens. A cover moving is the clearest sign there is."
+      ],
+      "file": "/audio/voice/fea8f3c65c1f3b4b.mp3"
+    },
+    {
+      "key": "3c4c9a5dc984718d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is a lens in a bedroom, pointing at a bed with its light on. This is the one you tell a grown-up about, straight away, every time.",
+      "lines": [
+        "That is a lens in a bedroom, pointing at a bed with its light on. This is the one you tell a grown-up about, straight away, every time."
+      ],
+      "file": "/audio/voice/3c4c9a5dc984718d.mp3"
+    },
+    {
+      "key": "9bee2f151ea93b6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Covering it hides it from you, and the grown-up who can actually sort it never finds out.",
+      "lines": [
+        "Covering it hides it from you, and the grown-up who can actually sort it never finds out."
+      ],
+      "file": "/audio/voice/9bee2f151ea93b6b.mp3"
+    },
+    {
+      "key": "f4e473c83293feff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Unplugging it quietly leaves the same question unanswered: who put it there, and why?",
+      "lines": [
+        "Unplugging it quietly leaves the same question unanswered: who put it there, and why?"
+      ],
+      "file": "/audio/voice/f4e473c83293feff.mp3"
+    },
+    {
+      "key": "f4f26ebfe8b556d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This is the one thing in the week that is never a maybe. A lens at a bed always gets told.",
+      "lines": [
+        "This is the one thing in the week that is never a maybe. A lens at a bed always gets told."
+      ],
+      "file": "/audio/voice/f4f26ebfe8b556d7.mp3"
+    },
+    {
+      "key": "a40e2cf1949132a8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one actually gets a grown-up involved?",
+      "lines": [
+        "Which one actually gets a grown-up involved?"
+      ],
+      "file": "/audio/voice/a40e2cf1949132a8.mp3"
+    },
+    {
+      "key": "cb9d7c0abdcb8e14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Same answer, different room, and Nova never hears it. That is the whole habit in one move.",
+      "lines": [
+        "Same answer, different room, and Nova never hears it. That is the whole habit in one move."
+      ],
+      "file": "/audio/voice/cb9d7c0abdcb8e14.mp3"
+    },
+    {
+      "key": "4ec8bd9207672954",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route.",
+      "lines": [
+        "Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route."
+      ],
+      "file": "/audio/voice/4ec8bd9207672954.mp3"
+    },
+    {
+      "key": "78e83f2c14e02f84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An empty house and the dates for it is exactly the sort of thing that does not need saying near a diary.",
+      "lines": [
+        "An empty house and the dates for it is exactly the sort of thing that does not need saying near a diary."
+      ],
+      "file": "/audio/voice/78e83f2c14e02f84.mp3"
+    },
+    {
+      "key": "69af401d928854da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one is fine. Gran knows your school, the speaker is already on for the call, and not every answer needs moving.",
+      "lines": [
+        "This one is fine. Gran knows your school, the speaker is already on for the call, and not every answer needs moving."
+      ],
+      "file": "/audio/voice/69af401d928854da.mp3"
+    },
+    {
+      "key": "b9ea9634d3f81d71",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tea is not a secret. The rule is for the private sort, not for everything.",
+      "lines": [
+        "Tea is not a secret. The rule is for the private sort, not for everything."
+      ],
+      "file": "/audio/voice/b9ea9634d3f81d71.mp3"
+    },
+    {
+      "key": "7cb84fc62485ae3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran already knows, and she is on the call anyway. That one stays where it is.",
+      "lines": [
+        "Gran already knows, and she is on the call anyway. That one stays where it is."
+      ],
+      "file": "/audio/voice/7cb84fc62485ae3a.mp3"
+    },
+    {
+      "key": "003f096562e38be3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all.",
+      "lines": [
+        "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all."
+      ],
+      "file": "/audio/voice/003f096562e38be3.mp3"
+    },
+    {
+      "key": "d1f8f374affe5a99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary.",
+      "lines": [
+        "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary."
+      ],
+      "file": "/audio/voice/d1f8f374affe5a99.mp3"
+    },
+    {
+      "key": "afadfc8aa8c44bc5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice.",
+      "lines": [
+        "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice."
+      ],
+      "file": "/audio/voice/afadfc8aa8c44bc5.mp3"
+    },
+    {
+      "key": "f61b4049393386f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely.",
+      "lines": [
+        "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely."
+      ],
+      "file": "/audio/voice/f61b4049393386f1.mp3"
+    },
+    {
+      "key": "b91a9f086183e12a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one can you not start without?",
+      "lines": [
+        "Which one can you not start without?"
+      ],
+      "file": "/audio/voice/b91a9f086183e12a.mp3"
+    },
+    {
+      "key": "b2c17e1b42ebf6b7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anything that answers you has to hear you first, so a talking toy has ears. That is knowing what listens.",
+      "lines": [
+        "Anything that answers you has to hear you first, so a talking toy has ears. That is knowing what listens."
+      ],
+      "file": "/audio/voice/b2c17e1b42ebf6b7.mp3"
+    },
+    {
+      "key": "4eb41a79163d9ea9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It woke on its name and kept what came next, which is the diary doing what a diary does. And a grown-up can clear it.",
+      "lines": [
+        "It woke on its name and kept what came next, which is the diary doing what a diary does. And a grown-up can clear it."
+      ],
+      "file": "/audio/voice/4eb41a79163d9ea9.mp3"
+    },
+    {
+      "key": "cf088ce763d10fdf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A little light coming on beside a lens means a camera just woke up. Comparing a moment ago with right now is how you catch it.",
+      "lines": [
+        "A little light coming on beside a lens means a camera just woke up. Comparing a moment ago with right now is how you catch it."
+      ],
+      "file": "/audio/voice/cf088ce763d10fdf.mp3"
+    },
+    {
+      "key": "302865363db6a8b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saying it out loud records it just as surely as typing it, so you walk through and tell her in the other room.",
+      "lines": [
+        "Saying it out loud records it just as surely as typing it, so you walk through and tell her in the other room."
+      ],
+      "file": "/audio/voice/302865363db6a8b4.mp3"
+    },
+    {
+      "key": "850e2b2cf5e9bf6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One setting makes that speaker tidy its own diary every three months, and you flip it with a grown-up in about ten minutes.",
+      "lines": [
+        "One setting makes that speaker tidy its own diary every three months, and you flip it with a grown-up in about ten minutes."
+      ],
+      "file": "/audio/voice/850e2b2cf5e9bf6d.mp3"
+    },
+    {
+      "key": "0edac6de0675e7f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check.",
+      "lines": [
+        "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check."
+      ],
+      "file": "/audio/voice/0edac6de0675e7f2.mp3"
+    },
+    {
+      "key": "4fd2ef61892ea124",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all.",
+      "lines": [
+        "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all."
+      ],
+      "file": "/audio/voice/4fd2ef61892ea124.mp3"
+    },
+    {
+      "key": "354bceadd0667292",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A lamp makes light and nothing else. It has no way to hear a single thing.",
+      "lines": [
+        "A lamp makes light and nothing else. It has no way to hear a single thing."
+      ],
+      "file": "/audio/voice/354bceadd0667292.mp3"
+    },
+    {
+      "key": "f9cb14396a54a5c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You wind it and it ticks. There is no microphone inside a clock with a key in the back.",
+      "lines": [
+        "You wind it and it ticks. There is no microphone inside a clock with a key in the back."
+      ],
+      "file": "/audio/voice/f9cb14396a54a5c5.mp3"
+    },
+    {
+      "key": "a94483ff05524771",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing went wrong here. You said its name on purpose, and it did the job you asked for.",
+      "lines": [
+        "Nothing went wrong here. You said its name on purpose, and it did the job you asked for."
+      ],
+      "file": "/audio/voice/a94483ff05524771.mp3"
+    },
+    {
+      "key": "d90f1ba2bd6932be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is not writing all the time. This line is here because you called it, which is the ordinary way.",
+      "lines": [
+        "It is not writing all the time. This line is here because you called it, which is the ordinary way."
+      ],
+      "file": "/audio/voice/d90f1ba2bd6932be.mp3"
+    },
+    {
+      "key": "7bc95be1c63bffdf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody spoke to Nova this time. The telly said something that sounded like its name, and that was enough.",
+      "lines": [
+        "Nobody spoke to Nova this time. The telly said something that sounded like its name, and that was enough."
+      ],
+      "file": "/audio/voice/7bc95be1c63bffdf.mp3"
+    },
+    {
+      "key": "46a20e4b164832e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nova is not broken. Waking on a word that sounds close is just what listening for a name is like.",
+      "lines": [
+        "Nova is not broken. Waking on a word that sounds close is just what listening for a name is like."
+      ],
+      "file": "/audio/voice/46a20e4b164832e2.mp3"
+    },
+    {
+      "key": "1ee73d5846da9e6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it.",
+      "lines": [
+        "It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it."
+      ],
+      "file": "/audio/voice/1ee73d5846da9e6b.mp3"
+    },
+    {
+      "key": "ea9692060589d89f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It cannot tell a row from a song request. Its name was said, so the diary got a line.",
+      "lines": [
+        "It cannot tell a row from a song request. Its name was said, so the diary got a line."
+      ],
+      "file": "/audio/voice/ea9692060589d89f.mp3"
+    },
+    {
+      "key": "6307234d31c073be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It does not tidy up on its own. Somebody went in and cleared it, which is exactly why knowing about it matters.",
+      "lines": [
+        "It does not tidy up on its own. Somebody went in and cleared it, which is exactly why knowing about it matters."
+      ],
+      "file": "/audio/voice/6307234d31c073be.mp3"
+    },
+    {
+      "key": "a7b1d472e4d239ab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It can absolutely be deleted. Dad just did it, in about four taps.",
+      "lines": [
+        "It can absolutely be deleted. Dad just did it, in about four taps."
+      ],
+      "file": "/audio/voice/a7b1d472e4d239ab.mp3"
+    },
+    {
+      "key": "cef723e5fbd52c0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Coat hooks in the hallway look the same in both pictures, and they have no lens to wake up.",
+      "lines": [
+        "Coat hooks in the hallway look the same in both pictures, and they have no lens to wake up."
+      ],
+      "file": "/audio/voice/cef723e5fbd52c0c.mp3"
+    },
+    {
+      "key": "df863d936fb9abee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That pile of post in the hallway has not moved and it never could. Compare the two pictures again.",
+      "lines": [
+        "That pile of post in the hallway has not moved and it never could. Compare the two pictures again."
+      ],
+      "file": "/audio/voice/df863d936fb9abee.mp3"
+    },
+    {
+      "key": "d5b83f732d7dea45",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A hallway mirror is glass, so it is a fair guess. But glass is not a lens, and nothing about it changed.",
+      "lines": [
+        "A hallway mirror is glass, so it is a fair guess. But glass is not a lens, and nothing about it changed."
+      ],
+      "file": "/audio/voice/d5b83f732d7dea45.mp3"
+    },
+    {
+      "key": "3f1d0a5588b9a8a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That lamp in the living room is lit in both pictures, so it did not change, and a bulb is not a lens.",
+      "lines": [
+        "That lamp in the living room is lit in both pictures, so it did not change, and a bulb is not a lens."
+      ],
+      "file": "/audio/voice/3f1d0a5588b9a8a5.mp3"
+    },
+    {
+      "key": "15e79cc68cf1495e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing has moved the living room plant, and nothing on it can wake up.",
+      "lines": [
+        "Nothing has moved the living room plant, and nothing on it can wake up."
+      ],
+      "file": "/audio/voice/15e79cc68cf1495e.mp3"
+    },
+    {
+      "key": "2d2f8dff8ea6031e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That living room speaker has ears, and you were right about that last game. This round is about eyes, and it looks the same in both.",
+      "lines": [
+        "That living room speaker has ears, and you were right about that last game. This round is about eyes, and it looks the same in both."
+      ],
+      "file": "/audio/voice/2d2f8dff8ea6031e.mp3"
+    },
+    {
+      "key": "8e18de74be2b0efd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Still a kitchen kettle, still no lens. It cannot wake up because there is nothing in it to wake.",
+      "lines": [
+        "Still a kitchen kettle, still no lens. It cannot wake up because there is nothing in it to wake."
+      ],
+      "file": "/audio/voice/8e18de74be2b0efd.mp3"
+    },
+    {
+      "key": "04e2cc0d55d2a4e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A kitchen radio plays sound out and has no eye at all. It looks identical in both pictures.",
+      "lines": [
+        "A kitchen radio plays sound out and has no eye at all. It looks identical in both pictures."
+      ],
+      "file": "/audio/voice/04e2cc0d55d2a4e3.mp3"
+    },
+    {
+      "key": "8613d93757ff1998",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Those kitchen clock hands moved a minute, which is a clock doing its job. No lens, no light, no change that counts.",
+      "lines": [
+        "Those kitchen clock hands moved a minute, which is a clock doing its job. No lens, no light, no change that counts."
+      ],
+      "file": "/audio/voice/8613d93757ff1998.mp3"
+    },
+    {
+      "key": "738dff30fab41645",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bedroom books have no lens and these have not moved. Keep comparing.",
+      "lines": [
+        "Bedroom books have no lens and these have not moved. Keep comparing."
+      ],
+      "file": "/audio/voice/738dff30fab41645.mp3"
+    },
+    {
+      "key": "bf353bfb8abb05f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The bedroom night-light is glowing in both pictures. A light that only makes light is not a lens.",
+      "lines": [
+        "The bedroom night-light is glowing in both pictures. A light that only makes light is not a lens."
+      ],
+      "file": "/audio/voice/bf353bfb8abb05f9.mp3"
+    },
+    {
+      "key": "834ec5ae211df74b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The bedroom poster is the same in both. Nothing on a wall can wake up.",
+      "lines": [
+        "The bedroom poster is the same in both. Nothing on a wall can wake up."
+      ],
+      "file": "/audio/voice/834ec5ae211df74b.mp3"
+    },
+    {
+      "key": "2a31bd1a6a1826f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Shouting it is the loudest way to say it, and Nova is right there in the middle. The answer is fine. The room is wrong.",
+      "lines": [
+        "Shouting it is the loudest way to say it, and Nova is right there in the middle. The answer is fine. The room is wrong."
+      ],
+      "file": "/audio/voice/2a31bd1a6a1826f1.mp3"
+    },
+    {
+      "key": "a2b5f87ac0afa31a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A microphone is much better at quiet than people think. Whispering is not the fix, moving rooms is.",
+      "lines": [
+        "A microphone is much better at quiet than people think. Whispering is not the fix, moving rooms is."
+      ],
+      "file": "/audio/voice/a2b5f87ac0afa31a.mp3"
+    },
+    {
+      "key": "df3bd8572b7854e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Clear is exactly the problem here. Every word lands in the room and the room has ears.",
+      "lines": [
+        "Clear is exactly the problem here. Every word lands in the room and the room has ears."
+      ],
+      "file": "/audio/voice/df3bd8572b7854e0.mp3"
+    },
+    {
+      "key": "3233f2ee24fa2f73",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Half an address out loud is still half an address on the record, and your friend still has to ask again.",
+      "lines": [
+        "Half an address out loud is still half an address on the record, and your friend still has to ask again."
+      ],
+      "file": "/audio/voice/3233f2ee24fa2f73.mp3"
+    },
+    {
+      "key": "d22102eae1a051db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saying them out loud is how they end up written down. Nobody needs to forget, they just need to be said elsewhere.",
+      "lines": [
+        "Saying them out loud is how they end up written down. Nobody needs to forget, they just need to be said elsewhere."
+      ],
+      "file": "/audio/voice/d22102eae1a051db.mp3"
+    },
+    {
+      "key": "483f6619e1af0e84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That hands it over on purpose. Handy, and it is still the one thing you would rather not say in here.",
+      "lines": [
+        "That hands it over on purpose. Handy, and it is still the one thing you would rather not say in here."
+      ],
+      "file": "/audio/voice/483f6619e1af0e84.mp3"
+    },
+    {
+      "key": "b17ca767ec391e24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You do not have to go silent in your own home. The rule is pick your moment, not say nothing ever.",
+      "lines": [
+        "You do not have to go silent in your own home. The rule is pick your moment, not say nothing ever."
+      ],
+      "file": "/audio/voice/b17ca767ec391e24.mp3"
+    },
+    {
+      "key": "a4c3b1bf10aab2bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran is on speakerphone, so whispering just means she asks again. This one never needed hiding.",
+      "lines": [
+        "Gran is on speakerphone, so whispering just means she asks again. This one never needed hiding."
+      ],
+      "file": "/audio/voice/a4c3b1bf10aab2bf.mp3"
+    },
+    {
+      "key": "67472ad2d04bb880",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That one is doing exactly the job it was put there for, and it points at a doorstep, not at anybody's bed. Leave it be.",
+      "lines": [
+        "That one is doing exactly the job it was put there for, and it points at a doorstep, not at anybody's bed. Leave it be."
+      ],
+      "file": "/audio/voice/67472ad2d04bb880.mp3"
+    },
+    {
+      "key": "9b2d96633d60741a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A night-light only makes light. It has no ears, no lens and no switch worth flipping. Not everything on a plate is a setting.",
+      "lines": [
+        "A night-light only makes light. It has no ears, no lens and no switch worth flipping. Not everything on a plate is a setting."
+      ],
+      "file": "/audio/voice/9b2d96633d60741a.mp3"
+    },
+    {
+      "key": "a946e2e6ab34e444",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one is about which things can hear at all. A toy that answers back has a microphone in it.",
+      "lines": [
+        "This one is about which things can hear at all. A toy that answers back has a microphone in it."
+      ],
+      "file": "/audio/voice/a946e2e6ab34e444.mp3"
+    },
+    {
+      "key": "2d02005f29ac0a48",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing here is about ears or lenses. This is what the speaker KEPT once it woke up.",
+      "lines": [
+        "Nothing here is about ears or lenses. This is what the speaker KEPT once it woke up."
+      ],
+      "file": "/audio/voice/2d02005f29ac0a48.mp3"
+    },
+    {
+      "key": "32bf690576cbd191",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A green dot by a glass circle is a camera, not a microphone. This one is about eyes.",
+      "lines": [
+        "A green dot by a glass circle is a camera, not a microphone. This one is about eyes."
+      ],
+      "file": "/audio/voice/32bf690576cbd191.mp3"
+    },
+    {
+      "key": "bfe70ec5813036be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You already know a password is private. This is about the room you say it in.",
+      "lines": [
+        "You already know a password is private. This is about the room you say it in."
+      ],
+      "file": "/audio/voice/bfe70ec5813036be.mp3"
+    },
+    {
+      "key": "11ef28f03e8bc2de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Knowing that speaker keeps a diary is one power. Doing something about it is this one.",
+      "lines": [
+        "Knowing that speaker keeps a diary is one power. Doing something about it is this one."
+      ],
+      "file": "/audio/voice/11ef28f03e8bc2de.mp3"
+    },
+    {
+      "key": "74e13a43e7bc51b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The music box and the radio only work when your hands touch them, no microphones inside. The speaker answers when you TALK to it, and answering back means ears.",
+      "lines": [
+        "The music box and the radio only work when your hands touch them, no microphones inside. The speaker answers when you TALK to it, and answering back means ears."
+      ],
+      "file": "/audio/voice/74e13a43e7bc51b2.mp3"
+    },
+    {
+      "key": "4495cce2ad7868af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Smart speakers doze until they hear their special name. It isn't Grandma's name and it isn't one person's voice, it's the wake word, and once awake, the speaker can hear everything that comes next.",
+      "lines": [
+        "Smart speakers doze until they hear their special name. It isn't Grandma's name and it isn't one person's voice, it's the wake word, and once awake, the speaker can hear everything that comes next."
+      ],
+      "file": "/audio/voice/4495cce2ad7868af.mp3"
+    },
+    {
+      "key": "f77a29ea44739fe7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Covering it in secret or waving at it leaves the mystery a mystery. A little glass circle nobody explained might be a camera, and a trusted grown-up can find out for sure.",
+      "lines": [
+        "Covering it in secret or waving at it leaves the mystery a mystery. A little glass circle nobody explained might be a camera, and a trusted grown-up can find out for sure."
+      ],
+      "file": "/audio/voice/f77a29ea44739fe7.mp3"
+    },
+    {
+      "key": "944ebbdf0b992f96",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fast talking and spelling are still sounds, and microphones catch sounds however quick or lettery they are. Paper makes no sound at all, so the password never touches the air.",
+      "lines": [
+        "Fast talking and spelling are still sounds, and microphones catch sounds however quick or lettery they are. Paper makes no sound at all, so the password never touches the air."
+      ],
+      "file": "/audio/voice/944ebbdf0b992f96.mp3"
+    },
+    {
+      "key": "fdc3f72ae56392e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A setting that never sleeps is exactly the problem, and extra loud is about talking, not listening. Push-to-talk opens the ear only while YOUR finger holds the button, so you decide when it hears.",
+      "lines": [
+        "A setting that never sleeps is exactly the problem, and extra loud is about talking, not listening. Push-to-talk opens the ear only while YOUR finger holds the button, so you decide when it hears."
+      ],
+      "file": "/audio/voice/fdc3f72ae56392e0.mp3"
+    },
+    {
+      "key": "3d75f08456f7d930",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If you can talk to it and it answers, it's got ears.",
+      "lines": [
+        "If you can talk to it and it answers, it's got ears."
+      ],
+      "file": "/audio/voice/3d75f08456f7d930.mp3"
+    },
+    {
+      "key": "6a5597cea6e4d301",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The name is the ON switch - and once awake, it hears much more.",
+      "lines": [
+        "The name is the ON switch - and once awake, it hears much more."
+      ],
+      "file": "/audio/voice/6a5597cea6e4d301.mp3"
+    },
+    {
+      "key": "028f616679c7061d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Out loud near smart ears is a megaphone - keep secrets off the air.",
+      "lines": [
+        "Out loud near smart ears is a megaphone - keep secrets off the air."
+      ],
+      "file": "/audio/voice/028f616679c7061d.mp3"
+    },
+    {
+      "key": "258e1d1679359ba3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Smart ears sometimes record - and the copies live in an app grown-ups can open.",
+      "lines": [
+        "Smart ears sometimes record - and the copies live in an app grown-ups can open."
+      ],
+      "file": "/audio/voice/258e1d1679359ba3.mp3"
+    },
+    {
+      "key": "830fa81987cc9cb2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Front-step watching is the job; bedrooms are lens-free zones, and mystery lenses get asked about.",
+      "lines": [
+        "Front-step watching is the job; bedrooms are lens-free zones, and mystery lenses get asked about."
+      ],
+      "file": "/audio/voice/830fa81987cc9cb2.mp3"
+    },
+    {
+      "key": "29c3c5b6b739c882",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Push-to-talk hands the ON switch to you - the ear hears only when you choose.",
+      "lines": [
+        "Push-to-talk hands the ON switch to you - the ear hears only when you choose."
+      ],
+      "file": "/audio/voice/29c3c5b6b739c882.mp3"
+    },
+    {
+      "key": "edb99fd74ebca68a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A password in a recording isn't fully yours - change it, and keep the next one off the air.",
+      "lines": [
+        "A password in a recording isn't fully yours - change it, and keep the next one off the air."
+      ],
+      "file": "/audio/voice/edb99fd74ebca68a.mp3"
+    },
+    {
+      "key": "c25da28b5af1c891",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Patrol, point, flip together - that's how settings get right AND stay right.",
+      "lines": [
+        "Patrol, point, flip together - that's how settings get right AND stay right."
+      ],
+      "file": "/audio/voice/c25da28b5af1c891.mp3"
+    },
+    {
+      "key": "ffe00773e33277c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Answering back = ears. Even toys join the ears list - the Scout surprise of the week.",
+      "lines": [
+        "Answering back = ears. Even toys join the ears list - the Scout surprise of the week."
+      ],
+      "file": "/audio/voice/ffe00773e33277c6.mp3"
+    },
+    {
+      "key": "f672acbe3af15908",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First entry. You said Nova's name, and asked for your favourite song.",
+      "lines": [
+        "First entry. You said Nova's name, and asked for your favourite song."
+      ],
+      "file": "/audio/voice/f672acbe3af15908.mp3"
+    },
+    {
+      "key": "4a497e5eb1037502",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second entry, and nobody in the room said anything to Nova at all.",
+      "lines": [
+        "Second entry, and nobody in the room said anything to Nova at all."
+      ],
+      "file": "/audio/voice/4a497e5eb1037502.mp3"
+    },
+    {
+      "key": "acb6994ab57ce1dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Third entry. Somebody said its name during a loud disagreement about the washing up.",
+      "lines": [
+        "Third entry. Somebody said its name during a loud disagreement about the washing up."
+      ],
+      "file": "/audio/voice/acb6994ab57ce1dd.mp3"
+    },
+    {
+      "key": "7d1c7300aa7f9841",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last entry, and this one is the best one. Dad opened the diary on his phone and pressed delete all.",
+      "lines": [
+        "Last entry, and this one is the best one. Dad opened the diary on his phone and pressed delete all."
+      ],
+      "file": "/audio/voice/7d1c7300aa7f9841.mp3"
+    },
+    {
+      "key": "d3fc0eb473e54611",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The hallway, a moment ago and right now. Something in here has woken up.",
+      "lines": [
+        "The hallway, a moment ago and right now. Something in here has woken up."
+      ],
+      "file": "/audio/voice/d3fc0eb473e54611.mp3"
+    },
+    {
+      "key": "492e863e7d1f19db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The living room now. Look carefully at both pictures.",
+      "lines": [
+        "The living room now. Look carefully at both pictures."
+      ],
+      "file": "/audio/voice/492e863e7d1f19db.mp3"
+    },
+    {
+      "key": "86f6e087d3fce456",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The kitchen. Two pictures, a moment apart.",
+      "lines": [
+        "The kitchen. Two pictures, a moment apart."
+      ],
+      "file": "/audio/voice/86f6e087d3fce456.mp3"
+    },
+    {
+      "key": "d1f6ca581e279dd2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last corner, and this one matters most. A bedroom, a moment ago and right now.",
+      "lines": [
+        "Last corner, and this one matters most. A bedroom, a moment ago and right now."
+      ],
+      "file": "/audio/voice/d1f6ca581e279dd2.mp3"
     },
     {
       "key": "2c617f63bc579ecb",
@@ -40418,70 +42102,543 @@
       "file": "/audio/voice/709f6bf4041713fc.mp3"
     },
     {
-      "key": "edcaefa81754c0af",
+      "key": "151ce1b9f2f3cf49",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Dad grins, reads it, nods - and not one letter went out loud. Nova's diary caught nothing but the kettle boiling.",
-      "lines": [
-        "That's right!",
-        "Dad grins, reads it, nods - and not one letter went out loud. Nova's diary caught nothing but the kettle boiling."
-      ],
-      "file": "/audio/voice/edcaefa81754c0af.mp3"
-    },
-    {
-      "key": "0e62e7a98e8f08b0",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. Straight into the ears - maybe straight into the diary. A password inside a recording isn't fully yours anymore... time to change it.",
+      "text": "Not quite. A kettle boils water. There is no microphone anywhere in it.",
       "lines": [
         "Not quite.",
-        "Straight into the ears - maybe straight into the diary. A password inside a recording isn't fully yours anymore... time to change it."
+        "A kettle boils water. There is no microphone anywhere in it."
       ],
-      "file": "/audio/voice/0e62e7a98e8f08b0.mp3"
+      "file": "/audio/voice/151ce1b9f2f3cf49.mp3"
     },
     {
-      "key": "315abcbdf32e5d9b",
+      "key": "add5c5a658828957",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Party plans stay surprises when the only ears around are the people you invited. Grandma won't see it coming!",
-      "lines": [
-        "That's right!",
-        "Party plans stay surprises when the only ears around are the people you invited. Grandma won't see it coming!"
-      ],
-      "file": "/audio/voice/315abcbdf32e5d9b.mp3"
-    },
-    {
-      "key": "8ca1e50f3b27589b",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. Robo-Pup's ears caught the whole plan - and saved it. Days later, the recording is sitting right there in the toy's app for anyone to play. Toys with ears make terrible secret-keepers.",
+      "text": "Not quite. A lamp makes light and that is all. Nothing to hear with.",
       "lines": [
         "Not quite.",
-        "Robo-Pup's ears caught the whole plan - and saved it. Days later, the recording is sitting right there in the toy's app for anyone to play. Toys with ears make terrible secret-keepers."
+        "A lamp makes light and that is all. Nothing to hear with."
       ],
-      "file": "/audio/voice/8ca1e50f3b27589b.mp3"
+      "file": "/audio/voice/add5c5a658828957.mp3"
     },
     {
-      "key": "fe229e68cfb0ce6d",
+      "key": "95c22df6a4d7cd55",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! The club stays secret because the password never touched the air. Proper spy work, Cyber Hero.",
-      "lines": [
-        "That's right!",
-        "The club stays secret because the password never touched the air. Proper spy work, Cyber Hero."
-      ],
-      "file": "/audio/voice/fe229e68cfb0ce6d.mp3"
-    },
-    {
-      "key": "122c9b34ea4c8ab4",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. Now the TV heard it, the chat heard it, and half the street probably heard it too. A shouted secret isn't a secret - it's news.",
+      "text": "Not quite. You wind it up and it ticks. No microphone in there at all.",
       "lines": [
         "Not quite.",
-        "Now the TV heard it, the chat heard it, and half the street probably heard it too. A shouted secret isn't a secret - it's news."
+        "You wind it up and it ticks. No microphone in there at all."
       ],
-      "file": "/audio/voice/122c9b34ea4c8ab4.mp3"
+      "file": "/audio/voice/95c22df6a4d7cd55.mp3"
+    },
+    {
+      "key": "88cb83971028e462",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That is the helping part working exactly as it should. You asked, it wrote it down, it played the song.",
+      "lines": [
+        "That's right!",
+        "That is the helping part working exactly as it should. You asked, it wrote it down, it played the song."
+      ],
+      "file": "/audio/voice/88cb83971028e462.mp3"
+    },
+    {
+      "key": "044da692a5d853c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing went wrong here. You said its name on purpose, and it did the job you asked for.",
+      "lines": [
+        "Not quite.",
+        "Nothing went wrong here. You said its name on purpose, and it did the job you asked for."
+      ],
+      "file": "/audio/voice/044da692a5d853c0.mp3"
+    },
+    {
+      "key": "01f33f228fec3ef6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It is not writing all the time. This line is here because you called it, which is the ordinary way.",
+      "lines": [
+        "Not quite.",
+        "It is not writing all the time. This line is here because you called it, which is the ordinary way."
+      ],
+      "file": "/audio/voice/01f33f228fec3ef6.mp3"
+    },
+    {
+      "key": "f2fe8f9f0bbd845d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A word on the telly sounded close enough to Nova's name, so it woke up and wrote down what came next.",
+      "lines": [
+        "That's right!",
+        "A word on the telly sounded close enough to Nova's name, so it woke up and wrote down what came next."
+      ],
+      "file": "/audio/voice/f2fe8f9f0bbd845d.mp3"
+    },
+    {
+      "key": "6c1ec9d60996aea3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody spoke to Nova this time. The telly said something that sounded like its name, and that was enough.",
+      "lines": [
+        "Not quite.",
+        "Nobody spoke to Nova this time. The telly said something that sounded like its name, and that was enough."
+      ],
+      "file": "/audio/voice/6c1ec9d60996aea3.mp3"
+    },
+    {
+      "key": "e52901d2fc296fc0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nova is not broken. Waking on a word that sounds close is just what listening for a name is like.",
+      "lines": [
+        "Not quite.",
+        "Nova is not broken. Waking on a word that sounds close is just what listening for a name is like."
+      ],
+      "file": "/audio/voice/e52901d2fc296fc0.mp3"
+    },
+    {
+      "key": "f71995962afde4bb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Its name got said in the middle of the washing up row, so it woke and wrote the next bit down. It cannot tell what is private.",
+      "lines": [
+        "That's right!",
+        "Its name got said in the middle of the washing up row, so it woke and wrote the next bit down. It cannot tell what is private."
+      ],
+      "file": "/audio/voice/f71995962afde4bb.mp3"
+    },
+    {
+      "key": "1db124ec5ad695eb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it.",
+      "lines": [
+        "Not quite.",
+        "It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it."
+      ],
+      "file": "/audio/voice/1db124ec5ad695eb.mp3"
+    },
+    {
+      "key": "280f2d31fd745902",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It cannot tell a row from a song request. Its name was said, so the diary got a line.",
+      "lines": [
+        "Not quite.",
+        "It cannot tell a row from a song request. Its name was said, so the diary got a line."
+      ],
+      "file": "/audio/voice/280f2d31fd745902.mp3"
+    },
+    {
+      "key": "034d9a2564eda048",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing.",
+      "lines": [
+        "That's right!",
+        "The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing."
+      ],
+      "file": "/audio/voice/034d9a2564eda048.mp3"
+    },
+    {
+      "key": "49e0e49ae4b9781f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It does not tidy up on its own. Somebody went in and cleared it, which is exactly why knowing about it matters.",
+      "lines": [
+        "Not quite.",
+        "It does not tidy up on its own. Somebody went in and cleared it, which is exactly why knowing about it matters."
+      ],
+      "file": "/audio/voice/49e0e49ae4b9781f.mp3"
+    },
+    {
+      "key": "0a6763a34d856d44",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It can absolutely be deleted. Dad just did it, in about four taps.",
+      "lines": [
+        "Not quite.",
+        "It can absolutely be deleted. Dad just did it, in about four taps."
+      ],
+      "file": "/audio/voice/0a6763a34d856d44.mp3"
+    },
+    {
+      "key": "3d231ab7f99c85c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It does keep a copy once it wakes up. Pretending otherwise is not the fix.",
+      "lines": [
+        "Not quite.",
+        "It does keep a copy once it wakes up. Pretending otherwise is not the fix."
+      ],
+      "file": "/audio/voice/3d231ab7f99c85c0.mp3"
+    },
+    {
+      "key": "0df6e4dc8744af08",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is backwards. Without wifi it cannot do its job at all.",
+      "lines": [
+        "Not quite.",
+        "That is backwards. Without wifi it cannot do its job at all."
+      ],
+      "file": "/audio/voice/0df6e4dc8744af08.mp3"
+    },
+    {
+      "key": "429e61a8c2c2c6c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It is half-awake for its name, not taking down your whole day. The diary shows what it actually kept.",
+      "lines": [
+        "Not quite.",
+        "It is half-awake for its name, not taking down your whole day. The diary shows what it actually kept."
+      ],
+      "file": "/audio/voice/429e61a8c2c2c6c7.mp3"
+    },
+    {
+      "key": "0c304c94b00428d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! In the hallway its little light has come on, so the doorbell lens is awake and watching the step. That is exactly its job.",
+      "lines": [
+        "That's right!",
+        "In the hallway its little light has come on, so the doorbell lens is awake and watching the step. That is exactly its job."
+      ],
+      "file": "/audio/voice/0c304c94b00428d6.mp3"
+    },
+    {
+      "key": "85a9d89f3dd404ea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Coat hooks in the hallway look the same in both pictures, and they have no lens to wake up.",
+      "lines": [
+        "Not quite.",
+        "Coat hooks in the hallway look the same in both pictures, and they have no lens to wake up."
+      ],
+      "file": "/audio/voice/85a9d89f3dd404ea.mp3"
+    },
+    {
+      "key": "be31ae5db3f160b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That pile of post in the hallway has not moved and it never could. Compare the two pictures again.",
+      "lines": [
+        "Not quite.",
+        "That pile of post in the hallway has not moved and it never could. Compare the two pictures again."
+      ],
+      "file": "/audio/voice/be31ae5db3f160b4.mp3"
+    },
+    {
+      "key": "834f4df7a98eb08c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A hallway mirror is glass, so it is a fair guess. But glass is not a lens, and nothing about it changed.",
+      "lines": [
+        "Not quite.",
+        "A hallway mirror is glass, so it is a fair guess. But glass is not a lens, and nothing about it changed."
+      ],
+      "file": "/audio/voice/834f4df7a98eb08c.mp3"
+    },
+    {
+      "key": "4905e74944d9e888",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Over on the living room sofa arm, the tablet has its little green dot on, which means its camera just woke up. Somebody started a video call.",
+      "lines": [
+        "That's right!",
+        "Over on the living room sofa arm, the tablet has its little green dot on, which means its camera just woke up. Somebody started a video call."
+      ],
+      "file": "/audio/voice/4905e74944d9e888.mp3"
+    },
+    {
+      "key": "0ed9d3b929a6dae7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That lamp in the living room is lit in both pictures, so it did not change, and a bulb is not a lens.",
+      "lines": [
+        "Not quite.",
+        "That lamp in the living room is lit in both pictures, so it did not change, and a bulb is not a lens."
+      ],
+      "file": "/audio/voice/0ed9d3b929a6dae7.mp3"
+    },
+    {
+      "key": "f7f0a232e1618fc9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing has moved the living room plant, and nothing on it can wake up.",
+      "lines": [
+        "Not quite.",
+        "Nothing has moved the living room plant, and nothing on it can wake up."
+      ],
+      "file": "/audio/voice/f7f0a232e1618fc9.mp3"
+    },
+    {
+      "key": "f9fcd39cdce9094c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That living room speaker has ears, and you were right about that last game. This round is about eyes, and it looks the same in both.",
+      "lines": [
+        "Not quite.",
+        "That living room speaker has ears, and you were right about that last game. This round is about eyes, and it looks the same in both."
+      ],
+      "file": "/audio/voice/f9fcd39cdce9094c.mp3"
+    },
+    {
+      "key": "12b53c3fddedab26",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! In the kitchen a little cover has slid back off the laptop's lens. A cover moving is the clearest sign there is.",
+      "lines": [
+        "That's right!",
+        "In the kitchen a little cover has slid back off the laptop's lens. A cover moving is the clearest sign there is."
+      ],
+      "file": "/audio/voice/12b53c3fddedab26.mp3"
+    },
+    {
+      "key": "d8a37601c4c7560f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Still a kitchen kettle, still no lens. It cannot wake up because there is nothing in it to wake.",
+      "lines": [
+        "Not quite.",
+        "Still a kitchen kettle, still no lens. It cannot wake up because there is nothing in it to wake."
+      ],
+      "file": "/audio/voice/d8a37601c4c7560f.mp3"
+    },
+    {
+      "key": "c7d2bef12f7c6d81",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A kitchen radio plays sound out and has no eye at all. It looks identical in both pictures.",
+      "lines": [
+        "Not quite.",
+        "A kitchen radio plays sound out and has no eye at all. It looks identical in both pictures."
+      ],
+      "file": "/audio/voice/c7d2bef12f7c6d81.mp3"
+    },
+    {
+      "key": "926ced91626e1c2f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Those kitchen clock hands moved a minute, which is a clock doing its job. No lens, no light, no change that counts.",
+      "lines": [
+        "Not quite.",
+        "Those kitchen clock hands moved a minute, which is a clock doing its job. No lens, no light, no change that counts."
+      ],
+      "file": "/audio/voice/926ced91626e1c2f.mp3"
+    },
+    {
+      "key": "9c25970426231067",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That is a lens in a bedroom, pointing at a bed with its light on. This is the one you tell a grown-up about, straight away, every time.",
+      "lines": [
+        "That's right!",
+        "That is a lens in a bedroom, pointing at a bed with its light on. This is the one you tell a grown-up about, straight away, every time."
+      ],
+      "file": "/audio/voice/9c25970426231067.mp3"
+    },
+    {
+      "key": "82ebebdac059f585",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Bedroom books have no lens and these have not moved. Keep comparing.",
+      "lines": [
+        "Not quite.",
+        "Bedroom books have no lens and these have not moved. Keep comparing."
+      ],
+      "file": "/audio/voice/82ebebdac059f585.mp3"
+    },
+    {
+      "key": "815c327ae3957ff9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The bedroom night-light is glowing in both pictures. A light that only makes light is not a lens.",
+      "lines": [
+        "Not quite.",
+        "The bedroom night-light is glowing in both pictures. A light that only makes light is not a lens."
+      ],
+      "file": "/audio/voice/815c327ae3957ff9.mp3"
+    },
+    {
+      "key": "47ec7f81e864e825",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The bedroom poster is the same in both. Nothing on a wall can wake up.",
+      "lines": [
+        "Not quite.",
+        "The bedroom poster is the same in both. Nothing on a wall can wake up."
+      ],
+      "file": "/audio/voice/47ec7f81e864e825.mp3"
+    },
+    {
+      "key": "fa59e7669ae147f4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Covering it hides it from you, and the grown-up who can actually sort it never finds out.",
+      "lines": [
+        "Not quite.",
+        "Covering it hides it from you, and the grown-up who can actually sort it never finds out."
+      ],
+      "file": "/audio/voice/fa59e7669ae147f4.mp3"
+    },
+    {
+      "key": "3898ddf1a20ec07b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Unplugging it quietly leaves the same question unanswered: who put it there, and why?",
+      "lines": [
+        "Not quite.",
+        "Unplugging it quietly leaves the same question unanswered: who put it there, and why?"
+      ],
+      "file": "/audio/voice/3898ddf1a20ec07b.mp3"
+    },
+    {
+      "key": "36581a064ba93d6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This is the one thing in the week that is never a maybe. A lens at a bed always gets told.",
+      "lines": [
+        "Not quite.",
+        "This is the one thing in the week that is never a maybe. A lens at a bed always gets told."
+      ],
+      "file": "/audio/voice/36581a064ba93d6d.mp3"
+    },
+    {
+      "key": "400b37601709ca96",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Tea is not a secret. The rule is for the private sort, not for everything.",
+      "lines": [
+        "Not quite.",
+        "Tea is not a secret. The rule is for the private sort, not for everything."
+      ],
+      "file": "/audio/voice/400b37601709ca96.mp3"
+    },
+    {
+      "key": "7f9038aa37ba8fb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Gran already knows, and she is on the call anyway. That one stays where it is.",
+      "lines": [
+        "Not quite.",
+        "Gran already knows, and she is on the call anyway. That one stays where it is."
+      ],
+      "file": "/audio/voice/7f9038aa37ba8fb7.mp3"
+    },
+    {
+      "key": "ea6c8367056fe9a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Anything that answers you has to hear you first, so a talking toy has ears. That is knowing what listens.",
+      "lines": [
+        "That's right!",
+        "Anything that answers you has to hear you first, so a talking toy has ears. That is knowing what listens."
+      ],
+      "file": "/audio/voice/ea6c8367056fe9a0.mp3"
+    },
+    {
+      "key": "6b18013bfd0d51ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This one is about which things can hear at all. A toy that answers back has a microphone in it.",
+      "lines": [
+        "Not quite.",
+        "This one is about which things can hear at all. A toy that answers back has a microphone in it."
+      ],
+      "file": "/audio/voice/6b18013bfd0d51ff.mp3"
+    },
+    {
+      "key": "6fdb7d355f7bc68c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It woke on its name and kept what came next, which is the diary doing what a diary does. And a grown-up can clear it.",
+      "lines": [
+        "That's right!",
+        "It woke on its name and kept what came next, which is the diary doing what a diary does. And a grown-up can clear it."
+      ],
+      "file": "/audio/voice/6fdb7d355f7bc68c.mp3"
+    },
+    {
+      "key": "1c371290d4f944d5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing here is about ears or lenses. This is what the speaker KEPT once it woke up.",
+      "lines": [
+        "Not quite.",
+        "Nothing here is about ears or lenses. This is what the speaker KEPT once it woke up."
+      ],
+      "file": "/audio/voice/1c371290d4f944d5.mp3"
+    },
+    {
+      "key": "a8a606768ad79758",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A little light coming on beside a lens means a camera just woke up. Comparing a moment ago with right now is how you catch it.",
+      "lines": [
+        "That's right!",
+        "A little light coming on beside a lens means a camera just woke up. Comparing a moment ago with right now is how you catch it."
+      ],
+      "file": "/audio/voice/a8a606768ad79758.mp3"
+    },
+    {
+      "key": "c8c0f92f3d5c2f04",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A green dot by a glass circle is a camera, not a microphone. This one is about eyes.",
+      "lines": [
+        "Not quite.",
+        "A green dot by a glass circle is a camera, not a microphone. This one is about eyes."
+      ],
+      "file": "/audio/voice/c8c0f92f3d5c2f04.mp3"
+    },
+    {
+      "key": "f146c366c83e13f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Saying it out loud records it just as surely as typing it, so you walk through and tell her in the other room.",
+      "lines": [
+        "That's right!",
+        "Saying it out loud records it just as surely as typing it, so you walk through and tell her in the other room."
+      ],
+      "file": "/audio/voice/f146c366c83e13f8.mp3"
+    },
+    {
+      "key": "856b9e78beca1be6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You already know a password is private. This is about the room you say it in.",
+      "lines": [
+        "Not quite.",
+        "You already know a password is private. This is about the room you say it in."
+      ],
+      "file": "/audio/voice/856b9e78beca1be6.mp3"
+    },
+    {
+      "key": "3ad839577a360453",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! One setting makes that speaker tidy its own diary every three months, and you flip it with a grown-up in about ten minutes.",
+      "lines": [
+        "That's right!",
+        "One setting makes that speaker tidy its own diary every three months, and you flip it with a grown-up in about ten minutes."
+      ],
+      "file": "/audio/voice/3ad839577a360453.mp3"
+    },
+    {
+      "key": "481326cf5096f99c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Knowing that speaker keeps a diary is one power. Doing something about it is this one.",
+      "lines": [
+        "Not quite.",
+        "Knowing that speaker keeps a diary is one power. Doing something about it is this one."
+      ],
+      "file": "/audio/voice/481326cf5096f99c.mp3"
     },
     {
       "key": "023ac240ee969d88",
