@@ -586,9 +586,16 @@ export default function HeroCinematicV3() {
                 />
               </div>
 
-              {/* base thickness — front edge, with machined port cutouts */}
+              {/* base thickness — front edge, with machined port cutouts.
+                  REMOVED on the light machine: its plane is rotated outward
+                  from the deck, so in screen space it projects down and to
+                  the left past the machine's silhouette. No horizontal inset
+                  can contain that, because the overhang comes from the
+                  rotation, not the width. On a black machine it was invisible
+                  against a black page; on silver it read as a tray. */}
               <div
                 style={{
+                  display: "none",
                   position: "absolute",
                   /* The port strip, not a tray. Inset 20px still left its
                    * flat ends outside the machine's silhouette once the
