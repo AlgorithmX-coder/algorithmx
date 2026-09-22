@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeUp } from "./landing-v2/utilities";
+import { sectionMark } from "@/app/components/sectionMark";
 
 /**
  * ProofBand — the four accreditations, given a section of their own.
@@ -82,7 +83,9 @@ export default function ProofBand({ tone = "night" }: { tone?: "night" | "sand" 
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <FadeUp>
           <div className="lv2-proof">
-            <p className="lv2-proof-kicker">{"// Accredited, certified and backed"}</p>
+            <p style={{ margin: "0 0 18px", textAlign: "left" }}>
+              <span style={sectionMark}>{"// Accredited, certified and backed"}</span>
+            </p>
             <ul className="lv2-proof-cols">
               {MARKS.map((m) => (
                 <li key={m.name} className="lv2-proof-col">

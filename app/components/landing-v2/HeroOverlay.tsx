@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { sectionMark } from "@/app/components/sectionMark";
 
 /**
  * HeroOverlay. The static brand UI over the cinematic: eyebrow +
@@ -21,8 +22,10 @@ import Link from "next/link";
  * the platform's ambition before the headline lands. */
 const EYEBROW = "// SIX TRACKS  ·  SKILLS THE AI ERA NEEDS";
 const HEADLINE = "Technology education for every stage of life.";
+/* Owner 2026-09-22: the old line spent half its length on courses that
+   are not out yet. It now says what is live and how it is taught. */
 const SUBLINE =
-  "Six technology streams, from age 6 all the way through to adulthood. Cyber Security is live today. The other five are classified until launch, unlocking over the coming months.";
+  "Cyber security taught properly, from age 6 all the way through to adulthood. One platform that grows with the learner, built around real projects.";
 
 export default function HeroOverlay() {
   /* The persistent ALGORITHMX wordmark previously rendered here was
@@ -102,7 +105,7 @@ export default function HeroOverlay() {
             text at 11px; it now takes the same lit-pill chrome as the nav
             telemetry and the LIVE NOW mark, which is the loudest the page
             gets without competing with the headline. */}
-        <span className="lv2-hero-eyebrow">
+        <span className="lv2-hero-eyebrow" style={sectionMark}>
           <span aria-hidden className="lv2-hero-eyebrow-dot" />
           {EYEBROW}
         </span>

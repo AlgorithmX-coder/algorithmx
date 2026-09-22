@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp } from "./utilities";
+import { sectionMark } from "@/app/components/sectionMark";
 
 /**
  * FAQ — "Before you start." A drill-down accordion of the questions people
@@ -109,19 +110,8 @@ export default function FAQ() {
     >
       <div style={{ position: "relative", maxWidth: 880, margin: "0 auto" }}>
         <FadeUp>
-          <p
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: "0.32em",
-              textTransform: "uppercase",
-              color: "var(--lv2-cyan)",
-              marginBottom: 16,
-              textAlign: "center",
-            }}
-          >
-            // QUESTIONS
+          <p style={{ margin: "0 0 18px", textAlign: "center" }}>
+            <span style={sectionMark}>// QUESTIONS</span>
           </p>
         </FadeUp>
 

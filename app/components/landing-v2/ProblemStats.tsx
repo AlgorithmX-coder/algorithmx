@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { useInView } from "framer-motion";
+import { sectionMark } from "@/app/components/sectionMark";
 import { FadeUp, useHoverCount } from "./utilities";
 
 /**
@@ -84,29 +85,7 @@ export default function ProblemStats() {
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <FadeUp>
           <p style={{ textAlign: "center", margin: "0 0 30px" }}>
-            {/* Owner: highlight this. It takes the same lit pill the hero
-                eyebrow wears, so the page has one way of marking a section
-                rather than two. An inline-flex p cannot be centred by its
-                own text-align, so the pill lives on a span inside it. */}
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                padding: "7px 16px",
-                borderRadius: 999,
-                border: "1px solid rgba(10,112,133,0.34)",
-                background: "rgba(10,112,133,0.1)",
-                boxShadow: "0 8px 22px -14px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.8)",
-                fontFamily: "var(--lv2-font-mono)",
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: "0.26em",
-                textTransform: "uppercase",
-                color: "#075a6b",
-              }}
-            >
-              // THE STATE OF PLAY
-            </span>
+            <span style={sectionMark}>{"// Today's risks, tomorrow's jobs"}</span>
           </p>
         </FadeUp>
 

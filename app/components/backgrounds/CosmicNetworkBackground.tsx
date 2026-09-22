@@ -130,7 +130,7 @@ type SkyPalette = {
 
 const NIGHT_SKY: SkyPalette = {
   base: ["#060a16", "#05070f", "#03040a"],
-  clouds: [[150, 95, 235], [60, 150, 245], [195, 80, 205], [70, 120, 235], [40, 70, 170]],
+  clouds: [[150, 95, 235], [60, 150, 245], [195, 80, 205], [70, 120, 235], [40, 70, 170], [60, 220, 200], [255, 150, 90]],
   blend: "lighter",
   hud: (a) => `rgba(130,185,255,${a})`,
   mote: (a) => `rgba(200,220,255,${a})`,
@@ -144,8 +144,13 @@ const NIGHT_SKY: SkyPalette = {
 
 const SAND_SKY: SkyPalette = {
   base: ["#f8f4ec", "#f3ede4", "#eee7db"],
-  /* the same hues, taken down far enough to read as ink rather than light */
-  clouds: [[96, 70, 150], [36, 84, 132], [120, 58, 112], [44, 74, 140], [30, 48, 96]],
+  /* Owner: more colours in this galaxy. Four of the five were a blue,
+     which is why it read as one wash. These are seven jewel hues spread
+     round the wheel (violet, teal, plum, indigo, navy, emerald, amber),
+     each taken down far enough to read as ink rather than light, and
+     their mean darkness held at the old set's so the page does not get
+     heavier for having more in it. */
+  clouds: [[96, 70, 150], [16, 92, 106], [130, 42, 104], [44, 74, 140], [30, 48, 96], [20, 100, 74], [142, 88, 26]],
   blend: "multiply",
   hud: (a) => `rgba(26,64,82,${a})`,
   mote: (a) => `rgba(44,52,68,${a})`,
@@ -283,11 +288,15 @@ function paintCosmicBase(ctx: CanvasRenderingContext2D, w: number, h: number, ti
    * the CSS NebulaGlows + the particle knots) */
   type Cloud = { x: number; y: number; r: number; col: [number, number, number]; a: number };
   const clouds: Cloud[] = [
-    { x: w * 0.82, y: h * 0.15, r: min * 0.34, col: SKY.clouds[0], a: 0.3 },
-    { x: w * 0.15, y: h * 0.64, r: min * 0.34, col: SKY.clouds[1], a: 0.3 },
-    { x: w * 0.52, y: h * 0.74, r: min * 0.22, col: SKY.clouds[2], a: 0.16 },
-    { x: w * 0.8, y: h * 0.62, r: min * 0.4, col: SKY.clouds[3], a: 0.16 },
-    { x: w * 0.45, y: h * 0.45, r: min * 0.55, col: SKY.clouds[4], a: 0.08 },
+    { x: w * 0.82, y: h * 0.15, r: min * 0.34, col: SKY.clouds[0], a: 0.22 },
+    { x: w * 0.15, y: h * 0.64, r: min * 0.34, col: SKY.clouds[1], a: 0.22 },
+    { x: w * 0.52, y: h * 0.74, r: min * 0.22, col: SKY.clouds[2], a: 0.15 },
+    { x: w * 0.8, y: h * 0.62, r: min * 0.4, col: SKY.clouds[3], a: 0.14 },
+    { x: w * 0.45, y: h * 0.45, r: min * 0.55, col: SKY.clouds[4], a: 0.07 },
+    /* the two new hues go where the canvas was empty, so the extra colour
+       shows up as more of the sky lit rather than a denser middle */
+    { x: w * 0.12, y: h * 0.16, r: min * 0.3, col: SKY.clouds[5], a: 0.11 },
+    { x: w * 0.68, y: h * 0.38, r: min * 0.26, col: SKY.clouds[6], a: 0.09 },
   ];
   ctx.globalCompositeOperation = SKY.blend;
   for (const c of clouds) {

@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 
-import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
+import CourseLockup, { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
+import { sectionMark } from "@/app/components/sectionMark";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { FadeUp } from "./utilities";
@@ -228,18 +229,8 @@ export default function SubjectShowcase() {
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <FadeUp>
-            <p
-              style={{
-                fontFamily: "var(--lv2-font-mono)",
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: "0.32em",
-                textTransform: "uppercase",
-                color: "rgba(17,22,38,0.58)",
-                marginBottom: 14,
-              }}
-            >
-              // SIX STREAMS //
+            <p style={{ margin: "0 0 18px", textAlign: "center" }}>
+              <span style={sectionMark}>// SIX STREAMS //</span>
             </p>
           </FadeUp>
           <FadeUp delay={0.05}>
@@ -284,19 +275,8 @@ export default function SubjectShowcase() {
            *  are: new courses, releasing soon, decrypting on launch day. */}
           <FadeUp delay={0.22}>
             <div style={{ margin: "0 0 26px" }}>
-              <p
-                style={{
-                  fontFamily: "var(--lv2-font-mono)",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.26em",
-                  textTransform: "uppercase",
-                  color: "var(--lv2-cyan)",
-                  margin: 0,
-                  textShadow: "0 0 18px rgba(0,229,255,0.35)",
-                }}
-              >
-                {"// INCOMING · NEW STREAMS DETECTED"}
+              <p style={{ margin: "0 0 18px", textAlign: "left" }}>
+                <span style={sectionMark}>{"// INCOMING · NEW STREAMS DETECTED"}</span>
               </p>
               <h3
                 style={{
@@ -750,13 +730,18 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
 
               <ul className="lv2-course-marks">
                 {CYBER_COURSES.map((c) => (
-                  <li
-                    key={c.id}
-                    className={c.live ? "lv2-course-mark" : "lv2-course-mark lv2-course-mark-soon"}
-                    style={{ ["--lv2-mark" as string]: c.accent }}
-                  >
-                    <CourseLockup id={c.id} size={0.74} tone="sand" />
-                    <span>{c.live ? `Ages ${c.ages}` : `Ages ${c.ages} · soon`}</span>
+                  /* Owner: put the actual links to these courses' landing
+                     pages on the chips. The anchor takes the whole chip
+                     rather than wrapping the wordmark, so the age line is
+                     part of the target too. */
+                  <li key={c.id} style={{ ["--lv2-mark" as string]: c.accent }}>
+                    <Link
+                      href={COURSE_HREF[c.id]}
+                      className={c.live ? "lv2-course-mark" : "lv2-course-mark lv2-course-mark-soon"}
+                    >
+                      <CourseLockup id={c.id} size={0.74} tone="sand" />
+                      <span>{c.live ? `Ages ${c.ages}` : `Ages ${c.ages} · soon`}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -768,27 +753,24 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         <div
           className="lv2-featured-project"
           style={{
-            border: `1px solid ${a}3a`,
-            background: `linear-gradient(180deg, ${a}14, transparent 90%)`,
+            /* Owner: it all seems too white and it is not clear. An 8%
+               accent wash on a near-white card is not a second surface, so
+               the panel is cut into the card instead: recessed ground, a
+               real edge, and an inner shadow at the top so it reads as
+               depth rather than another tint. */
+            border: `1px solid ${a}33`,
+            background: "linear-gradient(180deg, #f1e9dc, #ede4d4)",
+            boxShadow: `inset 0 2px 5px -2px rgba(86,68,45,0.3), inset 0 0 0 1px rgba(255,255,255,0.5)`,
             borderRadius: 16,
-            padding: "28px 26px",
+            padding: "26px 24px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             gap: 14,
           }}
         >
-          <span
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: "0.24em",
-              textTransform: "uppercase",
-              color: a,
-            }}
-          >
-            {stream.id === "cybersecurity" ? "// What you walk away with" : "// FLAGSHIP PROJECT"}
+          <span style={{ ...sectionMark, alignSelf: "flex-start", background: a }}>
+            {stream.id === "cybersecurity" ? "// Proof you can show" : "// Flagship project"}
           </span>
 
           {stream.id === "cybersecurity" ? (
@@ -845,6 +827,11 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           gap: 8px;
         }
         .lv2-course-mark {
+          text-decoration: none;
+          color: inherit;
+          cursor: pointer;
+          transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.2s ease, border-color 0.2s ease;
           display: flex;
           flex-direction: column;
           gap: 6px;
@@ -867,6 +854,15 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
            as the lighting failing on that half of the row. They are lit
            like the other two now; the word "soon" in each chip is what
            says they are not open yet. */
+        .lv2-course-mark:hover {
+          transform: translateY(-2px);
+          border-color: var(--lv2-mark);
+          box-shadow: 0 16px 34px -20px rgba(86,68,45,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
+        }
+        .lv2-course-mark:focus-visible {
+          outline: 2px solid var(--lv2-mark);
+          outline-offset: 3px;
+        }
         .lv2-course-mark-soon { opacity: 1; }
 
         /* Owner picked this treatment from a board of ten (2026-09-20):
@@ -888,7 +884,8 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           flex-direction: column;
           gap: 4px;
           padding-bottom: 13px;
-          border-bottom: 1px solid rgba(159,245,255,0.09);
+          /* was a neon hairline at 9%, which is nothing on paper */
+          border-bottom: 1px solid rgba(86,68,45,0.18);
         }
         .lv2-flagships li:last-child {
           padding-bottom: 0;
@@ -918,8 +915,12 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           margin-top: 2px;
           padding: 3px 8px;
           border-radius: 6px;
-          background: rgba(244,239,231,0.08);
-          border: 1px solid rgba(17,22,38,0.07);
+          /* The plate was a pale wash at 8%, built to sit on black. On
+             the recessed panel it needs to come the other way: paper
+             raised off the cut-in ground, with an edge to prove it. */
+          background: #fffdf8;
+          border: 1px solid rgba(86,68,45,0.2);
+          box-shadow: 0 1px 2px rgba(86,68,45,0.12);
           font-family: var(--lv2-font-mono);
           font-size: 7.5px;
           font-weight: 700;
@@ -1021,7 +1022,9 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
 
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
         <HexIcon accent={a} icon={LOCK_ICON} size={38} />
-        <StatusPill accent={a} status="ENCRYPTED" live={false} />
+        {/* Owner: put unlocks soon. "ENCRYPTED" described the graphic;
+            this says what it means for the reader. */}
+        <StatusPill accent={a} status="UNLOCKS SOON" live={false} />
       </div>
 
       {/* Ciphertext where the course name used to be. */}

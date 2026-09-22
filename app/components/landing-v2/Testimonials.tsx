@@ -1,6 +1,7 @@
 "use client";
 
 import { TRUST_LOGOS } from "./data";
+import { sectionMark } from "@/app/components/sectionMark";
 import { FadeUp, Marquee } from "./utilities";
 
 /**
@@ -46,18 +47,8 @@ export default function Testimonials() {
         }}
       >
         <FadeUp>
-          <p
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: "0.32em",
-              textTransform: "uppercase",
-              color: "rgba(17,22,38,0.58)",
-              marginBottom: 12,
-            }}
-          >
-            {"// THE REAL TOOLKIT"}
+          <p style={{ margin: "0 0 18px", textAlign: "center" }}>
+            <span style={sectionMark}>{"// THE REAL TOOLKIT"}</span>
           </p>
         </FadeUp>
         <FadeUp delay={0.05}>

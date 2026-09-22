@@ -107,13 +107,15 @@ export default function LandingV2() {
       }
 
       /* Buttons: a bright cyan fill went pale against sand, so the primary
-         becomes the deep teal with paper on it. */
-      .lv2-nav-cta, .lv2-hero-cta-primary {
+         becomes the deep teal with paper on it. The nav's CTA is the nav's
+         own business now (see Nav.tsx's sand tone), so that /schools
+         inherits it too; this is the hero's. */
+      .lv2-hero-cta-primary {
         background: #0a7085 !important;
         color: #fffdfa !important;
         box-shadow: 0 10px 26px -14px rgba(10,112,133,0.85) !important;
       }
-      .lv2-nav-cta *, .lv2-hero-cta-primary * { color: #fffdfa !important; }
+      .lv2-hero-cta-primary * { color: #fffdfa !important; }
 
       /* Glow, for paper. A halo works on black by adding light; sand has no
          darkness to bloom into, so the same idea becomes a saturated colour
@@ -129,11 +131,6 @@ export default function LandingV2() {
           0 18px 42px -12px rgba(10,112,133,0.9),
           0 0 0 1px rgba(10,112,133,0.4),
           inset 0 1px 0 rgba(255,255,255,0.55) !important;
-      }
-      .lv2-nav-cta {
-        box-shadow:
-          0 10px 26px -12px rgba(10,112,133,0.8),
-          inset 0 1px 0 rgba(255,255,255,0.4) !important;
       }
       .lv2-hero-eyebrow {
         box-shadow:
@@ -182,9 +179,9 @@ export default function LandingV2() {
       .trial-sand path[fill="#ffb347"] { fill: #9a5f00 !important; }
       .trial-sand path[fill="#22D3EE"], .trial-sand circle[fill="#22D3EE"] { fill: #0a6675 !important; }
 
-      /* The CTA keeps the bright cyan token for its fill, so it is restated
-         after the token override above. */
-      .lv2-nav-cta, .lv2-hero-cta-primary { background: #0a7085 !important; }
+      /* The hero CTA keeps the bright cyan token for its fill, so it is
+         restated after the token override above. */
+      .lv2-hero-cta-primary { background: #0a7085 !important; }
 
       /* The NCSC crest is white artwork. On a dark page it needed nothing;
          on sand it disappeared entirely, so it gets its own dark plate

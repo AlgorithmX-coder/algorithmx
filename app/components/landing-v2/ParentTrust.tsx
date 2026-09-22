@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeUp } from "./utilities";
+import { sectionMark } from "@/app/components/sectionMark";
 
 /**
  * "Why AlgorithmX" — the six promises, rewritten by the owner 2026-09-20.
@@ -107,19 +108,8 @@ export default function ParentTrust() {
         }}
       >
         <FadeUp>
-          <p
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: "0.32em",
-              textTransform: "uppercase",
-              color: "rgba(17,22,38,0.58)",
-              marginBottom: 18,
-              textAlign: "center",
-            }}
-          >
-            // WHY ALGORITHMX
+          <p style={{ margin: "0 0 18px", textAlign: "center" }}>
+            <span style={sectionMark}>// WHY ALGORITHMX</span>
           </p>
         </FadeUp>
 

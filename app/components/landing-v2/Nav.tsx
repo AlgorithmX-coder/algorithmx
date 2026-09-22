@@ -504,6 +504,70 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         nav[data-tone="sand"] {
           --lv2-word-flash: rgba(20, 22, 29, 0.32);
         }
+        /* The CTA was being recoloured by the homepage's own page-scoped
+           CSS, which is why /schools still showed the old bright cyan. It
+           belongs to the tone, so both pages get it from one place. */
+        nav[data-tone="sand"] :global(.lv2-nav-cta) {
+          background: #0a7085 !important;
+          color: #fffdfa !important;
+          box-shadow: 0 10px 26px -12px rgba(10, 112, 133, 0.85),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-nav-cta *) {
+          color: #fffdfa !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-nav-cta):hover {
+          box-shadow: 0 14px 32px -12px rgba(10, 112, 133, 1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+        }
+
+        /* Owner: the telemetry needs to stand out more. It was glass over
+           glass with no edge anywhere, and its dividers, glows and bars
+           were still neon values that vanish on paper. It gets a real
+           housing and darker labels, but no extra colour: this is ambient
+           status, and the CTA beside it has to stay the loudest thing. */
+        nav[data-tone="sand"] :global(.lv2-tel-shell) {
+          border: 1px solid rgba(70, 58, 44, 0.18) !important;
+          background: linear-gradient(180deg, #fffdf8, #f7f2e8) !important;
+          box-shadow: 0 6px 16px -12px rgba(86, 68, 45, 0.55),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-label) {
+          color: rgba(43, 35, 24, 0.72) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-num),
+        nav[data-tone="sand"] :global(.lv2-tel-latency) {
+          color: #0a7085 !important;
+          text-shadow: none !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-online) {
+          text-shadow: none !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-dot) {
+          box-shadow: 0 0 0 3px rgba(14, 122, 69, 0.16) !important;
+        }
+        /* The scan shimmer was white light sweeping a dark capsule; on a
+           near-white one it is invisible, so it sweeps a shadow instead. */
+        nav[data-tone="sand"] :global(.lv2-tel-scan) {
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(70, 58, 44, 0.07),
+            transparent
+          ) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-div) {
+          background: linear-gradient(
+            180deg,
+            transparent,
+            rgba(70, 58, 44, 0.3),
+            transparent
+          ) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-bars i) {
+          background: #0a7085 !important;
+          box-shadow: none !important;
+        }
         /* Owner: make these stand out. A grey outline pill reads as
            furniture next to a solid primary, so they become tinted
            secondary buttons: a teal wash, a teal edge, a teal label and
@@ -515,6 +579,11 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           background: rgba(10, 112, 133, 0.16) !important;
           color: #075a6b !important;
           font-weight: 700;
+          /* Owner: put these in glowing fonts. A halo works on black by
+             adding light; sand has no darkness to bloom into, so the glow
+             is a teal bloom carried by the letterforms themselves, over a
+             thin white lift that keeps them crisp on the wash. */
+          text-shadow: 0 0 10px rgba(10, 112, 133, 0.55), 0 1px 0 rgba(255, 255, 255, 0.6) !important;
           box-shadow: 0 6px 16px -12px rgba(10, 112, 133, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
         }
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover),
@@ -522,6 +591,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           border-color: rgba(10, 112, 133, 0.75) !important;
           background: rgba(10, 112, 133, 0.26) !important;
           color: #05454f !important;
+          text-shadow: 0 0 14px rgba(10, 112, 133, 0.85), 0 1px 0 rgba(255, 255, 255, 0.6) !important;
           box-shadow: 0 8px 20px -12px rgba(10, 112, 133, 1), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
         }
         :global(.lv2-nav-secondary) {

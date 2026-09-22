@@ -5,6 +5,22 @@
  */
 export type LockupId = "heroes" | "explorers" | "ops" | "pro";
 
+/**
+ * Where each mark points. One map, because both landing pages show the
+ * same four chips and they must not drift apart.
+ *
+ * Explorers goes to /cyberexplorers (the product page), not /explorers,
+ * which is the playable mission app. /ops carries noindex because the
+ * name is pending trademark clearance; it is a public page and a link to
+ * it is fine, the noindex is what keeps it out of search.
+ */
+export const COURSE_HREF: Record<LockupId, string> = {
+  heroes: "/cyberheroes",
+  explorers: "/cyberexplorers",
+  ops: "/ops",
+  pro: "/pro",
+};
+
 const ROW: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",

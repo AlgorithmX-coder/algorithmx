@@ -9,7 +9,8 @@ import SchoolsGlobe from "@/app/schools/SchoolsGlobe";
 import ProofBand from "@/app/components/ProofBand";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
-import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
+import CourseLockup, { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
+import { sectionMark } from "@/app/components/sectionMark";
 import EnquiryForm from "./EnquiryForm";
 import ProductTabs, { shotSet, shotSrc } from "./ProductTabs";
 import { PHASES, type Phase } from "./phases";
@@ -24,15 +25,9 @@ import { PHASES, type Phase } from "./phases";
  * remembered per browser.
  */
 
-const eyebrow: React.CSSProperties = {
-  margin: 0,
-  fontFamily: "var(--lv2-font-mono)",
-  fontSize: 12,
-  fontWeight: 700,
-  letterSpacing: "0.3em",
-  textTransform: "uppercase",
-  color: "rgb(10,112,133)",
-};
+/* Every eyebrow on this page takes the shared section mark, the same one
+   the homepage uses. Ten of them come from this constant. */
+const eyebrow: React.CSSProperties = sectionMark;
 
 const h2: React.CSSProperties = {
   margin: "14px 0 0",
@@ -461,9 +456,12 @@ export default function SchoolsLanding() {
                 <p className="sch-marks-label">{"// One platform, four courses"}</p>
                 <ul className="sch-marks-row">
                   {COURSE_MARKS.map((m) => (
-                    <li key={m.id} className="sch-mark" style={{ ["--sch-accent" as string]: m.accent }}>
-                      <CourseLockup id={m.id} size={0.82} tone="sand" />
-                      <span className="sch-mark-age">{m.ages}</span>
+                    /* Same links as the homepage chips, from the same map. */
+                    <li key={m.id} style={{ ["--sch-accent" as string]: m.accent }}>
+                      <Link href={COURSE_HREF[m.id]} className="sch-mark">
+                        <CourseLockup id={m.id} size={0.82} tone="sand" />
+                        <span className="sch-mark-age">{m.ages}</span>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -951,6 +949,10 @@ export default function SchoolsLanding() {
           gap: 10px;
         }
         .sch-mark {
+          text-decoration: none;
+          color: inherit;
+          cursor: pointer;
+          transition: transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s ease, border-color .2s ease;
           display: flex;
           flex-direction: column;
           gap: 7px;
@@ -960,6 +962,12 @@ export default function SchoolsLanding() {
           border: 1px solid rgba(20,22,29,0.14);
           border-left: 2px solid var(--sch-accent);
         }
+        .sch-mark:hover {
+          transform: translateY(-2px);
+          border-color: var(--sch-accent);
+          box-shadow: 0 16px 34px -20px rgba(86,68,45,0.7);
+        }
+        .sch-mark:focus-visible { outline: 2px solid var(--sch-accent); outline-offset: 3px; }
         .sch-mark-age {
           font-family: var(--lv2-font-mono);
           font-size: 10px;

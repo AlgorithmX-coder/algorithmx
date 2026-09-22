@@ -124,7 +124,7 @@ export default function ScrollFormObjects({ tone = "night" }: { tone?: "night" |
        * fighting foreground text. */
       /* ink on paper needs more weight than light on black to read as
          the same whisper */
-      const codeOp = clamp01((P - 0.12) / 0.06) * (onSand ? 0.52 : 0.3);
+      const codeOp = clamp01((P - 0.12) / 0.06) * (onSand ? 0.38 : 0.3);
       codeWrap.style.opacity = String(codeOp);
       codeWrap.style.transform = `translateY(-50%) translateX(${(1 - smooth(clamp01((P - 0.12) / 0.07))) * -26}px)`;
       const shown = codeP * lines.length;
@@ -189,6 +189,21 @@ export default function ScrollFormObjects({ tone = "night" }: { tone?: "night" |
           fontSize: 13.5,
           lineHeight: "1.62em",
           textShadow: onSand ? "none" : "0 1px 12px rgba(2,4,10,0.95), 0 0 2px rgba(2,4,10,0.9)",
+          /* Owner: things are not clear enough. On black the typed code
+             sat behind copy as a glow and read as depth; as ink on paper
+             the same lines read as a second column of text through the
+             first. The panel starts in the left gutter and runs under the
+             content column, so it is masked away across that overlap: it
+             stays legible where there is nothing over it and thins to
+             nothing where section copy begins. */
+          ...(onSand
+            ? {
+                maskImage:
+                  "linear-gradient(90deg, #000 0%, #000 34%, rgba(0,0,0,0.35) 66%, transparent 94%)",
+                WebkitMaskImage:
+                  "linear-gradient(90deg, #000 0%, #000 34%, rgba(0,0,0,0.35) 66%, transparent 94%)",
+              }
+            : null),
         }}
       >
         {/* glowing left accent rule (replaces the panel) */}
