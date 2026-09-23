@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -104,6 +104,19 @@ const RETHEME_ALLOWED = {
   // SEQUENCE, which no other week's is, and it is the right shape because
   // this week's whole lesson is an order.
   18: ["HookSort", "ReplyCards", "StepOrder (review)"], // The Charging Rack (W14 house), The Balloons (W14/W16 cards), The Lock Master’s Routine (W2 hero trail)
+  // W19's signature is CONVERTED and RE-VERBED: hearthLoom used to drag a
+  // thread from a defence charm to the family member it fitted, and that
+  // match-the-charm verb is what SignBingo (W1/W6/W14) and MemoryMatch
+  // (W1/W7/W13) spend their whole caps on. It now judges a house rule for
+  // FAIRNESS, which nothing else does. The three charged here each take
+  // their third and final use: ClueStamper turned outward (the child walks
+  // somebody ELSE through the tells rather than spotting them alone),
+  // FirewallBuilder on its wall, which is not borrowed paint because this
+  // week is NAMED after the wall, and AccountRescue's moves skin for the
+  // review. Its concept 4 is new ground entirely: nineteen weeks of
+  // prevention and not one minute on what a child does once it has already
+  // gone wrong.
+  19: ["ClueStamper", "FirewallBuilder", "AccountRescue (review)"], // The Kitchen Table (W3/W8 stamper), The Morning After Wall (W4/W10), The Family Rescue Board (W5/W11)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

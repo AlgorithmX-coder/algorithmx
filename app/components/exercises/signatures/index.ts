@@ -215,8 +215,31 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
     },
     { ssr: false },
   ),
-  // Week 19 · Family Firewall — weave learned defences to each family member.
-  hearthLoom: dynamic(() => import("./HearthLoom"), { ssr: false }),
+  // Week 19 . Family Firewall - judge each proposed house rule: does it go in
+  // the family quilt, or does it single somebody out?
+  // Rebuilt to the Learn-Loop standard (data-driven, TAP-ONLY, untimed) AND
+  // RE-VERBED. The original dragged a glowing thread from a defence charm to
+  // the family member it fitted: a drag on SVG lines, and a match-the-charm
+  // verb that SignBingo and MemoryMatch already spend their whole three-use
+  // caps on. It now judges a rule for FAIRNESS, which nothing else does. Its
+  // onComplete(score) no longer fits this registry, so this adapter keeps the
+  // legacy mount compiling on the built-in fallback rules.
+  hearthLoom: dynamic(
+    async () => {
+      const { default: HearthLoom } = await import("./HearthLoom");
+      function HearthLoomSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(HearthLoom, {
+          rules: [],
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      HearthLoomSignature.displayName = "HearthLoomSignature";
+      return HearthLoomSignature;
+    },
+    { ssr: false },
+  ),
   // Week 20 · Graduation — Simon echo of all twenty week emblems.
   encoreOfTwenty: dynamic(() => import("./EncoreOfTwenty"), { ssr: false }),
 };

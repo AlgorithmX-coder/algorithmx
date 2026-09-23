@@ -263,6 +263,29 @@ const ENGINES = {
     wrong: fld(b, "note"),
     only: "wrong",
   })),
+  // Week 19 engines (2026-09-23). ExplainIt and SpeakUp speak exactly ONE
+  // side per option: the good one speaks `why`, the others `explanation`,
+  // so a line in the wrong field is silent with a perfectly full field.
+  explainIt: (span) => objs(span, "questions").flatMap((q) =>
+    objs(q, "answers").map((o) =>
+      flag(o, "good")
+        ? { label: "answer " + (fld(o, "id") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  clumsy answer " + (fld(o, "id") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
+  speakUp: (span) => objs(span, "scenes").flatMap((sc) =>
+    objs(sc, "lines").map((o) =>
+      flag(o, "works")
+        ? { label: "line " + (fld(o, "id") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  other line " + (fld(o, "id") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
+  // The loom carries BOTH sides on one rule.
+  hearthLoom: (span) => objs(span, "rules").map((r) => ({
+    label: "rule " + (fld(r, "id") ?? ""),
+    right: fld(r, "why"),
+    wrong: fld(r, "explanation"),
+  })),
   whoseIsIt: (span) => objs(span, "things").map((t) => ({
     label: "thing " + (fld(t, "label") ?? ""),
     right: fld(t, "why"),
