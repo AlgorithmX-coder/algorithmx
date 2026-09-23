@@ -79,42 +79,6 @@ export const WEEK_15: WeekContent = {
       ],
     },
 
-      // SIGNATURE: The Proof Scale (bespoke mini-game unique to this week)
-      {
-        type: "signature",
-        mechanic: "proofScale",
-        title: "The Proof Scale",
-        narration: {
-          speaker: "adam",
-          lines: [
-            "[warmly] Welcome, hero, to your very first challenge: the Proof Scale!",
-            "This game is all about telling a REAL fact from a made-up one.",
-            "Out in the real world, people and even robots say things that sound true but aren't, so we learn to check for proof.",
-            "Here is what you do. On the left, the robot makes a claim. Tap it onto the scale.",
-            "Then find the proof book that shows it's real, and tap it. The book weighs it down: that one is true!",
-            "[whispers] But if no book proves it anywhere? Then it's made up. Slam the big red NO PROOF button!",
-            "[warmly] Get this right and you can check anything is true, all by yourself. Ready? Let's weigh the truth!",
-          ],
-        },
-        winNarration: {
-          speaker: "adam",
-          lines: [
-            "[excited] Amazing work, fact checker! You did it!",
-            "You checked every claim against real proof, just like a pro.",
-            "[warmly] Now you can fact check anything, all by yourself.",
-            "When something online sounds super sure, remember to ask: where's the proof?",
-            "[warmly] Carry that with you in the real world. I'm so proud of you!",
-          ],
-        },
-        // Sarah walks the child through the FIRST claim only, step by step, with
-        // on-screen arrows pointing at each thing to tap.
-        guide: {
-          speaker: "adam",
-          claim: "[warmly] Let's do the very first one together. Tap the robot's claim to pop it onto the scale!",
-          evidence: "Now, look at the proof books up top. If one proves it, tap that book. If NO book proves it, slam the big red NO PROOF button!",
-        },
-      },
-
     /* ─────────── BEAT 1 · A TOOL, NOT A FRIEND ─────────── */
     // 3 - Learn
     {
@@ -1231,32 +1195,33 @@ export const WEEK_15: WeekContent = {
   reactions: {
     0: { adam: { mood: "excited", message: "Mission 15 - robot or real?" }, layla: null }, // intro video
     1: { adam: { mood: "worried", message: "His Know-It-All bot NEVER stops talking..." }, layla: null }, // alert
-    2: { adam: null, layla: { mood: "curious", message: "Fact-checker kit ready? Let's go." } }, // mission brief
-    3: { adam: null, layla: { mood: "thinking", message: "It talks like us. It isn't us." } }, // learn: tool
-    4: { adam: null, layla: { mood: "curious", message: "Robot voice or real voice? Sort!" } }, // game: conveyorSort
-    5: { adam: { mood: "thumbsup", message: "Finish the fact-checker rule!" }, layla: null }, // prove: finish
-    6: { adam: { mood: "excited", message: "You can HEAR the robot now!" }, layla: null }, // recap 1
-    7: { adam: { mood: "curious", message: "Psst - the bot has a secret..." }, layla: null }, // learn: check
-    8: { adam: { mood: "curious", message: "Check every line against the book!" }, layla: null }, // game: clueBoard
-    9: { adam: { mood: "worried", message: "He's fibbing about the fib - catch him!" }, layla: null }, // prove: lie
-    10: { adam: null, layla: { mood: "excited", message: "The book beats the bot!" } }, // recap 2
-    11: { adam: null, layla: { mood: "thinking", message: "The jar never opens again..." } }, // learn: jar
-    12: { adam: null, layla: { mood: "curious", message: "Keep that jar EMPTY!" } }, // game: decide
-    13: { adam: null, layla: { mood: "thumbsup", message: "What stays out of bot chats?" } }, // prove: recall
-    14: { adam: { mood: "excited", message: "Zipped! Your secrets stay yours!" }, layla: null }, // recap 3
-    15: { adam: { mood: "thinking", message: "Some pictures never happened." }, layla: null }, // learn: fakes
-    16: { adam: { mood: "curious", message: "Count fingers - tap the fake!" }, layla: null }, // game: senderLineup
-    17: { adam: null, layla: { mood: "thumbsup", message: "Quick - spot the machine's tell!" } }, // prove: speed
-    18: { adam: null, layla: { mood: "excited", message: "No fake fools those eyes!" } }, // recap 4
-    19: { adam: null, layla: { mood: "curious", message: "Same seed - flowers or thorns." } }, // learn: kind
-    20: { adam: null, layla: { mood: "excited", message: "Plant the kind garden!" } }, // game: trailStamper
-    21: { adam: { mood: "thumbsup", message: "Which one grows kind?" }, layla: null }, // prove: quick-sort
-    22: { adam: { mood: "excited", message: "All five powers - parade time!" }, layla: null }, // recap 5
-    23: { adam: { mood: "excited", message: "Wise move or bot trap - you know!" }, layla: null }, // consolidation
-    24: { adam: { mood: "worried", message: "His booth - close it down!" }, layla: null }, // boss
-    25: { adam: null, layla: { mood: "excited", message: "Robot or real? Not sure - ask a grown-up!" } }, // outro video
-    26: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
-    27: { adam: { mood: "excited", message: "Stickers earned, Fact Checker!" }, layla: null }, // stickers
-    28: { adam: { mood: "thumbsup", message: "Fact Checker badge earned!" }, layla: null }, // completion
+    2: { adam: null, layla: { mood: "curious", message: "Fact-checker kit ready? Let's go." } }, // ATLAS briefing
+    3: { adam: null, layla: { mood: "curious", message: "Fact-checker kit ready? Let's go." } }, // mission brief
+    4: { adam: null, layla: { mood: "thinking", message: "It talks like us. It isn't us." } }, // learn: tool
+    5: { adam: null, layla: { mood: "curious", message: "Robot voice or real voice? Sort!" } }, // game: conveyorSort
+    6: { adam: { mood: "thumbsup", message: "Finish the fact-checker rule!" }, layla: null }, // prove
+    7: { adam: { mood: "excited", message: "You can HEAR the robot now!" }, layla: null }, // recap 1
+    8: { adam: { mood: "curious", message: "Psst - the bot has a secret..." }, layla: null }, // learn: sure isn't true
+    9: { adam: { mood: "curious", message: "Check every line against the book!" }, layla: null }, // game: clueBoard
+    10: { adam: { mood: "worried", message: "He's fibbing about the fib - catch him!" }, layla: null }, // prove: lie
+    11: { adam: null, layla: { mood: "excited", message: "The book beats the bot!" } }, // recap 2
+    12: { adam: null, layla: { mood: "thinking", message: "The jar never opens again..." } }, // learn: jar
+    13: { adam: null, layla: { mood: "curious", message: "Keep that jar EMPTY!" } }, // game: decide
+    14: { adam: null, layla: { mood: "thumbsup", message: "What stays out of bot chats?" } }, // prove: recall
+    15: { adam: { mood: "excited", message: "Zipped! Your secrets stay yours!" }, layla: null }, // recap 3
+    16: { adam: { mood: "thinking", message: "Some pictures never happened." }, layla: null }, // learn: fakes
+    17: { adam: { mood: "curious", message: "Count fingers - tap the fake!" }, layla: null }, // game: senderLineup
+    18: { adam: null, layla: { mood: "thumbsup", message: "Quick - spot the machine's tell!" } }, // prove: speed
+    19: { adam: null, layla: { mood: "excited", message: "No fake fools those eyes!" } }, // recap 4
+    20: { adam: null, layla: { mood: "curious", message: "Same seed - flowers or thorns." } }, // learn: kind
+    21: { adam: null, layla: { mood: "excited", message: "Plant the kind garden!" } }, // game: trailStamper
+    22: { adam: { mood: "thumbsup", message: "Which one grows kind?" }, layla: null }, // prove: quick-sort
+    23: { adam: { mood: "excited", message: "All five powers - parade time!" }, layla: null }, // recap 5
+    24: { adam: { mood: "excited", message: "Wise move or bot trap - you know!" }, layla: null }, // consolidation
+    25: { adam: { mood: "worried", message: "His booth - close it down!" }, layla: null }, // boss
+    26: { adam: null, layla: { mood: "excited", message: "Robot or real? Not sure - ask a grown-up!" } }, // outro video
+    27: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
+    28: { adam: { mood: "excited", message: "Stickers earned, Fact Checker!" }, layla: null }, // stickers
+    29: { adam: { mood: "thumbsup", message: "Fact Checker badge earned!" }, layla: null }, // completion
   },
 };
