@@ -269,9 +269,14 @@ export default function SubjectShowcase() {
                 margin: "18px auto 0",
               }}
             >
-              Cyber Security is live today. Five more courses are releasing
-              soon, each built around real projects to kickstart your career
-              in IT!
+              {/* Owner 2026-09-23: lead on the IT world that is coming, and
+                  say something for children too. The old line ended on
+                  "kickstart your career in IT", which spoke only to the
+                  adult end of a platform that starts at six. */}
+              The IT world our children will work in is being built right
+              now. Cyber Security is live today and five more courses
+              release soon, every one built on real projects: a six year
+              old&rsquo;s first safe password, an adult&rsquo;s first job in tech.
             </p>
           </FadeUp>
         </div>
