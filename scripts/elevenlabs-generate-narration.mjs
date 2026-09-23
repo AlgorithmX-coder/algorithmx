@@ -290,7 +290,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts", "week15.ts", "week16.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts", "week15.ts", "week16.ts", "week17.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -610,6 +610,15 @@ for (const fname of weekFiles) {
       // GlassCheck's `pane` are read on screen only, never spoken.
       if (["stickerPeel", "glassCheck", "keyholeCheck"].includes(st.type)) {
         pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
+      // Week 17 engines: Sarah reads each room over the rope, each pane as it
+      // is lifted, each scoop as it lands in the pan, and each draft line as it
+      // comes up. What stays on screen and is NEVER spoken: a room's `name` and
+      // `inside`, a pane's `label` and `shows`, a pebble's `name` and `who`, and
+      // a line's `text` and `swapTo`. The Friend Panner's readAloud sits on the
+      // scoop rather than the pebble, which this span-wide scan still reaches.
+      if (["ropeLine", "frostMirror", "draftScrub", "friendPanner"].includes(st.type)) {
+        pushAll(span, new RegExp("\\breadAloud:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"", "g"));
       }
       // teamPoster notes are already covered by the wrong-answer `note:` scan above
     });

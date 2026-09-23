@@ -166,8 +166,31 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
     },
     { ssr: false },
   ),
-  // Week 17 · Followers — pan the brag-crowd 100 down to your 6 real friends.
-  friendPanner: dynamic(() => import("./FriendPanner"), { ssr: false }),
+  // Week 17 · Followers — pick the gold out of a scoop of the Feed river,
+  // then tip the pan and watch the rest wash through.
+  // Rebuilt to the Learn-Loop standard (data-driven, TAP-ONLY, untimed): the
+  // original wanted a wiggle-drag shake, which is a wrist game rather than a
+  // thinking game and the one input a six year old on a tablet cannot reliably
+  // produce. Its `onComplete(score)` no longer fits this registry's score-less
+  // `onComplete()`, so this adapter keeps the legacy mount compiling and
+  // playable on the game's built-in fallback scoop, and passes the screen's
+  // spoken intro and payoff through to the beats that speak them.
+  friendPanner: dynamic(
+    async () => {
+      const { default: FriendPanner } = await import("./FriendPanner");
+      function FriendPannerSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(FriendPanner, {
+          scoops: [],
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      FriendPannerSignature.displayName = "FriendPannerSignature";
+      return FriendPannerSignature;
+    },
+    { ssr: false },
+  ),
   // Week 18 · Shared Devices — flick every app shut, then look back and lock up.
   logOutFlick: dynamic(() => import("./LogOutFlick"), { ssr: false }),
   // Week 19 · Family Firewall — weave learned defences to each family member.

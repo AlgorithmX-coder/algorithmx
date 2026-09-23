@@ -206,6 +206,32 @@ const ENGINES = {
     right: fld(d, "why"),
     wrong: fld(d, "explanation"),
   })),
+  // Week 17 engines (2026-09-23). All four carry BOTH sides on one item: the
+  // same tap is right or wrong depending on what the child called it, so a
+  // line in the wrong field plays as silence with a perfectly full field.
+  ropeLine: (span) => objs(span, "rooms").map((r) => ({
+    label: "room " + (fld(r, "name") ?? ""),
+    right: fld(r, "why"),
+    wrong: fld(r, "explanation"),
+  })),
+  frostMirror: (span) => objs(span, "panes").map((p) => ({
+    label: "pane " + (fld(p, "label") ?? ""),
+    right: fld(p, "why"),
+    wrong: fld(p, "explanation"),
+  })),
+  draftScrub: (span) => objs(span, "lines").map((l) => ({
+    label: "line " + (fld(l, "id") ?? ""),
+    right: fld(l, "why"),
+    wrong: fld(l, "explanation"),
+  })),
+  // The Friend Panner judges a whole SCOOP, not a pebble: the child commits
+  // several picks at once and the tip is the only judged moment, so the
+  // spoken pair lives on the scoop.
+  friendPanner: (span) => objs(span, "scoops").map((c) => ({
+    label: "scoop " + (fld(c, "label") ?? ""),
+    right: fld(c, "why"),
+    wrong: fld(c, "explanation"),
+  })),
   // Week 14 engines (2026-09-22). Each item speaks exactly ONE side, so map it
   // that way: a reason in the wrong field is silent even when the field is full.
   speakerDiary: (span) => objs(span, "entries").flatMap((e) =>

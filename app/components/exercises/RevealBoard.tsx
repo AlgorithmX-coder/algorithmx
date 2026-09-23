@@ -52,6 +52,68 @@ export interface RevealItem {
   counter: string;
 }
 
+/**
+ * The board's two worlds. The mechanic is identical in both; what differs is
+ * what the child is looking AT, which is the whole of a genuine re-theme.
+ *
+ * "wishlist" (Week 2) is the Raccoon's cork board of golden cards, visually
+ * continuous with the ones he harvests in that week's intro video: warm brown
+ * board, gold cards, a red pin through each one.
+ *
+ * "backstage" (Week 17) is a theatre. The cards are framed posts hanging in a
+ * lit gallery, and tapping one walks round behind it to the real moment that
+ * made it: the forty takes, the mess just out of frame, the ordinary Tuesday.
+ * Cool blue-violet rather than brown and gold, and a clip on each frame rather
+ * than a pin, so a parent could never mistake the two boards for each other.
+ */
+export type RevealSkin = "wishlist" | "backstage";
+
+interface RevealPalette {
+  board: string;
+  boardEdge: string;
+  title: string;
+  progress: string;
+  cardFace: string;
+  cardEdge: string;
+  cardInk: string;
+  cardGlow: string;
+  tapInk: string;
+  pin: string;
+  stampInk: string;
+  stampBg: string;
+}
+
+const PALETTES: Record<RevealSkin, RevealPalette> = {
+  wishlist: {
+    board: "linear-gradient(180deg, rgba(96,64,34,0.92) 0%, rgba(70,45,24,0.94) 100%)",
+    boardEdge: "rgba(140,96,52,0.9)",
+    title: "#ffd9a0",
+    progress: "#e8c890",
+    cardFace: "linear-gradient(180deg, #ffe9a8 0%, #f5c854 100%)",
+    cardEdge: "#ffdf8e",
+    cardInk: "#4a3208",
+    cardGlow: "0 0 18px rgba(255,214,110,0.55), 0 6px 14px -6px rgba(0,0,0,0.65)",
+    tapInk: "#7a5a14",
+    pin: "radial-gradient(circle at 35% 30%, #ff8d8d, #b91c1c)",
+    stampInk: "#7eff97",
+    stampBg: "rgba(10, 26, 18, 0.85)",
+  },
+  backstage: {
+    board: "linear-gradient(180deg, rgba(48,40,86,0.94) 0%, rgba(32,26,62,0.96) 100%)",
+    boardEdge: "rgba(122,104,196,0.85)",
+    title: "#e6dcff",
+    progress: "#c9bcf2",
+    cardFace: "linear-gradient(180deg, #fdf7ff 0%, #e4d9fb 100%)",
+    cardEdge: "#ffffff",
+    cardInk: "#3a2b63",
+    cardGlow: "0 0 18px rgba(196,170,255,0.5), 0 6px 14px -6px rgba(0,0,0,0.7)",
+    tapInk: "#6b5aa0",
+    pin: "linear-gradient(180deg, #d8d2e8 0%, #9a93b4 100%)",
+    stampInk: "#ffd27a",
+    stampBg: "rgba(38, 26, 12, 0.88)",
+  },
+};
+
 export interface RevealBoardProps {
   title: string;
   subtitle?: string;
@@ -60,6 +122,36 @@ export interface RevealBoardProps {
   /** Emoji (PixIcon key) fronting the board header. Default the Raccoon —
    *  pass e.g. "💬" for beats that aren't about him (W5's support board). */
   boardIcon?: string;
+  /** Which world the board is in. See RevealSkin. Default the W2 cork board. */
+  skin?: RevealSkin;
+  /**
+   * Chrome copy, all READ ON SCREEN and never spoken, so it is safe out here.
+   * A re-theme MUST pass its own: left on the W2 defaults, a Week 17 gallery
+   * would tell the child its posts were "guarded" and its wish list "denied".
+   */
+  tapLabel?: string;
+  stampLabel?: string;
+  stampIcon?: string;
+  lockedLine?: string;
+  progressNoun?: string;
+  /** The eyebrow over a vignette's story beats, and over its counter beat. */
+  planEyebrow?: string;
+  planIcon?: string;
+  counterEyebrow?: string;
+  counterIcon?: string;
+  /** The XP toast when a card is revealed. */
+  revealToast?: string;
+  /** The complete beat's headline. */
+  completeTitle?: string;
+  /** The vignette's advance button, on a story beat and on the closing
+   *  counter beat, and the dialog's own accessible name. */
+  stepButtonLabel?: string;
+  counterButtonLabel?: string;
+  /** Read as `<prefix> <card label>`. Data-driven so a week can supply it. */
+  vignetteAriaPrefix?: string;
+  /** The small icon closing the board header. Defaults to W2's cork-board
+   *  pin; a re-theme on another board should pass its own. */
+  trailIcon?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
@@ -78,12 +170,29 @@ export interface RevealBoardProps {
 
 type Phase = "intro" | "board" | "finished";
 
+
 export default function RevealBoard({
   title,
   subtitle,
   items,
   finale,
   boardIcon = "🦝",
+  skin = "wishlist",
+  tapLabel = "TAP TO REVEAL",
+  stampLabel = "PRIVATE!",
+  stampIcon = "🛡️",
+  lockedLine = "Wish list DENIED - nothing left for him to grab!",
+  progressNoun = "guarded",
+  planEyebrow = "THE RACCOON’S PLAN",
+  planIcon = "🦝",
+  counterEyebrow = "YOUR MOVE, CYBER HERO",
+  counterIcon = "🛡️",
+  revealToast = "GUARDED!",
+  completeTitle = "Wish list: DENIED!",
+  stepButtonLabel = "What’s he up to? →",
+  counterButtonLabel = "🛡️ Keep it private!",
+  vignetteAriaPrefix = "The Raccoon’s plan for",
+  trailIcon = "📍",
   introNarration,
   coachLines,
   threat,
@@ -92,6 +201,7 @@ export default function RevealBoard({
   onCorrect,
   onAnswered,
 }: RevealBoardProps) {
+  const pal = PALETTES[skin];
   const audio = useGameAudio();
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
@@ -134,7 +244,7 @@ export default function RevealBoard({
     // Counter-line acknowledged → stamp the card, back to the board.
     const id = active.id;
     audio.correct();
-    fx.correct({ xp: 25, text: "GUARDED!" });
+    fx.correct({ xp: 25, text: revealToast });
     onCorrect?.();
     onAnswered?.({
       questionKey: `reveal-${id}`,
@@ -193,8 +303,8 @@ export default function RevealBoard({
           // The Raccoon's corkboard — warm cork against the cosmic frame,
           // echoing the conspiracy wall from the intro video.
           background:
-            "linear-gradient(180deg, rgba(96,64,34,0.92) 0%, rgba(70,45,24,0.94) 100%)",
-          border: "3px solid rgba(140,96,52,0.9)",
+            pal.board,
+          border: `3px solid ${pal.boardEdge}`,
           boxShadow:
             "inset 0 0 34px rgba(0,0,0,0.45), 0 18px 44px -22px rgba(0,0,0,0.8)",
         }}
@@ -206,14 +316,14 @@ export default function RevealBoard({
               fontSize: 17,
               fontWeight: 900,
               letterSpacing: "0.05em",
-              color: "#ffd9a0",
+              color: pal.title,
               textShadow: "0 2px 6px rgba(0,0,0,0.6)",
               textTransform: "uppercase",
             }}
           >
             {title}
           </div>
-          <PixIcon emoji="📍" size={26} />
+          <PixIcon emoji={trailIcon} size={26} />
         </div>
 
         <div
@@ -249,12 +359,12 @@ export default function RevealBoard({
                   // dimmed with the shield stamp on top.
                   background: done
                     ? "linear-gradient(180deg, #3c3a33 0%, #2b2a25 100%)"
-                    : "linear-gradient(180deg, #ffe9a8 0%, #f5c854 100%)",
-                  border: done ? "2px solid #57554c" : "2px solid #ffdf8e",
+                    : pal.cardFace,
+                  border: done ? "2px solid #57554c" : `2px solid ${pal.cardEdge}`,
                   boxShadow: done
                     ? "inset 0 2px 8px rgba(0,0,0,0.5)"
-                    : "0 0 18px rgba(255,214,110,0.55), 0 6px 14px -6px rgba(0,0,0,0.65)",
-                  color: done ? "#8d8b80" : "#4a3208",
+                    : pal.cardGlow,
+                  color: done ? "#8d8b80" : pal.cardInk,
                   fontFamily: "inherit",
                 }}
               >
@@ -269,7 +379,7 @@ export default function RevealBoard({
                     width: 12,
                     height: 12,
                     borderRadius: "50%",
-                    background: "radial-gradient(circle at 35% 30%, #ff8d8d, #b91c1c)",
+                    background: pal.pin,
                     boxShadow: "0 2px 3px rgba(0,0,0,0.55)",
                   }}
                 />
@@ -278,8 +388,8 @@ export default function RevealBoard({
                   {item.label}
                 </span>
                 {!done && (
-                  <span style={{ fontSize: 11, fontWeight: 800, color: "#7a5a14", letterSpacing: "0.04em" }}>
-                    TAP TO REVEAL
+                  <span style={{ fontSize: 11, fontWeight: 800, color: pal.tapInk, letterSpacing: "0.04em" }}>
+                    {tapLabel}
                   </span>
                 )}
                 {done && (
@@ -303,15 +413,15 @@ export default function RevealBoard({
                         gap: 5,
                         padding: "4px 10px",
                         borderRadius: 999,
-                        background: "rgba(10, 26, 18, 0.85)",
-                        border: "2px solid #7eff97",
-                        color: "#7eff97",
+                        background: pal.stampBg,
+                        border: `2px solid ${pal.stampInk}`,
+                        color: pal.stampInk,
                         fontSize: 12,
                         fontWeight: 900,
                         letterSpacing: "0.06em",
                       }}
                     >
-                      <PixIcon emoji="🛡️" size={16} /> PRIVATE!
+                      <PixIcon emoji={stampIcon} size={16} /> {stampLabel}
                     </span>
                   </motion.span>
                 )}
@@ -320,10 +430,10 @@ export default function RevealBoard({
           })}
         </div>
 
-        <div style={{ textAlign: "center", fontSize: 12.5, fontWeight: 800, color: "#e8c890" }}>
+        <div style={{ textAlign: "center", fontSize: 12.5, fontWeight: 800, color: pal.progress }}>
           {boardLocked
-            ? "Wish list DENIED - nothing left for him to grab!"
-            : `${revealed.size} of ${items.length} guarded`}
+            ? lockedLine
+            : `${revealed.size} of ${items.length} ${progressNoun}`}
         </div>
       </motion.div>
 
@@ -337,7 +447,7 @@ export default function RevealBoard({
             exit={{ opacity: 0 }}
             role="dialog"
             aria-modal="true"
-            aria-label={`The Raccoon's plan for ${active.label}`}
+            aria-label={`${vignetteAriaPrefix} ${active.label}`}
             style={{
               position: "absolute",
               inset: 0,
@@ -405,11 +515,11 @@ export default function RevealBoard({
               >
                 {onCounterBeat ? (
                   <>
-                    <PixIcon emoji="🛡️" size={16} /> YOUR MOVE, CYBER HERO
+                    <PixIcon emoji={counterIcon} size={16} /> {counterEyebrow}
                   </>
                 ) : (
                   <>
-                    <PixIcon emoji="🦝" size={16} /> THE RACCOON&apos;S PLAN · {active.label.toUpperCase()}
+                    <PixIcon emoji={planIcon} size={16} /> {planEyebrow} · {active.label.toUpperCase()}
                   </>
                 )}
               </div>
@@ -445,7 +555,7 @@ export default function RevealBoard({
                 size="lg"
                 onClick={advanceVignette}
               >
-                {onCounterBeat ? "🛡️ Keep it private!" : "What's he up to? →"}
+                {onCounterBeat ? counterButtonLabel : stepButtonLabel}
               </GameButton>
             </motion.div>
           </motion.div>
@@ -458,7 +568,7 @@ export default function RevealBoard({
 
       {phase === "finished" && (
         <ExerciseCompleteBeat
-          title="Wish list: DENIED!"
+          title={completeTitle}
           stars={3}
           statLines={[
             `${items.length} private details guarded`,
