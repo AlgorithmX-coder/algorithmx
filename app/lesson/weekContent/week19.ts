@@ -4,36 +4,67 @@ import { WEEK_INTROS } from "./weekIntros";
 /**
  * Week 19 - Protecting Family: Family Firewall
  *
- * Built to the locked Cyber Heroes template:
+ * Rebuilt to the Learn-Loop Build Standard. 30 screens:
  *
- *   Opening video  -> alert -> mission brief
+ *   video -> alert -> ATLAS briefing -> mission
  *   5 BEATS, each = Learn (info) -> Game -> Prove (quickCheck) -> recap:
- *     1 EXPERT   you're the expert now (role-flip)  | chooseYourPath | finish
- *     2 TELLS    help grown-ups spot scams          | clueBoard      | lie
- *     3 QUILT    make family rules together         | teamPoster     | recall
- *     4 ROUNDS   check the family's settings        | settingsSwitch | speed
- *     5 FREEZE   speak up before the trap snaps     | senderLineup   | order
- *   Consolidation (cyberScanner, Family Photo skin) -> boss
- *   (placeholder quiz boss - the bespoke W19 fight is designed with the
- *   boss batch) -> closing video -> debrief -> stickers -> completion.
+ *     1 EXPERT   you know more than they do now    | explainIt        | recall
+ *     2 TELLS    help a grown-up see the trick     | clueStamper      | lie
+ *     3 QUILT    house rules that are FAIR         | hearthLoom       | recall
+ *     4 AFTER    it already happened. now what     | firewallBuilder  | speed
+ *     5 FREEZE   say it before the thumb lands     | speakUp          | finish
+ *   review (accountRescue) -> boss -> video -> debrief -> stickers -> done
  *
- * Game freshness: this is the ROLE-FLIP week - the kid teaches - so
- * every game is a re-dress of a power the child already owns, pointed
- * outward at the family. clueBoard's fifth outing 2 weeks after W17
- * (the plan's side-by-side spot-the-scam: Gran's text pinned centre,
- * the real bank's habits quoted in each evidence card); teamPoster
- * takes its W11-EARMARKED quilt re-dress; settingsSwitch closes its
- * W6-earmarked run (W14/W17/W19) as the evening House Rounds;
- * senderLineup's fourth outing 4 weeks after W15 re-dressed as Freeze
- * the Moment (new correctToast/stampLabel/wrongTitle props keep the
- * IMPOSTER copy out of Gran's living room); chooseYourPath carries the
- * role-flip beat. Lane-clean: teaching-the-family is new ground - scam
- * anatomy was W4's lane (applied here BY the child), settings W14/W17's
- * (their own devices - these are the family's), rules W13's (their own
- * day - this is the whole house). In-week flavour: the Expert in the
- * House. Palette: hearth warm + expert-badge gold. Warmth note: experts
- * teach, they never tease - every speak-up is kind, and grown-ups are
- * never mocked for nearly slipping.
+ * WHAT THE REBUILD FIXED. 31 screens and it OPENED ON A GAME, and its reactions
+ * map carried 29 keys for those 31 screens, so from index 2 onward every
+ * reaction landed on the wrong screen. Now 30 and 30, counted.
+ *
+ * THE THREE DESIGN PROBLEMS THIS WEEK CARRIED, and what was done about them:
+ *
+ * 1. `hearthLoom` dragged a thread from a defence charm to the family member it
+ *    fitted. A drag on SVG lines, and a match-the-charm verb that Sign Bingo
+ *    (W1/W6/W14) and the Memory Match (W1/W7/W13) already spend their whole
+ *    three-use caps on. CONVERTED to tap-only and RE-VERBED: it now judges each
+ *    proposed house rule for FAIRNESS, which nothing else in the library does.
+ *
+ * 2. Concept 3 collided with Week 13's "Set It Before You Start". SPLIT: Week 13
+ *    is MY plan for MY screen time, decided by me. This is a rule the whole
+ *    house lives under, which has to pass a test a personal plan never faces.
+ *    Every rule on the loom is SAFE. The question is only whether it is fair.
+ *
+ * 3. Concept 4 was "The Evening Rounds", a night-time device audit that is
+ *    TRIPLE booked: Week 13 shipped it and Week 14 owns the device switches. It
+ *    is replaced outright by AFTER IT HAPPENS, which is new ground for the whole
+ *    course: nineteen weeks of prevention, and not one minute on what a child
+ *    does when it has already gone wrong. That gap was worth more than a fourth
+ *    pass at the same audit.
+ *
+ * ENGINES. Two new, one converted, three re-themes (the option B budget exactly):
+ *   explainIt        NEW. Choose HOW to say it. Every answer is true; one is too
+ *                    technical, one lands like a telling-off, one actually helps.
+ *   clueStamper      RE-THEMED (3rd and final use). W4's scam anatomy, applied
+ *                    outward BY the child to a text on Gran's phone.
+ *   hearthLoom       CONVERTED + RE-VERBED, as above.
+ *   firewallBuilder  RE-THEMED (3rd and final use) on its "wall" skin. The wall
+ *                    is not borrowed here: this week is NAMED after it, and the
+ *                    bricks, the copy and the lesson are all new.
+ *   speakUp          NEW. Two seconds before the thumb lands, what do you say?
+ *   accountRescue    RE-THEMED for the review (3rd and final use) on its "moves"
+ *                    skin: three people, one problem each, the right power to
+ *                    hand them.
+ *
+ * TONE, and it matters more here than in any week except 11. The child is not
+ * the family's police officer. Every beat is help offered to people they love,
+ * never a child catching grown-ups out, and the unkind answer in beat 1 is
+ * always factually CORRECT so that being right is never the thing being
+ * rewarded. A child who wins these games by making their grandmother feel
+ * stupid has not protected her: she will stop asking, and the next fake text
+ * arrives with nobody left to ask.
+ *
+ * WARMTH NOTE. Beat 5 asks a child to interrupt an adult, which is genuinely
+ * hard and not always safe to get wrong. Saying nothing is offered every single
+ * round, it is never punished, and picking it gets "that is what most people
+ * do" followed by the sentence to use instead. The villain stays off that beat.
  */
 export const WEEK_19: WeekContent = {
   weekNumber: 19,
@@ -56,887 +87,1099 @@ export const WEEK_19: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-19.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon has given up on YOU - eighteen weeks of walls, locks and popped balloons taught him that lesson. So he's turned his tricks on your FAMILY: a gift-card prize text for Grandma, a $1 package scam for Dad, a free-coin machine for your little brother. Same tricks, bigger font. But he's forgotten the most important thing in the whole house... it has an EXPERT now. This week the roles flip: you teach, you check, you speak up - and together you raise the Family Firewall.",
+      caption: "The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY: a prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother. Same tricks, bigger letters. But he has forgotten the most important thing in the whole house. It has an EXPERT in it now. This week the roles flip: you explain, you spot, you speak up, and together you raise the Family Firewall.",
       photoCaption: "Wk 19 - The Expert in the House",
       ctaLabel: "See the Mission →",
     },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    // 2 - WEEK INTRO: ATLAS (Mission Command) briefing
     { type: "weekIntro", ...WEEK_INTROS[19] },
 
-    // 2 - Mission brief
+    // 3 - Mission brief
     {
       type: "mission",
       objectives: [
-        "You're the expert now - teach kindly",
-        "Give every device its evening rounds",
-        "Speak up before the trap snaps",
+        "Explain it so they can actually use it",
+        "Agree house rules that are fair on everybody",
+        "Have a sentence ready before the thumb lands",
       ],
     },
 
-    // Signature mini-game (bespoke to this week)
+    /* ─────────── BEAT 1 · YOU'RE THE EXPERT NOW ─────────── */
+    // 4 - Learn
     {
-      type: "signature",
-      mechanic: "hearthLoom",
-      title: "The Hearth Loom",
+      type: "info",
+      conceptNumber: 1,
+      conceptTotal: 5,
+      title: "You're the Expert Now",
+      content:
+        "Nineteen weeks in, you know more about this than most of the grown-ups in your house. That is simply true. But knowing a thing and being able to hand it to somebody else are two different skills, and the second one is harder. When Gran asks you why a text looks wrong, being RIGHT is the easy half. The hard half is saying it so she can use it tomorrow without you standing there. Short words, about the thing rather than about her, and no showing off.",
+      bullets: [
+        "You genuinely know more than they do",
+        "Knowing and explaining are different skills",
+        "Short words beat clever words",
+        "Talk about the thing, not the person",
+        "They should be able to do it without you",
+      ],
+      bulletIcons: ["🎓", "🧠", "💬", "👪", "💪"],
+      emblem: "🎓",
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Your family needs you, hero. Look at each trouble bubble.",
-          "Drag the right safety thread to each family member.",
-          "Weave all three and keep your whole family safe!",
+          "[warmly] Something has happened over these nineteen weeks, Cyber Hero, and I want to name it.",
+          "You know more about this than most of the grown-ups in your house. That is just true now.",
+          "[thinking] But here is the tricky bit. Knowing a thing and handing it to somebody else are two different skills.",
+          "When Gran asks you why a text looks wrong, being right is the easy half.",
+          "The hard half is saying it so she can do it herself tomorrow, without you standing there.",
+          "[excited] Come and answer some questions with me. Every answer is true, so that is not the test!",
         ],
       },
     },
-
-    /* ─────────── BEAT 1 · THE EXPERT ─────────── */
-    // 3 - Learn
+    // 5 - Game: EXPERT (ExplainIt, NEW). Every answer is TRUE. Sarah speaks the
+    // good answer's why and the clumsy ones' explanation, never both.
     {
-      type: "info",
-      title: "You're the Expert Now",
-      content:
-        "Stop and count: eighteen weeks of powers. Passwords, disguises, scam tells, painted doors, sticky balloons - you know things most GROWN-UPS in your house don't know. So this week the roles flip: when someone in your family is about to slip, the expert speaks up. One rule makes it work: experts TEACH, they never tease. No 'silly Grandma!', no grabbing the phone - just 'wait - can I show you something?', said kindly, right then. A firewall is a special wall that keeps trouble out of a house. This week, your family builds one - and YOU'RE the builder. That kind little sentence is the first brick.",
-      bullets: [
-        "Eighteen weeks of powers - count them",
-        "You know tells the grown-ups don't",
-        "The roles flip: now you teach",
-        "Experts teach, they never tease",
-        "'Wait - can I show you something?'",
-      ],
-      bulletIcons: ["🥇", "🧠", "🏠", "💬", "✋"],
-      emblem: "🥇",
+      type: "explainIt",
+      introTitle: "You're the Expert Now",
+      introSubtitle: "They asked YOU. Every answer here is true, so pick the one that actually helps.",
+      introIcon: "🎓",
+      askerLabel: "SOMEBODY IS ASKING YOU",
+      askPrompt: "What do you say?",
+      answersLabel: "ALL THREE ARE TRUE",
+      counterLabel: "Question",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] Week nineteen - and everything changes!",
-          "Count your powers: eighteen whole weeks of them.",
-          "[warmly] You know things the grown-ups don't.",
-          "So the roles flip. Now YOU teach.",
-          "One rule: teach kindly. Never tease.",
-          "[excited] Three family moments are coming - show me the expert!",
+          "[excited] Here we go. Somebody in the house asks you a question, and you get three answers.",
+          "Every single one of them is TRUE. That is the whole point, so do not go hunting for the right one.",
+          "Pick the one that would actually help THEM. Short, kind, and about the thing.",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: [
+          "Ask yourself one thing about each answer. Could they do it on their own tomorrow?",
+        ],
+      },
+      threat: {
+        raccoonLine: "Go on, use the big words! Baffle them! A confused grown-up is my favourite kind.",
+      },
+      questions: [
+        {
+          id: "q-gran-text",
+          who: "GRAN",
+          icon: "👪",
+          asks: "This text says I've won a prize draw I don't remember entering. Is that bad?",
+          readAloud: "Gran has a text about a prize draw she does not remember entering, and she is asking you if it is bad.",
+          answers: [
+            {
+              id: "a-gran-kind",
+              text: "You can't win something you never entered. That one's a trick.",
+              good: true,
+              why: "Short, and it is a test Gran can run herself on the next one without you in the room.",
+            },
+            {
+              id: "a-gran-tech",
+              text: "It's a phishing campaign using a spoofed sender header and a shortened redirect URL.",
+              explanation: "Every word of that is right, and Gran cannot use one of them. She will nod, delete it, and be stuck again next week.",
+            },
+            {
+              id: "a-gran-rude",
+              text: "Gran, honestly, everyone knows those are fake. Don't you know anything?",
+              explanation: "True, and it costs you the thing you actually want. She will not ask you next time, and next time might matter more.",
+            },
+          ],
+        },
+        {
+          id: "q-dad-password",
+          who: "DAD",
+          icon: "👤",
+          asks: "Why can't I just use the same password for everything? It's easier.",
+          readAloud: "Dad wants to know why he cannot just use the same password everywhere, because it is easier.",
+          answers: [
+            {
+              id: "a-dad-kind",
+              text: "If one place leaks it, they can open all the others with it.",
+              good: true,
+              why: "One sentence, and it gives Dad the reason rather than the rule, so he can work out the next one himself.",
+            },
+            {
+              id: "a-dad-tech",
+              text: "Credential stuffing means a breach at one service gets replayed against every other service.",
+              explanation: "Completely correct, and completely unusable. Dad now knows a phrase instead of a reason.",
+            },
+            {
+              id: "a-dad-rude",
+              text: "Because it's lazy, Dad. I learned this in week one.",
+              explanation: "Also true, and now this is about who knows more instead of about his passwords. He will stop listening at the word lazy.",
+            },
+          ],
+        },
+        {
+          id: "q-brother-coins",
+          who: "YOUR LITTLE BROTHER",
+          icon: "🦸",
+          asks: "This website says I can get free coins for my game. Can I?",
+          readAloud: "Your little brother has found a website promising free coins for his game, and he wants to know if he can have them.",
+          answers: [
+            {
+              id: "a-bro-kind",
+              text: "Free coins aren't free. They want your password for them.",
+              good: true,
+              why: "He is six and he understood every word, and now he knows what they are actually after.",
+            },
+            {
+              id: "a-bro-tech",
+              text: "That's a credential harvesting page monetised through account resale.",
+              explanation: "True, and he is six. He heard nothing, and he will click it the moment you leave the room.",
+            },
+            {
+              id: "a-bro-rude",
+              text: "Obviously not. That's so obviously fake, how did you not see that?",
+              explanation: "True, and he did not see it, which is why he came to you. Say that twice and he stops coming.",
+            },
+          ],
+        },
+        {
+          id: "q-mum-public",
+          who: "MUM",
+          icon: "👪",
+          asks: "Should I really bother making my account private? I've got nothing to hide.",
+          readAloud: "Mum is asking whether making her account private is worth bothering with, since she has nothing to hide.",
+          answers: [
+            {
+              id: "a-mum-kind",
+              text: "It's not about hiding. It's about choosing who gets to look.",
+              good: true,
+              why: "It answers the thing she actually said, and it leaves her feeling sensible rather than told off.",
+            },
+            {
+              id: "a-mum-tech",
+              text: "Public profiles get scraped and aggregated into data broker records.",
+              explanation: "Right on the facts, and it answers a question she did not ask. She said nothing to hide, and that is the bit to answer.",
+            },
+            {
+              id: "a-mum-rude",
+              text: "Everyone says that until something happens to them.",
+              explanation: "Fair enough, and it is a warning rather than an answer. She asked why, and this tells her she will be sorry.",
+            },
+          ],
+        },
+      ],
+      hints: {
+        tier1: "Do not look for the true one. They are all true. Look for the one THEY could use.",
+        tier2: "Rule out the one with the long words, then rule out the one that makes them feel small. What is left is the answer.",
+      },
+      completeTitle: "Explained it!",
+      completeLine: "Being right was the easy bit, Cyber Hero. You made it land.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Four questions, and every answer you gave was one they could actually use tomorrow.",
+          "You never used a long word and you never made anybody feel small.",
+          "[warmly] That is why they will come and ask you again. And they are going to need to.",
         ],
       },
     },
-    // 4 - Game: DECIDE (chooseYourPath - the Expert Call-Out)
-    {
-      type: "chooseYourPath",
-      scenarios: [
-        {
-          setup: "Grandma reads a text out loud: 'Ooh! I've won a $500 gift card! I just tap here to claim it...' Her finger is hovering...",
-          choices: [
-            {
-              text: "'Grandma, wait - can I show you something?'",
-              isSafe: true,
-              consequence: "You walk her through the tells - nobody wins prizes they never entered, and real prizes never rush you. Grandma deletes it, calls you 'my little expert', and tells the WHOLE family at dinner. The firewall grows.",
-            },
-            {
-              text: "Stay quiet - grown-ups sort their own phones",
-              isSafe: false,
-              consequence: "Grandma taps. The phone fills with pop-ups and it takes the whole weekend to untangle - and the worst bit is you KNEW. Eighteen weeks of powers only protect people when you share them.",
-            },
-          ],
-        },
-        {
-          setup: "Dad's setting up his new banking app. 'Password... dad1234. Easy to remember!' he says, typing it in...",
-          choices: [
-            {
-              text: "Suggest three random words - the Week 1 trick",
-              isSafe: true,
-              consequence: "'BananaRocketCloud?!' Dad laughs - then realizes he can actually remember it AND nobody could guess it. High-five. The expert's first grown-up graduate.",
-            },
-            {
-              text: "Say nothing - it's his bank, not yours",
-              isSafe: false,
-              consequence: "dad1234 is the kind of password the Cracking Machine ate for breakfast in Week 1. His name plus counting - a guesser's warm-up lap, guarding his BANK. Experts speak up, kindly, right then.",
-            },
-          ],
-        },
-        {
-          setup: "Your little brother leans into his game's microphone: 'My name is Sami Malik and I go to Sunnyside School and-'",
-          choices: [
-            {
-              text: "Gently teach him the disguise rule - like a coach, not a boss",
-              isSafe: true,
-              consequence: "You show him how to build a hero name instead - 'RobotRex99!' He loves it, the lobby learns nothing, and he starts calling you Coach. Teaching beats telling off, every time.",
-            },
-            {
-              text: "Yell 'STOP! You're doing it WRONG!'",
-              isSafe: false,
-              consequence: "He goes quiet and won't ask you anything next time - and next time matters more. The teach was right; the tease broke it. Kind is what keeps the firewall standing.",
-            },
-          ],
-        },
-      ],
-      narration: {
-        speaker: "layla",
-        lines: [
-          "[warmly] Three family moments. Three chances to speak up.",
-          "Remember the expert's rule:",
-          "teach kindly - never tease.",
-          "[excited] Show me the call-out!",
-        ],
-      },
-    },
-    // 5 - Prove: FINISH
+    // 6 - Prove
     {
       type: "quickCheck",
-      mode: "finish",
-      prompt: "Now I'm the ___.",
+      mode: "recall",
+      prompt: "Gran asks why a text looks wrong. What makes a GOOD answer?",
       choices: [
-        { text: "expert", isCorrect: true },
-        { text: "boss", isCorrect: false },
-        { text: "quietest", isCorrect: false },
-        { text: "littlest", isCorrect: false },
+        { text: "She could use it herself next time", isCorrect: true },
+        { text: "It uses the proper technical words", isCorrect: false, why: "The proper words are correct and useless. She cannot do anything with a word she has never heard." },
+        { text: "It shows how much you know", isCorrect: false, why: "She did not ask how much you know. She asked about her text." },
+        { text: "It is as long as possible", isCorrect: false, why: "Long answers get lost. The ones that stick are short." },
       ],
-      praise: "The EXPERT - eighteen weeks of powers, and now you share them. ✓",
+      praise: "She could use it herself next time. ✓",
+      nudge: "Think about tomorrow, when you are at school and another text arrives.",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] That's it!",
+          "A good explanation leaves something behind.",
+          "She should be able to do it on her own tomorrow.",
+          "[warmly] That is the whole test.",
+        ],
+      },
     },
-
-    // 6 - Recap · Concept 1 of 5
+    // 7 - Recap · Concept 1 of 5
     {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "Eighteen weeks of powers means the roles flip: you're the house expert now - and experts teach kindly, they never tease.",
-      next: "the scam text on Grandma's phone - and the four tells you'll show her",
-      emblem: "🥇",
+      learned: "You know more than they do now, and the skill is handing it over in words they can use without you standing there.",
+      next: "how to help a grown-up see a trick for themselves",
+      emblem: "🎓",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] Power one - the expert badge is yours!",
-          "Teach kindly. Never tease.",
-          "[whispers] And your first pupil is waiting in the kitchen...",
-          "Grandma's phone just buzzed. Come on.",
+          "[proud] One power down, Cyber Hero. You explain like somebody who wants to be understood.",
+          "Short words, about the thing, and nobody feeling small.",
+          "[whispers] Now. That text on Gran's phone is still sitting there...",
+          "Next, we'll learn how to help a grown-up see a trick for themselves. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 2 · GRAN'S PHONE ─────────── */
-    // 7 - Learn
+    /* ─────────── BEAT 2 · SHOW THEM THE TELLS ─────────── */
+    // 8 - Learn
     {
       type: "info",
-      title: "Same Tricks, Bigger Font",
+      conceptNumber: 2,
+      conceptTotal: 5,
+      title: "Show Them the Tells",
       content:
-        "Here's a secret the Raccoon counts on: grown-ups get MORE scam texts than kids do. Fake banks, fake packages, fake prizes - the exact tricks you learned in Week 4, just aimed at Grandma in bigger letters. And the tells never change: a stranger's number wearing a bank's name, a panic clock racing you, a link with no plaque, and sloppy spelling a real bank would never send. You know all four. Time to sit at the kitchen table and show Grandma - kindly, one tell at a time.",
+        "Back in Week 4 you learned the tells: a stranger's address, a rush, a prize nobody entered, a link that does not match. Grown-ups mostly never learned them, because nobody taught them. So when a trick lands on Gran's phone you do not say it is fake. You point at the tells, one at a time, and let her see it herself. A person who has been shown four tells can find the fifth one on their own. A person who has been told it is fake can only wait for you.",
       bullets: [
-        "Grown-ups get scam texts too - lots",
-        "Same tricks you beat in Week 4",
-        "Wrong number wearing a bank's name",
-        "Panic clocks and no-plaque links",
-        "Show the tells - one at a time",
+        "Grown-ups were never taught the tells",
+        "Point at them, do not announce the answer",
+        "A stranger's address",
+        "A rush, and a prize nobody entered",
+        "Shown four, they find the fifth alone",
       ],
-      bulletIcons: ["✉️", "🪤", "🆔", "🔔", "🔍"],
+      bulletIcons: ["🔍", "👆", "✉️", "⏱️", "💡"],
       emblem: "🔍",
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] Secret time: grown-ups get MORE scam texts than kids.",
-          "Fake banks. Fake packages. Fake prizes.",
-          "The same tricks you beat in Week four -",
-          "[warmly] just wearing bigger letters for Grandma.",
-          "And you still know every tell.",
-          "[excited] Her phone's on the kitchen table - let's check it together!",
+          "[thinking] Cast your mind right back to Week 4, Cyber Hero. The tells.",
+          "A stranger's address. A rush. A prize nobody entered. A link that does not match.",
+          "[warmly] Here is the thing about grown-ups. Most of them never learned those, because nobody ever taught them.",
+          "So when a trick lands on Gran's phone, we do not say it is fake.",
+          "We point at the tells, one at a time, and let her spot it herself. Then she can do the next one alone.",
+          "[excited] Come and stamp some evidence with me!",
         ],
       },
     },
-    // 8 - Game: INSPECT (clueBoard re-dress - the Kitchen-Table Check)
+    // 9 - Game: TELLS (ClueStamper, 3rd and final use, re-themed to the
+    // kitchen table). LANE: W4 taught the child to spot these FOR THEMSELVES;
+    // here the child is walking somebody else through them.
     {
-      type: "clueBoard",
-      introTitle: "The Kitchen-Table Check",
-      introSubtitle: "A 'bank' text just landed on Grandma's phone - and she's worried. Check it line by line and gather the tells to show her!",
+      type: "clueStamper",
+      introTitle: "The Kitchen Table",
+      introSubtitle: "A message on somebody else's phone. Stamp every tell, then call it.",
       introIcon: "🔍",
-      photoTitle: "Grandma's phone: 'FASTBANK ALERT!! Your acount is BLOCKED. Tap quick-fix-bank.win in 10 minutes or lose EVERYTHING. - from +44 7999 000111'",
-      photoIcon: "✉️",
-      clues: [
-        {
-          id: "sender",
-          icon: "🆔",
-          label: "From: +44 7999 000111",
-          evidence: "TELL ONE: Grandma's real bank always texts from the same short number - this is a strange long faraway number wearing a bank's name. Show her the old bank texts right above it: they don't match. And remember - tricksters can fake the number too, so check the OTHER tells as well.",
-        },
-        {
-          id: "clock",
-          icon: "🔔",
-          label: "'in 10 minutes or lose EVERYTHING'",
-          evidence: "TELL TWO: the panic clock - Week 4's rush trick in a cardigan. Real banks never race you; tricksters HAVE to, because a calm minute is all it takes to spot them.",
-        },
-        {
-          id: "link",
-          icon: "🔗",
-          label: "'Tap quick-fix-bank.win'",
-          evidence: "TELL THREE: a door with no plaque (Week 16!). Grandma's real bank never sends tap-this links - it says 'log in the way you always do'. Strange door, no walk-through.",
-        },
-        {
-          id: "spelling",
-          icon: "🔠",
-          label: "'Your acount'",
-          evidence: "TELL FOUR: the loose thread. Real banks check their spelling; tricksters rush theirs. 'Acount' with one C is the loose thread that unravels the whole disguise.",
-        },
-      ],
-      verdict: {
-        prompt: "All four tells gathered. What do you show Grandma?",
-        options: [
-          {
-            text: "It's a trick - walk her through the tells, then delete it together",
-            isCorrect: true,
-            explanation: "Exactly - she sees all four tells, SHE presses delete, and next time she'll spot it herself. That's teaching, not rescuing.",
-          },
-          {
-            text: "Tap the link quickly before her account gets blocked",
-            isCorrect: false,
-            explanation: "The panic clock nearly got you too! Her account was never blocked - the only trap here IS that link.",
-          },
-          {
-            text: "Take her phone away - banking's too dangerous for Grandma",
-            isCorrect: false,
-            explanation: "Too far - Grandma's the boss of her own phone. Experts hand people POWERS, not punishments.",
-          },
-        ],
-      },
-      stampText: "SCAM SPOTTED!",
-      completeTitle: "Four tells, shown kindly!",
-      completeLine: "Same tricks, bigger font - and now Grandma knows every tell, because YOU taught her.",
-      hints: {
-        tier1: "Compare it with the real bank's texts - what's different?",
-        tier2: "Check WHO sent it, the panic clock, the strange link, and the spelling.",
-      },
+      stampLabel: "STAMP THE TELL",
+      closeLabel: "THAT'S ALL OF THEM",
+      boardPrompt: "Which bits would you point at?",
+      realSeal: "NOTHING WRONG",
+      fakeSeal: "IT'S A TRICK",
+      realToast: "ALL CLEAR!",
+      fakeToast: "SPOTTED!",
+      wrongTitle: "Have another look at that one",
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] There it is, on Grandma's phone.",
-          "Looks scary. Checks easy.",
-          "Tap every line and gather the tells -",
-          "[warmly] then we show Grandma, one at a time.",
+          "[excited] Right. Somebody hands you their phone across the kitchen table and asks what you think.",
+          "Read the whole message first, then stamp every bit you would point at.",
+          "When you have stamped them all, say what it is.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Start with WHO sent it - tap the sender line!"],
+        lines: [
+          "Stamp the evidence, not the feeling. You want bits she can SEE.",
+        ],
+      },
+      threat: {
+        raccoonLine: "Bigger letters, friendlier words, and a nice old phone to land on. Grown-ups never check ANYTHING.",
+      },
+      cases: [
+        {
+          id: "case-gran-prize",
+          handle: "Gran's phone",
+          avatar: "👪",
+          pitch: "CONGRATULATIONS! You have won our monthly prize draw. Claim within 2 hours or it goes to someone else. Tap here: prize-claim-uk-winners.net",
+          readAloud: "First one. Gran's phone, and a text saying she has won a monthly prize draw.",
+          clues: [
+            { id: "what", evidence: "You have won our monthly prize draw", isRedFlag: true, teach: "Ask her one question first. Did she enter any prize draw at all? She did not, and you cannot win one you never went into." },
+            { id: "when", evidence: "Claim within 2 hours", isRedFlag: true, teach: "Two hours is not a deadline, it is a way of stopping her thinking. Real prizes wait." },
+            { id: "how", evidence: "prize-claim-uk-winners.net", isRedFlag: true, teach: "That address belongs to nobody she has ever dealt with. It just has hopeful words in it." },
+            { id: "who", evidence: "No company name anywhere in it", isRedFlag: true, teach: "A real prize company puts its name on things. This one never says who it is." },
+          ],
+          rightWhy: "Four tells on one text, and Gran spotted every one of them once you pointed. She can run that check herself now.",
+        },
+        {
+          id: "case-dad-parcel",
+          handle: "Dad's phone",
+          avatar: "👤",
+          pitch: "Royal Post: your parcel is held pending a 1.99 fee. Pay now to release: royalpost-redelivery-fee.co",
+          readAloud: "Next one. Dad's phone, and a message about a parcel being held for a small fee.",
+          clues: [
+            { id: "how", evidence: "royalpost-redelivery-fee.co", isRedFlag: true, teach: "Look at the end of that parcel address with him. It is not the real post office, it just starts like it." },
+            { id: "what", evidence: "a 1.99 fee", isRedFlag: true, teach: "The tiny amount is the trick. It feels too small to bother checking, and it is not really about the two pounds." },
+            { id: "when", evidence: "Pay now to release", isRedFlag: true, teach: "Now again. Every one of these wants the thinking skipped." },
+            { id: "who", evidence: "Dad is not expecting a parcel", isRedFlag: true, teach: "Ask him first. If no parcel is coming, there is nothing to release and the whole thing falls over." },
+          ],
+          rightWhy: "A wrong address, a tiny fee, a rush, and no parcel. Dad would have paid it in about four seconds.",
+        },
+        {
+          id: "case-mum-real",
+          handle: "Mum's phone",
+          avatar: "👪",
+          pitch: "Hi love, running 10 mins late for pickup, stuck behind the bin lorry on Chapel Street. See you outside the usual gate. Aunty Jo",
+          readAloud: "And this one. Mum's phone, a message from Aunty Jo about running late for pickup.",
+          clues: [
+            { id: "who", evidence: "Aunty Jo", isRedFlag: false, teach: "That is a real person Mum knows, saved in her phone under her own name." },
+            { id: "what", evidence: "running 10 mins late for pickup", isRedFlag: false, teach: "Nothing is being asked for. It is somebody telling her a thing, which is what messages are mostly for." },
+            { id: "how", evidence: "No link anywhere in it", isRedFlag: false, teach: "There is nothing to tap. A message with no door in it cannot take her anywhere." },
+            { id: "when", evidence: "stuck behind the bin lorry on Chapel Street", isRedFlag: false, teach: "A detail nobody would invent, about a street they both know. That is what a real message sounds like." },
+          ],
+          rightWhy: "A real person, nothing asked for, no link and a detail only Aunty Jo would say. Not everything is a trick, and saying so matters just as much.",
+        },
+      ],
+      hints: {
+        tier1: "Read the whole message first, then go back and stamp the bits you would actually point at.",
+        tier2: "Look for four things: who it is really from, what it wants, how fast it wants it, and where the link goes.",
+      },
+      completeTitle: "Tells stamped!",
+      completeLine: "You did not tell them it was fake, Cyber Hero. You showed them, and now they can look for themselves.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Three phones, and you pointed at every tell on all of them.",
+          "And that last one was real, and you said so. That matters as much as catching the other two.",
+          "[warmly] A house where everything is a scare is just as stuck as a house where nothing is.",
+        ],
       },
     },
-    // 9 - Prove: LIE
+    // 10 - Prove
     {
       type: "quickCheck",
       mode: "lie",
-      prompt: "Is that true?",
-      raccoonLine: "Grown-ups can't be tricked - scams only work on little kids! Your Grandma is TOTALLY safe without you, trust me!",
+      prompt: "The Raccoon says: 'Just tell them it's fake and delete it. They don't need to know why!' Is he right?",
       choices: [
-        { text: "TRUE", isCorrect: false },
-        { text: "FALSE", isCorrect: true },
+        { text: "No. Showing them why means they can spot the next one", isCorrect: true },
+        { text: "Yes, it saves everyone time", isCorrect: false, why: "It saves time once, and costs it every time after, because they will need you again for every single message." },
+        { text: "Yes, they would not understand anyway", isCorrect: false, why: "They understood perfectly when you pointed at the tells. Nobody had ever pointed before." },
+        { text: "Yes, as long as you delete it fast", isCorrect: false, why: "Deleting this one changes nothing about the next one, and there is always a next one." },
       ],
-      praise: "Busted - grown-ups get MORE scam texts than kids. That's exactly why the house needs its expert. ✓",
-      nudge: "Who was that fake bank text aimed at - you, or Grandma?",
+      praise: "No. Showing them why means they can spot the next one. ✓",
+      nudge: "Think about what happens the day you are at school and another text arrives.",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] You saw straight through that!",
+          "He would love you to be the only one in the house who can check.",
+          "Then he only has to wait until you are out.",
+          "[warmly] Show them the tells, and there is nobody left to wait for.",
+        ],
+      },
     },
-
-    // 10 - Recap · Concept 2 of 5
+    // 11 - Recap · Concept 2 of 5
     {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "Grown-ups get scam texts too - same tricks, bigger font - and you can show them all four tells, kindly.",
-      next: "the quilt of rules the WHOLE family sews together",
+      learned: "Grown-ups were never taught the tells, so you point at them one at a time instead of announcing the answer.",
+      next: "how a whole house agrees on rules everybody can live with",
       emblem: "🔍",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Power two - Grandma spots scams now!",
-          "Taught, not told off.",
-          "[warmly] But one lesson protects one person...",
-          "a family RULE protects everyone. Fetch the quilt.",
+          "[proud] Two powers down, Cyber Hero. Three phones checked and nobody made to feel silly.",
+          "Point at the evidence. Let them spot it. That is how it sticks.",
+          "[thinking] Now, the house wants to write some rules about all this...",
+          "Next, we'll learn how a whole house agrees on rules everybody can live with. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 3 · THE FAMILY-RULES QUILT ─────────── */
-    // 11 - Learn
+    /* ─────────── BEAT 3 · THE FAMILY QUILT ─────────── */
+    // 12 - Learn
     {
       type: "info",
-      title: "Rules You Sew Together",
+      conceptNumber: 3,
+      conceptTotal: 5,
+      title: "Rules the Whole House Can Live With",
       content:
-        "Here's the difference between a rule and a TOGETHER rule. A rule one person sets - 'no screens, because I said so' - gets grumbled at and wriggled around. A together rule gets SEWN: everyone adds their patch, everyone signs it, and it covers everyone - even Dad. Screens sleep in the kitchen (all of them). Ask-first on downloads (any age). Phones nap in the basket at dinner. And the golden patch that holds the whole quilt together: tell, don't hide - and nobody gets shouted at for telling.",
+        "Back in Week 13 you made a plan for your own screen time. A house rule is a different animal, because other people have to live under it too. Every rule you are about to see is perfectly SAFE, so that is not the question. The question is whether it is FAIR: does it cover everybody, grown-ups included, and would the person it lands hardest on still agree to it? A rule that singles one person out is not a rule, it is a punishment wearing a rule's coat, and nobody keeps one of those for long.",
       bullets: [
-        "'Because I said so' gets wriggled around",
-        "Together rules get SEWN by everyone",
-        "They cover grown-ups too - even Dad",
-        "Screens sleep downstairs, all of them",
-        "Golden patch: tell, don't hide",
+        "A house rule binds everybody in the house",
+        "Safe is not the same as fair",
+        "Does it cover the grown-ups too?",
+        "Would the person it lands on agree?",
+        "A rule naming one person is a punishment",
       ],
-      bulletIcons: ["👑", "👪", "🏠", "⏸️", "💬"],
-      emblem: "👪",
+      bulletIcons: ["🏠", "📏", "👪", "🤝", "🚫"],
+      emblem: "🧩",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[curious] What's warmer than a rule?",
-          "A quilt of rules - sewn by EVERYONE.",
-          "Everyone adds a patch. Everyone signs.",
-          "[warmly] And it covers everyone. Yes, even Dad's phone.",
-          "The golden patch holds it all: tell, don't hide.",
-          "[excited] The patches are on the table - let's sew!",
+          "[warmly] Remember Week 13, when you made a plan for your own screen time? This is different.",
+          "A house rule has other people living under it, so it has to pass a harder test.",
+          "[thinking] Every rule you are about to see is perfectly safe. So safe is not the question tonight.",
+          "The question is whether it is FAIR. Does it cover everybody, grown-ups as well?",
+          "Because a rule that names one person is not a rule at all. It is a punishment in a rule's coat.",
+          "[excited] Come and help the house sew its quilt!",
         ],
       },
     },
-    // 12 - Game: BUILD (teamPoster re-dress - the Family-Rules Quilt)
+    // 13 - Game: QUILT (HearthLoom, converted signature, TAP-ONLY, RE-VERBED).
+    // EVERY rule here is SAFE. Judged on fairness only.
     {
-      type: "teamPoster",
-      introTitle: "The Family-Rules Quilt",
-      introSubtitle: "The whole family's round the table with patches to sew. Pick the rules EVERYONE would sign - and watch out for patches that would unravel the quilt!",
+      type: "hearthLoom",
+      introTitle: "The Family Quilt",
+      introSubtitle: "The house is writing its rules. Every one is safe. Only some of them are fair.",
       introIcon: "👪",
-      posterTitle: "THE FAMILY RULES QUILT",
-      trayPrompt: "Tap the patches every member would sign",
-      placedToast: "PATCH SEWN!",
-      wrongTitle: "That patch would unravel the quilt",
-      completeTitle: "The quilt is complete!",
-      completeLine: "Rules everyone sews beat rules one person sets - and this one covers the whole family.",
-      tiles: [
-        {
-          id: "moon",
-          label: "SCREENS SLEEP IN THE KITCHEN",
-          detail: "everyone's - even Dad's",
-          icon: "🏠",
-          isTeam: true,
-          note: "The Week 13 garage rule, family-sized: every charger parks downstairs and every bedroom sleeps quiet.",
-        },
-        {
-          id: "bossy",
-          label: "RULES ARE ONLY FOR KIDS",
-          detail: "grown-ups do whatever they like",
-          icon: "👑",
-          isTeam: false,
-          note: "A firewall with a grown-up-sized hole isn't a firewall - Dad's phone sleeps in the kitchen too. That's what makes it a TOGETHER rule.",
-        },
-        {
-          id: "ask",
-          label: "ASK-FIRST ON DOWNLOADS AND BUYS",
-          detail: "any age - a second pair of eyes",
-          icon: "✅",
-          isTeam: true,
-          note: "Kids ask grown-ups... and grown-ups can ask YOU. A second pair of eyes catches what one pair misses.",
-        },
-        {
-          id: "never",
-          label: "NO SCREENS EVER AGAIN",
-          detail: "not even the Friday film",
-          icon: "🚫",
-          isTeam: false,
-          note: "Too far! Week 13 taught balance: SOME screen, not none. A quilt keeps the family warm - it doesn't lock anyone out.",
-        },
-        {
-          id: "dinner",
-          label: "THE DINNER BASKET",
-          detail: "phones nap in the basket while we eat",
-          icon: "📱",
-          isTeam: true,
-          note: "Half an hour where the only pings are forks - and everyone's phone naps together, so nobody's left out.",
-        },
-        {
-          id: "secret",
-          label: "KEEP PROBLEMS SECRET",
-          detail: "so nobody worries",
-          icon: "🤐",
-          isTeam: false,
-          note: "Secrets are how tricks GROW. The golden patch says the exact opposite: tell, don't hide.",
-        },
-        {
-          id: "tell",
-          label: "TELL, DON'T HIDE",
-          detail: "and nobody gets shouted at for telling",
-          icon: "💬",
-          isTeam: true,
-          special: true,
-          note: "The golden patch that holds the whole quilt together: the firewall only works if telling is ALWAYS safe.",
-        },
-      ],
-      hints: {
-        tier1: "Ask each patch: would EVERY member of the family happily sign it?",
-        tier2: "Together rules cover everyone kindly. Bossy rules, never-rules and secret-rules all unravel the quilt.",
-      },
+      quiltLabel: "THE QUILT SO FAR",
+      weaveLabel: "WEAVE IT IN",
+      unpickLabel: "UNPICK IT",
+      askPrompt: "Is that one fair on everybody?",
+      counterLabel: "Square",
+      proposedLabel: "SUGGESTED BY",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] Patches on the table!",
-          "One question for each:",
-          "would EVERYONE sign it - Grandma to little brother?",
-          "[warmly] Sew the together rules. Leave the unravellers. Go!",
+          "[excited] Here is the loom, and here comes the first square.",
+          "Somebody in the house suggests a rule. Read it, then decide.",
+          "Weave it into the quilt if it is fair on everybody. Unpick it if it lands on one person.",
         ],
       },
       coachLines: {
-        speaker: "layla",
-        lines: ["Read each patch - if the whole family would sign it, sew it on!"],
+        speaker: "adam",
+        lines: [
+          "Every rule here is safe. So ask the other question: who does it actually land on?",
+        ],
+      },
+      threat: {
+        raccoonLine: "Ooh, make LOADS of rules! Great big unfair ones! Nothing falls apart faster than a house arguing about rules.",
+      },
+      rules: [
+        {
+          id: "r-table",
+          text: "No screens at the dinner table",
+          proposedBy: "Mum",
+          icon: "🏠",
+          readAloud: "First square, from Mum. No screens at the dinner table.",
+          fair: true,
+          why: "That lands on everybody at that table, Mum included, which is exactly what makes it a rule.",
+          explanation: "Count who it covers. Every single person sitting down, grown-ups as well. That is a fair rule.",
+        },
+        {
+          id: "r-sam-only",
+          text: "Only Sam has to ask before going online",
+          proposedBy: "Sam's big sister",
+          icon: "👤",
+          readAloud: "Next square, from Sam's big sister. Only Sam has to ask before going online.",
+          fair: false,
+          why: "Perfectly safe, and it names one person, so it is a punishment with a rule's coat on. Sam will not keep it.",
+          explanation: "Read the first word again. Only Sam. Nothing unsafe about it, and nothing fair about it either.",
+        },
+        {
+          id: "r-ask-first",
+          text: "Anybody buying anything online checks with somebody else first",
+          proposedBy: "Dad",
+          icon: "💎",
+          readAloud: "This one is from Dad. Anybody buying anything online checks with somebody else first.",
+          fair: true,
+          why: "Anybody means Dad too, and he suggested it knowing that. A rule the grown-ups sign up to is one that lasts.",
+          explanation: "Look at the word anybody. It does not leave a gap for the person who wrote it.",
+        },
+        {
+          id: "r-kids-bedtime",
+          text: "Children put devices away at eight. Grown-ups keep theirs",
+          proposedBy: "Nobody will admit to it",
+          icon: "⏱️",
+          readAloud: "Here is one nobody will admit to suggesting. Children put devices away at eight, and grown-ups keep theirs.",
+          fair: false,
+          why: "Sensible and safe, and it splits the house in two, so the children will spend all their time arguing about it instead of keeping it.",
+          explanation: "Read the second half. The grown-ups kept theirs. That is the bit that will sink it.",
+        },
+        {
+          id: "r-tell-anyone",
+          text: "Anybody can say they got tricked and nobody laughs",
+          proposedBy: "Gran",
+          icon: "🤝",
+          readAloud: "Gran suggested this one. Anybody can say they got tricked, and nobody laughs.",
+          fair: true,
+          why: "Gran wrote the rule that protects Gran, and it protects everybody else too. That is the best square on the whole quilt.",
+          explanation: "Think about who needs that rule most. Everybody, eventually, which is what makes it fair.",
+        },
+        {
+          id: "r-read-messages",
+          text: "Mum can read everybody's messages whenever she likes",
+          proposedBy: "Mum, hopefully joking",
+          icon: "👀",
+          readAloud: "And the last square, from Mum, who is hopefully joking. She can read everybody's messages whenever she likes.",
+          fair: false,
+          why: "Safe as houses, and only one person in the house is exempt from it, which is the thing that makes it unfair.",
+          explanation: "Ask who does NOT have to follow that one. Only the person who wrote it, and that is the test it fails.",
+        },
+      ],
+      hints: {
+        tier1: "Do not ask if it is safe. They all are. Ask who it lands on.",
+        tier2: "If it names one person, or leaves the grown-ups out, unpick it. If it covers everybody, weave it in.",
+      },
+      completeTitle: "Quilt finished!",
+      completeLine: "Safe was never the hard part, Cyber Hero. Fair is what makes a rule stick.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Look at that quilt. Every square in it covers the whole house, grown-ups and all.",
+          "And the ones that singled somebody out never went in, which is why this quilt will still be here at Christmas.",
+          "[warmly] Gran's square is my favourite. Anybody can say they got tricked, and nobody laughs.",
+        ],
       },
     },
-    // 13 - Prove: RECALL (quick-sort)
+    // 14 - Prove
     {
       type: "quickCheck",
       mode: "recall",
-      prompt: "Which one is a TOGETHER rule?",
+      prompt: "What makes a house rule FAIR?",
       choices: [
-        { text: "Screens sleep in the kitchen - even Dad's", isCorrect: true },
-        { text: "Rules are only for kids", isCorrect: false },
-        { text: "No screens ever again", isCorrect: false },
-        { text: "Keep problems secret", isCorrect: false },
+        { text: "It covers everybody, grown-ups included", isCorrect: true },
+        { text: "It keeps everybody safe", isCorrect: false, why: "Every rule on that loom was safe. Safe was never the question tonight." },
+        { text: "A grown-up thought of it", isCorrect: false, why: "Two of the unfair ones came from grown-ups. Who suggested it changes nothing." },
+        { text: "Nobody complains about it", isCorrect: false, why: "People complain about fair rules all the time. That is not how you tell." },
       ],
-      praise: "Even Dad's - a rule the whole family signs is a rule the whole family keeps. ✓",
+      praise: "It covers everybody, grown-ups included. ✓",
+      nudge: "Think about the rule that said only Sam. What was wrong with it?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Exactly!",
+          "Safe and fair are two different tests.",
+          "A rule that leaves the grown-ups out never lasts a fortnight.",
+          "[warmly] The ones that cover everybody are still up at Christmas.",
+        ],
+      },
     },
-
-    // 14 - Recap · Concept 3 of 5
+    // 15 - Recap · Concept 3 of 5
     {
       type: "recap",
       concept: 3,
       total: 5,
-      learned: "Rules everyone sews beat rules one person sets - the quilt covers grown-ups too, and its golden patch is tell-don't-hide.",
-      next: "the expert's evening rounds - one device per family member",
-      emblem: "👪",
+      learned: "House rules are judged on fairness rather than safety, and a rule that names one person is a punishment in a rule's coat.",
+      next: "what to do when something has already gone wrong",
+      emblem: "🧩",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] Power three - the quilt is sewn!",
-          "Every patch signed, even Dad's.",
-          "[whispers] Now grab your flashlight, Cyber Hero...",
-          "it's time for the evening rounds.",
+          "[proud] Three powers down, Cyber Hero. That quilt covers the whole house.",
+          "Gran's square especially. Anybody can say they got tricked, and nobody laughs.",
+          "[thinking] Which is handy. Because sometimes somebody has already been tricked...",
+          "Next, we'll learn what to do when something has already gone wrong. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 4 · THE HOUSE ROUNDS ─────────── */
-    // 15 - Learn
+    /* ─────────── BEAT 4 · IT ALREADY HAPPENED ─────────── */
+    // 16 - Learn
     {
       type: "info",
-      title: "The Evening Rounds",
+      conceptNumber: 4,
+      conceptTotal: 5,
+      title: "When It Already Happened",
       content:
-        "Every castle guard walks the walls at night, checking each window. That's the expert's evening rounds: one device per family member, one check each. Grandma's phone - who can video-call her? Little brother's tablet - can he download without asking? Mom's phone - are her photos carrying a map pin? Some windows you'll find already locked (Dad's laptop updates itself; the family tablet still wears last week's forged code). The open ones? Show that person, flip the switch TOGETHER - and the wall is whole.",
+        "Nineteen weeks of stopping things before they start, and here is the week we finally say the other thing out loud: sometimes it happens anyway. Somebody taps the link, types the password, sends the money. That is not the end of anything, and it is absolutely not the moment for I told you so. It is the moment for three fast moves: tell somebody who can actually help, change the password on that account, and tell the bank if money is involved. Fast beats clever here. The first hour matters more than anything you say afterwards.",
       bullets: [
-        "Guards walk the walls each night",
-        "One device per family member",
-        "Who can video-call Grandma?",
-        "Can little hands download alone?",
-        "Some windows are already locked",
+        "Sometimes it happens anyway",
+        "It is never the end of anything",
+        "Never I told you so, ever",
+        "Tell a grown-up who can help, right away",
+        "Fast matters more than clever",
       ],
-      bulletIcons: ["🏠", "👪", "👀", "🎁", "🗝️"],
-      emblem: "⚙️",
+      bulletIcons: ["⚠️", "💪", "🤝", "📣", "⏱️"],
+      emblem: "🧱",
       narration: {
         speaker: "adam",
         lines: [
-          "[curious] Every castle guard walks the walls at night.",
-          "Checking window after window.",
-          "That's your evening rounds, expert:",
-          "one device per family member, one check each.",
-          "[whispers] Some windows are already locked. Some... aren't.",
-          "[excited] Flashlight on - let's do the rounds!",
+          "[thinking] Nineteen weeks of stopping things before they start. Now let's say the other bit out loud.",
+          "Sometimes it happens anyway. Somebody taps the link. Types the password. Sends the money.",
+          "[warmly] And that is not the end of anything, Cyber Hero. It really is not.",
+          "But it is absolutely not the moment for I told you so. Nobody has ever been helped by that.",
+          "It is the moment to move fast. Tell somebody who can help, change the password, ring the bank.",
+          "[excited] Come and build the wall of what we actually do!",
         ],
       },
     },
-    // 16 - Game: FIND (settingsSwitch re-dress - the House Rounds)
+    // 17 - Game: AFTER (FirewallBuilder, 3rd and final use, "wall" skin). The
+    // wall is this week's own metaphor, not a borrowed one: the week is named
+    // after it. Good bricks are the fast moves; bad ones are the tempting ones.
     {
-      type: "settingsSwitch",
-      panelTitle: "THE FAMILY'S DEVICES - EVENING ROUNDS",
-      introTitle: "The House Rounds",
-      introSubtitle: "One device per family member, all on the panel. Find every switch a trickster could slip through tonight - then show that person and flip it TOGETHER!",
-      introIcon: "⚙️",
-      rows: [
-        {
-          id: "gran",
-          label: "Grandma's phone - video calls",
-          value: "ANYONE CAN CALL",
-          safeValue: "CONTACTS ONLY",
-          icon: "👀",
-          isRisky: true,
-          note: "Video-call scammers love an open line to Grandma - show her the switch and flip it TOGETHER: contacts-only means only real faces can ring through.",
-        },
-        {
-          id: "dad",
-          label: "Dad's laptop - updates",
-          value: "INSTALLS ITSELF AT NIGHT",
-          icon: "⚙️",
-          isRisky: false,
-          note: "Already right! Updates are armor patches - Dad's laptop dresses itself while he snores.",
-        },
-        {
-          id: "brother",
-          label: "Little brother's tablet - downloads",
-          value: "NO ASK NEEDED",
-          safeValue: "GROWN-UP SAYS YES FIRST",
-          icon: "🎁",
-          isRisky: true,
-          note: "He's six - and Week 9's rule says downloads happen WITH a grown-up. One switch and every download asks first.",
-        },
-        {
-          id: "mum",
-          label: "Mom's phone - location on photos",
-          value: "ON",
-          safeValue: "OFF",
-          icon: "📍",
-          isRisky: true,
-          note: "Every dinner photo was carrying a map pin to your kitchen - show Mom and flip it TOGETHER: the Week 12 fix, family-sized.",
-        },
-        {
-          id: "tablet",
-          label: "The family tablet - lock code",
-          value: "ON - forged at the anvil",
-          icon: "🗝️",
-          isRisky: false,
-          note: "Last week's forge is holding strong - the front door still clicks shut behind everyone.",
-        },
-      ],
-      hints: {
-        tier1: "Ask each row: could a trickster slip through this window tonight?",
-        tier2: "ANYONE-can-call, NO-ASK downloads and location ON are the open windows. Updates and the lock code are already safe.",
-      },
+      type: "firewallBuilder",
+      skin: "wall",
+      introTitle: "The Morning After Wall",
+      introSubtitle: "Dad clicked the parcel link and typed his password. Build the wall of what happens now.",
+      introIcon: "🧱",
+      wallLabel: "THE WALL",
+      binLabel: "NOT THAT ONE",
+      layToast: "GOOD BRICK!",
+      binToast: "BINNED!",
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] The rounds begin - five windows on the wall.",
-          "Grandma's, Dad's, your brother's, Mom's, the tablet's.",
-          "Find the open ones...",
-          "[excited] and flip them shut - together. Go, Cyber Hero!",
+          "[warmly] Here is the situation. Dad clicked the parcel link and typed his password in.",
+          "It has happened. Now we build the wall of what we do about it, one brick at a time.",
+          "Read each brick. Lay it if it helps right now. Bin it if it does not.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Check each row - if a trickster could slip through it, tap it, then show that family member and flip it together!"],
+        lines: [
+          "Ask one thing about every brick. Does that make the next hour better for Dad?",
+        ],
+      },
+      threat: {
+        raccoonLine: "He's mortified! Now tell him how silly he was, go on. An embarrassed grown-up never tells ANYBODY.",
+      },
+      bricks: [
+        {
+          id: "b-tell",
+          text: "Tell Mum straight away, tonight",
+          good: true,
+          readAloud: "First brick. Tell Mum straight away, tonight.",
+          why: "The first hour is worth more than everything else put together, and Dad should not be carrying this on his own.",
+          whyWrong: "Have another think about telling somebody tonight. Who else in the house could actually do something about it?",
+        },
+        {
+          id: "b-password",
+          text: "Change that password now, and anywhere else he used it",
+          good: true,
+          readAloud: "Next brick. Change that password now, and anywhere else he used it.",
+          why: "They have the old one, so the old one has to stop working. Anywhere else is the bit people forget.",
+          whyWrong: "Look at it again. They have his password right now. What is the one thing that makes it useless?",
+        },
+        {
+          id: "b-told-you-so",
+          text: "Remind him you said that link looked wrong",
+          good: false,
+          readAloud: "Here is a brick. Remind him you said that link looked wrong.",
+          why: "You did say the link looked wrong, and saying so now helps nobody. It makes him wish he had not told you, and next time he will not.",
+          whyWrong: "It is true that you said it. Ask yourself what saying it NOW actually does for the next hour.",
+        },
+        {
+          id: "b-bank",
+          text: "Ring the bank if any money went anywhere",
+          good: true,
+          readAloud: "This brick says: ring the bank if any money went anywhere.",
+          why: "Banks can stop and reverse money, and they are far better at it in the first hour than the next day.",
+          whyWrong: "Think about who has the power to actually undo a payment. It is not anybody in your house.",
+        },
+        {
+          id: "b-say-nothing",
+          text: "Say nothing and hope it was fine",
+          good: false,
+          readAloud: "And this brick says: say nothing, and hope it was fine.",
+          why: "Hoping it was fine is the one move that uses up the hour that mattered. It is also exactly what he is counting on.",
+          whyWrong: "Have another look at hoping it was fine. What is actually happening to Dad's account while everybody waits?",
+        },
+        {
+          id: "b-check-together",
+          text: "Sit with him and check the account together",
+          good: true,
+          readAloud: "Next brick. Sit with him and check the account together.",
+          why: "Together is the word doing the work there. He is embarrassed, and nobody checks anything properly on their own while embarrassed.",
+          whyWrong: "Read it once more. The useful bit is not the checking, it is that he is not doing it alone.",
+        },
+        {
+          id: "b-pay-them",
+          text: "Pay the small fee so they go away",
+          good: false,
+          readAloud: "Careful with this brick. Pay the small fee so they go away.",
+          why: "They never go away. Paying only tells them somebody at this address pays, and the next message will be bigger.",
+          whyWrong: "Think about what paying actually proves to them. It proves the address works.",
+        },
+      ],
+      hints: {
+        tier1: "One question per brick. Does that make the next hour better for Dad?",
+        tier2: "Telling somebody, changing the password and ringing the bank are all bricks. Anything about how he feels is not.",
+      },
+      completeTitle: "Wall built!",
+      completeLine: "Fast, kind, and not one I told you so in it. That is what a Family Firewall is actually made of.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Look at that wall. Tell somebody, change it, ring the bank, sit with him.",
+          "And the bricks you binned were the tempting ones. Especially that first one.",
+          "[warmly] Because the whole thing only works if people tell you when it goes wrong. Make that easy and you have already won.",
+        ],
       },
     },
-    // 17 - Prove: SPEED
+    // 18 - Prove
     {
       type: "quickCheck",
       mode: "speed",
-      prompt: "Quick - tap the window that's still wide open!",
-      speedMs: 5000,
+      prompt: "Dad just typed his password into a fake page. What is the FIRST thing?",
       choices: [
-        { text: "Grandma's calls: ANYONE", isCorrect: true },
-        { text: "Tablet code: ON", isCorrect: false },
-        { text: "Updates: AUTOMATIC", isCorrect: false },
+        { text: "Tell somebody who can help, right now", isCorrect: true },
+        { text: "Work out exactly how it happened", isCorrect: false, why: "That can wait until tomorrow. The account cannot." },
+        { text: "Tell him he should have checked", isCorrect: false, why: "He knows. It costs the one thing you need, which is him telling you next time." },
+        { text: "Delete the message so nobody sees", isCorrect: false, why: "Deleting the message changes nothing. They already have the password." },
       ],
-      praise: "Spotted at guard speed - contacts-only, and Grandma's window clicks shut. ✓",
+      praise: "Tell somebody who can help, right now. ✓",
+      nudge: "Which move makes the next hour better?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Straight in!",
+          "The first hour is worth more than the whole rest of the week.",
+          "Tell somebody, change it, ring the bank.",
+          "[warmly] And never, ever, I told you so.",
+        ],
+      },
     },
-
-    // 18 - Recap · Concept 4 of 5
+    // 19 - Recap · Concept 4 of 5
     {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "The expert's evening rounds: one device per family member, one check each - and every open window gets flipped shut TOGETHER.",
-      next: "the hardest power of all - speaking up at the exact right moment",
-      emblem: "⚙️",
+      learned: "When it has already happened the moves are fast and kind: tell somebody who can help, change the password, ring the bank, and never say I told you so.",
+      next: "how to stop it in the two seconds before it happens at all",
+      emblem: "🧱",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Power four - the walls are checked!",
-          "Every window, every family member.",
-          "[warmly] One power left, and it's the bravest...",
-          "catching the trap at the exact moment it opens.",
+          "[proud] Four powers down, Cyber Hero. That wall goes up fast and it goes up kindly.",
+          "Tell somebody, change it, ring the bank, and sit with them while they check.",
+          "[thinking] Although... it would be even better to catch it two seconds earlier...",
+          "Next, we'll learn how to stop it in the two seconds before it happens at all. Come and see!",
         ],
       },
     },
 
     /* ─────────── BEAT 5 · FREEZE THE MOMENT ─────────── */
-    // 19 - Learn
+    // WARMTH NOTE: this beat asks a child to interrupt an adult, which is hard
+    // and sometimes not safe to get wrong. Saying nothing is offered every
+    // round and is NEVER punished. The villain stays OFF this beat.
+    // 20 - Learn
     {
       type: "info",
-      title: "Freeze the Moment",
+      conceptNumber: 5,
+      conceptTotal: 5,
+      title: "Say It Before the Thumb Lands",
       content:
-        "Rules and settings guard the house all day - but some traps need a HERO in the room. The prize text arriving while Grandma's on the sofa. Dad reading a '$1 re-delivery' package message at the door. A free-coin machine asking your brother for Mom's card RIGHT NOW. In those moments the expert's power is noticing - and speaking up at the exact second it matters: 'Wait! Freeze!' Then the three steps you know: notice it, speak up kindly, fix it together.",
+        "Here is the hardest thing this whole course asks of you. Somebody you love is about to tap the thing, and you have about two seconds. Knowing it is a trick is not the skill any more. Saying so, out loud, to a busy grown-up, is. And it works best when the sentence is short, about the THING rather than about them, and asks instead of tells: Wait, can I look at that with you first? Have that sentence ready and you will use it. Have only a worried feeling and you will stand there saying nothing, which is what almost everybody does.",
       bullets: [
-        "Some traps need a hero in the room",
-        "Watch for the about-to-tap moment",
-        "'Wait - freeze!' said kindly",
-        "Notice → speak up → fix together",
-        "One frozen moment saves the day",
+        "You get about two seconds",
+        "Keep it short, six or seven words",
+        "About the thing, never about them",
+        "Ask, do not tell: can I look with you?",
+        "Having the sentence ready is the trick",
       ],
-      bulletIcons: ["👀", "⚡", "✋", "👪", "🥇"],
+      bulletIcons: ["⏸️", "💬", "🔍", "🤝", "🧠"],
       emblem: "✋",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[warmly] Last power - and it's the bravest.",
-          "Some traps need a hero IN the room.",
-          "A prize text. A package trick. A free-coin machine.",
-          "[whispers] The power is noticing... at the exact right second.",
-          "Wait - FREEZE! Then fix it together.",
-          "[excited] Three family scenes - find each trap before it snaps!",
+          "[warmly] This is the hardest thing the whole course asks of you, Cyber Hero. I want to say that first.",
+          "Somebody you love is about to tap the thing, and you have about two seconds.",
+          "[thinking] Knowing it is a trick is not the skill any more. You have known that for weeks.",
+          "Saying it out loud, to a grown-up in a hurry, is the skill. And it needs to be short.",
+          "About the thing, never about them, and asking rather than telling. Wait, can I look at that with you first?",
+          "[excited] Come and practise the words with me. Just the words.",
         ],
       },
     },
-    // 20 - Game: SELECT (senderLineup re-dress - Freeze the Moment)
+    // 21 - Game: FREEZE (SpeakUp, NEW). NO `threat`: the villain is off this
+    // beat. Saying nothing is offered every round and never punished.
     {
-      type: "senderLineup",
+      type: "speakUp",
       introTitle: "Freeze the Moment",
-      introSubtitle: "Three family scenes are playing. Somewhere in each one, a trick is about to snap shut - tap that exact moment to freeze it and speak up!",
+      introSubtitle: "Their thumb is already moving. You have two seconds. What do you say?",
       introIcon: "✋",
-      correctToast: "MOMENT FROZEN!",
-      stampLabel: "FROZEN! ✋",
-      wrongTitle: "{name} is doing just fine",
-      completeTitle: "Three moments frozen!",
-      completeLine: "Notice, speak up - kindly - and fix it together. That's the whole firewall.",
-      rounds: [
+      frozenLabel: "FROZEN, RIGHT NOW",
+      askPrompt: "What do you say?",
+      linesLabel: "PICK YOUR WORDS",
+      counterLabel: "Moment",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] I am going to freeze each one right at the moment it matters.",
+          "Their thumb is already moving. Have a look at what is happening, then pick what you say.",
+          "And listen. Saying nothing is on there every time, because that is what most people really do.",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: [
+          "Short, about the thing, and asking rather than telling. That is the whole recipe.",
+        ],
+      },
+      scenes: [
         {
-          id: "friday",
-          prompt: "Friday evening at home. One of these moments needs freezing - tap it!",
-          senders: [
+          id: "s-gran-prize",
+          scene: "THE KITCHEN, SATURDAY MORNING",
+          icon: "👪",
+          doing: "Gran has the prize text open and her finger is over the link.",
+          readAloud: "The kitchen, Saturday morning. Gran has the prize text open, and her finger is hovering over the link.",
+          lines: [
             {
-              id: "dad-news",
-              name: "Dad in the armchair",
-              detail: "reading tomorrow's weather on the news app",
-              icon: "👪",
-              isFake: false,
-              note: "Just the weather - no money, no clicks, no freeze needed.",
+              id: "s1-works",
+              says: "Gran, wait. Can I look at that with you?",
+              works: true,
+              why: "Six words, about the text, and it asks. Gran stopped because you gave her a reason to, not a telling-off.",
             },
             {
-              id: "gran-voucher",
-              name: "Grandma on the sofa",
-              detail: "a text: 'You WON a $500 gift card! Tap to claim!' - finger hovering",
-              icon: "👪",
-              isFake: true,
-              note: "FREEZE! Nobody wins prizes they never entered - that's Week 4's oldest bait, aimed straight at Grandma.",
+              id: "s1-quiet",
+              says: "Say nothing. She is busy and it feels rude to butt in.",
+              explanation: "That is honestly what most people do, and it is not a failing. Next time try six words: Gran, wait, can I look at that with you?",
             },
             {
-              id: "bro-cartoons",
-              name: "Little brother on the rug",
-              detail: "watching his robot cartoon, volume way too loud",
-              icon: "👪",
-              isFake: false,
-              note: "Loud? Yes. Dangerous? No. Save the freeze.",
-            },
-            {
-              id: "mum-recipe",
-              name: "Mom at the counter",
-              detail: "following a soup recipe on the family tablet",
-              icon: "👪",
-              isFake: false,
-              note: "Soup's the only thing getting tricked tonight - no freeze here.",
+              id: "s1-accuse",
+              says: "Gran, don't! You always fall for these!",
+              explanation: "It would stop her, and it would also make her cross and embarrassed. She will not show you the next one.",
             },
           ],
         },
         {
-          id: "saturday",
-          prompt: "Saturday morning. Another trap is opening somewhere - freeze it!",
-          senders: [
+          id: "s-dad-pay",
+          scene: "THE HALLWAY, ON HIS WAY OUT",
+          icon: "👤",
+          doing: "Dad is typing his card number into the parcel fee page, one-handed, keys in the other.",
+          readAloud: "The hallway, and Dad is on his way out. He is typing his card number into the parcel fee page one-handed.",
+          lines: [
             {
-              id: "gran-knitting",
-              name: "Grandma in her chair",
-              detail: "knitting, phone face-down and quiet",
-              icon: "👪",
-              isFake: false,
-              note: "A face-down phone can't trick anyone - knit on, Grandma.",
+              id: "s2-works",
+              says: "Dad, hang on. Were you expecting a parcel?",
+              works: true,
+              why: "One short question, about the parcel rather than about him, and it is the exact question that makes the whole thing fall over.",
             },
             {
-              id: "sis-drawing",
-              name: "Your sister at the table",
-              detail: "drawing dragons on paper - actual paper",
-              icon: "👪",
-              isFake: false,
-              note: "The Raccoon has no power over crayons. No freeze.",
+              id: "s2-quiet",
+              says: "Say nothing. He is in a rush and he knows what he is doing.",
+              explanation: "Completely understandable, and he was not concentrating, which is exactly when it lands. Seven words would have done it.",
             },
             {
-              id: "dad-parcel",
-              name: "Dad by the front door",
-              detail: "a text: 'missed package! pay $1 re-delivery at package-fix.win' - card in hand",
-              icon: "👪",
-              isFake: true,
-              note: "FREEZE! The $1 package trick - a tiny ask to steal a whole card. Show Dad the no-plaque door rule.",
-            },
-            {
-              id: "bro-garden",
-              name: "Little brother in the backyard",
-              detail: "digging a hole to China, no screen in sight",
-              icon: "👪",
-              isFake: false,
-              note: "Offline and muddy - the safest kid in the county.",
+              id: "s2-long",
+              says: "Dad, that address doesn't match the real post office, it just starts the same and then it says dot co at the end which is a different...",
+              explanation: "Every word true, and he has already typed it by the time you finish. Long is the same as silent when the thumb is moving.",
             },
           ],
         },
         {
-          id: "sunday",
-          prompt: "Sunday afternoon - the last trap of the weekend. Find it!",
-          senders: [
+          id: "s-brother-coins",
+          scene: "THE FRONT ROOM, AFTER SCHOOL",
+          icon: "🦸",
+          doing: "Your little brother is about to type his game password into the free-coins site.",
+          readAloud: "The front room after school. Your little brother is about to type his game password into the free coins site.",
+          lines: [
             {
-              id: "mum-photo",
-              name: "Mom photographing Sunday dinner",
-              detail: "location stamp OFF since your rounds",
-              icon: "👪",
-              isFake: false,
-              note: "Your fix is holding - the photo carries zero map pins. No freeze needed.",
+              id: "s3-works",
+              says: "Stop! That one wants your password.",
+              works: true,
+              why: "Five words, and it names the thing it is after. He is six, and he understood it instantly.",
             },
             {
-              id: "dad-video",
-              name: "Dad on a video call",
-              detail: "with Uncle Ray - a contact he actually knows",
-              icon: "👪",
-              isFake: false,
-              note: "A real face from his contacts - exactly how calls should work.",
+              id: "s3-quiet",
+              says: "Say nothing. He never listens to you anyway.",
+              explanation: "He does, more than he lets on. And five words would have been enough here: stop, that one wants your password.",
             },
             {
-              id: "gran-telly",
-              name: "Grandma with her quiz show",
-              detail: "shouting answers at the TV",
-              icon: "👪",
-              isFake: false,
-              note: "The TV can't hear her and neither can the Raccoon. Carry on, Grandma.",
+              id: "s3-mock",
+              says: "Ha, you're not actually falling for that, are you?",
+              explanation: "He was, and now he is embarrassed as well, so he will do it later when you are not in the room.",
+            },
+          ],
+        },
+        {
+          id: "s-mum-public",
+          scene: "THE SOFA, SUNDAY",
+          icon: "👪",
+          doing: "Mum is about to post the school photo with the class name and the gate in it.",
+          readAloud: "The sofa on Sunday. Mum is about to post the school photo, with the class name and the front gate in it.",
+          lines: [
+            {
+              id: "s4-works",
+              says: "Mum, can we crop the gate out first?",
+              works: true,
+              why: "It is a small ask about the photo, so she can say yes without any of it being a big deal. Nobody had to be wrong.",
             },
             {
-              id: "bro-robux",
-              name: "Little brother waving the tablet",
-              detail: "'FREE ROBUX! Just type in Mom's card number!' - running to find Mom's purse",
-              icon: "👪",
-              isFake: true,
-              note: "FREEZE! Free-coin machines were Week 7's trap - and it nearly got fed Mom's actual card.",
+              id: "s4-quiet",
+              says: "Say nothing. It is her photo and her account.",
+              explanation: "It is, and you are still allowed to ask. One small question about the photo is not the same as telling her what to do.",
+            },
+            {
+              id: "s4-lecture",
+              says: "You shouldn't post that, we did this in week seventeen.",
+              explanation: "Right again, and it turns a photo into a lesson she did not ask for. Ask about the gate instead and she will just crop it.",
             },
           ],
         },
       ],
       hints: {
-        tier1: "Look for the moment where money, cards or clicks are about to happen.",
-        tier2: "Prize texts, tiny-money package asks, free-coin machines - freeze the frame BEFORE the tap.",
+        tier1: "Count the words. The one that works is always the short one.",
+        tier2: "It should be about the THING on the screen, and it should ask rather than tell.",
       },
-      narration: {
-        speaker: "layla",
+      completeTitle: "You said it!",
+      completeLine: "Short, about the thing, and asked rather than told. That sentence is yours now.",
+      completeNarration: {
+        speaker: "adam",
         lines: [
-          "[excited] The scenes are rolling!",
-          "Most of the family is fine...",
-          "but ONE moment in each scene is a trap mid-snap.",
-          "[warmly] Find it. Freeze it. Speak up!",
+          "[proud] Four moments, and you had a sentence ready for every single one.",
+          "Not one of them was clever, and not one of them made anybody feel small. They were just short, and in time.",
+          "[warmly] And if you ever do freeze and say nothing, that is alright too. You get the next one.",
         ],
       },
-      coachLines: {
-        speaker: "layla",
-        lines: ["Scan each moment - who's about to tap, pay or type something for a stranger?"],
-      },
     },
-    // 21 - Prove: ORDER
+    // 22 - Prove
     {
       type: "quickCheck",
-      mode: "order",
-      prompt: "Put the expert's rescue in order!",
+      mode: "finish",
+      prompt: "Somebody is about to tap a bad link. Finish the rule: the sentence that works is...",
       choices: [
-        { text: "NOTICE the trap", isCorrect: true },
-        { text: "SPEAK UP - kindly", isCorrect: true },
-        { text: "FIX IT together", isCorrect: true },
+        { text: "short, about the thing, and asks rather than tells", isCorrect: true },
+        { text: "long, so they understand properly", isCorrect: false, why: "They will have tapped it before you finish. Long is the same as silent when the thumb is moving." },
+        { text: "loud, so they definitely stop", isCorrect: false, why: "Loud makes people jump and then defend themselves. Short does the job without any of that." },
+        { text: "about how they always do this", isCorrect: false, why: "That is about them rather than the screen, and it is the fastest way to lose the argument you were not having." },
       ],
-      praise: "Notice, speak up, fix together - the firewall in three moves. ✓",
+      praise: "Short, about the thing, and asks rather than tells. ✓",
+      nudge: "Think about the six words that stopped Gran.",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] That is it exactly!",
+          "Wait, can I look at that with you?",
+          "Six words, and nobody had to be wrong about anything.",
+          "[warmly] Keep that sentence. It works on absolutely everybody.",
+        ],
+      },
     },
-
-    // 22 - Recap · Concept 5 of 5
+    // 23 - Recap · Concept 5 of 5 (promises the REVIEW, not the boss)
     {
       type: "recap",
       concept: 5,
       total: 5,
-      learned: "Some traps need a hero in the room: notice the moment, speak up kindly, fix it together.",
-      next: "one last walk through the house, then the Raccoon's final visit",
+      learned: "A short sentence about the thing, asked rather than told, stops a thumb in the two seconds you actually get.",
+      next: "take the whole house one more time, one person at a time",
       emblem: "✋",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] That's all FIVE powers, Family Firewall!",
-          "The expert crowned, Grandma taught, the quilt sewn,",
-          "the rounds walked... and the moments frozen.",
-          "[whispers] One last walk through the house...",
-          "[excited] then we send him packing for GOOD!",
+          "[proud] Five powers down, Cyber Hero, and this was the hardest week yet.",
+          "Explaining, spotting, agreeing, fixing, and saying the thing out loud.",
+          "[warmly] Now let's walk round the house one last time and put them all to work.",
+          "Next, we'll take the whole house one more time, one person at a time. Come and see!",
         ],
       },
     },
 
-    // 23 - Consolidation: Family Photo (W1 scanner engine, W19 content)
+    // 24 - REVIEW: the whole week, one family member at a time (AccountRescue,
+    // "moves" skin, 3rd and final use). Each person has one problem, and the
+    // child hands them the right power from the week.
     {
-      type: "cyberScanner",
-      labels: {
-        positive: "FIREWALL UP",
-        negative: "OPEN WINDOW",
-        positiveHint: "Tap FIREWALL UP for true house-expert form",
-        negativeHint: "Tap OPEN WINDOW for gaps a trickster slips through",
-        tipWhenPositive: "Taught kindly, checked nightly, sewn together, frozen in time - stamp it FIREWALL.",
-        tipWhenNegative: "Teasing, staying quiet, kid-only rules, secret problems - every one leaves a window open.",
-        hint1: "Ask: does this move protect the WHOLE family... or leave someone out in the cold?",
-        hint2: "FIREWALL = teach, check, sew, speak up. OPEN WINDOW = tease, stay quiet, skip the grown-ups.",
-        hint2Example: "FIREWALL: 'showed Grandma the four tells'   OPEN WINDOW: 'laughed at Dad's password'",
-        hint3: "Expert card: teach kindly · same tricks bigger font · sew together · walk the rounds · freeze the moment.",
-        hint3Example: "'Wait - can I show you something?' ✅    'Silly Grandma, that's fake!' ❌",
-      },
-      items: [
-        {
-          text: "Showing Grandma the four tells - kindly, one at a time",
-          isStrong: true,
-          explanation: "Taught, not told off - and now she spots them herself. Expert form.",
-        },
-        {
-          text: "Laughing at Dad for nearly tapping the package trick",
-          isStrong: false,
-          explanation: "The teach was right, the tease broke it - next time he won't show you the text at all.",
-        },
-        {
-          text: "A rules quilt that covers grown-ups too",
-          isStrong: true,
-          explanation: "Even Dad's phone sleeps in the kitchen - that's what makes it a firewall, not a fence around the kids.",
-        },
-        {
-          text: "Little brother downloading whatever he likes, no ask",
-          isStrong: false,
-          explanation: "An open window the House Rounds exist to catch - one switch, and every download asks first.",
-        },
-        {
-          text: "Freezing the free-coin moment BEFORE Mom's card goes in",
-          isStrong: true,
-          explanation: "Noticed, spoken up, fixed together - the trap snapped shut on nothing.",
-        },
-        {
-          text: "Keeping the scary pop-up secret so nobody worries",
-          isStrong: false,
-          explanation: "Secrets are how tricks grow - the quilt's golden patch says tell, don't hide.",
-        },
-      ],
+      type: "accountRescue",
+      skin: "moves",
+      tileLayout: "row",
+      countLabel: "SORTED",
+      duplicateToast: "Somebody else needs that one",
+      introTitle: "The Family Rescue Board",
+      introSubtitle: "Three people, one problem each. Hand each of them the right power.",
+      introIcon: "🏠",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] The Family Photo - final walk!",
-          "House moments are drifting past.",
-          "FIREWALL UP for expert moves...",
-          "[warmly] OPEN WINDOW for the gaps. Stamp them all!",
+          "[excited] Last walk of the house, Cyber Hero, and everybody needs something different.",
+          "Tap a person to hear what has happened to them.",
+          "Then hand them the one power from this week that actually fits.",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: [
+          "Each power goes to one person only, so read all three before you start handing them out.",
+        ],
+      },
+      threat: {
+        raccoonLine: "Three of them at once! One of you and three of them. Good luck, expert.",
+      },
+      accounts: [
+        {
+          id: "gran",
+          label: "Gran",
+          icon: "👪",
+          readAloud: "Gran has a text she is not sure about, and she has not tapped anything yet. She is asking you what you think.",
+          correctMoveId: "m-tells",
+          why: "Nothing has happened to that text yet, so this is the moment to show her the tells and let her spot it herself.",
+          whyWrong: "Look at that text again. She is still deciding whether to tap, so what does she need from you right now?",
+        },
+        {
+          id: "dad",
+          label: "Dad",
+          icon: "👤",
+          readAloud: "Dad already typed his password into the parcel page. It has happened, and he is quite embarrassed about it.",
+          correctMoveId: "m-after",
+          why: "It has already happened, so it is the fast moves: tell somebody, change it, ring the bank, and not one word of I told you so.",
+          whyWrong: "Read what happened to Dad again. He has already typed it in, so showing him the tells is a day too late.",
+        },
+        {
+          id: "brother",
+          label: "Your brother",
+          icon: "🦸",
+          readAloud: "Your little brother is on the sofa right now with his thumb over a free coins button.",
+          correctMoveId: "m-freeze",
+          why: "His thumb is moving right now, so this is the two second one. Five short words, about the button.",
+          whyWrong: "Look at when this is happening. Right now, thumb already moving. Which power works in two seconds?",
+        },
+      ],
+      passwordBank: [
+        { id: "m-tells", text: "Show them the tells", icon: "🔍" },
+        { id: "m-after", text: "The morning after moves", icon: "🧱" },
+        { id: "m-freeze", text: "Say the short sentence NOW", icon: "✋" },
+      ],
+      hints: {
+        tier1: "The question is always WHEN. Has it not happened, is it happening, or has it already happened?",
+        tier2: "Not yet means show the tells. Right now means the short sentence. Already done means the morning after moves.",
+      },
+      completeTitle: "House covered!",
+      completeLine: "Three people, three different moments, and the right power for each. That is a Family Firewall.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Gran got the tells, your brother got the sentence, and Dad got the morning after.",
+          "Same house, same week, three completely different moments, and you read every one of them right.",
+          "[excited] Which is just as well, because there is somebody waiting at the end of the hall.",
         ],
       },
     },
 
-    // 24 - BOSS BATTLE (placeholder quiz boss - the bespoke W19 fight comes with the boss batch)
+    // 25 - Boss
     { type: "bossBattle" },
 
-    // 25 - CLOSING VIDEO: the family firewall
-    { type: "video", videoPlaceholder: "Week 19: The Family Firewall", videoSrc: "/videos/module-19-outro.mp4" },
+    // 26 - CLOSING VIDEO: the whole house covered
+    { type: "video", videoPlaceholder: "Week 19: Family Firewall", videoSrc: "/videos/module-19-outro.mp4" },
 
-    // 26 - Mission Debrief
+    // 27 - Mission Debrief
     {
       type: "missionDebrief",
       title: "Mission Complete!",
       subtitle: "Here's everything you mastered this week.",
       concepts: [
-        { id: "expert", label: "House Expert", accent: "#ffd158", icon: "🥇", summary: "Eighteen weeks of powers - and now you share them. Teach kindly, never tease." },
-        { id: "tells", label: "Grandma's Guardian", accent: "#7df0ff", icon: "🔍", summary: "Same tricks, bigger font - you show all four tells at the kitchen table." },
-        { id: "quilt", label: "Quilt Sewer", accent: "#7eff97", icon: "👪", summary: "Rules everyone sews beat rules one person sets - and they cover Dad too." },
-        { id: "rounds", label: "Rounds Walker", accent: "#c084fc", icon: "⚙️", summary: "One device per family member, one check each - open windows flipped shut." },
-        { id: "freeze", label: "Moment Freezer", accent: "#ff5fb3", icon: "✋", summary: "Notice, speak up kindly, fix together - the trap snaps shut on nothing." },
+        { id: "expert", label: "The Explainer", accent: "#7eff97", icon: "🎓", summary: "Short words they can use without you there." },
+        { id: "tells", label: "Tell Spotter", accent: "#7df0ff", icon: "🔍", summary: "Point at the evidence, do not announce the answer." },
+        { id: "quilt", label: "Quilt Maker", accent: "#ffd158", icon: "🧩", summary: "A fair rule covers everybody, grown-ups included." },
+        { id: "after", label: "Wall Builder", accent: "#c084fc", icon: "🧱", summary: "Tell somebody, change it, ring the bank. Never I told you so." },
+        { id: "freeze", label: "Moment Freezer", accent: "#ff5fb3", icon: "✋", summary: "Six words, about the thing, asked not told." },
       ],
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "The expert crowned, Grandma taught,",
-          "the quilt sewn, the rounds walked... and the moments frozen.",
-          "[laughs] He came for your family and met a firewall.",
-          "[excited] Sticker time, Family Firewall!",
+          "Explaining it kindly, pointing at tells, sewing a fair quilt,",
+          "building the morning-after wall... and saying it out loud in time.",
+          "[laughs] He went after your family and walked straight into the expert.",
+          "[excited] Sticker time, Cyber Hero!",
         ],
       },
     },
 
-    // 27 - Sticker Unlock
+    // 28 - Sticker Unlock
     {
       type: "stickerUnlock",
       title: "Stickers Unlocked!",
       stickers: [
-        { id: "house-expert", name: "House Expert", icon: "🥇", description: "Teaches eighteen weeks of powers to the whole family - kindly." },
-        { id: "quilt-sewer", name: "Quilt Sewer", icon: "👪", description: "Sews family rules everyone signs - even Dad." },
-        { id: "moment-freezer", name: "Moment Freezer", icon: "✋", description: "Freezes the trap at the exact second before it snaps." },
+        { id: "the-explainer", name: "The Explainer", icon: "🎓", description: "Says it so they can use it tomorrow." },
+        { id: "quilt-maker", name: "Quilt Maker", icon: "🧩", description: "Knows fair from merely safe." },
+        { id: "moment-freezer", name: "Moment Freezer", icon: "✋", description: "Has the sentence ready before the thumb lands." },
       ],
     },
 
-    // 28 - Completion
+    // 29 - Completion
     { type: "completion" },
   ],
-
   bossQuiz: {
     villain: { name: "HACKER RACCOON", sprite: "raccoon" },
     accent: "#ffb26b",
@@ -1127,35 +1370,42 @@ export const WEEK_19: WeekContent = {
   // Keyed by SCREEN INDEX (0-28). Must stay in lock-step with `screens` above -
   // if a screen is inserted/removed, shift these too (the trailing labels help).
   // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
+
+  // Keyed by SCREEN INDEX (0-29), and there are exactly 30 screens above.
+  // The shipped week carried 29 keys for 31 screens, so from index 2 onward
+  // every reaction landed on the wrong screen. Counted and re-checked on the
+  // rebuild: if a screen is ever inserted or removed, shift these with it.
+  // The 5 recap checkpoints are indices 7 / 11 / 15 / 19 / 23.
   reactions: {
     0: { adam: { mood: "excited", message: "Mission 19 - the family firewall!" }, layla: null }, // intro video
-    1: { adam: { mood: "worried", message: "He's aiming at your FAMILY now..." }, layla: null }, // alert
-    2: { adam: null, layla: { mood: "curious", message: "Expert badge on? Let's protect the house." } }, // mission brief
-    3: { adam: null, layla: { mood: "thinking", message: "Eighteen weeks of powers - now you teach." } }, // learn: expert
-    4: { adam: null, layla: { mood: "curious", message: "Speak up - kindly, right then!" } }, // game: chooseYourPath
-    5: { adam: { mood: "thumbsup", message: "Finish the role-flip rule!" }, layla: null }, // prove: finish
-    6: { adam: { mood: "excited", message: "The expert badge is yours!" }, layla: null }, // recap 1
-    7: { adam: { mood: "thinking", message: "Same tricks, bigger font..." }, layla: null }, // learn: tells
-    8: { adam: { mood: "curious", message: "Check Grandma's text, line by line!" }, layla: null }, // game: clueBoard
-    9: { adam: null, layla: { mood: "thumbsup", message: "He's fibbing about grown-ups - catch him!" } }, // prove: lie
-    10: { adam: null, layla: { mood: "excited", message: "Grandma spots scams now!" } }, // recap 2
-    11: { adam: null, layla: { mood: "thinking", message: "Rules you sew together hold." } }, // learn: quilt
-    12: { adam: null, layla: { mood: "curious", message: "Sew the patches everyone would sign!" } }, // game: teamPoster
-    13: { adam: { mood: "thumbsup", message: "Which rule covers EVERYONE?" }, layla: null }, // prove: recall
-    14: { adam: { mood: "excited", message: "The quilt is sewn - even Dad's patch!" }, layla: null }, // recap 3
-    15: { adam: { mood: "thinking", message: "Guards walk the walls at night." }, layla: null }, // learn: rounds
-    16: { adam: { mood: "curious", message: "Five windows - find the open ones!" }, layla: null }, // game: settingsSwitch
-    17: { adam: null, layla: { mood: "thumbsup", message: "Quick - the open window!" } }, // prove: speed
-    18: { adam: null, layla: { mood: "excited", message: "The rounds are walked!" } }, // recap 4
-    19: { adam: null, layla: { mood: "thinking", message: "Some traps need a hero in the room." } }, // learn: freeze
-    20: { adam: null, layla: { mood: "curious", message: "Find the trap mid-snap - freeze it!" } }, // game: senderLineup
-    21: { adam: { mood: "thumbsup", message: "Order the expert's rescue!" }, layla: null }, // prove: order
-    22: { adam: { mood: "excited", message: "All five powers - final walk!" }, layla: null }, // recap 5
-    23: { adam: { mood: "curious", message: "Firewall up or open window - you know!" }, layla: null }, // consolidation
-    24: { adam: { mood: "worried", message: "He's at the door - send him packing!" }, layla: null }, // boss
-    25: { adam: null, layla: { mood: "excited", message: "The house stands - firewall complete!" } }, // outro video
-    26: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
-    27: { adam: null, layla: { mood: "excited", message: "Stickers earned, Family Firewall!" } }, // stickers
-    28: { adam: { mood: "thumbsup", message: "Family Firewall badge earned!" }, layla: null }, // completion
+    1: { adam: { mood: "worried", message: "He's gone after your FAMILY..." }, layla: null }, // alert
+    2: { adam: null, layla: { mood: "curious", message: "Mission Command has the layout." } }, // ATLAS briefing
+    3: { adam: null, layla: { mood: "curious", message: "Roles flip today. You teach." } }, // mission brief
+    4: { adam: null, layla: { mood: "thinking", message: "You know more than they do now." } }, // learn: expert
+    5: { adam: null, layla: { mood: "curious", message: "All true - pick the one that HELPS." } }, // game: explainIt
+    6: { adam: { mood: "thumbsup", message: "What makes a good answer?" }, layla: null }, // prove: recall
+    7: { adam: { mood: "excited", message: "They'll come and ask you again!" }, layla: null }, // recap 1
+    8: { adam: { mood: "thinking", message: "Nobody ever taught them the tells." }, layla: null }, // learn: tells
+    9: { adam: { mood: "curious", message: "Stamp what you'd point at!" }, layla: null }, // game: clueStamper
+    10: { adam: { mood: "worried", message: "Careful - is he fibbing? Listen close!" }, layla: null }, // prove: lie
+    11: { adam: null, layla: { mood: "excited", message: "Three phones, nobody made to feel silly!" } }, // recap 2
+    12: { adam: null, layla: { mood: "thinking", message: "Safe and fair aren't the same." } }, // learn: quilt
+    13: { adam: null, layla: { mood: "curious", message: "Who does that one land on?" } }, // game: hearthLoom
+    14: { adam: { mood: "thumbsup", message: "What makes a rule FAIR?" }, layla: null }, // prove: recall
+    15: { adam: { mood: "excited", message: "That quilt covers the whole house!" }, layla: null }, // recap 3
+    16: { adam: { mood: "thinking", message: "Sometimes it happens anyway." }, layla: null }, // learn: after
+    17: { adam: { mood: "curious", message: "Build the wall - fast and kind!" }, layla: null }, // game: firewallBuilder
+    18: { adam: null, layla: { mood: "thumbsup", message: "Quick - what's the FIRST thing?" } }, // prove: speed
+    19: { adam: null, layla: { mood: "excited", message: "Not one I told you so!" } }, // recap 4
+    20: { adam: null, layla: { mood: "thinking", message: "Two seconds. That's all you get." } }, // learn: freeze
+    21: { adam: null, layla: { mood: "curious", message: "Short words. Say it now." } }, // game: speakUp (villain OFF)
+    22: { adam: { mood: "thumbsup", message: "Finish the sentence rule!" }, layla: null }, // prove: finish
+    23: { adam: { mood: "excited", message: "All five - one last walk round!" }, layla: null }, // recap 5
+    24: { adam: { mood: "excited", message: "Three people, three moments!" }, layla: null }, // review: accountRescue
+    25: { adam: { mood: "worried", message: "He came for your family. Go." }, layla: null }, // boss
+    26: { adam: null, layla: { mood: "excited", message: "The whole house is covered!" } }, // outro video
+    27: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
+    28: { adam: { mood: "excited", message: "Stickers earned, Family Firewall!" }, layla: null }, // stickers
+    29: { adam: { mood: "thumbsup", message: "Family Firewall badge earned!" }, layla: null }, // completion
   },
 };

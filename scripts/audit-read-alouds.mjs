@@ -33,6 +33,8 @@ const weekArg = (args.find((a) => a.startsWith("--week=")) || "").split("=")[1];
 
 /** Fields an engine SPEAKS, over and above the shared `readAloud`. */
 const EXTRA_BY_TYPE = {
+  // AccountRescue's moves skin reads each tile out as it is tapped.
+  accountRescue: [],
   // The Log Out sweep speaks per card, and on each of its committed moments.
   logOutFlick: ["logOut", "lockWhy", "earlyLockExplanation", "goblinLine", "lookBackWhy"],
   // Sarah reads each step's affirmation as it lands (`speakSteps`).
