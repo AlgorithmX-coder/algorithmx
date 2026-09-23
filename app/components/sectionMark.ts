@@ -37,6 +37,32 @@ export const sectionMark: React.CSSProperties = {
     "0 10px 24px -14px rgba(10,112,133,0.95), inset 0 1px 0 rgba(255,255,255,0.28)",
 };
 
+/**
+ * The mark without its badge: the label itself in deep teal, nothing
+ * behind it.
+ *
+ * Owner 2026-09-23, on the /schools hero: "remove the coloured backdrop,
+ * maybe just highlight the font". A hero eyebrow sits above a very large
+ * headline and can afford to be the quiet one, where a section eyebrow
+ * competing with a page full of cards cannot. This is deliberately the
+ * exception, so the section marks below it keep the badge.
+ *
+ * #0a7085 on the sand ground measures 4.9:1, so the label still clears AA
+ * on its own. The weight and tracking go up to carry the emphasis the
+ * badge used to.
+ */
+export const sectionMarkBare: React.CSSProperties = {
+  display: "inline-block",
+  margin: 0,
+  color: "#0a7085",
+  fontFamily: "var(--lv2-font-mono)",
+  fontSize: 12.5,
+  fontWeight: 800,
+  letterSpacing: "0.26em",
+  textTransform: "uppercase",
+  whiteSpace: "normal",
+};
+
 /** Left-aligned, for a mark that sits in a column rather than centred. */
 export const sectionMarkWrap: React.CSSProperties = {
   ...sectionMark,

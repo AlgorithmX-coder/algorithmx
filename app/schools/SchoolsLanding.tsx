@@ -10,7 +10,7 @@ import ProofBand from "@/app/components/ProofBand";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
 import CourseLockup, { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
-import { sectionMark } from "@/app/components/sectionMark";
+import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
 import EnquiryForm from "./EnquiryForm";
 import ProductTabs, { shotSet, shotSrc } from "./ProductTabs";
 import { PHASES, type Phase } from "./phases";
@@ -277,7 +277,16 @@ export default function SchoolsLanding() {
           <div className="sch-hero-grid">
             <div className="sch-hero">
               <FadeUp>
-                <p style={eyebrow}>{"// For UK and British schools worldwide"}</p>
+                {/* Owner 2026-09-23: the page is sold worldwide, and the
+                    line should say where the curriculum comes from rather
+                    than who it is for. "British schools worldwide" read as
+                    the audience, which narrowed it to British-curriculum
+                    schools abroad; this puts Britain on the curriculum and
+                    opens the audience to any school.
+
+                    The badge comes off here alone: the section eyebrows
+                    below keep theirs. See sectionMarkBare. */}
+                <p style={sectionMarkBare}>{"// British curriculum · Schools worldwide"}</p>
               </FadeUp>
               <FadeUp delay={0.06}>
                 <h1 className="sch-h1">
@@ -343,7 +352,7 @@ export default function SchoolsLanding() {
                   Teach it in London. <span className="sch-grad">Teach it worldwide.</span>
                 </h2>
                 <p style={{ ...lede, maxWidth: 620 }}>
-                  British schools teach far beyond Britain, and this curriculum travels with them. One build serves every site from the edge, so the same week, the same safeguarding and the same teacher dashboard open in a browser tab wherever your classroom is.
+                  Built to the British curriculum and taught far beyond Britain. One build serves every site from the edge, so the same week, the same safeguarding and the same teacher dashboard open in a browser tab wherever your classroom is.
                 </p>
               </div>
             </div>

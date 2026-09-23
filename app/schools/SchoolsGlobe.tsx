@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
  * the places British schools teach: Dubai, Singapore, Madrid, Nairobi, Sydney
  * and the rest. What travels along each arc is real code from this repository,
  * one character at a time; when it lands, the school pin turns green and names
- * its city. It says "built in the UK, for UK and British schools worldwide"
+ * its city. It says "built to the British curriculum, taught worldwide"
  * before a word of the page is read.
  *
  * Deliberately no counter and no class codes: we are not claiming a number of
