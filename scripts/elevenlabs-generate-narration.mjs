@@ -290,7 +290,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts", "week15.ts", "week16.ts", "week17.ts", "week18.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts", "week15.ts", "week16.ts", "week17.ts", "week18.ts", "week19.ts", "week20.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -633,6 +633,11 @@ for (const fname of weekFiles) {
       // sweep speaks per card through `logOut` rather than `readAloud`, and
       // its four committed lines (lockWhy, earlyLockExplanation, goblinLine,
       // lookBackWhy) are picked up by the global scans.
+      // Week 19: the kitchen question, the frozen scene and the quilt square
+      // are each read aloud as they arrive.
+      if (["explainIt", "speakUp", "hearthLoom"].includes(st.type)) {
+        pushAll(span, new RegExp("\\breadAloud:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"", "g"));
+      }
       if (["whoseIsIt"].includes(st.type)) {
         pushAll(span, new RegExp("\\breadAloud:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"", "g"));
       }

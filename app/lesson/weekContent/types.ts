@@ -1432,7 +1432,10 @@ export type ScreenDef = (
           icon: string;
           isRight: boolean;
           /** Sarah's reason on the right card ("That's right!" + why). */
-          why: string;
+          /** SPOKEN only when this option is the right one, so a wrong
+           *  option does not need it (and a line put here on one would be
+           *  silent with a perfectly full field). */
+          why?: string;
           /** Sarah's teach on a wrong card ("Not quite." + explanation). */
           explanation: string;
         }[];
@@ -2600,6 +2603,181 @@ export type ScreenDef = (
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * You're the Expert Now (Week 19, concept 1). The role-flip week opens
+       * with the thing that actually follows from knowing more than the
+       * grown-ups: handing it over. A grown-up asks a real question and the
+       * child picks their answer from three that are ALL TRUE. One is so
+       * technical it helps nobody, one is right but lands like a telling-off,
+       * and one is plain and kind and would change what that person does next.
+       *
+       * Being correct is not on the table because being correct was never the
+       * hard part. A child who explains something to their grandmother by
+       * making her feel stupid has not protected her, they have taught her not
+       * to ask them again, and the next fake text arrives with nobody left to
+       * ask. That is the risk this beat guards against.
+       */
+      type: "explainIt";
+      questions: {
+        id: string;
+        /** Never spoken. */
+        who: string;
+        icon: string;
+        /** Their question, in their own words. Never spoken. */
+        asks: string;
+        /** Read aloud as they ask. Never hints at which answer is the kind one. */
+        readAloud: string;
+        /**
+         * Three reads best, exactly one `good`. EVERY answer must be
+         * factually TRUE: an answer that is simply wrong turns this back into
+         * a quiz and the beat stops teaching anything about how to talk to
+         * people. Give the two clumsy ones different faults, one too technical
+         * and one unkind, never two of a kind.
+         */
+        answers: {
+          id: string;
+          /** Never spoken. */
+          text: string;
+          good?: boolean;
+          /** SPOKEN when the good one is picked. Says what it does for the
+           *  PERSON, not that it was correct. */
+          why?: string;
+          /** SPOKEN when a clumsy one is picked. Says how it would LAND,
+           *  never that it was wrong: every answer here is true. */
+          explanation?: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      askerLabel?: string;
+      askPrompt?: string;
+      answersLabel?: string;
+      counterLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Freeze the Moment (Week 19, concept 5). Somebody they love, thumb
+       * already moving, about to do the thing. Knowing it is a scam is not the
+       * skill: saying so out loud, in the two seconds before the tap, to a
+       * grown-up who is in a hurry, is. It is the hardest thing the course asks
+       * and it gets its own beat.
+       *
+       * SAYING NOTHING IS NEVER PUNISHED. It is offered every round, it is the
+       * honest answer a shy child would give, and picking it gets a plain
+       * "that is what most people do" and then the sentence to use instead. A
+       * child made to feel bad for freezing freezes harder next time.
+       */
+      type: "speakUp";
+      scenes: {
+        id: string;
+        /** Never spoken. */
+        scene: string;
+        icon: string;
+        /** What the grown-up is doing THIS SECOND. Never spoken. */
+        doing: string;
+        /** Read aloud as the scene freezes. */
+        readAloud: string;
+        /**
+         * Three reads best, exactly one `works`. One of the other two must
+         * ALWAYS be the say-nothing option, phrased without shame. The line
+         * that works must be under about twelve words: a long sentence is one
+         * a frightened child will not get out.
+         */
+        lines: {
+          id: string;
+          /** What the child says, or does not. Never spoken. */
+          says: string;
+          works?: boolean;
+          /** SPOKEN when the working line is picked. Says what it DID. */
+          why?: string;
+          /** SPOKEN otherwise. Never scolds, especially not say-nothing. */
+          explanation?: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      frozenLabel?: string;
+      askPrompt?: string;
+      linesLabel?: string;
+      counterLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Family Quilt (Week 19, concept 3). This week's old screen-4
+       * signature, rebuilt data-driven, CONVERTED TO TAP-ONLY and RE-VERBED.
+       * The original dragged a thread from a defence charm to the family member
+       * it fitted: a drag on SVG lines, and a match-the-charm verb that Sign
+       * Bingo and the Memory Match already spend their whole three-use caps on.
+       *
+       * It now judges each proposed house rule for FAIRNESS. Every rule on the
+       * loom is SAFE, so safety is not what is being judged: the question is
+       * whether it covers everybody, grown-ups included.
+       *
+       * LANE: this is the split from Week 13. That week is MY plan for MY
+       * screen time, decided by me. This is a rule the whole house lives under,
+       * which has to pass a test a personal plan never faces.
+       */
+      type: "hearthLoom";
+      /**
+       * Five or six reads best, and at least TWO must be unfair or the child
+       * learns to wave everything through. An unfair rule must be genuinely
+       * SAFE and genuinely unfair: never write one that is also unsafe, or the
+       * child rejects it for the wrong reason and learns nothing.
+       */
+      rules: {
+        id: string;
+        /** Never spoken. */
+        text: string;
+        /** Never spoken. */
+        proposedBy: string;
+        icon: string;
+        /** Read aloud as the square comes up. Never says whether it is fair. */
+        readAloud: string;
+        /** True when it covers everybody, grown-ups included. */
+        fair: boolean;
+        /** SPOKEN on the right call. */
+        why: string;
+        /** SPOKEN on a wrong call. */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      quiltLabel?: string;
+      weaveLabel?: string;
+      unpickLabel?: string;
+      askPrompt?: string;
+      counterLabel?: string;
+      proposedLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Encore of Twenty (Week 20, the review). The graduation stage
+       * lights up six emblems from the journey and the child echoes the
+       * sequence back, growing 2 to 4 to 6 across three encores. This is the
+       * old screen-4 signature promoted to the REVIEW slot, which is where it
+       * always belonged: recalling the emblems is a celebration-shaped
+       * rehearsal of the whole course, and a miss simply replays the sequence
+       * slower with the next tile ghosted, so every child gets there.
+       *
+       * Already tap-only and already untimed, so no conversion was needed.
+       * It gained a spoken payoff in this rebuild: the last game of the
+       * entire twenty weeks used to end in silence.
+       */
+      type: "encoreOfTwenty";
     }
   | {
       /**
