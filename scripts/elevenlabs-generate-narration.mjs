@@ -290,7 +290,7 @@ for (const fname of weekFiles) {
   // Add each week's filename here as it is finalized; drop the guard at the end.
   // Weeks rebuilt to the Learn-Loop standard (boss trimmed to 5 / pass 4, wrong
   // panels + in-game read-alouds authored for Sarah). Append as weeks ship.
-  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts", "week15.ts", "week16.ts", "week17.ts"]);
+  const LEARN_LOOP_WEEKS = new Set(["week1.ts", "week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts", "week15.ts", "week16.ts", "week17.ts", "week18.ts"]);
   const learnLoop = LEARN_LOOP_WEEKS.has(fname);
   let ba, bossQ = 0;
   while (learnLoop && (ba = bossAskRe.exec(src)) !== null) {
@@ -445,7 +445,12 @@ for (const fname of weekFiles) {
   // Week 6 (2026-09-16) adds: the Chat Fixer messages, Lobby Doors players and
   // settings card, Guard Count rounds and slots, Power Panel rounds (readAloud),
   // plus the Power Panel's two wrong-order teach lines (stepTeach array).
-  if (["week2.ts", "week3.ts", "week4.ts", "week5.ts", "week6.ts", "week7.ts", "week8.ts", "week9.ts", "week10.ts", "week11.ts", "week12.ts", "week13.ts", "week14.ts", "week16.ts"].includes(fname)) {
+  // Gated on LEARN_LOOP_WEEKS, never a hardcoded list: this block used to
+  // carry its own list of week files and weeks 15, 17 and 18 were never added
+  // to it, so every in-game read-aloud in those weeks was generated for
+  // nobody and played as silence, with no error anywhere and nothing in any
+  // audit to catch it. Keep this keyed off the shared set.
+  if (learnLoop) {
     const w2TypeRe = /^\s*\{?\s*type:\s*"([a-zA-Z]+)"/gm;
     const w2Starts = [];
     let w2m;
@@ -476,6 +481,13 @@ for (const fname of weekFiles) {
         pushAll(span, /\bnudge:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       if (st.type === "stepOrder") pushAll(span, /\baffirmation:\s*"((?:[^"\\]|\\.)*)"/g);
+      // Sarah reads each thing as it arrives on both of these, and neither
+      // had a scan, so Week 14's Ears Check shipped with all eight things
+      // silent. Their why / explanation reasons come from the generic reason
+      // scan above; only the read-aloud was missing.
+      if (st.type === "hookSort" || st.type === "replyCards" || st.type === "settingsSwitch") {
+        pushAll(span, new RegExp("\\breadAloud:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"", "g"));
+      }
       if (st.type === "plaquePeek") {
         pushAll(span, /\bclaim:\s*"((?:[^"\\]|\\.)*)"/g);
         pushAll(span, /\baddress:\s*"((?:[^"\\]|\\.)*)"/g);
@@ -617,6 +629,19 @@ for (const fname of weekFiles) {
       // `inside`, a pane's `label` and `shows`, a pebble's `name` and `who`, and
       // a line's `text` and `swapTo`. The Friend Panner's readAloud sits on the
       // scoop rather than the pebble, which this span-wide scan still reaches.
+      // Week 18: the shelf reads each thing as it comes up. The Log Out
+      // sweep speaks per card through `logOut` rather than `readAloud`, and
+      // its four committed lines (lockWhy, earlyLockExplanation, goblinLine,
+      // lookBackWhy) are picked up by the global scans.
+      if (["whoseIsIt"].includes(st.type)) {
+        pushAll(span, new RegExp("\\breadAloud:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"", "g"));
+      }
+      if (["logOutFlick"].includes(st.type)) {
+        pushAll(span, new RegExp("\\blogOut:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"", "g"));
+        for (const k of ["lockWhy", "earlyLockExplanation", "goblinLine", "lookBackWhy"]) {
+          pushAll(span, new RegExp("\\b" + k + ":\\s*\"((?:[^\"\\\\]|\\\\.)*)\"", "g"));
+        }
+      }
       if (["ropeLine", "frostMirror", "draftScrub", "friendPanner"].includes(st.type)) {
         pushAll(span, new RegExp("\\breadAloud:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"", "g"));
       }

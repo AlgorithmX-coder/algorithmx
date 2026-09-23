@@ -191,8 +191,30 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
     },
     { ssr: false },
   ),
-  // Week 18 · Shared Devices — flick every app shut, then look back and lock up.
-  logOutFlick: dynamic(() => import("./LogOutFlick"), { ssr: false }),
+  // Week 18 . Shared Devices - close every card off the shared tablet, lock
+  // it, then look back when the goblin sneaks one open again.
+  // Rebuilt to the Learn-Loop standard (data-driven, TAP-ONLY, untimed): the
+  // original wanted a press-and-swipe-down flick, a gesture with a velocity
+  // threshold that a six year old on a tablet cannot produce on demand, so a
+  // child who could not flick could not finish. Its onComplete(score) no
+  // longer fits this registry, so this adapter keeps the legacy mount
+  // compiling and playable on the built-in fallback cards.
+  logOutFlick: dynamic(
+    async () => {
+      const { default: LogOutFlick } = await import("./LogOutFlick");
+      function LogOutFlickSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(LogOutFlick, {
+          cards: [],
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      LogOutFlickSignature.displayName = "LogOutFlickSignature";
+      return LogOutFlickSignature;
+    },
+    { ssr: false },
+  ),
   // Week 19 · Family Firewall — weave learned defences to each family member.
   hearthLoom: dynamic(() => import("./HearthLoom"), { ssr: false }),
   // Week 20 · Graduation — Simon echo of all twenty week emblems.

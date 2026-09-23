@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -91,6 +91,19 @@ const RETHEME_ALLOWED = {
   // here, and it takes RevealBoard's second use of the twenty weeks on a new
   // skin: a lit gallery of framed posts, not W2's brown cork board.
   17: ["RevealBoard"], // The Backstage Pass (W2 wish list, backstage skin)
+  // W18 needed only ONE new engine, because for once the library had the
+  // right shapes free. ButtonHunt is FREE rather than a re-theme (no rebuilt
+  // week uses it) and was earmarked for this exact log-out slot back in W6;
+  // whoseIsIt is new; logOutFlick is this week's signature CONVERTED to
+  // tap-only (the original wanted a swipe with a velocity threshold in it, so
+  // a child who could not flick could not finish). The three charged here all
+  // take their third and final use of the twenty weeks, each on a board the
+  // earlier weeks would not recognise: HookSort on a NEW cool-slate "rack"
+  // skin rather than W14's lamp-lit evening room, ReplyCards on its balloons,
+  // and StepOrder on a NEW steel "rail" skin for the review. That review is a
+  // SEQUENCE, which no other week's is, and it is the right shape because
+  // this week's whole lesson is an order.
+  18: ["HookSort", "ReplyCards", "StepOrder (review)"], // The Charging Rack (W14 house), The Balloons (W14/W16 cards), The Lock Master’s Routine (W2 hero trail)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

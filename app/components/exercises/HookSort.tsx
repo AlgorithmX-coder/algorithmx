@@ -125,8 +125,10 @@ export interface HookItem {
 
 export interface HookSortProps {
   items: HookItem[];
-  /** Visual skin: the W4 fishing dock (default) or the W14 listening house. */
-  skin?: "dock" | "house";
+  /** Visual skin: the W4 fishing dock (default), the W14 listening house, or
+   *  the W18 charging rack. House and rack share a layout and differ in paint
+   *  and copy; the dock is untouched by both. */
+  skin?: "dock" | "house" | "rack";
   /** Copy overrides (re-theme per week; defaults keep the W4 dock skin). */
   introTitle?: string;
   introSubtitle?: string;
@@ -169,12 +171,40 @@ const LABEL_FONT = "'Space Grotesk', sans-serif";
 const THING_MIN_H = 132;
 const NOOK_MIN_H = 92;
 /** Paints, house skin. A lamp-lit evening room: honey, cocoa, two nooks. */
-const HOUSE_BG = "linear-gradient(180deg, #2f1f10 0%, #241708 58%, #180f06 100%)";
-const HOUSE_BOARD = "linear-gradient(180deg, rgba(0,0,0,0.26) 0%, rgba(0,0,0,0.42) 100%)";
-const MAT = "radial-gradient(ellipse at 50% 42%, rgba(255,201,138,0.22) 0%, rgba(255,201,138,0.06) 58%, transparent 74%)";
-const EARS_HUE = "#45e3ff";
-const SLEEP_HUE = "#b9a7ff";
-const PAPER_INK = "#fff3e2";
+interface SortPalette {
+  bg: string;
+  board: string;
+  mat: string;
+  /** The hue of the CUT nook (house: ears on; rack: not mine). */
+  cutHue: string;
+  cutHueDeep: string;
+  /** The hue of the REEL nook (house: sleeping; rack: mine). */
+  reelHue: string;
+  reelHueDeep: string;
+  ink: string;
+}
+
+/** Week 14's lamp-lit evening room: honey and cocoa, two warm nooks. */
+const HOUSE_PALETTE: SortPalette = {
+  bg: "linear-gradient(180deg, #2f1f10 0%, #241708 58%, #180f06 100%)",
+  board: "linear-gradient(180deg, rgba(0,0,0,0.26) 0%, rgba(0,0,0,0.42) 100%)",
+  mat: "radial-gradient(ellipse at 50% 42%, rgba(255,201,138,0.22) 0%, rgba(255,201,138,0.06) 58%, transparent 74%)",
+  cutHue: "#45e3ff", cutHueDeep: "#2da8c9",
+  reelHue: "#b9a7ff", reelHueDeep: "#7c6bd6",
+  ink: "#fff3e2",
+};
+
+/** Week 18's charging rack: cool slate and morning steel, nothing like the
+ *  evening room four weeks earlier, so a parent could never take one board
+ *  for the other. */
+const RACK_PALETTE: SortPalette = {
+  bg: "linear-gradient(180deg, #16202e 0%, #101825 58%, #0b1119 100%)",
+  board: "linear-gradient(180deg, rgba(0,0,0,0.24) 0%, rgba(0,0,0,0.4) 100%)",
+  mat: "radial-gradient(ellipse at 50% 42%, rgba(146,199,255,0.2) 0%, rgba(146,199,255,0.06) 58%, transparent 74%)",
+  cutHue: "#ffb45c", cutHueDeep: "#d2823a",
+  reelHue: "#5fe0a8", reelHueDeep: "#2f9e73",
+  ink: "#eef6ff",
+};
 
 export default function HookSort({
   items,
@@ -210,7 +240,9 @@ export default function HookSort({
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
   const accent = useLessonTheme()?.accent ?? "#2b7fff";
-  const house = skin === "house";
+  // Both alternative skins run the house LAYOUT; only the paint differs.
+  const house = skin === "house" || skin === "rack";
+  const pal = skin === "rack" ? RACK_PALETTE : HOUSE_PALETTE;
   // Both content voices are Sarah; in-game read-alouds and verdict reasons are
   // recorded under "adam", so every manifest lookup here uses that key. Never
   // derive it from the intro narration's speaker.
@@ -362,7 +394,7 @@ export default function HookSort({
 
   /** One nook under the board, filling up as the child makes the calls. */
   const nook = (ears: boolean): ReactNode => {
-    const hue = ears ? EARS_HUE : SLEEP_HUE;
+    const hue = ears ? pal.cutHue : pal.reelHue;
     const kept = sorted.filter((s) => s.ears === ears);
     const label = ears ? (cutBinLabel ?? "EARS ON") : (reelBinLabel ?? "FAST ASLEEP");
     return (
@@ -387,7 +419,7 @@ export default function HookSort({
             alignContent: "center",
             justifyContent: kept.length ? "flex-start" : "center",
             gap: 7,
-            color: PAPER_INK,
+            color: pal.ink,
             fontFamily: KID_FONT,
             transition: "border-color 220ms ease, background 220ms ease",
           }}
@@ -440,9 +472,9 @@ export default function HookSort({
         style={{
           flex: "1 1 210px",
           maxWidth: 320,
-          background: `linear-gradient(135deg, ${EARS_HUE}, #2da8c9)`,
+          background: `linear-gradient(135deg, ${pal.cutHue}, ${pal.cutHueDeep})`,
           color: "#04212b",
-          boxShadow: `0 6px 22px ${EARS_HUE}55`,
+          boxShadow: `0 6px 22px ${pal.cutHue}55`,
           ...guideStyle(guided),
         }}
       >
@@ -456,9 +488,9 @@ export default function HookSort({
         style={{
           flex: "1 1 210px",
           maxWidth: 320,
-          background: `linear-gradient(135deg, ${SLEEP_HUE}, #7c6bd6)`,
+          background: `linear-gradient(135deg, ${pal.reelHue}, ${pal.reelHueDeep})`,
           color: "#140d24",
-          boxShadow: `0 6px 22px ${SLEEP_HUE}55`,
+          boxShadow: `0 6px 22px ${pal.reelHue}55`,
           ...guideStyle(guided),
         }}
       >
@@ -487,7 +519,7 @@ export default function HookSort({
           margin: "0 22px",
           padding: 12,
           borderRadius: 18,
-          background: HOUSE_BOARD,
+          background: pal.board,
           border: `1px solid ${accent}44`,
           boxShadow: `0 18px 40px -22px rgba(0,0,0,0.8), inset 0 0 0 1px ${accent}14`,
           display: "flex",
@@ -502,7 +534,7 @@ export default function HookSort({
             width: "100%",
             minHeight: THING_MIN_H,
             borderRadius: 18,
-            background: MAT,
+            background: pal.mat,
             border: "1.5px solid rgba(255,201,138,0.28)",
             display: "flex",
             alignItems: "center",
@@ -552,7 +584,7 @@ export default function HookSort({
                   fontSize: 19,
                   fontWeight: 800,
                   lineHeight: 1.3,
-                  color: PAPER_INK,
+                  color: pal.ink,
                   overflowWrap: "anywhere",
                 }}
               >
@@ -598,7 +630,7 @@ export default function HookSort({
   return (
     <ExerciseFrame
       maxWidth={house ? 860 : 760}
-      background={house ? HOUSE_BG : "linear-gradient(180deg, #0a1230 0%, #0a1f4d 55%, #06355c 100%)"}
+      background={house ? pal.bg : "linear-gradient(180deg, #0a1230 0%, #0a1f4d 55%, #06355c 100%)"}
       style={{ position: "relative", overflow: "hidden" }}
     >
       {fx.layer()}

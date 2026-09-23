@@ -110,6 +110,8 @@ import GlassCheck from "@/app/components/exercises/GlassCheck";
 import RopeLine from "@/app/components/exercises/RopeLine";
 import FrostMirror from "@/app/components/exercises/FrostMirror";
 import DraftScrub from "@/app/components/exercises/DraftScrub";
+import WhoseIsIt from "@/app/components/exercises/WhoseIsIt";
+import LogOutFlick from "@/app/components/exercises/signatures/LogOutFlick";
 import FriendPanner from "@/app/components/exercises/signatures/FriendPanner";
 import KeyholeCheck from "@/app/components/exercises/signatures/KeyholeCheck";
 import PausePower from "@/app/components/exercises/PausePower";
@@ -3127,6 +3129,79 @@ function DynamicLessonInner({
           </FullScene>
         );
 
+      // Week 18 (Lock Before You Leave): the family tablet on the bench.
+      case "logOutFlick":
+        return (
+          <FullScene bg="linear-gradient(180deg, #161022 0%, #2a2140 100%)">
+            <LogOutFlick
+              cards={def.cards}
+              tabletLabel={def.tabletLabel}
+              lockLabel={def.lockLabel}
+              lockedLabel={def.lockedLabel}
+              openCountLabel={def.openCountLabel}
+              greenLabel={def.greenLabel}
+              amberLabel={def.amberLabel}
+              redLabel={def.redLabel}
+              lockWhy={def.lockWhy}
+              earlyLockExplanation={def.earlyLockExplanation}
+              goblinLine={def.goblinLine}
+              lookBackWhy={def.lookBackWhy}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "whoseIsIt":
+        return (
+          <FullScene bg="linear-gradient(180deg, #161022 0%, #2a2140 100%)">
+            <WhoseIsIt
+              things={def.things}
+              owners={def.owners}
+              shelfLabel={def.shelfLabel}
+              askPrompt={def.askPrompt}
+              tagsLabel={def.tagsLabel}
+              counterLabel={def.counterLabel}
+              mineLabel={def.mineLabel}
+              theirsLabel={def.theirsLabel}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
       case "keyholeCheck":
         return (
           <FullScene bg="linear-gradient(180deg, #0c0a14 0%, #1e1a2e 100%)">
@@ -3813,6 +3888,10 @@ function DynamicLessonInner({
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}

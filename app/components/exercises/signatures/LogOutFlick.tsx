@@ -1,1718 +1,567 @@
 "use client";
 
 /**
- * LogOutFlick - Week 18 (Sharing Devices) signature exercise.
+ * LogOutFlick: the SWEEP, LOCK, THEN LOOK BACK drill (Week 18, concept 2).
  *
- * Locker room, end of break. A SHARED tablet on the bench is covered in
- * the child's open cards: a game still logged in, a half-written message,
- * a photo gallery. The child FLICKS each card downward off the screen
- * (framer-motion drag, swipe-to-dismiss with a slam-and-lock stamp) to
- * log out. When the stack looks empty and they head for the locker door,
- * a goblin paw sneaks ONE card back open behind them and the door light
- * snaps to AMBER until they turn back and flick that one too. Zero open
- * cards = shut the locker and tap the big lock (it goes GREEN). WIN =
- * "LOCKED AND SAFE!" banner, and onComplete() fires once from Finish.
+ * This week's old screen-4 signature, rebuilt to the Learn-Loop standard and
+ * CONVERTED TO TAP-ONLY. The original asked the child to press a card and swipe
+ * it downward fast enough to register as a flick. That is a gesture with a
+ * velocity threshold in it, which is the one thing a six year old on a tablet
+ * cannot produce on demand, and a child who cannot flick simply cannot finish.
+ * Everything else about it was right and all of it stays: the shared tablet
+ * covered in the child's open cards, the door light, the goblin paw that
+ * sneaks one card back open behind them, and the amber light that will not go
+ * green until they turn round and deal with it.
  *
- * Teaches: leaving a shared device is a sweep ritual. Close everything,
- * log out, lock, then LOOK BACK and check again.
+ * The lesson is a RITUAL, not a quiz, and that is deliberate. Leaving a shared
+ * device is four moves in a fixed order: close everything, log out, lock it,
+ * then look back and check again. A child who has done it in that order a few
+ * times has a habit; a child who has answered questions about it has a fact.
+ * So most taps here are not judged at all, and the one judged moment is the one
+ * that matters: pressing LOCK IT while cards are still open. That is exactly
+ * the mistake real people make, so it is the mistake the game is built around,
+ * and it costs nothing but Sarah pointing at what is still lit up.
  *
- * Forgiving by design: no timer, no red hard-fail. The amber light and
- * the goblin re-open ARE the lesson, never a punishment. Wrong flicks
- * just spring back with a friendly hint.
+ * THE GOBLIN IS NOT A PUNISHMENT. He arrives AFTER a correct lock, every time,
+ * scripted and unavoidable, because the point is not that the child did
+ * something wrong. The point is that a shared device can change behind your
+ * back, so looking again is part of the job rather than a sign you failed at
+ * it. Sarah's line on the amber light says exactly that.
  *
- * Self-contained by design: all copy lives here, deps are react +
- * framer-motion + ExerciseFrame + PixIcon + inline SVG/CSS only.
+ * Verb: CLEAR A BOARD, COMMIT, THEN BE SHOWN IT IS NOT DONE. Nothing else in
+ * the library has a second act. It is NOT a judged queue (the Glass Check, the
+ * Rope Line are): the cards are not right or wrong, they are simply open. It is
+ * NOT a two-bin sort (Hook Sort is, one beat earlier this same week): nothing is
+ * carried anywhere and there is only one place for a card to go. It is NOT a
+ * hunt among decoys (Button Hunt is, one beat later this same week): every card
+ * is real, every card must go, and none of them is a trap. It is NOT the Friend
+ * Panner's collect-then-commit (Week 17): there is no picking, the whole board
+ * always has to come down.
+ *
+ * Nothing races the child: tap-only, untimed, no lose state, no red hard-fail.
+ *
+ * Learn-Loop wiring: Raccoon boast in the intro (`threat`), Sarah's how-to once
+ * and each card's `logOut` line as it goes (audio-only, `recordedOnly`, released
+ * by the shared SPOKEN_GATE_MAX_MS), a one-take spoken verdict on the two
+ * committed moments (the lock, via VerdictVoice, and the early lock through
+ * WrongAnswerPanel), and a payoff on the complete beat gated on
+ * `!verdict.speaking` so it can never cut Sarah off. A synchronous ref latch
+ * shuts the lock the instant it is pressed, because `canTap` only closes once
+ * React re-renders on `verdict.speaking` and a quick second tap would otherwise
+ * restart the verdict and cut Sarah off (the real Week 12 bug).
+ *
+ * The CARDS are shuffled every play. Which card the goblin reopens is picked
+ * from the same shuffled deck, so the look-back is never in the same place.
+ *
+ * CRITICAL for the week author: every spoken string arrives through props
+ * (`introNarration`, `coachLines`, `threat`, each card's `logOut`, `lockWhy`,
+ * `earlyLockExplanation`, `goblinLine`, `lookBackWhy`, `hints`,
+ * `completeNarration`). The clip generator reads the WEEK FILE, so anything
+ * left to a component default is never recorded and plays as silence, with no
+ * error anywhere. Each card's `label` and `detail` are READ ON SCREEN, never
+ * spoken.
+ *
+ * Authoring: three or four cards reads best. Every card must be something the
+ * CHILD left open, never somebody else's (that is concept 4's ground, and
+ * mixing them here teaches a child to close their sister's things "to be
+ * tidy"). Keep `label` to about 14 characters and `detail` to about 40.
+ * Every icon must be in PixIcon's MAP or it renders as a flat system emoji.
+ *
+ * Layout budget at the owner's 1414x771 window (HUD 64 + stage padding 40, so
+ * the stage holds ~627px before it grows): header 29 + marginBottom 10 + board
+ * 26 + light row 44 + tablet 300 + gap 12 + lock 66 + strip 28 + hint gap 8 =
+ * ~523px, so the light, the tablet and the lock are on screen without a scroll.
+ * At 400px the cards fall to one column and nothing scrolls sideways.
  */
 
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import type { PanInfo } from "framer-motion";
-import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
-import PixIcon from "@/app/components/lesson/PixIcon";
-import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
+import { useExerciseFeedback } from "@/app/lib/gameEngine/useExerciseFeedback";
+import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import ExerciseIntroBeat, { ExerciseCompleteBeat } from "@/app/components/lesson/ExerciseBeats";
+import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import HintBubble from "@/app/components/lesson/HintBubble";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import { useVerdictVoice } from "@/app/components/lesson/VerdictVoice";
+import PixIcon from "@/app/components/lesson/PixIcon";
+import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
-/* ------------------------------------------------------------------ */
-/* Constants + content                                                */
-/* ------------------------------------------------------------------ */
+// Audio-only narration: Sarah's voice with no visible narration box (the text
+// she reads is already on screen), same recipe as GlassCheck / FrostMirror.
+const AUDIO_ONLY_STYLE = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  pointerEvents: "none",
+} as const;
+// SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
-const STAGE_W = 920;
-const STAGE_H = 520;
-
-/* Flick thresholds (pointer px, deliberately forgiving) */
-const DISMISS_OFFSET = 70;
-const DISMISS_VELOCITY = 400;
-
-type CardId = "game" | "message" | "photos";
-type Phase = "intro" | "sweep" | "ready" | "leaving" | "lookback" | "lock" | "won";
-type ToastTone = "green" | "amber" | "hint" | "soft";
-
-interface Toast {
-  key: number;
-  tone: ToastTone;
-  title: string;
-  body?: string;
+export interface OpenCard {
+  id: string;
+  /** What the card is. Read on screen, never spoken. */
+  label: string;
+  /** The little line under it. Read on screen, never spoken. */
+  detail: string;
+  icon: string;
+  /** SPOKEN as this card is logged out. One kid-sized sentence. */
+  logOut: string;
 }
 
-/* Bottom of the stack first, top of the stack last. */
-const STACK: CardId[] = ["photos", "message", "game"];
+export interface LogOutFlickProps {
+  cards: OpenCard[];
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  /** Chrome, never spoken. */
+  tabletLabel?: string;
+  lockLabel?: string;
+  lockedLabel?: string;
+  openCountLabel?: string;
+  greenLabel?: string;
+  amberLabel?: string;
+  redLabel?: string;
+  /** SPOKEN the first time the board is locked with every card closed. */
+  lockWhy?: string;
+  /** SPOKEN when LOCK IT is pressed with cards still open. */
+  earlyLockExplanation?: string;
+  /** SPOKEN as the goblin paw reopens a card. */
+  goblinLine?: string;
+  /** SPOKEN on the final lock, after the look-back. */
+  lookBackWhy?: string;
+  completeTitle?: string;
+  completeLine?: string;
+  hints?: { tier1: string; tier2: string };
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  threat?: { raccoonLine: string };
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  onComplete: (score: number) => void;
+  onCorrect?: () => void;
+  onWrong?: () => void;
+  onHintReached?: (tier: 1 | 2 | 3) => void;
+  onAnswered?: (o: { questionKey: string; selectedIndex: number; correctIndex: number; wasCorrect: boolean }) => void;
+}
 
-const ROT: Record<CardId, number> = { photos: -5, message: 4, game: 0 };
+/** Fixed chrome copy the props do not cover (never spoken). */
+const SWEEP_TOAST = "LOGGED OUT!";
+const LOCK_TOAST = "LOCKED!";
+const WRONG_TITLE = "Have another look at the tablet";
 
-const CARD_META: Record<CardId, { label: string; hudColor: string }> = {
-  game: { label: "Game", hudColor: "#b79cff" },
-  message: { label: "Message", hudColor: "#7df0ff" },
-  photos: { label: "Photos", hudColor: "#ff9fce" },
-};
+/**
+ * The LEGACY SIGNATURE MOUNT's fallback cards, and nothing else. Week 18 plays
+ * this engine as a regular data-driven exercise and passes every card from its
+ * week file. These lines live in this component rather than in a week file, so
+ * the clip generator never sees them and Sarah never reads them (the Week 11
+ * re-theme trap). If a week ever renders this set, it has forgotten `cards`.
+ */
+const DEFAULT_CARDS: OpenCard[] = [
+  { id: "legacy-game", label: "Game", detail: "Still logged in as you", icon: "🎮", logOut: "Game logged out. Now nobody can play as you." },
+  { id: "legacy-message", label: "Message", detail: "Half written, still open", icon: "💬", logOut: "Message closed. Your words stay yours." },
+  { id: "legacy-photos", label: "Photos", detail: "Your gallery, wide open", icon: "📸", logOut: "Gallery closed. Your pictures are private again." },
+];
 
-const FLICK_TOAST: Record<CardId, { title: string; body: string }> = {
-  game: { title: "Game logged out!", body: "Now nobody can play as you." },
-  message: { title: "Message closed!", body: "Your words stay yours." },
-  photos: { title: "Gallery closed!", body: "Your pictures are private again." },
-};
+const KID_FONT = "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif";
+const LABEL_FONT = "'Space Grotesk', sans-serif";
 
-/* ------------------------------------------------------------------ */
-/* Component                                                          */
-/* ------------------------------------------------------------------ */
+/** Geometry (px). */
+const CARD_MIN_H = 118;
+const LOCK_MIN_H = 66;
+
+/** Paints. A warm locker room, and one bright tablet in the middle of it. */
+const ROOM = "linear-gradient(180deg, #2a2338 0%, #1f1a2c 60%, #171322 100%)";
+const TABLET_SHELL = "linear-gradient(180deg, #3b3550 0%, #2b2640 100%)";
+const CARD_OPEN = "linear-gradient(160deg, #fff8ec 0%, #f6e7cd 100%)";
+const CARD_SHUT = "linear-gradient(160deg, #3a3a44 0%, #2c2c34 100%)";
+const INK = "#2e2417";
+const GREEN = "#16a34a";
+const AMBER = "#e0a13a";
+const RED = "#c2554d";
+
+/** Where the ritual has got to. */
+type Phase = "sweep" | "locked-early" | "goblin" | "lookback" | "done";
 
 export default function LogOutFlick({
+  cards,
+  introTitle = "Lock Before You Leave",
+  introSubtitle = "The shared tablet is covered in your open cards. Close every one, then lock it.",
+  introIcon = "🔒",
+  tabletLabel = "THE SHARED TABLET",
+  lockLabel = "LOCK IT AND GO",
+  lockedLabel = "LOCKED",
+  openCountLabel = "STILL OPEN",
+  greenLabel = "GREEN: SAFE TO LEAVE",
+  amberLabel = "AMBER: LOOK BACK",
+  redLabel = "RED: STILL OPEN",
+  lockWhy = "Every card shut and the tablet locked. That is the whole sweep.",
+  earlyLockExplanation = "Look at the tablet. There are still cards lit up on it, and locking now leaves every one of them open underneath.",
+  goblinLine = "Wait. Something just opened behind you.",
+  lookBackWhy = "You turned round and checked. That is the bit almost everybody forgets.",
+  completeTitle = "Locked and safe!",
+  completeLine = "Close, lock, then look back, Cyber Hero. That last bit is the one that counts.",
+  hints,
+  introNarration,
+  coachLines,
+  threat,
+  completeNarration,
   onComplete,
-  narration,
-  accent,
-}: {
-  onComplete: () => void;
-  narration?: { speaker?: "adam" | "layla"; lines: string[] };
-  accent?: string;
-}) {
-  const reduce = !!useReducedMotion();
+  onCorrect,
+  onWrong,
+  onHintReached,
+  onAnswered,
+}: LogOutFlickProps) {
   const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+  const reduce = intensity < 1;
+  const accent = useLessonTheme()?.accent ?? "#2b7fff";
+  // Both content voices are Sarah; in-game read-alouds and verdict reasons are
+  // recorded under "adam", so every manifest lookup here uses that key.
+  const voice = "adam" as const;
 
-  const [phase, setPhase] = useState<Phase>("intro");
-  const [openCards, setOpenCards] = useState<CardId[]>(STACK);
-  const [loggedOut, setLoggedOut] = useState<Record<CardId, boolean>>({
-    game: false,
-    message: false,
-    photos: false,
-  });
-  const [stamp, setStamp] = useState<{ key: number } | null>(null);
-  const [doorFlash, setDoorFlash] = useState(false);
-  const [pawIn, setPawIn] = useState(false);
-  const [giggle, setGiggle] = useState(false);
-  const [lockShut, setLockShut] = useState(false);
-  const [lockBurst, setLockBurst] = useState(false);
-  const [toast, setToast] = useState<Toast | null>(null);
+  const deck = useShuffledOnce(cards?.length ? cards : DEFAULT_CARDS, { key: "log-out-flick" });
 
-  const interactive = phase === "sweep" || phase === "lookback";
+  const [showIntro, setShowIntro] = useState(true);
+  const [narr, setNarr] = useState<"howto" | "card" | "goblin" | "idle">("idle");
+  /** The card whose logOut line is playing. */
+  const [speakingCard, setSpeakingCard] = useState<string | null>(null);
+  /** Cards still open on the tablet. */
+  const [open, setOpen] = useState<Set<string>>(() => new Set());
+  const [phase, setPhase] = useState<Phase>("sweep");
+  const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
+  const [wrongs, setWrongs] = useState(0);
+  /** Which card the goblin reopens. Chosen from the shuffled deck, so the
+   *  look-back is never in the same place twice. */
+  const goblinCard = useMemo(() => deck[deck.length > 1 ? deck.length - 1 : 0], [deck]);
 
-  /* -------- responsive scale (design px -> screen px) -------- */
+  // Everything starts open.
+  useEffect(() => { setOpen(new Set(deck.map((c) => c.id))); }, [deck]);
 
-  const wrapRef = useRef<HTMLDivElement | null>(null);
-  const [scale, setScale] = useState(1);
+  const verdict = useVerdictVoice(voice);
+  const speaking = narr !== "idle" || verdict.speaking || !!feedback;
+  const handlingRef = useRef(false);
+  const allShut = open.size === 0;
 
+  // Safety releases for the spoken gate (never leave the room held).
   useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const apply = () => setScale(Math.max(0.2, el.clientWidth / STAGE_W));
-    apply();
-    const ro = new ResizeObserver(apply);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+    if (narr === "idle") return;
+    const id = window.setTimeout(() => { setNarr("idle"); setSpeakingCard(null); }, SPOKEN_GATE_MAX_MS);
+    return () => window.clearTimeout(id);
+  }, [narr]);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) { setNarr("idle"); setSpeakingCard(null); } }), []);
 
-  /* -------- timers (all cleared on unmount) -------- */
-
-  const timersRef = useRef<number[]>([]);
-  const later = (fn: () => void, ms: number) => {
-    timersRef.current.push(window.setTimeout(fn, ms));
-  };
+  const reportedTier = useRef(0);
   useEffect(() => {
-    const timers = timersRef.current;
-    return () => timers.forEach((t) => window.clearTimeout(t));
-  }, []);
+    const tier = wrongs >= 2 ? 2 : wrongs >= 1 ? 1 : 0;
+    if (tier > reportedTier.current) {
+      reportedTier.current = tier;
+      onHintReached?.(tier as 1 | 2);
+    }
+  }, [wrongs, onHintReached]);
 
-  /* -------- toast -------- */
-
-  const toastTimerRef = useRef<number | null>(null);
-  const showToast = (tone: ToastTone, title: string, body?: string) => {
-    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
-    setToast({ key: Date.now(), tone, title, body });
-    toastTimerRef.current = window.setTimeout(() => setToast(null), 3200);
-  };
-  useEffect(
-    () => () => {
-      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
-    },
-    []
-  );
-
-  /* -------- the flick -------- */
-
-  const flickOff = (id: CardId) => {
-    audio.correct();
-    setOpenCards((prev) => prev.filter((c) => c !== id));
-    setLoggedOut((prev) => ({ ...prev, [id]: true }));
-    setStamp({ key: Date.now() });
-    later(() => setStamp(null), 950);
-    const t = FLICK_TOAST[id];
-    showToast("green", t.title, t.body);
+  const startBoard = () => {
+    setShowIntro(false);
+    setNarr(isAudioMuted() || !coachLines ? "idle" : "howto");
   };
 
-  const onCardDragEnd = (id: CardId) => (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (!interactive) return;
-    if (info.offset.y > DISMISS_OFFSET || info.velocity.y > DISMISS_VELOCITY) {
-      flickOff(id);
-    } else if (info.offset.y < -50 || Math.abs(info.offset.x) > 60) {
+  /* ───────── Closing a card. Not judged: every card has to go. ───────── */
+  const closeCard = (c: OpenCard) => {
+    if (speaking || !open.has(c.id)) return;
+    audio.select();
+    fx.correct({ xp: 10, text: SWEEP_TOAST });
+    setOpen((s) => { const n = new Set(s); n.delete(c.id); return n; });
+    setSpeakingCard(c.id);
+    setNarr(isAudioMuted() ? "idle" : "card");
+  };
+
+  /* ───────── THE LOCK: the one judged moment in the sweep ───────── */
+  const lock = () => {
+    if (speaking || phase === "done") return;
+    if (handlingRef.current) return;
+    handlingRef.current = true;
+    const right = allShut;
+    onAnswered?.({
+      questionKey: `logoutflick-lock-${phase === "lookback" ? "final" : "first"}`,
+      // 0 means "locked with everything shut", 1 means "locked too early".
+      selectedIndex: right ? 0 : 1,
+      correctIndex: 0,
+      wasCorrect: right,
+    });
+    if (!right) {
+      // The mistake the whole game is built around: locking over open cards.
       audio.wrong();
-      showToast("hint", "Almost!", "Flick the card DOWN, all the way off the screen.");
+      onWrong?.();
+      setWrongs((n) => n + 1);
+      setFeedback({ title: WRONG_TITLE, explanation: earlyLockExplanation, tip: wrongs >= 1 ? hints?.tier2 : hints?.tier1 });
+      handlingRef.current = false;
+      return;
     }
-  };
-
-  const onCardTap = () => {
-    if (!interactive) return;
-    audio.tap();
-    showToast("hint", "Give it a flick!", "Press the card and swipe it down fast.");
-  };
-
-  /* -------- phase transitions when the stack empties -------- */
-
-  useEffect(() => {
-    if (phase === "sweep" && openCards.length === 0) {
-      const t = window.setTimeout(() => {
-        setPhase("ready");
-        showToast("green", "Looking clear!", "The light is green. Tap the locker door to head out.");
-      }, 650);
-      timersRef.current.push(t);
-    } else if (phase === "lookback" && openCards.length === 0) {
-      const t = window.setTimeout(() => {
-        setPhase("lock");
-        showToast("green", "Really clear this time!", "You checked again like a pro. Now tap the big lock!");
-      }, 550);
-      timersRef.current.push(t);
-    }
-    // showToast is stable enough for this scripted beat; deps kept minimal on purpose.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openCards.length, phase]);
-
-  /* -------- the goblin beat -------- */
-
-  const startLeaving = () => {
-    setPhase("leaving");
-    showToast("soft", "Heading out...", "Wait. Did you check one last time?");
-    later(() => setPawIn(true), 250);
-    later(() => {
-      setOpenCards(["game"]);
-      setLoggedOut((prev) => ({ ...prev, game: false }));
-      setGiggle(true);
-    }, 850);
-    later(() => setPawIn(false), 1700);
-    later(() => setGiggle(false), 2100);
-    later(() => {
-      setPhase("lookback");
-      showToast("amber", "AMBER LIGHT! Look back!", "A sneaky goblin paw popped your game open again. Flick it off!");
-    }, 2000);
-  };
-
-  /* -------- door + lock -------- */
-
-  const flashAmber = () => {
-    setDoorFlash(true);
-    later(() => setDoorFlash(false), 1500);
-  };
-
-  const lockUp = () => {
-    if (lockShut) return;
-    audio.unlock();
-    setLockShut(true);
-    setLockBurst(true);
-    later(() => setLockBurst(false), 800);
-    later(() => setPhase("won"), 750);
-  };
-
-  const onDoorTap = () => {
+    audio.select();
+    fx.correct({ xp: 25, text: LOCK_TOAST });
+    onCorrect?.();
     if (phase === "sweep") {
-      audio.wrong();
-      flashAmber();
-      showToast("amber", "Amber light!", "Amber means something is still open. Flick every card off the tablet first!");
-    } else if (phase === "ready") {
-      audio.tap();
-      startLeaving();
-    } else if (phase === "lookback") {
-      audio.wrong();
-      flashAmber();
-      showToast("amber", "Still amber!", "The goblin opened a card behind you. Flick it off, then come back!");
-    } else if (phase === "lock") {
-      lockUp();
+      // First clean lock. Sarah says so, and THEN the goblin arrives: he is
+      // scripted and unavoidable, so this is never a comment on the child.
+      verdict.say("right", lockWhy, () => {
+        handlingRef.current = false;
+        setPhase("goblin");
+        setOpen(new Set([goblinCard.id]));
+        setNarr(isAudioMuted() ? "idle" : "goblin");
+        window.setTimeout(() => setPhase("lookback"), reduce ? 200 : 900);
+      });
+    } else {
+      // The final lock, after the look-back.
+      verdict.say("right", lookBackWhy, () => {
+        handlingRef.current = false;
+        setPhase("done");
+      });
     }
   };
 
-  /* -------- win -------- */
+  const stars = wrongs === 0 ? 3 : wrongs <= 2 ? 2 : 1;
+  const hintText = wrongs >= 2 ? hints?.tier2 : wrongs === 1 ? hints?.tier1 : undefined;
+  const hintTier = (wrongs >= 2 ? 2 : 1) as 1 | 2;
+  const light: { label: string; tint: string } =
+    phase === "done" ? { label: greenLabel, tint: GREEN }
+      : phase === "goblin" || phase === "lookback" ? { label: amberLabel, tint: AMBER }
+        : allShut ? { label: greenLabel, tint: GREEN }
+          : { label: redLabel, tint: RED };
+  const strip =
+    phase === "done" ? "Green light. That tablet is safe to walk away from"
+      : phase === "goblin" || phase === "lookback"
+        ? open.size > 0 ? "Amber light. One card is open again. Close it, then lock up" : "Amber light. Lock it one more time"
+        : allShut ? "Every card shut. Now lock it and go"
+          : wrongs > 0 ? "Close the cards that are still lit up first" : "Tap every open card to log it out";
 
-  const completedRef = useRef(false);
-  const finish = () => {
-    if (completedRef.current) return;
-    completedRef.current = true;
-    onComplete();
+  const eyebrowStyle: CSSProperties = {
+    fontFamily: LABEL_FONT, fontSize: 10, fontWeight: 800,
+    letterSpacing: "0.2em", textTransform: "uppercase", color: accent,
   };
 
-  /* -------- derived -------- */
-
-  const count = STACK.filter((id) => loggedOut[id]).length;
-
-  const goblinStruck = phase === "leaving" && openCards.length > 0;
-  const light: "off" | "amber" | "green" =
-    phase === "ready" || phase === "lock" || phase === "won"
-      ? "green"
-      : phase === "lookback" || goblinStruck
-        ? "amber"
-        : phase === "leaving"
-          ? "green"
-          : doorFlash
-            ? "amber"
-            : "off";
-
-  /* ---------------------------------------------------------------- */
-
-  return (
-    <ExerciseFrame padding={24} maxWidth={1060} touchActionNone>
-      {/* header row */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 10,
-          marginBottom: 14,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-          <div
-            style={{
-              fontSize: 15,
-              fontWeight: 900,
-              letterSpacing: 2.5,
-              color: "#9fe8ff",
-              textTransform: "uppercase",
-            }}
-          >
-            The Log-Out Flick
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "5px 12px",
-              borderRadius: 999,
-              background: "rgba(10,18,44,0.7)",
-              border: "1px solid rgba(125,240,255,0.35)",
-              fontSize: 12.5,
-              fontWeight: 700,
-              color: "#cfe6ff",
-            }}
-          >
-            <PixIcon emoji="👀" size={16} />
-            <span>Sweep it: close, log out, lock, CHECK!</span>
-          </div>
-        </div>
-        <ProgressHud loggedOut={loggedOut} count={count} />
-      </div>
-
-      {/* stage (fixed design coordinates, scaled to fit) */}
-      <div
-        ref={wrapRef}
-        style={{ position: "relative", width: "100%", height: Math.round(STAGE_H * scale) }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: STAGE_W,
-            height: STAGE_H,
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-          }}
-        >
-          {/* -------------------- the locker room -------------------- */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              borderRadius: 18,
-              overflow: "hidden",
-              border: "1px solid rgba(125,240,255,0.18)",
-              background: "linear-gradient(180deg, #2e3560 0%, #293056 55%, #232a4e 100%)",
-            }}
-          >
-            {/* floor */}
-            <div
-              style={{
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: 440,
-                bottom: 0,
-                background: "linear-gradient(180deg, #262046 0%, #1f1a3c 100%)",
-                borderTop: "3px solid rgba(140,150,220,0.35)",
-              }}
-            />
-
-            {/* background lockers */}
-            {[0, 1, 2, 3].map((i) => (
-              <BgLocker key={i} x={16 + i * 124} even={i % 2 === 0} />
-            ))}
-
-            {/* team pennant, just for charm */}
-            <div
-              style={{
-                position: "absolute",
-                left: 522,
-                top: 46,
-                width: 0,
-                height: 0,
-                borderTop: "22px solid transparent",
-                borderBottom: "22px solid transparent",
-                borderLeft: "66px solid #ff9f68",
-                filter: "drop-shadow(0 3px 4px rgba(0,0,0,0.3))",
-              }}
-            />
-
-            {/* bench */}
-            <div
-              style={{
-                position: "absolute",
-                left: 24,
-                top: 458,
-                width: 476,
-                height: 15,
-                borderRadius: 7,
-                background: "linear-gradient(180deg, #6d5a9e, #55437f)",
-                boxShadow: "0 6px 10px rgba(0,0,0,0.25)",
-              }}
-            />
-            {[60, 420].map((x) => (
-              <div
-                key={x}
-                style={{
-                  position: "absolute",
-                  left: x,
-                  top: 473,
-                  width: 12,
-                  height: 40,
-                  borderRadius: 4,
-                  background: "#4a3a78",
-                }}
-              />
-            ))}
-
-            {/* sneaker on the floor, charm */}
-            <svg
-              width={70}
-              height={38}
-              viewBox="0 0 70 38"
-              style={{ position: "absolute", left: 512, top: 470 }}
-            >
-              <path
-                d="M6 28 C6 16, 16 10, 26 12 L40 16 C54 20, 64 22, 64 28 L64 32 L6 32 Z"
-                fill="#e85d75"
-                stroke="#b23a52"
-                strokeWidth={2}
-              />
-              <path d="M6 30 L64 30 L64 34 A4 4 0 0 1 60 36 L10 36 A4 4 0 0 1 6 32 Z" fill="#f4f7ff" />
-              <path d="M26 13 L30 22 M34 15 L37 23" stroke="#f4f7ff" strokeWidth={2.5} strokeLinecap="round" />
-            </svg>
-
-            {/* -------------------- the shared tablet -------------------- */}
-            <div
-              style={{
-                position: "absolute",
-                left: 96,
-                top: 66,
-                width: 360,
-                height: 392,
-                borderRadius: 22,
-                background: "#1c2247",
-                border: "4px solid #59639a",
-                boxShadow: "0 18px 40px rgba(0,0,0,0.4)",
-                zIndex: 4,
-              }}
-            >
-              {/* camera dot on the bezel */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: 5,
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  transform: "translateX(-50%)",
-                  background: "#0b0f24",
-                  border: "1px solid #39406e",
-                }}
-              />
-              {/* "SHARED TABLET" etched label */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  bottom: -1,
-                  textAlign: "center",
-                  fontSize: 9,
-                  fontWeight: 900,
-                  letterSpacing: 2.5,
-                  color: "rgba(207,230,255,0.55)",
-                }}
-              >
-                SHARED TABLET
-              </div>
-
-              {/* screen */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: 12,
-                  top: 14,
-                  width: 336,
-                  height: 362,
-                  borderRadius: 14,
-                  overflow: "hidden",
-                  background: "linear-gradient(160deg, #2c3a80 0%, #222c5c 100%)",
-                }}
-              >
-                {/* wallpaper dots */}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    backgroundImage: "radial-gradient(rgba(160,190,255,0.14) 2px, transparent 2.4px)",
-                    backgroundSize: "34px 34px",
-                  }}
-                />
-
-                {/* the card stack */}
-                <AnimatePresence initial={false}>
-                  {openCards.map((id, i) => {
-                    const depth = openCards.length - 1 - i;
-                    const isTop = i === openCards.length - 1;
-                    return (
-                      <motion.div
-                        key={id}
-                        initial={{ y: 480, rotate: -16, opacity: 0.85 }}
-                        animate={{
-                          y: depth * 10,
-                          x: 0,
-                          rotate: ROT[id],
-                          scale: 1 - depth * 0.045,
-                          opacity: 1,
-                        }}
-                        exit={{
-                          y: 520,
-                          rotate: 16,
-                          opacity: 0.9,
-                          transition: { duration: 0.42, ease: "easeIn" },
-                        }}
-                        transition={{ type: "spring", stiffness: 260, damping: 24 }}
-                        drag={isTop && interactive}
-                        dragSnapToOrigin
-                        dragMomentum={false}
-                        dragElastic={0.85}
-                        onDragEnd={onCardDragEnd(id)}
-                        onTap={isTop ? onCardTap : undefined}
-                        role="button"
-                        aria-label={`Open ${CARD_META[id].label.toLowerCase()} card. Flick it down to log out.`}
-                        style={{
-                          position: "absolute",
-                          left: 38,
-                          top: 40,
-                          width: 260,
-                          height: 280,
-                          borderRadius: 18,
-                          overflow: "hidden",
-                          background: "#f4f7ff",
-                          border: "3px solid #ccd6f6",
-                          boxShadow: "0 14px 30px rgba(0,0,0,0.35)",
-                          cursor: isTop && interactive ? "grab" : "default",
-                          touchAction: "none",
-                          zIndex: 5 + i,
-                        }}
-                      >
-                        <CardFace id={id} reduce={reduce} />
-                        {isTop && interactive && <FlickHint reduce={reduce} />}
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
-
-                {/* empty-screen padlock watermark once swept */}
-                {openCards.length === 0 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 8,
-                      opacity: 0.55,
-                      pointerEvents: "none",
-                    }}
-                  >
-                    <PixIcon emoji="🔒" size={54} />
-                    <div style={{ fontSize: 13, fontWeight: 800, color: "#cfe6ff", letterSpacing: 1.5 }}>
-                      ALL LOGGED OUT
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* slam-and-lock stamp over the tablet */}
-            <div
-              style={{
-                position: "absolute",
-                left: 96,
-                top: 66,
-                width: 360,
-                height: 392,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                pointerEvents: "none",
-                zIndex: 25,
-              }}
-            >
-              <AnimatePresence>
-                {stamp && (
-                  <motion.div
-                    key={stamp.key}
-                    initial={{ scale: 2.1, opacity: 0, rotate: -8 }}
-                    animate={{ scale: 1, opacity: 1, rotate: -4 }}
-                    exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                    transition={{ type: "spring", stiffness: 500, damping: 22 }}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 10,
-                      padding: "12px 22px",
-                      borderRadius: 16,
-                      background: "linear-gradient(180deg, #10402c, #0c3323)",
-                      border: "3px solid rgba(52,211,153,0.9)",
-                      boxShadow: "0 0 30px rgba(52,211,153,0.45), 0 14px 30px rgba(0,0,0,0.4)",
-                    }}
-                  >
-                    <PixIcon emoji="🔒" size={30} />
-                    <span style={{ fontSize: 22, fontWeight: 900, letterSpacing: 2, color: "#8ff5c0" }}>
-                      LOGGED OUT!
-                    </span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* -------------------- the goblin paw -------------------- */}
-            <AnimatePresence>
-              {pawIn && (
-                <motion.div
-                  initial={{ x: 0 }}
-                  animate={{ x: 300 }}
-                  exit={{ x: 0, transition: { duration: 0.4, ease: "easeIn" } }}
-                  transition={{ type: "spring", stiffness: 120, damping: 16 }}
-                  style={{ position: "absolute", left: -290, top: 316, zIndex: 20 }}
-                >
-                  <GoblinPaw />
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <AnimatePresence>
-              {giggle && (
-                <motion.div
-                  initial={{ scale: 0.5, opacity: 0, y: 8 }}
-                  animate={{ scale: 1, opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, transition: { duration: 0.25 } }}
-                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                  style={{
-                    position: "absolute",
-                    left: 30,
-                    top: 268,
-                    padding: "6px 14px",
-                    borderRadius: 14,
-                    background: "#f4f7ff",
-                    border: "2px solid #68c94f",
-                    fontSize: 15,
-                    fontWeight: 900,
-                    color: "#3d8f2c",
-                    boxShadow: "0 8px 20px rgba(0,0,0,0.35)",
-                    zIndex: 21,
-                  }}
-                >
-                  hee hee!
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* -------------------- the locker door -------------------- */}
-            <motion.div
-              role="button"
-              aria-label="Your locker door"
-              onClick={onDoorTap}
-              animate={
-                phase === "ready" && !reduce
-                  ? {
-                      boxShadow: [
-                        "0 0 0px rgba(52,211,153,0.0)",
-                        "0 0 26px rgba(52,211,153,0.55)",
-                        "0 0 0px rgba(52,211,153,0.0)",
-                      ],
-                    }
-                  : { boxShadow: "0 14px 34px rgba(0,0,0,0.35)" }
-              }
-              transition={phase === "ready" && !reduce ? { duration: 1.6, repeat: Infinity } : undefined}
-              style={{
-                position: "absolute",
-                left: 608,
-                top: 44,
-                width: 240,
-                height: 436,
-                borderRadius: 14,
-                background: "linear-gradient(180deg, #3b4a8f, #2d3a75)",
-                border: "3px solid #59639a",
-                cursor: phase === "ready" || phase === "lock" ? "pointer" : "default",
-                zIndex: 6,
-              }}
-            >
-              {/* the sweep light */}
-              <DoorLight light={light} reduce={reduce} />
-              <div
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  top: 52,
-                  textAlign: "center",
-                  fontSize: 9,
-                  fontWeight: 900,
-                  letterSpacing: 2,
-                  color: "rgba(207,230,255,0.6)",
-                }}
-              >
-                SWEEP LIGHT
-              </div>
-
-              {/* number plate */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: 72,
-                  transform: "translateX(-50%)",
-                  width: 46,
-                  height: 27,
-                  borderRadius: 6,
-                  background: "#c9d1f2",
-                  border: "2px solid #7a86bb",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 15,
-                  fontWeight: 900,
-                  color: "#2b2f55",
-                }}
-              >
-                18
-              </div>
-
-              {/* vents */}
-              {[122, 140, 158].map((y) => (
-                <div
-                  key={y}
-                  style={{
-                    position: "absolute",
-                    left: "50%",
-                    top: y,
-                    transform: "translateX(-50%)",
-                    width: 150,
-                    height: 9,
-                    borderRadius: 5,
-                    background: "rgba(15,18,40,0.55)",
-                  }}
-                />
-              ))}
-
-              {/* handle */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: 14,
-                  top: 226,
-                  width: 15,
-                  height: 74,
-                  borderRadius: 8,
-                  background: "linear-gradient(180deg, #dbe2fb, #a9b3dd)",
-                  border: "2px solid #7a86bb",
-                }}
-              />
-
-              {/* hasp plate + the big padlock */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: 20,
-                  top: 322,
-                  width: 40,
-                  height: 20,
-                  borderRadius: 5,
-                  background: "#9aa3cf",
-                  border: "2px solid #6a749f",
-                }}
-              />
-              <div
-                role="button"
-                aria-label={lockShut ? "Locker is locked" : "The lock. Tap it to lock up."}
-                onClick={(e) => {
-                  if (phase === "lock") {
-                    e.stopPropagation();
-                    lockUp();
-                  }
-                }}
-                style={{
-                  position: "absolute",
-                  left: -6,
-                  top: 318,
-                  width: 96,
-                  height: 100,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: phase === "lock" ? "pointer" : "default",
-                }}
-              >
-                <motion.div
-                  animate={
-                    phase === "lock" && !lockShut && !reduce
-                      ? { scale: [1, 1.14, 1] }
-                      : { scale: 1 }
-                  }
-                  transition={
-                    phase === "lock" && !lockShut && !reduce
-                      ? { duration: 1.1, repeat: Infinity }
-                      : undefined
-                  }
-                >
-                  <Padlock shut={lockShut} armed={phase === "lock" || phase === "won"} />
-                </motion.div>
-                {/* green burst on lock */}
-                {lockBurst && (
-                  <motion.svg
-                    width={120}
-                    height={120}
-                    viewBox="0 0 120 120"
-                    initial={{ scale: 0.4, opacity: 1 }}
-                    animate={{ scale: 1.6, opacity: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                    style={{ position: "absolute", pointerEvents: "none" }}
-                  >
-                    {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => (
-                      <line
-                        key={a}
-                        x1={60 + 22 * Math.cos((a * Math.PI) / 180)}
-                        y1={60 + 22 * Math.sin((a * Math.PI) / 180)}
-                        x2={60 + 42 * Math.cos((a * Math.PI) / 180)}
-                        y2={60 + 42 * Math.sin((a * Math.PI) / 180)}
-                        stroke="#6fe89b"
-                        strokeWidth={5}
-                        strokeLinecap="round"
-                      />
-                    ))}
-                  </motion.svg>
-                )}
-              </div>
-            </motion.div>
-
-            {/* "Tap the door!" bubble */}
-            <AnimatePresence>
-              {phase === "ready" && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={reduce ? { opacity: 1, y: 0 } : { opacity: 1, y: [0, -8, 0] }}
-                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                  transition={reduce ? undefined : { y: { duration: 1.2, repeat: Infinity }, opacity: { duration: 0.3 } }}
-                  style={{
-                    position: "absolute",
-                    left: 618,
-                    top: 6,
-                    padding: "7px 16px",
-                    borderRadius: 999,
-                    background: "linear-gradient(180deg, #6fe89b, #34d399)",
-                    color: "#07130c",
-                    fontSize: 14,
-                    fontWeight: 900,
-                    boxShadow: "0 8px 20px rgba(52,211,153,0.4)",
-                    pointerEvents: "none",
-                    zIndex: 12,
-                  }}
-                >
-                  Tap the door to head out!
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* "Tap the lock!" bubble */}
-            <AnimatePresence>
-              {phase === "lock" && !lockShut && (
-                <motion.div
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={reduce ? { opacity: 1, x: 0 } : { opacity: 1, x: [0, 8, 0] }}
-                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                  transition={reduce ? undefined : { x: { duration: 1.1, repeat: Infinity }, opacity: { duration: 0.3 } }}
-                  style={{
-                    position: "absolute",
-                    left: 468,
-                    top: 372,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    padding: "7px 16px",
-                    borderRadius: 999,
-                    background: "linear-gradient(180deg, #6fe89b, #34d399)",
-                    color: "#07130c",
-                    fontSize: 14,
-                    fontWeight: 900,
-                    boxShadow: "0 8px 20px rgba(52,211,153,0.4)",
-                    pointerEvents: "none",
-                    zIndex: 12,
-                  }}
-                >
-                  <span>Tap the lock!</span>
-                  <svg width={20} height={14} viewBox="0 0 20 14">
-                    <path
-                      d="M2 7 h12 M9 2 l6 5 -6 5"
-                      stroke="#07130c"
-                      strokeWidth={3}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill="none"
-                    />
-                  </svg>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* soft green wash once locked */}
-            <AnimatePresence>
-              {phase === "won" && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1.2 }}
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: "radial-gradient(circle at 78% 40%, rgba(52,211,153,0.22) 0%, transparent 60%)",
-                    pointerEvents: "none",
-                    zIndex: 8,
-                  }}
-                />
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
-
-      {/* toast */}
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 14,
-          display: "flex",
-          justifyContent: "center",
-          pointerEvents: "none",
-          zIndex: 35,
-        }}
-      >
-        <AnimatePresence mode="wait">
-          {toast && (
-            <motion.div
-              key={toast.key}
-              initial={{ y: 24, opacity: 0, scale: 0.94 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: 10, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 320, damping: 26 }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                maxWidth: "min(92%, 560px)",
-                padding: "10px 18px",
-                borderRadius: 16,
-                background:
-                  toast.tone === "green"
-                    ? "linear-gradient(180deg, #10402c, #0c3323)"
-                    : toast.tone === "amber"
-                      ? "linear-gradient(180deg, #45300e, #38260a)"
-                      : toast.tone === "soft"
-                        ? "linear-gradient(180deg, #1d2a55, #172246)"
-                        : "linear-gradient(180deg, #10314a, #0c2739)",
-                border:
-                  toast.tone === "green"
-                    ? "2px solid rgba(52,211,153,0.8)"
-                    : toast.tone === "amber"
-                      ? "2px solid rgba(255,179,71,0.85)"
-                      : toast.tone === "soft"
-                        ? "2px solid rgba(140,170,255,0.7)"
-                        : "2px solid rgba(34,211,238,0.7)",
-                boxShadow: "0 12px 30px rgba(0,0,0,0.35)",
-              }}
-            >
-              <PixIcon
-                emoji={
-                  toast.tone === "green" ? "✅" : toast.tone === "amber" ? "👀" : toast.tone === "soft" ? "✨" : "👆"
-                }
-                size={26}
-              />
-              <div>
-                <div
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 900,
-                    color:
-                      toast.tone === "green"
-                        ? "#8ff5c0"
-                        : toast.tone === "amber"
-                          ? "#ffd9a1"
-                          : toast.tone === "soft"
-                            ? "#cdd9ff"
-                            : "#9fe8ff",
-                  }}
-                >
-                  {toast.title}
-                </div>
-                {toast.body && (
-                  <div style={{ fontSize: 13, color: "#dfe7ff", marginTop: 1 }}>{toast.body}</div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* intro */}
-      {phase === "intro" && (
-        <IntroOverlay
-          narration={narration}
-          accent={accent}
-          onStart={() => {
-            setPhase("sweep");
-            showToast("hint", "Flick it down!", "Press the top card and swipe it down fast.");
-          }}
-        />
-      )}
-
-      {/* win banner */}
-      {phase === "won" && <WinBanner onFinish={finish} />}
-    </ExerciseFrame>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Pieces                                                             */
-/* ------------------------------------------------------------------ */
-
-/** One chip per card + count. A chip flips back open when the goblin strikes. */
-function ProgressHud({
-  loggedOut,
-  count,
-}: {
-  loggedOut: Record<CardId, boolean>;
-  count: number;
-}) {
-  const order: CardId[] = ["game", "message", "photos"];
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-      <div style={{ display: "flex", gap: 6 }}>
-        {order.map((id) => {
-          const done = loggedOut[id];
-          return (
-            <div
-              key={id}
-              title={CARD_META[id].label}
-              style={{
-                width: 26,
-                height: 26,
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 13,
-                fontWeight: 900,
-                color: done ? "#0c2b1c" : "rgba(207,230,255,0.55)",
-                background: done
-                  ? "linear-gradient(180deg, #6fe89b, #34d399)"
-                  : "rgba(10,18,44,0.7)",
-                border: done ? "2px solid #a7f6c8" : `2px solid ${CARD_META[id].hudColor}66`,
-                boxShadow: done ? "0 0 10px rgba(110,255,170,0.5)" : undefined,
-                transition: "all 0.3s ease",
-              }}
-            >
-              {done ? "✓" : "!"}
-            </div>
-          );
-        })}
-      </div>
-      <div style={{ fontSize: 13, fontWeight: 800, color: "#cfe6ff" }}>{count} of 3 logged out</div>
-    </div>
-  );
-}
-
-/** One muted background locker, scenery only. */
-function BgLocker({ x, even }: { x: number; even: boolean }) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: x,
-        top: 30,
-        width: 112,
-        height: 400,
-        borderRadius: 10,
-        background: even
-          ? "linear-gradient(180deg, #3a4173, #313763)"
-          : "linear-gradient(180deg, #363c6d, #2d335e)",
-        border: "2px solid rgba(20,24,52,0.5)",
-      }}
-    >
-      {[24, 40].map((y) => (
-        <div
-          key={y}
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: y,
-            transform: "translateX(-50%)",
-            width: 64,
-            height: 7,
-            borderRadius: 4,
-            background: "rgba(15,18,40,0.55)",
-          }}
-        />
-      ))}
-      {/* dial */}
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: 200,
-          transform: "translateX(-50%)",
-          width: 26,
-          height: 26,
-          borderRadius: "50%",
-          background: "#252a52",
-          border: "3px solid rgba(140,150,220,0.4)",
-        }}
-      />
-    </div>
-  );
-}
-
-/** The visual face of an open app card. */
-function CardFace({ id, reduce }: { id: CardId; reduce: boolean }) {
-  if (id === "game") {
+  const renderCard = (c: OpenCard) => {
+    const isOpen = open.has(c.id);
+    const justReopened = (phase === "goblin" || phase === "lookback") && isOpen;
     return (
-      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            padding: "9px 14px",
-            background: "linear-gradient(90deg, #7c5cff, #5b3fd6)",
-            color: "#f2edff",
-            fontSize: 14,
-            fontWeight: 900,
-            letterSpacing: 1.5,
-          }}
-        >
-          BLASTO BOTS
-        </div>
-        <div
-          style={{
-            flex: 1,
-            position: "relative",
-            background: "linear-gradient(180deg, #1b1440 0%, #241a58 100%)",
-            overflow: "hidden",
-          }}
-        >
-          {[
-            { x: 30, y: 24 },
-            { x: 200, y: 40 },
-            { x: 120, y: 90 },
-            { x: 218, y: 130 },
-            { x: 44, y: 128 },
-          ].map((s, i) => (
-            <div
-              key={i}
-              style={{
-                position: "absolute",
-                left: s.x,
-                top: s.y,
-                width: 4,
-                height: 4,
-                borderRadius: "50%",
-                background: "#dfe9ff",
-                opacity: 0.8,
-              }}
-            />
-          ))}
-          {/* rocket */}
-          <svg width={70} height={90} viewBox="0 0 70 90" style={{ position: "absolute", left: 92, top: 36 }}>
-            <path d="M35 4 C48 20, 50 44, 44 62 L26 62 C20 44, 22 20, 35 4 Z" fill="#e8ecff" stroke="#8b96d6" strokeWidth={2.5} />
-            <circle cx={35} cy={32} r={8} fill="#41e6ff" stroke="#2b6f8f" strokeWidth={2} />
-            <path d="M26 56 L12 74 L26 68 Z" fill="#ff5f6b" />
-            <path d="M44 56 L58 74 L44 68 Z" fill="#ff5f6b" />
-            <path d="M30 64 L35 84 L40 64 Z" fill="#ffb347" />
-          </svg>
-          <div
-            style={{
-              position: "absolute",
-              left: 14,
-              top: 12,
-              fontSize: 12,
-              fontWeight: 900,
-              color: "#ffd166",
-              letterSpacing: 1,
-            }}
-          >
-            SCORE 4200
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 7,
-            padding: "8px 14px",
-            background: "#eef1ff",
-            borderTop: "2px solid #ccd6f6",
-          }}
-        >
-          <motion.span
-            animate={reduce ? undefined : { opacity: [1, 0.4, 1] }}
-            transition={{ duration: 1.4, repeat: Infinity }}
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: "50%",
-              background: "#34d399",
-              boxShadow: "0 0 6px rgba(52,211,153,0.8)",
-              flexShrink: 0,
-            }}
-          />
-          <span style={{ fontSize: 12.5, fontWeight: 900, color: "#2b2f55", letterSpacing: 0.5 }}>
-            LOGGED IN AS: YOU
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  if (id === "message") {
-    return (
-      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "9px 14px",
-            background: "linear-gradient(90deg, #22b8c9, #1690a0)",
-            color: "#eafcff",
-            fontSize: 14,
-            fontWeight: 900,
-            letterSpacing: 1.5,
-          }}
-        >
-          <PixIcon emoji="💬" size={18} />
-          <span>MESSAGE</span>
-        </div>
-        <div style={{ flex: 1, padding: "12px 16px", background: "#fdfefe" }}>
-          <div style={{ fontSize: 13.5, fontWeight: 900, color: "#2b2f55", marginBottom: 12 }}>
-            To: Grandma
-          </div>
-          {[190, 160, 120].map((w, i) => (
-            <div
-              key={i}
-              style={{
-                width: w,
-                height: 11,
-                borderRadius: 6,
-                background: "#c8d2e8",
-                marginBottom: 10,
-              }}
-            />
-          ))}
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div style={{ width: 64, height: 11, borderRadius: 6, background: "#c8d2e8" }} />
-            <motion.div
-              animate={reduce ? undefined : { opacity: [1, 0, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-              style={{ width: 3, height: 16, background: "#22b8c9", marginLeft: 4, borderRadius: 2 }}
-            />
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 7,
-            padding: "8px 14px",
-            background: "#eef1ff",
-            borderTop: "2px solid #ccd6f6",
-          }}
-        >
-          <span
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: "50%",
-              background: "#ffb347",
-              flexShrink: 0,
-            }}
-          />
-          <span style={{ fontSize: 12.5, fontWeight: 900, color: "#2b2f55", letterSpacing: 0.5 }}>
-            HALF-WRITTEN
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  /* photos */
-  return (
-    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" }}>
-      <div
+      <motion.button
+        key={c.id}
+        type="button"
+        aria-label={`${c.label}: ${c.detail}`}
+        onClick={() => closeCard(c)}
+        disabled={speaking || !isOpen}
+        animate={
+          justReopened && !reduce
+            ? { scale: [1, 1.06, 1], boxShadow: [`0 0 0 3px ${AMBER}77`, `0 0 22px ${AMBER}`, `0 0 0 3px ${AMBER}77`] }
+            : { scale: 1 }
+        }
+        transition={justReopened ? { duration: 1.2, repeat: Infinity } : { duration: 0.3 }}
+        whileTap={speaking || !isOpen || reduce ? undefined : { scale: 0.97 }}
         style={{
-          padding: "9px 14px",
-          background: "linear-gradient(90deg, #ff5f9e, #e0407e)",
-          color: "#fff0f6",
-          fontSize: 14,
-          fontWeight: 900,
-          letterSpacing: 1.5,
+          position: "relative",
+          minHeight: CARD_MIN_H,
+          padding: "12px 11px",
+          borderRadius: 14,
+          background: isOpen ? CARD_OPEN : CARD_SHUT,
+          border: `3px solid ${isOpen ? (justReopened ? AMBER : "#ffffff") : "#4a4a55"}`,
+          boxShadow: isOpen ? "0 10px 20px -12px rgba(0,0,0,0.85)" : "inset 0 2px 8px rgba(0,0,0,0.5)",
+          color: isOpen ? INK : "#8d8b96",
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          gap: 5, textAlign: "center", fontFamily: KID_FONT,
+          cursor: speaking || !isOpen ? "default" : "pointer",
+          touchAction: "manipulation",
+          transition: "background 300ms ease, border-color 220ms ease, color 300ms ease",
         }}
       >
-        MY PHOTOS
-      </div>
-      <div
-        style={{
-          flex: 1,
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          gridTemplateRows: "1fr 1fr",
-          gap: 8,
-          padding: 12,
-          background: "#fdfefe",
-        }}
-      >
-        {/* sunny hill photo */}
-        <div style={{ borderRadius: 10, overflow: "hidden", position: "relative", background: "#9fd8ff" }}>
-          <svg viewBox="0 0 70 70" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-            <circle cx={50} cy={18} r={10} fill="#ffd166" />
-            <path d="M0 70 L26 34 L46 70 Z" fill="#5cb85c" />
-            <path d="M28 70 L52 44 L70 70 Z" fill="#4a9e4a" />
-          </svg>
-        </div>
-        {/* smiley selfie */}
-        <div
-          style={{
-            borderRadius: 10,
-            background: "linear-gradient(135deg, #ffd9a1, #ff9f68)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <svg width={34} height={34} viewBox="0 0 34 34">
-            <circle cx={17} cy={17} r={13} fill="#fff5e6" />
-            <circle cx={12.5} cy={14} r={2} fill="#2b2f55" />
-            <circle cx={21.5} cy={14} r={2} fill="#2b2f55" />
-            <path d="M11 20 q6 6 12 0" stroke="#2b2f55" strokeWidth={2.4} fill="none" strokeLinecap="round" />
-          </svg>
-        </div>
-        <div style={{ borderRadius: 10, background: "linear-gradient(135deg, #b79cff, #7c5cff)" }} />
-        <div style={{ borderRadius: 10, background: "linear-gradient(135deg, #7df0ff, #41c8e6)" }} />
-        {/* cat photo */}
-        <div
-          style={{
-            borderRadius: 10,
-            background: "linear-gradient(135deg, #d3ddff, #aab8f0)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <svg width={36} height={32} viewBox="0 0 36 32">
-            <path d="M6 12 L4 2 L12 8 Z" fill="#8a6bb8" />
-            <path d="M30 12 L32 2 L24 8 Z" fill="#8a6bb8" />
-            <circle cx={18} cy={18} r={12} fill="#9d7fd0" />
-            <circle cx={13} cy={16} r={2} fill="#241a40" />
-            <circle cx={23} cy={16} r={2} fill="#241a40" />
-            <path d="M15 22 q3 3 6 0" stroke="#241a40" strokeWidth={2} fill="none" strokeLinecap="round" />
-          </svg>
-        </div>
-        <div style={{ borderRadius: 10, background: "linear-gradient(135deg, #ff9fce, #ff5f9e)" }} />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 7,
-          padding: "8px 14px",
-          background: "#eef1ff",
-          borderTop: "2px solid #ccd6f6",
-        }}
-      >
-        <span
-          style={{
-            width: 10,
-            height: 10,
-            borderRadius: "50%",
-            background: "#ff5f9e",
-            flexShrink: 0,
-          }}
-        />
-        <span style={{ fontSize: 12.5, fontWeight: 900, color: "#2b2f55", letterSpacing: 0.5 }}>
-          YOUR PICTURES
+        <PixIcon emoji={c.icon} size={28} style={isOpen ? undefined : { filter: "grayscale(0.9) opacity(0.5)" }} />
+        <span style={{ fontSize: 14, fontWeight: 900, lineHeight: 1.15 }}>{c.label}</span>
+        <span style={{ fontSize: 11, fontWeight: 700, lineHeight: 1.22, opacity: 0.74, overflowWrap: "anywhere" }}>
+          {isOpen ? c.detail : lockedLabel}
         </span>
-      </div>
-    </div>
-  );
-}
+        {!isOpen && (
+          <span aria-hidden style={{ position: "absolute", top: 5, right: 5 }}>
+            <PixIcon emoji="🔒" size={20} />
+          </span>
+        )}
+      </motion.button>
+    );
+  };
 
-/** Bouncing "flick down" affordance on the top card. */
-function FlickHint({ reduce }: { reduce: boolean }) {
+  const cardBeingRead = speakingCard ? deck.find((c) => c.id === speakingCard) : null;
+
   return (
-    <motion.div
-      animate={reduce ? undefined : { y: [0, 12, 0], opacity: [0.95, 0.5, 0.95] }}
-      transition={{ duration: 1.5, repeat: Infinity }}
-      style={{
-        position: "absolute",
-        left: "50%",
-        top: 96,
-        transform: "translateX(-50%)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 4,
-        pointerEvents: "none",
-      }}
-    >
-      <div
-        style={{
-          padding: "5px 13px",
-          borderRadius: 999,
-          background: "rgba(16,22,54,0.85)",
-          border: "2px solid rgba(125,240,255,0.7)",
-          fontSize: 12,
-          fontWeight: 900,
-          letterSpacing: 1.5,
-          color: "#9fe8ff",
-        }}
-      >
-        FLICK DOWN
-      </div>
-      <svg width={30} height={34} viewBox="0 0 30 34">
-        <path
-          d="M15 3 v20 M6 15 l9 11 9-11"
-          stroke="#9fe8ff"
-          strokeWidth={4.5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
+    <ExerciseFrame maxWidth={880} decor>
+      {fx.layer()}
+      {verdict.element}
+
+      {showIntro && (
+        <ExerciseIntroBeat
+          title={introTitle}
+          subtitle={introSubtitle}
+          icon={introIcon}
+          narration={introNarration}
+          threat={threat}
+          character={introNarration?.speaker}
+          onDismiss={startBoard}
         />
-      </svg>
-    </motion.div>
-  );
-}
-
-/** Sneaky green goblin arm, reaching in from the left. */
-function GoblinPaw() {
-  return (
-    <svg width={300} height={96} viewBox="0 0 300 96" style={{ display: "block", filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.4))" }}>
-      {/* arm */}
-      <rect x={0} y={34} width={228} height={30} rx={15} fill="#68c94f" stroke="#3d8f2c" strokeWidth={3} />
-      {/* sleeve cuff */}
-      <rect x={40} y={28} width={20} height={42} rx={8} fill="#3d2a63" stroke="#241a40" strokeWidth={2.5} />
-      {/* palm */}
-      <circle cx={236} cy={49} r={26} fill="#68c94f" stroke="#3d8f2c" strokeWidth={3} />
-      {/* fingers with little claws */}
-      <g fill="#68c94f" stroke="#3d8f2c" strokeWidth={2.5}>
-        <rect x={248} y={18} width={38} height={15} rx={7.5} transform="rotate(-18 248 18)" />
-        <rect x={254} y={42} width={42} height={15} rx={7.5} />
-        <rect x={248} y={66} width={36} height={15} rx={7.5} transform="rotate(16 248 66)" />
-      </g>
-      <g fill="#e8ecff">
-        <path d="M288 6 l9 3 -7 6 Z" />
-        <path d="M296 46 l9 4 -8 6 Z" />
-        <path d="M286 82 l9 1 -6 7 Z" />
-      </g>
-      {/* warts, because goblin */}
-      <circle cx={120} cy={42} r={3.5} fill="#3d8f2c" />
-      <circle cx={170} cy={56} r={3} fill="#3d8f2c" />
-    </svg>
-  );
-}
-
-/** The door's status light. */
-function DoorLight({ light, reduce }: { light: "off" | "amber" | "green"; reduce: boolean }) {
-  const color = light === "green" ? "#34d399" : light === "amber" ? "#ffb347" : "#39406e";
-  const glow =
-    light === "green"
-      ? "rgba(52,211,153,0.9)"
-      : light === "amber"
-        ? "rgba(255,179,71,0.9)"
-        : "rgba(0,0,0,0)";
-  return (
-    <motion.div
-      animate={
-        light !== "off" && !reduce
-          ? { boxShadow: [`0 0 6px ${glow}`, `0 0 22px ${glow}`, `0 0 6px ${glow}`] }
-          : { boxShadow: light !== "off" ? `0 0 12px ${glow}` : "none" }
-      }
-      transition={light !== "off" && !reduce ? { duration: 1.2, repeat: Infinity } : undefined}
-      style={{
-        position: "absolute",
-        left: "50%",
-        top: 16,
-        transform: "translateX(-50%)",
-        width: 32,
-        height: 32,
-        borderRadius: "50%",
-        background: color,
-        border: "3px solid rgba(20,24,52,0.6)",
-      }}
-    />
-  );
-}
-
-/** The big padlock on the locker hasp. */
-function Padlock({ shut, armed }: { shut: boolean; armed: boolean }) {
-  const body = shut ? "#34d399" : armed ? "#dbe2fb" : "#9aa3cf";
-  const stroke = shut ? "#0f7a52" : "#6a749f";
-  return (
-    <svg width={72} height={80} viewBox="0 0 72 80" style={{ display: "block" }}>
-      {/* shackle: raised while open, seated when shut */}
-      <motion.g animate={{ y: shut ? 7 : 0 }} transition={{ type: "spring", stiffness: 400, damping: 20 }}>
-        <path
-          d="M22 34 v-9 a14 14 0 0 1 28 0 v9"
-          fill="none"
-          stroke={shut ? "#0f7a52" : "#7a86bb"}
-          strokeWidth={9}
-          strokeLinecap="round"
-        />
-      </motion.g>
-      <rect x={11} y={36} width={50} height={38} rx={11} fill={body} stroke={stroke} strokeWidth={3.5} />
-      {shut ? (
-        <path
-          d="M26 55 l7 7 13 -14"
-          stroke="#0c3323"
-          strokeWidth={5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-      ) : (
-        <>
-          <circle cx={36} cy={52} r={5.5} fill="#39406e" />
-          <rect x={33.2} y={54} width={5.6} height={11} rx={2.5} fill="#39406e" />
-        </>
       )}
-    </svg>
-  );
-}
 
-/* ------------------------------------------------------------------ */
-/* Overlays                                                           */
-/* ------------------------------------------------------------------ */
+      {/* Sarah's read-alouds (audio only). Gated on !showIntro, always: a board
+          line that starts while the intro card is still open clobbers the
+          intro's own clip and the "I'm ready" button never appears (the
+          SignBingo / SenderLineup bug). Every line comes from the week file. */}
+      {!showIntro && phase !== "done" && (
+        <div aria-hidden style={AUDIO_ONLY_STYLE}>
+          {narr === "howto" && coachLines && (
+            <InfoNarration key="lof-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent={accent} recordedOnly onDone={() => setNarr("idle")} />
+          )}
+          {narr === "card" && cardBeingRead && (
+            <InfoNarration key={`lof-card-${cardBeingRead.id}`} speaker={voice} lines={[cardBeingRead.logOut]} accent={accent} recordedOnly onDone={() => { setNarr("idle"); setSpeakingCard(null); }} />
+          )}
+          {narr === "goblin" && (
+            <InfoNarration key="lof-goblin" speaker={voice} lines={[goblinLine]} accent={accent} recordedOnly onDone={() => setNarr("idle")} />
+          )}
+        </div>
+      )}
 
-function IntroOverlay({
-  onStart,
-  narration,
-  accent,
-}: {
-  onStart: () => void;
-  narration?: { speaker?: "adam" | "layla"; lines: string[] };
-  accent?: string;
-}) {
-  const rows: { color: string; text: string }[] = [
-    { color: "#7df0ff", text: "FLICK every open card down to log it out" },
-    { color: "#ffb347", text: "AMBER locker light means something is still open" },
-    { color: "#8ff5c0", text: "GREEN means safe: shut the locker and tap the lock" },
-  ];
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      style={{
-        position: "absolute",
-        inset: 0,
-        zIndex: 50,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
-        background: "rgba(9,12,30,0.82)",
-      }}
-    >
-      <motion.div
-        initial={{ y: 24, scale: 0.96 }}
-        animate={{ y: 0, scale: 1 }}
-        transition={{ type: "spring", stiffness: 260, damping: 24 }}
-        style={{
-          width: "min(100%, 500px)",
-          borderRadius: 24,
-          padding: "26px 28px",
-          background: "linear-gradient(180deg, #171d44, #121737)",
-          border: "1px solid rgba(125,240,255,0.35)",
-          boxShadow: "0 30px 60px rgba(0,0,0,0.45)",
-          textAlign: "center",
-          // The spoken-instruction block makes the intro taller; on short
-          // viewports the card scrolls internally so the start button is
-          // always reachable (never clipped by the centered overlay).
-          maxHeight: "100%",
-          overflowY: "auto",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 10 }}>
-          <PixIcon emoji="🎮" size={34} />
-          <PixIcon emoji="🔒" size={34} />
-        </div>
-        <div style={{ fontSize: 27, fontWeight: 900, color: "#eaf2ff", marginBottom: 8 }}>
-          The Log-Out Flick
-        </div>
-        <div style={{ fontSize: 15, lineHeight: 1.5, color: "#c6d3f7", marginBottom: 16 }}>
-          Break is over, hero! This <b style={{ color: "#9fe8ff" }}>shared tablet</b> is covered in
-          YOUR open cards, and anyone could pick it up next. Time for the sweep:
-        </div>
-        <div style={{ display: "grid", gap: 8, marginBottom: 16, textAlign: "left" }}>
-          {rows.map((r) => (
+      {!showIntro && phase !== "done" && (
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 22px 0" }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
+              <PixIcon emoji={introIcon} size={16} />
+              {introTitle}
+            </span>
+            <span style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9b8ff" }}>
+              {openCountLabel} {open.size}
+            </span>
+          </div>
+
+          <div
+            style={{
+              margin: "0 22px", padding: "12px", borderRadius: 18,
+              background: "linear-gradient(180deg, rgba(0,0,0,0.26) 0%, rgba(0,0,0,0.4) 100%)",
+              border: `1px solid ${accent}44`,
+              boxShadow: `0 18px 40px -22px rgba(0,0,0,0.8), inset 0 0 0 1px ${accent}14`,
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 12,
+            }}
+          >
+            {/* THE DOOR LIGHT. Red while cards are open, amber after the goblin,
+                green only when the tablet is genuinely clear. */}
             <div
-              key={r.text}
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "8px 12px",
-                borderRadius: 12,
-                background: "rgba(255,255,255,0.05)",
-                fontSize: 14,
-                fontWeight: 700,
-                color: "#dfe7ff",
+                width: "100%", minHeight: 40, borderRadius: 12,
+                background: "rgba(0,0,0,0.34)", border: `2px solid ${light.tint}`,
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+                transition: "border-color 320ms ease",
               }}
             >
-              <span
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  background: r.color,
-                  boxShadow: `0 0 8px ${r.color}`,
-                  flexShrink: 0,
-                }}
+              <motion.span
+                aria-hidden
+                animate={reduce ? {} : { opacity: [1, 0.45, 1] }}
+                transition={{ duration: 1.6, repeat: Infinity }}
+                style={{ width: 14, height: 14, borderRadius: 999, background: light.tint, boxShadow: `0 0 12px ${light.tint}` }}
               />
-              {r.text}
+              <span style={{ fontFamily: LABEL_FONT, fontSize: 11.5, fontWeight: 900, letterSpacing: "0.16em", textTransform: "uppercase", color: light.tint }}>
+                {light.label}
+              </span>
             </div>
-          ))}
-        </div>
-        <div style={{ fontSize: 14, color: "#aebadf", marginBottom: 18 }}>
-          Hero rule: before you walk away, always look back and check one more time.
-        </div>
-        {narration && narration.lines.length > 0 && (
-          <div style={{ textAlign: "left" }}>
-            <InfoNarration lines={narration.lines} accent={accent ?? "#62b6cb"} />
-          </div>
-        )}
-        <button
-          onClick={onStart}
-          style={{
-            fontSize: 19,
-            fontWeight: 900,
-            padding: "14px 40px",
-            borderRadius: 999,
-            border: "none",
-            cursor: "pointer",
-            color: "#07130c",
-            background: "linear-gradient(180deg, #6fe89b, #34d399)",
-            boxShadow: "0 10px 26px rgba(52,211,153,0.4)",
-            fontFamily: "inherit",
-          }}
-        >
-          Start the sweep
-        </button>
-      </motion.div>
-    </motion.div>
-  );
-}
 
-function WinBanner({ onFinish }: { onFinish: () => void }) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: 22,
-        display: "flex",
-        justifyContent: "center",
-        zIndex: 45,
-        pointerEvents: "none",
-      }}
-    >
-      <motion.div
-        initial={{ y: 46, opacity: 0, scale: 0.95 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        transition={{ delay: 0.9, type: "spring", stiffness: 220, damping: 22 }}
-        style={{
-          pointerEvents: "auto",
-          width: "min(92%, 520px)",
-          borderRadius: 22,
-          padding: "20px 26px",
-          textAlign: "center",
-          background: "linear-gradient(180deg, #0d3a2a, #0a2e21)",
-          border: "2px solid rgba(52,211,153,0.75)",
-          boxShadow: "0 24px 60px rgba(0,0,0,0.5), 0 0 30px rgba(52,211,153,0.25)",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 6 }}>
-          <PixIcon emoji="⭐" size={26} />
-          <PixIcon emoji="🔒" size={26} />
-          <PixIcon emoji="⭐" size={26} />
+            {/* THE ROOM, with the shared tablet lying on the bench. */}
+            <div
+              style={{
+                width: "100%", borderRadius: 16, background: ROOM,
+                border: "1.5px solid rgba(255,247,230,0.18)", padding: "12px 10px 14px",
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
+              }}
+            >
+              <div style={{ width: "100%", display: "flex", alignItems: "center", gap: 6, minHeight: 16, ...eyebrowStyle }}>
+                <PixIcon emoji="📱" size={15} />
+                <span>{tabletLabel}</span>
+              </div>
+              <div
+                style={{
+                  width: "100%", borderRadius: 18, background: TABLET_SHELL,
+                  border: "3px solid rgba(255,247,230,0.26)",
+                  boxShadow: "0 18px 34px -18px rgba(0,0,0,0.95)", padding: 10,
+                  display: "grid", gap: 8,
+                }}
+                className="lofCardGrid"
+              >
+                {deck.map(renderCard)}
+              </div>
+            </div>
+
+            {/* THE LOCK. Pressing it over open cards is the one judged mistake. */}
+            <motion.button
+              type="button"
+              onClick={lock}
+              disabled={speaking}
+              animate={allShut && !speaking && !reduce ? { boxShadow: [`0 0 0 3px ${accent}55`, `0 0 0 7px ${accent}22`, `0 0 0 3px ${accent}55`] } : {}}
+              transition={{ duration: 1.4, repeat: Infinity }}
+              whileTap={speaking || reduce ? undefined : { scale: 0.97 }}
+              style={{
+                width: "100%", maxWidth: 420, minHeight: LOCK_MIN_H, borderRadius: 14,
+                background: allShut ? "linear-gradient(180deg, #ffe9a8 0%, #f5c854 100%)" : "rgba(255,247,230,0.1)",
+                border: `3px solid ${allShut ? "#ffdf8e" : "rgba(255,247,230,0.22)"}`,
+                color: allShut ? INK : "rgba(255,247,230,0.62)",
+                fontFamily: KID_FONT, fontSize: 16, fontWeight: 900, letterSpacing: "0.04em",
+                display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 9,
+                cursor: speaking ? "default" : "pointer", touchAction: "manipulation",
+                transition: "background 240ms ease, color 240ms ease, border-color 240ms ease",
+              }}
+            >
+              <PixIcon emoji="🔒" size={24} />
+              {lockLabel}
+            </motion.button>
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 12 }}>
+            <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, minHeight: 16, padding: "0 16px" }}>
+              {strip}
+            </div>
+          </div>
+
+          <div style={{ maxWidth: 560, margin: "8px auto 0" }}>
+            {hintText && <HintBubble tier={hintTier} speaker={voice} text={hintText} />}
+          </div>
+
+          <style>{`
+            .lofCardGrid { grid-template-columns: repeat(${Math.min(deck.length, 4)}, minmax(0, 1fr)); }
+            @media (max-width: 760px) { .lofCardGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+            @media (max-width: 430px) { .lofCardGrid { grid-template-columns: minmax(0, 1fr); } }
+          `}</style>
         </div>
-        <div style={{ fontSize: 24, fontWeight: 900, color: "#8ff5c0", letterSpacing: 1 }}>
-          LOCKED AND SAFE!
-        </div>
-        <div style={{ fontSize: 14.5, color: "#d9f5e6", margin: "8px 0 16px", lineHeight: 1.5 }}>
-          You closed every card, logged out, locked up, and <b>checked again</b> when the goblin got
-          sneaky. That is the shared-device sweep. Do it every single time you hand a device back!
-        </div>
-        <button
-          onClick={onFinish}
-          style={{
-            fontSize: 18,
-            fontWeight: 900,
-            padding: "12px 44px",
-            borderRadius: 999,
-            border: "none",
-            cursor: "pointer",
-            color: "#07130c",
-            background: "linear-gradient(180deg, #6fe89b, #34d399)",
-            boxShadow: "0 10px 26px rgba(52,211,153,0.45)",
-            fontFamily: "inherit",
-          }}
-        >
-          Finish
-        </button>
-      </motion.div>
-    </div>
+      )}
+
+      <AnimatePresence>
+        {feedback && (
+          <WrongAnswerPanel
+            title={feedback.title}
+            explanation={feedback.explanation}
+            tip={feedback.tip}
+            onContinue={() => setFeedback(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* The payoff waits for Sarah: a complete beat that mounts while the last
+          verdict is still speaking would cut her off (the Week 9 bug). */}
+      {phase === "done" && !verdict.speaking && (
+        <ExerciseCompleteBeat
+          title={completeTitle}
+          stars={stars}
+          statLines={[
+            `${deck.length} cards closed, locked twice, and the sneaky one caught on the way out`,
+            completeLine,
+          ]}
+          narration={completeNarration}
+          onContinue={() => onComplete(stars === 3 ? 100 : stars === 2 ? 70 : 40)}
+        />
+      )}
+    </ExerciseFrame>
   );
 }
