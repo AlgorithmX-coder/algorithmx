@@ -2428,6 +2428,8 @@ export type ScreenDef = (
       introTitle: string;
       introSubtitle?: string;
       introIcon?: string;
+      completeTitle?: string;
+      completeLine?: string;
       hints?: { tier1: string; tier2: string };
     }
   | {
@@ -2439,7 +2441,13 @@ export type ScreenDef = (
       type: "hookSort";
       /** Visual skin: the W4 fishing dock (default) or W14's listening house
        *  (one house thing at a time: EARS ON, or FAST ASLEEP). */
-      skin?: "dock" | "house";
+      /**
+       * Visual skin: the W4 fishing dock (default), the W14 listening house,
+       * or the W18 charging rack. House and rack share a LAYOUT (one thing at
+       * a time, two nooks under it) and differ in paint and copy; the dock is
+       * untouched by either.
+       */
+      skin?: "dock" | "house" | "rack";
       /** "house": the board's question row. Never spoken. */
       askPrompt?: string;
       /** "house": the two nooks the calls fill up. Never spoken. */
@@ -2476,6 +2484,121 @@ export type ScreenDef = (
         /** Shown in the WrongAnswerPanel on a wrong call. */
         explanation: string;
       }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Lock Before You Leave (Week 18, concept 2). This week's old screen-4
+       * signature, rebuilt data-driven and CONVERTED TO TAP-ONLY: the original
+       * wanted a press-and-swipe-down flick, a gesture with a velocity
+       * threshold in it, so a child who could not flick could not finish.
+       *
+       * A RITUAL, not a quiz, and deliberately so: leaving a shared device is
+       * four moves in a fixed order (close everything, log out, lock, look
+       * back) and a child who has done them in order has a habit rather than a
+       * fact. Most taps are not judged. The one judged moment is pressing LOCK
+       * while cards are still open, which is the mistake real people make.
+       *
+       * THE GOBLIN IS NOT A PUNISHMENT: he arrives after a CORRECT lock, every
+       * time, scripted and unavoidable. The point is that a shared device can
+       * change behind your back, not that the child failed at anything.
+       */
+      type: "logOutFlick";
+      /**
+       * Every card must be something the CHILD left open, never somebody
+       * else's: that is concept 4's ground, and mixing them here teaches a
+       * child to close their sister's things to be tidy.
+       */
+      cards: {
+        id: string;
+        /** Never spoken. */
+        label: string;
+        /** Never spoken. */
+        detail: string;
+        icon: string;
+        /** SPOKEN as this card is logged out. */
+        logOut: string;
+      }[];
+      /** SPOKEN on the first clean lock. */
+      lockWhy?: string;
+      /** SPOKEN when LOCK IT is pressed with cards still open. */
+      earlyLockExplanation?: string;
+      /** SPOKEN as the goblin paw reopens a card. */
+      goblinLine?: string;
+      /** SPOKEN on the final lock, after the look-back. */
+      lookBackWhy?: string;
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      tabletLabel?: string;
+      lockLabel?: string;
+      lockedLabel?: string;
+      openCountLabel?: string;
+      greenLabel?: string;
+      amberLabel?: string;
+      redLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Other People's Things (Week 18, concept 4). A shared tablet is a shelf
+       * with everybody's things on it, and a child about to poke at something
+       * never reaches "should I?" because they never asked the question before
+       * it: WHOSE IS THIS? So that is the only question the game asks. Name the
+       * owner and the lid follows: anybody else's closes, the child's own stays
+       * open with a go-ahead.
+       *
+       * Answering with a PERSON rather than a yes or a no is the whole design.
+       * A right-or-wrong button teaches a child to judge a thing; a row of
+       * names teaches them there is somebody on the other end of it.
+       *
+       * Deliberately NOT a temptation game: nothing dares the child or tells
+       * them nobody would know, because that frames privacy as a test of
+       * willpower they might one day fail.
+       */
+      type: "whoseIsIt";
+      /** EXACTLY ONE owner carries `isChild`. */
+      owners: {
+        id: string;
+        /** Never spoken. */
+        label: string;
+        icon: string;
+        isChild?: boolean;
+      }[];
+      /**
+       * At least one thing must belong to the child, or the lesson collapses
+       * into "touch nothing", which is neither true nor the point.
+       */
+      things: {
+        id: string;
+        /** Never spoken. */
+        label: string;
+        /** Never spoken, and it must never name the owner in the same words
+         *  the tags use. */
+        detail: string;
+        icon: string;
+        /** Read aloud as the thing comes up. Never says whose it is. */
+        readAloud: string;
+        ownerId: string;
+        /** SPOKEN on the right name. For somebody else's thing this must name
+         *  what THEY would feel, never a rule. */
+        why: string;
+        /** SPOKEN on a wrong name. */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      shelfLabel?: string;
+      askPrompt?: string;
+      tagsLabel?: string;
+      counterLabel?: string;
+      mineLabel?: string;
+      theirsLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
       hints?: { tier1: string; tier2: string };
     }
   | {
@@ -3271,7 +3394,9 @@ export type ScreenDef = (
       introIcon?: string;
       /** Board dressing: "river" (W5 stepping stones, default) or "hero"
        *  (W2 Hero Pause: badge trail on a purple backup-signal board). */
-      skin?: "river" | "hero";
+      /** "river" is W5's calm path, "hero" W2's badge trail, "rail" W18's
+       *  steel locker rail. Each is a genuine re-theme, not a recolour. */
+      skin?: "river" | "hero" | "rail";
       /** Label above the path (e.g. "THE HERO PAUSE"). */
       pathLabel?: string;
       /** Complete-beat copy overrides. */

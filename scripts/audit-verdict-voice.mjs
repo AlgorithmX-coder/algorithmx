@@ -232,6 +232,59 @@ const ENGINES = {
     right: fld(c, "why"),
     wrong: fld(c, "explanation"),
   })),
+  // Week 18 engines (2026-09-23).
+  // PRE-EXISTING GAP, closed 2026-09-23 while building Week 18: these three
+  // engines were never audited, so their screens reported clean in Weeks 14,
+  // 16 and 18 while being checked by nothing at all. HookSort carries BOTH
+  // sides on one item; ReplyCards and ButtonHunt speak exactly ONE side per
+  // option, so a line in the wrong field is silent with a perfectly full
+  // field.
+  hookSort: (span) => objs(span, "items").map((it) => ({
+    label: "item " + (fld(it, "id") ?? ""),
+    right: fld(it, "why"),
+    wrong: fld(it, "explanation"),
+  })),
+  // ReplyCards: a SAFE pick speaks `why` only, a RISKY pick `explanation`
+  // only (ReplyCards.tsx, the per-branch note in its header).
+  replyCards: (span) => objs(span, "rounds").flatMap((r) =>
+    objs(r, "replies").map((o) =>
+      flag(o, "isSafe")
+        ? { label: "reply " + (fld(o, "text") ?? ""), right: fld(o, "why"), wrong: null, only: "right" }
+        : { label: "  risky reply " + (fld(o, "text") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
+    ),
+  ),
+  // ButtonHunt: only the WRONG side ever speaks. Every button's `note` is
+  // read out when it is tapped at the wrong moment (ButtonHunt.tsx sets it as
+  // the WrongAnswerPanel explanation), including a target tapped out of turn,
+  // so every button needs one.
+  buttonHunt: (span) => objs(span, "buttons").map((b) => ({
+    label: "  button " + (fld(b, "label") ?? ""),
+    right: null,
+    wrong: fld(b, "note"),
+    only: "wrong",
+  })),
+  whoseIsIt: (span) => objs(span, "things").map((t) => ({
+    label: "thing " + (fld(t, "label") ?? ""),
+    right: fld(t, "why"),
+    wrong: fld(t, "explanation"),
+  })),
+  // The Log Out sweep is a RITUAL: most taps are not judged at all, and its
+  // spoken pair sits on the two committed moments rather than on a card.
+  // `lockWhy` and `lookBackWhy` are both spoken on a CORRECT lock (first and
+  // final), and `earlyLockExplanation` only on locking over open cards.
+  logOutFlick: (span) => [
+    {
+      label: "the first lock",
+      right: fld(span, "lockWhy"),
+      wrong: fld(span, "earlyLockExplanation"),
+    },
+    {
+      label: "the look back",
+      right: fld(span, "lookBackWhy"),
+      wrong: null,
+      only: "right",
+    },
+  ],
   // Week 14 engines (2026-09-22). Each item speaks exactly ONE side, so map it
   // that way: a reason in the wrong field is silent even when the field is full.
   speakerDiary: (span) => objs(span, "entries").flatMap((e) =>
@@ -372,7 +425,12 @@ for (const w of WEEKS) {
       const cell = (txt, kind) => {
         if (txt === "n/a") return "n/a";
         if (r.only && r.only !== kind) return "·";
-        if (txt == null) { missing++; return "MISSING (lead only)"; }
+        // An EMPTY field is missing, not merely unrecorded. Week 14 shipped
+        // four Hook Sort items with why:"" and the real sentence parked in
+        // explanation, so a correct answer got "That’s right!" and then
+        // silence. The audit called that clean for two weeks because it only
+        // checked whether the key existed.
+        if (txt == null || txt.trim() === "") { missing++; return "MISSING (lead only)"; }
         if (txt.startsWith("(")) return txt;
         pairs.set(`${kind}::${txt}`, { verdict: kind, why: txt });
         const rec = isRecorded(txt) ? "" : (unrecorded++, " [UNRECORDED]");

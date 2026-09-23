@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T11:22:57.208Z",
+  "generatedAt": "2026-09-23T13:02:09.968Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -12345,6 +12345,86 @@
       "file": "/audio/voice/ffe00773e33277c6.mp3"
     },
     {
+      "key": "0b34c1ad81c39a5b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The smart speaker on the shelf.",
+      "lines": [
+        "The smart speaker on the shelf."
+      ],
+      "file": "/audio/voice/0b34c1ad81c39a5b.mp3"
+    },
+    {
+      "key": "313e44cdec14180e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The kettle.",
+      "lines": [
+        "The kettle."
+      ],
+      "file": "/audio/voice/313e44cdec14180e.mp3"
+    },
+    {
+      "key": "523fb53e6ade5c6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The telly, with the little voice button on the remote.",
+      "lines": [
+        "The telly, with the little voice button on the remote."
+      ],
+      "file": "/audio/voice/523fb53e6ade5c6b.mp3"
+    },
+    {
+      "key": "4b57135476d55b94",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The old teddy bear on the bed.",
+      "lines": [
+        "The old teddy bear on the bed."
+      ],
+      "file": "/audio/voice/4b57135476d55b94.mp3"
+    },
+    {
+      "key": "e001c67803906ce1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The games console, with the headset plugged in.",
+      "lines": [
+        "The games console, with the headset plugged in."
+      ],
+      "file": "/audio/voice/e001c67803906ce1.mp3"
+    },
+    {
+      "key": "6f23e93668e17ee3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The reading lamp beside the chair.",
+      "lines": [
+        "The reading lamp beside the chair."
+      ],
+      "file": "/audio/voice/6f23e93668e17ee3.mp3"
+    },
+    {
+      "key": "af917ebbd1910685",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The talking robot toy, the one that answers back.",
+      "lines": [
+        "The talking robot toy, the one that answers back."
+      ],
+      "file": "/audio/voice/af917ebbd1910685.mp3"
+    },
+    {
+      "key": "94a5eafa89e2815b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The wind-up alarm clock.",
+      "lines": [
+        "The wind-up alarm clock."
+      ],
+      "file": "/audio/voice/94a5eafa89e2815b.mp3"
+    },
+    {
       "key": "f672acbe3af15908",
       "speaker": "adam",
       "voice": "Sarah",
@@ -12423,6 +12503,106 @@
         "Last corner, and this one matters most. A bedroom, a moment ago and right now."
       ],
       "file": "/audio/voice/d1f6ca581e279dd2.mp3"
+    },
+    {
+      "key": "61f419d32c1f4663",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mum calls through from the next room. What is the wifi password again, someone is asking.",
+      "lines": [
+        "Mum calls through from the next room. What is the wifi password again, someone is asking."
+      ],
+      "file": "/audio/voice/61f419d32c1f4663.mp3"
+    },
+    {
+      "key": "bed5b72f61a1d130",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your friend is coming over, and asks on the call: what is your address again?",
+      "lines": [
+        "Your friend is coming over, and asks on the call: what is your address again?"
+      ],
+      "file": "/audio/voice/bed5b72f61a1d130.mp3"
+    },
+    {
+      "key": "7f6a93501ba8f3af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Dad is planning the holiday. So we are away the whole of next week, yes?",
+      "lines": [
+        "Dad is planning the holiday. So we are away the whole of next week, yes?"
+      ],
+      "file": "/audio/voice/7f6a93501ba8f3af.mp3"
+    },
+    {
+      "key": "ff20282e7df18022",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran is on the speakerphone. Which class are you in this year, love?",
+      "lines": [
+        "Gran is on the speakerphone. Which class are you in this year, love?"
+      ],
+      "file": "/audio/voice/ff20282e7df18022.mp3"
+    },
+    {
+      "key": "4e6d2a58ba36749f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The speaker's microphone. Right now it is always listening.",
+      "lines": [
+        "The speaker's microphone. Right now it is always listening."
+      ],
+      "file": "/audio/voice/4e6d2a58ba36749f.mp3"
+    },
+    {
+      "key": "a2deb53521255f34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The voice diary. At the moment it keeps everything, forever.",
+      "lines": [
+        "The voice diary. At the moment it keeps everything, forever."
+      ],
+      "file": "/audio/voice/a2deb53521255f34.mp3"
+    },
+    {
+      "key": "954d282f2d5c8154",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Send my recordings off to help improve the service. That one is switched on.",
+      "lines": [
+        "Send my recordings off to help improve the service. That one is switched on."
+      ],
+      "file": "/audio/voice/954d282f2d5c8154.mp3"
+    },
+    {
+      "key": "5041b44fe046e194",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The doorbell camera, watching the front step.",
+      "lines": [
+        "The doorbell camera, watching the front step."
+      ],
+      "file": "/audio/voice/5041b44fe046e194.mp3"
+    },
+    {
+      "key": "71b8fc4f96955d72",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The telly's voice button. Switched on, sitting there waiting.",
+      "lines": [
+        "The telly's voice button. Switched on, sitting there waiting."
+      ],
+      "file": "/audio/voice/71b8fc4f96955d72.mp3"
+    },
+    {
+      "key": "e62259a2f63374d1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The landing night-light, on at bedtime.",
+      "lines": [
+        "The landing night-light, on at bedtime."
+      ],
+      "file": "/audio/voice/e62259a2f63374d1.mp3"
     },
     {
       "key": "2c617f63bc579ecb",
@@ -17461,430 +17641,2322 @@
       "file": "/audio/voice/4bb28c8aa7c3f561.mp3"
     },
     {
-      "key": "5c88f6d8bd51e994",
+      "key": "64eb34d02f6463d7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Break is over, hero. Time to sweep the shared tablet. Flick every open card down to log it out. Look back for sneaky ones, then tap the lock before you leave.",
+      "text": "Have a look in this one. Soft blocks, a little slide, and a grown-up right there by the door.",
       "lines": [
-        "[warmly] Break is over, hero. Time to sweep the shared tablet.",
-        "Flick every open card down to log it out.",
-        "Look back for sneaky ones, then tap the lock before you leave."
+        "Have a look in this one. Soft blocks, a little slide, and a grown-up right there by the door."
       ],
-      "file": "/audio/voice/5c88f6d8bd51e994.mp3"
+      "file": "/audio/voice/64eb34d02f6463d7.mp3"
     },
     {
-      "key": "803d52d4febf2401",
+      "key": "6ab46732ccf26334",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Week eighteen - the family tablet week! Picture the hallway coat rack. Some hooks are yours. Most belong to EVERYBODY. [warmly] Devices are exactly the same. The kitchen tablet? Everyone's. Your sticker tablet? Yours. [curious] Can you tell which is which? Let's find out!",
+      "text": "This one is loud. Thousands of people who have never met, all talking at once, and nobody checking any of it.",
       "lines": [
-        "[excited] Week eighteen - the family tablet week!",
-        "Picture the hallway coat rack.",
-        "Some hooks are yours. Most belong to EVERYBODY.",
-        "[warmly] Devices are exactly the same.",
-        "The kitchen tablet? Everyone's. Your sticker tablet? Yours.",
-        "[curious] Can you tell which is which? Let's find out!"
+        "This one is loud. Thousands of people who have never met, all talking at once, and nobody checking any of it."
       ],
-      "file": "/audio/voice/803d52d4febf2401.mp3"
+      "file": "/audio/voice/6ab46732ccf26334.mp3"
     },
     {
-      "key": "341dfef797f77c6d",
+      "key": "bc3ad7ad4c5ef38b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The coat rack - devices incoming! One question for each: how many different hands touch it? [warmly] Lots of hands, everyone's hook. Just yours? Your hook. Go!",
+      "text": "In here you build things, and you show them to people you added yourself.",
       "lines": [
-        "[excited] The coat rack - devices incoming!",
-        "One question for each:",
-        "how many different hands touch it?",
-        "[warmly] Lots of hands, everyone's hook. Just yours? Your hook. Go!"
+        "In here you build things, and you show them to people you added yourself."
       ],
-      "file": "/audio/voice/341dfef797f77c6d.mp3"
+      "file": "/audio/voice/bc3ad7ad4c5ef38b.mp3"
     },
     {
-      "key": "6fc746310d1cd7e8",
+      "key": "6a8b50b86a18833c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "First device is here - whose hands touch it? Hang it on the right hook!",
+      "text": "Look at all the adverts in this one. Every single one is asking for a card number to buy something right now.",
       "lines": [
-        "First device is here - whose hands touch it? Hang it on the right hook!"
+        "Look at all the adverts in this one. Every single one is asking for a card number to buy something right now."
       ],
-      "file": "/audio/voice/6fc746310d1cd7e8.mp3"
+      "file": "/audio/voice/6a8b50b86a18833c.mp3"
     },
     {
-      "key": "7eca754542ad84bf",
+      "key": "b4cdd3744a3f00cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nice and quiet in this one. Picture books read out loud, the same six stories every day.",
+      "lines": [
+        "Nice and quiet in this one. Picture books read out loud, the same six stories every day."
+      ],
+      "file": "/audio/voice/b4cdd3744a3f00cb.mp3"
+    },
+    {
+      "key": "74124e155e08079b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This pane has your school on it. The name of it, and which class you are in.",
+      "lines": [
+        "This pane has your school on it. The name of it, and which class you are in."
+      ],
+      "file": "/audio/voice/74124e155e08079b.mp3"
+    },
+    {
+      "key": "e71708c10de4c168",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is the dragon you drew. The one with the wings you are still cross about.",
+      "lines": [
+        "Here is the dragon you drew. The one with the wings you are still cross about."
+      ],
+      "file": "/audio/voice/e71708c10de4c168.mp3"
+    },
+    {
+      "key": "0937233dc585be05",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one is your birthday. The day, and how old you are turning.",
+      "lines": [
+        "This one is your birthday. The day, and how old you are turning."
+      ],
+      "file": "/audio/voice/0937233dc585be05.mp3"
+    },
+    {
+      "key": "ee1b5a726d7e89ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This pane says which team you support. The one in the red shirts.",
+      "lines": [
+        "This pane says which team you support. The one in the red shirts."
+      ],
+      "file": "/audio/voice/ee1b5a726d7e89ca.mp3"
+    },
+    {
+      "key": "0d7701b5235e31e4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at this one carefully. It is a photo of your front door, with the number showing.",
+      "lines": [
+        "Look at this one carefully. It is a photo of your front door, with the number showing."
+      ],
+      "file": "/audio/voice/0d7701b5235e31e4.mp3"
+    },
+    {
+      "key": "b3b3900b0364c800",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And this one says how you get home. Past the big park, and what time you do it.",
+      "lines": [
+        "And this one says how you get home. Past the big park, and what time you do it."
+      ],
+      "file": "/audio/voice/b3b3900b0364c800.mp3"
+    },
+    {
+      "key": "d218e5dd084dc6a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First scoop out of the river. Four of them. Have a good look at each one.",
+      "lines": [
+        "First scoop out of the river. Four of them. Have a good look at each one."
+      ],
+      "file": "/audio/voice/d218e5dd084dc6a5.mp3"
+    },
+    {
+      "key": "e1007b8743369c17",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second scoop. Four more, and one of these is going to glitter at you.",
+      "lines": [
+        "Second scoop. Four more, and one of these is going to glitter at you."
+      ],
+      "file": "/audio/voice/e1007b8743369c17.mp3"
+    },
+    {
+      "key": "2916931006786494",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last scoop of the day. Four more out of the river.",
+      "lines": [
+        "Last scoop of the day. Four more out of the river."
+      ],
+      "file": "/audio/voice/2916931006786494.mp3"
+    },
+    {
+      "key": "9031a9576085b75a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First line. Best day ever at swimming club.",
+      "lines": [
+        "First line. Best day ever at swimming club."
+      ],
+      "file": "/audio/voice/9031a9576085b75a.mp3"
+    },
+    {
+      "key": "ab686313b1354310",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second line. The pool on Mill Road, next to the big clock.",
+      "lines": [
+        "Second line. The pool on Mill Road, next to the big clock."
+      ],
+      "file": "/audio/voice/ab686313b1354310.mp3"
+    },
+    {
+      "key": "90f15affec0e9fd9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Third line. I did a whole length without stopping.",
+      "lines": [
+        "Third line. I did a whole length without stopping."
+      ],
+      "file": "/audio/voice/90f15affec0e9fd9.mp3"
+    },
+    {
+      "key": "2871b247cd23e624",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fourth line. Same time next Saturday, ten in the morning, sharp.",
+      "lines": [
+        "Fourth line. Same time next Saturday, ten in the morning, sharp."
+      ],
+      "file": "/audio/voice/2871b247cd23e624.mp3"
+    },
+    {
+      "key": "eb1f1f9a445dc6bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fifth line. My badge has my full name and my school on it.",
+      "lines": [
+        "Fifth line. My badge has my full name and my school on it."
+      ],
+      "file": "/audio/voice/eb1f1f9a445dc6bf.mp3"
+    },
+    {
+      "key": "e0f477fd76f51abc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last line. Mum says I can get chips after. Yes.",
+      "lines": [
+        "Last line. Mum says I can get chips after. Yes."
+      ],
+      "file": "/audio/voice/e0f477fd76f51abc.mp3"
+    },
+    {
+      "key": "ad8f5486d77dae74",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One beautiful cake, lit from the side, not a crumb out of place...",
+      "lines": [
+        "One beautiful cake, lit from the side, not a crumb out of place..."
+      ],
+      "file": "/audio/voice/ad8f5486d77dae74.mp3"
+    },
+    {
+      "key": "1dc9729b3c28c22e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "...and behind the camera, the first two in the bin because they sank in the middle.",
+      "lines": [
+        "...and behind the camera, the first two in the bin because they sank in the middle."
+      ],
+      "file": "/audio/voice/1dc9729b3c28c22e.mp3"
+    },
+    {
+      "key": "dd3bc9e5aa81caeb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That photo took an hour and a half of a Saturday that nobody saw.",
+      "lines": [
+        "That photo took an hour and a half of a Saturday that nobody saw."
+      ],
+      "file": "/audio/voice/dd3bc9e5aa81caeb.mp3"
+    },
+    {
+      "key": "d4439ebd2ff1d73a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Blue sky, blue sea, everybody laughing at exactly the same moment...",
+      "lines": [
+        "Blue sky, blue sea, everybody laughing at exactly the same moment..."
+      ],
+      "file": "/audio/voice/d4439ebd2ff1d73a.mp3"
+    },
+    {
+      "key": "dfe86143333c7237",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "...and just out of the frame, two of them had been arguing about the car park.",
+      "lines": [
+        "...and just out of the frame, two of them had been arguing about the car park."
+      ],
+      "file": "/audio/voice/dfe86143333c7237.mp3"
+    },
+    {
+      "key": "5a0e7cec42bced9e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It rained for four of the seven days. Those four are not in anybody's feed.",
+      "lines": [
+        "It rained for four of the seven days. Those four are not in anybody's feed."
+      ],
+      "file": "/audio/voice/5a0e7cec42bced9e.mp3"
+    },
+    {
+      "key": "38a88c3c4c22509e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The ball in the top corner, arms up, the whole team running over...",
+      "lines": [
+        "The ball in the top corner, arms up, the whole team running over..."
+      ],
+      "file": "/audio/voice/38a88c3c4c22509e.mp3"
+    },
+    {
+      "key": "de689938dd258d3f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "...and not filmed at all, the eleven shots before it that went nowhere near.",
+      "lines": [
+        "...and not filmed at all, the eleven shots before it that went nowhere near."
+      ],
+      "file": "/audio/voice/de689938dd258d3f.mp3"
+    },
+    {
+      "key": "b0f921c20f0d6c92",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Eleven misses, then one goal. The goal is real, it simply arrived at the end of all that missing.",
+      "lines": [
+        "Eleven misses, then one goal. The goal is real, it simply arrived at the end of all that missing."
+      ],
+      "file": "/audio/voice/b0f921c20f0d6c92.mp3"
+    },
+    {
+      "key": "6f9195aea1c61c47",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A bed made perfectly, shelves straight, everything in its place...",
+      "lines": [
+        "A bed made perfectly, shelves straight, everything in its place..."
+      ],
+      "file": "/audio/voice/6f9195aea1c61c47.mp3"
+    },
+    {
+      "key": "ee08719b5b9e816c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "...and one foot to the left, the entire floor covered in everything that was on the shelves.",
+      "lines": [
+        "...and one foot to the left, the entire floor covered in everything that was on the shelves."
+      ],
+      "file": "/audio/voice/ee08719b5b9e816c.mp3"
+    },
+    {
+      "key": "9a1b17a8838aa478",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "So the camera was pointed at the one tidy corner, with that floor carefully just out of shot.",
+      "lines": [
+        "So the camera was pointed at the one tidy corner, with that floor carefully just out of shot."
+      ],
+      "file": "/audio/voice/9a1b17a8838aa478.mp3"
+    },
+    {
+      "key": "d76ee5bb94a88f1a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Out laughing on Friday, out again Saturday, out again Sunday...",
+      "lines": [
+        "Out laughing on Friday, out again Saturday, out again Sunday..."
+      ],
+      "file": "/audio/voice/d76ee5bb94a88f1a.mp3"
+    },
+    {
+      "key": "c532c98b2ca45204",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "...all three photos were taken on the same afternoon and posted across a week.",
+      "lines": [
+        "...all three photos were taken on the same afternoon and posted across a week."
+      ],
+      "file": "/audio/voice/c532c98b2ca45204.mp3"
+    },
+    {
+      "key": "458a014bfba35435",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The Tuesday, the Wednesday and the Thursday were homework and telly, same as yours.",
+      "lines": [
+        "The Tuesday, the Wednesday and the Thursday were homework and telly, same as yours."
+      ],
+      "file": "/audio/voice/458a014bfba35435.mp3"
+    },
+    {
+      "key": "188b104e76c20a34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "So one perfect cake is really three cakes and an afternoon.",
+      "lines": [
+        "So one perfect cake is really three cakes and an afternoon."
+      ],
+      "file": "/audio/voice/188b104e76c20a34.mp3"
+    },
+    {
+      "key": "41b1fc3c15e7be89",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "So a perfect holiday is a real one with the wet bits left out.",
+      "lines": [
+        "So a perfect holiday is a real one with the wet bits left out."
+      ],
+      "file": "/audio/voice/41b1fc3c15e7be89.mp3"
+    },
+    {
+      "key": "b1af914fa433ad2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "So one amazing goal is really twelve tries and one camera.",
+      "lines": [
+        "So one amazing goal is really twelve tries and one camera."
+      ],
+      "file": "/audio/voice/b1af914fa433ad2a.mp3"
+    },
+    {
+      "key": "e8fedbde3beb78f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "So a tidy room is often one tidy corner, carefully aimed at.",
+      "lines": [
+        "So a tidy room is often one tidy corner, carefully aimed at."
+      ],
+      "file": "/audio/voice/e8fedbde3beb78f0.mp3"
+    },
+    {
+      "key": "1ea0ae7b09af0e70",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "So a busy week can be one busy hour, stretched out.",
+      "lines": [
+        "So a busy week can be one busy hour, stretched out."
+      ],
+      "file": "/audio/voice/1ea0ae7b09af0e70.mp3"
+    },
+    {
+      "key": "0ff0cfacd69d902a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not one of those frames was a whole day. Every single one of them was a minute somebody chose.",
+      "lines": [
+        "Not one of those frames was a whole day. Every single one of them was a minute somebody chose."
+      ],
+      "file": "/audio/voice/0ff0cfacd69d902a.mp3"
+    },
+    {
+      "key": "b1575fafbfa2fdfc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The room number Pip uses the app made for under thirteens, not the big talk one.",
+      "lines": [
+        "The room number Pip uses the app made for under thirteens, not the big talk one."
+      ],
+      "file": "/audio/voice/b1575fafbfa2fdfc.mp3"
+    },
+    {
+      "key": "e8ac55ad2bd9498a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The mirror panes School, birthday and street are all frosted. The dragon is clear.",
+      "lines": [
+        "The mirror panes School, birthday and street are all frosted. The dragon is clear."
+      ],
+      "file": "/audio/voice/e8ac55ad2bd9498a.mp3"
+    },
+    {
+      "key": "0c48c681e185d769",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The follower list Two hundred and fourteen watching, and the six in the heart frame are all placeable.",
+      "lines": [
+        "The follower list Two hundred and fourteen watching, and the six in the heart frame are all placeable."
+      ],
+      "file": "/audio/voice/0c48c681e185d769.mp3"
+    },
+    {
+      "key": "99b35aa004dac5a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The last post Best day at swimming, one whole length, chips after. No road and no clock.",
+      "lines": [
+        "The last post Best day at swimming, one whole length, chips after. No road and no clock."
+      ],
+      "file": "/audio/voice/99b35aa004dac5a1.mp3"
+    },
+    {
+      "key": "1f6bc9b82d5d2751",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The room number Bo is on the big talk app, where anybody can message anybody.",
+      "lines": [
+        "The room number Bo is on the big talk app, where anybody can message anybody."
+      ],
+      "file": "/audio/voice/1f6bc9b82d5d2751.mp3"
+    },
+    {
+      "key": "953d6d94ccef384a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The mirror panes Every pane is clear, school badge included.",
+      "lines": [
+        "The mirror panes Every pane is clear, school badge included."
+      ],
+      "file": "/audio/voice/953d6d94ccef384a.mp3"
+    },
+    {
+      "key": "c336551c2cd68e7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The follower list Twelve hundred followers, and most of the heart frame are people Bo has never met.",
+      "lines": [
+        "The follower list Twelve hundred followers, and most of the heart frame are people Bo has never met."
+      ],
+      "file": "/audio/voice/c336551c2cd68e7b.mp3"
+    },
+    {
+      "key": "b31c62362ecd7445",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The last post Saturday, ten in the morning, and the name of the road.",
+      "lines": [
+        "The last post Saturday, ten in the morning, and the name of the road."
+      ],
+      "file": "/audio/voice/b31c62362ecd7445.mp3"
+    },
+    {
+      "key": "9ed83d1e2850356c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The room number Wren is in the making room, which is the right one.",
+      "lines": [
+        "The room number Wren is in the making room, which is the right one."
+      ],
+      "file": "/audio/voice/9ed83d1e2850356c.mp3"
+    },
+    {
+      "key": "80a49e722a9d5fe8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The mirror panes Almost all frosted, but the walk home is still clear: past the big park, half three.",
+      "lines": [
+        "The mirror panes Almost all frosted, but the walk home is still clear: past the big park, half three."
+      ],
+      "file": "/audio/voice/80a49e722a9d5fe8.mp3"
+    },
+    {
+      "key": "665b34471d7efc18",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The follower list Ninety six followers and a small heart frame, every one of them placeable.",
+      "lines": [
+        "The follower list Ninety six followers and a small heart frame, every one of them placeable."
+      ],
+      "file": "/audio/voice/665b34471d7efc18.mp3"
+    },
+    {
+      "key": "52cfc69ecb4b0a66",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The last post A photo of a sunken cake. No place in it and no time in it.",
+      "lines": [
+        "The last post A photo of a sunken cake. No place in it and no time in it."
+      ],
+      "file": "/audio/voice/52cfc69ecb4b0a66.mp3"
+    },
+    {
+      "key": "cfbbb56037ffa90e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four checks open, and not a road or a clock among them. Is there a single one that hands anything over?",
+      "lines": [
+        "Four checks open, and not a road or a clock among them. Is there a single one that hands anything over?"
+      ],
+      "file": "/audio/voice/cfbbb56037ffa90e.mp3"
+    },
+    {
+      "key": "17076e584f9e9ed2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four checks open. Put the last post together with the public setting. What could a stranger do with that?",
+      "lines": [
+        "Four checks open. Put the last post together with the public setting. What could a stranger do with that?"
+      ],
+      "file": "/audio/voice/17076e584f9e9ed2.mp3"
+    },
+    {
+      "key": "5807ec4cfc041cad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four checks open. Three came back fine. Go back and read the panes one more time.",
+      "lines": [
+        "Four checks open. Three came back fine. Go back and read the panes one more time."
+      ],
+      "file": "/audio/voice/5807ec4cfc041cad.mp3"
+    },
+    {
+      "key": "0013697338a5ef8b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Quick question, Cyber Hero. How many screens did you use this week? The tablet at home. The computer at school. Somebody's phone when you wanted a photo. [thinking] Now the harder one. How many of those are only YOURS? Probably none of them. That is completely normal. It just means you are a visitor on most screens you touch. And visitors are brilliant guests. They tidy up, and they leave a place as they found it. [excited] Come and sort a whole rack of them with me!",
+      "lines": [
+        "[warmly] Quick question, Cyber Hero. How many screens did you use this week?",
+        "The tablet at home. The computer at school. Somebody's phone when you wanted a photo.",
+        "[thinking] Now the harder one. How many of those are only YOURS? Probably none of them.",
+        "That is completely normal. It just means you are a visitor on most screens you touch.",
+        "And visitors are brilliant guests. They tidy up, and they leave a place as they found it.",
+        "[excited] Come and sort a whole rack of them with me!"
+      ],
+      "file": "/audio/voice/0013697338a5ef8b.mp3"
+    },
+    {
+      "key": "d0b78f82bbffa574",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Here is the charging rack, and there is a screen on it. Read what it says, then send it to one of the two shelves underneath. Shared, if anybody else in the world uses it. Just mine, if truly nobody else ever does.",
+      "lines": [
+        "[excited] Here is the charging rack, and there is a screen on it.",
+        "Read what it says, then send it to one of the two shelves underneath.",
+        "Shared, if anybody else in the world uses it. Just mine, if truly nobody else ever does."
+      ],
+      "file": "/audio/voice/d0b78f82bbffa574.mp3"
+    },
+    {
+      "key": "297c42c7795bb010",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One question sorts every one of them. Does ANYBODY else ever touch this?",
+      "lines": [
+        "One question sorts every one of them. Does ANYBODY else ever touch this?"
+      ],
+      "file": "/audio/voice/297c42c7795bb010.mp3"
+    },
+    {
+      "key": "205b6e2140ac8227",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Look at those two shelves. Nearly everything went on the shared side. That is not a problem. That is just what screens are like. [warmly] It only means one thing: on most screens you touch, you are a visitor. So let's learn how a good visitor leaves.",
+      "lines": [
+        "[proud] Look at those two shelves. Nearly everything went on the shared side.",
+        "That is not a problem. That is just what screens are like.",
+        "[warmly] It only means one thing: on most screens you touch, you are a visitor. So let's learn how a good visitor leaves."
+      ],
+      "file": "/audio/voice/205b6e2140ac8227.mp3"
+    },
+    {
+      "key": "7a61c15b825df7f2",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Power one - you can spot a shared device! Everyone's hook, extra care. [whispers] But what happens if you walk away still signed in...? The breakfast relay will show you. Come on.",
+      "text": "[proud] That's it! Not who owns it, not how old it is. Just whether anybody else ever picks it up. [warmly] And on nearly every screen, somebody does.",
       "lines": [
-        "[excited] Power one - you can spot a shared device!",
-        "Everyone's hook, extra care.",
-        "[whispers] But what happens if you walk away still signed in...?",
-        "The breakfast relay will show you. Come on."
+        "[proud] That's it!",
+        "Not who owns it, not how old it is.",
+        "Just whether anybody else ever picks it up.",
+        "[warmly] And on nearly every screen, somebody does."
       ],
-      "file": "/audio/voice/7eca754542ad84bf.mp3"
+      "file": "/audio/voice/7a61c15b825df7f2.mp3"
     },
     {
-      "key": "c89c4bfe98fffbf2",
+      "key": "605a04e23aa63a28",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[curious] Ever seen a relay race? Run your bit, hand the baton over CLEAN. [whispers] Walk away signed in, and the next kid... wears your name. Your posts. Your coins. Your messages. [warmly] And no - tapping Home doesn't count. Screen-off doesn't count. [excited] Only LOG OUT counts. Three accounts are open - let's run the relay!",
+      "text": "[proud] One power down, Cyber Hero. You can spot a shared screen across a room now. Borrowed screen, visitor rules. Simple as that. [whispers] Although... he did say nobody ever tidies up after themselves... Next, we'll learn exactly how a good visitor leaves a screen. Come and see!",
       "lines": [
-        "[curious] Ever seen a relay race?",
-        "Run your bit, hand the baton over CLEAN.",
-        "[whispers] Walk away signed in, and the next kid... wears your name.",
-        "Your posts. Your coins. Your messages.",
-        "[warmly] And no - tapping Home doesn't count. Screen-off doesn't count.",
-        "[excited] Only LOG OUT counts. Three accounts are open - let's run the relay!"
+        "[proud] One power down, Cyber Hero. You can spot a shared screen across a room now.",
+        "Borrowed screen, visitor rules. Simple as that.",
+        "[whispers] Although... he did say nobody ever tidies up after themselves...",
+        "Next, we'll learn exactly how a good visitor leaves a screen. Come and see!"
       ],
-      "file": "/audio/voice/c89c4bfe98fffbf2.mp3"
+      "file": "/audio/voice/605a04e23aa63a28.mp3"
     },
     {
-      "key": "86c40e9643ad1b52",
+      "key": "bbc6096f2313aca0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Right. Here is how a good visitor leaves a screen. It is four moves, always the same order. Close everything you opened. Log out, so it stops wearing your name. Lock the screen. And then, Cyber Hero, look back and check one more time. [thinking] That last one is the bit almost everybody skips. A shared screen can change behind you while you are still putting your shoes on. [excited] Come and clear a tablet with me. You'll see exactly what I mean!",
+      "lines": [
+        "[warmly] Right. Here is how a good visitor leaves a screen. It is four moves, always the same order.",
+        "Close everything you opened. Log out, so it stops wearing your name.",
+        "Lock the screen. And then, Cyber Hero, look back and check one more time.",
+        "[thinking] That last one is the bit almost everybody skips.",
+        "A shared screen can change behind you while you are still putting your shoes on.",
+        "[excited] Come and clear a tablet with me. You'll see exactly what I mean!"
+      ],
+      "file": "/audio/voice/bbc6096f2313aca0.mp3"
+    },
+    {
+      "key": "522001351506104a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Break is over and look at the state of this tablet. Your cards, all over it. Tap every open card to log it out. Then press the big lock and off you go. Keep an eye on the little light at the top. It tells you the truth about this tablet.",
+      "lines": [
+        "[excited] Break is over and look at the state of this tablet. Your cards, all over it.",
+        "Tap every open card to log it out. Then press the big lock and off you go.",
+        "Keep an eye on the little light at the top. It tells you the truth about this tablet."
+      ],
+      "file": "/audio/voice/522001351506104a.mp3"
+    },
+    {
+      "key": "8b3a3455d9fd4a82",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every card that is still bright is still open. Tap them all before you lock.",
+      "lines": [
+        "Every card that is still bright is still open. Tap them all before you lock."
+      ],
+      "file": "/audio/voice/8b3a3455d9fd4a82.mp3"
+    },
+    {
+      "key": "a3a100d2251da2b9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Now THAT is how a visitor leaves a screen. And did you see what happened? You had done everything right, and one thing still opened up behind you. [warmly] That was never your fault. It is just what shared screens do. Which is exactly why we look back.",
+      "lines": [
+        "[proud] Now THAT is how a visitor leaves a screen.",
+        "And did you see what happened? You had done everything right, and one thing still opened up behind you.",
+        "[warmly] That was never your fault. It is just what shared screens do. Which is exactly why we look back."
+      ],
+      "file": "/audio/voice/a3a100d2251da2b9.mp3"
+    },
+    {
+      "key": "74857611cb395a7f",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The relay is ON! Three apps, three batons to hand over. [whispers] Watch out - some buttons only PRETEND to finish the race. Find every LOG OUT. Go go go!",
+      "text": "[proud] Straight to it! Close, log out, lock, and then LOOK BACK. Four moves, every single time, and the fourth is the one that catches things. [warmly] It takes about two seconds.",
       "lines": [
-        "[excited] The relay is ON!",
-        "Three apps, three batons to hand over.",
-        "[whispers] Watch out - some buttons only PRETEND to finish the race.",
-        "Find every LOG OUT. Go go go!"
+        "[proud] Straight to it!",
+        "Close, log out, lock, and then LOOK BACK.",
+        "Four moves, every single time, and the fourth is the one that catches things.",
+        "[warmly] It takes about two seconds."
       ],
-      "file": "/audio/voice/86c40e9643ad1b52.mp3"
+      "file": "/audio/voice/74857611cb395a7f.mp3"
     },
     {
-      "key": "96484c7014b26ca5",
+      "key": "8478da4df7eff337",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Scan the menu for the words LOG OUT - start with your racing game!",
+      "text": "[proud] Two powers down, Cyber Hero. You leave a screen like a proper guest now. Close it, lock it, and always that one look over your shoulder. [whispers] But hang on. What if you pick up a screen that has no lock on it at all... Next, we'll learn where the lock actually lives on any screen you meet. Come and see!",
       "lines": [
-        "Scan the menu for the words LOG OUT - start with your racing game!"
+        "[proud] Two powers down, Cyber Hero. You leave a screen like a proper guest now.",
+        "Close it, lock it, and always that one look over your shoulder.",
+        "[whispers] But hang on. What if you pick up a screen that has no lock on it at all...",
+        "Next, we'll learn where the lock actually lives on any screen you meet. Come and see!"
       ],
-      "file": "/audio/voice/96484c7014b26ca5.mp3"
+      "file": "/audio/voice/8478da4df7eff337.mp3"
     },
     {
-      "key": "49f463b87f88fd9c",
+      "key": "798110141bf104ca",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Power two - relay runner form! Every baton handed over clean. [whispers] But what about the device itself, just lying there... unlocked? Time to forge it a front door.",
+      "text": "[thinking] So here is a thing worth knowing. A lock screen is a front door. And this is not about whether your code is clever. We did clever codes ages ago. This is about whether the door is THERE at all. A screen with no lock is a house with the door wide open. [warmly] Every single device has one, and it always hides in the same sort of spot. In Settings, under a word like Lock, or Screen Lock, or Passcode. [excited] Come and hunt one down with me!",
       "lines": [
-        "[excited] Power two - relay runner form!",
-        "Every baton handed over clean.",
-        "[whispers] But what about the device itself, just lying there...",
-        "unlocked? Time to forge it a front door."
+        "[thinking] So here is a thing worth knowing. A lock screen is a front door.",
+        "And this is not about whether your code is clever. We did clever codes ages ago.",
+        "This is about whether the door is THERE at all. A screen with no lock is a house with the door wide open.",
+        "[warmly] Every single device has one, and it always hides in the same sort of spot.",
+        "In Settings, under a word like Lock, or Screen Lock, or Passcode.",
+        "[excited] Come and hunt one down with me!"
       ],
-      "file": "/audio/voice/49f463b87f88fd9c.mp3"
+      "file": "/audio/voice/798110141bf104ca.mp3"
     },
     {
-      "key": "0f230e347efa8257",
+      "key": "25e6db1412cf6166",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[curious] Would you leave your house with no front door? Of course not! A lock screen IS the front door - every device needs one. [whispers] But careful: some codes tell guessers a story. One-two-three-four? First thing anyone tries. [excited] The forge is hot - let's hammer out a code with NO story!",
+      "text": "[excited] Here we are, deep in the tablet's settings. Look at all these buttons. Two of them put a front door on this tablet. The rest do something else entirely. Find SCREEN LOCK first, then the switch that actually turns it on.",
       "lines": [
-        "[curious] Would you leave your house with no front door?",
-        "Of course not!",
-        "A lock screen IS the front door - every device needs one.",
-        "[whispers] But careful: some codes tell guessers a story.",
-        "One-two-three-four? First thing anyone tries.",
-        "[excited] The forge is hot - let's hammer out a code with NO story!"
+        "[excited] Here we are, deep in the tablet's settings. Look at all these buttons.",
+        "Two of them put a front door on this tablet. The rest do something else entirely.",
+        "Find SCREEN LOCK first, then the switch that actually turns it on."
       ],
-      "file": "/audio/voice/0f230e347efa8257.mp3"
+      "file": "/audio/voice/25e6db1412cf6166.mp3"
     },
     {
-      "key": "19fd28750cbcc045",
+      "key": "68d4365d7536be1c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The forge is ROARING! Three strikes, three pairs, one lock code. [whispers] Skip the metal with a story on it... counting, doubles, birthdays - guessers read those. [excited] Hammer the quiet metal. Strike one - go!",
+      "text": "Read the buttons, do not guess. The right one has the word LOCK in it.",
       "lines": [
-        "[excited] The forge is ROARING!",
-        "Three strikes, three pairs, one lock code.",
-        "[whispers] Skip the metal with a story on it...",
-        "counting, doubles, birthdays - guessers read those.",
-        "[excited] Hammer the quiet metal. Strike one - go!"
+        "Read the buttons, do not guess. The right one has the word LOCK in it."
       ],
-      "file": "/audio/voice/19fd28750cbcc045.mp3"
+      "file": "/audio/voice/68d4365d7536be1c.mp3"
     },
     {
-      "key": "d7b95b8f5975d7e5",
+      "key": "c86d05159d034337",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Read all three blanks first - which one tells a guesser NOTHING?",
+      "text": "[proud] There it is. Screen Lock, then the switch that makes it mean something. That tablet has a front door on it now, and it did not have one five minutes ago. [warmly] And here is the good bit. It is in the same sort of place on every device you will ever pick up.",
       "lines": [
-        "Read all three blanks first - which one tells a guesser NOTHING?"
+        "[proud] There it is. Screen Lock, then the switch that makes it mean something.",
+        "That tablet has a front door on it now, and it did not have one five minutes ago.",
+        "[warmly] And here is the good bit. It is in the same sort of place on every device you will ever pick up."
       ],
-      "file": "/audio/voice/d7b95b8f5975d7e5.mp3"
+      "file": "/audio/voice/c86d05159d034337.mp3"
     },
     {
-      "key": "ea8c6370c35f7888",
+      "key": "f9097c08e511f7b1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Power three - forged and locked! A front door with a quiet code. [warmly] Now for the gentle one... what about the things OTHER people leave open?",
+      "text": "[proud] You saw through that one! He would love you to leave the door open because a door is not perfect. Nearly everybody who picks up a tablet just puts it down again when it is locked. [warmly] A shut door does its job.",
       "lines": [
-        "[excited] Power three - forged and locked!",
-        "A front door with a quiet code.",
-        "[warmly] Now for the gentle one...",
-        "what about the things OTHER people leave open?"
+        "[proud] You saw through that one!",
+        "He would love you to leave the door open because a door is not perfect.",
+        "Nearly everybody who picks up a tablet just puts it down again when it is locked.",
+        "[warmly] A shut door does its job."
       ],
-      "file": "/audio/voice/ea8c6370c35f7888.mp3"
+      "file": "/audio/voice/f9097c08e511f7b1.mp3"
     },
     {
-      "key": "b1bd6da6af61ace1",
+      "key": "231e256c0f8c409d",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] This power is the gentle one. Sometimes it's YOU who finds something open. A diary app. A chat. Somebody's account. [whispers] Open by accident... is still not yours. Don't read it, close it gently, tell them. [warmly] Because that's what you'd want for your chest. Three moments - show me.",
+      "text": "[proud] Three powers down, Cyber Hero. You can fit a front door to anything now. Settings, then Lock. Same sort of place on every device there is. [thinking] Now. A shared screen has other people's doors on it too... Next, we'll learn what to do about all the things on a shared screen that are not yours. Come and see!",
       "lines": [
-        "[warmly] This power is the gentle one.",
-        "Sometimes it's YOU who finds something open.",
-        "A diary app. A chat. Somebody's account.",
-        "[whispers] Open by accident... is still not yours.",
-        "Don't read it, close it gently, tell them.",
-        "[warmly] Because that's what you'd want for your chest. Three moments - show me."
+        "[proud] Three powers down, Cyber Hero. You can fit a front door to anything now.",
+        "Settings, then Lock. Same sort of place on every device there is.",
+        "[thinking] Now. A shared screen has other people's doors on it too...",
+        "Next, we'll learn what to do about all the things on a shared screen that are not yours. Come and see!"
       ],
-      "file": "/audio/voice/b1bd6da6af61ace1.mp3"
+      "file": "/audio/voice/231e256c0f8c409d.mp3"
     },
     {
-      "key": "465de6e2a2b369a8",
+      "key": "3aed7635b8982a76",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Think of a shared tablet as a shelf, Cyber Hero. Everybody's things are on it. Your brother's messages. Dad's email. Mum's photos. And somewhere in the middle, yours. [thinking] There is one question that sorts the whole shelf, and it comes before every other question. Whose is this? That is it. That is the whole thing. Because once you know the answer, you already know what to do about it. [excited] Come and go along the shelf with me!",
+      "lines": [
+        "[warmly] Think of a shared tablet as a shelf, Cyber Hero. Everybody's things are on it.",
+        "Your brother's messages. Dad's email. Mum's photos. And somewhere in the middle, yours.",
+        "[thinking] There is one question that sorts the whole shelf, and it comes before every other question.",
+        "Whose is this? That is it. That is the whole thing.",
+        "Because once you know the answer, you already know what to do about it.",
+        "[excited] Come and go along the shelf with me!"
+      ],
+      "file": "/audio/voice/3aed7635b8982a76.mp3"
+    },
+    {
+      "key": "e77547701600046c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Here is the shelf, and here are the name tags for everyone in the house. One thing comes up at a time. Have a proper look at it, then tap whose it is. If it belongs to somebody else the lid closes itself. If it is yours, it stays open for you.",
+      "lines": [
+        "[warmly] Here is the shelf, and here are the name tags for everyone in the house.",
+        "One thing comes up at a time. Have a proper look at it, then tap whose it is.",
+        "If it belongs to somebody else the lid closes itself. If it is yours, it stays open for you."
+      ],
+      "file": "/audio/voice/e77547701600046c.mp3"
+    },
+    {
+      "key": "7731366f8ad3a932",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the little line underneath. It always tells you whose thing you are looking at.",
+      "lines": [
+        "Read the little line underneath. It always tells you whose thing you are looking at."
+      ],
+      "file": "/audio/voice/7731366f8ad3a932.mp3"
+    },
+    {
+      "key": "1cb97496a450aa3b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Five things on that shelf, and you found a person behind every single one. Two of them were yours and you went straight ahead, which is exactly right. [warmly] And the other three got their lids put down by somebody kind. That is all respect really is.",
+      "lines": [
+        "[proud] Five things on that shelf, and you found a person behind every single one.",
+        "Two of them were yours and you went straight ahead, which is exactly right.",
+        "[warmly] And the other three got their lids put down by somebody kind. That is all respect really is."
+      ],
+      "file": "/audio/voice/1cb97496a450aa3b.mp3"
+    },
+    {
+      "key": "ac7aa411852d1a46",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Three open chests. Three chances. Remember: open by accident isn't an invitation. Don't read it, close it gently, tell them - [excited] show me the Lock Master's gentle side!",
+      "text": "[proud] That's the one! Whose is this. Before anything else, every time. And when the answer is somebody else, the lid goes down. [warmly] Not because of a rule. Because there is a person on the other end.",
       "lines": [
-        "[warmly] Three open chests. Three chances.",
-        "Remember: open by accident isn't an invitation.",
-        "Don't read it, close it gently, tell them -",
-        "[excited] show me the Lock Master's gentle side!"
+        "[proud] That's the one!",
+        "Whose is this. Before anything else, every time.",
+        "And when the answer is somebody else, the lid goes down.",
+        "[warmly] Not because of a rule. Because there is a person on the other end."
       ],
-      "file": "/audio/voice/465de6e2a2b369a8.mp3"
+      "file": "/audio/voice/ac7aa411852d1a46.mp3"
     },
     {
-      "key": "c5d9bfeab8412e95",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Power four - and it's the kindest one! Closed chests stay closed, both ways. [whispers] One power left... hear that squeaky bobbing sound? The SAVE PASSWORD balloon. Pin ready.",
-      "lines": [
-        "[excited] Power four - and it's the kindest one!",
-        "Closed chests stay closed, both ways.",
-        "[whispers] One power left... hear that squeaky bobbing sound?",
-        "The SAVE PASSWORD balloon. Pin ready."
-      ],
-      "file": "/audio/voice/c5d9bfeab8412e95.mp3"
-    },
-    {
-      "key": "39eace813f79c703",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[curious] Hear that squeak? There it is again! SAVE PASSWORD? KEEP ME SIGNED IN? [whispers] Tap yes on a shared device... and whoever picks it up next walks straight into your account. [warmly] Shared or borrowed? NO THANKS - pop. Your own? Ask first. [excited] Four balloons are bobbing - pin at the ready!",
-      "lines": [
-        "[curious] Hear that squeak? There it is again!",
-        "SAVE PASSWORD? KEEP ME SIGNED IN?",
-        "[whispers] Tap yes on a shared device...",
-        "and whoever picks it up next walks straight into your account.",
-        "[warmly] Shared or borrowed? NO THANKS - pop. Your own? Ask first.",
-        "[excited] Four balloons are bobbing - pin at the ready!"
-      ],
-      "file": "/audio/voice/39eace813f79c703.mp3"
-    },
-    {
-      "key": "95ce2aa5257806a6",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Four balloons, four devices! Before you pop anything, ask: whose device is this? [warmly] Shared says no. Your own asks first. Pin up!",
-      "lines": [
-        "[excited] Four balloons, four devices!",
-        "Before you pop anything, ask:",
-        "whose device is this?",
-        "[warmly] Shared says no. Your own asks first. Pin up!"
-      ],
-      "file": "/audio/voice/95ce2aa5257806a6.mp3"
-    },
-    {
-      "key": "4362293dec95d93f",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Check the device name at the top first - then pop your answer!",
-      "lines": [
-        "Check the device name at the top first - then pop your answer!"
-      ],
-      "file": "/audio/voice/4362293dec95d93f.mp3"
-    },
-    {
-      "key": "79ce11bd6f69e446",
+      "key": "09cf2e36bde7c5d9",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Lock Master! Hooks sorted, batons handed, the door forged, chests respected... and every balloon popped. [whispers] One last relay through the house... [excited] then we lock the Raccoon out for GOOD!",
+      "text": "[proud] Four powers down, Cyber Hero. You put three lids down today and nobody ever had to ask you. Whose is this. It is such a small question and it settles everything. [thinking] Now there is one last thing a borrowed screen tries to do, and it is very sneaky indeed... Next, we'll learn the one thing you must never let a borrowed screen do. Come and see!",
       "lines": [
-        "[excited] That's all FIVE powers, Lock Master!",
-        "Hooks sorted, batons handed, the door forged,",
-        "chests respected... and every balloon popped.",
-        "[whispers] One last relay through the house...",
-        "[excited] then we lock the Raccoon out for GOOD!"
+        "[proud] Four powers down, Cyber Hero. You put three lids down today and nobody ever had to ask you.",
+        "Whose is this. It is such a small question and it settles everything.",
+        "[thinking] Now there is one last thing a borrowed screen tries to do, and it is very sneaky indeed...",
+        "Next, we'll learn the one thing you must never let a borrowed screen do. Come and see!"
       ],
-      "file": "/audio/voice/79ce11bd6f69e446.mp3"
+      "file": "/audio/voice/09cf2e36bde7c5d9.mp3"
     },
     {
-      "key": "5b3af6a226b5925a",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] The Morning Relay - final lap! House moments are coming past. CLEAN HANDOFF for Lock Master form... [warmly] LEFT OPEN for the Raccoon's favorite doors. Stamp them all!",
-      "lines": [
-        "[excited] The Morning Relay - final lap!",
-        "House moments are coming past.",
-        "CLEAN HANDOFF for Lock Master form...",
-        "[warmly] LEFT OPEN for the Raccoon's favorite doors. Stamp them all!"
-      ],
-      "file": "/audio/voice/5b3af6a226b5925a.mp3"
-    },
-    {
-      "key": "2850abe2273c9ad9",
+      "key": "f9e01305703d826a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! Hooks sorted, batons handed over, the door forged, the chests closed... and the balloons popped. [laughs] Every door he was counting on just clicked shut. [excited] Sticker time, Lock Master!",
+      "text": "[thinking] Last one, Cyber Hero, and it is the sneakiest of the lot. You log in on a borrowed tablet and a little balloon floats up. Shall I remember this for you? [warmly] On your own device, with your own lock on it, that is a perfectly fair offer. But on a borrowed one? Saying yes means the next person who picks it up is already you. They never even see your password. The tablet just hands it straight over. [excited] Come and answer some balloons with me!",
+      "lines": [
+        "[thinking] Last one, Cyber Hero, and it is the sneakiest of the lot.",
+        "You log in on a borrowed tablet and a little balloon floats up. Shall I remember this for you?",
+        "[warmly] On your own device, with your own lock on it, that is a perfectly fair offer.",
+        "But on a borrowed one? Saying yes means the next person who picks it up is already you.",
+        "They never even see your password. The tablet just hands it straight over.",
+        "[excited] Come and answer some balloons with me!"
+      ],
+      "file": "/audio/voice/f9e01305703d826a.mp3"
+    },
+    {
+      "key": "50e8fea90e556097",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Here come the balloons. One floats up every time somebody logs in somewhere. Look at WHICH SCREEN it is first. That is the only thing that changes the answer. Then pick what you would say back to it.",
+      "lines": [
+        "[excited] Here come the balloons. One floats up every time somebody logs in somewhere.",
+        "Look at WHICH SCREEN it is first. That is the only thing that changes the answer.",
+        "Then pick what you would say back to it."
+      ],
+      "file": "/audio/voice/50e8fea90e556097.mp3"
+    },
+    {
+      "key": "cd845e70586ede87",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Same balloon every time. The answer depends entirely on whose screen it popped up on.",
+      "lines": [
+        "Same balloon every time. The answer depends entirely on whose screen it popped up on."
+      ],
+      "file": "/audio/voice/cd845e70586ede87.mp3"
+    },
+    {
+      "key": "8b50667378faf996",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Four balloons, and you answered every one of them by looking at the screen first. Your own locked phone got a yes. Everything borrowed got a no thank you. [warmly] And that is the last of the five. Let's put the whole lot together.",
+      "lines": [
+        "[proud] Four balloons, and you answered every one of them by looking at the screen first.",
+        "Your own locked phone got a yes. Everything borrowed got a no thank you.",
+        "[warmly] And that is the last of the five. Let's put the whole lot together."
+      ],
+      "file": "/audio/voice/8b50667378faf996.mp3"
+    },
+    {
+      "key": "ff8b253fa9166270",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Perfect! Borrowed screen, no thank you. Every single time, no exceptions. Because saying yes does not just save YOU time. [warmly] It makes the next person you.",
+      "lines": [
+        "[proud] Perfect!",
+        "Borrowed screen, no thank you. Every single time, no exceptions.",
+        "Because saying yes does not just save YOU time.",
+        "[warmly] It makes the next person you."
+      ],
+      "file": "/audio/voice/ff8b253fa9166270.mp3"
+    },
+    {
+      "key": "746ad9977d3e3979",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Five powers down, Cyber Hero. Every single one of them earned. Shared screens spotted, a clean leave, a front door fitted, lids put down, balloons popped. [warmly] Now here is the best bit. All five of those happen in an order. Next, we'll put them together into the routine you do every time. Come and see!",
+      "lines": [
+        "[proud] Five powers down, Cyber Hero. Every single one of them earned.",
+        "Shared screens spotted, a clean leave, a front door fitted, lids put down, balloons popped.",
+        "[warmly] Now here is the best bit. All five of those happen in an order.",
+        "Next, we'll put them together into the routine you do every time. Come and see!"
+      ],
+      "file": "/audio/voice/746ad9977d3e3979.mp3"
+    },
+    {
+      "key": "218353b819b79715",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Last job of the week, Cyber Hero, and it is the one that ties the lot together. Six moves. They are all things you already know how to do. Put them on the rail in the order you would actually do them, from the moment you sit down.",
+      "lines": [
+        "[excited] Last job of the week, Cyber Hero, and it is the one that ties the lot together.",
+        "Six moves. They are all things you already know how to do.",
+        "Put them on the rail in the order you would actually do them, from the moment you sit down."
+      ],
+      "file": "/audio/voice/218353b819b79715.mp3"
+    },
+    {
+      "key": "9664576038cc6329",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Look at the whole thing on the rail. Notice, no thank you, lids down, log out, lock, look back. Every one of those was a power you learned this week, and now they are one routine. [excited] Which is just as well, because somebody has been waiting for you at the end of it.",
+      "lines": [
+        "[proud] Look at the whole thing on the rail. Notice, no thank you, lids down, log out, lock, look back.",
+        "Every one of those was a power you learned this week, and now they are one routine.",
+        "[excited] Which is just as well, because somebody has been waiting for you at the end of it."
+      ],
+      "file": "/audio/voice/9664576038cc6329.mp3"
+    },
+    {
+      "key": "df5527f142a24957",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Shared screens spotted, clean leaves, front doors fitted, lids put down... and not one balloon said yes to. [laughs] He was counting on you being in a hurry. You weren't. [excited] Sticker time, Cyber Hero!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Hooks sorted, batons handed over,",
-        "the door forged, the chests closed... and the balloons popped.",
-        "[laughs] Every door he was counting on just clicked shut.",
-        "[excited] Sticker time, Lock Master!"
+        "Shared screens spotted, clean leaves, front doors fitted,",
+        "lids put down... and not one balloon said yes to.",
+        "[laughs] He was counting on you being in a hurry. You weren't.",
+        "[excited] Sticker time, Cyber Hero!"
       ],
-      "file": "/audio/voice/2850abe2273c9ad9.mp3"
+      "file": "/audio/voice/df5527f142a24957.mp3"
     },
     {
-      "key": "19fce357908ad5c1",
+      "key": "b85e7846d5f4ae9e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The family tablet is on the sofa - and your sister's diary app is glowing, wide open. 'Dear Diary...' is RIGHT THERE...",
+      "text": "What makes a screen a SHARED one?",
       "lines": [
-        "The family tablet is on the sofa - and your sister's diary app is glowing, wide open. 'Dear Diary...' is RIGHT THERE..."
+        "What makes a screen a SHARED one?"
       ],
-      "file": "/audio/voice/19fce357908ad5c1.mp3"
+      "file": "/audio/voice/b85e7846d5f4ae9e.mp3"
     },
     {
-      "key": "5c2d3a51f053dbb7",
+      "key": "bfa11465c675155a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your brother sprinted to football and left his chat open on the shared computer. The top message says 'don't tell anyone but...'",
+      "text": "You have closed everything and locked the shared tablet. What is the LAST move?",
       "lines": [
-        "Your brother sprinted to football and left his chat open on the shared computer. The top message says 'don't tell anyone but...'"
+        "You have closed everything and locked the shared tablet. What is the LAST move?"
       ],
-      "file": "/audio/voice/5c2d3a51f053dbb7.mp3"
+      "file": "/audio/voice/bfa11465c675155a.mp3"
     },
     {
-      "key": "79674b5b6b9d1f24",
+      "key": "db5a7135f9176b00",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You sit down at the school computer and the kid before you is STILL SIGNED IN. Their homework folder is right there...",
+      "text": "The Raccoon says: 'A lock screen is pointless, anyone clever can get past it!' Is he right?",
       "lines": [
-        "You sit down at the school computer and the kid before you is STILL SIGNED IN. Their homework folder is right there..."
+        "The Raccoon says: 'A lock screen is pointless, anyone clever can get past it!' Is he right?"
       ],
-      "file": "/audio/voice/79674b5b6b9d1f24.mp3"
+      "file": "/audio/voice/db5a7135f9176b00.mp3"
     },
     {
-      "key": "ca11f2179bfc305f",
+      "key": "833ebfe872979433",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "She goes pink, locks it with a code, and says thanks about nine times. At dinner she lets you pick the film - trust is the best trade there is.",
+      "text": "You pick up the family tablet and your sister's messages are open on it. What is the question to ask?",
       "lines": [
-        "She goes pink, locks it with a code, and says thanks about nine times. At dinner she lets you pick the film - trust is the best trade there is."
+        "You pick up the family tablet and your sister's messages are open on it. What is the question to ask?"
       ],
-      "file": "/audio/voice/ca11f2179bfc305f.mp3"
+      "file": "/audio/voice/833ebfe872979433.mp3"
     },
     {
-      "key": "a64d1cba01168c77",
+      "key": "b1174834fb4a455e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Now you know her secret wish and it sits in your tummy like a swallowed marble. She'd never have shown you - open by accident was never an invitation.",
+      "text": "The school computer asks if it should remember your password. Finish the rule: on a borrowed screen...",
       "lines": [
-        "Now you know her secret wish and it sits in your tummy like a swallowed marble. She'd never have shown you - open by accident was never an invitation."
+        "The school computer asks if it should remember your password. Finish the rule: on a borrowed screen..."
       ],
-      "file": "/audio/voice/a64d1cba01168c77.mp3"
+      "file": "/audio/voice/b1174834fb4a455e.mp3"
     },
     {
-      "key": "91f7526aa6994b98",
+      "key": "580d2e7ecb53527d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "He skids back in a panic an hour later - and finds it closed. 'YOU closed it? Legend.' Next week he spots YOUR game left open... and closes it, no peeking. It comes back around.",
+      "text": "Layla is about to open her diary app. One of these screens deserves EXTRA care before she types anything. Which one? Is it option A... The computer in the school library Option B... Her own tablet with her name stickers on it Or is it option C... The e-reader she got for her birthday So, what do you think?",
       "lines": [
-        "He skids back in a panic an hour later - and finds it closed. 'YOU closed it? Legend.' Next week he spots YOUR game left open... and closes it, no peeking. It comes back around."
+        "Layla is about to open her diary app. One of these screens deserves EXTRA care before she types anything. Which one?",
+        "Is it option A...",
+        "The computer in the school library",
+        "Option B...",
+        "Her own tablet with her name stickers on it",
+        "Or is it option C...",
+        "The e-reader she got for her birthday",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/91f7526aa6994b98.mp3"
+      "file": "/audio/voice/580d2e7ecb53527d.mp3"
     },
     {
-      "key": "3c913065787adefc",
+      "key": "995309eaa99abba4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "'He left it open' is the Raccoon's kind of excuse - an open door doesn't make it your room. Secrets read by accident still can't be un-read.",
+      "text": "Adam finishes his game on the library computer and taps the little X to close the window. Is his account safe now? Is it option A... Yes, library computers wipe everything at closing time Option B... Yes, the X signs him out all by itself Or is it option C... No, the X just hides the window, only LOG OUT shuts the door So, what do you think?",
       "lines": [
-        "'He left it open' is the Raccoon's kind of excuse - an open door doesn't make it your room. Secrets read by accident still can't be un-read."
+        "Adam finishes his game on the library computer and taps the little X to close the window. Is his account safe now?",
+        "Is it option A...",
+        "Yes, library computers wipe everything at closing time",
+        "Option B...",
+        "Yes, the X signs him out all by itself",
+        "Or is it option C...",
+        "No, the X just hides the window, only LOG OUT shuts the door",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/3c913065787adefc.mp3"
+      "file": "/audio/voice/995309eaa99abba4.mp3"
     },
     {
-      "key": "f62c484d497080ac",
+      "key": "c1dbf1b38e09a663",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The teacher says 'good catch' and reminds the whole class about the relay rule. That kid never knows what you DIDN'T look at - which is exactly what makes it the hero move.",
+      "text": "I read lock codes like bedtime stories! Adam's soccer number is 9 and his birthday is June 2. Which code tells me NOTHING? Is it option A... 06-02-16 Option B... 83-51-27 Or is it option C... 99-99-99 So, what do you think?",
       "lines": [
-        "The teacher says 'good catch' and reminds the whole class about the relay rule. That kid never knows what you DIDN'T look at - which is exactly what makes it the hero move."
+        "I read lock codes like bedtime stories! Adam's soccer number is 9 and his birthday is June 2. Which code tells me NOTHING?",
+        "Is it option A...",
+        "06-02-16",
+        "Option B...",
+        "83-51-27",
+        "Or is it option C...",
+        "99-99-99",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/f62c484d497080ac.mp3"
+      "file": "/audio/voice/c1dbf1b38e09a663.mp3"
     },
     {
-      "key": "d1d254a806859425",
+      "key": "1f0710eb86337cac",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Their stories, their pictures, their marks - none of it yours, and you'd feel it if it were YOUR folder. Left signed in is a mistake to fix, not a ticket to snoop.",
+      "text": "On the bus, the kid next to Adam falls asleep and their phone slips out, screen glowing and unlocked. What's the Lock Master move? Is it option A... Leave it alone, an unlocked phone still isn't an invitation Option B... Take one tiny peek, then put it back exactly where it was Or is it option C... Scroll through it to check the kid isn't in any trouble So, what do you think?",
       "lines": [
-        "Their stories, their pictures, their marks - none of it yours, and you'd feel it if it were YOUR folder. Left signed in is a mistake to fix, not a ticket to snoop."
+        "On the bus, the kid next to Adam falls asleep and their phone slips out, screen glowing and unlocked. What's the Lock Master move?",
+        "Is it option A...",
+        "Leave it alone, an unlocked phone still isn't an invitation",
+        "Option B...",
+        "Take one tiny peek, then put it back exactly where it was",
+        "Or is it option C...",
+        "Scroll through it to check the kid isn't in any trouble",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/d1d254a806859425.mp3"
+      "file": "/audio/voice/1f0710eb86337cac.mp3"
     },
     {
-      "key": "3f78bb38b704fde9",
+      "key": "60476e4c95df2887",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which of these is a SHARED device?",
+      "text": "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer? Is it option A... Save it, a grown-up just said it was fine Option B... Save it now and delete it before going home Or is it option C... No thanks, it's a shared computer, so my keys shouldn't live in it So, what do you think?",
       "lines": [
-        "Which of these is a SHARED device?"
+        "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer?",
+        "Is it option A...",
+        "Save it, a grown-up just said it was fine",
+        "Option B...",
+        "Save it now and delete it before going home",
+        "Or is it option C...",
+        "No thanks, it's a shared computer, so my keys shouldn't live in it",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/3f78bb38b704fde9.mp3"
+      "file": "/audio/voice/60476e4c95df2887.mp3"
     },
     {
-      "key": "dea2143523c2df34",
+      "key": "5fa48e1c30c7b464",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - the button that hands a shared tablet back clean!",
+      "text": "That's right! Her own tablet and her birthday e-reader hang on HER hook, but the library computer hangs on everyone's. When lots of hands share a screen, that's the one that gets extra care.",
       "lines": [
-        "Quick - the button that hands a shared tablet back clean!"
+        "That's right!",
+        "Her own tablet and her birthday e-reader hang on HER hook, but the library computer hangs on everyone's. When lots of hands share a screen, that's the one that gets extra care."
       ],
-      "file": "/audio/voice/dea2143523c2df34.mp3"
+      "file": "/audio/voice/5fa48e1c30c7b464.mp3"
     },
     {
-      "key": "e464a31b30a82dae",
+      "key": "24ef732ea3218545",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Before you leave it, blank it.",
+      "text": "Not quite. Her own tablet and her birthday e-reader hang on HER hook, but the library computer hangs on everyone's. When lots of hands share a screen, that's the one that gets extra care.",
       "lines": [
-        "Before you leave it, blank it."
+        "Not quite.",
+        "Her own tablet and her birthday e-reader hang on HER hook, but the library computer hangs on everyone's. When lots of hands share a screen, that's the one that gets extra care."
       ],
-      "file": "/audio/voice/e464a31b30a82dae.mp3"
+      "file": "/audio/voice/24ef732ea3218545.mp3"
     },
     {
-      "key": "7f9176e7dd690d31",
+      "key": "1175d2cb53fbb5a1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Is that true?",
+      "text": "That's right! Closing a window is like sliding a book over your open diary, everything is still there underneath. Only tapping LOG OUT actually shuts your account before the next person sits down.",
       "lines": [
-        "Is that true?"
+        "That's right!",
+        "Closing a window is like sliding a book over your open diary, everything is still there underneath. Only tapping LOG OUT actually shuts your account before the next person sits down."
       ],
-      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+      "file": "/audio/voice/1175d2cb53fbb5a1.mp3"
     },
     {
-      "key": "316cb42255c56fb8",
+      "key": "e44d15664dfcf61d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Where could 'Save password?' be OK - with a grown-up's yes?",
+      "text": "Not quite. Closing a window is like sliding a book over your open diary, everything is still there underneath. Only tapping LOG OUT actually shuts your account before the next person sits down.",
       "lines": [
-        "Where could 'Save password?' be OK - with a grown-up's yes?"
+        "Not quite.",
+        "Closing a window is like sliding a book over your open diary, everything is still there underneath. Only tapping LOG OUT actually shuts your account before the next person sits down."
       ],
-      "file": "/audio/voice/316cb42255c56fb8.mp3"
+      "file": "/audio/voice/e44d15664dfcf61d.mp3"
+    },
+    {
+      "key": "c2818e537579b173",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! His soccer nines and his birthday digits are stories a guesser can read about him. Quiet digits that mean nothing to anybody are the ones no guesser can figure out.",
+      "lines": [
+        "That's right!",
+        "His soccer nines and his birthday digits are stories a guesser can read about him. Quiet digits that mean nothing to anybody are the ones no guesser can figure out."
+      ],
+      "file": "/audio/voice/c2818e537579b173.mp3"
+    },
+    {
+      "key": "b0c7c8b48091152e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. His soccer nines and his birthday digits are stories a guesser can read about him. Quiet digits that mean nothing to anybody are the ones no guesser can figure out.",
+      "lines": [
+        "Not quite.",
+        "His soccer nines and his birthday digits are stories a guesser can read about him. Quiet digits that mean nothing to anybody are the ones no guesser can figure out."
+      ],
+      "file": "/audio/voice/b0c7c8b48091152e.mp3"
+    },
+    {
+      "key": "548d058548f20012",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Even one tiny peek, even a helpful-sounding peek, is still reading someone's private things. A phone that isn't yours stays a closed chest, glowing or not.",
+      "lines": [
+        "That's right!",
+        "Even one tiny peek, even a helpful-sounding peek, is still reading someone's private things. A phone that isn't yours stays a closed chest, glowing or not."
+      ],
+      "file": "/audio/voice/548d058548f20012.mp3"
+    },
+    {
+      "key": "de903c3b7b84c7c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Even one tiny peek, even a helpful-sounding peek, is still reading someone's private things. A phone that isn't yours stays a closed chest, glowing or not.",
+      "lines": [
+        "Not quite.",
+        "Even one tiny peek, even a helpful-sounding peek, is still reading someone's private things. A phone that isn't yours stays a closed chest, glowing or not."
+      ],
+      "file": "/audio/voice/de903c3b7b84c7c1.mp3"
+    },
+    {
+      "key": "a00be9c077cdc325",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Grandad is being kind, but his computer is shared, so a saved password would wait there for whoever clicks next. The ask-first rule only opens the door on your OWN device.",
+      "lines": [
+        "That's right!",
+        "Grandad is being kind, but his computer is shared, so a saved password would wait there for whoever clicks next. The ask-first rule only opens the door on your OWN device."
+      ],
+      "file": "/audio/voice/a00be9c077cdc325.mp3"
+    },
+    {
+      "key": "392cb3ca19feabc0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Grandad is being kind, but his computer is shared, so a saved password would wait there for whoever clicks next. The ask-first rule only opens the door on your OWN device.",
+      "lines": [
+        "Not quite.",
+        "Grandad is being kind, but his computer is shared, so a saved password would wait there for whoever clicks next. The ask-first rule only opens the door on your OWN device."
+      ],
+      "file": "/audio/voice/392cb3ca19feabc0.mp3"
+    },
+    {
+      "key": "20441c01fa28a0f4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Everyone in the house picks that one up, so everything you leave on it is sitting there for the next person.",
+      "lines": [
+        "Everyone in the house picks that one up, so everything you leave on it is sitting there for the next person."
+      ],
+      "file": "/audio/voice/20441c01fa28a0f4.mp3"
+    },
+    {
+      "key": "72697e9c5264a467",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A different child sits there on every other day of the week, so it is about as shared as a screen gets.",
+      "lines": [
+        "A different child sits there on every other day of the week, so it is about as shared as a screen gets."
+      ],
+      "file": "/audio/voice/72697e9c5264a467.mp3"
+    },
+    {
+      "key": "8f91533c7ab472e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your phone with your code on it really is yours alone, and it is fine to be relaxed on that one.",
+      "lines": [
+        "Your phone with your code on it really is yours alone, and it is fine to be relaxed on that one."
+      ],
+      "file": "/audio/voice/8f91533c7ab472e0.mp3"
+    },
+    {
+      "key": "ef03bf11d197484c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It goes straight back in Grandma's pocket, so anything you left signed in goes with it.",
+      "lines": [
+        "It goes straight back in Grandma's pocket, so anything you left signed in goes with it."
+      ],
+      "file": "/audio/voice/ef03bf11d197484c.mp3"
+    },
+    {
+      "key": "1e8ea75a84a9c2bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Everyone who sits on that sofa can play as whoever is still logged in, and that is usually you.",
+      "lines": [
+        "Everyone who sits on that sofa can play as whoever is still logged in, and that is usually you."
+      ],
+      "file": "/audio/voice/1e8ea75a84a9c2bd.mp3"
+    },
+    {
+      "key": "1687130f2377b0c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No screen, no login and no next person. Some things really are just yours, and that is lovely.",
+      "lines": [
+        "No screen, no login and no next person. Some things really are just yours, and that is lovely."
+      ],
+      "file": "/audio/voice/1687130f2377b0c6.mp3"
+    },
+    {
+      "key": "d19f600ed251fe65",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Age has nothing to do with it. A brand new tablet on the kitchen shelf is shared from day one.",
+      "lines": [
+        "Age has nothing to do with it. A brand new tablet on the kitchen shelf is shared from day one."
+      ],
+      "file": "/audio/voice/d19f600ed251fe65.mp3"
+    },
+    {
+      "key": "67717a35e3bfecec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What is on a screen does not change who else picks it up.",
+      "lines": [
+        "What is on a screen does not change who else picks it up."
+      ],
+      "file": "/audio/voice/67717a35e3bfecec.mp3"
+    },
+    {
+      "key": "f2ba8f5a8292caa6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Close, but a screen your brother uses is shared too, and he is not a grown-up.",
+      "lines": [
+        "Close, but a screen your brother uses is shared too, and he is not a grown-up."
+      ],
+      "file": "/audio/voice/f2ba8f5a8292caa6.mp3"
+    },
+    {
+      "key": "b8e8272dc8d85ae3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about the one question that sorted the whole rack.",
+      "lines": [
+        "Think about the one question that sorted the whole rack."
+      ],
+      "file": "/audio/voice/b8e8272dc8d85ae3.mp3"
+    },
+    {
+      "key": "6f2a26ac00727075",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Almost. One card had opened up behind you last time, remember?",
+      "lines": [
+        "Almost. One card had opened up behind you last time, remember?"
+      ],
+      "file": "/audio/voice/6f2a26ac00727075.mp3"
+    },
+    {
+      "key": "d36f19701c145770",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You do not need to. A locked screen is already a shut front door.",
+      "lines": [
+        "You do not need to. A locked screen is already a shut front door."
+      ],
+      "file": "/audio/voice/d36f19701c145770.mp3"
+    },
+    {
+      "key": "cabfdf649d571bf1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody needs telling. The looking back is the bit that actually helps.",
+      "lines": [
+        "Nobody needs telling. The looking back is the bit that actually helps."
+      ],
+      "file": "/audio/voice/cabfdf649d571bf1.mp3"
+    },
+    {
+      "key": "79039751141e27c4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about the goblin paw. When did it strike?",
+      "lines": [
+        "Think about the goblin paw. When did it strike?"
+      ],
+      "file": "/audio/voice/79039751141e27c4.mp3"
+    },
+    {
+      "key": "718a9a39c326fbb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is exactly what he wants you to think. An open door stops nobody at all.",
+      "lines": [
+        "That is exactly what he wants you to think. An open door stops nobody at all."
+      ],
+      "file": "/audio/voice/718a9a39c326fbb7.mp3"
+    },
+    {
+      "key": "fd0d0ff020834638",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This is not about the code. It is about whether there is a door there to begin with.",
+      "lines": [
+        "This is not about the code. It is about whether there is a door there to begin with."
+      ],
+      "file": "/audio/voice/fd0d0ff020834638.mp3"
+    },
+    {
+      "key": "e696bf7ece140f99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tablets, computers and consoles all have one, and all of them need it.",
+      "lines": [
+        "Tablets, computers and consoles all have one, and all of them need it."
+      ],
+      "file": "/audio/voice/e696bf7ece140f99.mp3"
+    },
+    {
+      "key": "28559313909ab787",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about a real front door. Does it have to be unbreakable to be worth shutting?",
+      "lines": [
+        "Think about a real front door. Does it have to be unbreakable to be worth shutting?"
+      ],
+      "file": "/audio/voice/28559313909ab787.mp3"
+    },
+    {
+      "key": "3f88969065fc5929",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam would go pink if he knew somebody had read that. Lid down, and he never has to feel it.",
+      "lines": [
+        "Sam would go pink if he knew somebody had read that. Lid down, and he never has to feel it."
+      ],
+      "file": "/audio/voice/3f88969065fc5929.mp3"
+    },
+    {
+      "key": "dead9f2ca23a1e12",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That dragon is yours, so off you go and finish the wings. Nobody minds at all.",
+      "lines": [
+        "That dragon is yours, so off you go and finish the wings. Nobody minds at all."
+      ],
+      "file": "/audio/voice/dead9f2ca23a1e12.mp3"
+    },
+    {
+      "key": "1325aa39c8b08d93",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grown-up work post is nobody's business but the grown-up's. Dad would want that lid down without even being asked.",
+      "lines": [
+        "Grown-up work post is nobody's business but the grown-up's. Dad would want that lid down without even being asked."
+      ],
+      "file": "/audio/voice/1325aa39c8b08d93.mp3"
+    },
+    {
+      "key": "c98af18b7d9a168c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran scanned every one of those herself. She would love to show you, and that is different from you helping yourself.",
+      "lines": [
+        "Gran scanned every one of those herself. She would love to show you, and that is different from you helping yourself."
+      ],
+      "file": "/audio/voice/c98af18b7d9a168c.mp3"
+    },
+    {
+      "key": "9512900db2b5f350",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your name, your homework, your folder. Open it up whenever you like.",
+      "lines": [
+        "Your name, your homework, your folder. Open it up whenever you like."
+      ],
+      "file": "/audio/voice/9512900db2b5f350.mp3"
+    },
+    {
+      "key": "abeaf32f2bb7998c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "How interesting it is has nothing to do with whether it is yours to read.",
+      "lines": [
+        "How interesting it is has nothing to do with whether it is yours to read."
+      ],
+      "file": "/audio/voice/abeaf32f2bb7998c.mp3"
+    },
+    {
+      "key": "0e407df39122b5d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That question is about not being caught. The kind question is about whose it is.",
+      "lines": [
+        "That question is about not being caught. The kind question is about whose it is."
+      ],
+      "file": "/audio/voice/0e407df39122b5d3.mp3"
+    },
+    {
+      "key": "f71ca1ea547b348b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Important or silly, it still belongs to your sister either way.",
+      "lines": [
+        "Important or silly, it still belongs to your sister either way."
+      ],
+      "file": "/audio/voice/f71ca1ea547b348b.mp3"
+    },
+    {
+      "key": "101ee708af2e0dd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which question came BEFORE all the others on the shelf?",
+      "lines": [
+        "Which question came BEFORE all the others on the shelf?"
+      ],
+      "file": "/audio/voice/101ee708af2e0dd0.mp3"
+    },
+    {
+      "key": "3f962813c5e035f7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A different child sits there tomorrow, and saying yes would have handed them your account.",
+      "lines": [
+        "A different child sits there tomorrow, and saying yes would have handed them your account."
+      ],
+      "file": "/audio/voice/3f962813c5e035f7.mp3"
+    },
+    {
+      "key": "692e71a2f565e819",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your phone, your lock code, nobody else gets in. That is exactly what saving is for.",
+      "lines": [
+        "Your phone, your lock code, nobody else gets in. That is exactly what saving is for."
+      ],
+      "file": "/audio/voice/692e71a2f565e819.mp3"
+    },
+    {
+      "key": "b16a48f3ada2bd7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Everyone in the house picks that tablet up, so a saved password would let any of them be you.",
+      "lines": [
+        "Everyone in the house picks that tablet up, so a saved password would let any of them be you."
+      ],
+      "file": "/audio/voice/b16a48f3ada2bd7b.mp3"
+    },
+    {
+      "key": "6b6137ac42d309f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That phone goes home in Gran's pocket, and anything saved on it goes with her.",
+      "lines": [
+        "That phone goes home in Gran's pocket, and anything saved on it goes with her."
+      ],
+      "file": "/audio/voice/6b6137ac42d309f9.mp3"
+    },
+    {
+      "key": "ad4a4c4a2d983e22",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Being in a hurry is exactly when it happens, which is why the rule has no exceptions in it.",
+      "lines": [
+        "Being in a hurry is exactly when it happens, which is why the rule has no exceptions in it."
+      ],
+      "file": "/audio/voice/ad4a4c4a2d983e22.mp3"
+    },
+    {
+      "key": "930573218998337c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The screen cannot tell who it is handing your account to. It just hands it over.",
+      "lines": [
+        "The screen cannot tell who it is handing your account to. It just hands it over."
+      ],
+      "file": "/audio/voice/930573218998337c.mp3"
+    },
+    {
+      "key": "57710781439ebb4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It makes no difference how good the password is if the screen types it in for somebody else.",
+      "lines": [
+        "It makes no difference how good the password is if the screen types it in for somebody else."
+      ],
+      "file": "/audio/voice/57710781439ebb4c.mp3"
+    },
+    {
+      "key": "47cc2cca9bc16dbd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about what saying yes does to the NEXT person who sits down.",
+      "lines": [
+        "Think about what saying yes does to the NEXT person who sits down."
+      ],
+      "file": "/audio/voice/47cc2cca9bc16dbd.mp3"
+    },
+    {
+      "key": "f79bb038cbe3b6e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite that one yet. Think about what you would actually be doing at that moment, from sitting down to walking away.",
+      "lines": [
+        "Not quite that one yet. Think about what you would actually be doing at that moment, from sitting down to walking away."
+      ],
+      "file": "/audio/voice/f79bb038cbe3b6e2.mp3"
+    },
+    {
+      "key": "84f22eec4b1b6260",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read it again. It says everyone uses it, and that is the whole test.",
+      "lines": [
+        "Read it again. It says everyone uses it, and that is the whole test."
+      ],
+      "file": "/audio/voice/84f22eec4b1b6260.mp3"
+    },
+    {
+      "key": "8c85a07a5e511c06",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about Wednesday. Somebody else is sitting at that exact computer.",
+      "lines": [
+        "Think about Wednesday. Somebody else is sitting at that exact computer."
+      ],
+      "file": "/audio/voice/8c85a07a5e511c06.mp3"
+    },
+    {
+      "key": "10196a9364482aa9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at what it says. Your phone, your code, and nobody else has either.",
+      "lines": [
+        "Look at what it says. Your phone, your code, and nobody else has either."
+      ],
+      "file": "/audio/voice/10196a9364482aa9.mp3"
+    },
+    {
+      "key": "1dbac78e3600c263",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask yourself whose pocket that phone ends up in. Not yours.",
+      "lines": [
+        "Ask yourself whose pocket that phone ends up in. Not yours."
+      ],
+      "file": "/audio/voice/1dbac78e3600c263.mp3"
+    },
+    {
+      "key": "d5ec39cce8414f7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Picture who else sits on that sofa. They can play as whoever is still signed in.",
+      "lines": [
+        "Picture who else sits on that sofa. They can play as whoever is still signed in."
+      ],
+      "file": "/audio/voice/d5ec39cce8414f7b.mp3"
+    },
+    {
+      "key": "6ef4042d460d4e92",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have another look. There is no screen there at all, and nobody else has it.",
+      "lines": [
+        "Have another look. There is no screen there at all, and nobody else has it."
+      ],
+      "file": "/audio/voice/6ef4042d460d4e92.mp3"
+    },
+    {
+      "key": "391bc49126cfc974",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This is the front door itself. Everything about locking this tablet lives in here.",
+      "lines": [
+        "This is the front door itself. Everything about locking this tablet lives in here."
+      ],
+      "file": "/audio/voice/391bc49126cfc974.mp3"
+    },
+    {
+      "key": "a27d2a8eecbb1daf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And this is the switch that actually shuts the door. Without it the lock is only decoration.",
+      "lines": [
+        "And this is the switch that actually shuts the door. Without it the lock is only decoration."
+      ],
+      "file": "/audio/voice/a27d2a8eecbb1daf.mp3"
+    },
+    {
+      "key": "469583a3d8e51155",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That changes the picture behind everything. Lovely, but it locks nothing.",
+      "lines": [
+        "That changes the picture behind everything. Lovely, but it locks nothing."
+      ],
+      "file": "/audio/voice/469583a3d8e51155.mp3"
+    },
+    {
+      "key": "af54a1a4f9634711",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That makes the screen brighter or dimmer. A bright screen is just as open as a dim one.",
+      "lines": [
+        "That makes the screen brighter or dimmer. A bright screen is just as open as a dim one."
+      ],
+      "file": "/audio/voice/af54a1a4f9634711.mp3"
+    },
+    {
+      "key": "a35e8cc887e52715",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is the volume. It will not stop anybody picking the tablet up.",
+      "lines": [
+        "That is the volume. It will not stop anybody picking the tablet up."
+      ],
+      "file": "/audio/voice/a35e8cc887e52715.mp3"
+    },
+    {
+      "key": "d39f219da8420172",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That shows how full the tablet is. Useful one day, no help at the front door.",
+      "lines": [
+        "That shows how full the tablet is. Useful one day, no help at the front door."
+      ],
+      "file": "/audio/voice/d39f219da8420172.mp3"
+    },
+    {
+      "key": "7eb821c7376cfbea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That changes what language the buttons are in. The door would still be open, just in French.",
+      "lines": [
+        "That changes what language the buttons are in. The door would still be open, just in French."
+      ],
+      "file": "/audio/voice/7eb821c7376cfbea.mp3"
+    },
+    {
+      "key": "74ca763150c501cc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That tells you what model it is. Nothing in there shuts a door.",
+      "lines": [
+        "That tells you what model it is. Nothing in there shuts a door."
+      ],
+      "file": "/audio/voice/74ca763150c501cc.mp3"
+    },
+    {
+      "key": "950b5f74ff7085f3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the line underneath. It says who was doing the talking.",
+      "lines": [
+        "Look at the line underneath. It says who was doing the talking."
+      ],
+      "file": "/audio/voice/950b5f74ff7085f3.mp3"
+    },
+    {
+      "key": "0f38e2fbb34b1ecc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read it again. Whose half finished dragon is that?",
+      "lines": [
+        "Read it again. Whose half finished dragon is that?"
+      ],
+      "file": "/audio/voice/0f38e2fbb34b1ecc.mp3"
+    },
+    {
+      "key": "247d308c91ef480a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who in this house gets work emails? That is your answer.",
+      "lines": [
+        "Who in this house gets work emails? That is your answer."
+      ],
+      "file": "/audio/voice/247d308c91ef480a.mp3"
+    },
+    {
+      "key": "13f030385ab2f9bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about who scans in old photographs. It is usually the person who was in them.",
+      "lines": [
+        "Think about who scans in old photographs. It is usually the person who was in them."
+      ],
+      "file": "/audio/voice/13f030385ab2f9bd.mp3"
+    },
+    {
+      "key": "be02dd6f47c67e74",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have a proper look at the name written across the top of it.",
+      "lines": [
+        "Have a proper look at the name written across the top of it."
+      ],
+      "file": "/audio/voice/be02dd6f47c67e74.mp3"
+    },
+    {
+      "key": "b09128f8d26340a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about who sits at that computer tomorrow. Saving it makes them you.",
+      "lines": [
+        "Think about who sits at that computer tomorrow. Saving it makes them you."
+      ],
+      "file": "/audio/voice/b09128f8d26340a2.mp3"
+    },
+    {
+      "key": "9ff8bcda65ec1d26",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Quicker for you once, and quicker for every other child who sits down there afterwards.",
+      "lines": [
+        "Quicker for you once, and quicker for every other child who sits down there afterwards."
+      ],
+      "file": "/audio/voice/9ff8bcda65ec1d26.mp3"
+    },
+    {
+      "key": "d2ee2a9a901a771e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is no only for today button. Once it is saved it stays saved.",
+      "lines": [
+        "There is no only for today button. Once it is saved it stays saved."
+      ],
+      "file": "/audio/voice/d2ee2a9a901a771e.mp3"
+    },
+    {
+      "key": "a8585791c7cbfe90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at which screen this is. It is your own, with a lock on it.",
+      "lines": [
+        "Look at which screen this is. It is your own, with a lock on it."
+      ],
+      "file": "/audio/voice/a8585791c7cbfe90.mp3"
+    },
+    {
+      "key": "e3b51c871c9075ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Never anywhere is a bit strict. On your own locked phone it is genuinely fine.",
+      "lines": [
+        "Never anywhere is a bit strict. On your own locked phone it is genuinely fine."
+      ],
+      "file": "/audio/voice/e3b51c871c9075ff.mp3"
+    },
+    {
+      "key": "9504375eeff7f56e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Lovely manners, but on your own locked phone this one really is your call.",
+      "lines": [
+        "Lovely manners, but on your own locked phone this one really is your call."
+      ],
+      "file": "/audio/voice/9504375eeff7f56e.mp3"
+    },
+    {
+      "key": "59d389f6134367e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who else picks up the family tablet? All of them, and a saved password lets any of them in.",
+      "lines": [
+        "Who else picks up the family tablet? All of them, and a saved password lets any of them in."
+      ],
+      "file": "/audio/voice/59d389f6134367e3.mp3"
+    },
+    {
+      "key": "0bfbb798e16ad4e5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Family is lovely, but the tablet cannot tell family from anybody else who picks it up.",
+      "lines": [
+        "Family is lovely, but the tablet cannot tell family from anybody else who picks it up."
+      ],
+      "file": "/audio/voice/0bfbb798e16ad4e5.mp3"
+    },
+    {
+      "key": "52d32f6bd8d72dfe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is the family tablet. Everybody uses it, which is what makes it the family tablet.",
+      "lines": [
+        "It is the family tablet. Everybody uses it, which is what makes it the family tablet."
+      ],
+      "file": "/audio/voice/52d32f6bd8d72dfe.mp3"
+    },
+    {
+      "key": "bfe0619c6c6ad261",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Whose pocket does that phone go home in? Anything saved on it travels too.",
+      "lines": [
+        "Whose pocket does that phone go home in? Anything saved on it travels too."
+      ],
+      "file": "/audio/voice/bfe0619c6c6ad261.mp3"
+    },
+    {
+      "key": "e038188cae3f1e27",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "She would not mind at all, and that is not the problem. The problem is that your account leaves the house.",
+      "lines": [
+        "She would not mind at all, and that is not the problem. The problem is that your account leaves the house."
+      ],
+      "file": "/audio/voice/e038188cae3f1e27.mp3"
+    },
+    {
+      "key": "219c3032121585a1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The photo takes a second. The saved password stays on that phone for good.",
+      "lines": [
+        "The photo takes a second. The saved password stays on that phone for good."
+      ],
+      "file": "/audio/voice/219c3032121585a1.mp3"
+    },
+    {
+      "key": "e9f8dcfa92b0ef41",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Her own tablet and her birthday e-reader hang on HER hook, but the library computer hangs on everyone's. When lots of hands share a screen, that's the one that gets extra care.",
+      "lines": [
+        "Her own tablet and her birthday e-reader hang on HER hook, but the library computer hangs on everyone's. When lots of hands share a screen, that's the one that gets extra care."
+      ],
+      "file": "/audio/voice/e9f8dcfa92b0ef41.mp3"
+    },
+    {
+      "key": "900eb008d467ac25",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Closing a window is like sliding a book over your open diary, everything is still there underneath. Only tapping LOG OUT actually shuts your account before the next person sits down.",
+      "lines": [
+        "Closing a window is like sliding a book over your open diary, everything is still there underneath. Only tapping LOG OUT actually shuts your account before the next person sits down."
+      ],
+      "file": "/audio/voice/900eb008d467ac25.mp3"
+    },
+    {
+      "key": "acac44afd8772f6f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "His soccer nines and his birthday digits are stories a guesser can read about him. Quiet digits that mean nothing to anybody are the ones no guesser can figure out.",
+      "lines": [
+        "His soccer nines and his birthday digits are stories a guesser can read about him. Quiet digits that mean nothing to anybody are the ones no guesser can figure out."
+      ],
+      "file": "/audio/voice/acac44afd8772f6f.mp3"
+    },
+    {
+      "key": "4b71164d9769091f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Even one tiny peek, even a helpful-sounding peek, is still reading someone's private things. A phone that isn't yours stays a closed chest, glowing or not.",
+      "lines": [
+        "Even one tiny peek, even a helpful-sounding peek, is still reading someone's private things. A phone that isn't yours stays a closed chest, glowing or not."
+      ],
+      "file": "/audio/voice/4b71164d9769091f.mp3"
+    },
+    {
+      "key": "44cdf3009467501d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Grandad is being kind, but his computer is shared, so a saved password would wait there for whoever clicks next. The ask-first rule only opens the door on your OWN device.",
+      "lines": [
+        "Grandad is being kind, but his computer is shared, so a saved password would wait there for whoever clicks next. The ask-first rule only opens the door on your OWN device."
+      ],
+      "file": "/audio/voice/44cdf3009467501d.mp3"
+    },
+    {
+      "key": "78ddfc199138eb5b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Everyone's hands touch it - so it hangs on everyone's hook and gets extra care.",
+      "lines": [
+        "Everyone's hands touch it - so it hangs on everyone's hook and gets extra care."
+      ],
+      "file": "/audio/voice/78ddfc199138eb5b.mp3"
+    },
+    {
+      "key": "9f5e12eca5e1fa76",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Home hides apps and screen-off just goes dark - only LOG OUT hands the baton over clean.",
+      "lines": [
+        "Home hides apps and screen-off just goes dark - only LOG OUT hands the baton over clean."
+      ],
+      "file": "/audio/voice/9f5e12eca5e1fa76.mp3"
+    },
+    {
+      "key": "8cc169d4a4a610fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "No lock means anyone who picks it up walks straight in - every device needs its front door.",
+      "lines": [
+        "No lock means anyone who picks it up walks straight in - every device needs its front door."
+      ],
+      "file": "/audio/voice/8cc169d4a4a610fd.mp3"
+    },
+    {
+      "key": "09de05191b01e5b5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They could post and spend as you without even meaning to - log out, every time.",
+      "lines": [
+        "They could post and spend as you without even meaning to - log out, every time."
+      ],
+      "file": "/audio/voice/09de05191b01e5b5.mp3"
+    },
+    {
+      "key": "816c4b75e59e8324",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Counting runs, doubles and birthdays are stories guessers read - quiet digits beat them all.",
+      "lines": [
+        "Counting runs, doubles and birthdays are stories guessers read - quiet digits beat them all."
+      ],
+      "file": "/audio/voice/816c4b75e59e8324.mp3"
+    },
+    {
+      "key": "32b21e938a25b2db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Open by accident is not an invitation - don't read it, close it gently, tell them.",
+      "lines": [
+        "Open by accident is not an invitation - don't read it, close it gently, tell them."
+      ],
+      "file": "/audio/voice/32b21e938a25b2db.mp3"
+    },
+    {
+      "key": "e7f6f377a4bc157d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Home just HIDES the apps - the sneakiest non-log-out there is. Only LOG OUT closes the door.",
+      "lines": [
+        "Home just HIDES the apps - the sneakiest non-log-out there is. Only LOG OUT closes the door."
+      ],
+      "file": "/audio/voice/e7f6f377a4bc157d.mp3"
+    },
+    {
+      "key": "9f11da6ff3d96ab6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Borrowed devices never keep your keys - the account would live in their pocket, not yours.",
+      "lines": [
+        "Borrowed devices never keep your keys - the account would live in their pocket, not yours."
+      ],
+      "file": "/audio/voice/9f11da6ff3d96ab6.mp3"
+    },
+    {
+      "key": "e2a9788f9a684af5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your own device plus the ask-first rule - everywhere shared or borrowed, the balloon gets popped.",
+      "lines": [
+        "Your own device plus the ask-first rule - everywhere shared or borrowed, the balloon gets popped."
+      ],
+      "file": "/audio/voice/e2a9788f9a684af5.mp3"
+    },
+    {
+      "key": "dd42caf737aa9d9d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First up. The tablet that lives on the kitchen shelf, and everyone in the house uses it.",
+      "lines": [
+        "First up. The tablet that lives on the kitchen shelf, and everyone in the house uses it."
+      ],
+      "file": "/audio/voice/dd42caf737aa9d9d.mp3"
+    },
+    {
+      "key": "b5079cbfc73ddb72",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Next one. The computer at school, the one you sit at on Tuesdays.",
+      "lines": [
+        "Next one. The computer at school, the one you sit at on Tuesdays."
+      ],
+      "file": "/audio/voice/b5079cbfc73ddb72.mp3"
+    },
+    {
+      "key": "6c7912ce8ce0bf8e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is one of yours. Your own phone, with your own lock code on it.",
+      "lines": [
+        "Here is one of yours. Your own phone, with your own lock code on it."
+      ],
+      "file": "/audio/voice/6c7912ce8ce0bf8e.mp3"
+    },
+    {
+      "key": "78bad042201ad70f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now this one. Grandma's phone, borrowed for one quick photo.",
+      "lines": [
+        "Now this one. Grandma's phone, borrowed for one quick photo."
+      ],
+      "file": "/audio/voice/78bad042201ad70f.mp3"
+    },
+    {
+      "key": "170e85c60e8ca560",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And this one. The games console in the living room.",
+      "lines": [
+        "And this one. The games console in the living room."
+      ],
+      "file": "/audio/voice/170e85c60e8ca560.mp3"
+    },
+    {
+      "key": "3768bf2812bb23fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last one, and it is not a screen at all. Your paper notebook, the one under your bed.",
+      "lines": [
+        "Last one, and it is not a screen at all. Your paper notebook, the one under your bed."
+      ],
+      "file": "/audio/voice/3768bf2812bb23fa.mp3"
+    },
+    {
+      "key": "2888611e15138901",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Game logged out. Now nobody can play as you.",
+      "lines": [
+        "Game logged out. Now nobody can play as you."
+      ],
+      "file": "/audio/voice/2888611e15138901.mp3"
+    },
+    {
+      "key": "306a633a0eeafebc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Message closed. Your words stay yours.",
+      "lines": [
+        "Message closed. Your words stay yours."
+      ],
+      "file": "/audio/voice/306a633a0eeafebc.mp3"
+    },
+    {
+      "key": "d9d62fe0d2ad73a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gallery closed. Your pictures are private again.",
+      "lines": [
+        "Gallery closed. Your pictures are private again."
+      ],
+      "file": "/audio/voice/d9d62fe0d2ad73a6.mp3"
+    },
+    {
+      "key": "2798ed25884b1fb9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Homework closed. That was your work with your name on it.",
+      "lines": [
+        "Homework closed. That was your work with your name on it."
+      ],
+      "file": "/audio/voice/2798ed25884b1fb9.mp3"
+    },
+    {
+      "key": "7306dc386ccd998b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every card shut and the tablet locked. That is a properly clean leave.",
+      "lines": [
+        "Every card shut and the tablet locked. That is a properly clean leave."
+      ],
+      "file": "/audio/voice/7306dc386ccd998b.mp3"
+    },
+    {
+      "key": "31d5e0a1da343d18",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the tablet before you lock it. There are cards still lit up, and locking now leaves every one of them open underneath.",
+      "lines": [
+        "Look at the tablet before you lock it. There are cards still lit up, and locking now leaves every one of them open underneath."
+      ],
+      "file": "/audio/voice/31d5e0a1da343d18.mp3"
+    },
+    {
+      "key": "61f3355a9015c615",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Hang on. Something just opened up again behind you.",
+      "lines": [
+        "Hang on. Something just opened up again behind you."
+      ],
+      "file": "/audio/voice/61f3355a9015c615.mp3"
+    },
+    {
+      "key": "10c84838bfc0c937",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You turned round and caught it. That is the move almost everybody skips.",
+      "lines": [
+        "You turned round and caught it. That is the move almost everybody skips."
+      ],
+      "file": "/audio/voice/10c84838bfc0c937.mp3"
+    },
+    {
+      "key": "999b21a8b9af9ec7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First thing on the shelf. A chat, still half open, about a football team.",
+      "lines": [
+        "First thing on the shelf. A chat, still half open, about a football team."
+      ],
+      "file": "/audio/voice/999b21a8b9af9ec7.mp3"
+    },
+    {
+      "key": "d379f65b22209652",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Next. A drawing app, with a half finished dragon sitting in it.",
+      "lines": [
+        "Next. A drawing app, with a half finished dragon sitting in it."
+      ],
+      "file": "/audio/voice/d379f65b22209652.mp3"
+    },
+    {
+      "key": "902548174e7fad48",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now this one. An email, open, about work, from somebody called Ravi.",
+      "lines": [
+        "Now this one. An email, open, about work, from somebody called Ravi."
+      ],
+      "file": "/audio/voice/902548174e7fad48.mp3"
+    },
+    {
+      "key": "ae6d6277dd37c4f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Here is a photo album. Old pictures, scanned in last summer.",
+      "lines": [
+        "Here is a photo album. Old pictures, scanned in last summer."
+      ],
+      "file": "/audio/voice/ae6d6277dd37c4f0.mp3"
+    },
+    {
+      "key": "af66658cba337684",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And the last thing on the shelf. A homework folder, with a name across the top.",
+      "lines": [
+        "And the last thing on the shelf. A homework folder, with a name across the top."
+      ],
+      "file": "/audio/voice/af66658cba337684.mp3"
+    },
+    {
+      "key": "74328919c30c5155",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First balloon. You are on the school computer, and it wants to save your password.",
+      "lines": [
+        "First balloon. You are on the school computer, and it wants to save your password."
+      ],
+      "file": "/audio/voice/74328919c30c5155.mp3"
+    },
+    {
+      "key": "ac8692e716de2b2e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second balloon. This time you are on your own phone, the one with your lock code on it.",
+      "lines": [
+        "Second balloon. This time you are on your own phone, the one with your lock code on it."
+      ],
+      "file": "/audio/voice/ac8692e716de2b2e.mp3"
+    },
+    {
+      "key": "8b5dbee7ed353db5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Third balloon. Now you are on the family tablet, the one from the kitchen shelf.",
+      "lines": [
+        "Third balloon. Now you are on the family tablet, the one from the kitchen shelf."
+      ],
+      "file": "/audio/voice/8b5dbee7ed353db5.mp3"
+    },
+    {
+      "key": "6a1e94afecf0ca18",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last balloon. You have borrowed Grandma's phone for one photo, and up it floats again.",
+      "lines": [
+        "Last balloon. You have borrowed Grandma's phone for one photo, and up it floats again."
+      ],
+      "file": "/audio/voice/6a1e94afecf0ca18.mp3"
+    },
+    {
+      "key": "72effc467e5b470d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First move. You spotted it was a borrowed screen before you touched anything.",
+      "lines": [
+        "First move. You spotted it was a borrowed screen before you touched anything."
+      ],
+      "file": "/audio/voice/72effc467e5b470d.mp3"
+    },
+    {
+      "key": "a04af038170f0dd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second. A borrowed screen, so when the balloon asked, you said no thank you.",
+      "lines": [
+        "Second. A borrowed screen, so when the balloon asked, you said no thank you."
+      ],
+      "file": "/audio/voice/a04af038170f0dd0.mp3"
+    },
+    {
+      "key": "2066f8d020eeb69d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Third. You said no to the balloon, and you left everything that was not yours alone too.",
+      "lines": [
+        "Third. You said no to the balloon, and you left everything that was not yours alone too."
+      ],
+      "file": "/audio/voice/2066f8d020eeb69d.mp3"
+    },
+    {
+      "key": "e4c8821df32e2328",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fourth. What WAS yours, you closed, and your name came off the screen.",
+      "lines": [
+        "Fourth. What WAS yours, you closed, and your name came off the screen."
+      ],
+      "file": "/audio/voice/e4c8821df32e2328.mp3"
+    },
+    {
+      "key": "87a5174fa8311f3b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fifth. Your name is off it, and now the front door is shut behind you.",
+      "lines": [
+        "Fifth. Your name is off it, and now the front door is shut behind you."
+      ],
+      "file": "/audio/voice/87a5174fa8311f3b.mp3"
+    },
+    {
+      "key": "9820d2a730e5edac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And sixth, the one everybody skips. Door shut, and you still turned round and looked back.",
+      "lines": [
+        "And sixth, the one everybody skips. Door shut, and you still turned round and looked back."
+      ],
+      "file": "/audio/voice/9820d2a730e5edac.mp3"
     },
     {
       "key": "5c0bd981747c1e68",
@@ -45122,6 +47194,94 @@
       "file": "/audio/voice/709f6bf4041713fc.mp3"
     },
     {
+      "key": "3ef22cb33ec9df97",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That is the easy one, and it is the one everybody thinks of. Ears, definitely.",
+      "lines": [
+        "That's right!",
+        "That is the easy one, and it is the one everybody thinks of. Ears, definitely."
+      ],
+      "file": "/audio/voice/3ef22cb33ec9df97.mp3"
+    },
+    {
+      "key": "022ab3db07325748",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check.",
+      "lines": [
+        "Not quite.",
+        "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check."
+      ],
+      "file": "/audio/voice/022ab3db07325748.mp3"
+    },
+    {
+      "key": "52e3906aa0dadf6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That voice button is a microphone, so the telly has ears. Most people never think of the telly.",
+      "lines": [
+        "That's right!",
+        "That voice button is a microphone, so the telly has ears. Most people never think of the telly."
+      ],
+      "file": "/audio/voice/52e3906aa0dadf6b.mp3"
+    },
+    {
+      "key": "5a52973826981c0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all.",
+      "lines": [
+        "Not quite.",
+        "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all."
+      ],
+      "file": "/audio/voice/5a52973826981c0e.mp3"
+    },
+    {
+      "key": "bb92b2c25d95afd8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The headset is a microphone, so the console can hear the room while you play.",
+      "lines": [
+        "That's right!",
+        "The headset is a microphone, so the console can hear the room while you play."
+      ],
+      "file": "/audio/voice/bb92b2c25d95afd8.mp3"
+    },
+    {
+      "key": "647f5bbe927ac866",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A lamp makes light and nothing else. It has no way to hear a single thing.",
+      "lines": [
+        "Not quite.",
+        "A lamp makes light and nothing else. It has no way to hear a single thing."
+      ],
+      "file": "/audio/voice/647f5bbe927ac866.mp3"
+    },
+    {
+      "key": "5bf6ee4dc2510bed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too.",
+      "lines": [
+        "That's right!",
+        "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too."
+      ],
+      "file": "/audio/voice/5bf6ee4dc2510bed.mp3"
+    },
+    {
+      "key": "21e018671e987bd5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You wind it and it ticks. There is no microphone inside a clock with a key in the back.",
+      "lines": [
+        "Not quite.",
+        "You wind it and it ticks. There is no microphone inside a clock with a key in the back."
+      ],
+      "file": "/audio/voice/21e018671e987bd5.mp3"
+    },
+    {
       "key": "151ce1b9f2f3cf49",
       "speaker": "adam",
       "voice": "Sarah",
@@ -45527,6 +47687,138 @@
         "This is the one thing in the week that is never a maybe. A lens at a bed always gets told."
       ],
       "file": "/audio/voice/36581a064ba93d6d.mp3"
+    },
+    {
+      "key": "8a409063205cc33b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Same answer, different room, and Nova never hears it. That is the whole habit in one move.",
+      "lines": [
+        "That's right!",
+        "Same answer, different room, and Nova never hears it. That is the whole habit in one move."
+      ],
+      "file": "/audio/voice/8a409063205cc33b.mp3"
+    },
+    {
+      "key": "0b2b186eae54fa22",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Shouting it is the loudest way to say it, and Nova is right there in the middle. The answer is fine. The room is wrong.",
+      "lines": [
+        "Not quite.",
+        "Shouting it is the loudest way to say it, and Nova is right there in the middle. The answer is fine. The room is wrong."
+      ],
+      "file": "/audio/voice/0b2b186eae54fa22.mp3"
+    },
+    {
+      "key": "f89a9d3018ea8886",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A microphone is much better at quiet than people think. Whispering is not the fix, moving rooms is.",
+      "lines": [
+        "Not quite.",
+        "A microphone is much better at quiet than people think. Whispering is not the fix, moving rooms is."
+      ],
+      "file": "/audio/voice/f89a9d3018ea8886.mp3"
+    },
+    {
+      "key": "0838501da649615d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route.",
+      "lines": [
+        "That's right!",
+        "Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route."
+      ],
+      "file": "/audio/voice/0838501da649615d.mp3"
+    },
+    {
+      "key": "d333d6f392f1e9c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Clear is exactly the problem here. Every word lands in the room and the room has ears.",
+      "lines": [
+        "Not quite.",
+        "Clear is exactly the problem here. Every word lands in the room and the room has ears."
+      ],
+      "file": "/audio/voice/d333d6f392f1e9c6.mp3"
+    },
+    {
+      "key": "a3e60ca6a5d8e43a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Half an address out loud is still half an address on the record, and your friend still has to ask again.",
+      "lines": [
+        "Not quite.",
+        "Half an address out loud is still half an address on the record, and your friend still has to ask again."
+      ],
+      "file": "/audio/voice/a3e60ca6a5d8e43a.mp3"
+    },
+    {
+      "key": "624e45d9fb4de5d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! An empty house and the dates for it is exactly the sort of thing that does not need saying near a diary.",
+      "lines": [
+        "That's right!",
+        "An empty house and the dates for it is exactly the sort of thing that does not need saying near a diary."
+      ],
+      "file": "/audio/voice/624e45d9fb4de5d6.mp3"
+    },
+    {
+      "key": "22c6b3ad2d26c7a4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Saying them out loud is how they end up written down. Nobody needs to forget, they just need to be said elsewhere.",
+      "lines": [
+        "Not quite.",
+        "Saying them out loud is how they end up written down. Nobody needs to forget, they just need to be said elsewhere."
+      ],
+      "file": "/audio/voice/22c6b3ad2d26c7a4.mp3"
+    },
+    {
+      "key": "9eea61b7e138acec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That hands it over on purpose. Handy, and it is still the one thing you would rather not say in here.",
+      "lines": [
+        "Not quite.",
+        "That hands it over on purpose. Handy, and it is still the one thing you would rather not say in here."
+      ],
+      "file": "/audio/voice/9eea61b7e138acec.mp3"
+    },
+    {
+      "key": "021c7d437686a1b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! This one is fine. Gran knows your school, the speaker is already on for the call, and not every answer needs moving.",
+      "lines": [
+        "That's right!",
+        "This one is fine. Gran knows your school, the speaker is already on for the call, and not every answer needs moving."
+      ],
+      "file": "/audio/voice/021c7d437686a1b3.mp3"
+    },
+    {
+      "key": "66252a6f9208b570",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You do not have to go silent in your own home. The rule is pick your moment, not say nothing ever.",
+      "lines": [
+        "Not quite.",
+        "You do not have to go silent in your own home. The rule is pick your moment, not say nothing ever."
+      ],
+      "file": "/audio/voice/66252a6f9208b570.mp3"
+    },
+    {
+      "key": "b2a1cafa4bb66c14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Gran is on speakerphone, so whispering just means she asks again. This one never needed hiding.",
+      "lines": [
+        "Not quite.",
+        "Gran is on speakerphone, so whispering just means she asks again. This one never needed hiding."
+      ],
+      "file": "/audio/voice/b2a1cafa4bb66c14.mp3"
     },
     {
       "key": "400b37601709ca96",
@@ -47696,70 +49988,741 @@
       "file": "/audio/voice/99f435438b632ac1.mp3"
     },
     {
-      "key": "eb2a5a0d7bf3b60d",
+      "key": "1d971526bfb8ceda",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! She goes pink, locks it with a code, and says thanks about nine times. At dinner she lets you pick the film - trust is the best trade there is.",
+      "text": "That's right! Everyone in the house picks that one up, so everything you leave on it is sitting there for the next person.",
       "lines": [
         "That's right!",
-        "She goes pink, locks it with a code, and says thanks about nine times. At dinner she lets you pick the film - trust is the best trade there is."
+        "Everyone in the house picks that one up, so everything you leave on it is sitting there for the next person."
       ],
-      "file": "/audio/voice/eb2a5a0d7bf3b60d.mp3"
+      "file": "/audio/voice/1d971526bfb8ceda.mp3"
     },
     {
-      "key": "1bec40fdcd5e6f22",
+      "key": "1fc17f7e1e3e8a4e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Now you know her secret wish and it sits in your tummy like a swallowed marble. She'd never have shown you - open by accident was never an invitation.",
+      "text": "Not quite. Read it again. It says everyone uses it, and that is the whole test.",
       "lines": [
         "Not quite.",
-        "Now you know her secret wish and it sits in your tummy like a swallowed marble. She'd never have shown you - open by accident was never an invitation."
+        "Read it again. It says everyone uses it, and that is the whole test."
       ],
-      "file": "/audio/voice/1bec40fdcd5e6f22.mp3"
+      "file": "/audio/voice/1fc17f7e1e3e8a4e.mp3"
     },
     {
-      "key": "2661d9e4182c871f",
+      "key": "e01c92a3fd7ef8a1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! He skids back in a panic an hour later - and finds it closed. 'YOU closed it? Legend.' Next week he spots YOUR game left open... and closes it, no peeking. It comes back around.",
+      "text": "That's right! A different child sits there on every other day of the week, so it is about as shared as a screen gets.",
       "lines": [
         "That's right!",
-        "He skids back in a panic an hour later - and finds it closed. 'YOU closed it? Legend.' Next week he spots YOUR game left open... and closes it, no peeking. It comes back around."
+        "A different child sits there on every other day of the week, so it is about as shared as a screen gets."
       ],
-      "file": "/audio/voice/2661d9e4182c871f.mp3"
+      "file": "/audio/voice/e01c92a3fd7ef8a1.mp3"
     },
     {
-      "key": "4034276872245e7a",
+      "key": "2bb4ceeaff5ca77e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. 'He left it open' is the Raccoon's kind of excuse - an open door doesn't make it your room. Secrets read by accident still can't be un-read.",
+      "text": "Not quite. Think about Wednesday. Somebody else is sitting at that exact computer.",
       "lines": [
         "Not quite.",
-        "'He left it open' is the Raccoon's kind of excuse - an open door doesn't make it your room. Secrets read by accident still can't be un-read."
+        "Think about Wednesday. Somebody else is sitting at that exact computer."
       ],
-      "file": "/audio/voice/4034276872245e7a.mp3"
+      "file": "/audio/voice/2bb4ceeaff5ca77e.mp3"
     },
     {
-      "key": "fc6a9c7b9a7a7dc7",
+      "key": "18be761c9787a28b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! The teacher says 'good catch' and reminds the whole class about the relay rule. That kid never knows what you DIDN'T look at - which is exactly what makes it the hero move.",
+      "text": "That's right! Your phone with your code on it really is yours alone, and it is fine to be relaxed on that one.",
       "lines": [
         "That's right!",
-        "The teacher says 'good catch' and reminds the whole class about the relay rule. That kid never knows what you DIDN'T look at - which is exactly what makes it the hero move."
+        "Your phone with your code on it really is yours alone, and it is fine to be relaxed on that one."
       ],
-      "file": "/audio/voice/fc6a9c7b9a7a7dc7.mp3"
+      "file": "/audio/voice/18be761c9787a28b.mp3"
     },
     {
-      "key": "a7b7b31a4976cc80",
+      "key": "33a97e5d0db970b4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Their stories, their pictures, their marks - none of it yours, and you'd feel it if it were YOUR folder. Left signed in is a mistake to fix, not a ticket to snoop.",
+      "text": "Not quite. Look at what it says. Your phone, your code, and nobody else has either.",
       "lines": [
         "Not quite.",
-        "Their stories, their pictures, their marks - none of it yours, and you'd feel it if it were YOUR folder. Left signed in is a mistake to fix, not a ticket to snoop."
+        "Look at what it says. Your phone, your code, and nobody else has either."
       ],
-      "file": "/audio/voice/a7b7b31a4976cc80.mp3"
+      "file": "/audio/voice/33a97e5d0db970b4.mp3"
+    },
+    {
+      "key": "b5c461d7440be792",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It goes straight back in Grandma's pocket, so anything you left signed in goes with it.",
+      "lines": [
+        "That's right!",
+        "It goes straight back in Grandma's pocket, so anything you left signed in goes with it."
+      ],
+      "file": "/audio/voice/b5c461d7440be792.mp3"
+    },
+    {
+      "key": "93675d6560a06c2b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ask yourself whose pocket that phone ends up in. Not yours.",
+      "lines": [
+        "Not quite.",
+        "Ask yourself whose pocket that phone ends up in. Not yours."
+      ],
+      "file": "/audio/voice/93675d6560a06c2b.mp3"
+    },
+    {
+      "key": "45c617cb6de0c9d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Everyone who sits on that sofa can play as whoever is still logged in, and that is usually you.",
+      "lines": [
+        "That's right!",
+        "Everyone who sits on that sofa can play as whoever is still logged in, and that is usually you."
+      ],
+      "file": "/audio/voice/45c617cb6de0c9d6.mp3"
+    },
+    {
+      "key": "7996203c69fbf5c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Picture who else sits on that sofa. They can play as whoever is still signed in.",
+      "lines": [
+        "Not quite.",
+        "Picture who else sits on that sofa. They can play as whoever is still signed in."
+      ],
+      "file": "/audio/voice/7996203c69fbf5c8.mp3"
+    },
+    {
+      "key": "8c7faa2568398b93",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! No screen, no login and no next person. Some things really are just yours, and that is lovely.",
+      "lines": [
+        "That's right!",
+        "No screen, no login and no next person. Some things really are just yours, and that is lovely."
+      ],
+      "file": "/audio/voice/8c7faa2568398b93.mp3"
+    },
+    {
+      "key": "ecded85aa0e8cba2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Have another look. There is no screen there at all, and nobody else has it.",
+      "lines": [
+        "Not quite.",
+        "Have another look. There is no screen there at all, and nobody else has it."
+      ],
+      "file": "/audio/voice/ecded85aa0e8cba2.mp3"
+    },
+    {
+      "key": "bce7781c7efd7873",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Age has nothing to do with it. A brand new tablet on the kitchen shelf is shared from day one.",
+      "lines": [
+        "Not quite.",
+        "Age has nothing to do with it. A brand new tablet on the kitchen shelf is shared from day one."
+      ],
+      "file": "/audio/voice/bce7781c7efd7873.mp3"
+    },
+    {
+      "key": "3ae855ea684bbaf2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. What is on a screen does not change who else picks it up.",
+      "lines": [
+        "Not quite.",
+        "What is on a screen does not change who else picks it up."
+      ],
+      "file": "/audio/voice/3ae855ea684bbaf2.mp3"
+    },
+    {
+      "key": "cd0e5d49c6605cb9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Close, but a screen your brother uses is shared too, and he is not a grown-up.",
+      "lines": [
+        "Not quite.",
+        "Close, but a screen your brother uses is shared too, and he is not a grown-up."
+      ],
+      "file": "/audio/voice/cd0e5d49c6605cb9.mp3"
+    },
+    {
+      "key": "4c4c2d1ef3e9a237",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every card shut and the tablet locked. That is a properly clean leave.",
+      "lines": [
+        "That's right!",
+        "Every card shut and the tablet locked. That is a properly clean leave."
+      ],
+      "file": "/audio/voice/4c4c2d1ef3e9a237.mp3"
+    },
+    {
+      "key": "1ce5f13bbff9bb2d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the tablet before you lock it. There are cards still lit up, and locking now leaves every one of them open underneath.",
+      "lines": [
+        "Not quite.",
+        "Look at the tablet before you lock it. There are cards still lit up, and locking now leaves every one of them open underneath."
+      ],
+      "file": "/audio/voice/1ce5f13bbff9bb2d.mp3"
+    },
+    {
+      "key": "eb088a9acdc27a1d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You turned round and caught it. That is the move almost everybody skips.",
+      "lines": [
+        "That's right!",
+        "You turned round and caught it. That is the move almost everybody skips."
+      ],
+      "file": "/audio/voice/eb088a9acdc27a1d.mp3"
+    },
+    {
+      "key": "cf9dbe18f9b8632b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Almost. One card had opened up behind you last time, remember?",
+      "lines": [
+        "Not quite.",
+        "Almost. One card had opened up behind you last time, remember?"
+      ],
+      "file": "/audio/voice/cf9dbe18f9b8632b.mp3"
+    },
+    {
+      "key": "1b48a45dc0ed0118",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You do not need to. A locked screen is already a shut front door.",
+      "lines": [
+        "Not quite.",
+        "You do not need to. A locked screen is already a shut front door."
+      ],
+      "file": "/audio/voice/1b48a45dc0ed0118.mp3"
+    },
+    {
+      "key": "e8740c339981af63",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody needs telling. The looking back is the bit that actually helps.",
+      "lines": [
+        "Not quite.",
+        "Nobody needs telling. The looking back is the bit that actually helps."
+      ],
+      "file": "/audio/voice/e8740c339981af63.mp3"
+    },
+    {
+      "key": "d37d4109ee1cdb7d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This is the front door itself. Everything about locking this tablet lives in here.",
+      "lines": [
+        "Not quite.",
+        "This is the front door itself. Everything about locking this tablet lives in here."
+      ],
+      "file": "/audio/voice/d37d4109ee1cdb7d.mp3"
+    },
+    {
+      "key": "e8d42247d10ea7c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. And this is the switch that actually shuts the door. Without it the lock is only decoration.",
+      "lines": [
+        "Not quite.",
+        "And this is the switch that actually shuts the door. Without it the lock is only decoration."
+      ],
+      "file": "/audio/voice/e8d42247d10ea7c1.mp3"
+    },
+    {
+      "key": "44983847f86f7281",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That changes the picture behind everything. Lovely, but it locks nothing.",
+      "lines": [
+        "Not quite.",
+        "That changes the picture behind everything. Lovely, but it locks nothing."
+      ],
+      "file": "/audio/voice/44983847f86f7281.mp3"
+    },
+    {
+      "key": "6a5a012b4a29b050",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That makes the screen brighter or dimmer. A bright screen is just as open as a dim one.",
+      "lines": [
+        "Not quite.",
+        "That makes the screen brighter or dimmer. A bright screen is just as open as a dim one."
+      ],
+      "file": "/audio/voice/6a5a012b4a29b050.mp3"
+    },
+    {
+      "key": "f0457f0451932f18",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is the volume. It will not stop anybody picking the tablet up.",
+      "lines": [
+        "Not quite.",
+        "That is the volume. It will not stop anybody picking the tablet up."
+      ],
+      "file": "/audio/voice/f0457f0451932f18.mp3"
+    },
+    {
+      "key": "b4262b6798b8eb03",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That shows how full the tablet is. Useful one day, no help at the front door.",
+      "lines": [
+        "Not quite.",
+        "That shows how full the tablet is. Useful one day, no help at the front door."
+      ],
+      "file": "/audio/voice/b4262b6798b8eb03.mp3"
+    },
+    {
+      "key": "fb730d6dc0052eaf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That changes what language the buttons are in. The door would still be open, just in French.",
+      "lines": [
+        "Not quite.",
+        "That changes what language the buttons are in. The door would still be open, just in French."
+      ],
+      "file": "/audio/voice/fb730d6dc0052eaf.mp3"
+    },
+    {
+      "key": "9ca935bfa2fc1cbd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That tells you what model it is. Nothing in there shuts a door.",
+      "lines": [
+        "Not quite.",
+        "That tells you what model it is. Nothing in there shuts a door."
+      ],
+      "file": "/audio/voice/9ca935bfa2fc1cbd.mp3"
+    },
+    {
+      "key": "027b448c7e44fe38",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is exactly what he wants you to think. An open door stops nobody at all.",
+      "lines": [
+        "Not quite.",
+        "That is exactly what he wants you to think. An open door stops nobody at all."
+      ],
+      "file": "/audio/voice/027b448c7e44fe38.mp3"
+    },
+    {
+      "key": "ca48d1d6630327fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. This is not about the code. It is about whether there is a door there to begin with.",
+      "lines": [
+        "Not quite.",
+        "This is not about the code. It is about whether there is a door there to begin with."
+      ],
+      "file": "/audio/voice/ca48d1d6630327fc.mp3"
+    },
+    {
+      "key": "f68739afc9100955",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Tablets, computers and consoles all have one, and all of them need it.",
+      "lines": [
+        "Not quite.",
+        "Tablets, computers and consoles all have one, and all of them need it."
+      ],
+      "file": "/audio/voice/f68739afc9100955.mp3"
+    },
+    {
+      "key": "31669317e5ec2565",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Sam would go pink if he knew somebody had read that. Lid down, and he never has to feel it.",
+      "lines": [
+        "That's right!",
+        "Sam would go pink if he knew somebody had read that. Lid down, and he never has to feel it."
+      ],
+      "file": "/audio/voice/31669317e5ec2565.mp3"
+    },
+    {
+      "key": "758efd62037aa3be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the line underneath. It says who was doing the talking.",
+      "lines": [
+        "Not quite.",
+        "Look at the line underneath. It says who was doing the talking."
+      ],
+      "file": "/audio/voice/758efd62037aa3be.mp3"
+    },
+    {
+      "key": "7e54498e10b4d5fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That dragon is yours, so off you go and finish the wings. Nobody minds at all.",
+      "lines": [
+        "That's right!",
+        "That dragon is yours, so off you go and finish the wings. Nobody minds at all."
+      ],
+      "file": "/audio/voice/7e54498e10b4d5fb.mp3"
+    },
+    {
+      "key": "633a5ee82360edb2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read it again. Whose half finished dragon is that?",
+      "lines": [
+        "Not quite.",
+        "Read it again. Whose half finished dragon is that?"
+      ],
+      "file": "/audio/voice/633a5ee82360edb2.mp3"
+    },
+    {
+      "key": "9b9c6c7ec96d5dff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Grown-up work post is nobody's business but the grown-up's. Dad would want that lid down without even being asked.",
+      "lines": [
+        "That's right!",
+        "Grown-up work post is nobody's business but the grown-up's. Dad would want that lid down without even being asked."
+      ],
+      "file": "/audio/voice/9b9c6c7ec96d5dff.mp3"
+    },
+    {
+      "key": "b497aa89ba71d01d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Who in this house gets work emails? That is your answer.",
+      "lines": [
+        "Not quite.",
+        "Who in this house gets work emails? That is your answer."
+      ],
+      "file": "/audio/voice/b497aa89ba71d01d.mp3"
+    },
+    {
+      "key": "aa5d187dbbe1620d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Gran scanned every one of those herself. She would love to show you, and that is different from you helping yourself.",
+      "lines": [
+        "That's right!",
+        "Gran scanned every one of those herself. She would love to show you, and that is different from you helping yourself."
+      ],
+      "file": "/audio/voice/aa5d187dbbe1620d.mp3"
+    },
+    {
+      "key": "0dc56364b3b63329",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Think about who scans in old photographs. It is usually the person who was in them.",
+      "lines": [
+        "Not quite.",
+        "Think about who scans in old photographs. It is usually the person who was in them."
+      ],
+      "file": "/audio/voice/0dc56364b3b63329.mp3"
+    },
+    {
+      "key": "cfc290f19770ed6c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your name, your homework, your folder. Open it up whenever you like.",
+      "lines": [
+        "That's right!",
+        "Your name, your homework, your folder. Open it up whenever you like."
+      ],
+      "file": "/audio/voice/cfc290f19770ed6c.mp3"
+    },
+    {
+      "key": "d1b00f8e2b2948ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Have a proper look at the name written across the top of it.",
+      "lines": [
+        "Not quite.",
+        "Have a proper look at the name written across the top of it."
+      ],
+      "file": "/audio/voice/d1b00f8e2b2948ec.mp3"
+    },
+    {
+      "key": "4a944dfcd07a25c2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. How interesting it is has nothing to do with whether it is yours to read.",
+      "lines": [
+        "Not quite.",
+        "How interesting it is has nothing to do with whether it is yours to read."
+      ],
+      "file": "/audio/voice/4a944dfcd07a25c2.mp3"
+    },
+    {
+      "key": "736b04a850623e86",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That question is about not being caught. The kind question is about whose it is.",
+      "lines": [
+        "Not quite.",
+        "That question is about not being caught. The kind question is about whose it is."
+      ],
+      "file": "/audio/voice/736b04a850623e86.mp3"
+    },
+    {
+      "key": "2863344b4fca8258",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Important or silly, it still belongs to your sister either way.",
+      "lines": [
+        "Not quite.",
+        "Important or silly, it still belongs to your sister either way."
+      ],
+      "file": "/audio/voice/2863344b4fca8258.mp3"
+    },
+    {
+      "key": "305647d34ca76a84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A different child sits there tomorrow, and saying yes would have handed them your account.",
+      "lines": [
+        "That's right!",
+        "A different child sits there tomorrow, and saying yes would have handed them your account."
+      ],
+      "file": "/audio/voice/305647d34ca76a84.mp3"
+    },
+    {
+      "key": "8054899fa21b22bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Quicker for you once, and quicker for every other child who sits down there afterwards.",
+      "lines": [
+        "Not quite.",
+        "Quicker for you once, and quicker for every other child who sits down there afterwards."
+      ],
+      "file": "/audio/voice/8054899fa21b22bd.mp3"
+    },
+    {
+      "key": "96db572efc57b26c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. There is no only for today button. Once it is saved it stays saved.",
+      "lines": [
+        "Not quite.",
+        "There is no only for today button. Once it is saved it stays saved."
+      ],
+      "file": "/audio/voice/96db572efc57b26c.mp3"
+    },
+    {
+      "key": "652f0b7165ba38fd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your phone, your lock code, nobody else gets in. That is exactly what saving is for.",
+      "lines": [
+        "That's right!",
+        "Your phone, your lock code, nobody else gets in. That is exactly what saving is for."
+      ],
+      "file": "/audio/voice/652f0b7165ba38fd.mp3"
+    },
+    {
+      "key": "20954863607cefcb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Never anywhere is a bit strict. On your own locked phone it is genuinely fine.",
+      "lines": [
+        "Not quite.",
+        "Never anywhere is a bit strict. On your own locked phone it is genuinely fine."
+      ],
+      "file": "/audio/voice/20954863607cefcb.mp3"
+    },
+    {
+      "key": "31cc524aa4a477ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Lovely manners, but on your own locked phone this one really is your call.",
+      "lines": [
+        "Not quite.",
+        "Lovely manners, but on your own locked phone this one really is your call."
+      ],
+      "file": "/audio/voice/31cc524aa4a477ac.mp3"
+    },
+    {
+      "key": "85abddc3dec6ce19",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Everyone in the house picks that tablet up, so a saved password would let any of them be you.",
+      "lines": [
+        "That's right!",
+        "Everyone in the house picks that tablet up, so a saved password would let any of them be you."
+      ],
+      "file": "/audio/voice/85abddc3dec6ce19.mp3"
+    },
+    {
+      "key": "5d7af69a437ec94e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Family is lovely, but the tablet cannot tell family from anybody else who picks it up.",
+      "lines": [
+        "Not quite.",
+        "Family is lovely, but the tablet cannot tell family from anybody else who picks it up."
+      ],
+      "file": "/audio/voice/5d7af69a437ec94e.mp3"
+    },
+    {
+      "key": "7a071c1b88f91bc6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It is the family tablet. Everybody uses it, which is what makes it the family tablet.",
+      "lines": [
+        "Not quite.",
+        "It is the family tablet. Everybody uses it, which is what makes it the family tablet."
+      ],
+      "file": "/audio/voice/7a071c1b88f91bc6.mp3"
+    },
+    {
+      "key": "56071ea89f0568d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That phone goes home in Gran's pocket, and anything saved on it goes with her.",
+      "lines": [
+        "That's right!",
+        "That phone goes home in Gran's pocket, and anything saved on it goes with her."
+      ],
+      "file": "/audio/voice/56071ea89f0568d6.mp3"
+    },
+    {
+      "key": "494d38adb9b279b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. She would not mind at all, and that is not the problem. The problem is that your account leaves the house.",
+      "lines": [
+        "Not quite.",
+        "She would not mind at all, and that is not the problem. The problem is that your account leaves the house."
+      ],
+      "file": "/audio/voice/494d38adb9b279b1.mp3"
+    },
+    {
+      "key": "d0d3ee21ff8d7aa1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The photo takes a second. The saved password stays on that phone for good.",
+      "lines": [
+        "Not quite.",
+        "The photo takes a second. The saved password stays on that phone for good."
+      ],
+      "file": "/audio/voice/d0d3ee21ff8d7aa1.mp3"
+    },
+    {
+      "key": "5adb337c7f933a84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Being in a hurry is exactly when it happens, which is why the rule has no exceptions in it.",
+      "lines": [
+        "Not quite.",
+        "Being in a hurry is exactly when it happens, which is why the rule has no exceptions in it."
+      ],
+      "file": "/audio/voice/5adb337c7f933a84.mp3"
+    },
+    {
+      "key": "c4420d50834128e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The screen cannot tell who it is handing your account to. It just hands it over.",
+      "lines": [
+        "Not quite.",
+        "The screen cannot tell who it is handing your account to. It just hands it over."
+      ],
+      "file": "/audio/voice/c4420d50834128e8.mp3"
+    },
+    {
+      "key": "4b32f3de6bf34d02",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It makes no difference how good the password is if the screen types it in for somebody else.",
+      "lines": [
+        "Not quite.",
+        "It makes no difference how good the password is if the screen types it in for somebody else."
+      ],
+      "file": "/audio/voice/4b32f3de6bf34d02.mp3"
+    },
+    {
+      "key": "c6241a369f0e5a5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! First move. You spotted it was a borrowed screen before you touched anything.",
+      "lines": [
+        "That's right!",
+        "First move. You spotted it was a borrowed screen before you touched anything."
+      ],
+      "file": "/audio/voice/c6241a369f0e5a5a.mp3"
+    },
+    {
+      "key": "860e595e9962e548",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Not quite that one yet. Think about what you would actually be doing at that moment, from sitting down to walking away.",
+      "lines": [
+        "Not quite.",
+        "Not quite that one yet. Think about what you would actually be doing at that moment, from sitting down to walking away."
+      ],
+      "file": "/audio/voice/860e595e9962e548.mp3"
+    },
+    {
+      "key": "01aafd77b1c6b9e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Second. A borrowed screen, so when the balloon asked, you said no thank you.",
+      "lines": [
+        "That's right!",
+        "Second. A borrowed screen, so when the balloon asked, you said no thank you."
+      ],
+      "file": "/audio/voice/01aafd77b1c6b9e9.mp3"
+    },
+    {
+      "key": "622cef8e1b6404d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Third. You said no to the balloon, and you left everything that was not yours alone too.",
+      "lines": [
+        "That's right!",
+        "Third. You said no to the balloon, and you left everything that was not yours alone too."
+      ],
+      "file": "/audio/voice/622cef8e1b6404d8.mp3"
+    },
+    {
+      "key": "6f7475e399afa7ed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Fourth. What WAS yours, you closed, and your name came off the screen.",
+      "lines": [
+        "That's right!",
+        "Fourth. What WAS yours, you closed, and your name came off the screen."
+      ],
+      "file": "/audio/voice/6f7475e399afa7ed.mp3"
+    },
+    {
+      "key": "bdf2c45b8f49a52e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Fifth. Your name is off it, and now the front door is shut behind you.",
+      "lines": [
+        "That's right!",
+        "Fifth. Your name is off it, and now the front door is shut behind you."
+      ],
+      "file": "/audio/voice/bdf2c45b8f49a52e.mp3"
+    },
+    {
+      "key": "21f13163c4948859",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! And sixth, the one everybody skips. Door shut, and you still turned round and looked back.",
+      "lines": [
+        "That's right!",
+        "And sixth, the one everybody skips. Door shut, and you still turned round and looked back."
+      ],
+      "file": "/audio/voice/21f13163c4948859.mp3"
     },
     {
       "key": "9575ee0d01619952",
