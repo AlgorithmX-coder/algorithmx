@@ -96,7 +96,7 @@ const AUDIO_ONLY_STYLE = {
 } as const;
 // SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
-export interface TrackPrint { id: string; label: string; icon: string; readAloud: string; options: { id: string; label: string; icon: string; isRight: boolean; why: string; explanation: string }[]; }
+export interface TrackPrint { id: string; label: string; icon: string; readAloud: string; options: { id: string; label: string; icon: string; isRight: boolean; why?: string; explanation: string }[]; }
 export interface TrackBackProps {
   prints: TrackPrint[];
   introTitle?: string; introSubtitle?: string; introIcon?: string;
@@ -262,7 +262,7 @@ export default function TrackBack({
       setSays((prev) => [...prev, { id: `${p.id}-${o.id}`, label: o.label, icon: o.icon }]);
       // Sarah: "That's right!" + this card's why, then the next print. Walking
       // on from her callback is what keeps a payoff from ever cutting her off.
-      verdict.say("right", o.why, () => {
+      verdict.say("right", o.why ?? "", () => {
         window.setTimeout(advance, reduce ? 200 : 900);
       });
     } else {

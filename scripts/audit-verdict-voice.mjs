@@ -281,6 +281,11 @@ const ENGINES = {
     ),
   ),
   // The loom carries BOTH sides on one rule.
+  // The Encore of Twenty is a watch-then-repeat memory game: there is no
+  // per-item verdict to check, because a miss simply replays the sequence
+  // slower with the next tile ghosted. Its only spoken lines are the intro
+  // and the payoff, which the read-aloud audit covers.
+  encoreOfTwenty: () => [],
   hearthLoom: (span) => objs(span, "rules").map((r) => ({
     label: "rule " + (fld(r, "id") ?? ""),
     right: fld(r, "why"),

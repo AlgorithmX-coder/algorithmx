@@ -115,7 +115,25 @@ function tilePos(i: number): { left: string; top: string } {
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function EncoreOfTwenty({ onComplete, narration, accent }: { onComplete: () => void; narration?: { speaker?: "adam" | "layla"; lines: string[] }; accent?: string }) {
+export default function EncoreOfTwenty({
+  onComplete,
+  narration,
+  accent,
+  completeNarration,
+  threat,
+}: {
+  onComplete: () => void;
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  accent?: string;
+  /**
+   * SPOKEN over the cap toss. Without it the very last game of the whole
+   * twenty weeks finished in silence, which is a poor note to go out on and
+   * is also what the narration-flow audit flags as a game with no payoff.
+   */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** The Raccoon's last boast, folded into the intro card. */
+  threat?: { raccoonLine: string };
+}) {
   const reduce = !!useReducedMotion();
 
   const [phase, setPhase] = useState<Phase>("intro");
@@ -252,8 +270,11 @@ export default function EncoreOfTwenty({ onComplete, narration, accent }: { onCo
     playSound("victory");
     const confettiT = setTimeout(() => playSound("confetti"), 500);
     const badgeT = setTimeout(() => playSound("badgeEarned"), 1400);
+    // If there is a spoken payoff, the celebration waits for it: leaving on
+    // the fixed timer would cut Sarah off mid-sentence on the last game of
+    // the course. With no payoff authored, the original timing is unchanged.
     const doneT = setTimeout(() => {
-      if (!completedRef.current) {
+      if (!completedRef.current && !completeNarration) {
         completedRef.current = true;
         onComplete();
       }
@@ -296,12 +317,37 @@ export default function EncoreOfTwenty({ onComplete, narration, accent }: { onCo
 
   const ghostTile = phase === "echo" && slowMode ? seq[progress] ?? null : null;
   const crowdLevel = phase === "celebrate" ? 3 : Math.min(3, cheer);
+  // The spoken payoff over the cap toss, audio only (the celebration is
+  // already on screen). It finishes the exercise itself, so Sarah is never
+  // cut off by the fixed celebration timer.
+  const payoff =
+    phase === "celebrate" && completeNarration ? (
+      <div
+        aria-hidden
+        style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}
+      >
+        <InfoNarration
+          key="encore-payoff"
+          speaker={completeNarration.speaker ?? "adam"}
+          lines={completeNarration.lines}
+          accent={accent ?? "#5b76ff"}
+          recordedOnly
+          onDone={() => {
+            if (!completedRef.current) {
+              completedRef.current = true;
+              onComplete();
+            }
+          }}
+        />
+      </div>
+    ) : null;
   const ignited = phase === "celebrate";
 
   /* ---------------------------- render ----------------------------- */
 
   return (
     <ExerciseFrame padding={24}>
+      {payoff}
       <div
         style={{
           position: "relative",

@@ -114,6 +114,7 @@ import WhoseIsIt from "@/app/components/exercises/WhoseIsIt";
 import ExplainIt from "@/app/components/exercises/ExplainIt";
 import SpeakUp from "@/app/components/exercises/SpeakUp";
 import HearthLoom from "@/app/components/exercises/signatures/HearthLoom";
+import EncoreOfTwenty from "@/app/components/exercises/signatures/EncoreOfTwenty";
 import LogOutFlick from "@/app/components/exercises/signatures/LogOutFlick";
 import FriendPanner from "@/app/components/exercises/signatures/FriendPanner";
 import KeyholeCheck from "@/app/components/exercises/signatures/KeyholeCheck";
@@ -3297,6 +3298,19 @@ function DynamicLessonInner({
                 progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
                 if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
               }}
+            />
+          </FullScene>
+        );
+
+      // Week 20 (Graduation): the encore, as the final review.
+      case "encoreOfTwenty":
+        return (
+          <FullScene bg="linear-gradient(180deg, #14082e 0%, #2a1258 55%, #3a2417 100%)">
+            <EncoreOfTwenty
+              narration={def.narration}
+              completeNarration={def.completeNarration}
+              threat={def.threat}
+              onComplete={() => navigate(screen + 1)}
             />
           </FullScene>
         );
