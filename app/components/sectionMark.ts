@@ -54,6 +54,18 @@ export const sectionMark: React.CSSProperties = {
 export const sectionMarkBare: React.CSSProperties = {
   display: "inline-block",
   margin: 0,
+  /* Say it, do not assume it. On /schools this lands on a bare <p>, but
+     the homepage hero keeps its pill in a class (.lv2-hero-eyebrow), and
+     an inline style that set only colour and type would have left the
+     card sitting behind the label. */
+  padding: 0,
+  background: "none",
+  border: "none",
+  borderRadius: 0,
+  boxShadow: "none",
+  backdropFilter: "none",
+  WebkitBackdropFilter: "none",
+  textShadow: "none",
   color: "#0a7085",
   fontFamily: "var(--lv2-font-mono)",
   fontSize: 12.5,

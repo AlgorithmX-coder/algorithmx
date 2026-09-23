@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { sectionMark } from "@/app/components/sectionMark";
+import { sectionMarkBare } from "@/app/components/sectionMark";
 
 /**
  * HeroOverlay. The static brand UI over the cinematic: eyebrow +
@@ -72,10 +72,18 @@ export default function HeroOverlay() {
         style={{
           position: "absolute",
           inset: 0,
+          /* A left-column wash rather than an ellipse. The ellipse put its
+             strength at the middle of the hero, so the eyebrow at ~16%
+             down sat in its falloff: measured, the ground there only came
+             up to rgb(191,189,185), which is 3.0:1 for the teal label.
+             A horizontal fade is predictable, lights the whole copy
+             column evenly top to bottom, and is clear of the machine by
+             62% across. Measured after: rgb(240,236,229), 4.8:1. */
           background:
-            "radial-gradient(ellipse 46% 52% at 20% 52%, " +
-            "rgba(244,239,231,0.8) 0%, rgba(244,239,231,0.42) 26%, " +
-            "rgba(244,239,231,0) 50%)",
+            "linear-gradient(100deg, " +
+            "rgba(246,241,233,0.97) 0%, rgba(246,241,233,0.94) 26%, " +
+            "rgba(246,241,233,0.72) 42%, rgba(246,241,233,0.26) 54%, " +
+            "rgba(246,241,233,0) 62%)",
           pointerEvents: "none",
         }}
       />
@@ -108,11 +116,19 @@ export default function HeroOverlay() {
         {/* border: none because the class carries an outline pill that the
             solid mark replaces, and the dot has to be paper now that the
             ground under it is the accent rather than the page. */}
-        <span className="lv2-hero-eyebrow" style={{ ...sectionMark, border: "none" }}>
+        {/* Owner 2026-09-23, after the same call on /schools: no card
+            behind it, just the label. inline-flex and the gap stay so the
+            status dot still lays out beside the text, and the dot comes
+            back to teal now that the ground under it is the page rather
+            than the badge. The section marks further down keep theirs. */}
+        <span
+          className="lv2-hero-eyebrow"
+          style={{ ...sectionMarkBare, display: "inline-flex", alignItems: "center", gap: 10 }}
+        >
           <span
             aria-hidden
             className="lv2-hero-eyebrow-dot"
-            style={{ background: "#fffdfa", boxShadow: "none" }}
+            style={{ background: "#0a7085", boxShadow: "none" }}
           />
           {EYEBROW}
         </span>
