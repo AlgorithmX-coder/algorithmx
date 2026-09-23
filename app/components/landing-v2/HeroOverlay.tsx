@@ -21,7 +21,11 @@ import { sectionMarkBare } from "@/app/components/sectionMark";
  * stage of life"). Replaced with a mission-grade line that signals
  * the platform's ambition before the headline lands. */
 const EYEBROW = "// SIX TRACKS  ·  SKILLS THE AI ERA NEEDS";
-const HEADLINE = "Technology education for every stage of life.";
+/* Owner 2026-09-23: highlight part of it. The payoff phrase carries the
+   gradient, which is how /schools does it ("...your pupils [teach
+   themselves.]"), and here the payoff is the range itself. */
+const HEADLINE_LEAD = "Technology education for ";
+const HEADLINE_ACCENT = "every stage of life.";
 /* Owner 2026-09-22: the old line spent half its length on courses that
    are not out yet. It now says what is live and how it is taught. */
 const SUBLINE =
@@ -153,7 +157,13 @@ export default function HeroOverlay() {
             MozOsxFontSmoothing: "grayscale",
           }}
         >
-          {HEADLINE}
+          {HEADLINE_LEAD}
+          {/* text-shadow off: the h1 carries a white glow for legibility,
+              and on transparent gradient-clipped text that glow paints
+              straight through the letterforms as a white smear. */}
+          <span className="lv2-grad" style={{ textShadow: "none" }}>
+            {HEADLINE_ACCENT}
+          </span>
         </h1>
 
         <p
@@ -233,6 +243,16 @@ export default function HeroOverlay() {
         text-transform: uppercase;
         color: #b8f4ff;
         text-shadow: 0 0 14px rgba(0, 229, 255, 0.55);
+      }
+      /* The same three sand accents /schools uses, in the same order, so
+         the two pages highlight with one voice. Each stop clears 4.5:1 on
+         the ground on its own, and the headline is far past large-text
+         size, where 3:1 is the bar. */
+      .lv2-grad {
+        background: linear-gradient(92deg, #0a7085 0%, #5744c9 55%, #a5117f 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
       .lv2-hero-eyebrow-dot {
         width: 7px;
