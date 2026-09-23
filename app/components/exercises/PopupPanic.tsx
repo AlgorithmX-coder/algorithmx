@@ -15,6 +15,13 @@
  * FRIENDLY. The two verdict buttons look identical and swap sides per
  * request, so the answer never lives in a colour or a position.
  *
+ * Skin "doorway" (Week 16, "The Barrier Rule"): the SAME judged-card mechanic
+ * as "request" (one card at a time, two identical verdict buttons that swap
+ * sides), repainted as the Doorway Maze. The card is a door in a stone jamb
+ * with a brass address strip, and the call is WALK THROUGH or wheel out the
+ * BARRIER and fetch a grown-up. Paint and layout only; every rule of the
+ * request mechanic is untouched.
+ *
  * Not a reaction-speed game - untimed. The urgency is theatrical:
  * countdown numbers, scary icons, but tapping the wrong button is
  * met with a calm explanation, never a loss state.
@@ -26,7 +33,7 @@
  * spoken `completeNarration` payoff. Pop-ups are shuffled per play.
  */
 
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   useExerciseFeedback,
@@ -60,7 +67,7 @@ const AUDIO_ONLY_STYLE = {
 
 // SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
-export type PopupPanicSkin = "popup" | "request";
+export type PopupPanicSkin = "popup" | "request" | "doorway";
 
 export interface PopupPanicPopup {
   id: string;
@@ -76,7 +83,8 @@ export interface PopupPanicPopup {
 
 export interface PopupPanicProps {
   popups: PopupPanicPopup[];
-  /** Visual skin: scary browser pop-ups (default) or W3 chat requests. */
+  /** Visual skin: scary browser pop-ups (default), W3 chat requests, or W16's
+   *  maze doorway. "request" and "doorway" run the identical judged mechanic. */
   skin?: PopupPanicSkin;
   hints?: { tier1: string; tier2: string; tier3: string };
   /** Intro copy overrides + spoken paced narration (week re-dress). */
@@ -94,6 +102,16 @@ export interface PopupPanicProps {
   wrongTip?: string;
   completeTitle?: string;
   completeLine?: string;
+  /* ── On-screen labels (never spoken; safe to leave at their defaults). ── */
+  /** Icons on the two identical verdict buttons (judged skins). */
+  fineIcon?: string;
+  flagIcon?: string;
+  /** The pill on the card ("NEW MESSAGE"). */
+  cardBadge?: string;
+  /** Shown in place of `popup.from` when an item omits it. */
+  fromFallback?: string;
+  /** The word in the footer counter: "REQUEST 1 OF 5". */
+  counterLabel?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
@@ -131,6 +149,11 @@ export default function PopupPanic({
   wrongTip,
   completeTitle,
   completeLine,
+  fineIcon = "💬",
+  flagIcon = "🚫",
+  cardBadge = "NEW MESSAGE",
+  fromFallback = "New friend",
+  counterLabel = "REQUEST",
   introNarration,
   coachLines,
   threat,
@@ -144,7 +167,13 @@ export default function PopupPanic({
   const intensity = useMotionIntensity();
   const fx = useExerciseFeedback();
   const audio = useGameAudio();
-  const request = skin === "request";
+  // `request` now means "the judged-card mechanic" - W3's chat requests and
+  // W16's maze doors run the same one. "popup" keeps the X-vs-OK mechanic.
+  const request = skin !== "popup";
+  // W16 paint only. Every divergence below is `door ? <new> : <the exact
+  // expression that shipped>`, so W3 and W7/W20 are byte-identical paths.
+  const door = skin === "doorway";
+  const narrAccent = door ? "#d9a441" : "#f5a623";
   // In-game read-alouds, verdict reasons and teach lines are recorded under
   // "adam" (both content voices are Sarah), so every manifest lookup here uses
   // that key. Keying them to the intro's speaker found no clip whenever a
@@ -177,8 +206,15 @@ export default function PopupPanic({
   const popup = shownPopups[popupIdx];
   // Spoken verdicts (owner 2026-09-12): "That's right!" leads the why on a
   // correct call; wrong calls speak through WrongAnswerPanel. Taps wait.
-  const verdict = useVerdictVoice();
+  // Explicitly keyed to "adam" like every other clip lookup in this file (the
+  // hook already defaults to "adam", so this changes nothing for W3/W7/W20).
+  const verdict = useVerdictVoice(voice);
   const speaking = (request && narr !== "idle") || verdict.speaking;
+  // Synchronous latch on every judged tap. `feedback` / `speaking` are state,
+  // so two taps in one tick both read the stale value and both score. Set at
+  // the top of the handler, cleared when the next card opens AND after a wrong
+  // call (the child stays on the same card and must be able to retry).
+  const judgingRef = useRef(false);
 
   useIsoLayoutEffect(() => {
     if (request) setFlip(Math.random() < 0.5);
@@ -209,6 +245,7 @@ export default function PopupPanic({
   }, [wrongOnCurrent, onHintReached]);
 
   const advance = useCallback(() => {
+    judgingRef.current = false;
     const next = popupIdx + 1;
     if (next >= shownPopups.length) {
       setPhase("finished");
@@ -220,6 +257,8 @@ export default function PopupPanic({
 
   const handleX = useCallback(() => {
     if (!popup || feedback) return;
+    if (judgingRef.current) return;
+    judgingRef.current = true;
     onAnswered?.({
       questionKey: `popup-${popup.id}`,
       selectedIndex: 0,
@@ -237,6 +276,8 @@ export default function PopupPanic({
 
   const handleOk = useCallback(() => {
     if (!popup || feedback) return;
+    if (judgingRef.current) return;
+    judgingRef.current = true;
     onAnswered?.({
       questionKey: `popup-${popup.id}`,
       selectedIndex: 1,
@@ -252,12 +293,16 @@ export default function PopupPanic({
       explanation: popup.whyTrick,
       tip: "Scary pop-ups want you to panic. The X (close) is always the right button.",
     });
+    // The child stays on this pop-up and has to find the X, so reopen the latch.
+    judgingRef.current = false;
   }, [popup, feedback, audio, onWrong, onAnswered]);
 
   // Request skin verdict: callFlag = the child says RED FLAG.
   const judge = useCallback(
     (callFlag: boolean) => {
       if (!popup || feedback || speaking) return;
+      if (judgingRef.current) return;
+      judgingRef.current = true;
       const isFlag = popup.isRedFlag !== false;
       const wasCorrect = callFlag === isFlag;
       onAnswered?.({
@@ -289,6 +334,8 @@ export default function PopupPanic({
           explanation: popup.whyTrick,
           tip: wrongTip ?? hints?.tier1,
         });
+        // Same card, retry allowed: reopen the latch.
+        judgingRef.current = false;
       }
     },
     [popup, feedback, speaking, audio, fx, onAnswered, onCorrect, onWrong, wrongOnCurrent, flagToast, fineToast, wrongTitle, wrongTip, hints, intensity, advance, verdict],
@@ -300,7 +347,7 @@ export default function PopupPanic({
     return (
       <ExerciseFrame maxWidth={900} padding={28}>
         <ExerciseCompleteBeat
-          title={completeTitle ?? (request ? "Every request judged!" : "All pop-ups closed!")}
+          title={completeTitle ?? (door ? "Every door called!" : request ? "Every request judged!" : "All pop-ups closed!")}
           stars={stars}
           statLines={[
             request
@@ -308,7 +355,7 @@ export default function PopupPanic({
               : `${closedCount} of ${shownPopups.length} dismissed`,
             completeLine ??
               (wrongTotal === 0
-                ? (request ? "Not one red flag slipped past you." : "Not once fooled by an OK button.")
+                ? (door ? "Not one painted sign fooled you." : request ? "Not one red flag slipped past you." : "Not once fooled by an OK button.")
                 : `${wrongTotal} ${request ? "slip" : "OK-trap"}${wrongTotal === 1 ? "" : "s"} along the way.`),
           ]}
           narration={completeNarration}
@@ -319,8 +366,8 @@ export default function PopupPanic({
   }
 
   const verdictButtons = [
-    { flag: false, label: fineLabel ?? "Fine. Friendly ask!", icon: "💬" },
-    { flag: true, label: flagLabel ?? "Red flag! No way.", icon: "🚫" },
+    { flag: false, label: fineLabel ?? "Fine. Friendly ask!", icon: fineIcon },
+    { flag: true, label: flagLabel ?? "Red flag! No way.", icon: flagIcon },
   ];
   const ordered = flip ? [verdictButtons[1], verdictButtons[0]] : verdictButtons;
 
@@ -330,7 +377,7 @@ export default function PopupPanic({
     <ExerciseFrame
       maxWidth={900}
       padding={24}
-      background={request ? "linear-gradient(180deg, #14122b 0%, #221a3a 100%)" : "linear-gradient(180deg, #0f1530 0%, #1a0f2a 100%)"}
+      background={door ? "radial-gradient(120% 90% at 50% 0%, #2c3a4e 0%, #18222f 48%, #0a0f16 100%)" : request ? "linear-gradient(180deg, #14122b 0%, #221a3a 100%)" : "linear-gradient(180deg, #0f1530 0%, #1a0f2a 100%)"}
     >
       {/* Header / progress */}
       <div
@@ -346,12 +393,12 @@ export default function PopupPanic({
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: 11,
             letterSpacing: "0.16em",
-            color: request ? "#f5a623" : "#ff9bcb",
+            color: door ? "#e8c37a" : request ? "#f5a623" : "#ff9bcb",
             textTransform: "uppercase",
             fontWeight: 800,
           }}
         >
-          {headerLabel ?? (request ? "🚩 Red-Flag Requests" : "⚠ Pop-up Panic")}
+          {headerLabel ?? (door ? "🚧 The Barrier Rule" : request ? "🚩 Red-Flag Requests" : "⚠ Pop-up Panic")}
         </span>
         <span
           style={{
@@ -377,6 +424,11 @@ export default function PopupPanic({
       >
         {boardPrompt ? (
           boardPrompt
+        ) : door ? (
+          <>
+            Read the door. Then tap: <strong style={{ color: "#ffd58a" }}>walk through</strong>, or{" "}
+            <strong style={{ color: "#ffd58a" }}>barrier</strong>?
+          </>
         ) : request ? (
           <>
             Read what the new friend is asking. Then tap: <strong style={{ color: "#ffd58a" }}>red flag</strong>, or{" "}
@@ -411,17 +463,17 @@ export default function PopupPanic({
       {request && phase === "active" && popup && (
         <div aria-hidden style={AUDIO_ONLY_STYLE}>
           {narr === "howto" && coachLines && (
-            <InfoNarration key="pp-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent="#f5a623" recordedOnly onDone={() => setNarr("body")} />
+            <InfoNarration key="pp-howto" speaker={coachLines.speaker ?? voice} lines={coachLines.lines} accent={narrAccent} recordedOnly onDone={() => setNarr("body")} />
           )}
           {narr === "body" && (
-            <InfoNarration key={`pp-body-${popup.id}`} speaker={voice} lines={[popup.body ?? popup.title]} accent="#f5a623" recordedOnly onDone={() => setNarr("idle")} />
+            <InfoNarration key={`pp-body-${popup.id}`} speaker={voice} lines={[popup.body ?? popup.title]} accent={narrAccent} recordedOnly onDone={() => setNarr("idle")} />
           )}
           {narr === "why" && (
             <InfoNarration
               key={`pp-why-${popup.id}`}
               speaker={voice}
               lines={[popup.whyTrick]}
-              accent="#f5a623"
+              accent={narrAccent}
               recordedOnly
               onDone={() => {
                 setNarr("idle");
@@ -432,12 +484,12 @@ export default function PopupPanic({
         </div>
       )}
 
-      {/* Faux browser frame / chat frame containing the popup */}
+      {/* Faux browser frame / chat frame / maze alcove containing the popup */}
       <div
         style={{
           position: "relative",
-          background: "rgba(8, 10, 22, 0.7)",
-          border: request ? "1px solid rgba(245, 166, 35, 0.3)" : "1px solid rgba(255, 95, 179, 0.25)",
+          background: door ? "rgba(13, 19, 27, 0.78)" : "rgba(8, 10, 22, 0.7)",
+          border: door ? "1px solid rgba(217, 164, 65, 0.32)" : request ? "1px solid rgba(245, 166, 35, 0.3)" : "1px solid rgba(255, 95, 179, 0.25)",
           borderRadius: 14,
           padding: 24,
           minHeight: 320,
@@ -455,6 +507,24 @@ export default function PopupPanic({
             opacity: 0.4,
           }}
         />
+
+        {/* Doorway skin: a hazard stripe across the top of the alcove, so the
+            barrier is part of the room before the child ever needs it. */}
+        {door && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 7,
+              opacity: 0.85,
+              background:
+                "repeating-linear-gradient(135deg, #f2c14e 0 12px, #1b1206 12px 24px)",
+            }}
+          />
+        )}
 
         <AnimatePresence mode="wait">
           {popup && !request && (
@@ -597,43 +667,121 @@ export default function PopupPanic({
                 gap: 14,
               }}
             >
-              {/* The request card: who + message bubble */}
-              <div
-                style={{
-                  background: "linear-gradient(180deg, #2a2452 0%, #1d1a3a 100%)",
-                  border: "2px solid rgba(245,166,35,0.55)",
-                  borderRadius: 18,
-                  padding: "14px 16px 16px",
-                  boxShadow: "0 18px 44px -22px rgba(245,166,35,0.6)",
-                  color: "#fff7e6",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                  <span style={{ display: "inline-flex", padding: 6, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "1.5px solid rgba(255,255,255,0.3)" }}>
-                    <PixIcon emoji={popup.icon ?? "💬"} size={26} />
-                  </span>
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ fontSize: 14.5, fontWeight: 900 }}>{popup.from ?? "New friend"}</div>
-                    <div style={{ fontSize: 11, fontWeight: 800, color: "#c9b8ff", letterSpacing: "0.05em" }}>{popup.title}</div>
-                  </div>
-                  <span style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: "0.08em", color: "#f5a623", padding: "3px 8px", borderRadius: 999, border: "1px solid rgba(245,166,35,0.45)", whiteSpace: "nowrap" }}>
-                    NEW MESSAGE
-                  </span>
-                </div>
+              {/* The card. Same three fields either way: who it claims to be
+                  from, what kind of thing it is, and the big line the child
+                  judges. The doorway skin re-stacks them as a door: plate on
+                  top, painted sign below. */}
+              {door ? (
                 <div
                   style={{
-                    padding: "12px 16px",
-                    borderRadius: "16px 16px 16px 4px",
-                    background: "rgba(255,255,255,0.1)",
-                    border: "1.5px solid rgba(255,255,255,0.3)",
-                    fontSize: 16.5,
-                    fontWeight: 800,
-                    lineHeight: 1.4,
+                    position: "relative",
+                    background: "linear-gradient(180deg, #4a3722 0%, #2e2216 62%, #241a11 100%)",
+                    border: "3px solid #d9a441",
+                    borderRadius: "18px 18px 6px 6px",
+                    padding: "14px 16px 18px",
+                    boxShadow: "0 20px 44px -22px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255, 225, 175, 0.16)",
+                    color: "#fff3dc",
                   }}
                 >
-                  {popup.body ?? popup.title}
+                  {/* The brass handle. */}
+                  <span
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      right: 9,
+                      top: "58%",
+                      width: 13,
+                      height: 13,
+                      borderRadius: "50%",
+                      background: "radial-gradient(circle at 35% 30%, #ffe4a8, #b8822c)",
+                      boxShadow: "0 0 10px rgba(255, 208, 130, 0.5)",
+                    }}
+                  />
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                    <span style={{ display: "inline-flex", padding: 6, borderRadius: 8, background: "rgba(255,228,176,0.12)", border: "1.5px solid rgba(217,164,65,0.6)" }}>
+                      <PixIcon emoji={popup.icon ?? "🚪"} size={26} />
+                    </span>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      {/* The brass address plate: where the door really opens. */}
+                      <div
+                        style={{
+                          display: "inline-block",
+                          maxWidth: "100%",
+                          padding: "4px 9px",
+                          borderRadius: 5,
+                          background: "linear-gradient(180deg, #e3bf78 0%, #b98f38 100%)",
+                          border: "2px solid #6d4c14",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45)",
+                          color: "#241703",
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: 12.5,
+                          fontWeight: 800,
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {popup.from ?? fromFallback}
+                      </div>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#e8c37a", letterSpacing: "0.05em", marginTop: 4 }}>{popup.title}</div>
+                    </div>
+                    <span style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: "0.08em", color: "#f2c14e", padding: "3px 8px", borderRadius: 999, border: "1px solid rgba(242,193,78,0.5)", whiteSpace: "nowrap" }}>
+                      {cardBadge}
+                    </span>
+                  </div>
+                  {/* The painted sign: what the door promises. */}
+                  <div
+                    style={{
+                      padding: "12px 16px",
+                      borderRadius: 8,
+                      background: "linear-gradient(180deg, #fff4dd 0%, #f2ddb4 100%)",
+                      border: "2px solid #8a5a12",
+                      color: "#3a2708",
+                      fontSize: 16.5,
+                      fontWeight: 900,
+                      lineHeight: 1.4,
+                      textAlign: "center",
+                    }}
+                  >
+                    {popup.body ?? popup.title}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div
+                  style={{
+                    background: "linear-gradient(180deg, #2a2452 0%, #1d1a3a 100%)",
+                    border: "2px solid rgba(245,166,35,0.55)",
+                    borderRadius: 18,
+                    padding: "14px 16px 16px",
+                    boxShadow: "0 18px 44px -22px rgba(245,166,35,0.6)",
+                    color: "#fff7e6",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                    <span style={{ display: "inline-flex", padding: 6, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "1.5px solid rgba(255,255,255,0.3)" }}>
+                      <PixIcon emoji={popup.icon ?? "💬"} size={26} />
+                    </span>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div style={{ fontSize: 14.5, fontWeight: 900 }}>{popup.from ?? fromFallback}</div>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#c9b8ff", letterSpacing: "0.05em" }}>{popup.title}</div>
+                    </div>
+                    <span style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: "0.08em", color: "#f5a623", padding: "3px 8px", borderRadius: 999, border: "1px solid rgba(245,166,35,0.45)", whiteSpace: "nowrap" }}>
+                      {cardBadge}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      padding: "12px 16px",
+                      borderRadius: "16px 16px 16px 4px",
+                      background: "rgba(255,255,255,0.1)",
+                      border: "1.5px solid rgba(255,255,255,0.3)",
+                      fontSize: 16.5,
+                      fontWeight: 800,
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {popup.body ?? popup.title}
+                  </div>
+                </div>
+              )}
 
               {/* Two IDENTICAL verdict buttons, sides swapped per request. */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 12 }}>
@@ -648,10 +796,12 @@ export default function PopupPanic({
                     whileTap={speaking ? undefined : { scale: 0.96 }}
                     style={{
                       padding: "16px 12px",
-                      borderRadius: 14,
-                      border: "2px solid rgba(245,166,35,0.55)",
-                      background: "linear-gradient(165deg, rgba(245,166,35,0.14), rgba(12,18,48,0.92))",
-                      color: "#ffe6bd",
+                      borderRadius: door ? 10 : 14,
+                      border: door ? "2px solid rgba(217,164,65,0.8)" : "2px solid rgba(245,166,35,0.55)",
+                      background: door
+                        ? "linear-gradient(165deg, rgba(217,164,65,0.18), rgba(16,22,30,0.94))"
+                        : "linear-gradient(165deg, rgba(245,166,35,0.14), rgba(12,18,48,0.92))",
+                      color: door ? "#ffe9c2" : "#ffe6bd",
                       fontSize: 14.5,
                       fontWeight: 900,
                       fontFamily: "inherit",
@@ -685,10 +835,10 @@ export default function PopupPanic({
                       gap: 10,
                       padding: "10px 14px",
                       borderRadius: 14,
-                      background: "rgba(15, 21, 48, 0.95)",
-                      border: "2px solid #f5a623",
-                      boxShadow: "0 0 16px rgba(245,166,35,0.35)",
-                      color: "#fff7e6",
+                      background: door ? "rgba(13, 19, 27, 0.96)" : "rgba(15, 21, 48, 0.95)",
+                      border: door ? "2px solid #d9a441" : "2px solid #f5a623",
+                      boxShadow: door ? "0 0 16px rgba(217,164,65,0.35)" : "0 0 16px rgba(245,166,35,0.35)",
+                      color: door ? "#fff3dc" : "#fff7e6",
                       fontSize: 14,
                       lineHeight: 1.4,
                       fontWeight: 700,
@@ -700,8 +850,8 @@ export default function PopupPanic({
                 )}
               </AnimatePresence>
 
-              <div style={{ textAlign: "center", fontSize: 12, fontWeight: 800, color: "#9fb1ff", letterSpacing: "0.1em" }}>
-                REQUEST {Math.min(popupIdx + 1, shownPopups.length)} OF {shownPopups.length}
+              <div style={{ textAlign: "center", fontSize: 12, fontWeight: 800, color: door ? "#cbb083" : "#9fb1ff", letterSpacing: "0.1em" }}>
+                {counterLabel} {Math.min(popupIdx + 1, shownPopups.length)} OF {shownPopups.length}
               </div>
             </motion.div>
           )}
@@ -711,14 +861,16 @@ export default function PopupPanic({
       {/* Intro beat */}
       {phase === "intro" && (
         <ExerciseIntroBeat
-          title={introTitle ?? (request ? "Red-Flag Requests" : "Pop-up Panic")}
+          title={introTitle ?? (door ? "The Barrier Rule" : request ? "Red-Flag Requests" : "Pop-up Panic")}
           subtitle={
             introSubtitle ??
-            (request
+            (door
+              ? "Read every door in the maze. Some are safe to walk through. When you cannot tell, wheel out the barrier and fetch a grown-up."
+              : request
               ? "A new friend keeps asking for things. Some asks are fine. Some are red flags. Judge every one."
               : "Close every fake pop-up by tapping its X. Don't tap OK - that's the trick.")
           }
-          icon={introIcon ?? (request ? "🚫" : "⚠️")}
+          icon={introIcon ?? (door ? "🚧" : request ? "🚫" : "⚠️")}
           narration={introNarration}
           threat={threat}
           character={introNarration?.speaker}

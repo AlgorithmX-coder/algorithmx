@@ -105,6 +105,9 @@ import SetTheDial from "@/app/components/exercises/SetTheDial";
 import NightFall from "@/app/components/exercises/NightFall";
 import SpeakerDiary from "@/app/components/exercises/SpeakerDiary";
 import LensCheck from "@/app/components/exercises/LensCheck";
+import StickerPeel from "@/app/components/exercises/StickerPeel";
+import GlassCheck from "@/app/components/exercises/GlassCheck";
+import KeyholeCheck from "@/app/components/exercises/signatures/KeyholeCheck";
 import PausePower from "@/app/components/exercises/PausePower";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
@@ -1641,6 +1644,11 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a0f2a 100%)">
             <PopupPanic
               popups={def.popups}
+              fineIcon={def.fineIcon}
+              flagIcon={def.flagIcon}
+              cardBadge={def.cardBadge}
+              fromFallback={def.fromFallback}
+              counterLabel={def.counterLabel}
               skin={def.skin}
               hints={def.hints}
               introTitle={def.introTitle}
@@ -2903,6 +2911,104 @@ function DynamicLessonInner({
           </FullScene>
         );
 
+      // Week 16 (The Doorway Maze): a stone corridor where every link is a door.
+      case "stickerPeel":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0c0a14 0%, #1e1a2e 100%)">
+            <StickerPeel
+              spots={def.spots}
+              boardLabel={def.boardLabel}
+              peelLabel={def.peelLabel}
+              stuckLabel={def.stuckLabel}
+              liftedLabel={def.liftedLabel}
+              askPrompt={def.askPrompt}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "glassCheck":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0c0a14 0%, #1e1a2e 100%)">
+            <GlassCheck
+              doors={def.doors}
+              clearLabel={def.clearLabel}
+              frostedLabel={def.frostedLabel}
+              walkLabel={def.walkLabel}
+              stopLabel={def.stopLabel}
+              grownUpLabel={def.grownUpLabel}
+              askPrompt={def.askPrompt}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "keyholeCheck":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0c0a14 0%, #1e1a2e 100%)">
+            <KeyholeCheck
+              keyring={def.keyring}
+              doors={def.doors}
+              ringLabel={def.ringLabel}
+              openLabel={def.openLabel}
+              chainLabel={def.chainLabel}
+              askPrompt={def.askPrompt}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
       // Week 10 (The Burrow): a dark mossy hole with daylight somewhere above.
       case "climbOut":
         return (
@@ -3940,6 +4046,10 @@ function DynamicLessonInner({
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <PhishInspector
               emails={def.emails}
+              skin={def.skin}
+              signCaption={def.signCaption}
+              plateCaption={def.plateCaption}
+              counterLabel={def.counterLabel}
               hints={def.hints}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}

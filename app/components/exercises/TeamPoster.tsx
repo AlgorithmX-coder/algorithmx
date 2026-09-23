@@ -16,6 +16,14 @@
  * where true fake-friend clues get pinned and the Raccoon's decoys get
  * turned away.
  *
+ * Skin "doorway" (Week 16, the Door Checker's Power Board): the SAME
+ * build-the-board mechanic, repainted as a stone slab bolted up in the
+ * Doorway Maze whose empty sockets take brass power plaques. Note that the
+ * drill is retrieval only as far as the authored tray makes it so: the
+ * mechanic shows every candidate's label, so the decoys have to be plausible
+ * near-misses of the week's powers, never obvious throwaways. Paint and
+ * layout only.
+ *
  * Learn-Loop wiring (owner standards, 2026-09-11): the Raccoon's boast folds
  * into the intro (`threat`); Sarah reads each pinned tile's `note` aloud as
  * it lands (audio-only, `recordedOnly`), holding the tray until she finishes
@@ -51,7 +59,7 @@ const AUDIO_ONLY_STYLE = {
 
 // SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
-export type TeamPosterSkin = "poster" | "case";
+export type TeamPosterSkin = "poster" | "case" | "doorway";
 
 export interface PosterTile {
   id: string;
@@ -71,7 +79,8 @@ export interface PosterTile {
 
 export interface TeamPosterProps {
   tiles: PosterTile[];
-  /** Visual skin: warm W11 poster (default) or the W3 detective cork board. */
+  /** Visual skin: warm W11 poster (default), the W3 detective cork board, or
+   *  W16's brass Power Board in the Doorway Maze. */
   skin?: TeamPosterSkin;
   /** Copy overrides (re-theme per week; defaults keep the W11 team skin). */
   introTitle?: string;
@@ -121,6 +130,23 @@ const SKINS = {
     filledText: "#2c5a1e",
     countColor: "#a5771f",
     pin: false,
+    screws: false,
+    detailText: "#8a5a12",
+    // Layout (was inline `skin === "case" ? … : …`; these are the else-arms).
+    frameBg: undefined as string | undefined,
+    boardMaxWidth: 620,
+    slotRadius: 14,
+    titleShadow: undefined as string | undefined,
+    trayCols: "repeat(auto-fit, minmax(150px, 1fr))",
+    maxCols: 4,
+    tilt: false,
+    inlineCoach: false,
+    overlayIntro: false,
+    trayBorder: "2px solid rgba(125,240,255,0.4)",
+    trayBg: "linear-gradient(165deg, rgba(0,229,255,0.1), rgba(12,18,48,0.92))",
+    trayText: "#eaf9ff",
+    trayShadow: "0 12px 26px -16px rgba(0,229,255,0.7)",
+    trayDetail: "#9fb1ff",
     introTitle: "The My-Team Poster",
     introSubtitle: "Fill every slot with someone who's truly on your team - then it's up on the wall forever.",
     introIcon: "👪",
@@ -147,6 +173,22 @@ const SKINS = {
     filledText: "#3a2a08",
     countColor: "#ffe0a3",
     pin: true,
+    screws: false,
+    detailText: "#8a5a12",
+    frameBg: undefined as string | undefined,
+    boardMaxWidth: 700,
+    slotRadius: 8,
+    titleShadow: "0 2px 6px rgba(0,0,0,0.5)" as string | undefined,
+    trayCols: "repeat(3, minmax(0, 1fr))",
+    maxCols: 5,
+    tilt: true,
+    inlineCoach: true,
+    overlayIntro: true,
+    trayBorder: "2px solid rgba(125,240,255,0.4)",
+    trayBg: "linear-gradient(165deg, rgba(0,229,255,0.1), rgba(12,18,48,0.92))",
+    trayText: "#eaf9ff",
+    trayShadow: "0 12px 26px -16px rgba(0,229,255,0.7)",
+    trayDetail: "#9fb1ff",
     introTitle: "The Case Board",
     introSubtitle: "Pin every TRUE fake-friend clue to the board. Leave the Raccoon's decoys in the tray.",
     introIcon: "🔍",
@@ -158,6 +200,51 @@ const SKINS = {
     completeLine: "Every real clue pinned, every decoy left behind.",
     countLabel: "CLUES PINNED",
     accent: "#f5a623",
+  },
+  doorway: {
+    // A stone slab bolted to the maze wall, framed in brass.
+    boardBg: "linear-gradient(180deg, #3a4a58 0%, #232f3a 55%, #18222c 100%)",
+    boardBorder: "6px solid #d9a441",
+    boardShadow: "0 18px 44px -20px rgba(0,0,0,0.85), inset 0 0 0 2px rgba(255,228,176,0.14)",
+    titleColor: "#ffe9c2",
+    slotBorder: "rgba(255,232,190,0.5)",
+    slotBg: "rgba(255,240,215,0.07)",
+    slotMark: "rgba(255,232,190,0.65)",
+    // Placed powers are engraved brass plaques: near-white on near-black.
+    filledBorder: "#d9a441",
+    filledBg: "linear-gradient(165deg, #fff4dd, #f0d8a6)",
+    filledGlow: "0 8px 18px -8px rgba(0,0,0,0.6)",
+    filledText: "#3a2708",
+    countColor: "#ffdca8",
+    pin: false,
+    screws: true,
+    detailText: "#6d4c14",
+    frameBg: "radial-gradient(120% 90% at 50% 0%, #2c3a4e 0%, #18222f 48%, #0a0f16 100%)" as string | undefined,
+    boardMaxWidth: 700,
+    slotRadius: 10,
+    titleShadow: "0 2px 6px rgba(0,0,0,0.5)" as string | undefined,
+    trayCols: "repeat(3, minmax(0, 1fr))",
+    maxCols: 5,
+    tilt: false,
+    inlineCoach: true,
+    overlayIntro: true,
+    // Brass on stone, so a candidate is never mistaken for the slab behind it.
+    trayBorder: "2px solid rgba(217,164,65,0.7)",
+    trayBg: "linear-gradient(165deg, rgba(217,164,65,0.16), rgba(14,20,26,0.94))",
+    trayText: "#ffe9c2",
+    trayShadow: "0 12px 26px -16px rgba(217,164,65,0.8)",
+    trayDetail: "#e0c28d",
+    introTitle: "The Power Board",
+    introSubtitle: "Bolt every real Door Checker power onto the board. Leave the Raccoon's look-alikes in the tray.",
+    introIcon: "🚪",
+    posterTitle: "🚪 DOOR CHECKER POWER BOARD",
+    trayPrompt: "Tap a power a Door Checker really uses",
+    placedToast: "BOLTED ON!",
+    wrongTitle: "That is not a Door Checker power",
+    completeTitle: "Power board complete!",
+    completeLine: "Every power bolted on. No painted sign gets past you now.",
+    countLabel: "POWERS BOLTED ON",
+    accent: "#d9a441",
   },
 } as const;
 
@@ -209,7 +296,7 @@ export default function TeamPoster({
   // Case skin: the how-to is spoken inline (audio-only) with its text in the
   // tray prompt, instead of the floating CoachCaption toast, so nothing ever
   // sits on top of the bottom row of tiles (owner: captions never cover content).
-  const inlineCoach = skin === "case";
+  const inlineCoach = sk.inlineCoach;
   const [howto, setHowto] = useState(false);
 
   // Anti-sequence: the tray tiles are dealt in a random order every play
@@ -239,7 +326,9 @@ export default function TeamPoster({
 
   // Spoken verdicts (owner 2026-09-12): "That's right!" leads the pinned
   // clue's note; a decoy speaks through WrongAnswerPanel. Taps wait for her.
-  const verdict = useVerdictVoice();
+  // Explicitly keyed to "adam" like every other clip lookup in this file (the
+  // hook already defaults to "adam", so this changes nothing for W3/W11).
+  const verdict = useVerdictVoice(voice);
 
   // Completion waits for the last spoken note so two voices never overlap.
   useEffect(() => {
@@ -259,8 +348,20 @@ export default function TeamPoster({
 
   const held = noteSpeaking || howto || verdict.speaking;
 
+  // Synchronous latch on the judged tap. `held` / `feedback` / `placedIds` are
+  // all state, so two taps inside one tick both read the stale values and both
+  // score. The ref is written before React re-renders, so the second is
+  // refused. It reopens the moment nothing is speaking (the effect below),
+  // which covers both the advance and a wrong answer.
+  const tappingRef = useRef(false);
+  useEffect(() => {
+    if (!held && !feedback) tappingRef.current = false;
+  }, [held, feedback]);
+
   const tap = (tile: PosterTile, idx: number) => {
     if (showIntro || finished || placed(tile.id) || feedback || held) return;
+    if (tappingRef.current) return;
+    tappingRef.current = true;
     setHasInteracted(true);
     onAnswered?.({
       questionKey: `poster-${tile.id}`,
@@ -293,14 +394,17 @@ export default function TeamPoster({
         explanation: tile.note,
         tip: hints?.tier1,
       });
+      // The child stays on the same board and retries, so the latch reopens
+      // as soon as the teach panel is dismissed (see the effect above).
+      tappingRef.current = false;
     }
   };
 
   const stars = wrongCount === 0 ? 3 : wrongCount <= 2 ? 2 : 1;
-  const cols = Math.min(teamTiles.length, skin === "case" ? 5 : 4);
+  const cols = Math.min(teamTiles.length, sk.maxCols);
 
   return (
-    <ExerciseFrame maxWidth={820} decor>
+    <ExerciseFrame maxWidth={820} decor background={sk.frameBg}>
       {fx.layer()}
       {verdict.element}
 
@@ -312,7 +416,7 @@ export default function TeamPoster({
           narration={introNarration}
           threat={threat}
           character={introNarration?.speaker}
-          overlay={skin === "case"}
+          overlay={sk.overlayIntro}
           onDismiss={() => setShowIntro(false)}
         />
       )}
@@ -330,7 +434,11 @@ export default function TeamPoster({
           />
         </div>
       )}
-      {speakNotes && noteSpeaking && readTile && (
+      {/* !showIntro is load-bearing: any narration that starts while the intro
+          overlay is still up clobbers the intro's own clip, its onDone never
+          fires, and the "I'm ready" button stays hidden until the 45 s safety
+          release (SignBingo W14, SenderLineup W15). */}
+      {speakNotes && noteSpeaking && readTile && !showIntro && (
         <div aria-hidden style={AUDIO_ONLY_STYLE}>
           <InfoNarration
             key={`tp-note-${readTile.id}`}
@@ -346,7 +454,7 @@ export default function TeamPoster({
       {/* The poster / board */}
       <div
         style={{
-          maxWidth: skin === "case" ? 700 : 620,
+          maxWidth: sk.boardMaxWidth,
           margin: "0 auto",
           borderRadius: 18,
           padding: "16px 16px 18px",
@@ -364,7 +472,7 @@ export default function TeamPoster({
             letterSpacing: "0.12em",
             color: sk.titleColor,
             marginBottom: 12,
-            textShadow: skin === "case" ? "0 2px 6px rgba(0,0,0,0.5)" : undefined,
+            textShadow: sk.titleShadow,
           }}
         >
           {posterTitle ?? sk.posterTitle}
@@ -379,13 +487,13 @@ export default function TeamPoster({
           {teamTiles.map((slotTile, slotIdx) => {
             const filledId = placedIds[slotIdx];
             const filled = filledId ? teamTiles.find((t) => t.id === filledId) : undefined;
-            const tilt = skin === "case" ? ((slotIdx % 2 === 0 ? -1 : 1) * (1.5 + (slotIdx % 3))) : 0;
+            const tilt = sk.tilt ? ((slotIdx % 2 === 0 ? -1 : 1) * (1.5 + (slotIdx % 3))) : 0;
             return (
               <div
                 key={slotTile.id}
                 style={{
                   minHeight: 116,
-                  borderRadius: skin === "case" ? 8 : 14,
+                  borderRadius: sk.slotRadius,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -414,6 +522,14 @@ export default function TeamPoster({
                     <PixIcon emoji="📌" size={20} />
                   </span>
                 )}
+                {/* Doorway skin: a plaque is bolted on, not pinned. Two CSS
+                    screw heads, so the tray keeps to emoji PixIcon only. */}
+                {filled && sk.screws && (
+                  <>
+                    <span aria-hidden style={{ position: "absolute", top: 6, left: 7, width: 7, height: 7, borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, #fff1cf, #8a6418)" }} />
+                    <span aria-hidden style={{ position: "absolute", top: 6, right: 7, width: 7, height: 7, borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, #fff1cf, #8a6418)" }} />
+                  </>
+                )}
                 {filled ? (
                   <motion.div
                     initial={reduce ? false : { scale: 1.4, opacity: 0 }}
@@ -425,7 +541,7 @@ export default function TeamPoster({
                       {filled.label}
                     </span>
                     {filled.detail && (
-                      <span style={{ fontSize: 10.5, fontWeight: 800, color: "#8a5a12", textAlign: "center" }}>{filled.detail}</span>
+                      <span style={{ fontSize: 10.5, fontWeight: 800, color: sk.detailText, textAlign: "center" }}>{filled.detail}</span>
                     )}
                   </motion.div>
                 ) : (
@@ -457,7 +573,7 @@ export default function TeamPoster({
             textAlign: "center",
             fontSize: 13.5,
             fontWeight: 800,
-            color: howto ? "#ffe0a3" : "#cfe3ff",
+            color: howto ? "#ffe0a3" : skin === "doorway" ? "#e8dcc4" : "#cfe3ff",
             marginBottom: 10,
             transition: "color 0.3s",
           }}
@@ -468,7 +584,7 @@ export default function TeamPoster({
           style={{
             display: "grid",
             // 9 clue cards on the case board read as a balanced 3x3; the poster keeps auto-fit.
-            gridTemplateColumns: skin === "case" ? "repeat(3, minmax(0, 1fr))" : "repeat(auto-fit, minmax(150px, 1fr))",
+            gridTemplateColumns: sk.trayCols,
             gap: 10,
           }}
         >
@@ -496,20 +612,20 @@ export default function TeamPoster({
                     padding: "12px 8px",
                     minHeight: 96,
                     borderRadius: 14,
-                    border: "2px solid rgba(125,240,255,0.4)",
-                    background: "linear-gradient(165deg, rgba(0,229,255,0.1), rgba(12,18,48,0.92))",
-                    color: "#eaf9ff",
+                    border: sk.trayBorder,
+                    background: sk.trayBg,
+                    color: sk.trayText,
                     fontFamily: "inherit",
                     cursor: held ? "wait" : "pointer",
                     opacity: held ? 0.75 : 1,
-                    boxShadow: "0 12px 26px -16px rgba(0,229,255,0.7)",
+                    boxShadow: sk.trayShadow,
                     touchAction: "manipulation",
                   }}
                 >
                   <PixIcon emoji={tile.icon} size={30} />
                   <span style={{ fontSize: 13, fontWeight: 900, lineHeight: 1.25, textAlign: "center" }}>{tile.label}</span>
                   {tile.detail && (
-                    <span style={{ fontSize: 10.5, fontWeight: 700, color: "#9fb1ff", textAlign: "center" }}>{tile.detail}</span>
+                    <span style={{ fontSize: 10.5, fontWeight: 700, color: sk.trayDetail, textAlign: "center" }}>{tile.detail}</span>
                   )}
                 </motion.button>
               );

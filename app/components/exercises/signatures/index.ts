@@ -145,8 +145,27 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
   proofScale: dynamic(() => import("./ProofScale"), { ssr: false }),
   // Week 6 · Safe Sharing — goalkeeper block: high-five badges, deny imposters.
   lobbyKeeper: dynamic(() => import("./LobbyKeeper"), { ssr: false }),
-  // Week 16 · QR & Links — superimpose your trusted key over each door's pattern.
-  keyholeCheck: dynamic(() => import("./KeyholeCheck"), { ssr: false }),
+  // Week 16 · QR & Links — hunt your keyring for the sender each door claims.
+  // Rebuilt to the Learn-Loop standard (data-driven, tap-only, untimed), so its
+  // `onComplete(score)` does not fit this registry's score-less `onComplete()`.
+  // This adapter keeps the legacy mount compiling and playable on the game's
+  // built-in default keyring and doors, and passes the screen's spoken intro
+  // and payoff through to the beats that speak them.
+  keyholeCheck: dynamic(
+    async () => {
+      const { default: KeyholeCheck } = await import("./KeyholeCheck");
+      function KeyholeCheckSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(KeyholeCheck, {
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      KeyholeCheckSignature.displayName = "KeyholeCheckSignature";
+      return KeyholeCheckSignature;
+    },
+    { ssr: false },
+  ),
   // Week 17 · Followers — pan the brag-crowd 100 down to your 6 real friends.
   friendPanner: dynamic(() => import("./FriendPanner"), { ssr: false }),
   // Week 18 · Shared Devices — flick every app shut, then look back and lock up.
