@@ -2,31 +2,43 @@ import type { WeekContent } from "./types";
 import { WEEK_INTROS } from "./weekIntros";
 
 /**
- * Week 16 - QR Codes & Links: Don't Take the Bait
+ * Week 16 - QR Codes & Links: Don't Take the Bait.
  *
- * Built to the locked Cyber Heroes template:
+ * Rebuilt to the Learn-Loop Build Standard v0.10. World: THE DOORWAY MAZE -
+ * a corridor of doors where every link and every QR code is a door. The SIGN
+ * is what the door promises. Where it actually opens is a separate question.
  *
- *   Opening video  -> alert -> mission brief
+ *   video -> alert -> ATLAS briefing -> mission
  *   5 BEATS, each = Learn (info) -> Game -> Prove (quickCheck) -> recap:
- *     1 DOORWAY  a link is a door you can't see through | reveal        | finish
- *     2 PEEK     read the address under the plaque      | plaquePeek    | speed
- *     3 PEEL     fake QR stickers on real posters       | hookSort      | lie
- *     4 GLASS    clear links vs frosted short-links     | replyCards    | recall
- *     5 BARRIER  unsure = stop and ask                  | chooseYourPath| order
- *   Consolidation (cyberScanner, Corridor Check skin) -> boss
- *   (placeholder quiz boss - the bespoke W16 fight is designed with the
- *   boss batch) -> closing video -> debrief -> stickers -> completion.
+ *     1 SIGN     the sign is not the destination   | phishInspector "plate" | recall
+ *     2 KEYRING  is this sender one of yours       | keyholeCheck (signature)| finish
+ *     3 STICKER  a fake pasted over a real code    | stickerPeel NEW         | lie
+ *     4 GLASS    you can read a link, not a code   | glassCheck NEW          | order
+ *     5 BARRIER  cannot tell? wheel out the barrier| popupPanic "barrier"    | speed
+ *   review (teamPoster, poster skin) -> boss -> video -> debrief -> stickers
+ *   -> completion. 30 screens, no game before Learn 1.
  *
- * Game freshness: RevealBoard returns after a 2-week rest as the Door
- * Swing (its four cards ARE doors this week); beat 2 debuts the small
- * NEW plaquePeek engine (clueBoard ran only last week - same call as
- * W13's signBingo) with a lift-then-judge rhythm no other drill has;
- * hookSort's fourth outing 2 weeks after W14 re-dressed as the Sticker
- * Peel; replyCards returns 5 weeks after W11 back in its W5 DOORS skin
- * (clear-glass vs frosted link-doors); chooseYourPath carries the
- * barrier rule. Lane-clean: doors/addresses/QR stickers/short links -
- * fake SENDERS stay W4's lane, app stores W9's, pop-up X-hunting W7's.
- * In-week flavour: the Doorway Trick.
+ * **The signature is CONVERTED but RE-VERBED.** `keyholeCheck` used to lay a key
+ * over a door and flash the ONE tooth that disagreed on a copycat. That verb,
+ * "spot the one difference in a lookalike", is already Week 4 (the lookalike
+ * sender), Week 9 (count the whiskers) and Week 14 (compare two pictures). A
+ * fourth would be repetition. It now asks whether the sender is on the child's
+ * keyring AT ALL: possession, not comparison. A door you cannot match to
+ * somebody you actually know does not get opened, however good the sign looks.
+ *
+ * Engine allocation (see RETHEME_ALLOWED[16] in scripts/audit-engine-reuse.mjs):
+ * - stickerPeel and glassCheck are NEW. stickerPeel's verb is PRESS A CORNER AND
+ *   SEE IF IT LIFTS, and it deliberately shows no tilt, shadow or bubble before
+ *   the press: a visible tell would teach a child to eyeball a code instead of
+ *   doing the test. glassCheck's verb is READ THE PANE OR ADMIT YOU CANNOT, and
+ *   its whole point is that "I cannot read this" is a complete answer.
+ * - phishInspector returns from Week 4 as the address plate: concept re-theme 1.
+ * - popupPanic returns from Week 3 as the barrier: concept re-theme 2.
+ * - teamPoster returns from Week 3 as the review.
+ *
+ * Lane-clean: DOORS. Scam feelings and the hurry-up trick were Week 4, stranger
+ * red flags Week 3, device switches Week 14. This week is only ever about what
+ * is behind a link or a code, and what you can tell before you walk through.
  */
 export const WEEK_16: WeekContent = {
   weekNumber: 16,
@@ -40,8 +52,8 @@ export const WEEK_16: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the doorway trick
-    { type: "video", videoPlaceholder: "Week 16: The Doorway Trick", videoSrc: "/videos/module-16-intro.mp4" },
+    // 0 - OPENING VIDEO: the doorway maze
+    { type: "video", videoPlaceholder: "Week 16: Don't Take the Bait", videoSrc: "/videos/module-16-intro.mp4" },
 
     // 1 - ALERT: incident report
     {
@@ -49,839 +61,1046 @@ export const WEEK_16: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-16.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes - but the doors open onto his slide. He's even pasting his own sticker-codes OVER real ones on posters and menus. This week you become a Door Checker. Peek at every address. Peel test the stickers. Pick the see-through doors. And when you can't tell? Wheel out the barrier and ask.",
-      photoCaption: "Wk 16 - The Doorway Trick",
+      caption: "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors, and he paints their signs with parties and prizes while the doors open onto his slide. He is even pasting his own sticker-codes over real ones on posters and menus. This week you become a Door Checker. Read the address. Run the peel test. Know which doors you simply cannot see through. And when you cannot tell, wheel out the barrier and ask.",
+      photoCaption: "Wk 16 - The Doorway Maze",
       ctaLabel: "See the Mission →",
     },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    // 2 - WEEK INTRO: ATLAS (Mission Command) briefing
     { type: "weekIntro", ...WEEK_INTROS[16] },
 
-    // 2 - Mission brief
+    // 3 - Mission brief
     {
       type: "mission",
       objectives: [
-        "Know that links and QR codes are doorways",
-        "Peek at the address before you walk through",
-        "Unsure? Stop at the barrier and ask",
+        "Know that every link and code is a doorway",
+        "Read the address, or admit you cannot",
+        "Cannot tell? Wheel out the barrier and ask",
       ],
     },
 
-    // Signature mini-game (bespoke to this week)
-    {
-      type: "signature",
-      mechanic: "keyholeCheck",
-      title: "The Keyhole Check",
-      narration: {
-        speaker: "adam",
-        lines: [
-          "[excited] Drag your trusted key onto each door in the maze!",
-          "Check every tooth to see if the patterns match.",
-          "All green means unlock it. One red tooth? Chain it shut!",
-        ],
-      },
-    },
-
-    /* ─────────── BEAT 1 · A DOOR YOU CAN'T SEE THROUGH ─────────── */
-    // 3 - Learn
+    /* BEAT 1 - THE SIGN IS NOT THE DOOR */
+    // 4 - Learn
     {
       type: "info",
+      conceptNumber: 1,
+      conceptTotal: 5,
       title: "A Door You Can't See Through",
       content:
-        "Every link is a doorway to another place on the internet - and here's the trick: the sign ON the door can say ANYTHING. 'Party photos!' 'Free coins!' The person who BUILT the door chooses where it really goes, not the sign. A QR code is the same thing wearing a disguise: a door made of dots that only a scanner can read. Pretty door doesn't mean safe place. Heroes check before they walk.",
+        "Every link and every QR code is a DOOR. Here is the thing about doors: the sign hanging on one is painted by whoever put it there. A door can say FREE PUPPIES in lovely letters and open onto a broom cupboard. The sign is a promise, not a destination, and anybody can paint a sign. So a Door Checker learns the one habit that beats all of it: never judge the door by the sign. Look at the address plate, which is the small bit that says where the door actually goes.",
       bullets: [
-        "A link is a doorway to another place",
-        "The door's sign can say ANYTHING",
-        "A QR code is a door made of dots",
-        "A pretty door is NOT a safe place",
-        "Heroes check before they walk",
+        "Every link and every code is a door",
+        "The sign is painted by whoever made the door",
+        "A lovely sign can open onto anywhere",
+        "The address plate says where it really goes",
+        "Never judge a door by its sign",
       ],
-      bulletIcons: ["🚪", "🏷️", "🔣", "🎭", "👀"],
+      bulletIcons: ["🚪", "🎨", "🪤", "🔍", "✋"],
       emblem: "🚪",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Week sixteen - the doorway week!",
-          "Every link is a door to somewhere else.",
-          "But the sign on the door? It can say ANYTHING.",
-          "A QR code is just a door made of dots.",
-          "[warmly] The builder picks where it goes - not the sign.",
-          "[excited] Four doors ahead. Swing them open and SEE!",
+          "[warmly] Welcome to the Doorway Maze, Cyber Hero. Doors as far as you can see.",
+          "Every link you tap and every code you scan is one of these. A door.",
+          "[thinking] And here is the thing about a door. The sign on it was painted by whoever put it there.",
+          "A door can say FREE PUPPIES in beautiful letters and open straight onto a broom cupboard.",
+          "So we never judge a door by its sign. We read the little address plate instead.",
+          "[excited] Let's go and inspect some plates together!",
         ],
       },
     },
-    // 4 - Game: REVEAL (RevealBoard re-dress - the Door Swing)
+    // 5 - Game: PLATE (PhishInspector, doorway skin).
+    // Sarah speaks linkNote only, never linkText, so the address it shows must
+    // also be said inside linkNote or the child never hears it. whyWrong falls
+    // back to a component default, which would be SILENT, so every door has one.
     {
-      type: "reveal",
-      title: "The Door Swing",
-      subtitle: "Four pretty doors, four shiny signs. Swing each one open and see where it REALLY goes.",
-      boardIcon: "🚪",
-      items: [
+      type: "phishInspector",
+      skin: "doorway",
+      introTitle: "The Address Plate",
+      introSubtitle: "Doors in the maze. Tap all four clues on each one, then decide: walk through, or turn it away.",
+      introIcon: "🚪",
+      signCaption: "WHAT THE SIGN SAYS",
+      plateCaption: "WHERE IT REALLY OPENS",
+      counterLabel: "Door",
+      headerLabel: "THE DOORWAY MAZE",
+      zapLabel: "TURN IT AWAY",
+      safeLabel: "WALK THROUGH",
+      zapToast: "TURNED AWAY!",
+      safeToast: "STRAIGHT THROUGH!",
+      wrongTitle: "Read the plate again",
+      completeTitle: "Every door checked!",
+      completeLine: "You read the plate on all of them, even the pretty ones.",
+      zoneLabels: {
+        sender: "Who it's from",
+        link: "The address plate",
+        urgency: "Any rushing?",
+        claim: "What it promises",
+      },
+      zoneQuestions: {
+        sender: "Check the sender",
+        link: "Read the plate",
+        urgency: "Is it hurrying you?",
+        claim: "Check the promise",
+      },
+      threat: {
+        raccoonLine: "I paint my signs BEAUTIFULLY. Big letters, bright colours, lovely promises. Nobody ever crouches down to read the little plate at the bottom.",
+      },
+      emails: [
         {
-          id: "party",
-          label: "The Party Door",
-          icon: "🎉",
-          steps: [
-            { icon: "🏷️", text: "The sign reads: 'Class party photos - this way!'" },
-            { icon: "🚪", text: "It swings open onto... the class photo album. Real!" },
-            { icon: "✅", text: "The address and the sign say the SAME thing." },
-          ],
-          counter: "Some doors are honest - this one goes exactly where it says.",
+          id: "school-trip",
+          sender: "Northside Elementary",
+          subject: "Sports day letter for your grown-up",
+          body: "The letter about sports day is ready. Open it with a grown-up when you get a minute.",
+          isPhishing: false,
+          readAloud: "A door from Northside Elementary. Sports day letter for your grown-up. The letter about sports day is ready, open it with a grown-up when you get a minute.",
+          why: "The plate says your school, the sign matches the plate, and nothing is rushing you. That door is exactly what it says it is.",
+          whyWrong: "Read the plate again. It says your own school, and the sign is asking you to take a letter to a grown-up. Nothing here is a trick.",
+          inspections: {
+            senderNote: "Northside Elementary is your actual school, and it is on your keyring.",
+            senderIsRedFlag: false,
+            linkText: "northside-elementary.sch.uk",
+            linkNote: "The plate reads northside dash elementary dot s c h dot u k, which is your school's real address.",
+            linkIsRedFlag: false,
+            urgencyNote: "When you get a minute. Nothing is counting down at you.",
+            urgencyIsRedFlag: false,
+            claimNote: "It promises a letter about sports day, which is a very ordinary thing for a school to send.",
+            claimIsRedFlag: false,
+          },
         },
         {
-          id: "prize",
-          label: "The Prize Door",
-          icon: "🎁",
-          steps: [
-            { icon: "🏷️", text: "The sign shouts: 'FREE ROBUX - CLICK HERE NOW!'" },
-            { icon: "🚪", text: "It swings open onto... the Raccoon's slide. Wheee - trapped!" },
-            { icon: "🦝", text: "He painted the sign himself. Signs are just paint." },
-          ],
-          counter: "The sign said prizes; the room was a trap. Paint promises nothing.",
+          id: "free-tablet",
+          sender: "Prize Club",
+          subject: "CLAIM YOUR FREE TABLET NOW!",
+          body: "You have been chosen! Tap within 10 minutes or your free tablet goes to somebody else!",
+          isPhishing: true,
+          readAloud: "A door from Prize Club. Claim your free tablet now! You have been chosen, tap within ten minutes or your free tablet goes to somebody else.",
+          why: "A prize nobody entered, a ten minute countdown, and a plate that is not a single place you know. That door is all paint.",
+          whyWrong: "Look at Prize Club's plate and its clock. The address is a stranger and there is a countdown on it, which is the hurry-up trick doing its job.",
+          inspections: {
+            senderNote: "Prize Club is on nobody's keyring, and you never entered anything.",
+            senderIsRedFlag: true,
+            linkText: "free-tablet-now.prizeclub.xyz",
+            linkNote: "The plate reads free dash tablet dash now dot prizeclub dot x y z, which is not one single place you have ever been.",
+            linkIsRedFlag: true,
+            urgencyNote: "Tap within ten minutes. A countdown is there to stop you reading the plate at all.",
+            urgencyIsRedFlag: true,
+            claimNote: "A free tablet for a competition you never entered. Prizes do not arrive out of nowhere.",
+            claimIsRedFlag: true,
+          },
         },
         {
-          id: "dots",
-          label: "The Dot Door",
-          icon: "🔣",
-          steps: [
-            { icon: "🔣", text: "This door has no words at all - just a square of dots." },
-            { icon: "❓", text: "Can you read where it goes? Nobody can - only a scanner." },
-            { icon: "👀", text: "A door you can't read needs a grown-up's check FIRST." },
-          ],
-          counter: "A QR is a door humans can't read - so you check before you scan.",
+          id: "library-club",
+          sender: "The library",
+          subject: "Summer reading club starts Saturday",
+          body: "Your reading club starts Saturday at ten. Ask a grown-up to bring you along.",
+          isPhishing: false,
+          readAloud: "A door from the library. Summer reading club starts Saturday. Your reading club starts Saturday at ten, ask a grown-up to bring you along.",
+          why: "The library is on your ring, the plate says the library, and it points you at a grown-up rather than away from one.",
+          whyWrong: "Have another look at the plate. It says the library, which is a place you know, and it asks you to bring a grown-up along.",
+          inspections: {
+            senderNote: "The library is a real place you go to, and it is on your keyring.",
+            senderIsRedFlag: false,
+            linkText: "library.gov.uk/reading",
+            linkNote: "The plate reads library dot gov dot u k slash reading, which is the library's own address.",
+            linkIsRedFlag: false,
+            urgencyNote: "Saturday at ten. That is a time, not a countdown.",
+            urgencyIsRedFlag: false,
+            claimNote: "It promises a reading club and asks for a grown-up. Nothing is being dangled at you.",
+            claimIsRedFlag: false,
+          },
         },
         {
-          id: "twin",
-          label: "The Twin Door",
-          icon: "🎭",
-          steps: [
-            { icon: "🚪", text: "It looks EXACTLY like your game's real front door..." },
-            { icon: "🔍", text: "But peek: the address says 'pixel-petz' - Z, not S." },
-            { icon: "🦝", text: "One letter off. A copycat room behind a copied door." },
-          ],
-          counter: "Copy-doors wear the real door's paint - the address gives them away.",
+          id: "game-coins",
+          sender: "Games Hub Support",
+          subject: "500 FREE COINS for your account!",
+          body: "Log in here to collect your 500 free coins before they expire tonight!",
+          isPhishing: true,
+          readAloud: "A door from Games Hub Support. Five hundred free coins for your account! Log in here to collect your five hundred free coins before they expire tonight.",
+          why: "A log in box, a plate that only wears the game's name, and coins that do not exist. Log in here is fishing for your password.",
+          whyWrong: "Read the plate slowly. It only looks like the game's address, and a door asking you to log in is after the password, not giving you coins.",
+          inspections: {
+            senderNote: "Games Hub Support sounds official, and support never comes to find you with presents.",
+            senderIsRedFlag: true,
+            linkText: "gameshub-rewards.co/login",
+            linkNote: "The plate reads gameshub dash rewards dot c o slash login, which is not the game's address, it just wears its name.",
+            linkIsRedFlag: true,
+            urgencyNote: "Before they expire tonight. Another countdown, doing exactly the same job as the last one.",
+            urgencyIsRedFlag: true,
+            claimNote: "Free coins that need you to log in. Free game money does not exist, and the log in box is the real ask.",
+            claimIsRedFlag: true,
+          },
         },
       ],
-      finale: "Four swings, one truth: the sign doesn't choose where a door goes - the BUILDER does. So Door Checkers peek first.",
+      hints: {
+        tier1: "Ignore the sign completely. Crouch down and read the plate at the bottom.",
+        tier2: "A plate that names a place you actually go is fine. A plate you have never seen, or one that only wears a familiar name, is not.",
+      },
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] The Door Swing - four doors, four signs!",
-          "Every sign makes a promise.",
-          "[whispers] Swing each door open...",
-          "and see if the promise was TRUE. Go!",
+          "[excited] Here is your first challenge, Cyber Hero. The Address Plate!",
+          "This game is all about reading where a door really goes.",
+          "Out in the real world, the sign is the loud bit and the plate is the true bit.",
+          "So here is what you do.",
+          "A door comes up with a sign on it and a little brass plate underneath.",
+          "Tap all four clues to look at them, and I will read each one out.",
+          "[warmly] Then decide: WALK THROUGH, or TURN IT AWAY. Four doors. Off you go.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Tap any door to swing it open - where does it REALLY go?"],
+        lines: ["Tap all four clues on the door, then choose WALK THROUGH or TURN IT AWAY."],
+      },
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Four doors read, Cyber Hero, and you never once went by the sign.",
+          "Your school and the library opened. The tablet and the coins did not.",
+          "[warmly] And the two you turned away had the prettiest signs of the lot.",
+        ],
       },
     },
-    // 5 - Prove: FINISH
+    // 6 - Prove: RECALL
     {
       type: "quickCheck",
-      mode: "finish",
-      prompt: "A link is a ___.",
+      mode: "recall",
+      prompt: "A link says WIN A FREE BIKE. What does that tell you about where it goes?",
       choices: [
-        { text: "doorway", isCorrect: true },
-        { text: "promise", isCorrect: false },
-        { text: "prize", isCorrect: false },
-        { text: "friend", isCorrect: false },
+        { text: "Nothing at all. The sign is just paint", isCorrect: true },
+        { text: "It goes to a bike competition", isCorrect: false, why: "That is what the sign promises. Whoever made the door chose those words, and they can choose anything." },
+        { text: "It must be real, it named a prize", isCorrect: false, why: "Naming a prize is the easiest part of painting a sign. It costs nothing." },
+        { text: "It is safe, because it is only a link", isCorrect: false, why: "A link is a door. Doors go somewhere, and this one has not told you where." },
       ],
-      praise: "A DOORWAY - and the sign never chooses where it goes. ✓",
+      praise: "Nothing at all. The sign is just paint. ✓",
+      nudge: "Who chose those words, and what did it cost them?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] That's it!",
+          "The sign tells you what somebody WANTS you to think.",
+          "It never tells you where the door goes.",
+          "[warmly] Only the address plate does that.",
+        ],
+      },
     },
-
-    // 6 - Recap · Concept 1 of 5
+    // 7 - Recap . Concept 1 of 5
     {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "A link is a doorway and a QR is a door made of dots - the sign can say anything; the builder picks where it goes.",
-      next: "the little plaque under every sign - and how to read it",
+      learned: "Every link and code is a door, and the sign on it is painted by whoever made it, so it promises nothing.",
+      next: "how a Door Checker knows which doors are theirs",
       emblem: "🚪",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Power one - you've seen behind the paint!",
-          "Signs promise. Builders decide.",
-          "[whispers] But every door hides a little plaque with the TRUTH on it...",
-          "Time to learn the Door Checker's peek.",
+          "[proud] One power down, Cyber Hero. You read plates now, not paint.",
+          "A sign is a promise. An address is a fact.",
+          "[whispers] But plenty of doors do not even have a plate you can read...",
+          "Next, we'll learn how a Door Checker knows which doors are theirs. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 2 · PEEK BEFORE YOU WALK ─────────── */
-    // 7 - Learn
+    /* BEAT 2 - YOUR KEYRING */
+    // 8 - Learn
     {
       type: "info",
+      conceptNumber: 2,
+      conceptTotal: 5,
       title: "Peek Before You Walk",
       content:
-        "Here's the Door Checker's secret: under every shiny sign hides a little plaque - the ADDRESS. That's the door's true name, and it can't lie like the paint can. On a tablet or phone, press and HOLD a link - the real address pops up. That's the plaque. Lift it and READ it: does it say the same thing as the sign? 'sunnyside-school.edu/field-day' matches a field-day door. 'prize-grab.win' under a 'school photos' sign? The sign and the plaque disagree - and when they disagree, believe the PLAQUE.",
+        "Here is the Door Checker's real tool, and it is simpler than checking every letter of an address. You carry a KEYRING. On it are the people and places you actually know: your mum, your school, the library, your football club. When a door claims to be from one of them, you look at the ring. If they are on it, fine. If a door says it is from somebody who is not on your ring at all, there is no key for it, and no amount of friendly paint changes that. You do not have to prove a door is bad. It has to prove it is yours.",
       bullets: [
-        "Under every sign hides the ADDRESS",
-        "The address is the door's true name",
-        "Lift the plaque and READ it",
-        "Sign and address should MATCH",
-        "They disagree? Believe the address",
+        "Your keyring is the people and places you know",
+        "Mum, school, the library, your club",
+        "A door claims a sender; check the ring",
+        "Not on the ring means no key, so no entry",
+        "A door has to prove it is yours, not the other way round",
       ],
-      bulletIcons: ["🔍", "🆔", "👀", "✅", "🚫"],
-      emblem: "👀",
+      bulletIcons: ["🔑", "👪", "🏫", "🚫", "🛡️"],
+      emblem: "🔑",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[whispers] Come close - the Door Checker's secret.",
-          "Under every shiny sign hides a little plaque.",
-          "The ADDRESS. The door's true name.",
-          "Paint can lie. The plaque can't.",
-          "[warmly] Sign and plaque should say the SAME thing.",
-          "[excited] Five doors in the corridor - lift every plaque!",
+          "[warmly] Now for the Door Checker's real tool, Cyber Hero. It is simpler than you think.",
+          "You carry a keyring. On it are the people and places you actually know.",
+          "Your mum. Your school. The library. Your football club.",
+          "[thinking] A door claims to be from somebody. You look at your ring.",
+          "Not on the ring? Then there is no key for that door, and the paint does not matter.",
+          "[excited] Come and try the ring on a few doors!",
         ],
       },
     },
-    // 8 - Game: INSPECT (NEW plaquePeek - the Address Peephole)
+    // 9 - Game: RING (the week's own signature, now tap-only and re-verbed)
     {
-      type: "plaquePeek",
-      introTitle: "The Address Peephole",
-      introSubtitle: "Five doors in the corridor, each wearing a shiny sign. Lift every plaque, read the REAL address, then make the call!",
-      introIcon: "🚪",
-      peekPrompt: "LIFT THE PLAQUE - READ THE REAL ADDRESS",
-      matchLabel: "GOES WHERE IT SAYS",
-      sneakyLabel: "SNEAKY DOOR!",
-      matchToast: "HONEST DOOR!",
-      sneakyToast: "SNEAKY DOOR CAUGHT!",
-      wrongTitle: "Read the plaque again!",
-      completeTitle: "Every plaque peeked!",
-      completeLine: "Five signs, five addresses - and you believed the plaque every time.",
+      type: "keyholeCheck",
+      introTitle: "Your Keyring",
+      introSubtitle: "Doors down the corridor, each claiming a sender. Lift the key that matches, or lift NO KEY, then commit.",
+      introIcon: "🔑",
+      ringLabel: "YOUR KEYRING",
+      openLabel: "OPEN IT",
+      chainLabel: "CHAIN IT",
+      askPrompt: "Is this sender on your ring?",
+      completeTitle: "Every door checked!",
+      completeLine: "Two opened, and the rest never got a key.",
+      threat: {
+        raccoonLine: "I paint my doors the SAME bright colours as the real ones. Same letters, same sparkles. Nobody has ever once stopped to ask whose door it actually is.",
+      },
+      keyring: [
+        { id: "mum", label: "Mum", icon: "🏠" },
+        { id: "school", label: "My school", icon: "🏫" },
+        { id: "club", label: "My swim club", icon: "🏅" },
+        { id: "zak", label: "My friend Zak", icon: "💬" },
+      ],
       doors: [
         {
-          id: "sports",
-          claim: "School Field Day Photos",
-          icon: "🏫",
-          address: "sunnyside-school.edu/field-day",
-          matches: true,
-          note: "Look again - the school's own name, saying exactly what the sign said. When sign and address agree, the door is honest.",
+          id: "mum-photos",
+          claim: "From: Mum",
+          sign: "Photos from the weekend!",
+          icon: "🏠",
+          readAloud: "First door. It says it is from Mum, with photos from the weekend.",
+          keyId: "mum",
+          why: "Mum is right there on your ring, so there is a key for this one and the door opens.",
+          explanation: "Look along the ring again. Mum is on it, so this door does have a key.",
         },
         {
-          id: "coins",
-          claim: "FREE GAME COINS!",
+          id: "prize-palace",
+          claim: "From: Prize Palace",
+          sign: "YOU WON! Claim your free coins!",
           icon: "🎁",
-          address: "raccoon-coins.prize-grab.win",
-          matches: false,
-          note: "The sign said free coins - the address says PRIZE-GRAB. When the sign and the plaque disagree, believe the plaque.",
+          readAloud: "Next door. From somewhere called Prize Palace, saying you have won free coins.",
+          keyId: null,
+          why: "Prize Palace is on nobody's ring. No key, so it gets chained, and the shouting about coins changes nothing.",
+          explanation: "Check the ring once more. There is no Prize Palace on it, so there is no key for this door.",
         },
         {
-          id: "museum",
-          claim: "Dino Museum Tickets",
-          icon: "🌍",
-          address: "dino-museum.org/tickets",
-          matches: true,
-          note: "Museum name, ticket page - the plaque agrees with the sign. That's what an honest door looks like.",
+          id: "swim-partner",
+          claim: "From: your swim club's new prize partner",
+          sign: "Free kit for every swimmer. Scan me!",
+          icon: "🏅",
+          readAloud: "This door says it is from your swim club's new prize partner, offering free kit.",
+          keyId: null,
+          why: "Your swim club is on the ring. A partner of theirs is not, and borrowing a name you trust is the oldest trick down here.",
+          explanation: "Read the claim slowly. Your club is on the ring, but this door is not from your club. It is from somebody standing next to the name.",
         },
         {
-          id: "parcel",
-          claim: "Your Package Is Waiting!",
-          icon: "✉️",
-          address: "package-track.deliveree-prizes.biz",
-          matches: false,
-          note: "A package door whose address says PRIZES and isn't a delivery company at all? Sign and plaque disagree - sneaky door.",
+          id: "games-hub",
+          claim: "From: Games Hub",
+          sign: "Scan for 500 free coins!",
+          icon: "🎮",
+          readAloud: "A door from Games Hub, with a code for five hundred free coins.",
+          keyId: null,
+          why: "Games Hub is not on your ring, so it never gets a key, however good five hundred coins sounds.",
+          explanation: "Games Hub is not one of yours. Nothing on the ring matches it, so there is no key to lift.",
         },
         {
-          id: "cartoons",
-          claim: "Watch Cartoons Now",
-          icon: "📱",
-          address: "cart00ns-4-free.tv",
-          matches: false,
-          note: "Peek closer: cart-zero-zero-ns. Zeros dressed up as letters - the classic copycat trick. Sneaky!",
+          id: "school-letter",
+          claim: "From: My school",
+          sign: "Sports day letter for your grown-up",
+          icon: "🏫",
+          readAloud: "Last door, and this one says it is from your school, with the sports day letter.",
+          keyId: "school",
+          why: "Your school is on the ring, so this one opens. Checking the ring is not about chaining everything.",
+          explanation: "Have another look. Your school is on the ring, so this door has a key waiting for it.",
         },
       ],
       hints: {
-        tier1: "Read the plaque out loud - does it say the SAME thing as the shiny sign?",
-        tier2: "Honest = the name matches the sign. Sneaky = prize-grab words, wrong names, zeros dressed as letters.",
+        tier1: "Read who the door says it is FROM, then look down your ring for that exact name.",
+        tier2: "If the name is not on the ring, lift NO KEY. A partner or a friend-of is not the same as the name itself.",
       },
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] The corridor of doors is open!",
-          "Every sign makes its promise...",
-          "[whispers] but the truth hides under the plaque.",
-          "Lift it. Read it. Make the call!",
+          "[excited] Your second challenge, Cyber Hero. Your Keyring!",
+          "This game is all about whether a door belongs to somebody you actually know.",
+          "Out in the real world, that one question sorts almost every door there is.",
+          "So here is what you do.",
+          "A door slides in and says who it is from. Your keyring sits underneath it.",
+          "Tap the key that matches, or tap the NO KEY tag at the end of the ring.",
+          "[warmly] Then press the big button to commit. Five doors. Off you go.",
         ],
       },
       coachLines: {
-        speaker: "layla",
-        lines: ["Tap the glowing plaque first - the real address hides underneath!"],
+        speaker: "adam",
+        lines: [
+          "Tap the key that matches the door, or tap NO KEY if nobody on your ring fits.",
+          "Then press the button underneath: it says OPEN IT for a key, and CHAIN IT for no key.",
+        ],
+      },
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Every door checked, Cyber Hero, and notice what you did NOT do.",
+          "You did not chain the lot. Mum's opened, and so did your school's.",
+          "[warmly] The ring is not about saying no. It is about knowing whose door it is.",
+        ],
       },
     },
-    // 9 - Prove: SPEED
+    // 10 - Prove: FINISH
     {
       type: "quickCheck",
-      mode: "speed",
-      prompt: "Quick - which address matches 'School Field Day Photos'?",
-      speedMs: 9000,
+      mode: "finish",
+      prompt: "Finish the keyring rule: a door does not have to look bad, it has to...",
       choices: [
-        { text: "sunnyside-school.edu/field-day", isCorrect: true },
-        { text: "prize-grab.win/field-day", isCorrect: false },
-        { text: "f1eld-day-free.biz", isCorrect: false },
+        { text: "prove it is one of yours", isCorrect: true },
+        { text: "look a bit suspicious first", isCorrect: false, why: "The good fakes never look suspicious. That is the whole point of painting a nice sign." },
+        { text: "be from somebody famous", isCorrect: false, why: "Famous is not the same as known. Your keyring holds people YOU know, not people everybody knows." },
+        { text: "have a spelling mistake in it", isCorrect: false, why: "Plenty of fakes are spelled perfectly. Waiting for a mistake means missing the tidy ones." },
       ],
-      praise: "Peeked at Door Checker speed - school name, field-day page, perfect match! ✓",
+      praise: "It has to prove it is yours. ✓",
+      nudge: "Whose job is it to prove something here, yours or the door's?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Exactly right!",
+          "You never have to prove a door is bad.",
+          "It has to show you it belongs to somebody on your ring.",
+          "[warmly] That is a much easier job, and it catches the tidy fakes too.",
+        ],
+      },
     },
-
-    // 10 - Recap · Concept 2 of 5
+    // 11 - Recap . Concept 2 of 5
     {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "Under every sign hides the address - the door's true name. Sign and address disagree? Believe the address.",
-      next: "the sticker trick hiding on real posters and menus",
-      emblem: "👀",
+      learned: "Your keyring is the people and places you actually know, and a door that matches nobody on it does not get opened.",
+      next: "the trick where a real code gets covered up",
+      emblem: "🔑",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] Two powers - no plaque escapes that peek!",
-          "Paint lies. Addresses don't.",
-          "[whispers] But the Raccoon's newest trick lives in the REAL world...",
-          "He's been busy with a sticker sheet. Come see.",
+          "[proud] Two powers, Cyber Hero. The ring does the hard work for you.",
+          "On the ring, fine. Not on the ring, no key.",
+          "[whispers] Now. What if somebody covered up a REAL code with their own...",
+          "Next, we'll learn the sticker trick. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 3 · THE STICKER TRICK ─────────── */
-    // 11 - Learn
+    /* BEAT 3 - THE STICKER TRICK */
+    // 12 - Learn
     {
       type: "info",
+      conceptNumber: 3,
+      conceptTotal: 5,
       title: "The Sticker Trick",
       content:
-        "QR codes live on real posters, menus and signs - and real ones are PRINTED, flat and smooth, part of the page. The Raccoon's trick? He prints his OWN dot-door on a sticker and pastes it right on top of the real one. So Door Checkers do the peel test with a grown-up: look at the corner. Printed codes have no edges to lift. A sticker sits crooked, bubbles in the middle, edges you can feel - and a sticker over a code means somebody swapped the door.",
+        "This one happens out in the world, not on a screen. A cafe prints a code on its menu so you can see the puddings. Somebody comes along and sticks their OWN code on top, and now the menu points at their door instead. You cannot spot it by staring, and that is important: a good sticker looks perfectly flat. So Door Checkers do not stare, they TEST. Press a corner with your thumb. Printed ink does not lift, because it is part of the paper. A sticker lifts, every time.",
       bullets: [
-        "Real QR codes are PRINTED flat",
-        "Tricksters paste stickers on top",
-        "Check the corner - the peel test",
-        "Crooked, bubbly, edgy = sticker",
-        "Sticker over a code? Door swapped!",
+        "Somebody sticks their code over a real one",
+        "Menus, posters, parking signs, shop windows",
+        "Staring does not work; a good sticker looks flat",
+        "So press a corner instead of looking",
+        "Ink cannot lift. A sticker always can",
       ],
-      bulletIcons: ["✅", "🏷️", "👀", "🌀", "🚫"],
+      bulletIcons: ["🏷️", "🎨", "👀", "👆", "📌"],
       emblem: "🏷️",
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] The Raccoon bought a sticker sheet...",
-          "He prints his OWN dot-doors,",
-          "and pastes them over real ones. On menus. On posters.",
-          "[warmly] So here's the peel test: look at the corner.",
-          "Printed codes are flat. Stickers have edges.",
-          "[excited] Eight codes coming - peel the fakes OFF!",
+          "[warmly] This one happens out in the world, Cyber Hero. Not on a screen at all.",
+          "A cafe prints a code on its menu. Somebody sticks their own code right on top of it.",
+          "[thinking] And here is the bit that matters. You cannot spot that by staring.",
+          "A good sticker lies perfectly flat. Looking harder will not help you.",
+          "So we do not look. We TEST. Press a corner, and see whether it lifts.",
+          "[excited] Come and run some peel tests with me!",
         ],
       },
     },
-    // 12 - Game: SORT (hookSort re-dress - the Sticker Peel)
+    // 13 - Game: PEEL (new stickerPeel engine)
     {
-      type: "hookSort",
-      introTitle: "The Sticker Peel",
-      introSubtitle: "Posters and menus slide in, one QR code at a time. Printed flat = real, leave it be. Sticker tells = PEEL IT OFF!",
+      type: "stickerPeel",
+      introTitle: "The Peel Test",
+      introSubtitle: "Codes out in the world. Press a corner on each one and see whether it lifts.",
       introIcon: "🏷️",
-      reelLabel: "PRINTED ON",
-      cutLabel: "PEEL IT OFF!",
-      reelToast: "FLAT AND TRUE!",
-      cutToast: "TRICK PEELED AWAY!",
-      wrongScamTitle: "That one's a sticker!",
-      wrongRealTitle: "That one's printed on!",
-      completeTitle: "Every code checked!",
-      completeLine: "Flat and printed stays; crooked, bubbly and pasted peels away. That's the peel test.",
-      items: [
+      boardLabel: "OUT AND ABOUT",
+      peelLabel: "PEEL TEST",
+      stuckLabel: "PRINTED ON",
+      liftedLabel: "IT LIFTED",
+      askPrompt: "Printed on, or stuck on top?",
+      completeTitle: "Every code tested!",
+      completeLine: "You never once guessed. You pressed a corner and found out.",
+      threat: {
+        raccoonLine: "My stickers are beautiful. Flat as anything, straight as a ruler. Nobody has ever once looked at one and thought: I shall put my thumb on that.",
+      },
+      spots: [
         {
-          id: "museum-sign",
-          text: "Museum sign: the code is printed flat, same colors as the whole poster",
-          icon: "🌍",
-          isScam: false,
-          explanation: "Part of the printed design, no edges anywhere - a real door, printed with the sign.",
-        },
-        {
-          id: "cafe-menu",
-          text: "Café menu: a code on a sticker sits crooked OVER another code",
+          id: "menu",
+          place: "the cafe menu",
           icon: "🏷️",
-          isScam: true,
-          explanation: "A code hiding a code is the classic swap - the real door is underneath that sticker.",
+          readAloud: "The cafe menu, with a code at the bottom for the puddings.",
+          isSticker: true,
+          tell: "The corner lifts, and there is a different code printed underneath.",
+          why: "It lifted, so it was a sticker, and the cafe's real code was hiding underneath it all along.",
+          explanation: "Have another look at that menu corner. It came away from the paper, and printed ink cannot do that.",
         },
         {
-          id: "library",
-          text: "Library poster: the code sits inside the design, corners smooth as the paper",
-          icon: "🔠",
-          isScam: false,
-          explanation: "Smooth corners, printed with the poster - the library's own door, exactly as made.",
+          id: "poster",
+          place: "the library poster",
+          icon: "📌",
+          readAloud: "A poster in the library, telling you about the summer reading club.",
+          isSticker: false,
+          tell: "The corner does not move. The code is printed into the poster itself.",
+          why: "Nothing lifted, so that code is part of the poster. The library printed it there themselves.",
+          explanation: "That corner would not budge. When a code is printed into the paper, there is nothing to peel.",
         },
         {
-          id: "bus-stop",
-          text: "Bus-stop ad: one corner of the code is lifting, with an air bubble in the middle",
-          icon: "🌀",
-          isScam: true,
-          explanation: "Lifting corners and bubbles mean STICKER - somebody pasted their door over the ad's.",
+          id: "parking",
+          place: "the car park sign",
+          icon: "🚪",
+          readAloud: "The sign in the car park, where you pay for your ticket.",
+          isSticker: true,
+          tell: "The whole square peels back and a proper printed code sits under it.",
+          why: "The whole square came away. Car park signs are a favourite for this one, because everybody is in a hurry.",
+          explanation: "Press the car park corner again. A whole square lifting off is the clearest sticker there is.",
         },
         {
-          id: "newsletter",
-          text: "School newsletter: the code is printed right on the page with the words",
-          icon: "🏫",
-          isScam: false,
-          explanation: "Printed with the page it lives on - the school built this door itself.",
-        },
-        {
-          id: "game-shop",
-          text: "Game-store window: a shiny new sticker-code slapped across the faded poster",
-          icon: "🎮",
-          isScam: true,
-          explanation: "Brand-new shiny sticker, faded old poster - those two didn't arrive together. Swapped!",
-        },
-        {
-          id: "zoo-map",
-          text: "Zoo map: the code sits flat under the map's shiny cover",
-          icon: "🎨",
-          isScam: false,
-          explanation: "UNDER the cover means it was printed first - no one can paste beneath the plastic.",
-        },
-        {
-          id: "park-gate",
-          text: "Park gate: a sticker-code with edges you can feel, promising 'FREE ICE CREAM'",
-          icon: "🎁",
-          isScam: true,
-          explanation: "Edges you can feel + a too-sweet promise = the Raccoon's sticker sheet at work. Peel it!",
+          id: "shopwindow",
+          place: "the shop window",
+          icon: "🔍",
+          readAloud: "A code in the shop window, next to the opening times.",
+          isSticker: false,
+          tell: "It stays flat. The code is printed on the same card as the opening times.",
+          why: "It stayed put, and it is on the same card as the opening times. That one is the shop's own.",
+          explanation: "Nothing lifted there. It is printed on the same piece of card as everything else in the window.",
         },
       ],
       hints: {
-        tier1: "Check the corner: printed codes are flat; stickers lift, bubble and sit crooked.",
-        tier2: "PRINTED = flat, smooth, part of the design. PEEL = crooked, bubbly, shiny-new, code-over-code.",
+        tier1: "Do not look at it. Press the corner and watch what the corner does.",
+        tier2: "Lifted means a sticker somebody added. Stayed flat means ink that was always there.",
       },
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] The Sticker Peel - posters incoming!",
-          "One code at a time. Check the corner.",
-          "Printed flat? It stays.",
-          "[whispers] Sticker tells? PEEL it off. Go!",
+          "[excited] Your third challenge, Cyber Hero. The Peel Test!",
+          "This game is all about testing a code instead of staring at it.",
+          "Out in the real world, a good sticker looks exactly as flat as printed ink.",
+          "So here is what you do.",
+          "A code comes up on a poster or a menu. Tap PEEL TEST to press its corner.",
+          "Then tap PRINTED ON, or tap IT LIFTED.",
+          "[warmly] Four codes to test. Thumbs at the ready.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["First code is here - flat and printed, or crooked sticker? Make the call!"],
+        lines: ["Tap PEEL TEST first, then make your call."],
+      },
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Every code tested, Cyber Hero, and look how you did it.",
+          "You did not squint at a single one. You pressed a corner and found out.",
+          "[warmly] Two of those were stickers, and neither of them looked like one.",
+        ],
       },
     },
-    // 13 - Prove: LIE
+    // 14 - Prove: LIE
     {
       type: "quickCheck",
       mode: "lie",
-      prompt: "Is that true?",
-      raccoonLine: "a QR sticker pasted on a poster is ALWAYS the real code... nobody would ever stick a fake door on top of a real one!",
+      prompt: "The Raccoon is fibbing about his stickers. Which bit is the lie?",
+      raccoonLine: "You can always SPOT a sticker! They're crooked, they're bubbly, they've got shadows. If it looks neat, it's definitely the real one!",
       choices: [
-        { text: "TRUE", isCorrect: false },
-        { text: "FALSE", isCorrect: true },
+        { text: "A good sticker looks perfectly flat and neat", isCorrect: true },
+        { text: "Stickers only go on menus", isCorrect: false, why: "They turn up on posters, car parks and shop windows too. The place is not the tell." },
+        { text: "You can spot one if you look for ages", isCorrect: false, why: "Looking for ages is still looking. The test is your thumb, not your eyes." },
+        { text: "Real codes are always crooked", isCorrect: false, why: "That is his trick turned round. Neat or crooked tells you nothing either way." },
       ],
-      praise: "Busted - pasting fake doors over real ones is YOUR favorite trick, Raccoon! ✓",
-      nudge: "Who did we just catch pasting sticker-codes over the real ones?",
+      praise: "Caught him. Neat proves nothing. ✓",
+      nudge: "If a sticker were easy to see, would his trick work at all?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Got him!",
+          "If stickers looked crooked and bubbly, nobody would ever fall for one.",
+          "The good ones are flat and tidy. That is why they work.",
+          "[warmly] Which is why we press, instead of peering.",
+        ],
+      },
     },
-
-    // 14 - Recap · Concept 3 of 5
+    // 15 - Recap . Concept 3 of 5
     {
       type: "recap",
       concept: 3,
       total: 5,
-      learned: "Real QR codes are printed flat; stickers lift, bubble and sit crooked - a sticker over a code means the door was swapped.",
-      next: "doors made of glass - some you can see through, some frosted",
+      learned: "A fake code gets stuck over a real one and looks perfectly flat, so you press a corner instead of staring at it.",
+      next: "the doors you cannot read at all, however hard you try",
       emblem: "🏷️",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Three powers - his sticker sheet is USELESS now!",
-          "Corners checked, fakes peeled.",
-          "[whispers] But some doors are made of glass...",
-          "and only SOME of them let you see through. Come look.",
+          "[proud] Three powers, Cyber Hero. Thumb beats eyeball.",
+          "Flat and tidy proves nothing at all. Only the peel does.",
+          "[whispers] Although... some doors cannot be read even when nobody has stuck anything on them...",
+          "Next, we'll learn about clear glass and frosted glass. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 4 · CLEAR GLASS, FROSTED GLASS ─────────── */
-    // 15 - Learn
+    /* BEAT 4 - CLEAR GLASS, FROSTED GLASS */
+    // 16 - Learn
     {
       type: "info",
+      conceptNumber: 4,
+      conceptTotal: 5,
       title: "Clear Glass, Frosted Glass",
       content:
-        "Some links show you their WHOLE address - like a clear glass door: 'sunnyside-school.edu/field-day-album'. You can read exactly where it leads before you touch it. But shortened links - bit.ly, tinyurl - are frosted glass: tiny scrambled letters hiding the whole destination. Frosted isn't always evil... but you CAN'T check it, and Door Checkers don't walk through doors they can't check. Pick the clear door, or hand the frosted one to a grown-up. And remember: words in a message can be paint too - press and HOLD to see the plaque.",
+        "Some doors have a clear pane: a link shows you its address, so you can read where it goes before you walk through. Some doors have a frosted pane: a QR code is a pattern for a machine, and no human being can read it. Not you, not your teacher, not anybody. That is not you being bad at reading. It is a fact about codes. So the honest answer for a frosted door is always the same, and it is not a cop out: I cannot read this one, so a grown-up looks with me. Saying that IS the skill.",
       bullets: [
-        "Clear links show their whole address",
-        "You can READ where they lead",
-        "bit.ly links are frosted glass",
-        "Frosted = you can't check it",
-        "Can't check it? Don't walk it",
+        "A link is a clear pane: you can read the address",
+        "A QR code is frosted: nobody can read a pattern",
+        "That is true for grown-ups too, not just you",
+        "So a code always gets a grown-up, every time",
+        "Saying 'I cannot read this' IS the skill",
       ],
-      bulletIcons: ["💎", "👀", "🌀", "🙈", "✋"],
-      emblem: "💎",
+      bulletIcons: ["🔍", "🌀", "👪", "🚪", "💪"],
+      emblem: "🌀",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[warmly] Two glass doors, side by side.",
-          "One is CLEAR - you can read its whole address.",
-          "One is FROSTED - bit-dot-ly-something-scrambled.",
-          "Where does the frosted one go? Nobody can tell.",
-          "[whispers] And Door Checkers never walk what they can't check.",
-          "[excited] Three door pairs coming - pick the clear glass!",
+          "[warmly] Some of these doors have clear glass, Cyber Hero. Some have frosted.",
+          "A link is clear glass. It shows you its address, so you can read where it goes.",
+          "[thinking] A code is frosted. It is a pattern for a machine, and no person can read it.",
+          "Not you. Not me. Not your teacher. Nobody.",
+          "So the honest answer for a frosted door is always the same, and it is not giving up.",
+          "[excited] Let's go and try some panes for ourselves, the clear ones and the frosted. You'll see what I mean!",
         ],
       },
     },
-    // 16 - Game: SELECT (replyCards DOORS skin - the Clear-Glass Doors)
+    // 17 - Game: PANES (new glassCheck engine)
     {
-      type: "replyCards",
-      skin: "doors",
-      introTitle: "The Clear-Glass Doors",
-      introSubtitle: "Three deliveries, each offering a choice of link-doors. Tap the door you can SEE through - the one showing its whole address.",
-      introIcon: "💎",
-      pickLabel: "Pick the see-through door",
-      roundNoun: "doorway",
-      correctToast: "CLEAR GLASS - YOU CAN SEE RIGHT THROUGH!",
-      wrongTitle: "Frosted glass!",
-      completeTitle: "Three clear doors walked!",
-      completeLine: "Addresses you could read AND check, every time - frosted mysteries left for grown-ups.",
-      scoreNoun: "clear picks",
-      rounds: [
+      type: "glassCheck",
+      introTitle: "Clear Glass, Frosted Glass",
+      introSubtitle: "Doors down the corridor. Read the pane if you can, and say so honestly when you cannot.",
+      introIcon: "🌀",
+      clearLabel: "CLEAR PANE",
+      frostedLabel: "FROSTED PANE",
+      walkLabel: "SAFE TO WALK",
+      stopLabel: "NOT THIS ONE",
+      grownUpLabel: "ASK A GROWN-UP",
+      askPrompt: "What does this door need?",
+      completeTitle: "Every pane read!",
+      completeLine: "And you said so, out loud, on the ones nobody can read.",
+      threat: {
+        raccoonLine: "Frosted glass is my favourite invention. A little pattern, and not one human being alive can tell what is behind it. They just scan it and hope!",
+      },
+      doors: [
         {
-          id: "album",
-          from: "Aunt Meg",
-          fromIcon: "💬",
-          message: "Field-day album is up! Someone sent me three links - which one can we actually CHECK?",
-          replies: [
-            {
-              text: "sunnyside-school.edu/field-day-album",
-              isSafe: true,
-              explanation: "Clear glass - the school's name and the album, readable end to end. This one you can check yourself.",
-            },
-            {
-              text: "bit.ly/3xYzq",
-              isSafe: false,
-              explanation: "Frosted - bit.ly hides the whole destination behind five scrambled letters. Could go ANYWHERE.",
-            },
-            {
-              text: "shorturl.at/album-yes",
-              isSafe: false,
-              explanation: "Still frosted - a short-link with a friendly word on it is frosted glass wearing a sticker.",
-            },
-          ],
+          id: "school-clear",
+          sign: "Sports day letter",
+          icon: "🏫",
+          readAloud: "A door with a clear pane, and your school's letter on the sign.",
+          pane: "yourschool.sch.uk/sportsday",
+          verdict: "walk",
+          why: "You could read that one, and it says your school right there in the address. Clear pane, known place, safe to walk.",
+          explanation: "Have another read of the pane. It says your school, and you could read it yourself, so this one is fine.",
         },
         {
-          id: "update",
-          from: "Game Chat",
-          fromIcon: "🎮",
-          message: "'Pixel Pets update is OUT!' - three doors appear in the chat...",
-          replies: [
-            {
-              text: "tinyurl.com/pxpts-upd8",
-              isSafe: false,
-              explanation: "Frosted - tinyurl scrambles the destination. Even 'upd8' in the name is just paint on the glass.",
-            },
-            {
-              text: "pixel-pets.com/update-notes",
-              isSafe: true,
-              explanation: "Clear glass - the game's own name, the update page, all readable. That's the checkable door.",
-            },
-            {
-              text: "bit.ly/freepets",
-              isSafe: false,
-              explanation: "Frosted AND promising freebies - two tricks on one door. Leave it shut.",
-            },
-          ],
+          id: "prize-clear",
+          sign: "CLAIM YOUR FREE TABLET",
+          icon: "🎁",
+          readAloud: "This door has a clear pane too, and a very exciting sign about a free tablet.",
+          pane: "free-tablet-now.prizeclub.xyz",
+          verdict: "stop",
+          why: "You read it, and it does not say anybody you know. A clear pane you CAN read is still a no when the address is a stranger.",
+          explanation: "Read the pane rather than the sign. Nothing in that address is a place you know, so the free tablet does not matter.",
         },
         {
-          id: "card",
-          from: "Email",
-          fromIcon: "✉️",
-          message: "'A birthday e-card is waiting for you!' Three glass doors to the card...",
-          replies: [
-            {
-              text: "short.link/bday-open-me",
-              isSafe: false,
-              explanation: "Frosted - 'open me' is exactly what a mystery door WOULD say. You still can't see through it.",
-            },
-            {
-              text: "qrco.de/card4u",
-              isSafe: false,
-              explanation: "Frosted - a shortened dot-door. Four-U or not, the destination is hidden.",
-            },
-            {
-              text: "cardshop.com/birthday-dragon-card",
-              isSafe: true,
-              explanation: "Clear glass - the card shop, the dragon card, spelled out whole. THAT one you can check.",
-            },
-          ],
+          id: "menu-frosted",
+          sign: "Scan for our puddings",
+          icon: "🌀",
+          readAloud: "A frosted pane now, on a door from the cafe menu.",
+          pane: "",
+          verdict: "grown-up",
+          why: "Nothing to read, so nothing to judge. A frosted pane always gets a grown-up, even for puddings.",
+          explanation: "Look at the pane again. There is nothing on it, because a code is a pattern. That is always a grown-up.",
+        },
+        {
+          id: "library-clear",
+          sign: "Summer reading club",
+          icon: "🔍",
+          readAloud: "Another clear pane, on the library's reading club door.",
+          pane: "library.gov.uk/reading",
+          verdict: "walk",
+          why: "The library is on your ring and the pane says the library. Read it, recognised it, walk through.",
+          explanation: "You can read that pane, and it names the library. That one is genuinely fine.",
+        },
+        {
+          id: "poster-frosted",
+          sign: "WIN A BIKE! Scan here",
+          icon: "🌀",
+          readAloud: "Last door. A frosted pane, on a poster shouting about winning a bike.",
+          pane: "",
+          verdict: "grown-up",
+          why: "Still nothing to read, so it is still a grown-up. A loud sign on a frosted door does not make the glass any clearer.",
+          explanation: "The shouting is on the sign, not the pane. The pane is blank, so this is a grown-up like every other code.",
         },
       ],
       hints: {
-        tier1: "Can you READ the whole address on the door? That's the clear glass.",
-        tier2: "bit.ly, tinyurl, short.link, qrco.de = frosted. A full name like school.edu/page = clear.",
+        tier1: "Look at the pane, not the sign. Can you read words on it, or is it blank?",
+        tier2: "Blank pane always means a grown-up. A readable pane you still have to recognise: known place walks, stranger stops.",
       },
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] The glass corridor - three door pairs!",
-          "Clear glass shows its whole address.",
-          "Frosted glass hides everything.",
-          "[whispers] Tap only what you can SEE through. Go!",
+          "[excited] Fourth challenge, Cyber Hero. Clear Glass, Frosted Glass!",
+          "This game is all about knowing when you CAN read a door and when you honestly cannot.",
+          "Out in the real world, a link shows its address and a code shows a pattern.",
+          "So here is what you do.",
+          "A door slides in with a pane. If there are words on it, read them.",
+          "Then tap SAFE TO WALK, or NOT THIS ONE, or ASK A GROWN-UP.",
+          "[warmly] And remember: a blank pane is not you failing. Off you go.",
         ],
       },
       coachLines: {
-        speaker: "layla",
-        lines: ["Read each door's address - tap the one you can read all the way to the end!"],
+        speaker: "adam",
+        lines: ["Read the pane if it has words, then tap one of the three answers."],
+      },
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Every pane sorted, Cyber Hero, and the frosted ones were the best bit.",
+          "You did not guess at them. You said the honest thing: I cannot read this one.",
+          "[warmly] That is not giving up. That is the whole skill.",
+        ],
       },
     },
-    // 17 - Prove: RECALL
+    // 18 - Prove: ORDER
     {
       type: "quickCheck",
-      mode: "recall",
-      prompt: "Which door could you SEE through?",
+      mode: "order",
+      prompt: "Put the Door Checker's look in order.",
       choices: [
-        { text: "The one showing its whole address", isCorrect: true },
-        { text: "The bit.ly one", isCorrect: false },
-        { text: "The shiniest one", isCorrect: false },
-        { text: "The one promising free pets", isCorrect: false },
+        { text: "1. Ignore the sign", isCorrect: true },
+        { text: "2. Look at the pane", isCorrect: true },
+        { text: "3. Read it, or say you cannot", isCorrect: true },
+        { text: "4. Walk, stop, or fetch a grown-up", isCorrect: true },
       ],
-      praise: "Clear glass every time - whole address or no walk. ✓",
+      praise: "Sign last, pane first. That is the order. ✓",
+      nudge: "Which part was painted by whoever built the door?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Perfect order!",
+          "The sign goes first because it is the part you ignore.",
+          "Then the pane, then the honest answer about it.",
+          "[warmly] And only then do you decide what to do.",
+        ],
+      },
     },
-
-    // 18 - Recap · Concept 4 of 5
+    // 19 - Recap . Concept 4 of 5
     {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "Clear links show their whole address so you can check them; bit.ly-style links are frosted glass - uncheckable.",
-      next: "the barrier rule: what Door Checkers do when they just can't tell",
-      emblem: "💎",
+      learned: "A link has a pane you can read and a code is frosted glass, so 'I cannot read this one' is a complete and correct answer.",
+      next: "what a Door Checker does when they genuinely cannot tell",
+      emblem: "🌀",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] Four powers - frosted glass can't fool you!",
-          "See through it or don't walk through it.",
-          "[warmly] One power left, and it's the one that keeps heroes safe forever:",
-          "what to do when you simply CAN'T tell. Almost there.",
+          "[proud] Four powers, Cyber Hero, and that fourth one is the grown-up one.",
+          "Clear glass you read. Frosted glass nobody reads, and you say so.",
+          "[whispers] Which leaves one last thing. What do you actually DO when you are stuck...",
+          "Next, we'll wheel out the barrier. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 5 · THE BARRIER RULE ─────────── */
-    // 19 - Learn
+    /* BEAT 5 - THE BARRIER RULE */
+    // 20 - Learn
     {
       type: "info",
+      conceptNumber: 5,
+      conceptTotal: 5,
       title: "The Barrier Rule",
       content:
-        "Sometimes a door has no plaque you can read: a mystery short-link, a strange QR, a pop-up promising the world. Here's the best news of the week: you never have to decide alone. That's what the barrier is for. Wheel it in front of the door - don't tap, don't scan - and call a grown-up to check it with you. Unsure means DON'T. No prize behind any door is worth walking through blind.",
+        "Last power, and it is the one that covers everything the other four miss. Sometimes you genuinely cannot tell. The sign looks ordinary, the address is half familiar, the code is frosted, and there is a little voice saying just tap it and find out. That is exactly the moment a Door Checker wheels out the barrier. Stop. Do not walk through. Go and get a grown-up. Nothing bad happens while a door is waiting, and that is the part the Raccoon hates most: a door you never opened cannot do a single thing to you.",
       bullets: [
-        "Some doors can't be checked",
-        "You never decide alone",
-        "Wheel the barrier - don't tap",
-        "Ask a grown-up to check with you",
-        "Unsure means DON'T",
+        "Sometimes you genuinely cannot tell, and that is fine",
+        "That is the moment for the barrier, not a guess",
+        "Stop, do not walk through, fetch a grown-up",
+        "Nothing bad happens while a door waits",
+        "A door you never opened cannot do anything at all",
       ],
-      bulletIcons: ["❓", "👪", "✋", "🔍", "🚫"],
+      bulletIcons: ["✋", "❓", "👪", "⏱️", "🛡️"],
       emblem: "✋",
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last power - and it's the kindest one.",
-          "Some doors just can't be checked.",
-          "No plaque. No clear glass. Just promises.",
-          "[whispers] So wheel the barrier in front. Don't tap.",
-          "Call your grown-up. Check it together.",
-          "[excited] Three mystery doors coming - show me the barrier!",
+          "[warmly] Last power, Cyber Hero, and it catches everything the others miss.",
+          "Sometimes you genuinely cannot tell. The sign is ordinary, the address is half familiar.",
+          "[thinking] And there is a little voice saying: go on, just tap it and find out.",
+          "That is exactly when a Door Checker wheels out the barrier.",
+          "Stop. Do not walk through. Go and get a grown-up. Nothing bad happens while a door waits.",
+          "[excited] Let's go and practise the barrier together!",
         ],
       },
     },
-    // 20 - Game: DECIDE (chooseYourPath - the No-Plaque Door)
+    // 21 - Game: BARRIER (PopupPanic, doorway skin).
+    // `body` is what Sarah speaks, and `whyTrick` is the ONLY reason field: it
+    // carries BOTH branches, so each one reads as a reason whichever way the
+    // child called it. Every door wears the same icon on purpose: `icon` renders
+    // before the tap, so a scary one on barrier doors would give the answer away.
     {
-      type: "chooseYourPath",
-      scenarios: [
+      type: "popupPanic",
+      skin: "doorway",
+      introTitle: "The Barrier",
+      introSubtitle: "Doors you are not sure about. Wheel the barrier out, or walk through, one at a time.",
+      introIcon: "✋",
+      headerLabel: "THE BARRIER",
+      boardPrompt: "Can you tell about this one?",
+      counterLabel: "DOOR",
+      cardBadge: "A DOOR APPEARS",
+      fromFallback: "A door",
+      fineLabel: "WALK THROUGH",
+      flagLabel: "BARRIER OUT",
+      fineIcon: "🚪",
+      flagIcon: "✋",
+      fineToast: "STRAIGHT THROUGH!",
+      flagToast: "BARRIER OUT!",
+      wrongTitle: "Have another think about this door",
+      wrongTip: "The barrier is for the ones you cannot tell about. It is never the wrong answer to be unsure.",
+      completeTitle: "Every door handled!",
+      completeLine: "Barriers where you needed them, and none where you did not.",
+      threat: {
+        raccoonLine: "Just tap it and find out! That is my favourite sentence in the whole world. Nobody ever went and fetched a grown-up over a little door.",
+      },
+      popups: [
         {
-          setup: "A message from a number you don't know: 'You've WON! Claim your prize: bit.ly/w1n-b1g' - a frosted door with no plaque at all...",
-          choices: [
-            {
-              text: "Wheel the barrier - don't tap, show a grown-up",
-              isSafe: true,
-              consequence: "Your grown-up checks it: a prize-grab door to nowhere good. The barrier held, the 'prize' stayed a trick, and you never even wobbled.",
-            },
-            {
-              text: "Tap fast - the prize might run out!",
-              isSafe: false,
-              consequence: "Hurry-hurry is the oldest paint on the oldest door. Through the frosted glass you go - straight onto the Raccoon's slide. Real prizes never hide behind doors you can't check.",
-            },
-          ],
+          id: "gran-photos",
+          from: "Gran",
+          icon: "🚪",
+          title: "sends the holiday photos",
+          body: "Gran has sent a link to the holiday photos, and the plate says her photo site, the same one as last time.",
+          isRedFlag: false,
+          whyTrick: "Gran is on your ring and the plate is the same site as last time, so there is nothing here you cannot tell. The barrier is for the unclear ones, not for everything.",
         },
         {
-          setup: "A QR sticker on the park gate says 'SCAN FOR FREE ICE CREAM' - shiny, new, and just a little crooked...",
-          choices: [
-            {
-              text: "Leave it - and tell your grown-up about the sticker",
-              isSafe: true,
-              consequence: "Peel test says sticker, promise says too-sweet, barrier says NO. Your grown-up even reports it - one less trick door on the gate for every kid after you.",
-            },
-            {
-              text: "Scan it - it's ice cream!",
-              isSafe: false,
-              consequence: "The dot-door opens somewhere no ice cream has ever been. Remember the peel tells: shiny, new, crooked, too sweet - that sticker had ALL four.",
-            },
-          ],
+          id: "half-familiar",
+          from: "A door",
+          icon: "🚪",
+          title: "looks a bit like your school's",
+          body: "A door that looks a bit like your school's, but the plate has an extra word in it you do not recognise.",
+          isRedFlag: true,
+          whyTrick: "A word on the plate you have never seen before is exactly the not-sure feeling, and not-sure is the barrier's cue. Nothing bad happens while that door waits for a grown-up.",
         },
         {
-          setup: "Your friend forwards a frosted short-link - 's.lol/xk2' - with 'OPEN IT OPEN IT!' underneath...",
-          choices: [
-            {
-              text: "Ask 'what is it?' - and check with a grown-up first",
-              isSafe: true,
-              consequence: "Your friend admits they never opened it either - someone just sent it to THEM. Two barriers wheeled at once, and the mystery door stays shut for both of you.",
-            },
-            {
-              text: "Open it - a friend sent it, so it must be safe",
-              isSafe: false,
-              consequence: "Friends forward doors they never checked - kind hands can still pass on a trick. The sender being nice doesn't tell you where the door goes; only the address can.",
-            },
-          ],
+          id: "frosted-poster",
+          from: "A poster",
+          icon: "🚪",
+          title: "has a code and no words",
+          body: "A poster in the street with a code on it and no address you can read anywhere.",
+          isRedFlag: true,
+          whyTrick: "A code you cannot read is the clearest barrier there is. You are not stuck, you just genuinely cannot see through that pane, so a grown-up looks with you.",
+        },
+        {
+          id: "club-known",
+          from: "Your swim club",
+          icon: "🚪",
+          title: "sends the timetable",
+          body: "Your swim club has sent the new timetable, on the same address they always use, with no rush on it at all.",
+          isRedFlag: false,
+          whyTrick: "Your club is on the ring, the address is their usual one, and nothing is hurrying you. Wheeling the barrier out here would just mean never going swimming.",
+        },
+        {
+          id: "just-tap-it",
+          from: "A door",
+          icon: "🚪",
+          title: "says just tap and see",
+          body: "A door with a friendly sign, a plate you half recognise, and a little voice saying just tap it and find out.",
+          isRedFlag: true,
+          whyTrick: "That little voice is the exact moment the barrier exists for. Half recognise is not recognise, and a door you never opened cannot do anything at all.",
         },
       ],
+      hints: {
+        tier1: "Ask yourself one thing: can I actually tell about this door, or am I guessing?",
+        tier2: "Guessing means the barrier. Knowing the sender and the address means you can walk through.",
+        tier3: "The barrier is never wrong when you are unsure. It is only wrong on doors you genuinely could tell about.",
+      },
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] Three doors. No plaques. Big promises.",
-          "Remember: unsure means DON'T.",
-          "Wheel the barrier, call your grown-up -",
-          "[excited] and show me Door Checker form! Go!",
+          "[excited] Last challenge of the week, Cyber Hero. The Barrier!",
+          "This game is all about what you do when you cannot tell.",
+          "Out in the real world, that little voice saying just tap it is the whole trick.",
+          "So here is what you do.",
+          "A door comes up, and I will read out what you can see about it.",
+          "Tap WALK THROUGH if you can genuinely tell, or BARRIER OUT if you cannot.",
+          "[warmly] And watch out: two of these you CAN tell about. Off you go.",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: ["Tap WALK THROUGH if you can tell, or BARRIER OUT if you cannot."],
+      },
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Every door handled, Cyber Hero, and you got the balance exactly right.",
+          "Barriers on the three you could not tell about. Gran and your club straight through.",
+          "[warmly] The barrier is not for being scared of doors. It is for being honest about which ones you can read.",
         ],
       },
     },
-    // 21 - Prove: ORDER
+    // 22 - Prove: SPEED
     {
       type: "quickCheck",
-      mode: "order",
-      prompt: "Put the Door Checker's moves in order!",
+      mode: "speed",
+      prompt: "Quick! You cannot tell about a door. What do you do?",
       choices: [
-        { text: "Peek at the address first", isCorrect: true },
-        { text: "Still can't tell? STOP at the barrier", isCorrect: true },
-        { text: "Ask a grown-up to check it with you", isCorrect: true },
+        { text: "Wheel out the barrier and fetch a grown-up", isCorrect: true },
+        { text: "Tap it once, just to see", isCorrect: false, why: "Once is all a door needs. There is no peeking through a doorway without walking into it." },
+        { text: "Leave it and never mention it", isCorrect: false, why: "Leaving it is safe, but the grown-up is the bit that makes it safe for everyone else too." },
       ],
-      praise: "Peek, stop, ask - the Door Checker's three moves, in perfect order. ✓",
+      praise: "Barrier out, grown-up fetched. ✓",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Straight away!",
+          "Not sure is not a problem. It is just the barrier's cue.",
+          "[warmly] And a door that waits cannot do a thing to anybody.",
+        ],
+      },
     },
-
-    // 22 - Recap · Concept 5 of 5
+    // 23 - Recap . Concept 5 of 5
     {
       type: "recap",
       concept: 5,
       total: 5,
-      learned: "When a door can't be checked, wheel the barrier: don't tap, don't scan - ask a grown-up. Unsure means don't.",
-      next: "one last walk down the corridor, then the Raccoon's paint shop",
+      learned: "When you genuinely cannot tell, the barrier goes out and a grown-up comes over, because a door that waits cannot do anything.",
+      next: "the power poster, where all five go up at once",
       emblem: "✋",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's all FIVE powers, Door Checker!",
-          "Doors seen through, plaques peeked, stickers peeled,",
-          "clear glass picked... and the barrier rule locked in.",
-          "[whispers] One last corridor walk...",
-          "[excited] then we shut his paint shop for GOOD!",
+          "[proud] Five powers, Cyber Hero. Every single one.",
+          "Sign ignored, ring checked, corner pressed, pane read, barrier ready.",
+          "[whispers] So there is one thing left to do with them...",
+          "Next, you put all five up on the poster at once. Come and see!",
         ],
       },
     },
 
-    // 23 - Consolidation: Corridor Check (W1 scanner engine, W16 content)
+
+    // 24 - REVIEW: The Power Board (TeamPoster, doorway skin).
+    // speakNotes MUST be true: it defaults to false, and every placed power
+    // would land silent with nothing erroring. `note` is the only spoken
+    // per-tile field and carries BOTH branches, so each reads as a reason
+    // either way. The four decoys are deliberate NEAR MISSES: this engine
+    // cannot enforce recall on its own, so the decoys are what make the child
+    // retrieve the week's actual rule instead of just recognising a word.
     {
-      type: "cyberScanner",
-      labels: {
-        positive: "SAFE DOORWAY",
-        negative: "TRICK DOORWAY",
-        positiveHint: "Tap SAFE DOORWAY for true Door Checker form",
-        negativeHint: "Tap TRICK DOORWAY for the Raccoon's painted doors",
-        tipWhenPositive: "Addresses peeked, stickers peel-tested, barriers wheeled - stamp it SAFE.",
-        tipWhenNegative: "Prize paint, frosted mysteries, pasted stickers - his corridor is full of these.",
-        hint1: "Ask: was this door CHECKED... or just trusted because of its paint?",
-        hint2: "SAFE = read the address, peel test, ask when unsure. TRICK = tap fast, trust the sign, scan the sticker.",
-        hint2Example: "SAFE: 'read the whole address first'   TRICK: 'the sign said FREE, so I tapped'",
-        hint3: "Door Checker card: the sign is NOT the destination · lift the plaque · peel test · clear glass only · unsure = don't.",
-        hint3Example: "Show a grown-up the frosted link ✅    Scan the crooked sticker ❌",
+      type: "teamPoster",
+      skin: "doorway",
+      speakNotes: true,
+      introTitle: "The Power Board",
+      introSubtitle: "Five sockets on the wall. Bolt on the powers a Door Checker really uses, and leave the rest in the tray.",
+      introIcon: "🚪",
+      posterTitle: "DOOR CHECKER POWER BOARD",
+      trayPrompt: "Tap a power a Door Checker really uses on a door",
+      placedToast: "BOLTED ON!",
+      countLabel: "POWERS BOLTED ON",
+      wrongTitle: "That one is not a Door Checker power",
+      completeTitle: "Power board complete!",
+      completeLine: "Five powers up on the wall, and four near-misses left in the tray.",
+      threat: {
+        raccoonLine: "Five little powers on a wall. Go on then. But I have slipped some VERY sensible sounding ones into that tray, and they are my favourites.",
       },
-      items: [
-        {
-          text: "Reading the whole address before tapping a link",
-          isStrong: true,
-          explanation: "Plaque peeked, destination known - that's the walk of a Door Checker.",
-        },
-        {
-          text: "Tapping fast because the sign says the prize runs out",
-          isStrong: false,
-          explanation: "Hurry-paint is still paint - real prizes don't hide behind unreadable doors.",
-        },
-        {
-          text: "Corner-checking a QR code before anyone scans it",
-          isStrong: true,
-          explanation: "The peel test - flat and printed passes, crooked stickers get caught.",
-        },
-        {
-          text: "Scanning the shiny new sticker pasted over the menu's code",
-          isStrong: false,
-          explanation: "A code over a code means the door was swapped - that scan opens the Raccoon's room.",
-        },
-        {
-          text: "Handing a frosted bit.ly link to a grown-up to check",
-          isStrong: true,
-          explanation: "Can't see through it, don't walk through it - barrier wheeled, backup called.",
-        },
-        {
-          text: "Opening a mystery link because a friend forwarded it",
-          isStrong: false,
-          explanation: "Kind hands forward unchecked doors too - only the address says where a door goes.",
-        },
+      tiles: [
+        { id: "ignore-sign", label: "Ignore the sign, read the plate", icon: "🚪", isTeam: true,
+          note: "Bolted on! The sign was painted by whoever built the door, so the plate underneath is the only part that tells you anything." },
+        { id: "decoy-logo", label: "Trust it if the logo looks right", icon: "🎨", isTeam: false,
+          note: "Near miss! A logo is part of the sign, and copying a logo is the easiest painting job there is. It proves nothing about the door." },
+        { id: "keyring", label: "Is this sender on my ring?", icon: "🔑", isTeam: true,
+          note: "Bolted on! A door has to prove it is one of yours. If the sender is on nobody's ring, there is no key for it." },
+        { id: "decoy-partner", label: "A partner of somebody I know counts", icon: "💬", isTeam: false,
+          note: "Near miss! Your club is on the ring; somebody standing next to your club's name is not. Borrowing a trusted name is the oldest trick down here." },
+        { id: "peel", label: "Press the corner, do not stare", icon: "🏷️", isTeam: true,
+          note: "Bolted on! A Door Checker presses the corner because a good sticker lies perfectly flat, so looking harder never works." },
+        { id: "decoy-crooked", label: "Fake stickers always look crooked", icon: "👀", isTeam: false,
+          note: "Near miss! If fakes looked crooked nobody would ever fall for one. Neat and flat is exactly what a good sticker looks like." },
+        { id: "frosted", label: "A code is frosted glass, so ask", icon: "🌀", isTeam: true,
+          note: "Bolted on! Nobody can read a code, not even a grown-up, so saying I cannot read this one is the honest and complete answer." },
+        { id: "decoy-scan", label: "Codes on real posters are always safe", icon: "📌", isTeam: false,
+          note: "Near miss! A real poster is exactly where somebody sticks a fake code. The poster being real says nothing about the code on it." },
+        { id: "barrier", label: "Cannot tell? Barrier and a grown-up", icon: "✋", isTeam: true,
+          note: "Bolted on! Not sure is not a problem, it is the barrier's cue. A door that waits cannot do a single thing to anybody." },
       ],
+      hints: {
+        tier1: "Ask whether each one is something you actually DO, or just something that sounds sensible.",
+        tier2: "The four near-misses all trust something on the outside: a logo, a borrowed name, a neat sticker, a real poster.",
+      },
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] The Corridor Check - final walk!",
-          "Doorway moments are drifting past.",
-          "SAFE DOORWAY for Door Checker form...",
-          "[warmly] TRICK DOORWAY for painted traps. Stamp them all!",
+          "[excited] Time for your review, Cyber Hero. The Power Board!",
+          "This game is all about knowing which moves a Door Checker actually uses.",
+          "Out in the real world, plenty of sensible sounding rules are quietly useless.",
+          "So here is what you do.",
+          "Nine powers sit in the tray, and only five of them are real.",
+          "Tap the ones a Door Checker really uses, and they bolt onto the wall.",
+          "[warmly] Five sockets, nine choices. Off you go!",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Tap a power from the tray to bolt it onto the board. Only five belong."],
+      },
+      completeNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Five powers up on the wall, Cyber Hero, and look what you left in the tray.",
+          "The right logo. A friend of a friend. A neat sticker. A real poster.",
+          "[warmly] Every one of those sounds sensible, and every one of them trusts the outside of a door. You did not.",
         ],
       },
     },
 
-    // 24 - BOSS BATTLE (placeholder quiz boss - the bespoke W16 fight comes with the boss batch)
+    // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 25 - CLOSING VIDEO: don't take the bait
-    { type: "video", videoPlaceholder: "Week 16: Don't Take the Bait", videoSrc: "/videos/module-16-outro.mp4" },
+    // 26 - CLOSING VIDEO: the checked maze
+    { type: "video", videoPlaceholder: "Week 16: Door Checker", videoSrc: "/videos/module-16-outro.mp4" },
 
-    // 26 - Mission Debrief
+    // 27 - Mission Debrief
     {
       type: "missionDebrief",
       title: "Mission Complete!",
       subtitle: "Here's everything you mastered this week.",
       concepts: [
-        { id: "doorway", label: "Doorway Truth", accent: "#c084fc", icon: "🚪", summary: "Links and QR codes are doorways - the sign never chooses where they go." },
-        { id: "peek", label: "Plaque Peeker", accent: "#7df0ff", icon: "👀", summary: "You lift the plaque and read the real address - and believe it over the paint." },
-        { id: "peel", label: "Sticker Peeler", accent: "#ffd158", icon: "🏷️", summary: "Printed codes lie flat; pasted stickers lift, bubble and get peeled." },
-        { id: "glass", label: "Clear-Glass Picker", accent: "#7eff97", icon: "💎", summary: "You walk the doors you can see through - frosted links go to a grown-up." },
-        { id: "barrier", label: "Barrier Boss", accent: "#ff5fb3", icon: "✋", summary: "Unsure means don't - you stop, wheel the barrier and ask." },
+        { id: "sign", label: "Sign Reader", accent: "#7eff97", icon: "🚪", summary: "The sign is paint. The address plate is the fact." },
+        { id: "ring", label: "Keyring Keeper", accent: "#7df0ff", icon: "🔑", summary: "A door has to prove it is yours, not the other way round." },
+        { id: "peel", label: "Peel Tester", accent: "#c084fc", icon: "🏷️", summary: "A good sticker looks flat, so you press a corner instead of staring." },
+        { id: "glass", label: "Pane Reader", accent: "#ffd158", icon: "🌀", summary: "Clear glass you read. Frosted glass nobody reads, and you say so." },
+        { id: "barrier", label: "Barrier Wheeler", accent: "#ff5fb3", icon: "✋", summary: "Cannot tell? The barrier goes out and a grown-up comes over." },
       ],
       narration: {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "Doors seen through, plaques peeked,",
-          "stickers peeled, clear glass picked... and the barrier rule ready.",
-          "[laughs] His paint shop just went out of business.",
-          "[excited] Sticker time, Door Checker!",
+          "Signs ignored, the keyring checked, corners pressed,",
+          "panes read honestly... and the barrier always ready.",
+          "[laughs] His whole Doorway Trick just stopped working on you.",
+          "[excited] Sticker time, Cyber Hero!",
         ],
       },
     },
 
-    // 27 - Sticker Unlock
+    // 28 - Sticker Unlock
     {
       type: "stickerUnlock",
       title: "Stickers Unlocked!",
       stickers: [
-        { id: "plaque-peeker", name: "Plaque Peeker", icon: "👀", description: "Reads the real address under every shiny sign." },
-        { id: "sticker-peeler", name: "Sticker Peeler", icon: "🏷️", description: "Corner-checks every code and peels the pasted fakes." },
-        { id: "barrier-boss", name: "Barrier Boss", icon: "✋", description: "Wheels the barrier and asks when a door can't be checked." },
+        { id: "keyring-keeper", name: "Keyring Keeper", icon: "🔑", description: "Knows whose door is whose." },
+        { id: "peel-tester", name: "Peel Tester", icon: "🏷️", description: "Presses the corner instead of guessing." },
+        { id: "barrier-wheeler", name: "Barrier Wheeler", icon: "✋", description: "Stops and fetches a grown-up." },
       ],
     },
 
-    // 28 - Completion
+    // 29 - Completion
     { type: "completion" },
   ],
   bossQuiz: {
@@ -918,11 +1137,11 @@ export const WEEK_16: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "The builder picks the place!",
-          explanation: "The words are just paint, they can promise anything, and tapping doesn't steer where you land. The person who BUILT the door chose where it goes before you ever saw it.",
+          explanation: "Paint can promise anything, and tapping does not steer where you land. The person who BUILT the door chose where it goes before you ever saw it.",
         },
         villainRight: {
           slug: "quiz-w16-right-c1-1",
-          text: "You know about the builder?! Next you'll be asking who does my decorating!",
+          text: "You know who really decides where a button leads?! Next you'll be asking who does my decorating!",
         },
         villainWrong: {
           slug: "quiz-w16-wrong-c1-1",
@@ -1003,7 +1222,7 @@ export const WEEK_16: WeekContent = {
         },
         villainRight: {
           slug: "quiz-w16-right-c4-1",
-          text: "Clear glass again?! Nobody ever picks my lovely frosted doors!",
+          text: "You checked which link you could actually READ?! Nobody ever picks the one they can read!",
         },
         villainWrong: {
           slug: "quiz-w16-wrong-c4-1",
@@ -1030,11 +1249,11 @@ export const WEEK_16: WeekContent = {
         },
         villainRight: {
           slug: "quiz-w16-right-c5-1",
-          text: "You let the timer run OUT?! That countdown was my best pressure paint yet!",
+          text: "Adam wasn't sure, so he STOPPED?! That countdown was my best pressure paint yet!",
         },
         villainWrong: {
           slug: "quiz-w16-wrong-c5-1",
-          text: "Tick tock, tick tock! Rushed feet never read plaques! In you come!",
+          text: "Ten seconds and counting! Rushed feet never read plaques! In you come!",
         },
       },
     
@@ -1071,38 +1290,39 @@ export const WEEK_16: WeekContent = {
     ],
   },
 
-  // Keyed by SCREEN INDEX (0-28). Must stay in lock-step with `screens` above -
-  // if a screen is inserted/removed, shift these too (the trailing labels help).
-  // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
+  // Keyed by SCREEN INDEX (0-29). Must stay in lock-step with `screens` above -
+  // if a screen is inserted or removed, shift these too (the trailing labels help).
+  // The 5 "recap" checkpoints (after each Prove beat) are indices 7/11/15/19/23.
   reactions: {
-    0: { adam: { mood: "excited", message: "Mission 16 - don't take the bait!" }, layla: null }, // intro video
-    1: { adam: { mood: "worried", message: "He's painting trick doors EVERYWHERE..." }, layla: null }, // alert
-    2: { adam: null, layla: { mood: "curious", message: "Door Checker kit on? Let's walk." } }, // mission brief
-    3: { adam: { mood: "thinking", message: "The sign isn't the destination." }, layla: null }, // learn: doorway
-    4: { adam: { mood: "curious", message: "Swing them open - where do they GO?" }, layla: null }, // game: reveal
-    5: { adam: null, layla: { mood: "thumbsup", message: "Finish the Door Checker rule!" } }, // prove: finish
-    6: { adam: null, layla: { mood: "excited", message: "You see behind the paint now!" } }, // recap 1
-    7: { adam: null, layla: { mood: "curious", message: "Psst - every door has a plaque..." } }, // learn: peek
-    8: { adam: null, layla: { mood: "curious", message: "Lift every plaque - read the truth!" } }, // game: plaquePeek
-    9: { adam: { mood: "thumbsup", message: "Quick - match sign to address!" }, layla: null }, // prove: speed
-    10: { adam: { mood: "excited", message: "No plaque escapes that peek!" }, layla: null }, // recap 2
-    11: { adam: { mood: "thinking", message: "His sticker sheet is out..." }, layla: null }, // learn: peel
-    12: { adam: { mood: "curious", message: "Check the corners - peel the fakes!" }, layla: null }, // game: hookSort
-    13: { adam: { mood: "worried", message: "He's fibbing about stickers - catch him!" }, layla: null }, // prove: lie
-    14: { adam: null, layla: { mood: "excited", message: "Peel tested and PASSED!" } }, // recap 3
-    15: { adam: null, layla: { mood: "thinking", message: "Clear glass... or frosted?" } }, // learn: glass
-    16: { adam: null, layla: { mood: "curious", message: "Tap only what you can SEE through!" } }, // game: replyCards doors
-    17: { adam: null, layla: { mood: "thumbsup", message: "Which door showed its address?" } }, // prove: recall
-    18: { adam: { mood: "excited", message: "Frosted glass can't fool you!" }, layla: null }, // recap 4
-    19: { adam: { mood: "thinking", message: "Unsure means DON'T. Always." }, layla: null }, // learn: barrier
-    20: { adam: { mood: "curious", message: "Wheel that barrier - ask first!" }, layla: null }, // game: decide
-    21: { adam: null, layla: { mood: "thumbsup", message: "Peek, stop, ask - in order!" } }, // prove: order
-    22: { adam: null, layla: { mood: "excited", message: "All five powers - corridor time!" } }, // recap 5
-    23: { adam: null, layla: { mood: "excited", message: "Safe door or trick door - you know!" } }, // consolidation
-    24: { adam: { mood: "worried", message: "His paint shop - shut it down!" }, layla: null }, // boss
-    25: { adam: { mood: "excited", message: "No bait taken - not today!" }, layla: null }, // outro video
-    26: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
-    27: { adam: null, layla: { mood: "excited", message: "Stickers earned, Door Checker!" } }, // stickers
-    28: { adam: null, layla: { mood: "thumbsup", message: "Door Checker badge earned!" } }, // completion
+    0: { adam: { mood: "excited", message: "Mission 16 - into the doorway maze!" }, layla: null }, // intro video
+    1: { adam: { mood: "worried", message: "His Doorway Trick is everywhere..." }, layla: null }, // alert
+    2: { adam: null, layla: { mood: "curious", message: "Checker kit ready? Here's the plan." } }, // ATLAS briefing
+    3: { adam: null, layla: { mood: "curious", message: "Three powers to pack. Let's go." } }, // mission brief
+    4: { adam: { mood: "thinking", message: "The sign is only paint." }, layla: null }, // learn: sign
+    5: { adam: { mood: "curious", message: "Read the plate, not the poster!" }, layla: null }, // game: address plate
+    6: { adam: null, layla: { mood: "thumbsup", message: "What does a sign actually promise?" } }, // prove: recall
+    7: { adam: null, layla: { mood: "excited", message: "One power down - four to go!" } }, // recap 1
+    8: { adam: null, layla: { mood: "curious", message: "Whose door IS it, though?" } }, // learn: keyring
+    9: { adam: null, layla: { mood: "excited", message: "Check the ring, Cyber Hero!" } }, // game: keyring
+    10: { adam: { mood: "thinking", message: "Finish the keyring rule." }, layla: null }, // prove: finish
+    11: { adam: { mood: "excited", message: "It has to prove it's yours!" }, layla: null }, // recap 2
+    12: { adam: { mood: "thinking", message: "Somebody's covered the real one..." }, layla: null }, // learn: sticker
+    13: { adam: { mood: "curious", message: "Thumb on the corner - press!" }, layla: null }, // game: peel test
+    14: { adam: { mood: "worried", message: "He's fibbing about stickers - catch him!" }, layla: null }, // prove: lie
+    15: { adam: null, layla: { mood: "excited", message: "Thumb beats eyeball every time!" } }, // recap 3
+    16: { adam: null, layla: { mood: "curious", message: "Some panes you just can't read." } }, // learn: glass
+    17: { adam: null, layla: { mood: "excited", message: "Read it, or say you can't!" } }, // game: panes
+    18: { adam: { mood: "thumbsup", message: "Put the Checker's look in order." }, layla: null }, // prove: order
+    19: { adam: { mood: "excited", message: "Saying 'I can't read it' IS the skill!" }, layla: null }, // recap 4
+    20: { adam: { mood: "thinking", message: "And when you really can't tell..." }, layla: null }, // learn: barrier
+    21: { adam: { mood: "curious", message: "Barrier out - fetch a grown-up!" }, layla: null }, // game: barrier
+    22: { adam: null, layla: { mood: "thumbsup", message: "Quick - you can't tell. Now what?" } }, // prove: speed
+    23: { adam: null, layla: { mood: "excited", message: "All five powers - poster time!" } }, // recap 5
+    24: { adam: null, layla: { mood: "excited", message: "Every power up on the poster!" } }, // review: power poster
+    25: { adam: { mood: "worried", message: "His Doorway Trick - shut it down!" }, layla: null }, // boss
+    26: { adam: null, layla: { mood: "excited", message: "Look at that maze, all checked!" } }, // outro video
+    27: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
+    28: { adam: null, layla: { mood: "excited", message: "Stickers earned, Cyber Hero!" } }, // stickers
+    29: { adam: { mood: "thumbsup", message: "Door Checker badge earned!" }, layla: null }, // completion
   },
 };

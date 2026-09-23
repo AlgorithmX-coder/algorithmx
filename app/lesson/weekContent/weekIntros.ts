@@ -176,13 +176,13 @@ export const WEEK_INTROS: Record<number, WeekIntroContent> = {
   },
   16: {
     title: "QR Codes & Links: Don't Take the Bait",
-    tagline: "A link is a doorway, so look before you leap.",
+    tagline: "Every link is a door. Read the plate.",
     audioSrc: "/audio/atlas/heroes-week-16.mp3",
     accent: "#b44dff",
     points: [
-      { icon: "🔗", label: "Check the link" },
-      { icon: "🔍", label: "Look before you tap" },
-      { icon: "🪤", label: "Don't take the bait" },
+      { icon: "🚪", label: "The sign is only paint" },
+      { icon: "🔑", label: "Is it one of yours?" },
+      { icon: "✋", label: "Can't tell? Barrier out" },
     ],
   },
   17: {

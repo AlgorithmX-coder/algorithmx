@@ -450,6 +450,18 @@ export type ScreenDef = (
        * to LOOK AT.
        */
       type: "phishInspector";
+      /** Visual skin: the W4 message card (default) or W16's maze door. */
+      skin?: "inbox" | "doorway";
+      /** "doorway" chrome, never spoken: the captions over the sign and plate. */
+      signCaption?: string;
+      plateCaption?: string;
+      /** The word before the counter ("Message 1 / 5"). Never spoken. */
+      counterLabel?: string;
+      unlockHint?: string;
+      zapBanner?: string;
+      safeBanner?: string;
+      senderLabel?: string;
+      timeLabel?: string;
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
@@ -548,7 +560,17 @@ export type ScreenDef = (
       type: "popupPanic";
       /** Visual skin: scary browser pop-ups (default) or W3 chat requests
        *  judged RED FLAG / FRIENDLY on two identical, side-swapping buttons. */
-      skin?: "popup" | "request";
+      /** Visual skin: scary browser pop-ups (default), W3 chat requests, or
+       *  W16's maze doorway. "request" and "doorway" run the same judged
+       *  mechanic. */
+      skin?: "popup" | "request" | "doorway";
+      /** Visible-only chrome. `icon` on each item renders BEFORE the tap, so
+       *  keep it identical across items or it names the answer on sight. */
+      fineIcon?: string;
+      flagIcon?: string;
+      cardBadge?: string;
+      fromFallback?: string;
+      counterLabel?: string;
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
@@ -1687,6 +1709,131 @@ export type ScreenDef = (
     }
   | {
       /**
+       * The Sticker Trick (Week 16, concept 3). Somebody has pasted their own QR
+       * sticker OVER the real one on a poster or a menu. The child runs a PEEL
+       * TEST: press a corner and see whether it lifts. Deliberately there are no
+       * visual tells before the press, because a tilt or a shadow would teach a
+       * child to eyeball it instead of doing the test.
+       */
+      type: "stickerPeel";
+      spots: {
+        id: string;
+        /** Where this poster is, on the board. Never spoken. */
+        place: string;
+        icon: string;
+        /** Read aloud as the poster goes up. */
+        readAloud: string;
+        /** true = a fake pasted on top of the real code. */
+        isSticker: boolean;
+        /** What the peel reveals, shown after the test. Never spoken. */
+        tell: string;
+        /** SPOKEN on the right call ("That's right!" + why). Silent in explanation. */
+        why: string;
+        /** SPOKEN on a wrong call ("Not quite." + explanation). Silent in why. */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      boardLabel?: string;
+      peelLabel?: string;
+      stuckLabel?: string;
+      liftedLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Clear Glass, Frosted Glass (Week 16, concept 4). A link can be READ
+       * before you tap it; a QR code cannot, because to a human it is just a
+       * pattern. The lesson is that "I cannot read this" is a correct and
+       * complete answer, not a failure.
+       */
+      type: "glassCheck";
+      doors: {
+        id: string;
+        /** What the poster round the door promises. Never spoken. */
+        sign: string;
+        icon: string;
+        /**
+         * Read aloud as the door slides in. MUST NOT read the address out: a
+         * child who is told the address has not read the pane themselves.
+         */
+        readAloud: string;
+        /** The address on a clear pane; an EMPTY STRING means a frosted pane. */
+        pane: string;
+        /**
+         * A frosted pane's only correct verdict is "grown-up". Authoring "walk"
+         * or "stop" on an empty pane teaches the opposite of the concept.
+         */
+        verdict: "walk" | "stop" | "grown-up";
+        /** SPOKEN on the right verdict ("That's right!" + why). */
+        why: string;
+        /** SPOKEN on a wrong verdict ("Not quite." + explanation). */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      clearLabel?: string;
+      frostedLabel?: string;
+      walkLabel?: string;
+      stopLabel?: string;
+      grownUpLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Your Keyring (Week 16, concept 2). This week's old screen-4 signature,
+       * now tap-only and RE-VERBED. It used to lay a key over a door and flash
+       * the one tooth that disagreed; "spot the one difference in a lookalike"
+       * is already Week 4, Week 9 and Week 14, so a fourth would be repetition.
+       * It now asks whether the sender is on the child's keyring AT ALL:
+       * possession, not comparison. Two taps per door: lift a key (or the NO KEY
+       * tag), then commit with the button underneath.
+       */
+      type: "keyholeCheck";
+      /** The people and places the child actually knows. */
+      keyring: { id: string; label: string; icon: string }[];
+      doors: {
+        id: string;
+        /** What the door says it is from: "From: Mum". Never spoken. */
+        claim: string;
+        /** The friendly paint around it. Never spoken. */
+        sign: string;
+        icon: string;
+        /** Read aloud as the door slides in. */
+        readAloud: string;
+        /**
+         * Which keyring key matches, or null when nobody on the ring does. A
+         * keyId naming a key that is NOT on the ring is treated as null rather
+         * than becoming an unanswerable door.
+         */
+        keyId: string | null;
+        /** SPOKEN on the right call. One door can be right either way (open or
+         *  chain), so this must read sensibly for whichever way it was got. */
+        why: string;
+        /** SPOKEN on a wrong call, same both-ways rule. */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      ringLabel?: string;
+      openLabel?: string;
+      chainLabel?: string;
+      askPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * The Great Climb-Out (Week 10, concept 1: autoplay is a machine that
        * picks for you). This week's old screen-4 signature, now tap-only and
        * data-driven: the child is deep in a video burrow and climbs a ladder
@@ -2528,7 +2675,9 @@ export type ScreenDef = (
         note: string;
       }[];
       /** Visual skin: warm W11 poster (default) or the W3 detective cork board. */
-      skin?: "poster" | "case";
+      /** Visual skin: the W11 poster (default), the W3 cork board, or W16's
+       *  brass Power Board in the Doorway Maze. */
+      skin?: "poster" | "case" | "doorway";
       /** Copy overrides (defaults keep the W11 team skin). */
       introTitle?: string;
       introSubtitle?: string;
