@@ -232,10 +232,17 @@ export default function SenderLineup({
             </div>
 
             {/* Sarah reads the round aloud (audio-only; the prompt above shows
-                the words + the task). Keyed per round so she re-reads each one. */}
-            <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
-              <InfoNarration key={`lineup-${idx}`} speaker="adam" lines={promptLines} accent={accent ?? "#7df0ff"} />
-            </div>
+                the words + the task). Keyed per round so she re-reads each one.
+                MUST wait for !showIntro: the intro's no-skip gate hides "I'm
+                ready" until ITS narration fires onDone, and a round clip
+                starting underneath the overlay clobbers that one, so the gate
+                falls through to its safety release and the child is left looking
+                at an intro card that never opens. */}
+            {!showIntro && (
+              <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
+                <InfoNarration key={`lineup-${idx}`} speaker="adam" lines={promptLines} accent={accent ?? "#7df0ff"} />
+              </div>
+            )}
 
             {/* The lineup */}
             <div
