@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T13:02:09.968Z",
+  "generatedAt": "2026-09-23T13:39:47.907Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -10870,6 +10870,16 @@
       "file": "/audio/voice/efd040526b1b368c.mp3"
     },
     {
+      "key": "0edac6de0675e7f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check.",
+      "lines": [
+        "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check."
+      ],
+      "file": "/audio/voice/0edac6de0675e7f2.mp3"
+    },
+    {
       "key": "be1eff2b8b58b947",
       "speaker": "adam",
       "voice": "Sarah",
@@ -10878,6 +10888,16 @@
         "That voice button is a microphone, so the telly has ears. Most people never think of the telly."
       ],
       "file": "/audio/voice/be1eff2b8b58b947.mp3"
+    },
+    {
+      "key": "4fd2ef61892ea124",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all.",
+      "lines": [
+        "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all."
+      ],
+      "file": "/audio/voice/4fd2ef61892ea124.mp3"
     },
     {
       "key": "965f7904a4d3fc18",
@@ -10890,6 +10910,16 @@
       "file": "/audio/voice/965f7904a4d3fc18.mp3"
     },
     {
+      "key": "354bceadd0667292",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A lamp makes light and nothing else. It has no way to hear a single thing.",
+      "lines": [
+        "A lamp makes light and nothing else. It has no way to hear a single thing."
+      ],
+      "file": "/audio/voice/354bceadd0667292.mp3"
+    },
+    {
       "key": "f911c3a92d5bd81a",
       "speaker": "adam",
       "voice": "Sarah",
@@ -10898,6 +10928,16 @@
         "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too."
       ],
       "file": "/audio/voice/f911c3a92d5bd81a.mp3"
+    },
+    {
+      "key": "f9cb14396a54a5c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You wind it and it ticks. There is no microphone inside a clock with a key in the back.",
+      "lines": [
+        "You wind it and it ticks. There is no microphone inside a clock with a key in the back."
+      ],
+      "file": "/audio/voice/f9cb14396a54a5c5.mp3"
     },
     {
       "key": "86f5ae33c445bad7",
@@ -11425,6 +11465,16 @@
       "file": "/audio/voice/efd040526b1b368c.mp3"
     },
     {
+      "key": "0edac6de0675e7f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check.",
+      "lines": [
+        "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check."
+      ],
+      "file": "/audio/voice/0edac6de0675e7f2.mp3"
+    },
+    {
       "key": "be1eff2b8b58b947",
       "speaker": "adam",
       "voice": "Sarah",
@@ -11433,6 +11483,16 @@
         "That voice button is a microphone, so the telly has ears. Most people never think of the telly."
       ],
       "file": "/audio/voice/be1eff2b8b58b947.mp3"
+    },
+    {
+      "key": "4fd2ef61892ea124",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all.",
+      "lines": [
+        "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all."
+      ],
+      "file": "/audio/voice/4fd2ef61892ea124.mp3"
     },
     {
       "key": "965f7904a4d3fc18",
@@ -11445,6 +11505,16 @@
       "file": "/audio/voice/965f7904a4d3fc18.mp3"
     },
     {
+      "key": "354bceadd0667292",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A lamp makes light and nothing else. It has no way to hear a single thing.",
+      "lines": [
+        "A lamp makes light and nothing else. It has no way to hear a single thing."
+      ],
+      "file": "/audio/voice/354bceadd0667292.mp3"
+    },
+    {
       "key": "f911c3a92d5bd81a",
       "speaker": "adam",
       "voice": "Sarah",
@@ -11453,6 +11523,16 @@
         "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too."
       ],
       "file": "/audio/voice/f911c3a92d5bd81a.mp3"
+    },
+    {
+      "key": "f9cb14396a54a5c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You wind it and it ticks. There is no microphone inside a clock with a key in the back.",
+      "lines": [
+        "You wind it and it ticks. There is no microphone inside a clock with a key in the back."
+      ],
+      "file": "/audio/voice/f9cb14396a54a5c5.mp3"
     },
     {
       "key": "86f5ae33c445bad7",
@@ -11815,44 +11895,84 @@
       "file": "/audio/voice/850e2b2cf5e9bf6d.mp3"
     },
     {
-      "key": "0edac6de0675e7f2",
+      "key": "39594408c34209aa",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check.",
+      "text": "Think about what a smart speaker is FOR. You talk to it and it answers, and nothing can answer you without hearing you first.",
       "lines": [
-        "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check."
+        "Think about what a smart speaker is FOR. You talk to it and it answers, and nothing can answer you without hearing you first."
       ],
-      "file": "/audio/voice/0edac6de0675e7f2.mp3"
+      "file": "/audio/voice/39594408c34209aa.mp3"
     },
     {
-      "key": "4fd2ef61892ea124",
+      "key": "ab77db78aeb3113f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all.",
+      "text": "Have another think about a kettle. It gets hot and it clicks off, and there is nothing in it that could hear you.",
       "lines": [
-        "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all."
+        "Have another think about a kettle. It gets hot and it clicks off, and there is nothing in it that could hear you."
       ],
-      "file": "/audio/voice/4fd2ef61892ea124.mp3"
+      "file": "/audio/voice/ab77db78aeb3113f.mp3"
     },
     {
-      "key": "354bceadd0667292",
+      "key": "707969033023365e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A lamp makes light and nothing else. It has no way to hear a single thing.",
+      "text": "Have another look at that little voice button on the remote. You speak into it, so there is a microphone behind it.",
       "lines": [
-        "A lamp makes light and nothing else. It has no way to hear a single thing."
+        "Have another look at that little voice button on the remote. You speak into it, so there is a microphone behind it."
       ],
-      "file": "/audio/voice/354bceadd0667292.mp3"
+      "file": "/audio/voice/707969033023365e.mp3"
     },
     {
-      "key": "f9cb14396a54a5c5",
+      "key": "a53dfd23826d6ac2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You wind it and it ticks. There is no microphone inside a clock with a key in the back.",
+      "text": "Give that teddy another look. No batteries anywhere, and nothing that lights up or speaks. It is stuffing all the way through.",
       "lines": [
-        "You wind it and it ticks. There is no microphone inside a clock with a key in the back."
+        "Give that teddy another look. No batteries anywhere, and nothing that lights up or speaks. It is stuffing all the way through."
       ],
-      "file": "/audio/voice/f9cb14396a54a5c5.mp3"
+      "file": "/audio/voice/a53dfd23826d6ac2.mp3"
+    },
+    {
+      "key": "0055b9a0fc4682c4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the headset again. The bit that curves round to your mouth is a microphone, and it is switched on while you play.",
+      "lines": [
+        "Look at the headset again. The bit that curves round to your mouth is a microphone, and it is switched on while you play."
+      ],
+      "file": "/audio/voice/0055b9a0fc4682c4.mp3"
+    },
+    {
+      "key": "3cabeadf62a74de1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A reading lamp does one job. It goes on and it goes off, and neither of those needs ears.",
+      "lines": [
+        "A reading lamp does one job. It goes on and it goes off, and neither of those needs ears."
+      ],
+      "file": "/audio/voice/3cabeadf62a74de1.mp3"
+    },
+    {
+      "key": "6d2f2263bef76864",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It talks back to you, and that is the clue. Nothing can answer a question it never heard.",
+      "lines": [
+        "It talks back to you, and that is the clue. Nothing can answer a question it never heard."
+      ],
+      "file": "/audio/voice/6d2f2263bef76864.mp3"
+    },
+    {
+      "key": "384c9de62a27696d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look for the key in the back of it. A clock you wind up by hand has no electricity in it at all, so it cannot listen.",
+      "lines": [
+        "Look for the key in the back of it. A clock you wind up by hand has no electricity in it at all, so it cannot listen."
+      ],
+      "file": "/audio/voice/384c9de62a27696d.mp3"
     },
     {
       "key": "a94483ff05524771",
@@ -47205,15 +47325,37 @@
       "file": "/audio/voice/3ef22cb33ec9df97.mp3"
     },
     {
-      "key": "022ab3db07325748",
+      "key": "21e86945fecbec41",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check.",
+      "text": "Not quite. Think about what a smart speaker is FOR. You talk to it and it answers, and nothing can answer you without hearing you first.",
       "lines": [
         "Not quite.",
+        "Think about what a smart speaker is FOR. You talk to it and it answers, and nothing can answer you without hearing you first."
+      ],
+      "file": "/audio/voice/21e86945fecbec41.mp3"
+    },
+    {
+      "key": "b4487ccfe9d22226",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check.",
+      "lines": [
+        "That's right!",
         "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check."
       ],
-      "file": "/audio/voice/022ab3db07325748.mp3"
+      "file": "/audio/voice/b4487ccfe9d22226.mp3"
+    },
+    {
+      "key": "d414a26344dc9558",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Have another think about a kettle. It gets hot and it clicks off, and there is nothing in it that could hear you.",
+      "lines": [
+        "Not quite.",
+        "Have another think about a kettle. It gets hot and it clicks off, and there is nothing in it that could hear you."
+      ],
+      "file": "/audio/voice/d414a26344dc9558.mp3"
     },
     {
       "key": "52e3906aa0dadf6b",
@@ -47227,15 +47369,37 @@
       "file": "/audio/voice/52e3906aa0dadf6b.mp3"
     },
     {
-      "key": "5a52973826981c0e",
+      "key": "d0d72548e24512ff",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all.",
+      "text": "Not quite. Have another look at that little voice button on the remote. You speak into it, so there is a microphone behind it.",
       "lines": [
         "Not quite.",
+        "Have another look at that little voice button on the remote. You speak into it, so there is a microphone behind it."
+      ],
+      "file": "/audio/voice/d0d72548e24512ff.mp3"
+    },
+    {
+      "key": "9037f21779393fa9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all.",
+      "lines": [
+        "That's right!",
         "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all."
       ],
-      "file": "/audio/voice/5a52973826981c0e.mp3"
+      "file": "/audio/voice/9037f21779393fa9.mp3"
+    },
+    {
+      "key": "cf29e2177dc27926",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Give that teddy another look. No batteries anywhere, and nothing that lights up or speaks. It is stuffing all the way through.",
+      "lines": [
+        "Not quite.",
+        "Give that teddy another look. No batteries anywhere, and nothing that lights up or speaks. It is stuffing all the way through."
+      ],
+      "file": "/audio/voice/cf29e2177dc27926.mp3"
     },
     {
       "key": "bb92b2c25d95afd8",
@@ -47249,15 +47413,37 @@
       "file": "/audio/voice/bb92b2c25d95afd8.mp3"
     },
     {
-      "key": "647f5bbe927ac866",
+      "key": "b289b229b1aa9452",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. A lamp makes light and nothing else. It has no way to hear a single thing.",
+      "text": "Not quite. Look at the headset again. The bit that curves round to your mouth is a microphone, and it is switched on while you play.",
       "lines": [
         "Not quite.",
+        "Look at the headset again. The bit that curves round to your mouth is a microphone, and it is switched on while you play."
+      ],
+      "file": "/audio/voice/b289b229b1aa9452.mp3"
+    },
+    {
+      "key": "bbb3a870c80b34d6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A lamp makes light and nothing else. It has no way to hear a single thing.",
+      "lines": [
+        "That's right!",
         "A lamp makes light and nothing else. It has no way to hear a single thing."
       ],
-      "file": "/audio/voice/647f5bbe927ac866.mp3"
+      "file": "/audio/voice/bbb3a870c80b34d6.mp3"
+    },
+    {
+      "key": "fea3a24602a16962",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A reading lamp does one job. It goes on and it goes off, and neither of those needs ears.",
+      "lines": [
+        "Not quite.",
+        "A reading lamp does one job. It goes on and it goes off, and neither of those needs ears."
+      ],
+      "file": "/audio/voice/fea3a24602a16962.mp3"
     },
     {
       "key": "5bf6ee4dc2510bed",
@@ -47271,15 +47457,37 @@
       "file": "/audio/voice/5bf6ee4dc2510bed.mp3"
     },
     {
-      "key": "21e018671e987bd5",
+      "key": "d73fb2b32a861c16",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. You wind it and it ticks. There is no microphone inside a clock with a key in the back.",
+      "text": "Not quite. It talks back to you, and that is the clue. Nothing can answer a question it never heard.",
       "lines": [
         "Not quite.",
+        "It talks back to you, and that is the clue. Nothing can answer a question it never heard."
+      ],
+      "file": "/audio/voice/d73fb2b32a861c16.mp3"
+    },
+    {
+      "key": "1adc6091d0c3fbe1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You wind it and it ticks. There is no microphone inside a clock with a key in the back.",
+      "lines": [
+        "That's right!",
         "You wind it and it ticks. There is no microphone inside a clock with a key in the back."
       ],
-      "file": "/audio/voice/21e018671e987bd5.mp3"
+      "file": "/audio/voice/1adc6091d0c3fbe1.mp3"
+    },
+    {
+      "key": "f2a32d535ce8570a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look for the key in the back of it. A clock you wind up by hand has no electricity in it at all, so it cannot listen.",
+      "lines": [
+        "Not quite.",
+        "Look for the key in the back of it. A clock you wind up by hand has no electricity in it at all, so it cannot listen."
+      ],
+      "file": "/audio/voice/f2a32d535ce8570a.mp3"
     },
     {
       "key": "151ce1b9f2f3cf49",
