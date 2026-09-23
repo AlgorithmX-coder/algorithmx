@@ -886,6 +886,11 @@ export default function HeroCinematicV3() {
         @media (max-width: 1100px) { .hv3-sceneScale { zoom: 0.82; } }
         @media (max-width: 1000px) { .hv3-sceneScale { zoom: 0.64; } }
         @media (max-width: 768px)  { .hv3-sceneScale { zoom: 0.56; } }
+        /* Phones: one step smaller again. The scene grows through the pin
+           (measured 432-594 at rest, 412-642 by the end of it) and the
+           frame is only ~664 tall, which left no floor for the CTA the
+           owner wants under it. */
+        @media (max-width: 640px)  { .hv3-sceneScale { zoom: 0.44; } }
         /* SCROLL HINT on short windows: the overlay copy (headline, CTA,
          * trust row) fills the 100vh frame, so the hint drops to the
          * frame edge, and disappears where even that would collide. */

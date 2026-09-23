@@ -197,6 +197,7 @@ export default function HeroOverlay() {
             flexWrap: "wrap",
             pointerEvents: "auto",
           }}
+          className="lv2-hero-cta-row"
         >
           {/* The button already scrolled to the streams rather than
               navigating away, so the label now says what it does. The
@@ -283,6 +284,56 @@ export default function HeroOverlay() {
       @media (max-width: 640px) {
         .lv2-hero-pad { padding-top: 88px; }
         .lv2-hero-copy { margin-top: 0 !important; }
+        /* Owner 2026-09-23: on a phone the button should sit under the
+           machine, not between the copy and it. The copy overlay and the
+           scene are two absolutely positioned layers in the same pinned
+           frame, so the button cannot simply follow the machine in flow:
+           it is pinned to the floor of the frame instead, and the machine
+           is scaled down (see HeroCinematicV3) so it clears it at every
+           point of the pin, not just at rest. !important because the row
+           carries its margin inline. */
+        /* The scrim is a two-column device: it lights the copy column and
+           fades out before the machine, left to right. A phone has one
+           column, so left-to-right is the wrong axis and its 0.97 alpha
+           sat over the laptop's left half. Turning it off is not an
+           option either: measured without it, the ground under the
+           eyebrow here is rgb(136,137,138) and the teal label on that is
+           1.63:1. So on a phone it runs top to bottom instead, lighting
+           the copy and clearing before the machine.
+
+           z-index because the copy below goes static to anchor the CTA,
+           and a positioned sibling would otherwise paint over it. */
+        .lv2-hero-scrim {
+          z-index: -1;
+          background: linear-gradient(
+            180deg,
+            rgba(246,241,233,0.97) 0%,
+            rgba(246,241,233,0.95) 52%,
+            rgba(246,241,233,0.5) 63%,
+            rgba(246,241,233,0) 73%
+          ) !important;
+        }
+        /* The copy block is the nearest positioned ancestor, so without
+           this the row pins to the bottom of the COPY rather than the
+           frame. Static rather than relative because a positioned sibling
+           would then paint over it; with the scrim gone there is no such
+           sibling left, and the row is the only absolutely positioned
+           thing inside the copy, so nothing loses its anchor. */
+        .lv2-hero-copy { position: static !important; }
+        .lv2-hero-cta-row {
+          position: absolute;
+          left: var(--lv2-rail);
+          right: var(--lv2-rail);
+          bottom: 18px;
+          margin-top: 0 !important;
+        }
+        /* The bare mark's size and tracking are inline, so they survive
+           the older phone rule below and pushed "NEEDS" onto a line of
+           its own. */
+        .lv2-hero-eyebrow {
+          font-size: 11px !important;
+          letter-spacing: 0.14em !important;
+        }
       }
       @media (min-height: 1100px) {
         .lv2-hero-pad { padding-bottom: calc(var(--lv2-rail) * 3); }
