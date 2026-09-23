@@ -50,6 +50,13 @@ export interface ButtonHuntProps {
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spot-the-Danger Raccoon preamble folded into the intro. */
+  threat?: { raccoonLine: string };
+  /** SPOKEN payoff on the complete beat. Without it the week has a game that
+   *  ends in silence, which the narration-flow audit flags. */
+  completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  completeTitle?: string;
+  completeLine?: string;
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -72,6 +79,10 @@ export default function ButtonHunt({
   hints,
   introNarration,
   coachLines,
+  threat,
+  completeNarration,
+  completeTitle = "You know exactly where they live!",
+  completeLine = "Muscle memory: installed.",
   onComplete,
   onCorrect,
   onWrong,
@@ -161,6 +172,7 @@ export default function ButtonHunt({
           subtitle={introSubtitle}
           icon={introIcon}
           narration={introNarration}
+          threat={threat}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
         />
@@ -298,12 +310,13 @@ export default function ButtonHunt({
 
       {finished && (
         <ExerciseCompleteBeat
-          title="You know exactly where they live!"
+          title={completeTitle}
           stars={stars}
           statLines={[
             targets.map((t) => t.label).join(" → "),
-            "Muscle memory: installed.",
+            completeLine,
           ]}
+          narration={completeNarration}
           onContinue={() => onComplete(targets.length)}
         />
       )}

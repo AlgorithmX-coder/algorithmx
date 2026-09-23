@@ -166,10 +166,55 @@ export const SIGNATURES: Record<string, ComponentType<SignatureProps>> = {
     },
     { ssr: false },
   ),
-  // Week 17 · Followers — pan the brag-crowd 100 down to your 6 real friends.
-  friendPanner: dynamic(() => import("./FriendPanner"), { ssr: false }),
-  // Week 18 · Shared Devices — flick every app shut, then look back and lock up.
-  logOutFlick: dynamic(() => import("./LogOutFlick"), { ssr: false }),
+  // Week 17 · Followers — pick the gold out of a scoop of the Feed river,
+  // then tip the pan and watch the rest wash through.
+  // Rebuilt to the Learn-Loop standard (data-driven, TAP-ONLY, untimed): the
+  // original wanted a wiggle-drag shake, which is a wrist game rather than a
+  // thinking game and the one input a six year old on a tablet cannot reliably
+  // produce. Its `onComplete(score)` no longer fits this registry's score-less
+  // `onComplete()`, so this adapter keeps the legacy mount compiling and
+  // playable on the game's built-in fallback scoop, and passes the screen's
+  // spoken intro and payoff through to the beats that speak them.
+  friendPanner: dynamic(
+    async () => {
+      const { default: FriendPanner } = await import("./FriendPanner");
+      function FriendPannerSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(FriendPanner, {
+          scoops: [],
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      FriendPannerSignature.displayName = "FriendPannerSignature";
+      return FriendPannerSignature;
+    },
+    { ssr: false },
+  ),
+  // Week 18 . Shared Devices - close every card off the shared tablet, lock
+  // it, then look back when the goblin sneaks one open again.
+  // Rebuilt to the Learn-Loop standard (data-driven, TAP-ONLY, untimed): the
+  // original wanted a press-and-swipe-down flick, a gesture with a velocity
+  // threshold that a six year old on a tablet cannot produce on demand, so a
+  // child who could not flick could not finish. Its onComplete(score) no
+  // longer fits this registry, so this adapter keeps the legacy mount
+  // compiling and playable on the built-in fallback cards.
+  logOutFlick: dynamic(
+    async () => {
+      const { default: LogOutFlick } = await import("./LogOutFlick");
+      function LogOutFlickSignature({ onComplete, narration, winNarration }: SignatureProps) {
+        return createElement(LogOutFlick, {
+          cards: [],
+          onComplete: () => onComplete(),
+          introNarration: narration,
+          completeNarration: winNarration,
+        });
+      }
+      LogOutFlickSignature.displayName = "LogOutFlickSignature";
+      return LogOutFlickSignature;
+    },
+    { ssr: false },
+  ),
   // Week 19 · Family Firewall — weave learned defences to each family member.
   hearthLoom: dynamic(() => import("./HearthLoom"), { ssr: false }),
   // Week 20 · Graduation — Simon echo of all twenty week emblems.

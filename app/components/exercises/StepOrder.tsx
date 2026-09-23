@@ -10,6 +10,9 @@
  *
  * SKINS (owner rule: a reuse must be a genuine re-theme, never a copy):
  *   - "river"  (W5 Calm Path): stepping stones across a calm river.
+ *   - "rail"   (W18 The Lock-Up Routine): a steel locker rail in a cool
+ *              slate room, amber lock glow, square plates bolted to a bar -
+ *              no river, no badges, nothing warm about it.
  *   - "hero"   (W2 The Hero Pause): a glowing hero-badge trail on a purple
  *              backup-signal board — no river, badge slots joined by a light
  *              line, gold tiles.
@@ -43,7 +46,7 @@ export interface OrderStep {
   affirmation?: string;
 }
 
-export type StepOrderSkin = "river" | "hero";
+export type StepOrderSkin = "river" | "hero" | "rail";
 
 export interface StepOrderProps {
   /** Steps in CORRECT order; display order is runtime-shuffled. */
@@ -120,6 +123,25 @@ const SKINS = {
     completeTitle: "Backup team, assembled!",
     completeLine: "Now you know the Hero Pause by heart - for real life too.",
     fxText: "HERO PAUSE!",
+  },
+  rail: {
+    frameBg: "linear-gradient(180deg, #16202e 0%, #101a28 58%, #0a1119 100%)",
+    accent: "#9fc4ee",
+    filledBg: "linear-gradient(165deg, #3d6b57 0%, #244433 100%)",
+    filledBorder: "#5fe0a8",
+    filledGlow: "rgba(95,224,168,0.6)",
+    emptyBg: "linear-gradient(165deg, #2b3646 0%, #1c242f 100%)",
+    emptyBorder: "rgba(159,196,238,0.35)",
+    slotRadius: "10px",
+    numberColor: "#6f849c",
+    affirmColor: "#5fe0a8",
+    tileBorder: "rgba(255,180,92,0.55)",
+    tileBg: "linear-gradient(165deg, rgba(255,180,92,0.18), rgba(18,24,32,0.92))",
+    tileText: "#eef6ff",
+    tileGlow: "rgba(255,180,92,0.8)",
+    completeTitle: "Locked up, in order!",
+    completeLine: "That routine is yours now - for every shared screen you ever meet.",
+    fxText: "ROUTINE LOCKED!",
   },
 } as const;
 

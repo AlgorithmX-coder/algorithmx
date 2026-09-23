@@ -4,32 +4,58 @@ import { WEEK_INTROS } from "./weekIntros";
 /**
  * Week 17 - Social Media: The Profile Shield
  *
- * Built to the locked Cyber Heroes template:
+ * Rebuilt to the Learn-Loop Build Standard. 30 screens:
  *
- *   Opening video  -> alert -> mission brief
+ *   video -> alert -> ATLAS briefing -> mission
  *   5 BEATS, each = Learn (info) -> Game -> Prove (quickCheck) -> recap:
- *     1 SOON     why the 13+ sign exists            | growthRings    | recall
- *     2 FROST    private accounts & settings        | settingsSwitch | speed
- *     3 HEART    followers aren't friends           | conveyorSort   | lie
- *     4 SCRUB    smart posting (highlighter check)  | clueBoard      | recall
- *     5 PAUSE    perfect feeds aren't real life     | chooseYourPath | finish
- *   Consolidation (cyberScanner, Backstage Pass skin) -> boss
- *   (placeholder quiz boss - the bespoke W17 fight is designed with the
- *   boss batch) -> closing video -> debrief -> stickers -> completion.
+ *     1 NUMBER   why the 13+ sign exists          | ropeLine       | recall
+ *     2 FROST    account privacy, pane by pane    | frostMirror    | speed
+ *     3 GOLD     followers are not friends        | friendPanner   | lie
+ *     4 SCRUB    check a draft before it goes     | draftScrub     | recall
+ *     5 BACKSTAGE the reel is one shiny minute    | reveal         | finish
+ *   review (profileInspector) -> boss -> video -> debrief -> stickers -> done
  *
- * Game freshness: beat 1 debuts the small NEW growthRings engine
- * (RevealBoard ran only last week as W16's Door Swing - same call as
- * W13's signBingo and W16's plaquePeek) with an enforced centre-outward
- * ring order no other drill has; settingsSwitch takes its W6-earmarked
- * W17 slot 3 weeks after W14 (the profile burrow); conveyorSort's fifth
- * outing 2 weeks after W15 as the Photo Wall (teamPoster stays reserved
- * for W19's quilt); clueBoard's fourth outing 2 weeks after W15 in its
- * W8-earmarked highlighter dressing; chooseYourPath carries the
- * wellbeing beat. Lane-clean: age signs / your own privacy switches /
- * follower-vs-friend / draft scrubbing / comparison - fake profiles
- * were W3's lane, footprint trails W12's, doors W16's. In-week flavour:
- * the Highlight Reel. Warmth note: beat 5 touches feelings-of-not-
- * enough - villain stays OFF that beat (W5/W11 precedent).
+ * WHAT THE REBUILD FIXED. The shipped week had 31 screens and OPENED ON A GAME
+ * (the old screen-4 Friend Panner), against the owner's rule that a week never
+ * does. Worse, its `reactions` map carried 29 keys for those 31 screens, so from
+ * index 2 onward every single reaction landed on the wrong screen: the Raccoon
+ * worried about his hall of mirrors over the mission brief, and so on all the
+ * way to the completion screen. Both are gone. The map below is 30 keys for 30
+ * screens and every line is against the screen it names.
+ *
+ * ENGINES. Three are NEW, because the six formally free engines are all unfit
+ * on merit: ConveyorBelt and ProtectTheData are timed arcade games with a lose
+ * state, and CrackTheCode and PasswordLab are password puzzles with no bearing
+ * on a social week.
+ *   ropeLine     NEW. Rate a room from what is going on inside it.
+ *   frostMirror  NEW. Choose an audience for each pane of your own profile.
+ *   friendPanner CONVERTED from this week's drag-and-shake signature, now
+ *                tap-only: pick the gold out of a scoop, then tip the pan.
+ *   draftScrub   NEW. Rewrite your own post, line by line, before it goes.
+ *   reveal       RE-THEMED (RETHEME_ALLOWED[17]), W2's only other use, on a new
+ *                "backstage" skin: a lit gallery of framed posts, not a brown
+ *                cork board of golden cards.
+ *   profileInspector  FREE (no rebuilt week uses it) and re-verbed for the
+ *                review: W3 judged a STRANGER's profile for fakeness; this
+ *                audits the child's OWN for openness, one zone per concept.
+ *
+ * LANE, and the one that matters most this week: CONCEPT 2 IS ACCOUNT PRIVACY.
+ * Week 14 shipped DEVICE privacy (a microphone, a camera, a history, switched
+ * off). Nothing in the Frost Mirror switches off; every pane stays on the
+ * mirror and the answer is WHO MAY LOOK. Do not let a microphone anywhere near
+ * this week. Elsewhere: fake profiles are W3's lane, footprint trails W12's,
+ * painted doors W16's, and concept 3 stays on follower-versus-friend rather
+ * than drifting onto strangers.
+ *
+ * TONE. Never anti social media, and never "say less". A profile with nothing
+ * on it is not the win and a child taught to fear their own news simply stops
+ * posting, which teaches them nothing. Every frosted pane leaves the lovely
+ * ones clear, and every scrubbed line keeps the news it was carrying. The 13+
+ * number is a label on a room, never a verdict on the child.
+ *
+ * WARMTH NOTE. Beat 5 touches feeling not-good-enough, so the villain stays OFF
+ * that beat entirely (the W5 and W11 precedent): no `threat` on its game, and
+ * no raccoon in its recap.
  */
 export const WEEK_17: WeekContent = {
   weekNumber: 17,
@@ -52,796 +78,1032 @@ export const WEEK_17: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-17.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone - ANYONE - can stare into. He wants kids dazzled, comparing, and wide open. This week you forge the Profile Shield: learn why the 13+ sign stands at the door, make your profile private, sort followers from friends, scrub your drafts - and see through the highlight reel.",
-      photoCaption: "Wk 17 - The Highlight Reel",
+      caption: "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone at all can stand and stare into. He wants kids dazzled, comparing, and wide open. This week you forge the Profile Shield: read the number on the room, frost your own mirror, tell gold from glitter, check a post before it goes, and see what is really backstage.",
+      photoCaption: "Wk 17 - The Hall of Mirrors",
       ctaLabel: "See the Mission →",
     },
 
-    // WEEK INTRO: ATLAS (Mission Command) briefing, plays after the alert
+    // 2 - WEEK INTRO: ATLAS (Mission Command) briefing
     { type: "weekIntro", ...WEEK_INTROS[17] },
 
-    // 2 - Mission brief
+    // 3 - Mission brief
     {
       type: "mission",
       objectives: [
-        "Know why the 13+ sign exists",
-        "Make your profile PRIVATE - friends only",
-        "Remember: feeds aren't real life",
+        "Read the number on the room, not on yourself",
+        "Choose who looks through every pane",
+        "Check a post BEFORE it goes anywhere",
       ],
     },
 
-    // Signature mini-game (bespoke to this week)
+    /* ─────────── BEAT 1 · THE NUMBER ON THE ROOM ─────────── */
+    // 4 - Learn
     {
-      type: "signature",
-      mechanic: "friendPanner",
-      title: "The Friend Panner",
+      type: "info",
+      conceptNumber: 1,
+      conceptTotal: 5,
+      title: "The 13+ Sign",
+      content:
+        "You have seen the number. 13+, sitting on the app you wanted. It feels like somebody looked at you and said no. It is not that at all. That number is a LABEL ON THE ROOM, the same way the label on a jar tells you what is in the jar. A 13 means the room is full of grown-up sized things: strangers who can talk to anybody, arguments, adverts aimed at people with money. The number describes what is inside. It never once describes you.",
+      bullets: [
+        "The number is a label on the ROOM",
+        "It says what is going on in there",
+        "13 means grown-up sized things inside",
+        "It is not a score for how clever you are",
+        "Not yet is a fact, not a telling off",
+      ],
+      bulletIcons: ["🔢", "👀", "🏷️", "🧠", "⏱️"],
+      emblem: "🔢",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Time to pan for real treasure in the Feed river!",
-          "Shake the pan hard to wash the strangers away.",
-          "Keep the friends you know off the screen. That's your true gold!",
+          "[warmly] Welcome to the Hall of Mirrors, Cyber Hero. Look at all these rooms.",
+          "Every one of them has a number on a little brass stand outside.",
+          "[thinking] And I know how that number feels. Like somebody looked at YOU and said no.",
+          "It is not you. That number is a label on the ROOM, like the label on a jam jar.",
+          "It tells you what is going on in there. That is the only job it has.",
+          "[excited] Come and hand out some numbers with me. You'll see exactly what I mean!",
         ],
       },
     },
-
-    /* ─────────── BEAT 1 · THE 13+ SIGN ─────────── */
-    // 3 - Learn
+    // 5 - Game: NUMBER (RopeLine, NEW).
+    // Sarah speaks readAloud, why and explanation only. `name` and `inside` are
+    // on screen and never spoken, and no readAloud may name the number.
     {
-      type: "info",
-      title: "The 13+ Sign",
-      content:
-        "Social media apps have a sign on the door: 13+. Not a punishment - it means NOT YET. Those rooms are built for teenagers and grown-ups: strangers, pressure, and tricks that take practice to dodge. You're not missing out - you're still growing your trick-spotting powers, year by year, like a tree grows rings. When you reach the sign, you'll walk in strong - because you waited AND you trained.",
-      bullets: [
-        "Social media's door sign says 13+",
-        "Not a punishment - it means NOT YET",
-        "The rooms are grown-up-sized",
-        "Your trick-spotting powers grow every year",
-        "13+ means SOON - and you'll be ready",
-      ],
-      bulletIcons: ["🔰", "❓", "🚪", "🧠", "🌟"],
-      emblem: "🔰",
+      type: "ropeLine",
+      introTitle: "The Number on the Room",
+      introSubtitle: "Look over the rope at what is actually going on in there, then put the right number on the stand.",
+      introIcon: "🔢",
+      ropeLabel: "OVER THE ROPE",
+      insideLabel: "WHAT GOES ON IN THERE",
+      shelfLabel: "THE PLATES ON THE SHELF",
+      askPrompt: "Which number belongs on this room?",
+      counterLabel: "Room",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] Week seventeen - the mirror-hall week!",
-          "Social media's door has a sign: thirteen plus.",
-          "[warmly] It's not a punishment. Promise.",
-          "Those rooms are built grown-up-sized.",
-          "And you? You're growing, ring by ring, like a tree.",
-          "[excited] Come see what grows before you reach the sign!",
-        ],
-      },
-    },
-    // 4 - Game: REVEAL (NEW growthRings - the Growth Rings)
-    {
-      type: "growthRings",
-      introTitle: "The Growth Rings",
-      introSubtitle: "A tree slice of YOU. Tap the glowing ring - middle first - and watch what grows on the way to the 13+ sign.",
-      introIcon: "🔰",
-      centerLabel: "YOU",
-      revealToast: "RING GROWN!",
-      finale: "EVERY RING GROWN - THE SIGN IS A PROMISE!",
-      completeTitle: "Every ring is glowing!",
-      completeLine: "The 13+ sign isn't a wall - it's a promise: SOON, and readier every ring.",
-      rings: [
-        {
-          id: "now",
-          label: "NOW · 6-9",
-          icon: "🎨",
-          title: "The ring you're in",
-          text: "Games, drawing, big ideas, chats with family close by. This ring is already STRONG - and it's yours.",
-        },
-        {
-          id: "radar",
-          label: "10-12 · RADAR",
-          icon: "🧠",
-          title: "The trick-radar ring",
-          text: "Reading tricky messages, spotting pressure, smelling a scam a mile off - your radar grows sharper every single year.",
-        },
-        {
-          id: "sign",
-          label: "13 · THE SIGN",
-          icon: "🔰",
-          title: "The number on the door",
-          text: "13+ is where social media's rooms begin - built grown-up-sized, with strangers and pressure inside. The sign waits so YOU'RE ready, not because you're not clever.",
-        },
-        {
-          id: "ready",
-          label: "READY & STRONG",
-          icon: "🌟",
-          title: "The walking-in ring",
-          text: "Every ring you grow, the shield gets thicker. When you walk through that door at 13+, you'll walk in STRONG - with every Cyber Heroes power already yours.",
-        },
-      ],
-      narration: {
-        speaker: "layla",
-        lines: [
-          "[excited] A tree slice of YOU!",
-          "Every ring is a year of growing.",
-          "Tap the glowing middle first...",
-          "[warmly] and grow your way out to the sign!",
+          "[excited] Here we are. Five rooms, and a shelf of brass number plates.",
+          "Look over the rope at each one. Not at the name over the door, at what is HAPPENING inside.",
+          "Then pick the plate that fits the room. Three, seven or thirteen.",
         ],
       },
       coachLines: {
-        speaker: "layla",
-        lines: ["Start at the glowing center ring - that one's you right now!"],
+        speaker: "adam",
+        lines: [
+          "Remember the jam jar. The label is about what is inside, never about who is reading it.",
+        ],
+      },
+      threat: {
+        raccoonLine: "I took ALL the number plates off my rooms! Now nobody knows what they are walking into. Heh heh heh.",
+      },
+      rooms: [
+        {
+          id: "bouncy",
+          name: "The Bouncy Room",
+          icon: "🎨",
+          inside: "Soft blocks, a slide, and a grown-up sitting by the door the whole time.",
+          readAloud: "Have a look in this one. Soft blocks, a little slide, and a grown-up right there by the door.",
+          plate: "3",
+          why: "Soft blocks and a grown-up sitting right there. Nothing in that room needs anybody to be big yet.",
+          explanation: "Look again at what is in there. Blocks, a slide, and a grown-up watching. Who is that room built for?",
+        },
+        {
+          id: "openmic",
+          name: "The Big Talk Room",
+          icon: "💬",
+          inside: "Thousands of strangers, all talking to each other at once, with nobody checking.",
+          readAloud: "This one is loud. Thousands of people who have never met, all talking at once, and nobody checking any of it.",
+          plate: "13",
+          why: "Strangers can say anything to anybody in there and nobody is checking, so that room waits until you are older.",
+          explanation: "Count the strangers in there, and then count the people checking what they say. Nobody. That is what the number is for.",
+        },
+        {
+          id: "craft",
+          name: "The Making Room",
+          icon: "🎨",
+          inside: "You build things and show them to people you have added yourself.",
+          readAloud: "In here you build things, and you show them to people you added yourself.",
+          plate: "7",
+          why: "You choose who sees your building, so it is a middle sized room. Not tiny, and nowhere near grown-up.",
+          explanation: "The making is easy. The bit to look at is WHO sees it, and in there you pick them yourself.",
+        },
+        {
+          id: "market",
+          name: "The Bargain Room",
+          icon: "💎",
+          inside: "Adverts everywhere asking for a card number to buy things right now.",
+          readAloud: "Look at all the adverts in this one. Every single one is asking for a card number to buy something right now.",
+          plate: "13",
+          why: "That room is asking for a bank card, and a bank card belongs to a grown-up, so the room does too.",
+          explanation: "Follow what the room is ASKING for. It wants a card number, and that is a grown-up thing to hand over.",
+        },
+        {
+          id: "story",
+          name: "The Story Corner",
+          icon: "📋",
+          inside: "Picture books read out loud, and the same six stories every day.",
+          readAloud: "Nice and quiet in this one. Picture books read out loud, the same six stories every day.",
+          plate: "3",
+          why: "Six picture books read out loud, and nothing else can happen in there. That is as small and safe as a room gets.",
+          explanation: "Ask yourself what else could possibly happen in there. Nothing. Just the stories.",
+        },
+      ],
+      hints: {
+        tier1: "Do not read the name over the arch. Read the line under it, the one about what goes on inside.",
+        tier2: "Ask one question: can a stranger talk to anybody in there, or is somebody asking for money? Either one means thirteen.",
+      },
+      completeTitle: "Every room labelled!",
+      completeLine: "The number was never about you, Cyber Hero. It was always about the room.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Look at that. Five rooms, five numbers, and you earned every one of them from what was inside.",
+          "So when an app shows you a thirteen, you already know what it is telling you.",
+          "[warmly] It is describing its room. It is not describing you.",
+        ],
       },
     },
-    // 5 - Prove: RECALL
+    // 6 - Prove
     {
       type: "quickCheck",
       mode: "recall",
-      prompt: "What number is on social media's door sign?",
+      prompt: "An app has 13+ on it. What is that number actually telling you?",
       choices: [
-        { text: "13", isCorrect: true },
-        { text: "3", isCorrect: false },
-        { text: "30", isCorrect: false },
-        { text: "100", isCorrect: false },
+        { text: "What kind of things go on inside that app", isCorrect: true },
+        { text: "How clever you are", isCorrect: false, why: "The number has never met you. It was written before anybody knew you existed." },
+        { text: "That you are in trouble", isCorrect: false, why: "Nobody is cross with you. It is a label, and labels do not tell anybody off." },
+        { text: "That the app is broken", isCorrect: false, why: "The app works perfectly. It is simply built for a room you are not in yet." },
       ],
-      praise: "Thirteen - and every ring until then grows your shield. ✓",
+      praise: "What kind of things go on inside that app. ✓",
+      nudge: "Think about the jam jar. What does a label on a jar describe?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] That's it!",
+          "The number is about the room, every single time.",
+          "Grown-up sized things inside, grown-up sized number outside.",
+          "[warmly] And you can walk right past it without feeling small.",
+        ],
+      },
     },
-
-    // 6 - Recap · Concept 1 of 5
+    // 7 - Recap · Concept 1 of 5
     {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "The 13+ sign isn't a punishment - it means NOT YET: a promise you grow toward, ring by ring.",
-      next: "the frost switch that hides YOUR mirror from strangers",
-      emblem: "🔰",
+      learned: "The number on an app is a label on the room, describing what goes on inside it, never describing you.",
+      next: "how to choose who is allowed to look at your own profile",
+      emblem: "🔢",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] Power one - the sign makes sense now!",
-          "Not a wall. A promise.",
-          "[whispers] But some profiles are already out there, wide open...",
-          "Time to learn the frost switch. Come on.",
+          "[proud] One power down, Cyber Hero. You read the room now, not the telling off.",
+          "A number is a label. A label is a fact. Facts are easy to walk past.",
+          "[whispers] But there is one room you are already standing in, and it has no door on it at all...",
+          "Next, we'll learn how to choose who is allowed to look at your own profile. Come and see!",
         ],
       },
     },
 
     /* ─────────── BEAT 2 · FROST THE MIRROR ─────────── */
-    // 7 - Learn
+    // 8 - Learn
     {
       type: "info",
+      conceptNumber: 2,
+      conceptTotal: 5,
       title: "Frost the Mirror",
       content:
-        "A profile is like a mirror hanging in a public hall - unlocked, ANYONE walking past can stare into it: your photos, your posts, your name. The fix is one hero move: flip it to PRIVATE, so only people you actually know can see in. Remember the Raccoon's frosted doors last week? Frost on HIS doors hid tricks. Frost on YOUR mirror is armor - it hides YOU from strangers. Photos friends-only, messages friends-only, and the padlock ON.",
+        "Your own profile is the room with no door on it. It hangs in the hall like a mirror, and anybody walking past can stop and look through it for as long as they like. Here is the good part: every pane of that mirror has a setting, and the setting says WHO may look. Friends only, or anybody at all. Frosting a pane does not delete it. The thing is still there, still yours, still on your profile. You have simply decided who gets to stand and stare at it.",
       bullets: [
-        "A public profile = a mirror in a hall",
-        "Anyone passing can stare in",
-        "Flip it PRIVATE - friends only",
-        "Frost on YOUR mirror is armor",
-        "Photos, messages, padlock - all locked",
+        "Your profile hangs where people walk past",
+        "Every pane has a who-can-see setting",
+        "Frosted means friends only",
+        "Frosting hides nothing from your friends",
+        "Some panes are lovely left clear",
       ],
-      bulletIcons: ["🚪", "👀", "🔒", "🛡️", "✅"],
+      bulletIcons: ["🆔", "⚙️", "🔒", "👪", "👀"],
       emblem: "🔒",
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] Picture your profile as a mirror in a busy hall.",
-          "Unlocked? Anyone can stare in.",
-          "Your photos. Your name. Anyone.",
-          "[warmly] So we frost it: PRIVATE, friends only.",
-          "On his doors, frost hid tricks. On YOUR mirror, frost is armor.",
-          "[excited] The settings burrow is open - flip those switches!",
+          "[thinking] So. That room with no door on it? It is yours, Cyber Hero. It is your profile.",
+          "It hangs right here in the hall, and anybody walking past can stop and look straight through it.",
+          "[warmly] Now here is the lovely part. Every pane of that mirror has a little setting on it.",
+          "The setting says who may look. Just your friends, or absolutely anybody.",
+          "And frosting a pane deletes nothing. Your friends still see it. You just chose who else does.",
+          "[excited] Let's go and frost your mirror together, pane by pane!",
         ],
       },
     },
-    // 8 - Game: FIND (settingsSwitch re-dress - the Settings Burrow)
+    // 9 - Game: FROST (FrostMirror, NEW).
+    // ACCOUNT privacy, never device switches (W14 owns those). Sarah speaks
+    // readAloud, why and explanation; `label` and `shows` stay on screen.
+    // At least one pane MUST be frost:false or the lesson becomes "hide it all".
     {
-      type: "settingsSwitch",
-      panelTitle: "PIP'S PROFILE SETTINGS",
-      introTitle: "The Settings Burrow",
-      introSubtitle: "Pip the fox cub's profile mirror hangs wide open in the hall. Dig through the settings and frost every switch a stranger could stare through!",
+      type: "frostMirror",
+      introTitle: "Frost the Mirror",
+      introSubtitle: "Six panes, all of them wide open. Work them in any order and decide who looks through each one.",
       introIcon: "🔒",
-      rows: [
-        {
-          id: "account",
-          label: "Account",
-          value: "PUBLIC - the whole hall can peek",
-          safeValue: "PRIVATE - friends only",
-          icon: "🔒",
-          isRisky: true,
-          note: "The big one - one flip and the mirror frosts over. Strangers see nothing; friends see Pip.",
-        },
-        {
-          id: "photos",
-          label: "Who sees my photos",
-          value: "EVERYONE",
-          safeValue: "PEOPLE I KNOW",
-          icon: "👀",
-          isRisky: true,
-          note: "Photos are treasure (Week 8 rule!) - the gallery is for people Pip actually knows.",
-        },
-        {
-          id: "messages",
-          label: "Who can message me",
-          value: "ANYBODY",
-          safeValue: "FRIENDS ONLY",
-          icon: "💬",
-          isRisky: true,
-          note: "ANYBODY means any stranger with a keyboard. Friends-only shuts the flap on the burrow door.",
-        },
-        {
-          id: "name",
-          label: "Name shown",
-          value: "Pip + a made-up hero tag",
-          icon: "🆔",
-          isRisky: false,
-          note: "Already perfect - no full name, no school. The Week 2 disguise, still holding strong.",
-        },
-        {
-          id: "location",
-          label: "Location on posts",
-          value: "OFF",
-          icon: "📍",
-          isRisky: false,
-          note: "Already off - no map pins to the den. Trail Ranger form from Week 12.",
-        },
-      ],
-      hints: {
-        tier1: "Ask each row: could a STRANGER see in through this one?",
-        tier2: "The risky rows say EVERYONE, PUBLIC or ANYBODY. The safe rows already say friends-only, off, or disguised.",
-      },
+      mirrorLabel: "YOUR PROFILE MIRROR",
+      frostLabel: "FROST IT (FRIENDS ONLY)",
+      clearLabel: "LEAVE IT CLEAR (ANYONE)",
+      askPrompt: "Who should see the pane you lift?",
+      liftPrompt: "Tap a pane to lift it and have a proper look",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] The settings burrow - dig in!",
-          "Some switches are wide open to the hall.",
-          "Find every one a stranger could stare through...",
-          "[whispers] and frost it. Friends only. Go!",
+          "[excited] Here it is. Your whole mirror, all six panes, every one of them clear.",
+          "Stand back and look at the lot for a second. That is what a stranger sees in one go.",
+          "Tap any pane you like to lift it out, then choose. Frost it for friends, or leave it clear for anybody.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Read each row - if strangers can see through it, tap it and flip it safe!"],
+        lines: [
+          "Ask yourself one thing about each pane. Could a stranger USE this to find me?",
+        ],
+      },
+      threat: {
+        raccoonLine: "Wide open, every pane of it! I can stand here all day reading your lovely profile. Do NOT touch those settings.",
+      },
+      panes: [
+        {
+          id: "school",
+          label: "MY SCHOOL",
+          icon: "🏫",
+          shows: "Oakfield Primary, Class 4B",
+          readAloud: "This pane has your school on it. The name of it, and which class you are in.",
+          frost: true,
+          why: "A school and a class is a building and a time. Anybody reading that knows where to stand at half past three.",
+          explanation: "Read it again as a stranger would. It names a building, and it names when you will be in it.",
+        },
+        {
+          id: "drawing",
+          label: "MY DRAWING",
+          icon: "🎨",
+          shows: "A dragon I drew, with the wings all wrong",
+          readAloud: "Here is the dragon you drew. The one with the wings you are still cross about.",
+          frost: false,
+          why: "A dragon with wonky wings tells a stranger absolutely nothing except that you can draw. Leave it up and be proud of it.",
+          explanation: "Have another look. Is there anything in that dragon that could help somebody find you? Nothing at all.",
+        },
+        {
+          id: "birthday",
+          label: "MY BIRTHDAY",
+          icon: "🎂",
+          shows: "14 March, and I will be 9",
+          readAloud: "This one is your birthday. The day, and how old you are turning.",
+          frost: true,
+          why: "Your birthday is one of the answers grown-ups use to prove who they are, so it stays with people you know.",
+          explanation: "Think about who asks for a date of birth. Banks and schools do. That makes it worth keeping close.",
+        },
+        {
+          id: "team",
+          label: "MY TEAM",
+          icon: "⭐",
+          shows: "I support the team in the red shirts",
+          readAloud: "This pane says which team you support. The one in the red shirts.",
+          frost: false,
+          why: "Millions of people love that team. Knowing you are one of them gets a stranger no closer to you at all.",
+          explanation: "Count how many people support that team. A stranger would have to knock on an awful lot of doors.",
+        },
+        {
+          id: "street",
+          label: "MY STREET",
+          icon: "📍",
+          shows: "A photo of my front door and the number on it",
+          readAloud: "Look at this one carefully. It is a photo of your front door, with the number showing.",
+          frost: true,
+          why: "A front door with its number on it is an address, even without a single word written under it.",
+          explanation: "Look past the photo to what is IN it. That number is your address, sitting there in a picture.",
+        },
+        {
+          id: "walk",
+          label: "MY WALK HOME",
+          icon: "🌍",
+          shows: "I walk home past the big park every day at 3:30",
+          readAloud: "And this one says how you get home. Past the big park, and what time you do it.",
+          frost: true,
+          why: "A route and a time is the easiest thing in the world for a stranger to wait in, so that one goes to friends only.",
+          explanation: "Put the two halves together. A place, and a time you are always there. That is somewhere to wait.",
+        },
+      ],
+      hints: {
+        tier1: "Lift the pane and ask it one question. Could somebody who has never met me USE this?",
+        tier2: "The ones to frost name a place, a time, or a date. The ones to leave clear are just things you like.",
+      },
+      completeTitle: "Mirror sorted!",
+      completeLine: "Not hidden, Cyber Hero. Yours. You chose who looks through every single pane.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Look at your mirror now. Frosted where it needed it, and still bright where it did not.",
+          "Your dragon is still up there. Your team is still up there. Your friends still see all of it.",
+          "[warmly] Nothing got hidden away. You just decided who stands and stares. That is your profile shield.",
+        ],
       },
     },
-    // 9 - Prove: SPEED
+    // 10 - Prove
     {
       type: "quickCheck",
       mode: "speed",
-      prompt: "Quick - tap the switch that frosts the WHOLE mirror!",
-      speedMs: 5000,
+      prompt: "Which of these belongs behind frosted glass, friends only?",
       choices: [
-        { text: "Account: PRIVATE 🔒", isCorrect: true },
-        { text: "Messages: FRIENDS ONLY", isCorrect: false },
-        { text: "Sound: EXTRA LOUD", isCorrect: false },
+        { text: "The name of my school", isCorrect: true },
+        { text: "A painting I am proud of", isCorrect: false, why: "A painting tells nobody where you are. Leave it clear and let people enjoy it." },
+        { text: "My favourite colour", isCorrect: false, why: "There is nothing a stranger can do with a favourite colour. That one is safe in the open." },
+        { text: "The team I support", isCorrect: false, why: "Millions of people support that team. It gets a stranger no nearer to you." },
       ],
-      praise: "Padlock found at shield speed - one flip, whole mirror frosted! ✓",
+      praise: "The name of my school. ✓",
+      nudge: "Which one of those is a building a stranger could stand outside?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Straight to it!",
+          "A school is a place, and places are how strangers find people.",
+          "Paintings and colours and teams are just you being you.",
+          "[warmly] Frost the places. Keep the you.",
+        ],
+      },
     },
-
-    // 10 - Recap · Concept 2 of 5
+    // 11 - Recap · Concept 2 of 5
     {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "A public profile is a mirror anyone can stare into - flip it private, friends only, padlock on.",
-      next: "the follower counter - and why big numbers aren't friendship",
+      learned: "Every pane of your profile has a who-can-see setting, and frosting one keeps it for friends without hiding it from them.",
+      next: "why the big follower number is not a list of your friends",
       emblem: "🔒",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Two powers - the mirror is frosted!",
-          "Strangers see armor. Friends see you.",
-          "[whispers] But the hall has a counter that never stops spinning...",
-          "followers. Let's talk about that number.",
+          "[proud] Two powers down, Cyber Hero. Your mirror is frosted exactly where it needed to be.",
+          "Friends see everything. Strangers see the dragon and nothing else.",
+          "[whispers] Although... he is awfully quiet about that big number spinning at the top of your mirror...",
+          "Next, we'll learn why that big follower number is not a list of your friends. Come and see!",
         ],
       },
     },
 
-    /* ─────────── BEAT 3 · THE HEART FRAME ─────────── */
-    // 11 - Learn
+    /* ─────────── BEAT 3 · GOLD AND GLITTER ─────────── */
+    // 12 - Learn
     {
       type: "info",
-      title: "Followers Aren't Friends",
+      conceptNumber: 3,
+      conceptTotal: 5,
+      title: "Followers Are Not Friends",
       content:
-        "In the mirror hall there's a counter that spins: followers! 500! 10,000! Here's the truth the Raccoon hopes you never learn: a follower is just a VIEWER - someone watching through the glass. A friend is someone you KNOW: they sit with you at lunch, they know your dog's name, they'd notice if you were sad. Friends go inside the heart frame on your wall. Everyone else - however many, however flattering - stays behind the rope.",
+        "At the top of every profile sits a number, and it only ever goes up. That number counts FOLLOWERS, and a follower is simply somebody watching. A friend is different, and there is one question that tells them apart every time: could you say where you know this person from? Sam, from football. Your nana. That is gold. Somebody lovely who replies to everything and has never been anywhere near you is glitter, and glitter is the trick, because glitter is the bit that shines.",
       bullets: [
-        "The follower counter just spins",
-        "A follower = a viewer through glass",
-        "A friend = someone you KNOW",
-        "Friends go in the heart frame",
-        "Everyone else stays behind the rope",
+        "The follower number counts watchers",
+        "A friend is somebody you can place",
+        "Ask: where do I know them from?",
+        "Lovely in the comments is not a place",
+        "A few real ones beats a big number",
       ],
-      bulletIcons: ["🔢", "👀", "👪", "🌟", "🚫"],
-      emblem: "👪",
+      bulletIcons: ["🔢", "👪", "❓", "✨", "💎"],
+      emblem: "💎",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[curious] See that counter spinning? Followers!",
-          "Five hundred! Ten thousand! Ooooh!",
-          "[warmly] Now the truth: a follower is a viewer.",
-          "A friend knows your dog's name.",
-          "Friends go in the heart frame. Everyone else - behind the rope.",
-          "[excited] Follower cards incoming - sort the wall!",
+          "[thinking] Right. That big number at the top of your mirror. Let's talk about that one.",
+          "It counts followers. And a follower is just somebody watching. That is the whole job.",
+          "A friend is a different thing entirely, and there is one question that sorts them out.",
+          "[warmly] Could you say WHERE you know them from? Sam, from football. Your nana. That is gold.",
+          "Somebody lovely who replies to everything but has never been anywhere near you? That is glitter.",
+          "[excited] Come and pan the river with me. You'll spot the difference in a second!",
         ],
       },
     },
-    // 12 - Game: SORT (conveyorSort re-dress - the Photo Wall)
+    // 13 - Game: GOLD (FriendPanner, the converted signature, TAP-ONLY).
+    // Every scoop needs at least one gold and at least one fool's gold. `who`
+    // carries the whole test and is never spoken; the scoop's why walks its own
+    // pebbles. Nothing is judged until the child tips.
     {
-      type: "conveyorSort",
-      introTitle: "The Photo Wall",
-      introSubtitle: "Follower cards are riding the belt to Pip's photo wall. People Pip KNOWS go in the heart frame - everyone else stays behind the rope!",
-      introIcon: "👪",
-      machineLabel: "THE PHOTO WALL",
-      chuteWord: "SPOT",
-      completeTitle: "The wall is sorted!",
-      completeLine: "Knowing someone beats being followed by them - the heart frame stays honest.",
-      categories: [
-        { id: "heart", label: "HEART FRAME", icon: "👪", tone: "safe" },
-        { id: "rope", label: "BEHIND THE ROPE", icon: "🚫", tone: "lock" },
-      ],
-      items: [
-        {
-          id: "maya",
-          text: "Maya from class - you sit together at lunch every day",
-          icon: "💬",
-          categoryId: "heart",
-          explanation: "Lunch-table, real-life, knows-your-jokes Maya - exactly who the heart frame is for.",
-        },
-        {
-          id: "coolgamer",
-          text: "CoolGamer_9000 - never met, follows 4,000 kids",
-          icon: "🎮",
-          categoryId: "rope",
-          explanation: "Four thousand kids isn't friendship, it's a collection - behind the rope it goes.",
-        },
-        {
-          id: "zain",
-          text: "Cousin Zain - beach vacation together every summer",
-          icon: "🎉",
-          categoryId: "heart",
-          explanation: "Family you actually see and know - heart frame, always.",
-        },
-        {
-          id: "scout",
-          text: "'Talent scout' who messaged: 'you could be FAMOUS!'",
-          icon: "🌟",
-          categoryId: "rope",
-          explanation: "Too-friendly-too-fast plus a big shiny promise - that's the Week 3 stranger trick in a new coat.",
-        },
-        {
-          id: "leo",
-          text: "Leo next door - backyard soccer every weekend",
-          icon: "💪",
-          categoryId: "heart",
-          explanation: "Real backyard, real soccer, real friend - in the frame.",
-        },
-        {
-          id: "instaliker",
-          text: "A grown-up stranger who likes every photo within seconds",
-          icon: "👀",
-          categoryId: "rope",
-          explanation: "Watching a kid's profile that closely is a rope-and-tell-a-grown-up moment, not a friendship.",
-        },
-        {
-          id: "gran",
-          text: "Grandma - biggest fan of every drawing you post",
-          icon: "🎁",
-          categoryId: "heart",
-          explanation: "Grandma knows you, loves you, and claps for every scribble - heart frame royalty.",
-        },
-        {
-          id: "coinclub",
-          text: "FreeCoinsClub - a 'friend' that only posts prize links",
-          icon: "🪤",
-          categoryId: "rope",
-          explanation: "That's not a person, it's a store wearing a face - and its doors are painted doors from Week 16.",
-        },
-      ],
-      hints: {
-        tier1: "Ask the friend question: do you KNOW them in real life?",
-        tier2: "HEART = lunch table, family, next door, Grandma. ROPE = never-met, too-flattering, always-watching, prize links.",
-      },
+      type: "friendPanner",
+      introTitle: "The Friend Panner",
+      introSubtitle: "The Feed river is full of followers. Pick out the gold, then tip the pan and let the rest wash through.",
+      introIcon: "💎",
+      followerCount: 214,
+      followersLabel: "FOLLOWERS",
+      friendsLabel: "GOLD FOUND",
+      panLabel: "IN YOUR PAN",
+      tipLabel: "TIP THE PAN",
+      emptyTipLabel: "PICK YOUR GOLD FIRST",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[excited] The photo wall - cards on the belt!",
-          "One question for every card:",
-          "do you KNOW them in real life?",
-          "[warmly] Heart frame for yes. Rope for everyone else. Go!",
+          "[excited] Here comes the river, and here is your pan. Two hundred and fourteen followers in there.",
+          "A scoop at a time. Tap everyone you could actually place, and they stay in the pan.",
+          "Then tip it, and everybody else washes straight through. Nothing bad happens to them, they simply are not gold.",
         ],
       },
       coachLines: {
-        speaker: "layla",
-        lines: ["First card's here - would they know your dog's name? Sort it!"],
+        speaker: "adam",
+        lines: [
+          "Read the little line under each name. If it says WHERE you know them from, that is your gold.",
+        ],
+      },
+      threat: {
+        raccoonLine: "Two hundred and fourteen! What a POPULAR little hero. Keep them all, go on. The more the merrier for me.",
+      },
+      scoops: [
+        {
+          id: "scoop-1",
+          label: "First scoop",
+          readAloud: "First scoop out of the river. Four of them. Have a good look at each one.",
+          why: "Maya sits next to you and Nana is your nana. SuperFan2000 and the star sender are lovely, but you could not say where either of them is standing right now.",
+          explanation: "Go along the little lines underneath. Two of them name a real place. Two of them only name something nice.",
+          pebbles: [
+            { id: "p-maya", name: "Maya", who: "Sits next to you in Class 4B", icon: "🏫", gold: true },
+            { id: "p-nana", name: "Nana", who: "Makes the good custard", icon: "👪", gold: true },
+            { id: "p-fan", name: "SuperFan2000", who: "Replies to every post with a heart", icon: "💬", gold: false },
+            { id: "p-star", name: "StarSender", who: "Sends a hundred stars a day", icon: "⭐", gold: false },
+          ],
+        },
+        {
+          id: "scoop-2",
+          label: "Second scoop",
+          readAloud: "Second scoop. Four more, and one of these is going to glitter at you.",
+          why: "Sam kicks a ball at you every Saturday and Ollie lives four doors down. The scout and the prize account have never once said where they are.",
+          explanation: "One of these is shinier than the others and that is exactly why it is worth checking. Where would you have met them?",
+          pebbles: [
+            { id: "p-sam", name: "Sam", who: "Kicks with you at football", icon: "🎮", gold: true },
+            { id: "p-scout", name: "TalentScout", who: "Says you could be famous", icon: "🌟", gold: false },
+            { id: "p-ollie", name: "Ollie", who: "Lives four doors down from you", icon: "🏠", gold: true },
+            { id: "p-prize", name: "PrizeDrop", who: "Gives away a phone every single day", icon: "🎁", gold: false },
+          ],
+        },
+        {
+          id: "scoop-3",
+          label: "Last scoop",
+          readAloud: "Last scoop of the day. Four more out of the river.",
+          why: "Mr Patel teaches you and Ada swims with you on Tuesdays. The other two are just very keen, and keen is not a place.",
+          explanation: "Two of these you could point out to a grown-up tomorrow. The other two you could not point out anywhere.",
+          pebbles: [
+            { id: "p-patel", name: "Mr Patel", who: "Teaches your class on Fridays", icon: "🏫", gold: true },
+            { id: "p-hype", name: "HypeSquad", who: "Calls everybody their best friend", icon: "💬", gold: false },
+            { id: "p-ada", name: "Ada", who: "Swims with you on Tuesdays", icon: "👪", gold: true },
+            { id: "p-follow", name: "FollowBack99", who: "Follows anybody who follows first", icon: "🔀", gold: false },
+          ],
+        },
+      ],
+      hints: {
+        tier1: "Do not look at how nice they sound. Look for a PLACE in the little line underneath.",
+        tier2: "Football, school, four doors down, Tuesdays. Those are places. Hearts, stars and compliments are not.",
+      },
+      completeTitle: "Panned to the gold!",
+      completeLine: "That is the real number, Cyber Hero. Small, and every single one of them yours.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Look at those two numbers sitting next to each other.",
+          "Two hundred and fourteen watching. Six you could walk up to tomorrow and say hello.",
+          "[warmly] And here is the thing. The small number is the one that would notice if you were sad.",
+        ],
       },
     },
-    // 13 - Prove: LIE
+    // 14 - Prove
     {
       type: "quickCheck",
       mode: "lie",
-      prompt: "Is that true?",
-      raccoonLine: "followers are just viewers watching through the glass - they'd never even notice if you were sad. That's why I LOVE a big spinning counter... viewers ask no questions!",
+      prompt: "The Raccoon says: 'Anyone who follows you back is officially your friend!' Is he right?",
       choices: [
-        { text: "TRUE", isCorrect: true },
-        { text: "FALSE", isCorrect: false },
+        { text: "No. Following is watching, and watching is not knowing", isCorrect: true },
+        { text: "Yes, following back makes it official", isCorrect: false, why: "Nothing official happens. A button was pressed, and that is the whole of it." },
+        { text: "Yes, if they follow you fast", isCorrect: false, why: "Speed says nothing about somebody. It only says their thumb was quick." },
+        { text: "Yes, if they have lots of followers", isCorrect: false, why: "A big number means a lot of people are watching them too. It still is not knowing you." },
       ],
-      praise: "Sharp ears - this time he told the TRUTH and twisted it. Followers ARE just viewers... which is exactly why friends beat counters. ✓",
-      nudge: "Careful - read it again. Is the first bit of what he said actually TRUE this time?",
+      praise: "No. Following is watching, and watching is not knowing. ✓",
+      nudge: "Ask the panning question about a follower. Could you say where you know them from?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] You spotted it!",
+          "He wants that counter to feel like a friendship list.",
+          "It is a list of people watching, and it always was.",
+          "[warmly] Your gold is the handful you could name a place for.",
+        ],
+      },
     },
-
-    // 14 - Recap · Concept 3 of 5
+    // 15 - Recap · Concept 3 of 5
     {
       type: "recap",
       concept: 3,
       total: 5,
-      learned: "A follower is a viewer through the glass; a friend is someone you KNOW - the heart frame stays honest.",
-      next: "the highlighter that checks every draft before it goes anywhere",
-      emblem: "👪",
+      learned: "The follower number counts people watching, and the one question that finds a real friend is where do I know them from.",
+      next: "how to check a post before it goes anywhere",
+      emblem: "💎",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] Three powers - the counter can't dazzle you!",
-          "Viewers watch. Friends KNOW.",
-          "[whispers] Now, about the posts themselves...",
-          "some drafts glow RED under the highlighter. Come see.",
+          "[proud] Three powers down, Cyber Hero. Gold in the pan, glitter in the river.",
+          "Watching is easy. Knowing somebody takes an actual place and an actual day.",
+          "[whispers] Now. All those watchers are still out there, and you are about to post something...",
+          "Next, we'll learn how to check a post before it goes anywhere. Come and see!",
         ],
       },
     },
 
     /* ─────────── BEAT 4 · THE HIGHLIGHTER CHECK ─────────── */
-    // 15 - Learn
+    // 16 - Learn
     {
       type: "info",
-      title: "The Highlighter Check",
+      conceptNumber: 4,
+      conceptTotal: 5,
+      title: "Check It Before It Goes",
       content:
-        "Before any post goes anywhere, heroes run the highlighter over it. Risky bits glow RED: your school's name, times and places you'll be, what you're wearing today - together they make a find-me map for strangers. Happy news with no clues glows GREEN: new sneakers, a drawing you're proud of, a game your team won. The rule from Week 8 still rules: scrub the red, keep the green, THEN post.",
+        "Between writing a post and sending it there is a little gap, and that gap belongs entirely to you. Nobody has seen anything yet. So you read it back with a highlighter, looking for two things only: WHERE, and WHEN. Those two together are a map. The good news is that a map can be taken out without taking the news out. Back at Oakfield Primary tomorrow at half eight becomes back at school tomorrow, and it is the same happy post with the map gone.",
       bullets: [
-        "Run the highlighter before posting",
-        "School names glow RED",
-        "Times + places = a find-me map",
-        "What-you're-wearing glows red too",
-        "Scrub the red, keep the green, post",
+        "Nothing is sent until you send it",
+        "Read it back looking for WHERE",
+        "Then read it back looking for WHEN",
+        "Where plus when makes a map",
+        "Swap the map out, keep the news",
       ],
-      bulletIcons: ["🔍", "🏫", "📍", "👀", "✅"],
+      bulletIcons: ["⏸️", "📍", "⏱️", "🌍", "🔀"],
       emblem: "🔍",
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] Every hero post starts as a draft...",
-          "and every draft gets the highlighter.",
-          "School names? RED. Times and places? RED.",
-          "What you're wearing today? Red, red, red.",
-          "[warmly] Happy news with no clues? Green and good to go.",
-          "[excited] Pip's draft is on the desk - light it up!",
+          "[warmly] So you have written a post. Lovely. And here is the best bit: it has not gone anywhere.",
+          "There is a little gap between writing a thing and sending it, and that gap is all yours.",
+          "[thinking] So we read it back with a highlighter, hunting for two words. Where, and when.",
+          "Those two stuck together make a map, and a map is the only part a stranger can actually use.",
+          "And listen, we are not deleting your news. We swap the map out and keep every bit of the fun.",
+          "[excited] Come and run the highlighter over a draft with me!",
         ],
       },
     },
-    // 16 - Game: INSPECT (clueBoard re-dress - the Draft-Post Highlighter)
+    // 17 - Game: SCRUB (DraftScrub, NEW).
+    // Worked top to bottom and NEVER shuffled (it is a sentence), so keeps and
+    // swaps are interleaved by hand: keep, swap, keep, swap, swap, keep. Every
+    // swapTo keeps the news, or the game teaches a child to stop posting.
     {
-      type: "clueBoard",
-      introTitle: "The Draft-Post Highlighter",
-      introSubtitle: "Pip's first-day-back post is ready to send. Run the highlighter over every line - see what glows red before it goes anywhere!",
+      type: "draftScrub",
+      introTitle: "The Highlighter Check",
+      introSubtitle: "Your post is written and not sent. Read it line by line and swap out the bits that draw a map.",
       introIcon: "🔍",
-      photoTitle: "Pip's draft: 'First day back! Meet me at Sunnyside School gates at 3:15 - I'm the one in the red scarf! #NewSneakers'",
-      photoIcon: "💬",
-      clues: [
-        {
-          id: "school",
-          icon: "🏫",
-          label: "'Sunnyside School gates'",
-          evidence: "RED GLOW: that's the school's name AND the pick-up spot - the biggest pin on a stranger's map.",
-        },
-        {
-          id: "time",
-          icon: "🔔",
-          label: "'at 3:15'",
-          evidence: "RED GLOW: now the map has a TIME. Where-plus-when is exactly what a stranger can use.",
-        },
-        {
-          id: "scarf",
-          icon: "👀",
-          label: "'the one in the red scarf'",
-          evidence: "RED GLOW: that tells anyone how to SPOT Pip in a crowd of kids. What-you're-wearing never posts.",
-        },
-        {
-          id: "trainers",
-          icon: "🎉",
-          label: "'#NewSneakers'",
-          evidence: "GREEN GLOW: happy news, zero clues - no school, no time, no way to find anyone. This bit is post-safe!",
-        },
-      ],
-      verdict: {
-        prompt: "Highlighter's done. What's the call on this draft?",
-        options: [
-          {
-            text: "Scrub the school, the time and the scarf - then post the happy bit",
-            isCorrect: true,
-            explanation: "Exactly - the excitement posts, the find-me map doesn't. That's shield-bearer form.",
-          },
-          {
-            text: "Post it as-is - it's just first-day excitement",
-            isCorrect: false,
-            explanation: "Three red glows say otherwise: school + time + what-to-look-for is a complete stranger's map.",
-          },
-          {
-            text: "Never post anything again, ever",
-            isCorrect: false,
-            explanation: "Too far! The sneakers line glowed green - posting isn't the danger, the DETAILS are.",
-          },
-        ],
-      },
-      stampText: "SCRUBBED CLEAN!",
-      completeTitle: "Draft checked, line by line!",
-      completeLine: "Three red glows scrubbed, one green kept - the post is safe AND still fun.",
-      hints: {
-        tier1: "Highlight every line - which ones help a stranger FIND Pip?",
-        tier2: "School name, time, what-Pip's-wearing = red. Sneakers with no clues = green.",
-      },
+      draftLabel: "YOUR DRAFT, NOT SENT YET",
+      keepLabel: "KEEP IT",
+      swapLabel: "SWAP IT",
+      askPrompt: "Does this line go as it is?",
+      postedByLabel: "Pip",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] The draft is on the desk!",
-          "Run the highlighter over every line.",
-          "Red for find-me clues...",
-          "[whispers] green for safe-and-happy. Light it up!",
+          "[excited] Here is the draft. Six lines, sitting on the phone, not sent.",
+          "I will light up one line at a time. Read it, then tell me: does it go as it is, or does it get swapped?",
+          "Swapping never deletes your news. It just says the same thing without the map.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Tap the first line and see what color it glows!"],
+        lines: [
+          "Two words to hunt for on every line. Where, and when.",
+        ],
+      },
+      threat: {
+        raccoonLine: "Post it! Post it all! Every lovely little detail! I do so enjoy a draft that nobody read twice.",
+      },
+      lines: [
+        {
+          id: "l1",
+          text: "Best day EVER at swimming club!",
+          safe: true,
+          readAloud: "First line. Best day ever at swimming club.",
+          why: "That is your news and it is lovely. It says you had a brilliant time and it does not say where you are.",
+          explanation: "Have another read. Is there a place in that line, or a time? Neither. It is just your happy news.",
+        },
+        {
+          id: "l2",
+          text: "The pool on Mill Road, next to the big clock",
+          swapTo: "At our pool",
+          safe: false,
+          readAloud: "Second line. The pool on Mill Road, next to the big clock.",
+          why: "A road name and a landmark is an address with the word address left off. At our pool says the same thing and keeps it yours.",
+          explanation: "That line names a road and a landmark. Put together, somebody could walk straight to it.",
+        },
+        {
+          id: "l3",
+          text: "I did a whole length without stopping!",
+          safe: true,
+          readAloud: "Third line. I did a whole length without stopping.",
+          why: "That is the proudest bit of the whole post and there is nothing in it but you being brilliant.",
+          explanation: "Read it once more. A whole length is a thing you DID, not a place anybody could stand.",
+        },
+        {
+          id: "l4",
+          text: "Same time next Saturday, 10am sharp",
+          swapTo: "Going again next week",
+          safe: false,
+          readAloud: "Fourth line. Same time next Saturday, ten in the morning, sharp.",
+          why: "A day and a time is somewhere to wait. Going again next week tells your friends exactly as much and tells a stranger nothing.",
+          explanation: "This one is the WHEN. A day and a clock time means anybody reading it knows where you will be standing.",
+        },
+        {
+          id: "l5",
+          text: "My badge has my full name and school on it",
+          swapTo: "I got my new badge",
+          safe: false,
+          readAloud: "Fifth line. My badge has my full name and my school on it.",
+          why: "A full name and a school in one line is the whole map at once. I got my new badge is still the proud bit, with the map taken out.",
+          explanation: "Count what is in that line. A full name, and a school. That is two of the biggest things on your mirror.",
+        },
+        {
+          id: "l6",
+          text: "Mum says I can get chips after. YES.",
+          safe: true,
+          readAloud: "Last line. Mum says I can get chips after. Yes.",
+          why: "Chips are not a map. That line is just a happy ending and it can go exactly as it is.",
+          explanation: "Look for the where and the when in that one. There is not a single one of either. Only chips.",
+        },
+      ],
+      hints: {
+        tier1: "Read the glowing line and hunt for two things only. A place, or a time.",
+        tier2: "Road names, clock times and full names get swapped. Feelings and things you did stay exactly as they are.",
+      },
+      completeTitle: "Draft ready to send!",
+      completeLine: "Still your news, Cyber Hero. Just without the map to your front door.",
+      completeNarration: {
+        speaker: "adam",
+        lines: [
+          "[proud] Read it back. Best day ever, a whole length, and chips after.",
+          "Every bit of the fun is still sitting right there in it.",
+          "[warmly] The only things you took out were a road, a clock and a full name. Nobody will miss those but him.",
+        ],
       },
     },
-    // 17 - Prove: RECALL (quick-sort)
+    // 18 - Prove
     {
       type: "quickCheck",
       mode: "recall",
-      prompt: "Which line was safe to post?",
+      prompt: "You are reading a draft back with the highlighter. Which two words are you hunting for?",
       choices: [
-        { text: "#NewSneakers", isCorrect: true },
-        { text: "'Sunnyside School gates'", isCorrect: false },
-        { text: "'at 3:15'", isCorrect: false },
-        { text: "'the one in the red scarf'", isCorrect: false },
+        { text: "Where, and when", isCorrect: true },
+        { text: "Please, and thank you", isCorrect: false, why: "Lovely manners, but manners do not draw anybody a map." },
+        { text: "Funny, and boring", isCorrect: false, why: "How good the post is has nothing to do with how safe it is." },
+        { text: "Long, and short", isCorrect: false, why: "A short post can hand over an address, and a long one might hand over nothing." },
       ],
-      praise: "Green glow spotted - joy with zero find-me clues posts every time. ✓",
+      praise: "Where, and when. ✓",
+      nudge: "Which two things stuck together make a map somebody could follow?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] Exactly right!",
+          "A place on its own is not much. A time on its own is not much either.",
+          "Stick them together and you have made somewhere to wait.",
+          "[warmly] So we swap one of them out, and the post is still yours.",
+        ],
+      },
     },
-
-    // 18 - Recap · Concept 4 of 5
+    // 19 - Recap · Concept 4 of 5
     {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "The highlighter finds the find-me clues - school, times, what-you're-wearing glow red and get scrubbed before posting.",
-      next: "the hall of perfect posts - and the pause that beats it",
+      learned: "The gap before you send belongs to you, and running a highlighter over it takes the map out without taking the news out.",
+      next: "what is really behind a perfect looking post",
       emblem: "🔍",
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Four powers - no draft escapes the highlighter!",
-          "Red scrubbed, green posted.",
-          "[warmly] One power left, and it's the gentlest one...",
-          "for the days the mirror hall makes you feel small.",
+          "[proud] Four powers down, Cyber Hero. No draft of yours leaves without a read back now.",
+          "Map out, news in. That is the whole highlighter trick.",
+          "[thinking] And now the strangest room in his whole hall. The one where everything looks perfect...",
+          "Next, we'll learn what is really behind a perfect looking post. Come and see!",
         ],
       },
     },
 
     /* ─────────── BEAT 5 · THE BACKSTAGE TRUTH ─────────── */
-    // 19 - Learn
+    // WARMTH NOTE: this beat touches feeling not-good-enough, so the villain is
+    // OFF it entirely. No `threat` on the game, no raccoon in the recap.
+    // 20 - Learn
     {
       type: "info",
+      conceptNumber: 5,
+      conceptTotal: 5,
       title: "The Backstage Truth",
       content:
-        "Walk the mirror hall and every post sparkles: perfect vacations, perfect goals, perfect hair. Here's the backstage truth: feeds are HIGHLIGHT REELS. People post their one shiny minute, never the boring Tuesday, the burnt toast, the fifteen blurry photos it took to get the good one. Comparing your real, messy, wonderful life to everyone else's highlight reel is a game nobody wins. When the sparkle makes you feel small: put the screen down, remember the un-posted bits of YOUR day, and tell someone how you feel - yours is real, and real is better.",
+        "Scroll for a minute and everybody looks like they are having the best day of their life. Here is what is actually happening: people post their SHINY MINUTE. The cake that came out right, the goal that went in, the holiday morning. Nobody posts the forty photos before the good one, or the ordinary wet Tuesday, or the bit where they were bored. You are comparing your whole day, all of it, against everybody else's best minute. That is not a fair race, and it was never meant to be one.",
       bullets: [
-        "Feeds are highlight reels",
-        "One shiny minute, posted",
-        "The messy Tuesday, never posted",
-        "Don't compare backstage to reels",
-        "Feeling small? Pause + tell someone",
+        "People post their shiniest minute",
+        "The other thousand minutes stay off",
+        "You see one photo, not forty tries",
+        "Your whole day against their best bit",
+        "Feeling small means the reel worked",
       ],
-      bulletIcons: ["🌟", "🎉", "🌀", "🚫", "👪"],
-      emblem: "🌟",
+      bulletIcons: ["🌟", "🙈", "📸", "⭐", "🧠"],
+      emblem: "🎭",
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
-          "[warmly] Last power - and it's the gentlest.",
-          "Every post in the hall sparkles. Perfect, perfect, perfect.",
-          "[whispers] But feeds are highlight reels.",
-          "Nobody posts the burnt toast or the soggy Tuesday.",
-          "Comparing your backstage to their reel? Nobody wins that.",
-          "[excited] Three sparkly moments coming - show me the pause!",
+          "[thinking] Have you ever scrolled for a bit and come away feeling a bit rubbish? I have.",
+          "Everybody looks like they are having the best day of their life, all at once.",
+          "[warmly] Here is what is really going on. People post their shiniest minute.",
+          "The cake that worked. The goal that went in. Not the forty photos before the good one.",
+          "So you end up putting your whole ordinary day next to everybody else's best bit. That is not a fair race.",
+          "[excited] Come backstage with me. Let's see what is really behind these posts!",
         ],
       },
     },
-    // 20 - Game: DECIDE (chooseYourPath - the Perfect-Feed Pause)
+    // 21 - Game: BACKSTAGE (RevealBoard, RETHEME_ALLOWED[17], "backstage" skin).
+    // The board and every word of its chrome are re-themed: a lit gallery of
+    // framed posts, not W2's brown cork board of golden cards, and no raccoon
+    // anywhere in it. `counter` is the line the child leaves each post with.
     {
-      type: "chooseYourPath",
-      scenarios: [
+      type: "reveal",
+      skin: "backstage",
+      title: "The Backstage Pass",
+      subtitle: "Every post in this gallery looks perfect. Tap one and walk round the back of it.",
+      boardIcon: "🎭",
+      tapLabel: "TAP TO GO BACKSTAGE",
+      stampLabel: "SEEN IT!",
+      stampIcon: "👀",
+      lockedLine: "Every frame checked. Not one of them was a whole day.",
+      progressNoun: "seen backstage",
+      planEyebrow: "WHAT THE POST SHOWS",
+      planIcon: "📸",
+      counterEyebrow: "AND HERE IS THE REST OF IT",
+      counterIcon: "🎭",
+      revealToast: "BACKSTAGE!",
+      stepButtonLabel: "So what is behind it? →",
+      counterButtonLabel: "🎭 Got it!",
+      vignetteAriaPrefix: "What is really behind",
+      trailIcon: "👀",
+      completeTitle: "Backstage pass: used!",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Here we are. A whole gallery of perfect posts, all framed up and shining.",
+          "Tap any frame you like and we will walk round the back of it together.",
+          "[thinking] You will see the bit that did not get posted. That bit is where everybody actually lives.",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: [
+          "There is no wrong tap in here, Cyber Hero. Open them all and see everything.",
+        ],
+      },
+      items: [
         {
-          setup: "Scroll... scroll... everyone's summer looks AMAZING - beaches, pools, fireworks. Yours was a rainy campsite. Your sparkle dims a little...",
-          choices: [
-            {
-              text: "Flip to backstage - remember the un-posted bits",
-              isSafe: true,
-              consequence: "Their reel didn't show THEIR rainy days either - nobody posts those. Your soggy-tent giggles with Dad were real, and real beats posted, every time.",
-            },
-            {
-              text: "Keep scrolling and comparing",
-              isSafe: false,
-              consequence: "An hour later the sparkle feels worse, not better - because you compared your whole backstage to a hundred one-shiny-minute reels. That game has no winner; the pause does.",
-            },
+          id: "cake",
+          label: "The Perfect Cake",
+          icon: "🎂",
+          steps: [
+            { icon: "📸", text: "One beautiful cake, lit from the side, not a crumb out of place..." },
+            { icon: "🗑️", text: "...and behind the camera, the first two in the bin because they sank in the middle." },
+            { icon: "⏱️", text: "That photo took an hour and a half of a Saturday that nobody saw." },
           ],
+          counter: "So one perfect cake is really three cakes and an afternoon.",
         },
         {
-          setup: "Priya's drawing got 94 likes. Yours got 6. Your tummy does the sinking thing...",
-          choices: [
-            {
-              text: "Close the app and tell someone how it felt",
-              isSafe: true,
-              consequence: "Mom reminds you: Grandma printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it.",
-            },
-            {
-              text: "Post something you don't even like, to chase likes",
-              isSafe: false,
-              consequence: "Now a picture you never liked is out there wearing your name, and the counter still won't fill the tummy-sink. Likes are taps, not love - post what YOU'RE proud of or nothing at all.",
-            },
+          id: "holiday",
+          label: "The Best Holiday",
+          icon: "🌍",
+          steps: [
+            { icon: "📸", text: "Blue sky, blue sea, everybody laughing at exactly the same moment..." },
+            { icon: "🙈", text: "...and just out of the frame, two of them had been arguing about the car park." },
+            { icon: "⏱️", text: "It rained for four of the seven days. Those four are not in anybody's feed." },
           ],
+          counter: "So a perfect holiday is a real one with the wet bits left out.",
         },
         {
-          setup: "A sparkly 'perfect' account announces: 'REAL fans post their morning routine at 6am EVERY day - or you're out of the club!'",
-          choices: [
-            {
-              text: "Pause - a feed that gives you homework isn't a friend",
-              isSafe: true,
-              consequence: "You skip the 6am club and nothing bad happens - because it was never a club, just a counter feeding itself. Feeds that demand things from you have forgotten who's boss.",
-            },
-            {
-              text: "Set the alarm - you don't want to lose them",
-              isSafe: false,
-              consequence: "A stranger's feed now runs your mornings, and the 'club' never even knew your name. When an app starts setting YOUR alarm clock, that's the moment to hand it to a grown-up.",
-            },
+          id: "goal",
+          label: "The Amazing Goal",
+          icon: "🎮",
+          steps: [
+            { icon: "📸", text: "The ball in the top corner, arms up, the whole team running over..." },
+            { icon: "🙈", text: "...and not filmed at all, the eleven shots before it that went nowhere near." },
+            { icon: "💪", text: "Eleven misses, then one goal. The goal is real, it simply arrived at the end of all that missing." },
           ],
+          counter: "So one amazing goal is really twelve tries and one camera.",
+        },
+        {
+          id: "room",
+          label: "The Tidy Room",
+          icon: "🏠",
+          steps: [
+            { icon: "📸", text: "A bed made perfectly, shelves straight, everything in its place..." },
+            { icon: "🙈", text: "...and one foot to the left, the entire floor covered in everything that was on the shelves." },
+            { icon: "🌀", text: "So the camera was pointed at the one tidy corner, with that floor carefully just out of shot." },
+          ],
+          counter: "So a tidy room is often one tidy corner, carefully aimed at.",
+        },
+        {
+          id: "friends",
+          label: "Always Out With Friends",
+          icon: "👪",
+          steps: [
+            { icon: "📸", text: "Out laughing on Friday, out again Saturday, out again Sunday..." },
+            { icon: "⏱️", text: "...all three photos were taken on the same afternoon and posted across a week." },
+            { icon: "🙈", text: "The Tuesday, the Wednesday and the Thursday were homework and telly, same as yours." },
+          ],
+          counter: "So a busy week can be one busy hour, stretched out.",
         },
       ],
-      narration: {
-        speaker: "layla",
+      finale: "Not one of those frames was a whole day. Every single one of them was a minute somebody chose.",
+      completeNarration: {
+        speaker: "adam",
         lines: [
-          "[warmly] Three sparkly moments. Three chances to pause.",
-          "Remember: reels show the shiny minute.",
-          "Backstage is where real life lives -",
-          "[excited] and yours is wonderful. Show me the pause!",
+          "[warmly] Five frames, and not one of them was a whole day.",
+          "Behind every single one there was a bin, or an argument, or eleven misses, or a floor covered in stuff.",
+          "[proud] So the next time a feed makes you feel small, you already know what you are looking at. A minute, Cyber Hero. Not a life.",
         ],
       },
     },
-    // 21 - Prove: FINISH
+    // 22 - Prove
     {
       type: "quickCheck",
       mode: "finish",
-      prompt: "Feeds aren't ___ life.",
+      prompt: "You scroll for a while and start feeling like everybody's life is better than yours. What is actually happening?",
       choices: [
-        { text: "real", isCorrect: true },
-        { text: "fun", isCorrect: false },
-        { text: "big", isCorrect: false },
-        { text: "new", isCorrect: false },
+        { text: "You are comparing your whole day to everybody's best minute", isCorrect: true },
+        { text: "Everybody's life really is better", isCorrect: false, why: "You are seeing their chosen minute. The bin, the rain and the misses stayed off the screen." },
+        { text: "You need to post more", isCorrect: false, why: "Posting more would not change a thing, because you would still be seeing everybody else's shiny minutes." },
+        { text: "Your day was boring", isCorrect: false, why: "Your day had ordinary bits in it, the same as theirs did. Theirs simply did not get posted." },
       ],
-      praise: "REAL life is backstage - messy, funny, yours. The reel is just the shiny minute. ✓",
+      praise: "You are comparing your whole day to everybody's best minute. ✓",
+      nudge: "Think about what you saw backstage. How much of a day actually gets posted?",
+      teachNarration: {
+        speaker: "layla",
+        lines: [
+          "[proud] That is exactly it!",
+          "Your whole day, ordinary bits and all, against their one best minute.",
+          "Nobody could win that, and nobody is meant to.",
+          "[warmly] Knowing that is the shield, Cyber Hero. It takes all the sting straight out.",
+        ],
+      },
     },
-
-    // 22 - Recap · Concept 5 of 5
+    // 23 - Recap · Concept 5 of 5 (promises the REVIEW, not the boss)
     {
       type: "recap",
       concept: 5,
       total: 5,
-      learned: "Feeds are highlight reels - pause, flip to backstage, and remember your real, messy, wonderful life wins.",
-      next: "one last walk past the mirrors, then the Raccoon's hall itself",
-      emblem: "🌟",
+      learned: "Feeds show a chosen minute, so feeling small is the reel working, not a true thing about your day.",
+      next: "walk the whole hall once more and check a profile all the way round",
+      emblem: "🎭",
       narration: {
-        speaker: "adam",
+        speaker: "layla",
         lines: [
-          "[excited] That's all FIVE powers, Shield Bearer!",
-          "The sign understood, the mirror frosted, the frame honest,",
-          "the drafts scrubbed... and the reel seen through.",
-          "[whispers] One last walk past the mirrors...",
-          "[excited] then we close his hall for GOOD!",
+          "[proud] Five powers down, Cyber Hero. Every single one of them earned.",
+          "Room numbers, frosted panes, gold in the pan, a scrubbed draft, and the backstage truth.",
+          "[warmly] Now let's put the whole lot together at once.",
+          "Next, we'll walk the hall once more and check a profile all the way round. Come and see!",
         ],
       },
     },
 
-    // 23 - Consolidation: Backstage Pass (W1 scanner engine, W17 content)
+    // 24 - REVIEW: the whole week on one board (ProfileInspector, free engine,
+    // re-verbed). W3 judged a STRANGER's profile for fakeness; this audits a
+    // profile for OPENNESS, and the four zones are four of the week's concepts,
+    // in a fixed order because they ARE the checking round.
     {
-      type: "cyberScanner",
-      labels: {
-        positive: "SHIELD MOVE",
-        negative: "MIRROR TRAP",
-        positiveHint: "Tap SHIELD MOVE for true shield-bearer form",
-        negativeHint: "Tap MIRROR TRAP for the hall's glittery tricks",
-        tipWhenPositive: "Mirrors frosted, frames honest, drafts scrubbed, reels seen through - stamp it SHIELD.",
-        tipWhenNegative: "Counter-chasing, wide-open profiles, find-me posts - the hall glitters with these.",
-        hint1: "Ask: does this move protect the kid behind the profile... or feed the mirror hall?",
-        hint2: "SHIELD = private, friends-only, scrubbed, paused. TRAP = public, counter-chasing, school-name posts.",
-        hint2Example: "SHIELD: 'flipped it to friends-only'   TRAP: 'posted the school gates pic for likes'",
-        hint3: "Shield card: 13+ is a promise · frost the mirror · friends beat followers · scrub the red · reels aren't real.",
-        hint3Example: "Tell someone the feed made you feel small ✅    Chase the counter with posts you hate ❌",
+      type: "profileInspector",
+      introTitle: "The Shield Check",
+      introSubtitle: "Three profiles, and a round of four checks on each. Open every check, then call it.",
+      introIcon: "🔰",
+      realLabel: "SHIELD UP",
+      fakeLabel: "STILL OPEN",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Last walk of the hall, Cyber Hero, and you are doing the checking this time.",
+          "Three profiles. On each one, tap all four checks before you decide anything.",
+          "Then call it. Shield up, or still open.",
+        ],
       },
-      items: [
+      coachLines: {
+        speaker: "adam",
+        lines: [
+          "All four checks first. A profile can look lovely and still have one pane wide open.",
+        ],
+      },
+      threat: {
+        raccoonLine: "Oh, inspecting now, are we? Go on then. I have left something open on every single one of these. Probably.",
+      },
+      profiles: [
         {
-          text: "Flipping the account to PRIVATE, friends only",
-          isStrong: true,
-          explanation: "One flip and the mirror frosts - strangers see armor, friends see you.",
+          id: "pip",
+          handle: "Pip",
+          avatar: "👤",
+          bio: "Draws dragons. Swims on Tuesdays.",
+          stats: [
+            { label: "Followers", value: "214" },
+            { label: "Account", value: "PRIVATE" },
+          ],
+          isFake: false,
+          zones: [
+            { id: "age", label: "The room number", note: "Pip uses the app made for under thirteens, not the big talk one.", isRedFlag: false },
+            { id: "panes", label: "The mirror panes", note: "School, birthday and street are all frosted. The dragon is clear.", isRedFlag: false },
+            { id: "gold", label: "The follower list", note: "Two hundred and fourteen watching, and the six in the heart frame are all placeable.", isRedFlag: false },
+            { id: "draft", label: "The last post", note: "Best day at swimming, one whole length, chips after. No road and no clock.", isRedFlag: false },
+          ],
+          verdictNote: "Every check came back clean. That is a shield, all the way round.",
+          why: "Right room, frosted panes, a heart frame you could point at, and a post with no map in it. All four.",
+          nudge: "Four checks open, and not a road or a clock among them. Is there a single one that hands anything over?",
         },
         {
-          text: "Accepting every follow to make the counter spin",
-          isStrong: false,
-          explanation: "A spinning counter of strangers isn't friendship - it's an open door to the hall.",
+          id: "bo",
+          handle: "Bo",
+          avatar: "👤",
+          bio: "Football mad. Back at training Saturday 10am, Mill Road pitches!",
+          stats: [
+            { label: "Followers", value: "1,208" },
+            { label: "Account", value: "PUBLIC" },
+          ],
+          isFake: true,
+          zones: [
+            { id: "age", label: "The room number", note: "Bo is on the big talk app, where anybody can message anybody.", isRedFlag: true },
+            { id: "panes", label: "The mirror panes", note: "Every pane is clear, school badge included.", isRedFlag: true },
+            { id: "gold", label: "The follower list", note: "Twelve hundred followers, and most of the heart frame are people Bo has never met.", isRedFlag: true },
+            { id: "draft", label: "The last post", note: "Saturday, ten in the morning, and the name of the road.", isRedFlag: true },
+          ],
+          verdictNote: "Wide open on all four. A road, a time and a school, sitting out where anybody can read them.",
+          why: "All four checks came back open. The post alone gives a place and a time, which is somewhere to wait.",
+          nudge: "Four checks open. Put the last post together with the public setting. What could a stranger do with that?",
         },
         {
-          text: "Scrubbing the school name out of a draft before posting",
-          isStrong: true,
-          explanation: "The highlighter caught the red glow - the joy posts, the map doesn't.",
-        },
-        {
-          text: "Posting 'meet me at the gates at 3:15' to everyone",
-          isStrong: false,
-          explanation: "Where-plus-when is a find-me map - exactly what the highlighter exists to catch.",
-        },
-        {
-          text: "Pausing the scroll when the sparkle makes you feel small",
-          isStrong: true,
-          explanation: "That's the backstage flip - reels are one shiny minute, your real life is the whole show.",
-        },
-        {
-          text: "Believing a follower counter measures how loved you are",
-          isStrong: false,
-          explanation: "Counters count taps. Love is Grandma's fridge with your drawing on it.",
+          id: "wren",
+          handle: "Wren",
+          avatar: "👤",
+          bio: "Baking, badly. Ask me about my sunken cakes.",
+          stats: [
+            { label: "Followers", value: "96" },
+            { label: "Account", value: "PRIVATE" },
+          ],
+          isFake: true,
+          zones: [
+            { id: "age", label: "The room number", note: "Wren is in the making room, which is the right one.", isRedFlag: false },
+            { id: "panes", label: "The mirror panes", note: "Almost all frosted, but the walk home is still clear: past the big park, half three.", isRedFlag: true },
+            { id: "gold", label: "The follower list", note: "Ninety six followers and a small heart frame, every one of them placeable.", isRedFlag: false },
+            { id: "draft", label: "The last post", note: "A photo of a sunken cake. No place in it and no time in it.", isRedFlag: false },
+          ],
+          verdictNote: "Three checks clean and one pane left clear, and that one pane is a route and a time.",
+          why: "Three of these were lovely, and that is exactly why the fourth is worth finding. A walk home is a place plus a time.",
+          nudge: "Four checks open. Three came back fine. Go back and read the panes one more time.",
         },
       ],
-      narration: {
+      hints: {
+        tier1: "Open all four checks before you call it. One clear pane is enough to leave a profile open.",
+        tier2: "A profile is only shielded when all four come back clean: the right room, frosted panes, a placeable heart frame and a post with no map.",
+      },
+      completeTitle: "Hall walked!",
+      completeLine: "Four checks, every profile, every time. That is the Profile Shield, Cyber Hero.",
+      completeNarration: {
         speaker: "adam",
         lines: [
-          "[excited] The Backstage Pass - final walk!",
-          "Mirror-hall moments are drifting past.",
-          "SHIELD MOVE for shield-bearer form...",
-          "[warmly] MIRROR TRAP for the glittery tricks. Stamp them all!",
+          "[proud] Three profiles, four checks each, and you found every open pane in the place.",
+          "The room, the panes, the heart frame and the last post. That is the round, and now it is yours.",
+          "[excited] Which is just as well, because somebody is waiting at the end of this hall.",
         ],
       },
     },
 
-    // 24 - BOSS BATTLE (placeholder quiz boss - the bespoke W17 fight comes with the boss batch)
+    // 25 - Boss
     { type: "bossBattle" },
 
-    // 25 - CLOSING VIDEO: the profile shield
-    { type: "video", videoPlaceholder: "Week 17: The Profile Shield", videoSrc: "/videos/module-17-outro.mp4" },
+    // 26 - CLOSING VIDEO: the hall goes dark
+    { type: "video", videoPlaceholder: "Week 17: Shield Bearer", videoSrc: "/videos/module-17-outro.mp4" },
 
-    // 26 - Mission Debrief
+    // 27 - Mission Debrief
     {
       type: "missionDebrief",
       title: "Mission Complete!",
       subtitle: "Here's everything you mastered this week.",
       concepts: [
-        { id: "soon", label: "Soon Ticket", accent: "#ffd158", icon: "🔰", summary: "13+ isn't a wall - it's a promise you grow toward, ring by ring." },
-        { id: "frost", label: "Mirror Froster", accent: "#7df0ff", icon: "🔒", summary: "Private account, friends-only photos - you flip every switch strangers stare through." },
-        { id: "heart", label: "Heart Framer", accent: "#7eff97", icon: "👪", summary: "Followers are viewers; friends know your dog's name. The frame stays honest." },
-        { id: "scrub", label: "Draft Scrubber", accent: "#c084fc", icon: "🔍", summary: "School, times and what-you're-wearing glow red - you scrub before you post." },
-        { id: "backstage", label: "Backstage Passer", accent: "#ff5fb3", icon: "🌟", summary: "Feeds are highlight reels - you pause, flip to backstage, and keep your sparkle." },
+        { id: "number", label: "Room Reader", accent: "#7eff97", icon: "🔢", summary: "The number is a label on the room, never on you." },
+        { id: "frost", label: "Mirror Froster", accent: "#7df0ff", icon: "🔒", summary: "Every pane has a who-can-see, and you choose it." },
+        { id: "gold", label: "Gold Panner", accent: "#ffd158", icon: "💎", summary: "Ask where you know them from. That finds the gold." },
+        { id: "scrub", label: "Draft Checker", accent: "#c084fc", icon: "🔍", summary: "Swap the where and the when out, keep the news in." },
+        { id: "backstage", label: "Backstage Pass", accent: "#ff5fb3", icon: "🎭", summary: "A feed is a chosen minute, never a whole day." },
       ],
       narration: {
-        speaker: "layla",
+        speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "The sign understood, the mirror frosted,",
-          "the frame honest, the drafts scrubbed... and the reel seen through.",
-          "[laughs] His hall of mirrors just went dark.",
-          "[excited] Sticker time, Shield Bearer!",
+          "Rooms read, panes frosted, gold panned,",
+          "drafts checked... and the backstage seen for what it is.",
+          "[laughs] His whole Hall of Mirrors just stopped working on you.",
+          "[excited] Sticker time, Cyber Hero!",
         ],
       },
     },
 
-    // 27 - Sticker Unlock
+    // 28 - Sticker Unlock
     {
       type: "stickerUnlock",
       title: "Stickers Unlocked!",
       stickers: [
-        { id: "ring-grower", name: "Ring Grower", icon: "🔰", description: "Knows the 13+ sign is a promise, not a punishment." },
-        { id: "mirror-froster", name: "Mirror Froster", icon: "🔒", description: "Flips every switch a stranger could stare through." },
-        { id: "backstage-passer", name: "Backstage Passer", icon: "🌟", description: "Sees the messy, wonderful real life behind every reel." },
+        { id: "mirror-froster", name: "Mirror Froster", icon: "🔒", description: "Chooses who looks through every pane." },
+        { id: "gold-panner", name: "Gold Panner", icon: "💎", description: "Knows where every friend is known from." },
+        { id: "backstage-pass", name: "Backstage Pass", icon: "🎭", description: "Sees the whole day, not the shiny minute." },
       ],
     },
 
-    // 28 - Completion
+    // 29 - Completion
     { type: "completion" },
   ],
   bossQuiz: {
@@ -1034,35 +1296,43 @@ export const WEEK_17: WeekContent = {
   // Keyed by SCREEN INDEX (0-28). Must stay in lock-step with `screens` above -
   // if a screen is inserted/removed, shift these too (the trailing labels help).
   // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
+
+  // Keyed by SCREEN INDEX (0-29), and there are exactly 30 screens above.
+  // The shipped week carried 29 keys for 31 screens, so from index 2 onward
+  // every reaction landed on the wrong screen. Counted and re-checked on the
+  // rebuild: if a screen is ever inserted or removed, shift these with it (the
+  // trailing labels are there to make that possible at a glance).
+  // The 5 recap checkpoints are indices 7 / 11 / 15 / 19 / 23.
   reactions: {
     0: { adam: { mood: "excited", message: "Mission 17 - the profile shield!" }, layla: null }, // intro video
     1: { adam: { mood: "worried", message: "His hall of mirrors is OPEN..." }, layla: null }, // alert
-    2: { adam: null, layla: { mood: "curious", message: "Shield up? Let's walk the hall." } }, // mission brief
-    3: { adam: null, layla: { mood: "thinking", message: "13+ is a promise, not a wall." } }, // learn: sign
-    4: { adam: null, layla: { mood: "curious", message: "Grow the rings, middle first!" } }, // game: growthRings
-    5: { adam: { mood: "thumbsup", message: "What's the number on the door?" }, layla: null }, // prove: recall
-    6: { adam: { mood: "excited", message: "The sign makes sense now!" }, layla: null }, // recap 1
-    7: { adam: { mood: "thinking", message: "An unlocked mirror... anyone can stare." }, layla: null }, // learn: frost
-    8: { adam: { mood: "curious", message: "Dig in - frost those switches!" }, layla: null }, // game: settingsSwitch
-    9: { adam: null, layla: { mood: "thumbsup", message: "Quick - the padlock flip!" } }, // prove: speed
-    10: { adam: null, layla: { mood: "excited", message: "The mirror is FROSTED!" } }, // recap 2
-    11: { adam: null, layla: { mood: "thinking", message: "That counter just spins..." } }, // learn: heart
-    12: { adam: null, layla: { mood: "curious", message: "Heart frame or rope - sort them!" } }, // game: conveyorSort
-    13: { adam: { mood: "worried", message: "Careful - is he ALWAYS fibbing? Listen close!" }, layla: null }, // prove: lie
-    14: { adam: { mood: "excited", message: "The frame stays honest!" }, layla: null }, // recap 3
-    15: { adam: { mood: "thinking", message: "Some lines glow red..." }, layla: null }, // learn: scrub
-    16: { adam: { mood: "curious", message: "Run the highlighter - every line!" }, layla: null }, // game: clueBoard
-    17: { adam: null, layla: { mood: "thumbsup", message: "Which line stayed green?" } }, // prove: recall
-    18: { adam: null, layla: { mood: "excited", message: "No draft escapes the highlighter!" } }, // recap 4
-    19: { adam: null, layla: { mood: "thinking", message: "Reels show one shiny minute." } }, // learn: backstage
-    20: { adam: null, layla: { mood: "curious", message: "Feel the pull? Pause it!" } }, // game: decide
-    21: { adam: { mood: "thumbsup", message: "Finish the backstage rule!" }, layla: null }, // prove: finish
-    22: { adam: { mood: "excited", message: "All five powers - final walk!" }, layla: null }, // recap 5
-    23: { adam: { mood: "excited", message: "Shield move or mirror trap - you know!" }, layla: null }, // consolidation
-    24: { adam: { mood: "worried", message: "His hall - darken it for good!" }, layla: null }, // boss
-    25: { adam: null, layla: { mood: "excited", message: "Shield forged - hall closed!" } }, // outro video
-    26: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
-    27: { adam: { mood: "excited", message: "Stickers earned, Shield Bearer!" }, layla: null }, // stickers
-    28: { adam: { mood: "thumbsup", message: "Shield Bearer badge earned!" }, layla: null }, // completion
+    2: { adam: null, layla: { mood: "curious", message: "Mission Command has the layout." } }, // ATLAS briefing
+    3: { adam: null, layla: { mood: "curious", message: "Shield up? Let's walk the hall." } }, // mission brief
+    4: { adam: null, layla: { mood: "thinking", message: "13+ is a label, not a wall." } }, // learn: the number
+    5: { adam: null, layla: { mood: "curious", message: "Look inside, then pick a plate!" } }, // game: ropeLine
+    6: { adam: { mood: "thumbsup", message: "What is that number really about?" }, layla: null }, // prove: recall
+    7: { adam: { mood: "excited", message: "The sign makes sense now!" }, layla: null }, // recap 1
+    8: { adam: { mood: "thinking", message: "A room with no door... anyone can stare." }, layla: null }, // learn: frost
+    9: { adam: { mood: "curious", message: "Six panes. Who gets to look?" }, layla: null }, // game: frostMirror
+    10: { adam: null, layla: { mood: "thumbsup", message: "Quick now - which one is a place?" } }, // prove: speed
+    11: { adam: null, layla: { mood: "excited", message: "The mirror is FROSTED!" } }, // recap 2
+    12: { adam: null, layla: { mood: "thinking", message: "That counter only ever goes up..." } }, // learn: gold
+    13: { adam: null, layla: { mood: "curious", message: "Pick your gold, then tip the pan!" } }, // game: friendPanner
+    14: { adam: { mood: "worried", message: "Careful - is he fibbing? Listen close!" }, layla: null }, // prove: lie
+    15: { adam: { mood: "excited", message: "Gold in the pan, glitter in the river!" }, layla: null }, // recap 3
+    16: { adam: { mood: "thinking", message: "Nothing is sent until YOU send it." }, layla: null }, // learn: scrub
+    17: { adam: { mood: "curious", message: "Line by line - where and when!" }, layla: null }, // game: draftScrub
+    18: { adam: null, layla: { mood: "thumbsup", message: "Which two words were you hunting?" } }, // prove: recall
+    19: { adam: null, layla: { mood: "excited", message: "No draft leaves without a read back!" } }, // recap 4
+    20: { adam: null, layla: { mood: "thinking", message: "One shiny minute is not a day." } }, // learn: backstage
+    21: { adam: null, layla: { mood: "curious", message: "Go on, walk round the back of one!" } }, // game: reveal
+    22: { adam: { mood: "thumbsup", message: "So what were you really comparing?" }, layla: null }, // prove: finish
+    23: { adam: { mood: "excited", message: "All five powers - one last walk!" }, layla: null }, // recap 5
+    24: { adam: { mood: "excited", message: "Four checks on every profile!" }, layla: null }, // review: profileInspector
+    25: { adam: { mood: "worried", message: "His hall - darken it for good!" }, layla: null }, // boss
+    26: { adam: null, layla: { mood: "excited", message: "Shield forged - hall closed!" } }, // outro video
+    27: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
+    28: { adam: { mood: "excited", message: "Stickers earned, Shield Bearer!" }, layla: null }, // stickers
+    29: { adam: { mood: "thumbsup", message: "Shield Bearer badge earned!" }, layla: null }, // completion
   },
 };
