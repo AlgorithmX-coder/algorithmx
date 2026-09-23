@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -79,6 +79,18 @@ const RETHEME_ALLOWED = {
   // lookalike" is already W4, W9 and W14. It now asks whether the sender is on
   // the keyring at all: possession, not comparison.
   16: ["PhishInspector", "PopupPanic", "TeamPoster (review)"], // The Address Plate (W4 carnival), The Barrier (W3 popups), The Power Poster (W3 team)
+  // W17 needs ONE re-theme. Three of its six slots are new builds, because
+  // the formally free engines are all unfit on merit (ConveyorBelt and
+  // ProtectTheData are timed arcade games with a lose state; CrackTheCode and
+  // PasswordLab are password puzzles). Its signature is CONVERTED to tap-only:
+  // friendPanner wanted a wiggle-drag shake, which is a wrist game rather than
+  // a thinking game. The review is ProfileInspector, which is FREE rather than
+  // a re-theme (no rebuilt week uses it) and re-verbed besides: W3 judged a
+  // STRANGER's profile for fakeness, and this audits the child's OWN for
+  // openness, one zone per concept. So only the Backstage Pass is charged
+  // here, and it takes RevealBoard's second use of the twenty weeks on a new
+  // skin: a lit gallery of framed posts, not W2's brown cork board.
+  17: ["RevealBoard"], // The Backstage Pass (W2 wish list, backstage skin)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

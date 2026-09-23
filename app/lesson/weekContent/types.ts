@@ -2005,6 +2005,229 @@ export type ScreenDef = (
       }[];
       /** Line spoken/shown once every card has been revealed. */
       finale?: string;
+      /**
+       * Which world the board is in. "wishlist" (default) is Week 2's brown
+       * cork board of golden cards; "backstage" is Week 17's lit gallery of
+       * framed posts, cool blue-violet with a clip on every frame. The
+       * mechanic is identical; the thing being looked at is not.
+       */
+      skin?: "wishlist" | "backstage";
+      /**
+       * Chrome, READ ON SCREEN and never spoken. A re-theme MUST pass all of
+       * it: left on the W2 defaults, a Week 17 gallery tells the child it has
+       * foiled "the Raccoon's plan" while it is looking at a photo of
+       * somebody's breakfast.
+       */
+      tapLabel?: string;
+      stampLabel?: string;
+      stampIcon?: string;
+      lockedLine?: string;
+      progressNoun?: string;
+      planEyebrow?: string;
+      planIcon?: string;
+      counterEyebrow?: string;
+      counterIcon?: string;
+      revealToast?: string;
+      stepButtonLabel?: string;
+      counterButtonLabel?: string;
+      vignetteAriaPrefix?: string;
+      trailIcon?: string;
+      completeTitle?: string;
+    }
+  | {
+      /**
+       * The Rope Line (Week 17, concept 1). The gallery's rooms each carry a
+       * number on a brass stand, and the child reads what is actually going on
+       * inside and puts the right number on it. The verb is RATE, not judge:
+       * the 13+ sign is a label on the ROOM, the way a label on a jar
+       * describes the jam, and a child who has handed the numbers out
+       * themselves stops hearing "not yet" as a verdict on them.
+       */
+      type: "ropeLine";
+      rooms: {
+        id: string;
+        /** The friendly name over the arch. Never spoken, and it never gives
+         *  the number away, because in real life the friendly name is exactly
+         *  the part that does not tell you. */
+        name: string;
+        icon: string;
+        /** What a child would SEE going on in there. Never spoken. Write it as
+         *  the thing itself, never as a rating notice. */
+        inside: string;
+        /** Read aloud as the arch slides in. Never says the number. */
+        readAloud: string;
+        /** The plate that belongs on this room. At least two rooms in a set
+         *  must be "13": that is the one the week is about. */
+        plate: "3" | "7" | "13";
+        /** SPOKEN on the right plate. Must earn the number from the ROOM
+         *  ("strangers can talk to anyone in there"), never from the child
+         *  ("you are too young"). */
+        why: string;
+        /** SPOKEN on a wrong plate. */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      ropeLabel?: string;
+      insideLabel?: string;
+      shelfLabel?: string;
+      askPrompt?: string;
+      counterLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Frost the Mirror (Week 17, concept 2). ACCOUNT privacy, and the whole
+       * profile is on the board at once because that is how a stranger meets
+       * it: not a line at a time, but in one look. The child works the panes
+       * in any order and chooses an AUDIENCE for each.
+       *
+       * LANE: this is account privacy. Week 14's switch board is DEVICE
+       * privacy (a microphone, a camera, a history, turned off). Nothing here
+       * switches off; every pane stays on the mirror whichever way it is
+       * called. The two weeks must never trade ground.
+       */
+      type: "frostMirror";
+      panes: {
+        id: string;
+        /** What this corner of the profile is. Never spoken. */
+        label: string;
+        icon: string;
+        /** The thing itself, exactly as a profile would show it ("Oakfield
+         *  Primary, Class 4B", not "Your school"). Never spoken. */
+        shows: string;
+        /** Read aloud when the child lifts this pane. Never says the answer. */
+        readAloud: string;
+        /** True when only friends should see it. At least one pane in every
+         *  set must be FALSE and genuinely lovely left open: a profile with
+         *  nothing on it is not the win. */
+        frost: boolean;
+        /** SPOKEN on the right call. A clear pane's why must say what makes it
+         *  safe, not merely that it is. */
+        why: string;
+        /** SPOKEN on a wrong call. */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      mirrorLabel?: string;
+      frostLabel?: string;
+      clearLabel?: string;
+      askPrompt?: string;
+      liftPrompt?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Draft Scrub (Week 17, concept 4). The post is written and NOT SENT,
+       * and that gap is the only place in the week where the child holds all
+       * the power. Line by line they decide: this goes as it is, or this gets
+       * swapped for a safer one that still says the same happy thing.
+       *
+       * The lesson is never "say less". A child taught to fear their own news
+       * simply stops posting, which teaches them nothing. Every swap must keep
+       * the news: "Back at Oakfield Primary tomorrow at half eight" becomes
+       * "Back at school tomorrow", and it is the same post.
+       */
+      type: "draftScrub";
+      /**
+       * Worked TOP TO BOTTOM and never shuffled, because the lines are a
+       * sentence. That removes the usual protection against a learnable run of
+       * answers, so the AUTHOR carries it: interleave keeps and swaps, never
+       * two swaps then two keeps.
+       */
+      lines: {
+        id: string;
+        /** The line as the child first wrote it. Never spoken. */
+        text: string;
+        /** True when the line goes as it is. At least two lines must be safe,
+         *  and genuinely worth keeping, never filler. */
+        safe: boolean;
+        /** What the line becomes when swapped. REQUIRED on every line that is
+         *  not safe. Never spoken. Never put a real place in it. */
+        swapTo?: string;
+        /** Read aloud as this line comes up. Never says which way it goes. */
+        readAloud: string;
+        /** SPOKEN on the right call. */
+        why: string;
+        /** SPOKEN on a wrong call. */
+        explanation: string;
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      draftLabel?: string;
+      keepLabel?: string;
+      swapLabel?: string;
+      askPrompt?: string;
+      postedByLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Friend Panner (Week 17, concept 3). This week's old screen-4
+       * signature, rebuilt data-driven and CONVERTED TO TAP-ONLY: the original
+       * wanted a wiggle-drag shake, which is a wrist game rather than a
+       * thinking game and the one input a six year old on a tablet cannot
+       * reliably produce.
+       *
+       * The child is handed the river a scoop at a time, picks out the gold
+       * with their fingers, and only THEN tips the pan. Picking several things
+       * and committing to the lot is the shape the concept wants, because the
+       * lesson is not about any one person in the scoop. It is the ratio: two
+       * hundred and some followers, a handful of actual friends. The two
+       * counters along the top say that without a word.
+       */
+      type: "friendPanner";
+      scoops: {
+        id: string;
+        /** Chrome over the pan for this scoop. Never spoken. */
+        label: string;
+        /** Read aloud as the scoop lands. Never says which are gold. */
+        readAloud: string;
+        /** EVERY scoop needs at least one gold and at least one fool's gold. */
+        pebbles: {
+          id: string;
+          /** Never spoken. */
+          name: string;
+          /**
+           * Where the child knows them from, or the warm useless thing that
+           * stands in for it. Never spoken. THIS LINE IS THE TEST: a gold
+           * pebble names a PLACE ("Kicks with you at football") and a fool's
+           * gold one cannot ("Replies to every post with a heart").
+           */
+          who: string;
+          icon: string;
+          /** True when the child could point them out and say where from. */
+          gold: boolean;
+        }[];
+        /** SPOKEN when the scoop is tipped right. Walks its own pebbles. */
+        why: string;
+        /** SPOKEN when the scoop is tipped wrong. */
+        explanation: string;
+      }[];
+      /** The follower number on the profile, which never moves however much
+       *  gold is found. That is exactly why it is on screen. */
+      followerCount?: number;
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      followersLabel?: string;
+      friendsLabel?: string;
+      panLabel?: string;
+      tipLabel?: string;
+      emptyTipLabel?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
     }
   | {
       /**

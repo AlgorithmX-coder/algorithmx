@@ -107,6 +107,10 @@ import SpeakerDiary from "@/app/components/exercises/SpeakerDiary";
 import LensCheck from "@/app/components/exercises/LensCheck";
 import StickerPeel from "@/app/components/exercises/StickerPeel";
 import GlassCheck from "@/app/components/exercises/GlassCheck";
+import RopeLine from "@/app/components/exercises/RopeLine";
+import FrostMirror from "@/app/components/exercises/FrostMirror";
+import DraftScrub from "@/app/components/exercises/DraftScrub";
+import FriendPanner from "@/app/components/exercises/signatures/FriendPanner";
 import KeyholeCheck from "@/app/components/exercises/signatures/KeyholeCheck";
 import PausePower from "@/app/components/exercises/PausePower";
 import HookSort from "@/app/components/exercises/HookSort";
@@ -1782,6 +1786,22 @@ function DynamicLessonInner({
               items={def.items}
               finale={def.finale}
               boardIcon={def.boardIcon}
+              skin={def.skin}
+              tapLabel={def.tapLabel}
+              stampLabel={def.stampLabel}
+              stampIcon={def.stampIcon}
+              lockedLine={def.lockedLine}
+              progressNoun={def.progressNoun}
+              planEyebrow={def.planEyebrow}
+              planIcon={def.planIcon}
+              counterEyebrow={def.counterEyebrow}
+              counterIcon={def.counterIcon}
+              revealToast={def.revealToast}
+              stepButtonLabel={def.stepButtonLabel}
+              counterButtonLabel={def.counterButtonLabel}
+              vignetteAriaPrefix={def.vignetteAriaPrefix}
+              trailIcon={def.trailIcon}
+              completeTitle={def.completeTitle}
               introNarration={def.narration}
               coachLines={def.coachLines}
               threat={def.threat}
@@ -2955,6 +2975,136 @@ function DynamicLessonInner({
               stopLabel={def.stopLabel}
               grownUpLabel={def.grownUpLabel}
               askPrompt={def.askPrompt}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      // Week 17 (The Profile Shield): the Raccoon's Hall of Mirrors.
+      case "ropeLine":
+        return (
+          <FullScene bg="linear-gradient(180deg, #100c22 0%, #221c46 100%)">
+            <RopeLine
+              rooms={def.rooms}
+              ropeLabel={def.ropeLabel}
+              insideLabel={def.insideLabel}
+              shelfLabel={def.shelfLabel}
+              askPrompt={def.askPrompt}
+              counterLabel={def.counterLabel}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "frostMirror":
+        return (
+          <FullScene bg="linear-gradient(180deg, #100c22 0%, #221c46 100%)">
+            <FrostMirror
+              panes={def.panes}
+              mirrorLabel={def.mirrorLabel}
+              frostLabel={def.frostLabel}
+              clearLabel={def.clearLabel}
+              askPrompt={def.askPrompt}
+              liftPrompt={def.liftPrompt}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "draftScrub":
+        return (
+          <FullScene bg="linear-gradient(180deg, #100c22 0%, #221c46 100%)">
+            <DraftScrub
+              lines={def.lines}
+              draftLabel={def.draftLabel}
+              keepLabel={def.keepLabel}
+              swapLabel={def.swapLabel}
+              askPrompt={def.askPrompt}
+              postedByLabel={def.postedByLabel}
+              hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              threat={def.threat}
+              completeNarration={def.completeNarration}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({ screenIndex: screen, questionKey: o.questionKey, selectedIndex: o.selectedIndex, correctIndex: o.correctIndex, wasCorrect: o.wasCorrect });
+                if (!o.wasCorrect) progress.reportWrong(screen, o.questionKey);
+              }}
+            />
+          </FullScene>
+        );
+
+      case "friendPanner":
+        return (
+          <FullScene bg="linear-gradient(180deg, #100c22 0%, #221c46 100%)">
+            <FriendPanner
+              scoops={def.scoops}
+              followerCount={def.followerCount}
+              followersLabel={def.followersLabel}
+              friendsLabel={def.friendsLabel}
+              panLabel={def.panLabel}
+              tipLabel={def.tipLabel}
+              emptyTipLabel={def.emptyTipLabel}
               hints={def.hints}
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}

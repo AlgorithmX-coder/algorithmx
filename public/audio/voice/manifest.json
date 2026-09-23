@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T09:19:47.236Z",
+  "generatedAt": "2026-09-23T11:22:57.208Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -15843,429 +15843,1622 @@
       "file": "/audio/voice/8a089dc8c1eb4c6c.mp3"
     },
     {
-      "key": "9c2d85dd47f61e0c",
+      "key": "eaf52fbb3d098a3f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Time to pan for real treasure in the Feed river! Shake the pan hard to wash the strangers away. Keep the friends you know off the screen. That's your true gold!",
+      "text": "[warmly] Welcome to the Hall of Mirrors, Cyber Hero. Look at all these rooms. Every one of them has a number on a little brass stand outside. [thinking] And I know how that number feels. Like somebody looked at YOU and said no. It is not you. That number is a label on the ROOM, like the label on a jam jar. It tells you what is going on in there. That is the only job it has. [excited] Come and hand out some numbers with me. You'll see exactly what I mean!",
       "lines": [
-        "[excited] Time to pan for real treasure in the Feed river!",
-        "Shake the pan hard to wash the strangers away.",
-        "Keep the friends you know off the screen. That's your true gold!"
+        "[warmly] Welcome to the Hall of Mirrors, Cyber Hero. Look at all these rooms.",
+        "Every one of them has a number on a little brass stand outside.",
+        "[thinking] And I know how that number feels. Like somebody looked at YOU and said no.",
+        "It is not you. That number is a label on the ROOM, like the label on a jam jar.",
+        "It tells you what is going on in there. That is the only job it has.",
+        "[excited] Come and hand out some numbers with me. You'll see exactly what I mean!"
       ],
-      "file": "/audio/voice/9c2d85dd47f61e0c.mp3"
+      "file": "/audio/voice/eaf52fbb3d098a3f.mp3"
     },
     {
-      "key": "040f0d88eb38658b",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Week seventeen - the mirror-hall week! Social media's door has a sign: thirteen plus. [warmly] It's not a punishment. Promise. Those rooms are built grown-up-sized. And you? You're growing, ring by ring, like a tree. [excited] Come see what grows before you reach the sign!",
-      "lines": [
-        "[excited] Week seventeen - the mirror-hall week!",
-        "Social media's door has a sign: thirteen plus.",
-        "[warmly] It's not a punishment. Promise.",
-        "Those rooms are built grown-up-sized.",
-        "And you? You're growing, ring by ring, like a tree.",
-        "[excited] Come see what grows before you reach the sign!"
-      ],
-      "file": "/audio/voice/040f0d88eb38658b.mp3"
-    },
-    {
-      "key": "b44f8477bdd36471",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] A tree slice of YOU! Every ring is a year of growing. Tap the glowing middle first... [warmly] and grow your way out to the sign!",
-      "lines": [
-        "[excited] A tree slice of YOU!",
-        "Every ring is a year of growing.",
-        "Tap the glowing middle first...",
-        "[warmly] and grow your way out to the sign!"
-      ],
-      "file": "/audio/voice/b44f8477bdd36471.mp3"
-    },
-    {
-      "key": "b39172e25423e881",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Start at the glowing center ring - that one's you right now!",
-      "lines": [
-        "Start at the glowing center ring - that one's you right now!"
-      ],
-      "file": "/audio/voice/b39172e25423e881.mp3"
-    },
-    {
-      "key": "97fd3193c9a6fbb5",
+      "key": "d2dda436f15fda6a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Power one - the sign makes sense now! Not a wall. A promise. [whispers] But some profiles are already out there, wide open... Time to learn the frost switch. Come on.",
+      "text": "[excited] Here we are. Five rooms, and a shelf of brass number plates. Look over the rope at each one. Not at the name over the door, at what is HAPPENING inside. Then pick the plate that fits the room. Three, seven or thirteen.",
       "lines": [
-        "[excited] Power one - the sign makes sense now!",
-        "Not a wall. A promise.",
-        "[whispers] But some profiles are already out there, wide open...",
-        "Time to learn the frost switch. Come on."
+        "[excited] Here we are. Five rooms, and a shelf of brass number plates.",
+        "Look over the rope at each one. Not at the name over the door, at what is HAPPENING inside.",
+        "Then pick the plate that fits the room. Three, seven or thirteen."
       ],
-      "file": "/audio/voice/97fd3193c9a6fbb5.mp3"
+      "file": "/audio/voice/d2dda436f15fda6a.mp3"
     },
     {
-      "key": "8e0e537b09c0f75e",
+      "key": "6f0436d8509b90d5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Picture your profile as a mirror in a busy hall. Unlocked? Anyone can stare in. Your photos. Your name. Anyone. [warmly] So we frost it: PRIVATE, friends only. On his doors, frost hid tricks. On YOUR mirror, frost is armor. [excited] The settings burrow is open - flip those switches!",
+      "text": "Remember the jam jar. The label is about what is inside, never about who is reading it.",
       "lines": [
-        "[whispers] Picture your profile as a mirror in a busy hall.",
-        "Unlocked? Anyone can stare in.",
-        "Your photos. Your name. Anyone.",
-        "[warmly] So we frost it: PRIVATE, friends only.",
-        "On his doors, frost hid tricks. On YOUR mirror, frost is armor.",
-        "[excited] The settings burrow is open - flip those switches!"
+        "Remember the jam jar. The label is about what is inside, never about who is reading it."
       ],
-      "file": "/audio/voice/8e0e537b09c0f75e.mp3"
+      "file": "/audio/voice/6f0436d8509b90d5.mp3"
     },
     {
-      "key": "fc2b201a259c1e0b",
+      "key": "5b4176589b816a38",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The settings burrow - dig in! Some switches are wide open to the hall. Find every one a stranger could stare through... [whispers] and frost it. Friends only. Go!",
+      "text": "[proud] Look at that. Five rooms, five numbers, and you earned every one of them from what was inside. So when an app shows you a thirteen, you already know what it is telling you. [warmly] It is describing its room. It is not describing you.",
       "lines": [
-        "[excited] The settings burrow - dig in!",
-        "Some switches are wide open to the hall.",
-        "Find every one a stranger could stare through...",
-        "[whispers] and frost it. Friends only. Go!"
+        "[proud] Look at that. Five rooms, five numbers, and you earned every one of them from what was inside.",
+        "So when an app shows you a thirteen, you already know what it is telling you.",
+        "[warmly] It is describing its room. It is not describing you."
       ],
-      "file": "/audio/voice/fc2b201a259c1e0b.mp3"
+      "file": "/audio/voice/5b4176589b816a38.mp3"
     },
     {
-      "key": "a37ff63b8bfa4f52",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Read each row - if strangers can see through it, tap it and flip it safe!",
-      "lines": [
-        "Read each row - if strangers can see through it, tap it and flip it safe!"
-      ],
-      "file": "/audio/voice/a37ff63b8bfa4f52.mp3"
-    },
-    {
-      "key": "2ddcd820d5ed7ee3",
+      "key": "c0e7633ddcbf92fa",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Two powers - the mirror is frosted! Strangers see armor. Friends see you. [whispers] But the hall has a counter that never stops spinning... followers. Let's talk about that number.",
+      "text": "[proud] That's it! The number is about the room, every single time. Grown-up sized things inside, grown-up sized number outside. [warmly] And you can walk right past it without feeling small.",
       "lines": [
-        "[excited] Two powers - the mirror is frosted!",
-        "Strangers see armor. Friends see you.",
-        "[whispers] But the hall has a counter that never stops spinning...",
-        "followers. Let's talk about that number."
+        "[proud] That's it!",
+        "The number is about the room, every single time.",
+        "Grown-up sized things inside, grown-up sized number outside.",
+        "[warmly] And you can walk right past it without feeling small."
       ],
-      "file": "/audio/voice/2ddcd820d5ed7ee3.mp3"
+      "file": "/audio/voice/c0e7633ddcbf92fa.mp3"
     },
     {
-      "key": "eba28f8bc06c08de",
+      "key": "ad131386c7ba1bc1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[curious] See that counter spinning? Followers! Five hundred! Ten thousand! Ooooh! [warmly] Now the truth: a follower is a viewer. A friend knows your dog's name. Friends go in the heart frame. Everyone else - behind the rope. [excited] Follower cards incoming - sort the wall!",
+      "text": "[proud] One power down, Cyber Hero. You read the room now, not the telling off. A number is a label. A label is a fact. Facts are easy to walk past. [whispers] But there is one room you are already standing in, and it has no door on it at all... Next, we'll learn how to choose who is allowed to look at your own profile. Come and see!",
       "lines": [
-        "[curious] See that counter spinning? Followers!",
-        "Five hundred! Ten thousand! Ooooh!",
-        "[warmly] Now the truth: a follower is a viewer.",
-        "A friend knows your dog's name.",
-        "Friends go in the heart frame. Everyone else - behind the rope.",
-        "[excited] Follower cards incoming - sort the wall!"
+        "[proud] One power down, Cyber Hero. You read the room now, not the telling off.",
+        "A number is a label. A label is a fact. Facts are easy to walk past.",
+        "[whispers] But there is one room you are already standing in, and it has no door on it at all...",
+        "Next, we'll learn how to choose who is allowed to look at your own profile. Come and see!"
       ],
-      "file": "/audio/voice/eba28f8bc06c08de.mp3"
+      "file": "/audio/voice/ad131386c7ba1bc1.mp3"
     },
     {
-      "key": "65634776771de6ce",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] The photo wall - cards on the belt! One question for every card: do you KNOW them in real life? [warmly] Heart frame for yes. Rope for everyone else. Go!",
-      "lines": [
-        "[excited] The photo wall - cards on the belt!",
-        "One question for every card:",
-        "do you KNOW them in real life?",
-        "[warmly] Heart frame for yes. Rope for everyone else. Go!"
-      ],
-      "file": "/audio/voice/65634776771de6ce.mp3"
-    },
-    {
-      "key": "f4e72213477def24",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "First card's here - would they know your dog's name? Sort it!",
-      "lines": [
-        "First card's here - would they know your dog's name? Sort it!"
-      ],
-      "file": "/audio/voice/f4e72213477def24.mp3"
-    },
-    {
-      "key": "7137b156b71b16c8",
+      "key": "8a2ec4d6a8427adf",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Three powers - the counter can't dazzle you! Viewers watch. Friends KNOW. [whispers] Now, about the posts themselves... some drafts glow RED under the highlighter. Come see.",
+      "text": "[thinking] So. That room with no door on it? It is yours, Cyber Hero. It is your profile. It hangs right here in the hall, and anybody walking past can stop and look straight through it. [warmly] Now here is the lovely part. Every pane of that mirror has a little setting on it. The setting says who may look. Just your friends, or absolutely anybody. And frosting a pane deletes nothing. Your friends still see it. You just chose who else does. [excited] Let's go and frost your mirror together, pane by pane!",
       "lines": [
-        "[excited] Three powers - the counter can't dazzle you!",
-        "Viewers watch. Friends KNOW.",
-        "[whispers] Now, about the posts themselves...",
-        "some drafts glow RED under the highlighter. Come see."
+        "[thinking] So. That room with no door on it? It is yours, Cyber Hero. It is your profile.",
+        "It hangs right here in the hall, and anybody walking past can stop and look straight through it.",
+        "[warmly] Now here is the lovely part. Every pane of that mirror has a little setting on it.",
+        "The setting says who may look. Just your friends, or absolutely anybody.",
+        "And frosting a pane deletes nothing. Your friends still see it. You just chose who else does.",
+        "[excited] Let's go and frost your mirror together, pane by pane!"
       ],
-      "file": "/audio/voice/7137b156b71b16c8.mp3"
+      "file": "/audio/voice/8a2ec4d6a8427adf.mp3"
     },
     {
-      "key": "e862fdc7e31c7286",
+      "key": "a3ca1d2027a63384",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Every hero post starts as a draft... and every draft gets the highlighter. School names? RED. Times and places? RED. What you're wearing today? Red, red, red. [warmly] Happy news with no clues? Green and good to go. [excited] Pip's draft is on the desk - light it up!",
+      "text": "[excited] Here it is. Your whole mirror, all six panes, every one of them clear. Stand back and look at the lot for a second. That is what a stranger sees in one go. Tap any pane you like to lift it out, then choose. Frost it for friends, or leave it clear for anybody.",
       "lines": [
-        "[whispers] Every hero post starts as a draft...",
-        "and every draft gets the highlighter.",
-        "School names? RED. Times and places? RED.",
-        "What you're wearing today? Red, red, red.",
-        "[warmly] Happy news with no clues? Green and good to go.",
-        "[excited] Pip's draft is on the desk - light it up!"
+        "[excited] Here it is. Your whole mirror, all six panes, every one of them clear.",
+        "Stand back and look at the lot for a second. That is what a stranger sees in one go.",
+        "Tap any pane you like to lift it out, then choose. Frost it for friends, or leave it clear for anybody."
       ],
-      "file": "/audio/voice/e862fdc7e31c7286.mp3"
+      "file": "/audio/voice/a3ca1d2027a63384.mp3"
     },
     {
-      "key": "73b4e17db3fa3c7e",
+      "key": "6226a3726a7bb9e6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The draft is on the desk! Run the highlighter over every line. Red for find-me clues... [whispers] green for safe-and-happy. Light it up!",
+      "text": "Ask yourself one thing about each pane. Could a stranger USE this to find me?",
       "lines": [
-        "[excited] The draft is on the desk!",
-        "Run the highlighter over every line.",
-        "Red for find-me clues...",
-        "[whispers] green for safe-and-happy. Light it up!"
+        "Ask yourself one thing about each pane. Could a stranger USE this to find me?"
       ],
-      "file": "/audio/voice/73b4e17db3fa3c7e.mp3"
+      "file": "/audio/voice/6226a3726a7bb9e6.mp3"
     },
     {
-      "key": "3df40d4ecc03f278",
+      "key": "fe23ca37b00ba67e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Tap the first line and see what color it glows!",
+      "text": "[proud] Look at your mirror now. Frosted where it needed it, and still bright where it did not. Your dragon is still up there. Your team is still up there. Your friends still see all of it. [warmly] Nothing got hidden away. You just decided who stands and stares. That is your profile shield.",
       "lines": [
-        "Tap the first line and see what color it glows!"
+        "[proud] Look at your mirror now. Frosted where it needed it, and still bright where it did not.",
+        "Your dragon is still up there. Your team is still up there. Your friends still see all of it.",
+        "[warmly] Nothing got hidden away. You just decided who stands and stares. That is your profile shield."
       ],
-      "file": "/audio/voice/3df40d4ecc03f278.mp3"
+      "file": "/audio/voice/fe23ca37b00ba67e.mp3"
     },
     {
-      "key": "1d6ea79400f79b37",
+      "key": "be66a111b1171523",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Four powers - no draft escapes the highlighter! Red scrubbed, green posted. [warmly] One power left, and it's the gentlest one... for the days the mirror hall makes you feel small.",
+      "text": "[proud] Straight to it! A school is a place, and places are how strangers find people. Paintings and colours and teams are just you being you. [warmly] Frost the places. Keep the you.",
       "lines": [
-        "[excited] Four powers - no draft escapes the highlighter!",
-        "Red scrubbed, green posted.",
-        "[warmly] One power left, and it's the gentlest one...",
-        "for the days the mirror hall makes you feel small."
+        "[proud] Straight to it!",
+        "A school is a place, and places are how strangers find people.",
+        "Paintings and colours and teams are just you being you.",
+        "[warmly] Frost the places. Keep the you."
       ],
-      "file": "/audio/voice/1d6ea79400f79b37.mp3"
+      "file": "/audio/voice/be66a111b1171523.mp3"
     },
     {
-      "key": "b6f7a1d1f944e104",
+      "key": "1a21ecf2fb2e3d46",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Last power - and it's the gentlest. Every post in the hall sparkles. Perfect, perfect, perfect. [whispers] But feeds are highlight reels. Nobody posts the burnt toast or the soggy Tuesday. Comparing your backstage to their reel? Nobody wins that. [excited] Three sparkly moments coming - show me the pause!",
+      "text": "[proud] Two powers down, Cyber Hero. Your mirror is frosted exactly where it needed to be. Friends see everything. Strangers see the dragon and nothing else. [whispers] Although... he is awfully quiet about that big number spinning at the top of your mirror... Next, we'll learn why that big follower number is not a list of your friends. Come and see!",
       "lines": [
-        "[warmly] Last power - and it's the gentlest.",
-        "Every post in the hall sparkles. Perfect, perfect, perfect.",
-        "[whispers] But feeds are highlight reels.",
-        "Nobody posts the burnt toast or the soggy Tuesday.",
-        "Comparing your backstage to their reel? Nobody wins that.",
-        "[excited] Three sparkly moments coming - show me the pause!"
+        "[proud] Two powers down, Cyber Hero. Your mirror is frosted exactly where it needed to be.",
+        "Friends see everything. Strangers see the dragon and nothing else.",
+        "[whispers] Although... he is awfully quiet about that big number spinning at the top of your mirror...",
+        "Next, we'll learn why that big follower number is not a list of your friends. Come and see!"
       ],
-      "file": "/audio/voice/b6f7a1d1f944e104.mp3"
+      "file": "/audio/voice/1a21ecf2fb2e3d46.mp3"
     },
     {
-      "key": "0b42e5dd0eb3301f",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[warmly] Three sparkly moments. Three chances to pause. Remember: reels show the shiny minute. Backstage is where real life lives - [excited] and yours is wonderful. Show me the pause!",
-      "lines": [
-        "[warmly] Three sparkly moments. Three chances to pause.",
-        "Remember: reels show the shiny minute.",
-        "Backstage is where real life lives -",
-        "[excited] and yours is wonderful. Show me the pause!"
-      ],
-      "file": "/audio/voice/0b42e5dd0eb3301f.mp3"
-    },
-    {
-      "key": "a10e42f25f1fbe1e",
+      "key": "5ee0dbd20e480e79",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Shield Bearer! The sign understood, the mirror frosted, the frame honest, the drafts scrubbed... and the reel seen through. [whispers] One last walk past the mirrors... [excited] then we close his hall for GOOD!",
+      "text": "[thinking] Right. That big number at the top of your mirror. Let's talk about that one. It counts followers. And a follower is just somebody watching. That is the whole job. A friend is a different thing entirely, and there is one question that sorts them out. [warmly] Could you say WHERE you know them from? Sam, from football. Your nana. That is gold. Somebody lovely who replies to everything but has never been anywhere near you? That is glitter. [excited] Come and pan the river with me. You'll spot the difference in a second!",
       "lines": [
-        "[excited] That's all FIVE powers, Shield Bearer!",
-        "The sign understood, the mirror frosted, the frame honest,",
-        "the drafts scrubbed... and the reel seen through.",
-        "[whispers] One last walk past the mirrors...",
-        "[excited] then we close his hall for GOOD!"
+        "[thinking] Right. That big number at the top of your mirror. Let's talk about that one.",
+        "It counts followers. And a follower is just somebody watching. That is the whole job.",
+        "A friend is a different thing entirely, and there is one question that sorts them out.",
+        "[warmly] Could you say WHERE you know them from? Sam, from football. Your nana. That is gold.",
+        "Somebody lovely who replies to everything but has never been anywhere near you? That is glitter.",
+        "[excited] Come and pan the river with me. You'll spot the difference in a second!"
       ],
-      "file": "/audio/voice/a10e42f25f1fbe1e.mp3"
+      "file": "/audio/voice/5ee0dbd20e480e79.mp3"
     },
     {
-      "key": "f60b13318e2242f8",
+      "key": "e992611da9195e86",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The Backstage Pass - final walk! Mirror-hall moments are drifting past. SHIELD MOVE for shield-bearer form... [warmly] MIRROR TRAP for the glittery tricks. Stamp them all!",
+      "text": "[excited] Here comes the river, and here is your pan. Two hundred and fourteen followers in there. A scoop at a time. Tap everyone you could actually place, and they stay in the pan. Then tip it, and everybody else washes straight through. Nothing bad happens to them, they simply are not gold.",
       "lines": [
-        "[excited] The Backstage Pass - final walk!",
-        "Mirror-hall moments are drifting past.",
-        "SHIELD MOVE for shield-bearer form...",
-        "[warmly] MIRROR TRAP for the glittery tricks. Stamp them all!"
+        "[excited] Here comes the river, and here is your pan. Two hundred and fourteen followers in there.",
+        "A scoop at a time. Tap everyone you could actually place, and they stay in the pan.",
+        "Then tip it, and everybody else washes straight through. Nothing bad happens to them, they simply are not gold."
       ],
-      "file": "/audio/voice/f60b13318e2242f8.mp3"
+      "file": "/audio/voice/e992611da9195e86.mp3"
     },
     {
-      "key": "0f3f52228e179b49",
+      "key": "4bd3bc1ac3b18e37",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the little line under each name. If it says WHERE you know them from, that is your gold.",
+      "lines": [
+        "Read the little line under each name. If it says WHERE you know them from, that is your gold."
+      ],
+      "file": "/audio/voice/4bd3bc1ac3b18e37.mp3"
+    },
+    {
+      "key": "d0c6d3c43762ac6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Look at those two numbers sitting next to each other. Two hundred and fourteen watching. Six you could walk up to tomorrow and say hello. [warmly] And here is the thing. The small number is the one that would notice if you were sad.",
+      "lines": [
+        "[proud] Look at those two numbers sitting next to each other.",
+        "Two hundred and fourteen watching. Six you could walk up to tomorrow and say hello.",
+        "[warmly] And here is the thing. The small number is the one that would notice if you were sad."
+      ],
+      "file": "/audio/voice/d0c6d3c43762ac6d.mp3"
+    },
+    {
+      "key": "87732e37baaa75a3",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! The sign understood, the mirror frosted, the frame honest, the drafts scrubbed... and the reel seen through. [laughs] His hall of mirrors just went dark. [excited] Sticker time, Shield Bearer!",
+      "text": "[proud] You spotted it! He wants that counter to feel like a friendship list. It is a list of people watching, and it always was. [warmly] Your gold is the handful you could name a place for.",
+      "lines": [
+        "[proud] You spotted it!",
+        "He wants that counter to feel like a friendship list.",
+        "It is a list of people watching, and it always was.",
+        "[warmly] Your gold is the handful you could name a place for."
+      ],
+      "file": "/audio/voice/87732e37baaa75a3.mp3"
+    },
+    {
+      "key": "5e7cba53ef27bf49",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Three powers down, Cyber Hero. Gold in the pan, glitter in the river. Watching is easy. Knowing somebody takes an actual place and an actual day. [whispers] Now. All those watchers are still out there, and you are about to post something... Next, we'll learn how to check a post before it goes anywhere. Come and see!",
+      "lines": [
+        "[proud] Three powers down, Cyber Hero. Gold in the pan, glitter in the river.",
+        "Watching is easy. Knowing somebody takes an actual place and an actual day.",
+        "[whispers] Now. All those watchers are still out there, and you are about to post something...",
+        "Next, we'll learn how to check a post before it goes anywhere. Come and see!"
+      ],
+      "file": "/audio/voice/5e7cba53ef27bf49.mp3"
+    },
+    {
+      "key": "8ec136f136333539",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] So you have written a post. Lovely. And here is the best bit: it has not gone anywhere. There is a little gap between writing a thing and sending it, and that gap is all yours. [thinking] So we read it back with a highlighter, hunting for two words. Where, and when. Those two stuck together make a map, and a map is the only part a stranger can actually use. And listen, we are not deleting your news. We swap the map out and keep every bit of the fun. [excited] Come and run the highlighter over a draft with me!",
+      "lines": [
+        "[warmly] So you have written a post. Lovely. And here is the best bit: it has not gone anywhere.",
+        "There is a little gap between writing a thing and sending it, and that gap is all yours.",
+        "[thinking] So we read it back with a highlighter, hunting for two words. Where, and when.",
+        "Those two stuck together make a map, and a map is the only part a stranger can actually use.",
+        "And listen, we are not deleting your news. We swap the map out and keep every bit of the fun.",
+        "[excited] Come and run the highlighter over a draft with me!"
+      ],
+      "file": "/audio/voice/8ec136f136333539.mp3"
+    },
+    {
+      "key": "6e2a27f0699a38e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Here is the draft. Six lines, sitting on the phone, not sent. I will light up one line at a time. Read it, then tell me: does it go as it is, or does it get swapped? Swapping never deletes your news. It just says the same thing without the map.",
+      "lines": [
+        "[excited] Here is the draft. Six lines, sitting on the phone, not sent.",
+        "I will light up one line at a time. Read it, then tell me: does it go as it is, or does it get swapped?",
+        "Swapping never deletes your news. It just says the same thing without the map."
+      ],
+      "file": "/audio/voice/6e2a27f0699a38e8.mp3"
+    },
+    {
+      "key": "d087a63dbf1e09f3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two words to hunt for on every line. Where, and when.",
+      "lines": [
+        "Two words to hunt for on every line. Where, and when."
+      ],
+      "file": "/audio/voice/d087a63dbf1e09f3.mp3"
+    },
+    {
+      "key": "7214c0e38dea1949",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Read it back. Best day ever, a whole length, and chips after. Every bit of the fun is still sitting right there in it. [warmly] The only things you took out were a road, a clock and a full name. Nobody will miss those but him.",
+      "lines": [
+        "[proud] Read it back. Best day ever, a whole length, and chips after.",
+        "Every bit of the fun is still sitting right there in it.",
+        "[warmly] The only things you took out were a road, a clock and a full name. Nobody will miss those but him."
+      ],
+      "file": "/audio/voice/7214c0e38dea1949.mp3"
+    },
+    {
+      "key": "40ef300435811cf4",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Exactly right! A place on its own is not much. A time on its own is not much either. Stick them together and you have made somewhere to wait. [warmly] So we swap one of them out, and the post is still yours.",
+      "lines": [
+        "[proud] Exactly right!",
+        "A place on its own is not much. A time on its own is not much either.",
+        "Stick them together and you have made somewhere to wait.",
+        "[warmly] So we swap one of them out, and the post is still yours."
+      ],
+      "file": "/audio/voice/40ef300435811cf4.mp3"
+    },
+    {
+      "key": "b7522a541d0b32e1",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Four powers down, Cyber Hero. No draft of yours leaves without a read back now. Map out, news in. That is the whole highlighter trick. [thinking] And now the strangest room in his whole hall. The one where everything looks perfect... Next, we'll learn what is really behind a perfect looking post. Come and see!",
+      "lines": [
+        "[proud] Four powers down, Cyber Hero. No draft of yours leaves without a read back now.",
+        "Map out, news in. That is the whole highlighter trick.",
+        "[thinking] And now the strangest room in his whole hall. The one where everything looks perfect...",
+        "Next, we'll learn what is really behind a perfect looking post. Come and see!"
+      ],
+      "file": "/audio/voice/b7522a541d0b32e1.mp3"
+    },
+    {
+      "key": "5156e10a6c7dca5f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[thinking] Have you ever scrolled for a bit and come away feeling a bit rubbish? I have. Everybody looks like they are having the best day of their life, all at once. [warmly] Here is what is really going on. People post their shiniest minute. The cake that worked. The goal that went in. Not the forty photos before the good one. So you end up putting your whole ordinary day next to everybody else's best bit. That is not a fair race. [excited] Come backstage with me. Let's see what is really behind these posts!",
+      "lines": [
+        "[thinking] Have you ever scrolled for a bit and come away feeling a bit rubbish? I have.",
+        "Everybody looks like they are having the best day of their life, all at once.",
+        "[warmly] Here is what is really going on. People post their shiniest minute.",
+        "The cake that worked. The goal that went in. Not the forty photos before the good one.",
+        "So you end up putting your whole ordinary day next to everybody else's best bit. That is not a fair race.",
+        "[excited] Come backstage with me. Let's see what is really behind these posts!"
+      ],
+      "file": "/audio/voice/5156e10a6c7dca5f.mp3"
+    },
+    {
+      "key": "37a9d2db41fcb553",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Here we are. A whole gallery of perfect posts, all framed up and shining. Tap any frame you like and we will walk round the back of it together. [thinking] You will see the bit that did not get posted. That bit is where everybody actually lives.",
+      "lines": [
+        "[warmly] Here we are. A whole gallery of perfect posts, all framed up and shining.",
+        "Tap any frame you like and we will walk round the back of it together.",
+        "[thinking] You will see the bit that did not get posted. That bit is where everybody actually lives."
+      ],
+      "file": "/audio/voice/37a9d2db41fcb553.mp3"
+    },
+    {
+      "key": "0da49dc65ddde6e3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is no wrong tap in here, Cyber Hero. Open them all and see everything.",
+      "lines": [
+        "There is no wrong tap in here, Cyber Hero. Open them all and see everything."
+      ],
+      "file": "/audio/voice/0da49dc65ddde6e3.mp3"
+    },
+    {
+      "key": "4b751a808acf5620",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Five frames, and not one of them was a whole day. Behind every single one there was a bin, or an argument, or eleven misses, or a floor covered in stuff. [proud] So the next time a feed makes you feel small, you already know what you are looking at. A minute, Cyber Hero. Not a life.",
+      "lines": [
+        "[warmly] Five frames, and not one of them was a whole day.",
+        "Behind every single one there was a bin, or an argument, or eleven misses, or a floor covered in stuff.",
+        "[proud] So the next time a feed makes you feel small, you already know what you are looking at. A minute, Cyber Hero. Not a life."
+      ],
+      "file": "/audio/voice/4b751a808acf5620.mp3"
+    },
+    {
+      "key": "1284a0ddf229dc3e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] That is exactly it! Your whole day, ordinary bits and all, against their one best minute. Nobody could win that, and nobody is meant to. [warmly] Knowing that is the shield, Cyber Hero. It takes all the sting straight out.",
+      "lines": [
+        "[proud] That is exactly it!",
+        "Your whole day, ordinary bits and all, against their one best minute.",
+        "Nobody could win that, and nobody is meant to.",
+        "[warmly] Knowing that is the shield, Cyber Hero. It takes all the sting straight out."
+      ],
+      "file": "/audio/voice/1284a0ddf229dc3e.mp3"
+    },
+    {
+      "key": "a3d631c1423681b8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Five powers down, Cyber Hero. Every single one of them earned. Room numbers, frosted panes, gold in the pan, a scrubbed draft, and the backstage truth. [warmly] Now let's put the whole lot together at once. Next, we'll walk the hall once more and check a profile all the way round. Come and see!",
+      "lines": [
+        "[proud] Five powers down, Cyber Hero. Every single one of them earned.",
+        "Room numbers, frosted panes, gold in the pan, a scrubbed draft, and the backstage truth.",
+        "[warmly] Now let's put the whole lot together at once.",
+        "Next, we'll walk the hall once more and check a profile all the way round. Come and see!"
+      ],
+      "file": "/audio/voice/a3d631c1423681b8.mp3"
+    },
+    {
+      "key": "4a296caffb5d11c4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Last walk of the hall, Cyber Hero, and you are doing the checking this time. Three profiles. On each one, tap all four checks before you decide anything. Then call it. Shield up, or still open.",
+      "lines": [
+        "[excited] Last walk of the hall, Cyber Hero, and you are doing the checking this time.",
+        "Three profiles. On each one, tap all four checks before you decide anything.",
+        "Then call it. Shield up, or still open."
+      ],
+      "file": "/audio/voice/4a296caffb5d11c4.mp3"
+    },
+    {
+      "key": "a6334ed0316747c9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four checks first. A profile can look lovely and still have one pane wide open.",
+      "lines": [
+        "All four checks first. A profile can look lovely and still have one pane wide open."
+      ],
+      "file": "/audio/voice/a6334ed0316747c9.mp3"
+    },
+    {
+      "key": "499cc634b7c3fc45",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Three profiles, four checks each, and you found every open pane in the place. The room, the panes, the heart frame and the last post. That is the round, and now it is yours. [excited] Which is just as well, because somebody is waiting at the end of this hall.",
+      "lines": [
+        "[proud] Three profiles, four checks each, and you found every open pane in the place.",
+        "The room, the panes, the heart frame and the last post. That is the round, and now it is yours.",
+        "[excited] Which is just as well, because somebody is waiting at the end of this hall."
+      ],
+      "file": "/audio/voice/499cc634b7c3fc45.mp3"
+    },
+    {
+      "key": "897f7f6ff225f001",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Rooms read, panes frosted, gold panned, drafts checked... and the backstage seen for what it is. [laughs] His whole Hall of Mirrors just stopped working on you. [excited] Sticker time, Cyber Hero!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "The sign understood, the mirror frosted,",
-        "the frame honest, the drafts scrubbed... and the reel seen through.",
-        "[laughs] His hall of mirrors just went dark.",
-        "[excited] Sticker time, Shield Bearer!"
+        "Rooms read, panes frosted, gold panned,",
+        "drafts checked... and the backstage seen for what it is.",
+        "[laughs] His whole Hall of Mirrors just stopped working on you.",
+        "[excited] Sticker time, Cyber Hero!"
       ],
-      "file": "/audio/voice/0f3f52228e179b49.mp3"
+      "file": "/audio/voice/897f7f6ff225f001.mp3"
     },
     {
-      "key": "3b0573bef3df3de1",
+      "key": "dcc0ec05487ff868",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Scroll... scroll... everyone's summer looks AMAZING - beaches, pools, fireworks. Yours was a rainy campsite. Your sparkle dims a little...",
+      "text": "An app has 13+ on it. What is that number actually telling you?",
       "lines": [
-        "Scroll... scroll... everyone's summer looks AMAZING - beaches, pools, fireworks. Yours was a rainy campsite. Your sparkle dims a little..."
+        "An app has 13+ on it. What is that number actually telling you?"
       ],
-      "file": "/audio/voice/3b0573bef3df3de1.mp3"
+      "file": "/audio/voice/dcc0ec05487ff868.mp3"
     },
     {
-      "key": "edfb1b7f411afd20",
+      "key": "fa049f9b61928486",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Priya's drawing got 94 likes. Yours got 6. Your tummy does the sinking thing...",
+      "text": "Which of these belongs behind frosted glass, friends only?",
       "lines": [
-        "Priya's drawing got 94 likes. Yours got 6. Your tummy does the sinking thing..."
+        "Which of these belongs behind frosted glass, friends only?"
       ],
-      "file": "/audio/voice/edfb1b7f411afd20.mp3"
+      "file": "/audio/voice/fa049f9b61928486.mp3"
     },
     {
-      "key": "a7c59e2f5dd91601",
+      "key": "bd67c3a5a207bbf1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A sparkly 'perfect' account announces: 'REAL fans post their morning routine at 6am EVERY day - or you're out of the club!'",
+      "text": "The Raccoon says: 'Anyone who follows you back is officially your friend!' Is he right?",
       "lines": [
-        "A sparkly 'perfect' account announces: 'REAL fans post their morning routine at 6am EVERY day - or you're out of the club!'"
+        "The Raccoon says: 'Anyone who follows you back is officially your friend!' Is he right?"
       ],
-      "file": "/audio/voice/a7c59e2f5dd91601.mp3"
+      "file": "/audio/voice/bd67c3a5a207bbf1.mp3"
     },
     {
-      "key": "183596c4bf783a74",
+      "key": "a68606b5397bb0b8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Their reel didn't show THEIR rainy days either - nobody posts those. Your soggy-tent giggles with Dad were real, and real beats posted, every time.",
+      "text": "You are reading a draft back with the highlighter. Which two words are you hunting for?",
       "lines": [
-        "Their reel didn't show THEIR rainy days either - nobody posts those. Your soggy-tent giggles with Dad were real, and real beats posted, every time."
+        "You are reading a draft back with the highlighter. Which two words are you hunting for?"
       ],
-      "file": "/audio/voice/183596c4bf783a74.mp3"
+      "file": "/audio/voice/a68606b5397bb0b8.mp3"
     },
     {
-      "key": "610359544884f356",
+      "key": "976274f2618485c1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "An hour later the sparkle feels worse, not better - because you compared your whole backstage to a hundred one-shiny-minute reels. That game has no winner; the pause does.",
+      "text": "You scroll for a while and start feeling like everybody's life is better than yours. What is actually happening?",
       "lines": [
-        "An hour later the sparkle feels worse, not better - because you compared your whole backstage to a hundred one-shiny-minute reels. That game has no winner; the pause does."
+        "You scroll for a while and start feeling like everybody's life is better than yours. What is actually happening?"
       ],
-      "file": "/audio/voice/610359544884f356.mp3"
+      "file": "/audio/voice/976274f2618485c1.mp3"
     },
     {
-      "key": "fa46ab12efe5146d",
+      "key": "726433b84d45cc74",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Mom reminds you: Grandma printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it.",
+      "text": "A new app's door has a big 13+ sign, and Adam is eight. What is the sign really telling him? Is it option A... Not yet, that room is built grown-up-sized Option B... Never, kids are banned from the internet forever Or is it option C... Go on in, door signs are only suggestions So, what do you think?",
       "lines": [
-        "Mom reminds you: Grandma printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it."
+        "A new app's door has a big 13+ sign, and Adam is eight. What is the sign really telling him?",
+        "Is it option A...",
+        "Not yet, that room is built grown-up-sized",
+        "Option B...",
+        "Never, kids are banned from the internet forever",
+        "Or is it option C...",
+        "Go on in, door signs are only suggestions",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/fa46ab12efe5146d.mp3"
+      "file": "/audio/voice/726433b84d45cc74.mp3"
     },
     {
-      "key": "dd3415f8c44e385b",
+      "key": "501e5713811bd81e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Now a picture you never liked is out there wearing your name, and the counter still won't fill the tummy-sink. Likes are taps, not love - post what YOU'RE proud of or nothing at all.",
+      "text": "Pip the fox cub's profile is set to PUBLIC. Who can stare into that mirror right now? Is it option A... Only kind people, mean ones get blocked automatically Option B... Only the people Pip has met in real life Or is it option C... Anyone at all who wanders past online So, what do you think?",
       "lines": [
-        "Now a picture you never liked is out there wearing your name, and the counter still won't fill the tummy-sink. Likes are taps, not love - post what YOU'RE proud of or nothing at all."
+        "Pip the fox cub's profile is set to PUBLIC. Who can stare into that mirror right now?",
+        "Is it option A...",
+        "Only kind people, mean ones get blocked automatically",
+        "Option B...",
+        "Only the people Pip has met in real life",
+        "Or is it option C...",
+        "Anyone at all who wanders past online",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/dd3415f8c44e385b.mp3"
+      "file": "/audio/voice/501e5713811bd81e.mp3"
     },
     {
-      "key": "d57d316dd28d514c",
+      "key": "e4935a138384d226",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You skip the 6am club and nothing bad happens - because it was never a club, just a counter feeding itself. Feeds that demand things from you have forgotten who's boss.",
+      "text": "A stranger with a MILLION followers messages Pip: 'Follow me back and we'll be best friends forever!' What is true here? Is it option A... Saying best friends forever is what makes it real Option B... A big follower number can't make someone a friend Or is it option C... A million followers means a million safety checks passed So, what do you think?",
       "lines": [
-        "You skip the 6am club and nothing bad happens - because it was never a club, just a counter feeding itself. Feeds that demand things from you have forgotten who's boss."
+        "A stranger with a MILLION followers messages Pip: 'Follow me back and we'll be best friends forever!' What is true here?",
+        "Is it option A...",
+        "Saying best friends forever is what makes it real",
+        "Option B...",
+        "A big follower number can't make someone a friend",
+        "Or is it option C...",
+        "A million followers means a million safety checks passed",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/d57d316dd28d514c.mp3"
+      "file": "/audio/voice/e4935a138384d226.mp3"
     },
     {
-      "key": "6b3eb2af10ef82f5",
+      "key": "597eba700c443484",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A stranger's feed now runs your mornings, and the 'club' never even knew your name. When an app starts setting YOUR alarm clock, that's the moment to hand it to a grown-up.",
+      "text": "Which line in Pip's draft post glows RED under the highlighter? Is it option A... Meet me at the school gates at 3:15! Option B... We won our game this morning! Or is it option C... I love drawing dragons best! So, what do you think?",
       "lines": [
-        "A stranger's feed now runs your mornings, and the 'club' never even knew your name. When an app starts setting YOUR alarm clock, that's the moment to hand it to a grown-up."
+        "Which line in Pip's draft post glows RED under the highlighter?",
+        "Is it option A...",
+        "Meet me at the school gates at 3:15!",
+        "Option B...",
+        "We won our game this morning!",
+        "Or is it option C...",
+        "I love drawing dragons best!",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/6b3eb2af10ef82f5.mp3"
+      "file": "/audio/voice/597eba700c443484.mp3"
     },
     {
-      "key": "79c37b8cd3bccd40",
+      "key": "4951d3a603fc36ad",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "What number is on social media's door sign?",
+      "text": "Everyone posted AMAZING birthday parties, and Pip's was small and quiet. What is the backstage truth? Is it option A... Everyone else's whole life really is that sparkly Option B... Pip should throw a bigger party next time, for the photos Or is it option C... Feeds show one shiny minute, not the whole day So, what do you think?",
       "lines": [
-        "What number is on social media's door sign?"
+        "Everyone posted AMAZING birthday parties, and Pip's was small and quiet. What is the backstage truth?",
+        "Is it option A...",
+        "Everyone else's whole life really is that sparkly",
+        "Option B...",
+        "Pip should throw a bigger party next time, for the photos",
+        "Or is it option C...",
+        "Feeds show one shiny minute, not the whole day",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/79c37b8cd3bccd40.mp3"
+      "file": "/audio/voice/4951d3a603fc36ad.mp3"
     },
     {
-      "key": "4b0bb3c729b708aa",
+      "key": "cd3c66daa1012bc1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - tap the switch that frosts the WHOLE mirror!",
+      "text": "That's right! It isn't a ban on everything, and it isn't a suggestion. It's a NOT YET: those rooms are full of strangers, pressure and tricks that take practice, and Adam is still growing his powers for them.",
       "lines": [
-        "Quick - tap the switch that frosts the WHOLE mirror!"
+        "That's right!",
+        "It isn't a ban on everything, and it isn't a suggestion. It's a NOT YET: those rooms are full of strangers, pressure and tricks that take practice, and Adam is still growing his powers for them."
       ],
-      "file": "/audio/voice/4b0bb3c729b708aa.mp3"
+      "file": "/audio/voice/cd3c66daa1012bc1.mp3"
     },
     {
-      "key": "7f9176e7dd690d31",
+      "key": "50395182b6d8e9f7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Is that true?",
+      "text": "Not quite. It isn't a ban on everything, and it isn't a suggestion. It's a NOT YET: those rooms are full of strangers, pressure and tricks that take practice, and Adam is still growing his powers for them.",
       "lines": [
-        "Is that true?"
+        "Not quite.",
+        "It isn't a ban on everything, and it isn't a suggestion. It's a NOT YET: those rooms are full of strangers, pressure and tricks that take practice, and Adam is still growing his powers for them."
       ],
-      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+      "file": "/audio/voice/50395182b6d8e9f7.mp3"
     },
     {
-      "key": "a2ad7ef635133ce1",
+      "key": "81f5f1cbaaf412e1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which line was safe to post?",
+      "text": "That's right! A public profile doesn't check who's kind or who Pip knows, there's no magic doorman. Unlocked means ANY passerby can look in, and that's exactly why the mirror gets frosted.",
       "lines": [
-        "Which line was safe to post?"
+        "That's right!",
+        "A public profile doesn't check who's kind or who Pip knows, there's no magic doorman. Unlocked means ANY passerby can look in, and that's exactly why the mirror gets frosted."
       ],
-      "file": "/audio/voice/a2ad7ef635133ce1.mp3"
+      "file": "/audio/voice/81f5f1cbaaf412e1.mp3"
     },
     {
-      "key": "199a677def6041bb",
+      "key": "1076fb00d8a52215",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Feeds aren't blank life.",
+      "text": "Not quite. A public profile doesn't check who's kind or who Pip knows, there's no magic doorman. Unlocked means ANY passerby can look in, and that's exactly why the mirror gets frosted.",
       "lines": [
-        "Feeds aren't blank life."
+        "Not quite.",
+        "A public profile doesn't check who's kind or who Pip knows, there's no magic doorman. Unlocked means ANY passerby can look in, and that's exactly why the mirror gets frosted."
       ],
-      "file": "/audio/voice/199a677def6041bb.mp3"
+      "file": "/audio/voice/1076fb00d8a52215.mp3"
+    },
+    {
+      "key": "f038e3864ada5e6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Follower counters count taps, not kindness, and words in a message are just words. A friend is someone who actually knows you, and a stranger stays behind the rope, whatever their number says.",
+      "lines": [
+        "That's right!",
+        "Follower counters count taps, not kindness, and words in a message are just words. A friend is someone who actually knows you, and a stranger stays behind the rope, whatever their number says."
+      ],
+      "file": "/audio/voice/f038e3864ada5e6b.mp3"
+    },
+    {
+      "key": "93eeadbfae4c06b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Follower counters count taps, not kindness, and words in a message are just words. A friend is someone who actually knows you, and a stranger stays behind the rope, whatever their number says.",
+      "lines": [
+        "Not quite.",
+        "Follower counters count taps, not kindness, and words in a message are just words. A friend is someone who actually knows you, and a stranger stays behind the rope, whatever their number says."
+      ],
+      "file": "/audio/voice/93eeadbfae4c06b3.mp3"
+    },
+    {
+      "key": "d960faf4562abd76",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Winning news and dragon love carry no clues, they glow green. A place AND a time together make a find-me map, and find-me maps get scrubbed before anything posts.",
+      "lines": [
+        "That's right!",
+        "Winning news and dragon love carry no clues, they glow green. A place AND a time together make a find-me map, and find-me maps get scrubbed before anything posts."
+      ],
+      "file": "/audio/voice/d960faf4562abd76.mp3"
+    },
+    {
+      "key": "21df81ead4aa7b4a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Winning news and dragon love carry no clues, they glow green. A place AND a time together make a find-me map, and find-me maps get scrubbed before anything posts.",
+      "lines": [
+        "Not quite.",
+        "Winning news and dragon love carry no clues, they glow green. A place AND a time together make a find-me map, and find-me maps get scrubbed before anything posts."
+      ],
+      "file": "/audio/voice/21df81ead4aa7b4a.mp3"
+    },
+    {
+      "key": "c6aa371e911cb647",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nobody's life is all sparkle, and parties aren't for photos. A feed shows each person's one best minute, and comparing a whole real day to that minute isn't fair on anyone. Quiet can be lovely.",
+      "lines": [
+        "That's right!",
+        "Nobody's life is all sparkle, and parties aren't for photos. A feed shows each person's one best minute, and comparing a whole real day to that minute isn't fair on anyone. Quiet can be lovely."
+      ],
+      "file": "/audio/voice/c6aa371e911cb647.mp3"
+    },
+    {
+      "key": "6b65bdf58bd6f4c2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody's life is all sparkle, and parties aren't for photos. A feed shows each person's one best minute, and comparing a whole real day to that minute isn't fair on anyone. Quiet can be lovely.",
+      "lines": [
+        "Not quite.",
+        "Nobody's life is all sparkle, and parties aren't for photos. A feed shows each person's one best minute, and comparing a whole real day to that minute isn't fair on anyone. Quiet can be lovely."
+      ],
+      "file": "/audio/voice/6b65bdf58bd6f4c2.mp3"
+    },
+    {
+      "key": "7d3b5f9230f338dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Soft blocks and a grown-up sitting right there. Nothing in that room needs anybody to be big yet.",
+      "lines": [
+        "Soft blocks and a grown-up sitting right there. Nothing in that room needs anybody to be big yet."
+      ],
+      "file": "/audio/voice/7d3b5f9230f338dd.mp3"
+    },
+    {
+      "key": "a73155cf05c83dbc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Strangers can say anything to anybody in there and nobody is checking, so that room waits until you are older.",
+      "lines": [
+        "Strangers can say anything to anybody in there and nobody is checking, so that room waits until you are older."
+      ],
+      "file": "/audio/voice/a73155cf05c83dbc.mp3"
+    },
+    {
+      "key": "3abd168bb69b7905",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You choose who sees your building, so it is a middle sized room. Not tiny, and nowhere near grown-up.",
+      "lines": [
+        "You choose who sees your building, so it is a middle sized room. Not tiny, and nowhere near grown-up."
+      ],
+      "file": "/audio/voice/3abd168bb69b7905.mp3"
+    },
+    {
+      "key": "a250ea196a7651ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That room is asking for a bank card, and a bank card belongs to a grown-up, so the room does too.",
+      "lines": [
+        "That room is asking for a bank card, and a bank card belongs to a grown-up, so the room does too."
+      ],
+      "file": "/audio/voice/a250ea196a7651ca.mp3"
+    },
+    {
+      "key": "da045531c190a297",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Six picture books read out loud, and nothing else can happen in there. That is as small and safe as a room gets.",
+      "lines": [
+        "Six picture books read out loud, and nothing else can happen in there. That is as small and safe as a room gets."
+      ],
+      "file": "/audio/voice/da045531c190a297.mp3"
+    },
+    {
+      "key": "09b1b265bf721480",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The number has never met you. It was written before anybody knew you existed.",
+      "lines": [
+        "The number has never met you. It was written before anybody knew you existed."
+      ],
+      "file": "/audio/voice/09b1b265bf721480.mp3"
+    },
+    {
+      "key": "b63626c43add981e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody is cross with you. It is a label, and labels do not tell anybody off.",
+      "lines": [
+        "Nobody is cross with you. It is a label, and labels do not tell anybody off."
+      ],
+      "file": "/audio/voice/b63626c43add981e.mp3"
+    },
+    {
+      "key": "22b7b95355a055a4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The app works perfectly. It is simply built for a room you are not in yet.",
+      "lines": [
+        "The app works perfectly. It is simply built for a room you are not in yet."
+      ],
+      "file": "/audio/voice/22b7b95355a055a4.mp3"
+    },
+    {
+      "key": "7dd2a047873d032f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about the jam jar. What does a label on a jar describe?",
+      "lines": [
+        "Think about the jam jar. What does a label on a jar describe?"
+      ],
+      "file": "/audio/voice/7dd2a047873d032f.mp3"
+    },
+    {
+      "key": "2210e7f9b4973bed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A school and a class is a building and a time. Anybody reading that knows where to stand at half past three.",
+      "lines": [
+        "A school and a class is a building and a time. Anybody reading that knows where to stand at half past three."
+      ],
+      "file": "/audio/voice/2210e7f9b4973bed.mp3"
+    },
+    {
+      "key": "8fa619da9a8ee871",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A dragon with wonky wings tells a stranger absolutely nothing except that you can draw. Leave it up and be proud of it.",
+      "lines": [
+        "A dragon with wonky wings tells a stranger absolutely nothing except that you can draw. Leave it up and be proud of it."
+      ],
+      "file": "/audio/voice/8fa619da9a8ee871.mp3"
+    },
+    {
+      "key": "53157d367f6a06fe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your birthday is one of the answers grown-ups use to prove who they are, so it stays with people you know.",
+      "lines": [
+        "Your birthday is one of the answers grown-ups use to prove who they are, so it stays with people you know."
+      ],
+      "file": "/audio/voice/53157d367f6a06fe.mp3"
+    },
+    {
+      "key": "e0cc4a655a6f5a53",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Millions of people love that team. Knowing you are one of them gets a stranger no closer to you at all.",
+      "lines": [
+        "Millions of people love that team. Knowing you are one of them gets a stranger no closer to you at all."
+      ],
+      "file": "/audio/voice/e0cc4a655a6f5a53.mp3"
+    },
+    {
+      "key": "110267f6de86cf61",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A front door with its number on it is an address, even without a single word written under it.",
+      "lines": [
+        "A front door with its number on it is an address, even without a single word written under it."
+      ],
+      "file": "/audio/voice/110267f6de86cf61.mp3"
+    },
+    {
+      "key": "4f9b9b58dbda7051",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A route and a time is the easiest thing in the world for a stranger to wait in, so that one goes to friends only.",
+      "lines": [
+        "A route and a time is the easiest thing in the world for a stranger to wait in, so that one goes to friends only."
+      ],
+      "file": "/audio/voice/4f9b9b58dbda7051.mp3"
+    },
+    {
+      "key": "25ce82af86bee3ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A painting tells nobody where you are. Leave it clear and let people enjoy it.",
+      "lines": [
+        "A painting tells nobody where you are. Leave it clear and let people enjoy it."
+      ],
+      "file": "/audio/voice/25ce82af86bee3ce.mp3"
+    },
+    {
+      "key": "350d2c1b60692c7d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "There is nothing a stranger can do with a favourite colour. That one is safe in the open.",
+      "lines": [
+        "There is nothing a stranger can do with a favourite colour. That one is safe in the open."
+      ],
+      "file": "/audio/voice/350d2c1b60692c7d.mp3"
+    },
+    {
+      "key": "4fa1b04e6492185f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Millions of people support that team. It gets a stranger no nearer to you.",
+      "lines": [
+        "Millions of people support that team. It gets a stranger no nearer to you."
+      ],
+      "file": "/audio/voice/4fa1b04e6492185f.mp3"
+    },
+    {
+      "key": "c90ae080b70d3b9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which one of those is a building a stranger could stand outside?",
+      "lines": [
+        "Which one of those is a building a stranger could stand outside?"
+      ],
+      "file": "/audio/voice/c90ae080b70d3b9a.mp3"
+    },
+    {
+      "key": "599057d70d509cee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Maya sits next to you and Nana is your nana. SuperFan2000 and the star sender are lovely, but you could not say where either of them is standing right now.",
+      "lines": [
+        "Maya sits next to you and Nana is your nana. SuperFan2000 and the star sender are lovely, but you could not say where either of them is standing right now."
+      ],
+      "file": "/audio/voice/599057d70d509cee.mp3"
+    },
+    {
+      "key": "46d534304f61b015",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam kicks a ball at you every Saturday and Ollie lives four doors down. The scout and the prize account have never once said where they are.",
+      "lines": [
+        "Sam kicks a ball at you every Saturday and Ollie lives four doors down. The scout and the prize account have never once said where they are."
+      ],
+      "file": "/audio/voice/46d534304f61b015.mp3"
+    },
+    {
+      "key": "4898870f9e1f954b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mr Patel teaches you and Ada swims with you on Tuesdays. The other two are just very keen, and keen is not a place.",
+      "lines": [
+        "Mr Patel teaches you and Ada swims with you on Tuesdays. The other two are just very keen, and keen is not a place."
+      ],
+      "file": "/audio/voice/4898870f9e1f954b.mp3"
+    },
+    {
+      "key": "96e3bf6a573f3540",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing official happens. A button was pressed, and that is the whole of it.",
+      "lines": [
+        "Nothing official happens. A button was pressed, and that is the whole of it."
+      ],
+      "file": "/audio/voice/96e3bf6a573f3540.mp3"
+    },
+    {
+      "key": "88b06f23614797d8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Speed says nothing about somebody. It only says their thumb was quick.",
+      "lines": [
+        "Speed says nothing about somebody. It only says their thumb was quick."
+      ],
+      "file": "/audio/voice/88b06f23614797d8.mp3"
+    },
+    {
+      "key": "84936b23e1193482",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A big number means a lot of people are watching them too. It still is not knowing you.",
+      "lines": [
+        "A big number means a lot of people are watching them too. It still is not knowing you."
+      ],
+      "file": "/audio/voice/84936b23e1193482.mp3"
+    },
+    {
+      "key": "4ce703fc53c26efa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask the panning question about a follower. Could you say where you know them from?",
+      "lines": [
+        "Ask the panning question about a follower. Could you say where you know them from?"
+      ],
+      "file": "/audio/voice/4ce703fc53c26efa.mp3"
+    },
+    {
+      "key": "4e35b431d00811ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is your news and it is lovely. It says you had a brilliant time and it does not say where you are.",
+      "lines": [
+        "That is your news and it is lovely. It says you had a brilliant time and it does not say where you are."
+      ],
+      "file": "/audio/voice/4e35b431d00811ca.mp3"
+    },
+    {
+      "key": "3fdf801662e13b4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A road name and a landmark is an address with the word address left off. At our pool says the same thing and keeps it yours.",
+      "lines": [
+        "A road name and a landmark is an address with the word address left off. At our pool says the same thing and keeps it yours."
+      ],
+      "file": "/audio/voice/3fdf801662e13b4c.mp3"
+    },
+    {
+      "key": "34d8f5985fc245ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is the proudest bit of the whole post and there is nothing in it but you being brilliant.",
+      "lines": [
+        "That is the proudest bit of the whole post and there is nothing in it but you being brilliant."
+      ],
+      "file": "/audio/voice/34d8f5985fc245ec.mp3"
+    },
+    {
+      "key": "0d583b7a326859fb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A day and a time is somewhere to wait. Going again next week tells your friends exactly as much and tells a stranger nothing.",
+      "lines": [
+        "A day and a time is somewhere to wait. Going again next week tells your friends exactly as much and tells a stranger nothing."
+      ],
+      "file": "/audio/voice/0d583b7a326859fb.mp3"
+    },
+    {
+      "key": "fbdd0e28494cc6d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A full name and a school in one line is the whole map at once. I got my new badge is still the proud bit, with the map taken out.",
+      "lines": [
+        "A full name and a school in one line is the whole map at once. I got my new badge is still the proud bit, with the map taken out."
+      ],
+      "file": "/audio/voice/fbdd0e28494cc6d3.mp3"
+    },
+    {
+      "key": "2f5a3dc9a1d8fed8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Chips are not a map. That line is just a happy ending and it can go exactly as it is.",
+      "lines": [
+        "Chips are not a map. That line is just a happy ending and it can go exactly as it is."
+      ],
+      "file": "/audio/voice/2f5a3dc9a1d8fed8.mp3"
+    },
+    {
+      "key": "8d1a7cac0403383a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Lovely manners, but manners do not draw anybody a map.",
+      "lines": [
+        "Lovely manners, but manners do not draw anybody a map."
+      ],
+      "file": "/audio/voice/8d1a7cac0403383a.mp3"
+    },
+    {
+      "key": "ccbb66e7dee62a43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "How good the post is has nothing to do with how safe it is.",
+      "lines": [
+        "How good the post is has nothing to do with how safe it is."
+      ],
+      "file": "/audio/voice/ccbb66e7dee62a43.mp3"
+    },
+    {
+      "key": "54267c9732ff9220",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A short post can hand over an address, and a long one might hand over nothing.",
+      "lines": [
+        "A short post can hand over an address, and a long one might hand over nothing."
+      ],
+      "file": "/audio/voice/54267c9732ff9220.mp3"
+    },
+    {
+      "key": "f9832c4dd6b449b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which two things stuck together make a map somebody could follow?",
+      "lines": [
+        "Which two things stuck together make a map somebody could follow?"
+      ],
+      "file": "/audio/voice/f9832c4dd6b449b4.mp3"
+    },
+    {
+      "key": "174f39d22ea44bf7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You are seeing their chosen minute. The bin, the rain and the misses stayed off the screen.",
+      "lines": [
+        "You are seeing their chosen minute. The bin, the rain and the misses stayed off the screen."
+      ],
+      "file": "/audio/voice/174f39d22ea44bf7.mp3"
+    },
+    {
+      "key": "8baa71a08897bb1b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Posting more would not change a thing, because you would still be seeing everybody else's shiny minutes.",
+      "lines": [
+        "Posting more would not change a thing, because you would still be seeing everybody else's shiny minutes."
+      ],
+      "file": "/audio/voice/8baa71a08897bb1b.mp3"
+    },
+    {
+      "key": "96c910577ed583dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your day had ordinary bits in it, the same as theirs did. Theirs simply did not get posted.",
+      "lines": [
+        "Your day had ordinary bits in it, the same as theirs did. Theirs simply did not get posted."
+      ],
+      "file": "/audio/voice/96c910577ed583dd.mp3"
+    },
+    {
+      "key": "082656394527e44e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about what you saw backstage. How much of a day actually gets posted?",
+      "lines": [
+        "Think about what you saw backstage. How much of a day actually gets posted?"
+      ],
+      "file": "/audio/voice/082656394527e44e.mp3"
+    },
+    {
+      "key": "618f3779068575f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every check came back clean. That is a shield, all the way round.",
+      "lines": [
+        "Every check came back clean. That is a shield, all the way round."
+      ],
+      "file": "/audio/voice/618f3779068575f0.mp3"
+    },
+    {
+      "key": "3b1881462e607e8d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Right room, frosted panes, a heart frame you could point at, and a post with no map in it. All four.",
+      "lines": [
+        "Right room, frosted panes, a heart frame you could point at, and a post with no map in it. All four."
+      ],
+      "file": "/audio/voice/3b1881462e607e8d.mp3"
+    },
+    {
+      "key": "cfbbb56037ffa90e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four checks open, and not a road or a clock among them. Is there a single one that hands anything over?",
+      "lines": [
+        "Four checks open, and not a road or a clock among them. Is there a single one that hands anything over?"
+      ],
+      "file": "/audio/voice/cfbbb56037ffa90e.mp3"
+    },
+    {
+      "key": "d09c44163e10af49",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Wide open on all four. A road, a time and a school, sitting out where anybody can read them.",
+      "lines": [
+        "Wide open on all four. A road, a time and a school, sitting out where anybody can read them."
+      ],
+      "file": "/audio/voice/d09c44163e10af49.mp3"
+    },
+    {
+      "key": "68bae5664588eb52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four checks came back open. The post alone gives a place and a time, which is somewhere to wait.",
+      "lines": [
+        "All four checks came back open. The post alone gives a place and a time, which is somewhere to wait."
+      ],
+      "file": "/audio/voice/68bae5664588eb52.mp3"
+    },
+    {
+      "key": "17076e584f9e9ed2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four checks open. Put the last post together with the public setting. What could a stranger do with that?",
+      "lines": [
+        "Four checks open. Put the last post together with the public setting. What could a stranger do with that?"
+      ],
+      "file": "/audio/voice/17076e584f9e9ed2.mp3"
+    },
+    {
+      "key": "b4d2fd154305db9e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three checks clean and one pane left clear, and that one pane is a route and a time.",
+      "lines": [
+        "Three checks clean and one pane left clear, and that one pane is a route and a time."
+      ],
+      "file": "/audio/voice/b4d2fd154305db9e.mp3"
+    },
+    {
+      "key": "2a69ba22a30cb21d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three of these were lovely, and that is exactly why the fourth is worth finding. A walk home is a place plus a time.",
+      "lines": [
+        "Three of these were lovely, and that is exactly why the fourth is worth finding. A walk home is a place plus a time."
+      ],
+      "file": "/audio/voice/2a69ba22a30cb21d.mp3"
+    },
+    {
+      "key": "5807ec4cfc041cad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Four checks open. Three came back fine. Go back and read the panes one more time.",
+      "lines": [
+        "Four checks open. Three came back fine. Go back and read the panes one more time."
+      ],
+      "file": "/audio/voice/5807ec4cfc041cad.mp3"
+    },
+    {
+      "key": "3362512fa09f9039",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look again at what is in there. Blocks, a slide, and a grown-up watching. Who is that room built for?",
+      "lines": [
+        "Look again at what is in there. Blocks, a slide, and a grown-up watching. Who is that room built for?"
+      ],
+      "file": "/audio/voice/3362512fa09f9039.mp3"
+    },
+    {
+      "key": "59a89543e2cde837",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Count the strangers in there, and then count the people checking what they say. Nobody. That is what the number is for.",
+      "lines": [
+        "Count the strangers in there, and then count the people checking what they say. Nobody. That is what the number is for."
+      ],
+      "file": "/audio/voice/59a89543e2cde837.mp3"
+    },
+    {
+      "key": "e876e6c8b9590f0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The making is easy. The bit to look at is WHO sees it, and in there you pick them yourself.",
+      "lines": [
+        "The making is easy. The bit to look at is WHO sees it, and in there you pick them yourself."
+      ],
+      "file": "/audio/voice/e876e6c8b9590f0c.mp3"
+    },
+    {
+      "key": "cc0e63d859230536",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Follow what the room is ASKING for. It wants a card number, and that is a grown-up thing to hand over.",
+      "lines": [
+        "Follow what the room is ASKING for. It wants a card number, and that is a grown-up thing to hand over."
+      ],
+      "file": "/audio/voice/cc0e63d859230536.mp3"
+    },
+    {
+      "key": "82d8a865db0014ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask yourself what else could possibly happen in there. Nothing. Just the stories.",
+      "lines": [
+        "Ask yourself what else could possibly happen in there. Nothing. Just the stories."
+      ],
+      "file": "/audio/voice/82d8a865db0014ac.mp3"
+    },
+    {
+      "key": "8f27d1ef0af56d51",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read it again as a stranger would. It names a building, and it names when you will be in it.",
+      "lines": [
+        "Read it again as a stranger would. It names a building, and it names when you will be in it."
+      ],
+      "file": "/audio/voice/8f27d1ef0af56d51.mp3"
+    },
+    {
+      "key": "dfa1bca59455efd0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have another look. Is there anything in that dragon that could help somebody find you? Nothing at all.",
+      "lines": [
+        "Have another look. Is there anything in that dragon that could help somebody find you? Nothing at all."
+      ],
+      "file": "/audio/voice/dfa1bca59455efd0.mp3"
+    },
+    {
+      "key": "546c28eee896fee5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about who asks for a date of birth. Banks and schools do. That makes it worth keeping close.",
+      "lines": [
+        "Think about who asks for a date of birth. Banks and schools do. That makes it worth keeping close."
+      ],
+      "file": "/audio/voice/546c28eee896fee5.mp3"
+    },
+    {
+      "key": "020522089c6497a4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Count how many people support that team. A stranger would have to knock on an awful lot of doors.",
+      "lines": [
+        "Count how many people support that team. A stranger would have to knock on an awful lot of doors."
+      ],
+      "file": "/audio/voice/020522089c6497a4.mp3"
+    },
+    {
+      "key": "74978ec3f5a8b14e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look past the photo to what is IN it. That number is your address, sitting there in a picture.",
+      "lines": [
+        "Look past the photo to what is IN it. That number is your address, sitting there in a picture."
+      ],
+      "file": "/audio/voice/74978ec3f5a8b14e.mp3"
+    },
+    {
+      "key": "461d516767096a92",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Put the two halves together. A place, and a time you are always there. That is somewhere to wait.",
+      "lines": [
+        "Put the two halves together. A place, and a time you are always there. That is somewhere to wait."
+      ],
+      "file": "/audio/voice/461d516767096a92.mp3"
+    },
+    {
+      "key": "c2ff1a5060445e3c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Go along the little lines underneath. Two of them name a real place. Two of them only name something nice.",
+      "lines": [
+        "Go along the little lines underneath. Two of them name a real place. Two of them only name something nice."
+      ],
+      "file": "/audio/voice/c2ff1a5060445e3c.mp3"
+    },
+    {
+      "key": "64472432ab97b4ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One of these is shinier than the others and that is exactly why it is worth checking. Where would you have met them?",
+      "lines": [
+        "One of these is shinier than the others and that is exactly why it is worth checking. Where would you have met them?"
+      ],
+      "file": "/audio/voice/64472432ab97b4ce.mp3"
+    },
+    {
+      "key": "b9d1dd8f489266df",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two of these you could point out to a grown-up tomorrow. The other two you could not point out anywhere.",
+      "lines": [
+        "Two of these you could point out to a grown-up tomorrow. The other two you could not point out anywhere."
+      ],
+      "file": "/audio/voice/b9d1dd8f489266df.mp3"
+    },
+    {
+      "key": "05f5a5c64cd31a3d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have another read. Is there a place in that line, or a time? Neither. It is just your happy news.",
+      "lines": [
+        "Have another read. Is there a place in that line, or a time? Neither. It is just your happy news."
+      ],
+      "file": "/audio/voice/05f5a5c64cd31a3d.mp3"
+    },
+    {
+      "key": "ffef6679a0337b3b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That line names a road and a landmark. Put together, somebody could walk straight to it.",
+      "lines": [
+        "That line names a road and a landmark. Put together, somebody could walk straight to it."
+      ],
+      "file": "/audio/voice/ffef6679a0337b3b.mp3"
+    },
+    {
+      "key": "76040126c52f7c67",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read it once more. A whole length is a thing you DID, not a place anybody could stand.",
+      "lines": [
+        "Read it once more. A whole length is a thing you DID, not a place anybody could stand."
+      ],
+      "file": "/audio/voice/76040126c52f7c67.mp3"
+    },
+    {
+      "key": "5711e094ea00bafa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This one is the WHEN. A day and a clock time means anybody reading it knows where you will be standing.",
+      "lines": [
+        "This one is the WHEN. A day and a clock time means anybody reading it knows where you will be standing."
+      ],
+      "file": "/audio/voice/5711e094ea00bafa.mp3"
+    },
+    {
+      "key": "64394dbf5f921123",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Count what is in that line. A full name, and a school. That is two of the biggest things on your mirror.",
+      "lines": [
+        "Count what is in that line. A full name, and a school. That is two of the biggest things on your mirror."
+      ],
+      "file": "/audio/voice/64394dbf5f921123.mp3"
+    },
+    {
+      "key": "0a1fa2126f8f4ddc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look for the where and the when in that one. There is not a single one of either. Only chips.",
+      "lines": [
+        "Look for the where and the when in that one. There is not a single one of either. Only chips."
+      ],
+      "file": "/audio/voice/0a1fa2126f8f4ddc.mp3"
+    },
+    {
+      "key": "48b13acd33d144f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pip uses the app made for under thirteens, not the big talk one.",
+      "lines": [
+        "Pip uses the app made for under thirteens, not the big talk one."
+      ],
+      "file": "/audio/voice/48b13acd33d144f8.mp3"
+    },
+    {
+      "key": "b009e74cc863f332",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "School, birthday and street are all frosted. The dragon is clear.",
+      "lines": [
+        "School, birthday and street are all frosted. The dragon is clear."
+      ],
+      "file": "/audio/voice/b009e74cc863f332.mp3"
+    },
+    {
+      "key": "83ca5459bf85b557",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two hundred and fourteen watching, and the six in the heart frame are all placeable.",
+      "lines": [
+        "Two hundred and fourteen watching, and the six in the heart frame are all placeable."
+      ],
+      "file": "/audio/voice/83ca5459bf85b557.mp3"
+    },
+    {
+      "key": "6831502aea6ce6bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Best day at swimming, one whole length, chips after. No road and no clock.",
+      "lines": [
+        "Best day at swimming, one whole length, chips after. No road and no clock."
+      ],
+      "file": "/audio/voice/6831502aea6ce6bf.mp3"
+    },
+    {
+      "key": "3ff552f93147ca26",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bo is on the big talk app, where anybody can message anybody.",
+      "lines": [
+        "Bo is on the big talk app, where anybody can message anybody."
+      ],
+      "file": "/audio/voice/3ff552f93147ca26.mp3"
+    },
+    {
+      "key": "20b6528945c7e4a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every pane is clear, school badge included.",
+      "lines": [
+        "Every pane is clear, school badge included."
+      ],
+      "file": "/audio/voice/20b6528945c7e4a0.mp3"
+    },
+    {
+      "key": "84fe00606571b271",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Twelve hundred followers, and most of the heart frame are people Bo has never met.",
+      "lines": [
+        "Twelve hundred followers, and most of the heart frame are people Bo has never met."
+      ],
+      "file": "/audio/voice/84fe00606571b271.mp3"
+    },
+    {
+      "key": "492889a3fd6c09dc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saturday, ten in the morning, and the name of the road.",
+      "lines": [
+        "Saturday, ten in the morning, and the name of the road."
+      ],
+      "file": "/audio/voice/492889a3fd6c09dc.mp3"
+    },
+    {
+      "key": "dfd55493fce619ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Wren is in the making room, which is the right one.",
+      "lines": [
+        "Wren is in the making room, which is the right one."
+      ],
+      "file": "/audio/voice/dfd55493fce619ef.mp3"
+    },
+    {
+      "key": "2e251b28db80feb6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Almost all frosted, but the walk home is still clear: past the big park, half three.",
+      "lines": [
+        "Almost all frosted, but the walk home is still clear: past the big park, half three."
+      ],
+      "file": "/audio/voice/2e251b28db80feb6.mp3"
+    },
+    {
+      "key": "58651a67aa1c7999",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ninety six followers and a small heart frame, every one of them placeable.",
+      "lines": [
+        "Ninety six followers and a small heart frame, every one of them placeable."
+      ],
+      "file": "/audio/voice/58651a67aa1c7999.mp3"
+    },
+    {
+      "key": "db2848241fa0c305",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A photo of a sunken cake. No place in it and no time in it.",
+      "lines": [
+        "A photo of a sunken cake. No place in it and no time in it."
+      ],
+      "file": "/audio/voice/db2848241fa0c305.mp3"
+    },
+    {
+      "key": "b77c2cfdb77c47c7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It isn't a ban on everything, and it isn't a suggestion. It's a NOT YET: those rooms are full of strangers, pressure and tricks that take practice, and Adam is still growing his powers for them.",
+      "lines": [
+        "It isn't a ban on everything, and it isn't a suggestion. It's a NOT YET: those rooms are full of strangers, pressure and tricks that take practice, and Adam is still growing his powers for them."
+      ],
+      "file": "/audio/voice/b77c2cfdb77c47c7.mp3"
+    },
+    {
+      "key": "1f8fad8b6d49a303",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A public profile doesn't check who's kind or who Pip knows, there's no magic doorman. Unlocked means ANY passerby can look in, and that's exactly why the mirror gets frosted.",
+      "lines": [
+        "A public profile doesn't check who's kind or who Pip knows, there's no magic doorman. Unlocked means ANY passerby can look in, and that's exactly why the mirror gets frosted."
+      ],
+      "file": "/audio/voice/1f8fad8b6d49a303.mp3"
+    },
+    {
+      "key": "cb57bd5341098c8d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Follower counters count taps, not kindness, and words in a message are just words. A friend is someone who actually knows you, and a stranger stays behind the rope, whatever their number says.",
+      "lines": [
+        "Follower counters count taps, not kindness, and words in a message are just words. A friend is someone who actually knows you, and a stranger stays behind the rope, whatever their number says."
+      ],
+      "file": "/audio/voice/cb57bd5341098c8d.mp3"
+    },
+    {
+      "key": "030295bb550e24cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Winning news and dragon love carry no clues, they glow green. A place AND a time together make a find-me map, and find-me maps get scrubbed before anything posts.",
+      "lines": [
+        "Winning news and dragon love carry no clues, they glow green. A place AND a time together make a find-me map, and find-me maps get scrubbed before anything posts."
+      ],
+      "file": "/audio/voice/030295bb550e24cb.mp3"
+    },
+    {
+      "key": "a654ce83b4af2d96",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody's life is all sparkle, and parties aren't for photos. A feed shows each person's one best minute, and comparing a whole real day to that minute isn't fair on anyone. Quiet can be lovely.",
+      "lines": [
+        "Nobody's life is all sparkle, and parties aren't for photos. A feed shows each person's one best minute, and comparing a whole real day to that minute isn't fair on anyone. Quiet can be lovely."
+      ],
+      "file": "/audio/voice/a654ce83b4af2d96.mp3"
+    },
+    {
+      "key": "bfcfde087c6fc70f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not a punishment - it means NOT YET, and every ring you grow makes you readier.",
+      "lines": [
+        "Not a punishment - it means NOT YET, and every ring you grow makes you readier."
+      ],
+      "file": "/audio/voice/bfcfde087c6fc70f.mp3"
+    },
+    {
+      "key": "f0bf80473261b1f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Private means strangers see armor and friends see you.",
+      "lines": [
+        "Private means strangers see armor and friends see you."
+      ],
+      "file": "/audio/voice/f0bf80473261b1f9.mp3"
+    },
+    {
+      "key": "8889b705c535c223",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Friends know your dog's name - viewers just watch.",
+      "lines": [
+        "Friends know your dog's name - viewers just watch."
+      ],
+      "file": "/audio/voice/8889b705c535c223.mp3"
+    },
+    {
+      "key": "f091150194d4394c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where-plus-when is a find-me map - it gets scrubbed before anything posts.",
+      "lines": [
+        "Where-plus-when is a find-me map - it gets scrubbed before anything posts."
+      ],
+      "file": "/audio/voice/f091150194d4394c.mp3"
+    },
+    {
+      "key": "9a3a8c6e4995b5a0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Counters count taps; love is Grandma printing your drawing for her fridge.",
+      "lines": [
+        "Counters count taps; love is Grandma printing your drawing for her fridge."
+      ],
+      "file": "/audio/voice/9a3a8c6e4995b5a0.mp3"
+    },
+    {
+      "key": "20c83bbbf009628c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One shiny minute gets posted; the burnt toast never does. Backstage is where real life lives.",
+      "lines": [
+        "One shiny minute gets posted; the burnt toast never does. Backstage is where real life lives."
+      ],
+      "file": "/audio/voice/20c83bbbf009628c.mp3"
+    },
+    {
+      "key": "8e4a02afd8a51154",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Week 3's tells in a new coat - flattery is bait, and the rope is for bait.",
+      "lines": [
+        "Week 3's tells in a new coat - flattery is bait, and the rope is for bait."
+      ],
+      "file": "/audio/voice/8e4a02afd8a51154.mp3"
+    },
+    {
+      "key": "5c0e1e511f397a90",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "When an app starts setting your alarm clock, it's forgotten who's boss - pause and tell someone.",
+      "lines": [
+        "When an app starts setting your alarm clock, it's forgotten who's boss - pause and tell someone."
+      ],
+      "file": "/audio/voice/5c0e1e511f397a90.mp3"
+    },
+    {
+      "key": "4bb28c8aa7c3f561",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Knowing beats following - the frame stays honest however fast the counter spins.",
+      "lines": [
+        "Knowing beats following - the frame stays honest however fast the counter spins."
+      ],
+      "file": "/audio/voice/4bb28c8aa7c3f561.mp3"
     },
     {
       "key": "5c88f6d8bd51e994",
@@ -45964,70 +47157,543 @@
       "file": "/audio/voice/0140dd6c4c68175d.mp3"
     },
     {
-      "key": "b9401b6f9aa0ab81",
+      "key": "18f6b44c1aaab1de",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Their reel didn't show THEIR rainy days either - nobody posts those. Your soggy-tent giggles with Dad were real, and real beats posted, every time.",
+      "text": "That's right! Soft blocks and a grown-up sitting right there. Nothing in that room needs anybody to be big yet.",
       "lines": [
         "That's right!",
-        "Their reel didn't show THEIR rainy days either - nobody posts those. Your soggy-tent giggles with Dad were real, and real beats posted, every time."
+        "Soft blocks and a grown-up sitting right there. Nothing in that room needs anybody to be big yet."
       ],
-      "file": "/audio/voice/b9401b6f9aa0ab81.mp3"
+      "file": "/audio/voice/18f6b44c1aaab1de.mp3"
     },
     {
-      "key": "0244c13c3f0a9616",
+      "key": "9f63f972ddf983d1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. An hour later the sparkle feels worse, not better - because you compared your whole backstage to a hundred one-shiny-minute reels. That game has no winner; the pause does.",
+      "text": "Not quite. Look again at what is in there. Blocks, a slide, and a grown-up watching. Who is that room built for?",
       "lines": [
         "Not quite.",
-        "An hour later the sparkle feels worse, not better - because you compared your whole backstage to a hundred one-shiny-minute reels. That game has no winner; the pause does."
+        "Look again at what is in there. Blocks, a slide, and a grown-up watching. Who is that room built for?"
       ],
-      "file": "/audio/voice/0244c13c3f0a9616.mp3"
+      "file": "/audio/voice/9f63f972ddf983d1.mp3"
     },
     {
-      "key": "f5f250772d9ccab9",
+      "key": "5101638b9add8673",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Mom reminds you: Grandma printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it.",
+      "text": "That's right! Strangers can say anything to anybody in there and nobody is checking, so that room waits until you are older.",
       "lines": [
         "That's right!",
-        "Mom reminds you: Grandma printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it."
+        "Strangers can say anything to anybody in there and nobody is checking, so that room waits until you are older."
       ],
-      "file": "/audio/voice/f5f250772d9ccab9.mp3"
+      "file": "/audio/voice/5101638b9add8673.mp3"
     },
     {
-      "key": "9a0665312f204abf",
+      "key": "df4d483ab242ee9c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Now a picture you never liked is out there wearing your name, and the counter still won't fill the tummy-sink. Likes are taps, not love - post what YOU'RE proud of or nothing at all.",
+      "text": "Not quite. Count the strangers in there, and then count the people checking what they say. Nobody. That is what the number is for.",
       "lines": [
         "Not quite.",
-        "Now a picture you never liked is out there wearing your name, and the counter still won't fill the tummy-sink. Likes are taps, not love - post what YOU'RE proud of or nothing at all."
+        "Count the strangers in there, and then count the people checking what they say. Nobody. That is what the number is for."
       ],
-      "file": "/audio/voice/9a0665312f204abf.mp3"
+      "file": "/audio/voice/df4d483ab242ee9c.mp3"
     },
     {
-      "key": "ce8e89d553d59613",
+      "key": "c8fa165c0c4863c9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! You skip the 6am club and nothing bad happens - because it was never a club, just a counter feeding itself. Feeds that demand things from you have forgotten who's boss.",
+      "text": "That's right! You choose who sees your building, so it is a middle sized room. Not tiny, and nowhere near grown-up.",
       "lines": [
         "That's right!",
-        "You skip the 6am club and nothing bad happens - because it was never a club, just a counter feeding itself. Feeds that demand things from you have forgotten who's boss."
+        "You choose who sees your building, so it is a middle sized room. Not tiny, and nowhere near grown-up."
       ],
-      "file": "/audio/voice/ce8e89d553d59613.mp3"
+      "file": "/audio/voice/c8fa165c0c4863c9.mp3"
     },
     {
-      "key": "5ff02b42769180ec",
+      "key": "8f412aa199c46fd4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. A stranger's feed now runs your mornings, and the 'club' never even knew your name. When an app starts setting YOUR alarm clock, that's the moment to hand it to a grown-up.",
+      "text": "Not quite. The making is easy. The bit to look at is WHO sees it, and in there you pick them yourself.",
       "lines": [
         "Not quite.",
-        "A stranger's feed now runs your mornings, and the 'club' never even knew your name. When an app starts setting YOUR alarm clock, that's the moment to hand it to a grown-up."
+        "The making is easy. The bit to look at is WHO sees it, and in there you pick them yourself."
       ],
-      "file": "/audio/voice/5ff02b42769180ec.mp3"
+      "file": "/audio/voice/8f412aa199c46fd4.mp3"
+    },
+    {
+      "key": "64e1e28b5e1a5da6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That room is asking for a bank card, and a bank card belongs to a grown-up, so the room does too.",
+      "lines": [
+        "That's right!",
+        "That room is asking for a bank card, and a bank card belongs to a grown-up, so the room does too."
+      ],
+      "file": "/audio/voice/64e1e28b5e1a5da6.mp3"
+    },
+    {
+      "key": "ae36b2babfacae5a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Follow what the room is ASKING for. It wants a card number, and that is a grown-up thing to hand over.",
+      "lines": [
+        "Not quite.",
+        "Follow what the room is ASKING for. It wants a card number, and that is a grown-up thing to hand over."
+      ],
+      "file": "/audio/voice/ae36b2babfacae5a.mp3"
+    },
+    {
+      "key": "131726859da83736",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Six picture books read out loud, and nothing else can happen in there. That is as small and safe as a room gets.",
+      "lines": [
+        "That's right!",
+        "Six picture books read out loud, and nothing else can happen in there. That is as small and safe as a room gets."
+      ],
+      "file": "/audio/voice/131726859da83736.mp3"
+    },
+    {
+      "key": "bf71021aa8ccf4ae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ask yourself what else could possibly happen in there. Nothing. Just the stories.",
+      "lines": [
+        "Not quite.",
+        "Ask yourself what else could possibly happen in there. Nothing. Just the stories."
+      ],
+      "file": "/audio/voice/bf71021aa8ccf4ae.mp3"
+    },
+    {
+      "key": "257b8da6a97b00ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The number has never met you. It was written before anybody knew you existed.",
+      "lines": [
+        "Not quite.",
+        "The number has never met you. It was written before anybody knew you existed."
+      ],
+      "file": "/audio/voice/257b8da6a97b00ff.mp3"
+    },
+    {
+      "key": "0e8c7e58d4d8fc73",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody is cross with you. It is a label, and labels do not tell anybody off.",
+      "lines": [
+        "Not quite.",
+        "Nobody is cross with you. It is a label, and labels do not tell anybody off."
+      ],
+      "file": "/audio/voice/0e8c7e58d4d8fc73.mp3"
+    },
+    {
+      "key": "3499539ee026f263",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The app works perfectly. It is simply built for a room you are not in yet.",
+      "lines": [
+        "Not quite.",
+        "The app works perfectly. It is simply built for a room you are not in yet."
+      ],
+      "file": "/audio/voice/3499539ee026f263.mp3"
+    },
+    {
+      "key": "ebaa0cca50d8dcce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A school and a class is a building and a time. Anybody reading that knows where to stand at half past three.",
+      "lines": [
+        "That's right!",
+        "A school and a class is a building and a time. Anybody reading that knows where to stand at half past three."
+      ],
+      "file": "/audio/voice/ebaa0cca50d8dcce.mp3"
+    },
+    {
+      "key": "e74c02550eeaf533",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read it again as a stranger would. It names a building, and it names when you will be in it.",
+      "lines": [
+        "Not quite.",
+        "Read it again as a stranger would. It names a building, and it names when you will be in it."
+      ],
+      "file": "/audio/voice/e74c02550eeaf533.mp3"
+    },
+    {
+      "key": "c86e7b3b82f1b87c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A dragon with wonky wings tells a stranger absolutely nothing except that you can draw. Leave it up and be proud of it.",
+      "lines": [
+        "That's right!",
+        "A dragon with wonky wings tells a stranger absolutely nothing except that you can draw. Leave it up and be proud of it."
+      ],
+      "file": "/audio/voice/c86e7b3b82f1b87c.mp3"
+    },
+    {
+      "key": "8d535585abd0c4d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Have another look. Is there anything in that dragon that could help somebody find you? Nothing at all.",
+      "lines": [
+        "Not quite.",
+        "Have another look. Is there anything in that dragon that could help somebody find you? Nothing at all."
+      ],
+      "file": "/audio/voice/8d535585abd0c4d7.mp3"
+    },
+    {
+      "key": "3da2fca51e88054e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your birthday is one of the answers grown-ups use to prove who they are, so it stays with people you know.",
+      "lines": [
+        "That's right!",
+        "Your birthday is one of the answers grown-ups use to prove who they are, so it stays with people you know."
+      ],
+      "file": "/audio/voice/3da2fca51e88054e.mp3"
+    },
+    {
+      "key": "ee932fab59043a17",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Think about who asks for a date of birth. Banks and schools do. That makes it worth keeping close.",
+      "lines": [
+        "Not quite.",
+        "Think about who asks for a date of birth. Banks and schools do. That makes it worth keeping close."
+      ],
+      "file": "/audio/voice/ee932fab59043a17.mp3"
+    },
+    {
+      "key": "4ea2ae62890d770c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Millions of people love that team. Knowing you are one of them gets a stranger no closer to you at all.",
+      "lines": [
+        "That's right!",
+        "Millions of people love that team. Knowing you are one of them gets a stranger no closer to you at all."
+      ],
+      "file": "/audio/voice/4ea2ae62890d770c.mp3"
+    },
+    {
+      "key": "38d115d91ee88a6e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Count how many people support that team. A stranger would have to knock on an awful lot of doors.",
+      "lines": [
+        "Not quite.",
+        "Count how many people support that team. A stranger would have to knock on an awful lot of doors."
+      ],
+      "file": "/audio/voice/38d115d91ee88a6e.mp3"
+    },
+    {
+      "key": "12f527acf420710a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A front door with its number on it is an address, even without a single word written under it.",
+      "lines": [
+        "That's right!",
+        "A front door with its number on it is an address, even without a single word written under it."
+      ],
+      "file": "/audio/voice/12f527acf420710a.mp3"
+    },
+    {
+      "key": "2a9845b6b62b8b3f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look past the photo to what is IN it. That number is your address, sitting there in a picture.",
+      "lines": [
+        "Not quite.",
+        "Look past the photo to what is IN it. That number is your address, sitting there in a picture."
+      ],
+      "file": "/audio/voice/2a9845b6b62b8b3f.mp3"
+    },
+    {
+      "key": "de61a5af26e67837",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A route and a time is the easiest thing in the world for a stranger to wait in, so that one goes to friends only.",
+      "lines": [
+        "That's right!",
+        "A route and a time is the easiest thing in the world for a stranger to wait in, so that one goes to friends only."
+      ],
+      "file": "/audio/voice/de61a5af26e67837.mp3"
+    },
+    {
+      "key": "a9e1a4f19f7af2fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Put the two halves together. A place, and a time you are always there. That is somewhere to wait.",
+      "lines": [
+        "Not quite.",
+        "Put the two halves together. A place, and a time you are always there. That is somewhere to wait."
+      ],
+      "file": "/audio/voice/a9e1a4f19f7af2fa.mp3"
+    },
+    {
+      "key": "5f783b55ce343d9f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A painting tells nobody where you are. Leave it clear and let people enjoy it.",
+      "lines": [
+        "Not quite.",
+        "A painting tells nobody where you are. Leave it clear and let people enjoy it."
+      ],
+      "file": "/audio/voice/5f783b55ce343d9f.mp3"
+    },
+    {
+      "key": "bc860f7b58e3f14c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. There is nothing a stranger can do with a favourite colour. That one is safe in the open.",
+      "lines": [
+        "Not quite.",
+        "There is nothing a stranger can do with a favourite colour. That one is safe in the open."
+      ],
+      "file": "/audio/voice/bc860f7b58e3f14c.mp3"
+    },
+    {
+      "key": "5e033df591c98d32",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Millions of people support that team. It gets a stranger no nearer to you.",
+      "lines": [
+        "Not quite.",
+        "Millions of people support that team. It gets a stranger no nearer to you."
+      ],
+      "file": "/audio/voice/5e033df591c98d32.mp3"
+    },
+    {
+      "key": "537218aa9f90e23e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Maya sits next to you and Nana is your nana. SuperFan2000 and the star sender are lovely, but you could not say where either of them is standing right now.",
+      "lines": [
+        "That's right!",
+        "Maya sits next to you and Nana is your nana. SuperFan2000 and the star sender are lovely, but you could not say where either of them is standing right now."
+      ],
+      "file": "/audio/voice/537218aa9f90e23e.mp3"
+    },
+    {
+      "key": "cd185d16337bf949",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Go along the little lines underneath. Two of them name a real place. Two of them only name something nice.",
+      "lines": [
+        "Not quite.",
+        "Go along the little lines underneath. Two of them name a real place. Two of them only name something nice."
+      ],
+      "file": "/audio/voice/cd185d16337bf949.mp3"
+    },
+    {
+      "key": "1c002b4729c257be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Sam kicks a ball at you every Saturday and Ollie lives four doors down. The scout and the prize account have never once said where they are.",
+      "lines": [
+        "That's right!",
+        "Sam kicks a ball at you every Saturday and Ollie lives four doors down. The scout and the prize account have never once said where they are."
+      ],
+      "file": "/audio/voice/1c002b4729c257be.mp3"
+    },
+    {
+      "key": "8fcdb35f242248a8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One of these is shinier than the others and that is exactly why it is worth checking. Where would you have met them?",
+      "lines": [
+        "Not quite.",
+        "One of these is shinier than the others and that is exactly why it is worth checking. Where would you have met them?"
+      ],
+      "file": "/audio/voice/8fcdb35f242248a8.mp3"
+    },
+    {
+      "key": "c5d7dc3cb19c722e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Mr Patel teaches you and Ada swims with you on Tuesdays. The other two are just very keen, and keen is not a place.",
+      "lines": [
+        "That's right!",
+        "Mr Patel teaches you and Ada swims with you on Tuesdays. The other two are just very keen, and keen is not a place."
+      ],
+      "file": "/audio/voice/c5d7dc3cb19c722e.mp3"
+    },
+    {
+      "key": "1fd5f6e65a732a6a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Two of these you could point out to a grown-up tomorrow. The other two you could not point out anywhere.",
+      "lines": [
+        "Not quite.",
+        "Two of these you could point out to a grown-up tomorrow. The other two you could not point out anywhere."
+      ],
+      "file": "/audio/voice/1fd5f6e65a732a6a.mp3"
+    },
+    {
+      "key": "5a80d6e1ae64c1af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing official happens. A button was pressed, and that is the whole of it.",
+      "lines": [
+        "Not quite.",
+        "Nothing official happens. A button was pressed, and that is the whole of it."
+      ],
+      "file": "/audio/voice/5a80d6e1ae64c1af.mp3"
+    },
+    {
+      "key": "f96f3c495481a9d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Speed says nothing about somebody. It only says their thumb was quick.",
+      "lines": [
+        "Not quite.",
+        "Speed says nothing about somebody. It only says their thumb was quick."
+      ],
+      "file": "/audio/voice/f96f3c495481a9d7.mp3"
+    },
+    {
+      "key": "2052bbc2dbbbeddb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A big number means a lot of people are watching them too. It still is not knowing you.",
+      "lines": [
+        "Not quite.",
+        "A big number means a lot of people are watching them too. It still is not knowing you."
+      ],
+      "file": "/audio/voice/2052bbc2dbbbeddb.mp3"
+    },
+    {
+      "key": "73e3a6d34394da2c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Lovely manners, but manners do not draw anybody a map.",
+      "lines": [
+        "Not quite.",
+        "Lovely manners, but manners do not draw anybody a map."
+      ],
+      "file": "/audio/voice/73e3a6d34394da2c.mp3"
+    },
+    {
+      "key": "a3bfa97001ad7aa6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. How good the post is has nothing to do with how safe it is.",
+      "lines": [
+        "Not quite.",
+        "How good the post is has nothing to do with how safe it is."
+      ],
+      "file": "/audio/voice/a3bfa97001ad7aa6.mp3"
+    },
+    {
+      "key": "d29154c65f7e85e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A short post can hand over an address, and a long one might hand over nothing.",
+      "lines": [
+        "Not quite.",
+        "A short post can hand over an address, and a long one might hand over nothing."
+      ],
+      "file": "/audio/voice/d29154c65f7e85e8.mp3"
+    },
+    {
+      "key": "9e600a802389b16c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You are seeing their chosen minute. The bin, the rain and the misses stayed off the screen.",
+      "lines": [
+        "Not quite.",
+        "You are seeing their chosen minute. The bin, the rain and the misses stayed off the screen."
+      ],
+      "file": "/audio/voice/9e600a802389b16c.mp3"
+    },
+    {
+      "key": "09069f29ca2daee4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Posting more would not change a thing, because you would still be seeing everybody else's shiny minutes.",
+      "lines": [
+        "Not quite.",
+        "Posting more would not change a thing, because you would still be seeing everybody else's shiny minutes."
+      ],
+      "file": "/audio/voice/09069f29ca2daee4.mp3"
+    },
+    {
+      "key": "9fcfc36c6accd14e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your day had ordinary bits in it, the same as theirs did. Theirs simply did not get posted.",
+      "lines": [
+        "Not quite.",
+        "Your day had ordinary bits in it, the same as theirs did. Theirs simply did not get posted."
+      ],
+      "file": "/audio/voice/9fcfc36c6accd14e.mp3"
+    },
+    {
+      "key": "2208a3eb49a30f0d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Right room, frosted panes, a heart frame you could point at, and a post with no map in it. All four.",
+      "lines": [
+        "That's right!",
+        "Right room, frosted panes, a heart frame you could point at, and a post with no map in it. All four."
+      ],
+      "file": "/audio/voice/2208a3eb49a30f0d.mp3"
+    },
+    {
+      "key": "f07d1a8a550d1195",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Every check came back clean. That is a shield, all the way round.",
+      "lines": [
+        "Not quite.",
+        "Every check came back clean. That is a shield, all the way round."
+      ],
+      "file": "/audio/voice/f07d1a8a550d1195.mp3"
+    },
+    {
+      "key": "6d6b9b966d1c79ba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! All four checks came back open. The post alone gives a place and a time, which is somewhere to wait.",
+      "lines": [
+        "That's right!",
+        "All four checks came back open. The post alone gives a place and a time, which is somewhere to wait."
+      ],
+      "file": "/audio/voice/6d6b9b966d1c79ba.mp3"
+    },
+    {
+      "key": "4acd767fc28a796c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Wide open on all four. A road, a time and a school, sitting out where anybody can read them.",
+      "lines": [
+        "Not quite.",
+        "Wide open on all four. A road, a time and a school, sitting out where anybody can read them."
+      ],
+      "file": "/audio/voice/4acd767fc28a796c.mp3"
+    },
+    {
+      "key": "6a9f56138feb269f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Three of these were lovely, and that is exactly why the fourth is worth finding. A walk home is a place plus a time.",
+      "lines": [
+        "That's right!",
+        "Three of these were lovely, and that is exactly why the fourth is worth finding. A walk home is a place plus a time."
+      ],
+      "file": "/audio/voice/6a9f56138feb269f.mp3"
+    },
+    {
+      "key": "99f435438b632ac1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Three checks clean and one pane left clear, and that one pane is a route and a time.",
+      "lines": [
+        "Not quite.",
+        "Three checks clean and one pane left clear, and that one pane is a route and a time."
+      ],
+      "file": "/audio/voice/99f435438b632ac1.mp3"
     },
     {
       "key": "eb2a5a0d7bf3b60d",
