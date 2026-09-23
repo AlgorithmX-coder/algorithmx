@@ -1432,7 +1432,10 @@ export type ScreenDef = (
           icon: string;
           isRight: boolean;
           /** Sarah's reason on the right card ("That's right!" + why). */
-          why: string;
+          /** SPOKEN only when this option is the right one, so a wrong
+           *  option does not need it (and a line put here on one would be
+           *  silent with a perfectly full field). */
+          why?: string;
           /** Sarah's teach on a wrong card ("Not quite." + explanation). */
           explanation: string;
         }[];
@@ -2759,6 +2762,22 @@ export type ScreenDef = (
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * The Encore of Twenty (Week 20, the review). The graduation stage
+       * lights up six emblems from the journey and the child echoes the
+       * sequence back, growing 2 to 4 to 6 across three encores. This is the
+       * old screen-4 signature promoted to the REVIEW slot, which is where it
+       * always belonged: recalling the emblems is a celebration-shaped
+       * rehearsal of the whole course, and a miss simply replays the sequence
+       * slower with the next tile ghosted, so every child gets there.
+       *
+       * Already tap-only and already untimed, so no conversion was needed.
+       * It gained a spoken payoff in this rebuild: the last game of the
+       * entire twenty weeks used to end in silence.
+       */
+      type: "encoreOfTwenty";
     }
   | {
       /**

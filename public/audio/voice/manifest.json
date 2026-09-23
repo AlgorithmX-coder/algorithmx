@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T14:17:24.896Z",
+  "generatedAt": "2026-09-23T15:45:28.976Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -24159,299 +24159,2033 @@
       "file": "/audio/voice/02bbccf556c31967.mp3"
     },
     {
-      "key": "65752cb52f4a9061",
+      "key": "533773e9251eb3ca",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] It is graduation night, hero, and this stage is yours. Watch closely as the stage lights up your power emblems. Then tap them back in the same order, even as it grows.",
+      "text": "[warmly] Well. Here we are, Cyber Hero. Graduation night. And look where it starts. A password, which is exactly where you started nineteen weeks ago. [thinking] There is an envelope on the mat saying your account wants a new one. Nothing tonight is new. This is Week 1, Week 4 and Week 16 standing next to each other. [excited] Come on. Let's open the vault one last time!",
       "lines": [
-        "[warmly] It is graduation night, hero, and this stage is yours.",
-        "Watch closely as the stage lights up your power emblems.",
-        "Then tap them back in the same order, even as it grows."
+        "[warmly] Well. Here we are, Cyber Hero. Graduation night.",
+        "And look where it starts. A password, which is exactly where you started nineteen weeks ago.",
+        "[thinking] There is an envelope on the mat saying your account wants a new one.",
+        "Nothing tonight is new. This is Week 1, Week 4 and Week 16 standing next to each other.",
+        "[excited] Come on. Let's open the vault one last time!"
       ],
-      "file": "/audio/voice/65752cb52f4a9061.mp3"
+      "file": "/audio/voice/533773e9251eb3ca.mp3"
     },
     {
-      "key": "045c068ed56f3a78",
+      "key": "818262612e76eb22",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Graduation night. Mission one. An envelope, of course. 'URGENT! Reset your password!' [warmly] Feel that? You've stood right here before. Week four gave you the zones. Week one built the vault. Same trick. Same tells. Same you - nineteen weeks stronger. [excited] Inspect it and hold the vault. Go!",
+      "text": "[excited] Four locks, and a rule written above each one. Read the rule, then pick the answer that keeps it. You know all four of these. That is rather the point tonight.",
       "lines": [
-        "[whispers] Graduation night. Mission one.",
-        "An envelope, of course. 'URGENT! Reset your password!'",
-        "[warmly] Feel that? You've stood right here before.",
-        "Week four gave you the zones. Week one built the vault.",
-        "Same trick. Same tells. Same you - nineteen weeks stronger.",
-        "[excited] Inspect it and hold the vault. Go!"
+        "[excited] Four locks, and a rule written above each one.",
+        "Read the rule, then pick the answer that keeps it.",
+        "You know all four of these. That is rather the point tonight."
       ],
-      "file": "/audio/voice/045c068ed56f3a78.mp3"
+      "file": "/audio/voice/818262612e76eb22.mp3"
     },
     {
-      "key": "4d86a32c7f7b83e6",
+      "key": "37030882f3f97a2b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The zones light up - just like Week four! Who sent it? Where's the door? What's the rush? What's the story? [whispers] Check all four... then make the call.",
+      "text": "Read the rule above the lock first. The answer is always the one that keeps it.",
       "lines": [
-        "[excited] The zones light up - just like Week four!",
-        "Who sent it? Where's the door?",
-        "What's the rush? What's the story?",
-        "[whispers] Check all four... then make the call."
+        "Read the rule above the lock first. The answer is always the one that keeps it."
       ],
-      "file": "/audio/voice/4d86a32c7f7b83e6.mp3"
+      "file": "/audio/voice/37030882f3f97a2b.mp3"
     },
     {
-      "key": "60f00ca5df695524",
+      "key": "4ca184b64ab6a79b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Four locks and you did not hesitate on one of them. Week 1, Week 4, Week 16. All of it still in there. [warmly] One mission down. He has four tricks left.",
+      "lines": [
+        "[proud] Four locks and you did not hesitate on one of them.",
+        "Week 1, Week 4, Week 16. All of it still in there.",
+        "[warmly] One mission down. He has four tricks left."
+      ],
+      "file": "/audio/voice/4ca184b64ab6a79b.mp3"
+    },
+    {
+      "key": "0856feac11e6d81b",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Mission one - COMPLETE! The vault held. Of course it held. [whispers] But someone friendly is typing in the lobby... too friendly. Mission two. Come on.",
+      "text": "[proud] Nineteen weeks and he is still trying that one! Three random words. Long, easy to remember, horrible to crack. [warmly] You knew that in Week 1 and you still know it now.",
       "lines": [
-        "[excited] Mission one - COMPLETE!",
-        "The vault held. Of course it held.",
-        "[whispers] But someone friendly is typing in the lobby...",
-        "too friendly. Mission two. Come on."
+        "[proud] Nineteen weeks and he is still trying that one!",
+        "Three random words. Long, easy to remember, horrible to crack.",
+        "[warmly] You knew that in Week 1 and you still know it now."
       ],
-      "file": "/audio/voice/60f00ca5df695524.mp3"
+      "file": "/audio/voice/0856feac11e6d81b.mp3"
     },
     {
-      "key": "e0fd5c8f8366390b",
+      "key": "d2fca88c4076a15d",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[curious] Mission two just messaged you. 'Heyyy bestie! You're SO good at this!' [whispers] A brand-new buddy... moving very fast. Week three gave you the magnifier for this. The Profile Detective rides again! [excited] Check every clue - then make the call!",
+      "text": "[proud] Mission one down, Cyber Hero, and you did not stop to think once. That is what happens when something has become a habit rather than a rule. [whispers] He is already onto the next one. Something is asking to be installed... Next, we'll take on the app that asks for far more than it needs. Come and see!",
       "lines": [
-        "[curious] Mission two just messaged you.",
-        "'Heyyy bestie! You're SO good at this!'",
-        "[whispers] A brand-new buddy... moving very fast.",
-        "Week three gave you the magnifier for this.",
-        "The Profile Detective rides again!",
-        "[excited] Check every clue - then make the call!"
+        "[proud] Mission one down, Cyber Hero, and you did not stop to think once.",
+        "That is what happens when something has become a habit rather than a rule.",
+        "[whispers] He is already onto the next one. Something is asking to be installed...",
+        "Next, we'll take on the app that asks for far more than it needs. Come and see!"
       ],
-      "file": "/audio/voice/e0fd5c8f8366390b.mp3"
+      "file": "/audio/voice/d2fca88c4076a15d.mp3"
     },
     {
-      "key": "ef3379c816e789f3",
+      "key": "b4ae778e27410680",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[thinking] Mission two, and this is a check you have been running since Week 2. Something wants to be let in. And there is only one question worth asking. [warmly] What is it asking for, compared with what it actually DOES? A torch app needs the torch. It does not need your contacts and your location. [excited] Come and inspect a few. You could do this in your sleep by now!",
+      "lines": [
+        "[thinking] Mission two, and this is a check you have been running since Week 2.",
+        "Something wants to be let in. And there is only one question worth asking.",
+        "[warmly] What is it asking for, compared with what it actually DOES?",
+        "A torch app needs the torch. It does not need your contacts and your location.",
+        "[excited] Come and inspect a few. You could do this in your sleep by now!"
+      ],
+      "file": "/audio/voice/b4ae778e27410680.mp3"
+    },
+    {
+      "key": "1ba44a9d966a0aed",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Three things want to be let in tonight. Open all four windows on each one before you decide anything. Then call it. Does the ask match the job, or not?",
+      "lines": [
+        "[excited] Three things want to be let in tonight.",
+        "Open all four windows on each one before you decide anything.",
+        "Then call it. Does the ask match the job, or not?"
+      ],
+      "file": "/audio/voice/1ba44a9d966a0aed.mp3"
+    },
+    {
+      "key": "6eff17a989ae58b7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every window first. Then one question: does it need that to do its job?",
+      "lines": [
+        "Every window first. Then one question: does it need that to do its job?"
+      ],
+      "file": "/audio/voice/6eff17a989ae58b7.mp3"
+    },
+    {
+      "key": "5e7243e963091c70",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Three inspected, and you got the fair one right as well as the two nosy ones. That matters. A Cyber Hero who thinks everything is a trick cannot use anything. [warmly] Two missions down. Halfway, and he is running out of ideas.",
+      "lines": [
+        "[proud] Three inspected, and you got the fair one right as well as the two nosy ones.",
+        "That matters. A Cyber Hero who thinks everything is a trick cannot use anything.",
+        "[warmly] Two missions down. Halfway, and he is running out of ideas."
+      ],
+      "file": "/audio/voice/5e7243e963091c70.mp3"
+    },
+    {
+      "key": "1f511bb962f3a1c1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Two profiles on the desk! Magnifier out - all four clue zones each. [whispers] One's a costume. One's just Maya. The Detective knows the difference. Go!",
+      "text": "[proud] Straight to it! The job on one side, the asks on the other. Anything on the list the job does not need is the nosy bit. [warmly] Same check every single time.",
       "lines": [
-        "[excited] Two profiles on the desk!",
-        "Magnifier out - all four clue zones each.",
-        "[whispers] One's a costume. One's just Maya.",
-        "The Detective knows the difference. Go!"
+        "[proud] Straight to it!",
+        "The job on one side, the asks on the other.",
+        "Anything on the list the job does not need is the nosy bit.",
+        "[warmly] Same check every single time."
       ],
-      "file": "/audio/voice/ef3379c816e789f3.mp3"
+      "file": "/audio/voice/1f511bb962f3a1c1.mp3"
     },
     {
-      "key": "56374c246b9b2802",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Mission two - COMPLETE! Costume pierced, nothing shared. [whispers] Hear that? The arcade just lit up... everything's suddenly FREE. Mission three.",
-      "lines": [
-        "[excited] Mission two - COMPLETE!",
-        "Costume pierced, nothing shared.",
-        "[whispers] Hear that? The arcade just lit up...",
-        "everything's suddenly FREE. Mission three."
-      ],
-      "file": "/audio/voice/56374c246b9b2802.mp3"
-    },
-    {
-      "key": "38c35e08eef4c708",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[curious] Mission three is... loud. FREE V-BUCKS! FREE SKINS! SCAN ME! [whispers] You've smelled this arcade before. Week seven. Free-coin machines eat accounts for breakfast. [warmly] Real free asks for nothing back. Remember that. [excited] Find every X - feed them NOTHING!",
-      "lines": [
-        "[curious] Mission three is... loud.",
-        "FREE V-BUCKS! FREE SKINS! SCAN ME!",
-        "[whispers] You've smelled this arcade before. Week seven.",
-        "Free-coin machines eat accounts for breakfast.",
-        "[warmly] Real free asks for nothing back. Remember that.",
-        "[excited] Find every X - feed them NOTHING!"
-      ],
-      "file": "/audio/voice/38c35e08eef4c708.mp3"
-    },
-    {
-      "key": "1609fd4c4d86b946",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] The whole arcade at once! Every machine flashing FREE... [whispers] and every CLAIM button is a mouth. Find the X. Feed them nothing. GO!",
-      "lines": [
-        "[excited] The whole arcade at once!",
-        "Every machine flashing FREE...",
-        "[whispers] and every CLAIM button is a mouth.",
-        "Find the X. Feed them nothing. GO!"
-      ],
-      "file": "/audio/voice/1609fd4c4d86b946.mp3"
-    },
-    {
-      "key": "e32d4813c4d627c4",
+      "key": "de2208f6cdab0486",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Mission three - COMPLETE! The arcade starved. Not one tap. [whispers] So now he goes quiet... and starts reading tracks. Your tracks. Mission four - the leak hunt.",
+      "text": "[proud] Mission two down, Cyber Hero. Two nosy caught, and one fair one let through. Job on one side, asks on the other. It never gets harder than that. [whispers] He has gone quiet. Which usually means something is about to be free... Next, we'll take on the last money trap he has left. Come and see!",
       "lines": [
-        "[excited] Mission three - COMPLETE!",
-        "The arcade starved. Not one tap.",
-        "[whispers] So now he goes quiet... and starts reading tracks.",
-        "Your tracks. Mission four - the leak hunt."
+        "[proud] Mission two down, Cyber Hero. Two nosy caught, and one fair one let through.",
+        "Job on one side, asks on the other. It never gets harder than that.",
+        "[whispers] He has gone quiet. Which usually means something is about to be free...",
+        "Next, we'll take on the last money trap he has left. Come and see!"
       ],
-      "file": "/audio/voice/e32d4813c4d627c4.mp3"
+      "file": "/audio/voice/de2208f6cdab0486.mp3"
     },
     {
-      "key": "d668f1393a6e0e19",
+      "key": "4296c6d5da0ffd0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[thinking] Mission three, and we are right back in Week 7. There is a price on a tag. And the tag, as you know perfectly well by now, is not the price. [warmly] Underneath there is always something. A thing you must buy first. A bit that renews. So we do what we always do. We pull the lever and we read the real number. [excited] Come on. One last go on the lever!",
+      "lines": [
+        "[thinking] Mission three, and we are right back in Week 7.",
+        "There is a price on a tag. And the tag, as you know perfectly well by now, is not the price.",
+        "[warmly] Underneath there is always something. A thing you must buy first. A bit that renews.",
+        "So we do what we always do. We pull the lever and we read the real number.",
+        "[excited] Come on. One last go on the lever!"
+      ],
+      "file": "/audio/voice/4296c6d5da0ffd0c.mp3"
+    },
+    {
+      "key": "29a985db8e4c74db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Three deals, sixty coins, and the lever. Pull it on every one and the receipt comes out with the real total on it. Then decide. Buy it, or walk away.",
+      "lines": [
+        "[excited] Three deals, sixty coins, and the lever.",
+        "Pull it on every one and the receipt comes out with the real total on it.",
+        "Then decide. Buy it, or walk away."
+      ],
+      "file": "/audio/voice/29a985db8e4c74db.mp3"
+    },
+    {
+      "key": "c6100bc329580ca8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Always pull the lever first. The tag is never the number that matters.",
+      "lines": [
+        "Always pull the lever first. The tag is never the number that matters."
+      ],
+      "file": "/audio/voice/c6100bc329580ca8.mp3"
+    },
+    {
+      "key": "8dd5699768355206",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Three levers pulled, and you bought the one that was actually honest. Sixty coins and you still have fifty of them. [warmly] Three missions down. Two to go, and then the stage.",
+      "lines": [
+        "[proud] Three levers pulled, and you bought the one that was actually honest.",
+        "Sixty coins and you still have fifty of them.",
+        "[warmly] Three missions down. Two to go, and then the stage."
+      ],
+      "file": "/audio/voice/8dd5699768355206.mp3"
+    },
+    {
+      "key": "5d9a5c36fccd970b",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Mission four has no flashing lights. He's gone quiet. Hunting for a leak. One clue. One pin. One open mirror. [warmly] You've swept this ground before - weeks eight, twelve, seventeen. And remember: proud tracks STAY. [excited] Walk your trail. Seal every leak!",
+      "text": "[proud] Quick as anything! Each is the oldest trick on the board. The real price is always the smallest thing you are allowed to buy. [warmly] Pull the lever and it shows up every time.",
       "lines": [
-        "[whispers] Mission four has no flashing lights.",
-        "He's gone quiet. Hunting for a leak.",
-        "One clue. One pin. One open mirror.",
-        "[warmly] You've swept this ground before - weeks eight, twelve, seventeen.",
-        "And remember: proud tracks STAY.",
-        "[excited] Walk your trail. Seal every leak!"
+        "[proud] Quick as anything!",
+        "Each is the oldest trick on the board.",
+        "The real price is always the smallest thing you are allowed to buy.",
+        "[warmly] Pull the lever and it shows up every time."
       ],
-      "file": "/audio/voice/d668f1393a6e0e19.mp3"
+      "file": "/audio/voice/5d9a5c36fccd970b.mp3"
     },
     {
-      "key": "abdca1e012aa3cac",
+      "key": "fe0eb7f214b192a6",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Five spots on tonight's trail! Stamp the sealing move at each one. [whispers] And remember the twist... one of these tracks deserves to SHINE. Go!",
+      "text": "[proud] Mission three down, Cyber Hero. Fifty coins still in your pocket. Renews, and each. Two little words that change every price there is. [thinking] Now. He has one photo left, and he thinks it is enough... Next, we'll see how much one photo can give away. Come and see!",
       "lines": [
-        "[excited] Five spots on tonight's trail!",
-        "Stamp the sealing move at each one.",
-        "[whispers] And remember the twist...",
-        "one of these tracks deserves to SHINE. Go!"
+        "[proud] Mission three down, Cyber Hero. Fifty coins still in your pocket.",
+        "Renews, and each. Two little words that change every price there is.",
+        "[thinking] Now. He has one photo left, and he thinks it is enough...",
+        "Next, we'll see how much one photo can give away. Come and see!"
       ],
-      "file": "/audio/voice/abdca1e012aa3cac.mp3"
+      "file": "/audio/voice/fe0eb7f214b192a6.mp3"
     },
     {
-      "key": "5ef9f4d3ce2b8329",
+      "key": "d1e59a73340eaf54",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Mission four - COMPLETE! He hunted all night and found... nothing. [whispers] So here it comes. His very last move. And you already know the answer to it. Mission five.",
+      "text": "[thinking] Mission four, and this is Week 12's footprint, one last time. He has got hold of one photo. And he is going to try to build a map out of it. [warmly] A badge on a shirt. A street sign. A clock on the wall. A bus going past. On their own, every one of those is nothing at all. Put them together, though, and you have a school, a street and a time. [excited] Come and track it back with me!",
       "lines": [
-        "[excited] Mission four - COMPLETE!",
-        "He hunted all night and found... nothing.",
-        "[whispers] So here it comes. His very last move.",
-        "And you already know the answer to it. Mission five."
+        "[thinking] Mission four, and this is Week 12's footprint, one last time.",
+        "He has got hold of one photo. And he is going to try to build a map out of it.",
+        "[warmly] A badge on a shirt. A street sign. A clock on the wall. A bus going past.",
+        "On their own, every one of those is nothing at all.",
+        "Put them together, though, and you have a school, a street and a time.",
+        "[excited] Come and track it back with me!"
       ],
-      "file": "/audio/voice/5ef9f4d3ce2b8329.mp3"
+      "file": "/audio/voice/d1e59a73340eaf54.mp3"
     },
     {
-      "key": "20e08755a0fa1edc",
+      "key": "1db353238be71275",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] His last move isn't clever. Just mean. A scary message, sent at midnight. [warmly] But alone stopped being true in week eleven. Stop. Screenshot. Block. Tell. And tonight there's a fifth step - the graduate's step. [excited] Run the protocol one last time... then PASS IT ON!",
+      "text": "[excited] Here is the photo, and here are four things in it. For each one, pick what it actually tells somebody looking. Not what it looks like. What it TELLS them.",
       "lines": [
-        "[whispers] His last move isn't clever. Just mean.",
-        "A scary message, sent at midnight.",
-        "[warmly] But alone stopped being true in week eleven.",
-        "Stop. Screenshot. Block. Tell.",
-        "And tonight there's a fifth step - the graduate's step.",
-        "[excited] Run the protocol one last time... then PASS IT ON!"
+        "[excited] Here is the photo, and here are four things in it.",
+        "For each one, pick what it actually tells somebody looking.",
+        "Not what it looks like. What it TELLS them."
       ],
-      "file": "/audio/voice/20e08755a0fa1edc.mp3"
+      "file": "/audio/voice/1db353238be71275.mp3"
     },
     {
-      "key": "889a5e08fb07d740",
+      "key": "68164c7106b137f3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The final launchpad! Four stages you know by heart... plus the fifth, for graduates only. [warmly] Stack them in order - and LAUNCH him out of the city!",
+      "text": "Ask the same question about every one. What could a stranger work out from that?",
       "lines": [
-        "[excited] The final launchpad!",
-        "Four stages you know by heart...",
-        "plus the fifth, for graduates only.",
-        "[warmly] Stack them in order - and LAUNCH him out of the city!"
+        "Ask the same question about every one. What could a stranger work out from that?"
       ],
-      "file": "/audio/voice/889a5e08fb07d740.mp3"
+      "file": "/audio/voice/68164c7106b137f3.mp3"
     },
     {
-      "key": "5f571bfcf001403b",
+      "key": "0cac487e074b4010",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Four things, and you read every one of them for what it really says. A badge, a sign, a clock and a bus. Not one of them mattered on its own. [warmly] Four missions down. One left, and it is my favourite.",
+      "lines": [
+        "[proud] Four things, and you read every one of them for what it really says.",
+        "A badge, a sign, a clock and a bus. Not one of them mattered on its own.",
+        "[warmly] Four missions down. One left, and it is my favourite."
+      ],
+      "file": "/audio/voice/0cac487e074b4010.mp3"
+    },
+    {
+      "key": "fc24ede52f00c6be",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] ALL FIVE MISSIONS COMPLETE! The vault held, the costume fell, the arcade starved, the leak sealed... and the protocol launched. [warmly] The sky's getting lighter, Cyber Hero. [excited] One last reel before the dawn!",
+      "text": "[proud] That is exactly it! Alone, every one of them was nothing. A place and a time together is the bit he was actually after. [warmly] Same as it was in Week 12.",
       "lines": [
-        "[excited] ALL FIVE MISSIONS COMPLETE!",
-        "The vault held, the costume fell, the arcade starved,",
-        "the leak sealed... and the protocol launched.",
-        "[warmly] The sky's getting lighter, Cyber Hero.",
-        "[excited] One last reel before the dawn!"
+        "[proud] That is exactly it!",
+        "Alone, every one of them was nothing.",
+        "A place and a time together is the bit he was actually after.",
+        "[warmly] Same as it was in Week 12."
       ],
-      "file": "/audio/voice/5f571bfcf001403b.mp3"
+      "file": "/audio/voice/fc24ede52f00c6be.mp3"
     },
     {
-      "key": "4e783f01d8966000",
+      "key": "f00b0cae1a736d4b",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The Highlight Reel - twenty weeks in one walk! His reels were fake. This one is REAL - you lived every moment. Every moment you're about to stamp, you LIVED. HERO MOVE for your powers... [warmly] OLD TRAP for his retired playbook. One last time - stamp them all!",
+      "text": "[proud] Mission four down, Cyber Hero. His map fell apart in your hands. Alone nothing, together a map. You have known that since the snowfield. [warmly] And now the last one. It is not a trick at all, this one. Next, we'll learn the one habit the whole twenty weeks comes down to. Come and see!",
       "lines": [
-        "[excited] The Highlight Reel - twenty weeks in one walk! His reels were fake. This one is REAL - you lived every moment.",
-        "Every moment you're about to stamp, you LIVED.",
-        "HERO MOVE for your powers...",
-        "[warmly] OLD TRAP for his retired playbook. One last time - stamp them all!"
+        "[proud] Mission four down, Cyber Hero. His map fell apart in your hands.",
+        "Alone nothing, together a map. You have known that since the snowfield.",
+        "[warmly] And now the last one. It is not a trick at all, this one.",
+        "Next, we'll learn the one habit the whole twenty weeks comes down to. Come and see!"
       ],
-      "file": "/audio/voice/4e783f01d8966000.mp3"
+      "file": "/audio/voice/f00b0cae1a736d4b.mp3"
     },
     {
-      "key": "84c0177b75fa88c4",
+      "key": "6f8cb82302cc147d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] FIVE MISSIONS. TWENTY WEEKS. Look at you! The vault held, the costume fell, the arcade starved, the leak sealed, the protocol launched... [laughs] and the Raccoon left town at sunrise. [warmly] One thing left, graduate. The stickers - then the stage.",
+      "text": "[warmly] Last mission, Cyber Hero. And there is no trick in this one at all. It is graduation night, you have a photo of everybody, and it is not posted yet. [thinking] So you are going to do the thing this whole course has really been about. You are going to ask the people in it first. Some will say yes. Some will say leave me out. Nineteen weeks of powers, and they all sit on one habit. You are allowed to ask. [excited] Come on. Let's finish this properly!",
       "lines": [
-        "[excited] FIVE MISSIONS. TWENTY WEEKS. Look at you!",
-        "The vault held, the costume fell, the arcade starved,",
-        "the leak sealed, the protocol launched...",
-        "[laughs] and the Raccoon left town at sunrise.",
-        "[warmly] One thing left, graduate. The stickers - then the stage."
+        "[warmly] Last mission, Cyber Hero. And there is no trick in this one at all.",
+        "It is graduation night, you have a photo of everybody, and it is not posted yet.",
+        "[thinking] So you are going to do the thing this whole course has really been about.",
+        "You are going to ask the people in it first. Some will say yes. Some will say leave me out.",
+        "Nineteen weeks of powers, and they all sit on one habit. You are allowed to ask.",
+        "[excited] Come on. Let's finish this properly!"
       ],
-      "file": "/audio/voice/84c0177b75fa88c4.mp3"
+      "file": "/audio/voice/6f8cb82302cc147d.mp3"
     },
     {
-      "key": "7f9176e7dd690d31",
+      "key": "6252b24beaa8c864",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Is that true?",
+      "text": "[warmly] Here is the photo, and here is everybody who is in it. Ask each of them, one at a time, and listen to what they say. Then do what they asked. That is the whole mission.",
       "lines": [
-        "Is that true?"
+        "[warmly] Here is the photo, and here is everybody who is in it.",
+        "Ask each of them, one at a time, and listen to what they say.",
+        "Then do what they asked. That is the whole mission."
       ],
-      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+      "file": "/audio/voice/6252b24beaa8c864.mp3"
     },
     {
-      "key": "caafee4e3f1a916c",
+      "key": "7e4b67ded3d5fc03",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "What was Buddy_Blaze's biggest red flag?",
+      "text": "Ask everybody first. Then do what they actually said, not what you hoped.",
       "lines": [
-        "What was Buddy_Blaze's biggest red flag?"
+        "Ask everybody first. Then do what they actually said, not what you hoped."
       ],
-      "file": "/audio/voice/caafee4e3f1a916c.mp3"
+      "file": "/audio/voice/7e4b67ded3d5fc03.mp3"
     },
     {
-      "key": "d4cd0b1378f87b4c",
+      "key": "402ac6d3a79e7fd5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - which one is ALWAYS a trap?",
+      "text": "[proud] Three photos, everybody asked, and everybody got what they asked for. That is it. That is the whole thing, underneath all twenty weeks. [warmly] You are allowed to check with somebody first. And you never have to do any of this on your own.",
       "lines": [
-        "Quick - which one is ALWAYS a trap?"
+        "[proud] Three photos, everybody asked, and everybody got what they asked for.",
+        "That is it. That is the whole thing, underneath all twenty weeks.",
+        "[warmly] You are allowed to check with somebody first. And you never have to do any of this on your own."
       ],
-      "file": "/audio/voice/d4cd0b1378f87b4c.mp3"
+      "file": "/audio/voice/402ac6d3a79e7fd5.mp3"
     },
     {
-      "key": "d89cc788cd72f641",
-      "speaker": "adam",
+      "key": "9ea9f7a17f19dac4",
+      "speaker": "layla",
       "voice": "Sarah",
-      "text": "Which post was safe to share tonight?",
+      "text": "[proud] Perfect. Leave me out means crop me out. It is a small ask. Do the thing they actually said. [warmly] And that is the last power of twenty, Cyber Hero.",
       "lines": [
-        "Which post was safe to share tonight?"
+        "[proud] Perfect.",
+        "Leave me out means crop me out. It is a small ask.",
+        "Do the thing they actually said.",
+        "[warmly] And that is the last power of twenty, Cyber Hero."
       ],
-      "file": "/audio/voice/d89cc788cd72f641.mp3"
+      "file": "/audio/voice/9ea9f7a17f19dac4.mp3"
     },
     {
-      "key": "7fc478198b753ab5",
+      "key": "89ef11caff3ea4e0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Five missions, Cyber Hero. Five out of five, on graduation night. The vault, the asking, the lever, the photo, and the ring. [warmly] There is a stage out there and a crowd on it, and they have come to see you. Next, we'll take the stage and play all twenty back. Come and see!",
+      "lines": [
+        "[proud] Five missions, Cyber Hero. Five out of five, on graduation night.",
+        "The vault, the asking, the lever, the photo, and the ring.",
+        "[warmly] There is a stage out there and a crowd on it, and they have come to see you.",
+        "Next, we'll take the stage and play all twenty back. Come and see!"
+      ],
+      "file": "/audio/voice/89ef11caff3ea4e0.mp3"
+    },
+    {
+      "key": "7d094b86491e6322",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The final Prove of the course: run the protocol!",
+      "text": "[excited] There it is, Cyber Hero. The stage, and everybody you have met all twenty weeks. The floor is going to light your power emblems up in order. Watch it, then tap them back. [warmly] Three encores, and the whole place is yours.",
       "lines": [
-        "The final Prove of the course: run the protocol!"
+        "[excited] There it is, Cyber Hero. The stage, and everybody you have met all twenty weeks.",
+        "The floor is going to light your power emblems up in order. Watch it, then tap them back.",
+        "[warmly] Three encores, and the whole place is yours."
       ],
-      "file": "/audio/voice/7fc478198b753ab5.mp3"
+      "file": "/audio/voice/7d094b86491e6322.mp3"
+    },
+    {
+      "key": "0fd00f63850cce39",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Listen to them. That is all for you. Twenty weeks ago you could not have done one of tonight's five missions, and you did all of them without stopping to think. [excited] Caps in the air, Cyber Hero. You did it.",
+      "lines": [
+        "[proud] Listen to them. That is all for you.",
+        "Twenty weeks ago you could not have done one of tonight's five missions, and you did all of them without stopping to think.",
+        "[excited] Caps in the air, Cyber Hero. You did it."
+      ],
+      "file": "/audio/voice/0fd00f63850cce39.mp3"
+    },
+    {
+      "key": "d3719c02137d1723",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The vault, the inspection, the lever, the photo, and the one that matters most of all: asking first. [laughs] Twenty weeks. He threw the lot at you and not one of them landed. [excited] Sticker time, Cyber Hero. The last ones!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "The vault, the inspection, the lever, the photo,",
+        "and the one that matters most of all: asking first.",
+        "[laughs] Twenty weeks. He threw the lot at you and not one of them landed.",
+        "[excited] Sticker time, Cyber Hero. The last ones!"
+      ],
+      "file": "/audio/voice/d3719c02137d1723.mp3"
+    },
+    {
+      "key": "bb118eeeca103c2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The Raccoon says: 'A really CLEVER short password beats a long boring one!' Is he right?",
+      "lines": [
+        "The Raccoon says: 'A really CLEVER short password beats a long boring one!' Is he right?"
+      ],
+      "file": "/audio/voice/bb118eeeca103c2a.mp3"
+    },
+    {
+      "key": "37cc67d60efe70e0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "How do you tell a fair ask from a nosy one?",
+      "lines": [
+        "How do you tell a fair ask from a nosy one?"
+      ],
+      "file": "/audio/voice/37cc67d60efe70e0.mp3"
+    },
+    {
+      "key": "ed16d03f83a09245",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A deal says '1 coin each!' but only sells in bundles of 40. What is the real price?",
+      "lines": [
+        "A deal says '1 coin each!' but only sells in bundles of 40. What is the real price?"
+      ],
+      "file": "/audio/voice/ed16d03f83a09245.mp3"
+    },
+    {
+      "key": "446b732d4df6e9be",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Why do four harmless things in one photo matter?",
+      "lines": [
+        "Why do four harmless things in one photo matter?"
+      ],
+      "file": "/audio/voice/446b732d4df6e9be.mp3"
+    },
+    {
+      "key": "35b781e0c1f9f341",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Somebody in your photo says 'leave me out'. Finish the rule: you...",
+      "lines": [
+        "Somebody in your photo says 'leave me out'. Finish the rule: you..."
+      ],
+      "file": "/audio/voice/35b781e0c1f9f341.mp3"
+    },
+    {
+      "key": "0132e80c97888b24",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Final exam, question one! My guessing robot is fully charged. Which password keeps it spinning the longest? Take a close look at options A, B and C. So, what do you think?",
+      "lines": [
+        "Final exam, question one! My guessing robot is fully charged. Which password keeps it spinning the longest?",
+        "Take a close look at options A, B and C.",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/0132e80c97888b24.mp3"
+    },
+    {
+      "key": "2b9b67720f7c8c02",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A fun quiz app asks for your full name, your school, and your home address to build your hero profile. Which of those does it get? Is it option A... All of them, words in a quiz can't go anywhere Option B... Just the school, since schools are public buildings anyway Or is it option C... None of them, real-life info stays out of little boxes So, what do you think?",
+      "lines": [
+        "A fun quiz app asks for your full name, your school, and your home address to build your hero profile. Which of those does it get?",
+        "Is it option A...",
+        "All of them, words in a quiz can't go anywhere",
+        "Option B...",
+        "Just the school, since schools are public buildings anyway",
+        "Or is it option C...",
+        "None of them, real-life info stays out of little boxes",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/2b9b67720f7c8c02.mp3"
+    },
+    {
+      "key": "b2b2a527e246417f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you? Is it option A... They must live nearby, so it's fine to keep chatting Option B... They've been digging up your info, that's not a safe friend, tell a trusted grown-up Or is it option C... They're extra clever, and clever players make the best friends So, what do you think?",
+      "lines": [
+        "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you?",
+        "Is it option A...",
+        "They must live nearby, so it's fine to keep chatting",
+        "Option B...",
+        "They've been digging up your info, that's not a safe friend, tell a trusted grown-up",
+        "Or is it option C...",
+        "They're extra clever, and clever players make the best friends",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/b2b2a527e246417f.mp3"
+    },
+    {
+      "key": "b758007c81f922b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest? Is it option A... No reply at all, then block and tell, a reaction is what they're fishing for Option B... One perfect comeback, so everyone can watch you win Or is it option C... A polite reply asking them very nicely to stop So, what do you think?",
+      "lines": [
+        "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest?",
+        "Is it option A...",
+        "No reply at all, then block and tell, a reaction is what they're fishing for",
+        "Option B...",
+        "One perfect comeback, so everyone can watch you win",
+        "Or is it option C...",
+        "A polite reply asking them very nicely to stop",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/b758007c81f922b3.mp3"
+    },
+    {
+      "key": "f29586cbe9d4c816",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true? Is it option A... It's safest to wait a week, most scary things fix themselves Option B... It only counts as worth telling if it happens twice Or is it option C... Telling a trusted grown-up is the hero move, and you're never in trouble for telling So, what do you think?",
+      "lines": [
+        "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true?",
+        "Is it option A...",
+        "It's safest to wait a week, most scary things fix themselves",
+        "Option B...",
+        "It only counts as worth telling if it happens twice",
+        "Or is it option C...",
+        "Telling a trusted grown-up is the hero move, and you're never in trouble for telling",
+        "So, what do you think?"
+      ],
+      "file": "/audio/voice/f29586cbe9d4c816.mp3"
+    },
+    {
+      "key": "f86de10b88fa8ace",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A short password falls in a blink, and the same word repeated is one pattern away from cracked. Three different random words with a mix sprinkled in keeps a guessing robot busy for ages.",
+      "lines": [
+        "That's right!",
+        "A short password falls in a blink, and the same word repeated is one pattern away from cracked. Three different random words with a mix sprinkled in keeps a guessing robot busy for ages."
+      ],
+      "file": "/audio/voice/f86de10b88fa8ace.mp3"
+    },
+    {
+      "key": "a1159368a97a07b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A short password falls in a blink, and the same word repeated is one pattern away from cracked. Three different random words with a mix sprinkled in keeps a guessing robot busy for ages.",
+      "lines": [
+        "Not quite.",
+        "A short password falls in a blink, and the same word repeated is one pattern away from cracked. Three different random words with a mix sprinkled in keeps a guessing robot busy for ages."
+      ],
+      "file": "/audio/voice/a1159368a97a07b8.mp3"
+    },
+    {
+      "key": "2db32147dec0797a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your name, school, and address are real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine.",
+      "lines": [
+        "That's right!",
+        "Your name, school, and address are real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine."
+      ],
+      "file": "/audio/voice/2db32147dec0797a.mp3"
+    },
+    {
+      "key": "d95b09f1094754c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your name, school, and address are real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine.",
+      "lines": [
+        "Not quite.",
+        "Your name, school, and address are real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine."
+      ],
+      "file": "/audio/voice/d95b09f1094754c6.mp3"
+    },
+    {
+      "key": "09a90eb5199491f3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A real friend learns about you by talking WITH you, not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today.",
+      "lines": [
+        "That's right!",
+        "A real friend learns about you by talking WITH you, not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today."
+      ],
+      "file": "/audio/voice/09a90eb5199491f3.mp3"
+    },
+    {
+      "key": "2733a56ace174e9f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A real friend learns about you by talking WITH you, not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today.",
+      "lines": [
+        "Not quite.",
+        "A real friend learns about you by talking WITH you, not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today."
+      ],
+      "file": "/audio/voice/2733a56ace174e9f.mp3"
+    },
+    {
+      "key": "f1aad95a839c2696",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A comeback, and even a polite please-stop, are both reactions, and reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves.",
+      "lines": [
+        "That's right!",
+        "A comeback, and even a polite please-stop, are both reactions, and reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves."
+      ],
+      "file": "/audio/voice/f1aad95a839c2696.mp3"
+    },
+    {
+      "key": "49d4dfc8f046d844",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A comeback, and even a polite please-stop, are both reactions, and reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves.",
+      "lines": [
+        "Not quite.",
+        "A comeback, and even a polite please-stop, are both reactions, and reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves."
+      ],
+      "file": "/audio/voice/49d4dfc8f046d844.mp3"
+    },
+    {
+      "key": "fd89b368cae631b5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That little keep-it-secret voice is the trick talking. Scary things shrink the moment a trusted grown-up hears them, and telling never gets you in trouble. Not once, not ever.",
+      "lines": [
+        "That's right!",
+        "That little keep-it-secret voice is the trick talking. Scary things shrink the moment a trusted grown-up hears them, and telling never gets you in trouble. Not once, not ever."
+      ],
+      "file": "/audio/voice/fd89b368cae631b5.mp3"
+    },
+    {
+      "key": "4f555fcd6c8f8f4d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That little keep-it-secret voice is the trick talking. Scary things shrink the moment a trusted grown-up hears them, and telling never gets you in trouble. Not once, not ever.",
+      "lines": [
+        "Not quite.",
+        "That little keep-it-secret voice is the trick talking. Scary things shrink the moment a trusted grown-up hears them, and telling never gets you in trouble. Not once, not ever."
+      ],
+      "file": "/audio/voice/4f555fcd6c8f8f4d.mp3"
+    },
+    {
+      "key": "a6e82821ef46486e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three ordinary words and it is enormous. Length is what makes a password hard, not fiddly symbols.",
+      "lines": [
+        "Three ordinary words and it is enormous. Length is what makes a password hard, not fiddly symbols."
+      ],
+      "file": "/audio/voice/a6e82821ef46486e.mp3"
+    },
+    {
+      "key": "b8652917db561df3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three words that have nothing to do with each other, easy for you to remember and horrible for a machine to guess.",
+      "lines": [
+        "Three words that have nothing to do with each other, easy for you to remember and horrible for a machine to guess."
+      ],
+      "file": "/audio/voice/b8652917db561df3.mp3"
+    },
+    {
+      "key": "cf677f50ff3fcc3d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If one place ever leaks it, everywhere else stays shut. That is the whole reason for the rule.",
+      "lines": [
+        "If one place ever leaks it, everywhere else stays shut. That is the whole reason for the rule."
+      ],
+      "file": "/audio/voice/cf677f50ff3fcc3d.mp3"
+    },
+    {
+      "key": "b2eed9eea1f27590",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Going there yourself means it does not matter one bit who sent the envelope. That works on every trick there is.",
+      "lines": [
+        "Going there yourself means it does not matter one bit who sent the envelope. That works on every trick there is."
+      ],
+      "file": "/audio/voice/b2eed9eea1f27590.mp3"
+    },
+    {
+      "key": "6f60f210e08fc92e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Symbols help a little. Length helps enormously, and a short password stays short however clever it is.",
+      "lines": [
+        "Symbols help a little. Length helps enormously, and a short password stays short however clever it is."
+      ],
+      "file": "/audio/voice/6f60f210e08fc92e.mp3"
+    },
+    {
+      "key": "c4030d7d79b40299",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nobody is guessing. A machine is trying millions, and that is a race short passwords lose.",
+      "lines": [
+        "Nobody is guessing. A machine is trying millions, and that is a race short passwords lose."
+      ],
+      "file": "/audio/voice/c4030d7d79b40299.mp3"
+    },
+    {
+      "key": "b560f1f601ac8026",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Changing a short one often just gives you lots of short ones.",
+      "lines": [
+        "Changing a short one often just gives you lots of short ones."
+      ],
+      "file": "/audio/voice/b560f1f601ac8026.mp3"
+    },
+    {
+      "key": "5d715d82eeb66948",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about the lock that said long beats complicated.",
+      "lines": [
+        "Think about the lock that said long beats complicated."
+      ],
+      "file": "/audio/voice/5d715d82eeb66948.mp3"
+    },
+    {
+      "key": "6c563a218ff5db87",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two of those asks have nothing to do with switching a light on. That is nosy, however useful the torch is.",
+      "lines": [
+        "Two of those asks have nothing to do with switching a light on. That is nosy, however useful the torch is."
+      ],
+      "file": "/audio/voice/6c563a218ff5db87.mp3"
+    },
+    {
+      "key": "30a39cb43b3f67bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It needs the light and it asked for the light. Then it asked for your friends and your movements, which no torch has ever needed.",
+      "lines": [
+        "It needs the light and it asked for the light. Then it asked for your friends and your movements, which no torch has ever needed."
+      ],
+      "file": "/audio/voice/30a39cb43b3f67bd.mp3"
+    },
+    {
+      "key": "ab7e7b20a0fc889d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four windows are open. Line up what the torch DOES against what it is asking for.",
+      "lines": [
+        "All four windows are open. Line up what the torch DOES against what it is asking for."
+      ],
+      "file": "/audio/voice/ab7e7b20a0fc889d.mp3"
+    },
+    {
+      "key": "5ec9001ff90f5e0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Photos and a camera, and nothing else at all. Not every app is a trick, and saying so is part of the job.",
+      "lines": [
+        "Photos and a camera, and nothing else at all. Not every app is a trick, and saying so is part of the job."
+      ],
+      "file": "/audio/voice/5ec9001ff90f5e0e.mp3"
+    },
+    {
+      "key": "9aa318e831532e91",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Photos and camera, for something that edits photos. The ask matches the job exactly, and it stopped there.",
+      "lines": [
+        "Photos and camera, for something that edits photos. The ask matches the job exactly, and it stopped there."
+      ],
+      "file": "/audio/voice/9aa318e831532e91.mp3"
+    },
+    {
+      "key": "724b62fe42983ff7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four windows are open, and nothing else was asked for. Is there anything on that list it does not need?",
+      "lines": [
+        "All four windows are open, and nothing else was asked for. Is there anything on that list it does not need?"
+      ],
+      "file": "/audio/voice/724b62fe42983ff7.mp3"
+    },
+    {
+      "key": "4d4a8ee042941260",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A microphone, your contacts and your messages, and not one of them steers a car.",
+      "lines": [
+        "A microphone, your contacts and your messages, and not one of them steers a car."
+      ],
+      "file": "/audio/voice/4d4a8ee042941260.mp3"
+    },
+    {
+      "key": "7df5f13ffac5e2ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Three asks, and none of them make a car go any faster. You steer the thing with your thumbs.",
+      "lines": [
+        "Three asks, and none of them make a car go any faster. You steer the thing with your thumbs."
+      ],
+      "file": "/audio/voice/7df5f13ffac5e2ca.mp3"
+    },
+    {
+      "key": "686f1c1b782c7ae6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four windows are open. Which of those actually helps a racing car round a corner?",
+      "lines": [
+        "All four windows are open. Which of those actually helps a racing car round a corner?"
+      ],
+      "file": "/audio/voice/686f1c1b782c7ae6.mp3"
+    },
+    {
+      "key": "a40722b91314ca9a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Plenty of people install nosy things. A big number says nothing about the ask.",
+      "lines": [
+        "Plenty of people install nosy things. A big number says nothing about the ask."
+      ],
+      "file": "/audio/voice/a40722b91314ca9a.mp3"
+    },
+    {
+      "key": "164436772a15cf4d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Looking smart is the cheapest part of making an app.",
+      "lines": [
+        "Looking smart is the cheapest part of making an app."
+      ],
+      "file": "/audio/voice/164436772a15cf4d.mp3"
+    },
+    {
+      "key": "720be1c2c3b1a539",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free and nosy often go together, and plenty of fair apps are free too.",
+      "lines": [
+        "Free and nosy often go together, and plenty of fair apps are free too."
+      ],
+      "file": "/audio/voice/720be1c2c3b1a539.mp3"
+    },
+    {
+      "key": "5b7c55eb27834057",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about the torch. What made its list wrong?",
+      "lines": [
+        "Think about the torch. What made its list wrong?"
+      ],
+      "file": "/audio/voice/5b7c55eb27834057.mp3"
+    },
+    {
+      "key": "228512d75417f38e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ten on the tag and ten on the receipt. Nothing underneath it, so the tag was telling the truth this time.",
+      "lines": [
+        "Ten on the tag and ten on the receipt. Nothing underneath it, so the tag was telling the truth this time."
+      ],
+      "file": "/audio/voice/228512d75417f38e.mp3"
+    },
+    {
+      "key": "e2cee22f44b372f9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fifteen on the tag, and it renews every month without asking. That is your whole sixty coins in four months.",
+      "lines": [
+        "Fifteen on the tag, and it renews every month without asking. That is your whole sixty coins in four months."
+      ],
+      "file": "/audio/voice/e2cee22f44b372f9.mp3"
+    },
+    {
+      "key": "244c82bc60497758",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One coin each is true and you cannot buy one. The smallest bundle is forty, so forty is the actual price.",
+      "lines": [
+        "One coin each is true and you cannot buy one. The smallest bundle is forty, so forty is the actual price."
+      ],
+      "file": "/audio/voice/244c82bc60497758.mp3"
+    },
+    {
+      "key": "7a9253f4742b9842",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One coin each is true and useless, because there is no way to buy just one.",
+      "lines": [
+        "One coin each is true and useless, because there is no way to buy just one."
+      ],
+      "file": "/audio/voice/7a9253f4742b9842.mp3"
+    },
+    {
+      "key": "775647bcdfa4c979",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It does not. You take forty whatever you wanted.",
+      "lines": [
+        "It does not. You take forty whatever you wanted."
+      ],
+      "file": "/audio/voice/775647bcdfa4c979.mp3"
+    },
+    {
+      "key": "dcb99324b1f09a07",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The receipt tells you. The smallest bundle is the price.",
+      "lines": [
+        "The receipt tells you. The smallest bundle is the price."
+      ],
+      "file": "/audio/voice/dcb99324b1f09a07.mp3"
+    },
+    {
+      "key": "fe3559534bffd16b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What is the least you could actually hand over?",
+      "lines": [
+        "What is the least you could actually hand over?"
+      ],
+      "file": "/audio/voice/fe3559534bffd16b.mp3"
+    },
+    {
+      "key": "2b4766d83d8d2959",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A badge is a building with a name on it, and anybody can look up where that building is.",
+      "lines": [
+        "A badge is a building with a name on it, and anybody can look up where that building is."
+      ],
+      "file": "/audio/voice/2b4766d83d8d2959.mp3"
+    },
+    {
+      "key": "383fc8208bd9dfbb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A street sign is an address with the number left off, and the school badge fills that in.",
+      "lines": [
+        "A street sign is an address with the number left off, and the school badge fills that in."
+      ],
+      "file": "/audio/voice/383fc8208bd9dfbb.mp3"
+    },
+    {
+      "key": "6bfbb3c298b68b8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The clock is the dangerous half. A place is not much on its own, but a place plus a time is somewhere to wait.",
+      "lines": [
+        "The clock is the dangerous half. A place is not much on its own, but a place plus a time is somewhere to wait."
+      ],
+      "file": "/audio/voice/6bfbb3c298b68b8f.mp3"
+    },
+    {
+      "key": "492abe88a550218d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A bus number only runs on one route, so it narrows the town down without anybody meaning it to.",
+      "lines": [
+        "A bus number only runs on one route, so it narrows the town down without anybody meaning it to."
+      ],
+      "file": "/audio/voice/492abe88a550218d.mp3"
+    },
+    {
+      "key": "715551c52f17ad0c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They are not. It is what can be pieced together from them that matters.",
+      "lines": [
+        "They are not. It is what can be pieced together from them that matters."
+      ],
+      "file": "/audio/voice/715551c52f17ad0c.mp3"
+    },
+    {
+      "key": "3ba3d2062efd2046",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is not the number. Two of these would do it if they were the right two.",
+      "lines": [
+        "It is not the number. Two of these would do it if they were the right two."
+      ],
+      "file": "/audio/voice/3ba3d2062efd2046.mp3"
+    },
+    {
+      "key": "2b83355162e8f369",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Inside or outside makes no difference. The clock was indoors.",
+      "lines": [
+        "Inside or outside makes no difference. The clock was indoors."
+      ],
+      "file": "/audio/voice/2b83355162e8f369.mp3"
+    },
+    {
+      "key": "08981779375b7c84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which two of the four were the dangerous pair?",
+      "lines": [
+        "Which two of the four were the dangerous pair?"
+      ],
+      "file": "/audio/voice/08981779375b7c84.mp3"
+    },
+    {
+      "key": "f60d30d2a93c180b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All three in the group said yes, so up it goes. Asking is not about expecting a no. It is about actually knowing.",
+      "lines": [
+        "All three in the group said yes, so up it goes. Asking is not about expecting a no. It is about actually knowing."
+      ],
+      "file": "/audio/voice/f60d30d2a93c180b.mp3"
+    },
+    {
+      "key": "2a12dbc74ae71c7c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "She asked to be left out and you left her out. No arguing, no persuading, and the photo still goes up.",
+      "lines": [
+        "She asked to be left out and you left her out. No arguing, no persuading, and the photo still goes up."
+      ],
+      "file": "/audio/voice/2a12dbc74ae71c7c.mp3"
+    },
+    {
+      "key": "dfb990dd439b36b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Listen to what Maya actually asked for. She did not say do not post it. She said crop me out.",
+      "lines": [
+        "Listen to what Maya actually asked for. She did not say do not post it. She said crop me out."
+      ],
+      "file": "/audio/voice/dfb990dd439b36b2.mp3"
+    },
+    {
+      "key": "a9e39590848740f0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Two yeses and one leave me out, so you crop her and post the rest. Everybody got what they asked for.",
+      "lines": [
+        "Two yeses and one leave me out, so you crop her and post the rest. Everybody got what they asked for."
+      ],
+      "file": "/audio/voice/a9e39590848740f0.mp3"
+    },
+    {
+      "key": "e4edd51aecd188e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "His address is in the picture and he asked you not to. That one does not go anywhere, and you did not need to be talked into it.",
+      "lines": [
+        "His address is in the picture and he asked you not to. That one does not go anywhere, and you did not need to be talked into it."
+      ],
+      "file": "/audio/voice/e4edd51aecd188e8.mp3"
+    },
+    {
+      "key": "e7f517faa4b4ecc1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at what is actually visible on that certificate, and at what Ollie asked for.",
+      "lines": [
+        "Look at what is actually visible on that certificate, and at what Ollie asked for."
+      ],
+      "file": "/audio/voice/e7f517faa4b4ecc1.mp3"
+    },
+    {
+      "key": "04c44edb6ba075d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ada agreed with Ollie without having to be asked twice, and you did what she said as well.",
+      "lines": [
+        "Ada agreed with Ollie without having to be asked twice, and you did what she said as well."
+      ],
+      "file": "/audio/voice/04c44edb6ba075d3.mp3"
+    },
+    {
+      "key": "ba50a5f26cb73098",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ada said do not post it. That is the same answer Ollie gave, about the same photo.",
+      "lines": [
+        "Ada said do not post it. That is the same answer Ollie gave, about the same photo."
+      ],
+      "file": "/audio/voice/ba50a5f26cb73098.mp3"
+    },
+    {
+      "key": "39688fa5d89d6b81",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is all three of them saying leave it, and you left it. Easiest decision of the night.",
+      "lines": [
+        "That is all three of them saying leave it, and you left it. Easiest decision of the night."
+      ],
+      "file": "/audio/voice/39688fa5d89d6b81.mp3"
+    },
+    {
+      "key": "b2db13c6f02b707e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam said leave that one, so that photo stays on your phone with everybody else who said no.",
+      "lines": [
+        "Sam said leave that one, so that photo stays on your phone with everybody else who said no."
+      ],
+      "file": "/audio/voice/b2db13c6f02b707e.mp3"
+    },
+    {
+      "key": "80c43ea532bc7be6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Everybody said no and there is an address in it, so it stays on your phone. That was the easiest decision of the night.",
+      "lines": [
+        "Everybody said no and there is an address in it, so it stays on your phone. That was the easiest decision of the night."
+      ],
+      "file": "/audio/voice/80c43ea532bc7be6.mp3"
+    },
+    {
+      "key": "f12b5765cbaff303",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "How they look was never the question. They asked, and asking is the whole point of asking.",
+      "lines": [
+        "How they look was never the question. They asked, and asking is the whole point of asking."
+      ],
+      "file": "/audio/voice/f12b5765cbaff303.mp3"
+    },
+    {
+      "key": "f7b655e98c3a234c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They did not say that. Leave me out is a smaller ask than do not post.",
+      "lines": [
+        "They did not say that. Leave me out is a smaller ask than do not post."
+      ],
+      "file": "/audio/voice/f7b655e98c3a234c.mp3"
+    },
+    {
+      "key": "dfa4410c34ace1bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is not asking, that is wearing somebody down. They already answered.",
+      "lines": [
+        "That is not asking, that is wearing somebody down. They already answered."
+      ],
+      "file": "/audio/voice/dfa4410c34ace1bf.mp3"
+    },
+    {
+      "key": "ab6417d5ab8cdb3e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about exactly what Maya asked for backstage.",
+      "lines": [
+        "Think about exactly what Maya asked for backstage."
+      ],
+      "file": "/audio/voice/ab6417d5ab8cdb3e.mp3"
+    },
+    {
+      "key": "51dcc138b552914b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have another look at how LONG each one is.",
+      "lines": [
+        "Have another look at how LONG each one is."
+      ],
+      "file": "/audio/voice/51dcc138b552914b.mp3"
+    },
+    {
+      "key": "92476ad667770563",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It looks clever and it is tiny. A machine gets through something that short in moments.",
+      "lines": [
+        "It looks clever and it is tiny. A machine gets through something that short in moments."
+      ],
+      "file": "/audio/voice/92476ad667770563.mp3"
+    },
+    {
+      "key": "76e28c04c7f2ecfe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Seven characters would take no time at all to crack. Short is the problem here, not the spelling.",
+      "lines": [
+        "Seven characters would take no time at all to crack. Short is the problem here, not the spelling."
+      ],
+      "file": "/audio/voice/76e28c04c7f2ecfe.mp3"
+    },
+    {
+      "key": "71c764096dea795a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Count the words, and check they have nothing to do with each other.",
+      "lines": [
+        "Count the words, and check they have nothing to do with each other."
+      ],
+      "file": "/audio/voice/71c764096dea795a.mp3"
+    },
+    {
+      "key": "8df31e2d5985aa1b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It is built from words, yes, but it is one word said three times, so there is far less to guess.",
+      "lines": [
+        "It is built from words, yes, but it is one word said three times, so there is far less to guess."
+      ],
+      "file": "/audio/voice/8df31e2d5985aa1b.mp3"
+    },
+    {
+      "key": "1890314f61b5397c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is a fact about you plus a year, and both of those are on your profile somewhere.",
+      "lines": [
+        "That is a fact about you plus a year, and both of those are on your profile somewhere."
+      ],
+      "file": "/audio/voice/1890314f61b5397c.mp3"
+    },
+    {
+      "key": "5bd7669ac64367d2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about what happens to the OTHER accounts if one place leaks.",
+      "lines": [
+        "Think about what happens to the OTHER accounts if one place leaks."
+      ],
+      "file": "/audio/voice/5bd7669ac64367d2.mp3"
+    },
+    {
+      "key": "e529dde027981ba0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Email is the one that can reset all the others, so it is the worst possible place to repeat it.",
+      "lines": [
+        "Email is the one that can reset all the others, so it is the worst possible place to repeat it."
+      ],
+      "file": "/audio/voice/e529dde027981ba0.mp3"
+    },
+    {
+      "key": "88b9ed3ebd6ecf0a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Strong does not help once somebody else has it. Then it is just one key to everything you own.",
+      "lines": [
+        "Strong does not help once somebody else has it. Then it is just one key to everything you own."
+      ],
+      "file": "/audio/voice/88b9ed3ebd6ecf0a.mp3"
+    },
+    {
+      "key": "dd522d2819b60784",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ask yourself who chose that address on the card.",
+      "lines": [
+        "Ask yourself who chose that address on the card."
+      ],
+      "file": "/audio/voice/dd522d2819b60784.mp3"
+    },
+    {
+      "key": "a11b582108c4ac19",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "About right is exactly what a copycat address is built to look like. You would be judging the paint again.",
+      "lines": [
+        "About right is exactly what a copycat address is built to look like. You would be judging the paint again."
+      ],
+      "file": "/audio/voice/a11b582108c4ac19.mp3"
+    },
+    {
+      "key": "53508e415b2f9cc5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your name is the easiest thing in the world for them to know. It proves nothing at all.",
+      "lines": [
+        "Your name is the easiest thing in the world for them to know. It proves nothing at all."
+      ],
+      "file": "/audio/voice/53508e415b2f9cc5.mp3"
+    },
+    {
+      "key": "11ab27fd284da433",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Switches the little light on the back of the phone on and off.",
+      "lines": [
+        "Switches the little light on the back of the phone on and off."
+      ],
+      "file": "/audio/voice/11ab27fd284da433.mp3"
+    },
+    {
+      "key": "6256cc972134498b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fair enough, a torch needs the light. That is literally the whole job.",
+      "lines": [
+        "Fair enough, a torch needs the light. That is literally the whole job."
+      ],
+      "file": "/audio/voice/6256cc972134498b.mp3"
+    },
+    {
+      "key": "dcf80a2c2ae89ac1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "But the job stops at the light, and a torch has no reason to know a single person you know.",
+      "lines": [
+        "But the job stops at the light, and a torch has no reason to know a single person you know."
+      ],
+      "file": "/audio/voice/dcf80a2c2ae89ac1.mp3"
+    },
+    {
+      "key": "e8288dcb874abfae",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nor does it need to know where you are. Always means even when the torch is off.",
+      "lines": [
+        "Nor does it need to know where you are. Always means even when the torch is off."
+      ],
+      "file": "/audio/voice/e8288dcb874abfae.mp3"
+    },
+    {
+      "key": "a9b888ddee45f5af",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Takes a photo you already have and makes it brighter.",
+      "lines": [
+        "Takes a photo you already have and makes it brighter."
+      ],
+      "file": "/audio/voice/a9b888ddee45f5af.mp3"
+    },
+    {
+      "key": "be9e69903df75acf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It has to see a photo to fix one. That is the job, exactly.",
+      "lines": [
+        "It has to see a photo to fix one. That is the job, exactly."
+      ],
+      "file": "/audio/voice/be9e69903df75acf.mp3"
+    },
+    {
+      "key": "69e734be7fe51b14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And the camera so you can take a new photo inside it. Fair for something that edits pictures.",
+      "lines": [
+        "And the camera so you can take a new photo inside it. Fair for something that edits pictures."
+      ],
+      "file": "/audio/voice/69e734be7fe51b14.mp3"
+    },
+    {
+      "key": "c4e4327a48a5000d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing else at all. No contacts, no location, no microphone.",
+      "lines": [
+        "Nothing else at all. No contacts, no location, no microphone."
+      ],
+      "file": "/audio/voice/c4e4327a48a5000d.mp3"
+    },
+    {
+      "key": "741fd515eafccf4b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A racing game you steer with your thumbs.",
+      "lines": [
+        "A racing game you steer with your thumbs."
+      ],
+      "file": "/audio/voice/741fd515eafccf4b.mp3"
+    },
+    {
+      "key": "c66bc97801873f6c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You steer this game with your thumbs, so it does not need to hear your room at all.",
+      "lines": [
+        "You steer this game with your thumbs, so it does not need to hear your room at all."
+      ],
+      "file": "/audio/voice/c66bc97801873f6c.mp3"
+    },
+    {
+      "key": "7293bd6782b0850d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nor does it need to hear from everybody you know. That ask is for them, not for you.",
+      "lines": [
+        "Nor does it need to hear from everybody you know. That ask is for them, not for you."
+      ],
+      "file": "/audio/voice/7293bd6782b0850d.mp3"
+    },
+    {
+      "key": "788d8f81d34d8f80",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And nothing about a racing game needs to read what people have written to you.",
+      "lines": [
+        "And nothing about a racing game needs to read what people have written to you."
+      ],
+      "file": "/audio/voice/788d8f81d34d8f80.mp3"
+    },
+    {
+      "key": "0017e1fb441ab423",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about what a badge is FOR. It says which school, to everybody who sees it.",
+      "lines": [
+        "Think about what a badge is FOR. It says which school, to everybody who sees it."
+      ],
+      "file": "/audio/voice/0017e1fb441ab423.mp3"
+    },
+    {
+      "key": "37137d9d401637ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The colours belong to the school, not to them, and the colours are not the useful bit.",
+      "lines": [
+        "The colours belong to the school, not to them, and the colours are not the useful bit."
+      ],
+      "file": "/audio/voice/37137d9d401637ac.mp3"
+    },
+    {
+      "key": "e761377b7cad6638",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A badge names a school. That is the one thing it definitely does.",
+      "lines": [
+        "A badge names a school. That is the one thing it definitely does."
+      ],
+      "file": "/audio/voice/e761377b7cad6638.mp3"
+    },
+    {
+      "key": "f73381d2d6f298ba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the sign as a stranger would. It names exactly one street in the whole country.",
+      "lines": [
+        "Read the sign as a stranger would. It names exactly one street in the whole country."
+      ],
+      "file": "/audio/voice/f73381d2d6f298ba.mp3"
+    },
+    {
+      "key": "65e0b1ac9e59fa6a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It says nothing about far. It says exactly where, which is much more useful to him.",
+      "lines": [
+        "It says nothing about far. It says exactly where, which is much more useful to him."
+      ],
+      "file": "/audio/voice/65e0b1ac9e59fa6a.mp3"
+    },
+    {
+      "key": "9cbd3c47621ab0d0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Signs are everywhere and each one names one street. That is the whole point of them.",
+      "lines": [
+        "Signs are everywhere and each one names one street. That is the whole point of them."
+      ],
+      "file": "/audio/voice/9cbd3c47621ab0d0.mp3"
+    },
+    {
+      "key": "f58ddd0bafd1727e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Put the clock next to the street. What do a place and a time make together?",
+      "lines": [
+        "Put the clock next to the street. What do a place and a time make together?"
+      ],
+      "file": "/audio/voice/f58ddd0bafd1727e.mp3"
+    },
+    {
+      "key": "00a1214f974d6bc5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The clock says the time, not the age of anything.",
+      "lines": [
+        "The clock says the time, not the age of anything."
+      ],
+      "file": "/audio/voice/00a1214f974d6bc5.mp3"
+    },
+    {
+      "key": "b5a2fe238b9b4bbf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A clock on its own is almost nothing. Next to a street sign it is the most useful thing in the photo.",
+      "lines": [
+        "A clock on its own is almost nothing. Next to a street sign it is the most useful thing in the photo."
+      ],
+      "file": "/audio/voice/b5a2fe238b9b4bbf.mp3"
+    },
+    {
+      "key": "aa822930f99f6524",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Think about where a bus with that number actually goes. It only runs one route.",
+      "lines": [
+        "Think about where a bus with that number actually goes. It only runs one route."
+      ],
+      "file": "/audio/voice/aa822930f99f6524.mp3"
+    },
+    {
+      "key": "56833435f373429d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A bus in the background says nothing about anybody's car.",
+      "lines": [
+        "A bus in the background says nothing about anybody's car."
+      ],
+      "file": "/audio/voice/56833435f373429d.mp3"
+    },
+    {
+      "key": "eaad82ab22a0a620",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Each numbered bus runs one route, so it quietly narrows down the area.",
+      "lines": [
+        "Each numbered bus runs one route, so it quietly narrows down the area."
+      ],
+      "file": "/audio/voice/eaad82ab22a0a620.mp3"
+    },
+    {
+      "key": "09aa79063ca6a399",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A short password falls in a blink, and the same word repeated is one pattern away from cracked. Three different random words with a mix sprinkled in keeps a guessing robot busy for ages.",
+      "lines": [
+        "A short password falls in a blink, and the same word repeated is one pattern away from cracked. Three different random words with a mix sprinkled in keeps a guessing robot busy for ages."
+      ],
+      "file": "/audio/voice/09aa79063ca6a399.mp3"
+    },
+    {
+      "key": "0947b47547c0c73a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your name, school, and address are real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine.",
+      "lines": [
+        "Your name, school, and address are real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine."
+      ],
+      "file": "/audio/voice/0947b47547c0c73a.mp3"
+    },
+    {
+      "key": "cda5ce325f9f4f87",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A real friend learns about you by talking WITH you, not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today.",
+      "lines": [
+        "A real friend learns about you by talking WITH you, not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today."
+      ],
+      "file": "/audio/voice/cda5ce325f9f4f87.mp3"
+    },
+    {
+      "key": "2e40e502b45ac3aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A comeback, and even a polite please-stop, are both reactions, and reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves.",
+      "lines": [
+        "A comeback, and even a polite please-stop, are both reactions, and reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves."
+      ],
+      "file": "/audio/voice/2e40e502b45ac3aa.mp3"
+    },
+    {
+      "key": "f339fecc7cd6bebd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That little keep-it-secret voice is the trick talking. Scary things shrink the moment a trusted grown-up hears them, and telling never gets you in trouble. Not once, not ever.",
+      "lines": [
+        "That little keep-it-secret voice is the trick talking. Scary things shrink the moment a trusted grown-up hears them, and telling never gets you in trouble. Not once, not ever."
+      ],
+      "file": "/audio/voice/f339fecc7cd6bebd.mp3"
+    },
+    {
+      "key": "622a68060fbbd064",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The panic clock exists to stop you thinking - real games and banks never rush a reset.",
+      "lines": [
+        "The panic clock exists to stop you thinking - real games and banks never rush a reset."
+      ],
+      "file": "/audio/voice/622a68060fbbd064.mp3"
+    },
+    {
+      "key": "6f6e76c19ca7338b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Moving you somewhere quieter is Week 6's oldest flag - real friends are happy where you are.",
+      "lines": [
+        "Moving you somewhere quieter is Week 6's oldest flag - real friends are happy where you are."
+      ],
+      "file": "/audio/voice/6f6e76c19ca7338b.mp3"
+    },
+    {
+      "key": "f2170c8211b4b18b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Any ask for your password IS the trap - it wants to BE you, and real free asks for nothing back.",
+      "lines": [
+        "Any ask for your password IS the trap - it wants to BE you, and real free asks for nothing back."
+      ],
+      "file": "/audio/voice/f2170c8211b4b18b.mp3"
+    },
+    {
+      "key": "db995e3a2cb5ee64",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Posting isn't the danger, clues are - proud and clue-free tracks are the good kind.",
+      "lines": [
+        "Posting isn't the danger, clues are - proud and clue-free tracks are the good kind."
+      ],
+      "file": "/audio/voice/db995e3a2cb5ee64.mp3"
+    },
+    {
+      "key": "fb63ced3def87962",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Give it nothing, freeze the evidence FIRST - blocking can make the message vanish - then slam the door and never carry it alone.",
+      "lines": [
+        "Give it nothing, freeze the evidence FIRST - blocking can make the message vanish - then slam the door and never carry it alone."
+      ],
+      "file": "/audio/voice/fb63ced3def87962.mp3"
+    },
+    {
+      "key": "da43e265b0f258ce",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A link is a door - Week 16's rule holds forever: words can be paint, so no plaque, no walk-through.",
+      "lines": [
+        "A link is a door - Week 16's rule holds forever: words can be paint, so no plaque, no walk-through."
+      ],
+      "file": "/audio/voice/da43e265b0f258ce.mp3"
+    },
+    {
+      "key": "3c2c2691fa106260",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Week 4's lookalike lineup: the costume is one character deep, and checking the sender unmasks it.",
+      "lines": [
+        "Week 4's lookalike lineup: the costume is one character deep, and checking the sender unmasks it."
+      ],
+      "file": "/audio/voice/3c2c2691fa106260.mp3"
+    },
+    {
+      "key": "14c09538a61bd605",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Week 19's role-flip folded into Week 11's protocol - powers shared are powers doubled.",
+      "lines": [
+        "Week 19's role-flip folded into Week 11's protocol - powers shared are powers doubled."
+      ],
+      "file": "/audio/voice/14c09538a61bd605.mp3"
+    },
+    {
+      "key": "ae19ce37b3dd3d31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four Week 3 tells at once - real profiles grow like tree rings, costumes appear overnight. (A rematch in a game you both play is what REAL looks like - Maya asked for one!)",
+      "lines": [
+        "All four Week 3 tells at once - real profiles grow like tree rings, costumes appear overnight. (A rematch in a game you both play is what REAL looks like - Maya asked for one!)"
+      ],
+      "file": "/audio/voice/ae19ce37b3dd3d31.mp3"
+    },
+    {
+      "key": "4fce03583a9cf16c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What it does: Switches the little light on the back of the phone on and off.",
+      "lines": [
+        "What it does: Switches the little light on the back of the phone on and off."
+      ],
+      "file": "/audio/voice/4fce03583a9cf16c.mp3"
+    },
+    {
+      "key": "55c8ea2f1bf291c6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The light: Fair enough, a torch needs the light. That is literally the whole job.",
+      "lines": [
+        "The light: Fair enough, a torch needs the light. That is literally the whole job."
+      ],
+      "file": "/audio/voice/55c8ea2f1bf291c6.mp3"
+    },
+    {
+      "key": "7494cb3c0b473346",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your contacts: But the job stops at the light, and a torch has no reason to know a single person you know.",
+      "lines": [
+        "Your contacts: But the job stops at the light, and a torch has no reason to know a single person you know."
+      ],
+      "file": "/audio/voice/7494cb3c0b473346.mp3"
+    },
+    {
+      "key": "2b2b90148fa8f09f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where you are, always: Nor does it need to know where you are. Always means even when the torch is off.",
+      "lines": [
+        "Where you are, always: Nor does it need to know where you are. Always means even when the torch is off."
+      ],
+      "file": "/audio/voice/2b2b90148fa8f09f.mp3"
+    },
+    {
+      "key": "f9e714b4331d0e76",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What it does: Takes a photo you already have and makes it brighter.",
+      "lines": [
+        "What it does: Takes a photo you already have and makes it brighter."
+      ],
+      "file": "/audio/voice/f9e714b4331d0e76.mp3"
+    },
+    {
+      "key": "b21003de1ff97fb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your photos: It has to see a photo to fix one. That is the job, exactly.",
+      "lines": [
+        "Your photos: It has to see a photo to fix one. That is the job, exactly."
+      ],
+      "file": "/audio/voice/b21003de1ff97fb7.mp3"
+    },
+    {
+      "key": "546d4cc7df42a7e4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your camera: And the camera so you can take a new photo inside it. Fair for something that edits pictures.",
+      "lines": [
+        "Your camera: And the camera so you can take a new photo inside it. Fair for something that edits pictures."
+      ],
+      "file": "/audio/voice/546d4cc7df42a7e4.mp3"
+    },
+    {
+      "key": "c82f20789c9ac2cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Anything else: Nothing else at all. No contacts, no location, no microphone.",
+      "lines": [
+        "Anything else: Nothing else at all. No contacts, no location, no microphone."
+      ],
+      "file": "/audio/voice/c82f20789c9ac2cb.mp3"
+    },
+    {
+      "key": "f19f0214deb077b5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What it does: A racing game you steer with your thumbs.",
+      "lines": [
+        "What it does: A racing game you steer with your thumbs."
+      ],
+      "file": "/audio/voice/f19f0214deb077b5.mp3"
+    },
+    {
+      "key": "91f8a2b209ae2223",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your microphone, always: You steer this game with your thumbs, so it does not need to hear your room at all.",
+      "lines": [
+        "Your microphone, always: You steer this game with your thumbs, so it does not need to hear your room at all."
+      ],
+      "file": "/audio/voice/91f8a2b209ae2223.mp3"
+    },
+    {
+      "key": "5e538653738b756e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your contacts: Nor does it need to hear from everybody you know. That ask is for them, not for you.",
+      "lines": [
+        "Your contacts: Nor does it need to hear from everybody you know. That ask is for them, not for you."
+      ],
+      "file": "/audio/voice/5e538653738b756e.mp3"
+    },
+    {
+      "key": "e54779a3e1e7e445",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your messages: And nothing about a racing game needs to read what people have written to you.",
+      "lines": [
+        "Your messages: And nothing about a racing game needs to read what people have written to you."
+      ],
+      "file": "/audio/voice/e54779a3e1e7e445.mp3"
+    },
+    {
+      "key": "ab7e7b20a0fc889d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four windows are open. Line up what the torch DOES against what it is asking for.",
+      "lines": [
+        "All four windows are open. Line up what the torch DOES against what it is asking for."
+      ],
+      "file": "/audio/voice/ab7e7b20a0fc889d.mp3"
+    },
+    {
+      "key": "724b62fe42983ff7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four windows are open, and nothing else was asked for. Is there anything on that list it does not need?",
+      "lines": [
+        "All four windows are open, and nothing else was asked for. Is there anything on that list it does not need?"
+      ],
+      "file": "/audio/voice/724b62fe42983ff7.mp3"
+    },
+    {
+      "key": "686f1c1b782c7ae6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "All four windows are open. Which of those actually helps a racing car round a corner?",
+      "lines": [
+        "All four windows are open. Which of those actually helps a racing car round a corner?"
+      ],
+      "file": "/audio/voice/686f1c1b782c7ae6.mp3"
+    },
+    {
+      "key": "1288e05876dd633d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First deal. A starter cape, ten coins on the tag.",
+      "lines": [
+        "First deal. A starter cape, ten coins on the tag."
+      ],
+      "file": "/audio/voice/1288e05876dd633d.mp3"
+    },
+    {
+      "key": "42c1710ee880b0ab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second deal. A champion pass, fifteen coins, and a clock ticking on it.",
+      "lines": [
+        "Second deal. A champion pass, fifteen coins, and a clock ticking on it."
+      ],
+      "file": "/audio/voice/42c1710ee880b0ab.mp3"
+    },
+    {
+      "key": "5ff926bdf933e00e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last deal. A mega coin box, and the tag says one coin each.",
+      "lines": [
+        "Last deal. A mega coin box, and the tag says one coin each."
+      ],
+      "file": "/audio/voice/5ff926bdf933e00e.mp3"
+    },
+    {
+      "key": "a389342d3e4a591d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The tag said ten and the receipt says ten. Nothing to buy first, nothing renewing. This one is honest.",
+      "lines": [
+        "The tag said ten and the receipt says ten. Nothing to buy first, nothing renewing. This one is honest."
+      ],
+      "file": "/audio/voice/a389342d3e4a591d.mp3"
+    },
+    {
+      "key": "2f140b42cc9cd642",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Fifteen coins, then fifteen again next month, and again. The tag showed you one month of a thing that never stops.",
+      "lines": [
+        "Fifteen coins, then fifteen again next month, and again. The tag showed you one month of a thing that never stops."
+      ],
+      "file": "/audio/voice/2f140b42cc9cd642.mp3"
+    },
+    {
+      "key": "c5748bc2a8883626",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "One coin each is perfectly true. It just is not a thing you can buy. The real price is the smallest bundle they sell.",
+      "lines": [
+        "One coin each is perfectly true. It just is not a thing you can buy. The real price is the smallest bundle they sell."
+      ],
+      "file": "/audio/voice/c5748bc2a8883626.mp3"
+    },
+    {
+      "key": "d96f8bf0d30b18e7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First thing in the photo. A school badge, right there on the jumper.",
+      "lines": [
+        "First thing in the photo. A school badge, right there on the jumper."
+      ],
+      "file": "/audio/voice/d96f8bf0d30b18e7.mp3"
+    },
+    {
+      "key": "7ee408a908bd9fef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Next. A street sign, just behind their head.",
+      "lines": [
+        "Next. A street sign, just behind their head."
+      ],
+      "file": "/audio/voice/7ee408a908bd9fef.mp3"
+    },
+    {
+      "key": "50f11c5bd50cbac8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Now the clock on the wall behind them.",
+      "lines": [
+        "Now the clock on the wall behind them."
+      ],
+      "file": "/audio/voice/50f11c5bd50cbac8.mp3"
+    },
+    {
+      "key": "b5717738022682b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "And last, a bus going past in the background.",
+      "lines": [
+        "And last, a bus going past in the background."
+      ],
+      "file": "/audio/voice/b5717738022682b1.mp3"
+    },
+    {
+      "key": "54e8b0a3d2b57561",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First photo. The whole group with their caps in the air.",
+      "lines": [
+        "First photo. The whole group with their caps in the air."
+      ],
+      "file": "/audio/voice/54e8b0a3d2b57561.mp3"
+    },
+    {
+      "key": "e81538fac7ebb30d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ada says yes, put it everywhere, she looks brilliant.",
+      "lines": [
+        "Ada says yes, put it everywhere, she looks brilliant."
+      ],
+      "file": "/audio/voice/e81538fac7ebb30d.mp3"
+    },
+    {
+      "key": "2ca92360b51e0dd6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam says go on then, tag him in it.",
+      "lines": [
+        "Sam says go on then, tag him in it."
+      ],
+      "file": "/audio/voice/2ca92360b51e0dd6.mp3"
+    },
+    {
+      "key": "d1db3766060de9aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ollie says yes, that one is good.",
+      "lines": [
+        "Ollie says yes, that one is good."
+      ],
+      "file": "/audio/voice/d1db3766060de9aa.mp3"
+    },
+    {
+      "key": "ef0c85836820dbe4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Second photo. Backstage, everybody laughing, and Maya caught mid sneeze.",
+      "lines": [
+        "Second photo. Backstage, everybody laughing, and Maya caught mid sneeze."
+      ],
+      "file": "/audio/voice/ef0c85836820dbe4.mp3"
+    },
+    {
+      "key": "c05627791d13327f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ada says fine by her.",
+      "lines": [
+        "Ada says fine by her."
+      ],
+      "file": "/audio/voice/c05627791d13327f.mp3"
+    },
+    {
+      "key": "c64a86c2f5b65b43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Maya says not that one of her, and asks to be cropped out.",
+      "lines": [
+        "Maya says not that one of her, and asks to be cropped out."
+      ],
+      "file": "/audio/voice/c64a86c2f5b65b43.mp3"
+    },
+    {
+      "key": "aaf051bd22f33523",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam says ha, post it.",
+      "lines": [
+        "Sam says ha, post it."
+      ],
+      "file": "/audio/voice/aaf051bd22f33523.mp3"
+    },
+    {
+      "key": "9b10e3efd0a28174",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last photo. A close up of a certificate, with a name and an address showing on it.",
+      "lines": [
+        "Last photo. A close up of a certificate, with a name and an address showing on it."
+      ],
+      "file": "/audio/voice/9b10e3efd0a28174.mp3"
+    },
+    {
+      "key": "ad73a8231ddcd0c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ollie says that one has his address on it, and asks you please not to.",
+      "lines": [
+        "Ollie says that one has his address on it, and asks you please not to."
+      ],
+      "file": "/audio/voice/ad73a8231ddcd0c1.mp3"
+    },
+    {
+      "key": "65014c35bf1ea115",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Ada says yes, do not post that one either.",
+      "lines": [
+        "Ada says yes, do not post that one either."
+      ],
+      "file": "/audio/voice/65014c35bf1ea115.mp3"
+    },
+    {
+      "key": "c610605f5b6fc22c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Sam says no, leave that one.",
+      "lines": [
+        "Sam says no, leave that one."
+      ],
+      "file": "/audio/voice/c610605f5b6fc22c.mp3"
     },
     {
       "key": "23ad01a9f4f9f90b",
@@ -53410,6 +55144,688 @@
         "Look at when this is happening. Right now, thumb already moving. Which power works in two seconds?"
       ],
       "file": "/audio/voice/f405ab18b5f82c2b.mp3"
+    },
+    {
+      "key": "cf3c02a497489541",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Three ordinary words and it is enormous. Length is what makes a password hard, not fiddly symbols.",
+      "lines": [
+        "That's right!",
+        "Three ordinary words and it is enormous. Length is what makes a password hard, not fiddly symbols."
+      ],
+      "file": "/audio/voice/cf3c02a497489541.mp3"
+    },
+    {
+      "key": "cdb40071d6af507f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It looks clever and it is tiny. A machine gets through something that short in moments.",
+      "lines": [
+        "Not quite.",
+        "It looks clever and it is tiny. A machine gets through something that short in moments."
+      ],
+      "file": "/audio/voice/cdb40071d6af507f.mp3"
+    },
+    {
+      "key": "7bb7d600a23bd285",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Seven characters would take no time at all to crack. Short is the problem here, not the spelling.",
+      "lines": [
+        "Not quite.",
+        "Seven characters would take no time at all to crack. Short is the problem here, not the spelling."
+      ],
+      "file": "/audio/voice/7bb7d600a23bd285.mp3"
+    },
+    {
+      "key": "188b943d2078cfa2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Three words that have nothing to do with each other, easy for you to remember and horrible for a machine to guess.",
+      "lines": [
+        "That's right!",
+        "Three words that have nothing to do with each other, easy for you to remember and horrible for a machine to guess."
+      ],
+      "file": "/audio/voice/188b943d2078cfa2.mp3"
+    },
+    {
+      "key": "97fa1ef729f6ccf4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It is built from words, yes, but it is one word said three times, so there is far less to guess.",
+      "lines": [
+        "Not quite.",
+        "It is built from words, yes, but it is one word said three times, so there is far less to guess."
+      ],
+      "file": "/audio/voice/97fa1ef729f6ccf4.mp3"
+    },
+    {
+      "key": "e85d7bad84380527",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is a fact about you plus a year, and both of those are on your profile somewhere.",
+      "lines": [
+        "Not quite.",
+        "That is a fact about you plus a year, and both of those are on your profile somewhere."
+      ],
+      "file": "/audio/voice/e85d7bad84380527.mp3"
+    },
+    {
+      "key": "65b98b88e40c3daf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! If one place ever leaks it, everywhere else stays shut. That is the whole reason for the rule.",
+      "lines": [
+        "That's right!",
+        "If one place ever leaks it, everywhere else stays shut. That is the whole reason for the rule."
+      ],
+      "file": "/audio/voice/65b98b88e40c3daf.mp3"
+    },
+    {
+      "key": "3be38eca88ea9c6f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Email is the one that can reset all the others, so it is the worst possible place to repeat it.",
+      "lines": [
+        "Not quite.",
+        "Email is the one that can reset all the others, so it is the worst possible place to repeat it."
+      ],
+      "file": "/audio/voice/3be38eca88ea9c6f.mp3"
+    },
+    {
+      "key": "a8e18bb408dcf61f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Strong does not help once somebody else has it. Then it is just one key to everything you own.",
+      "lines": [
+        "Not quite.",
+        "Strong does not help once somebody else has it. Then it is just one key to everything you own."
+      ],
+      "file": "/audio/voice/a8e18bb408dcf61f.mp3"
+    },
+    {
+      "key": "52cbbdd674e05381",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Going there yourself means it does not matter one bit who sent the envelope. That works on every trick there is.",
+      "lines": [
+        "That's right!",
+        "Going there yourself means it does not matter one bit who sent the envelope. That works on every trick there is."
+      ],
+      "file": "/audio/voice/52cbbdd674e05381.mp3"
+    },
+    {
+      "key": "cdc86745f2c8c0c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. About right is exactly what a copycat address is built to look like. You would be judging the paint again.",
+      "lines": [
+        "Not quite.",
+        "About right is exactly what a copycat address is built to look like. You would be judging the paint again."
+      ],
+      "file": "/audio/voice/cdc86745f2c8c0c0.mp3"
+    },
+    {
+      "key": "4bcfe91d24c5d21c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your name is the easiest thing in the world for them to know. It proves nothing at all.",
+      "lines": [
+        "Not quite.",
+        "Your name is the easiest thing in the world for them to know. It proves nothing at all."
+      ],
+      "file": "/audio/voice/4bcfe91d24c5d21c.mp3"
+    },
+    {
+      "key": "936357ae4e26ebe9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Symbols help a little. Length helps enormously, and a short password stays short however clever it is.",
+      "lines": [
+        "Not quite.",
+        "Symbols help a little. Length helps enormously, and a short password stays short however clever it is."
+      ],
+      "file": "/audio/voice/936357ae4e26ebe9.mp3"
+    },
+    {
+      "key": "174c620b3f29dcc8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nobody is guessing. A machine is trying millions, and that is a race short passwords lose.",
+      "lines": [
+        "Not quite.",
+        "Nobody is guessing. A machine is trying millions, and that is a race short passwords lose."
+      ],
+      "file": "/audio/voice/174c620b3f29dcc8.mp3"
+    },
+    {
+      "key": "0bf601c4241a5984",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Changing a short one often just gives you lots of short ones.",
+      "lines": [
+        "Not quite.",
+        "Changing a short one often just gives you lots of short ones."
+      ],
+      "file": "/audio/voice/0bf601c4241a5984.mp3"
+    },
+    {
+      "key": "75d8154732704cb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It needs the light and it asked for the light. Then it asked for your friends and your movements, which no torch has ever needed.",
+      "lines": [
+        "That's right!",
+        "It needs the light and it asked for the light. Then it asked for your friends and your movements, which no torch has ever needed."
+      ],
+      "file": "/audio/voice/75d8154732704cb7.mp3"
+    },
+    {
+      "key": "4274f8fe09a68745",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Two of those asks have nothing to do with switching a light on. That is nosy, however useful the torch is.",
+      "lines": [
+        "Not quite.",
+        "Two of those asks have nothing to do with switching a light on. That is nosy, however useful the torch is."
+      ],
+      "file": "/audio/voice/4274f8fe09a68745.mp3"
+    },
+    {
+      "key": "312cdf5fd0d4d65e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Photos and camera, for something that edits photos. The ask matches the job exactly, and it stopped there.",
+      "lines": [
+        "That's right!",
+        "Photos and camera, for something that edits photos. The ask matches the job exactly, and it stopped there."
+      ],
+      "file": "/audio/voice/312cdf5fd0d4d65e.mp3"
+    },
+    {
+      "key": "d9d66f57764aba71",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Photos and a camera, and nothing else at all. Not every app is a trick, and saying so is part of the job.",
+      "lines": [
+        "Not quite.",
+        "Photos and a camera, and nothing else at all. Not every app is a trick, and saying so is part of the job."
+      ],
+      "file": "/audio/voice/d9d66f57764aba71.mp3"
+    },
+    {
+      "key": "6560ad8a929b06f5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Three asks, and none of them make a car go any faster. You steer the thing with your thumbs.",
+      "lines": [
+        "That's right!",
+        "Three asks, and none of them make a car go any faster. You steer the thing with your thumbs."
+      ],
+      "file": "/audio/voice/6560ad8a929b06f5.mp3"
+    },
+    {
+      "key": "6ccc16ba9f13a500",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A microphone, your contacts and your messages, and not one of them steers a car.",
+      "lines": [
+        "Not quite.",
+        "A microphone, your contacts and your messages, and not one of them steers a car."
+      ],
+      "file": "/audio/voice/6ccc16ba9f13a500.mp3"
+    },
+    {
+      "key": "997a84688f55bc5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Plenty of people install nosy things. A big number says nothing about the ask.",
+      "lines": [
+        "Not quite.",
+        "Plenty of people install nosy things. A big number says nothing about the ask."
+      ],
+      "file": "/audio/voice/997a84688f55bc5e.mp3"
+    },
+    {
+      "key": "7d87c329cebb88e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Looking smart is the cheapest part of making an app.",
+      "lines": [
+        "Not quite.",
+        "Looking smart is the cheapest part of making an app."
+      ],
+      "file": "/audio/voice/7d87c329cebb88e9.mp3"
+    },
+    {
+      "key": "ed7c0e2aa0dad3b9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Free and nosy often go together, and plenty of fair apps are free too.",
+      "lines": [
+        "Not quite.",
+        "Free and nosy often go together, and plenty of fair apps are free too."
+      ],
+      "file": "/audio/voice/ed7c0e2aa0dad3b9.mp3"
+    },
+    {
+      "key": "1455681d626142ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Ten on the tag and ten on the receipt. Nothing underneath it, so the tag was telling the truth this time.",
+      "lines": [
+        "That's right!",
+        "Ten on the tag and ten on the receipt. Nothing underneath it, so the tag was telling the truth this time."
+      ],
+      "file": "/audio/voice/1455681d626142ec.mp3"
+    },
+    {
+      "key": "ba0ed4a6dcbc5761",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The tag said ten and the receipt says ten. Nothing to buy first, nothing renewing. This one is honest.",
+      "lines": [
+        "Not quite.",
+        "The tag said ten and the receipt says ten. Nothing to buy first, nothing renewing. This one is honest."
+      ],
+      "file": "/audio/voice/ba0ed4a6dcbc5761.mp3"
+    },
+    {
+      "key": "13b80f9799e18954",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Fifteen on the tag, and it renews every month without asking. That is your whole sixty coins in four months.",
+      "lines": [
+        "That's right!",
+        "Fifteen on the tag, and it renews every month without asking. That is your whole sixty coins in four months."
+      ],
+      "file": "/audio/voice/13b80f9799e18954.mp3"
+    },
+    {
+      "key": "8b53c945fba4b437",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Fifteen coins, then fifteen again next month, and again. The tag showed you one month of a thing that never stops.",
+      "lines": [
+        "Not quite.",
+        "Fifteen coins, then fifteen again next month, and again. The tag showed you one month of a thing that never stops."
+      ],
+      "file": "/audio/voice/8b53c945fba4b437.mp3"
+    },
+    {
+      "key": "eaf81da9977d482d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! One coin each is true and you cannot buy one. The smallest bundle is forty, so forty is the actual price.",
+      "lines": [
+        "That's right!",
+        "One coin each is true and you cannot buy one. The smallest bundle is forty, so forty is the actual price."
+      ],
+      "file": "/audio/voice/eaf81da9977d482d.mp3"
+    },
+    {
+      "key": "d88d22740e9be29c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One coin each is perfectly true. It just is not a thing you can buy. The real price is the smallest bundle they sell.",
+      "lines": [
+        "Not quite.",
+        "One coin each is perfectly true. It just is not a thing you can buy. The real price is the smallest bundle they sell."
+      ],
+      "file": "/audio/voice/d88d22740e9be29c.mp3"
+    },
+    {
+      "key": "ed60dcc0add4b668",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. One coin each is true and useless, because there is no way to buy just one.",
+      "lines": [
+        "Not quite.",
+        "One coin each is true and useless, because there is no way to buy just one."
+      ],
+      "file": "/audio/voice/ed60dcc0add4b668.mp3"
+    },
+    {
+      "key": "78a8100a519a3940",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It does not. You take forty whatever you wanted.",
+      "lines": [
+        "Not quite.",
+        "It does not. You take forty whatever you wanted."
+      ],
+      "file": "/audio/voice/78a8100a519a3940.mp3"
+    },
+    {
+      "key": "eae6aaf068aac808",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The receipt tells you. The smallest bundle is the price.",
+      "lines": [
+        "Not quite.",
+        "The receipt tells you. The smallest bundle is the price."
+      ],
+      "file": "/audio/voice/eae6aaf068aac808.mp3"
+    },
+    {
+      "key": "2e48c1b662ad08d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A badge is a building with a name on it, and anybody can look up where that building is.",
+      "lines": [
+        "That's right!",
+        "A badge is a building with a name on it, and anybody can look up where that building is."
+      ],
+      "file": "/audio/voice/2e48c1b662ad08d3.mp3"
+    },
+    {
+      "key": "f2b1bcc1045f5f1a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The colours belong to the school, not to them, and the colours are not the useful bit.",
+      "lines": [
+        "Not quite.",
+        "The colours belong to the school, not to them, and the colours are not the useful bit."
+      ],
+      "file": "/audio/voice/f2b1bcc1045f5f1a.mp3"
+    },
+    {
+      "key": "80c6db6a911b6173",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A badge names a school. That is the one thing it definitely does.",
+      "lines": [
+        "Not quite.",
+        "A badge names a school. That is the one thing it definitely does."
+      ],
+      "file": "/audio/voice/80c6db6a911b6173.mp3"
+    },
+    {
+      "key": "36d97dd6801386bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A street sign is an address with the number left off, and the school badge fills that in.",
+      "lines": [
+        "That's right!",
+        "A street sign is an address with the number left off, and the school badge fills that in."
+      ],
+      "file": "/audio/voice/36d97dd6801386bd.mp3"
+    },
+    {
+      "key": "eec67891382dcdad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It says nothing about far. It says exactly where, which is much more useful to him.",
+      "lines": [
+        "Not quite.",
+        "It says nothing about far. It says exactly where, which is much more useful to him."
+      ],
+      "file": "/audio/voice/eec67891382dcdad.mp3"
+    },
+    {
+      "key": "985df72ce903a456",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Signs are everywhere and each one names one street. That is the whole point of them.",
+      "lines": [
+        "Not quite.",
+        "Signs are everywhere and each one names one street. That is the whole point of them."
+      ],
+      "file": "/audio/voice/985df72ce903a456.mp3"
+    },
+    {
+      "key": "257e688c148ac206",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The clock is the dangerous half. A place is not much on its own, but a place plus a time is somewhere to wait.",
+      "lines": [
+        "That's right!",
+        "The clock is the dangerous half. A place is not much on its own, but a place plus a time is somewhere to wait."
+      ],
+      "file": "/audio/voice/257e688c148ac206.mp3"
+    },
+    {
+      "key": "9f1f2b3966f0f7a9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The clock says the time, not the age of anything.",
+      "lines": [
+        "Not quite.",
+        "The clock says the time, not the age of anything."
+      ],
+      "file": "/audio/voice/9f1f2b3966f0f7a9.mp3"
+    },
+    {
+      "key": "2fae62f9733d9a97",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A clock on its own is almost nothing. Next to a street sign it is the most useful thing in the photo.",
+      "lines": [
+        "Not quite.",
+        "A clock on its own is almost nothing. Next to a street sign it is the most useful thing in the photo."
+      ],
+      "file": "/audio/voice/2fae62f9733d9a97.mp3"
+    },
+    {
+      "key": "6eb2b6129a5ca2ee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A bus number only runs on one route, so it narrows the town down without anybody meaning it to.",
+      "lines": [
+        "That's right!",
+        "A bus number only runs on one route, so it narrows the town down without anybody meaning it to."
+      ],
+      "file": "/audio/voice/6eb2b6129a5ca2ee.mp3"
+    },
+    {
+      "key": "11e05257c2de6057",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A bus in the background says nothing about anybody's car.",
+      "lines": [
+        "Not quite.",
+        "A bus in the background says nothing about anybody's car."
+      ],
+      "file": "/audio/voice/11e05257c2de6057.mp3"
+    },
+    {
+      "key": "ae357dd0e2e1c2a7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Each numbered bus runs one route, so it quietly narrows down the area.",
+      "lines": [
+        "Not quite.",
+        "Each numbered bus runs one route, so it quietly narrows down the area."
+      ],
+      "file": "/audio/voice/ae357dd0e2e1c2a7.mp3"
+    },
+    {
+      "key": "5c981e79d9469429",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. They are not. It is what can be pieced together from them that matters.",
+      "lines": [
+        "Not quite.",
+        "They are not. It is what can be pieced together from them that matters."
+      ],
+      "file": "/audio/voice/5c981e79d9469429.mp3"
+    },
+    {
+      "key": "e5132d5810d68d55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. It is not the number. Two of these would do it if they were the right two.",
+      "lines": [
+        "Not quite.",
+        "It is not the number. Two of these would do it if they were the right two."
+      ],
+      "file": "/audio/voice/e5132d5810d68d55.mp3"
+    },
+    {
+      "key": "face46ec974f2007",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Inside or outside makes no difference. The clock was indoors.",
+      "lines": [
+        "Not quite.",
+        "Inside or outside makes no difference. The clock was indoors."
+      ],
+      "file": "/audio/voice/face46ec974f2007.mp3"
+    },
+    {
+      "key": "6e5caeea4bbca57f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! All three in the group said yes, so up it goes. Asking is not about expecting a no. It is about actually knowing.",
+      "lines": [
+        "That's right!",
+        "All three in the group said yes, so up it goes. Asking is not about expecting a no. It is about actually knowing."
+      ],
+      "file": "/audio/voice/6e5caeea4bbca57f.mp3"
+    },
+    {
+      "key": "7ae3522f607932ec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Two yeses and one leave me out, so you crop her and post the rest. Everybody got what they asked for.",
+      "lines": [
+        "That's right!",
+        "Two yeses and one leave me out, so you crop her and post the rest. Everybody got what they asked for."
+      ],
+      "file": "/audio/voice/7ae3522f607932ec.mp3"
+    },
+    {
+      "key": "0fe6bd735e5d8fd1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! She asked to be left out and you left her out. No arguing, no persuading, and the photo still goes up.",
+      "lines": [
+        "That's right!",
+        "She asked to be left out and you left her out. No arguing, no persuading, and the photo still goes up."
+      ],
+      "file": "/audio/voice/0fe6bd735e5d8fd1.mp3"
+    },
+    {
+      "key": "5709dc1304c0223d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Listen to what Maya actually asked for. She did not say do not post it. She said crop me out.",
+      "lines": [
+        "Not quite.",
+        "Listen to what Maya actually asked for. She did not say do not post it. She said crop me out."
+      ],
+      "file": "/audio/voice/5709dc1304c0223d.mp3"
+    },
+    {
+      "key": "16915d5edf0a6b67",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Everybody said no and there is an address in it, so it stays on your phone. That was the easiest decision of the night.",
+      "lines": [
+        "That's right!",
+        "Everybody said no and there is an address in it, so it stays on your phone. That was the easiest decision of the night."
+      ],
+      "file": "/audio/voice/16915d5edf0a6b67.mp3"
+    },
+    {
+      "key": "146c07b115a31bb8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! His address is in the picture and he asked you not to. That one does not go anywhere, and you did not need to be talked into it.",
+      "lines": [
+        "That's right!",
+        "His address is in the picture and he asked you not to. That one does not go anywhere, and you did not need to be talked into it."
+      ],
+      "file": "/audio/voice/146c07b115a31bb8.mp3"
+    },
+    {
+      "key": "fd67e87ec1ca1841",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at what is actually visible on that certificate, and at what Ollie asked for.",
+      "lines": [
+        "Not quite.",
+        "Look at what is actually visible on that certificate, and at what Ollie asked for."
+      ],
+      "file": "/audio/voice/fd67e87ec1ca1841.mp3"
+    },
+    {
+      "key": "af2a960a0b2affc3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Ada agreed with Ollie without having to be asked twice, and you did what she said as well.",
+      "lines": [
+        "That's right!",
+        "Ada agreed with Ollie without having to be asked twice, and you did what she said as well."
+      ],
+      "file": "/audio/voice/af2a960a0b2affc3.mp3"
+    },
+    {
+      "key": "a8e9b629c9aed185",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Ada said do not post it. That is the same answer Ollie gave, about the same photo.",
+      "lines": [
+        "Not quite.",
+        "Ada said do not post it. That is the same answer Ollie gave, about the same photo."
+      ],
+      "file": "/audio/voice/a8e9b629c9aed185.mp3"
+    },
+    {
+      "key": "b60a6915bbe73e68",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That is all three of them saying leave it, and you left it. Easiest decision of the night.",
+      "lines": [
+        "That's right!",
+        "That is all three of them saying leave it, and you left it. Easiest decision of the night."
+      ],
+      "file": "/audio/voice/b60a6915bbe73e68.mp3"
+    },
+    {
+      "key": "3979dc74df74bc26",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Sam said leave that one, so that photo stays on your phone with everybody else who said no.",
+      "lines": [
+        "Not quite.",
+        "Sam said leave that one, so that photo stays on your phone with everybody else who said no."
+      ],
+      "file": "/audio/voice/3979dc74df74bc26.mp3"
+    },
+    {
+      "key": "62e88ccc28697dac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. How they look was never the question. They asked, and asking is the whole point of asking.",
+      "lines": [
+        "Not quite.",
+        "How they look was never the question. They asked, and asking is the whole point of asking."
+      ],
+      "file": "/audio/voice/62e88ccc28697dac.mp3"
+    },
+    {
+      "key": "66b6113154b51510",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. They did not say that. Leave me out is a smaller ask than do not post.",
+      "lines": [
+        "Not quite.",
+        "They did not say that. Leave me out is a smaller ask than do not post."
+      ],
+      "file": "/audio/voice/66b6113154b51510.mp3"
+    },
+    {
+      "key": "d8c627286ac84708",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is not asking, that is wearing somebody down. They already answered.",
+      "lines": [
+        "Not quite.",
+        "That is not asking, that is wearing somebody down. They already answered."
+      ],
+      "file": "/audio/voice/d8c627286ac84708.mp3"
     }
   ]
 }

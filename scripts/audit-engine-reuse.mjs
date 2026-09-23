@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -119,6 +119,27 @@ const RETHEME_ALLOWED = {
   19: ["ClueStamper", "FirewallBuilder", "AccountRescue (review)"], // The Kitchen Table (W3/W8 stamper), The Morning After Wall (W4/W10), The Family Rescue Board (W5/W11)
 };
 const RETHEME_MAX = 2;
+
+/**
+ * THE GRADUATION EXEMPTION.
+ *
+ * Week 20 is the capstone and it teaches NO new concepts. Every mission is a
+ * recombination of powers the child already owns, and every engine is one
+ * they have met before, because RECOGNITION IS THE DESIGN: a child who says
+ * "oh, I know this one" is having exactly the experience the week exists to
+ * give them.
+ *
+ * That is the OPPOSITE of a re-theme, which exists to make a familiar
+ * mechanic feel new, so it is declared here by name rather than smuggled
+ * into RETHEME_ALLOWED where it would read as the same thing.
+ *
+ * It is an exemption from the re-theme BUDGET only. The cap of three uses
+ * and the no-neighbour-week rule still apply and the week still honours
+ * both: nothing in it is over cap, and nothing comes from Week 19, so the
+ * recognition is spread across the whole course (weeks 2, 4, 6, 7, 8, 9 and
+ * 12) rather than echoing last week back at the child.
+ */
+const GRADUATION_WEEK = 20;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));
 
 // Screen types that are the spine, not exercises.
@@ -180,7 +201,8 @@ for (const [engine, uses] of rows) {
   // rule 1 (with the explicit re-theme allowance: a later rebuilt week listed in
   // RETHEME_ALLOWED for this engine does not count as a collision, provided the
   // engine is under CAP and the weeks are not neighbours).
-  const rebuiltHits = REBUILT.filter((w) => weeks.includes(w));
+  // The graduation week never counts as a collision: see GRADUATION_WEEK.
+  const rebuiltHits = REBUILT.filter((w) => weeks.includes(w) && w !== GRADUATION_WEEK);
   const allowed = rebuiltHits.filter((w) => allowedEngines(w).includes(engine));
   const counted = rebuiltHits.filter((w) => !allowed.includes(w));
   const neighbourly = allowed.some((w) => weeks.some((o) => o !== w && Math.abs(o - w) === 1));
