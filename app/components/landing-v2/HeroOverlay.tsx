@@ -28,8 +28,14 @@ const HEADLINE_LEAD = "Technology education for ";
 const HEADLINE_ACCENT = "every stage of life.";
 /* Owner 2026-09-22: the old line spent half its length on courses that
    are not out yet. It now says what is live and how it is taught. */
+/* Owner 2026-09-23: the last clause should say that these projects come
+   out of a world AI is changing, not just that they are real. "with the
+   AI tools that are rewriting every industry" is the same claim the
+   promises section already makes further down ("Build real things with
+   real tools, including the AI tools shaping every industry"), so the
+   hero is not promising something the page does not back up. */
 const SUBLINE =
-  "Cyber security taught properly, from age 6 all the way through to adulthood. One platform that grows with the learner, built around real projects.";
+  "Cyber security taught properly, from age 6 all the way through to adulthood. One platform that grows with the learner, built on real projects with the AI tools that are rewriting every industry.";
 
 export default function HeroOverlay() {
   /* The persistent ALGORITHMX wordmark previously rendered here was
