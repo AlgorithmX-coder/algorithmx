@@ -87,10 +87,13 @@ export default function LandingV2() {
          style), and these !important rules were beating it back to the old
          outline pill. */
       .lv2-hero-copy h1, .lv2-hero-copy p { text-shadow: none !important; }
-      /* The scrim exists so the headline reads against a sunset sky. Its
-         own comment warns it would otherwise be a black smudge behind the
-         headline, which is exactly what it becomes on sand. */
-      .lv2-hero-scrim { display: none !important; }
+      /* The scrim is back on. It was switched off when it was still a
+         dark smudge; its colour was repainted to sand in the same batch
+         and the switch was never flipped back, so the hero copy has been
+         sitting straight on the machine's ambient ever since. Measured
+         there, that ground is rgb(120,127,130) and the teal eyebrow on it
+         is 1.41:1. With the scrim lighting the copy column it is paper
+         again. HeroOverlay owns the gradient. */
 
       /* ---- the sand palette ----
          Measured against the ground, every value below at 4.5:1 or better

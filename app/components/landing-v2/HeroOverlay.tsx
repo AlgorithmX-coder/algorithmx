@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { sectionMark } from "@/app/components/sectionMark";
+import { sectionMarkBare } from "@/app/components/sectionMark";
 
 /**
  * HeroOverlay. The static brand UI over the cinematic: eyebrow +
@@ -21,11 +21,21 @@ import { sectionMark } from "@/app/components/sectionMark";
  * stage of life"). Replaced with a mission-grade line that signals
  * the platform's ambition before the headline lands. */
 const EYEBROW = "// SIX TRACKS  ·  SKILLS THE AI ERA NEEDS";
-const HEADLINE = "Technology education for every stage of life.";
+/* Owner 2026-09-23: highlight part of it. The payoff phrase carries the
+   gradient, which is how /schools does it ("...your pupils [teach
+   themselves.]"), and here the payoff is the range itself. */
+const HEADLINE_LEAD = "Technology education for ";
+const HEADLINE_ACCENT = "every stage of life.";
 /* Owner 2026-09-22: the old line spent half its length on courses that
    are not out yet. It now says what is live and how it is taught. */
+/* Owner 2026-09-23: the last clause should say that these projects come
+   out of a world AI is changing, not just that they are real. "with the
+   AI tools that are rewriting every industry" is the same claim the
+   promises section already makes further down ("Build real things with
+   real tools, including the AI tools shaping every industry"), so the
+   hero is not promising something the page does not back up. */
 const SUBLINE =
-  "Cyber security taught properly, from age 6 all the way through to adulthood. One platform that grows with the learner, built around real projects.";
+  "Cyber security taught properly, from age 6 all the way through to adulthood. One platform that grows with the learner, built on real projects with the AI tools that are rewriting every industry.";
 
 export default function HeroOverlay() {
   /* The persistent ALGORITHMX wordmark previously rendered here was
@@ -72,10 +82,18 @@ export default function HeroOverlay() {
         style={{
           position: "absolute",
           inset: 0,
+          /* A left-column wash rather than an ellipse. The ellipse put its
+             strength at the middle of the hero, so the eyebrow at ~16%
+             down sat in its falloff: measured, the ground there only came
+             up to rgb(191,189,185), which is 3.0:1 for the teal label.
+             A horizontal fade is predictable, lights the whole copy
+             column evenly top to bottom, and is clear of the machine by
+             62% across. Measured after: rgb(240,236,229), 4.8:1. */
           background:
-            "radial-gradient(ellipse 46% 52% at 20% 52%, " +
-            "rgba(244,239,231,0.8) 0%, rgba(244,239,231,0.42) 26%, " +
-            "rgba(244,239,231,0) 50%)",
+            "linear-gradient(100deg, " +
+            "rgba(246,241,233,0.97) 0%, rgba(246,241,233,0.94) 26%, " +
+            "rgba(246,241,233,0.72) 42%, rgba(246,241,233,0.26) 54%, " +
+            "rgba(246,241,233,0) 62%)",
           pointerEvents: "none",
         }}
       />
@@ -108,11 +126,19 @@ export default function HeroOverlay() {
         {/* border: none because the class carries an outline pill that the
             solid mark replaces, and the dot has to be paper now that the
             ground under it is the accent rather than the page. */}
-        <span className="lv2-hero-eyebrow" style={{ ...sectionMark, border: "none" }}>
+        {/* Owner 2026-09-23, after the same call on /schools: no card
+            behind it, just the label. inline-flex and the gap stay so the
+            status dot still lays out beside the text, and the dot comes
+            back to teal now that the ground under it is the page rather
+            than the badge. The section marks further down keep theirs. */}
+        <span
+          className="lv2-hero-eyebrow"
+          style={{ ...sectionMarkBare, display: "inline-flex", alignItems: "center", gap: 10 }}
+        >
           <span
             aria-hidden
             className="lv2-hero-eyebrow-dot"
-            style={{ background: "#fffdfa", boxShadow: "none" }}
+            style={{ background: "#0a7085", boxShadow: "none" }}
           />
           {EYEBROW}
         </span>
@@ -137,7 +163,13 @@ export default function HeroOverlay() {
             MozOsxFontSmoothing: "grayscale",
           }}
         >
-          {HEADLINE}
+          {HEADLINE_LEAD}
+          {/* text-shadow off: the h1 carries a white glow for legibility,
+              and on transparent gradient-clipped text that glow paints
+              straight through the letterforms as a white smear. */}
+          <span className="lv2-grad" style={{ textShadow: "none" }}>
+            {HEADLINE_ACCENT}
+          </span>
         </h1>
 
         <p
@@ -217,6 +249,16 @@ export default function HeroOverlay() {
         text-transform: uppercase;
         color: #b8f4ff;
         text-shadow: 0 0 14px rgba(0, 229, 255, 0.55);
+      }
+      /* The same three sand accents /schools uses, in the same order, so
+         the two pages highlight with one voice. Each stop clears 4.5:1 on
+         the ground on its own, and the headline is far past large-text
+         size, where 3:1 is the bar. */
+      .lv2-grad {
+        background: linear-gradient(92deg, #0a7085 0%, #5744c9 55%, #a5117f 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
       .lv2-hero-eyebrow-dot {
         width: 7px;
