@@ -472,6 +472,19 @@ function chainsFor(type, span) {
       }
     }
   }
+  // Week 16 engines (rebuilt 2026-09-23).
+  if (type === "stickerPeel" || type === "glassCheck" || type === "keyholeCheck") {
+    // each poster / door: the read-aloud as it arrives -> the why on the right
+    // call; the teach answers that same read-aloud.
+    const noun = type === "stickerPeel" ? "sticker peel" : type === "glassCheck" ? "glass check" : "keyhole check";
+    for (const p of span.split(/\breadAloud:\s*(?=")/).slice(1)) {
+      const readAloud = (p.match(new RegExp("^" + STR)) || [])[1] || "";
+      if (!readAloud) continue;
+      const why = field(p, "why"), expl = field(p, "explanation");
+      if (why) chains.push({ name: noun + ": " + un(readAloud).slice(0, 40), mode: "chain", beats: [readAloud, why] });
+      if (expl) chains.push({ name: noun + ": " + un(readAloud).slice(0, 40) + " (teach)", mode: "branch", beats: [readAloud], branches: [expl] });
+    }
+  }
   // Week 14 engines (rebuilt 2026-09-22).
   if (type === "speakerDiary" || type === "lensCheck") {
     // each entry / corner: the read-aloud as it opens -> the right item's why; a

@@ -21,7 +21,7 @@ const strict = args.includes("--strict");
 const planWeek = Number((args.find((a) => a.startsWith("--week=")) || "").split("=")[1] || 0);
 
 // Weeks rebuilt to the Learn-Loop standard, in build order. Append as weeks ship.
-const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+const REBUILT = [15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16];
 const CAP = 3;
 // Re-theme allowance (Weeks 5-10 design, option B, OWNER DECIDED 2026-09-17
 // for W8-W10 as well): once the wired library is exhausted, a rebuilt week may re-theme
@@ -74,6 +74,11 @@ const RETHEME_ALLOWED = {
   // can be won without recalling one. SignBingo is W1 + W6, so this is its third
   // and final use of the twenty weeks.
   14: ["SignBingo (review)"], // The Scout's Check-Card (W1 vault, W6 arcade card)
+  // W16's signature is CONVERTED but RE-VERBED: keyholeCheck used to flash the
+  // one disagreeing tooth on a copycat key, and "spot the one difference in a
+  // lookalike" is already W4, W9 and W14. It now asks whether the sender is on
+  // the keyring at all: possession, not comparison.
+  16: ["PhishInspector", "PopupPanic", "TeamPoster (review)"], // The Address Plate (W4 carnival), The Barrier (W3 popups), The Power Poster (W3 team)
 };
 const RETHEME_MAX = 2;
 const allowedEngines = (wk) => (RETHEME_ALLOWED[wk] || []).map((e) => e.replace(/\s*\(review\)$/, ""));

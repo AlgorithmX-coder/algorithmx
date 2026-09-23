@@ -189,6 +189,23 @@ const ENGINES = {
         : { label: "  wrong move " + (fld(o, "label") ?? ""), right: null, wrong: fld(o, "explanation"), only: "wrong" },
     ),
   ),
+  // Week 16 engines (2026-09-23). Each item carries both sides: the same tap
+  // can be right or wrong depending on what the child called it.
+  stickerPeel: (span) => objs(span, "spots").map((s) => ({
+    label: "poster " + (fld(s, "place") ?? ""),
+    right: fld(s, "why"),
+    wrong: fld(s, "explanation"),
+  })),
+  glassCheck: (span) => objs(span, "doors").map((d) => ({
+    label: "door " + (fld(d, "id") ?? ""),
+    right: fld(d, "why"),
+    wrong: fld(d, "explanation"),
+  })),
+  keyholeCheck: (span) => objs(span, "doors").map((d) => ({
+    label: "door " + (fld(d, "claim") ?? ""),
+    right: fld(d, "why"),
+    wrong: fld(d, "explanation"),
+  })),
   // Week 14 engines (2026-09-22). Each item speaks exactly ONE side, so map it
   // that way: a reason in the wrong field is silent even when the field is full.
   speakerDiary: (span) => objs(span, "entries").flatMap((e) =>

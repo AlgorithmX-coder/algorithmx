@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T21:56:49.620Z",
+  "generatedAt": "2026-09-23T09:19:47.236Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -12440,36 +12440,6 @@
       "file": "/audio/voice/2c617f63bc579ecb.mp3"
     },
     {
-      "key": "ad304073f4cc648f",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Welcome, hero, to your very first challenge: the Proof Scale! This game is all about telling a REAL fact from a made-up one. Out in the real world, people and even robots say things that sound true but aren't, so we learn to check for proof. Here is what you do. On the left, the robot makes a claim. Tap it onto the scale. Then find the proof book that shows it's real, and tap it. The book weighs it down: that one is true! [whispers] But if no book proves it anywhere? Then it's made up. Slam the big red NO PROOF button! [warmly] Get this right and you can check anything is true, all by yourself. Ready? Let's weigh the truth!",
-      "lines": [
-        "[warmly] Welcome, hero, to your very first challenge: the Proof Scale!",
-        "This game is all about telling a REAL fact from a made-up one.",
-        "Out in the real world, people and even robots say things that sound true but aren't, so we learn to check for proof.",
-        "Here is what you do. On the left, the robot makes a claim. Tap it onto the scale.",
-        "Then find the proof book that shows it's real, and tap it. The book weighs it down: that one is true!",
-        "[whispers] But if no book proves it anywhere? Then it's made up. Slam the big red NO PROOF button!",
-        "[warmly] Get this right and you can check anything is true, all by yourself. Ready? Let's weigh the truth!"
-      ],
-      "file": "/audio/voice/ad304073f4cc648f.mp3"
-    },
-    {
-      "key": "fbe765527c558e29",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] Amazing work, fact checker! You did it! You checked every claim against real proof, just like a pro. [warmly] Now you can fact check anything, all by yourself. When something online sounds super sure, remember to ask: where's the proof? [warmly] Carry that with you in the real world. I'm so proud of you!",
-      "lines": [
-        "[excited] Amazing work, fact checker! You did it!",
-        "You checked every claim against real proof, just like a pro.",
-        "[warmly] Now you can fact check anything, all by yourself.",
-        "When something online sounds super sure, remember to ask: where's the proof?",
-        "[warmly] Carry that with you in the real world. I'm so proud of you!"
-      ],
-      "file": "/audio/voice/fbe765527c558e29.mp3"
-    },
-    {
       "key": "a362364a378a2a49",
       "speaker": "layla",
       "voice": "Sarah",
@@ -13971,26 +13941,6 @@
       "file": "/audio/voice/9ed8a5636396f4b3.mp3"
     },
     {
-      "key": "c5d5f33c5eaec75a",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[warmly] Let's do the very first one together. Tap the robot's claim to pop it onto the scale!",
-      "lines": [
-        "[warmly] Let's do the very first one together. Tap the robot's claim to pop it onto the scale!"
-      ],
-      "file": "/audio/voice/c5d5f33c5eaec75a.mp3"
-    },
-    {
-      "key": "08a7541672bb85ac",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Now, look at the proof books up top. If one proves it, tap that book. If NO book proves it, slam the big red NO PROOF button!",
-      "lines": [
-        "Now, look at the proof books up top. If one proves it, tap that book. If NO book proves it, slam the big red NO PROOF button!"
-      ],
-      "file": "/audio/voice/08a7541672bb85ac.mp3"
-    },
-    {
       "key": "5aeb4c85e0655ffe",
       "speaker": "adam",
       "voice": "Sarah",
@@ -14021,429 +13971,1876 @@
       "file": "/audio/voice/8cbd2d9643dd33ce.mp3"
     },
     {
-      "key": "c8d164f81b1d41f8",
+      "key": "e23a7824ad984018",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Drag your trusted key onto each door in the maze! Check every tooth to see if the patterns match. All green means unlock it. One red tooth? Chain it shut!",
+      "text": "[warmly] Welcome to the Doorway Maze, Cyber Hero. Doors as far as you can see. Every link you tap and every code you scan is one of these. A door. [thinking] And here is the thing about a door. The sign on it was painted by whoever put it there. A door can say FREE PUPPIES in beautiful letters and open straight onto a broom cupboard. So we never judge a door by its sign. We read the little address plate instead. [excited] Let's go and inspect some plates together!",
       "lines": [
-        "[excited] Drag your trusted key onto each door in the maze!",
-        "Check every tooth to see if the patterns match.",
-        "All green means unlock it. One red tooth? Chain it shut!"
+        "[warmly] Welcome to the Doorway Maze, Cyber Hero. Doors as far as you can see.",
+        "Every link you tap and every code you scan is one of these. A door.",
+        "[thinking] And here is the thing about a door. The sign on it was painted by whoever put it there.",
+        "A door can say FREE PUPPIES in beautiful letters and open straight onto a broom cupboard.",
+        "So we never judge a door by its sign. We read the little address plate instead.",
+        "[excited] Let's go and inspect some plates together!"
       ],
-      "file": "/audio/voice/c8d164f81b1d41f8.mp3"
+      "file": "/audio/voice/e23a7824ad984018.mp3"
     },
     {
-      "key": "c5081ae6f3aa96c5",
+      "key": "09670c70deb49f84",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Week sixteen - the doorway week! Every link is a door to somewhere else. But the sign on the door? It can say ANYTHING. A QR code is just a door made of dots. [warmly] The builder picks where it goes - not the sign. [excited] Four doors ahead. Swing them open and SEE!",
+      "text": "[excited] Here is your first challenge, Cyber Hero. The Address Plate! This game is all about reading where a door really goes. Out in the real world, the sign is the loud bit and the plate is the true bit. So here is what you do. A door comes up with a sign on it and a little brass plate underneath. Tap all four clues to look at them, and I will read each one out. [warmly] Then decide: WALK THROUGH, or TURN IT AWAY. Four doors. Off you go.",
       "lines": [
-        "[excited] Week sixteen - the doorway week!",
-        "Every link is a door to somewhere else.",
-        "But the sign on the door? It can say ANYTHING.",
-        "A QR code is just a door made of dots.",
-        "[warmly] The builder picks where it goes - not the sign.",
-        "[excited] Four doors ahead. Swing them open and SEE!"
+        "[excited] Here is your first challenge, Cyber Hero. The Address Plate!",
+        "This game is all about reading where a door really goes.",
+        "Out in the real world, the sign is the loud bit and the plate is the true bit.",
+        "So here is what you do.",
+        "A door comes up with a sign on it and a little brass plate underneath.",
+        "Tap all four clues to look at them, and I will read each one out.",
+        "[warmly] Then decide: WALK THROUGH, or TURN IT AWAY. Four doors. Off you go."
       ],
-      "file": "/audio/voice/c5081ae6f3aa96c5.mp3"
+      "file": "/audio/voice/09670c70deb49f84.mp3"
     },
     {
-      "key": "4a7eb7bb1f9c3491",
+      "key": "c4a869d5208cc51a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The Door Swing - four doors, four signs! Every sign makes a promise. [whispers] Swing each door open... and see if the promise was TRUE. Go!",
+      "text": "Tap all four clues on the door, then choose WALK THROUGH or TURN IT AWAY.",
       "lines": [
-        "[excited] The Door Swing - four doors, four signs!",
-        "Every sign makes a promise.",
-        "[whispers] Swing each door open...",
-        "and see if the promise was TRUE. Go!"
+        "Tap all four clues on the door, then choose WALK THROUGH or TURN IT AWAY."
       ],
-      "file": "/audio/voice/4a7eb7bb1f9c3491.mp3"
+      "file": "/audio/voice/c4a869d5208cc51a.mp3"
     },
     {
-      "key": "cab2abc78129504f",
+      "key": "f84fbcaf8694087c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Tap any door to swing it open - where does it REALLY go?",
+      "text": "[proud] Four doors read, Cyber Hero, and you never once went by the sign. Your school and the library opened. The tablet and the coins did not. [warmly] And the two you turned away had the prettiest signs of the lot.",
       "lines": [
-        "Tap any door to swing it open - where does it REALLY go?"
+        "[proud] Four doors read, Cyber Hero, and you never once went by the sign.",
+        "Your school and the library opened. The tablet and the coins did not.",
+        "[warmly] And the two you turned away had the prettiest signs of the lot."
       ],
-      "file": "/audio/voice/cab2abc78129504f.mp3"
+      "file": "/audio/voice/f84fbcaf8694087c.mp3"
     },
     {
-      "key": "12531875b9aa9969",
+      "key": "ec7d3a77d5ab2158",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Power one - you've seen behind the paint! Signs promise. Builders decide. [whispers] But every door hides a little plaque with the TRUTH on it... Time to learn the Door Checker's peek.",
+      "text": "[proud] That's it! The sign tells you what somebody WANTS you to think. It never tells you where the door goes. [warmly] Only the address plate does that.",
       "lines": [
-        "[excited] Power one - you've seen behind the paint!",
-        "Signs promise. Builders decide.",
-        "[whispers] But every door hides a little plaque with the TRUTH on it...",
-        "Time to learn the Door Checker's peek."
+        "[proud] That's it!",
+        "The sign tells you what somebody WANTS you to think.",
+        "It never tells you where the door goes.",
+        "[warmly] Only the address plate does that."
       ],
-      "file": "/audio/voice/12531875b9aa9969.mp3"
+      "file": "/audio/voice/ec7d3a77d5ab2158.mp3"
     },
     {
-      "key": "8c55927e3eb11d69",
+      "key": "bbaa63d7f8299adc",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[whispers] Come close - the Door Checker's secret. Under every shiny sign hides a little plaque. The ADDRESS. The door's true name. Paint can lie. The plaque can't. [warmly] Sign and plaque should say the SAME thing. [excited] Five doors in the corridor - lift every plaque!",
+      "text": "[proud] One power down, Cyber Hero. You read plates now, not paint. A sign is a promise. An address is a fact. [whispers] But plenty of doors do not even have a plate you can read... Next, we'll learn how a Door Checker knows which doors are theirs. Come and see!",
       "lines": [
-        "[whispers] Come close - the Door Checker's secret.",
-        "Under every shiny sign hides a little plaque.",
-        "The ADDRESS. The door's true name.",
-        "Paint can lie. The plaque can't.",
-        "[warmly] Sign and plaque should say the SAME thing.",
-        "[excited] Five doors in the corridor - lift every plaque!"
+        "[proud] One power down, Cyber Hero. You read plates now, not paint.",
+        "A sign is a promise. An address is a fact.",
+        "[whispers] But plenty of doors do not even have a plate you can read...",
+        "Next, we'll learn how a Door Checker knows which doors are theirs. Come and see!"
       ],
-      "file": "/audio/voice/8c55927e3eb11d69.mp3"
+      "file": "/audio/voice/bbaa63d7f8299adc.mp3"
     },
     {
-      "key": "b49a5d36a8051c00",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] The corridor of doors is open! Every sign makes its promise... [whispers] but the truth hides under the plaque. Lift it. Read it. Make the call!",
-      "lines": [
-        "[excited] The corridor of doors is open!",
-        "Every sign makes its promise...",
-        "[whispers] but the truth hides under the plaque.",
-        "Lift it. Read it. Make the call!"
-      ],
-      "file": "/audio/voice/b49a5d36a8051c00.mp3"
-    },
-    {
-      "key": "0516a2c77c63b57e",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Tap the glowing plaque first - the real address hides underneath!",
-      "lines": [
-        "Tap the glowing plaque first - the real address hides underneath!"
-      ],
-      "file": "/audio/voice/0516a2c77c63b57e.mp3"
-    },
-    {
-      "key": "d133a9b612b54398",
+      "key": "d5e32ff2eaca6023",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Two powers - no plaque escapes that peek! Paint lies. Addresses don't. [whispers] But the Raccoon's newest trick lives in the REAL world... He's been busy with a sticker sheet. Come see.",
+      "text": "[warmly] Now for the Door Checker's real tool, Cyber Hero. It is simpler than you think. You carry a keyring. On it are the people and places you actually know. Your mum. Your school. The library. Your football club. [thinking] A door claims to be from somebody. You look at your ring. Not on the ring? Then there is no key for that door, and the paint does not matter. [excited] Come and try the ring on a few doors!",
       "lines": [
-        "[excited] Two powers - no plaque escapes that peek!",
-        "Paint lies. Addresses don't.",
-        "[whispers] But the Raccoon's newest trick lives in the REAL world...",
-        "He's been busy with a sticker sheet. Come see."
+        "[warmly] Now for the Door Checker's real tool, Cyber Hero. It is simpler than you think.",
+        "You carry a keyring. On it are the people and places you actually know.",
+        "Your mum. Your school. The library. Your football club.",
+        "[thinking] A door claims to be from somebody. You look at your ring.",
+        "Not on the ring? Then there is no key for that door, and the paint does not matter.",
+        "[excited] Come and try the ring on a few doors!"
       ],
-      "file": "/audio/voice/d133a9b612b54398.mp3"
+      "file": "/audio/voice/d5e32ff2eaca6023.mp3"
     },
     {
-      "key": "256e9cc33a6edd8b",
+      "key": "b3190ce4b7d71182",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] The Raccoon bought a sticker sheet... He prints his OWN dot-doors, and pastes them over real ones. On menus. On posters. [warmly] So here's the peel test: look at the corner. Printed codes are flat. Stickers have edges. [excited] Eight codes coming - peel the fakes OFF!",
+      "text": "[excited] Your second challenge, Cyber Hero. Your Keyring! This game is all about whether a door belongs to somebody you actually know. Out in the real world, that one question sorts almost every door there is. So here is what you do. A door slides in and says who it is from. Your keyring sits underneath it. Tap the key that matches, or tap the NO KEY tag at the end of the ring. [warmly] Then press the big button to commit. Five doors. Off you go.",
       "lines": [
-        "[whispers] The Raccoon bought a sticker sheet...",
-        "He prints his OWN dot-doors,",
-        "and pastes them over real ones. On menus. On posters.",
-        "[warmly] So here's the peel test: look at the corner.",
-        "Printed codes are flat. Stickers have edges.",
-        "[excited] Eight codes coming - peel the fakes OFF!"
+        "[excited] Your second challenge, Cyber Hero. Your Keyring!",
+        "This game is all about whether a door belongs to somebody you actually know.",
+        "Out in the real world, that one question sorts almost every door there is.",
+        "So here is what you do.",
+        "A door slides in and says who it is from. Your keyring sits underneath it.",
+        "Tap the key that matches, or tap the NO KEY tag at the end of the ring.",
+        "[warmly] Then press the big button to commit. Five doors. Off you go."
       ],
-      "file": "/audio/voice/256e9cc33a6edd8b.mp3"
+      "file": "/audio/voice/b3190ce4b7d71182.mp3"
     },
     {
-      "key": "59c44a024ccf8d6f",
+      "key": "a91e0a1d31dd6e8e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The Sticker Peel - posters incoming! One code at a time. Check the corner. Printed flat? It stays. [whispers] Sticker tells? PEEL it off. Go!",
+      "text": "Tap the key that matches the door, or tap NO KEY if nobody on your ring fits. Then press the button underneath: it says OPEN IT for a key, and CHAIN IT for no key.",
       "lines": [
-        "[excited] The Sticker Peel - posters incoming!",
-        "One code at a time. Check the corner.",
-        "Printed flat? It stays.",
-        "[whispers] Sticker tells? PEEL it off. Go!"
+        "Tap the key that matches the door, or tap NO KEY if nobody on your ring fits.",
+        "Then press the button underneath: it says OPEN IT for a key, and CHAIN IT for no key."
       ],
-      "file": "/audio/voice/59c44a024ccf8d6f.mp3"
+      "file": "/audio/voice/a91e0a1d31dd6e8e.mp3"
     },
     {
-      "key": "9a3186b536e64d82",
+      "key": "3fa23fd314a2b9ec",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "First code is here - flat and printed, or crooked sticker? Make the call!",
+      "text": "[proud] Every door checked, Cyber Hero, and notice what you did NOT do. You did not chain the lot. Mum's opened, and so did your school's. [warmly] The ring is not about saying no. It is about knowing whose door it is.",
       "lines": [
-        "First code is here - flat and printed, or crooked sticker? Make the call!"
+        "[proud] Every door checked, Cyber Hero, and notice what you did NOT do.",
+        "You did not chain the lot. Mum's opened, and so did your school's.",
+        "[warmly] The ring is not about saying no. It is about knowing whose door it is."
       ],
-      "file": "/audio/voice/9a3186b536e64d82.mp3"
+      "file": "/audio/voice/3fa23fd314a2b9ec.mp3"
     },
     {
-      "key": "dd4e0422e9b9a9b5",
+      "key": "23533024181dd618",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three powers - his sticker sheet is USELESS now! Corners checked, fakes peeled. [whispers] But some doors are made of glass... and only SOME of them let you see through. Come look.",
+      "text": "[proud] Exactly right! You never have to prove a door is bad. It has to show you it belongs to somebody on your ring. [warmly] That is a much easier job, and it catches the tidy fakes too.",
       "lines": [
-        "[excited] Three powers - his sticker sheet is USELESS now!",
-        "Corners checked, fakes peeled.",
-        "[whispers] But some doors are made of glass...",
-        "and only SOME of them let you see through. Come look."
+        "[proud] Exactly right!",
+        "You never have to prove a door is bad.",
+        "It has to show you it belongs to somebody on your ring.",
+        "[warmly] That is a much easier job, and it catches the tidy fakes too."
       ],
-      "file": "/audio/voice/dd4e0422e9b9a9b5.mp3"
+      "file": "/audio/voice/23533024181dd618.mp3"
     },
     {
-      "key": "2cc31c1084f2aa66",
+      "key": "248c2f9c8af175aa",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Two glass doors, side by side. One is CLEAR - you can read its whole address. One is FROSTED - bit-dot-ly-something-scrambled. Where does the frosted one go? Nobody can tell. [whispers] And Door Checkers never walk what they can't check. [excited] Three door pairs coming - pick the clear glass!",
+      "text": "[proud] Two powers, Cyber Hero. The ring does the hard work for you. On the ring, fine. Not on the ring, no key. [whispers] Now. What if somebody covered up a REAL code with their own... Next, we'll learn the sticker trick. Come and see!",
       "lines": [
-        "[warmly] Two glass doors, side by side.",
-        "One is CLEAR - you can read its whole address.",
-        "One is FROSTED - bit-dot-ly-something-scrambled.",
-        "Where does the frosted one go? Nobody can tell.",
-        "[whispers] And Door Checkers never walk what they can't check.",
-        "[excited] Three door pairs coming - pick the clear glass!"
+        "[proud] Two powers, Cyber Hero. The ring does the hard work for you.",
+        "On the ring, fine. Not on the ring, no key.",
+        "[whispers] Now. What if somebody covered up a REAL code with their own...",
+        "Next, we'll learn the sticker trick. Come and see!"
       ],
-      "file": "/audio/voice/2cc31c1084f2aa66.mp3"
+      "file": "/audio/voice/248c2f9c8af175aa.mp3"
     },
     {
-      "key": "76317f688dde92e6",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] The glass corridor - three door pairs! Clear glass shows its whole address. Frosted glass hides everything. [whispers] Tap only what you can SEE through. Go!",
-      "lines": [
-        "[excited] The glass corridor - three door pairs!",
-        "Clear glass shows its whole address.",
-        "Frosted glass hides everything.",
-        "[whispers] Tap only what you can SEE through. Go!"
-      ],
-      "file": "/audio/voice/76317f688dde92e6.mp3"
-    },
-    {
-      "key": "c593a36386bee570",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Read each door's address - tap the one you can read all the way to the end!",
-      "lines": [
-        "Read each door's address - tap the one you can read all the way to the end!"
-      ],
-      "file": "/audio/voice/c593a36386bee570.mp3"
-    },
-    {
-      "key": "32c687d144e12b3d",
+      "key": "63b9e693ed430be2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Four powers - frosted glass can't fool you! See through it or don't walk through it. [warmly] One power left, and it's the one that keeps heroes safe forever: what to do when you simply CAN'T tell. Almost there.",
+      "text": "[warmly] This one happens out in the world, Cyber Hero. Not on a screen at all. A cafe prints a code on its menu. Somebody sticks their own code right on top of it. [thinking] And here is the bit that matters. You cannot spot that by staring. A good sticker lies perfectly flat. Looking harder will not help you. So we do not look. We TEST. Press a corner, and see whether it lifts. [excited] Come and run some peel tests with me!",
       "lines": [
-        "[excited] Four powers - frosted glass can't fool you!",
-        "See through it or don't walk through it.",
-        "[warmly] One power left, and it's the one that keeps heroes safe forever:",
-        "what to do when you simply CAN'T tell. Almost there."
+        "[warmly] This one happens out in the world, Cyber Hero. Not on a screen at all.",
+        "A cafe prints a code on its menu. Somebody sticks their own code right on top of it.",
+        "[thinking] And here is the bit that matters. You cannot spot that by staring.",
+        "A good sticker lies perfectly flat. Looking harder will not help you.",
+        "So we do not look. We TEST. Press a corner, and see whether it lifts.",
+        "[excited] Come and run some peel tests with me!"
       ],
-      "file": "/audio/voice/32c687d144e12b3d.mp3"
+      "file": "/audio/voice/63b9e693ed430be2.mp3"
     },
     {
-      "key": "0628d6ee34d4bda4",
+      "key": "191a0284dc00b902",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Last power - and it's the kindest one. Some doors just can't be checked. No plaque. No clear glass. Just promises. [whispers] So wheel the barrier in front. Don't tap. Call your grown-up. Check it together. [excited] Three mystery doors coming - show me the barrier!",
+      "text": "[excited] Your third challenge, Cyber Hero. The Peel Test! This game is all about testing a code instead of staring at it. Out in the real world, a good sticker looks exactly as flat as printed ink. So here is what you do. A code comes up on a poster or a menu. Tap PEEL TEST to press its corner. Then tap PRINTED ON, or tap IT LIFTED. [warmly] Four codes to test. Thumbs at the ready.",
       "lines": [
-        "[warmly] Last power - and it's the kindest one.",
-        "Some doors just can't be checked.",
-        "No plaque. No clear glass. Just promises.",
-        "[whispers] So wheel the barrier in front. Don't tap.",
-        "Call your grown-up. Check it together.",
-        "[excited] Three mystery doors coming - show me the barrier!"
+        "[excited] Your third challenge, Cyber Hero. The Peel Test!",
+        "This game is all about testing a code instead of staring at it.",
+        "Out in the real world, a good sticker looks exactly as flat as printed ink.",
+        "So here is what you do.",
+        "A code comes up on a poster or a menu. Tap PEEL TEST to press its corner.",
+        "Then tap PRINTED ON, or tap IT LIFTED.",
+        "[warmly] Four codes to test. Thumbs at the ready."
       ],
-      "file": "/audio/voice/0628d6ee34d4bda4.mp3"
+      "file": "/audio/voice/191a0284dc00b902.mp3"
     },
     {
-      "key": "0f689698b811572c",
+      "key": "4711c7a0d62255d4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] Three doors. No plaques. Big promises. Remember: unsure means DON'T. Wheel the barrier, call your grown-up - [excited] and show me Door Checker form! Go!",
+      "text": "Tap PEEL TEST first, then make your call.",
       "lines": [
-        "[whispers] Three doors. No plaques. Big promises.",
-        "Remember: unsure means DON'T.",
-        "Wheel the barrier, call your grown-up -",
-        "[excited] and show me Door Checker form! Go!"
+        "Tap PEEL TEST first, then make your call."
       ],
-      "file": "/audio/voice/0f689698b811572c.mp3"
+      "file": "/audio/voice/4711c7a0d62255d4.mp3"
     },
     {
-      "key": "86e365e0836ee044",
+      "key": "d7654dee0cb583bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every code tested, Cyber Hero, and look how you did it. You did not squint at a single one. You pressed a corner and found out. [warmly] Two of those were stickers, and neither of them looked like one.",
+      "lines": [
+        "[proud] Every code tested, Cyber Hero, and look how you did it.",
+        "You did not squint at a single one. You pressed a corner and found out.",
+        "[warmly] Two of those were stickers, and neither of them looked like one."
+      ],
+      "file": "/audio/voice/d7654dee0cb583bf.mp3"
+    },
+    {
+      "key": "1c6b9938813c42bd",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Door Checker! Doors seen through, plaques peeked, stickers peeled, clear glass picked... and the barrier rule locked in. [whispers] One last corridor walk... [excited] then we shut his paint shop for GOOD!",
+      "text": "[proud] Got him! If stickers looked crooked and bubbly, nobody would ever fall for one. The good ones are flat and tidy. That is why they work. [warmly] Which is why we press, instead of peering.",
       "lines": [
-        "[excited] That's all FIVE powers, Door Checker!",
-        "Doors seen through, plaques peeked, stickers peeled,",
-        "clear glass picked... and the barrier rule locked in.",
-        "[whispers] One last corridor walk...",
-        "[excited] then we shut his paint shop for GOOD!"
+        "[proud] Got him!",
+        "If stickers looked crooked and bubbly, nobody would ever fall for one.",
+        "The good ones are flat and tidy. That is why they work.",
+        "[warmly] Which is why we press, instead of peering."
       ],
-      "file": "/audio/voice/86e365e0836ee044.mp3"
+      "file": "/audio/voice/1c6b9938813c42bd.mp3"
     },
     {
-      "key": "f32e493af6165e8b",
+      "key": "94acbcf4ea1c8a71",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The Corridor Check - final walk! Doorway moments are drifting past. SAFE DOORWAY for Door Checker form... [warmly] TRICK DOORWAY for painted traps. Stamp them all!",
+      "text": "[proud] Three powers, Cyber Hero. Thumb beats eyeball. Flat and tidy proves nothing at all. Only the peel does. [whispers] Although... some doors cannot be read even when nobody has stuck anything on them... Next, we'll learn about clear glass and frosted glass. Come and see!",
       "lines": [
-        "[excited] The Corridor Check - final walk!",
-        "Doorway moments are drifting past.",
-        "SAFE DOORWAY for Door Checker form...",
-        "[warmly] TRICK DOORWAY for painted traps. Stamp them all!"
+        "[proud] Three powers, Cyber Hero. Thumb beats eyeball.",
+        "Flat and tidy proves nothing at all. Only the peel does.",
+        "[whispers] Although... some doors cannot be read even when nobody has stuck anything on them...",
+        "Next, we'll learn about clear glass and frosted glass. Come and see!"
       ],
-      "file": "/audio/voice/f32e493af6165e8b.mp3"
+      "file": "/audio/voice/94acbcf4ea1c8a71.mp3"
     },
     {
-      "key": "a38fed1ef8ca06f2",
+      "key": "e79f3981f796bf49",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! Doors seen through, plaques peeked, stickers peeled, clear glass picked... and the barrier rule ready. [laughs] His paint shop just went out of business. [excited] Sticker time, Door Checker!",
+      "text": "[warmly] Some of these doors have clear glass, Cyber Hero. Some have frosted. A link is clear glass. It shows you its address, so you can read where it goes. [thinking] A code is frosted. It is a pattern for a machine, and no person can read it. Not you. Not me. Not your teacher. Nobody. So the honest answer for a frosted door is always the same, and it is not giving up. [excited] Let's go and try some panes for ourselves, the clear ones and the frosted. You'll see what I mean!",
+      "lines": [
+        "[warmly] Some of these doors have clear glass, Cyber Hero. Some have frosted.",
+        "A link is clear glass. It shows you its address, so you can read where it goes.",
+        "[thinking] A code is frosted. It is a pattern for a machine, and no person can read it.",
+        "Not you. Not me. Not your teacher. Nobody.",
+        "So the honest answer for a frosted door is always the same, and it is not giving up.",
+        "[excited] Let's go and try some panes for ourselves, the clear ones and the frosted. You'll see what I mean!"
+      ],
+      "file": "/audio/voice/e79f3981f796bf49.mp3"
+    },
+    {
+      "key": "f120ea3bb5e97123",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Fourth challenge, Cyber Hero. Clear Glass, Frosted Glass! This game is all about knowing when you CAN read a door and when you honestly cannot. Out in the real world, a link shows its address and a code shows a pattern. So here is what you do. A door slides in with a pane. If there are words on it, read them. Then tap SAFE TO WALK, or NOT THIS ONE, or ASK A GROWN-UP. [warmly] And remember: a blank pane is not you failing. Off you go.",
+      "lines": [
+        "[excited] Fourth challenge, Cyber Hero. Clear Glass, Frosted Glass!",
+        "This game is all about knowing when you CAN read a door and when you honestly cannot.",
+        "Out in the real world, a link shows its address and a code shows a pattern.",
+        "So here is what you do.",
+        "A door slides in with a pane. If there are words on it, read them.",
+        "Then tap SAFE TO WALK, or NOT THIS ONE, or ASK A GROWN-UP.",
+        "[warmly] And remember: a blank pane is not you failing. Off you go."
+      ],
+      "file": "/audio/voice/f120ea3bb5e97123.mp3"
+    },
+    {
+      "key": "f9129574ef65ca84",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the pane if it has words, then tap one of the three answers.",
+      "lines": [
+        "Read the pane if it has words, then tap one of the three answers."
+      ],
+      "file": "/audio/voice/f9129574ef65ca84.mp3"
+    },
+    {
+      "key": "e8ce02a2d0ad7c62",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every pane sorted, Cyber Hero, and the frosted ones were the best bit. You did not guess at them. You said the honest thing: I cannot read this one. [warmly] That is not giving up. That is the whole skill.",
+      "lines": [
+        "[proud] Every pane sorted, Cyber Hero, and the frosted ones were the best bit.",
+        "You did not guess at them. You said the honest thing: I cannot read this one.",
+        "[warmly] That is not giving up. That is the whole skill."
+      ],
+      "file": "/audio/voice/e8ce02a2d0ad7c62.mp3"
+    },
+    {
+      "key": "a36ee5c78badbb81",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Perfect order! The sign goes first because it is the part you ignore. Then the pane, then the honest answer about it. [warmly] And only then do you decide what to do.",
+      "lines": [
+        "[proud] Perfect order!",
+        "The sign goes first because it is the part you ignore.",
+        "Then the pane, then the honest answer about it.",
+        "[warmly] And only then do you decide what to do."
+      ],
+      "file": "/audio/voice/a36ee5c78badbb81.mp3"
+    },
+    {
+      "key": "00f77def760ebe2e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Four powers, Cyber Hero, and that fourth one is the grown-up one. Clear glass you read. Frosted glass nobody reads, and you say so. [whispers] Which leaves one last thing. What do you actually DO when you are stuck... Next, we'll wheel out the barrier. Come and see!",
+      "lines": [
+        "[proud] Four powers, Cyber Hero, and that fourth one is the grown-up one.",
+        "Clear glass you read. Frosted glass nobody reads, and you say so.",
+        "[whispers] Which leaves one last thing. What do you actually DO when you are stuck...",
+        "Next, we'll wheel out the barrier. Come and see!"
+      ],
+      "file": "/audio/voice/00f77def760ebe2e.mp3"
+    },
+    {
+      "key": "58e59dd7a2e33a8d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last power, Cyber Hero, and it catches everything the others miss. Sometimes you genuinely cannot tell. The sign is ordinary, the address is half familiar. [thinking] And there is a little voice saying: go on, just tap it and find out. That is exactly when a Door Checker wheels out the barrier. Stop. Do not walk through. Go and get a grown-up. Nothing bad happens while a door waits. [excited] Let's go and practise the barrier together!",
+      "lines": [
+        "[warmly] Last power, Cyber Hero, and it catches everything the others miss.",
+        "Sometimes you genuinely cannot tell. The sign is ordinary, the address is half familiar.",
+        "[thinking] And there is a little voice saying: go on, just tap it and find out.",
+        "That is exactly when a Door Checker wheels out the barrier.",
+        "Stop. Do not walk through. Go and get a grown-up. Nothing bad happens while a door waits.",
+        "[excited] Let's go and practise the barrier together!"
+      ],
+      "file": "/audio/voice/58e59dd7a2e33a8d.mp3"
+    },
+    {
+      "key": "6c24cd51649d5958",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Last challenge of the week, Cyber Hero. The Barrier! This game is all about what you do when you cannot tell. Out in the real world, that little voice saying just tap it is the whole trick. So here is what you do. A door comes up, and I will read out what you can see about it. Tap WALK THROUGH if you can genuinely tell, or BARRIER OUT if you cannot. [warmly] And watch out: two of these you CAN tell about. Off you go.",
+      "lines": [
+        "[excited] Last challenge of the week, Cyber Hero. The Barrier!",
+        "This game is all about what you do when you cannot tell.",
+        "Out in the real world, that little voice saying just tap it is the whole trick.",
+        "So here is what you do.",
+        "A door comes up, and I will read out what you can see about it.",
+        "Tap WALK THROUGH if you can genuinely tell, or BARRIER OUT if you cannot.",
+        "[warmly] And watch out: two of these you CAN tell about. Off you go."
+      ],
+      "file": "/audio/voice/6c24cd51649d5958.mp3"
+    },
+    {
+      "key": "f2abc54a7c17c77b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap WALK THROUGH if you can tell, or BARRIER OUT if you cannot.",
+      "lines": [
+        "Tap WALK THROUGH if you can tell, or BARRIER OUT if you cannot."
+      ],
+      "file": "/audio/voice/f2abc54a7c17c77b.mp3"
+    },
+    {
+      "key": "50843384b8f3314c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[proud] Every door handled, Cyber Hero, and you got the balance exactly right. Barriers on the three you could not tell about. Gran and your club straight through. [warmly] The barrier is not for being scared of doors. It is for being honest about which ones you can read.",
+      "lines": [
+        "[proud] Every door handled, Cyber Hero, and you got the balance exactly right.",
+        "Barriers on the three you could not tell about. Gran and your club straight through.",
+        "[warmly] The barrier is not for being scared of doors. It is for being honest about which ones you can read."
+      ],
+      "file": "/audio/voice/50843384b8f3314c.mp3"
+    },
+    {
+      "key": "519764a1cbd5441d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Straight away! Not sure is not a problem. It is just the barrier's cue. [warmly] And a door that waits cannot do a thing to anybody.",
+      "lines": [
+        "[proud] Straight away!",
+        "Not sure is not a problem. It is just the barrier's cue.",
+        "[warmly] And a door that waits cannot do a thing to anybody."
+      ],
+      "file": "/audio/voice/519764a1cbd5441d.mp3"
+    },
+    {
+      "key": "9b38aff0ee0a655b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Five powers, Cyber Hero. Every single one. Sign ignored, ring checked, corner pressed, pane read, barrier ready. [whispers] So there is one thing left to do with them... Next, you put all five up on the poster at once. Come and see!",
+      "lines": [
+        "[proud] Five powers, Cyber Hero. Every single one.",
+        "Sign ignored, ring checked, corner pressed, pane read, barrier ready.",
+        "[whispers] So there is one thing left to do with them...",
+        "Next, you put all five up on the poster at once. Come and see!"
+      ],
+      "file": "/audio/voice/9b38aff0ee0a655b.mp3"
+    },
+    {
+      "key": "1d0188f44ed8b120",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Time for your review, Cyber Hero. The Power Board! This game is all about knowing which moves a Door Checker actually uses. Out in the real world, plenty of sensible sounding rules are quietly useless. So here is what you do. Nine powers sit in the tray, and only five of them are real. Tap the ones a Door Checker really uses, and they bolt onto the wall. [warmly] Five sockets, nine choices. Off you go!",
+      "lines": [
+        "[excited] Time for your review, Cyber Hero. The Power Board!",
+        "This game is all about knowing which moves a Door Checker actually uses.",
+        "Out in the real world, plenty of sensible sounding rules are quietly useless.",
+        "So here is what you do.",
+        "Nine powers sit in the tray, and only five of them are real.",
+        "Tap the ones a Door Checker really uses, and they bolt onto the wall.",
+        "[warmly] Five sockets, nine choices. Off you go!"
+      ],
+      "file": "/audio/voice/1d0188f44ed8b120.mp3"
+    },
+    {
+      "key": "f2bc0aa2b99ef012",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap a power from the tray to bolt it onto the board. Only five belong.",
+      "lines": [
+        "Tap a power from the tray to bolt it onto the board. Only five belong."
+      ],
+      "file": "/audio/voice/f2bc0aa2b99ef012.mp3"
+    },
+    {
+      "key": "553907c64fd9d7d3",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[proud] Five powers up on the wall, Cyber Hero, and look what you left in the tray. The right logo. A friend of a friend. A neat sticker. A real poster. [warmly] Every one of those sounds sensible, and every one of them trusts the outside of a door. You did not.",
+      "lines": [
+        "[proud] Five powers up on the wall, Cyber Hero, and look what you left in the tray.",
+        "The right logo. A friend of a friend. A neat sticker. A real poster.",
+        "[warmly] Every one of those sounds sensible, and every one of them trusts the outside of a door. You did not."
+      ],
+      "file": "/audio/voice/553907c64fd9d7d3.mp3"
+    },
+    {
+      "key": "9b3e5b18de507150",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Signs ignored, the keyring checked, corners pressed, panes read honestly... and the barrier always ready. [laughs] His whole Doorway Trick just stopped working on you. [excited] Sticker time, Cyber Hero!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Doors seen through, plaques peeked,",
-        "stickers peeled, clear glass picked... and the barrier rule ready.",
-        "[laughs] His paint shop just went out of business.",
-        "[excited] Sticker time, Door Checker!"
+        "Signs ignored, the keyring checked, corners pressed,",
+        "panes read honestly... and the barrier always ready.",
+        "[laughs] His whole Doorway Trick just stopped working on you.",
+        "[excited] Sticker time, Cyber Hero!"
       ],
-      "file": "/audio/voice/a38fed1ef8ca06f2.mp3"
+      "file": "/audio/voice/9b3e5b18de507150.mp3"
     },
     {
-      "key": "fd3bde613f673c5b",
+      "key": "70590a3e54069cd4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A message from a number you don't know: 'You've WON! Claim your prize: bit.ly/w1n-b1g' - a frosted door with no plaque at all...",
+      "text": "A link says WIN A FREE BIKE. What does that tell you about where it goes?",
       "lines": [
-        "A message from a number you don't know: 'You've WON! Claim your prize: bit.ly/w1n-b1g' - a frosted door with no plaque at all..."
+        "A link says WIN A FREE BIKE. What does that tell you about where it goes?"
       ],
-      "file": "/audio/voice/fd3bde613f673c5b.mp3"
+      "file": "/audio/voice/70590a3e54069cd4.mp3"
     },
     {
-      "key": "f6907a9830ac29be",
+      "key": "0614696d50502b15",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A QR sticker on the park gate says 'SCAN FOR FREE ICE CREAM' - shiny, new, and just a little crooked...",
+      "text": "Finish the keyring rule: a door does not have to look bad, it has to...",
       "lines": [
-        "A QR sticker on the park gate says 'SCAN FOR FREE ICE CREAM' - shiny, new, and just a little crooked..."
+        "Finish the keyring rule: a door does not have to look bad, it has to..."
       ],
-      "file": "/audio/voice/f6907a9830ac29be.mp3"
+      "file": "/audio/voice/0614696d50502b15.mp3"
     },
     {
-      "key": "a9b0ad8474a32ef1",
+      "key": "9f6af4f2a93f81d8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your friend forwards a frosted short-link - 's.lol/xk2' - with 'OPEN IT OPEN IT!' underneath...",
+      "text": "The Raccoon is fibbing about his stickers. Which bit is the lie?",
       "lines": [
-        "Your friend forwards a frosted short-link - 's.lol/xk2' - with 'OPEN IT OPEN IT!' underneath..."
+        "The Raccoon is fibbing about his stickers. Which bit is the lie?"
       ],
-      "file": "/audio/voice/a9b0ad8474a32ef1.mp3"
+      "file": "/audio/voice/9f6af4f2a93f81d8.mp3"
     },
     {
-      "key": "7153ce781c85f067",
+      "key": "8e4680dcb82c3d87",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your grown-up checks it: a prize-grab door to nowhere good. The barrier held, the 'prize' stayed a trick, and you never even wobbled.",
+      "text": "Put the Door Checker's look in order.",
       "lines": [
-        "Your grown-up checks it: a prize-grab door to nowhere good. The barrier held, the 'prize' stayed a trick, and you never even wobbled."
+        "Put the Door Checker's look in order."
       ],
-      "file": "/audio/voice/7153ce781c85f067.mp3"
+      "file": "/audio/voice/8e4680dcb82c3d87.mp3"
     },
     {
-      "key": "4a6af872eacd3f58",
+      "key": "f825991d0147ccb9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Hurry-hurry is the oldest paint on the oldest door. Through the frosted glass you go - straight onto the Raccoon's slide. Real prizes never hide behind doors you can't check.",
+      "text": "Quick! You cannot tell about a door. What do you do?",
       "lines": [
-        "Hurry-hurry is the oldest paint on the oldest door. Through the frosted glass you go - straight onto the Raccoon's slide. Real prizes never hide behind doors you can't check."
+        "Quick! You cannot tell about a door. What do you do?"
       ],
-      "file": "/audio/voice/4a6af872eacd3f58.mp3"
+      "file": "/audio/voice/f825991d0147ccb9.mp3"
     },
     {
-      "key": "aabde6afe8efcbc1",
+      "key": "bf62432a82593d5c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Peel test says sticker, promise says too-sweet, barrier says NO. Your grown-up even reports it - one less trick door on the gate for every kid after you.",
+      "text": "A flashing button says 'FREE GAME COINS, TAP HERE!' Who decided where that button really leads? Is it option A... Whoever built the button Option B... The words written on the button Or is it option C... The first person who taps the button So, what do you think?",
       "lines": [
-        "Peel test says sticker, promise says too-sweet, barrier says NO. Your grown-up even reports it - one less trick door on the gate for every kid after you."
+        "A flashing button says 'FREE GAME COINS, TAP HERE!' Who decided where that button really leads?",
+        "Is it option A...",
+        "Whoever built the button",
+        "Option B...",
+        "The words written on the button",
+        "Or is it option C...",
+        "The first person who taps the button",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/aabde6afe8efcbc1.mp3"
+      "file": "/audio/voice/bf62432a82593d5c.mp3"
     },
     {
-      "key": "7c3c586971efbdef",
+      "key": "ee5d68df7d19f03c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The dot-door opens somewhere no ice cream has ever been. Remember the peel tells: shiny, new, crooked, too sweet - that sticker had ALL four.",
+      "text": "Layla wants to see where 'Tap for the class photo album!' REALLY goes before she taps. What is the peek move on her tablet? Is it option A... Zoom way in on the link's letters to study them Option B... Tap it super quickly and be ready to close it fast Or is it option C... Press and HOLD the link until the real address pops up So, what do you think?",
       "lines": [
-        "The dot-door opens somewhere no ice cream has ever been. Remember the peel tells: shiny, new, crooked, too sweet - that sticker had ALL four."
+        "Layla wants to see where 'Tap for the class photo album!' REALLY goes before she taps. What is the peek move on her tablet?",
+        "Is it option A...",
+        "Zoom way in on the link's letters to study them",
+        "Option B...",
+        "Tap it super quickly and be ready to close it fast",
+        "Or is it option C...",
+        "Press and HOLD the link until the real address pops up",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/7c3c586971efbdef.mp3"
+      "file": "/audio/voice/ee5d68df7d19f03c.mp3"
     },
     {
-      "key": "496b37d188fd8156",
+      "key": "b288a88c62cd62e5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your friend admits they never opened it either - someone just sent it to THEM. Two barriers wheeled at once, and the mystery door stays shut for both of you.",
+      "text": "At the pizza place, the menu's QR code sits crooked, with a bubble in the middle and an edge you can lift. What happened here? Is it option A... It's a bonus code, two codes always mean two prizes Option B... Somebody pasted their own code on top of the real one Or is it option C... The menu is just old and wrinkly, safe to scan anyway So, what do you think?",
       "lines": [
-        "Your friend admits they never opened it either - someone just sent it to THEM. Two barriers wheeled at once, and the mystery door stays shut for both of you."
+        "At the pizza place, the menu's QR code sits crooked, with a bubble in the middle and an edge you can lift. What happened here?",
+        "Is it option A...",
+        "It's a bonus code, two codes always mean two prizes",
+        "Option B...",
+        "Somebody pasted their own code on top of the real one",
+        "Or is it option C...",
+        "The menu is just old and wrinkly, safe to scan anyway",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/496b37d188fd8156.mp3"
+      "file": "/audio/voice/b288a88c62cd62e5.mp3"
     },
     {
-      "key": "7a882a78bb928a21",
+      "key": "25d836681e899389",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Friends forward doors they never checked - kind hands can still pass on a trick. The sender being nice doesn't tell you where the door goes; only the address can.",
+      "text": "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through? Is it option A... toon-town.tv/silly-cat-show, the whole address is readable Option B... bit.ly/x7qz2, a shorter address is quicker to check Or is it option C... Either one, all links show where they're going So, what do you think?",
       "lines": [
-        "Friends forward doors they never checked - kind hands can still pass on a trick. The sender being nice doesn't tell you where the door goes; only the address can."
+        "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through?",
+        "Is it option A...",
+        "toon-town.tv/silly-cat-show, the whole address is readable",
+        "Option B...",
+        "bit.ly/x7qz2, a shorter address is quicker to check",
+        "Or is it option C...",
+        "Either one, all links show where they're going",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/7a882a78bb928a21.mp3"
+      "file": "/audio/voice/25d836681e899389.mp3"
     },
     {
-      "key": "8e0c96b102e9ea1c",
+      "key": "e0b5a22824116b2a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A link is a blank.",
+      "text": "A pop-up yells: 'SCAN THIS CODE IN TEN SECONDS OR LOSE YOUR PRIZE!' Adam isn't sure about it. What wins here? Is it option A... Scan fast, ten seconds is too short to go ask anybody Option B... Scan it, but keep his fingers crossed the entire time Or is it option C... Don't scan, unsure means DON'T, a trusted grown-up can look with him So, what do you think?",
       "lines": [
-        "A link is a blank."
+        "A pop-up yells: 'SCAN THIS CODE IN TEN SECONDS OR LOSE YOUR PRIZE!' Adam isn't sure about it. What wins here?",
+        "Is it option A...",
+        "Scan fast, ten seconds is too short to go ask anybody",
+        "Option B...",
+        "Scan it, but keep his fingers crossed the entire time",
+        "Or is it option C...",
+        "Don't scan, unsure means DON'T, a trusted grown-up can look with him",
+        "So, what do you think?"
       ],
-      "file": "/audio/voice/8e0c96b102e9ea1c.mp3"
+      "file": "/audio/voice/e0b5a22824116b2a.mp3"
     },
     {
-      "key": "8e9a9ce0b7d0084e",
+      "key": "2b4b8cc70850dabf",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Quick - which address matches 'School Field Day Photos'?",
+      "text": "That's right! Paint can promise anything, and tapping does not steer where you land. The person who BUILT the door chose where it goes before you ever saw it.",
       "lines": [
-        "Quick - which address matches 'School Field Day Photos'?"
+        "That's right!",
+        "Paint can promise anything, and tapping does not steer where you land. The person who BUILT the door chose where it goes before you ever saw it."
       ],
-      "file": "/audio/voice/8e9a9ce0b7d0084e.mp3"
+      "file": "/audio/voice/2b4b8cc70850dabf.mp3"
     },
     {
-      "key": "7f9176e7dd690d31",
+      "key": "7bf5690af7152fc4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Is that true?",
+      "text": "Not quite. Paint can promise anything, and tapping does not steer where you land. The person who BUILT the door chose where it goes before you ever saw it.",
       "lines": [
-        "Is that true?"
+        "Not quite.",
+        "Paint can promise anything, and tapping does not steer where you land. The person who BUILT the door chose where it goes before you ever saw it."
       ],
-      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+      "file": "/audio/voice/7bf5690af7152fc4.mp3"
     },
     {
-      "key": "5ae2ee7207f18f12",
+      "key": "93094c40ce8763ae",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Which door could you SEE through?",
+      "text": "That's right! A fast tap already walks you through the door, and zooming just shows you bigger paint. Press and HOLD, and the door's true address pops up for you to read first.",
       "lines": [
-        "Which door could you SEE through?"
+        "That's right!",
+        "A fast tap already walks you through the door, and zooming just shows you bigger paint. Press and HOLD, and the door's true address pops up for you to read first."
       ],
-      "file": "/audio/voice/5ae2ee7207f18f12.mp3"
+      "file": "/audio/voice/93094c40ce8763ae.mp3"
     },
     {
-      "key": "ea5c3825784d07aa",
+      "key": "d7b973dc9b4a12c6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Put the Door Checker's moves in order!",
+      "text": "Not quite. A fast tap already walks you through the door, and zooming just shows you bigger paint. Press and HOLD, and the door's true address pops up for you to read first.",
       "lines": [
-        "Put the Door Checker's moves in order!"
+        "Not quite.",
+        "A fast tap already walks you through the door, and zooming just shows you bigger paint. Press and HOLD, and the door's true address pops up for you to read first."
       ],
-      "file": "/audio/voice/ea5c3825784d07aa.mp3"
+      "file": "/audio/voice/d7b973dc9b4a12c6.mp3"
+    },
+    {
+      "key": "695002e8f06e035b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Old menus wrinkle all over, not in one perfect square, and real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped.",
+      "lines": [
+        "That's right!",
+        "Old menus wrinkle all over, not in one perfect square, and real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped."
+      ],
+      "file": "/audio/voice/695002e8f06e035b.mp3"
+    },
+    {
+      "key": "68b3b7f62fb45729",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Old menus wrinkle all over, not in one perfect square, and real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped.",
+      "lines": [
+        "Not quite.",
+        "Old menus wrinkle all over, not in one perfect square, and real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped."
+      ],
+      "file": "/audio/voice/68b3b7f62fb45729.mp3"
+    },
+    {
+      "key": "d79f288bfa070ee5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Short doesn't mean checkable, a bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked.",
+      "lines": [
+        "That's right!",
+        "Short doesn't mean checkable, a bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked."
+      ],
+      "file": "/audio/voice/d79f288bfa070ee5.mp3"
+    },
+    {
+      "key": "19941959fe3329ef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Short doesn't mean checkable, a bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked.",
+      "lines": [
+        "Not quite.",
+        "Short doesn't mean checkable, a bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked."
+      ],
+      "file": "/audio/voice/19941959fe3329ef.mp3"
+    },
+    {
+      "key": "5a7d059f9947b915",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The timer is there so you skip the thinking part, and crossed fingers aren't a safety plan. Unsure means DON'T: wheel in the barrier and check it with a trusted grown-up.",
+      "lines": [
+        "That's right!",
+        "The timer is there so you skip the thinking part, and crossed fingers aren't a safety plan. Unsure means DON'T: wheel in the barrier and check it with a trusted grown-up."
+      ],
+      "file": "/audio/voice/5a7d059f9947b915.mp3"
+    },
+    {
+      "key": "c4801c43cd8d8c0d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The timer is there so you skip the thinking part, and crossed fingers aren't a safety plan. Unsure means DON'T: wheel in the barrier and check it with a trusted grown-up.",
+      "lines": [
+        "Not quite.",
+        "The timer is there so you skip the thinking part, and crossed fingers aren't a safety plan. Unsure means DON'T: wheel in the barrier and check it with a trusted grown-up."
+      ],
+      "file": "/audio/voice/c4801c43cd8d8c0d.mp3"
+    },
+    {
+      "key": "912d6eb12b04d5b0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The plate says your school, the sign matches the plate, and nothing is rushing you. That door is exactly what it says it is.",
+      "lines": [
+        "The plate says your school, the sign matches the plate, and nothing is rushing you. That door is exactly what it says it is."
+      ],
+      "file": "/audio/voice/912d6eb12b04d5b0.mp3"
+    },
+    {
+      "key": "ca9c853fb6f45e59",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the plate again. It says your own school, and the sign is asking you to take a letter to a grown-up. Nothing here is a trick.",
+      "lines": [
+        "Read the plate again. It says your own school, and the sign is asking you to take a letter to a grown-up. Nothing here is a trick."
+      ],
+      "file": "/audio/voice/ca9c853fb6f45e59.mp3"
+    },
+    {
+      "key": "b8adc5a4a5e8cc6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A prize nobody entered, a ten minute countdown, and a plate that is not a single place you know. That door is all paint.",
+      "lines": [
+        "A prize nobody entered, a ten minute countdown, and a plate that is not a single place you know. That door is all paint."
+      ],
+      "file": "/audio/voice/b8adc5a4a5e8cc6b.mp3"
+    },
+    {
+      "key": "d9421898e9b037d2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at Prize Club's plate and its clock. The address is a stranger and there is a countdown on it, which is the hurry-up trick doing its job.",
+      "lines": [
+        "Look at Prize Club's plate and its clock. The address is a stranger and there is a countdown on it, which is the hurry-up trick doing its job."
+      ],
+      "file": "/audio/voice/d9421898e9b037d2.mp3"
+    },
+    {
+      "key": "d0b3bd6dcd8e266b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The library is on your ring, the plate says the library, and it points you at a grown-up rather than away from one.",
+      "lines": [
+        "The library is on your ring, the plate says the library, and it points you at a grown-up rather than away from one."
+      ],
+      "file": "/audio/voice/d0b3bd6dcd8e266b.mp3"
+    },
+    {
+      "key": "71bb416863870431",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have another look at the plate. It says the library, which is a place you know, and it asks you to bring a grown-up along.",
+      "lines": [
+        "Have another look at the plate. It says the library, which is a place you know, and it asks you to bring a grown-up along."
+      ],
+      "file": "/audio/voice/71bb416863870431.mp3"
+    },
+    {
+      "key": "e12291577bf16f3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A log in box, a plate that only wears the game's name, and coins that do not exist. Log in here is fishing for your password.",
+      "lines": [
+        "A log in box, a plate that only wears the game's name, and coins that do not exist. Log in here is fishing for your password."
+      ],
+      "file": "/audio/voice/e12291577bf16f3a.mp3"
+    },
+    {
+      "key": "73e10f4aaade920c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the plate slowly. It only looks like the game's address, and a door asking you to log in is after the password, not giving you coins.",
+      "lines": [
+        "Read the plate slowly. It only looks like the game's address, and a door asking you to log in is after the password, not giving you coins."
+      ],
+      "file": "/audio/voice/73e10f4aaade920c.mp3"
+    },
+    {
+      "key": "4fa683c17647d27b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is what the sign promises. Whoever made the door chose those words, and they can choose anything.",
+      "lines": [
+        "That is what the sign promises. Whoever made the door chose those words, and they can choose anything."
+      ],
+      "file": "/audio/voice/4fa683c17647d27b.mp3"
+    },
+    {
+      "key": "aaedb896ae1b489b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Naming a prize is the easiest part of painting a sign. It costs nothing.",
+      "lines": [
+        "Naming a prize is the easiest part of painting a sign. It costs nothing."
+      ],
+      "file": "/audio/voice/aaedb896ae1b489b.mp3"
+    },
+    {
+      "key": "286aa6b1d9dda5e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A link is a door. Doors go somewhere, and this one has not told you where.",
+      "lines": [
+        "A link is a door. Doors go somewhere, and this one has not told you where."
+      ],
+      "file": "/audio/voice/286aa6b1d9dda5e2.mp3"
+    },
+    {
+      "key": "3e65b9ff43a0f720",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Who chose those words, and what did it cost them?",
+      "lines": [
+        "Who chose those words, and what did it cost them?"
+      ],
+      "file": "/audio/voice/3e65b9ff43a0f720.mp3"
+    },
+    {
+      "key": "8ef18cd7a2a6dc46",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Mum is right there on your ring, so there is a key for this one and the door opens.",
+      "lines": [
+        "Mum is right there on your ring, so there is a key for this one and the door opens."
+      ],
+      "file": "/audio/voice/8ef18cd7a2a6dc46.mp3"
+    },
+    {
+      "key": "ba051ba855122079",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Prize Palace is on nobody's ring. No key, so it gets chained, and the shouting about coins changes nothing.",
+      "lines": [
+        "Prize Palace is on nobody's ring. No key, so it gets chained, and the shouting about coins changes nothing."
+      ],
+      "file": "/audio/voice/ba051ba855122079.mp3"
+    },
+    {
+      "key": "0a1998b8b2389278",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your swim club is on the ring. A partner of theirs is not, and borrowing a name you trust is the oldest trick down here.",
+      "lines": [
+        "Your swim club is on the ring. A partner of theirs is not, and borrowing a name you trust is the oldest trick down here."
+      ],
+      "file": "/audio/voice/0a1998b8b2389278.mp3"
+    },
+    {
+      "key": "64c8b5b77de52c55",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Games Hub is not on your ring, so it never gets a key, however good five hundred coins sounds.",
+      "lines": [
+        "Games Hub is not on your ring, so it never gets a key, however good five hundred coins sounds."
+      ],
+      "file": "/audio/voice/64c8b5b77de52c55.mp3"
+    },
+    {
+      "key": "98c8dd31319ee42e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your school is on the ring, so this one opens. Checking the ring is not about chaining everything.",
+      "lines": [
+        "Your school is on the ring, so this one opens. Checking the ring is not about chaining everything."
+      ],
+      "file": "/audio/voice/98c8dd31319ee42e.mp3"
+    },
+    {
+      "key": "ea1bb38854117a2d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The good fakes never look suspicious. That is the whole point of painting a nice sign.",
+      "lines": [
+        "The good fakes never look suspicious. That is the whole point of painting a nice sign."
+      ],
+      "file": "/audio/voice/ea1bb38854117a2d.mp3"
+    },
+    {
+      "key": "a33f8d5909665b8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Famous is not the same as known. Your keyring holds people YOU know, not people everybody knows.",
+      "lines": [
+        "Famous is not the same as known. Your keyring holds people YOU know, not people everybody knows."
+      ],
+      "file": "/audio/voice/a33f8d5909665b8f.mp3"
+    },
+    {
+      "key": "71fedfb311ce646d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Plenty of fakes are spelled perfectly. Waiting for a mistake means missing the tidy ones.",
+      "lines": [
+        "Plenty of fakes are spelled perfectly. Waiting for a mistake means missing the tidy ones."
+      ],
+      "file": "/audio/voice/71fedfb311ce646d.mp3"
+    },
+    {
+      "key": "1e811c5c6b45082a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Whose job is it to prove something here, yours or the door's?",
+      "lines": [
+        "Whose job is it to prove something here, yours or the door's?"
+      ],
+      "file": "/audio/voice/1e811c5c6b45082a.mp3"
+    },
+    {
+      "key": "f69374cacccd3a4a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It lifted, so it was a sticker, and the cafe's real code was hiding underneath it all along.",
+      "lines": [
+        "It lifted, so it was a sticker, and the cafe's real code was hiding underneath it all along."
+      ],
+      "file": "/audio/voice/f69374cacccd3a4a.mp3"
+    },
+    {
+      "key": "ca129d4a8679e6df",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing lifted, so that code is part of the poster. The library printed it there themselves.",
+      "lines": [
+        "Nothing lifted, so that code is part of the poster. The library printed it there themselves."
+      ],
+      "file": "/audio/voice/ca129d4a8679e6df.mp3"
+    },
+    {
+      "key": "8a8bbb257d03ebec",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The whole square came away. Car park signs are a favourite for this one, because everybody is in a hurry.",
+      "lines": [
+        "The whole square came away. Car park signs are a favourite for this one, because everybody is in a hurry."
+      ],
+      "file": "/audio/voice/8a8bbb257d03ebec.mp3"
+    },
+    {
+      "key": "05c62118afbc0819",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It stayed put, and it is on the same card as the opening times. That one is the shop's own.",
+      "lines": [
+        "It stayed put, and it is on the same card as the opening times. That one is the shop's own."
+      ],
+      "file": "/audio/voice/05c62118afbc0819.mp3"
+    },
+    {
+      "key": "597fa0eb6b085dfc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "They turn up on posters, car parks and shop windows too. The place is not the tell.",
+      "lines": [
+        "They turn up on posters, car parks and shop windows too. The place is not the tell."
+      ],
+      "file": "/audio/voice/597fa0eb6b085dfc.mp3"
+    },
+    {
+      "key": "d00bd87dc3dda94a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Looking for ages is still looking. The test is your thumb, not your eyes.",
+      "lines": [
+        "Looking for ages is still looking. The test is your thumb, not your eyes."
+      ],
+      "file": "/audio/voice/d00bd87dc3dda94a.mp3"
+    },
+    {
+      "key": "ec104da35c33941a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That is his trick turned round. Neat or crooked tells you nothing either way.",
+      "lines": [
+        "That is his trick turned round. Neat or crooked tells you nothing either way."
+      ],
+      "file": "/audio/voice/ec104da35c33941a.mp3"
+    },
+    {
+      "key": "889e05253a3e6204",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "If a sticker were easy to see, would his trick work at all?",
+      "lines": [
+        "If a sticker were easy to see, would his trick work at all?"
+      ],
+      "file": "/audio/voice/889e05253a3e6204.mp3"
+    },
+    {
+      "key": "20d1dd4fb1785076",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You could read that one, and it says your school right there in the address. Clear pane, known place, safe to walk.",
+      "lines": [
+        "You could read that one, and it says your school right there in the address. Clear pane, known place, safe to walk."
+      ],
+      "file": "/audio/voice/20d1dd4fb1785076.mp3"
+    },
+    {
+      "key": "b5d93a52fe09f1b3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You read it, and it does not say anybody you know. A clear pane you CAN read is still a no when the address is a stranger.",
+      "lines": [
+        "You read it, and it does not say anybody you know. A clear pane you CAN read is still a no when the address is a stranger."
+      ],
+      "file": "/audio/voice/b5d93a52fe09f1b3.mp3"
+    },
+    {
+      "key": "17f3731b2307b257",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing to read, so nothing to judge. A frosted pane always gets a grown-up, even for puddings.",
+      "lines": [
+        "Nothing to read, so nothing to judge. A frosted pane always gets a grown-up, even for puddings."
+      ],
+      "file": "/audio/voice/17f3731b2307b257.mp3"
+    },
+    {
+      "key": "00bf9cf754ed7cb8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The library is on your ring and the pane says the library. Read it, recognised it, walk through.",
+      "lines": [
+        "The library is on your ring and the pane says the library. Read it, recognised it, walk through."
+      ],
+      "file": "/audio/voice/00bf9cf754ed7cb8.mp3"
+    },
+    {
+      "key": "30a5427735eea803",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Still nothing to read, so it is still a grown-up. A loud sign on a frosted door does not make the glass any clearer.",
+      "lines": [
+        "Still nothing to read, so it is still a grown-up. A loud sign on a frosted door does not make the glass any clearer."
+      ],
+      "file": "/audio/voice/30a5427735eea803.mp3"
+    },
+    {
+      "key": "c96e15303f670cb7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which part was painted by whoever built the door?",
+      "lines": [
+        "Which part was painted by whoever built the door?"
+      ],
+      "file": "/audio/voice/c96e15303f670cb7.mp3"
+    },
+    {
+      "key": "6f08984e390fafbf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Once is all a door needs. There is no peeking through a doorway without walking into it.",
+      "lines": [
+        "Once is all a door needs. There is no peeking through a doorway without walking into it."
+      ],
+      "file": "/audio/voice/6f08984e390fafbf.mp3"
+    },
+    {
+      "key": "35a0c4d43d399ad0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Leaving it is safe, but the grown-up is the bit that makes it safe for everyone else too.",
+      "lines": [
+        "Leaving it is safe, but the grown-up is the bit that makes it safe for everyone else too."
+      ],
+      "file": "/audio/voice/35a0c4d43d399ad0.mp3"
+    },
+    {
+      "key": "3ea17688e8d95e44",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look along the ring again. Mum is on it, so this door does have a key.",
+      "lines": [
+        "Look along the ring again. Mum is on it, so this door does have a key."
+      ],
+      "file": "/audio/voice/3ea17688e8d95e44.mp3"
+    },
+    {
+      "key": "80f3dd157c0bc261",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check the ring once more. There is no Prize Palace on it, so there is no key for this door.",
+      "lines": [
+        "Check the ring once more. There is no Prize Palace on it, so there is no key for this door."
+      ],
+      "file": "/audio/voice/80f3dd157c0bc261.mp3"
+    },
+    {
+      "key": "8c7d01168d9897c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the claim slowly. Your club is on the ring, but this door is not from your club. It is from somebody standing next to the name.",
+      "lines": [
+        "Read the claim slowly. Your club is on the ring, but this door is not from your club. It is from somebody standing next to the name."
+      ],
+      "file": "/audio/voice/8c7d01168d9897c5.mp3"
+    },
+    {
+      "key": "c71d82545cb1a27a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Games Hub is not one of yours. Nothing on the ring matches it, so there is no key to lift.",
+      "lines": [
+        "Games Hub is not one of yours. Nothing on the ring matches it, so there is no key to lift."
+      ],
+      "file": "/audio/voice/c71d82545cb1a27a.mp3"
+    },
+    {
+      "key": "5aeed1f2e3f20a93",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have another look. Your school is on the ring, so this door has a key waiting for it.",
+      "lines": [
+        "Have another look. Your school is on the ring, so this door has a key waiting for it."
+      ],
+      "file": "/audio/voice/5aeed1f2e3f20a93.mp3"
+    },
+    {
+      "key": "ee8485d760f265b0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have another look at that menu corner. It came away from the paper, and printed ink cannot do that.",
+      "lines": [
+        "Have another look at that menu corner. It came away from the paper, and printed ink cannot do that."
+      ],
+      "file": "/audio/voice/ee8485d760f265b0.mp3"
+    },
+    {
+      "key": "db988c72a2ee7503",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That corner would not budge. When a code is printed into the paper, there is nothing to peel.",
+      "lines": [
+        "That corner would not budge. When a code is printed into the paper, there is nothing to peel."
+      ],
+      "file": "/audio/voice/db988c72a2ee7503.mp3"
+    },
+    {
+      "key": "6cc41ebffffc3396",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Press the car park corner again. A whole square lifting off is the clearest sticker there is.",
+      "lines": [
+        "Press the car park corner again. A whole square lifting off is the clearest sticker there is."
+      ],
+      "file": "/audio/voice/6cc41ebffffc3396.mp3"
+    },
+    {
+      "key": "66a481d0b6079410",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Nothing lifted there. It is printed on the same piece of card as everything else in the window.",
+      "lines": [
+        "Nothing lifted there. It is printed on the same piece of card as everything else in the window."
+      ],
+      "file": "/audio/voice/66a481d0b6079410.mp3"
+    },
+    {
+      "key": "f4cde4b3833feda8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Have another read of the pane. It says your school, and you could read it yourself, so this one is fine.",
+      "lines": [
+        "Have another read of the pane. It says your school, and you could read it yourself, so this one is fine."
+      ],
+      "file": "/audio/voice/f4cde4b3833feda8.mp3"
+    },
+    {
+      "key": "3316b0a6ecb09246",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the pane rather than the sign. Nothing in that address is a place you know, so the free tablet does not matter.",
+      "lines": [
+        "Read the pane rather than the sign. Nothing in that address is a place you know, so the free tablet does not matter."
+      ],
+      "file": "/audio/voice/3316b0a6ecb09246.mp3"
+    },
+    {
+      "key": "0896f458efb65b9c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the pane again. There is nothing on it, because a code is a pattern. That is always a grown-up.",
+      "lines": [
+        "Look at the pane again. There is nothing on it, because a code is a pattern. That is always a grown-up."
+      ],
+      "file": "/audio/voice/0896f458efb65b9c.mp3"
+    },
+    {
+      "key": "80abf58d106ecfe4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You can read that pane, and it names the library. That one is genuinely fine.",
+      "lines": [
+        "You can read that pane, and it names the library. That one is genuinely fine."
+      ],
+      "file": "/audio/voice/80abf58d106ecfe4.mp3"
+    },
+    {
+      "key": "784958ef705d39d1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The shouting is on the sign, not the pane. The pane is blank, so this is a grown-up like every other code.",
+      "lines": [
+        "The shouting is on the sign, not the pane. The pane is blank, so this is a grown-up like every other code."
+      ],
+      "file": "/audio/voice/784958ef705d39d1.mp3"
+    },
+    {
+      "key": "4466f95f4f125da6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bolted on! The sign was painted by whoever built the door, so the plate underneath is the only part that tells you anything.",
+      "lines": [
+        "Bolted on! The sign was painted by whoever built the door, so the plate underneath is the only part that tells you anything."
+      ],
+      "file": "/audio/voice/4466f95f4f125da6.mp3"
+    },
+    {
+      "key": "1a9d1aa14b0f19b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Near miss! A logo is part of the sign, and copying a logo is the easiest painting job there is. It proves nothing about the door.",
+      "lines": [
+        "Near miss! A logo is part of the sign, and copying a logo is the easiest painting job there is. It proves nothing about the door."
+      ],
+      "file": "/audio/voice/1a9d1aa14b0f19b4.mp3"
+    },
+    {
+      "key": "0ba4fc6979a8841a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bolted on! A door has to prove it is one of yours. If the sender is on nobody's ring, there is no key for it.",
+      "lines": [
+        "Bolted on! A door has to prove it is one of yours. If the sender is on nobody's ring, there is no key for it."
+      ],
+      "file": "/audio/voice/0ba4fc6979a8841a.mp3"
+    },
+    {
+      "key": "8e3bb376cec13efe",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Near miss! Your club is on the ring; somebody standing next to your club's name is not. Borrowing a trusted name is the oldest trick down here.",
+      "lines": [
+        "Near miss! Your club is on the ring; somebody standing next to your club's name is not. Borrowing a trusted name is the oldest trick down here."
+      ],
+      "file": "/audio/voice/8e3bb376cec13efe.mp3"
+    },
+    {
+      "key": "1d0a7ff1906848f6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bolted on! A Door Checker presses the corner because a good sticker lies perfectly flat, so looking harder never works.",
+      "lines": [
+        "Bolted on! A Door Checker presses the corner because a good sticker lies perfectly flat, so looking harder never works."
+      ],
+      "file": "/audio/voice/1d0a7ff1906848f6.mp3"
+    },
+    {
+      "key": "85e37e86767cf438",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Near miss! If fakes looked crooked nobody would ever fall for one. Neat and flat is exactly what a good sticker looks like.",
+      "lines": [
+        "Near miss! If fakes looked crooked nobody would ever fall for one. Neat and flat is exactly what a good sticker looks like."
+      ],
+      "file": "/audio/voice/85e37e86767cf438.mp3"
+    },
+    {
+      "key": "2eb23d459a082231",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bolted on! Nobody can read a code, not even a grown-up, so saying I cannot read this one is the honest and complete answer.",
+      "lines": [
+        "Bolted on! Nobody can read a code, not even a grown-up, so saying I cannot read this one is the honest and complete answer."
+      ],
+      "file": "/audio/voice/2eb23d459a082231.mp3"
+    },
+    {
+      "key": "8efb1d7832a6b210",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Near miss! A real poster is exactly where somebody sticks a fake code. The poster being real says nothing about the code on it.",
+      "lines": [
+        "Near miss! A real poster is exactly where somebody sticks a fake code. The poster being real says nothing about the code on it."
+      ],
+      "file": "/audio/voice/8efb1d7832a6b210.mp3"
+    },
+    {
+      "key": "d507908bca5aeb81",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Bolted on! Not sure is not a problem, it is the barrier's cue. A door that waits cannot do a single thing to anybody.",
+      "lines": [
+        "Bolted on! Not sure is not a problem, it is the barrier's cue. A door that waits cannot do a single thing to anybody."
+      ],
+      "file": "/audio/voice/d507908bca5aeb81.mp3"
+    },
+    {
+      "key": "0196110bb71c1a4b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Paint can promise anything, and tapping does not steer where you land. The person who BUILT the door chose where it goes before you ever saw it.",
+      "lines": [
+        "Paint can promise anything, and tapping does not steer where you land. The person who BUILT the door chose where it goes before you ever saw it."
+      ],
+      "file": "/audio/voice/0196110bb71c1a4b.mp3"
+    },
+    {
+      "key": "2e0000a4727d99eb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A fast tap already walks you through the door, and zooming just shows you bigger paint. Press and HOLD, and the door's true address pops up for you to read first.",
+      "lines": [
+        "A fast tap already walks you through the door, and zooming just shows you bigger paint. Press and HOLD, and the door's true address pops up for you to read first."
+      ],
+      "file": "/audio/voice/2e0000a4727d99eb.mp3"
+    },
+    {
+      "key": "39689b2c41f93f97",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Old menus wrinkle all over, not in one perfect square, and real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped.",
+      "lines": [
+        "Old menus wrinkle all over, not in one perfect square, and real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped."
+      ],
+      "file": "/audio/voice/39689b2c41f93f97.mp3"
+    },
+    {
+      "key": "f035e3b832cd5563",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Short doesn't mean checkable, a bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked.",
+      "lines": [
+        "Short doesn't mean checkable, a bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked."
+      ],
+      "file": "/audio/voice/f035e3b832cd5563.mp3"
+    },
+    {
+      "key": "804855b9cd3a970f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The timer is there so you skip the thinking part, and crossed fingers aren't a safety plan. Unsure means DON'T: wheel in the barrier and check it with a trusted grown-up.",
+      "lines": [
+        "The timer is there so you skip the thinking part, and crossed fingers aren't a safety plan. Unsure means DON'T: wheel in the barrier and check it with a trusted grown-up."
+      ],
+      "file": "/audio/voice/804855b9cd3a970f.mp3"
+    },
+    {
+      "key": "668cafdb63484b2e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A doorway - and the sign on it can say anything at all.",
+      "lines": [
+        "A doorway - and the sign on it can say anything at all."
+      ],
+      "file": "/audio/voice/668cafdb63484b2e.mp3"
+    },
+    {
+      "key": "247ba7bc5f3a3a11",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The builder picks the destination - the sign is just paint.",
+      "lines": [
+        "The builder picks the destination - the sign is just paint."
+      ],
+      "file": "/audio/voice/247ba7bc5f3a3a11.mp3"
+    },
+    {
+      "key": "d0f03bf2a09c0788",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You can't read the dots - which is why it gets checked before it gets scanned.",
+      "lines": [
+        "You can't read the dots - which is why it gets checked before it gets scanned."
+      ],
+      "file": "/audio/voice/d0f03bf2a09c0788.mp3"
+    },
+    {
+      "key": "e101d87b4a3ccd3d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "When sign and address disagree, the address is the door's true name.",
+      "lines": [
+        "When sign and address disagree, the address is the door's true name."
+      ],
+      "file": "/audio/voice/e101d87b4a3ccd3d.mp3"
+    },
+    {
+      "key": "9522a344b3924364",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Real codes are printed flat - a code over a code is the sticker trick.",
+      "lines": [
+        "Real codes are printed flat - a code over a code is the sticker trick."
+      ],
+      "file": "/audio/voice/9522a344b3924364.mp3"
+    },
+    {
+      "key": "7e50b6c7e63a4429",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Frosted isn't always evil - but uncheckable means a grown-up checks it, not you.",
+      "lines": [
+        "Frosted isn't always evil - but uncheckable means a grown-up checks it, not you."
+      ],
+      "file": "/audio/voice/7e50b6c7e63a4429.mp3"
+    },
+    {
+      "key": "568183b76578d6c0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A kind sender doesn't tell you where a door goes - only the address does.",
+      "lines": [
+        "A kind sender doesn't tell you where a door goes - only the address does."
+      ],
+      "file": "/audio/voice/568183b76578d6c0.mp3"
+    },
+    {
+      "key": "d8bd3f2de3ec1d07",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "You never decide alone - the barrier plus a grown-up beats every mystery door.",
+      "lines": [
+        "You never decide alone - the barrier plus a grown-up beats every mystery door."
+      ],
+      "file": "/audio/voice/d8bd3f2de3ec1d07.mp3"
+    },
+    {
+      "key": "900a9e5bd33deb2c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Swapped letters and zeros are the copycat trick painted onto an address.",
+      "lines": [
+        "Swapped letters and zeros are the copycat trick painted onto an address."
+      ],
+      "file": "/audio/voice/900a9e5bd33deb2c.mp3"
+    },
+    {
+      "key": "c73ede24b7200737",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A door from Northside Elementary. Sports day letter for your grown-up. The letter about sports day is ready, open it with a grown-up when you get a minute.",
+      "lines": [
+        "A door from Northside Elementary. Sports day letter for your grown-up. The letter about sports day is ready, open it with a grown-up when you get a minute."
+      ],
+      "file": "/audio/voice/c73ede24b7200737.mp3"
+    },
+    {
+      "key": "6f65342f230e6c33",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A door from Prize Club. Claim your free tablet now! You have been chosen, tap within ten minutes or your free tablet goes to somebody else.",
+      "lines": [
+        "A door from Prize Club. Claim your free tablet now! You have been chosen, tap within ten minutes or your free tablet goes to somebody else."
+      ],
+      "file": "/audio/voice/6f65342f230e6c33.mp3"
+    },
+    {
+      "key": "2fd2f6178c9e6caa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A door from the library. Summer reading club starts Saturday. Your reading club starts Saturday at ten, ask a grown-up to bring you along.",
+      "lines": [
+        "A door from the library. Summer reading club starts Saturday. Your reading club starts Saturday at ten, ask a grown-up to bring you along."
+      ],
+      "file": "/audio/voice/2fd2f6178c9e6caa.mp3"
+    },
+    {
+      "key": "7678e191653a113e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A door from Games Hub Support. Five hundred free coins for your account! Log in here to collect your five hundred free coins before they expire tonight.",
+      "lines": [
+        "A door from Games Hub Support. Five hundred free coins for your account! Log in here to collect your five hundred free coins before they expire tonight."
+      ],
+      "file": "/audio/voice/7678e191653a113e.mp3"
+    },
+    {
+      "key": "aba6149a1eba919c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Northside Elementary is your actual school, and it is on your keyring.",
+      "lines": [
+        "Northside Elementary is your actual school, and it is on your keyring."
+      ],
+      "file": "/audio/voice/aba6149a1eba919c.mp3"
+    },
+    {
+      "key": "220c334f7424d283",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The plate reads northside dash elementary dot s c h dot u k, which is your school's real address.",
+      "lines": [
+        "The plate reads northside dash elementary dot s c h dot u k, which is your school's real address."
+      ],
+      "file": "/audio/voice/220c334f7424d283.mp3"
+    },
+    {
+      "key": "e04302783e54cac5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "When you get a minute. Nothing is counting down at you.",
+      "lines": [
+        "When you get a minute. Nothing is counting down at you."
+      ],
+      "file": "/audio/voice/e04302783e54cac5.mp3"
+    },
+    {
+      "key": "60d2882ee395157c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It promises a letter about sports day, which is a very ordinary thing for a school to send.",
+      "lines": [
+        "It promises a letter about sports day, which is a very ordinary thing for a school to send."
+      ],
+      "file": "/audio/voice/60d2882ee395157c.mp3"
+    },
+    {
+      "key": "fd024864bf5b77b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Prize Club is on nobody's keyring, and you never entered anything.",
+      "lines": [
+        "Prize Club is on nobody's keyring, and you never entered anything."
+      ],
+      "file": "/audio/voice/fd024864bf5b77b4.mp3"
+    },
+    {
+      "key": "6581181907fcfa0d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The plate reads free dash tablet dash now dot prizeclub dot x y z, which is not one single place you have ever been.",
+      "lines": [
+        "The plate reads free dash tablet dash now dot prizeclub dot x y z, which is not one single place you have ever been."
+      ],
+      "file": "/audio/voice/6581181907fcfa0d.mp3"
+    },
+    {
+      "key": "0045e30499464d5e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap within ten minutes. A countdown is there to stop you reading the plate at all.",
+      "lines": [
+        "Tap within ten minutes. A countdown is there to stop you reading the plate at all."
+      ],
+      "file": "/audio/voice/0045e30499464d5e.mp3"
+    },
+    {
+      "key": "f4da536ab2c733aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A free tablet for a competition you never entered. Prizes do not arrive out of nowhere.",
+      "lines": [
+        "A free tablet for a competition you never entered. Prizes do not arrive out of nowhere."
+      ],
+      "file": "/audio/voice/f4da536ab2c733aa.mp3"
+    },
+    {
+      "key": "11d9083c694bc4e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The library is a real place you go to, and it is on your keyring.",
+      "lines": [
+        "The library is a real place you go to, and it is on your keyring."
+      ],
+      "file": "/audio/voice/11d9083c694bc4e2.mp3"
+    },
+    {
+      "key": "b58b159f3142d8d3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The plate reads library dot gov dot u k slash reading, which is the library's own address.",
+      "lines": [
+        "The plate reads library dot gov dot u k slash reading, which is the library's own address."
+      ],
+      "file": "/audio/voice/b58b159f3142d8d3.mp3"
+    },
+    {
+      "key": "e8958b16856cf8b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Saturday at ten. That is a time, not a countdown.",
+      "lines": [
+        "Saturday at ten. That is a time, not a countdown."
+      ],
+      "file": "/audio/voice/e8958b16856cf8b2.mp3"
+    },
+    {
+      "key": "45681df7b2631d74",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "It promises a reading club and asks for a grown-up. Nothing is being dangled at you.",
+      "lines": [
+        "It promises a reading club and asks for a grown-up. Nothing is being dangled at you."
+      ],
+      "file": "/audio/voice/45681df7b2631d74.mp3"
+    },
+    {
+      "key": "28b52670f7428a99",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Games Hub Support sounds official, and support never comes to find you with presents.",
+      "lines": [
+        "Games Hub Support sounds official, and support never comes to find you with presents."
+      ],
+      "file": "/audio/voice/28b52670f7428a99.mp3"
+    },
+    {
+      "key": "608befc27e3b31eb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The plate reads gameshub dash rewards dot c o slash login, which is not the game's address, it just wears its name.",
+      "lines": [
+        "The plate reads gameshub dash rewards dot c o slash login, which is not the game's address, it just wears its name."
+      ],
+      "file": "/audio/voice/608befc27e3b31eb.mp3"
+    },
+    {
+      "key": "2305855dd177a6da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Before they expire tonight. Another countdown, doing exactly the same job as the last one.",
+      "lines": [
+        "Before they expire tonight. Another countdown, doing exactly the same job as the last one."
+      ],
+      "file": "/audio/voice/2305855dd177a6da.mp3"
+    },
+    {
+      "key": "e6e984e66a3423a5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Free coins that need you to log in. Free game money does not exist, and the log in box is the real ask.",
+      "lines": [
+        "Free coins that need you to log in. Free game money does not exist, and the log in box is the real ask."
+      ],
+      "file": "/audio/voice/e6e984e66a3423a5.mp3"
+    },
+    {
+      "key": "aa7e2da71ff4f41d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First door. It says it is from Mum, with photos from the weekend.",
+      "lines": [
+        "First door. It says it is from Mum, with photos from the weekend."
+      ],
+      "file": "/audio/voice/aa7e2da71ff4f41d.mp3"
+    },
+    {
+      "key": "53249c8ad9fbeb78",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Next door. From somewhere called Prize Palace, saying you have won free coins.",
+      "lines": [
+        "Next door. From somewhere called Prize Palace, saying you have won free coins."
+      ],
+      "file": "/audio/voice/53249c8ad9fbeb78.mp3"
+    },
+    {
+      "key": "cb39c9f903d485dc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This door says it is from your swim club's new prize partner, offering free kit.",
+      "lines": [
+        "This door says it is from your swim club's new prize partner, offering free kit."
+      ],
+      "file": "/audio/voice/cb39c9f903d485dc.mp3"
+    },
+    {
+      "key": "2b5595d702a2c13f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A door from Games Hub, with a code for five hundred free coins.",
+      "lines": [
+        "A door from Games Hub, with a code for five hundred free coins."
+      ],
+      "file": "/audio/voice/2b5595d702a2c13f.mp3"
+    },
+    {
+      "key": "4035deb9eba1f316",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last door, and this one says it is from your school, with the sports day letter.",
+      "lines": [
+        "Last door, and this one says it is from your school, with the sports day letter."
+      ],
+      "file": "/audio/voice/4035deb9eba1f316.mp3"
+    },
+    {
+      "key": "06aa3467c0da2021",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The cafe menu, with a code at the bottom for the puddings.",
+      "lines": [
+        "The cafe menu, with a code at the bottom for the puddings."
+      ],
+      "file": "/audio/voice/06aa3467c0da2021.mp3"
+    },
+    {
+      "key": "84bb0b5352ff6a0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A poster in the library, telling you about the summer reading club.",
+      "lines": [
+        "A poster in the library, telling you about the summer reading club."
+      ],
+      "file": "/audio/voice/84bb0b5352ff6a0e.mp3"
+    },
+    {
+      "key": "8436968315530129",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "The sign in the car park, where you pay for your ticket.",
+      "lines": [
+        "The sign in the car park, where you pay for your ticket."
+      ],
+      "file": "/audio/voice/8436968315530129.mp3"
+    },
+    {
+      "key": "ef95971f8eae91de",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A code in the shop window, next to the opening times.",
+      "lines": [
+        "A code in the shop window, next to the opening times."
+      ],
+      "file": "/audio/voice/ef95971f8eae91de.mp3"
+    },
+    {
+      "key": "abf668e880b7b6d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A door with a clear pane, and your school's letter on the sign.",
+      "lines": [
+        "A door with a clear pane, and your school's letter on the sign."
+      ],
+      "file": "/audio/voice/abf668e880b7b6d7.mp3"
+    },
+    {
+      "key": "a791545a377519db",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "This door has a clear pane too, and a very exciting sign about a free tablet.",
+      "lines": [
+        "This door has a clear pane too, and a very exciting sign about a free tablet."
+      ],
+      "file": "/audio/voice/a791545a377519db.mp3"
+    },
+    {
+      "key": "bf589ed9714b76cf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A frosted pane now, on a door from the cafe menu.",
+      "lines": [
+        "A frosted pane now, on a door from the cafe menu."
+      ],
+      "file": "/audio/voice/bf589ed9714b76cf.mp3"
+    },
+    {
+      "key": "15fbe2e565faa9bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Another clear pane, on the library's reading club door.",
+      "lines": [
+        "Another clear pane, on the library's reading club door."
+      ],
+      "file": "/audio/voice/15fbe2e565faa9bf.mp3"
+    },
+    {
+      "key": "3b194e4e2b4a6596",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Last door. A frosted pane, on a poster shouting about winning a bike.",
+      "lines": [
+        "Last door. A frosted pane, on a poster shouting about winning a bike."
+      ],
+      "file": "/audio/voice/3b194e4e2b4a6596.mp3"
+    },
+    {
+      "key": "df2acffec8321d03",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran has sent a link to the holiday photos, and the plate says her photo site, the same one as last time.",
+      "lines": [
+        "Gran has sent a link to the holiday photos, and the plate says her photo site, the same one as last time."
+      ],
+      "file": "/audio/voice/df2acffec8321d03.mp3"
+    },
+    {
+      "key": "25d1824e4cb2b02d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A door that looks a bit like your school's, but the plate has an extra word in it you do not recognise.",
+      "lines": [
+        "A door that looks a bit like your school's, but the plate has an extra word in it you do not recognise."
+      ],
+      "file": "/audio/voice/25d1824e4cb2b02d.mp3"
+    },
+    {
+      "key": "61dc589bb385a24f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A poster in the street with a code on it and no address you can read anywhere.",
+      "lines": [
+        "A poster in the street with a code on it and no address you can read anywhere."
+      ],
+      "file": "/audio/voice/61dc589bb385a24f.mp3"
+    },
+    {
+      "key": "1d48fbbe5017b19c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your swim club has sent the new timetable, on the same address they always use, with no rush on it at all.",
+      "lines": [
+        "Your swim club has sent the new timetable, on the same address they always use, with no rush on it at all."
+      ],
+      "file": "/audio/voice/1d48fbbe5017b19c.mp3"
+    },
+    {
+      "key": "d6b8a9f0a412cd0e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A door with a friendly sign, a plate you half recognise, and a little voice saying just tap it and find out.",
+      "lines": [
+        "A door with a friendly sign, a plate you half recognise, and a little voice saying just tap it and find out."
+      ],
+      "file": "/audio/voice/d6b8a9f0a412cd0e.mp3"
+    },
+    {
+      "key": "720e0fe2894364ee",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Gran is on your ring and the plate is the same site as last time, so there is nothing here you cannot tell. The barrier is for the unclear ones, not for everything.",
+      "lines": [
+        "Gran is on your ring and the plate is the same site as last time, so there is nothing here you cannot tell. The barrier is for the unclear ones, not for everything."
+      ],
+      "file": "/audio/voice/720e0fe2894364ee.mp3"
+    },
+    {
+      "key": "8672769488b9dc30",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A word on the plate you have never seen before is exactly the not-sure feeling, and not-sure is the barrier's cue. Nothing bad happens while that door waits for a grown-up.",
+      "lines": [
+        "A word on the plate you have never seen before is exactly the not-sure feeling, and not-sure is the barrier's cue. Nothing bad happens while that door waits for a grown-up."
+      ],
+      "file": "/audio/voice/8672769488b9dc30.mp3"
+    },
+    {
+      "key": "b8b554f7211284e2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "A code you cannot read is the clearest barrier there is. You are not stuck, you just genuinely cannot see through that pane, so a grown-up looks with you.",
+      "lines": [
+        "A code you cannot read is the clearest barrier there is. You are not stuck, you just genuinely cannot see through that pane, so a grown-up looks with you."
+      ],
+      "file": "/audio/voice/b8b554f7211284e2.mp3"
+    },
+    {
+      "key": "84ea00946af029ba",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Your club is on the ring, the address is their usual one, and nothing is hurrying you. Wheeling the barrier out here would just mean never going swimming.",
+      "lines": [
+        "Your club is on the ring, the address is their usual one, and nothing is hurrying you. Wheeling the barrier out here would just mean never going swimming."
+      ],
+      "file": "/audio/voice/84ea00946af029ba.mp3"
+    },
+    {
+      "key": "8a089dc8c1eb4c6c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That little voice is the exact moment the barrier exists for. Half recognise is not recognise, and a door you never opened cannot do anything at all.",
+      "lines": [
+        "That little voice is the exact moment the barrier exists for. Half recognise is not recognise, and a door you never opened cannot do anything at all."
+      ],
+      "file": "/audio/voice/8a089dc8c1eb4c6c.mp3"
     },
     {
       "key": "9c2d85dd47f61e0c",
@@ -43841,70 +45238,730 @@
       "file": "/audio/voice/9b5db3cc918a7b20.mp3"
     },
     {
-      "key": "92b4c7479734b0ff",
+      "key": "345c4e7e2da4d293",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Your grown-up checks it: a prize-grab door to nowhere good. The barrier held, the 'prize' stayed a trick, and you never even wobbled.",
+      "text": "That's right! The plate says your school, the sign matches the plate, and nothing is rushing you. That door is exactly what it says it is.",
       "lines": [
         "That's right!",
-        "Your grown-up checks it: a prize-grab door to nowhere good. The barrier held, the 'prize' stayed a trick, and you never even wobbled."
+        "The plate says your school, the sign matches the plate, and nothing is rushing you. That door is exactly what it says it is."
       ],
-      "file": "/audio/voice/92b4c7479734b0ff.mp3"
+      "file": "/audio/voice/345c4e7e2da4d293.mp3"
     },
     {
-      "key": "77fb570925e4f47e",
+      "key": "ade3e5e899aa7e9c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Hurry-hurry is the oldest paint on the oldest door. Through the frosted glass you go - straight onto the Raccoon's slide. Real prizes never hide behind doors you can't check.",
+      "text": "Not quite. Read the plate again. It says your own school, and the sign is asking you to take a letter to a grown-up. Nothing here is a trick.",
       "lines": [
         "Not quite.",
-        "Hurry-hurry is the oldest paint on the oldest door. Through the frosted glass you go - straight onto the Raccoon's slide. Real prizes never hide behind doors you can't check."
+        "Read the plate again. It says your own school, and the sign is asking you to take a letter to a grown-up. Nothing here is a trick."
       ],
-      "file": "/audio/voice/77fb570925e4f47e.mp3"
+      "file": "/audio/voice/ade3e5e899aa7e9c.mp3"
     },
     {
-      "key": "d7e223b7d2bbc722",
+      "key": "46ed1013f3e13210",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Peel test says sticker, promise says too-sweet, barrier says NO. Your grown-up even reports it - one less trick door on the gate for every kid after you.",
+      "text": "That's right! A prize nobody entered, a ten minute countdown, and a plate that is not a single place you know. That door is all paint.",
       "lines": [
         "That's right!",
-        "Peel test says sticker, promise says too-sweet, barrier says NO. Your grown-up even reports it - one less trick door on the gate for every kid after you."
+        "A prize nobody entered, a ten minute countdown, and a plate that is not a single place you know. That door is all paint."
       ],
-      "file": "/audio/voice/d7e223b7d2bbc722.mp3"
+      "file": "/audio/voice/46ed1013f3e13210.mp3"
     },
     {
-      "key": "c7d9081a0e257ee2",
+      "key": "7a68fb9bb4243f74",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. The dot-door opens somewhere no ice cream has ever been. Remember the peel tells: shiny, new, crooked, too sweet - that sticker had ALL four.",
+      "text": "Not quite. Look at Prize Club's plate and its clock. The address is a stranger and there is a countdown on it, which is the hurry-up trick doing its job.",
       "lines": [
         "Not quite.",
-        "The dot-door opens somewhere no ice cream has ever been. Remember the peel tells: shiny, new, crooked, too sweet - that sticker had ALL four."
+        "Look at Prize Club's plate and its clock. The address is a stranger and there is a countdown on it, which is the hurry-up trick doing its job."
       ],
-      "file": "/audio/voice/c7d9081a0e257ee2.mp3"
+      "file": "/audio/voice/7a68fb9bb4243f74.mp3"
     },
     {
-      "key": "126a32b13b9a09ff",
+      "key": "87192136c7a93e0a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Your friend admits they never opened it either - someone just sent it to THEM. Two barriers wheeled at once, and the mystery door stays shut for both of you.",
+      "text": "That's right! The library is on your ring, the plate says the library, and it points you at a grown-up rather than away from one.",
       "lines": [
         "That's right!",
-        "Your friend admits they never opened it either - someone just sent it to THEM. Two barriers wheeled at once, and the mystery door stays shut for both of you."
+        "The library is on your ring, the plate says the library, and it points you at a grown-up rather than away from one."
       ],
-      "file": "/audio/voice/126a32b13b9a09ff.mp3"
+      "file": "/audio/voice/87192136c7a93e0a.mp3"
     },
     {
-      "key": "5b8f30b50540f89e",
+      "key": "40e6feb2e745431e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Friends forward doors they never checked - kind hands can still pass on a trick. The sender being nice doesn't tell you where the door goes; only the address can.",
+      "text": "Not quite. Have another look at the plate. It says the library, which is a place you know, and it asks you to bring a grown-up along.",
       "lines": [
         "Not quite.",
-        "Friends forward doors they never checked - kind hands can still pass on a trick. The sender being nice doesn't tell you where the door goes; only the address can."
+        "Have another look at the plate. It says the library, which is a place you know, and it asks you to bring a grown-up along."
       ],
-      "file": "/audio/voice/5b8f30b50540f89e.mp3"
+      "file": "/audio/voice/40e6feb2e745431e.mp3"
+    },
+    {
+      "key": "bd0fccf05546714b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A log in box, a plate that only wears the game's name, and coins that do not exist. Log in here is fishing for your password.",
+      "lines": [
+        "That's right!",
+        "A log in box, a plate that only wears the game's name, and coins that do not exist. Log in here is fishing for your password."
+      ],
+      "file": "/audio/voice/bd0fccf05546714b.mp3"
+    },
+    {
+      "key": "49dae5cafe0d19cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read the plate slowly. It only looks like the game's address, and a door asking you to log in is after the password, not giving you coins.",
+      "lines": [
+        "Not quite.",
+        "Read the plate slowly. It only looks like the game's address, and a door asking you to log in is after the password, not giving you coins."
+      ],
+      "file": "/audio/voice/49dae5cafe0d19cb.mp3"
+    },
+    {
+      "key": "337ab1cb5d935b7a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is what the sign promises. Whoever made the door chose those words, and they can choose anything.",
+      "lines": [
+        "Not quite.",
+        "That is what the sign promises. Whoever made the door chose those words, and they can choose anything."
+      ],
+      "file": "/audio/voice/337ab1cb5d935b7a.mp3"
+    },
+    {
+      "key": "bf6d822a0ec0f8b2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Naming a prize is the easiest part of painting a sign. It costs nothing.",
+      "lines": [
+        "Not quite.",
+        "Naming a prize is the easiest part of painting a sign. It costs nothing."
+      ],
+      "file": "/audio/voice/bf6d822a0ec0f8b2.mp3"
+    },
+    {
+      "key": "ca57006078342ec0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A link is a door. Doors go somewhere, and this one has not told you where.",
+      "lines": [
+        "Not quite.",
+        "A link is a door. Doors go somewhere, and this one has not told you where."
+      ],
+      "file": "/audio/voice/ca57006078342ec0.mp3"
+    },
+    {
+      "key": "99718019bbe812bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Mum is right there on your ring, so there is a key for this one and the door opens.",
+      "lines": [
+        "That's right!",
+        "Mum is right there on your ring, so there is a key for this one and the door opens."
+      ],
+      "file": "/audio/voice/99718019bbe812bc.mp3"
+    },
+    {
+      "key": "2f3b994221991418",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look along the ring again. Mum is on it, so this door does have a key.",
+      "lines": [
+        "Not quite.",
+        "Look along the ring again. Mum is on it, so this door does have a key."
+      ],
+      "file": "/audio/voice/2f3b994221991418.mp3"
+    },
+    {
+      "key": "45cd590b10c935ca",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Prize Palace is on nobody's ring. No key, so it gets chained, and the shouting about coins changes nothing.",
+      "lines": [
+        "That's right!",
+        "Prize Palace is on nobody's ring. No key, so it gets chained, and the shouting about coins changes nothing."
+      ],
+      "file": "/audio/voice/45cd590b10c935ca.mp3"
+    },
+    {
+      "key": "22e81493babed3a2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Check the ring once more. There is no Prize Palace on it, so there is no key for this door.",
+      "lines": [
+        "Not quite.",
+        "Check the ring once more. There is no Prize Palace on it, so there is no key for this door."
+      ],
+      "file": "/audio/voice/22e81493babed3a2.mp3"
+    },
+    {
+      "key": "9e86e7829eac6357",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your swim club is on the ring. A partner of theirs is not, and borrowing a name you trust is the oldest trick down here.",
+      "lines": [
+        "That's right!",
+        "Your swim club is on the ring. A partner of theirs is not, and borrowing a name you trust is the oldest trick down here."
+      ],
+      "file": "/audio/voice/9e86e7829eac6357.mp3"
+    },
+    {
+      "key": "fdbc272e7ccaf0f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read the claim slowly. Your club is on the ring, but this door is not from your club. It is from somebody standing next to the name.",
+      "lines": [
+        "Not quite.",
+        "Read the claim slowly. Your club is on the ring, but this door is not from your club. It is from somebody standing next to the name."
+      ],
+      "file": "/audio/voice/fdbc272e7ccaf0f8.mp3"
+    },
+    {
+      "key": "860f5dbe5d2d9f0f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Games Hub is not on your ring, so it never gets a key, however good five hundred coins sounds.",
+      "lines": [
+        "That's right!",
+        "Games Hub is not on your ring, so it never gets a key, however good five hundred coins sounds."
+      ],
+      "file": "/audio/voice/860f5dbe5d2d9f0f.mp3"
+    },
+    {
+      "key": "19657a7731556385",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Games Hub is not one of yours. Nothing on the ring matches it, so there is no key to lift.",
+      "lines": [
+        "Not quite.",
+        "Games Hub is not one of yours. Nothing on the ring matches it, so there is no key to lift."
+      ],
+      "file": "/audio/voice/19657a7731556385.mp3"
+    },
+    {
+      "key": "d260b629049f50a8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your school is on the ring, so this one opens. Checking the ring is not about chaining everything.",
+      "lines": [
+        "That's right!",
+        "Your school is on the ring, so this one opens. Checking the ring is not about chaining everything."
+      ],
+      "file": "/audio/voice/d260b629049f50a8.mp3"
+    },
+    {
+      "key": "e4e8abb5571bb219",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Have another look. Your school is on the ring, so this door has a key waiting for it.",
+      "lines": [
+        "Not quite.",
+        "Have another look. Your school is on the ring, so this door has a key waiting for it."
+      ],
+      "file": "/audio/voice/e4e8abb5571bb219.mp3"
+    },
+    {
+      "key": "040fe7c778742b1e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The good fakes never look suspicious. That is the whole point of painting a nice sign.",
+      "lines": [
+        "Not quite.",
+        "The good fakes never look suspicious. That is the whole point of painting a nice sign."
+      ],
+      "file": "/audio/voice/040fe7c778742b1e.mp3"
+    },
+    {
+      "key": "b9d9740332f7b56f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Famous is not the same as known. Your keyring holds people YOU know, not people everybody knows.",
+      "lines": [
+        "Not quite.",
+        "Famous is not the same as known. Your keyring holds people YOU know, not people everybody knows."
+      ],
+      "file": "/audio/voice/b9d9740332f7b56f.mp3"
+    },
+    {
+      "key": "f0f3254c31e0c682",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Plenty of fakes are spelled perfectly. Waiting for a mistake means missing the tidy ones.",
+      "lines": [
+        "Not quite.",
+        "Plenty of fakes are spelled perfectly. Waiting for a mistake means missing the tidy ones."
+      ],
+      "file": "/audio/voice/f0f3254c31e0c682.mp3"
+    },
+    {
+      "key": "8bdd101d1735e824",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It lifted, so it was a sticker, and the cafe's real code was hiding underneath it all along.",
+      "lines": [
+        "That's right!",
+        "It lifted, so it was a sticker, and the cafe's real code was hiding underneath it all along."
+      ],
+      "file": "/audio/voice/8bdd101d1735e824.mp3"
+    },
+    {
+      "key": "64e88453985c4b3c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Have another look at that menu corner. It came away from the paper, and printed ink cannot do that.",
+      "lines": [
+        "Not quite.",
+        "Have another look at that menu corner. It came away from the paper, and printed ink cannot do that."
+      ],
+      "file": "/audio/voice/64e88453985c4b3c.mp3"
+    },
+    {
+      "key": "0cc59228a9e87ad2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nothing lifted, so that code is part of the poster. The library printed it there themselves.",
+      "lines": [
+        "That's right!",
+        "Nothing lifted, so that code is part of the poster. The library printed it there themselves."
+      ],
+      "file": "/audio/voice/0cc59228a9e87ad2.mp3"
+    },
+    {
+      "key": "732403d2b51fac70",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That corner would not budge. When a code is printed into the paper, there is nothing to peel.",
+      "lines": [
+        "Not quite.",
+        "That corner would not budge. When a code is printed into the paper, there is nothing to peel."
+      ],
+      "file": "/audio/voice/732403d2b51fac70.mp3"
+    },
+    {
+      "key": "2e3cc10cc4c701fc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The whole square came away. Car park signs are a favourite for this one, because everybody is in a hurry.",
+      "lines": [
+        "That's right!",
+        "The whole square came away. Car park signs are a favourite for this one, because everybody is in a hurry."
+      ],
+      "file": "/audio/voice/2e3cc10cc4c701fc.mp3"
+    },
+    {
+      "key": "5220879f9a391adb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Press the car park corner again. A whole square lifting off is the clearest sticker there is.",
+      "lines": [
+        "Not quite.",
+        "Press the car park corner again. A whole square lifting off is the clearest sticker there is."
+      ],
+      "file": "/audio/voice/5220879f9a391adb.mp3"
+    },
+    {
+      "key": "192c57dfdd52f364",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! It stayed put, and it is on the same card as the opening times. That one is the shop's own.",
+      "lines": [
+        "That's right!",
+        "It stayed put, and it is on the same card as the opening times. That one is the shop's own."
+      ],
+      "file": "/audio/voice/192c57dfdd52f364.mp3"
+    },
+    {
+      "key": "a74ecd883997ce70",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Nothing lifted there. It is printed on the same piece of card as everything else in the window.",
+      "lines": [
+        "Not quite.",
+        "Nothing lifted there. It is printed on the same piece of card as everything else in the window."
+      ],
+      "file": "/audio/voice/a74ecd883997ce70.mp3"
+    },
+    {
+      "key": "72e4e5025d9f2843",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. They turn up on posters, car parks and shop windows too. The place is not the tell.",
+      "lines": [
+        "Not quite.",
+        "They turn up on posters, car parks and shop windows too. The place is not the tell."
+      ],
+      "file": "/audio/voice/72e4e5025d9f2843.mp3"
+    },
+    {
+      "key": "9af26de78b229644",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Looking for ages is still looking. The test is your thumb, not your eyes.",
+      "lines": [
+        "Not quite.",
+        "Looking for ages is still looking. The test is your thumb, not your eyes."
+      ],
+      "file": "/audio/voice/9af26de78b229644.mp3"
+    },
+    {
+      "key": "5fa88961ed3e3cbb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That is his trick turned round. Neat or crooked tells you nothing either way.",
+      "lines": [
+        "Not quite.",
+        "That is his trick turned round. Neat or crooked tells you nothing either way."
+      ],
+      "file": "/audio/voice/5fa88961ed3e3cbb.mp3"
+    },
+    {
+      "key": "e5f051365aaa9bf4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You could read that one, and it says your school right there in the address. Clear pane, known place, safe to walk.",
+      "lines": [
+        "That's right!",
+        "You could read that one, and it says your school right there in the address. Clear pane, known place, safe to walk."
+      ],
+      "file": "/audio/voice/e5f051365aaa9bf4.mp3"
+    },
+    {
+      "key": "e3509282bfbb0054",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Have another read of the pane. It says your school, and you could read it yourself, so this one is fine.",
+      "lines": [
+        "Not quite.",
+        "Have another read of the pane. It says your school, and you could read it yourself, so this one is fine."
+      ],
+      "file": "/audio/voice/e3509282bfbb0054.mp3"
+    },
+    {
+      "key": "8c242b4638e74c5d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! You read it, and it does not say anybody you know. A clear pane you CAN read is still a no when the address is a stranger.",
+      "lines": [
+        "That's right!",
+        "You read it, and it does not say anybody you know. A clear pane you CAN read is still a no when the address is a stranger."
+      ],
+      "file": "/audio/voice/8c242b4638e74c5d.mp3"
+    },
+    {
+      "key": "a37ce5768d03456c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Read the pane rather than the sign. Nothing in that address is a place you know, so the free tablet does not matter.",
+      "lines": [
+        "Not quite.",
+        "Read the pane rather than the sign. Nothing in that address is a place you know, so the free tablet does not matter."
+      ],
+      "file": "/audio/voice/a37ce5768d03456c.mp3"
+    },
+    {
+      "key": "4b07157758956585",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Nothing to read, so nothing to judge. A frosted pane always gets a grown-up, even for puddings.",
+      "lines": [
+        "That's right!",
+        "Nothing to read, so nothing to judge. A frosted pane always gets a grown-up, even for puddings."
+      ],
+      "file": "/audio/voice/4b07157758956585.mp3"
+    },
+    {
+      "key": "cc3ec78819929ea0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Look at the pane again. There is nothing on it, because a code is a pattern. That is always a grown-up.",
+      "lines": [
+        "Not quite.",
+        "Look at the pane again. There is nothing on it, because a code is a pattern. That is always a grown-up."
+      ],
+      "file": "/audio/voice/cc3ec78819929ea0.mp3"
+    },
+    {
+      "key": "95f747a0bf31dd8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! The library is on your ring and the pane says the library. Read it, recognised it, walk through.",
+      "lines": [
+        "That's right!",
+        "The library is on your ring and the pane says the library. Read it, recognised it, walk through."
+      ],
+      "file": "/audio/voice/95f747a0bf31dd8f.mp3"
+    },
+    {
+      "key": "f59e15860ff31ad9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. You can read that pane, and it names the library. That one is genuinely fine.",
+      "lines": [
+        "Not quite.",
+        "You can read that pane, and it names the library. That one is genuinely fine."
+      ],
+      "file": "/audio/voice/f59e15860ff31ad9.mp3"
+    },
+    {
+      "key": "99f1b10c0b3cb9c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Still nothing to read, so it is still a grown-up. A loud sign on a frosted door does not make the glass any clearer.",
+      "lines": [
+        "That's right!",
+        "Still nothing to read, so it is still a grown-up. A loud sign on a frosted door does not make the glass any clearer."
+      ],
+      "file": "/audio/voice/99f1b10c0b3cb9c5.mp3"
+    },
+    {
+      "key": "741f50e897edf71f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. The shouting is on the sign, not the pane. The pane is blank, so this is a grown-up like every other code.",
+      "lines": [
+        "Not quite.",
+        "The shouting is on the sign, not the pane. The pane is blank, so this is a grown-up like every other code."
+      ],
+      "file": "/audio/voice/741f50e897edf71f.mp3"
+    },
+    {
+      "key": "f4b0e74d2eddc1ea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Gran is on your ring and the plate is the same site as last time, so there is nothing here you cannot tell. The barrier is for the unclear ones, not for everything.",
+      "lines": [
+        "That's right!",
+        "Gran is on your ring and the plate is the same site as last time, so there is nothing here you cannot tell. The barrier is for the unclear ones, not for everything."
+      ],
+      "file": "/audio/voice/f4b0e74d2eddc1ea.mp3"
+    },
+    {
+      "key": "f01e8a70f53f2875",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Gran is on your ring and the plate is the same site as last time, so there is nothing here you cannot tell. The barrier is for the unclear ones, not for everything.",
+      "lines": [
+        "Not quite.",
+        "Gran is on your ring and the plate is the same site as last time, so there is nothing here you cannot tell. The barrier is for the unclear ones, not for everything."
+      ],
+      "file": "/audio/voice/f01e8a70f53f2875.mp3"
+    },
+    {
+      "key": "0511b52185bc2cbf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A word on the plate you have never seen before is exactly the not-sure feeling, and not-sure is the barrier's cue. Nothing bad happens while that door waits for a grown-up.",
+      "lines": [
+        "That's right!",
+        "A word on the plate you have never seen before is exactly the not-sure feeling, and not-sure is the barrier's cue. Nothing bad happens while that door waits for a grown-up."
+      ],
+      "file": "/audio/voice/0511b52185bc2cbf.mp3"
+    },
+    {
+      "key": "bf49e5ba02ca7e31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A word on the plate you have never seen before is exactly the not-sure feeling, and not-sure is the barrier's cue. Nothing bad happens while that door waits for a grown-up.",
+      "lines": [
+        "Not quite.",
+        "A word on the plate you have never seen before is exactly the not-sure feeling, and not-sure is the barrier's cue. Nothing bad happens while that door waits for a grown-up."
+      ],
+      "file": "/audio/voice/bf49e5ba02ca7e31.mp3"
+    },
+    {
+      "key": "1b54308762eabc75",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! A code you cannot read is the clearest barrier there is. You are not stuck, you just genuinely cannot see through that pane, so a grown-up looks with you.",
+      "lines": [
+        "That's right!",
+        "A code you cannot read is the clearest barrier there is. You are not stuck, you just genuinely cannot see through that pane, so a grown-up looks with you."
+      ],
+      "file": "/audio/voice/1b54308762eabc75.mp3"
+    },
+    {
+      "key": "11c8bfe8c812da49",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. A code you cannot read is the clearest barrier there is. You are not stuck, you just genuinely cannot see through that pane, so a grown-up looks with you.",
+      "lines": [
+        "Not quite.",
+        "A code you cannot read is the clearest barrier there is. You are not stuck, you just genuinely cannot see through that pane, so a grown-up looks with you."
+      ],
+      "file": "/audio/voice/11c8bfe8c812da49.mp3"
+    },
+    {
+      "key": "12b6502c37252279",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Your club is on the ring, the address is their usual one, and nothing is hurrying you. Wheeling the barrier out here would just mean never going swimming.",
+      "lines": [
+        "That's right!",
+        "Your club is on the ring, the address is their usual one, and nothing is hurrying you. Wheeling the barrier out here would just mean never going swimming."
+      ],
+      "file": "/audio/voice/12b6502c37252279.mp3"
+    },
+    {
+      "key": "b1835bb113749a00",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Your club is on the ring, the address is their usual one, and nothing is hurrying you. Wheeling the barrier out here would just mean never going swimming.",
+      "lines": [
+        "Not quite.",
+        "Your club is on the ring, the address is their usual one, and nothing is hurrying you. Wheeling the barrier out here would just mean never going swimming."
+      ],
+      "file": "/audio/voice/b1835bb113749a00.mp3"
+    },
+    {
+      "key": "8f081a4804e64447",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! That little voice is the exact moment the barrier exists for. Half recognise is not recognise, and a door you never opened cannot do anything at all.",
+      "lines": [
+        "That's right!",
+        "That little voice is the exact moment the barrier exists for. Half recognise is not recognise, and a door you never opened cannot do anything at all."
+      ],
+      "file": "/audio/voice/8f081a4804e64447.mp3"
+    },
+    {
+      "key": "7983bb9dbc78c32e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. That little voice is the exact moment the barrier exists for. Half recognise is not recognise, and a door you never opened cannot do anything at all.",
+      "lines": [
+        "Not quite.",
+        "That little voice is the exact moment the barrier exists for. Half recognise is not recognise, and a door you never opened cannot do anything at all."
+      ],
+      "file": "/audio/voice/7983bb9dbc78c32e.mp3"
+    },
+    {
+      "key": "75f6639db3acd4dd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Once is all a door needs. There is no peeking through a doorway without walking into it.",
+      "lines": [
+        "Not quite.",
+        "Once is all a door needs. There is no peeking through a doorway without walking into it."
+      ],
+      "file": "/audio/voice/75f6639db3acd4dd.mp3"
+    },
+    {
+      "key": "2fb03953c43acc9c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Leaving it is safe, but the grown-up is the bit that makes it safe for everyone else too.",
+      "lines": [
+        "Not quite.",
+        "Leaving it is safe, but the grown-up is the bit that makes it safe for everyone else too."
+      ],
+      "file": "/audio/voice/2fb03953c43acc9c.mp3"
+    },
+    {
+      "key": "bb73320784b0774d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Bolted on! The sign was painted by whoever built the door, so the plate underneath is the only part that tells you anything.",
+      "lines": [
+        "That's right!",
+        "Bolted on! The sign was painted by whoever built the door, so the plate underneath is the only part that tells you anything."
+      ],
+      "file": "/audio/voice/bb73320784b0774d.mp3"
+    },
+    {
+      "key": "5a8ce889673fc000",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Near miss! A logo is part of the sign, and copying a logo is the easiest painting job there is. It proves nothing about the door.",
+      "lines": [
+        "Not quite.",
+        "Near miss! A logo is part of the sign, and copying a logo is the easiest painting job there is. It proves nothing about the door."
+      ],
+      "file": "/audio/voice/5a8ce889673fc000.mp3"
+    },
+    {
+      "key": "7033238a79ccc1d4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Bolted on! A door has to prove it is one of yours. If the sender is on nobody's ring, there is no key for it.",
+      "lines": [
+        "That's right!",
+        "Bolted on! A door has to prove it is one of yours. If the sender is on nobody's ring, there is no key for it."
+      ],
+      "file": "/audio/voice/7033238a79ccc1d4.mp3"
+    },
+    {
+      "key": "106eb4f806ddf91c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Near miss! Your club is on the ring; somebody standing next to your club's name is not. Borrowing a trusted name is the oldest trick down here.",
+      "lines": [
+        "Not quite.",
+        "Near miss! Your club is on the ring; somebody standing next to your club's name is not. Borrowing a trusted name is the oldest trick down here."
+      ],
+      "file": "/audio/voice/106eb4f806ddf91c.mp3"
+    },
+    {
+      "key": "68f51e0599f92690",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Bolted on! A Door Checker presses the corner because a good sticker lies perfectly flat, so looking harder never works.",
+      "lines": [
+        "That's right!",
+        "Bolted on! A Door Checker presses the corner because a good sticker lies perfectly flat, so looking harder never works."
+      ],
+      "file": "/audio/voice/68f51e0599f92690.mp3"
+    },
+    {
+      "key": "529aa767e5a729bd",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Near miss! If fakes looked crooked nobody would ever fall for one. Neat and flat is exactly what a good sticker looks like.",
+      "lines": [
+        "Not quite.",
+        "Near miss! If fakes looked crooked nobody would ever fall for one. Neat and flat is exactly what a good sticker looks like."
+      ],
+      "file": "/audio/voice/529aa767e5a729bd.mp3"
+    },
+    {
+      "key": "6e8d01f977a05c6b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Bolted on! Nobody can read a code, not even a grown-up, so saying I cannot read this one is the honest and complete answer.",
+      "lines": [
+        "That's right!",
+        "Bolted on! Nobody can read a code, not even a grown-up, so saying I cannot read this one is the honest and complete answer."
+      ],
+      "file": "/audio/voice/6e8d01f977a05c6b.mp3"
+    },
+    {
+      "key": "962b6405c210637f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Not quite. Near miss! A real poster is exactly where somebody sticks a fake code. The poster being real says nothing about the code on it.",
+      "lines": [
+        "Not quite.",
+        "Near miss! A real poster is exactly where somebody sticks a fake code. The poster being real says nothing about the code on it."
+      ],
+      "file": "/audio/voice/962b6405c210637f.mp3"
+    },
+    {
+      "key": "0140dd6c4c68175d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Bolted on! Not sure is not a problem, it is the barrier's cue. A door that waits cannot do a single thing to anybody.",
+      "lines": [
+        "That's right!",
+        "Bolted on! Not sure is not a problem, it is the barrier's cue. A door that waits cannot do a single thing to anybody."
+      ],
+      "file": "/audio/voice/0140dd6c4c68175d.mp3"
     },
     {
       "key": "b9401b6f9aa0ab81",

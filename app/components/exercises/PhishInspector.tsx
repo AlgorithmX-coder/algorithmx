@@ -21,9 +21,20 @@
  * Teaches the mental model of phishing literacy: SLOW DOWN, LOOK AT
  * THESE FOUR THINGS, then decide. Replaces "every scary message =
  * delete" with "every message gets inspected".
+ *
+ * Skin "inbox" (default, Week 4 "The Barker's Booth"): the item opens as a
+ * message card in a dark inbox.
+ *
+ * Skin "doorway" (Week 16, "A Door You Can't See Through"): the SAME four
+ * checks and the same decide-only-after-all-four mechanic, repainted as a
+ * door in the Doorway Maze. The card becomes a wooden door in a stone jamb:
+ * the painted SIGN across the top is what the door promises, and the brass
+ * ADDRESS PLATE screwed on below is where it actually opens. The four
+ * inspect zones become four brass studs set into the door. Nothing about the
+ * mechanic moves - only paint and the layout of the card.
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   useExerciseFeedback,
@@ -55,6 +66,10 @@ const AUDIO_ONLY_STYLE = {
 } as const;
 // SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
+/** Visual skin. "inbox" = the original message card (Week 4). "doorway" =
+ *  Week 16's door-in-a-stone-jamb repaint. Paint and layout only. */
+export type PhishInspectorSkin = "inbox" | "doorway";
+
 export interface PhishEmail {
   id: string;
   sender: string;
@@ -82,6 +97,8 @@ export interface PhishEmail {
 
 export interface PhishInspectorProps {
   emails: PhishEmail[];
+  /** Visual skin: the W4 message card (default) or W16's maze door. */
+  skin?: PhishInspectorSkin;
   hints?: { tier1: string; tier2: string };
   /** Intro copy overrides + spoken paced narration (week re-dress). */
   introTitle?: string;
@@ -103,6 +120,20 @@ export interface PhishInspectorProps {
   wrongTitle?: string;
   completeTitle?: string;
   completeLine?: string;
+  /* ── On-screen labels (never spoken; safe to leave at their defaults). ── */
+  /** The word before the counter: "Message 1 / 5". */
+  counterLabel?: string;
+  /** The line under the locked decision row. */
+  unlockHint?: string;
+  /** The big stamp shown after a correct-or-not decision. */
+  zapBanner?: string;
+  safeBanner?: string;
+  /** Inbox skin only: the "From:" prefix and the "now" timestamp on the card. */
+  senderLabel?: string;
+  timeLabel?: string;
+  /** Doorway skin only: the tiny captions over the sign and the plate. */
+  signCaption?: string;
+  plateCaption?: string;
   /** The how-to, spoken once as the first message opens (audio only). */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Optional "Spot the Danger" Raccoon preamble folded into the intro. */
@@ -131,8 +162,39 @@ const ZONE_META: Record<ZoneId, { label: string; question: string; icon: string 
   claim:   { label: "What's it promising?", question: "Check the offer", icon: "🎁" },
 };
 
+/* ── Skin paint. Every "inbox" value is the literal the file shipped with;
+      only the "doorway" column is new. ── */
+const SKINS = {
+  inbox: {
+    frameBg: "linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)",
+    cardBg: "rgba(8, 10, 22, 0.85)",
+    cardBorder: "1px solid rgba(125, 240, 255, 0.25)",
+    cardRadius: 12,
+    closedBg: "rgba(15, 21, 48, 0.7)",
+    closedBorder: "rgba(125, 240, 255, 0.3)",
+    closedText: "#7df0ff",
+    zoneRadius: 12,
+    noteText: "#e2e8f0",
+  },
+  doorway: {
+    // A stone corridor receding into the dark; the door is the only warm thing.
+    frameBg: "radial-gradient(120% 90% at 50% 0%, #2c3a4e 0%, #18222f 48%, #0a0f16 100%)",
+    // Dark oiled wood inside a brass-rimmed jamb.
+    cardBg: "linear-gradient(180deg, #4a3722 0%, #2e2216 62%, #241a11 100%)",
+    cardBorder: "3px solid #d9a441",
+    cardRadius: 16,
+    // Brass studs on wood: warm and clearly lifted off the door.
+    closedBg: "rgba(20, 15, 9, 0.88)",
+    closedBorder: "rgba(217, 164, 65, 0.85)",
+    closedText: "#ffdc9b",
+    zoneRadius: 10,
+    noteText: "#fff3dc",
+  },
+} as const;
+
 export default function PhishInspector({
   emails,
+  skin = "inbox",
   hints,
   introTitle,
   introSubtitle,
@@ -148,6 +210,14 @@ export default function PhishInspector({
   wrongTitle,
   completeTitle = "Inspector training complete!",
   completeLine,
+  counterLabel = "Message",
+  unlockHint = "Tap all 4 clues to open the buttons",
+  zapBanner = "⚡ ZAPPED!",
+  safeBanner = "✓ SAFE",
+  senderLabel = "From:",
+  timeLabel = "now",
+  signCaption = "WHAT THE SIGN SAYS",
+  plateCaption = "WHERE IT REALLY OPENS",
   coachLines,
   threat,
   completeNarration,
@@ -161,6 +231,8 @@ export default function PhishInspector({
   const fx = useExerciseFeedback();
   const audio = useGameAudio();
   const accent = useLessonTheme()?.accent ?? "#7df0ff";
+  const door = skin === "doorway";
+  const sk = SKINS[skin];
   // Both content voices are Sarah; in-game read-alouds are recorded under "adam".
   const voice = "adam" as const;
 
@@ -173,12 +245,17 @@ export default function PhishInspector({
   // verdict, and the next message waits for Sarah. Wrong verdicts speak
   // through the WrongAnswerPanel.
   const verdict = useVerdictVoice(voice);
+  // Synchronous mirror of `narr !== "idle"`. Two zone taps inside one tick both
+  // read the stale state and the second read-aloud clobbers the first; the ref
+  // is written before React re-renders, so the second tap is refused.
+  const narrRef = useRef(false);
   useEffect(() => {
-    if (narr === "idle") return;
+    if (narr === "idle") { narrRef.current = false; return; }
+    narrRef.current = true;
     const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
     return () => window.clearTimeout(id);
   }, [narr]);
-  useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
+  useEffect(() => subscribeAudioMute((muted) => { if (muted) { narrRef.current = false; setNarr("idle"); } }), []);
   const [emailIdx, setEmailIdx] = useState(0);
   const [inspected, setInspected] = useState<Record<ZoneId, boolean>>({
     sender: false,
@@ -187,6 +264,10 @@ export default function PhishInspector({
     claim: false,
   });
   const [decided, setDecided] = useState(false);
+  // Synchronous latch on the judged tap. `decided` is state, so two taps in
+  // the same tick both read the old value and both score; this ref closes
+  // that window. Cleared when the next door opens AND after a wrong call.
+  const judgingRef = useRef(false);
   const [wrongTotal, setWrongTotal] = useState(0);
   const [wrongOnCurrent, setWrongOnCurrent] = useState(0);
   const [feedback, setFeedback] = useState<null | {
@@ -209,11 +290,12 @@ export default function PhishInspector({
   // Move to the next message: reset the per-message state in the same event
   // (never in an effect), and Sarah reads the new message as it opens.
   const openEmail = useCallback((next: number) => {
+    judgingRef.current = false;
     setEmailIdx(next);
     setInspected({ sender: false, link: false, urgency: false, claim: false });
     setDecided(false);
     setWrongOnCurrent(0);
-    if (!isAudioMuted()) setNarr("read");
+    if (!isAudioMuted()) { narrRef.current = true; setNarr("read"); }
   }, []);
 
   const speaking = narr !== "idle" || verdict.speaking;
@@ -222,6 +304,7 @@ export default function PhishInspector({
     (zone: ZoneId) => {
       if (!email || feedback || decided || speaking) return;
       if (inspected[zone]) return;
+      if (narrRef.current || judgingRef.current) return;
       audio.tap();
       setInspected((prev) => ({ ...prev, [zone]: true }));
       // Sarah reads the note that opens (audio only, taps held).
@@ -234,6 +317,7 @@ export default function PhishInspector({
               ? email.inspections.urgencyNote
               : email.inspections.claimNote;
       if (note && !isAudioMuted()) {
+        narrRef.current = true;
         setZoneLine(note);
         setNarr("zone");
       }
@@ -267,6 +351,8 @@ export default function PhishInspector({
   const handleDecision = useCallback(
     (zapped: boolean) => {
       if (!email || feedback || decided || speaking) return;
+      if (judgingRef.current) return;
+      judgingRef.current = true;
       const wasCorrect = zapped === email.isPhishing;
       // correctIndex: 0 for ZAP if phishing, 1 for SAFE if legit.
       const correctIndex = email.isPhishing ? 0 : 1;
@@ -320,6 +406,9 @@ export default function PhishInspector({
             : `"${email.sender}" was a normal email. You'd want to keep it - the answer was SAFE.`),
           tip: `Look at all 4 clues together. Red flags mean ${correctChoice}.`,
         });
+        // A wrong call leaves the child on the same door, so the latch has to
+        // reopen for their retry.
+        judgingRef.current = false;
         if (nextWrong === 1) onHintReached?.(1);
         if (nextWrong >= 2) onHintReached?.(2);
       }
@@ -377,7 +466,7 @@ export default function PhishInspector({
     <ExerciseFrame
       maxWidth={1000}
       padding={24}
-      background="linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)"
+      background={sk.frameBg}
     >
       {verdict.element}
       {/* Sarah's read-alouds (audio only): the how-to once, the message as it
@@ -423,42 +512,136 @@ export default function PhishInspector({
             color: "#cbd5e1",
           }}
         >
-          Message {emailIdx + 1} / {shownEmails.length}
+          {counterLabel} {emailIdx + 1} / {shownEmails.length}
         </span>
       </div>
 
-      {/* Email card */}
+      {/* Email card / maze door. Same three pieces of content either way; the
+          doorway skin re-stacks them as sign -> promise -> address plate. */}
       <div
         style={{
-          padding: "14px 16px",
+          padding: door ? "12px 16px 14px" : "14px 16px",
           marginBottom: 12,
-          background: "rgba(8, 10, 22, 0.85)",
-          border: "1px solid rgba(125, 240, 255, 0.25)",
-          borderRadius: 12,
-          color: "#e2e8f0",
+          background: sk.cardBg,
+          border: sk.cardBorder,
+          borderRadius: sk.cardRadius,
+          color: door ? sk.noteText : "#e2e8f0",
           fontFamily: "'DM Sans', sans-serif",
+          position: door ? "relative" : undefined,
+          boxShadow: door
+            ? "0 20px 44px -22px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255, 225, 175, 0.16)"
+            : undefined,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: 11,
-            color: "#94a3b8",
-            marginBottom: 6,
-            fontFamily: "'JetBrains Mono', monospace",
-            letterSpacing: "0.04em",
-          }}
-        >
-          <span>From: <span style={{ color: "#cbd5e1" }}>{email.sender}</span></span>
-          <span style={{ color: "#64748b" }}>now</span>
-        </div>
-        <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 8, color: "#fff7e6" }}>
-          {email.subject}
-        </div>
-        <div style={{ fontSize: 13, lineHeight: 1.5, color: "#cbd5e1" }}>
-          {email.body}
-        </div>
+        {door ? (
+          <>
+            {/* The brass handle, so the card reads as a door at a glance. */}
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                right: 10,
+                top: "50%",
+                width: 13,
+                height: 13,
+                marginTop: -6,
+                borderRadius: "50%",
+                background: "radial-gradient(circle at 35% 30%, #ffe4a8, #b8822c)",
+                boxShadow: "0 0 10px rgba(255, 208, 130, 0.5)",
+              }}
+            />
+            <div
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 9.5,
+                lineHeight: 1,
+                letterSpacing: "0.18em",
+                color: "#d9a441",
+                marginBottom: 4,
+              }}
+            >
+              {signCaption}
+            </div>
+            {/* The painted sign: big, bright, and promising. */}
+            <div
+              style={{
+                padding: "8px 14px",
+                marginBottom: 10,
+                borderRadius: 8,
+                background: "linear-gradient(180deg, #fff4dd 0%, #f2ddb4 100%)",
+                border: "2px solid #8a5a12",
+                color: "#3a2708",
+                fontWeight: 900,
+                fontSize: 16,
+                lineHeight: 1.3,
+                textAlign: "center",
+              }}
+            >
+              {email.subject}
+            </div>
+            <div style={{ fontSize: 13, lineHeight: 1.45, color: "#f6e6c9", marginBottom: 10 }}>
+              {email.body}
+            </div>
+            <div
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 9.5,
+                lineHeight: 1,
+                letterSpacing: "0.18em",
+                color: "#d9a441",
+                marginBottom: 4,
+              }}
+            >
+              {plateCaption}
+            </div>
+            {/* The brass address plate screwed on below the sign. */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 10,
+                padding: "7px 12px",
+                borderRadius: 6,
+                background: "linear-gradient(180deg, #e3bf78 0%, #b98f38 100%)",
+                border: "2px solid #6d4c14",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45)",
+                color: "#241703",
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 12.5,
+                fontWeight: 800,
+                letterSpacing: "0.02em",
+                wordBreak: "break-word",
+              }}
+            >
+              <span style={{ minWidth: 0 }}>{email.sender}</span>
+              <span aria-hidden style={{ fontSize: 13, opacity: 0.75 }}>🔩</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: 11,
+                color: "#94a3b8",
+                marginBottom: 6,
+                fontFamily: "'JetBrains Mono', monospace",
+                letterSpacing: "0.04em",
+              }}
+            >
+              <span>{senderLabel} <span style={{ color: "#cbd5e1" }}>{email.sender}</span></span>
+              <span style={{ color: "#64748b" }}>{timeLabel}</span>
+            </div>
+            <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 8, color: "#fff7e6" }}>
+              {email.subject}
+            </div>
+            <div style={{ fontSize: 13, lineHeight: 1.5, color: "#cbd5e1" }}>
+              {email.body}
+            </div>
+          </>
+        )}
       </div>
 
       {/* 4-zone inspector grid */}
@@ -499,7 +682,7 @@ export default function PhishInspector({
             ? isRedFlag
               ? { bg: "rgba(239, 68, 68, 0.12)", border: "rgba(255, 95, 179, 0.65)", text: "#ff9bcb" }
               : { bg: "rgba(126, 255, 151, 0.1)", border: "rgba(126, 255, 151, 0.55)", text: "#a0ffb0" }
-            : { bg: "rgba(15, 21, 48, 0.7)", border: "rgba(125, 240, 255, 0.3)", text: "#7df0ff" };
+            : { bg: sk.closedBg, border: sk.closedBorder, text: sk.closedText };
           return (
             <motion.button
               key={zone}
@@ -516,9 +699,10 @@ export default function PhishInspector({
                 position: "relative",
                 padding: "12px 14px",
                 minHeight: 88,
-                borderRadius: 12,
+                borderRadius: sk.zoneRadius,
                 background: accent.bg,
                 border: `2px solid ${accent.border}`,
+                boxShadow: door ? "inset 0 1px 0 rgba(255, 228, 176, 0.18)" : undefined,
                 color: accent.text,
                 fontFamily:
                   "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
@@ -559,7 +743,7 @@ export default function PhishInspector({
                   style={{
                     fontSize: 12,
                     fontWeight: 500,
-                    color: "#e2e8f0",
+                    color: sk.noteText,
                     lineHeight: 1.4,
                   }}
                 >
@@ -638,7 +822,7 @@ export default function PhishInspector({
             textTransform: "uppercase",
           }}
         >
-          Tap all 4 clues to open the buttons
+          {unlockHint}
         </div>
       )}
 
@@ -656,7 +840,9 @@ export default function PhishInspector({
           character={introNarration?.speaker}
           onDismiss={() => {
             setPhase("active");
-            setNarr(isAudioMuted() ? "idle" : coachLines ? "howto" : email.readAloud ? "read" : "idle");
+            const next = isAudioMuted() ? "idle" : coachLines ? "howto" : email.readAloud ? "read" : "idle";
+            narrRef.current = next !== "idle";
+            setNarr(next);
           }}
         />
       )}
@@ -703,7 +889,7 @@ export default function PhishInspector({
                 boxShadow: "0 0 32px rgba(0, 0, 0, 0.4)",
               }}
             >
-              {email.isPhishing ? "⚡ ZAPPED!" : "✓ SAFE"}
+              {email.isPhishing ? zapBanner : safeBanner}
             </div>
           </motion.div>
         )}
