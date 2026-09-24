@@ -28,7 +28,96 @@ import { useEffect, useRef } from "react";
  *
  * Fixed-position, pointer-events: none, z-index: -1.
  */
-export default function GlobalBackdrop() {
+/**
+ * Two skies, the same scene.
+ *
+ * Night builds light out of black: every mark is brighter than the ground
+ * and the canvas blends with screen. Paper has no darkness to add light
+ * to, so sand builds dark out of paper instead, multiplying, and at a
+ * fraction of the weight because multiply carries much further than
+ * screen. Same hues, taken down until they read as ink.
+ *
+ * The scrim inverts with everything else: on black it DIMS the centre so
+ * paper text reads, on paper it LIFTS the centre so ink text reads.
+ */
+type GbPalette = {
+  wrap: string;
+  base: string;
+  blend: GlobalCompositeOperation;
+  canvasBlend: "screen" | "multiply";
+  glowScale: number;
+  hud: (a: number) => string;
+  limbBand: string;
+  limbEdge: string;
+  limbInner: string;
+  link: string;
+  node: (a: number) => string;
+  nodeHalo: (a: number) => string;
+  star: (a: number) => string;
+  starViolet: (a: number) => string;
+  starHalo: (a: number) => string;
+  starHaloViolet: (a: number) => string;
+  spike: (a: number) => string;
+  spikeViolet: (a: number) => string;
+  shoot: [string, string, string];
+  scrim: string;
+};
+
+const NIGHT_GB: GbPalette = {
+  wrap: "#04050d",
+  base: "radial-gradient(120% 100% at 50% 45%, #070b18 0%, #04060f 45%, #020308 100%)",
+  blend: "screen",
+  canvasBlend: "screen",
+  glowScale: 1,
+  hud: (a) => `rgba(130,185,255,${a})`,
+  limbBand: "rgba(110,190,255,0.14)",
+  limbEdge: "rgba(195,230,255,0.5)",
+  limbInner: "rgba(150,210,255,0.28)",
+  link: "rgba(150,200,255,0.22)",
+  node: (a) => `rgba(205,226,255,${a})`,
+  nodeHalo: (a) => `rgba(150,200,255,${a})`,
+  star: (a) => `rgba(208,226,255,${a})`,
+  starViolet: (a) => `rgba(186,158,255,${a})`,
+  starHalo: (a) => `rgba(150,200,255,${a})`,
+  starHaloViolet: (a) => `rgba(150,120,255,${a})`,
+  spike: (a) => `rgba(205,226,255,${a})`,
+  spikeViolet: (a) => `rgba(180,150,255,${a})`,
+  shoot: ["rgba(220,238,255,", "rgba(120,180,255,", "rgba(120,180,255,0)"],
+  scrim:
+    "radial-gradient(ellipse 64% 52% at 50% 47%, rgba(2,3,8,0.72) 0%, rgba(2,3,8,0.34) 44%, rgba(2,3,8,0) 72%), " +
+    "linear-gradient(to bottom, rgba(2,3,8,0.45) 0%, rgba(2,3,8,0) 22%, rgba(2,3,8,0) 100%)",
+};
+
+const SAND_GB: GbPalette = {
+  wrap: "#f3ede4",
+  base: "radial-gradient(120% 100% at 50% 45%, #f8f4ec 0%, #f3ede4 45%, #eee7db 100%)",
+  blend: "multiply",
+  canvasBlend: "multiply",
+  /* multiply reads about three times as strongly as screen at the same
+     alpha, so the nebulae come down to a third */
+  glowScale: 0.32,
+  hud: (a) => `rgba(34,64,104,${a})`,
+  limbBand: "rgba(30,74,120,0.1)",
+  limbEdge: "rgba(24,58,98,0.42)",
+  limbInner: "rgba(34,72,116,0.2)",
+  link: "rgba(38,70,112,0.2)",
+  node: (a) => `rgba(28,48,78,${a})`,
+  nodeHalo: (a) => `rgba(46,84,132,${a})`,
+  star: (a) => `rgba(32,48,74,${a})`,
+  starViolet: (a) => `rgba(78,58,126,${a})`,
+  starHalo: (a) => `rgba(46,84,132,${a})`,
+  starHaloViolet: (a) => `rgba(84,62,140,${a})`,
+  spike: (a) => `rgba(32,48,74,${a})`,
+  spikeViolet: (a) => `rgba(78,58,126,${a})`,
+  shoot: ["rgba(26,44,72,", "rgba(40,84,132,", "rgba(40,84,132,0)"],
+  /* lift, not dim: the centre goes back towards paper so ink reads */
+  scrim:
+    "radial-gradient(ellipse 64% 52% at 50% 47%, rgba(255,251,244,0.72) 0%, rgba(255,251,244,0.34) 44%, rgba(255,251,244,0) 72%), " +
+    "linear-gradient(to bottom, rgba(255,251,244,0.45) 0%, rgba(255,251,244,0) 22%, rgba(255,251,244,0) 100%)",
+};
+
+export default function GlobalBackdrop({ tone = "night" }: { tone?: "night" | "sand" } = {}) {
+  const GB = tone === "sand" ? SAND_GB : NIGHT_GB;
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -214,7 +303,7 @@ export default function GlobalBackdrop() {
     };
     if (!reduceMotion) window.addEventListener("pointermove", onPointer, { passive: true });
 
-    const hud = (a: number) => `rgba(130,185,255,${a})`;
+    const hud = GB.hud;
 
     /* Concentric partial rings around a centre */
     const rings = (cx: number, cy: number, radii: number[], a0: number, a1: number, alpha: number) => {
@@ -331,19 +420,19 @@ export default function GlobalBackdrop() {
       const cy = h * 1.04;
       const R = min * 0.47;
       // wide soft glow band along the limb
-      ctx.strokeStyle = "rgba(110,190,255,0.14)";
+      ctx.strokeStyle = GB.limbBand;
       ctx.lineWidth = 16;
       ctx.beginPath();
       ctx.arc(cx, cy, R, -1.18, -0.3);
       ctx.stroke();
       // crisp bright crescent edge
-      ctx.strokeStyle = "rgba(195,230,255,0.5)";
+      ctx.strokeStyle = GB.limbEdge;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(cx, cy, R, -1.02, -0.46);
       ctx.stroke();
       // faint inner highlight just inside the edge
-      ctx.strokeStyle = "rgba(150,210,255,0.28)";
+      ctx.strokeStyle = GB.limbInner;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(cx, cy, R - 7, -0.96, -0.5);
@@ -353,7 +442,7 @@ export default function GlobalBackdrop() {
     const drawConstellations = (ts: number, motion: number, px: number, py: number) => {
       for (const c of constellations) {
         // links
-        ctx.strokeStyle = "rgba(150,200,255,0.22)";
+        ctx.strokeStyle = GB.link;
         ctx.lineWidth = 1;
         for (const [i, j] of c.links) {
           const a = c.nodes[i];
@@ -369,12 +458,12 @@ export default function GlobalBackdrop() {
           const x = n.x + px * 6;
           const y = n.y + py * 6;
           const base = n.major ? 0.9 : 0.55;
-          ctx.fillStyle = `rgba(205,226,255,${base * tw})`;
+          ctx.fillStyle = GB.node(base * tw);
           ctx.beginPath();
           ctx.arc(x, y, n.major ? 1.8 : 1.2, 0, Math.PI * 2);
           ctx.fill();
           if (n.major) {
-            ctx.fillStyle = `rgba(150,200,255,${0.12 * tw})`;
+            ctx.fillStyle = GB.nodeHalo(0.12 * tw);
             ctx.beginPath();
             ctx.arc(x, y, 6, 0, Math.PI * 2);
             ctx.fill();
@@ -404,25 +493,19 @@ export default function GlobalBackdrop() {
         const alpha = Math.max(0, Math.min(1, s.a * twk));
         const x = s.x + px * (2 + s.z * 16);
         const y = s.y + py * (2 + s.z * 16);
-        ctx.fillStyle = s.violet
-          ? `rgba(186,158,255,${alpha})`
-          : `rgba(208,226,255,${alpha})`;
+        ctx.fillStyle = s.violet ? GB.starViolet(alpha) : GB.star(alpha);
         ctx.beginPath();
         ctx.arc(x, y, s.r, 0, Math.PI * 2);
         ctx.fill();
         if (s.r > 1.5 && alpha > 0.45) {
           // soft halo
-          ctx.fillStyle = s.violet
-            ? `rgba(150,120,255,${alpha * 0.1})`
-            : `rgba(150,200,255,${alpha * 0.1})`;
+          ctx.fillStyle = s.violet ? GB.starHaloViolet(alpha * 0.1) : GB.starHalo(alpha * 0.1);
           ctx.beginPath();
           ctx.arc(x, y, s.r * 2.6, 0, Math.PI * 2);
           ctx.fill();
           // diffraction spikes on the brightest stars (astrophotography feel)
           const L = s.r * (3.2 + s.z * 3);
-          ctx.strokeStyle = s.violet
-            ? `rgba(180,150,255,${alpha * 0.5})`
-            : `rgba(205,226,255,${alpha * 0.55})`;
+          ctx.strokeStyle = s.violet ? GB.spikeViolet(alpha * 0.5) : GB.spike(alpha * 0.55);
           ctx.lineWidth = 0.75;
           ctx.beginPath();
           ctx.moveTo(x - L, y);
@@ -495,9 +578,9 @@ export default function GlobalBackdrop() {
         const tx = shoot.x - Math.cos(ang) * shoot.len;
         const ty = shoot.y - Math.sin(ang) * shoot.len;
         const grad = ctx.createLinearGradient(shoot.x, shoot.y, tx, ty);
-        grad.addColorStop(0, `rgba(220,238,255,${0.9 * fade})`);
-        grad.addColorStop(0.4, `rgba(120,180,255,${0.4 * fade})`);
-        grad.addColorStop(1, "rgba(120,180,255,0)");
+        grad.addColorStop(0, `${GB.shoot[0]}${0.9 * fade})`);
+        grad.addColorStop(0.4, `${GB.shoot[1]}${0.4 * fade})`);
+        grad.addColorStop(1, GB.shoot[2]);
         ctx.strokeStyle = grad;
         ctx.lineWidth = 1.6;
         ctx.lineCap = "round";
@@ -547,7 +630,9 @@ export default function GlobalBackdrop() {
         zIndex: -1,
         pointerEvents: "none",
         overflow: "hidden",
-        background: "#04050d",
+        background: GB.wrap,
+        ["--gb-blend" as string]: GB.blend,
+        ["--gb-glow-scale" as string]: String(GB.glowScale),
       }}
     >
       {/* Layer 1: near-black navy base, darkest through the centre */}
@@ -555,8 +640,7 @@ export default function GlobalBackdrop() {
         style={{
           position: "absolute",
           inset: 0,
-          background:
-            "radial-gradient(120% 100% at 50% 45%, #070b18 0%, #04060f 45%, #020308 100%)",
+          background: GB.base,
         }}
       />
 
@@ -575,7 +659,7 @@ export default function GlobalBackdrop() {
           inset: 0,
           width: "100%",
           height: "100%",
-          mixBlendMode: "screen",
+          mixBlendMode: GB.canvasBlend,
         }}
       />
 
@@ -584,9 +668,7 @@ export default function GlobalBackdrop() {
         style={{
           position: "absolute",
           inset: 0,
-          background:
-            "radial-gradient(ellipse 64% 52% at 50% 47%, rgba(2,3,8,0.72) 0%, rgba(2,3,8,0.34) 44%, rgba(2,3,8,0) 72%), " +
-            "linear-gradient(to bottom, rgba(2,3,8,0.45) 0%, rgba(2,3,8,0) 22%, rgba(2,3,8,0) 100%)",
+          background: GB.scrim,
         }}
       />
 
@@ -594,7 +676,8 @@ export default function GlobalBackdrop() {
         .gb-glow {
           position: absolute;
           border-radius: 50%;
-          mix-blend-mode: screen;
+          mix-blend-mode: var(--gb-blend, screen);
+          opacity: var(--gb-glow-scale, 1);
           will-change: transform;
         }
         .gb-glow-blue {
