@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { prisma } from "@/app/lib/prisma";
+import { sectionMarkBare } from "@/app/components/sectionMark";
 import { landingRouteFor } from "@/app/lib/courseLandings";
 
 import Nav from "@/app/components/landing-v2/Nav";
@@ -363,15 +364,45 @@ export default async function CybersecurityPage() {
 
   return (
     <>
-      <GlobalBackdrop />
-      <Nav />
+      {/* Owner 2026-09-24: this page joins the homepage and /schools on
+          the warm sand ground. The four track cards below keep their own
+          art and colour: they are product identities, and Pro's black
+          coding theme is a taste call on record. They sit on the paper
+          the way the dark product screenshots sit on /schools. */}
+      <GlobalBackdrop tone="sand" />
+      <Nav tone="sand" />
       <main
+        className="cs-page"
         style={{
           position: "relative",
-          color: "var(--lv2-paper)",
+          color: "var(--lv2-ink)",
           minHeight: "100vh",
         }}
       >
+        <style>{`
+          /* The sand token layer, the same one the other two light pages
+             carry. Without it this page reads the neon values straight
+             out of globals.css, and --lv2-cyan-soft is 1.1:1 on paper. */
+          .cs-page, .cs-page :is(section, div, nav, header, footer, span, p, li, a, h1, h2, h3) {
+            --lv2-cyan: #0a7085;
+            --lv2-cyan-soft: #0a7085;
+            --lv2-lime: #0e7a45;
+            --lv2-cosmic: #5744c9;
+            --lv2-text-muted: #5d6472;
+            --lv2-ink: #14161d;
+          }
+          /* The ground goes on html: the backdrop is fixed at z-index -1
+             and a background on body paints straight over it. */
+          html { background: #f3ede4; }
+          body { background: transparent; }
+          /* the same three sand accents the other two pages highlight with */
+          .cs-grad {
+            background: linear-gradient(92deg, #0a7085 0%, #5744c9 55%, #a5117f 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+          }
+        `}</style>
         {/* HERO ────────────────────────────────────────────── */}
         <section
           style={{
@@ -412,18 +443,10 @@ export default async function CybersecurityPage() {
           </FadeUp>
 
           <FadeUp>
-            <p
-              style={{
-                fontFamily: "var(--lv2-font-mono)",
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: "0.32em",
-                textTransform: "uppercase",
-                color: "rgba(232,237,255,0.55)",
-                marginBottom: 18,
-              }}
-            >
-              // CYBERSECURITY · 4 TRACKS · AGES 6 → 18+
+            {/* The same bare mark the other two heroes take: teal on the
+                ground, no badge. */}
+            <p style={{ ...sectionMarkBare, marginBottom: 18 }}>
+              {"// Cybersecurity · 4 tracks · Ages 6 to 18+"}
             </p>
           </FadeUp>
 
@@ -437,10 +460,13 @@ export default async function CybersecurityPage() {
                 fontWeight: 400,
                 margin: "0 auto",
                 maxWidth: 900,
-                color: "var(--lv2-paper)",
+                color: "var(--lv2-ink)",
               }}
             >
-              Cybersecurity for every age.
+              {/* The payoff phrase carries the gradient, the way the
+                  homepage and /schools headlines do. */}
+              Cybersecurity for{" "}
+              <span className="cs-grad">every age.</span>
             </h1>
           </FadeUp>
 
@@ -450,7 +476,7 @@ export default async function CybersecurityPage() {
                 fontFamily: "var(--lv2-font-display)",
                 fontSize: "clamp(1rem, 1.25vw, 1.125rem)",
                 lineHeight: 1.6,
-                color: "rgba(232,237,255,0.78)",
+                color: "rgba(17,22,38,0.8)",
                 marginTop: 22,
                 marginBottom: 0,
                 maxWidth: 640,
@@ -472,16 +498,17 @@ export default async function CybersecurityPage() {
               <span style={{
                 display: "inline-flex", alignItems: "center", gap: 14,
                 padding: "10px 20px", borderRadius: 999,
-                background: "rgba(13,15,24,0.55)",
-                border: "1px solid rgba(159,245,255,0.28)",
-                boxShadow: "0 0 30px -16px rgba(159,245,255,0.9)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
+                /* The crest is white artwork and may not be recoloured,
+                   so its plate stays dark. It is the one dark object in
+                   the hero, which is how the homepage handles it too. */
+                background: "#14161d",
+                border: "1px solid rgba(20,22,29,0.5)",
+                boxShadow: "0 14px 34px -20px rgba(20,22,29,0.7)",
               }}>
                 <span style={{
                   fontFamily: "var(--lv2-font-mono)",
                   fontSize: 10.5, fontWeight: 700, letterSpacing: "0.24em",
-                  textTransform: "uppercase", color: "var(--lv2-cyan-soft)",
+                  textTransform: "uppercase", color: "#9fe8f5",
                 }}>
                   Aligned with UK&rsquo;s National Cyber Security Centre
                 </span>
@@ -521,6 +548,7 @@ export default async function CybersecurityPage() {
               const characterImage = TRACK_CHARACTER_IMAGES[p.slug];
               return (
                 <TrackCard
+                  tone="sand"
                   key={p.slug}
                   slug={p.slug}
                   emoji={TRACK_EMOJI_OVERRIDES[p.slug] ?? p.emoji}
@@ -557,7 +585,7 @@ export default async function CybersecurityPage() {
                 fontFamily: "var(--lv2-font-display)",
                 fontSize: 14,
                 lineHeight: 1.6,
-                color: "rgba(232,237,255,0.55)",
+                color: "rgba(17,22,38,0.68)",
                 maxWidth: 560,
                 marginLeft: "auto",
                 marginRight: "auto",
@@ -581,7 +609,7 @@ export default async function CybersecurityPage() {
         </section>
       </main>
 
-      <Footer />
+      <Footer tone="sand" />
 
       <style>{`
         .lv2-cyber-tracks-grid {

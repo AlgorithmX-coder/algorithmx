@@ -109,7 +109,9 @@ export default function TrackCard({
   specs,
   codeBackdrop,
   diagramOverlay,
-}: TrackCardProps) {
+  tone = "night",
+}: TrackCardProps & { tone?: "night" | "sand" }) {
+  const onSand = tone === "sand";
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
   const isLive = status === "ACTIVE";
@@ -138,14 +140,23 @@ export default function TrackCard({
         /* Translucent frosted fill — more see-through + a stronger blur
          *  so the cosmic backdrop reads through the glass and the card
          *  feels seated in the scene rather than stamped on top. */
-        background:
-          "linear-gradient(180deg, rgba(16,19,30,0.58) 0%, rgba(10,12,20,0.46) 100%)",
-        backdropFilter: "blur(22px) saturate(1.3)",
-        WebkitBackdropFilter: "blur(22px) saturate(1.3)",
+        /* On night the card is frosted glass so the cosmic backdrop reads
+           through it and it sits IN the scene. On paper there is nothing
+           worth seeing through it, and a translucent dark fill over sand
+           just goes muddy grey, so it becomes a solid panel: the card
+           keeps its own dark identity and reads as artwork placed ON the
+           page, which is how the product screenshots sit on /schools. */
+        background: onSand
+          ? "linear-gradient(180deg, #171b25 0%, #0f1219 100%)"
+          : "linear-gradient(180deg, rgba(16,19,30,0.58) 0%, rgba(10,12,20,0.46) 100%)",
+        backdropFilter: onSand ? "none" : "blur(22px) saturate(1.3)",
+        WebkitBackdropFilter: onSand ? "none" : "blur(22px) saturate(1.3)",
         /* No hard accent rule across the top (that was the "sharp" tell).
          *  Identity now comes from a soft accent halo below; the border
          *  is just a whisper to catch the edge. */
-        border: "1px solid rgba(232,237,255,0.06)",
+        /* A whisper of an edge is enough on black; on paper the card
+             needs a real one or it floats. */
+        border: onSand ? `1px solid ${accent}4d` : "1px solid rgba(232,237,255,0.06)",
         borderRadius: 24,
         padding: "34px 30px 30px",
         display: "flex",
@@ -153,9 +164,16 @@ export default function TrackCard({
         gap: 16,
         /* Diffuse, spread-negative shadows: a soft dark seat with no crisp
          *  edge + a gentle accent aura that melts into the space behind. */
-        boxShadow: hover
-          ? `0 30px 72px -28px rgba(0,0,0,0.55), 0 0 66px -12px ${accent}4d`
-          : `0 22px 56px -30px rgba(0,0,0,0.5), 0 0 46px -16px ${accent}2e`,
+        /* Paper casts a warm shadow, not a black one, and the accent aura
+           that melted into space would just be a smudge on sand, so on
+           sand it tightens to a seat under the card. */
+        boxShadow: onSand
+          ? hover
+            ? `0 26px 56px -24px rgba(86,68,45,0.62), 0 0 0 1px ${accent}33`
+            : `0 16px 38px -22px rgba(86,68,45,0.5)`
+          : hover
+            ? `0 30px 72px -28px rgba(0,0,0,0.55), 0 0 66px -12px ${accent}4d`
+            : `0 22px 56px -30px rgba(0,0,0,0.5), 0 0 46px -16px ${accent}2e`,
         transform: hover && !reduced ? "translateY(-4px)" : "translateY(0)",
         transition:
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",

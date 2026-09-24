@@ -11,10 +11,12 @@ export default function TermsPage() {
   return (
     <main
       style={{
+        /* Owner 2026-09-24: joins the light brand. This page has no art
+           direction of its own, so whatever the brand is, it is this. */
         minHeight: "100vh",
         background:
-          "radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
-        color: "#e7ecff",
+          "radial-gradient(ellipse at 50% 70%, #fbf7f0 0%, #f6f1e7 35%, #f3ede4 70%, #efe8dc 100%)",
+        color: "#14161d",
         padding: "80px 24px",
         fontFamily: "'Nunito', system-ui, sans-serif",
       }}
@@ -22,7 +24,7 @@ export default function TermsPage() {
       <article style={{ maxWidth: 760, margin: "0 auto" }}>
         <Link
           href="/cyberheroes"
-          style={{ color: "#7df0ff", fontSize: 13, textDecoration: "none" }}
+          style={{ color: "#0a7085", fontSize: 13, textDecoration: "none" }}
         >
           ← Back to Cyber Heroes
         </Link>
@@ -34,7 +36,7 @@ export default function TermsPage() {
             marginTop: 18,
             marginBottom: 8,
             background:
-              "linear-gradient(135deg, #ffd158 0%, #ff7a59 35%, #ff5fb3 70%, #7c5cff 100%)",
+              "linear-gradient(135deg, #8a5400 0%, #a63a08 35%, #a5117f 70%, #5744c9 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -43,7 +45,7 @@ export default function TermsPage() {
         >
           Terms of Service
         </h1>
-        <p style={{ color: "rgba(199,207,240,0.7)", fontSize: 13, marginBottom: 36 }}>
+        <p style={{ color: "rgba(17,22,38,0.62)", fontSize: 13, marginBottom: 36 }}>
           Last updated: April 2026
         </p>
 
@@ -110,7 +112,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
           fontFamily: "'Space Grotesk', system-ui, sans-serif",
           fontSize: 18,
           fontWeight: 800,
-          color: "#7df0ff",
+          color: "#0a7085",
           textTransform: "uppercase",
           letterSpacing: "0.12em",
           marginBottom: 10,
@@ -118,7 +120,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       >
         {title}
       </h2>
-      <div style={{ color: "#c5cdf0", fontSize: 15, lineHeight: 1.7 }}>{children}</div>
+      <div style={{ color: "rgba(17,22,38,0.84)", fontSize: 15, lineHeight: 1.7 }}>{children}</div>
     </section>
   );
 }
@@ -127,7 +129,7 @@ function ContactEmail() {
   return (
     <a
       href="mailto:support@algorithmx.co.uk"
-      style={{ color: "#ff5fb3", textDecoration: "underline" }}
+      style={{ color: "#a5117f", textDecoration: "underline" }}
     >
       support@algorithmx.co.uk
     </a>
