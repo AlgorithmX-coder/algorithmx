@@ -85,8 +85,8 @@
  * 26 + eyebrow 22 + mirror 300 (two rows of 138 + gap) + gap 12 + ask row 20 +
  * answers 84 + strip 28 + hint gap 8 = ~539px, so the whole mirror and both
  * answers are on screen without a scroll. At narrow widths the panes fall to two
- * columns at 760px and one at 430px, the answers to one, and nothing scrolls
- * sideways.
+ * columns at 760px and stay two across even on a phone, the answers fall to
+ * one, and nothing scrolls sideways.
  */
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
@@ -602,7 +602,11 @@ export default function FrostMirror({
           <style>{`
             .fmMirrorGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             @media (max-width: 760px) { .fmMirrorGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-            @media (max-width: 430px) { .fmMirrorGrid { grid-template-columns: minmax(0, 1fr); } }
+            /* NO single-column tier. Stacking the six panes into one column
+               pushed the board 479px past the fold on a 390px phone, and worse,
+               it broke the point of the board: the child is meant to see the
+               WHOLE mirror at once, the way a stranger meets a profile. Two
+               across keeps all six in one view at every width. */
             @keyframes fmGuide { 0%,100% { box-shadow: 0 0 0 3px ${accent}55, 0 0 16px ${accent}77 } 50% { box-shadow: 0 0 0 6px ${accent}22, 0 0 28px ${accent} } }
           `}</style>
         </div>
