@@ -129,7 +129,7 @@ function ContactEmail() {
   return (
     <a
       href="mailto:support@algorithmx.co.uk"
-      style={{ color: "#ff5fb3", textDecoration: "underline" }}
+      style={{ color: "#a5117f", textDecoration: "underline" }}
     >
       support@algorithmx.co.uk
     </a>
