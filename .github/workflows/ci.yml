@@ -98,6 +98,21 @@ jobs:
           npx prisma migrate deploy
           npx prisma db seed
 
+      # next/font/google downloads every face at BUILD time and caches it
+      # under .next/cache. Nothing was caching that here, so every run
+      # cold-fetched ~30 font files from Google and any single failure took
+      # the whole build down before a test could run: six builds died that
+      # way on 2026-09-23, one of them a production deploy. The key is the
+      # official Next.js recipe, so a source change still rebuilds; only
+      # the fetched fonts and the compiler cache carry over.
+      - name: Cache the Next build cache (fonts live here)
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
       # Build once; the playwright config boots `next start` itself.
       - name: Build production bundle
         run: npm run build
