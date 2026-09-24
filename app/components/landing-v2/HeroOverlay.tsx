@@ -335,6 +335,17 @@ export default function HeroOverlay() {
           letter-spacing: 0.14em !important;
         }
       }
+      /* Short phones: the copy gives a little back too, so the machine
+         does not have to carry the whole squeeze on its own. The headline
+         size is inline (a clamp), hence the !important. */
+      @media (max-width: 640px) and (max-height: 620px) {
+        .lv2-hero-pad { padding-top: 74px; }
+        .lv2-hero-copy h1 { font-size: 2rem !important; line-height: 0.95; }
+        /* the sub-line is four lines here, so a point off it is worth
+           about 16px of frame */
+        .lv2-hero-copy p { font-size: 14px !important; line-height: 1.45; }
+        .lv2-hero-cta-row { bottom: 14px; }
+      }
       @media (min-height: 1100px) {
         .lv2-hero-pad { padding-bottom: calc(var(--lv2-rail) * 3); }
       }

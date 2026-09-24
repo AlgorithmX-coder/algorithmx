@@ -244,11 +244,20 @@ export default function HeroCinematicV3() {
         background: "transparent",
       }}
     >
+      {/* The pinned frame. Height comes from the class, not from here,
+          because it needs two declarations: 100vh for anything without
+          svh, then 100svh. On iOS Safari 100vh is the toolbar-HIDDEN
+          height, so a frame that tall runs its last ~90px underneath the
+          visible toolbar. That is where the phone CTA is pinned, and the
+          owner's screenshot shows it cut in half by the toolbar. 100svh
+          is the toolbar-SHOWN height, so the frame ends where the user
+          can actually see. On desktop svh and vh are the same number, so
+          nothing there moves. */}
       <div
+        className="hv3-pinFrame"
         style={{
           position: "sticky",
           top: 0,
-          height: "100vh",
           width: "100%",
           overflow: "hidden",
         }}
@@ -882,6 +891,10 @@ export default function HeroCinematicV3() {
 
       {/* scoped styles: ambient keyframes + responsive scale + a11y */}
       <style>{`
+        /* Two declarations on purpose: the second wins wherever svh is
+           understood, the first is the fallback. See the comment on the
+           element itself. */
+        .hv3-pinFrame { height: 100vh; height: 100svh; }
         .hv3-sceneScale { transform-style: preserve-3d; }
         @media (max-width: 1100px) { .hv3-sceneScale { zoom: 0.82; } }
         @media (max-width: 1000px) { .hv3-sceneScale { zoom: 0.64; } }
@@ -891,6 +904,18 @@ export default function HeroCinematicV3() {
            frame is only ~664 tall, which left no floor for the CTA the
            owner wants under it. */
         @media (max-width: 640px)  { .hv3-sceneScale { zoom: 0.44; } }
+        /* Width alone is not enough on a phone: the frame also has to hold
+           the copy and the button, and a short phone has 100px less to
+           give. Measured at 390x600 the machine ran to 541 while the
+           button started at 536. These two steps buy that back. */
+        @media (max-width: 640px) and (max-height: 700px) { .hv3-sceneScale { zoom: 0.36; } }
+        @media (max-width: 640px) and (max-height: 620px) { .hv3-sceneScale { zoom: 0.29; } }
+        /* Shrinking alone raises the machine TOWARDS the copy, because the
+           box shrinks about its own centre: at 0.22 the gap under it grew
+           to 100 while the copy started overlapping it by 3. So on the
+           shortest phones it is pushed back down instead. margin, not
+           transform, because framer-motion owns the transform. */
+        @media (max-width: 640px) and (max-height: 620px) { .hv3-sceneScale { margin-top: 26px; } }
         /* SCROLL HINT on short windows: the overlay copy (headline, CTA,
          * trust row) fills the 100vh frame, so the hint drops to the
          * frame edge, and disappears where even that would collide. */
