@@ -1168,34 +1168,43 @@ export const WEEK_1: WeekContent = {
   // if a screen is inserted/removed, shift these too (the trailing labels help).
   // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
   reactions: {
+  // Keyed by SCREEN INDEX (0-29), one per screen.
+  //
+  // These were authored for a 29-screen Week 1, before the ATLAS briefing was
+  // inserted at index 2, and nobody shifted them afterwards. Every reaction
+  // from index 2 on therefore sat one screen EARLY: a game prompt on a Learn
+  // screen, "Boss battle!" on the outro video. Renumbered 2026-09-24, and the
+  // briefing given its own line. If a screen is ever inserted again, shift
+  // these with it (the trailing labels make that checkable at a glance).
     0: { adam: { mood: "excited", message: "Mission 1 - let's go, Cyber Hero!" }, layla: null }, // intro video
     1: { adam: { mood: "worried", message: "Alert! The Raccoon's after our passwords - let's stop him!" }, layla: null }, // alert
-    2: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } }, // mission brief
-    3: { adam: { mood: "thinking", message: "A password is your secret key." }, layla: null }, // learn: key
-    4: { adam: null, layla: { mood: "excited", message: "Match the cyber words!" } }, // game: match
-    5: { adam: { mood: "thumbsup", message: "Prove it - finish the rule!" }, layla: null }, // prove: finish
-    6: { adam: null, layla: { mood: "excited", message: "You did it! One secret down - keep going!" } }, // recap 1
-    7: { adam: null, layla: { mood: "curious", message: "Long beats clever every time." } }, // learn: long
-    8: { adam: { mood: "excited", message: "Pick three random words!" }, layla: null }, // game: build
-    9: { adam: null, layla: { mood: "excited", message: "Quick - tap the longest!" } }, // prove: speed
-    10: { adam: { mood: "thumbsup", message: "Stronger every round - nice!" }, layla: null }, // recap 2
-    11: { adam: { mood: "thinking", message: "Now let's MIX it up." }, layla: null }, // learn: mix
-    12: { adam: { mood: "excited", message: "Heal these weak passwords!" }, layla: null }, // game: repair
-    13: { adam: null, layla: { mood: "worried", message: "The Raccoon's talking - true or false?" } }, // prove: lie
-    14: { adam: null, layla: { mood: "excited", message: "Three secrets mastered - amazing!" } }, // recap 3
-    15: { adam: null, layla: { mood: "thinking", message: "Keep your password secret." } }, // learn: secret
-    16: { adam: { mood: "curious", message: "Pick the safe choice." }, layla: null }, // game: decide
-    17: { adam: null, layla: { mood: "thumbsup", message: "Who should know it? You decide." } }, // prove: recall
-    18: { adam: { mood: "thumbsup", message: "Almost there, Cyber Hero!" }, layla: null }, // recap 4
-    19: { adam: { mood: "worried", message: "Never pick the obvious ones." }, layla: null }, // learn: obvious
-    20: { adam: { mood: "thinking", message: "Tell me WHY each one is weak." }, layla: null }, // game: sort
-    21: { adam: { mood: "excited", message: "Which would he guess first?" }, layla: null }, // prove: recall
-    22: { adam: null, layla: { mood: "excited", message: "All five! You're ready for the boss!" } }, // recap 5
-    23: { adam: null, layla: { mood: "excited", message: "Rip the weak ones from his notebook!" } }, // consolidation
-    24: { adam: { mood: "worried", message: "Boss battle - lock him out!" }, layla: null }, // boss
-    25: { adam: null, layla: { mood: "excited", message: "Watch the Raccoon bounce right off!" } }, // outro video
-    26: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
-    27: { adam: null, layla: { mood: "excited", message: "Stickers earned - off to your Cyber HQ!" } }, // stickers
-    28: { adam: { mood: "thumbsup", message: "Password Protector badge earned!" }, layla: null }, // completion
+    2: { adam: null, layla: { mood: "curious", message: "Mission Command has the briefing." } }, // ATLAS briefing
+    3: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } }, // mission brief
+    4: { adam: { mood: "thinking", message: "A password is your secret key." }, layla: null }, // learn: key
+    5: { adam: null, layla: { mood: "excited", message: "Match the cyber words!" } }, // game: match
+    6: { adam: { mood: "thumbsup", message: "Prove it - finish the rule!" }, layla: null }, // prove: finish
+    7: { adam: null, layla: { mood: "excited", message: "You did it! One secret down - keep going!" } }, // recap 1
+    8: { adam: null, layla: { mood: "curious", message: "Long beats clever every time." } }, // learn: long
+    9: { adam: { mood: "excited", message: "Pick three random words!" }, layla: null }, // game: build
+    10: { adam: null, layla: { mood: "excited", message: "Quick - tap the longest!" } }, // prove: speed
+    11: { adam: { mood: "thumbsup", message: "Stronger every round - nice!" }, layla: null }, // recap 2
+    12: { adam: { mood: "thinking", message: "Now let's MIX it up." }, layla: null }, // learn: mix
+    13: { adam: { mood: "excited", message: "Heal these weak passwords!" }, layla: null }, // game: repair
+    14: { adam: null, layla: { mood: "worried", message: "The Raccoon's talking - true or false?" } }, // prove: lie
+    15: { adam: null, layla: { mood: "excited", message: "Three secrets mastered - amazing!" } }, // recap 3
+    16: { adam: null, layla: { mood: "thinking", message: "Keep your password secret." } }, // learn: secret
+    17: { adam: { mood: "curious", message: "Pick the safe choice." }, layla: null }, // game: decide
+    18: { adam: null, layla: { mood: "thumbsup", message: "Who should know it? You decide." } }, // prove: recall
+    19: { adam: { mood: "thumbsup", message: "Almost there, Cyber Hero!" }, layla: null }, // recap 4
+    20: { adam: { mood: "worried", message: "Never pick the obvious ones." }, layla: null }, // learn: obvious
+    21: { adam: { mood: "thinking", message: "Tell me WHY each one is weak." }, layla: null }, // game: sort
+    22: { adam: { mood: "excited", message: "Which would he guess first?" }, layla: null }, // prove: recall
+    23: { adam: null, layla: { mood: "excited", message: "All five! You're ready for the boss!" } }, // recap 5
+    24: { adam: null, layla: { mood: "excited", message: "Rip the weak ones from his notebook!" } }, // consolidation
+    25: { adam: { mood: "worried", message: "Boss battle - lock him out!" }, layla: null }, // boss
+    26: { adam: null, layla: { mood: "excited", message: "Watch the Raccoon bounce right off!" } }, // outro video
+    27: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
+    28: { adam: null, layla: { mood: "excited", message: "Stickers earned - off to your Cyber HQ!" } }, // stickers
+    29: { adam: { mood: "thumbsup", message: "Password Protector badge earned!" }, layla: null }, // completion
   },
 };
