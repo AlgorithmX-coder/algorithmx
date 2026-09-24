@@ -68,9 +68,29 @@ const SLOTS: Slot[] = [
 /** Anything a child can tap. The pill must never sit on one of these. */
 const CONTROL_SELECTOR = "button, a[href], [role='button'], input, select, textarea, [data-pd-card], [data-mm-card]";
 
-/** Total area (px²) of visible controls the box would cover. */
+/**
+ * Total area (px²) the box would cover, counting BOTH tappable controls and
+ * readable text.
+ *
+ * Text used to be invisible to this. The check only weighed CONTROL_SELECTOR,
+ * so a slot sitting squarely on a sentence scored a clean zero and won on the
+ * spot. On six of fifteen sampled boards the pill parked on the on-board
+ * instruction strip, which is a plain div and always will be, covering the
+ * one line telling the child what to do. It is the line they need most while
+ * Sarah is talking.
+ *
+ * Counting text here rather than tagging every engine means all twenty weeks
+ * are fixed by one file and a new board gets it for free. If every slot is
+ * covered the least-bad one still wins, exactly as before, so the worst case
+ * is today's behaviour.
+ */
 function coveredArea(box: Box, guard: HTMLElement | null): number {
   let area = 0;
+  const overlap = (r: DOMRect | Box) => {
+    const ix = Math.max(0, Math.min(box.right, r.right) - Math.max(box.left, r.left));
+    const iy = Math.max(0, Math.min(box.bottom, r.bottom) - Math.max(box.top, r.top));
+    return ix * iy;
+  };
   document.querySelectorAll(CONTROL_SELECTOR).forEach((el) => {
     if (guard && guard.contains(el)) return;
     const r = el.getBoundingClientRect();
@@ -80,10 +100,50 @@ function coveredArea(box: Box, guard: HTMLElement | null): number {
     // that is about to appear.
     const cs = window.getComputedStyle(el);
     if (cs.visibility === "hidden" || cs.display === "none") return;
-    const ix = Math.max(0, Math.min(box.right, r.right) - Math.max(box.left, r.left));
-    const iy = Math.max(0, Math.min(box.bottom, r.bottom) - Math.max(box.top, r.top));
-    area += ix * iy;
+    area += overlap(r);
   });
+
+  // Readable text. Measured with a Range rather than the element box, because
+  // a short line inside a wide container would otherwise claim the whole
+  // width, and intersected with any clipping ancestor, because a clipped
+  // element's own rect reports where it WOULD paint, not where it does (the
+  // lesson from the phone-header work).
+  const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let node = walk.nextNode(); node; node = walk.nextNode()) {
+    const text = (node.textContent || "").trim();
+    // Single glyphs and counters are not worth moving the pill for.
+    if (text.length < 6) continue;
+    const el = node.parentElement;
+    if (!el || (guard && guard.contains(el))) continue;
+    const cs = window.getComputedStyle(el);
+    if (cs.visibility === "hidden" || cs.display === "none") continue;
+
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    const r = range.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) continue;
+
+    let clip: Box = { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight };
+    for (let p: HTMLElement | null = el; p && p !== document.body; p = p.parentElement) {
+      const pcs = window.getComputedStyle(p);
+      if (pcs.overflow === "visible" && pcs.overflowX === "visible" && pcs.overflowY === "visible") continue;
+      const pb = p.getBoundingClientRect();
+      clip = {
+        left: Math.max(clip.left, pb.left),
+        top: Math.max(clip.top, pb.top),
+        right: Math.min(clip.right, pb.right),
+        bottom: Math.min(clip.bottom, pb.bottom),
+      };
+    }
+    const painted: Box = {
+      left: Math.max(r.left, clip.left),
+      top: Math.max(r.top, clip.top),
+      right: Math.min(r.right, clip.right),
+      bottom: Math.min(r.bottom, clip.bottom),
+    };
+    if (painted.right <= painted.left || painted.bottom <= painted.top) continue;
+    area += overlap(painted);
+  }
   return area;
 }
 
