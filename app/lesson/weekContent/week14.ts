@@ -79,6 +79,16 @@ export const WEEK_14: WeekContent = {
       caption: "The Raccoon has found a lazy new trick: he listens through the gadgets already sitting in your house. Speakers, tellies, even talking toys. None of them are out to get you, and that is the point. This week you become a Settings Scout. Know which things have ears, know what they keep, and flip the switches with a grown-up.",
       photoCaption: "Wk 14 - The House That Listens",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, keep your voice down and read this incident report with me.",
+          "The Raccoon has found a lazy new trick: he listens through the gadgets already sitting in your house. Speakers, tellies, even talking toys. None of them are out to get you, and that is the point. This week you become a Settings Scout. Know which things have ears, know what they keep, and flip the switches with a grown-up.",
+          "[whispers] Speakers, tellies, even talking toys. Already sitting in the house.",
+          "[warmly] By the end of today, you will know which things have ears, and how to flip the switches with a grown-up.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing

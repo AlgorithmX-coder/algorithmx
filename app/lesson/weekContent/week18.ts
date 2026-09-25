@@ -81,6 +81,17 @@ export const WEEK_18: WeekContent = {
       caption: "The Raccoon does not need to crack anything this week. He just waits. A family tablet left signed in on the kitchen shelf, a school computer still wearing the last kid's name, SAVE PASSWORD balloons bobbing over every login. Every left open screen is a door he can stroll through wearing YOUR face. This week you become the Lock Master: spot which screens are shared, close down like a relay runner, find the front door on any device, leave other people's things alone, and pop every sticky balloon.",
       photoCaption: "Wk 18 - The Family Tablet",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, check the shelf, then read this incident report with me.",
+          "The Raccoon does not need to crack anything this week. He just waits. A family tablet left signed in on the kitchen shelf, SAVE PASSWORD balloons bobbing over every login. Every left open screen is a door he can stroll through wearing YOUR face.",
+          "This week you become the Lock Master, and learn to close a door behind you.",
+          "[whispers] He does not crack anything. He just waits for somebody to walk away.",
+          "[warmly] By the end of today, you will never leave a door open behind you again.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing

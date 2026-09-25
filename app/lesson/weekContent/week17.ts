@@ -81,6 +81,17 @@ export const WEEK_17: WeekContent = {
       caption: "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone at all can stand and stare into. He wants kids dazzled, comparing, and wide open. This week you forge the Profile Shield: read the number on the room, frost your own mirror, tell gold from glitter, check a post before it goes, and see what is really backstage.",
       photoCaption: "Wk 17 - The Hall of Mirrors",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, mind your reflection, and read this incident report with me.",
+          "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone at all can stand and stare into.",
+          "This week you forge the Profile Shield, so the mirror shows only what you choose.",
+          "[whispers] Dazzled, comparing, and wide open. That is exactly how he likes them.",
+          "[warmly] By the end of today, you will look into any mirror he builds and see straight through it.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing

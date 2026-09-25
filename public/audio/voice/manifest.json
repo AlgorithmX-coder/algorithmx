@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T15:45:28.976Z",
+  "generatedAt": "2026-09-25T19:03:02.944Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -2172,6 +2172,20 @@
       "file": "/audio/voice/5c449a3b21f85e9b.mp3"
     },
     {
+      "key": "0497dc64c1fa2c31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, sit down with me and read this incident report. The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later, and some of what they watched wasn't even true. This week you learn to notice the pull, and climb out. [whispers] Two hours. And after the first one, nobody chose a single video. [warmly] By the end of today, you will feel the pull coming and climb out whenever you want. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, sit down with me and read this incident report.",
+        "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later, and some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
+        "[whispers] Two hours. And after the first one, nobody chose a single video.",
+        "[warmly] By the end of today, you will feel the pull coming and climb out whenever you want.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/0497dc64c1fa2c31.mp3"
+    },
+    {
       "key": "28ee10c3c59be7e7",
       "speaker": "adam",
       "voice": "Sarah",
@@ -4025,14 +4039,14 @@
       "file": "/audio/voice/b337b6e4a5f61fb0.mp3"
     },
     {
-      "key": "a28c2f9aecabc4f9",
+      "key": "bca829eb8bcc1f5c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "SEARCH FOR WHAT I CAME FOR",
+      "text": "Search for what I came for",
       "lines": [
-        "SEARCH FOR WHAT I CAME FOR"
+        "Search for what I came for"
       ],
-      "file": "/audio/voice/a28c2f9aecabc4f9.mp3"
+      "file": "/audio/voice/bca829eb8bcc1f5c.mp3"
     },
     {
       "key": "adb56670d1752280",
@@ -4423,6 +4437,20 @@
         "Reply with your school name."
       ],
       "file": "/audio/voice/e401eb8045246333.mp3"
+    },
+    {
+      "key": "94c709fe926aaddf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Cyber Hero, come and read this incident report with me. This one matters. Messages landed on kids' screens that made their tummies drop, and the Raccoon whispered a sneaky lie after them: it is YOUR fault, keep it quiet. This week you learn the calm steps every hero knows, in a lighthouse where the light never goes out. [whispers] That lie is the whole trick. Quiet is the thing he needs. [warmly] So here is the first truth, before anything else. It is NEVER your fault, and telling a trusted grown-up is always the right move. Let's see what Mission Command has for us!",
+      "lines": [
+        "[warmly] Cyber Hero, come and read this incident report with me. This one matters.",
+        "Messages landed on kids' screens that made their tummies drop, and the Raccoon whispered a sneaky lie after them: it is YOUR fault, keep it quiet. This week you learn the calm steps every hero knows, in a lighthouse where the light never goes out.",
+        "[whispers] That lie is the whole trick. Quiet is the thing he needs.",
+        "[warmly] So here is the first truth, before anything else. It is NEVER your fault, and telling a trusted grown-up is always the right move.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/94c709fe926aaddf.mp3"
     },
     {
       "key": "79b3945ef4ca607f",
@@ -6143,6 +6171,20 @@
         "Kai has been carrying this on their own for a whole week, and has not told a single grown-up."
       ],
       "file": "/audio/voice/23c07a12bb69dfd9.mp3"
+    },
+    {
+      "key": "a059100f414e2d9d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, look at the tracks on this incident report. The Raccoon has been reading kids' trails like a map: school names in bios, park times in captions, grumpy posts to giggle at. This week you get the ranger kit. See the prints you leave, learn why copies cannot be caught, and stamp a trail you are proud of. [whispers] A school name, a park time, a grumpy post. He never had to crack a thing. [warmly] By the end of today, you will see every print you leave BEFORE you leave it. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, look at the tracks on this incident report.",
+        "The Raccoon has been reading kids' trails like a map: school names in bios, park times in captions, grumpy posts to giggle at. This week you get the ranger kit. See the prints you leave, learn why copies cannot be caught, and stamp a trail you are proud of.",
+        "[whispers] A school name, a park time, a grumpy post. He never had to crack a thing.",
+        "[warmly] By the end of today, you will see every print you leave BEFORE you leave it.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/a059100f414e2d9d.mp3"
     },
     {
       "key": "b5faadc9195c1cbf",
@@ -8396,6 +8438,20 @@
       "file": "/audio/voice/d3b8cca6b8ae5c1f.mp3"
     },
     {
+      "key": "28eea699968c870c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, read this incident report with me. The Raccoon has a new hobby: battery thieving. Not phone batteries, KID batteries. He loves heroes drained and glued to the glow, because a tired hero is an easy hero to trick. This week you take your power back. Screens stay in your life. You just get to say how big they are. [whispers] A tired hero is an easy hero to trick. That is the entire plan. [warmly] By the end of today, YOU are the one who says how big the screens get. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, read this incident report with me.",
+        "The Raccoon has a new hobby: battery thieving. Not phone batteries, KID batteries. He loves heroes drained and glued to the glow, because a tired hero is an easy hero to trick. This week you take your power back. Screens stay in your life. You just get to say how big they are.",
+        "[whispers] A tired hero is an easy hero to trick. That is the entire plan.",
+        "[warmly] By the end of today, YOU are the one who says how big the screens get.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/28eea699968c870c.mp3"
+    },
+    {
       "key": "2759f91c4f36f0b9",
       "speaker": "adam",
       "voice": "Sarah",
@@ -10314,6 +10370,20 @@
         "The telly in the corner, blinking on standby."
       ],
       "file": "/audio/voice/ee30f207e0e76e83.mp3"
+    },
+    {
+      "key": "4250173dad46fc28",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, keep your voice down and read this incident report with me. The Raccoon has found a lazy new trick: he listens through the gadgets already sitting in your house. Speakers, tellies, even talking toys. None of them are out to get you, and that is the point. This week you become a Settings Scout. Know which things have ears, know what they keep, and flip the switches with a grown-up. [whispers] Speakers, tellies, even talking toys. Already sitting in the house. [warmly] By the end of today, you will know which things have ears, and how to flip the switches with a grown-up. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, keep your voice down and read this incident report with me.",
+        "The Raccoon has found a lazy new trick: he listens through the gadgets already sitting in your house. Speakers, tellies, even talking toys. None of them are out to get you, and that is the point. This week you become a Settings Scout. Know which things have ears, know what they keep, and flip the switches with a grown-up.",
+        "[whispers] Speakers, tellies, even talking toys. Already sitting in the house.",
+        "[warmly] By the end of today, you will know which things have ears, and how to flip the switches with a grown-up.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/4250173dad46fc28.mp3"
     },
     {
       "key": "25c128f92a1c3e3d",
@@ -14271,6 +14341,21 @@
       "file": "/audio/voice/8cbd2d9643dd33ce.mp3"
     },
     {
+      "key": "207d254ba10cb303",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, do not touch anything yet. Read this incident report with me. The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors, and he paints their signs with parties and prizes while the doors open onto his slide. This week you become a Door Checker, and learn to read a door before you walk through it. [whispers] His own stickers, stuck straight over the real ones. On a poster. On a menu. [warmly] By the end of today, no painted sign gets you through a door you did not choose. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, do not touch anything yet. Read this incident report with me.",
+        "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors, and he paints their signs with parties and prizes while the doors open onto his slide.",
+        "This week you become a Door Checker, and learn to read a door before you walk through it.",
+        "[whispers] His own stickers, stuck straight over the real ones. On a poster. On a menu.",
+        "[warmly] By the end of today, no painted sign gets you through a door you did not choose.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/207d254ba10cb303.mp3"
+    },
+    {
       "key": "e23a7824ad984018",
       "speaker": "adam",
       "voice": "Sarah",
@@ -16141,6 +16226,21 @@
         "That little voice is the exact moment the barrier exists for. Half recognise is not recognise, and a door you never opened cannot do anything at all."
       ],
       "file": "/audio/voice/8a089dc8c1eb4c6c.mp3"
+    },
+    {
+      "key": "e5f8f92b8d5e8fb1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, mind your reflection, and read this incident report with me. The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone at all can stand and stare into. This week you forge the Profile Shield, so the mirror shows only what you choose. [whispers] Dazzled, comparing, and wide open. That is exactly how he likes them. [warmly] By the end of today, you will look into any mirror he builds and see straight through it. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, mind your reflection, and read this incident report with me.",
+        "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone at all can stand and stare into.",
+        "This week you forge the Profile Shield, so the mirror shows only what you choose.",
+        "[whispers] Dazzled, comparing, and wide open. That is exactly how he likes them.",
+        "[warmly] By the end of today, you will look into any mirror he builds and see straight through it.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/e5f8f92b8d5e8fb1.mp3"
     },
     {
       "key": "eaf52fbb3d098a3f",
@@ -18321,6 +18421,21 @@
       "file": "/audio/voice/5807ec4cfc041cad.mp3"
     },
     {
+      "key": "e70f5a386ac11343",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, check the shelf, then read this incident report with me. The Raccoon does not need to crack anything this week. He just waits. A family tablet left signed in on the kitchen shelf, SAVE PASSWORD balloons bobbing over every login. Every left open screen is a door he can stroll through wearing YOUR face. This week you become the Lock Master, and learn to close a door behind you. [whispers] He does not crack anything. He just waits for somebody to walk away. [warmly] By the end of today, you will never leave a door open behind you again. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, check the shelf, then read this incident report with me.",
+        "The Raccoon does not need to crack anything this week. He just waits. A family tablet left signed in on the kitchen shelf, SAVE PASSWORD balloons bobbing over every login. Every left open screen is a door he can stroll through wearing YOUR face.",
+        "This week you become the Lock Master, and learn to close a door behind you.",
+        "[whispers] He does not crack anything. He just waits for somebody to walk away.",
+        "[warmly] By the end of today, you will never leave a door open behind you again.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/e70f5a386ac11343.mp3"
+    },
+    {
       "key": "0013697338a5ef8b",
       "speaker": "adam",
       "voice": "Sarah",
@@ -20077,6 +20192,21 @@
         "And sixth, the one everybody skips. Door shut, and you still turned round and looked back."
       ],
       "file": "/audio/voice/9820d2a730e5edac.mp3"
+    },
+    {
+      "key": "3e74dd7c9d0f85f3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, this incident report is not about you. Read it with me. The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY: a prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother. But he has forgotten the most important thing in that house. It has an EXPERT in it now. [whispers] Same tricks. He has only changed who he points them at. [warmly] By the end of today, your whole family will be as hard to trick as you are. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, this incident report is not about you. Read it with me.",
+        "The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY: a prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother.",
+        "But he has forgotten the most important thing in that house. It has an EXPERT in it now.",
+        "[whispers] Same tricks. He has only changed who he points them at.",
+        "[warmly] By the end of today, your whole family will be as hard to trick as you are.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/3e74dd7c9d0f85f3.mp3"
     },
     {
       "key": "e68a55b133742c0f",
@@ -24159,6 +24289,21 @@
       "file": "/audio/voice/02bbccf556c31967.mp3"
     },
     {
+      "key": "e67d9951fb2ba1bf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] Cyber Hero, look at that sky, and read this last incident report with me. Storm clouds over the city. Nineteen weeks of defeats have left the Raccoon exactly one plan: everything, all at once, in one night. Every trick he owns, thrown at you in one last heist. Here is the bit he has not understood. You have beaten every one of these before. Tonight is not a lesson, it is a graduation. [whispers] Every trick he owns. And you have already beaten all of them. [warmly] By the end of tonight, Cyber Hero, you graduate. Let's see what Mission Command has for us!",
+      "lines": [
+        "[nervous] Cyber Hero, look at that sky, and read this last incident report with me.",
+        "Storm clouds over the city. Nineteen weeks of defeats have left the Raccoon exactly one plan: everything, all at once, in one night. Every trick he owns, thrown at you in one last heist.",
+        "Here is the bit he has not understood. You have beaten every one of these before. Tonight is not a lesson, it is a graduation.",
+        "[whispers] Every trick he owns. And you have already beaten all of them.",
+        "[warmly] By the end of tonight, Cyber Hero, you graduate.",
+        "Let's see what Mission Command has for us!"
+      ],
+      "file": "/audio/voice/e67d9951fb2ba1bf.mp3"
+    },
+    {
       "key": "533773e9251eb3ca",
       "speaker": "adam",
       "voice": "Sarah",
@@ -25228,14 +25373,14 @@
       "file": "/audio/voice/e7f517faa4b4ecc1.mp3"
     },
     {
-      "key": "04c44edb6ba075d3",
+      "key": "3df857894c9fbd50",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Ada agreed with Ollie without having to be asked twice, and you did what she said as well.",
+      "text": "Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it.",
       "lines": [
-        "Ada agreed with Ollie without having to be asked twice, and you did what she said as well."
+        "Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it."
       ],
-      "file": "/audio/voice/04c44edb6ba075d3.mp3"
+      "file": "/audio/voice/3df857894c9fbd50.mp3"
     },
     {
       "key": "ba50a5f26cb73098",
@@ -25248,14 +25393,14 @@
       "file": "/audio/voice/ba50a5f26cb73098.mp3"
     },
     {
-      "key": "39688fa5d89d6b81",
+      "key": "27833f7773626ccd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That is all three of them saying leave it, and you left it. Easiest decision of the night.",
+      "text": "Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them.",
       "lines": [
-        "That is all three of them saying leave it, and you left it. Easiest decision of the night."
+        "Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them."
       ],
-      "file": "/audio/voice/39688fa5d89d6b81.mp3"
+      "file": "/audio/voice/27833f7773626ccd.mp3"
     },
     {
       "key": "b2db13c6f02b707e",
@@ -37224,6 +37369,16 @@
       "file": "/audio/voice/cafb7225475fff90.mp3"
     },
     {
+      "key": "442d9bafeaa34317",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Every face asked, and one no was enough to keep the whole photo private. That is what listening looks like.",
+      "lines": [
+        "Every face asked, and one no was enough to keep the whole photo private. That is what listening looks like."
+      ],
+      "file": "/audio/voice/442d9bafeaa34317.mp3"
+    },
+    {
       "key": "aa2e67dc13eee357",
       "speaker": "adam",
       "voice": "Sarah",
@@ -38440,19 +38595,19 @@
       "file": "/audio/voice/7597e0b2f565bcdd.mp3"
     },
     {
-      "key": "70abb28d21501238",
+      "key": "6feba31642a78b9e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Now, Cyber Hero, apps ask for permissions: little keys to your device. Here's the only question that matters. Does it need that key for its JOB? A flashlight app needs the light. Of course! [nervous] But your contacts? Your microphone? Your photos? A flashlight needs none of that. [excited] Come and flip the app boxes, and check every key they ask for!",
+      "text": "[warmly] Now, Cyber Hero, apps ask for permissions: little keys to your device. Here's the only question that matters. Does it need that key for its job? A flashlight app needs the light. Of course! [nervous] But your contacts? Your microphone? Your photos? A flashlight needs none of that. [excited] Come and flip the app boxes, and check every key they ask for!",
       "lines": [
         "[warmly] Now, Cyber Hero, apps ask for permissions: little keys to your device.",
         "Here's the only question that matters.",
-        "Does it need that key for its JOB?",
+        "Does it need that key for its job?",
         "A flashlight app needs the light. Of course!",
         "[nervous] But your contacts? Your microphone? Your photos? A flashlight needs none of that.",
         "[excited] Come and flip the app boxes, and check every key they ask for!"
       ],
-      "file": "/audio/voice/70abb28d21501238.mp3"
+      "file": "/audio/voice/6feba31642a78b9e.mp3"
     },
     {
       "key": "f94f7987421850eb",
@@ -45937,6 +46092,17 @@
         "Zara asked to be cropped out, not for the whole photo to stay hidden. Leave her out, and Sam's yes still counts."
       ],
       "file": "/audio/voice/37f5a59f09c9a8ae.mp3"
+    },
+    {
+      "key": "c63d6957f930c636",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "That's right! Every face asked, and one no was enough to keep the whole photo private. That is what listening looks like.",
+      "lines": [
+        "That's right!",
+        "Every face asked, and one no was enough to keep the whole photo private. That is what listening looks like."
+      ],
+      "file": "/audio/voice/c63d6957f930c636.mp3"
     },
     {
       "key": "383f5cd62a4e5e5e",
@@ -55751,15 +55917,15 @@
       "file": "/audio/voice/fd67e87ec1ca1841.mp3"
     },
     {
-      "key": "af2a960a0b2affc3",
+      "key": "55c2a748cfde11fe",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Ada agreed with Ollie without having to be asked twice, and you did what she said as well.",
+      "text": "That's right! Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it.",
       "lines": [
         "That's right!",
-        "Ada agreed with Ollie without having to be asked twice, and you did what she said as well."
+        "Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it."
       ],
-      "file": "/audio/voice/af2a960a0b2affc3.mp3"
+      "file": "/audio/voice/55c2a748cfde11fe.mp3"
     },
     {
       "key": "a8e9b629c9aed185",
@@ -55773,15 +55939,15 @@
       "file": "/audio/voice/a8e9b629c9aed185.mp3"
     },
     {
-      "key": "b60a6915bbe73e68",
+      "key": "c8435ddbc00fce75",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! That is all three of them saying leave it, and you left it. Easiest decision of the night.",
+      "text": "That's right! Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them.",
       "lines": [
         "That's right!",
-        "That is all three of them saying leave it, and you left it. Easiest decision of the night."
+        "Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them."
       ],
-      "file": "/audio/voice/b60a6915bbe73e68.mp3"
+      "file": "/audio/voice/c8435ddbc00fce75.mp3"
     },
     {
       "key": "3979dc74df74bc26",

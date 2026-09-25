@@ -74,9 +74,9 @@ export const WEEK_7: WeekContent = {
     {
       type: "mission",
       objectives: [
-        "Learn to count game coins back into real money, so no shiny pack can hide what it costs",
-        "Learn what a loot box and a countdown are really doing, so no gamble or rush can hurry your hand",
-        "Learn to ask before every buy and to spot fake free coins, so nobody spends your family's money but your family",
+        "Count game coins back into real money",
+        "See what a loot box and a countdown are really doing",
+        "Ask before every buy, and spot fake free coins",
       ],
     },
 
@@ -479,6 +479,9 @@ export const WEEK_7: WeekContent = {
           art: "box",
           priceTag: "1 coin!!",
           pressure: "EVERYONE HAS ONE!",
+          // No clock on this one, so the banner carries the stamp: without it
+          // the lever looked broken on deal 3 (Abdullah, retest 3b).
+          pressureFake: true,
           advertised: 1,
           trueCost: 5,
           receipt: [

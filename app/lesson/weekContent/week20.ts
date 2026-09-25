@@ -78,6 +78,17 @@ export const WEEK_20: WeekContent = {
       caption: "Storm clouds over the city. Nineteen weeks of defeats have left the Raccoon exactly one plan: everything, all at once, in one night. The fake reset envelope. The app that wants far too much. The free coin machines. The leak hunt. Every trick he owns, thrown at you in one last heist. Here is the bit he still has not understood. You have beaten every single one of these before. Tonight is not a lesson. It is a graduation. Five final missions, and at dawn you walk out CERTIFIED.",
       photoCaption: "Wk 20 - Graduation Day",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, look at that sky, and read this last incident report with me.",
+          "Storm clouds over the city. Nineteen weeks of defeats have left the Raccoon exactly one plan: everything, all at once, in one night. Every trick he owns, thrown at you in one last heist.",
+          "Here is the bit he has not understood. You have beaten every one of these before. Tonight is not a lesson, it is a graduation.",
+          "[whispers] Every trick he owns. And you have already beaten all of them.",
+          "[warmly] By the end of tonight, Cyber Hero, you graduate.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing
@@ -823,8 +834,8 @@ export const WEEK_20: WeekContent = {
           readAloud: "Last photo. A close up of a certificate, with a name and an address showing on it.",
           friends: [
             { id: "h-ollie", name: "Ollie", answer: "no", noMove: "dontPost", says: "That's got my address on it. Please don't.", readAloud: "Ollie says that one has his address on it, and asks you please not to.", why: "His address is in the picture and he asked you not to. That one does not go anywhere, and you did not need to be talked into it.", whyWrong: "Look at what is actually visible on that certificate, and at what Ollie asked for." },
-            { id: "h-ada", name: "Ada", answer: "no", noMove: "dontPost", says: "Yeah, don't post that one.", readAloud: "Ada says yes, do not post that one either.", why: "Ada agreed with Ollie without having to be asked twice, and you did what she said as well.", whyWrong: "Ada said do not post it. That is the same answer Ollie gave, about the same photo." },
-            { id: "h-sam", name: "Sam", answer: "no", noMove: "dontPost", says: "Nah, leave that.", readAloud: "Sam says no, leave that one.", why: "That is all three of them saying leave it, and you left it. Easiest decision of the night.", whyWrong: "Sam said leave that one, so that photo stays on your phone with everybody else who said no." },
+            { id: "h-ada", name: "Ada", answer: "no", noMove: "dontPost", says: "Yeah, don't post that one.", readAloud: "Ada says yes, do not post that one either.", why: "Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it.", whyWrong: "Ada said do not post it. That is the same answer Ollie gave, about the same photo." },
+            { id: "h-sam", name: "Sam", answer: "no", noMove: "dontPost", says: "Nah, leave that.", readAloud: "Sam says no, leave that one.", why: "Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them.", whyWrong: "Sam said leave that one, so that photo stays on your phone with everybody else who said no." },
           ],
           why: "Everybody said no and there is an address in it, so it stays on your phone. That was the easiest decision of the night.",
         },

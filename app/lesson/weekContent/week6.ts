@@ -76,9 +76,9 @@ export const WEEK_6: WeekContent = {
     {
       type: "mission",
       objectives: [
-        "Learn to keep real-life info out of game chat, so a lobby stranger gets game talk and nothing else",
-        "Learn the lobby setting and the two power buttons, so strangers stay out and bullies get booted",
-        "Learn the 'somewhere else' trick and the free-download trap, so nobody can pull you or your account out of the game",
+        "Keep real-life info out of game chat",
+        "Find the lobby setting and the two power buttons",
+        "Spot the somewhere-else trick and the free-download trap",
       ],
     },
 

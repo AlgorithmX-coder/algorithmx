@@ -82,9 +82,9 @@ export const WEEK_5: WeekContent = {
     {
       type: "mission",
       objectives: [
-        "Learn the laugh test, so a mean message can never hide behind the word joke",
-        "Learn the biggest truth of all, so no mean word can ever make you feel it was your fault",
-        "Learn the kind moves that stop a pile-on cold, and who to tell, so you never carry it alone",
+        "Use the laugh test on anything that calls itself a joke",
+        "Hold on to the biggest truth: it is never your fault",
+        "Learn the kind moves that stop a pile-on, and who to tell",
       ],
     },
 

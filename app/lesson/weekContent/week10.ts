@@ -59,6 +59,16 @@ export const WEEK_10: WeekContent = {
       caption: "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later, and some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
       photoCaption: "Wk 10 - Escape the Rabbit Hole",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, sit down with me and read this incident report.",
+          "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later, and some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
+          "[whispers] Two hours. And after the first one, nobody chose a single video.",
+          "[warmly] By the end of today, you will feel the pull coming and climb out whenever you want.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing
@@ -138,7 +148,10 @@ export const WEEK_10: WeekContent = {
           id: "six",
           prompt: "Six videos have rolled past and you can't remember choosing a single one.",
           tokens: [
-            { id: "search", label: "SEARCH FOR WHAT I CAME FOR", icon: "🔍", isGrip: true, why: "Searching puts your hands back on the wheel. You came for one of those videos, so go and get that one.", explanation: "" },
+            // Sentence case ON PURPOSE. This exact label was spoken aloud as
+            // She for what I came for. The card still shows it in caps (the
+            // engine uppercases in CSS), so nothing changes on screen.
+            { id: "search", label: "Search for what I came for", icon: "🔍", isGrip: true, why: "Searching puts your hands back on the wheel. You came for one of those videos, so go and get that one.", explanation: "" },
             { id: "easier", label: "KEEP ROLLING, IT'S EASIER", icon: "🌀", isGrip: false, why: "", explanation: "Easy is exactly how the belt wins. Six videos rolled past while it did all the choosing." },
             { id: "onemore", label: "JUST ONE MORE, THEN I STOP", icon: "☝️", isGrip: false, why: "", explanation: "One more after six is the belt's favourite sentence, because it never means one." },
           ],

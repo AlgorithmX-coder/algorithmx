@@ -70,7 +70,7 @@ export interface AskRound { id: string; caption: string; photoIcon: string; read
 export interface AskRingProps {
   rounds: AskRound[];
   introTitle?: string; introSubtitle?: string; introIcon?: string;
-  postLabel?: string; leaveOutLabel?: string; dontPostLabel?: string; yesChip?: string; noChip?: string; leftOutChip?: string;
+  postLabel?: string; leaveOutLabel?: string; dontPostLabel?: string; yesChip?: string; noChip?: string; leftOutChip?: string; keptChip?: string;
   postToast?: string; keptToast?: string; wrongTitle?: string; completeTitle?: string; completeLine?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -88,7 +88,7 @@ export interface AskRingProps {
 type Move = "leaveOut" | "dontPost";
 const MOVES: Move[] = ["leaveOut", "dontPost"];
 /** A friend's state this round. Absent = not asked yet. */
-type FriendState = "yes" | "no" | "leftOut";
+type FriendState = "yes" | "no" | "leftOut" | "kept";
 
 const EMPTY_FRIENDS: AskFriend[] = [];
 const KID_FONT = "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif";
@@ -112,6 +112,7 @@ const STONE: Record<FriendState | "idle", { bg: string; glow: string }> = {
   yes: { bg: "radial-gradient(ellipse at 50% 35%, #c2ffd4 0%, #34d399 58%, #15803d 100%)", glow: "0 0 14px rgba(52,211,153,0.85), 0 0 4px rgba(52,211,153,0.95)" },
   no: { bg: "radial-gradient(ellipse at 50% 35%, #ffe9b0 0%, #ffb020 58%, #b86e00 100%)", glow: "0 0 14px rgba(255,176,32,0.8), 0 0 4px rgba(255,176,32,0.9)" },
   leftOut: { bg: "radial-gradient(ellipse at 50% 35%, #8d92a2 0%, #4e525d 78%)", glow: "none" },
+  kept: { bg: "radial-gradient(ellipse at 50% 35%, #cfc4ff 0%, #8b7bd8 58%, #4c3f8f 100%)", glow: "0 0 14px rgba(139,123,216,0.75), 0 0 4px rgba(139,123,216,0.9)" },
 };
 /** Corner crop marks drawn round a left-out token (longhand widths only, so
  *  nothing mixes with a border shorthand). */
@@ -133,6 +134,7 @@ export default function AskRing({
   yesChip = "Yes!",
   noChip = "No thanks",
   leftOutChip = "Left out",
+  keptChip = "Kept private",
   postToast = "POSTED, EVERY YES!",
   keptToast = "KEPT. THEIR CALL.",
   wrongTitle = "Their face, their call",
@@ -198,8 +200,16 @@ export default function AskRing({
       : round?.friends ?? EMPTY_FRIENDS;
   const stateOf = (f: AskFriend): FriendState | undefined => answers[f.id];
   const askedThisRound = seats.filter((f) => stateOf(f) !== undefined).length;
-  // Every face a yes or left out (a photo with no one in it has nobody to ask).
-  const allSettled = seats.every((f) => stateOf(f) === "yes" || stateOf(f) === "leftOut");
+  // Every face answered AND settled: a yes, a crop, or a no that keeps the
+  // whole photo off the internet. (A photo with nobody in it has nobody to ask.)
+  const allAsked = seats.every((f) => {
+    const st = stateOf(f);
+    return st === "yes" || st === "leftOut" || st === "kept";
+  });
+  const anyKept = seats.some((f) => stateOf(f) === "kept");
+  // POST stays reachable only when every face is a yes or left out. One
+  // don't-post no keeps the photo off the internet, so POST never lights.
+  const allSettled = allAsked && !anyKept;
   const pending = seats.find((f) => stateOf(f) === "no") ?? null;
   const readTarget = readFriend ? seats.find((f) => f.id === readFriend) ?? null : null;
   // Round 1 teaches the mechanic only: the first seat breathes until someone
@@ -293,16 +303,14 @@ export default function AskRing({
       // carries on asking.
       verdict.say("right", f.why);
     } else if (right) {
-      fx.correct({ xp: 25, text: keptToast });
+      fx.correct({ xp: 20 });
       onCorrect?.();
-      setKeptCount((n) => n + 1);
-      setOutcome("kept");
-      setPhase("sealed");
-      // Their call ends the round: the KEPT seal lands under her, then the
-      // next round arrives.
-      verdict.say("right", f.why, () => {
-        window.setTimeout(advance, reduce ? 200 : 900);
-      });
+      setAnswers((a) => ({ ...a, [f.id]: "kept" }));
+      // Their call keeps the photo off the internet, but it does NOT end the
+      // round: everyone else in the photo still gets asked. Sealing here was
+      // the bug - the unasked friends never got a turn, and on Week 20 two of
+      // the three authored answers could never be heard.
+      verdict.say("right", f.why);
     } else {
       audio.wrong();
       onWrong?.();
@@ -314,6 +322,23 @@ export default function AskRing({
       setFeedback({ title: wrongTitle, explanation: f.whyWrong ?? "", tip: rw >= 2 ? hints?.tier2 : hints?.tier1 });
     }
   };
+
+  // Every face asked, and at least one no that covers the whole photo: it
+  // stays off the internet. This waits for Sarah so it can never cut off the
+  // line she is in the middle of, and phase flips to "sealed" on the first
+  // pass so it cannot fire twice.
+  useEffect(() => {
+    if (!round || phase !== "play" || !allAsked || !anyKept || speaking) return;
+    fx.correct({ xp: 25, text: keptToast });
+    onCorrect?.();
+    setKeptCount((k) => k + 1);
+    setOutcome("kept");
+    setPhase("sealed");
+    verdict.say("right", round.why, () => {
+      window.setTimeout(advance, reduce ? 200 : 900);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [round, phase, allAsked, anyKept, speaking]);
 
   // POST: only reachable once every face is a yes or left out.
   const post = () => {
@@ -385,7 +410,9 @@ export default function AskRing({
           ? { icon: "✋", text: noChip, ink: "#ffd68a", rim: "rgba(255,176,32,0.6)", bg: "rgba(255,176,32,0.16)" }
           : st === "leftOut"
             ? { icon: null, text: leftOutChip, ink: "#d5d8e2", rim: "rgba(255,255,255,0.3)", bg: "rgba(255,255,255,0.08)" }
-            : null;
+            : st === "kept"
+              ? { icon: "🔒", text: keptChip, ink: "#d9d0ff", rim: "rgba(139,123,216,0.6)", bg: "rgba(139,123,216,0.18)" }
+              : null;
     return (
       <div
         key={`${round.id}-${f.id}`}

@@ -1014,7 +1014,15 @@ function TokenTile({
           <span aria-hidden style={{ flexShrink: 0, display: "grid", placeItems: "center", width: 34, height: 34 }}>
             <PixIcon emoji={token.icon} size={30} />
           </span>
-          <span style={{ flex: 1, minWidth: 0, overflowWrap: "anywhere" }}>{token.label}</span>
+          {/* The card SHOUTS in caps, but the caps live here rather than in the
+              authored string. ElevenLabs mangled one all-caps label outright:
+              SEARCH FOR WHAT I CAME FOR came out as She for what I came for
+              (Abdullah, retest W10), because a label is BOTH what the child
+              reads and what Sarah says. Uppercasing in CSS lets such a label be
+              written as an ordinary sentence, so it is pronounced properly,
+              while the card looks exactly as it always has. Labels still
+              authored in caps are unaffected: uppercasing caps is a no-op. */}
+          <span style={{ flex: 1, minWidth: 0, overflowWrap: "anywhere", textTransform: "uppercase" }}>{token.label}</span>
           {marked && <PixIcon emoji="⚠️" size={18} style={{ flexShrink: 0 }} />}
         </motion.button>
       </div>

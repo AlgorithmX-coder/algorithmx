@@ -61,6 +61,16 @@ export const WEEK_11: WeekContent = {
       caption: "Messages landed on kids' screens that made their tummies drop, and the Raccoon whispered a sneaky lie after them: \"it's YOUR fault, keep it quiet.\" This week you learn the calm steps every hero knows, in a lighthouse where the light never goes out. First truth first: it is NEVER your fault.",
       photoCaption: "Wk 11 - Emergency Protocol",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Cyber Hero, come and read this incident report with me. This one matters.",
+          "Messages landed on kids' screens that made their tummies drop, and the Raccoon whispered a sneaky lie after them: it is YOUR fault, keep it quiet. This week you learn the calm steps every hero knows, in a lighthouse where the light never goes out.",
+          "[whispers] That lie is the whole trick. Quiet is the thing he needs.",
+          "[warmly] So here is the first truth, before anything else. It is NEVER your fault, and telling a trusted grown-up is always the right move.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing

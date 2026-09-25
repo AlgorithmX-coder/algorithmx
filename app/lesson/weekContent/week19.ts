@@ -90,6 +90,17 @@ export const WEEK_19: WeekContent = {
       caption: "The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY: a prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother. Same tricks, bigger letters. But he has forgotten the most important thing in the whole house. It has an EXPERT in it now. This week the roles flip: you explain, you spot, you speak up, and together you raise the Family Firewall.",
       photoCaption: "Wk 19 - The Expert in the House",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, this incident report is not about you. Read it with me.",
+          "The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY: a prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother.",
+          "But he has forgotten the most important thing in that house. It has an EXPERT in it now.",
+          "[whispers] Same tricks. He has only changed who he points them at.",
+          "[warmly] By the end of today, your whole family will be as hard to trick as you are.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing
