@@ -850,7 +850,12 @@ export const WEEK_6: WeekContent = {
           isNosy: true,
           zones: [
             { id: "who", label: "Who made it?", note: "Not the real game company. Some random site nobody can check.", isRedFlag: true },
-            { id: "want", label: "What does it want?", note: "Your game LOGIN, and the virus checker switched OFF. Two alarm bells.", isRedFlag: true },
+            // ONE stressed word per sentence (the other three clues here each
+            // have one or none). Two made the read lurch: Sarah hit LOGIN and
+            // OFF equally hard and the line lost its shape. Abdullah reported
+            // this line on the retest; the words were always pronounced
+            // correctly, so emphasis is what was wrong with it.
+            { id: "want", label: "What does it want?", note: "Your game login, and the virus checker switched OFF. Two alarm bells.", isRedFlag: true },
             { id: "need", label: "Would the real game do this?", note: "Real games sell their stuff INSIDE the game, never through secret downloads.", isRedFlag: true },
             { id: "happens", label: "If you install it?", note: "Best case, nothing. Worst case, your account is stolen and the computer is sick.", isRedFlag: true },
           ],

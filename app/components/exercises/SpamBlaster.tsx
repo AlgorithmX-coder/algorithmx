@@ -1148,9 +1148,15 @@ export default function SpamBlaster({
       ctx.textAlign = "center";
       ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#4b5563";
       ctx.fillText(`${missLabelText} ${s.viruses}`, CANVAS_W / 2, 12);
-      if (s.streak >= 3) {
+      // The ONLY streak readout. It used to appear at x3 and up, with a second
+      // one printed under the meter at y 85 - which is exactly where the turret
+      // mount is drawn (y 84 to 106, same centre line), so the turret painted
+      // over it and the child read "STREA  x2" (Abdullah, W2 retest). One
+      // readout, up here where nothing is drawn on top of it, and from the
+      // first zap so the meter filling always has a number beside it.
+      if (s.streak >= 1) {
         ctx.fillStyle = "#fbbf24";
-        ctx.fillText(`STREAK x${s.streak}`, CANVAS_W / 2, 30);
+        ctx.fillText(s.streak >= 5 ? `MAX STREAK x${s.streak}` : `STREAK x${s.streak}`, CANVAS_W / 2, 30);
       }
 
       // CROSSHAIR / AIMING RETICULE - follows mouse position so the kid
@@ -1323,16 +1329,11 @@ export default function SpamBlaster({
         else ctx.rect(meterX, meterY, fillW, meterH);
         ctx.fill();
         ctx.shadowBlur = 0;
-        // Label
-        ctx.font = "900 9px ui-monospace, 'JetBrains Mono', Menlo, monospace";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "top";
-        ctx.fillStyle = streakPct >= 1 ? "#7df0ff" : "rgba(125, 240, 255, 0.7)";
-        ctx.fillText(
-          streakPct >= 1 ? `MAX STREAK · x${s.streak}` : `STREAK · x${s.streak}`,
-          CANVAS_W / 2,
-          meterY + meterH + 3
-        );
+        // NO label under the bar. It sat at y 85 on the centre line, and the
+        // turret mount is drawn at y 84 to 106 on that same line, so the turret
+        // covered the middle of it and the child read "STREA  x2". The number
+        // lives in the gold readout at y 30 instead, which nothing overlaps;
+        // the bar here carries the progress on its own.
         ctx.restore();
       }
 

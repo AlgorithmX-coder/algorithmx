@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T19:03:02.944Z",
+  "generatedAt": "2026-09-25T21:06:48.876Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -33983,14 +33983,14 @@
       "file": "/audio/voice/0da15c84744b0c2f.mp3"
     },
     {
-      "key": "bd6da0f47507d7bb",
+      "key": "30de379fa6a0faae",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your game LOGIN, and the virus checker switched OFF. Two alarm bells.",
+      "text": "Your game login, and the virus checker switched OFF. Two alarm bells.",
       "lines": [
-        "Your game LOGIN, and the virus checker switched OFF. Two alarm bells."
+        "Your game login, and the virus checker switched OFF. Two alarm bells."
       ],
-      "file": "/audio/voice/bd6da0f47507d7bb.mp3"
+      "file": "/audio/voice/30de379fa6a0faae.mp3"
     },
     {
       "key": "4b344004b36530fb",
@@ -34793,14 +34793,14 @@
       "file": "/audio/voice/84b4956b91abc7ed.mp3"
     },
     {
-      "key": "458e36ddfc1e520e",
+      "key": "095f0d000848ae11",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "What does it want? Your game LOGIN, and the virus checker switched OFF. Two alarm bells.",
+      "text": "What does it want? Your game login, and the virus checker switched OFF. Two alarm bells.",
       "lines": [
-        "What does it want? Your game LOGIN, and the virus checker switched OFF. Two alarm bells."
+        "What does it want? Your game login, and the virus checker switched OFF. Two alarm bells."
       ],
-      "file": "/audio/voice/458e36ddfc1e520e.mp3"
+      "file": "/audio/voice/095f0d000848ae11.mp3"
     },
     {
       "key": "81e490e55a997e91",
