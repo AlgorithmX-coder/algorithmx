@@ -76,9 +76,9 @@ export const WEEK_9: WeekContent = {
     {
       type: "mission",
       objectives: [
-        "Learn where real apps come from and how to count a copycat's whiskers, so no fake app reaches your device",
-        "Learn why an app only gets the keys its job needs and what FREE really costs, so no app takes more than it should",
-        "Learn to install every new app together with a grown-up, so four eyes catch what two might miss",
+        "Know where real apps come from, and spot a copycat",
+        "Check an app only asks for the keys its job needs",
+        "Install a new app with a grown-up, so four eyes check it",
       ],
     },
 
@@ -465,7 +465,12 @@ export const WEEK_9: WeekContent = {
         lines: [
           "[warmly] Now, Cyber Hero, apps ask for permissions: little keys to your device.",
           "Here's the only question that matters.",
-          "Does it need that key for its JOB?",
+          // Lower case on purpose. ElevenLabs read the all-caps JOB as an
+          // initialism, so Sarah said jay oh bee out loud (Abdullah, retest).
+          // Confirmed by transcribing the shipped clip rather than guessing.
+          // Every JOB the child SEES stays capitalised: only the spoken line
+          // changed, so the emphasis on the page is untouched.
+          "Does it need that key for its job?",
           "A flashlight app needs the light. Of course!",
           "[nervous] But your contacts? Your microphone? Your photos? A flashlight needs none of that.",
           "[excited] Come and flip the app boxes, and check every key they ask for!",

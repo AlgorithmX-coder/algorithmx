@@ -71,6 +71,9 @@ export interface LeverDeal {
   id: string; name: string; art: "hat" | "box" | "pass" | "cape";
   priceTag: string;
   pressure?: string;
+  /** The banner is a lie the receipt can disprove: stamp it like the clock.
+   *  Opt-in, so a deal carrying both a banner and a clock keeps one stamp. */
+  pressureFake?: boolean;
   countdown?: boolean;
   advertised: number;
   trueCost: number;
@@ -857,12 +860,24 @@ function DealCard({
         <PixIcon emoji="✨" size={20} />
       </div>
 
-      {/* Pressure banner: flashes, means nothing. */}
+      {/* Pressure banner: flashes, means nothing. Once the lever has printed
+          the receipt, a banner marked pressureFake stops flashing and takes
+          the same stamp the clock takes: the rush is over and the claim was
+          paint. */}
       {deal.pressure && (
         <motion.div
-          animate={reduce ? { opacity: 1 } : { opacity: [1, 0.45, 1], scale: [1, 1.03, 1] }}
-          transition={reduce ? undefined : { repeat: Infinity, duration: 0.9, ease: "easeInOut" }}
+          animate={
+            reduce || (deal.pressureFake && stamped)
+              ? { opacity: 1, scale: 1 }
+              : { opacity: [1, 0.45, 1], scale: [1, 1.03, 1] }
+          }
+          transition={
+            reduce || (deal.pressureFake && stamped)
+              ? undefined
+              : { repeat: Infinity, duration: 0.9, ease: "easeInOut" }
+          }
           style={{
+            position: "relative",
             alignSelf: "stretch",
             textAlign: "center",
             padding: "5px 10px",
@@ -877,6 +892,37 @@ function DealCard({
           }}
         >
           {deal.pressure}
+          <AnimatePresence>
+            {deal.pressureFake && stamped && (
+              <motion.span
+                key="pressure-fake"
+                initial={{ scale: reduce ? 1 : 2, opacity: 0, rotate: -12 }}
+                animate={{ scale: 1, opacity: 1, rotate: -12 }}
+                transition={{ type: "spring", stiffness: 340, damping: 18 }}
+                style={{
+                  // LEFT, not right: the card pins a sparkle at top 8 / right
+                  // 10, and a stamp overhanging the banner's right corner
+                  // lands straight on top of it. The card is overflow:hidden,
+                  // so this also has to stay inside - at -6/-13 off a banner
+                  // inset 16/18 by the card padding, it clears both edges.
+                  position: "absolute",
+                  left: -6,
+                  top: -13,
+                  padding: "1px 7px",
+                  border: `3px double ${INK_BAD}`,
+                  borderRadius: 6,
+                  background: "rgba(255, 253, 242, 0.92)",
+                  color: INK_BAD,
+                  fontWeight: 900,
+                  fontSize: 12,
+                  letterSpacing: 1,
+                  textTransform: "none",
+                }}
+              >
+                {fakeStamp}
+              </motion.span>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
 

@@ -65,6 +65,16 @@ export const WEEK_12: WeekContent = {
       caption: "The Raccoon has been reading kids' trails like a map: school names in bios, park times in captions, grumpy posts to giggle at. This week you get the ranger kit. See the prints you leave, learn why copies cannot be caught, and stamp a trail you are proud of.",
       photoCaption: "Wk 12 - Tracks in the Snow",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, look at the tracks on this incident report.",
+          "The Raccoon has been reading kids' trails like a map: school names in bios, park times in captions, grumpy posts to giggle at. This week you get the ranger kit. See the prints you leave, learn why copies cannot be caught, and stamp a trail you are proud of.",
+          "[whispers] A school name, a park time, a grumpy post. He never had to crack a thing.",
+          "[warmly] By the end of today, you will see every print you leave BEFORE you leave it.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing

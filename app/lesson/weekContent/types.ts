@@ -1067,6 +1067,8 @@ export type ScreenDef = (
         art: "hat" | "box" | "pass" | "cape";
         priceTag: string;
         pressure?: string;
+        /** Stamp the banner FAKE when the receipt prints (see TruePriceLever). */
+        pressureFake?: boolean;
         countdown?: boolean;
         advertised: number;
         trueCost: number;

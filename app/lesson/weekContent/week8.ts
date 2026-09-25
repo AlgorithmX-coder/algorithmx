@@ -76,9 +76,9 @@ export const WEEK_8: WeekContent = {
     {
       type: "mission",
       objectives: [
-        "Learn that delete only deletes your copy, so you do your thinking before a photo ever goes",
-        "Learn to ask every face and check every corner, so no friend and no clue gets shared by accident",
-        "Learn to pick the door that fits and run look, think, ask, so strangers never see what is not for them",
+        "Learn that delete only ever deletes your own copy",
+        "Ask every face and check every corner before you share",
+        "Pick the door that fits, and run look, think, ask",
       ],
     },
 
@@ -356,9 +356,9 @@ export const WEEK_8: WeekContent = {
             },
             { id: "kai", name: "Kai", answer: "yes", says: "Fine by me!", readAloud: "Kai says: Fine by me! Post it." },
           ],
-          // A don't-post round ends on Ava's move and never reaches POST, so the
-          // round's why repeats her line (same text = one recording).
-          why: "Her no was for the whole photo, so it stays off the internet. One no can keep a photo private, even when Kai says yes.",
+          // Spoken once every face has been asked, so it closes the round
+          // rather than repeating the line Sarah has just said.
+          why: "Every face asked, and one no was enough to keep the whole photo private. That is what listening looks like.",
         },
       ],
       hints: {

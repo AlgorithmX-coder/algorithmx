@@ -74,6 +74,16 @@ export const WEEK_13: WeekContent = {
       caption: "The Raccoon has a new hobby: battery thieving. Not phone batteries, KID batteries. He loves heroes drained and glued to the glow, because a tired hero is an easy hero to trick. This week you take your power back. Screens stay in your life. You just get to say how big they are.",
       photoCaption: "Wk 13 - The Battery Thief",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, read this incident report with me.",
+          "The Raccoon has a new hobby: battery thieving. Not phone batteries, KID batteries. He loves heroes drained and glued to the glow, because a tired hero is an easy hero to trick. This week you take your power back. Screens stay in your life. You just get to say how big they are.",
+          "[whispers] A tired hero is an easy hero to trick. That is the entire plan.",
+          "[warmly] By the end of today, YOU are the one who says how big the screens get.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing

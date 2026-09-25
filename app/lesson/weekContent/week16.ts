@@ -64,6 +64,17 @@ export const WEEK_16: WeekContent = {
       caption: "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors, and he paints their signs with parties and prizes while the doors open onto his slide. He is even pasting his own sticker-codes over real ones on posters and menus. This week you become a Door Checker. Read the address. Run the peel test. Know which doors you simply cannot see through. And when you cannot tell, wheel out the barrier and ask.",
       photoCaption: "Wk 16 - The Doorway Maze",
       ctaLabel: "See the Mission →",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] Cyber Hero, do not touch anything yet. Read this incident report with me.",
+          "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors, and he paints their signs with parties and prizes while the doors open onto his slide.",
+          "This week you become a Door Checker, and learn to read a door before you walk through it.",
+          "[whispers] His own stickers, stuck straight over the real ones. On a poster. On a menu.",
+          "[warmly] By the end of today, no painted sign gets you through a door you did not choose.",
+          "Let's see what Mission Command has for us!",
+        ],
+      },
     },
 
     // 2 - WEEK INTRO: ATLAS (Mission Command) briefing
