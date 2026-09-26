@@ -231,6 +231,10 @@ export default function WelcomeScene({
 
 /* ───────────────────────── POLAROID ───────────────────────── */
 
+/** The photo box, and the cap the caption must respect so the polaroid
+ *  never grows wider than the picture inside it. */
+const PHOTO_W = "min(44vw, 300px, 40vh * 4 / 3)";
+
 function Polaroid({ src, caption }: { src: string; caption: string }) {
   return (
     <div
@@ -249,7 +253,7 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
           // Sized so the full flow column (title + polaroid + caption + CTA)
           // fits a ~771px laptop without scrolling for typical captions; the
           // vh term shrinks it further on shorter viewports.
-          width: "min(44vw, 300px, 40vh * 4 / 3)",
+          width: PHOTO_W,
           aspectRatio: "4 / 3",
           backgroundImage: `url(${src})`,
           backgroundSize: "cover",
@@ -295,6 +299,15 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
       <div
         style={{
           marginTop: 10,
+          // Capped to the PHOTO width. The caption is the widest child, so a
+          // long one (Wk 8 - Think Before You Share) stretched the polaroid
+          // past the photo and left it sitting against one edge with a fat
+          // cream margin on the other: Abdullah read that as the postcard
+          // being lopsided. Capped here it wraps instead, and the photo sits
+          // flush and even, with the Hacked tag still on its corner.
+          maxWidth: PHOTO_W,
+          marginLeft: "auto",
+          marginRight: "auto",
           textAlign: "center",
           fontFamily: "'Caveat', 'Comic Sans MS', cursive",
           fontSize: 22,

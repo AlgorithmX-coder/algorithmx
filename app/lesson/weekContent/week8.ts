@@ -90,7 +90,7 @@ export const WEEK_8: WeekContent = {
       conceptTotal: 5,
       title: "Once It's Out, It's Out",
       content:
-        "Here is the biggest photo secret: DELETE only deletes YOUR copy. The moment you share a photo, copies land on your friend's phone, in the group chat and on the app's computers. A friend can screenshot it or send it on. You cannot reach into their phones and take it back. That is not scary if you remember it BEFORE you share.",
+        "Here is the biggest photo secret: delete only deletes YOUR copy. The moment you share a photo, copies land on your friend's phone, in the group chat and on the app's computers. A friend can screenshot it or send it on. You cannot reach into their phones and take it back. That is not scary if you remember it BEFORE you share.",
       bullets: [
         "Delete only deletes YOUR copy",
         "Every share makes NEW copies",
@@ -513,7 +513,7 @@ export const WEEK_8: WeekContent = {
           "This game is all about finding what a photo gives away before it goes anywhere.",
           "Out in the real world, everyone looks at the smile in the middle, and the clues hide in the corners.",
           "Here is what you do. A photo is hiding under squares of film. Tap every square to develop it. Then tap everything the photo gives away. When you have found them all, tap SHARE or KEEP.",
-          "[warmly] Check every corner, not just the middle. Ready? Start developing!",
+          "[warmly] Check every corner, not just the middle. Ready? [excited] Start developing!",
         ],
       },
       coachLines: {
@@ -903,6 +903,7 @@ export const WEEK_8: WeekContent = {
       ],
       praise: "Look. Think. Ask. The ritual is yours! ✓",
       nudge: "What do your EYES do before your brain gets a turn?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "adam",
         lines: [

@@ -791,6 +791,7 @@ export const WEEK_16: WeekContent = {
       ],
       praise: "Sign last, pane first. That is the order. ✓",
       nudge: "Which part was painted by whoever built the door?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "layla",
         lines: [

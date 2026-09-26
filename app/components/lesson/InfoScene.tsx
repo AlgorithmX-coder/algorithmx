@@ -277,9 +277,17 @@ export default function InfoScene({
                       padding: "12px 14px 12px 13px", borderRadius: 999,
                       cursor: on ? "default" : "pointer", touchAction: "manipulation",
                       fontFamily: "inherit", textAlign: "left",
+                      // The clue sits on an OPAQUE base, with the accent tint
+                      // layered over it. It used to be a 16%/12% wash, so the
+                      // command-centre scene behind the card read straight
+                      // through the button and its text: Abdullah saw the
+                      // background's lateral lines lying across every clue, and
+                      // they only "cleared" when a tap swapped in the brighter
+                      // lit state. On a tablet there is no hover, so the unlit
+                      // clues stayed striped the whole time.
                       background: on
-                        ? `linear-gradient(180deg, ${accent}42 0%, ${accent}1c 55%, ${accent}12 100%)`
-                        : "linear-gradient(180deg, rgba(80,92,140,0.16) 0%, rgba(40,48,90,0.12) 100%)",
+                        ? `linear-gradient(180deg, ${accent}42 0%, ${accent}1c 55%, ${accent}12 100%), linear-gradient(180deg, rgba(30,38,72,0.94) 0%, rgba(18,24,52,0.97) 100%)`
+                        : "linear-gradient(180deg, rgba(34,43,80,0.94) 0%, rgba(20,26,56,0.97) 100%)",
                       border: on ? `1px solid ${accent}66` : "1.5px dashed rgba(159,233,255,0.4)",
                       boxShadow: on
                         ? `inset 0 1px 0 ${accent}88, inset 0 -7px 14px -8px rgba(0,0,0,0.55), 0 6px 16px -10px ${accent}aa`

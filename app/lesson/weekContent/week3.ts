@@ -911,6 +911,7 @@ export const WEEK_3: WeekContent = {
       ],
       praise: "Feel it. Stop. Tell. Every single time! ✓",
       nudge: "What comes FIRST: the feeling, the stopping, or the telling?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "layla",
         lines: [

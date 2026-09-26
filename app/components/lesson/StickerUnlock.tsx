@@ -174,10 +174,17 @@ export default function StickerUnlock({
                 aria-hidden
                 style={{
                   position: "absolute",
-                  top: -54,
-                  left: "8%",
-                  right: "8%",
-                  height: 58,
+                  // Kept BELOW the header band. At -54 with a 58 height the
+                  // cone climbed into the title and subtitle: the copy still
+                  // painted on top (zIndex 2) but sat in a wash of light,
+                  // and with the base at 8%/92% the blurred, screen-blended
+                  // edges of neighbouring cards met in the gaps. Abdullah saw
+                  // both as the lights overlapping each other and the text.
+                  // Shorter reach, narrower base, same lamp-cone shape.
+                  top: -30,
+                  left: "15%",
+                  right: "15%",
+                  height: 34,
                   zIndex: 0,
                   clipPath: "polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",
                   background:
@@ -343,7 +350,10 @@ export default function StickerUnlock({
             textAlign: "center",
           }}
         >
-          ✓ All 3 stickers earned
+          {/* Counts the stickers actually on the sheet. It was hardcoded to 3,
+              and Week 10 awards FIVE, so the stamp contradicted the row of
+              cards right above it. */}
+          ✓ All {stickers.length} stickers earned
         </motion.div>
       )}
 

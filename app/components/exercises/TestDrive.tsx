@@ -483,8 +483,14 @@ export default function TestDrive({
               {stamped ? (
                 <motion.span
                   key={`stuck-${r.id}`}
+                  // Settles SQUARE to its box. A child rotate is relative to
+                  // the parent, and the whole card already sits at -4deg, so a
+                  // -3 here landed the price 3deg off the box it sits in and
+                  // read as crooked text in a straight frame (Abdullah, W9 5d).
+                  // The stamp-in tilt stays: it is the arrival that should feel
+                  // thrown, not the resting state.
                   initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.7, rotate: -14 }}
-                  animate={{ opacity: 1, scale: 1, rotate: -3 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
                   transition={reduce ? { duration: 0.2 } : { type: "spring", stiffness: 380, damping: 14, delay: 0.1 }}
                   style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: KID_FONT, fontSize: 15, fontWeight: 900, lineHeight: 1.1, whiteSpace: "nowrap" }}
                 >

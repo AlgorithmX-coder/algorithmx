@@ -955,6 +955,7 @@ export const WEEK_14: WeekContent = {
       ],
       praise: "Grown-up, list, flip, leave. That is the whole job. ✓",
       nudge: "Which one can you not start without?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "layla",
         lines: [
