@@ -34,6 +34,7 @@ const TOOLS: Record<string, string> = {
   chatgpt: "ChatGPT",
   gemini: "Gemini",
   claude: "Claude",
+  other: "Other",
   unsure: "Not sure yet",
 };
 function esc(s: string): string {

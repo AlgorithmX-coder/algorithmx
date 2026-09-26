@@ -32,6 +32,7 @@ const TOOLS = [
   ["chatgpt", "ChatGPT"],
   ["gemini", "Gemini"],
   ["claude", "Claude"],
+  ["other", "Other"],
   ["unsure", "Not sure yet"],
 ] as const;
 
