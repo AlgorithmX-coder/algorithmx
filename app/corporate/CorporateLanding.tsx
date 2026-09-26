@@ -167,7 +167,7 @@ const PILLARS = [
 const PACKS = [
   { name: "Team", seats: "10 to 49 seats", cleared: "£29", fluent: "£59", note: "Running in your firm within a week.", accent: "#0a7085" },
   { name: "Firm", seats: "50 to 249 seats", cleared: "£19", fluent: "£45", note: "Team-level reporting and a named onboarding call.", accent: "#5744c9" },
-  { name: "Enterprise", seats: "250 seats and up", cleared: "Let's talk", fluent: "Let's talk", note: "SSO, SCORM export and data classes per division.", accent: "#8a5400" },
+  { name: "Enterprise", seats: "250 seats and up", cleared: "Please enquire", fluent: "Please enquire", note: "SSO, SCORM export and data classes per division.", accent: "#8a5400" },
 ];
 
 const FAQS = [
@@ -444,7 +444,7 @@ export default function CorporateLanding() {
                   Tell us your headcount and the tools in use, and we&rsquo;ll walk you through a module on your screen, explain the onboarding process from the firm profile to the first certificate, and reply within two working days. We bring a data-protection summary to the first conversation so your DPO has what they need.
                 </p>
                 <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)" }}>
-                  Prefer email? <a href="mailto:support@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>support@algorithmx.co.uk</a>
+                  Prefer email? <a href="mailto:admissions@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>admissions@algorithmx.co.uk</a>
                 </p>
               </div>
             </FadeUp>
