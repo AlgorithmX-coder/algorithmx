@@ -155,9 +155,15 @@ export default function ProofBand({ tone = "night" }: { tone?: "night" | "sand" 
           border-radius: 10px;
           background: #fff;
         }
+        /* The NCSC crest is white artwork and may not be recoloured, so
+           its plate has to be dark on every ground. The night value is a
+           faint lift on an already dark panel; on sand that same value sat
+           on a near-white panel and the crest vanished (owner, 2026-09-26:
+           "I can't see the logo", on /schools and /corporate; the homepage
+           only survived through a page-level rule of its own). */
         .lv2-proof-plate-dark {
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(159, 245, 255, 0.18);
+          background: ${onSand ? "#14161d" : "rgba(255, 255, 255, 0.06)"};
+          border: 1px solid ${onSand ? "rgba(20, 22, 29, 0.35)" : "rgba(159, 245, 255, 0.18)"};
         }
         .lv2-proof-name {
           font-family: var(--lv2-font-display);
