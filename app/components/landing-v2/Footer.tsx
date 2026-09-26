@@ -112,7 +112,7 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
                 maxWidth: 260,
               }}
             >
-              Technology education for every stage of life.
+              Cyber and AI skills for people, schools and firms.
             </p>
           </div>
 
