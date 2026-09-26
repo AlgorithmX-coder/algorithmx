@@ -425,6 +425,25 @@ export default function TestDrive({
                 boxShadow: "inset 0 2px 3px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.55)",
               }}
             />
+            {/* The PIN through that hole. The punch hole on its own promised an
+                attachment that was not there, so the tag read as hanging in
+                mid-air (Abdullah, W9 5c). A domed metal head sitting in the
+                hole is what makes it read as pinned on. */}
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                left: 14,
+                top: "50%",
+                marginTop: -5,
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                background: "radial-gradient(circle at 34% 30%, #ffffff 0%, #d7deeb 38%, #8d9ab4 72%, #5b6780 100%)",
+                boxShadow: "0 1px 2px rgba(0,0,0,0.55), inset 0 -1px 1px rgba(0,0,0,0.25)",
+                pointerEvents: "none",
+              }}
+            />
             {!reduce && (
               <span
                 aria-hidden

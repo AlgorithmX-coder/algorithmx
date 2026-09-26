@@ -583,15 +583,19 @@ export default function NameTagCheck({
                   style={{
                     position: "absolute",
                     left: "50%",
-                    bottom: -14,
-                    padding: "6px 14px",
+                    // Sits ON the card, not hanging under it. At -14 the verdict
+                    // stamp - the whole point of the round - dangled off the
+                    // bottom edge at 16px and read as an afterthought
+                    // (Abdullah, W9 2a: wants to be higher and bigger).
+                    bottom: 12,
+                    padding: "8px 18px",
                     borderRadius: 10,
                     border: `4px double ${isCopycat ? "#ff5fb3" : "#34d399"}`,
                     color: isCopycat ? "#d5262e" : "#137a45",
                     background: "rgba(255,255,255,0.9)",
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontWeight: 900,
-                    fontSize: 16,
+                    fontSize: 19,
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
                     whiteSpace: "nowrap",
