@@ -178,6 +178,13 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
               >
                 Schools
               </Link>
+              <Link
+                className="lv2-nav-secondary"
+                href="/corporate"
+                style={onSand ? { ...navLink, color: "#075a6b" } : navLink}
+              >
+                Corporate
+              </Link>
             </>
           ) : null}
           {aside ? (
@@ -720,29 +727,50 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           :global(.lv2-brand) {
             gap: 6px !important;
           }
+          /* Four items in the bar since Corporate joined Courses and
+             Schools (2026-09-26): at 10px with 0.06em tracking the row
+             ran 56px past a 360px screen and pushed Get Started off the
+             edge. Everything tightens a step and nothing hides; the tap
+             heights are unchanged. Measured: 360px fits with room. */
           .lv2-wordmark {
-            font-size: 11px;
-            letter-spacing: 0.12em;
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
           }
           .lv2-nav-links {
-            gap: 10px;
+            gap: 6px;
           }
           :global(.lv2-nav-secondary) {
-            font-size: 10px !important;
-            letter-spacing: 0.06em !important;
+            font-size: 9.5px !important;
+            letter-spacing: 0.02em !important;
             padding: 12px 0 !important;
           }
           :global(.lv2-nav-secondary)::after {
             bottom: 6px;
           }
           :global(.lv2-nav-cta) {
-            padding: 11px 12px !important;
+            padding: 11px 10px !important;
             font-size: 10px !important;
-            letter-spacing: 0.06em !important;
+            letter-spacing: 0.02em !important;
             gap: 0 !important;
           }
           :global(.lv2-nav-cta-inner svg) {
             display: none !important;
+          }
+        }
+
+        /* The narrowest phones: the four links and the pill reached the
+           screen edge at 360px with the bar side padding gone. Eight
+           pixels back on each side and a hair off the gaps. */
+        @media (max-width: 380px) {
+          .lv2-nav-inner {
+            padding: 0 8px !important;
+            gap: 6px !important;
+          }
+          .lv2-nav-links {
+            gap: 5px;
+          }
+          :global(.lv2-nav-cta) {
+            padding: 11px 9px !important;
           }
         }
 

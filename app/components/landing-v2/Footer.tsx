@@ -138,6 +138,7 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
             label="Company"
             links={[
               { name: "For Schools", href: "/schools" },
+              { name: "Corporate training", href: "/corporate" },
               { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
             ]}
           />
