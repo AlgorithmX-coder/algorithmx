@@ -262,7 +262,12 @@ export default function ExerciseIntroBeat({
             : "transparent",
           border: paced ? `1px solid ${mat?.edge ?? accent}${mat ? "" : "55"}` : "none",
           borderRadius: paced ? 22 : 0,
-          padding: threat ? "18px 22px 18px" : paced ? "26px 22px 24px" : 0,
+          // More room UNDER the start button than over it. At 18/24 the button
+          // cleared the card edge by about 12px while carrying 32px above, so
+          // it read as pinned to the bottom rail: Abdullah flagged the low
+          // "I'm ready" and noted it was the same on every card of this type,
+          // which it was, because this padding is shared by all twenty weeks.
+          padding: threat ? "18px 22px 32px" : paced ? "26px 22px 34px" : 0,
           boxShadow: paced
             ? mat
               ? `0 24px 60px -28px rgba(0,0,0,0.7), inset 0 0 0 2px ${mat.edge}66, inset 0 1px 0 rgba(255,255,255,0.08)`

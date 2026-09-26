@@ -302,9 +302,18 @@ function CardDecorationArt({ deco, edge, tone = "card" }: { deco: CardDeco; edge
         <span aria-hidden style={{ position: "absolute", inset: 8, border: chrome ? "4px solid rgba(244,239,228,0.38)" : "6px solid rgba(255,255,255,0.85)", borderBottomWidth: chrome ? 9 : 14, borderRadius: 4, pointerEvents: "none" }} />
       </>);
     case "moss":
+      // FOUR corners. This drew three - top-left, top-right and bottom-right -
+      // at three different insets (10, 22, 14) and left the bottom-left bare.
+      // Meant as scattered moss, but sitting at the corners of a card they
+      // read as pins with one lost, which is what Abdullah reported (W10 1b:
+      // uneven and one is missing). Kept the organic size variation, which is
+      // what makes them moss rather than rivets, and evened the insets so the
+      // set reads as deliberate.
       return (<>
-        <span aria-hidden style={dot({ top: 10, left: 10 }, 6, edge)} /><span aria-hidden style={dot({ bottom: 14, right: 12 }, 5, edge)} />
-        <span aria-hidden style={dot({ top: 22, right: 18 }, 4, edge)} />
+        <span aria-hidden style={dot({ top: 10, left: 10 }, 6, edge)} />
+        <span aria-hidden style={dot({ top: 12, right: 11 }, 4, edge)} />
+        <span aria-hidden style={dot({ bottom: 11, left: 12 }, 5, edge)} />
+        <span aria-hidden style={dot({ bottom: 12, right: 10 }, 5, edge)} />
         <span aria-hidden style={{ position: "absolute", inset: 0, borderRadius: 18, boxShadow: `inset 0 0 22px ${edge}44`, pointerEvents: "none" }} />
       </>);
     case "bezel":
