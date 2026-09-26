@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T21:06:48.876Z",
+  "generatedAt": "2026-09-26T11:43:47.231Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -30938,17 +30938,18 @@
       "file": "/audio/voice/318fb5922b58a3e9.mp3"
     },
     {
-      "key": "6bf09521c9a41ea2",
+      "key": "a48a3c5c951cfa1d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] That's all FIVE powers, Cyber Hero! You can weigh a moment, you know it is never your fault, you starve the fire, you stop the chain... [warmly] and you never carry heavy words alone. One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy. Come on!",
+      "text": "[excited] That's all FIVE powers, Cyber Hero! You can weigh a moment, you know it is never your fault, you starve the fire, you stop the chain... [warmly] and you never carry heavy words alone. One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy. [excited] Come on!",
       "lines": [
         "[excited] That's all FIVE powers, Cyber Hero!",
         "You can weigh a moment, you know it is never your fault, you starve the fire, you stop the chain...",
         "[warmly] and you never carry heavy words alone.",
-        "One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy. Come on!"
+        "One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy.",
+        "[excited] Come on!"
       ],
-      "file": "/audio/voice/6bf09521c9a41ea2.mp3"
+      "file": "/audio/voice/a48a3c5c951cfa1d.mp3"
     },
     {
       "key": "949f60ee5c85746f",
@@ -32332,18 +32333,18 @@
       "file": "/audio/voice/5ba73df279bbe08f.mp3"
     },
     {
-      "key": "f34a8ecfa85628cf",
+      "key": "98f059865ca9bed8",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] On your fourth challenge, you take on the Power Panel! This game is all about finding report and block, fast, in any game. Out in the real world, every game hides these buttons in a different spot, so you look for the WORD, not the place. Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again. [warmly] Three menus, three times report, block, tell. Ready? First menu!",
+      "text": "[excited] On your fourth challenge, you take on the Power Panel! This game is all about finding report and block, fast, in any game. Out in the real world, every game hides these buttons in a different spot, so you look for the WORD, not the place. Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again. [warmly] Three menus, and three times through it. Report. Block. Tell. Ready? First menu!",
       "lines": [
         "[excited] On your fourth challenge, you take on the Power Panel!",
         "This game is all about finding report and block, fast, in any game.",
         "Out in the real world, every game hides these buttons in a different spot, so you look for the WORD, not the place.",
         "Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again.",
-        "[warmly] Three menus, three times report, block, tell. Ready? First menu!"
+        "[warmly] Three menus, and three times through it. Report. Block. Tell. Ready? First menu!"
       ],
-      "file": "/audio/voice/f34a8ecfa85628cf.mp3"
+      "file": "/audio/voice/98f059865ca9bed8.mp3"
     },
     {
       "key": "262d18d0284faa6d",
@@ -34053,14 +34054,14 @@
       "file": "/audio/voice/369cc9069a2df5f0.mp3"
     },
     {
-      "key": "04cc69ea6d8a636e",
+      "key": "f231473f3d9f2b1e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "'No virus we promise!!' Real companies never have to promise that.",
+      "text": "'No virus, we promise!!' Real companies never have to promise that.",
       "lines": [
-        "'No virus we promise!!' Real companies never have to promise that."
+        "'No virus, we promise!!' Real companies never have to promise that."
       ],
-      "file": "/audio/voice/04cc69ea6d8a636e.mp3"
+      "file": "/audio/voice/f231473f3d9f2b1e.mp3"
     },
     {
       "key": "e9c372f1d8c7cfe7",
@@ -34863,14 +34864,14 @@
       "file": "/audio/voice/06725aea83eafef6.mp3"
     },
     {
-      "key": "38bc02869120cfad",
+      "key": "290f95b484c62529",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Who made it? 'No virus we promise!!' Real companies never have to promise that.",
+      "text": "Who made it? 'No virus, we promise!!' Real companies never have to promise that.",
       "lines": [
-        "Who made it? 'No virus we promise!!' Real companies never have to promise that."
+        "Who made it? 'No virus, we promise!!' Real companies never have to promise that."
       ],
-      "file": "/audio/voice/38bc02869120cfad.mp3"
+      "file": "/audio/voice/290f95b484c62529.mp3"
     },
     {
       "key": "d37ac88ad2982381",
@@ -36672,18 +36673,18 @@
       "file": "/audio/voice/147bc3e8990ffaf9.mp3"
     },
     {
-      "key": "a9057e2810b3fc4e",
+      "key": "dd19e6fa6bd7154c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] On your third challenge, you work the Developing Tray! This game is all about finding what a photo gives away before it goes anywhere. Out in the real world, everyone looks at the smile in the middle, and the clues hide in the corners. Here is what you do. A photo is hiding under squares of film. Tap every square to develop it. Then tap everything the photo gives away. When you have found them all, tap SHARE or KEEP. [warmly] Check every corner, not just the middle. Ready? Start developing!",
+      "text": "[excited] On your third challenge, you work the Developing Tray! This game is all about finding what a photo gives away before it goes anywhere. Out in the real world, everyone looks at the smile in the middle, and the clues hide in the corners. Here is what you do. A photo is hiding under squares of film. Tap every square to develop it. Then tap everything the photo gives away. When you have found them all, tap SHARE or KEEP. [warmly] Check every corner, not just the middle. Ready? [excited] Start developing!",
       "lines": [
         "[excited] On your third challenge, you work the Developing Tray!",
         "This game is all about finding what a photo gives away before it goes anywhere.",
         "Out in the real world, everyone looks at the smile in the middle, and the clues hide in the corners.",
         "Here is what you do. A photo is hiding under squares of film. Tap every square to develop it. Then tap everything the photo gives away. When you have found them all, tap SHARE or KEEP.",
-        "[warmly] Check every corner, not just the middle. Ready? Start developing!"
+        "[warmly] Check every corner, not just the middle. Ready? [excited] Start developing!"
       ],
-      "file": "/audio/voice/a9057e2810b3fc4e.mp3"
+      "file": "/audio/voice/dd19e6fa6bd7154c.mp3"
     },
     {
       "key": "2243cdd03c18c08a",
@@ -40267,14 +40268,14 @@
       "file": "/audio/voice/41e8928c439bc9b3.mp3"
     },
     {
-      "key": "1484fe87be904e63",
+      "key": "e1b78f60c819bfd2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The reviews side: bright and simple, four point seven stars.",
+      "text": "The reviews side: bright and simple, four point seven out of five.",
       "lines": [
-        "The reviews side: bright and simple, four point seven stars."
+        "The reviews side: bright and simple, four point seven out of five."
       ],
-      "file": "/audio/voice/1484fe87be904e63.mp3"
+      "file": "/audio/voice/e1b78f60c819bfd2.mp3"
     },
     {
       "key": "e235153d5d21c740",
@@ -40307,14 +40308,14 @@
       "file": "/audio/voice/f8da616407cca9a0.mp3"
     },
     {
-      "key": "8b85b4733e63a05b",
+      "key": "7dcc88c8ea82ce8b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The reviews side: my kids love the colours, four point eight stars.",
+      "text": "The reviews side: my kids love the colours, four point eight out of five.",
       "lines": [
-        "The reviews side: my kids love the colours, four point eight stars."
+        "The reviews side: my kids love the colours, four point eight out of five."
       ],
-      "file": "/audio/voice/8b85b4733e63a05b.mp3"
+      "file": "/audio/voice/7dcc88c8ea82ce8b.mp3"
     },
     {
       "key": "bf24f3392c835ad2",

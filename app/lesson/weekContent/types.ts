@@ -322,6 +322,10 @@ export type ScreenDef = (
       raccoonLine?: string;
       praise?: string;
       nudge?: string;
+      /** Order mode only: spoken when a step is already placed, where
+       *  `nudge` (which describes the FIRST step) would contradict the
+       *  screen, since it only ever names the FIRST step. */
+      nudgeNext?: string;
       /** `speed` mode urgency window (ms). Cosmetic. */
       speedMs?: number;
       /**

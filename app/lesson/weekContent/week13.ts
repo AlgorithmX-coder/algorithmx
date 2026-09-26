@@ -758,6 +758,7 @@ export const WEEK_13: WeekContent = {
       ],
       praise: "Save, say bye, plug in, walk away. ✓",
       nudge: "Which one cannot wait even twenty seconds?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "layla",
         lines: [

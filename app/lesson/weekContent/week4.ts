@@ -911,6 +911,7 @@ export const WEEK_4: WeekContent = {
       ],
       praise: "Stop. Check. Show. Trick-proof! ✓",
       nudge: "What's the very FIRST thing, before any checking?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "layla",
         lines: [

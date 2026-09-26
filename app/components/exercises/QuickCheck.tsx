@@ -63,6 +63,10 @@ export interface QuickCheckProps {
   praise?: string;
   /** Gentle nudge on wrong (defaults generic). */
   nudge?: string;
+  /** `order` mode: spoken on a wrong tap once a step is ALREADY placed, where
+   *  `nudge` would contradict the screen because it only ever describes the
+   *  FIRST step. Must be true at any mid-point, since it is one recorded clip. */
+  nudgeNext?: string;
   /** `speed` mode urgency window, ms. Cosmetic — never hard-fails. */
   speedMs?: number;
   /**
@@ -122,6 +126,7 @@ export default function QuickCheck({
   raccoonLine,
   praise,
   nudge,
+  nudgeNext,
   speedMs = 5000,
   teachNarration,
   onComplete,
@@ -207,7 +212,16 @@ export default function QuickCheck({
     onWrong?.();
     // Only an AUTHORED nudge is spoken as the fallback (the default nudges
     // already start with "Not quite", which would double the lead).
-    verdict.say("wrong", (mode === "order" ? null : shuffledChoices[i].why) ?? nudge ?? null);
+    // Order mode, mid-sequence: the authored `nudge` only ever describes the
+    // FIRST step, so speaking it after a step is placed contradicts the line
+    // on screen (Abdullah, W4 5a). `nudgeNext` is the authored, recordable
+    // line that stays true at any point. Weeks that author no nudge still
+    // speak nothing here, exactly as before.
+    const spoken =
+      mode === "order"
+        ? (placed.length > 0 ? nudgeNext ?? null : nudge ?? null)
+        : shuffledChoices[i].why ?? nudge ?? null;
+    verdict.say("wrong", spoken);
   };
 
   const handlePick = (i: number) => {

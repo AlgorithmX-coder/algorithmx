@@ -711,6 +711,7 @@ export const WEEK_12: WeekContent = {
       ],
       praise: "That is the golden check, in order. ✓",
       nudge: "Other people first, then older you, then the credit, then the stamp.",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "layla",
         lines: [

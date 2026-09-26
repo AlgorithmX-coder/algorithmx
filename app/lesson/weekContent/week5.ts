@@ -797,6 +797,7 @@ export const WEEK_5: WeekContent = {
       ],
       praise: "Don't reply. Keep it. Tell. That's the path! ✓",
       nudge: "What's the very FIRST thing, before keeping or telling?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "layla",
         lines: [
@@ -821,7 +822,13 @@ export const WEEK_5: WeekContent = {
           "[excited] That's all FIVE powers, Cyber Hero!",
           "You can weigh a moment, you know it is never your fault, you starve the fire, you stop the chain...",
           "[warmly] and you never carry heavy words alone.",
-          "One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy. Come on!",
+          // The sign-off ran straight off the end of the sentence and was gone
+          // before the child registered it (Abdullah, W5 6d: end rushed). The
+          // [excited] tag is what changes the delivery; the split is not a
+          // pause (a narration block is ONE clip) but it does give the line its
+          // own bullet on screen.
+          "One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy.",
+          "[excited] Come on!",
         ],
       },
     },

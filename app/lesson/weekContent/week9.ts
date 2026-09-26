@@ -502,7 +502,7 @@ export const WEEK_9: WeekContent = {
           tagline: "The brightest light app!",
           readAloud: "Here comes Torchy Light, the brightest light app. Turn the box and read every side.",
           maker: { text: "Made by Beacon Apps · 3 million downloads", readAloud: "The maker side: made by Beacon Apps, with three million downloads.", fishy: false },
-          reviews: { text: "Bright and simple! ★ 4.7", readAloud: "The reviews side: bright and simple, four point seven stars.", fishy: false },
+          reviews: { text: "Bright and simple! 4.7 out of 5 ★", readAloud: "The reviews side: bright and simple, four point seven out of five.", fishy: false },
           asks: {
             job: "Its job: make light",
             items: [
@@ -524,7 +524,7 @@ export const WEEK_9: WeekContent = {
           tagline: "Draw, colour and save your art!",
           readAloud: "Here comes Doodle Pad: draw, colour and save your art. Turn the box and read every side.",
           maker: { text: "Made by Brightbox Studio · 8 million downloads", readAloud: "The maker side: made by Brightbox Studio, with eight million downloads.", fishy: false },
-          reviews: { text: "My kids love the colours! ★ 4.8", readAloud: "The reviews side: my kids love the colours, four point eight stars.", fishy: false },
+          reviews: { text: "My kids love the colours! 4.8 out of 5 ★", readAloud: "The reviews side: my kids love the colours, four point eight out of five.", fishy: false },
           asks: {
             job: "Its job: drawing and colouring",
             items: [
@@ -952,6 +952,7 @@ export const WEEK_9: WeekContent = {
       ],
       praise: "Real shop, check together, install together! ✓",
       nudge: "Where does a new app always come from first?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "adam",
         lines: [

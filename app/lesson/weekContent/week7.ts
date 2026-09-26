@@ -884,6 +884,7 @@ export const WEEK_7: WeekContent = {
       ],
       praise: "Hands off, close it, tell. Free coins never get you! ✓",
       nudge: "What must you NOT do first, before anything else?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "adam",
         lines: [

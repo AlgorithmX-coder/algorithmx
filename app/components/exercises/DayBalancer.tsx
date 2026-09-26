@@ -240,6 +240,20 @@ export default function DayBalancer({
   // in a predictable spot). keptBlocks are display-only and stay as authored.
   const shownSwaps = useShuffledOnce(swaps);
   const finished = swapIdx >= shownSwaps.length;
+  // The completion beat is a full-frame overlay and it used to appear on the
+  // very tick the last swap landed, so the balance bar sprang to 100% BEHIND
+  // it and the child never saw it fill. Abdullah reported the meter as never
+  // reaching full, which is exactly what that looks like. Hold the overlay
+  // back for a beat so the bar arrives at 100% and the see-saw settles level
+  // in plain sight: that moment IS the payoff the game has been building to.
+  const [sealed, setSealed] = useState(false);
+  useEffect(() => {
+    // swapIdx only ever climbs, so there is nothing to reset here (and a
+    // synchronous setState in an effect body cascades renders).
+    if (!finished) return;
+    const id = window.setTimeout(() => setSealed(true), 1100);
+    return () => window.clearTimeout(id);
+  }, [finished]);
   const swap = shownSwaps[swapIdx];
   const swapOptions = useShuffledOnce(swap?.options ?? EMPTY_OPTIONS, { key: swap?.id ?? "done" });
   const balance = Math.round((swapIdx / shownSwaps.length) * 100);
@@ -569,7 +583,7 @@ export default function DayBalancer({
         />
       )}
 
-      {finished && (
+      {sealed && (
         <ExerciseCompleteBeat
           title={completeTitle ?? "The see-saw sits LEVEL!"}
           stars={stars}

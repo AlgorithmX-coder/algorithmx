@@ -1068,24 +1068,41 @@ function Daylight({ sunD, label, reduce }: { sunD: number; label: string; reduce
           border: "5px solid rgba(80,54,28,0.9)",
         }}
       />
-      {/* grass tufts on the rim */}
+      {/* Grass tufts RINGING the burrow mouth.
+          They used to be a straight row along the top of the container, level
+          with the hole rather than round it, so the surface read as a line
+          floating across the shaft (Abdullah, W10 2b). Now each tuft sits on
+          the circle's circumference and is rotated to the outward normal, so
+          the mouth is fringed the way a real burrow rim is. The viewBox is
+          280 wide for a 200-wide circle, which leaves room for the blades to
+          stand outside the rim. */}
       <svg
-        viewBox="0 0 200 40"
-        width={sunD * 1.7}
-        height={sunD * 0.34}
+        viewBox="0 0 280 280"
+        width={sunD * 1.4}
+        height={sunD * 1.4}
         aria-hidden
-        style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)" }}
+        style={{ position: "absolute", top: 6 - sunD * 0.2, left: "50%", marginLeft: -(sunD * 1.4) / 2 }}
       >
-        {[14, 44, 78, 116, 152, 182].map((x, i) => (
-          <path
-            key={i}
-            d={`M${x} 38 Q${x - 5} 22 ${x - 9} 12 M${x} 38 Q${x} 18 ${x + 2} 8 M${x} 38 Q${x + 6} 24 ${x + 10} 14`}
-            fill="none"
-            stroke={i % 2 === 0 ? "#4ea94e" : "#63c163"}
-            strokeWidth={3.4}
-            strokeLinecap="round"
-          />
-        ))}
+        {Array.from({ length: 14 }, (_, i) => {
+          // Start at the top of the circle and work round. SVG y grows
+          // downward, so the top of the rim is -90deg.
+          const deg = -90 + (360 / 14) * i;
+          const rad = (deg * Math.PI) / 180;
+          const r = 100;
+          const x = 140 + r * Math.cos(rad);
+          const y = 140 + r * Math.sin(rad);
+          return (
+            <g key={i} transform={`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${(deg + 90).toFixed(2)})`}>
+              <path
+                d="M0 0 Q-5 -16 -9 -26 M0 0 Q0 -20 2 -30 M0 0 Q6 -14 10 -24"
+                fill="none"
+                stroke={i % 2 === 0 ? "#4ea94e" : "#63c163"}
+                strokeWidth={3.4}
+                strokeLinecap="round"
+              />
+            </g>
+          );
+        })}
       </svg>
       {/* the surface, named */}
       <span
@@ -1115,7 +1132,12 @@ function Daylight({ sunD, label, reduce }: { sunD: number; label: string; reduce
  *  above and below so it never looks like it stops. */
 function Ladder({ height, gap, steps }: { height: number; gap: number; steps: number }) {
   const rungs: number[] = [];
-  for (let i = -1; i <= steps + 1; i++) rungs.push(i);
+  // Start at 0, not -1. A rung sits at `FOOT_Y + i * gap - 5`, and with
+  // FOOT_Y 20 against a gap of 60-100px the i = -1 rung landed at roughly
+  // -50 to -80: below the rails, below the floor line, hanging in space
+  // (Abdullah, W10 2a). The extra rung ABOVE is kept, since that one reads
+  // as the ladder carrying on up out of the frame.
+  for (let i = 0; i <= steps + 1; i++) rungs.push(i);
   return (
     <div
       aria-hidden

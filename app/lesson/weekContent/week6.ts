@@ -741,7 +741,7 @@ export const WEEK_6: WeekContent = {
           "This game is all about finding report and block, fast, in any game.",
           "Out in the real world, every game hides these buttons in a different spot, so you look for the WORD, not the place.",
           "Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again.",
-          "[warmly] Three menus, three times report, block, tell. Ready? First menu!",
+          "[warmly] Three menus, and three times through it. Report. Block. Tell. Ready? First menu!",
         ],
       },
       coachLines: {
@@ -768,6 +768,7 @@ export const WEEK_6: WeekContent = {
       ],
       praise: "Report. Block. Tell. The lobby is safe again! ✓",
       nudge: "Which button calls the game's guards FIRST?",
+      nudgeNext: "What comes straight after the step you just did?",
       teachNarration: {
         speaker: "layla",
         lines: [
@@ -884,11 +885,11 @@ export const WEEK_6: WeekContent = {
           id: "skin-generator",
           appName: "FREE Skin Generator 3000",
           appIcon: "🎮",
-          tagline: "Generate ANY skin for FREE! 100% works! No virus we promise!!",
+          tagline: "Generate ANY skin for FREE! 100% works! No virus, we promise!!",
           asksFor: ["Your username AND password", "Click 3 mystery links"],
           isNosy: true,
           zones: [
-            { id: "who", label: "Who made it?", note: "'No virus we promise!!' Real companies never have to promise that.", isRedFlag: true },
+            { id: "who", label: "Who made it?", note: "'No virus, we promise!!' Real companies never have to promise that.", isRedFlag: true },
             { id: "want", label: "What does it want?", note: "Your USERNAME and PASSWORD. That is the whole trick, right there.", isRedFlag: true },
             { id: "need", label: "Would the real game do this?", note: "Free-anything generators do not exist. Skins cost the game company money.", isRedFlag: true },
             { id: "happens", label: "If you use it?", note: "You type your password... and the account is not yours any more.", isRedFlag: true },
