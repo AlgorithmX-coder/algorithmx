@@ -521,7 +521,10 @@ export default function CorporateLanding() {
         .corp-toplink:hover { opacity: .8; }
 
         /* hero */
-        .corp-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr); gap: 44px; align-items: center; }
+        /* Top-aligned, not centred: the paste test is the taller column, and
+           centring dropped the title a third of the way down the owner's
+           window (2026-09-26, "title needs to be higher"). */
+        .corp-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr); gap: 44px; align-items: start; }
         .corp-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
         .corp-trust { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
         .corp-trust li {
