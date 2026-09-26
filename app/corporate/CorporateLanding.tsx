@@ -10,6 +10,7 @@ import { FadeUp } from "@/app/components/landing-v2/utilities";
 import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
 import EnquiryForm from "./EnquiryForm";
 import PasteTest from "./PasteTest";
+import PolicyBuilder from "./PolicyBuilder";
 
 /**
  * The corporate landing page: AI Cleared.
@@ -89,6 +90,7 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
   ["how", "Set-up"],
   ["firm", "Your firm"],
   ["roles", "Roles"],
+  ["policy", "Free policy"],
   ["questions", "Questions"],
   ["enquiry", "Get in touch", true],
 ];
@@ -162,8 +164,14 @@ const FAQS = [
   { q: "How long does it take?", a: "About ninety minutes in total, in twenty minute sittings. Progress saves on every screen, so a module can be finished between meetings and picked up the next day." },
   { q: "Does our data go into the course?", a: "The course runs on invented firms, clients and people. The sandbox stops any send that contains something that looks like a real identifier and explains why, and transcripts are not kept. Your firm profile holds tool names and a contact, and that is all." },
   { q: "Does it make us compliant?", a: "It gives you training and evidence of training: a register with scores, dates and certificates, which is what auditors, insurers and regulators ask to see. Your own policies and legal advice stay yours, and the starter policy is written as a starting point for your review." },
-  { q: "Can we tailor it to our firm?", a: "Yes. The firm profile takes ten minutes and the course reads it from then on: your approved tools, your data class names, your escalation contact. Firms without an AI policy get a starter policy written from their answers." },
+  { q: "Can we tailor it to our firm?", a: "Yes. The firm profile takes ten minutes and the course reads it from then on: your approved tools, your data class names, your escalation contact. Firms without an AI policy can write one now, free, further down this page." },
   { q: "How is it licensed?", a: "Per seat, per year, in packs sized to your headcount, with the content refreshed as the tools change. Larger firms can split seats across departments. Please get in touch to find out about the onboarding process." },
+];
+
+/* The two regulation pages, linked from the strip above the policy. */
+const REGS = [
+  { href: "/corporate/eu-ai-act", k: "EU AI Act · Article 4", title: "The AI literacy duty", text: "Since February 2025 firms that deploy AI have had to ensure their staff are AI literate. Whether it reaches a UK firm, and what evidence looks like." },
+  { href: "/corporate/uk-gdpr", k: "UK GDPR · the ICO", title: "When a paste becomes a breach", text: "The duties that already apply when staff put client or employee data into a tool, and why Cyber Essentials does not cover it." },
 ];
 
 export default function CorporateLanding() {
@@ -258,7 +266,7 @@ export default function CorporateLanding() {
                     Register your interest
                     <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
                   </a>
-                  <a href="#covered" style={pillGhost}>See what&rsquo;s covered</a>
+                  <a href="#policy" style={pillGhost}>Write our AI policy, free</a>
                 </div>
               </FadeUp>
               <FadeUp delay={0.24}>
@@ -437,6 +445,41 @@ export default function CorporateLanding() {
               </FadeUp>
             ))}
           </div>
+        </section>
+
+        {/* REGULATION ─────────────────────────────────────── */}
+        <section className="corp-section corp-reg-section">
+          <FadeUp>
+            <p style={eyebrow}>{"// The duties behind the demand"}</p>
+            <h2 style={h2}>Two rules already apply. <span className="corp-grad">Here they are in plain English.</span></h2>
+          </FadeUp>
+          <div className="corp-grid-2" style={{ marginTop: 30 }}>
+            {REGS.map((r, i) => (
+              <FadeUp key={r.href} delay={0.06 * i}>
+                <Link href={r.href} className="corp-reg">
+                  <span className="corp-reg-k">{r.k}</span>
+                  <span className="corp-reg-title">{r.title}</span>
+                  <span className="corp-reg-text">{r.text}</span>
+                  <span className="corp-reg-more">Read the page <span aria-hidden>&rarr;</span></span>
+                </Link>
+              </FadeUp>
+            ))}
+          </div>
+        </section>
+
+        {/* FREE POLICY ────────────────────────────────────── */}
+        <section id="policy" className="corp-section">
+          <span className="corp-glow corp-glow-cyan" aria-hidden />
+          <FadeUp>
+            <p style={eyebrow}>{"// Free · Your AI use policy"}</p>
+            <h2 style={h2}>Six answers. <span className="corp-grad">A policy your firm can adopt today.</span></h2>
+            <p style={lede}>Every firm needs one before the first member of staff opens Copilot. Answer six questions and the policy writes itself on the right, in plain English, with your tools, your data rules and your contact in it. Email yourself a copy, free.</p>
+          </FadeUp>
+          <FadeUp delay={0.08}>
+            <div style={{ marginTop: 34 }}>
+              <PolicyBuilder />
+            </div>
+          </FadeUp>
         </section>
 
         {/* QUESTIONS ──────────────────────────────────────── */}
@@ -619,7 +662,7 @@ export default function CorporateLanding() {
         .corp-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .corp-subnav::-webkit-scrollbar { display: none; }
         .corp-navsections { display: none; }
-        @media (min-width: 1180px) {
+        @media (min-width: 1280px) {
           .corp-navsections { display: flex; align-items: center; gap: 6px; min-width: 0; }
           .corp-subnav-wrap { display: none; }
           .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); }
@@ -762,6 +805,46 @@ export default function CorporateLanding() {
         .corp-faq summary::after { content: "+"; position: absolute; right: 2px; top: 12px; font-size: 22px; color: var(--lv2-cyan-soft); transition: transform .2s ease; }
         .corp-faq[open] summary::after { transform: rotate(45deg); }
         .corp-faq p { margin: 0; padding: 0 0 16px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.82); }
+
+        /* regulation strip */
+        .corp-reg-section { padding-bottom: calc(var(--lv2-rail) * 0.6); }
+        .corp-reg { display: flex; flex-direction: column; gap: 8px; height: 100%; box-sizing: border-box; padding: 24px 24px 22px; border-radius: 18px; text-decoration: none; color: inherit; background: linear-gradient(180deg, rgba(244,239,231,0.78), rgba(255,253,248,0.78)); border: 1px solid rgba(20,22,29,0.24); border-left: 2px solid #0a7085; transition: transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s ease, border-color .2s ease; }
+        .corp-reg:hover { transform: translateY(-2px); border-color: #0a7085; box-shadow: 0 16px 34px -20px rgba(10,112,133,0.7); }
+        .corp-reg-k { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #0a7085; }
+        .corp-reg-title { font-family: var(--lv2-font-display); font-size: 1.25rem; font-weight: 500; letter-spacing: -0.01em; color: #14161d; }
+        .corp-reg-text { font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.79); }
+        .corp-reg-more { margin-top: auto; padding-top: 8px; font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #0a7085; }
+
+        /* the policy builder */
+        .corp-pol { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 26px; align-items: start; }
+        .corp-pol-form { display: flex; flex-direction: column; gap: 16px; position: relative; }
+        .corp-pol-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .corp-pol-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .corp-pol-chip { height: 36px; padding: 0 12px; border-radius: 999px; cursor: pointer; border: 1.5px solid rgba(10,112,133,0.3); background: rgba(255,253,248,0.8); color: rgba(17,22,38,0.8); font-family: var(--lv2-font-display); font-size: 13px; font-weight: 600; transition: border-color .2s ease, background .2s ease, color .2s ease; }
+        .corp-pol-chip.on { border-color: #0a7085; background: rgba(10,112,133,0.14); color: #14161d; }
+        .corp-pol-chip-no.on { border-color: #a63a08; background: rgba(166,58,8,0.1); }
+        .corp-pol-gate { margin-top: 6px; padding: 18px 18px 16px; border-radius: 16px; border: 1px solid rgba(10,112,133,0.35); background: rgba(10,112,133,0.06); display: flex; flex-direction: column; gap: 12px; }
+        .corp-pol-gate-head { margin: 0; font-family: var(--lv2-font-display); font-size: 1.1rem; font-weight: 500; color: #14161d; }
+        .corp-pol-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .corp-pol-send { height: 50px; padding: 0 24px; border-radius: 999px; border: none; cursor: pointer; background: linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%); color: #fffdfa; font-family: var(--lv2-font-display); font-size: 15px; font-weight: 700; box-shadow: 0 12px 30px -12px rgba(10,112,133,0.9); }
+        .corp-pol-send:disabled { opacity: 0.7; cursor: wait; }
+        .corp-pol-fine { font-family: var(--lv2-font-display); font-size: 13px; color: rgba(17,22,38,0.66); }
+        .corp-pol-err { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; font-weight: 600; color: #a63a08; }
+        .corp-pol-ok { margin: 0; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.55; color: #14161d; }
+        .corp-pol-doc { border-radius: 16px; overflow: hidden; background: #fffdf8; border: 1px solid rgba(20,22,29,0.3); box-shadow: 0 30px 70px -30px rgba(10,112,133,0.5); position: sticky; top: 140px; }
+        .corp-pol-doc-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #f4efe7; border-bottom: 1px solid rgba(17,22,38,0.08); font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(17,22,38,0.7); }
+        .corp-pol-copy { height: 30px; padding: 0 12px; border-radius: 999px; cursor: pointer; border: 1px solid rgba(20,22,29,0.25); background: #fffdf8; color: #14161d; font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+        .corp-pol-copy:hover { border-color: #0a7085; color: #0a7085; }
+        .corp-pol-doc-body { padding: 22px 24px 26px; max-height: 640px; overflow: auto; font-family: var(--lv2-font-display); }
+        .corp-pol-doc-body h3 { margin: 0 0 6px; font-size: 1.45rem; font-weight: 500; letter-spacing: -0.02em; color: #14161d; }
+        .corp-pol-doc-intro { margin: 0 0 18px; font-size: 13.5px; line-height: 1.55; color: rgba(17,22,38,0.66); }
+        .corp-pol-doc-body section { padding-top: 14px; margin-top: 14px; border-top: 1px solid rgba(20,22,29,0.1); }
+        .corp-pol-doc-body h4 { margin: 0 0 6px; font-size: 14.5px; font-weight: 600; color: #14161d; }
+        .corp-pol-doc-body p { margin: 0 0 8px; font-size: 14px; line-height: 1.6; color: rgba(17,22,38,0.86); }
+        .corp-pol-doc-body ul { margin: 4px 0 6px; padding-left: 18px; }
+        .corp-pol-doc-body li { font-size: 13.5px; line-height: 1.55; color: rgba(17,22,38,0.86); margin-bottom: 4px; }
+        @media (max-width: 980px) { .corp-pol { grid-template-columns: 1fr; } .corp-pol-doc { position: static; } }
+        @media (max-width: 520px) { .corp-pol-two { grid-template-columns: 1fr; } }
 
         /* form */
         .corp-form-grid { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; }
