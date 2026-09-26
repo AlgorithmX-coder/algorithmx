@@ -20,12 +20,16 @@ import { sectionMarkBare } from "@/app/components/sectionMark";
  * brochure spec sheet (and was redundant with the headline's "every
  * stage of life"). Replaced with a mission-grade line that signals
  * the platform's ambition before the headline lands. */
-const EYEBROW = "// SIX TRACKS  ·  SKILLS THE AI ERA NEEDS";
+/* Owner 2026-09-26: three lines of business now (courses for
+   individuals, schools, corporate), so the eyebrow names them in the
+   same order as the nav, and the headline says who it is for rather
+   than what stage of life they are at. */
+const EYEBROW = "// COURSES  ·  SCHOOLS  ·  CORPORATE";
 /* Owner 2026-09-23: highlight part of it. The payoff phrase carries the
    gradient, which is how /schools does it ("...your pupils [teach
    themselves.]"), and here the payoff is the range itself. */
-const HEADLINE_LEAD = "Technology education for ";
-const HEADLINE_ACCENT = "every stage of life.";
+const HEADLINE_LEAD = "Cyber and AI skills for ";
+const HEADLINE_ACCENT = "people, schools and firms.";
 /* Owner 2026-09-22: the old line spent half its length on courses that
    are not out yet. It now says what is live and how it is taught. */
 /* Owner 2026-09-23: the last clause should say that these projects come
