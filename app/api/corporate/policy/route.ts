@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/app/lib/resend";
-import { APPROVED, BANNED, SECTORS, buildPolicy, policyToText, type PolicyProfile, type SectorId } from "@/app/corporate/policyText";
+import { APPROVED, BANNED, SECTORS, buildPolicy, policyToHtml, policyToText, type PolicyProfile, type SectorId } from "@/app/corporate/policyText";
 
 /**
  * POST /api/corporate/policy - the free AI use policy.
@@ -62,21 +62,9 @@ export async function POST(req: Request) {
   const text = policyToText(policy);
   console.log("[corporate-policy]", JSON.stringify({ name, email, ...profile, at: new Date().toISOString() }));
 
-  const policyHtml = `<!doctype html><html><body style="margin:0;padding:24px;background:#f3ede4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#14161d;">
-  <div style="max-width:640px;margin:0 auto;background:#fffdf8;border:1px solid rgba(20,22,29,0.18);border-radius:16px;padding:28px;">
-    <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#0a7085;font-weight:800;margin-bottom:10px;">${esc(policy.stamp)}</div>
-    <h1 style="margin:0 0 12px;font-size:22px;">${esc(policy.title)}</h1>
-    <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#5d6472;">${esc(policy.intro)}</p>
-    ${policy.sections
-      .map(
-        (s) =>
-          `<h2 style="margin:22px 0 8px;font-size:15px;">${esc(s.heading)}</h2>` +
-          s.paras.map((p) => `<p style="margin:0 0 10px;font-size:14px;line-height:1.6;">${esc(p)}</p>`).join("") +
-          (s.bullets ? `<ul style="margin:0 0 10px;padding-left:20px;font-size:14px;line-height:1.6;">${s.bullets.map((x) => `<li style="margin-bottom:4px;">${esc(x)}</li>`).join("")}</ul>` : ""),
-      )
-      .join("")}
-    <p style="margin:26px 0 0;padding-top:16px;border-top:1px solid rgba(20,22,29,0.12);font-size:12.5px;line-height:1.6;color:#5d6472;">A starting point for your own review, written from the answers ${esc(name)} gave at algorithmx.io/corporate. The training that goes with it is AI Cleared by AlgorithmX. Reply to this email and a real person will pick it up.</p>
-  </div></body></html>`;
+  const policyHtml = policyToHtml(policy, {
+    footer: `A starting point for your own review, written from the answers ${name} gave at algorithmx.io/corporate. The training that goes with it is AI Cleared by AlgorithmX. Reply to this email and a real person will pick it up.`,
+  });
 
   const to = process.env.CORPORATE_ENQUIRY_TO ?? process.env.SCHOOLS_ENQUIRY_TO ?? "support@algorithmx.co.uk";
   const leadRows: Array<[string, string]> = [
