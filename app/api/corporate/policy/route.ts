@@ -92,7 +92,7 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("[corporate-policy] email failed", err);
     return NextResponse.json(
-      { error: "We couldn't send the policy just now. Use Copy text to keep it, and email support@algorithmx.co.uk if you would like a copy." },
+      { error: "We couldn't send the policy just now. Use Copy text to keep it, and email admissions@algorithmx.co.uk if you would like a copy." },
       { status: 502 },
     );
   }

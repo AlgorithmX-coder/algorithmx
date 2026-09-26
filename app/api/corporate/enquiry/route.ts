@@ -122,7 +122,7 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("[corporate-enquiry] email failed", err);
     return NextResponse.json(
-      { error: "We couldn't send your enquiry just now. Please email support@algorithmx.co.uk and we'll pick it up." },
+      { error: "We couldn't send your enquiry just now. Please email admissions@algorithmx.co.uk and we'll pick it up." },
       { status: 502 },
     );
   }
