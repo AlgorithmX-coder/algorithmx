@@ -636,13 +636,13 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.strokeStyle = "#8a6a4a";
   ctx.lineWidth = 5;
   ctx.beginPath();
-  ctx.moveTo(548, 26);
-  ctx.lineTo(548, 112);
+  ctx.moveTo(548, 20);
+  ctx.lineTo(548, 124);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(552, 34);
-  ctx.lineTo(704, 68);
-  ctx.lineTo(552, 102);
+  ctx.moveTo(552, 26);
+  ctx.lineTo(744, 72);
+  ctx.lineTo(552, 118);
   ctx.closePath();
   ctx.fillStyle = "#2f7d4f";
   ctx.fill();
@@ -651,10 +651,10 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.stroke();
   ctx.fillStyle = "#eaf6ee";
   ctx.textAlign = "left";
-  ctx.font = `800 16px ${FONT_STACK}`;
-  ctx.fillText("OAKWOOD", 562, 62);
-  ctx.font = `700 13px ${FONT_STACK}`;
-  ctx.fillText("SCHOOL", 562, 82);
+  ctx.font = `800 19px ${FONT_STACK}`;
+  ctx.fillText("OAKWOOD", 564, 64);
+  ctx.font = `700 15px ${FONT_STACK}`;
+  ctx.fillText("SCHOOL", 564, 88);
 
   // LEAK 3: friend peeking in the bottom-right corner.
   // Jumper (school green, matching the pennant).
