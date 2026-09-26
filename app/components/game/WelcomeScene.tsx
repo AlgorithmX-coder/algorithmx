@@ -231,8 +231,8 @@ export default function WelcomeScene({
 
 /* ───────────────────────── POLAROID ───────────────────────── */
 
-/** The photo box, and the cap the caption must respect so the polaroid
- *  never grows wider than the picture inside it. */
+/** The photo box. The wrapper below is what centres it (and its tag) when a
+ *  long caption makes the card wider than the picture. */
 const PHOTO_W = "min(44vw, 300px, 40vh * 4 / 3)";
 
 function Polaroid({ src, caption }: { src: string; caption: string }) {
@@ -248,12 +248,17 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
         animation: "polaroidIn 0.9s 0.5s cubic-bezier(.2,.8,.2,1) backwards",
       }}
     >
+      {/* Photo + tag as ONE centred unit. The caption is the card's widest
+          child, so without this the picture sat hard against the left edge
+          with a fat cream margin on the right (Abdullah, W8 1a). Centring
+          here costs no height, unlike capping the caption. */}
+      <div style={{ position: "relative", width: PHOTO_W, marginLeft: "auto", marginRight: "auto" }}>
       <div
         style={{
           // Sized so the full flow column (title + polaroid + caption + CTA)
           // fits a ~771px laptop without scrolling for typical captions; the
           // vh term shrinks it further on shorter viewports.
-          width: PHOTO_W,
+          width: "100%",
           aspectRatio: "4 / 3",
           backgroundImage: `url(${src})`,
           backgroundSize: "cover",
@@ -295,19 +300,11 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
       >
         ✕ Hacked
       </div>
+      </div>
       {/* Polaroid caption (handwritten feel) */}
       <div
         style={{
           marginTop: 10,
-          // Capped to the PHOTO width. The caption is the widest child, so a
-          // long one (Wk 8 - Think Before You Share) stretched the polaroid
-          // past the photo and left it sitting against one edge with a fat
-          // cream margin on the other: Abdullah read that as the postcard
-          // being lopsided. Capped here it wraps instead, and the photo sits
-          // flush and even, with the Hacked tag still on its corner.
-          maxWidth: PHOTO_W,
-          marginLeft: "auto",
-          marginRight: "auto",
           textAlign: "center",
           fontFamily: "'Caveat', 'Comic Sans MS', cursive",
           fontSize: 22,
