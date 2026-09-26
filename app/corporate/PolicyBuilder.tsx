@@ -2,15 +2,16 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { APPROVED, BANNED, SECTORS, buildPolicy, policyToText, type PolicyProfile, type SectorId } from "./policyText";
+import { APPROVED, BANNED, SECTORS, buildPolicy, policyToHtml, policyToText, type PolicyProfile, type SectorId } from "./policyText";
 
 /**
  * The free AI use policy, on the page.
  *
- * Six answers on the left, the policy written on the right as they type, and
- * one gate at the end: a work email to receive a copy. That email is the
- * lead. The policy itself is a starting point and says so; nothing here
- * claims to make a firm compliant.
+ * Six answers on the left, the policy written on the right as they type,
+ * a PDF from the browser's own print dialog, and one gate at the end: a
+ * work email to receive a copy. That email is the lead. The policy is a
+ * starting point and says so; nothing here claims to make a firm
+ * compliant.
  */
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -83,6 +84,22 @@ export default function PolicyBuilder() {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1800);
     } catch {}
+  };
+
+  /* The PDF is the browser's own print of a clean document: the same HTML
+     the email carries, in a new window, with the print dialog opened for
+     them. Every browser offers "Save as PDF" there, and the firm's own
+     header, page size and margins apply. */
+  const pdf = () => {
+    /* No "noopener" here: it makes window.open return null and there is
+       then no handle to write into. This is our own blank window. */
+    const w = window.open("", "_blank", "width=900,height=1000");
+    if (!w) return;
+    w.document.open();
+    w.document.write(policyToHtml(policy, { footer: "A starting point for your own review, written at algorithmx.io/corporate. The training that goes with it is AI Cleared by AlgorithmX." }));
+    w.document.close();
+    w.focus();
+    w.setTimeout(() => w.print(), 350);
   };
 
   const send = async (e: React.FormEvent) => {
@@ -192,7 +209,10 @@ export default function PolicyBuilder() {
       <div className="corp-pol-doc" aria-live="polite">
         <div className="corp-pol-doc-bar">
           <span>{policy.stamp}</span>
-          <button type="button" onClick={copy} className="corp-pol-copy">{copied ? "Copied" : "Copy text"}</button>
+          <span className="corp-pol-doc-tools">
+            <button type="button" onClick={copy} className="corp-pol-copy">{copied ? "Copied" : "Copy text"}</button>
+            <button type="button" onClick={pdf} className="corp-pol-copy corp-pol-pdf">Download PDF</button>
+          </span>
         </div>
         <div className="corp-pol-doc-body">
           <h3>{policy.title}</h3>
@@ -202,6 +222,13 @@ export default function PolicyBuilder() {
               <h4>{s.heading}</h4>
               {s.paras.map((t, i) => <p key={i}>{t}</p>)}
               {s.bullets && <ul>{s.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}
+              {s.blanks && (
+                <dl className="corp-pol-blanks">
+                  {s.blanks.map((b) => (
+                    <div key={b}><dt>{b}</dt><dd aria-label="blank line to fill in" /></div>
+                  ))}
+                </dl>
+              )}
             </section>
           ))}
         </div>

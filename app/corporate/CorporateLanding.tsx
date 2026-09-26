@@ -89,7 +89,7 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
   ["covered", "What's covered"],
   ["how", "Set-up"],
   ["firm", "Your firm"],
-  ["roles", "Roles"],
+  ["pricing", "Pricing"],
   ["policy", "Free policy"],
   ["questions", "Questions"],
   ["enquiry", "Get in touch", true],
@@ -165,8 +165,17 @@ const FAQS = [
   { q: "Does our data go into the course?", a: "The course runs on invented firms, clients and people. The sandbox stops any send that contains something that looks like a real identifier and explains why, and transcripts are not kept. Your firm profile holds tool names and a contact, and that is all." },
   { q: "Does it make us compliant?", a: "It gives you training and evidence of training: a register with scores, dates and certificates, which is what auditors, insurers and regulators ask to see. Your own policies and legal advice stay yours, and the starter policy is written as a starting point for your review." },
   { q: "Can we tailor it to our firm?", a: "Yes. The firm profile takes ten minutes and the course reads it from then on: your approved tools, your data class names, your escalation contact. Firms without an AI policy can write one now, free, further down this page." },
-  { q: "How is it licensed?", a: "Per seat, per year, in packs sized to your headcount, with the content refreshed as the tools change. Larger firms can split seats across departments. Please get in touch to find out about the onboarding process." },
+  { q: "How is it licensed?", a: "Per person, per year, in packs of ten: £29 a seat for ten to forty-nine seats and £19 a seat from fifty, with the content refreshed as the tools change. Every seat includes the course, the sandbox, the register, the certificates and the policy pack. Larger firms can split seats across departments; please get in touch to find out about the onboarding process." },
 ];
+
+/* Per person, per year, in packs. The Team price is public; the rest is a
+   conversation. Owner-set 2026-09-26. */
+const PACKS = [
+  { name: "Team", seats: "10 to 49 seats", price: "£29", unit: "per person, per year", note: "Everything included. Running in your firm within a week.", accent: "#0a7085" },
+  { name: "Firm", seats: "50 to 249 seats", price: "£19", unit: "per person, per year", note: "Team-level reporting and a named onboarding call.", accent: "#5744c9" },
+  { name: "Enterprise", seats: "250 seats and up", price: "Let's talk", unit: "seats split by department", note: "SSO, SCORM export and data classes per division.", accent: "#8a5400" },
+];
+const INCLUDED = ["The five-module course", "The live sandbox and leak grader", "The training register and export", "A certificate per person and per firm", "The starter AI policy", "Content refreshed as the tools change"];
 
 /* The two regulation pages, linked from the strip above the policy. */
 const REGS = [
@@ -445,6 +454,36 @@ export default function CorporateLanding() {
               </FadeUp>
             ))}
           </div>
+        </section>
+
+        {/* PRICING ────────────────────────────────────────── */}
+        <section id="pricing" className="corp-section">
+          <span className="corp-glow corp-glow-amber" aria-hidden />
+          <FadeUp>
+            <p style={eyebrow}>{"// Pricing"}</p>
+            <h2 style={h2}>One price per person. <span className="corp-grad">Everything included.</span></h2>
+            <p style={lede}>Per person, per year, in packs of ten, with the content refreshed as the tools change. Every seat carries the whole product, so there is nothing to add on later.</p>
+          </FadeUp>
+          <div className="corp-grid-3" style={{ marginTop: 36 }}>
+            {PACKS.map((k, i) => (
+              <FadeUp key={k.name} delay={0.06 * i}>
+                <div className="corp-card corp-pack" style={{ ["--corp-accent" as string]: k.accent }}>
+                  <span className="corp-pack-name">{k.name}</span>
+                  <span className="corp-pack-seats">{k.seats}</span>
+                  <span className="corp-pack-price">{k.price}</span>
+                  <span className="corp-pack-unit">{k.unit}</span>
+                  <p>{k.note}</p>
+                  <a href="#enquiry" className="corp-pack-cta">Register your interest <span aria-hidden>&rarr;</span></a>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+          <FadeUp delay={0.2}>
+            <div className="corp-included">
+              <span className="corp-included-k">Every seat includes</span>
+              <ul>{INCLUDED.map((x) => <li key={x}>{x}</li>)}</ul>
+            </div>
+          </FadeUp>
         </section>
 
         {/* REGULATION ─────────────────────────────────────── */}
@@ -806,6 +845,20 @@ export default function CorporateLanding() {
         .corp-faq[open] summary::after { transform: rotate(45deg); }
         .corp-faq p { margin: 0; padding: 0 0 16px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.82); }
 
+        /* pricing */
+        .corp-pack { display: flex; flex-direction: column; gap: 4px; border-top: 2px solid var(--corp-accent); height: 100%; }
+        .corp-pack-name { font-family: var(--lv2-font-mono); font-size: 11.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--corp-accent); }
+        .corp-pack-seats { font-family: var(--lv2-font-display); font-size: 14px; color: rgba(17,22,38,0.7); }
+        .corp-pack-price { margin-top: 14px; font-family: var(--lv2-font-display); font-size: clamp(2.2rem, 3.2vw, 2.9rem); line-height: 1; letter-spacing: -0.03em; font-weight: 500; color: #14161d; font-variant-numeric: tabular-nums; }
+        .corp-pack-unit { font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.62); margin-top: 6px; }
+        .corp-pack p { margin: 14px 0 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.79); }
+        .corp-pack-cta { margin-top: auto; padding-top: 18px; align-self: flex-start; font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
+        .corp-included { display: flex; align-items: flex-start; gap: 18px; flex-wrap: wrap; margin-top: 22px; padding: 18px 20px; border-radius: 14px; border: 1px solid rgba(20,22,29,0.18); background: rgba(255,253,248,0.6); }
+        .corp-included-k { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #0a7085; padding-top: 4px; white-space: nowrap; }
+        .corp-included ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; }
+        .corp-included li { position: relative; padding-left: 16px; font-family: var(--lv2-font-display); font-size: 14px; color: rgba(17,22,38,0.86); }
+        .corp-included li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: #0e7a45; }
+
         /* regulation strip */
         .corp-reg-section { padding-bottom: calc(var(--lv2-rail) * 0.6); }
         .corp-reg { display: flex; flex-direction: column; gap: 8px; height: 100%; box-sizing: border-box; padding: 24px 24px 22px; border-radius: 18px; text-decoration: none; color: inherit; background: linear-gradient(180deg, rgba(244,239,231,0.78), rgba(255,253,248,0.78)); border: 1px solid rgba(20,22,29,0.24); border-left: 2px solid #0a7085; transition: transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s ease, border-color .2s ease; }
@@ -833,8 +886,14 @@ export default function CorporateLanding() {
         .corp-pol-ok { margin: 0; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.55; color: #14161d; }
         .corp-pol-doc { border-radius: 16px; overflow: hidden; background: #fffdf8; border: 1px solid rgba(20,22,29,0.3); box-shadow: 0 30px 70px -30px rgba(10,112,133,0.5); position: sticky; top: 140px; }
         .corp-pol-doc-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #f4efe7; border-bottom: 1px solid rgba(17,22,38,0.08); font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(17,22,38,0.7); }
-        .corp-pol-copy { height: 30px; padding: 0 12px; border-radius: 999px; cursor: pointer; border: 1px solid rgba(20,22,29,0.25); background: #fffdf8; color: #14161d; font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+        .corp-pol-copy { height: 30px; padding: 0 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; flex: none; border: 1px solid rgba(20,22,29,0.25); background: #fffdf8; color: #14161d; font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
         .corp-pol-copy:hover { border-color: #0a7085; color: #0a7085; }
+        .corp-pol-doc-tools { display: inline-flex; gap: 6px; flex: none; }
+        .corp-pol-pdf { border-color: #0a7085; color: #0a7085; }
+        .corp-pol-blanks { margin: 12px 0 0; display: grid; gap: 10px; }
+        .corp-pol-blanks div { display: grid; grid-template-columns: 110px 1fr; gap: 10px; align-items: end; }
+        .corp-pol-blanks dt { font-size: 13px; color: rgba(17,22,38,0.7); }
+        .corp-pol-blanks dd { margin: 0; height: 18px; border-bottom: 1px solid rgba(20,22,29,0.4); }
         .corp-pol-doc-body { padding: 22px 24px 26px; max-height: 640px; overflow: auto; font-family: var(--lv2-font-display); }
         .corp-pol-doc-body h3 { margin: 0 0 6px; font-size: 1.45rem; font-weight: 500; letter-spacing: -0.02em; color: #14161d; }
         .corp-pol-doc-intro { margin: 0 0 18px; font-size: 13.5px; line-height: 1.55; color: rgba(17,22,38,0.66); }
