@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Ico, useMagnetic, useMediaQuery } from "./utilities";
+import { Ico, useMagnetic } from "./utilities";
 
 /**
  * Landing-v2 top nav — a futuristic "live control bar".
@@ -14,8 +14,8 @@ import { Ico, useMagnetic, useMediaQuery } from "./utilities";
  *  - a holographic 3D brand cube: translucent glass faces, a pulsing
  *    inner energy core, an orbiting light spark, hover parallax, slow
  *    float + breathing bloom (all CSS transforms, reduced-motion safe)
- *  - a live telemetry console: stronger status pulse, signal bars, a
- *    scan shimmer and a ticking latency read-out with a trend caret
+ *  - a trust strip: Cyber Essentials, the NCSC and Microsoft for
+ *    Startups, each on its own plate, with a scan shimmer
  *  - a magnetic, dimensional "Get Started" CTA with an energy sweep
  *
  * The signup + login paths are always visible/clickable so they're never
@@ -28,7 +28,7 @@ type NavProps = {
   cta?: { label: string; href: string };
   /** One page-owned link, in the bar beside the CTA. */
   aside?: { label: string; href: string };
-  /** The live telemetry console. */
+  /** The trust strip (Cyber Essentials, NCSC, Microsoft) in the centre of the bar. */
   showTelemetry?: boolean;
   /** The Courses and Schools links. */
   showSiteLinks?: boolean;
@@ -153,7 +153,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           </span>
         </Link>
 
-        {showTelemetry ? <LiveTelemetry isLight={isLight} /> : null}
+        {showTelemetry ? <TrustStrip isLight={isLight} /> : null}
         {centre}
 
         <div className="lv2-nav-links">
@@ -561,7 +561,10 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
         }
         nav[data-tone="sand"] :global(.lv2-tel-label) {
-          color: rgba(43, 35, 24, 0.72) !important;
+          color: rgba(43, 35, 24, 0.78) !important;
+        }
+        nav[data-tone="sand"] :global(.lv2-tel-plate-dark) {
+          border-color: rgba(20, 22, 29, 0.35) !important;
         }
         nav[data-tone="sand"] :global(.lv2-tel-num),
         nav[data-tone="sand"] :global(.lv2-tel-latency) {
@@ -1073,43 +1076,28 @@ function BrandCube() {
 }
 
 /**
- * LiveTelemetry — the centred "this site is alive" console. A grouped
- * capsule of live read-outs: a pulsing online status, a signal-bar stream
- * count, an age-track count and a ticking latency value with a trend
- * caret. A soft scan shimmer glides across the group. Hidden under 1100px
- * so the bar never overflows on tablets.
+ * TrustStrip: the centred pill in the bar. Three things that are true and
+ * verifiable, each with its mark: Cyber Essentials (certified), the NCSC
+ * (content aligned to its guidance) and Microsoft for Startups
+ * (collaborating; their guidance asks for that word, not "partner").
+ *
+ * It replaces the "live telemetry" console (owner 2026-09-27): the invented
+ * latency read-out and the internal stream counts were theatre, and the
+ * bar now fronts a page that sells to IT managers and DPOs. Same housing,
+ * same boot-in, same scan shimmer, so the bar keeps its pulse; only the
+ * contents changed. Hidden under 1300px so the links keep their room.
+ *
+ * Artwork rules: the Cyber Essentials and Microsoft marks are dark on
+ * white plates; the NCSC crest is white and sits on a dark plate; none
+ * of them is recoloured.
  */
-function LiveTelemetry({ isLight }: { isLight: boolean }) {
-  const reduceMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
-  const [latency, setLatency] = useState(42);
-  const [trend, setTrend] = useState<"up" | "down">("down");
-  const latencyRef = useRef(42);
-
-  // Drift the latency read-out by ±1–3ms every couple of seconds, kept in
-  // a believable 38–47ms band, so it reads as a live measurement rather
-  // than a number that randomly leaps around. Paused under reduced motion.
-  useEffect(() => {
-    if (reduceMotion) return;
-    const i = setInterval(() => {
-      const prev = latencyRef.current;
-      const step = 1 + Math.floor(Math.random() * 3); // 1–3ms
-      const dir = Math.random() < 0.5 ? -1 : 1;
-      let next = prev + step * dir;
-      if (next < 38) next = 38 + step;
-      else if (next > 47) next = 47 - step;
-      latencyRef.current = next;
-      setLatency(next);
-      setTrend(next >= prev ? "up" : "down");
-    }, 2600);
-    return () => clearInterval(i);
-  }, [reduceMotion]);
-
+function TrustStrip({ isLight }: { isLight: boolean }) {
   const baseColor = isLight ? "rgba(10,15,28,0.78)" : "rgba(232, 237, 255, 0.82)";
 
   return (
     <div
       className="lv2-telemetry"
-      aria-hidden
+      aria-label="Accreditations"
       style={{
         fontFamily: "var(--lv2-font-mono)",
         color: baseColor,
@@ -1119,50 +1107,32 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
       <span className="lv2-tel-shell">
         <span className="lv2-tel-scan" aria-hidden />
 
-        <span
-          className="lv2-tel-item lv2-tel-status"
-          style={{ animationDelay: "0.05s" }}
-        >
-          <span className="lv2-tel-dot" aria-hidden />
-          <span className="lv2-tel-label">Systems</span>
-          <span className="lv2-tel-online">Online</span>
+        <span className="lv2-tel-item" style={{ animationDelay: "0.05s" }}>
+          <span className="lv2-tel-plate">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logos/cyber-essentials.png" alt="Cyber Essentials" width={433} height={160} decoding="async" />
+          </span>
+          <span className="lv2-tel-label">Certified</span>
         </span>
 
         <i className="lv2-tel-div" aria-hidden />
 
         <span className="lv2-tel-item" style={{ animationDelay: "0.12s" }}>
-          <span className="lv2-tel-bars" aria-hidden>
-            <i />
-            <i />
-            <i />
+          <span className="lv2-tel-plate lv2-tel-plate-dark">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" decoding="async" />
           </span>
-          <span className="lv2-tel-num">6</span>
-          <span className="lv2-tel-label">Streams</span>
+          <span className="lv2-tel-label">Aligned</span>
         </span>
 
         <i className="lv2-tel-div" aria-hidden />
 
         <span className="lv2-tel-item" style={{ animationDelay: "0.19s" }}>
-          <span className="lv2-tel-num">4</span>
-          <span className="lv2-tel-label">Age Tracks</span>
-        </span>
-
-        <i className="lv2-tel-div" aria-hidden />
-
-        <span
-          className="lv2-tel-item lv2-tel-latency-item"
-          style={{ animationDelay: "0.26s" }}
-        >
-          <span className="lv2-tel-label">Latency</span>
-          {/* key remounts the value on each change so it gets a tiny fade-in
-              blip — reads as a fresh reading landing. */}
-          <span className="lv2-tel-latency" key={latency}>
-            {latency}
-            <span className="lv2-tel-unit">ms</span>
+          <span className="lv2-tel-plate">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logos/microsoft-for-startups.webp" alt="Microsoft for Startups" width={424} height={65} decoding="async" />
           </span>
-          <span className={`lv2-tel-trend lv2-tel-trend-${trend}`}>
-            {trend === "up" ? "▲" : "▼"}
-          </span>
+          <span className="lv2-tel-label">Collaborating</span>
         </span>
       </span>
 
@@ -1172,15 +1142,14 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           align-items: center;
           flex-shrink: 0;
         }
-        /* Grouped capsule — gives the read-outs a console housing.
-           nowrap keeps every read-out on a single line (no "AGE / TRACKS"
-           wrapping when horizontal room gets tight). */
+        /* Grouped capsule: the same housing the console had. nowrap keeps
+           each item on one line when the bar gets tight. */
         .lv2-tel-shell {
           position: relative;
           display: inline-flex;
           align-items: center;
           white-space: nowrap;
-          padding: 6px 6px;
+          padding: 5px 6px;
           border-radius: 999px;
           border: 1px solid rgba(0, 229, 255, 0.14);
           background: linear-gradient(
@@ -1191,7 +1160,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
           box-shadow: inset 0 0 18px rgba(0, 229, 255, 0.05);
           overflow: hidden;
         }
-        /* Scan shimmer gliding across the whole console. */
+        /* Scan shimmer gliding across the whole strip. */
         .lv2-tel-scan {
           position: absolute;
           top: 0;
@@ -1224,15 +1193,13 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
             opacity: 0;
           }
         }
-
-        /* Staggered fade-down as the console boots. Only the entrance
-           opacity is keyed, so each item settles to its resting state. */
+        /* Staggered fade-down as the strip boots. */
         .lv2-tel-item {
           position: relative;
           display: inline-flex;
           align-items: center;
-          gap: 7px;
-          padding: 0 12px;
+          gap: 8px;
+          padding: 0 10px;
           font-size: 11px;
           animation: lv2TelReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
@@ -1254,167 +1221,51 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
         }
         .lv2-tel-label {
           font-size: 10px;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: rgba(232, 237, 255, 0.58);
-        }
-        .lv2-tel-num {
-          font-size: 13px;
-          font-weight: 700;
-          letter-spacing: 0.02em;
-          color: var(--lv2-cyan-soft);
-          text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
-        }
-        .lv2-tel-online {
-          font-size: 10px;
           font-weight: 600;
-          letter-spacing: 0.16em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: #7dffb0;
-          text-shadow: 0 0 10px rgba(95, 255, 163, 0.45);
+          color: rgba(232, 237, 255, 0.7);
         }
-
-        /* Live status dot — stronger pulse + breathing ping ring. */
-        .lv2-tel-dot {
-          position: relative;
-          width: 8px;
-          height: 8px;
-          border-radius: 999px;
-          background: #5fffa3;
-          box-shadow: 0 0 12px #5fffa3, 0 0 4px #ffffff inset;
-          animation: lv2TelPulse 2.2s ease-in-out infinite;
-        }
-        .lv2-tel-dot::after {
-          content: "";
-          position: absolute;
-          inset: -2px;
-          border-radius: 999px;
-          border: 1px solid #5fffa3;
-          opacity: 0;
-          animation: lv2TelRing 2.2s ease-out infinite;
-        }
-        @keyframes lv2TelPulse {
-          0%,
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.6;
-            transform: scale(0.82);
-          }
-        }
-        @keyframes lv2TelRing {
-          0% {
-            opacity: 0.6;
-            transform: scale(1);
-          }
-          70%,
-          100% {
-            opacity: 0;
-            transform: scale(2.8);
-          }
-        }
-
-        /* Mini signal-bar equaliser next to the stream count. */
-        .lv2-tel-bars {
+        /* The marks: each on the plate its artwork needs. */
+        .lv2-tel-plate {
           display: inline-flex;
-          align-items: flex-end;
-          gap: 1.5px;
-          height: 10px;
+          align-items: center;
+          justify-content: center;
+          height: 22px;
+          padding: 0 7px;
+          border-radius: 999px;
+          background: #fff;
         }
-        .lv2-tel-bars i {
+        .lv2-tel-plate img {
           display: block;
-          width: 2px;
-          border-radius: 1px;
-          background: var(--lv2-cyan);
-          box-shadow: 0 0 5px rgba(0, 229, 255, 0.6);
-          animation: lv2TelEq 1.5s ease-in-out infinite;
+          width: auto;
         }
-        .lv2-tel-bars i:nth-child(1) {
-          height: 4px;
-          animation-delay: 0s;
+        .lv2-tel-plate img[src*="cyber-essentials"] {
+          height: 14px;
         }
-        .lv2-tel-bars i:nth-child(2) {
-          height: 9px;
-          animation-delay: 0.25s;
+        .lv2-tel-plate img[src*="ncsc"] {
+          height: 13px;
         }
-        .lv2-tel-bars i:nth-child(3) {
-          height: 6px;
-          animation-delay: 0.5s;
+        .lv2-tel-plate img[src*="microsoft"] {
+          height: 11px;
         }
-        @keyframes lv2TelEq {
-          0%,
-          100% {
-            transform: scaleY(0.55);
-            opacity: 0.7;
-          }
-          50% {
-            transform: scaleY(1);
-            opacity: 1;
-          }
+        .lv2-tel-plate-dark {
+          background: #14161d;
+          border: 1px solid rgba(159, 245, 255, 0.22);
         }
-
-        /* Latency value — bright, tabular, with a fade blip on refresh
-           and a coloured trend caret. */
-        .lv2-tel-latency {
-          display: inline-flex;
-          align-items: baseline;
-          font-size: 13px;
-          font-weight: 700;
-          font-variant-numeric: tabular-nums;
-          color: var(--lv2-cyan-soft);
-          text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
-          animation: lv2TelBlip 0.5s ease;
-        }
-        .lv2-tel-unit {
-          font-size: 9px;
-          font-weight: 600;
-          margin-left: 1px;
-          opacity: 0.7;
-        }
-        .lv2-tel-trend {
-          font-size: 8px;
-          line-height: 1;
-        }
-        .lv2-tel-trend-up {
-          color: #ff9d6e;
-        }
-        .lv2-tel-trend-down {
-          color: #5fffa3;
-        }
-        @keyframes lv2TelBlip {
-          from {
-            opacity: 0.35;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
         @media (prefers-reduced-motion: reduce) {
-          .lv2-tel-item,
-          .lv2-tel-latency,
-          .lv2-tel-dot,
-          .lv2-tel-dot::after,
-          .lv2-tel-bars i,
           .lv2-tel-scan {
             animation: none;
-          }
-          .lv2-tel-dot::after,
-          .lv2-tel-scan {
             opacity: 0;
           }
-          .lv2-tel-bars i {
-            transform: none;
-            opacity: 1;
+          .lv2-tel-item {
+            animation: none;
           }
         }
-        /* Hide the telemetry console below this width: with the brand,
-           console and links all flex-shrink:0 (so nothing wraps), the
-           console is the optional piece that's dropped first to keep the
-           bar from overflowing and to give the links breathing room. */
-        @media (max-width: 1240px) {
+        /* Hide the strip below this width: with the brand, strip and links
+           all flex-shrink:0 (so nothing wraps), the strip is the optional
+           piece that goes first to keep the bar from overflowing. */
+        @media (max-width: 1300px) {
           .lv2-telemetry {
             display: none !important;
           }
