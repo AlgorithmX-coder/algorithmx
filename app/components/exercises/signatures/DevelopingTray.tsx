@@ -578,6 +578,81 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
     ctx.stroke();
   }
 
+  // Faint wallpaper stripes, so the wall reads as a papered surface
+  // rather than one flat fill. Kept above the floor line only.
+  ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+  for (let i = 0; i < 12; i++) {
+    ctx.fillRect(M + 14 + i * 60, M, 26, 374 - M);
+  }
+
+  // Skirting board: the wall and the floor now meet at something.
+  ctx.fillStyle = "#e9cb9f";
+  ctx.fillRect(M, 360, W - M * 2, 14);
+  ctx.fillStyle = "rgba(255, 255, 255, 0.55)";
+  ctx.fillRect(M, 360, W - M * 2, 3);
+  ctx.fillStyle = "rgba(122, 76, 40, 0.3)";
+  ctx.fillRect(M, 371, W - M * 2, 3);
+
+  // Contact shade where the floor runs back into the wall.
+  const contact = ctx.createLinearGradient(0, 374, 0, 412);
+  contact.addColorStop(0, "rgba(88, 50, 22, 0.34)");
+  contact.addColorStop(1, "rgba(88, 50, 22, 0)");
+  ctx.fillStyle = contact;
+  ctx.fillRect(M, 374, W - M * 2, 38);
+
+  // One warm light source, spilling in from above the party.
+  const pool = ctx.createRadialGradient(360, 34, 18, 360, 34, 400);
+  pool.addColorStop(0, "rgba(255, 247, 216, 0.5)");
+  pool.addColorStop(0.55, "rgba(255, 240, 200, 0.15)");
+  pool.addColorStop(1, "rgba(255, 236, 190, 0)");
+  ctx.fillStyle = pool;
+  ctx.fillRect(M, M, W - M * 2, H - M * 2);
+
+  // Two balloons in the gaps either side of the child. Placed clear of
+  // all three leaks: right of the door, left of the pennant pole.
+  const balloons = [
+    { x: 192, y: 124, r: 27, c: "#ff7b8a", d: 1 },
+    { x: 486, y: 148, r: 24, c: "#7dc9ff", d: -1 },
+  ];
+  for (const b of balloons) {
+    ctx.strokeStyle = "rgba(122, 76, 40, 0.45)";
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(b.x, b.y + b.r * 1.18 + 8);
+    ctx.quadraticCurveTo(
+      b.x + 13 * b.d,
+      b.y + b.r + 48,
+      b.x + 2 * b.d,
+      b.y + b.r + 88
+    );
+    ctx.stroke();
+    ctx.fillStyle = b.c;
+    ctx.beginPath();
+    ctx.ellipse(b.x, b.y, b.r, b.r * 1.18, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(b.x - 5, b.y + b.r * 1.15);
+    ctx.lineTo(b.x + 5, b.y + b.r * 1.15);
+    ctx.lineTo(b.x, b.y + b.r * 1.15 + 9);
+    ctx.closePath();
+    ctx.fill();
+    const shine = ctx.createRadialGradient(
+      b.x - b.r * 0.38,
+      b.y - b.r * 0.52,
+      2,
+      b.x,
+      b.y,
+      b.r * 1.2
+    );
+    shine.addColorStop(0, "rgba(255, 255, 255, 0.7)");
+    shine.addColorStop(1, "rgba(255, 255, 255, 0)");
+    ctx.fillStyle = shine;
+    ctx.beginPath();
+    ctx.ellipse(b.x, b.y, b.r, b.r * 1.18, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+
   // Bunting across the top.
   ctx.strokeStyle = "rgba(122, 76, 40, 0.55)";
   ctx.lineWidth = 2.5;
@@ -600,6 +675,19 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
     ctx.fill();
   }
 
+  // Shadow at the foot of the door, so it stands in the room.
+  ctx.save();
+  ctx.translate(86, 437);
+  ctx.scale(1, 0.15);
+  const doorShadow = ctx.createRadialGradient(0, 0, 4, 0, 0, 80);
+  doorShadow.addColorStop(0, "rgba(94, 56, 26, 0.32)");
+  doorShadow.addColorStop(0.55, "rgba(94, 56, 26, 0.17)");
+  doorShadow.addColorStop(1, "rgba(94, 56, 26, 0)");
+  ctx.fillStyle = doorShadow;
+  ctx.beginPath();
+  ctx.arc(0, 0, 80, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
   // LEAK 1: front door with the house number 42 (left edge).
   ctx.fillStyle = "#7a5230";
   ctx.fillRect(24, 134, 122, 300);
@@ -674,6 +762,18 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.beginPath();
   ctx.arc(646, 352, 42, 0, Math.PI * 2);
   ctx.fill();
+  // Same ball shading on the friend, lit from the middle of the room.
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(646, 352, 42, 0, Math.PI * 2);
+  ctx.clip();
+  const friendShade = ctx.createLinearGradient(664, 0, 692, 0);
+  friendShade.addColorStop(0, "rgba(140, 84, 48, 0)");
+  friendShade.addColorStop(1, "rgba(140, 84, 48, 0.32)");
+  ctx.fillStyle = friendShade;
+  ctx.fillRect(602, 308, 88, 88);
+  ctx.restore();
+
   // Short dark hair cap.
   ctx.fillStyle = "#2f2a26";
   ctx.beginPath();
@@ -700,20 +800,19 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.moveTo(632, 370);
   ctx.quadraticCurveTo(646, 365, 660, 370);
   ctx.stroke();
-  // Tiny school crest on the jumper.
-  roundRectPath(ctx, 634, 416, 24, 26, 5);
+  // School name patch on the jumper. This is the leak the child has to
+  // read, so it sits wholly inside the photo rather than running off the
+  // bottom-right corner the way a floating word did.
+  roundRectPath(ctx, 598, 408, 102, 32, 9);
   ctx.fillStyle = "#f4e9c9";
   ctx.fill();
   ctx.strokeStyle = "#1f5c3c";
   ctx.lineWidth = 2.5;
   ctx.stroke();
   ctx.fillStyle = "#1f5c3c";
-  ctx.font = `800 13px ${FONT_STACK}`;
+  ctx.font = `800 15px ${FONT_STACK}`;
   ctx.textAlign = "center";
-  ctx.fillText("O", 646, 430);
-  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-  ctx.font = `700 10px ${FONT_STACK}`;
-  ctx.fillText("OAKWOOD", 685, 448);
+  ctx.fillText("OAKWOOD", 649, 425);
 
   // Center: the kid with the trophy (the fun bit).
   // Trophy glow.
@@ -725,6 +824,19 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.arc(360, 108, 86, 0, Math.PI * 2);
   ctx.fill();
 
+  // The child's ground shadow: they stand on the floor, not above it.
+  ctx.save();
+  ctx.translate(360, 399);
+  ctx.scale(1, 0.21);
+  const feetShadow = ctx.createRadialGradient(0, 0, 4, 0, 0, 62);
+  feetShadow.addColorStop(0, "rgba(94, 56, 26, 0.4)");
+  feetShadow.addColorStop(0.5, "rgba(94, 56, 26, 0.2)");
+  feetShadow.addColorStop(1, "rgba(94, 56, 26, 0)");
+  ctx.fillStyle = feetShadow;
+  ctx.beginPath();
+  ctx.arc(0, 0, 62, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
   // Legs + shoes.
   ctx.fillStyle = "#3b6ea5";
   roundRectPath(ctx, 334, 326, 20, 62, 8);
@@ -755,6 +867,16 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.strokeStyle = "#d94f4f";
   ctx.lineWidth = 3;
   ctx.stroke();
+  // Form shadow down the right of the tee, away from the light.
+  ctx.save();
+  roundRectPath(ctx, 315, 236, 90, 98, 24);
+  ctx.clip();
+  const teeShade = ctx.createLinearGradient(342, 0, 405, 0);
+  teeShade.addColorStop(0, "rgba(122, 32, 42, 0)");
+  teeShade.addColorStop(1, "rgba(122, 32, 42, 0.32)");
+  ctx.fillStyle = teeShade;
+  ctx.fillRect(315, 236, 90, 98);
+  ctx.restore();
   starPath(ctx, 360, 284, 5, 16, 7);
   ctx.fillStyle = "#fff3d6";
   ctx.fill();
@@ -764,6 +886,24 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.beginPath();
   ctx.arc(360, 190, 46, 0, Math.PI * 2);
   ctx.fill();
+
+  // Lit on the light side, shaded on the other, so the head is a ball.
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(360, 190, 46, 0, Math.PI * 2);
+  ctx.clip();
+  const headShade = ctx.createLinearGradient(376, 0, 408, 0);
+  headShade.addColorStop(0, "rgba(152, 92, 52, 0)");
+  headShade.addColorStop(1, "rgba(152, 92, 52, 0.34)");
+  ctx.fillStyle = headShade;
+  ctx.fillRect(314, 144, 92, 92);
+  const headLight = ctx.createRadialGradient(342, 174, 4, 360, 190, 48);
+  headLight.addColorStop(0, "rgba(255, 255, 255, 0.42)");
+  headLight.addColorStop(1, "rgba(255, 255, 255, 0)");
+  ctx.fillStyle = headLight;
+  ctx.fillRect(314, 144, 92, 92);
+  ctx.restore();
+
   ctx.fillStyle = "#5b3a1e";
   ctx.beginPath();
   ctx.arc(360, 184, 47, Math.PI * 1.05, Math.PI * 1.95);
@@ -797,6 +937,24 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
+  // Metal sheen across the cup: bright rim, dark turn, warm bounce.
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(330, 76);
+  ctx.lineTo(390, 76);
+  ctx.quadraticCurveTo(388, 112, 360, 120);
+  ctx.quadraticCurveTo(332, 112, 330, 76);
+  ctx.closePath();
+  ctx.clip();
+  const cupSheen = ctx.createLinearGradient(330, 0, 390, 0);
+  cupSheen.addColorStop(0, "rgba(255, 255, 255, 0.5)");
+  cupSheen.addColorStop(0.34, "rgba(255, 255, 255, 0.06)");
+  cupSheen.addColorStop(0.62, "rgba(186, 118, 20, 0.3)");
+  cupSheen.addColorStop(1, "rgba(255, 246, 202, 0.45)");
+  ctx.fillStyle = cupSheen;
+  ctx.fillRect(328, 74, 66, 50);
+  ctx.restore();
+
   ctx.beginPath();
   ctx.arc(324, 88, 12, Math.PI * 0.4, Math.PI * 1.6);
   ctx.stroke();
@@ -846,6 +1004,18 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   vig.addColorStop(1, "rgba(90, 60, 20, 0.18)");
   ctx.fillStyle = vig;
   ctx.fillRect(M, M, W - M * 2, H - M * 2);
+
+  // A soft diagonal sheen: this is a printed photo catching the light,
+  // not a drawing on a screen.
+  const sheen = ctx.createLinearGradient(M, H - M, W - M, M);
+  sheen.addColorStop(0, "rgba(255, 255, 255, 0)");
+  sheen.addColorStop(0.42, "rgba(255, 255, 255, 0.05)");
+  sheen.addColorStop(0.5, "rgba(255, 255, 255, 0.12)");
+  sheen.addColorStop(0.58, "rgba(255, 255, 255, 0.05)");
+  sheen.addColorStop(1, "rgba(255, 255, 255, 0)");
+  ctx.fillStyle = sheen;
+  ctx.fillRect(M, M, W - M * 2, H - M * 2);
+
 
   ctx.restore();
 }
