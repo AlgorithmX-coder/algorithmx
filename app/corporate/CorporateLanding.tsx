@@ -358,10 +358,26 @@ export default function CorporateLanding() {
 
         {/* HOW IT RUNS ────────────────────────────────────── */}
         <section id="how" className="corp-section">
-          <FadeUp>
-            <p style={eyebrow}>{"// Running in your firm within a week"}</p>
-            <h2 style={h2}>Four steps. <span className="corp-grad">Two of them are ours.</span></h2>
-          </FadeUp>
+          {/* The photography carries down the page as a half-width panel
+              beside the section: the aisle of the same office as the hero,
+              fading into the sand on its left edge. */}
+          <div className="corp-how-head">
+            <FadeUp>
+              <div>
+                <p style={eyebrow}>{"// Running in your firm within a week"}</p>
+                <h2 style={h2}>Four steps. <span className="corp-grad">Two of them are ours.</span></h2>
+                <p style={lede}>Ten minutes on a profile, a seat pack sized to your headcount, twenty-minute modules that save on every screen, and a register that turns completion into something you can hand to an auditor.</p>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.08} y={20}>
+              <figure className="corp-photo-panel" aria-label="An open-plan office, people working desk by desk">
+                <picture>
+                  <source srcSet="/corporate/aisle.webp" type="image/webp" />
+                  <img src="/corporate/aisle.jpg" alt="" loading="lazy" decoding="async" width={1400} height={788} />
+                </picture>
+              </figure>
+            </FadeUp>
+          </div>
           <div className="corp-grid-4" style={{ marginTop: 36 }}>
             {STEPS.map((s, i) => (
               <FadeUp key={s.n} delay={0.06 * i}>
@@ -755,6 +771,18 @@ export default function CorporateLanding() {
         .corp-course-price { font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; color: #14161d; }
         .corp-course-cta { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
         @media (max-width: 900px) { .corp-courses { grid-template-columns: 1fr; } }
+
+        /* the section photograph */
+        .corp-how-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+        .corp-photo-panel {
+          position: relative; margin: 0; border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 10;
+          border: 1px solid rgba(20,22,29,0.24); box-shadow: 0 30px 70px -40px rgba(10,112,133,0.6), 0 20px 50px -30px rgba(0,0,0,0.5);
+          background: #e8dfd0;
+        }
+        .corp-photo-panel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+        /* fades into the sand on the side that meets the copy */
+        .corp-photo-panel::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(243,237,228,0.9) 0%, rgba(243,237,228,0) 26%); }
+        @media (max-width: 900px) { .corp-how-head { grid-template-columns: 1fr; } .corp-photo-panel::after { background: linear-gradient(180deg, rgba(243,237,228,0) 70%, rgba(243,237,228,0.9) 100%); } }
 
         /* numbered cards: the set-up steps */
         .corp-step { display: flex; flex-direction: column; gap: 10px; border-top: 2px solid var(--corp-accent); height: 100%; }
