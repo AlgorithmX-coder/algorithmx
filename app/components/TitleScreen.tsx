@@ -432,7 +432,7 @@ function SlotCard({
         <div style={slotInnerStyle}>
           <AvatarRing avatar={slot.avatar} tint={tint} />
           <div style={slotNameStyle}>{slot.name}</div>
-          <RankChip totalXP={slot.totalXP} />
+          <RankChip totalXP={slot.totalXP} slotId={slot.id} />
           <div style={slotMetaStyle}>
             <span>★ {slot.totalStars}</span>
             <span style={dotStyle}>•</span>
@@ -585,8 +585,14 @@ function WeekProgressBar({
   );
 }
 
-function RankChip({ totalXP }: { totalXP: number }) {
-  const rank = getRank(totalXP).current;
+function RankChip({ totalXP, slotId }: { totalXP: number; slotId: string }) {
+  // Floored on the rank this slot has already been shown, so re-scaling
+  // the ladder never demotes a save mid-course.
+  const saved = useMemo(
+    () => getSlotProgressionState(slotId).currentRank,
+    [slotId]
+  );
+  const rank = getRank(totalXP, saved).current;
   return (
     <div
       style={{

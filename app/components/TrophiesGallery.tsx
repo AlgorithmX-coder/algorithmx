@@ -71,7 +71,9 @@ export default function TrophiesGallery({ onClose }: TrophiesGalleryProps) {
   }, []);
 
   const earned = new Set(state.badges);
-  const rank = getRank(state.totalXP);
+  // The saved rank floors the display, so a re-scaled ladder never shows a
+  // child a LOWER rank than the one they were already given.
+  const rank = getRank(state.totalXP, state.currentRank);
   const earnedCount = earned.size;
 
   return (

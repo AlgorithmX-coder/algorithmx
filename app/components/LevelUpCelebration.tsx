@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import type { RankInfo } from "@/app/lib/progression";
-import { getRank } from "@/app/lib/progression";
+import { getRankWithFloor } from "@/app/lib/progression";
 import { playSound } from "@/app/lib/sounds";
 
 export interface LevelUpProps {
@@ -24,7 +24,7 @@ export default function LevelUpCelebration({
     return () => window.clearTimeout(auto);
   }, [onDismiss]);
 
-  const rank = getRank(totalXP);
+  const rank = getRankWithFloor(totalXP);
   const fillPct = rank.progressPct * 100;
   const confettiColors = ["#fbbf24", "#f59e0b", "#34d399", "#60a5fa", "#a78bfa", "#f97316"];
 

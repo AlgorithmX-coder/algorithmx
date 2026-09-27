@@ -13,14 +13,46 @@ export interface RankInfo {
   icon: string;
 }
 
+/**
+ * The rank ladder, scaled to the whole 20-week course.
+ *
+ * The old ladder topped out at 8,000 XP. The course awards 25 XP per
+ * answerable item and there are 1,271 of them across the twenty weeks
+ * (~31,775 XP), plus boss XP on top - so a child hit "Cyber Hero", the FINAL
+ * rank, somewhere in WEEK 4, then played sixteen more weeks with the rank bar
+ * frozen full and nothing left to climb. That is UAT W7 2a.
+ *
+ * These thresholds spread the five promotions across the course instead:
+ *
+ *   Agent          600   mid week 1   - an early win, which a 6-year-old needs
+ *   Specialist   3,000   week 2
+ *   Expert       8,000   week 4-5
+ *   Commander   16,000   week 9-10
+ *   Cyber Hero  30,000   week 16-19   - the crown lands in the final stretch
+ *
+ * Those weeks are cumulative 25 XP x items, so they are a ceiling on how long
+ * it takes: boss XP pulls every promotion earlier. Cyber Hero sits just under
+ * the ~31,775 XP a child banks from items alone, so finishing the course
+ * earns the crown even without a single boss bonus.
+ *
+ * Raising a threshold would DEMOTE anyone already playing, which is the one
+ * thing a reward ladder for young children must never do. It cannot happen
+ * here: see the `floorRankName` argument to `getRank` and `getRankWithFloor`.
+ */
 export const RANKS: RankInfo[] = [
   { name: "Recruit", minXP: 0, colour: "#94a3b8", icon: "🛡️" },
-  { name: "Agent", minXP: 500, colour: "#60a5fa", icon: "⚡" },
-  { name: "Specialist", minXP: 1500, colour: "#34d399", icon: "🔰" },
-  { name: "Expert", minXP: 3000, colour: "#f59e0b", icon: "⭐" },
-  { name: "Commander", minXP: 5000, colour: "#f97316", icon: "🏆" },
-  { name: "Cyber Hero", minXP: 8000, colour: "#ef4444", icon: "👑" },
+  { name: "Agent", minXP: 600, colour: "#60a5fa", icon: "⚡" },
+  { name: "Specialist", minXP: 3000, colour: "#34d399", icon: "🔰" },
+  { name: "Expert", minXP: 8000, colour: "#f59e0b", icon: "⭐" },
+  { name: "Commander", minXP: 16000, colour: "#f97316", icon: "🏆" },
+  { name: "Cyber Hero", minXP: 30000, colour: "#ef4444", icon: "👑" },
 ];
+
+/** Index of a rank by name, or -1 when the name is not one of ours. */
+function rankIndexByName(name: string | undefined | null): number {
+  if (!name) return -1;
+  return RANKS.findIndex((r) => r.name === name);
+}
 
 export interface RankProgress {
   current: RankInfo;
@@ -30,22 +62,44 @@ export interface RankProgress {
   progressPct: number; // 0..1 into the current rank toward the next
 }
 
-/** Returns current + next rank plus the fill percentage toward the next. */
-export function getRank(totalXP: number): RankProgress {
-  let current = RANKS[0];
-  let nextIdx = -1;
+/**
+ * Returns current + next rank plus the fill percentage toward the next.
+ *
+ * `floorRankName` is the rank the player has ALREADY been shown (persisted as
+ * `currentRank`). A player never drops below it, so re-scaling the ladder can
+ * never take a rank away from a child who has already earned it - they simply
+ * hold their rank while their XP catches up to the new threshold.
+ */
+export function getRank(
+  totalXP: number,
+  floorRankName?: string | null
+): RankProgress {
+  let idx = 0;
   for (let i = 0; i < RANKS.length; i++) {
-    if (totalXP >= RANKS[i].minXP) {
-      current = RANKS[i];
-      nextIdx = i + 1;
-    } else break;
+    if (totalXP >= RANKS[i].minXP) idx = i;
+    else break;
   }
-  const next: RankInfo | null = RANKS[nextIdx] ?? null;
-  const xpIntoRank = totalXP - current.minXP;
+
+  // Never demote below a rank the player has already been shown.
+  idx = Math.max(idx, rankIndexByName(floorRankName));
+
+  const current = RANKS[idx];
+  const next: RankInfo | null = RANKS[idx + 1] ?? null;
+  // A floored player can sit below their own rank's threshold, so clamp at 0
+  // rather than reporting negative progress.
+  const xpIntoRank = Math.max(0, totalXP - current.minXP);
   const span = next ? next.minXP - current.minXP : 1;
   const xpNeededForNext = next ? Math.max(0, next.minXP - totalXP) : 0;
   const progressPct = next ? Math.max(0, Math.min(1, xpIntoRank / span)) : 1;
   return { current, next, xpIntoRank, xpNeededForNext, progressPct };
+}
+
+/**
+ * `getRank` for the player on THIS device, with their saved rank as the floor.
+ * Use this anywhere a rank is shown to the player from local progression.
+ */
+export function getRankWithFloor(totalXP: number): RankProgress {
+  return getRank(totalXP, getProgressionState().currentRank);
 }
 
 export interface XPBreakdown {
@@ -264,7 +318,12 @@ export function addXP(
   newRank: RankInfo;
 } {
   const state = getProgressionState();
-  const oldRank = getRank(state.totalXP).current;
+  // The saved rank is the floor on both reads, so a player who was promoted
+  // under an older, shorter ladder holds their rank instead of being demoted,
+  // and does not get a second "RANK UP" for a rank they already hold when
+  // their XP finally reaches the new threshold.
+  const floor = state.currentRank;
+  const oldRank = getRank(state.totalXP, floor).current;
   state.totalXP = Math.max(0, state.totalXP + amount);
 
   const weekMatch = source.match(/week-(\d+)/);
@@ -273,7 +332,7 @@ export function addXP(
     state.weeklyXP[w] = (state.weeklyXP[w] ?? 0) + amount;
   }
 
-  const newRank = getRank(state.totalXP).current;
+  const newRank = getRank(state.totalXP, floor).current;
   state.currentRank = newRank.name;
   saveProgression(state);
 
