@@ -270,6 +270,9 @@ export default function CorporateLanding() {
           <div className="corp-hero-media" aria-hidden>
             <HeroVideo />
             <span className="corp-hero-scrim" />
+            {/* Owner 2026-09-27: no hard edge; the dark band fades into the
+                sand over the last stretch, below the paste test. */}
+            <span className="corp-hero-fade" />
           </div>
           <div className="corp-section corp-hero-section">
           <FadeUp>
@@ -326,8 +329,8 @@ export default function CorporateLanding() {
           <span className="corp-glow corp-glow-amber" aria-hidden />
           <FadeUp>
             <p style={eyebrow}>{"// The courses"}</p>
-            <h2 style={h2}>Two courses. <span className="corp-grad">Safe first, then good.</span></h2>
-            <p style={lede}>AI Cleared is the gate every member of staff passes. AI Fluent is the upskill for the people who use AI most. Both run in the browser, both practise against a live AI on invented data, and both leave a certificate on your register.</p>
+            <h2 style={h2}>Two courses. <span className="corp-grad">Everybody safe first, then everybody efficient.</span></h2>
+            <p style={lede}>Get every member of staff safe on AI first with AI Cleared. Then teach the people who use it most to get real work out of it, efficiently, with AI Fluent. Both run in the browser, both practise against a live AI on invented data, and both leave a certificate on your register.</p>
           </FadeUp>
           <div className="corp-courses">
             {COURSES.map((c, i) => (
@@ -533,8 +536,12 @@ export default function CorporateLanding() {
             linear-gradient(180deg, rgba(8,13,18,0.45) 0%, rgba(8,13,18,0) 28%, rgba(8,13,18,0.55) 100%);
         }
         .corp-hero-band .corp-section { position: relative; z-index: 1; width: 100%; }
+        .corp-hero-fade { position: absolute; left: 0; right: 0; bottom: 0; height: clamp(180px, 26vh, 300px); pointer-events: none; background: linear-gradient(180deg, rgba(243,237,228,0) 0%, rgba(243,237,228,0.55) 55%, #f3ede4 100%); }
+        /* the band shares the sand ground so the fade lands on the same colour the next section starts on */
+        .corp-hero-band { background: #f3ede4; }
+        .corp-hero-band::before { content: ""; position: absolute; inset: 0; background: #0b1117; z-index: -1; }
         .corp-hero-pause {
-          position: absolute; right: clamp(14px, 2vw, 28px); bottom: 14px; z-index: 2;
+          position: absolute; right: clamp(14px, 2vw, 28px); bottom: 18px; z-index: 2;
           display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; cursor: pointer;
           border: 1px solid rgba(255,255,255,0.28); background: rgba(14,20,26,0.72); color: #eef2f5;
           font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
@@ -570,7 +577,7 @@ export default function CorporateLanding() {
           padding: calc(var(--lv2-rail) * 1.3) var(--lv2-rail);
           scroll-margin-top: 128px;
         }
-        .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 0.9); }
+        .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 1.2 + 120px); }
         .corp-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
         .corp-glow-amber { width: 520px; height: 520px; right: -140px; top: -80px; background: radial-gradient(circle, rgba(255,179,71,0.35), transparent 65%); }
         .corp-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(10,112,133,0.28), transparent 65%); }
