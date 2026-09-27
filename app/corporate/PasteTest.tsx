@@ -23,12 +23,19 @@ const CLASS: Record<Cls, string> = {
   C: "CONFIDENTIAL",
   R: "RESTRICTED",
 };
-/* the sand accent ramp, all 4.5:1 or better on the ground */
+/* the sand accent ramp, all 4.5:1 or better on the ground, and the night
+   ramp for the same four classes on dark glass */
 const COLOUR: Record<Cls, string> = {
   P: "#0e7a45",
   I: "#0a7085",
   C: "#8a5400",
   R: "#a63a08",
+};
+const COLOUR_NIGHT: Record<Cls, string> = {
+  P: "#4cc38a",
+  I: "#46b7bf",
+  C: "#e0a040",
+  R: "#e4655c",
 };
 const RANK: Record<Cls, number> = { P: 0, I: 1, C: 2, R: 3 };
 
@@ -71,10 +78,10 @@ function grade(text: string): Finding[] {
 }
 
 type Verdict = "ok" | "warn" | "crit";
-const VERDICT: Record<Verdict, { label: string; colour: string; line: string }> = {
-  ok: { label: "Cleared", colour: "#0e7a45", line: "Nothing above INTERNAL left the building. INTERNAL is allowed in the firm's enterprise tool." },
-  warn: { label: "Over-shared", colour: "#8a5400", line: "A client could be identified. A placeholder would have written the same email." },
-  crit: { label: "Leaked", colour: "#a63a08", line: "RESTRICTED data was in the prompt. At a real firm this is the moment you tell the DPO." },
+const VERDICT: Record<Verdict, { label: string; colour: string; night: string; line: string }> = {
+  ok: { label: "Cleared", colour: "#0e7a45", night: "#4cc38a", line: "Nothing above INTERNAL left the building. INTERNAL is allowed in the firm's enterprise tool." },
+  warn: { label: "Over-shared", colour: "#8a5400", night: "#e0a040", line: "A client could be identified. A placeholder would have written the same email." },
+  crit: { label: "Leaked", colour: "#a63a08", night: "#e4655c", line: "RESTRICTED data was in the prompt. At a real firm this is the moment you tell the DPO." },
 };
 
 const REFLEX =
@@ -82,7 +89,9 @@ const REFLEX =
 const CLEARED =
   "Write a firm but polite email to a supplier contact chasing invoice INV-2041 for £18,450, 40 days overdue. Leave a placeholder for [contact name]. Say payment details are on the original invoice.";
 
-export default function PasteTest() {
+export default function PasteTest({ tone = "sand" }: { tone?: "sand" | "night" } = {}) {
+  const night = tone === "night";
+  const colours = night ? COLOUR_NIGHT : COLOUR;
   const [draft, setDraft] = useState(REFLEX);
   const [graded, setGraded] = useState(REFLEX);
 
@@ -112,7 +121,7 @@ export default function PasteTest() {
   const dirty = draft !== graded;
 
   return (
-    <div className="corp-pt" aria-label="The paste test, a live example from the course">
+    <div className={night ? "corp-pt corp-pt-night" : "corp-pt"} aria-label="The paste test, a live example from the course">
       <div className="corp-pt-bar">
         <span className="corp-pt-dots" aria-hidden><i /><i /><i /></span>
         <span className="corp-pt-url">copilot · marlow fenwick llp · practice tenant</span>
@@ -151,7 +160,7 @@ export default function PasteTest() {
           </button>
         </div>
 
-        <div className="corp-pt-verdict" style={{ ["--pt" as string]: v.colour }} role="status">
+        <div className="corp-pt-verdict" style={{ ["--pt" as string]: night ? v.night : v.colour }} role="status">
           <div className="corp-pt-top">
             <span className="corp-pt-pill">{v.label}</span>
             <span>{v.line}</span>
@@ -161,7 +170,7 @@ export default function PasteTest() {
             <ul className="corp-pt-finds">
               {findings.map((f, k) => (
                 <li key={k}>
-                  <span className="corp-pt-tag" style={{ color: COLOUR[f.cls] }}>{CLASS[f.cls]}</span>
+                  <span className="corp-pt-tag" style={{ color: colours[f.cls] }}>{CLASS[f.cls]}</span>
                   <span className="corp-pt-txt">{f.text}</span>
                   <span className="corp-pt-why">{f.label}</span>
                 </li>

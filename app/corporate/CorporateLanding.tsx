@@ -9,6 +9,7 @@ import ProofBand from "@/app/components/ProofBand";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
 import EnquiryForm from "./EnquiryForm";
+import HeroVideo from "./HeroVideo";
 import PasteTest from "./PasteTest";
 import PolicyBuilder from "./PolicyBuilder";
 
@@ -182,6 +183,23 @@ const FAQS = [
 export default function CorporateLanding() {
   const [activeSection, setActiveSection] = useState("");
   const subnavRef = useRef<HTMLElement>(null);
+  /* The hero is a dark photograph and everything under it is sand, so the
+     fixed nav wears its night tone while the hero is under it and its sand
+     tone once the page has scrolled past. */
+  const heroRef = useRef<HTMLElement>(null);
+  const [overHero, setOverHero] = useState(true);
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([e]) => setOverHero(e.isIntersecting),
+      /* the nav is 68px tall: count the hero as "under the nav" until its
+         bottom edge has cleared the bar */
+      { rootMargin: "-68px 0px 0px 0px", threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const sectionChip = ([id, label, cta]: (typeof SECTIONS)[number]) => (
     <a
@@ -223,9 +241,9 @@ export default function CorporateLanding() {
   }, [activeSection]);
 
   return (
-    <div className="corp-page" style={{ display: "contents" }}>
+    <div className={overHero ? "corp-page corp-page-dark" : "corp-page"} style={{ display: "contents" }}>
       <Nav
-        tone="sand"
+        tone={overHero ? "night" : "sand"}
         showTelemetry={false}
         showSiteLinks={false}
         cta={{ label: "Get in touch", href: "#enquiry" }}
@@ -243,7 +261,17 @@ export default function CorporateLanding() {
         </div>
 
         {/* HERO ────────────────────────────────────────────── */}
-        <section className="corp-section corp-hero-section">
+        {/* A dark photographic band: an ordinary open-plan office, desk by
+            desk, as a slow loop (owner 2026-09-27, "the desk row"). The
+            photograph's own dark left wall carries the headline, so the
+            scrim is light; the paste test sits as dark glass over the far
+            desks. Everything below this band stays on sand. */}
+        <section ref={heroRef} className="corp-hero-band">
+          <div className="corp-hero-media" aria-hidden>
+            <HeroVideo />
+            <span className="corp-hero-scrim" />
+          </div>
+          <div className="corp-section corp-hero-section">
           <FadeUp>
             <div className="corp-toprow">
               <Link href="/" className="corp-toplink"><span aria-hidden>←</span> Back to home</Link>
@@ -253,15 +281,15 @@ export default function CorporateLanding() {
           <div className="corp-hero-grid">
             <div className="corp-hero">
               <FadeUp>
-                <p style={sectionMarkBare}>{"// AI at work · Two courses for firms of every size"}</p>
+                <p style={sectionMarkBare} className="corp-hero-eyebrow">{"// AI at work · Two courses for firms of every size"}</p>
               </FadeUp>
               <FadeUp delay={0.06}>
                 <h1 className="corp-h1">
-                  Every member of staff, <span className="corp-grad">cleared to use AI.</span>
+                  Every member of staff, <span className="corp-grad corp-grad-night">cleared to use AI.</span>
                 </h1>
               </FadeUp>
               <FadeUp delay={0.12}>
-                <p style={{ ...lede, fontSize: "clamp(1.05rem, 1.35vw, 1.2rem)", maxWidth: 560 }}>
+                <p className="corp-hero-lede" style={{ ...lede, fontSize: "clamp(1.05rem, 1.35vw, 1.2rem)", maxWidth: 560 }}>
                   <strong>AI Cleared</strong> teaches your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking a client, a colleague or a bank detail. <strong>AI Fluent</strong> then teaches them to get real work out of it. Both are interactive, both end in a certificate, and every completion goes on a training register you can show clients, auditors and insurers.
                 </p>
               </FadeUp>
@@ -271,7 +299,7 @@ export default function CorporateLanding() {
                     Register your interest
                     <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
                   </a>
-                  <a href="#courses" style={pillGhost}>See the two courses</a>
+                  <a href="#courses" style={pillGhost} className="corp-hero-ghost">See the two courses</a>
                 </div>
               </FadeUp>
               <FadeUp delay={0.24}>
@@ -284,8 +312,9 @@ export default function CorporateLanding() {
             </div>
 
             <FadeUp delay={0.15} y={30}>
-              <PasteTest />
+              <PasteTest tone="night" />
             </FadeUp>
+          </div>
           </div>
         </section>
 
@@ -329,10 +358,26 @@ export default function CorporateLanding() {
 
         {/* HOW IT RUNS ────────────────────────────────────── */}
         <section id="how" className="corp-section">
-          <FadeUp>
-            <p style={eyebrow}>{"// Running in your firm within a week"}</p>
-            <h2 style={h2}>Four steps. <span className="corp-grad">Two of them are ours.</span></h2>
-          </FadeUp>
+          {/* The photography carries down the page as a half-width panel
+              beside the section: the aisle of the same office as the hero,
+              fading into the sand on its left edge. */}
+          <div className="corp-how-head">
+            <FadeUp>
+              <div>
+                <p style={eyebrow}>{"// Running in your firm within a week"}</p>
+                <h2 style={h2}>Four steps. <span className="corp-grad">Two of them are ours.</span></h2>
+                <p style={lede}>Ten minutes on a profile, a seat pack sized to your headcount, twenty-minute modules that save on every screen, and a register that turns completion into something you can hand to an auditor.</p>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.08} y={20}>
+              <figure className="corp-photo-panel" aria-label="An open-plan office, people working desk by desk">
+                <picture>
+                  <source srcSet="/corporate/aisle.webp" type="image/webp" />
+                  <img src="/corporate/aisle.jpg" alt="" loading="lazy" decoding="async" width={1400} height={788} />
+                </picture>
+              </figure>
+            </FadeUp>
+          </div>
           <div className="corp-grid-4" style={{ marginTop: 36 }}>
             {STEPS.map((s, i) => (
               <FadeUp key={s.n} delay={0.06 * i}>
@@ -470,16 +515,53 @@ export default function CorporateLanding() {
         }
         html, .corp-page { background: #f3ede4; }
 
-        /* A faint ruled grid behind the hero, receding to plain sand. */
-        .corp-main::before {
-          content: ""; position: absolute; inset: 0 0 auto 0; height: 1400px; z-index: 0; pointer-events: none;
-          background-image:
-            linear-gradient(rgba(10,112,133,0.09) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(10,112,133,0.09) 1px, transparent 1px);
-          background-size: 48px 48px;
-          -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 45%, transparent 100%);
-          mask-image: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 45%, transparent 100%);
+        /* ── the photographic hero band ─────────────────────────── */
+        .corp-hero-band {
+          position: relative; isolation: isolate; overflow: hidden;
+          background: #0b1117; color: #eef2f5;
+          min-height: clamp(620px, 92svh, 900px);
+          display: flex; flex-direction: column; justify-content: center;
         }
+        .corp-hero-media { position: absolute; inset: 0; z-index: 0; }
+        .corp-hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% center; display: block; }
+        /* The photograph already has a dark wall on the left; the scrim only
+           deepens it under the copy and holds the bottom edge. */
+        .corp-hero-scrim {
+          position: absolute; inset: 0; pointer-events: none;
+          background:
+            linear-gradient(90deg, rgba(8,13,18,0.9) 0%, rgba(8,13,18,0.82) 30%, rgba(8,13,18,0.5) 48%, rgba(8,13,18,0.12) 64%, rgba(8,13,18,0.3) 100%),
+            linear-gradient(180deg, rgba(8,13,18,0.45) 0%, rgba(8,13,18,0) 28%, rgba(8,13,18,0.55) 100%);
+        }
+        .corp-hero-band .corp-section { position: relative; z-index: 1; width: 100%; }
+        .corp-hero-pause {
+          position: absolute; right: clamp(14px, 2vw, 28px); bottom: 14px; z-index: 2;
+          display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; cursor: pointer;
+          border: 1px solid rgba(255,255,255,0.28); background: rgba(14,20,26,0.72); color: #eef2f5;
+          font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+          backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .corp-hero-pause:hover { border-color: rgba(255,255,255,0.55); }
+        .corp-hero-pause:focus-visible { outline: 2px solid #46b7bf; outline-offset: 3px; }
+        .corp-hero-pause-ico { font-size: 9px; }
+        @media (prefers-reduced-motion: reduce) { .corp-hero-video { display: none; } .corp-hero-media { background: url(/corporate/desk-row.jpg) 70% center / cover no-repeat; } }
+        /* copy on the photograph */
+        .corp-hero-band .corp-toplink { color: #9fdfe4; }
+        .corp-hero-band .corp-hero-eyebrow { color: #46b7bf !important; }
+        .corp-hero-band .corp-h1 { color: #ffffff; text-shadow: 0 2px 30px rgba(0,0,0,0.35); }
+        .corp-grad-night { background: linear-gradient(92deg, #5fd0d8 0%, #9d8cff 55%, #ff8fe0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .corp-hero-band .corp-hero-lede { color: rgba(238,242,245,0.86) !important; }
+        .corp-hero-band .corp-hero strong { color: #ffffff; }
+        .corp-hero-band .corp-hero-ghost { background: rgba(255,255,255,0.08) !important; border-color: rgba(255,255,255,0.3) !important; color: #ffffff !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .corp-hero-band .corp-trust li { color: rgba(238,242,245,0.72); }
+        .corp-hero-band .corp-trust li::before { background: #4cc38a; box-shadow: 0 0 10px #4cc38a; }
+        /* the section chips wear night while the nav does */
+        .corp-page-dark .corp-navsections .corp-chip-link { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.06); color: #ffffff; text-shadow: none; box-shadow: none; }
+        .corp-page-dark .corp-navsections .corp-chip-link:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.12); color: #ffffff; }
+        .corp-page-dark .corp-navsections .corp-chip-link.on { border-color: #46b7bf; background: #46b7bf; color: #06181b; }
+        /* the subnav strip (below 1180px) sits under the nav on the dark band too */
+        .corp-page-dark .corp-subnav-wrap { background: rgba(11,17,23,0.72); border-color: rgba(255,255,255,0.1); }
+        .corp-page-dark .corp-subnav .corp-chip-link { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.06); color: #ffffff; text-shadow: none; box-shadow: none; }
+        .corp-page-dark .corp-subnav .corp-chip-link.on { border-color: #46b7bf; background: #46b7bf; color: #06181b; }
 
         .corp-section {
           position: relative;
@@ -488,7 +570,7 @@ export default function CorporateLanding() {
           padding: calc(var(--lv2-rail) * 1.3) var(--lv2-rail);
           scroll-margin-top: 128px;
         }
-        .corp-hero-section { padding-top: clamp(26px, 2.2vw, 44px); padding-bottom: calc(var(--lv2-rail) * 0.8); }
+        .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 0.9); }
         .corp-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
         .corp-glow-amber { width: 520px; height: 520px; right: -140px; top: -80px; background: radial-gradient(circle, rgba(255,179,71,0.35), transparent 65%); }
         .corp-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(10,112,133,0.28), transparent 65%); }
@@ -587,16 +669,37 @@ export default function CorporateLanding() {
         .corp-pt-why { grid-column: 2; font-family: var(--lv2-font-display); color: rgba(17,22,38,0.62); margin-top: -4px; }
         .corp-pt-note { margin: 0; font-family: var(--lv2-font-mono); font-size: 10.5px; letter-spacing: 0.06em; color: rgba(17,22,38,0.6); }
         @media (max-width: 480px) { .corp-pt-finds li { grid-template-columns: 1fr; } .corp-pt-why { grid-column: 1; margin-top: 0; } }
+        /* night: dark glass over the photograph */
+        .corp-pt-night { background: rgba(14,20,26,0.74); border-color: rgba(255,255,255,0.14); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #eef2f5; }
+        .corp-pt-night .corp-pt-bar { background: rgba(255,255,255,0.05); border-bottom-color: rgba(255,255,255,0.08); }
+        .corp-pt-night .corp-pt-url { color: rgba(238,242,245,0.7); background: rgba(255,255,255,0.06); }
+        .corp-pt-night .corp-pt-chip { color: #e0a040; border-color: rgba(224,160,64,0.5); }
+        .corp-pt-night .corp-pt-task { background: rgba(70,183,191,0.1); border-color: rgba(70,183,191,0.35); color: rgba(238,242,245,0.92); }
+        .corp-pt-night .corp-pt-task span { color: #46b7bf; }
+        .corp-pt-night .corp-pt-lab { color: rgba(238,242,245,0.6); }
+        .corp-pt-night .corp-pt-ta { background: rgba(255,255,255,0.05); border-color: rgba(70,183,191,0.4); color: #eef2f5; }
+        .corp-pt-night .corp-pt-ta:focus-visible { border-color: #46b7bf; box-shadow: 0 0 0 3px rgba(70,183,191,0.2); }
+        .corp-pt-night .corp-pt-run { background: #46b7bf; color: #06181b; box-shadow: 0 12px 26px -12px rgba(70,183,191,0.9); }
+        .corp-pt-night .corp-pt-alt { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); color: #ffffff; }
+        .corp-pt-night .corp-pt-alt:hover { border-color: #46b7bf; }
+        .corp-pt-night .corp-pt-verdict { background: color-mix(in srgb, var(--pt) 12%, rgba(14,20,26,0.6)); border-color: color-mix(in srgb, var(--pt) 55%, transparent); }
+        .corp-pt-night .corp-pt-top { color: rgba(238,242,245,0.92); }
+        .corp-pt-night .corp-pt-pill { background: rgba(14,20,26,0.6); }
+        .corp-pt-night .corp-pt-echo { background: rgba(14,20,26,0.55); border-color: rgba(255,255,255,0.1); color: #eef2f5; }
+        .corp-pt-night .corp-pt-rd { background: #ffffff; color: #ffffff; }
+        .corp-pt-night .corp-pt-int { color: #46b7bf; }
+        .corp-pt-night .corp-pt-txt { color: #eef2f5; }
+        .corp-pt-night .corp-pt-why { color: rgba(238,242,245,0.62); }
+        .corp-pt-night .corp-pt-note { color: rgba(238,242,245,0.55); }
 
         /* section nav, the /schools pattern */
-        .corp-subnav-wrap { margin-top: 68px; position: sticky; top: 68px; z-index: 30; background: rgba(255,253,248,0.68); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(10,112,133,0.1); border-bottom: 1px solid rgba(10,112,133,0.1); }
+        .corp-subnav-wrap { position: sticky; top: 68px; z-index: 30; background: rgba(255,253,248,0.68); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(10,112,133,0.1); border-bottom: 1px solid rgba(10,112,133,0.1); }
         .corp-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .corp-subnav::-webkit-scrollbar { display: none; }
         .corp-navsections { display: none; }
         @media (min-width: 1180px) {
           .corp-navsections { display: flex; align-items: center; gap: 6px; min-width: 0; }
           .corp-subnav-wrap { display: none; }
-          .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); }
           .corp-section { scroll-margin-top: 88px; }
         }
         .corp-chip-link {
@@ -668,6 +771,18 @@ export default function CorporateLanding() {
         .corp-course-price { font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; color: #14161d; }
         .corp-course-cta { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
         @media (max-width: 900px) { .corp-courses { grid-template-columns: 1fr; } }
+
+        /* the section photograph */
+        .corp-how-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+        .corp-photo-panel {
+          position: relative; margin: 0; border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 10;
+          border: 1px solid rgba(20,22,29,0.24); box-shadow: 0 30px 70px -40px rgba(10,112,133,0.6), 0 20px 50px -30px rgba(0,0,0,0.5);
+          background: #e8dfd0;
+        }
+        .corp-photo-panel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+        /* fades into the sand on the side that meets the copy */
+        .corp-photo-panel::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(243,237,228,0.9) 0%, rgba(243,237,228,0) 26%); }
+        @media (max-width: 900px) { .corp-how-head { grid-template-columns: 1fr; } .corp-photo-panel::after { background: linear-gradient(180deg, rgba(243,237,228,0) 70%, rgba(243,237,228,0.9) 100%); } }
 
         /* numbered cards: the set-up steps */
         .corp-step { display: flex; flex-direction: column; gap: 10px; border-top: 2px solid var(--corp-accent); height: 100%; }
