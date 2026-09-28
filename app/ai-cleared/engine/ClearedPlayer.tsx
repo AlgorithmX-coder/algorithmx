@@ -1324,7 +1324,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
 
       <style jsx global>{`
         .cl-shell { min-height: 100svh; background: ${K.ground}; color: ${K.body}; font-family: ${K.sans}; font-size: 15px; line-height: 1.55; }
-        .cl-top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 18px; min-height: 52px; box-sizing: border-box; background: rgba(11,17,23,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid ${K.edge}; }
+        .cl-top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 18px; min-height: 52px; box-sizing: border-box; background: ${K.headerBg}; backdrop-filter: blur(8px); border-bottom: 1px solid ${K.edge}; }
         .cl-top-left, .cl-top-right { display: flex; align-items: center; gap: 10px; min-width: 0; }
         .cl-word { font-family: ${K.mono}; font-size: 11.5px; font-weight: 700; letter-spacing: 0.22em; color: ${K.accentInk}; white-space: nowrap; }
         .cl-sep { width: 1px; height: 14px; background: ${K.edge}; }

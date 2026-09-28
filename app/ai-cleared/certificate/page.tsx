@@ -50,7 +50,7 @@ export default async function CertificatePage() {
         Every module cleared and the final assessment passed. The certificate below is yours to download; the serial lets a manager, an auditor or an insurer check it without asking you.
       </p>
 
-      <div style={{ background: "#fbfaf7", color: "#14161d", borderRadius: 14, padding: "26px 28px", borderLeft: "5px solid #0a7085", boxShadow: "0 12px 40px rgba(0,0,0,0.35)" }}>
+      <div style={{ background: "#fbfaf7", color: "#14161d", borderRadius: 14, padding: "26px 28px", borderLeft: "5px solid #0a7085", boxShadow: K.lift, border: `1px solid ${K.edge}` }}>
         <div style={{ fontFamily: K.mono, fontSize: 10.5, letterSpacing: "0.2em", color: "#0a7085", fontWeight: 700 }}>AI CLEARED</div>
         <div style={{ fontSize: 13, color: "#5b6572", marginTop: 14 }}>This certifies that</div>
         <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.015em", marginTop: 2 }}>{holder}</div>

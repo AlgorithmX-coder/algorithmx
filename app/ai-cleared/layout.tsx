@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function AiClearedLayout({ children }: { children: ReactNode }) {
-  return <div style={{ minHeight: "100svh", background: K.ground, color: K.body, fontFamily: K.sans, colorScheme: "dark" }}>{children}</div>;
+  return <div style={{ minHeight: "100svh", background: K.ground, color: K.body, fontFamily: K.sans, colorScheme: "light" }}>{children}</div>;
 }

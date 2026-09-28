@@ -1,45 +1,48 @@
-/* The clearance console. Graphite, not black; paper text at 92%; the four
- * data classes as the one colour system. Single source: a hex or font stack
- * appearing anywhere else under app/ai-cleared is a bug (the simulators are
- * the one exception, because each recreates a vendor's own chrome). The
- * corporate page's photograph never appears in here; the console is its own
- * place. */
+/* The clearance console, light. The site's warm sand ground, paper panels,
+ * graphite ink, the site teal as the one accent, and the four data classes
+ * as the one colour system. Single source: a hex or font stack appearing
+ * anywhere else under app/ai-cleared is a bug (the simulators are the one
+ * exception, because each recreates a vendor's own chrome). */
 import type { DataClass, Verdict } from "./types";
 
 export const K = Object.freeze({
-  ground: "#0b1117",
-  panel: "#111a22",
-  panelRaise: "#16212b",
-  sunk: "#080d12",
-  edge: "#1f2b36",
-  edgeSoft: "rgba(255,255,255,0.07)",
+  ground: "#f3ede4",
+  panel: "#ffffff",
+  panelRaise: "#faf7f1",
+  sunk: "#ece6da",
+  edge: "#d9d2c4",
+  edgeSoft: "rgba(20,22,29,0.08)",
 
-  ink: "rgba(240,244,247,0.92)",
-  body: "rgba(226,232,238,0.82)",
-  muted: "#93a3b0",
-  faint: "#6b7a87",
+  ink: "#14161d",
+  body: "#2b2f36",
+  muted: "#5b6572",
+  faint: "#8a8f98",
 
-  accent: "#46b7bf",
-  accentInk: "#8ed6db",
-  accentSoft: "rgba(70,183,191,0.14)",
-  onAccent: "#07141a",
+  accent: "#0a7085",
+  accentInk: "#0a7085",
+  accentSoft: "rgba(10,112,133,0.10)",
+  onAccent: "#ffffff",
 
-  ok: "#4cc38a",
-  okSoft: "rgba(76,195,138,0.14)",
-  warn: "#e0a040",
-  warnSoft: "rgba(224,160,64,0.14)",
-  crit: "#e4655c",
-  critSoft: "rgba(228,101,92,0.14)",
+  ok: "#0e7a45",
+  okSoft: "rgba(14,122,69,0.10)",
+  warn: "#8a5400",
+  warnSoft: "rgba(138,84,0,0.10)",
+  crit: "#a63a08",
+  critSoft: "rgba(166,58,8,0.10)",
+
+  /* the header's translucent ground, and the shadow under lifted cards */
+  headerBg: "rgba(243,237,228,0.92)",
+  lift: "0 12px 40px rgba(20,22,29,0.12)",
 
   sans: "var(--font-inter), Inter, system-ui, -apple-system, 'Segoe UI', sans-serif",
   mono: "var(--font-geist-mono), 'Geist Mono', ui-monospace, Consolas, monospace",
 });
 
 export const CLASS_COLOUR: Record<DataClass, { ink: string; soft: string }> = {
-  P: { ink: "#7fb3c8", soft: "rgba(127,179,200,0.16)" },
-  I: { ink: "#46b7bf", soft: "rgba(70,183,191,0.16)" },
-  C: { ink: "#e0a040", soft: "rgba(224,160,64,0.16)" },
-  R: { ink: "#e4655c", soft: "rgba(228,101,92,0.16)" },
+  P: { ink: "#3f7f96", soft: "rgba(63,127,150,0.12)" },
+  I: { ink: "#0a7085", soft: "rgba(10,112,133,0.12)" },
+  C: { ink: "#8a5400", soft: "rgba(138,84,0,0.12)" },
+  R: { ink: "#a63a08", soft: "rgba(166,58,8,0.12)" },
 };
 
 export const VERDICT_COLOUR: Record<Verdict, { ink: string; soft: string; label: string }> = {
