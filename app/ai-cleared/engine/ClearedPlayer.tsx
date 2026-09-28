@@ -32,6 +32,7 @@ import { DEFAULT_COACH, DEFAULT_WHY, VERDICT_LINE, type GradeResult } from "./gr
 import { scriptedReply } from "./scripted";
 import { VENDORS, VENDOR_TERMS_INTRO } from "../content/vendors";
 import Simulator, { type SimMessage } from "../sims";
+import Aurora from "../Aurora";
 
 /* The engine that runs one module through Learn -> Practise -> Prove.
  * Structure only; every word of content comes from the manifest, the
@@ -1269,6 +1270,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
 
   return (
     <div className="cl-shell">
+      <Aurora intensity={0.55} />
       <header className="cl-top">
         <div className="cl-top-left">
           <span className="cl-word">AI CLEARED</span>
@@ -1323,10 +1325,11 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
       </div>
 
       <style jsx global>{`
-        .cl-shell { min-height: 100svh; background: ${K.ground}; color: ${K.body}; font-family: ${K.sans}; font-size: 15px; line-height: 1.55; }
-        .cl-top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 18px; min-height: 52px; box-sizing: border-box; background: rgba(11,17,23,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid ${K.edge}; }
+        .cl-shell { position: relative; min-height: 100svh; background: ${K.ground}; color: ${K.body}; font-family: ${K.sans}; font-size: 15px; line-height: 1.55; overflow-x: clip; }
+        .cl-top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 18px; min-height: 52px; box-sizing: border-box; background: ${K.headerBg}; backdrop-filter: blur(14px); border-bottom: 1px solid ${K.glassEdge}; }
         .cl-top-left, .cl-top-right { display: flex; align-items: center; gap: 10px; min-width: 0; }
-        .cl-word { font-family: ${K.mono}; font-size: 11.5px; font-weight: 700; letter-spacing: 0.22em; color: ${K.accentInk}; white-space: nowrap; }
+        .cl-word { display: inline-flex; align-items: center; gap: 8px; font-family: ${K.mono}; font-size: 11.5px; font-weight: 700; letter-spacing: 0.22em; color: ${K.accentInk}; white-space: nowrap; }
+        .cl-word::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: ${K.grad}; transform: rotate(45deg); box-shadow: 0 0 0 3px rgba(87,68,201,0.12); }
         .cl-sep { width: 1px; height: 14px; background: ${K.edge}; }
         .cl-firm { color: ${K.ink}; font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .cl-where { color: ${K.muted}; font-size: 13px; white-space: nowrap; }
@@ -1335,12 +1338,12 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-exit { color: ${K.ink}; font-size: 13px; text-decoration: none; border: 1px solid ${K.edge}; border-radius: 8px; padding: 5px 10px; }
         .cl-exit:hover { border-color: ${K.accent}; }
         .cl-desk-btn { display: none; white-space: nowrap; }
-        .cl-bar { height: 2px; background: ${K.edge}; }
-        .cl-bar i { display: block; height: 100%; background: ${K.accent}; transition: width 300ms ease; }
+        .cl-bar { position: relative; z-index: 4; height: 3px; background: ${K.edgeSoft}; }
+        .cl-bar i { display: block; height: 100%; background: ${K.grad}; transition: width 300ms ease; box-shadow: 0 0 12px rgba(87,68,201,0.45); }
 
-        .cl-body { display: grid; grid-template-columns: 224px minmax(0, 1fr) 300px; gap: 0; max-width: 1480px; margin: 0 auto; }
-        .cl-rail { padding: 24px 18px; border-right: 1px solid ${K.edge}; position: sticky; top: 56px; align-self: start; height: calc(100svh - 56px); overflow: auto; }
-        .cl-dock { padding: 24px 18px; border-left: 1px solid ${K.edge}; position: sticky; top: 56px; align-self: start; height: calc(100svh - 56px); overflow: auto; font-size: 13.5px; color: ${K.muted}; }
+        .cl-body { position: relative; z-index: 1; display: grid; grid-template-columns: 224px minmax(0, 1fr) 300px; gap: 0; max-width: 1480px; margin: 0 auto; }
+        .cl-rail { padding: 24px 18px; border-right: 1px solid ${K.glassEdge}; position: sticky; top: 56px; align-self: start; height: calc(100svh - 56px); overflow: auto; }
+        .cl-dock { padding: 24px 18px; border-left: 1px solid ${K.glassEdge}; position: sticky; top: 56px; align-self: start; height: calc(100svh - 56px); overflow: auto; font-size: 13.5px; color: ${K.muted}; }
         .cl-dock p { margin: 0 0 6px; }
         .cl-dock b { color: ${K.body}; font-weight: 600; }
         .cl-dock-sec { margin-bottom: 22px; }
@@ -1350,12 +1353,12 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-classes { display: flex; flex-wrap: wrap; gap: 6px; }
 
         .cl-stage { padding: 28px 28px 60px; min-width: 0; animation: cl-in 250ms ease both; }
-        .cl-card { max-width: 780px; margin: 0 auto; background: ${K.panel}; border: 1px solid ${K.edge}; border-radius: 14px; padding: 30px 32px 26px; }
+        .cl-card { max-width: 780px; margin: 0 auto; background: ${K.glass}; backdrop-filter: blur(18px); border: 1px solid ${K.glassEdge}; border-radius: 20px; padding: 30px 32px 26px; box-shadow: 0 10px 40px rgba(20,22,29,0.07); }
         @keyframes cl-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
         .cl-label { font-family: ${K.mono}; font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: ${K.faint}; margin-bottom: 8px; }
         .cl-eyebrow { font-family: ${K.mono}; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: ${K.accentInk}; margin-bottom: 12px; }
-        .cl-h1 { font-size: 27px; line-height: 1.2; font-weight: 600; letter-spacing: -0.015em; color: ${K.ink}; margin: 0 0 12px; text-wrap: balance; }
+        .cl-h1 { font-family: ${K.display}; font-size: 29px; line-height: 1.15; font-weight: 600; letter-spacing: -0.02em; color: ${K.ink}; margin: 0 0 12px; text-wrap: balance; }
         .cl-lead { font-size: 16.5px; line-height: 1.55; color: ${K.body}; margin: 0 0 10px; max-width: 64ch; }
         .cl-p { margin: 0 0 12px; max-width: 66ch; }
         .cl-note { font-size: 14px; color: ${K.muted}; margin: 0; }
@@ -1364,11 +1367,12 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-nav .cl-hint { margin-right: auto; }
         .cl-nav > .cl-btn:first-child:not(.cl-btn-pri) { margin-right: auto; }
 
-        .cl-btn { font: inherit; font-size: 14px; font-weight: 600; color: ${K.ink}; background: transparent; border: 1px solid ${K.edge}; border-radius: 9px; padding: 9px 16px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
-        .cl-btn:hover:not(:disabled) { border-color: ${K.accent}; }
-        .cl-btn:disabled { opacity: 0.45; cursor: default; }
-        .cl-btn-pri { background: ${K.accent}; border-color: ${K.accent}; color: ${K.onAccent}; }
-        .cl-btn-pri:hover:not(:disabled) { filter: brightness(1.08); }
+        .cl-btn { font: inherit; font-size: 14px; font-weight: 600; color: ${K.ink}; background: ${K.glassStrong}; border: 1px solid ${K.edge}; border-radius: 11px; padding: 9px 16px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease; }
+        .cl-btn:hover:not(:disabled) { border-color: ${K.accent}; transform: translateY(-1px); }
+        .cl-btn:disabled { opacity: 0.45; cursor: default; transform: none; }
+        .cl-btn-pri { background: ${K.grad}; border-color: transparent; color: ${K.onAccent}; box-shadow: ${K.glow}; }
+        .cl-btn-pri:hover:not(:disabled) { filter: brightness(1.05); }
+        .cl-btn-pri:disabled { box-shadow: none; }
         .cl-btn-small { font-size: 12.5px; padding: 6px 11px; }
         .cl-shell button:focus-visible, .cl-shell a:focus-visible, .cl-shell input:focus-visible { outline: 2px solid ${K.accentInk}; outline-offset: 2px; }
 
@@ -1525,8 +1529,10 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-map li, .cl-phases li { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; font-size: 13.5px; color: ${K.muted}; }
         .cl-map-n { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; border: 1px solid ${K.edge}; font-family: ${K.mono}; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
         .cl-map-current, .cl-ph-current { color: ${K.ink}; }
-        .cl-map-current .cl-map-n, .cl-ph-current .cl-map-n { border-color: ${K.accent}; color: ${K.accentInk}; background: ${K.accentSoft}; }
+        .cl-map-current .cl-map-n, .cl-ph-current .cl-map-n { border-color: transparent; color: ${K.onAccent}; background: ${K.grad}; box-shadow: 0 0 0 3px rgba(87,68,201,0.12); }
         .cl-map-done .cl-map-n, .cl-ph-done .cl-map-n { border-color: ${K.ok}; color: ${K.ok}; background: ${K.okSoft}; }
+        .cl-map-n, .cl-n, .cl-tl-n, .cl-src-n { background: ${K.glassStrong}; }
+        .cl-meter i, .cl-contact-avatar, .cl-stamp-fill { background: ${K.grad}; }
         .cl-map-locked { color: ${K.faint}; }
         .cl-phases b { display: block; color: inherit; font-weight: 600; }
         .cl-phases small { display: block; font-size: 12px; color: ${K.faint}; }

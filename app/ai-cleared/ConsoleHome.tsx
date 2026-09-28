@@ -2,62 +2,119 @@ import Link from "next/link";
 import { K } from "./engine/tokens";
 import { TRACK_LABEL, type Track } from "./engine/types";
 import type { CourseMapEntry } from "./engine/ClearedPlayer";
+import Frame from "./Frame";
+import CourseAside from "./CourseAside";
 import TrackChange from "./TrackChange";
 
-/* The console home: firm name, the five modules, resume, the certificate
- * once the course is complete, and the one-time desk change. */
-export default function ConsoleHome({ firmName, learnerName, track, trackLocked, modules, resumeN, complete }: { firmName: string; learnerName: string; track: Track; trackLocked: boolean; modules: (CourseMapEntry & { phaseLabel?: string })[]; resumeN: number | null; complete: boolean }) {
+/* The course home: a progress ring, the five modules as glass cards with
+ * their state, the certificate once the course is complete, and the
+ * one-time desk change. */
+export default function ConsoleHome({
+  firmName,
+  contactName,
+  contactRole,
+  learnerName,
+  track,
+  trackLocked,
+  modules,
+  resumeN,
+  complete,
+  isAdmin,
+}: {
+  firmName: string;
+  contactName?: string | null;
+  contactRole?: string | null;
+  learnerName: string;
+  track: Track;
+  trackLocked: boolean;
+  modules: (CourseMapEntry & { phaseLabel?: string })[];
+  resumeN: number | null;
+  complete: boolean;
+  isAdmin?: boolean;
+}) {
   const done = modules.filter((m) => m.done).length;
-  return (
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "40px 24px 80px" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <span style={{ fontFamily: K.mono, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.22em", color: K.accentInk }}>AI CLEARED</span>
-        <span style={{ fontSize: 13, color: K.muted, display: "inline-flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>{learnerName} · {TRACK_LABEL[track]} track <TrackChange current={track} locked={trackLocked} /></span>
-      </div>
-      <h1 style={{ fontSize: 30, lineHeight: 1.15, fontWeight: 600, letterSpacing: "-0.015em", color: K.ink, margin: "26px 0 8px", textWrap: "balance" }}>{firmName}</h1>
-      <p style={{ fontSize: 16.5, color: K.body, margin: "0 0 26px", maxWidth: "60ch" }}>
-        Five short modules. Everybody gets cleared on the same habits, on a desk that looks like yours. Nothing you type in here is real data, and none of it is stored.
-      </p>
+  const pct = Math.round((done / modules.length) * 100);
+  const r = 34;
+  const c = 2 * Math.PI * r;
+  const next = modules.find((m) => m.n === resumeN);
 
-      <div style={{ height: 8, background: K.sunk, borderRadius: 999, overflow: "hidden", marginBottom: 8 }}>
-        <i style={{ display: "block", height: "100%", width: `${(done / modules.length) * 100}%`, background: K.accent }} />
+  return (
+    <Frame
+      firmName={firmName}
+      meta={<><span className="cf-meta">{learnerName} · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} /></span>{isAdmin && <Link href="/ai-cleared/admin" className="cf-link">Admin</Link>}</>}
+      aside={<CourseAside firmName={firmName} contactName={contactName} contactRole={contactRole} learnerName={learnerName} done={modules.filter((m) => m.done).map((m) => m.n)} showModules={false} showWindow />}
+    >
+      <span className="cf-eyebrow">
+        <span style={{ width: 7, height: 7, borderRadius: "50%", background: K.ok, boxShadow: `0 0 0 3px ${K.okSoft}` }} />
+        Practice data only
+      </span>
+      <div style={{ display: "flex", alignItems: "center", gap: 22, flexWrap: "wrap", marginBottom: 6 }}>
+        <svg width="88" height="88" viewBox="0 0 88 88" role="img" aria-label={`${pct} percent of the course cleared`} style={{ flexShrink: 0 }}>
+          <defs>
+            <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#0a7085" />
+              <stop offset="58%" stopColor="#5744c9" />
+              <stop offset="100%" stopColor="#a5117f" />
+            </linearGradient>
+          </defs>
+          <circle cx="44" cy="44" r={r} fill="none" stroke={K.edge} strokeWidth="7" />
+          <circle cx="44" cy="44" r={r} fill="none" stroke="url(#ring)" strokeWidth="7" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c * (1 - done / modules.length)} transform="rotate(-90 44 44)" style={{ transition: "stroke-dashoffset 600ms ease" }} />
+          <text x="44" y="49" textAnchor="middle" fontFamily="var(--font-geist-mono), monospace" fontSize="15" fontWeight="700" fill={K.ink}>{pct}%</text>
+        </svg>
+        <div>
+          <h1 className="cf-h1" style={{ marginBottom: 6 }}>{complete ? <>You are <span className="cf-grad">AI Cleared</span>.</> : done === 0 ? <>Hello, {learnerName}. Let&rsquo;s get you <span className="cf-grad">cleared</span>.</> : <>{done} of {modules.length} cleared, {learnerName}.</>}</h1>
+          <p className="cf-note">{complete ? "Every module passed. Your certificate is ready below." : next ? `Next up: Module ${next.n}, ${next.title}, about ${next.minutes} minutes.` : "Five short modules, about ninety minutes in all."}</p>
+        </div>
       </div>
-      <div style={{ fontSize: 13, color: K.muted, marginBottom: 28 }}>{done} of {modules.length} modules cleared</div>
 
       {complete && (
-        <Link href="/ai-cleared/certificate" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "16px 18px", marginBottom: 18, background: K.okSoft, border: `1px solid ${K.ok}`, borderRadius: 12, textDecoration: "none" }}>
-          <span style={{ fontFamily: K.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.16em", color: K.ok, border: `1.5px solid ${K.ok}`, borderRadius: 6, padding: "4px 8px", whiteSpace: "nowrap" }}>COURSE CLEARED</span>
-          <span style={{ color: K.ink, fontSize: 15, flex: "1 1 240px" }}>Your certificate is ready. Download it, or send the verify link to your manager.</span>
-          <span style={{ color: K.ok, fontWeight: 600, whiteSpace: "nowrap" }}>Open</span>
+        <Link href="/ai-cleared/certificate" className="ch-cert">
+          <span className="ch-cert-stamp">Course cleared</span>
+          <span className="ch-cert-text">Your certificate is ready. Download it, or send the verify link to your manager.</span>
+          <span className="ch-cert-go">Open</span>
         </Link>
       )}
 
-      <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+      <ol className="ch-list">
         {modules.map((m) => {
-          const state = m.done ? "done" : m.available ? "open" : "locked";
-          const colour = state === "done" ? K.ok : state === "open" ? K.accentInk : K.faint;
+          const state = m.done ? "done" : m.available ? (m.n === resumeN ? "next" : "open") : "locked";
           const inner = (
             <>
-              <span style={{ flexShrink: 0, width: 32, height: 32, borderRadius: "50%", border: `1px solid ${colour}`, color: colour, fontFamily: K.mono, fontSize: 13, display: "inline-flex", alignItems: "center", justifyContent: "center", background: state === "done" ? K.okSoft : state === "open" ? K.accentSoft : "transparent" }}>{m.done ? "✓" : m.n}</span>
-              <span style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
-                <b style={{ color: state === "locked" ? K.muted : K.ink, fontSize: 16, fontWeight: 600 }}>{m.title}</b>
-                <small style={{ color: K.faint, fontSize: 13 }}>{m.minutes} min{m.phaseLabel ? ` · ${m.phaseLabel}` : ""}{state === "locked" ? " · coming with the next release" : ""}</small>
+              <span className={`ch-n ${state}`}>{m.done ? "✓" : m.n}</span>
+              <span className="ch-body">
+                <b>{m.title}</b>
+                <small>{m.minutes} min{m.phaseLabel ? ` · ${m.phaseLabel}` : ""}{state === "locked" ? " · coming with the next release" : ""}</small>
               </span>
-              <span style={{ marginLeft: "auto", fontSize: 13.5, fontWeight: 600, color: colour, whiteSpace: "nowrap" }}>{state === "done" ? "Cleared" : state === "open" ? (m.n === resumeN ? "Resume" : "Start") : "Locked"}</span>
+              <span className={`ch-go ${state}`}>{m.done ? "Cleared" : state === "next" ? (m.phaseLabel ? "Resume" : "Start") : state === "open" ? "Open" : "Locked"}</span>
             </>
           );
-          const style = { display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: K.panel, border: `1px solid ${state === "open" ? K.accent : K.edge}`, borderRadius: 12, textDecoration: "none" } as const;
           return (
             <li key={m.n}>
-              {state === "locked" ? <div style={style}>{inner}</div> : <Link href={`/ai-cleared/m/${m.n}`} style={style}>{inner}</Link>}
+              {state === "locked" ? <div className={`ch-card ${state}`}>{inner}</div> : <Link href={`/ai-cleared/m/${m.n}`} className={`ch-card ${state}`}>{inner}</Link>}
             </li>
           );
         })}
       </ol>
 
-      <p style={{ marginTop: 30, fontSize: 13.5, color: K.muted }}>
-        Questions about the course go to your firm&rsquo;s admin. Questions about your seat go to <a href="mailto:admissions@algorithmx.co.uk" style={{ color: K.accentInk }}>admissions@algorithmx.co.uk</a>.
-      </p>
-    </div>
+      <style>{`
+        .ch-list { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+        .ch-card { display: flex; align-items: center; gap: 16px; padding: 16px 18px; background: ${K.glass}; backdrop-filter: blur(16px); border: 1px solid ${K.glassEdge}; border-radius: 16px; text-decoration: none; transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease; }
+        a.ch-card:hover { transform: translateY(-2px); box-shadow: ${K.lift}; border-color: rgba(87,68,201,0.4); }
+        .ch-card.next { border-color: transparent; background: ${K.glassStrong}; box-shadow: 0 0 0 1px rgba(87,68,201,0.35), ${K.glow}; }
+        .ch-card.locked { opacity: 0.6; }
+        .ch-n { flex-shrink: 0; width: 36px; height: 36px; border-radius: 12px; border: 1px solid ${K.edge}; font-family: ${K.mono}; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; color: ${K.muted}; background: ${K.panel}; }
+        .ch-n.done, .ch-n.next { border-color: transparent; color: ${K.onAccent}; background: ${K.grad}; }
+        .ch-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+        .ch-body b { color: ${K.ink}; font-size: 16px; font-weight: 600; }
+        .ch-body small { color: ${K.muted}; font-size: 13px; }
+        .ch-go { font-size: 13.5px; font-weight: 600; white-space: nowrap; color: ${K.muted}; }
+        .ch-go.done { color: ${K.ok}; }
+        .ch-go.next { color: ${K.onAccent}; background: ${K.grad}; border-radius: 999px; padding: 6px 13px; }
+        .ch-cert { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 18px; padding: 16px 18px; background: ${K.glassStrong}; border: 1px solid transparent; border-radius: 16px; text-decoration: none; box-shadow: 0 0 0 1px rgba(14,122,69,0.4), 0 10px 34px rgba(14,122,69,0.16); }
+        .ch-cert-stamp { font-family: ${K.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${K.onAccent}; background: ${K.ok}; border-radius: 6px; padding: 5px 9px; white-space: nowrap; }
+        .ch-cert-text { color: ${K.ink}; font-size: 15px; flex: 1 1 240px; }
+        .ch-cert-go { color: ${K.ok}; font-weight: 600; white-space: nowrap; }
+      `}</style>
+    </Frame>
   );
 }
