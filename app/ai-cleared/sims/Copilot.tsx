@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef } from "react";
+import type { SimProps } from "./types";
+export type { SimMessage, SimProps } from "./types";
 
 /* A recreation of Microsoft 365 Copilot's chat surface in its native light
  * look: the rail of chats and pages on the left, a tenant label, the blue
@@ -8,29 +10,6 @@ import { useEffect, useRef, type ReactNode } from "react";
  * is named, no vendor logo or wordmark artwork is used, and every simulator
  * carries the "Practice tenant" label. The chrome is deliberately the
  * vendor's, not the console's, so habits transfer. */
-
-export interface SimMessage {
-  id: string;
-  role: "user" | "assistant";
-  text: string;
-  /* The assistant is still writing. */
-  pending?: boolean;
-  /* Rendered under a user message: the grader's panel. */
-  panel?: ReactNode;
-}
-
-export interface SimProps {
-  firmName: string;
-  learnerName: string;
-  messages: SimMessage[];
-  draft: string;
-  onDraftChange?: (v: string) => void;
-  onSend: () => void;
-  canSend: boolean;
-  /* Locked composer: the builder writes the draft, the learner cannot edit. */
-  composerLocked?: boolean;
-  status?: string;
-}
 
 const C = {
   bg: "#ffffff",
@@ -53,7 +32,9 @@ function Icon({ d, size = 18, stroke = C.muted }: { d: string; size?: number; st
   );
 }
 
-export default function CopilotSim({ firmName, learnerName, messages, draft, onDraftChange, onSend, canSend, composerLocked, status }: SimProps) {
+export default function CopilotSim({ firmName, learnerName, messages, draft, onDraftChange, onSend, canSend, composerLocked, status, tier = "enterprise", compact }: SimProps) {
+  const account = tier === "enterprise" ? `${firmName} · work account` : tier === "consumer-paid" ? "Copilot Pro · personal account" : "Personal account · free";
+  const accountDot = tier === "enterprise" ? "#13a10e" : "#c19c00";
   const logRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = logRef.current;
@@ -61,9 +42,10 @@ export default function CopilotSim({ firmName, learnerName, messages, draft, onD
   }, [messages]);
 
   const empty = messages.length === 0;
+  const scale = compact ? 0.78 : 1;
 
   return (
-    <div className="sim-copilot" style={{ display: "grid", gridTemplateColumns: "200px minmax(0, 1fr)", minHeight: 520, borderRadius: 12, overflow: "hidden", border: `1px solid ${C.edge}`, background: C.bg, color: C.ink, fontFamily: C.font, fontSize: 14, lineHeight: 1.5, colorScheme: "light" }}>
+    <div className={compact ? "sim-copilot sim-compact" : "sim-copilot"} style={{ display: "grid", gridTemplateColumns: compact ? "120px minmax(0, 1fr)" : "200px minmax(0, 1fr)", minHeight: compact ? 200 : 520, fontSize: compact ? 11 : 14, pointerEvents: compact ? "none" : undefined, userSelect: compact ? "none" : undefined, borderRadius: 12, overflow: "hidden", border: `1px solid ${C.edge}`, background: C.bg, color: C.ink, fontFamily: C.font, lineHeight: 1.5, colorScheme: "light" }}>
       {/* rail */}
       <aside className="sim-copilot-rail" style={{ background: C.rail, borderRight: `1px solid ${C.edge}`, padding: "14px 12px", display: "flex", flexDirection: "column", gap: 4 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "2px 6px 12px", fontWeight: 600, fontSize: 15 }}>
@@ -83,8 +65,8 @@ export default function CopilotSim({ firmName, learnerName, messages, draft, onD
         ))}
         <div style={{ marginTop: "auto", paddingTop: 12, borderTop: `1px solid ${C.edge}`, fontSize: 12, color: C.muted, display: "flex", flexDirection: "column", gap: 6 }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: "#13a10e" }} />
-            {firmName} · work account
+            <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: accountDot }} />
+            {account}
           </span>
           <span style={{ alignSelf: "flex-start", padding: "2px 7px", borderRadius: 4, background: C.blueSoft, color: C.blue, fontWeight: 600, fontSize: 11, letterSpacing: "0.02em" }}>Practice tenant</span>
         </div>
@@ -93,7 +75,7 @@ export default function CopilotSim({ firmName, learnerName, messages, draft, onD
       {/* stage */}
       <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderBottom: `1px solid ${C.edge}`, fontSize: 13, color: C.muted }}>
-          <span>Work</span>
+          <span>{tier === "enterprise" ? "Work" : "Chat"}</span>
           <span className="sim-copilot-tenant" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
             <span style={{ width: 22, height: 22, borderRadius: "50%", background: "#c7e0f4", color: "#0f4a80", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700 }}>{learnerName.slice(0, 1).toUpperCase()}</span>
             {learnerName}
@@ -103,7 +85,7 @@ export default function CopilotSim({ firmName, learnerName, messages, draft, onD
         <div ref={logRef} style={{ flex: 1, overflowY: "auto", padding: "18px 20px", display: "flex", flexDirection: "column", gap: 14 }}>
           {empty && (
             <div style={{ margin: "auto 0", padding: "28px 0 8px" }}>
-              <div style={{ fontSize: 26, fontWeight: 600, letterSpacing: "-0.01em", background: "linear-gradient(90deg, #1b6ec2, #23a2a0)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
+              <div style={{ fontSize: 26 * scale, fontWeight: 600, letterSpacing: "-0.01em", background: "linear-gradient(90deg, #1b6ec2, #23a2a0)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
                 Hi {learnerName}, how can I help today?
               </div>
               <div style={{ marginTop: 6, color: C.muted }}>Ask a question, draft an email, or summarise a file from your work account.</div>

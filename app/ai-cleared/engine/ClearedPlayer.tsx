@@ -5,30 +5,38 @@ import Link from "next/link";
 import { K, CLASS_COLOUR, VERDICT_COLOUR } from "./tokens";
 import {
   fill,
+  resolveSituation,
   resolveTrack,
+  TIER_LABEL,
   TRACK_LABEL,
   TOOL_LABEL,
   VERDICT_RANK,
   type DataClass,
   type FirmView,
+  type LearnCard,
   type LearnScreen,
   type ModuleManifest,
   type Phase,
   type ProveItem,
+  type SandboxPractise,
+  type SimRef,
+  type SituationAnswer,
   type Tool,
   type Track,
+  type TriageAnswer,
   type Verdict,
 } from "./types";
 import { classCounts, localRewrite, realDataCheck, ruleFindings, segments, verdictOf } from "./rules";
 import { DEFAULT_COACH, DEFAULT_WHY, VERDICT_LINE, type GradeResult } from "./grading";
 import { scriptedReply } from "./scripted";
-import CopilotSim, { type SimMessage } from "../sims/Copilot";
+import { VENDORS, VENDOR_TERMS_INTRO } from "../content/vendors";
+import Simulator, { type SimMessage } from "../sims";
 
 /* The engine that runs one module through Learn -> Practise -> Prove.
  * Structure only; every word of content comes from the manifest, the
  * firm's profile and the learner's track. Three columns: the rail (the
  * learner's place), the stage (the only thing that changes), the dock
- * (the desk and the firm's rules). */
+ * (the desk and the firm's rules). One screen, one action. */
 
 export interface CourseMapEntry {
   n: number;
@@ -60,6 +68,9 @@ type Screen =
   | { kind: "build"; phase: "practise" }
   | { kind: "sandbox"; phase: "practise" }
   | { kind: "free"; phase: "practise" }
+  | { kind: "sortItem"; i: number; phase: "practise" }
+  | { kind: "situation"; i: number; phase: "practise" }
+  | { kind: "incident"; i: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -74,7 +85,6 @@ interface SandboxState {
   messages: Msg[];
   status: string;
   busy: boolean;
-  lastVerdict?: Verdict;
 }
 const EMPTY_SANDBOX: SandboxState = { messages: [], status: "", busy: false };
 
@@ -83,6 +93,41 @@ const nextId = () => `m${++idSeq}`;
 
 async function postJson(url: string, body: unknown): Promise<Response> {
   return fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), keepalive: true });
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* The final assessment draw: `fromTrack` from the track's own bank, the
+ * rest from the shared bank spread across the modules it is tagged with. */
+function drawFinal(manifest: ModuleManifest, trackProve: ProveItem[]): ProveItem[] {
+  const f = manifest.final;
+  if (!f) return trackProve;
+  const fromTrack = shuffle(trackProve).slice(0, f.fromTrack);
+  const groups = new Map<number, ProveItem[]>();
+  for (const item of shuffle(f.bank)) {
+    const k = item.from ?? 0;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k)!.push(item);
+  }
+  const keys = shuffle([...groups.keys()]);
+  const shared: ProveItem[] = [];
+  const need = f.draw - fromTrack.length;
+  let round = 0;
+  while (shared.length < need && round < 20) {
+    for (const k of keys) {
+      const g = groups.get(k)!;
+      if (g[round] && shared.length < need) shared.push(g[round]);
+    }
+    round++;
+  }
+  return shuffle([...fromTrack, ...shared]);
 }
 
 /* ---------- small pieces ---------- */
@@ -96,10 +141,10 @@ function Tag({ cls, names, small }: { cls: DataClass; names: Record<DataClass, s
   );
 }
 
-function Btn({ children, onClick, primary, disabled, hidden, ariaLabel }: { children: ReactNode; onClick?: () => void; primary?: boolean; disabled?: boolean; hidden?: boolean; ariaLabel?: string }) {
+function Btn({ children, onClick, primary, disabled, hidden }: { children: ReactNode; onClick?: () => void; primary?: boolean; disabled?: boolean; hidden?: boolean }) {
   if (hidden) return null;
   return (
-    <button type="button" onClick={onClick} disabled={disabled} aria-label={ariaLabel} className={primary ? "cl-btn cl-btn-pri" : "cl-btn"}>
+    <button type="button" onClick={onClick} disabled={disabled} className={primary ? "cl-btn cl-btn-pri" : "cl-btn"}>
       {children}
     </button>
   );
@@ -109,11 +154,47 @@ function Eyebrow({ children }: { children: ReactNode }) {
   return <div className="cl-eyebrow">{children}</div>;
 }
 
+function tintColour(tint: LearnCard["tint"]): string {
+  if (!tint) return K.accent;
+  if (tint === "ok") return K.ok;
+  if (tint === "warn") return K.warn;
+  if (tint === "crit") return K.crit;
+  return CLASS_COLOUR[tint].ink;
+}
+
+/* A compact simulator window with a caption, used wherever a screen shows
+ * "this window" rather than a working chat. */
+function Window({ sim, firm, learnerName, caption }: { sim: SimRef; firm: FirmView; learnerName: string; caption?: string }) {
+  return (
+    <div className="cl-window">
+      <Simulator tool={sim.tool} tier={sim.tier} compact firmName={firm.name} learnerName={learnerName} messages={[]} draft="" onSend={() => {}} canSend={false} />
+      {caption && <div className="cl-window-cap">{caption}</div>}
+    </div>
+  );
+}
+
+/* Three-way answer buttons with instant feedback. */
+function ThreeWay<T extends string>({ options, picked, answer, onPick }: { options: { id: T; label: string; desc?: string }[]; picked: T | null; answer: T; onPick: (id: T) => void }) {
+  return (
+    <div className="cl-three">
+      {options.map((o) => {
+        const state = picked === null ? "" : o.id === answer ? "right" : o.id === picked ? "wrong" : "";
+        return (
+          <button key={o.id} type="button" disabled={picked !== null} className={`cl-three-btn ${state}`} onClick={() => onPick(o.id)}>
+            <b>{o.label}</b>
+            {o.desc && <small>{o.desc}</small>}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ---------- the grader's panel, shown under the learner's message ---------- */
 
 function GraderPanel({ prompt, grade, names, onUseRewrite }: { prompt: string; grade: GradeResult; names: Record<DataClass, string>; onUseRewrite?: (rewrite: string) => void }) {
   const v = VERDICT_COLOUR[grade.verdict];
-  const findings = useMemo(() => ruleFindingsFromGrade(prompt, grade), [prompt, grade]);
+  const findings = useMemo(() => spansFromGrade(prompt, grade), [prompt, grade]);
   return (
     <div className="cl-grader" style={{ borderColor: v.ink }}>
       <div className="cl-grader-top">
@@ -155,9 +236,7 @@ function GraderPanel({ prompt, grade, names, onUseRewrite }: { prompt: string; g
   );
 }
 
-/* The echo is built from the grade's findings (which may include one the
- * model added), located in the prompt text. */
-function ruleFindingsFromGrade(prompt: string, grade: GradeResult): { text: string; cls?: DataClass }[] {
+function spansFromGrade(prompt: string, grade: GradeResult): { text: string; cls?: DataClass }[] {
   const spans: { start: number; end: number; text: string; cls: DataClass }[] = [];
   const lower = prompt.toLowerCase();
   for (const f of grade.findings) {
@@ -175,27 +254,40 @@ function ruleFindingsFromGrade(prompt: string, grade: GradeResult): { text: stri
 
 export default function ClearedPlayer({ manifest, track, firm, tool, learnerName, courseMap, initialPhase, live }: PlayerProps) {
   const { block, track: usedTrack } = useMemo(() => resolveTrack(manifest, track), [manifest, track]);
-  const pack = block.dataPack;
   const practise = block.practise;
+  const sandbox = practise.kind === "sandbox" ? (practise as SandboxPractise) : null;
+  const pack = block.dataPack;
   const names = firm.classNames;
   const ctx = useMemo(() => ({ firm, tool }), [firm, tool]);
   const t = useCallback((s: string) => fill(s, ctx), [ctx]);
+  const isFinal = !!manifest.final;
+
+  /* the prove set: the track's bank, or a fresh draw for the final */
+  const [proveSet, setProveSet] = useState<ProveItem[]>(() => drawFinal(manifest, block.prove));
 
   const screens = useMemo<Screen[]>(() => {
     const out: Screen[] = manifest.learn.map((_, i) => ({ kind: "learn", i, phase: "learn" }));
-    out.push({ kind: "desk", phase: "practise" }, { kind: "picked", phase: "practise" }, { kind: "build", phase: "practise" }, { kind: "sandbox", phase: "practise" }, { kind: "free", phase: "practise" });
-    block.prove.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
+    if (practise.kind === "sandbox") {
+      out.push({ kind: "desk", phase: "practise" }, { kind: "picked", phase: "practise" }, { kind: "build", phase: "practise" }, { kind: "sandbox", phase: "practise" }, { kind: "free", phase: "practise" });
+    } else if (practise.kind === "sort") {
+      practise.items.forEach((_, i) => out.push({ kind: "sortItem", i, phase: "practise" }));
+    } else if (practise.kind === "situations") {
+      practise.situations.forEach((_, i) => out.push({ kind: "situation", i, phase: "practise" }));
+    } else if (practise.kind === "triage") {
+      practise.incidents.forEach((_, i) => out.push({ kind: "incident", i, phase: "practise" }));
+    }
+    proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
     out.push({ kind: "result", phase: "done" });
     return out;
-  }, [manifest, block]);
+  }, [manifest, practise, proveSet]);
 
   const startOf = useCallback((phase: Phase) => Math.max(0, screens.findIndex((s) => s.phase === phase)), [screens]);
   const [cur, setCur] = useState(() => (initialPhase && initialPhase !== "done" ? startOf(initialPhase) : 0));
   const screen = screens[cur];
 
   /* learn interactions, keyed by learn index */
-  const [learnState, setLearnState] = useState<Record<number, { pick?: DataClass; revealed?: number; shown?: boolean }>>({});
-  /* practise */
+  const [learnState, setLearnState] = useState<Record<number, { pick?: DataClass; revealed?: number; shown?: boolean; opened?: number[]; flipped?: Record<number, boolean> }>>({});
+  /* sandbox practise */
   const [deskPicks, setDeskPicks] = useState<Set<string>>(() => new Set());
   const [builder, setBuilder] = useState<Record<string, number>>({});
   const [flagged, setFlagged] = useState(false);
@@ -205,9 +297,14 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const [freeSent, setFreeSent] = useState(false);
   const bestRank = useRef(99);
   const [bestVerdict, setBestVerdict] = useState<Verdict | undefined>(undefined);
+  /* one-action practises: answer per item */
+  const [picks, setPicks] = useState<Record<number, string>>({});
   /* prove */
-  const [proveAnswers, setProveAnswers] = useState<(DataClass | null)[]>(() => block.prove.map(() => null));
-  const correct = proveAnswers.filter((a, i) => a !== null && a === block.prove[i].answer).length;
+  const [proveAnswers, setProveAnswers] = useState<(string | null)[]>(() => proveSet.map(() => null));
+  const correct = proveAnswers.filter((a, i) => {
+    const q = proveSet[i];
+    return a !== null && (q.kind === "classify" ? a === q.answer : Number(a) === q.answer);
+  }).length;
   const passed = correct >= manifest.passMark;
   /* phone dock drawer */
   const [dockOpen, setDockOpen] = useState(false);
@@ -222,7 +319,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
     [live, screens, cur, manifest.n, bestVerdict],
   );
   useEffect(() => {
-    if (screen.kind === "result") persistScreen({ proveScore: correct, proveTotal: block.prove.length, completed: passed });
+    if (screen.kind === "result") persistScreen({ proveScore: correct, proveTotal: proveSet.length, completed: passed });
     else persistScreen();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cur]);
@@ -238,6 +335,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   /* ---- the sandbox ---- */
   const runSandbox = useCallback(
     async (which: "build" | "free", prompt: string) => {
+      if (!pack) return "ok" as Verdict;
       const set = which === "build" ? setBuildBox : setFreeBox;
       const findings = ruleFindings(prompt, pack);
       const v = verdictOf(findings);
@@ -292,7 +390,6 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         }
         finish();
       } else {
-        /* offline: type the scripted reply in a few beats */
         const full = scriptedReply(manifest.n, usedTrack, prompt);
         const parts = full.split(/(?<=\n\n)/);
         for (const p of parts) {
@@ -308,15 +405,16 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
 
   /* builder */
   const { assembledText, builderComplete } = useMemo(() => {
-    const complete = practise.builder.every((g) => builder[g.key] !== undefined);
+    if (!sandbox) return { assembledText: "", builderComplete: false };
+    const complete = sandbox.builder.every((g) => builder[g.key] !== undefined);
     if (!Object.keys(builder).length) return { assembledText: "", builderComplete: false };
-    let s = practise.assemble;
-    for (const g of practise.builder) {
+    let s = sandbox.assemble;
+    for (const g of sandbox.builder) {
       const idx = builder[g.key];
       s = s.replace(`{${g.key}}`, idx === undefined ? `[${g.question.toLowerCase().replace(/\?$/, "")}?]` : g.choices[idx].value);
     }
     return { assembledText: s.replace(/\s+/g, " ").trim(), builderComplete: complete };
-  }, [builder, practise]);
+  }, [builder, sandbox]);
 
   const sendBuilt = async () => {
     setBuildBox(EMPTY_SANDBOX);
@@ -331,7 +429,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
 
   const sendFree = async () => {
     const prompt = freeDraft.trim();
-    if (!prompt || freeBox.busy) return;
+    if (!prompt || freeBox.busy || !pack) return;
     const real = realDataCheck(prompt, pack);
     if (real) {
       setFreeBox((s) => ({ ...s, status: `Stopped: that looks like ${real} that is not in the practice pack. Nothing was sent.` }));
@@ -345,7 +443,9 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   };
 
   const retryProve = () => {
-    setProveAnswers(block.prove.map(() => null));
+    const fresh = drawFinal(manifest, block.prove);
+    setProveSet(fresh);
+    setProveAnswers(fresh.map(() => null));
     go(startOf("prove"));
   };
 
@@ -354,11 +454,42 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
-    { key: "practise", label: "Practise", sub: "in the simulator" },
-    { key: "prove", label: "Prove", sub: `${block.prove.length} snippets, pass at ${manifest.passMark}` },
+    { key: "practise", label: "Practise", sub: practise.kind === "sandbox" ? "in the simulator" : practise.kind === "sort" ? "which tier is this" : practise.kind === "situations" ? "ten situations" : "six incidents" },
+    { key: "prove", label: isFinal ? "Final assessment" : "Prove", sub: `${proveSet.length} items, pass at ${manifest.passMark}` },
   ];
   const toSim = (m: Msg[], onUseRewrite?: (r: string) => void): SimMessage[] =>
     m.map((x) => ({ id: x.id, role: x.role, text: x.text, pending: x.pending, panel: x.grade ? <GraderPanel prompt={x.text} grade={x.grade} names={names} onUseRewrite={onUseRewrite} /> : undefined }));
+
+  /* cards that come from the firm or the vendor matrix */
+  const cardsFor = (L: Extract<LearnScreen, { kind: "cards" }>): LearnCard[] => {
+    if (L.cards) return L.cards;
+    if (L.source === "firm.rules") {
+      return [
+        { title: "Approved", tint: "ok", tag: "Use on your work account", body: firm.approvedTools.length ? firm.approvedTools.join(" · ") : "Nothing listed yet.", detail: "Under a contract the firm signed: not used for training, kept in the firm's tenant, usage visible to your admin. INTERNAL is allowed here. CONFIDENTIAL still needs placeholders and RESTRICTED never goes in." },
+        { title: "Ask first", tint: "warn", tag: `Ask ${firm.contactName}`, body: firm.askFirstTools.length ? firm.askFirstTools.join(" · ") : "Nothing listed yet.", detail: "Fine for some tasks, not for others. The firm decides case by case, so the question goes to the named contact, not to your own judgement on the day." },
+        { title: "Not allowed", tint: "crit", tag: "Not on any account, any device", body: firm.bannedTools.length ? firm.bannedTools.join(" · ") : "Nothing listed yet.", detail: "No contract, no visibility, no control. This includes personal accounts of tools the firm has approved on work accounts." },
+      ];
+    }
+    if (L.source === "vendors.terms") {
+      const tools: Tool[] = ["copilot", "chatgpt", "gemini", "claude"];
+      return tools.map((tl) => {
+        const facts = VENDORS.filter((v) => v.tool === tl);
+        const ent = facts.find((v) => v.tier === "enterprise");
+        const con = facts.find((v) => v.tier === "consumer-free");
+        if (!facts.length) return { title: TOOL_LABEL[tl], tag: "Being verified", body: "The vendor's page is being checked. Ask your admin for the current terms until it is.", tint: "I" as const };
+        const verified = facts.map((v) => v.verifiedOn).sort().reverse()[0];
+        return {
+          title: TOOL_LABEL[tl],
+          tag: `Checked ${verified}`,
+          tint: "I" as const,
+          body: `${con ? `Consumer: ${con.trains}` : ""}${con && ent ? " " : ""}${ent ? `Enterprise: ${ent.trains}` : ""}`,
+          detail: `Look for: “${(ent ?? con)?.terms.find ?? ""}”`,
+          link: { label: (ent ?? con)?.terms.title ?? "", href: (ent ?? con)?.terms.url ?? "" },
+        };
+      });
+    }
+    return [];
+  };
 
   /* ---- the stage ---- */
   let stage: ReactNode = null;
@@ -423,6 +554,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
     } else if (L.kind === "reveal") {
       const shown = st.revealed ?? 1;
       const all = shown >= L.items.length;
+      const more = (L.more ?? "Show question {n}").replace("{n}", String(shown + 1));
       stage = (
         <>
           <Eyebrow>{t(L.eyebrow)}</Eyebrow>
@@ -441,7 +573,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           </div>
           <div className="cl-nav">
             <Btn onClick={back}>Back</Btn>
-            <Btn hidden={all} onClick={() => setSt({ revealed: shown + 1 })}>Show question {shown + 1}</Btn>
+            <Btn hidden={all} onClick={() => setSt({ revealed: shown + 1 })}>{more}</Btn>
             <Btn primary hidden={!all} onClick={next}>Continue</Btn>
           </div>
         </>
@@ -474,15 +606,142 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           </div>
         </>
       );
+    } else if (L.kind === "cards") {
+      const cards = cardsFor(L);
+      const opened = st.opened ?? [];
+      const gate = L.reveal ? cards.every((_, i) => opened.includes(i)) : true;
+      const lead = L.source === "vendors.terms" ? VENDOR_TERMS_INTRO : L.lead;
+      stage = (
+        <>
+          <Eyebrow>{t(L.eyebrow)}</Eyebrow>
+          <h1 className="cl-h1">{t(L.heading)}</h1>
+          {lead && <p className="cl-lead">{t(lead)}</p>}
+          <div className={`cl-cards ${L.columns === 1 || cards.length === 1 ? "one" : ""}`}>
+            {cards.map((c, i) => {
+              const open = !L.reveal || opened.includes(i);
+              const colour = tintColour(c.tint);
+              const inner = (
+                <>
+                  {c.sim && <Window sim={c.sim} firm={firm} learnerName={learnerName} />}
+                  <div className="cl-card-head">
+                    <b>{t(c.title)}</b>
+                    {c.tag && <span className="cl-card-tag" style={{ color: colour, borderColor: colour }}>{t(c.tag)}</span>}
+                  </div>
+                  <p>{t(c.body)}</p>
+                  {c.detail && open && <p className="cl-card-detail">{t(c.detail)}</p>}
+                  {c.link && open && <a className="cl-card-link" href={c.link.href} target="_blank" rel="noopener noreferrer">{c.link.label} ↗</a>}
+                  {c.detail && !open && <span className="cl-card-more">Tap to reveal</span>}
+                </>
+              );
+              return L.reveal && c.detail ? (
+                <button key={i} type="button" className={`cl-cardbtn ${open ? "open" : ""}`} style={{ borderTopColor: colour }} onClick={() => setSt({ opened: opened.includes(i) ? opened : [...opened, i] })}>
+                  {inner}
+                </button>
+              ) : (
+                <div key={i} className="cl-cardbtn open static" style={{ borderTopColor: colour }}>{inner}</div>
+              );
+            })}
+          </div>
+          {L.note && <p className="cl-note" style={{ marginTop: 14 }}>{t(L.note)}</p>}
+          <div className="cl-nav">
+            <Btn onClick={back}>Back</Btn>
+            {!gate && <span className="cl-hint">{cards.length - opened.length} left to open</span>}
+            <Btn primary onClick={next} disabled={!gate}>Continue</Btn>
+          </div>
+        </>
+      );
+    } else if (L.kind === "toggles") {
+      const flipped = st.flipped ?? {};
+      const touched = L.toggles.every((_, i) => i in flipped);
+      stage = (
+        <>
+          <Eyebrow>{t(L.eyebrow)}</Eyebrow>
+          <h1 className="cl-h1">{t(L.heading)}</h1>
+          {L.lead && <p className="cl-lead">{t(L.lead)}</p>}
+          <div className="cl-toggles">
+            {L.toggles.map((tg, i) => {
+              const on = !!flipped[i];
+              return (
+                <div key={i} className="cl-toggle">
+                  <button type="button" role="switch" aria-checked={on} className={`cl-switch ${on ? "on" : ""}`} onClick={() => setSt({ flipped: { ...flipped, [i]: !on } })}>
+                    <span className="cl-knob" />
+                  </button>
+                  <div>
+                    <b>{t(tg.label)} <span className="cl-state">{on ? "On" : "Off"}</span></b>
+                    <small>{t(on ? tg.on : tg.off)}</small>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {L.note && <p className="cl-note" style={{ marginTop: 14 }}>{t(L.note)}</p>}
+          <div className="cl-nav">
+            <Btn onClick={back}>Back</Btn>
+            {!touched && <span className="cl-hint">Flip each switch once</span>}
+            <Btn primary onClick={next} disabled={!touched}>Continue</Btn>
+          </div>
+        </>
+      );
+    } else if (L.kind === "timeline") {
+      const shown = !!st.shown;
+      const Line = ({ label, steps, tone }: { label: string; steps: string[]; tone: "before" | "after" }) => (
+        <div className={`cl-tl ${tone}`}>
+          <div className="cl-label">{label}</div>
+          <ol>
+            {steps.map((s, i) => <li key={i}><span className="cl-tl-n">{i + 1}</span><span>{t(s)}</span></li>)}
+          </ol>
+        </div>
+      );
+      stage = (
+        <>
+          <Eyebrow>{t(L.eyebrow)}</Eyebrow>
+          <h1 className="cl-h1">{t(L.heading)}</h1>
+          {L.lead && <p className="cl-lead">{t(L.lead)}</p>}
+          <div className={`cl-tls ${shown ? "two" : ""}`}>
+            <Line label={L.before.label} steps={L.before.steps} tone="before" />
+            {shown && <Line label={L.after.label} steps={L.after.steps} tone="after" />}
+          </div>
+          {shown && <p className="cl-p" style={{ marginTop: 14 }}>{t(L.note)}</p>}
+          <div className="cl-nav">
+            <Btn onClick={back}>Back</Btn>
+            <Btn hidden={shown} onClick={() => setSt({ shown: true })}>{L.revealLabel}</Btn>
+            <Btn primary hidden={!shown} onClick={next}>Continue</Btn>
+          </div>
+        </>
+      );
+    } else if (L.kind === "contact") {
+      stage = (
+        <>
+          <Eyebrow>{t(L.eyebrow)}</Eyebrow>
+          <h1 className="cl-h1">{t(L.heading)}</h1>
+          <p className="cl-lead">{t(L.lead)}</p>
+          <div className="cl-contact">
+            <span className="cl-contact-avatar">{firm.contactName.slice(0, 1).toUpperCase()}</span>
+            <div>
+              <b>{firm.contactName}</b>
+              <small>{firm.contactRole || "Data protection lead"} · {firm.name}</small>
+            </div>
+          </div>
+          <div className="cl-label" style={{ marginTop: 18 }}>What to say</div>
+          <ol className="cl-script">
+            {L.script.map((s, i) => <li key={i}>{t(s)}</li>)}
+          </ol>
+          {L.note && <p className="cl-note" style={{ marginTop: 14 }}>{t(L.note)}</p>}
+          <div className="cl-nav">
+            <Btn onClick={back}>Back</Btn>
+            <Btn primary onClick={next}>Continue to Practise</Btn>
+          </div>
+        </>
+      );
     }
-  } else if (screen.kind === "desk") {
+  } else if (screen.kind === "desk" && sandbox) {
     const n = deskPicks.size;
     stage = (
       <>
         <Eyebrow>Practise · step 1 of 4 · look at your desk</Eyebrow>
-        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(practise.task)}</p></div>
-        <p className="cl-p">{t(practise.deskIntro)}</p>
-        {practise.desk.map((doc, di) => (
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(sandbox.task)}</p></div>
+        <p className="cl-p">{t(sandbox.deskIntro)}</p>
+        {sandbox.desk.map((doc, di) => (
           <div key={di} className="cl-doc">
             <div className="cl-dh"><span>Desk · {doc.title}</span><Tag cls={doc.cls} names={names} /></div>
             {doc.rows.map((row, ri) => {
@@ -505,8 +764,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
-  } else if (screen.kind === "picked") {
-    const rows = practise.desk.flatMap((doc, di) => doc.rows.map((row, ri) => ({ ...row, key2: `${di}:${ri}`, picked: deskPicks.has(`${di}:${ri}`) })));
+  } else if (screen.kind === "picked" && sandbox) {
+    const rows = sandbox.desk.flatMap((doc, di) => doc.rows.map((row, ri) => ({ ...row, key2: `${di}:${ri}`, picked: deskPicks.has(`${di}:${ri}`) })));
     const picked = rows.filter((r) => r.picked);
     const n = { C: 0, R: 0, I: 0, P: 0 } as Record<DataClass, number>;
     for (const r of picked) n[r.cls]++;
@@ -539,15 +798,15 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
-  } else if (screen.kind === "build") {
-    const nPicked = practise.builder.filter((g) => builder[g.key] !== undefined).length;
+  } else if (screen.kind === "build" && sandbox) {
+    const nPicked = sandbox.builder.filter((g) => builder[g.key] !== undefined).length;
     stage = (
       <>
         <Eyebrow>Practise · step 3 of 4 · build the prompt</Eyebrow>
         <h1 className="cl-h1">Pick one answer for each. The prompt writes itself.</h1>
         {flagged && <p className="cl-note" style={{ color: K.warn }}>The flagged answers are the ones the grader caught. Change them, then send again.</p>}
         <div className="cl-builder">
-          {practise.builder.map((g) => (
+          {sandbox.builder.map((g) => (
             <div key={g.key} className="cl-grp">
               <div className="cl-q">{g.question}</div>
               <div className="cl-choices">
@@ -571,19 +830,19 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         <div className="cl-ex">{assembledText || "Pick an answer above to start."}</div>
         <div className="cl-nav">
           <Btn onClick={back}>Back</Btn>
-          <span className="cl-hint">{nPicked} of {practise.builder.length} picked</span>
+          <span className="cl-hint">{nPicked} of {sandbox.builder.length} picked</span>
           <Btn primary disabled={!builderComplete} onClick={sendBuilt}>Send to {TOOL_LABEL[tool]}</Btn>
         </div>
       </>
     );
-  } else if (screen.kind === "sandbox") {
-    const v = buildBox.lastVerdict ?? buildBox.messages.find((m) => m.grade)?.grade?.verdict;
+  } else if (screen.kind === "sandbox" && sandbox) {
+    const v = buildBox.messages.find((m) => m.grade)?.grade?.verdict;
     const done = !buildBox.busy && buildBox.messages.length > 0;
     stage = (
       <>
         <Eyebrow>Practise · step 4 of 4 · the grader checks before {TOOL_LABEL[tool]} answers</Eyebrow>
         <div className="cl-banner"><span className="cl-dot" />Practice data only. Nothing you send is stored.</div>
-        <CopilotSim firmName={firm.name} learnerName={learnerName} messages={toSim(buildBox.messages)} draft="" onSend={() => {}} canSend={false} composerLocked status={buildBox.status} />
+        <Simulator tool={tool} firmName={firm.name} learnerName={learnerName} messages={toSim(buildBox.messages)} draft="" onSend={() => {}} canSend={false} composerLocked status={buildBox.status} />
         <div className="cl-nav">
           <Btn hidden={!done || v === "ok"} onClick={fixAndResend}>Fix and resend</Btn>
           <span className="cl-hint">{done ? (v === "ok" ? "Cleared send banked." : "Change the flagged answers, then resend.") : ""}</span>
@@ -591,79 +850,189 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
-  } else if (screen.kind === "free") {
+  } else if (screen.kind === "free" && sandbox) {
     stage = (
       <>
         <Eyebrow>Practise · your turn, optional</Eyebrow>
-        <h1 className="cl-h1">{t(practise.freeWrite.heading)}</h1>
-        <p className="cl-lead">{t(practise.freeWrite.lead)}</p>
-        <CopilotSim firmName={firm.name} learnerName={learnerName} messages={toSim(freeBox.messages, (r) => setFreeDraft(r))} draft={freeDraft} onDraftChange={setFreeDraft} onSend={sendFree} canSend={!!freeDraft.trim() && !freeBox.busy} status={freeBox.status} />
+        <h1 className="cl-h1">{t(sandbox.freeWrite.heading)}</h1>
+        <p className="cl-lead">{t(sandbox.freeWrite.lead)}</p>
+        <Simulator tool={tool} firmName={firm.name} learnerName={learnerName} messages={toSim(freeBox.messages, (r) => setFreeDraft(r))} draft={freeDraft} onDraftChange={setFreeDraft} onSend={sendFree} canSend={!!freeDraft.trim() && !freeBox.busy} status={freeBox.status} />
         <div className="cl-nav">
           <Btn onClick={back}>Back</Btn>
           <Btn primary onClick={next} disabled={freeBox.busy}>{freeSent ? "Continue to Prove" : "Skip to Prove"}</Btn>
         </div>
       </>
     );
-  } else if (screen.kind === "prove") {
-    const q: ProveItem = block.prove[screen.i];
-    const picked = proveAnswers[screen.i];
-    const last = screen.i === block.prove.length - 1;
+  } else if (screen.kind === "sortItem" && practise.kind === "sort") {
+    const item = practise.items[screen.i];
+    const picked = (picks[screen.i] as SimRef["tier"] | undefined) ?? null;
+    const last = screen.i === practise.items.length - 1;
     stage = (
       <>
-        <Eyebrow>Prove · snippet {screen.i + 1} of {block.prove.length} · pass at {manifest.passMark}</Eyebrow>
-        <h1 className="cl-h1">Which class is this?</h1>
-        <div className="cl-check solid">
-          <div className="cl-snip">&ldquo;{t(q.stem)}&rdquo;</div>
-          <div className="cl-opts">
-            {q.options.map((o) => {
-              const state = picked === null ? "" : o === q.answer ? "right" : o === picked ? "wrong" : "";
-              return (
-                <button key={o} type="button" disabled={picked !== null} className={`cl-opt ${state}`} onClick={() => setProveAnswers((a) => a.map((x, i) => (i === screen.i ? o : x)))}>
-                  {names[o]}
-                </button>
-              );
-            })}
+        <Eyebrow>Practise · window {screen.i + 1} of {practise.items.length}</Eyebrow>
+        <h1 className="cl-h1">Which tier is this window?</h1>
+        <p className="cl-p">Read it from the screen. The label is always somewhere.</p>
+        <Window sim={item.sim} firm={firm} learnerName={learnerName} caption={item.caption} />
+        <ThreeWay options={practise.bins} picked={picked} answer={item.sim.tier} onPick={(id) => setPicks((p) => ({ ...p, [screen.i]: id }))} />
+        {picked !== null && (
+          <div className="cl-fb">
+            <b>{picked === item.sim.tier ? "Correct." : `It is ${TIER_LABEL[item.sim.tier].toLowerCase()}.`}</b> {t(item.tell)}
           </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={back} hidden={screen.i === 0}>Back</Btn>
+          <span className="cl-hint">One pick. The tell appears straight away.</span>
+          <Btn primary disabled={picked === null} onClick={next}>{last ? "Continue to Prove" : "Next window"}</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "situation" && practise.kind === "situations") {
+    const s = practise.situations[screen.i];
+    const resolved = resolveSituation(s, firm);
+    const picked = (picks[screen.i] as SituationAnswer | undefined) ?? null;
+    const last = screen.i === practise.situations.length - 1;
+    const LABEL: Record<SituationAnswer, string> = { fine: "Fine", ask: "Ask first", no: "Not here" };
+    stage = (
+      <>
+        <Eyebrow>Practise · situation {screen.i + 1} of {practise.situations.length}</Eyebrow>
+        <h1 className="cl-h1">Is this fine here?</h1>
+        <div className="cl-sit">
+          {s.sim && <Window sim={s.sim} firm={firm} learnerName={learnerName} caption={`${TOOL_LABEL[s.sim.tool]} · ${TIER_LABEL[s.sim.tier]}`} />}
+          <p className="cl-sit-text">{t(s.text)}</p>
+        </div>
+        <ThreeWay
+          options={[
+            { id: "fine" as const, label: "Fine", desc: "Approved tool, right account, right class." },
+            { id: "ask" as const, label: "Ask first", desc: `Check with ${firm.contactName} before anything goes in.` },
+            { id: "no" as const, label: "Not here", desc: "Not on this account, this device or this tool." },
+          ]}
+          picked={picked}
+          answer={resolved.answer}
+          onPick={(id) => setPicks((p) => ({ ...p, [screen.i]: id }))}
+        />
+        {picked !== null && (
+          <div className="cl-fb">
+            <b>{picked === resolved.answer ? "Correct." : `${LABEL[resolved.answer]}.`}</b> {t(resolved.why)}
+          </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={back} hidden={screen.i === 0}>Back</Btn>
+          <span className="cl-hint">{firm.name}&rsquo;s own list decides.</span>
+          <Btn primary disabled={picked === null} onClick={next}>{last ? "Continue to Prove" : "Next situation"}</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "incident" && practise.kind === "triage") {
+    const inc = practise.incidents[screen.i];
+    const picked = (picks[screen.i] as TriageAnswer | undefined) ?? null;
+    const last = screen.i === practise.incidents.length - 1;
+    const label = practise.columns.find((c) => c.id === inc.answer)?.label ?? "";
+    stage = (
+      <>
+        <Eyebrow>Practise · incident {screen.i + 1} of {practise.incidents.length}</Eyebrow>
+        <h1 className="cl-h1">{t(inc.title)}</h1>
+        <div className="cl-task"><p>{t(inc.body)}</p></div>
+        <p className="cl-p">Which column?</p>
+        <ThreeWay options={practise.columns.map((c) => ({ id: c.id, label: t(c.label), desc: t(c.desc) }))} picked={picked} answer={inc.answer} onPick={(id) => setPicks((p) => ({ ...p, [screen.i]: id }))} />
+        {picked !== null && (
+          <div className="cl-fb">
+            <b>{picked === inc.answer ? "Correct." : `${t(label)}.`}</b> {t(inc.why)}
+          </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={back} hidden={screen.i === 0}>Back</Btn>
+          <span className="cl-hint">The reason appears as soon as you choose.</span>
+          <Btn primary disabled={picked === null} onClick={next}>{last ? (isFinal ? "Start the final assessment" : "Continue to Prove") : "Next incident"}</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "prove") {
+    const q = proveSet[screen.i];
+    const picked = proveAnswers[screen.i];
+    const last = screen.i === proveSet.length - 1;
+    const setAns = (v: string) => setProveAnswers((a) => a.map((x, i) => (i === screen.i ? v : x)));
+    stage = (
+      <>
+        <Eyebrow>{isFinal ? "Final assessment" : "Prove"} · item {screen.i + 1} of {proveSet.length} · pass at {manifest.passMark}</Eyebrow>
+        <h1 className="cl-h1">{q.kind === "classify" ? "Which class is this?" : t(q.stem)}</h1>
+        <div className="cl-check solid">
+          {q.kind === "classify" ? (
+            <>
+              <div className="cl-snip">&ldquo;{t(q.stem)}&rdquo;</div>
+              <div className="cl-opts">
+                {q.options.map((o) => {
+                  const state = picked === null ? "" : o === q.answer ? "right" : o === picked ? "wrong" : "";
+                  return (
+                    <button key={o} type="button" disabled={picked !== null} className={`cl-opt ${state}`} onClick={() => setAns(o)}>
+                      {names[o]}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <>
+              {q.sim && <Window sim={q.sim} firm={firm} learnerName={learnerName} />}
+              <div className="cl-opts col">
+                {q.options.map((o, oi) => {
+                  const state = picked === null ? "" : oi === q.answer ? "right" : String(oi) === picked ? "wrong" : "";
+                  return (
+                    <button key={oi} type="button" disabled={picked !== null} className={`cl-opt text ${state}`} onClick={() => setAns(String(oi))}>
+                      {t(o)}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
           {picked !== null && (
             <div className="cl-fb">
-              <b>{picked === q.answer ? "Correct." : `It is ${names[q.answer]}.`}</b> {t(q.why)}
+              <b>{(q.kind === "classify" ? picked === q.answer : Number(picked) === q.answer) ? "Correct." : q.kind === "classify" ? `It is ${names[q.answer]}.` : "Not quite."}</b> {t(q.why)}
             </div>
           )}
         </div>
         <div className="cl-nav">
           <span className="cl-hint">One pick. You will see the answer straight away.</span>
-          <Btn primary disabled={picked === null} onClick={next}>{last ? "See my result" : "Next snippet"}</Btn>
+          <Btn primary disabled={picked === null} onClick={next}>{last ? "See my result" : "Next item"}</Btn>
         </div>
       </>
     );
   } else if (screen.kind === "result") {
     const clean = bestVerdict === "ok";
-    const doneCount = courseMap.filter((m) => m.done || m.n === manifest.n).length;
+    const doneCount = courseMap.filter((m) => m.done || (m.n === manifest.n && passed)).length;
+    const total = courseMap.length;
+    const courseDone = passed && courseMap.filter((m) => m.available).every((m) => m.done || m.n === manifest.n);
     stage = (
       <>
-        <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? "Module cleared" : "Not yet cleared"}</span>
+        <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? (isFinal ? "Course cleared" : "Module cleared") : "Not yet cleared"}</span>
         <Eyebrow>Module {manifest.n} · {manifest.title}</Eyebrow>
-        <h1 className="cl-h1">{passed ? "Cleared, " : "Not yet, "}{correct} of {block.prove.length}</h1>
+        <h1 className="cl-h1">{passed ? "Cleared, " : "Not yet, "}{correct} of {proveSet.length}</h1>
         <p className="cl-lead">
           {passed
-            ? clean
-              ? `You classified ${correct} snippets correctly and sent a cleared prompt in the sandbox. This module's score is on your record.`
-              : `You classified ${correct} snippets correctly. Your sandbox send was not fully cleared; a cleared send would lift this to full marks.`
-            : `Pass mark is ${manifest.passMark} of ${block.prove.length}. Go back over the three questions and try the snippets again. Nothing is recorded until you pass.`}
+            ? isFinal
+              ? courseDone
+                ? `You passed the final assessment with ${correct} of ${proveSet.length}. Every module is cleared and your certificate is being prepared; you will find it on the course page.`
+                : `You passed the final assessment with ${correct} of ${proveSet.length}. Clear the remaining modules and your certificate issues from the course page.`
+              : sandbox
+                ? clean
+                  ? `You classified ${correct} snippets correctly and sent a cleared prompt in the sandbox. This module's score is on your record.`
+                  : `You classified ${correct} snippets correctly. Your sandbox send was not fully cleared; a cleared send would lift this to full marks.`
+                : `You answered ${correct} of ${proveSet.length} correctly. This module's score is on your record.`
+            : `Pass mark is ${manifest.passMark} of ${proveSet.length}. ${isFinal ? "A retake draws a different set of questions." : "Go back over the Learn screens and try again."} Nothing is recorded until you pass.`}
         </p>
         <div className="cl-label" style={{ marginTop: 22 }}>Progress to your AI Cleared certificate</div>
-        <div className="cl-meter"><i style={{ width: `${(doneCount / courseMap.length) * 100}%` }} /></div>
-        <div className="cl-hint">{doneCount} of {courseMap.length} modules · {TRACK_LABEL[track]} track</div>
+        <div className="cl-meter"><i style={{ width: `${(doneCount / total) * 100}%` }} /></div>
+        <div className="cl-hint">{doneCount} of {total} modules · {TRACK_LABEL[track]} track</div>
         <div className="cl-nav">
           {passed ? (
             <>
-              <span className="cl-hint">The next module reads {firm.name}&rsquo;s own approved tool list.</span>
+              <span className="cl-hint">{isFinal ? "Thank you. The habits are the point; the certificate is the receipt." : "The next module is waiting on the course page."}</span>
               <Link href="/ai-cleared" className="cl-btn cl-btn-pri">Back to your course</Link>
             </>
           ) : (
             <>
-              <Btn onClick={() => go(startOf("learn") + 3)}>Read the three questions again</Btn>
-              <Btn primary onClick={retryProve}>Try the snippets again</Btn>
+              <Btn onClick={() => go(0)}>Read the Learn screens again</Btn>
+              <Btn primary onClick={retryProve}>{isFinal ? "Retake with new questions" : "Try again"}</Btn>
             </>
           )}
         </div>
@@ -681,10 +1050,10 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           <p>{t(practise.task)}</p>
         </div>
       )}
-      {inPractise && (
+      {inPractise && sandbox && (
         <div className="cl-dock-sec">
           <div className="cl-label">On your desk</div>
-          {practise.desk.map((doc, di) => (
+          {sandbox.desk.map((doc, di) => (
             <div key={di} className="cl-dock-doc">
               <div className="cl-dh"><span>{doc.title}</span><Tag cls={doc.cls} names={names} small /></div>
               {doc.rows.map((row, ri) => (
@@ -718,7 +1087,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           <span className="cl-sep" />
           <span className="cl-firm">{firm.name}</span>
           <span className="cl-sep" />
-          <span className="cl-where">Module {manifest.n} · {screen.phase === "done" ? "Result" : screen.phase.charAt(0).toUpperCase() + screen.phase.slice(1)}</span>
+          <span className="cl-where">Module {manifest.n} · {screen.phase === "done" ? "Result" : screen.phase === "prove" && isFinal ? "Final assessment" : screen.phase.charAt(0).toUpperCase() + screen.phase.slice(1)}</span>
         </div>
         <div className="cl-top-right">
           <span className="cl-chip">Practice data only</span>
@@ -807,12 +1176,12 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-nav .cl-hint { margin-right: auto; }
         .cl-nav > .cl-btn:first-child:not(.cl-btn-pri) { margin-right: auto; }
 
-        .cl-shell .cl-btn { font: inherit; font-size: 14px; font-weight: 600; color: ${K.ink}; background: transparent; border: 1px solid ${K.edge}; border-radius: 9px; padding: 9px 16px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
-        .cl-shell .cl-btn:hover:not(:disabled) { border-color: ${K.accent}; }
-        .cl-shell .cl-btn:disabled { opacity: 0.45; cursor: default; }
-        .cl-shell .cl-btn-pri { background: ${K.accent}; border-color: ${K.accent}; color: ${K.onAccent}; }
-        .cl-shell .cl-btn-pri:hover:not(:disabled) { filter: brightness(1.08); }
-        .cl-shell .cl-btn-small { font-size: 12.5px; padding: 6px 11px; }
+        .cl-btn { font: inherit; font-size: 14px; font-weight: 600; color: ${K.ink}; background: transparent; border: 1px solid ${K.edge}; border-radius: 9px; padding: 9px 16px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+        .cl-btn:hover:not(:disabled) { border-color: ${K.accent}; }
+        .cl-btn:disabled { opacity: 0.45; cursor: default; }
+        .cl-btn-pri { background: ${K.accent}; border-color: ${K.accent}; color: ${K.onAccent}; }
+        .cl-btn-pri:hover:not(:disabled) { filter: brightness(1.08); }
+        .cl-btn-small { font-size: 12.5px; padding: 6px 11px; }
         .cl-shell button:focus-visible, .cl-shell a:focus-visible, .cl-shell input:focus-visible { outline: 2px solid ${K.accentInk}; outline-offset: 2px; }
 
         .cl-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 18px; }
@@ -824,7 +1193,9 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-q { font-weight: 600; color: ${K.ink}; margin-bottom: 8px; }
         .cl-snip { font-family: ${K.mono}; font-size: 14px; color: ${K.ink}; background: ${K.sunk}; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; line-height: 1.5; }
         .cl-opts { display: flex; flex-wrap: wrap; gap: 8px; }
-        .cl-opt { font: inherit; font-family: ${K.mono}; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: ${K.ink}; background: transparent; border: 1px solid ${K.edge}; border-radius: 8px; padding: 8px 13px; cursor: pointer; }
+        .cl-opts.col { flex-direction: column; }
+        .cl-opt { font: inherit; font-family: ${K.mono}; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: ${K.ink}; background: transparent; border: 1px solid ${K.edge}; border-radius: 8px; padding: 8px 13px; cursor: pointer; text-align: left; }
+        .cl-opt.text { font-family: ${K.sans}; font-size: 14.5px; font-weight: 500; letter-spacing: 0; padding: 11px 14px; line-height: 1.45; }
         .cl-opt:hover:not(:disabled) { border-color: ${K.accent}; }
         .cl-opt:disabled { cursor: default; }
         .cl-opt.right { border-color: ${K.ok}; background: ${K.okSoft}; color: ${K.ok}; }
@@ -841,6 +1212,59 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-ex { font-size: 15px; line-height: 1.6; color: ${K.ink}; background: ${K.sunk}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px 16px; }
         .cl-rd { background: ${K.ink}; color: ${K.ink}; border-radius: 2px; padding-inline: 2px; }
         .cl-phd { color: ${K.accentInk}; font-weight: 500; }
+
+        .cl-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+        .cl-cards.one { grid-template-columns: 1fr; }
+        .cl-cardbtn { font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; color: ${K.body}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; border-top: 2px solid; border-radius: 10px; padding: 14px 14px 12px; cursor: pointer; }
+        .cl-cardbtn.static { cursor: default; }
+        .cl-cardbtn:not(.static):hover { border-color: ${K.accent}; border-top-color: inherit; }
+        .cl-cardbtn p { margin: 0; font-size: 14px; line-height: 1.5; }
+        .cl-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+        .cl-card-head b { color: ${K.ink}; font-size: 15.5px; line-height: 1.3; }
+        .cl-card-tag { flex-shrink: 0; font-family: ${K.mono}; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; border-radius: 4px; padding: 2px 6px; white-space: nowrap; }
+        .cl-card-detail { color: ${K.ink}; border-top: 1px solid ${K.edgeSoft}; padding-top: 8px; margin-top: 4px; animation: cl-in 250ms ease both; overflow-wrap: anywhere; }
+        .cl-card-link { color: ${K.accentInk}; font-size: 13.5px; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+        .cl-card-more { font-family: ${K.mono}; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.accentInk}; margin-top: 4px; }
+
+        .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+        .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
+        .cl-toggle b { display: block; color: ${K.ink}; font-size: 15px; margin-bottom: 4px; }
+        .cl-toggle small { color: ${K.muted}; font-size: 13.5px; line-height: 1.5; display: block; }
+        .cl-state { font-family: ${K.mono}; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.accentInk}; margin-left: 6px; }
+        .cl-switch { flex-shrink: 0; width: 44px; height: 24px; border-radius: 999px; border: 1px solid ${K.edge}; background: ${K.sunk}; position: relative; cursor: pointer; margin-top: 2px; }
+        .cl-switch.on { background: ${K.accent}; border-color: ${K.accent}; }
+        .cl-knob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: ${K.ink}; transition: left 150ms ease; }
+        .cl-switch.on .cl-knob { left: 22px; background: ${K.onAccent}; }
+
+        .cl-tls { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 12px; }
+        .cl-tls.two { grid-template-columns: 1fr 1fr; }
+        .cl-tl { border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
+        .cl-tl.after { border-color: ${K.warn}; animation: cl-in 250ms ease both; }
+        .cl-tl ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+        .cl-tl li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: ${K.body}; }
+        .cl-tl-n { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; border: 1px solid ${K.edge}; font-family: ${K.mono}; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; color: ${K.muted}; }
+        .cl-tl.after .cl-tl-n { border-color: ${K.warn}; color: ${K.warn}; }
+
+        .cl-contact { display: flex; align-items: center; gap: 14px; border: 1px solid ${K.accent}; background: ${K.accentSoft}; border-radius: 12px; padding: 14px 16px; margin-top: 8px; }
+        .cl-contact-avatar { width: 44px; height: 44px; border-radius: 50%; background: ${K.accent}; color: ${K.onAccent}; font-weight: 700; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; }
+        .cl-contact b { display: block; color: ${K.ink}; font-size: 17px; }
+        .cl-contact small { color: ${K.muted}; font-size: 13.5px; }
+        .cl-script { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; color: ${K.ink}; font-size: 15px; }
+
+        .cl-window { margin: 12px 0 14px; }
+        .cl-window-cap { font-family: ${K.mono}; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.faint}; margin-top: 6px; }
+        .cl-sit { margin-bottom: 6px; }
+        .cl-sit-text { font-size: 16px; line-height: 1.55; color: ${K.ink}; margin: 0 0 14px; }
+        .cl-three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 6px; }
+        .cl-three-btn { font: inherit; text-align: left; display: flex; flex-direction: column; gap: 4px; color: ${K.ink}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 12px 13px; cursor: pointer; }
+        .cl-three-btn b { font-size: 15px; }
+        .cl-three-btn small { color: ${K.muted}; font-size: 12.5px; line-height: 1.4; }
+        .cl-three-btn:hover:not(:disabled) { border-color: ${K.accent}; }
+        .cl-three-btn:disabled { cursor: default; }
+        .cl-three-btn.right { border-color: ${K.ok}; background: ${K.okSoft}; }
+        .cl-three-btn.right b { color: ${K.ok}; }
+        .cl-three-btn.wrong { border-color: ${K.crit}; background: ${K.critSoft}; }
+        .cl-three-btn.wrong b { color: ${K.crit}; }
 
         .cl-task { border-left: 3px solid ${K.accent}; background: ${K.accentSoft}; border-radius: 0 10px 10px 0; padding: 12px 14px; margin: 4px 0 14px; }
         .cl-task p { margin: 0; color: ${K.ink}; }
@@ -865,17 +1289,17 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-banner { display: flex; align-items: center; gap: 8px; font-size: 13px; color: ${K.ok}; margin-bottom: 12px; }
         .cl-dot { width: 8px; height: 8px; border-radius: 50%; background: ${K.ok}; box-shadow: 0 0 0 3px ${K.okSoft}; }
 
-        .cl-shell .cl-grader { background: ${K.panel}; color: ${K.body}; border: 1px solid; border-radius: 10px; padding: 14px 16px; font-family: ${K.sans}; font-size: 14px; text-align: left; animation: cl-in 250ms ease both; }
-        .cl-shell .cl-grader-top { display: flex; align-items: center; gap: 10px; color: ${K.ink}; font-weight: 500; margin-bottom: 10px; }
-        .cl-shell .cl-pill { font-family: ${K.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; border-radius: 999px; padding: 3px 10px; }
-        .cl-shell .cl-echo { background: ${K.sunk}; border-radius: 8px; padding: 10px 12px; line-height: 1.7; color: ${K.body}; white-space: pre-wrap; }
-        .cl-shell .cl-finds { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
-        .cl-shell .cl-find { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; }
-        .cl-shell .cl-find b { color: ${K.ink}; font-weight: 600; }
-        .cl-shell .cl-why { color: ${K.muted}; }
-        .cl-shell .cl-coach { margin: 12px 0 0; color: ${K.ink}; font-size: 14.5px; line-height: 1.55; }
-        .cl-shell .cl-rewrite { margin-top: 12px; padding-top: 12px; border-top: 1px solid ${K.edgeSoft}; }
-        .cl-shell .cl-rewrite-text { color: ${K.accentInk}; font-size: 14px; line-height: 1.55; margin-bottom: 10px; }
+        .cl-grader { background: ${K.panel}; color: ${K.body}; border: 1px solid; border-radius: 10px; padding: 14px 16px; font-family: ${K.sans}; font-size: 14px; text-align: left; animation: cl-in 250ms ease both; }
+        .cl-grader-top { display: flex; align-items: center; gap: 10px; color: ${K.ink}; font-weight: 500; margin-bottom: 10px; }
+        .cl-pill { font-family: ${K.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; border-radius: 999px; padding: 3px 10px; }
+        .cl-echo { background: ${K.sunk}; border-radius: 8px; padding: 10px 12px; line-height: 1.7; color: ${K.body}; white-space: pre-wrap; }
+        .cl-finds { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+        .cl-find { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; }
+        .cl-find b { color: ${K.ink}; font-weight: 600; }
+        .cl-why { color: ${K.muted}; }
+        .cl-coach { margin: 12px 0 0; color: ${K.ink}; font-size: 14.5px; line-height: 1.55; }
+        .cl-rewrite { margin-top: 12px; padding-top: 12px; border-top: 1px solid ${K.edgeSoft}; }
+        .cl-rewrite-text { color: ${K.accentInk}; font-size: 14px; line-height: 1.55; margin-bottom: 10px; }
 
         .cl-stamp { display: inline-block; font-family: ${K.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; border: 1.5px solid; border-radius: 6px; padding: 5px 10px; margin-bottom: 16px; }
         .cl-meter { height: 8px; background: ${K.sunk}; border-radius: 999px; overflow: hidden; margin: 6px 0 8px; }
@@ -905,13 +1329,14 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-stage { padding: 16px 16px 48px; }
           .cl-card { padding: 22px 18px 20px; }
           .cl-h1 { font-size: 23px; }
-          .cl-tiles, .cl-choices { grid-template-columns: 1fr; }
+          .cl-tiles, .cl-choices, .cl-cards, .cl-tls.two { grid-template-columns: 1fr; }
+          .cl-three { grid-template-columns: 1fr; }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }
           .cl-row.show { grid-template-columns: 1fr auto; }
           .cl-row.show .cl-v { grid-column: 1; }
-          .cl-shell .sim-copilot { grid-template-columns: minmax(0, 1fr) !important; }
-          .cl-shell .sim-copilot-rail { display: none !important; }
+          .sim-copilot:not(.sim-compact), .sim-chatgpt:not(.sim-compact), .sim-gemini:not(.sim-compact), .sim-claude:not(.sim-compact) { grid-template-columns: minmax(0, 1fr) !important; }
+          .sim-copilot:not(.sim-compact) .sim-copilot-rail, .sim-chatgpt:not(.sim-compact) .sim-chatgpt-rail, .sim-gemini:not(.sim-compact) .sim-gemini-rail, .sim-claude:not(.sim-compact) .sim-claude-rail { display: none !important; }
         }
         @media (max-width: 480px) {
           .cl-chip { display: none; }
@@ -922,8 +1347,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-top-right { gap: 6px; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .cl-stage, .cl-rv, .cl-shell .cl-grader { animation: none; }
-          .cl-bar i, .cl-meter i { transition: none; }
+          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after { animation: none; }
+          .cl-bar i, .cl-meter i, .cl-knob { transition: none; }
         }
       `}</style>
     </div>

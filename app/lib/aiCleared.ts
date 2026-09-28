@@ -150,11 +150,28 @@ export async function saveScreen(args: {
     bestVerdict,
     completedAt: args.completed ? (existing?.completedAt ?? new Date()) : existing?.completedAt,
   };
-  return prisma.moduleProgress.upsert({
+  const row = await prisma.moduleProgress.upsert({
     where: { enrolmentId_module: { enrolmentId: args.enrolmentId, module: args.module } },
     update: data,
     create: { enrolmentId: args.enrolmentId, module: args.module, ...data },
   });
+  if (args.completed) await completeIfFinished(args.enrolmentId);
+  return row;
+}
+
+/* The course is complete when every available module has a completion
+ * date. finalScore is the final assessment score as a percentage. */
+export async function completeIfFinished(enrolmentId: string) {
+  const { MODULE_LIST } = await import("@/app/ai-cleared/manifests");
+  const rows = await prisma.moduleProgress.findMany({ where: { enrolmentId } });
+  const byModule = new Map(rows.map((r) => [r.module, r]));
+  const available = MODULE_LIST.filter((m) => m.available);
+  const allDone = available.every((m) => byModule.get(m.n)?.completedAt);
+  if (!allDone) return false;
+  const finalRow = byModule.get(5);
+  const finalScore = finalRow?.proveScore != null && finalRow.proveTotal ? Math.round((finalRow.proveScore / finalRow.proveTotal) * 100) : null;
+  await prisma.enrolment.update({ where: { id: enrolmentId }, data: { completedAt: new Date(), finalScore } });
+  return true;
 }
 
 /* Scores only. Never the prompt, never the reply. */

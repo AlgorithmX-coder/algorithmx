@@ -32,7 +32,7 @@ export default async function ModulePage({ params }: { params: Promise<{ n: stri
       manifest={manifest}
       track={DB_TO_TRACK[enrolment.track]}
       firm={firm}
-      tool={manifest.tracks[DB_TO_TRACK[enrolment.track]]?.practise.tool ?? defaultToolFor(firm)}
+      tool={(() => { const pr = manifest.tracks[DB_TO_TRACK[enrolment.track]]?.practise; return (pr && pr.kind === "sandbox" && pr.tool) || defaultToolFor(firm); })()}
       learnerName={firstNameOf(enrolment.user.name, enrolment.user.email)}
       courseMap={courseMap}
       initialPhase={mine && !mine.completedAt ? DB_TO_PHASE[mine.phase] : undefined}

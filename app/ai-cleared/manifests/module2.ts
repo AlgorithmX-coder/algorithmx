@@ -1,4 +1,5 @@
 import type { ModuleManifest } from "../engine/types";
+import { GENERAL_TRACK, HR_TRACK, LEGAL_TRACK } from "./module2Tracks";
 
 /* Module 2 · The paste test. Rebuilt from the approved demo in the engine's
  * manifest shape. The Learn screens are shared; the Finance track supplies
@@ -192,5 +193,8 @@ export const MODULE_2: ModuleManifest = {
         { kind: "classify", stem: "Draft a chaser for a supplier that is 40 days overdue, placeholders for name and amount.", options: ["P", "I", "C", "R"], answer: "P", why: "There is no data in it at all. That is the goal." },
       ],
     },
+    legal: LEGAL_TRACK,
+    hr: HR_TRACK,
+    general: GENERAL_TRACK,
   },
 };

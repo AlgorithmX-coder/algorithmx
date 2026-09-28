@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
   const manifest = getModule(module);
   if (!manifest) return Response.json({ error: "No such module." }, { status: 404 });
   const { block, track: resolvedTrack } = resolveTrack(manifest, track);
+  if (!block.dataPack) return Response.json({ error: "This module has no sandbox." }, { status: 404 });
   if (realDataCheck(prompt, block.dataPack)) return Response.json({ error: "Halted: that looks like real data." }, { status: 422 });
 
   const fallback = scriptedReply(module, resolvedTrack, prompt);

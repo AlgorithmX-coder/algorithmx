@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
   if (!manifest) return Response.json({ error: "No such module." }, { status: 404 });
   const { block } = resolveTrack(manifest, track);
   const pack = block.dataPack;
+  if (!pack) return Response.json({ error: "This module has no sandbox." }, { status: 404 });
 
   /* The real-data halt, enforced again server-side. */
   const real = realDataCheck(prompt, pack);

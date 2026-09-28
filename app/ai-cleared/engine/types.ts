@@ -4,9 +4,12 @@
  * engine code, and a track is a different desk, never a different engine.
  *
  * Shape: Learn (three or four screens, one action each) -> Practise (one
- * task in a simulator with the grader) -> Prove (five items, pass at four).
- * The shared Learn screens are written once; the per-track block supplies
- * the data pack, the desk, the task, the builder and the prove bank. */
+ * task, one action per screen) -> Prove (five items, pass at four; the
+ * final assessment draws ten from a bank, pass at eight). The shared Learn
+ * screens are written once; the per-track block supplies the desk. */
+
+import type { SimTier } from "../sims/types";
+export type { SimTier } from "../sims/types";
 
 /* The four data classes, the one colour system of the whole course. */
 export type DataClass = "P" | "I" | "C" | "R";
@@ -45,12 +48,24 @@ export const TRACK_LABEL: Record<Track, string> = {
 };
 
 export type Tool = "copilot" | "chatgpt" | "gemini" | "claude";
+export const TOOLS: readonly Tool[] = ["copilot", "chatgpt", "gemini", "claude"];
 export const TOOL_LABEL: Record<Tool, string> = {
   copilot: "Copilot",
   chatgpt: "ChatGPT",
   gemini: "Gemini",
   claude: "Claude",
 };
+export const TIER_LABEL: Record<SimTier, string> = {
+  "consumer-free": "Consumer, free",
+  "consumer-paid": "Consumer, paid",
+  enterprise: "Enterprise",
+};
+
+/* A window in a simulator: which tool, on which account. */
+export interface SimRef {
+  tool: Tool;
+  tier: SimTier;
+}
 
 /* ok = cleared, warn = over-shared (CONFIDENTIAL went out), crit = leaked
  * (RESTRICTED went out). Mirrors SandboxVerdict in Prisma. */
@@ -108,6 +123,19 @@ export interface TextPart {
   mark?: "redact" | "placeholder";
 }
 
+/* A card on a Learn screen. `detail` is revealed on tap when the screen
+ * says so; `sim` draws a compact simulator window above the text. */
+export interface LearnCard {
+  title: string;
+  body: string;
+  detail?: string;
+  tag?: string;
+  tint?: DataClass | "ok" | "warn" | "crit";
+  sim?: SimRef;
+  /* An outbound page, opened in a new tab. */
+  link?: { label: string; href: string };
+}
+
 export type LearnScreen =
   | {
       kind: "intro";
@@ -130,6 +158,8 @@ export type LearnScreen =
       heading: string;
       lead?: string;
       items: { title: string; body: string }[];
+      /* Button label pattern, "{n}" = the next number. Default "Show question {n}". */
+      more?: string;
     }
   | {
       kind: "compare";
@@ -140,6 +170,51 @@ export type LearnScreen =
       after: { label: string; parts: TextPart[]; note: string };
       revealLabel: string;
       cta: string;
+    }
+  | {
+      /* A grid of cards. With `reveal`, each card's detail opens on tap
+       * and the screen gates on every card having been opened. With
+       * `source`, the cards come from the firm profile or the vendor
+       * matrix at render time instead of the manifest. */
+      kind: "cards";
+      eyebrow: string;
+      heading: string;
+      lead?: string;
+      cards?: LearnCard[];
+      source?: "firm.approved" | "firm.askFirst" | "firm.banned" | "firm.rules" | "vendors.terms";
+      reveal?: boolean;
+      columns?: 1 | 2;
+      note?: string;
+    }
+  | {
+      /* Switches the learner flips to see the consequence. Gates on every
+       * switch having been flipped at least once. */
+      kind: "toggles";
+      eyebrow: string;
+      heading: string;
+      lead?: string;
+      toggles: { label: string; off: string; on: string }[];
+      note?: string;
+    }
+  | {
+      /* Two vertical timelines, the second revealed on tap. */
+      kind: "timeline";
+      eyebrow: string;
+      heading: string;
+      lead?: string;
+      before: { label: string; steps: string[] };
+      after: { label: string; steps: string[] };
+      revealLabel: string;
+      note: string;
+    }
+  | {
+      /* The firm's escalation contact, with what to say. */
+      kind: "contact";
+      eyebrow: string;
+      heading: string;
+      lead: string;
+      script: string[];
+      note?: string;
     };
 
 /* ---- Practise ---- */
@@ -158,6 +233,7 @@ export interface BuilderGroup {
   choices: BuilderChoice[];
 }
 
+/* Module 2: build a prompt, send it, get graded, fix it. */
 export interface SandboxPractise {
   kind: "sandbox";
   /* Which simulator to mount. Absent = the firm's approved tool. */
@@ -171,21 +247,65 @@ export interface SandboxPractise {
   freeWrite: { heading: string; lead: string; placeholder: string };
 }
 
-/* ---- Prove ---- */
+/* Module 1: which tier is this window? One item per screen. */
+export interface SortPractise {
+  kind: "sort";
+  task: string;
+  bins: { id: SimTier; label: string; desc: string }[];
+  items: { sim: SimRef; caption?: string; tell: string }[];
+}
 
-export interface ProveItem {
-  kind: "classify";
-  stem: string;
-  options: DataClass[];
-  answer: DataClass;
+/* Module 3: is this fine here? One situation per screen. The answer can
+ * be fixed, or resolved against the firm's own tool lists at render time
+ * (`toolStatus`), which is how one manifest serves every firm. */
+export type SituationAnswer = "fine" | "ask" | "no";
+export interface Situation {
+  text: string;
+  sim?: SimRef;
+  answer?: SituationAnswer;
+  /* Resolve from the firm profile: which tool and tier the situation is
+   * really about. approved -> fine, ask first -> ask, banned/unknown -> no
+   * or ask (see resolveSituation). */
+  toolStatus?: SimRef;
+  why: string;
+  /* Why lines per resolved answer, used with toolStatus. */
+  whyBy?: Partial<Record<SituationAnswer, string>>;
+}
+export interface SituationsPractise {
+  kind: "situations";
+  task: string;
+  situations: Situation[];
+}
+
+/* Module 5: what do you do now? One incident per screen. */
+export type TriageAnswer = "none" | "manager" | "today";
+export interface Incident {
+  title: string;
+  body: string;
+  answer: TriageAnswer;
   why: string;
 }
+export interface TriagePractise {
+  kind: "triage";
+  task: string;
+  columns: { id: TriageAnswer; label: string; desc: string }[];
+  incidents: Incident[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise;
+
+/* ---- Prove ---- */
+
+export type ProveItem =
+  | { kind: "classify"; stem: string; options: DataClass[]; answer: DataClass; why: string; from?: number }
+  | { kind: "choose"; stem: string; options: string[]; answer: number; why: string; sim?: SimRef; from?: number };
 
 /* ---- the per-track block and the module ---- */
 
 export interface TrackBlock {
-  dataPack: DataPack;
-  practise: SandboxPractise;
+  /* Only a sandbox practise needs a pack; the grade route refuses without one. */
+  dataPack?: DataPack;
+  practise: Practise;
   prove: ProveItem[];
 }
 
@@ -197,8 +317,11 @@ export interface ModuleManifest {
   promise: string;
   learn: LearnScreen[];
   tracks: Partial<Record<Track, TrackBlock>>;
-  /* Correct prove items needed, out of the track's prove.length. */
+  /* Correct prove items needed, out of the items shown. */
   passMark: number;
+  /* The final assessment: draw `draw` items, `fromTrack` of them from the
+   * track's own prove bank, the rest from `bank`, spread across modules. */
+  final?: { draw: number; fromTrack: number; bank: ProveItem[] };
 }
 
 /* ---- what the player knows about the firm (client-safe view) ---- */
@@ -224,8 +347,7 @@ export const DEFAULT_FIRM: FirmView = {
 };
 
 /* Pick the desk for a track, falling back to General, then the first
- * authored track. Phase 1 ships Finance only, so every track reads Finance
- * until its own block is written. */
+ * authored track. */
 export function resolveTrack(manifest: ModuleManifest, track: Track): { track: Track; block: TrackBlock } {
   const direct = manifest.tracks[track];
   if (direct) return { track, block: direct };
@@ -244,6 +366,41 @@ export function fill(text: string, ctx: { firm: FirmView; tool: Tool }): string 
     .replaceAll("{{firm.contactRole}}", ctx.firm.contactRole)
     .replaceAll("{{firm.approved}}", ctx.firm.approvedTools[0] ?? "your approved tool")
     .replaceAll("{{tool}}", TOOL_LABEL[ctx.tool]);
+}
+
+/* Where the firm stands on a tool at a tier, read from its three lists by
+ * keyword. "personal", "free" or "consumer" in an entry marks the consumer
+ * tiers; "team", "enterprise", "work" or "workspace" marks enterprise. An
+ * entry with neither applies to every tier. Unknown means the firm has not
+ * said, and the safe answer is to ask first. */
+export type ToolStatus = "approved" | "ask" | "banned" | "unknown";
+export function toolStatus(firm: FirmView, ref: SimRef): ToolStatus {
+  const key = TOOL_LABEL[ref.tool].toLowerCase();
+  const consumer = ref.tier !== "enterprise";
+  const matches = (entry: string) => {
+    const e = entry.toLowerCase();
+    if (!e.includes(key)) return 0;
+    const saysConsumer = /personal|free|consumer|own account/.test(e);
+    const saysEnterprise = /team|enterprise|work account|workspace|tenant|business/.test(e);
+    if (saysConsumer && !consumer) return 0;
+    if (saysEnterprise && consumer) return 0;
+    return saysConsumer || saysEnterprise ? 2 : 1;
+  };
+  const best = (list: string[]) => list.reduce((a, e) => Math.max(a, matches(e)), 0);
+  const scores: [ToolStatus, number][] = [
+    ["approved", best(firm.approvedTools)],
+    ["ask", best(firm.askFirstTools)],
+    ["banned", best(firm.bannedTools)],
+  ];
+  scores.sort((a, b) => b[1] - a[1]);
+  return scores[0][1] === 0 ? "unknown" : scores[0][0];
+}
+
+export function resolveSituation(s: Situation, firm: FirmView): { answer: SituationAnswer; why: string } {
+  if (!s.toolStatus) return { answer: s.answer ?? "ask", why: s.why };
+  const st = toolStatus(firm, s.toolStatus);
+  const answer: SituationAnswer = st === "approved" ? "fine" : st === "banned" ? "no" : "ask";
+  return { answer, why: s.whyBy?.[answer] ?? s.why };
 }
 
 /* Where a learner is inside a module. Persisted as ModuleProgress. */
