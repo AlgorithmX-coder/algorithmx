@@ -15,7 +15,8 @@ export default function CertificateActions({ serial }: { serial: string }) {
     setState("sending");
     try {
       const r = await fetch("/api/ai-cleared/certificate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: true }) });
-      setState(r.ok ? "sent" : "failed");
+      const j = (await r.json().catch(() => ({}))) as { emailed?: boolean };
+      setState(r.ok && j.emailed ? "sent" : "failed");
     } catch {
       setState("failed");
     }

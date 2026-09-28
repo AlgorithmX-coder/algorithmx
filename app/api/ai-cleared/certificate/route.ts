@@ -33,7 +33,9 @@ export async function POST(req: NextRequest) {
 
   const body = (await req.json().catch(() => ({}))) as { email?: boolean };
   let emailed = false;
+  let emailError: string | undefined;
   if (body.email && enrolment.user.email) {
+    try {
     await emailCertificate({
       to: enrolment.user.email,
       holder: enrolment.user.name?.trim() || firstNameOf(enrolment.user.name, enrolment.user.email),
@@ -43,8 +45,12 @@ export async function POST(req: NextRequest) {
       origin: originOf(req),
     });
     emailed = true;
+    } catch (err) {
+      console.error("[ai-cleared/certificate] email failed", err instanceof Error ? err.message : err);
+      emailError = "The email could not be sent just now. The download and the verify link still work.";
+    }
   }
-  return Response.json({ ok: true, serial: issued.serial, issuedAt: issued.issuedAt, expiresAt: issued.expiresAt, score: issued.score, emailed });
+  return Response.json({ ok: true, serial: issued.serial, issuedAt: issued.issuedAt, expiresAt: issued.expiresAt, score: issued.score, emailed, emailError });
 }
 
 export async function GET(req: NextRequest) {
