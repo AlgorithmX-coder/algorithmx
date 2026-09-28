@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
 import { hasEntitlement } from "@/app/lib/entitlements";
 import { AI_CLEARED_SLUG, DB_TO_TRACK, firstNameOf, getEnrolment } from "@/app/lib/aiCleared";
 import { MODULE_LIST } from "./manifests";
@@ -16,7 +17,12 @@ export default async function AiClearedHome() {
   if (!session?.user?.id) redirect("/login?callbackUrl=%2Fai-cleared");
   const userId = session.user.id;
 
-  const [entitled, enrolment] = await Promise.all([hasEntitlement(userId, AI_CLEARED_SLUG), getEnrolment(userId)]);
+  const [entitled, enrolment, adminRow] = await Promise.all([
+    hasEntitlement(userId, AI_CLEARED_SLUG),
+    getEnrolment(userId),
+    prisma.orgMember.findFirst({ where: { userId, role: { in: ["ADMIN", "MANAGER"] } }, select: { id: true } }),
+  ]);
+  if (adminRow && !enrolment) redirect("/ai-cleared/admin");
   if (!entitled || !enrolment) {
     return (
       <Frame meta={<span className="cf-meta">{session.user.email}</span>}>
@@ -53,6 +59,7 @@ export default async function AiClearedHome() {
       modules={modules}
       resumeN={resume?.n ?? null}
       complete={!!enrolment.completedAt}
+      isAdmin={!!adminRow}
     />
   );
 }

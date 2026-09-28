@@ -108,7 +108,7 @@ export async function claimSeat(args: { token: string; userId: string; track: Tr
     prisma.orgMember.upsert({
       where: { orgId_userId: { orgId: seat.orgId, userId: args.userId } },
       update: {},
-      create: { orgId: seat.orgId, userId: args.userId, role: "LEARNER", team: seat.team },
+      create: { orgId: seat.orgId, userId: args.userId, role: seat.role, team: seat.team },
     }),
     prisma.enrolment.upsert({
       where: { userId_productId: { userId: args.userId, productId: product.id } },

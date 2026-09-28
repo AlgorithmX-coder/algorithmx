@@ -392,6 +392,8 @@ model Seat {
   inviteToken String        @unique
   team        String?
   trackHint   ClearedTrack?
+  /// The role the seat grants on claim. An admin invite is a seat with ADMIN.
+  role        OrgRole       @default(LEARNER)
   invitedAt   DateTime      @default(now())
   claimedAt   DateTime?
 
