@@ -157,6 +157,12 @@ const PILLARS = [
     points: ["A training register by person and team", "Scores, dates and certificate expiry", "An export for auditors, insurers and client questionnaires", "A firm certificate once your team has passed"],
   },
   {
+    title: "Revised as fast as the tools change",
+    accent: "#5744c9",
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M20 12a8 8 0 1 1-2.3-5.7" /><path d="M20 4v5h-5" /></svg>,
+    points: ["Every vendor fact carries the date it was last checked", "Reviewed every quarter, and within weeks of a major model or policy change", "Your admin is told what changed and why", "The certificate renews on the refreshed content, so it never goes stale"],
+  },
+  {
     title: "Practice data only",
     accent: "#8a5400",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M7 10h6M7 14h10" /><path d="M15 9.5h3" strokeWidth="3" /></svg>,
@@ -173,6 +179,7 @@ const PACKS = [
 
 const FAQS = [
   { q: "Which AI tools do the courses cover?", a: "Microsoft 365 Copilot, ChatGPT, Gemini and Claude, at every tier from a free personal account to an enterprise workspace, plus a five minute method for checking any tool you have not seen before. Every vendor fact carries the date it was last verified." },
+  { q: "How do you keep up with how fast the tools change?", a: "By treating it as part of the product, not an afterthought. Every fact about a tool carries the date it was last checked and is shown on screen. The whole course is reviewed every quarter, and within weeks of a major model release or a change to a vendor's data terms. Your admin gets a note saying what changed and why, and the annual renewal is on the refreshed content." },
   { q: "Do staff need AI Cleared before AI Fluent?", a: "Yes. AI Cleared is the ninety minute safety gate everyone passes; AI Fluent is the upskill for people who hold that certificate. Most firms clear everyone first and then put the people who use AI most through Fluent." },
   { q: "Does our data go into the courses?", a: "No real data is needed. Both courses run on invented firms, clients and people. The sandbox stops any send that contains something that looks like a real identifier and explains why, and transcripts are not kept. Your firm profile holds tool names and a contact, and that is all." },
   { q: "Does it make us compliant?", a: "It gives you training and evidence of training: a register with scores, dates and certificates, which is what auditors, insurers and regulators ask to see. Your own policies and legal advice stay yours, and the free policy below is written as a starting point for your review." },
@@ -400,9 +407,9 @@ export default function CorporateLanding() {
           <FadeUp>
             <p style={eyebrow}>{"// With every seat"}</p>
             <h2 style={h2}>Tailored to your firm. <span className="corp-grad">Evidence you can show.</span></h2>
-            <p style={lede}>Written once, personal to every firm. The profile your admin fills in drives the scenarios, the verdicts and the policy, and the register turns completion into something you can hand to an auditor.</p>
+            <p style={lede}>Written once, personal to every firm, and kept current with the tools. The profile your admin fills in drives the scenarios, the verdicts and the policy; the register turns completion into something you can hand to an auditor; and the content is revised as fast as the AI tools themselves change.</p>
           </FadeUp>
-          <div className="corp-grid-3" style={{ marginTop: 36 }}>
+          <div className="corp-grid-4 corp-pillars" style={{ marginTop: 36 }}>
             {PILLARS.map((p, i) => (
               <FadeUp key={p.title} delay={0.06 * i}>
                 <div className="corp-card corp-pillar" style={{ ["--corp-accent" as string]: p.accent }}>
@@ -804,6 +811,9 @@ export default function CorporateLanding() {
 
         /* pillars */
         .corp-pillar { border-top: 2px solid var(--corp-accent); height: 100%; }
+        /* four pillars: two by two on tablets rather than one long column */
+        @media (max-width: 980px) { .corp-pillars { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+        @media (max-width: 560px) { .corp-pillars { grid-template-columns: 1fr !important; } }
         .corp-pillar-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: center; color: var(--corp-accent); background: color-mix(in srgb, var(--corp-accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--corp-accent) 40%, transparent); }
         .corp-pillar-icon svg { width: 22px; height: 22px; }
         .corp-pillar ul { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
