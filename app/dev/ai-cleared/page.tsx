@@ -7,9 +7,11 @@ import { MODULE_LIST, getModule } from "@/app/ai-cleared/manifests";
  * /dev in production. ?m=2 picks the module. */
 export const dynamic = "force-dynamic";
 
-export default async function DevAiCleared({ searchParams }: { searchParams: Promise<{ m?: string }> }) {
-  const { m } = await searchParams;
+export default async function DevAiCleared({ searchParams }: { searchParams: Promise<{ m?: string; tool?: string; track?: string }> }) {
+  const { m, tool: toolParam, track: trackParam } = await searchParams;
   const manifest = getModule(Number(m ?? 2)) ?? getModule(2)!;
+  const tool = (["copilot", "chatgpt", "gemini", "claude"] as const).find((t) => t === toolParam) ?? "copilot";
+  const track = (["finance", "legal", "hr", "general"] as const).find((t) => t === trackParam) ?? "finance";
   const firm = {
     ...DEFAULT_FIRM,
     name: "Marlow Fenwick LLP",
@@ -22,9 +24,9 @@ export default async function DevAiCleared({ searchParams }: { searchParams: Pro
   return (
     <ClearedPlayer
       manifest={manifest}
-      track="finance"
+      track={track}
       firm={firm}
-      tool="copilot"
+      tool={tool}
       learnerName="Hannah"
       courseMap={MODULE_LIST.map((x) => ({ ...x, done: false }))}
       live={false}

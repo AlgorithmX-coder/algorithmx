@@ -215,7 +215,44 @@ export type LearnScreen =
       lead: string;
       script: string[];
       note?: string;
+    }
+  | {
+      /* An assistant reply that cites sources. The learner taps each
+       * source to check it; the invented one is revealed. Gates on every
+       * source having been checked. */
+      kind: "sources";
+      eyebrow: string;
+      heading: string;
+      lead?: string;
+      sim: SimRef;
+      prompt: string;
+      reply: string;
+      sources: { label: string; real: boolean; note: string }[];
+      note?: string;
+    }
+  | {
+      /* A document with an instruction hidden inside it, and the reply the
+       * assistant gave after reading it. The planted line is highlighted
+       * on reveal. */
+      kind: "injection";
+      eyebrow: string;
+      heading: string;
+      lead?: string;
+      document: AttachedDocument;
+      sim: SimRef;
+      prompt: string;
+      reply: string;
+      revealLabel: string;
+      note: string;
     };
+
+/* A document the simulator has attached: a few short sections, one of
+ * which carries the planted instruction. */
+export interface AttachedDocument {
+  title: string;
+  kind: string;
+  sections: { heading: string; paragraphs: { text: string; planted?: boolean }[] }[];
+}
 
 /* ---- Practise ---- */
 
@@ -292,7 +329,23 @@ export interface TriagePractise {
   incidents: Incident[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise;
+/* Module 4: the simulator has a document attached. Ask for a summary (the
+ * summary follows an instruction that arrived from inside the document),
+ * find the planted line, then ask for sources and mark the invented one.
+ * Replies are scripted, never live: the injection must land every time. */
+export interface InspectPractise {
+  kind: "inspect";
+  task: string;
+  document: AttachedDocument;
+  summaryPrompt: string;
+  summaryReply: string;
+  injectionWhy: string;
+  sourcesPrompt: string;
+  sourcesReply: string;
+  sources: { label: string; real: boolean; note: string }[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise;
 
 /* ---- Prove ---- */
 

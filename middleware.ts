@@ -36,6 +36,6 @@ export const config = {
      * NOTE: /dev and /test are intentionally INCLUDED now so the handler
      * above can 404 them in production.
      */
-    "/((?!password|api|_next|favicon.ico|logos|.*\\..*).*)",
+    "/((?!password|api|verify|_next|favicon.ico|logos|.*\\..*).*)",
   ],
 };

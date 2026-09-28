@@ -11,6 +11,7 @@ import {
   TRACK_LABEL,
   TOOL_LABEL,
   VERDICT_RANK,
+  type AttachedDocument,
   type DataClass,
   type FirmView,
   type LearnCard,
@@ -71,6 +72,9 @@ type Screen =
   | { kind: "sortItem"; i: number; phase: "practise" }
   | { kind: "situation"; i: number; phase: "practise" }
   | { kind: "incident"; i: number; phase: "practise" }
+  | { kind: "attach"; phase: "practise" }
+  | { kind: "findLine"; phase: "practise" }
+  | { kind: "sources"; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -169,6 +173,59 @@ function Window({ sim, firm, learnerName, caption }: { sim: SimRef; firm: FirmVi
     <div className="cl-window">
       <Simulator tool={sim.tool} tier={sim.tier} compact firmName={firm.name} learnerName={learnerName} messages={[]} draft="" onSend={() => {}} canSend={false} />
       {caption && <div className="cl-window-cap">{caption}</div>}
+    </div>
+  );
+}
+
+/* An attached document, shown as pages. With `reveal`, the planted line is
+ * highlighted; with `onPick`, each paragraph is a button and the picked
+ * one is marked right or wrong. */
+function DocumentView({ doc, reveal, onPick, picked }: { doc: AttachedDocument; reveal?: boolean; onPick?: (id: string) => void; picked?: string | null }) {
+  const plantedId = doc.sections.flatMap((s, si) => s.paragraphs.map((p, pi) => (p.planted ? `${si}:${pi}` : null))).find(Boolean) ?? null;
+  return (
+    <div className="cl-docview">
+      <div className="cl-doc-head">
+        <span className="cl-doc-icon" aria-hidden />
+        <span><b>{doc.title}</b><small>{doc.kind}</small></span>
+      </div>
+      {doc.sections.map((s, si) => (
+        <section key={si}>
+          <h4>{s.heading}</h4>
+          {s.paragraphs.map((p, pi) => {
+            const id = `${si}:${pi}`;
+            const show = reveal && p.planted;
+            const state = picked === null || picked === undefined ? "" : id === plantedId ? "right" : id === picked ? "wrong" : "";
+            return onPick ? (
+              <button key={pi} type="button" disabled={picked !== null && picked !== undefined} className={`cl-para pickable ${state}`} onClick={() => onPick(id)}>{p.text}</button>
+            ) : (
+              <p key={pi} className={`cl-para ${show ? "planted" : ""}`}>{p.text}</p>
+            );
+          })}
+        </section>
+      ))}
+    </div>
+  );
+}
+
+/* Sources as tap-to-check rows. */
+function SourceList({ sources, checked, onCheck, single, picked }: { sources: { label: string; real: boolean; note: string }[]; checked?: number[]; onCheck?: (i: number) => void; single?: boolean; picked?: number | null }) {
+  return (
+    <div className="cl-srcs">
+      {sources.map((s, i) => {
+        const isChecked = single ? picked !== null && picked !== undefined : (checked ?? []).includes(i);
+        const show = single ? picked !== null && picked !== undefined : isChecked;
+        const state = single ? (picked === null || picked === undefined ? "" : !s.real ? "right" : i === picked ? "wrong" : "") : isChecked ? (s.real ? "ok" : "bad") : "";
+        return (
+          <button key={i} type="button" className={`cl-src ${state}`} disabled={single ? picked !== null && picked !== undefined : isChecked} onClick={() => onCheck?.(i)}>
+            <span className="cl-src-n">{i + 1}</span>
+            <span className="cl-src-body">
+              <b>{s.label}</b>
+              {show && <small><span className={`cl-src-tag ${s.real ? "ok" : "bad"}`}>{s.real ? "Exists" : "Does not exist"}</span> {s.note}</small>}
+              {!show && <small className="cl-src-hint">{single ? "Tap if this is the invented one" : "Tap to check"}</small>}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -275,6 +332,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
       practise.situations.forEach((_, i) => out.push({ kind: "situation", i, phase: "practise" }));
     } else if (practise.kind === "triage") {
       practise.incidents.forEach((_, i) => out.push({ kind: "incident", i, phase: "practise" }));
+    } else if (practise.kind === "inspect") {
+      out.push({ kind: "attach", phase: "practise" }, { kind: "findLine", phase: "practise" }, { kind: "sources", phase: "practise" });
     }
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
     out.push({ kind: "result", phase: "done" });
@@ -299,6 +358,18 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const [bestVerdict, setBestVerdict] = useState<Verdict | undefined>(undefined);
   /* one-action practises: answer per item */
   const [picks, setPicks] = useState<Record<number, string>>({});
+  /* the inspect practise: two scripted replies, typed out */
+  const [inspect, setInspect] = useState<{ sent: boolean; text: string; pending: boolean; asked: boolean; srcText: string; srcPending: boolean; line: string | null; src: number | null }>({ sent: false, text: "", pending: false, asked: false, srcText: "", srcPending: false, line: null, src: null });
+  const typeOut = useCallback(async (full: string, onChunk: (t: string) => void, onDone: () => void) => {
+    const parts = full.split(/(?<=\n)/);
+    let acc = "";
+    for (const p of parts) {
+      await new Promise((res) => setTimeout(res, live ? 140 : 90));
+      acc += p;
+      onChunk(acc);
+    }
+    onDone();
+  }, [live]);
   /* prove */
   const [proveAnswers, setProveAnswers] = useState<(string | null)[]>(() => proveSet.map(() => null));
   const correct = proveAnswers.filter((a, i) => {
@@ -454,7 +525,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
-    { key: "practise", label: "Practise", sub: practise.kind === "sandbox" ? "in the simulator" : practise.kind === "sort" ? "which tier is this" : practise.kind === "situations" ? "ten situations" : "six incidents" },
+    { key: "practise", label: "Practise", sub: practise.kind === "sandbox" ? "in the simulator" : practise.kind === "sort" ? "which tier is this" : practise.kind === "situations" ? "ten situations" : practise.kind === "inspect" ? "a document to check" : "six incidents" },
     { key: "prove", label: isFinal ? "Final assessment" : "Prove", sub: `${proveSet.length} items, pass at ${manifest.passMark}` },
   ];
   const toSim = (m: Msg[], onUseRewrite?: (r: string) => void): SimMessage[] =>
@@ -709,6 +780,48 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           </div>
         </>
       );
+    } else if (L.kind === "sources") {
+      const checked = st.opened ?? [];
+      const all = L.sources.every((_, i) => checked.includes(i));
+      stage = (
+        <>
+          <Eyebrow>{t(L.eyebrow)}</Eyebrow>
+          <h1 className="cl-h1">{t(L.heading)}</h1>
+          {L.lead && <p className="cl-lead">{t(L.lead)}</p>}
+          <Simulator tool={L.sim.tool} tier={L.sim.tier} firmName={firm.name} learnerName={learnerName} messages={[{ id: "u", role: "user", text: t(L.prompt) }, { id: "a", role: "assistant", text: t(L.reply) }]} draft="" onSend={() => {}} canSend={false} composerLocked />
+          <div className="cl-label" style={{ marginTop: 16 }}>The sources it gave</div>
+          <SourceList sources={L.sources} checked={checked} onCheck={(i) => setSt({ opened: checked.includes(i) ? checked : [...checked, i] })} />
+          {L.note && all && <p className="cl-note" style={{ marginTop: 14 }}>{t(L.note)}</p>}
+          <div className="cl-nav">
+            <Btn onClick={back}>Back</Btn>
+            {!all && <span className="cl-hint">{L.sources.length - checked.length} left to check</span>}
+            <Btn primary onClick={next} disabled={!all}>Continue</Btn>
+          </div>
+        </>
+      );
+    } else if (L.kind === "injection") {
+      const shown = !!st.shown;
+      stage = (
+        <>
+          <Eyebrow>{t(L.eyebrow)}</Eyebrow>
+          <h1 className="cl-h1">{t(L.heading)}</h1>
+          {L.lead && <p className="cl-lead">{t(L.lead)}</p>}
+          <div className="cl-attach"><span className="cl-doc-icon" aria-hidden />Attached: {L.document.title} · {L.document.kind}</div>
+          <Simulator tool={L.sim.tool} tier={L.sim.tier} firmName={firm.name} learnerName={learnerName} messages={[{ id: "u", role: "user", text: t(L.prompt) }, { id: "a", role: "assistant", text: t(L.reply) }]} draft="" onSend={() => {}} canSend={false} composerLocked />
+          {shown && (
+            <>
+              <div className="cl-label" style={{ marginTop: 16 }}>Inside the document</div>
+              <DocumentView doc={L.document} reveal />
+              <p className="cl-p" style={{ marginTop: 12 }}>{t(L.note)}</p>
+            </>
+          )}
+          <div className="cl-nav">
+            <Btn onClick={back}>Back</Btn>
+            <Btn hidden={shown} onClick={() => setSt({ shown: true })}>{L.revealLabel}</Btn>
+            <Btn primary hidden={!shown} onClick={next}>Continue</Btn>
+          </div>
+        </>
+      );
     } else if (L.kind === "contact") {
       stage = (
         <>
@@ -943,6 +1056,81 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           <Btn onClick={back} hidden={screen.i === 0}>Back</Btn>
           <span className="cl-hint">The reason appears as soon as you choose.</span>
           <Btn primary disabled={picked === null} onClick={next}>{last ? (isFinal ? "Start the final assessment" : "Continue to Prove") : "Next incident"}</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "attach" && practise.kind === "inspect") {
+    const msgs: SimMessage[] = inspect.sent ? [{ id: "u", role: "user", text: t(practise.summaryPrompt) }, { id: "a", role: "assistant", text: inspect.text, pending: inspect.pending }] : [];
+    const send = () => {
+      if (inspect.sent) return;
+      setInspect((s) => ({ ...s, sent: true, pending: true, text: "" }));
+      void typeOut(t(practise.summaryReply), (txt) => setInspect((s) => ({ ...s, text: txt })), () => setInspect((s) => ({ ...s, pending: false })));
+    };
+    const done = inspect.sent && !inspect.pending;
+    stage = (
+      <>
+        <Eyebrow>Practise · step 1 of 3 · ask for a summary</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(practise.task)}</p></div>
+        <div className="cl-attach"><span className="cl-doc-icon" aria-hidden />Attached: {practise.document.title} · {practise.document.kind}</div>
+        <Simulator tool={tool} firmName={firm.name} learnerName={learnerName} messages={msgs} draft={inspect.sent ? "" : t(practise.summaryPrompt)} onSend={send} canSend={!inspect.sent} composerLocked status={inspect.pending ? `${TOOL_LABEL[tool]} is reading the document…` : ""} />
+        {done && <p className="cl-p" style={{ marginTop: 12 }}>Read the summary again. One of those points is not a summary of anything. Next, find where it came from.</p>}
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">{inspect.sent ? "" : "Press send in the composer."}</span>
+          <Btn primary disabled={!done} onClick={next}>Find where it came from</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "findLine" && practise.kind === "inspect") {
+    const plantedId = practise.document.sections.flatMap((s, si) => s.paragraphs.map((p, pi) => (p.planted ? `${si}:${pi}` : null))).find(Boolean) ?? null;
+    const picked = inspect.line;
+    stage = (
+      <>
+        <Eyebrow>Practise · step 2 of 3 · find the line</Eyebrow>
+        <h1 className="cl-h1">Which line in the document put that instruction in the summary?</h1>
+        <p className="cl-p">Tap the paragraph. The tool read all of them; only one was written for it.</p>
+        <DocumentView doc={practise.document} onPick={(id) => setInspect((s) => ({ ...s, line: id }))} picked={picked} />
+        {picked !== null && (
+          <div className="cl-fb">
+            <b>{picked === plantedId ? "That is the one." : "Not that one; the planted line is highlighted."}</b> {t(practise.injectionWhy)}
+          </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <Btn primary disabled={picked === null} onClick={next}>Now ask for its sources</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "sources" && practise.kind === "inspect") {
+    const msgs: SimMessage[] = inspect.asked ? [{ id: "u", role: "user", text: t(practise.sourcesPrompt) }, { id: "a", role: "assistant", text: inspect.srcText, pending: inspect.srcPending }] : [];
+    const ask = () => {
+      if (inspect.asked) return;
+      setInspect((s) => ({ ...s, asked: true, srcPending: true, srcText: "" }));
+      void typeOut(t(practise.sourcesReply), (txt) => setInspect((s) => ({ ...s, srcText: txt })), () => setInspect((s) => ({ ...s, srcPending: false })));
+    };
+    const replied = inspect.asked && !inspect.srcPending;
+    const picked = inspect.src;
+    const invented = practise.sources.findIndex((s) => !s.real);
+    stage = (
+      <>
+        <Eyebrow>Practise · step 3 of 3 · check the sources</Eyebrow>
+        <h1 className="cl-h1">Ask for its sources, then mark the one that does not exist.</h1>
+        <Simulator tool={tool} firmName={firm.name} learnerName={learnerName} messages={msgs} draft={inspect.asked ? "" : t(practise.sourcesPrompt)} onSend={ask} canSend={!inspect.asked} composerLocked status={inspect.srcPending ? `${TOOL_LABEL[tool]} is writing…` : ""} />
+        {replied && (
+          <>
+            <div className="cl-label" style={{ marginTop: 16 }}>Which one is invented?</div>
+            <SourceList sources={practise.sources} single picked={picked} onCheck={(i) => setInspect((s) => ({ ...s, src: i }))} />
+            {picked !== null && (
+              <div className="cl-fb">
+                <b>{picked === invented ? "Correct." : "Not that one."}</b> {t(practise.sources[invented].note)}
+              </div>
+            )}
+          </>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">{inspect.asked ? "" : "Press send in the composer."}</span>
+          <Btn primary disabled={picked === null} onClick={next}>Continue to Prove</Btn>
         </div>
       </>
     );
@@ -1251,6 +1439,34 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-contact small { color: ${K.muted}; font-size: 13.5px; }
         .cl-script { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; color: ${K.ink}; font-size: 15px; }
 
+        .cl-attach { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: ${K.ink}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; border-radius: 8px; padding: 6px 10px; margin: 4px 0 12px; }
+        .cl-doc-icon { display: inline-block; width: 12px; height: 15px; border: 1.5px solid ${K.accentInk}; border-radius: 2px 4px 2px 2px; position: relative; }
+        .cl-docview { border: 1px solid ${K.edge}; border-radius: 10px; background: #f7f5ef; color: #1d2229; padding: 18px 20px; font-size: 13.5px; line-height: 1.55; }
+        .cl-doc-head { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; margin-bottom: 8px; border-bottom: 1px solid #d9d4c7; }
+        .cl-doc-head b { display: block; font-size: 14px; }
+        .cl-doc-head small { display: block; font-size: 11.5px; color: #6b7280; font-family: ${K.mono}; }
+        .cl-docview .cl-doc-icon { border-color: #6b7280; }
+        .cl-docview h4 { font-size: 12px; font-family: ${K.mono}; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; margin: 12px 0 4px; }
+        .cl-para { display: block; width: 100%; margin: 0 0 6px; padding: 6px 8px; border-radius: 6px; border: 1px solid transparent; text-align: left; font: inherit; color: inherit; background: transparent; }
+        .cl-para.pickable { cursor: pointer; }
+        .cl-para.pickable:hover:not(:disabled) { border-color: ${K.accent}; background: rgba(70,183,191,0.08); }
+        .cl-para.pickable:disabled { cursor: default; }
+        .cl-para.planted, .cl-para.right { background: rgba(228,101,92,0.14); border-color: ${K.crit}; }
+        .cl-para.wrong { border-color: ${K.warn}; background: rgba(224,160,64,0.12); }
+        .cl-srcs { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+        .cl-src { font: inherit; text-align: left; display: flex; gap: 12px; align-items: flex-start; color: ${K.ink}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 12px 13px; cursor: pointer; }
+        .cl-src:hover:not(:disabled) { border-color: ${K.accent}; }
+        .cl-src:disabled { cursor: default; }
+        .cl-src.ok, .cl-src.wrong { border-color: ${K.edge}; }
+        .cl-src.bad, .cl-src.right { border-color: ${K.crit}; background: ${K.critSoft}; }
+        .cl-src.wrong { border-color: ${K.warn}; }
+        .cl-src-n { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; border: 1px solid ${K.edge}; font-family: ${K.mono}; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; color: ${K.muted}; }
+        .cl-src-body b { display: block; font-size: 14.5px; font-weight: 600; }
+        .cl-src-body small { display: block; color: ${K.muted}; font-size: 13px; line-height: 1.5; margin-top: 4px; }
+        .cl-src-hint { color: ${K.accentInk} !important; font-family: ${K.mono}; font-size: 11px !important; letter-spacing: 0.08em; text-transform: uppercase; }
+        .cl-src-tag { font-family: ${K.mono}; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-right: 6px; }
+        .cl-src-tag.ok { color: ${K.ok}; }
+        .cl-src-tag.bad { color: ${K.crit}; }
         .cl-window { margin: 12px 0 14px; }
         .cl-window-cap { font-family: ${K.mono}; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.faint}; margin-top: 6px; }
         .cl-sit { margin-bottom: 6px; }

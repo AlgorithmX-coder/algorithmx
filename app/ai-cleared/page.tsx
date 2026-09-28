@@ -45,8 +45,10 @@ export default async function AiClearedHome() {
       firmName={enrolment.org.name}
       learnerName={firstNameOf(enrolment.user.name, enrolment.user.email)}
       track={DB_TO_TRACK[enrolment.track]}
+      trackLocked={!!enrolment.trackChangedAt}
       modules={modules}
       resumeN={resume?.n ?? null}
+      complete={!!enrolment.completedAt}
     />
   );
 }
