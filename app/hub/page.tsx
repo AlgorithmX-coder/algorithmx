@@ -24,6 +24,7 @@
 
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
+import { CORPORATE_PRODUCT_SLUGS } from "@/app/lib/corporateProducts";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
@@ -138,7 +139,12 @@ export default async function HubPage() {
 
   /* ── Data: all real, all from Progress / ChildProfile / Product ── */
   const [products, ownedSlugs, children, activeChildId] = await Promise.all([
-    prisma.product.findMany({ orderBy: { ageMin: "asc" } }),
+    prisma.product.findMany({
+      // Corporate products (AI Cleared, AI Fluent) are seat-licensed by a
+      // firm and live at /ai-cleared, never on the consumer hub.
+      where: { slug: { notIn: [...CORPORATE_PRODUCT_SLUGS] } },
+      orderBy: { ageMin: "asc" },
+    }),
     getOwnedProductSlugs(userId),
     prisma.childProfile.findMany({
       where: { userId },
