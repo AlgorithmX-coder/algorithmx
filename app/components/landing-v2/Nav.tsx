@@ -36,6 +36,25 @@ type NavProps = {
   tone?: "night" | "sand";
 };
 
+/**
+ * Each mark carries its own height as an inline style rather than taking it
+ * from the stylesheet below.
+ *
+ * styled-jsx arrives after the first paint. Until it does, the browser sizes
+ * an image from its own attributes, so these marks drew at full size for
+ * about forty milliseconds on every cold load and then snapped down. An
+ * inline style travels in the HTML and applies immediately, so there is no
+ * frame in which a mark is the wrong size.
+ *
+ * Keep the size here and nowhere else: a second copy in the stylesheet would
+ * be free to drift, and only one of the two is visible on the first paint.
+ */
+const MARK_SIZE = (height: number): React.CSSProperties => ({
+  display: "block",
+  width: "auto",
+  height,
+});
+
 export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night" }: NavProps) {
   const onSand = tone === "sand";
   /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
@@ -1110,7 +1129,14 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
         <span className="lv2-tel-item" style={{ animationDelay: "0.05s" }}>
           <span className="lv2-tel-plate">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logos/cyber-essentials.png" alt="Cyber Essentials" width={433} height={160} decoding="async" />
+            <img
+              src="/logos/cyber-essentials.png"
+              alt="Cyber Essentials"
+              width={433}
+              height={160}
+              decoding="async"
+              style={MARK_SIZE(14)}
+            />
           </span>
           <span className="lv2-tel-label">Certified</span>
         </span>
@@ -1120,7 +1146,14 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
         <span className="lv2-tel-item" style={{ animationDelay: "0.12s" }}>
           <span className="lv2-tel-plate lv2-tel-plate-dark">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" decoding="async" />
+            <img
+              src="/logos/ncsc.svg"
+              alt="National Cyber Security Centre"
+              width={1489}
+              height={346}
+              decoding="async"
+              style={MARK_SIZE(13)}
+            />
           </span>
           <span className="lv2-tel-label">Aligned</span>
         </span>
@@ -1130,7 +1163,14 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
         <span className="lv2-tel-item" style={{ animationDelay: "0.19s" }}>
           <span className="lv2-tel-plate">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logos/microsoft-for-startups.webp" alt="Microsoft for Startups" width={424} height={65} decoding="async" />
+            <img
+              src="/logos/microsoft-for-startups.webp"
+              alt="Microsoft for Startups"
+              width={424}
+              height={65}
+              decoding="async"
+              style={MARK_SIZE(11)}
+            />
           </span>
           <span className="lv2-tel-label">Collaborating</span>
         </span>
@@ -1235,19 +1275,6 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
           padding: 0 7px;
           border-radius: 999px;
           background: #fff;
-        }
-        .lv2-tel-plate img {
-          display: block;
-          width: auto;
-        }
-        .lv2-tel-plate img[src*="cyber-essentials"] {
-          height: 14px;
-        }
-        .lv2-tel-plate img[src*="ncsc"] {
-          height: 13px;
-        }
-        .lv2-tel-plate img[src*="microsoft"] {
-          height: 11px;
         }
         .lv2-tel-plate-dark {
           background: #14161d;
