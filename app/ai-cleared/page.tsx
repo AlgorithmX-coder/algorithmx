@@ -4,7 +4,7 @@ import { auth } from "@/app/lib/auth";
 import { hasEntitlement } from "@/app/lib/entitlements";
 import { AI_CLEARED_SLUG, DB_TO_TRACK, firstNameOf, getEnrolment } from "@/app/lib/aiCleared";
 import { MODULE_LIST } from "./manifests";
-import { K } from "./engine/tokens";
+import Frame from "./Frame";
 import ConsoleHome from "./ConsoleHome";
 
 /* /ai-cleared: the console home. Gated by the entitlement; a signed-in
@@ -19,16 +19,17 @@ export default async function AiClearedHome() {
   const [entitled, enrolment] = await Promise.all([hasEntitlement(userId, AI_CLEARED_SLUG), getEnrolment(userId)]);
   if (!entitled || !enrolment) {
     return (
-      <div style={{ maxWidth: 620, margin: "0 auto", padding: "60px 24px" }}>
-        <span style={{ fontFamily: K.mono, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.22em", color: K.accentInk }}>AI CLEARED</span>
-        <h1 style={{ fontSize: 28, fontWeight: 600, color: K.ink, margin: "20px 0 10px", letterSpacing: "-0.015em" }}>You do not have a seat yet.</h1>
-        <p style={{ fontSize: 16, color: K.body, maxWidth: "56ch" }}>
-          AI Cleared is licensed by your firm. Your admin sends an invite link that claims your seat; open that link while signed in as {session.user.email}.
+      <Frame meta={<span className="cf-meta">{session.user.email}</span>}>
+        <span className="cf-eyebrow">No seat yet</span>
+        <h1 className="cf-h1">Your firm reserves your seat. Then you are <span className="cf-grad">in</span>.</h1>
+        <p className="cf-lead">
+          AI Cleared is licensed by firms, not bought by individuals. Your admin sends an invite link that claims your seat; open that link while signed in as {session.user.email}.
         </p>
-        <p style={{ fontSize: 14.5, color: K.muted }}>
-          Running training for your firm? See <Link href="/corporate" style={{ color: K.accentInk }}>the corporate page</Link> or write to <a href="mailto:admissions@algorithmx.co.uk" style={{ color: K.accentInk }}>admissions@algorithmx.co.uk</a>.
-        </p>
-      </div>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <Link href="/corporate" className="cf-btn cf-btn-pri">About AI Cleared for firms</Link>
+          <a href="mailto:admissions@algorithmx.co.uk" className="cf-btn">Email admissions</a>
+        </div>
+      </Frame>
     );
   }
 
@@ -39,10 +40,13 @@ export default async function AiClearedHome() {
     return { ...m, done: !!p?.completedAt, phaseLabel };
   });
   const resume = modules.find((m) => m.available && !m.done && progress.has(m.n)) ?? modules.find((m) => m.available && !m.done) ?? null;
+  const profile = enrolment.org.profile;
 
   return (
     <ConsoleHome
       firmName={enrolment.org.name}
+      contactName={profile?.escalationContact ?? enrolment.org.contactName}
+      contactRole={profile?.escalationRole ?? enrolment.org.contactRole}
       learnerName={firstNameOf(enrolment.user.name, enrolment.user.email)}
       track={DB_TO_TRACK[enrolment.track]}
       trackLocked={!!enrolment.trackChangedAt}

@@ -31,10 +31,21 @@ export const K = Object.freeze({
   critSoft: "rgba(166,58,8,0.10)",
 
   /* the header's translucent ground, and the shadow under lifted cards */
-  headerBg: "rgba(243,237,228,0.92)",
-  lift: "0 12px 40px rgba(20,22,29,0.12)",
+  headerBg: "rgba(243,237,228,0.78)",
+  lift: "0 18px 50px rgba(20,22,29,0.14)",
+
+  /* the AI-platform surface language: glass panels over the aurora, and
+   * one gradient (teal -> violet -> pink) for the wordmark, primary
+   * actions, progress and gradient text */
+  glass: "rgba(255,255,255,0.72)",
+  glassStrong: "rgba(255,255,255,0.88)",
+  glassEdge: "rgba(255,255,255,0.85)",
+  grad: "linear-gradient(120deg, #0a7085 0%, #5744c9 58%, #a5117f 100%)",
+  gradSoft: "linear-gradient(120deg, rgba(10,112,133,0.16), rgba(87,68,201,0.14) 58%, rgba(165,17,127,0.12))",
+  glow: "0 10px 34px rgba(87,68,201,0.22), 0 2px 8px rgba(10,112,133,0.18)",
 
   sans: "var(--font-inter), Inter, system-ui, -apple-system, 'Segoe UI', sans-serif",
+  display: "var(--font-space-grotesk), 'Space Grotesk', var(--font-inter), Inter, system-ui, sans-serif",
   mono: "var(--font-geist-mono), 'Geist Mono', ui-monospace, Consolas, monospace",
 });
 
