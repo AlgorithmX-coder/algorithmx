@@ -35,6 +35,9 @@ model User {
   entitlements        Entitlement[]
   passwordResetTokens PasswordResetToken[]
   preferences         UserPreference?
+  orgMemberships      OrgMember[]
+  seats               Seat[]
+  enrolments          Enrolment[]
 }
 
 model Account {
@@ -143,6 +146,7 @@ model Product {
   progress       Progress[]
   waitlist       WaitlistEntry[]
   courseContents CourseContent[]
+  enrolments     Enrolment[]
 }
 
 // ============================================================
@@ -286,4 +290,211 @@ model WaitlistEntry {
 
   @@unique([email, productId])
   @@index([productId])
+}
+
+// ---------------------------------------------------------------------------
+// AI Cleared (corporate). Adult, module-based, seat-licensed by a firm.
+// Deliberately separate from ChildProfile/Progress, which are child- and
+// week-keyed. A learner is a User who claimed a Seat; the Entitlement to the
+// `ai-cleared` Product is still granted through the normal funnel, so every
+// gated route keeps using hasEntitlement().
+// ---------------------------------------------------------------------------
+
+enum OrgPlan {
+  TEAM
+  FIRM
+  ENTERPRISE
+}
+
+enum OrgRole {
+  ADMIN
+  MANAGER
+  LEARNER
+}
+
+/// The desk a learner sees. Same modules, different data pack, task,
+/// situations and prove bank. GENERAL catches unmapped job titles.
+enum ClearedTrack {
+  FINANCE
+  LEGAL
+  HR
+  SALES
+  SUPPORT
+  OPS
+  IT
+  LEADERSHIP
+  GENERAL
+}
+
+enum ModulePhase {
+  LEARN
+  PRACTISE
+  PROVE
+  DONE
+}
+
+enum SandboxTool {
+  COPILOT
+  CHATGPT
+  GEMINI
+  CLAUDE
+}
+
+/// OK = cleared, WARN = over-shared (CONFIDENTIAL went out),
+/// CRIT = leaked (RESTRICTED went out).
+enum SandboxVerdict {
+  OK
+  WARN
+  CRIT
+}
+
+model Organisation {
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  sector           String?
+  contactName      String?
+  contactRole      String?
+  seatsPurchased   Int      @default(0)
+  plan             OrgPlan  @default(TEAM)
+  stripeCustomerId String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  members      OrgMember[]
+  seats        Seat[]
+  profile      FirmProfile?
+  enrolments   Enrolment[]
+  certificates Certificate[]
+}
+
+model OrgMember {
+  id        String   @id @default(cuid())
+  orgId     String
+  userId    String
+  role      OrgRole  @default(LEARNER)
+  team      String?
+  createdAt DateTime @default(now())
+
+  org  Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, userId])
+  @@index([userId])
+}
+
+/// Reserved on invite, claimed on first sign-in via /ai-cleared/join/[token].
+model Seat {
+  id          String        @id @default(cuid())
+  orgId       String
+  email       String
+  userId      String?
+  inviteToken String        @unique
+  team        String?
+  trackHint   ClearedTrack?
+  invitedAt   DateTime      @default(now())
+  claimedAt   DateTime?
+
+  org  Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([orgId, email])
+  @@index([userId])
+}
+
+/// Read at render time by modules 2, 3 and 5. One per firm.
+model FirmProfile {
+  id                String   @id @default(cuid())
+  orgId             String   @unique
+  approvedTools     String[]
+  askFirstTools     String[]
+  bannedTools       String[]
+  /// The firm's own names for the four classes, defaulting to ours.
+  classPublic       String   @default("PUBLIC")
+  classInternal     String   @default("INTERNAL")
+  classConfidential String   @default("CONFIDENTIAL")
+  classRestricted   String   @default("RESTRICTED")
+  escalationContact String
+  escalationRole    String?
+  regulator         String?
+  policyText        String?
+  updatedAt         DateTime @updatedAt
+
+  org Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+}
+
+/// One per learner per course. `track` picks the desk in every module.
+model Enrolment {
+  id             String        @id @default(cuid())
+  userId         String
+  productId      String
+  orgId          String
+  track          ClearedTrack  @default(GENERAL)
+  trackChangedAt DateTime?
+  startedAt      DateTime      @default(now())
+  completedAt    DateTime?
+  finalScore     Int?
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  org     Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  modules     ModuleProgress[]
+  attempts    SandboxAttempt[]
+  certificate Certificate?
+
+  @@unique([userId, productId])
+  @@index([orgId])
+}
+
+/// Written on every screen change. Scores max-merge so a replay never lowers them.
+model ModuleProgress {
+  id          String          @id @default(cuid())
+  enrolmentId String
+  module      Int
+  phase       ModulePhase     @default(LEARN)
+  screen      Int             @default(0)
+  proveScore  Int?
+  proveTotal  Int?
+  bestVerdict SandboxVerdict?
+  completedAt DateTime?
+  updatedAt   DateTime        @updatedAt
+
+  enrolment Enrolment @relation(fields: [enrolmentId], references: [id], onDelete: Cascade)
+
+  @@unique([enrolmentId, module])
+}
+
+/// Scores only. Never the prompt, never the reply.
+model SandboxAttempt {
+  id                String         @id @default(cuid())
+  enrolmentId       String
+  module            Int
+  tool              SandboxTool
+  verdict           SandboxVerdict
+  countPublic       Int            @default(0)
+  countInternal     Int            @default(0)
+  countConfidential Int            @default(0)
+  countRestricted   Int            @default(0)
+  halted            Boolean        @default(false)
+  at                DateTime       @default(now())
+
+  enrolment Enrolment @relation(fields: [enrolmentId], references: [id], onDelete: Cascade)
+
+  @@index([enrolmentId])
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  enrolmentId String   @unique
+  orgId       String
+  serial      String   @unique
+  score       Int
+  issuedAt    DateTime @default(now())
+  expiresAt   DateTime
+
+  enrolment Enrolment    @relation(fields: [enrolmentId], references: [id], onDelete: Cascade)
+  org       Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
 }

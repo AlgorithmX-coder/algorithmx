@@ -111,7 +111,64 @@ const products = [
     weeksCount: 0,
     content: [],
   },
+  /* AI Cleared: the corporate AI-safety course. Seat-licensed by a firm
+   * (see Organisation/Seat), so it is excluded from the consumer hub by
+   * slug (app/lib/corporateProducts.ts). Price is the Team rate per seat;
+   * Firm and Enterprise rates are quoted on /corporate. Adult, module-based,
+   * no weekly CourseContent. */
+  {
+    slug: "ai-cleared",
+    name: "AI Cleared",
+    ageMin: 18,
+    ageMax: 99,
+    priceGBP: 2900,
+    weeks: 0,
+    status: ProductStatus.ACTIVE,
+    emoji: "🛡️",
+    ageRange: "Working adults",
+    duration: "About 90 minutes",
+    weeksCount: 0,
+    content: [],
+  },
 ];
+
+/* The test firm for AI Cleared. Invented, like everything in the course.
+ * Only seeded when SEED_AI_CLEARED_TEST_ORG=1 so an ordinary seed run never
+ * creates claimable seats. The invite tokens are fixed so the owner and the
+ * testers can reach /ai-cleared/join/<token> on production without a mailbox. */
+async function seedAiClearedTestOrg() {
+  if (process.env.SEED_AI_CLEARED_TEST_ORG !== "1") {
+    console.log("  · ai-cleared test org skipped (set SEED_AI_CLEARED_TEST_ORG=1 to seed Marlow Fenwick)");
+    return;
+  }
+  const org = await prisma.organisation.upsert({
+    where: { slug: "marlow-fenwick" },
+    update: { name: "Marlow Fenwick LLP", sector: "Legal services", contactName: "Priya Nair", contactRole: "Data Protection Officer", seatsPurchased: 25, plan: "FIRM" },
+    create: { name: "Marlow Fenwick LLP", slug: "marlow-fenwick", sector: "Legal services", contactName: "Priya Nair", contactRole: "Data Protection Officer", seatsPurchased: 25, plan: "FIRM" },
+  });
+  const profile = {
+    approvedTools: ["Microsoft 365 Copilot on your work account"],
+    askFirstTools: ["Claude Team", "Gemini in Google Workspace"],
+    bannedTools: ["Personal ChatGPT", "Browser extensions that read the page", "Meeting note-takers"],
+    escalationContact: "Priya Nair",
+    escalationRole: "Data Protection Officer",
+    regulator: "Solicitors Regulation Authority",
+  };
+  await prisma.firmProfile.upsert({ where: { orgId: org.id }, update: profile, create: { orgId: org.id, ...profile } });
+  const seats = [
+    { email: "finance.tester@marlowfenwick.example", inviteToken: "mf-fin-7q2kd9xw4n8p", trackHint: "FINANCE" as const, team: "Finance" },
+    { email: "legal.tester@marlowfenwick.example", inviteToken: "mf-leg-c3vn8ry5tz1m", trackHint: "LEGAL" as const, team: "Disputes" },
+    { email: "general.tester@marlowfenwick.example", inviteToken: "mf-gen-h6sm2wq9kb4d", trackHint: null, team: null },
+  ];
+  for (const seat of seats) {
+    await prisma.seat.upsert({
+      where: { orgId_email: { orgId: org.id, email: seat.email } },
+      update: {},
+      create: { orgId: org.id, ...seat },
+    });
+  }
+  console.log(`  · ai-cleared test org "${org.name}" with ${seats.length} seat(s)`);
+}
 
 async function main() {
   console.log("Seeding products + course content…");
@@ -157,6 +214,8 @@ async function main() {
 
     console.log(`  · ${p.slug} (${p.status}) — ${actualCount} week(s)`);
   }
+
+  await seedAiClearedTestOrg();
 
   console.log("Done.");
 }

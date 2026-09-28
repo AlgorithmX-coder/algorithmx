@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
+    "vercel-build": "prisma migrate deploy && prisma generate && next build",
     "migrate:prod": "prisma migrate deploy",
     "start": "next start",
     "lint": "eslint",
@@ -13,12 +14,14 @@
     "test:e2e": "playwright test",
     "test:e2e:dev": "cross-env PLAYWRIGHT_USE_DEV=1 playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "seed:ai-cleared": "tsx prisma/seedAiCleared.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
     "@auth/prisma-adapter": "^2.11.1",
     "@gsap/react": "^2.1.2",
     "@lottiefiles/dotlottie-react": "^0.18.10",
@@ -60,6 +63,7 @@
     "tailwind-merge": "^3.5.0",
     "three": "^0.183.2",
     "three-stdlib": "^2.36.1",
+    "zod": "^4.6.5",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
