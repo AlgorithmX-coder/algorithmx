@@ -11,7 +11,7 @@ import CorporateLanding from "./CorporateLanding";
 export const metadata: Metadata = {
   title: "AI Cleared and AI Fluent by AlgorithmX | AI training for every member of staff",
   description:
-    "AI Cleared teaches your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking client, colleague or bank data. AI Fluent teaches them to get real work out of it. Interactive, with a certificate and a training register. From £19 per person per year.",
+    "AI Cleared teaches your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking client, colleague or bank data. AI Fluent teaches them to get real work out of it. Interactive, with a certificate and a training register. From £25 per person per year.",
   alternates: { canonical: "https://algorithmx.io/corporate" },
   openGraph: {
     title: "AI Cleared and AI Fluent by AlgorithmX",
