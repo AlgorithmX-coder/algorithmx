@@ -17,7 +17,8 @@ Rules for your answer:
 - Keep every finding the rules layer already found, with the exact text it found.
 - Add a finding only if it is clearly a data item from the practice pack that the rules missed. Never invent findings.
 - The rewrite keeps PUBLIC and INTERNAL items, replaces CONFIDENTIAL items with square-bracket placeholders, and drops RESTRICTED items entirely.
-- Coaching is one sentence, specific to what happened, never a lecture.`;
+- Coaching is one sentence, specific to what happened, never a lecture.
+- Never repeat a CONFIDENTIAL or RESTRICTED item in a why line or in the coaching. Name it by its kind instead: the client, the contact, the salary, the NI number, the health detail, the witness. The learner's own words are already on their screen; yours must not copy them.`;
 
 const VOICE: Record<Tool, string> = {
   copilot: `You are Microsoft 365 Copilot inside a firm's work tenant, answering a member of staff. Answer the request directly and helpfully as an office assistant would, in British English, under 170 words, with no preamble about being an AI and no sign-off about being happy to help. If the request leaves placeholders in square brackets or asks for placeholders, keep them as [placeholders]. If it includes real-looking details, use them as asked. Do not lecture about data protection, another part of the course does that. Never mention that this is training.`,
