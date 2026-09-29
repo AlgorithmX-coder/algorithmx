@@ -1,5 +1,5 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { anthropicClient, apiKeyStatus, safeErrorMessage } from "@/app/lib/anthropicClient";
 import { z } from "zod";
 import { getModule } from "@/app/ai-cleared/manifests";
 import { classCounts, isClean, localRewrite, realDataCheck, ruleFindings, verdictOf } from "@/app/ai-cleared/engine/rules";
@@ -53,15 +53,12 @@ const Grade = z.object({
 
 const NAME_TO_CLS: Record<string, DataClass> = { PUBLIC: "P", INTERNAL: "I", CONFIDENTIAL: "C", RESTRICTED: "R" };
 
-let client: Anthropic | null = null;
-function anthropic(): Anthropic | null {
-  if (!process.env.ANTHROPIC_API_KEY) return null;
-  if (!client) client = new Anthropic({ maxRetries: 1, timeout: 20_000 });
-  return client;
+function anthropic() {
+  return anthropicClient({ timeout: 20_000 });
 }
 
 export function modelAvailable(): boolean {
-  return !!process.env.ANTHROPIC_API_KEY;
+  return apiKeyStatus() === "ok";
 }
 
 export async function gradePrompt(input: GradeInput): Promise<GradeOutput> {
@@ -133,7 +130,7 @@ export async function gradePrompt(input: GradeInput): Promise<GradeOutput> {
     const coach = out.coach.trim() || base.coach;
     return { ...base, findings: merged, rewrite, coach, source: "model" };
   } catch (err) {
-    console.error("[ai-cleared/grade] model call failed, rules-only verdict served", err instanceof Error ? err.message : err);
+    console.error("[ai-cleared/grade] model call failed, rules-only verdict served:", safeErrorMessage(err));
     return base;
   }
 }

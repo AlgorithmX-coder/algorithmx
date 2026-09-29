@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { auth } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
-import { modelAvailable } from "@/app/lib/aiClearedGrader";
+import { KEY_STATUS_MESSAGE, apiKeyStatus } from "@/app/lib/anthropicClient";
 import { runEvalSlice } from "@/app/lib/aiClearedEval";
 import { EVAL_BANK } from "@/app/ai-cleared/engine/evalBank";
 
@@ -18,7 +18,8 @@ export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "Sign in first." }, { status: 401 });
   if (!(await isStaffUser(session.user.id))) return Response.json({ error: "Staff only." }, { status: 403 });
-  if (!modelAvailable()) return Response.json({ error: "ANTHROPIC_API_KEY is not set on this deployment, so there is no model to evaluate." }, { status: 409 });
+  const key = apiKeyStatus();
+  if (key !== "ok") return Response.json({ error: `${KEY_STATUS_MESSAGE[key]} There is no model to evaluate until it is fixed.` }, { status: 409 });
   const p = new URL(req.url).searchParams;
   const from = Math.max(0, Math.min(EVAL_BANK.length, Number(p.get("from") ?? 0) || 0));
   const count = Math.max(1, Math.min(10, Number(p.get("count") ?? 10) || 10));

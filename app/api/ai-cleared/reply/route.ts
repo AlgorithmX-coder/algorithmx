@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
+import { anthropicClient, safeErrorMessage } from "@/app/lib/anthropicClient";
 import { auth } from "@/app/lib/auth";
 import { getModule } from "@/app/ai-cleared/manifests";
 import { realDataCheck } from "@/app/ai-cleared/engine/rules";
@@ -23,11 +23,8 @@ const Body = z.object({
   firmName: z.string().max(120).optional(),
 });
 
-let client: Anthropic | null = null;
-function anthropic(): Anthropic | null {
-  if (!process.env.ANTHROPIC_API_KEY) return null;
-  if (!client) client = new Anthropic({ maxRetries: 1, timeout: 30_000 });
-  return client;
+function anthropic() {
+  return anthropicClient({ timeout: 30_000 });
 }
 
 const TEXT_HEADERS = {
@@ -78,7 +75,7 @@ export async function POST(req: NextRequest) {
           controller.enqueue(encoder.encode((sent ? "\n\n" : "") + fallback));
         }
       } catch (err) {
-        console.error("[ai-cleared/reply] model call failed, scripted reply served", err instanceof Error ? err.message : err);
+        console.error("[ai-cleared/reply] model call failed, scripted reply served:", safeErrorMessage(err));
         if (sent === 0) controller.enqueue(encoder.encode(fallback));
       } finally {
         controller.close();
