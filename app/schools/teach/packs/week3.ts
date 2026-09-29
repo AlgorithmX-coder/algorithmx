@@ -5,13 +5,19 @@
  * briefing for the same reason week 11 does: a child may recognise themselves
  * in it and tell you something.
  *
- * ONE THING THE GAME DOES NOT DO, AND THE TEACHER HAS TO. Week 3 teaches
- * that "don't tell your parents" is the biggest warning sign there is, but it
- * contains no "it was not your fault" line: the blame-free reassurance is
- * deliberately held back for week 11, eight weeks later. A child who has
- * already sent a photo or given away their school needs to hear that TODAY,
- * out loud, from the adult in the room. That is the whole reason the briefing
- * below exists, and it is the most useful thing in this file.
+ * A LANE, AND WHY THE TEACHER STEPS OUTSIDE IT. The course runs on lanes:
+ * docs/cyberheroes/curriculum-buildsheet.md gives every concept one owning
+ * week, and "tell a trusted adult / not your fault" belongs to week 11, with
+ * week 5 owning the emotional frame. So week 3 teaching the warning sign
+ * without the reassurance is deliberate design, not an omission, and the
+ * teacher should NOT start teaching week 11's protocol eight weeks early.
+ *
+ * But a lane governs what the GAME TEACHES across twenty weeks. It does not
+ * govern what an adult says when a child tells them something unplanned in
+ * the middle of a Tuesday. A child who has already sent a photo needs to hear
+ * today that they are not in trouble, and safeguarding outranks sequencing.
+ * That is the one place the briefing below asks the teacher to step outside
+ * the lane, and it is deliberate.
  *
  * Mirrors app/lesson/weekContent/week3.ts. See ./types.ts for the fields, and
  * note that several carry authored HTML on purpose.
@@ -147,7 +153,7 @@ const SLIDES: readonly Slide[] = [
       ["&ldquo;But what if I am wrong?&rdquo;", "&ldquo;Then you are wrong, and absolutely nothing bad happens. You never need a reason you can put into words. The feeling is enough.&rdquo;"],
       ["&ldquo;What if I already did something?&rdquo;", "See the warning below. Answer this one properly, out loud, before you move on."],
     ],
-    warn:"<b>This is the most important thing you will say all lesson, and the game does not say it for you.</b> Week 3 never tells a child it was not their fault: that line is held back for week 11. So say it here, in your own words, to the whole room. Something like: <em>if you have already sent a photo, or told somebody where you go to school, you are not in trouble and it is never too late to tell a grown-up.</em> Say it even if nobody asks. The child who needs it will not be the one with their hand up." },
+    warn:"<b>Say this one out loud, to the whole room, whether or not anybody asks.</b> Something like: <em>if you have already sent a photo, or told somebody where you go to school, you are not in trouble and it is never too late to tell a grown-up.</em> The course teaches that properly in week 11 and you are not teaching it early here: you are answering the child in this room who has just recognised themselves, and that child will not be the one with their hand up." },
 
   { at:"after", kind:"tell", scene:"tonight", art:ART.team, eyebrow:"Tonight",
     title:"Name one grown-up.",
@@ -173,8 +179,8 @@ export const WEEK_3: Pack = {
       "<b>This week teaches children that &ldquo;do not tell your parents&rdquo; is the biggest warning sign there is.</b> A child who is currently being asked to keep something secret may recognise themselves in it, and may tell you. That is the lesson working, not the lesson going wrong.",
       "<b>Listen.</b> Do not investigate, and never ask a child to describe what happened in front of the class.",
       "<b>Never promise to keep it secret.</b> Say: &ldquo;I am really glad you told me. I need to tell somebody who can help.&rdquo;",
-      "<b>The game never says &ldquo;it was not your fault&rdquo;. You have to.</b> That reassurance is held back until week 11, eight weeks away. A child who has already sent a photo or given away their school needs to hear today, out loud, that they are not in trouble and that it is never too late to tell. It is written into the last question slide so you do not forget.",
-      "<b>Write down what they said in their own words</b> as soon as you can, and pass it to your designated safeguarding lead <b>the same day</b>.",
+      "<b>If a child tells you something, say &ldquo;it was not your fault&rdquo; yourself.</b> The course teaches that line properly in week 11, and holding it until then is deliberate, so do not start teaching week 11 early. But a child who has already sent a photo or given away their school needs to hear <b>today</b> that they are not in trouble and that it is never too late to tell. That is safeguarding, not curriculum, and it comes first. It is on the last question slide so you do not forget.",
+      "<b>Write down what they said in their own words</b> as soon as you can, and pass it to whoever is responsible for child protection at your school <b>the same day</b>.",
       "Your own setting&rsquo;s safeguarding policy overrides anything on these slides.",
     ],
   },

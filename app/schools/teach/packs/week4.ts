@@ -12,10 +12,12 @@
  *    is reframed as "what would you tell a friend?", which gets the same
  *    thinking with nobody exposed.
  *
- * 2. Like week 3, this week carries no "it was not your fault" line anywhere,
- *    and its whole vocabulary is biting: you bit, don't bite, not a nibble.
- *    That is good teaching and it is blame-adjacent, so the teacher supplies
- *    the reassurance. It is written into the debrief slide.
+ * 2. The week's whole vocabulary is biting: you bit, don't bite, not a
+ *    nibble. That is good teaching and it is blame-adjacent. The reassurance
+ *    line belongs to week 11 by design (see the lanes in
+ *    docs/cyberheroes/curriculum-buildsheet.md), so the pack does not teach
+ *    it early; it asks the teacher to say it once to the room, because a
+ *    child who has actually clicked one of these is sitting in it.
  *
  * Mirrors app/lesson/weekContent/week4.ts. See ./types.ts for the fields.
  */
@@ -140,7 +142,7 @@ const SLIDES: readonly Slide[] = [
       ["Somebody looks pleased", "Let them. They earned it."],
       ["Somebody looks worried", "That is who the sentence below is for. Say it to the room, not to them."],
     ],
-    warn:"<b>Say this out loud, whether or not anybody asks, and the game will not say it for you.</b> Something like: <em>if you have ever tapped one of these, you are not in trouble, it happens to grown-ups all the time, and the only thing to do is tell somebody.</em> This week talks about biting all the way through, which is good teaching and lands hard on a child who has bitten. Week 4 has no &ldquo;it was not your fault&rdquo; line anywhere in it. You are it." },
+    warn:"<b>Say this out loud, whether or not anybody asks.</b> Something like: <em>if you have ever tapped one of these, you are not in trouble, it happens to grown-ups all the time, and the only thing to do is tell somebody.</em> This week talks about biting the whole way through, which is good teaching and lands hard on a child who has bitten. One sentence from you is enough, and the course does the full version in week 11." },
 
   { at:"after", kind:"ask", scene:"solo", art:ART.magnifier, eyebrow:"What would you do?",
     title:"It says it is from<br>your school.",

@@ -5,13 +5,17 @@
  * nothing is timed against the child, nothing can be failed, and no beat ever
  * suggests they brought it on themselves. The game's own header says so.
  *
- * THE OPPOSITE PROBLEM TO WEEKS 3 AND 4. Those teach hard things and never
- * say "it was not your fault", so the teacher has to. Week 5 says it
- * EIGHTEEN TIMES: it is the centre of the whole week. What it has instead is
- * no route: no reporting, no evidence, no signposting, nothing about what
- * happens after a child tells. That is deliberately held for week 11, six
- * weeks away, and it means a child who discloses TODAY gets their feelings
- * met and no next step. The briefing below is about that gap.
+ * THE OTHER END OF THE SAME LANE. The course gives every concept one owning
+ * week (docs/cyberheroes/curriculum-buildsheet.md). Week 5 owns the EMOTIONAL
+ * frame, and it says "it is never your fault" eighteen times: that is the
+ * centre of the week. Week 11 owns the PROTOCOL, so reporting, blocking and
+ * keeping evidence are deliberately not here.
+ *
+ * Which is fine as curriculum and awkward on the day: a child who discloses
+ * in this lesson gets their feelings met properly and no next step, and will
+ * ask how to report it six weeks before the course answers. The briefing
+ * tells the teacher to have their own school's answer ready rather than
+ * teaching week 11 early.
  *
  * AND ONE PRACTICAL THING A TEACHER MUST KNOW BEFORE THEY WATCH. The Ember
  * Chase is DESIGNED to be lost. Every child gets full stars and the embers
@@ -175,7 +179,7 @@ export const WEEK_5: Pack = {
       "<b>One game is meant to be lost.</b> In the Ember Chase the copies get away from every child, every time, and everybody still gets full stars. It is a demonstration of what forwarding does, not a test. Say so in the debrief, because some of them will think they were bad at it.",
       "<b>Check your register for a Sam or a Maya.</b> Both names are used for children who get picked on, and a class will turn round and look.",
       "<b>Somebody in the room has laughed along at something this week</b> and is about to realise it counts as joining in. Aim for repair, not guilt: the week gives you the exit, which is that one kind message can turn a whole chat around.",
-      "<b>Write down what they said in their own words</b> as soon as you can, and pass it to your designated safeguarding lead <b>the same day</b>.",
+      "<b>Write down what they said in their own words</b> as soon as you can, and pass it to whoever is responsible for child protection at your school <b>the same day</b>.",
       "Your own setting&rsquo;s safeguarding policy overrides anything on these slides.",
     ],
   },
