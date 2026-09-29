@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { K } from "../engine/tokens";
 import type { LookupHit } from "@/app/lib/aiClearedOps";
+import type { EvalResult } from "@/app/lib/aiClearedEval";
 
 /* The two staff actions that need a form: create a firm by hand, and look
  * a certificate or a person up across every firm. */
@@ -47,6 +48,32 @@ export default function OpsPanel() {
       setHits(j.hits ?? []);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Something went wrong.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const [evalRows, setEvalRows] = useState<EvalResult[]>([]);
+  const [evalDone, setEvalDone] = useState(false);
+  const evalPassRate = evalRows.length ? evalRows.filter((r) => r.pass).length / evalRows.length : 0;
+
+  async function runEval() {
+    setBusy("eval");
+    setErr(null);
+    setEvalRows([]);
+    setEvalDone(false);
+    try {
+      const all: EvalResult[] = [];
+      for (let from = 0; from < 40; from += 10) {
+        const res = await fetch(`/api/ops/eval?from=${from}&count=10`);
+        const j = (await res.json().catch(() => ({}))) as { results?: EvalResult[]; error?: string };
+        if (!res.ok) throw new Error(j.error ?? "The eval could not run.");
+        all.push(...(j.results ?? []));
+        setEvalRows([...all]);
+      }
+      setEvalDone(true);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "The eval could not run.");
     } finally {
       setBusy(null);
     }
@@ -115,9 +142,33 @@ export default function OpsPanel() {
           </ul>
         )}
       </div>
+      <div className="cf-card op-form op-wide">
+        <h2 className="op-h2">Grader eval</h2>
+        <p className="cf-note">Forty practice prompts through the live grader, scored on what rules cannot check: the explanations are the model&rsquo;s own, the coaching is one British sentence, nothing leaked is repeated, the rewrite is clean. Bar 90%. Costs about a pound of model usage and takes a minute or two.</p>
+        <button type="button" className="cf-btn cf-btn-pri" onClick={runEval} disabled={busy === "eval"}>{busy === "eval" ? `Running, ${evalRows.length} of 40…` : evalRows.length ? "Run again" : "Run the grader eval"}</button>
+        {evalDone && (
+          <div className={`op-made ${evalPassRate >= 0.9 ? "" : "warn"}`}>
+            <b>{evalRows.filter((r) => r.pass).length} of {evalRows.length} passed ({Math.round(evalPassRate * 100)}%)</b>
+            {evalPassRate >= 0.9 ? "Above the bar." : "Under the 90% bar: send Claude the failures below."}
+          </div>
+        )}
+        {evalRows.some((r) => !r.pass) && (
+          <ul className="op-hits">
+            {evalRows.filter((r) => !r.pass).map((r) => (
+              <li key={r.id}>
+                <b>{r.id}: {r.note}</b>
+                <span>{r.verdict}, {r.ms} ms</span>
+                {r.failed.map((f, i) => <span key={i}>{f.name}{f.detail ? `: ${f.detail}` : ""}</span>)}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       {err && <div className="op-err">{err}</div>}
 
       <style jsx>{`
+        .op-wide { grid-column: 1 / -1; }
+        .op-made.warn { background: ${K.warnSoft}; }
         .op-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
         .op-h2 { font-family: ${K.display}; font-size: 20px; margin: 0 0 4px; color: ${K.ink}; }
         .op-form { display: flex; flex-direction: column; gap: 12px; }
