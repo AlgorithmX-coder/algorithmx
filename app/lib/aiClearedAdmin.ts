@@ -167,6 +167,31 @@ export async function sendInvite(args: { to: string; token: string; firmName: st
   return sendEmail({ to: args.to, subject: `${args.adminName} has enrolled you on AI Cleared at ${args.firmName}`, html, text, replyTo: args.adminEmail ?? undefined });
 }
 
+/* The welcome to a firm's first admin, after a purchase or a hand set-up.
+ * Different from a staff invite: this person runs the course for the
+ * firm, so the email says what they can do and where. */
+export async function sendAdminWelcome(args: { to: string; token: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
+  const link = `${args.origin}/ai-cleared/join/${args.token}`;
+  const seatLine = `${args.seats} ${args.seats === 1 ? "seat" : "seats"}`;
+  const html = `
+    <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">AI CLEARED</p>
+      <h1 style="font-size:22px;margin:0 0 12px">${seatLine} on AI Cleared are ready for ${esc(args.firmName)}.</h1>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the admin for ${esc(args.firmName)}. Set up your account from the link below, then invite your staff from the admin console: paste their email addresses and each person gets their own invite. The same console shows who has finished, and their certificates.</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Your own seat is included, so you can take the course too: about ninety minutes in five short modules, practised inside a copy of the tool your firm uses, on invented data.</p>
+      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my admin account</a></p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
+    </div>`;
+  const text = `${seatLine} on AI Cleared are ready for ${args.firmName}.
+
+You are the admin. Set up your account, then invite your staff from the admin console; the same console shows who has finished and their certificates. Your own seat is included.
+
+Set up your admin account: ${link}
+`;
+  return sendEmail({ to: args.to, subject: `AI Cleared is ready for ${args.firmName}: ${seatLine}`, html, text, replyTo: args.staffEmail ?? undefined });
+}
+
 /* A reminder to everyone who has not finished, under the admin's name. */
 export async function nudge(args: { orgId: string; firmName: string; origin: string; adminName: string; adminEmail: string | null }) {
   const rows = await getRegister(args.orgId);

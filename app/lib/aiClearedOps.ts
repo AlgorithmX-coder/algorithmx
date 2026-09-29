@@ -1,6 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { AI_CLEARED_SLUG } from "@/app/lib/aiCleared";
-import { FIRM_THRESHOLD, newInviteToken, sendInvite } from "@/app/lib/aiClearedAdmin";
+import { FIRM_THRESHOLD, newInviteToken, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
 import { MODULE_LIST } from "@/app/ai-cleared/manifests";
 import type { OrgPlan } from "@prisma/client";
 
@@ -117,7 +117,7 @@ export async function createFirm(args: {
   await prisma.seat.create({ data: { orgId: org.id, email: args.adminEmail.trim().toLowerCase(), inviteToken: token, team: "Admin", role: "ADMIN" } });
   let emailed = true;
   try {
-    await sendInvite({ to: args.adminEmail, token, firmName: org.name, origin: args.origin, adminName: args.staffName, adminEmail: args.staffEmail });
+    await sendAdminWelcome({ to: args.adminEmail, token, firmName: org.name, seats: args.seatsPurchased, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail });
   } catch (err) {
     emailed = false;
     console.error("[ai-cleared/ops] admin invite email failed", err instanceof Error ? err.message : err);
