@@ -38,6 +38,7 @@ model User {
   orgMemberships      OrgMember[]
   seats               Seat[]
   enrolments          Enrolment[]
+  packShareLinks      PackShareLink[]
 }
 
 model Account {
@@ -368,6 +369,7 @@ model Organisation {
   profile      FirmProfile?
   enrolments   Enrolment[]
   certificates Certificate[]
+  packShares   PackShareLink[]
 }
 
 model OrgMember {
@@ -501,4 +503,33 @@ model Certificate {
   org       Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
   @@index([orgId])
+}
+
+/// A read-only link to ONE week's teacher pack, so a school can be shown the
+/// product before anybody has an account.
+///
+/// Same shape as PasswordResetToken and for the same reason: the random half
+/// lives only in the URL and only its hash is stored, so a copy of this table
+/// hands out no working links. Unlike a signed token it can be revoked, and
+/// the open count is the useful part for whoever sent it: you can tell whether
+/// the school actually looked.
+model PackShareLink {
+  id           String    @id @default(cuid())
+  tokenHash    String    @unique
+  week         Int
+  /// Who it went to, in whatever words the sender used. Never shown publicly.
+  label        String?
+  orgId        String
+  createdById  String
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  opens        Int       @default(0)
+  lastOpenedAt DateTime?
+  createdAt    DateTime  @default(now())
+
+  org       Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdBy User         @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@index([createdById])
 }
