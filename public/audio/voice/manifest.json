@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-29T12:11:13.865Z",
+  "generatedAt": "2026-09-29T17:49:18.327Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -4528,19 +4528,19 @@
       "file": "/audio/voice/70ab28109d27a2df.mp3"
     },
     {
-      "key": "a210b28d00da0b43",
+      "key": "94b9b16d93ecdf8d",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you. Your team is the grown-ups who come running. A parent. A teacher. A grandparent. Somebody you'd shout for. Name them NOW, while everything is calm and easy. [warmly] And if they're all asleep, there's a free phone line just for children that never sleeps. Ask a grown-up to put the number on your poster. [excited] Come to the radio. Let's call your crew in!",
+      "text": "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you. Your team is the grown-ups who come running. A parent. A teacher. A grandparent. Somebody you'd shout for. Name them NOW, while everything is calm and easy. [warmly] And if they're all asleep, there's a free child line service that never sleeps. Ask a grown-up to put the number on your poster. [excited] Come to the radio. Let's call your crew in!",
       "lines": [
         "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you.",
         "Your team is the grown-ups who come running.",
         "A parent. A teacher. A grandparent. Somebody you'd shout for.",
         "Name them NOW, while everything is calm and easy.",
-        "[warmly] And if they're all asleep, there's a free phone line just for children that never sleeps. Ask a grown-up to put the number on your poster.",
+        "[warmly] And if they're all asleep, there's a free child line service that never sleeps. Ask a grown-up to put the number on your poster.",
         "[excited] Come to the radio. Let's call your crew in!"
       ],
-      "file": "/audio/voice/a210b28d00da0b43.mp3"
+      "file": "/audio/voice/94b9b16d93ecdf8d.mp3"
     },
     {
       "key": "4cb47d4a58c3d334",
@@ -4955,10 +4955,10 @@
       "file": "/audio/voice/e4c109290f853fd1.mp3"
     },
     {
-      "key": "a7cd98f21542fa8c",
+      "key": "99d375377e66c488",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach? Is it option A... A friendly player from my game, they're online all night Option B... Nobody until morning, worries have to wait Or is it option C... The children's helpline, free and always awake So, what do you think?",
+      "text": "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach? Is it option A... A friendly player from my game, they're online all night Option B... Nobody until morning, worries have to wait Or is it option C... The child line service, free and always awake So, what do you think?",
       "lines": [
         "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach?",
         "Is it option A...",
@@ -4966,10 +4966,10 @@
         "Option B...",
         "Nobody until morning, worries have to wait",
         "Or is it option C...",
-        "The children's helpline, free and always awake",
+        "The child line service, free and always awake",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/a7cd98f21542fa8c.mp3"
+      "file": "/audio/voice/99d375377e66c488.mp3"
     },
     {
       "key": "243ef510dc1d99c3",
@@ -5045,26 +5045,26 @@
       "file": "/audio/voice/0a5d07b29c7b9a2d.mp3"
     },
     {
-      "key": "93dc425992dedba4",
+      "key": "dee879fb7d87f666",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "That's right! Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps.",
       "lines": [
         "That's right!",
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps."
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps."
       ],
-      "file": "/audio/voice/93dc425992dedba4.mp3"
+      "file": "/audio/voice/dee879fb7d87f666.mp3"
     },
     {
-      "key": "9a316da3d00f667e",
+      "key": "5cc23b4ef583a131",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "Not quite. Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps.",
       "lines": [
         "Not quite.",
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps."
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps."
       ],
-      "file": "/audio/voice/9a316da3d00f667e.mp3"
+      "file": "/audio/voice/5cc23b4ef583a131.mp3"
     },
     {
       "key": "4049726e6ca56d73",
@@ -5683,14 +5683,14 @@
       "file": "/audio/voice/041e79a3babb6d4b.mp3"
     },
     {
-      "key": "51fcb06392a3afe5",
+      "key": "fd6f5ece724ed884",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps.",
       "lines": [
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps."
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps."
       ],
-      "file": "/audio/voice/51fcb06392a3afe5.mp3"
+      "file": "/audio/voice/fd6f5ece724ed884.mp3"
     },
     {
       "key": "5570e8eb7927c5f8",
@@ -5733,14 +5733,14 @@
       "file": "/audio/voice/832f04ea8cfdf0e4.mp3"
     },
     {
-      "key": "e051d40c751e08a3",
+      "key": "648935f821c59efa",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The children's helpline - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one.",
+      "text": "The child line service - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one.",
       "lines": [
-        "The children's helpline - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one."
+        "The child line service - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one."
       ],
-      "file": "/audio/voice/e051d40c751e08a3.mp3"
+      "file": "/audio/voice/648935f821c59efa.mp3"
     },
     {
       "key": "00524d9ebc0bb7cf",
@@ -5893,14 +5893,14 @@
       "file": "/audio/voice/962be73a3144ebed.mp3"
     },
     {
-      "key": "70e2844d37c930ac",
+      "key": "6226379f3dff3d1f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The children's helpline",
+      "text": "The child line service",
       "lines": [
-        "The children's helpline"
+        "The child line service"
       ],
-      "file": "/audio/voice/70e2844d37c930ac.mp3"
+      "file": "/audio/voice/6226379f3dff3d1f.mp3"
     },
     {
       "key": "666dda81eed6d985",
