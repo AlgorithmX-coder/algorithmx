@@ -7,8 +7,9 @@
  * Tap a tile that belongs → it flies up onto the next open slot with a
  * glow; tap one that doesn't → a gentle teach panel explains why the
  * poster is only for the real team. The poster completes when every
- * belonging tile is placed. Special tiles (e.g. the Childline number)
- * get a golden frame so they stand out on the finished poster.
+ * belonging tile is placed. Special tiles (the children's helpline, which
+ * is described and never named, because the service differs in every country
+ * the course sells into) get a golden frame so they stand out.
  *
  * Re-dressable via the copy props (W11 My-Team poster; W19 family-rules
  * quilt is the earmarked reuse). Skin "case" (Week 3, "The Case Board"):
@@ -63,7 +64,10 @@ export type TeamPosterSkin = "poster" | "case" | "doorway";
 
 export interface PosterTile {
   id: string;
-  /** Big label on the tile (e.g. "Mum or Dad", "Childline 0800 1111"). */
+  /** Big label on the tile (e.g. "Mum or Dad", "The children's helpline").
+   *  Never a phone number and never one country's service: the number belongs
+   *  on the wall of the room, written up by a grown-up who knows which country
+   *  they are in. */
   label: string;
   /** Optional small line under the label. */
   detail?: string;
@@ -71,7 +75,7 @@ export interface PosterTile {
   icon: string;
   /** True = belongs on the poster. */
   isTeam: boolean;
-  /** Golden frame on the poster (e.g. the Childline tile). */
+  /** Golden frame on the poster (e.g. the children's helpline tile). */
   special?: boolean;
   /** Teach copy: why it belongs / why it doesn't. */
   note: string;

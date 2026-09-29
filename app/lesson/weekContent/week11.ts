@@ -6,8 +6,10 @@ import { WEEK_INTROS } from "./weekIntros";
  *
  * SENSITIVE WEEK, built warmth-first like Week 5: the Raccoon stays out of the
  * feelings beats (concepts 1, 2 and 4 carry no threat line at all), the child is
- * never blamed, and nothing here is frightening. The lesson carries the Childhelp
- * number (1-800-422-4453) that the no-text films could not.
+ * never blamed, and nothing here is frightening. The lesson points at a free
+ * CHILD LINE SERVICE and never at one country's: the
+ * number differs everywhere the course is sold, so it belongs on the wall of
+ * the room, written up by a grown-up, not baked into a film or a recording.
  *
  * Rebuilt to the Learn-Loop Build Standard v0.10. World: THE LIGHTHOUSE - a warm
  * rescue station on a dark coast, where the light never goes out.
@@ -206,13 +208,13 @@ export const WEEK_11: WeekContent = {
       type: "info",
       title: "Name Your Team",
       content:
-        "Every lighthouse has a crew, and so do you. Your team is the grown-ups who come running: a parent or carer, a teacher you like, a grandparent, an aunt or uncle, a club leader. Name them NOW, while nothing is wrong, because a name you already know is much easier to reach for when your tummy drops. And if your team is asleep or far away, Childhelp is awake all night, every night, on 1-800-422-4453.",
+        "Every lighthouse has a crew, and so do you. Your team is the grown-ups who come running: a parent or carer, a teacher you like, a grandparent, an aunt or uncle, a club leader. Name them NOW, while nothing is wrong, because a name you already know is much easier to reach for when your tummy drops. And if your team is asleep or far away, there is a child line service that is awake all night, every night, and it costs nothing to ring.",
       bullets: [
         "Your team is grown-ups who come running",
         "Name them now, before anything is wrong",
         "Three is plenty. One is a start",
         "A grown-up you only know online is not on it",
-        "Childhelp is awake all night: 1-800-422-4453",
+        "A free child line service, awake all night",
       ],
       bulletIcons: ["👪", "📌", "🔢", "🚫", "🔔"],
       emblem: "👪",
@@ -223,7 +225,7 @@ export const WEEK_11: WeekContent = {
           "Your team is the grown-ups who come running.",
           "A parent. A teacher. A grandparent. Somebody you'd shout for.",
           "Name them NOW, while everything is calm and easy.",
-          "[warmly] And if they're all asleep, Childhelp is awake. One, eight hundred, four two two, four four five three.",
+          "[warmly] And if they're all asleep, there's a free child line service that never sleeps. Ask a grown-up to put the number on your poster.",
           "[excited] Come to the radio. Let's call your crew in!",
         ],
       },
@@ -244,7 +246,7 @@ export const WEEK_11: WeekContent = {
         { id: "mum", label: "Mum or Dad at home", icon: "🏠", isTeam: true, why: "The people at home come running first, and they would rather know at midnight than find out next week.", explanation: "" },
         { id: "teacher", label: "Mrs Okafor, my teacher", icon: "🎓", isTeam: true, why: "A teacher you like can sort out things that happen with people at school, and they have done it many times before.", explanation: "" },
         { id: "gran", label: "Gran, two streets away", icon: "👪", isTeam: true, why: "Gran is a brilliant pick. Two streets away is close enough to come round, and a grandparent is never too busy for you.", explanation: "" },
-        { id: "helpline", label: "Childhelp, 1-800-422-4453", icon: "🔔", isTeam: true, why: "Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you.", explanation: "" },
+        { id: "helpline", label: "The child line service", icon: "🔔", isTeam: true, why: "That line is awake every hour of every night, it costs nothing to ring, and the person who answers is there to help a child exactly like you.", explanation: "" },
         { id: "static", label: "Static, nobody there", icon: "📱", isTeam: false, why: "", explanation: "That channel is just hiss. When you really need somebody, pick a person you could name out loud instead." },
         { id: "gamer", label: "ShadowFox99, from my game", icon: "🎮", isTeam: false, why: "", explanation: "Somebody from your game cannot come round, cannot ring your school, and might not be who they say they are. Your team stands in the same room as you." },
         { id: "influencer", label: "My favourite streamer", icon: "📣", isTeam: false, why: "", explanation: "A streamer does not know your name and never will. Your team is people who know you back." },
@@ -881,7 +883,7 @@ export const WEEK_11: WeekContent = {
       subtitle: "Here's everything you mastered this week.",
       concepts: [
         { id: "fault", label: "Never Your Fault", accent: "#7df0ff", icon: "💪", summary: "Someone unkind made THEIR choice, and it was never yours to carry." },
-        { id: "team", label: "My Team", accent: "#ffd158", icon: "👪", summary: "Named before you needed them, plus Childhelp 1-800-422-4453, always awake." },
+        { id: "team", label: "My Team", accent: "#ffd158", icon: "👪", summary: "Named before you needed them, plus the free child line service, always awake." },
         { id: "block", label: "Stop & Block", accent: "#c084fc", icon: "🚫", summary: "Your reply is the fuel, so you send nothing and close the door." },
         { id: "camera", label: "Camera, Not Trash", accent: "#ff5fb3", icon: "📸", summary: "A screenshot freezes the proof a delete would throw away." },
         { id: "protocol", label: "The Protocol", accent: "#7eff97", icon: "🚀", summary: "Breathe, snap, stop, block, tell, in that order, calmly." },
@@ -974,14 +976,14 @@ export const WEEK_11: WeekContent = {
           text: "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach?",
         },
         options: [
-          { text: "Childhelp, 1-800-422-4453, free and always awake" },
+          { text: "The child line service, free and always awake" },
           { text: "Nobody until morning, worries have to wait" },
           { text: "A friendly player from my game, they're online all night" },
         ],
         correctIndex: 0,
         teachOnWrong: {
           title: "Someone is always awake!",
-          explanation: "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps.",
+          explanation: "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps.",
         },
         villainRight: {
           slug: "quiz-w11-right-c2-1",
@@ -1092,7 +1094,7 @@ export const WEEK_11: WeekContent = {
   bossQuestions: {
     easy: [
       { question: "Someone sends you a horrid message. Whose fault is it?", answers: ["Theirs - they chose to send it", "Yours", "A little bit yours", "Nobody knows"], correctIndex: 0, explanation: "The sender made the choice - it is never your fault." },
-      { question: "What's the golden number on every kid's team poster?", answers: ["Childhelp 1-800-422-4453", "911 for everything", "Your best friend's number", "There isn't one"], correctIndex: 0, explanation: "Childhelp - free, just for kids, always awake." },
+      { question: "What goes on every kid's team poster, next to the grown-ups?", answers: ["The child line service", "The emergency services number", "Your best friend's number", "There isn't one"], correctIndex: 0, explanation: "The child line service - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one." },
       { question: "A nasty message arrives. What happens to it FIRST?", answers: ["Screenshot - freeze the proof", "Delete it fast", "Reply to it", "Forward it to friends"], correctIndex: 0, explanation: "Camera, not trash - your team helps best when they can see." },
     ],
     medium: [
@@ -1102,7 +1104,7 @@ export const WEEK_11: WeekContent = {
     ],
     hard: [
       { question: "Why does 'keep it secret' make everything heavier?", answers: ["Carrying it alone grows the worry - telling shares the weight", "Secrets are illegal", "Grown-ups always find out", "It doesn't"], correctIndex: 0, explanation: "Telling someone starts making it lighter right away - that's the whole trick." },
-      { question: "The full protocol, in order, is...", answers: ["Stop → Screenshot → Block → Tell → Childhelp if needed", "Reply → Delete → Forget", "Stop → Block → Screenshot → Tell", "Screenshot → Fire back → Tell"], correctIndex: 0, explanation: "Fingers, camera, door, team, phone - freeze the proof BEFORE the door shuts." },
+      { question: "The full protocol, in order, is...", answers: ["Stop → Screenshot → Block → Tell → the child line service if you need more", "Reply → Delete → Forget", "Stop → Block → Screenshot → Tell", "Screenshot → Fire back → Tell"], correctIndex: 0, explanation: "Fingers, camera, door, team, phone - freeze the proof BEFORE the door shuts." },
       { question: "Your friend says 'don't tell anyone what happened to me online.' What's the hero move?", answers: ["Tell a trusted grown-up anyway - some secrets need helpers", "Promise and keep the secret", "Post about it", "Ignore your friend"], correctIndex: 0, explanation: "Safety secrets are the kind you SHARE with a grown-up - that's real friendship." },
     ],
   },

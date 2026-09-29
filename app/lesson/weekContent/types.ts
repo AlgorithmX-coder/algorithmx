@@ -3186,8 +3186,10 @@ export type ScreenDef = (
        * warm poster with empty slots and a tray of candidate tiles. Tap
        * a tile that belongs → it fills the next slot with a glow; tap
        * one that doesn't → a gentle teach panel. Special tiles (the
-       * Childline number) get a golden frame. Re-dressable via the copy
-       * props (W19 family-rules quilt is the earmarked reuse).
+       * children's helpline, described and never named, because the service
+       * differs in every country the course sells into) get a golden frame.
+       * Re-dressable via the copy props (W19 family-rules quilt is the
+       * earmarked reuse).
        */
       type: "teamPoster";
       tiles: {
@@ -3199,7 +3201,7 @@ export type ScreenDef = (
         icon: string;
         /** True = belongs on the poster. */
         isTeam: boolean;
-        /** Golden frame on the poster (e.g. the Childline tile). */
+        /** Golden frame on the poster (e.g. the children's helpline). */
         special?: boolean;
         /** Teach copy: why it belongs / why it doesn't. */
         note: string;
