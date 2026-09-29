@@ -185,8 +185,11 @@ export default function LandingV2() {
 
       /* The NCSC crest is white artwork. On a dark page it needed nothing;
          on sand it disappeared entirely, so it gets its own dark plate
-         wherever it appears. Recolouring it is not allowed. */
-      .lv2-sand img[src="/logos/ncsc.svg"] {
+         wherever it appears. Recolouring it is not allowed. The nav's
+         trust strip already sets the crest on its own dark pill, so it is
+         left out: a plate inside a plate drew a stepped outline (owner
+         spotted it 2026-09-29). */
+      .lv2-sand :not(.lv2-tel-plate) > img[src="/logos/ncsc.svg"] {
         background: #14161d !important;
         padding: 5px 9px !important;
         border-radius: 8px !important;
