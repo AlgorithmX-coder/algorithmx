@@ -115,7 +115,7 @@ jobs:
 
       # Build once; the playwright config boots `next start` itself.
       - name: Build production bundle
-        run: npm run build
+        run: npm run build || (echo "next build failed once (usually the next/font/google fetch flake); retrying" && npm run build)
 
       - name: Run Playwright tests
         run: npm run test:e2e
