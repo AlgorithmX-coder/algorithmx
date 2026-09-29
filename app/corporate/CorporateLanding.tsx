@@ -114,7 +114,7 @@ const COURSES = [
       "Shadow AI, and what to do the moment something goes wrong",
     ],
     outcome: "A certificate per person and per firm, and every completion on the training register.",
-    price: "From £19 per person, per year",
+    price: "From £25 per person, per year",
   },
   {
     id: "fluent",
@@ -170,10 +170,10 @@ const PILLARS = [
   },
 ];
 
-/* Per person, per year, in packs of ten. Owner-set 2026-09-26. */
+/* Per person, per year, in packs of ten. Owner-set 2026-09-26; AI Cleared Firm tier £25 from 2026-09-29. */
 const PACKS = [
   { name: "Team", seats: "10 to 49 seats", cleared: "£29", fluent: "£59", note: "Running in your firm within a week.", accent: "#0a7085" },
-  { name: "Firm", seats: "50 to 249 seats", cleared: "£19", fluent: "£45", note: "Team-level reporting and a named onboarding call.", accent: "#5744c9" },
+  { name: "Firm", seats: "50 to 249 seats", cleared: "£25", fluent: "£45", note: "Team-level reporting and a named onboarding call.", accent: "#5744c9" },
   { name: "Enterprise", seats: "250 seats and up", cleared: "Please enquire", fluent: "Please enquire", note: "SSO, SCORM export and data classes per division.", accent: "#8a5400" },
 ];
 
@@ -184,7 +184,7 @@ const FAQS = [
   { q: "Does our data go into the courses?", a: "No real data is needed. Both courses run on invented firms, clients and people. The sandbox stops any send that contains something that looks like a real identifier and explains why, and transcripts are not kept. Your firm profile holds tool names and a contact, and that is all." },
   { q: "Does it make us compliant?", a: "It gives you training and evidence of training: a register with scores, dates and certificates, which is what auditors, insurers and regulators ask to see. Your own policies and legal advice stay yours, and the free policy below is written as a starting point for your review." },
   { q: "Can we tailor it to our firm?", a: "Yes. The firm profile takes ten minutes and both courses read it from then on: your approved tools, your data class names, your escalation contact. Firms without an AI policy can write one now, free, further down this page." },
-  { q: "How is it licensed?", a: "Per person, per year, in packs of ten. AI Cleared is £29 a seat for ten to forty-nine seats and £19 from fifty; AI Fluent is £59 and £45. Every seat includes the sandbox, the register, the certificates and the policy pack. Larger firms can split seats across departments; please get in touch to find out about the onboarding process." },
+  { q: "How is it licensed?", a: "Per person, per year, in packs of ten. AI Cleared is £29 a seat for ten to forty-nine seats and £25 from fifty; AI Fluent is £59 and £45. Every seat includes the sandbox, the register, the certificates and the policy pack. Larger firms can split seats across departments; please get in touch to find out about the onboarding process." },
 ];
 
 export default function CorporateLanding() {
