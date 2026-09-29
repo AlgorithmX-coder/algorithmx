@@ -4,8 +4,10 @@ import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getTeacherContext } from "@/app/lib/schoolAccess";
 import { WEEK_CONTENT, getAvailableWeeks } from "@/app/lesson/weekContent";
+import { listShareLinks } from "@/app/lib/packShare";
 import { writtenWeeks } from "./packs";
 import Locked from "./Locked";
+import SharePanel from "./SharePanel";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +24,7 @@ export default async function TeachIndexPage() {
   if (!ctx) return <Locked email={session.user.email} />;
 
   const ready = new Map(writtenWeeks().map((p) => [p.n, p]));
+  const links = await listShareLinks(ctx.orgId);
 
   return (
     <div className="axtp">
@@ -41,6 +44,11 @@ export default async function TeachIndexPage() {
           the game teaches and tests them, then ten minutes talking it through. The pack gives you
           the board to put on the screen, the script to read from, and a sheet you can print.
         </p>
+
+        <SharePanel
+          weeks={writtenWeeks().map((p) => ({ n: p.n, title: p.title }))}
+          links={links}
+        />
 
         <div className="sheet">
           <div className="phase">Ready to teach</div>

@@ -47,7 +47,14 @@ const WHAT_IS: Record<Mode, string> = {
 /** How far a light slide is allowed to grow into an empty board. */
 const MAX_GROW = 1.5;
 
-export default function Pack({ pack, weeks }: { pack: PackData; weeks: number[] }) {
+export default function Pack({ pack, weeks, shared = false }: {
+  pack: PackData;
+  weeks: number[];
+  /** Rendered from a read-only share link, so the reader has no account and
+   *  this is the only week they hold. Changes what is said, not what is shown:
+   *  a school judging the product should see exactly what a teacher gets. */
+  shared?: boolean;
+}) {
   const [mode, setMode] = useState<Mode>("teach");
   const [i, setI] = useState(0);
   const [isFull, setIsFull] = useState(false);
@@ -152,16 +159,20 @@ export default function Pack({ pack, weeks }: { pack: PackData; weeks: number[] 
               {pack.sub} &middot; ages 6&ndash;9 &middot; you set it up, they play and are tested
               by the game, then you talk it through
             </div>
-            <div className="weeks" role="group" aria-label="Week">
-              {/* real links, not buttons: each week is its own route, so these
-                  open in a new tab and come back through history like anything
-                  else a teacher clicks */}
-              {weeks.map((n) => (
-                <Link key={n} href={`/schools/teach/${n}`} aria-current={n === pack.n ? "page" : undefined}>
-                  Week {n}
-                </Link>
-              ))}
-            </div>
+            {/* No picker on a share link: it names one week, and holding a
+                link to week 1 should not hand over weeks 11 and 20. */}
+            {weeks.length > 0 && (
+              <div className="weeks" role="group" aria-label="Week">
+                {/* real links, not buttons: each week is its own route, so
+                    these open in a new tab and come back through history like
+                    anything else a teacher clicks */}
+                {weeks.map((n) => (
+                  <Link key={n} href={`/schools/teach/${n}`} aria-current={n === pack.n ? "page" : undefined}>
+                    Week {n}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
           <div className="modes" role="group" aria-label="View">
             <button aria-pressed={mode === "teach"} onClick={() => setMode("teach")}>Teacher deck</button>
@@ -179,6 +190,18 @@ export default function Pack({ pack, weeks }: { pack: PackData; weeks: number[] 
             {pack.brief.body.map((p, n) => <Html key={n} as="p" html={p} />)}
             {pack.helpline && <Html as="p" className="line" html={pack.helpline.setup} />}
           </div>
+        )}
+
+        {/* Somebody sent this to a school. Say which week it is and that there
+            are twenty, because the whole point of the link is to stand in for
+            the other nineteen they cannot see. */}
+        {shared && (
+          <p className="whatis">
+            <b>This is one week of twenty.</b> Week {pack.n} of Cyber Heroes, exactly as a teacher
+            gets it: the board for the screen, the script to read from, and a printable sheet.
+            Every week in the course has one.{" "}
+            <Link href="/schools">See what a school licence includes</Link>.
+          </p>
         )}
 
         <Html as="p" className="whatis" html={WHAT_IS[mode]} />

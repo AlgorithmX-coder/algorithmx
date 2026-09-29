@@ -36,7 +36,7 @@ const SLIDES: readonly Slide[] = [
       ["&ldquo;My teacher.&rdquo;", "&ldquo;Yes. Any grown-up here counts, and you can always come to me.&rdquo;"],
       ["A child cannot name anybody", "Do not let it sit. &ldquo;Everyone in this room has me, and everyone has the number on the board.&rdquo; Then check in with them privately, today."],
     ],
-    warn:"If a child cannot name anyone at home, note it and follow it up quietly the same day. And leave your country's child helpline on the board beside the names: it is free, it is open any hour, and a child can ring it <em>without telling anybody first</em>, which is exactly why it belongs on the list rather than instead of it." },
+    warn:"If a child cannot name anyone at home, note it and follow it up quietly the same day. And leave your country's child line service on the board beside the names: it is free, it is open any hour, and a child can ring it <em>without telling anybody first</em>, which is exactly why it belongs on the list rather than instead of it." },
 
   { at:"before", kind:"tell", scene:"protocol", eyebrow:"The four steps",
     title:"Stop. Screenshot.<br>Block. Tell.",
@@ -115,12 +115,12 @@ export const WEEK_11: Pack = {
      (it belongs on the school record, which arrives with phase 3), the board
      is the right place for it and the copy now says so. */
   helpline: {
-         label:"A free phone line just for children",
-         note:"any hour &middot; and you do not have to tell anybody you are ringing",
-         setup:"<b>Write your country's child helpline number on the board before you teach this.</b> "
-           + "Your safeguarding lead will have it, and most countries have a free line just for "
-           + "children. Once you know it, leave it up where the class can see it for the rest of "
-           + "the week.",
+         label:"The child line service",
+         note:"free &middot; any hour &middot; and you do not have to tell anybody you are ringing",
+         setup:"<b>Write your country's child line service number on the board before you teach "
+           + "this.</b> Your safeguarding lead will have it, and most countries have a free line "
+           + "just for children. Once you know it, leave it up where the class can see it for the "
+           + "rest of the week.",
        },
   brief: {
          head:"Read this before you teach it",

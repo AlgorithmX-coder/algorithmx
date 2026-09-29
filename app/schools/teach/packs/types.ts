@@ -77,11 +77,12 @@ export interface Slide {
   clocks?: true;
 }
 
-/** Country neutral by design. Every country has a different child helpline,
- *  so the pack ships without a number and the board teaches the IDEA. The
- *  centre fills the number in once, because only the centre knows which
- *  country it is in. A wrong number in a safeguarding lesson is worse than
- *  no number at all, so we never guess one and never ship a table of them. */
+/** Country neutral by design. Every country has a different child line service,
+ *  so the pack ships without a number and the board teaches the IDEA under one
+ *  name the whole course uses: "the child line service". The centre fills the
+ *  number in once, because only the centre knows which country it is in. A
+ *  wrong number in a safeguarding lesson is worse than no number at all, so we
+ *  never guess one and never ship a table of them. */
 export interface HelplineSlot {
   /** What the board says when no number is set. */
   label: string;

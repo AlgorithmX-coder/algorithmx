@@ -374,3 +374,54 @@
   .axtp .sheet {border:0;padding:0;background:none}
   .axtp .row, .axtp .phase {break-inside:avoid}
 }
+/* ============ SENDING A WEEK TO A SCHOOL ============
+   The one part of this page that is not for a classroom. It is a sales tool,
+   so it stays quiet: a row of controls and a list, in the teacher's typeface
+   rather than the board's. */
+.axtp .share {background:var(--paper);border:1px solid var(--rule);border-radius:14px;
+  padding:clamp(16px,2.4vw,22px);margin:22px 0}
+.axtp .share h3 {margin:0 0 4px;font:600 1.15rem var(--font-fredoka),system-ui,sans-serif}
+.axtp .sharelede {margin:0 0 14px;font-size:.9rem;line-height:1.5;color:var(--muted);max-width:68ch}
+
+.axtp .sharerow {display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.axtp .sharerow label {display:flex;flex-direction:column;gap:4px}
+.axtp .sharerow label.grow {flex:1;min-width:220px}
+.axtp .sharerow span {font:700 .65rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+.axtp .sharerow input, .axtp .sharerow select {font:600 .9rem var(--font-nunito),system-ui,sans-serif;
+  padding:9px 11px;border:1px solid var(--rule);border-radius:9px;background:var(--sheet);
+  color:var(--ink);width:100%}
+.axtp .sharerow input:focus-visible, .axtp .sharerow select:focus-visible,
+.axtp .sharerow button:focus-visible {outline:2px solid var(--say-c);outline-offset:1px}
+.axtp .sharerow button {font:800 .85rem var(--font-nunito),system-ui,sans-serif;padding:10px 18px;
+  border-radius:9px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+.axtp .sharerow button:disabled {opacity:.5;cursor:default}
+
+.axtp .shareerr {margin:12px 0 0;font-size:.88rem;font-weight:700;color:var(--warn)}
+
+/* Shown once and never again, so it has to be obvious and easy to select. */
+.axtp .madelink {margin-top:14px;padding:12px 14px;border-radius:10px;
+  background:rgba(10,112,133,.08);border:1px solid rgba(10,112,133,.35);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.axtp .madelink code {flex:1;min-width:240px;font:600 .85rem ui-monospace,Menlo,monospace;
+  word-break:break-all;color:var(--say-c)}
+.axtp .madelink button {font:800 .8rem var(--font-nunito),system-ui,sans-serif;padding:8px 16px;
+  border-radius:8px;border:1px solid var(--say-c);background:var(--say-c);color:#fff;cursor:pointer}
+.axtp .madelink small {flex-basis:100%;font-size:.78rem;color:var(--muted)}
+
+.axtp .sharelist {width:100%;border-collapse:collapse;margin-top:18px}
+.axtp .sharelist th {text-align:left;font:700 .62rem var(--font-nunito),system-ui,sans-serif;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  padding:8px 10px;border-bottom:1px solid var(--rule)}
+.axtp .sharelist td {padding:10px;border-bottom:1px solid var(--rule-soft);font-size:.88rem;vertical-align:top}
+.axtp .sharelist tr.dead td {opacity:.5}
+.axtp .sharelist td small {display:block;font-size:.75rem;color:var(--muted)}
+.axtp .sharelist .dim {color:var(--muted)}
+.axtp .sharelist .revoke {font:700 .78rem var(--font-nunito),system-ui,sans-serif;padding:5px 11px;
+  border-radius:7px;border:1px solid var(--rule);background:transparent;color:var(--warn);cursor:pointer}
+.axtp .sharelist .revoke:focus-visible {outline:2px solid var(--warn);outline-offset:1px}
+
+/* none of this belongs on a printed lesson */
+@media print {
+  .axtp .share {display:none!important}
+}
