@@ -155,3 +155,33 @@ export const TRACK_KEYWORDS: Record<Track, string[]> = {
 
 /* The order desks appear in on the invite landing. */
 export const TRACK_ORDER: Track[] = ["finance", "legal", "hr", "ops", "sales", "support", "it", "leadership", "general"];
+
+/* Titles that could sit on more than one desk, or on none: the "Other
+ * roles" tab lists these with the desk each one lands on, so nobody has
+ * to guess whether a project manager is Operations or IT. */
+export const OTHER_ROLES: string[] = [
+  "Team leader",
+  "Project manager",
+  "Programme manager",
+  "Business analyst",
+  "Product manager",
+  "Consultant",
+  "Administrator",
+  "Executive assistant",
+  "Personal assistant",
+  "Account manager",
+  "Client relationship manager",
+  "Contracts manager",
+  "Risk manager",
+  "Quality manager",
+  "Data analyst",
+  "Partner",
+  "Director",
+  "Head of department",
+  "Apprentice",
+  "Intern",
+  "Graduate trainee",
+  "Contractor",
+  "Volunteer",
+  "Other",
+];
