@@ -10,7 +10,8 @@ import type { Tool } from "../engine/types";
  * Wording rule: state what the vendor's page says, in plain words, with no
  * numbers we did not see on that page. Where a fact is unconfirmed, say so
  * on screen rather than guess. All entries below were checked against the
- * vendor pages on 2026-09-28. */
+ * vendor pages on 2026-09-29 (scripts/vendor-check.ts holds each page to
+ * its quoted sentence every quarter). */
 
 export interface VendorFact {
   tool: Tool;
@@ -32,7 +33,7 @@ export interface VendorFact {
   verifiedOn: string;
 }
 
-const CHECKED = "2026-09-28";
+const CHECKED = "2026-09-29";
 
 export const VENDORS: VendorFact[] = [
   /* ---- ChatGPT (OpenAI) ---- */
@@ -117,11 +118,11 @@ export const VENDORS: VendorFact[] = [
     tier: "consumer-free",
     label: "Claude Free",
     tell: "Free plan in the account line, no firm name.",
-    trains: "Only if you allow it. Since the 2025 terms change, Free, Pro and Max chats are used to improve models when the “Help improve our AI models” setting under Settings, Privacy is on, and always if a conversation is flagged for safety review. Incognito chats are not used even when the setting is on.",
+    trains: "Only if you allow it. Since the 2025 terms change, Free, Pro and Max chats and coding sessions are used to improve models when the Model Improvement setting under Privacy Settings is on, and always if a conversation is flagged for safety review. Incognito chats are not used even when the setting is on.",
     retention: "If you allow training, chats are kept in de-identified form for up to 5 years. A deleted chat leaves your history at once and Anthropic's storage within 30 days, and is not used for future training. Conversations flagged for a policy breach can be kept for up to 2 years.",
     adminSees: "Nobody at your firm. It is your account.",
     humanReview: "Limited to a small number of staff involved in model training, with data de-linked from your account; flagged conversations may be used for safety work.",
-    terms: { title: "Is my data used for model training? (Claude Privacy Center)", url: "https://privacy.claude.com/en/articles/10023580", find: "Help improve our AI models" },
+    terms: { title: "Is my data used for model training? (Claude Privacy Center)", url: "https://privacy.claude.com/en/articles/10023580", find: "use your chats and coding sessions to improve Claude" },
     verifiedOn: CHECKED,
   },
   {
@@ -141,11 +142,11 @@ export const VENDORS: VendorFact[] = [
     tier: "enterprise",
     label: "Claude Team and Enterprise",
     tell: "The firm's name and Team or Enterprise in the account line.",
-    trains: "No. Anthropic's page says chats and coding sessions on work plans are not used to train its models unless the organisation joins its development partner programme or gives explicit feedback.",
+    trains: "No. Anthropic's page says inputs and outputs from its commercial products, Claude for Work included, are not used to train its models by default. They can be if someone reports feedback through the thumbs up or down button, which an owner can switch off for the organisation, or if the organisation chooses to allow it.",
     retention: "Team: kept to run the product; a deleted chat leaves Anthropic's storage within 30 days. Enterprise: kept indefinitely by default unless an owner sets a retention period, minimum 30 days.",
     adminSees: "Partly on Team: the primary owner can request a data export that may contain conversations. On Enterprise: audit logs (without chat content) and, if the primary owner enables it, a Compliance API that includes chat data.",
     humanReview: "Only for conversations flagged for a policy breach.",
-    terms: { title: "Who owns and manages the data of my team? (Claude Privacy Center)", url: "https://privacy.claude.com/en/articles/9265372", find: "will not use your chats or coding sessions to train our models" },
+    terms: { title: "Is my data used for model training? Commercial products (Claude Privacy Center)", url: "https://privacy.anthropic.com/en/articles/7996868-is-my-data-used-for-model-training", find: "we will not use your inputs or outputs from our commercial products" },
     verifiedOn: CHECKED,
   },
 
@@ -155,11 +156,11 @@ export const VENDORS: VendorFact[] = [
     tier: "consumer-free",
     label: "Copilot on a personal Microsoft account",
     tell: "Personal account in the rail, no firm name, and the top bar says Chat rather than Work.",
-    trains: "Two Microsoft pages are live. The privacy FAQ for the older app says Microsoft uses Copilot conversations for AI training unless you opt out under Privacy, “Training on conversation activity”. The newer app's page says prompts, responses and file contents are not used to train foundation models. Which applies depends on the app version, so assume the older answer until you have checked.",
+    trains: "Two Microsoft pages are live. The privacy FAQ for the older app says Microsoft uses Copilot conversations for AI training unless you opt out of model training in the app's privacy settings, which you can do at any time. The newer app's page says prompts, responses and file contents are not used to train foundation models. Which applies depends on the app version, so assume the older answer until you have checked.",
     retention: "Conversation history is kept for 18 months by default. You can delete chats in the app or all activity from the Microsoft privacy dashboard; how long deletion takes to complete is not stated on the pages we checked.",
     adminSees: "Nobody at your firm. It is your account.",
     humanReview: "The older app's FAQ says some conversations are subject to automated and human review and that an opt-out of human review is not available.",
-    terms: { title: "Privacy FAQ for Microsoft Copilot (Microsoft Support)", url: "https://support.microsoft.com/en-us/microsoft-copilot/privacy-faq-for-microsoft-copilot", find: "Training on conversation activity" },
+    terms: { title: "Privacy FAQ for Microsoft Copilot (Microsoft Support)", url: "https://support.microsoft.com/en-us/microsoft-copilot/privacy-faq-for-microsoft-copilot", find: "You can opt out of use of your conversation activity for model training at any time" },
     verifiedOn: CHECKED,
   },
   {
@@ -183,7 +184,7 @@ export const VENDORS: VendorFact[] = [
     retention: "Prompts and responses are stored in a hidden folder in your mailbox and kept for as long as your firm's retention policy says. Deleting your Copilot activity history removes it from view; compliance copies follow the firm's holds and retention rules.",
     adminSees: "Yes. Microsoft's own staff-facing page says your prompts and responses are logged and your IT admin can use Microsoft's search and audit tools to view them.",
     humanReview: "No. Microsoft says its Copilot services have opted out of the abuse monitoring that includes human review.",
-    terms: { title: "Data protection when using Microsoft Copilot Chat for work or school", url: "https://support.microsoft.com/en-us/privacy/data-protection-when-using-microsoft-365-copilot-chat-for-work-or-school", find: "aren't used to train foundation LLMs" },
+    terms: { title: "Data protection when using Microsoft Copilot Chat for work or school", url: "https://support.microsoft.com/en-us/privacy/data-protection-when-using-microsoft-365-copilot-chat-for-work-or-school", find: "aren't used to train foundation models" },
     verifiedOn: CHECKED,
   },
 ];

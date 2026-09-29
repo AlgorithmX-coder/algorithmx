@@ -24,6 +24,11 @@ export default async function globalSetup(config: FullConfig) {
 
   const baseURL = config.projects[0].use.baseURL ?? "http://localhost:3100";
 
+  // The `cleared` project needs no seed and no sign-in (it plays the AI
+  // Cleared modules through the offline preview). Set PLAYWRIGHT_SKIP_SEED=1
+  // to run it alone against a dev server that has no E2E_TESTS flag.
+  if (process.env.PLAYWRIGHT_SKIP_SEED === "1") return;
+
   // 1. Seed the database via the test endpoint.
   const api = await request.newContext({ baseURL });
   const seedRes = await api.post("/api/test/seed");

@@ -7,8 +7,10 @@ export function middleware(req: NextRequest) {
   // reachable in production — they expose internal tooling and unfinished
   // scaffolding. 404 them in prod; leave them open (no site-password) in
   // local dev so iteration stays frictionless.
+  // The CI e2e job runs a production build with E2E_TESTS=1 and plays the
+  // AI Cleared modules through /dev/ai-cleared; Vercel never sets that.
   if (pathname.startsWith("/dev") || pathname.startsWith("/test")) {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production" && process.env.E2E_TESTS !== "1") {
       return new NextResponse(null, { status: 404 });
     }
     return NextResponse.next();
