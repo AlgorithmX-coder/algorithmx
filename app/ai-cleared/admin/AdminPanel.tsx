@@ -11,7 +11,7 @@ import type { RegisterRow, ProfileInput } from "@/app/lib/aiClearedAdmin";
 
 type Standing = { claimed: number; cleared: number; invited: number; pct: number; firmCleared: boolean };
 
-export default function AdminPanel({ firmName, role, seatsPurchased, rows, standing, profile }: { firmName: string; role: "ADMIN" | "MANAGER" | "LEARNER"; seatsPurchased: number; rows: RegisterRow[]; standing: Standing; profile: ProfileInput }) {
+export default function AdminPanel({ firmName, role, seatsPurchased, rows, standing, profile, orgId }: { firmName: string; role: "ADMIN" | "MANAGER" | "LEARNER"; seatsPurchased: number; rows: RegisterRow[]; standing: Standing; profile: ProfileInput; /* Set when AlgorithmX staff act on a firm from the ops console. */ orgId?: string }) {
   const router = useRouter();
   const [tab, setTab] = useState<"register" | "invite" | "profile">("register");
   const [emails, setEmails] = useState("");
@@ -24,6 +24,8 @@ export default function AdminPanel({ firmName, role, seatsPurchased, rows, stand
   const [copied, setCopied] = useState<string | null>(null);
 
   const origin = typeof window !== "undefined" ? window.location.origin : "";
+  /* Every call names the firm when staff are acting on it. */
+  const api = (path: string, extra = "") => `${path}?${orgId ? `org=${encodeURIComponent(orgId)}&` : ""}${extra}`.replace(/[?&]$/, "");
   const used = rows.length;
   const pct = Math.round(standing.pct * 100);
   const r = 30;
@@ -46,17 +48,17 @@ export default function AdminPanel({ firmName, role, seatsPurchased, rows, stand
   }
 
   const invite = () =>
-    call("invite", () => fetch("/api/org/seats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ emails: emails.split(/[\n,;]+/), team: team || null, track: track || null, role: inviteRole }) }), (j) => {
+    call("invite", () => fetch(api("/api/org/seats"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ emails: emails.split(/[\n,;]+/), team: team || null, track: track || null, role: inviteRole }) }), (j) => {
       const created = (j.created as unknown[])?.length ?? 0;
       const skipped = (j.skipped as unknown[])?.length ?? 0;
       const failed = (j.emailFailed as unknown[])?.length ?? 0;
       setEmails("");
       return `${created} invite${created === 1 ? "" : "s"} created${skipped ? `, ${skipped} already had a seat` : ""}${failed ? `, ${failed} email${failed === 1 ? "" : "s"} could not be sent (copy the link from the register)` : ""}.`;
     });
-  const resend = (seatId: string) => call(`resend-${seatId}`, () => fetch("/api/org/seats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ resend: seatId }) }), () => "Invite sent again.");
-  const remove = (seatId: string) => call(`remove-${seatId}`, () => fetch("/api/org/seats", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ seatId }) }), () => "Seat removed.");
-  const nudge = () => call("nudge", () => fetch("/api/org/nudge", { method: "POST" }), (j) => `Reminder sent to ${j.sent as number} of ${j.eligible as number} people, under your name.`);
-  const save = () => call("profile", () => fetch("/api/org/profile", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(prof) }), () => "Firm profile saved. Modules 2, 3 and 5 read it from the next screen a learner opens.");
+  const resend = (seatId: string) => call(`resend-${seatId}`, () => fetch(api("/api/org/seats"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ resend: seatId }) }), () => "Invite sent again.");
+  const remove = (seatId: string) => call(`remove-${seatId}`, () => fetch(api("/api/org/seats"), { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ seatId }) }), () => "Seat removed.");
+  const nudge = () => call("nudge", () => fetch(api("/api/org/nudge"), { method: "POST" }), (j) => `Reminder sent to ${j.sent as number} of ${j.eligible as number} people, under your name.`);
+  const save = () => call("profile", () => fetch(api("/api/org/profile"), { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(prof) }), () => "Firm profile saved. Modules 2, 3 and 5 read it from the next screen a learner opens.");
 
   const copy = async (token: string) => {
     try {
@@ -72,7 +74,7 @@ export default function AdminPanel({ firmName, role, seatsPurchased, rows, stand
 
   return (
     <div className="ad">
-      <span className="cf-eyebrow">Admin · {firmName}</span>
+      <span className="cf-eyebrow">{orgId ? "Ops" : "Admin"} · {firmName}</span>
       <div className="ad-head">
         <svg width="76" height="76" viewBox="0 0 76 76" role="img" aria-label={`${pct} percent of claimed seats cleared`}>
           <defs>
@@ -94,7 +96,7 @@ export default function AdminPanel({ firmName, role, seatsPurchased, rows, stand
         {(["register", "invite", "profile"] as const).map((t) => (
           <button key={t} type="button" className={`ad-tab ${tab === t ? "on" : ""}`} onClick={() => setTab(t)}>{t === "register" ? `Register (${rows.length})` : t === "invite" ? "Invite people" : "Firm profile"}</button>
         ))}
-        <a className="cf-btn ad-csv" href="/api/org/register?format=csv">Download CSV</a>
+        <a className="cf-btn ad-csv" href={api("/api/org/register", "format=csv")}>Download CSV</a>
         <button type="button" className="cf-btn" onClick={nudge} disabled={busy === "nudge"}>{busy === "nudge" ? "Sending…" : "Nudge everyone unfinished"}</button>
       </div>
       {note && <div className={`ad-note ${note.tone}`}>{note.text}</div>}

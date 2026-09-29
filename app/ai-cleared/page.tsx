@@ -4,6 +4,7 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { hasEntitlement } from "@/app/lib/entitlements";
 import { AI_CLEARED_SLUG, DB_TO_TRACK, firstNameOf, getEnrolment } from "@/app/lib/aiCleared";
+import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import { MODULE_LIST } from "./manifests";
 import Frame from "./Frame";
 import ConsoleHome from "./ConsoleHome";
@@ -17,11 +18,13 @@ export default async function AiClearedHome() {
   if (!session?.user?.id) redirect("/login?callbackUrl=%2Fai-cleared");
   const userId = session.user.id;
 
-  const [entitled, enrolment, adminRow] = await Promise.all([
+  const [entitled, enrolment, adminRow, staff] = await Promise.all([
     hasEntitlement(userId, AI_CLEARED_SLUG),
     getEnrolment(userId),
     prisma.orgMember.findFirst({ where: { userId, role: { in: ["ADMIN", "MANAGER"] } }, select: { id: true } }),
+    isStaffUser(userId),
   ]);
+  if (staff && !enrolment) redirect("/ai-cleared/ops");
   if (adminRow && !enrolment) redirect("/ai-cleared/admin");
   if (!entitled || !enrolment) {
     return (
@@ -60,6 +63,7 @@ export default async function AiClearedHome() {
       resumeN={resume?.n ?? null}
       complete={!!enrolment.completedAt}
       isAdmin={!!adminRow}
+      isStaff={staff}
     />
   );
 }

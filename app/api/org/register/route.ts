@@ -1,13 +1,13 @@
 import { NextRequest } from "next/server";
 import { auth } from "@/app/lib/auth";
-import { getAdminContext, getRegister, registerCsv } from "@/app/lib/aiClearedAdmin";
+import { getAdminContext, orgRefOf, getRegister, registerCsv } from "@/app/lib/aiClearedAdmin";
 
 /* GET /api/org/register[?format=csv]
  * The firm's training register for its admins and managers. */
 export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "Sign in first." }, { status: 401 });
-  const ctx = await getAdminContext(session.user.id);
+  const ctx = await getAdminContext(session.user.id, orgRefOf(req));
   if (!ctx) return Response.json({ error: "Not an admin." }, { status: 403 });
 
   const rows = await getRegister(ctx.orgId);

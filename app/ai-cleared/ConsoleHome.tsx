@@ -20,6 +20,7 @@ export default function ConsoleHome({
   resumeN,
   complete,
   isAdmin,
+  isStaff,
 }: {
   firmName: string;
   contactName?: string | null;
@@ -31,6 +32,7 @@ export default function ConsoleHome({
   resumeN: number | null;
   complete: boolean;
   isAdmin?: boolean;
+  isStaff?: boolean;
 }) {
   const done = modules.filter((m) => m.done).length;
   const pct = Math.round((done / modules.length) * 100);
@@ -41,7 +43,7 @@ export default function ConsoleHome({
   return (
     <Frame
       firmName={firmName}
-      meta={<><span className="cf-meta">{learnerName} · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} /></span>{isAdmin && <Link href="/ai-cleared/admin" className="cf-link">Admin</Link>}</>}
+      meta={<><span className="cf-meta">{learnerName} · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} /></span>{isAdmin && <Link href="/ai-cleared/admin" className="cf-link">Admin</Link>}{isStaff && <Link href="/ai-cleared/ops" className="cf-link">Ops</Link>}</>}
       aside={<CourseAside firmName={firmName} contactName={contactName} contactRole={contactRole} learnerName={learnerName} done={modules.filter((m) => m.done).map((m) => m.n)} showModules={false} showWindow />}
     >
       <span className="cf-eyebrow">
