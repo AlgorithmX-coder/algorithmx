@@ -1,7 +1,7 @@
 /**
  * Which weeks have a written teacher pack.
  *
- * Three of twenty are written, and that is not an accident of ordering:
+ * Five of twenty are written. The first three were not an accident of ordering:
  * these are the three the format was proved against, because they are the
  * three that break a format if anything does. Week 1 is ordinary, week 11
  * has no villain and carries a safeguarding briefing, week 20 teaches
@@ -9,6 +9,8 @@
  * file in this folder and nothing else.
  */
 import { WEEK_1 } from "./week1";
+import { WEEK_2 } from "./week2";
+import { WEEK_3 } from "./week3";
 import { WEEK_11 } from "./week11";
 import { WEEK_20 } from "./week20";
 import type { Pack } from "./types";
@@ -17,6 +19,8 @@ export type { Pack, Slide, Concept, SceneKey, Heard } from "./types";
 
 const PACKS: Record<number, Pack> = {
   1: WEEK_1,
+  2: WEEK_2,
+  3: WEEK_3,
   11: WEEK_11,
   20: WEEK_20,
 };

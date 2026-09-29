@@ -290,7 +290,12 @@
   text-transform:none;max-width:24ch}
 .axtp .card.risk {min-height:26cqh;gap:.9cqw;padding:2.2cqw 1.6cqw}
 .axtp .card.risk img {width:7.5cqw;height:7.5cqw;object-fit:contain}
-.axtp .card.risk b {font:800 2cqw/1.15 var(--font-fredoka),system-ui,sans-serif;color:#fff;text-align:center;letter-spacing:-.01em}
+/* Two lines' worth of room whether the heading needs it or not, so the
+   subtitles line up across a row when some headings wrap and others do not.
+   Without it a four-card board has its small print at four different heights,
+   which reads as sloppy from the back of a hall. */
+.axtp .card.risk b {font:800 2cqw/1.15 var(--font-fredoka),system-ui,sans-serif;color:#fff;text-align:center;letter-spacing:-.01em;
+  min-height:4.6cqw;display:flex;align-items:center;justify-content:center}
 .axtp .card.risk small {font:600 1.35cqw/1.35 var(--font-nunito),system-ui,sans-serif;color:#9fb0dd;text-align:center;
   letter-spacing:0;text-transform:none;max-width:22ch}
 .axtp .stamp {position:absolute;bottom:-1.4cqw;font:800 1.5cqw var(--font-nunito),system-ui,sans-serif;letter-spacing:.1em;
