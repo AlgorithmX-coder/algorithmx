@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { K } from "@/app/ai-cleared/engine/tokens";
-import type { CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
 
 /* The seat-pack form: course, seats in tens, firm details, the admin's
  * email, then off to Stripe. Prices are the published ones; Stripe's
@@ -16,7 +16,9 @@ export default function BuyForm({ course: initialCourse, seats: initialSeats, pr
 
   const plan: "TEAM" | "FIRM" = seats >= 50 ? "FIRM" : "TEAM";
   const perSeat = prices[course][plan];
-  const total = perSeat * seats;
+  const net = perSeat * seats;
+  const vat = Math.round((net * VAT_PERCENT) / 100);
+  const total = net + vat;
   const gbp = (pence: number) => `£${(pence / 100).toLocaleString("en-GB", { minimumFractionDigits: pence % 100 ? 2 : 0, maximumFractionDigits: 2 })}`;
   const set = (k: keyof typeof f, v: string) => setF({ ...f, [k]: v });
 
@@ -43,8 +45,8 @@ export default function BuyForm({ course: initialCourse, seats: initialSeats, pr
           <label>Pack <input id="bf-plan" value={plan === "FIRM" ? "Firm, 50 to 249 seats" : "Team, 10 to 49 seats"} readOnly /></label>
         </div>
         <div className="bf-total">
-          <span>{seats} seats × {gbp(perSeat)}</span>
-          <b>{gbp(total)} a year, plus VAT</b>
+          <span>{seats} seats × {gbp(perSeat)} = {gbp(net)}, VAT at {VAT_PERCENT}% {gbp(vat)}</span>
+          <b>{gbp(total)} a year</b>
         </div>
         <p className="cf-note">More than 249 seats is an Enterprise conversation: use the enquiry form and we will quote.</p>
       </div>
@@ -62,7 +64,7 @@ export default function BuyForm({ course: initialCourse, seats: initialSeats, pr
         <p className="cf-note">The admin runs AI Cleared for the firm: invites staff, sees the register, edits the firm profile. It can be you.</p>
         {err && <div className="bf-err">{err}</div>}
         <button type="button" className="cf-btn cf-btn-pri" onClick={pay} disabled={busy || !f.firmName.trim() || !f.adminEmail.trim()}>{busy ? "Opening secure checkout…" : `Pay ${gbp(total)} by card`}</button>
-        <p className="cf-note">Payment is taken by Stripe on a secure page. You receive a VAT invoice by email.</p>
+        <p className="cf-note">Payment is taken by Stripe on a secure page. You receive a VAT invoice by email; enter your firm's VAT number there and it appears on the invoice.</p>
       </div>
 
       <style jsx>{`
