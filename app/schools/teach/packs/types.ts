@@ -44,6 +44,23 @@ export interface Concept {
  *  a first class field and not a note at the bottom. */
 export type Heard = readonly [heard: string, reply: string];
 
+/** One picture card on the board.
+ *
+ *  The card scenes (`risks`, `scenarios`, `meet`) used to hold their content
+ *  inside the component, which was fine for one week and would have meant
+ *  editing a React file for each of the other nineteen. They read this
+ *  instead, so a week is data all the way down and `Scenes.tsx` stops
+ *  growing. */
+export interface Card {
+  /** Absolute path under /public. */
+  art: string;
+  /** The line in Fredoka, large. Optional on `scenarios`, where the whole
+   *  card is one sentence and a heading would just repeat it. */
+  head?: string;
+  /** The quieter line under it. */
+  sub?: string;
+}
+
 export interface Slide {
   at: Phase;
   kind: SlideKind;
@@ -71,10 +88,35 @@ export interface Slide {
   handover?: true;
   /** `solo` scene: the one picture this slide is about. */
   art?: string;
-  /** `risks` scene: the same three cards, now stamped as stopped. */
+  /** The cards for `risks`, `scenarios` and `meet`.
+   *
+   *  A week states its own three. The "what could go wrong" slide before the
+   *  break and the "look what you stopped" slide after it carry the SAME
+   *  three, deliberately: identical layout is what makes the mirror land from
+   *  the back of the room. */
+  cards?: readonly Card[];
+  /** `risks` scene: the same cards, now stamped as stopped. */
   safe?: true;
+  /** The word on the stamp. Defaults to "stopped". */
+  stamp?: string;
   /** `tiles` scene: show how long each password would take to guess. */
   clocks?: true;
+  /** `recipe` scene: build something on the board with the class.
+   *
+   *  Three dashed slots the teacher fills out loud with whatever the room
+   *  shouts, then the things that go on top, then the test that proves it
+   *  worked. Week 1 builds a passphrase this way; week 2 builds a username.
+   *  Same shape, different words, which is why it is data. */
+  recipe?: {
+    /** The dashed slots, joined by plus signs. Usually three. */
+    slots: readonly string[];
+    /** The label before the extras, e.g. "then add". */
+    thenLabel?: string;
+    /** The pills that go on top. */
+    add?: readonly string[];
+    /** The check at the bottom that proves it worked. */
+    test?: string;
+  };
 }
 
 /** Country neutral by design. Every country has a different child line service,

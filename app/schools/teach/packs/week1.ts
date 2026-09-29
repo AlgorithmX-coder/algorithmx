@@ -7,7 +7,7 @@
  * of them carry authored HTML on purpose.
  */
 import { ART } from "./art";
-import type { Concept, Pack, Slide } from "./types";
+import type { Card, Concept, Pack, Slide } from "./types";
 
 const FIVE: readonly Concept[] = [
   { art:ART.key,     name:"Secret Key",      line:"It proves you are you." },
@@ -17,9 +17,24 @@ const FIVE: readonly Concept[] = [
   { art:ART.noentry, name:"Nothing Obvious", line:"No names. No birthdays." },
 ];
 
+/* The three cards that appear twice: once as what he could do to you, and
+   again after the break with a STOPPED stamp on each. Same array both times,
+   because identical layout is what makes the mirror land from the back of
+   the room. */
+const RISKS: readonly Card[] = [
+  { art:ART.gamepad, head:"Takes your stuff",   sub:"coins, skins, everything you earned" },
+  { art:ART.mask,    head:"Pretends to be you", sub:"messages your friends, and they believe him" },
+  { art:ART.locked,  head:"Locks you out",      sub:"changes it, and you never get back in" },
+];
+
 const SLIDES: readonly Slide[] = [
   /* ───────── 10 MINUTES: TALKING IT THROUGH BEFORE THEY PLAY ───────── */
   { at:"before", kind:"tell", scene:"meet", eyebrow:"Week 1 &middot; Passwords",
+    cards:[
+      { art:ART.adam,  head:"Adam",               sub:"you play as him" },
+      { art:ART.layla, head:"Layla",              sub:"and as her" },
+      { art:ART.racc,  head:"The Hacker Raccoon", sub:"he wants your password" },
+    ],
     title:"Meet the team.",
     say:"&ldquo;Okay everyone, eyes up here. This week we are doing passwords. This is <b>Adam</b>, and this is <b>Layla</b>, and they are who you play as. And that one, with the cape, is the <b>Hacker Raccoon</b>. He is the one trying to get in.&rdquo;",
     warn:"Thirty seconds on this. They will meet all three properly in the game, so you are only putting the names in the room." },
@@ -36,6 +51,7 @@ const SLIDES: readonly Slide[] = [
     warn:"The line you are drawing is <em>stranger</em>: somebody you have never met who wants your things. A brother borrowing your tablet is annoying, but he is not a hacker, and it is worth saying so plainly." },
 
   { at:"before", kind:"ask", scene:"risks", id:"risks", eyebrow:"Talk about it",
+    cards:RISKS,
     title:"So what could<br>he actually do?",
     say:"&ldquo;Let us think about what that really means. If he had your password sitting in front of him right now, what could he do?&rdquo; Take a few, then walk through the three on the board. &ldquo;He takes everything you saved up for. He talks to your friends as if he <b>is</b> you, and they believe him. And then he changes it, so you can never get back in. That account is gone.&rdquo;",
     hear:[
@@ -47,6 +63,11 @@ const SLIDES: readonly Slide[] = [
     warn:"This is the slide that makes them care, so do not rush it. Then stop: do not add frightening things nobody asked about. If a child looks worried, tell them that is exactly why they are learning this today, and that by the end they will know how to stop all three." },
 
   { at:"before", kind:"ask", scene:"scenarios", eyebrow:"Ask the class",
+    cards:[
+      { art:ART.gamepad, sub:"Somebody you did not know started talking to you in a game" },
+      { art:ART.mask,    sub:"Somebody asked you for your login, or offered you free stuff for it" },
+      { art:ART.mail,    sub:"A message said you had won something, or that your account was in trouble" },
+    ],
     title:"Has any of this<br>happened to you?",
     say:"&ldquo;Hands up if any of these has ever happened to you. Be honest, there is nothing wrong with any of it.&rdquo; Go along the three one at a time.",
     hear:[
@@ -91,7 +112,9 @@ const SLIDES: readonly Slide[] = [
     ],
     warn:"If they leave today with one thing, make it this. And keep saying <em>remember</em>: a password nobody can remember is no use, because a child who forgets theirs gets locked out or writes it on a note by the screen." },
 
-  { at:"after", kind:"do", scene:"recipe", id:"build", eyebrow:"Now you do it",
+  { at:"after", kind:"do", scene:"recipe",
+    recipe:{ slots:["word","word","word"], thenLabel:"then add",
+      add:["a Capital","a 7","a !"], test:"and now say it back without looking" }, id:"build", eyebrow:"Now you do it",
     title:"Let&rsquo;s build one<br>together.",
     say:"&ldquo;Give me a word. Any word at all. Now somebody give me another one. And one more. Stick them together. Right, who can make that even stronger?&rdquo; Then cover it up. &ldquo;Nobody look. Who can say the whole thing back to me?&rdquo;",
     hear:[
@@ -101,7 +124,7 @@ const SLIDES: readonly Slide[] = [
     ],
     warn:"Build it on the board out loud, all together, then cover it and make them say it back. That ten seconds teaches what a rule cannot. Say clearly that this one is pretend and nobody will use it." },
 
-  { at:"after", kind:"tell", scene:"risks", safe:true, id:"safe", eyebrow:"Look what you did",
+  { at:"after", kind:"tell", scene:"risks", safe:true, id:"safe", cards:RISKS, eyebrow:"Look what you did",
     title:"You just stopped<br>all three.",
     link:{ to:"risks", text:"The same three you talked about on slide %s, before they played." },
     say:"&ldquo;Remember these from the start of the lesson? A long password nobody can guess stops every single one. Your things stay yours. Nobody gets to pretend to be you. And nobody locks you out. <b>That is what you have just learned to do.</b>&rdquo;",
@@ -122,7 +145,7 @@ const SLIDES: readonly Slide[] = [
     ],
     warn:"If a child says they have already shared one, thank them for telling you and move on. This whole lesson only works if admitting that feels safe." },
 
-  { at:"after", kind:"tell", scene:"tonight", eyebrow:"Tonight",
+  { at:"after", kind:"tell", scene:"tonight", art:ART.key, eyebrow:"Tonight",
     title:"Change one password.",
     say:"&ldquo;One job tonight. Pick one password you now know is rubbish, and change it to three silly words. Say it to yourself three times, because it is no good to you if you cannot remember it on Monday. And tell somebody at home one thing you found out today.&rdquo;",
     hear:[

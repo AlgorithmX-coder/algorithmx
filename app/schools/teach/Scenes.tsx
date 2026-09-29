@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { ART } from "./packs/art";
 import type { Pack, SceneKey, Slide } from "./packs/types";
 
@@ -90,27 +91,6 @@ function Wall({ five, bare }: { five: Pack["five"]; bare?: boolean }) {
   );
 }
 
-/** The same three cards before and after. Afterwards each carries a STOPPED
- *  pill and the layout is otherwise identical on purpose, so the mirror is
- *  obvious from the back of the room. */
-const RISKS: readonly [string, string, string][] = [
-  [ART.gamepad, "Takes your stuff", "coins, skins, everything you earned"],
-  [ART.mask, "Pretends to be you", "messages your friends, and they believe him"],
-  [ART.locked, "Locks you out", "changes it, and you never get back in"],
-];
-
-const SCENARIOS: readonly [string, string][] = [
-  [ART.gamepad, "Somebody you did not know started talking to you in a game"],
-  [ART.mask, "Somebody asked you for your login, or offered you free stuff for it"],
-  [ART.mail, "A message said you had won something, or that your account was in trouble"],
-];
-
-const MEET: readonly [string, string, string][] = [
-  [ART.adam, "Adam", "you play as him"],
-  [ART.layla, "Layla", "and as her"],
-  [ART.racc, "The Hacker Raccoon", "he wants your password"],
-];
-
 const PROTOCOL: readonly [string, string, string][] = [
   ["1", "Stop", "hands off, do not reply"],
   ["2", "Screenshot", "before you block, or it vanishes"],
@@ -123,29 +103,34 @@ function Scene({ slide, pack }: { slide: Slide; pack: Pack }) {
     case "racc":
       return slide.bubble ? <Html as="div" className="bubble" html={slide.bubble} /> : null;
 
+    /* The same cards before the break and after it. Afterwards each carries a
+       stamp and the layout is otherwise identical on purpose, so the mirror is
+       obvious from the back of the room. */
     case "risks":
       return (
         <div className="cards risks">
-          {RISKS.map(([art, head, sub]) => (
-            <div key={head} className="card risk">
+          {(slide.cards ?? []).map((c, n) => (
+            <div key={n} className="card risk">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={art} alt="" />
-              <b>{head}</b>
-              <small>{sub}</small>
-              {slide.safe && <span className="stamp good">stopped</span>}
+              <img src={c.art} alt="" />
+              {c.head && <Html as="b" html={c.head} />}
+              {c.sub && <Html as="small" html={c.sub} />}
+              {slide.safe && <span className="stamp good">{slide.stamp ?? "stopped"}</span>}
             </div>
           ))}
         </div>
       );
 
+    /* Things that have actually happened to them. One sentence per card and no
+       heading, because the sentence IS the point. */
     case "scenarios":
       return (
         <div className="cards risks">
-          {SCENARIOS.map(([art, line]) => (
-            <div key={line} className="card risk">
+          {(slide.cards ?? []).map((c, n) => (
+            <div key={n} className="card risk">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={art} alt="" />
-              <small className="big-s">{line}</small>
+              <img src={c.art} alt="" />
+              <Html as="small" className="big-s" html={c.sub ?? c.head ?? ""} />
             </div>
           ))}
         </div>
@@ -154,12 +139,12 @@ function Scene({ slide, pack }: { slide: Slide; pack: Pack }) {
     case "meet":
       return (
         <div className="cards meet">
-          {MEET.map(([art, name, role]) => (
-            <div key={name} className="card who">
+          {(slide.cards ?? []).map((c, n) => (
+            <div key={n} className="card who">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={art} alt="" />
-              <b>{name}</b>
-              <small>{role}</small>
+              <img src={c.art} alt="" />
+              {c.head && <Html as="b" html={c.head} />}
+              {c.sub && <Html as="small" html={c.sub} />}
             </div>
           ))}
         </div>
@@ -201,11 +186,12 @@ function Scene({ slide, pack }: { slide: Slide; pack: Pack }) {
     case "five":
       return <Wall five={pack.five} />;
 
-    /* slide 14 has just shown all five, so this one shows the single thing it
-       is actually about: one password, being changed tonight */
+    /* The slide before has just shown all five, so this one shows the single
+       thing it is actually about: one picture, and the pair standing beside
+       it. `solo` is the same picture without them. */
     case "tonight":
       /* eslint-disable-next-line @next/next/no-img-element */
-      return <img className="bigicon" src={ART.key} alt="" />;
+      return slide.art ? <img className="bigicon" src={slide.art} alt="" /> : null;
 
     case "grad":
       /* eslint-disable-next-line @next/next/no-img-element */
@@ -215,27 +201,36 @@ function Scene({ slide, pack }: { slide: Slide; pack: Pack }) {
       /* eslint-disable-next-line @next/next/no-img-element */
       return slide.art ? <img className="bigicon" src={slide.art} alt="" /> : null;
 
-    /* three words they invent, then the three things that go on top. The
-       teacher fills the blanks out loud with whatever the class shouts. */
-    case "recipe":
+    /* Slots the class fills out loud, then what goes on top, then the test
+       that proves it worked. Week 1 builds a passphrase, week 2 a username;
+       the shape is the same, so the words come from the week. */
+    case "recipe": {
+      const r = slide.recipe;
+      if (!r) return null;
       return (
         <div className="tiles">
           <div className="trow">
-            <span className="rword">word</span><span className="plus">+</span>
-            <span className="rword">word</span><span className="plus">+</span>
-            <span className="rword">word</span>
+            {r.slots.map((w, n) => (
+              <React.Fragment key={n}>
+                {n > 0 && <span className="plus">+</span>}
+                <span className="rword">{w}</span>
+              </React.Fragment>
+            ))}
           </div>
-          <div className="trow">
-            <span className="rthen">then add</span>
-            <span className="radd">a Capital</span>
-            <span className="radd">a 7</span>
-            <span className="radd">a !</span>
-          </div>
-          <div className="trow">
-            <span className="rtest">and now say it back without looking</span>
-          </div>
+          {r.add && r.add.length > 0 && (
+            <div className="trow">
+              <span className="rthen">{r.thenLabel ?? "then add"}</span>
+              {r.add.map((a, n) => <span key={n} className="radd">{a}</span>)}
+            </div>
+          )}
+          {r.test && (
+            <div className="trow">
+              <span className="rtest">{r.test}</span>
+            </div>
+          )}
         </div>
       );
+    }
 
     /* countable letter tiles: length stops being an idea and becomes objects */
     case "tiles":
