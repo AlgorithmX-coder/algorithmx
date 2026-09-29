@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import DevFpsCounter from "./components/DevFpsCounter";
 import PlausibleScript from "./components/PlausibleScript";
 import "./globals.css";
+import StyledJsxRegistry from "./StyledJsxRegistry";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,7 +69,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${spaceGrotesk.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
+        {/* The App Router does not server-render styled-jsx without this.
+            Everything that uses it goes inside; the scripts below do not. */}
+        <StyledJsxRegistry>{children}</StyledJsxRegistry>
         <Analytics />
         <PlausibleScript />
         <DevFpsCounter />
