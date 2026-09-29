@@ -1,0 +1,376 @@
+/*
+  The Cyber Heroes teacher pack, as it appears on a classroom projector.
+
+  EVERY selector in this file is under .axtp on purpose. Next.js keeps a
+  route level stylesheet loaded after you navigate away from the route (its
+  own docs say so: React stylesheet support does not unmount them), so an
+  unscoped .card or .big in here would follow the teacher around the site.
+  Scoped, a lingering sheet matches nothing and costs nothing.
+
+  It is one plain stylesheet rather than styled-jsx, matching the precedent in
+  landing-v3. styled-jsx hashes only elements rendered in the SAME file, so a
+  scoped selector silently matches nothing as soon as a child component renders
+  the element, with no type error and no build error to warn you. It is also
+  not inline style objects, which cannot express the container queries or the
+  print rules this deck is built on.
+
+  Generated from the reviewed prototype by scratchpad/scopecss.mjs. Edit here.
+*/
+
+  /*
+    Built for a primary school teacher, not a cyber person.
+
+    One rule runs the whole thing: a slide either TELLS them something or
+    ASKS them something, and the answer to an ask is simply the next slide.
+    Nothing is hidden, nothing is timed, there is no mode to learn. Forward
+    goes forward. That is the entire interface.
+  */
+  
+.axtp {
+  --space:#0b1020; --space-2:#141b33; --space-3:#1d2646;
+  --amber:#ffb347; --ask:#ffd158; --ans:#7eff97; --talk:#c4a7ff;
+  --paper:#fffdf8; --ink:#141824; --sheet:#f4f1ea;
+  --rule:rgba(20,24,36,.14); --muted:#5a6273;
+  --say-c:#0a7085; --ask-c:#a6531b; --warn:#a5117f;
+}
+.axtp * {box-sizing:border-box}
+.axtp {background:var(--sheet);color:var(--ink);font-family:var(--font-nunito),system-ui,sans-serif;margin:0}
+  /* a presenter tool, not a document: 1180px was a reading measure and it
+     left half a large monitor empty */
+  
+.axtp .wrap {max-width:1760px;margin:0 auto;padding-block:22px;padding-left:16px;padding-right:16px}
+  /* the class deck is the one you look at to judge a slide, so it takes the lot */
+  /* NOT .solo: that is the big-single-icon class, and putting it on body
+     gave the BODY a width of 20cqw. Bare one-word class names collide. */
+  
+.axtp.boardonly .wrap {max-width:none}
+.axtp header.top {display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.axtp .brand {font-family:var(--font-fredoka),system-ui,sans-serif;font-weight:700;font-size:1.35rem;letter-spacing:-.01em}
+.axtp .brand span {color:#b06a00}
+.axtp .sub {color:var(--muted);font-size:.88rem}
+.axtp .modes {display:flex;gap:6px;flex-wrap:wrap}
+.axtp .modes button {font:600 .82rem var(--font-nunito),system-ui,sans-serif;padding:7px 14px;border-radius:999px;border:1px solid var(--rule);
+  background:var(--paper);color:var(--ink);cursor:pointer;transition:.18s}
+.axtp .modes button[aria-pressed=true] {background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.axtp .modes button:focus-visible {outline:2px solid var(--say-c);outline-offset:2px}
+.axtp .whatis {margin:0 0 12px;font-size:.92rem;line-height:1.5;padding:9px 13px;border-radius:9px;
+  background:rgba(10,112,133,.07);border-left:3px solid var(--say-c)}
+.axtp .whatis b {font-weight:800}
+.axtp .brand i {font-style:normal}
+.axtp .weeks {display:flex;gap:6px;margin-top:9px}
+/* Anchors, not buttons: each week is its own route now, so the picker opens in
+   a new tab and moves through history like anything else a teacher clicks. A
+   selector left saying `button` would match nothing and render bare blue links,
+   with no error anywhere to say so. */
+.axtp .weeks a {font:800 .74rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.06em;padding:5px 12px;border-radius:8px;
+  border:1.5px solid var(--rule);background:transparent;color:var(--muted);cursor:pointer;
+  text-decoration:none;display:inline-block}
+.axtp .weeks a[aria-current="page"] {background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.axtp .weeks a:focus-visible {outline:2px solid var(--say-c);outline-offset:2px}
+  /* a week can carry a briefing the teacher must read before slide 1 */
+  
+.axtp .brief {margin:0 0 12px;padding:15px 18px;border-radius:12px;background:#fff7fc;
+  border:2px solid rgba(165,17,127,.45)}
+.axtp .brief h4 {margin:0 0 9px;font:800 .74rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--warn)}
+.axtp .brief p {margin:0 0 7px;font-size:.96rem;line-height:1.55}
+.axtp .brief p:last-child {margin:0}
+.axtp .brief .line {margin-top:10px;padding-top:9px;border-top:1px solid rgba(165,17,127,.25);font-size:1rem}
+.axtp.boardonly .brief {display:none}
+  /* The whole lesson at a glance: fifteen slides in their three phases, so a
+     teacher can see what is taught when and what comes back. Clickable. */
+  
+.axtp .run {display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap;align-items:stretch}
+.axtp .leg {background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:8px 11px}
+.axtp .leg h5 {margin:0 0 7px;font:800 .62rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.axtp .leg.now h5 {color:var(--ink)}
+.axtp .leg.now {border-color:rgba(20,24,36,.4)}
+.axtp .dots {display:flex;gap:4px}
+.axtp .dots button {width:25px;height:25px;border-radius:7px;cursor:pointer;padding:0;
+  font:800 .68rem var(--font-nunito),system-ui,sans-serif;border:1.5px solid;background:transparent;transition:.15s}
+.axtp .dots button:focus-visible {outline:2px solid var(--say-c);outline-offset:2px}
+.axtp .dots .d-say {border-color:rgba(10,112,133,.45);color:var(--say-c)}
+.axtp .dots .d-ask {border-color:rgba(166,83,27,.5);color:var(--ask-c);background:rgba(255,179,71,.12)}
+.axtp .dots .d-tell {border-color:rgba(10,112,133,.45);color:var(--say-c)}
+.axtp .dots .d-do {border-color:rgba(91,59,171,.45);color:#5b3bab;background:rgba(196,167,255,.16)}
+.axtp .dots button[aria-current=true] {background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.axtp .leg.play {flex:1;min-width:160px;display:flex;flex-direction:column;justify-content:center;
+  background:repeating-linear-gradient(135deg,#efeade 0 9px,#f5f1e8 9px 18px);text-align:center}
+.axtp .leg.play b {font-family:var(--font-fredoka),system-ui,sans-serif;font-weight:600;font-size:.95rem}
+.axtp .leg.play span {font-size:.75rem;line-height:1.45;color:var(--muted)}
+.axtp .leg.play span b {font-family:var(--font-nunito),system-ui,sans-serif;font-weight:800;font-size:.75rem;color:var(--ask-c)}
+.axtp .stage {position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--rule);
+  box-shadow:0 18px 46px -30px rgba(40,32,20,.55)}
+  /* On the projector: black surround, board centred, letterboxed, because a
+     room screen is almost never exactly 16:9. */
+  
+.axtp .stage:fullscreen {border:0;border-radius:0;box-shadow:none;background:#000;
+  display:grid;place-items:center;width:100vw;height:100vh}
+.axtp .stage:fullscreen .pane {width:min(100vw,177.78vh);height:auto}
+  /* Presenter view: the board on the left exactly as the children see it,
+     what you say on the right. Nothing about the board changes between the
+     two columns and the full screen, because it is sized in cqw. */
+  
+.axtp .sbs {display:grid;gap:16px;align-items:start}
+@media(min-width:920px) {
+    /* past a point extra width belongs to the board, not to the script */
+    
+  .axtp .sbs {grid-template-columns:minmax(0,1fr) clamp(320px,31%,540px)}
+}
+.axtp .sbs.solo .notes {display:none}
+.axtp .sbs.solo {grid-template-columns:1fr}
+.axtp .notes {background:var(--paper);border:1px solid var(--rule);border-radius:14px;
+  padding:clamp(16px,2.4vw,22px);display:flex;flex-direction:column;gap:14px;
+  box-shadow:0 18px 46px -34px rgba(40,32,20,.5)}
+.axtp .nhead {display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  border-bottom:1px solid var(--rule);padding-bottom:12px}
+.axtp .tkind {display:flex;align-items:center;gap:8px;font:800 .72rem var(--font-nunito),system-ui,sans-serif;
+  letter-spacing:.14em;text-transform:uppercase}
+.axtp .tkind .dot {width:23px;height:23px;border-radius:50%;display:grid;place-items:center;
+  font:800 .82rem var(--font-fredoka),system-ui,sans-serif;letter-spacing:0}
+.axtp .tkind.k-say {color:var(--say-c)}
+.axtp .tkind.k-say .dot {background:var(--say-c);color:#fff}
+.axtp .tkind.k-ask {color:var(--ask-c)}
+.axtp .tkind.k-ask .dot {background:var(--ask-c);color:#fff}
+.axtp .tkind.k-ans {color:#0e7a45}
+.axtp .tkind.k-ans .dot {background:#0e7a45;color:#fff}
+.axtp .tkind.k-talk {color:#5b3bab}
+.axtp .tkind.k-talk .dot {background:#5b3bab;color:#fff}
+.axtp .nnum {margin-left:auto;font:700 .74rem var(--font-nunito),system-ui,sans-serif;color:var(--muted)}
+  /* a slide that is half of a pair says which half, and where the other is */
+  
+.axtp .link {margin:0;padding:8px 11px;border-radius:8px;background:rgba(255,179,71,.16);
+  border-left:3px solid var(--ask-c);font:700 .85rem var(--font-nunito),system-ui,sans-serif;
+  line-height:1.45;color:#6b3d12}
+.axtp .yousay {margin:0;font-size:clamp(1.02rem,1.5vw,1.16rem);line-height:1.6}
+.axtp .yousay b {font-weight:800}
+.axtp .lead {display:block;font:800 .68rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--say-c);margin-bottom:7px}
+  /* What a child actually says, and the sentence that takes it somewhere.
+     Two lines per answer: theirs, then yours. */
+  
+.axtp .hear h4 {margin:0 0 9px;font:800 .66rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ask-c)}
+.axtp .hr {padding:8px 0;border-top:1px solid var(--rule)}
+.axtp .hr:first-of-type {border-top:0;padding-top:0}
+.axtp .said {margin:0;font-size:.95rem;line-height:1.4;font-weight:700}
+.axtp .back {margin:3px 0 0;font-size:.93rem;line-height:1.45;color:#3d4657;padding-left:16px;
+  position:relative}
+.axtp .back:before {content:"\2192";position:absolute;left:0;color:var(--ask-c);font-weight:800}
+.axtp .back code {font:700 .88em ui-monospace,Menlo,monospace}
+.axtp .said code {font:700 .9em ui-monospace,Menlo,monospace}
+  /* the one instruction a teacher must not miss, so it stops looking like a note */
+  
+.axtp .hand {padding:13px 15px;border-radius:10px;background:rgba(255,179,71,.18);
+  border:2px solid var(--ask-c)}
+.axtp .hand h4 {margin:0 0 6px;font:800 .7rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ask-c)}
+.axtp .hand p {margin:0;font-size:.97rem;line-height:1.52}
+.axtp .warn {padding:12px 14px;border-radius:10px;background:#fff7fc;border:1px solid rgba(165,17,127,.3)}
+.axtp .warn h4 {margin:0 0 5px;font:800 .66rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--warn)}
+.axtp .warn p {margin:0;font-size:.95rem;line-height:1.5}
+.axtp .nnext {margin-top:auto;padding-top:12px;border-top:1px dashed var(--rule);
+  font:600 .82rem var(--font-nunito),system-ui,sans-serif;color:var(--muted)}
+.axtp .nnext b {font-family:var(--font-fredoka),system-ui,sans-serif;font-weight:600;color:var(--ink)}
+.axtp .nnext.isans b {color:#0e7a45}
+.axtp .nnext.gap {color:var(--ask-c);font-weight:800}
+.axtp .nnext.gap b {color:var(--ask-c)}
+  /* ============ THE BOARD ============
+     The pane is a size container and every unit inside is cqw, so one
+     composition holds from a laptop preview to a hall projector with no
+     breakpoints to go wrong in a room you have never stood in. */
+  
+.axtp .board .pane {aspect-ratio:16/9;container-type:size;position:relative;overflow:hidden;
+  background:radial-gradient(120% 100% at 50% 38%,var(--space-3) 0%,var(--space-2) 46%,var(--space) 100%);
+  color:#eef2ff}
+.axtp .stars {position:absolute;inset:0;width:100%;height:100%}
+.axtp .inner {position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:5cqw}
+.axtp .inner.castright {padding-right:50cqw}
+.axtp .inner.casthigh {justify-content:flex-start;padding-top:8cqw}
+  /* Sized to its content so the fit can read a real width ratio and grow a
+     light slide, rather than leaving it marooned small on a wide board. */
+  
+.axtp .fit {display:flex;flex-direction:column;align-items:flex-start;gap:2cqw;
+  width:fit-content;max-width:100%;align-self:flex-start;transform-origin:left center}
+  /* an eyebrow that says, at a glance, which of the two kinds of slide this is */
+  
+.axtp .eyebrow {display:flex;align-items:center;gap:1.1cqw;font:800 1.7cqw/1 var(--font-nunito),system-ui,sans-serif;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+.axtp .eyebrow .mark {width:3.4cqw;height:3.4cqw;border-radius:50%;display:grid;place-items:center;
+  font:800 2.1cqw/1 var(--font-fredoka),system-ui,sans-serif;letter-spacing:0;flex:none}
+.axtp .ask .eyebrow {color:var(--ask)}
+.axtp .ask .eyebrow .mark {background:var(--ask);color:#2a1f00}
+.axtp .do .eyebrow {color:var(--talk)}
+.axtp .do .eyebrow .mark {background:var(--talk);color:#241243}
+.axtp .big {font-family:var(--font-fredoka),system-ui,sans-serif;font-weight:600;line-height:1.03;letter-spacing:-.02em;
+  font-size:6.4cqw;text-wrap:balance;margin:0;max-width:20ch}
+.axtp .under {font-size:2.6cqw;line-height:1.3;margin:0;color:#c3cff0;max-width:30ch}
+  /* the cast, standing in the scene */
+  
+.axtp .cast {position:absolute;bottom:0;pointer-events:none}
+.axtp .cast img {display:block;height:100%;width:auto;object-fit:contain}
+  /* the raccoon art is 1232x900, so 60cqh makes him 46cqw wide and he starts
+     at 53.8cqw: that is the number castright has to clear */
+  
+.axtp .cast.racc {right:1cqw;height:60cqh;filter:drop-shadow(0 0 4cqw rgba(124,92,255,.5))}
+.axtp .cast.adam {left:2cqw;height:46cqh}
+.axtp .cast.layla {left:12.5cqw;height:48cqh}
+.axtp .cast.adam.r {left:auto;right:15cqw;height:34cqh}
+.axtp .cast.layla.r {left:auto;right:1cqw;height:36cqh}
+.axtp .inner.castr {padding-right:27cqw}
+  /* what all three of them are reaching for, in the gap between them */
+  
+.axtp .cast.prize {left:36cqw;bottom:16cqh;height:auto;width:14cqw}
+.axtp .cast.prize img {width:100%;height:auto;filter:drop-shadow(0 0 3cqw rgba(255,179,71,.7));
+  animation:axtp-hover 4.5s ease-in-out infinite}
+@keyframes axtp-hover {50%{transform:translateY(-2.2cqw)}}
+@media (prefers-reduced-motion:reduce) {
+  .axtp .cast.prize img {animation:none}
+}
+.axtp .bubble {position:relative;align-self:stretch;background:#fff;color:#14161d;border-radius:2cqw;
+  padding:2cqw 2.4cqw;font:800 2.5cqw/1.25 var(--font-fredoka),system-ui,sans-serif;box-shadow:0 2cqw 5cqw -2cqw rgba(0,0,0,.6)}
+.axtp .bubble:after {content:"";position:absolute;right:-1.4cqw;top:58%;border:1.2cqw solid transparent;
+  border-left-color:#fff;border-right:0}
+  /* countable letter tiles: length stops being an idea and becomes objects */
+  
+.axtp .tiles {display:flex;flex-direction:column;gap:1.8cqw;align-self:stretch}
+.axtp .trow {display:flex;align-items:center;gap:1.4cqw}
+.axtp .trow .no {width:3.6cqw;height:3.6cqw;flex:none;border-radius:50%;display:grid;place-items:center;
+  font:800 2cqw var(--font-nunito),system-ui,sans-serif;background:rgba(255,255,255,.1);color:#fff}
+  /* nowrap is the whole point: a wrapped row is no longer countable */
+  
+.axtp .tset {display:flex;gap:.4cqw;flex-wrap:nowrap}
+.axtp .tile {width:3cqw;height:5cqw;flex:none;border-radius:.5cqw;display:grid;place-items:center;
+  font:800 1.7cqw/1 ui-monospace,Menlo,monospace;background:rgba(255,255,255,.1);
+  border:.12cqw solid rgba(255,255,255,.2);color:#fff}
+.axtp .tile.add {background:rgba(255,209,88,.9);color:#231a04;border-color:#ffd158;
+  box-shadow:0 0 2cqw rgba(255,209,88,.7)}
+.axtp .trow .len {font:800 2cqw var(--font-nunito),system-ui,sans-serif;color:#9fb0dd;white-space:nowrap;font-variant-numeric:tabular-nums}
+.axtp .trow .len b {color:#fff;font-size:2.7cqw}
+.axtp .clock {margin-left:.8cqw;padding:.6cqw 1.4cqw;border-radius:99cqw;font:800 1.8cqw var(--font-nunito),system-ui,sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+  /* the two words carry the whole idea, so the board says what they measure */
+  
+.axtp .clocklab {margin:.4cqw 0 0 5cqw;font:700 1.5cqw var(--font-nunito),system-ui,sans-serif;letter-spacing:.1em;
+  text-transform:uppercase;color:#8fa0cc}
+.axtp .rword {min-width:16cqw;padding:1.4cqw 2cqw;border-radius:1cqw;text-align:center;
+  border:.3cqw dashed rgba(255,255,255,.4);font:700 2.2cqw var(--font-nunito),system-ui,sans-serif;color:#9fb0dd}
+.axtp .plus {font:800 2.6cqw var(--font-fredoka),system-ui,sans-serif;color:#7d8cb5}
+.axtp .rthen {font:700 1.7cqw var(--font-nunito),system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8fa0cc}
+.axtp .radd {padding:.9cqw 1.8cqw;border-radius:99cqw;background:rgba(255,209,88,.9);color:#231a04;
+  font:800 2cqw var(--font-nunito),system-ui,sans-serif}
+  /* the memory test, live: a password nobody can remember is no use */
+  
+.axtp .rtest {margin-top:.6cqw;padding:1cqw 2cqw;border-radius:99cqw;font:800 2cqw var(--font-nunito),system-ui,sans-serif;
+  background:rgba(196,167,255,.2);border:.2cqw solid rgba(196,167,255,.55);color:var(--talk)}
+.axtp .clock.fast {background:#ff4d6d;color:#fff}
+.axtp .clock.slow {background:var(--ans);color:#05301a}
+  /* four things to judge */
+  
+.axtp .cards {display:flex;gap:1.6cqw;align-items:stretch;align-self:stretch;min-width:86cqw}
+.axtp .card {flex:1;background:rgba(255,255,255,.07);border:.18cqw solid rgba(255,255,255,.18);border-radius:1.4cqw;
+  padding:2cqw 1.4cqw;display:flex;flex-direction:column;align-items:center;gap:1.2cqw;
+  justify-content:center;position:relative;min-height:32cqh}
+.axtp .card code {font:800 1.7cqw/1.15 ui-monospace,Menlo,monospace;color:#fff;text-align:center}
+.axtp .card small {font:700 1.2cqw var(--font-nunito),system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#9fb0dd}
+.axtp .cards.risks {min-width:88cqw}
+.axtp .cards.meet {min-width:80cqw}
+.axtp .card.step {justify-content:flex-start;gap:.8cqw;min-height:22cqh}
+.axtp .stepno {width:5cqw;height:5cqw;border-radius:50%;display:grid;place-items:center;flex:none;
+  font:800 2.6cqw var(--font-fredoka),system-ui,sans-serif;background:var(--talk);color:#241243}
+.axtp .card.gold {border-color:rgba(255,209,88,.7);background:rgba(255,209,88,.1)}
+.axtp .card.gold b {color:var(--ask)}
+.axtp .card.who {min-height:34cqh;justify-content:flex-end;gap:1cqw;padding:2cqw 1.4cqw 2.4cqw}
+.axtp .card.who img {height:20cqh;width:auto;object-fit:contain}
+.axtp .card.who b {font:800 2.2cqw var(--font-fredoka),system-ui,sans-serif;color:#fff;letter-spacing:-.01em}
+.axtp .card.who small {font:600 1.4cqw var(--font-nunito),system-ui,sans-serif;color:#9fb0dd;letter-spacing:0;text-transform:none}
+.axtp .card small.big-s {font:600 1.75cqw/1.4 var(--font-nunito),system-ui,sans-serif;color:#dfe6fb;letter-spacing:0;
+  text-transform:none;max-width:24ch}
+.axtp .card.risk {min-height:26cqh;gap:.9cqw;padding:2.2cqw 1.6cqw}
+.axtp .card.risk img {width:7.5cqw;height:7.5cqw;object-fit:contain}
+.axtp .card.risk b {font:800 2cqw/1.15 var(--font-fredoka),system-ui,sans-serif;color:#fff;text-align:center;letter-spacing:-.01em}
+.axtp .card.risk small {font:600 1.35cqw/1.35 var(--font-nunito),system-ui,sans-serif;color:#9fb0dd;text-align:center;
+  letter-spacing:0;text-transform:none;max-width:22ch}
+.axtp .stamp {position:absolute;bottom:-1.4cqw;font:800 1.5cqw var(--font-nunito),system-ui,sans-serif;letter-spacing:.1em;
+  text-transform:uppercase;padding:.6cqw 1.4cqw;border-radius:99cqw;white-space:nowrap}
+.axtp .stamp.bad {background:#ff4d6d;color:#fff}
+.axtp .stamp.good {background:var(--ans);color:#05301a}
+  /* the five, and the places they get stolen from */
+  
+.axtp .wall {display:flex;gap:1.4cqw;align-self:stretch}
+.axtp .wall div {display:flex;flex-direction:column;align-items:center;gap:.9cqw;width:17cqw}
+.axtp .wall img {width:11cqw;height:11cqw;object-fit:contain}
+.axtp .wall b {font:800 1.6cqw/1.2 var(--font-nunito),system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;
+  text-align:center;color:#fff}
+.axtp .wall i {font-style:normal;font:600 1.4cqw/1.3 var(--font-nunito),system-ui,sans-serif;text-align:center;color:#c3cff0}
+.axtp .wall.small div {width:13cqw}
+.axtp .wall.small img {width:9cqw;height:9cqw}
+.axtp .wall.bare div {width:11cqw}
+.axtp .wall.bare img {width:9.5cqw;height:9.5cqw}
+.axtp .wall.shelf {align-self:flex-start;gap:1.2cqw;padding:2cqw 2.4cqw;border-radius:2cqw;
+  background:rgba(255,255,255,.06);border:.15cqw solid rgba(255,255,255,.14)}
+.axtp .bigicon {width:20cqw;height:20cqw;object-fit:contain;align-self:center}
+  /* you and the Raccoon, the same key, the same door */
+  
+.axtp .door {display:flex;align-items:flex-end;gap:1.6cqw;align-self:stretch;min-width:84cqw;
+  justify-content:space-between}
+.axtp .dfig {display:flex;flex-direction:column;align-items:center;gap:.8cqw}
+.axtp .dfig b {font:700 1.4cqw var(--font-nunito),system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#9fb0dd}
+.axtp .arrow {font:800 3cqw/1 var(--font-nunito),system-ui,sans-serif;color:rgba(232,237,255,.4);padding-bottom:3cqw}
+  /* ============ WHAT THE TEACHER READS ============
+     Two things per slide at most: what to say, and a warning when one is
+     genuinely needed. A primary teacher has thirty children and no prep
+     time; anything else on this page is something to wade through. */
+  /* controls */
+  
+.axtp .bar {display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
+.axtp .nav {display:flex;gap:8px;align-items:center}
+.axtp .nav button {font:700 .9rem var(--font-nunito),system-ui,sans-serif;height:42px;min-width:42px;padding:0 14px;border-radius:10px;
+  border:1px solid var(--rule);background:var(--paper);cursor:pointer}
+.axtp .nav button:disabled {opacity:.35;cursor:default}
+.axtp .nav button:focus-visible {outline:2px solid var(--say-c);outline-offset:2px}
+.axtp .count {font:700 .82rem var(--font-nunito),system-ui,sans-serif;color:var(--muted);min-width:104px}
+.axtp .hint {font-size:.78rem;color:var(--muted)}
+  /* the printed page */
+  
+.axtp .sheet {background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:clamp(16px,3vw,28px)}
+.axtp .sheet h2 {font-family:var(--font-fredoka),system-ui,sans-serif;font-weight:600;margin:0 0 2px;font-size:1.4rem}
+.axtp .sheet .lede {color:var(--muted);font-size:.88rem;margin:0 0 6px;max-width:70ch}
+.axtp .phase {margin:20px 0 4px;font:800 .7rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--say-c);border-bottom:1px solid var(--rule);padding-bottom:6px}
+.axtp .row {display:grid;gap:6px;padding:11px 0;border-top:1px solid var(--rule)}
+@media(min-width:720px) {
+  .axtp .row {grid-template-columns:34px 190px 1fr}
+}
+.axtp .row:first-of-type {border-top:0}
+.axtp .rn {font:800 .95rem var(--font-fredoka),system-ui,sans-serif;color:var(--muted)}
+.axtp .rb {font-family:var(--font-fredoka),system-ui,sans-serif;font-weight:600;font-size:.98rem;line-height:1.25}
+.axtp .rb small {display:block;font:800 .6rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;
+  margin-top:3px}
+.axtp .rb small.s-ask {color:var(--ask-c)}
+.axtp .rb small.s-ans {color:#0e7a45}
+.axtp .rb small.s-say {color:var(--say-c)}
+.axtp .rb small.s-talk {color:#5b3bab}
+.axtp .rs p {margin:0;font-size:.95rem;line-height:1.5}
+.axtp .rs .sh {margin-top:7px;padding-left:11px;border-left:2px solid rgba(166,83,27,.4)}
+.axtp .rs .sh p {margin:0 0 5px;font-size:.88rem;line-height:1.45;color:#3d4657}
+.axtp .rs .sh p:last-child {margin:0}
+.axtp .rs .sh b {color:var(--ink)}
+.axtp .rs .lk {margin:0 0 5px;font-size:.85rem;font-weight:700;color:var(--ask-c)}
+.axtp .rs .w {margin-top:6px;font-size:.9rem;color:var(--warn)}
+.axtp .rs .w b {font:800 .6rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.axtp footer.note {margin-top:18px;color:var(--muted);font-size:.8rem;line-height:1.5}
+  /* On screen the handout is not there at all. On paper it is the only
+     thing there: the deck, the buttons and the chrome all drop away. */
+  
+.axtp .printable {display:none}
+@media print {
+  .axtp {background:#fff}
+  .axtp .modes, .axtp .bar, .axtp .run, .axtp .deck, .axtp footer.note, .axtp .hint, .axtp .whatis {display:none!important}
+  .axtp .printable {display:block}
+  .axtp .wrap {padding:0;max-width:none}
+  .axtp .sheet {border:0;padding:0;background:none}
+  .axtp .row, .axtp .phase {break-inside:avoid}
+}
