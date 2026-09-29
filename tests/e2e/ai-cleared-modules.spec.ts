@@ -20,7 +20,16 @@ async function playThrough(page: Page, query: string) {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
   page.on("console", (m) => {
-    if (m.type() === "error") errors.push(`console: ${m.text().slice(0, 160)}`);
+    /* A failed resource is reported by URL below, with its status. */
+    if (m.type() === "error" && !/Failed to load resource/.test(m.text())) errors.push(`console: ${m.text().slice(0, 160)}`);
+  });
+  page.on("response", (r) => {
+    const path = new URL(r.url()).pathname;
+    /* Vercel Analytics and Speed Insights fetch their scripts from the
+     * site's own /_vercel path, which exists only on Vercel; Sentry's
+     * envelope goes to a tunnel. Neither can strand a learner. */
+    if (/^\/_vercel\//.test(path) || /\/envelope\/?$/.test(path)) return;
+    if (r.status() >= 400) errors.push(`${r.status()} ${path}`);
   });
   /* A generous first load: a dev server compiles the page on first hit. */
   await page.goto(`/dev/ai-cleared?${query}`, { waitUntil: "domcontentloaded", timeout: 90_000 });
