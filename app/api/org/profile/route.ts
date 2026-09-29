@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { auth } from "@/app/lib/auth";
-import { getAdminContext, saveProfile } from "@/app/lib/aiClearedAdmin";
+import { getAdminContext, orgRefOf, saveProfile } from "@/app/lib/aiClearedAdmin";
 
 /* PUT /api/org/profile: the firm's own rules, read by modules 2, 3 and 5
  * at render time. */
@@ -23,7 +23,7 @@ const Body = z.object({
 export async function PUT(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "Sign in first." }, { status: 401 });
-  const ctx = await getAdminContext(session.user.id);
+  const ctx = await getAdminContext(session.user.id, orgRefOf(req));
   if (!ctx) return Response.json({ error: "Not an admin." }, { status: 403 });
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Check the fields: the contact is required and lists hold up to twenty entries." }, { status: 400 });

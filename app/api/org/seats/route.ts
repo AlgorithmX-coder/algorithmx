@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
-import { getAdminContext, inviteSeats, sendInvite } from "@/app/lib/aiClearedAdmin";
+import { getAdminContext, orgRefOf, inviteSeats, sendInvite } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
 import { TRACKS } from "@/app/ai-cleared/engine/types";
 
@@ -29,7 +29,7 @@ function originOf(req: NextRequest): string {
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "Sign in first." }, { status: 401 });
-  const ctx = await getAdminContext(session.user.id);
+  const ctx = await getAdminContext(session.user.id, orgRefOf(req));
   if (!ctx) return Response.json({ error: "Not an admin." }, { status: 403 });
   const body = await req.json().catch(() => null);
   const adminName = ctx.user.name?.trim() || firstNameOf(ctx.user.name, ctx.user.email);
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "Sign in first." }, { status: 401 });
-  const ctx = await getAdminContext(session.user.id);
+  const ctx = await getAdminContext(session.user.id, orgRefOf(req));
   if (!ctx) return Response.json({ error: "Not an admin." }, { status: 403 });
   const parsed = Remove.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Bad request." }, { status: 400 });

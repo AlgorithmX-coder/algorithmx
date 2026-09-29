@@ -4,7 +4,8 @@ import { sendEmail } from "@/app/lib/resend";
 import { AI_CLEARED_SLUG, DB_TO_TRACK, TRACK_TO_DB } from "@/app/lib/aiCleared";
 import { MODULE_LIST } from "@/app/ai-cleared/manifests";
 import { TRACK_LABEL, type Track } from "@/app/ai-cleared/engine/types";
-import type { OrgRole } from "@prisma/client";
+import { isStaffUser } from "@/app/lib/aiClearedStaff";
+import type { FirmProfile, Organisation, OrgRole } from "@prisma/client";
 
 /* Admin-side helpers for AI Cleared: who may administer a firm, the
  * register, invites, nudges and the firm profile. Never import from a
@@ -12,15 +13,41 @@ import type { OrgRole } from "@prisma/client";
 
 export const FIRM_THRESHOLD = 0.8;
 
-export async function getAdminContext(userId: string) {
+export interface AdminContext {
+  orgId: string;
+  role: OrgRole;
+  org: Organisation & { profile: FirmProfile | null };
+  user: { name: string | null; email: string };
+  /* True when AlgorithmX staff are acting on a firm from the ops console. */
+  staff: boolean;
+}
+
+/* The firm a user may administer. With `orgRef` (an id or slug), staff act
+ * on that firm as its ADMIN; anyone else gets null. */
+export async function getAdminContext(userId: string, orgRef?: string | null): Promise<AdminContext | null> {
   if (!userId) return null;
+  if (orgRef) {
+    if (!(await isStaffUser(userId))) return null;
+    const [org, user] = await Promise.all([
+      prisma.organisation.findFirst({ where: { OR: [{ id: orgRef }, { slug: orgRef }] }, include: { profile: true } }),
+      prisma.user.findUnique({ where: { id: userId }, select: { name: true, email: true } }),
+    ]);
+    if (!org || !user) return null;
+    return { orgId: org.id, role: "ADMIN", org, user, staff: true };
+  }
   const member = await prisma.orgMember.findFirst({
     where: { userId, role: { in: ["ADMIN", "MANAGER"] } },
     include: { org: { include: { profile: true } }, user: { select: { name: true, email: true } } },
   });
-  return member;
+  if (!member) return null;
+  return { orgId: member.orgId, role: member.role, org: member.org, user: member.user, staff: false };
 }
-export type AdminContext = NonNullable<Awaited<ReturnType<typeof getAdminContext>>>;
+
+/* The firm an API call is about: the caller's own firm, or for staff the
+ * one named by ?org= on the request. */
+export function orgRefOf(req: { url: string }): string | null {
+  return new URL(req.url).searchParams.get("org");
+}
 
 export interface RegisterRow {
   seatId: string;
@@ -88,13 +115,14 @@ export function registerCsv(rows: RegisterRow[], firmName: string): string {
   return [head.map(esc).join(","), ...lines].join("\r\n");
 }
 
-function token(prefix: string): string {
+export function newInviteToken(prefix: string): string {
   const alphabet = "abcdefghjkmnpqrstuvwxyz23456789";
   const b = randomBytes(12);
   let s = "";
   for (let i = 0; i < 12; i++) s += alphabet[b[i] % alphabet.length];
   return `${prefix}-${s}`;
 }
+const token = newInviteToken;
 
 function esc(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
