@@ -10,7 +10,7 @@ import { FadeUp } from "@/app/components/landing-v2/utilities";
 import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
 import EnquiryForm from "./EnquiryForm";
 import HeroVideo from "./HeroVideo";
-import PasteTest from "./PasteTest";
+import HeroSim from "./HeroSim";
 import PolicyBuilder from "./PolicyBuilder";
 
 /**
@@ -322,7 +322,7 @@ export default function CorporateLanding() {
             </div>
 
             <FadeUp delay={0.15} y={30}>
-              <PasteTest tone="night" />
+              <HeroSim />
             </FadeUp>
           </div>
           </div>
