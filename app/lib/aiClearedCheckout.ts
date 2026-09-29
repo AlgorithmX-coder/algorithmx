@@ -1,7 +1,7 @@
 import type Stripe from "stripe";
 import { prisma } from "@/app/lib/prisma";
 import { createFirm } from "@/app/lib/aiClearedOps";
-import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, SELLABLE, planForSeats, priceIdFor, stripe, stripeConfigured } from "@/app/lib/stripe";
+import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, SELLABLE, planForSeats, priceIdFor, stripe, stripeConfigured, vatTaxRateId } from "@/app/lib/stripe";
 import type { CorporateProductSlug } from "@/app/lib/corporateProducts";
 
 /* Card checkout for a firm's seat pack, and the fulfilment that follows
@@ -37,14 +37,20 @@ export async function createCorporateCheckout(input: CheckoutInput): Promise<{ u
   const price = priceIdFor(input.course, plan);
   if (!price) return { error: "That pack is priced on a call. Use the enquiry form.", status: 400 };
 
+  /* VAT: the fixed UK rate on every line, unless Stripe Tax is switched
+   * on, in which case Stripe works the tax out from the billing address
+   * and the two must not be combined. */
+  const automaticTax = process.env.STRIPE_AUTOMATIC_TAX === "1";
+  const taxRates = automaticTax ? undefined : [await vatTaxRateId()];
+
   const session = await stripe().checkout.sessions.create({
     mode: "payment",
-    line_items: [{ price, quantity: input.seats }],
+    line_items: [{ price, quantity: input.seats, tax_rates: taxRates }],
     customer_email: input.adminEmail.trim().toLowerCase(),
     customer_creation: "always",
     billing_address_collection: "required",
     tax_id_collection: { enabled: true },
-    automatic_tax: { enabled: process.env.STRIPE_AUTOMATIC_TAX === "1" },
+    automatic_tax: { enabled: automaticTax },
     invoice_creation: { enabled: true },
     allow_promotion_codes: true,
     metadata: {

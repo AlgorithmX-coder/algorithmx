@@ -1,6 +1,8 @@
 import Stripe from "stripe";
 import type { OrgPlan } from "@prisma/client";
-import type { CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
+
+export { VAT_PERCENT };
 
 /* Stripe for the corporate packs. Everything is driven by environment
  * variables so checkout switches on the moment they exist on Vercel and
@@ -51,4 +53,32 @@ export function stripe(): Stripe {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error("STRIPE_SECRET_KEY is not set");
   if (!client) client = new Stripe(process.env.STRIPE_SECRET_KEY);
   return client;
+}
+
+/* The fixed UK VAT rate, found or created once per instance in whichever
+ * Stripe account the key belongs to (the sandbox and the live account
+ * each get their own), so nobody makes it by hand or carries its id in a
+ * variable. Tagged in metadata so a later rate change makes a new one
+ * rather than editing history. */
+let vatRateId: string | null = null;
+export async function vatTaxRateId(): Promise<string> {
+  if (vatRateId) return vatRateId;
+  const s = stripe();
+  const tag = `uk-vat-${VAT_PERCENT}`;
+  const existing = await s.taxRates.list({ active: true, limit: 100 });
+  const found = existing.data.find((r) => r.metadata?.algorithmx === tag);
+  const rate =
+    found ??
+    (await s.taxRates.create({
+      display_name: "VAT",
+      percentage: VAT_PERCENT,
+      inclusive: false,
+      country: "GB",
+      tax_type: "vat",
+      jurisdiction: "GB",
+      description: `UK VAT at ${VAT_PERCENT}%`,
+      metadata: { algorithmx: tag },
+    }));
+  vatRateId = rate.id;
+  return rate.id;
 }
