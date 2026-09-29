@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Product } from "@prisma/client";
 import CodeRainBg from "@/app/pro/CodeRainBg";
-import WaitlistForm from "@/app/components/WaitlistForm";
 
 // Cosmic violet → cyan for the Pro tier — on-palette with the cyber
 // brand and gives the adult product a distinct accent.
@@ -130,14 +129,38 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }
         .cypro-cursor { animation: cyproBlink 1.3s steps(1) infinite; }
         @keyframes cyproBlink { 50% { opacity: 0; } }
+
+        /* ── futuristic HUD system ── */
+        .hud-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+          background-image:
+            linear-gradient(${ACCENT}0e 1px, transparent 1px),
+            linear-gradient(90deg, ${PRIMARY}0d 1px, transparent 1px);
+          background-size: 48px 48px;
+          -webkit-mask-image: radial-gradient(130% 82% at 50% -6%, #000 20%, transparent 72%);
+          mask-image: radial-gradient(130% 82% at 50% -6%, #000 20%, transparent 72%); }
+
+        .hud-eyebrow { font-family: ${MONO}; font-size: 11px; font-weight: 800; letter-spacing: 0.26em; text-transform: uppercase; color: ${ACCENT}; display: inline-flex; align-items: center; gap: 9px; }
+        .hud-eyebrow::before { content: ""; width: 22px; height: 1px; background: ${ACCENT}; box-shadow: 0 0 9px ${ACCENT}; }
+
+        .hud-card { position: relative; background: linear-gradient(158deg, rgba(16,20,44,0.62), rgba(8,10,22,0.5)); border: 1px solid ${ACCENT}26; backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); box-shadow: inset 0 0 40px ${ACCENT}0c; clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); transition: border-color 240ms ease, background 240ms ease; }
+        .hud-card:hover { border-color: ${ACCENT}66; background: linear-gradient(158deg, rgba(20,26,54,0.72), rgba(10,13,28,0.58)); }
+        .hud-card::before { content: ""; position: absolute; top: 0; left: 0; width: 15px; height: 15px; border-top: 2px solid ${ACCENT}; border-left: 2px solid ${ACCENT}; }
+        .hud-card::after { content: ""; position: absolute; bottom: 0; right: 0; width: 15px; height: 15px; border-bottom: 2px solid ${ACCENT}; border-right: 2px solid ${ACCENT}; }
+        .hud-card--violet { border-color: ${PRIMARY}33; }
+        .hud-card--violet::before, .hud-card--violet::after { border-color: ${PRIMARY}; }
+        .hud-card--red { border-color: ${RED}33; }
+        .hud-card--red::before, .hud-card--red::after { border-color: ${RED}; }
+        .hud-card--red:hover { border-color: ${RED}88; }
+
         @media (prefers-reduced-motion: reduce) { .cypro-cursor { animation: none; } }
       `}</style>
 
       <CodeRainBg />
+      <div className="hud-grid" aria-hidden />
 
       <div className="min-h-screen relative" style={{ background: "transparent", zIndex: 1 }}>
         {/* Nav */}
@@ -167,8 +190,8 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               <motion.a href="/signup?course=cyberstart-pro"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                className="px-5 py-2.5 rounded-2xl text-sm font-black text-white"
-                style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50` }}>
+                className="px-5 py-2.5 text-sm font-black text-white"
+                style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50`, clipPath: "polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px))" }}>
                 Get Started
               </motion.a>
             </div>
@@ -178,8 +201,8 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         {/* Hero — full-bleed, cinematic, code-rain behind */}
         <section className="relative max-w-[980px] mx-auto px-6 md:px-10 min-h-[90vh] flex flex-col justify-center text-center pt-28 pb-20">
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-8"
-              style={{ background: `${PRIMARY}1f`, border: `1px solid ${PRIMARY}55`, color: "#c9b8ff", fontFamily: MONO, boxShadow: `0 0 24px ${PRIMARY}22` }}>
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 text-[11px] font-black uppercase tracking-[0.2em] mb-8"
+              style={{ background: `${PRIMARY}1f`, border: `1px solid ${PRIMARY}55`, color: "#c9b8ff", fontFamily: MONO, boxShadow: `0 0 24px ${PRIMARY}22`, clipPath: "polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px))" }}>
               <span aria-hidden style={{ width: 6, height: 6, borderRadius: "50%", background: ACCENT, boxShadow: `0 0 10px ${ACCENT}` }} />
               Cyber security &middot; for total beginners &middot; 18+
             </div>
@@ -198,9 +221,10 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               {["No experience needed", "Hands-on from module 1", "Aligned to CompTIA Security+"].map((chip, i) => (
                 <span key={i} style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
-                  padding: "7px 14px", borderRadius: 9,
-                  background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
-                  fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.78)",
+                  padding: "7px 14px",
+                  clipPath: "polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))",
+                  background: "rgba(255,255,255,0.05)", border: `1px solid ${ACCENT}22`,
+                  fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.82)",
                   backdropFilter: "blur(6px)",
                 }}>
                   <span aria-hidden style={{ color: GREEN }}>&#10003;</span>{chip}
@@ -208,31 +232,28 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               ))}
             </div>
 
-            <div className="flex justify-center">
-              <WaitlistForm
-                courseSlug={product.slug as "cyberstart-pro"}
-                accent={PRIMARY}
-                accentSoft={ACCENT}
-                buttonGradient={GRAD}
-                buttonShadow={`0 8px 32px ${PRIMARY}50`}
-                source="hero"
-              />
-            </div>
-            <div className="mt-6 flex flex-col items-center gap-3">
-              <a href="/pro/course" className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors" style={{ color: ACCENT }}>
-                Explore the 21 modules <span aria-hidden>&rarr;</span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <motion.a href="/pro/course" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-8 py-4 text-base font-black text-white"
+                style={{ background: GRAD, clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))", boxShadow: `0 8px 40px ${PRIMARY}55` }}>
+                Start the course <span aria-hidden>&rarr;</span>
+              </motion.a>
+              <a href="/signup?course=cyberstart-pro"
+                className="inline-flex items-center gap-2 px-7 py-4 text-base font-bold transition-colors hover:text-white"
+                style={{ color: ACCENT, border: `1px solid ${ACCENT}55`, clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))" }}>
+                Create account
               </a>
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-500" style={{ fontFamily: MONO }}>
-                Ages {product.ageRange} &middot; 21 modules &middot; {priceLine} once
-              </p>
             </div>
+            <p className="mt-7 text-xs font-bold uppercase tracking-widest text-gray-500" style={{ fontFamily: MONO }}>
+              Ages {product.ageRange} &middot; 21 modules &middot; {priceLine} once &middot; lifetime access
+            </p>
           </motion.div>
         </section>
 
         {/* Real, not simulated — the differentiator */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-20">
           <ScrollReveal className="text-center mb-3">
-            <p className="text-xs font-black uppercase tracking-[0.3em]" style={{ color: ACCENT, fontFamily: MONO }}>Real, not simulated</p>
+            <span className="hud-eyebrow">// Real, not simulated</span>
           </ScrollReveal>
           <ScrollReveal className="text-center mb-4" delay={0.05}>
             <h2 className="text-3xl sm:text-4xl font-black text-white">
@@ -249,8 +270,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {DEMOS.map((d, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="rounded-3xl p-6 h-full flex flex-col"
-                  style={{ background: "rgba(255,255,255,0.035)", border: `1px solid ${PRIMARY}22`, backdropFilter: "blur(12px)" }}>
+                <div className="hud-card p-6 h-full flex flex-col">
                   <div className="text-[10px] font-black uppercase tracking-[0.18em] mb-2" style={{ color: "#b9a4ff", fontFamily: MONO }}>{d.week}</div>
                   <h3 className="font-black text-white text-lg mb-2">{d.t}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{d.d}</p>
@@ -276,7 +296,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {METHOD.map((m, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
-                <div className="rounded-3xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <div className="hud-card hud-card--violet p-6 h-full">
                   <div className="text-2xl font-black mb-3" style={{ color: PRIMARY, fontFamily: MONO }}>{m.n}</div>
                   <h3 className="font-black text-white text-lg mb-2">{m.t}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{m.d}</p>
@@ -301,7 +321,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {BREACHES.map((b, i) => (
               <ScrollReveal key={i} delay={i * 0.06}>
-                <div className="rounded-2xl p-5 h-full" style={{ background: "rgba(255,255,255,0.035)", border: "1px solid rgba(255,255,255,0.08)", borderLeft: `2px solid ${RED}66` }}>
+                <div className="hud-card hud-card--red p-5 h-full">
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className="font-black text-white text-base">{b.org}</span>
                     <span className="text-xs text-gray-500" style={{ fontFamily: MONO }}>{b.year}</span>
@@ -329,7 +349,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {ACTS.map((a, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
-                <div className="rounded-3xl p-6 h-full flex gap-5" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}20` }}>
+                <div className="hud-card hud-card--violet p-6 h-full flex gap-5">
                   <div className="flex-shrink-0">
                     <div className="text-sm font-black" style={{ color: PRIMARY, fontFamily: MONO }}>{a.n}</div>
                     <div className="text-[10px] text-gray-500 mt-1" style={{ fontFamily: MONO }}>{a.weeks}</div>
@@ -347,7 +367,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         {/* Finish with a portfolio */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-20">
           <ScrollReveal>
-            <div className="rounded-3xl p-8 sm:p-12" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25`, backdropFilter: "blur(16px)" }}>
+            <div className="hud-card p-8 sm:p-12">
               <div className="text-center mb-10">
                 <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
                   You leave with proof,{" "}
@@ -359,7 +379,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
                 {PORTFOLIO.map((a, i) => (
-                  <div key={i} className="rounded-2xl p-5" style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                  <div key={i} className="p-5" style={{ background: "rgba(0,0,0,0.32)", border: `1px solid ${ACCENT}1f`, borderTop: `2px solid ${GREEN}77` }}>
                     <div className="text-xs font-black mb-2" style={{ color: GREEN, fontFamily: MONO }}>{String(i + 1).padStart(2, "0")}</div>
                     <h3 className="font-black text-white text-sm mb-1.5 leading-snug">{a.t}</h3>
                     <p className="text-gray-500 text-xs leading-relaxed">{a.d}</p>
@@ -373,7 +393,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         {/* Straight answers */}
         <section className="max-w-[1000px] mx-auto px-6 md:px-10 py-16 sm:py-20">
           <ScrollReveal className="text-center mb-3">
-            <p className="text-xs font-black uppercase tracking-[0.3em]" style={{ color: ACCENT, fontFamily: MONO }}>No hype</p>
+            <span className="hud-eyebrow">// No hype</span>
           </ScrollReveal>
           <ScrollReveal className="text-center mb-10" delay={0.05}>
             <h2 className="text-3xl sm:text-4xl font-black text-white">The honest version</h2>
@@ -385,7 +405,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               { t: "We prepare you, honestly", d: "The course is aligned to the CompTIA Security+ objectives and points you at the certificates worth your money. We never promise a job. We make you ready to earn one." },
             ].map((s, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="rounded-3xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderTop: `2px solid ${GREEN}55` }}>
+                <div className="hud-card p-6 h-full" style={{ background: `linear-gradient(158deg, rgba(20,40,32,0.5), rgba(8,16,14,0.42))` }}>
                   <h3 className="font-black text-white text-lg mb-2">{s.t}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{s.d}</p>
                 </div>
@@ -397,7 +417,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         {/* Facts + why £99 */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-10">
           <ScrollReveal>
-            <div className="rounded-3xl px-6 py-8 sm:px-10" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+            <div className="hud-card px-6 py-8 sm:px-10">
               <p className="text-center text-gray-400 text-sm max-w-2xl mx-auto mb-8">
                 Free courses leave you to figure it out alone. Bootcamps charge thousands. Cyber Pro sits in between: taught properly, hands-on, for one small payment.
               </p>
@@ -422,27 +442,24 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         {/* CTA */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
           <ScrollReveal>
-            <div className="rounded-3xl p-8 sm:p-14 text-center" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25`, backdropFilter: "blur(16px)" }}>
+            <div className="hud-card p-8 sm:p-14 text-center">
               <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
                 Curious enough to{" "}
                 <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>start</span>?
               </h2>
               <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
-                Be first in when {product.name} opens. No experience needed, and you can always change your mind.
+                No experience needed. Start Module 1 today, work at your own pace, and keep it for life.
               </p>
-              <div className="flex justify-center">
-                <WaitlistForm
-                  courseSlug={product.slug as "cyberstart-pro"}
-                  accent={PRIMARY}
-                  accentSoft={ACCENT}
-                  buttonGradient={GRAD}
-                  buttonShadow={`0 8px 40px ${PRIMARY}50`}
-                  source="footer-cta"
-                />
-              </div>
-              <div className="mt-6">
-                <a href="/hub" className="text-sm font-bold text-gray-400 hover:text-white transition-colors">
-                  &larr; Back to your hub
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <motion.a href="/pro/course" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                  className="inline-flex items-center gap-2 px-8 py-4 text-base font-black text-white"
+                  style={{ background: GRAD, clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))", boxShadow: `0 8px 40px ${PRIMARY}55` }}>
+                  Start the course <span aria-hidden>&rarr;</span>
+                </motion.a>
+                <a href="/signup?course=cyberstart-pro"
+                  className="inline-flex items-center gap-2 px-7 py-4 text-base font-bold transition-colors hover:text-white"
+                  style={{ color: ACCENT, border: `1px solid ${ACCENT}55`, clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))" }}>
+                  Create account
                 </a>
               </div>
             </div>
