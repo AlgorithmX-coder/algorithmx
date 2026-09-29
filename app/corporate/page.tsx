@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CorporateLanding from "./CorporateLanding";
+import { stripeConfigured } from "@/app/lib/stripe";
 
 /**
  * /corporate - AlgorithmX for firms: AI Cleared and AI Fluent.
@@ -24,5 +25,5 @@ export const metadata: Metadata = {
 };
 
 export default function CorporatePage() {
-  return <CorporateLanding />;
+  return <CorporateLanding checkoutLive={stripeConfigured()} />;
 }

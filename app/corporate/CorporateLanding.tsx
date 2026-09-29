@@ -187,7 +187,7 @@ const FAQS = [
   { q: "How is it licensed?", a: "Per person, per year, in packs of ten. AI Cleared is £29 a seat for ten to forty-nine seats and £25 from fifty; AI Fluent is £59 and £45. Every seat includes the sandbox, the register, the certificates and the policy pack. Larger firms can split seats across departments; please get in touch to find out about the onboarding process." },
 ];
 
-export default function CorporateLanding() {
+export default function CorporateLanding({ checkoutLive = false }: { checkoutLive?: boolean }) {
   const [activeSection, setActiveSection] = useState("");
   const subnavRef = useRef<HTMLElement>(null);
   /* The hero is a dark photograph and everything under it is sand, so the
@@ -443,7 +443,11 @@ export default function CorporateLanding() {
                   </dl>
                   <span className="corp-pack-unit">per person, per year</span>
                   <p>{k.note}</p>
-                  <a href="#enquiry" className="corp-pack-cta">Register your interest <span aria-hidden>&rarr;</span></a>
+                  {checkoutLive && k.name !== "Enterprise" ? (
+                    <a href={`/corporate/buy?course=ai-cleared&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy AI Cleared seats <span aria-hidden>&rarr;</span></a>
+                  ) : (
+                    <a href="#enquiry" className="corp-pack-cta">Register your interest <span aria-hidden>&rarr;</span></a>
+                  )}
                 </div>
               </FadeUp>
             ))}

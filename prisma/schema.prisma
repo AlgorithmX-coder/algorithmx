@@ -358,6 +358,8 @@ model Organisation {
   seatsPurchased   Int      @default(0)
   plan             OrgPlan  @default(TEAM)
   stripeCustomerId String?
+  /// Set by the checkout webhook so a repeated delivery creates nothing twice.
+  stripeCheckoutSessionId String? @unique
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
