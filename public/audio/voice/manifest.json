@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T11:43:47.231Z",
+  "generatedAt": "2026-09-29T12:11:13.865Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -4528,19 +4528,19 @@
       "file": "/audio/voice/70ab28109d27a2df.mp3"
     },
     {
-      "key": "6a41ef1ed6698289",
+      "key": "a210b28d00da0b43",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you. Your team is the grown-ups who come running. A parent. A teacher. A grandparent. Somebody you'd shout for. Name them NOW, while everything is calm and easy. [warmly] And if they're all asleep, Childhelp is awake. One, eight hundred, four two two, four four five three. [excited] Come to the radio. Let's call your crew in!",
+      "text": "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you. Your team is the grown-ups who come running. A parent. A teacher. A grandparent. Somebody you'd shout for. Name them NOW, while everything is calm and easy. [warmly] And if they're all asleep, there's a free phone line just for children that never sleeps. Ask a grown-up to put the number on your poster. [excited] Come to the radio. Let's call your crew in!",
       "lines": [
         "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you.",
         "Your team is the grown-ups who come running.",
         "A parent. A teacher. A grandparent. Somebody you'd shout for.",
         "Name them NOW, while everything is calm and easy.",
-        "[warmly] And if they're all asleep, Childhelp is awake. One, eight hundred, four two two, four four five three.",
+        "[warmly] And if they're all asleep, there's a free phone line just for children that never sleeps. Ask a grown-up to put the number on your poster.",
         "[excited] Come to the radio. Let's call your crew in!"
       ],
-      "file": "/audio/voice/6a41ef1ed6698289.mp3"
+      "file": "/audio/voice/a210b28d00da0b43.mp3"
     },
     {
       "key": "4cb47d4a58c3d334",
@@ -4955,10 +4955,10 @@
       "file": "/audio/voice/e4c109290f853fd1.mp3"
     },
     {
-      "key": "60d87508d82e35d8",
+      "key": "a7cd98f21542fa8c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach? Is it option A... A friendly player from my game, they're online all night Option B... Nobody until morning, worries have to wait Or is it option C... Childhelp, 1-800-422-4453, free and always awake So, what do you think?",
+      "text": "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach? Is it option A... A friendly player from my game, they're online all night Option B... Nobody until morning, worries have to wait Or is it option C... The children's helpline, free and always awake So, what do you think?",
       "lines": [
         "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach?",
         "Is it option A...",
@@ -4966,10 +4966,10 @@
         "Option B...",
         "Nobody until morning, worries have to wait",
         "Or is it option C...",
-        "Childhelp, 1-800-422-4453, free and always awake",
+        "The children's helpline, free and always awake",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/60d87508d82e35d8.mp3"
+      "file": "/audio/voice/a7cd98f21542fa8c.mp3"
     },
     {
       "key": "243ef510dc1d99c3",
@@ -5045,26 +5045,26 @@
       "file": "/audio/voice/0a5d07b29c7b9a2d.mp3"
     },
     {
-      "key": "6a335130a39bae60",
+      "key": "93dc425992dedba4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "That's right! Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps.",
       "lines": [
         "That's right!",
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps."
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps."
       ],
-      "file": "/audio/voice/6a335130a39bae60.mp3"
+      "file": "/audio/voice/93dc425992dedba4.mp3"
     },
     {
-      "key": "91b584d0c4c4f569",
+      "key": "9a316da3d00f667e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "Not quite. Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps.",
       "lines": [
         "Not quite.",
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps."
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps."
       ],
-      "file": "/audio/voice/91b584d0c4c4f569.mp3"
+      "file": "/audio/voice/9a316da3d00f667e.mp3"
     },
     {
       "key": "4049726e6ca56d73",
@@ -5253,14 +5253,14 @@
       "file": "/audio/voice/c7a80f046d8f0c78.mp3"
     },
     {
-      "key": "7b36132fd850c32d",
+      "key": "828caec69eacf66c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you.",
+      "text": "That line is awake every hour of every night, it costs nothing to ring, and the person who answers is there to help a child exactly like you.",
       "lines": [
-        "Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you."
+        "That line is awake every hour of every night, it costs nothing to ring, and the person who answers is there to help a child exactly like you."
       ],
-      "file": "/audio/voice/7b36132fd850c32d.mp3"
+      "file": "/audio/voice/828caec69eacf66c.mp3"
     },
     {
       "key": "4e9c6cdd200fb21e",
@@ -5683,14 +5683,14 @@
       "file": "/audio/voice/041e79a3babb6d4b.mp3"
     },
     {
-      "key": "b19916ce3106244a",
+      "key": "51fcb06392a3afe5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps.",
       "lines": [
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. Childhelp, 1-800-422-4453, is free, just for kids, and always awake. Your team never fully sleeps."
+        "Worries don't have to wait for morning, and a game stranger isn't a helper. The children's helpline is free, just for kids, and always awake. Your team never fully sleeps."
       ],
-      "file": "/audio/voice/b19916ce3106244a.mp3"
+      "file": "/audio/voice/51fcb06392a3afe5.mp3"
     },
     {
       "key": "5570e8eb7927c5f8",
@@ -5733,14 +5733,14 @@
       "file": "/audio/voice/832f04ea8cfdf0e4.mp3"
     },
     {
-      "key": "977b5a617442e1e5",
+      "key": "e051d40c751e08a3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Childhelp - free, just for kids, always awake.",
+      "text": "The children's helpline - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one.",
       "lines": [
-        "Childhelp - free, just for kids, always awake."
+        "The children's helpline - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one."
       ],
-      "file": "/audio/voice/977b5a617442e1e5.mp3"
+      "file": "/audio/voice/e051d40c751e08a3.mp3"
     },
     {
       "key": "00524d9ebc0bb7cf",
@@ -5893,14 +5893,14 @@
       "file": "/audio/voice/962be73a3144ebed.mp3"
     },
     {
-      "key": "5d7c81dea497157e",
+      "key": "70e2844d37c930ac",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Childhelp, 1-800-422-4453",
+      "text": "The children's helpline",
       "lines": [
-        "Childhelp, 1-800-422-4453"
+        "The children's helpline"
       ],
-      "file": "/audio/voice/5d7c81dea497157e.mp3"
+      "file": "/audio/voice/70e2844d37c930ac.mp3"
     },
     {
       "key": "666dda81eed6d985",
@@ -48680,15 +48680,15 @@
       "file": "/audio/voice/fd5caad82af9fa2b.mp3"
     },
     {
-      "key": "81775a59417b0e61",
+      "key": "031472cfabb77fc0",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you.",
+      "text": "That's right! That line is awake every hour of every night, it costs nothing to ring, and the person who answers is there to help a child exactly like you.",
       "lines": [
         "That's right!",
-        "Childhelp is awake every hour of every night, and the person who answers is there to help a child exactly like you."
+        "That line is awake every hour of every night, it costs nothing to ring, and the person who answers is there to help a child exactly like you."
       ],
-      "file": "/audio/voice/81775a59417b0e61.mp3"
+      "file": "/audio/voice/031472cfabb77fc0.mp3"
     },
     {
       "key": "6fa87793519ef606",
