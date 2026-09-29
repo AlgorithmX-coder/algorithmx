@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { K } from "./engine/tokens";
-import { JOB_TITLES, TRACK_KEYWORDS, TRACK_ORDER } from "./engine/jobTitles";
+import { JOB_TITLES, OTHER_ROLES, TRACK_KEYWORDS, TRACK_ORDER } from "./engine/jobTitles";
 import { TRACK_LABEL, type Track } from "./engine/types";
 
 /* The invite landing after sign-in: a composer-style field (the same shape
@@ -18,6 +18,7 @@ export default function JoinForm({ token, orgName, presetTrack }: { token: strin
   const [track, setTrack] = useState<Track | null>(presetTrack);
   const [title, setTitle] = useState<string>(presetTrack ? TRACK_LABEL[presetTrack] : "");
   const [open, setOpen] = useState<Set<Track>>(new Set());
+  const [tab, setTab] = useState<"desks" | "other">("desks");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,6 +44,7 @@ export default function JoinForm({ token, orgName, presetTrack }: { token: strin
   }, [s]);
 
   const groups = useMemo(() => TRACK_ORDER.map((t) => ({ track: t, titles: JOB_TITLES.filter((j) => j.track === t) })), []);
+  const others = useMemo(() => OTHER_ROLES.map((t) => JOB_TITLES.find((j) => j.title === t)).filter((j): j is { title: string; track: Track } => !!j), []);
 
   function pick(j: { title: string; track: Track }) {
     setTitle(j.title);
@@ -87,6 +89,33 @@ export default function JoinForm({ token, orgName, presetTrack }: { token: strin
           {!hits.length && chip({ title: "Other", track: "general" })}
         </div>
       ) : (
+        <>
+        <div className="jf-tabs" role="tablist" aria-label="Find your title">
+          <button type="button" role="tab" aria-selected={tab === "desks"} className={`jf-tab ${tab === "desks" ? "on" : ""}`} onClick={() => setTab("desks")}>By desk</button>
+          <button type="button" role="tab" aria-selected={tab === "other"} className={`jf-tab ${tab === "other" ? "on" : ""}`} onClick={() => setTab("other")}>Other roles</button>
+          <span className="jf-tabs-hint">{tab === "desks" ? "Nine desks, the common titles on each." : "Titles that could sit on more than one desk, and where each one lands."}</span>
+        </div>
+        {tab === "other" ? (
+          <div className="jf-other">
+            <div className="jf-chips">
+              {others.map((j) => (
+                <button key={j.title} type="button" className={`jf-chip tagged ${title === j.title ? "on" : ""}`} onClick={() => pick(j)}>
+                  {j.title}<small>{TRACK_LABEL[j.track]}</small>
+                </button>
+              ))}
+            </div>
+            <div className="jf-direct">
+              <span className="jf-desk-name">Still not there? Choose the desk closest to your work</span>
+              <div className="jf-chips">
+                {TRACK_ORDER.map((t) => (
+                  <button key={t} type="button" className={`jf-chip ${track === t && title === TRACK_LABEL[t] ? "on" : ""}`} onClick={() => pick({ title: TRACK_LABEL[t], track: t })}>
+                    {TRACK_LABEL[t]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
         <div className="jf-desks">
           {groups.map((g) => {
             const isOpen = open.has(g.track);
@@ -107,6 +136,8 @@ export default function JoinForm({ token, orgName, presetTrack }: { token: strin
             );
           })}
         </div>
+        )}
+        </>
       )}
 
       <div className="jf-desk">
@@ -132,6 +163,17 @@ export default function JoinForm({ token, orgName, presetTrack }: { token: strin
         .jf-composer input { flex: 1; min-width: 0; font: inherit; font-size: 15.5px; color: ${K.ink}; background: transparent; border: none; outline: none; padding: 8px 0; }
         .jf-composer input::placeholder { color: ${K.faint}; }
         .jf-picked { flex-shrink: 0; font-size: 12.5px; font-weight: 600; color: ${K.onAccent}; background: ${K.grad}; border-radius: 999px; padding: 6px 11px; white-space: nowrap; }
+        .jf-tabs { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .jf-tab { font: inherit; font-size: 13.5px; font-weight: 600; color: ${K.muted}; background: ${K.glass}; border: 1px solid ${K.glassEdge}; border-radius: 999px; padding: 7px 14px; cursor: pointer; transition: color 120ms ease, background 120ms ease; }
+        .jf-tab:hover { color: ${K.ink}; }
+        .jf-tab.on { color: ${K.onAccent}; background: ${K.ink}; border-color: ${K.ink}; }
+        .jf-tabs-hint { font-size: 13px; color: ${K.muted}; margin-left: 6px; }
+        .jf-other { display: flex; flex-direction: column; gap: 16px; }
+        .jf-chip.tagged { display: inline-flex; align-items: baseline; gap: 8px; }
+        .jf-chip.tagged small { font-family: ${K.mono}; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.muted}; }
+        .jf-chip.tagged.on small { color: rgba(255,255,255,0.7); }
+        .jf-direct { display: flex; flex-direction: column; gap: 8px; padding-top: 14px; border-top: 1px solid ${K.glassEdge}; }
+        .jf-direct .jf-desk-name { padding-top: 0; }
         .jf-desks { display: flex; flex-direction: column; gap: 10px; }
         .jf-desk-row { display: grid; grid-template-columns: 148px 1fr; gap: 6px 14px; align-items: start; padding: 8px 0; border-top: 1px solid ${K.glassEdge}; }
         .jf-desk-row:first-child { border-top: none; padding-top: 0; }
@@ -152,6 +194,7 @@ export default function JoinForm({ token, orgName, presetTrack }: { token: strin
         @media (max-width: 640px) {
           .jf-desk-row { grid-template-columns: 1fr; gap: 6px; }
           .jf-desk-name { padding-top: 0; }
+          .jf-tabs-hint { flex-basis: 100%; margin-left: 0; }
         }
       `}</style>
     </div>
