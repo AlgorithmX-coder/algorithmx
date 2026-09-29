@@ -53,6 +53,9 @@ export const ART = {
   speech: "/cyberheroes/icons/speech-bubble.png",
   brain: "/cyberheroes/icons/brain.png",
   stopwatch: "/cyberheroes/icons/stopwatch.png",
+  star: "/cyberheroes/icons/sparkle-star.png",
+  laughing: "/cyberheroes/icons/laughing.png",
+  megaphone: "/cyberheroes/icons/megaphone.png",
 } as const;
 
 export type ArtKey = keyof typeof ART;
