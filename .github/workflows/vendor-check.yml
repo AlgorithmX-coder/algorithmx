@@ -1,0 +1,26 @@
+name: AI Cleared vendor check
+
+# The course quotes each vendor's own terms page and the sentence to look
+# for. Vendors move those pages. This runs quarterly and on demand, and
+# fails when a page is gone or no longer carries the sentence, so the
+# facts in app/ai-cleared/content/vendors.ts get re-verified.
+
+on:
+  schedule:
+    - cron: "0 9 1 1,4,7,10 *"
+  workflow_dispatch:
+
+jobs:
+  vendors:
+    name: vendor terms still say what the course says
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run check:vendors

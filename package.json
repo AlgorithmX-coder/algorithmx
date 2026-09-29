@@ -15,7 +15,9 @@
     "test:e2e:dev": "cross-env PLAYWRIGHT_USE_DEV=1 playwright test",
     "test:e2e:ui": "playwright test --ui",
     "seed": "tsx prisma/seed.ts",
-    "seed:ai-cleared": "tsx prisma/seedAiCleared.ts"
+    "seed:ai-cleared": "tsx prisma/seedAiCleared.ts",
+    "eval:ai-cleared": "tsx scripts/ai-cleared-eval.ts",
+    "check:vendors": "tsx scripts/vendor-check.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
