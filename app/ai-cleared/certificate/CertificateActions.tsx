@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { K } from "../engine/tokens";
+import type { CourseSlug } from "../engine/courses";
 
 /* Download, verify link, email me a copy. */
-export default function CertificateActions({ serial }: { serial: string }) {
+export default function CertificateActions({ serial, course = "ai-cleared" }: { serial: string; course?: CourseSlug }) {
   const [state, setState] = useState<"idle" | "sending" | "sent" | "failed">("idle");
   const [verify, setVerify] = useState(`/verify/${serial}`);
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function CertificateActions({ serial }: { serial: string }) {
   async function email() {
     setState("sending");
     try {
-      const r = await fetch("/api/ai-cleared/certificate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: true }) });
+      const r = await fetch("/api/ai-cleared/certificate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: true, course }) });
       const j = (await r.json().catch(() => ({}))) as { emailed?: boolean };
       setState(r.ok && j.emailed ? "sent" : "failed");
     } catch {
@@ -24,7 +25,7 @@ export default function CertificateActions({ serial }: { serial: string }) {
 
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginTop: 20 }}>
-      <a href="/api/ai-cleared/certificate" className="cf-btn cf-btn-pri">Download the PDF</a>
+      <a href={`/api/ai-cleared/certificate?course=${course}`} className="cf-btn cf-btn-pri">Download the PDF</a>
       <a href={`/verify/${serial}`} target="_blank" rel="noopener noreferrer" className="cf-btn">Open the verify page</a>
       <button type="button" onClick={email} disabled={state === "sending" || state === "sent"} className="cf-btn" style={{ opacity: state === "sent" ? 0.7 : 1 }}>
         {state === "idle" ? "Email me a copy" : state === "sending" ? "Sending…" : state === "sent" ? "Sent to your inbox" : "Could not send, try again"}

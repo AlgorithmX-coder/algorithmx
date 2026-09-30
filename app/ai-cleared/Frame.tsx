@@ -1,33 +1,38 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { K } from "./engine/tokens";
+import { COURSES, type CourseSlug } from "./engine/courses";
 import Aurora from "./Aurora";
 
 /* The frame for every page outside the player: the aurora backdrop, a
  * glass header strip, a two-column body (the action on the left, the
  * context on the right) and a footer line. Server component; the
- * responsive rules live in a plain style tag with cf- prefixed classes. */
+ * responsive rules live in a plain style tag with cf- prefixed classes.
+ * Both courses use it; the wordmark and the home link follow `course`. */
 export default function Frame({
   firmName,
   meta,
   aside,
   children,
   courseLink,
+  course = "ai-cleared",
 }: {
   firmName?: string;
   meta?: ReactNode;
   aside?: ReactNode;
   children: ReactNode;
   courseLink?: boolean;
+  course?: CourseSlug;
 }) {
+  const c = COURSES[course];
   return (
     <div className="cf-page">
       <Aurora />
       <header className="cf-top">
         <div className="cf-top-left">
-          <Link href="/ai-cleared" className="cf-brand">
+          <Link href={c.base} className="cf-brand">
             <span className="cf-spark" aria-hidden />
-            <span className="cf-word">AI CLEARED</span>
+            <span className="cf-word">{c.brand}</span>
           </Link>
           {firmName && (
             <>
@@ -38,7 +43,7 @@ export default function Frame({
         </div>
         <div className="cf-top-right">
           {meta}
-          {courseLink && <Link href="/ai-cleared" className="cf-link">Course</Link>}
+          {courseLink && <Link href={c.base} className="cf-link">Course</Link>}
         </div>
       </header>
       <div className={`cf-body ${aside ? "two" : ""}`}>

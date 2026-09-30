@@ -4,18 +4,20 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { getAdminContext, orgRefOf, inviteSeats, sendInvite } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
+import { courseByKey } from "@/app/ai-cleared/engine/courses";
 import { TRACKS } from "@/app/ai-cleared/engine/types";
 
 /* POST /api/org/seats
- *   { emails: string[], team?, track?, role? }  invite new seats
- *   { resend: seatId }                           resend one invite
- * DELETE /api/org/seats { seatId }               remove an unclaimed seat */
+ *   { emails: string[], team?, track?, role?, course? }  invite new seats
+ *   { resend: seatId }                                    resend one invite
+ * DELETE /api/org/seats { seatId }                        remove an unclaimed seat */
 
 const Invite = z.object({
   emails: z.array(z.string().max(200)).min(1).max(200),
   team: z.string().max(80).optional().nullable(),
   track: z.enum(TRACKS).optional().nullable(),
   role: z.enum(["LEARNER", "MANAGER", "ADMIN"]).optional(),
+  course: z.enum(["ai-cleared", "ai-fluent"]).optional(),
 });
 const Resend = z.object({ resend: z.string().min(1) });
 const Remove = z.object({ seatId: z.string().min(1) });
@@ -39,7 +41,7 @@ export async function POST(req: NextRequest) {
     const seat = await prisma.seat.findFirst({ where: { id: resend.data.resend, orgId: ctx.orgId } });
     if (!seat) return Response.json({ error: "No such seat." }, { status: 404 });
     try {
-      await sendInvite({ to: seat.email, token: seat.inviteToken, firmName: ctx.org.name, origin: originOf(req), adminName, adminEmail: ctx.user.email });
+      await sendInvite({ to: seat.email, token: seat.inviteToken, firmName: ctx.org.name, origin: originOf(req), adminName, adminEmail: ctx.user.email, course: courseByKey(seat.course).slug });
       return Response.json({ ok: true });
     } catch (err) {
       console.error("[ai-cleared/admin] resend failed", err instanceof Error ? err.message : err);
@@ -58,6 +60,7 @@ export async function POST(req: NextRequest) {
     team: parsed.data.team ?? null,
     track: parsed.data.track ?? null,
     role: parsed.data.role ?? "LEARNER",
+    course: parsed.data.course ?? "ai-cleared",
     origin: originOf(req),
     adminName,
     adminEmail: ctx.user.email,

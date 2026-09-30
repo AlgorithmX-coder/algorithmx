@@ -349,6 +349,22 @@ enum SandboxVerdict {
   CRIT
 }
 
+/// The two corporate courses a seat can be for. Mirrors the Product slugs
+/// ai-cleared and ai-fluent; a seat's course decides which product the
+/// claim enrols the person on.
+enum CourseKey {
+  AI_CLEARED
+  AI_FLUENT
+}
+
+/// AI Fluent's verdict on a practice: the loop was run well, one move was
+/// missing, or the first answer was taken as the answer.
+enum FluentVerdict {
+  FLUENT
+  NEARLY
+  NOT_YET
+}
+
 model Organisation {
   id               String   @id @default(cuid())
   name             String
@@ -357,6 +373,8 @@ model Organisation {
   contactName      String?
   contactRole      String?
   seatsPurchased   Int      @default(0)
+  /// AI Fluent seats, licensed separately from the Cleared seats above.
+  fluentSeatsPurchased Int  @default(0)
   plan             OrgPlan  @default(TEAM)
   stripeCustomerId String?
   /// Set by the checkout webhook so a repeated delivery creates nothing twice.
@@ -398,13 +416,15 @@ model Seat {
   trackHint   ClearedTrack?
   /// The role the seat grants on claim. An admin invite is a seat with ADMIN.
   role        OrgRole       @default(LEARNER)
+  /// Which course the seat is for. A person can hold one seat per course.
+  course      CourseKey     @default(AI_CLEARED)
   invitedAt   DateTime      @default(now())
   claimedAt   DateTime?
 
   org  Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
   user User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  @@unique([orgId, email])
+  @@unique([orgId, email, course])
   @@index([userId])
 }
 
@@ -448,6 +468,7 @@ model Enrolment {
   modules     ModuleProgress[]
   attempts    SandboxAttempt[]
   certificate Certificate?
+  playbook    PlaybookEntry[]
 
   @@unique([userId, productId])
   @@index([orgId])
@@ -463,6 +484,8 @@ model ModuleProgress {
   proveScore  Int?
   proveTotal  Int?
   bestVerdict SandboxVerdict?
+  /// AI Fluent's best practice verdict for the module; null on Cleared.
+  bestFluent  FluentVerdict?
   completedAt DateTime?
   updatedAt   DateTime        @updatedAt
 
@@ -483,7 +506,30 @@ model SandboxAttempt {
   countConfidential Int            @default(0)
   countRestricted   Int            @default(0)
   halted            Boolean        @default(false)
+  /// AI Fluent only: the rubric verdict and score (0 to 100) for the send.
+  fluentVerdict     FluentVerdict?
+  rubricScore       Int?
   at                DateTime       @default(now())
+
+  enrolment Enrolment @relation(fields: [enrolmentId], references: [id], onDelete: Cascade)
+
+  @@index([enrolmentId])
+}
+
+/// AI Fluent's playbook: the one place the platform keeps text a learner
+/// wrote. Their own prompt from a practice, the tool it was written for,
+/// one line on when to use it and the check that goes with it. Private to
+/// the learner (the admin sees a count), deleted with the enrolment.
+model PlaybookEntry {
+  id          String      @id @default(cuid())
+  enrolmentId String
+  module      Int
+  workflow    String
+  tool        SandboxTool
+  prompt      String
+  whenToUse   String?
+  check       String?
+  createdAt   DateTime    @default(now())
 
   enrolment Enrolment @relation(fields: [enrolmentId], references: [id], onDelete: Cascade)
 

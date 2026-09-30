@@ -61,7 +61,7 @@ async function main() {
     { email: "tester3@marlowfenwick.example", inviteToken: "mf-t3-z9qn5vh3kw6c", trackHint: null, team: null },
   ];
   for (const seat of seats) {
-    await prisma.seat.upsert({ where: { orgId_email: { orgId: org.id, email: seat.email } }, update: {}, create: { orgId: org.id, ...seat } });
+    await prisma.seat.upsert({ where: { orgId_email_course: { orgId: org.id, email: seat.email, course: "AI_CLEARED" } }, update: {}, create: { orgId: org.id, ...seat } });
   }
   console.log(`  · test org "${org.name}" with ${seats.length} seat(s)`);
 }

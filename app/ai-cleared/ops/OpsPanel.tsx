@@ -10,7 +10,7 @@ import type { EvalResult } from "@/app/lib/aiClearedEval";
  * a certificate or a person up across every firm. */
 export default function OpsPanel() {
   const router = useRouter();
-  const [f, setF] = useState({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", adminEmail: "" });
+  const [f, setF] = useState({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", fluentSeatsPurchased: "0", adminEmail: "" });
   const [busy, setBusy] = useState<string | null>(null);
   const [made, setMade] = useState<{ name: string; slug: string; link: string; emailed: boolean } | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -25,11 +25,11 @@ export default function OpsPanel() {
     setErr(null);
     setMade(null);
     try {
-      const res = await fetch("/api/ops/firms", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, seatsPurchased: Number(f.seatsPurchased) }) });
+      const res = await fetch("/api/ops/firms", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, seatsPurchased: Number(f.seatsPurchased), fluentSeatsPurchased: Number(f.fluentSeatsPurchased) || 0 }) });
       const j = (await res.json().catch(() => ({}))) as Record<string, unknown>;
       if (!res.ok) throw new Error((j.error as string) ?? "Something went wrong.");
       setMade({ name: j.name as string, slug: j.slug as string, link: j.link as string, emailed: !!j.emailed });
-      setF({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", adminEmail: "" });
+      setF({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", fluentSeatsPurchased: "0", adminEmail: "" });
       router.refresh();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Something went wrong.");
@@ -106,9 +106,10 @@ export default function OpsPanel() {
         </div>
         <div className="op-row three">
           <label>Plan <select id="op-plan" value={f.plan} onChange={(e) => set("plan", e.target.value)}><option value="TEAM">Team (10 to 49)</option><option value="FIRM">Firm (50 to 249)</option><option value="ENTERPRISE">Enterprise</option></select></label>
-          <label>Seats <input id="op-seats" type="number" min={1} value={f.seatsPurchased} onChange={(e) => set("seatsPurchased", e.target.value)} /></label>
-          <label>Admin email <input id="op-admin" type="email" value={f.adminEmail} onChange={(e) => set("adminEmail", e.target.value)} placeholder="admin@firm.co.uk" /></label>
+          <label>Cleared seats <input id="op-seats" type="number" min={1} value={f.seatsPurchased} onChange={(e) => set("seatsPurchased", e.target.value)} /></label>
+          <label>Fluent seats <input id="op-fluent-seats" type="number" min={0} value={f.fluentSeatsPurchased} onChange={(e) => set("fluentSeatsPurchased", e.target.value)} /></label>
         </div>
+        <label>Admin email <input id="op-admin" type="email" value={f.adminEmail} onChange={(e) => set("adminEmail", e.target.value)} placeholder="admin@firm.co.uk" /></label>
         <button type="button" className="cf-btn cf-btn-pri" onClick={create} disabled={busy === "create" || !f.name.trim() || !f.adminEmail.trim()}>{busy === "create" ? "Creating…" : "Create firm and admin invite"}</button>
         {made && (
           <div className="op-made">
@@ -126,7 +127,7 @@ export default function OpsPanel() {
         <h2 className="op-h2">Look up</h2>
         <p className="cf-note">A certificate serial, or a person&rsquo;s email address, across every firm.</p>
         <div className="op-find">
-          <input id="op-q" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") find(); }} placeholder="AXC-XXXX-XXXX or name@firm.co.uk" />
+          <input id="op-q" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") find(); }} placeholder="AXC-XXXX-XXXX, AXF-XXXX-XXXX or name@firm.co.uk" />
           <button type="button" className="cf-btn cf-btn-pri" onClick={find} disabled={busy === "find" || q.trim().length < 3}>{busy === "find" ? "Looking…" : "Find"}</button>
         </div>
         {hits && hits.length === 0 && <p className="cf-note">Nothing matches that.</p>}
@@ -135,7 +136,7 @@ export default function OpsPanel() {
             {hits.map((h, i) => (
               <li key={i}>
                 <b>{h.name ?? h.email}</b>
-                <span>{h.name ? h.email : ""} · <a href={`/ai-cleared/ops/${h.firmSlug}`}>{h.firm}</a> · {h.status === "cleared" ? "Cleared" : h.status === "started" ? `${h.modulesDone} modules cleared` : "Invited, not yet claimed"}</span>
+                <span>{h.name ? h.email : ""} · <a href={`/ai-cleared/ops/${h.firmSlug}?course=${h.course}`}>{h.firm}</a> · {h.course === "ai-fluent" ? "AI Fluent" : "AI Cleared"} · {h.status === "cleared" ? (h.course === "ai-fluent" ? "Fluent" : "Cleared") : h.status === "started" ? `${h.modulesDone} modules done` : "Invited, not yet claimed"}</span>
                 {h.serial && <span>Certificate <a href={`/verify/${h.serial}`} target="_blank" rel="noopener noreferrer">{h.serial}</a>, {h.score}%, issued {day(h.issuedAt)}, expires {day(h.expiresAt)}</span>}
               </li>
             ))}

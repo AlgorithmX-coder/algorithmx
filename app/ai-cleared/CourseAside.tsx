@@ -1,9 +1,12 @@
 import SimPreview from "./SimPreview";
-import { MODULE_LIST } from "./manifests";
+import { COURSES, type CourseSlug } from "./engine/courses";
+import { moduleListFor } from "@/app/lib/courseModules";
 
-/* The right-hand context on the outer pages: the firm, the five modules
- * with their minutes, and (on the invite page) a look at the simulator
- * they will practise in. */
+const WORDS = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+
+/* The right-hand context on the outer pages: the firm, the course's
+ * modules with their minutes, and (on the invite page) a look at the
+ * simulator they will practise in. */
 export default function CourseAside({
   firmName,
   contactName,
@@ -12,6 +15,7 @@ export default function CourseAside({
   done,
   showWindow,
   showModules = true,
+  course = "ai-cleared",
 }: {
   firmName: string;
   contactName?: string | null;
@@ -22,22 +26,25 @@ export default function CourseAside({
   showWindow?: boolean;
   /* Off on the course home, where the modules are the main content. */
   showModules?: boolean;
+  course?: CourseSlug;
 }) {
-  const total = MODULE_LIST.reduce((a, m) => a + m.minutes, 0);
+  const list = moduleListFor(course);
+  const total = list.reduce((a, m) => a + m.minutes, 0);
+  const c = COURSES[course];
   return (
     <>
       <div className="cf-card cf-firmcard">
         <span className="cf-avatar">{firmName.slice(0, 1).toUpperCase()}</span>
         <span>
           <b>{firmName}</b>
-          <small>{contactName ? `Ask ${contactName}${contactRole ? `, ${contactRole}` : ""}` : "Your firm's AI Cleared programme"}</small>
+          <small>{contactName ? `Ask ${contactName}${contactRole ? `, ${contactRole}` : ""}` : `Your firm's ${c.name} programme`}</small>
         </span>
       </div>
       {showModules && (
       <div className="cf-card">
-        <div className="cf-label">Five modules · about {total} minutes</div>
+        <div className="cf-label">{WORDS[list.length] ?? list.length} modules · about {total} minutes</div>
         <ol className="cf-modules">
-          {MODULE_LIST.map((m) => {
+          {list.map((m) => {
             const isDone = done?.includes(m.n);
             return (
               <li key={m.n}>

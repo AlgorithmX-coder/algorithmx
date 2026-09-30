@@ -5,8 +5,8 @@ import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import { createFirm } from "@/app/lib/aiClearedOps";
 import { firstNameOf } from "@/app/lib/aiCleared";
 
-/* POST /api/ops/firms: AlgorithmX staff create a firm by hand and get its
- * admin invite link. */
+/* POST /api/ops/firms: AlgorithmX staff create a firm by hand, with its
+ * Cleared and Fluent seat counts, and get its admin invite link. */
 
 const Body = z.object({
   name: z.string().min(2).max(120),
@@ -15,6 +15,7 @@ const Body = z.object({
   contactRole: z.string().max(120).optional().nullable(),
   plan: z.enum(["TEAM", "FIRM", "ENTERPRISE"]),
   seatsPurchased: z.number().int().min(1).max(100000),
+  fluentSeatsPurchased: z.number().int().min(0).max(100000).optional(),
   adminEmail: z.string().email().max(200),
 });
 

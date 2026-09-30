@@ -5,11 +5,12 @@ import { prisma } from "@/app/lib/prisma";
 import { getEnrolment, TRACK_TO_DB } from "@/app/lib/aiCleared";
 import { TRACKS } from "@/app/ai-cleared/engine/types";
 
-/* POST /api/ai-cleared/track { track }
- * The one-time track change the invite page promises. A second change goes
- * through the firm's admin. Modules already cleared stay cleared. */
+/* POST /api/ai-cleared/track { track, course? }
+ * The one-time track change the invite page promises, per course. A
+ * second change goes through the firm's admin. Modules already cleared
+ * stay cleared. */
 
-const Body = z.object({ track: z.enum(TRACKS) });
+const Body = z.object({ track: z.enum(TRACKS), course: z.enum(["ai-cleared", "ai-fluent"]).optional() });
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -17,7 +18,7 @@ export async function POST(req: NextRequest) {
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Bad request." }, { status: 400 });
 
-  const enrolment = await getEnrolment(session.user.id);
+  const enrolment = await getEnrolment(session.user.id, parsed.data.course ?? "ai-cleared");
   if (!enrolment) return Response.json({ error: "No enrolment." }, { status: 403 });
   if (enrolment.trackChangedAt) return Response.json({ error: "Your desk has already been changed once. Ask your admin for another change." }, { status: 409 });
   if (TRACK_TO_DB[parsed.data.track] === enrolment.track) return Response.json({ ok: true, unchanged: true });

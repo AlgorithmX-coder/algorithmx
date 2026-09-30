@@ -1,17 +1,18 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
-import { getAdminContext, getRegister, firmStanding } from "@/app/lib/aiClearedAdmin";
+import { courseOf, getAdminContext, getRegister, firmStanding } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
 import { CLASS_DEFAULT_NAME } from "../engine/types";
 import Frame from "../Frame";
 import AdminPanel from "./AdminPanel";
 
-/* /ai-cleared/admin: the register, invites, nudges and the firm profile.
- * Gated by an OrgMember row with ADMIN or MANAGER. */
+/* /ai-cleared/admin[?course=ai-fluent]: the register per course, invites,
+ * nudges and the firm profile. Gated by an OrgMember row with ADMIN or
+ * MANAGER. */
 export const dynamic = "force-dynamic";
 
-export default async function AdminPage() {
+export default async function AdminPage({ searchParams }: { searchParams: Promise<{ course?: string }> }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login?callbackUrl=%2Fai-cleared%2Fadmin");
   const ctx = await getAdminContext(session.user.id);
@@ -26,7 +27,8 @@ export default async function AdminPage() {
     );
   }
 
-  const rows = await getRegister(ctx.orgId);
+  const course = courseOf((await searchParams).course);
+  const rows = await getRegister(ctx.orgId, course);
   const standing = firmStanding(rows);
   const p = ctx.org.profile;
   const profile = {
@@ -48,9 +50,12 @@ export default async function AdminPage() {
         firmName={ctx.org.name}
         role={ctx.role}
         seatsPurchased={ctx.org.seatsPurchased}
+        fluentSeatsPurchased={ctx.org.fluentSeatsPurchased}
         rows={rows}
         standing={standing}
         profile={profile}
+        course={course}
+        basePath="/ai-cleared/admin"
       />
     </Frame>
   );

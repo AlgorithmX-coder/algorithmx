@@ -1,12 +1,14 @@
 import { prisma } from "@/app/lib/prisma";
-import { AI_CLEARED_SLUG } from "@/app/lib/aiCleared";
+import { AI_CLEARED_SLUG, AI_FLUENT_SLUG } from "@/app/lib/aiCleared";
 import { FIRM_THRESHOLD, newInviteToken, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
-import { MODULE_LIST } from "@/app/ai-cleared/manifests";
+import { moduleListFor } from "@/app/lib/courseModules";
+import { COURSES, courseByKey, courseOfSerial, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import type { OrgPlan } from "@prisma/client";
 
-/* The AlgorithmX side of AI Cleared: every firm at a glance, the totals,
- * creating a firm by hand, and looking a certificate or a person up.
- * Never import from a client component. */
+/* The AlgorithmX side of both courses: every firm at a glance with its
+ * Cleared and Fluent numbers, the totals, creating a firm by hand, and
+ * looking a certificate or a person up. Never import from a client
+ * component. */
 
 export interface FirmRow {
   id: string;
@@ -21,6 +23,10 @@ export interface FirmRow {
   cleared: number;
   pct: number;
   firmCleared: boolean;
+  fluentSeats: number;
+  fluentInvited: number;
+  fluentClaimed: number;
+  fluentDone: number;
   certificates: number;
   lastActivity: string | null;
   createdAt: string;
@@ -31,14 +37,16 @@ export async function listFirms(): Promise<FirmRow[]> {
   const orgs = await prisma.organisation.findMany({
     orderBy: { createdAt: "desc" },
     include: {
-      seats: { select: { claimedAt: true } },
-      enrolments: { select: { completedAt: true, startedAt: true, modules: { select: { updatedAt: true } } } },
+      seats: { select: { claimedAt: true, course: true } },
+      enrolments: { select: { completedAt: true, startedAt: true, modules: { select: { updatedAt: true } }, product: { select: { slug: true } } } },
       _count: { select: { certificates: true } },
     },
   });
   return orgs.map((o) => {
-    const claimed = o.seats.filter((s) => s.claimedAt).length;
-    const cleared = o.enrolments.filter((e) => e.completedAt).length;
+    const clearedSeats = o.seats.filter((s) => s.course === "AI_CLEARED");
+    const fluentSeats = o.seats.filter((s) => s.course === "AI_FLUENT");
+    const claimed = clearedSeats.filter((s) => s.claimedAt).length;
+    const cleared = o.enrolments.filter((e) => e.product.slug === AI_CLEARED_SLUG && e.completedAt).length;
     const pct = claimed ? cleared / claimed : 0;
     const stamps = o.enrolments.flatMap((e) => [e.startedAt, ...e.modules.map((m) => m.updatedAt)]);
     const last = stamps.length ? new Date(Math.max(...stamps.map((d) => d.getTime()))) : null;
@@ -50,11 +58,15 @@ export async function listFirms(): Promise<FirmRow[]> {
       plan: o.plan,
       contactName: o.contactName,
       seatsPurchased: o.seatsPurchased,
-      invited: o.seats.length,
+      invited: clearedSeats.length,
       claimed,
       cleared,
       pct,
       firmCleared: claimed > 0 && pct >= FIRM_THRESHOLD,
+      fluentSeats: o.fluentSeatsPurchased,
+      fluentInvited: fluentSeats.length,
+      fluentClaimed: fluentSeats.filter((s) => s.claimedAt).length,
+      fluentDone: o.enrolments.filter((e) => e.product.slug === AI_FLUENT_SLUG && e.completedAt).length,
       certificates: o._count.certificates,
       lastActivity: last ? last.toISOString() : null,
       createdAt: o.createdAt.toISOString(),
@@ -70,6 +82,9 @@ export function platformTotals(rows: FirmRow[]) {
     seatsInvited: rows.reduce((a, r) => a + r.invited, 0),
     seatsClaimed: rows.reduce((a, r) => a + r.claimed, 0),
     cleared: rows.reduce((a, r) => a + r.cleared, 0),
+    fluentLicensed: rows.reduce((a, r) => a + r.fluentSeats, 0),
+    fluentClaimed: rows.reduce((a, r) => a + r.fluentClaimed, 0),
+    fluentDone: rows.reduce((a, r) => a + r.fluentDone, 0),
     certificates: rows.reduce((a, r) => a + r.certificates, 0),
     firmsCleared: rows.filter((r) => r.firmCleared).length,
   };
@@ -85,7 +100,7 @@ function slugify(name: string): string {
 }
 
 /* Create a firm by hand (an invoiced deal, or a test firm) and its admin
- * invite. The admin gets the invite email under the staff member's name
+ * invite. The admin gets the welcome email under the staff member's name
  * when email is configured; the link comes back either way. */
 export async function createFirm(args: {
   name: string;
@@ -94,6 +109,7 @@ export async function createFirm(args: {
   contactRole?: string | null;
   plan: OrgPlan;
   seatsPurchased: number;
+  fluentSeatsPurchased?: number;
   adminEmail: string;
   origin: string;
   staffName: string;
@@ -111,13 +127,14 @@ export async function createFirm(args: {
       contactRole: args.contactRole?.trim() || null,
       plan: args.plan,
       seatsPurchased: args.seatsPurchased,
+      fluentSeatsPurchased: args.fluentSeatsPurchased ?? 0,
     },
   });
   const token = newInviteToken(slug.slice(0, 6));
   await prisma.seat.create({ data: { orgId: org.id, email: args.adminEmail.trim().toLowerCase(), inviteToken: token, team: "Admin", role: "ADMIN" } });
   let emailed = true;
   try {
-    await sendAdminWelcome({ to: args.adminEmail, token, firmName: org.name, seats: args.seatsPurchased, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail });
+    await sendAdminWelcome({ to: args.adminEmail, token, firmName: org.name, seats: args.seatsPurchased, fluentSeats: args.fluentSeatsPurchased ?? 0, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail });
   } catch (err) {
     emailed = false;
     console.error("[ai-cleared/ops] admin invite email failed", err instanceof Error ? err.message : err);
@@ -127,6 +144,7 @@ export async function createFirm(args: {
 
 export interface LookupHit {
   kind: "certificate" | "person";
+  course: CourseSlug;
   name: string | null;
   email: string;
   firm: string;
@@ -139,24 +157,28 @@ export interface LookupHit {
   modulesDone: number;
 }
 
-/* A serial (AXC-XXXX-XXXX) or an email address. */
+/* A serial (AXC- or AXF-XXXX-XXXX) or an email address. A person gets one
+ * hit per seat, each with its course. */
 export async function lookup(q: string): Promise<LookupHit[]> {
   const s = q.trim();
   if (!s) return [];
-  const total = MODULE_LIST.filter((m) => m.available).length;
-  if (/^AXC-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(s)) {
-    const c = await prisma.certificate.findUnique({ where: { serial: s.toUpperCase() }, include: { org: true, enrolment: { include: { user: true } } } });
+  if (/^AX[CF]-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(s)) {
+    const c = await prisma.certificate.findUnique({ where: { serial: s.toUpperCase() }, include: { org: true, enrolment: { include: { user: true, product: { select: { slug: true } } } } } });
     if (!c) return [];
-    return [{ kind: "certificate", name: c.enrolment.user.name, email: c.enrolment.user.email, firm: c.org.name, firmSlug: c.org.slug, serial: c.serial, score: c.score, issuedAt: c.issuedAt.toISOString(), expiresAt: c.expiresAt.toISOString(), status: "cleared", modulesDone: total }];
+    const course = courseOfSerial(c.serial)?.slug ?? (c.enrolment.product.slug === "ai-fluent" ? "ai-fluent" : "ai-cleared");
+    const total = moduleListFor(course).filter((m) => m.available).length;
+    return [{ kind: "certificate", course, name: c.enrolment.user.name, email: c.enrolment.user.email, firm: c.org.name, firmSlug: c.org.slug, serial: c.serial, score: c.score, issuedAt: c.issuedAt.toISOString(), expiresAt: c.expiresAt.toISOString(), status: "cleared", modulesDone: total }];
   }
   const email = s.toLowerCase();
-  const seats = await prisma.seat.findMany({ where: { email }, include: { org: true, user: true } });
-  const enrolments = await prisma.enrolment.findMany({ where: { user: { email }, product: { slug: AI_CLEARED_SLUG } }, include: { certificate: true, modules: true, org: true } });
-  const byOrg = new Map(enrolments.map((e) => [e.orgId, e]));
+  const seats = await prisma.seat.findMany({ where: { email }, include: { org: true, user: true }, orderBy: [{ course: "asc" }] });
+  const enrolments = await prisma.enrolment.findMany({ where: { user: { email } }, include: { certificate: true, modules: true, org: true, product: { select: { slug: true } } } });
+  const byOrgCourse = new Map(enrolments.map((e) => [`${e.orgId}:${e.product.slug}`, e]));
   const hits: LookupHit[] = seats.map((seat) => {
-    const e = byOrg.get(seat.orgId);
+    const course = courseByKey(seat.course).slug;
+    const e = byOrgCourse.get(`${seat.orgId}:${course}`);
     return {
       kind: "person",
+      course,
       name: seat.user?.name ?? null,
       email: seat.email,
       firm: seat.org.name,
@@ -169,5 +191,28 @@ export async function lookup(q: string): Promise<LookupHit[]> {
       modulesDone: e ? e.modules.filter((m) => m.completedAt).length : 0,
     };
   });
+  /* An enrolment whose seat was issued to a different address (the person
+   * signed in with another email) still shows, from the enrolment itself. */
+  const seen = new Set(seats.map((s) => `${s.orgId}:${courseByKey(s.course).slug}`));
+  for (const e of enrolments) {
+    const course = (e.product.slug === "ai-fluent" ? "ai-fluent" : "ai-cleared") as CourseSlug;
+    if (seen.has(`${e.orgId}:${course}`)) continue;
+    hits.push({
+      kind: "person",
+      course,
+      name: null,
+      email,
+      firm: e.org.name,
+      firmSlug: e.org.slug,
+      serial: e.certificate?.serial ?? null,
+      score: e.certificate?.score ?? e.finalScore ?? null,
+      issuedAt: e.certificate?.issuedAt.toISOString() ?? null,
+      expiresAt: e.certificate?.expiresAt.toISOString() ?? null,
+      status: e.completedAt ? "cleared" : "started",
+      modulesDone: e.modules.filter((m) => m.completedAt).length,
+    });
+  }
   return hits;
 }
+
+export { COURSES };

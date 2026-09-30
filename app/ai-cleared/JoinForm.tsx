@@ -5,14 +5,16 @@ import { useRouter } from "next/navigation";
 import { K } from "./engine/tokens";
 import { JOB_TITLES, OTHER_ROLES, TRACK_KEYWORDS, TRACK_ORDER } from "./engine/jobTitles";
 import { TRACK_LABEL, type Track } from "./engine/types";
+import { COURSES, type CourseSlug } from "./engine/courses";
 
 /* The invite landing after sign-in: a composer-style field (the same shape
  * as the AI tools' own), every desk with its common titles, the desk the
  * pick resolves to, and one gradient action. Typing narrows the titles
- * across every desk; "IT" on its own finds the IT desk through keywords. */
+ * across every desk; "IT" on its own finds the IT desk through keywords.
+ * Both courses use it; the seat's course decides where the claim lands. */
 const PER_DESK = 4;
 
-export default function JoinForm({ token, orgName, presetTrack }: { token: string; orgName: string; presetTrack: Track | null }) {
+export default function JoinForm({ token, orgName, presetTrack, course = "ai-cleared" }: { token: string; orgName: string; presetTrack: Track | null; course?: CourseSlug }) {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [track, setTrack] = useState<Track | null>(presetTrack);
@@ -59,7 +61,7 @@ export default function JoinForm({ token, orgName, presetTrack }: { token: strin
       const r = await fetch("/api/ai-cleared/join", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token, track }) });
       const j = (await r.json()) as { error?: string; redirect?: string };
       if (!r.ok) throw new Error(j.error ?? "Something went wrong.");
-      router.push(j.redirect ?? "/ai-cleared");
+      router.push(j.redirect ?? COURSES[course].base);
       router.refresh();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong.");
@@ -144,7 +146,7 @@ export default function JoinForm({ token, orgName, presetTrack }: { token: strin
         {track ? (
           <>
             <span className="jf-desk-dot" aria-hidden />
-            <span>Your desk: <b>{TRACK_LABEL[track]}</b>. The practice uses documents this role handles. You can change it once from the course page.</span>
+            <span>Your desk: <b>{TRACK_LABEL[track]}</b>. The {course === "ai-fluent" ? "real task" : "practice"} uses documents this role handles. You can change it once from the course page.</span>
           </>
         ) : (
           <span>Pick the closest title. It decides which desk the practice uses.</span>
