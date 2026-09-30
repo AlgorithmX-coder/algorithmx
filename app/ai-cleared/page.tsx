@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { hasEntitlement } from "@/app/lib/entitlements";
-import { AI_CLEARED_SLUG, DB_TO_TRACK, firstNameOf, getEnrolment } from "@/app/lib/aiCleared";
+import { AI_CLEARED_SLUG, DB_TO_TRACK, firstNameOf, getEnrolments } from "@/app/lib/aiCleared";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import { MODULE_LIST } from "./manifests";
 import Frame from "./Frame";
@@ -18,9 +18,9 @@ export default async function AiClearedHome() {
   if (!session?.user?.id) redirect("/login?callbackUrl=%2Fai-cleared");
   const userId = session.user.id;
 
-  const [entitled, enrolment, adminRow, staff] = await Promise.all([
+  const [entitled, { cleared: enrolment, fluent }, adminRow, staff] = await Promise.all([
     hasEntitlement(userId, AI_CLEARED_SLUG),
-    getEnrolment(userId),
+    getEnrolments(userId),
     prisma.orgMember.findFirst({ where: { userId, role: { in: ["ADMIN", "MANAGER"] } }, select: { id: true } }),
     isStaffUser(userId),
   ]);
@@ -53,6 +53,7 @@ export default async function AiClearedHome() {
 
   return (
     <ConsoleHome
+      course="ai-cleared"
       firmName={enrolment.org.name}
       contactName={profile?.escalationContact ?? enrolment.org.contactName}
       contactRole={profile?.escalationRole ?? enrolment.org.contactRole}
@@ -64,6 +65,7 @@ export default async function AiClearedHome() {
       complete={!!enrolment.completedAt}
       isAdmin={!!adminRow}
       isStaff={staff}
+      otherCourse={fluent ? { href: "/ai-fluent", label: "AI Fluent" } : null}
     />
   );
 }

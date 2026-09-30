@@ -2,12 +2,15 @@ import { NextRequest } from "next/server";
 import { jsPDF } from "jspdf";
 import { auth } from "@/app/lib/auth";
 import { getEnrolment, firstNameOf, DB_TO_TRACK } from "@/app/lib/aiCleared";
-import { emailCertificate, fmtDate, issueCertificate } from "@/app/lib/aiClearedCertificate";
+import { CERT_COPY, emailCertificate, fmtDate, issueCertificate } from "@/app/lib/aiClearedCertificate";
+import { COURSES, isCourseSlug, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import { TRACK_LABEL } from "@/app/ai-cleared/engine/types";
 
-/* GET  /api/ai-cleared/certificate        the PDF, for the signed-in holder
- * POST /api/ai-cleared/certificate        issue (idempotent) and, with
- *                                         { email: true }, send the copy */
+/* GET  /api/ai-cleared/certificate?course=   the PDF, for the signed-in holder
+ * POST /api/ai-cleared/certificate            issue (idempotent) and, with
+ *                                            { email: true, course? }, send the copy
+ * Both courses: the course picks the enrolment, the serial prefix and the
+ * words on the paper. */
 
 const INK = "#14161d";
 const MUTED = "#5b6572";
@@ -22,29 +25,35 @@ function originOf(req: NextRequest): string {
   return `${proto}://${host}`;
 }
 
+function courseOf(v: unknown): CourseSlug {
+  return isCourseSlug(v) ? v : "ai-cleared";
+}
+
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "Sign in first." }, { status: 401 });
-  const enrolment = await getEnrolment(session.user.id);
+  const body = (await req.json().catch(() => ({}))) as { email?: boolean; course?: string };
+  const course = courseOf(body.course);
+  const enrolment = await getEnrolment(session.user.id, course);
   if (!enrolment) return Response.json({ error: "No enrolment." }, { status: 403 });
 
   const issued = await issueCertificate(enrolment.id);
   if (!issued.ok) return Response.json({ error: issued.reason === "not-complete" ? "Finish every module first." : "No enrolment." }, { status: 409 });
 
-  const body = (await req.json().catch(() => ({}))) as { email?: boolean };
   let emailed = false;
   let emailError: string | undefined;
   if (body.email && enrolment.user.email) {
     try {
-    await emailCertificate({
-      to: enrolment.user.email,
-      holder: enrolment.user.name?.trim() || firstNameOf(enrolment.user.name, enrolment.user.email),
-      firm: enrolment.org.name,
-      serial: issued.serial,
-      expiresAt: issued.expiresAt,
-      origin: originOf(req),
-    });
-    emailed = true;
+      await emailCertificate({
+        to: enrolment.user.email,
+        holder: enrolment.user.name?.trim() || firstNameOf(enrolment.user.name, enrolment.user.email),
+        firm: enrolment.org.name,
+        serial: issued.serial,
+        expiresAt: issued.expiresAt,
+        origin: originOf(req),
+        course,
+      });
+      emailed = true;
     } catch (err) {
       console.error("[ai-cleared/certificate] email failed", err instanceof Error ? err.message : err);
       emailError = "The email could not be sent just now. The download and the verify link still work.";
@@ -56,11 +65,14 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "Sign in first." }, { status: 401 });
-  const enrolment = await getEnrolment(session.user.id);
+  const course = courseOf(new URL(req.url).searchParams.get("course"));
+  const enrolment = await getEnrolment(session.user.id, course);
   if (!enrolment) return Response.json({ error: "No enrolment." }, { status: 403 });
   const issued = await issueCertificate(enrolment.id);
   if (!issued.ok) return Response.json({ error: "Finish every module first." }, { status: 409 });
 
+  const c = COURSES[course];
+  const copy = CERT_COPY[course];
   const holder = enrolment.user.name?.trim() || firstNameOf(enrolment.user.name, enrolment.user.email);
   const firm = enrolment.org.name;
   const track = TRACK_LABEL[DB_TO_TRACK[enrolment.track]];
@@ -86,11 +98,11 @@ export async function GET(req: NextRequest) {
   doc.setFont("courier", "bold");
   doc.setFontSize(9.5);
   doc.setTextColor(TEAL);
-  doc.text("AI CLEARED", x, 30, { charSpace: 1.6 });
+  doc.text(c.brand, x, 30, { charSpace: 1.6 });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.setTextColor(FAINT);
-  doc.text("AlgorithmX  ·  Safe and effective AI use for staff", x, 36);
+  doc.text(`AlgorithmX  ·  ${copy.tagline}`, x, 36);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(12);
@@ -110,23 +122,16 @@ export async function GET(req: NextRequest) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(13);
   doc.setTextColor(INK);
-  const body = doc.splitTextToSize(
-    "has completed AI Cleared: the five modules on what happens to what you type, the paste test, the firm's approved tools, trust but verify, and shadow AI, and passed the final assessment.",
-    W - x - 40,
-  );
+  const body = doc.splitTextToSize(copy.pdfBody, W - x - 40);
   doc.text(body, x, 104);
 
-  /* the four classes, the course's one colour system */
-  const classes: [string, string][] = [
-    ["PUBLIC", "#4f8fa6"],
-    ["INTERNAL", "#0a7085"],
-    ["CONFIDENTIAL", "#8a5400"],
-    ["RESTRICTED", "#a63a08"],
-  ];
+  /* the chips: Cleared's four classes in their colours, Fluent's five workflows in teal */
+  const chipColours = course === "ai-cleared" ? ["#4f8fa6", "#0a7085", "#8a5400", "#a63a08"] : copy.chips.map(() => TEAL);
   let cx = x;
   doc.setFont("courier", "bold");
   doc.setFontSize(7.5);
-  for (const [label, colour] of classes) {
+  copy.chips.forEach((label, i) => {
+    const colour = chipColours[i];
     const w = doc.getTextWidth(label) + 6;
     doc.setDrawColor(colour);
     doc.setLineWidth(0.3);
@@ -134,7 +139,7 @@ export async function GET(req: NextRequest) {
     doc.setTextColor(colour);
     doc.text(label, cx + 3, 126.6);
     cx += w + 3;
-  }
+  });
 
   /* facts row */
   const rowY = 150;
@@ -172,7 +177,7 @@ export async function GET(req: NextRequest) {
   return new Response(bytes, {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="AI-Cleared-${safe}-${issued.serial}.pdf"`,
+      "Content-Disposition": `attachment; filename="${c.name.replace(/\s+/g, "-")}-${safe}-${issued.serial}.pdf"`,
       "Cache-Control": "no-store",
     },
   });

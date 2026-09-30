@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { K } from "./engine/tokens";
 import { TRACKS, TRACK_LABEL, type Track } from "./engine/types";
+import type { CourseSlug } from "./engine/courses";
 
-/* The one-time desk change from the course page. */
-export default function TrackChange({ current, locked }: { current: Track; locked: boolean }) {
+/* The one-time desk change from the course page, per course. */
+export default function TrackChange({ current, locked, course = "ai-cleared" }: { current: Track; locked: boolean; course?: CourseSlug }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [pick, setPick] = useState<Track>(current);
@@ -20,7 +21,7 @@ export default function TrackChange({ current, locked }: { current: Track; locke
     setBusy(true);
     setError(null);
     try {
-      const r = await fetch("/api/ai-cleared/track", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ track: pick }) });
+      const r = await fetch("/api/ai-cleared/track", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ track: pick, course }) });
       const j = (await r.json()) as { error?: string };
       if (!r.ok) throw new Error(j.error ?? "Could not change your desk.");
       setOpen(false);

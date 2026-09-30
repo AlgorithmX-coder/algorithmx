@@ -8,7 +8,7 @@ import { MODULE_5 } from "./module5";
 /* The course map the rail shows. Modules without a manifest yet are listed
  * so the learner sees the whole journey; they open when their phase ships. */
 export interface ModuleSummary {
-  n: 1 | 2 | 3 | 4 | 5;
+  n: number;
   title: string;
   minutes: number;
   available: boolean;

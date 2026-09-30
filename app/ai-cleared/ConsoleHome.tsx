@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { K } from "./engine/tokens";
 import { TRACK_LABEL, type Track } from "./engine/types";
+import { COURSES, type CourseSlug } from "./engine/courses";
 import type { CourseMapEntry } from "./engine/ClearedPlayer";
 import Frame from "./Frame";
 import CourseAside from "./CourseAside";
 import TrackChange from "./TrackChange";
 
-/* The course home: a progress ring, the five modules as glass cards with
- * their state, the certificate once the course is complete, and the
- * one-time desk change. */
+const WORDS = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+
+/* The course home for either course: a progress ring, the modules as
+ * glass cards with their state, the certificate once the course is
+ * complete, the playbook on Fluent, and the one-time desk change. */
 export default function ConsoleHome({
   firmName,
   contactName,
@@ -21,6 +24,9 @@ export default function ConsoleHome({
   complete,
   isAdmin,
   isStaff,
+  course = "ai-cleared",
+  otherCourse,
+  playbookCount,
 }: {
   firmName: string;
   contactName?: string | null;
@@ -33,25 +39,35 @@ export default function ConsoleHome({
   complete: boolean;
   isAdmin?: boolean;
   isStaff?: boolean;
+  course?: CourseSlug;
+  /* A link to the person's other course, when they hold a seat on it. */
+  otherCourse?: { href: string; label: string } | null;
+  /* Fluent only: how many playbook entries the learner has saved. */
+  playbookCount?: number;
 }) {
+  const c = COURSES[course];
+  const fluent = course === "ai-fluent";
   const done = modules.filter((m) => m.done).length;
   const pct = Math.round((done / modules.length) * 100);
   const r = 34;
-  const c = 2 * Math.PI * r;
+  const circ = 2 * Math.PI * r;
   const next = modules.find((m) => m.n === resumeN);
+  const anyOpen = modules.some((m) => m.available);
+  const stateWord = c.stateWord;
 
   return (
     <Frame
+      course={course}
       firmName={firmName}
-      meta={<><span className="cf-meta">{learnerName} · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} /></span>{isAdmin && <Link href="/ai-cleared/admin" className="cf-link">Admin</Link>}{isStaff && <Link href="/ai-cleared/ops" className="cf-link">Ops</Link>}</>}
-      aside={<CourseAside firmName={firmName} contactName={contactName} contactRole={contactRole} learnerName={learnerName} done={modules.filter((m) => m.done).map((m) => m.n)} showModules={false} showWindow />}
+      meta={<><span className="cf-meta">{learnerName} · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} course={course} /></span>{otherCourse && <Link href={otherCourse.href} className="cf-link">{otherCourse.label}</Link>}{isAdmin && <Link href="/ai-cleared/admin" className="cf-link">Admin</Link>}{isStaff && <Link href="/ai-cleared/ops" className="cf-link">Ops</Link>}</>}
+      aside={<CourseAside course={course} firmName={firmName} contactName={contactName} contactRole={contactRole} learnerName={learnerName} done={modules.filter((m) => m.done).map((m) => m.n)} showModules={false} showWindow />}
     >
       <span className="cf-eyebrow">
         <span style={{ width: 7, height: 7, borderRadius: "50%", background: K.ok, boxShadow: `0 0 0 3px ${K.okSoft}` }} />
         Practice data only
       </span>
       <div style={{ display: "flex", alignItems: "center", gap: 22, flexWrap: "wrap", marginBottom: 6 }}>
-        <svg width="88" height="88" viewBox="0 0 88 88" role="img" aria-label={`${pct} percent of the course cleared`} style={{ flexShrink: 0 }}>
+        <svg width="88" height="88" viewBox="0 0 88 88" role="img" aria-label={`${pct} percent of the course ${stateWord === "cleared" ? "cleared" : "complete"}`} style={{ flexShrink: 0 }}>
           <defs>
             <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="#0a7085" />
@@ -60,19 +76,37 @@ export default function ConsoleHome({
             </linearGradient>
           </defs>
           <circle cx="44" cy="44" r={r} fill="none" stroke={K.edge} strokeWidth="7" />
-          <circle cx="44" cy="44" r={r} fill="none" stroke="url(#ring)" strokeWidth="7" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c * (1 - done / modules.length)} transform="rotate(-90 44 44)" style={{ transition: "stroke-dashoffset 600ms ease" }} />
+          <circle cx="44" cy="44" r={r} fill="none" stroke="url(#ring)" strokeWidth="7" strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={circ * (1 - done / modules.length)} transform="rotate(-90 44 44)" style={{ transition: "stroke-dashoffset 600ms ease" }} />
           <text x="44" y="49" textAnchor="middle" fontFamily="var(--font-geist-mono), monospace" fontSize="15" fontWeight="700" fill={K.ink}>{pct}%</text>
         </svg>
         <div>
-          <h1 className="cf-h1" style={{ marginBottom: 6 }}>{complete ? <>You are <span className="cf-grad">AI Cleared</span>.</> : done === 0 ? <>Hello, {learnerName}. Let&rsquo;s get you <span className="cf-grad">cleared</span>.</> : <>{done} of {modules.length} cleared, {learnerName}.</>}</h1>
-          <p className="cf-note">{complete ? "Every module passed. Your certificate is ready below." : next ? `Next up: Module ${next.n}, ${next.title}, about ${next.minutes} minutes.` : "Five short modules, about ninety minutes in all."}</p>
+          <h1 className="cf-h1" style={{ marginBottom: 6 }}>
+            {complete ? <>You are <span className="cf-grad">{c.doneName}</span>.</> : done === 0 ? <>Hello, {learnerName}. Let&rsquo;s get you <span className="cf-grad">{stateWord}</span>.</> : <>{done} of {modules.length} {fluent ? "done" : "cleared"}, {learnerName}.</>}
+          </h1>
+          <p className="cf-note">
+            {complete
+              ? "Every module passed. Your certificate is ready below."
+              : next
+                ? `Next up: Module ${next.n}, ${next.title}, about ${next.minutes} minutes.`
+                : anyOpen
+                  ? `${WORDS[modules.length] ? WORDS[modules.length].charAt(0).toUpperCase() + WORDS[modules.length].slice(1) : modules.length} modules, ${c.length}.`
+                  : `Your seat is claimed. The modules open as they are released; ${c.length} in all.`}
+          </p>
         </div>
       </div>
 
       {complete && (
-        <Link href="/ai-cleared/certificate" className="ch-cert">
-          <span className="ch-cert-stamp">Course cleared</span>
+        <Link href={`${c.base}/certificate`} className="ch-cert">
+          <span className="ch-cert-stamp">Course {fluent ? "complete" : "cleared"}</span>
           <span className="ch-cert-text">Your certificate is ready. Download it, or send the verify link to your manager.</span>
+          <span className="ch-cert-go">Open</span>
+        </Link>
+      )}
+
+      {fluent && (
+        <Link href={`${c.base}/playbook`} className="ch-cert ch-play">
+          <span className="ch-cert-stamp">Playbook</span>
+          <span className="ch-cert-text">{playbookCount ? `${playbookCount} prompt${playbookCount === 1 ? "" : "s"} saved. Your best prompts from each workflow, yours to keep and print.` : "Your best prompts from each workflow are saved here as you go, to keep and print."}</span>
           <span className="ch-cert-go">Open</span>
         </Link>
       )}
@@ -87,12 +121,12 @@ export default function ConsoleHome({
                 <b>{m.title}</b>
                 <small>{m.minutes} min{m.phaseLabel ? ` · ${m.phaseLabel}` : ""}{state === "locked" ? " · coming with the next release" : ""}</small>
               </span>
-              <span className={`ch-go ${state}`}>{m.done ? "Cleared" : state === "next" ? (m.phaseLabel ? "Resume" : "Start") : state === "open" ? "Open" : "Locked"}</span>
+              <span className={`ch-go ${state}`}>{m.done ? (fluent ? "Done" : "Cleared") : state === "next" ? (m.phaseLabel ? "Resume" : "Start") : state === "open" ? "Open" : "Locked"}</span>
             </>
           );
           return (
             <li key={m.n}>
-              {state === "locked" ? <div className={`ch-card ${state}`}>{inner}</div> : <Link href={`/ai-cleared/m/${m.n}`} className={`ch-card ${state}`}>{inner}</Link>}
+              {state === "locked" ? <div className={`ch-card ${state}`}>{inner}</div> : <Link href={`${c.base}/m/${m.n}`} className={`ch-card ${state}`}>{inner}</Link>}
             </li>
           );
         })}
@@ -116,6 +150,9 @@ export default function ConsoleHome({
         .ch-cert-stamp { font-family: ${K.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${K.onAccent}; background: ${K.ok}; border-radius: 6px; padding: 5px 9px; white-space: nowrap; }
         .ch-cert-text { color: ${K.ink}; font-size: 15px; flex: 1 1 240px; }
         .ch-cert-go { color: ${K.ok}; font-weight: 600; white-space: nowrap; }
+        .ch-play { box-shadow: 0 0 0 1px rgba(87,68,201,0.35), 0 10px 34px rgba(87,68,201,0.14); }
+        .ch-play .ch-cert-stamp { background: ${K.accent}; }
+        .ch-play .ch-cert-go { color: ${K.accentInk}; }
       `}</style>
     </Frame>
   );

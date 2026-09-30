@@ -363,7 +363,7 @@ export interface TrackBlock {
 }
 
 export interface ModuleManifest {
-  n: 1 | 2 | 3 | 4 | 5;
+  n: number;
   slug: string;
   title: string;
   minutes: number;
