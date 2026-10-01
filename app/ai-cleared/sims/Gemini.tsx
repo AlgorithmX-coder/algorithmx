@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { SimProps } from "./types";
-import { ActionRow, Icon, ICONS, Lite, TypingDots, initialOf } from "./shared";
+import { ActionRow, AttachmentChip, Icon, ICONS, Lite, TypingDots, initialOf } from "./shared";
 
 /* Gemini in the browser: the left nav (menu, New chat, Explore Gems,
  * Recent, Settings and help), "Gemini" with the model picker top-left, the
@@ -33,7 +33,7 @@ function Spark({ size = 20 }: { size?: number }) {
   return <span aria-hidden style={{ display: "inline-block", width: size, height: size, background: C.grad, WebkitMaskImage: SPARK, maskImage: SPARK, WebkitMaskSize: "contain", maskSize: "contain", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat" }} />;
 }
 
-export default function GeminiSim({ firmName, learnerName, messages, draft, onDraftChange, onSend, canSend, composerLocked, status, tier = "enterprise", compact }: SimProps) {
+export default function GeminiSim({ firmName, learnerName, messages, draft, onDraftChange, onSend, canSend, composerLocked, status, tier = "enterprise", compact, attachment }: SimProps) {
   const domain = (firmName.toLowerCase().replace(/[^a-z]/g, "") || "workspace") + ".co.uk";
   const logRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -117,6 +117,7 @@ export default function GeminiSim({ firmName, learnerName, messages, draft, onDr
 
         <div style={{ padding: compact ? "6px 12px 10px" : "6px 10% 12px" }}>
           {status && <div style={{ fontSize: 12, color: C.muted, marginBottom: 6 }}>{status}</div>}
+          {attachment && <AttachmentChip title={attachment.title} kind={attachment.kind} colour={C.muted} edge={C.edge} />}
           <div style={{ display: "flex", flexDirection: "column", background: C.composer, borderRadius: 28, padding: "12px 12px 8px 18px" }}>
             <textarea
               aria-label="Message Gemini"

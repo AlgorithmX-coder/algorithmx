@@ -266,7 +266,15 @@ export interface AttachedDocument {
   title: string;
   kind: string;
   sections: { heading: string; paragraphs: { text: string; planted?: boolean }[] }[];
+  /* For the Office views: the same material as a sheet, an inbox or a
+   * transcript. Absent = derived from the sections. */
+  table?: { columns: string[]; rows: string[][] };
+  emails?: { from: string; subject: string; time: string; preview: string }[];
+  transcript?: { who: string; line: string }[];
 }
+
+/* Where a Fluent practice runs: Copilot inside an Office app, or chat. */
+export type OfficeApp = "word" | "excel" | "outlook" | "teams";
 
 /* ---- Practise ---- */
 
@@ -401,6 +409,9 @@ export interface LoopPractise {
   brief: string;
   /* The desk material the tool has, shown as an attachment. */
   material?: AttachedDocument;
+  /* On Copilot, run inside this Office app with the material open; the
+   * other three tools show the material as an attachment instead. */
+  office?: OfficeApp;
   /* A weak prompt to start from; the composer holds it on turn one. */
   starter?: string;
   followUp: boolean;

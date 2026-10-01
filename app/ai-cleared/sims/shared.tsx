@@ -111,3 +111,17 @@ export function ActionRow({ colour, items = ["copy", "thumbUp", "thumbDown", "re
 export function initialOf(name: string): string {
   return (name.trim().charAt(0) || "Y").toUpperCase();
 }
+
+/* The file the tool was given, as the real tools show it: a chip above
+ * the composer with the title and the kind. */
+export function AttachmentChip({ title, kind, colour, edge }: { title: string; kind: string; colour: string; edge: string }) {
+  return (
+    <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 8, padding: "6px 10px 6px 8px", border: `1px solid ${edge}`, borderRadius: 10, background: "#fff", fontSize: 12.5, color: colour, maxWidth: "100%" }}>
+      <span aria-hidden style={{ flexShrink: 0, width: 26, height: 26, borderRadius: 6, background: "#e8f0fb", color: "#185abd", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icon d={ICONS.page} size={14} /></span>
+      <span style={{ minWidth: 0, display: "flex", flexDirection: "column", lineHeight: 1.3 }}>
+        <b style={{ color: "inherit", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</b>
+        <small style={{ fontSize: 11, opacity: 0.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{kind}</small>
+      </span>
+    </div>
+  );
+}

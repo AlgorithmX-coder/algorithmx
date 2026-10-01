@@ -1,24 +1,36 @@
 "use client";
 
-import type { Tool } from "../engine/types";
+import type { AttachedDocument, OfficeApp, Tool } from "../engine/types";
 import type { SimProps } from "./types";
 import CopilotSim from "./Copilot";
 import ChatGPTSim from "./ChatGPT";
 import GeminiSim from "./Gemini";
 import ClaudeSim from "./Claude";
+import OfficeFrame from "./OfficeFrame";
 
 export type { SimMessage, SimProps, SimTier } from "./types";
 
-/* The player mounts a simulator by tool and never knows which. */
-export default function Simulator({ tool, ...props }: SimProps & { tool: Tool }) {
+/* The player mounts a simulator by tool and never knows which. With
+ * `office`, Copilot runs as the pane inside that Office app with the
+ * material open; the other three tools show the material as an
+ * attachment chip above the composer. */
+export default function Simulator({ tool, office, material, ...props }: SimProps & { tool: Tool; office?: OfficeApp; material?: AttachedDocument }) {
+  const attachment = props.attachment ?? (material ? { title: material.title, kind: material.kind } : undefined);
   switch (tool) {
     case "chatgpt":
-      return <ChatGPTSim {...props} />;
+      return <ChatGPTSim {...props} attachment={attachment} />;
     case "gemini":
-      return <GeminiSim {...props} />;
+      return <GeminiSim {...props} attachment={attachment} />;
     case "claude":
-      return <ClaudeSim {...props} />;
+      return <ClaudeSim {...props} attachment={attachment} />;
     default:
-      return <CopilotSim {...props} />;
+      if (office && material) {
+        return (
+          <OfficeFrame app={office} material={material} firmName={props.firmName} learnerName={props.learnerName}>
+            <CopilotSim {...props} pane />
+          </OfficeFrame>
+        );
+      }
+      return <CopilotSim {...props} attachment={attachment} />;
   }
 }
