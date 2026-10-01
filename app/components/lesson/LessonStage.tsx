@@ -23,7 +23,7 @@
  * The decorative glow remains; everything else flows naturally inside.
  */
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { useLessonTheme } from "./LessonThemeContext";
 
 /**
@@ -31,6 +31,46 @@ import { useLessonTheme } from "./LessonThemeContext";
  * future HUD-height change (e.g. 72px on tablet) is a one-line edit.
  */
 export const LESSON_HUD_HEIGHT = 64;
+
+/**
+ * Short-viewport fit (UAT retest W6 2d/4a, W10 5a, W5 2b: "frame too small,"
+ * buttons under the fold, the Listening pill landing on the board).
+ *
+ * Every board was laid out for the owner's 771px-tall window. Abdullah tests on
+ * a 1366x768 laptop at 125% scaling, which leaves 525px, and there the same
+ * boards ran under the fold with the pill sitting on top of them. Below
+ * STAGE_FIT_HEIGHT the stage content is zoomed down so it lays out as it does
+ * on a tall window; at or above it this is a strict no-op, so nothing changes
+ * on any viewport where the course was signed off.
+ *
+ * `zoom` rather than transform: it participates in layout, so nothing leaves a
+ * gap or a scrollbar behind (the intro card already fits itself this way).
+ * The factor is published as --stage-zoom so fixed overlays inside the stage
+ * can undo it for viewport-sized reserves (see ExerciseBeats).
+ */
+export const STAGE_FIT_HEIGHT = 640;
+const STAGE_FIT_MIN = 0.72;
+
+export function useStageFit(): number {
+  const [fit, setFit] = useState(1);
+  useEffect(() => {
+    const measure = () => {
+      const h = window.innerHeight;
+      const next =
+        h >= STAGE_FIT_HEIGHT
+          ? 1
+          : Math.max(
+              STAGE_FIT_MIN,
+              (h - LESSON_HUD_HEIGHT) / (STAGE_FIT_HEIGHT - LESSON_HUD_HEIGHT)
+            );
+      setFit((cur) => (Math.abs(cur - next) < 0.005 ? cur : next));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+  return fit;
+}
 
 /**
  * The amount of available vertical space inside a LessonStage, in CSS.
@@ -84,6 +124,11 @@ export default function LessonStage({
   const theme = useLessonTheme();
   const bgValue = theme?.bgGradient ?? bg ?? "linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)";
   const glowValue = theme?.glow ?? glow;
+  const fit = useStageFit();
+  const fitStyle: CSSProperties =
+    fit < 1
+      ? ({ zoom: fit, "--stage-zoom": String(fit) } as CSSProperties)
+      : {};
   return (
     <div
       style={{
@@ -140,6 +185,7 @@ export default function LessonStage({
           zIndex: 1,
           width: "100%",
           maxWidth,
+          ...fitStyle,
         }}
       >
         {children}

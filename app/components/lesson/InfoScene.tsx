@@ -180,8 +180,10 @@ export default function InfoScene({
           ))
         )}
 
-        {/* Emblem + sparkles + LEARN kicker + title */}
-        <div style={{ textAlign: "center", marginBottom: 16 }}>
+        {/* Emblem + sparkles + LEARN kicker + title. Above the decoration:
+            once the emblem's entrance settles it is a plain block, and the
+            absolutely-positioned decoration painted over it (UAT W5 3a). */}
+        <div style={{ position: "relative", zIndex: 1, textAlign: "center", marginBottom: 16 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
             <span aria-hidden style={{ color: gold, fontSize: 14, opacity: 0.85, textShadow: `0 0 10px ${gold}99` }}>✦</span>
             <motion.div

@@ -93,7 +93,7 @@ export default function RaccoonThreatScene({
                 ? { duration: 0.3 }
                 : { scale: { type: "spring", stiffness: 200, damping: 16 }, y: { duration: 2.6, repeat: Infinity, ease: "easeInOut" } }
             }
-            style={{ height: 132, flexShrink: 0, objectFit: "contain", filter: `drop-shadow(0 10px 20px ${accent}66)` }}
+            style={{ height: 132, flexShrink: 0, objectFit: "contain", filter: `drop-shadow(0 10px 20px ${accent}66)`, willChange: "transform" }}
           />
           <motion.div
             initial={reduce ? false : { scale: 0.9, opacity: 0 }}

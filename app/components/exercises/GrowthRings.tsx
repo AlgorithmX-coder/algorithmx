@@ -234,7 +234,10 @@ export default function GrowthRings({
         </div>
       )}
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 18, justifyContent: "center", alignItems: "center" }}>
+      {/* Vertical inset: the outermost ring's label is pinned 6px inside its
+          circle, and the circle sat at the very top of the frame, so the label
+          touched the frame border (UAT W5 5a, at every viewport). */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 18, justifyContent: "center", alignItems: "center", padding: "22px 16px 10px" }}>
         {/* The tree slice */}
         <div style={{ position: "relative", width: SIZE, height: SIZE, flex: "0 0 auto" }}>
           {rings.map((ring, i) => {

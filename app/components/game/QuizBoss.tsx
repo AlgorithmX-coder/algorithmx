@@ -103,6 +103,13 @@ function optionLetterList(count: number): string {
   return letters.length > 1 ? `${letters.slice(0, -1).join(", ")} and ${letters[letters.length - 1]}` : letters.join("");
 }
 
+/** "...believing it" -> "...believing it." so the voice pauses before the next
+ *  option. KEEP IDENTICAL to closeSentence in scripts/elevenlabs-generate-narration.mjs. */
+function closeSentence(text: string): string {
+  const t = text.trim();
+  return /[.!?…]$/.test(t) ? t : t + ".";
+}
+
 /** Same-every-week how-to line (the whole format IS the instruction). */
 const HOW_TO_PLAY = "Tap the right answer to beat him!";
 
@@ -272,7 +279,11 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
         : last
           ? `Or is it option ${OPTION_LETTERS[i]}...`
           : `Option ${OPTION_LETTERS[i]}...`;
-      lines.push(lead, o.text);
+      // An option is authored without a full stop (272 of 303 are), and the
+      // whole ask is ONE clip, so the voice ran option A straight into "Or is
+      // it option B" with no pause (UAT W10 6c). Close each option as a
+      // sentence for the reader; the label on screen is untouched.
+      lines.push(lead, closeSentence(o.text));
     });
     lines.push("So, what do you think?");
     return lines;
@@ -694,7 +705,14 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             }}
           >
             <span style={{ flexShrink: 0, display: "grid", placeItems: "center", width: 34, height: 34, borderRadius: "50%", background: explain.correct ? "rgba(87,224,138,0.16)" : `${accent}22`, border: `1.5px solid ${explain.correct ? "#57e08a" : `${accent}c0`}` }}>
-              <PixIcon emoji={explain.correct ? "✅" : "💡"} size={20} />
+              {/* A flat tick, not the 3D check-badge: that icon is itself a green
+                  sphere with its tick drawn low-right in perspective, so inside
+                  this circle it read as a tick that was off-centre (UAT W8 5a). */}
+              {explain.correct ? (
+                <span aria-hidden style={{ fontSize: 19, fontWeight: 900, lineHeight: 1, color: "#7eff97", transform: "translateY(-1px)" }}>✓</span>
+              ) : (
+                <PixIcon emoji="💡" size={20} />
+              )}
             </span>
             <span style={{ textAlign: "left", lineHeight: 1.4 }}>
               <b style={{ display: "block", fontSize: 14, fontWeight: 900, letterSpacing: "0.02em", color: explain.correct ? "#7eff97" : accent, marginBottom: 2 }}>
@@ -933,7 +951,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="victory" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "8%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
-                <motion.img src={weekCharacterSrc(week, "raccoon", "defeated")} onError={fallbackToShared("raccoon", "defeated")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.5))" }} />
+                <motion.img src={weekCharacterSrc(week, "raccoon", "defeated")} onError={fallbackToShared("raccoon", "defeated")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.5))", willChange: "transform" }} />
                 {/* Comic KO: dizzy stars orbit his head so the defeat reads funny, not sad. */}
                 <div aria-hidden style={{ position: "absolute", top: 6, left: "50%", width: 108, height: 108, marginLeft: -54, animation: reduce ? undefined : "qbSpin 3.2s linear infinite", pointerEvents: "none", zIndex: 3 }}>
                   {[0, 120, 240].map((deg) => (
@@ -977,7 +995,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="failed" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "6%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
-                <motion.img src={RACCOON.taunt} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 12px 16px rgba(5,10,30,0.5)) drop-shadow(0 0 18px ${accent}66)` }} />
+                <motion.img src={RACCOON.taunt} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 12px 16px rgba(5,10,30,0.5)) drop-shadow(0 0 18px ${accent}66)`, willChange: "transform" }} />
               </div>
               <motion.div initial={reduce ? false : { scale: 1.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 200, damping: 16 }} style={{ margin: "4px 0 0", fontSize: "clamp(30px, 5.2vw, 46px)", fontWeight: 900, lineHeight: 1, textTransform: "uppercase", background: `linear-gradient(180deg, #fffbe9 0%, ${accent} 60%, ${accent}88 100%)`, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: `drop-shadow(0 0 18px ${accent}66)` }}>
                 So Close!

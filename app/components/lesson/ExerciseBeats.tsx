@@ -236,11 +236,17 @@ export default function ExerciseIntroBeat({
         overflowY: "auto",
         // Fixed overlays keep clear of the HUD (see HUD_RESERVE); in-frame
         // overlays are unchanged.
-        padding: fullScreen ? `${HUD_RESERVE}px 20px` : 20,
+        // Divided by the stage fit: the reserve is measured against the
+        // viewport, but this overlay lives inside the zoomed stage.
+        padding: fullScreen ? `calc(${HUD_RESERVE}px / var(--stage-zoom, 1)) 20px` : 20,
         background: "rgba(8, 10, 22, 0.88)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         isolation: "isolate",
+        // Own layer for the fade: with a backdrop blur, an opacity fade
+        // re-blurs the whole viewport every frame, which is the slow, blocky
+        // card-to-card transition on an integrated GPU (UAT W5 3a/4/6a).
+        willChange: "opacity",
         pointerEvents: leaving ? "none" : undefined,
         animation:
           intensity === 0
@@ -525,6 +531,10 @@ export function ExerciseCompleteBeat({
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         isolation: "isolate",
+        // Own layer for the fade: with a backdrop blur, an opacity fade
+        // re-blurs the whole viewport every frame, which is the slow, blocky
+        // card-to-card transition on an integrated GPU (UAT W5 3a/4/6a).
+        willChange: "opacity",
         animation: intensity === 0 ? undefined : "exCompleteFade 240ms ease-out",
       }}
     >

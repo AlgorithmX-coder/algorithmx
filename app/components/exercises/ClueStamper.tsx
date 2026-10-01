@@ -539,8 +539,13 @@ export default function ClueStamper({
                       background: "rgba(28,12,6,0.85)",
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontWeight: 900,
-                      fontSize: 18,
-                      letterSpacing: "0.12em",
+                      // The seal is centred on the photo and cannot wrap, so a
+                      // long one (W8's SAFE TO SHARE, 13 chars, ~240px) ran past
+                      // the photo's clipped edge and lost the end of SHARE (UAT
+                      // W8 4b). Size it to its length; W3's REAL FRIEND (11) is
+                      // unchanged.
+                      fontSize: (isFake ? fakeSeal : realSeal).length > 11 ? 15 : 18,
+                      letterSpacing: (isFake ? fakeSeal : realSeal).length > 11 ? "0.08em" : "0.12em",
                       textTransform: "uppercase",
                       whiteSpace: "nowrap",
                       boxShadow: `0 0 18px ${isFake ? "rgba(255,157,46,0.55)" : "rgba(52,211,153,0.5)"}`,
@@ -655,8 +660,13 @@ export default function ClueStamper({
                       background: "rgba(8,10,22,0.78)",
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontWeight: 900,
-                      fontSize: 18,
-                      letterSpacing: "0.12em",
+                      // The seal is centred on the photo and cannot wrap, so a
+                      // long one (W8's SAFE TO SHARE, 13 chars, ~240px) ran past
+                      // the photo's clipped edge and lost the end of SHARE (UAT
+                      // W8 4b). Size it to its length; W3's REAL FRIEND (11) is
+                      // unchanged.
+                      fontSize: (isFake ? fakeSeal : realSeal).length > 11 ? 15 : 18,
+                      letterSpacing: (isFake ? fakeSeal : realSeal).length > 11 ? "0.08em" : "0.12em",
                       textTransform: "uppercase",
                       whiteSpace: "nowrap",
                       boxShadow: `0 0 18px ${isFake ? "rgba(255,95,179,0.5)" : "rgba(52,211,153,0.5)"}`,

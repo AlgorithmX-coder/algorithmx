@@ -85,15 +85,23 @@ export default function SceneShell({
       (intensity === 0 ? 0 : intensity < 1 ? 280 : 620);
     if (camera.kind === "overview") {
       return {
-        transform: "scale(1) translate(0px, 0px)",
+        transform: "translate(0px, 0px) scale(1)",
         transition: `transform ${transitionMs}ms cubic-bezier(0.22, 1, 0.36, 1)`,
       };
     }
     const zoom = camera.zoom ?? defaultZoom;
+    // The hotspot sits `d` px from the centre in scene space; zoomed about
+    // the centre it lands at zoom*d, so the world must slide back by that.
+    // CSS applies the list right-to-left, so the translate goes FIRST in the
+    // list to be applied after the scale, in viewport px. Written the other
+    // way round the translate was scaled too, and every focus overshot by
+    // zoom*d*(zoom-1): ~190px on the vault's pentagon, 312px on a warehouse
+    // crate, which put a tapped crate off the far edge behind the panel
+    // (UAT W9 6a).
     const tx = (-camera.x / 100) * focusBasis * zoom;
     const ty = (-camera.y / 100) * focusBasis * zoom;
     return {
-      transform: `scale(${zoom}) translate(${tx}px, ${ty}px)`,
+      transform: `translate(${tx}px, ${ty}px) scale(${zoom})`,
       transition: `transform ${transitionMs}ms cubic-bezier(0.22, 1, 0.36, 1)`,
     };
   }, [camera, focusBasis, defaultZoom, cameraTransitionMs, intensity]);
