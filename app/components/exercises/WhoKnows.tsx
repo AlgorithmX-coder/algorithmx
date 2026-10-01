@@ -613,8 +613,10 @@ export default function WhoKnows({
 
       {!showIntro && !finished && r && (
         <div style={{ position: "relative", zIndex: 1 }}>
-          {/* Side padding keeps the header clear of the frame's corner ornaments. */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 22px 0" }}>
+          {/* Side padding keeps the header clear of the frame's corner ornaments;
+              the top inset keeps the title off the frame edge (UAT: at 2px the
+              title sat 13px under the edge and read as squashed on every board). */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "16px 22px 0" }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
               <PixIcon emoji={introIcon} size={16} />
               {introTitle}

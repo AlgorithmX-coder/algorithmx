@@ -145,10 +145,10 @@ export const WEEK_6: WeekContent = {
           readAloud: "Your message says: I'm at Maple Hill School, who's playing? Which word gives you away?",
           chips: [
             { text: "my house,", isSafe: false, whyWrong: "My house still gives you away: it is where you live. Swap the school for something about the game." },
-            { text: "on my team,", isSafe: true, whyWrong: "" },
+            { text: "level 4,", isSafe: true, whyWrong: "" },
             { text: "Maple Hill,", isSafe: false, whyWrong: "That is still the school's name, just shorter. A stranger can look it up." },
           ],
-          why: "Your school says where you are every weekday. On my team keeps it about the game, and the message still works.",
+          why: "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
           whyWrong: "Your school is where you are. A stranger with your school can find you, so that word cannot fly.",
         },
         {

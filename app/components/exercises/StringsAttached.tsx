@@ -441,7 +441,7 @@ export default function StringsAttached({
         <div style={{ position: "relative", zIndex: 1 }}>
           {/* Board counter */}
           {/* Side padding keeps the header clear of the frame's corner ornaments. */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, padding: "2px 22px 0" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, padding: "16px 22px 0" /* top inset: title off the frame edge (UAT) */ }}>
             <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
               {introIcon} {introTitle}
             </span>

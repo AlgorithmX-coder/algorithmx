@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-29T17:49:18.327Z",
+  "generatedAt": "2026-10-01T10:30:30.189Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1192,21 +1192,21 @@
       "file": "/audio/voice/889c239306c2e12f.mp3"
     },
     {
-      "key": "44d39f86f808a3a2",
+      "key": "c98385c40708e114",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam left his tablet on the bus seat. What actually keeps his stuff safe? Is it option A... A secret code only he knows Option B... Keeping it in a secret hiding spot Or is it option C... Only using it in his own room So, what do you think?",
+      "text": "Adam left his tablet on the bus seat. What actually keeps his stuff safe? Is it option A... A secret code only he knows. Option B... Keeping it in a secret hiding spot. Or is it option C... Only using it in his own room. So, what do you think?",
       "lines": [
         "Adam left his tablet on the bus seat. What actually keeps his stuff safe?",
         "Is it option A...",
-        "A secret code only he knows",
+        "A secret code only he knows.",
         "Option B...",
-        "Keeping it in a secret hiding spot",
+        "Keeping it in a secret hiding spot.",
         "Or is it option C...",
-        "Only using it in his own room",
+        "Only using it in his own room.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/44d39f86f808a3a2.mp3"
+      "file": "/audio/voice/c98385c40708e114.mp3"
     },
     {
       "key": "87d240bc4e62e793",
@@ -1233,21 +1233,21 @@
       "file": "/audio/voice/a90fdb47c7d0d7de.mp3"
     },
     {
-      "key": "19a95716b05f2241",
+      "key": "524de522ccdbdd5f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A website says: type your password here and we will tell you how strong it is! What do you do? Is it option A... Keep it secret Option B... Type it in to get the free reward Or is it option C... Tell only your best friend So, what do you think?",
+      "text": "A website says: type your password here and we will tell you how strong it is! What do you do? Is it option A... Keep it secret. Option B... Type it in to get the free reward. Or is it option C... Tell only your best friend. So, what do you think?",
       "lines": [
         "A website says: type your password here and we will tell you how strong it is! What do you do?",
         "Is it option A...",
-        "Keep it secret",
+        "Keep it secret.",
         "Option B...",
-        "Type it in to get the free reward",
+        "Type it in to get the free reward.",
         "Or is it option C...",
-        "Tell only your best friend",
+        "Tell only your best friend.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/19a95716b05f2241.mp3"
+      "file": "/audio/voice/524de522ccdbdd5f.mp3"
     },
     {
       "key": "789fa17624b31e6d",
@@ -2704,89 +2704,89 @@
       "file": "/audio/voice/da4151b0ca4c6b32.mp3"
     },
     {
-      "key": "ce93fdbec913ed38",
+      "key": "f11e11fb832ef919",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your puppy video ends and BAM, a new one is already playing. You never tapped a thing. Who picked it? Is it option A... The app's next-video machine picked it for me Option B... I picked it without noticing when I tapped play Or is it option C... The puppy video's maker lined it up for me So, what do you think?",
+      "text": "Your puppy video ends and BAM, a new one is already playing. You never tapped a thing. Who picked it? Is it option A... The app's next-video machine picked it for me. Option B... I picked it without noticing when I tapped play. Or is it option C... The puppy video's maker lined it up for me. So, what do you think?",
       "lines": [
         "Your puppy video ends and BAM, a new one is already playing. You never tapped a thing. Who picked it?",
         "Is it option A...",
-        "The app's next-video machine picked it for me",
+        "The app's next-video machine picked it for me.",
         "Option B...",
-        "I picked it without noticing when I tapped play",
+        "I picked it without noticing when I tapped play.",
         "Or is it option C...",
-        "The puppy video's maker lined it up for me",
+        "The puppy video's maker lined it up for me.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ce93fdbec913ed38.mp3"
+      "file": "/audio/voice/f11e11fb832ef919.mp3"
     },
     {
-      "key": "616309f56b1166af",
+      "key": "f7225723a31a2209",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A video says eating carrots lets you see in the dark like a cat! What's the smart first move? Is it option A... Try it tonight and see if it works Option B... Watch the video again to make sure I heard right Or is it option C... Check it against my science book before believing it So, what do you think?",
+      "text": "A video says eating carrots lets you see in the dark like a cat! What's the smart first move? Is it option A... Try it tonight and see if it works. Option B... Watch the video again to make sure I heard right. Or is it option C... Check it against my science book before believing it. So, what do you think?",
       "lines": [
         "A video says eating carrots lets you see in the dark like a cat! What's the smart first move?",
         "Is it option A...",
-        "Try it tonight and see if it works",
+        "Try it tonight and see if it works.",
         "Option B...",
-        "Watch the video again to make sure I heard right",
+        "Watch the video again to make sure I heard right.",
         "Or is it option C...",
-        "Check it against my science book before believing it",
+        "Check it against my science book before believing it.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/616309f56b1166af.mp3"
+      "file": "/audio/voice/f7225723a31a2209.mp3"
     },
     {
-      "key": "d6cbfd9c56f9ef88",
+      "key": "c3cfa2f7f5c5e9ed",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The belt rolls in a video that's way too scary and your tummy drops. Whose fault is it on your screen? Is it option A... Mine, because I didn't skip it fast enough Option B... Not mine, the belt rolled it in, so I back out and tell Or is it option C... Mine a little, I should have picked more carefully So, what do you think?",
+      "text": "The belt rolls in a video that's way too scary and your tummy drops. Whose fault is it on your screen? Is it option A... Mine, because I didn't skip it fast enough. Option B... Not mine, the belt rolled it in, so I back out and tell. Or is it option C... Mine a little, I should have picked more carefully. So, what do you think?",
       "lines": [
         "The belt rolls in a video that's way too scary and your tummy drops. Whose fault is it on your screen?",
         "Is it option A...",
-        "Mine, because I didn't skip it fast enough",
+        "Mine, because I didn't skip it fast enough.",
         "Option B...",
-        "Not mine, the belt rolled it in, so I back out and tell",
+        "Not mine, the belt rolled it in, so I back out and tell.",
         "Or is it option C...",
-        "Mine a little, I should have picked more carefully",
+        "Mine a little, I should have picked more carefully.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/d6cbfd9c56f9ef88.mp3"
+      "file": "/audio/voice/c3cfa2f7f5c5e9ed.mp3"
     },
     {
-      "key": "2b9a4ff0605dc874",
+      "key": "0026c39bd10432c2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Under a video, a comment asks: 'Which school do you go to? Just curious!' What do you do? Is it option A... Scroll past, a stranger never needs my school Option B... Answer with just my town, not the school name Or is it option C... Ask them which school THEY go to first So, what do you think?",
+      "text": "Under a video, a comment asks: 'Which school do you go to? Just curious!' What do you do? Is it option A... Scroll past, a stranger never needs my school. Option B... Answer with just my town, not the school name. Or is it option C... Ask them which school THEY go to first. So, what do you think?",
       "lines": [
         "Under a video, a comment asks: 'Which school do you go to? Just curious!' What do you do?",
         "Is it option A...",
-        "Scroll past, a stranger never needs my school",
+        "Scroll past, a stranger never needs my school.",
         "Option B...",
-        "Answer with just my town, not the school name",
+        "Answer with just my town, not the school name.",
         "Or is it option C...",
-        "Ask them which school THEY go to first",
+        "Ask them which school THEY go to first.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/2b9a4ff0605dc874.mp3"
+      "file": "/audio/voice/0026c39bd10432c2.mp3"
     },
     {
-      "key": "295318073f5963a6",
+      "key": "c5b542550ae26ff6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You look up from the screen and the sky outside has gone dark, and you never noticed. What just happened? Is it option A... Nothing, the sun just set extra early today Option B... The bright screen made the window look darker than it is Or is it option C... My body's bell rang: been watching a while, time to pause So, what do you think?",
+      "text": "You look up from the screen and the sky outside has gone dark, and you never noticed. What just happened? Is it option A... Nothing, the sun just set extra early today. Option B... The bright screen made the window look darker than it is. Or is it option C... My body's bell rang: been watching a while, time to pause. So, what do you think?",
       "lines": [
         "You look up from the screen and the sky outside has gone dark, and you never noticed. What just happened?",
         "Is it option A...",
-        "Nothing, the sun just set extra early today",
+        "Nothing, the sun just set extra early today.",
         "Option B...",
-        "The bright screen made the window look darker than it is",
+        "The bright screen made the window look darker than it is.",
         "Or is it option C...",
-        "My body's bell rang: been watching a while, time to pause",
+        "My body's bell rang: been watching a while, time to pause.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/295318073f5963a6.mp3"
+      "file": "/audio/voice/c5b542550ae26ff6.mp3"
     },
     {
       "key": "7bc6800926809f68",
@@ -4938,89 +4938,89 @@
       "file": "/audio/voice/e4cef10e0756041d.mp3"
     },
     {
-      "key": "e4c109290f853fd1",
+      "key": "20cc13aa02265a54",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A kid sends a horrid message, then says 'you MADE me do it, your drawing was silly.' What's true? Is it option A... Being unkind was their choice, it is never my fault Option B... It's a little bit my fault for posting the drawing Or is it option C... It's only my fault if I reply back So, what do you think?",
+      "text": "A kid sends a horrid message, then says 'you MADE me do it, your drawing was silly.' What's true? Is it option A... Being unkind was their choice, it is never my fault. Option B... It's a little bit my fault for posting the drawing. Or is it option C... It's only my fault if I reply back. So, what do you think?",
       "lines": [
         "A kid sends a horrid message, then says 'you MADE me do it, your drawing was silly.' What's true?",
         "Is it option A...",
-        "Being unkind was their choice, it is never my fault",
+        "Being unkind was their choice, it is never my fault.",
         "Option B...",
-        "It's a little bit my fault for posting the drawing",
+        "It's a little bit my fault for posting the drawing.",
         "Or is it option C...",
-        "It's only my fault if I reply back",
+        "It's only my fault if I reply back.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/e4c109290f853fd1.mp3"
+      "file": "/audio/voice/20cc13aa02265a54.mp3"
     },
     {
-      "key": "99d375377e66c488",
+      "key": "7c95f128c6d53a94",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach? Is it option A... A friendly player from my game, they're online all night Option B... Nobody until morning, worries have to wait Or is it option C... The child line service, free and always awake So, what do you think?",
+      "text": "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach? Is it option A... A friendly player from my game, they're online all night. Option B... Nobody until morning, worries have to wait. Or is it option C... The child line service, free and always awake. So, what do you think?",
       "lines": [
         "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach?",
         "Is it option A...",
-        "A friendly player from my game, they're online all night",
+        "A friendly player from my game, they're online all night.",
         "Option B...",
-        "Nobody until morning, worries have to wait",
+        "Nobody until morning, worries have to wait.",
         "Or is it option C...",
-        "The child line service, free and always awake",
+        "The child line service, free and always awake.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/99d375377e66c488.mp3"
+      "file": "/audio/voice/7c95f128c6d53a94.mp3"
     },
     {
-      "key": "243ef510dc1d99c3",
+      "key": "48370efd0c3f4a8c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your friend says 'just reply STOP and the meanie will quit.' What's the better move? Is it option A... Reply STOP in capitals so they know you mean it Option B... Don't reply at all, block instead, even STOP feeds them Or is it option C... Reply STOP once, politely, then wait and see So, what do you think?",
+      "text": "Your friend says 'just reply STOP and the meanie will quit.' What's the better move? Is it option A... Reply STOP in capitals so they know you mean it. Option B... Don't reply at all, block instead, even STOP feeds them. Or is it option C... Reply STOP once, politely, then wait and see. So, what do you think?",
       "lines": [
         "Your friend says 'just reply STOP and the meanie will quit.' What's the better move?",
         "Is it option A...",
-        "Reply STOP in capitals so they know you mean it",
+        "Reply STOP in capitals so they know you mean it.",
         "Option B...",
-        "Don't reply at all, block instead, even STOP feeds them",
+        "Don't reply at all, block instead, even STOP feeds them.",
         "Or is it option C...",
-        "Reply STOP once, politely, then wait and see",
+        "Reply STOP once, politely, then wait and see.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/243ef510dc1d99c3.mp3"
+      "file": "/audio/voice/48370efd0c3f4a8c.mp3"
     },
     {
-      "key": "9c66203f55e7d461",
+      "key": "a7e5f56f31659955",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first? Is it option A... Camera, freeze the proof, then show a trusted grown-up Option B... Delete it fast so it can't scare me again Or is it option C... Beg them not to ban me, just in case So, what do you think?",
+      "text": "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first? Is it option A... Camera, freeze the proof, then show a trusted grown-up. Option B... Delete it fast so it can't scare me again. Or is it option C... Beg them not to ban me, just in case. So, what do you think?",
       "lines": [
         "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first?",
         "Is it option A...",
-        "Camera, freeze the proof, then show a trusted grown-up",
+        "Camera, freeze the proof, then show a trusted grown-up.",
         "Option B...",
-        "Delete it fast so it can't scare me again",
+        "Delete it fast so it can't scare me again.",
         "Or is it option C...",
-        "Beg them not to ban me, just in case",
+        "Beg them not to ban me, just in case.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/9c66203f55e7d461.mp3"
+      "file": "/audio/voice/a7e5f56f31659955.mp3"
     },
     {
-      "key": "8de0734dd2037188",
+      "key": "afe27d6b75815e99",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one? Is it option A... Screenshot it before anything else Option B... Block the sender before they send more Or is it option C... STOP, hands off, send nothing back So, what do you think?",
+      "text": "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one? Is it option A... Screenshot it before anything else. Option B... Block the sender before they send more. Or is it option C... STOP, hands off, send nothing back. So, what do you think?",
       "lines": [
         "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one?",
         "Is it option A...",
-        "Screenshot it before anything else",
+        "Screenshot it before anything else.",
         "Option B...",
-        "Block the sender before they send more",
+        "Block the sender before they send more.",
         "Or is it option C...",
-        "STOP, hands off, send nothing back",
+        "STOP, hands off, send nothing back.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/8de0734dd2037188.mp3"
+      "file": "/audio/voice/afe27d6b75815e99.mp3"
     },
     {
       "key": "30da96d7bb520ab4",
@@ -6683,89 +6683,89 @@
       "file": "/audio/voice/517724fa5884729a.mp3"
     },
     {
-      "key": "30de3e602f2dd77d",
+      "key": "b7da3cb6744d611a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You searched 'best dinosaur jokes', giggled twice, and closed the tab without posting a thing. Track or no track? Is it option A... Track, searches print even when I post nothing Option B... No track, closing the tab wipes it clean Or is it option C... Half a track, it fades away by tomorrow So, what do you think?",
+      "text": "You searched 'best dinosaur jokes', giggled twice, and closed the tab without posting a thing. Track or no track? Is it option A... Track, searches print even when I post nothing. Option B... No track, closing the tab wipes it clean. Or is it option C... Half a track, it fades away by tomorrow. So, what do you think?",
       "lines": [
         "You searched 'best dinosaur jokes', giggled twice, and closed the tab without posting a thing. Track or no track?",
         "Is it option A...",
-        "Track, searches print even when I post nothing",
+        "Track, searches print even when I post nothing.",
         "Option B...",
-        "No track, closing the tab wipes it clean",
+        "No track, closing the tab wipes it clean.",
         "Or is it option C...",
-        "Half a track, it fades away by tomorrow",
+        "Half a track, it fades away by tomorrow.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/30de3e602f2dd77d.mp3"
+      "file": "/audio/voice/b7da3cb6744d611a.mp3"
     },
     {
-      "key": "78de82b49c2c8b66",
+      "key": "07f4e9c9ae3f738f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You sent ONE photo to just ONE friend. How many copies of it exist now? Is it option A... Zero, sending moves a photo instead of copying it Option B... Exactly one, on my friend's phone Or is it option C... More than one: mine, my friend's, and the app kept one too So, what do you think?",
+      "text": "You sent ONE photo to just ONE friend. How many copies of it exist now? Is it option A... Zero, sending moves a photo instead of copying it. Option B... Exactly one, on my friend's phone. Or is it option C... More than one: mine, my friend's, and the app kept one too. So, what do you think?",
       "lines": [
         "You sent ONE photo to just ONE friend. How many copies of it exist now?",
         "Is it option A...",
-        "Zero, sending moves a photo instead of copying it",
+        "Zero, sending moves a photo instead of copying it.",
         "Option B...",
-        "Exactly one, on my friend's phone",
+        "Exactly one, on my friend's phone.",
         "Or is it option C...",
-        "More than one: mine, my friend's, and the app kept one too",
+        "More than one: mine, my friend's, and the app kept one too.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/78de82b49c2c8b66.mp3"
+      "file": "/audio/voice/07f4e9c9ae3f738f.mp3"
     },
     {
-      "key": "f57347a055b401e4",
+      "key": "fe2504c28e8181fe",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You lost the final and your thumbs are already typing a rage-post about the ref. Mirror check: what does future-you say? Is it option A... Post it, being right makes it a golden track Option B... Skip it, the anger melts by morning, the track stays Or is it option C... Post it, you can delete it once you calm down So, what do you think?",
+      "text": "You lost the final and your thumbs are already typing a rage-post about the ref. Mirror check: what does future-you say? Is it option A... Post it, being right makes it a golden track. Option B... Skip it, the anger melts by morning, the track stays. Or is it option C... Post it, you can delete it once you calm down. So, what do you think?",
       "lines": [
         "You lost the final and your thumbs are already typing a rage-post about the ref. Mirror check: what does future-you say?",
         "Is it option A...",
-        "Post it, being right makes it a golden track",
+        "Post it, being right makes it a golden track.",
         "Option B...",
-        "Skip it, the anger melts by morning, the track stays",
+        "Skip it, the anger melts by morning, the track stays.",
         "Or is it option C...",
-        "Post it, you can delete it once you calm down",
+        "Post it, you can delete it once you calm down.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/f57347a055b401e4.mp3"
+      "file": "/audio/voice/fe2504c28e8181fe.mp3"
     },
     {
-      "key": "f8419ecb6770013a",
+      "key": "865f7e81b65640e3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your team won on penalties! Which post stamps the win GOLD? Is it option A... 'What a save, Jaya, champions!' Option B... 'We won! Their goalie is terrible, ha!' Or is it option C... 'We won, no thanks to our slowpoke defenders' So, what do you think?",
+      "text": "Your team won on penalties! Which post stamps the win GOLD? Is it option A... 'What a save, Jaya, champions!'. Option B... 'We won! Their goalie is terrible, ha!'. Or is it option C... 'We won, no thanks to our slowpoke defenders'. So, what do you think?",
       "lines": [
         "Your team won on penalties! Which post stamps the win GOLD?",
         "Is it option A...",
-        "'What a save, Jaya, champions!'",
+        "'What a save, Jaya, champions!'.",
         "Option B...",
-        "'We won! Their goalie is terrible, ha!'",
+        "'We won! Their goalie is terrible, ha!'.",
         "Or is it option C...",
-        "'We won, no thanks to our slowpoke defenders'",
+        "'We won, no thanks to our slowpoke defenders'.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/f8419ecb6770013a.mp3"
+      "file": "/audio/voice/865f7e81b65640e3.mp3"
     },
     {
-      "key": "17409bba1a0af81f",
+      "key": "651b64b78ba418e5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A trail check with your grown-up finds a bio: 'Age 8, Northside Elementary, class 3B.' What kind of track is that? Is it option A... Golden, it helps real friends find me Option B... Neither, bios don't count as tracks Or is it option C... Pointy, it aims a stranger straight at me, tidy it So, what do you think?",
+      "text": "A trail check with your grown-up finds a bio: 'Age 8, Northside Elementary, class 3B.' What kind of track is that? Is it option A... Golden, it helps real friends find me. Option B... Neither, bios don't count as tracks. Or is it option C... Pointy, it aims a stranger straight at me, tidy it. So, what do you think?",
       "lines": [
         "A trail check with your grown-up finds a bio: 'Age 8, Northside Elementary, class 3B.' What kind of track is that?",
         "Is it option A...",
-        "Golden, it helps real friends find me",
+        "Golden, it helps real friends find me.",
         "Option B...",
-        "Neither, bios don't count as tracks",
+        "Neither, bios don't count as tracks.",
         "Or is it option C...",
-        "Pointy, it aims a stranger straight at me, tidy it",
+        "Pointy, it aims a stranger straight at me, tidy it.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/17409bba1a0af81f.mp3"
+      "file": "/audio/voice/651b64b78ba418e5.mp3"
     },
     {
       "key": "9c2ecdfc9e9ca82f",
@@ -8947,89 +8947,89 @@
       "file": "/audio/voice/6802ba8941efd671.mp3"
     },
     {
-      "key": "87e27154e09edaa3",
+      "key": "9337c276e5eb994f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your battery feels totally drained after a long screen morning. What's the FASTEST way to fill it back up? Is it option A... Get outside and move, then eat something real Option B... Switch to a calmer, quieter show to rest Or is it option C... Play a different game so my brain gets a change So, what do you think?",
+      "text": "Your battery feels totally drained after a long screen morning. What's the FASTEST way to fill it back up? Is it option A... Get outside and move, then eat something real. Option B... Switch to a calmer, quieter show to rest. Or is it option C... Play a different game so my brain gets a change. So, what do you think?",
       "lines": [
         "Your battery feels totally drained after a long screen morning. What's the FASTEST way to fill it back up?",
         "Is it option A...",
-        "Get outside and move, then eat something real",
+        "Get outside and move, then eat something real.",
         "Option B...",
-        "Switch to a calmer, quieter show to rest",
+        "Switch to a calmer, quieter show to rest.",
         "Or is it option C...",
-        "Play a different game so my brain gets a change",
+        "Play a different game so my brain gets a change.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/87e27154e09edaa3.mp3"
+      "file": "/audio/voice/9337c276e5eb994f.mp3"
     },
     {
-      "key": "697b72a491ceaf83",
+      "key": "a143784e4e6af4b5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Saturday morning, and you are about to start a game. When is the EASIEST moment to decide how long you will play? Is it option A... When the game starts to feel finished Option B... Nothing, that's just how voices work mid-game Or is it option C... Right now, before I start, out loud with a grown-up So, what do you think?",
+      "text": "Saturday morning, and you are about to start a game. When is the EASIEST moment to decide how long you will play? Is it option A... When the game starts to feel finished. Option B... Nothing, that's just how voices work mid-game. Or is it option C... Right now, before I start, out loud with a grown-up. So, what do you think?",
       "lines": [
         "Saturday morning, and you are about to start a game. When is the EASIEST moment to decide how long you will play?",
         "Is it option A...",
-        "When the game starts to feel finished",
+        "When the game starts to feel finished.",
         "Option B...",
-        "Nothing, that's just how voices work mid-game",
+        "Nothing, that's just how voices work mid-game.",
         "Or is it option C...",
-        "Right now, before I start, out loud with a grown-up",
+        "Right now, before I start, out loud with a grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/697b72a491ceaf83.mp3"
+      "file": "/audio/voice/a143784e4e6af4b5.mp3"
     },
     {
-      "key": "53fc8f0245d9b7d9",
+      "key": "02294d6b2de3a3e6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Sleepover at Gran's, and there's no charging garage anywhere. Where does the tablet spend the night? Is it option A... Inside my sleeping bag to keep it warm Option B... Out of the room I sleep in, like on the kitchen side Or is it option C... Under my pillow so it can't get lost So, what do you think?",
+      "text": "Sleepover at Gran's, and there's no charging garage anywhere. Where does the tablet spend the night? Is it option A... Inside my sleeping bag to keep it warm. Option B... Out of the room I sleep in, like on the kitchen side. Or is it option C... Under my pillow so it can't get lost. So, what do you think?",
       "lines": [
         "Sleepover at Gran's, and there's no charging garage anywhere. Where does the tablet spend the night?",
         "Is it option A...",
-        "Inside my sleeping bag to keep it warm",
+        "Inside my sleeping bag to keep it warm.",
         "Option B...",
-        "Out of the room I sleep in, like on the kitchen side",
+        "Out of the room I sleep in, like on the kitchen side.",
         "Or is it option C...",
-        "Under my pillow so it can't get lost",
+        "Under my pillow so it can't get lost.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/53fc8f0245d9b7d9.mp3"
+      "file": "/audio/voice/02294d6b2de3a3e6.mp3"
     },
     {
-      "key": "36bdc589b81555f5",
+      "key": "4075ab790f7e0908",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Mom hands you a screen-time rule she wrote all by herself. What actually makes a plan WORK? Is it option A... Building it together and both signing it, like teammates Option B... A grown-up writing it alone, they know best Or is it option C... No plan at all, I can feel when I've had enough So, what do you think?",
+      "text": "Mom hands you a screen-time rule she wrote all by herself. What actually makes a plan WORK? Is it option A... Building it together and both signing it, like teammates. Option B... A grown-up writing it alone, they know best. Or is it option C... No plan at all, I can feel when I've had enough. So, what do you think?",
       "lines": [
         "Mom hands you a screen-time rule she wrote all by herself. What actually makes a plan WORK?",
         "Is it option A...",
-        "Building it together and both signing it, like teammates",
+        "Building it together and both signing it, like teammates.",
         "Option B...",
-        "A grown-up writing it alone, they know best",
+        "A grown-up writing it alone, they know best.",
         "Or is it option C...",
-        "No plan at all, I can feel when I've had enough",
+        "No plan at all, I can feel when I've had enough.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/36bdc589b81555f5.mp3"
+      "file": "/audio/voice/4075ab790f7e0908.mp3"
     },
     {
-      "key": "8a53a9d90a45819b",
+      "key": "4bb7145466278342",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You keep telling yourself you'll stop 'when the game feels done.' Why does that never work? Is it option A... It works fine if the game is short enough Option B... Because grown-ups always interrupt before then Or is it option C... Games are built to never feel done, so I pick the ending So, what do you think?",
+      "text": "You keep telling yourself you'll stop 'when the game feels done.' Why does that never work? Is it option A... It works fine if the game is short enough. Option B... Because grown-ups always interrupt before then. Or is it option C... Games are built to never feel done, so I pick the ending. So, what do you think?",
       "lines": [
         "You keep telling yourself you'll stop 'when the game feels done.' Why does that never work?",
         "Is it option A...",
-        "It works fine if the game is short enough",
+        "It works fine if the game is short enough.",
         "Option B...",
-        "Because grown-ups always interrupt before then",
+        "Because grown-ups always interrupt before then.",
         "Or is it option C...",
-        "Games are built to never feel done, so I pick the ending",
+        "Games are built to never feel done, so I pick the ending.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/8a53a9d90a45819b.mp3"
+      "file": "/audio/voice/4bb7145466278342.mp3"
     },
     {
       "key": "aedc765bb74629bd",
@@ -11330,89 +11330,89 @@
       "file": "/audio/voice/850e2b2cf5e9bf6d.mp3"
     },
     {
-      "key": "400dad58251052c9",
+      "key": "f126b2352eee3c3e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "You want to tell your cousin a birthday-surprise secret at Grandma's house. Which thing in the room could actually HEAR it? Is it option A... The speaker that plays a song when you ask it Option B... The music box that plays when you wind the key Or is it option C... The radio that plays when you press its big button So, what do you think?",
+      "text": "You want to tell your cousin a birthday-surprise secret at Grandma's house. Which thing in the room could actually HEAR it? Is it option A... The speaker that plays a song when you ask it. Option B... The music box that plays when you wind the key. Or is it option C... The radio that plays when you press its big button. So, what do you think?",
       "lines": [
         "You want to tell your cousin a birthday-surprise secret at Grandma's house. Which thing in the room could actually HEAR it?",
         "Is it option A...",
-        "The speaker that plays a song when you ask it",
+        "The speaker that plays a song when you ask it.",
         "Option B...",
-        "The music box that plays when you wind the key",
+        "The music box that plays when you wind the key.",
         "Or is it option C...",
-        "The radio that plays when you press its big button",
+        "The radio that plays when you press its big button.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/400dad58251052c9.mp3"
+      "file": "/audio/voice/f126b2352eee3c3e.mp3"
     },
     {
-      "key": "2501472de0ab0022",
+      "key": "608f657568b5c3eb",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Mom says 'Nova, call Grandma' and the kitchen speaker wakes right up. What actually woke it? Is it option A... Knowing the sound of Mom's voice only Option B... Hearing the word Grandma at the end Or is it option C... Hearing its own name at the start So, what do you think?",
+      "text": "Mom says 'Nova, call Grandma' and the kitchen speaker wakes right up. What actually woke it? Is it option A... Knowing the sound of Mom's voice only. Option B... Hearing the word Grandma at the end. Or is it option C... Hearing its own name at the start. So, what do you think?",
       "lines": [
         "Mom says 'Nova, call Grandma' and the kitchen speaker wakes right up. What actually woke it?",
         "Is it option A...",
-        "Knowing the sound of Mom's voice only",
+        "Knowing the sound of Mom's voice only.",
         "Option B...",
-        "Hearing the word Grandma at the end",
+        "Hearing the word Grandma at the end.",
         "Or is it option C...",
-        "Hearing its own name at the start",
+        "Hearing its own name at the start.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/2501472de0ab0022.mp3"
+      "file": "/audio/voice/608f657568b5c3eb.mp3"
     },
     {
-      "key": "4ed20f92032ccdc5",
+      "key": "129a86412feb65dd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla's new talking doll has a small round shiny circle on its head that nobody mentioned. What is her first Scout move? Is it option A... Wave at it in case somebody nice is watching Option B... Show it to a trusted grown-up and ask what it is Or is it option C... Stick a sticker over it and tell nobody at all So, what do you think?",
+      "text": "Layla's new talking doll has a small round shiny circle on its head that nobody mentioned. What is her first Scout move? Is it option A... Wave at it in case somebody nice is watching. Option B... Show it to a trusted grown-up and ask what it is. Or is it option C... Stick a sticker over it and tell nobody at all. So, what do you think?",
       "lines": [
         "Layla's new talking doll has a small round shiny circle on its head that nobody mentioned. What is her first Scout move?",
         "Is it option A...",
-        "Wave at it in case somebody nice is watching",
+        "Wave at it in case somebody nice is watching.",
         "Option B...",
-        "Show it to a trusted grown-up and ask what it is",
+        "Show it to a trusted grown-up and ask what it is.",
         "Or is it option C...",
-        "Stick a sticker over it and tell nobody at all",
+        "Stick a sticker over it and tell nobody at all.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/4ed20f92032ccdc5.mp3"
+      "file": "/audio/voice/129a86412feb65dd.mp3"
     },
     {
-      "key": "e9815931937b045d",
+      "key": "e8cb7536ac6b0591",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Dad asks for the new tablet password and Nova the speaker is wide awake on the counter. What is the hero way to give it to him? Is it option A... Write it on paper and slide it across Option B... Say it extra fast so the speaker can't keep up Or is it option C... Spell it out letter by letter instead of saying it So, what do you think?",
+      "text": "Dad asks for the new tablet password and Nova the speaker is wide awake on the counter. What is the hero way to give it to him? Is it option A... Write it on paper and slide it across. Option B... Say it extra fast so the speaker can't keep up. Or is it option C... Spell it out letter by letter instead of saying it. So, what do you think?",
       "lines": [
         "Dad asks for the new tablet password and Nova the speaker is wide awake on the counter. What is the hero way to give it to him?",
         "Is it option A...",
-        "Write it on paper and slide it across",
+        "Write it on paper and slide it across.",
         "Option B...",
-        "Say it extra fast so the speaker can't keep up",
+        "Say it extra fast so the speaker can't keep up.",
         "Or is it option C...",
-        "Spell it out letter by letter instead of saying it",
+        "Spell it out letter by letter instead of saying it.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/e9815931937b045d.mp3"
+      "file": "/audio/voice/e8cb7536ac6b0591.mp3"
     },
     {
-      "key": "ed1d5d07a82caca5",
+      "key": "e87675c0d7839afb",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The TV remote's microphone has two settings: 'always on' or 'push-to-talk'. Which one hands the ear's ON switch to YOU? Is it option A... Always on, it never misses a single word you say Option B... Extra loud, it can hear you from any room in the house Or is it option C... Push-to-talk, it hears only while the button is held So, what do you think?",
+      "text": "The TV remote's microphone has two settings: 'always on' or 'push-to-talk'. Which one hands the ear's ON switch to YOU? Is it option A... Always on, it never misses a single word you say. Option B... Extra loud, it can hear you from any room in the house. Or is it option C... Push-to-talk, it hears only while the button is held. So, what do you think?",
       "lines": [
         "The TV remote's microphone has two settings: 'always on' or 'push-to-talk'. Which one hands the ear's ON switch to YOU?",
         "Is it option A...",
-        "Always on, it never misses a single word you say",
+        "Always on, it never misses a single word you say.",
         "Option B...",
-        "Extra loud, it can hear you from any room in the house",
+        "Extra loud, it can hear you from any room in the house.",
         "Or is it option C...",
-        "Push-to-talk, it hears only while the button is held",
+        "Push-to-talk, it hears only while the button is held.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ed1d5d07a82caca5.mp3"
+      "file": "/audio/voice/e87675c0d7839afb.mp3"
     },
     {
       "key": "fb4eb95011a7cae3",
@@ -14853,89 +14853,89 @@
       "file": "/audio/voice/f825991d0147ccb9.mp3"
     },
     {
-      "key": "bf62432a82593d5c",
+      "key": "535507febaf712e7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A flashing button says 'FREE GAME COINS, TAP HERE!' Who decided where that button really leads? Is it option A... Whoever built the button Option B... The words written on the button Or is it option C... The first person who taps the button So, what do you think?",
+      "text": "A flashing button says 'FREE GAME COINS, TAP HERE!' Who decided where that button really leads? Is it option A... Whoever built the button. Option B... The words written on the button. Or is it option C... The first person who taps the button. So, what do you think?",
       "lines": [
         "A flashing button says 'FREE GAME COINS, TAP HERE!' Who decided where that button really leads?",
         "Is it option A...",
-        "Whoever built the button",
+        "Whoever built the button.",
         "Option B...",
-        "The words written on the button",
+        "The words written on the button.",
         "Or is it option C...",
-        "The first person who taps the button",
+        "The first person who taps the button.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/bf62432a82593d5c.mp3"
+      "file": "/audio/voice/535507febaf712e7.mp3"
     },
     {
-      "key": "ee5d68df7d19f03c",
+      "key": "c765a8b8e1d02435",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla wants to see where 'Tap for the class photo album!' REALLY goes before she taps. What is the peek move on her tablet? Is it option A... Zoom way in on the link's letters to study them Option B... Tap it super quickly and be ready to close it fast Or is it option C... Press and HOLD the link until the real address pops up So, what do you think?",
+      "text": "Layla wants to see where 'Tap for the class photo album!' REALLY goes before she taps. What is the peek move on her tablet? Is it option A... Zoom way in on the link's letters to study them. Option B... Tap it super quickly and be ready to close it fast. Or is it option C... Press and HOLD the link until the real address pops up. So, what do you think?",
       "lines": [
         "Layla wants to see where 'Tap for the class photo album!' REALLY goes before she taps. What is the peek move on her tablet?",
         "Is it option A...",
-        "Zoom way in on the link's letters to study them",
+        "Zoom way in on the link's letters to study them.",
         "Option B...",
-        "Tap it super quickly and be ready to close it fast",
+        "Tap it super quickly and be ready to close it fast.",
         "Or is it option C...",
-        "Press and HOLD the link until the real address pops up",
+        "Press and HOLD the link until the real address pops up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ee5d68df7d19f03c.mp3"
+      "file": "/audio/voice/c765a8b8e1d02435.mp3"
     },
     {
-      "key": "b288a88c62cd62e5",
+      "key": "02fef43fb5e670c8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "At the pizza place, the menu's QR code sits crooked, with a bubble in the middle and an edge you can lift. What happened here? Is it option A... It's a bonus code, two codes always mean two prizes Option B... Somebody pasted their own code on top of the real one Or is it option C... The menu is just old and wrinkly, safe to scan anyway So, what do you think?",
+      "text": "At the pizza place, the menu's QR code sits crooked, with a bubble in the middle and an edge you can lift. What happened here? Is it option A... It's a bonus code, two codes always mean two prizes. Option B... Somebody pasted their own code on top of the real one. Or is it option C... The menu is just old and wrinkly, safe to scan anyway. So, what do you think?",
       "lines": [
         "At the pizza place, the menu's QR code sits crooked, with a bubble in the middle and an edge you can lift. What happened here?",
         "Is it option A...",
-        "It's a bonus code, two codes always mean two prizes",
+        "It's a bonus code, two codes always mean two prizes.",
         "Option B...",
-        "Somebody pasted their own code on top of the real one",
+        "Somebody pasted their own code on top of the real one.",
         "Or is it option C...",
-        "The menu is just old and wrinkly, safe to scan anyway",
+        "The menu is just old and wrinkly, safe to scan anyway.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/b288a88c62cd62e5.mp3"
+      "file": "/audio/voice/02fef43fb5e670c8.mp3"
     },
     {
-      "key": "25d836681e899389",
+      "key": "fd61828d02f86c6b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through? Is it option A... toon-town.tv/silly-cat-show, the whole address is readable Option B... bit.ly/x7qz2, a shorter address is quicker to check Or is it option C... Either one, all links show where they're going So, what do you think?",
+      "text": "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through? Is it option A... toon-town.tv/silly-cat-show, the whole address is readable. Option B... bit.ly/x7qz2, a shorter address is quicker to check. Or is it option C... Either one, all links show where they're going. So, what do you think?",
       "lines": [
         "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through?",
         "Is it option A...",
-        "toon-town.tv/silly-cat-show, the whole address is readable",
+        "toon-town.tv/silly-cat-show, the whole address is readable.",
         "Option B...",
-        "bit.ly/x7qz2, a shorter address is quicker to check",
+        "bit.ly/x7qz2, a shorter address is quicker to check.",
         "Or is it option C...",
-        "Either one, all links show where they're going",
+        "Either one, all links show where they're going.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/25d836681e899389.mp3"
+      "file": "/audio/voice/fd61828d02f86c6b.mp3"
     },
     {
-      "key": "e0b5a22824116b2a",
+      "key": "adfa414ad02ab101",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A pop-up yells: 'SCAN THIS CODE IN TEN SECONDS OR LOSE YOUR PRIZE!' Adam isn't sure about it. What wins here? Is it option A... Scan fast, ten seconds is too short to go ask anybody Option B... Scan it, but keep his fingers crossed the entire time Or is it option C... Don't scan, unsure means DON'T, a trusted grown-up can look with him So, what do you think?",
+      "text": "A pop-up yells: 'SCAN THIS CODE IN TEN SECONDS OR LOSE YOUR PRIZE!' Adam isn't sure about it. What wins here? Is it option A... Scan fast, ten seconds is too short to go ask anybody. Option B... Scan it, but keep his fingers crossed the entire time. Or is it option C... Don't scan, unsure means DON'T, a trusted grown-up can look with him. So, what do you think?",
       "lines": [
         "A pop-up yells: 'SCAN THIS CODE IN TEN SECONDS OR LOSE YOUR PRIZE!' Adam isn't sure about it. What wins here?",
         "Is it option A...",
-        "Scan fast, ten seconds is too short to go ask anybody",
+        "Scan fast, ten seconds is too short to go ask anybody.",
         "Option B...",
-        "Scan it, but keep his fingers crossed the entire time",
+        "Scan it, but keep his fingers crossed the entire time.",
         "Or is it option C...",
-        "Don't scan, unsure means DON'T, a trusted grown-up can look with him",
+        "Don't scan, unsure means DON'T, a trusted grown-up can look with him.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/e0b5a22824116b2a.mp3"
+      "file": "/audio/voice/adfa414ad02ab101.mp3"
     },
     {
       "key": "2b4b8cc70850dabf",
@@ -16716,55 +16716,55 @@
       "file": "/audio/voice/976274f2618485c1.mp3"
     },
     {
-      "key": "726433b84d45cc74",
+      "key": "dcd4958e02d2d070",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A new app's door has a big 13+ sign, and Adam is eight. What is the sign really telling him? Is it option A... Not yet, that room is built grown-up-sized Option B... Never, kids are banned from the internet forever Or is it option C... Go on in, door signs are only suggestions So, what do you think?",
+      "text": "A new app's door has a big 13+ sign, and Adam is eight. What is the sign really telling him? Is it option A... Not yet, that room is built grown-up-sized. Option B... Never, kids are banned from the internet forever. Or is it option C... Go on in, door signs are only suggestions. So, what do you think?",
       "lines": [
         "A new app's door has a big 13+ sign, and Adam is eight. What is the sign really telling him?",
         "Is it option A...",
-        "Not yet, that room is built grown-up-sized",
+        "Not yet, that room is built grown-up-sized.",
         "Option B...",
-        "Never, kids are banned from the internet forever",
+        "Never, kids are banned from the internet forever.",
         "Or is it option C...",
-        "Go on in, door signs are only suggestions",
+        "Go on in, door signs are only suggestions.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/726433b84d45cc74.mp3"
+      "file": "/audio/voice/dcd4958e02d2d070.mp3"
     },
     {
-      "key": "501e5713811bd81e",
+      "key": "00a1f76fcada9799",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Pip the fox cub's profile is set to PUBLIC. Who can stare into that mirror right now? Is it option A... Only kind people, mean ones get blocked automatically Option B... Only the people Pip has met in real life Or is it option C... Anyone at all who wanders past online So, what do you think?",
+      "text": "Pip the fox cub's profile is set to PUBLIC. Who can stare into that mirror right now? Is it option A... Only kind people, mean ones get blocked automatically. Option B... Only the people Pip has met in real life. Or is it option C... Anyone at all who wanders past online. So, what do you think?",
       "lines": [
         "Pip the fox cub's profile is set to PUBLIC. Who can stare into that mirror right now?",
         "Is it option A...",
-        "Only kind people, mean ones get blocked automatically",
+        "Only kind people, mean ones get blocked automatically.",
         "Option B...",
-        "Only the people Pip has met in real life",
+        "Only the people Pip has met in real life.",
         "Or is it option C...",
-        "Anyone at all who wanders past online",
+        "Anyone at all who wanders past online.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/501e5713811bd81e.mp3"
+      "file": "/audio/voice/00a1f76fcada9799.mp3"
     },
     {
-      "key": "e4935a138384d226",
+      "key": "97efc01d87610f1b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A stranger with a MILLION followers messages Pip: 'Follow me back and we'll be best friends forever!' What is true here? Is it option A... Saying best friends forever is what makes it real Option B... A big follower number can't make someone a friend Or is it option C... A million followers means a million safety checks passed So, what do you think?",
+      "text": "A stranger with a MILLION followers messages Pip: 'Follow me back and we'll be best friends forever!' What is true here? Is it option A... Saying best friends forever is what makes it real. Option B... A big follower number can't make someone a friend. Or is it option C... A million followers means a million safety checks passed. So, what do you think?",
       "lines": [
         "A stranger with a MILLION followers messages Pip: 'Follow me back and we'll be best friends forever!' What is true here?",
         "Is it option A...",
-        "Saying best friends forever is what makes it real",
+        "Saying best friends forever is what makes it real.",
         "Option B...",
-        "A big follower number can't make someone a friend",
+        "A big follower number can't make someone a friend.",
         "Or is it option C...",
-        "A million followers means a million safety checks passed",
+        "A million followers means a million safety checks passed.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/e4935a138384d226.mp3"
+      "file": "/audio/voice/97efc01d87610f1b.mp3"
     },
     {
       "key": "597eba700c443484",
@@ -16784,21 +16784,21 @@
       "file": "/audio/voice/597eba700c443484.mp3"
     },
     {
-      "key": "4951d3a603fc36ad",
+      "key": "e93332e676fd2713",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Everyone posted AMAZING birthday parties, and Pip's was small and quiet. What is the backstage truth? Is it option A... Everyone else's whole life really is that sparkly Option B... Pip should throw a bigger party next time, for the photos Or is it option C... Feeds show one shiny minute, not the whole day So, what do you think?",
+      "text": "Everyone posted AMAZING birthday parties, and Pip's was small and quiet. What is the backstage truth? Is it option A... Everyone else's whole life really is that sparkly. Option B... Pip should throw a bigger party next time, for the photos. Or is it option C... Feeds show one shiny minute, not the whole day. So, what do you think?",
       "lines": [
         "Everyone posted AMAZING birthday parties, and Pip's was small and quiet. What is the backstage truth?",
         "Is it option A...",
-        "Everyone else's whole life really is that sparkly",
+        "Everyone else's whole life really is that sparkly.",
         "Option B...",
-        "Pip should throw a bigger party next time, for the photos",
+        "Pip should throw a bigger party next time, for the photos.",
         "Or is it option C...",
-        "Feeds show one shiny minute, not the whole day",
+        "Feeds show one shiny minute, not the whole day.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/4951d3a603fc36ad.mp3"
+      "file": "/audio/voice/e93332e676fd2713.mp3"
     },
     {
       "key": "cd3c66daa1012bc1",
@@ -18899,89 +18899,89 @@
       "file": "/audio/voice/b1174834fb4a455e.mp3"
     },
     {
-      "key": "580d2e7ecb53527d",
+      "key": "a645c1207fd05cf7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla is about to open her diary app. One of these screens deserves EXTRA care before she types anything. Which one? Is it option A... The computer in the school library Option B... Her own tablet with her name stickers on it Or is it option C... The e-reader she got for her birthday So, what do you think?",
+      "text": "Layla is about to open her diary app. One of these screens deserves EXTRA care before she types anything. Which one? Is it option A... The computer in the school library. Option B... Her own tablet with her name stickers on it. Or is it option C... The e-reader she got for her birthday. So, what do you think?",
       "lines": [
         "Layla is about to open her diary app. One of these screens deserves EXTRA care before she types anything. Which one?",
         "Is it option A...",
-        "The computer in the school library",
+        "The computer in the school library.",
         "Option B...",
-        "Her own tablet with her name stickers on it",
+        "Her own tablet with her name stickers on it.",
         "Or is it option C...",
-        "The e-reader she got for her birthday",
+        "The e-reader she got for her birthday.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/580d2e7ecb53527d.mp3"
+      "file": "/audio/voice/a645c1207fd05cf7.mp3"
     },
     {
-      "key": "995309eaa99abba4",
+      "key": "4ecfbad25662212e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam finishes his game on the library computer and taps the little X to close the window. Is his account safe now? Is it option A... Yes, library computers wipe everything at closing time Option B... Yes, the X signs him out all by itself Or is it option C... No, the X just hides the window, only LOG OUT shuts the door So, what do you think?",
+      "text": "Adam finishes his game on the library computer and taps the little X to close the window. Is his account safe now? Is it option A... Yes, library computers wipe everything at closing time. Option B... Yes, the X signs him out all by itself. Or is it option C... No, the X just hides the window, only LOG OUT shuts the door. So, what do you think?",
       "lines": [
         "Adam finishes his game on the library computer and taps the little X to close the window. Is his account safe now?",
         "Is it option A...",
-        "Yes, library computers wipe everything at closing time",
+        "Yes, library computers wipe everything at closing time.",
         "Option B...",
-        "Yes, the X signs him out all by itself",
+        "Yes, the X signs him out all by itself.",
         "Or is it option C...",
-        "No, the X just hides the window, only LOG OUT shuts the door",
+        "No, the X just hides the window, only LOG OUT shuts the door.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/995309eaa99abba4.mp3"
+      "file": "/audio/voice/4ecfbad25662212e.mp3"
     },
     {
-      "key": "c1dbf1b38e09a663",
+      "key": "523455868f63aa20",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "I read lock codes like bedtime stories! Adam's soccer number is 9 and his birthday is June 2. Which code tells me NOTHING? Is it option A... 06-02-16 Option B... 83-51-27 Or is it option C... 99-99-99 So, what do you think?",
+      "text": "I read lock codes like bedtime stories! Adam's soccer number is 9 and his birthday is June 2. Which code tells me NOTHING? Is it option A... 06-02-16. Option B... 83-51-27. Or is it option C... 99-99-99. So, what do you think?",
       "lines": [
         "I read lock codes like bedtime stories! Adam's soccer number is 9 and his birthday is June 2. Which code tells me NOTHING?",
         "Is it option A...",
-        "06-02-16",
+        "06-02-16.",
         "Option B...",
-        "83-51-27",
+        "83-51-27.",
         "Or is it option C...",
-        "99-99-99",
+        "99-99-99.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/c1dbf1b38e09a663.mp3"
+      "file": "/audio/voice/523455868f63aa20.mp3"
     },
     {
-      "key": "1f0710eb86337cac",
+      "key": "761dfc4830e9b06c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "On the bus, the kid next to Adam falls asleep and their phone slips out, screen glowing and unlocked. What's the Lock Master move? Is it option A... Leave it alone, an unlocked phone still isn't an invitation Option B... Take one tiny peek, then put it back exactly where it was Or is it option C... Scroll through it to check the kid isn't in any trouble So, what do you think?",
+      "text": "On the bus, the kid next to Adam falls asleep and their phone slips out, screen glowing and unlocked. What's the Lock Master move? Is it option A... Leave it alone, an unlocked phone still isn't an invitation. Option B... Take one tiny peek, then put it back exactly where it was. Or is it option C... Scroll through it to check the kid isn't in any trouble. So, what do you think?",
       "lines": [
         "On the bus, the kid next to Adam falls asleep and their phone slips out, screen glowing and unlocked. What's the Lock Master move?",
         "Is it option A...",
-        "Leave it alone, an unlocked phone still isn't an invitation",
+        "Leave it alone, an unlocked phone still isn't an invitation.",
         "Option B...",
-        "Take one tiny peek, then put it back exactly where it was",
+        "Take one tiny peek, then put it back exactly where it was.",
         "Or is it option C...",
-        "Scroll through it to check the kid isn't in any trouble",
+        "Scroll through it to check the kid isn't in any trouble.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/1f0710eb86337cac.mp3"
+      "file": "/audio/voice/761dfc4830e9b06c.mp3"
     },
     {
-      "key": "60476e4c95df2887",
+      "key": "d8c4b90e1a9c11ed",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer? Is it option A... Save it, a grown-up just said it was fine Option B... Save it now and delete it before going home Or is it option C... No thanks, it's a shared computer, so my keys shouldn't live in it So, what do you think?",
+      "text": "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer? Is it option A... Save it, a grown-up just said it was fine. Option B... Save it now and delete it before going home. Or is it option C... No thanks, it's a shared computer, so my keys shouldn't live in it. So, what do you think?",
       "lines": [
         "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer?",
         "Is it option A...",
-        "Save it, a grown-up just said it was fine",
+        "Save it, a grown-up just said it was fine.",
         "Option B...",
-        "Save it now and delete it before going home",
+        "Save it now and delete it before going home.",
         "Or is it option C...",
-        "No thanks, it's a shared computer, so my keys shouldn't live in it",
+        "No thanks, it's a shared computer, so my keys shouldn't live in it.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/60476e4c95df2887.mp3"
+      "file": "/audio/voice/d8c4b90e1a9c11ed.mp3"
     },
     {
       "key": "5fa48e1c30c7b464",
@@ -20682,89 +20682,89 @@
       "file": "/audio/voice/3819d49616a367b6.mp3"
     },
     {
-      "key": "a6e29f052f0f0f3d",
+      "key": "9503669f90b42538",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Grandma waves you over: this computer thing is asking me something strange! After all your hero training, who's the right helper for this job? Is it option A... You are, and an expert explains kindly Option B... Only another grown-up can help a grown-up Or is it option C... Nobody, computers usually sort themselves out So, what do you think?",
+      "text": "Grandma waves you over: this computer thing is asking me something strange! After all your hero training, who's the right helper for this job? Is it option A... You are, and an expert explains kindly. Option B... Only another grown-up can help a grown-up. Or is it option C... Nobody, computers usually sort themselves out. So, what do you think?",
       "lines": [
         "Grandma waves you over: this computer thing is asking me something strange! After all your hero training, who's the right helper for this job?",
         "Is it option A...",
-        "You are, and an expert explains kindly",
+        "You are, and an expert explains kindly.",
         "Option B...",
-        "Only another grown-up can help a grown-up",
+        "Only another grown-up can help a grown-up.",
         "Or is it option C...",
-        "Nobody, computers usually sort themselves out",
+        "Nobody, computers usually sort themselves out.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/a6e29f052f0f0f3d.mp3"
+      "file": "/audio/voice/9503669f90b42538.mp3"
     },
     {
-      "key": "946733cd108dfd5c",
+      "key": "80eb93a41b9d5ea1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Grandad's email says he WON a big vacation, he just pays a small fee to release the prize. But he never entered any contest. What do you show him? Is it option A... It's only fake if the spelling has mistakes in it Option B... It could be real, small fees are how big prizes usually work Or is it option C... You can't win a contest you never entered, and real prizes never ask for a fee So, what do you think?",
+      "text": "Grandad's email says he WON a big vacation, he just pays a small fee to release the prize. But he never entered any contest. What do you show him? Is it option A... It's only fake if the spelling has mistakes in it. Option B... It could be real, small fees are how big prizes usually work. Or is it option C... You can't win a contest you never entered, and real prizes never ask for a fee. So, what do you think?",
       "lines": [
         "Grandad's email says he WON a big vacation, he just pays a small fee to release the prize. But he never entered any contest. What do you show him?",
         "Is it option A...",
-        "It's only fake if the spelling has mistakes in it",
+        "It's only fake if the spelling has mistakes in it.",
         "Option B...",
-        "It could be real, small fees are how big prizes usually work",
+        "It could be real, small fees are how big prizes usually work.",
         "Or is it option C...",
-        "You can't win a contest you never entered, and real prizes never ask for a fee",
+        "You can't win a contest you never entered, and real prizes never ask for a fee.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/946733cd108dfd5c.mp3"
+      "file": "/audio/voice/80eb93a41b9d5ea1.mp3"
     },
     {
-      "key": "14f91e59654521ee",
+      "key": "e798f24eafb68f3d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A note appears on the fridge: NEW RULE, only the KIDS lock their devices, grown-ups don't have to bother. What's wrong with it? Is it option A... It's backwards, grown-ups should lock up while kids go free Option B... A rule with a grown-up-sized hole in it isn't a firewall, locks are for everyone Or is it option C... Nothing, grown-ups already know all about locks So, what do you think?",
+      "text": "A note appears on the fridge: NEW RULE, only the KIDS lock their devices, grown-ups don't have to bother. What's wrong with it? Is it option A... It's backwards, grown-ups should lock up while kids go free. Option B... A rule with a grown-up-sized hole in it isn't a firewall, locks are for everyone. Or is it option C... Nothing, grown-ups already know all about locks. So, what do you think?",
       "lines": [
         "A note appears on the fridge: NEW RULE, only the KIDS lock their devices, grown-ups don't have to bother. What's wrong with it?",
         "Is it option A...",
-        "It's backwards, grown-ups should lock up while kids go free",
+        "It's backwards, grown-ups should lock up while kids go free.",
         "Option B...",
-        "A rule with a grown-up-sized hole in it isn't a firewall, locks are for everyone",
+        "A rule with a grown-up-sized hole in it isn't a firewall, locks are for everyone.",
         "Or is it option C...",
-        "Nothing, grown-ups already know all about locks",
+        "Nothing, grown-ups already know all about locks.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/14f91e59654521ee.mp3"
+      "file": "/audio/voice/e798f24eafb68f3d.mp3"
     },
     {
-      "key": "35a8650d4f4aa50e",
+      "key": "49dc7df417e5cdcf",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "On the evening rounds you find your little brother's game lets ANY player message him. Which setting shuts that window? Is it option A... Friends he knows only, so he keeps playing while strangers stay out Option B... Messages from everyone, because more chat means more friends Or is it option C... Deleting the game, since a game he doesn't have can't message him So, what do you think?",
+      "text": "On the evening rounds you find your little brother's game lets ANY player message him. Which setting shuts that window? Is it option A... Friends he knows only, so he keeps playing while strangers stay out. Option B... Messages from everyone, because more chat means more friends. Or is it option C... Deleting the game, since a game he doesn't have can't message him. So, what do you think?",
       "lines": [
         "On the evening rounds you find your little brother's game lets ANY player message him. Which setting shuts that window?",
         "Is it option A...",
-        "Friends he knows only, so he keeps playing while strangers stay out",
+        "Friends he knows only, so he keeps playing while strangers stay out.",
         "Option B...",
-        "Messages from everyone, because more chat means more friends",
+        "Messages from everyone, because more chat means more friends.",
         "Or is it option C...",
-        "Deleting the game, since a game he doesn't have can't message him",
+        "Deleting the game, since a game he doesn't have can't message him.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/35a8650d4f4aa50e.mp3"
+      "file": "/audio/voice/49dc7df417e5cdcf.mp3"
     },
     {
-      "key": "244174370f3bd17a",
+      "key": "5527cd6ea3e57238",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your little brother is about to type Mom's card number into a FREE ROBUX box. When does the expert speak up? Is it option A... Right after the tap, so he sees what happens first Option B... At bedtime, when everyone is calm and cozy Or is it option C... Right now, kindly, before the tap lands So, what do you think?",
+      "text": "Your little brother is about to type Mom's card number into a FREE ROBUX box. When does the expert speak up? Is it option A... Right after the tap, so he sees what happens first. Option B... At bedtime, when everyone is calm and cozy. Or is it option C... Right now, kindly, before the tap lands. So, what do you think?",
       "lines": [
         "Your little brother is about to type Mom's card number into a FREE ROBUX box. When does the expert speak up?",
         "Is it option A...",
-        "Right after the tap, so he sees what happens first",
+        "Right after the tap, so he sees what happens first.",
         "Option B...",
-        "At bedtime, when everyone is calm and cozy",
+        "At bedtime, when everyone is calm and cozy.",
         "Or is it option C...",
-        "Right now, kindly, before the tap lands",
+        "Right now, kindly, before the tap lands.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/244174370f3bd17a.mp3"
+      "file": "/audio/voice/5527cd6ea3e57238.mp3"
     },
     {
       "key": "24a2f08f2595d8bf",
@@ -22683,55 +22683,55 @@
       "file": "/audio/voice/3984dcff6d64e241.mp3"
     },
     {
-      "key": "1dc8dfd1fec12b47",
+      "key": "e1ef7f58211ffc54",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam's new game wants him to fill in his player card, and three facts are ready to type. Which one stays locked in the vault? Is it option A... The name of the school he goes to Option B... The name of the game he plays most Or is it option C... The name of his favorite dinosaur So, what do you think?",
+      "text": "Adam's new game wants him to fill in his player card, and three facts are ready to type. Which one stays locked in the vault? Is it option A... The name of the school he goes to. Option B... The name of the game he plays most. Or is it option C... The name of his favorite dinosaur. So, what do you think?",
       "lines": [
         "Adam's new game wants him to fill in his player card, and three facts are ready to type. Which one stays locked in the vault?",
         "Is it option A...",
-        "The name of the school he goes to",
+        "The name of the school he goes to.",
         "Option B...",
-        "The name of the game he plays most",
+        "The name of the game he plays most.",
         "Or is it option C...",
-        "The name of his favorite dinosaur",
+        "The name of his favorite dinosaur.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/1dc8dfd1fec12b47.mp3"
+      "file": "/audio/voice/e1ef7f58211ffc54.mp3"
     },
     {
-      "key": "ebc52cb920f1e191",
+      "key": "1823cb2416dbdc7f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla's club profile has one empty box left for a fun line about herself. Which line is safe to type in? Is it option A... Rainbow Road is the best street ever Option B... Maple Hill is the best school ever Or is it option C... Pancakes are the best breakfast ever So, what do you think?",
+      "text": "Layla's club profile has one empty box left for a fun line about herself. Which line is safe to type in? Is it option A... Rainbow Road is the best street ever. Option B... Maple Hill is the best school ever. Or is it option C... Pancakes are the best breakfast ever. So, what do you think?",
       "lines": [
         "Layla's club profile has one empty box left for a fun line about herself. Which line is safe to type in?",
         "Is it option A...",
-        "Rainbow Road is the best street ever",
+        "Rainbow Road is the best street ever.",
         "Option B...",
-        "Maple Hill is the best school ever",
+        "Maple Hill is the best school ever.",
         "Or is it option C...",
-        "Pancakes are the best breakfast ever",
+        "Pancakes are the best breakfast ever.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ebc52cb920f1e191.mp3"
+      "file": "/audio/voice/1823cb2416dbdc7f.mp3"
     },
     {
-      "key": "a61d68d7b3be5ce2",
+      "key": "7bfc8721c316f361",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Three coloring apps each want one thing before Adam can draw. Which app is being too nosy? Is it option A... The one that wants his favorite color Option B... The one that wants his phone number Or is it option C... The one that wants a made-up nickname So, what do you think?",
+      "text": "Three coloring apps each want one thing before Adam can draw. Which app is being too nosy? Is it option A... The one that wants his favorite color. Option B... The one that wants his phone number. Or is it option C... The one that wants a made-up nickname. So, what do you think?",
       "lines": [
         "Three coloring apps each want one thing before Adam can draw. Which app is being too nosy?",
         "Is it option A...",
-        "The one that wants his favorite color",
+        "The one that wants his favorite color.",
         "Option B...",
-        "The one that wants his phone number",
+        "The one that wants his phone number.",
         "Or is it option C...",
-        "The one that wants a made-up nickname",
+        "The one that wants a made-up nickname.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/a61d68d7b3be5ce2.mp3"
+      "file": "/audio/voice/7bfc8721c316f361.mp3"
     },
     {
       "key": "11dbc41f3c609804",
@@ -22746,21 +22746,21 @@
       "file": "/audio/voice/11dbc41f3c609804.mp3"
     },
     {
-      "key": "c40a3f2e65ca1d44",
+      "key": "a826cd519c5cb0bb",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move? Is it option A... Type an answer and see what happens Option B... Ask the app's help robot instead Or is it option C... Pause and ask a trusted grown-up So, what do you think?",
+      "text": "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move? Is it option A... Type an answer and see what happens. Option B... Ask the app's help robot instead. Or is it option C... Pause and ask a trusted grown-up. So, what do you think?",
       "lines": [
         "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move?",
         "Is it option A...",
-        "Type an answer and see what happens",
+        "Type an answer and see what happens.",
         "Option B...",
-        "Ask the app's help robot instead",
+        "Ask the app's help robot instead.",
         "Or is it option C...",
-        "Pause and ask a trusted grown-up",
+        "Pause and ask a trusted grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/c40a3f2e65ca1d44.mp3"
+      "file": "/audio/voice/a826cd519c5cb0bb.mp3"
     },
     {
       "key": "f14151a6f46c5741",
@@ -24775,72 +24775,72 @@
       "file": "/audio/voice/0132e80c97888b24.mp3"
     },
     {
-      "key": "2b9b67720f7c8c02",
+      "key": "3dfaf11ad9c3256c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A fun quiz app asks for your full name, your school, and your home address to build your hero profile. Which of those does it get? Is it option A... All of them, words in a quiz can't go anywhere Option B... Just the school, since schools are public buildings anyway Or is it option C... None of them, real-life info stays out of little boxes So, what do you think?",
+      "text": "A fun quiz app asks for your full name, your school, and your home address to build your hero profile. Which of those does it get? Is it option A... All of them, words in a quiz can't go anywhere. Option B... Just the school, since schools are public buildings anyway. Or is it option C... None of them, real-life info stays out of little boxes. So, what do you think?",
       "lines": [
         "A fun quiz app asks for your full name, your school, and your home address to build your hero profile. Which of those does it get?",
         "Is it option A...",
-        "All of them, words in a quiz can't go anywhere",
+        "All of them, words in a quiz can't go anywhere.",
         "Option B...",
-        "Just the school, since schools are public buildings anyway",
+        "Just the school, since schools are public buildings anyway.",
         "Or is it option C...",
-        "None of them, real-life info stays out of little boxes",
+        "None of them, real-life info stays out of little boxes.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/2b9b67720f7c8c02.mp3"
+      "file": "/audio/voice/3dfaf11ad9c3256c.mp3"
     },
     {
-      "key": "b2b2a527e246417f",
+      "key": "5d23970b1acc9584",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you? Is it option A... They must live nearby, so it's fine to keep chatting Option B... They've been digging up your info, that's not a safe friend, tell a trusted grown-up Or is it option C... They're extra clever, and clever players make the best friends So, what do you think?",
+      "text": "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you? Is it option A... They must live nearby, so it's fine to keep chatting. Option B... They've been digging up your info, that's not a safe friend, tell a trusted grown-up. Or is it option C... They're extra clever, and clever players make the best friends. So, what do you think?",
       "lines": [
         "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you?",
         "Is it option A...",
-        "They must live nearby, so it's fine to keep chatting",
+        "They must live nearby, so it's fine to keep chatting.",
         "Option B...",
-        "They've been digging up your info, that's not a safe friend, tell a trusted grown-up",
+        "They've been digging up your info, that's not a safe friend, tell a trusted grown-up.",
         "Or is it option C...",
-        "They're extra clever, and clever players make the best friends",
+        "They're extra clever, and clever players make the best friends.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/b2b2a527e246417f.mp3"
+      "file": "/audio/voice/5d23970b1acc9584.mp3"
     },
     {
-      "key": "b758007c81f922b3",
+      "key": "83a30bd9e475a96c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest? Is it option A... No reply at all, then block and tell, a reaction is what they're fishing for Option B... One perfect comeback, so everyone can watch you win Or is it option C... A polite reply asking them very nicely to stop So, what do you think?",
+      "text": "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest? Is it option A... No reply at all, then block and tell, a reaction is what they're fishing for. Option B... One perfect comeback, so everyone can watch you win. Or is it option C... A polite reply asking them very nicely to stop. So, what do you think?",
       "lines": [
         "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest?",
         "Is it option A...",
-        "No reply at all, then block and tell, a reaction is what they're fishing for",
+        "No reply at all, then block and tell, a reaction is what they're fishing for.",
         "Option B...",
-        "One perfect comeback, so everyone can watch you win",
+        "One perfect comeback, so everyone can watch you win.",
         "Or is it option C...",
-        "A polite reply asking them very nicely to stop",
+        "A polite reply asking them very nicely to stop.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/b758007c81f922b3.mp3"
+      "file": "/audio/voice/83a30bd9e475a96c.mp3"
     },
     {
-      "key": "f29586cbe9d4c816",
+      "key": "986e9011acc6f69d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true? Is it option A... It's safest to wait a week, most scary things fix themselves Option B... It only counts as worth telling if it happens twice Or is it option C... Telling a trusted grown-up is the hero move, and you're never in trouble for telling So, what do you think?",
+      "text": "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true? Is it option A... It's safest to wait a week, most scary things fix themselves. Option B... It only counts as worth telling if it happens twice. Or is it option C... Telling a trusted grown-up is the hero move, and you're never in trouble for telling. So, what do you think?",
       "lines": [
         "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true?",
         "Is it option A...",
-        "It's safest to wait a week, most scary things fix themselves",
+        "It's safest to wait a week, most scary things fix themselves.",
         "Option B...",
-        "It only counts as worth telling if it happens twice",
+        "It only counts as worth telling if it happens twice.",
         "Or is it option C...",
-        "Telling a trusted grown-up is the hero move, and you're never in trouble for telling",
+        "Telling a trusted grown-up is the hero move, and you're never in trouble for telling.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/f29586cbe9d4c816.mp3"
+      "file": "/audio/voice/986e9011acc6f69d.mp3"
     },
     {
       "key": "f86de10b88fa8ace",
@@ -26816,89 +26816,89 @@
       "file": "/audio/voice/df62f32051f4fb72.mp3"
     },
     {
-      "key": "b5602367dd6bc1d6",
+      "key": "616b2553158eb6b7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing? Is it option A... Nothing, all three can be faked Option B... The photo proves it's a kid at least Or is it option C... The age proves it. Games check ages So, what do you think?",
+      "text": "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing? Is it option A... Nothing, all three can be faked. Option B... The photo proves it's a kid at least. Or is it option C... The age proves it. Games check ages. So, what do you think?",
       "lines": [
         "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing?",
         "Is it option A...",
-        "Nothing, all three can be faked",
+        "Nothing, all three can be faked.",
         "Option B...",
-        "The photo proves it's a kid at least",
+        "The photo proves it's a kid at least.",
         "Or is it option C...",
-        "The age proves it. Games check ages",
+        "The age proves it. Games check ages.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/b5602367dd6bc1d6.mp3"
+      "file": "/audio/voice/616b2553158eb6b7.mp3"
     },
     {
-      "key": "c124c51977a3d3a5",
+      "key": "061a0ed1812c9e85",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Two profiles sent Adam friend requests, and he's checking them like a detective. Which clue points to a FAKE? Is it option A... The account has a cat in its picture Option B... The account loves the same game as him Or is it option C... The account was made yesterday So, what do you think?",
+      "text": "Two profiles sent Adam friend requests, and he's checking them like a detective. Which clue points to a FAKE? Is it option A... The account has a cat in its picture. Option B... The account loves the same game as him. Or is it option C... The account was made yesterday. So, what do you think?",
       "lines": [
         "Two profiles sent Adam friend requests, and he's checking them like a detective. Which clue points to a FAKE?",
         "Is it option A...",
-        "The account has a cat in its picture",
+        "The account has a cat in its picture.",
         "Option B...",
-        "The account loves the same game as him",
+        "The account loves the same game as him.",
         "Or is it option C...",
-        "The account was made yesterday",
+        "The account was made yesterday.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/c124c51977a3d3a5.mp3"
+      "file": "/audio/voice/061a0ed1812c9e85.mp3"
     },
     {
-      "key": "8111cb3f451795aa",
+      "key": "6499da72c1ffba91",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar? Is it option A... Same team again tomorrow after school? Option B... This chat is our little secret, delete it after reading Or is it option C... That last goal was absolutely incredible So, what do you think?",
+      "text": "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar? Is it option A... Same team again tomorrow after school? Option B... This chat is our little secret, delete it after reading. Or is it option C... That last goal was absolutely incredible. So, what do you think?",
       "lines": [
         "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar?",
         "Is it option A...",
         "Same team again tomorrow after school?",
         "Option B...",
-        "This chat is our little secret, delete it after reading",
+        "This chat is our little secret, delete it after reading.",
         "Or is it option C...",
-        "That last goal was absolutely incredible",
+        "That last goal was absolutely incredible.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/8111cb3f451795aa.mp3"
+      "file": "/audio/voice/6499da72c1ffba91.mp3"
     },
     {
-      "key": "ce58f3e83259d468",
+      "key": "6a2cff48e615aa40",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "An online teammate says: 'Meet me at the library tomorrow, it's the safest place in town!' The library really is safe. So what's the answer? Is it option A... Still no, online-only friends are never met Option B... Yes, libraries are full of grown-ups Or is it option C... Yes, but only for five minutes So, what do you think?",
+      "text": "An online teammate says: 'Meet me at the library tomorrow, it's the safest place in town!' The library really is safe. So what's the answer? Is it option A... Still no, online-only friends are never met. Option B... Yes, libraries are full of grown-ups. Or is it option C... Yes, but only for five minutes. So, what do you think?",
       "lines": [
         "An online teammate says: 'Meet me at the library tomorrow, it's the safest place in town!' The library really is safe. So what's the answer?",
         "Is it option A...",
-        "Still no, online-only friends are never met",
+        "Still no, online-only friends are never met.",
         "Option B...",
-        "Yes, libraries are full of grown-ups",
+        "Yes, libraries are full of grown-ups.",
         "Or is it option C...",
-        "Yes, but only for five minutes",
+        "Yes, but only for five minutes.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ce58f3e83259d468.mp3"
+      "file": "/audio/voice/6a2cff48e615aa40.mp3"
     },
     {
-      "key": "d6aa93237db987c6",
+      "key": "bca80d3b90e9a393",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Mid-chat, Layla's tummy suddenly feels weird and uh-oh, but she can't explain WHY. What does a hero do with a feeling like that? Is it option A... Ignore it until she can explain it properly Option B... Keep chatting, just a bit more carefully Or is it option C... Trust it: stop chatting and tell a trusted grown-up So, what do you think?",
+      "text": "Mid-chat, Layla's tummy suddenly feels weird and uh-oh, but she can't explain WHY. What does a hero do with a feeling like that? Is it option A... Ignore it until she can explain it properly. Option B... Keep chatting, just a bit more carefully. Or is it option C... Trust it: stop chatting and tell a trusted grown-up. So, what do you think?",
       "lines": [
         "Mid-chat, Layla's tummy suddenly feels weird and uh-oh, but she can't explain WHY. What does a hero do with a feeling like that?",
         "Is it option A...",
-        "Ignore it until she can explain it properly",
+        "Ignore it until she can explain it properly.",
         "Option B...",
-        "Keep chatting, just a bit more carefully",
+        "Keep chatting, just a bit more carefully.",
         "Or is it option C...",
-        "Trust it: stop chatting and tell a trusted grown-up",
+        "Trust it: stop chatting and tell a trusted grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/d6aa93237db987c6.mp3"
+      "file": "/audio/voice/bca80d3b90e9a393.mp3"
     },
     {
       "key": "a45b0ad7af4d1360",
@@ -28740,21 +28740,21 @@
       "file": "/audio/voice/6d4be4f4062dad30.mp3"
     },
     {
-      "key": "6a492b2523f91608",
+      "key": "b96601b90636abdb",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Three quiet little messages land on Adam's tablet. A scam always wants something back. Which one is the scam? Is it option A... Game bag full! Type your password to make space Option B... Library: your dragon book is ready for pickup Or is it option C... Coach: practice moved to four o'clock today So, what do you think?",
+      "text": "Three quiet little messages land on Adam's tablet. A scam always wants something back. Which one is the scam? Is it option A... Game bag full! Type your password to make space. Option B... Library: your dragon book is ready for pickup. Or is it option C... Coach: practice moved to four o'clock today. So, what do you think?",
       "lines": [
         "Three quiet little messages land on Adam's tablet. A scam always wants something back. Which one is the scam?",
         "Is it option A...",
-        "Game bag full! Type your password to make space",
+        "Game bag full! Type your password to make space.",
         "Option B...",
-        "Library: your dragon book is ready for pickup",
+        "Library: your dragon book is ready for pickup.",
         "Or is it option C...",
-        "Coach: practice moved to four o'clock today",
+        "Coach: practice moved to four o'clock today.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/6a492b2523f91608.mp3"
+      "file": "/audio/voice/b96601b90636abdb.mp3"
     },
     {
       "key": "b6913429150f201b",
@@ -28774,57 +28774,57 @@
       "file": "/audio/voice/b6913429150f201b.mp3"
     },
     {
-      "key": "d202ffe3ef563dca",
+      "key": "f2afe26de3ff8f19",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A message tells Layla: 'Your account breaks in 5 minutes! Fix it NOW!' Her heart starts racing. What is her racing heart telling her? Is it option A... Fix it first and think about it after Option B... The rush trick is working, slow down Or is it option C... Something really is wrong, so hurry So, what do you think?",
+      "text": "A message tells Layla: 'Your account breaks in 5 minutes! Fix it NOW!' Her heart starts racing. What is her racing heart telling her? Is it option A... Fix it first and think about it after. Option B... The rush trick is working, slow down. Or is it option C... Something really is wrong, so hurry. So, what do you think?",
       "lines": [
         "A message tells Layla: 'Your account breaks in 5 minutes! Fix it NOW!' Her heart starts racing. What is her racing heart telling her?",
         "Is it option A...",
-        "Fix it first and think about it after",
+        "Fix it first and think about it after.",
         "Option B...",
-        "The rush trick is working, slow down",
+        "The rush trick is working, slow down.",
         "Or is it option C...",
-        "Something really is wrong, so hurry",
+        "Something really is wrong, so hurry.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/d202ffe3ef563dca.mp3"
+      "file": "/audio/voice/f2afe26de3ff8f19.mp3"
     },
     {
-      "key": "ac71553172b272a2",
+      "key": "66483c0aeb63adad",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla lines up four senders from her inbox. Which one is wearing a costume? Is it option A... PetPals, message center inside the app Option B... Petpa1s Club, gift@petpa1s.fun Option C... Grandpa, saved in the family phone Or is it option D... Maple Hill School, office@maplehill.edu So, what do you think?",
+      "text": "Layla lines up four senders from her inbox. Which one is wearing a costume? Is it option A... PetPals, message center inside the app. Option B... Petpa1s Club, gift@petpa1s.fun. Option C... Grandpa, saved in the family phone. Or is it option D... Maple Hill School, office@maplehill.edu. So, what do you think?",
       "lines": [
         "Layla lines up four senders from her inbox. Which one is wearing a costume?",
         "Is it option A...",
-        "PetPals, message center inside the app",
+        "PetPals, message center inside the app.",
         "Option B...",
-        "Petpa1s Club, gift@petpa1s.fun",
+        "Petpa1s Club, gift@petpa1s.fun.",
         "Option C...",
-        "Grandpa, saved in the family phone",
+        "Grandpa, saved in the family phone.",
         "Or is it option D...",
-        "Maple Hill School, office@maplehill.edu",
+        "Maple Hill School, office@maplehill.edu.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ac71553172b272a2.mp3"
+      "file": "/audio/voice/66483c0aeb63adad.mp3"
     },
     {
-      "key": "62e18fd0f174774f",
+      "key": "173bec3588df1780",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A scary message is sitting on Adam's screen, and his finger is hovering over its big red button. What's step one of the no-bite rule? Is it option A... Press it once, just to see what happens Option B... Delete it fast without reading anything Or is it option C... STOP, no clicking while he checks So, what do you think?",
+      "text": "A scary message is sitting on Adam's screen, and his finger is hovering over its big red button. What's step one of the no-bite rule? Is it option A... Press it once, just to see what happens. Option B... Delete it fast without reading anything. Or is it option C... STOP, no clicking while he checks. So, what do you think?",
       "lines": [
         "A scary message is sitting on Adam's screen, and his finger is hovering over its big red button. What's step one of the no-bite rule?",
         "Is it option A...",
-        "Press it once, just to see what happens",
+        "Press it once, just to see what happens.",
         "Option B...",
-        "Delete it fast without reading anything",
+        "Delete it fast without reading anything.",
         "Or is it option C...",
-        "STOP, no clicking while he checks",
+        "STOP, no clicking while he checks.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/62e18fd0f174774f.mp3"
+      "file": "/audio/voice/173bec3588df1780.mp3"
     },
     {
       "key": "dbb2f71cb0e42219",
@@ -31051,89 +31051,89 @@
       "file": "/audio/voice/682829adf0033446.mp3"
     },
     {
-      "key": "c453d073dfe0010f",
+      "key": "e0bd185158187a51",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam teases his friend Leo about a typo in the class chat, and Leo posts three laughing faces back. What's the verdict? Is it option A... A shared joke, both of them are laughing Option B... Bullying, teasing always counts as mean Or is it option C... Bullying, because it happened in the chat So, what do you think?",
+      "text": "Adam teases his friend Leo about a typo in the class chat, and Leo posts three laughing faces back. What's the verdict? Is it option A... A shared joke, both of them are laughing. Option B... Bullying, teasing always counts as mean. Or is it option C... Bullying, because it happened in the chat. So, what do you think?",
       "lines": [
         "Adam teases his friend Leo about a typo in the class chat, and Leo posts three laughing faces back. What's the verdict?",
         "Is it option A...",
-        "A shared joke, both of them are laughing",
+        "A shared joke, both of them are laughing.",
         "Option B...",
-        "Bullying, teasing always counts as mean",
+        "Bullying, teasing always counts as mean.",
         "Or is it option C...",
-        "Bullying, because it happened in the chat",
+        "Bullying, because it happened in the chat.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/c453d073dfe0010f.mp3"
+      "file": "/audio/voice/e0bd185158187a51.mp3"
     },
     {
-      "key": "2c119a1676caa9ed",
+      "key": "8305f04c5aa9a953",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A mean comment lands on Adam's dinosaur drawing, and he thinks: 'I shouldn't have posted it.' What's the truth? Is it option A... It's a little bit his fault for posting in public Option B... He should wait to post until he draws better Or is it option C... Posting was fine, the meanness is the typer's choice So, what do you think?",
+      "text": "A mean comment lands on Adam's dinosaur drawing, and he thinks: 'I shouldn't have posted it.' What's the truth? Is it option A... It's a little bit his fault for posting in public. Option B... He should wait to post until he draws better. Or is it option C... Posting was fine, the meanness is the typer's choice. So, what do you think?",
       "lines": [
         "A mean comment lands on Adam's dinosaur drawing, and he thinks: 'I shouldn't have posted it.' What's the truth?",
         "Is it option A...",
-        "It's a little bit his fault for posting in public",
+        "It's a little bit his fault for posting in public.",
         "Option B...",
-        "He should wait to post until he draws better",
+        "He should wait to post until he draws better.",
         "Or is it option C...",
-        "Posting was fine, the meanness is the typer's choice",
+        "Posting was fine, the meanness is the typer's choice.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/2c119a1676caa9ed.mp3"
+      "file": "/audio/voice/8305f04c5aa9a953.mp3"
     },
     {
-      "key": "5db86560eb28dfe8",
+      "key": "49f55d0be2fe757d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "'You're the WORST goalie ever' pops up after Layla's game, and her fingers are already typing something meaner back. What happens if she sends it? Is it option A... Nothing much, they started it first Option B... The fire grows, now there are two mean messages Or is it option C... The bully learns a lesson and stops So, what do you think?",
+      "text": "'You're the WORST goalie ever' pops up after Layla's game, and her fingers are already typing something meaner back. What happens if she sends it? Is it option A... Nothing much, they started it first. Option B... The fire grows, now there are two mean messages. Or is it option C... The bully learns a lesson and stops. So, what do you think?",
       "lines": [
         "'You're the WORST goalie ever' pops up after Layla's game, and her fingers are already typing something meaner back. What happens if she sends it?",
         "Is it option A...",
-        "Nothing much, they started it first",
+        "Nothing much, they started it first.",
         "Option B...",
-        "The fire grows, now there are two mean messages",
+        "The fire grows, now there are two mean messages.",
         "Or is it option C...",
-        "The bully learns a lesson and stops",
+        "The bully learns a lesson and stops.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/5db86560eb28dfe8.mp3"
+      "file": "/audio/voice/49f55d0be2fe757d.mp3"
     },
     {
-      "key": "cc266f092fd7dea9",
+      "key": "3ea2d19d4e7482cd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "An embarrassing photo of Sam is going around with 'pass it on lol', and it lands on Adam's screen. Adam didn't write anything mean. Does forwarding still join in? Is it option A... Yes, every forward spreads the hurt Option B... No, joining in needs mean words Or is it option C... Only if he adds a laughing face to it So, what do you think?",
+      "text": "An embarrassing photo of Sam is going around with 'pass it on lol', and it lands on Adam's screen. Adam didn't write anything mean. Does forwarding still join in? Is it option A... Yes, every forward spreads the hurt. Option B... No, joining in needs mean words. Or is it option C... Only if he adds a laughing face to it. So, what do you think?",
       "lines": [
         "An embarrassing photo of Sam is going around with 'pass it on lol', and it lands on Adam's screen. Adam didn't write anything mean. Does forwarding still join in?",
         "Is it option A...",
-        "Yes, every forward spreads the hurt",
+        "Yes, every forward spreads the hurt.",
         "Option B...",
-        "No, joining in needs mean words",
+        "No, joining in needs mean words.",
         "Or is it option C...",
-        "Only if he adds a laughing face to it",
+        "Only if he adds a laughing face to it.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/cc266f092fd7dea9.mp3"
+      "file": "/audio/voice/3ea2d19d4e7482cd.mp3"
     },
     {
-      "key": "913ac4db87bdfe3b",
+      "key": "6f81f74a0531be0f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A mean message about Adam is sitting in his chat, and his first thought is to delete it so he never sees it again. Why keep it instead? Is it option A... Deleting messages breaks the chat rules Option B... He might want to answer it later on Or is it option C... A trusted grown-up needs to see it to help So, what do you think?",
+      "text": "A mean message about Adam is sitting in his chat, and his first thought is to delete it so he never sees it again. Why keep it instead? Is it option A... Deleting messages breaks the chat rules. Option B... He might want to answer it later on. Or is it option C... A trusted grown-up needs to see it to help. So, what do you think?",
       "lines": [
         "A mean message about Adam is sitting in his chat, and his first thought is to delete it so he never sees it again. Why keep it instead?",
         "Is it option A...",
-        "Deleting messages breaks the chat rules",
+        "Deleting messages breaks the chat rules.",
         "Option B...",
-        "He might want to answer it later on",
+        "He might want to answer it later on.",
         "Or is it option C...",
-        "A trusted grown-up needs to see it to help",
+        "A trusted grown-up needs to see it to help.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/913ac4db87bdfe3b.mp3"
+      "file": "/audio/voice/6f81f74a0531be0f.mp3"
     },
     {
       "key": "b1c81d34161c9120",
@@ -32639,14 +32639,14 @@
       "file": "/audio/voice/6a12f3156d26518a.mp3"
     },
     {
-      "key": "86d2814c754642f6",
+      "key": "6e53d8919b47bc90",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your school says where you are every weekday. On my team keeps it about the game, and the message still works.",
+      "text": "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
       "lines": [
-        "Your school says where you are every weekday. On my team keeps it about the game, and the message still works."
+        "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works."
       ],
-      "file": "/audio/voice/86d2814c754642f6.mp3"
+      "file": "/audio/voice/6e53d8919b47bc90.mp3"
     },
     {
       "key": "18054caa44273d7b",
@@ -32999,89 +32999,89 @@
       "file": "/audio/voice/d9c1aa36e989de76.mp3"
     },
     {
-      "key": "4ec7eee7a70d7dfd",
+      "key": "392fa892fc480c13",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Mid-match, a player Adam just met types: 'What school do you go to? I bet I know you!' What does Adam send back? Is it option A... 'Nice try! Game talk only', and he keeps playing Option B... Just the name of his town, not the school Or is it option C... The school's name, since they might really be neighbors So, what do you think?",
+      "text": "Mid-match, a player Adam just met types: 'What school do you go to? I bet I know you!' What does Adam send back? Is it option A... 'Nice try! Game talk only', and he keeps playing. Option B... Just the name of his town, not the school. Or is it option C... The school's name, since they might really be neighbors. So, what do you think?",
       "lines": [
         "Mid-match, a player Adam just met types: 'What school do you go to? I bet I know you!' What does Adam send back?",
         "Is it option A...",
-        "'Nice try! Game talk only', and he keeps playing",
+        "'Nice try! Game talk only', and he keeps playing.",
         "Option B...",
-        "Just the name of his town, not the school",
+        "Just the name of his town, not the school.",
         "Or is it option C...",
-        "The school's name, since they might really be neighbors",
+        "The school's name, since they might really be neighbors.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/4ec7eee7a70d7dfd.mp3"
+      "file": "/audio/voice/392fa892fc480c13.mp3"
     },
     {
-      "key": "452d945fb4cca165",
+      "key": "1dca9275ce059d69",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Strangers keep dropping into Layla's lobby mid-game. Which fix locks the door for good? Is it option A... Quit and start a fresh lobby every time one appears Option B... Pick a scarier hero name so strangers stay away Or is it option C... Flip 'who can join' to friends only So, what do you think?",
+      "text": "Strangers keep dropping into Layla's lobby mid-game. Which fix locks the door for good? Is it option A... Quit and start a fresh lobby every time one appears. Option B... Pick a scarier hero name so strangers stay away. Or is it option C... Flip 'who can join' to friends only. So, what do you think?",
       "lines": [
         "Strangers keep dropping into Layla's lobby mid-game. Which fix locks the door for good?",
         "Is it option A...",
-        "Quit and start a fresh lobby every time one appears",
+        "Quit and start a fresh lobby every time one appears.",
         "Option B...",
-        "Pick a scarier hero name so strangers stay away",
+        "Pick a scarier hero name so strangers stay away.",
         "Or is it option C...",
-        "Flip 'who can join' to friends only",
+        "Flip 'who can join' to friends only.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/452d945fb4cca165.mp3"
+      "file": "/audio/voice/1dca9275ce059d69.mp3"
     },
     {
-      "key": "3fa10dd192d4d746",
+      "key": "414189d4e60bd95e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A player Layla met tonight says: 'This chat is so laggy, message me on SnapTalk instead!' What's the hero answer? Is it option A... 'OK, since laggy chat is hard to read' Option B... 'No thanks, I chat where the guards are' Or is it option C... 'OK, but only to talk about the game' So, what do you think?",
+      "text": "A player Layla met tonight says: 'This chat is so laggy, message me on SnapTalk instead!' What's the hero answer? Is it option A... 'OK, since laggy chat is hard to read'. Option B... 'No thanks, I chat where the guards are'. Or is it option C... 'OK, but only to talk about the game'. So, what do you think?",
       "lines": [
         "A player Layla met tonight says: 'This chat is so laggy, message me on SnapTalk instead!' What's the hero answer?",
         "Is it option A...",
-        "'OK, since laggy chat is hard to read'",
+        "'OK, since laggy chat is hard to read'.",
         "Option B...",
-        "'No thanks, I chat where the guards are'",
+        "'No thanks, I chat where the guards are'.",
         "Or is it option C...",
-        "'OK, but only to talk about the game'",
+        "'OK, but only to talk about the game'.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/3fa10dd192d4d746.mp3"
+      "file": "/audio/voice/414189d4e60bd95e.mp3"
     },
     {
-      "key": "948c40cef8487e1b",
+      "key": "b2998d78e66ecc94",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A player calls Adam nasty names every single round. Which button does Adam press FIRST? Is it option A... REPORT, so the game's guards check the player Option B... BLOCK, so the player vanishes right away Or is it option C... MUTE, so the nasty names go quiet So, what do you think?",
+      "text": "A player calls Adam nasty names every single round. Which button does Adam press FIRST? Is it option A... REPORT, so the game's guards check the player. Option B... BLOCK, so the player vanishes right away. Or is it option C... MUTE, so the nasty names go quiet. So, what do you think?",
       "lines": [
         "A player calls Adam nasty names every single round. Which button does Adam press FIRST?",
         "Is it option A...",
-        "REPORT, so the game's guards check the player",
+        "REPORT, so the game's guards check the player.",
         "Option B...",
-        "BLOCK, so the player vanishes right away",
+        "BLOCK, so the player vanishes right away.",
         "Or is it option C...",
-        "MUTE, so the nasty names go quiet",
+        "MUTE, so the nasty names go quiet.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/948c40cef8487e1b.mp3"
+      "file": "/audio/voice/b2998d78e66ecc94.mp3"
     },
     {
-      "key": "3ce7b8c287d60ef3",
+      "key": "e94833d2195fd117",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A website offers Adam a super-rare skin for FREE, it just needs his game login 'to deliver it'. What's really going on? Is it option A... It's real, deliveries always need a login Option B... It's safe as long as he changes his password right after Or is it option C... It's an account thief, close it and tell a trusted grown-up So, what do you think?",
+      "text": "A website offers Adam a super-rare skin for FREE, it just needs his game login 'to deliver it'. What's really going on? Is it option A... It's real, deliveries always need a login. Option B... It's safe as long as he changes his password right after. Or is it option C... It's an account thief, close it and tell a trusted grown-up. So, what do you think?",
       "lines": [
         "A website offers Adam a super-rare skin for FREE, it just needs his game login 'to deliver it'. What's really going on?",
         "Is it option A...",
-        "It's real, deliveries always need a login",
+        "It's real, deliveries always need a login.",
         "Option B...",
-        "It's safe as long as he changes his password right after",
+        "It's safe as long as he changes his password right after.",
         "Or is it option C...",
-        "It's an account thief, close it and tell a trusted grown-up",
+        "It's an account thief, close it and tell a trusted grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/3ce7b8c287d60ef3.mp3"
+      "file": "/audio/voice/e94833d2195fd117.mp3"
     },
     {
       "key": "c9bfe57e647377bc",
@@ -33234,14 +33234,14 @@
       "file": "/audio/voice/ecd4dde79c91f763.mp3"
     },
     {
-      "key": "86d2814c754642f6",
+      "key": "6e53d8919b47bc90",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Your school says where you are every weekday. On my team keeps it about the game, and the message still works.",
+      "text": "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
       "lines": [
-        "Your school says where you are every weekday. On my team keeps it about the game, and the message still works."
+        "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works."
       ],
-      "file": "/audio/voice/86d2814c754642f6.mp3"
+      "file": "/audio/voice/6e53d8919b47bc90.mp3"
     },
     {
       "key": "4544c5a7b42712e1",
@@ -35537,89 +35537,89 @@
       "file": "/audio/voice/fdb674e9fd49a7a2.mp3"
     },
     {
-      "key": "65ec529f0ce910dd",
+      "key": "2b9cc77ef931e408",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth? Is it option A... Real money bought them, so they're real money in a costume Option B... He's right, money stops being real once it turns into coins Or is it option C... Only the giant coin packs count as real money So, what do you think?",
+      "text": "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth? Is it option A... Real money bought them, so they're real money in a costume. Option B... He's right, money stops being real once it turns into coins. Or is it option C... Only the giant coin packs count as real money. So, what do you think?",
       "lines": [
         "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth?",
         "Is it option A...",
-        "Real money bought them, so they're real money in a costume",
+        "Real money bought them, so they're real money in a costume.",
         "Option B...",
-        "He's right, money stops being real once it turns into coins",
+        "He's right, money stops being real once it turns into coins.",
         "Or is it option C...",
-        "Only the giant coin packs count as real money",
+        "Only the giant coin packs count as real money.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/65ec529f0ce910dd.mp3"
+      "file": "/audio/voice/2b9cc77ef931e408.mp3"
     },
     {
-      "key": "ba7922b50f7a916b",
+      "key": "10215e34a4741aea",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla opened nine loot boxes chasing the dragon pet. Her friend says the tenth HAS to win. What's true? Is it option A... The chance doubles with every box she opens Option B... Her friend is right, ten tries earns the prize Or is it option C... Box ten has the exact same tiny chance as box one So, what do you think?",
+      "text": "Layla opened nine loot boxes chasing the dragon pet. Her friend says the tenth HAS to win. What's true? Is it option A... The chance doubles with every box she opens. Option B... Her friend is right, ten tries earns the prize. Or is it option C... Box ten has the exact same tiny chance as box one. So, what do you think?",
       "lines": [
         "Layla opened nine loot boxes chasing the dragon pet. Her friend says the tenth HAS to win. What's true?",
         "Is it option A...",
-        "The chance doubles with every box she opens",
+        "The chance doubles with every box she opens.",
         "Option B...",
-        "Her friend is right, ten tries earns the prize",
+        "Her friend is right, ten tries earns the prize.",
         "Or is it option C...",
-        "Box ten has the exact same tiny chance as box one",
+        "Box ten has the exact same tiny chance as box one.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ba7922b50f7a916b.mp3"
+      "file": "/audio/voice/10215e34a4741aea.mp3"
     },
     {
-      "key": "5a4ed0102aa9e25b",
+      "key": "f9c99772fa3675a7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "The shop flashes: 'GOLDEN CAPE, gone FOREVER in 3 minutes!' Layla loves it. What should she know? Is it option A... She can buy it now and return it if she changes her mind Option B... 'Gone forever' deals almost always come back, real deals can wait Or is it option C... The timer is real, forever really means forever So, what do you think?",
+      "text": "The shop flashes: 'GOLDEN CAPE, gone FOREVER in 3 minutes!' Layla loves it. What should she know? Is it option A... She can buy it now and return it if she changes her mind. Option B... 'Gone forever' deals almost always come back, real deals can wait. Or is it option C... The timer is real, forever really means forever. So, what do you think?",
       "lines": [
         "The shop flashes: 'GOLDEN CAPE, gone FOREVER in 3 minutes!' Layla loves it. What should she know?",
         "Is it option A...",
-        "She can buy it now and return it if she changes her mind",
+        "She can buy it now and return it if she changes her mind.",
         "Option B...",
-        "'Gone forever' deals almost always come back, real deals can wait",
+        "'Gone forever' deals almost always come back, real deals can wait.",
         "Or is it option C...",
-        "The timer is real, forever really means forever",
+        "The timer is real, forever really means forever.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/5a4ed0102aa9e25b.mp3"
+      "file": "/audio/voice/f9c99772fa3675a7.mp3"
     },
     {
-      "key": "4478ae99295f9cd9",
+      "key": "fc42fee211e03179",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Mid-game, a box pops up: 'GOLDEN BLASTER, 7.99, card already saved, just tap YES!' What's the hero move? Is it option A... Pause the game and ask the grown-up whose money it is Option B... Tap YES, a saved card means it's already allowed Or is it option C... Buy it now and pay it back from his piggy bank later So, what do you think?",
+      "text": "Mid-game, a box pops up: 'GOLDEN BLASTER, 7.99, card already saved, just tap YES!' What's the hero move? Is it option A... Pause the game and ask the grown-up whose money it is. Option B... Tap YES, a saved card means it's already allowed. Or is it option C... Buy it now and pay it back from his piggy bank later. So, what do you think?",
       "lines": [
         "Mid-game, a box pops up: 'GOLDEN BLASTER, 7.99, card already saved, just tap YES!' What's the hero move?",
         "Is it option A...",
-        "Pause the game and ask the grown-up whose money it is",
+        "Pause the game and ask the grown-up whose money it is.",
         "Option B...",
-        "Tap YES, a saved card means it's already allowed",
+        "Tap YES, a saved card means it's already allowed.",
         "Or is it option C...",
-        "Buy it now and pay it back from his piggy bank later",
+        "Buy it now and pay it back from his piggy bank later.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/4478ae99295f9cd9.mp3"
+      "file": "/audio/voice/fc42fee211e03179.mp3"
     },
     {
-      "key": "9de961f31fae64c3",
+      "key": "5d6221573b219028",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A site promises Layla 10,000 free Gem Bucks if she types her username and password. What is the site really for? Is it option A... Sharing leftover coins the game company didn't sell Option B... Real coins, they just take a few weeks to arrive Or is it option C... Stealing accounts, free game money doesn't exist So, what do you think?",
+      "text": "A site promises Layla 10,000 free Gem Bucks if she types her username and password. What is the site really for? Is it option A... Sharing leftover coins the game company didn't sell. Option B... Real coins, they just take a few weeks to arrive. Or is it option C... Stealing accounts, free game money doesn't exist. So, what do you think?",
       "lines": [
         "A site promises Layla 10,000 free Gem Bucks if she types her username and password. What is the site really for?",
         "Is it option A...",
-        "Sharing leftover coins the game company didn't sell",
+        "Sharing leftover coins the game company didn't sell.",
         "Option B...",
-        "Real coins, they just take a few weeks to arrive",
+        "Real coins, they just take a few weeks to arrive.",
         "Or is it option C...",
-        "Stealing accounts, free game money doesn't exist",
+        "Stealing accounts, free game money doesn't exist.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/9de961f31fae64c3.mp3"
+      "file": "/audio/voice/5d6221573b219028.mp3"
     },
     {
       "key": "975e48dc991f608a",
@@ -36985,89 +36985,89 @@
       "file": "/audio/voice/d25104529cfb7972.mp3"
     },
     {
-      "key": "647a8888e4fa0646",
+      "key": "1b87fc5a78fde283",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla sent a funny video to her cousin, then deleted it from the chat. Her cousin had already saved it. Where is the video now? Is it option A... Still on her cousin's phone, delete only cleared Layla's copy Option B... Gone from every phone, delete reaches everywhere Or is it option C... Nowhere, videos can't be saved by cousins So, what do you think?",
+      "text": "Layla sent a funny video to her cousin, then deleted it from the chat. Her cousin had already saved it. Where is the video now? Is it option A... Still on her cousin's phone, delete only cleared Layla's copy. Option B... Gone from every phone, delete reaches everywhere. Or is it option C... Nowhere, videos can't be saved by cousins. So, what do you think?",
       "lines": [
         "Layla sent a funny video to her cousin, then deleted it from the chat. Her cousin had already saved it. Where is the video now?",
         "Is it option A...",
-        "Still on her cousin's phone, delete only cleared Layla's copy",
+        "Still on her cousin's phone, delete only cleared Layla's copy.",
         "Option B...",
-        "Gone from every phone, delete reaches everywhere",
+        "Gone from every phone, delete reaches everywhere.",
         "Or is it option C...",
-        "Nowhere, videos can't be saved by cousins",
+        "Nowhere, videos can't be saved by cousins.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/647a8888e4fa0646.mp3"
+      "file": "/audio/voice/1b87fc5a78fde283.mp3"
     },
     {
-      "key": "f1759ea221d9e88a",
+      "key": "43439f8f61d53458",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first? Is it option A... Send just the funniest wobbly bit Option B... Send it, family chats don't count Or is it option C... Ask his brother if he's happy for it to be shared So, what do you think?",
+      "text": "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first? Is it option A... Send just the funniest wobbly bit. Option B... Send it, family chats don't count. Or is it option C... Ask his brother if he's happy for it to be shared. So, what do you think?",
       "lines": [
         "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first?",
         "Is it option A...",
-        "Send just the funniest wobbly bit",
+        "Send just the funniest wobbly bit.",
         "Option B...",
-        "Send it, family chats don't count",
+        "Send it, family chats don't count.",
         "Or is it option C...",
-        "Ask his brother if he's happy for it to be shared",
+        "Ask his brother if he's happy for it to be shared.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/f1759ea221d9e88a.mp3"
+      "file": "/audio/voice/43439f8f61d53458.mp3"
     },
     {
-      "key": "3f11f459d3e66b05",
+      "key": "274908285fbc42c4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers? Is it option A... The stripy towel over her shoulder Option B... The pool's name on the wall, it shows where she swims every week Or is it option C... The shiny medal around her neck So, what do you think?",
+      "text": "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers? Is it option A... The stripy towel over her shoulder. Option B... The pool's name on the wall, it shows where she swims every week. Or is it option C... The shiny medal around her neck. So, what do you think?",
       "lines": [
         "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers?",
         "Is it option A...",
-        "The stripy towel over her shoulder",
+        "The stripy towel over her shoulder.",
         "Option B...",
-        "The pool's name on the wall, it shows where she swims every week",
+        "The pool's name on the wall, it shows where she swims every week.",
         "Or is it option C...",
-        "The shiny medal around her neck",
+        "The shiny medal around her neck.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/3f11f459d3e66b05.mp3"
+      "file": "/audio/voice/274908285fbc42c4.mp3"
     },
     {
-      "key": "f71ebbfe70d186cc",
+      "key": "cd7f02466929467c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam filmed the class play for the school's families. It shows every kid's face and the school hall. Which door fits? Is it option A... School, it was made for the school's families Option B... Everyone, the play was brilliant Or is it option C... Just Me, nobody should ever watch a play So, what do you think?",
+      "text": "Adam filmed the class play for the school's families. It shows every kid's face and the school hall. Which door fits? Is it option A... School, it was made for the school's families. Option B... Everyone, the play was brilliant. Or is it option C... Just Me, nobody should ever watch a play. So, what do you think?",
       "lines": [
         "Adam filmed the class play for the school's families. It shows every kid's face and the school hall. Which door fits?",
         "Is it option A...",
-        "School, it was made for the school's families",
+        "School, it was made for the school's families.",
         "Option B...",
-        "Everyone, the play was brilliant",
+        "Everyone, the play was brilliant.",
         "Or is it option C...",
-        "Just Me, nobody should ever watch a play",
+        "Just Me, nobody should ever watch a play.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/f71ebbfe70d186cc.mp3"
+      "file": "/audio/voice/cd7f02466929467c.mp3"
     },
     {
-      "key": "4945c41285ac8520",
+      "key": "26bad745bc0ce275",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual? Is it option A... Post it now, looking was enough Option B... Add music first so it gets more likes Or is it option C... THINK: where is it going, and is it OK for anyone, forever? So, what do you think?",
+      "text": "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual? Is it option A... Post it now, looking was enough. Option B... Add music first so it gets more likes. Or is it option C... THINK: where is it going, and is it OK for anyone, forever? So, what do you think?",
       "lines": [
         "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual?",
         "Is it option A...",
-        "Post it now, looking was enough",
+        "Post it now, looking was enough.",
         "Option B...",
-        "Add music first so it gets more likes",
+        "Add music first so it gets more likes.",
         "Or is it option C...",
         "THINK: where is it going, and is it OK for anyone, forever?",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/4945c41285ac8520.mp3"
+      "file": "/audio/voice/26bad745bc0ce275.mp3"
     },
     {
       "key": "2737aa30cb782bb1",
@@ -38923,89 +38923,89 @@
       "file": "/audio/voice/dc7fb8428ac93f7a.mp3"
     },
     {
-      "key": "b8a20855917f9df9",
+      "key": "c3b9b42bcdd0a207",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move? Is it option A... Say no thanks, new apps come from the official app store only Option B... Download it, links from family are family-checked Or is it option C... Download it, then run a free virus scan right after So, what do you think?",
+      "text": "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move? Is it option A... Say no thanks, new apps come from the official app store only. Option B... Download it, links from family are family-checked. Or is it option C... Download it, then run a free virus scan right after. So, what do you think?",
       "lines": [
         "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move?",
         "Is it option A...",
-        "Say no thanks, new apps come from the official app store only",
+        "Say no thanks, new apps come from the official app store only.",
         "Option B...",
-        "Download it, links from family are family-checked",
+        "Download it, links from family are family-checked.",
         "Or is it option C...",
-        "Download it, then run a free virus scan right after",
+        "Download it, then run a free virus scan right after.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/b8a20855917f9df9.mp3"
+      "file": "/audio/voice/c3b9b42bcdd0a207.mp3"
     },
     {
-      "key": "ee630c5cad9a5d05",
+      "key": "e378a07091a749ea",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla wants Maze Mates. One result is by Tiny Tower Games with 2 million downloads. The other is by Tiny Tower Gamez with 40 downloads. Which is the copycat? Is it option A... Neither, both are called Maze Mates Option B... The one with 2 million downloads Or is it option C... The one by Tiny Tower Gamez, with 40 downloads So, what do you think?",
+      "text": "Layla wants Maze Mates. One result is by Tiny Tower Games with 2 million downloads. The other is by Tiny Tower Gamez with 40 downloads. Which is the copycat? Is it option A... Neither, both are called Maze Mates. Option B... The one with 2 million downloads. Or is it option C... The one by Tiny Tower Gamez, with 40 downloads. So, what do you think?",
       "lines": [
         "Layla wants Maze Mates. One result is by Tiny Tower Games with 2 million downloads. The other is by Tiny Tower Gamez with 40 downloads. Which is the copycat?",
         "Is it option A...",
-        "Neither, both are called Maze Mates",
+        "Neither, both are called Maze Mates.",
         "Option B...",
-        "The one with 2 million downloads",
+        "The one with 2 million downloads.",
         "Or is it option C...",
-        "The one by Tiny Tower Gamez, with 40 downloads",
+        "The one by Tiny Tower Gamez, with 40 downloads.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ee630c5cad9a5d05.mp3"
+      "file": "/audio/voice/e378a07091a749ea.mp3"
     },
     {
-      "key": "669e8b812ab768da",
+      "key": "70d505bd9fe9c0d5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Adam's new calculator app asks for his microphone and his contacts. What's the hero move? Is it option A... Allow the contacts, so he can share his answers Option B... Block them, a calculator's job is doing sums Or is it option C... Allow them, it asked politely So, what do you think?",
+      "text": "Adam's new calculator app asks for his microphone and his contacts. What's the hero move? Is it option A... Allow the contacts, so he can share his answers. Option B... Block them, a calculator's job is doing sums. Or is it option C... Allow them, it asked politely. So, what do you think?",
       "lines": [
         "Adam's new calculator app asks for his microphone and his contacts. What's the hero move?",
         "Is it option A...",
-        "Allow the contacts, so he can share his answers",
+        "Allow the contacts, so he can share his answers.",
         "Option B...",
-        "Block them, a calculator's job is doing sums",
+        "Block them, a calculator's job is doing sums.",
         "Or is it option C...",
-        "Allow them, it asked politely",
+        "Allow them, it asked politely.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/669e8b812ab768da.mp3"
+      "file": "/audio/voice/70d505bd9fe9c0d5.mp3"
     },
     {
-      "key": "d5c289a8751886cc",
+      "key": "3023e8f0a44365ee",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Layla's FREE colouring app stops after two pictures: 'Unlock more pictures for 300 coins!' What is the real price? Is it option A... Coins, it's free to start but not free to play Option B... Nothing, pictures are always free Or is it option C... Her time, because colouring takes a while So, what do you think?",
+      "text": "Layla's FREE colouring app stops after two pictures: 'Unlock more pictures for 300 coins!' What is the real price? Is it option A... Coins, it's free to start but not free to play. Option B... Nothing, pictures are always free. Or is it option C... Her time, because colouring takes a while. So, what do you think?",
       "lines": [
         "Layla's FREE colouring app stops after two pictures: 'Unlock more pictures for 300 coins!' What is the real price?",
         "Is it option A...",
-        "Coins, it's free to start but not free to play",
+        "Coins, it's free to start but not free to play.",
         "Option B...",
-        "Nothing, pictures are always free",
+        "Nothing, pictures are always free.",
         "Or is it option C...",
-        "Her time, because colouring takes a while",
+        "Her time, because colouring takes a while.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/d5c289a8751886cc.mp3"
+      "file": "/audio/voice/3023e8f0a44365ee.mp3"
     },
     {
-      "key": "7f17bd1ccb17ea24",
+      "key": "2aca8b272660480c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move? Is it option A... Tap it quickly, updates keep games safe Option B... Tap it, but only because it's his favourite game Or is it option C... Close it, and check for updates in the real app store with a grown-up So, what do you think?",
+      "text": "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move? Is it option A... Tap it quickly, updates keep games safe. Option B... Tap it, but only because it's his favourite game. Or is it option C... Close it, and check for updates in the real app store with a grown-up. So, what do you think?",
       "lines": [
         "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move?",
         "Is it option A...",
-        "Tap it quickly, updates keep games safe",
+        "Tap it quickly, updates keep games safe.",
         "Option B...",
-        "Tap it, but only because it's his favourite game",
+        "Tap it, but only because it's his favourite game.",
         "Or is it option C...",
-        "Close it, and check for updates in the real app store with a grown-up",
+        "Close it, and check for updates in the real app store with a grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/7f17bd1ccb17ea24.mp3"
+      "file": "/audio/voice/2aca8b272660480c.mp3"
     },
     {
       "key": "4c436917bfab3892",
@@ -44445,15 +44445,15 @@
       "file": "/audio/voice/b4e1a63f8cfbc34f.mp3"
     },
     {
-      "key": "3c4b2edee2d18e3a",
+      "key": "a8e7022c9e5da4ec",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Your school says where you are every weekday. On my team keeps it about the game, and the message still works.",
+      "text": "That's right! Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
       "lines": [
         "That's right!",
-        "Your school says where you are every weekday. On my team keeps it about the game, and the message still works."
+        "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works."
       ],
-      "file": "/audio/voice/3c4b2edee2d18e3a.mp3"
+      "file": "/audio/voice/a8e7022c9e5da4ec.mp3"
     },
     {
       "key": "5b9d6dc9af688f52",

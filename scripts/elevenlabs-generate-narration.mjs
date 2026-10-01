@@ -127,6 +127,11 @@ const bossAskRe = /ask:\s*\{\s*slug:\s*"[^"]*",\s*text:\s*"((?:[^"\\]|\\.)*)"\s*
 function isCodeLikeOption(text) {
   return !/\s/.test(text) && (/[$@#%&*^~+=<>|\\/_]/.test(text) || (/\d/.test(text) && /[A-Za-z]/.test(text)) || /[!?]./.test(text));
 }
+/** "...believing it" -> "...believing it." KEEP IDENTICAL to closeSentence in QuizBoss.tsx. */
+function closeSentence(text) {
+  const t = text.trim();
+  return /[.!?…]$/.test(t) ? t : t + ".";
+}
 function optionLetterList(count) {
   const letters = ["A", "B", "C", "D", "E"].slice(0, count);
   return letters.length > 1 ? `${letters.slice(0, -1).join(", ")} and ${letters[letters.length - 1]}` : letters.join("");
@@ -323,7 +328,9 @@ for (const fname of weekFiles) {
           : last
             ? `Or is it option ${LETTERS[i]}...`
             : `Option ${LETTERS[i]}...`;
-        lines.push(lead, text);
+        // Closed as a sentence so the voice pauses before the next option
+        // (UAT W10 6c); mirrors QuizBoss askLines exactly.
+        lines.push(lead, closeSentence(text));
       });
       lines.push("So, what do you think?");
       blocks.push({ speaker: "adam", lines, source: fname });

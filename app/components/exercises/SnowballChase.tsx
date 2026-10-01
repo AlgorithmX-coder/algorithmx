@@ -103,7 +103,10 @@ export interface SnowballChaseProps {
   onCorrect?: () => void;
 }
 
-const DURATION_MS = 34000;
+// 34s -> 24s: a demonstration the child cannot end early, and 34s of it
+// was reported as too long (UAT W5 5d). Everything scales off `phase`
+// (t / duration), so the run is the same, just shorter.
+const DURATION_MS = 24000;
 const REDUCED_DURATION_MS = 20000;
 const ROLL_AWAY_MS = 2700;
 const MAX_ON_FIELD = 8;

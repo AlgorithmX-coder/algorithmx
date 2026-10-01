@@ -382,6 +382,14 @@ function ArtifactPedestal({
         width: 0,
         height: 0,
         display: "grid",
+        // Explicit 0px tracks. With the default `auto` track a zero-size
+        // container still sizes its track to the 130px pedestal, so the
+        // track ran 0..130 from the anchor and "centre" put the pedestal's
+        // LEFT EDGE on the point: the whole ring sat 65px right of the
+        // centrepiece on every skin (UAT W9 7a). A 0px track centres the
+        // item on the point, -65..65.
+        gridTemplateColumns: "0px",
+        gridTemplateRows: "0px",
         placeItems: "center",
       }}
     >

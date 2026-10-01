@@ -214,10 +214,15 @@ export default function StickerUnlock({
                 transition={
                   intensity === 0
                     ? { duration: 0.2 }
-                    : { type: "spring", stiffness: 320, damping: 14 }
+                    : { type: "spring", stiffness: 320, damping: 18 }
                 }
                 style={{
                   position: "relative",
+                  // Own compositor layer: the card carries a blurred glow and
+                  // springs in from above, so without a layer it re-rasterised
+                  // every frame (UAT W4 6a: blocky). Damping 14 -> 18 also
+                  // removes the overshoot that read as a stutter.
+                  willChange: "transform, opacity",
                   // Fill the column so every card in a row is the same height
                   // whatever its description's line count (polish 2026-09-12).
                   flex: 1,

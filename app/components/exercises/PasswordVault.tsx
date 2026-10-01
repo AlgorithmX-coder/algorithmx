@@ -691,6 +691,11 @@ export default function PasswordVault({
                     ? "radial-gradient(circle at center, #ffffff 0%, rgba(255,226,176,0.75) 20%, rgba(102,169,255,0.4) 48%, transparent 74%)"
                     : "radial-gradient(circle at center, #ffffff 0%, rgba(125,240,255,0.7) 20%, rgba(124,92,255,0.4) 48%, transparent 74%)",
                   filter: "blur(34px)",
+                  // Promoted to its own layer: Motion scales and fades this 780px
+                  // blur for a full second, and without a layer the browser
+                  // re-blurs it on every frame, which is the laggy shutter on an
+                  // integrated GPU (UAT W9 7a). Rasterised once, composited after.
+                  willChange: "transform, opacity",
                   pointerEvents: "none",
                   zIndex: 15,
                 }}

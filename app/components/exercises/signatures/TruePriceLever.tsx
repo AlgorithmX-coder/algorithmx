@@ -843,12 +843,18 @@ function DealCard({
       {!reduce && (
         <motion.div
           aria-hidden
-          animate={{ x: ["-120%", "220%"] }}
+          // Pixel travel, not percentages: Motion's % x is relative to the
+          // band's OWN 60px, so -120%..220% moved it 132px and it never
+          // reached the far side of the 250px card (UAT W7 3a: "starts a
+          // quarter in"). It now enters fully off the left edge and leaves
+          // fully off the right.
+          animate={{ x: [0, 250 + 60] }}
           transition={{ repeat: Infinity, duration: 2.8, repeatDelay: 1.4, ease: "easeInOut" }}
           style={{
             position: "absolute",
             top: 0,
             bottom: 0,
+            left: -60,
             width: 60,
             background:
               "linear-gradient(100deg, transparent, rgba(255,255,255,0.14), transparent)",

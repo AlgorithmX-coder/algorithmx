@@ -715,8 +715,10 @@ export default function FourEyes({
 
       {!showIntro && !finished && r && (
         <div style={{ position: "relative", zIndex: 1 }}>
-          {/* Side padding keeps the header clear of the frame's corner ornaments. */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 22px 0" }}>
+          {/* Side padding keeps the header clear of the frame's corner ornaments;
+              the top inset keeps the title off the frame edge (UAT: at 2px the
+              title sat 13px under the edge and read as squashed on every board). */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "16px 22px 0" }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
               <PixIcon emoji={introIcon} size={16} />
               {introTitle}
@@ -726,7 +728,10 @@ export default function FourEyes({
             </span>
           </div>
 
-          {/* The board: the child's page | the grown-up's page (stacked when narrow). */}
+          {/* The board: the child's page | the grown-up's page (stacked when narrow).
+              A plain layout box, not a painted panel: with the frame outside it and
+              the two page panels inside it, a third border here read as frames
+              within frames (UAT W9 6a). Same padding, so nothing moves. */}
           <div
             ref={setBoardEl}
             style={{
@@ -734,9 +739,6 @@ export default function FourEyes({
               margin: "0 14px",
               padding: "12px 12px 12px",
               borderRadius: 18,
-              background: "linear-gradient(180deg, rgba(0,0,0,0.26) 0%, rgba(0,0,0,0.4) 100%)",
-              border: `1px solid ${accent}44`,
-              boxShadow: `0 18px 40px -22px rgba(0,0,0,0.8), inset 0 0 0 1px ${accent}14`,
             }}
           >
             <div

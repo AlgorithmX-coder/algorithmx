@@ -569,7 +569,7 @@ export default function ReplyCards({
   const roomBoard: ReactNode = round ? (
     <div style={{ position: "relative", zIndex: 1 }}>
       {/* Side padding keeps the header clear of the frame's corner ornaments. */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 22px 0" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "16px 22px 0" /* top inset: title off the frame edge (UAT) */ }}>
         <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
           <PixIcon emoji={introIcon ?? "💬"} size={16} />
           {introTitle ?? "The Safe Reply"}

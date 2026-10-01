@@ -32,6 +32,7 @@ import LessonStage, {
 import { ComfortModeProvider, useComfortMode } from "@/app/lib/comfortMode";
 import { useLessonProgress } from "@/app/lib/useLessonProgress";
 import { analytics } from "@/app/lib/analytics";
+import { weekCharacterSrc } from "@/app/lib/weekCharacters";
 import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
 import { MISSION_WORLDS } from "@/app/lesson/weekContent/missionWorlds";
 import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
@@ -869,6 +870,27 @@ function DynamicLessonInner({
     () => (Number.isFinite(weekNum) ? getWeekContent(weekNum) : null),
     [weekNum]
   );
+
+  // Warm the cache for the week's heavy art before any screen needs it. The
+  // Raccoon sprites run 0.9-1.45MB each and the badge ~400KB; fetched on
+  // demand they arrived mid-animation on a slow laptop, which read as a
+  // laggy shrink/fade on the quiz, a slow debrief and a slow sticker screen
+  // (UAT W5 7b/7d, W9 7b-i). Over a 45-minute lesson the bandwidth is the
+  // same either way; only the timing moves.
+  useEffect(() => {
+    if (!content) return;
+    const urls = [
+      ...["idle", "taunt", "attack", "hurt", "defeated"].map((mood) =>
+        weekCharacterSrc(content.weekNumber, "raccoon", mood)
+      ),
+      ...(content.badgeArt ? [content.badgeArt] : []),
+    ];
+    for (const url of urls) {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = url;
+    }
+  }, [content]);
 
   // One-time debug trace on mount / when params change - visible in the
   // browser console so the user can paste it back if something is off.
