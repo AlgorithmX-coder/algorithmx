@@ -201,7 +201,7 @@ function TeamsRecap({ doc }: { doc: AttachedDocument }) {
 
 export default function OfficeFrame({ app, material, firmName, learnerName, children }: { app: OfficeApp; material: AttachedDocument; firmName: string; learnerName: string; children: ReactNode }) {
   return (
-    <div className="sim-office" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 340px", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.edge}`, background: C.page, color: C.ink, fontFamily: C.font, lineHeight: 1.5, colorScheme: "light", minHeight: 600, maxHeight: 760 }}>
+    <div className="sim-office" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 340px", gridTemplateRows: "minmax(0, 1fr)", height: 680, borderRadius: 12, overflow: "hidden", border: `1px solid ${C.edge}`, background: C.page, color: C.ink, fontFamily: C.font, lineHeight: 1.5, colorScheme: "light" }}>
       <div style={{ display: "flex", flexDirection: "column", minWidth: 0, minHeight: 0 }}>
         <TitleBar app={app} title={material.title} firmName={firmName} learnerName={learnerName} />
         <Ribbon app={app} />
@@ -220,8 +220,7 @@ export default function OfficeFrame({ app, material, firmName, learnerName, chil
           .sim-office { grid-template-columns: minmax(0, 1fr) 300px !important; }
         }
         @media (max-width: 900px) {
-          .sim-office { grid-template-columns: minmax(0, 1fr) !important; max-height: none !important; }
-          .sim-office > div:first-child { max-height: 320px; }
+          .sim-office { grid-template-columns: minmax(0, 1fr) !important; grid-template-rows: 300px minmax(0, 1fr) !important; height: 720px !important; }
         }
       `}</style>
     </div>
