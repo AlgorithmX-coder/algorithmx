@@ -35,6 +35,16 @@ export const FINANCE_PACK: DataPack = {
 export const AGED_DEBTORS: AttachedDocument = {
   title: "Aged debtors, month end",
   kind: "Spreadsheet export, 4 rows",
+  table: {
+    columns: ["Client", "Invoice", "Amount", "Days", "Status", "Contact"],
+    rows: [
+      ["Brightwater Logistics Ltd", "INV-3107, INV-3122", "£42,300", "61", "Two statements sent, no reply", "Nadia Ferreira"],
+      ["Cotton & Mather Ltd", "INV-3140", "£9,850", "34", "Disputed: short delivery", "Rob Askew"],
+      ["Halcyon Dental Group", "INV-3151", "£3,120", "12", "Within terms", "Priya Menon"],
+      ["Oakhurst Fabrics", "INV-3098", "£27,600", "92", "Payment plan, £4,600 a month", "Lee Danvers"],
+      ["Total", "", "£82,870", "", "", ""],
+    ],
+  },
   sections: [
     {
       heading: "Summary",
@@ -69,7 +79,31 @@ export const SUPPLIER_STATEMENT: AttachedDocument = {
 export const BOARD_REQUEST: AttachedDocument = {
   title: "Email from Helen Okonkwo, finance director",
   kind: "Email, Tuesday 09:14",
+  emails: [
+    { from: "Helen Okonkwo", subject: "Board pack, debtors slide", time: "09:14", preview: "Can I have one page on debtors for Thursday? The board do not want the full export…" },
+    { from: "Penrose Office Supplies", subject: "Statement, September", time: "Mon", preview: "Please find attached your statement for September. Balance carried forward £3,865…" },
+    { from: "Sam Whitlow", subject: "Brightwater: new accounts contact?", time: "Mon", preview: "Their old contact has left. Anyone got a name for the new one before I chase again?" },
+    { from: "Operations", subject: "Re: Cotton & Mather delivery note", time: "Fri", preview: "Still looking for it. The driver's copy may be in the depot office." },
+  ],
   sections: [
     { heading: "Subject: Board pack, debtors slide", paragraphs: [{ text: "Can I have one page on debtors for Thursday? The board do not want the full export. They want to know the position, what has changed since last month, and the two things I am asking them to decide. Plain English, no jargon, they are not all finance people. By Wednesday noon please." }] },
+  ],
+};
+
+export const MONTH_END_STANDUP: AttachedDocument = {
+  title: "Month-end stand-up",
+  kind: "Meeting recap, Tuesday, 14 minutes",
+  transcript: [
+    { who: "Helen Okonkwo", line: "Quick round on debtors before the board pack. Sam, where are we on the big one?" },
+    { who: "Sam Whitlow", line: "Brightwater is still quiet. Two statements, no reply, and their accounts contact has moved on. I need a name before I chase again." },
+    { who: "Helen Okonkwo", line: "Then it goes to a director-level call this week. I will take that one myself if nobody has a contact by Thursday." },
+    { who: "Sam Whitlow", line: "Cotton and Mather say the delivery was short. Operations are still looking for the delivery note." },
+    { who: "Dev Patel", line: "The driver's copy might be at the depot. I can go through the Friday run sheets tomorrow." },
+    { who: "Helen Okonkwo", line: "Please do. Until we have it, that balance stays out of the total I give the board." },
+    { who: "Sam Whitlow", line: "Oakhurst's plan is on track, two instalments in. Halcyon is within terms." },
+    { who: "Helen Okonkwo", line: "Good. Actions: Sam chases a Brightwater contact, Dev finds the delivery note by Wednesday, I draft the board page. Anything else? No. Thanks all." },
+  ],
+  sections: [
+    { heading: "Recap", paragraphs: [{ text: "Debtors round before the board pack: the largest overdue account is unresponsive and escalates to a director-level call this week; one balance is disputed pending a delivery note; the payment plan is on track; the newest balance is within terms. Three actions were agreed." }] },
   ],
 };

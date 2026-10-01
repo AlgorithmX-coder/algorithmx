@@ -1359,6 +1359,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         <div className="cl-banner"><span className="cl-dot" />Practice data only. Nothing you send is stored; the leak rules still run.</div>
         <Simulator
           tool={tool}
+          office={loop.office}
+          material={loop.material}
           firmName={firm.name}
           learnerName={learnerName}
           messages={toSim(st.messages, undefined, turnLabel)}
@@ -1659,7 +1661,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </aside>
 
         <main className="cl-stage" key={cur}>
-          <div className="cl-card">{stage}</div>
+          <div className={`cl-card ${screen.kind === "loopTurn" && (practises[screen.p] as LoopPractise | undefined)?.office ? "wide" : ""}`}>{stage}</div>
         </main>
 
         <aside className={`cl-dock ${dockOpen ? "open" : ""}`}>{dock}</aside>
@@ -1695,6 +1697,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
 
         .cl-stage { padding: 28px 28px 60px; min-width: 0; animation: cl-in 250ms ease both; }
         .cl-card { max-width: 780px; margin: 0 auto; background: ${K.glass}; backdrop-filter: blur(18px); border: 1px solid ${K.glassEdge}; border-radius: 20px; padding: 30px 32px 26px; box-shadow: 0 10px 40px rgba(20,22,29,0.07); }
+        .cl-card.wide { max-width: 1040px; }
         @keyframes cl-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
         .cl-label { font-family: ${K.mono}; font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: ${K.faint}; margin-bottom: 8px; }

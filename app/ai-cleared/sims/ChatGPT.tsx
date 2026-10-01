@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { SimProps } from "./types";
-import { ActionRow, Icon, ICONS, Lite, TypingDots, initialOf } from "./shared";
+import { ActionRow, AttachmentChip, Icon, ICONS, Lite, TypingDots, initialOf } from "./shared";
 
 /* ChatGPT in its default light look: the sidebar with New chat, Search
  * chats, Library, GPTs, Projects and the chat list, the model picker
@@ -25,7 +25,7 @@ const C = {
   font: "-apple-system, 'Segoe UI', 'Söhne', Helvetica, Arial, sans-serif",
 };
 
-export default function ChatGPTSim({ firmName, learnerName, messages, draft, onDraftChange, onSend, canSend, composerLocked, status, tier = "enterprise", compact }: SimProps) {
+export default function ChatGPTSim({ firmName, learnerName, messages, draft, onDraftChange, onSend, canSend, composerLocked, status, tier = "enterprise", compact, attachment }: SimProps) {
   const plan = tier === "enterprise" ? `${firmName} · Business workspace` : tier === "consumer-paid" ? "Personal · Plus" : "Personal · Free";
   const model = tier === "consumer-free" ? "ChatGPT" : "ChatGPT 5";
   const avatar = tier === "enterprise" ? "#1f9d55" : tier === "consumer-paid" ? "#7a5af8" : "#9c9c9c";
@@ -118,6 +118,7 @@ export default function ChatGPTSim({ firmName, learnerName, messages, draft, onD
 
         <div style={{ padding: compact ? "6px 12px 10px" : "6px 12% 12px" }}>
           {status && <div style={{ fontSize: 12, color: C.muted, marginBottom: 6 }}>{status}</div>}
+          {attachment && <AttachmentChip title={attachment.title} kind={attachment.kind} colour={C.muted} edge={C.edge} />}
           <div style={{ display: "flex", flexDirection: "column", border: `1px solid ${C.edge}`, borderRadius: 26, padding: "10px 10px 8px 16px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", background: "#fff" }}>
             <textarea
               aria-label="Message ChatGPT"

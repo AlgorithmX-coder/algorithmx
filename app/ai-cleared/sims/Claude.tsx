@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { SimProps } from "./types";
-import { ActionRow, Icon, ICONS, Lite, TypingDots, initialOf } from "./shared";
+import { ActionRow, AttachmentChip, Icon, ICONS, Lite, TypingDots, initialOf } from "./shared";
 
 /* Claude in the browser: the cream sidebar (New chat, Chats, Projects,
  * Artifacts, Recents), the serif greeting with the small spark mark, the
@@ -34,7 +34,7 @@ function Mark({ size = 16, colour = C.terracotta }: { size?: number; colour?: st
   );
 }
 
-export default function ClaudeSim({ firmName, learnerName, messages, draft, onDraftChange, onSend, canSend, composerLocked, status, tier = "enterprise", compact }: SimProps) {
+export default function ClaudeSim({ firmName, learnerName, messages, draft, onDraftChange, onSend, canSend, composerLocked, status, tier = "enterprise", compact, attachment }: SimProps) {
   const plan = tier === "enterprise" ? `${firmName} · Team` : tier === "consumer-paid" ? "Pro plan" : "Free plan";
   const model = tier === "consumer-free" ? "Claude Sonnet 4.5" : "Claude Opus 4.5";
   const hour = new Date().getHours();
@@ -120,6 +120,7 @@ export default function ClaudeSim({ firmName, learnerName, messages, draft, onDr
 
         <div style={{ padding: compact ? "6px 12px 10px" : "6px 11% 12px" }}>
           {status && <div style={{ fontSize: 12, color: C.muted, marginBottom: 6 }}>{status}</div>}
+          {attachment && <AttachmentChip title={attachment.title} kind={attachment.kind} colour={C.muted} edge={C.edge} />}
           <div style={{ display: "flex", flexDirection: "column", background: "#fff", border: `1px solid ${C.edge}`, borderRadius: 16, padding: "12px 12px 10px 16px", boxShadow: "0 4px 18px rgba(41,38,27,0.06)" }}>
             <textarea
               aria-label="Message Claude"

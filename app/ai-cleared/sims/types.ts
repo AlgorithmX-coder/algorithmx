@@ -36,4 +36,8 @@ export interface SimProps {
   /* Chrome only, small, for "which tier is this?" sorting: no messages,
    * no live composer, greeting state, roughly 320px wide. */
   compact?: boolean;
+  /* The file the tool was given: a chip above the composer. */
+  attachment?: { title: string; kind: string };
+  /* Copilot only: render as the side pane inside an Office app, no rail. */
+  pane?: boolean;
 }
