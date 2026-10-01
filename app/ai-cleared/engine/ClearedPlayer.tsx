@@ -16,8 +16,10 @@ import {
   type FirmView,
   type LearnCard,
   type LearnScreen,
+  type LoopPractise,
   type ModuleManifest,
   type Phase,
+  type Practise,
   type ProveItem,
   type SandboxPractise,
   type SimRef,
@@ -27,12 +29,17 @@ import {
   type TriageAnswer,
   type Verdict,
 } from "./types";
+import { COURSES } from "./courses";
 import { classCounts, localRewrite, realDataCheck, ruleFindings, segments, verdictOf } from "./rules";
 import { DEFAULT_COACH, DEFAULT_WHY, VERDICT_LINE, type GradeResult } from "./grading";
 import { scriptedReply } from "./scripted";
 import { VENDORS, VENDOR_TERMS_INTRO } from "../content/vendors";
 import Simulator, { type SimMessage } from "../sims";
 import Aurora from "../Aurora";
+import { rulesGrade } from "@/app/ai-fluent/engine/rubric";
+import { fluentScriptedReply } from "@/app/ai-fluent/engine/scripted";
+import { FLUENT_LABEL, FLUENT_RANK, type FluentGrade, type FluentVerdict } from "@/app/ai-fluent/engine/grading";
+import { FluentPanel, SpotReply } from "@/app/ai-fluent/engine/FluentPieces";
 
 /* The engine that runs one module through Learn -> Practise -> Prove.
  * Structure only; every word of content comes from the manifest, the
@@ -76,6 +83,12 @@ type Screen =
   | { kind: "attach"; phase: "practise" }
   | { kind: "findLine"; phase: "practise" }
   | { kind: "sources"; phase: "practise" }
+  /* AI Fluent practices, indexed by practice `p` within the module. */
+  | { kind: "loopIntro"; p: number; phase: "practise" }
+  | { kind: "loopTurn"; p: number; i: number; phase: "practise" }
+  | { kind: "spot"; p: number; phase: "practise" }
+  | { kind: "srcs"; p: number; phase: "practise" }
+  | { kind: "playbook"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -85,7 +98,20 @@ interface Msg {
   text: string;
   pending?: boolean;
   grade?: GradeResult;
+  fluent?: FluentGrade;
 }
+
+interface LoopState {
+  messages: Msg[];
+  /* The learner's prompts sent so far, oldest first. */
+  turns: string[];
+  replies: string[];
+  grades: FluentGrade[];
+  draft: string;
+  busy: boolean;
+  status: string;
+}
+const EMPTY_LOOP: LoopState = { messages: [], turns: [], replies: [], grades: [], draft: "", busy: false, status: "" };
 interface SandboxState {
   messages: Msg[];
   status: string;
@@ -313,33 +339,47 @@ function spansFromGrade(prompt: string, grade: GradeResult): { text: string; cls
 export default function ClearedPlayer({ manifest, track, firm, tool, learnerName, courseMap, initialPhase, live }: PlayerProps) {
   const { block, track: usedTrack } = useMemo(() => resolveTrack(manifest, track), [manifest, track]);
   const practise = block.practise;
+  const practises = useMemo<Practise[]>(() => block.practises ?? [block.practise], [block]);
   const sandbox = practise.kind === "sandbox" ? (practise as SandboxPractise) : null;
   const pack = block.dataPack;
   const names = firm.classNames;
   const ctx = useMemo(() => ({ firm, tool }), [firm, tool]);
   const t = useCallback((s: string) => fill(s, ctx), [ctx]);
   const isFinal = !!manifest.final;
+  const course = manifest.course ?? "ai-cleared";
+  const courseDef = COURSES[course];
+  const fluent = course === "ai-fluent";
 
   /* the prove set: the track's bank, or a fresh draw for the final */
   const [proveSet, setProveSet] = useState<ProveItem[]>(() => drawFinal(manifest, block.prove));
 
   const screens = useMemo<Screen[]>(() => {
     const out: Screen[] = manifest.learn.map((_, i) => ({ kind: "learn", i, phase: "learn" }));
-    if (practise.kind === "sandbox") {
-      out.push({ kind: "desk", phase: "practise" }, { kind: "picked", phase: "practise" }, { kind: "build", phase: "practise" }, { kind: "sandbox", phase: "practise" }, { kind: "free", phase: "practise" });
-    } else if (practise.kind === "sort") {
-      practise.items.forEach((_, i) => out.push({ kind: "sortItem", i, phase: "practise" }));
-    } else if (practise.kind === "situations") {
-      practise.situations.forEach((_, i) => out.push({ kind: "situation", i, phase: "practise" }));
-    } else if (practise.kind === "triage") {
-      practise.incidents.forEach((_, i) => out.push({ kind: "incident", i, phase: "practise" }));
-    } else if (practise.kind === "inspect") {
-      out.push({ kind: "attach", phase: "practise" }, { kind: "findLine", phase: "practise" }, { kind: "sources", phase: "practise" });
-    }
+    practises.forEach((pr, p) => {
+      if (pr.kind === "sandbox") {
+        out.push({ kind: "desk", phase: "practise" }, { kind: "picked", phase: "practise" }, { kind: "build", phase: "practise" }, { kind: "sandbox", phase: "practise" }, { kind: "free", phase: "practise" });
+      } else if (pr.kind === "sort") {
+        pr.items.forEach((_, i) => out.push({ kind: "sortItem", i, phase: "practise" }));
+      } else if (pr.kind === "situations") {
+        pr.situations.forEach((_, i) => out.push({ kind: "situation", i, phase: "practise" }));
+      } else if (pr.kind === "triage") {
+        pr.incidents.forEach((_, i) => out.push({ kind: "incident", i, phase: "practise" }));
+      } else if (pr.kind === "inspect") {
+        out.push({ kind: "attach", phase: "practise" }, { kind: "findLine", phase: "practise" }, { kind: "sources", phase: "practise" });
+      } else if (pr.kind === "loop") {
+        out.push({ kind: "loopIntro", p, phase: "practise" });
+        pr.turns.forEach((_, i) => out.push({ kind: "loopTurn", p, i, phase: "practise" }));
+        if (pr.playbook) out.push({ kind: "playbook", p, phase: "practise" });
+      } else if (pr.kind === "spot") {
+        out.push({ kind: "spot", p, phase: "practise" });
+      } else if (pr.kind === "sources") {
+        out.push({ kind: "srcs", p, phase: "practise" });
+      }
+    });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
     out.push({ kind: "result", phase: "done" });
     return out;
-  }, [manifest, practise, proveSet]);
+  }, [manifest, practises, proveSet]);
 
   const startOf = useCallback((phase: Phase) => Math.max(0, screens.findIndex((s) => s.phase === phase)), [screens]);
   const [cur, setCur] = useState(() => (initialPhase && initialPhase !== "done" ? startOf(initialPhase) : 0));
@@ -357,6 +397,14 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const [freeSent, setFreeSent] = useState(false);
   const bestRank = useRef(99);
   const [bestVerdict, setBestVerdict] = useState<Verdict | undefined>(undefined);
+  /* AI Fluent practices, keyed by practice index */
+  const [loops, setLoops] = useState<Record<number, LoopState>>({});
+  const [spotPicks, setSpotPicks] = useState<Record<number, number[]>>({});
+  const [srcState, setSrcState] = useState<Record<number, { asked: boolean; text: string; pending: boolean; picked: number | null }>>({});
+  const [playbookDraft, setPlaybookDraft] = useState<{ prompt: string; whenToUse: string; check: string } | null>(null);
+  const [playbookSaved, setPlaybookSaved] = useState<"idle" | "saving" | "saved" | "failed">("idle");
+  const bestFluentRank = useRef(99);
+  const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
   const [picks, setPicks] = useState<Record<number, string>>({});
   /* the inspect practise: two scripted replies, typed out */
@@ -386,9 +434,9 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
     (extra?: { proveScore?: number; proveTotal?: number; completed?: boolean }) => {
       if (!live) return;
       const s = screens[cur];
-      void postJson("/api/ai-cleared/progress", { type: "screen", module: manifest.n, phase: s.phase, screen: cur, bestVerdict, ...extra }).catch(() => {});
+      void postJson("/api/ai-cleared/progress", { type: "screen", course, module: manifest.n, phase: s.phase, screen: cur, bestVerdict, bestFluent, ...extra }).catch(() => {});
     },
-    [live, screens, cur, manifest.n, bestVerdict],
+    [live, screens, cur, manifest.n, bestVerdict, bestFluent, course],
   );
   useEffect(() => {
     if (screen.kind === "result") persistScreen({ proveScore: correct, proveTotal: proveSet.length, completed: passed });
@@ -521,16 +569,124 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
     go(startOf("prove"));
   };
 
+  /* ---- the AI Fluent loop: send, grade on the rubric, reply with history ---- */
+  const loopOf = (p: number): LoopState => loops[p] ?? EMPTY_LOOP;
+  const setLoop = (p: number, fn: (s: LoopState) => LoopState) => setLoops((all) => ({ ...all, [p]: fn(all[p] ?? EMPTY_LOOP) }));
+  const noteFluent = (v: FluentVerdict) => {
+    if (FLUENT_RANK[v] < bestFluentRank.current) {
+      bestFluentRank.current = FLUENT_RANK[v];
+      setBestFluent(v);
+    }
+  };
+  const runLoop = async (p: number, loop: LoopPractise, turnIndex: number, prompt: string) => {
+    const st = loopOf(p);
+    if (!prompt.trim() || st.busy) return;
+    /* the leak layer under every send */
+    if (pack) {
+      const real = realDataCheck(prompt, pack);
+      if (real) {
+        setLoop(p, (s) => ({ ...s, status: `Stopped: that looks like ${real} that is not in the practice material. Nothing was sent.` }));
+        if (live) void postJson("/api/ai-cleared/progress", { type: "attempt", course, module: manifest.n, tool, verdict: "ok", counts: { P: 0, I: 0, C: 0, R: 0 }, halted: true }).catch(() => {});
+        return;
+      }
+      const findings = ruleFindings(prompt, pack);
+      const v = verdictOf(findings);
+      if (v !== "ok") {
+        const leak: GradeResult = { verdict: v, findings: findings.map((f) => ({ text: f.text, cls: f.cls, why: DEFAULT_WHY[f.cls] })), rewrite: localRewrite(prompt, findings, pack), coach: DEFAULT_COACH[v], counts: classCounts(findings), source: "rules" };
+        setLoop(p, (s) => ({ ...s, draft: "", status: "That send would have leaked. Use the cleared version and send again; the turn does not count.", messages: [...s.messages, { id: nextId(), role: "user", text: prompt, grade: leak }] }));
+        if (live) void postJson("/api/ai-cleared/progress", { type: "attempt", course, module: manifest.n, tool, verdict: v, counts: leak.counts, halted: false }).catch(() => {});
+        return;
+      }
+    }
+    const turns = [...st.turns, prompt];
+    const local = rulesGrade({ turns, rubric: loop.turns[turnIndex]?.rubric, followUp: loop.followUp });
+    const userId = nextId();
+    const history = loop.followUp ? st.messages.filter((m) => !m.grade).map((m) => ({ role: m.role, text: m.text })) : [];
+    setLoop(p, (s) => ({ ...s, draft: "", busy: true, status: "Scoring your prompt…", turns, messages: [...(loop.followUp ? s.messages : []), { id: userId, role: "user", text: prompt, fluent: local }] }));
+    noteFluent(local.verdict);
+    let graded: FluentGrade = local;
+    if (live) {
+      try {
+        const r = await postJson("/api/ai-fluent/grade", { module: manifest.n, track: usedTrack, tool, practise: p, turns, replies: st.replies, firmName: firm.name });
+        const j = (await r.json()) as Partial<FluentGrade> & { halted?: string; error?: string };
+        if (r.ok && j.verdict && Array.isArray(j.elements)) {
+          graded = j as FluentGrade;
+          setLoop(p, (s) => ({ ...s, messages: s.messages.map((m) => (m.id === userId ? { ...m, fluent: graded.leak ? undefined : graded, grade: graded.leak } : m)) }));
+          if (!graded.leak) noteFluent(graded.verdict);
+        }
+      } catch {
+        /* the rules grade stands */
+      }
+      void postJson("/api/ai-cleared/progress", { type: "attempt", course, module: manifest.n, tool, verdict: "ok", counts: { P: 0, I: 0, C: 0, R: 0 }, halted: false, fluent: graded.verdict, rubricScore: graded.score }).catch(() => {});
+    }
+    setLoop(p, (s) => ({ ...s, grades: [...s.grades, graded] }));
+
+    const aiId = nextId();
+    setLoop(p, (s) => ({ ...s, status: `${TOOL_LABEL[tool]} is writing…`, messages: [...s.messages, { id: aiId, role: "assistant", text: "", pending: true }] }));
+    let replyText = "";
+    const append = (chunk: string) => {
+      replyText += chunk;
+      setLoop(p, (s) => ({ ...s, messages: s.messages.map((m) => (m.id === aiId ? { ...m, text: m.text + chunk } : m)) }));
+    };
+    const finish = () => setLoop(p, (s) => ({ ...s, busy: false, status: "", replies: [...s.replies, replyText], messages: s.messages.map((m) => (m.id === aiId ? { ...m, pending: false } : m)) }));
+    if (live) {
+      try {
+        const r = await postJson("/api/ai-fluent/reply", { prompt, history, module: manifest.n, track: usedTrack, tool, practise: p, firmName: firm.name });
+        if (!r.ok || !r.body) throw new Error("reply failed");
+        const reader = r.body.getReader();
+        const dec = new TextDecoder();
+        for (;;) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          append(dec.decode(value, { stream: true }));
+        }
+      } catch {
+        append(fluentScriptedReply(prompt, turns.length, loop.material?.title));
+      }
+      finish();
+    } else {
+      const full = fluentScriptedReply(prompt, turns.length, loop.material?.title);
+      const parts = full.split(/(?<=\n\n)/);
+      for (const part of parts) {
+        await new Promise((res) => setTimeout(res, 200));
+        append(part);
+      }
+      finish();
+    }
+  };
+
+  const savePlaybook = async (loop: LoopPractise) => {
+    if (!playbookDraft || !loop.playbook) return;
+    setPlaybookSaved("saving");
+    if (!live) {
+      setPlaybookSaved("saved");
+      return;
+    }
+    try {
+      const r = await postJson("/api/ai-fluent/playbook", { module: manifest.n, workflow: loop.playbook.workflow, tool, prompt: playbookDraft.prompt, whenToUse: playbookDraft.whenToUse, check: playbookDraft.check });
+      setPlaybookSaved(r.ok ? "saved" : "failed");
+    } catch {
+      setPlaybookSaved("failed");
+    }
+  };
+
   /* ---- rail data ---- */
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
+  const practiseSub = (pr: Practise): string =>
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
-    { key: "practise", label: "Practise", sub: practise.kind === "sandbox" ? "in the simulator" : practise.kind === "sort" ? "which tier is this" : practise.kind === "situations" ? "ten situations" : practise.kind === "inspect" ? "a document to check" : "six incidents" },
+    { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
     { key: "prove", label: isFinal ? "Final assessment" : "Prove", sub: `${proveSet.length} items, pass at ${manifest.passMark}` },
   ];
-  const toSim = (m: Msg[], onUseRewrite?: (r: string) => void): SimMessage[] =>
-    m.map((x) => ({ id: x.id, role: x.role, text: x.text, pending: x.pending, panel: x.grade ? <GraderPanel prompt={x.text} grade={x.grade} names={names} onUseRewrite={onUseRewrite} /> : undefined }));
+  const toSim = (m: Msg[], onUseRewrite?: (r: string) => void, turnLabel?: (i: number) => string): SimMessage[] => {
+    let sends = 0;
+    return m.map((x) => {
+      const label = x.role === "user" && x.fluent ? turnLabel?.(sends++) : undefined;
+      return { id: x.id, role: x.role, text: x.text, pending: x.pending, panel: x.grade ? <GraderPanel prompt={x.text} grade={x.grade} names={names} onUseRewrite={onUseRewrite} /> : x.fluent ? <FluentPanel grade={x.fluent} turnLabel={label} /> : undefined };
+    });
+  };
 
   /* cards that come from the firm or the vendor matrix */
   const cardsFor = (L: Extract<LearnScreen, { kind: "cards" }>): LearnCard[] => {
@@ -820,6 +976,34 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
             <Btn onClick={back}>Back</Btn>
             <Btn hidden={shown} onClick={() => setSt({ shown: true })}>{L.revealLabel}</Btn>
             <Btn primary hidden={!shown} onClick={next}>Continue</Btn>
+          </div>
+        </>
+      );
+    } else if (L.kind === "beforeAfter") {
+      const shown = !!st.shown;
+      stage = (
+        <>
+          <Eyebrow>{t(L.eyebrow)}</Eyebrow>
+          <h1 className="cl-h1">{t(L.heading)}</h1>
+          {L.lead && <p className="cl-lead">{t(L.lead)}</p>}
+          <div className={`cl-ba ${shown ? "two" : ""}`}>
+            <div className="cl-ba-col">
+              <div className="cl-label">Before</div>
+              <Simulator tool={L.sim.tool} tier={L.sim.tier} firmName={firm.name} learnerName={learnerName} messages={[{ id: "u", role: "user", text: t(L.before.prompt) }, { id: "a", role: "assistant", text: t(L.before.reply) }]} draft="" onSend={() => {}} canSend={false} composerLocked />
+              <p className="cl-p cl-ba-note">{t(L.before.note)}</p>
+            </div>
+            {shown && (
+              <div className="cl-ba-col after">
+                <div className="cl-label">After</div>
+                <Simulator tool={L.sim.tool} tier={L.sim.tier} firmName={firm.name} learnerName={learnerName} messages={[{ id: "u", role: "user", text: t(L.after.prompt) }, { id: "a", role: "assistant", text: t(L.after.reply) }]} draft="" onSend={() => {}} canSend={false} composerLocked />
+                <p className="cl-p cl-ba-note">{t(L.after.note)}</p>
+              </div>
+            )}
+          </div>
+          <div className="cl-nav">
+            <Btn onClick={back}>Back</Btn>
+            <Btn hidden={shown} onClick={() => setSt({ shown: true })}>{L.revealLabel}</Btn>
+            <Btn primary hidden={!shown} onClick={next}>{L.cta}</Btn>
           </div>
         </>
       );
@@ -1135,6 +1319,160 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "loopIntro" && practises[screen.p]?.kind === "loop") {
+    const loop = practises[screen.p] as LoopPractise;
+    stage = (
+      <>
+        <Eyebrow>Practise · the brief</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(loop.task)}</p></div>
+        <h1 className="cl-h1">Here is what you have been asked for.</h1>
+        <p className="cl-lead">{t(loop.brief)}</p>
+        {loop.material && (
+          <>
+            <div className="cl-attach"><span className="cl-doc-icon" aria-hidden />Attached in {TOOL_LABEL[tool]}: {loop.material.title} · {loop.material.kind}</div>
+            <DocumentView doc={loop.material} />
+          </>
+        )}
+        <p className="cl-p" style={{ marginTop: 12 }}>{loop.turns.length} send{loop.turns.length === 1 ? "" : "s"}. Each one is scored on the rubric the moment you send it; {TOOL_LABEL[tool]} answers after the score. {loop.followUp ? "The conversation is kept between sends, so reply to what it gave you." : "Each send starts a fresh chat."}</p>
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <Btn primary onClick={next}>Open {TOOL_LABEL[tool]}</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "loopTurn" && practises[screen.p]?.kind === "loop") {
+    const loop = practises[screen.p] as LoopPractise;
+    const st = loopOf(screen.p);
+    const turn = loop.turns[screen.i];
+    const sentThisTurn = st.turns.length > screen.i;
+    const graded = st.grades[screen.i];
+    const last = screen.i === loop.turns.length - 1;
+    const draft = sentThisTurn ? "" : st.draft || (screen.i === 0 && loop.starter ? t(loop.starter) : "");
+    const turnLabel = (i: number) => `Send ${i + 1}`;
+    stage = (
+      <>
+        <Eyebrow>Practise · send {screen.i + 1} of {loop.turns.length}</Eyebrow>
+        <div className="cl-task"><span className="cl-label">This send</span><p>{t(turn.instruction)}</p></div>
+        {turn.rubric && (
+          <p className="cl-note" style={{ marginBottom: 10 }}>Scored on: {turn.rubric.requires.map((k) => k === "scope" ? "one thing at a time" : k).join(", ")}.</p>
+        )}
+        <div className="cl-banner"><span className="cl-dot" />Practice data only. Nothing you send is stored; the leak rules still run.</div>
+        <Simulator
+          tool={tool}
+          firmName={firm.name}
+          learnerName={learnerName}
+          messages={toSim(st.messages, undefined, turnLabel)}
+          draft={draft}
+          onDraftChange={(v) => setLoop(screen.p, (s) => ({ ...s, draft: v }))}
+          onSend={() => void runLoop(screen.p, loop, screen.i, draft)}
+          canSend={!!draft.trim() && !st.busy && !sentThisTurn}
+          composerLocked={sentThisTurn}
+          status={st.status}
+        />
+        <div className="cl-nav">
+          <Btn onClick={back} hidden={screen.i === 0}>Back</Btn>
+          <span className="cl-hint">{sentThisTurn ? (graded ? `${FLUENT_LABEL[graded.verdict]} on this send.` : "") : turn.placeholder ? t(turn.placeholder) : "Press send in the composer."}</span>
+          <Btn primary hidden={!sentThisTurn || st.busy} onClick={next}>{last ? (loop.playbook ? "Save to my playbook" : "Continue to Prove") : "Next send"}</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "playbook" && practises[screen.p]?.kind === "loop") {
+    const loop = practises[screen.p] as LoopPractise;
+    const st = loopOf(screen.p);
+    const bestIdx = st.grades.reduce((best, g, i) => (best < 0 || g.score > st.grades[best].score ? i : best), -1);
+    if (!playbookDraft && loop.playbook) setPlaybookDraft({ prompt: st.turns[bestIdx] ?? st.turns[st.turns.length - 1] ?? "", whenToUse: t(loop.playbook.whenToUse), check: t(loop.playbook.check) });
+    const d = playbookDraft ?? { prompt: "", whenToUse: "", check: "" };
+    stage = (
+      <>
+        <Eyebrow>Practise · your playbook</Eyebrow>
+        <h1 className="cl-h1">Keep the prompt that worked.</h1>
+        <p className="cl-lead">Your best-scoring send from this practice, with one line on when to use it and the check that goes with it. Edit anything, then save it to your playbook. It is yours; your admin sees only that it exists.</p>
+        <div className="cl-pbform">
+          <label><span className="cl-label">The prompt</span><textarea rows={5} value={d.prompt} onChange={(e) => setPlaybookDraft({ ...d, prompt: e.target.value })} /></label>
+          <label><span className="cl-label">When to use it</span><input value={d.whenToUse} onChange={(e) => setPlaybookDraft({ ...d, whenToUse: e.target.value })} /></label>
+          <label><span className="cl-label">Check before you use the output</span><input value={d.check} onChange={(e) => setPlaybookDraft({ ...d, check: e.target.value })} /></label>
+        </div>
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">{playbookSaved === "saved" ? "Saved to your playbook." : playbookSaved === "failed" ? "Could not save just now; you can add it from the playbook page later." : "Optional. Skip if you would rather not keep it."}</span>
+          <Btn hidden={playbookSaved === "saved"} disabled={playbookSaved === "saving" || !d.prompt.trim()} onClick={() => void savePlaybook(loop)}>{playbookSaved === "saving" ? "Saving…" : "Save to my playbook"}</Btn>
+          <Btn primary onClick={next}>{playbookSaved === "saved" ? "Continue to Prove" : "Skip to Prove"}</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "spot" && practises[screen.p]?.kind === "spot") {
+    const sp = practises[screen.p] as Extract<Practise, { kind: "spot" }>;
+    const picked = spotPicks[screen.p] ?? [];
+    const found = picked.includes(sp.errorIndex);
+    const done = found || picked.length >= 2;
+    const verdictHere: FluentVerdict | null = !done ? null : found ? (picked.length === 1 ? "fluent" : "nearly") : "notyet";
+    stage = (
+      <>
+        <Eyebrow>Practise · spot the mistake</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(sp.task)}</p></div>
+        {sp.material && (
+          <>
+            <div className="cl-attach"><span className="cl-doc-icon" aria-hidden />The source: {sp.material.title} · {sp.material.kind}</div>
+            <DocumentView doc={sp.material} />
+          </>
+        )}
+        <div className="cl-label" style={{ marginTop: 14 }}>The prompt</div>
+        <div className="cl-ex">{t(sp.prompt)}</div>
+        <div className="cl-label" style={{ marginTop: 14 }}>The reply. Tap the sentence the tool got wrong.</div>
+        <SpotReply sentences={sp.sentences.map(t)} errorIndex={sp.errorIndex} picked={picked} tool={TOOL_LABEL[tool]} onPick={(i) => {
+          const nextPicks = [...picked, i];
+          setSpotPicks((s) => ({ ...s, [screen.p]: nextPicks }));
+          const hit = i === sp.errorIndex;
+          const isDone = hit || nextPicks.length >= 2;
+          if (isDone) noteFluent(hit ? (nextPicks.length === 1 ? "fluent" : "nearly") : "notyet");
+        }} />
+        {done && (
+          <div className="cl-fb">
+            <b>{found ? (picked.length === 1 ? "First time." : "Second try.") : "Not found; it is highlighted."}</b> {t(sp.why)}
+          </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">{done ? `${FLUENT_LABEL[verdictHere ?? "notyet"]} on this check.` : picked.length === 1 ? "One more try." : "Two tries."}</span>
+          <Btn primary disabled={!done} onClick={next}>Continue</Btn>
+        </div>
+      </>
+    );
+  } else if (screen.kind === "srcs" && practises[screen.p]?.kind === "sources") {
+    const sp = practises[screen.p] as Extract<Practise, { kind: "sources" }>;
+    const st = srcState[screen.p] ?? { asked: false, text: "", pending: false, picked: null };
+    const setSt = (patch: Partial<typeof st>) => setSrcState((all) => ({ ...all, [screen.p]: { ...(all[screen.p] ?? { asked: false, text: "", pending: false, picked: null }), ...patch } }));
+    const msgs: SimMessage[] = st.asked ? [{ id: "u", role: "user", text: t(sp.prompt) }, { id: "a", role: "assistant", text: st.text, pending: st.pending }] : [];
+    const ask = () => {
+      if (st.asked) return;
+      setSt({ asked: true, pending: true, text: "" });
+      void typeOut(t(sp.reply), (txt) => setSt({ text: txt }), () => setSt({ pending: false }));
+    };
+    const replied = st.asked && !st.pending;
+    const invented = sp.sources.findIndex((s) => !s.real);
+    stage = (
+      <>
+        <Eyebrow>Practise · check the sources</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(sp.task)}</p></div>
+        <Simulator tool={tool} firmName={firm.name} learnerName={learnerName} messages={msgs} draft={st.asked ? "" : t(sp.prompt)} onSend={ask} canSend={!st.asked} composerLocked status={st.pending ? `${TOOL_LABEL[tool]} is writing…` : ""} />
+        {replied && (
+          <>
+            <div className="cl-label" style={{ marginTop: 16 }}>Which one is invented?</div>
+            <SourceList sources={sp.sources} single picked={st.picked} onCheck={(i) => { setSt({ picked: i }); noteFluent(i === invented ? "fluent" : "notyet"); }} />
+            {st.picked !== null && (
+              <div className="cl-fb">
+                <b>{st.picked === invented ? "Correct." : "Not that one."}</b> {t(sp.sources[invented].note)}
+              </div>
+            )}
+          </>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">{st.asked ? "" : "Press send in the composer."}</span>
+          <Btn primary disabled={st.picked === null} onClick={next}>Continue</Btn>
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -1191,32 +1529,35 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
     const doneCount = courseMap.filter((m) => m.done || (m.n === manifest.n && passed)).length;
     const total = courseMap.length;
     const courseDone = passed && courseMap.filter((m) => m.available).every((m) => m.done || m.n === manifest.n);
+    const doneWord = fluent ? "done" : "cleared";
     stage = (
       <>
-        <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? (isFinal ? "Course cleared" : "Module cleared") : "Not yet cleared"}</span>
+        <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? (isFinal ? `Course ${fluent ? "complete" : "cleared"}` : `Module ${doneWord}`) : `Not yet ${doneWord}`}</span>
         <Eyebrow>Module {manifest.n} · {manifest.title}</Eyebrow>
-        <h1 className="cl-h1">{passed ? "Cleared, " : "Not yet, "}{correct} of {proveSet.length}</h1>
+        <h1 className="cl-h1">{passed ? (fluent ? "Done, " : "Cleared, ") : "Not yet, "}{correct} of {proveSet.length}</h1>
         <p className="cl-lead">
           {passed
             ? isFinal
               ? courseDone
-                ? `You passed the final assessment with ${correct} of ${proveSet.length}. Every module is cleared and your certificate is being prepared; you will find it on the course page.`
-                : `You passed the final assessment with ${correct} of ${proveSet.length}. Clear the remaining modules and your certificate issues from the course page.`
-              : sandbox
-                ? clean
-                  ? `You classified ${correct} snippets correctly and sent a cleared prompt in the sandbox. This module's score is on your record.`
-                  : `You classified ${correct} snippets correctly. Your sandbox send was not fully cleared; a cleared send would lift this to full marks.`
-                : `You answered ${correct} of ${proveSet.length} correctly. This module's score is on your record.`
+                ? `You passed the final assessment with ${correct} of ${proveSet.length}. Every module is ${doneWord} and your certificate is being prepared; you will find it on the course page.`
+                : `You passed the final assessment with ${correct} of ${proveSet.length}. Finish the remaining modules and your certificate issues from the course page.`
+              : fluent
+                ? `You answered ${correct} of ${proveSet.length} correctly${bestFluent ? `, and your best practice send scored ${FLUENT_LABEL[bestFluent]}` : ""}. This module is on your record.`
+                : sandbox
+                  ? clean
+                    ? `You classified ${correct} snippets correctly and sent a cleared prompt in the sandbox. This module's score is on your record.`
+                    : `You classified ${correct} snippets correctly. Your sandbox send was not fully cleared; a cleared send would lift this to full marks.`
+                  : `You answered ${correct} of ${proveSet.length} correctly. This module's score is on your record.`
             : `Pass mark is ${manifest.passMark} of ${proveSet.length}. ${isFinal ? "A retake draws a different set of questions." : "Go back over the Learn screens and try again."} Nothing is recorded until you pass.`}
         </p>
-        <div className="cl-label" style={{ marginTop: 22 }}>Progress to your AI Cleared certificate</div>
+        <div className="cl-label" style={{ marginTop: 22 }}>Progress to your {courseDef.doneName} certificate</div>
         <div className="cl-meter"><i style={{ width: `${(doneCount / total) * 100}%` }} /></div>
         <div className="cl-hint">{doneCount} of {total} modules · {TRACK_LABEL[track]} track</div>
         <div className="cl-nav">
           {passed ? (
             <>
               <span className="cl-hint">{isFinal ? "Thank you. The habits are the point; the certificate is the receipt." : "The next module is waiting on the course page."}</span>
-              <Link href="/ai-cleared" className="cl-btn cl-btn-pri">Back to your course</Link>
+              <Link href={courseDef.base} className="cl-btn cl-btn-pri">Back to your course</Link>
             </>
           ) : (
             <>
@@ -1273,7 +1614,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
       <Aurora intensity={0.55} />
       <header className="cl-top">
         <div className="cl-top-left">
-          <span className="cl-word">AI CLEARED</span>
+          <span className="cl-word">{courseDef.brand}</span>
           <span className="cl-sep" />
           <span className="cl-firm">{firm.name}</span>
           <span className="cl-sep" />
@@ -1283,7 +1624,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           <span className="cl-chip">Practice data only</span>
           <span className="cl-learner">{learnerName}</span>
           <button type="button" className="cl-btn cl-btn-small cl-desk-btn" onClick={() => setDockOpen((o) => !o)} aria-expanded={dockOpen}>{dockOpen ? "Close desk" : "Desk"}</button>
-          <Link href="/ai-cleared" className="cl-exit">Course</Link>
+          <Link href={courseDef.base} className="cl-exit">Course</Link>
         </div>
       </header>
       <div className="cl-bar" aria-hidden><i style={{ width: `${pct}%` }} /></div>
@@ -1314,7 +1655,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
               );
             })}
           </ol>
-          <div className="cl-pct">{pct}% cleared</div>
+          <div className="cl-pct">{pct}% {fluent ? "done" : "cleared"}</div>
         </aside>
 
         <main className="cl-stage" key={cur}>
@@ -1522,6 +1863,16 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-rewrite-text { color: ${K.accentInk}; font-size: 14px; line-height: 1.55; margin-bottom: 10px; }
 
         .cl-stamp { display: inline-block; font-family: ${K.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; border: 1.5px solid; border-radius: 6px; padding: 5px 10px; margin-bottom: 16px; }
+        .cl-ba { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 12px; }
+        .cl-ba.two { grid-template-columns: 1fr 1fr; }
+        .cl-ba-col.after { animation: cl-in 250ms ease both; }
+        .cl-ba-note { margin-top: 10px; font-size: 14px; }
+        .cl-ba .sim-copilot:not(.sim-compact), .cl-ba .sim-chatgpt:not(.sim-compact), .cl-ba .sim-gemini:not(.sim-compact), .cl-ba .sim-claude:not(.sim-compact) { grid-template-columns: minmax(0, 1fr) !important; min-height: 380px !important; }
+        .cl-ba .sim-copilot-rail, .cl-ba .sim-chatgpt-rail, .cl-ba .sim-gemini-rail, .cl-ba .sim-claude-rail { display: none !important; }
+        .cl-pbform { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+        .cl-pbform label { display: flex; flex-direction: column; gap: 4px; }
+        .cl-pbform textarea, .cl-pbform input { width: 100%; box-sizing: border-box; font: inherit; font-size: 14.5px; line-height: 1.5; color: ${K.ink}; background: ${K.glassStrong}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 10px 12px; }
+        .cl-pbform textarea:focus, .cl-pbform input:focus { outline: none; border-color: rgba(87,68,201,0.5); box-shadow: 0 0 0 4px rgba(87,68,201,0.12); }
         .cl-meter { height: 8px; background: ${K.sunk}; border-radius: 999px; overflow: hidden; margin: 6px 0 8px; }
         .cl-meter i { display: block; height: 100%; background: ${K.accent}; transition: width 500ms ease; }
 
@@ -1551,7 +1902,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-stage { padding: 16px 16px 48px; }
           .cl-card { padding: 22px 18px 20px; }
           .cl-h1 { font-size: 23px; }
-          .cl-tiles, .cl-choices, .cl-cards, .cl-tls.two { grid-template-columns: 1fr; }
+          .cl-tiles, .cl-choices, .cl-cards, .cl-tls.two, .cl-ba.two { grid-template-columns: 1fr; }
           .cl-three { grid-template-columns: 1fr; }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }

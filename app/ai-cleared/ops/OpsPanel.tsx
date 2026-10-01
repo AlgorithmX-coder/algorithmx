@@ -55,17 +55,19 @@ export default function OpsPanel() {
 
   const [evalRows, setEvalRows] = useState<EvalResult[]>([]);
   const [evalDone, setEvalDone] = useState(false);
+  const [evalCourse, setEvalCourse] = useState<"ai-cleared" | "ai-fluent">("ai-cleared");
   const evalPassRate = evalRows.length ? evalRows.filter((r) => r.pass).length / evalRows.length : 0;
 
-  async function runEval() {
+  async function runEval(course: "ai-cleared" | "ai-fluent") {
     setBusy("eval");
     setErr(null);
     setEvalRows([]);
     setEvalDone(false);
+    setEvalCourse(course);
     try {
       const all: EvalResult[] = [];
       for (let from = 0; from < 40; from += 10) {
-        const res = await fetch(`/api/ops/eval?from=${from}&count=10`);
+        const res = await fetch(`/api/ops/eval?from=${from}&count=10&course=${course}`);
         const j = (await res.json().catch(() => ({}))) as { results?: EvalResult[]; error?: string };
         if (!res.ok) throw new Error(j.error ?? "The eval could not run.");
         all.push(...(j.results ?? []));
@@ -144,12 +146,15 @@ export default function OpsPanel() {
         )}
       </div>
       <div className="cf-card op-form op-wide">
-        <h2 className="op-h2">Grader eval</h2>
-        <p className="cf-note">Forty practice prompts through the live grader, scored on what rules cannot check: the explanations are the model&rsquo;s own, the coaching is one British sentence, nothing leaked is repeated, the rewrite is clean. Bar 90%. Costs about a pound of model usage and takes a minute or two.</p>
-        <button type="button" className="cf-btn cf-btn-pri" onClick={runEval} disabled={busy === "eval"}>{busy === "eval" ? `Running, ${evalRows.length} of 40…` : evalRows.length ? "Run again" : "Run the grader eval"}</button>
+        <h2 className="op-h2">Grader evals</h2>
+        <p className="cf-note">Forty practice prompts through each live grader, scored on what rules cannot check: the explanations are the model&rsquo;s own, the coaching is one British sentence, nothing confidential is repeated. AI Cleared scores leaks; AI Fluent scores the rubric and the turns. Bar 90% each. Each run costs about a pound of model usage and takes a minute or two.</p>
+        <span style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button type="button" className="cf-btn cf-btn-pri" onClick={() => runEval("ai-cleared")} disabled={busy === "eval"}>{busy === "eval" && evalCourse === "ai-cleared" ? `Running Cleared, ${evalRows.length} of 40…` : "Run the AI Cleared eval"}</button>
+          <button type="button" className="cf-btn" onClick={() => runEval("ai-fluent")} disabled={busy === "eval"}>{busy === "eval" && evalCourse === "ai-fluent" ? `Running Fluent, ${evalRows.length} of 40…` : "Run the AI Fluent eval"}</button>
+        </span>
         {evalDone && (
           <div className={`op-made ${evalPassRate >= 0.9 ? "" : "warn"}`}>
-            <b>{evalRows.filter((r) => r.pass).length} of {evalRows.length} passed ({Math.round(evalPassRate * 100)}%)</b>
+            <b>{evalCourse === "ai-fluent" ? "AI Fluent" : "AI Cleared"}: {evalRows.filter((r) => r.pass).length} of {evalRows.length} passed ({Math.round(evalPassRate * 100)}%)</b>
             {evalPassRate >= 0.9 ? "Above the bar." : "Under the 90% bar: send Claude the failures below."}
           </div>
         )}
