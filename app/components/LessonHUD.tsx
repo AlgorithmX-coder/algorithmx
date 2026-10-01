@@ -47,18 +47,23 @@ export default function LessonHUD({
 }: LessonHUDProps) {
   const accRGB = hexToRgb(accent);
   const [totalXP, setTotalXP] = useState<number>(0);
+  // The rank the player has already been shown. It floors the displayed
+  // rank, so re-scaling the ladder can never demote a child mid-course.
+  const [savedRank, setSavedRank] = useState<string | null>(null);
   const [xpPulseKey, setXpPulseKey] = useState(0);
 
   // Sync rank info from localStorage on mount and whenever lesson XP shifts.
   useEffect(() => {
-    setTotalXP(getProgressionState().totalXP);
+    const st = getProgressionState();
+    setTotalXP(st.totalXP);
+    setSavedRank(st.currentRank);
   }, [xpEarned]);
 
   useEffect(() => {
     setXpPulseKey((k) => k + 1);
   }, [xpEarned]);
 
-  const rank = getRank(totalXP);
+  const rank = getRank(totalXP, savedRank);
   const rankFillPct = rank.progressPct * 100;
   const lessonFillPct = totalScreens > 0
     ? Math.max(0, Math.min(1, currentScreen / totalScreens)) * 100

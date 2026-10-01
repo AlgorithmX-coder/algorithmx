@@ -65,6 +65,12 @@ export default async function CyberHQPage() {
 
   // Durable XP / rank, summed server-side across the child's weeks.
   const totalXp = snapshot.totalXp;
+  // No floor here, deliberately: the floor is the player's saved rank, and
+  // that lives in local progression, which a server component cannot read.
+  // So HQ shows the true current-ladder rank. The only way this differs from
+  // the lesson HUD is a save that was already past the OLD 8,000 XP top rank
+  // before the ladder was re-scaled; to close that, the rank would have to be
+  // persisted server-side alongside totalXp.
   const rank = getRank(totalXp);
   const collectionsEmpty = earnedCount === 0 && badgeEarnedCount === 0;
 
