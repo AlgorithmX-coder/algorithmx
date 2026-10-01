@@ -41,11 +41,22 @@ import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 const OUT_MS = 260;
 /** Smallest zoom a full-screen intro card may shrink to so it fits the viewport. */
 const MIN_FIT = 0.62;
+/**
+ * Full-screen intro overlays are `fixed; inset: 0`, which puts their top
+ * LESSON_HUD_HEIGHT px UNDER the fixed HUD. Reserve that much at the top so the
+ * card can never start behind the HUD, and the same at the bottom so the
+ * card's centre stays exactly where it was on any viewport where it already
+ * fitted (UAT retest W3 4b / W5 5c / W5 6c / W9 4a: on a 1366x768 laptop at
+ * 125% scaling the card's top edge and header vanished under the HUD, and
+ * nothing could scroll up to them).
+ */
+const HUD_RESERVE = LESSON_HUD_HEIGHT;
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { LESSON_HUD_HEIGHT } from "@/app/components/lesson/LessonStage";
 import { useWeekWorld, WorldBackdrop, CARD_MATERIALS, CardDecoration } from "@/app/components/game/missionWorldStyles";
 
 /* ─────────────── Intro beat ─────────────── */
@@ -154,7 +165,7 @@ export default function ExerciseIntroBeat({
     const measure = () => {
       // getBoundingClientRect reflects zoom; divide it out for the natural height.
       const natural = el.getBoundingClientRect().height / current;
-      const avail = window.innerHeight - 40;
+      const avail = window.innerHeight - HUD_RESERVE * 2;
       if (natural <= 0 || avail <= 0) return;
       const next = Math.max(MIN_FIT, Math.min(1, avail / natural));
       if (Math.abs(next - current) < 0.01) return;
@@ -223,7 +234,9 @@ export default function ExerciseIntroBeat({
         alignItems: "center",
         justifyContent: "flex-start",
         overflowY: "auto",
-        padding: 20,
+        // Fixed overlays keep clear of the HUD (see HUD_RESERVE); in-frame
+        // overlays are unchanged.
+        padding: fullScreen ? `${HUD_RESERVE}px 20px` : 20,
         background: "rgba(8, 10, 22, 0.88)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
