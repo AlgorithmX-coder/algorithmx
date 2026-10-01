@@ -58,7 +58,7 @@ export default defineConfig({
     {
       // AI Cleared play-throughs: no sign-in, the offline preview under /dev.
       name: "cleared",
-      testMatch: /ai-cleared-.*\.spec\.ts/,
+      testMatch: /ai-(cleared|fluent)-.*\.spec\.ts/,
       use: { ...devices["Desktop Chrome"], channel: BROWSER_CHANNEL },
     },
     {

@@ -68,7 +68,7 @@ const REAL: { re: RegExp; what: string }[] = [
   { re: /\b[A-CEGHJ-PR-TW-Z]{2}\s?\d{2}\s?\d{2}\s?\d{2}\s?[A-D]\b/g, what: "a National Insurance number" },
   { re: /\b\d{2}-\d{2}-\d{2}\b/g, what: "a sort code" },
   { re: /\b\d{8}\b/g, what: "an account number" },
-  { re: /[\w.+-]+@[\w-]+\.[\w.-]+/g, what: "an email address" },
+  { re: /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g, what: "an email address" },
   { re: /\b(?:\+44\s?7|07)\d{3}\s?\d{6}\b/g, what: "a mobile number" },
   { re: /\b(?:\d[ -]?){15,16}\b/g, what: "a card number" },
 ];

@@ -208,6 +208,20 @@ export type LearnScreen =
       note: string;
     }
   | {
+      /* A prompt and its reply on the left, the improved prompt and its
+       * reply on the right, revealed on tap. The whole of AI Fluent is
+       * about that difference. */
+      kind: "beforeAfter";
+      eyebrow: string;
+      heading: string;
+      lead?: string;
+      sim: SimRef;
+      before: { prompt: string; reply: string; note: string };
+      after: { prompt: string; reply: string; note: string };
+      revealLabel: string;
+      cta: string;
+    }
+  | {
       /* The firm's escalation contact, with what to say. */
       kind: "contact";
       eyebrow: string;
@@ -345,7 +359,82 @@ export interface InspectPractise {
   sources: { label: string; real: boolean; note: string }[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise;
+/* ---- AI Fluent practices ---- */
+
+/* The eight prompt elements the Fluent rubric scores. */
+export type RubricElement = "role" | "reader" | "task" | "format" | "length" | "constraints" | "material" | "scope";
+export const RUBRIC_ELEMENTS: readonly RubricElement[] = ["role", "reader", "task", "format", "length", "constraints", "material", "scope"];
+export const RUBRIC_LABEL: Record<RubricElement, string> = {
+  role: "Role",
+  reader: "Reader",
+  task: "Task",
+  format: "Format",
+  length: "Length",
+  constraints: "Constraints",
+  material: "Material",
+  scope: "One thing at a time",
+};
+
+/* What a good prompt for this turn must contain, and what a good output
+ * must do (one sentence the model reads). */
+export interface Rubric {
+  requires: RubricElement[];
+  goal: string;
+}
+
+export interface LoopTurn {
+  /* What the screen asks the learner to do on this turn. */
+  instruction: string;
+  /* Absent = the turn is scored on its move only (moved, repeated, wandered). */
+  rubric?: Rubric;
+  placeholder?: string;
+}
+
+/* Fluent's main practice: one or more sends, scored on the rubric, with
+ * the conversation kept when `followUp` is true (turn two sees turn one's
+ * reply) or a fresh chat each send when it is false. */
+export interface LoopPractise {
+  kind: "loop";
+  tool?: Tool;
+  task: string;
+  /* The brief: what the person needs, in the words they would get it in. */
+  brief: string;
+  /* The desk material the tool has, shown as an attachment. */
+  material?: AttachedDocument;
+  /* A weak prompt to start from; the composer holds it on turn one. */
+  starter?: string;
+  followUp: boolean;
+  turns: LoopTurn[];
+  /* The tool's web mode is on: replies cite numbered sources. */
+  webMode?: boolean;
+  /* Offered at the end: save the best prompt to the playbook under this workflow. */
+  playbook?: { workflow: string; whenToUse: string; check: string };
+}
+
+/* A reply with a planted mistake to find. Scripted, never live: the
+ * mistake must land every time. */
+export interface SpotPractise {
+  kind: "spot";
+  tool?: Tool;
+  task: string;
+  prompt: string;
+  sentences: string[];
+  errorIndex: number;
+  why: string;
+  material?: AttachedDocument;
+}
+
+/* A reply that cites sources; the learner marks the invented one. */
+export interface SourcesPractise {
+  kind: "sources";
+  tool?: Tool;
+  task: string;
+  prompt: string;
+  reply: string;
+  sources: { label: string; real: boolean; note: string }[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise;
 
 /* ---- Prove ---- */
 
@@ -359,6 +448,9 @@ export interface TrackBlock {
   /* Only a sandbox practise needs a pack; the grade route refuses without one. */
   dataPack?: DataPack;
   practise: Practise;
+  /* A module that runs more than one practice in a row lists them here;
+   * `practise` is then the first of them. */
+  practises?: Practise[];
   prove: ProveItem[];
 }
 
@@ -368,6 +460,8 @@ export interface ModuleManifest {
   title: string;
   minutes: number;
   promise: string;
+  /* Which course the module belongs to; AI Cleared when absent. */
+  course?: "ai-cleared" | "ai-fluent";
   learn: LearnScreen[];
   tracks: Partial<Record<Track, TrackBlock>>;
   /* Correct prove items needed, out of the items shown. */
