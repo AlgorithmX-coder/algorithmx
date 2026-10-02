@@ -123,12 +123,20 @@ export default function SenderLineup({
   const cardGlow = accent ? `0 14px 30px -18px ${accent}b3` : "0 14px 30px -18px rgba(0,229,255,0.7)";
 
   const [showIntro, setShowIntro] = useState(true);
+  // The visible CoachCaption speaks the how-to. Unlike the other engines in
+  // this family there was no guard here at all, so the round prompt below
+  // started underneath it and both voices ran together (UAT W15 3a).
+  const [captionDone, setCaptionDone] = useState(false);
   const [idx, setIdx] = useState(0);
   const [busted, setBusted] = useState<string | null>(null); // imposter id once caught
   const [wrongCount, setWrongCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [feedback, setFeedback] = useState<null | { title: string; explanation: string; tip?: string }>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
+  // The round prompt waits while the how-to caption is still speaking. Any
+  // interaction, or no caption at all, releases it at once, so a caption that
+  // unmounts early can never leave the prompt stranded in silence.
+  const captionSpeaking = !!coachLines && !captionDone && !hasInteracted;
 
   // Anti-sequence: the lineups arrive in a random order, and each lineup's four
   // podiums are dealt in a random order (authored data keeps the imposter in a
@@ -238,7 +246,7 @@ export default function SenderLineup({
                 starting underneath the overlay clobbers that one, so the gate
                 falls through to its safety release and the child is left looking
                 at an intro card that never opens. */}
-            {!showIntro && (
+            {!showIntro && !captionSpeaking && (
               <div aria-hidden style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" }}>
                 <InfoNarration key={`lineup-${idx}`} speaker="adam" lines={promptLines} accent={accent ?? "#7df0ff"} />
               </div>
@@ -400,7 +408,11 @@ export default function SenderLineup({
       )}
 
       {coachLines && !showIntro && !hasInteracted && !finished && (
-        <CoachCaption lines={coachLines.lines} speaker={coachLines.speaker} />
+        <CoachCaption
+          lines={coachLines.lines}
+          speaker={coachLines.speaker}
+          onDone={() => setCaptionDone(true)}
+        />
       )}
 
       {feedback && (

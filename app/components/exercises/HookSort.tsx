@@ -304,7 +304,18 @@ export default function HookSort({
     // The dock keeps its visible CoachCaption, which plays that same clip
     // itself, so only the house skin speaks the how-to through this chain -
     // otherwise the two would talk over each other.
-    setNarr(house && coachLines ? "howto" : shownItems[0]?.readAloud ? "read" : "idle");
+    // When the visible CoachCaption is the how-to (every skin but the house),
+    // the first item WAITS for it: starting here put the two voices on top of
+    // each other (UAT W14 4a / W18 5a). The caption's onDone hands over.
+    setNarr(
+      house && coachLines
+        ? "howto"
+        : coachLines
+          ? "idle"
+          : shownItems[0]?.readAloud
+            ? "read"
+            : "idle",
+    );
   };
 
   // The only place idx ever moves, so the per-thing state is cleared here
@@ -804,7 +815,21 @@ export default function HookSort({
       {/* The dock keeps its visible teach-once caption; the house skin speaks
           its how-to instead (audio only), so the two never stack. */}
       {!house && coachLines && !showIntro && !hasInteracted && !finished && (
-        <CoachCaption lines={coachLines.lines} speaker={coachLines.speaker} />
+        <CoachCaption
+          lines={coachLines.lines}
+          speaker={coachLines.speaker}
+          onDone={() => {
+            // Hand the first item to Sarah now the how-to has finished.
+            // Guarded on the opening item and an idle voice, so a child who
+            // has already moved on is never spoken over.
+            if (idx !== 0) return;
+            setNarr((cur) =>
+              cur === "idle" && !isAudioMuted() && shownItems[0]?.readAloud
+                ? "read"
+                : cur,
+            );
+          }}
+        />
       )}
 
       {feedback && (
