@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-02T16:43:45.752Z",
+  "generatedAt": "2026-10-02T17:36:15.368Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -16088,14 +16088,14 @@
       "file": "/audio/voice/abf668e880b7b6d7.mp3"
     },
     {
-      "key": "a791545a377519db",
+      "key": "4e60995a698e1093",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "This door has a clear pane too, and a very exciting sign about a free tablet.",
+      "text": "This door has a clear pane, and a very exciting sign about a free tablet.",
       "lines": [
-        "This door has a clear pane too, and a very exciting sign about a free tablet."
+        "This door has a clear pane, and a very exciting sign about a free tablet."
       ],
-      "file": "/audio/voice/a791545a377519db.mp3"
+      "file": "/audio/voice/4e60995a698e1093.mp3"
     },
     {
       "key": "bf589ed9714b76cf",
@@ -25373,44 +25373,44 @@
       "file": "/audio/voice/e7f517faa4b4ecc1.mp3"
     },
     {
-      "key": "3df857894c9fbd50",
+      "key": "12e33c26c5d69268",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it.",
+      "text": "Ada does not want that photo posted. One no is enough to stop a photo, and nothing cancels it out.",
       "lines": [
-        "Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it."
+        "Ada does not want that photo posted. One no is enough to stop a photo, and nothing cancels it out."
       ],
-      "file": "/audio/voice/3df857894c9fbd50.mp3"
+      "file": "/audio/voice/12e33c26c5d69268.mp3"
     },
     {
-      "key": "ba50a5f26cb73098",
+      "key": "7f5b4185ab51215e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Ada said do not post it. That is the same answer Ollie gave, about the same photo.",
+      "text": "Ada said do not post it, and that is about the whole photo, not just her.",
       "lines": [
-        "Ada said do not post it. That is the same answer Ollie gave, about the same photo."
+        "Ada said do not post it, and that is about the whole photo, not just her."
       ],
-      "file": "/audio/voice/ba50a5f26cb73098.mp3"
+      "file": "/audio/voice/7f5b4185ab51215e.mp3"
     },
     {
-      "key": "27833f7773626ccd",
+      "key": "3038d78dfcd1f72e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them.",
+      "text": "Sam said leave it. That photo stays exactly where it is.",
       "lines": [
-        "Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them."
+        "Sam said leave it. That photo stays exactly where it is."
       ],
-      "file": "/audio/voice/27833f7773626ccd.mp3"
+      "file": "/audio/voice/3038d78dfcd1f72e.mp3"
     },
     {
-      "key": "b2db13c6f02b707e",
+      "key": "2b46f46747a2dd82",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Sam said leave that one, so that photo stays on your phone with everybody else who said no.",
+      "text": "Sam said leave that one, so that photo stays on your phone.",
       "lines": [
-        "Sam said leave that one, so that photo stays on your phone with everybody else who said no."
+        "Sam said leave that one, so that photo stays on your phone."
       ],
-      "file": "/audio/voice/b2db13c6f02b707e.mp3"
+      "file": "/audio/voice/2b46f46747a2dd82.mp3"
     },
     {
       "key": "80c43ea532bc7be6",
@@ -26313,14 +26313,14 @@
       "file": "/audio/voice/ad73a8231ddcd0c1.mp3"
     },
     {
-      "key": "65014c35bf1ea115",
+      "key": "5ec4f1a0c0945d75",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Ada says yes, do not post that one either.",
+      "text": "Ada says do not post that one.",
       "lines": [
-        "Ada says yes, do not post that one either."
+        "Ada says do not post that one."
       ],
-      "file": "/audio/voice/65014c35bf1ea115.mp3"
+      "file": "/audio/voice/5ec4f1a0c0945d75.mp3"
     },
     {
       "key": "c610605f5b6fc22c",
@@ -55918,48 +55918,48 @@
       "file": "/audio/voice/fd67e87ec1ca1841.mp3"
     },
     {
-      "key": "55c2a748cfde11fe",
+      "key": "49057a97867235ab",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it.",
+      "text": "That's right! Ada does not want that photo posted. One no is enough to stop a photo, and nothing cancels it out.",
       "lines": [
         "That's right!",
-        "Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it."
+        "Ada does not want that photo posted. One no is enough to stop a photo, and nothing cancels it out."
       ],
-      "file": "/audio/voice/55c2a748cfde11fe.mp3"
+      "file": "/audio/voice/49057a97867235ab.mp3"
     },
     {
-      "key": "a8e9b629c9aed185",
+      "key": "ceeda84680021a49",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Ada said do not post it. That is the same answer Ollie gave, about the same photo.",
+      "text": "Not quite. Ada said do not post it, and that is about the whole photo, not just her.",
       "lines": [
         "Not quite.",
-        "Ada said do not post it. That is the same answer Ollie gave, about the same photo."
+        "Ada said do not post it, and that is about the whole photo, not just her."
       ],
-      "file": "/audio/voice/a8e9b629c9aed185.mp3"
+      "file": "/audio/voice/ceeda84680021a49.mp3"
     },
     {
-      "key": "c8435ddbc00fce75",
+      "key": "a0a996d58c9f8d46",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them.",
+      "text": "That's right! Sam said leave it. That photo stays exactly where it is.",
       "lines": [
         "That's right!",
-        "Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them."
+        "Sam said leave it. That photo stays exactly where it is."
       ],
-      "file": "/audio/voice/c8435ddbc00fce75.mp3"
+      "file": "/audio/voice/a0a996d58c9f8d46.mp3"
     },
     {
-      "key": "3979dc74df74bc26",
+      "key": "545db486367cbe0b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Sam said leave that one, so that photo stays on your phone with everybody else who said no.",
+      "text": "Not quite. Sam said leave that one, so that photo stays on your phone.",
       "lines": [
         "Not quite.",
-        "Sam said leave that one, so that photo stays on your phone with everybody else who said no."
+        "Sam said leave that one, so that photo stays on your phone."
       ],
-      "file": "/audio/voice/3979dc74df74bc26.mp3"
+      "file": "/audio/voice/545db486367cbe0b.mp3"
     },
     {
       "key": "62e88ccc28697dac",

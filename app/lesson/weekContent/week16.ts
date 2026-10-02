@@ -712,7 +712,7 @@ export const WEEK_16: WeekContent = {
           id: "prize-clear",
           sign: "CLAIM YOUR FREE TABLET",
           icon: "🎁",
-          readAloud: "This door has a clear pane too, and a very exciting sign about a free tablet.",
+          readAloud: "This door has a clear pane, and a very exciting sign about a free tablet.",
           pane: "free-tablet-now.prizeclub.xyz",
           verdict: "stop",
           why: "You read it, and it does not say anybody you know. A clear pane you CAN read is still a no when the address is a stranger.",
