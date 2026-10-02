@@ -346,12 +346,18 @@ export default function TrackBack({
               aria-label={done ? `${pr.label}, read` : now ? "this print" : "a print further along"}
               style={{ position: "relative", flex: 1, minWidth: 0, display: "flex", justifyContent: "center", alignItems: "center", minHeight: PIP }}
             >
-              {/* Half connectors, so the prints read as one line crossing snow. */}
+              {/* Half connectors, so the prints read as one line crossing snow.
+                  They STOP at the pip rather than running under it: the pip's
+                  fill is only 8-22% opaque, so a connector drawn across the
+                  full half showed straight through the circle and looked like
+                  the rule was cutting through the icon and its number (UAT
+                  W12 2b). Insetting is theme-safe; making the pip opaque is
+                  not, because the surface behind it is the week's own. */}
               {i > 0 && (
-                <span aria-hidden style={{ position: "absolute", top: "50%", left: 0, width: "50%", height: 2, marginTop: -1, background: i <= idx ? READ_BLUE : "rgba(255,247,230,0.18)" }} />
+                <span aria-hidden style={{ position: "absolute", top: "50%", left: 0, width: `calc(50% - ${PIP / 2 + 3}px)`, height: 2, marginTop: -1, background: i <= idx ? READ_BLUE : "rgba(255,247,230,0.18)" }} />
               )}
               {i < prints.length - 1 && (
-                <span aria-hidden style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: 2, marginTop: -1, background: done ? READ_BLUE : "rgba(255,247,230,0.18)" }} />
+                <span aria-hidden style={{ position: "absolute", top: "50%", left: `calc(50% + ${PIP / 2 + 3}px)`, width: `calc(50% - ${PIP / 2 + 3}px)`, height: 2, marginTop: -1, background: done ? READ_BLUE : "rgba(255,247,230,0.18)" }} />
               )}
               {tappable ? (
                 <motion.button
