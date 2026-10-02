@@ -415,7 +415,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Mission two down, Cyber Hero. Two nosy caught, and one fair one let through.",
+          "[proud] Two missions down, Cyber Hero. Two nosy caught, and one fair one let through.",
           "Job on one side, asks on the other. It never gets harder than that.",
           "[whispers] He has gone quiet. Which usually means something is about to be free...",
           "Next, we'll take on the last money trap he has left. Come and see!",

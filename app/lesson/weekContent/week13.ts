@@ -713,7 +713,7 @@ export const WEEK_13: WeekContent = {
             "Save first. Even at bedtime, whatever you were doing gets to survive the night.",
             "Say bye before it goes on charge, so nobody is left mid-conversation.",
           ],
-          why: "Saved, said bye, and on charge outside the bedroom. Tomorrow-you wakes up to a full battery and no argument.",
+          why: "Saved, said bye, and on charge outside the bedroom. Tomorrow, you wake up to a full battery and no argument.",
         },
       ],
       hints: {

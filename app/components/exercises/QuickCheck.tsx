@@ -289,7 +289,7 @@ export default function QuickCheck({
   const promptLines = useMemo(
     () =>
       mode === "finish"
-        ? ["Can you fill in the missing word?"]
+        ? ["Can you finish the rule?"]
         : [prompt.replace(/_{2,}/g, "blank")],
     [prompt, mode],
   );
