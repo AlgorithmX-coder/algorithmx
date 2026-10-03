@@ -146,7 +146,13 @@ export default function StickerUnlock({
           position: "relative",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: 16,
+          // The row gap has to clear the light beam, which reaches 30px ABOVE
+          // each card. At a 16px gap a second-row beam climbed 14px into the
+          // card above and washed over its description - which is why this was
+          // reported as recurring on every week: any week with more than one
+          // row of stickers hits it (UAT W16 9b).
+          columnGap: 16,
+          rowGap: 38,
           marginBottom: 22,
           paddingBottom: 18,
         }}

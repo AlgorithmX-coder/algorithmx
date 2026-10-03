@@ -699,11 +699,16 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
         {explain && (
           <motion.div
             key={`explain-${qIdx}-${attemptNonce}`}
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
+            // The centring goes to Motion as `x`, not into `style`: this panel
+            // animates `y`, so Motion owns `transform` and a static translate
+            // there is dropped. The panel then sat with its LEFT edge on the
+            // centre line - up to 280px right - straight over the raccoon, which
+            // is what was reported as the hint box covering him (UAT W14 6a).
+            initial={reduce ? false : { opacity: 0, y: 16, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, x: "-50%" }}
             style={{
-              position: "absolute", left: "50%", bottom: "3.5%", transform: "translateX(-50%)",
+              position: "absolute", left: "50%", bottom: "3.5%",
               zIndex: 30, width: "min(560px, 92%)",
               padding: "13px 18px", borderRadius: 14,
               background: "linear-gradient(180deg, rgba(20,27,52,0.97), rgba(9,13,28,0.98))",
@@ -781,11 +786,14 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           {popups.map((p) => (
             <motion.div
               key={p.id}
-              initial={{ opacity: 1, y: 0, scale: reduce ? 1 : 0.7 }}
-              animate={{ opacity: 0, y: -56, scale: 1.15 }}
-              exit={{ opacity: 0 }}
+              // `x` via Motion, not a static translate: this animates y and
+              // scale, so Motion owns transform and the popup landed half its
+              // width right of the tap instead of over it.
+              initial={{ opacity: 1, y: 0, scale: reduce ? 1 : 0.7, x: "-50%" }}
+              animate={{ opacity: 0, y: -56, scale: 1.15, x: "-50%" }}
+              exit={{ opacity: 0, x: "-50%" }}
               transition={{ duration: 0.9, ease: "easeOut" }}
-              style={{ position: "absolute", left: p.x, top: p.y, transform: "translateX(-50%)", fontFamily: MONO, fontSize: 17, fontWeight: 900, color: p.colour, textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
+              style={{ position: "absolute", left: p.x, top: p.y, fontFamily: MONO, fontSize: 17, fontWeight: 900, color: p.colour, textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
             >
               {p.text}
             </motion.div>
