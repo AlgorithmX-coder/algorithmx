@@ -50,8 +50,21 @@ export const LESSON_HUD_HEIGHT = 64;
  */
 export const STAGE_FIT_HEIGHT = 640;
 const STAGE_FIT_MIN = 0.62;
-/** Breathing room under the board so nothing sits flush to the fold. */
-const STAGE_FIT_PAD = 16;
+/**
+ * Everything between the HUD and the board that `avail` cannot see.
+ *
+ * The fit sizes the content correctly - on Week 20's Ask the ring at 1093x525
+ * it measured 445px, exactly 525 - 64 - 16 - and the POST IT button still
+ * ended 11px under the fold. The content does not START at the HUD: the stage
+ * centres it inside its own vertical padding, so it began at y=97 and ran on
+ * to 541. A pad of 16 was breathing room UNDER the board; it was never the
+ * ~33px the stage spends above it.
+ *
+ * 48 covers both. It only ever makes a board smaller, so it cannot push
+ * anything off-screen, and it applies only below STAGE_FIT_HEIGHT - the
+ * owner's 771px window and every signed-off screenshot are untouched.
+ */
+const STAGE_FIT_PAD = 48;
 
 /**
  * Fit the stage to the content it actually holds.

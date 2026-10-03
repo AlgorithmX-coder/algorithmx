@@ -516,6 +516,16 @@ export default function AskRing({
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
+                  // The chip has to fit a 96px token column. "Kept private" plus
+                  // its lock needs ~113px, so with nowrap the words ran outside
+                  // the pill (UAT W20 7b). Wrapping centred keeps every label
+                  // whole whatever a week authors, and the 176px seat minimum
+                  // absorbs the second line, so the ring never moves.
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  maxWidth: "100%",
+                  lineHeight: 1.2,
                   gap: 4,
                   padding: "2px 8px",
                   borderRadius: 999,
@@ -526,7 +536,6 @@ export default function AskRing({
                   fontSize: 10.5,
                   fontWeight: 900,
                   letterSpacing: "0.06em",
-                  whiteSpace: "nowrap",
                 }}
               >
                 {chip.icon && <PixIcon emoji={chip.icon} size={13} />}

@@ -14,6 +14,23 @@
 //
 // Usage:
 //   node --env-file=.env.local scripts/elevenlabs-generate-narration.mjs
+//   node scripts/elevenlabs-generate-narration.mjs --check    (no API, no writes)
+//
+// --check IS THE SILENCE GATE for spine narration. A clip's filename is the
+// sha1 of its text, so editing one word of a narration block points it at a
+// recording that does not exist, and the block plays SILENT. Nothing reports
+// it: the manifest entry for the OLD text is still valid and still has its
+// file, so no entry is missing a file and no file is missing an entry.
+// audit-read-alouds only sees lines an engine reads off its own board,
+// audit-verdict-voice only the sentence after That's right / Not quite, and
+// audit-spine-narration only asks whether a block EXISTS, never whether it
+// was recorded. On 2026-10-03 two Week 16 lines rewritten for emphasis shipped
+// silent through all three. This script already knows every text the course
+// needs, so it is the only honest gate; --check runs the same scan and reports
+// what has no recording instead of buying one.
+//
+//   --check           list every unrecorded block, exit 1 if there are any
+//   --check --quiet   just the count
 
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -21,8 +38,11 @@ import ffmpegPath from "ffmpeg-static";
 import { mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
+const CHECK_ONLY = process.argv.includes("--check");
+const QUIET = process.argv.includes("--quiet");
+
 const KEY = process.env.ELEVENLABS_API_KEY;
-if (!KEY) {
+if (!KEY && !CHECK_ONLY) {
   console.error("ELEVENLABS_API_KEY missing - run with --env-file=.env.local");
   process.exit(1);
 }
@@ -804,6 +824,11 @@ async function generateBlock(speaker, lines) {
     return { key, filename, cached: true, speaker, blockText, lines };
   }
 
+  // --check reports the gap rather than buying a recording for it.
+  if (CHECK_ONLY) {
+    return { key, filename, missing: true, speaker, blockText, lines };
+  }
+
   const url = `https://api.elevenlabs.io/v1/text-to-speech/${voice.id}?output_format=${OUTPUT_FORMAT}`;
 
   // Determine which models to try this call. If we've already pinned
@@ -891,6 +916,7 @@ async function generateBlock(speaker, lines) {
 }
 
 const entries = [];
+const unrecorded = [];
 let generated = 0;
 let cachedCount = 0;
 let totalBytes = 0;
@@ -898,11 +924,17 @@ let totalBytes = 0;
 for (let i = 0; i < blocks.length; i++) {
   const block = blocks[i];
   const previewText = joinBlock(block.lines).slice(0, 80);
-  process.stdout.write(
-    `${(i + 1).toString().padStart(2)}/${blocks.length} ${block.speaker.padEnd(6)} (${block.lines.length} lines) "${previewText}${previewText.length === 80 ? "…" : ""}" … `,
-  );
+  if (!CHECK_ONLY) {
+    process.stdout.write(
+      `${(i + 1).toString().padStart(2)}/${blocks.length} ${block.speaker.padEnd(6)} (${block.lines.length} lines) "${previewText}${previewText.length === 80 ? "…" : ""}" … `,
+    );
+  }
   try {
     const r = await generateBlock(block.speaker, block.lines);
+    if (r.missing) {
+      unrecorded.push({ speaker: r.speaker, file: r.filename, text: r.blockText, source: block.source });
+      continue;
+    }
     entries.push({
       key: r.key,
       speaker: r.speaker,
@@ -913,7 +945,7 @@ for (let i = 0; i < blocks.length; i++) {
     });
     if (r.cached) {
       cachedCount++;
-      console.log("cached");
+      if (!CHECK_ONLY) console.log("cached");
     } else {
       generated++;
       totalBytes += r.bytes;
@@ -930,6 +962,26 @@ for (let i = 0; i < blocks.length; i++) {
     console.error(`  Saved ${entries.length} finished block(s) to the manifest before exiting.`);
     process.exit(3);
   }
+}
+
+// --check never writes: `entries` is incomplete by design, because an
+// unrecorded block has no entry to add.
+if (CHECK_ONLY) {
+  if (!QUIET) {
+    for (const u of unrecorded) {
+      console.log(`SILENT  ${u.speaker.padEnd(6)} ${u.source ?? "?"}`);
+      console.log(`        wants ${u.file}`);
+      console.log(`        "${u.text.slice(0, 150)}${u.text.length > 150 ? "…" : ""}"`);
+    }
+  }
+  console.log(
+    `\n${blocks.length} block(s) scanned, ${cachedCount} recorded, ${unrecorded.length} SILENT`,
+  );
+  if (unrecorded.length) {
+    console.log("Run without --check to record them.");
+    process.exit(1);
+  }
+  process.exit(0);
 }
 
 const newManifest = {

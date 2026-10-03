@@ -762,13 +762,18 @@ function Pouch({
       <span style={{ fontSize: 13, fontWeight: 900, letterSpacing: 1.5, color: GOLD }}>
         POUCH
       </span>
-      <div style={{ display: "flex", gap: 5 }}>
+      {/* The whole pouch has to be countable. Week 20 carries enough coins
+          that one row ran off the panel and the rest were simply gone, which
+          read as a never-ending stream (UAT W20 5a). It wraps now, and each
+          coin holds its size rather than being squeezed thinner. */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 5, rowGap: 5, flex: 1, minWidth: 0 }}>
         {Array.from({ length: Math.max(total, coins) }).map((_, i) => (
           <div
             key={i}
             style={{
               width: 28,
               height: 28,
+              flexShrink: 0,
               borderRadius: "50%",
               border: "2px dashed rgba(255, 215, 94, 0.3)",
               display: "flex",
@@ -1497,7 +1502,11 @@ function LeverStation({
                   style={{
                     display: "flex",
                     alignItems: "baseline",
-                    height: 30,
+                    // minHeight, not height: Week 20's deal has a long label
+                    // ("Renews every month") against a long amount ("15 coins
+                    // a month"), and at a fixed 30px the wrapped second line
+                    // printed straight through the row beneath it (UAT W20 5a).
+                    minHeight: 30,
                     fontSize: line.note ? 12 : 14,
                     fontWeight: 800,
                     color: line.note ? INK_NOTE : line.bad ? INK_BAD : INK_GOOD,
@@ -1507,18 +1516,25 @@ function LeverStation({
                   <span
                     style={{
                       flex: 1,
+                      minWidth: 12,
                       borderBottom: `2px dotted ${INK_FAINT}`,
                       margin: "0 6px 4px",
                       opacity: 0.6,
                     }}
                   />
-                  <span>{line.amount}</span>
+                  {/* The amount is the thing being read, so it keeps one line
+                      and the label wraps instead. */}
+                  <span style={{ whiteSpace: "nowrap", flexShrink: 0 }}>{line.amount}</span>
                 </div>
               ))}
               <div
                 style={{
                   marginTop: 6,
                   paddingTop: 8,
+                  // Clear of the stamp, which is pinned bottom-right: stamping
+                  // the paper is the look, stamping over the real total is the
+                  // bug (UAT W20 5a - "REAL TOTAL: 6_" under TRICK!).
+                  paddingRight: 118,
                   borderTop: "2px dashed #b8ad8d",
                   fontSize: 15,
                   fontWeight: 900,
