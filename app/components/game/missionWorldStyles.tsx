@@ -372,8 +372,13 @@ function CardDecorationArt({ deco, edge, tone = "card" }: { deco: CardDeco; edge
     case "foil":
       return (<>
         <span aria-hidden style={{ position: "absolute", inset: 5, borderRadius: 14, border: `2px double ${edge}` }} />
-        <span aria-hidden style={{ position: "absolute", bottom: chrome ? 10 : 6, right: 12, width: chrome ? 15 : 18, height: chrome ? 15 : 18, borderRadius: "50%", background: `radial-gradient(circle at 35% 35%, #fff6d0, ${edge} 55%, #a9781a)`, boxShadow: "0 1px 3px rgba(0,0,0,0.4)" }} />
-        {!chrome && <span aria-hidden style={{ position: "absolute", bottom: -4, right: 16, width: 4, height: 14, background: "#5b76ff", transform: "rotate(15deg)" }} />}
+        {/* A certificate's wax seal and its ribbon. The ribbon hung at
+            bottom:-4 inside a card that clips its overflow, so all that
+            survived was a stub under a gold disc and Talha asked outright
+            what it was (UAT W20 1a). Both sit fully inside the card now, the
+            seal lifted to leave the ribbon somewhere to hang. */}
+        <span aria-hidden style={{ position: "absolute", bottom: chrome ? 10 : 16, right: 12, width: chrome ? 15 : 18, height: chrome ? 15 : 18, borderRadius: "50%", background: `radial-gradient(circle at 35% 35%, #fff6d0, ${edge} 55%, #a9781a)`, boxShadow: "0 1px 3px rgba(0,0,0,0.4)" }} />
+        {!chrome && <span aria-hidden style={{ position: "absolute", bottom: 4, right: 16, width: 5, height: 15, background: "#5b76ff", transform: "rotate(15deg)" }} />}
       </>);
     default:
       return null;
