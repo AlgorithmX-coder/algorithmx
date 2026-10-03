@@ -209,6 +209,14 @@ export default function InfoScene({
           </div>
           <h2 style={{
             margin: 0, maxWidth: 680, marginInline: "auto",
+            // The gradient is clipped to the glyphs, but it is only PAINTED
+            // across this element's own box - and at lineHeight 1.12 that box
+            // is shorter than the type, so anything hanging below the baseline
+            // had no gradient to show and simply disappeared: Week 12's
+            // "Everything Leaves a Track" lost the tails of its y and g (UAT
+            // W12 1a). The padding extends the paint box without moving the
+            // text, so every week's title keeps its exact position.
+            paddingBottom: 6,
             fontSize: "clamp(1.6rem, 3.4vw, 2.2rem)", fontWeight: 900, lineHeight: 1.12,
             background: themeAccent
               ? `linear-gradient(180deg, #ffffff 0%, ${themeAccent} 100%)`

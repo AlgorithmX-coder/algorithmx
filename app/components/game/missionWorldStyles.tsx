@@ -345,7 +345,11 @@ function CardDecorationArt({ deco, edge, tone = "card" }: { deco: CardDeco; edge
         {/* Softened on the console: at full strength the nameplate reads as a
             stray bar rather than a plate on a door (UAT W16 1a). */}
         <span aria-hidden style={{ position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)", width: 74, height: chrome ? 6 : 12, borderRadius: 4, background: chrome ? `linear-gradient(180deg, ${edge}55, ${edge}22)` : `linear-gradient(180deg, ${edge}, #6a2aa0)`, boxShadow: chrome ? "none" : `0 0 10px ${edge}88` }} />
-        <span aria-hidden style={{ position: "absolute", right: 14, top: "50%", width: 8, height: 8, borderRadius: "50%", background: "radial-gradient(circle at 35% 35%, #fff1c9, #e3b341 55%, #6b4d12)" }} />
+        {/* The doorknob, softened on the console for the same reason as the
+            nameplate above it. On a door it is a handle; on the dark card it
+            was one gold dot floating at the right edge with nothing to belong
+            to, which is what Talha pointed at (UAT W16 8a). */}
+        <span aria-hidden style={{ position: "absolute", right: 14, top: "50%", width: chrome ? 6 : 8, height: chrome ? 6 : 8, borderRadius: "50%", opacity: chrome ? 0.4 : 1, background: "radial-gradient(circle at 35% 35%, #fff1c9, #e3b341 55%, #6b4d12)" }} />
         <span aria-hidden style={{ position: "absolute", inset: 5, borderRadius: 14, border: "2px solid rgba(180,77,255,0.35)" }} />
       </>);
     case "post":
