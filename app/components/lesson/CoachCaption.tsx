@@ -27,6 +27,7 @@
 import { useEffect, useRef, useState } from "react";
 import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
+import { claimSpokenSlot, releaseSpokenSlot } from "@/app/components/lesson/InfoNarration";
 
 const NARRATION_VOLUME = 0.5;
 const MANIFEST_URL = "/audio/voice/manifest.json";
@@ -75,18 +76,30 @@ export interface CoachCaptionProps {
   speaker?: "adam" | "layla";
   /** Change to re-show + re-play (e.g. a step id). Defaults to a one-shot. */
   triggerKey?: string | number;
+  /**
+   * Fired once this caption's voice has finished (or was never going to
+   * sound: muted, no recording, blocked autoplay). A host that speaks its
+   * own line next should wait for this instead of starting straight away,
+   * or the two talk over each other.
+   */
+  onDone?: () => void;
 }
 
 export default function CoachCaption({
   lines,
   speaker = "layla",
   triggerKey,
+  onDone,
 }: CoachCaptionProps) {
   const [visible, setVisible] = useState(true);
   // True while the recorded line is sounding (or committed to start). Drives
   // the click-guard below.
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Latest onDone without re-running the play effect (which is keyed on
+  // triggerKey only, deliberately).
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
 
   useEffect(() => {
     if (!lines || lines.length === 0) return;
@@ -101,21 +114,44 @@ export default function CoachCaption({
         safety = null;
       }
     };
+    // This caption's own stopper while it holds the shared voice slot.
+    let slotStop: (() => void) | null = null;
+    let finished = false;
     const stopGuard = () => {
       clearSafety();
+      if (slotStop) {
+        releaseSpokenSlot(slotStop);
+        slotStop = null;
+      }
       if (!cancelled) setPlaying(false);
+      // Once only, and never on unmount (the host has moved on by then).
+      if (!finished && !cancelled) {
+        finished = true;
+        onDoneRef.current?.();
+      }
     };
     const armSafety = (ms: number) => {
       clearSafety();
       safety = window.setTimeout(stopGuard, ms);
     };
 
-    if (!isAudioMuted()) {
+    if (isAudioMuted()) {
+      // Nothing will sound: release the host immediately.
+      stopGuard();
+    } else {
       void loadManifest().then((m) => {
-        if (cancelled || !m) return;
+        if (cancelled) return;
+        if (!m) {
+          stopGuard();
+          return;
+        }
         const key = joinKey(lines);
         const e = m.entries.find((x) => x.speaker === speaker && x.text === key);
-        if (!e) return;
+        if (!e) {
+          // No recording for this line: never silently strand the host.
+          stopGuard();
+          return;
+        }
         try {
           const el = new Audio(e.file);
           el.volume = NARRATION_VOLUME;
@@ -139,6 +175,16 @@ export default function CoachCaption({
           // slip through; a rejected play() drops it straight away.
           armSafety(GUARD_FALLBACK_MS);
           setPlaying(true);
+          // Join the single-voice slot: silences anything else sounding, and
+          // lets a later InfoNarration silence this (see claimSpokenSlot).
+          slotStop = () => {
+            try {
+              el.pause();
+            } catch {
+              /* noop */
+            }
+          };
+          claimSpokenSlot(slotStop);
           el.play().catch(stopGuard);
         } catch {
           stopGuard();

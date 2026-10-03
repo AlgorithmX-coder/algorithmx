@@ -23,7 +23,7 @@
  * The decorative glow remains; everything else flows naturally inside.
  */
 
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
 import { useLessonTheme } from "./LessonThemeContext";
 
 /**
@@ -49,26 +49,53 @@ export const LESSON_HUD_HEIGHT = 64;
  * can undo it for viewport-sized reserves (see ExerciseBeats).
  */
 export const STAGE_FIT_HEIGHT = 640;
-const STAGE_FIT_MIN = 0.72;
+const STAGE_FIT_MIN = 0.62;
+/** Breathing room under the board so nothing sits flush to the fold. */
+const STAGE_FIT_PAD = 16;
 
-export function useStageFit(): number {
+/**
+ * Fit the stage to the content it actually holds.
+ *
+ * The first version assumed every board was about STAGE_FIT_HEIGHT tall and
+ * scaled by viewport alone. Boards are not all that height: at 1093x525 the
+ * Week 16 panes and the Week 17 draft still pushed their answer buttons below
+ * the fold, because a fixed ratio cannot know a given board is 700px tall.
+ * Measuring the content and dividing out the zoom already in force (the same
+ * trick the intro card uses) fits each board on its own terms.
+ *
+ * Still a STRICT no-op at or above STAGE_FIT_HEIGHT, so every viewport the
+ * course was signed off at renders byte-identically.
+ */
+export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
   const [fit, setFit] = useState(1);
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let current = 1;
     const measure = () => {
       const h = window.innerHeight;
-      const next =
-        h >= STAGE_FIT_HEIGHT
-          ? 1
-          : Math.max(
-              STAGE_FIT_MIN,
-              (h - LESSON_HUD_HEIGHT) / (STAGE_FIT_HEIGHT - LESSON_HUD_HEIGHT)
-            );
-      setFit((cur) => (Math.abs(cur - next) < 0.005 ? cur : next));
+      if (h >= STAGE_FIT_HEIGHT) {
+        if (current !== 1) { current = 1; setFit(1); }
+        return;
+      }
+      // getBoundingClientRect reflects zoom, so divide it back out.
+      const natural = el.getBoundingClientRect().height / current;
+      const avail = h - LESSON_HUD_HEIGHT - STAGE_FIT_PAD;
+      if (natural <= 0 || avail <= 0) return;
+      const next = Math.max(STAGE_FIT_MIN, Math.min(1, avail / natural));
+      if (Math.abs(next - current) < 0.01) return;
+      current = next;
+      setFit(next);
     };
     measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [ref]);
   return fit;
 }
 
@@ -124,7 +151,8 @@ export default function LessonStage({
   const theme = useLessonTheme();
   const bgValue = theme?.bgGradient ?? bg ?? "linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)";
   const glowValue = theme?.glow ?? glow;
-  const fit = useStageFit();
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const fit = useStageFit(contentRef);
   const fitStyle: CSSProperties =
     fit < 1
       ? ({ zoom: fit, "--stage-zoom": String(fit) } as CSSProperties)
@@ -180,6 +208,7 @@ export default function LessonStage({
         />
       )}
       <div
+        ref={contentRef}
         style={{
           position: "relative",
           zIndex: 1,

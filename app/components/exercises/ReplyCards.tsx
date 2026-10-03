@@ -296,7 +296,20 @@ export default function ReplyCards({
     // The chat skins keep their visible CoachCaption, which plays that same
     // clip itself, so only the speaker room speaks the how-to through this
     // chain - otherwise the two would talk over each other.
-    setNarr(room && coachLines ? "howto" : shownRounds[0]?.readAloud ? "read" : "idle");
+    //
+    // And when the caption IS the how-to, the first moment waits for it: it
+    // used to start here, a third of a second behind the caption, so both
+    // voices ran to the end together (UAT W18 5a). The caption's onDone
+    // hands over instead.
+    setNarr(
+      room && coachLines
+        ? "howto"
+        : coachLines
+          ? "idle"
+          : shownRounds[0]?.readAloud
+            ? "read"
+            : "idle",
+    );
   };
 
   // The only place idx ever moves, so the per-round state is cleared here
@@ -1021,7 +1034,21 @@ export default function ReplyCards({
       {/* The chat skins keep their visible teach-once caption; the speaker room
           speaks its how-to instead (audio only), so the two never stack. */}
       {!room && coachLines && !showIntro && !hasInteracted && !finished && (
-        <CoachCaption lines={coachLines.lines} speaker={coachLines.speaker} />
+        <CoachCaption
+          lines={coachLines.lines}
+          speaker={coachLines.speaker}
+          onDone={() => {
+            // Hand the first moment to Sarah now the how-to has finished.
+            // Guarded on the opening round and an idle voice so a child who
+            // has already moved on is never spoken over.
+            if (idx !== 0) return;
+            setNarr((cur) =>
+              cur === "idle" && !isAudioMuted() && shownRounds[0]?.readAloud
+                ? "read"
+                : cur,
+            );
+          }}
+        />
       )}
 
       {feedback && (

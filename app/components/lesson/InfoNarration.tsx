@@ -129,6 +129,34 @@ let manifestPromise: Promise<Manifest | null> | null = null;
 let activeNarrationStop: (() => void) | null = null;
 
 /**
+ * Join the single-voice slot from OUTSIDE InfoNarration.
+ *
+ * CoachCaption plays its line on a raw `new Audio()`, so until now it was
+ * invisible to this slot in both directions: nothing could silence it, and
+ * starting it silenced nothing. 15 engines mount a CoachCaption AND their own
+ * InfoNarration, so the two could sound together - which is exactly what was
+ * reported on three different weeks (UAT W14 4a, W15 3a-ii, W18 5a: "the task
+ * description and the first scenario play at the same time").
+ *
+ * Claiming stops whatever else is sounding; release when the voice ends so a
+ * finished clip never holds the slot.
+ */
+export function claimSpokenSlot(stop: () => void): void {
+  if (activeNarrationStop && activeNarrationStop !== stop) {
+    try {
+      activeNarrationStop();
+    } catch {
+      /* noop */
+    }
+  }
+  activeNarrationStop = stop;
+}
+
+export function releaseSpokenSlot(stop: () => void): void {
+  if (activeNarrationStop === stop) activeNarrationStop = null;
+}
+
+/**
  * Silence every spoken voice IMMEDIATELY.
  *
  * Owner decision 2026-09-14 (UAT W1-01): tapping on must advance at once and

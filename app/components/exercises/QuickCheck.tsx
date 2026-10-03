@@ -111,11 +111,23 @@ const MODE_HERALD: Record<
 // Fisher-Yates. The authored choices often list the correct answer first,
 // which teaches "just tap the first one" — so we shuffle once per mount.
 function shuffleChoices<T>(arr: T[]): T[] {
-  const out = arr.slice();
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [out[i], out[j]] = [out[j], out[i]];
+  if (arr.length < 2) return arr.slice();
+  // Re-draw until the result differs from the authored order. That order is
+  // the ANSWER - the correct sequence in `order` mode, the correct choice
+  // first in the others - so handing it back gives the game away. An unguarded
+  // Fisher-Yates returns it 1 run in 6 on a three-item list, which is what was
+  // reported as "these steps were already in order" (UAT W11 3b).
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const out = arr.slice();
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    if (out.some((v, i) => v !== arr[i])) return out;
   }
+  // Pathologically unlucky: rotate, which is never the identity for n >= 2.
+  const out = arr.slice();
+  out.push(out.shift() as T);
   return out;
 }
 
@@ -277,7 +289,7 @@ export default function QuickCheck({
   const promptLines = useMemo(
     () =>
       mode === "finish"
-        ? ["Can you fill in the missing word?"]
+        ? ["Can you finish the rule?"]
         : [prompt.replace(/_{2,}/g, "blank")],
     [prompt, mode],
   );

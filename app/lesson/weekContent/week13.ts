@@ -713,7 +713,7 @@ export const WEEK_13: WeekContent = {
             "Save first. Even at bedtime, whatever you were doing gets to survive the night.",
             "Say bye before it goes on charge, so nobody is left mid-conversation.",
           ],
-          why: "Saved, said bye, and on charge outside the bedroom. Tomorrow-you wakes up to a full battery and no argument.",
+          why: "Saved, said bye, and on charge outside the bedroom. Tomorrow, you wake up to a full battery and no argument.",
         },
       ],
       hints: {
@@ -751,10 +751,10 @@ export const WEEK_13: WeekContent = {
       mode: "order",
       prompt: "Put the landing in order.",
       choices: [
-        { text: "1. Save it", isCorrect: true },
-        { text: "2. Say bye to whoever you are with", isCorrect: true },
-        { text: "3. Plug it in", isCorrect: true },
-        { text: "4. Walk away proud of the landing", isCorrect: true },
+        { text: "Save it", isCorrect: true },
+        { text: "Say bye to whoever you are with", isCorrect: true },
+        { text: "Plug it in", isCorrect: true },
+        { text: "Walk away proud of the landing", isCorrect: true },
       ],
       praise: "Save, say bye, plug in, walk away. ✓",
       nudge: "Which one cannot wait even twenty seconds?",

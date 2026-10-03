@@ -660,7 +660,15 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.6))",
             }}
           />
-          <div aria-hidden style={{ position: "absolute", right: "6%", bottom: "9.5%", width: "16%", height: 20, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(0,0,0,0.4), transparent 70%)" }} />
+          {/* The raccoon's ground shadow used to be drawn here as a separate
+              ellipse pinned to right:6% at a fixed 16% width. It could not
+              track the sprite, whose width follows its own aspect ratio, so
+              it sat beside him rather than under him - reported on every
+              quiz from Week 3 to Week 20 ("same recursive error", "fix this
+              shadow problem as it is consistent"). The sprites themselves
+              are clean (scanned all 40: no baked shadow), and the image
+              already carries its own drop-shadow, which grounds it properly
+              because a filter follows the rendered pixels. */}
         </>
       )}
 

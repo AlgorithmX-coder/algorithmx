@@ -350,16 +350,22 @@ export default function SpeakerDiary({
     textTransform: "uppercase",
     color: accent,
   };
-  const timeStyle: CSSProperties = {
+  // The margin time centres against the entry's FIRST LINE, whose height is
+  // set by that row's icon (20px in the list, 26px on the open entry). A fixed
+  // paddingTop cannot track two different icon sizes, so the time sat high
+  // against every row (UAT W14 1b: "the times do not line up, on every row").
+  const timeStyleFor = (iconSize: number): CSSProperties => ({
     flexShrink: 0,
     width: 46,
+    minHeight: iconSize,
+    display: "flex",
+    alignItems: "center",
     fontFamily: LABEL_FONT,
     fontSize: 11,
     fontWeight: 800,
     letterSpacing: "0.04em",
     color: MARGIN_RED,
-    paddingTop: 3,
-  };
+  });
   const timeFor = (i: number) => ENTRY_TIMES[i] ?? `#${i + 1}`;
 
   /* ───────── The quote block: the speaker's own written line ───────── */
@@ -414,7 +420,7 @@ export default function SpeakerDiary({
           opacity: 0.92,
         }}
       >
-        <span aria-hidden style={timeStyle}>{timeFor(i)}</span>
+        <span aria-hidden style={timeStyleFor(20)}>{timeFor(i)}</span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: KID_FONT, fontSize: 13.5, fontWeight: 800, color: FAINT_INK, lineHeight: 1.25, overflowWrap: "anywhere" }}>
             <PixIcon emoji={e.icon} size={20} />
@@ -468,7 +474,7 @@ export default function SpeakerDiary({
         boxShadow: `inset 0 0 0 2px ${accent}33`,
       }}
     >
-      <span aria-hidden style={timeStyle}>{timeFor(idx)}</span>
+      <span aria-hidden style={timeStyleFor(26)}>{timeFor(idx)}</span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: KID_FONT, fontSize: 16, fontWeight: 900, color: INK, lineHeight: 1.25, overflowWrap: "anywhere" }}>
           <PixIcon emoji={entry.icon} size={26} />

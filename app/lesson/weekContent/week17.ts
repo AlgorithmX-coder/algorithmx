@@ -196,7 +196,7 @@ export const WEEK_17: WeekContent = {
           readAloud: "In here you build things, and you show them to people you added yourself.",
           plate: "7",
           why: "You choose who sees your building, so it is a middle sized room. Not tiny, and nowhere near grown-up.",
-          explanation: "The making is easy. The bit to look at is WHO sees it, and in there you pick them yourself.",
+          explanation: "The making is easy. The bit to look at is who sees it, and in there you pick them yourself.",
         },
         {
           id: "market",
@@ -284,7 +284,7 @@ export const WEEK_17: WeekContent = {
       conceptTotal: 5,
       title: "Frost the Mirror",
       content:
-        "Your own profile is the room with no door on it. It hangs in the hall like a mirror, and anybody walking past can stop and look through it for as long as they like. Here is the good part: every pane of that mirror has a setting, and the setting says WHO may look. Friends only, or anybody at all. Frosting a pane does not delete it. The thing is still there, still yours, still on your profile. You have simply decided who gets to stand and stare at it.",
+        "Your own profile is the room with no door on it. It hangs in the hall like a mirror, and anybody walking past can stop and look through it for as long as they like. Here is the good part: every pane of that mirror has a setting, and the setting says who may look. Friends only, or anybody at all. Frosting a pane does not delete it. The thing is still there, still yours, still on your profile. You have simply decided who gets to stand and stare at it.",
       bullets: [
         "Your profile hangs where people walk past",
         "Every pane has a who-can-see setting",
@@ -393,7 +393,7 @@ export const WEEK_17: WeekContent = {
           label: "MY WALK HOME",
           icon: "🌍",
           shows: "I walk home past the big park every day at 3:30",
-          readAloud: "And this one says how you get home. Past the big park, and what time you do it.",
+          readAloud: "This one says how you get home. Past the big park, and what time you do it.",
           frost: true,
           why: "A route and a time is the easiest thing in the world for a stranger to wait in, so that one goes to friends only.",
           explanation: "Put the two halves together. A place, and a time you are always there. That is somewhere to wait.",

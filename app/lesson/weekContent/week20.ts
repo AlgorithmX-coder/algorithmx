@@ -415,7 +415,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Mission two down, Cyber Hero. Two nosy caught, and one fair one let through.",
+          "[proud] Two missions down, Cyber Hero. Two nosy caught, and one fair one let through.",
           "Job on one side, asks on the other. It never gets harder than that.",
           "[whispers] He has gone quiet. Which usually means something is about to be free...",
           "Next, we'll take on the last money trap he has left. Come and see!",
@@ -834,8 +834,8 @@ export const WEEK_20: WeekContent = {
           readAloud: "Last photo. A close up of a certificate, with a name and an address showing on it.",
           friends: [
             { id: "h-ollie", name: "Ollie", answer: "no", noMove: "dontPost", says: "That's got my address on it. Please don't.", readAloud: "Ollie says that one has his address on it, and asks you please not to.", why: "His address is in the picture and he asked you not to. That one does not go anywhere, and you did not need to be talked into it.", whyWrong: "Look at what is actually visible on that certificate, and at what Ollie asked for." },
-            { id: "h-ada", name: "Ada", answer: "no", noMove: "dontPost", says: "Yeah, don't post that one.", readAloud: "Ada says yes, do not post that one either.", why: "Ada said the same thing about the same photo. A second no does not cancel the first one out, it adds to it.", whyWrong: "Ada said do not post it. That is the same answer Ollie gave, about the same photo." },
-            { id: "h-sam", name: "Sam", answer: "no", noMove: "dontPost", says: "Nah, leave that.", readAloud: "Sam says no, leave that one.", why: "Sam said leave it too. Nobody in that photo wanted it up, and you listened to every one of them.", whyWrong: "Sam said leave that one, so that photo stays on your phone with everybody else who said no." },
+            { id: "h-ada", name: "Ada", answer: "no", noMove: "dontPost", says: "Yeah, don't post that one.", readAloud: "Ada says do not post that one.", why: "Ada does not want that photo posted. One no is enough to stop a photo, and nothing cancels it out.", whyWrong: "Ada said do not post it, and that is about the whole photo, not just her." },
+            { id: "h-sam", name: "Sam", answer: "no", noMove: "dontPost", says: "Nah, leave that.", readAloud: "Sam says no, leave that one.", why: "Sam said leave it. That photo stays exactly where it is.", whyWrong: "Sam said leave that one, so that photo stays on your phone." },
           ],
           why: "Everybody said no and there is an address in it, so it stays on your phone. That was the easiest decision of the night.",
         },
