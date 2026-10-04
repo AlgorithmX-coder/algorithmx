@@ -13,7 +13,7 @@ import { test, expect, type Page } from "@playwright/test";
  * learner.
  */
 
-const MODULES = [1];
+const MODULES = [1, 2, 3];
 const MAX_SCREENS = 90;
 const PROMPT = "You are writing for the finance director, who has to tell the board what to decide. From the attached export give me a one-paragraph position and the two items that need a decision as bullets with the amount, under 120 words, plain English, and flag anything disputed.";
 
@@ -83,7 +83,17 @@ async function playThrough(page: Page, query: string) {
       await page.waitForTimeout(250);
     }
     if (await page.locator(".cl-stamp").count()) break;
-    const pri = page.locator(".cl-nav .cl-btn-pri:not(:disabled)").first();
+    let pri = page.locator(".cl-nav .cl-btn-pri:not(:disabled)").first();
+    if (!(await pri.count())) {
+      /* A reveal button that does not start with "Show": press any enabled
+       * nav button other than Back once, then look again. */
+      const other = page.locator(".cl-nav button.cl-btn:not(.cl-btn-pri):not(:disabled)").filter({ hasNotText: /^Back$/ }).first();
+      if (await other.count()) {
+        await other.click();
+        await page.waitForTimeout(200);
+        pri = page.locator(".cl-nav .cl-btn-pri:not(:disabled)").first();
+      }
+    }
     if (!(await pri.count())) {
       stuckAt = eyebrow;
       break;
