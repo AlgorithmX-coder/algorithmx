@@ -10,9 +10,8 @@ import { FLUENT_MODULE_7 } from "./module7";
 import { FLUENT_MODULE_8 } from "./module8";
 import { FLUENT_MODULE_9 } from "./module9";
 
-/* The AI Fluent course map: nine modules in three acts. Modules open as
- * their content lands (phase 4 of the build); until then the home page
- * lists the whole journey with each one marked as coming. */
+/* The AI Fluent course map: nine modules in three acts, all open. A
+ * module marked unavailable would show on the home page as coming. */
 
 export const FLUENT_MODULE_LIST: ModuleSummary[] = [
   { n: 1, title: "The loop", minutes: 18, available: true },
