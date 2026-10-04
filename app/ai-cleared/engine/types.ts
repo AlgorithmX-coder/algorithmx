@@ -458,11 +458,15 @@ export type ProveItem =
 export interface TrackBlock {
   /* Only a sandbox practise needs a pack; the grade route refuses without one. */
   dataPack?: DataPack;
-  practise: Practise;
-  /* A module that runs more than one practice in a row lists them here;
-   * `practise` is then the first of them. */
+  /* One practice, or several in a row in `practises`. One of the two is set. */
+  practise?: Practise;
   practises?: Practise[];
   prove: ProveItem[];
+}
+
+/* The practices of a block, in order. */
+export function practisesOf(block: TrackBlock): Practise[] {
+  return block.practises ?? (block.practise ? [block.practise] : []);
 }
 
 export interface ModuleManifest {
