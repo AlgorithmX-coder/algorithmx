@@ -1,6 +1,8 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import type { ModuleSummary } from "@/app/ai-cleared/manifests";
 import { FLUENT_MODULE_1 } from "./module1";
+import { FLUENT_MODULE_2 } from "./module2";
+import { FLUENT_MODULE_3 } from "./module3";
 
 /* The AI Fluent course map: nine modules in three acts. Modules open as
  * their content lands (phase 4 of the build); until then the home page
@@ -8,8 +10,8 @@ import { FLUENT_MODULE_1 } from "./module1";
 
 export const FLUENT_MODULE_LIST: ModuleSummary[] = [
   { n: 1, title: "The loop", minutes: 18, available: true },
-  { n: 2, title: "Say what you want", minutes: 22, available: false },
-  { n: 3, title: "Fix the prompt, not the output", minutes: 20, available: false },
+  { n: 2, title: "Say what you want", minutes: 22, available: true },
+  { n: 3, title: "Fix the prompt, not the output", minutes: 20, available: true },
   { n: 4, title: "Summarise", minutes: 20, available: false },
   { n: 5, title: "Draft", minutes: 20, available: false },
   { n: 6, title: "Analyse", minutes: 22, available: false },
@@ -20,6 +22,8 @@ export const FLUENT_MODULE_LIST: ModuleSummary[] = [
 
 const MANIFESTS: Partial<Record<number, ModuleManifest>> = {
   1: FLUENT_MODULE_1,
+  2: FLUENT_MODULE_2,
+  3: FLUENT_MODULE_3,
 };
 
 export function getFluentModule(n: number): ModuleManifest | null {
