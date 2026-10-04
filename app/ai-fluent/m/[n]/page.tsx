@@ -3,6 +3,7 @@ import { auth } from "@/app/lib/auth";
 import { hasEntitlement } from "@/app/lib/entitlements";
 import { AI_FLUENT_SLUG, DB_TO_PHASE, DB_TO_TRACK, defaultToolFor, firmViewOf, firstNameOf, getEnrolment } from "@/app/lib/aiCleared";
 import { FLUENT_MODULE_LIST, getFluentModule } from "../../manifests";
+import { practisesOf } from "@/app/ai-cleared/engine/types";
 import ClearedPlayer from "@/app/ai-cleared/engine/ClearedPlayer";
 
 /* /ai-fluent/m/[n]: the player for Fluent module n, fed the manifest, the
@@ -33,7 +34,7 @@ export default async function FluentModulePage({ params }: { params: Promise<{ n
       manifest={manifest}
       track={DB_TO_TRACK[enrolment.track]}
       firm={firm}
-      tool={(() => { const pr = manifest.tracks[DB_TO_TRACK[enrolment.track]]?.practise; return (pr && pr.kind === "sandbox" && pr.tool) || defaultToolFor(firm); })()}
+      tool={(() => { const blk = manifest.tracks[DB_TO_TRACK[enrolment.track]]; const pr = blk ? practisesOf(blk)[0] : undefined; return (pr && pr.kind === "sandbox" && pr.tool) || defaultToolFor(firm); })()}
       learnerName={firstNameOf(enrolment.user.name, enrolment.user.email)}
       courseMap={courseMap}
       initialPhase={mine && !mine.completedAt ? DB_TO_PHASE[mine.phase] : undefined}
