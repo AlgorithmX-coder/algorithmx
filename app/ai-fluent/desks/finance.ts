@@ -90,6 +90,36 @@ export const BOARD_REQUEST: AttachedDocument = {
   ],
 };
 
+/* The long document for Module 4: the credit controller's month-end
+ * commentary, six sections, more than anyone wants to read. */
+export const MONTH_END_COMMENTARY: AttachedDocument = {
+  title: "Month-end commentary, debtors",
+  kind: "Word document, 6 sections",
+  sections: [
+    { heading: "Overview", paragraphs: [{ text: "Total outstanding at month end is £82,870 across four clients, against £91,400 last month. The fall is Oakhurst's two plan instalments (£9,200) less new invoicing to Halcyon (£3,120) and a small Cotton & Mather credit. Over-60-day debt is £69,900 and sits with two clients. One balance is disputed. Nothing has been written off and no new credit limits were requested." }] },
+    { heading: "Brightwater Logistics, £42,300, 61 days", paragraphs: [{ text: "Two invoices, INV-3107 and INV-3122, were issued in July. Two statements have gone out and neither drew a reply. The accounts contact we had, Nadia Ferreira, has left; the switchboard would not give a replacement and the general accounts inbox has not answered in nine days. Brightwater has been a client for six years and has never previously gone past 45 days. There is no dispute on record. I recommend a director-level call this week rather than a third statement, and a formal notice if that call is not returned within seven days." }] },
+    { heading: "Cotton & Mather, £9,850, 34 days, disputed", paragraphs: [{ text: "INV-3140 covers the August delivery. Rob Askew says the delivery was eleven units short and will not pay until a credit is agreed. Operations have not yet produced the signed delivery note; the driver's copy may be in the depot office. Until the note is found the balance should be held out of the collectable total. If the note shows a short delivery, the credit is about £1,400 and the rest is collectable immediately." }] },
+    { heading: "Halcyon Dental Group, £3,120, 12 days", paragraphs: [{ text: "INV-3151 is within terms. Halcyon pays on the 25th as a rule and has done so for two years. No action." }] },
+    { heading: "Oakhurst Fabrics, £27,600, 92 days, on a plan", paragraphs: [{ text: "The plan agreed in August is £4,600 a month for six months. Two instalments have been received on time. The balance looks old because the plan covers invoices from June; it is performing. Lee Danvers has asked whether a lump sum in December could close it early at a small discount; that would need a decision." }] },
+    { heading: "Process notes", paragraphs: [{ text: "Statements now go out on the first working day. The new accounts contact field in the ledger is being filled in for every client after the Brightwater gap. Sam Whitlow is on leave the week of the 14th; chasers that week are covered by Dev Patel." }] },
+  ],
+};
+
+/* The email for Module 5: the supplier chasing payment on the chairs. */
+export const SUPPLIER_QUERY: AttachedDocument = {
+  title: "Email from Penrose Office Supplies",
+  kind: "Email, Thursday 11:02",
+  emails: [
+    { from: "Penrose Office Supplies", subject: "Overdue: PO-8897, chairs, £1,540", time: "11:02", preview: "Our September statement shows PO-8897 unpaid at 38 days. We would be grateful for payment or an explanation…" },
+    { from: "Helen Okonkwo", subject: "Board pack, debtors slide", time: "Tue", preview: "Can I have one page on debtors for Thursday? The board do not want the full export…" },
+    { from: "Sam Whitlow", subject: "Brightwater: new accounts contact?", time: "Mon", preview: "Their old contact has left. Anyone got a name for the new one before I chase again?" },
+  ],
+  sections: [
+    { heading: "Subject: Overdue: PO-8897, chairs, £1,540", paragraphs: [{ text: "Good morning. Our September statement shows PO-8897 (six operator chairs, £1,540) unpaid at 38 days, outside our thirty-day terms. The other September items were settled on time, thank you. We would be grateful for payment by Friday or an explanation of any issue, as our credit control process would otherwise place the account on hold. Kind regards, Marion Kettle, Accounts, Penrose Office Supplies." }] },
+    { heading: "What you know", paragraphs: [{ text: "The chairs were never delivered. The carrier's tracking shows the consignment returned to Penrose's depot on the 9th after two failed delivery attempts to the wrong unit number. Nobody at Penrose has mentioned this. The firm wants the chairs, not a refund, and wants to keep the account in good standing." }] },
+  ],
+};
+
 export const MONTH_END_STANDUP: AttachedDocument = {
   title: "Month-end stand-up",
   kind: "Meeting recap, Tuesday, 14 minutes",
