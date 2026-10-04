@@ -13,7 +13,7 @@ import { test, expect, type Page } from "@playwright/test";
  * learner.
  */
 
-const MODULES = [1, 2, 3, 4, 5];
+const MODULES = [1, 2, 3, 4, 5, 6, 7];
 const MAX_SCREENS = 90;
 const PROMPT = "You are writing for the finance director, who has to tell the board what to decide. From the attached export give me a one-paragraph position and the two items that need a decision as bullets with the amount, under 120 words, plain English, and flag anything disputed.";
 
@@ -70,8 +70,11 @@ async function playThrough(page: Page, query: string) {
       await settle();
       await page.waitForTimeout(250);
     }
-    if (await page.locator(".cl-para.pickable:not(:disabled)").count()) {
-      await page.locator(".cl-para.pickable:not(:disabled)").nth(1).click();
+    /* A pickable paragraph: the second one first (a deliberate miss where
+     * two tries are allowed), then the first still enabled. */
+    for (let k = 0; k < 2 && (await page.locator(".cl-para.pickable:not(:disabled)").count()); k++) {
+      const picks = page.locator(".cl-para.pickable:not(:disabled)");
+      await picks.nth(k === 0 && (await picks.count()) > 1 ? 1 : 0).click();
       await page.waitForTimeout(120);
     }
     for (let k = 0; k < 6 && (await page.locator(".cl-src:not(:disabled)").count()); k++) {

@@ -5,6 +5,8 @@ import { FLUENT_MODULE_2 } from "./module2";
 import { FLUENT_MODULE_3 } from "./module3";
 import { FLUENT_MODULE_4 } from "./module4";
 import { FLUENT_MODULE_5 } from "./module5";
+import { FLUENT_MODULE_6 } from "./module6";
+import { FLUENT_MODULE_7 } from "./module7";
 
 /* The AI Fluent course map: nine modules in three acts. Modules open as
  * their content lands (phase 4 of the build); until then the home page
@@ -16,8 +18,8 @@ export const FLUENT_MODULE_LIST: ModuleSummary[] = [
   { n: 3, title: "Fix the prompt, not the output", minutes: 20, available: true },
   { n: 4, title: "Summarise", minutes: 20, available: true },
   { n: 5, title: "Draft", minutes: 20, available: true },
-  { n: 6, title: "Analyse", minutes: 22, available: false },
-  { n: 7, title: "Research", minutes: 20, available: false },
+  { n: 6, title: "Analyse", minutes: 22, available: true },
+  { n: 7, title: "Research", minutes: 20, available: true },
   { n: 8, title: "Verify and automate", minutes: 20, available: false },
   { n: 9, title: "Your real task", minutes: 22, available: false },
 ];
@@ -28,6 +30,8 @@ const MANIFESTS: Partial<Record<number, ModuleManifest>> = {
   3: FLUENT_MODULE_3,
   4: FLUENT_MODULE_4,
   5: FLUENT_MODULE_5,
+  6: FLUENT_MODULE_6,
+  7: FLUENT_MODULE_7,
 };
 
 export function getFluentModule(n: number): ModuleManifest | null {
