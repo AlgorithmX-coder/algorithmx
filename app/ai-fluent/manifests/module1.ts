@@ -1,5 +1,6 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import { AGED_DEBTORS, FINANCE_PACK } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
 
 /* AI Fluent, Module 1 · The loop. Why the first answer is never the
  * answer, and the four moves: say, look, fix, check. The practice takes
@@ -68,6 +69,7 @@ export const FLUENT_MODULE_1: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[1],
     finance: {
       dataPack: FINANCE_PACK,
       practise: {

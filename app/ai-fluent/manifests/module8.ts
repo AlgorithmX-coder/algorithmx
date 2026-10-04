@@ -1,5 +1,13 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import { FINANCE_PACK, MONTH_END_STANDUP } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
+import { LEGAL_BLOCKS } from "../desks/legal";
+import { HR_BLOCKS } from "../desks/hr";
+import { SALES_BLOCKS } from "../desks/sales";
+import { SUPPORT_BLOCKS } from "../desks/support";
+import { OPS_BLOCKS } from "../desks/ops";
+import { IT_BLOCKS } from "../desks/it";
+import { LEADERSHIP_BLOCKS } from "../desks/leadership";
 
 /* AI Fluent, Module 8 · Verify and automate. The two-minute check before
  * anything leaves, and where a repeatable prompt becomes a template.
@@ -58,21 +66,16 @@ export const FLUENT_MODULE_8: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[8],
+    legal: LEGAL_BLOCKS[8],
+    hr: HR_BLOCKS[8],
+    sales: SALES_BLOCKS[8],
+    support: SUPPORT_BLOCKS[8],
+    ops: OPS_BLOCKS[8],
+    it: IT_BLOCKS[8],
+    leadership: LEADERSHIP_BLOCKS[8],
     finance: {
       dataPack: FINANCE_PACK,
-      practise: {
-        kind: "loop",
-        task: "Write the recap prompt once with slots, run it twice inside Teams, then check the second run against the transcript.",
-        brief: "Helen missed the stand-up and wants a recap: what was decided, then the actions with an owner and a date each. You will run the same template twice, the second time for a different reader, in a fresh chat each time.",
-        material: MONTH_END_STANDUP,
-        office: "teams",
-        followUp: false,
-        turns: [
-          { instruction: "Send 1: the template, filled in for Helen. Name the reader, the shape (decisions, then actions with owner and date), the length, what to flag, and write the check into the prompt.", rubric: { requires: ["reader", "format", "length", "constraints", "material"], goal: "A recap for the finance director: decisions as bullets, actions with owner and date, under a stated length, anything blocked flagged, every owner and date from the transcript." }, placeholder: "Recap the month-end stand-up for Helen, who missed it: three bullets on what was decided, then actions with owner and date, under … words, flag anything blocked. Check: …" },
-          { instruction: "Send 2: the same template, filled in for Dev, who was there and only needs his own actions. Change the slots, not the prompt.", rubric: { requires: ["reader", "format", "length", "constraints", "material"], goal: "The same shape for a different reader: only Dev's actions, with dates, under a stated length." }, placeholder: "Recap the month-end stand-up for Dev, who was there and needs only his own actions…" },
-        ],
-        playbook: { workflow: "Automate", whenToUse: "A task you do every week with different inputs: write it once with slots for the meeting, the reader and the length, and write the check into the prompt.", check: "Every owner and date traced to the transcript; ask the tool to mark anything not stated in the source." },
-      },
       practises: [
         {
           kind: "loop",

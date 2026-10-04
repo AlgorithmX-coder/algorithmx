@@ -1,5 +1,13 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import { FINANCE_PACK, SUPPLIER_QUERY } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
+import { LEGAL_BLOCKS } from "../desks/legal";
+import { HR_BLOCKS } from "../desks/hr";
+import { SALES_BLOCKS } from "../desks/sales";
+import { SUPPORT_BLOCKS } from "../desks/support";
+import { OPS_BLOCKS } from "../desks/ops";
+import { IT_BLOCKS } from "../desks/it";
+import { LEADERSHIP_BLOCKS } from "../desks/leadership";
 
 /* AI Fluent, Module 5 · Draft. Drafting from a brief in the firm's
  * voice: letters, emails, first versions. The practice runs in Copilot
@@ -67,6 +75,14 @@ export const FLUENT_MODULE_5: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[5],
+    legal: LEGAL_BLOCKS[5],
+    hr: HR_BLOCKS[5],
+    sales: SALES_BLOCKS[5],
+    support: SUPPORT_BLOCKS[5],
+    ops: OPS_BLOCKS[5],
+    it: IT_BLOCKS[5],
+    leadership: LEADERSHIP_BLOCKS[5],
     finance: {
       dataPack: FINANCE_PACK,
       practise: {

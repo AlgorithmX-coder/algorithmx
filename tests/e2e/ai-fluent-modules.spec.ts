@@ -118,6 +118,18 @@ test.describe("AI Fluent modules play through to the result", () => {
     });
   }
 
+  /* The other desks: one module each, so a broken block cannot ship.
+   * Every desk's full shape is checked by desks.test.ts; this is the
+   * player on a non-Finance desk, including the General fallback. */
+  for (const [m, track] of [[2, "general"], [6, "legal"], [9, "hr"]] as const) {
+    test(`module ${m} on the ${track} desk`, async ({ page }) => {
+      const r = await playThrough(page, `m=${m}&track=${track}`);
+      expect(r.stuckAt, `no way forward at "${r.stuckAt}" after ${r.screens} screens`).toBeNull();
+      expect(r.stamped, "reached the result stamp").toBe(true);
+      expect(r.errors, "no page or console errors").toEqual([]);
+    });
+  }
+
   test("module 1 on ChatGPT", async ({ page }) => {
     const r = await playThrough(page, "m=1&tool=chatgpt");
     expect(r.stuckAt).toBeNull();

@@ -1,5 +1,13 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import { FINANCE_PACK, MONTH_END_COMMENTARY } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
+import { LEGAL_BLOCKS } from "../desks/legal";
+import { HR_BLOCKS } from "../desks/hr";
+import { SALES_BLOCKS } from "../desks/sales";
+import { SUPPORT_BLOCKS } from "../desks/support";
+import { OPS_BLOCKS } from "../desks/ops";
+import { IT_BLOCKS } from "../desks/it";
+import { LEADERSHIP_BLOCKS } from "../desks/leadership";
 
 /* AI Fluent, Module 4 · Summarise. The first workflow: summaries that
  * keep the decision and drop the noise. The practice runs in Copilot
@@ -70,6 +78,14 @@ export const FLUENT_MODULE_4: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[4],
+    legal: LEGAL_BLOCKS[4],
+    hr: HR_BLOCKS[4],
+    sales: SALES_BLOCKS[4],
+    support: SUPPORT_BLOCKS[4],
+    ops: OPS_BLOCKS[4],
+    it: IT_BLOCKS[4],
+    leadership: LEADERSHIP_BLOCKS[4],
     finance: {
       dataPack: FINANCE_PACK,
       practise: {
