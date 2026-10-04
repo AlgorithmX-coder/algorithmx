@@ -831,7 +831,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                   initial={reduce ? false : { scale: 0.9, opacity: 0, y: -8 }}
                   animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -8, 0] }}
                   transition={reduce ? { duration: 0.3 } : { duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  style={{ position: "relative", zIndex: 2, height: shortViewport ? 100 : 150, filter: `drop-shadow(0 10px 16px rgba(0,0,0,0.55)) drop-shadow(0 0 20px ${accent}73)` }}
+                  style={{ position: "relative", zIndex: 2, height: shortViewport ? 100 : 150, filter: `drop-shadow(0 0 16px rgba(0,0,0,0.45)) drop-shadow(0 0 20px ${accent}73)` }}
                 />
               </div>
               <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: accent, marginTop: 2 }}>
@@ -973,7 +973,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="victory" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "8%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
-                <motion.img src={weekCharacterSrc(week, "raccoon", "defeated")} onError={fallbackToShared("raccoon", "defeated")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.5))", willChange: "transform" }} />
+                <motion.img src={weekCharacterSrc(week, "raccoon", "defeated")} onError={fallbackToShared("raccoon", "defeated")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 0 16px rgba(5,10,30,0.45))", willChange: "transform" }} />
                 {/* Comic KO: dizzy stars orbit his head so the defeat reads funny, not sad. */}
                 <div aria-hidden style={{ position: "absolute", top: 6, left: "50%", width: 108, height: 108, marginLeft: -54, animation: reduce ? undefined : "qbSpin 3.2s linear infinite", pointerEvents: "none", zIndex: 3 }}>
                   {[0, 120, 240].map((deg) => (
@@ -982,7 +982,13 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                     </span>
                   ))}
                 </div>
-                <div aria-hidden style={{ position: "absolute", left: "50%", bottom: 0, transform: "translateX(-50%)", width: 100, height: 12, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(0,0,0,0.4), transparent 70%)" }} />
+                {/* A ground shadow used to sit here. The defeated raccoon
+                    floats on a dark arena with no floor under him, so a
+                    100x12 dark ellipse at his feet read as a grey smudge
+                    rather than as contact - which is what "the raccoon still
+                    has a shadow at the end of the quiz" is pointing at (UAT
+                    W2 4b, W12 7b, W14 6c). The spinning stars give him his
+                    base without pretending there is a floor. */}
               </div>
               <motion.div initial={reduce ? false : { scale: 2.0, opacity: 0, rotate: -4 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 190, damping: 14 }} style={{ margin: "4px 0 0", fontSize: "clamp(34px, 5.6vw, 50px)", fontWeight: 900, lineHeight: 1, background: "linear-gradient(180deg, #d6ffe0 0%, #7eff97 50%, #2fae4e 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 3px 0 rgba(0,0,0,0.35))" }}>
                 YOU WIN!
@@ -1017,7 +1023,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="failed" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "6%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
-                <motion.img src={RACCOON.taunt} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 12px 16px rgba(5,10,30,0.5)) drop-shadow(0 0 18px ${accent}66)`, willChange: "transform" }} />
+                <motion.img src={RACCOON.taunt} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 0 16px rgba(5,10,30,0.45)) drop-shadow(0 0 18px ${accent}66)`, willChange: "transform" }} />
               </div>
               <motion.div initial={reduce ? false : { scale: 1.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 200, damping: 16 }} style={{ margin: "4px 0 0", fontSize: "clamp(30px, 5.2vw, 46px)", fontWeight: 900, lineHeight: 1, textTransform: "uppercase", background: `linear-gradient(180deg, #fffbe9 0%, ${accent} 60%, ${accent}88 100%)`, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: `drop-shadow(0 0 18px ${accent}66)` }}>
                 So Close!

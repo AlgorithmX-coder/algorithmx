@@ -619,7 +619,7 @@ export default function ClueStamper({
                         animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0 }}
                         transition={{ type: "spring", stiffness: 260, damping: 16 }}
-                        style={{ position: "absolute", left: -18, top: -30, height: 118, objectFit: "contain", filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.6))", pointerEvents: "none" }}
+                        style={{ position: "absolute", left: -18, top: -30, height: 118, objectFit: "contain", filter: "drop-shadow(0 0 14px rgba(0,0,0,0.45))", pointerEvents: "none" }}
                       />
                     )}
                   </AnimatePresence>
