@@ -65,6 +65,8 @@ const STAGE_FIT_MIN = 0.55;
  * owner's 771px window and every signed-off screenshot are untouched.
  */
 const STAGE_FIT_PAD = 24;
+/** The same reserve on a tall window, where the 3vw clamp is still in force. */
+const STAGE_FIT_PAD_TALL = 72;
 
 /**
  * Is the window too short for the layouts this course was drawn for?
@@ -109,13 +111,24 @@ export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
     let current = 1;
     const measure = () => {
       const h = window.innerHeight;
-      if (h >= STAGE_FIT_HEIGHT) {
-        if (current !== 1) { current = 1; setFit(1); }
-        return;
-      }
       // getBoundingClientRect reflects zoom, so divide it back out.
       const natural = el.getBoundingClientRect().height / current;
-      const avail = h - LESSON_HUD_HEIGHT - STAGE_FIT_PAD;
+      // The gate used to be "only below STAGE_FIT_HEIGHT", to protect the
+      // window the course was signed off at. Measuring that window proved the
+      // protection was the bug: Week 2's Learn board is ~923px, so at the
+      // owner's 771px it ran 203px past the fold and at 1920x950 it still ran
+      // 24px past. It has always overflowed except on a very tall screen.
+      //
+      // So the fit now applies at any height - but only when the content
+      // genuinely does not fit. A board with room to spare computes a scale of
+      // 1 and renders byte-identically to before, so the only screens that
+      // change are the ones that were already broken.
+      //
+      // The pad has to match the stage's real padding, which is ~33px top and
+      // bottom from a 3vw clamp on a tall window and 8px on a short one. Using
+      // the short figure everywhere would leave the fit believing it had 50px
+      // more room than it does, and the board would still overhang.
+      const avail = h - LESSON_HUD_HEIGHT - (h < STAGE_FIT_HEIGHT ? STAGE_FIT_PAD : STAGE_FIT_PAD_TALL);
       if (natural <= 0 || avail <= 0) return;
       const next = Math.max(STAGE_FIT_MIN, Math.min(1, avail / natural));
       if (Math.abs(next - current) < 0.01) return;
