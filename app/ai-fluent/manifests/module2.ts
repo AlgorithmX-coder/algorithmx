@@ -1,5 +1,6 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import { FINANCE_PACK, SUPPLIER_STATEMENT } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
 
 /* AI Fluent, Module 2 · Say what you want. The eight elements of a prompt
  * and what each one changes. The practice rewrites one desk task three
@@ -92,6 +93,7 @@ export const FLUENT_MODULE_2: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[2],
     finance: {
       dataPack: FINANCE_PACK,
       practise: {

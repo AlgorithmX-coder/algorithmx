@@ -1,5 +1,13 @@
 import type { ModuleManifest, ProveItem } from "@/app/ai-cleared/engine/types";
 import { AGED_DEBTORS, FINANCE_PACK } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
+import { LEGAL_BLOCKS } from "../desks/legal";
+import { HR_BLOCKS } from "../desks/hr";
+import { SALES_BLOCKS } from "../desks/sales";
+import { SUPPORT_BLOCKS } from "../desks/support";
+import { OPS_BLOCKS } from "../desks/ops";
+import { IT_BLOCKS } from "../desks/it";
+import { LEADERSHIP_BLOCKS } from "../desks/leadership";
 
 /* AI Fluent, Module 9 · Your real task. The capstone: one complete piece
  * of work from brief to verified output on the learner's own desk, the
@@ -43,22 +51,16 @@ export const FLUENT_MODULE_9: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[9],
+    legal: LEGAL_BLOCKS[9],
+    hr: HR_BLOCKS[9],
+    sales: SALES_BLOCKS[9],
+    support: SUPPORT_BLOCKS[9],
+    ops: OPS_BLOCKS[9],
+    it: IT_BLOCKS[9],
+    leadership: LEADERSHIP_BLOCKS[9],
     finance: {
       dataPack: FINANCE_PACK,
-      practise: {
-        kind: "loop",
-        task: "Turn the aged-debtors export into a one-page board note with three actions, inside Excel, in three turns.",
-        brief: "The board meets Thursday. They want one page: the position in a paragraph, what changed since last month, and three actions with an owner each. Plain English; they are not all finance people. The export is open in Excel; Copilot has it. Three turns: ask, fix, finish. Then check it.",
-        material: AGED_DEBTORS,
-        office: "excel",
-        followUp: true,
-        turns: [
-          { instruction: "Turn 1: the full ask. Who it is for, the shape, the length, what to flag and leave out, from the sheet.", rubric: { requires: ["reader", "task", "format", "length", "constraints", "material"], goal: "A one-page board note: position, change since last month, three actions with owners, plain English, from the export." }, placeholder: "For the board, who are not all finance people: one page with the position in a paragraph, what changed, and three actions with an owner each, under … words, from the sheet…" },
-          { instruction: "Turn 2: look at it as a board member. Say what was wrong or narrow it.", placeholder: "The actions need owners; cut the invoice numbers; shorter…" },
-          { instruction: "Turn 3: ask it to check every figure and name against the sheet and mark anything it stated that the sheet does not.", placeholder: "Check every figure and name in the note against the sheet and mark anything not stated in it…" },
-        ],
-        playbook: { workflow: "Your real task", whenToUse: "The board page, every month: reader, shape, length, what to flag, from the export; then fix, then check.", check: "Every figure and name traced to the sheet; the tool asked to mark anything the sheet does not say; the three actions each have an owner the sheet or the stand-up supports." },
-      },
       practises: [
         {
           kind: "loop",

@@ -1,5 +1,13 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import { AGED_DEBTORS, FINANCE_PACK } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
+import { LEGAL_BLOCKS } from "../desks/legal";
+import { HR_BLOCKS } from "../desks/hr";
+import { SALES_BLOCKS } from "../desks/sales";
+import { SUPPORT_BLOCKS } from "../desks/support";
+import { OPS_BLOCKS } from "../desks/ops";
+import { IT_BLOCKS } from "../desks/it";
+import { LEADERSHIP_BLOCKS } from "../desks/leadership";
 
 /* AI Fluent, Module 6 · Analyse. Tables and numbers with Copilot in
  * Excel: asking for the comparison you want rather than "analyse this",
@@ -57,23 +65,16 @@ export const FLUENT_MODULE_6: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[6],
+    legal: LEGAL_BLOCKS[6],
+    hr: HR_BLOCKS[6],
+    sales: SALES_BLOCKS[6],
+    support: SUPPORT_BLOCKS[6],
+    ops: OPS_BLOCKS[6],
+    it: IT_BLOCKS[6],
+    leadership: LEADERSHIP_BLOCKS[6],
     finance: {
       dataPack: FINANCE_PACK,
-      practise: {
-        kind: "spot",
-        task: "Read Copilot's reply about the debtors sheet. One sentence states something the sheet does not say. Tap it.",
-        prompt: "Summarise what this sheet says about the over-60-day accounts",
-        sentences: [
-          "Total outstanding is £82,870 across four clients.",
-          "Two clients are over 60 days: Brightwater Logistics at 61 days and Oakhurst Fabrics at 92 days, £69,900 between them.",
-          "Oakhurst Fabrics has paid nothing against its payment plan since it was agreed in August.",
-          "Cotton & Mather's £9,850 is disputed over a short delivery and should be held out of the collectable total.",
-          "Halcyon Dental Group's £3,120 is within terms.",
-        ],
-        errorIndex: 2,
-        why: "The sheet says two instalments have been received against Oakhurst's plan. The tool stated the opposite, confidently, in the middle of four true sentences. That is what a guess looks like: plausible, specific, and not in the source.",
-        material: AGED_DEBTORS,
-      },
       practises: [
         {
           kind: "spot",

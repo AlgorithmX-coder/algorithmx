@@ -1,5 +1,13 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import { FINANCE_PACK } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
+import { LEGAL_BLOCKS } from "../desks/legal";
+import { HR_BLOCKS } from "../desks/hr";
+import { SALES_BLOCKS } from "../desks/sales";
+import { SUPPORT_BLOCKS } from "../desks/support";
+import { OPS_BLOCKS } from "../desks/ops";
+import { IT_BLOCKS } from "../desks/it";
+import { LEADERSHIP_BLOCKS } from "../desks/leadership";
 
 /* AI Fluent, Module 7 · Research. Finding out with sources on: asking
  * for sources, checking them, the difference between a citation and a
@@ -55,20 +63,16 @@ export const FLUENT_MODULE_7: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[7],
+    legal: LEGAL_BLOCKS[7],
+    hr: HR_BLOCKS[7],
+    sales: SALES_BLOCKS[7],
+    support: SUPPORT_BLOCKS[7],
+    ops: OPS_BLOCKS[7],
+    it: IT_BLOCKS[7],
+    leadership: LEADERSHIP_BLOCKS[7],
     finance: {
       dataPack: FINANCE_PACK,
-      practise: {
-        kind: "loop",
-        task: "Research a question for the finance director with web mode on, then get the sources.",
-        brief: "Helen wants to know what the firm could charge Brightwater in statutory interest and recovery costs if it came to that, UK rules only, as a short note she can forward to the firm's solicitor. Do not name the client in the prompt; the figures are what matter.",
-        followUp: true,
-        webMode: true,
-        turns: [
-          { instruction: "Send 1: the question, for the finance director, with the constraints that matter: UK only, current rules, cite sources, say when each was last updated.", rubric: { requires: ["task", "reader", "constraints"], goal: "A short note on statutory interest and recovery sums for a late commercial payment in the UK, with sources and their dates." }, placeholder: "For the finance director: what interest and recovery costs can a UK business claim on a late commercial payment… UK only, current rules, cite sources with dates…" },
-          { instruction: "Send 2: ask for the sources as a numbered list with the publisher, the page title and the date, and ask it to mark any it is not certain exists.", placeholder: "List your sources with publisher, title and date, and mark any you are not certain exist…" },
-        ],
-        playbook: { workflow: "Research", whenToUse: "A question you cannot answer from your own files: ask with the reader and the constraints, UK only and current, and demand sources with dates.", check: "Open two of the sources. If one does not exist, trust nothing in the reply." },
-      },
       practises: [
         {
           kind: "loop",

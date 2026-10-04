@@ -1,5 +1,6 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import { AGED_DEBTORS, FINANCE_PACK } from "../desks/finance";
+import { GENERAL_BLOCKS } from "../desks/general";
 
 /* AI Fluent, Module 3 · Fix the prompt, not the output. Iterating: telling
  * the tool what was wrong, asking for options, narrowing, asking it to
@@ -58,6 +59,7 @@ export const FLUENT_MODULE_3: ModuleManifest = {
     },
   ],
   tracks: {
+    general: GENERAL_BLOCKS[3],
     finance: {
       dataPack: FINANCE_PACK,
       practise: {
