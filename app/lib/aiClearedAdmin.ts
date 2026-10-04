@@ -192,20 +192,43 @@ export async function sendInvite(args: { to: string; token: string; firmName: st
  * firm, so the email says what they can do and where. */
 export async function sendAdminWelcome(args: { to: string; token: string; firmName: string; seats: number; fluentSeats?: number; origin: string; staffName: string; staffEmail: string | null }) {
   const link = `${args.origin}/ai-cleared/join/${args.token}`;
-  const seatLine = `${args.seats} ${args.seats === 1 ? "seat" : "seats"}`;
-  const fluentLine = args.fluentSeats ? ` and ${args.fluentSeats} AI Fluent ${args.fluentSeats === 1 ? "seat" : "seats"}` : "";
+  const parts: string[] = [];
+  if (args.seats > 0) parts.push(`${args.seats} AI Cleared ${args.seats === 1 ? "seat" : "seats"}`);
+  if (args.fluentSeats) parts.push(`${args.fluentSeats} AI Fluent ${args.fluentSeats === 1 ? "seat" : "seats"}`);
+  const seatLine = parts.join(" and ") || "Your seats";
+  const brand = args.seats > 0 ? "AI CLEARED" : "AI FLUENT";
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
-      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">AI CLEARED</p>
-      <h1 style="font-size:22px;margin:0 0 12px">${seatLine} on AI Cleared${fluentLine} are ready for ${esc(args.firmName)}.</h1>
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${brand}</p>
+      <h1 style="font-size:22px;margin:0 0 12px">${seatLine} are ready for ${esc(args.firmName)}.</h1>
       <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the admin for ${esc(args.firmName)}. Set up your account from the link below, then invite your staff from the admin console: paste their email addresses and each person gets their own invite. The same console shows who has finished, and their certificates.</p>
       <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Your own seat is included, so you can take the course too: about ninety minutes in five short modules, practised inside a copy of the tool your firm uses, on invented data.</p>
       <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my admin account</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
     </div>`;
-  const text = `${seatLine} on AI Cleared${fluentLine} are ready for ${args.firmName}.\n\nYou are the admin. Set up your account, then invite your staff from the admin console; the same console shows who has finished and their certificates. Your own seat is included.\n\nSet up your admin account: ${link}\n`;
-  return sendEmail({ to: args.to, subject: `AI Cleared is ready for ${args.firmName}: ${seatLine}`, html, text, replyTo: args.staffEmail ?? undefined });
+  const text = `${seatLine} are ready for ${args.firmName}.\n\nYou are the admin. Set up your account, then invite your staff from the admin console; the same console shows who has finished and their certificates. Your own seat is included.\n\nSet up your admin account: ${link}\n`;
+  return sendEmail({ to: args.to, subject: `${args.seats > 0 ? "AI Cleared" : "AI Fluent"} is ready for ${args.firmName}: ${seatLine}`, html, text, replyTo: args.staffEmail ?? undefined });
+}
+
+/* Seats bought by card by an admin who already runs a firm: no new firm,
+ * no new invite, just the count going up and a note saying so. */
+export async function sendSeatsAdded(args: { to: string; firmName: string; course: CourseSlug; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
+  const c = COURSES[args.course];
+  const link = `${args.origin}/ai-cleared/admin`;
+  const seatLine = `${args.seats} ${c.name} ${args.seats === 1 ? "seat" : "seats"}`;
+  const claim = args.course === "ai-fluent" ? "Each AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate; the invite tells them so." : "Each person you invite gets their own link and claims a seat on first sign-in.";
+  const html = `
+    <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${c.brand}</p>
+      <h1 style="font-size:22px;margin:0 0 12px">${seatLine} added to ${esc(args.firmName)}.</h1>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Thank you. The seats are on your firm's account now and the admin console shows the new total. Invite staff from there: paste their email addresses and each person gets their own invite. ${claim}</p>
+      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Open the admin console</a></p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Your VAT invoice comes separately from Stripe. Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
+    </div>`;
+  const text = `${seatLine} added to ${args.firmName}.\n\nThe seats are on your firm's account now and the admin console shows the new total. Invite staff from there. ${claim}\n\nAdmin console: ${link}\n`;
+  return sendEmail({ to: args.to, subject: `${seatLine} added to ${args.firmName}`, html, text, replyTo: args.staffEmail ?? undefined });
 }
 
 /* A reminder to everyone on a course who has not finished, under the

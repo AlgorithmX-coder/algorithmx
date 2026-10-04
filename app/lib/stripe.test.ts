@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { SEAT_PRICE_PENCE, planForSeats, priceIdFor, stripeConfigured } from "./stripe";
+import { SEAT_PRICE_PENCE, planForSeats, priceIdFor, sellableCourses, stripeConfigured } from "./stripe";
 import { validateSeats } from "./aiClearedCheckout";
 
 /* The pack rules the checkout enforces, and the switch that keeps
  * checkout off until every variable exists. */
 
-const KEYS = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "STRIPE_PRICE_AI_CLEARED_TEAM", "STRIPE_PRICE_AI_CLEARED_FIRM"];
+const KEYS = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "STRIPE_PRICE_AI_CLEARED_TEAM", "STRIPE_PRICE_AI_CLEARED_FIRM", "STRIPE_PRICE_AI_FLUENT_TEAM", "STRIPE_PRICE_AI_FLUENT_FIRM"];
 
 describe("corporate seat packs", () => {
   afterEach(() => {
@@ -47,5 +47,27 @@ describe("corporate seat packs", () => {
     expect(priceIdFor("ai-cleared", "TEAM")).toBe("price_team");
     expect(priceIdFor("ai-cleared", "FIRM")).toBe("price_firm");
     expect(priceIdFor("ai-cleared", "ENTERPRISE")).toBeNull();
+  });
+
+  it("puts AI Fluent on sale only once both its prices exist", () => {
+    process.env.STRIPE_SECRET_KEY = "sk_test_x";
+    process.env.STRIPE_WEBHOOK_SECRET = "whsec_x";
+    process.env.STRIPE_PRICE_AI_CLEARED_TEAM = "price_team";
+    process.env.STRIPE_PRICE_AI_CLEARED_FIRM = "price_firm";
+    expect(sellableCourses()).toEqual(["ai-cleared"]);
+    process.env.STRIPE_PRICE_AI_FLUENT_TEAM = "price_fluent_team";
+    expect(sellableCourses()).toEqual(["ai-cleared"]);
+    process.env.STRIPE_PRICE_AI_FLUENT_FIRM = "price_fluent_firm";
+    expect(sellableCourses()).toEqual(["ai-cleared", "ai-fluent"]);
+    expect(stripeConfigured()).toBe(true);
+  });
+
+  it("stays off when only AI Fluent is priced", () => {
+    process.env.STRIPE_SECRET_KEY = "sk_test_x";
+    process.env.STRIPE_WEBHOOK_SECRET = "whsec_x";
+    process.env.STRIPE_PRICE_AI_FLUENT_TEAM = "price_fluent_team";
+    process.env.STRIPE_PRICE_AI_FLUENT_FIRM = "price_fluent_firm";
+    expect(sellableCourses()).toEqual(["ai-fluent"]);
+    expect(stripeConfigured()).toBe(false);
   });
 });

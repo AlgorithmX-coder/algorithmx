@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { K } from "@/app/ai-cleared/engine/tokens";
-import { VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { COURSE_BLURB, COURSE_NAME, VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
 
 /* The seat-pack form: course, seats in tens, firm details, the admin's
  * email, then off to Stripe. Prices are the published ones; Stripe's
  * price objects match them. */
-export default function BuyForm({ course: initialCourse, seats: initialSeats, prices }: { course: CorporateProductSlug; seats: number; prices: Record<CorporateProductSlug, Record<"TEAM" | "FIRM", number>> }) {
-  const [course] = useState<CorporateProductSlug>(initialCourse);
+export default function BuyForm({ course: initialCourse, courses, seats: initialSeats, prices }: { course: CorporateProductSlug; courses: CorporateProductSlug[]; seats: number; prices: Record<CorporateProductSlug, Record<"TEAM" | "FIRM", number>> }) {
+  const [course, setCourse] = useState<CorporateProductSlug>(initialCourse);
   const [seats, setSeats] = useState(initialSeats);
   const [f, setF] = useState({ firmName: "", sector: "", contactName: "", contactRole: "", adminEmail: "" });
   const [busy, setBusy] = useState(false);
@@ -39,8 +39,18 @@ export default function BuyForm({ course: initialCourse, seats: initialSeats, pr
   return (
     <div className="bf">
       <div className="cf-card bf-card">
+        {courses.length > 1 ? (
+          <div className="bf-courses" role="radiogroup" aria-label="Course">
+            {courses.map((c) => (
+              <button key={c} type="button" role="radio" aria-checked={course === c} id={`bf-course-${c}`} className={"bf-course" + (course === c ? " on" : "")} onClick={() => setCourse(c)}>
+                <b>{COURSE_NAME[c]}</b>
+                <span>{COURSE_BLURB[c]}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
         <div className="bf-row">
-          <label>Course <input id="bf-course" value="AI Cleared" readOnly /></label>
+          <label>Course <input id="bf-course" value={COURSE_NAME[course]} readOnly /></label>
           <label>Seats <input id="bf-seats" type="number" min={10} max={249} step={10} value={seats} onChange={(e) => setSeats(Math.min(249, Math.max(10, Number(e.target.value) || 10)))} /></label>
           <label>Pack <input id="bf-plan" value={plan === "FIRM" ? "Firm, 50 to 249 seats" : "Team, 10 to 49 seats"} readOnly /></label>
         </div>
@@ -48,6 +58,7 @@ export default function BuyForm({ course: initialCourse, seats: initialSeats, pr
           <span>{seats} seats × {gbp(perSeat)} = {gbp(net)}, VAT at {VAT_PERCENT}% {gbp(vat)}</span>
           <b>{gbp(total)} a year</b>
         </div>
+        {course === "ai-fluent" ? <p className="cf-note">An AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate. Most firms clear everyone first, then put the people who use AI most through Fluent.</p> : null}
         <p className="cf-note">More than 249 seats is an Enterprise conversation: use the enquiry form and we will quote.</p>
       </div>
 
@@ -61,7 +72,7 @@ export default function BuyForm({ course: initialCourse, seats: initialSeats, pr
           <label>Their role <input id="bf-contact-role" value={f.contactRole} onChange={(e) => set("contactRole", e.target.value)} placeholder="Head of Compliance" /></label>
         </div>
         <label>Admin email, where the invite goes <input id="bf-admin" type="email" value={f.adminEmail} onChange={(e) => set("adminEmail", e.target.value)} placeholder="you@yourfirm.co.uk" /></label>
-        <p className="cf-note">The admin runs AI Cleared for the firm: invites staff, sees the register, edits the firm profile. It can be you.</p>
+        <p className="cf-note">The admin runs the course for the firm: invites staff, sees the register, edits the firm profile. It can be you. Already run a firm with us? Use the same admin email and the seats are added to that firm.</p>
         {err && <div className="bf-err">{err}</div>}
         <button type="button" className="cf-btn cf-btn-pri" onClick={pay} disabled={busy || !f.firmName.trim() || !f.adminEmail.trim()}>{busy ? "Opening secure checkout…" : `Pay ${gbp(total)} by card`}</button>
         <p className="cf-note">Payment is taken by Stripe on a secure page. You receive a VAT invoice by email; enter your firm's VAT number there and it appears on the invoice.</p>
@@ -70,6 +81,11 @@ export default function BuyForm({ course: initialCourse, seats: initialSeats, pr
       <style jsx>{`
         .bf { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
         .bf-card { display: flex; flex-direction: column; gap: 12px; }
+        .bf-courses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .bf-course { display: flex; flex-direction: column; gap: 4px; text-align: left; font: inherit; cursor: pointer; padding: 12px 14px; border-radius: 12px; border: 1px solid ${K.edge}; background: ${K.glassStrong}; color: ${K.ink}; }
+        .bf-course span { font-size: 12.5px; line-height: 1.45; color: ${K.muted}; }
+        .bf-course.on { border-color: rgba(87,68,201,0.6); box-shadow: 0 0 0 3px rgba(87,68,201,0.14); }
+        .bf-course:focus-visible { outline: 2px solid rgba(87,68,201,0.6); outline-offset: 2px; }
         .bf-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
         .bf-row.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .bf-card label { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: ${K.muted}; }
@@ -80,7 +96,7 @@ export default function BuyForm({ course: initialCourse, seats: initialSeats, pr
         .bf-total b { font-family: ${K.display}; font-size: 20px; color: ${K.ink}; }
         .bf-err { padding: 10px 14px; border-radius: 10px; font-size: 14px; background: ${K.warnSoft}; color: ${K.warn}; }
         .bf-card .cf-btn { align-self: flex-start; }
-        @media (max-width: 640px) { .bf-row, .bf-row.two { grid-template-columns: 1fr; } }
+        @media (max-width: 640px) { .bf-row, .bf-row.two, .bf-courses { grid-template-columns: 1fr; } }
       `}</style>
     </div>
   );
