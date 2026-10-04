@@ -424,6 +424,9 @@ export interface CycleDef {
   promise?: string;
   /** Verb-first instruction for the PLAY strip (≤10 words). Falls back to fieldwork payload intro. */
   instruction?: string;
+  /** WREN's bridge into PRACTICE, shown on the LEARN→PRACTICE hand-off so the child
+   *  knows what the next screen asks of them. Falls back to a line built from `instruction`. */
+  practiceIntro?: string;
   intel: {
     beats: string[];
     /** Narrator-led lessons: WREN VO per beat (public/ paths), 1:1 with `beats`. When present the LEARN beats auto-advance as each clip ends; a tap always overrides. */
@@ -489,12 +492,19 @@ export interface IncidentProps {
 
 /* ---------------------------------------------------------- manifest */
 
+/** Per-case visual identity. Each case in a block wears a different one so no two
+ *  cases look alike (owner mandate): a distinct accent, animated backdrop and
+ *  captured-device skin. Learning content is unchanged; only the surface differs. */
+export type CaseThemeKey = "signals" | "prize" | "crack" | "pinboard" | "storm";
+
 export interface MissionManifest {
   id: string;
   caseNumber: string;
   title: string;
   block: 1 | 2 | 3 | 4;
   classification: Classification;
+  /** Visual world for this case. Falls back to a block default when unset. */
+  theme?: CaseThemeKey;
   actor: { codename: string; mo: string; portrait?: string };
   transmission: { headline: string; lines: string[] };
   briefing: {

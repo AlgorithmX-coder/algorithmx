@@ -32,6 +32,7 @@ export const mission03: MissionManifest = {
   title: "The Guessing Game",
   block: 1,
   classification: "CONFIDENTIAL",
+  theme: "crack",
   actor: {
     codename: "SKELETON KEY",
     mo: "Doesn't trick you. He guesses you. Swears every lock talks eventually.",

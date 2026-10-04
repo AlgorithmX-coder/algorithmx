@@ -10,7 +10,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-import { MatrixRain } from "../MatrixRain";
+import { BlockBackdrop } from "../BlockBackdrop";
 import type { BlockIntroData } from "./blockIntroData";
 
 const DISP = `"Oswald", "Arial Narrow", "Segoe UI", sans-serif`;
@@ -63,10 +63,14 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
     let alive = true, done = false;
     const start = () => { if (done || !alive) return; done = true; a.play().then(() => { if (alive) setPlaying(true); else a.pause(); }).catch(() => { done = false; }); };
     start();
-    const onGesture = () => { if (alive && a.paused) start(); window.removeEventListener("pointerdown", onGesture); };
-    window.addEventListener("pointerdown", onGesture);
+    // Cold deep-links have no user gesture, so the browser blocks autoplay. Catch
+    // the very first interaction of ANY kind and start ATLAS then, so he still
+    // opens the block the moment the kid touches the page.
+    const events = ["pointerdown", "keydown", "touchstart", "wheel"] as const;
+    const onGesture = () => { if (alive && a.paused) start(); events.forEach((e) => window.removeEventListener(e, onGesture)); };
+    events.forEach((e) => window.addEventListener(e, onGesture, { passive: true }));
     // On leave, stop ATLAS for good — a play() still in flight must not bleed over WREN in the phone.
-    return () => { alive = false; window.removeEventListener("pointerdown", onGesture); try { a.pause(); } catch {} };
+    return () => { alive = false; events.forEach((e) => window.removeEventListener(e, onGesture)); try { a.pause(); } catch {} };
   }, []);
 
   const toggle = () => { const a = audioRef.current; if (!a) return; if (a.paused) a.play().then(() => setPlaying(true)).catch(() => {}); else { a.pause(); setPlaying(false); } };
@@ -86,7 +90,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
       }}
     >
       <style>{CSS}</style>
-      <MatrixRain reduced={!!reduce} opacity={0.1} colors={t.matrix} head={accHi} />
+      <BlockBackdrop variant={t.backdrop} colors={t.matrix} accent={acc} accentHi={accHi} reduced={!!reduce} opacity={0.6} />
 
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 1000, maxHeight: "calc(100vh - 24px)", display: "flex", flexDirection: "column", gap: 14, background: "linear-gradient(180deg, rgba(19,22,28,.72), rgba(10,12,16,.72))", border: "1px solid #232B36", borderRadius: 16, padding: "clamp(16px, 3vw, 26px)", backdropFilter: "blur(4px)" }}>
 
@@ -122,6 +126,14 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
             <audio ref={audioRef} preload="auto" src={data.audio} />
           </div>
         </div>
+
+        {/* real-world stakes — why this matters out there */}
+        {data.realWorld && (
+          <div style={{ display: "flex", gap: 11, alignItems: "flex-start", background: `linear-gradient(90deg, rgba(${t.accentRGB},.10), rgba(${t.accentRGB},.02))`, border: `1px solid rgba(${t.accentRGB},.28)`, borderLeft: `3px solid ${acc}`, borderRadius: 9, padding: "11px 15px" }}>
+            <span aria-hidden style={{ flex: "0 0 auto", fontFamily: MONO, fontSize: 10, letterSpacing: ".14em", color: acc, marginTop: 2, textTransform: "uppercase" }}>OUT THERE</span>
+            <p style={{ margin: 0, fontSize: "clamp(12.5px,1.5vw,14.5px)", lineHeight: 1.45, color: "#C7D0DA" }}>{data.realWorld}</p>
+          </div>
+        )}
 
         {/* the five cases — one aggregated row */}
         <div>

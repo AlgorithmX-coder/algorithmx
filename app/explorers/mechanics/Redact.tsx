@@ -63,13 +63,13 @@ export default function Redact({ payload, audio, onEvent, voiceOn }: MechanicPro
       {/* the post, rendered as tappable spans */}
       <div
         style={{
-          background: T.paper,
-          border: `1px solid ${T.hairline}`,
-          borderRadius: 4,
+          background: "var(--sf-card)",
+          border: "1px solid var(--sf-edge)",
+          borderRadius: "var(--sf-radius)",
           padding: "18px 20px",
           fontSize: 16,
           lineHeight: 1.9,
-          color: T.fileInk,
+          color: "var(--sf-ink)",
         }}
       >
         {payload.spans.map((s, idx) => {
@@ -83,10 +83,10 @@ export default function Redact({ payload, audio, onEvent, voiceOn }: MechanicPro
                 aria-label={isRedacted ? "redacted" : s.text}
                 style={{
                   font: "inherit",
-                  color: isRedacted ? "transparent" : T.fileInk,
-                  background: isRedacted ? T.fileInk : isNoted && !note?.ok ? `${T.threatRed}33` : "transparent",
+                  color: isRedacted ? "transparent" : "var(--sf-ink)",
+                  background: isRedacted ? "var(--sf-ink)" : isNoted && !note?.ok ? `${T.threatRed}33` : "transparent",
                   border: "none",
-                  borderBottom: isRedacted ? "none" : `1px dotted ${T.fileInk}66`,
+                  borderBottom: isRedacted ? "none" : "1px dotted var(--sf-edge)",
                   borderRadius: isRedacted ? 2 : 0,
                   padding: isRedacted ? "0 4px" : 0,
                   cursor: done ? "default" : "pointer",

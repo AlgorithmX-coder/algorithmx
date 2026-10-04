@@ -50,8 +50,8 @@ export default function Profile({ payload, audio, onEvent, voiceOn }: MechanicPr
     <section style={{ maxWidth: 720, margin: "0 auto" }}>
       {/* No instruction heading here — the amber instruction strip above
           (rendered by PlayStage) is the single, canonical instruction. */}
-      <div style={{ background: T.paper, color: T.fileInk, borderRadius: 2, padding: "16px 20px", boxShadow: "0 2px 0 rgba(0,0,0,0.55)" }}>
-        <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", opacity: 0.6, marginBottom: 8 }}>
+      <div style={{ background: "var(--sf-card)", color: "var(--sf-ink)", border: "1px solid var(--sf-edge)", borderRadius: "var(--sf-radius)", padding: "16px 20px", boxShadow: "var(--sf-shadow)" }}>
+        <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: "var(--sf-dim)", marginBottom: 8 }}>
           CASE EVIDENCE ON FILE
         </div>
         {payload.evidence.map((e) => (

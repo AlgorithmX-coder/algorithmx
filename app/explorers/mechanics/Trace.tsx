@@ -76,8 +76,8 @@ export default function Trace({ payload, reduced, audio, onEvent }: MechanicProp
       : isPinned
         ? T.actionAmber
         : isRejected
-          ? T.hairline
-          : T.hairline;
+          ? "var(--sf-edge)"
+          : "var(--sf-edge)";
     return (
       <button
         key={card.id}
@@ -85,33 +85,33 @@ export default function Trace({ payload, reduced, audio, onEvent }: MechanicProp
         className="sr-btn"
         style={{
           textAlign: "left",
-          background: T.paper,
-          color: T.fileInk,
+          background: "var(--sf-card)",
+          color: "var(--sf-ink)",
           border: "none",
           outline: `2px solid ${border}`,
           outlineOffset: -2,
-          borderRadius: 2,
+          borderRadius: "var(--sf-radius)",
           padding: "12px 14px",
-          boxShadow: "0 2px 0 rgba(0,0,0,0.5)",
+          boxShadow: "var(--sf-shadow)",
           cursor: (inStage2 ? seqIndex < 0 : !isPinned) ? "pointer" : "default",
           opacity: isRejected && !inStage2 ? 0.55 : 1,
           position: "relative",
         }}
       >
         {isPinned && !inStage2 && (
-          <span aria-hidden style={{ position: "absolute", top: 6, right: 8, fontFamily: MONO, fontSize: 10, color: "#A66A00" }}>⚑ PINNED</span>
+          <span aria-hidden style={{ position: "absolute", top: 6, right: 8, fontFamily: MONO, fontSize: 10, color: "var(--sf-accent)" }}>⚑ PINNED</span>
         )}
         {seqIndex >= 0 && (
           <span aria-hidden style={{ position: "absolute", top: 6, right: 8, fontFamily: MONO, fontSize: 12, fontWeight: 600, color: "#1F7A4D" }}>
             {seqIndex + 1}
           </span>
         )}
-        <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", opacity: 0.55, marginBottom: 4 }}>
+        <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: "var(--sf-dim)", marginBottom: 4 }}>
           {card.surface} · FROM: {card.from}
         </div>
         <div style={{ fontSize: 13, lineHeight: 1.5 }}>{card.text}</div>
         {isPinned && card.clue && (
-          <div style={{ fontFamily: MONO, fontSize: 10, marginTop: 6, color: "#A66A00" }}>FINGERPRINT: {card.clue}</div>
+          <div style={{ fontFamily: MONO, fontSize: 10, marginTop: 6, color: "var(--sf-accent)" }}>FINGERPRINT: {card.clue}</div>
         )}
       </button>
     );

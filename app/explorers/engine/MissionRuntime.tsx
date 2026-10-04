@@ -14,6 +14,7 @@
  */
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
@@ -48,7 +49,8 @@ import type {
 } from "./types";
 import { checkpointStorageKey, xpForEvent } from "./types";
 import { BLOCK_FILMS, BlockFilm, filmId, filmSeen, markFilmSeen } from "./BlockFilm";
-import { MatrixRain } from "../MatrixRain";
+import { BlockBackdrop } from "../BlockBackdrop";
+import { resolveCaseTheme, CaseThemeProvider, useCaseTheme } from "./caseThemes";
 import Inspect from "../mechanics/Inspect";
 import Decide from "../mechanics/Decide";
 import Profile from "../mechanics/Profile";
@@ -142,7 +144,34 @@ function beatNarrates(pos: BeatPos, manifest: MissionManifest, voiceOn: boolean,
 
 /* ================================================================= map */
 
+/* Faint "live coding" ambience that runs inside each mission-map row, so a skill
+   tab reads as a live system rather than a static box. Pure CSS scroll + a slow
+   scan sweep, tinted to the row's state. Dies under reduced-motion (see .sr-fx). */
+const FX_CODE = [
+  "scan(msg)", "if(host!=real) flag()", "verify(sender)", "0xA1 3F 9C 22",
+  "trust = 0.00", "// too good?", "hash mismatch", "decode(url)",
+  "await check()", "risk += 1", "pattern.match()", "trace(origin)",
+  "shield.up()", "return SAFE", "0b1011 0110", "reply_to = null",
+];
+const fxColText = (offset: number) => {
+  const block = Array.from({ length: 16 }, (_, i) => FX_CODE[(i + offset) % FX_CODE.length]).join("\n");
+  return block + "\n" + block; // duplicated so the -50% scroll loops seamlessly
+};
+const FX_TEXT_A = fxColText(0);
+const FX_TEXT_B = fxColText(7);
+
+function SkillCardFX({ color, active }: { color: string; active: boolean }) {
+  return (
+    <div className="sr-fx" aria-hidden style={{ opacity: active ? 1 : 0.6 }}>
+      <div className="sr-fx-col" style={{ left: "7%", color, opacity: active ? 0.5 : 0.28, animationDuration: active ? "20s" : "34s", textShadow: active ? `0 0 6px ${color}66` : "none" }}>{FX_TEXT_A}</div>
+      <div className="sr-fx-col" style={{ left: "56%", color, opacity: active ? 0.36 : 0.2, animationDuration: active ? "28s" : "44s", animationDelay: "-9s" }}>{FX_TEXT_B}</div>
+      <div className="sr-fx-scan" style={{ background: `linear-gradient(180deg, transparent, ${color}1F, transparent)`, animationDuration: active ? "3.6s" : "7s" }} />
+    </div>
+  );
+}
+
 function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; pos: BeatPos; stampNew?: number }) {
+  const caseTheme = useCaseTheme();
   const n = manifest.cycles.length;
   const done = stepsDone(pos, n);
   const rows: { label: string; sub: string; idx: number }[] = [
@@ -161,7 +190,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
         const isCurrent = r.idx === done;
         const justStamped = stampNew !== undefined && r.idx === stampNew;
         const boss = r.idx === n;
-        const accent = boss ? T.threatRed : T.arcCyan;
+        const accent = boss ? T.threatRed : caseTheme.accent;
         return (
           <div
             key={r.label}
@@ -179,6 +208,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
               boxShadow: isCurrent ? `0 0 24px -6px ${accent}44, 0 6px 16px -10px rgba(0,0,0,0.7)` : "0 4px 12px -8px rgba(0,0,0,0.5)",
             }}
           >
+            <SkillCardFX color={isDone ? T.confirmedGreen : accent} active={isCurrent} />
             <span
               style={{
                 display: "grid",
@@ -192,18 +222,20 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
                 color: isDone ? T.inkBlack : isCurrent ? accent : T.textDisabled,
                 background: isDone ? T.confirmedGreen : "transparent",
                 border: isDone ? "none" : `2px solid ${isCurrent ? accent : T.hairline}`,
+                position: "relative",
+                zIndex: 1,
               }}
             >
               {isDone ? "✓" : boss ? "!" : r.idx < n ? r.idx + 1 : "★"}
             </span>
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, position: "relative", zIndex: 1 }}>
               <div style={{ fontFamily: BODY, fontSize: 15, fontWeight: 700, color: isDone ? T.confirmedGreen : isCurrent ? T.textPrimary : T.textSecondary }}>
                 {r.label}
               </div>
               <div style={{ fontSize: 13, color: T.textSecondary, marginTop: 2 }}>{r.sub}</div>
             </div>
             {isCurrent && (
-              <span className="sr-blink" style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.1em", color: accent }}>
+              <span className="sr-blink" style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.1em", color: accent, position: "relative", zIndex: 1 }}>
                 ▶ YOU ARE HERE
               </span>
             )}
@@ -225,6 +257,10 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   // it, so the anti-skip stays on for them.
   const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
   const reduced = useReducedMotion() || fast;
+  // Per-case visual identity (accent + backdrop + device skin). Each case in a
+  // block gets a different one so no two cases look alike; learning is unchanged.
+  const theme = resolveCaseTheme(manifest.theme);
+  const accent = theme.accent;
   const audio = useSignalAudio();
   const storageKey = checkpointStorageKey(manifest.id);
 
@@ -397,7 +433,11 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   }, [atStart, pos.beat, resumeOffer, filmToPlay, voiceOn, manifest.voice]);
   useEffect(() => () => stopWren(), []);
 
-  const tone = mapGate !== null ? T.confirmedGreen : toneFor(pos);
+  // The base/identity beats (transmission, learn, catch, default) come back as
+  // cyan from toneFor; remap that one to the case accent so the whole deck wears
+  // this case's colour, while the functional tones (amber/green/red) stay put.
+  const rawTone = toneFor(pos);
+  const tone = mapGate !== null ? T.confirmedGreen : rawTone === T.arcCyan ? accent : rawTone;
   const skillCount = manifest.cycles.length;
   const done = stepsDone(pos, skillCount);
   const speaking = useWrenSpeaking();
@@ -419,10 +459,11 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const locked = speaking || armLock;
 
   return (
-    <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
+    <CaseThemeProvider value={theme}>
+    <main style={{ ...(theme.surface as CSSProperties), minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
       {/* matrix-terminal backdrop, dimmed in-mission so it never fights the reading (kept for identity) */}
-      <MatrixRain reduced={reduced} opacity={0.16} />
+      <BlockBackdrop variant={theme.backdrop} colors={theme.matrix} accent={theme.accent} accentHi={theme.accentHi} reduced={reduced} opacity={0.42} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.32 }} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 82% 72% at 50% 34%, transparent 44%, ${tone}12 74%, rgba(3,5,12,0.9) 100%)`, transition: "background 700ms" }} />
 
@@ -458,7 +499,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#27c93f" }} />
             </span>
             <span style={{ color: T.textDisabled }}>ARC · {manifest.caseNumber} ·</span>{" "}
-            <span style={{ color: T.arcCyan, fontWeight: 600 }}>{manifest.title}</span>
+            <span style={{ color: accent, fontWeight: 600 }}>{manifest.title}</span>
             <button
               onClick={toggleVoice}
               aria-label={voiceOn ? "Turn WREN's voice off" : "Turn WREN's voice on"}
@@ -570,6 +611,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
         </button>
       )}
     </main>
+    </CaseThemeProvider>
   );
 }
 
@@ -693,8 +735,9 @@ function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { man
 /* ------------------------------------------------------------- cycles */
 
 function CycleScene({ cycle, cycleIndex, total, stage, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; total: number; stage: "intel" | "fieldwork" | "checkpoint"; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
+  const caseTheme = useCaseTheme();
   const stageIndex = stage === "intel" ? 0 : stage === "fieldwork" ? 1 : 2;
-  const stageTones = [T.arcCyan, T.actionAmber, T.confirmedGreen];
+  const stageTones = [caseTheme.accent, T.actionAmber, T.confirmedGreen];
   return (
     <section>
       <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${stageTones[stageIndex]}44`, padding: "14px 20px", marginBottom: 20 }}>
@@ -1044,14 +1087,21 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
       )}
 
       {lessonDone && (
-        <div className="sr-msg" style={{ marginTop: 22 }}>
-          <AmberButton
-            label="PRACTICE IT →"
-            onClick={() => {
-              emit({ type: "INTEL_COMPLETED", sourceKey: `cycle-${cycleIndex}` });
-              onNext();
-            }}
-          />
+        <div className="sr-msg" style={{ display: "grid", gap: 18, marginTop: 22 }}>
+          {/* WREN bridges into practice so the lone button never floats in empty
+              space, and the child knows exactly what the next screen asks. */}
+          <Bubble who="wren">
+            {cycle.practiceIntro ?? `Now let's put it to work. On the next screen: ${cycle.instruction ?? "give it a go."}`}
+          </Bubble>
+          <div style={{ justifySelf: "start" }}>
+            <AmberButton
+              label="PRACTICE IT →"
+              onClick={() => {
+                emit({ type: "INTEL_COMPLETED", sourceKey: `cycle-${cycleIndex}` });
+                onNext();
+              }}
+            />
+          </div>
         </div>
       )}
     </div>

@@ -32,6 +32,7 @@ export const mission04: MissionManifest = {
   title: "The Puzzle You Posted",
   block: 1,
   classification: "CONFIDENTIAL",
+  theme: "pinboard",
   actor: {
     codename: "PACKRAT",
     mo: "Never breaks in. Grabs the crumbs you drop and files them away.",
