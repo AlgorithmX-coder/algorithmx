@@ -434,6 +434,11 @@ export default function ExplorersPage() {
         .tc-locked:hover{border-color:color-mix(in srgb, var(--accent) 55%, transparent);box-shadow:0 0 22px color-mix(in srgb, var(--accent) 28%, transparent);transform:none}
         .lf{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;user-select:none}
         .tc-locked:hover .lf{filter:brightness(1.6)}
+        /* live FX plays in every card: subtle behind an open card's text, fainter
+           on a closed one, and it wakes up on hover. */
+        .tc-card:not(.tc-locked):not(.tc-closed) .lf{opacity:.24}
+        .tc-card:not(.tc-locked):not(.tc-closed):hover .lf{opacity:.42;filter:brightness(1.3)}
+        .tc-closed .lf{opacity:.1}
         .lf-radar{opacity:.5}
         .radar-grid{position:absolute;top:52%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;opacity:.4}
         .radar-grid circle{fill:none;stroke:currentColor;stroke-width:.6}
@@ -532,12 +537,16 @@ export default function ExplorersPage() {
                   return (
                     <button
                       key={m.id}
-                      className={`tc-card${isNext ? " tc-next" : ""}${locked ? " tc-locked" : ""}`}
+                      className={`tc-card${isNext ? " tc-next" : ""}${isClosed ? " tc-closed" : ""}${locked ? " tc-locked" : ""}`}
                       onClick={locked ? undefined : () => openCase(m)}
                       disabled={locked}
                       aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : locked ? " Locked. Finish the earlier cases first." : isNext ? " Play next." : ""}`}
                       style={{ ["--accent"]: accent, position: "relative" } as CSSProperties}
                     >
+                      {/* Live ambient FX behind every card — the block's own "world"
+                          (radar / redaction / hex / network), subtle on open cards
+                          and brighter on hover. Locked cards keep the stronger look. */}
+                      <LockedFX variant={LOCK_VARIANTS[b.n - 1] ?? "signal"} accent={b.color} />
                       {isClosed && (
                         <span
                           aria-hidden
@@ -568,7 +577,6 @@ export default function ExplorersPage() {
                       )}
                       {locked && (
                         <>
-                          <LockedFX variant={LOCK_VARIANTS[b.n - 1] ?? "signal"} accent={b.color} />
                           <span
                             aria-hidden
                             className="tc-lockpulse"

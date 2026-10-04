@@ -29,6 +29,7 @@ export const mission05: MissionManifest = {
   title: "Signal Storm",
   block: 1,
   classification: "CONFIDENTIAL",
+  theme: "storm",
   actor: {
     codename: "PHANTOM HOOK",
     mo: "Same trick, a costume cut to fit you, fired at every channel at once.",
