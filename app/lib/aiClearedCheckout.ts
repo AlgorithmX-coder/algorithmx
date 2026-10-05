@@ -2,6 +2,7 @@ import type Stripe from "stripe";
 import { prisma } from "@/app/lib/prisma";
 import { createFirm } from "@/app/lib/aiClearedOps";
 import { sendSeatsAdded } from "@/app/lib/aiClearedAdmin";
+import { opsAlert } from "@/app/lib/opsAlert";
 import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, planForSeats, priceIdFor, sellableCourses, stripe, stripeConfigured, vatMode, vatTaxRateId } from "@/app/lib/stripe";
 import { FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug } from "@/app/lib/corporateProducts";
 
@@ -123,6 +124,7 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
     } catch (err) {
       emailed = false;
       console.error("[corporate/checkout] seats-added email failed", err instanceof Error ? err.message : err);
+      await opsAlert({ what: "A seats-added email did not send", detail: { firm: admin.org.name, slug: admin.org.slug, adminEmail, course, seats, sessionId: session.id }, error: err });
     }
     return { added: true, slug: admin.org.slug, course, seats, emailed };
   }

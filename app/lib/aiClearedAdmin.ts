@@ -4,6 +4,7 @@ import { sendEmail } from "@/app/lib/resend";
 import { DB_TO_TRACK, TRACK_TO_DB } from "@/app/lib/aiCleared";
 import { moduleListFor } from "@/app/lib/courseModules";
 import { COURSES, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { opsAlert } from "@/app/lib/opsAlert";
 import { TRACK_LABEL, type Track } from "@/app/ai-cleared/engine/types";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import type { FirmProfile, Organisation, OrgRole } from "@prisma/client";
@@ -164,6 +165,7 @@ export async function inviteSeats(args: { orgId: string; orgSlug: string; firmNa
       failed.push(email);
     }
   }
+  if (failed.length) await opsAlert({ what: "Invite emails did not send", detail: { firm: args.firmName, course, failed, origin: args.origin, links: created.filter((c) => failed.includes(c.email)).map((c) => `${c.email}: ${args.origin}/ai-cleared/join/${c.token}`) } });
   return { created, skipped: clean.filter((e) => have.has(e)), emailFailed: failed };
 }
 
