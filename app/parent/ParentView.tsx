@@ -29,7 +29,7 @@ export interface WeekCell { week: number; state: WeekState; stars: number; }
 export interface ChildSummary {
   id: string;
   name: string;
-  age: number;
+  age: number | null;
   completedCount: number;
   totalStars: number;
   weeks: WeekCell[];
@@ -170,7 +170,9 @@ function ChildCard({ child, weeksCount }: { child: ChildSummary; weeksCount: num
           <div style={{ minWidth: 0 }}>
             <h2 className="display" style={{ margin: 0, fontSize: 22, fontWeight: 700, color: C.text }}>
               {child.name}{" "}
-              <span style={{ fontSize: 14, color: C.textMuted, fontWeight: 500 }}>· age {child.age}</span>
+              {child.age !== null && (
+                  <span style={{ fontSize: 14, color: C.textMuted, fontWeight: 500 }}>· age {child.age}</span>
+                )}
             </h2>
             <p style={{ margin: "4px 0 0", color: C.textSoft, fontSize: 14, lineHeight: 1.5 }}>
               <span style={{ color: C.cyan, fontWeight: 800 }}>{child.completedCount}</span> of {weeksCount} weeks complete

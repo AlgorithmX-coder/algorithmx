@@ -1,4 +1,5 @@
-import { Fredoka, Chakra_Petch } from "next/font/google";
+import { Fredoka, Chakra_Petch, Nunito } from "next/font/google";
+import "./teach/pack.css";
 
 /**
  * Route-scoped brand fonts for /schools: the phase cards carry each
@@ -12,6 +13,15 @@ const fredoka = Fredoka({
   subsets: ["latin"],
   display: "swap",
 });
+/* The teacher-facing pages (packs, classes) run on Nunito for everything the
+   adult reads and Fredoka for anything a class reads off a board. Declared
+   here rather than in each of them, so the two can never drift apart. */
+const nunito = Nunito({
+  variable: "--font-nunito",
+  weight: ["600", "700", "800"],
+  subsets: ["latin"],
+  display: "swap",
+});
 const chakra = Chakra_Petch({
   variable: "--font-chakra",
   weight: ["700"],
@@ -21,7 +31,7 @@ const chakra = Chakra_Petch({
 
 export default function SchoolsLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`${fredoka.variable} ${chakra.variable}`} style={{ display: "contents" }}>
+    <div className={`${fredoka.variable} ${chakra.variable} ${nunito.variable}`} style={{ display: "contents" }}>
       {children}
     </div>
   );
