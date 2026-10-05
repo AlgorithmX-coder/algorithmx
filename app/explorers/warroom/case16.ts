@@ -78,7 +78,11 @@ export interface WarCase {
   caseNumber: string;
   title: string;
   actor: string;
+  /** Per-case identity: its own colour (not a shade of the block's violet) and
+   *  a living backdrop matching its topic (owner standard, every case its own
+   *  room). Falls back to the block's plain violet matrix if unset. */
   accent?: string;
+  theme?: { backdrop: import("../BlockBackdrop").BackdropVariant; matrix: string[]; accentHi: string };
   open: string[];
   openVoice?: string[];
   skills: WarSkill[];
@@ -92,7 +96,8 @@ export const case16War: WarCase = {
   caseNumber: "CASE 016",
   title: "The File On You",
   actor: "PACKRAT",
-  accent: "#B98BFF",
+  accent: "#FFC43D",
+  theme: { backdrop: "harvest", matrix: ["#FFC43D", "#FFE08A", "#FF9A4D"], accentHi: "#FFE08A" },
   open: [
     "Highest clearance now, Agent. Welcome to the War Room. From here you don't just spot one attack, you see the whole picture, and connect it.",
     "First target: the file. Right now, companies you've never heard of keep a file on you, what you like, where you go, who you know, and they trade it. PACKRAT's whole business is building and selling that file.",

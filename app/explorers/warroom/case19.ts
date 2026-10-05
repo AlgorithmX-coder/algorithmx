@@ -17,7 +17,8 @@ export const case19War: WarCase = {
   caseNumber: "CASE 019",
   title: "Static Rising",
   actor: "ALL FREQUENCIES",
-  accent: "#B98BFF",
+  accent: "#E8384F",
+  theme: { backdrop: "convergence", matrix: ["#E8384F", "#34E1FF", "#3BF57E", "#FFB23E", "#B98BFF"], accentHi: "#FF8A94" },
   open: [
     "This is a big one, Agent. Until now you've faced one attacker at a time. Real trouble doesn't work like that. A serious attack is a campaign, a chain of stages, run patiently, often by a whole crew.",
     "The board's lighting up on every frequency at once: research, bait, break-in, theft, spread. Your job today is to see the whole chain, not one alert, and learn where to cut it.",

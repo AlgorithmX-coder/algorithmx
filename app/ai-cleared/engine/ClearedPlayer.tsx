@@ -392,6 +392,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const [deskPicks, setDeskPicks] = useState<Set<string>>(() => new Set());
   const [builder, setBuilder] = useState<Record<string, number>>({});
   const [flagged, setFlagged] = useState(false);
+  /* Set when a grade route answers 429: the day's model allowance is spent. */
+  const [allowanceNote, setAllowanceNote] = useState<string | null>(null);
   const [buildBox, setBuildBox] = useState<SandboxState>(EMPTY_SANDBOX);
   const [freeBox, setFreeBox] = useState<SandboxState>(EMPTY_SANDBOX);
   const [freeDraft, setFreeDraft] = useState("");
@@ -479,7 +481,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
       if (live) {
         try {
           const r = await postJson("/api/ai-cleared/grade", { prompt, module: manifest.n, track: usedTrack, tool, classNames: names, firmName: firm.name });
-          const j = (await r.json()) as Partial<GradeResult> & { halted?: string };
+          const j = (await r.json()) as Partial<GradeResult> & { halted?: string; error?: string };
+          if (r.status === 429) setAllowanceNote(j.error ?? null);
           if (r.ok && j.verdict && Array.isArray(j.findings)) {
             const g = j as GradeResult;
             set((s) => ({ ...s, messages: s.messages.map((m) => (m.id === userId ? { ...m, grade: g } : m)) }));
@@ -610,6 +613,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
       try {
         const r = await postJson("/api/ai-fluent/grade", { module: manifest.n, track: usedTrack, tool, practise: p, turns, replies: st.replies, firmName: firm.name });
         const j = (await r.json()) as Partial<FluentGrade> & { halted?: string; error?: string };
+        if (r.status === 429) setAllowanceNote(j.error ?? null);
         if (r.ok && j.verdict && Array.isArray(j.elements)) {
           graded = j as FluentGrade;
           setLoop(p, (s) => ({ ...s, messages: s.messages.map((m) => (m.id === userId ? { ...m, fluent: graded.leak ? undefined : graded, grade: graded.leak } : m)) }));
@@ -1142,6 +1146,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         <Eyebrow>Practise · step 4 of 4 · the grader checks before {TOOL_LABEL[tool]} answers</Eyebrow>
         <div className="cl-banner"><span className="cl-dot" />Practice data only. Nothing you send is stored.</div>
         <Simulator tool={tool} firmName={firm.name} learnerName={learnerName} messages={toSim(buildBox.messages)} draft="" onSend={() => {}} canSend={false} composerLocked status={buildBox.status} />
+        {allowanceNote && <p className="cl-note" style={{ color: K.warn }}>{allowanceNote}</p>}
         <div className="cl-nav">
           <Btn hidden={!done || v === "ok"} onClick={fixAndResend}>Fix and resend</Btn>
           <span className="cl-hint">{done ? (v === "ok" ? "Cleared send banked." : "Change the flagged answers, then resend.") : ""}</span>
@@ -1156,6 +1161,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         <h1 className="cl-h1">{t(sandbox.freeWrite.heading)}</h1>
         <p className="cl-lead">{t(sandbox.freeWrite.lead)}</p>
         <Simulator tool={tool} firmName={firm.name} learnerName={learnerName} messages={toSim(freeBox.messages, (r) => setFreeDraft(r))} draft={freeDraft} onDraftChange={setFreeDraft} onSend={sendFree} canSend={!!freeDraft.trim() && !freeBox.busy} status={freeBox.status} />
+        {allowanceNote && <p className="cl-note" style={{ color: K.warn }}>{allowanceNote}</p>}
         <div className="cl-nav">
           <Btn onClick={back}>Back</Btn>
           <Btn primary onClick={next} disabled={freeBox.busy}>{freeSent ? "Continue to Prove" : "Skip to Prove"}</Btn>
@@ -1372,6 +1378,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           composerLocked={sentThisTurn}
           status={st.status}
         />
+        {allowanceNote && <p className="cl-note" style={{ color: K.warn }}>{allowanceNote}</p>}
         <div className="cl-nav">
           <Btn onClick={back} hidden={screen.i === 0}>Back</Btn>
           <span className="cl-hint">{sentThisTurn ? (graded ? `${FLUENT_LABEL[graded.verdict]} on this send.` : "") : turn.placeholder ? t(turn.placeholder) : "Press send in the composer."}</span>

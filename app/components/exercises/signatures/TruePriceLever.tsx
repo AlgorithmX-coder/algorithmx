@@ -1036,16 +1036,36 @@ function FakeClock({
             animate={{ scale: 1, opacity: 1, rotate: -12 }}
             transition={{ type: "spring", stiffness: 340, damping: 18 }}
             style={{
+              // UAT W7 3b, the FAKE stamp's placement and size. At right -10 /
+              // top -13 it landed squarely on the countdown's own digits, so
+              // the child could not read the time it was calling fake, and at
+              // 12px it was the smallest thing on a card whose other stamp
+              // ("TRICK!") is twice the size.
+              //
+              // It cannot simply move UP: the price badge sits directly above
+              // and the card is overflow:hidden. So it sits just off the pill's
+              // right edge and vertically centred - still reading as stamped
+              // ONTO the clock, but clear of the numerals.
+              //
+              // Centred with marginTop rather than a translate: Motion owns
+              // `transform` here for the rotate, and a transform set in style
+              // is silently dropped.
+              // -38 still caught the last digit: the pill's right edge is at
+              // ~411 and the numerals run to ~408, so a 43px-wide stamp ending
+              // 38px past the edge began at 406 and sat on the "2". -50 starts
+              // it at ~418, clear of the numerals and still inside the card
+              // (which clips at 479).
               position: "absolute",
-              right: -10,
-              top: -13,
-              padding: "1px 7px",
+              right: -50,
+              top: "50%",
+              marginTop: -13,
+              padding: "2px 8px",
               border: `3px double ${INK_BAD}`,
               borderRadius: 6,
               background: "rgba(255, 253, 242, 0.92)",
               color: INK_BAD,
               fontWeight: 900,
-              fontSize: 12,
+              fontSize: 13,
               letterSpacing: 1,
               fontFamily: "inherit",
             }}

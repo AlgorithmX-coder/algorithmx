@@ -245,9 +245,13 @@ const LEAKS: readonly TrayLeak[] = [
   },
   {
     id: "school",
-    ring: { x: 534, y: 22, w: 180, h: 92 },
-    chipLeftPct: ((534 + 90) / CANVAS_W) * 100,
-    chipTopPct: ((22 + 92 + 10) / CANVAS_H) * 100,
+    // Matches the enlarged pennant (UAT W8 4a): pole at x=466, apex at x=716,
+    // top y=4, bottom y=150. A ring still sized to the old, smaller pennant
+    // would leave the flag's left half outside both the highlight and the tap
+    // target.
+    ring: { x: 462, y: 2, w: 256, h: 154 },
+    chipLeftPct: ((462 + 128) / CANVAS_W) * 100,
+    chipTopPct: ((2 + 154 + 10) / CANVAS_H) * 100,
     icon: "🏫",
     chip: "Your school name!",
     bullet: "Your school name is on the wall pennant",
@@ -609,10 +613,16 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.fillRect(M, M, W - M * 2, H - M * 2);
 
   // Two balloons in the gaps either side of the child. Placed clear of
-  // all three leaks: right of the door, left of the pennant pole.
+  // all three leaks: right of the door, below the pennant.
+  //
+  // The blue one used to sit at y=148, which was clear of the OLD pennant
+  // (pole at x=548). Enlarging the pennant for UAT W8 4a moved its pole to
+  // x=466, which put the balloon underneath it, so the balloon drops below the
+  // pennant's lower edge instead. It stays clear of the child (who ends around
+  // x=434) and of the friend leak (which starts at y=302).
   const balloons = [
     { x: 192, y: 124, r: 27, c: "#ff7b8a", d: 1 },
-    { x: 486, y: 148, r: 24, c: "#7dc9ff", d: -1 },
+    { x: 486, y: 212, r: 24, c: "#7dc9ff", d: -1 },
   ];
   for (const b of balloons) {
     ctx.strokeStyle = "rgba(122, 76, 40, 0.45)";
@@ -721,16 +731,32 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.fillText("42", 85, 219);
 
   // LEAK 2: school pennant (top-right wall).
+  //
+  // UAT W8 4a, "the top left flag is too small for the words in it". Two
+  // separate faults, both real:
+  //
+  //  1. The apex was at x=744 in a canvas whose logical width is CANVAS_W
+  //     (720), so the tip was drawn off the edge and clipped.
+  //  2. This canvas is drawn at 720x460 and displayed at ~277px wide on the
+  //     tester's 1093x525 window - a 0.38x downscale. "OAKWOOD" at 19px
+  //     therefore reached the child at 7.3px and "SCHOOL" at 15px reached it
+  //     at 5.8px, which is below the size at which letterforms survive at all.
+  //     That is why the words look broken rather than merely small.
+  //
+  // So the pennant is larger and its lettering is sized to stay legible after
+  // the downscale. The two-line block is kept inside the taper: the triangle's
+  // half-height falls by ~0.28px per px of x, and the block's half-height is
+  // 28.5px, so the longest line has to end before x~608. It ends at ~608.
   ctx.strokeStyle = "#8a6a4a";
   ctx.lineWidth = 5;
   ctx.beginPath();
-  ctx.moveTo(548, 20);
-  ctx.lineTo(548, 124);
+  ctx.moveTo(466, 4);
+  ctx.lineTo(466, 160);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(552, 26);
-  ctx.lineTo(744, 72);
-  ctx.lineTo(552, 118);
+  ctx.moveTo(470, 10);
+  ctx.lineTo(716, 80);
+  ctx.lineTo(470, 150);
   ctx.closePath();
   ctx.fillStyle = "#2f7d4f";
   ctx.fill();
@@ -739,10 +765,10 @@ function drawPhotoScene(ctx: CanvasRenderingContext2D) {
   ctx.stroke();
   ctx.fillStyle = "#eaf6ee";
   ctx.textAlign = "left";
-  ctx.font = `800 19px ${FONT_STACK}`;
-  ctx.fillText("OAKWOOD", 564, 64);
-  ctx.font = `700 15px ${FONT_STACK}`;
-  ctx.fillText("SCHOOL", 564, 88);
+  ctx.font = `800 25px ${FONT_STACK}`;
+  ctx.fillText("OAKWOOD", 484, 64);
+  ctx.font = `700 21px ${FONT_STACK}`;
+  ctx.fillText("SCHOOL", 484, 98);
 
   // LEAK 3: friend peeking in the bottom-right corner.
   // Jumper (school green, matching the pennant).

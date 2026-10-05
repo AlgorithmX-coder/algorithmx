@@ -21,7 +21,13 @@ export type BackdropVariant =
   // block covers
   | "signals" | "human" | "systems" | "network"
   // per-case worlds (Block 1)
-  | "prize" | "crack" | "pinboard" | "storm";
+  | "prize" | "crack" | "pinboard" | "storm"
+  // per-case worlds (Block 2 — matches each case's "app" identity)
+  | "ripple" | "loop" | "glint" | "bond" | "ringer"
+  // per-case worlds (Block 3 — the Console)
+  | "vault" | "cipher" | "backdoor" | "install" | "browser"
+  // per-case worlds (Block 4 — the War Room)
+  | "harvest" | "deepfake" | "crossroads" | "convergence" | "unmask";
 
 const GROUND = "#060810";
 
@@ -92,6 +98,50 @@ export function BlockBackdrop({
     // storm
     let streaks: { ang: number; d: number; sp: number; len: number; col: [number, number, number] }[] = [];
     let sweep = 0;
+    // ripple (B2 case 6 "Ripple" — emotional pressure spreading outward)
+    let ripples: { x: number; y: number; r: number; max: number; sp: number; col: [number, number, number] }[] = [];
+    let rippleClock = 0;
+    // loop (B2 case 7 "Loop" — a stolen identity echoing/duplicating)
+    let loopOrbits: { cx: number; cy: number; rad: number; ang: number; sp: number; trail: number[]; col: [number, number, number] }[] = [];
+    // glint (B2 case 8 "Glint" — AI ghostwriting streaming out, too perfect)
+    let glintLines: { x: number; y: number; w: number; chars: number; max: number; sp: number; col: [number, number, number] }[] = [];
+    let glintSparkle: { x: number; y: number; t: number; life: number }[] = [];
+    // bond (B2 case 9 "Bond" — a slow-drip trust timeline, weeks ticking by)
+    let bondNodes: { x: number; y: number; lit: number }[] = [];
+    let bondDrip = 0;
+    // ringer (B2 case 10 "Ringer" — a voice clone, two waveforms converging)
+    let ringerPhase = 0;
+    let ringerPulses: { t: number; sp: number }[] = [];
+    // vault (B3 case 11 — tumblers turning, building a lock that holds)
+    let tumblers: { cx: number; cy: number; r: number; ang: number; sp: number; ticks: number }[] = [];
+    // cipher (B3 case 12 — ciphertext columns that briefly resolve to plaintext)
+    let cipherCols: { x: number; y: number; sp: number; chars: string[]; resolve: number }[] = [];
+    const CIPHER_CHARS = "!@#$%&*?<>~^".split("");
+    const PLAIN_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    // backdoor (B3 case 13 — a wall of code with one cell glitching open)
+    let wallCells: { x: number; y: number; s: number }[] = [];
+    let doorCell = 0;
+    let doorClock = 0;
+    // install (B3 case 14 — permissions cascading, a progress bar that never finishes)
+    let permGlyphs: { x: number; y: number; sp: number; shape: number }[] = [];
+    let installBar = 0;
+    // browser (B3 case 15 — two near-identical windows, a URL bar that glitches)
+    let urlGlitch = 0;
+    // harvest (B4 case 16 — data tags drifting into a broker's collection)
+    let dataTags: { x: number; y: number; vx: number; vy: number; shape: number }[] = [];
+    let harvestCenter = { x: 0, y: 0 };
+    // deepfake (B4 case 17 — a face that glitches between two states)
+    let faceGlitch = 0;
+    let faceCenter = { x: 0, y: 0 };
+    // crossroads (B4 case 18 — a path forks, one branch pulses)
+    let forkClock = 0;
+    let forkPick = 0;
+    // convergence (B4 case 19 — every earlier signal style, all at once)
+    let convStreaks: { ang: number; d: number; sp: number; col: [number, number, number] }[] = [];
+    let convCenter = { x: 0, y: 0 };
+    // unmask (B4 case 20 — a redacted glyph that periodically resolves)
+    let unmaskBlocks: { x: number; y: number; s: number; on: boolean }[] = [];
+    let unmaskClock = 0;
 
     const R = (a: number, b: number) => a + Math.random() * (b - a);
     const MASK = "0123456789ABCDEF!@#$%*abcdef".split("");
@@ -189,6 +239,86 @@ export function BlockBackdrop({
           col: pal[Math.floor(Math.random() * pal.length)],
         }));
         sweep = 0;
+      } else if (variant === "ripple") {
+        ripples = [];
+        for (let i = 0; i < 3; i++) ripples.push({ x: R(W * 0.2, W * 0.8), y: R(H * 0.2, H * 0.8), r: R(0, 160), max: R(200, 340), sp: R(0.02, 0.04), col: pal[i % pal.length] });
+        rippleClock = 0;
+      } else if (variant === "loop") {
+        const n = Math.max(4, Math.round((W * H) / 180000));
+        loopOrbits = Array.from({ length: n }, () => ({
+          cx: R(W * 0.1, W * 0.9), cy: R(H * 0.1, H * 0.9), rad: R(16, 42), ang: R(0, Math.PI * 2),
+          sp: R(0.006, 0.016) * (Math.random() > 0.5 ? 1 : -1), trail: [], col: pal[Math.floor(Math.random() * pal.length)],
+        }));
+      } else if (variant === "glint") {
+        const lh = 26;
+        const rows = Math.ceil(H / lh);
+        glintLines = Array.from({ length: rows }, (_, i) => ({
+          x: 14, y: i * lh + R(0, lh * 0.4), w: R(W * 0.18, W * 0.5), chars: 0, max: R(20, 60), sp: R(0.3, 0.9), col: pal[Math.floor(Math.random() * pal.length)],
+        }));
+        glintSparkle = [];
+      } else if (variant === "bond") {
+        const n = Math.max(7, Math.round(W / 130));
+        bondNodes = Array.from({ length: n }, (_, i) => ({ x: (W / (n + 1)) * (i + 1), y: H * 0.5 + R(-24, 24), lit: 0 }));
+        bondDrip = 0;
+      } else if (variant === "ringer") {
+        ringerPhase = 0;
+        ringerPulses = Array.from({ length: 5 }, (_, i) => ({ t: i * 0.7, sp: 0.6 }));
+        // Off-centre: a centred phone shell would otherwise sit right on top of
+        // the ring's epicentre and hide it. Bloom from the open side margin.
+        center = { x: W * 0.82, y: H * 0.38 };
+      } else if (variant === "vault") {
+        // Off-centre: a centred console panel would otherwise sit right over
+        // the dial and hide it. Turn it in the open side margin instead.
+        tumblers = Array.from({ length: 3 }, (_, i) => ({
+          cx: W * 0.18, cy: H * 0.5, r: 70 + i * 48, ang: R(0, Math.PI * 2),
+          sp: (i % 2 === 0 ? 1 : -1) * R(0.0006, 0.0014), ticks: 10 + i * 4,
+        }));
+      } else if (variant === "cipher") {
+        const step = 22;
+        const n = Math.max(6, Math.floor(W / step));
+        cipherCols = Array.from({ length: n }, (_, i) => ({
+          x: i * step + 4, y: R(-H, 0), sp: R(1, 2.6),
+          chars: Array.from({ length: Math.ceil(H / 16) + 2 }, () => CIPHER_CHARS[Math.floor(Math.random() * CIPHER_CHARS.length)]),
+          resolve: Math.random() > 0.75 ? Math.floor(R(0, 6)) : -1,
+        }));
+      } else if (variant === "backdoor") {
+        const step = 34;
+        const cols = Math.ceil(W / step), rowsN = Math.ceil(H / step);
+        wallCells = [];
+        for (let gx = 0; gx < cols; gx++) for (let gy = 0; gy < rowsN; gy++) if (Math.random() > 0.55) wallCells.push({ x: gx * step, y: gy * step, s: step - 6 });
+        doorCell = Math.floor(Math.random() * Math.max(1, wallCells.length));
+        doorClock = 0;
+      } else if (variant === "install") {
+        const n = Math.max(10, Math.round((W * H) / 70000));
+        permGlyphs = Array.from({ length: n }, () => ({ x: R(0, W), y: R(-H, H), sp: R(0.3, 0.9), shape: Math.floor(R(0, 3)) }));
+        installBar = 0;
+      } else if (variant === "browser") {
+        urlGlitch = 0;
+      } else if (variant === "harvest") {
+        harvestCenter = { x: W * 0.5, y: H * 0.5 };
+        const n = Math.max(14, Math.round((W * H) / 42000));
+        dataTags = Array.from({ length: n }, () => ({ x: R(0, W), y: R(0, H), vx: 0, vy: 0, shape: Math.floor(R(0, 3)) }));
+      } else if (variant === "deepfake") {
+        faceGlitch = 0;
+        // Off-centre, same reason as vault — the console panel would hide a
+        // face drawn dead-centre.
+        faceCenter = { x: W * 0.84, y: H * 0.42 };
+      } else if (variant === "crossroads") {
+        forkClock = 0; forkPick = 0;
+      } else if (variant === "convergence") {
+        convCenter = { x: W * 0.5, y: H * 0.5 };
+        const n = Math.max(30, Math.round((W * H) / 20000));
+        convStreaks = Array.from({ length: n }, () => ({ ang: R(0, Math.PI * 2), d: R(0.3, 1) * Math.max(W, H) * 0.65, sp: R(1.6, 4.6), col: pal[Math.floor(Math.random() * pal.length)] }));
+      } else if (variant === "unmask") {
+        // Off-centre, same reason as vault/deepfake.
+        const cell = 16, cols = 11, rowsN = 13;
+        const ox = W * 0.18 - (cols * cell) / 2, oy = H * 0.5 - (rowsN * cell) / 2;
+        unmaskBlocks = [];
+        for (let gx = 0; gx < cols; gx++) for (let gy = 0; gy < rowsN; gy++) {
+          const dx = gx - cols / 2, dy = gy - rowsN / 2;
+          if (dx * dx * 1.3 + dy * dy < (cols / 2) * (rowsN / 2) * 0.55) unmaskBlocks.push({ x: ox + gx * cell, y: oy + gy * cell, s: cell - 2, on: Math.random() > 0.5 });
+        }
+        unmaskClock = 0;
       } else {
         // network: nodes drifting, edges between near ones, pulses toward a mind.
         center = { x: W * 0.5, y: H * 0.42 };
@@ -409,6 +539,309 @@ export function BlockBackdrop({
       cx.beginPath(); cx.arc(center.x, center.y, 3.5, 0, Math.PI * 2); cx.fill();
     };
 
+    // ---------- RIPPLE (B2 case 6 · pressure spreads outward) ----------
+    const drawRipple = (dt: number, live: boolean) => {
+      clear(1);
+      if (live) {
+        rippleClock += dt;
+        if (rippleClock > 1400 && ripples.length < 6) {
+          rippleClock = 0;
+          ripples.push({ x: R(W * 0.1, W * 0.9), y: R(H * 0.1, H * 0.9), r: 0, max: R(220, 380), sp: R(0.025, 0.045), col: pal[Math.floor(Math.random() * pal.length)] });
+        }
+      }
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const rp = ripples[i];
+        const a = Math.max(0, 1 - rp.r / rp.max);
+        for (let k = 0; k < 3; k++) {
+          const rr = rp.r - k * 26;
+          if (rr <= 0) continue;
+          cx.beginPath(); cx.arc(rp.x, rp.y, rr, 0, Math.PI * 2);
+          cx.strokeStyle = rgba(rp.col, a * (0.5 - k * 0.14)); cx.lineWidth = 1.4; cx.stroke();
+        }
+        if (live) { rp.r += rp.sp * dt * 6; if (rp.r > rp.max + 60) ripples.splice(i, 1); }
+      }
+    };
+
+    // ---------- LOOP (B2 case 7 · a stolen identity echoing) ----------
+    const drawLoop = (dt: number, live: boolean) => {
+      clear(1);
+      for (const o of loopOrbits) {
+        const x = o.cx + Math.cos(o.ang) * o.rad, y = o.cy + Math.sin(o.ang) * o.rad;
+        // ghost trail of past positions (the "echo")
+        for (let t = 0; t < o.trail.length; t += 2) {
+          const ta = o.trail[t], tr = o.trail[t + 1];
+          const tx = o.cx + Math.cos(ta) * tr, ty = o.cy + Math.sin(ta) * tr;
+          const age = 1 - t / o.trail.length;
+          cx.beginPath(); cx.arc(tx, ty, 2.4, 0, Math.PI * 2); cx.fillStyle = rgba(o.col, 0.25 * age); cx.fill();
+        }
+        // faint orbit ring + the live head
+        cx.beginPath(); cx.arc(o.cx, o.cy, o.rad, 0, Math.PI * 2); cx.strokeStyle = rgba(o.col, 0.1); cx.lineWidth = 1; cx.stroke();
+        cx.beginPath(); cx.arc(x, y, 3, 0, Math.PI * 2); cx.fillStyle = rgba(accH, 0.85); cx.fill();
+        if (live) {
+          o.ang += o.sp * dt * 0.06;
+          o.trail.unshift(o.ang, o.rad); if (o.trail.length > 16) o.trail.length = 16;
+        }
+      }
+    };
+
+    // ---------- GLINT (B2 case 8 · AI ghostwriting, too perfect) ----------
+    const drawGlint = (dt: number, live: boolean) => {
+      clear(1);
+      cx.font = "12px monospace"; cx.textBaseline = "top";
+      for (const ln of glintLines) {
+        const shown = Math.min(ln.max, Math.floor(ln.chars));
+        cx.fillStyle = rgba(ln.col, 0.16);
+        cx.fillRect(ln.x, ln.y, (ln.w * shown) / ln.max, 3);
+        // the typing cursor glints bright at the write-head
+        if (shown < ln.max) {
+          cx.fillStyle = rgba(accH, 0.6);
+          cx.fillRect(ln.x + (ln.w * shown) / ln.max, ln.y - 1, 2, 5);
+        }
+        if (live) { ln.chars += ln.sp * dt * 0.05; if (ln.chars > ln.max + 40) ln.chars = 0; }
+      }
+      if (live && Math.random() > 0.93 && glintSparkle.length < 10) glintSparkle.push({ x: R(0, W), y: R(0, H), t: 0, life: R(400, 800) });
+      for (let i = glintSparkle.length - 1; i >= 0; i--) {
+        const s = glintSparkle[i]; const a = Math.sin((s.t / s.life) * Math.PI);
+        cx.strokeStyle = rgba(accH, a * 0.8); cx.lineWidth = 1.2;
+        const r = 4 + a * 4;
+        cx.beginPath(); cx.moveTo(s.x - r, s.y); cx.lineTo(s.x + r, s.y); cx.moveTo(s.x, s.y - r); cx.lineTo(s.x, s.y + r); cx.stroke();
+        if (live) { s.t += dt; if (s.t > s.life) glintSparkle.splice(i, 1); }
+      }
+    };
+
+    // ---------- BOND (B2 case 9 · trust accrues slowly, weeks tick by) ----------
+    const drawBond = (dt: number, live: boolean) => {
+      clear(1);
+      const y = H * 0.5;
+      cx.strokeStyle = rgba(acc, 0.14); cx.lineWidth = 1.4;
+      cx.beginPath(); cx.moveTo(bondNodes[0]?.x ?? 0, y); cx.lineTo(bondNodes[bondNodes.length - 1]?.x ?? W, y); cx.stroke();
+      for (let i = 0; i < bondNodes.length; i++) {
+        const n = bondNodes[i];
+        const lit = live ? Math.max(0, Math.min(1, (Date.now() / 1000 - i * 0.9) % (bondNodes.length * 0.9 + 2))) : 0.5;
+        const on = lit < 1;
+        cx.beginPath(); cx.arc(n.x, y, on ? 4 : 2.6, 0, Math.PI * 2);
+        cx.fillStyle = on ? rgba(accH, 0.9) : rgba(acc, 0.3);
+        cx.fill();
+        if (on) { cx.beginPath(); cx.arc(n.x, y, 9, 0, Math.PI * 2); cx.strokeStyle = rgba(accH, 0.3); cx.lineWidth = 1; cx.stroke(); }
+      }
+      // a slow drip falling from the line (patience, time passing)
+      if (live) {
+        bondDrip += dt * 0.05;
+        const dx = W * 0.5 + Math.sin(bondDrip * 0.2) * W * 0.3;
+        const dy = y + ((bondDrip * 14) % (H * 0.4));
+        cx.beginPath(); cx.arc(dx, dy, 1.8, 0, Math.PI * 2); cx.fillStyle = rgba(accH, 0.5); cx.fill();
+      }
+    };
+
+    // ---------- RINGER (B2 case 10 · a cloned voice, two waveforms meeting) ----------
+    const drawRinger = (dt: number, live: boolean) => {
+      clear(1);
+      const cxp = center.x, cyp = center.y;
+      // expanding ring pulses, like an incoming call, blooming from the margin
+      for (const p of ringerPulses) {
+        const r = (p.t % 1) * Math.min(W, H) * 0.55;
+        const a = Math.max(0, 1 - (p.t % 1));
+        cx.beginPath(); cx.arc(cxp, cyp, r, 0, Math.PI * 2); cx.strokeStyle = rgba(accH, a * 0.42); cx.lineWidth = 1.6; cx.stroke();
+        if (live) p.t += p.sp * dt * 0.001;
+      }
+      cx.beginPath(); cx.arc(cxp, cyp, 3, 0, Math.PI * 2); cx.fillStyle = rgba(accH, 0.7); cx.fill();
+      // two waveform ribbons at mid-height, one real one cloned, drifting out
+      // of phase then back in sync — the whole width, so it reads in the open
+      // margins either side of the phone even though the ring sits off to one.
+      const t = live ? Date.now() * 0.0015 : 0;
+      const wy = H * 0.5;
+      for (let w2 = 0; w2 < 2; w2++) {
+        cx.beginPath();
+        const amp = 22, phase = w2 === 0 ? t : t + Math.sin(t * 0.3) * 1.4; // the clone drifts off-phase, then converges
+        for (let x = 0; x <= W; x += 8) {
+          const yy = wy + Math.sin(x * 0.02 + phase) * amp * (0.6 + 0.4 * Math.sin(x * 0.004 + t));
+          if (x === 0) cx.moveTo(x, yy); else cx.lineTo(x, yy);
+        }
+        cx.strokeStyle = rgba(w2 === 0 ? acc : accH, 0.3); cx.lineWidth = 1.4; cx.stroke();
+      }
+    };
+
+    // ---------- VAULT (B3 case 11 · tumblers turning into place) ----------
+    const drawVault = (dt: number, live: boolean) => {
+      clear(1);
+      for (const t of tumblers) {
+        cx.beginPath(); cx.arc(t.cx, t.cy, t.r, 0, Math.PI * 2); cx.strokeStyle = rgba(acc, 0.14); cx.lineWidth = 1.2; cx.stroke();
+        for (let i = 0; i < t.ticks; i++) {
+          const a = t.ang + (i / t.ticks) * Math.PI * 2;
+          const x1 = t.cx + Math.cos(a) * (t.r - 6), y1 = t.cy + Math.sin(a) * (t.r - 6);
+          const x2 = t.cx + Math.cos(a) * (t.r + 6), y2 = t.cy + Math.sin(a) * (t.r + 6);
+          cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2);
+          cx.strokeStyle = rgba(i === 0 ? accH : acc, i === 0 ? 0.8 : 0.22); cx.lineWidth = i === 0 ? 2 : 1; cx.stroke();
+        }
+        if (live) t.ang += t.sp * dt;
+      }
+      cx.beginPath(); cx.arc(tumblers[0]?.cx ?? W / 2, tumblers[0]?.cy ?? H / 2, 4, 0, Math.PI * 2);
+      cx.fillStyle = rgba(accH, 0.7); cx.fill();
+    };
+
+    // ---------- CIPHER (B3 case 12 · ciphertext that briefly resolves) ----------
+    const drawCipher = (dt: number, live: boolean) => {
+      clear(live ? 0.22 : 1);
+      cx.font = "13px monospace"; cx.textAlign = "left"; cx.textBaseline = "top";
+      const lh = 16;
+      for (const c of cipherCols) {
+        for (let k = 0; k < c.chars.length; k++) {
+          const yy = c.y + k * lh;
+          if (yy < -lh || yy > H) continue;
+          const inResolve = c.resolve >= 0 && k >= c.resolve && k < c.resolve + 4;
+          cx.fillStyle = inResolve ? rgba(accH, 0.75) : rgba(acc, 0.22);
+          cx.fillText(inResolve ? PLAIN_CHARS[Math.floor(Math.random() * PLAIN_CHARS.length) % PLAIN_CHARS.length] : c.chars[k], c.x, yy);
+        }
+        if (live) {
+          c.y += c.sp * dt * 0.1;
+          if (Math.random() > 0.92) c.chars[Math.floor(Math.random() * c.chars.length)] = CIPHER_CHARS[Math.floor(Math.random() * CIPHER_CHARS.length)];
+          if (c.y > H) { c.y = -c.chars.length * lh - R(0, H * 0.4); c.resolve = Math.random() > 0.7 ? Math.floor(R(0, 6)) : -1; }
+        }
+      }
+    };
+
+    // ---------- BACKDOOR (B3 case 13 · a wall of code, one cell glitches open) ----------
+    const drawBackdoor = (dt: number, live: boolean) => {
+      clear(1);
+      for (let i = 0; i < wallCells.length; i++) {
+        const c = wallCells[i];
+        const isDoor = i === doorCell;
+        const flicker = isDoor ? 0.5 + 0.5 * Math.sin(doorClock * 0.012) : 1;
+        cx.fillStyle = isDoor ? rgba(accH, 0.5 * flicker) : rgba(acc, 0.05);
+        cx.fillRect(c.x, c.y, c.s, c.s);
+        if (isDoor) { cx.strokeStyle = rgba(accH, 0.6 * flicker); cx.lineWidth = 1.2; cx.strokeRect(c.x - 1, c.y - 1, c.s + 2, c.s + 2); }
+      }
+      if (live) { doorClock += dt; if (Math.random() > 0.995) doorCell = Math.floor(Math.random() * Math.max(1, wallCells.length)); }
+    };
+
+    // ---------- INSTALL (B3 case 14 · permissions cascading, never finishes) ----------
+    const drawInstall = (dt: number, live: boolean) => {
+      clear(1);
+      for (const g of permGlyphs) {
+        cx.strokeStyle = rgba(acc, 0.22); cx.lineWidth = 1.3;
+        if (g.shape === 0) { cx.strokeRect(g.x - 5, g.y - 6, 10, 12); cx.beginPath(); cx.moveTo(g.x - 5, g.y - 2); cx.lineTo(g.x + 5, g.y - 2); cx.stroke(); }
+        else if (g.shape === 1) { cx.beginPath(); cx.moveTo(g.x, g.y - 7); cx.lineTo(g.x + 6, g.y - 3); cx.lineTo(g.x + 6, g.y + 4); cx.lineTo(g.x, g.y + 7); cx.lineTo(g.x - 6, g.y + 4); cx.lineTo(g.x - 6, g.y - 3); cx.closePath(); cx.stroke(); }
+        else { cx.beginPath(); cx.moveTo(g.x - 4, g.y); cx.lineTo(g.x - 1, g.y + 4); cx.lineTo(g.x + 5, g.y - 5); cx.stroke(); }
+        if (live) { g.y += g.sp * dt * 0.1; if (g.y > H + 10) g.y = -10; }
+      }
+      // a progress bar along the bottom that fills, then resets — never finishes
+      if (live) installBar = (installBar + dt * 0.00006) % 1;
+      const bw = W * 0.7, bx = W * 0.15, by = H - 26;
+      cx.strokeStyle = rgba(acc, 0.18); cx.lineWidth = 1; cx.strokeRect(bx, by, bw, 6);
+      cx.fillStyle = rgba(accH, 0.35); cx.fillRect(bx, by, bw * installBar, 6);
+    };
+
+    // ---------- BROWSER (B3 case 15 · two near-identical windows) ----------
+    const drawBrowser = (dt: number, live: boolean) => {
+      clear(1);
+      if (live) urlGlitch += dt;
+      const draw = (ox: number, oy: number, a: number, urlLen: number) => {
+        const w2 = W * 0.34, h2 = H * 0.26;
+        cx.strokeStyle = rgba(acc, a); cx.lineWidth = 1.3;
+        cx.strokeRect(ox, oy, w2, h2);
+        cx.fillStyle = rgba(acc, a * 0.6); cx.fillRect(ox, oy, w2, 18);
+        cx.strokeStyle = rgba(accH, a * 1.3); cx.strokeRect(ox + 8, oy + 5, urlLen, 8);
+      };
+      const glitch = Math.sin(urlGlitch * 0.002) > 0.7;
+      draw(W * 0.08, H * 0.14, 0.16, 90);
+      draw(W * 0.56, H * 0.56, 0.16, glitch ? 94 : 86); // the fake's URL is a hair off, and it swims
+    };
+
+    // ---------- HARVEST (B4 case 16 · your data, drifting to a buyer) ----------
+    const drawHarvest = (dt: number, live: boolean) => {
+      clear(1);
+      const cxp = harvestCenter.x, cyp = harvestCenter.y;
+      // the collector: a small database-stack icon at centre
+      cx.strokeStyle = rgba(accH, 0.4); cx.lineWidth = 1.3;
+      for (let i = 0; i < 3; i++) { cx.beginPath(); cx.ellipse(cxp, cyp - 8 + i * 7, 16, 5, 0, 0, Math.PI * 2); cx.stroke(); }
+      for (const t of dataTags) {
+        const dx = cxp - t.x, dy = cyp - t.y, dist = Math.hypot(dx, dy) || 1;
+        cx.fillStyle = rgba(pal[t.shape % pal.length], 0.4);
+        if (t.shape === 0) cx.fillRect(t.x - 4, t.y - 3, 8, 6);
+        else { cx.beginPath(); cx.arc(t.x, t.y, 3, 0, Math.PI * 2); cx.fill(); }
+        // a faint thread toward the collector
+        cx.strokeStyle = rgba(acc, Math.max(0, 0.14 - dist / 4000)); cx.lineWidth = 0.8;
+        cx.beginPath(); cx.moveTo(t.x, t.y); cx.lineTo(cxp, cyp); cx.stroke();
+        if (live) {
+          t.vx += (dx / dist) * 0.0025 * dt; t.vy += (dy / dist) * 0.0025 * dt;
+          t.x += t.vx; t.y += t.vy;
+          if (dist < 20) { t.x = R(0, W); t.y = R(0, H); t.vx = 0; t.vy = 0; }
+        }
+      }
+    };
+
+    // ---------- DEEPFAKE (B4 case 17 · a face that glitches between two states) ----------
+    const drawDeepfake = (dt: number, live: boolean) => {
+      clear(1);
+      if (live) faceGlitch += dt;
+      const glitching = Math.sin(faceGlitch * 0.0022) > 0.75;
+      const fx = faceCenter.x + (glitching ? R(-4, 4) : 0), fy = faceCenter.y;
+      cx.strokeStyle = rgba(glitching ? accH : acc, glitching ? 0.5 : 0.22); cx.lineWidth = 1.3;
+      cx.beginPath(); cx.ellipse(fx, fy, 60, 78, 0, 0, Math.PI * 2); cx.stroke();
+      // eyes + mouth as a wireframe "key points" mesh
+      for (const [ex, ey] of [[-22, -14], [22, -14], [0, 10], [-18, 30], [18, 30]] as [number, number][]) {
+        cx.beginPath(); cx.arc(fx + ex, fy + ey, 2.4, 0, Math.PI * 2); cx.fillStyle = rgba(accH, glitching ? 0.7 : 0.3); cx.fill();
+      }
+      // scanline sweep
+      if (live) {
+        const sy = (faceGlitch * 0.08) % (H + 60) - 30;
+        const g = cx.createLinearGradient(0, sy - 20, 0, sy + 20);
+        g.addColorStop(0, rgba(accH, 0)); g.addColorStop(0.5, rgba(accH, 0.08)); g.addColorStop(1, rgba(accH, 0));
+        cx.fillStyle = g; cx.fillRect(0, sy - 20, W, 40);
+      }
+    };
+
+    // ---------- CROSSROADS (B4 case 18 · the fork, and the choice) ----------
+    const drawCrossroads = (dt: number, live: boolean) => {
+      clear(1);
+      if (live) { forkClock += dt; if (Math.random() > 0.996) forkPick = forkPick ? 0 : 1; }
+      const ox = W * 0.5, oy = H * 0.72;
+      cx.strokeStyle = rgba(acc, 0.3); cx.lineWidth = 1.6;
+      cx.beginPath(); cx.moveTo(ox, H + 20); cx.lineTo(ox, oy); cx.stroke();
+      const ends: [number, number][] = [[W * 0.18, H * 0.1], [W * 0.82, H * 0.1]];
+      for (let i = 0; i < 2; i++) {
+        const picked = i === forkPick;
+        const pulse = picked ? 0.55 + 0.25 * Math.sin(forkClock * 0.004) : 0.14;
+        cx.strokeStyle = rgba(picked ? accH : acc, pulse); cx.lineWidth = picked ? 2 : 1.2;
+        cx.beginPath(); cx.moveTo(ox, oy); cx.lineTo(ends[i][0], ends[i][1]); cx.stroke();
+      }
+    };
+
+    // ---------- CONVERGENCE (B4 case 19 · every trick, all at once) ----------
+    const drawConvergence = (dt: number, live: boolean) => {
+      clear(live ? 0.3 : 1);
+      const cxp = convCenter.x, cyp = convCenter.y;
+      for (const s of convStreaks) {
+        const x1 = cxp + Math.cos(s.ang) * s.d, y1 = cyp + Math.sin(s.ang) * s.d;
+        const x2 = cxp + Math.cos(s.ang) * (s.d - 36), y2 = cyp + Math.sin(s.ang) * (s.d - 36);
+        const a = Math.max(0, Math.min(0.6, 1 - s.d / (Math.max(W, H) * 0.65)));
+        cx.strokeStyle = rgba(s.col, a); cx.lineWidth = 1.4;
+        cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke();
+        if (live) { s.d -= s.sp * dt * 0.12; if (s.d < 8) { s.ang = R(0, Math.PI * 2); s.d = R(0.6, 1) * Math.max(W, H) * 0.65; } }
+      }
+      const pulse = live ? 0.6 + Math.sin(Date.now() * 0.005) * 0.4 : 0.8;
+      cx.fillStyle = rgba(accH, pulse); cx.beginPath(); cx.arc(cxp, cyp, 3.5, 0, Math.PI * 2); cx.fill();
+    };
+
+    // ---------- UNMASK (B4 case 20 · the mastermind resolves into focus) ----------
+    const drawUnmask = (dt: number, live: boolean) => {
+      clear(1);
+      if (live) unmaskClock += dt;
+      const sharp = Math.max(0, Math.sin(unmaskClock * 0.0009)); // breathes in and out of focus
+      for (const b of unmaskBlocks) {
+        const lit = b.on ? sharp > 0.3 : sharp <= 0.3;
+        cx.fillStyle = lit ? rgba(accH, 0.35 + sharp * 0.3) : rgba(acc, 0.06);
+        cx.fillRect(b.x, b.y, b.s, b.s);
+      }
+      // converging lines from the four corners, as if every earlier case's
+      // evidence is pointing here (the glyph itself sits off-centre; aim at it)
+      const cxp = W * 0.18, cyp = H * 0.5;
+      for (const [cx0, cy0] of [[0, 0], [W, 0], [0, H], [W, H]] as [number, number][]) {
+        cx.strokeStyle = rgba(acc, 0.05); cx.lineWidth = 1;
+        cx.beginPath(); cx.moveTo(cx0, cy0); cx.lineTo(cxp, cyp); cx.stroke();
+      }
+    };
+
     // ---------- PRIZE (case 2 · greed) ----------
     const drawPrize = (dt: number, live: boolean) => {
       clear(1);
@@ -582,6 +1015,21 @@ export function BlockBackdrop({
       else if (variant === "crack") drawCrack(dt, live);
       else if (variant === "pinboard") drawPinboard(dt, live);
       else if (variant === "storm") drawStorm(dt, live);
+      else if (variant === "ripple") drawRipple(dt, live);
+      else if (variant === "loop") drawLoop(dt, live);
+      else if (variant === "glint") drawGlint(dt, live);
+      else if (variant === "bond") drawBond(dt, live);
+      else if (variant === "ringer") drawRinger(dt, live);
+      else if (variant === "vault") drawVault(dt, live);
+      else if (variant === "cipher") drawCipher(dt, live);
+      else if (variant === "backdoor") drawBackdoor(dt, live);
+      else if (variant === "install") drawInstall(dt, live);
+      else if (variant === "browser") drawBrowser(dt, live);
+      else if (variant === "harvest") drawHarvest(dt, live);
+      else if (variant === "deepfake") drawDeepfake(dt, live);
+      else if (variant === "crossroads") drawCrossroads(dt, live);
+      else if (variant === "convergence") drawConvergence(dt, live);
+      else if (variant === "unmask") drawUnmask(dt, live);
       else drawNetwork(dt, live);
     };
 

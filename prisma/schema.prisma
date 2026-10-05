@@ -231,9 +231,10 @@ model ChildProfile {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  class    Class?     @relation(fields: [classId], references: [id], onDelete: SetNull)
-  progress Progress[]
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class       Class?       @relation(fields: [classId], references: [id], onDelete: SetNull)
+  progress    Progress[]
+  opsFindings OpsFinding[]
 
   @@index([userId])
   @@index([classId])
@@ -300,6 +301,47 @@ model WaitlistEntry {
 
   @@unique([email, productId])
   @@index([productId])
+}
+
+// ---------------------------------------------------------------------------
+// Cyber Ops (14-17, product slug "cyberstart"). Week progress and reputation
+// ride the platform spine as-is: one Progress row per (child, product, week),
+// with rep points stored in Progress.xp (max-merged, never lowered). The one
+// thing the spine cannot hold is the PORTFOLIO — the pentest-style finding
+// every engagement files, which is the tier's core promise to the family.
+// One finding per (child, week); re-completing a week re-files (upserts) it.
+// ---------------------------------------------------------------------------
+
+enum OpsSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model OpsFinding {
+  id             String      @id @default(cuid())
+  childProfileId String
+  week           Int
+  /// The operator callsign the learner signed the engagement's scope with.
+  callsign       String
+  title          String
+  severity       OpsSeverity
+  /// CVSS score as displayed ("8.2") — presentation value, not computed.
+  cvss           String
+  /// Where the weakness lives (host · surface), as shown on the report.
+  location       String
+  impact         String      @db.Text
+  fix            String      @db.Text
+  /// The flag the capture produced — proof the technique actually ran.
+  flag           String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  childProfile ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([childProfileId, week])
+  @@index([childProfileId])
 }
 
 // ---------------------------------------------------------------------------
@@ -416,6 +458,21 @@ model SeatPurchase {
   org Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
   @@index([orgId])
+}
+
+/// One row per call to the model on a learner's behalf (a grade or a
+/// reply, either course). Counted over the last 24 hours against the
+/// per-person allowance so a runaway session or a script cannot spend
+/// without limit. Rows older than a month can be dropped.
+model ModelCall {
+  id     String    @id @default(cuid())
+  userId String
+  course CourseKey
+  route  String
+  at     DateTime  @default(now())
+
+  @@index([userId, at])
+  @@index([at])
 }
 
 model OrgMember {

@@ -14,7 +14,8 @@ export const case12Console: ConsoleCase = {
   caseNumber: "CASE 012",
   title: "Unreadable",
   actor: "PACKRAT",
-  accent: "#FF9E3D",
+  accent: "#9B59F6",
+  theme: { backdrop: "cipher", matrix: ["#9B59F6", "#C4A0FF", "#6B2FD6"], accentHi: "#C4A0FF" },
   open: [
     "New system to master, Agent. This one's about secrets, how to send a message so that only the right person can read it.",
     "PACKRAT is back, and this time it isn't stealing accounts. It's LISTENING, sitting quietly on networks, reading whatever travels past unprotected.",
@@ -35,13 +36,12 @@ export const case12Console: ConsoleCase = {
       ],
       practice: [
         {
-          t: "choose",
-          prompt: "Shift each letter BACK by one. What does IFMMP say?",
-          options: [
-            { label: "HELLO", outcome: "good", then: [{ t: "wren", text: "Cracked it. I-F-M-M-P shifted back one letter is H-E-L-L-O. With the key, gibberish becomes a message. Without it, PACKRAT just sees IFMMP and learns nothing. That's the whole power of a cipher.", voice: "/audio/wren/m12c-s1-ok.mp3" }] },
-            { label: "WORLD", outcome: "bad", then: [{ t: "wren", text: "Not quite. Take each letter and step it back one: I to H, F to E. Try again.", voice: "/audio/wren/m12c-s1-bad.mp3" }] },
-            { label: "IFMMP is already English", outcome: "bad", then: [{ t: "wren", text: "It's scrambled, that's the point. Apply the key, shift each letter back one, and read what appears. Try again.", voice: "/audio/wren/m12c-s1-bad2.mp3" }] },
-          ],
+          t: "decode",
+          prompt: "Turn the dial until IFMMP reads as a real word.",
+          ciphertext: "IFMMP",
+          shift: 1,
+          ok: "Cracked it. I-F-M-M-P shifted back one letter is H-E-L-L-O. With the key, gibberish becomes a message. Without it, PACKRAT just sees IFMMP and learns nothing. That's the whole power of a cipher.",
+          okVoice: "/audio/wren/m12c-s1-ok.mp3",
         },
         {
           t: "build",

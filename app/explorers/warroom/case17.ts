@@ -16,7 +16,8 @@ export const case17War: WarCase = {
   caseNumber: "CASE 017",
   title: "Ghost Stories",
   actor: "GHOSTWRITER",
-  accent: "#B98BFF",
+  accent: "#5FD3F3",
+  theme: { backdrop: "deepfake", matrix: ["#5FD3F3", "#B4ECFF", "#2FA3D6"], accentHi: "#B4ECFF" },
   open: [
     "Back at the board, Agent. New signature on the wire: GHOSTWRITER. This one doesn't steal your password, it steals your belief. It makes things that never happened look completely real.",
     "Fake photos, cloned voices, invented quotes, whole stories built from nothing, and cheap to make now. The goal is to get you to believe it, feel something, and pass it on before you think.",
