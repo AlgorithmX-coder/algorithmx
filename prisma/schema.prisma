@@ -39,6 +39,7 @@ model User {
   seats               Seat[]
   enrolments          Enrolment[]
   packShareLinks      PackShareLink[]
+  classesTaught       Class[]
 }
 
 model Account {
@@ -219,15 +220,23 @@ model ChildProfile {
   id              String   @id @default(cuid())
   userId          String
   name            String
-  dateOfBirth     DateTime
+  /// Optional since the school spine: a school never hands us a child's
+  /// birthday. A family profile still has one; a school pupil has a year
+  /// group on their class instead, which is all the age signal we need.
+  dateOfBirth     DateTime?
   favouriteColour String
+  /// Set for a school pupil, null for a child on a family account. This one
+  /// field is the whole difference between the two.
+  classId         String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class    Class?     @relation(fields: [classId], references: [id], onDelete: SetNull)
   progress Progress[]
 
   @@index([userId])
+  @@index([classId])
 }
 
 // ============================================================
@@ -385,6 +394,8 @@ model Organisation {
   members      OrgMember[]
   seats        Seat[]
   profile      FirmProfile?
+  school       SchoolProfile?
+  classes      Class[]
   enrolments   Enrolment[]
   certificates Certificate[]
   packShares   PackShareLink[]
@@ -595,4 +606,55 @@ model PackShareLink {
 
   @@index([orgId])
   @@index([createdById])
+}
+
+/// Marks an Organisation as a SCHOOL rather than a firm.
+///
+/// Its presence is the answer to the question app/lib/schoolAccess.ts could
+/// not answer before: whether the organisation a teacher belongs to is a
+/// school at all. Sector was never usable for that, because it is free text
+/// somebody types at onboarding and a wording difference would lock a real
+/// teacher out of a live lesson.
+model SchoolProfile {
+  id        String   @id @default(cuid())
+  orgId     String   @unique
+  /// Who a teacher passes a disclosure to, in this school's own words. There
+  /// is no country-neutral job title for this, so the school supplies one.
+  safeguardingContact String?
+  /// This country's child line service number. We never guess it and never
+  /// ship a table of them: a wrong number in a safeguarding lesson is worse
+  /// than none. The school fills it in once and it prints on the pack.
+  childLineNumber     String?
+  updatedAt DateTime @updatedAt
+
+  org Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+}
+
+/// One class of pupils, taught by one teacher.
+model Class {
+  id        String   @id @default(cuid())
+  orgId     String
+  /// The teacher who made it. Other staff at the school can see it; this is
+  /// who it belongs to.
+  teacherId String
+  /// What the school calls it. "4B", "Year 5 Oak".
+  name      String
+  /// 3 to 6. The only age signal stored about a school pupil, and it lives on
+  /// the class rather than on the child.
+  yearGroup Int?
+  /// Printed on the login cards and typed by a child. Unambiguous alphabet,
+  /// no letters a seven year old confuses with digits.
+  code      String   @unique
+  /// Archived at the end of a year rather than deleted, so last year's
+  /// progress is still attached to something.
+  archivedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  org     Organisation   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  teacher User           @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  pupils  ChildProfile[]
+
+  @@index([orgId])
+  @@index([teacherId])
 }

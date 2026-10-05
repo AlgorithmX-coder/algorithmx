@@ -182,7 +182,7 @@ export interface WeekItem {
 }
 export interface DashboardViewProps {
   userName: string;
-  childAge: number;
+  childAge: number | null;
   completedCount: number;
   totalWeeks: number;
   progressPct: number;
@@ -260,7 +260,9 @@ export default function DashboardView({
                 </div>
                 <span className="text-sm font-bold" style={{ color: C.textSoft }}>
                   {userName}
+                  {childAge !== null && (
                   <span className="ml-1.5" style={{ color: C.textMuted, fontWeight: 700 }}>· age {childAge}</span>
+                )}
                 </span>
               </div>
               <a href="/hub" className="hidden sm:inline-flex items-center lift" style={{ background: "rgba(54,214,255,0.08)", border: `1px solid ${C.borderStrong}`, borderRadius: 100, padding: "8px 18px", fontSize: 13, fontWeight: 800, color: C.cyan, textDecoration: "none" }}>Hub</a>

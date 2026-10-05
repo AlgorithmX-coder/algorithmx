@@ -281,7 +281,7 @@ export default async function ParentWeekDetail({ params }: PageProps) {
                         fontSize: 14,
                       }}
                     >
-                      ({age} yo)
+                      {age !== null ? `(${age} yo)` : ""}
                     </span>
                   </h2>
                   <div
