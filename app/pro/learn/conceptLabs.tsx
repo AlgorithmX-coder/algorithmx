@@ -1060,3 +1060,75 @@ export function EndOfLifeLab({ onDidTry }: LabProps) {
       { text: "Ignoring end-of-life dates because upgrading is inconvenient and costly.", cat: "risky", why: "The cost and inconvenience are real, but ignoring EOL just defers them into a far more expensive breach." },
     ]} />;
 }
+
+/* ---- Module 9 labs: web attacks & the OWASP Top 10 (recognise & defend) ---- */
+
+const TRUST_INPUT: Cat[] = [
+  { id: "untrusted", label: "Untrusted (never trust it)", color: T.red },
+  { id: "trusted", label: "Controlled by you", color: T.green },
+];
+export function TrustInputLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={TRUST_INPUT}
+    prompt="The golden rule of web security: never trust input that came from the user. For each source of data, decide: is it untrusted user input, or something you control?"
+    items={[
+      { text: "What someone types into a login or search box.", cat: "untrusted", why: "Anything a user types can be anything, including an attack. Always treat it as hostile until checked." },
+      { text: "Values in a URL, like ?id=42, that a user can edit.", cat: "untrusted", why: "Users can change URL parameters freely, so these are untrusted input too." },
+      { text: "A setting hard-coded in your own server's configuration.", cat: "trusted", why: "You control this; it does not come from the user, so it is not an injection risk." },
+      { text: "Data uploaded in a file by a visitor.", cat: "untrusted", why: "An uploaded file's name and contents are user-supplied and must be treated as untrusted." },
+      { text: "A hidden form field the browser sends back.", cat: "untrusted", why: "'Hidden' only means not shown; a user can still change it. Never trust it." },
+      { text: "A fixed list of options your own code defines.", cat: "trusted", why: "If your code sets it and the user cannot alter it, you control it." },
+    ]} />;
+}
+
+const XSS_SAFETY: Cat[] = [
+  { id: "vuln", label: "Vulnerable to XSS", color: T.red },
+  { id: "safe", label: "Handled safely", color: T.green },
+];
+export function XssSafetyLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={XSS_SAFETY}
+    prompt="Cross-site scripting (XSS) happens when a site shows user content as if it were code. For each practice, decide: vulnerable to XSS, or handled safely?"
+    items={[
+      { text: "Showing a user's comment on a page exactly as typed, with no escaping.", cat: "vuln", why: "If the comment contains script, it runs in other visitors' browsers. This is classic XSS." },
+      { text: "Escaping user content so tags are shown as text, not run as code.", cat: "safe", why: "Escaping (encoding) output means a script is displayed harmlessly, never executed." },
+      { text: "Putting a user's name straight into the page's HTML without encoding.", cat: "vuln", why: "Unencoded user input in HTML is the core XSS mistake, whatever the field." },
+      { text: "Treating all user content as data to display, never as code to run.", cat: "safe", why: "The right mindset: user content is data, not instructions. Encode it on output." },
+      { text: "Trusting that users 'won't type anything weird'.", cat: "vuln", why: "Hope is not a control. Attackers type exactly the weird things you did not defend against." },
+      { text: "Using a framework or library that auto-escapes output by default.", cat: "safe", why: "Modern frameworks escape output for you, which is why they prevent most XSS when used properly." },
+    ]} />;
+}
+
+const ACCESS_CTRL: Cat[] = [
+  { id: "sound", label: "Proper access control", color: T.green },
+  { id: "broken", label: "Broken access control", color: T.red },
+];
+export function AccessControlLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={ACCESS_CTRL}
+    prompt="Broken access control, letting people reach things they should not, is the #1 web risk. For each design, decide: proper access control, or broken?"
+    items={[
+      { text: "The server checks, on every request, that you are allowed to see that specific record.", cat: "sound", why: "Server-side checks on every request are exactly how access control should work." },
+      { text: "Letting anyone view order #124 by changing the URL from order #123.", cat: "broken", why: "If changing a number in the URL reaches someone else's data, access control is broken (an IDOR flaw)." },
+      { text: "Hiding the 'admin' button but leaving the admin page reachable by typing its address.", cat: "broken", why: "Hiding a button is not access control. If the page works when reached directly, anyone can." },
+      { text: "Enforcing permissions on the server, not just in the browser's interface.", cat: "sound", why: "The browser can be bypassed; the server is the only place access control truly holds." },
+      { text: "Trusting a hidden field that says role=user, which a user can change to role=admin.", cat: "broken", why: "Never trust client-supplied values for permissions. The user can edit them to escalate." },
+      { text: "Denying access by default, and granting only what each role genuinely needs.", cat: "sound", why: "Default-deny plus least privilege is the sound foundation of access control." },
+    ]} />;
+}
+
+const WEB_FIX: Cat[] = [
+  { id: "inject", label: "Injection (e.g. SQLi)", color: T.red },
+  { id: "xss", label: "Cross-site scripting", color: T.amber },
+  { id: "access", label: "Broken access control", color: T.cyan },
+  { id: "auth", label: "Weak authentication", color: T.green },
+];
+export function WebFixLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={WEB_FIX}
+    prompt="The OWASP Top 10 is the industry's shared list of the worst web risks. Tap each fix, then tap the risk it addresses. Knowing the fix mindset for each is what matters."
+    items={[
+      { text: "Use parameterised queries so input can never change the command", cat: "inject", why: "Separating data from the command is the definitive fix for SQL injection and injection generally." },
+      { text: "Escape (encode) all user content on output so it is shown, not run", cat: "xss", why: "Encoding output means user content is displayed as harmless text: the core XSS fix." },
+      { text: "Check permissions on the server for every request, default-deny", cat: "access", why: "Server-side, default-deny permission checks are the fix for broken access control." },
+      { text: "Require strong passwords and multi-factor authentication", cat: "auth", why: "MFA and strong credentials defend against weak-authentication attacks like credential stuffing." },
+      { text: "Never glue user input straight into a database query", cat: "inject", why: "Gluing input into a command is exactly what causes injection; parameterise instead." },
+      { text: "Do not rely on hiding buttons; enforce access on the server", cat: "access", why: "Hiding UI is not control. Broken access control is fixed by real server-side enforcement." },
+    ]} />;
+}
