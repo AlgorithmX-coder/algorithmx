@@ -773,10 +773,13 @@ export const WEEK_5: WeekContent = {
           "[warmly] Cross all three, and you never carry it alone. Ready? First stone!",
         ],
       },
-      coachLines: {
-        speaker: "layla",
-        lines: ["Here are three stones for the first step. Tap the safe one."],
-      },
+      // No coachLines here (UAT W5 5b, "two voices on the first stone").
+      // PasscodeForge speaks the how-to once as the board appears and THEN the
+      // round's own read-aloud, so stone one got two spoken instructions back
+      // to back while stones two and three got one each. The how-to also
+      // restated this screen's own intro line ("Read all three, then tap the
+      // safe one") almost word for word. The read-aloud is self-contained, so
+      // dropping the duplicate leaves every stone with exactly one voice.
       completeNarration: {
         speaker: "layla",
         lines: [
