@@ -28,7 +28,7 @@ const ACTS: Act[] = [
       { n: 8, title: "Malware: how it really works", blurb: "Viruses, ransomware, and how infection actually happens.", tag: "Security+ 2.4", href: "/pro/module08", status: "live" },
       { n: 9, title: "Web attacks & the OWASP Top 10", blurb: "How web apps get broken, and you run a real SQL injection yourself.", tag: "OWASP Top 10", href: "/pro/week08", status: "preview" },
       { n: 10, title: "Networks & Wi-Fi under attack", blurb: "Eavesdropping, spoofing, denial of service, and moving through a network.", tag: "Security+ 2.4", href: "/pro/module10", status: "live" },
-      { n: 11, title: "Vulnerabilities & patching", blurb: "What a vulnerability really is, and the race to patch it before attackers strike.", tag: "Security+ 2.5", status: "soon" },
+      { n: 11, title: "Vulnerabilities & patching", blurb: "What a vulnerability really is, and the race to patch it before attackers strike.", tag: "Security+ 2.5", href: "/pro/module11", status: "live" },
     ],
   },
   {

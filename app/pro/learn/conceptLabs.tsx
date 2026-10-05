@@ -967,3 +967,96 @@ export function LateralMovementLab({ onDidTry }: LabProps) {
       ] },
     ]} />;
 }
+
+/* ---- Module 11 labs: vulnerabilities & patching ---- */
+
+const VULN_TERM: Cat[] = [
+  { id: "vuln", label: "Vulnerability", color: T.amber },
+  { id: "exploit", label: "Exploit", color: T.red },
+  { id: "cve", label: "CVE", color: T.cyan },
+  { id: "cvss", label: "CVSS", color: T.green },
+];
+export function VulnTermLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={VULN_TERM}
+    prompt="Vulnerability management has its own vocabulary, and using it precisely is how you communicate risk. Tap each description, then tap the term it defines."
+    items={[
+      { text: "A weakness in software or a system that could be abused", cat: "vuln", why: "A vulnerability is the weakness itself, the flaw an attacker might use." },
+      { text: "A piece of code or technique that actually takes advantage of a weakness", cat: "exploit", why: "An exploit is the thing that uses a vulnerability; the weakness is only dangerous once an exploit exists." },
+      { text: "A unique public ID for a specific known vulnerability (like CVE-2014-0160)", cat: "cve", why: "A CVE identifier lets everyone refer to the exact same flaw unambiguously." },
+      { text: "A standard 0-10 score rating how severe a vulnerability is", cat: "cvss", why: "CVSS gives a severity score so you can compare vulnerabilities at a glance." },
+      { text: "The flaw that existed in a system before anyone built a way to abuse it", cat: "vuln", why: "Still a vulnerability: the weakness exists whether or not an exploit has been written yet." },
+      { text: "A 9.8 'critical' rating attached to a flaw", cat: "cvss", why: "A high number on the 0-10 scale is a CVSS severity score." },
+    ]} />;
+}
+
+export function PatchRaceLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="A vendor has just released an emergency patch for a critical, actively-exploited flaw in software you run on an internet-facing server. Play the race: speed and judgement both matter."
+    doneKicker="Patched in time"
+    doneNote="You treated a critical, exploited, internet-facing flaw as the emergency it was: assessed exposure, prioritised, patched fast, and mitigated where you could not. That is the patch race, and winning it is one of the highest-value things a defender does."
+    steps={[
+      { role: "The news breaks", prompt: "The advisory says the flaw is critical and already being exploited in the wild. What is your first move?", options: [
+        { text: "Find out whether, and where, you run the affected software, especially anything internet-facing.", correct: true, why: "You cannot fix what you cannot find. Knowing your exposure, starting with internet-facing systems, is step one." },
+        { text: "Wait a few weeks to see if the patch causes any problems for others.", correct: false, why: "'Actively exploited' and 'internet-facing' means the clock is running now. Waiting weeks is exactly the gap attackers need." },
+        { text: "Ignore it; if it mattered, someone would tell you.", correct: false, why: "Nobody is coming to patch it for you. Known, exploited flaws left open are how the biggest breaches start." },
+      ] },
+      { role: "Can't patch instantly", prompt: "Testing the patch properly will take a little time, but the server is exposed now. What do you do in the meantime?", options: [
+        { text: "Apply an interim mitigation (e.g. restrict access or use the vendor's workaround) to reduce exposure while you test.", correct: true, why: "When you cannot patch instantly, you shrink the exposure: limit who can reach it, apply a workaround, add monitoring. You reduce risk now, then patch." },
+        { text: "Leave it fully exposed until the patch is tested, changing nothing.", correct: false, why: "Doing nothing on a critical, exploited, internet-facing flaw leaves the door wide open during the most dangerous window." },
+        { text: "Take the whole business offline indefinitely to be safe.", correct: false, why: "Disproportionate: the goal is to reduce exposure (access limits, workarounds) while you test, not to halt everything." },
+      ] },
+      { role: "Afterwards", prompt: "The patch is applied. What turns this scramble into something better next time?", options: [
+        { text: "Build an inventory and a patching process, so next time you know your exposure and act fast by default.", correct: true, why: "The lasting fix is process: know what you run (inventory), watch for advisories, and patch critical flaws fast as routine, not panic." },
+        { text: "Assume this was a one-off and change nothing.", correct: false, why: "Critical flaws are regular, not rare. Without a process, every one is a fresh scramble, and eventually one is missed." },
+        { text: "Disable all future updates to avoid the hassle.", correct: false, why: "That guarantees you fall behind and accumulate open doors. Updating is the defence, not the problem." },
+      ] },
+    ]} />;
+}
+
+const REPORT_FIELD: Cat[] = [
+  { id: "which", label: "Which flaw / does it apply to me", color: T.cyan },
+  { id: "severity", label: "How severe", color: T.amber },
+  { id: "urgency", label: "How urgent (exploited?)", color: T.red },
+  { id: "action", label: "What to do", color: T.green },
+];
+export function VulnReportLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={REPORT_FIELD}
+    prompt="A vulnerability advisory is dense, but each part answers a specific question. Tap each element, then tap what it tells you. Reading reports well is a daily analyst skill."
+    items={[
+      { text: "The CVE identifier and the list of affected products and versions", cat: "which", why: "These pin down exactly which flaw it is, and whether your systems are affected." },
+      { text: "The CVSS base score, e.g. 9.8 'critical'", cat: "severity", why: "The severity score tells you how bad the flaw is in principle." },
+      { text: "A note that the flaw is 'being actively exploited in the wild'", cat: "urgency", why: "Known real-world exploitation sharply raises urgency, often above a slightly higher-scored flaw that is not being used." },
+      { text: "The patch version, or a temporary workaround / mitigation", cat: "action", why: "This is what you actually do: apply the patch, or the interim mitigation if you cannot patch yet." },
+      { text: "'Affects versions 2.0 to 2.4; fixed in 2.4.1'", cat: "which", why: "Version details tell you whether you are exposed and what to upgrade to." },
+      { text: "'Proof-of-concept exploit code is publicly available'", cat: "urgency", why: "Public exploit code means attacks will follow fast: a strong urgency signal." },
+    ]} />;
+}
+
+export function PriorityOrderLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry}
+    prompt="You cannot patch everything at once, so you prioritise. Rank these four vulnerabilities from fix-first to fix-last, weighing severity, exposure, and whether they are actually being exploited."
+    doneNote="That is risk-based prioritisation: a flaw that is severe, internet-facing, and actively exploited beats a severe one that is isolated and not exploited. Exposure and real-world exploitation, not the raw score alone, decide what you fix first."
+    items={[
+      { label: "Critical flaw, internet-facing server, actively exploited right now", note: "Severe, exposed, and being used in real attacks: the textbook fix-this-first emergency." },
+      { label: "Critical flaw, internet-facing, no known exploitation yet", note: "Severe and exposed, so still urgent, but slightly less than one already being exploited." },
+      { label: "High flaw, internal-only system behind segmentation", note: "Serious, but exposure is limited by not being reachable from outside. Important, not an emergency." },
+      { label: "Medium flaw, isolated test machine, not exploited", note: "Low exposure and lower severity: real, but it waits behind the others." },
+    ]} />;
+}
+
+const EOL_APPROACH: Cat[] = [
+  { id: "sound", label: "Sound approach", color: T.green },
+  { id: "risky", label: "Risky approach", color: T.red },
+];
+export function EndOfLifeLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={EOL_APPROACH}
+    prompt="End-of-life software no longer gets security patches, so new flaws in it are never fixed. For each way of handling a legacy system, decide: sound, or risky?"
+    items={[
+      { text: "Planning and budgeting to migrate off the end-of-life system before support ends.", cat: "sound", why: "Getting ahead of the deadline is the real answer: migrate before the patches stop." },
+      { text: "Leaving an unsupported, unpatchable system directly exposed to the internet.", cat: "risky", why: "A system that can never be patched, open to the world, is a permanent open door. The worst case." },
+      { text: "Isolating a legacy system that genuinely cannot be replaced yet, with tight segmentation and monitoring.", cat: "sound", why: "If you truly cannot migrate yet, you contain it: isolate, restrict access, and watch it closely." },
+      { text: "Assuming an old system is fine because 'it has always worked'.", cat: "risky", why: "Working is not the same as safe. Unpatched flaws accumulate silently; past reliability says nothing about security." },
+      { text: "Keeping an inventory so you know which systems are approaching end of life.", cat: "sound", why: "You cannot manage what you do not track. Knowing what is ageing out is the first step." },
+      { text: "Ignoring end-of-life dates because upgrading is inconvenient and costly.", cat: "risky", why: "The cost and inconvenience are real, but ignoring EOL just defers them into a far more expensive breach." },
+    ]} />;
+}
