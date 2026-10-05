@@ -7,6 +7,12 @@ export type CorporateProductSlug = (typeof CORPORATE_PRODUCT_SLUGS)[number];
 export const COURSE_NAME: Record<CorporateProductSlug, string> = { "ai-cleared": "AI Cleared", "ai-fluent": "AI Fluent" };
 
 /* What the buyer is choosing between, in the words of the corporate page. */
+/* Why a firm cannot start with AI Fluent: a Fluent seat is claimed by a
+ * person holding a valid AI Cleared certificate, so a firm with no Cleared
+ * seats would have nobody who could sit it. Shown on the buy form and
+ * returned by the checkout route. */
+export const FLUENT_NEEDS_CLEARED_FIRM = "AI Fluent seats are added to a firm that already runs AI Cleared. Buy AI Cleared first, or use the admin email of your existing firm.";
+
 export const COURSE_BLURB: Record<CorporateProductSlug, string> = {
   "ai-cleared": "The safety gate every member of staff passes. About 90 minutes, in 20 minute sittings.",
   "ai-fluent": "The upskill for staff who hold an AI Cleared certificate. About 3 hours, in 20 minute sittings.",

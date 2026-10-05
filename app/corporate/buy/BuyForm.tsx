@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { K } from "@/app/ai-cleared/engine/tokens";
-import { COURSE_BLURB, COURSE_NAME, VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { COURSE_BLURB, COURSE_NAME, FLUENT_NEEDS_CLEARED_FIRM, VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
 
 /* The seat-pack form: course, seats in tens, firm details, the admin's
  * email, then off to Stripe. Prices are the published ones; Stripe's
@@ -58,7 +58,7 @@ export default function BuyForm({ course: initialCourse, courses, seats: initial
           <span>{seats} seats × {gbp(perSeat)} = {gbp(net)}, VAT at {VAT_PERCENT}% {gbp(vat)}</span>
           <b>{gbp(total)} a year</b>
         </div>
-        {course === "ai-fluent" ? <p className="cf-note">An AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate. Most firms clear everyone first, then put the people who use AI most through Fluent.</p> : null}
+        {course === "ai-fluent" ? <p className="cf-note">An AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate. {FLUENT_NEEDS_CLEARED_FIRM}</p> : null}
         <p className="cf-note">More than 249 seats is an Enterprise conversation: use the enquiry form and we will quote.</p>
       </div>
 
