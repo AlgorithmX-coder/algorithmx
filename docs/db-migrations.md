@@ -155,24 +155,36 @@ migration has already been validated against a copy of prod data.
 ## Smoke-test workflow
 
 `.github/workflows/post-deploy-smoke.yml` runs on every push to
-`main`. It waits 4 minutes for Vercel to deploy, then POSTs a fresh
-test signup to `/api/signup` on prod. If the response is 5xx the
-workflow fails with a red X on the commit and the GitHub Actions tab
-shows the error.
+`main`. It waits 4 minutes for Vercel to deploy, then POSTs to
+`/api/signup` on prod. If the response is 5xx the workflow fails with
+a red X on the commit and the GitHub Actions tab shows the error.
 
 You can override the prod URL it pings via repo settings → Secrets
 and variables → Actions → Variables → `PROD_URL`.
 
-The test users it creates use email like `ci-smoke-{timestamp}-{run_id}@algorithmx-ci.invalid`
-so they don't collide with real signups, but they do persist in the
-database. To clean up, run periodically (or wire into a cron):
+**It writes nothing.** The POST uses one fixed sentinel address,
+`ci-smoke-sentinel@algorithmx-ci.invalid`, which already exists in
+prod. `/api/signup` validates the payload, then calls
+`prisma.user.findUnique`, then answers 400 "Email already in use" -
+so the database round-trip is exercised on every deploy without
+creating a row. A pass is that exact 400, or a 201 if the sentinel
+has been purged (it is then recreated - one row, self-healing).
+Any other 400 fails the build, because those are returned *before*
+the database is touched and so prove nothing.
+
+> **History.** Until 2026-10-04 this workflow sent a unique
+> `ci-smoke-{timestamp}-{run_id}@...` address per run and relied on a
+> cleanup endpoint that was never built. It left one permanent user per
+> deploy: 450 of the 468 rows in the prod `User` table. Do not
+> reintroduce a per-run email here.
+
+To clear out the historical rows (the sentinel is deliberately
+excluded):
 
 ```bash
-DATABASE_URL='<prod-url>' npx prisma db execute --stdin <<'SQL'
-DELETE FROM "User" WHERE email LIKE 'ci-smoke-%@algorithmx-ci.invalid';
+DATABASE_URL='<prod-direct-url>' npx prisma db execute --stdin <<'SQL'
+DELETE FROM "User"
+WHERE email LIKE 'ci-smoke-%@algorithmx-ci.invalid'
+  AND email <> 'ci-smoke-sentinel@algorithmx-ci.invalid';
 SQL
 ```
-
-I haven't wired this cleanup as a scheduled action yet because it
-adds a couple of rows per deploy and is harmless. Add it later if
-the table fills up.
