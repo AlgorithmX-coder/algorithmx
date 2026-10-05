@@ -14,21 +14,21 @@ const ACTS: Act[] = [
     cls: "a1", tag: "Act 1", name: "Foundations you can touch", focus: "The language every certificate starts with.",
     modules: [
       { n: 1, title: "What security actually means", blurb: "The core ideas every certificate opens with: the CIA triad, risk, and thinking like a defender.", tag: "Security+ 1.0", href: "/pro/module01", status: "live" },
-      { n: 2, title: "How the internet actually works", blurb: "The plumbing attackers use, from IP and DNS to HTTPS, explained without jargon.", tag: "Security+ 3.0", status: "soon" },
+      { n: 2, title: "How the internet actually works", blurb: "The plumbing attackers use, from IP and DNS to HTTPS, explained without jargon.", tag: "Security+ 3.0", href: "/pro/module02", status: "live" },
       { n: 3, title: "Passwords & account security", blurb: "How passwords are really stored and cracked, and how to lock down your own accounts.", tag: "Security+ 4.0", href: "/pro/module03", status: "live" },
       { n: 4, title: "Cryptography without the maths", blurb: "Why the padlock means something: encryption, hashing and certificates in plain terms.", tag: "Security+ 1.4", href: "/pro/week02", status: "preview" },
-      { n: 5, title: "Law, ethics & your first audit", blurb: "The Computer Misuse Act, data protection, and your first real portfolio piece.", tag: "Security+ 5.0", status: "soon" },
+      { n: 5, title: "Law, ethics & your first audit", blurb: "The Computer Misuse Act, data protection, and your first real portfolio piece.", tag: "Security+ 5.0", href: "/pro/module05", status: "live" },
     ],
   },
   {
     cls: "a2", tag: "Act 2", name: "How attacks happen", focus: "Threats, vulnerabilities and the breaches they caused.",
     modules: [
-      { n: 6, title: "Who the attackers are", blurb: "The real threat actors and the lifecycle of an attack, from recon to impact.", tag: "Security+ 2.1", status: "soon" },
-      { n: 7, title: "Social engineering & phishing", blurb: "Why people are the easiest way in, and how to spot and report it.", tag: "Security+ 2.2", status: "soon" },
-      { n: 8, title: "Malware: how it really works", blurb: "Viruses, ransomware, and how infection actually happens.", tag: "Security+ 2.4", status: "soon" },
+      { n: 6, title: "Who the attackers are", blurb: "The real threat actors and the lifecycle of an attack, from recon to impact.", tag: "Security+ 2.1", href: "/pro/module06", status: "live" },
+      { n: 7, title: "Social engineering & phishing", blurb: "Why people are the easiest way in, and how to spot and report it.", tag: "Security+ 2.2", href: "/pro/module07", status: "live" },
+      { n: 8, title: "Malware: how it really works", blurb: "Viruses, ransomware, and how infection actually happens.", tag: "Security+ 2.4", href: "/pro/module08", status: "live" },
       { n: 9, title: "Web attacks & the OWASP Top 10", blurb: "How web apps get broken, and you run a real SQL injection yourself.", tag: "OWASP Top 10", href: "/pro/week08", status: "preview" },
-      { n: 10, title: "Networks & Wi-Fi under attack", blurb: "Eavesdropping, spoofing, denial of service, and moving through a network.", tag: "Security+ 2.4", status: "soon" },
-      { n: 11, title: "Vulnerabilities & patching", blurb: "What a vulnerability really is, and the race to patch it before attackers strike.", tag: "Security+ 2.5", status: "soon" },
+      { n: 10, title: "Networks & Wi-Fi under attack", blurb: "Eavesdropping, spoofing, denial of service, and moving through a network.", tag: "Security+ 2.4", href: "/pro/module10", status: "live" },
+      { n: 11, title: "Vulnerabilities & patching", blurb: "What a vulnerability really is, and the race to patch it before attackers strike.", tag: "Security+ 2.5", href: "/pro/module11", status: "live" },
     ],
   },
   {
