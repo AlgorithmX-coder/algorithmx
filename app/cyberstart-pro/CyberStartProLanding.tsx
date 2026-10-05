@@ -126,6 +126,9 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
   }, []);
 
   const priceLine = `£${Math.round(product.priceGBP / 100)}`;
+  // COMING_SOON shows the waitlist; ACTIVE sells. Flipping the Product
+  // row flips the page, no deploy needed.
+  const onSale = product.status === "ACTIVE";
 
   return (
     <>
@@ -209,14 +212,26 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
             </div>
 
             <div className="flex justify-center">
-              <WaitlistForm
-                courseSlug={product.slug as "cyberstart-pro"}
-                accent={PRIMARY}
-                accentSoft={ACCENT}
-                buttonGradient={GRAD}
-                buttonShadow={`0 8px 32px ${PRIMARY}50`}
-                source="hero"
-              />
+              {onSale ? (
+                <motion.a
+                  href={`/purchase/${product.slug}`}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-base font-black text-white"
+                  style={{ backgroundImage: GRAD, boxShadow: `0 8px 32px ${PRIMARY}50` }}
+                >
+                  Start the course today <span aria-hidden>&rarr;</span>
+                </motion.a>
+              ) : (
+                <WaitlistForm
+                  courseSlug={product.slug as "cyberstart-pro"}
+                  accent={PRIMARY}
+                  accentSoft={ACCENT}
+                  buttonGradient={GRAD}
+                  buttonShadow={`0 8px 32px ${PRIMARY}50`}
+                  source="hero"
+                />
+              )}
             </div>
             <div className="mt-6 flex flex-col items-center gap-3">
               <a href="/pro/course" className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors" style={{ color: ACCENT }}>
@@ -428,17 +443,31 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
                 <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>start</span>?
               </h2>
               <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
-                Be first in when {product.name} opens. No experience needed, and you can always change your mind.
+                {onSale
+                  ? `No experience needed. Act 1 is free to try, and one payment of ${priceLine} unlocks the full course.`
+                  : `Be first in when ${product.name} opens. No experience needed, and you can always change your mind.`}
               </p>
               <div className="flex justify-center">
-                <WaitlistForm
-                  courseSlug={product.slug as "cyberstart-pro"}
-                  accent={PRIMARY}
-                  accentSoft={ACCENT}
-                  buttonGradient={GRAD}
-                  buttonShadow={`0 8px 40px ${PRIMARY}50`}
-                  source="footer-cta"
-                />
+                {onSale ? (
+                  <motion.a
+                    href={`/purchase/${product.slug}`}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-base font-black text-white"
+                    style={{ backgroundImage: GRAD, boxShadow: `0 8px 40px ${PRIMARY}50` }}
+                  >
+                    Unlock the full course, {priceLine} once <span aria-hidden>&rarr;</span>
+                  </motion.a>
+                ) : (
+                  <WaitlistForm
+                    courseSlug={product.slug as "cyberstart-pro"}
+                    accent={PRIMARY}
+                    accentSoft={ACCENT}
+                    buttonGradient={GRAD}
+                    buttonShadow={`0 8px 40px ${PRIMARY}50`}
+                    source="footer-cta"
+                  />
+                )}
               </div>
               <div className="mt-6">
                 <a href="/hub" className="text-sm font-bold text-gray-400 hover:text-white transition-colors">
