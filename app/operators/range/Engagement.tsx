@@ -247,6 +247,16 @@ function CheckBox({ check, onPass }: { check: Check; onPass: () => void }) {
 function Report({ mod, callsign, onExit }: { mod: ModuleDef; callsign: string; onExit?: () => void }) {
   const [share, setShare] = useState(false);
   const f = mod.finding;
+
+  function shareCapture() {
+    const text = `🎯 ${callsign} cleared Cyber Ops Module ${String(mod.moduleNo).padStart(2, "0")}: ${mod.title}\nFinding: ${f.title} (${f.severity} · CVSS ${f.cvss})\n+${mod.rep} rep · ${mod.flag}\nReal, ethical hacking at AlgorithmX.`;
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+    } catch {
+      /* clipboard blocked (permissions/insecure context) — the label still confirms the action */
+    }
+    setShare(true);
+  }
   return (
     <div style={{ display: "grid", gap: 18 }}>
       <Panel style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
@@ -280,7 +290,7 @@ function Report({ mod, callsign, onExit }: { mod: ModuleDef; callsign: string; o
         <div style={{ display: "flex", gap: 20, marginTop: 18, flexWrap: "wrap" }}>
           <Stat n="✓" l={`module ${String(mod.moduleNo).padStart(2, "0")}`} /><Stat n={`+${mod.rep}`} l="reputation" /><Stat n={f.cvss} l={`CVSS · ${f.severity.toLowerCase()}`} />
         </div>
-        <Btn tone="i" onClick={() => setShare(true)} style={{ marginTop: 20, fontSize: 12.5 }}>{share ? "✓ copied — go flex" : "SHARE CAPTURE →"}</Btn>
+        <Btn tone="i" onClick={shareCapture} style={{ marginTop: 20, fontSize: 12.5 }}>{share ? "✓ copied — go flex" : "SHARE CAPTURE →"}</Btn>
       </div>
       <Btn tone="ghost" onClick={onExit}>{mod.next}</Btn>
     </div>

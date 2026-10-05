@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getPortfolio } from "@/app/lib/opsPortfolio.actions";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
+import { CURRICULUM, PHASE_ORDER } from "@/app/operators/range/curriculum";
 
 export const metadata: Metadata = {
   title: "Cyber Ops · Portfolio",
@@ -31,6 +32,8 @@ export default async function OperatorsPortfolioPage() {
   const p = await getPortfolio();
   const findings = p?.findings ?? [];
   const rank = p?.rank;
+  const done = new Set(findings.map((f) => f.module));
+  const nextModule = CURRICULUM.find((m) => !done.has(m.no) && m.no <= HIGHEST_BUILT_MODULE)?.no ?? null;
 
   return (
     <main style={{ minHeight: "100vh", background: C.carbon, color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "56px 20px 100px" }}>
@@ -59,7 +62,45 @@ export default async function OperatorsPortfolioPage() {
           </div>
         )}
 
+        {/* course map — the full posting, status per module */}
+        <div style={{ marginBottom: 34 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 14px" }}>
+            <span style={{ width: 18, height: 2, background: C.indigo, borderRadius: 2 }} />
+            <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.soft, fontWeight: 600 }}>The posting · {done.size}/16 modules cleared</span>
+          </div>
+          {PHASE_ORDER.map((phase) => (
+            <div key={phase} style={{ marginBottom: 14 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", textTransform: "uppercase", color: C.mute, marginBottom: 7 }}>{phase}</div>
+              <div style={{ display: "grid", gap: 6 }}>
+                {CURRICULUM.filter((m) => m.phase === phase).map((m) => {
+                  const isDone = done.has(m.no);
+                  const isNext = m.no === nextModule;
+                  const playable = m.no <= HIGHEST_BUILT_MODULE;
+                  const inner = (
+                    <div style={{ display: "flex", gap: 11, alignItems: "center", padding: "10px 13px", borderRadius: 10, background: isNext ? "rgba(139,123,255,0.07)" : C.panel, border: `1px solid ${isNext ? C.indigo : C.lineSoft}` }}>
+                      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.indigo2 : C.mute, minWidth: 30 }}>{isDone ? "✓" : `M${String(m.no).padStart(2, "0")}`}</span>
+                      <span style={{ fontSize: 13.5, color: playable ? C.ink : C.mute, flex: 1 }}>{m.title}</span>
+                      {isNext && <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, letterSpacing: ".08em", color: C.indigo, border: `1px solid ${C.indigo}66`, borderRadius: 5, padding: "2px 7px" }}>NEXT</span>}
+                      {isDone && !isNext && <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.green }}>filed</span>}
+                      {!playable && <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>soon</span>}
+                    </div>
+                  );
+                  return playable ? (
+                    <Link key={m.no} href={`/operators/play/${m.no}`} style={{ textDecoration: "none" }}>{inner}</Link>
+                  ) : (
+                    <div key={m.no}>{inner}</div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* findings */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 14px" }}>
+          <span style={{ width: 18, height: 2, background: C.indigo, borderRadius: 2 }} />
+          <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.soft, fontWeight: 600 }}>Findings filed</span>
+        </div>
         {findings.length === 0 ? (
           <div style={{ padding: "40px 28px", textAlign: "center", background: C.panel, border: `1px dashed ${C.line}`, borderRadius: 16 }}>
             <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 19, marginBottom: 8 }}>No findings yet.</div>
