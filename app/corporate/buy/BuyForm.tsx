@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { K } from "@/app/ai-cleared/engine/tokens";
-import { COURSE_BLURB, COURSE_NAME, FLUENT_NEEDS_CLEARED_FIRM, VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { COURSE_BLURB, COURSE_NAME, FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug, type VatMode } from "@/app/lib/corporateProducts";
 
 /* The seat-pack form: course, seats in tens, firm details, the admin's
  * email, then off to Stripe. Prices are the published ones; Stripe's
  * price objects match them. */
-export default function BuyForm({ course: initialCourse, courses, seats: initialSeats, prices }: { course: CorporateProductSlug; courses: CorporateProductSlug[]; seats: number; prices: Record<CorporateProductSlug, Record<"TEAM" | "FIRM", number>> }) {
+export default function BuyForm({ course: initialCourse, courses, seats: initialSeats, prices, vatPercent, vatMode }: { course: CorporateProductSlug; courses: CorporateProductSlug[]; seats: number; prices: Record<CorporateProductSlug, Record<"TEAM" | "FIRM", number>>; vatPercent: number; vatMode: VatMode }) {
   const [course, setCourse] = useState<CorporateProductSlug>(initialCourse);
   const [seats, setSeats] = useState(initialSeats);
   const [f, setF] = useState({ firmName: "", sector: "", contactName: "", contactRole: "", adminEmail: "" });
@@ -17,9 +17,10 @@ export default function BuyForm({ course: initialCourse, courses, seats: initial
   const plan: "TEAM" | "FIRM" = seats >= 50 ? "FIRM" : "TEAM";
   const perSeat = prices[course][plan];
   const net = perSeat * seats;
-  const vat = Math.round((net * VAT_PERCENT) / 100);
+  const vat = Math.round((net * vatPercent) / 100);
   const total = net + vat;
   const gbp = (pence: number) => `£${(pence / 100).toLocaleString("en-GB", { minimumFractionDigits: pence % 100 ? 2 : 0, maximumFractionDigits: 2 })}`;
+  const totalLabel = vatMode === "automatic" ? `${gbp(total)} a year before VAT` : `${gbp(total)} a year`;
   const set = (k: keyof typeof f, v: string) => setF({ ...f, [k]: v });
 
   async function pay() {
@@ -55,8 +56,8 @@ export default function BuyForm({ course: initialCourse, courses, seats: initial
           <label>Pack <input id="bf-plan" value={plan === "FIRM" ? "Firm, 50 to 249 seats" : "Team, 10 to 49 seats"} readOnly /></label>
         </div>
         <div className="bf-total">
-          <span>{seats} seats × {gbp(perSeat)} = {gbp(net)}, VAT at {VAT_PERCENT}% {gbp(vat)}</span>
-          <b>{gbp(total)} a year</b>
+          <span>{seats} seats × {gbp(perSeat)} = {gbp(net)}{vatMode === "fixed" ? `, VAT at ${vatPercent}% ${gbp(vat)}` : vatMode === "automatic" ? ", VAT added at checkout from your billing address" : ""}</span>
+          <b>{totalLabel}</b>
         </div>
         {course === "ai-fluent" ? <p className="cf-note">An AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate. {FLUENT_NEEDS_CLEARED_FIRM}</p> : null}
         <p className="cf-note">More than 249 seats is an Enterprise conversation: use the enquiry form and we will quote.</p>
@@ -75,7 +76,7 @@ export default function BuyForm({ course: initialCourse, courses, seats: initial
         <p className="cf-note">The admin runs the course for the firm: invites staff, sees the register, edits the firm profile. It can be you. Already run a firm with us? Use the same admin email and the seats are added to that firm.</p>
         {err && <div className="bf-err">{err}</div>}
         <button type="button" className="cf-btn cf-btn-pri" onClick={pay} disabled={busy || !f.firmName.trim() || !f.adminEmail.trim()}>{busy ? "Opening secure checkout…" : `Pay ${gbp(total)} by card`}</button>
-        <p className="cf-note">Payment is taken by Stripe on a secure page. You receive a VAT invoice by email; enter your firm's VAT number there and it appears on the invoice.</p>
+        <p className="cf-note">Payment is taken by Stripe on a secure page. You receive {vatMode === "none" ? "an invoice" : "a VAT invoice"} by email; enter your firm's VAT number there and it appears on the invoice.</p>
       </div>
 
       <style jsx>{`
