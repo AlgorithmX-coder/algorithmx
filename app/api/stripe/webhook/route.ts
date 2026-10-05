@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import type Stripe from "stripe";
 import { fulfilCheckoutSession } from "@/app/lib/aiClearedCheckout";
+import { fulfilConsumerCheckoutSession } from "@/app/lib/consumerCheckout";
 import { stripe } from "@/app/lib/stripe";
 
 /* POST /api/stripe/webhook: Stripe tells us a checkout completed. The
@@ -30,7 +31,14 @@ export async function POST(req: NextRequest) {
     const proto = req.headers.get("x-forwarded-proto") ?? "https";
     const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "www.algorithmx.co.uk";
     try {
-      const result = await fulfilCheckoutSession(event.data.object as Stripe.Checkout.Session, `${proto}://${host}`);
+      const object = event.data.object as Stripe.Checkout.Session;
+      // Dispatch on the metadata we stamped at session creation: the
+      // corporate seat flow and the consumer course flow share this
+      // webhook but fulfil very differently.
+      const result =
+        object.metadata?.product === "consumer-course"
+          ? await fulfilConsumerCheckoutSession(object)
+          : await fulfilCheckoutSession(object, `${proto}://${host}`);
       console.log("[stripe/webhook]", event.type, JSON.stringify(result));
     } catch (err) {
       console.error("[stripe/webhook] fulfilment failed", err instanceof Error ? err.message : err);

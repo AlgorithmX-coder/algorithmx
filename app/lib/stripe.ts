@@ -50,6 +50,24 @@ export function priceIdFor(course: CorporateProductSlug, plan: OrgPlan): string 
   return priceEnv(course, plan) ?? null;
 }
 
+/* Consumer (one-payment) course prices: one env var per product slug,
+ * eg STRIPE_PRICE_CYBERSTART_PRO. The Stripe price object must be the
+ * displayed B2C price with tax behaviour "inclusive" — consumers see
+ * one number and VAT lives inside it, unlike the corporate packs which
+ * add VAT on top. */
+export function consumerPriceIdFor(slug: string): string | null {
+  const key = `STRIPE_PRICE_${slug.toUpperCase().replace(/-/g, "_")}`;
+  return process.env[key] ?? null;
+}
+
+/* A consumer course can take cards the moment its price exists along
+ * with the shared secret + webhook secret; until then the purchase
+ * flow stays on its stub (grant-without-payment, test only). */
+export function consumerCheckoutConfigured(slug: string): boolean {
+  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) return false;
+  return consumerPriceIdFor(slug) !== null;
+}
+
 let client: Stripe | null = null;
 export function stripe(): Stripe {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error("STRIPE_SECRET_KEY is not set");

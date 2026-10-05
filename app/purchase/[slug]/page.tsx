@@ -27,6 +27,8 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { hasEntitlement } from "@/app/lib/entitlements";
+import { consumerCheckoutConfigured, stripe } from "@/app/lib/stripe";
+import { fulfilConsumerCheckoutSession } from "@/app/lib/consumerCheckout";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
@@ -41,7 +43,7 @@ const C = CYBER_PALETTE;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ status?: string; session_id?: string }>;
 }
 
 /* Cyber-heroes is the only product with a live lesson entry today.
@@ -59,7 +61,7 @@ function formatPrice(pence: number): string {
 
 export default async function PurchasePage({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const { status } = await searchParams;
+  const { status, session_id } = await searchParams;
 
   /* ──────────────────── auth ──────────────────── */
   const session = await auth();
@@ -88,9 +90,27 @@ export default async function PurchasePage({ params, searchParams }: PageProps) 
   if (product.status !== "ACTIVE") redirect("/hub");
 
   /* ──────────────────── state routing ──────────────────── */
-  const owned = await hasEntitlement(session.user.id, product.slug);
+  let owned = await hasEntitlement(session.user.id, product.slug);
 
   if (status === "success") {
+    // Stripe can land the buyer here before its webhook has fired. If
+    // they arrived with a session_id, verify the payment with Stripe
+    // directly and fulfil it ourselves — the same idempotent grant the
+    // webhook makes, so whichever runs second is a no-op.
+    if (!owned && session_id && consumerCheckoutConfigured(product.slug)) {
+      try {
+        const checkout = await stripe().checkout.sessions.retrieve(session_id);
+        if (
+          checkout.metadata?.userId === session.user.id &&
+          checkout.metadata?.productSlug === product.slug
+        ) {
+          const result = await fulfilConsumerCheckoutSession(checkout);
+          owned = "granted" in result;
+        }
+      } catch (err) {
+        console.error("[purchase] success verify failed", err instanceof Error ? err.message : err);
+      }
+    }
     // Defensive: don't render the success view for users who haven't
     // actually been granted the entitlement (eg someone typing the
     // ?status=success URL directly).
