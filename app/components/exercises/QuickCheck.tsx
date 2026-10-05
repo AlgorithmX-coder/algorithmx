@@ -441,7 +441,7 @@ export default function QuickCheck({
               height: 96,
               flexShrink: 0,
               objectFit: "contain",
-              filter: "drop-shadow(0 8px 16px rgba(192,132,252,0.5))",
+              filter: "drop-shadow(0 0 16px rgba(192,132,252,0.5))",
             }}
           />
           <div

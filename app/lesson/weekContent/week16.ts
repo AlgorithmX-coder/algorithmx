@@ -265,7 +265,7 @@ export const WEEK_16: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Four doors read, Cyber Hero, and you never once went by the sign.",
+          "[proud] Four doors read, and you never once went by the sign, Cyber Hero.",
           "Your school and the library opened. The tablet and the coins did not.",
           "[warmly] And the two you turned away had the prettiest signs of the lot.",
         ],
@@ -483,7 +483,7 @@ export const WEEK_16: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Two powers, Cyber Hero. The ring does the hard work for you.",
-          "On the ring, fine. Not on the ring, no key.",
+          "On the ring... fine. Not on the ring, no key.",
           "[whispers] Now. What if somebody covered up a REAL code with their own...",
           "Next, we'll learn the sticker trick. Come and see!",
         ],

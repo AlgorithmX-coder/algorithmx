@@ -124,15 +124,18 @@ export default function GraduationScene({
       />
 
       {/* Hero medal */}
+      {/* The centring is handed to Motion as `x`, not left in `style`:
+          this element animates a transform, so Motion owns `transform`
+          and a static translate there is silently dropped, leaving the
+          block half its own width to the right (UAT W20 8b). */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.4, rotate: -25, y: 40 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+        initial={{ opacity: 0, scale: 0.4, rotate: -25, y: 40, x: "-50%" }}
+        animate={{ opacity: 1, scale: 1, rotate: 0, y: 0, x: "-50%" }}
         transition={{ ...SPRING.bouncy, delay: 0.4 }}
         style={{
           position: "absolute",
           left: "50%",
           top: "30%",
-          transform: "translate(-50%, 0)",
           zIndex: 6,
         }}
       >
@@ -140,15 +143,18 @@ export default function GraduationScene({
       </motion.div>
 
       {/* Ribbon with hero name */}
+      {/* The centring is handed to Motion as `x`, not left in `style`:
+          this element animates a transform, so Motion owns `transform`
+          and a static translate there is silently dropped, leaving the
+          block half its own width to the right (UAT W20 8b). */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 20, x: "-50%" }}
+        animate={{ opacity: 1, y: 0, x: "-50%" }}
         transition={{ ...SPRING.gentle, delay: 0.85 }}
         style={{
           position: "absolute",
           left: "50%",
           top: "62%",
-          transform: "translate(-50%, 0)",
           zIndex: 6,
           textAlign: "center",
         }}
@@ -222,15 +228,18 @@ export default function GraduationScene({
       </motion.div>
 
       {/* Action buttons - Continue centered, Download to the right when milestone */}
+      {/* The centring is handed to Motion as `x`, not left in `style`:
+          this element animates a transform, so Motion owns `transform`
+          and a static translate there is silently dropped, leaving the
+          block half its own width to the right (UAT W20 8b). */}
       <motion.div
-        initial={{ opacity: 0, y: 12, scale: 0.92 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+        initial={{ opacity: 0, y: 12, scale: 0.92, x: "-50%" }}
+        animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
         transition={{ ...SPRING.bouncy, delay: 1.1 }}
         style={{
           position: "absolute",
           bottom: 36,
           left: "50%",
-          transform: "translateX(-50%)",
           zIndex: 9,
         }}
       >

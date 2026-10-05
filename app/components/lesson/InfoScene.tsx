@@ -28,6 +28,7 @@ import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { useShortViewport } from "@/app/components/lesson/LessonStage";
 import { useWeekWorld, WorldBackdrop, CARD_MATERIALS, CardDecoration } from "@/app/components/game/missionWorldStyles";
 
 export interface InfoSceneProps {
@@ -73,6 +74,7 @@ export default function InfoScene({
   // frame rim, clue rows) uses the ONE week accent instead of the gold/rainbow
   // command-center palette. Un-themed weeks keep the classic gold look.
   const theme = useLessonTheme();
+  const shortViewport = useShortViewport();
   const themeAccent = theme?.accent;
   // Per-week world (owner 2026-09-12): the week's live scene replaces the
   // shared command-center painting and the console frame borrows the world's
@@ -209,6 +211,14 @@ export default function InfoScene({
           </div>
           <h2 style={{
             margin: 0, maxWidth: 680, marginInline: "auto",
+            // The gradient is clipped to the glyphs, but it is only PAINTED
+            // across this element's own box - and at lineHeight 1.12 that box
+            // is shorter than the type, so anything hanging below the baseline
+            // had no gradient to show and simply disappeared: Week 12's
+            // "Everything Leaves a Track" lost the tails of its y and g (UAT
+            // W12 1a). The padding extends the paint box without moving the
+            // text, so every week's title keeps its exact position.
+            paddingBottom: 6,
             fontSize: "clamp(1.6rem, 3.4vw, 2.2rem)", fontWeight: 900, lineHeight: 1.12,
             background: themeAccent
               ? `linear-gradient(180deg, #ffffff 0%, ${themeAccent} 100%)`
@@ -239,7 +249,14 @@ export default function InfoScene({
             <div style={{ textAlign: "center", fontFamily: "'Space Grotesk', sans-serif", fontSize: 11.5, fontWeight: 800, letterSpacing: "0.18em", color: "#9fe9ff", margin: "2px 0 10px" }}>
               <PixIcon emoji="👆" size={15} style={{ verticalAlign: "-3px", marginRight: 4 }} />TAP EACH CLUE TO POWER IT UP · {Math.min(lit.size, total)} / {total}
             </div>
-            <div style={{ display: "grid", gap: 11, maxWidth: 600, margin: "0 auto 22px" }}>
+            {/* Two-up on a short window. Five clue rows stacked are ~355px of
+                a board that already measures 923px against 413px of room on
+                the tester's laptop, so the last clues and the advance button
+                sat under the fold and the child could not finish the screen.
+                The fit alone cannot rescue that: it would have to go to 0.45,
+                which puts body text under 8px for a six-year-old. Untouched at
+                or above STAGE_FIT_HEIGHT. */}
+            <div style={{ display: "grid", gridTemplateColumns: shortViewport ? "1fr 1fr" : "1fr", gap: 11, maxWidth: 600, margin: "0 auto 22px" }}>
               {bullets.map((b, i) => {
                 const accent = themeAccent ?? ROW_COLOURS[i % ROW_COLOURS.length];
                 const icon = bulletIcons?.[i];

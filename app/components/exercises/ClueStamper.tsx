@@ -544,11 +544,19 @@ export default function ClueStamper({
                       // the photo's clipped edge and lost the end of SHARE (UAT
                       // W8 4b). Size it to its length; W3's REAL FRIEND (11) is
                       // unchanged.
-                      fontSize: (isFake ? fakeSeal : realSeal).length > 11 ? 15 : 18,
+                      // W19's NOTHING WRONG (13) still reached both edges of the
+                      // card at the tester's viewport, and its glow crossed
+                      // them, so the seal read as unconfined (UAT W19 2a). A
+                      // third rung takes about 13% off the width. Narrowed by
+                      // TYPE, never by a maxWidth: the seal cannot wrap, so a
+                      // width cap would clip its end - the W8 4b bug above.
+                      fontSize: (isFake ? fakeSeal : realSeal).length > 12 ? 13 : (isFake ? fakeSeal : realSeal).length > 11 ? 15 : 18,
                       letterSpacing: (isFake ? fakeSeal : realSeal).length > 11 ? "0.08em" : "0.12em",
                       textTransform: "uppercase",
                       whiteSpace: "nowrap",
-                      boxShadow: `0 0 18px ${isFake ? "rgba(255,157,46,0.55)" : "rgba(52,211,153,0.5)"}`,
+                      // Pulled in from 18px for the same reason: the halo was
+                      // reaching the card edge even when the box did not.
+                      boxShadow: `0 0 10px ${isFake ? "rgba(255,157,46,0.55)" : "rgba(52,211,153,0.5)"}`,
                     }}
                   >
                     <PixIcon emoji={isFake ? "🔒" : "✅"} size={20} />
@@ -611,7 +619,7 @@ export default function ClueStamper({
                         animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0 }}
                         transition={{ type: "spring", stiffness: 260, damping: 16 }}
-                        style={{ position: "absolute", left: -18, top: -30, height: 118, objectFit: "contain", filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.6))", pointerEvents: "none" }}
+                        style={{ position: "absolute", left: -18, top: -30, height: 118, objectFit: "contain", filter: "drop-shadow(0 0 14px rgba(0,0,0,0.45))", pointerEvents: "none" }}
                       />
                     )}
                   </AnimatePresence>

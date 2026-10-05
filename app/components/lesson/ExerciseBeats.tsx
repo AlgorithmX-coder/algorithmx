@@ -228,6 +228,14 @@ export default function ExerciseIntroBeat({
         // forces the modal for threat-less intros in wide frames.
         position: fullScreen ? "fixed" : "absolute",
         inset: 0,
+        // A fixed overlay inside the zoomed stage is SCALED by that zoom, so
+        // inset:0 covered only zoom x viewport and the undimmed page showed
+        // all the way round the scrim (UAT W17 2a). The padding below already
+        // divided the HUD reserve back out for exactly this reason; the SIZE
+        // needs the same treatment. At or above STAGE_FIT_HEIGHT the variable
+        // is unset, calc resolves to 100vw/100vh, and this is a no-op.
+        width: fullScreen ? "calc(100vw / var(--stage-zoom, 1))" : undefined,
+        height: fullScreen ? "calc(100vh / var(--stage-zoom, 1))" : undefined,
         zIndex: fullScreen ? 90 : 25,
         display: "flex",
         flexDirection: "column",

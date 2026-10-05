@@ -14,6 +14,23 @@
 //
 // Usage:
 //   node --env-file=.env.local scripts/elevenlabs-generate-narration.mjs
+//   node scripts/elevenlabs-generate-narration.mjs --check    (no API, no writes)
+//
+// --check IS THE SILENCE GATE for spine narration. A clip's filename is the
+// sha1 of its text, so editing one word of a narration block points it at a
+// recording that does not exist, and the block plays SILENT. Nothing reports
+// it: the manifest entry for the OLD text is still valid and still has its
+// file, so no entry is missing a file and no file is missing an entry.
+// audit-read-alouds only sees lines an engine reads off its own board,
+// audit-verdict-voice only the sentence after That's right / Not quite, and
+// audit-spine-narration only asks whether a block EXISTS, never whether it
+// was recorded. On 2026-10-03 two Week 16 lines rewritten for emphasis shipped
+// silent through all three. This script already knows every text the course
+// needs, so it is the only honest gate; --check runs the same scan and reports
+// what has no recording instead of buying one.
+//
+//   --check           list every unrecorded block, exit 1 if there are any
+//   --check --quiet   just the count
 
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -21,8 +38,11 @@ import ffmpegPath from "ffmpeg-static";
 import { mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
+const CHECK_ONLY = process.argv.includes("--check");
+const QUIET = process.argv.includes("--quiet");
+
 const KEY = process.env.ELEVENLABS_API_KEY;
-if (!KEY) {
+if (!KEY && !CHECK_ONLY) {
   console.error("ELEVENLABS_API_KEY missing - run with --env-file=.env.local");
   process.exit(1);
 }
@@ -740,9 +760,17 @@ async function fileExists(p) {
 // files stop while the voice is still sounding. So: retake a clip whose last
 // 60ms is still loud, and always append a short silence so the final word has
 // room to land before the host moves on.
-const CUT_OFF_DB = -45; // mean volume of the last 60ms above this = cut off
+// 2026-10-04: that guard never fired on the clips the testers complained about,
+// for the same reason my audit cleared them. `-sseof -0.06` reads the last 60ms
+// of the FILE, and ElevenLabs usually leaves a little silence there - so a clip
+// whose voice stops at full level passes, because the silence after it is quiet.
+// What matters is the moment the VOICE stops. Measured over all 5,173 clips, one
+// that lands ends near -34 dB having fallen ~21 dB across its closing half
+// second; 227 ended still at level, and those are the ones heard as "cut off
+// sharply" or "out of breath". So the test is now the level at end of speech.
+const CUT_OFF_DB = -24;   // RMS of the last 80ms OF SPEECH above this = cut off
 const MAX_CUT_RETAKES = 4;
-const END_PAD_SEC = 0.3;
+const END_PAD_SEC = 0.45;
 const START_PAD_MS = 120;
 // Transient API errors (rate limit, gateway) are retried with backoff so one
 // flaky response cannot end a long recording run.
@@ -761,17 +789,67 @@ async function fetchWithRetry(url, init, attempts = 4) {
 function runFfmpeg(args) {
   return spawnSync(ffmpegPath, args, { encoding: "utf8", maxBuffer: 32 * 1024 * 1024 });
 }
-function endingLoudnessDb(file) {
-  const r = runFfmpeg(["-hide_banner", "-sseof", "-0.06", "-i", file, "-af", "volumedetect", "-f", "null", "-"]);
-  const m = (r.stderr || "").match(/mean_volume: (-?[0-9.]+) dB/);
-  return m ? Number(m[1]) : -99;
+/**
+ * Where the voice actually stops, and how loud it still is there.
+ *
+ * Decodes to mono 16k PCM and walks back to the last 20ms above a speech
+ * floor. Returns the end of speech in seconds and the RMS of the 80ms before
+ * it. Reading the tail of the file instead is what let every one of these
+ * through (see CUT_OFF_DB).
+ */
+const ENDING_SR = 16000;
+function endingOfSpeech(file) {
+  const r = spawnSync(ffmpegPath, ["-v", "quiet", "-i", file, "-ac", "1", "-ar", String(ENDING_SR), "-f", "s16le", "-"], { maxBuffer: 1 << 28 });
+  if (r.status !== 0 || !r.stdout || !r.stdout.length) return { endSec: -1, endDb: -99 };
+  const b = r.stdout;
+  const n = b.length >> 1;
+  const a = new Float32Array(n);
+  for (let i = 0; i < n; i++) a[i] = b.readInt16LE(i << 1) / 32768;
+  const rms = (from, to) => {
+    let s = 0, c = 0;
+    for (let i = Math.max(0, from); i < Math.min(a.length, to); i++) { s += a[i] * a[i]; c++; }
+    return c ? Math.sqrt(s / c) : 0;
+  };
+  const toDb = (x) => (x <= 1e-9 ? -120 : 20 * Math.log10(x));
+  const win = Math.round(ENDING_SR * 0.02);
+  const floor = Math.pow(10, -45 / 20);
+  let end = -1;
+  for (let i = a.length - win; i >= 0; i -= win) {
+    if (rms(i, i + win) > floor) { end = i + win; break; }
+  }
+  if (end < 0) return { endSec: -1, endDb: -99 };
+  const w80 = Math.round(ENDING_SR * 0.08);
+  return { endSec: end / ENDING_SR, endDb: toDb(rms(end - w80, end)) };
 }
+function endingLoudnessDb(file) {
+  return endingOfSpeech(file).endDb;
+}
+
+/**
+ * Lead-in, a landing, and a cushion.
+ *
+ * A clip that still opens at full volume loses its first consonant when
+ * playback starts (UAT round 2, W2 1a-1d), hence the 120ms lead-in. A clip
+ * that STOPS at full level is heard as cut off or out of breath, so when the
+ * take ends above CUT_OFF_DB the final moments are ramped down: the louder the
+ * stop, the longer the ramp (120ms at -24 dB out to 220ms at -12 dB). A
+ * syllable runs 150-250ms, so this shapes the tail of the last sound rather
+ * than swallowing it. A take that already lands is padded and nothing else.
+ */
 function padEnding(inFile, outFile) {
+  const { endSec, endDb } = endingOfSpeech(inFile);
+  const lead = START_PAD_MS / 1000;
+  let filter = `adelay=${START_PAD_MS}:all=1`;
+  if (endSec > 0 && endDb > CUT_OFF_DB) {
+    const k = Math.min(1, Math.max(0, (endDb - CUT_OFF_DB) / 12));
+    const fade = 0.12 + k * 0.1;
+    const stop = lead + endSec;
+    filter += `,afade=t=out:st=${Math.max(0, stop - fade).toFixed(3)}:d=${fade.toFixed(3)},atrim=0:${(stop + 0.02).toFixed(3)}`;
+  }
+  filter += `,apad=pad_dur=${END_PAD_SEC}`;
   const r = runFfmpeg([
     "-hide_banner", "-y", "-i", inFile,
-    // A 120ms silent lead-in as well as the 0.3s tail: a clip that opens at full
-    // volume loses its first consonant when playback starts (UAT round 2, W2 1a-1d).
-    "-af", `adelay=${START_PAD_MS}:all=1,apad=pad_dur=${END_PAD_SEC}`,
+    "-af", filter,
     "-c:a", "libmp3lame", "-b:a", "128k", "-ar", "44100",
     outFile,
   ]);
@@ -802,6 +880,11 @@ async function generateBlock(speaker, lines) {
   // cached even when an interrupted run never wrote its manifest entry.
   if (await fileExists(filepath)) {
     return { key, filename, cached: true, speaker, blockText, lines };
+  }
+
+  // --check reports the gap rather than buying a recording for it.
+  if (CHECK_ONLY) {
+    return { key, filename, missing: true, speaker, blockText, lines };
   }
 
   const url = `https://api.elevenlabs.io/v1/text-to-speech/${voice.id}?output_format=${OUTPUT_FORMAT}`;
@@ -891,6 +974,7 @@ async function generateBlock(speaker, lines) {
 }
 
 const entries = [];
+const unrecorded = [];
 let generated = 0;
 let cachedCount = 0;
 let totalBytes = 0;
@@ -898,11 +982,17 @@ let totalBytes = 0;
 for (let i = 0; i < blocks.length; i++) {
   const block = blocks[i];
   const previewText = joinBlock(block.lines).slice(0, 80);
-  process.stdout.write(
-    `${(i + 1).toString().padStart(2)}/${blocks.length} ${block.speaker.padEnd(6)} (${block.lines.length} lines) "${previewText}${previewText.length === 80 ? "…" : ""}" … `,
-  );
+  if (!CHECK_ONLY) {
+    process.stdout.write(
+      `${(i + 1).toString().padStart(2)}/${blocks.length} ${block.speaker.padEnd(6)} (${block.lines.length} lines) "${previewText}${previewText.length === 80 ? "…" : ""}" … `,
+    );
+  }
   try {
     const r = await generateBlock(block.speaker, block.lines);
+    if (r.missing) {
+      unrecorded.push({ speaker: r.speaker, file: r.filename, text: r.blockText, source: block.source });
+      continue;
+    }
     entries.push({
       key: r.key,
       speaker: r.speaker,
@@ -913,7 +1003,7 @@ for (let i = 0; i < blocks.length; i++) {
     });
     if (r.cached) {
       cachedCount++;
-      console.log("cached");
+      if (!CHECK_ONLY) console.log("cached");
     } else {
       generated++;
       totalBytes += r.bytes;
@@ -930,6 +1020,26 @@ for (let i = 0; i < blocks.length; i++) {
     console.error(`  Saved ${entries.length} finished block(s) to the manifest before exiting.`);
     process.exit(3);
   }
+}
+
+// --check never writes: `entries` is incomplete by design, because an
+// unrecorded block has no entry to add.
+if (CHECK_ONLY) {
+  if (!QUIET) {
+    for (const u of unrecorded) {
+      console.log(`SILENT  ${u.speaker.padEnd(6)} ${u.source ?? "?"}`);
+      console.log(`        wants ${u.file}`);
+      console.log(`        "${u.text.slice(0, 150)}${u.text.length > 150 ? "…" : ""}"`);
+    }
+  }
+  console.log(
+    `\n${blocks.length} block(s) scanned, ${cachedCount} recorded, ${unrecorded.length} SILENT`,
+  );
+  if (unrecorded.length) {
+    console.log("Run without --check to record them.");
+    process.exit(1);
+  }
+  process.exit(0);
 }
 
 const newManifest = {

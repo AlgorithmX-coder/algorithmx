@@ -46,6 +46,7 @@ import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
 import { useLessonWeek } from "@/app/components/lesson/LessonWeekContext";
 import { fallbackToShared, weekCharacterSrc } from "@/app/lib/weekCharacters";
 import CodeRainBackground from "@/app/components/CodeRainBackground";
+import { useShortViewport } from "@/app/components/lesson/LessonStage";
 import type { WeekContent, BossQuizQuestion } from "@/app/lesson/weekContent/types";
 import type { BossEndStats, BossPhaseResult } from "@/app/components/game/BossBattle";
 import {
@@ -164,6 +165,11 @@ function seededShuffle<T>(arr: readonly T[], seed: number): T[] {
 export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossProps) {
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+  // The showdown gate stacks a 200px reticle, a two-line title, the taunt
+  // panel and the button into ~576px. On the tester's 525px laptop that put
+  // INITIATE TEST 63px under the fold, so the child could not start the boss
+  // at all. Compact on a short window; untouched at or above the threshold.
+  const shortViewport = useShortViewport();
   // NO-SKIP for the villain too (owner rule: nothing is clickable while a
   // narrator speaks): while Callum's bark plays (intro taunt, scenario,
   // ow / gloat, victory payoff) the guard below swallows every tap, so the
@@ -699,11 +705,16 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
         {explain && (
           <motion.div
             key={`explain-${qIdx}-${attemptNonce}`}
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
+            // The centring goes to Motion as `x`, not into `style`: this panel
+            // animates `y`, so Motion owns `transform` and a static translate
+            // there is dropped. The panel then sat with its LEFT edge on the
+            // centre line - up to 280px right - straight over the raccoon, which
+            // is what was reported as the hint box covering him (UAT W14 6a).
+            initial={reduce ? false : { opacity: 0, y: 16, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, x: "-50%" }}
             style={{
-              position: "absolute", left: "50%", bottom: "3.5%", transform: "translateX(-50%)",
+              position: "absolute", left: "50%", bottom: "3.5%",
               zIndex: 30, width: "min(560px, 92%)",
               padding: "13px 18px", borderRadius: 14,
               background: "linear-gradient(180deg, rgba(20,27,52,0.97), rgba(9,13,28,0.98))",
@@ -781,11 +792,14 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           {popups.map((p) => (
             <motion.div
               key={p.id}
-              initial={{ opacity: 1, y: 0, scale: reduce ? 1 : 0.7 }}
-              animate={{ opacity: 0, y: -56, scale: 1.15 }}
-              exit={{ opacity: 0 }}
+              // `x` via Motion, not a static translate: this animates y and
+              // scale, so Motion owns transform and the popup landed half its
+              // width right of the tap instead of over it.
+              initial={{ opacity: 1, y: 0, scale: reduce ? 1 : 0.7, x: "-50%" }}
+              animate={{ opacity: 0, y: -56, scale: 1.15, x: "-50%" }}
+              exit={{ opacity: 0, x: "-50%" }}
               transition={{ duration: 0.9, ease: "easeOut" }}
-              style={{ position: "absolute", left: p.x, top: p.y, transform: "translateX(-50%)", fontFamily: MONO, fontSize: 17, fontWeight: 900, color: p.colour, textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
+              style={{ position: "absolute", left: p.x, top: p.y, fontFamily: MONO, fontSize: 17, fontWeight: 900, color: p.colour, textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
             >
               {p.text}
             </motion.div>
@@ -794,7 +808,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
       </div>
 
       {/* Main stage */}
-      <div ref={arenaRef} style={{ position: "absolute", inset: 0, zIndex: 10, display: "flex", flexDirection: "column", padding: "68px 16px 14px" }}>
+      <div ref={arenaRef} style={{ position: "absolute", inset: 0, zIndex: 10, display: "flex", flexDirection: "column", padding: shortViewport ? "44px 16px 10px" : "68px 16px 14px" }}>
         <ParticleLayer apiRef={particlesRef} disabled={reduce} />
 
         <AnimatePresence mode="wait">
@@ -802,7 +816,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="intro" initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 600, width: "100%", zIndex: 15 }}>
 
               {/* The villain as a LOCKED TARGET inside a scanning reticle */}
-              <div style={{ position: "relative", width: 200, height: 200, display: "grid", placeItems: "center", marginBottom: 2 }}>
+              <div style={{ position: "relative", width: shortViewport ? 132 : 200, height: shortViewport ? 132 : 200, display: "grid", placeItems: "center", marginBottom: 2 }}>
                 <div aria-hidden style={{ position: "absolute", inset: "8%", borderRadius: "50%", background: `radial-gradient(circle, ${accent}42, transparent 62%)` }} />
                 <div aria-hidden style={{ position: "absolute", inset: 0, borderRadius: "50%", border: `2px dashed ${accent}b3`, animation: reduce ? undefined : "qbSpin 15s linear infinite" }} />
                 <div aria-hidden style={{ position: "absolute", inset: "16%", borderRadius: "50%", border: `2px solid ${accent}4d`, borderTopColor: accent, animation: reduce ? undefined : "qbSpinRev 6s linear infinite" }} />
@@ -817,7 +831,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                   initial={reduce ? false : { scale: 0.9, opacity: 0, y: -8 }}
                   animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -8, 0] }}
                   transition={reduce ? { duration: 0.3 } : { duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  style={{ position: "relative", zIndex: 2, height: 150, filter: `drop-shadow(0 10px 16px rgba(0,0,0,0.55)) drop-shadow(0 0 20px ${accent}73)` }}
+                  style={{ position: "relative", zIndex: 2, height: shortViewport ? 100 : 150, filter: `drop-shadow(0 0 16px rgba(0,0,0,0.45)) drop-shadow(0 0 20px ${accent}73)` }}
                 />
               </div>
               <div style={{ fontFamily: MONO, fontSize: 10.5, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: accent, marginTop: 2 }}>
@@ -828,7 +842,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                 initial={reduce ? false : { scale: 1.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 200, damping: 16 }}
-                style={{ margin: "12px 0 0", fontSize: "clamp(30px, 5.2vw, 46px)", fontWeight: 900, lineHeight: 1.0, letterSpacing: "0.01em", textTransform: "uppercase", background: `linear-gradient(180deg, #fffbe9 0%, ${accent} 60%, ${accent}88 100%)`, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: `drop-shadow(0 0 18px ${accent}66)` }}
+                style={{ margin: shortViewport ? "8px 0 0" : "12px 0 0", fontSize: shortViewport ? "clamp(22px, 3.6vw, 32px)" : "clamp(30px, 5.2vw, 46px)", fontWeight: 900, lineHeight: 1.0, letterSpacing: "0.01em", textTransform: "uppercase", background: `linear-gradient(180deg, #fffbe9 0%, ${accent} 60%, ${accent}88 100%)`, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: `drop-shadow(0 0 18px ${accent}66)` }}
               >
                 {quiz.villain.name}&rsquo;S QUIZ SHOWDOWN
               </motion.h1>
@@ -959,7 +973,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="victory" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "8%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
-                <motion.img src={weekCharacterSrc(week, "raccoon", "defeated")} onError={fallbackToShared("raccoon", "defeated")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.5))", willChange: "transform" }} />
+                <motion.img src={weekCharacterSrc(week, "raccoon", "defeated")} onError={fallbackToShared("raccoon", "defeated")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 0 16px rgba(5,10,30,0.45))", willChange: "transform" }} />
                 {/* Comic KO: dizzy stars orbit his head so the defeat reads funny, not sad. */}
                 <div aria-hidden style={{ position: "absolute", top: 6, left: "50%", width: 108, height: 108, marginLeft: -54, animation: reduce ? undefined : "qbSpin 3.2s linear infinite", pointerEvents: "none", zIndex: 3 }}>
                   {[0, 120, 240].map((deg) => (
@@ -968,7 +982,13 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                     </span>
                   ))}
                 </div>
-                <div aria-hidden style={{ position: "absolute", left: "50%", bottom: 0, transform: "translateX(-50%)", width: 100, height: 12, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(0,0,0,0.4), transparent 70%)" }} />
+                {/* A ground shadow used to sit here. The defeated raccoon
+                    floats on a dark arena with no floor under him, so a
+                    100x12 dark ellipse at his feet read as a grey smudge
+                    rather than as contact - which is what "the raccoon still
+                    has a shadow at the end of the quiz" is pointing at (UAT
+                    W2 4b, W12 7b, W14 6c). The spinning stars give him his
+                    base without pretending there is a floor. */}
               </div>
               <motion.div initial={reduce ? false : { scale: 2.0, opacity: 0, rotate: -4 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 190, damping: 14 }} style={{ margin: "4px 0 0", fontSize: "clamp(34px, 5.6vw, 50px)", fontWeight: 900, lineHeight: 1, background: "linear-gradient(180deg, #d6ffe0 0%, #7eff97 50%, #2fae4e 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 3px 0 rgba(0,0,0,0.35))" }}>
                 YOU WIN!
@@ -1003,7 +1023,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="failed" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "6%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
-                <motion.img src={RACCOON.taunt} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 12px 16px rgba(5,10,30,0.5)) drop-shadow(0 0 18px ${accent}66)`, willChange: "transform" }} />
+                <motion.img src={RACCOON.taunt} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 0 16px rgba(5,10,30,0.45)) drop-shadow(0 0 18px ${accent}66)`, willChange: "transform" }} />
               </div>
               <motion.div initial={reduce ? false : { scale: 1.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 200, damping: 16 }} style={{ margin: "4px 0 0", fontSize: "clamp(30px, 5.2vw, 46px)", fontWeight: 900, lineHeight: 1, textTransform: "uppercase", background: `linear-gradient(180deg, #fffbe9 0%, ${accent} 60%, ${accent}88 100%)`, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: `drop-shadow(0 0 18px ${accent}66)` }}>
                 So Close!
