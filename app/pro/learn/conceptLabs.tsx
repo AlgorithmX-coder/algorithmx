@@ -1228,3 +1228,101 @@ export function HardeningChecklistLab({ onDidTry }: LabProps) {
       { text: "Turn on logging and monitoring so activity is recorded.", cat: "in", why: "Hardening includes being able to see what happens: enable logging." },
     ]} />;
 }
+
+/* ---- Module 13 labs: the SOC & the analyst's day ---- */
+
+const SOC_JOB: Cat[] = [
+  { id: "yes", label: "A SOC does this", color: T.green },
+  { id: "no", label: "Not the SOC's job", color: T.faint },
+];
+export function SocJobLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={SOC_JOB}
+    prompt="A Security Operations Centre (SOC) is the team that watches for and responds to threats. For each activity, decide: is it part of what a SOC does, or not?"
+    items={[
+      { text: "Monitoring alerts and logs for signs of an attack, around the clock.", cat: "yes", why: "Continuous monitoring and detection is the core of the SOC's role." },
+      { text: "Triaging alerts to decide which are real and which are noise.", cat: "yes", why: "Deciding what matters, triage, is the everyday work of a SOC analyst." },
+      { text: "Investigating and responding when something looks like a real incident.", cat: "yes", why: "Investigating and kicking off response is central to the SOC." },
+      { text: "Designing the company's new marketing logo.", cat: "no", why: "Not a security function. The SOC watches for and responds to threats." },
+      { text: "Escalating a confirmed serious incident to the right people.", cat: "yes", why: "Escalation along the agreed path is a key SOC responsibility." },
+      { text: "Choosing which office snacks to order.", cat: "no", why: "Nothing to do with detecting or responding to threats." },
+    ]} />;
+}
+
+const SOC_ROLE: Cat[] = [
+  { id: "t1", label: "Tier 1 (triage)", color: T.cyan },
+  { id: "t2", label: "Tier 2 (investigate)", color: T.amber },
+  { id: "t3", label: "Tier 3 (hunt / IR)", color: T.red },
+  { id: "mgr", label: "SOC manager", color: T.green },
+];
+export function SocRoleLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={SOC_ROLE}
+    prompt="A SOC is usually organised in tiers. Tap each responsibility, then tap whose job it most is. This is the career ladder many analysts climb."
+    items={[
+      { text: "First to see incoming alerts; sorts real from noise and escalates", cat: "t1", why: "Tier 1 analysts do front-line triage, often the entry role into the field." },
+      { text: "Digs deeper into escalated alerts; investigates confirmed suspicious activity", cat: "t2", why: "Tier 2 analysts investigate what Tier 1 escalates, with more depth and context." },
+      { text: "Proactively hunts for threats and leads serious incident response", cat: "t3", why: "Tier 3 (senior analysts / threat hunters / IR) handle the hardest work and hunt proactively." },
+      { text: "Runs the team, sets priorities, and owns the overall process", cat: "mgr", why: "The SOC manager leads the team and owns how it operates." },
+      { text: "Closes the flood of low-level alerts and passes on the ones that matter", cat: "t1", why: "Handling alert volume and escalating the real ones is Tier 1's daily reality." },
+      { text: "Builds new detections after hunting down a novel threat", cat: "t3", why: "Creating detections from threat hunting is senior, Tier 3 work." },
+    ]} />;
+}
+
+const EVENT_LEVEL: Cat[] = [
+  { id: "event", label: "Event (routine log entry)", color: T.cyan },
+  { id: "alert", label: "Alert (worth a look)", color: T.amber },
+  { id: "incident", label: "Incident (confirmed harm)", color: T.red },
+];
+export function EventIncidentLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={EVENT_LEVEL}
+    prompt="Analysts distinguish events (routine logged activity), alerts (something worth a look), and incidents (confirmed malicious or harmful activity). Sort each one."
+    items={[
+      { text: "A user successfully logs in during normal working hours.", cat: "event", why: "Routine, expected activity: just an event in the logs, nothing to act on." },
+      { text: "500 failed logins against one account in a minute triggers a rule.", cat: "alert", why: "A rule fired on suspicious activity: an alert worth a look, not yet confirmed harm." },
+      { text: "Investigation confirms an attacker is inside and exfiltrating data.", cat: "incident", why: "Confirmed malicious activity causing harm is an incident, requiring response." },
+      { text: "A server records that a scheduled backup completed.", cat: "event", why: "Normal logged activity: an event, not a concern." },
+      { text: "Antivirus flags a suspicious file and raises a notification.", cat: "alert", why: "A detection fired: an alert to triage, which may or may not be a real incident." },
+      { text: "Ransomware has encrypted files and a demand has appeared.", cat: "incident", why: "Confirmed, active harm: unmistakably an incident." },
+    ]} />;
+}
+
+const SEC_TOOL: Cat[] = [
+  { id: "siem", label: "SIEM", color: T.cyan },
+  { id: "edr", label: "EDR", color: T.red },
+  { id: "fw", label: "Firewall", color: T.amber },
+];
+export function SecToolLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={SEC_TOOL}
+    prompt="Analysts work with a few core tools. Tap each description, then tap the tool. Knowing what each does, and does not, is day-one SOC knowledge."
+    items={[
+      { text: "Collects logs from everywhere, searches them at scale, and correlates events into alerts", cat: "siem", why: "A SIEM aggregates and correlates logs across the organisation: the analyst's central console." },
+      { text: "Watches individual computers for malicious behaviour and can isolate an infected one", cat: "edr", why: "Endpoint Detection and Response watches and can respond on the device itself." },
+      { text: "Controls what network traffic is allowed in and out at the boundary", cat: "fw", why: "A firewall filters traffic; it is prevention at the boundary, not endpoint detection." },
+      { text: "The central place an analyst searches millions of log lines to investigate", cat: "siem", why: "Searching aggregated logs at scale is the SIEM's job (you used one in the SIEM module)." },
+      { text: "Flags a suspicious process on a laptop and lets you contain that laptop", cat: "edr", why: "Detecting and responding on the endpoint is exactly what EDR does." },
+      { text: "Blocks an unwanted inbound connection before it reaches a server", cat: "fw", why: "Stopping traffic at the boundary is the firewall's preventive role." },
+    ]} />;
+}
+
+export function TriageLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="You are a Tier 1 analyst and an alert has just fired. Play the triage: good triage is calm, evidence-led, and knows when to escalate."
+    doneKicker="Triaged well"
+    doneNote="You gathered context before judging, escalated a genuine concern through the proper path, and neither ignored it nor panicked. Calm, evidence-led triage, and knowing when to escalate, is the core craft of a SOC analyst."
+    steps={[
+      { role: "The alert", prompt: "An alert says an account had many failed logins, then a success, from an unusual location. First move?", options: [
+        { text: "Gather context: whose account, is the location plausible, what happened after the success?", correct: true, why: "Triage starts with context. An alert is a question, not a verdict; you gather evidence before deciding." },
+        { text: "Immediately shut down the whole network to be safe.", correct: false, why: "Disproportionate for an unconfirmed alert. You investigate first; drastic action without evidence causes its own harm." },
+        { text: "Dismiss it; failed logins happen all the time.", correct: false, why: "Failed-then-successful logins from an odd location is a classic account-takeover pattern. Do not wave it away." },
+      ] },
+      { role: "The evidence", prompt: "Context shows the user is on holiday abroad and did not travel with work devices, yet their account is now active. What is this?", options: [
+        { text: "A likely real incident (account takeover): escalate it through the proper path.", correct: true, why: "The evidence now points to a genuine compromise. Escalating along the agreed path gets the right people responding fast." },
+        { text: "Definitely a false alarm; close the ticket.", correct: false, why: "The evidence points the other way. Closing it would let a real takeover continue." },
+        { text: "Handle the whole incident yourself without telling anyone.", correct: false, why: "A confirmed serious concern is escalated, not handled solo in silence. The escalation path exists for this." },
+      ] },
+      { role: "Doing it right", prompt: "What makes you a good analyst in this moment, beyond the technical call?", options: [
+        { text: "Clear, factual notes on what you saw and did, so others can pick it up fast.", correct: true, why: "Good triage is documented. Clear notes let the next tier act immediately and make the incident defensible later." },
+        { text: "Keeping your reasoning in your head to save time.", correct: false, why: "Undocumented work cannot be handed over or reviewed. Clear notes are part of the craft." },
+        { text: "Guessing at conclusions you cannot support yet.", correct: false, why: "Evidence-led beats guessing. State what you know, what you suspect, and what is still unconfirmed." },
+      ] },
+    ]} />;
+}
