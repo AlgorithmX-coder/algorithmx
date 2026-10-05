@@ -116,7 +116,7 @@ const FALLBACK_CONFIG: TrackCfg = {
  * (self-contained), Cyber Ops (its landing) and Cyber Pro (its course hub). */
 const TEST_ENTER: Record<string, string> = {
   cyberexplorers: "/explorers",
-  cyberstart: "/ops",
+  cyberstart: "/operators/portfolio",
   "cyberstart-pro": "/pro/course",
 };
 
