@@ -1132,3 +1132,99 @@ export function WebFixLab({ onDidTry }: LabProps) {
       { text: "Do not rely on hiding buttons; enforce access on the server", cat: "access", why: "Hiding UI is not control. Broken access control is fixed by real server-side enforcement." },
     ]} />;
 }
+
+/* ---- Module 12 labs: hardening & secure configuration ---- */
+
+const CE_CONTROL: Cat[] = [
+  { id: "firewall", label: "Firewalls", color: T.cyan },
+  { id: "config", label: "Secure configuration", color: T.amber },
+  { id: "access", label: "Access control", color: T.red },
+  { id: "update", label: "Update management", color: T.green },
+];
+export function CyberEssentialsLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={CE_CONTROL}
+    prompt="The Cyber Essentials five controls block the vast majority of common attacks. Tap each measure, then tap which control it belongs to. (Malware protection is the fifth.)"
+    items={[
+      { text: "Block unwanted inbound traffic at the network boundary", cat: "firewall", why: "Controlling traffic in and out at the boundary is the firewalls control." },
+      { text: "Remove default passwords and disable unnecessary features", cat: "config", why: "Stripping defaults and extras is secure configuration: shrinking the attack surface." },
+      { text: "Give each user only the access their role needs; limit admin accounts", cat: "access", why: "Least privilege and controlling who can do what is the access-control control." },
+      { text: "Apply security updates promptly, especially for critical flaws", cat: "update", why: "Keeping software patched is the security-update (patch) management control." },
+      { text: "Change the default admin login on a new router", cat: "config", why: "Defaults are public knowledge; changing them is basic secure configuration." },
+      { text: "Remove an ex-employee's accounts the day they leave", cat: "access", why: "Promptly revoking access is part of access control." },
+    ]} />;
+}
+
+const ATTACK_SURFACE: Cat[] = [
+  { id: "reduces", label: "Reduces attack surface", color: T.green },
+  { id: "increases", label: "Increases attack surface", color: T.red },
+];
+export function AttackSurfaceLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={ATTACK_SURFACE}
+    prompt="A secure baseline is about having as little exposed as possible. For each choice, decide: does it reduce the attack surface, or increase it?"
+    items={[
+      { text: "Uninstalling software and services you do not actually use.", cat: "reduces", why: "Every unused component is a potential door. Removing it shrinks the attack surface." },
+      { text: "Leaving every default feature and port enabled 'just in case'.", cat: "increases", why: "Unused but enabled features are extra doors attackers can try. Disable what you do not need." },
+      { text: "Closing ports that no service needs to expose.", cat: "reduces", why: "Fewer open ports means fewer ways in: a core hardening step." },
+      { text: "Keeping an old test account active long after the test ended.", cat: "increases", why: "Forgotten accounts are classic footholds. Remove them promptly." },
+      { text: "Disabling macros by default across the organisation.", cat: "reduces", why: "Macros are a common malware vector; disabling them by default removes it." },
+      { text: "Exposing a database directly to the internet for convenience.", cat: "increases", why: "Direct exposure of sensitive systems hugely increases risk. Keep them off the internet." },
+    ]} />;
+}
+
+const LEAST_PRIV: Cat[] = [
+  { id: "yes", label: "Follows least privilege", color: T.green },
+  { id: "no", label: "Violates least privilege", color: T.red },
+];
+export function LeastPrivilegeLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={LEAST_PRIV}
+    prompt="Least privilege means each account gets only the access it genuinely needs. For each practice, decide: follows least privilege, or violates it?"
+    items={[
+      { text: "Giving a new starter access only to the systems their role requires.", cat: "yes", why: "Granting exactly what the role needs, no more, is least privilege." },
+      { text: "Making everyone a local administrator so support calls are easier.", cat: "no", why: "Blanket admin rights hand an attacker (or malware) the keys to everything. The opposite of least privilege." },
+      { text: "Using a normal account for daily work and a separate admin account only when needed.", cat: "yes", why: "Separating everyday use from admin privilege limits what a compromise can do." },
+      { text: "Leaving a departed contractor's wide-ranging access active.", cat: "no", why: "Standing, unneeded access is exactly what least privilege removes." },
+      { text: "Reviewing access regularly and removing permissions no longer needed.", cat: "yes", why: "Access creep is real; regular review keeps privilege minimal." },
+      { text: "Sharing one powerful admin login among the whole team.", cat: "no", why: "Shared, over-powered accounts break both least privilege and accountability." },
+    ]} />;
+}
+
+export function PatchOpsLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="You are setting up patch management for a small organisation. Play the decisions: good operational patching is a routine, not a scramble."
+    doneKicker="Process in place"
+    doneNote="You built a real patch-management process: know what you run, patch critical and exposed systems fast, test sensibly, and automate the routine. That discipline closes the doors most breaches walk through."
+    steps={[
+      { role: "Know what you have", prompt: "Where does a reliable patching process start?", options: [
+        { text: "An inventory: you cannot patch what you do not know you run.", correct: true, why: "Asset inventory is the foundation. Unknown systems are unpatched systems waiting to be breached." },
+        { text: "Buying the most expensive security product.", correct: false, why: "Tools help, but without knowing what you run, you cannot patch it. Inventory comes first." },
+        { text: "Hoping vendors patch everything automatically for you.", correct: false, why: "Most systems need you to apply updates. Assuming otherwise leaves doors open." },
+      ] },
+      { role: "What first", prompt: "A batch of updates is available. What do you prioritise?", options: [
+        { text: "Critical flaws on internet-facing systems, fast; schedule the rest sensibly.", correct: true, why: "Severity and exposure set priority (Module 11). Exposed, critical, exploited flaws cannot wait." },
+        { text: "Apply every update to every system at the exact same second.", correct: false, why: "Reckless mass-patching risks outages. Prioritise by risk, and test where sensible." },
+        { text: "Wait months on everything to be totally safe from bugs.", correct: false, why: "Delay on critical, exposed flaws is exactly the gap attackers exploit." },
+      ] },
+      { role: "Make it routine", prompt: "How do you stop every patch cycle being a panic?", options: [
+        { text: "Automate routine updates (e.g. auto-updates for endpoints) and schedule regular patch cycles.", correct: true, why: "Automation and a regular cadence turn patching into background routine, so humans focus on the hard cases." },
+        { text: "Rely on someone remembering to check manually now and then.", correct: false, why: "Ad-hoc memory fails. A defined, automated process is what keeps you consistently patched." },
+        { text: "Turn off updates to avoid the hassle.", correct: false, why: "That guarantees you fall behind and accumulate open doors. Updating is the defence." },
+      ] },
+    ]} />;
+}
+
+const HARDENING: Cat[] = [
+  { id: "in", label: "Belongs on a hardening checklist", color: T.green },
+  { id: "out", label: "Not a hardening step", color: T.faint },
+];
+export function HardeningChecklistLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={HARDENING}
+    prompt="A hardening checklist is the practical heart of secure configuration. For each item, decide: does it belong on a hardening checklist, or is it something else?"
+    items={[
+      { text: "Change or remove all default passwords and accounts.", cat: "in", why: "Defaults are public knowledge; removing them is a top hardening step." },
+      { text: "Disable or uninstall services and features you do not use.", cat: "in", why: "Removing unneeded components shrinks the attack surface: core hardening." },
+      { text: "Enable automatic security updates where appropriate.", cat: "in", why: "Keeping software current is central to a hardened baseline." },
+      { text: "Choose a nicer colour scheme for the desktop.", cat: "out", why: "Cosmetic, not security. A hardening checklist is about reducing risk." },
+      { text: "Apply least privilege and remove unnecessary admin rights.", cat: "in", why: "Minimising privilege is a key hardening control." },
+      { text: "Turn on logging and monitoring so activity is recorded.", cat: "in", why: "Hardening includes being able to see what happens: enable logging." },
+    ]} />;
+}
