@@ -17,6 +17,22 @@ export default function OpsPanel() {
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<LookupHit[] | null>(null);
   const [copied, setCopied] = useState(false);
+  const [smoke, setSmoke] = useState<{ smoke: number; real: number } | { deleted: number } | null>(null);
+
+  async function smokeUsers(method: "GET" | "DELETE") {
+    setBusy("smoke");
+    setErr(null);
+    try {
+      const res = await fetch("/api/ops/smoke-users", { method });
+      const j = (await res.json().catch(() => ({}))) as { smoke?: number; real?: number; deleted?: number; error?: string };
+      if (!res.ok) throw new Error(j.error ?? "Could not reach the user table.");
+      setSmoke(method === "GET" ? { smoke: j.smoke ?? 0, real: j.real ?? 0 } : { deleted: j.deleted ?? 0 });
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Could not reach the user table.");
+    } finally {
+      setBusy(null);
+    }
+  }
 
   const set = (k: keyof typeof f, v: string) => setF({ ...f, [k]: v });
 
@@ -169,6 +185,16 @@ export default function OpsPanel() {
             ))}
           </ul>
         )}
+      </div>
+      <div className="cf-card op-form op-wide">
+        <h2 className="op-h2">Smoke-test users</h2>
+        <p className="cf-note">Until October the post-deploy smoke test left one account in production per push to main. Count them, then remove them; the one sentinel account the test reuses now stays.</p>
+        <span style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button type="button" className="cf-btn" onClick={() => smokeUsers("GET")} disabled={busy === "smoke"}>Count smoke-test accounts</button>
+          <button type="button" className="cf-btn cf-btn-pri" onClick={() => smokeUsers("DELETE")} disabled={busy === "smoke" || !smoke || !("smoke" in smoke) || smoke.smoke === 0}>Remove them</button>
+        </span>
+        {smoke && "smoke" in smoke && <div className="op-made"><b>{smoke.smoke} smoke-test accounts; {smoke.real} real people.</b></div>}
+        {smoke && "deleted" in smoke && <div className="op-made"><b>{smoke.deleted} removed.</b> The user table now holds real people and the sentinel.</div>}
       </div>
       {err && <div className="op-err">{err}</div>}
 
