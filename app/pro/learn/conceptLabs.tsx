@@ -581,3 +581,93 @@ export function DisclosureOrderLab({ onDidTry }: LabProps) {
       { label: "Publish responsibly, if at all", note: "Only after the fix, with details that help others learn without handing attackers a weapon, and never customer data." },
     ]} />;
 }
+
+/* ---- Module 6 labs: who the attackers are & how they operate ---- */
+
+const ACTORS: Cat[] = [
+  { id: "crime", label: "Organised crime", color: T.red },
+  { id: "nation", label: "Nation-state", color: T.amber },
+  { id: "hacktivist", label: "Hacktivist", color: T.cyan },
+  { id: "insider", label: "Insider", color: T.green },
+];
+export function ActorMotiveLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={ACTORS}
+    prompt="Attackers are not all the same, and the kind you face changes how you defend. Read each motive and behaviour, and match it to the type of threat actor behind it."
+    items={[
+      { text: "Encrypts a hospital's files and demands a cryptocurrency ransom to unlock them.", cat: "crime", why: "Financially motivated, run like a business. Organised crime is behind most ransomware." },
+      { text: "Quietly steals a defence contractor's research over many months, to benefit another country.", cat: "nation", why: "Patient, well-resourced espionage for strategic advantage is the hallmark of a nation-state." },
+      { text: "Defaces a company's website to protest its environmental record.", cat: "hacktivist", why: "The motive is a political or social message, not money: that is hacktivism." },
+      { text: "A departing employee copies the customer list to take to a competitor.", cat: "insider", why: "A trusted person misusing their legitimate access is an insider threat, one of the hardest to catch." },
+      { text: "Steals millions of card numbers to sell in bulk on criminal marketplaces.", cat: "crime", why: "Turning data into money at scale is the core of the cybercrime economy." },
+      { text: "Targets a power grid's control systems to hold a capability in reserve for a conflict.", cat: "nation", why: "Pre-positioning in critical infrastructure is a strategic, state-level goal, not a criminal one." },
+      { text: "Leaks internal documents to embarrass an organisation over a cause.", cat: "hacktivist", why: "Disclosure to make a point is hacktivist behaviour, not profit-seeking." },
+      { text: "An administrator sells their login to an outside group for a cut of the proceeds.", cat: "insider", why: "A malicious insider, here working with outsiders, abuses trusted access from within." },
+    ]} />;
+}
+
+const CRIME_MYTH: Cat[] = [
+  { id: "myth", label: "Myth", color: T.red },
+  { id: "real", label: "Reality", color: T.green },
+];
+export function CrimeEconomyLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={CRIME_MYTH}
+    prompt="The lone hacker in a hoodie is mostly a myth. Modern cybercrime is an industry. Sort each statement: myth, or reality?"
+    items={[
+      { text: "Most serious attacks are one genius working alone in a basement.", cat: "myth", why: "The reality is organised groups with roles, suppliers and customers, more like a company than a loner." },
+      { text: "Criminal groups have specialists: developers, negotiators, even support staff.", cat: "real", why: "Leaked internal chats from ransomware crews showed salaries, HR and performance reviews, exactly like a business." },
+      { text: "You can rent ransomware as a service, the way you rent any software.", cat: "real", why: "Ransomware-as-a-service lets low-skill affiliates use professional tools for a cut of the profits." },
+      { text: "Attackers only go after big, famous companies.", cat: "myth", why: "Automated attacks hit everyone; small organisations are targeted precisely because their defences are weaker." },
+      { text: "Stolen data, access and tools are bought and sold in established marketplaces.", cat: "real", why: "There is a whole economy: access brokers sell footholds, others buy them to deploy ransomware." },
+      { text: "A successful attack usually needs rare, expensive 'zero-day' exploits.", cat: "myth", why: "Most breaches use known, unpatched flaws and stolen passwords, not exotic unknown exploits." },
+    ]} />;
+}
+
+export function KillChainOrderLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry}
+    prompt="Most intrusions follow a recognisable lifecycle, often called the kill chain. Understanding the order is what lets defenders break it early. Put the stages in sequence, from the attacker's first move to their goal."
+    doneNote="That is the attack lifecycle. The defender's insight: you do not have to stop every stage, you just have to break the chain at any one of them before the final goal."
+    items={[
+      { label: "Reconnaissance", note: "Research the target: people, systems, exposed information. The quiet homework before any attack." },
+      { label: "Delivery", note: "Get the attack to the target, typically a phishing email, a malicious link, or an exposed service." },
+      { label: "Exploitation", note: "The weakness is triggered: a user clicks, or a vulnerability is used, and the attacker gains a foothold." },
+      { label: "Installation", note: "The attacker establishes persistence, a way back in that survives reboots and closed sessions." },
+      { label: "Command and control", note: "The compromised machine phones home, so the attacker can direct it remotely." },
+      { label: "Actions on objectives", note: "The goal itself: steal data, deploy ransomware, or move deeper into the network." },
+    ]} />;
+}
+
+const OSINT_EXPOSURE: Cat[] = [
+  { id: "open", label: "Findable for free (OSINT)", color: T.amber },
+  { id: "hidden", label: "Needs an actual breach", color: T.cyan },
+];
+export function OsintLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={OSINT_EXPOSURE}
+    prompt="Before attacking, criminals do their homework using open-source intelligence (OSINT): information anyone can gather legally and freely. Sort each item: findable for free, or does it need an actual break-in?"
+    items={[
+      { text: "The names and job titles of a company's staff, from a professional network site.", cat: "open", why: "Public profiles hand attackers an org chart and perfect targets for tailored phishing." },
+      { text: "Which email addresses have appeared in past data breaches.", cat: "open", why: "Breach-lookup services make this searchable, so attackers know whose credentials to try reusing." },
+      { text: "The contents of the company's private internal file server.", cat: "hidden", why: "That is behind access controls; reaching it would require an actual compromise." },
+      { text: "What software and services a company exposes to the internet.", cat: "open", why: "Search engines for internet-connected devices index this, pointing attackers straight at the attack surface." },
+      { text: "A developer's cloud password accidentally committed to a public code repository.", cat: "open", why: "Secrets leaked in public repos are a classic free find, and a direct route in. Never a break-in needed." },
+      { text: "The live keystrokes of an employee at their desk.", cat: "hidden", why: "Capturing those needs malware already on the machine, which is a breach, not open research." },
+      { text: "Photos and details employees post publicly on social media.", cat: "open", why: "Personal posts help attackers craft convincing, personalised lures, all from public information." },
+    ]} />;
+}
+
+const STAGE_DEFENCE: Cat[] = [
+  { id: "recon", label: "Disrupts reconnaissance", color: T.amber },
+  { id: "deliver", label: "Disrupts delivery / exploit", color: T.red },
+  { id: "actions", label: "Limits actions on objectives", color: T.cyan },
+];
+export function DefenceStageLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={STAGE_DEFENCE}
+    prompt="Defenders use the same kill-chain map, to decide where to break it. Tap each defence, then tap the stage it most disrupts. There is more than one right place to defend, which is the whole point."
+    items={[
+      { text: "Reducing what the company exposes publicly, and training staff on their footprint", cat: "recon", why: "Less public information means attackers' homework is harder: it disrupts reconnaissance." },
+      { text: "Email filtering and phishing-aware staff who do not click", cat: "deliver", why: "Stopping the lure from landing or being clicked breaks delivery and exploitation." },
+      { text: "Patching known vulnerabilities before they can be used", cat: "deliver", why: "No working exploit means the delivered attack fails at the exploitation stage." },
+      { text: "Network segmentation and least privilege", cat: "actions", why: "Even after a foothold, tight access limits how far the attacker can get: it caps actions on objectives." },
+      { text: "Offline backups that survive an attacker reaching the data", cat: "actions", why: "If they do reach the goal, recoverable backups blunt the impact of their final actions." },
+      { text: "Removing employee details and old accounts from public exposure", cat: "recon", why: "Shrinking the discoverable footprint again disrupts the reconnaissance stage." },
+    ]} />;
+}
