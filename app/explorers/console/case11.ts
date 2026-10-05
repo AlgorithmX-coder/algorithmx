@@ -41,6 +41,17 @@ export type ConsoleStep =
       okVoice?: string;
       bad?: string;
       badVoice?: string;
+    }
+  | {
+      // turn the shift dial until the sealed note decodes — it latches the
+      // moment it's right, no submit button. A continuous drag + live preview,
+      // genuinely different motion from toggle/build/choose's discrete taps.
+      t: "decode";
+      ciphertext: string; // the sealed text, already shifted
+      shift: number; // the Caesar shift (0-25) that reveals it
+      prompt?: string;
+      ok?: string;
+      okVoice?: string;
     };
 
 export interface ConsoleSkill {
