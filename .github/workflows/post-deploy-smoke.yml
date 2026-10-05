@@ -6,10 +6,16 @@ name: Post-deploy smoke test
 # bug we hit on 2026-05-10 would have failed this check 30s after the
 # deploy went out, instead of being discovered by a customer.
 #
-# Strategy: try one signup with a unique email per run. We don't keep
-# the user - the cleanup endpoint at the end nukes any test users we
-# created. Failure here annotates the commit with a red X on GitHub
-# so a broken deploy is immediately visible.
+# Strategy: POST a SENTINEL email that already exists in prod. The route
+# validates the payload, then does `prisma.user.findUnique` and answers
+# 400 "Email already in use" - so a pass still proves the DB round-trip
+# works, while writing nothing. The previous version sent a unique email
+# per run and relied on a cleanup endpoint that was never built, which
+# left 450 permanent ci-smoke users in production between May and Oct
+# 2026. Never reintroduce a per-run email here.
+#
+# If the sentinel is ever deleted (e.g. a cleanup of ci-smoke rows), the
+# next run answers 201 and recreates it - one row, self-healing.
 
 on:
   push:
@@ -32,29 +38,51 @@ jobs:
           # Defaults to the prod domain. Override via repo secrets/vars
           # if your prod URL is different.
           PROD_URL: ${{ vars.PROD_URL || 'https://algorithmx.io' }}
+          # Fixed, non-routable address. One row in prod, reused forever.
+          EMAIL: ci-smoke-sentinel@algorithmx-ci.invalid
         run: |
           set -e
-          STAMP=$(date +%s)
-          EMAIL="ci-smoke-${STAMP}-${{ github.run_id }}@algorithmx-ci.invalid"
           BODY=$(cat <<EOF
           {"name":"CI Smoke","email":"${EMAIL}","password":"CiSmoke1!"}
           EOF
           )
-          echo "POST ${PROD_URL}/api/signup with email ${EMAIL}"
+          echo "POST ${PROD_URL}/api/signup with sentinel ${EMAIL}"
           STATUS=$(curl -s -o /tmp/body.txt -w "%{http_code}" \
             -X POST "${PROD_URL}/api/signup" \
             -H "Content-Type: application/json" \
             --data "${BODY}")
+          RESPONSE=$(cat /tmp/body.txt)
           echo "HTTP status: ${STATUS}"
-          echo "Body: $(cat /tmp/body.txt)"
-          # 201 Created is the happy path. 400 would mean valid request
-          # with rejected payload (e.g. email already used) - fine, server
-          # is up. 5xx means the server is broken.
+          echo "Body: ${RESPONSE}"
+
+          # 5xx means the server or its DB connection is broken.
           if [ "${STATUS}" -ge 500 ]; then
-            echo "::error::Signup endpoint returned ${STATUS} - deploy is broken."
+            echo "::error::Signup endpoint returned ${STATUS} - deploy is broken. Body: ${RESPONSE}"
             exit 1
           fi
-          if [ "${STATUS}" -lt 200 ] || [ "${STATUS}" -ge 400 ]; then
-            echo "::warning::Unexpected status ${STATUS} from /api/signup. Body: $(cat /tmp/body.txt)"
+
+          # Steady state: the sentinel exists, so the route read the DB and
+          # rejected the duplicate. That rejection IS the proof of life.
+          if [ "${STATUS}" = "400" ]; then
+            case "${RESPONSE}" in
+              *"Email already in use"*)
+                echo "DB round-trip confirmed (sentinel already present)."
+                echo "smoke=ok" >> "$GITHUB_OUTPUT"
+                exit 0
+                ;;
+            esac
+            # Any OTHER 400 is a payload rejection that happens BEFORE the
+            # DB is touched, so it proves nothing about the database.
+            echo "::error::400 from /api/signup, but not the duplicate-email path, so the DB was never reached. Body: ${RESPONSE}"
+            exit 1
           fi
-          echo "smoke=ok" >> "$GITHUB_OUTPUT"
+
+          # First run after the sentinel was purged: it gets recreated.
+          if [ "${STATUS}" = "201" ]; then
+            echo "::notice::Sentinel user was missing and has been recreated. DB write confirmed."
+            echo "smoke=ok" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "::error::Unexpected status ${STATUS} from /api/signup. Body: ${RESPONSE}"
+          exit 1

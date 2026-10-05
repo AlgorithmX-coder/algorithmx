@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { SEAT_PRICE_PENCE, planForSeats, priceIdFor, sellableCourses, stripeConfigured } from "./stripe";
+import { SEAT_PRICE_PENCE, planForSeats, priceIdFor, sellableCourses, stripeConfigured, vatMode, vatPercentShown } from "./stripe";
 import { validateSeats } from "./aiClearedCheckout";
 
 /* The pack rules the checkout enforces, and the switch that keeps
  * checkout off until every variable exists. */
 
-const KEYS = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "STRIPE_PRICE_AI_CLEARED_TEAM", "STRIPE_PRICE_AI_CLEARED_FIRM", "STRIPE_PRICE_AI_FLUENT_TEAM", "STRIPE_PRICE_AI_FLUENT_FIRM"];
+const KEYS = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "STRIPE_PRICE_AI_CLEARED_TEAM", "STRIPE_PRICE_AI_CLEARED_FIRM", "STRIPE_PRICE_AI_FLUENT_TEAM", "STRIPE_PRICE_AI_FLUENT_FIRM", "VAT_MODE", "STRIPE_AUTOMATIC_TAX"];
 
 describe("corporate seat packs", () => {
   afterEach(() => {
@@ -60,6 +60,22 @@ describe("corporate seat packs", () => {
     process.env.STRIPE_PRICE_AI_FLUENT_FIRM = "price_fluent_firm";
     expect(sellableCourses()).toEqual(["ai-cleared", "ai-fluent"]);
     expect(stripeConfigured()).toBe(true);
+  });
+
+  it("adds the fixed UK rate unless VAT_MODE says otherwise", () => {
+    expect(vatMode()).toBe("fixed");
+    expect(vatPercentShown()).toBe(20);
+    process.env.VAT_MODE = "none";
+    expect(vatMode()).toBe("none");
+    expect(vatPercentShown()).toBe(0);
+    process.env.VAT_MODE = "automatic";
+    expect(vatMode()).toBe("automatic");
+    expect(vatPercentShown()).toBe(0);
+    process.env.VAT_MODE = "nonsense";
+    expect(vatMode()).toBe("fixed");
+    delete process.env.VAT_MODE;
+    process.env.STRIPE_AUTOMATIC_TAX = "1";
+    expect(vatMode()).toBe("automatic");
   });
 
   it("stays off when only AI Fluent is priced", () => {

@@ -43,6 +43,28 @@ const cyberHeroesWeeks = [
   { week: 20, title: "Graduation Day: The Final Mission",      description: "The ultimate challenge! Test everything you've learned and earn your Cyber Hero certificate." },
 ];
 
+// Cyber Ops (14-17). The LOCKED 16-week curriculum (design spine section 8).
+// Kept in lock-step with the idempotent prod data migration
+// 20261005120100_cyber_ops_content; edit both together.
+const cyberOpsWeeks = [
+  { week: 1,  title: "Rules of Engagement",        description: "Meet Redoubt, sign your first scope, and land a fully authorized first capture." },
+  { week: 2,  title: "Reconnaissance & OSINT",     description: "Footprint a fake company from public information. Map the attack surface before you act." },
+  { week: 3,  title: "The Web Surface",            description: "How web apps really work. Use dev tools to intercept and modify requests against the range." },
+  { week: 4,  title: "Broken Authentication",      description: "Credential attacks, weak sessions, and MFA gaps against a fake login." },
+  { week: 5,  title: "Injection",                  description: "Run a real SQL injection against a sandboxed database and extract what the scope allows." },
+  { week: 6,  title: "Cross-Site Scripting",       description: "Inject script into a fake app, simulate cookie theft, and see why client-side trust fails." },
+  { week: 7,  title: "Broken Access Control",      description: "IDOR, forced browsing, and privilege escalation — reach what should not be yours." },
+  { week: 8,  title: "Cryptography",               description: "Encoding vs hashing vs encryption. Break weak and classical crypto, and learn why it matters." },
+  { week: 9,  title: "Passwords & Hashes",         description: "Cracking concepts in-range: salting, rainbow tables, and the case for strong hashing." },
+  { week: 10, title: "Network Recon",              description: "Port scanning and service enumeration against a fake network." },
+  { week: 11, title: "Digital Forensics",          description: "Analyse logs and reconstruct a timeline to find the attacker's trail. Start reading the other side." },
+  { week: 12, title: "Incident Response",          description: "Now you defend: detect, contain, and eradicate a live simulated breach." },
+  { week: 13, title: "Social Engineering Defence", description: "Recognise phishing and pretexting. Analysis only — you spot the con, never author it." },
+  { week: 14, title: "Disclosure & Reporting",     description: "The craft of the writeup: severity scoring and how real researchers disclose. Portfolio polish." },
+  { week: 15, title: "Full Engagement, Part 1",    description: "A complete multi-stage engagement against a fake client: recon through exploit." },
+  { week: 16, title: "Full Engagement, Part 2",    description: "Write the real report, present your findings, and receive a field-ready rating. Season close." },
+];
+
 const products = [
   {
     slug: "cyber-heroes",
@@ -81,18 +103,24 @@ const products = [
     content: EXPLORERS_CONTENT,
   },
   {
+    // Cyber Ops course app is being wired at /operators; its 16 engagements
+    // carry per-child Progress (engagement = week), with reputation stored in
+    // Progress.xp and the portfolio in OpsFinding. Status stays COMING_SOON —
+    // catalogue/purchase state is a separate commercial decision; content can
+    // exist without flipping it (same pattern as Explorers). On prod, content
+    // lands via the idempotent migration, never the destructive full seed.
     slug: "cyberstart",
-    name: "CyberStart",
+    name: "Cyber Ops",
     ageMin: 14,
-    ageMax: 16,
+    ageMax: 17,
     priceGBP: 9900,
-    weeks: 0,
+    weeks: cyberOpsWeeks.length,
     status: ProductStatus.COMING_SOON,
     emoji: "🚀",
-    ageRange: "14–16",
+    ageRange: "14–17",
     duration: "60 min/week",
-    weeksCount: 0,
-    content: [],
+    weeksCount: cyberOpsWeeks.length,
+    content: cyberOpsWeeks,
   },
   {
     // Adult tier. Display name is "Cyber Pro"; the slug keeps the legacy

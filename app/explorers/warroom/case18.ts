@@ -16,7 +16,8 @@ export const case18War: WarCase = {
   caseNumber: "CASE 018",
   title: "The Recruiter",
   actor: "COORD (veiled)",
-  accent: "#B98BFF",
+  accent: "#FF8A3D",
+  theme: { backdrop: "crossroads", matrix: ["#FF8A3D", "#FFB988", "#D6601F"], accentHi: "#FFB988" },
   open: [
     "Sensitive one today, Agent, so I want you sharp. You've learned real skills in this programme, and skills are power. Power can protect people, or it can hurt them. The difference is a choice you make.",
     "Out there, some people go looking for talented kids and try to pull that power the wrong way. They call it a recruiter, an offer, a team. It's a con, and it uses the very influence levers you already know.",

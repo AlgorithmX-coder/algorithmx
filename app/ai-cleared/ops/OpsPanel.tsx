@@ -17,6 +17,42 @@ export default function OpsPanel() {
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<LookupHit[] | null>(null);
   const [copied, setCopied] = useState(false);
+  const [erase, setErase] = useState<{ email: string; confirm: string } | null>(null);
+  const [erased, setErased] = useState<{ deletedAccount: boolean; seatsAnonymised: number; certificatesRemoved: number; firms: string[] } | null>(null);
+
+  async function eraseNow() {
+    if (!erase) return;
+    setBusy("erase");
+    setErr(null);
+    try {
+      const res = await fetch("/api/ops/erase", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(erase) });
+      const j = (await res.json().catch(() => ({}))) as { error?: string; deletedAccount?: boolean; seatsAnonymised?: number; certificatesRemoved?: number; firms?: string[] };
+      if (!res.ok) throw new Error(j.error ?? "The removal did not run.");
+      setErased({ deletedAccount: !!j.deletedAccount, seatsAnonymised: j.seatsAnonymised ?? 0, certificatesRemoved: j.certificatesRemoved ?? 0, firms: j.firms ?? [] });
+      setErase(null);
+      setHits(null);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "The removal did not run.");
+    } finally {
+      setBusy(null);
+    }
+  }
+  const [smoke, setSmoke] = useState<{ smoke: number; real: number } | { deleted: number } | null>(null);
+
+  async function smokeUsers(method: "GET" | "DELETE") {
+    setBusy("smoke");
+    setErr(null);
+    try {
+      const res = await fetch("/api/ops/smoke-users", { method });
+      const j = (await res.json().catch(() => ({}))) as { smoke?: number; real?: number; deleted?: number; error?: string };
+      if (!res.ok) throw new Error(j.error ?? "Could not reach the user table.");
+      setSmoke(method === "GET" ? { smoke: j.smoke ?? 0, real: j.real ?? 0 } : { deleted: j.deleted ?? 0 });
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Could not reach the user table.");
+    } finally {
+      setBusy(null);
+    }
+  }
 
   const set = (k: keyof typeof f, v: string) => setF({ ...f, [k]: v });
 
@@ -140,9 +176,26 @@ export default function OpsPanel() {
                 <b>{h.name ?? h.email}</b>
                 <span>{h.name ? h.email : ""} · <a href={`/ai-cleared/ops/${h.firmSlug}?course=${h.course}`}>{h.firm}</a> · {h.course === "ai-fluent" ? "AI Fluent" : "AI Cleared"} · {h.status === "cleared" ? (h.course === "ai-fluent" ? "Fluent" : "Cleared") : h.status === "started" ? `${h.modulesDone} modules done` : "Invited, not yet claimed"}</span>
                 {h.serial && <span>Certificate <a href={`/verify/${h.serial}`} target="_blank" rel="noopener noreferrer">{h.serial}</a>, {h.score}%, issued {day(h.issuedAt)}, expires {day(h.expiresAt)}</span>}
+                {i === 0 && h.kind === "person" && !erase && <span><button type="button" className="cf-btn" onClick={() => setErase({ email: h.email, confirm: "" })}>Remove this person&rsquo;s data</button></span>}
               </li>
             ))}
           </ul>
+        )}
+        {erase && (
+          <div className="op-made warn">
+            <b>Deletion on request: {erase.email}</b>
+            <span>Their account, every attempt, playbook entry and certificate are deleted; their seats stay on the register with the address removed. Only on the firm&rsquo;s written request. Type the address again to confirm.</span>
+            <input id="op-erase-confirm" type="email" value={erase.confirm} onChange={(e) => setErase({ ...erase, confirm: e.target.value })} placeholder={erase.email} />
+            <span>
+              <button type="button" className="cf-btn cf-btn-pri" onClick={eraseNow} disabled={busy === "erase" || erase.confirm.trim().toLowerCase() !== erase.email.toLowerCase()}>{busy === "erase" ? "Removing…" : "Remove their data"}</button>
+              <button type="button" className="cf-btn" onClick={() => setErase(null)}>Cancel</button>
+            </span>
+          </div>
+        )}
+        {erased && (
+          <div className="op-made">
+            <b>Removed.</b> {erased.deletedAccount ? "Account deleted" : "No account to delete"}; {erased.seatsAnonymised} seat{erased.seatsAnonymised === 1 ? "" : "s"} anonymised; {erased.certificatesRemoved} certificate{erased.certificatesRemoved === 1 ? "" : "s"} withdrawn{erased.firms.length ? `; firms: ${erased.firms.join(", ")}` : ""}.
+          </div>
         )}
       </div>
       <div className="cf-card op-form op-wide">
@@ -169,6 +222,16 @@ export default function OpsPanel() {
             ))}
           </ul>
         )}
+      </div>
+      <div className="cf-card op-form op-wide">
+        <h2 className="op-h2">Smoke-test users</h2>
+        <p className="cf-note">Until October the post-deploy smoke test left one account in production per push to main. Count them, then remove them; the one sentinel account the test reuses now stays.</p>
+        <span style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button type="button" className="cf-btn" onClick={() => smokeUsers("GET")} disabled={busy === "smoke"}>Count smoke-test accounts</button>
+          <button type="button" className="cf-btn cf-btn-pri" onClick={() => smokeUsers("DELETE")} disabled={busy === "smoke" || !smoke || !("smoke" in smoke) || smoke.smoke === 0}>Remove them</button>
+        </span>
+        {smoke && "smoke" in smoke && <div className="op-made"><b>{smoke.smoke} smoke-test accounts; {smoke.real} real people.</b></div>}
+        {smoke && "deleted" in smoke && <div className="op-made"><b>{smoke.deleted} removed.</b> The user table now holds real people and the sentinel.</div>}
       </div>
       {err && <div className="op-err">{err}</div>}
 
