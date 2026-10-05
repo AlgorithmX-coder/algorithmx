@@ -25,6 +25,7 @@ export default function CorporateSubpage({
   lede,
   sections,
   maps,
+  mapsHeading = "// How AI Cleared answers it",
   asOf,
 }: {
   eyebrow: string;
@@ -33,6 +34,8 @@ export default function CorporateSubpage({
   sections: SubSection[];
   /** How AI Cleared answers the duty, as short points. */
   maps: string[];
+  /** The aside heading over those points. */
+  mapsHeading?: string;
   /** The date the reading was checked. */
   asOf: string;
 }) {
@@ -67,7 +70,7 @@ export default function CorporateSubpage({
 
           <FadeUp>
             <aside className="corp-sub-map">
-              <p style={sectionMark}>{"// How AI Cleared answers it"}</p>
+              <p style={sectionMark}>{mapsHeading}</p>
               <ul>{maps.map((m) => <li key={m}>{m}</li>)}</ul>
               <div className="corp-sub-doors">
                 <Link href="/corporate#enquiry" className="corp-sub-pri">Register your interest <span aria-hidden>&rarr;</span></Link>

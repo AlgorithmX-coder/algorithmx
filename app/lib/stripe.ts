@@ -1,8 +1,21 @@
 import Stripe from "stripe";
 import type { OrgPlan } from "@prisma/client";
-import { CORPORATE_PRODUCT_SLUGS, COURSE_NAME, VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { CORPORATE_PRODUCT_SLUGS, COURSE_NAME, VAT_PERCENT, type CorporateProductSlug, type VatMode } from "@/app/lib/corporateProducts";
 
 export { COURSE_NAME, VAT_PERCENT };
+
+/* VAT_MODE on Vercel; the older STRIPE_AUTOMATIC_TAX=1 still means automatic. */
+export function vatMode(): VatMode {
+  const m = (process.env.VAT_MODE ?? "").trim().toLowerCase();
+  if (m === "automatic" || m === "none" || m === "fixed") return m;
+  return process.env.STRIPE_AUTOMATIC_TAX === "1" ? "automatic" : "fixed";
+}
+
+/* The percentage the buy page adds to the published price: the fixed
+ * rate, or nothing when Stripe works it out or there is none. */
+export function vatPercentShown(): number {
+  return vatMode() === "fixed" ? VAT_PERCENT : 0;
+}
 
 /* Stripe for the corporate packs. Everything is driven by environment
  * variables so checkout switches on the moment they exist on Vercel and

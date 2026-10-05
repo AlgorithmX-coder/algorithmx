@@ -17,7 +17,7 @@ export const case07Phone: PhoneCase = {
   caseNumber: "CASE 007",
   title: "Borrowed Faces",
   actor: "MIMIC",
-  app: { name: "Loop", accent: "#9B7BFF", wall: "radial-gradient(130% 90% at 50% 0%, #171233 0%, #0b0b14 62%)" },
+  app: { name: "Loop", accent: "#9B7BFF", wall: "radial-gradient(130% 90% at 50% 0%, #171233 0%, #0b0b14 62%)", theme: { backdrop: "loop", matrix: ["#9B7BFF", "#C4B2FF", "#6B4FE0"], accentHi: "#C4B2FF" } },
   open: [
     "Next case, Agent, and a new kind of enemy. This one's name is MIMIC, and MIMIC doesn't send you a dodgy link.",
     "MIMIC steals a real account, one of your actual friends, and wears it like a mask. Same name, same photo, every chat you've ever had. So the message really is from your friend's account. That's what makes it so dangerous.",
@@ -86,15 +86,19 @@ export const case07Phone: PhoneCase = {
         { t: "wren", text: "So how do you tell a friend from a thief wearing their face? Not by how nice they are, a thief can be lovely. You tell them by the ASK. Real friends don't suddenly need your password, a code from your phone, gift cards, or for you to keep it all secret. When the ask gets weird, the friendly face stops mattering.", voice: "/audio/wren/m07p-s2-learn.mp3" },
       ],
       practice: [
-        { t: "con", text: "omg can you buy me a £20 google play card real quick?? i'll pay you back tomorrow i promise 🙏 oh and don't mention it to my mum x", ask: true },
         {
-          t: "choose",
-          prompt: "How many weird-ask flags are stacked in this one message?",
-          options: [
-            { label: "Three: money, a rush, and secrecy", outcome: "good", then: [{ t: "wren", text: "All three. Money you can't easily get back, a rush so you don't think, and 'don't tell an adult', which is a flag on its own. Any one of those from a friend is odd. All three together is a thief.", voice: "/audio/wren/m07p-s2-ok.mp3" }] },
-            { label: "None, friends lend each other money", outcome: "bad", then: [{ t: "wren", text: "A real mate might, but not a stranger's gift card, in a rush, kept secret from adults. Read it again and count the odd bits. Try again.", voice: "/audio/wren/m07p-s2-bad.mp3" }] },
-            { label: "One: the kiss at the end", outcome: "bad", then: [{ t: "wren", text: "The 'x' is just her normal style, that's not it. Look at what she's asking you to do, and how many odd things are stacked in it. Try again.", voice: "/audio/wren/m07p-s2-bad2.mp3" }] },
+          t: "tag",
+          segments: [
+            { text: "omg can you " },
+            { text: "buy me a £20 google play card", tellId: "money" },
+            { text: " real quick?? " },
+            { text: "i'll pay you back tomorrow i promise 🙏", tellId: "rush" },
+            { text: " oh and " },
+            { text: "don't mention it to my mum", tellId: "secrecy" },
+            { text: " x" },
           ],
+          ok: "All three, tagged. Money you can't easily get back, a rush so you don't think, and 'don't tell an adult', which is a flag on its own. Any one of those from a friend is odd. All three together is a thief.",
+          okVoice: "/audio/wren/m07p-s2-ok.mp3",
         },
         { t: "con", text: "quick favour! read me the 6-digit code that just landed on your phone? i'm setting something up and it went to you by accident 🙈", ask: true },
         {

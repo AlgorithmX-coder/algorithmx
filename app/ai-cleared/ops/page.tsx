@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DAILY_ALLOWANCE, modelCallsLastDay } from "@/app/lib/modelAllowance";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
@@ -30,6 +31,7 @@ export default async function OpsPage() {
 
   const rows = await listFirms();
   const t = platformTotals(rows);
+  const calls = await modelCallsLastDay();
   const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "—");
 
   return (
@@ -40,7 +42,7 @@ export default async function OpsPage() {
       </h1>
       <p className="cf-note">
         AI Cleared: {t.seatsLicensed} seats licensed · {t.seatsInvited} invited · {t.seatsClaimed} claimed · {t.cleared} cleared · {t.firmsCleared} firm{t.firmsCleared === 1 ? "" : "s"} at the 80% bar.
-        {" "}AI Fluent: {t.fluentLicensed} seats licensed · {t.fluentClaimed} claimed · {t.fluentDone} done. {t.certificates} certificates live across both.
+        {" "}AI Fluent: {t.fluentLicensed} seats licensed · {t.fluentClaimed} claimed · {t.fluentDone} done. {t.certificates} certificates live across both. {calls} model call{calls === 1 ? "" : "s"} in the last 24 hours, against an allowance of {DAILY_ALLOWANCE} a person a day.
       </p>
 
       <div className="cf-card op-table-wrap">

@@ -4857,7 +4857,16 @@ function DynamicLessonInner({
         <ScreenTransition
           transitionKey={screen}
           type={transitionForScreen(def, navDirRef.current)}
-          duration={500}
+          // 500ms was reported as slow three separate times in one week's
+          // report (UAT W5 4 "the transition between the Spot the danger cards
+          // are slow and laggy", W5 6a "transitions are very slow between
+          // multiple cards: increase the speed for all transitions", W5 7d the
+          // debrief). A week is 29 screens, so half a second of wipe on every
+          // one of them is nearly fifteen seconds of a child waiting.
+          //
+          // 340ms still reads as a deliberate wipe rather than a cut, and the
+          // screen's own entrance animations keep the arrival feeling staged.
+          duration={340}
           onTransitionStart={() => playSFX("transition")}
         >
           <ScreenShake trigger={shakeTrigger}>

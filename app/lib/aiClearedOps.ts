@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import { opsAlert } from "@/app/lib/opsAlert";
 import { AI_CLEARED_SLUG, AI_FLUENT_SLUG } from "@/app/lib/aiCleared";
 import { FIRM_THRESHOLD, newInviteToken, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
 import { moduleListFor } from "@/app/lib/courseModules";
@@ -138,6 +139,7 @@ export async function createFirm(args: {
   } catch (err) {
     emailed = false;
     console.error("[ai-cleared/ops] admin invite email failed", err instanceof Error ? err.message : err);
+    await opsAlert({ what: "An admin welcome email did not send", detail: { firm: org.name, slug, adminEmail: args.adminEmail, link: `${args.origin}/ai-cleared/join/${token}` }, error: err });
   }
   return { org, token, link: `${args.origin}/ai-cleared/join/${token}`, emailed };
 }
@@ -216,3 +218,38 @@ export async function lookup(q: string): Promise<LookupHit[]> {
 }
 
 export { COURSES };
+
+/* Deletion on request. The person's account goes, and with it every
+ * enrolment, attempt, progress row, playbook entry and certificate (the
+ * schema cascades). Their seats stay on the firm's register, counted as
+ * used, with the address replaced so the register no longer carries their
+ * data. Refused when the account is also a consumer account (children or
+ * course purchases hang off it: that is a different request) or when the
+ * person is a firm's only admin. */
+export async function eraseLearner(email: string): Promise<
+  | { ok: true; deletedAccount: boolean; seatsAnonymised: number; certificatesRemoved: number; firms: string[] }
+  | { ok: false; message: string }
+> {
+  const clean = email.trim().toLowerCase();
+  const user = await prisma.user.findUnique({
+    where: { email: clean },
+    select: { id: true, role: true, _count: { select: { children: true, entitlements: true } }, enrolments: { select: { certificate: { select: { id: true } }, org: { select: { name: true } } } }, orgMemberships: { select: { orgId: true, role: true } } },
+  });
+  const seats = await prisma.seat.findMany({ where: { email: clean }, select: { id: true, orgId: true, role: true, org: { select: { name: true } } } });
+  if (!user && !seats.length) return { ok: false, message: "Nobody with that address is on any firm's register." };
+  if (user?.role === "staff") return { ok: false, message: "That is a staff account; remove the staff flag first." };
+  if (user && (user._count.children > 0 || user._count.entitlements > 0)) return { ok: false, message: "That account also holds consumer courses or child profiles. A consumer deletion is a different request; do it from the database with care." };
+  for (const m of user?.orgMemberships ?? []) {
+    if (m.role !== "ADMIN") continue;
+    const otherAdmins = await prisma.orgMember.count({ where: { orgId: m.orgId, role: "ADMIN", NOT: { userId: user!.id } } });
+    if (otherAdmins === 0) return { ok: false, message: "That person is the only admin of a firm. Give the firm another admin first." };
+  }
+  const stamp = `removed-${Math.random().toString(36).slice(2, 10)}`;
+  const certificates = user?.enrolments.filter((e) => e.certificate).length ?? 0;
+  const firms = Array.from(new Set([...(user?.enrolments.map((e) => e.org.name) ?? []), ...seats.map((s) => s.org.name)]));
+  await prisma.$transaction(async (tx) => {
+    if (user) await tx.user.delete({ where: { id: user.id } });
+    for (const [i, s] of seats.entries()) await tx.seat.update({ where: { id: s.id }, data: { email: `${stamp}-${i}@removed.invalid`, userId: null } });
+  });
+  return { ok: true, deletedAccount: !!user, seatsAnonymised: seats.length, certificatesRemoved: certificates, firms };
+}
