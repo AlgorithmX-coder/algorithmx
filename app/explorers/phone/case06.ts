@@ -93,9 +93,15 @@ export interface PhoneTest {
 
 /** Per-case "app" skin so each Block-2 case feels like a different app on the
  * same phone (different wallpaper + accent + name), not the same screen 5 times.
- * The block stays pink-branded (ATLAS intro, matrix, roadmap); only the chat
- * conversation changes character. `accent` colours your own bubbles + header. */
-export interface PhoneApp { name: string; accent: string; wall: string }
+ * `accent` colours your own bubbles + header. `theme` extends that identity to
+ * the living backdrop BEHIND the phone, so the whole room (not just the chat)
+ * is a different world per case (owner standard, matches Block 1). */
+export interface PhoneApp {
+  name: string;
+  accent: string;
+  wall: string;
+  theme?: { backdrop: import("../BlockBackdrop").BackdropVariant; matrix: string[]; accentHi: string };
+}
 
 export interface PhoneCase {
   id: string;
@@ -116,7 +122,7 @@ export const case06Phone: PhoneCase = {
   caseNumber: "CASE 006",
   title: "Levers",
   actor: "SIREN",
-  app: { name: "Ripple", accent: "#FF3D8A", wall: "radial-gradient(130% 90% at 50% 0%, #2a0f1e 0%, #0d0d12 62%)" },
+  app: { name: "Ripple", accent: "#FF3D8A", wall: "radial-gradient(130% 90% at 50% 0%, #2a0f1e 0%, #0d0d12 62%)", theme: { backdrop: "ripple", matrix: ["#FF3D8A", "#FF74AE", "#C355FF"], accentHi: "#FF74AE" } },
   open: [
     "New block, Agent, and a whole new job. No control room tonight. Just this, your phone.",
     "Because this is where it really happens. People won't hack your machine. They'll message you, sweet as anything, and try to work you through the screen.",
