@@ -505,3 +505,79 @@ export function ControlMatchLab({ onDidTry }: LabProps) {
       { text: "An incident-response plan that isolates and rebuilds a machine", cat: "c", why: "It corrects and recovers after the incident: corrective." },
     ]} />;
 }
+
+/* ---- Module 5 labs: law, ethics & your first audit ---- */
+
+const LEGAL_LINE: Cat[] = [
+  { id: "ok", label: "Lawful", color: T.green },
+  { id: "cma", label: "Computer Misuse Act offence", color: T.red },
+];
+export function LegalLineLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={LEGAL_LINE}
+    prompt="The line is authorisation, not skill or intent to help. For each action, decide: lawful, or a Computer Misuse Act 1990 offence? Assume no permission unless it is stated."
+    items={[
+      { text: "Running a password-cracking tool against your own test account on your own laptop.", cat: "ok", why: "Your systems, your permission. This is exactly how you are meant to practise." },
+      { text: "Trying a few guessed passwords on a stranger's email account to prove it is weak.", cat: "cma", why: "Unauthorised access, even just attempting it, is a section 1 offence. Good intentions do not grant permission." },
+      { text: "Typing a web address by hand to poke at folders on a site you do not run, 'just to look'.", cat: "cma", why: "This is the Daniel Cuthbert line: deliberately probing someone else's system without authorisation is unauthorised access, however curious you are." },
+      { text: "Testing a company's website for flaws because you were hired and have a signed scope.", cat: "ok", why: "Authorised testing within an agreed scope is lawful and is the job itself." },
+      { text: "Logging into a friend's social media 'as a joke' using a password they once told you.", cat: "cma", why: "Knowing the password is not the same as being authorised to use the account. It is still unauthorised access." },
+      { text: "Launching traffic to knock a game server offline because you are losing.", cat: "cma", why: "Impairing a computer's operation (a denial-of-service attack) is a section 3 offence, and a serious one." },
+      { text: "Reading a security researcher's published write-up and trying the technique on your own VM.", cat: "ok", why: "Learning on systems you own is encouraged. The technique is not illegal; using it without authorisation is." },
+    ]} />;
+}
+
+const GDPR_DATA: Cat[] = [
+  { id: "pd", label: "Personal data", color: T.cyan },
+  { id: "special", label: "Special category (extra-sensitive)", color: T.amber },
+  { id: "no", label: "Not personal data", color: T.faint },
+];
+export function GdprDataLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={GDPR_DATA}
+    prompt="UK GDPR protects personal data, and guards some kinds especially tightly. Sort each item: ordinary personal data, special-category (extra-sensitive) data, or not personal data at all."
+    items={[
+      { text: "A customer's name and home address.", cat: "pd", why: "It identifies a living person, so it is personal data under UK GDPR." },
+      { text: "A person's medical records and diagnoses.", cat: "special", why: "Health data is special-category: it needs stronger justification and protection." },
+      { text: "Aggregate sales figures with no individual attached ('3,000 orders in June').", cat: "no", why: "If no living individual can be identified, it is not personal data." },
+      { text: "An email address like j.smith@company.com.", cat: "pd", why: "It can identify an individual, so it counts as personal data." },
+      { text: "Someone's religious beliefs or trade-union membership.", cat: "special", why: "These are explicitly special-category data, protected more tightly because misuse can cause real harm." },
+      { text: "An IP address logged against a user's session.", cat: "pd", why: "On its own or combined with other data it can identify a person, so regulators treat it as personal data." },
+      { text: "A fully anonymised dataset that cannot be traced back to anyone.", cat: "no", why: "True anonymisation takes it outside personal data, the key word being genuinely irreversible." },
+    ]} />;
+}
+
+export function ScopeConsentLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="You have been hired to test a company's security. A signed contract and a written scope exist. Play the engagement: the right call is the one that respects authorisation and scope."
+    doneKicker="Within scope"
+    doneNote="Every decision came back to one question: am I authorised to do this, right here, right now? A contract is permission for what is written in it, and nothing more. That discipline is what separates a professional from an offender."
+    steps={[
+      { role: "Day one", prompt: "The scope lists two web applications and their test servers. While testing, you notice the company's separate email server looks wide open and tempting. What do you do?", options: [
+        { text: "Leave it alone and note it to raise with the client; it is outside the written scope.", correct: true, why: "Out of scope means out of bounds, however easy the target looks. You flag it and let the client decide whether to extend the scope in writing." },
+        { text: "Test it quickly; you are already hired, so it is all fair game.", correct: false, why: "A contract authorises exactly what the scope says. Touching the email server is unauthorised access, a potential offence, even mid-engagement." },
+        { text: "Test it but do not mention it, to avoid awkwardness.", correct: false, why: "That is both unauthorised and dishonest. The whole value of a tester is trust and a clean paper trail." },
+      ] },
+      { role: "A find", prompt: "On an in-scope app you confirm a flaw that would let you read other customers' data. How far do you go to 'prove' it?", options: [
+        { text: "Prove it just enough to show it is real, without hoarding or exposing actual customer data.", correct: true, why: "Minimum necessary: demonstrate the flaw, capture only enough evidence to prove it, and never exfiltrate real personal data. Scope governs depth as well as targets." },
+        { text: "Download the entire customer database as proof.", correct: false, why: "That turns a clean finding into a data breach you caused. You prove impact, you do not realise it." },
+        { text: "Post a redacted screenshot publicly to warn users.", correct: false, why: "Findings go to the client privately, under the engagement's rules. Public disclosure here would breach confidentiality and could break the law." },
+      ] },
+      { role: "The clock", prompt: "The authorised testing window was 9am to 5pm. At 6pm you have one more idea you are itching to try. What now?", options: [
+        { text: "Stop. The authorisation was time-bound; you resume only within the agreed window.", correct: true, why: "Authorisation can be limited by time, not just by target. Outside the window you have no permission, so you wait or get the window extended in writing." },
+        { text: "Carry on; an hour over will not matter.", correct: false, why: "Permission that has expired is no permission. 'Just an hour more' is exactly how testers end up on the wrong side of the line." },
+        { text: "Hand your access to a colleague who is still working.", correct: false, why: "Authorisation is specific to who, what, and when it names. It is not yours to pass on." },
+      ] },
+    ]} />;
+}
+
+export function DisclosureOrderLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry}
+    prompt="You have found a serious flaw in a service you use (and were authorised to probe, or found by accident without crossing the line). Responsible disclosure has an order. Put the steps in the right sequence."
+    doneNote="That is coordinated, responsible disclosure: report privately, give them a fair chance to fix, then go public to protect everyone else. It is the path that helps users and keeps you on the right side of the law."
+    items={[
+      { label: "Stop and document, do not dig further", note: "Record what you found with the minimum proof. Do not access more data than it takes to confirm the flaw." },
+      { label: "Report it privately to the organisation", note: "Use their security contact or a security.txt / vulnerability-disclosure channel. Give them the details and how to reproduce it." },
+      { label: "Give them reasonable time to fix it", note: "Agree a timeline. Standard practice is a fixed window (often around 90 days) before any public mention." },
+      { label: "Confirm the fix is in place", note: "Check they have actually remediated, and agree what, if anything, can be said publicly." },
+      { label: "Publish responsibly, if at all", note: "Only after the fix, with details that help others learn without handing attackers a weapon, and never customer data." },
+    ]} />;
+}
