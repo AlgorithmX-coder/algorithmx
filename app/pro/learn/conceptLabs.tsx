@@ -1326,3 +1326,99 @@ export function TriageLab({ onDidTry }: LabProps) {
       ] },
     ]} />;
 }
+
+/* ---- Module 15 labs: detection & threat intelligence ---- */
+
+const DETECT_TYPE: Cat[] = [
+  { id: "sig", label: "Signature-based", color: T.cyan },
+  { id: "behav", label: "Behaviour-based", color: T.amber },
+];
+export function DetectionTypeLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={DETECT_TYPE}
+    prompt="Detection comes in two broad styles: matching known-bad signatures, and spotting suspicious behaviour. For each, decide which style it is, and remember: you need both."
+    items={[
+      { text: "Blocking a file because its fingerprint matches known malware.", cat: "sig", why: "Matching a known-bad fingerprint is signature-based detection: precise, but blind to new variants." },
+      { text: "Flagging a process that suddenly encrypts thousands of files.", cat: "behav", why: "Watching for suspicious actions, whatever the file, is behaviour-based detection." },
+      { text: "Alerting on traffic to a known malicious address from a blocklist.", cat: "sig", why: "A known-bad indicator on a list is a signature-style match." },
+      { text: "Noticing an account logging in at 3am and accessing systems it never touches.", cat: "behav", why: "Anomalous behaviour, not a known indicator, is behaviour-based detection." },
+      { text: "Detecting a brand-new malware variant by its ransomware-like actions.", cat: "behav", why: "Behaviour catches novel threats signatures have never seen, which is why you need it." },
+      { text: "Matching an email attachment's hash against a database of known-bad files.", cat: "sig", why: "Comparing a hash to known-bad is classic signature detection." },
+    ]} />;
+}
+
+const IOC_TYPE: Cat[] = [
+  { id: "ioc", label: "An indicator of compromise", color: T.red },
+  { id: "not", label: "Not an IOC", color: T.faint },
+];
+export function IocLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={IOC_TYPE}
+    prompt="An indicator of compromise (IOC) is an observable sign that an attack has occurred, shareable so others can detect the same threat. For each, decide: an IOC, or not?"
+    items={[
+      { text: "The file hash of a specific piece of malware.", cat: "ioc", why: "A malware hash is a classic IOC: others can search for it to find the same infection." },
+      { text: "A malicious IP address or domain an attacker's malware contacts.", cat: "ioc", why: "Attacker infrastructure addresses are shareable IOCs for detection and blocking." },
+      { text: "The colour of the SOC analyst's coffee mug.", cat: "not", why: "Not observable evidence of an attack. An IOC is a concrete sign of compromise." },
+      { text: "A specific suspicious filename or registry change malware creates.", cat: "ioc", why: "Artefacts a threat leaves behind are IOCs others can hunt for." },
+      { text: "The general feeling that something might be wrong.", cat: "not", why: "A hunch is not an IOC. Indicators are concrete, observable and shareable." },
+      { text: "A pattern of behaviour a specific attacker group reliably uses.", cat: "ioc", why: "Behavioural indicators (sometimes called TTPs) are higher-level but still shareable signs to detect by." },
+    ]} />;
+}
+
+const INTEL_VALUE: Cat[] = [
+  { id: "useful", label: "Useful threat intelligence", color: T.green },
+  { id: "noise", label: "Not useful on its own", color: T.faint },
+];
+export function ThreatIntelLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={INTEL_VALUE}
+    prompt="Good threat intelligence is relevant, actionable and timely. For each piece, decide: genuinely useful for defending your organisation, or not useful on its own?"
+    items={[
+      { text: "'A group targeting your exact industry is using this technique right now.'", cat: "useful", why: "Relevant, specific and timely: exactly what you can act on to prepare defences." },
+      { text: "'Cyber attacks are increasing.' (a generic headline)", cat: "noise", why: "True but not actionable. Intelligence must be specific enough to do something with." },
+      { text: "Shared IOCs you can load into your tools to detect a known campaign.", cat: "useful", why: "Actionable indicators you can immediately use to detect or block: valuable intelligence." },
+      { text: "'Attackers exist and are bad.'", cat: "noise", why: "No specifics, nothing to act on. Not useful intelligence by itself." },
+      { text: "A detailed report on how a relevant threat group operates, mapped to defences.", cat: "useful", why: "Understanding a relevant adversary's methods lets you prepare specific defences: high-value intel." },
+      { text: "An unverified rumour with no source or detail.", cat: "noise", why: "Intelligence must be credible and specific. An unsourced rumour is not actionable." },
+    ]} />;
+}
+
+const ATTACK_TACTIC: Cat[] = [
+  { id: "initial", label: "Initial access", color: T.red },
+  { id: "persist", label: "Persistence", color: T.amber },
+  { id: "lateral", label: "Lateral movement", color: T.cyan },
+  { id: "exfil", label: "Exfiltration", color: T.green },
+];
+export function AttackMappingLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={ATTACK_TACTIC}
+    prompt="MITRE ATT&CK organises attacker behaviour into tactics (goals). Tap each observed activity, then tap the ATT&CK tactic it fits. This mapping is how defenders describe and detect attacks precisely."
+    items={[
+      { text: "A phishing email delivers the first foothold", cat: "initial", why: "Getting that first foothold is the Initial Access tactic." },
+      { text: "Malware sets itself to run automatically on every reboot", cat: "persist", why: "Maintaining a foothold across restarts is Persistence." },
+      { text: "The attacker moves from the first machine to a file server", cat: "lateral", why: "Moving to other systems inside the network is Lateral Movement." },
+      { text: "Large amounts of data are quietly sent to an external server", cat: "exfil", why: "Stealing data out of the organisation is Exfiltration." },
+      { text: "A stolen account is used to reach additional internal systems", cat: "lateral", why: "Using access to spread to more systems is Lateral Movement." },
+      { text: "A hidden scheduled task re-launches the malware if it is killed", cat: "persist", why: "Ensuring the malware survives is Persistence." },
+    ]} />;
+}
+
+export function TuningLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="Your SOC is drowning in alerts, and real ones are getting missed. Play the tuning decisions: good detection is as much about cutting noise as catching threats."
+    doneKicker="Signal restored"
+    doneNote="You cut the noise without going blind: tuned out the false positives, kept and sharpened the detections that matter, and measured the result. Reducing noise so real alerts stand out is as important as detection itself."
+    steps={[
+      { role: "The flood", prompt: "One rule fires hundreds of times a day, almost always on harmless, expected activity. What do you do?", options: [
+        { text: "Tune it: refine the rule so it only fires on the genuinely suspicious cases.", correct: true, why: "A rule that is almost always wrong trains analysts to ignore it. Tuning it to fire only on real concerns restores its value." },
+        { text: "Leave it; more alerts must mean more security.", correct: false, why: "Noise is not security. A flood of false positives causes alert fatigue and hides the real ones (the Target lesson)." },
+        { text: "Delete all detection rules to get some quiet.", correct: false, why: "Going blind is the opposite mistake. The goal is signal, not silence: keep real detections, cut the noise." },
+      ] },
+      { role: "The balance", prompt: "How do you decide what to tune out versus keep?", options: [
+        { text: "Weigh each alert's track record: is it catching real threats, or almost always a false positive?", correct: true, why: "Tuning is evidence-based: keep and sharpen what catches real threats, reduce what reliably wastes time." },
+        { text: "Turn off whichever rules are the loudest, regardless of value.", correct: false, why: "A loud rule might be loud because it catches real things. Judge by value, not just volume." },
+        { text: "Keep everything forever and never review.", correct: false, why: "Detections drift and environments change; without review, noise accumulates and signal drowns." },
+      ] },
+      { role: "The goal", prompt: "What is the real aim of tuning detection?", options: [
+        { text: "So real alerts stand out and analysts can trust and act on them.", correct: true, why: "The point is signal-to-noise: a trusted, actionable alert stream beats an ignored flood every time." },
+        { text: "To have the fewest alerts possible, whatever the cost.", correct: false, why: "Too few can mean missing real attacks. The aim is the right alerts, not the fewest." },
+        { text: "To generate the most alerts to look busy.", correct: false, why: "Volume for its own sake causes fatigue and missed threats. Quality of signal is the goal." },
+      ] },
+    ]} />;
+}
