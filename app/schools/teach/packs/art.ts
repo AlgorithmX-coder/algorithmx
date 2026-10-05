@@ -35,6 +35,27 @@ export const ART = {
   racc: "/cyberheroes/icons/raccoon.png",
   adam: "/game/characters/adam-idle.png",
   layla: "/game/characters/layla-celebrate.png",
+  /* Added for weeks 2 and 3: the places a stranger could reach a child, and
+     the tools for checking who is really there. All of these were already in
+     /public; only this map had not heard of them. */
+  home: "/cyberheroes/icons/home.png",
+  school: "/cyberheroes/icons/school.png",
+  nametag: "/cyberheroes/icons/name-tag.png",
+  pin: "/cyberheroes/icons/map-pin.png",
+  shield: "/cyberheroes/icons/shield.png",
+  question: "/cyberheroes/icons/question-mark.png",
+  pause: "/cyberheroes/icons/pause-button.png",
+  detective: "/cyberheroes/icons/detective.png",
+  eye: "/cyberheroes/icons/eye.png",
+  warning: "/cyberheroes/icons/warning.png",
+  idcard: "/cyberheroes/icons/id-card.png",
+  share: "/cyberheroes/icons/share-board.png",
+  speech: "/cyberheroes/icons/speech-bubble.png",
+  brain: "/cyberheroes/icons/brain.png",
+  stopwatch: "/cyberheroes/icons/stopwatch.png",
+  star: "/cyberheroes/icons/sparkle-star.png",
+  laughing: "/cyberheroes/icons/laughing.png",
+  megaphone: "/cyberheroes/icons/megaphone.png",
 } as const;
 
 export type ArtKey = keyof typeof ART;
