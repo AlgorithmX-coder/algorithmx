@@ -41,6 +41,19 @@ export type WarStep =
       okVoice?: string;
       bad?: string;
       badVoice?: string;
+    }
+  | {
+      // tap the scattered cards into the right ORDER (shuffled for display;
+      // authored here in the correct sequence). Genuinely different shape from
+      // connect (match pairs) and pin (pick a subset, order-free) — this is
+      // the only War Room interaction where sequence itself is the answer.
+      t: "sequence";
+      prompt?: string;
+      cards: { id: string; label: string; sub?: string }[];
+      ok?: string;
+      okVoice?: string;
+      bad?: string;
+      badVoice?: string;
     };
 
 export interface WarSkill {

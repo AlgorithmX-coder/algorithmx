@@ -38,23 +38,17 @@ export const case19War: WarCase = {
       ],
       practice: [
         {
-          t: "connect",
-          prompt: "Link each stage to what happens in it:",
-          left: [
-            { id: "recon", label: "Recon" },
-            { id: "lure", label: "Lure" },
-            { id: "harvest", label: "Harvest" },
+          t: "sequence",
+          prompt: "Tap the five stages into the order the chain actually runs:",
+          cards: [
+            { id: "recon", label: "Recon", sub: "they research you" },
+            { id: "lure", label: "Lure", sub: "they send the bait" },
+            { id: "access", label: "Access", sub: "they get in" },
+            { id: "harvest", label: "Harvest", sub: "they take what they came for" },
+            { id: "spread", label: "Spread", sub: "they use you to reach others" },
           ],
-          right: [
-            { id: "research", label: "They research you and your habits" },
-            { id: "bait", label: "They send the bait to get you to act" },
-            { id: "take", label: "They take the data or money they came for" },
-          ],
-          pairs: [["recon", "research"], ["lure", "bait"], ["harvest", "take"]],
           ok: "That's the chain: recon, lure, access, harvest, spread. Each link depends on the one before it. And that's your advantage, you don't have to be perfect at every stage, you just have to break one link to stop the whole thing.",
           okVoice: "/audio/wren/m19w-s1-ok.mp3",
-          bad: "Not quite. Recon is the research, the lure is the bait that gets you to act, and the harvest is when they take what they came for. Match them up. Try again.",
-          badVoice: "/audio/wren/m19w-s1-bad.mp3",
         },
         {
           t: "choose",

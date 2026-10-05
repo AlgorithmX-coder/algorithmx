@@ -56,6 +56,7 @@ type Dock =
   | { type: "choose"; prompt?: string; options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: WarStep[] }[] }
   | { type: "connect"; prompt?: string; left: { id: string; label: string }[]; right: { id: string; label: string }[]; pairs: [string, string][] }
   | { type: "pin"; prompt?: string; cards: { label: string; good: boolean; sub?: string }[]; need: number }
+  | { type: "sequence"; prompt?: string; cards: { id: string; label: string; sub?: string }[] }
   | { type: "clear"; text: string }
   | { type: "idle" }
   | null;
@@ -120,6 +121,10 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       } else if (step.t === "pin") {
         setNudge(null); setDock({ type: "pin", prompt: step.prompt, cards: step.cards, need: step.need });
+        await awaitUser(); setDock(null);
+        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
+      } else if (step.t === "sequence") {
+        setNudge(null); setDock({ type: "sequence", prompt: step.prompt, cards: step.cards });
         await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       }
@@ -272,7 +277,12 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   const [sel, setSel] = useState<number[]>([]);        // pin: selected card indices
   const [selLeft, setSelLeft] = useState<string | null>(null); // connect: currently picked left id
   const [matched, setMatched] = useState<string[]>([]);        // connect: solved left ids
-  useEffect(() => { setSel([]); setSelLeft(null); setMatched([]); }, [dock]);
+  const [pool, setPool] = useState<number[]>([]);       // sequence: shuffled indices still unplaced
+  const [placed, setPlaced] = useState<number[]>([]);   // sequence: indices tapped, in order
+  useEffect(() => {
+    setSel([]); setSelLeft(null); setMatched([]); setPlaced([]);
+    setPool(dock?.type === "sequence" ? shuffled(dock.cards.length) : []);
+  }, [dock]);
 
   if (!dock || dock.type === "idle") return <div style={{ fontFamily: MONO, fontSize: 12, color: C.faint, opacity: 0.6, textAlign: "center", padding: "6px 0" }}>board idle…</div>;
   if (dock.type === "clear") {
@@ -330,6 +340,50 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
             })}
           </div>
         </div>
+      </>
+    );
+  }
+  if (dock.type === "sequence") {
+    const total = dock.cards.length;
+    const tapPool = (idx: number) => { setPool((p) => p.filter((i) => i !== idx)); setPlaced((p) => [...p, idx]); };
+    const tapPlaced = (pos: number) => { // undo: pull a placed card back to the pool
+      const idx = placed[pos];
+      setPlaced((p) => p.filter((_, i) => i !== pos));
+      setPool((p) => [...p, idx]);
+    };
+    const submit = () => {
+      const ok = placed.every((idx, i) => dock.cards[idx].id === dock.cards[i]?.id) && placed.length === total;
+      if (ok) onResolve("ok");
+      else { onBad("Not quite the right order. Have another look, then rebuild it."); setPlaced([]); setPool(shuffled(total)); }
+    };
+    return (
+      <>
+        {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
+          : <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Tap the cards into order:"} <span style={{ color: acc }}>({placed.length}/{total})</span></p>}
+        {/* the chain being built, left to right, one numbered slot per card */}
+        <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+          {Array.from({ length: total }).map((_, pos) => {
+            const idx = placed[pos];
+            const filled = idx !== undefined;
+            return (
+              <button key={pos} className="wr-opt" disabled={!filled} onClick={() => tapPlaced(pos)}
+                style={{ flex: "1 1 0", minWidth: 0, fontFamily: UI, fontSize: 12, fontWeight: 700, textAlign: "center", color: filled ? C.page : C.faint, background: filled ? acc : C.chip, border: `1px solid ${filled ? acc : C.chipedge}`, borderRadius: 8, padding: "9px 4px", cursor: filled ? "pointer" : "default" }}>
+                <span style={{ display: "block", fontSize: 9, opacity: 0.75, marginBottom: 2 }}>{pos + 1}</span>
+                {filled ? dock.cards[idx].label : "—"}
+              </button>
+            );
+          })}
+        </div>
+        {/* the shuffled pool: tap to append to the chain */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginBottom: 10 }}>
+          {pool.map((idx) => (
+            <button key={idx} className="wr-opt" onClick={() => tapPool(idx)}
+              style={{ fontFamily: UI, fontSize: 13, fontWeight: 600, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 8, padding: "9px 12px", cursor: "pointer", textAlign: "left" }}>
+              {dock.cards[idx].label}{dock.cards[idx].sub && <span style={{ display: "block", fontSize: 10.5, fontWeight: 500, color: C.dim, marginTop: 1 }}>{dock.cards[idx].sub}</span>}
+            </button>
+          ))}
+        </div>
+        <button className="wr-btn" onClick={submit} disabled={placed.length !== total} style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: placed.length === total ? acc : "#3a2f5e", border: 0, borderRadius: 6, padding: "11px", cursor: placed.length === total ? "pointer" : "not-allowed" }}>LOCK THE CHAIN</button>
       </>
     );
   }
