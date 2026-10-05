@@ -4,7 +4,7 @@ import { anthropicClient, apiKeyStatus, safeErrorMessage } from "@/app/lib/anthr
 import { manifestFor } from "@/app/lib/courseModules";
 import { classCounts, localRewrite, realDataCheck, ruleFindings, verdictOf } from "@/app/ai-cleared/engine/rules";
 import { DEFAULT_COACH, DEFAULT_WHY, type GradeResult } from "@/app/ai-cleared/engine/grading";
-import { RUBRIC_ELEMENTS, RUBRIC_LABEL, resolveTrack, TOOL_LABEL, type LoopPractise, type Tool, type Track } from "@/app/ai-cleared/engine/types";
+import { RUBRIC_ELEMENTS, RUBRIC_LABEL, practisesOf, resolveTrack, TOOL_LABEL, type LoopPractise, type Tool, type Track } from "@/app/ai-cleared/engine/types";
 import { rulesGrade, scoreFrom, verdictFrom } from "@/app/ai-fluent/engine/rubric";
 import { FLUENT_COACH, type ElementScore, type FluentGrade, type TurnScore } from "@/app/ai-fluent/engine/grading";
 
@@ -63,7 +63,7 @@ export async function gradeFluent(input: FluentGradeInput): Promise<FluentGradeO
   const manifest = manifestFor("ai-fluent", input.module);
   if (!manifest) return { error: "No such module.", status: 404 };
   const { block } = resolveTrack(manifest, input.track);
-  const list = block.practises ?? [block.practise];
+  const list = practisesOf(block);
   const practise = list[input.practise ?? 0];
   if (!practise || practise.kind !== "loop") return { error: "This practice is not graded on the rubric.", status: 404 };
   const loop = practise as LoopPractise;

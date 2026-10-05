@@ -6,6 +6,7 @@ import { K, CLASS_COLOUR, VERDICT_COLOUR } from "./tokens";
 import {
   fill,
   resolveSituation,
+  practisesOf,
   resolveTrack,
   TIER_LABEL,
   TRACK_LABEL,
@@ -338,8 +339,8 @@ function spansFromGrade(prompt: string, grade: GradeResult): { text: string; cls
 
 export default function ClearedPlayer({ manifest, track, firm, tool, learnerName, courseMap, initialPhase, live }: PlayerProps) {
   const { block, track: usedTrack } = useMemo(() => resolveTrack(manifest, track), [manifest, track]);
-  const practise = block.practise;
-  const practises = useMemo<Practise[]>(() => block.practises ?? [block.practise], [block]);
+  const practises = useMemo<Practise[]>(() => practisesOf(block), [block]);
+  const practise = practises[0];
   const sandbox = practise.kind === "sandbox" ? (practise as SandboxPractise) : null;
   const pack = block.dataPack;
   const names = firm.classNames;

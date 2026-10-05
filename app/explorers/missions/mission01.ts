@@ -25,13 +25,14 @@ export const mission01: MissionManifest = {
   title: "Phishing",
   block: 1,
   classification: "CONFIDENTIAL",
+  theme: "signals",
   actor: {
     codename: "PHANTOM HOOK",
     mo: "Fake 'urgent' messages that copy apps you trust.",
     portrait: "/explorers/actors/phantom-hook.png",
   },
 
-  hook: "A fake email nearly tricked Maya out of her game account. Let's find out how it works, and catch the one who sent it.",
+  hook: "Welcome to your first mission, Agent. A fake message nearly tricked your friend Maya out of her game account. Everything you'll learn to catch the hacker who sent it is right here on your map. Let's go.",
   scene: "/explorers/scenes/m01-cold-open.jpg",
 
   transmission: {
@@ -69,6 +70,7 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn the feelings a scammer fakes, and how to catch it.",
       instruction: "Read this NEW message. Select every part that's trying to pressure you, then submit.",
+      practiceIntro: "Now let's put it to work, Agent. On the next screen I'll show you a NEW message you haven't seen. Your job: tap every part that's trying to pressure you, then hit submit. Find them all and this skill is yours.",
       intel: {
         beats: [
           "A scammer can't reach through the screen and make you do anything. So they do the next best thing. They make you FEEL something strong, fast.",

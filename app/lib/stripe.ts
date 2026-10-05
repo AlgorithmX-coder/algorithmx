@@ -1,8 +1,8 @@
 import Stripe from "stripe";
 import type { OrgPlan } from "@prisma/client";
-import { VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { CORPORATE_PRODUCT_SLUGS, COURSE_NAME, VAT_PERCENT, type CorporateProductSlug } from "@/app/lib/corporateProducts";
 
-export { VAT_PERCENT };
+export { COURSE_NAME, VAT_PERCENT };
 
 /* Stripe for the corporate packs. Everything is driven by environment
  * variables so checkout switches on the moment they exist on Vercel and
@@ -20,10 +20,6 @@ export const SEAT_PRICE_PENCE: Record<CorporateProductSlug, Record<"TEAM" | "FIR
   "ai-fluent": { TEAM: 5900, FIRM: 4500 },
 };
 
-export const COURSE_NAME: Record<CorporateProductSlug, string> = { "ai-cleared": "AI Cleared", "ai-fluent": "AI Fluent" };
-
-/* Which courses can be bought by card today. AI Fluent joins when built. */
-export const SELLABLE: CorporateProductSlug[] = ["ai-cleared"];
 
 export function planForSeats(seats: number): OrgPlan {
   if (seats >= 250) return "ENTERPRISE";
@@ -36,11 +32,17 @@ function priceEnv(course: CorporateProductSlug, plan: "TEAM" | "FIRM"): string |
   return process.env[key];
 }
 
-/* Checkout is live when the secret key, the webhook secret and every
- * sellable course's two prices are present. */
+/* Which courses can be bought by card: the ones whose two Stripe prices
+ * are set. AI Fluent joins the buy page the moment its prices exist. */
+export function sellableCourses(): CorporateProductSlug[] {
+  return CORPORATE_PRODUCT_SLUGS.filter((c) => priceEnv(c, "TEAM") && priceEnv(c, "FIRM"));
+}
+
+/* Checkout is live when the secret key, the webhook secret and AI
+ * Cleared's two prices are present. */
 export function stripeConfigured(): boolean {
   if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) return false;
-  return SELLABLE.every((c) => priceEnv(c, "TEAM") && priceEnv(c, "FIRM"));
+  return sellableCourses().includes("ai-cleared");
 }
 
 export function priceIdFor(course: CorporateProductSlug, plan: OrgPlan): string | null {

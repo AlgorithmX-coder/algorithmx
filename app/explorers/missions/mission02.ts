@@ -28,6 +28,7 @@ export const mission02: MissionManifest = {
   title: "Too Good To Be True",
   block: 1,
   classification: "CONFIDENTIAL",
+  theme: "prize",
   actor: {
     codename: "SIREN",
     mo: "Gives to get. Gifts, flattery, and 'you're the special one,' then the ask.",

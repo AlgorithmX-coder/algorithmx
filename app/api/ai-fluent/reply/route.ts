@@ -4,7 +4,7 @@ import { anthropicClient, safeErrorMessage } from "@/app/lib/anthropicClient";
 import { auth } from "@/app/lib/auth";
 import { manifestFor } from "@/app/lib/courseModules";
 import { realDataCheck } from "@/app/ai-cleared/engine/rules";
-import { TRACKS, resolveTrack, type AttachedDocument } from "@/app/ai-cleared/engine/types";
+import { TRACKS, practisesOf, resolveTrack, type AttachedDocument } from "@/app/ai-cleared/engine/types";
 import { voiceFor } from "@/app/ai-cleared/engine/voices";
 import { fluentScriptedReply } from "@/app/ai-fluent/engine/scripted";
 
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   const manifest = manifestFor("ai-fluent", module);
   if (!manifest) return Response.json({ error: "No such module." }, { status: 404 });
   const { block } = resolveTrack(manifest, track);
-  const list = block.practises ?? [block.practise];
+  const list = practisesOf(block);
   const practise = list[parsed.data.practise ?? 0];
   const loop = practise?.kind === "loop" ? practise : null;
   if (block.dataPack && realDataCheck(prompt, block.dataPack)) return Response.json({ error: "Halted: that looks like real data." }, { status: 422 });

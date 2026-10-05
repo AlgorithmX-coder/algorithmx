@@ -12,7 +12,7 @@
 import { useEffect, useState } from "react";
 import { playWren, playWrenNudge, stopWren } from "../engine/audio";
 import { AmberButton } from "../engine/primitives";
-import { MONO, BODY, T } from "../engine/tokens";
+import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, UnmaskPayload } from "../engine/types";
 
 type Verdict = "REAL" | "FAKE";
@@ -81,12 +81,12 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
           const v = verdicts[it.id];
           const isCorrect = correct(it);
           const showTruth = submitted;
-          const edge = showTruth ? (isCorrect ? T.confirmedGreen : T.threatRed) : isRevealed ? T.arcCyan : T.hairline;
+          const edge = showTruth ? (isCorrect ? T.confirmedGreen : T.threatRed) : isRevealed ? T.arcCyan : "var(--sf-edge)";
           return (
-            <div key={it.id} style={{ background: T.paper, color: T.fileInk, borderRadius: 4, border: `1px solid ${edge}`, boxShadow: "0 2px 0 rgba(0,0,0,0.5)", overflow: "hidden" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: `1px solid ${T.fileInk}18` }}>
-                <span style={{ fontFamily: BODY, fontSize: 14.5, fontWeight: 700 }}>{it.displayName}</span>
-                <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", opacity: 0.55 }}>{payload.sourceLabel ?? "SENDER"}</span>
+            <div key={it.id} style={{ background: "var(--sf-card)", color: "var(--sf-ink)", borderRadius: "var(--sf-radius)", border: `1px solid ${edge}`, boxShadow: "var(--sf-shadow)", overflow: "hidden" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid var(--sf-edge)" }}>
+                <span style={{ fontFamily: "var(--sf-font)", fontSize: 14.5, fontWeight: 700 }}>{it.displayName}</span>
+                <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", color: "var(--sf-dim)" }}>{payload.sourceLabel ?? "SENDER"}</span>
               </div>
 
               {!isRevealed ? (
@@ -100,7 +100,7 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
                 </button>
               ) : (
                 <div style={{ padding: "12px 14px" }}>
-                  <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.06em", opacity: 0.6, marginBottom: 3 }}>REAL ADDRESS</div>
+                  <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.06em", color: "var(--sf-dim)", marginBottom: 3 }}>REAL ADDRESS</div>
                   <div style={{ fontFamily: MONO, fontSize: 14, wordBreak: "break-all", marginBottom: 12 }}>{it.address}</div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
                     {(["REAL", "FAKE"] as Verdict[]).map((opt) => {

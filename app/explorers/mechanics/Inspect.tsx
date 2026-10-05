@@ -57,7 +57,7 @@ export default function Inspect({ payload, reduced, audio, onEvent, voiceOn }: M
     const sel = selected.has(seg.id);
     const flagged = !!result && result.wrong.includes(seg.id);
     const done = passed && !!seg.tellId;
-    const col = flagged ? T.threatRed : done ? T.confirmedGreen : sel ? T.actionAmber : `${T.fileInk}44`;
+    const col = flagged ? T.threatRed : done ? T.confirmedGreen : sel ? T.actionAmber : "var(--sf-edge)";
     return (
       <button
         key={seg.id}
@@ -66,7 +66,7 @@ export default function Inspect({ payload, reduced, audio, onEvent, voiceOn }: M
         aria-pressed={sel}
         style={{
           font: "inherit", fontFamily: seg.mono ? MONO : "inherit", fontSize: seg.mono ? 13.5 : "inherit",
-          color: T.fileInk, background: flagged ? `${T.threatRed}26` : done ? `${T.confirmedGreen}22` : sel ? `${T.actionAmber}2E` : "transparent",
+          color: "var(--sf-ink)", background: flagged ? `${T.threatRed}26` : done ? `${T.confirmedGreen}22` : sel ? `${T.actionAmber}2E` : "transparent",
           border: `${sel || flagged || done ? 2 : 1}px ${sel || flagged || done ? "solid" : "dashed"} ${col}`,
           borderRadius: 5, padding: "3px 7px", margin: "1px 1px", cursor: passed ? "default" : "pointer",
         }}
@@ -92,8 +92,8 @@ export default function Inspect({ payload, reduced, audio, onEvent, voiceOn }: M
       </div>
 
       <DeviceFrame app={payload.device?.app ?? "MESSAGES"} owner={payload.device?.owner ?? "CAPTURED DEVICE"}>
-        <div style={{ background: T.paper, color: T.fileInk, padding: "20px 22px", fontSize: 15.5, lineHeight: 2, position: "relative" }}>
-          <div style={{ fontFamily: MONO, fontSize: 12.5, borderBottom: `1px solid ${T.fileInk}22`, paddingBottom: 12, marginBottom: 14 }}>
+        <div style={{ background: "var(--sf-card)", color: "var(--sf-ink)", fontFamily: "var(--sf-font)", padding: "20px 22px", fontSize: 15.5, lineHeight: 2, position: "relative" }}>
+          <div style={{ fontFamily: MONO, fontSize: 12.5, borderBottom: "1px solid var(--sf-edge)", paddingBottom: 12, marginBottom: 14 }}>
             {payload.header.map((h) => (
               <div key={h.seg.id} style={{ marginTop: 6 }}>
                 <span style={{ opacity: 0.55 }}>{h.label.padEnd(6, " ")}</span>

@@ -1,7 +1,8 @@
 import type Stripe from "stripe";
 import { prisma } from "@/app/lib/prisma";
 import { createFirm } from "@/app/lib/aiClearedOps";
-import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, SELLABLE, planForSeats, priceIdFor, stripe, stripeConfigured, vatTaxRateId } from "@/app/lib/stripe";
+import { sendSeatsAdded } from "@/app/lib/aiClearedAdmin";
+import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, planForSeats, priceIdFor, sellableCourses, stripe, stripeConfigured, vatTaxRateId } from "@/app/lib/stripe";
 import type { CorporateProductSlug } from "@/app/lib/corporateProducts";
 
 /* Card checkout for a firm's seat pack, and the fulfilment that follows
@@ -30,7 +31,7 @@ export function validateSeats(seats: number): string | null {
 
 export async function createCorporateCheckout(input: CheckoutInput): Promise<{ url: string } | { error: string; status: number }> {
   if (!stripeConfigured()) return { error: "Card checkout is not switched on yet. Use the enquiry form and we will invoice you.", status: 503 };
-  if (!SELLABLE.includes(input.course)) return { error: `${COURSE_NAME[input.course]} is not on sale by card yet.`, status: 400 };
+  if (!sellableCourses().includes(input.course)) return { error: `${COURSE_NAME[input.course]} is not on sale by card yet.`, status: 400 };
   const seatsError = validateSeats(input.seats);
   if (seatsError) return { error: seatsError, status: 400 };
   const plan = planForSeats(input.seats);
@@ -71,20 +72,52 @@ export async function createCorporateCheckout(input: CheckoutInput): Promise<{ u
   return { url: session.url };
 }
 
-/* Called by the webhook on checkout.session.completed. Creates the firm
- * once per session and sends the admin invite under AlgorithmX's name. */
+const COURSE_KEY = { "ai-cleared": "AI_CLEARED", "ai-fluent": "AI_FLUENT" } as const;
+
+/* Called by the webhook on checkout.session.completed. The same admin
+ * email means the same firm: a buyer who already runs a firm with us gets
+ * the seats added to it and a note saying so; anyone else gets a new firm
+ * and the admin invite, under AlgorithmX's name. Once per session. */
 export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, origin: string) {
   const m = session.metadata ?? {};
   if (m.product !== "corporate-seats") return { skipped: "not a corporate seat purchase" };
   if (session.payment_status !== "paid") return { skipped: `payment status ${session.payment_status}` };
 
-  const existing = await prisma.organisation.findUnique({ where: { stripeCheckoutSessionId: session.id }, select: { id: true, slug: true } });
-  if (existing) return { already: true, slug: existing.slug };
+  const done = await prisma.seatPurchase.findUnique({ where: { stripeCheckoutSessionId: session.id }, select: { orgId: true } });
+  if (done) return { already: true, orgId: done.orgId };
+  const legacy = await prisma.organisation.findUnique({ where: { stripeCheckoutSessionId: session.id }, select: { id: true, slug: true } });
+  if (legacy) return { already: true, slug: legacy.slug };
 
   const seats = Number(m.seats) || 0;
+  const course: CorporateProductSlug = m.course === "ai-fluent" ? "ai-fluent" : "ai-cleared";
   const adminEmail = (m.adminEmail || session.customer_details?.email || session.customer_email || "").toLowerCase();
   if (!adminEmail || !m.firmName) return { skipped: "session is missing the firm name or the admin email" };
   const customerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
+  const staffName = "AlgorithmX";
+  const staffEmail = process.env.CORPORATE_ENQUIRY_TO ?? "admissions@algorithmx.co.uk";
+
+  const admin = await prisma.seat.findFirst({
+    where: { email: adminEmail, role: "ADMIN" },
+    orderBy: { invitedAt: "asc" },
+    select: { org: { select: { id: true, name: true, slug: true } } },
+  });
+  if (admin) {
+    await prisma.$transaction([
+      prisma.organisation.update({
+        where: { id: admin.org.id },
+        data: course === "ai-fluent" ? { fluentSeatsPurchased: { increment: seats } } : { seatsPurchased: { increment: seats } },
+      }),
+      prisma.seatPurchase.create({ data: { orgId: admin.org.id, course: COURSE_KEY[course], seats, stripeCheckoutSessionId: session.id } }),
+    ]);
+    let emailed = true;
+    try {
+      await sendSeatsAdded({ to: adminEmail, firmName: admin.org.name, course, seats, origin, staffName, staffEmail });
+    } catch (err) {
+      emailed = false;
+      console.error("[corporate/checkout] seats-added email failed", err instanceof Error ? err.message : err);
+    }
+    return { added: true, slug: admin.org.slug, course, seats, emailed };
+  }
 
   const made = await createFirm({
     name: m.firmName,
@@ -92,12 +125,16 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
     contactName: m.contactName || null,
     contactRole: m.contactRole || null,
     plan: planForSeats(seats),
-    seatsPurchased: seats,
+    seatsPurchased: course === "ai-cleared" ? seats : 0,
+    fluentSeatsPurchased: course === "ai-fluent" ? seats : 0,
     adminEmail,
     origin,
-    staffName: "AlgorithmX",
-    staffEmail: process.env.CORPORATE_ENQUIRY_TO ?? "admissions@algorithmx.co.uk",
+    staffName,
+    staffEmail,
   });
-  await prisma.organisation.update({ where: { id: made.org.id }, data: { stripeCheckoutSessionId: session.id, stripeCustomerId: customerId } });
-  return { created: true, slug: made.org.slug, emailed: made.emailed, link: made.link };
+  await prisma.$transaction([
+    prisma.organisation.update({ where: { id: made.org.id }, data: { stripeCheckoutSessionId: session.id, stripeCustomerId: customerId } }),
+    prisma.seatPurchase.create({ data: { orgId: made.org.id, course: COURSE_KEY[course], seats, stripeCheckoutSessionId: session.id } }),
+  ]);
+  return { created: true, slug: made.org.slug, course, seats, emailed: made.emailed, link: made.link };
 }

@@ -9,6 +9,7 @@
 import { useEffect, useState } from "react";
 import { BAND_BY_CLASSIFICATION, MONO, T } from "./tokens";
 import type { Classification } from "./types";
+import { useCaseTheme } from "./caseThemes";
 
 /* ----------------------------------------------------- reduced motion */
 
@@ -90,11 +91,13 @@ export function RoomBackdrop({ reduced, tone }: { reduced: boolean; tone: string
 /* Character presence without portrait art (yet): signature chips. */
 
 export function Face({ who }: { who: "wren" | "you" | "villain" | string }) {
+  const caseTheme = useCaseTheme();
   if (who === "wren") {
+    const acc = caseTheme.accent;
     return (
-      <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 2, width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${T.arcCyan}14`, border: `1.5px solid ${T.arcCyan}88` }}>
+      <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 2, width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${acc}14`, border: `1.5px solid ${acc}88` }}>
         {[7, 12, 8].map((h, i) => (
-          <span key={i} className="sr-wavebar" style={{ width: 2.5, height: h, background: T.arcCyan, animationDelay: `${i * 0.14}s` }} />
+          <span key={i} className="sr-wavebar" style={{ width: 2.5, height: h, background: acc, animationDelay: `${i * 0.14}s` }} />
         ))}
       </span>
     );
@@ -133,7 +136,10 @@ export function TypingDots() {
 
 /** A radio/chat message in the story stream. */
 export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain" | string; children: React.ReactNode; tone?: string }) {
+  const caseTheme = useCaseTheme();
   const mine = who === "you";
+  // WREN's bubble edge/glow follows the case accent (unless a specific tone is set).
+  const wrenEdge = tone ?? caseTheme.accent;
   return (
     <div className="sr-msg" style={{ display: "flex", gap: 12, flexDirection: mine ? "row-reverse" : "row", alignItems: "flex-end" }}>
       <Face who={who} />
@@ -142,13 +148,13 @@ export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain
           maxWidth: "78%",
           background: mine ? `${T.actionAmber}14` : who === "villain" ? `${T.threatRed}10` : T.panelRaised,
           backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.045) 0%, transparent 45%)",
-          border: `1px solid ${mine ? `${T.actionAmber}88` : who === "villain" ? `${T.threatRed}88` : tone ? `${tone}77` : `${T.glowCyan}55`}`,
+          border: `1px solid ${mine ? `${T.actionAmber}88` : who === "villain" ? `${T.threatRed}88` : `${wrenEdge}66`}`,
           borderRadius: mine ? "14px 14px 3px 14px" : "14px 14px 14px 3px",
           padding: "12px 16px",
           fontSize: 16,
           lineHeight: 1.6,
           color: T.textPrimary,
-          boxShadow: `0 4px 14px -8px rgba(0,0,0,0.6), 0 0 16px ${mine ? T.actionAmber : who === "villain" ? T.threatRed : T.glowCyan}1A`,
+          boxShadow: `0 4px 14px -8px rgba(0,0,0,0.6), 0 0 16px ${mine ? T.actionAmber : who === "villain" ? T.threatRed : wrenEdge}1A`,
         }}
       >
         {children}
@@ -157,13 +163,16 @@ export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain
   );
 }
 
-/** Captured-screen evidence frame — the kid inspects a real-looking phone. */
+/** Captured-screen evidence frame. Re-skinned per case (viewer label, corner
+ *  radius and accent edge) so it reads as a different device each time, not the
+ *  same phone over and over. */
 export function DeviceFrame({ app, owner, children }: { app: string; owner: string; children: React.ReactNode }) {
+  const { accent, accentRGB, device } = useCaseTheme();
   return (
-    <div style={{ maxWidth: 540, margin: "0 auto", borderRadius: 18, background: "#05070A", border: `1px solid ${T.hairline}`, boxShadow: "0 24px 60px -20px rgba(0,0,0,0.85), 0 0 0 4px #10151C", overflow: "hidden" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 14px", fontFamily: MONO, fontSize: 9, letterSpacing: "0.08em", color: T.textDisabled, borderBottom: `1px solid ${T.hairline}` }}>
-        <span>ARC EVIDENCE VIEWER</span>
-        <span>CAPTURED SCREEN ▪▪▪</span>
+    <div style={{ maxWidth: 540, margin: "0 auto", borderRadius: device.radius, background: "#05070A", border: `1px solid rgba(${accentRGB},0.35)`, boxShadow: `0 24px 60px -20px rgba(0,0,0,0.85), 0 0 0 4px #10151C, 0 0 22px -6px rgba(${accentRGB},0.4)`, overflow: "hidden" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 14px", fontFamily: MONO, fontSize: 9, letterSpacing: "0.08em", color: accent, borderBottom: `1px solid rgba(${accentRGB},0.25)` }}>
+        <span>{device.viewer}</span>
+        <span style={{ color: T.textDisabled }}>{device.tag} ▪▪▪</span>
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 14px", background: T.panel, borderBottom: `1px solid ${T.hairline}` }}>
         <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.06em", color: T.textPrimary }}>{app}</span>
@@ -604,6 +613,14 @@ export function EngineStyles() {
         -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 55%);
         opacity: 0.45; }
 
+      /* skill-card live-code ambience — a faint terminal running inside each
+         map row, so every skill tab reads as a live system, not a static box */
+      .sr-fx { position: absolute; inset: 0; overflow: hidden; border-radius: 4px; pointer-events: none; z-index: 0; }
+      .sr-fx-col { position: absolute; top: 0; font-family: ${MONO}; font-size: 10px; line-height: 1.5; white-space: pre; letter-spacing: 0.05em; animation: srFxScroll linear infinite; will-change: transform; }
+      @keyframes srFxScroll { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+      .sr-fx-scan { position: absolute; left: 0; right: 0; height: 44px; animation: srFxScan linear infinite; }
+      @keyframes srFxScan { 0% { top: -44px; } 100% { top: 100%; } }
+
       @media (max-width: 760px) {
         .sr-two-col { grid-template-columns: 1fr !important; }
       }
@@ -613,6 +630,8 @@ export function EngineStyles() {
         .sr-msg, .sr-typedot, .sr-alert-edge, .sr-blink { animation: none !important; }
         .sr-scanin::after { display: none; }
         .srof-code { animation: none !important; opacity: 0.08; }
+        .sr-fx-col, .sr-fx-scan { animation: none !important; }
+        .sr-fx { opacity: 0.1 !important; }
         .sr-scene { opacity: 1; transform: none; }
       }
     `}</style>

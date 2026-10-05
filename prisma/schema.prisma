@@ -388,6 +388,23 @@ model Organisation {
   enrolments   Enrolment[]
   certificates Certificate[]
   packShares   PackShareLink[]
+  purchases    SeatPurchase[]
+}
+
+/// One card purchase of seats: a new firm, or seats added to the firm the
+/// buyer already runs. Keyed by the Stripe session so a repeated webhook
+/// delivery adds nothing twice.
+model SeatPurchase {
+  id                      String    @id @default(cuid())
+  orgId                   String
+  course                  CourseKey
+  seats                   Int
+  stripeCheckoutSessionId String    @unique
+  createdAt               DateTime  @default(now())
+
+  org Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
 }
 
 model OrgMember {

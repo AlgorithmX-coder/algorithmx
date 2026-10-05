@@ -19,8 +19,8 @@ export default async function DevAiFluent({ searchParams }: { searchParams: Prom
         tracks: Object.fromEntries(
           Object.entries(base.tracks).map(([k, block]) => {
             if (!block) return [k, block];
-            const withOffice = (pr: typeof block.practise) => (pr.kind === "loop" ? { ...pr, office: app } : pr);
-            return [k, { ...block, practise: withOffice(block.practise), practises: block.practises?.map(withOffice) }];
+            const withOffice = (pr: NonNullable<typeof block.practise>) => (pr.kind === "loop" ? { ...pr, office: app } : pr);
+            return [k, { ...block, practise: block.practise ? withOffice(block.practise) : undefined, practises: block.practises?.map(withOffice) }];
           }),
         ),
       }

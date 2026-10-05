@@ -10,6 +10,8 @@
  *   Block 4 · The Long Game  · ULTRA        · brass  (M16-20)
  */
 
+import type { BackdropVariant } from "../BlockBackdrop";
+
 export interface BlockTheme {
   /** Classification accent (the block's identity colour). */
   accent: string;
@@ -19,6 +21,8 @@ export interface BlockTheme {
   classification: string;
   /** Code-rain colours behind the briefing, tinted to the block. */
   matrix: string[];
+  /** The living background "world" for this block (a distinct animation each). */
+  backdrop: BackdropVariant;
 }
 
 export interface BlockFile {
@@ -36,6 +40,8 @@ export interface BlockIntroData {
   audio: string;
   commander: { name: string; org: string; signoff: string };
   shift: { kicker: string; lede: string; body: string };
+  /** A short real-world hook that ties the block to real stakes out there. */
+  realWorld?: string;
   filesKicker: string;
   files: BlockFile[];
   ceremony: string;
@@ -50,6 +56,8 @@ export const block2Intro: BlockIntroData = {
   title: ["The Human", "Factor"],
   thesis:
     "They won't try to hack your phone. They'll try to hack <b>you.</b>",
+  realWorld:
+    "This is where nearly everyone gets caught, because it never feels like an attack. It feels like a friend. Learn how you're played, and you stop being the easy target.",
   audio: "/audio/atlas/block2.mp3",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · I'll be watching" },
   shift: {
@@ -83,6 +91,7 @@ export const block2Intro: BlockIntroData = {
     accentRGB: "255, 61, 138",
     classification: "SECRET",
     matrix: ["#FF3D8A", "#FF74AE", "#C355FF"],
+    backdrop: "human",
   },
 };
 
@@ -91,6 +100,8 @@ export const block1Intro: BlockIntroData = {
   title: ["Signals"],
   thesis:
     "Every scam has to reach you first, as a message, a link, a post. Learn to read it, and you'll spot the trap <b>before it springs.</b>",
+  realWorld:
+    "Out there, this catches real people every single day, with nothing more than a message. You've dodged it so far. Now you'll understand it inside and out, so it never catches you for real.",
   audio: "/audio/atlas/block1.mp3",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Start here" },
   shift: {
@@ -124,6 +135,7 @@ export const block1Intro: BlockIntroData = {
     accentRGB: "52, 225, 255",
     classification: "CONFIDENTIAL",
     matrix: ["#34E1FF", "#7FF0FF", "#3BF57E"],
+    backdrop: "signals",
   },
 };
 
@@ -132,6 +144,8 @@ export const block3Intro: BlockIntroData = {
   title: ["Systems"],
   thesis:
     "You've beaten the tricks. Now look under the hood: how the tech really works, and <b>where it breaks.</b>",
+  realWorld:
+    "Every account you own runs on systems like these. The people who break in understand exactly how they work. After this block, so do you.",
   audio: "/audio/atlas/block3.mp3",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Top clearance" },
   shift: {
@@ -165,6 +179,7 @@ export const block3Intro: BlockIntroData = {
     accentRGB: "255, 178, 62",
     classification: "TOP SECRET",
     matrix: ["#FFB23E", "#FFD27A", "#FF7A3E"],
+    backdrop: "systems",
   },
 };
 
@@ -173,6 +188,8 @@ export const block4Intro: BlockIntroData = {
   title: ["The Long", "Game"],
   thesis:
     "Everything so far was one attacker warming up. This is the big picture, and <b>the mind behind it.</b>",
+  realWorld:
+    "Real attacks are never one trick. They're patient, linked, and run by someone who planned the whole thing. This is how you read the entire board, and unmask the mind behind it.",
   audio: "/audio/atlas/block4.mp3",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Highest clearance" },
   shift: {
@@ -206,5 +223,6 @@ export const block4Intro: BlockIntroData = {
     accentRGB: "185, 139, 255",
     classification: "ULTRA",
     matrix: ["#B98BFF", "#D4B8FF", "#7A5CFF"],
+    backdrop: "network",
   },
 };
