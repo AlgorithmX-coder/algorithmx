@@ -174,7 +174,7 @@ const PILLARS = [
 const PACKS = [
   { name: "Team", seats: "10 to 49 seats", cleared: "£29", fluent: "£59", note: "Running in your firm within a week.", accent: "#0a7085" },
   { name: "Firm", seats: "50 to 249 seats", cleared: "£25", fluent: "£45", note: "Team-level reporting and a named onboarding call.", accent: "#5744c9" },
-  { name: "Enterprise", seats: "250 seats and up", cleared: "Please enquire", fluent: "Please enquire", note: "SSO, SCORM export and data classes per division.", accent: "#8a5400" },
+  { name: "Enterprise", seats: "250 seats and up", cleared: "Please enquire", fluent: "Please enquire", note: "A named onboarding call; SSO, SCORM export and data classes per division on request.", accent: "#8a5400" },
 ];
 
 const FAQS = [
