@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { modelCallsLastDay } from "@/app/lib/modelAllowance";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
@@ -25,6 +26,7 @@ export default async function OpsFirmPage({ params, searchParams }: { params: Pr
 
   const course = courseOf((await searchParams).course);
   const rows = await getRegister(ctx.orgId, course);
+  const calls = await modelCallsLastDay(ctx.orgId);
   const standing = firmStanding(rows);
   const p = ctx.org.profile;
   const profile = {
@@ -43,7 +45,7 @@ export default async function OpsFirmPage({ params, searchParams }: { params: Pr
   return (
     <Frame firmName={ctx.org.name} meta={<><Link href="/ai-cleared/ops" className="cf-link">All firms</Link><span className="cf-meta">{firstNameOf(session.user.name, session.user.email)} · Staff</span></>} courseLink>
       <p className="cf-note" style={{ marginBottom: 14 }}>
-        {PLAN[ctx.org.plan]} plan · {ctx.org.seatsPurchased} Cleared seats · {ctx.org.fluentSeatsPurchased} Fluent seats · {ctx.org.sector ?? "sector not set"} · contact {ctx.org.contactName ?? "not set"}{ctx.org.contactRole ? `, ${ctx.org.contactRole}` : ""} · {ctx.org.stripeCustomerId ? "paid through Stripe" : "manual deal"} · created {ctx.org.createdAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+        {PLAN[ctx.org.plan]} plan · {ctx.org.seatsPurchased} Cleared seats · {ctx.org.fluentSeatsPurchased} Fluent seats · {ctx.org.sector ?? "sector not set"} · contact {ctx.org.contactName ?? "not set"}{ctx.org.contactRole ? `, ${ctx.org.contactRole}` : ""} · {ctx.org.stripeCustomerId ? "paid through Stripe" : "manual deal"} · {calls} model call{calls === 1 ? "" : "s"} in the last 24 hours · created {ctx.org.createdAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
       </p>
       <AdminPanel firmName={ctx.org.name} role="ADMIN" seatsPurchased={ctx.org.seatsPurchased} fluentSeatsPurchased={ctx.org.fluentSeatsPurchased} rows={rows} standing={standing} profile={profile} orgId={ctx.orgId} course={course} basePath={`/ai-cleared/ops/${ctx.org.slug}`} />
     </Frame>

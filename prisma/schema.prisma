@@ -407,6 +407,21 @@ model SeatPurchase {
   @@index([orgId])
 }
 
+/// One row per call to the model on a learner's behalf (a grade or a
+/// reply, either course). Counted over the last 24 hours against the
+/// per-person allowance so a runaway session or a script cannot spend
+/// without limit. Rows older than a month can be dropped.
+model ModelCall {
+  id     String    @id @default(cuid())
+  userId String
+  course CourseKey
+  route  String
+  at     DateTime  @default(now())
+
+  @@index([userId, at])
+  @@index([at])
+}
+
 model OrgMember {
   id        String   @id @default(cuid())
   orgId     String
