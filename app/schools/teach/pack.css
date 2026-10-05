@@ -430,3 +430,38 @@
 @media print {
   .axtp .share {display:none!important}
 }
+
+/* ============ CLASSES ============
+   The teacher's own admin: making a class, pasting a register, reading a
+   class code off the screen. Same quiet register as the share panel, because
+   it is the same kind of job. */
+.axtp .axbtn {font:600 .82rem var(--font-nunito),system-ui,sans-serif;padding:7px 14px;border-radius:999px;
+  border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;
+  text-decoration:none;display:inline-block}
+.axtp .axbtn:hover {border-color:rgba(20,24,36,.4)}
+.axtp .axbtn:focus-visible {outline:2px solid var(--say-c);outline-offset:2px}
+
+/* A class code is read off a screen and typed by a seven year old, so it is
+   set large, spaced, and in the one face where 0 and O cannot be confused. */
+.axtp .axcode {font:800 1.05em ui-monospace,Menlo,monospace;letter-spacing:.08em;
+  background:rgba(10,112,133,.1);color:var(--say-c);padding:2px 8px;border-radius:6px}
+
+.axtp .sharedone {margin:12px 0 0;font-size:.9rem;font-weight:700;color:var(--good)}
+
+.axtp .pupilbox {display:flex;flex-direction:column;gap:5px}
+.axtp .pupilbox span {font:700 .65rem var(--font-nunito),system-ui,sans-serif;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+.axtp .pupilbox textarea {font:600 .95rem/1.6 var(--font-nunito),system-ui,sans-serif;
+  padding:11px 13px;border:1px solid var(--rule);border-radius:9px;background:var(--sheet);
+  color:var(--ink);width:100%;resize:vertical;min-height:120px}
+.axtp .pupilbox textarea:focus-visible {outline:2px solid var(--say-c);outline-offset:1px}
+/* It lives inside .sharerow, whose label rule uppercases every span in there,
+   so a plain sentence came out SHOUTING. Scoping stops a stylesheet leaking
+   out; it does nothing about two rules inside it meeting. The selector needs
+   the extra class too: .sharerow span is (0,2,1) and beat a bare
+   .pupilcount at (0,2,0), so the first fix changed nothing. */
+.axtp .sharerow .pupilcount {font:500 .82rem var(--font-nunito),system-ui,sans-serif;color:var(--muted);
+  align-self:center;text-transform:none;letter-spacing:0}
+
+/* a pupil who has not signed in yet is amber, not an error */
+.axtp .rb small.s-ask {color:var(--ask-c)}
