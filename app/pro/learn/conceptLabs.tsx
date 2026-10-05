@@ -871,3 +871,99 @@ export function MalwareHandlingLab({ onDidTry }: LabProps) {
       { text: "Forwarding a live malware sample around the office to 'warn' people.", cat: "unsafe", why: "That spreads the threat. Report through the proper channel; never circulate live samples." },
     ]} />;
 }
+
+/* ---- Module 10 labs: networks & Wi-Fi under attack (recognise & defend) ---- */
+
+const EAVESDROP: Cat[] = [
+  { id: "safe", label: "Protects against eavesdropping", color: T.green },
+  { id: "exposed", label: "Does not protect it", color: T.red },
+];
+export function EavesdropLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={EAVESDROP}
+    prompt="On an untrusted network, someone may be listening. For each measure, decide: does it actually protect your traffic from eavesdropping, or not?"
+    items={[
+      { text: "Visiting sites over HTTPS (the padlock), so the conversation is encrypted.", cat: "safe", why: "HTTPS encrypts content end to end, so a snooper on the network sees only scrambled bytes." },
+      { text: "Using a trustworthy VPN that encrypts all your traffic to a safe exit point.", cat: "safe", why: "A good VPN wraps everything in encryption across the untrusted network: strong protection against local eavesdropping." },
+      { text: "Entering your password on a plain HTTP page.", cat: "exposed", why: "Plain HTTP crosses the network readable by anyone on it, passwords included. No protection at all." },
+      { text: "Connecting to Wi-Fi that uses modern encryption (WPA2/WPA3) with a real password.", cat: "safe", why: "Encrypted Wi-Fi scrambles the local radio link, stopping casual sniffing of your traffic nearby." },
+      { text: "Trusting an open, passwordless Wi-Fi network just because it is busy.", cat: "exposed", why: "Open Wi-Fi gives no link encryption, and popularity proves nothing. Your plain traffic is exposed locally." },
+      { text: "Choosing a website because it 'looks professional'.", cat: "exposed", why: "Appearance has nothing to do with whether your connection is encrypted. Only HTTPS/VPN protect the traffic." },
+    ]} />;
+}
+
+const WIFI_HABIT: Cat[] = [
+  { id: "safe", label: "Safe habit", color: T.green },
+  { id: "risky", label: "Risky habit", color: T.red },
+];
+export function WifiHabitLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={WIFI_HABIT}
+    prompt="Attackers set up fake 'evil twin' hotspots that look just like real ones. For each Wi-Fi habit, decide: safe, or risky?"
+    items={[
+      { text: "Confirming the exact network name with staff before joining a café or hotel Wi-Fi.", cat: "safe", why: "Verifying the real name helps you avoid a lookalike evil-twin network set up to impersonate it." },
+      { text: "Letting your phone auto-connect to any open network it has seen before.", cat: "risky", why: "Auto-connect can silently join an attacker's hotspot that reuses a familiar name. Turn it off on untrusted networks." },
+      { text: "Using a VPN whenever you are on Wi-Fi you do not control.", cat: "safe", why: "A VPN encrypts your traffic even if the network itself is hostile: a strong habit on public Wi-Fi." },
+      { text: "Doing your online banking on unknown open Wi-Fi without a VPN.", cat: "risky", why: "Sensitive actions on an untrusted, unencrypted network are exactly what attackers hope to intercept." },
+      { text: "Joining a hotspot just because it is named 'Free Airport WiFi'.", cat: "risky", why: "Anyone can name a hotspot anything. A convincing name is how evil twins lure victims." },
+      { text: "Preferring your mobile data (or a personal hotspot) over sketchy public Wi-Fi for anything sensitive.", cat: "safe", why: "Your own connection avoids the whole untrusted-network risk for sensitive tasks." },
+    ]} />;
+}
+
+const SPOOF_TYPE: Cat[] = [
+  { id: "arp", label: "Local network (ARP)", color: T.red },
+  { id: "caller", label: "Phone number (caller ID)", color: T.amber },
+  { id: "email", label: "Email sender", color: T.cyan },
+  { id: "dns", label: "Website name (DNS)", color: T.green },
+];
+export function SpoofTypeLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={SPOOF_TYPE}
+    prompt="Spoofing means faking an identity to impersonate something trusted. Tap each example, then tap what is being faked. Naming it precisely helps you choose the right defence."
+    items={[
+      { text: "An attacker on the same Wi-Fi tricks your device into sending its traffic through them", cat: "arp", why: "Faking local network addresses (ARP spoofing) puts the attacker in the middle on the local network." },
+      { text: "A scam call shows your bank's real phone number on your screen", cat: "caller", why: "Caller-ID spoofing fakes the number a call appears to come from, a key tool in phone fraud." },
+      { text: "An email's 'from' looks like your CEO but was not sent by them", cat: "email", why: "Email sender spoofing fakes who a message appears to be from (recall the phishing module)." },
+      { text: "A poisoned lookup sends a bank's name to the attacker's address", cat: "dns", why: "DNS spoofing fakes the name-to-address answer, sending victims to the wrong server (recall Module 2)." },
+      { text: "A text message appears to come from 'Royal Mail' but is from a fraudster", cat: "caller", why: "Sender-ID spoofing on SMS fakes the displayed sender, the same idea as caller-ID spoofing." },
+      { text: "On a café network, your traffic is quietly rerouted through another laptop", cat: "arp", why: "Redirecting local traffic by faking network addresses is ARP spoofing, a man-in-the-middle setup." },
+    ]} />;
+}
+
+const DDOS_DEFENCE: Cat[] = [
+  { id: "helps", label: "Helps against DDoS", color: T.green },
+  { id: "no", label: "Does not address DDoS", color: T.red },
+];
+export function DdosDefenceLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={DDOS_DEFENCE}
+    prompt="A denial-of-service attack floods a target so real users cannot get through. It attacks availability, not secrecy. For each measure, decide: does it help against DDoS, or address a different problem?"
+    items={[
+      { text: "A DDoS-protection or 'scrubbing' service that absorbs and filters flood traffic.", cat: "helps", why: "Specialised services soak up and clean enormous floods before they reach the target: a core DDoS defence." },
+      { text: "A content delivery network spreading the load across many global servers.", cat: "helps", why: "Distributing traffic across huge global capacity makes a target far harder to overwhelm." },
+      { text: "Rate limiting and filtering out obviously bad traffic.", cat: "helps", why: "Capping request rates and dropping junk reduces how much flood reaches your systems." },
+      { text: "Encrypting the database so stolen copies are unreadable.", cat: "no", why: "Encryption protects secrecy, not availability. It does nothing to stop a flood of traffic." },
+      { text: "Training staff to spot phishing emails.", cat: "no", why: "Vital for other attacks, but irrelevant to a traffic flood that targets availability." },
+      { text: "Having capacity and an incident plan to absorb or reroute surges.", cat: "helps", why: "Over-provisioning and a rehearsed plan are part of surviving a denial-of-service attack." },
+    ]} />;
+}
+
+export function LateralMovementLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="An attacker has compromised one ordinary laptop in an organisation. Play the defence: the goal is to limit how far that single foothold can reach."
+    doneKicker="Contained"
+    doneNote="Assume breach, then limit the blast radius. Segmentation, least privilege and monitoring mean one compromised laptop stays one compromised laptop, instead of becoming the whole network. That is the defender's answer to lateral movement."
+    steps={[
+      { role: "The foothold", prompt: "The attacker wants to move from this laptop to the valuable servers. What most limits how far they can go?", options: [
+        { text: "Network segmentation, so the laptop simply cannot reach the sensitive systems directly.", correct: true, why: "Segmentation divides the network so a foothold in one zone cannot freely reach another. It is the single biggest brake on lateral movement." },
+        { text: "A flat network where everything can talk to everything, for convenience.", correct: false, why: "A flat network is the attacker's dream: one foothold reaches everything. This is what let several famous breaches spread." },
+        { text: "Relying only on the antivirus that already missed the infection.", correct: false, why: "The malware is already past the antivirus. You need to limit reach, not hope the thing that failed catches up." },
+      ] },
+      { role: "The credentials", prompt: "The attacker tries to use the laptop's access to log into other systems. What blunts this?", options: [
+        { text: "Least privilege: the account can only reach the few things it genuinely needs.", correct: true, why: "If a compromised account can touch very little, a stolen foothold is worth very little. Least privilege caps the damage." },
+        { text: "Giving every user administrator rights so things 'just work'.", correct: false, why: "Over-privileged accounts hand the attacker the keys to everything. It is the opposite of what you want." },
+        { text: "Using the same password for every system to keep things simple.", correct: false, why: "Reused credentials let one stolen password unlock everything: exactly how attackers move sideways." },
+      ] },
+      { role: "Seeing it", prompt: "How do you catch the attacker moving around before they reach the goal?", options: [
+        { text: "Monitoring and alerting on unusual internal activity, assuming a breach will happen.", correct: true, why: "Assume-breach means watching inside, not just at the perimeter. Detecting odd lateral activity early is how you stop a foothold becoming a disaster." },
+        { text: "Only watching the perimeter and trusting everything already inside.", correct: false, why: "'Hard shell, soft centre' fails once an attacker is in. Modern defence watches internal movement too." },
+        { text: "Assuming that if they got in, it is already too late.", correct: false, why: "Defeatist and wrong. Detection and containment inside the network routinely stop breaches before the goal is reached." },
+      ] },
+    ]} />;
+}
