@@ -22,6 +22,8 @@ export type Check = {
 
 export type WeekDef = {
   code: string;
+  /** Numeric week (1-16) — the key for Progress + the portfolio finding. */
+  weekNo: number;
   title: string;
   client: string;
   brief: string;
@@ -62,13 +64,27 @@ const BEATS: { id: Phase; label: string }[] = [
   { id: "act", label: "Capture" }, { id: "defend", label: "Defend" }, { id: "report", label: "Report" },
 ];
 
-export default function Engagement({ week }: { week: WeekDef }) {
+export default function Engagement({
+  week,
+  onReport,
+}: {
+  week: WeekDef;
+  /** Fired once when the learner reaches the report beat — the completion
+   *  signal the live lesson uses to persist progress + file the finding.
+   *  Omitted by the preview/dev routes, which don't persist. */
+  onReport?: (callsign: string) => void;
+}) {
   const [phase, setPhase] = useState<Phase>("brief");
   const [callsign, setCallsign] = useState("NIGHTJAR");
   const [lessonOk, setLessonOk] = useState(false);
   const [defendOk, setDefendOk] = useState(false);
   const [hint, setHint] = useState(false);
   const idx = BEATS.findIndex((b) => b.id === phase);
+
+  function goToReport() {
+    onReport?.(callsign);
+    setPhase("report");
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: C.carbon, color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "44px 20px 100px" }}>
@@ -177,7 +193,7 @@ export default function Engagement({ week }: { week: WeekDef }) {
               ))}
               <CheckBox check={week.defend.check} onPass={() => setDefendOk(true)} />
               <div style={{ marginTop: 20 }}>
-                <Btn tone="i" disabled={!defendOk} onClick={() => setPhase("report")}>File your report →</Btn>
+                <Btn tone="i" disabled={!defendOk} onClick={goToReport}>File your report →</Btn>
               </div>
             </Panel>
           </div>

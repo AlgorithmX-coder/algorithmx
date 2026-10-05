@@ -544,8 +544,34 @@ Decisions resolved this session (previously `DECIDE` in sections 4 / 10):
   where relevant (authorization ceremony), per section 6.
 
 Still `DECIDE` (do not block the engine): handler casting, callsign word lists,
-reputation ladder names/thresholds/scoring, the full visual/motion art-direction
-doc.
+the full visual/motion art-direction doc.
+
+**App integration — BUILT 2026-10-05 (Phase A; branch feat/cyber-ops-build).**
+The /operators/* routes were previews with no backend. They are now a real,
+persisted course on the platform spine:
+- **Progress + reputation reuse the existing spine.** One `Progress` row per
+  (child, product `cyberstart`, week); reputation is stored in `Progress.xp`
+  (max-merged, never lowered) and a learner's total rep is the SUM across weeks
+  — exactly what the schema's `xp` comment prescribes. No new progress table.
+- **Portfolio = the one new table, `OpsFinding`** (one per child x week, upserted
+  on re-completion). It holds the pentest-style finding each engagement files —
+  the tier's core promise — which the spine couldn't represent.
+- **The 16 `CourseContent` rows** (locked section-8 curriculum) land on every DB
+  via an idempotent data migration (the `ai_cleared_seed` pattern), mirrored in
+  `prisma/seed.ts` for local dev. `Product.status` stays `COMING_SOON` — content
+  exists without flipping the commercial/launch state (same as Explorers).
+- **Routes:** `/operators/play/[week]` (auth-gated real engagement; reaching the
+  report beat persists) and `/operators/portfolio` (rank, reputation, findings).
+  The old `/operators/week1` etc. remain as no-save previews. The family hub's
+  Cyber Ops card now enters `/operators/portfolio` (the course home). No
+  entitlement gate yet — opened for testing behind the site password, matching
+  the other unlaunched tiers; the purchase gate lands with the launch phase.
+
+- **Reputation ladder - RESOLVED 2026-10-05** (`app/lib/opsRank.ts`): five ranks,
+  Recruit (0) -> Junior Operator (100) -> Operator (300) -> Lead Operator (600)
+  -> Principal (1000). Per-engagement rep rises across the course (~25 early to
+  ~90 at the capstone) so a learner who clears all 16 lands near Principal. Rank
+  is derived from total reputation; nothing stored beyond `Progress.xp`.
 
 ---
 

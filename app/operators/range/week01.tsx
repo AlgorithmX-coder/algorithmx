@@ -61,6 +61,7 @@ function dot(c: string): React.CSSProperties { return { width: 9, height: 9, bor
 
 export const WEEK1: WeekDef = {
   code: "E-01",
+  weekNo: 1,
   title: "Rules of Engagement",
   client: "Meridian Clinic",
   brief:
