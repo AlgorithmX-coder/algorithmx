@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 /* Tier tokens (mirrors the range's design system; inlined so this server
  * component doesn't import the "use client" Engagement module). */
 const C = {
-  carbon: "#0a0b0f", panel: "#0f1119", line: "rgba(139,123,255,0.18)", lineSoft: "rgba(166,178,214,0.10)",
-  ink: "#e8edff", soft: "#a6b2d6", mute: "#6a7396", indigo: "#8b7bff", indigo2: "#b3a8ff",
-  green: "#4ade80", red: "#ff5b62", amber: "#e8a33d",
+  carbon: "#16181f", panel: "#1d212c", line: "rgba(139,123,255,0.20)", lineSoft: "rgba(166,178,214,0.12)",
+  ink: "#dce2ee", soft: "#a8b2cc", mute: "#79839f", indigo: "#8b7bff", indigo2: "#b3a8ff",
+  green: "#55d98c", red: "#f26d72", amber: "#e8a33d",
 };
 const DISP = "var(--font-chakra),'Chakra Petch',system-ui,sans-serif";
 const MONO = "var(--font-plex-mono),ui-monospace,Menlo,monospace";

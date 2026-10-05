@@ -48,11 +48,14 @@ export type ModuleDef = {
   next: string;
 };
 
+// Palette tuned for lower eye strain: background lifted off pure-black to a
+// muted slate (less halation), brightest text eased down from near-white, and
+// accents kept slightly softer. Still clearly the dark Cyber Ops range.
 export const C = {
-  carbon: "#0a0b0f", panel: "#0f1119", raise: "#161a27",
-  line: "rgba(139,123,255,0.18)", lineSoft: "rgba(166,178,214,0.10)",
-  ink: "#e8edff", soft: "#a6b2d6", mute: "#6a7396",
-  indigo: "#8b7bff", indigo2: "#b3a8ff", green: "#4ade80", red: "#ff5b62", amber: "#e8a33d", cyan: "#5fe6ff",
+  carbon: "#16181f", panel: "#1d212c", raise: "#272c3a",
+  line: "rgba(139,123,255,0.20)", lineSoft: "rgba(166,178,214,0.12)",
+  ink: "#dce2ee", soft: "#a8b2cc", mute: "#79839f",
+  indigo: "#8b7bff", indigo2: "#b3a8ff", green: "#55d98c", red: "#f26d72", amber: "#e8a33d", cyan: "#5fe6ff",
 };
 // Fonts flow from the --font-* CSS variables the /operators layout sets via
 // next/font (Chakra Petch + IBM Plex); the literal names + system stack are the
