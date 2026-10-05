@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { opsAlert } from "@/app/lib/opsAlert";
 import { jsPDF } from "jspdf";
 import { auth } from "@/app/lib/auth";
 import { getEnrolment, firstNameOf, DB_TO_TRACK } from "@/app/lib/aiCleared";
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
       emailed = true;
     } catch (err) {
       console.error("[ai-cleared/certificate] email failed", err instanceof Error ? err.message : err);
+      await opsAlert({ what: "A certificate email did not send", detail: { serial: issued.serial, to: enrolment.user.email, firm: enrolment.org.name, course }, error: err });
       emailError = "The email could not be sent just now. The download and the verify link still work.";
     }
   }

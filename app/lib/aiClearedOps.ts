@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import { opsAlert } from "@/app/lib/opsAlert";
 import { AI_CLEARED_SLUG, AI_FLUENT_SLUG } from "@/app/lib/aiCleared";
 import { FIRM_THRESHOLD, newInviteToken, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
 import { moduleListFor } from "@/app/lib/courseModules";
@@ -138,6 +139,7 @@ export async function createFirm(args: {
   } catch (err) {
     emailed = false;
     console.error("[ai-cleared/ops] admin invite email failed", err instanceof Error ? err.message : err);
+    await opsAlert({ what: "An admin welcome email did not send", detail: { firm: org.name, slug, adminEmail: args.adminEmail, link: `${args.origin}/ai-cleared/join/${token}` }, error: err });
   }
   return { org, token, link: `${args.origin}/ai-cleared/join/${token}`, emailed };
 }
