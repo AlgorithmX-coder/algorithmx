@@ -71,6 +71,7 @@ export default function Engagement({
   mod,
   onReport,
   onExit,
+  liveRank,
 }: {
   mod: ModuleDef;
   /** Fired once when the learner reaches the report beat — the completion
@@ -80,6 +81,10 @@ export default function Engagement({
   /** Where the post-report "next" button goes. Live flow routes to the
    *  portfolio; previews leave it as a label. */
   onExit?: () => void;
+  /** The learner's REAL rank/standing after saving, from the server. When
+   *  present it overrides the module's designed rank text so the celebration
+   *  matches the portfolio. Previews pass nothing and show the designed text. */
+  liveRank?: { rank: string; label: string; fraction: number } | null;
 }) {
   const [phase, setPhase] = useState<Phase>("brief");
   const [callsign, setCallsign] = useState("NIGHTJAR");
@@ -207,7 +212,7 @@ export default function Engagement({
         )}
 
         {/* REPORT / reward */}
-        {phase === "report" && <Report mod={mod} callsign={callsign} onExit={onExit} />}
+        {phase === "report" && <Report mod={mod} callsign={callsign} onExit={onExit} liveRank={liveRank} />}
       </div>
     </div>
   );
@@ -244,9 +249,12 @@ function CheckBox({ check, onPass }: { check: Check; onPass: () => void }) {
 }
 
 /* ---------- report / reward ---------- */
-function Report({ mod, callsign, onExit }: { mod: ModuleDef; callsign: string; onExit?: () => void }) {
+function Report({ mod, callsign, onExit, liveRank }: { mod: ModuleDef; callsign: string; onExit?: () => void; liveRank?: { rank: string; label: string; fraction: number } | null }) {
   const [share, setShare] = useState(false);
   const f = mod.finding;
+  const rankName = liveRank?.rank ?? mod.repRank;
+  const rankLabel = liveRank?.label ?? mod.repTo;
+  const barWidth = liveRank ? `${Math.round(liveRank.fraction * 100)}%` : undefined;
 
   function shareCapture() {
     const text = `🎯 ${callsign} cleared Cyber Ops Module ${String(mod.moduleNo).padStart(2, "0")}: ${mod.title}\nFinding: ${f.title} (${f.severity} · CVSS ${f.cvss})\n+${mod.rep} rep · ${mod.flag}\nReal, ethical hacking at AlgorithmX.`;
@@ -263,10 +271,10 @@ function Report({ mod, callsign, onExit }: { mod: ModuleDef; callsign: string; o
         <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 18, color: C.amber }}>+{mod.rep} REP</div>
         <div style={{ flex: 1, minWidth: 160 }}>
           <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 6 }}>
-            <span style={{ color: C.indigo2 }}>{mod.repRank}</span><span>{mod.repTo}</span>
+            <span style={{ color: C.indigo2 }}>{rankName}</span><span>{rankLabel}</span>
           </div>
           <div style={{ height: 8, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
-            <div className="co-anim co-bar" style={{ height: "100%", borderRadius: 999, background: `linear-gradient(90deg, ${C.indigo}, ${C.amber})`, boxShadow: `0 0 12px ${C.amber}` }} />
+            <div className={liveRank ? "" : "co-anim co-bar"} style={{ height: "100%", width: barWidth, borderRadius: 999, background: `linear-gradient(90deg, ${C.indigo}, ${C.amber})`, boxShadow: `0 0 12px ${C.amber}`, transition: "width .8s cubic-bezier(.34,1.4,.5,1)" }} />
           </div>
         </div>
       </Panel>

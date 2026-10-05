@@ -29,6 +29,7 @@ function toSeverity(display: string): OpsSeverity {
 export default function LiveEngagement({ mod }: { mod: ModuleDef }) {
   const router = useRouter();
   const [note, setNote] = useState<string | null>(null);
+  const [liveRank, setLiveRank] = useState<{ rank: string; label: string; fraction: number } | null>(null);
 
   async function persist(callsign: string) {
     try {
@@ -46,7 +47,9 @@ export default function LiveEngagement({ mod }: { mod: ModuleDef }) {
           fix: mod.finding.fix,
         },
       });
-      if (!res.ok) {
+      if (res.ok) {
+        setLiveRank({ rank: res.rank.rank, label: res.rank.label, fraction: res.rank.fraction });
+      } else {
         setNote(
           res.reason === "no_learner"
             ? "Heads up — add a learner profile to save this to a portfolio."
@@ -60,7 +63,7 @@ export default function LiveEngagement({ mod }: { mod: ModuleDef }) {
 
   return (
     <>
-      <Engagement mod={mod} onReport={persist} onExit={() => router.push("/operators/portfolio")} />
+      <Engagement mod={mod} onReport={persist} onExit={() => router.push("/operators/portfolio")} liveRank={liveRank} />
       {note && (
         <div
           role="status"
