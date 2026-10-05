@@ -152,7 +152,7 @@ export function MindsetLab({ onDidTry }: LabProps) {
 /* ---- ScenarioGame: a short branching decision, one choice at a time ---- */
 type ScenarioStep = { role: string; prompt: string; options: { text: string; correct: boolean; why: string }[] };
 
-function ScenarioGame({ steps, intro, onDidTry }: LabProps & { steps: ScenarioStep[]; intro: string }) {
+function ScenarioGame({ steps, intro, onDidTry, doneKicker = "Played out", doneNote = "You switched between the attacker's and the defender's head at each step. That is the exact habit this whole course builds." }: LabProps & { steps: ScenarioStep[]; intro: string; doneKicker?: string; doneNote?: string }) {
   const [i, setI] = useState(0);
   const [chosen, setChosen] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
@@ -163,8 +163,8 @@ function ScenarioGame({ steps, intro, onDidTry }: LabProps & { steps: ScenarioSt
   if (finished) {
     return (
       <div style={{ fontFamily: T.sans, background: T.greenSoft, border: `1px solid ${T.green}66`, borderRadius: 12, padding: "16px 18px" }}>
-        <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: T.green, marginBottom: 6 }}>Played out</div>
-        <div style={{ fontSize: 14.5, color: T.body, lineHeight: 1.55 }}>You switched between the attacker&apos;s and the defender&apos;s head at each step. That is the exact habit this whole course builds.</div>
+        <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: T.green, marginBottom: 6 }}>{doneKicker}</div>
+        <div style={{ fontSize: 14.5, color: T.body, lineHeight: 1.55 }}>{doneNote}</div>
       </div>
     );
   }
@@ -230,7 +230,7 @@ export function MindsetScenarioLab({ onDidTry }: LabProps) {
 /* ---- OrderGame: put the items in the right order (up/down, no drag) ---- */
 type OrderItem = { label: string; note: string };
 
-function OrderGame({ items, prompt, onDidTry }: LabProps & { items: OrderItem[]; prompt: string }) {
+function OrderGame({ items, prompt, onDidTry, doneNote = "Perfect. That is defence in depth: layer after layer." }: LabProps & { items: OrderItem[]; prompt: string; doneNote?: string }) {
   // `items` is the correct order; start from a fixed scramble (reversed) so
   // SSR and the client agree (no random on first render).
   const [order, setOrder] = useState<number[]>(() => items.map((_, i) => items.length - 1 - i));
@@ -276,7 +276,7 @@ function OrderGame({ items, prompt, onDidTry }: LabProps & { items: OrderItem[];
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 14 }}>
         <button onClick={() => setChecked(true)} style={{ fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: "#fff", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 9, padding: "10px 20px", cursor: "pointer" }}>Check the order</button>
-        {checked && <span style={{ fontSize: 13.5, color: correctCount === items.length ? T.green : T.muted }}>{correctCount === items.length ? "Perfect. That is defence in depth: layer after layer." : `${correctCount} of ${items.length} in the right place. Use the arrows and check again.`}</span>}
+        {checked && <span style={{ fontSize: 13.5, color: correctCount === items.length ? T.green : T.muted }}>{correctCount === items.length ? doneNote : `${correctCount} of ${items.length} in the right place. Use the arrows and check again.`}</span>}
       </div>
     </div>
   );
@@ -397,6 +397,100 @@ function MatchGame({ categories, items, prompt, onDidTry }: LabProps & { categor
       )}
     </div>
   );
+}
+
+/* ---- Module 2 labs: how the internet actually works ---- */
+
+export function JourneyOrderLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry}
+    prompt="You tap send on a message. Put the journey in the order it really happens, from your hand to the far server."
+    doneNote="Perfect. Every email, page and video makes exactly this trip, usually in well under a second."
+    items={[
+      { label: "Your device chops the message into packets", note: "Each packet carries a piece of the data plus the address it is going to." },
+      { label: "Your router passes them to your internet provider", note: "The first hop out of your home or office network." },
+      { label: "Routers across the internet pass them hop by hop", note: "Each router reads the destination address and forwards the packet onwards. Networks share their routes with each other so every router knows a way." },
+      { label: "The destination network delivers them to the server", note: "The packets arrive, possibly by different paths and out of order." },
+      { label: "The server reassembles the packets and replies", note: "The reply makes the same kind of journey straight back to you." },
+    ]} />;
+}
+
+export function DnsScenarioLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="Play the lookup out, one step at a time. You are the browser, then the resolver, then the browser again."
+    doneKicker="Resolved"
+    doneNote="That whole chain, cache, resolver, root, the site's own name server, runs in milliseconds, every time anyone opens any website. And because everything depends on it, attacking it is attacking everything."
+    steps={[
+      { role: "You're the browser", prompt: "Someone types a website's name and hits enter. Names mean nothing to the network, it routes by IP address. What do you do first?", options: [
+        { text: "Check whether you already know this name's address from a recent visit.", correct: true, why: "Caching first: if you looked this name up recently, you reuse the answer and skip the whole journey. The web would crawl without it." },
+        { text: "Send the message to the name and hope the routers work it out.", correct: false, why: "Routers only understand IP addresses. Until the name becomes a number, nothing can be sent anywhere." },
+        { text: "Ask the website for its own address.", correct: false, why: "You cannot ask a server you cannot yet reach. That is the chicken-and-egg problem DNS exists to solve." },
+      ] },
+      { role: "You're the resolver", prompt: "The browser had nothing cached, so it asked you, the DNS resolver. You have never seen this name either. Who do you ask?", options: [
+        { text: "Start at the root servers, which point you to the right registry, which points you to the site's own name server.", correct: true, why: "DNS is a hierarchy: the root knows who runs .com or .io, that registry knows who answers for the site, and the site's own name server holds the actual address." },
+        { text: "Broadcast the question to every server on the internet.", correct: false, why: "Billions of machines cannot all be asked. The hierarchy exists precisely so three targeted questions replace billions." },
+        { text: "Guess an address that looks about right.", correct: false, why: "A guessed address would send someone's banking login to a stranger's machine. Answers must come from the servers authorised to give them." },
+      ] },
+      { role: "You're the browser again", prompt: "The answer comes back: the name maps to 76.76.21.21. What happens now?", options: [
+        { text: "Connect to that IP address and start the real conversation.", correct: true, why: "DNS's job is done: name in, number out. Now the packets can actually be addressed and the page can load. Notice what this means: whoever controls your DNS answers controls where you go." },
+        { text: "Show the user the number and ask them to confirm it.", correct: false, why: "Users never see this layer, which is exactly why a poisoned answer is so dangerous: everything looks normal while you are sent to the wrong machine." },
+        { text: "Look the name up a second time to be sure.", correct: false, why: "The answer is cached and used. Fast, but it also means a bad answer, once cached, keeps misdirecting people until it expires." },
+      ] },
+    ]} />;
+}
+
+const HTTPS_EXPOSURE: Cat[] = [
+  { id: "http", label: "Anyone on the network can read it (HTTP)", color: T.red },
+  { id: "tls", label: "Encrypted by HTTPS", color: T.green },
+  { id: "meta", label: "Visible even with HTTPS", color: T.amber },
+];
+export function HttpsExposureLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={HTTPS_EXPOSURE}
+    prompt="You are on café Wi-Fi. For each item, decide what a stranger running a sniffer on that network can see."
+    items={[
+      { text: "The password you type into a login form served over plain HTTP.", cat: "http", why: "Plain HTTP is a postcard: every word, passwords included, crosses the network readable by anyone on it." },
+      { text: "Your card number on a checkout page served over HTTPS.", cat: "tls", why: "HTTPS encrypts the conversation end to end, so the sniffer sees scrambled bytes, not your card." },
+      { text: "Which website you are connecting to.", cat: "meta", why: "HTTPS hides what you say, not who you are talking to. The destination of your connection is still visible to the network." },
+      { text: "The session cookie a site sends you over plain HTTP.", cat: "http", why: "On HTTP the cookie crosses the network in the clear. Cookies prove who you are, which is why they must only ever travel encrypted." },
+      { text: "The exact pages you read and the forms you fill on an HTTPS site.", cat: "tls", why: "The content, paths and form data are all inside the encrypted channel." },
+      { text: "The fact that you are online and roughly how much data you are sending.", cat: "meta", why: "Traffic patterns are always observable. Encryption protects content, not the existence of the conversation." },
+    ]} />;
+}
+
+const PORT_JOBS: Cat[] = [
+  { id: "web", label: "Serving websites", color: T.cyan },
+  { id: "mail", label: "Moving email", color: T.amber },
+  { id: "remote", label: "Remote control", color: T.red },
+  { id: "names", label: "Finding addresses", color: T.green },
+];
+export function PortMatchLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={PORT_JOBS}
+    prompt="A port is a numbered door, and each service listens behind a well-known one. Tap a door, then tap the job behind it. These exact pairings come up in interviews and on Security+."
+    items={[
+      { text: "Port 443 - HTTPS", cat: "web", why: "Encrypted web traffic: the padlock pages." },
+      { text: "Port 80 - HTTP", cat: "web", why: "Unencrypted web traffic, the older open door." },
+      { text: "Port 25 - SMTP", cat: "mail", why: "SMTP is how mail servers pass email between them." },
+      { text: "Port 22 - SSH", cat: "remote", why: "Encrypted remote command line, how admins drive servers." },
+      { text: "Port 3389 - RDP", cat: "remote", why: "Remote desktop. Left open to the internet, it is one of the most attacked doors there is." },
+      { text: "Port 53 - DNS", cat: "names", why: "The lookup service itself: names in, addresses out." },
+    ]} />;
+}
+
+const FLOW_STAGE: Cat[] = [
+  { id: "lookup", label: "The lookup", color: T.amber },
+  { id: "journey", label: "The journey", color: T.cyan },
+  { id: "dest", label: "The destination", color: T.red },
+];
+export function AttackStageLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={FLOW_STAGE}
+    prompt="Every attack targets a stage of the flow you now know: the lookup (turning the name into an address), the journey (the packets in transit), or the destination (the server itself). Place each one."
+    items={[
+      { text: "Poisoning a resolver's cache so a bank's name returns the attacker's address.", cat: "lookup", why: "The name-to-address step is corrupted, so every later step faithfully delivers you to the wrong place." },
+      { text: "Hijacking internet routes so traffic for a service flows through the attacker's network.", cat: "journey", why: "The routers' shared map of routes is abused, moving the packets' path itself. This is what a BGP hijack does." },
+      { text: "A fake 'free Wi-Fi' hotspot that quietly reads everything passing through it.", cat: "journey", why: "An evil twin puts the attacker on the packets' path: a classic man-in-the-middle position." },
+      { text: "Flooding a website with so much junk traffic that real visitors cannot get through.", cat: "dest", why: "A DDoS attacks the destination's availability. The lookup and journey work fine, the server just drowns." },
+      { text: "Sending a crafted login that tricks the server's database into dumping its tables.", cat: "dest", why: "SQL injection attacks the server's own code at the destination. Module 9 lets you run one for real." },
+      { text: "Registering a look-alike name so a typo delivers people to a copy of the real site.", cat: "lookup", why: "Typosquatting attacks the naming step before DNS even resolves: the wrong name resolves perfectly." },
+    ]} />;
 }
 
 export function ControlMatchLab({ onDidTry }: LabProps) {
