@@ -503,7 +503,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                 <p style={eyebrow}>{"// Get in touch"}</p>
                 <h2 style={h2}>Thinking of <span className="corp-grad">clearing your firm?</span></h2>
                 <p style={lede}>
-                  Tell us your headcount and the tools in use, and we&rsquo;ll walk you through a module on your screen, explain the onboarding process from the firm profile to the first certificate, and reply within two working days. We bring a data-protection summary to the first conversation so your DPO has what they need.
+                  Tell us your headcount and the tools in use, and we&rsquo;ll walk you through a module on your screen, explain the onboarding process from the firm profile to the first certificate, and reply within two working days. We bring a data-protection summary to the first conversation so your DPO has what they need; the <Link href="/corporate/security">security and data handling page</Link> has it in writing.
                 </p>
                 <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)" }}>
                   Prefer email? <a href="mailto:admissions@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>admissions@algorithmx.co.uk</a>
