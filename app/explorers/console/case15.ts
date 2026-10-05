@@ -16,7 +16,8 @@ export const case15Console: ConsoleCase = {
   caseNumber: "CASE 015",
   title: "The Real Site",
   actor: "MIMIC",
-  accent: "#FFB23E",
+  accent: "#3B9EFF",
+  theme: { backdrop: "browser", matrix: ["#3B9EFF", "#8CC8FF", "#1F6FD6"], accentHi: "#8CC8FF" },
   open: [
     "Final system of the block, Agent, and MIMIC has saved its best trick for last. It can build a fake website that looks EXACTLY like the real one. Pixel for pixel.",
     "Your logo, your colours, your login box, perfect. Type your password into it and you've handed it straight to the thief. So how do you tell the real site from a perfect copy?",

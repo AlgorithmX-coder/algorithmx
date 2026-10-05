@@ -15,7 +15,8 @@ export const case13Console: ConsoleCase = {
   caseNumber: "CASE 013",
   title: "Backdoors",
   actor: "SKELETON KEY",
-  accent: "#FFA24D",
+  accent: "#FF4D5E",
+  theme: { backdrop: "backdoor", matrix: ["#FF4D5E", "#FF8A94", "#C62828"], accentHi: "#FF8A94" },
   open: [
     "Your locks are strong now, Agent. Unique passwords, 2FA, the lot. So SKELETON KEY has stopped trying the front door entirely.",
     "It's going for the BACK door: account recovery. That 'forgot my password' path, the security questions, the recovery email. If those are weak, your brilliant password doesn't matter one bit.",

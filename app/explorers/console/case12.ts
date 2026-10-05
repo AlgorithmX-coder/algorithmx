@@ -14,7 +14,8 @@ export const case12Console: ConsoleCase = {
   caseNumber: "CASE 012",
   title: "Unreadable",
   actor: "PACKRAT",
-  accent: "#FF9E3D",
+  accent: "#9B59F6",
+  theme: { backdrop: "cipher", matrix: ["#9B59F6", "#C4A0FF", "#6B2FD6"], accentHi: "#C4A0FF" },
   open: [
     "New system to master, Agent. This one's about secrets, how to send a message so that only the right person can read it.",
     "PACKRAT is back, and this time it isn't stealing accounts. It's LISTENING, sitting quietly on networks, reading whatever travels past unprotected.",

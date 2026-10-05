@@ -11,6 +11,7 @@
 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
+import { BlockBackdrop } from "../BlockBackdrop";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
@@ -71,6 +72,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
   useWrenSpeaking();
   const [, force] = useReducer((n) => n + 1, 0);
   const acc = warCase.accent ?? C.violet;
+  const THEME = warCase.theme;
 
   const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const idRef = useRef(0);
@@ -174,7 +176,13 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
   return (
     <main className="wr" style={{ minHeight: "100dvh", background: `radial-gradient(900px 520px at 50% -8%, #241541 0%, rgba(36,21,65,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", ["--v" as string]: acc }}>
       <style>{CSS}</style>
-      <MatrixRain reduced={!!reduce} opacity={0.12} colors={["#B98BFF", "#D4B8FF", "#7A5CFF"]} head="#F0E6FF" />
+      {/* Per-case living world behind the dossier board (owner standard). Falls
+          back to the block's plain violet matrix if a case hasn't set a theme. */}
+      {THEME ? (
+        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={acc} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.5} />
+      ) : (
+        <MatrixRain reduced={!!reduce} opacity={0.12} colors={["#B98BFF", "#D4B8FF", "#7A5CFF"]} head="#F0E6FF" />
+      )}
 
       <button className="wr-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
       <button className="wr-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
