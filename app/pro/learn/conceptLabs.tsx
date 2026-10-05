@@ -671,3 +671,103 @@ export function DefenceStageLab({ onDidTry }: LabProps) {
       { text: "Removing employee details and old accounts from public exposure", cat: "recon", why: "Shrinking the discoverable footprint again disrupts the reconnaissance stage." },
     ]} />;
 }
+
+/* ---- Module 7 labs: social engineering & phishing (recognise & defend) ---- */
+
+const HUMAN_TARGET: Cat[] = [
+  { id: "tech", label: "A technical control stops it", color: T.cyan },
+  { id: "human", label: "It targets the person directly", color: T.amber },
+];
+export function HumanTargetLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={HUMAN_TARGET}
+    prompt="Attackers target people because people cannot be patched. For each scenario, decide: would a technical control stop it, or does it bypass the technology by going straight for the person?"
+    items={[
+      { text: "Malware tries to exploit an unpatched server over the network.", cat: "tech", why: "Patching and firewalls address this directly: it is a technical attack on technology." },
+      { text: "An email convinces an employee to type their password into a fake login page.", cat: "human", why: "No firewall stops a person choosing to enter their own password. The target is the human decision." },
+      { text: "A caller pretends to be IT support and talks a user into granting remote access.", cat: "human", why: "The technology is not broken; a person is persuaded to open the door. That is social engineering." },
+      { text: "An attacker brute-forces a login with no rate limiting.", cat: "tech", why: "Rate limiting, lockouts and MFA are technical controls that defeat this." },
+      { text: "A text message panics someone into clicking a link about a missed delivery.", cat: "human", why: "The attack works on emotion and habit, not a technical flaw. It targets the person." },
+      { text: "A worm spreads automatically between machines using a known exploit.", cat: "tech", why: "Patching the exploited flaw stops it. No human choice is involved." },
+      { text: "Someone holds a door open for a stranger carrying boxes into a secure office.", cat: "human", why: "Tailgating exploits politeness, not technology. It is social engineering in the physical world." },
+    ]} />;
+}
+
+const PHISH_FAMILY: Cat[] = [
+  { id: "spear", label: "Spear phishing", color: T.cyan },
+  { id: "whaling", label: "Whaling / BEC", color: T.red },
+  { id: "vishing", label: "Vishing (voice)", color: T.amber },
+  { id: "smishing", label: "Smishing (SMS)", color: T.green },
+];
+export function PhishFamilyLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={PHISH_FAMILY}
+    prompt="Phishing is a family of attacks across different channels and targets. Tap each example, then tap which kind it is. Naming them precisely is how you describe an incident to colleagues."
+    items={[
+      { text: "A tailored email to one engineer, naming their real manager and project", cat: "spear", why: "Targeted at a specific person using research: spear phishing." },
+      { text: "An 'urgent' email to finance, appearing to be from the CEO, requesting a wire transfer", cat: "whaling", why: "Impersonating a senior figure to drive a high-value action is whaling / business email compromise." },
+      { text: "A phone call from 'the bank's fraud team' asking you to confirm a code", cat: "vishing", why: "Phishing by voice call is vishing. The urgency and authority are the levers." },
+      { text: "A text message about a 'missed parcel' with a link to pay a fee", cat: "smishing", why: "Phishing by SMS is smishing, and delivery-scam texts are among the most common." },
+      { text: "A fake invoice emailed to an executive, impersonating a known supplier", cat: "whaling", why: "High-value fraud aimed at those who can authorise payments: business email compromise." },
+      { text: "A recorded call warning your account is 'suspended', press 1 to speak to an agent", cat: "vishing", why: "Automated voice phishing still relies on fear and urgency over the phone: vishing." },
+    ]} />;
+}
+
+const PERSUASION: Cat[] = [
+  { id: "authority", label: "Authority", color: T.red },
+  { id: "urgency", label: "Urgency / scarcity", color: T.amber },
+  { id: "fear", label: "Fear", color: T.cyan },
+  { id: "liking", label: "Liking / trust", color: T.green },
+];
+export function PersuasionLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={PERSUASION}
+    prompt="Social engineering works by pulling emotional levers so you act before you think. For each line from a scam message, identify the main lever it pulls. Spotting the lever is how you catch yourself in the moment."
+    items={[
+      { text: "'This is the CEO. I need this done now, do not question it.'", cat: "authority", why: "Impersonating power pressures you to comply without checking: the authority lever." },
+      { text: "'Your account will be closed in 2 hours unless you act immediately.'", cat: "urgency", why: "A ticking clock stops you pausing to think. Urgency is the classic lever." },
+      { text: "'We've detected criminal activity on your account and police may be involved.'", cat: "fear", why: "Frightening you into panic makes you obey. Fear overrides careful judgement." },
+      { text: "'Hi, it's Dave from the team downstairs, can you do me a quick favour?'", cat: "liking", why: "Posing as a friendly, familiar colleague lowers your guard. Liking and trust are levers too." },
+      { text: "'Only 3 spots left, confirm your details to secure yours now.'", cat: "urgency", why: "Scarcity is urgency's twin: fear of missing out rushes you into acting." },
+      { text: "'Per the director's instruction, process this today without the usual checks.'", cat: "authority", why: "Invoking a senior figure to bypass normal process is the authority lever at work." },
+    ]} />;
+}
+
+const EMAIL_FLAG: Cat[] = [
+  { id: "flag", label: "Warning sign", color: T.red },
+  { id: "fine", label: "Not by itself a red flag", color: T.green },
+];
+export function SpotPhishLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={EMAIL_FLAG}
+    prompt="Reading a suspicious email is a checklist, not a feeling. For each feature, decide: is it a genuine warning sign, or not by itself a reason to worry? The goal is to recognise the real tells."
+    items={[
+      { text: "The display name says 'IT Helpdesk' but the actual address is a random public mailbox.", cat: "flag", why: "A mismatch between the friendly name and the real address is one of the strongest tells." },
+      { text: "A link's text says your bank, but hovering shows a completely different domain.", cat: "flag", why: "Always check where a link really goes. Mismatched link destinations are a classic sign." },
+      { text: "The message creates urgency and asks you to act outside the normal process.", cat: "flag", why: "Pressure to skip the usual checks is a hallmark of phishing and business email compromise." },
+      { text: "The email is addressed to you by your correct name.", cat: "fine", why: "Not reassuring on its own: attackers get names from public profiles. Realism is not proof of safety." },
+      { text: "A lookalike domain that swaps a letter, like 'rnicrosoft' for 'microsoft'.", cat: "flag", why: "Lookalike and misspelled domains are deliberate. Read the address character by character." },
+      { text: "The email has a company logo and professional formatting.", cat: "fine", why: "Logos and polish are trivial to copy, so they prove nothing by themselves." },
+      { text: "An unexpected attachment urging you to 'enable content' or 'enable macros'.", cat: "flag", why: "Prompts to enable macros or content on an unexpected file are a well-known malware delivery trick." },
+    ]} />;
+}
+
+export function PhishResponseLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="A suspicious email lands in your inbox at work. Play it out: the right moves are the calm, process-following ones that protect you and everyone else."
+    doneKicker="Handled well"
+    doneNote="You did not click, you did not reply, you verified through a trusted channel, and you reported it so the whole organisation is protected. That calm, report-it-forward habit is worth more than any single clever catch."
+    steps={[
+      { role: "First glance", prompt: "The email claims to be from your CEO, marked urgent, asking you to buy gift cards and send the codes quietly. What is your first move?", options: [
+        { text: "Pause. The urgency and the unusual request are red flags, so do not act on it yet.", correct: true, why: "Stopping to think is the whole defence. Urgency plus an unusual, secretive request is a textbook business-email-compromise pattern." },
+        { text: "Buy the gift cards quickly; it is the CEO and it is urgent.", correct: false, why: "That is exactly what the attack is engineered to make you do. Authority and urgency are the levers, not proof it is real." },
+        { text: "Reply to ask if it is genuine.", correct: false, why: "Replying talks to the attacker, who will simply reassure you. Never verify a suspicious message through the message itself." },
+      ] },
+      { role: "Checking", prompt: "You want to confirm whether it is really from the CEO. How?", options: [
+        { text: "Verify out-of-band: contact them through a known number or channel you already trust.", correct: true, why: "Out-of-band verification, using contact details you already have, defeats impersonation because you reach the real person, not the attacker." },
+        { text: "Check that the sender's display name says the CEO's name.", correct: false, why: "Display names are trivial to fake. The friendly name proves nothing about who really sent it." },
+        { text: "Click the link in the email to 'confirm your identity'.", correct: false, why: "Never click to verify. Links in a suspicious message are part of the attack, not a safety check." },
+      ] },
+      { role: "Closing it out", prompt: "You are now fairly sure it is a scam. What is the most useful final step?", options: [
+        { text: "Report it through your organisation's channel (e.g. a 'report phishing' button or the security team).", correct: true, why: "Reporting protects everyone: the security team can warn others, block the sender, and hunt for who else got it. Your report is a defensive act for the whole organisation." },
+        { text: "Just delete it and move on.", correct: false, why: "Deleting protects only you. If you were targeted, colleagues probably were too, and only a report lets the team act." },
+        { text: "Forward it to colleagues to warn them yourself.", correct: false, why: "Well-meant, but it spreads the malicious content and muddies the investigation. Use the official reporting route instead." },
+      ] },
+    ]} />;
+}

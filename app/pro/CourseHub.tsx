@@ -24,7 +24,7 @@ const ACTS: Act[] = [
     cls: "a2", tag: "Act 2", name: "How attacks happen", focus: "Threats, vulnerabilities and the breaches they caused.",
     modules: [
       { n: 6, title: "Who the attackers are", blurb: "The real threat actors and the lifecycle of an attack, from recon to impact.", tag: "Security+ 2.1", href: "/pro/module06", status: "live" },
-      { n: 7, title: "Social engineering & phishing", blurb: "Why people are the easiest way in, and how to spot and report it.", tag: "Security+ 2.2", status: "soon" },
+      { n: 7, title: "Social engineering & phishing", blurb: "Why people are the easiest way in, and how to spot and report it.", tag: "Security+ 2.2", href: "/pro/module07", status: "live" },
       { n: 8, title: "Malware: how it really works", blurb: "Viruses, ransomware, and how infection actually happens.", tag: "Security+ 2.4", status: "soon" },
       { n: 9, title: "Web attacks & the OWASP Top 10", blurb: "How web apps get broken, and you run a real SQL injection yourself.", tag: "OWASP Top 10", href: "/pro/week08", status: "preview" },
       { n: 10, title: "Networks & Wi-Fi under attack", blurb: "Eavesdropping, spoofing, denial of service, and moving through a network.", tag: "Security+ 2.4", status: "soon" },
