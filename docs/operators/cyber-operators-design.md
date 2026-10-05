@@ -573,6 +573,34 @@ persisted course on the platform spine:
   ~90 at the capstone) so a learner who clears all 16 lands near Principal. Rank
   is derived from total reputation; nothing stored beyond `Progress.xp`.
 
+**TERMINOLOGY - "Module" not "Week" (owner, 2026-10-05).** The learner-facing
+unit is a **Module** (Module 01…16). The in-fiction activity you run inside one
+is still "the engagement". The shared `Progress.week` / `CourseContent.week` DB
+columns KEEP the name `week` (they back Heroes/Explorers/Pro too — renaming is a
+cross-tier migration not worth the risk); the Ops code maps module->week at the
+persistence boundary (`moduleNo` on `ModuleDef`, `fileEngagement({module})`). All
+Ops-only files/identifiers use Module (`ModuleDef`, `module0N.tsx`, `modules.ts`,
+`BUILT_MODULES`, route `/operators/play/[module]`).
+
+**Phase B — the offensive core, BUILT 2026-10-05 (modules 2-5; branch
+feat/cyber-ops-build).** Each module = a `ModuleDef` + one bespoke `Act` surface,
+registered in `modules.ts`. Pricing confirmed by owner: £99 flat across all cyber
+courses (finalised at launch). Built:
+- **M2 Reconnaissance & OSINT** — no new engine. An intel board of four public
+  sources (website, job ad, social post, photo) the learner reads and pieces
+  together to derive a target's login email. Teaches passive vs active recon.
+- **M3 The Web Surface** — FIRST new engine: a request-tamper inspector. The
+  learner edits the `unitPrice` in a live order request and the simulated server
+  honours it, proving the client is untrusted. Teaches HTTP + "decide on server".
+- **M4 Broken Authentication** — a login with no lockout + a weak guessable
+  password; the learner sprays a short list while the attempt counter never
+  locks. Teaches weak creds / brute force / spraying; fix centres on MFA.
+- **M5 Injection** — reuses the proven wasm SQLite engine (`engine.ts`): the real
+  `' OR 1=1--` payload executes in-browser and bypasses the Northwind login. The
+  flagship capture, now inside the full taught chassis.
+- REMAINING offensive core: M6 XSS, M7 Broken Access Control. Then data & systems
+  (8-11), role flip (12-14), capstone (15-16).
+
 ---
 
 End of spine. This document is canon for Cyber Operators. Update it here when a

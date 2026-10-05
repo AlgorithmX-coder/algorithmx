@@ -9,11 +9,11 @@ import { C, DISP, MONO, SANS, Btn } from "./Engagement";
 
 type Tone = "indigo" | "green" | "amber";
 const PHASES: { n: string; name: string; weeks: string; topics: string; tone: Tone; here?: boolean }[] = [
-  { n: "01", name: "Foundations", weeks: "Weeks 1-3", topics: "Rules of Engagement · Recon & OSINT · The Web Surface", tone: "indigo", here: true },
-  { n: "02", name: "Web Exploitation", weeks: "Weeks 4-7", topics: "Broken Auth · Injection · XSS · Access Control", tone: "indigo" },
-  { n: "03", name: "Data & Systems", weeks: "Weeks 8-11", topics: "Cryptography · Passwords & Hashes · Network Recon · Forensics", tone: "indigo" },
-  { n: "04", name: "The Role Flip", weeks: "Weeks 12-14", topics: "Incident Response · Phishing Defence · Disclosure & Reporting", tone: "green" },
-  { n: "05", name: "Capstone", weeks: "Weeks 15-16", topics: "Full Engagement · Report & Debrief", tone: "amber" },
+  { n: "01", name: "Foundations", weeks: "Modules 1-3", topics: "Rules of Engagement · Recon & OSINT · The Web Surface", tone: "indigo", here: true },
+  { n: "02", name: "Web Exploitation", weeks: "Modules 4-7", topics: "Broken Auth · Injection · XSS · Access Control", tone: "indigo" },
+  { n: "03", name: "Data & Systems", weeks: "Modules 8-11", topics: "Cryptography · Passwords & Hashes · Network Recon · Forensics", tone: "indigo" },
+  { n: "04", name: "The Role Flip", weeks: "Modules 12-14", topics: "Incident Response · Phishing Defence · Disclosure & Reporting", tone: "green" },
+  { n: "05", name: "Capstone", weeks: "Modules 15-16", topics: "Full Engagement · Report & Debrief", tone: "amber" },
 ];
 const TONE: Record<Tone, string> = { indigo: C.indigo, green: C.green, amber: C.amber };
 
@@ -36,11 +36,11 @@ export default function CourseIntro({ onBegin }: { onBegin: () => void }) {
         <div style={eyebrow}><span style={{ width: 7, height: 7, borderRadius: "50%", background: C.green, boxShadow: `0 0 9px ${C.green}` }} />Redoubt · Operator orientation</div>
         <h1 style={{ fontFamily: DISP, fontWeight: 700, fontSize: "clamp(30px,6vw,46px)", lineHeight: 1.03, letterSpacing: "-.01em", margin: "16px 0 14px" }}>You&rsquo;ve been recruited.</h1>
         <p style={{ color: C.soft, fontSize: 16, lineHeight: 1.62, maxWidth: "60ch", margin: 0 }}>
-          Cyber Ops is a <b style={{ color: C.ink }}>16-week posting</b> at Redoubt, a security firm that hires you as a junior operator. Each week is a real client engagement: you break in, then you defend. You leave with a <b style={{ color: C.ink }}>portfolio of real findings</b>{" "}and a reputation rank, not a certificate. Here&rsquo;s the whole plan before you start.
+          Cyber Ops is a <b style={{ color: C.ink }}>16-module posting</b> at Redoubt, a security firm that hires you as a junior operator. Each module is a real client engagement: you break in, then you defend. You leave with a <b style={{ color: C.ink }}>portfolio of real findings</b>{" "}and a reputation rank, not a certificate. Here&rsquo;s the whole plan before you start.
         </p>
 
         {/* the path */}
-        <SectionLabel>The path · 16 weeks, attacker <span style={{ color: C.mute }}>&rarr;</span> defender</SectionLabel>
+        <SectionLabel>The path · 16 modules, attacker <span style={{ color: C.mute }}>&rarr;</span> defender</SectionLabel>
         <div style={{ display: "grid", gap: 8 }}>
           {PHASES.map((p) => {
             const t = TONE[p.tone];
@@ -60,7 +60,7 @@ export default function CourseIntro({ onBegin }: { onBegin: () => void }) {
           })}
         </div>
         <p style={{ fontFamily: MONO, fontSize: 12.5, color: C.mute, margin: "12px 2px 0", lineHeight: 1.55 }}>
-          You spend the first weeks learning to break in, then flip and learn to catch it. That&rsquo;s the honest arc of the job.
+          You spend the first modules learning to break in, then flip and learn to catch it. That&rsquo;s the honest arc of the job.
         </p>
 
         {/* how a week runs */}
@@ -75,7 +75,7 @@ export default function CourseIntro({ onBegin }: { onBegin: () => void }) {
           ))}
         </div>
         <p style={{ fontFamily: MONO, fontSize: 12.5, color: C.mute, margin: "12px 2px 0", lineHeight: 1.55 }}>
-          Same six beats every week, so once you know the rhythm every engagement feels familiar.
+          Same six beats every module, so once you know the rhythm every engagement feels familiar.
         </p>
 
         {/* what you leave with */}
@@ -94,7 +94,7 @@ export default function CourseIntro({ onBegin }: { onBegin: () => void }) {
         {/* begin */}
         <div style={{ marginTop: 30, display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           <Btn tone="i" onClick={onBegin} style={{ padding: "14px 26px", fontSize: 14 }}>Begin your first engagement →</Btn>
-          <span style={{ fontFamily: MONO, fontSize: 12, color: C.mute }}>Week 1 · Rules of Engagement</span>
+          <span style={{ fontFamily: MONO, fontSize: 12, color: C.mute }}>Module 1 · Rules of Engagement</span>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
  * it on Meridian's login) -> the defense (how to prevent it) -> report. */
 
 import { useState } from "react";
-import Engagement, { type WeekDef, C, MONO, Btn } from "./Engagement";
+import Engagement, { type ModuleDef, C, MONO, Btn } from "./Engagement";
 import CourseIntro from "./CourseIntro";
 
 const LEAK_EMAIL = "j.reed@meridian.range";
@@ -59,9 +59,9 @@ function MeridianLoginAct({ onCapture }: { onCapture: () => void }) {
 }
 function dot(c: string): React.CSSProperties { return { width: 9, height: 9, borderRadius: "50%", background: c, display: "inline-block" }; }
 
-export const WEEK1: WeekDef = {
+export const MODULE1: ModuleDef = {
   code: "E-01",
-  weekNo: 1,
+  moduleNo: 1,
   title: "Rules of Engagement",
   client: "Meridian Clinic",
   brief:
@@ -128,11 +128,11 @@ export const WEEK1: WeekDef = {
   rep: 25,
   repRank: "Recruit",
   repTo: "25 / 100 to Junior Operator",
-  next: "NEXT ENGAGEMENT · The Web Surface →",
+  next: "NEXT MODULE · The Web Surface →",
 };
 
-export default function Week1() {
+export default function Module1() {
   const [started, setStarted] = useState(false);
   if (!started) return <CourseIntro onBegin={() => setStarted(true)} />;
-  return <Engagement week={WEEK1} />;
+  return <Engagement mod={MODULE1} />;
 }

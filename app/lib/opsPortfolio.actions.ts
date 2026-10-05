@@ -22,9 +22,11 @@ import type { OpsSeverity } from "@prisma/client";
 
 const PRODUCT_SLUG = "cyberstart";
 
-/** The finding a week files, sent from the client at the report beat. */
+/** The finding a module files, sent from the client at the report beat.
+ *  `module` is the learner-facing unit (1-16); it maps to the shared
+ *  Progress.week column at the DB boundary below. */
 export type FileEngagementInput = {
-  week: number;
+  module: number;
   callsign: string;
   rep: number;
   flag: string;
@@ -52,9 +54,9 @@ export async function fileEngagement(input: FileEngagementInput): Promise<FileEn
   if (!userId) return { ok: false, reason: "unauthenticated" };
 
   if (
-    !Number.isInteger(input?.week) ||
-    input.week < 1 ||
-    input.week > 16 ||
+    !Number.isInteger(input?.module) ||
+    input.module < 1 ||
+    input.module > 16 ||
     !input.finding?.title
   ) {
     return { ok: false, reason: "invalid" };
@@ -64,30 +66,32 @@ export async function fileEngagement(input: FileEngagementInput): Promise<FileEn
   if (!childProfileId) return { ok: false, reason: "no_learner" };
 
   const rep = Number.isFinite(input.rep) && input.rep > 0 ? Math.trunc(input.rep) : 0;
+  // The learner-facing "module" is stored in the shared Progress.week column.
+  const week = input.module;
 
-  // 1. Progress + reputation (reputation = xp, max-merged, week completed).
+  // 1. Progress + reputation (reputation = xp, max-merged, module completed).
   const prog = await upsertProgress({
     userId,
     childProfileId,
     productSlug: PRODUCT_SLUG,
-    week: input.week,
-    screen: 6, // the six-beat engagement is fully walked at report
+    week,
+    screen: 6, // the six-beat module is fully walked at report
     stars: 3,
     xp: rep,
     completed: true,
   });
   if (!prog.ok) {
-    // The only expected failure here is missing CourseContent for the week
+    // The only expected failure here is missing CourseContent for the module
     // (the data migration hasn't reached this DB yet).
     return { ok: false, reason: "content_missing" };
   }
 
-  // 2. Portfolio finding (one per child x week; re-filing updates in place).
+  // 2. Portfolio finding (one per child x module; re-filing updates in place).
   await prisma.opsFinding.upsert({
-    where: { childProfileId_week: { childProfileId, week: input.week } },
+    where: { childProfileId_week: { childProfileId, week } },
     create: {
       childProfileId,
-      week: input.week,
+      week,
       callsign: cleanCallsign(input.callsign),
       title: input.finding.title,
       severity: input.finding.severity,
@@ -124,9 +128,9 @@ export type OpsPortfolio = {
   callsign: string | null;
   totalRep: number;
   rank: RankStatus;
-  completedWeeks: number;
+  completedModules: number;
   findings: {
-    week: number;
+    module: number;
     title: string;
     severity: OpsSeverity;
     cvss: string;
@@ -145,7 +149,7 @@ export async function getPortfolio(): Promise<OpsPortfolio | null> {
 
   const childProfileId = await resolveActiveChildProfileId(userId);
   if (!childProfileId) {
-    return { callsign: null, totalRep: 0, rank: rankFor(0), completedWeeks: 0, findings: [] };
+    return { callsign: null, totalRep: 0, rank: rankFor(0), completedModules: 0, findings: [] };
   }
 
   const [rows, agg, completed] = await Promise.all([
@@ -167,9 +171,9 @@ export async function getPortfolio(): Promise<OpsPortfolio | null> {
     callsign: rows[rows.length - 1]?.callsign ?? null,
     totalRep,
     rank: rankFor(totalRep),
-    completedWeeks: completed,
+    completedModules: completed,
     findings: rows.map((r) => ({
-      week: r.week,
+      module: r.week,
       title: r.title,
       severity: r.severity,
       cvss: r.cvss,

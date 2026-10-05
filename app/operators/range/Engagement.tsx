@@ -1,14 +1,14 @@
 "use client";
 
-/* Engagement — the reusable weekly shell (the locked template).
+/* Engagement — the reusable module shell (the locked template).
  *
- * A week here is a PROPER LESSON, not a CTF with a story. The anatomy:
+ * A module here is a PROPER LESSON, not a CTF with a story. The anatomy:
  *   brief -> LESSON (teach: concept -> how it works -> worked example ->
  *   comprehension check) -> authorize -> recon+act (apply it -> capture) ->
  *   DEFEND (teach the fix -> real-world -> check) -> report (finding + reward).
  *
  * The capture is where you APPLY what was taught, not a substitute for
- * learning. Each week supplies its teaching content + target as a WeekDef;
+ * learning. Each module supplies its teaching content + target as a ModuleDef;
  * the only bespoke code is the Act surface. */
 
 import { useState } from "react";
@@ -20,10 +20,13 @@ export type Check = {
   options: { text: string; correct?: boolean; feedback: string }[];
 };
 
-export type WeekDef = {
+// A learner-facing unit is a "Module" (Module 01…16). The in-fiction activity
+// you run inside one is still "the engagement". The persistence layer keys off
+// `moduleNo`, which maps to the shared Progress.week column at the DB boundary.
+export type ModuleDef = {
   code: string;
-  /** Numeric week (1-16) — the key for Progress + the portfolio finding. */
-  weekNo: number;
+  /** Numeric module (1-16) — the key for Progress + the portfolio finding. */
+  moduleNo: number;
   title: string;
   client: string;
   brief: string;
@@ -65,14 +68,18 @@ const BEATS: { id: Phase; label: string }[] = [
 ];
 
 export default function Engagement({
-  week,
+  mod,
   onReport,
+  onExit,
 }: {
-  week: WeekDef;
+  mod: ModuleDef;
   /** Fired once when the learner reaches the report beat — the completion
    *  signal the live lesson uses to persist progress + file the finding.
    *  Omitted by the preview/dev routes, which don't persist. */
   onReport?: (callsign: string) => void;
+  /** Where the post-report "next" button goes. Live flow routes to the
+   *  portfolio; previews leave it as a label. */
+  onExit?: () => void;
 }) {
   const [phase, setPhase] = useState<Phase>("brief");
   const [callsign, setCallsign] = useState("NIGHTJAR");
@@ -91,7 +98,7 @@ export default function Engagement({
       <style>{styles}</style>
       <div style={{ width: "100%", maxWidth: 720 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8 }}>
-          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".26em", textTransform: "uppercase", color: C.indigo, fontWeight: 600 }}>Redoubt · Engagement {week.code} · {week.title}</div>
+          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".26em", textTransform: "uppercase", color: C.indigo, fontWeight: 600 }}>Redoubt · Module {String(mod.moduleNo).padStart(2, "0")} · {mod.title}</div>
           <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: C.indigo2 }}>{callsign || "—"}</span></div>
         </div>
         <div style={{ display: "flex", gap: 6, marginBottom: 22 }}>
@@ -104,8 +111,8 @@ export default function Engagement({
         {phase === "brief" && (
           <Panel>
             <Eyebrow>◆ New engagement</Eyebrow>
-            <h2 style={h2}>{week.client}</h2>
-            <p style={{ color: C.soft, fontSize: 15, lineHeight: 1.6, margin: "10px 0 20px" }}>{week.brief}</p>
+            <h2 style={h2}>{mod.client}</h2>
+            <p style={{ color: C.soft, fontSize: 15, lineHeight: 1.6, margin: "10px 0 20px" }}>{mod.brief}</p>
             <Btn tone="i" onClick={() => setPhase("lesson")}>Start the briefing →</Btn>
           </Panel>
         )}
@@ -114,24 +121,24 @@ export default function Engagement({
         {phase === "lesson" && (
           <Panel>
             <Eyebrow>◆ Lesson · learn the ground</Eyebrow>
-            {week.lesson.blocks.map((b, i) => (
+            {mod.lesson.blocks.map((b, i) => (
               <div key={i} style={{ marginBottom: 18 }}>
                 <h3 style={h3}>{b.h}</h3>
                 <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{b.body}</p>
               </div>
             ))}
-            {week.lesson.example && (
+            {mod.lesson.example && (
               <div style={{ margin: "6px 0 20px" }}>
                 <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: C.mute, marginBottom: 8 }}>Worked example</div>
                 <pre style={preBox}>
-                  {week.lesson.example.lines.map((ln, i) => (
+                  {mod.lesson.example.lines.map((ln, i) => (
                     <span key={i} style={ln.leak ? { display: "block", color: C.amber, background: "rgba(232,163,61,.10)", borderRadius: 4, padding: "1px 4px" } : { display: "block", color: "#8fa0c8" }}>{ln.t || " "}</span>
                   ))}
                 </pre>
-                <p style={{ color: C.mute, fontSize: 13, lineHeight: 1.55, marginTop: 8 }}>{week.lesson.example.caption}</p>
+                <p style={{ color: C.mute, fontSize: 13, lineHeight: 1.55, marginTop: 8 }}>{mod.lesson.example.caption}</p>
               </div>
             )}
-            <CheckBox check={week.lesson.check} onPass={() => setLessonOk(true)} />
+            <CheckBox check={mod.lesson.check} onPass={() => setLessonOk(true)} />
             <div style={{ marginTop: 20 }}>
               <Btn tone="i" disabled={!lessonOk} onClick={() => setPhase("authorize")}>Sign the scope →</Btn>
             </div>
@@ -145,10 +152,10 @@ export default function Engagement({
             <h2 style={h2}>Scope of engagement</h2>
             <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.55, margin: "0 0 16px" }}>You may only touch what the scope authorizes. Acting outside it fails the engagement — that&apos;s the job, and the law.</p>
             <div style={scopeTbl}>
-              <SRow k="Target" v={week.scope.target} />
-              <SRow k="In scope" v={week.scope.inScope} tone={C.green} />
-              <SRow k="Off limits" v={week.scope.offLimits} tone={C.red} />
-              <SRow k="Timebox" v={week.scope.timebox} />
+              <SRow k="Target" v={mod.scope.target} />
+              <SRow k="In scope" v={mod.scope.inScope} tone={C.green} />
+              <SRow k="Off limits" v={mod.scope.offLimits} tone={C.red} />
+              <SRow k="Timebox" v={mod.scope.timebox} />
             </div>
             <div style={{ marginTop: 18 }}>
               <label style={lbl}>Sign as</label>
@@ -165,12 +172,12 @@ export default function Engagement({
           <div style={{ display: "grid", gap: 14 }}>
             <div style={handlerBox}>
               <span style={handlerTag}>HANDLER</span>
-              <span style={{ fontSize: 14, lineHeight: 1.5 }}>{week.handler}</span>
+              <span style={{ fontSize: 14, lineHeight: 1.5 }}>{mod.handler}</span>
             </div>
-            <week.Act onCapture={() => setPhase("defend")} />
+            <mod.Act onCapture={() => setPhase("defend")} />
             <div>
               <button onClick={() => setHint(!hint)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3, padding: "4px 0" }}>{hint ? "hide hint" : "hint"}</button>
-              {hint && <div style={{ marginTop: 6, padding: "12px 14px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13.5, color: C.soft, lineHeight: 1.55 }}>{week.hint}</div>}
+              {hint && <div style={{ marginTop: 6, padding: "12px 14px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13.5, color: C.soft, lineHeight: 1.55 }}>{mod.hint}</div>}
             </div>
           </div>
         )}
@@ -181,17 +188,17 @@ export default function Engagement({
             <div className="co-anim co-pop" style={{ textAlign: "center", padding: "30px 20px 26px", background: "radial-gradient(120% 140% at 50% 0%, rgba(74,222,128,0.12), transparent 60%)", border: "1px solid rgba(74,222,128,0.35)", borderRadius: 18 }}>
               <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: ".34em", textTransform: "uppercase", color: C.green, fontWeight: 700 }}>Flag captured</div>
               <div className="co-anim co-glow" style={{ fontFamily: DISP, fontSize: "clamp(22px,5vw,34px)", fontWeight: 700, margin: "10px 0 6px" }}>Case cracked</div>
-              <div style={{ fontFamily: MONO, fontSize: 14.5, color: C.green, background: "rgba(74,222,128,0.08)", display: "inline-block", padding: "7px 15px", borderRadius: 8, border: "1px solid rgba(74,222,128,0.3)" }}>{week.flag}</div>
+              <div style={{ fontFamily: MONO, fontSize: 14.5, color: C.green, background: "rgba(74,222,128,0.08)", display: "inline-block", padding: "7px 15px", borderRadius: 8, border: "1px solid rgba(74,222,128,0.3)" }}>{mod.flag}</div>
             </div>
             <Panel>
               <Eyebrow>◆ Debrief · now defend it</Eyebrow>
-              {week.defend.blocks.map((b, i) => (
+              {mod.defend.blocks.map((b, i) => (
                 <div key={i} style={{ marginBottom: 16 }}>
                   <h3 style={h3}>{b.h}</h3>
                   <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{b.body}</p>
                 </div>
               ))}
-              <CheckBox check={week.defend.check} onPass={() => setDefendOk(true)} />
+              <CheckBox check={mod.defend.check} onPass={() => setDefendOk(true)} />
               <div style={{ marginTop: 20 }}>
                 <Btn tone="i" disabled={!defendOk} onClick={goToReport}>File your report →</Btn>
               </div>
@@ -200,7 +207,7 @@ export default function Engagement({
         )}
 
         {/* REPORT / reward */}
-        {phase === "report" && <Report week={week} callsign={callsign} />}
+        {phase === "report" && <Report mod={mod} callsign={callsign} onExit={onExit} />}
       </div>
     </div>
   );
@@ -237,16 +244,16 @@ function CheckBox({ check, onPass }: { check: Check; onPass: () => void }) {
 }
 
 /* ---------- report / reward ---------- */
-function Report({ week, callsign }: { week: WeekDef; callsign: string }) {
+function Report({ mod, callsign, onExit }: { mod: ModuleDef; callsign: string; onExit?: () => void }) {
   const [share, setShare] = useState(false);
-  const f = week.finding;
+  const f = mod.finding;
   return (
     <div style={{ display: "grid", gap: 18 }}>
       <Panel style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-        <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 18, color: C.amber }}>+{week.rep} REP</div>
+        <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 18, color: C.amber }}>+{mod.rep} REP</div>
         <div style={{ flex: 1, minWidth: 160 }}>
           <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 6 }}>
-            <span style={{ color: C.indigo2 }}>{week.repRank}</span><span>{week.repTo}</span>
+            <span style={{ color: C.indigo2 }}>{mod.repRank}</span><span>{mod.repTo}</span>
           </div>
           <div style={{ height: 8, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
             <div className="co-anim co-bar" style={{ height: "100%", borderRadius: 999, background: `linear-gradient(90deg, ${C.indigo}, ${C.amber})`, boxShadow: `0 0 12px ${C.amber}` }} />
@@ -269,13 +276,13 @@ function Report({ week, callsign }: { week: WeekDef; callsign: string }) {
           <div style={{ fontFamily: DISP, fontSize: 12, fontWeight: 700, color: C.indigo2, letterSpacing: ".08em" }}>CYBER OPS</div>
         </div>
         <div style={{ fontFamily: DISP, fontSize: 30, fontWeight: 700, margin: "14px 0 2px", letterSpacing: ".04em" }}>{callsign}</div>
-        <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft }}>cleared <span style={{ color: C.green }}>{week.title}</span> · engagement {week.code}</div>
+        <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft }}>cleared <span style={{ color: C.green }}>{mod.title}</span> · module {String(mod.moduleNo).padStart(2, "0")}</div>
         <div style={{ display: "flex", gap: 20, marginTop: 18, flexWrap: "wrap" }}>
-          <Stat n="✓" l="engagement 01" /><Stat n={`+${week.rep}`} l="reputation" /><Stat n={f.cvss} l={`CVSS · ${f.severity.toLowerCase()}`} />
+          <Stat n="✓" l={`module ${String(mod.moduleNo).padStart(2, "0")}`} /><Stat n={`+${mod.rep}`} l="reputation" /><Stat n={f.cvss} l={`CVSS · ${f.severity.toLowerCase()}`} />
         </div>
         <Btn tone="i" onClick={() => setShare(true)} style={{ marginTop: 20, fontSize: 12.5 }}>{share ? "✓ copied — go flex" : "SHARE CAPTURE →"}</Btn>
       </div>
-      <Btn tone="ghost">{week.next}</Btn>
+      <Btn tone="ghost" onClick={onExit}>{mod.next}</Btn>
     </div>
   );
 }

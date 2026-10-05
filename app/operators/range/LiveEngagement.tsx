@@ -3,14 +3,15 @@
 /* LiveEngagement — the Engagement shell wired to persistence.
  *
  * Wraps the pure <Engagement> (which the /dev + preview routes use without a
- * backend) and, when the learner reaches the report beat, files the week's
+ * backend) and, when the learner reaches the report beat, files the module's
  * finding + saves progress/reputation via the fileEngagement server action.
  * The save is fire-and-forget from the UI's point of view — the celebration
  * never waits on the network — but a soft note appears if nothing could be
  * saved (e.g. the family account has no learner profile yet). */
 
 import { useState } from "react";
-import Engagement, { type WeekDef, C, MONO } from "./Engagement";
+import { useRouter } from "next/navigation";
+import Engagement, { type ModuleDef, C, MONO } from "./Engagement";
 import { fileEngagement } from "@/app/lib/opsPortfolio.actions";
 import type { OpsSeverity } from "@prisma/client";
 
@@ -25,23 +26,24 @@ function toSeverity(display: string): OpsSeverity {
   return SEVERITY_MAP[display.trim().toLowerCase()] ?? "MEDIUM";
 }
 
-export default function LiveEngagement({ week }: { week: WeekDef }) {
+export default function LiveEngagement({ mod }: { mod: ModuleDef }) {
+  const router = useRouter();
   const [note, setNote] = useState<string | null>(null);
 
   async function persist(callsign: string) {
     try {
       const res = await fileEngagement({
-        week: week.weekNo,
+        module: mod.moduleNo,
         callsign,
-        rep: week.rep,
-        flag: week.flag,
+        rep: mod.rep,
+        flag: mod.flag,
         finding: {
-          title: week.finding.title,
-          severity: toSeverity(week.finding.severity),
-          cvss: week.finding.cvss,
-          location: week.finding.where,
-          impact: week.finding.impact,
-          fix: week.finding.fix,
+          title: mod.finding.title,
+          severity: toSeverity(mod.finding.severity),
+          cvss: mod.finding.cvss,
+          location: mod.finding.where,
+          impact: mod.finding.impact,
+          fix: mod.finding.fix,
         },
       });
       if (!res.ok) {
@@ -58,7 +60,7 @@ export default function LiveEngagement({ week }: { week: WeekDef }) {
 
   return (
     <>
-      <Engagement week={week} onReport={persist} />
+      <Engagement mod={mod} onReport={persist} onExit={() => router.push("/operators/portfolio")} />
       {note && (
         <div
           role="status"
