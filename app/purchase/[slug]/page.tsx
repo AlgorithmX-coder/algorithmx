@@ -44,11 +44,10 @@ interface PageProps {
   searchParams: Promise<{ status?: string }>;
 }
 
-/* Cyber-heroes is the only product with a live lesson entry today.
- * When a second track becomes enterable, replace this with a real
- * slug → route map (mirrors COURSE_LANDING_ROUTES). */
+/* Where "Enter <track>" lands a new owner (mirrors COURSE_LANDING_ROUTES). */
 function entryRouteFor(slug: string): string {
   if (slug === "cyber-heroes") return "/dashboard";
+  if (slug === "cyberstart-pro") return "/pro/course";
   return "/hub";
 }
 
@@ -124,13 +123,23 @@ function OrderSummary({
 }) {
   const priceLabel = formatPrice(product.priceGBP);
 
-  const included = [
-    `${product.weeksCount > 0 ? `${product.weeksCount} weekly` : "Weekly"} interactive missions`,
-    "Boss battles, badges and a printable hero certificate",
-    "Progress saved per child. Multiple kids on one account",
-    "Family-safe: COPPA-aware, no third-party tracking",
-    "Lifetime access. Buy once, replay any time",
-  ];
+  // The children's tracks share one pitch; the adult course has its own.
+  const included =
+    product.slug === "cyberstart-pro"
+      ? [
+          "21 modules across four acts, built for total beginners",
+          "Real labs in your browser: crack a hash, run an injection, read honeypot logs",
+          "A portfolio of real artefacts you build as you learn",
+          "Aligned to CompTIA Security+ objectives",
+          "Lifetime access. Buy once, learn at your pace",
+        ]
+      : [
+          `${product.weeksCount > 0 ? `${product.weeksCount} weekly` : "Weekly"} interactive missions`,
+          "Boss battles, badges and a printable hero certificate",
+          "Progress saved per child. Multiple kids on one account",
+          "Family-safe: COPPA-aware, no third-party tracking",
+          "Lifetime access. Buy once, replay any time",
+        ];
 
   return (
     <PurchaseFrame>

@@ -62,7 +62,25 @@ function Pill({ status }: { status: Status }) {
   return <span style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: map.color, background: map.bg, border: `1px solid ${map.color}44`, borderRadius: 5, padding: "3px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>{map.label}</span>;
 }
 
-export default function CourseHub() {
+/* Act 1 (modules 1-5) is the free taster; everything after it belongs
+ * to buyers. The module pages enforce this server-side — the hub just
+ * tells the truth about it. */
+const FREE_UP_TO = 5;
+
+export default function CourseHub({
+  locked = true,
+  purchasable = false,
+  priceLabel = "£99",
+  bounced = false,
+}: {
+  /** True when the viewer does not own the course. */
+  locked?: boolean;
+  /** True when the Product is ACTIVE, ie /purchase will take the sale. */
+  purchasable?: boolean;
+  priceLabel?: string;
+  /** True when a locked module page just redirected the viewer here. */
+  bounced?: boolean;
+}) {
   const built = ACTS.flatMap((a) => a.modules).filter((m) => m.href).length;
 
   return (
@@ -88,6 +106,15 @@ export default function CourseHub() {
         .hub-cta svg { transition: transform 150ms ease; }
         .hub-cta:hover svg { transform: translateX(3px); }
         .hub-cta-note { font-size: 13.5px; color: ${T.faint}; }
+
+        /* unlock banner */
+        .hub-unlock { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-top: 26px; padding: 18px 22px; background: ${T.panel}; border: 1px solid ${T.primary}55; border-radius: 15px; }
+        .hub-unlock.bounced { border-color: ${T.primary}; box-shadow: 0 0 0 1px ${T.primary}44, 0 10px 30px rgba(139,109,255,0.18); }
+        .hub-unlock-title { font-family: ${T.display}; font-size: 16.5px; font-weight: 800; color: ${T.ink}; margin-bottom: 4px; }
+        .hub-unlock-sub { font-size: 13.5px; line-height: 1.55; color: ${T.muted}; margin: 0; max-width: 56ch; }
+        .hub-unlock-btn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; font-family: ${T.display}; font-size: 14.5px; font-weight: 700; color: #fff; text-decoration: none; background: linear-gradient(135deg, ${T.primary}, ${T.cyan}); border-radius: 11px; padding: 12px 22px; box-shadow: 0 8px 24px rgba(139,109,255,0.3); transition: transform 150ms ease, box-shadow 150ms ease; }
+        .hub-unlock-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(139,109,255,0.42); }
+        .mod-go.lockedgo { color: ${T.faint}; }
 
         /* act header */
         .act { margin-top: 46px; }
@@ -159,6 +186,26 @@ export default function CourseHub() {
             <span className="hub-cta-note">or pick any open module below.</span>
           </div>
 
+          {locked && (
+            <div className={`hub-unlock${bounced ? " bounced" : ""}`} role={bounced ? "alert" : undefined}>
+              <div>
+                <div className="hub-unlock-title">
+                  {bounced ? "That module is part of the full course." : "Act 1 is free for everyone."}
+                </div>
+                <p className="hub-unlock-sub">
+                  {purchasable
+                    ? `One payment of ${priceLabel} unlocks all 21 modules, every lab and the portfolio work, for good.`
+                    : `Start Act 1 today. The full course opens soon: all 21 modules, every lab and the portfolio work, for one payment of ${priceLabel}.`}
+                </p>
+              </div>
+              {purchasable ? (
+                <a className="hub-unlock-btn" href="/purchase/cyberstart-pro">Unlock the course</a>
+              ) : (
+                <a className="hub-unlock-btn" href="/pro">Join the opening list</a>
+              )}
+            </div>
+          )}
+
           {ACTS.map((a) => (
             <section key={a.tag} className={`act ${a.cls}`}>
               <div className="act-head">
@@ -170,6 +217,7 @@ export default function CourseHub() {
               </div>
               <div className="mods">
                 {a.modules.map((m) => {
+                  const paidLocked = locked && m.n > FREE_UP_TO;
                   const inner = (
                     <>
                       <div className="mod-top">
@@ -180,12 +228,24 @@ export default function CourseHub() {
                       <p className="mod-blurb">{m.blurb}</p>
                       <div className="mod-foot">
                         <span className="mod-tag">{m.tag}</span>
-                        {m.href && <span className="mod-go">{m.status === "preview" ? "Preview lesson" : "Start module"} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>}
+                        {m.href && !paidLocked && (
+                          <span className="mod-go">{m.status === "preview" ? "Preview lesson" : "Start module"} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                        )}
+                        {m.href && paidLocked && (
+                          <span className="mod-go lockedgo">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+                            {purchasable ? "Unlock the course" : "Part of the full course"}
+                          </span>
+                        )}
                       </div>
                     </>
                   );
-                  return m.href
-                    ? <a key={m.n} className={`mod ${m.status}`} href={m.href}>{inner}</a>
+                  // A built-but-locked module links to the purchase page once
+                  // the product is on sale; before that it renders unlinked
+                  // (the page itself would only bounce back here anyway).
+                  const dest = m.href && paidLocked ? (purchasable ? "/purchase/cyberstart-pro" : undefined) : m.href;
+                  return dest
+                    ? <a key={m.n} className={`mod ${m.status}`} href={dest}>{inner}</a>
                     : <div key={m.n} className={`mod ${m.status}`}>{inner}</div>;
                 })}
               </div>
