@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
+/* Paths that never see the launch password. `/verify` and `/api` are
+ * already outside the matcher below. */
+const OPEN_PREFIXES = ["/corporate", "/ai-cleared", "/ai-fluent", "/login", "/signup", "/forgot-password", "/reset-password"];
+
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
@@ -15,6 +19,12 @@ export function middleware(req: NextRequest) {
     }
     return NextResponse.next();
   }
+
+  // The corporate line is on sale: its pages, both courses (including the
+  // join links and certificates under them) and the sign-in pages a learner
+  // needs are open to everyone. The rest of the site stays behind the
+  // launch password until the owner lifts it.
+  if (OPEN_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/"))) return NextResponse.next();
 
   const authed = req.cookies.get("site_auth")?.value === "true";
   if (authed) return NextResponse.next();
