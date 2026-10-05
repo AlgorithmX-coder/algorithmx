@@ -771,3 +771,103 @@ export function PhishResponseLab({ onDidTry }: LabProps) {
       ] },
     ]} />;
 }
+
+/* ---- Module 8 labs: malware, how it really works (recognise & defend) ---- */
+
+const MALWARE_TYPE: Cat[] = [
+  { id: "virus", label: "Virus / worm", color: T.red },
+  { id: "trojan", label: "Trojan", color: T.amber },
+  { id: "ransom", label: "Ransomware", color: T.cyan },
+  { id: "spy", label: "Spyware / stealer", color: T.green },
+];
+export function MalwareTypeLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={MALWARE_TYPE}
+    prompt="Malware is a family, and the type tells you what it does. Tap each description, then tap the kind of malware it is. Naming the type correctly is how you describe and respond to an infection."
+    items={[
+      { text: "Spreads by itself across a network, with no user action, copying from machine to machine", cat: "virus", why: "Self-spreading, no user needed, is the defining trait of a worm (a virus needs a host file; both self-replicate)." },
+      { text: "Pretends to be useful software so a user installs it willingly", cat: "trojan", why: "A trojan hides malice inside something that looks legitimate, tricking the user into running it." },
+      { text: "Encrypts your files and demands payment for the key", cat: "ransom", why: "Holding data hostage for a ransom is, by definition, ransomware." },
+      { text: "Quietly records keystrokes and steals passwords, trying not to be noticed", cat: "spy", why: "Secretly collecting information is spyware, and a password-grabber is an info-stealer." },
+      { text: "Attaches itself to a legitimate file and runs when that file is opened", cat: "virus", why: "Needing a host file to attach to and spread is the classic trait of a virus." },
+      { text: "Looks like a free game but installs a hidden backdoor when run", cat: "trojan", why: "Disguising a backdoor inside something desirable is textbook trojan behaviour." },
+    ]} />;
+}
+
+export function RansomwareResponseLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="Your organisation's files have just been encrypted by ransomware and a ransom note has appeared. Play the response: the right moves protect what is left and recover safely."
+    doneKicker="Contained"
+    doneNote="You isolated fast, protected the backups, brought in the right people, and did not reflexively pay. That calm, backups-first response is why offline backups and a tested recovery plan are the real answer to ransomware."
+    steps={[
+      { role: "First minutes", prompt: "Screens across the office show a ransom note. What is the most urgent first action?", options: [
+        { text: "Isolate the affected machines from the network to stop the spread.", correct: true, why: "Ransomware often keeps spreading. Disconnecting affected machines (and segments) first limits how much it can reach." },
+        { text: "Immediately pay the ransom to get the files back fastest.", correct: false, why: "Paying first is the worst reflex: it funds crime, there is no guarantee of recovery, and it does nothing to stop the spread happening right now." },
+        { text: "Reboot everything and hope it clears.", correct: false, why: "Rebooting can trigger further encryption or destroy forensic evidence, and does nothing to contain the spread." },
+      ] },
+      { role: "Protecting recovery", prompt: "You have backups. What matters most about them right now?", options: [
+        { text: "Make sure the backups are offline or otherwise out of the attacker's reach, and intact.", correct: true, why: "Attackers deliberately seek and encrypt backups. Offline, immutable backups the ransomware could not touch are what make recovery possible without paying." },
+        { text: "Restore immediately onto the still-infected network.", correct: false, why: "Restoring onto a network that is still compromised just gets your clean data re-encrypted. Contain and clean first." },
+        { text: "Assume the backups are fine and do not check them.", correct: false, why: "Untested backups fail exactly when you need them. You confirm they are intact and reachable before relying on them." },
+      ] },
+      { role: "Getting it right", prompt: "Beyond the technical response, what must happen?", options: [
+        { text: "Bring in incident response, and report it (to leadership, and often to regulators and law enforcement).", correct: true, why: "A serious ransomware incident is a reportable event, with legal duties (like data-protection breach notification) and value in law-enforcement involvement. It is not something to quietly handle alone." },
+        { text: "Keep it secret to avoid embarrassment.", correct: false, why: "Hiding a breach can break the law (notification duties) and makes everything worse. Serious incidents must be escalated and reported." },
+        { text: "Blame whoever clicked and move on.", correct: false, why: "Blame helps nothing and poisons reporting culture. The focus is contain, recover, learn, report." },
+      ] },
+    ]} />;
+}
+
+const INFECTION_VECTOR: Cat[] = [
+  { id: "phish", label: "Phishing attachment / link", color: T.red },
+  { id: "download", label: "Malicious download", color: T.amber },
+  { id: "media", label: "Removable media", color: T.cyan },
+  { id: "supply", label: "Software supply chain", color: T.green },
+];
+export function InfectionVectorLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={INFECTION_VECTOR}
+    prompt="Malware has to get in somehow. Tap each way in, then tap which infection vector it is. Knowing the common routes is how defenders close them."
+    items={[
+      { text: "An employee opens an email attachment and enables macros, running hidden code", cat: "phish", why: "A booby-trapped attachment delivered by email is a phishing vector, the most common of all." },
+      { text: "A user downloads 'free' software from an untrustworthy site, bundled with malware", cat: "download", why: "Malicious or bundled downloads from dodgy sources are a classic infection route." },
+      { text: "Someone plugs in a USB stick found in the car park", cat: "media", why: "Removable media can auto-run or carry malicious files. 'Found' USB sticks are a known trick." },
+      { text: "A trusted software update is tampered with, infecting everyone who installs it", cat: "supply", why: "Compromising a supplier's update reaches all its customers at once: a supply-chain attack." },
+      { text: "A pirated app from an unofficial store carries a hidden trojan", cat: "download", why: "Unofficial app sources are a frequent source of malicious downloads." },
+      { text: "A malicious attachment disguised as an invoice arrives from a 'supplier'", cat: "phish", why: "Delivered by email with a social-engineering lure: a phishing vector." },
+    ]} />;
+}
+
+const PAYLOAD: Cat[] = [
+  { id: "steal", label: "Steal data / credentials", color: T.cyan },
+  { id: "extort", label: "Extort (ransom)", color: T.red },
+  { id: "control", label: "Take remote control / enlist", color: T.amber },
+  { id: "destroy", label: "Destroy / disrupt", color: T.green },
+];
+export function PayloadLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={PAYLOAD}
+    prompt="Once inside, malware has a job to do, its payload. Sort each behaviour by the attacker's goal. Reading the goal from the behaviour is a core analyst skill."
+    items={[
+      { text: "Logs every keystroke and sends captured passwords to a remote server.", cat: "steal", why: "Harvesting credentials and data to send out is theft: an info-stealer or spyware payload." },
+      { text: "Encrypts all documents and displays a demand for payment.", cat: "extort", why: "Locking data for money is extortion: the ransomware payload." },
+      { text: "Opens a hidden backdoor so the attacker can control the machine at will.", cat: "control", why: "A remote-access backdoor hands control to the attacker: a RAT-style payload." },
+      { text: "Enlists the machine into a botnet to send spam and attack others.", cat: "control", why: "Conscripting the device into a botnet puts it under the attacker's remote command." },
+      { text: "Overwrites the system so the computer can no longer boot, with no ransom offered.", cat: "destroy", why: "Pure destruction with no payment demand is a wiper: disruption, not profit." },
+      { text: "Silently copies confidential files out of the company over weeks.", cat: "steal", why: "Quiet, long-term exfiltration of data is a theft payload, typical of espionage." },
+    ]} />;
+}
+
+const SAFE_HANDLING: Cat[] = [
+  { id: "safe", label: "Safe", color: T.green },
+  { id: "unsafe", label: "Dangerous", color: T.red },
+];
+export function MalwareHandlingLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={SAFE_HANDLING}
+    prompt="Malware is studied safely, in isolation, never casually. For each action with a suspicious file, decide: a safe practice, or a dangerous one? This is how professionals avoid becoming the next victim."
+    items={[
+      { text: "Opening a suspicious file in an isolated, disposable sandbox with no access to real systems.", cat: "safe", why: "A sandbox or isolated VM lets analysts watch behaviour without risking real machines or data." },
+      { text: "Double-clicking a suspicious attachment on your everyday work laptop 'just to see'.", cat: "unsafe", why: "Running unknown code on a real, connected machine is exactly how infections start. Never do this." },
+      { text: "Submitting a file's fingerprint (hash) to a reputation service to check if it is known-bad.", cat: "safe", why: "Checking a hash reveals whether it is known malware without running it: safe and routine." },
+      { text: "Plugging a found USB stick into a networked computer to find out what is on it.", cat: "unsafe", why: "Unknown removable media is a classic infection vector. Never plug it into a real system." },
+      { text: "Analysing malware on a machine that is network-isolated and reset after each test.", cat: "safe", why: "Isolation and a clean reset between tests is the standard way to study malware behaviour safely." },
+      { text: "Forwarding a live malware sample around the office to 'warn' people.", cat: "unsafe", why: "That spreads the threat. Report through the proper channel; never circulate live samples." },
+    ]} />;
+}
