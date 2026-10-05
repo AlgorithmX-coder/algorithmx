@@ -9,6 +9,7 @@ import {
   removePupil,
   type ClassFailure,
 } from "@/app/lib/schoolClasses";
+import { resetPupilPictures } from "@/app/lib/pupilAuth";
 
 /**
  * Making a class and putting children in it.
@@ -85,6 +86,26 @@ export async function addPupilsAction(formData: FormData): Promise<ActionResult>
   revalidatePath("/schools/classes");
   revalidatePath(`/schools/classes/${classId}`);
   return { ok: true, message: `${res.added} pupil${res.added === 1 ? "" : "s"} added.` };
+}
+
+/**
+ * Clear a child's pictures so they can choose again.
+ *
+ * The only way back in for a child who has forgotten them, and it has to be
+ * one click in the middle of a lesson. It is also the mitigation for the
+ * first-run claim: a pupil's account is taken by whoever signs in as them
+ * first, so a teacher needs to be able to undo that.
+ */
+export async function resetPicturesAction(formData: FormData): Promise<void> {
+  const session = await auth();
+  if (!session?.user?.id) return;
+  const school = await getSchoolContext(session.user.id);
+  if (!school) return;
+
+  const id = String(formData.get("childProfileId") ?? "");
+  const classId = String(formData.get("classId") ?? "");
+  if (id) await resetPupilPictures(school.orgId, id);
+  revalidatePath(`/schools/classes/${classId}`);
 }
 
 export async function removePupilAction(formData: FormData): Promise<void> {
