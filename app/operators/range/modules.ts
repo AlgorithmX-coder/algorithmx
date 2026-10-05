@@ -13,6 +13,15 @@ import { MODULE4 } from "./module04";
 import { MODULE5 } from "./module05";
 import { MODULE6 } from "./module06";
 import { MODULE7 } from "./module07";
+import { MODULE8 } from "./module08";
+import { MODULE9 } from "./module09";
+import { MODULE10 } from "./module10";
+import { MODULE11 } from "./module11";
+import { MODULE12 } from "./module12";
+import { MODULE13 } from "./module13";
+import { MODULE14 } from "./module14";
+import { MODULE15 } from "./module15";
+import { MODULE16 } from "./module16";
 
 export const BUILT_MODULES: Record<number, ModuleDef> = {
   1: MODULE1,
@@ -22,6 +31,15 @@ export const BUILT_MODULES: Record<number, ModuleDef> = {
   5: MODULE5,
   6: MODULE6,
   7: MODULE7,
+  8: MODULE8,
+  9: MODULE9,
+  10: MODULE10,
+  11: MODULE11,
+  12: MODULE12,
+  13: MODULE13,
+  14: MODULE14,
+  15: MODULE15,
+  16: MODULE16,
 };
 
 export function builtModule(n: number): ModuleDef | null {

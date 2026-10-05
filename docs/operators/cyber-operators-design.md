@@ -598,8 +598,39 @@ courses (finalised at launch). Built:
 - **M5 Injection** — reuses the proven wasm SQLite engine (`engine.ts`): the real
   `' OR 1=1--` payload executes in-browser and bypasses the Northwind login. The
   flagship capture, now inside the full taught chassis.
-- REMAINING offensive core: M6 XSS, M7 Broken Access Control. Then data & systems
-  (8-11), role flip (12-14), capstone (15-16).
+- **M6 Cross-Site Scripting** — a noticeboard that renders posts as HTML; a stored
+  <script> is detected and its impact SIMULATED (we never execute user HTML in our
+  own app) — cookie theft shown in a victim view.
+- **M7 Broken Access Control** — an IDOR: changing the record id returns another
+  user's data because the server never checks ownership.
+
+**Phases C & D — ALL 16 MODULES BUILT 2026-10-05 (branch feat/cyber-ops-build).**
+The full locked curriculum is now authored and playable. Data & systems (8-11),
+the blue-team role flip (12-14), and the capstone (15-16):
+- **M8 Cryptography** — a decoder bench; a Base64 "token" reverses to a password
+  (encoding ≠ encryption). Uses atob/ROT13, no engine.
+- **M9 Passwords & Hashes** — crack unsalted hashes against a rainbow table; the
+  salted admin hash has no match (why salting works). Consistent hash constants.
+- **M10 Network Recon** — a port scan; the learner flags the internet-exposed RDP
+  (and an ancient FTP). Authored data.
+- **M11 Digital Forensics** — the hinge: read an access log and pinpoint the moment
+  of compromise (the 200 after a 401 storm). First defender seat.
+- **M12 Incident Response** — a live breach handled in order: contain → eradicate
+  → recover (staged decisions).
+- **M13 Social Engineering Defence** — ANALYSIS ONLY (the ethical carve-out): triage
+  an inbox, classify phish/pretext vs legit, name the tells. Never authors a phish.
+- **M14 Disclosure & Reporting** — score a finding's CVSS band + choose coordinated
+  disclosure. Portfolio-craft.
+- **M15 Full Engagement Pt 1** — capstone chain: robots.txt → exposed backup → admin
+  creds (recon + misconfig chained).
+- **M16 Full Engagement Pt 2** — turn the break-in into a delivered report, scored +
+  fixed, with a field-ready rating. Season close; `next` routes to the portfolio.
+
+All 16 use the same chassis (`ModuleDef` + one `Act`), registered in `modules.ts`.
+Per-module rep rises ~25→90 so a full clear lands near Principal. The post-report
+"next" button routes to `/operators/portfolio` in the live flow (`onExit`).
+Verified: tsc + next build clean. NEXT: QA the full flow on prod once merged +
+deployed (testers-test-live); then growth loop + Stripe/entitlement gate for launch.
 
 ---
 
