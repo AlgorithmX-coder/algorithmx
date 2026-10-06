@@ -45,15 +45,22 @@ export const case10Phone: PhoneCase = {
         { t: "wren", text: "Here's the scariest trick of all. MIMIC can now clone a voice. A few seconds of someone talking, grabbed from a video or a voice note online, is enough for a machine to copy them exactly. Your mum, your best friend, your brother. A scammer can make their voice say anything at all. So from this moment on, hearing a familiar voice is not proof it's really them.", voice: "/audio/wren/m10p-s1-learn.mp3" },
       ],
       practice: [
-        { t: "con", text: "[voice message] hi sweetie it's mum, quick one, can you send me your bank code? i'll explain later, love you x", ask: true },
         {
-          t: "choose",
-          prompt: "It's definitely your mum's voice. Does that prove it's really her?",
-          options: [
-            { label: "No, a voice can be cloned from a few seconds of audio", outcome: "good", then: [{ t: "wren", text: "Exactly. It sounds perfectly like her because a machine copied her, from clips that are online for anyone to grab. The voice is real. The person using it might not be. Your ears are no longer proof.", voice: "/audio/wren/m10p-s1-ok.mp3" }] },
-            { label: "Yes, you'd always know your own mum's voice", outcome: "bad", then: [{ t: "wren", text: "You would have, once. But a clone can now fool even you, that's the whole point of this case. The voice isn't proof any more. Try again.", voice: "/audio/wren/m10p-s1-bad.mp3" }] },
-            { label: "Yes, voices are impossible to fake", outcome: "bad", then: [{ t: "wren", text: "They used to be. Not any more, a few seconds of audio is all a machine needs. That's exactly why this case exists. Try again.", voice: "/audio/wren/m10p-s1-bad2.mp3" }] },
+          t: "tag",
+          prompt: "Set the voice aside. Tap every part of what she's actually SAYING that's a tell.",
+          segments: [
+            { text: "hi sweetie " },
+            { text: "it's mum", tellId: "claim" },
+            { text: ", " },
+            { text: "quick one", tellId: "rush" },
+            { text: ", can you " },
+            { text: "send me your bank code", tellId: "ask" },
+            { text: "? " },
+            { text: "i'll explain later", tellId: "deflect" },
+            { text: ", love you x" },
           ],
+          ok: "All four, tagged. 'It's mum' is the claim, 'quick one' is the rush, the bank code is the real ask, and 'I'll explain later' dodges any question. The voice sounds right. Everything else about this message doesn't.",
+          okVoice: "/audio/wren/m10p-s1-ok.mp3",
         },
         { t: "con", text: "[voice message] heyyy it's your best mate, my card's not working, can you send a fiver to this account? do it quick 🙏", ask: true },
         {
