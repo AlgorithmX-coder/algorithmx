@@ -519,7 +519,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         </section>
       </main>
 
-      <Footer tone="sand" />
+      <Footer tone="sand" variant="corporate" />
 
       <style>{`
         .corp-page, .corp-page :is(section, div, nav, header, footer, main, span, p, li, a, ol, textarea, button, article, dl, dt, dd) {
