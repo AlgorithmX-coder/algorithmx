@@ -25,7 +25,7 @@ const Body = z.object({
 });
 
 function anthropic() {
-  return anthropicClient({ timeout: 30_000 });
+  return anthropicClient({ timeout: 20_000 });
 }
 
 const TEXT_HEADERS = {
