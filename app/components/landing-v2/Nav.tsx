@@ -37,6 +37,9 @@ type NavProps = {
   /** Where the brand mark links. The homepage by default; a page that is
    * open while the rest of the site is gated passes itself. */
   homeHref?: string;
+  /** The CTA's look: the consumer site's neon pill, or the corporate
+   * page's plain teal one with no glow or sweep. */
+  ctaTone?: "neon" | "teal";
 };
 
 /**
@@ -58,7 +61,7 @@ const MARK_SIZE = (height: number): React.CSSProperties => ({
   height,
 });
 
-export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night", homeHref = "/" }: NavProps) {
+export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night", homeHref = "/", ctaTone = "neon" }: NavProps) {
   const onSand = tone === "sand";
   /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
    * Under Lenis, scroll events fire every rAF — storing the pixel value
@@ -220,11 +223,11 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           ) : null}
           {ctaHref.startsWith("#") ? (
             /* Same-page anchor: a plain <a> scrolls without a route change. */
-            <a ref={ctaRef} href={ctaHref} data-cta className="lv2-nav-cta" style={ctaPill}>
+            <a ref={ctaRef} href={ctaHref} data-cta className={ctaTone === "teal" ? "lv2-nav-cta-teal" : "lv2-nav-cta"} style={ctaTone === "teal" ? ctaPillTeal : ctaPill}>
               {ctaInner}
             </a>
           ) : (
-            <Link ref={ctaRef} href={ctaHref} data-cta className="lv2-nav-cta" style={ctaPill}>
+            <Link ref={ctaRef} href={ctaHref} data-cta className={ctaTone === "teal" ? "lv2-nav-cta-teal" : "lv2-nav-cta"} style={ctaTone === "teal" ? ctaPillTeal : ctaPill}>
               {ctaInner}
             </Link>
           )}
@@ -1317,6 +1320,24 @@ const navLink: React.CSSProperties = {
   // .lv2-nav-secondary CSS transition is otherwise overridden by this rule).
   transition:
     "color .25s ease, text-shadow .25s ease, transform .25s cubic-bezier(0.16,1,0.3,1)",
+};
+
+const ctaPillTeal: React.CSSProperties = {
+  background: "linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%)",
+  color: "#fffdfa",
+  fontFamily: "var(--lv2-font-display)",
+  fontSize: 14.5,
+  fontWeight: 600,
+  letterSpacing: "0.005em",
+  height: 42,
+  padding: "0 20px",
+  borderRadius: 999,
+  textDecoration: "none",
+  display: "inline-flex",
+  alignItems: "center",
+  position: "relative",
+  boxShadow: "0 10px 26px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.25)",
+  willChange: "transform",
 };
 
 const ctaPill: React.CSSProperties = {
