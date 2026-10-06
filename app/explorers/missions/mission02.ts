@@ -72,6 +72,7 @@ export const mission02: MissionManifest = {
       },
       promise: "You'll learn the one gut-check that pops most scams on sight.",
       instruction: "Tap every claim that's too good to be true.",
+      practiceIntro: "Now let's put it to work, Agent. A pop-up ad is about to land on the next screen, a brand-new one you haven't seen. Tap every claim on it that's too good to be true, then submit. Spot them all and this skill is yours.",
       intel: {
         beats: [
           "Here's the oldest trick there is. An offer so good you can't say no. A free phone. Ninety percent off. Five hundred free skins, just for you.",
@@ -129,6 +130,7 @@ export const mission02: MissionManifest = {
       },
       promise: "You'll learn to read what 'free' is really charging.",
       instruction: "Your friend's about to grab a 'free' pass. Make the call.",
+      practiceIntro: "Now let's put it to work, Agent. On the next screen your friend Mia's about to grab a 'free' offer of her own. Read what's really going on, then make the call.",
       intel: {
         beats: [
           "When something's free, ask one question. If I'm not paying with money, then what AM I paying with?",
@@ -189,6 +191,7 @@ export const mission02: MissionManifest = {
       },
       promise: "You'll learn to unmask the account behind a 'you won!' message.",
       instruction: "Unmask each account, then call real or fake.",
+      practiceIntro: "Now let's put it to work, Agent. A fresh batch of 'you won!' messages is waiting, all claiming to be GameHub. Tap each one to reveal the real account behind the name, then call it real or fake.",
       intel: {
         beats: [
           "Ever seen it? A star or a big brand, running a giveaway, and somehow YOU won. Reply to claim.",
@@ -237,6 +240,7 @@ export const mission02: MissionManifest = {
       },
       promise: "You'll learn to prove three messages come from one scammer, and see the line they reel you down.",
       instruction: "Pin every clue that belongs to SIREN's scam, then put the trail in order.",
+      practiceIntro: "Now let's put it to work, Agent. A fresh evidence board is up, a brand-new scam called SKINSTORM. Pin every piece that belongs to it, then line the trail up the way SIREN runs it.",
       intel: {
         beats: [
           "The chat post, the DM, the website. They're not three different things.",
@@ -284,6 +288,7 @@ export const mission02: MissionManifest = {
       },
       promise: "You'll learn which boxes to slam shut the moment a 'prize' asks you to fill them in.",
       instruction: "Black out every box you'd never hand over for a prize.",
+      practiceIntro: "Now let's put it to work, Agent. SIREN's own 'claim your prize' form is up next. Black out every box you should never hand over, and leave the harmless ones alone.",
       intel: {
         beats: [
           "Every funnel SIREN builds ends in the same place. A form. 'Just fill this in to claim your prize!' That form isn't the last little step. It's the whole point.",
@@ -333,6 +338,7 @@ export const mission02: MissionManifest = {
       },
       promise: "You'll learn the pattern behind every giveaway scam, and the move that beats it.",
       instruction: "Tap the 3 moves that are really hers.",
+      practiceIntro: "Now let's put it to work, Agent. Time to build her file properly. From the evidence on the next screen, tap the three moves that are really SIREN's, no more, no less.",
       intel: {
         beats: [
           "Here's SIREN's whole game, in three moves. First, an offer you can't resist. A prize, a freebie, a 'you're the special one'.",
@@ -384,6 +390,7 @@ export const mission02: MissionManifest = {
       },
       promise: "You'll learn the exact steps if a 'free' prize ever catches you.",
       instruction: "Build the rescue plan: pick the right move for each step.",
+      practiceIntro: "Now let's put it to work, Agent. Leo just got caught by SKINSTORM, paid the postage and typed in his password. Build his rescue plan, one right move at a time.",
       intel: {
         beats: [
           "So it happened. You typed your password, or paid the 'postage', or handed over your details. Don't panic, and don't feel silly. It's built to catch people.",
