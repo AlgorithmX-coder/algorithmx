@@ -467,3 +467,28 @@
 .axtp .rb small.s-ask {color:var(--ask-c)}
 
 .axtp .pupilacts {display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* ============ A CLASS AT A GLANCE ============
+   Thirty rows a teacher scans in a few seconds while standing up. */
+.axtp .prow {grid-template-columns:1fr}
+@media(min-width:900px){
+  .axtp .prow {display:grid;grid-template-columns:170px 1fr auto;gap:14px;align-items:center}
+}
+.axtp .bignum {font:600 2rem/1 var(--font-fredoka),system-ui,sans-serif;color:var(--ink);
+  letter-spacing:-.02em}
+
+/* One pip per week. Colour carries the state and so does the fill, so the
+   strip still reads for somebody who cannot separate the green from the
+   amber. */
+.axtp .strip {display:flex;gap:3px;flex-wrap:wrap}
+.axtp .pip {width:13px;height:13px;border-radius:4px;flex:none;
+  border:1.5px solid var(--rule)}
+.axtp .pip.done {background:#0e7a45;border-color:#0e7a45}
+.axtp .pip.in_progress {background:var(--ask);border-color:var(--ask-c)}
+.axtp .pip.not_started {background:transparent}
+
+.axtp .legend {display:flex;gap:7px;align-items:center;margin:14px 0 0;
+  font:600 .76rem var(--font-nunito),system-ui,sans-serif;color:var(--muted)}
+.axtp .legend .pip {margin-left:9px}
+.axtp .legend .pip:first-child {margin-left:0}
+.axtp .rs small.dim {display:block;margin-top:5px;color:var(--muted);font-size:.76rem}
