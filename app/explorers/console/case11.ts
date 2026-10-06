@@ -41,6 +41,28 @@ export type ConsoleStep =
       okVoice?: string;
       bad?: string;
       badVoice?: string;
+    }
+  | {
+      // turn the shift dial until the sealed note decodes — it latches the
+      // moment it's right, no submit button. A continuous drag + live preview,
+      // genuinely different motion from toggle/build/choose's discrete taps.
+      t: "decode";
+      ciphertext: string; // the sealed text, already shifted
+      shift: number; // the Caesar shift (0-25) that reveals it
+      prompt?: string;
+      ok?: string;
+      okVoice?: string;
+    }
+  | {
+      // tap the risky part IN a captured readout (a URL, a filename, a log
+      // line) directly, where it sits — not a multiple-choice question
+      // describing it. Same shape as Phone's "tag" but Console-skinned: a
+      // terminal readout, not a chat bubble.
+      t: "spot";
+      segments: { text: string; tellId?: string }[];
+      prompt?: string;
+      ok?: string;
+      okVoice?: string;
     };
 
 export interface ConsoleSkill {
@@ -78,8 +100,11 @@ export interface ConsoleCase {
   caseNumber: string;
   title: string;
   actor: string;
-  /** per-case console tint within the amber Systems block (a little variety). */
+  /** Per-case identity: its own colour (not a shade of the block's amber) and a
+   *  living backdrop world matching its topic — owner standard, every case its
+   *  own room. Falls back to the block's plain amber matrix if unset. */
   accent?: string;
+  theme?: { backdrop: import("../BlockBackdrop").BackdropVariant; matrix: string[]; accentHi: string };
   open: string[];
   openVoice?: string[];
   skills: ConsoleSkill[];
@@ -93,7 +118,8 @@ export const case11Console: ConsoleCase = {
   caseNumber: "CASE 011",
   title: "The Master Key",
   actor: "SKELETON KEY",
-  accent: "#FFB23E",
+  accent: "#2DD4BF",
+  theme: { backdrop: "vault", matrix: ["#2DD4BF", "#7FEFE2", "#17A398"], accentHi: "#7FEFE2" },
   open: [
     "New clearance, Agent, and a whole new job. No more reading messages, no more dodging DMs. Now you're at the controls of the machine itself.",
     "SKELETON KEY is back, the one whose rig guesses passwords. Last time you just watched it. This time, you're going to BUILD the defences that stop it dead.",

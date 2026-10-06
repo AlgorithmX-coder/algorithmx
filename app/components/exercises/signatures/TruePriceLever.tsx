@@ -762,13 +762,18 @@ function Pouch({
       <span style={{ fontSize: 13, fontWeight: 900, letterSpacing: 1.5, color: GOLD }}>
         POUCH
       </span>
-      <div style={{ display: "flex", gap: 5 }}>
+      {/* The whole pouch has to be countable. Week 20 carries enough coins
+          that one row ran off the panel and the rest were simply gone, which
+          read as a never-ending stream (UAT W20 5a). It wraps now, and each
+          coin holds its size rather than being squeezed thinner. */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 5, rowGap: 5, flex: 1, minWidth: 0 }}>
         {Array.from({ length: Math.max(total, coins) }).map((_, i) => (
           <div
             key={i}
             style={{
               width: 28,
               height: 28,
+              flexShrink: 0,
               borderRadius: "50%",
               border: "2px dashed rgba(255, 215, 94, 0.3)",
               display: "flex",
@@ -1031,16 +1036,36 @@ function FakeClock({
             animate={{ scale: 1, opacity: 1, rotate: -12 }}
             transition={{ type: "spring", stiffness: 340, damping: 18 }}
             style={{
+              // UAT W7 3b, the FAKE stamp's placement and size. At right -10 /
+              // top -13 it landed squarely on the countdown's own digits, so
+              // the child could not read the time it was calling fake, and at
+              // 12px it was the smallest thing on a card whose other stamp
+              // ("TRICK!") is twice the size.
+              //
+              // It cannot simply move UP: the price badge sits directly above
+              // and the card is overflow:hidden. So it sits just off the pill's
+              // right edge and vertically centred - still reading as stamped
+              // ONTO the clock, but clear of the numerals.
+              //
+              // Centred with marginTop rather than a translate: Motion owns
+              // `transform` here for the rotate, and a transform set in style
+              // is silently dropped.
+              // -38 still caught the last digit: the pill's right edge is at
+              // ~411 and the numerals run to ~408, so a 43px-wide stamp ending
+              // 38px past the edge began at 406 and sat on the "2". -50 starts
+              // it at ~418, clear of the numerals and still inside the card
+              // (which clips at 479).
               position: "absolute",
-              right: -10,
-              top: -13,
-              padding: "1px 7px",
+              right: -50,
+              top: "50%",
+              marginTop: -13,
+              padding: "2px 8px",
               border: `3px double ${INK_BAD}`,
               borderRadius: 6,
               background: "rgba(255, 253, 242, 0.92)",
               color: INK_BAD,
               fontWeight: 900,
-              fontSize: 12,
+              fontSize: 13,
               letterSpacing: 1,
               fontFamily: "inherit",
             }}
@@ -1497,7 +1522,11 @@ function LeverStation({
                   style={{
                     display: "flex",
                     alignItems: "baseline",
-                    height: 30,
+                    // minHeight, not height: Week 20's deal has a long label
+                    // ("Renews every month") against a long amount ("15 coins
+                    // a month"), and at a fixed 30px the wrapped second line
+                    // printed straight through the row beneath it (UAT W20 5a).
+                    minHeight: 30,
                     fontSize: line.note ? 12 : 14,
                     fontWeight: 800,
                     color: line.note ? INK_NOTE : line.bad ? INK_BAD : INK_GOOD,
@@ -1507,18 +1536,25 @@ function LeverStation({
                   <span
                     style={{
                       flex: 1,
+                      minWidth: 12,
                       borderBottom: `2px dotted ${INK_FAINT}`,
                       margin: "0 6px 4px",
                       opacity: 0.6,
                     }}
                   />
-                  <span>{line.amount}</span>
+                  {/* The amount is the thing being read, so it keeps one line
+                      and the label wraps instead. */}
+                  <span style={{ whiteSpace: "nowrap", flexShrink: 0 }}>{line.amount}</span>
                 </div>
               ))}
               <div
                 style={{
                   marginTop: 6,
                   paddingTop: 8,
+                  // Clear of the stamp, which is pinned bottom-right: stamping
+                  // the paper is the look, stamping over the real total is the
+                  // bug (UAT W20 5a - "REAL TOTAL: 6_" under TRICK!).
+                  paddingRight: 118,
                   borderTop: "2px dashed #b8ad8d",
                   fontSize: 15,
                   fontWeight: 900,

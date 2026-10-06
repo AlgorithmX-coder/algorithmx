@@ -118,7 +118,7 @@ export const WEEK_11: Pack = {
          label:"The child line service",
          note:"free &middot; any hour &middot; and you do not have to tell anybody you are ringing",
          setup:"<b>Write your country's child line service number on the board before you teach "
-           + "this.</b> Your safeguarding lead will have it, and most countries have a free line "
+           + "this.</b> Whoever handles child protection at your school will have it, and most countries have a free line "
            + "just for children. Once you know it, leave it up where the class can see it for the "
            + "rest of the week.",
        },
@@ -128,7 +128,7 @@ export const WEEK_11: Pack = {
            "<b>This is a safeguarding lesson, and a child may tell you something during it.</b> That is the lesson working, not the lesson going wrong.",
            "<b>Listen.</b> Do not investigate, and never ask a child to describe what happened in front of the class.",
            "<b>Never promise to keep it secret.</b> Say: &ldquo;I am really glad you told me. I need to tell somebody who can help.&rdquo;",
-           "<b>Write down what they said in their own words</b> as soon as you can, and pass it to your designated safeguarding lead <b>the same day</b>.",
+           "<b>Write down what they said in their own words</b> as soon as you can, and pass it to whoever is responsible for child protection at your school <b>the same day</b>.",
            "Your own setting's safeguarding policy overrides anything on these slides.",
          ] },
 };

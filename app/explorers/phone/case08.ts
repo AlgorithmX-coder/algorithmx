@@ -20,7 +20,7 @@ export const case08Phone: PhoneCase = {
   caseNumber: "CASE 008",
   title: "The Perfect Message",
   actor: "GHOSTWRITER",
-  app: { name: "Glint", accent: "#FF7A4D", wall: "radial-gradient(130% 90% at 50% 0%, #2a1710 0%, #0d0b0a 62%)" },
+  app: { name: "Glint", accent: "#FF7A4D", wall: "radial-gradient(130% 90% at 50% 0%, #2a1710 0%, #0d0b0a 62%)", theme: { backdrop: "glint", matrix: ["#FF7A4D", "#FFB088", "#FF9A4D"], accentHi: "#FFB088" } },
   open: [
     "New case, Agent. This villain is called GHOSTWRITER, and GHOSTWRITER doesn't type. It uses a machine.",
     "Everything you were taught about spotting scams, bad spelling, dodgy grammar, is out of date. AI now writes perfect, warm, friendly messages by the thousand, each one tweaked to feel like it was made just for you.",
@@ -91,15 +91,17 @@ export const case08Phone: PhoneCase = {
         { t: "wren", text: "Here's why this matters so much. A machine doesn't get tired. GHOSTWRITER can send the same warm, personal-sounding message to ten thousand kids at once, each one auto-filled with your name and your favourite game. It feels like it was written just for you. It wasn't. It was written for everyone.", voice: "/audio/wren/m08p-s2-learn.mp3" },
       ],
       practice: [
-        { t: "con", text: "Hey [YOUR NAME]! Saw you love Fortnite too 🎮 I hardly ever meet people as into it as me. We'd totally get on!" },
         {
-          t: "choose",
-          prompt: "It knows your name and your favourite game. What does that prove?",
-          options: [
-            { label: "Nothing, a machine can look those up and slot them in", outcome: "good", then: [{ t: "wren", text: "Exactly. Your name and your game are on your profile for anyone, human or machine, to grab. Feeling 'known' by a stranger is the trick, not the proof. It just means it did its homework.", voice: "/audio/wren/m08p-s2-ok.mp3" }] },
-            { label: "It's really from someone who knows me", outcome: "bad", then: [{ t: "wren", text: "Knowing your name and game proves nothing, that's all public. A machine slots those in automatically to feel personal. Try again.", voice: "/audio/wren/m08p-s2-bad.mp3" }] },
-            { label: "It must be a friend from school", outcome: "bad", then: [{ t: "wren", text: "A real school friend wouldn't need to introduce themselves like a stranger. The 'personal' details are just filled in from your profile. Try again.", voice: "/audio/wren/m08p-s2-bad2.mp3" }] },
+          t: "tag",
+          segments: [
+            { text: "Hey " },
+            { text: "[YOUR NAME]", tellId: "name" },
+            { text: "! Saw you love " },
+            { text: "Fortnite", tellId: "game" },
+            { text: " too 🎮 I hardly ever meet people as into it as me. We'd totally get on!" },
           ],
+          ok: "Exactly. Your name and your game are on your profile for anyone, human or machine, to grab. Feeling 'known' by a stranger is the trick, not the proof. It just means it did its homework.",
+          okVoice: "/audio/wren/m08p-s2-ok.mp3",
         },
         { t: "con", text: "Hi [YOUR NAME]! Saw you're in Year 7 and love drawing 🎨 finally someone who gets me! let's be mates!", ask: true },
         {

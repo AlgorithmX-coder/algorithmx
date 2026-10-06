@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SEAT_PRICE_PENCE, sellableCourses, stripeConfigured } from "@/app/lib/stripe";
+import { SEAT_PRICE_PENCE, sellableCourses, stripeConfigured, vatMode, vatPercentShown } from "@/app/lib/stripe";
+import { VAT_LINE } from "@/app/lib/corporateProducts";
 import Frame from "@/app/ai-cleared/Frame";
 import BuyForm from "./BuyForm";
 
@@ -27,9 +28,9 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
     <Frame firmName="AlgorithmX" meta={<Link href="/corporate" className="cf-link">Back to the corporate page</Link>}>
       <span className="cf-eyebrow">Buy seats</span>
       <h1 className="cf-h1">Seats for your firm, <span className="cf-grad">live the moment payment clears</span>.</h1>
-      <p className="cf-lead">Per person, per year, in packs of ten. Your admin invite is emailed as soon as the card payment goes through; from that link you invite your staff. VAT at 20% is added at checkout and shown on your invoice.</p>
+      <p className="cf-lead">Per person, per year, in packs of ten. Your admin invite is emailed as soon as the card payment goes through; from that link you invite your staff. {VAT_LINE[vatMode()]}</p>
       {live ? (
-        <BuyForm course={course} courses={courses} seats={seats} prices={SEAT_PRICE_PENCE} />
+        <BuyForm course={course} courses={courses} seats={seats} prices={SEAT_PRICE_PENCE} vatPercent={vatPercentShown()} vatMode={vatMode()} />
       ) : (
         <div className="cf-card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <b>Card checkout is not switched on yet.</b>

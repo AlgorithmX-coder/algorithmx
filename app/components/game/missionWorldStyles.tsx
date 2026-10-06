@@ -342,8 +342,14 @@ function CardDecorationArt({ deco, edge, tone = "card" }: { deco: CardDeco; edge
       </>);
     case "plaque":
       return (<>
-        <span aria-hidden style={{ position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)", width: 74, height: 12, borderRadius: 4, background: `linear-gradient(180deg, ${edge}, #6a2aa0)`, boxShadow: `0 0 10px ${edge}88` }} />
-        <span aria-hidden style={{ position: "absolute", right: 14, top: "50%", width: 8, height: 8, borderRadius: "50%", background: "radial-gradient(circle at 35% 35%, #fff1c9, #e3b341 55%, #6b4d12)" }} />
+        {/* Softened on the console: at full strength the nameplate reads as a
+            stray bar rather than a plate on a door (UAT W16 1a). */}
+        <span aria-hidden style={{ position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)", width: 74, height: chrome ? 6 : 12, borderRadius: 4, background: chrome ? `linear-gradient(180deg, ${edge}55, ${edge}22)` : `linear-gradient(180deg, ${edge}, #6a2aa0)`, boxShadow: chrome ? "none" : `0 0 10px ${edge}88` }} />
+        {/* The doorknob, softened on the console for the same reason as the
+            nameplate above it. On a door it is a handle; on the dark card it
+            was one gold dot floating at the right edge with nothing to belong
+            to, which is what Talha pointed at (UAT W16 8a). */}
+        <span aria-hidden style={{ position: "absolute", right: 14, top: "50%", width: chrome ? 6 : 8, height: chrome ? 6 : 8, borderRadius: "50%", opacity: chrome ? 0.4 : 1, background: "radial-gradient(circle at 35% 35%, #fff1c9, #e3b341 55%, #6b4d12)" }} />
         <span aria-hidden style={{ position: "absolute", inset: 5, borderRadius: 14, border: "2px solid rgba(180,77,255,0.35)" }} />
       </>);
     case "post":
@@ -355,7 +361,10 @@ function CardDecorationArt({ deco, edge, tone = "card" }: { deco: CardDeco; edge
       </>);
     case "vents":
       return (<>
-        <span aria-hidden style={{ position: "absolute", top: 8, left: 14, right: 14, height: 12, background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.5) 0 2px, transparent 2px 5px)" }} />
+        {/* On the dark console the slots are cut in light, not black: black
+            stripes there read as a rendering fault rather than a vent (UAT
+            W18 1b). */}
+        <span aria-hidden style={{ position: "absolute", top: 8, left: 14, right: 14, height: 12, background: chrome ? `repeating-linear-gradient(0deg, ${edge}2e 0 2px, transparent 2px 5px)` : "repeating-linear-gradient(0deg, rgba(0,0,0,0.5) 0 2px, transparent 2px 5px)" }} />
         <span aria-hidden style={{ position: "absolute", right: 10, top: "52%", width: 8, height: 8, borderRadius: "50%", background: edge, boxShadow: `0 0 8px ${edge}` }} />
         <span aria-hidden style={{ position: "absolute", inset: 5, borderRadius: 14, border: `2px solid ${edge}55` }} />
       </>);
@@ -367,8 +376,13 @@ function CardDecorationArt({ deco, edge, tone = "card" }: { deco: CardDeco; edge
     case "foil":
       return (<>
         <span aria-hidden style={{ position: "absolute", inset: 5, borderRadius: 14, border: `2px double ${edge}` }} />
-        <span aria-hidden style={{ position: "absolute", bottom: chrome ? 10 : 6, right: 12, width: chrome ? 15 : 18, height: chrome ? 15 : 18, borderRadius: "50%", background: `radial-gradient(circle at 35% 35%, #fff6d0, ${edge} 55%, #a9781a)`, boxShadow: "0 1px 3px rgba(0,0,0,0.4)" }} />
-        {!chrome && <span aria-hidden style={{ position: "absolute", bottom: -4, right: 16, width: 4, height: 14, background: "#5b76ff", transform: "rotate(15deg)" }} />}
+        {/* A certificate's wax seal and its ribbon. The ribbon hung at
+            bottom:-4 inside a card that clips its overflow, so all that
+            survived was a stub under a gold disc and Talha asked outright
+            what it was (UAT W20 1a). Both sit fully inside the card now, the
+            seal lifted to leave the ribbon somewhere to hang. */}
+        <span aria-hidden style={{ position: "absolute", bottom: chrome ? 10 : 16, right: 12, width: chrome ? 15 : 18, height: chrome ? 15 : 18, borderRadius: "50%", background: `radial-gradient(circle at 35% 35%, #fff6d0, ${edge} 55%, #a9781a)`, boxShadow: "0 1px 3px rgba(0,0,0,0.4)" }} />
+        {!chrome && <span aria-hidden style={{ position: "absolute", bottom: 4, right: 16, width: 5, height: 15, background: "#5b76ff", transform: "rotate(15deg)" }} />}
       </>);
     default:
       return null;

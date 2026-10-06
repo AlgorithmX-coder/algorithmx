@@ -10,6 +10,7 @@
 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
+import { BlockBackdrop } from "../BlockBackdrop";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
@@ -25,6 +26,19 @@ const C = {
   red: "#FF6A4D", mint: "#4FD98A",
 };
 const MONO = `"IBM Plex Mono", ui-monospace, Consolas, monospace`;
+/** Shift letters by n (mod 26), preserving everything else — the "decode" dial. */
+const CIPHER_A = "A".charCodeAt(0);
+function caesar(text: string, n: number): string {
+  return text
+    .toUpperCase()
+    .split("")
+    .map((ch) => {
+      const c = ch.charCodeAt(0);
+      if (c < CIPHER_A || c > CIPHER_A + 25) return ch;
+      return String.fromCharCode(((c - CIPHER_A + n + 26) % 26) + CIPHER_A);
+    })
+    .join("");
+}
 const UI = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif`;
 const NUDGES = ["/audio/wren/nudge-1.mp3", "/audio/wren/nudge-2.mp3", "/audio/wren/nudge-3.mp3"];
 
@@ -56,6 +70,8 @@ type Dock =
   | { type: "choose"; prompt?: string; options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: ConsoleStep[] }[] }
   | { type: "toggle"; prompt?: string; switches: { label: string; sub?: string; want: boolean }[] }
   | { type: "build"; prompt?: string; parts: { label: string; good: boolean; sub?: string }[]; need: number }
+  | { type: "decode"; ciphertext: string; shift: number; prompt?: string }
+  | { type: "spot"; segments: { text: string; tellId?: string }[]; prompt?: string }
   | { type: "clear"; text: string }
   | { type: "idle" }
   | null;
@@ -75,6 +91,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   useWrenSpeaking();
   const [, force] = useReducer((n) => n + 1, 0);
   const acc = consoleCase.accent ?? C.amber;
+  const THEME = consoleCase.theme;
   const [resumeStage] = useState<CaseStage | null>(() => readProgress(consoleCase.id));
 
   const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
@@ -131,6 +148,17 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         setDock({ type: "build", prompt: step.prompt, parts: step.parts, need: step.need });
         await awaitUser(); // resolves only when the right parts are chosen
         setDock(null);
+        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
+      } else if (step.t === "decode") {
+        setNudge(null);
+        setDock({ type: "decode", ciphertext: step.ciphertext, shift: step.shift, prompt: step.prompt });
+        await awaitUser(); // resolves the instant the dial lands on the right shift
+        setDock(null);
+        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
+      } else if (step.t === "spot") {
+        setNudge(null);
+        setDock({ type: "spot", segments: step.segments, prompt: step.prompt });
+        await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       }
     }
@@ -195,7 +223,13 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   return (
     <main className="cn" style={{ minHeight: "100dvh", background: `radial-gradient(900px 520px at 50% -8%, #2a1e08 0%, rgba(42,30,8,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", ["--amber" as string]: acc }}>
       <style>{CSS}</style>
-      <MatrixRain reduced={!!reduce} opacity={0.12} colors={["#FFB23E", "#FFD27A", "#FF7A3E"]} head="#FFF0D6" />
+      {/* Per-case living world behind the console (owner standard). Falls back
+          to the block's plain amber matrix if a case hasn't set a theme. */}
+      {THEME ? (
+        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={acc} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.5} />
+      ) : (
+        <MatrixRain reduced={!!reduce} opacity={0.12} colors={["#FFB23E", "#FFD27A", "#FF7A3E"]} head="#FFF0D6" />
+      )}
 
       <button className="cn-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
       <button className="cn-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
@@ -290,10 +324,15 @@ function ItemView({ it, acc, wrenDot }: { it: Item; acc: string; wrenDot: React.
 function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: string | null; acc: string; onResolve: (v: string) => void; onBad: (t?: string) => void }) {
   const [sw, setSw] = useState<boolean[]>([]);
   const [sel, setSel] = useState<number[]>([]);
+  const [dial, setDial] = useState(0);
+  const [solved, setSolved] = useState(false);
+  const [spotSel, setSpotSel] = useState<Set<number>>(new Set());
   // reset local control state whenever a new interactive dock appears
   useEffect(() => {
     if (dock?.type === "toggle") setSw(dock.switches.map(() => false));
     if (dock?.type === "build") setSel([]);
+    if (dock?.type === "decode") { setDial(0); setSolved(false); }
+    if (dock?.type === "spot") setSpotSel(new Set());
   }, [dock]);
 
   if (!dock || dock.type === "idle") {
@@ -343,6 +382,65 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
           ))}
         </div>
         <button className="cn-btn" onClick={submit} style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: acc, border: 0, borderRadius: 6, padding: "11px", cursor: "pointer" }}>CONFIRM</button>
+      </>
+    );
+  }
+  if (dock.type === "decode") {
+    const preview = caesar(dock.ciphertext, -dial);
+    const spin = (n: number) => {
+      if (solved) return;
+      setDial(n);
+      if (n === dock.shift) { setSolved(true); onResolve("ok"); }
+    };
+    return (
+      <>
+        <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Turn the dial until it reads."}</p>
+        <div style={{ background: C.chip, border: `1px solid ${solved ? "rgba(79,217,138,.5)" : C.chipedge}`, borderRadius: 8, padding: "12px 14px" }}>
+          <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".12em", color: C.faint, marginBottom: 5 }}>SEALED NOTE</div>
+          <div style={{ fontFamily: MONO, fontSize: 14, letterSpacing: ".1em", lineHeight: 1.6, color: C.dim }}>{dock.ciphertext}</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", margin: "11px 0 4px" }}>
+            <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".1em", color: C.faint }}>SHIFT DIAL</span>
+            <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: solved ? C.mint : acc }}>{dial} / 25</span>
+          </div>
+          <input
+            type="range" min={0} max={25} step={1} value={dial} disabled={solved}
+            aria-label="Shift dial: turn from 0 to 25 until the note reads"
+            onChange={(e) => spin(Number(e.target.value))}
+            style={{ width: "100%", accentColor: solved ? C.mint : acc, cursor: solved ? "default" : "pointer" }}
+          />
+          <div style={{ fontFamily: MONO, fontSize: 14, letterSpacing: ".1em", lineHeight: 1.6, color: solved ? C.mint : C.ink, marginTop: 10 }}>→ {preview}</div>
+        </div>
+      </>
+    );
+  }
+  if (dock.type === "spot") {
+    const need = dock.segments.filter((s) => s.tellId).length;
+    const toggleSeg = (i: number) => {
+      if (!dock.segments[i].tellId) return;
+      setSpotSel((s) => { const n = new Set(s); n.has(i) ? n.delete(i) : n.add(i); return n; });
+    };
+    const submit = () => {
+      const correctIdx = dock.segments.map((s, i) => (s.tellId ? i : -1)).filter((i) => i >= 0);
+      const ok = spotSel.size === correctIdx.length && correctIdx.every((i) => spotSel.has(i));
+      if (ok) onResolve("ok"); else onBad("Not quite the full set. Read it again, slowly.");
+    };
+    return (
+      <>
+        {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
+          : <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Tap every risky part of the readout above."} <span style={{ color: acc }}>({spotSel.size}/{need})</span></p>}
+        <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 8, padding: "12px 14px", marginBottom: 10, fontFamily: MONO, fontSize: 13, letterSpacing: ".04em", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
+          {dock.segments.map((seg, i) => {
+            if (!seg.tellId) return <span key={i} style={{ color: C.ink }}>{seg.text}</span>;
+            const on = spotSel.has(i);
+            return (
+              <span key={i} onClick={() => toggleSeg(i)} role="button" tabIndex={0}
+                style={{ cursor: "pointer", color: on ? C.page : acc, background: on ? acc : "rgba(255,178,62,.1)", outline: on ? "none" : `1.5px dashed ${acc}55`, borderRadius: 3, padding: "0 2px", fontWeight: 700 }}>
+                {seg.text}
+              </span>
+            );
+          })}
+        </div>
+        <button className="cn-btn" onClick={submit} disabled={spotSel.size === 0} style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: spotSel.size === 0 ? "#4a3d20" : acc, border: 0, borderRadius: 6, padding: "11px", cursor: spotSel.size === 0 ? "not-allowed" : "pointer" }}>{spotSel.size === 0 ? "TAP ABOVE TO START" : `${spotSel.size} FLAGGED · SUBMIT`}</button>
       </>
     );
   }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-02T17:36:15.368Z",
+  "generatedAt": "2026-10-04T11:08:00.095Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -14397,16 +14397,16 @@
       "file": "/audio/voice/c4a869d5208cc51a.mp3"
     },
     {
-      "key": "f84fbcaf8694087c",
+      "key": "5134f2f67df99fc9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[proud] Four doors read, Cyber Hero, and you never once went by the sign. Your school and the library opened. The tablet and the coins did not. [warmly] And the two you turned away had the prettiest signs of the lot.",
+      "text": "[proud] Four doors read, and you never once went by the sign, Cyber Hero. Your school and the library opened. The tablet and the coins did not. [warmly] And the two you turned away had the prettiest signs of the lot.",
       "lines": [
-        "[proud] Four doors read, Cyber Hero, and you never once went by the sign.",
+        "[proud] Four doors read, and you never once went by the sign, Cyber Hero.",
         "Your school and the library opened. The tablet and the coins did not.",
         "[warmly] And the two you turned away had the prettiest signs of the lot."
       ],
-      "file": "/audio/voice/f84fbcaf8694087c.mp3"
+      "file": "/audio/voice/5134f2f67df99fc9.mp3"
     },
     {
       "key": "ec7d3a77d5ab2158",
@@ -14502,17 +14502,17 @@
       "file": "/audio/voice/23533024181dd618.mp3"
     },
     {
-      "key": "248c2f9c8af175aa",
+      "key": "39597a70ea83c5d7",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[proud] Two powers, Cyber Hero. The ring does the hard work for you. On the ring, fine. Not on the ring, no key. [whispers] Now. What if somebody covered up a REAL code with their own... Next, we'll learn the sticker trick. Come and see!",
+      "text": "[proud] Two powers, Cyber Hero. The ring does the hard work for you. On the ring... fine. Not on the ring, no key. [whispers] Now. What if somebody covered up a REAL code with their own... Next, we'll learn the sticker trick. Come and see!",
       "lines": [
         "[proud] Two powers, Cyber Hero. The ring does the hard work for you.",
-        "On the ring, fine. Not on the ring, no key.",
+        "On the ring... fine. Not on the ring, no key.",
         "[whispers] Now. What if somebody covered up a REAL code with their own...",
         "Next, we'll learn the sticker trick. Come and see!"
       ],
-      "file": "/audio/voice/248c2f9c8af175aa.mp3"
+      "file": "/audio/voice/39597a70ea83c5d7.mp3"
     },
     {
       "key": "63b9e693ed430be2",

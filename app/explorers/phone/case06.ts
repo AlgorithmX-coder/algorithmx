@@ -33,6 +33,13 @@ export const LEVERS: { id: LeverId; name: string; emoji: string }[] = [
 /** A teaching card for one lever, shown in the skill-1 LEARN, before any pad. */
 export interface LeverTeach { id: LeverId; line: string; example: string; voice?: string }
 
+/** One chunk of a "tag" message: plain text, or a tappable tell (the exact
+ *  phrase doing the work — a lever, a weird-ask flag, whatever this case's
+ *  tells are). `tellId` is free-form per case, not tied to LeverId, so the
+ *  same interaction works for any case's taxonomy. Authored as segments (not
+ *  string search) so there's no ambiguity about which words are the tell. */
+export interface TagSegment { text: string; tellId?: string }
+
 export type PhoneStep =
   | { t: "con"; text: string; ask?: boolean; delay?: number }
   | { t: "you"; text: string }
@@ -42,6 +49,22 @@ export type PhoneStep =
       t: "choose";
       prompt?: string;
       options: { label: string; outcome?: "good" | "bad"; then?: PhoneStep[] }[];
+    }
+  | {
+      // tap every lever hiding IN the message, in place, as you read it —
+      // not a multiple-choice question about the message. A stacked con
+      // almost always needs this one (name every lever, not just the first).
+      t: "tag";
+      segments: TagSegment[];
+      /** Overrides the default "tap every part that's pulling a lever" dock
+       *  line — needed when the segments are several candidate MESSAGES
+       *  rather than phrases within one (e.g. "tap the one that's the turn"). */
+      prompt?: string;
+      delay?: number;
+      ok?: string;
+      okVoice?: string;
+      bad?: string;
+      badVoice?: string;
     };
 
 /** One of the 7 skills: WREN teaches (learn), then the child does it (practice). */
@@ -93,9 +116,15 @@ export interface PhoneTest {
 
 /** Per-case "app" skin so each Block-2 case feels like a different app on the
  * same phone (different wallpaper + accent + name), not the same screen 5 times.
- * The block stays pink-branded (ATLAS intro, matrix, roadmap); only the chat
- * conversation changes character. `accent` colours your own bubbles + header. */
-export interface PhoneApp { name: string; accent: string; wall: string }
+ * `accent` colours your own bubbles + header. `theme` extends that identity to
+ * the living backdrop BEHIND the phone, so the whole room (not just the chat)
+ * is a different world per case (owner standard, matches Block 1). */
+export interface PhoneApp {
+  name: string;
+  accent: string;
+  wall: string;
+  theme?: { backdrop: import("../BlockBackdrop").BackdropVariant; matrix: string[]; accentHi: string };
+}
 
 export interface PhoneCase {
   id: string;
@@ -116,7 +145,7 @@ export const case06Phone: PhoneCase = {
   caseNumber: "CASE 006",
   title: "Levers",
   actor: "SIREN",
-  app: { name: "Ripple", accent: "#FF3D8A", wall: "radial-gradient(130% 90% at 50% 0%, #2a0f1e 0%, #0d0d12 62%)" },
+  app: { name: "Ripple", accent: "#FF3D8A", wall: "radial-gradient(130% 90% at 50% 0%, #2a0f1e 0%, #0d0d12 62%)", theme: { backdrop: "ripple", matrix: ["#FF3D8A", "#FF74AE", "#C355FF"], accentHi: "#FF74AE" } },
   open: [
     "New block, Agent, and a whole new job. No control room tonight. Just this, your phone.",
     "Because this is where it really happens. People won't hack your machine. They'll message you, sweet as anything, and try to work you through the screen.",
@@ -211,23 +240,19 @@ export const case06Phone: PhoneCase = {
             { label: "block & report 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }, { t: "wren", text: "Even better. You shut him down before he could get another word in. That's how you end it. Well done, Agent.", voice: "/audio/wren/m06p-t1-win2.mp3" }] },
           ],
         },
-        { t: "con", text: "this is the prize team 🎩 only 1 code left and it expires in 10 mins, claim NOW", ask: true },
         {
-          t: "choose",
-          prompt: "How many levers is he stacking here?",
-          options: [
-            { label: "Three: authority, scarcity and hurry", outcome: "good", then: [{ t: "wren", text: "All three. 'Prize team' is authority, 'only 1 left' is scarcity, '10 mins' is hurry. You named the whole stack.", voice: "/audio/wren/m06p-s2-q2ok.mp3" }] },
-            { label: "Just one: hurry", outcome: "bad", then: [{ t: "wren", text: "There's more than the clock. He's also acting official and making it rare. Count them all. Try again.", voice: "/audio/wren/m06p-s2-q2bad.mp3" }] },
+          t: "tag",
+          segments: [
+            { text: "this is the " },
+            { text: "prize team 🎩", tellId: "authority" },
+            { text: " only " },
+            { text: "1 code left", tellId: "scarcity" },
+            { text: " and it expires in " },
+            { text: "10 mins", tellId: "hurry" },
+            { text: ", claim NOW" },
           ],
-        },
-        {
-          t: "choose",
-          prompt: "A DM stacks 'I'm a mod, only 2 spots left, reply in 5 mins.' You've spotted the first lever. What now?",
-          options: [
-            { label: "Keep watching, more levers are usually right behind it", outcome: "good", then: [{ t: "wren", text: "Right. One lever is rarely the end. Naming each as it lands is how you stay ahead of the stack.", voice: "/audio/wren/m06p-s2-q3ok.mp3" }] },
-            { label: "Relax, one lever means it's probably fine", outcome: "bad", then: [{ t: "wren", text: "That's the trap. Spotting one is when you watch closer, not switch off. Try again.", voice: "/audio/wren/m06p-s2-q3bad.mp3" }] },
-            { label: "Reply fast before the spots run out", outcome: "bad", then: [{ t: "wren", text: "That's the hurry lever working on you. The spots aren't real. Slow down. Try again.", voice: "/audio/wren/m06p-s2-q3bad2.mp3" }] },
-          ],
+          ok: "All three, tagged. 'Prize team' is authority, '1 code left' is scarcity, '10 mins' is hurry. That's the whole stack, right where it landed.",
+          okVoice: "/audio/wren/m06p-s2-q2ok.mp3",
         },
       ],
     },

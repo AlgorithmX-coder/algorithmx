@@ -13,12 +13,13 @@
 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
+import { BlockBackdrop } from "../BlockBackdrop";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
-import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest } from "./case06";
+import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
 
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#6b6b78",
@@ -63,6 +64,7 @@ type Item =
   | { id: number; kind: "you"; text: string }
   | { id: number; kind: "wren"; text: string }
   | { id: number; kind: "lever"; lever: LeverId; line: string; example: string }
+  | { id: number; kind: "tagmsg"; segments: TagSegment[]; selected: string[]; locked: boolean }
   | { id: number; kind: "divider"; kicker: string; title: string; sub?: string; boss?: boolean }
   | { id: number; kind: "phase"; label: string }
   | { id: number; kind: "roadmap"; title: string; actor: string; skills: { n: number; title: string; goal: string }[] }
@@ -74,6 +76,7 @@ const WREN_HEADER: Header = { who: "WREN", avatar: "◈", sub: "in your ear" };
 type Dock =
   | { type: "call"; answer: LeverId }
   | { type: "choose"; prompt?: string; options: { label: string; outcome?: "good" | "bad"; then?: PhoneStep[] }[] }
+  | { type: "tag"; itemId: number; need: number; prompt?: string }
   | { type: "clear"; text: string }
   | { type: "composer" }
   | null;
@@ -99,9 +102,12 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const OUT = phoneCase.app?.accent ?? C.out;
   const WALL = phoneCase.app?.wall ?? C.chat;
   const APP = phoneCase.app?.name ?? "Messages";
+  const THEME = phoneCase.app?.theme;
   const idRef = useRef(0);
   const lastConRef = useRef<number | null>(null);
   const resolveRef = useRef<((v: string) => void) | null>(null);
+  // the currently-live "tag" item's answer key, for validating a submit
+  const tagSubmitRef = useRef<{ segments: TagSegment[] } | null>(null);
   const startedRef = useRef(false);
   const threadRef = useRef<HTMLDivElement>(null);
   const [resumeStage] = useState<CaseStage | null>(() => readProgress(phoneCase.id));
@@ -171,6 +177,22 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           if (opt.outcome === "bad") { await wait(300); continue; } // rewind
           done = true;
         }
+      } else if (step.t === "tag") {
+        await typing(step.delay ?? 1100);
+        const itemId = nextId();
+        const need = step.segments.filter((s) => s.tellId).length;
+        push({ id: itemId, kind: "tagmsg", segments: step.segments, selected: [], locked: false });
+        tagSubmitRef.current = { segments: step.segments };
+        setNudge(null);
+        setDock({ type: "tag", itemId, need, prompt: step.prompt });
+        // The dock stays mounted across a wrong submit (submitTag sets the nudge
+        // and resolves "bad"); the child keeps adjusting the same taps and
+        // resubmits, so the nudge is never cleared out from under them.
+        let result = "";
+        while (result !== "ok") result = await awaitUser();
+        setDock(null);
+        setItems((a) => a.map((x) => (x.id === itemId && x.kind === "tagmsg" ? { ...x, locked: true } : x)));
+        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       }
     }
   };
@@ -271,7 +293,37 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const tapReply = (label: string) => { if (dock?.type === "choose") resolveRef.current?.(label); };
   const tapContinue = () => resolveRef.current?.("go");
 
+  // tag: toggle one tappable phrase in the live message (only lever-bearing
+  // segments respond; plain text is inert).
+  const tapTagSegment = (itemId: number, idx: number) => {
+    if (dock?.type !== "tag" || dock.itemId !== itemId) return;
+    setItems((a) =>
+      a.map((x) => {
+        if (x.id !== itemId || x.kind !== "tagmsg") return x;
+        const seg = x.segments[idx];
+        if (!seg.tellId) return x;
+        const has = x.selected.includes(seg.tellId);
+        return { ...x, selected: has ? x.selected.filter((l) => l !== seg.tellId) : [...x.selected, seg.tellId] };
+      }),
+    );
+  };
+  const submitTag = () => {
+    if (dock?.type !== "tag") return;
+    const item = items.find((x) => x.id === dock.itemId);
+    if (!item || item.kind !== "tagmsg") return;
+    const want = new Set((tagSubmitRef.current?.segments ?? []).map((s) => s.tellId).filter((l): l is string => !!l));
+    const got = new Set(item.selected);
+    const correct = want.size === got.size && [...want].every((l) => got.has(l));
+    if (correct) { setNudge(null); resolveRef.current?.("ok"); }
+    else {
+      setNudge(got.size === 0 ? "Tap the part of the message that's pulling on you, right where it sits." : "Not quite the full set yet, give it another look.");
+      resolveRef.current?.("bad");
+    }
+  };
+
   /* ------------------------------------------------------------ render */
+  const tagItem = dock?.type === "tag" ? items.find((x) => x.id === dock.itemId) : undefined;
+  const tagCount = tagItem && tagItem.kind === "tagmsg" ? tagItem.selected.length : 0;
   const wrenAvatar = (
     <span aria-hidden style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 13 }}>
       {[5, 11, 7].map((h, i) => <i key={i} style={{ width: 2.5, height: h, background: C.wren, borderRadius: 2, display: "block", animation: reduce ? "none" : `ph-eq .9s ${i * 0.15}s infinite ease-in-out` }} />)}
@@ -281,7 +333,14 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   return (
     <main className="ph" style={{ background: `radial-gradient(900px 500px at 50% -10%, #241033 0%, rgba(36,16,51,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden" }}>
       <style>{CSS}</style>
-      <MatrixRain reduced={!!reduce} opacity={0.13} colors={["#FF3D8A", "#FF74AE", "#C355FF"]} head="#FFE3EE" />
+      {/* Per-case living world behind the phone (owner standard: every case its
+          own room, not just its own app-skin). Falls back to the block's
+          generic pink matrix if a case hasn't set a theme yet. */}
+      {THEME ? (
+        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={OUT} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.5} />
+      ) : (
+        <MatrixRain reduced={!!reduce} opacity={0.13} colors={["#FF3D8A", "#FF74AE", "#C355FF"]} head="#FFE3EE" />
+      )}
 
       <button className="ph-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>← Leave</button>
       <button className="ph-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
@@ -327,12 +386,12 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
               {/* thread */}
               <div ref={threadRef} className="ph-thread" style={{ flex: "1 1 auto", overflowY: "auto", padding: "14px 13px 8px", display: "flex", flexDirection: "column", gap: 3, background: WALL }}>
                 <div style={{ textAlign: "center", color: C.faint, fontSize: 11, margin: "2px 0 8px" }}>Today 9:41</div>
-                {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={wrenAvatar} accent={OUT} />)}
+                {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={wrenAvatar} accent={OUT} onTagSegment={tapTagSegment} />)}
               </div>
 
               {/* dock */}
               <div style={{ flex: "0 0 auto", borderTop: `1px solid ${C.line}`, background: C.chrome, padding: "11px 12px 14px" }}>
-                <DockView dock={dock} wrongId={wrongId} nudge={nudge} onLever={tapLever} onReply={tapReply} onContinue={tapContinue} />
+                <DockView dock={dock} wrongId={wrongId} nudge={nudge} onLever={tapLever} onReply={tapReply} onContinue={tapContinue} onSubmitTag={submitTag} tagCount={tagCount} />
               </div>
             </>
           )}
@@ -342,7 +401,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   );
 }
 
-function ItemView({ it, wrenAvatar, accent }: { it: Item; wrenAvatar: React.ReactNode; accent: string }) {
+function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvatar: React.ReactNode; accent: string; onTagSegment: (itemId: number, idx: number) => void }) {
   if (it.kind === "typing") {
     return (
       <div className="ph-row" style={{ display: "flex", marginTop: 7 }}>
@@ -402,6 +461,40 @@ function ItemView({ it, wrenAvatar, accent }: { it: Item; wrenAvatar: React.Reac
       </div>
     );
   }
+  if (it.kind === "tagmsg") {
+    return (
+      <div className="ph-row" style={{ display: "flex", marginTop: 7 }}>
+        <div style={{ maxWidth: "88%", padding: "10px 13px", borderRadius: 19, borderBottomLeftRadius: 6, fontSize: 15, lineHeight: 1.55, background: C.inc, color: C.ink, whiteSpace: "pre-line" }}>
+          {it.segments.map((seg, i) => {
+            if (!seg.tellId) return <span key={i}>{seg.text}</span>;
+            const on = it.selected.includes(seg.tellId);
+            return (
+              <span
+                key={i}
+                onClick={() => !it.locked && onTagSegment(it.id, i)}
+                role="button"
+                tabIndex={it.locked ? -1 : 0}
+                aria-pressed={on}
+                style={{
+                  cursor: it.locked ? "default" : "pointer",
+                  background: on ? "rgba(255,61,138,.3)" : "rgba(255,61,138,.08)",
+                  outline: on ? `1.5px solid ${C.pinkHi}` : "1.5px dashed rgba(255,61,138,.35)",
+                  outlineOffset: 1,
+                  borderRadius: 4,
+                  padding: "0 1px",
+                  fontWeight: on ? 700 : 400,
+                  transition: "background .12s, outline .12s",
+                }}
+              >
+                {seg.text}
+              </span>
+            );
+          })}
+          {it.locked && <span style={{ display: "block", marginTop: 7, fontSize: 10.5, fontWeight: 700, letterSpacing: ".05em", color: C.mint }}>✓ {it.selected.length} tagged</span>}
+        </div>
+      </div>
+    );
+  }
   if (it.kind === "wren") {
     return (
       <div className="ph-row" style={{ margin: "8px 4px 2px", background: C.wrenbg, border: `1px solid rgba(43,212,180,.5)`, borderRadius: 16, padding: "10px 12px", display: "flex", gap: 10, alignItems: "flex-start" }}>
@@ -426,7 +519,7 @@ function ItemView({ it, wrenAvatar, accent }: { it: Item; wrenAvatar: React.Reac
   );
 }
 
-function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue }: { dock: Dock; wrongId: LeverId | null; nudge: string | null; onLever: (id: LeverId) => void; onReply: (l: string) => void; onContinue: () => void }) {
+function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmitTag, tagCount }: { dock: Dock; wrongId: LeverId | null; nudge: string | null; onLever: (id: LeverId) => void; onReply: (l: string) => void; onContinue: () => void; onSubmitTag: () => void; tagCount: number }) {
   if (!dock || dock.type === "composer") {
     return (
       <div style={{ display: "flex", alignItems: "center", gap: 9, opacity: 0.55 }}>
@@ -454,6 +547,22 @@ function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue }: { dock
             </button>
           ))}
         </div>
+      </>
+    );
+  }
+  if (dock.type === "tag") {
+    return (
+      <>
+        {nudge ? (
+          <div role="alert" style={{ background: "rgba(255,90,99,.12)", border: `1px solid rgba(255,90,99,.5)`, borderRadius: 11, padding: "8px 11px", margin: "0 0 9px", textAlign: "center", lineHeight: 1.4 }}>
+            <span style={{ fontSize: 12.5, color: C.red, fontWeight: 600 }}>{nudge}</span>
+          </div>
+        ) : (
+          <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Tap every part of the message above that’s pulling a lever on you."}</p>
+        )}
+        <button className="ph-btn" onClick={onSubmitTag} disabled={tagCount === 0} style={{ width: "100%", fontFamily: UI, fontWeight: 700, fontSize: 14, color: tagCount === 0 ? C.faint : C.page, background: tagCount === 0 ? C.chip : C.pink, border: `1px solid ${tagCount === 0 ? C.chipedge : C.pink}`, borderRadius: 14, padding: "11px 14px", cursor: tagCount === 0 ? "default" : "pointer" }}>
+          {tagCount === 0 ? "Tap above to start" : `${tagCount} tagged · SUBMIT →`}
+        </button>
       </>
     );
   }

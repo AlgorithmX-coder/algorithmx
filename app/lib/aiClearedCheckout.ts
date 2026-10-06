@@ -2,8 +2,9 @@ import type Stripe from "stripe";
 import { prisma } from "@/app/lib/prisma";
 import { createFirm } from "@/app/lib/aiClearedOps";
 import { sendSeatsAdded } from "@/app/lib/aiClearedAdmin";
-import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, planForSeats, priceIdFor, sellableCourses, stripe, stripeConfigured, vatTaxRateId } from "@/app/lib/stripe";
-import type { CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { opsAlert } from "@/app/lib/opsAlert";
+import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, planForSeats, priceIdFor, sellableCourses, stripe, stripeConfigured, vatMode, vatTaxRateId } from "@/app/lib/stripe";
+import { FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug } from "@/app/lib/corporateProducts";
 
 /* Card checkout for a firm's seat pack, and the fulfilment that follows
  * the webhook. The checkout carries everything needed to create the firm
@@ -34,15 +35,16 @@ export async function createCorporateCheckout(input: CheckoutInput): Promise<{ u
   if (!sellableCourses().includes(input.course)) return { error: `${COURSE_NAME[input.course]} is not on sale by card yet.`, status: 400 };
   const seatsError = validateSeats(input.seats);
   if (seatsError) return { error: seatsError, status: 400 };
+  if (input.course === "ai-fluent" && !(await runsAFirm(input.adminEmail))) return { error: FLUENT_NEEDS_CLEARED_FIRM, status: 400 };
   const plan = planForSeats(input.seats);
   const price = priceIdFor(input.course, plan);
   if (!price) return { error: "That pack is priced on a call. Use the enquiry form.", status: 400 };
 
-  /* VAT: the fixed UK rate on every line, unless Stripe Tax is switched
-   * on, in which case Stripe works the tax out from the billing address
-   * and the two must not be combined. */
-  const automaticTax = process.env.STRIPE_AUTOMATIC_TAX === "1";
-  const taxRates = automaticTax ? undefined : [await vatTaxRateId()];
+  /* VAT: the fixed UK rate on every line, or Stripe Tax from the billing
+   * address, or none at all; the two Stripe mechanisms are never combined. */
+  const mode = vatMode();
+  const automaticTax = mode === "automatic";
+  const taxRates = mode === "fixed" ? [await vatTaxRateId()] : undefined;
 
   const session = await stripe().checkout.sessions.create({
     mode: "payment",
@@ -73,6 +75,13 @@ export async function createCorporateCheckout(input: CheckoutInput): Promise<{ u
 }
 
 const COURSE_KEY = { "ai-cleared": "AI_CLEARED", "ai-fluent": "AI_FLUENT" } as const;
+
+/* The admin email of a firm that exists: an ADMIN seat under it. No firm
+ * means no Cleared seats, so nobody who could claim a Fluent seat. */
+export async function runsAFirm(adminEmail: string): Promise<boolean> {
+  const seat = await prisma.seat.findFirst({ where: { email: adminEmail.trim().toLowerCase(), role: "ADMIN" }, select: { id: true } });
+  return !!seat;
+}
 
 /* Called by the webhook on checkout.session.completed. The same admin
  * email means the same firm: a buyer who already runs a firm with us gets
@@ -115,6 +124,7 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
     } catch (err) {
       emailed = false;
       console.error("[corporate/checkout] seats-added email failed", err instanceof Error ? err.message : err);
+      await opsAlert({ what: "A seats-added email did not send", detail: { firm: admin.org.name, slug: admin.org.slug, adminEmail, course, seats, sessionId: session.id }, error: err });
     }
     return { added: true, slug: admin.org.slug, course, seats, emailed };
   }

@@ -49,9 +49,46 @@ export const LESSON_HUD_HEIGHT = 64;
  * can undo it for viewport-sized reserves (see ExerciseBeats).
  */
 export const STAGE_FIT_HEIGHT = 640;
-const STAGE_FIT_MIN = 0.62;
-/** Breathing room under the board so nothing sits flush to the fold. */
-const STAGE_FIT_PAD = 16;
+const STAGE_FIT_MIN = 0.55;
+/**
+ * Everything between the HUD and the board that `avail` cannot see.
+ *
+ * The fit sizes the content correctly - on Week 20's Ask the ring at 1093x525
+ * it measured 445px, exactly 525 - 64 - 16 - and the POST IT button still
+ * ended 11px under the fold. The content does not START at the HUD: the stage
+ * centres it inside its own vertical padding, so it began at y=97 and ran on
+ * to 541. A pad of 16 was breathing room UNDER the board; it was never the
+ * ~33px the stage spends above it.
+ *
+ * 48 covers both. It only ever makes a board smaller, so it cannot push
+ * anything off-screen, and it applies only below STAGE_FIT_HEIGHT - the
+ * owner's 771px window and every signed-off screenshot are untouched.
+ */
+const STAGE_FIT_PAD = 24;
+/** The same reserve on a tall window, where the 3vw clamp is still in force. */
+const STAGE_FIT_PAD_TALL = 72;
+
+/**
+ * Is the window too short for the layouts this course was drawn for?
+ *
+ * The fit can only scale a board down so far before the type stops being
+ * readable by a six-year-old, and some boards are simply twice the height a
+ * 1366x768 laptop at 125% scaling leaves (Week 2's Learn screens measure 923px
+ * against 413px of room). Those boards have to lay themselves out differently,
+ * not just smaller - so they ask this.
+ *
+ * Same threshold as the fit, so a window at or above it is untouched.
+ */
+export function useShortViewport(): boolean {
+  const [short, setShort] = useState(false);
+  useEffect(() => {
+    const read = () => setShort(window.innerHeight < STAGE_FIT_HEIGHT);
+    read();
+    window.addEventListener("resize", read);
+    return () => window.removeEventListener("resize", read);
+  }, []);
+  return short;
+}
 
 /**
  * Fit the stage to the content it actually holds.
@@ -74,13 +111,24 @@ export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
     let current = 1;
     const measure = () => {
       const h = window.innerHeight;
-      if (h >= STAGE_FIT_HEIGHT) {
-        if (current !== 1) { current = 1; setFit(1); }
-        return;
-      }
       // getBoundingClientRect reflects zoom, so divide it back out.
       const natural = el.getBoundingClientRect().height / current;
-      const avail = h - LESSON_HUD_HEIGHT - STAGE_FIT_PAD;
+      // The gate used to be "only below STAGE_FIT_HEIGHT", to protect the
+      // window the course was signed off at. Measuring that window proved the
+      // protection was the bug: Week 2's Learn board is ~923px, so at the
+      // owner's 771px it ran 203px past the fold and at 1920x950 it still ran
+      // 24px past. It has always overflowed except on a very tall screen.
+      //
+      // So the fit now applies at any height - but only when the content
+      // genuinely does not fit. A board with room to spare computes a scale of
+      // 1 and renders byte-identically to before, so the only screens that
+      // change are the ones that were already broken.
+      //
+      // The pad has to match the stage's real padding, which is ~33px top and
+      // bottom from a 3vw clamp on a tall window and 8px on a short one. Using
+      // the short figure everywhere would leave the fit believing it had 50px
+      // more room than it does, and the board would still overhang.
+      const avail = h - LESSON_HUD_HEIGHT - (h < STAGE_FIT_HEIGHT ? STAGE_FIT_PAD : STAGE_FIT_PAD_TALL);
       if (natural <= 0 || avail <= 0) return;
       const next = Math.max(STAGE_FIT_MIN, Math.min(1, avail / natural));
       if (Math.abs(next - current) < 0.01) return;
@@ -152,6 +200,7 @@ export default function LessonStage({
   const bgValue = theme?.bgGradient ?? bg ?? "linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)";
   const glowValue = theme?.glow ?? glow;
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const shortViewport = useShortViewport();
   const fit = useStageFit(contentRef);
   const fitStyle: CSSProperties =
     fit < 1
@@ -174,9 +223,17 @@ export default function LessonStage({
         // Vertical padding includes safe-area-inset-bottom for iOS home
         // indicator. clamp() prevents 40px padding eating the whole
         // screen on a tiny phone.
-        padding: "clamp(16px, 3vw, 40px) clamp(12px, 3vw, 24px)",
-        paddingBottom:
-          "max(clamp(16px, 3vw, 40px), calc(env(safe-area-inset-bottom, 0px) + 16px))",
+        // On a short window that vertical clamp resolves to ~33px top AND
+        // bottom - 66px of the ~460px a 1366x768 laptop at 125% leaves, spent
+        // on air above and below a board that already does not fit. Reclaimed
+        // first, because losing padding costs nothing and shrinking the type
+        // costs a six-year-old their reading.
+        padding: shortViewport
+          ? "8px clamp(12px, 3vw, 24px)"
+          : "clamp(16px, 3vw, 40px) clamp(12px, 3vw, 24px)",
+        paddingBottom: shortViewport
+          ? "max(8px, calc(env(safe-area-inset-bottom, 0px) + 6px))"
+          : "max(clamp(16px, 3vw, 40px), calc(env(safe-area-inset-bottom, 0px) + 16px))",
         // Allow internal scroll as a fallback. Better than clipping.
         // overflowX:hidden keeps decorative glows from forcing a
         // horizontal scrollbar.

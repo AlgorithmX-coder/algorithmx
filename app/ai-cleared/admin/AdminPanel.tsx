@@ -151,8 +151,8 @@ export default function AdminPanel({
               {rows.map((row) => (
                 <tr key={row.seatId}>
                   <td>
-                    <b>{row.name ?? row.email}</b>
-                    <small>{row.name ? row.email : row.role === "ADMIN" ? "Admin invite" : "Not yet claimed"}</small>
+                    <b>{row.email.endsWith("@removed.invalid") ? "Removed at the person\u2019s request" : row.name ?? row.email}</b>
+                    <small>{row.email.endsWith("@removed.invalid") ? "Seat used; data deleted" : row.name ? row.email : row.role === "ADMIN" ? "Admin invite" : "Not yet claimed"}</small>
                   </td>
                   <td>{row.team ?? "—"}</td>
                   <td>{row.track ? TRACK_LABEL[row.track] : "—"}</td>

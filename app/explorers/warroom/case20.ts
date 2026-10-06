@@ -17,7 +17,8 @@ export const case20War: WarCase = {
   caseNumber: "CASE 020",
   title: "Signal Zero",
   actor: "K-STATIC / COORD",
-  accent: "#B98BFF",
+  accent: "#F0C14B",
+  theme: { backdrop: "unmask", matrix: ["#F0C14B", "#FFE08A", "#C9A961"], accentHi: "#FFE08A" },
   open: [
     "This is the last case, Agent. No new tricks today, you already have everything you need. Today we put it all together, and we find out who's been behind it the whole time.",
     "Every signature you've faced, the phisher, the data hoarder, the ghostwriter, the flood, they were never really separate. One hand has been conducting them. On this board, we connect all of it, and we trace it back to the source. Signal Zero.",

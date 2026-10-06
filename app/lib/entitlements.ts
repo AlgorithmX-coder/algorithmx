@@ -89,7 +89,12 @@ export async function grantEntitlement(
  * Compute a child's current integer age in whole years from their DOB.
  * We never store age — only DOB — so this is the single derivation.
  */
-export function getAge(dateOfBirth: Date): number {
+export function getAge(dateOfBirth: Date | null | undefined): number | null {
+  /* A school pupil has no date of birth: a school should not have to hand
+     over a child's birthday to run a cyber-safety lesson, and the class
+     carries a year group instead. Callers print the age only when there is
+     one to print. */
+  if (!dateOfBirth) return null;
   const now = new Date();
   let age = now.getFullYear() - dateOfBirth.getFullYear();
   const monthDiff = now.getMonth() - dateOfBirth.getMonth();

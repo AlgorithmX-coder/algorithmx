@@ -544,8 +544,93 @@ Decisions resolved this session (previously `DECIDE` in sections 4 / 10):
   where relevant (authorization ceremony), per section 6.
 
 Still `DECIDE` (do not block the engine): handler casting, callsign word lists,
-reputation ladder names/thresholds/scoring, the full visual/motion art-direction
-doc.
+the full visual/motion art-direction doc.
+
+**App integration — BUILT 2026-10-05 (Phase A; branch feat/cyber-ops-build).**
+The /operators/* routes were previews with no backend. They are now a real,
+persisted course on the platform spine:
+- **Progress + reputation reuse the existing spine.** One `Progress` row per
+  (child, product `cyberstart`, week); reputation is stored in `Progress.xp`
+  (max-merged, never lowered) and a learner's total rep is the SUM across weeks
+  — exactly what the schema's `xp` comment prescribes. No new progress table.
+- **Portfolio = the one new table, `OpsFinding`** (one per child x week, upserted
+  on re-completion). It holds the pentest-style finding each engagement files —
+  the tier's core promise — which the spine couldn't represent.
+- **The 16 `CourseContent` rows** (locked section-8 curriculum) land on every DB
+  via an idempotent data migration (the `ai_cleared_seed` pattern), mirrored in
+  `prisma/seed.ts` for local dev. `Product.status` stays `COMING_SOON` — content
+  exists without flipping the commercial/launch state (same as Explorers).
+- **Routes:** `/operators/play/[week]` (auth-gated real engagement; reaching the
+  report beat persists) and `/operators/portfolio` (rank, reputation, findings).
+  The old `/operators/week1` etc. remain as no-save previews. The family hub's
+  Cyber Ops card now enters `/operators/portfolio` (the course home). No
+  entitlement gate yet — opened for testing behind the site password, matching
+  the other unlaunched tiers; the purchase gate lands with the launch phase.
+
+- **Reputation ladder - RESOLVED 2026-10-05** (`app/lib/opsRank.ts`): five ranks,
+  Recruit (0) -> Junior Operator (100) -> Operator (300) -> Lead Operator (600)
+  -> Principal (1000). Per-engagement rep rises across the course (~25 early to
+  ~90 at the capstone) so a learner who clears all 16 lands near Principal. Rank
+  is derived from total reputation; nothing stored beyond `Progress.xp`.
+
+**TERMINOLOGY - "Module" not "Week" (owner, 2026-10-05).** The learner-facing
+unit is a **Module** (Module 01…16). The in-fiction activity you run inside one
+is still "the engagement". The shared `Progress.week` / `CourseContent.week` DB
+columns KEEP the name `week` (they back Heroes/Explorers/Pro too — renaming is a
+cross-tier migration not worth the risk); the Ops code maps module->week at the
+persistence boundary (`moduleNo` on `ModuleDef`, `fileEngagement({module})`). All
+Ops-only files/identifiers use Module (`ModuleDef`, `module0N.tsx`, `modules.ts`,
+`BUILT_MODULES`, route `/operators/play/[module]`).
+
+**Phase B — the offensive core, BUILT 2026-10-05 (modules 2-5; branch
+feat/cyber-ops-build).** Each module = a `ModuleDef` + one bespoke `Act` surface,
+registered in `modules.ts`. Pricing confirmed by owner: £99 flat across all cyber
+courses (finalised at launch). Built:
+- **M2 Reconnaissance & OSINT** — no new engine. An intel board of four public
+  sources (website, job ad, social post, photo) the learner reads and pieces
+  together to derive a target's login email. Teaches passive vs active recon.
+- **M3 The Web Surface** — FIRST new engine: a request-tamper inspector. The
+  learner edits the `unitPrice` in a live order request and the simulated server
+  honours it, proving the client is untrusted. Teaches HTTP + "decide on server".
+- **M4 Broken Authentication** — a login with no lockout + a weak guessable
+  password; the learner sprays a short list while the attempt counter never
+  locks. Teaches weak creds / brute force / spraying; fix centres on MFA.
+- **M5 Injection** — reuses the proven wasm SQLite engine (`engine.ts`): the real
+  `' OR 1=1--` payload executes in-browser and bypasses the Northwind login. The
+  flagship capture, now inside the full taught chassis.
+- **M6 Cross-Site Scripting** — a noticeboard that renders posts as HTML; a stored
+  <script> is detected and its impact SIMULATED (we never execute user HTML in our
+  own app) — cookie theft shown in a victim view.
+- **M7 Broken Access Control** — an IDOR: changing the record id returns another
+  user's data because the server never checks ownership.
+
+**Phases C & D — ALL 16 MODULES BUILT 2026-10-05 (branch feat/cyber-ops-build).**
+The full locked curriculum is now authored and playable. Data & systems (8-11),
+the blue-team role flip (12-14), and the capstone (15-16):
+- **M8 Cryptography** — a decoder bench; a Base64 "token" reverses to a password
+  (encoding ≠ encryption). Uses atob/ROT13, no engine.
+- **M9 Passwords & Hashes** — crack unsalted hashes against a rainbow table; the
+  salted admin hash has no match (why salting works). Consistent hash constants.
+- **M10 Network Recon** — a port scan; the learner flags the internet-exposed RDP
+  (and an ancient FTP). Authored data.
+- **M11 Digital Forensics** — the hinge: read an access log and pinpoint the moment
+  of compromise (the 200 after a 401 storm). First defender seat.
+- **M12 Incident Response** — a live breach handled in order: contain → eradicate
+  → recover (staged decisions).
+- **M13 Social Engineering Defence** — ANALYSIS ONLY (the ethical carve-out): triage
+  an inbox, classify phish/pretext vs legit, name the tells. Never authors a phish.
+- **M14 Disclosure & Reporting** — score a finding's CVSS band + choose coordinated
+  disclosure. Portfolio-craft.
+- **M15 Full Engagement Pt 1** — capstone chain: robots.txt → exposed backup → admin
+  creds (recon + misconfig chained).
+- **M16 Full Engagement Pt 2** — turn the break-in into a delivered report, scored +
+  fixed, with a field-ready rating. Season close; `next` routes to the portfolio.
+
+All 16 use the same chassis (`ModuleDef` + one `Act`), registered in `modules.ts`.
+Per-module rep rises ~25→90 so a full clear lands near Principal. The post-report
+"next" button routes to `/operators/portfolio` in the live flow (`onExit`).
+Verified: tsc + next build clean. NEXT: QA the full flow on prod once merged +
+deployed (testers-test-live); then growth loop + Stripe/entitlement gate for launch.
 
 ---
 

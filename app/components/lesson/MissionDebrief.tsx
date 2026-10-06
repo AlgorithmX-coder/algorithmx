@@ -33,6 +33,7 @@ import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
+import { useShortViewport } from "@/app/components/lesson/LessonStage";
 
 export interface DebriefConcept {
   id: string;
@@ -63,6 +64,7 @@ export default function MissionDebrief({
   const intensity = useMotionIntensity();
   const fx = useExerciseFeedback();
   const audio = useGameAudio();
+  const shortViewport = useShortViewport();
 
   // Number of cards currently visible. Animates up one by one with
   // a small audio tick to feel rewarding.
@@ -193,7 +195,14 @@ export default function MissionDebrief({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          // 220px wraps five concepts as four-plus-one, and that orphan row
+          // is ~125px of a board already 965px tall against ~450px of room on
+          // the tester's laptop, which pushed "Claim your stickers" off the
+          // bottom. A narrower track puts all five on one row. Untouched at or
+          // above STAGE_FIT_HEIGHT.
+          gridTemplateColumns: shortViewport
+            ? "repeat(auto-fit, minmax(150px, 1fr))"
+            : "repeat(auto-fit, minmax(220px, 1fr))",
           gap: 14,
           marginBottom: 18,
         }}

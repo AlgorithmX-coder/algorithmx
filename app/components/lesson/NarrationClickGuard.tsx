@@ -196,9 +196,25 @@ export default function NarrationClickGuard({
     // Lesson content animates in; re-check once it has settled.
     const timers = [350, 900, 1800].map((ms) => window.setTimeout(place, ms));
     window.addEventListener("resize", place);
+
+    // Some boards fill in WHILE the narration is still running - Week 9's Test
+    // Drive reveals one minute at a time, and its fourth row arrived underneath
+    // a pill that had settled when only three rows existed. Three fixed
+    // re-checks cannot see content that appears later, so watch the document
+    // for as long as the pill is up. The choice itself is unchanged: it still
+    // takes the first slot that covers nothing, so it does not wander.
+    let raf = 0;
+    const observer = new MutationObserver(() => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(place);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
     return () => {
       timers.forEach((t) => window.clearTimeout(t));
       window.removeEventListener("resize", place);
+      observer.disconnect();
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [active, hidePill, mounted]);
 

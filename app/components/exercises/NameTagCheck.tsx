@@ -637,7 +637,7 @@ export default function NameTagCheck({
                 animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ type: "spring", stiffness: 260, damping: 16 }}
-                style={{ position: "absolute", right: 0, bottom: -40, height: 104, objectFit: "contain", filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.6))", pointerEvents: "none", zIndex: 3 }}
+                style={{ position: "absolute", right: 0, bottom: -40, height: 104, objectFit: "contain", filter: "drop-shadow(0 0 14px rgba(0,0,0,0.45))", pointerEvents: "none", zIndex: 3 }}
               />
             )}
           </AnimatePresence>
@@ -818,7 +818,7 @@ export default function NameTagCheck({
                   animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, transition: { duration: 0.12 } }}
                   transition={{ type: "spring", stiffness: 260, damping: 16 }}
-                  style={{ position: "absolute", right: -10, top: -40, height: 110, objectFit: "contain", filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.6))", pointerEvents: "none", zIndex: 3 }}
+                  style={{ position: "absolute", right: -10, top: -40, height: 110, objectFit: "contain", filter: "drop-shadow(0 0 14px rgba(0,0,0,0.45))", pointerEvents: "none", zIndex: 3 }}
                 />
               )}
             </AnimatePresence>

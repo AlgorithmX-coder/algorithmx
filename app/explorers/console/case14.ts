@@ -14,7 +14,8 @@ export const case14Console: ConsoleCase = {
   caseNumber: "CASE 014",
   title: "The Update Trap",
   actor: "GHOSTWRITER",
-  accent: "#FFC24B",
+  accent: "#3ECF8E",
+  theme: { backdrop: "install", matrix: ["#3ECF8E", "#8CFFC1", "#1FA36A"], accentHi: "#8CFFC1" },
   open: [
     "New system, Agent. Every app you install is handed POWERS on your device, your camera, your files, your location. Today you learn to control exactly what you hand over.",
     "GHOSTWRITER is back, and it's stopped writing messages. Now it writes fake installers, malware dressed up as a game you want or an update you need.",

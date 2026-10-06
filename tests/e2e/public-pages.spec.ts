@@ -1,4 +1,5 @@
 import { test, expect } from "./fixtures";
+import { test as bare } from "@playwright/test";
 
 /**
  * Smoke tests for the public, auth-free pages.
@@ -128,4 +129,25 @@ test.describe("Critical UI invariants", () => {
     expect(text).toMatch(/ages 6\s*[–-]\s*9(?!\d)/i);
     expect(text).not.toMatch(/ages 6\s*[–-]\s*10/i);
   });
+});
+
+/* The launch password gate. The corporate line is on sale, so its pages,
+ * both courses and the sign-in pages are open to a visitor with no
+ * cookie; everything else still goes to /password. `bare` carries no
+ * site_auth cookie. */
+bare.describe("Launch gate", () => {
+  for (const path of ["/corporate", "/corporate/buy", "/ai-cleared", "/ai-fluent", "/ai-cleared/join/not-a-real-token", "/verify/AXC-0000-0000", "/login", "/signup", "/forgot-password"]) {
+    bare(`${path} is open without the site password`, async ({ page }) => {
+      const res = await page.goto(path);
+      expect(res?.status(), "answers rather than errors").toBeLessThan(500);
+      expect(new URL(page.url()).pathname, "did not land on the gate").not.toBe("/password");
+    });
+  }
+
+  for (const path of ["/", "/cyberheroes", "/schools", "/dashboard"]) {
+    bare(`${path} still needs the site password`, async ({ page }) => {
+      await page.goto(path);
+      expect(new URL(page.url()).pathname).toBe("/password");
+    });
+  }
 });
