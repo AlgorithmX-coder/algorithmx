@@ -139,7 +139,7 @@ const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
 // terminal palette (scoped to this page)
 const SYS = "#34E1FF"; // system / chrome
 const TXT = "#D3E6F7"; // readable body
-const DIM = "#5E7699"; // muted
+const DIM = "#617a9e"; // muted
 const AMBER = "#FFC24B"; // the next case
 
 /* Locked cards read as "encrypted intel awaiting decryption", not dead grey

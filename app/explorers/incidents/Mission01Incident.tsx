@@ -402,6 +402,15 @@ function TransmitPhase({ reduced, audio, onDone }: { reduced: boolean; audio: In
             onPointerDown={start}
             onPointerUp={stop}
             onPointerLeave={stop}
+            onKeyDown={(e) => {
+              if ((e.key === "Enter" || e.key === " ") && !e.repeat) {
+                e.preventDefault();
+                start();
+              }
+            }}
+            onKeyUp={(e) => {
+              if (e.key === "Enter" || e.key === " ") stop();
+            }}
             className="sr-btn sr-scanfill"
             style={{
               fontFamily: MONO,

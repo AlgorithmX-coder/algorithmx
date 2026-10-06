@@ -19,7 +19,7 @@ import { ResumePrompt } from "../engine/ResumePrompt";
 import type { ConsoleCase, ConsoleStep, ConsoleTest } from "./case11";
 
 const C = {
-  page: "#0b0a06", ink: "#F4ECD8", dim: "#B39B6E", faint: "#6b5f45",
+  page: "#0b0a06", ink: "#F4ECD8", dim: "#B39B6E", faint: "#877857",
   panel: "#141009", panel2: "#1c160c", edge: "#3a2f16", chip: "#221a0d", chipedge: "#43371c",
   amber: "#FFB23E", amberHi: "#FFD27A", amberbg: "#2a2110",
   wren: "#2BD4B4", wrenbg: "#0f2622",
@@ -368,7 +368,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
           : <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Set the switches:"}</p>}
         <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 10 }}>
           {dock.switches.map((s, i) => (
-            <button key={i} className="cn-sw" onClick={() => setSw((a) => a.map((v, j) => (j === i ? !v : v)))}
+            <button key={i} className="cn-sw" role="switch" aria-checked={sw[i]} onClick={() => setSw((a) => a.map((v, j) => (j === i ? !v : v)))}
               style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", background: sw[i] ? "rgba(79,217,138,.12)" : C.chip, border: `1px solid ${sw[i] ? "rgba(79,217,138,.5)" : C.chipedge}`, borderRadius: 8, padding: "9px 12px", cursor: "pointer", fontFamily: UI }}>
               <span aria-hidden style={{ flex: "0 0 auto", width: 40, height: 22, borderRadius: 999, background: sw[i] ? C.mint : "#2a2416", position: "relative", transition: "background .15s" }}>
                 <span style={{ position: "absolute", top: 2, left: sw[i] ? 20 : 2, width: 18, height: 18, borderRadius: "50%", background: "#0c0a05", transition: "left .15s", display: "block" }} />
