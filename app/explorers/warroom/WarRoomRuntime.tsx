@@ -17,6 +17,7 @@ import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
+import { ClosingCeremony } from "../engine/closingCeremony";
 import type { WarCase, WarStep, WarTest } from "./case16";
 
 const C = {
@@ -41,6 +42,10 @@ const CSS = `
 .wr-opt:hover:not(:disabled){border-color:var(--v);transform:translateY(-1px)}
 .wr-opt:focus-visible{outline:2px solid var(--v);outline-offset:2px}
 .wr-btn:focus-visible{outline:2px solid var(--v);outline-offset:2px}
+.sr-stamp-in{animation:srStamp .3s cubic-bezier(.2,0,0,1)}
+@keyframes srStamp{0%{transform:rotate(-3deg) scale(1.15);opacity:0}30%{transform:rotate(-3deg) scale(1);opacity:1}38%{transform:rotate(-3deg) scale(1) translate(2px,0)}46%{transform:rotate(-3deg) scale(1) translate(0,0)}100%{transform:rotate(-3deg) scale(1);opacity:.9}}
+.sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
+@keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){.wr *{animation-duration:.001ms !important}}
 `;
 
@@ -208,7 +213,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
         ) : phase === "test" ? (
           <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(warCase.id); clearProgress(warCase.id); void saveExplorersProgress(parseInt(warCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
         ) : phase === "debrief" ? (
-          <Debrief data={warCase.debrief} acc={acc} onExit={onExit} onNext={onNextCase} />
+          <Debrief data={warCase.debrief} acc={acc} caseId={warCase.id} xp={100} reduced={!!reduce} onExit={onExit} onNext={onNextCase} />
         ) : (
           <>
             <div ref={workRef} className="wr-work" style={{ flex: "1 1 auto", overflowY: "auto", padding: "16px 15px 10px", display: "flex", flexDirection: "column", gap: 4, backgroundImage: "radial-gradient(rgba(185,139,255,0.06) 1px, transparent 1px)", backgroundSize: "22px 22px" }}>
@@ -466,7 +471,8 @@ function BootScreen({ title, caseNumber, open, acc, onBoot }: { title: string; c
   );
 }
 
-function Debrief({ data, acc, onExit, onNext }: { data: WarCase["debrief"]; acc: string; onExit?: () => void; onNext?: () => void }) {
+function Debrief({ data, acc, caseId, xp, reduced, onExit, onNext }: { data: WarCase["debrief"]; acc: string; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
+  const [revealed, setRevealed] = useState(false);
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 26px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 800, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2, fontFamily: MONO }}>{data.title}</div>
@@ -476,10 +482,23 @@ function Debrief({ data, acc, onExit, onNext }: { data: WarCase["debrief"]; acc:
       <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 10, padding: "13px 15px", fontSize: 13.5, lineHeight: 1.5, color: C.dim, marginBottom: 20 }}>
         <b style={{ color: acc, display: "block", fontSize: 10.5, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 5, fontFamily: MONO }}>Your move this week</b>{data.move}
       </div>
-      <div style={{ display: "flex", gap: 10 }}>
-        <button className="wr-btn" onClick={onExit} style={{ flex: 1, fontFamily: MONO, fontWeight: 700, fontSize: 13.5, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 6, padding: "12px", cursor: "pointer" }}>Back to map</button>
-        {onNext && <button className="wr-btn" onClick={onNext} style={{ flex: 1, fontFamily: MONO, fontWeight: 700, fontSize: 13.5, color: C.page, background: acc, border: 0, borderRadius: 6, padding: "12px", cursor: "pointer" }}>Next case →</button>}
-      </div>
+      <ClosingCeremony
+        caseId={caseId}
+        xp={xp}
+        accent={acc}
+        reduced={reduced}
+        font={MONO}
+        ink={C.ink}
+        dim={C.dim}
+        signoff="Board cleared, Agent. Until the next case."
+        onStamp={() => setRevealed(true)}
+      />
+      {revealed && (
+        <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+          <button className="wr-btn" onClick={onExit} style={{ flex: 1, fontFamily: MONO, fontWeight: 700, fontSize: 13.5, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 6, padding: "12px", cursor: "pointer" }}>Back to map</button>
+          {onNext && <button className="wr-btn" onClick={onNext} style={{ flex: 1, fontFamily: MONO, fontWeight: 700, fontSize: 13.5, color: C.page, background: acc, border: 0, borderRadius: 6, padding: "12px", cursor: "pointer" }}>Next case →</button>}
+        </div>
+      )}
     </div>
   );
 }

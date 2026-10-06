@@ -19,6 +19,7 @@ import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
+import { ClosingCeremony } from "../engine/closingCeremony";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
 
 const C = {
@@ -56,6 +57,10 @@ const CSS = `
 .ph-reply{transition:transform .1s,border-color .15s}
 .ph-reply:focus-visible{outline:2px solid ${C.out};outline-offset:2px}
 .ph-btn:focus-visible{outline:2px solid ${C.wren};outline-offset:2px}
+.sr-stamp-in{animation:srStamp .3s cubic-bezier(.2,0,0,1)}
+@keyframes srStamp{0%{transform:rotate(-3deg) scale(1.15);opacity:0}30%{transform:rotate(-3deg) scale(1);opacity:1}38%{transform:rotate(-3deg) scale(1) translate(2px,0)}46%{transform:rotate(-3deg) scale(1) translate(0,0)}100%{transform:rotate(-3deg) scale(1);opacity:.9}}
+.sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
+@keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){.ph *{animation-duration:.001ms !important}}
 `;
 
@@ -366,7 +371,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           ) : phase === "test" ? (
             <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => { markCaseComplete(phoneCase.id); clearProgress(phoneCase.id); void saveExplorersProgress(parseInt(phoneCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
           ) : phase === "debrief" ? (
-            <Debrief data={phoneCase.debrief} onExit={onExit} onNext={onNextCase} />
+            <Debrief data={phoneCase.debrief} caseId={phoneCase.id} xp={100} reduced={!!reduce} onExit={onExit} onNext={onNextCase} />
           ) : (
             <>
               {/* chat header */}
@@ -677,7 +682,8 @@ function LockScreen({ caseNumber, open, title, onOpen }: { caseNumber: string; o
   );
 }
 
-function Debrief({ data, onExit, onNext }: { data: PhoneCase["debrief"]; onExit?: () => void; onNext?: () => void }) {
+function Debrief({ data, caseId, xp, reduced, onExit, onNext }: { data: PhoneCase["debrief"]; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
+  const [revealed, setRevealed] = useState(false);
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 24px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 700, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2 }}>{data.title}</div>
@@ -691,10 +697,23 @@ function Debrief({ data, onExit, onNext }: { data: PhoneCase["debrief"]; onExit?
       <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 14, padding: "13px 15px", fontSize: 13.5, lineHeight: 1.5, color: C.dim, marginBottom: 20 }}>
         <b style={{ color: C.pink, display: "block", fontSize: 10.5, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 5 }}>Your move this week</b>{data.move}
       </div>
-      <div style={{ display: "flex", gap: 10 }}>
-        <button className="ph-btn" onClick={onExit} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Back to map</button>
-        {onNext && <button className="ph-btn" onClick={onNext} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Next case →</button>}
-      </div>
+      <ClosingCeremony
+        caseId={caseId}
+        xp={xp}
+        accent={C.pink}
+        reduced={reduced}
+        font={UI}
+        ink={C.ink}
+        dim={C.dim}
+        signoff="Nice work tonight, Agent. I'm always in your ear if a message like this shows up again."
+        onStamp={() => setRevealed(true)}
+      />
+      {revealed && (
+        <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+          <button className="ph-btn" onClick={onExit} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Back to map</button>
+          {onNext && <button className="ph-btn" onClick={onNext} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Next case →</button>}
+        </div>
+      )}
     </div>
   );
 }
