@@ -54,14 +54,14 @@ const pillPrimary: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  height: 58,
-  padding: "0 34px",
+  height: 56,
+  padding: "0 30px",
   borderRadius: 999,
   background: "linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%)",
   color: "#fffdfa",
   fontFamily: "var(--lv2-font-display)",
-  fontSize: 16.5,
-  fontWeight: 700,
+  fontSize: 15.5,
+  fontWeight: 600,
   letterSpacing: "0.005em",
   textDecoration: "none",
   boxShadow: "0 16px 38px -12px rgba(10,112,133,0.9), 0 0 0 1px rgba(10,112,133,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
@@ -72,7 +72,7 @@ const pillGhost: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  height: 58,
+  height: 56,
   padding: "0 26px",
   borderRadius: 999,
   border: "1px solid rgba(20,22,29,0.22)",
@@ -255,6 +255,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         showTelemetry={false}
         showSiteLinks={false}
         homeHref="/corporate"
+        ctaTone="teal"
         cta={{ label: "Get in touch", href: "#enquiry" }}
         centre={
           <nav className="corp-navsections" aria-label="On this page">
@@ -301,8 +302,8 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
               </FadeUp>
               <FadeUp delay={0.18}>
                 <div className="corp-cta-row">
-                  <a href="#enquiry" style={pillPrimary}>
-                    Register your interest
+                  <a href={checkoutLive ? "#pricing" : "#enquiry"} style={pillPrimary}>
+                    {checkoutLive ? "See pricing and buy seats" : "Get in touch"}
                     <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
                   </a>
                   <a href="#courses" style={pillGhost} className="corp-hero-ghost">See the two courses</a>
@@ -354,7 +355,11 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                   <p className="corp-course-outcome">{c.outcome}</p>
                   <div className="corp-course-foot">
                     <span className="corp-course-price">{c.price}</span>
-                    <a href="#enquiry" className="corp-course-cta">Register your interest <span aria-hidden>&rarr;</span></a>
+                    {checkoutLive && (c.id === "cleared" || fluentLive) ? (
+                      <a href={`/corporate/buy?course=${c.id === "cleared" ? "ai-cleared" : "ai-fluent"}`} className="corp-course-cta">Buy seats <span aria-hidden>&rarr;</span></a>
+                    ) : (
+                      <a href="#enquiry" className="corp-course-cta">Get in touch <span aria-hidden>&rarr;</span></a>
+                    )}
                   </div>
                 </article>
               </FadeUp>
@@ -445,7 +450,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                       {fluentLive ? <a href={`/corporate/buy?course=ai-fluent&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy AI Fluent seats <span aria-hidden>&rarr;</span></a> : null}
                     </>
                   ) : (
-                    <a href="#enquiry" className="corp-pack-cta">Register your interest <span aria-hidden>&rarr;</span></a>
+                    <a href="#enquiry" className="corp-pack-cta">Get in touch <span aria-hidden>&rarr;</span></a>
                   )}
                 </div>
               </FadeUp>
@@ -792,7 +797,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-course-outcome { margin: 0; padding: 12px 14px; border-radius: 10px; background: color-mix(in srgb, var(--corp-accent) 9%, transparent); border: 1px solid color-mix(in srgb, var(--corp-accent) 30%, transparent); font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: #14161d; }
         .corp-course-foot { margin-top: auto; padding-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
         .corp-course-price { font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; color: #14161d; }
-        .corp-course-cta { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
+        .corp-course-cta { font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
         @media (max-width: 900px) { .corp-courses { grid-template-columns: 1fr; } }
 
         /* the section photograph */
@@ -847,7 +852,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-pricing-line { margin-top: 26px; }
         .corp-pack-unit { font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.62); margin-top: 8px; }
         .corp-pack p { margin: 14px 0 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.79); }
-        .corp-pack-cta { margin-top: auto; padding-top: 18px; align-self: flex-start; font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
+        .corp-pack-cta { margin-top: auto; padding-top: 18px; align-self: flex-start; font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
 
         /* the regulation line under the policy heading */
         .corp-reg-line { margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-family: var(--lv2-font-display); font-size: 14.5px; color: rgba(17,22,38,0.72); }
@@ -865,7 +870,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-pol-gate { margin-top: 6px; padding: 18px 18px 16px; border-radius: 16px; border: 1px solid rgba(10,112,133,0.35); background: rgba(10,112,133,0.06); display: flex; flex-direction: column; gap: 12px; }
         .corp-pol-gate-head { margin: 0; font-family: var(--lv2-font-display); font-size: 1.1rem; font-weight: 500; color: #14161d; }
         .corp-pol-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-        .corp-pol-send { height: 50px; padding: 0 24px; border-radius: 999px; border: none; cursor: pointer; background: linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%); color: #fffdfa; font-family: var(--lv2-font-display); font-size: 15px; font-weight: 700; box-shadow: 0 12px 30px -12px rgba(10,112,133,0.9); }
+        .corp-pol-send { height: 52px; padding: 0 26px; border-radius: 999px; border: none; cursor: pointer; background: linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%); color: #fffdfa; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; letter-spacing: 0.005em; box-shadow: 0 12px 30px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.25); }
         .corp-pol-send:disabled { opacity: 0.7; cursor: wait; }
         .corp-pol-fine { font-family: var(--lv2-font-display); font-size: 13px; color: rgba(17,22,38,0.66); }
         .corp-pol-err { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; font-weight: 600; color: #a63a08; }
