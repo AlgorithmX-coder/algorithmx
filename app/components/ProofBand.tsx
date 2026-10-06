@@ -71,8 +71,11 @@ const MARKS: Mark[] = [
   },
 ];
 
-export default function ProofBand({ tone = "night" }: { tone?: "night" | "sand" } = {}) {
+export default function ProofBand({ tone = "night", forFirms = false }: { tone?: "night" | "sand"; forFirms?: boolean } = {}) {
   const onSand = tone === "sand";
+  /* The ASDAN mark speaks to schools; a page for firms shows the three
+   * that apply to them. */
+  const marks = forFirms ? MARKS.filter((m) => !m.name.startsWith("ASDAN")) : MARKS;
   return (
     <section
       id="accreditations"
@@ -89,8 +92,8 @@ export default function ProofBand({ tone = "night" }: { tone?: "night" | "sand" 
             <p style={{ margin: "0 0 18px", textAlign: "left" }}>
               <span style={sectionMark}>{"// Accredited, certified and backed"}</span>
             </p>
-            <ul className="lv2-proof-cols">
-              {MARKS.map((m) => (
+            <ul className={marks.length === 3 ? "lv2-proof-cols lv2-proof-cols-three" : "lv2-proof-cols"}>
+              {marks.map((m) => (
                 <li key={m.name} className="lv2-proof-col">
                   <span className={m.dark ? "lv2-proof-plate lv2-proof-plate-dark" : "lv2-proof-plate"}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -137,6 +140,9 @@ export default function ProofBand({ tone = "night" }: { tone?: "night" | "sand" 
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
           gap: 26px;
+        }
+        .lv2-proof-cols-three {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
         }
         .lv2-proof-col {
           display: flex;

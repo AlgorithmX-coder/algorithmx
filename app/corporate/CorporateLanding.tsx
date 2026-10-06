@@ -329,7 +329,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         </section>
 
         {/* ACCREDITATIONS ─────────────────────────────────── */}
-        <ProofBand tone="sand" />
+        <ProofBand tone="sand" forFirms />
 
         {/* THE COURSES ────────────────────────────────────── */}
         <section id="courses" className="corp-section">
@@ -503,10 +503,13 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                 <p style={eyebrow}>{"// Get in touch"}</p>
                 <h2 style={h2}>Thinking of <span className="corp-grad">clearing your firm?</span></h2>
                 <p style={lede}>
-                  Tell us your headcount and the tools in use, and we&rsquo;ll walk you through a module on your screen, explain the onboarding process from the firm profile to the first certificate, and reply within two working days. We bring a data-protection summary to the first conversation so your DPO has what they need; the <Link href="/corporate/security">security and data handling page</Link> has it in writing.
+                  Tell us your headcount and the tools in use. We walk you through a module on your screen, explain onboarding from the firm profile to the first certificate, and reply within two working days.
                 </p>
                 <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)" }}>
                   Prefer email? <a href="mailto:admissions@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>admissions@algorithmx.co.uk</a>
+                </p>
+                <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)", marginTop: 8 }}>
+                  For your DPO: <Link href="/corporate/security" style={{ color: "var(--lv2-cyan-soft)" }}>security and data handling</Link>, in writing.
                 </p>
               </div>
             </FadeUp>
@@ -536,7 +539,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-hero-band {
           position: relative; isolation: isolate; overflow: hidden;
           background: #0b1117; color: #eef2f5;
-          min-height: clamp(620px, 92svh, 900px);
+          min-height: clamp(560px, 84svh, 780px);
           display: flex; flex-direction: column; justify-content: center;
         }
         .corp-hero-media { position: absolute; inset: 0; z-index: 0; }
@@ -591,7 +594,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
           padding: calc(var(--lv2-rail) * 1.3) var(--lv2-rail);
           scroll-margin-top: 128px;
         }
-        .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 1.2 + 120px); }
+        .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 1.2 + 36px); }
         .corp-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
         .corp-glow-amber { width: 520px; height: 520px; right: -140px; top: -80px; background: radial-gradient(circle, rgba(255,179,71,0.35), transparent 65%); }
         .corp-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(10,112,133,0.28), transparent 65%); }
@@ -867,7 +870,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-pol-err { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; font-weight: 600; color: #a63a08; }
         .corp-pol-ok { margin: 0; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.55; color: #14161d; }
         .corp-pol-doc { border-radius: 16px; overflow: hidden; background: #fffdf8; border: 1px solid rgba(20,22,29,0.3); box-shadow: 0 30px 70px -30px rgba(10,112,133,0.5); position: sticky; top: 140px; }
-        .corp-pol-doc-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #f4efe7; border-bottom: 1px solid rgba(17,22,38,0.08); font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(17,22,38,0.7); }
+        .corp-pol-doc-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px; padding: 10px 16px; background: #f4efe7; border-bottom: 1px solid rgba(17,22,38,0.08); font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(17,22,38,0.7); }
         .corp-pol-copy { height: 30px; padding: 0 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; flex: none; border: 1px solid rgba(20,22,29,0.25); background: #fffdf8; color: #14161d; font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
         .corp-pol-copy:hover { border-color: #0a7085; color: #0a7085; }
         .corp-pol-doc-tools { display: inline-flex; gap: 6px; flex: none; }
@@ -904,7 +907,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-form-tools { display: flex; flex-wrap: wrap; gap: 8px; min-height: 54px; align-items: center; }
         .corp-form-tool {
           height: 38px; padding: 0 13px; border-radius: 999px; cursor: pointer;
-          border: 1.5px solid rgba(10,112,133,0.28); background: rgba(8,10,22,0.78); color: rgba(242,246,255,0.86);
+          border: 1.5px solid rgba(20,22,29,0.2); background: rgba(255,253,248,0.85); color: #14161d;
           font-family: var(--lv2-font-display); font-size: 13.5px; font-weight: 600; transition: border-color .2s ease, background .2s ease, color .2s ease;
         }
         .corp-form-tool.on { border-color: #0a7085; background: rgba(10,112,133,0.14); color: #14161d; }
