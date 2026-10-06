@@ -21,11 +21,22 @@ export const KEY_STATUS_MESSAGE: Record<KeyStatus, string> = {
   malformed: "ANTHROPIC_API_KEY holds more than a key. Paste only the value that starts sk-ant-, on one line, and redeploy.",
 };
 
-let client: Anthropic | null = null;
-export function anthropicClient(opts: { timeout: number }): Anthropic | null {
+/* One client per setting. No automatic retry: every caller has its own
+ * fallback (the rules-only grade, the scripted reply), so an overloaded or
+ * slow API hands over inside the timeout instead of after a retry on top.
+ * Seen on production 2026-10-06: a retry plus two timeouts kept a learner
+ * waiting about two minutes before the scripted reply appeared. */
+const clients = new Map<string, Anthropic>();
+export function anthropicClient(opts: { timeout: number; maxRetries?: number }): Anthropic | null {
   if (apiKeyStatus() !== "ok") return null;
-  if (!client) client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!.trim(), maxRetries: 1, timeout: opts.timeout });
-  return client;
+  const maxRetries = opts.maxRetries ?? 0;
+  const key = `${opts.timeout}:${maxRetries}`;
+  let c = clients.get(key);
+  if (!c) {
+    c = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!.trim(), maxRetries, timeout: opts.timeout });
+    clients.set(key, c);
+  }
+  return c;
 }
 
 /* Never let a key, a header or a whole request body reach the logs. */
