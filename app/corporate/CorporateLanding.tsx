@@ -242,6 +242,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
   useEffect(() => {
     const nav = subnavRef.current;
     if (!nav || !activeSection) return;
+    if (window.scrollY < 120) return;
     const chip = nav.querySelector<HTMLElement>(`[data-target="${activeSection}"]`);
     if (!chip || nav.scrollWidth <= nav.clientWidth) return;
     nav.scrollTo({ left: chip.offsetLeft - (nav.clientWidth - chip.clientWidth) / 2, behavior: "smooth" });
@@ -253,6 +254,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         tone={overHero ? "night" : "sand"}
         showTelemetry={false}
         showSiteLinks={false}
+        homeHref="/corporate"
         cta={{ label: "Get in touch", href: "#enquiry" }}
         centre={
           <nav className="corp-navsections" aria-label="On this page">
@@ -263,7 +265,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
       <main className="corp-main" style={{ position: "relative", color: "var(--lv2-ink)", minHeight: "100vh", overflowX: "clip" }}>
         <div className="corp-subnav-wrap">
           <nav ref={subnavRef} className="corp-subnav" aria-label="On this page">
-            {SECTIONS.map(sectionChip)}
+            {SECTIONS.filter(([, , cta]) => !cta).map(sectionChip)}
           </nav>
         </div>
 
@@ -282,12 +284,6 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
             <span className="corp-hero-fade" />
           </div>
           <div className="corp-section corp-hero-section">
-          <FadeUp>
-            <div className="corp-toprow">
-              <Link href="/" className="corp-toplink"><span aria-hidden>←</span> Back to home</Link>
-            </div>
-          </FadeUp>
-
           <div className="corp-hero-grid">
             <div className="corp-hero">
               <FadeUp>
