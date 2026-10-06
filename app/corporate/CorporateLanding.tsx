@@ -231,7 +231,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
           else visible.delete(e.target.id);
         }
         const first = SECTIONS.find(([id]) => visible.has(id));
-        if (first) setActiveSection(first[0]);
+        setActiveSection(first ? first[0] : "");
       },
       { rootMargin: "-130px 0px -60% 0px", threshold: 0 },
     );
@@ -241,8 +241,9 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
 
   useEffect(() => {
     const nav = subnavRef.current;
-    if (!nav || !activeSection) return;
-    if (window.scrollY < 120) return;
+    if (!nav) return;
+    /* Above the first section (the hero) the strip rests at its start. */
+    if (!activeSection || window.scrollY < 120) { nav.scrollTo({ left: 0, behavior: "auto" }); return; }
     const chip = nav.querySelector<HTMLElement>(`[data-target="${activeSection}"]`);
     if (!chip || nav.scrollWidth <= nav.clientWidth) return;
     nav.scrollTo({ left: chip.offsetLeft - (nav.clientWidth - chip.clientWidth) / 2, behavior: "smooth" });
