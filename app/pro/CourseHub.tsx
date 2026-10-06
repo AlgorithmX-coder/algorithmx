@@ -44,7 +44,7 @@ const ACTS: Act[] = [
   {
     cls: "a4", tag: "Act 4", name: "Get hired", focus: "Governance, scripting and the career on-ramp.",
     modules: [
-      { n: 17, title: "Governance, risk & compliance", blurb: "The huge hiring lane most beginners never hear about.", tag: "Security+ 5.0", status: "soon" },
+      { n: 17, title: "Governance, risk & compliance", blurb: "The huge hiring lane most beginners never hear about.", tag: "Security+ 5.0", href: "/pro/module17", status: "live" },
       { n: 18, title: "Scripting for defenders", blurb: "A little real code goes a long way: parse logs, check input, automate.", tag: "Code Lab", href: "/pro/code", status: "live" },
       { n: 19, title: "Resilience: backups & continuity", blurb: "Surviving the bad day, from ransomware to disaster recovery.", tag: "Security+ 3.0", status: "soon" },
       { n: 20, title: "The roles & the cert roadmap", blurb: "Which job, which certificate, and the honest state of the market.", tag: "Career map", status: "soon" },

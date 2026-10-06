@@ -1510,3 +1510,96 @@ export function IncidentReportLab({ onDidTry }: LabProps) {
       ] },
     ]} />;
 }
+
+/* ---- Module 17 labs: governance, risk & compliance (GRC) ---- */
+
+const RISK_TREATMENT: Cat[] = [
+  { id: "reduce", label: "Reduce", color: T.green },
+  { id: "transfer", label: "Transfer", color: T.cyan },
+  { id: "avoid", label: "Avoid", color: T.amber },
+  { id: "accept", label: "Accept", color: T.faint },
+];
+export function RiskTreatmentLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={RISK_TREATMENT}
+    prompt="There are four ways to treat a risk (from Module 1). Tap each decision, then tap which treatment it is. This is the language GRC uses every day."
+    items={[
+      { text: "Apply MFA and patch the system to lower the chance and impact", cat: "reduce", why: "Lowering likelihood or impact with controls is reducing the risk." },
+      { text: "Buy cyber insurance so someone else covers part of the loss", cat: "transfer", why: "Shifting the financial impact to an insurer is transferring the risk." },
+      { text: "Stop offering the risky feature entirely", cat: "avoid", why: "Not doing the risky activity at all is avoiding the risk." },
+      { text: "Decide a small risk is not worth fixing, and sign it off in writing", cat: "accept", why: "Knowingly living with a risk, documented and approved, is accepting it." },
+      { text: "Outsource a risky process to a specialist provider under contract", cat: "transfer", why: "Moving the risk to a third party (contractually) is a form of transfer." },
+      { text: "Add monitoring and backups to lessen a ransomware risk", cat: "reduce", why: "Controls that lower impact and likelihood reduce the risk." },
+    ]} />;
+}
+
+const FRAMEWORK: Cat[] = [
+  { id: "iso", label: "ISO 27001", color: T.cyan },
+  { id: "csf", label: "NIST CSF", color: T.amber },
+  { id: "ce", label: "Cyber Essentials", color: T.green },
+  { id: "gdpr", label: "UK GDPR", color: T.red },
+];
+export function FrameworkLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={FRAMEWORK}
+    prompt="GRC uses a handful of key frameworks and standards. Tap each description, then tap which one it is. Knowing what each is for is day-one GRC knowledge."
+    items={[
+      { text: "An international standard for a certifiable information-security management system", cat: "iso", why: "ISO 27001 is the certifiable ISMS standard: a whole management system for security." },
+      { text: "A US framework organised around five functions: identify, protect, detect, respond, recover", cat: "csf", why: "The NIST Cybersecurity Framework is structured around those functions." },
+      { text: "A UK scheme of five basic controls that blocks most common attacks", cat: "ce", why: "Cyber Essentials is the UK's five-control baseline (Module 12)." },
+      { text: "A UK law governing how personal data must be handled and protected", cat: "gdpr", why: "UK GDPR is data-protection law, not a voluntary framework (Module 5)." },
+      { text: "Certifiable, management-system-based, and widely required by enterprise customers", cat: "iso", why: "ISO 27001 certification is often demanded in enterprise contracts." },
+      { text: "A free, flexible framework many organisations use to structure their security programme", cat: "csf", why: "The NIST CSF is widely used, free, and framework (not law or certification)." },
+    ]} />;
+}
+
+const GRC_DOC: Cat[] = [
+  { id: "policy", label: "Policy (what & why)", color: T.cyan },
+  { id: "standard", label: "Standard (specific rule)", color: T.amber },
+  { id: "procedure", label: "Procedure (how, step by step)", color: T.green },
+  { id: "control", label: "Control (the safeguard itself)", color: T.red },
+];
+export function PolicyControlLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={GRC_DOC}
+    prompt="GRC distinguishes policies, standards, procedures and controls. Tap each example, then tap which it is. The distinction matters when you build or audit a programme."
+    items={[
+      { text: "'We will protect customer data and comply with the law.' (high-level intent)", cat: "policy", why: "A policy states what the organisation will do and why, at a high level." },
+      { text: "'All passwords must be at least 12 characters and use MFA.' (specific rule)", cat: "standard", why: "A standard is a specific, measurable requirement that supports a policy." },
+      { text: "'To onboard a user: 1) create account, 2) assign least-privilege role, 3) ...' (steps)", cat: "procedure", why: "A procedure is the step-by-step how-to that implements standards." },
+      { text: "The MFA system itself, actually enforcing the second factor", cat: "control", why: "A control is the real safeguard that does the protecting." },
+      { text: "'Access is granted on least privilege.' (a guiding rule)", cat: "standard", why: "A specific rule supporting policy is a standard." },
+      { text: "A firewall configured to block unwanted traffic", cat: "control", why: "The firewall doing its job is the control, the actual safeguard." },
+    ]} />;
+}
+
+const THIRD_PARTY: Cat[] = [
+  { id: "manages", label: "Manages third-party risk", color: T.green },
+  { id: "ignores", label: "Ignores third-party risk", color: T.red },
+];
+export function ThirdPartyLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={THIRD_PARTY}
+    prompt="Your suppliers' security is your risk too. For each practice, decide: does it manage third-party risk, or ignore it?"
+    items={[
+      { text: "Assessing a supplier's security before trusting them with your data.", cat: "manages", why: "Due diligence before onboarding is core third-party risk management." },
+      { text: "Assuming a big-name vendor must be secure, with no checks.", cat: "ignores", why: "Size is not security. Unchecked trust is exactly how supply-chain breaches start." },
+      { text: "Requiring security standards (e.g. certifications) in supplier contracts.", cat: "manages", why: "Contractual security requirements set and enforce expectations." },
+      { text: "Giving a supplier far more access than they need, indefinitely.", cat: "ignores", why: "Over-broad, standing third-party access is a classic risk (recall Target's HVAC vendor)." },
+      { text: "Monitoring and periodically re-reviewing key suppliers.", cat: "manages", why: "Ongoing monitoring catches changes; risk is not a one-off check." },
+      { text: "Never knowing which suppliers can reach your systems or data.", cat: "ignores", why: "You cannot manage what you do not track. Unknown third-party access is unmanaged risk." },
+    ]} />;
+}
+
+const AUDIT_EVIDENCE: Cat[] = [
+  { id: "evidence", label: "Good audit evidence", color: T.green },
+  { id: "not", label: "Not real evidence", color: T.red },
+];
+export function AuditEvidenceLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={AUDIT_EVIDENCE}
+    prompt="An audit checks that controls really exist and work, proven by evidence, not claims. For each, decide: good audit evidence, or not?"
+    items={[
+      { text: "Logs and configuration screenshots showing MFA is actually enforced.", cat: "evidence", why: "Verifiable records demonstrating a control works are good evidence." },
+      { text: "Someone saying 'yes, we definitely do that' with nothing to show.", cat: "not", why: "Verbal assurance is not evidence. Audits need proof, not claims." },
+      { text: "A dated access-review record showing permissions were checked.", cat: "evidence", why: "A documented, dated record of a control being performed is solid evidence." },
+      { text: "A policy document that is written but never actually followed.", cat: "not", why: "A policy on paper, with no proof it is enforced, does not evidence a working control." },
+      { text: "A report from a tool confirming systems are patched to a standard.", cat: "evidence", why: "Tool-generated, verifiable output demonstrating compliance is good evidence." },
+      { text: "'Trust us, it is all fine', with no records kept.", cat: "not", why: "No records means nothing to verify. Audits rely on demonstrable evidence." },
+    ]} />;
+}
