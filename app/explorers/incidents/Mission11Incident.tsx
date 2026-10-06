@@ -236,6 +236,15 @@ function WatchRigPhase({ reduced, audio, onDone }: PhaseProps) {
             onPointerDown={start}
             onPointerUp={stop}
             onPointerLeave={stop}
+            onKeyDown={(e) => {
+              if ((e.key === "Enter" || e.key === " ") && !e.repeat) {
+                e.preventDefault();
+                start();
+              }
+            }}
+            onKeyUp={(e) => {
+              if (e.key === "Enter" || e.key === " ") stop();
+            }}
             className="sr-btn sr-scanfill"
             style={{
               fontFamily: MONO,

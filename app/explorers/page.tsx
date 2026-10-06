@@ -104,7 +104,7 @@ const TOPICS: Record<string, string> = {
 
 // Page-level block-intro slides (ATLAS briefings), shown once when a kid opens
 // the FIRST case of a block. Block 2 self-briefs inside the phone, so it's not
-// listed here; blocks 3-4 will be added as their intros are built.
+// listed here.
 const BLOCK_INTROS: Record<number, BlockIntroData> = { 1: block1Intro, 2: block2Intro, 3: block3Intro, 4: block4Intro };
 
 // Block 2 cases run in THE PHONE (not the Signal Room engine), one PhoneCase each.
@@ -139,7 +139,7 @@ const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
 // terminal palette (scoped to this page)
 const SYS = "#34E1FF"; // system / chrome
 const TXT = "#D3E6F7"; // readable body
-const DIM = "#5E7699"; // muted
+const DIM = "#617a9e"; // muted
 const AMBER = "#FFC24B"; // the next case
 
 /* Locked cards read as "encrypted intel awaiting decryption", not dead grey

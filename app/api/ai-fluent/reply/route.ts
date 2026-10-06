@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
   const material = loop?.material ? materialText(loop.material) : undefined;
   const turn = history.filter((h) => h.role === "user").length + 1;
   const fallback = fluentScriptedReply(prompt, turn, material);
-  const ai = anthropicClient({ timeout: 30_000 });
+  const ai = anthropicClient({ timeout: 20_000 });
   if (!ai) return new Response(fallback, { headers: TEXT_HEADERS });
   await recordModelCall(session.user.id, "AI_FLUENT", "reply");
 

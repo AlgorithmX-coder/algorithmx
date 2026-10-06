@@ -40,6 +40,7 @@ model User {
   enrolments          Enrolment[]
   packShareLinks      PackShareLink[]
   classesTaught       Class[]
+  proProgress         ProProgress[]
 }
 
 model Account {
@@ -714,4 +715,31 @@ model Class {
 
   @@index([orgId])
   @@index([teacherId])
+}
+
+// ---------------------------------------------------------------------------
+// Cyber Pro (consumer, adult). Simple server-side progress for the 21-module
+// course, so a logged-in learner's completed topics follow them across
+// devices. Deliberately minimal and ADDITIVE: the client keeps using
+// localStorage as the primary store and syncs here best-effort, so this table
+// being briefly absent (e.g. before its migration deploys) never breaks the
+// course. One row per (user, completed topic); moduleId is kept so a module
+// can be reset in one query.
+// ---------------------------------------------------------------------------
+
+model ProProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  /// The module the topic belongs to, e.g. "module-06". Lets a reset clear a
+  /// whole module in one query.
+  moduleId    String
+  /// The completed topic, e.g. "m6t1". Unique per user.
+  topicId     String
+  completedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+  @@index([userId])
+  @@index([userId, moduleId])
 }

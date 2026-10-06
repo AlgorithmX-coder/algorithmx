@@ -136,7 +136,7 @@ test.describe("Critical UI invariants", () => {
  * cookie; everything else still goes to /password. `bare` carries no
  * site_auth cookie. */
 bare.describe("Launch gate", () => {
-  for (const path of ["/corporate", "/corporate/buy", "/ai-cleared", "/ai-fluent", "/ai-cleared/join/not-a-real-token", "/verify/AXC-0000-0000", "/login", "/signup", "/forgot-password"]) {
+  for (const path of ["/corporate", "/corporate/buy", "/ai-cleared", "/ai-fluent", "/ai-cleared/join/not-a-real-token", "/verify/AXC-0000-0000", "/login", "/signup", "/forgot-password", "/privacy", "/terms"]) {
     bare(`${path} is open without the site password`, async ({ page }) => {
       const res = await page.goto(path);
       expect(res?.status(), "answers rather than errors").toBeLessThan(500);

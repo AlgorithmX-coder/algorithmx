@@ -219,17 +219,16 @@ export const case09Phone: PhoneCase = {
         { t: "wren", text: "Somewhere in every long con is the turn, the exact moment it flips from giving to taking. Up to then, they gave, attention, gifts, warmth. After it, they take, money, codes, favours. The turn is usually gentle, wrapped in the friendship so you barely feel it. But once you can spot the turn, you can leave the very second it happens.", voice: "/audio/wren/m09p-s5-learn.mp3" },
       ],
       practice: [
-        { t: "con", text: "Week 1: honestly you're the best, i love our chats 💛" },
-        { t: "con", text: "Week 2: sent you a little gift, just because 🎁", delay: 900 },
-        { t: "con", text: "Week 3: heyy so, tiny favour, could you lend me a bit of credit? i'll pay you back 🙏", delay: 900 },
         {
-          t: "choose",
-          prompt: "Which message is THE turn, from giving to taking?",
-          options: [
-            { label: "Week 3, the first time they take instead of give", outcome: "good", then: [{ t: "wren", text: "Spot on. Weeks one and two were all giving, warmth and a gift. Week three is the first take, wrapped up as a tiny favour. That's the turn, and it's your cue to walk.", voice: "/audio/wren/m09p-s5-ok.mp3" }] },
-            { label: "Week 1, the friendly opener", outcome: "bad", then: [{ t: "wren", text: "That's still giving, pure warmth, no ask. The turn is the first time they take something. Look further down. Try again.", voice: "/audio/wren/m09p-s5-bad.mp3" }] },
-            { label: "Week 2, the gift", outcome: "bad", then: [{ t: "wren", text: "A gift is still giving, it's the bait. The turn is the first ask, the first time it takes. Try again.", voice: "/audio/wren/m09p-s5-bad2.mp3" }] },
+          t: "tag",
+          prompt: "Tap the one message that's THE turn, from giving to taking.",
+          segments: [
+            { text: "Week 1: honestly you're the best, i love our chats 💛\n\n" },
+            { text: "Week 2: sent you a little gift, just because 🎁\n\n" },
+            { text: "Week 3: heyy so, tiny favour, could you lend me a bit of credit? i'll pay you back 🙏", tellId: "turn" },
           ],
+          ok: "Spot on. Weeks one and two were all giving, warmth and a gift. Week three is the first take, wrapped up as a tiny favour. That's the turn, and it's your cue to walk.",
+          okVoice: "/audio/wren/m09p-s5-ok.mp3",
         },
         { t: "con", text: "Week 1: you're honestly my favourite person to talk to 💛", ask: true },
         { t: "con", text: "Week 2: made you a little playlist, just because 🎧", ask: true, delay: 900 },

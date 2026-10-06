@@ -56,6 +56,10 @@ export type PhoneStep =
       // almost always needs this one (name every lever, not just the first).
       t: "tag";
       segments: TagSegment[];
+      /** Overrides the default "tap every part that's pulling a lever" dock
+       *  line — needed when the segments are several candidate MESSAGES
+       *  rather than phrases within one (e.g. "tap the one that's the turn"). */
+      prompt?: string;
       delay?: number;
       ok?: string;
       okVoice?: string;

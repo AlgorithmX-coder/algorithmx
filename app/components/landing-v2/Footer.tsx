@@ -36,8 +36,14 @@ const FOOTER_TONES = {
   },
 } as const;
 
-export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
+/* The corporate variant carries what a firm's buyer looks for at the foot
+ * of a page: the two courses, the trust pages and the company line, and
+ * none of the children's courses. */
+export type FooterVariant = "site" | "corporate";
+
+export default function Footer({ tone = "night", variant = "site" }: { tone?: FooterTone; variant?: FooterVariant }) {
   const T = FOOTER_TONES[tone];
+  const corporate = variant === "corporate";
   return (
     <footer
       style={{
@@ -116,16 +122,40 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
             </p>
           </div>
 
-          <FooterColumn
-            tone={tone}
-            label="Subjects"
-            links={[
-              { name: "Cybersecurity", href: "/cybersecurity" },
-              { name: "Cyber Heroes", href: "/cyberheroes" },
-              { name: "Cyber Explorers", href: "/cyberexplorers" },
-            ]}
-            note="+ 5 more streams, encrypted until launch"
-          />
+          {corporate ? (
+            <FooterColumn
+              tone={tone}
+              label="Courses"
+              links={[
+                { name: "AI Cleared", href: "/corporate#courses" },
+                { name: "AI Fluent", href: "/corporate#courses" },
+                { name: "Pricing", href: "/corporate#pricing" },
+                { name: "Buy seats", href: "/corporate/buy" },
+              ]}
+            />
+          ) : (
+            <FooterColumn
+              tone={tone}
+              label="Subjects"
+              links={[
+                { name: "Cybersecurity", href: "/cybersecurity" },
+                { name: "Cyber Heroes", href: "/cyberheroes" },
+                { name: "Cyber Explorers", href: "/cyberexplorers" },
+              ]}
+              note="+ 5 more streams, encrypted until launch"
+            />
+          )}
+          {corporate && (
+            <FooterColumn
+              tone={tone}
+              label="Trust"
+              links={[
+                { name: "Security and data handling", href: "/corporate/security" },
+                { name: "Free AI use policy", href: "/corporate#policy" },
+                { name: "Privacy", href: "/privacy" },
+              ]}
+            />
+          )}
           {/* HONESTY PASS (2026-07-17): dead `href="#"` links removed —
            * About / For Parents / For Teens / Pricing and the entire
            * Legal column (Privacy / Terms / Cookies / Safeguarding) all
@@ -136,11 +166,18 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
           <FooterColumn
             tone={tone}
             label="Company"
-            links={[
-              { name: "For Schools", href: "/schools" },
-              { name: "Corporate training", href: "/corporate" },
-              { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
-            ]}
+            links={
+              corporate
+                ? [
+                    { name: "For schools", href: "/schools" },
+                    { name: "Contact", href: "mailto:admissions@algorithmx.co.uk" },
+                  ]
+                : [
+                    { name: "For Schools", href: "/schools" },
+                    { name: "Corporate training", href: "/corporate" },
+                    { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
+                  ]
+            }
           />
         </div>
 
@@ -151,9 +188,9 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
             margin: "40px 0 22px",
           }}
         />
-        <div className="lv2-footer-bottom">
+        <div className={corporate ? "lv2-footer-bottom lv2-footer-bottom-corp" : "lv2-footer-bottom"}>
           <a
-            href="mailto:support@algorithmx.co.uk"
+            href={corporate ? "mailto:admissions@algorithmx.co.uk" : "mailto:support@algorithmx.co.uk"}
             style={{
               /* Bumped from 0.45 -> 0.7 alpha so the support email
                * meets WCAG AA contrast (~4.5:1) on the dark backdrop. */
@@ -164,7 +201,7 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
               textDecoration: "none",
             }}
           >
-            support@algorithmx.co.uk
+            {corporate ? "admissions@algorithmx.co.uk" : "support@algorithmx.co.uk"}
           </a>
           <p
             style={{
@@ -176,7 +213,7 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
               letterSpacing: "0.06em",
             }}
           >
-            &copy; 2026 AlgorithmX Ltd. Registered in England and Wales.
+            &copy; 2026 AlgorithmX Limited. Company 17266946, registered in England and Wales. Registered office: 301b Uppingham Road, Leicester LE5 4DG.
           </p>
         </div>
       </div>
@@ -187,6 +224,16 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
           grid-template-columns: 2fr 1fr 1fr;
           gap: 48px;
         }
+        .lv2-footer-grid:has(> :nth-child(4)) {
+          grid-template-columns: 1.6fr 1fr 1fr 1fr;
+        }
+        .lv2-footer-bottom-corp {
+          flex-wrap: wrap;
+        }
+        .lv2-footer-bottom-corp p {
+          max-width: 62ch;
+          line-height: 1.6;
+        }
         .lv2-footer-bottom {
           display: flex;
           justify-content: space-between;
@@ -194,7 +241,8 @@ export default function Footer({ tone = "night" }: { tone?: FooterTone }) {
           gap: 12px;
         }
         @media (max-width: 760px) {
-          .lv2-footer-grid {
+          .lv2-footer-grid,
+          .lv2-footer-grid:has(> :nth-child(4)) {
             grid-template-columns: 1fr 1fr;
             gap: 32px;
           }

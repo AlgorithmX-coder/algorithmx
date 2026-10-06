@@ -70,9 +70,9 @@ const field: React.CSSProperties = {
   fontFamily: "var(--lv2-font-display)",
   fontSize: 16.5,
   fontWeight: 500,
-  color: "#f2f6ff",
-  background: "rgba(6,9,20,0.86)",
-  border: "1.5px solid rgba(10,112,133,0.4)",
+  color: "#14161d",
+  background: "#fffdf8",
+  border: "1.5px solid rgba(20,22,29,0.18)",
   outline: "none",
   boxSizing: "border-box",
   transition: "border-color .2s ease, box-shadow .2s ease",
@@ -83,7 +83,7 @@ function focus(e: React.FocusEvent<HTMLElement>) {
   e.currentTarget.style.boxShadow = `0 0 0 3px rgba(10,112,133,0.14)`;
 }
 function blur(e: React.FocusEvent<HTMLElement>) {
-  e.currentTarget.style.borderColor = "rgba(10,112,133,0.4)";
+  e.currentTarget.style.borderColor = "rgba(20,22,29,0.18)";
   e.currentTarget.style.boxShadow = "none";
 }
 
@@ -235,13 +235,13 @@ export default function EnquiryForm() {
             borderRadius: 999,
             border: "none",
             cursor: state === "loading" ? "wait" : "pointer",
-            background: "linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%)",
-            color: "#04050d",
+            background: "linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%)",
+            color: "#fffdfa",
             fontFamily: "var(--lv2-font-display)",
-            fontSize: 15,
-            fontWeight: 700,
-            letterSpacing: "0.01em",
-            boxShadow: "0 12px 30px -12px rgb(10,112,133)",
+            fontSize: 15.5,
+            fontWeight: 600,
+            letterSpacing: "0.005em",
+            boxShadow: "0 12px 30px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.25)",
             opacity: state === "loading" ? 0.7 : 1,
           }}
         >

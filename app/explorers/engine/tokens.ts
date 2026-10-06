@@ -16,7 +16,7 @@ export const T = {
   glowCyan: "#00E5FF",
   textPrimary: "#E6EDF3",
   textSecondary: "#8FA0B2",
-  textDisabled: "#5A6B80",
+  textDisabled: "#677a92",
   // semantic accents — roles, not decorations
   arcCyan: "#34E1FF", // identity / live data (matrix-terminal cyan)
   confirmedGreen: "#3ECF8E", // success / verified

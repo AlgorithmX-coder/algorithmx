@@ -54,14 +54,14 @@ const pillPrimary: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  height: 58,
-  padding: "0 34px",
+  height: 56,
+  padding: "0 30px",
   borderRadius: 999,
   background: "linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%)",
   color: "#fffdfa",
   fontFamily: "var(--lv2-font-display)",
-  fontSize: 16.5,
-  fontWeight: 700,
+  fontSize: 15.5,
+  fontWeight: 600,
   letterSpacing: "0.005em",
   textDecoration: "none",
   boxShadow: "0 16px 38px -12px rgba(10,112,133,0.9), 0 0 0 1px rgba(10,112,133,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
@@ -72,7 +72,7 @@ const pillGhost: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  height: 58,
+  height: 56,
   padding: "0 26px",
   borderRadius: 999,
   border: "1px solid rgba(20,22,29,0.22)",
@@ -173,8 +173,8 @@ const PILLARS = [
 /* Per person, per year, in packs of ten. Owner-set 2026-09-26; AI Cleared Firm tier £25 from 2026-09-29. */
 const PACKS = [
   { name: "Team", seats: "10 to 49 seats", cleared: "£29", fluent: "£59", note: "Running in your firm within a week.", accent: "#0a7085" },
-  { name: "Firm", seats: "50 to 249 seats", cleared: "£25", fluent: "£45", note: "Team-level reporting and a named onboarding call.", accent: "#5744c9" },
-  { name: "Enterprise", seats: "250 seats and up", cleared: "Please enquire", fluent: "Please enquire", note: "A named onboarding call; SSO, SCORM export and data classes per division on request.", accent: "#8a5400" },
+  { name: "Firm", seats: "50 to 249 seats", cleared: "£25", fluent: "£45", note: "The register with CSV export, and a named onboarding call.", accent: "#5744c9" },
+  { name: "Enterprise", seats: "250 seats and up", cleared: "Priced per firm", fluent: "Priced per firm", note: "A named onboarding call; SSO, SCORM export and data classes per division on request.", accent: "#8a5400" },
 ];
 
 const FAQS = [
@@ -231,7 +231,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
           else visible.delete(e.target.id);
         }
         const first = SECTIONS.find(([id]) => visible.has(id));
-        if (first) setActiveSection(first[0]);
+        setActiveSection(first ? first[0] : "");
       },
       { rootMargin: "-130px 0px -60% 0px", threshold: 0 },
     );
@@ -241,7 +241,9 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
 
   useEffect(() => {
     const nav = subnavRef.current;
-    if (!nav || !activeSection) return;
+    if (!nav) return;
+    /* Above the first section (the hero) the strip rests at its start. */
+    if (!activeSection || window.scrollY < 120) { nav.scrollTo({ left: 0, behavior: "auto" }); return; }
     const chip = nav.querySelector<HTMLElement>(`[data-target="${activeSection}"]`);
     if (!chip || nav.scrollWidth <= nav.clientWidth) return;
     nav.scrollTo({ left: chip.offsetLeft - (nav.clientWidth - chip.clientWidth) / 2, behavior: "smooth" });
@@ -253,6 +255,8 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         tone={overHero ? "night" : "sand"}
         showTelemetry={false}
         showSiteLinks={false}
+        homeHref="/corporate"
+        ctaTone="teal"
         cta={{ label: "Get in touch", href: "#enquiry" }}
         centre={
           <nav className="corp-navsections" aria-label="On this page">
@@ -263,7 +267,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
       <main className="corp-main" style={{ position: "relative", color: "var(--lv2-ink)", minHeight: "100vh", overflowX: "clip" }}>
         <div className="corp-subnav-wrap">
           <nav ref={subnavRef} className="corp-subnav" aria-label="On this page">
-            {SECTIONS.map(sectionChip)}
+            {SECTIONS.filter(([, , cta]) => !cta).map(sectionChip)}
           </nav>
         </div>
 
@@ -282,12 +286,6 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
             <span className="corp-hero-fade" />
           </div>
           <div className="corp-section corp-hero-section">
-          <FadeUp>
-            <div className="corp-toprow">
-              <Link href="/" className="corp-toplink"><span aria-hidden>←</span> Back to home</Link>
-            </div>
-          </FadeUp>
-
           <div className="corp-hero-grid">
             <div className="corp-hero">
               <FadeUp>
@@ -305,8 +303,8 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
               </FadeUp>
               <FadeUp delay={0.18}>
                 <div className="corp-cta-row">
-                  <a href="#enquiry" style={pillPrimary}>
-                    Register your interest
+                  <a href={checkoutLive ? "#pricing" : "#enquiry"} style={pillPrimary}>
+                    {checkoutLive ? "See pricing and buy seats" : "Get in touch"}
                     <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
                   </a>
                   <a href="#courses" style={pillGhost} className="corp-hero-ghost">See the two courses</a>
@@ -329,7 +327,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         </section>
 
         {/* ACCREDITATIONS ─────────────────────────────────── */}
-        <ProofBand tone="sand" />
+        <ProofBand tone="sand" forFirms />
 
         {/* THE COURSES ────────────────────────────────────── */}
         <section id="courses" className="corp-section">
@@ -358,7 +356,11 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                   <p className="corp-course-outcome">{c.outcome}</p>
                   <div className="corp-course-foot">
                     <span className="corp-course-price">{c.price}</span>
-                    <a href="#enquiry" className="corp-course-cta">Register your interest <span aria-hidden>&rarr;</span></a>
+                    {checkoutLive && (c.id === "cleared" || fluentLive) ? (
+                      <a href={`/corporate/buy?course=${c.id === "cleared" ? "ai-cleared" : "ai-fluent"}`} className="corp-course-cta">Buy seats <span aria-hidden>&rarr;</span></a>
+                    ) : (
+                      <a href="#enquiry" className="corp-course-cta">Get in touch <span aria-hidden>&rarr;</span></a>
+                    )}
                   </div>
                 </article>
               </FadeUp>
@@ -429,7 +431,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
           <FadeUp>
             <p style={eyebrow}>{"// Pricing"}</p>
             <h2 style={h2}>One price per person. <span className="corp-grad">Everything included.</span></h2>
-            <p style={lede}>Per person, per year, in packs of ten, with the content refreshed as the tools change. Every seat carries the sandbox, the register, the certificates and the policy pack. Both courses together, fifteen percent off.</p>
+            <p style={lede}>Per person, per year, in packs of ten, with the content refreshed as the tools change. Every seat carries the sandbox, the register, the certificates and the policy pack. Buy either course, or both, for the same people.</p>
           </FadeUp>
           <div className="corp-grid-3" style={{ marginTop: 36 }}>
             {PACKS.map((k, i) => (
@@ -437,11 +439,11 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                 <div className="corp-card corp-pack" style={{ ["--corp-accent" as string]: k.accent }}>
                   <span className="corp-pack-name">{k.name}</span>
                   <span className="corp-pack-seats">{k.seats}</span>
-                  <dl className="corp-pack-prices">
+                  <dl className={k.name === "Enterprise" ? "corp-pack-prices corp-pack-prices-text" : "corp-pack-prices"}>
                     <div><dt>AI Cleared</dt><dd>{k.cleared}</dd></div>
                     <div><dt>AI Fluent</dt><dd>{k.fluent}</dd></div>
                   </dl>
-                  <span className="corp-pack-unit">per person, per year</span>
+                  <span className="corp-pack-unit">{k.name === "Enterprise" ? "on a signed agreement" : "per person, per year"}</span>
                   <p>{k.note}</p>
                   {checkoutLive && k.name !== "Enterprise" ? (
                     <>
@@ -449,12 +451,18 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                       {fluentLive ? <a href={`/corporate/buy?course=ai-fluent&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy AI Fluent seats <span aria-hidden>&rarr;</span></a> : null}
                     </>
                   ) : (
-                    <a href="#enquiry" className="corp-pack-cta">Register your interest <span aria-hidden>&rarr;</span></a>
+                    <a href="#enquiry" className="corp-pack-cta">Get in touch <span aria-hidden>&rarr;</span></a>
                   )}
                 </div>
               </FadeUp>
             ))}
           </div>
+          <FadeUp>
+            <p className="corp-reg-line corp-pricing-line">
+              <span>What procurement asks for, in writing:</span>
+              <Link href="/corporate/security">Security and data handling</Link>
+            </p>
+          </FadeUp>
         </section>
 
         {/* FREE POLICY ────────────────────────────────────── */}
@@ -503,10 +511,13 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                 <p style={eyebrow}>{"// Get in touch"}</p>
                 <h2 style={h2}>Thinking of <span className="corp-grad">clearing your firm?</span></h2>
                 <p style={lede}>
-                  Tell us your headcount and the tools in use, and we&rsquo;ll walk you through a module on your screen, explain the onboarding process from the firm profile to the first certificate, and reply within two working days. We bring a data-protection summary to the first conversation so your DPO has what they need; the <Link href="/corporate/security">security and data handling page</Link> has it in writing.
+                  Tell us your headcount and the tools in use. We walk you through a module on your screen, explain onboarding from the firm profile to the first certificate, and reply within two working days.
                 </p>
                 <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)" }}>
                   Prefer email? <a href="mailto:admissions@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>admissions@algorithmx.co.uk</a>
+                </p>
+                <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)", marginTop: 8 }}>
+                  For your DPO: <Link href="/corporate/security" style={{ color: "var(--lv2-cyan-soft)" }}>security and data handling</Link>, in writing.
                 </p>
               </div>
             </FadeUp>
@@ -519,7 +530,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         </section>
       </main>
 
-      <Footer tone="sand" />
+      <Footer tone="sand" variant="corporate" />
 
       <style>{`
         .corp-page, .corp-page :is(section, div, nav, header, footer, main, span, p, li, a, ol, textarea, button, article, dl, dt, dd) {
@@ -536,7 +547,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-hero-band {
           position: relative; isolation: isolate; overflow: hidden;
           background: #0b1117; color: #eef2f5;
-          min-height: clamp(620px, 92svh, 900px);
+          min-height: clamp(560px, 84svh, 780px);
           display: flex; flex-direction: column; justify-content: center;
         }
         .corp-hero-media { position: absolute; inset: 0; z-index: 0; }
@@ -591,7 +602,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
           padding: calc(var(--lv2-rail) * 1.3) var(--lv2-rail);
           scroll-margin-top: 128px;
         }
-        .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 1.2 + 120px); }
+        .corp-hero-section { padding-top: calc(68px + clamp(26px, 2.2vw, 44px)); padding-bottom: calc(var(--lv2-rail) * 1.2 + 36px); }
         .corp-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
         .corp-glow-amber { width: 520px; height: 520px; right: -140px; top: -80px; background: radial-gradient(circle, rgba(255,179,71,0.35), transparent 65%); }
         .corp-glow-cyan { width: 640px; height: 640px; left: -220px; top: 120px; background: radial-gradient(circle, rgba(10,112,133,0.28), transparent 65%); }
@@ -610,7 +621,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         }
         .corp-h1 {
           margin: 18px 0 0; font-family: var(--lv2-font-display);
-          font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.0; letter-spacing: -0.03em; font-weight: 400;
+          font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.0; letter-spacing: -0.03em; font-weight: 500;
         }
         .corp-hero strong { font-weight: 600; color: #14161d; }
 
@@ -790,7 +801,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-course-outcome { margin: 0; padding: 12px 14px; border-radius: 10px; background: color-mix(in srgb, var(--corp-accent) 9%, transparent); border: 1px solid color-mix(in srgb, var(--corp-accent) 30%, transparent); font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: #14161d; }
         .corp-course-foot { margin-top: auto; padding-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
         .corp-course-price { font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; color: #14161d; }
-        .corp-course-cta { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
+        .corp-course-cta { font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
         @media (max-width: 900px) { .corp-courses { grid-template-columns: 1fr; } }
 
         /* the section photograph */
@@ -841,9 +852,11 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-pack-prices div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(86,68,45,0.14); }
         .corp-pack-prices dt { font-family: var(--lv2-font-display); font-size: 14.5px; font-weight: 600; color: #14161d; }
         .corp-pack-prices dd { margin: 0; font-family: var(--lv2-font-display); font-size: clamp(1.6rem, 2.2vw, 2rem); line-height: 1; letter-spacing: -0.03em; font-weight: 500; color: #14161d; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .corp-pack-prices-text dd { font-size: 1.05rem !important; font-weight: 600 !important; letter-spacing: 0 !important; color: rgba(17,22,38,0.78) !important; }
+        .corp-pricing-line { margin-top: 26px; }
         .corp-pack-unit { font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.62); margin-top: 8px; }
         .corp-pack p { margin: 14px 0 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.79); }
-        .corp-pack-cta { margin-top: auto; padding-top: 18px; align-self: flex-start; font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
+        .corp-pack-cta { margin-top: auto; padding-top: 18px; align-self: flex-start; font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
 
         /* the regulation line under the policy heading */
         .corp-reg-line { margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-family: var(--lv2-font-display); font-size: 14.5px; color: rgba(17,22,38,0.72); }
@@ -861,13 +874,13 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-pol-gate { margin-top: 6px; padding: 18px 18px 16px; border-radius: 16px; border: 1px solid rgba(10,112,133,0.35); background: rgba(10,112,133,0.06); display: flex; flex-direction: column; gap: 12px; }
         .corp-pol-gate-head { margin: 0; font-family: var(--lv2-font-display); font-size: 1.1rem; font-weight: 500; color: #14161d; }
         .corp-pol-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-        .corp-pol-send { height: 50px; padding: 0 24px; border-radius: 999px; border: none; cursor: pointer; background: linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%); color: #fffdfa; font-family: var(--lv2-font-display); font-size: 15px; font-weight: 700; box-shadow: 0 12px 30px -12px rgba(10,112,133,0.9); }
+        .corp-pol-send { height: 52px; padding: 0 26px; border-radius: 999px; border: none; cursor: pointer; background: linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%); color: #fffdfa; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; letter-spacing: 0.005em; box-shadow: 0 12px 30px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.25); }
         .corp-pol-send:disabled { opacity: 0.7; cursor: wait; }
         .corp-pol-fine { font-family: var(--lv2-font-display); font-size: 13px; color: rgba(17,22,38,0.66); }
         .corp-pol-err { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; font-weight: 600; color: #a63a08; }
         .corp-pol-ok { margin: 0; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.55; color: #14161d; }
         .corp-pol-doc { border-radius: 16px; overflow: hidden; background: #fffdf8; border: 1px solid rgba(20,22,29,0.3); box-shadow: 0 30px 70px -30px rgba(10,112,133,0.5); position: sticky; top: 140px; }
-        .corp-pol-doc-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #f4efe7; border-bottom: 1px solid rgba(17,22,38,0.08); font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(17,22,38,0.7); }
+        .corp-pol-doc-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px; padding: 10px 16px; background: #f4efe7; border-bottom: 1px solid rgba(17,22,38,0.08); font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(17,22,38,0.7); }
         .corp-pol-copy { height: 30px; padding: 0 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; flex: none; border: 1px solid rgba(20,22,29,0.25); background: #fffdf8; color: #14161d; font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
         .corp-pol-copy:hover { border-color: #0a7085; color: #0a7085; }
         .corp-pol-doc-tools { display: inline-flex; gap: 6px; flex: none; }
@@ -904,7 +917,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-form-tools { display: flex; flex-wrap: wrap; gap: 8px; min-height: 54px; align-items: center; }
         .corp-form-tool {
           height: 38px; padding: 0 13px; border-radius: 999px; cursor: pointer;
-          border: 1.5px solid rgba(10,112,133,0.28); background: rgba(8,10,22,0.78); color: rgba(242,246,255,0.86);
+          border: 1.5px solid rgba(20,22,29,0.2); background: rgba(255,253,248,0.85); color: #14161d;
           font-family: var(--lv2-font-display); font-size: 13.5px; font-weight: 600; transition: border-color .2s ease, background .2s ease, color .2s ease;
         }
         .corp-form-tool.on { border-color: #0a7085; background: rgba(10,112,133,0.14); color: #14161d; }

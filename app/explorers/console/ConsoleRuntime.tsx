@@ -16,10 +16,11 @@ import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
+import { ClosingCeremony } from "../engine/closingCeremony";
 import type { ConsoleCase, ConsoleStep, ConsoleTest } from "./case11";
 
 const C = {
-  page: "#0b0a06", ink: "#F4ECD8", dim: "#B39B6E", faint: "#6b5f45",
+  page: "#0b0a06", ink: "#F4ECD8", dim: "#B39B6E", faint: "#877857",
   panel: "#141009", panel2: "#1c160c", edge: "#3a2f16", chip: "#221a0d", chipedge: "#43371c",
   amber: "#FFB23E", amberHi: "#FFD27A", amberbg: "#2a2110",
   wren: "#2BD4B4", wrenbg: "#0f2622",
@@ -55,6 +56,10 @@ const CSS = `
 .cn-opt:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .cn-sw{transition:background .15s,border-color .15s}
 .cn-btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.sr-stamp-in{animation:srStamp .3s cubic-bezier(.2,0,0,1)}
+@keyframes srStamp{0%{transform:rotate(-3deg) scale(1.15);opacity:0}30%{transform:rotate(-3deg) scale(1);opacity:1}38%{transform:rotate(-3deg) scale(1) translate(2px,0)}46%{transform:rotate(-3deg) scale(1) translate(0,0)}100%{transform:rotate(-3deg) scale(1);opacity:.9}}
+.sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
+@keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){.cn *{animation-duration:.001ms !important}}
 `;
 
@@ -71,6 +76,7 @@ type Dock =
   | { type: "toggle"; prompt?: string; switches: { label: string; sub?: string; want: boolean }[] }
   | { type: "build"; prompt?: string; parts: { label: string; good: boolean; sub?: string }[]; need: number }
   | { type: "decode"; ciphertext: string; shift: number; prompt?: string }
+  | { type: "spot"; segments: { text: string; tellId?: string }[]; prompt?: string }
   | { type: "clear"; text: string }
   | { type: "idle" }
   | null;
@@ -153,6 +159,11 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         setDock({ type: "decode", ciphertext: step.ciphertext, shift: step.shift, prompt: step.prompt });
         await awaitUser(); // resolves the instant the dial lands on the right shift
         setDock(null);
+        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
+      } else if (step.t === "spot") {
+        setNudge(null);
+        setDock({ type: "spot", segments: step.segments, prompt: step.prompt });
+        await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       }
     }
@@ -245,7 +256,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         ) : phase === "test" ? (
           <TestView test={consoleCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(consoleCase.id); clearProgress(consoleCase.id); void saveExplorersProgress(parseInt(consoleCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
         ) : phase === "debrief" ? (
-          <Debrief data={consoleCase.debrief} acc={acc} onExit={onExit} onNext={onNextCase} />
+          <Debrief data={consoleCase.debrief} acc={acc} caseId={consoleCase.id} xp={100} reduced={!!reduce} onExit={onExit} onNext={onNextCase} />
         ) : (
           <>
             <div ref={workRef} className="cn-work" style={{ flex: "1 1 auto", overflowY: "auto", padding: "16px 15px 10px", display: "flex", flexDirection: "column", gap: 4, backgroundImage: "repeating-linear-gradient(0deg, rgba(255,178,62,0.02) 0 1px, transparent 1px 6px)" }}>
@@ -320,11 +331,13 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   const [sel, setSel] = useState<number[]>([]);
   const [dial, setDial] = useState(0);
   const [solved, setSolved] = useState(false);
+  const [spotSel, setSpotSel] = useState<Set<number>>(new Set());
   // reset local control state whenever a new interactive dock appears
   useEffect(() => {
     if (dock?.type === "toggle") setSw(dock.switches.map(() => false));
     if (dock?.type === "build") setSel([]);
     if (dock?.type === "decode") { setDial(0); setSolved(false); }
+    if (dock?.type === "spot") setSpotSel(new Set());
   }, [dock]);
 
   if (!dock || dock.type === "idle") {
@@ -360,7 +373,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
           : <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Set the switches:"}</p>}
         <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 10 }}>
           {dock.switches.map((s, i) => (
-            <button key={i} className="cn-sw" onClick={() => setSw((a) => a.map((v, j) => (j === i ? !v : v)))}
+            <button key={i} className="cn-sw" role="switch" aria-checked={sw[i]} onClick={() => setSw((a) => a.map((v, j) => (j === i ? !v : v)))}
               style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", background: sw[i] ? "rgba(79,217,138,.12)" : C.chip, border: `1px solid ${sw[i] ? "rgba(79,217,138,.5)" : C.chipedge}`, borderRadius: 8, padding: "9px 12px", cursor: "pointer", fontFamily: UI }}>
               <span aria-hidden style={{ flex: "0 0 auto", width: 40, height: 22, borderRadius: 999, background: sw[i] ? C.mint : "#2a2416", position: "relative", transition: "background .15s" }}>
                 <span style={{ position: "absolute", top: 2, left: sw[i] ? 20 : 2, width: 18, height: 18, borderRadius: "50%", background: "#0c0a05", transition: "left .15s", display: "block" }} />
@@ -402,6 +415,37 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
           />
           <div style={{ fontFamily: MONO, fontSize: 14, letterSpacing: ".1em", lineHeight: 1.6, color: solved ? C.mint : C.ink, marginTop: 10 }}>→ {preview}</div>
         </div>
+      </>
+    );
+  }
+  if (dock.type === "spot") {
+    const need = dock.segments.filter((s) => s.tellId).length;
+    const toggleSeg = (i: number) => {
+      if (!dock.segments[i].tellId) return;
+      setSpotSel((s) => { const n = new Set(s); n.has(i) ? n.delete(i) : n.add(i); return n; });
+    };
+    const submit = () => {
+      const correctIdx = dock.segments.map((s, i) => (s.tellId ? i : -1)).filter((i) => i >= 0);
+      const ok = spotSel.size === correctIdx.length && correctIdx.every((i) => spotSel.has(i));
+      if (ok) onResolve("ok"); else onBad("Not quite the full set. Read it again, slowly.");
+    };
+    return (
+      <>
+        {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
+          : <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Tap every risky part of the readout above."} <span style={{ color: acc }}>({spotSel.size}/{need})</span></p>}
+        <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 8, padding: "12px 14px", marginBottom: 10, fontFamily: MONO, fontSize: 13, letterSpacing: ".04em", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
+          {dock.segments.map((seg, i) => {
+            if (!seg.tellId) return <span key={i} style={{ color: C.ink }}>{seg.text}</span>;
+            const on = spotSel.has(i);
+            return (
+              <span key={i} onClick={() => toggleSeg(i)} role="button" tabIndex={0}
+                style={{ cursor: "pointer", color: on ? C.page : acc, background: on ? acc : "rgba(255,178,62,.1)", outline: on ? "none" : `1.5px dashed ${acc}55`, borderRadius: 3, padding: "0 2px", fontWeight: 700 }}>
+                {seg.text}
+              </span>
+            );
+          })}
+        </div>
+        <button className="cn-btn" onClick={submit} disabled={spotSel.size === 0} style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: spotSel.size === 0 ? "#4a3d20" : acc, border: 0, borderRadius: 6, padding: "11px", cursor: spotSel.size === 0 ? "not-allowed" : "pointer" }}>{spotSel.size === 0 ? "TAP ABOVE TO START" : `${spotSel.size} FLAGGED · SUBMIT`}</button>
       </>
     );
   }
@@ -489,7 +533,8 @@ function BootScreen({ title, caseNumber, open, acc, onBoot }: { title: string; c
   );
 }
 
-function Debrief({ data, acc, onExit, onNext }: { data: ConsoleCase["debrief"]; acc: string; onExit?: () => void; onNext?: () => void }) {
+function Debrief({ data, acc, caseId, xp, reduced, onExit, onNext }: { data: ConsoleCase["debrief"]; acc: string; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
+  const [revealed, setRevealed] = useState(false);
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 26px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 800, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2, fontFamily: MONO }}>{data.title}</div>
@@ -499,10 +544,23 @@ function Debrief({ data, acc, onExit, onNext }: { data: ConsoleCase["debrief"]; 
       <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 10, padding: "13px 15px", fontSize: 13.5, lineHeight: 1.5, color: C.dim, marginBottom: 20 }}>
         <b style={{ color: acc, display: "block", fontSize: 10.5, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 5, fontFamily: MONO }}>Your move this week</b>{data.move}
       </div>
-      <div style={{ display: "flex", gap: 10 }}>
-        <button className="cn-btn" onClick={onExit} style={{ flex: 1, fontFamily: MONO, fontWeight: 700, fontSize: 13.5, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 6, padding: "12px", cursor: "pointer" }}>Back to map</button>
-        {onNext && <button className="cn-btn" onClick={onNext} style={{ flex: 1, fontFamily: MONO, fontWeight: 700, fontSize: 13.5, color: C.page, background: acc, border: 0, borderRadius: 6, padding: "12px", cursor: "pointer" }}>Next case →</button>}
-      </div>
+      <ClosingCeremony
+        caseId={caseId}
+        xp={xp}
+        accent={acc}
+        reduced={reduced}
+        font={MONO}
+        ink={C.ink}
+        dim={C.dim}
+        signoff="Case logged, systems secure. ARC out."
+        onStamp={() => setRevealed(true)}
+      />
+      {revealed && (
+        <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+          <button className="cn-btn" onClick={onExit} style={{ flex: 1, fontFamily: MONO, fontWeight: 700, fontSize: 13.5, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 6, padding: "12px", cursor: "pointer" }}>Back to map</button>
+          {onNext && <button className="cn-btn" onClick={onNext} style={{ flex: 1, fontFamily: MONO, fontWeight: 700, fontSize: 13.5, color: C.page, background: acc, border: 0, borderRadius: 6, padding: "12px", cursor: "pointer" }}>Next case →</button>}
+        </div>
+      )}
     </div>
   );
 }

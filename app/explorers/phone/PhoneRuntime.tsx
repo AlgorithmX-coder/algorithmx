@@ -19,10 +19,11 @@ import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
+import { ClosingCeremony } from "../engine/closingCeremony";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
 
 const C = {
-  page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#6b6b78",
+  page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#7a7a88",
   phone: "#0A0A0C", chat: "#101017", chrome: "#17171f",
   inc: "#26262f", out: "#FF3D8A", wren: "#2BD4B4", wrenbg: "#0f2622",
   // Block 2 identity = PINK (matrix, brand actions, your own bubbles). WREN stays teal.
@@ -56,6 +57,10 @@ const CSS = `
 .ph-reply{transition:transform .1s,border-color .15s}
 .ph-reply:focus-visible{outline:2px solid ${C.out};outline-offset:2px}
 .ph-btn:focus-visible{outline:2px solid ${C.wren};outline-offset:2px}
+.sr-stamp-in{animation:srStamp .3s cubic-bezier(.2,0,0,1)}
+@keyframes srStamp{0%{transform:rotate(-3deg) scale(1.15);opacity:0}30%{transform:rotate(-3deg) scale(1);opacity:1}38%{transform:rotate(-3deg) scale(1) translate(2px,0)}46%{transform:rotate(-3deg) scale(1) translate(0,0)}100%{transform:rotate(-3deg) scale(1);opacity:.9}}
+.sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
+@keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){.ph *{animation-duration:.001ms !important}}
 `;
 
@@ -76,7 +81,7 @@ const WREN_HEADER: Header = { who: "WREN", avatar: "◈", sub: "in your ear" };
 type Dock =
   | { type: "call"; answer: LeverId }
   | { type: "choose"; prompt?: string; options: { label: string; outcome?: "good" | "bad"; then?: PhoneStep[] }[] }
-  | { type: "tag"; itemId: number; need: number }
+  | { type: "tag"; itemId: number; need: number; prompt?: string }
   | { type: "clear"; text: string }
   | { type: "composer" }
   | null;
@@ -184,7 +189,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         push({ id: itemId, kind: "tagmsg", segments: step.segments, selected: [], locked: false });
         tagSubmitRef.current = { segments: step.segments };
         setNudge(null);
-        setDock({ type: "tag", itemId, need });
+        setDock({ type: "tag", itemId, need, prompt: step.prompt });
         // The dock stays mounted across a wrong submit (submitTag sets the nudge
         // and resolves "bad"); the child keeps adjusting the same taps and
         // resubmits, so the nudge is never cleared out from under them.
@@ -366,7 +371,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           ) : phase === "test" ? (
             <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => { markCaseComplete(phoneCase.id); clearProgress(phoneCase.id); void saveExplorersProgress(parseInt(phoneCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
           ) : phase === "debrief" ? (
-            <Debrief data={phoneCase.debrief} onExit={onExit} onNext={onNextCase} />
+            <Debrief data={phoneCase.debrief} caseId={phoneCase.id} xp={100} reduced={!!reduce} onExit={onExit} onNext={onNextCase} />
           ) : (
             <>
               {/* chat header */}
@@ -464,7 +469,7 @@ function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvat
   if (it.kind === "tagmsg") {
     return (
       <div className="ph-row" style={{ display: "flex", marginTop: 7 }}>
-        <div style={{ maxWidth: "88%", padding: "10px 13px", borderRadius: 19, borderBottomLeftRadius: 6, fontSize: 15, lineHeight: 1.55, background: C.inc, color: C.ink }}>
+        <div style={{ maxWidth: "88%", padding: "10px 13px", borderRadius: 19, borderBottomLeftRadius: 6, fontSize: 15, lineHeight: 1.55, background: C.inc, color: C.ink, whiteSpace: "pre-line" }}>
           {it.segments.map((seg, i) => {
             if (!seg.tellId) return <span key={i}>{seg.text}</span>;
             const on = it.selected.includes(seg.tellId);
@@ -472,6 +477,13 @@ function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvat
               <span
                 key={i}
                 onClick={() => !it.locked && onTagSegment(it.id, i)}
+                onKeyDown={(e) => {
+                  if (it.locked) return;
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onTagSegment(it.id, i);
+                  }
+                }}
                 role="button"
                 tabIndex={it.locked ? -1 : 0}
                 aria-pressed={on}
@@ -558,10 +570,10 @@ function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmit
             <span style={{ fontSize: 12.5, color: C.red, fontWeight: 600 }}>{nudge}</span>
           </div>
         ) : (
-          <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>Tap every part of the message above that&rsquo;s pulling a lever on you.</p>
+          <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Tap every part of the message above that’s pulling a lever on you."}</p>
         )}
         <button className="ph-btn" onClick={onSubmitTag} disabled={tagCount === 0} style={{ width: "100%", fontFamily: UI, fontWeight: 700, fontSize: 14, color: tagCount === 0 ? C.faint : C.page, background: tagCount === 0 ? C.chip : C.pink, border: `1px solid ${tagCount === 0 ? C.chipedge : C.pink}`, borderRadius: 14, padding: "11px 14px", cursor: tagCount === 0 ? "default" : "pointer" }}>
-          {tagCount === 0 ? "Tap a lever above to start" : `${tagCount} tagged · SUBMIT →`}
+          {tagCount === 0 ? "Tap above to start" : `${tagCount} tagged · SUBMIT →`}
         </button>
       </>
     );
@@ -670,7 +682,8 @@ function LockScreen({ caseNumber, open, title, onOpen }: { caseNumber: string; o
   );
 }
 
-function Debrief({ data, onExit, onNext }: { data: PhoneCase["debrief"]; onExit?: () => void; onNext?: () => void }) {
+function Debrief({ data, caseId, xp, reduced, onExit, onNext }: { data: PhoneCase["debrief"]; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
+  const [revealed, setRevealed] = useState(false);
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 24px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 700, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2 }}>{data.title}</div>
@@ -684,10 +697,23 @@ function Debrief({ data, onExit, onNext }: { data: PhoneCase["debrief"]; onExit?
       <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 14, padding: "13px 15px", fontSize: 13.5, lineHeight: 1.5, color: C.dim, marginBottom: 20 }}>
         <b style={{ color: C.pink, display: "block", fontSize: 10.5, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 5 }}>Your move this week</b>{data.move}
       </div>
-      <div style={{ display: "flex", gap: 10 }}>
-        <button className="ph-btn" onClick={onExit} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Back to map</button>
-        {onNext && <button className="ph-btn" onClick={onNext} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Next case →</button>}
-      </div>
+      <ClosingCeremony
+        caseId={caseId}
+        xp={xp}
+        accent={C.pink}
+        reduced={reduced}
+        font={UI}
+        ink={C.ink}
+        dim={C.dim}
+        signoff="Nice work tonight, Agent. I'm always in your ear if a message like this shows up again."
+        onStamp={() => setRevealed(true)}
+      />
+      {revealed && (
+        <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+          <button className="ph-btn" onClick={onExit} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Back to map</button>
+          {onNext && <button className="ph-btn" onClick={onNext} style={{ flex: 1, fontFamily: UI, fontWeight: 700, fontSize: 14, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "12px", cursor: "pointer" }}>Next case →</button>}
+        </div>
+      )}
     </div>
   );
 }

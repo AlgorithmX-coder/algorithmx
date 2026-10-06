@@ -52,7 +52,7 @@ Rules for your answer:
 - Never score the reply. If the prompt was good and the reply was poor, the prompt still scores well.`;
 
 function anthropic() {
-  return anthropicClient({ timeout: 25_000 });
+  return anthropicClient({ timeout: 20_000 });
 }
 
 export function fluentModelAvailable(): boolean {

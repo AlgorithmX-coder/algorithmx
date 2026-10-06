@@ -132,15 +132,16 @@ export const case15Console: ConsoleCase = {
         { t: "wren", text: "So the habit is a flip. Most people glance at the page and trust the look. You do the opposite: ignore the pretty page, and read the address carefully instead. Look for tiny swaps too, an l that's really a 1, an o that's a zero, an extra word. Fakes hide in details that big to fool a quick glance. A slow read of the address bar beats the best-looking fake there is.", voice: "/audio/wren/m15c-s3-learn.mp3" },
       ],
       practice: [
-        { t: "sys", text: "A: paypa1.com    B: paypal.com    C: paypal-verify.com" },
         {
-          t: "choose",
-          prompt: "You're logging into PayPal. Which address is the REAL one?",
-          options: [
-            { label: "B, paypal.com", outcome: "good", then: [{ t: "wren", text: "Nice slow read. A used a number 1 instead of an l, sneaky. C bolted 'verify' on the end, so its real owner is 'paypal-verify.com', a stranger. Only B is the genuine domain. Details like that are exactly what a careful read catches.", voice: "/audio/wren/m15c-s3-ok.mp3" }] },
-            { label: "A, paypa1.com", outcome: "bad", then: [{ t: "wren", text: "Look very closely, that's a number 1, not an l. A classic look-alike. The real one is paypal.com. Try again.", voice: "/audio/wren/m15c-s3-bad.mp3" }] },
-            { label: "C, paypal-verify.com", outcome: "bad", then: [{ t: "wren", text: "Read it right to left: the owner is 'paypal-verify.com', not PayPal. The real site is just paypal.com. Try again.", voice: "/audio/wren/m15c-s3-bad2.mp3" }] },
+          t: "spot",
+          prompt: "You're logging into PayPal. Tap every address below that's a FAKE.",
+          segments: [
+            { text: "A: " }, { text: "paypa1.com", tellId: "a" }, { text: "\n" },
+            { text: "B: paypal.com" }, { text: "\n" },
+            { text: "C: " }, { text: "paypal-verify.com", tellId: "c" },
           ],
+          ok: "Nice slow read. A used a number 1 instead of an l, sneaky. C bolted 'verify' on the end, so its real owner is 'paypal-verify.com', a stranger. Only B is the genuine domain. Details like that are exactly what a careful read catches.",
+          okVoice: "/audio/wren/m15c-s3-ok.mp3",
         },
         {
           t: "toggle",

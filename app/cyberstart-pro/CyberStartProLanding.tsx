@@ -1,44 +1,73 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Product } from "@prisma/client";
 import CodeRainBg from "@/app/pro/CodeRainBg";
 import WaitlistForm from "@/app/components/WaitlistForm";
 
-// Cosmic violet → cyan for the Pro tier — on-palette with the cyber
-// brand and gives the adult product a distinct accent.
-const PRIMARY = "#7c5cff";   // cosmic violet
-const ACCENT = "#00e5ff";    // cyan
-const GREEN = "#3ecf8e";     // proof / safe
-const RED = "#ff5d6c";       // attack
-const AMBER = "#ffb454";     // alert
+/* Cyber Pro landing (marketing / sales page for /pro).
+ *
+ * Audience: a curious adult, non-technical or lightly technical, who
+ * could be persuaded to HAVE A GO. The page is written to sell the
+ * feeling, not list features. Its spine is the one fact that converts:
+ * Act 1 (modules 1 to 5) is completely free and playable right now, no
+ * sign-up and no card. So the primary call to action everywhere is
+ * "start free", dropping the reader straight into module 1, rather than
+ * a waitlist. The paid upgrade (Acts 2 to 4) lives in the pricing band
+ * and is status-aware: a real buy button once the Product is ACTIVE, a
+ * "tell me when it opens" waitlist while it is COMING_SOON.
+ *
+ * Claims policy: aligned to the CompTIA Security+ objectives + CyBOK; no
+ * NCSC marks, no job guarantees, no debunked stats, no "certification
+ * included". British spelling. No em-dashes. Age is 18+ (a fixed product
+ * fact), stated in copy rather than read from the catalogue; only PRICE
+ * stays catalogue-driven, since that is the owner's live lever.
+ *
+ * House rules: fonts from the self-hosted next/font vars in
+ * app/pro/layout.tsx (--font-pro-*), no runtime Google @import; every
+ * section is VISIBLE BY DEFAULT with only a one-shot CSS load animation,
+ * so content never depends on scroll-triggered JS. */
+
+const PRIMARY = "#7c5cff"; // cosmic violet
+const ACCENT = "#00e5ff"; // cyan
+const GREEN = "#3ecf8e"; // proof / safe / free
+const RED = "#ff5d6c"; // attack
+const AMBER = "#ffb454"; // alert
 const GRAD = `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})`;
-const MONO = "ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace";
+const DISPLAY = "var(--font-pro-display), 'Chakra Petch', sans-serif";
+const SANS = "var(--font-pro-sans), 'Nunito', sans-serif";
+const MONO = "var(--font-pro-mono), ui-monospace, 'Cascadia Code', Consolas, monospace";
 
-/* Copy source: docs/pro/cyber-pro-design.md (v3) + docs/pro/syllabus.md.
- * This is the from-zero-to-hired course for curious, non-technical
- * adults: taught properly, real systems and real breaches, a real
- * portfolio, honest about the job. Claims policy: aligned to Security+
- * objectives + CyBOK; no NCSC marks, no job guarantees, no debunked
- * stats, no "certification included". No em-dashes in copy. */
+const START_FREE_HREF = "/pro/module01"; // Act 1 is ungated: straight into a lesson.
 
-function ScrollReveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 32 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, ease: "easeOut", delay }} className={className}>
-      {children}
-    </motion.div>
-  );
-}
+const HOOKS = [
+  { mod: "Module 3", t: "Crack a password", d: "Type any password and watch a real cracker estimate how fast it falls. See why one long phrase beats a lifetime of clever tricks.", demo: "password" },
+  { mod: "Module 9", t: "Break into a database", d: "Run a real SQL injection on a practice site, watch the whole customer table spill out, then fix it with one line.", demo: "injection" },
+  { mod: "Module 14", t: "Catch an attacker", d: "Read a real capture of bots hammering a server and find the single break-in hidden in the noise, like an analyst does.", demo: "honeypot" },
+];
 
 const METHOD = [
   { n: "01", t: "Learn", d: "The idea in plain English, one everyday example, then the real word for it. If a term is new, we teach it before we use it." },
   { n: "02", t: "See", d: "A true story of a real company this happened to, and what it cost them when the basics were missing." },
   { n: "03", t: "Try", d: "You do it yourself, safely, in your browser. Real tools, real data, nothing you can break." },
   { n: "04", t: "Explain", d: "Put it in your own words. Being able to explain it is how you know it stuck, and how you talk your way into the job." },
+];
+
+const FORYOU = [
+  { t: "Never touched security", d: "You start at the very beginning. Module 1 assumes nothing at all." },
+  { t: "Eyeing a career change", d: "A real, in-demand field with a clear first rung. We show you the honest route in." },
+  { t: "A bit techy already", d: "You will still learn the proper names, the frameworks and the hands-on craft employers test for." },
+  { t: "Want proof you can do it", d: "You finish with a portfolio of real work, not just a line on a CV." },
+];
+
+const OUTCOMES = [
+  "Read a login and network log and spot the one break-in",
+  "Run a real SQL injection, then write the one-line fix",
+  "Investigate a live honeypot capture like an analyst",
+  "Measure a small business against the security basics",
+  "Write up an incident the way a professional would",
+  "Explain any of it, plainly, in a job interview",
 ];
 
 const BREACHES = [
@@ -51,10 +80,10 @@ const BREACHES = [
 ];
 
 const ACTS = [
-  { n: "Act 1", weeks: "Modules 1 to 5", t: "Foundations you can touch", d: "How security, the internet, passwords and cryptography really work. Taught from scratch, hands-on from day one." },
-  { n: "Act 2", weeks: "Modules 6 to 11", t: "How attacks happen", d: "Phishing, malware, web and network attacks and the breaches they caused, each rebuilt so you understand it by doing it." },
-  { n: "Act 3", weeks: "Modules 12 to 16", t: "Defence for real", d: "Become the analyst: hardening, the SOC, a real SIEM, detection and threat intel, and incident response." },
-  { n: "Act 4", weeks: "Modules 17 to 21", t: "Get hired", d: "Governance, scripting, resilience, the roles and cert roadmap, and a capstone. Finish with a portfolio and a plan." },
+  { n: "Act 1", span: "Modules 1 to 5", t: "Foundations you can touch", d: "How security, the internet, passwords and cryptography really work. Taught from scratch, hands-on from day one.", free: true },
+  { n: "Act 2", span: "Modules 6 to 11", t: "How attacks happen", d: "Phishing, malware, web and network attacks and the breaches they caused, each rebuilt so you understand it by doing it.", free: false },
+  { n: "Act 3", span: "Modules 12 to 16", t: "Defence for real", d: "Become the analyst: hardening, the SOC, a real SIEM, detection and threat intel, and incident response.", free: false },
+  { n: "Act 4", span: "Modules 17 to 21", t: "Get hired", d: "Governance, scripting, resilience, the roles and cert roadmap, and a capstone. Finish with a portfolio and a plan.", free: false },
 ];
 
 const PORTFOLIO = [
@@ -63,6 +92,14 @@ const PORTFOLIO = [
   { t: "A breach you rebuilt", d: "A famous vulnerability, found, exploited and patched by you." },
   { t: "A risk assessment", d: "A small business measured against the basics, in plain business language." },
   { t: "A capstone report", d: "One full intrusion, start to finish, and a briefing anyone could follow." },
+];
+
+const FAQ = [
+  { q: "I have zero technical background. Is that really okay?", a: "That is exactly who this is built for. Module 1 assumes nothing, every new term is taught before it is used, and you are hands-on from the very first topic. If you can use a web browser, you can do this." },
+  { q: "Is it really free to start?", a: "Yes. The first five modules, the whole of Act 1, are free with no card and no sign-up. Start now, and only pay if you want to carry on into the rest of the course." },
+  { q: "How much time does it take?", a: "It is self-paced with lifetime access, so you decide. The course is 21 modules across four acts, and each module tells you up front what it asks of you." },
+  { q: "Do I get a certificate?", a: "You finish with something stronger: a portfolio of real work. The course is aligned to the CompTIA Security+ objectives and points you at the certificates worth paying for, which you sit with the exam body." },
+  { q: "Will this get me a job?", a: "No honest course can promise that. What we can do is make you genuinely ready for a first support or analyst role, and give you the proof of work to show for it." },
 ];
 
 /* ---------- the "real, not simulated" mockups ---------- */
@@ -75,32 +112,28 @@ function DemoFrame({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PasswordDemo() {
-  return (
-    <DemoFrame>
-      <div style={{ color: "rgba(255,255,255,0.55)" }}>password123</div>
-      <div style={{ color: RED }}>cracked instantly</div>
-      <div style={{ height: 8 }} />
-      <div style={{ color: "rgba(255,255,255,0.55)" }}>purple-tractor-jazz</div>
-      <div style={{ color: GREEN }}>safe for centuries</div>
-    </DemoFrame>
-  );
-}
-
-function InjectionDemo() {
-  return (
-    <DemoFrame>
-      <div style={{ color: "rgba(255,255,255,0.65)" }}>
-        password = &apos;<span style={{ color: RED, fontWeight: 700 }}>&apos; OR &apos;1&apos;=&apos;1</span>
-      </div>
-      <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11 }}>your input, typed into a login box</div>
-      <div style={{ height: 8 }} />
-      <div style={{ color: RED, fontWeight: 700 }}>&rsaquo; the whole customer table dumped</div>
-    </DemoFrame>
-  );
-}
-
-function HoneypotDemo() {
+function Demo({ kind }: { kind: string }) {
+  if (kind === "password")
+    return (
+      <DemoFrame>
+        <div style={{ color: "rgba(255,255,255,0.55)" }}>password123</div>
+        <div style={{ color: RED }}>cracked instantly</div>
+        <div style={{ height: 8 }} />
+        <div style={{ color: "rgba(255,255,255,0.55)" }}>purple-tractor-jazz</div>
+        <div style={{ color: GREEN }}>safe for centuries</div>
+      </DemoFrame>
+    );
+  if (kind === "injection")
+    return (
+      <DemoFrame>
+        <div style={{ color: "rgba(255,255,255,0.65)" }}>
+          password = &apos;<span style={{ color: RED, fontWeight: 700 }}>&apos; OR &apos;1&apos;=&apos;1</span>
+        </div>
+        <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11 }}>your input, typed into a login box</div>
+        <div style={{ height: 8 }} />
+        <div style={{ color: RED, fontWeight: 700 }}>&rsaquo; the whole customer table dumped</div>
+      </DemoFrame>
+    );
   return (
     <DemoFrame>
       <div style={{ color: AMBER }}>02:14 FAIL root/admin</div>
@@ -111,11 +144,21 @@ function HoneypotDemo() {
   );
 }
 
-const DEMOS = [
-  { week: "Module 3", t: "Crack a password", d: "Type any password and watch a real cracking estimate. See why a long phrase beats a clever one.", demo: <PasswordDemo /> },
-  { week: "Module 9", t: "Break into a database", d: "Perform a real SQL injection on a practice site, watch it leak, then apply the one-line fix.", demo: <InjectionDemo /> },
-  { week: "Module 14", t: "Catch an attacker", d: "Investigate a real capture of bots attacking a server, and find the single break-in in the noise.", demo: <HoneypotDemo /> },
-];
+function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <section className={`relative max-w-[1200px] mx-auto px-6 md:px-10 ${className}`}>{children}</section>;
+}
+
+/* The one button that carries the whole page: have a go, free, now. */
+function StartFree({ size = "lg", label = "Start module 1, free" }: { size?: "lg" | "md"; label?: string }) {
+  const big = size === "lg";
+  return (
+    <a href={START_FREE_HREF} className="cypro-start"
+      style={{ padding: big ? "16px 34px" : "13px 26px", fontSize: big ? 18 : 15, background: GRAD, boxShadow: `0 10px 38px ${PRIMARY}55` }}>
+      {label}
+      <span aria-hidden>&rarr;</span>
+    </a>
+  );
+}
 
 export default function CyberStartProLanding({ product }: { product: Product }) {
   const [scrolled, setScrolled] = useState(false);
@@ -125,16 +168,37 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const isActive = product.status === "ACTIVE";
   const priceLine = `£${Math.round(product.priceGBP / 100)}`;
+  const buyHref = `/purchase/${product.slug}`;
 
   return (
-    <>
+    <div className="cypro" style={{ fontFamily: SANS }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap');
-        * { font-family: 'Nunito', sans-serif; }
+        .cypro { color-scheme: dark; }
+        .cypro ::selection { background: ${PRIMARY}66; color: #fff; }
+        .cypro :focus-visible { outline: 2px solid ${ACCENT}; outline-offset: 3px; border-radius: 6px; }
+        .cypro .disp { font-family: ${DISPLAY}; }
+        .cypro .mono { font-family: ${MONO}; }
+
+        @keyframes cyproRise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+        .cypro .rise { animation: cyproRise 0.6s cubic-bezier(0.2,0.7,0.2,1) both; }
         .cypro-cursor { animation: cyproBlink 1.3s steps(1) infinite; }
         @keyframes cyproBlink { 50% { opacity: 0; } }
-        @media (prefers-reduced-motion: reduce) { .cypro-cursor { animation: none; } }
+
+        .cypro .card { transition: transform 180ms ease, border-color 180ms ease, background 180ms ease; }
+        .cypro .card-hover:hover { transform: translateY(-3px); border-color: ${PRIMARY}66; background: rgba(255,255,255,0.055); }
+
+        .cypro-start { display: inline-flex; align-items: center; gap: 10px; border-radius: 16px; font-family: ${DISPLAY}; font-weight: 700; color: #fff; text-decoration: none; transition: transform 160ms ease, box-shadow 160ms ease; white-space: nowrap; }
+        .cypro-start:hover { transform: translateY(-2px); box-shadow: 0 14px 46px ${PRIMARY}66; }
+        .cypro-ghost { transition: transform 140ms ease, box-shadow 140ms ease; }
+        .cypro-ghost:hover { transform: scale(1.04); }
+
+        @media (prefers-reduced-motion: reduce) {
+          .cypro .rise, .cypro-cursor { animation: none; }
+          .cypro .card, .cypro-start, .cypro-ghost { transition: none; }
+          .cypro .card-hover:hover, .cypro-start:hover, .cypro-ghost:hover { transform: none; }
+        }
       `}</style>
 
       <CodeRainBg />
@@ -148,306 +212,292 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
             borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
           }}>
           <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5" aria-label="Cyber Pro by AlgorithmX — home">
+            <Link href="/" className="flex items-center gap-2.5" aria-label="Cyber Pro by AlgorithmX, home">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#ff7a3d" strokeWidth="2" aria-hidden
                 style={{ filter: "drop-shadow(0 0 9px rgba(255,122,61,0.35))", flexShrink: 0 }}>
                 <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
                 <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
                 <path className="cypro-cursor" d="M13 15.5 H16.2" strokeLinecap="round" />
               </svg>
-              <span style={{ fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: "0.07em", color: "#fff", whiteSpace: "nowrap" }}>
-                CYBER PRO
-              </span>
-              <span className="hidden sm:inline" style={{ fontFamily: MONO, fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>
-                by AlgorithmX
-              </span>
+              <span className="disp" style={{ fontWeight: 700, fontSize: 18, letterSpacing: "0.07em", color: "#fff", whiteSpace: "nowrap" }}>CYBER PRO</span>
+              <span className="hidden sm:inline mono" style={{ fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>by AlgorithmX</span>
             </Link>
             <div className="flex items-center gap-4">
-              <a href="/login?course=cyberstart-pro" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Log In</a>
-              <motion.a href="/signup?course=cyberstart-pro"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
-                className="px-5 py-2.5 rounded-2xl text-sm font-black text-white"
-                style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50` }}>
-                Get Started
-              </motion.a>
+              <a href="/pro/course" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Browse modules</a>
+              <a href={START_FREE_HREF} className="cypro-ghost px-5 py-2.5 rounded-2xl text-sm font-black text-white" style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50` }}>
+                Start free
+              </a>
             </div>
           </div>
         </nav>
 
-        {/* Hero — full-bleed, cinematic, code-rain behind */}
-        <section className="relative max-w-[980px] mx-auto px-6 md:px-10 min-h-[90vh] flex flex-col justify-center text-center pt-28 pb-20">
-          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-8"
-              style={{ background: `${PRIMARY}1f`, border: `1px solid ${PRIMARY}55`, color: "#c9b8ff", fontFamily: MONO, boxShadow: `0 0 24px ${PRIMARY}22` }}>
-              <span aria-hidden style={{ width: 6, height: 6, borderRadius: "50%", background: ACCENT, boxShadow: `0 0 10px ${ACCENT}` }} />
-              Cyber security &middot; for total beginners &middot; 18+
+        {/* Hero */}
+        <Section className="min-h-[92vh] max-w-[1000px] flex flex-col justify-center text-center pt-28 pb-16">
+          <div className="rise">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-[0.2em] mb-8 mono"
+              style={{ background: `${GREEN}1a`, border: `1px solid ${GREEN}66`, color: "#9bf0cb", boxShadow: `0 0 24px ${GREEN}22` }}>
+              <span aria-hidden style={{ width: 6, height: 6, borderRadius: "50%", background: GREEN, boxShadow: `0 0 10px ${GREEN}` }} />
+              The first 5 modules are free &middot; no card needed
             </div>
 
-            <h1 className="font-black text-white leading-[1.04] mb-7" style={{ fontSize: "clamp(2.6rem, 6.4vw, 4.6rem)", letterSpacing: "-0.02em" }}>
+            <h1 className="disp font-black text-white leading-[1.04] mb-7" style={{ fontSize: "clamp(2.6rem, 6.4vw, 4.6rem)", letterSpacing: "-0.02em" }}>
               You don&apos;t need to be technical to start.
               <br className="hidden sm:block" />{" "}
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text", filter: `drop-shadow(0 0 30px ${PRIMARY}44)` }}>You will be by the end.</span>
             </h1>
 
-            <p className="text-gray-300 leading-relaxed max-w-2xl mx-auto mb-9" style={{ fontSize: "clamp(1rem, 1.4vw, 1.2rem)" }}>
-              A cyber security course that starts from zero. We teach you properly, you practise on real systems in your own browser, and you finish with a portfolio of real work and an honest route to your first job.
+            <p className="text-gray-300 leading-relaxed max-w-2xl mx-auto mb-9" style={{ fontSize: "clamp(1.05rem, 1.4vw, 1.25rem)" }}>
+              Cyber security is one of the best-paid, most in-demand careers going, and far more learnable than it looks. This course takes you from complete beginner to job-ready: taught properly, hands-on in your browser, with a portfolio of real work at the end.
             </p>
 
-            <div className="flex justify-center flex-wrap gap-2.5 mb-9">
-              {["No experience needed", "Hands-on from module 1", "Aligned to CompTIA Security+"].map((chip, i) => (
-                <span key={i} style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  padding: "7px 14px", borderRadius: 9,
-                  background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
-                  fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.78)",
-                  backdropFilter: "blur(6px)",
-                }}>
-                  <span aria-hidden style={{ color: GREEN }}>&#10003;</span>{chip}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex justify-center">
-              <WaitlistForm
-                courseSlug={product.slug as "cyberstart-pro"}
-                accent={PRIMARY}
-                accentSoft={ACCENT}
-                buttonGradient={GRAD}
-                buttonShadow={`0 8px 32px ${PRIMARY}50`}
-                source="hero"
-              />
-            </div>
-            <div className="mt-6 flex flex-col items-center gap-3">
-              <a href="/pro/course" className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors" style={{ color: ACCENT }}>
-                Explore the 21 modules <span aria-hidden>&rarr;</span>
-              </a>
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-500" style={{ fontFamily: MONO }}>
-                Ages {product.ageRange} &middot; 21 modules &middot; {priceLine} once
+            <div className="flex flex-col items-center gap-4">
+              <StartFree />
+              <p className="text-sm" style={{ color: "rgba(255,255,255,0.55)" }}>
+                No sign-up, no card. You are learning in ten seconds.
               </p>
             </div>
-          </motion.div>
-        </section>
 
-        {/* Real, not simulated — the differentiator */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-20">
-          <ScrollReveal className="text-center mb-3">
-            <p className="text-xs font-black uppercase tracking-[0.3em]" style={{ color: ACCENT, fontFamily: MONO }}>Real, not simulated</p>
-          </ScrollReveal>
-          <ScrollReveal className="text-center mb-4" delay={0.05}>
-            <h2 className="text-3xl sm:text-4xl font-black text-white">
-              You won&apos;t just read about it.{" "}
-              <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>You&apos;ll do it.</span>
+            <div className="mt-8 flex items-center justify-center gap-5 flex-wrap">
+              <a href="/pro/course" className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors" style={{ color: ACCENT }}>
+                See all 21 modules <span aria-hidden>&rarr;</span>
+              </a>
+              <span className="text-xs font-bold uppercase tracking-widest text-gray-500 mono">18+ &middot; 21 modules &middot; start free</span>
+            </div>
+          </div>
+        </Section>
+
+        {/* The hook: do real things in your first hour */}
+        <Section className="py-16 sm:py-20">
+          <div className="rise text-center mb-3"><p className="text-xs font-black uppercase tracking-[0.3em] mono" style={{ color: ACCENT }}>Real, not simulated</p></div>
+          <div className="rise text-center mb-4">
+            <h2 className="disp text-3xl sm:text-4xl font-black text-white">
+              In your first hour, you&apos;ll do{" "}
+              <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>this, for real</span>
             </h2>
-          </ScrollReveal>
-          <ScrollReveal className="text-center mb-12" delay={0.1}>
-            <p className="text-gray-400 text-base max-w-2xl mx-auto">
-              From your first week you work with real tools on real data, inside your browser. Everything is safe: you cannot break anything, and nothing you do ever leaves the page.
-            </p>
-          </ScrollReveal>
+          </div>
+          <div className="rise text-center mb-12">
+            <p className="text-gray-400 text-base max-w-2xl mx-auto">No slideshows, no quizzes about hacking. You actually crack a password, break into a database and catch an attacker, all safely in your browser. Nothing you can break, nothing that ever leaves the page.</p>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {DEMOS.map((d, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="rounded-3xl p-6 h-full flex flex-col"
-                  style={{ background: "rgba(255,255,255,0.035)", border: `1px solid ${PRIMARY}22`, backdropFilter: "blur(12px)" }}>
-                  <div className="text-[10px] font-black uppercase tracking-[0.18em] mb-2" style={{ color: "#b9a4ff", fontFamily: MONO }}>{d.week}</div>
-                  <h3 className="font-black text-white text-lg mb-2">{d.t}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{d.d}</p>
-                  {d.demo}
-                </div>
-              </ScrollReveal>
+            {HOOKS.map((d) => (
+              <div key={d.t} className="rise card card-hover rounded-3xl p-6 h-full flex flex-col"
+                style={{ background: "rgba(255,255,255,0.035)", border: `1px solid ${PRIMARY}22`, backdropFilter: "blur(12px)" }}>
+                <div className="text-[10px] font-black uppercase tracking-[0.18em] mb-2 mono" style={{ color: "#b9a4ff" }}>{d.mod}</div>
+                <h3 className="disp font-black text-white text-lg mb-2">{d.t}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{d.d}</p>
+                <Demo kind={d.demo} />
+              </div>
             ))}
           </div>
-        </section>
+          <div className="rise text-center mt-10"><StartFree size="md" label="Try it now, free" /></div>
+        </Section>
 
-        {/* How you learn */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-20">
-          <ScrollReveal className="text-center mb-4">
-            <h2 className="text-3xl sm:text-4xl font-black text-white">
-              Taught like you&apos;re{" "}
-              <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>smart but new</span>
-            </h2>
-          </ScrollReveal>
-          <ScrollReveal className="text-center mb-12" delay={0.05}>
-            <p className="text-gray-400 text-base max-w-2xl mx-auto">Every single topic follows the same four steps, so you are never lost and never bored.</p>
-          </ScrollReveal>
+        {/* Reassurance: how you learn */}
+        <Section className="py-16 sm:py-20">
+          <div className="rise text-center mb-4">
+            <h2 className="disp text-3xl sm:text-4xl font-black text-white">Taught like you&apos;re smart but new</h2>
+          </div>
+          <div className="rise text-center mb-12"><p className="text-gray-400 text-base max-w-2xl mx-auto">Every single topic follows the same four steps, so you are never lost and never bored. If you can use a web browser, you can do all of it.</p></div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {METHOD.map((m, i) => (
-              <ScrollReveal key={i} delay={i * 0.08}>
-                <div className="rounded-3xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                  <div className="text-2xl font-black mb-3" style={{ color: PRIMARY, fontFamily: MONO }}>{m.n}</div>
-                  <h3 className="font-black text-white text-lg mb-2">{m.t}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{m.d}</p>
-                </div>
-              </ScrollReveal>
+            {METHOD.map((m) => (
+              <div key={m.n} className="rise card rounded-3xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <div className="text-2xl font-black mb-3 mono" style={{ color: PRIMARY }}>{m.n}</div>
+                <h3 className="disp font-black text-white text-lg mb-2">{m.t}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{m.d}</p>
+              </div>
             ))}
           </div>
-        </section>
+        </Section>
 
-        {/* Every lesson is a true story */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-20">
-          <ScrollReveal className="text-center mb-4">
-            <h2 className="text-3xl sm:text-4xl font-black text-white">
+        {/* Is this for you? */}
+        <Section className="py-16 sm:py-20">
+          <div className="rise text-center mb-10"><h2 className="disp text-3xl sm:text-4xl font-black text-white">Made for you, wherever you&apos;re starting</h2></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {FORYOU.map((f) => (
+              <div key={f.t} className="rise card card-hover rounded-3xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${ACCENT}22`, borderTop: `2px solid ${ACCENT}66` }}>
+                <h3 className="disp font-black text-white text-base mb-2">{f.t}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{f.d}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* By the end */}
+        <Section className="py-16 sm:py-20">
+          <div className="rise text-center mb-3"><p className="text-xs font-black uppercase tracking-[0.3em] mono" style={{ color: GREEN }}>By the end</p></div>
+          <div className="rise text-center mb-12"><h2 className="disp text-3xl sm:text-4xl font-black text-white">Things you&apos;ll actually be able to do</h2></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 max-w-3xl mx-auto">
+            {OUTCOMES.map((o) => (
+              <div key={o} className="rise flex items-start gap-3">
+                <span aria-hidden style={{ color: GREEN, flexShrink: 0, marginTop: 2, fontWeight: 900 }}>&#10003;</span>
+                <span className="text-gray-200 text-[15px] leading-snug">{o}</span>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* True story */}
+        <Section className="py-16 sm:py-20">
+          <div className="rise text-center mb-4">
+            <h2 className="disp text-3xl sm:text-4xl font-black text-white">
               Every lesson is a{" "}
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>true story</span>
             </h2>
-          </ScrollReveal>
-          <ScrollReveal className="text-center mb-12" delay={0.05}>
-            <p className="text-gray-400 text-base max-w-2xl mx-auto">You learn each defence by seeing the real company that skipped it, and what it cost them. Real names, real fines, real consequences.</p>
-          </ScrollReveal>
+          </div>
+          <div className="rise text-center mb-12"><p className="text-gray-400 text-base max-w-2xl mx-auto">You learn each defence by seeing the real company that skipped it, and what it cost them. Real names, real fines, real consequences.</p></div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {BREACHES.map((b, i) => (
-              <ScrollReveal key={i} delay={i * 0.06}>
-                <div className="rounded-2xl p-5 h-full" style={{ background: "rgba(255,255,255,0.035)", border: "1px solid rgba(255,255,255,0.08)", borderLeft: `2px solid ${RED}66` }}>
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span className="font-black text-white text-base">{b.org}</span>
-                    <span className="text-xs text-gray-500" style={{ fontFamily: MONO }}>{b.year}</span>
-                  </div>
-                  <p className="text-gray-300 text-sm leading-relaxed mb-3">{b.lesson}</p>
-                  <span className="text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: "#b9a4ff", fontFamily: MONO }}>{b.tag}</span>
+            {BREACHES.map((b) => (
+              <div key={b.org} className="rise card card-hover rounded-2xl p-5 h-full" style={{ background: "rgba(255,255,255,0.035)", border: "1px solid rgba(255,255,255,0.08)", borderLeft: `2px solid ${RED}66` }}>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="font-black text-white text-base">{b.org}</span>
+                  <span className="text-xs text-gray-500 mono">{b.year}</span>
                 </div>
-              </ScrollReveal>
+                <p className="text-gray-300 text-sm leading-relaxed mb-3">{b.lesson}</p>
+                <span className="text-[10px] font-black uppercase tracking-[0.14em] mono" style={{ color: "#b9a4ff" }}>{b.tag}</span>
+              </div>
             ))}
           </div>
-        </section>
+        </Section>
 
         {/* The journey */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-20">
-          <ScrollReveal className="text-center mb-4">
-            <h2 className="text-3xl sm:text-4xl font-black text-white">
+        <Section className="py-16 sm:py-20">
+          <div className="rise text-center mb-4">
+            <h2 className="disp text-3xl sm:text-4xl font-black text-white">
               From zero to{" "}
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>job-ready</span>, in four acts
             </h2>
-          </ScrollReveal>
-          <ScrollReveal className="text-center mb-12" delay={0.05}>
-            <p className="text-gray-400 text-base max-w-2xl mx-auto">Twenty-one modules, at your own pace. Each act builds on the last.</p>
-          </ScrollReveal>
+          </div>
+          <div className="rise text-center mb-12"><p className="text-gray-400 text-base max-w-2xl mx-auto">Twenty-one modules, at your own pace. Act 1 is free, so you can start today and see for yourself before you spend a penny.</p></div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {ACTS.map((a, i) => (
-              <ScrollReveal key={i} delay={i * 0.08}>
-                <div className="rounded-3xl p-6 h-full flex gap-5" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}20` }}>
-                  <div className="flex-shrink-0">
-                    <div className="text-sm font-black" style={{ color: PRIMARY, fontFamily: MONO }}>{a.n}</div>
-                    <div className="text-[10px] text-gray-500 mt-1" style={{ fontFamily: MONO }}>{a.weeks}</div>
-                  </div>
-                  <div>
-                    <h3 className="font-black text-white text-lg mb-1.5">{a.t}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">{a.d}</p>
-                  </div>
+            {ACTS.map((a) => (
+              <div key={a.n} className="rise card card-hover rounded-3xl p-6 h-full flex gap-5" style={{ background: "rgba(255,255,255,0.04)", border: a.free ? `1px solid ${GREEN}44` : `1px solid ${PRIMARY}20` }}>
+                <div className="flex-shrink-0">
+                  <div className="text-sm font-black mono" style={{ color: a.free ? GREEN : PRIMARY }}>{a.n}</div>
+                  <div className="text-[10px] text-gray-500 mt-1 mono">{a.span}</div>
                 </div>
-              </ScrollReveal>
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                    <h3 className="disp font-black text-white text-lg">{a.t}</h3>
+                    {a.free && <span className="mono" style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: GREEN, background: `${GREEN}1a`, border: `1px solid ${GREEN}55`, borderRadius: 5, padding: "2px 7px" }}>Free</span>}
+                  </div>
+                  <p className="text-gray-400 text-sm leading-relaxed">{a.d}</p>
+                </div>
+              </div>
             ))}
           </div>
-        </section>
+          <div className="rise text-center mt-8"><StartFree size="md" label="Start Act 1, free" /></div>
+        </Section>
 
-        {/* Finish with a portfolio */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-20">
-          <ScrollReveal>
-            <div className="rounded-3xl p-8 sm:p-12" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25`, backdropFilter: "blur(16px)" }}>
-              <div className="text-center mb-10">
-                <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-                  You leave with proof,{" "}
-                  <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>not just a certificate</span>
-                </h2>
-                <p className="text-gray-400 text-base max-w-2xl mx-auto">
-                  Employers hire people who can show the work. Every part of the course produces something real you can put in front of them.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-                {PORTFOLIO.map((a, i) => (
-                  <div key={i} className="rounded-2xl p-5" style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                    <div className="text-xs font-black mb-2" style={{ color: GREEN, fontFamily: MONO }}>{String(i + 1).padStart(2, "0")}</div>
-                    <h3 className="font-black text-white text-sm mb-1.5 leading-snug">{a.t}</h3>
-                    <p className="text-gray-500 text-xs leading-relaxed">{a.d}</p>
-                  </div>
-                ))}
-              </div>
+        {/* Portfolio */}
+        <Section className="py-16 sm:py-20">
+          <div className="rise card rounded-3xl p-8 sm:p-12" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25`, backdropFilter: "blur(16px)" }}>
+            <div className="text-center mb-10">
+              <h2 className="disp text-3xl sm:text-4xl font-black text-white mb-4">
+                You leave with proof,{" "}
+                <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>not just a certificate</span>
+              </h2>
+              <p className="text-gray-400 text-base max-w-2xl mx-auto">Employers hire people who can show the work. Every part of the course produces something real you can put in front of them.</p>
             </div>
-          </ScrollReveal>
-        </section>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+              {PORTFOLIO.map((a, i) => (
+                <div key={a.t} className="rounded-2xl p-5" style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                  <div className="text-xs font-black mb-2 mono" style={{ color: GREEN }}>{String(i + 1).padStart(2, "0")}</div>
+                  <h3 className="disp font-black text-white text-sm mb-1.5 leading-snug">{a.t}</h3>
+                  <p className="text-gray-500 text-xs leading-relaxed">{a.d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Section>
 
-        {/* Straight answers */}
-        <section className="max-w-[1000px] mx-auto px-6 md:px-10 py-16 sm:py-20">
-          <ScrollReveal className="text-center mb-3">
-            <p className="text-xs font-black uppercase tracking-[0.3em]" style={{ color: ACCENT, fontFamily: MONO }}>No hype</p>
-          </ScrollReveal>
-          <ScrollReveal className="text-center mb-10" delay={0.05}>
-            <h2 className="text-3xl sm:text-4xl font-black text-white">The honest version</h2>
-          </ScrollReveal>
+        {/* Honest version */}
+        <section className="relative max-w-[1000px] mx-auto px-6 md:px-10 py-16 sm:py-20">
+          <div className="rise text-center mb-3"><p className="text-xs font-black uppercase tracking-[0.3em] mono" style={{ color: ACCENT }}>No hype</p></div>
+          <div className="rise text-center mb-10"><h2 className="disp text-3xl sm:text-4xl font-black text-white">The honest version</h2></div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { t: "It takes real effort", d: "Nobody goes from zero to hired in a weekend. This is a proper 20-week course, and we tell you exactly what each week asks of you." },
+              { t: "It takes real effort", d: "Nobody goes from zero to hired in a weekend. This is a proper course of 21 modules, and we tell you exactly what each one asks of you." },
               { t: "The first job is realistic", d: "Your way in is usually a support or analyst role, around £25,000 to £32,000 in the UK. We show you that path, not a fantasy one." },
               { t: "We prepare you, honestly", d: "The course is aligned to the CompTIA Security+ objectives and points you at the certificates worth your money. We never promise a job. We make you ready to earn one." },
-            ].map((s, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="rounded-3xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderTop: `2px solid ${GREEN}55` }}>
-                  <h3 className="font-black text-white text-lg mb-2">{s.t}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{s.d}</p>
-                </div>
-              </ScrollReveal>
+            ].map((s) => (
+              <div key={s.t} className="rise card rounded-3xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderTop: `2px solid ${GREEN}55` }}>
+                <h3 className="disp font-black text-white text-lg mb-2">{s.t}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{s.d}</p>
+              </div>
             ))}
           </div>
         </section>
 
-        {/* Facts + why £99 */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-10">
-          <ScrollReveal>
-            <div className="rounded-3xl px-6 py-8 sm:px-10" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-              <p className="text-center text-gray-400 text-sm max-w-2xl mx-auto mb-8">
-                Free courses leave you to figure it out alone. Bootcamps charge thousands. Cyber Pro sits in between: taught properly, hands-on, for one small payment.
-              </p>
-              <div className="flex flex-wrap justify-center gap-x-10 gap-y-4 text-center">
-                {[
-                  { k: "Price", v: `${priceLine} once` },
-                  { k: "Access", v: "Lifetime" },
-                  { k: "Length", v: "21 modules" },
-                  { k: "Pace", v: `${product.duration} guided` },
-                  { k: "Billing", v: "No subscription" },
-                ].map((f, i) => (
-                  <div key={i}>
-                    <div className="text-[10px] font-black uppercase tracking-[0.22em] text-gray-500 mb-1" style={{ fontFamily: MONO }}>{f.k}</div>
-                    <div className="text-white font-black text-lg">{f.v}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
+        {/* FAQ */}
+        <section className="relative max-w-[820px] mx-auto px-6 md:px-10 py-16 sm:py-20">
+          <div className="rise text-center mb-10"><h2 className="disp text-3xl sm:text-4xl font-black text-white">Questions, answered straight</h2></div>
+          <div className="flex flex-col gap-3">
+            {FAQ.map((f) => (
+              <details key={f.q} className="rise card group rounded-2xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-4 p-5">
+                  <span className="disp font-black text-white text-base">{f.q}</span>
+                  <span aria-hidden className="transition-transform group-open:rotate-45 flex-shrink-0 text-2xl font-light leading-none" style={{ color: ACCENT }}>+</span>
+                </summary>
+                <p className="text-gray-400 text-sm leading-relaxed px-5 pb-5">{f.a}</p>
+              </details>
+            ))}
+          </div>
         </section>
 
-        {/* CTA */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <ScrollReveal>
-            <div className="rounded-3xl p-8 sm:p-14 text-center" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25`, backdropFilter: "blur(16px)" }}>
-              <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-                Curious enough to{" "}
-                <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>start</span>?
-              </h2>
-              <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
-                Be first in when {product.name} opens. No experience needed, and you can always change your mind.
-              </p>
-              <div className="flex justify-center">
-                <WaitlistForm
-                  courseSlug={product.slug as "cyberstart-pro"}
-                  accent={PRIMARY}
-                  accentSoft={ACCENT}
-                  buttonGradient={GRAD}
-                  buttonShadow={`0 8px 40px ${PRIMARY}50`}
-                  source="footer-cta"
-                />
-              </div>
-              <div className="mt-6">
-                <a href="/hub" className="text-sm font-bold text-gray-400 hover:text-white transition-colors">
-                  &larr; Back to your hub
-                </a>
+        {/* Pricing: start free, go all the way for one payment */}
+        <Section className="py-10">
+          <div className="rise card rounded-3xl px-6 py-10 sm:px-12" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25`, backdropFilter: "blur(16px)" }}>
+            <div className="text-center mb-8">
+              <h2 className="disp text-2xl sm:text-3xl font-black text-white mb-3">Start free. Go all the way for one payment.</h2>
+              <p className="text-gray-400 text-sm max-w-2xl mx-auto">The first five modules are free, forever. When you are hooked, one payment unlocks the other sixteen for life. Free courses leave you alone; bootcamps charge thousands. Cyber Pro sits in between.</p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-x-10 gap-y-4 text-center mb-9">
+              {[
+                { k: "Act 1", v: "Free" },
+                { k: "Full course", v: `${priceLine} once` },
+                { k: "Access", v: "Lifetime" },
+                { k: "Length", v: "21 modules" },
+                { k: "Billing", v: "No subscription" },
+              ].map((f) => (
+                <div key={f.k}>
+                  <div className="text-[10px] font-black uppercase tracking-[0.22em] text-gray-500 mb-1 mono">{f.k}</div>
+                  <div className="disp text-white font-black text-lg">{f.v}</div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <StartFree label="Start the free modules" />
+              <div className="text-sm">
+                {isActive ? (
+                  <a href={buyHref} className="font-bold transition-colors" style={{ color: ACCENT }}>or unlock everything now for {priceLine} &rarr;</a>
+                ) : (
+                  <div className="flex flex-col items-center gap-2">
+                    <span style={{ color: "rgba(255,255,255,0.5)" }}>Want the full course the moment it opens?</span>
+                    <WaitlistForm courseSlug={product.slug as "cyberstart-pro"} accent={PRIMARY} accentSoft={ACCENT} buttonGradient={GRAD} buttonShadow={`0 8px 32px ${PRIMARY}50`} source="pricing" />
+                  </div>
+                )}
               </div>
             </div>
-          </ScrollReveal>
-        </section>
+          </div>
+        </Section>
+
+        {/* Final CTA */}
+        <Section className="py-16 sm:py-24">
+          <div className="rise card rounded-3xl p-8 sm:p-14 text-center" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25`, backdropFilter: "blur(16px)" }}>
+            <h2 className="disp text-3xl sm:text-4xl font-black text-white mb-4">
+              Curious enough to{" "}
+              <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>have a go</span>?
+            </h2>
+            <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
+              The first module is free and takes minutes to start. No experience needed, no card, nothing to lose.
+            </p>
+            <div className="flex justify-center"><StartFree /></div>
+          </div>
+        </Section>
 
         {/* Footer */}
         <footer className="border-t py-8 px-6 md:px-10" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
@@ -462,6 +512,6 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
           </div>
         </footer>
       </div>
-    </>
+    </div>
   );
 }

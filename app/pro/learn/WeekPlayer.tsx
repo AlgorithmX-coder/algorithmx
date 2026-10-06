@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { T } from "./tokens";
 import LessonPlayer from "./LessonPlayer";
 import { lessonCheckpointKey, type LessonCheckpoint, type WeekManifest } from "./types";
@@ -32,9 +32,14 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
   const [startedIds, setStartedIds] = useState<string[]>([]);
   const [restored, setRestored] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  // Server-synced progress (cross-device), merged additively on top of the
+  // localStorage source of truth. Both best-effort: if the server is
+  // unavailable, progress silently stays local-only and nothing breaks.
+  const serverDone = useRef<Set<string>>(new Set());
+  const synced = useRef<Set<string>>(new Set());
 
   const recompute = useCallback(() => {
-    const done: string[] = [];
+    const localDone: string[] = [];
     const started: string[] = [];
     for (const t of week.topics) {
       try {
@@ -42,23 +47,66 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
         if (!raw) continue;
         const cp = JSON.parse(raw) as LessonCheckpoint;
         if (cp.id !== t.id) continue;
-        if (cp.phase === "done") done.push(t.id);
+        if (cp.phase === "done") localDone.push(t.id);
         else if (cp.phase !== "intro") started.push(t.id);
       } catch { /* ignore corrupt checkpoint */ }
     }
+    // Union with any progress already fetched from the server (another device).
+    const done = [...localDone];
+    for (const id of serverDone.current) {
+      if (!done.includes(id) && week.topics.some((t) => t.id === id)) done.push(id);
+    }
     setDoneIds(done);
-    setStartedIds(started);
-  }, [week.topics]);
+    setStartedIds(started.filter((id) => !done.includes(id)));
+
+    // Best-effort: push locally-completed topics the server does not yet know.
+    const toSync = localDone.filter((id) => !serverDone.current.has(id) && !synced.current.has(id));
+    if (toSync.length > 0) {
+      toSync.forEach((id) => synced.current.add(id));
+      void fetch("/api/pro/progress", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ moduleId: week.id, topicIds: toSync }),
+      }).catch(() => { /* local progress is the source of truth; ignore */ });
+    }
+  }, [week.topics, week.id]);
 
   useEffect(() => { recompute(); setRestored(true); }, [recompute]);
+
+  // Pull cross-device progress from the server once, then re-merge. Silent on
+  // failure (e.g. signed-out, or the table not yet deployed): local stands.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/pro/progress", { cache: "no-store" });
+        if (cancelled || !res.ok) return;
+        const data = (await res.json()) as { done?: string[] };
+        if (cancelled || !Array.isArray(data.done) || data.done.length === 0) return;
+        let changed = false;
+        for (const id of data.done) {
+          if (!serverDone.current.has(id)) { serverDone.current.add(id); changed = true; }
+        }
+        if (changed) recompute();
+      } catch { /* no server sync available; local progress stands */ }
+    })();
+    return () => { cancelled = true; };
+  }, [recompute]);
 
   const resetWeek = useCallback(() => {
     for (const t of week.topics) {
       try { localStorage.removeItem(lessonCheckpointKey(t.id)); } catch { /* ignore */ }
     }
+    serverDone.current.clear();
+    synced.current.clear();
+    void fetch("/api/pro/progress", {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ moduleId: week.id }),
+    }).catch(() => { /* ignore; local reset already done */ });
     recompute();
     setActive(null);
-  }, [week.topics, recompute]);
+  }, [week.topics, week.id, recompute]);
 
   const totalMins = useMemo(() => week.topics.reduce((s, t) => s + t.minutes, 0), [week.topics]);
   const doneCount = doneIds.length;

@@ -36,6 +36,7 @@ function LoginPageInner() {
     callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//") ? callbackRaw : hubTargetFor(course);
 
   const justRegistered = searchParams.get("registered") === "true";
+  const forCourse = safeCallback.startsWith("/ai-cleared") || safeCallback.startsWith("/ai-fluent");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -198,7 +199,7 @@ function LoginPageInner() {
                   lineHeight: 1.08,
                 }}
               >
-                Welcome back
+                {forCourse ? "Sign in to your course" : "Welcome back"}
               </h1>
 
               {justRegistered && !formError && (
@@ -265,7 +266,7 @@ function LoginPageInner() {
                   error={emailInvalid ? "That email doesn't look right." : null}
                   autoComplete="email"
                   inputMode="email"
-                  placeholder="parent@example.com"
+                  placeholder={forCourse ? "you@yourfirm.co.uk" : "parent@example.com"}
                   required
                 />
 
@@ -296,22 +297,24 @@ function LoginPageInner() {
                 </div>
 
                 <div className="pt-1">
-                  <AuthButton state={buttonState} idleLabel="Resume" loadingLabel="Resuming…" successLabel="You're in" />
+                  <AuthButton state={buttonState} idleLabel={forCourse ? "Sign in" : "Resume"} loadingLabel={forCourse ? "Signing in…" : "Resuming…"} successLabel="You're in" />
                 </div>
               </form>
 
               <p className="text-center mt-5" style={{ color: ACCESS.textSoft, fontSize: 13.5, fontWeight: 500 }}>
                 Don&apos;t have an account?{" "}
-                <a href="/signup" style={{ color: ACCESS.cyan, fontWeight: 700 }} className="transition hover:opacity-80">
+                <a href={forCourse ? `/signup?callbackUrl=${encodeURIComponent(safeCallback)}` : "/signup"} style={{ color: ACCESS.cyan, fontWeight: 700 }} className="transition hover:opacity-80">
                   Sign up
                 </a>
               </p>
             </AuthTerminalPanel>
 
             {/* Dormant identity line (replaces the old "Secure terminal" chrome) */}
+            {!forCourse && (
             <p className="text-center mt-8" style={{ fontFamily: ACCESS_FONT.mono, fontSize: 11.5, letterSpacing: 2.2, color: ACCESS.textSoft }}>
               Six streams. One key.
             </p>
+            )}
 
             <div className="flex items-center justify-center gap-5 mt-6 flex-wrap">
               {[

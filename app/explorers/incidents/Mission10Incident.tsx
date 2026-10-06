@@ -217,6 +217,15 @@ function HoldPhase({ reduced, audio, onDone }: { reduced: boolean; audio: Incide
               onPointerDown={start}
               onPointerUp={release}
               onPointerLeave={release}
+              onKeyDown={(e) => {
+                if ((e.key === "Enter" || e.key === " ") && !e.repeat) {
+                  e.preventDefault();
+                  start();
+                }
+              }}
+              onKeyUp={(e) => {
+                if (e.key === "Enter" || e.key === " ") release();
+              }}
               className="sr-btn sr-scanfill"
               style={{
                 fontFamily: MONO,
