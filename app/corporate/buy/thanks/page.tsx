@@ -27,7 +27,7 @@ export default async function ThanksPage({ searchParams }: { searchParams: Promi
   }
   const name = COURSE_NAME[course];
   return (
-    <Frame firmName="AlgorithmX" meta={<Link href="/corporate" className="cf-link">Corporate page</Link>}>
+    <Frame firmName="AlgorithmX" course={course} meta={<Link href="/corporate" className="cf-link">Corporate page</Link>}>
       <span className="cf-eyebrow">Payment received</span>
       <h1 className="cf-h1">{firm ? <>{name} seats for {firm} are being <span className="cf-grad">set up</span>.</> : <>Your {name} seats are being <span className="cf-grad">set up</span>.</>}</h1>
       <p className="cf-lead">
