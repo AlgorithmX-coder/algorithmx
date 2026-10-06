@@ -76,7 +76,7 @@ const WREN_HEADER: Header = { who: "WREN", avatar: "◈", sub: "in your ear" };
 type Dock =
   | { type: "call"; answer: LeverId }
   | { type: "choose"; prompt?: string; options: { label: string; outcome?: "good" | "bad"; then?: PhoneStep[] }[] }
-  | { type: "tag"; itemId: number; need: number }
+  | { type: "tag"; itemId: number; need: number; prompt?: string }
   | { type: "clear"; text: string }
   | { type: "composer" }
   | null;
@@ -184,7 +184,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         push({ id: itemId, kind: "tagmsg", segments: step.segments, selected: [], locked: false });
         tagSubmitRef.current = { segments: step.segments };
         setNudge(null);
-        setDock({ type: "tag", itemId, need });
+        setDock({ type: "tag", itemId, need, prompt: step.prompt });
         // The dock stays mounted across a wrong submit (submitTag sets the nudge
         // and resolves "bad"); the child keeps adjusting the same taps and
         // resubmits, so the nudge is never cleared out from under them.
@@ -464,7 +464,7 @@ function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvat
   if (it.kind === "tagmsg") {
     return (
       <div className="ph-row" style={{ display: "flex", marginTop: 7 }}>
-        <div style={{ maxWidth: "88%", padding: "10px 13px", borderRadius: 19, borderBottomLeftRadius: 6, fontSize: 15, lineHeight: 1.55, background: C.inc, color: C.ink }}>
+        <div style={{ maxWidth: "88%", padding: "10px 13px", borderRadius: 19, borderBottomLeftRadius: 6, fontSize: 15, lineHeight: 1.55, background: C.inc, color: C.ink, whiteSpace: "pre-line" }}>
           {it.segments.map((seg, i) => {
             if (!seg.tellId) return <span key={i}>{seg.text}</span>;
             const on = it.selected.includes(seg.tellId);
@@ -558,10 +558,10 @@ function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmit
             <span style={{ fontSize: 12.5, color: C.red, fontWeight: 600 }}>{nudge}</span>
           </div>
         ) : (
-          <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>Tap every part of the message above that&rsquo;s pulling a lever on you.</p>
+          <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Tap every part of the message above that’s pulling a lever on you."}</p>
         )}
         <button className="ph-btn" onClick={onSubmitTag} disabled={tagCount === 0} style={{ width: "100%", fontFamily: UI, fontWeight: 700, fontSize: 14, color: tagCount === 0 ? C.faint : C.page, background: tagCount === 0 ? C.chip : C.pink, border: `1px solid ${tagCount === 0 ? C.chipedge : C.pink}`, borderRadius: 14, padding: "11px 14px", cursor: tagCount === 0 ? "default" : "pointer" }}>
-          {tagCount === 0 ? "Tap a lever above to start" : `${tagCount} tagged · SUBMIT →`}
+          {tagCount === 0 ? "Tap above to start" : `${tagCount} tagged · SUBMIT →`}
         </button>
       </>
     );
