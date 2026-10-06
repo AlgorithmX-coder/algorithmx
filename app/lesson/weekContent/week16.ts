@@ -863,7 +863,12 @@ export const WEEK_16: WeekContent = {
       introSubtitle: "Doors you are not sure about. Wheel the barrier out, or walk through, one at a time.",
       introIcon: "✋",
       headerLabel: "THE BARRIER",
-      boardPrompt: "Can you tell about this one?",
+      // UAT W16 7b: the word "What" really was missing - this read "Can you
+      // tell about this one?". It was closed as "no change needed: every
+      // prompt is complete and bold", which was wrong on both counts. The
+      // prompt appears in no manifest entry, so it is display-only and the
+      // wording change costs no recording.
+      boardPrompt: "What can you tell about this one?",
       counterLabel: "DOOR",
       cardBadge: "A DOOR APPEARS",
       fromFallback: "A door",

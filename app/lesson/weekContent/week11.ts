@@ -518,6 +518,11 @@ export const WEEK_11: WeekContent = {
         body: "Deleting feels wonderful for about four seconds. Then the message is gone, and so is the only thing that shows a grown-up who sent it, what it said and when it came. Keep it, show it once, and let them carry it from there.",
         tip: "Snap it, show it, then let your team take it.",
       },
+      // Each proof stands on its own (UAT W11 3a). The child taps these in
+      // ANY order, but the three lines were written as one chain - the second
+      // opened "And the time stamp..." and the third "Then the words...". Tap
+      // the second one first, as the tester did, and Sarah begins a sentence
+      // with "And" about nothing. No connectives, so every order reads.
       leakCopy: {
         sender: {
           chip: "Who sent it!",
@@ -527,12 +532,12 @@ export const WEEK_11: WeekContent = {
         time: {
           chip: "When it came!",
           bullet: "The time stamp shows exactly when it arrived",
-          readAloud: "And the time stamp, which shows exactly when it landed. That matters when there has been more than one.",
+          readAloud: "The time stamp, which shows exactly when it landed. That matters when there has been more than one.",
         },
         words: {
           chip: "What it said!",
           bullet: "The words themselves, frozen exactly as they were sent",
-          readAloud: "Then the words themselves, frozen exactly as they were sent. Now nobody can say it never happened.",
+          readAloud: "The words themselves, frozen exactly as they were sent. Now nobody can say it never happened.",
         },
       },
       completeTitle: "Proof developed!",

@@ -663,7 +663,15 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               bottom: "11%",
               height: "26%",
               zIndex: 3,
-              filter: "drop-shadow(0 12px 16px rgba(5,10,30,0.6))",
+              // De-offset: 0 0, never 0 12px. An offset drop-shadow IS the
+              // "shadow beneath him" the testers keep reporting - it follows
+              // the sprite's pixels, so it reads as a cast shadow on the
+              // ground rather than as separation from the background. The
+              // same change was made on the gate raccoon below (line ~834) and
+              // across weeks 2-10; this one was missed, which is why the item
+              // kept coming back as "same recursive error" on nearly every
+              // week from 11 to 20.
+              filter: "drop-shadow(0 0 16px rgba(5,10,30,0.6))",
             }}
           />
           {/* The raccoon's ground shadow used to be drawn here as a separate
@@ -672,9 +680,8 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               it sat beside him rather than under him - reported on every
               quiz from Week 3 to Week 20 ("same recursive error", "fix this
               shadow problem as it is consistent"). The sprites themselves
-              are clean (scanned all 40: no baked shadow), and the image
-              already carries its own drop-shadow, which grounds it properly
-              because a filter follows the rendered pixels. */}
+              are clean (scanned all 106: no baked shadow), and the halo above
+              separates him from the arena without grounding him. */}
         </>
       )}
 

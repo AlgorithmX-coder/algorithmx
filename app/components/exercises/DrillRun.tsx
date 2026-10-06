@@ -564,8 +564,15 @@ export default function DrillRun({
             </div>
           </div>
 
-          {/* On-board instructions: the current beat, in the child's words. */}
-          <div style={{ textAlign: "center", marginTop: 12 }}>
+          {/* On-board instructions: the current beat, in the child's words.
+              The strip is the last thing on the board, so its margin is the
+              board's bottom clearance. At the tester's 1093x525 that left only
+              10px between the words and the frame edge, against 19 and 32 on
+              this week's other boards - UAT W11 4a, "same frame issue again".
+              The board is fit-scaled on a short screen, so the margin is
+              scaled down with it: 10px only bought 1px back (10 -> 11). 26
+              survives the scaling and lands around 18px. */}
+          <div style={{ textAlign: "center", margin: "12px 0 26px" }}>
             <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, minHeight: 16, padding: "0 16px" }}>
               {strip}
             </div>

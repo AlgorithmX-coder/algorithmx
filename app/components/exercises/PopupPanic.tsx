@@ -414,12 +414,18 @@ export default function PopupPanic({
       <p
         role="status"
         style={{
+          // UAT W16 7b also asked for this to read as a proper title rather
+          // than body copy: it is the question the whole board is asking, and
+          // at 14px in #cbd5e1 it sat quieter than the card beneath it. Only
+          // weeks 3 and 16 use this engine, and week 3's prompt is an
+          // instruction that carries the extra weight just as well.
           textAlign: "center",
-          color: "#cbd5e1",
-          fontSize: 14,
+          color: "#e8eeff",
+          fontSize: 17,
+          fontWeight: 800,
           marginTop: 0,
           marginBottom: 18,
-          lineHeight: 1.5,
+          lineHeight: 1.45,
         }}
       >
         {boardPrompt ? (

@@ -614,8 +614,13 @@ export default function RadioRoll({
         <div style={{ position: "relative", zIndex: 1 }}>
           {/* Side padding keeps the header clear of the frame's corner ornaments;
               the top inset keeps the title off the frame edge (UAT: at 2px the
-              title sat 13px under the edge and read as squashed on every board). */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "16px 22px 0" }}>
+              title sat 13px under the edge and read as squashed on every board).
+              Raised 16 -> 22 for UAT W11 2b ("the top edge of the frame is too
+              tight with the text beneath it"). Measured at the tester's
+              1093x525: this board's title sat 14px under the frame while the
+              week's other boards sit at 18 and 23, so it read as the tight one.
+              22 puts it with its siblings. */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "22px 22px 0" }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
               <PixIcon emoji={introIcon} size={16} />
               {introTitle}

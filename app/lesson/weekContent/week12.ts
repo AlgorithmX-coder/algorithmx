@@ -108,6 +108,17 @@ export const WEEK_12: WeekContent = {
       ],
       bulletIcons: ["🌍", "🔍", "💬", "💡", "📍"],
       emblem: "💡",
+      // UAT W12 1b, the final word. The shipped clip read back as ending on
+      // the word through rather than together, so the reported fault was real
+      // and the earlier no-change-needed answer was wrong. The ending decays
+      // 13dB, so it was never a hard cut: the voice slurred the word away. The
+      // comma below gives it its own beat to land on.
+      //
+      // NEVER put a comment inside a lines array. The generator lifts quoted
+      // strings out of the block, comments included, so an explanation written
+      // in here is RECORDED AND SPOKEN TO THE CHILD. That is not theoretical:
+      // the first attempt at this fix shipped a 37s clip that read the comment
+      // aloud, and only a transcript caught it.
       narration: {
         speaker: "adam",
         lines: [
@@ -116,7 +127,7 @@ export const WEEK_12: WeekContent = {
           "Here is the part almost nobody knows.",
           "The internet is snow too. Every search, every like, every comment presses a print.",
           "You cannot feel it happen... but the print is there.",
-          "[excited] Grab the lamp. Let's go and read some tracks together!",
+          "[excited] Grab the lamp. Let's go and read some tracks, together!",
         ],
       },
     },

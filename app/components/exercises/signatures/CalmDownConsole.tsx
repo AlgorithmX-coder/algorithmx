@@ -698,6 +698,17 @@ export default function CalmDownConsole({
                 <PixIcon emoji={phase === "truth" ? "✨" : "💪"} size={Math.round(ringD * 0.24)} />
               </span>
             </div>
+
+            {/* Balances the hero on the left so the ring sits over the breathe
+                buttons (UAT W11 1b: "the arm emoji is not centred between the
+                two breathe buttons"). The row centres its children as a group,
+                so the hero's width pushed the ring half that width to the
+                right - 40px at the tester's window - while the buttons below
+                stay centred on the panel. A mirror-width spacer re-centres the
+                ring without moving the hero, and, unlike pinning the hero
+                absolutely, it cannot let the two overlap on a narrow screen
+                (ringD reaches 172 and heroW 117). */}
+            <div aria-hidden style={{ width: heroW, flexShrink: 0 }} />
           </div>
 
           {/* ---- the two breath taps: never a hold, never a race ---- */}
@@ -752,7 +763,13 @@ export default function CalmDownConsole({
                 justifyContent: "center",
                 gap: 10,
                 flexWrap: "wrap",
-                marginBottom: 6,
+                // 6px left exactly nothing once a stone lifts: StoneTile
+                // animates to y:-6, so the lift ate the whole gap and the
+                // stone's box crossed into this line by 1px (measured: stone
+                // top 320, strip bottom 321). That is UAT W11 2a, "it floats
+                // upwards too much and overlaps the text". 14 keeps 8px clear
+                // at the top of the lift, so the float still reads as a float.
+                marginBottom: 14,
                 fontSize: 11,
                 fontWeight: 900,
                 letterSpacing: "0.14em",
@@ -1031,7 +1048,16 @@ function HeroWithStones({
       <motion.g
         animate={{ rotate: -7 * load, y: 5 * load }}
         transition={reduce ? { duration: 0.2 } : { type: "spring", stiffness: 140, damping: 18 }}
-        style={{ transformBox: "view-box", originX: 46, originY: 146 }}
+        // originX/originY are FRACTIONS of the box, not pixels. As bare
+        // numbers, 46 and 146 were read as 4600% and 14600%, giving a computed
+        // transform-origin of 4232px 21900px - so the whole hero was rotated
+        // out of its own box and painted at roughly -1380,652 while its <svg>
+        // sat at 462,173. The figure was drawn (18 shapes) but never on
+        // screen, and its empty 64px slot is what pushed the breathing ring
+        // 40px right of the breathe buttons (UAT W11 1b).
+        //
+        // 46/92 and 146/150 are the same feet-pivot the comment above intends.
+        style={{ transformBox: "view-box", originX: 46 / 92, originY: 146 / 150 }}
       >
         {/* the stones still on their shoulders */}
         {rocks.map((i) => (
