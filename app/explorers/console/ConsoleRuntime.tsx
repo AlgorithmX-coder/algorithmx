@@ -71,6 +71,7 @@ type Dock =
   | { type: "toggle"; prompt?: string; switches: { label: string; sub?: string; want: boolean }[] }
   | { type: "build"; prompt?: string; parts: { label: string; good: boolean; sub?: string }[]; need: number }
   | { type: "decode"; ciphertext: string; shift: number; prompt?: string }
+  | { type: "spot"; segments: { text: string; tellId?: string }[]; prompt?: string }
   | { type: "clear"; text: string }
   | { type: "idle" }
   | null;
@@ -153,6 +154,11 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         setDock({ type: "decode", ciphertext: step.ciphertext, shift: step.shift, prompt: step.prompt });
         await awaitUser(); // resolves the instant the dial lands on the right shift
         setDock(null);
+        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
+      } else if (step.t === "spot") {
+        setNudge(null);
+        setDock({ type: "spot", segments: step.segments, prompt: step.prompt });
+        await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       }
     }
@@ -320,11 +326,13 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   const [sel, setSel] = useState<number[]>([]);
   const [dial, setDial] = useState(0);
   const [solved, setSolved] = useState(false);
+  const [spotSel, setSpotSel] = useState<Set<number>>(new Set());
   // reset local control state whenever a new interactive dock appears
   useEffect(() => {
     if (dock?.type === "toggle") setSw(dock.switches.map(() => false));
     if (dock?.type === "build") setSel([]);
     if (dock?.type === "decode") { setDial(0); setSolved(false); }
+    if (dock?.type === "spot") setSpotSel(new Set());
   }, [dock]);
 
   if (!dock || dock.type === "idle") {
@@ -402,6 +410,37 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
           />
           <div style={{ fontFamily: MONO, fontSize: 14, letterSpacing: ".1em", lineHeight: 1.6, color: solved ? C.mint : C.ink, marginTop: 10 }}>→ {preview}</div>
         </div>
+      </>
+    );
+  }
+  if (dock.type === "spot") {
+    const need = dock.segments.filter((s) => s.tellId).length;
+    const toggleSeg = (i: number) => {
+      if (!dock.segments[i].tellId) return;
+      setSpotSel((s) => { const n = new Set(s); n.has(i) ? n.delete(i) : n.add(i); return n; });
+    };
+    const submit = () => {
+      const correctIdx = dock.segments.map((s, i) => (s.tellId ? i : -1)).filter((i) => i >= 0);
+      const ok = spotSel.size === correctIdx.length && correctIdx.every((i) => spotSel.has(i));
+      if (ok) onResolve("ok"); else onBad("Not quite the full set. Read it again, slowly.");
+    };
+    return (
+      <>
+        {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
+          : <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Tap every risky part of the readout above."} <span style={{ color: acc }}>({spotSel.size}/{need})</span></p>}
+        <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 8, padding: "12px 14px", marginBottom: 10, fontFamily: MONO, fontSize: 13, letterSpacing: ".04em", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
+          {dock.segments.map((seg, i) => {
+            if (!seg.tellId) return <span key={i} style={{ color: C.ink }}>{seg.text}</span>;
+            const on = spotSel.has(i);
+            return (
+              <span key={i} onClick={() => toggleSeg(i)} role="button" tabIndex={0}
+                style={{ cursor: "pointer", color: on ? C.page : acc, background: on ? acc : "rgba(255,178,62,.1)", outline: on ? "none" : `1.5px dashed ${acc}55`, borderRadius: 3, padding: "0 2px", fontWeight: 700 }}>
+                {seg.text}
+              </span>
+            );
+          })}
+        </div>
+        <button className="cn-btn" onClick={submit} disabled={spotSel.size === 0} style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: spotSel.size === 0 ? "#4a3d20" : acc, border: 0, borderRadius: 6, padding: "11px", cursor: spotSel.size === 0 ? "not-allowed" : "pointer" }}>{spotSel.size === 0 ? "TAP ABOVE TO START" : `${spotSel.size} FLAGGED · SUBMIT`}</button>
       </>
     );
   }

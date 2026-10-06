@@ -52,6 +52,17 @@ export type ConsoleStep =
       prompt?: string;
       ok?: string;
       okVoice?: string;
+    }
+  | {
+      // tap the risky part IN a captured readout (a URL, a filename, a log
+      // line) directly, where it sits — not a multiple-choice question
+      // describing it. Same shape as Phone's "tag" but Console-skinned: a
+      // terminal readout, not a chat bubble.
+      t: "spot";
+      segments: { text: string; tellId?: string }[];
+      prompt?: string;
+      ok?: string;
+      okVoice?: string;
     };
 
 export interface ConsoleSkill {
