@@ -173,8 +173,8 @@ const PILLARS = [
 /* Per person, per year, in packs of ten. Owner-set 2026-09-26; AI Cleared Firm tier £25 from 2026-09-29. */
 const PACKS = [
   { name: "Team", seats: "10 to 49 seats", cleared: "£29", fluent: "£59", note: "Running in your firm within a week.", accent: "#0a7085" },
-  { name: "Firm", seats: "50 to 249 seats", cleared: "£25", fluent: "£45", note: "Team-level reporting and a named onboarding call.", accent: "#5744c9" },
-  { name: "Enterprise", seats: "250 seats and up", cleared: "Please enquire", fluent: "Please enquire", note: "A named onboarding call; SSO, SCORM export and data classes per division on request.", accent: "#8a5400" },
+  { name: "Firm", seats: "50 to 249 seats", cleared: "£25", fluent: "£45", note: "The register with CSV export, and a named onboarding call.", accent: "#5744c9" },
+  { name: "Enterprise", seats: "250 seats and up", cleared: "Priced per firm", fluent: "Priced per firm", note: "A named onboarding call; SSO, SCORM export and data classes per division on request.", accent: "#8a5400" },
 ];
 
 const FAQS = [
@@ -429,7 +429,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
           <FadeUp>
             <p style={eyebrow}>{"// Pricing"}</p>
             <h2 style={h2}>One price per person. <span className="corp-grad">Everything included.</span></h2>
-            <p style={lede}>Per person, per year, in packs of ten, with the content refreshed as the tools change. Every seat carries the sandbox, the register, the certificates and the policy pack. Both courses together, fifteen percent off.</p>
+            <p style={lede}>Per person, per year, in packs of ten, with the content refreshed as the tools change. Every seat carries the sandbox, the register, the certificates and the policy pack. Buy either course, or both, for the same people.</p>
           </FadeUp>
           <div className="corp-grid-3" style={{ marginTop: 36 }}>
             {PACKS.map((k, i) => (
@@ -437,11 +437,11 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                 <div className="corp-card corp-pack" style={{ ["--corp-accent" as string]: k.accent }}>
                   <span className="corp-pack-name">{k.name}</span>
                   <span className="corp-pack-seats">{k.seats}</span>
-                  <dl className="corp-pack-prices">
+                  <dl className={k.name === "Enterprise" ? "corp-pack-prices corp-pack-prices-text" : "corp-pack-prices"}>
                     <div><dt>AI Cleared</dt><dd>{k.cleared}</dd></div>
                     <div><dt>AI Fluent</dt><dd>{k.fluent}</dd></div>
                   </dl>
-                  <span className="corp-pack-unit">per person, per year</span>
+                  <span className="corp-pack-unit">{k.name === "Enterprise" ? "on a signed agreement" : "per person, per year"}</span>
                   <p>{k.note}</p>
                   {checkoutLive && k.name !== "Enterprise" ? (
                     <>
@@ -455,6 +455,12 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
               </FadeUp>
             ))}
           </div>
+          <FadeUp>
+            <p className="corp-reg-line corp-pricing-line">
+              <span>What procurement asks for, in writing:</span>
+              <Link href="/corporate/security">Security and data handling</Link>
+            </p>
+          </FadeUp>
         </section>
 
         {/* FREE POLICY ────────────────────────────────────── */}
@@ -841,6 +847,8 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-pack-prices div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(86,68,45,0.14); }
         .corp-pack-prices dt { font-family: var(--lv2-font-display); font-size: 14.5px; font-weight: 600; color: #14161d; }
         .corp-pack-prices dd { margin: 0; font-family: var(--lv2-font-display); font-size: clamp(1.6rem, 2.2vw, 2rem); line-height: 1; letter-spacing: -0.03em; font-weight: 500; color: #14161d; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .corp-pack-prices-text dd { font-size: 1.05rem !important; font-weight: 600 !important; letter-spacing: 0 !important; color: rgba(17,22,38,0.78) !important; }
+        .corp-pricing-line { margin-top: 26px; }
         .corp-pack-unit { font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.62); margin-top: 8px; }
         .corp-pack p { margin: 14px 0 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.79); }
         .corp-pack-cta { margin-top: auto; padding-top: 18px; align-self: flex-start; font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
