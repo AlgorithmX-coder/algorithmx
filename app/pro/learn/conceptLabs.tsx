@@ -1603,3 +1603,97 @@ export function AuditEvidenceLab({ onDidTry }: LabProps) {
       { text: "'Trust us, it is all fine', with no records kept.", cat: "not", why: "No records means nothing to verify. Audits rely on demonstrable evidence." },
     ]} />;
 }
+
+/* ---- Module 19 labs: resilience, backups & continuity ---- */
+
+const BC_DR: Cat[] = [
+  { id: "bc", label: "Business continuity", color: T.cyan },
+  { id: "dr", label: "Disaster recovery", color: T.amber },
+];
+export function BcDrLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={BC_DR}
+    prompt="Business continuity is keeping the business running (or running in a reduced way) through a disruption; disaster recovery is restoring the IT systems afterwards. Sort each one."
+    items={[
+      { text: "A plan for staff to keep serving customers on paper while systems are down.", cat: "bc", why: "Keeping the business operating through the disruption is business continuity." },
+      { text: "Rebuilding servers and restoring data after a ransomware attack.", cat: "dr", why: "Restoring the IT systems afterwards is disaster recovery." },
+      { text: "Deciding which business functions must keep going no matter what.", cat: "bc", why: "Prioritising critical functions to keep running is continuity planning." },
+      { text: "Failing over to a backup data centre to bring systems back online.", cat: "dr", why: "Technical restoration of systems is disaster recovery." },
+      { text: "Arranging an alternative way to take orders if the website is down.", cat: "bc", why: "Keeping the business function going by another means is continuity." },
+      { text: "Restoring files from backup to a clean, rebuilt system.", cat: "dr", why: "Recovering the data and systems is disaster recovery." },
+    ]} />;
+}
+
+const BACKUP_321: Cat[] = [
+  { id: "ok", label: "Follows 3-2-1", color: T.green },
+  { id: "no", label: "Violates 3-2-1", color: T.red },
+];
+export function Backup321Lab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={BACKUP_321}
+    prompt="The 3-2-1 rule: keep 3 copies of your data, on 2 different types of media, with 1 copy kept offsite (and ideally offline/immutable). For each, decide: follows 3-2-1, or violates it?"
+    items={[
+      { text: "Three copies: the original, a local backup, and one offsite and offline.", cat: "ok", why: "Three copies, different locations, one offsite and offline: textbook 3-2-1, and ransomware-resistant." },
+      { text: "The only backup is on the same server as the original data.", cat: "no", why: "One copy, same place: if that server is lost (fire, ransomware), everything is gone. Violates 3-2-1." },
+      { text: "A backup kept offline/immutable so ransomware cannot reach and encrypt it.", cat: "ok", why: "An offline or immutable copy is exactly what survives ransomware: the heart of resilient backup." },
+      { text: "All backups in the same data centre as the live systems.", cat: "no", why: "No offsite copy: one disaster (like the OVHcloud fire) destroys both live and backup. Violates 3-2-1." },
+      { text: "Backups that are never disconnected, always reachable from the network.", cat: "no", why: "Always-online backups can be found and encrypted by ransomware. Keep one offline/immutable." },
+      { text: "Copies on two media types, one of them stored offsite.", cat: "ok", why: "Multiple media and an offsite copy are core to the 3-2-1 rule." },
+    ]} />;
+}
+
+const RTO_RPO: Cat[] = [
+  { id: "rto", label: "RTO (how fast to restore)", color: T.cyan },
+  { id: "rpo", label: "RPO (how much data loss)", color: T.amber },
+];
+export function RtoRpoLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={RTO_RPO}
+    prompt="Two key recovery targets: RTO is how fast you must restore a system; RPO is how much recent data you can afford to lose. Tap each statement, then tap which it sets."
+    items={[
+      { text: "'The website must be back online within 2 hours of an outage.'", cat: "rto", why: "A target for how fast to restore is the Recovery Time Objective (RTO)." },
+      { text: "'We can afford to lose at most 15 minutes of transactions.'", cat: "rpo", why: "A target for how much recent data you can lose is the Recovery Point Objective (RPO)." },
+      { text: "'Back up every hour, so we never lose more than an hour's data.'", cat: "rpo", why: "Backup frequency sets how much data you might lose: that is RPO." },
+      { text: "'Our failover must bring the service back in under 30 minutes.'", cat: "rto", why: "Speed of restoration is RTO." },
+      { text: "'Payroll must be running again within one business day.'", cat: "rto", why: "A deadline to be operational again is RTO." },
+      { text: "'Continuous replication means near-zero data loss.'", cat: "rpo", why: "How little data is lost is the RPO (here, near zero)." },
+    ]} />;
+}
+
+const REDUNDANCY: Cat[] = [
+  { id: "redundant", label: "Provides redundancy", color: T.green },
+  { id: "spof", label: "Single point of failure", color: T.red },
+];
+export function RedundancyLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={REDUNDANCY}
+    prompt="Redundancy means no single failure takes you down; a single point of failure is something whose loss stops everything. For each, decide which it is."
+    items={[
+      { text: "Running the service across two data centres, so one can fail.", cat: "redundant", why: "A second site that can take over is redundancy: no single failure is fatal." },
+      { text: "The entire company depends on one server with no backup or failover.", cat: "spof", why: "One server whose loss stops everything is a classic single point of failure." },
+      { text: "Two internet connections from different providers.", cat: "redundant", why: "A second, independent connection means one outage does not cut you off." },
+      { text: "A single admin who is the only person who knows the critical systems.", cat: "spof", why: "A 'key person' dependency is a single point of failure too, not just hardware." },
+      { text: "Automatic failover to a standby system if the main one dies.", cat: "redundant", why: "Standby plus failover is redundancy: the service continues through a failure." },
+      { text: "All systems depending on one power supply with no backup.", cat: "spof", why: "One power source whose loss stops everything is a single point of failure." },
+    ]} />;
+}
+
+export function RecoveryTestLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="Your organisation has backups and a recovery plan. Play the decisions: an untested plan is a guess, not a guarantee."
+    doneKicker="Proven recovery"
+    doneNote="You tested recovery by actually restoring, measured against your RTO and RPO, and fixed what you found, before a real disaster. A recovery plan is only real once it has been proven to work."
+    steps={[
+      { role: "The assumption", prompt: "You have backups running nightly. Are you confident you can recover?", options: [
+        { text: "Not until you have actually tested a restore; untested backups often fail.", correct: true, why: "Backups that have never been restored frequently fail when needed, corrupt, incomplete, or unrestorable. Only a tested restore proves recovery." },
+        { text: "Yes, backups exist, so recovery is guaranteed.", correct: false, why: "Existence is not the same as working. The graveyard of breaches is full of 'we had backups' that could not actually restore." },
+        { text: "No need to check; the backup tool says 'success'.", correct: false, why: "A 'backup succeeded' message does not prove the data can be restored and used. Test the actual restore." },
+      ] },
+      { role: "The test", prompt: "How do you properly test recovery?", options: [
+        { text: "Actually restore to a test environment and confirm the data and systems work, measuring the time taken.", correct: true, why: "A real restore, verified and timed against your RTO and RPO, is the only true test. It finds the gaps in calm, not crisis." },
+        { text: "Just confirm the backup files exist.", correct: false, why: "Files existing is not recovery. You must restore and verify the result actually works." },
+        { text: "Assume it will be fine on the day.", correct: false, why: "The day of a disaster is the worst time to discover your backups do not restore. Test beforehand." },
+      ] },
+      { role: "The habit", prompt: "How often should you test recovery?", options: [
+        { text: "Regularly, and after major changes, because systems and backups drift over time.", correct: true, why: "Recovery testing is ongoing: a plan that worked last year may not work now. Regular tests keep it real." },
+        { text: "Once, years ago, is plenty.", correct: false, why: "Environments change constantly. A one-off test long ago gives false confidence today." },
+        { text: "Never; testing is a waste of time.", correct: false, why: "An untested recovery plan is a guess. Testing is exactly what turns it into a guarantee." },
+      ] },
+    ]} />;
+}
