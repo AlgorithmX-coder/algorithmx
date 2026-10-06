@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 /* Paths that never see the launch password. `/verify` and `/api` are
  * already outside the matcher below. */
-const OPEN_PREFIXES = ["/corporate", "/ai-cleared", "/ai-fluent", "/login", "/signup", "/forgot-password", "/reset-password"];
+const OPEN_PREFIXES = ["/corporate", "/ai-cleared", "/ai-fluent", "/login", "/signup", "/forgot-password", "/reset-password", "/privacy", "/terms"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

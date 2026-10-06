@@ -12,7 +12,7 @@ import { sellableCourses, stripeConfigured } from "@/app/lib/stripe";
 export const metadata: Metadata = {
   title: "AI Cleared and AI Fluent by AlgorithmX | AI training for every member of staff",
   description:
-    "AI Cleared teaches your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking client, colleague or bank data. AI Fluent teaches them to get real work out of it. Interactive, with a certificate and a training register. From £19 per person per year.",
+    "AI Cleared teaches your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking client, colleague or bank data. AI Fluent teaches them to get real work out of it. Interactive, with a certificate and a training register. From £25 per person per year.",
   alternates: { canonical: "https://algorithmx.io/corporate" },
   openGraph: {
     title: "AI Cleared and AI Fluent by AlgorithmX",
@@ -21,7 +21,9 @@ export const metadata: Metadata = {
     url: "https://algorithmx.io/corporate",
     siteName: "AlgorithmX",
     type: "website",
+    images: [{ url: "https://algorithmx.io/corporate/og.png", width: 1200, height: 630, alt: "Every member of staff, cleared to use AI. AI Cleared and AI Fluent by AlgorithmX." }],
   },
+  twitter: { card: "summary_large_image", title: "AI Cleared and AI Fluent by AlgorithmX", description: "Every member of staff, cleared to use AI. Two short interactive courses with a live sandbox, a certificate and a training register.", images: ["https://algorithmx.io/corporate/og.png"] },
 };
 
 export default function CorporatePage() {
