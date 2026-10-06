@@ -8,7 +8,12 @@ import Aurora from "@/app/ai-cleared/Aurora";
  * firm, course, dates, valid or not. Nothing else: no scores, no track,
  * nothing from the register. */
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Verify an AlgorithmX certificate", robots: { index: false, follow: false } };
+export const metadata: Metadata = {
+  title: "Verify an AlgorithmX certificate",
+  description: "Confirms whether an AlgorithmX certificate was issued and is still within its validity. It shows no scores and nothing from the firm's training register.",
+  openGraph: { title: "Verify an AlgorithmX certificate", description: "Confirms whether a certificate was issued and is still within its validity.", siteName: "AlgorithmX", type: "website" },
+  robots: { index: false, follow: false },
+};
 
 const C = { ground: "#f3ede4", panel: "#ffffff", ink: "#14161d", muted: "#5b6572", faint: "#8a8f98", edge: "#dcd6ca", teal: "#0a7085", green: "#0e7a45", red: "#a63a08" };
 
