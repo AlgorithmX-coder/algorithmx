@@ -25,7 +25,7 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
   const seats = Math.min(249, Math.max(10, Math.round((Number(sp.seats) || 10) / 10) * 10));
 
   return (
-    <Frame firmName="AlgorithmX" meta={<Link href="/corporate" className="cf-link">Back to the corporate page</Link>}>
+    <Frame firmName="AlgorithmX" course={course} meta={<Link href="/corporate" className="cf-link">Back to the corporate page</Link>}>
       <span className="cf-eyebrow">Buy seats</span>
       <h1 className="cf-h1">Seats for your firm, <span className="cf-grad">live the moment payment clears</span>.</h1>
       <p className="cf-lead">Per person, per year, in packs of ten. Your admin invite is emailed as soon as the card payment goes through; from that link you invite your staff. {VAT_LINE[vatMode()]}</p>

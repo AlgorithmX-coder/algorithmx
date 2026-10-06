@@ -621,7 +621,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         }
         .corp-h1 {
           margin: 18px 0 0; font-family: var(--lv2-font-display);
-          font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.0; letter-spacing: -0.03em; font-weight: 400;
+          font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.0; letter-spacing: -0.03em; font-weight: 500;
         }
         .corp-hero strong { font-weight: 600; color: #14161d; }
 

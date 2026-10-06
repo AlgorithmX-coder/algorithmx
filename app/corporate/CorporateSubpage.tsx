@@ -45,6 +45,8 @@ export default function CorporateSubpage({
         tone="sand"
         showTelemetry={false}
         showSiteLinks={false}
+        homeHref="/corporate"
+        ctaTone="teal"
         cta={{ label: "Get in touch", href: "/corporate#enquiry" }}
         aside={{ label: "AI Cleared", href: "/corporate" }}
       />
@@ -73,7 +75,7 @@ export default function CorporateSubpage({
               <p style={sectionMark}>{mapsHeading}</p>
               <ul>{maps.map((m) => <li key={m}>{m}</li>)}</ul>
               <div className="corp-sub-doors">
-                <Link href="/corporate#enquiry" className="corp-sub-pri">Register your interest <span aria-hidden>&rarr;</span></Link>
+                <Link href="/corporate#enquiry" className="corp-sub-pri">Get in touch <span aria-hidden>&rarr;</span></Link>
                 <Link href="/corporate#policy" className="corp-sub-ghost">Write our AI policy, free</Link>
               </div>
             </aside>
@@ -82,7 +84,7 @@ export default function CorporateSubpage({
           <p className="corp-sub-asof">This page sets out our reading of the position as of {asOf}. It is general information for firms, and your own legal advice governs.</p>
         </article>
       </main>
-      <Footer tone="sand" />
+      <Footer tone="sand" variant="corporate" />
 
       <style>{`
         .corp-page, .corp-page :is(section, div, nav, header, footer, main, span, p, li, a, article, aside, h1, h2) {
@@ -112,8 +114,8 @@ export default function CorporateSubpage({
         .corp-sub-map li::before { content: ""; position: absolute; left: 2px; top: 16px; width: 6px; height: 6px; border-radius: 999px; background: #0e7a45; }
         .corp-sub-map li:first-child::before { top: 7px; }
         .corp-sub-doors { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
-        .corp-sub-pri { display: inline-flex; align-items: center; gap: 10px; height: 54px; padding: 0 28px; border-radius: 999px; text-decoration: none; background: linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%); color: #fffdfa; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 700; box-shadow: 0 16px 38px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.4); white-space: nowrap; }
-        .corp-sub-ghost { display: inline-flex; align-items: center; height: 54px; padding: 0 22px; border-radius: 999px; text-decoration: none; border: 1px solid rgba(20,22,29,0.22); background: rgba(255,253,248,0.8); color: #14161d; font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; white-space: nowrap; }
+        .corp-sub-pri { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 26px; border-radius: 999px; text-decoration: none; background: linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%); color: #fffdfa; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; box-shadow: 0 16px 38px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.4); white-space: nowrap; }
+        .corp-sub-ghost { display: inline-flex; align-items: center; height: 52px; padding: 0 22px; border-radius: 999px; text-decoration: none; border: 1px solid rgba(20,22,29,0.22); background: rgba(255,253,248,0.8); color: #14161d; font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; white-space: nowrap; }
         .corp-sub-asof { margin: 26px 0 0; font-family: var(--lv2-font-mono); font-size: 11.5px; letter-spacing: 0.04em; line-height: 1.6; color: rgba(17,22,38,0.62); }
         .corp-sub-article :is(a, button):focus-visible { outline: 2px solid #0a7085; outline-offset: 3px; }
       `}</style>
