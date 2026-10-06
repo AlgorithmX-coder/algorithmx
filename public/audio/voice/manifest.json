@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T11:08:00.095Z",
+  "generatedAt": "2026-10-06T10:18:47.874Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -6013,24 +6013,24 @@
       "file": "/audio/voice/81597abacb8582b2.mp3"
     },
     {
-      "key": "5a9e84dafd626290",
+      "key": "84154782731022c7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "And the time stamp, which shows exactly when it landed. That matters when there has been more than one.",
+      "text": "The time stamp, which shows exactly when it landed. That matters when there has been more than one.",
       "lines": [
-        "And the time stamp, which shows exactly when it landed. That matters when there has been more than one."
+        "The time stamp, which shows exactly when it landed. That matters when there has been more than one."
       ],
-      "file": "/audio/voice/5a9e84dafd626290.mp3"
+      "file": "/audio/voice/84154782731022c7.mp3"
     },
     {
-      "key": "0ae705c89e652786",
+      "key": "a108d4401d7bda97",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Then the words themselves, frozen exactly as they were sent. Now nobody can say it never happened.",
+      "text": "The words themselves, frozen exactly as they were sent. Now nobody can say it never happened.",
       "lines": [
-        "Then the words themselves, frozen exactly as they were sent. Now nobody can say it never happened."
+        "The words themselves, frozen exactly as they were sent. Now nobody can say it never happened."
       ],
-      "file": "/audio/voice/0ae705c89e652786.mp3"
+      "file": "/audio/voice/a108d4401d7bda97.mp3"
     },
     {
       "key": "c43fe48ab41ea260",
@@ -6187,19 +6187,19 @@
       "file": "/audio/voice/a059100f414e2d9d.mp3"
     },
     {
-      "key": "b5faadc9195c1cbf",
+      "key": "95c06387b2a9fe3e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Welcome to the snowfield, Cyber Hero. Fresh snow, all the way to the hills. Walk across it and you leave prints. You know that already. Here is the part almost nobody knows. The internet is snow too. Every search, every like, every comment presses a print. You cannot feel it happen... but the print is there. [excited] Grab the lamp. Let's go and read some tracks together!",
+      "text": "[warmly] Welcome to the snowfield, Cyber Hero. Fresh snow, all the way to the hills. Walk across it and you leave prints. You know that already. Here is the part almost nobody knows. The internet is snow too. Every search, every like, every comment presses a print. You cannot feel it happen... but the print is there. [excited] Grab the lamp. Let's go and read some tracks, together!",
       "lines": [
         "[warmly] Welcome to the snowfield, Cyber Hero. Fresh snow, all the way to the hills.",
         "Walk across it and you leave prints. You know that already.",
         "Here is the part almost nobody knows.",
         "The internet is snow too. Every search, every like, every comment presses a print.",
         "You cannot feel it happen... but the print is there.",
-        "[excited] Grab the lamp. Let's go and read some tracks together!"
+        "[excited] Grab the lamp. Let's go and read some tracks, together!"
       ],
-      "file": "/audio/voice/b5faadc9195c1cbf.mp3"
+      "file": "/audio/voice/95c06387b2a9fe3e.mp3"
     },
     {
       "key": "a658abf2bfbc5e14",
@@ -30902,16 +30902,6 @@
         "[warmly] Cross all three, and you never carry it alone. Ready? First stone!"
       ],
       "file": "/audio/voice/95737f22a515d72a.mp3"
-    },
-    {
-      "key": "2999b1034eb051fc",
-      "speaker": "layla",
-      "voice": "Sarah",
-      "text": "Here are three stones for the first step. Tap the safe one.",
-      "lines": [
-        "Here are three stones for the first step. Tap the safe one."
-      ],
-      "file": "/audio/voice/2999b1034eb051fc.mp3"
     },
     {
       "key": "64c1531ebf86a270",
