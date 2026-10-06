@@ -1422,3 +1422,91 @@ export function TuningLab({ onDidTry }: LabProps) {
       ] },
     ]} />;
 }
+
+/* ---- Module 16 labs: incident response & digital forensics ---- */
+
+export function IrLifecycleLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry}
+    prompt="Incident response follows a recognised lifecycle (often remembered as prepare, identify, contain, eradicate, recover, learn). Put the stages in order."
+    doneNote="That is the incident-response lifecycle. Note that preparation comes first (before any incident) and lessons-learned comes last (feeding back into preparation): it is a cycle, not a one-off."
+    items={[
+      { label: "Preparation", note: "Before anything happens: plans, tools, training and contacts ready, so you are not improvising under pressure." },
+      { label: "Identification", note: "Detect and confirm that an incident is really happening, and understand its scope." },
+      { label: "Containment", note: "Limit the damage and stop the spread, buying time without destroying evidence." },
+      { label: "Eradication", note: "Remove the threat fully: the malware, the attacker's access, the root cause." },
+      { label: "Recovery", note: "Restore systems to normal, safely, and confirm the threat is really gone." },
+      { label: "Lessons learned", note: "Review what happened and improve, feeding back into preparation for next time." },
+    ]} />;
+}
+
+const CONTAIN_ERAD: Cat[] = [
+  { id: "contain", label: "Containment", color: T.amber },
+  { id: "eradicate", label: "Eradication", color: T.red },
+];
+export function ContainEradicateLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={CONTAIN_ERAD}
+    prompt="Containment limits the damage now; eradication removes the threat fully afterwards. For each action, decide which it is."
+    items={[
+      { text: "Disconnecting an infected laptop from the network to stop the spread.", cat: "contain", why: "Isolating to limit damage, fast, is containment: you buy time without yet removing the threat." },
+      { text: "Fully removing the malware and closing the vulnerability it used.", cat: "eradicate", why: "Eliminating the threat and its root cause is eradication." },
+      { text: "Blocking the attacker's command-and-control address at the firewall.", cat: "contain", why: "Cutting the attacker's control quickly, to limit harm, is a containment action." },
+      { text: "Rebuilding a compromised server from a known-clean image.", cat: "eradicate", why: "Removing the compromise entirely by rebuilding clean is eradication." },
+      { text: "Resetting the credentials the attacker is actively using, right now.", cat: "contain", why: "Quickly denying the attacker's current access limits damage: containment." },
+      { text: "Removing every backdoor and persistence mechanism the attacker left.", cat: "eradicate", why: "Thoroughly rooting out all the attacker's footholds is eradication." },
+    ]} />;
+}
+
+const EVIDENCE: Cat[] = [
+  { id: "preserve", label: "Preserves evidence", color: T.green },
+  { id: "destroy", label: "Risks destroying evidence", color: T.red },
+];
+export function EvidenceLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={EVIDENCE}
+    prompt="Evidence must be preserved properly if an incident may lead to legal action. For each action, decide: does it preserve evidence, or risk destroying it?"
+    items={[
+      { text: "Making a forensic copy of a disk and working only on the copy.", cat: "preserve", why: "Imaging and working on a copy preserves the original evidence intact: standard practice." },
+      { text: "Logging into the compromised machine and poking around to 'have a look'.", cat: "destroy", why: "Interacting with the original changes it, overwriting evidence. Work on copies, under a plan." },
+      { text: "Recording exactly who handled evidence, when, and what they did.", cat: "preserve", why: "A documented chain of custody keeps evidence credible and admissible." },
+      { text: "Rebooting the infected machine before capturing its memory.", cat: "destroy", why: "A reboot wipes volatile evidence (like what was in memory). Capture it first." },
+      { text: "Carefully documenting each step of the investigation as you go.", cat: "preserve", why: "Clear, contemporaneous documentation underpins sound, defensible evidence." },
+      { text: "Letting many people access the evidence with no record kept.", cat: "destroy", why: "An unrecorded free-for-all breaks the chain of custody and can make evidence worthless." },
+    ]} />;
+}
+
+export function TimelineOrderLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry}
+    prompt="Reconstructing the timeline is the heart of an investigation. From these pieces of evidence, put the attack in the order it happened."
+    doneNote="That is an incident timeline: the attack reconstructed in order from evidence. Building it is how an investigator understands what happened, how far it went, and how to stop it recurring."
+    items={[
+      { label: "A phishing email is opened, giving the first foothold", note: "The entry point: where and how the attacker got in." },
+      { label: "Malware installs and sets itself to persist", note: "The attacker secures their foothold so it survives reboots." },
+      { label: "The attacker moves to other systems using stolen credentials", note: "Lateral movement toward the valuable data." },
+      { label: "Sensitive data is gathered and staged for theft", note: "The attacker collects what they came for." },
+      { label: "The data is exfiltrated to an external server", note: "The goal achieved: data leaves the organisation." },
+      { label: "The SOC detects the activity and response begins", note: "Detection and the start of containment: where the timeline, for now, ends." },
+    ]} />;
+}
+
+export function IncidentReportLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="An incident is over, and it is time to run the review and write the report. Play the decisions: a good incident process learns and improves, without blame."
+    doneKicker="Written up well"
+    doneNote="You ran a blameless review, captured the real lessons, and wrote a clear, factual report that helps the organisation improve. The write-up, and the learning, is how one incident makes you stronger against the next."
+    steps={[
+      { role: "The review", prompt: "You gather the team to review the incident. What tone makes it most useful?", options: [
+        { text: "Blameless: focus on what happened and how to improve, not on who to punish.", correct: true, why: "A blameless review surfaces the real causes honestly. Blame makes people hide information, so you learn nothing." },
+        { text: "Find someone to blame and make an example of them.", correct: false, why: "Blame drives mistakes underground and poisons the culture, so the next incident is hidden, not prevented." },
+        { text: "Skip the review; the incident is over.", correct: false, why: "Lessons-learned is a stage of the lifecycle for a reason. Skipping it wastes the hardest-won knowledge." },
+      ] },
+      { role: "The report", prompt: "What makes a good incident report?", options: [
+        { text: "Clear, factual and structured: what happened, the impact, the timeline, and the lessons.", correct: true, why: "A clear, factual report lets others understand, act, and improve, and stands up to later scrutiny." },
+        { text: "Vague and reassuring, playing down what happened.", correct: false, why: "Downplaying hides the truth and prevents improvement (and can breach legal duties). Be factual." },
+        { text: "So technical and long that no one will read it.", correct: false, why: "A report no one reads helps no one. Clarity, including for non-technical readers, is the point." },
+      ] },
+      { role: "The payoff", prompt: "What is the real value of the whole exercise?", options: [
+        { text: "Turning this incident into concrete improvements that prevent or reduce the next one.", correct: true, why: "The point of response and review is to come out stronger: fixed root causes, better detection, a tested plan." },
+        { text: "Proving the incident was nobody's fault so everyone feels fine.", correct: false, why: "Comfort is not the goal; genuine improvement is. Honest lessons, acted on, are what matter." },
+        { text: "Filing the report and changing nothing.", correct: false, why: "A report that leads to no change wastes the incident's lessons. Improvement is the whole point." },
+      ] },
+    ]} />;
+}

@@ -38,7 +38,7 @@ const ACTS: Act[] = [
       { n: 13, title: "The SOC & the analyst's day", blurb: "The most common first job in cyber security, seen from the inside.", tag: "Security+ 4.0", href: "/pro/module13", status: "live" },
       { n: 14, title: "Logs & the SIEM", blurb: "Reading what attackers leave behind, on real honeypot data.", tag: "Security+ 4.0", href: "/pro/week13", status: "preview" },
       { n: 15, title: "Detection & threat intelligence", blurb: "Spotting the attack, and knowing your enemy with MITRE ATT&CK.", tag: "MITRE ATT&CK", href: "/pro/module15", status: "live" },
-      { n: 16, title: "Incident response & forensics", blurb: "When it goes wrong: contain, investigate, recover.", tag: "NIST 800-61", status: "soon" },
+      { n: 16, title: "Incident response & forensics", blurb: "When it goes wrong: contain, investigate, recover.", tag: "NIST 800-61", href: "/pro/module16", status: "live" },
     ],
   },
   {
