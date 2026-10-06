@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     url: "https://algorithmx.io/corporate/uk-gdpr",
     siteName: "AlgorithmX",
     type: "article",
+    images: [{ url: "https://algorithmx.io/corporate/og.png", width: 1200, height: 630, alt: "Every member of staff, cleared to use AI. AI Cleared and AI Fluent by AlgorithmX." }],
   },
 };
 
