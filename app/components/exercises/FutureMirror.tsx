@@ -624,8 +624,12 @@ export default function FutureMirror({
             </div>
           </div>
 
-          {/* On-board instructions: the current beat, in the child's words. */}
-          <div style={{ textAlign: "center", marginTop: 12 }}>
+          {/* On-board instructions: the current beat, in the child's words.
+              Last element on the board, so its bottom margin IS the board's
+              bottom clearance: 9px at the tester's 1093x525 (UAT W12 4a,
+              "frame size again"). A fit-scaled board shrinks the margin along
+              with everything else, so 26 is what reads as a margin. */}
+          <div style={{ textAlign: "center", margin: "12px 0 26px" }}>
             <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, minHeight: 16, padding: "0 16px" }}>
               {strip}
             </div>
