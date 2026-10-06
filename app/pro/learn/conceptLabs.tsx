@@ -1783,3 +1783,98 @@ export function DayToDayLab({ onDidTry }: LabProps) {
       { text: "Preparing evidence and documentation for an ISO 27001 audit", cat: "grc", why: "Audit preparation and evidence is GRC's remit." },
     ]} />;
 }
+
+/* ---- Module 21 labs: the job machinery + capstone ---- */
+
+const PORTFOLIO: Cat[] = [
+  { id: "strong", label: "Strong portfolio piece", color: T.green },
+  { id: "weak", label: "Weak / not a portfolio piece", color: T.red },
+];
+export function PortfolioLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={PORTFOLIO}
+    prompt="Employers skills-test, so a portfolio of real work sets you apart. For each, decide: a strong portfolio piece, or weak?"
+    items={[
+      { text: "A clear write-up of a real breach: what happened, root cause, and lessons.", cat: "strong", why: "A breach write-up shows you can analyse and communicate: exactly what the course's method built." },
+      { text: "A finished Personal Security Audit with findings and what you changed.", cat: "strong", why: "A concrete audit (your Module 5 piece) proves you can assess and act on real security." },
+      { text: "'I'm passionate about cyber security.' (just a statement)", cat: "weak", why: "A claim with nothing to show is not a portfolio piece. Employers want demonstrable work." },
+      { text: "An incident-response timeline you reconstructed from evidence.", cat: "strong", why: "A timeline (your Module 16 piece) demonstrates real investigation skill." },
+      { text: "A long list of cyber words you have heard of.", cat: "weak", why: "Listing terms shows nothing you can do. A portfolio shows applied skill." },
+      { text: "A small working script with a short README, on a public code repo.", cat: "strong", why: "A real, shareable artefact (your Code Lab / scripting work) is a genuine portfolio piece." },
+    ]} />;
+}
+
+const CV_LINKEDIN: Cat[] = [
+  { id: "helps", label: "Helps your application", color: T.green },
+  { id: "hurts", label: "Hurts your application", color: T.red },
+];
+export function CvLinkedInLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={CV_LINKEDIN}
+    prompt="Your CV and LinkedIn are how you get noticed. For each, decide: does it help your application, or hurt it?"
+    items={[
+      { text: "Linking to your portfolio and describing specific things you built or did.", cat: "helps", why: "Concrete, demonstrable work (with links) sets you apart and proves ability." },
+      { text: "Connecting your transferable strengths to what the role needs.", cat: "helps", why: "Reframing your background as an asset (Module 20) makes a compelling case." },
+      { text: "Vague buzzwords with nothing concrete to back them.", cat: "hurts", why: "Empty buzzwords are forgettable and unconvincing. Show specifics instead." },
+      { text: "Tailoring your CV to each role, matching its actual requirements.", cat: "helps", why: "A tailored CV that mirrors the role's needs gets noticed; a generic one rarely does." },
+      { text: "Claiming certifications or skills you do not actually have.", cat: "hurts", why: "Dishonesty is easily caught, costs you the job, and is unethical. Represent yourself accurately." },
+      { text: "A clear, error-free, well-structured document.", cat: "helps", why: "Clarity and care signal professionalism; typos and chaos signal the opposite." },
+    ]} />;
+}
+
+export function InterviewLab({ onDidTry }: LabProps) {
+  return <ScenarioGame onDidTry={onDidTry}
+    intro="You are in a cyber interview. Play the decisions: good interviewing is honest, structured and shows how you think."
+    doneKicker="Interviewed well"
+    doneNote="You showed your reasoning, were honest about limits, and pointed to real work you had done. Demonstrating how you think, and backing it with your portfolio, is exactly what gets a capable beginner hired."
+    steps={[
+      { role: "A scenario question", prompt: "They ask: 'An alert shows many failed logins then a success from an odd location. What do you do?' How do you answer?", options: [
+        { text: "Walk through your reasoning step by step: gather context, judge the evidence, escalate if real.", correct: true, why: "Scenario questions test how you think. Showing a calm, structured triage process (Module 13) is exactly what they want." },
+        { text: "Say 'I'd fix it' and stop.", correct: false, why: "A vague answer shows no reasoning. They want to see your thought process, not a one-liner." },
+        { text: "Panic and say you have no idea.", correct: false, why: "Even if unsure, talk through how you would approach it. Reasoning matters more than a perfect answer." },
+      ] },
+      { role: "A gap in your knowledge", prompt: "They ask about something you genuinely do not know. What is the best response?", options: [
+        { text: "Be honest, say you are not sure, and explain how you would find out.", correct: true, why: "Honesty plus a method ('I'd check the vendor advisory and the logs') is impressive. Nobody knows everything." },
+        { text: "Bluff and make something up.", correct: false, why: "Bluffing is easily spotted and destroys trust. Honesty about limits, with a method, is far stronger." },
+        { text: "Say the question is unfair and refuse to answer.", correct: false, why: "Defensiveness looks bad. Treat gaps as a chance to show how you learn." },
+      ] },
+      { role: "Showing your work", prompt: "How do you stand out as a capable beginner?", options: [
+        { text: "Point to your portfolio: real pieces you built, and what you learned from them.", correct: true, why: "Demonstrable work (your audit, phishing guide, breach write-up, IR timeline, script) proves ability beyond words." },
+        { text: "Just insist you are passionate and a fast learner.", correct: false, why: "Everyone says that. Proof (a portfolio) is what actually sets you apart." },
+        { text: "Claim years of experience you do not have.", correct: false, why: "Dishonesty is easily caught and unethical. Your real work and honest reasoning are your strength." },
+      ] },
+    ]} />;
+}
+
+const HOMELAB: Cat[] = [
+  { id: "good", label: "Good practice", color: T.green },
+  { id: "risky", label: "Risky / unlawful", color: T.red },
+];
+export function HomeLabLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={HOMELAB}
+    prompt="A home lab and continuous learning keep you sharp and hireable, but only when done safely and lawfully. For each, decide: good practice, or risky/unlawful?"
+    items={[
+      { text: "Practising attacks and defences on your own isolated virtual machines.", cat: "good", why: "Your own isolated lab is the lawful, safe place to practise (recall Module 5)." },
+      { text: "Using deliberately-vulnerable training apps designed for practice.", cat: "good", why: "Purpose-built vulnerable apps and ranges exist precisely for safe, lawful practice." },
+      { text: "Testing your 'skills' on a real website you do not own or have permission for.", cat: "risky", why: "Unauthorised testing is a Computer Misuse Act offence. Never do it, however curious." },
+      { text: "Following security news and advisories to stay current.", cat: "good", why: "The field moves fast; staying current is part of the job and keeps you hireable." },
+      { text: "Running malware you found on your everyday personal laptop.", cat: "risky", why: "Running unknown malware on a real machine is how you get infected (recall Module 8). Use isolation." },
+      { text: "Joining a community to learn from and network with others in the field.", cat: "good", why: "Communities build skills and surface opportunities: good for learning and the job hunt." },
+    ]} />;
+}
+
+const CAPSTONE_AUDIENCE: Cat[] = [
+  { id: "tech", label: "Technical write-up", color: T.cyan },
+  { id: "exec", label: "Executive summary", color: T.amber },
+  { id: "both", label: "Both", color: T.green },
+];
+export function CapstoneLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={CAPSTONE_AUDIENCE}
+    prompt="The capstone is one investigation written up two ways: a detailed technical write-up, and a short executive summary for non-technical leaders. For each element, decide where it belongs."
+    items={[
+      { text: "The precise technical steps, evidence and timeline of the attack.", cat: "tech", why: "Full technical detail belongs in the technical write-up, for a technical reader." },
+      { text: "A one-paragraph plain-English summary of what happened and the impact.", cat: "exec", why: "A concise, non-technical summary of impact is for the executive audience." },
+      { text: "A clear statement of the business impact and risk.", cat: "both", why: "Impact and risk matter to both audiences, framed appropriately for each." },
+      { text: "The specific indicators of compromise and affected systems.", cat: "tech", why: "Detailed IOCs and system lists are for the technical responders." },
+      { text: "The key recommendation, in language a leader can act on.", cat: "exec", why: "A clear, actionable recommendation in plain terms is what leaders need." },
+      { text: "What the incident was and why it matters, honestly.", cat: "both", why: "A clear, honest account of what happened and why it matters serves both audiences." },
+    ]} />;
+}
