@@ -666,8 +666,14 @@ export default function TrackBack({
             {saysPanel}
           </div>
 
-          {/* On-board instructions: the current beat, in the child's words. */}
-          <div style={{ textAlign: "center", marginTop: 12 }}>
+          {/* On-board instructions: the current beat, in the child's words.
+              The strip is the last thing on the board, so its bottom margin is
+              the board's bottom clearance. At the tester's 1093x525 that was
+              7px (UAT W12 2a "make the outer filleted rectangle a little
+              larger", 3a "there is no offset at the bottom"). A fit-scaled
+              board scales the margin down with everything else, so 26 is what
+              it takes to read as a margin rather than a seam. */}
+          <div style={{ textAlign: "center", margin: "12px 0 26px" }}>
             <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, minHeight: 16, padding: "0 16px" }}>
               {strip}
             </div>
