@@ -6,7 +6,7 @@ import { prisma } from "@/app/lib/prisma";
 import { getSchoolContext, listPupils } from "@/app/lib/schoolClasses";
 import Locked from "../../teach/Locked";
 import AddPupils from "./AddPupils";
-import { removePupilAction } from "../class.actions";
+import { removePupilAction, resetPicturesAction } from "../class.actions";
 
 export const dynamic = "force-dynamic";
 
@@ -90,11 +90,23 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
                   </small>
                 </div>
                 <div className="rs">
-                  <form action={removePupilAction}>
-                    <input type="hidden" name="childProfileId" value={p.id} />
-                    <input type="hidden" name="classId" value={klass.id} />
-                    <button type="submit" className="revoke">Remove</button>
-                  </form>
+                  <div className="pupilacts">
+                    {/* A child who has forgotten their pictures needs to be
+                        back in the lesson in seconds, so this is one click
+                        and no confirmation. */}
+                    {p.user.hashedPassword && (
+                      <form action={resetPicturesAction}>
+                        <input type="hidden" name="childProfileId" value={p.id} />
+                        <input type="hidden" name="classId" value={klass.id} />
+                        <button type="submit" className="axbtn">Forgotten pictures</button>
+                      </form>
+                    )}
+                    <form action={removePupilAction}>
+                      <input type="hidden" name="childProfileId" value={p.id} />
+                      <input type="hidden" name="classId" value={klass.id} />
+                      <button type="submit" className="revoke">Remove</button>
+                    </form>
+                  </div>
                 </div>
               </div>
             ))}

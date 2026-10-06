@@ -465,3 +465,5 @@
 
 /* a pupil who has not signed in yet is amber, not an error */
 .axtp .rb small.s-ask {color:var(--ask-c)}
+
+.axtp .pupilacts {display:flex;gap:8px;align-items:center;flex-wrap:wrap}
