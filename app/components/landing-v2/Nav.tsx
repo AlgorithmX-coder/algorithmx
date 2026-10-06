@@ -34,6 +34,9 @@ type NavProps = {
   showSiteLinks?: boolean;
   /** Which page the bar is sitting on. */
   tone?: "night" | "sand";
+  /** Where the brand mark links. The homepage by default; a page that is
+   * open while the rest of the site is gated passes itself. */
+  homeHref?: string;
 };
 
 /**
@@ -55,7 +58,7 @@ const MARK_SIZE = (height: number): React.CSSProperties => ({
   height,
 });
 
-export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night" }: NavProps) {
+export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night", homeHref = "/" }: NavProps) {
   const onSand = tone === "sand";
   /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
    * Under Lenis, scroll events fire every rAF — storing the pixel value
@@ -155,7 +158,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         }}
       >
         <Link
-          href="/"
+          href={homeHref}
           className="lv2-brand"
           style={{
             display: "flex",
