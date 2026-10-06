@@ -25,7 +25,7 @@ const sans = IBM_Plex_Sans({
 });
 
 /**
- * /cyberstart - the Cyber Ops (14-17 tier) marketing landing.
+ * /ops - the Cyber Ops (14-17 tier) marketing landing.
  *
  * noindex: "Cyber Ops" is a working title pending trademark clearance, so
  * the page ships and is shareable by link but is kept out of search

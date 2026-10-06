@@ -379,13 +379,13 @@ export default function CyberStartLanding() {
               <div className="chiprow">
                 <span className="chip"><span className="pip" />Coming soon</span>
                 <span className="chip range"><span className="pip" />Ages 14-17</span>
-                <span className="chip mono">16 weeks . 90 min/week</span>
+                <span className="chip mono">16 modules . about an hour each</span>
               </div>
               <h1>Get recruited.<br /><span className="g">Do the real work.</span></h1>
               <p className="lead">Cyber Ops hires you as a junior security operator. Break into real targets, defend against real attacks, and write up real findings - inside a walled range where nothing can actually go wrong. You leave with a portfolio, not a certificate.</p>
               <div className="hbtns">
                 <a href="#join" className="cta">Join the waitlist</a>
-                <a href="#curriculum" className="cta ghost">See the 16 weeks &rarr;</a>
+                <a href="#curriculum" className="cta ghost">See the 16 modules &rarr;</a>
               </div>
               <p className="hnote">The top tier of AlgorithmX - after Cyber Heroes and Cyber Explorers.</p>
               {/* Aligned with the NCSC (alignment, not endorsement). */}
@@ -434,7 +434,7 @@ export default function CyberStartLanding() {
             <div>
               <div className="ey"><span className="k">What you actually do</span></div>
               <h2>A walled range. Real tools. Real targets.</h2>
-              <p className="lead" style={{ marginTop: 16 }}>Every week, Cyber Ops hands you a client engagement. You run it the way professionals do - on genuinely vulnerable systems we build for you to break. It all lives inside a sandbox that never touches the real internet, so you can do the real thing without any of the real risk.</p>
+              <p className="lead" style={{ marginTop: 16 }}>Every module, Cyber Ops hands you a client engagement. You run it the way professionals do - on genuinely vulnerable systems we build for you to break. It all lives inside a sandbox that never touches the real internet, so you can do the real thing without any of the real risk.</p>
               <p className="lead" style={{ marginTop: 14, color: "var(--muted)", fontSize: ".98rem" }}>Your payloads actually run. Your exploits actually land. Nothing ever leaves your browser.</p>
             </div>
             <div>
@@ -453,11 +453,11 @@ export default function CyberStartLanding() {
         <section className="band" id="curriculum">
           <div className="wrap">
             <div className="ey"><span className="k">The curriculum</span></div>
-            <h2>Sixteen weeks, attacker to defender.</h2>
-            <p className="lead" style={{ marginTop: 14 }}>You spend the first weeks learning to break in - then turn around and learn to catch it. That&rsquo;s the honest arc of the profession, and it&rsquo;s why this is never just a hacking course.</p>
+            <h2>Sixteen modules, attacker to defender.</h2>
+            <p className="lead" style={{ marginTop: 14 }}>You spend the first modules learning to break in - then turn around and learn to catch it. That&rsquo;s the honest arc of the profession, and it&rsquo;s why this is never just a hacking course.</p>
             <div className="acts">
               <div className="act">
-                <div className="ah"><div className="wk">Weeks 1-3</div><h4>Foundations</h4></div>
+                <div className="ah"><div className="wk">Modules 1-3</div><h4>Foundations</h4></div>
                 <ul>
                   <li><b>01</b>Rules of Engagement</li>
                   <li><b>02</b>Recon &amp; OSINT</li>
@@ -465,7 +465,7 @@ export default function CyberStartLanding() {
                 </ul>
               </div>
               <div className="act">
-                <div className="ah"><div className="wk">Weeks 4-7</div><h4>Web Exploitation</h4></div>
+                <div className="ah"><div className="wk">Modules 4-7</div><h4>Web Exploitation</h4></div>
                 <ul>
                   <li><b>04</b>Broken Auth</li>
                   <li><b>05</b>Injection</li>
@@ -474,7 +474,7 @@ export default function CyberStartLanding() {
                 </ul>
               </div>
               <div className="act">
-                <div className="ah"><div className="wk">Weeks 8-11</div><h4>Data &amp; Systems</h4></div>
+                <div className="ah"><div className="wk">Modules 8-11</div><h4>Data &amp; Systems</h4></div>
                 <ul>
                   <li><b>08</b>Cryptography</li>
                   <li><b>09</b>Passwords &amp; Hashes</li>
@@ -483,7 +483,7 @@ export default function CyberStartLanding() {
                 </ul>
               </div>
               <div className="act flip">
-                <div className="ah"><div className="wk">Weeks 12-14</div><h4>The Role Flip</h4></div>
+                <div className="ah"><div className="wk">Modules 12-14</div><h4>The Role Flip</h4></div>
                 <ul>
                   <li><b>12</b>Incident Response</li>
                   <li><b>13</b>Phishing Defense</li>
@@ -491,7 +491,7 @@ export default function CyberStartLanding() {
                 </ul>
               </div>
               <div className="act cap">
-                <div className="ah"><div className="wk">Weeks 15-16</div><h4>Capstone</h4></div>
+                <div className="ah"><div className="wk">Modules 15-16</div><h4>Capstone</h4></div>
                 <ul>
                   <li><b>15</b>Full Engagement I</li>
                   <li><b>16</b>Report &amp; Debrief</li>
@@ -555,7 +555,7 @@ export default function CyberStartLanding() {
               </div>
               <div className="scard">
                 <div className="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6" /></svg></div>
-                <div><h4>Structured &amp; tracked</h4><p>A 16-week curriculum with clear progress, a professional tone, and law-aware framing throughout. Built for teenagers, respected as teenagers.</p></div>
+                <div><h4>Structured &amp; tracked</h4><p>A 16-module curriculum with clear progress, a professional tone, and law-aware framing throughout. Built for teenagers, respected as teenagers.</p></div>
               </div>
             </div>
           </div>
@@ -569,7 +569,7 @@ export default function CyberStartLanding() {
             <div className="faq">
               <details open><summary>Is this teaching my child to hack?<span className="pl">+</span></summary><p>Yes - and that&rsquo;s the point. You cannot defend what you don&rsquo;t understand. Cyber Ops teaches real offensive technique against fake targets in a sealed range, then turns your child around to defend and disclose. They finish as someone who protects systems, with the professional ethics to match.</p></details>
               <details><summary>Is it actually safe and legal?<span className="pl">+</span></summary><p>Completely. Every target is simulated inside the browser with no route to any real system, and every engagement starts by signing an authorization scope - the exact habit that keeps real professionals on the right side of the law. We frame the relevant UK law (the Computer Misuse Act) throughout.</p></details>
-              <details><summary>What ages is it for? Do they need to be technical?<span className="pl">+</span></summary><p>Ages 14-17. No prior experience needed - the first weeks build the ground up, and early engagements guide the commands so nobody&rsquo;s staring at a blank terminal. It gets genuinely challenging by design as they rank up.</p></details>
+              <details><summary>What ages is it for? Do they need to be technical?<span className="pl">+</span></summary><p>Ages 14-17. No prior experience needed - the first modules build the ground up, and early engagements guide the commands so nobody&rsquo;s staring at a blank terminal. It gets genuinely challenging by design as they rank up.</p></details>
               <details><summary>When can we start, and how much?<span className="pl">+</span></summary><p>Cyber Ops is in development now. Join the waitlist and you&rsquo;ll be first to know when the range opens, with early-access pricing. AlgorithmX courses are a one-time payment for lifetime access.</p></details>
             </div>
           </div>
