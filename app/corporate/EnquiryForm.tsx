@@ -70,9 +70,9 @@ const field: React.CSSProperties = {
   fontFamily: "var(--lv2-font-display)",
   fontSize: 16.5,
   fontWeight: 500,
-  color: "#f2f6ff",
-  background: "rgba(6,9,20,0.86)",
-  border: "1.5px solid rgba(10,112,133,0.4)",
+  color: "#14161d",
+  background: "#fffdf8",
+  border: "1.5px solid rgba(20,22,29,0.18)",
   outline: "none",
   boxSizing: "border-box",
   transition: "border-color .2s ease, box-shadow .2s ease",
@@ -83,7 +83,7 @@ function focus(e: React.FocusEvent<HTMLElement>) {
   e.currentTarget.style.boxShadow = `0 0 0 3px rgba(10,112,133,0.14)`;
 }
 function blur(e: React.FocusEvent<HTMLElement>) {
-  e.currentTarget.style.borderColor = "rgba(10,112,133,0.4)";
+  e.currentTarget.style.borderColor = "rgba(20,22,29,0.18)";
   e.currentTarget.style.boxShadow = "none";
 }
 
