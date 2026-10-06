@@ -67,6 +67,11 @@ function SignupPageInner() {
   /* Preserve ?course= intent through the auth flow so the hub can
    * highlight it after login. Validated to a safe slug shape. */
   const course = safeCourseSlug(searchParams.get("course"));
+  /* A join link sends its own address here so the new account lands back
+   * on the seat. Same-origin only. */
+  const callbackRaw = searchParams.get("callbackUrl");
+  const safeCallback = callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//") ? callbackRaw : null;
+  const forCourse = !!safeCallback && (safeCallback.startsWith("/ai-cleared") || safeCallback.startsWith("/ai-fluent"));
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -168,7 +173,7 @@ function SignupPageInner() {
       setPhase("success");
       // Account created but not signed in — route through /login, carrying
       // the intended hub destination (with any selected course).
-      const loginUrl = `/login?registered=true&callbackUrl=${encodeURIComponent(hubTargetFor(course))}`;
+      const loginUrl = `/login?registered=true&callbackUrl=${encodeURIComponent(safeCallback ?? hubTargetFor(course))}`;
       // Slightly longer than the old 800ms so the core's unlock/portal
       // moment lands before we route. Still snappy.
       window.setTimeout(() => {
@@ -290,10 +295,10 @@ function SignupPageInner() {
                   lineHeight: 1.08,
                 }}
               >
-                Bring AlgorithmX online
+                {forCourse ? "Your seat is waiting" : "Bring AlgorithmX online"}
               </h1>
               <p className="mb-7" style={{ color: ACCESS.textSoft, fontSize: 15, fontWeight: 500, lineHeight: 1.5 }}>
-                Create your account.
+                {forCourse ? "Create your account with your work email, then your seat is yours." : "Create your account."}
               </p>
 
               <AnimatePresence>
@@ -356,7 +361,7 @@ function SignupPageInner() {
                   error={touched.email && email.length > 0 && !emailOk ? "That email doesn't look right." : null}
                   autoComplete="email"
                   inputMode="email"
-                  placeholder="you@example.com"
+                  placeholder={forCourse ? "you@yourfirm.co.uk" : "you@example.com"}
                   required
                 />
 
@@ -408,7 +413,7 @@ function SignupPageInner() {
                 <div className="pt-1">
                   <AuthButton
                     state={buttonState}
-                    idleLabel="Power on"
+                    idleLabel={forCourse ? "Create my account" : "Power on"}
                     loadingLabel="Powering on…"
                     successLabel="Account ready"
                     disabledHint={missingHint}
@@ -425,9 +430,11 @@ function SignupPageInner() {
             </AuthTerminalPanel>
 
             {/* Dormant identity line (replaces the old "Secure terminal" chrome) */}
+            {!forCourse && (
             <p className="text-center mt-8" style={{ fontFamily: ACCESS_FONT.mono, fontSize: 11.5, letterSpacing: 2.2, color: ACCESS.textSoft }}>
               Six streams. One key.
             </p>
+            )}
 
             {/* Trust row — SVG, not emoji */}
             <div className="flex items-center justify-center gap-5 mt-6 flex-wrap">
