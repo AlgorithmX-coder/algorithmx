@@ -19,7 +19,7 @@ const BODY = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, 
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
-.bi{ --ground:#0A0C10; --panel:#12161C; --panel2:#171C24; --edge:#232B36; --ink:#ECEFF3; --dim:#9BA6B2; --faint:#5E6874; min-height:100vh; min-height:100dvh; }
+.bi{ --ground:#0A0C10; --panel:#12161C; --panel2:#171C24; --edge:#232B36; --ink:#ECEFF3; --dim:#9BA6B2; --faint:#6f7b89; min-height:100vh; min-height:100dvh; }
 .bi *{ box-sizing:border-box }
 .bi ::selection{ background:var(--acc); color:#0b0b0b }
 .bi .disp{ font-family:${DISP}; font-weight:600; text-transform:uppercase }
@@ -97,7 +97,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
         {/* top strip */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", color: "#9BA6B2" }}>
           <span style={{ color: acc, display: "inline-flex", alignItems: "center", gap: 7 }}><span style={{ width: 7, height: 7, background: acc, borderRadius: "50%", boxShadow: `0 0 8px ${acc}`, display: "block" }} />{t.classification} · Clearance Upgrade</span>
-          <span style={{ color: "#5E6874" }}>{data.commander.org}</span>
+          <span style={{ color: "#6f7b89" }}>{data.commander.org}</span>
         </div>
 
         {/* title + thesis + player, in a row on wide screens */}
@@ -143,7 +143,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
               <div key={f.caseNo} className="file" style={{ background: "linear-gradient(180deg,#171C24,#12161C)", border: "1px solid #232B36", borderRadius: 9, padding: "11px 11px 10px", position: "relative", overflow: "hidden", minWidth: 0 }}>
                 <span style={{ position: "absolute", inset: "0 auto 0 0", width: 3, background: `rgba(${t.accentRGB},.55)`, display: "block" }} />
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
-                  <span style={{ fontFamily: MONO, fontSize: 10, color: "#5E6874" }}>{f.caseNo}</span>
+                  <span style={{ fontFamily: MONO, fontSize: 10, color: "#6f7b89" }}>{f.caseNo}</span>
                   <span style={{ fontFamily: MONO, fontSize: 9, letterSpacing: ".08em", color: acc, border: `1px solid rgba(${t.accentRGB},.5)`, borderRadius: 3, padding: "0 5px" }}>{f.codename}</span>
                 </div>
                 <div className="disp" style={{ fontSize: 15, color: "#ECEFF3", fontWeight: 600, textTransform: "none", lineHeight: 1.05, marginBottom: 3 }}>{f.title}</div>
@@ -167,7 +167,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
           </div>
           <div style={{ flex: "0 0 auto", textAlign: "right" }}>
             <button className="cta" onClick={onBegin} style={{ fontFamily: DISP, fontWeight: 600, fontSize: 17, letterSpacing: ".05em", textTransform: "uppercase", color: "#14110a", background: `linear-gradient(180deg,${accHi},${acc})`, border: 0, borderRadius: 9, padding: "14px 30px", cursor: "pointer" }}>{data.beginLabel}</button>
-            <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".12em", color: "#5E6874", marginTop: 8, textTransform: "uppercase" }}>— {data.commander.signoff}</div>
+            <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".12em", color: "#6f7b89", marginTop: 8, textTransform: "uppercase" }}>— {data.commander.signoff}</div>
           </div>
         </div>
 

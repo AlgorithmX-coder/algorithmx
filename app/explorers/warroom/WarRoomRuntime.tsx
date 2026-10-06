@@ -20,7 +20,7 @@ import { ResumePrompt } from "../engine/ResumePrompt";
 import type { WarCase, WarStep, WarTest } from "./case16";
 
 const C = {
-  page: "#0a0812", ink: "#ECE8F7", dim: "#A99BD0", faint: "#655a86",
+  page: "#0a0812", ink: "#ECE8F7", dim: "#A99BD0", faint: "#7e72a1",
   panel: "#130f22", edge: "#332a52", chip: "#1e1836", chipedge: "#3a2f5e",
   violet: "#B98BFF", violetHi: "#D4B8FF", violetbg: "#221a3a",
   wren: "#2BD4B4", wrenbg: "#0f2622",

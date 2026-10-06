@@ -22,7 +22,7 @@ import { ResumePrompt } from "../engine/ResumePrompt";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
 
 const C = {
-  page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#6b6b78",
+  page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#7a7a88",
   phone: "#0A0A0C", chat: "#101017", chrome: "#17171f",
   inc: "#26262f", out: "#FF3D8A", wren: "#2BD4B4", wrenbg: "#0f2622",
   // Block 2 identity = PINK (matrix, brand actions, your own bubbles). WREN stays teal.
@@ -472,6 +472,13 @@ function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvat
               <span
                 key={i}
                 onClick={() => !it.locked && onTagSegment(it.id, i)}
+                onKeyDown={(e) => {
+                  if (it.locked) return;
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onTagSegment(it.id, i);
+                  }
+                }}
                 role="button"
                 tabIndex={it.locked ? -1 : 0}
                 aria-pressed={on}

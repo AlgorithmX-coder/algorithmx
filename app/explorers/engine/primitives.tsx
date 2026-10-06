@@ -510,6 +510,8 @@ export function EngineStyles() {
       .sr-xpnum { display: inline-block; animation: srXpNum 0.5s cubic-bezier(0.2,0,0,1); }
       @keyframes srXpNum { 0% { transform: scale(1.35); color: ${T.confirmedGreen}; } 100% { transform: scale(1); } }
 
+      .sr-btn:focus-visible { outline: 2px solid ${T.arcCyan}; outline-offset: 2px; }
+
       /* choice buttons — bigger, alive */
       .sr-choice { transition: transform 180ms cubic-bezier(0.16,1,0.3,1), box-shadow 180ms, border-color 180ms; }
       @media (hover:hover) {
