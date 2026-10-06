@@ -1697,3 +1697,89 @@ export function RecoveryTestLab({ onDidTry }: LabProps) {
       ] },
     ]} />;
 }
+
+/* ---- Module 20 labs: the roles & the certification roadmap ---- */
+
+const CYBER_ROLE: Cat[] = [
+  { id: "soc", label: "SOC analyst", color: T.cyan },
+  { id: "grc", label: "GRC / risk analyst", color: T.amber },
+  { id: "itsec", label: "IT security / admin", color: T.green },
+  { id: "pentest", label: "Penetration tester", color: T.red },
+];
+export function CyberRoleLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={CYBER_ROLE}
+    prompt="Cyber security is many jobs, not one. Tap each description, then tap the role it fits. Knowing where you would start is half the battle."
+    items={[
+      { text: "Monitors alerts, triages and investigates, the common entry role", cat: "soc", why: "Monitoring and triage is the SOC analyst, often the most accessible first job." },
+      { text: "Manages risk, policies, compliance and audits; non-technical-friendly", cat: "grc", why: "Risk, compliance and audit work is GRC, often open to career-changers." },
+      { text: "Hardens, patches and administers systems securely, day to day", cat: "itsec", why: "Hands-on protecting and running systems is IT security / security administration." },
+      { text: "Authorised to attack systems to find flaws, usually a later-career role", cat: "pentest", why: "Penetration testing is authorised offensive work, typically reached after experience, not a first job." },
+      { text: "Spends the day in a SIEM, deciding which alerts are real", cat: "soc", why: "Living in the SIEM triaging alerts is the SOC analyst's day (Module 13)." },
+      { text: "Helps an organisation achieve ISO 27001 and pass audits", cat: "grc", why: "Framework and audit work is GRC (Module 17)." },
+    ]} />;
+}
+
+export function CertRoadmapLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry}
+    prompt="Certifications have a typical progression for a beginner. Put these in a sensible order, from foundational first to specialised later."
+    doneNote="That is a sensible cert path: a foundational cert to start, Security+ as the widely-recognised entry standard, then a specialism, and advanced certs later (often employer-funded). The order matters: build the base before chasing prestige names."
+    items={[
+      { label: "A foundational entry cert (e.g. ISC2 CC)", note: "A beginner-friendly first certification to establish the basics and show commitment." },
+      { label: "CompTIA Security+", note: "The widely-recognised baseline entry cert in the UK; the one most often asked for in junior roles." },
+      { label: "A first specialism (e.g. a blue-team or cloud cert)", note: "Once you have the base and a direction, a cert aligned to your chosen path (SOC, GRC, cloud)." },
+      { label: "An advanced / prestige cert, later", note: "Harder, expensive certs that carry weight with experience, and are often employer-funded. Not a starting point." },
+    ]} />;
+}
+
+const MARKET_MYTH: Cat[] = [
+  { id: "myth", label: "Hype / myth", color: T.red },
+  { id: "real", label: "Honest reality", color: T.green },
+];
+export function MarketRealityLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={MARKET_MYTH}
+    prompt="The cyber job market is often hyped. Sort each statement: overblown hype, or honest reality?"
+    items={[
+      { text: "'There are millions of unfilled cyber jobs, you'll walk straight in.'", cat: "myth", why: "The giant 'skills gap' numbers are widely debunked. Real demand exists, but entry is competitive, not automatic." },
+      { text: "Entry-level roles are competitive, and many ask for some experience.", cat: "real", why: "A common frustration: even 'junior' roles often want experience, which a portfolio and projects help provide." },
+      { text: "'Do a short course and earn a six-figure salary immediately.'", cat: "myth", why: "First-role salaries are typically modest, not the headline figures hype promises. Progression comes with experience." },
+      { text: "A strong portfolio and demonstrable skills help you stand out.", cat: "real", why: "Because employers skills-test, proof of ability (a portfolio) genuinely helps, which is what this course builds toward." },
+      { text: "'Certifications alone guarantee you a job.'", cat: "myth", why: "Certs help, but alone they guarantee nothing. Skills, a portfolio and persistence matter as much or more." },
+      { text: "Many people enter cyber from other, non-technical careers.", cat: "real", why: "A large share of professionals came from outside tech; your background can be an asset, not a barrier." },
+    ]} />;
+}
+
+const BACKGROUND_ASSET: Cat[] = [
+  { id: "asset", label: "A transferable strength", color: T.green },
+  { id: "irrelevant", label: "Not really relevant", color: T.faint },
+];
+export function BackgroundAssetLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={BACKGROUND_ASSET}
+    prompt="A non-technical background is often an asset in cyber, not a handicap. For each, decide: a genuinely transferable strength, or not really relevant?"
+    items={[
+      { text: "Clear communication, explaining things to non-technical people.", cat: "asset", why: "Hugely valuable: much of security is communicating risk clearly. A real strength, especially in GRC." },
+      { text: "Attention to detail and methodical, careful work.", cat: "asset", why: "Core to triage, audit and investigation. A genuine, transferable strength." },
+      { text: "Understanding how a business actually works.", cat: "asset", why: "Invaluable for risk and GRC: translating threats into business terms. A real asset." },
+      { text: "Your favourite colour.", cat: "irrelevant", why: "Not a professional strength. (The point: most genuine skills transfer, but not everything.)" },
+      { text: "Experience handling pressure and staying calm (e.g. healthcare, service).", cat: "asset", why: "Calm under pressure is exactly what incident response and triage need." },
+      { text: "Project management and organising people and tasks.", cat: "asset", why: "Directly transferable to GRC, continuity and security programme work." },
+    ]} />;
+}
+
+const DAY_ROLE: Cat[] = [
+  { id: "soc", label: "SOC analyst", color: T.cyan },
+  { id: "grc", label: "GRC / risk analyst", color: T.amber },
+  { id: "itsec", label: "IT security", color: T.green },
+  { id: "pentest", label: "Penetration tester", color: T.red },
+];
+export function DayToDayLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={DAY_ROLE}
+    prompt="Each role has a different day. Tap each day-to-day activity, then tap whose job it most is. This helps you picture which role would actually suit you."
+    items={[
+      { text: "Working through a queue of alerts, deciding which are real", cat: "soc", why: "Triaging alerts in a SIEM is the SOC analyst's daily work." },
+      { text: "Reviewing a supplier's security and updating the risk register", cat: "grc", why: "Risk assessment and documentation is GRC's day-to-day." },
+      { text: "Applying patches, configuring firewalls, hardening servers", cat: "itsec", why: "Hands-on protecting and running systems is IT security's day." },
+      { text: "Running an authorised test against a client's web app, with a signed scope", cat: "pentest", why: "Authorised attacking within scope is the penetration tester's work (recall Module 5)." },
+      { text: "Writing an incident report and briefing the team on lessons learned", cat: "soc", why: "Investigation, response and write-ups are core SOC/analyst work." },
+      { text: "Preparing evidence and documentation for an ISO 27001 audit", cat: "grc", why: "Audit preparation and evidence is GRC's remit." },
+    ]} />;
+}
