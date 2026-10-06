@@ -16,7 +16,7 @@ const ACTS: Act[] = [
       { n: 1, title: "What security actually means", blurb: "The core ideas every certificate opens with: the CIA triad, risk, and thinking like a defender.", tag: "Security+ 1.0", href: "/pro/module01", status: "live" },
       { n: 2, title: "How the internet actually works", blurb: "The plumbing attackers use, from IP and DNS to HTTPS, explained without jargon.", tag: "Security+ 3.0", href: "/pro/module02", status: "live" },
       { n: 3, title: "Passwords & account security", blurb: "How passwords are really stored and cracked, and how to lock down your own accounts.", tag: "Security+ 4.0", href: "/pro/module03", status: "live" },
-      { n: 4, title: "Cryptography without the maths", blurb: "Why the padlock means something: encryption, hashing and certificates in plain terms.", tag: "Security+ 1.4", href: "/pro/week02", status: "preview" },
+      { n: 4, title: "Cryptography without the maths", blurb: "Why the padlock means something: encryption, hashing and certificates in plain terms.", tag: "Security+ 1.4", href: "/pro/module04", status: "live" },
       { n: 5, title: "Law, ethics & your first audit", blurb: "The Computer Misuse Act, data protection, and your first real portfolio piece.", tag: "Security+ 5.0", href: "/pro/module05", status: "live" },
     ],
   },
@@ -36,7 +36,7 @@ const ACTS: Act[] = [
     modules: [
       { n: 12, title: "Hardening & secure configuration", blurb: "Closing the doors, using the Cyber Essentials five controls as your checklist.", tag: "Cyber Essentials", href: "/pro/module12", status: "live" },
       { n: 13, title: "The SOC & the analyst's day", blurb: "The most common first job in cyber security, seen from the inside.", tag: "Security+ 4.0", href: "/pro/module13", status: "live" },
-      { n: 14, title: "Logs & the SIEM", blurb: "Reading what attackers leave behind, on real honeypot data.", tag: "Security+ 4.0", href: "/pro/week13", status: "preview" },
+      { n: 14, title: "Logs & the SIEM", blurb: "Reading what attackers leave behind, on real honeypot data.", tag: "Security+ 4.0", href: "/pro/module14", status: "live" },
       { n: 15, title: "Detection & threat intelligence", blurb: "Spotting the attack, and knowing your enemy with MITRE ATT&CK.", tag: "MITRE ATT&CK", href: "/pro/module15", status: "live" },
       { n: 16, title: "Incident response & forensics", blurb: "When it goes wrong: contain, investigate, recover.", tag: "NIST 800-61", href: "/pro/module16", status: "live" },
     ],

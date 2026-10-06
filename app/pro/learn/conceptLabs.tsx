@@ -1878,3 +1878,141 @@ export function CapstoneLab({ onDidTry }: LabProps) {
       { text: "What the incident was and why it matters, honestly.", cat: "both", why: "A clear, honest account of what happened and why it matters serves both audiences." },
     ]} />;
 }
+
+/* ---- Module 4 labs: cryptography without the maths ---- */
+
+const ENCRYPT_PROTECT: Cat[] = [
+  { id: "yes", label: "Encryption protects this", color: T.green },
+  { id: "no", label: "Encryption does NOT protect this", color: T.red },
+];
+export function EncryptProtectLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={ENCRYPT_PROTECT}
+    prompt="Encryption keeps data secret (confidentiality), but it is not a cure-all. For each, decide: does encryption protect against it, or not?"
+    items={[
+      { text: "Someone intercepting your data as it crosses a network and reading it.", cat: "yes", why: "Encryption in transit makes intercepted data unreadable: its core job." },
+      { text: "A stolen laptop's disk being read by the thief.", cat: "yes", why: "Full-disk encryption means a stolen disk is unreadable without the key." },
+      { text: "A phishing email tricking you into typing your password into a fake site.", cat: "no", why: "Encryption does not stop social engineering. You hand over the secret willingly." },
+      { text: "Someone with the decryption key reading the data.", cat: "no", why: "Encryption protects data from those WITHOUT the key; whoever holds it can read it." },
+      { text: "A database copy being stolen, if the data is stored encrypted.", cat: "yes", why: "Encrypted-at-rest data is unreadable to a thief without the key." },
+      { text: "Ransomware making your files unavailable.", cat: "no", why: "Encryption protects confidentiality, not availability. (Ransomware weaponises encryption against you.)" },
+    ]} />;
+}
+
+const KEY_TYPE: Cat[] = [
+  { id: "sym", label: "Symmetric (one shared key)", color: T.cyan },
+  { id: "asym", label: "Asymmetric (a key pair)", color: T.amber },
+];
+export function KeyTypeLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={KEY_TYPE}
+    prompt="Symmetric encryption uses one shared secret key; asymmetric uses a public/private key pair. For each, decide which it is."
+    items={[
+      { text: "The same secret key locks and unlocks the message.", cat: "sym", why: "One shared key for both directions is symmetric encryption: fast, but you must share the key safely." },
+      { text: "A public key anyone can use to encrypt, and a private key only you hold to decrypt.", cat: "asym", why: "A public/private key pair is asymmetric encryption, which solves the key-sharing problem." },
+      { text: "Fast and efficient, ideal for encrypting lots of data.", cat: "sym", why: "Symmetric encryption is fast, so it does the bulk work once a key is shared." },
+      { text: "Lets strangers send you a secret without ever sharing a key first.", cat: "asym", why: "Anyone can encrypt with your public key; only your private key decrypts. No prior secret needed." },
+      { text: "The challenge is getting the shared key to the other person securely.", cat: "sym", why: "The key-distribution problem is symmetric encryption's weakness, which asymmetric solves." },
+      { text: "Used to safely exchange a symmetric key at the start of an HTTPS connection.", cat: "asym", why: "HTTPS uses asymmetric crypto to agree a shared symmetric key, then switches to fast symmetric." },
+    ]} />;
+}
+
+const HASH_ENCRYPT: Cat[] = [
+  { id: "hash", label: "Hashing (one-way)", color: T.cyan },
+  { id: "encrypt", label: "Encryption (reversible)", color: T.amber },
+];
+export function HashEncryptLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={HASH_ENCRYPT}
+    prompt="Hashing is one-way (you cannot reverse it); encryption is reversible (with the key). For each use, decide which you want."
+    items={[
+      { text: "Storing passwords so you can check them but never recover the original.", cat: "hash", why: "Passwords are hashed: you compare hashes, never decrypt. One-way is the point (recall Module 3)." },
+      { text: "Sending a confidential message the recipient must be able to read.", cat: "encrypt", why: "They need to recover the original, so you encrypt (reversible with the key), not hash." },
+      { text: "Checking that a downloaded file has not been tampered with.", cat: "hash", why: "A hash acts as a fingerprint to verify integrity; if it changed, the file changed." },
+      { text: "Protecting data on a disk so it can be read back later with the key.", cat: "encrypt", why: "You need to recover the data, so it is encrypted, not hashed." },
+      { text: "Producing a short fixed-length fingerprint of any input.", cat: "hash", why: "A fixed-length one-way fingerprint is a hash." },
+      { text: "Keeping a message secret in transit but readable at the far end.", cat: "encrypt", why: "Readable at the far end means reversible: encryption." },
+    ]} />;
+}
+
+const PKI_PART: Cat[] = [
+  { id: "confidential", label: "Keeps it secret", color: T.cyan },
+  { id: "authentic", label: "Proves who sent it / integrity", color: T.amber },
+];
+export function SignatureLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={PKI_PART}
+    prompt="Encryption keeps a message secret; a digital signature proves who sent it and that it was not changed. For each, decide what is being provided."
+    items={[
+      { text: "Scrambling a message so only the holder of the key can read it.", cat: "confidential", why: "Making it unreadable to others is confidentiality: encryption's job." },
+      { text: "Proving a software update really came from the vendor, unaltered.", cat: "authentic", why: "A digital signature proves origin (authenticity) and that it was not tampered with (integrity)." },
+      { text: "A certificate vouching that this public key really belongs to this website.", cat: "authentic", why: "Certificates (via PKI) bind a key to an identity, proving who you are talking to." },
+      { text: "Hiding the contents of an email from anyone on the network.", cat: "confidential", why: "Concealing contents is confidentiality." },
+      { text: "Confirming a signed document was not changed after signing.", cat: "authentic", why: "A signature detects any change: it provides integrity as well as proof of signer." },
+      { text: "Letting a recipient verify a message came from you and no one else.", cat: "authentic", why: "Proof of sender is authenticity, what signatures provide (and encryption does not)." },
+    ]} />;
+}
+
+/* ---- Module 14 labs: logs & the SIEM ---- */
+
+const LOG_SOURCE: Cat[] = [
+  { id: "auth", label: "Authentication log", color: T.cyan },
+  { id: "web", label: "Web server log", color: T.amber },
+  { id: "fw", label: "Firewall log", color: T.red },
+  { id: "dns", label: "DNS log", color: T.green },
+];
+export function LogSourceLab({ onDidTry }: LabProps) {
+  return <MatchGame onDidTry={onDidTry} categories={LOG_SOURCE}
+    prompt="Different logs record different things, and knowing which to look in is half the skill. Tap each question, then tap the log that would answer it."
+    items={[
+      { text: "Who logged in, when, and whether it succeeded or failed", cat: "auth", why: "Authentication (login) logs record sign-in attempts: the first place to look for account attacks." },
+      { text: "Which pages and URLs were requested on a website", cat: "web", why: "Web server logs record every request, with status codes (recall Module 2)." },
+      { text: "Which connections were allowed or blocked at the network boundary", cat: "fw", why: "Firewall logs record traffic decisions in and out: useful for spotting scanning and blocked attacks." },
+      { text: "Which domain names a machine looked up", cat: "dns", why: "DNS logs show name lookups, great for catching malware phoning home (recall Module 2)." },
+      { text: "A burst of 500 failed sign-ins on one account", cat: "auth", why: "Failed logins live in the authentication log: a classic brute-force signal." },
+      { text: "A machine repeatedly resolving a strange, random-looking domain", cat: "dns", why: "Odd, repeated lookups in the DNS log are a classic malware-heartbeat tell." },
+    ]} />;
+}
+
+const SEARCH_STRATEGY: Cat[] = [
+  { id: "good", label: "Narrows effectively", color: T.green },
+  { id: "bad", label: "Poor search strategy", color: T.red },
+];
+export function LogSearchLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={SEARCH_STRATEGY}
+    prompt="Searching millions of logs is about narrowing to what matters. For each approach, decide: does it narrow the search effectively, or not?"
+    items={[
+      { text: "Filtering to a specific time window around the suspected event.", cat: "good", why: "Narrowing by time is one of the most powerful filters: it cuts millions of lines to a manageable slice." },
+      { text: "Filtering to the specific user, IP address, or system of interest.", cat: "good", why: "Pivoting on a known entity (a user, an IP) quickly isolates the relevant activity." },
+      { text: "Scrolling through every single log line by hand, in order.", cat: "bad", why: "Impossible at scale, millions of lines, and error-prone. You filter and search, not scroll." },
+      { text: "Searching for a known indicator of compromise (a bad IP or file hash).", cat: "good", why: "Searching for a specific IOC jumps straight to relevant hits across huge volumes." },
+      { text: "Looking only at today, when the incident was two weeks ago.", cat: "bad", why: "Searching the wrong time window misses the evidence entirely. Match the window to the event." },
+      { text: "Combining filters (time + user + action) to zero in on the activity.", cat: "good", why: "Stacking filters is how an analyst zeroes in fast: the core SIEM search skill." },
+    ]} />;
+}
+
+export function CorrelateLab({ onDidTry }: LabProps) {
+  return <OrderGame onDidTry={onDidTry}
+    prompt="Correlation means connecting separate log entries into one story. From these log events (across different logs), put the attack in the order it happened."
+    doneNote="That is correlation: separate entries from different logs, connected by time and logic into a single clear story. Turning scattered log lines into an attack narrative is the heart of a SIEM investigation."
+    items={[
+      { label: "Firewall log: a scan of many ports from one external IP", note: "Reconnaissance: the attacker probes what is exposed." },
+      { label: "Auth log: hundreds of failed logins from that same IP", note: "A brute-force attempt against an account." },
+      { label: "Auth log: one successful login from that IP", note: "The brute force worked, or a credential was valid: a foothold." },
+      { label: "Web/system log: unusual commands run under that account", note: "The attacker acts with the access they gained." },
+      { label: "DNS + firewall log: the machine contacts an unknown external server", note: "Command-and-control or data leaving: the attacker's goal in motion." },
+    ]} />;
+}
+
+const FINDING: Cat[] = [
+  { id: "in", label: "Belongs in the finding", color: T.green },
+  { id: "out", label: "Leave it out", color: T.red },
+];
+export function FindingWriteupLab({ onDidTry }: LabProps) {
+  return <SortGame onDidTry={onDidTry} categories={FINDING}
+    prompt="A good finding write-up is clear, factual and useful. For each element, decide: does it belong in the finding, or should it be left out?"
+    items={[
+      { text: "What happened, in clear plain language.", cat: "in", why: "A clear statement of what happened is the core of any finding." },
+      { text: "The evidence: the specific log entries and timeline that support it.", cat: "in", why: "Findings must be evidence-led; cite the logs and timeline that back the conclusion." },
+      { text: "The impact: what it means and how serious it is.", cat: "in", why: "The reader needs to know why it matters and how urgent it is." },
+      { text: "A guess stated as fact, with nothing to support it.", cat: "out", why: "Never present unsupported guesses as fact. State what you know, and flag what is uncertain." },
+      { text: "A clear recommendation: what to do about it.", cat: "in", why: "A good finding ends with actionable next steps, not just a description." },
+      { text: "Blame aimed at a named colleague.", cat: "out", why: "Findings are factual and blameless (recall Module 16); focus on what happened and the fix, not who to blame." },
+    ]} />;
+}
