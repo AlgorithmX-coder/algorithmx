@@ -29,7 +29,10 @@ export default function Redact({ payload, audio, onEvent, voiceOn }: MechanicPro
   // button is held ~15s so they read + hear the review through (locked rule).
   useEffect(() => {
     if (!done) return;
-    if (payload.doneAudio) playWren(payload.doneAudio, !!voiceOn);
+    if (payload.doneAudio && voiceOn) {
+      playWren(payload.doneAudio, true, () => setReviewReady(true));
+      return () => stopWren();
+    }
     const t = setTimeout(() => setReviewReady(true), 15000);
     return () => { clearTimeout(t); stopWren(); };
   }, [done]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -126,7 +129,7 @@ export default function Redact({ payload, audio, onEvent, voiceOn }: MechanicPro
             <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 220 }} aria-label="review time">
               <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>LOOK IT OVER...</span>
               <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
-                <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 15000ms linear forwards" }} />
+                <span className="sr-indeterminate" style={{ display: "block", height: "100%", background: T.confirmedGreen }} />
               </span>
             </div>
           )}
