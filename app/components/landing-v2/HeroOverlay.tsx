@@ -1,6 +1,5 @@
 "use client";
 
-import { sectionMarkBare } from "@/app/components/sectionMark";
 
 /**
  * HeroOverlay. The static brand UI over the cinematic: eyebrow +
@@ -15,15 +14,9 @@ import { sectionMarkBare } from "@/app/components/sectionMark";
  * animation, so the component needs no scroll plumbing at all.
  */
 
-/* Eyebrow rewritten - "AGES 6 TO ADULT" framing read as a parents-
- * brochure spec sheet (and was redundant with the headline's "every
- * stage of life"). Replaced with a mission-grade line that signals
- * the platform's ambition before the headline lands. */
-/* Owner 2026-09-26: three lines of business now (courses for
-   individuals, schools, corporate), so the eyebrow names them in the
-   same order as the nav, and the headline says who it is for rather
-   than what stage of life they are at. */
-const EYEBROW = "// COURSES  ·  SCHOOLS  ·  CORPORATE";
+/* Eyebrow removed entirely (owner 2026-10-07): the COURSES - SCHOOLS -
+ * CORPORATE line duplicated the nav tabs sitting right above it. The
+ * headline now opens the hero. */
 /* Owner 2026-09-23: highlight part of it. The payoff phrase carries the
    gradient, which is how /schools does it ("...your pupils [teach
    themselves.]"), and here the payoff is the range itself. */
@@ -126,26 +119,6 @@ export default function HeroOverlay() {
             text at 11px; it now takes the same lit-pill chrome as the nav
             telemetry and the LIVE NOW mark, which is the loudest the page
             gets without competing with the headline. */}
-        {/* border: none because the class carries an outline pill that the
-            solid mark replaces, and the dot has to be paper now that the
-            ground under it is the accent rather than the page. */}
-        {/* Owner 2026-09-23, after the same call on /schools: no card
-            behind it, just the label. inline-flex and the gap stay so the
-            status dot still lays out beside the text, and the dot comes
-            back to teal now that the ground under it is the page rather
-            than the badge. The section marks further down keep theirs. */}
-        <span
-          className="lv2-hero-eyebrow"
-          style={{ ...sectionMarkBare, display: "inline-flex", alignItems: "center", gap: 10 }}
-        >
-          <span
-            aria-hidden
-            className="lv2-hero-eyebrow-dot"
-            style={{ background: "#0a7085", boxShadow: "none" }}
-          />
-          {EYEBROW}
-        </span>
-
         <h1
           style={{
             fontFamily: "var(--lv2-font-display)",
@@ -225,32 +198,6 @@ export default function HeroOverlay() {
      *  glow that intensifies on hover so it reads as premium rather
      *  than ghosted. */}
     <style jsx global>{`
-      .lv2-hero-eyebrow {
-        display: inline-flex;
-        /* The copy column is a flex column, so an inline-flex child is
-           blockified and stretched to the full 1180px reading width: the
-           pill read as a banner across the page. These three lines make it
-           hug its own text again. */
-        align-self: flex-start;
-        width: max-content;
-        max-width: 100%;
-        align-items: center;
-        gap: 10px;
-        padding: 7px 16px 7px 13px;
-        border-radius: 999px;
-        border: 1px solid rgba(0, 229, 255, 0.34);
-        background: rgba(0, 229, 255, 0.07);
-        box-shadow: inset 0 1px 0 rgba(17,22,38,0.07), 0 0 34px -12px rgba(0, 229, 255, 0.9);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        font-family: var(--lv2-font-mono);
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #b8f4ff;
-        text-shadow: 0 0 14px rgba(0, 229, 255, 0.55);
-      }
       /* The same three sand accents /schools uses, in the same order, so
          the two pages highlight with one voice. Each stop clears 4.5:1 on
          the ground on its own, and the headline is far past large-text
@@ -260,16 +207,6 @@ export default function HeroOverlay() {
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
-      }
-      .lv2-hero-eyebrow-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 999px;
-        background: var(--lv2-cyan);
-        box-shadow: 0 0 10px rgba(0, 229, 255, 0.9);
-      }
-      @media (max-width: 640px) {
-        .lv2-hero-eyebrow { font-size: 0.6875rem; letter-spacing: 0.16em; padding: 6px 13px 6px 11px; }
       }
       .lv2-hero-pad {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
@@ -326,13 +263,6 @@ export default function HeroOverlay() {
           right: var(--lv2-rail);
           bottom: 18px;
           margin-top: 0 !important;
-        }
-        /* The bare mark's size and tracking are inline, so they survive
-           the older phone rule below and pushed "NEEDS" onto a line of
-           its own. */
-        .lv2-hero-eyebrow {
-          font-size: 11px !important;
-          letter-spacing: 0.14em !important;
         }
       }
       /* Short phones: the copy gives a little back too, so the machine
