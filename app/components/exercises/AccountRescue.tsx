@@ -38,6 +38,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useShuffledOnce } from "@/app/lib/gameEngine/useShuffledOnce";
 import {
   useExerciseFeedback,
   useGameAudio,
@@ -201,6 +202,13 @@ export default function AccountRescue({
   // recorded under "adam", so every manifest lookup here uses that key.
   const voice = "adam" as const;
   const moves = skin === "moves";
+
+  // UAT W19 5a: authored banks tend to be written in the SAME order as the
+  // accounts above them (account 1 wants bank entry 1, and so on), so a child
+  // can clear the board positionally - 1-1, 2-2, 3-3 - without reading a word.
+  // Shuffle the bank for DISPLAY only; every lookup below still runs against
+  // the authored `passwordBank`, so ids, clip indices and resume all hold.
+  const shownBank = useShuffledOnce(passwordBank);
 
   const [phase, setPhase] = useState<Phase>("intro");
   // Map of accountId -> chosen password bank id. Empty until assigned.
@@ -706,7 +714,7 @@ export default function AccountRescue({
             gap: 8,
           }}
         >
-          {passwordBank.map((p) => {
+          {shownBank.map((p) => {
             // Find which account (if any) has this password assigned.
             const usedByAccountId = Object.entries(assignments).find(
               ([, bankId]) => bankId === p.id
