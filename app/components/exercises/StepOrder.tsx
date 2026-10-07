@@ -347,7 +347,12 @@ export default function StepOrder({
               display: "grid",
               gridTemplateColumns: `repeat(${steps.length}, minmax(0,1fr))`,
               gap: 12,
-              alignItems: "center",
+              // stretch, not center: the boxes sized to their own text, so a
+              // two-line step ("Lock the screen") sat visibly shorter than its
+              // three-line neighbours - UAT W18 6b, "why is the 5th box
+              // smaller than the rest?". Stretching makes every box match the
+              // tallest in the row, whatever the copy.
+              alignItems: "stretch",
               position: "relative",
             }}
           >
@@ -363,6 +368,10 @@ export default function StepOrder({
                     style={{
                       width: "100%",
                       minHeight: 84,
+                      // Fill the stretched row so every box matches the tallest
+                      // (UAT W18 6b). Without this the grid stretches the
+                      // column but the box inside keeps its content height.
+                      flex: 1,
                       borderRadius: sk.slotRadius,
                       display: "flex",
                       flexDirection: "column",
