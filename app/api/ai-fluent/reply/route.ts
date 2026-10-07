@@ -74,10 +74,13 @@ export async function POST(req: NextRequest) {
     async start(controller) {
       let sent = 0;
       try {
+        /* Sonnet 5.5 (owner call: efficient model per task) - same as
+           ai-cleared/reply: omit `thinking` (Sonnet 5.5 rejects
+           "disabled"; its default adaptive mode at effort "low" rarely
+           engages on chat turns). */
         const stream = ai.messages.stream({
-          model: "claude-opus-5",
+          model: "claude-sonnet-5-5",
           max_tokens: 700,
-          thinking: { type: "disabled" },
           output_config: { effort: "low" },
           system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
           messages: [...history.map((h) => ({ role: h.role, content: h.text })), { role: "user" as const, content: prompt }],

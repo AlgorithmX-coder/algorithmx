@@ -94,11 +94,16 @@ export async function gradePrompt(input: GradeInput): Promise<GradeOutput> {
       tool === "copilot"
         ? "The tool is the firm's enterprise Copilot, so INTERNAL is allowed."
         : `The tool is ${TOOL_LABEL[tool]} on an account the firm has not approved, so even INTERNAL should not be there.`;
+    /* Haiku 4.5 (owner call: efficient model per task): the rules layer
+       already finds the classes and post-validates everything the model
+       adds, so the model only writes short explanations and a rewrite -
+       a small-model job at a fifth of the Opus price. Haiku's API
+       surface takes no `thinking` param when thinking is off and
+       rejects `output_config.effort`. */
     const res = await ai.messages.parse({
-      model: "claude-opus-5",
+      model: "claude-haiku-4-5",
       max_tokens: 1200,
-      thinking: { type: "disabled" },
-      output_config: { effort: "low", format: zodOutputFormat(Grade) },
+      output_config: { format: zodOutputFormat(Grade) },
       system: [
         {
           type: "text",

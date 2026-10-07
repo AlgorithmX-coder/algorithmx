@@ -105,11 +105,14 @@ export async function gradeFluent(input: FluentGradeInput): Promise<FluentGradeO
         return `Turn ${i} (learner): """${t}"""${reply ? `\nTurn ${i} (assistant, for context only, not scored): """${reply.slice(0, 900)}"""` : ""}`;
       })
       .join("\n\n");
+    /* Haiku 4.5 (owner call: efficient model per task) - same reasoning
+       as aiClearedGrader: short structured verdict with a deterministic
+       layer around it. No `thinking` param (off by default on Haiku)
+       and no `effort` (rejected on Haiku 4.5). */
     const res = await ai.messages.parse({
-      model: "claude-opus-5",
+      model: "claude-haiku-4-5",
       max_tokens: 1200,
-      thinking: { type: "disabled" },
-      output_config: { effort: "low", format: zodOutputFormat(Grade) },
+      output_config: { format: zodOutputFormat(Grade) },
       system: [
         {
           type: "text",
