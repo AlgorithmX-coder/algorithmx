@@ -89,6 +89,14 @@ export interface InfoNarrationProps {
    */
   recordedOnly?: boolean;
   /**
+   * Render for a LIGHT surface. The panel is dark navy by default, which is
+   * right on the lesson's dark screens, but SignBingo's verdict card is cream
+   * - and a dark slab inside it is UAT W14 5a, "the transcription box is
+   * unusually dark (this happens for all of these)". Set it where the host
+   * card is light; everything else keeps the dark panel untouched.
+   */
+  onLight?: boolean;
+  /**
    * Delay before autoplay starts (default 400ms, so a screen transition can
    * settle). A verdict right after a tap passes 0: the old pause made every
    * spoken verdict feel laggy (UAT batch 3, item 7b).
@@ -263,6 +271,7 @@ export default function InfoNarration({
   onDone,
   guard = true,
   recordedOnly = false,
+  onLight = false,
   preRollMs = 400,
 }: InfoNarrationProps) {
   // Themed accent (hex). An explicit `accent` prop wins; otherwise the week
@@ -582,8 +591,10 @@ export default function InfoNarration({
         gap: 12,
         alignItems: "flex-start",
         padding: 14,
-        background: "rgba(15, 21, 48, 0.65)",
-        border: `1px solid ${A}40`,
+        // See `onLight`: dark navy is right on the lesson's dark screens and
+        // wrong inside a cream verdict card (UAT W14 5a).
+        background: onLight ? "rgba(255, 252, 244, 0.72)" : "rgba(15, 21, 48, 0.65)",
+        border: `1px solid ${A}${onLight ? "66" : "40"}`,
         borderRadius: 14,
         marginBottom: 16,
       }}
@@ -650,7 +661,9 @@ export default function InfoNarration({
             display: "flex",
             flexDirection: "column",
             gap: 6,
-            color: "#e7ecff",
+            // Near-white reads on the dark panel; on the light one it needs
+            // ink (UAT W14 5a).
+            color: onLight ? "#4a3a22" : "#e7ecff",
             fontFamily:
               "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
             fontSize: 14,

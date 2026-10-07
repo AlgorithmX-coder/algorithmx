@@ -595,7 +595,12 @@ export default function SettingsSwitch({
           <div
             style={{
               textAlign: "center",
-              marginTop: 12,
+              // This prompt is the last line on the board (the other footer
+              // only renders in the legacy layout), so its bottom margin IS
+              // the board's bottom clearance: 8px at the tester's 1093x525,
+              // UAT W14 2a / 2b. A fit-scaled board shrinks margins with
+              // everything else, so 26 is what reads as a margin.
+              margin: "12px 0 26px",
               padding: "0 22px",
               fontFamily: LABEL_FONT,
               fontSize: 11,
@@ -727,7 +732,9 @@ export default function SettingsSwitch({
           <div
             style={{
               textAlign: "center",
-              marginTop: 12,
+              // Last line on the board, so this margin is the board's bottom
+              // clearance: 8px at the tester's 1093x525 (UAT W14 2a / 2b).
+              margin: "12px 0 26px",
               fontSize: 12,
               fontWeight: 700,
               color: "#7d8cc9",

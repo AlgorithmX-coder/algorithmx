@@ -1000,6 +1000,11 @@ export default function SignBingo({
               recordedOnly
               autoPlay={false}
               guard={false}
+              // This verdict card is cream on the house skin, so the default
+              // dark narration panel sat inside it as a grey slab with its
+              // label almost unreadable - UAT W14 5a, "the transcription box
+              // is unusually dark (this happens for all of these)".
+              onLight={house}
             />
             <VerdictVoice key={`sb-vv-${explain.key}`} verdict="right" why={explain.why} onDone={() => setWhyDone(true)} />
           </div>
