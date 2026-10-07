@@ -643,10 +643,16 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         }
         @media (min-width: 641px) {
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
-          border-color: rgba(10, 112, 133, 0.42) !important;
-          background: rgba(10, 112, 133, 0.16) !important;
+          /* Owner 2026-10-07: "stand out more". Deeper tint, firmer
+             border, a step up in size and padding - still clearly below
+             a solid pill, so the hierarchy survives. Label #075a6b on
+             the 0.24 wash still clears 4.5:1. */
+          border-color: rgba(10, 112, 133, 0.6) !important;
+          background: rgba(10, 112, 133, 0.24) !important;
           color: #075a6b !important;
           font-weight: 700;
+          font-size: 13px !important;
+          padding: 9px 18px !important;
           /* Owner: put these in glowing fonts. A halo works on black by
              adding light; sand has no darkness to bloom into, so the glow
              is a teal bloom carried by the letterforms themselves, over a
@@ -656,8 +662,8 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         }
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover),
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):focus-visible) {
-          border-color: rgba(10, 112, 133, 0.75) !important;
-          background: rgba(10, 112, 133, 0.26) !important;
+          border-color: rgba(10, 112, 133, 0.85) !important;
+          background: rgba(10, 112, 133, 0.34) !important;
           color: #05454f !important;
           text-shadow: 0 0 14px rgba(10, 112, 133, 0.85), 0 1px 0 rgba(255, 255, 255, 0.6) !important;
           box-shadow: 0 8px 20px -12px rgba(10, 112, 133, 1), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
@@ -1142,7 +1148,7 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
               width={433}
               height={160}
               decoding="async"
-              style={MARK_SIZE(14)}
+              style={MARK_SIZE(18)}
             />
           </span>
           <span className="lv2-tel-label">Certified</span>
@@ -1159,7 +1165,7 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
               width={1489}
               height={346}
               decoding="async"
-              style={MARK_SIZE(13)}
+              style={MARK_SIZE(17)}
             />
           </span>
           <span className="lv2-tel-label">Aligned</span>
@@ -1176,7 +1182,7 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
               width={424}
               height={65}
               decoding="async"
-              style={MARK_SIZE(11)}
+              style={MARK_SIZE(14)}
             />
           </span>
           <span className="lv2-tel-label">Collaborating</span>
@@ -1196,7 +1202,10 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
           display: inline-flex;
           align-items: center;
           white-space: nowrap;
-          padding: 5px 6px;
+          /* Sized up ~25% (owner 2026-10-07): the marks were too small to
+             read at a glance. Shell, plates, labels and dividers all grow
+             together so the capsule keeps its proportions. */
+          padding: 6px 8px;
           border-radius: 999px;
           border: 1px solid rgba(0, 229, 255, 0.14);
           background: linear-gradient(
@@ -1245,9 +1254,9 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
           position: relative;
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          padding: 0 10px;
-          font-size: 11px;
+          gap: 9px;
+          padding: 0 13px;
+          font-size: 12px;
           animation: lv2TelReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
         @keyframes lv2TelReveal {
@@ -1258,7 +1267,7 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
         }
         .lv2-tel-div {
           width: 1px;
-          height: 13px;
+          height: 16px;
           background: linear-gradient(
             180deg,
             transparent,
@@ -1267,7 +1276,7 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
           );
         }
         .lv2-tel-label {
-          font-size: 10px;
+          font-size: 11.5px;
           font-weight: 600;
           letter-spacing: 0.14em;
           text-transform: uppercase;
@@ -1278,8 +1287,8 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          height: 22px;
-          padding: 0 7px;
+          height: 28px;
+          padding: 0 9px;
           border-radius: 999px;
           background: #fff;
         }
