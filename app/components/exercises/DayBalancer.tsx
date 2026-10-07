@@ -383,8 +383,12 @@ export default function DayBalancer({
         </div>
       )}
 
-      {/* Balance meter */}
-      <div style={{ maxWidth: 660, margin: "0 auto 10px" }}>
+      {/* Balance meter. It is the FIRST thing on the board, so its top margin
+          is the board's top clearance - and at 0 the BALANCE label sat flat
+          against the frame edge (measured 0px at the tester's 1093x525, UAT
+          W13 1a "the frame should be made bigger"). 14 only reached 10px once
+          the board's fit-scaling shrank it, so 24 is what lands near 18. */}
+      <div style={{ maxWidth: 660, margin: "24px auto 10px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, fontWeight: 900, letterSpacing: "0.1em", color: isSeesaw ? "#ffd166" : "#7eff97", marginBottom: 4 }}>
           <span>{meterLabel ?? "BALANCE"}</span>
           <span>{balance}%</span>
@@ -558,7 +562,9 @@ export default function DayBalancer({
               ))}
             </div>
 
-            <div style={{ textAlign: "center", marginTop: 12, fontSize: 12, fontWeight: 800, color: "#7d8cc9", letterSpacing: "0.1em" }}>
+            {/* Last line on the board, so its bottom margin is the board's
+                bottom clearance: 7px before this (UAT W13 1a). */}
+            <div style={{ textAlign: "center", margin: "12px 0 24px", fontSize: 12, fontWeight: 800, color: "#7d8cc9", letterSpacing: "0.1em" }}>
               SWAP {Math.min(swapIdx + 1, shownSwaps.length)} OF {shownSwaps.length}
             </div>
           </motion.div>
