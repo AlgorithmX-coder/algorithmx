@@ -1483,11 +1483,16 @@ function LeverStation({
         )}
       </div>
 
-      {/* ---- the receipt printer ---- */}
+      {/* ---- the receipt printer ----
+           Widened 246 -> 296 (paper 230 -> 280) for UAT W20 5a, "the receipt
+           looks very squashed in terms of text and spacing". Week 20's deal
+           prints "Renews every month" against "15 coins a month", and at 230px
+           the paper left about 206px for the pair, so the amount broke into
+           stubs - "every" and "month" landing on their own lines. */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div
           style={{
-            width: 246,
+            width: 296,
             height: 16,
             borderRadius: 8,
             background: "#263041",
@@ -1498,7 +1503,7 @@ function LeverStation({
         <motion.div
           animate={holding && !done && !reduce ? { rotate: [0, -0.6, 0.6, 0] } : { rotate: 0 }}
           transition={holding && !done ? { repeat: Infinity, duration: 0.25 } : undefined}
-          style={{ position: "relative", width: 230 }}
+          style={{ position: "relative", width: 280 }}
         >
           <motion.div
             style={{

@@ -507,7 +507,14 @@ export const WEEK_20: WeekContent = {
           trueCost: 60,
           receipt: [
             { label: "Champion Pass", amount: "15 coins", bad: false },
-            { label: "Renews every month", amount: "15 coins a month", bad: true },
+            // "Renews every month" + "15 coins a month" is the longest pair on
+            // any receipt, and it wrapped onto a second line even after the
+            // paper was widened for UAT W20 5a ("the receipt looks very
+            // squashed in terms of text and spacing"). The shorter label fits
+            // on one line and says the same thing. Display only - the spoken
+            // line phrases it as "it renews every month without asking" - so
+            // this costs no recording.
+            { label: "Renews monthly", amount: "15 coins a month", bad: true },
             { label: "Over four months", amount: "60 coins", bad: true },
           ],
           totalLabel: "REAL TOTAL: 60 coins",

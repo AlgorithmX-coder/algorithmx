@@ -811,7 +811,12 @@ export default function ClueStamper({
             </div>
           </div>
 
-          <div style={{ maxWidth: 560, margin: "8px auto 0" }}>
+          {/* The hint slot is the last thing on this board (it is usually
+              empty), so its bottom margin IS the board's bottom clearance:
+              8px at the tester's 1093x525, against 19-22 on this week's other
+              boards. A fit-scaled board shrinks margins with everything else,
+              so 26 is what lands near 20. */}
+          <div style={{ maxWidth: 560, margin: "8px auto 26px" }}>
             {hintText && <HintBubble tier={hintTier} speaker={voice} text={hintText} />}
           </div>
         </div>
