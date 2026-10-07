@@ -713,10 +713,10 @@ function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { man
   return (
     <section style={{ maxWidth: 660, margin: "0 auto" }}>
       <Eyebrow text={stamped === n ? "Boss defeated" : `Skill ${stamped + 1} complete`} color={T.confirmedGreen} />
-      <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>
+      <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 26px" }}>
         {stamped === n ? "You beat the boss." : "Nice work. One box down."}
       </h1>
-      <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.confirmedGreen}44`, padding: "18px 20px 20px" }}>
+      <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.confirmedGreen}44`, padding: "26px 20px 22px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: "0.12em", color: T.textSecondary, marginBottom: 12 }}>
           <span>MISSION MAP</span>
           <span>
@@ -878,7 +878,7 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
 
       {allDone && (
         <div style={{ marginTop: 18 }}>
-          <Bubble who="wren" tone={T.confirmedGreen}>{art.doneLine}</Bubble>
+          <Bubble who="wren" tone={T.confirmedGreen} speaking={speaking}>{art.doneLine}</Bubble>
           <div style={{ marginTop: 14 }}>
             {locked ? (
               <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
@@ -896,6 +896,7 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
 
 /* LEARN — tap-to-continue dialogue (law 8: the kid sets the pace) */
 function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
+  const speaking = useWrenSpeaking(); // so WREN's bubble icon only animates while she's actually talking
   const p = cycle.intel.prediction;
   const beats = cycle.intel.beats;
   const beatAudio = cycle.intel.beatAudio;
@@ -966,7 +967,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   useEffect(() => {
     if (reduced || beatsDone) { setReady(true); return; }
     setReady(false);
-    const t = setTimeout(() => setReady(true), narrated ? 15000 : readMs(beats[shown - 1] ?? ""));
+    const t = setTimeout(() => setReady(true), narrated ? 30000 : readMs(beats[shown - 1] ?? ""));
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shown, reduced, beatsDone, narrated]);
@@ -982,16 +983,17 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
     if (retryLock || settled || replies.some((r) => r.text === p.options[i])) return;
     const ok = i === p.answer;
     setReplies((r) => [...r, { text: p.options[i], ok, response: ok ? p.right : p.wrong }]);
-    if (ok) audio.latch();
-    else {
+    if (ok) {
+      audio.latch();
+      if (voiceOn && !reduced && predAudio?.right) playWren(predAudio.right, true);
+    } else {
       audio.thud();
       setRetryLock(true); // make them stop and re-read before trying again
-      setTimeout(() => setRetryLock(false), 5000);
-    }
-    // WREN reacts out loud to what they picked.
-    if (voiceOn && !reduced) {
-      const rc = ok ? predAudio?.right : predAudio?.wrong;
-      if (rc) playWren(rc, true);
+      if (voiceOn && !reduced && predAudio?.wrong) {
+        playWren(predAudio.wrong, true, () => setRetryLock(false));
+      } else {
+        setTimeout(() => setRetryLock(false), 5000);
+      }
     }
   };
 
@@ -1002,7 +1004,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
       ) : (
       <div style={{ display: "grid", gap: 14 }}>
         {!artifact && beats.slice(0, shown).map((b, i) => (
-          <Bubble key={i} who="wren">
+          <Bubble key={i} who="wren" speaking={i === shown - 1 ? speaking : false}>
             {b}
           </Bubble>
         ))}
@@ -1025,7 +1027,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
         ))}
 
         {taught && p && (
-          <Bubble who="wren" tone={T.actionAmber}>
+          <Bubble who="wren" tone={T.actionAmber} speaking={speaking}>
             <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.actionAmber, marginBottom: 6 }}>
               YOUR CALL
             </span>
@@ -1059,7 +1061,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
                 {r.text}
               </div>
             </div>
-            <Bubble who="wren" tone={r.ok ? T.confirmedGreen : undefined}>
+            <Bubble who="wren" tone={r.ok ? T.confirmedGreen : undefined} speaking={i === replies.length - 1 ? speaking : false}>
               {r.response}
             </Bubble>
           </div>
@@ -1069,7 +1071,11 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
           <div style={{ justifySelf: "end", display: "flex", flexDirection: "column", gap: 7, width: 230, alignItems: "flex-end" }} aria-label="read it again">
             <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.threatRed }}>READ IT AGAIN, THEN TRY...</span>
             <span style={{ display: "block", width: "100%", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
-              <span key={replies.length} style={{ display: "block", height: "100%", background: T.threatRed, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 5000ms linear forwards" }} />
+              {voiceOn && !reduced && predAudio?.wrong ? (
+                <span className="sr-indeterminate" style={{ display: "block", height: "100%", background: T.threatRed }} />
+              ) : (
+                <span key={replies.length} style={{ display: "block", height: "100%", background: T.threatRed, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 5000ms linear forwards" }} />
+              )}
             </span>
           </div>
         ) : (
@@ -1265,7 +1271,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
       {nudge && !solved && <p style={{ marginTop: 12, fontFamily: MONO, fontSize: 13, fontWeight: 600, color: T.threatRed }}>{nudge}</p>}
       {solved && (
         <div style={{ marginTop: 16 }}>
-          {q.ok && <Bubble who="wren" tone={T.confirmedGreen}>{q.ok}</Bubble>}
+          {q.ok && <Bubble who="wren" tone={T.confirmedGreen} speaking={voiceOn && !!q.okVoice && !reviewReady}>{q.ok}</Bubble>}
           <div style={{ marginTop: 14 }}>
             {voiceOn && q.okVoice ? (
               reviewReady ? (
@@ -1320,6 +1326,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
+  const [passReviewReady, setPassReviewReady] = useState(false);
   const s = scenarios[idx];
   const score = scenarios.reduce((n, sc, i) => n + (answers[i] === sc.answer ? 1 : 0), 0);
 
@@ -1340,7 +1347,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
     if (got >= def.pass) {
       setPhase("passed"); audio.stamp();
       emit({ type: "CHECKPOINT_PASSED", sourceKey: "case-test", evidence: [] });
-      if (voiceOn && def.voice?.pass) playWren(def.voice.pass, true);
+      if (voiceOn && def.voice?.pass) playWren(def.voice.pass, true, () => setPassReviewReady(true));
     } else {
       setPhase("failed"); audio.thud();
       if (voiceOn && def.voice?.fail) playWren(def.voice.fail, true);
@@ -1403,7 +1410,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
           You scored {score} out of {scenarios.length}.
         </p>
         <div style={{ textAlign: "left", margin: "0 0 16px" }}>
-          <Bubble who="wren" tone={T.confirmedGreen}>
+          <Bubble who="wren" tone={T.confirmedGreen} speaking={voiceOn && !!def.voice?.pass && !passReviewReady}>
             That's the real thing, Agent. You earned this yourself. Now here's how each one went.
           </Bubble>
         </div>
@@ -1422,7 +1429,20 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
             );
           })}
         </div>
-        <GatedButton label="CLOSE THE CASE →" onClick={onPass} delayMs={7000} note="LOOK OVER YOUR ANSWERS..." />
+        {voiceOn && def.voice?.pass ? (
+          passReviewReady ? (
+            <AmberButton label="CLOSE THE CASE →" onClick={onPass} />
+          ) : (
+            <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 230 }} aria-label="review time">
+              <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>LOOK OVER YOUR ANSWERS...</span>
+              <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+                <span className="sr-indeterminate" style={{ display: "block", height: "100%", background: T.confirmedGreen }} />
+              </span>
+            </div>
+          )
+        ) : (
+          <GatedButton label="CLOSE THE CASE →" onClick={onPass} delayMs={7000} note="LOOK OVER YOUR ANSWERS..." />
+        )}
       </section>
     );
   }
@@ -1441,7 +1461,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
           You needed {def.pass} to pass.
         </p>
         <div style={{ textAlign: "left", margin: "0 0 22px" }}>
-          <Bubble who="wren" tone={T.actionAmber}>
+          <Bubble who="wren" tone={T.actionAmber} speaking={speaking}>
             Close, but not there yet. Run the case again and it'll stick. No shortcuts, that's how you really learn it.
           </Bubble>
         </div>

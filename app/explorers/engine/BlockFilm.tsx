@@ -112,12 +112,26 @@ export function BlockFilm({
 
   useEffect(() => {
     if (reduced) return; // respect reduced-motion: wait for an explicit tap
-    videoRef.current
-      ?.play()
-      .then(() => setStarted(true))
-      .catch(() => {
-        /* autoplay blocked: the center Play button handles it */
-      });
+    const v = videoRef.current; if (!v) return;
+    const start = () => {
+      v.play()
+        .then(() => setStarted(true))
+        .catch(() => {
+          /* autoplay blocked: the center Play button handles it */
+        });
+    };
+    // Calling play() the instant the element mounts can clip the opening
+    // moment — the decoder hasn't primed yet. Wait for it to report it's
+    // actually ready, with a short backstop so a slow connection never
+    // blocks the film for long.
+    if (v.readyState >= 3) {
+      start();
+    } else {
+      const onReady = () => { v.removeEventListener("canplaythrough", onReady); start(); };
+      v.addEventListener("canplaythrough", onReady);
+      const backstop = window.setTimeout(onReady, 1500);
+      return () => { v.removeEventListener("canplaythrough", onReady); window.clearTimeout(backstop); };
+    }
   }, [reduced]);
 
   const onPlaying = () => { setStarted(true); setPlaying(true); };

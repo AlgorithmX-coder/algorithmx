@@ -49,9 +49,12 @@ export default function Inspect({ payload, reduced, audio, onEvent, voiceOn }: M
       setPassed(true); audio.stamp(); // COMPLETED fires on the CONTINUE click below
     } else {
       setWrongOnce(true); audio.thud();
-      playWrenNudge(!!voiceOn); // "not quite, look again"
       setResult({ wrong, missed });
-      setLocked(true); setTimeout(() => setLocked(false), 4000);
+      setLocked(true);
+      let cleared = false;
+      const clear = () => { if (!cleared) { cleared = true; setLocked(false); } };
+      playWrenNudge(!!voiceOn, clear); // "not quite, look again"
+      setTimeout(clear, voiceOn ? 6000 : 4000); // backstop, in case the nudge didn't actually play
       onEvent({ kind: "MISS" });
     }
   };
@@ -124,7 +127,7 @@ export default function Inspect({ payload, reduced, audio, onEvent, voiceOn }: M
             <div style={{ display: "flex", flexDirection: "column", gap: 7, width: 220 }} aria-label="look again">
               <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.threatRed }}>LOOK AGAIN...</span>
               <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
-                <span key={String(result?.missed) + String(result?.wrong.length)} style={{ display: "block", height: "100%", background: T.threatRed, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 4000ms linear forwards" }} />
+                <span className="sr-indeterminate" style={{ display: "block", height: "100%", background: T.threatRed }} />
               </span>
             </div>
           ) : (

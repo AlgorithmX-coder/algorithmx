@@ -161,11 +161,11 @@ export function stopWren() {
  */
 const NUDGES = ["/audio/wren/nudge-1.mp3", "/audio/wren/nudge-2.mp3", "/audio/wren/nudge-3.mp3"];
 let nudgeIdx = 0;
-export function playWrenNudge(enabled: boolean) {
+export function playWrenNudge(enabled: boolean, onEnded?: () => void) {
   if (!enabled || speaking) return;
   const url = NUDGES[nudgeIdx % NUDGES.length];
   nudgeIdx += 1;
-  playWren(url, true);
+  playWren(url, true, onEnded);
 }
 
 export function useSignalAudio(): SignalAudio {
