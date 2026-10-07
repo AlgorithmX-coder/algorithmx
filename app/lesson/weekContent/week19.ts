@@ -613,7 +613,13 @@ export const WEEK_19: WeekContent = {
           text: "Mum can read everybody's messages whenever she likes",
           proposedBy: "Mum, hopefully joking",
           icon: "👀",
-          readAloud: "And the last square, from Mum, who is hopefully joking. She can read everybody's messages whenever she likes.",
+          // Stands alone. HearthLoom shuffles its rules (useShuffledOnce), so
+          // this can be read first, middle or last; it used to open "And the
+          // last square, from Mum..." - the same fault the tester caught on
+          // Week 18 ("this audio starts off with 'And this one..' which makes
+          // me think you ordered them but then randomised them after") and on
+          // Week 11's Evidence Tray. No position word, no connective.
+          readAloud: "This square is from Mum, who is hopefully joking. She can read everybody's messages whenever she likes.",
           fair: false,
           why: "Safe as houses, and only one person in the house is exempt from it, which is the thing that makes it unfair.",
           explanation: "Ask who does NOT have to follow that one. Only the person who wrote it, and that is the test it fails.",

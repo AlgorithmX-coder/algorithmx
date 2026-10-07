@@ -424,7 +424,13 @@ export default function ProfileInspector({
                     key={zone.id}
                     onClick={() => inspect(zone)}
                     disabled={open || !!decided || showIntro || zoneSpeaking}
-                    animate={open && !reduce ? { scale: [1, 1.04, 1] } : undefined}
+                    // 1.015, not 1.04. These boxes are ~460px wide, so a 4%
+                    // pulse threw roughly 9px over each edge and the box
+                    // crossed the frame before settling back - UAT W17 4a,
+                    // "when any of the magnifying glass boxes are pressed they
+                    // expand out of frame and then return to normal size".
+                    // 1.5% still reads as a press without leaving the board.
+                    animate={open && !reduce ? { scale: [1, 1.015, 1] } : undefined}
                     style={{
                       textAlign: "left",
                       padding: "10px 12px",
