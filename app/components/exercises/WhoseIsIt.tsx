@@ -527,7 +527,11 @@ export default function WhoseIsIt({
             </div>
           </div>
 
-          <div style={{ textAlign: "center", marginTop: 12 }}>
+          /* Last line on the board, so its bottom margin IS the board's bottom
+              clearance: measured 7-9px at the tester's 1093x525 (UAT W16 2a/3a/4a,
+              W18 4a). A fit-scaled board shrinks margins with everything else,
+              so 26 is what reads as a margin. */
+          <div style={{ textAlign: "center", margin: "12px 0 26px" }}>
             <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, minHeight: 16, padding: "0 16px" }}>
               {strip}
             </div>

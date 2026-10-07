@@ -815,7 +815,10 @@ export default function PhishInspector({
             textAlign: "center",
             fontSize: 12,
             color: "#94a3b8",
-            marginTop: 8,
+            // Last line on the board, so this margin is the board's bottom
+            // clearance (UAT W16 frame items). A fit-scaled board shrinks its
+            // margins with everything else, so 26 is what reads as a margin.
+            margin: "8px 0 26px",
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 800,
             letterSpacing: "0.1em",
