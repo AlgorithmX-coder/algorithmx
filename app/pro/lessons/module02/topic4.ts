@@ -51,6 +51,7 @@ const topic4: TopicManifest = {
     },
     {
       heading: "Open doors are attack surface",
+      visual: { id: "ports-doors" },
       body: [
         "Every port open to the internet is a door an attacker can walk up to and try. The first thing attackers do to a target is scan it: knock on every door and note which ones answer and what is behind them. So a core defensive habit is simple: expose as few doors as possible, and make sure each open one is patched, encrypted, and genuinely needed.",
         "The classic failure is a powerful door left open by accident. Remote Desktop, port 3389, is the standout: it is meant for administrators inside a network, but when it is exposed straight to the internet it becomes a login box the whole world can attack. As you are about to see, that single misconfiguration has fuelled years of ransomware.",

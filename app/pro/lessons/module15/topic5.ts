@@ -35,6 +35,7 @@ const topic5: TopicManifest = {
     },
     {
       heading: "Tuning: reducing noise so signal stands out",
+      visual: { id: "alert-funnel" },
       body: [
         "Tuning is the disciplined work of reducing false positives so that real alerts stand out and can be trusted. It means examining detection rules and refining them: a rule that fires hundreds of times a day, almost always on benign activity, is tuned so it only fires on the genuinely suspicious cases. The aim is not to delete detections (that would make you blind) but to sharpen them, improving the signal-to-noise ratio.",
         "Tuning is evidence-based. You judge each rule by its track record: is it catching real threats, or almost always a false positive? You keep and sharpen what catches real things, and reduce what reliably wastes time, without going blind. And because environments change, tuning is ongoing, not a one-off. It is unglamorous, continuous work, and it is precisely what keeps a detection programme effective rather than drowning.",

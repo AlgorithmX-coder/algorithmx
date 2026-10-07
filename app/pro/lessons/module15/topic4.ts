@@ -18,6 +18,7 @@ const topic4: TopicManifest = {
   learn: [
     {
       heading: "Tactics and techniques: a shared map of behaviour",
+      visual: { id: "attack-steps" },
       body: [
         "MITRE ATT&CK organises attacker behaviour into tactics and techniques. A tactic is the attacker's goal at a stage, for example initial access (get in), persistence (stay), lateral movement (spread), exfiltration (steal data out). A technique is a specific way of achieving a tactic, for example phishing as a way to get initial access. Together they form a detailed, shared map of how attacks actually unfold, built from real-world observation.",
         "The power is a common, precise language. When an analyst says an activity maps to a specific ATT&CK technique, every defender knows exactly what is meant, can look up how to detect and mitigate it, and can compare notes without ambiguity. It turns vague descriptions ('they did something sneaky to stay hidden') into precise, shareable, actionable statements ('they used this persistence technique').",

@@ -34,6 +34,7 @@ const topic2: TopicManifest = {
     },
     {
       heading: "Attack surface: less is safer",
+      visual: { id: "ports-doors" },
       body: [
         "Every feature, service, port, account and exposed system is a potential way in, the attack surface you met in Module 6. Hardening is largely the disciplined removal of attack surface: uninstall software you do not use, disable features you do not need, close ports nothing requires, remove old accounts, and never expose anything to the internet that does not have to be.",
         "The principle is simple and powerful: the less there is, the less there is to attack. A minimal, purpose-built system is far easier to secure than a sprawling one with everything switched on 'just in case'. This is why 'reduce your attack surface' is one of the most repeated pieces of defensive advice, and why hardening, though unglamorous, is so effective.",

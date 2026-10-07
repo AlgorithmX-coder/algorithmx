@@ -19,6 +19,7 @@ const topic4: TopicManifest = {
   learn: [
     {
       heading: "The timeline is the story of the attack",
+      visual: { id: "timeline-builder" },
       body: [
         "An incident timeline is the attack reconstructed in order: when the attacker got in, what they did first, how they moved, what they took, and when. It is assembled from evidence scattered across many sources, logs from different systems, the artefacts malware left, network records, each a fragment that, placed in sequence, forms a coherent story. Building it is the detective work at the heart of an investigation.",
         "This matters because, without the timeline, you are guessing. You cannot eradicate a threat you do not understand, confirm the full scope of a breach, or prevent a recurrence if you do not know how it happened. The timeline answers the essential questions, how did they get in, how far did they get, what did they touch, when did it start and end, which is why reconstructing it is one of the most valuable things an investigator does.",

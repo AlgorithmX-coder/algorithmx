@@ -43,7 +43,11 @@ export type LearnVisual =
   | { id: "network-spread"; mode?: "worm" | "lateral" } // an infection/attacker spreads machine to machine
   | { id: "injection"; mode?: "sql" | "xss" } // user input breaks out of data into command
   | { id: "phishing-redflags" } // click the tells in a fake email
-  | { id: "public-key"; mode?: "exchange" | "sign" }; // the key-pair idea, exchange or sign/verify
+  | { id: "public-key"; mode?: "exchange" | "sign" } // the key-pair idea, exchange or sign/verify
+  | { id: "timeline-builder" } // order scattered events into the real sequence
+  | { id: "ports-doors" } // open/close a host's doors, watch the attack surface change
+  | { id: "attack-steps" } // step the kill chain, with the defender's chance at each stage
+  | { id: "alert-funnel" }; // millions of events down to the few real incidents
 
 /* A key term the learner can hover/tap for a plain-language meaning.
  * Definitions are written in-house (never copied from a dictionary). */
