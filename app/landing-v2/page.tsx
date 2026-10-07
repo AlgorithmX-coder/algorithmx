@@ -223,7 +223,9 @@ export default function LandingV2() {
       <CosmicNetworkBackground tone="sand" />
       <ScrollFormObjects tone="sand" />
       <SpotlightCursor />
-      <Nav tone="sand" />
+      {/* cta null: no Get Started pill here (owner 2026-10-07) - it jumped
+          to the platform signup; course pages carry their own auth now. */}
+      <Nav tone="sand" cta={null} />
       <main>
         <HeroCinematic />
         <ProofBand />

@@ -24,8 +24,9 @@ import { Ico, useMagnetic } from "./utilities";
 type NavProps = {
   /** Page-owned content where the telemetry console normally sits. */
   centre?: ReactNode;
-  /** Replaces the "Get Started" pill. A "#id" href stays on the page. */
-  cta?: { label: string; href: string };
+  /** Replaces the "Get Started" pill. A "#id" href stays on the page.
+   * null removes the pill entirely (the homepage: no jump to signup). */
+  cta?: { label: string; href: string } | null;
   /** One page-owned link, in the bar beside the CTA. */
   aside?: { label: string; href: string };
   /** The trust strip (Cyber Essentials, NCSC, Microsoft) in the centre of the bar. */
@@ -221,7 +222,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
               {aside.label}
             </Link>
           ) : null}
-          {ctaHref.startsWith("#") ? (
+          {cta === null ? null : ctaHref.startsWith("#") ? (
             /* Same-page anchor: a plain <a> scrolls without a route change. */
             <a ref={ctaRef} href={ctaHref} data-cta className={ctaTone === "teal" ? "lv2-nav-cta-teal" : "lv2-nav-cta"} style={ctaTone === "teal" ? ctaPillTeal : ctaPill}>
               {ctaInner}
