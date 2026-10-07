@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { sectionMarkBare } from "@/app/components/sectionMark";
 
 /**
@@ -203,21 +202,18 @@ export default function HeroOverlay() {
           }}
           className="lv2-hero-cta-row"
         >
-          {/* The button already scrolled to the streams rather than
-              navigating away, so the label now says what it does. The
-              separate scroll pill in HeroCinematicV3 went with this
-              change: two things saying "scroll to continue" in one
-              screen read as a mistake.
-              data-plausible is deliberately unchanged so the click
-              history stays comparable across the rename. */}
-          <Link
-            href="#subjects"
-            data-plausible="landing-v2-hero-primary"
+          {/* Deliberately NOT a link (owner 2026-10-07): visitors should
+              scroll the whole story themselves rather than jump straight
+              to the streams, so the pill stays as a visual cue only.
+              pointerEvents none keeps hover and click affordances off
+              while the row itself stays interactive for any future CTA. */}
+          <span
             className="lv2-hero-cta lv2-hero-cta-primary"
+            style={{ pointerEvents: "none" }}
           >
             Scroll to continue
             <span aria-hidden style={{ marginLeft: 8 }}>↓</span>
-          </Link>
+          </span>
         </div>
       </div>
     </div>
