@@ -62,7 +62,17 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
     const a = audioRef.current; if (!a || fast) return; // fast test mode: no auto-play
     let alive = true, done = false;
     const start = () => { if (done || !alive) return; done = true; a.play().then(() => { if (alive) setPlaying(true); else a.pause(); }).catch(() => { done = false; }); };
-    start();
+    // Calling play() the instant the element mounts can clip the opening word —
+    // the decoder hasn't primed yet. Wait for it to report it's actually ready,
+    // with a short backstop so a slow connection never blocks ATLAS for long.
+    let backstop: number | null = null;
+    const onReady = () => { a.removeEventListener("canplaythrough", onReady); if (backstop !== null) window.clearTimeout(backstop); start(); };
+    if (a.readyState >= 3) {
+      start();
+    } else {
+      a.addEventListener("canplaythrough", onReady);
+      backstop = window.setTimeout(onReady, 1500);
+    }
     // Cold deep-links have no user gesture, so the browser blocks autoplay. Catch
     // the very first interaction of ANY kind and start ATLAS then, so he still
     // opens the block the moment the kid touches the page.
@@ -70,7 +80,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
     const onGesture = () => { if (alive && a.paused) start(); events.forEach((e) => window.removeEventListener(e, onGesture)); };
     events.forEach((e) => window.addEventListener(e, onGesture, { passive: true }));
     // On leave, stop ATLAS for good — a play() still in flight must not bleed over WREN in the phone.
-    return () => { alive = false; events.forEach((e) => window.removeEventListener(e, onGesture)); try { a.pause(); } catch {} };
+    return () => { alive = false; a.removeEventListener("canplaythrough", onReady); if (backstop !== null) window.clearTimeout(backstop); events.forEach((e) => window.removeEventListener(e, onGesture)); try { a.pause(); } catch {} };
   }, []);
 
   const toggle = () => { const a = audioRef.current; if (!a) return; if (a.paused) a.play().then(() => setPlaying(true)).catch(() => {}); else { a.pause(); setPlaying(false); } };

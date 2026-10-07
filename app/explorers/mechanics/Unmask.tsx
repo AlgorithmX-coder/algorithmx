@@ -35,7 +35,10 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
   // reveals + reasons get read + heard through.
   useEffect(() => {
     if (!passed) return;
-    if (payload.doneAudio) playWren(payload.doneAudio, !!voiceOn);
+    if (payload.doneAudio && voiceOn) {
+      playWren(payload.doneAudio, true, () => setReviewReady(true));
+      return () => stopWren();
+    }
     const t = setTimeout(() => setReviewReady(true), 15000);
     return () => { clearTimeout(t); stopWren(); };
   }, [passed]);
@@ -144,7 +147,7 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
               <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.confirmedGreen }}>{payload.doneLine}</span>
               <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.06em", color: T.textSecondary }}>LOOK IT OVER...</span>
               <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
-                <span style={{ display: "block", height: "100%", background: T.confirmedGreen, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 15000ms linear forwards" }} />
+                <span className="sr-indeterminate" style={{ display: "block", height: "100%", background: T.confirmedGreen }} />
               </span>
             </div>
           )

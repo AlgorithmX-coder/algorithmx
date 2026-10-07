@@ -1195,6 +1195,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
   const [solved, setSolved] = useState(false);
   const [wrong, setWrong] = useState<number | null>(null);
   const [nudge, setNudge] = useState<string | null>(null);
+  const [reviewReady, setReviewReady] = useState(false);
   const q = questions[idx];
 
   useEffect(() => { if (!questions.length) onNext(); return () => stopWren(); }, []);
@@ -1204,7 +1205,8 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
     if (solved) return;
     if (i === q.answer) {
       setSolved(true); setWrong(null); setNudge(null); audio.latch();
-      if (voiceOn && q.okVoice) playWren(q.okVoice, true);
+      if (voiceOn && q.okVoice) { setReviewReady(false); playWren(q.okVoice, true, () => setReviewReady(true)); }
+      else setReviewReady(true); // no clip to wait for — the button's own timer paces it
     } else {
       setWrong(i); audio.thud();
       const k = chkNudgeI++ % CHK_NUDGES.length;
@@ -1215,7 +1217,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
 
   const next = () => {
     stopWren();
-    if (idx + 1 < questions.length) { setIdx(idx + 1); setSolved(false); setWrong(null); setNudge(null); audio.click(); return; }
+    if (idx + 1 < questions.length) { setIdx(idx + 1); setSolved(false); setWrong(null); setNudge(null); setReviewReady(false); audio.click(); return; }
     emit({
       type: "CHECKPOINT_PASSED",
       sourceKey: `cycle-${cycleIndex}`,
@@ -1265,7 +1267,20 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
         <div style={{ marginTop: 16 }}>
           {q.ok && <Bubble who="wren" tone={T.confirmedGreen}>{q.ok}</Bubble>}
           <div style={{ marginTop: 14 }}>
-            <GatedButton label={idx + 1 < questions.length ? "NEXT QUESTION →" : "SKILL LOCKED IN →"} onClick={next} delayMs={reduced ? 0 : 2600} note="TAKE A MOMENT..." />
+            {voiceOn && q.okVoice ? (
+              reviewReady ? (
+                <AmberButton label={idx + 1 < questions.length ? "NEXT QUESTION →" : "SKILL LOCKED IN →"} onClick={next} />
+              ) : (
+                <div style={{ display: "inline-flex", flexDirection: "column", gap: 7, minWidth: 230 }} aria-label="review time">
+                  <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.textSecondary }}>TAKE A MOMENT...</span>
+                  <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
+                    <span className="sr-indeterminate" style={{ display: "block", height: "100%", background: T.confirmedGreen }} />
+                  </span>
+                </div>
+              )
+            ) : (
+              <GatedButton label={idx + 1 < questions.length ? "NEXT QUESTION →" : "SKILL LOCKED IN →"} onClick={next} delayMs={reduced ? 0 : 2600} note="TAKE A MOMENT..." />
+            )}
           </div>
         </div>
       )}
@@ -1360,7 +1375,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
           Time for the Test
         </h1>
         <div style={{ textAlign: "left", marginBottom: 22 }}>
-          <Bubble who="wren" tone={T.arcCyan}>{def.intro}</Bubble>
+          <Bubble who="wren" tone={T.arcCyan} speaking={speaking}>{def.intro}</Bubble>
         </div>
         <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 20 }}>
           {scenarios.length} questions. Get {def.pass} right to close the case. Miss it and you sit the whole case again.
@@ -1505,10 +1520,10 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
       <section style={{ maxWidth: 640, margin: "0 auto" }}>
         {!reduced && <div className="sr-alert-edge" aria-hidden />}
         <Eyebrow text="Boss: live case" color={T.threatRed} />
-        <h1 style={{ fontFamily: BODY, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "12px 0 16px", textShadow: `0 0 40px ${T.threatRed}33` }}>
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "12px 0 26px", textShadow: `0 0 40px ${T.threatRed}33` }}>
           <Resolve text={manifest.incident.title} reduced={reduced} />
         </h1>
-        <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.threatRed}44`, padding: "18px 20px 20px" }}>
+        <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.threatRed}44`, padding: "26px 20px 22px" }}>
           <div style={{ display: "flex", gap: 18, alignItems: "center", marginBottom: 16 }}>
             {manifest.actor.portrait && (
               <div className={reduced ? undefined : "sr-takeover"} style={{ position: "relative", flexShrink: 0 }}>
