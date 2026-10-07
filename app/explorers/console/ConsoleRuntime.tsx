@@ -524,9 +524,9 @@ function BootScreen({ title, caseNumber, open, acc, onBoot }: { title: string; c
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 30px 30px", textAlign: "center" }}>
       <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: ".28em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 6 }}>{caseNumber}</div>
-      <div style={{ fontSize: 34, fontWeight: 800, letterSpacing: "-.01em", marginBottom: 20 }}>{title}</div>
+      <div style={{ fontSize: 34, fontWeight: 800, letterSpacing: "-.01em", marginBottom: 28 }}>{title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 9, textAlign: "left", marginBottom: 26 }}>
-        {open.slice(0, 2).map((l, i) => <div key={i} style={{ background: C.wrenbg, border: `1px solid rgba(43,212,180,.4)`, borderRadius: 10, padding: "10px 13px", fontSize: 13.5, lineHeight: 1.42, color: C.ink }}>{l}</div>)}
+        {open.slice(0, 2).map((l, i) => <div key={i} style={{ background: C.wrenbg, border: `1px solid rgba(43,212,180,.4)`, borderRadius: 10, padding: "16px 13px", fontSize: 13.5, lineHeight: 1.42, color: C.ink }}>{l}</div>)}
       </div>
       <button className="cn-btn" onClick={onBoot} style={{ fontFamily: MONO, fontWeight: 700, fontSize: 15, letterSpacing: ".04em", color: C.page, background: acc, border: 0, borderRadius: 6, padding: "13px 20px", cursor: "pointer" }}>▸ BOOT THE CONSOLE</button>
     </div>
