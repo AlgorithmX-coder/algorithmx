@@ -1058,7 +1058,14 @@ function PhaseTransitionCard({
       aria-label="Phase 2: Rebuild from Memory"
       style={{
         position: "absolute",
-        inset: 0,
+        // -24, not 0. Measured at the tester's 1093x525: this card's
+        // offsetParent ends at y=497 while the board paints on below it, and
+        // that parent is overflow:visible - so a strip of card edges stayed
+        // sharp under the blur (UAT W13 6a, "not all of the card is blurred").
+        // Overhanging is safe and self-limiting: ExerciseFrame is
+        // overflow:hidden, so the dim is clipped to the frame's own rounded
+        // edge and cannot spill outside the board.
+        inset: -24,
         zIndex: 12,
         display: "flex",
         alignItems: "center",
