@@ -63,10 +63,12 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
       setWrongOnce(true);
       setSubmitted(true);
       audio.thud();
-      playWrenNudge(!!voiceOn); // "not quite, look again"
       onEvent({ kind: "MISS" });
       setLocked(true);
-      setTimeout(() => { setLocked(false); setSubmitted(false); }, 4000);
+      let cleared = false;
+      const clear = () => { if (!cleared) { cleared = true; setLocked(false); setSubmitted(false); } };
+      playWrenNudge(!!voiceOn, clear); // "not quite, look again"
+      setTimeout(clear, voiceOn ? 6000 : 4000); // backstop, in case the nudge didn't actually play
     }
   };
 
@@ -155,7 +157,7 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
           <div style={{ display: "flex", flexDirection: "column", gap: 7, width: 240 }} aria-label="look again">
             <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: T.threatRed }}>LOOK AGAIN...</span>
             <span style={{ display: "block", height: 4, borderRadius: 2, background: T.hairline, overflow: "hidden" }}>
-              <span key={String(wrongOnce)} style={{ display: "block", height: "100%", background: T.threatRed, transformOrigin: "left", transform: "scaleX(0)", animation: "sr-read 4000ms linear forwards" }} />
+              <span className="sr-indeterminate" style={{ display: "block", height: "100%", background: T.threatRed }} />
             </span>
           </div>
         ) : allRevealed && allJudged ? (
