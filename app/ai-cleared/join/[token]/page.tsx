@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { DB_TO_TRACK, clearedTrackOf, firstNameOf, hasValidClearedCertificate } from "@/app/lib/aiCleared";
-import { courseByKey } from "../../engine/courses";
+import { courseByKey, corporateCourse } from "../../engine/courses";
 import Frame from "../../Frame";
 import CourseAside from "../../CourseAside";
 import JoinForm from "../../JoinForm";
@@ -29,7 +29,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
     );
   }
 
-  const course = courseByKey(seat.course);
+  const course = courseByKey(corporateCourse(seat.course));
   const fluent = course.slug === "ai-fluent";
   const session = await auth();
   const here = `/ai-cleared/join/${encodeURIComponent(token)}`;

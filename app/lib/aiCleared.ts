@@ -10,7 +10,7 @@ import {
   type Track,
   type Verdict,
 } from "@/app/ai-cleared/engine/types";
-import { COURSES, courseByKey, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { COURSES, courseByKey, corporateCourse, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import { moduleListFor } from "@/app/lib/courseModules";
 
 /* Server-side helpers for the corporate courses, AI Cleared and AI Fluent.
@@ -136,7 +136,7 @@ export async function claimSeat(args: { token: string; userId: string; track: Tr
   if (!seat) return { ok: false as const, reason: "not-found" as const };
   if (seat.userId && seat.userId !== args.userId) return { ok: false as const, reason: "taken" as const };
 
-  const course = courseByKey(seat.course as CourseKey);
+  const course = courseByKey(corporateCourse(seat.course));
   if (course.slug === "ai-fluent" && !(await hasValidClearedCertificate(args.userId))) return { ok: false as const, reason: "needs-cleared" as const };
 
   const product = await prisma.product.findUnique({ where: { slug: course.slug }, select: { id: true } });

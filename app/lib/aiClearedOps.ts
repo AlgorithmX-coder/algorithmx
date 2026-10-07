@@ -3,7 +3,7 @@ import { opsAlert } from "@/app/lib/opsAlert";
 import { AI_CLEARED_SLUG, AI_FLUENT_SLUG } from "@/app/lib/aiCleared";
 import { FIRM_THRESHOLD, newInviteToken, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
 import { moduleListFor } from "@/app/lib/courseModules";
-import { COURSES, courseByKey, courseOfSerial, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { COURSES, courseByKey, corporateCourse, courseOfSerial, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import type { OrgPlan } from "@prisma/client";
 
 /* The AlgorithmX side of both courses: every firm at a glance with its
@@ -176,7 +176,7 @@ export async function lookup(q: string): Promise<LookupHit[]> {
   const enrolments = await prisma.enrolment.findMany({ where: { user: { email } }, include: { certificate: true, modules: true, org: true, product: { select: { slug: true } } } });
   const byOrgCourse = new Map(enrolments.map((e) => [`${e.orgId}:${e.product.slug}`, e]));
   const hits: LookupHit[] = seats.map((seat) => {
-    const course = courseByKey(seat.course).slug;
+    const course = courseByKey(corporateCourse(seat.course)).slug;
     const e = byOrgCourse.get(`${seat.orgId}:${course}`);
     return {
       kind: "person",
@@ -195,7 +195,7 @@ export async function lookup(q: string): Promise<LookupHit[]> {
   });
   /* An enrolment whose seat was issued to a different address (the person
    * signed in with another email) still shows, from the enrolment itself. */
-  const seen = new Set(seats.map((s) => `${s.orgId}:${courseByKey(s.course).slug}`));
+  const seen = new Set(seats.map((s) => `${s.orgId}:${courseByKey(corporateCourse(s.course)).slug}`));
   for (const e of enrolments) {
     const course = (e.product.slug === "ai-fluent" ? "ai-fluent" : "ai-cleared") as CourseSlug;
     if (seen.has(`${e.orgId}:${course}`)) continue;
