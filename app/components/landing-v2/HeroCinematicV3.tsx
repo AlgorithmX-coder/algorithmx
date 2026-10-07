@@ -51,16 +51,16 @@ import HeroOverlay from "./HeroOverlay";
  * (T-minus countdowns for unlaunched streams) retired 2026-10-07: the
  * whole lineup is live, so the screen now sells the real catalogue -
  * every row a named course with its audience and a working link. Hues
- * stay inside the luxe palette, darkened for ink-on-paper contrast,
- * each echoing its course world (Heroes amber, Explorers green, Ops
- * violet, Pro orange). */
+ * are each course world's own accent at full brightness - the console
+ * surface is dark, so they carry the neon (Heroes amber, Explorers
+ * green, Ops violet, Pro orange). */
 const STREAMS = [
-  { name: "CYBER HEROES", age: "AGES 6-9", status: "LIVE", color: "#8a5a00", href: "/cyberheroes" },
-  { name: "CYBER EXPLORERS", age: "AGES 10-13", status: "LIVE", color: "#0e7a45", href: "/cyberexplorers" },
-  { name: "CYBER OPS", age: "AGES 14-17", status: "LIVE", color: "#5744c9", href: "/ops" },
-  { name: "CYBER PRO", age: "AGES 18+", status: "LIVE", color: "#a34a12", href: "/pro" },
-  { name: "AI CLEARED", age: "FOR WORK", status: "LIVE", color: "#0a7085", href: "/ai-cleared" },
-  { name: "AI FLUENT", age: "FOR WORK", status: "LIVE", color: "#a5117f", href: "/ai-fluent" },
+  { name: "CYBER HEROES", age: "AGES 6-9", status: "LIVE", color: "#ffb347", href: "/cyberheroes" },
+  { name: "CYBER EXPLORERS", age: "AGES 10-13", status: "LIVE", color: "#4ade80", href: "/cyberexplorers" },
+  { name: "CYBER OPS", age: "AGES 14-17", status: "LIVE", color: "#8b7bff", href: "/ops" },
+  { name: "CYBER PRO", age: "AGES 18+", status: "LIVE", color: "#ff7a3d", href: "/pro" },
+  { name: "AI CLEARED", age: "FOR WORK", status: "LIVE", color: "#22d3ee", href: "/ai-cleared" },
+  { name: "AI FLUENT", age: "FOR WORK", status: "LIVE", color: "#f472b6", href: "/ai-fluent" },
 ] as const;
 
 /* Deterministic per-row activity sparklines (viewBox 0 0 30 10). */
@@ -820,8 +820,12 @@ export default function HeroCinematicV3() {
                         flexDirection: "column",
                         padding: "14px 18px 12px",
                         fontFamily: "var(--lv2-font-mono)",
+                        /* near-opaque: the light dormant wallpaper sits
+                           underneath, and any see-through washes the
+                           console grey. The boot-up now reads as the
+                           display going dark and lighting up. */
                         background:
-                          "linear-gradient(180deg, rgba(238,240,243,0.92), rgba(238,240,243,0.95))",
+                          "linear-gradient(180deg, rgba(9,13,21,0.97), rgba(12,17,26,0.98))",
                         zIndex: 2,
                       }}
                     >
@@ -960,30 +964,36 @@ export default function HeroCinematicV3() {
         .hv3-ring { animation: hv3RingDrift 26s ease-in-out infinite alternate; }
         @keyframes hv3RingDrift { from { rotate: -14deg; } to { rotate: -6deg; } }
         .hv3-row { transition: background-color 0.18s ease, box-shadow 0.18s ease; cursor: pointer; }
-        .hv3-row:hover { background-color: rgba(63,208,255,0.1); }
+        .hv3-row:hover { background-color: rgba(63,208,255,0.12); }
         .hv3-row:focus-visible { outline: 1.5px solid var(--lv2-cyan); outline-offset: 1px; }
+        .hv3-sweep { animation: hv3Sweep 3.6s linear infinite; }
+        @keyframes hv3Sweep { to { transform: rotate(360deg); } }
+        .hv3-radarBlip { animation: hv3BlipPulse 3.3s ease-in-out infinite; }
+        @keyframes hv3BlipPulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
         @media (prefers-reduced-motion: reduce) {
-          .hv3-nebulaA, .hv3-nebulaB, .hv3-ledBreathe, .hv3-blink, .hv3-ring { animation: none; }
+          .hv3-nebulaA, .hv3-nebulaB, .hv3-ledBreathe, .hv3-blink, .hv3-ring, .hv3-sweep, .hv3-radarBlip { animation: none; }
         }
       `}</style>
     </section>
   );
 }
 
-/* Screen dashboard — real HTML mission-control layout (echoes the old
- * live hero's ORBITAL OVERVIEW screen): OS bar with tabs, left system
- * sidebar, central streams panel, right health/feed column, bottom
- * parameter strip. Everything is static except the scroll-cascading
- * stream rows — rasterized once, free during the lid animation. */
+/* Screen dashboard — a dark SOC-style threat console (owner
+ * 2026-10-07: "something in cybersecurity that looks cool"). Same
+ * skeleton as the old mission-control layout — OS bar, left sidebar,
+ * centre panel, right column, bottom strip — so the lid animation's
+ * raster cost is unchanged. Everything is static except the
+ * scroll-cascading operation rows and three tiny CSS loops (radar
+ * sweep, blip pulse, caret), all killed under reduced motion. */
 const PANEL: CSSProperties = {
-  /* Panels on the screen: on a black display a faint light fill lifted
-   * them off the glass. On a silver one they have to sit INTO it, so the
-   * fill goes a shade under the screen and the edge gains weight. */
-  background: "rgba(226,230,238,0.92)",
-  border: "1px solid rgba(52,68,94,0.22)",
+  /* Dark glass panes on a near-black display; the faint cyan hairline
+   * does the lifting that light fills did on the old silver screen. */
+  background: "rgba(16,23,34,0.85)",
+  border: "1px solid rgba(63,208,255,0.16)",
   borderRadius: 7,
 };
-const DIM = "rgba(32,36,45,0.82)";
+const DIM = "rgba(168,186,214,0.62)";
+const INK = "#e8f2ff";
 
 function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
   return (
@@ -1004,24 +1014,24 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
               width: 6,
               height: 6,
               borderRadius: 99,
-              background: "#0a7085",
-              boxShadow: "0 0 8px rgba(0,229,255,0.9)",
+              background: "#3fd0ff",
+              boxShadow: "0 0 8px rgba(63,208,255,0.9)",
             }}
           />
-          <span style={{ color: "#0a7085", fontWeight: 700, fontSize: 10.5, letterSpacing: "0.1em" }}>
+          <span style={{ color: "#3fd0ff", fontWeight: 700, fontSize: 10.5, letterSpacing: "0.1em", textShadow: "0 0 10px rgba(63,208,255,0.45)" }}>
             ALGORITHMX_OS
           </span>
         </span>
         <span style={{ flex: 1, display: "flex", gap: 13, justifyContent: "center" }}>
-          {["OVERVIEW", "STREAMS", "MISSIONS", "ANALYTICS"].map((tab, i) => (
+          {["OVERVIEW", "RANGE", "THREATS", "INTEL"].map((tab, i) => (
             <span
               key={tab}
               style={{
                 fontSize: 7.5,
                 letterSpacing: "0.14em",
                 fontWeight: 600,
-                color: i === 1 ? "#20242d" : DIM,
-                borderBottom: i === 1 ? "1.5px solid #0a7085" : "1.5px solid transparent",
+                color: i === 1 ? INK : DIM,
+                borderBottom: i === 1 ? "1.5px solid #3fd0ff" : "1.5px solid transparent",
                 paddingBottom: 2,
               }}
             >
@@ -1043,17 +1053,17 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
           <svg viewBox="0 0 12 9" style={{ width: 10, height: 8 }} aria-hidden>
             <path
               d="M1.2 3.8a7 7 0 0 1 9.6 0M3.2 5.8a4.2 4.2 0 0 1 5.6 0"
-              stroke="#0a7085"
+              stroke="#3fd0ff"
               strokeWidth="1.1"
               strokeLinecap="round"
               fill="none"
               opacity="0.75"
             />
-            <circle cx="6" cy="7.6" r="0.9" fill="#0a7085" opacity="0.9" />
+            <circle cx="6" cy="7.6" r="0.9" fill="#3fd0ff" opacity="0.9" />
           </svg>
           <span>23:47</span>
           <span>
-            SYS-07 · <span style={{ color: "#0e7a45" }}>ONLINE</span>
+            SYS-07 · <span style={{ color: "#2fe28a" }}>SHIELDS UP</span>
           </span>
         </span>
       </div>
@@ -1071,40 +1081,41 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             gap: 5,
           }}
         >
-          <span style={{ fontSize: 6.5, letterSpacing: "0.16em", color: DIM }}>SYSTEM STATUS</span>
+          <span style={{ fontSize: 6.5, letterSpacing: "0.16em", color: DIM }}>SHIELD STATUS</span>
           <span
             style={{
               fontFamily: "var(--font-geist-sans, ui-sans-serif), system-ui, sans-serif",
               fontSize: 21,
               fontWeight: 750,
-              color: "#0a7085",
+              color: "#3fd0ff",
               lineHeight: 1,
+              textShadow: "0 0 14px rgba(63,208,255,0.5)",
             }}
           >
             100%
           </span>
-          <span style={{ fontSize: 6.5, letterSpacing: "0.16em", color: DIM }}>OPERATIONAL</span>
+          <span style={{ fontSize: 6.5, letterSpacing: "0.16em", color: "#2fe28a" }}>PERIMETER SECURE</span>
           {/* waveform */}
           <svg viewBox="0 0 100 16" style={{ width: "100%", height: 14, marginTop: 2 }} aria-hidden>
             <polyline
               points="0,9 8,9 12,4 16,13 22,9 34,9 38,6 42,12 48,9 60,9 64,3 68,14 74,9 86,9 90,6 94,11 100,9"
               fill="none"
-              stroke="#0a7085"
+              stroke="#3fd0ff"
               strokeWidth="1.1"
               opacity="0.8"
             />
           </svg>
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3, marginTop: 3 }}>
-            {["DASHBOARD", "STREAMS", "MISSIONS", "REPORTS"].map((n, i) => (
+            {["RADAR", "RANGE", "INTEL", "REPORTS"].map((n, i) => (
               <span
                 key={n}
                 style={{
                   fontSize: 7,
                   letterSpacing: "0.13em",
                   fontWeight: 600,
-                  color: i === 1 ? "#20242d" : DIM,
+                  color: i === 1 ? INK : DIM,
                   background: i === 1 ? "rgba(63,208,255,0.12)" : "transparent",
-                  borderLeft: i === 1 ? "2px solid #0a7085" : "2px solid transparent",
+                  borderLeft: i === 1 ? "2px solid #3fd0ff" : "2px solid transparent",
                   borderRadius: 3,
                   padding: "3px 5px",
                 }}
@@ -1114,7 +1125,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             ))}
           </div>
           <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
-            UPTIME <span style={{ color: "#0a7085" }}>23:47:12</span>
+            THREATS BLOCKED <span style={{ color: "#2fe28a", fontWeight: 700 }}>312</span>
           </span>
         </div>
 
@@ -1126,7 +1137,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             padding: "7px 9px",
             display: "flex",
             flexDirection: "column",
-            background: "rgba(238,240,243,0.45)",
+            background: "rgba(13,19,29,0.55)",
             minWidth: 0,
           }}
         >
@@ -1143,14 +1154,14 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                 fontFamily: "var(--font-geist-sans, ui-sans-serif), system-ui, sans-serif",
                 fontSize: 11,
                 fontWeight: 750,
-                color: "#20242d",
+                color: INK,
                 letterSpacing: "0.02em",
               }}
             >
-              LEARNING STREAMS
+              LIVE OPERATIONS
             </span>
-            <span style={{ fontSize: 6.5, letterSpacing: "0.15em", color: "#0a7085" }}>
-              ● REAL-TIME VIEW
+            <span style={{ fontSize: 6.5, letterSpacing: "0.15em", color: "#2fe28a" }}>
+              ● RANGE ACTIVE
             </span>
           </div>
           <div
@@ -1177,43 +1188,44 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             gap: 7,
           }}
         >
-          <div style={{ ...PANEL, padding: "7px 9px", display: "flex", gap: 8, alignItems: "center" }}>
-            {/* conic gauge */}
+          <div style={{ ...PANEL, padding: "7px 9px", display: "flex", gap: 9, alignItems: "center" }}>
+            {/* perimeter radar — rotating sweep + pulsing contacts */}
             <div
               style={{
-                width: 34,
-                height: 34,
+                position: "relative",
+                width: 44,
+                height: 44,
                 borderRadius: 99,
                 flexShrink: 0,
-                background:
-                  "conic-gradient(#0a7085 0deg 356deg, rgba(90,150,220,0.25) 356deg 360deg)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                overflow: "hidden",
+                background: "radial-gradient(circle, rgba(63,208,255,0.1), rgba(8,13,21,0.4) 72%)",
+                boxShadow: "inset 0 0 0 1px rgba(63,208,255,0.3)",
               }}
             >
+              <div style={{ position: "absolute", inset: 7, borderRadius: 99, border: "1px solid rgba(63,208,255,0.22)" }} />
+              <div style={{ position: "absolute", inset: 14, borderRadius: 99, border: "1px solid rgba(63,208,255,0.15)" }} />
               <div
+                className="hv3-sweep"
                 style={{
-                  width: 26,
-                  height: 26,
+                  position: "absolute",
+                  inset: 0,
                   borderRadius: 99,
-                  background: "#eef0f3",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 7.5,
-                  fontWeight: 700,
-                  color: "#20242d",
+                  background: "conic-gradient(from 0deg, rgba(63,208,255,0.5), rgba(63,208,255,0) 75deg, transparent 360deg)",
                 }}
-              >
-                100%
-              </div>
+              />
+              <span className="hv3-radarBlip" style={{ position: "absolute", left: "62%", top: "26%", width: 4, height: 4, borderRadius: 99, background: "#ff5d73", boxShadow: "0 0 6px rgba(255,93,115,0.9)" }} />
+              <span className="hv3-radarBlip" style={{ position: "absolute", left: "28%", top: "54%", width: 3.5, height: 3.5, borderRadius: 99, background: "#ffb347", boxShadow: "0 0 6px rgba(255,179,71,0.9)", animationDelay: "-1.1s" }} />
+              <span className="hv3-radarBlip" style={{ position: "absolute", left: "52%", top: "68%", width: 3, height: 3, borderRadius: 99, background: "#2fe28a", boxShadow: "0 0 6px rgba(47,226,138,0.9)", animationDelay: "-2.2s" }} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
               <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
-                SYSTEM HEALTH
+                PERIMETER SCAN
               </span>
-              {["POWER", "SHIELDS", "COMMS"].map((m) => (
+              {[
+                ["TRACKING", "3", "#ffb347"],
+                ["BLOCKED", "312", "#2fe28a"],
+                ["RISK", "LOW", "#2fe28a"],
+              ].map(([m, v, c]) => (
                 <span
                   key={m}
                   style={{
@@ -1225,35 +1237,36 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                     gap: 6,
                   }}
                 >
-                  {m} <span style={{ color: "#0e7a45" }}>100%</span>
+                  {m} <span style={{ color: c, fontWeight: 700 }}>{v}</span>
                 </span>
               ))}
             </div>
           </div>
           <div style={{ ...PANEL, flex: 1, padding: "7px 9px", minHeight: 0, overflow: "hidden" }}>
-            <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>MISSION FEED</span>
+            <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>INTERCEPT LOG</span>
             {[
-              ["23:46:58", "System check complete"],
-              ["23:46:31", "All nodes operational"],
-              ["23:46:02", "Data sync complete"],
-            ].map(([time, msg]) => (
+              ["23:46:58", "Port scan dropped · 203.0.113.9", "#ff5d73"],
+              ["23:46:31", "Phishing URL quarantined", "#ffb347"],
+              ["23:46:02", "Brute force locked out", "#2fe28a"],
+            ].map(([time, msg, c]) => (
               <div key={time} style={{ display: "flex", gap: 5, alignItems: "baseline", marginTop: 4 }}>
                 <span
                   style={{
                     width: 4,
                     height: 4,
                     borderRadius: 99,
-                    background: "#0e7a45",
+                    background: c,
+                    boxShadow: `0 0 5px ${c}`,
                     flexShrink: 0,
                     transform: "translateY(-1px)",
                   }}
                 />
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 6, color: "#0a7085", letterSpacing: "0.1em" }}>{time}</div>
+                  <div style={{ fontSize: 6, color: "#3fd0ff", letterSpacing: "0.1em" }}>{time}</div>
                   <div
                     style={{
                       fontSize: 7,
-                      color: "rgba(32,36,45,0.8)",
+                      color: "rgba(206,220,242,0.82)",
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -1266,7 +1279,7 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             ))}
             {/* live terminal prompt — blinking caret (CSS steps keyframe,
              *  its own tiny layer; killed under reduced motion) */}
-            <div style={{ marginTop: 5, fontSize: 6.5, color: "#0a7085", letterSpacing: "0.1em" }}>
+            <div style={{ marginTop: 5, fontSize: 6.5, color: "#3fd0ff", letterSpacing: "0.1em" }}>
               &gt; <span className="hv3-blink">▍</span>
             </div>
           </div>
@@ -1283,20 +1296,20 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
           borderTop: "1px solid rgba(63,208,255,0.16)",
         }}
       >
-        <span style={{ fontSize: 7.5, letterSpacing: "0.18em", color: "#0e7a45", fontWeight: 700 }}>
-          ● READY
+        <span style={{ fontSize: 7.5, letterSpacing: "0.18em", color: "#2fe28a", fontWeight: 700, textShadow: "0 0 8px rgba(47,226,138,0.5)" }}>
+          ● SHIELDS UP
         </span>
         {[
           ["AGES", "6 → ADULT"],
-          ["STREAMS", "6"],
-          ["FORMAT", "PROJECT-BASED"],
+          ["OPERATIONS", "6"],
+          ["FORMAT", "HANDS-ON"],
         ].map(([k, v]) => (
           <span key={k} style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
-            {k} <span style={{ color: "#20242d", fontWeight: 700 }}>{v}</span>
+            {k} <span style={{ color: INK, fontWeight: 700 }}>{v}</span>
           </span>
         ))}
         <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
-          CHOOSE A STREAM TO BEGIN
+          CHOOSE YOUR OPERATION
         </span>
       </div>
     </>
@@ -1347,16 +1360,17 @@ function StreamRow({
       />
       <span
         style={{
-          color: `${stream.color}e6`,
+          color: stream.color,
           fontWeight: 700,
           fontSize: 9,
           letterSpacing: "0.07em",
           whiteSpace: "nowrap",
+          textShadow: `0 0 9px ${stream.color}59`,
         }}
       >
         {stream.name}
       </span>
-      <span style={{ color: "rgba(17,22,38,0.44)", fontSize: 7, whiteSpace: "nowrap" }}>
+      <span style={{ color: "rgba(186,200,224,0.5)", fontSize: 7, whiteSpace: "nowrap" }}>
         {stream.age}
       </span>
       <span style={{ flex: 1 }} />
