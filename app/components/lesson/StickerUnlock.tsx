@@ -97,8 +97,10 @@ export default function StickerUnlock({
     >
       {/* The week's world behind the sticker sheet (world weeks only) */}
       <WorldBackdrop intensity={0.36} />
-      {/* Above the beams: the light shafts poke ~60px up out of the grid
-          and must never wash over the heading/subtitle copy. */}
+      {/* Above the beams. The shafts reach 14px up out of the grid and this
+          marginBottom is the only thing standing between them and the copy,
+          so the two numbers are a pair: shrinking this 20 without shrinking
+          the beam puts the light back inside the subtitle (UAT W16 9b). */}
       <div style={{ position: "relative", zIndex: 2, textAlign: "center", marginBottom: 20 }}>
         <span
           style={{
@@ -187,10 +189,23 @@ export default function StickerUnlock({
                   // edges of neighbouring cards met in the gaps. Abdullah saw
                   // both as the lights overlapping each other and the text.
                   // Shorter reach, narrower base, same lamp-cone shape.
-                  top: -30,
+                  //
+                  // UAT W16 9b ("the lantern illuminating the second badge
+                  // always cuts into the words above", reported as recurring
+                  // on every week): -30 was still 10px too tall. The header
+                  // block above clears exactly marginBottom: 20, so a beam
+                  // reaching 30px up HAS to land inside the subtitle - not a
+                  // viewport quirk, true on every week at every size. Measured
+                  // at the tester's 1093x525: cone top 173.7 against subtitle
+                  // 164-182.4, an 8.7px overlap. The reach now fits the gap it
+                  // has (14 up, 6px of clearance) instead of overshooting it.
+                  // Keep reach + clearance <= that 20, or this comes straight
+                  // back. zIndex 2 on the copy does NOT save it: the wash sits
+                  // behind the letters, which is exactly what was reported.
+                  top: -14,
                   left: "15%",
                   right: "15%",
-                  height: 34,
+                  height: 18,
                   zIndex: 0,
                   clipPath: "polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",
                   background:
