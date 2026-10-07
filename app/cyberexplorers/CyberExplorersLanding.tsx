@@ -752,11 +752,11 @@ export default function CyberExplorersLanding() {
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <a href="#course" className="cx-navlink">THE COURSE</a>
           <a href="#parents" className="cx-navlink">FOR PARENTS</a>
-          <Link href="/login?course=cyberexplorers" className="cx-navlink" style={{ border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "8px 13px" }}>
+          <Link href="/cyberexplorers/login" className="cx-navlink" style={{ border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "8px 13px" }}>
             LOG IN
           </Link>
           <Link
-            href="/signup?course=cyberexplorers"
+            href="/cyberexplorers/signup"
             className="cx-cta"
             style={{
               fontFamily: MONO,
@@ -801,7 +801,7 @@ export default function CyberExplorersLanding() {
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
               <Link
-                href="/signup?course=cyberexplorers"
+                href="/cyberexplorers/signup"
                 className="cx-cta cx-cta-primary"
                 style={{
                   fontFamily: MONO,
@@ -1019,7 +1019,7 @@ export default function CyberExplorersLanding() {
             </div>
             <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
               <Link
-                href="/signup?course=cyberexplorers"
+                href="/cyberexplorers/signup"
                 className="cx-cta cx-cta-primary"
                 style={{
                   fontFamily: MONO,
@@ -1035,7 +1035,7 @@ export default function CyberExplorersLanding() {
               >
                 ENROLL NOW · £99
               </Link>
-              <Link href="/login?course=cyberexplorers" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "15px 20px", display: "inline-block" }}>
+              <Link href="/cyberexplorers/login" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "15px 20px", display: "inline-block" }}>
                 ALREADY ENROLLED? LOG IN
               </Link>
             </div>

@@ -256,6 +256,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               <span className="hidden sm:inline mono" style={{ fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>by AlgorithmX</span>
             </Link>
             <div className="flex items-center gap-4">
+              <a href="/pro/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Sign in</a>
               <a href="/pro/course" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">See the course</a>
               <a href={isActive ? buyHref : ENROL_ANCHOR} className="cypro-ghost px-5 py-2.5 rounded-2xl text-sm font-black text-white" style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50` }}>
                 {isActive ? "Get the course" : "Enrol"}
