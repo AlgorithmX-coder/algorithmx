@@ -33,6 +33,7 @@ const topic1: TopicManifest = {
     },
     {
       heading: "The three pillars, one at a time",
+      visual: { id: "cia-breaker" },
       body: [
         "Confidentiality is about who is allowed to see. Passwords, encryption, and access controls all exist to keep data in the right hands. When you hear 'data breach', that is usually a confidentiality failure.",
         "Integrity is about whether you can trust the data is correct and unchanged. Was this record altered? Is this the real software update, or a tampered one? Availability is about access when it matters: if ransomware locks every file, the data still exists, but its availability is gone, and that can be just as damaging as it being stolen.",
