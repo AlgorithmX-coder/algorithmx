@@ -35,6 +35,7 @@ const topic1: TopicManifest = {
     },
     {
       heading: "Worms and the danger of self-spread",
+      visual: { id: "network-spread", mode: "worm" },
       body: [
         "The worm deserves special attention because self-spreading is what turns one infection into thousands in hours. A worm needs no one to click: it finds other vulnerable machines on its own and copies itself to them, then those copies do the same. This exponential spread is why the most explosive outbreaks in history, which you will meet later in this module, were wormable.",
         "This also explains why patching matters so urgently. Worms spread by exploiting known vulnerabilities, so an unpatched flaw is not just a risk to one machine, it is a doorway a worm can pour through across an entire network. The defensive lesson lands hard here: the time between a fix being available and you applying it is exactly the window a worm needs.",

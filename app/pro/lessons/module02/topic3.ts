@@ -51,6 +51,7 @@ const topic3: TopicManifest = {
     },
     {
       heading: "HTTPS: what the padlock protects, and what it does not",
+      visual: { id: "packet-path", mode: "eavesdrop" },
       body: [
         "HTTPS is HTTP wrapped in encryption (TLS). It does two things: it scrambles the conversation so anyone on the path sees only unreadable bytes, and it checks you are really talking to the genuine server, using a certificate the server must present. The padlock in the address bar means both are in place for this connection.",
         "But be precise about what it covers. HTTPS protects the content and integrity of the conversation between you and that server. It does not hide which server you are talking to, it does not vouch that the site is run by honest people, and it does nothing once the data arrives, a phishing site can show a perfectly valid padlock. The padlock means 'private and genuine connection', not 'trustworthy website'.",

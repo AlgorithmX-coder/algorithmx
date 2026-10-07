@@ -19,6 +19,7 @@ const topic2: TopicManifest = {
   learn: [
     {
       heading: "When your input becomes part of the question",
+      visual: { id: "injection", mode: "sql" },
       body: [
         "Recall from the last topic that a website asks its database questions in a language called SQL. A login builds a question like: 'is there a user whose name is X and whose password is Y?'. The danger is in how the website builds that sentence. If it simply glues your typed-in text straight into the question, then what you type can change the question itself, not just answer it.",
         "This is SQL injection: sending input crafted so that it breaks out of being data and becomes part of the command. An attacker types not a username, but a fragment of SQL, and if the site glues it in blindly, the database obeys. The classic result is a login that lets anyone in, or a query that dumps the entire table of customers.",

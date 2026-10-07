@@ -19,6 +19,7 @@ const topic4: TopicManifest = {
   learn: [
     {
       heading: "Look past the friendly name to the real address",
+      visual: { id: "phishing-redflags" },
       body: [
         "The single most useful habit is to check who an email is really from. Email shows a 'display name', the friendly label like 'IT Helpdesk' or your CEO's name, but that is just a label anyone can set. Underneath is the actual address, and that is what matters. A message whose display name says your bank but whose real address is a random mailbox is an instant red flag.",
         "Closely related are lookalike domains: addresses crafted to resemble a real one, swapping or adding a character, like 'rnicrosoft.com' (r-n instead of m) or 'company-support.com' instead of the genuine domain. Attackers rely on you skim-reading. The defence is to read the real address slowly, character by character, especially the part after the @.",

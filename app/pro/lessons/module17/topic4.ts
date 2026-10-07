@@ -47,6 +47,7 @@ const topic4: TopicManifest = {
     },
     {
       heading: "When one supplier flaw cascades to many",
+      visual: { id: "network-spread", mode: "lateral" },
       body: [
         "The most alarming feature of supply-chain risk is its scale: a single flaw in a widely-used supplier can cascade to all of that supplier's customers at once. Attackers have learned this and deliberately target popular software and service providers, because compromising one reaches hundreds. This is a force multiplier that makes supply-chain attacks uniquely efficient and damaging, and it is why third-party risk has risen to the top of the GRC agenda.",
         "It also has a cascading dimension: your supplier's suppliers are, indirectly, your risk too, and a breach at one organisation can expose the data of its many customers, and their customers. The MOVEit case you are about to see is the definitive modern example: attackers exploited one flaw in one widely-used file-transfer tool and, through it, breached hundreds of organisations and the personal data of many millions of people, a single supplier flaw rippling across the world.",

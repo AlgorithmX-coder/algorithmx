@@ -19,6 +19,7 @@ const topic1: TopicManifest = {
   learn: [
     {
       heading: "Listening in: eavesdropping on the journey",
+      visual: { id: "packet-path", mode: "eavesdrop" },
       body: [
         "Recall from Module 2 that your data travels as packets across shared networks. Eavesdropping is simply listening to those packets as they pass. On an unencrypted network, especially open Wi-Fi, anyone suitably positioned can capture the traffic and read whatever is sent in the clear: the websites you visit, and on plain HTTP, the very contents, passwords included.",
         "This is exactly why encryption in transit matters so much. HTTPS scrambles the content of your web conversations, and a VPN wraps all your traffic in encryption across an untrusted network. With these, an eavesdropper captures only unreadable noise. Without them, they capture your secrets. The defence is not mysterious; it is encrypting the journey.",

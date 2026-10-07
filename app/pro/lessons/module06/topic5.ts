@@ -19,6 +19,7 @@ const topic5: TopicManifest = {
   learn: [
     {
       heading: "Turning the attacker's playbook into your defence",
+      visual: { id: "mindset-flip" },
       body: [
         "Everything you learned this module, who attacks and why, the stages they move through, how they research, becomes powerful the moment you use it defensively. If you know the stages of an attack, you can place detections and defences at each one. If you know the common techniques, you can watch for them. The attacker's playbook, understood, becomes your defensive plan.",
         "This is the heart of modern security operations. Defenders do not just wait and react; they study how attackers behave and prepare specifically for it. 'Assume breach, and know what the breach will look like' is far stronger than hoping nothing gets in.",

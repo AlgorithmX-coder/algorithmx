@@ -35,6 +35,7 @@ const topic2: TopicManifest = {
     },
     {
       heading: "Asymmetric: a public/private key pair",
+      visual: { id: "public-key", mode: "exchange" },
       body: [
         "Asymmetric encryption solves the key-distribution problem with a beautiful idea: each person has a pair of keys, a public key they share with everyone, and a private key they keep secret. Anything encrypted with your public key can only be decrypted with your private key. So anyone can send you a secret by encrypting it with your freely-shared public key, and only you, with your private key, can read it. No prior shared secret is needed.",
         "This is revolutionary because it lets total strangers communicate securely. You can publish your public key to the world; people use it to send you secrets that only you can open. The trade-off is that asymmetric encryption is slower than symmetric, so it is not used for bulk data. Instead, it is used cleverly: to safely exchange a shared symmetric key, after which the fast symmetric encryption takes over.",

@@ -35,6 +35,7 @@ const topic1: TopicManifest = {
     },
     {
       heading: "Routers, and the hop-by-hop journey",
+      visual: { id: "packet-path", mode: "journey" },
       body: [
         "No single cable runs from your phone to a website in another country. Instead, the internet is tens of thousands of networks joined together, and routers are the machines standing at every junction. Each router reads a packet's destination address and makes one decision: which neighbour to hand it to next. Repeat that twenty-odd times and your packet crosses the world.",
         "How does every router know a way to everywhere? The big networks constantly announce to each other which addresses they can deliver to, building a shared, living map of routes. It is one of the most trusting systems ever built: networks largely believe what their neighbours announce. When an announcement is wrong, whether by accident or by attack, traffic follows the wrong map.",
