@@ -426,7 +426,13 @@ export default function RequestInspector({
                     key={zone.id}
                     onClick={() => inspect(zone)}
                     disabled={open || !!decided || showIntro || zoneSpeaking}
-                    animate={open && !reduce ? { scale: [1, 1.04, 1] } : undefined}
+                    // 1.015, not 1.04 - the same fault as the Profile
+                    // Inspector's. These boxes are ~350px wide, so a 4% pulse
+                    // threw roughly 7px past each edge, more than the board's
+                    // side margin, and the box crossed the frame before
+                    // settling back: UAT W20 3a, "boxes sit flush and expand
+                    // past edges when clicked on". 1.5% still reads as a press.
+                    animate={open && !reduce ? { scale: [1, 1.015, 1] } : undefined}
                     style={{
                       textAlign: "left",
                       padding: "10px 12px",

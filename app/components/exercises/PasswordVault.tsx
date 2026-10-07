@@ -117,6 +117,12 @@ export interface PasswordVaultProps {
  * dial-over-PERSONAL overlap. Order follows the lock array.
  */
 const LOCK_POSITIONS: Record<string, { x: number; y: number }> = {
+  // NOTE (UAT W20 2a, "the top of the hexagon is not visible"): the guidance
+  // ribbon is pinned at top:12 inside this stage and overlaps the top lock.
+  // Dropping the whole ring by 4 points was tried and REVERTED - it cleared
+  // the pill but pushed the bottom two locks into the stage's lower edge,
+  // which is worse. A real fix means moving the ribbon out of the stage, not
+  // moving the ring. Left as it was rather than trading one clip for another.
   length:   { x:   0, y: -27 },
   mix:      { x:  26, y: -8 },
   personal: { x:  16, y:  22 },
