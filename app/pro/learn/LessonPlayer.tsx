@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { T } from "./tokens";
+import TutorChat from "./TutorChat";
 import {
   FIVE_CONTROLS,
   lessonCheckpointKey,
@@ -358,7 +359,6 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
   const [learnIdx, setLearnIdx] = useState(0);
   const [didTry, setDidTry] = useState(false);
   const [explainDraft, setExplainDraft] = useState("");
-  const [explainRevealed, setExplainRevealed] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<(number | null)[]>(() => lesson.check.quiz.map(() => null));
   const [restored, setRestored] = useState(false);
 
@@ -394,6 +394,22 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
 
   const quizDone = useMemo(() => quizAnswers.every((a) => a !== null), [quizAnswers]);
   const inLesson = phase !== "intro" && phase !== "done";
+
+  /* The teaching material for this topic, compiled for the AI tutor so it
+     answers from the lesson rather than the open web. Bounded to stay
+     within the tutor route's input limit. */
+  const tutorTeaching = useMemo(() => {
+    const parts: string[] = lesson.learn.map((c) => {
+      const bits = [`${c.heading}`, c.body.join(" ")];
+      if (c.examples?.length) bits.push(`Examples: ${c.examples.join("; ")}`);
+      if (c.analogy) bits.push(`Analogy: ${c.analogy.plain} (the real term is ${c.analogy.realTerm}).`);
+      return bits.join("\n");
+    });
+    if (lesson.glossary?.length) parts.push(`Key terms: ${lesson.glossary.map((g) => `${g.term} = ${g.definition}`).join("; ")}`);
+    parts.push(`The question the learner is answering: ${lesson.check.explain.prompt}`);
+    parts.push(`A strong answer looks like: ${lesson.check.explain.modelAnswer}`);
+    return parts.join("\n\n").slice(0, 9900);
+  }, [lesson]);
 
   const btn = (label: string, onClick: () => void, opts?: { disabled?: boolean; ghost?: boolean }) => (
     <button onClick={onClick} disabled={opts?.disabled}
@@ -726,17 +742,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                 <p style={{ fontSize: 15.5, color: T.body, lineHeight: 1.6 }}>{lesson.check.explain.prompt}</p>
                 <textarea value={explainDraft} onChange={(e) => setExplainDraft(e.target.value)} rows={4} placeholder="In your own words..."
                   style={{ width: "100%", boxSizing: "border-box", resize: "vertical", background: T.bgRaise, color: T.ink, border: `1px solid ${T.edge}`, borderRadius: 8, fontFamily: T.sans, fontSize: 15, lineHeight: 1.6, padding: "11px 13px" }} />
-                {!explainRevealed ? (
-                  <button onClick={() => setExplainRevealed(true)} disabled={explainDraft.trim().length < 10}
-                    style={{ marginTop: 10, fontFamily: T.mono, fontSize: 12, fontWeight: 600, color: explainDraft.trim().length < 10 ? T.faint : T.cyan, background: "transparent", border: `1px solid ${explainDraft.trim().length < 10 ? T.edge : T.cyan}66`, borderRadius: 7, padding: "8px 14px", cursor: explainDraft.trim().length < 10 ? "not-allowed" : "pointer" }}>
-                    {explainDraft.trim().length < 10 ? "write a little first" : "REVEAL A MODEL ANSWER"}
-                  </button>
-                ) : (
-                  <div style={{ marginTop: 12, background: T.greenSoft, border: `1px solid ${T.green}55`, borderRadius: 8, padding: "12px 15px" }}>
-                    <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: "0.14em", color: T.green, marginBottom: 6 }}>A STRONG ANSWER LOOKS LIKE</div>
-                    <div style={{ fontSize: 14.5, color: T.body, lineHeight: 1.6 }}>{lesson.check.explain.modelAnswer}</div>
-                  </div>
-                )}
+                <TutorChat lesson={{ title: lesson.title, teaching: tutorTeaching }} getDraft={() => explainDraft} modelAnswer={lesson.check.explain.modelAnswer} />
               </div>
 
               <h3 style={{ fontFamily: T.display, fontSize: 18, fontWeight: 700, margin: "0 0 14px", color: T.ink }}>Quick checks</h3>

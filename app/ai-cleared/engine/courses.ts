@@ -6,6 +6,14 @@
 export type CourseSlug = "ai-cleared" | "ai-fluent";
 export type CourseKey = "AI_CLEARED" | "AI_FLUENT";
 
+/* Narrow a database CourseKey (which also includes the consumer course
+ * CYBER_PRO) to the two corporate courses. Seats and firm enrolments are
+ * only ever corporate, so CYBER_PRO never reaches here; this falls back to
+ * AI_CLEARED defensively rather than widening the corporate types. */
+export function corporateCourse(k: string): CourseKey {
+  return k === "AI_FLUENT" ? "AI_FLUENT" : "AI_CLEARED";
+}
+
 export interface CourseDef {
   slug: CourseSlug;
   key: CourseKey;
