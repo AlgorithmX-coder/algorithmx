@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T10:18:47.874Z",
+  "generatedAt": "2026-10-07T09:42:16.780Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -11240,44 +11240,44 @@
       "file": "/audio/voice/7cb84fc62485ae3a.mp3"
     },
     {
-      "key": "003f096562e38be3",
+      "key": "bf4d6748b0bc8b16",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all.",
+      "text": "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker, and pressing it when nobody is using it costs nothing at all.",
       "lines": [
-        "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all."
+        "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker, and pressing it when nobody is using it costs nothing at all."
       ],
-      "file": "/audio/voice/003f096562e38be3.mp3"
+      "file": "/audio/voice/bf4d6748b0bc8b16.mp3"
     },
     {
-      "key": "d1f8f374affe5a99",
+      "key": "1beaf2b4652e5008",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary.",
+      "text": "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months, and that is the same speaker, just as helpful, with a much shorter diary.",
       "lines": [
-        "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary."
+        "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months, and that is the same speaker, just as helpful, with a much shorter diary."
       ],
-      "file": "/audio/voice/d1f8f374affe5a99.mp3"
+      "file": "/audio/voice/1beaf2b4652e5008.mp3"
     },
     {
-      "key": "afadfc8aa8c44bc5",
+      "key": "bcc9643883b8cb5e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice.",
+      "text": "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to, and turning it off changes nothing you would notice.",
       "lines": [
-        "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice."
+        "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to, and turning it off changes nothing you would notice."
       ],
-      "file": "/audio/voice/afadfc8aa8c44bc5.mp3"
+      "file": "/audio/voice/bcc9643883b8cb5e.mp3"
     },
     {
-      "key": "f61b4049393386f1",
+      "key": "83f865738bddd795",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely.",
+      "text": "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it, so off until the day you want it, and the telly stops listening entirely.",
       "lines": [
-        "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely."
+        "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it, so off until the day you want it, and the telly stops listening entirely."
       ],
-      "file": "/audio/voice/f61b4049393386f1.mp3"
+      "file": "/audio/voice/83f865738bddd795.mp3"
     },
     {
       "key": "b2c17e1b42ebf6b7",
@@ -11865,44 +11865,44 @@
       "file": "/audio/voice/7cb84fc62485ae3a.mp3"
     },
     {
-      "key": "003f096562e38be3",
+      "key": "bf4d6748b0bc8b16",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all.",
+      "text": "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker, and pressing it when nobody is using it costs nothing at all.",
       "lines": [
-        "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all."
+        "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker, and pressing it when nobody is using it costs nothing at all."
       ],
-      "file": "/audio/voice/003f096562e38be3.mp3"
+      "file": "/audio/voice/bf4d6748b0bc8b16.mp3"
     },
     {
-      "key": "d1f8f374affe5a99",
+      "key": "1beaf2b4652e5008",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary.",
+      "text": "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months, and that is the same speaker, just as helpful, with a much shorter diary.",
       "lines": [
-        "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary."
+        "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months, and that is the same speaker, just as helpful, with a much shorter diary."
       ],
-      "file": "/audio/voice/d1f8f374affe5a99.mp3"
+      "file": "/audio/voice/1beaf2b4652e5008.mp3"
     },
     {
-      "key": "afadfc8aa8c44bc5",
+      "key": "bcc9643883b8cb5e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice.",
+      "text": "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to, and turning it off changes nothing you would notice.",
       "lines": [
-        "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice."
+        "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to, and turning it off changes nothing you would notice."
       ],
-      "file": "/audio/voice/afadfc8aa8c44bc5.mp3"
+      "file": "/audio/voice/bcc9643883b8cb5e.mp3"
     },
     {
-      "key": "f61b4049393386f1",
+      "key": "83f865738bddd795",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely.",
+      "text": "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it, so off until the day you want it, and the telly stops listening entirely.",
       "lines": [
-        "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely."
+        "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it, so off until the day you want it, and the telly stops listening entirely."
       ],
-      "file": "/audio/voice/f61b4049393386f1.mp3"
+      "file": "/audio/voice/83f865738bddd795.mp3"
     },
     {
       "key": "b91a9f086183e12a",
@@ -12325,24 +12325,24 @@
       "file": "/audio/voice/a4c3b1bf10aab2bf.mp3"
     },
     {
-      "key": "67472ad2d04bb880",
+      "key": "4efc455161b04e71",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That one is doing exactly the job it was put there for, and it points at a doorstep, not at anybody's bed. Leave it be.",
+      "text": "The doorbell camera is watching the front step, and that is exactly the job it was put there for. It points at a doorstep, not at anybody's bed. Leave it be.",
       "lines": [
-        "That one is doing exactly the job it was put there for, and it points at a doorstep, not at anybody's bed. Leave it be."
+        "The doorbell camera is watching the front step, and that is exactly the job it was put there for. It points at a doorstep, not at anybody's bed. Leave it be."
       ],
-      "file": "/audio/voice/67472ad2d04bb880.mp3"
+      "file": "/audio/voice/4efc455161b04e71.mp3"
     },
     {
-      "key": "9b2d96633d60741a",
+      "key": "951812fb1983b4af",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A night-light only makes light. It has no ears, no lens and no switch worth flipping. Not everything on a plate is a setting.",
+      "text": "The landing night-light is on at bedtime, and a night-light only makes light. It has no ears, no lens and no switch worth flipping. Not everything on a plate is a setting.",
       "lines": [
-        "A night-light only makes light. It has no ears, no lens and no switch worth flipping. Not everything on a plate is a setting."
+        "The landing night-light is on at bedtime, and a night-light only makes light. It has no ears, no lens and no switch worth flipping. Not everything on a plate is a setting."
       ],
-      "file": "/audio/voice/9b2d96633d60741a.mp3"
+      "file": "/audio/voice/951812fb1983b4af.mp3"
     },
     {
       "key": "a946e2e6ab34e444",
@@ -12733,66 +12733,6 @@
         "Gran is on the speakerphone. Which class are you in this year, love?"
       ],
       "file": "/audio/voice/ff20282e7df18022.mp3"
-    },
-    {
-      "key": "4e6d2a58ba36749f",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The speaker's microphone. Right now it is always listening.",
-      "lines": [
-        "The speaker's microphone. Right now it is always listening."
-      ],
-      "file": "/audio/voice/4e6d2a58ba36749f.mp3"
-    },
-    {
-      "key": "a2deb53521255f34",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The voice diary. At the moment it keeps everything, forever.",
-      "lines": [
-        "The voice diary. At the moment it keeps everything, forever."
-      ],
-      "file": "/audio/voice/a2deb53521255f34.mp3"
-    },
-    {
-      "key": "954d282f2d5c8154",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Send my recordings off to help improve the service. That one is switched on.",
-      "lines": [
-        "Send my recordings off to help improve the service. That one is switched on."
-      ],
-      "file": "/audio/voice/954d282f2d5c8154.mp3"
-    },
-    {
-      "key": "5041b44fe046e194",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The doorbell camera, watching the front step.",
-      "lines": [
-        "The doorbell camera, watching the front step."
-      ],
-      "file": "/audio/voice/5041b44fe046e194.mp3"
-    },
-    {
-      "key": "71b8fc4f96955d72",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The telly's voice button. Switched on, sitting there waiting.",
-      "lines": [
-        "The telly's voice button. Switched on, sitting there waiting."
-      ],
-      "file": "/audio/voice/71b8fc4f96955d72.mp3"
-    },
-    {
-      "key": "e62259a2f63374d1",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "The landing night-light, on at bedtime.",
-      "lines": [
-        "The landing night-light, on at bedtime."
-      ],
-      "file": "/audio/voice/e62259a2f63374d1.mp3"
     },
     {
       "key": "2c617f63bc579ecb",

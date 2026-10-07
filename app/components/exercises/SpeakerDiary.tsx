@@ -366,7 +366,17 @@ export default function SpeakerDiary({
     letterSpacing: "0.04em",
     color: MARGIN_RED,
   });
-  const timeFor = (i: number) => ENTRY_TIMES[i] ?? `#${i + 1}`;
+  // The margin clock now comes from the ENTRY ITSELF. It used to be a fixed
+  // decorative list (4:05, 4:17, ...) while each entry's own written line ends
+  // with its real timestamp ("...- 4:12pm", "...- 6:30pm"), so the margin and
+  // the page disagreed on every row - UAT W14 1b, "the timings on the left
+  // side margin don't align with the timestamps on the requests on the right.
+  // This happens for all of the entries." Reading the time out of the line
+  // keeps the two in step however the content is edited later.
+  const timeFor = (i: number) => {
+    const m = (entries[i]?.wrote ?? "").match(/(\d{1,2}:\d{2})\s*(?:am|pm)?/i);
+    return m ? m[1] : (ENTRY_TIMES[i] ?? `#${i + 1}`);
+  };
 
   /* ───────── The quote block: the speaker's own written line ───────── */
   const wroteBlock = (text: string, small: boolean): ReactNode => (

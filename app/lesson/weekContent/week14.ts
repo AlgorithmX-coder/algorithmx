@@ -846,6 +846,15 @@ export const WEEK_14: WeekContent = {
       threat: {
         raccoonLine: "Switches? Nobody touches the switches. They come out of the box wide open and they stay that way for YEARS. I rely on it.",
       },
+      // No readAloud on these rows (UAT W14 3a). SettingsSwitch speaks the
+      // row's description as it is tapped and THEN the verdict, so the child
+      // heard "The speaker's microphone. Right now it is always listening."
+      // and then, as a separate clip, "That's right! There is a mute
+      // button..." - a description that stops dead and a judgement that starts
+      // cold. The tester asked for the description to be folded into the
+      // justification, so each why/explanation below now opens by naming what
+      // the switch was doing and carries straight on into why it matters. One
+      // clip, one thought.
       rows: [
         {
           id: "mic",
@@ -854,8 +863,7 @@ export const WEEK_14: WeekContent = {
           safeValue: "Mute button on when not in use",
           icon: "🤫",
           isRisky: true,
-          readAloud: "The speaker's microphone. Right now it is always listening.",
-          why: "There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all.",
+          why: "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker, and pressing it when nobody is using it costs nothing at all.",
           explanation: "",
         },
         {
@@ -865,8 +873,7 @@ export const WEEK_14: WeekContent = {
           safeValue: "Deletes itself every 3 months",
           icon: "📋",
           isRisky: true,
-          readAloud: "The voice diary. At the moment it keeps everything, forever.",
-          why: "One setting makes it tidy itself every three months. Same speaker, same helpfulness, much shorter diary.",
+          why: "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months, and that is the same speaker, just as helpful, with a much shorter diary.",
           explanation: "",
         },
         {
@@ -876,8 +883,7 @@ export const WEEK_14: WeekContent = {
           safeValue: "Off",
           icon: "💬",
           isRisky: true,
-          readAloud: "Send my recordings off to help improve the service. That one is switched on.",
-          why: "This is the one that sends actual recordings away to be listened to. It is on by default, and turning it off changes nothing you would notice.",
+          why: "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to, and turning it off changes nothing you would notice.",
           explanation: "",
         },
         {
@@ -887,9 +893,8 @@ export const WEEK_14: WeekContent = {
           safeValue: "",
           icon: "🚪",
           isRisky: false,
-          readAloud: "The doorbell camera, watching the front step.",
           why: "",
-          explanation: "That one is doing exactly the job it was put there for, and it points at a doorstep, not at anybody's bed. Leave it be.",
+          explanation: "The doorbell camera is watching the front step, and that is exactly the job it was put there for. It points at a doorstep, not at anybody's bed. Leave it be.",
         },
         {
           id: "tellymic",
@@ -898,8 +903,7 @@ export const WEEK_14: WeekContent = {
           safeValue: "Off until you want it",
           icon: "🔔",
           isRisky: true,
-          readAloud: "The telly's voice button. Switched on, sitting there waiting.",
-          why: "Almost nobody uses the telly by talking to it. Off until the day you want it, and the telly stops listening entirely.",
+          why: "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it, so off until the day you want it, and the telly stops listening entirely.",
           explanation: "",
         },
         {
@@ -909,9 +913,8 @@ export const WEEK_14: WeekContent = {
           safeValue: "",
           icon: "💡",
           isRisky: false,
-          readAloud: "The landing night-light, on at bedtime.",
           why: "",
-          explanation: "A night-light only makes light. It has no ears, no lens and no switch worth flipping. Not everything on a plate is a setting." },
+          explanation: "The landing night-light is on at bedtime, and a night-light only makes light. It has no ears, no lens and no switch worth flipping. Not everything on a plate is a setting." },
       ],
       hints: {
         tier1: "Ask what each one is actually doing. Is it listening or watching when it does not need to be?",

@@ -252,12 +252,18 @@ export default function SenderLineup({
               </div>
             )}
 
-            {/* The lineup */}
+            {/* The lineup. The grid had no side padding, so the first and last
+                cards sat against the frame edge, and a 12px gutter put the four
+                of them shoulder to shoulder - UAT W15 3a, "the cards are too
+                squashed together and the end ones sit flush with the frame
+                sides; this happens for all the line-ups". Measured 11px of
+                side clearance at the tester's 1093x525. */}
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(4, minmax(0,1fr))",
-                gap: 12,
+                gap: 16,
+                padding: "0 12px",
                 alignItems: "end",
               }}
             >
