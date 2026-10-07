@@ -92,27 +92,68 @@ function HeroesBackdrop() {
       <div className="caH-drift" style={{ position: "absolute", width: "52vw", height: "52vw", left: "-14vw", bottom: "-20vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,179,71,0.3), transparent 65%)", filter: "blur(30px)" }} />
       <div className="caH-drift caH-drift2" style={{ position: "absolute", width: "46vw", height: "46vw", right: "-10vw", top: "-16vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,229,255,0.22), transparent 65%)", filter: "blur(30px)" }} />
       <div className="caH-drift caH-drift3" style={{ position: "absolute", width: "30vw", height: "30vw", right: "18vw", bottom: "-8vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(124,92,255,0.25), transparent 65%)", filter: "blur(28px)" }} />
-      {/* a shooting star streaks down-left every ~9s */}
+      {/* shooting stars: two streaks on offset timers, one every ~4-5s */}
       <div className="caH-streak" style={{ position: "absolute", top: "8%", right: "-140px", width: 130, height: 2, borderRadius: 2, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.9))", opacity: 0 }} />
+      <div className="caH-streak caH-streak2" style={{ position: "absolute", top: "34%", right: "-110px", width: 100, height: 2, borderRadius: 2, background: "linear-gradient(90deg, transparent, rgba(190,235,255,0.85))", opacity: 0 }} />
+      {/* star dust: glowing motes rising the full height of the page,
+          the always-on motion the specks and streaks only hint at */}
+      {[
+        { left: "7%", size: 5, color: "255,190,96", dur: "15s", delay: "0s", sway: "4vw" },
+        { left: "18%", size: 3, color: "255,255,255", dur: "21s", delay: "-7s", sway: "-3vw" },
+        { left: "29%", size: 4, color: "120,225,255", dur: "17s", delay: "-12s", sway: "5vw" },
+        { left: "40%", size: 3, color: "255,190,96", dur: "23s", delay: "-3s", sway: "-4vw" },
+        { left: "58%", size: 3, color: "200,170,255", dur: "19s", delay: "-15s", sway: "4vw" },
+        { left: "70%", size: 5, color: "120,225,255", dur: "16s", delay: "-9s", sway: "-5vw" },
+        { left: "81%", size: 3, color: "255,255,255", dur: "22s", delay: "-5s", sway: "3vw" },
+        { left: "91%", size: 4, color: "255,190,96", dur: "18s", delay: "-11s", sway: "-4vw" },
+      ].map((m, i) => (
+        <span
+          key={i}
+          className="caH-mote"
+          style={{
+            position: "absolute",
+            left: m.left,
+            bottom: -12,
+            width: m.size,
+            height: m.size,
+            borderRadius: "50%",
+            background: `rgba(${m.color},0.9)`,
+            boxShadow: `0 0 ${m.size * 2.5}px rgba(${m.color},0.8)`,
+            opacity: 0,
+            animationDuration: m.dur,
+            animationDelay: m.delay,
+            ["--sway" as never]: m.sway,
+          }}
+        />
+      ))}
       <style>{`
         @media (prefers-reduced-motion: no-preference) {
-          .caH-stars { animation: caH-twinkle 4.5s ease-in-out infinite; }
-          .caH-stars2 { animation-delay: -2.25s; }
-          .caH-drift { animation: caH-float 26s ease-in-out infinite alternate; }
-          .caH-drift2 { animation-duration: 32s; animation-delay: -9s; }
-          .caH-drift3 { animation-duration: 22s; animation-delay: -5s; }
+          .caH-stars { animation: caH-twinkle 3s ease-in-out infinite; }
+          .caH-stars2 { animation-delay: -1.5s; }
+          .caH-drift { animation: caH-float 26s ease-in-out infinite alternate, caH-breathe 9s ease-in-out infinite; }
+          .caH-drift2 { animation-duration: 32s, 11s; animation-delay: -9s, -4s; }
+          .caH-drift3 { animation-duration: 22s, 8s; animation-delay: -5s, -2s; }
           .caH-streak { animation: caH-shoot 9s linear infinite; animation-delay: 2.5s; transform: rotate(32deg); }
+          .caH-streak2 { animation-duration: 11s; animation-delay: 7s; transform: rotate(24deg); }
+          .caH-mote { animation-name: caH-rise; animation-timing-function: linear; animation-iteration-count: infinite; }
         }
-        @keyframes caH-twinkle { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.9; } }
+        @keyframes caH-twinkle { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
         @keyframes caH-float {
           from { transform: translate3d(0, 0, 0); }
           to { transform: translate3d(2.5vw, -2vw, 0); }
         }
+        @keyframes caH-breathe { 0%, 100% { opacity: 0.72; } 50% { opacity: 1; } }
         @keyframes caH-shoot {
           0% { transform: rotate(32deg) translateX(0); opacity: 0; }
           2% { opacity: 0.9; }
           11% { transform: rotate(32deg) translateX(-62vw); opacity: 0; }
           100% { transform: rotate(32deg) translateX(-62vw); opacity: 0; }
+        }
+        @keyframes caH-rise {
+          0% { transform: translate3d(0, 0, 0); opacity: 0; }
+          8% { opacity: 0.9; }
+          85% { opacity: 0.65; }
+          100% { transform: translate3d(var(--sway, 3vw), -108vh, 0); opacity: 0; }
         }
       `}</style>
     </div>
