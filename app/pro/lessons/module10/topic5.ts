@@ -36,6 +36,7 @@ const topic5: TopicManifest = {
     },
     {
       heading: "Why flat networks are a gift to attackers",
+      visual: { id: "network-spread", mode: "lateral" },
       body: [
         "A 'flat' network is one where, once you are inside, everything can reach everything else. It is convenient to run, which is exactly why it is common, and it is catastrophic under attack: a single foothold anywhere gives the attacker a clear path to everywhere. Many of the worst breaches in history, including ones you have already seen, spread so far precisely because the internal network was flat.",
         "The answer is segmentation: dividing the network into zones with controlled boundaries, so that a foothold in one zone cannot freely reach another. Combined with least privilege (accounts can only touch the few things they genuinely need), segmentation means a compromised machine or account is worth far less, because it simply cannot get to much. This is defence in depth from Module 1, applied inside the walls.",

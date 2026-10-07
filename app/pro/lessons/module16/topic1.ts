@@ -19,6 +19,7 @@ const topic1: TopicManifest = {
   learn: [
     {
       heading: "Response is a lifecycle, and it starts before the incident",
+      visual: { id: "control-timeline" },
       body: [
         "Incident response follows a recognised lifecycle, commonly described as: preparation, identification, containment, eradication, recovery, and lessons learned. The single most important thing to grasp is that it begins with preparation, before any incident. The plans, tools, contacts and training must be ready in advance, because the middle of a crisis is the worst time to be working out who to call or what to do.",
         "The stages then flow: identify (confirm an incident is really happening and its scope), contain (limit the damage and stop the spread), eradicate (remove the threat fully), recover (restore to normal, safely), and lessons learned (review and improve). And it is a cycle: lessons learned feed back into preparation, so each incident makes you better prepared for the next. Response is a practised process, not a panicked scramble.",

@@ -38,7 +38,12 @@ export type LearnVisual =
   | { id: "risk-equation" } // dial threat and vulnerability, watch risk move
   | { id: "control-timeline" } // place preventive/detective/corrective on an incident
   | { id: "defence-layers" } // peel back the layers an attacker must pass
-  | { id: "mindset-flip" }; // flip one system between attacker and defender eyes
+  | { id: "mindset-flip" } // flip one system between attacker and defender eyes
+  | { id: "packet-path"; mode?: "journey" | "eavesdrop" | "flood" } // a message hops across the network
+  | { id: "network-spread"; mode?: "worm" | "lateral" } // an infection/attacker spreads machine to machine
+  | { id: "injection"; mode?: "sql" | "xss" } // user input breaks out of data into command
+  | { id: "phishing-redflags" } // click the tells in a fake email
+  | { id: "public-key"; mode?: "exchange" | "sign" }; // the key-pair idea, exchange or sign/verify
 
 /* A key term the learner can hover/tap for a plain-language meaning.
  * Definitions are written in-house (never copied from a dictionary). */

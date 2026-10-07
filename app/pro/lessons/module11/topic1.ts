@@ -47,6 +47,7 @@ const topic1: TopicManifest = {
     },
     {
       heading: "CVSS: scoring how bad it is",
+      visual: { id: "risk-equation" },
       body: [
         "Knowing a flaw exists is not enough; you need a sense of how serious it is, so you can decide what to do first. That is what CVSS provides: the Common Vulnerability Scoring System gives each vulnerability a severity score from 0 to 10, with bands like low, medium, high and critical. A 9.8 'critical' demands urgent attention; a 3.1 'low' can usually wait.",
         "CVSS is invaluable but not the whole story, a nuance you will build on in this module. The base score measures severity in principle, but real priority also depends on whether the flaw is actually being exploited and how exposed your affected systems are. For now, hold CVSS as your first, standardised read on 'how bad', and remember that severity and priority are related but not identical.",

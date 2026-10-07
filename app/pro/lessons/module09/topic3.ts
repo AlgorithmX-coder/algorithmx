@@ -18,6 +18,7 @@ const topic3: TopicManifest = {
   learn: [
     {
       heading: "When a page runs the attacker's code",
+      visual: { id: "injection", mode: "xss" },
       body: [
         "Cross-site scripting happens when a website takes content from one user and shows it to others without treating it purely as text. If an attacker can get a site to include their script in a page, that script runs in the browser of everyone who views it, as if the site itself had written it. The flaw is the same 'never trust user input' failure from topic 1, but aimed at the page instead of the database.",
         "What makes XSS distinctive is who it targets: the other users of the site, not the server. A script running in a victim's browser can steal their session cookie (so the attacker becomes them, recall Module 2), capture what they type, redirect them, or act on their behalf. The trusted site becomes the delivery mechanism for an attack on its own visitors.",

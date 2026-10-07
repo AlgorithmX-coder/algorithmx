@@ -35,6 +35,7 @@ const topic1: TopicManifest = {
     },
     {
       heading: "Risk management: cyber risk is business risk",
+      visual: { id: "risk-equation" },
       body: [
         "At the heart of GRC is risk management, which you first met in Module 1: identifying risks, weighing them by likelihood and impact, and deciding what to do, reduce, transfer, avoid, or knowingly accept. GRC applies this as a business discipline: cyber risk is treated as one of the risks an organisation manages, alongside financial, legal and operational risk, and discussed in the language leaders understand.",
         "This business framing is the key insight. Security is not about eliminating all risk (impossible) or saying 'no' to everything; it is about helping the organisation take the right risks knowingly and protect what matters most, proportionately. A good risk professional translates technical threats into business terms ('this could cost us this much, this likely') so leaders can make informed decisions. That translation skill is enormously valuable and very hireable.",
