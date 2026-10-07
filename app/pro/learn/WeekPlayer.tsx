@@ -220,8 +220,26 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
 
           {restored && allDone && (
             <div className="pro-week-done" style={{ marginTop: 22 }}>
-              <span style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.18em", color: T.green, fontWeight: 700 }}>MODULE COMPLETE</span>
-              <div style={{ fontFamily: T.display, fontSize: 20, fontWeight: 700, color: T.ink, marginTop: 6, marginBottom: 10 }}>You finished all {week.topics.length} topics of {week.weekLabel}.</div>
+              <style>{`
+                @keyframes cyproPop { 0%{transform:scale(0.4);opacity:0} 60%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+                @keyframes cyproRing { 0%{transform:scale(0.6);opacity:0.55} 100%{transform:scale(1.9);opacity:0} }
+                .cypro-badge{ animation:cyproPop 0.5s cubic-bezier(0.2,0.8,0.2,1) both }
+                .cypro-ring{ animation:cyproRing 1.1s ease-out 0.2s both }
+                @media (prefers-reduced-motion: reduce){ .cypro-badge{animation:none} .cypro-ring{display:none} }
+              `}</style>
+              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
+                <div style={{ position: "relative", flexShrink: 0, width: 46, height: 46 }}>
+                  <span className="cypro-ring" aria-hidden style={{ position: "absolute", inset: 0, borderRadius: "50%", border: `2px solid ${T.green}` }} />
+                  <div className="cypro-badge" style={{ width: 46, height: 46, borderRadius: "50%", background: T.greenSoft, border: `1.5px solid ${T.green}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M20 6 9 17l-5-5" /></svg>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.18em", color: T.green, fontWeight: 700 }}>SKILL UNLOCKED</div>
+                  <div style={{ fontFamily: T.display, fontSize: 20, fontWeight: 800, color: T.ink, marginTop: 3 }}>{week.title}</div>
+                </div>
+              </div>
+              <div style={{ fontSize: 14.5, color: T.muted, marginBottom: 14, lineHeight: 1.55 }}>You finished all {week.topics.length} topics of {week.weekLabel}. Another step toward job-ready.</div>
               <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: T.green, marginBottom: 8 }}>You can now</div>
               <ul style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 6 }}>
                 {week.outcomes.map((o, i) => <li key={i} style={{ fontSize: 15, color: T.body, lineHeight: 1.55 }}>{o}</li>)}

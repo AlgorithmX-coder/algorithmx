@@ -1,5 +1,6 @@
 import { T } from "./learn/tokens";
 import CodeRainBg from "./CodeRainBg";
+import ReadinessMeter from "./ReadinessMeter";
 
 /* The Cyber Pro course hub: every module, grouped into the four acts, with
  * a clear route into the ones that are built. Static and link-based so it
@@ -158,6 +159,8 @@ export default function CourseHub() {
             </a>
             <span className="hub-cta-note">or pick any open module below.</span>
           </div>
+
+          <ReadinessMeter />
 
           {ACTS.map((a) => (
             <section key={a.tag} className={`act ${a.cls}`}>
