@@ -90,14 +90,14 @@ export function RoomBackdrop({ reduced, tone }: { reduced: boolean; tone: string
 /* ------------------------------------------------------------- faces */
 /* Character presence without portrait art (yet): signature chips. */
 
-export function Face({ who }: { who: "wren" | "you" | "villain" | string }) {
+export function Face({ who, speaking = true }: { who: "wren" | "you" | "villain" | string; speaking?: boolean }) {
   const caseTheme = useCaseTheme();
   if (who === "wren") {
     const acc = caseTheme.accent;
     return (
       <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 2, width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${acc}14`, border: `1.5px solid ${acc}88` }}>
         {[7, 12, 8].map((h, i) => (
-          <span key={i} className="sr-wavebar" style={{ width: 2.5, height: h, background: acc, animationDelay: `${i * 0.14}s` }} />
+          <span key={i} className={speaking ? "sr-wavebar" : undefined} style={{ width: 2.5, height: h, background: acc, animationDelay: `${i * 0.14}s` }} />
         ))}
       </span>
     );
@@ -135,14 +135,14 @@ export function TypingDots() {
 }
 
 /** A radio/chat message in the story stream. */
-export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain" | string; children: React.ReactNode; tone?: string }) {
+export function Bubble({ who, children, tone, speaking }: { who: "wren" | "you" | "villain" | string; children: React.ReactNode; tone?: string; speaking?: boolean }) {
   const caseTheme = useCaseTheme();
   const mine = who === "you";
   // WREN's bubble edge/glow follows the case accent (unless a specific tone is set).
   const wrenEdge = tone ?? caseTheme.accent;
   return (
     <div className="sr-msg" style={{ display: "flex", gap: 12, flexDirection: mine ? "row-reverse" : "row", alignItems: "flex-end" }}>
-      <Face who={who} />
+      <Face who={who} speaking={speaking} />
       <div
         style={{
           maxWidth: "78%",
@@ -419,6 +419,11 @@ export function EngineStyles() {
       /* lesson read-timer fill — gates "tap for more" so kids read the beat */
       @keyframes sr-read { from { transform: scaleX(0); } to { transform: scaleX(1); } }
       @media (prefers-reduced-motion: reduce) { .sr-read-instant { animation: none !important; } }
+
+      /* A "still going" bar for waits gated on a real signal (audio finishing)
+         rather than a guessed duration — no fixed length to miscalibrate against. */
+      .sr-indeterminate { animation: srIndeterminate 1.1s ease-in-out infinite; }
+      @keyframes srIndeterminate { 0% { transform: translateX(-120%); width: 35%; } 50% { width: 45%; } 100% { transform: translateX(320%); width: 35%; } }
 
       .sr-tell, .sr-decoy {
         background: none; border: none; padding: 0 2px; margin: 0;
