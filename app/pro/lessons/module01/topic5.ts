@@ -50,6 +50,7 @@ const topic5: TopicManifest = {
     },
     {
       heading: "The two mindsets are the same map, read two ways",
+      visual: { id: "mindset-flip" },
       body: [
         "Attacker and defender are not opposites so much as two readings of the same map. Every path an attacker would take is a path a defender should watch and block. This is why later modules teach frameworks like MITRE ATT&CK: they lay out the attacker's moves precisely so defenders can cover each one.",
         "Holding both views at once is the real skill of the field. You will practise switching between them throughout the course: recreate an attack to understand it, then put on the defender's hat to stop it. It starts with the simple habit of asking both questions about everything you protect.",

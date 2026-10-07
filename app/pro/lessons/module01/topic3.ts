@@ -17,6 +17,7 @@ const topic3: TopicManifest = {
   learn: [
     {
       heading: "A control is anything that reduces risk. There are three jobs it can do",
+      visual: { id: "control-timeline" },
       body: [
         "In security, a 'control' is just a safeguard: anything you put in place to reduce a risk. That includes technology, but also rules and even physical things. There are three jobs a control can do, and good security uses all three.",
         "Preventive controls stop a bad thing from happening. Detective controls spot it when it does. Corrective controls put things right afterwards. Prevention alone is never enough, because some attacks will get through, so you also need to detect them and recover.",

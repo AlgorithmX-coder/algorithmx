@@ -34,6 +34,7 @@ const topic2: TopicManifest = {
     },
     {
       heading: "Risk is the part the business actually cares about",
+      visual: { id: "risk-equation" },
       body: [
         "You can never remove every threat (you cannot stop criminals existing) and you will never fix every vulnerability (there are always more). So security is really about managing risk: spending your limited time and money where the likelihood and the impact are highest.",
         "This is why 'risk' is the word executives understand. A security professional who can say 'this unpatched system is our biggest risk because it is internet-facing and holds customer data' will be heard. One who just lists vulnerabilities will not.",

@@ -18,6 +18,7 @@ const topic4: TopicManifest = {
   learn: [
     {
       heading: "No single wall holds, so you build in layers",
+      visual: { id: "defence-layers" },
       body: [
         "Beginners imagine security as one strong wall around the company. Professionals assume that wall will be breached somewhere, because it always eventually is, and plan for it. That is defence in depth: multiple independent layers, so that getting past one does not hand the attacker everything.",
         "Layers span people (training), the network (segmentation, firewalls), devices (antivirus, hardening), and the data itself (encryption, access limits). If one layer fails, the next one still stands. The goal is not to be unbreachable, it is to make sure one failure is not fatal.",

@@ -17,9 +17,28 @@ export interface LearnCard {
   examples?: string[];
   /* One everyday analogy, set apart visually. */
   analogy?: { plain: string; realTerm: string };
-  /* Optional captioned diagram slug the engine knows how to draw. */
+  /* Optional captioned diagram slug the engine knows how to draw.
+   * Superseded by `visual` (which also covers the two diagrams); kept for
+   * the original Module 3 content. */
   diagram?: "hash-oneway" | "avalanche";
+  /* An interactive or diagram visual the learner manipulates while they
+   * read, so the idea is shown and done, not only described. The engine
+   * maps the id to a component in learnVisuals.tsx. */
+  visual?: LearnVisual;
 }
+
+/* The interactive / diagram visuals the Learn engine can render inline.
+ * Each is a self-contained, theme-driven, reduced-motion-aware component
+ * keyed by id; the manifest only names which one, the component carries
+ * the concept (the same pattern as the original SVG diagrams). */
+export type LearnVisual =
+  | { id: "hash-oneway" } // one-way hashing (diagram)
+  | { id: "avalanche" } // one char changes the whole hash (diagram)
+  | { id: "cia-breaker" } // click an attack, see which of C/I/A it breaks
+  | { id: "risk-equation" } // dial threat and vulnerability, watch risk move
+  | { id: "control-timeline" } // place preventive/detective/corrective on an incident
+  | { id: "defence-layers" } // peel back the layers an attacker must pass
+  | { id: "mindset-flip" }; // flip one system between attacker and defender eyes
 
 /* A key term the learner can hover/tap for a plain-language meaning.
  * Definitions are written in-house (never copied from a dictionary). */

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { T } from "./tokens";
+import InlineVisual from "./learnVisuals";
 import TutorChat from "./TutorChat";
 import {
   FIVE_CONTROLS,
@@ -654,6 +655,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                     <Diagram kind={card.diagram} />
                   </div>
                 )}
+                {card.visual && <InlineVisual spec={card.visual} />}
                 <div style={{ display: "flex", gap: 12, marginTop: 26 }}>
                   {learnIdx > 0 && btn("Back", () => setLearnIdx((i) => i - 1), { ghost: true })}
                   {last ? btn("See it happen for real", () => setPhase("see")) : btn("Next idea", () => setLearnIdx((i) => i + 1))}
