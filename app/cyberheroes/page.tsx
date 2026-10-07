@@ -635,9 +635,9 @@ function CyberHeroesNav() {
             </div>
 
             <div className="chnav-cta">
-              <a href="/login" className="chnav-login">Log In</a>
+              <a href="/cyberheroes/login" className="chnav-login">Log In</a>
               <a
-                href="/signup?course=cyber-heroes"
+                href="/cyberheroes/signup"
                 className="chnav-enrol ch-lift"
                 style={{ background: BTN_GRAD, boxShadow: `${BTN_GLOW}, inset 0 1px 0 rgba(255,255,255,0.3)`, padding: scrolled ? "10px 18px" : "11px 20px" }}
               >
@@ -672,8 +672,8 @@ function CyberHeroesNav() {
                   {l.label}
                 </a>
               ))}
-              <a href="/login" className="chnav-sheet-login" onClick={() => setOpen(false)}>Log In</a>
-              <a href="/signup?course=cyber-heroes" className="chnav-sheet-enrol" style={{ background: BTN_GRAD, boxShadow: BTN_GLOW }} onClick={() => setOpen(false)}>
+              <a href="/cyberheroes/login" className="chnav-sheet-login" onClick={() => setOpen(false)}>Log In</a>
+              <a href="/cyberheroes/signup" className="chnav-sheet-enrol" style={{ background: BTN_GRAD, boxShadow: BTN_GLOW }} onClick={() => setOpen(false)}>
                 Enrol Now · £99
               </a>
             </div>
@@ -928,7 +928,7 @@ export default function HomePage() {
                 <span>Built by parents, for parents. UK-based.</span>
               </div>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
-                <a href="/signup?course=cyber-heroes"
+                <a href="/cyberheroes/signup"
                   className="px-7 py-4 font-bold ch-cta-text text-base ch-lift"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99
@@ -1174,7 +1174,7 @@ export default function HomePage() {
             <p className="ch-sub text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
               Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon and learn how to protect yourself too!
             </p>
-            <a href="/signup?course=cyber-heroes"
+            <a href="/cyberheroes/signup"
               className="inline-block px-7 py-4 font-bold ch-cta-text text-base ch-lift"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Enrol Your Child - £99
@@ -1758,7 +1758,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <a href="/signup?course=cyber-heroes"
+              <a href="/cyberheroes/signup"
                 className="ch-lift"
                 style={{
                   display: "inline-block", width: "100%",
@@ -1849,7 +1849,7 @@ export default function HomePage() {
                 <p className="text-base sm:text-lg max-w-lg mx-auto mb-8" style={{ color: "#dbe4ff", fontWeight: 500 }}>
                   Join families across the UK giving their children the online safety skills they&apos;ll carry for life.
                 </p>
-                <a href="/signup?course=cyber-heroes"
+                <a href="/cyberheroes/signup"
                   className="inline-block px-10 py-5 font-bold ch-cta-text text-lg ch-lift"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99

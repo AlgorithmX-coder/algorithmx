@@ -366,6 +366,7 @@ export default function CyberStartLanding() {
             <a href="#outcome">Outcome</a>
             <a href="#safety">Safety</a>
             <a href="#faq">FAQ</a>
+            <a href="/ops/login">Sign in</a>
           </div>
           <a href="#join" className="cta">Join the waitlist</a>
         </div>
