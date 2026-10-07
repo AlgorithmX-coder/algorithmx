@@ -401,12 +401,15 @@ enum SandboxVerdict {
   CRIT
 }
 
-/// The two corporate courses a seat can be for. Mirrors the Product slugs
-/// ai-cleared and ai-fluent; a seat's course decides which product the
-/// claim enrols the person on.
+/// Which course a model call (or corporate seat) belongs to. The two
+/// corporate courses mirror the Product slugs ai-cleared and ai-fluent; a
+/// seat's course decides which product the claim enrols the person on.
+/// CYBER_PRO is the consumer course, used to label its AI tutor calls
+/// against the per-person model allowance (never for seats).
 enum CourseKey {
   AI_CLEARED
   AI_FLUENT
+  CYBER_PRO
 }
 
 /// AI Fluent's verdict on a practice: the loop was run well, one move was

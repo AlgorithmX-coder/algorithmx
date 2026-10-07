@@ -4,7 +4,7 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { getAdminContext, orgRefOf, inviteSeats, sendInvite } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
-import { courseByKey } from "@/app/ai-cleared/engine/courses";
+import { courseByKey, corporateCourse } from "@/app/ai-cleared/engine/courses";
 import { TRACKS } from "@/app/ai-cleared/engine/types";
 
 /* POST /api/org/seats
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     const seat = await prisma.seat.findFirst({ where: { id: resend.data.resend, orgId: ctx.orgId } });
     if (!seat) return Response.json({ error: "No such seat." }, { status: 404 });
     try {
-      await sendInvite({ to: seat.email, token: seat.inviteToken, firmName: ctx.org.name, origin: originOf(req), adminName, adminEmail: ctx.user.email, course: courseByKey(seat.course).slug });
+      await sendInvite({ to: seat.email, token: seat.inviteToken, firmName: ctx.org.name, origin: originOf(req), adminName, adminEmail: ctx.user.email, course: courseByKey(corporateCourse(seat.course)).slug });
       return Response.json({ ok: true });
     } catch (err) {
       console.error("[ai-cleared/admin] resend failed", err instanceof Error ? err.message : err);
