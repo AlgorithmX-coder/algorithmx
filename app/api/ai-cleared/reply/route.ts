@@ -59,10 +59,14 @@ export async function POST(req: NextRequest) {
     async start(controller) {
       let sent = 0;
       try {
+        /* Sonnet 5.5 (owner call: efficient model per task): everyday
+           workplace-assistant chat at 60% off Opus. Sonnet 5.5 rejects
+           thinking "disabled" - omitting the param runs its default
+           adaptive thinking, which at effort "low" rarely engages on
+           chat turns (the recommended chat configuration). */
         const stream = ai.messages.stream({
-          model: "claude-opus-5",
+          model: "claude-sonnet-5-5",
           max_tokens: 600,
-          thinking: { type: "disabled" },
           output_config: { effort: "low" },
           system: [{ type: "text", text: voiceFor(tool, firmName ?? "the firm"), cache_control: { type: "ephemeral" } }],
           messages: [{ role: "user", content: prompt }],
