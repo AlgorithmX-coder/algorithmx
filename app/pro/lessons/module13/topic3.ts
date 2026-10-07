@@ -19,6 +19,7 @@ const topic3: TopicManifest = {
   learn: [
     {
       heading: "Events: the routine hum of activity",
+      visual: { id: "alert-funnel" },
       body: [
         "Systems generate an enormous stream of events: records of things happening. A user logs in, a file is saved, a backup completes, a connection is made. The vast majority are completely routine and expected, the normal hum of a working organisation, logged so there is a record, but requiring no action. Events are the raw material of monitoring: there are millions of them, and almost all are benign.",
         "Understanding that most activity is routine is important, because it sets the scale of the problem. An analyst is not reacting to every event, that would be impossible and pointless. Events are collected and recorded (often in a SIEM, the next topic), so that the few that matter can be found among the many that do not. The skill is separating signal from this vast, mostly-innocent noise.",

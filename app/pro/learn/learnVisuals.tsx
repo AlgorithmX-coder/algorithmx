@@ -34,6 +34,10 @@ function render(spec: LearnVisual) {
     case "injection": return <Injection mode={spec.mode ?? "sql"} />;
     case "phishing-redflags": return <PhishingRedflags />;
     case "public-key": return <PublicKey mode={spec.mode ?? "exchange"} />;
+    case "timeline-builder": return <TimelineBuilder />;
+    case "ports-doors": return <PortsDoors />;
+    case "attack-steps": return <AttackSteps />;
+    case "alert-funnel": return <AlertFunnel />;
   }
 }
 
@@ -549,6 +553,161 @@ function PublicKey({ mode }: { mode: "exchange" | "sign" }) {
       </div>
       {step >= 1 && !wrongKey && <div style={{ marginTop: 12, fontSize: 14, color: T.body, lineHeight: 1.6 }}>{step === 1 ? "Locked with their PUBLIC key, which everyone can know. Now only their matching PRIVATE key can open it, not even you can." : "Their PRIVATE key, which only they hold, opens it. The secret crossed the open internet safely."}</div>}
       <Takeaway>The two keys are a pair: what one locks, only the other opens. You can share your public key with the world, which is how total strangers exchange secrets safely.</Takeaway>
+    </div>
+  );
+}
+
+/* ---------- 11. Timeline builder (Module 14, 16) ---------- */
+
+const STORY = [
+  { t: "Failed logins from a new country", note: "the attacker is guessing passwords" },
+  { t: "One successful admin login", note: "a guess worked" },
+  { t: "A new hidden user is created", note: "they make a way back in" },
+  { t: "A large upload out at 3am", note: "the data leaves" },
+];
+
+function TimelineBuilder() {
+  const [order, setOrder] = useState<number[]>([2, 0, 3, 1]); // shuffled
+  const [checked, setChecked] = useState(false);
+  const correct = order.every((v, i) => v === i);
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= order.length) return;
+    setChecked(false);
+    setOrder((o) => { const c = [...o]; [c[i], c[j]] = [c[j], c[i]]; return c; });
+  };
+  return (
+    <div>
+      <Try>These log lines are out of order. Put them into the story.</Try>
+      <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+        {order.map((idx, i) => (
+          <div key={idx} className="lv-anim" style={{ display: "flex", alignItems: "center", gap: 10, background: checked ? (order[i] === i ? T.greenSoft : T.redSoft) : T.panel, border: `1px solid ${checked ? (order[i] === i ? T.green : T.red) + "66" : T.edge}`, borderRadius: 9, padding: "9px 12px", transition: "background 160ms ease" }}>
+            <span className="mono" style={{ color: T.faint, fontSize: 12, width: 18, flexShrink: 0 }}>{i + 1}</span>
+            <span style={{ flex: 1, fontSize: 13.5, color: T.body }}>{STORY[idx].t}</span>
+            <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <button onClick={() => move(i, -1)} aria-label="move up" style={{ background: "transparent", border: "none", color: T.faint, cursor: "pointer", fontSize: 11, lineHeight: 1 }}>&#9650;</button>
+              <button onClick={() => move(i, 1)} aria-label="move down" style={{ background: "transparent", border: "none", color: T.faint, cursor: "pointer", fontSize: 11, lineHeight: 1 }}>&#9660;</button>
+            </span>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 10, marginTop: 12, alignItems: "center" }}>
+        <button onClick={() => setChecked(true)} style={{ ...chipStyle(false, T.primary), fontWeight: 700 }}>Check the story</button>
+        {checked && correct && <span style={{ fontSize: 13.5, fontWeight: 700, color: T.green }}>That is the attack, start to finish.</span>}
+        {checked && !correct && <span style={{ fontSize: 13.5, color: T.muted }}>Not quite. Guessing comes before the break-in.</span>}
+      </div>
+      {checked && correct && <div style={{ marginTop: 10, fontSize: 13.5, color: T.body, lineHeight: 1.6 }}>Scattered log lines mean nothing alone. In order, they tell the whole story: guess, get in, dig in, steal.</div>}
+      <Takeaway>Correlation is the analyst's craft: joining separate events into one timeline that reveals what actually happened.</Takeaway>
+    </div>
+  );
+}
+
+/* ---------- 12. Ports and doors / attack surface (Module 2, 8, 12) ---------- */
+
+const DOORS = [
+  { name: "HTTPS (443)", need: true, risk: false },
+  { name: "SSH (22)", need: true, risk: false },
+  { name: "Remote Desktop (3389)", need: false, risk: true },
+  { name: "Old file sharing (FTP)", need: false, risk: true },
+  { name: "Telnet (23)", need: false, risk: true },
+];
+
+function PortsDoors() {
+  const [open, setOpen] = useState<boolean[]>([true, true, true, true, true]);
+  const openRisky = open.filter((o, i) => o && DOORS[i].risk).length;
+  const surface = open.filter(Boolean).length;
+  return (
+    <div>
+      <Try>Close the doors you do not need</Try>
+      <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 12 }}>
+        {DOORS.map((d, i) => {
+          const isOpen = open[i];
+          const risky = d.risk && isOpen;
+          return (
+            <button key={d.name} onClick={() => setOpen((o) => o.map((v, j) => j === i ? !v : v))} className="lv-anim"
+              style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, textAlign: "left", background: risky ? T.redSoft : isOpen ? T.panel : T.bgRaise, border: `1px solid ${risky ? T.red : isOpen ? T.edge : T.green + "55"}`, borderRadius: 9, padding: "10px 13px", cursor: "pointer", transition: "background 160ms ease, border-color 160ms ease" }}>
+              <span style={{ fontSize: 13.5, fontWeight: 700, color: isOpen ? T.ink : T.muted }}>{d.name} {!d.need && <span className="mono" style={{ fontSize: 10, color: T.faint }}>(rarely needed)</span>}</span>
+              <span className="mono" style={{ fontSize: 11, fontWeight: 700, color: isOpen ? (risky ? T.red : T.cyan) : T.green }}>{isOpen ? "OPEN" : "closed"}</span>
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ display: "flex", gap: 16, fontSize: 13.5 }}>
+        <span style={{ color: T.muted }}>Doors open: <b style={{ color: T.ink }}>{surface}</b></span>
+        <span style={{ color: openRisky ? T.red : T.green, fontWeight: 700 }}>{openRisky ? `${openRisky} risky door${openRisky > 1 ? "s" : ""} exposed` : "No risky doors open"}</span>
+      </div>
+      <Takeaway>Every open door is a possible way in. Turning off services you do not use shrinks the attack surface, the cheapest security win there is.</Takeaway>
+    </div>
+  );
+}
+
+/* ---------- 13. Attack steps / kill chain (Module 6, 15) ---------- */
+
+const CHAIN = [
+  { stage: "Recon", attacker: "Scours public sources for names, emails and weak spots.", defender: "Limit what you publish; train staff on what attackers look for." },
+  { stage: "Intrude", attacker: "Phishes a password or exploits an unpatched flaw to get in.", defender: "MFA and patching stop most intrusions dead." },
+  { stage: "Expand", attacker: "Moves from the first machine toward the valuable systems.", defender: "Segmented networks and least privilege trap them." },
+  { stage: "Act", attacker: "Steals or encrypts the data, the actual goal.", defender: "Backups, encryption and alerts limit the damage." },
+];
+
+function AttackSteps() {
+  const [step, setStep] = useState(0);
+  const [broken, setBroken] = useState<number | null>(null);
+  const c = CHAIN[step];
+  return (
+    <div>
+      <Try>Walk the attack. Break the chain whenever you can.</Try>
+      <div style={{ display: "flex", gap: 4, marginBottom: 12 }}>
+        {CHAIN.map((s, i) => (
+          <div key={s.stage} className="lv-anim" style={{ flex: 1, textAlign: "center", fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", color: broken !== null && i >= broken ? T.faint : i <= step ? "#06121a" : T.faint, background: broken !== null && i === broken ? T.greenSoft : i <= step && (broken === null || i < broken) ? T.red : T.panel, border: `1px solid ${broken === i ? T.green : i <= step && (broken === null || i < broken) ? T.red : T.edge}`, borderRadius: 7, padding: "7px 3px", transition: "background 180ms ease" }}>{s.stage}</div>
+        ))}
+      </div>
+      {broken !== null ? (
+        <div className="lv-anim" style={{ background: T.greenSoft, border: `1px solid ${T.green}55`, borderRadius: 10, padding: "12px 15px", fontSize: 14, color: T.body, lineHeight: 1.6 }}>
+          You broke the chain at <b style={{ color: T.green }}>{CHAIN[broken].stage}</b>. {CHAIN[broken].defender} The attack never reached its goal.
+        </div>
+      ) : (
+        <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 10, padding: "12px 15px" }}>
+          <div style={{ fontSize: 14, color: T.body, lineHeight: 1.6, marginBottom: 6 }}><b style={{ color: T.red }}>Attacker:</b> {c.attacker}</div>
+          <div style={{ fontSize: 13.5, color: T.muted, lineHeight: 1.6 }}><b style={{ color: T.cyan }}>Your move:</b> {c.defender}</div>
+        </div>
+      )}
+      <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
+        {broken === null && <button onClick={() => setBroken(step)} style={{ ...chipStyle(false, T.green), fontWeight: 700 }}>Break the chain here</button>}
+        {broken === null && step < CHAIN.length - 1 && <button onClick={() => setStep((s) => s + 1)} style={{ ...chipStyle(false, T.red), fontWeight: 700 }}>Let it continue</button>}
+        {(broken !== null || step > 0) && <button onClick={() => { setStep(0); setBroken(null); }} style={{ ...chipStyle(false, T.edge), color: T.faint }}>Reset</button>}
+      </div>
+      <Takeaway>An attack is a chain of steps. You do not have to be perfect, you just have to break any one link before the final one.</Takeaway>
+    </div>
+  );
+}
+
+/* ---------- 14. Alert funnel (Module 13, 15) ---------- */
+
+function AlertFunnel() {
+  const [tuned, setTuned] = useState(false);
+  const alerts = tuned ? 40 : 600;
+  const rows = [
+    { label: "Events logged today", n: "2,000,000", c: T.faint },
+    { label: "Turned into alerts", n: tuned ? "40" : "600", c: tuned ? T.green : T.amber },
+    { label: "Real incidents", n: "3", c: T.red },
+  ];
+  return (
+    <div>
+      <Try>A SOC is drowning. Tune the rules.</Try>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, marginBottom: 12 }}>
+        {rows.map((r, i) => (
+          <div key={r.label} className="lv-anim" style={{ width: `${100 - i * 26}%`, background: T.panel, border: `1px solid ${r.c}55`, borderRadius: 9, padding: "9px 13px", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "width 200ms ease" }}>
+            <span style={{ fontSize: 12.5, color: T.muted }}>{r.label}</span>
+            <span className="mono lv-anim" style={{ fontSize: 15, fontWeight: 700, color: r.c, transition: "color 200ms ease" }}>{r.n}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 14, color: T.body, lineHeight: 1.6, marginBottom: 10 }}>
+        {tuned ? "With tuned rules, the analyst sees 40 alerts instead of 600, and can actually get to the 3 that matter." : "600 alerts a day is more than an analyst can read. The 3 real incidents are buried in the noise."}
+      </div>
+      <button onClick={() => setTuned((t) => !t)} style={{ ...chipStyle(tuned, T.green), fontWeight: 700 }}>{tuned ? "Rules tuned" : "Tune the detection rules"}</button>
+      <Takeaway>Detection is not about catching everything, it is about cutting the noise so the few alerts that matter are not missed.</Takeaway>
     </div>
   );
 }

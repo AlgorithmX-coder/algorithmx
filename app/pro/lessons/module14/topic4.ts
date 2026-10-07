@@ -46,6 +46,7 @@ const topic4: TopicManifest = {
     },
     {
       heading: "Correlation builds the timeline",
+      visual: { id: "timeline-builder" },
       body: [
         "When you correlate events into a story, what you are really producing is a timeline, the chronological reconstruction of the attack you met in Module 16, built here from the logs. Each correlated event becomes a step: when the attacker arrived, what they tried, when they got in, what they did, when it was detected. The timeline is the output of good correlation, and it is what lets you understand the scope, eradicate the threat, and write the finding.",
         "So the module comes together: logs are the evidence, searching finds the relevant entries, and correlation connects them into the timeline, the story of what happened. This is real understanding, not just a pile of hits. In the lab you glimpsed this; now you can see the full method. The final step, which the next topic covers, is to write that understanding up clearly, turning your correlated timeline into a finding others can act on.",

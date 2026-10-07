@@ -19,6 +19,7 @@ const topic3: TopicManifest = {
   learn: [
     {
       heading: "Attacks have a lifecycle, and that is a gift to defenders",
+      visual: { id: "attack-steps" },
       body: [
         "A breach is not one magic moment; it is a journey through stages. A common way to describe it is the kill chain: reconnaissance (research the target), delivery (get the attack to them), exploitation (trigger the weakness and gain a foothold), installation (set up a way to stay), command and control (steer the compromised machine remotely), and finally actions on objectives (the real goal, such as stealing data or deploying ransomware).",
         "Why this matters: the attacker has to succeed at every stage, but the defender only has to break the chain at one. That single idea reframes defence entirely. You are not trying to be perfect everywhere; you are looking for the easiest place to snap the sequence before it reaches the goal.",
