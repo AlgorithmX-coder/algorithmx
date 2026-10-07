@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import CodeRainBackground from "@/app/components/CodeRainBackground";
-import WaitlistForm from "@/app/components/WaitlistForm";
 
 /**
  * Cyber Ops - the 14-17 tier landing page (route stays /cyberstart).
@@ -368,7 +367,7 @@ export default function CyberStartLanding() {
             <a href="#faq">FAQ</a>
             <a href="/ops/login">Sign in</a>
           </div>
-          <a href="#join" className="cta">Join the waitlist</a>
+          <a href="/ops/signup" className="cta">Sign up</a>
         </div>
       </nav>
 
@@ -378,14 +377,14 @@ export default function CyberStartLanding() {
           <div className="wrap hgrid">
             <div>
               <div className="chiprow">
-                <span className="chip"><span className="pip" />Coming soon</span>
+                <span className="chip"><span className="pip" />Recruitment open</span>
                 <span className="chip range"><span className="pip" />Ages 14-17</span>
                 <span className="chip mono">16 modules . about an hour each</span>
               </div>
               <h1>Get recruited.<br /><span className="g">Do the real work.</span></h1>
               <p className="lead">Cyber Ops hires you as a junior security operator. Break into real targets, defend against real attacks, and write up real findings - inside a walled range where nothing can actually go wrong. You leave with a portfolio, not a certificate.</p>
               <div className="hbtns">
-                <a href="#join" className="cta">Join the waitlist</a>
+                <a href="/ops/signup" className="cta">Sign up</a>
                 <a href="#curriculum" className="cta ghost">See the 16 modules &rarr;</a>
               </div>
               <p className="hnote">The top tier of AlgorithmX - after Cyber Heroes and Cyber Explorers.</p>
@@ -571,7 +570,7 @@ export default function CyberStartLanding() {
               <details open><summary>Is this teaching my child to hack?<span className="pl">+</span></summary><p>Yes - and that&rsquo;s the point. You cannot defend what you don&rsquo;t understand. Cyber Ops teaches real offensive technique against fake targets in a sealed range, then turns your child around to defend and disclose. They finish as someone who protects systems, with the professional ethics to match.</p></details>
               <details><summary>Is it actually safe and legal?<span className="pl">+</span></summary><p>Completely. Every target is simulated inside the browser with no route to any real system, and every engagement starts by signing an authorization scope - the exact habit that keeps real professionals on the right side of the law. We frame the relevant UK law (the Computer Misuse Act) throughout.</p></details>
               <details><summary>What ages is it for? Do they need to be technical?<span className="pl">+</span></summary><p>Ages 14-17. No prior experience needed - the first modules build the ground up, and early engagements guide the commands so nobody&rsquo;s staring at a blank terminal. It gets genuinely challenging by design as they rank up.</p></details>
-              <details><summary>When can we start, and how much?<span className="pl">+</span></summary><p>Cyber Ops is in development now. Join the waitlist and you&rsquo;ll be first to know when the range opens, with early-access pricing. AlgorithmX courses are a one-time payment for lifetime access.</p></details>
+              <details><summary>When can we start, and how much?<span className="pl">+</span></summary><p>Right now - the range is open. Create an account and your operator starts their first engagement today. AlgorithmX courses are a one-time payment for lifetime access.</p></details>
             </div>
           </div>
         </section>
@@ -580,19 +579,12 @@ export default function CyberStartLanding() {
         <section className="final band" id="join">
           <div className="wrap">
             <div className="ey" style={{ justifyContent: "center" }}><span className="k">Enlist</span></div>
-            <h2>Be first into the range.</h2>
-            <p className="lead" style={{ margin: "0 auto", textAlign: "center" }}>Cyber Ops opens soon. Leave your email and we&rsquo;ll bring you in the moment recruitment starts.</p>
-            <div style={{ marginTop: 30 }}>
-              <WaitlistForm
-                courseSlug="cyberstart"
-                accent="#8B7BFF"
-                accentSoft="#B4AAFF"
-                buttonGradient="linear-gradient(120deg,#B4AAFF,#8B7BFF)"
-                buttonShadow="0 8px 24px -10px rgba(139,123,255,.6)"
-                source="cyberops-landing"
-              />
+            <h2>The range is open.</h2>
+            <p className="lead" style={{ margin: "0 auto", textAlign: "center" }}>Create an operator account and take the first engagement today. Sixteen modules, one payment, a portfolio at the end.</p>
+            <div style={{ marginTop: 30, display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+              <a href="/ops/signup" className="cta">Sign up</a>
+              <a href="/ops/login" className="cta ghost">Sign in</a>
             </div>
-            <p className="finalnote">No spam. One email when the range opens.</p>
           </div>
         </section>
       </main>
@@ -606,7 +598,7 @@ export default function CyberStartLanding() {
               <a href="#curriculum">Curriculum</a>
               <a href="#safety">Safety</a>
               <a href="#faq">FAQ</a>
-              <a href="#join">Waitlist</a>
+              <a href="/ops/signup">Sign up</a>
             </div>
           </div>
           <p className="fine">Cyber Ops is the 14-17 tier of AlgorithmX, a UK cybersecurity course for young people. All training takes place in a simulated, sandboxed range; no real systems are ever involved. &copy; AlgorithmX. Working name - brand and pricing subject to change.</p>
