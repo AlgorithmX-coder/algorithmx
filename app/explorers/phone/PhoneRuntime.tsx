@@ -98,7 +98,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const [nudge, setNudge] = useState<string | null>(null);
   const [voiceOn, setVoiceOn] = useState(!fast);
   const voiceRef = useRef(!fast);
-  useWrenSpeaking();
+  const speaking = useWrenSpeaking();
   const [, force] = useReducer((n) => n + 1, 0);
 
   const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
@@ -110,6 +110,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const THEME = phoneCase.app?.theme;
   const idRef = useRef(0);
   const lastConRef = useRef<number | null>(null);
+  const lastWrenRef = useRef<number | null>(null);
   const resolveRef = useRef<((v: string) => void) | null>(null);
   // the currently-live "tag" item's answer key, for validating a submit
   const tagSubmitRef = useRef<{ segments: TagSegment[] } | null>(null);
@@ -122,7 +123,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const scroll = () => { const t = threadRef.current; if (t) t.scrollTop = t.scrollHeight; };
   useEffect(scroll, [items, dock]);
 
-  const push = (it: Item) => { setItems((a) => [...a, it]); if (it.kind === "con") lastConRef.current = it.id; };
+  const push = (it: Item) => { setItems((a) => [...a, it]); if (it.kind === "con") lastConRef.current = it.id; if (it.kind === "wren") lastWrenRef.current = it.id; };
   const removeItem = (id: number) => setItems((a) => a.filter((x) => x.id !== id));
 
   const typing = async (ms: number) => {
@@ -141,7 +142,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
       const fin = () => { if (!done) { done = true; res(); } };
       // Normal: wait for WREN to finish (anti-whizz). Fast/reduced: don't wait —
       // start the clip if voice is on, but advance quickly so testing flies.
-      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 16000); }
+      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 30000); }
       else { if (voice && voiceRef.current) playWren(voice, true); setTimeout(fin, reduce ? 250 : Math.max(2400, text.length * 42)); }
     });
 
@@ -329,9 +330,10 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   /* ------------------------------------------------------------ render */
   const tagItem = dock?.type === "tag" ? items.find((x) => x.id === dock.itemId) : undefined;
   const tagCount = tagItem && tagItem.kind === "tagmsg" ? tagItem.selected.length : 0;
-  const wrenAvatar = (
+  // Only the current/latest WREN bubble should pulse — not every past one.
+  const renderWrenAvatar = (active: boolean) => (
     <span aria-hidden style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 13 }}>
-      {[5, 11, 7].map((h, i) => <i key={i} style={{ width: 2.5, height: h, background: C.wren, borderRadius: 2, display: "block", animation: reduce ? "none" : `ph-eq .9s ${i * 0.15}s infinite ease-in-out` }} />)}
+      {[5, 11, 7].map((h, i) => <i key={i} style={{ width: 2.5, height: active && !reduce ? h : 4, background: C.wren, borderRadius: 2, display: "block", animation: active && !reduce ? `ph-eq .9s ${i * 0.15}s infinite ease-in-out` : "none" }} />)}
     </span>
   );
 
@@ -391,7 +393,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
               {/* thread */}
               <div ref={threadRef} className="ph-thread" style={{ flex: "1 1 auto", overflowY: "auto", padding: "14px 13px 8px", display: "flex", flexDirection: "column", gap: 3, background: WALL }}>
                 <div style={{ textAlign: "center", color: C.faint, fontSize: 11, margin: "2px 0 8px" }}>Today 9:41</div>
-                {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={wrenAvatar} accent={OUT} onTagSegment={tapTagSegment} />)}
+                {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={renderWrenAvatar(speaking && it.id === lastWrenRef.current)} accent={OUT} onTagSegment={tapTagSegment} />)}
               </div>
 
               {/* dock */}
@@ -609,6 +611,7 @@ function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean
   const [correct, setCorrect] = useState(0);
   const [result, setResult] = useState<null | "pass" | "fail">(null);
   const [orders, setOrders] = useState<number[][]>(() => test.questions.map((q) => shuffled(q.options.length)));
+  const [reviewReady, setReviewReady] = useState(false);
 
   // Focus/study music bed under the exam (Guardian Calm, same as Cyber Heroes).
   useEffect(() => {
@@ -628,7 +631,8 @@ function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean
       setCorrect(nextCorrect);
       setResult(passed ? "pass" : "fail");
       const v = passed ? test.passVoice : test.failVoice;
-      if (voiceOn && v) playWren(v, true);
+      if (voiceOn && v) playWren(v, true, () => setReviewReady(true));
+      else setReviewReady(true);
     }
   };
 
@@ -640,7 +644,11 @@ function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean
         <div style={{ fontSize: 24, fontWeight: 800, color: passed ? C.mint : C.warn, marginBottom: 8 }}>{passed ? "Case closed." : "So close."}</div>
         <div style={{ fontSize: 15, color: C.ink, lineHeight: 1.5, marginBottom: 8 }}>You got <b style={{ color: passed ? C.mint : C.warn }}>{correct} of {test.questions.length}</b> right.</div>
         <div style={{ fontSize: 13.5, color: C.dim, lineHeight: 1.5, marginBottom: 24 }}>{passed ? "You spotted every scam on your own. That's a pass." : `You need ${test.pass} to close the case. Give it another go, you've got this.`}</div>
-        <button className="ph-btn" onClick={passed ? onPass : restart} style={{ fontFamily: UI, fontWeight: 700, fontSize: 15, color: C.page, background: passed ? C.mint : C.pink, border: 0, borderRadius: 999, padding: "13px 20px", cursor: "pointer" }}>{passed ? "Finish →" : "Try the test again"}</button>
+        {reviewReady ? (
+          <button className="ph-btn" onClick={passed ? onPass : restart} style={{ fontFamily: UI, fontWeight: 700, fontSize: 15, color: C.page, background: passed ? C.mint : C.pink, border: 0, borderRadius: 999, padding: "13px 20px", cursor: "pointer" }}>{passed ? "Finish →" : "Try the test again"}</button>
+        ) : (
+          <span style={{ fontSize: 12.5, color: C.dim, fontFamily: UI, fontStyle: "italic" }}>Listening…</span>
+        )}
       </div>
     );
   }
@@ -669,12 +677,12 @@ function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean
 
 function LockScreen({ caseNumber, open, title, onOpen }: { caseNumber: string; open: string[]; title: string; onOpen: () => void }) {
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 26px 30px", textAlign: "center" }}>
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "20px 26px 30px", textAlign: "center" }}>
       <div style={{ fontSize: 12, letterSpacing: ".28em", textTransform: "uppercase", color: C.pink, fontWeight: 700, marginBottom: 6 }}>{caseNumber}</div>
-      <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: "-.01em", marginBottom: 20 }}>{title}</div>
+      <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: "-.01em", marginBottom: 28 }}>{title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 9, textAlign: "left", marginBottom: 26 }}>
         {open.slice(0, 2).map((l, i) => (
-          <div key={i} style={{ background: C.wrenbg, border: `1px solid rgba(43,212,180,.4)`, borderRadius: 14, padding: "10px 13px", fontSize: 13.5, lineHeight: 1.42, color: C.ink }}>{l}</div>
+          <div key={i} style={{ background: C.wrenbg, border: `1px solid rgba(43,212,180,.4)`, borderRadius: 14, padding: "16px 13px", fontSize: 13.5, lineHeight: 1.42, color: C.ink }}>{l}</div>
         ))}
       </div>
       <button className="ph-btn" onClick={onOpen} style={{ fontFamily: UI, fontWeight: 700, fontSize: 15, color: C.page, background: C.pink, border: 0, borderRadius: 999, padding: "13px 20px", cursor: "pointer" }}>Open your messages →</button>
