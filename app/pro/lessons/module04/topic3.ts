@@ -19,6 +19,7 @@ const topic3: TopicManifest = {
   learn: [
     {
       heading: "The core difference: reversible vs one-way",
+      visual: { id: "hash-oneway" },
       body: [
         "Encryption and hashing look similar, both turn readable data into scrambled data, but they differ in the most important way possible: encryption is reversible, hashing is not. With encryption, whoever has the key can turn the scrambled data back into the original; that is the whole point, the recipient must be able to read the message. With hashing, there is no key and no way back: a hash is a one-way fingerprint of the input, and you cannot reconstruct the original from it.",
         "This difference decides which you should use. If the data must be recoverable, a message to be read, a file to be opened, you encrypt it. If the data must never be recoverable, only checked, you hash it. Confusing the two, using reversible encryption where you needed irreversible hashing, is a classic and dangerous mistake, as the case ahead shows.",

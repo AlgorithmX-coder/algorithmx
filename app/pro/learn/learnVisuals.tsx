@@ -29,6 +29,11 @@ function render(spec: LearnVisual) {
     case "control-timeline": return <ControlTimeline />;
     case "defence-layers": return <DefenceLayers />;
     case "mindset-flip": return <MindsetFlip />;
+    case "packet-path": return <PacketPath mode={spec.mode ?? "journey"} />;
+    case "network-spread": return <NetworkSpread mode={spec.mode ?? "worm"} />;
+    case "injection": return <Injection mode={spec.mode ?? "sql"} />;
+    case "phishing-redflags": return <PhishingRedflags />;
+    case "public-key": return <PublicKey mode={spec.mode ?? "exchange"} />;
   }
 }
 
@@ -283,5 +288,267 @@ function Avalanche() {
       <text x="240" y="142" fill={T.muted} fontFamily={T.sans} fontSize="12" textAnchor="middle">Change one character, and the whole fingerprint changes.</text>
       <defs><marker id="av" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill={T.green} /></marker></defs>
     </svg>
+  );
+}
+
+/* ---------- 6. Packet path (Module 2, 10) ---------- */
+
+function PacketPath({ mode }: { mode: "journey" | "eavesdrop" | "flood" }) {
+  if (mode === "flood") return <PacketFlood />;
+  if (mode === "eavesdrop") return <Eavesdrop />;
+  return <PacketJourney />;
+}
+
+const HOPS = [
+  { label: "You", sub: "your device" },
+  { label: "Router", sub: "your home" },
+  { label: "ISP", sub: "your provider" },
+  { label: "Internet", sub: "many hops" },
+  { label: "Server", sub: "the website" },
+];
+
+function PacketJourney() {
+  const [sent, setSent] = useState(false);
+  return (
+    <div>
+      <Try>Send a message and watch it travel</Try>
+      <div style={{ position: "relative", margin: "8px 0 2px" }}>
+        <div style={{ position: "absolute", left: "8%", right: "8%", top: 13, height: 2, background: T.edge }} />
+        <div className="lv-anim" aria-hidden style={{ position: "absolute", top: 7, left: sent ? "92%" : "8%", transform: "translateX(-50%)", width: 14, height: 14, borderRadius: "50%", background: T.cyan, boxShadow: `0 0 10px ${T.cyan}`, transition: "left 1.4s ease" }} />
+        <div style={{ display: "flex", justifyContent: "space-between", position: "relative" }}>
+          {HOPS.map((h) => (
+            <div key={h.label} style={{ textAlign: "center", width: "19%" }}>
+              <div style={{ width: 14, height: 14, borderRadius: 4, background: T.panel, border: `1px solid ${T.edge}`, margin: "0 auto 8px" }} />
+              <div style={{ fontSize: 12, fontWeight: 700, color: T.ink }}>{h.label}</div>
+              <div style={{ fontSize: 10, color: T.faint }}>{h.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ marginTop: 14, fontSize: 14, color: T.body, lineHeight: 1.6 }}>
+        {sent ? "Your message was split into small packets, each hopping node to node until they reached the server and were reassembled. No single wire carried the whole thing." : "Press send. Your request does not travel in one piece down one wire."}
+      </div>
+      <button onClick={() => setSent((s) => !s)} style={{ ...chipStyle(false, T.primary), marginTop: 10, fontWeight: 700 }}>{sent ? "Send again" : "Send the message"}</button>
+      <Takeaway>A message is broken into packets that each find their own way across many machines. That is what makes the internet robust, and what attackers try to listen in on.</Takeaway>
+    </div>
+  );
+}
+
+function Eavesdrop() {
+  const [https, setHttps] = useState(false);
+  return (
+    <div>
+      <Try>You are on cafe Wi-Fi. Flip the padlock.</Try>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, fontSize: 12.5, color: T.muted }}>
+        <span style={{ fontWeight: 700, color: T.ink }}>You</span>
+        <span style={{ flex: 1, height: 2, background: T.edge }} />
+        <span style={{ fontFamily: T.mono, fontSize: 10.5, color: T.red, border: `1px solid ${T.red}55`, borderRadius: 6, padding: "3px 7px" }}>attacker listening</span>
+        <span style={{ flex: 1, height: 2, background: T.edge }} />
+        <span style={{ fontWeight: 700, color: T.ink }}>Website</span>
+      </div>
+      <div style={{ display: "inline-flex", background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 9, padding: 3, marginBottom: 12 }}>
+        {[["HTTP", false], ["HTTPS", true]].map(([label, val]) => {
+          const on = https === val;
+          return <button key={label as string} onClick={() => setHttps(val as boolean)} className="lv-anim" style={{ fontFamily: T.display, fontWeight: 700, fontSize: 13, color: on ? "#06121a" : T.body, background: on ? (val ? T.green : T.red) : "transparent", border: "none", borderRadius: 7, padding: "7px 16px", cursor: "pointer", transition: "background 160ms ease, color 160ms ease" }}>{label as string}</button>;
+        })}
+      </div>
+      <div className="lv-anim" style={{ background: https ? T.greenSoft : T.redSoft, border: `1px solid ${(https ? T.green : T.red)}55`, borderRadius: 10, padding: "12px 15px", transition: "background 180ms ease" }}>
+        <div style={{ fontFamily: T.mono, fontSize: 10.5, letterSpacing: "0.1em", color: https ? T.green : T.red, marginBottom: 6, textTransform: "uppercase" }}>What the attacker sees</div>
+        <div style={{ fontFamily: T.mono, fontSize: 14, color: T.body }}>{https ? "a8 f3 1c 9d 4b e2 … (scrambled)" : "login: you@email.com  password: hunter2"}</div>
+      </div>
+      <Takeaway>On plain HTTP, anyone on the same Wi-Fi can read what you send. HTTPS (the padlock) scrambles it so they see only noise.</Takeaway>
+    </div>
+  );
+}
+
+function PacketFlood() {
+  const [load, setLoad] = useState(1);
+  const [filtered, setFiltered] = useState(false);
+  const effective = filtered ? Math.min(load, 4) : load;
+  const down = effective > 6;
+  return (
+    <div>
+      <Try>Pile on the traffic</Try>
+      <div style={{ marginBottom: 8, fontSize: 12.5, color: T.muted }}>Requests hitting the server {filtered && <span style={{ color: T.green }}>(junk filtered first)</span>}</div>
+      <div style={{ height: 22, borderRadius: 7, background: T.panel, border: `1px solid ${T.edge}`, overflow: "hidden", position: "relative" }}>
+        <div className="lv-anim" style={{ height: "100%", width: `${Math.min(100, effective / 10 * 100)}%`, background: down ? T.red : T.cyan, transition: "width 220ms ease, background 220ms ease" }} />
+        <div style={{ position: "absolute", left: "60%", top: 0, bottom: 0, width: 2, background: T.amber }} />
+      </div>
+      <div style={{ marginTop: 10, fontFamily: T.display, fontWeight: 800, fontSize: 16, color: down ? T.red : T.green }}>{down ? "Server overwhelmed, site is down" : "Server coping"}</div>
+      <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
+        <button onClick={() => setLoad((l) => Math.min(10, l + 2))} style={{ ...chipStyle(false, T.red), fontWeight: 700 }}>Send a flood of traffic</button>
+        <button onClick={() => setFiltered((f) => !f)} style={{ ...chipStyle(filtered, T.green), fontWeight: 700 }}>{filtered ? "Filtering on" : "Add filtering"}</button>
+        <button onClick={() => { setLoad(1); setFiltered(false); }} style={{ ...chipStyle(false, T.edge), color: T.faint }}>Reset</button>
+      </div>
+      <Takeaway>A denial-of-service attack floods a service from many machines at once until real users cannot get through. Defences filter the junk before it reaches the server.</Takeaway>
+    </div>
+  );
+}
+
+/* ---------- 7. Network spread (Module 8, 10, 12, 17) ---------- */
+
+function NetworkSpread({ mode }: { mode: "worm" | "lateral" }) {
+  const GRID = 9; // 3x3
+  const neighbours = (i: number) => {
+    const r = Math.floor(i / 3), c = i % 3;
+    return [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].filter(([rr, cc]) => rr >= 0 && rr < 3 && cc >= 0 && cc < 3).map(([rr, cc]) => rr * 3 + cc);
+  };
+  const [infected, setInfected] = useState<Set<number>>(new Set([0]));
+  const [wall, setWall] = useState(false); // lateral: segmentation isolates the bottom row (6,7,8)
+  const step = () => {
+    setInfected((prev) => {
+      const next = new Set(prev);
+      for (const i of prev) for (const n of neighbours(i)) {
+        if (wall && ((i < 6) !== (n < 6))) continue; // segmentation blocks crossing into the isolated zone
+        next.add(n);
+      }
+      return next;
+    });
+  };
+  const allHit = infected.size >= GRID;
+  return (
+    <div>
+      <Try>{mode === "lateral" ? "One machine is compromised. Watch it spread, then wall it off." : "One machine is infected. Spread it."}</Try>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 48px)", gap: 8, justifyContent: "center", margin: "6px 0 12px" }}>
+        {Array.from({ length: GRID }, (_, i) => {
+          const on = infected.has(i);
+          const isolated = wall && i >= 6;
+          return (
+            <div key={i} className="lv-anim" style={{ width: 48, height: 40, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, background: on ? T.redSoft : isolated ? T.greenSoft : T.panel, border: `1px solid ${on ? T.red : isolated ? `${T.green}66` : T.edge}`, transition: "background 180ms ease, border-color 180ms ease" }}>
+              <span aria-hidden>{on ? "🔴" : "💻"}</span>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ fontSize: 14, color: T.body, lineHeight: 1.6, minHeight: 44 }}>
+        {allHit ? "Every machine fell. On a flat network, one foothold becomes the whole building." : `${infected.size} of ${GRID} machines hit.${wall ? " The segmented zone (green) is holding." : ""}`}
+      </div>
+      <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+        <button onClick={step} disabled={allHit} style={{ ...chipStyle(false, T.red), fontWeight: 700, opacity: allHit ? 0.5 : 1, cursor: allHit ? "not-allowed" : "pointer" }}>Spread one step</button>
+        {mode === "lateral" && <button onClick={() => setWall((w) => !w)} style={{ ...chipStyle(wall, T.green), fontWeight: 700 }}>{wall ? "Segmentation on" : "Add segmentation"}</button>}
+        <button onClick={() => { setInfected(new Set([0])); }} style={{ ...chipStyle(false, T.edge), color: T.faint }}>Reset</button>
+      </div>
+      <Takeaway>{mode === "lateral" ? "Flat networks let an attacker roam from one machine to everything. Splitting the network into zones traps them where they land." : "A worm copies itself from machine to machine with no clicks needed. One infection becomes hundreds within minutes."}</Takeaway>
+    </div>
+  );
+}
+
+/* ---------- 8. Injection (Module 9) ---------- */
+
+function Injection({ mode }: { mode: "sql" | "xss" }) {
+  const [evil, setEvil] = useState(false);
+  const [fixed, setFixed] = useState(false);
+  if (mode === "xss") {
+    const brokeOut = evil && !fixed;
+    return (
+      <div>
+        <Try>Type a comment on a web page</Try>
+        <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 12 }}>
+          <button onClick={() => setEvil(false)} style={chipStyle(!evil, T.cyan)}>Great article, thanks!</button>
+          <button onClick={() => setEvil(true)} style={chipStyle(evil, T.cyan)}>&lt;script&gt;steal cookies&lt;/script&gt;</button>
+        </div>
+        <button onClick={() => setFixed((f) => !f)} style={{ ...chipStyle(fixed, T.green), marginBottom: 12, fontWeight: 700 }}>{fixed ? "Fix on: treat input as text" : "Apply the fix"}</button>
+        <div className="lv-anim" style={{ background: brokeOut ? T.redSoft : T.greenSoft, border: `1px solid ${(brokeOut ? T.red : T.green)}55`, borderRadius: 10, padding: "12px 15px", fontSize: 14, color: T.body, lineHeight: 1.6, transition: "background 180ms ease" }}>
+          {brokeOut ? "The page RAN your script as code. It could steal every visitor's login. That is cross-site scripting." : evil ? "With the fix, your script is shown as plain text on the page. It does nothing." : "A normal comment just shows as text, as expected."}
+        </div>
+        <Takeaway>The bug is the page treating what a visitor typed as code to run. The fix is always treating it as plain data to display.</Takeaway>
+      </div>
+    );
+  }
+  const brokeOut = evil && !fixed;
+  const input = evil ? "' OR '1'='1" : "alice";
+  return (
+    <div>
+      <Try>Pick what gets typed into the login box</Try>
+      <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 12 }}>
+        <button onClick={() => setEvil(false)} style={chipStyle(!evil, T.cyan)}>alice (a normal name)</button>
+        <button onClick={() => setEvil(true)} style={chipStyle(evil, T.cyan)}>&apos; OR &apos;1&apos;=&apos;1 (an attacker&apos;s trick)</button>
+      </div>
+      <button onClick={() => setFixed((f) => !f)} style={{ ...chipStyle(fixed, T.green), marginBottom: 12, fontWeight: 700 }}>{fixed ? "Fix on: input is kept as data" : "Apply the fix (parameterised query)"}</button>
+      <div style={{ background: "rgba(4,6,14,0.7)", border: `1px solid ${T.edge}`, borderRadius: 10, padding: "11px 13px", fontFamily: T.mono, fontSize: 12.5, lineHeight: 1.7, marginBottom: 10 }}>
+        <span style={{ color: T.muted }}>SELECT * FROM users WHERE name = &apos;</span>
+        <span style={{ color: brokeOut ? T.red : T.cyan, fontWeight: 700 }}>{input}</span>
+        <span style={{ color: T.muted }}>&apos;</span>
+      </div>
+      <div className="lv-anim" style={{ background: brokeOut ? T.redSoft : T.greenSoft, border: `1px solid ${(brokeOut ? T.red : T.green)}55`, borderRadius: 10, padding: "12px 15px", fontSize: 14, color: T.body, lineHeight: 1.6, transition: "background 180ms ease" }}>
+        {brokeOut ? "The trick broke out of the quotes and became part of the command. The query now returns EVERY user. That is SQL injection." : evil ? "With the fix, the whole trick is treated as one harmless name to look up. It matches nobody. The attack is dead." : "The query looks up one user, alice, exactly as intended."}
+      </div>
+      <Takeaway>Injection happens when input is pasted straight into a command. The fix keeps input as data the command can never be confused by.</Takeaway>
+    </div>
+  );
+}
+
+/* ---------- 9. Phishing red flags (Module 7) ---------- */
+
+const FLAGS = [
+  { key: "sender", why: "The display name says 'IT Support' but the real address is a random free-mail account. Always check the actual address, not the name." },
+  { key: "link", why: "The link text says the real company, but it actually points to a lookalike domain (paypaI-secure.com, with a capital I). Hover before you click." },
+  { key: "urgency", why: "Threats and deadlines ('within 24 hours or your account is closed') are designed to make you act before you think." },
+  { key: "attach", why: "An unexpected attachment, especially one asking you to 'enable content', is a classic way to deliver malware." },
+];
+
+function PhishingRedflags() {
+  const [found, setFound] = useState<Set<string>>(new Set());
+  const [last, setLast] = useState<string | null>(null);
+  const hit = (k: string) => { setFound((f) => new Set(f).add(k)); setLast(k); };
+  const spot = (k: string): React.CSSProperties => ({ cursor: "pointer", borderRadius: 4, padding: "0 3px", background: found.has(k) ? T.amberSoft : "transparent", boxShadow: found.has(k) ? `inset 0 0 0 1px ${T.amber}88` : `inset 0 0 0 1px ${T.edge}`, transition: "background 160ms ease" });
+  return (
+    <div>
+      <Try>Tap the parts that give this email away ({found.size} of {FLAGS.length})</Try>
+      <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 10, padding: "14px 16px", fontSize: 13.5, lineHeight: 1.9, color: T.body }}>
+        <div>From: <button onClick={() => hit("sender")} style={{ ...spot("sender"), border: "none", font: "inherit", color: "inherit" }}>IT Support &lt;helpdesk@secure-mail-447.com&gt;</button></div>
+        <div style={{ margin: "6px 0", height: 1, background: T.edge }} />
+        <div><button onClick={() => hit("urgency")} style={{ ...spot("urgency"), border: "none", font: "inherit", color: "inherit" }}>URGENT: your account will be closed in 24 hours.</button></div>
+        <div style={{ marginTop: 6 }}>Please confirm your password at <button onClick={() => hit("link")} style={{ ...spot("link"), border: "none", font: "inherit", color: T.cyan }}>company-portal.com</button>.</div>
+        <div style={{ marginTop: 6 }}>See the attached <button onClick={() => hit("attach")} style={{ ...spot("attach"), border: "none", font: "inherit", color: "inherit" }}>invoice.html</button> for details.</div>
+      </div>
+      {last && <div style={{ marginTop: 12, fontSize: 14, color: T.body, lineHeight: 1.6 }}>{FLAGS.find((f) => f.key === last)!.why}</div>}
+      {found.size === FLAGS.length && <div style={{ marginTop: 10, fontSize: 13.5, fontWeight: 700, color: T.green }}>You found all four. You would not have fallen for this one.</div>}
+      <Takeaway>The tells are in the details: who really sent it, where the link really goes, the pressure to act fast, and the unexpected attachment.</Takeaway>
+    </div>
+  );
+}
+
+/* ---------- 10. Public key (Module 4) ---------- */
+
+function PublicKey({ mode }: { mode: "exchange" | "sign" }) {
+  const [step, setStep] = useState(0); // 0 start, 1 locked/signed, 2 opened/verified
+  const [tampered, setTampered] = useState(false);
+  if (mode === "sign") {
+    return (
+      <div>
+        <Try>Prove a message is really from you, and unchanged</Try>
+        <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 10, padding: "12px 15px", marginBottom: 12, fontSize: 14, color: T.body }}>
+          Message: &ldquo;Pay the invoice.&rdquo;{tampered && <span style={{ color: T.red }}> (someone changed it to &ldquo;Pay me instead.&rdquo;)</span>}
+        </div>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+          <button onClick={() => setStep(1)} style={{ ...chipStyle(step >= 1, T.primary), fontWeight: 700 }}>1. Sign with my PRIVATE key</button>
+          <button onClick={() => setStep(2)} disabled={step < 1} style={{ ...chipStyle(step >= 2, T.cyan), fontWeight: 700, opacity: step < 1 ? 0.5 : 1 }}>2. Anyone verifies with my PUBLIC key</button>
+          <button onClick={() => setTampered((t) => !t)} style={{ ...chipStyle(tampered, T.red) }}>{tampered ? "Tampering on" : "Tamper with it"}</button>
+        </div>
+        {step >= 2 && (
+          <div className="lv-anim" style={{ background: tampered ? T.redSoft : T.greenSoft, border: `1px solid ${(tampered ? T.red : T.green)}55`, borderRadius: 10, padding: "12px 15px", fontSize: 14, color: T.body, lineHeight: 1.6 }}>
+            {tampered ? "Verification FAILS. The signature no longer matches the changed message, so you know it was altered." : "Verification passes. The signature matches, proving it was you and that nothing changed."}
+          </div>
+        )}
+        <Takeaway>Signing with your private key proves it was you and that the message is unchanged. Anyone can check it with your public key, but nobody can forge it.</Takeaway>
+      </div>
+    );
+  }
+  const wrongKey = false;
+  return (
+    <div>
+      <Try>Send a secret to someone you have never met</Try>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+        <button onClick={() => setStep(1)} style={{ ...chipStyle(step >= 1, T.primary), fontWeight: 700 }}>1. Lock it with their PUBLIC key</button>
+        <button onClick={() => setStep(2)} disabled={step < 1} style={{ ...chipStyle(step >= 2, T.green), fontWeight: 700, opacity: step < 1 ? 0.5 : 1 }}>2. They open it with their PRIVATE key</button>
+        <button onClick={() => setStep(0)} style={{ ...chipStyle(false, T.edge), color: T.faint }}>Reset</button>
+      </div>
+      <div className="lv-anim" style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 10, padding: "14px 16px", fontFamily: T.mono, fontSize: 14, color: step === 1 ? T.amber : T.body, textAlign: "center", transition: "color 180ms ease" }}>
+        {step === 0 ? "“Meet me at noon”" : step === 1 ? "7f a2 9c 1d 4e … (locked, unreadable to anyone listening)" : "“Meet me at noon” (opened)"}
+      </div>
+      {step >= 1 && !wrongKey && <div style={{ marginTop: 12, fontSize: 14, color: T.body, lineHeight: 1.6 }}>{step === 1 ? "Locked with their PUBLIC key, which everyone can know. Now only their matching PRIVATE key can open it, not even you can." : "Their PRIVATE key, which only they hold, opens it. The secret crossed the open internet safely."}</div>}
+      <Takeaway>The two keys are a pair: what one locks, only the other opens. You can share your public key with the world, which is how total strangers exchange secrets safely.</Takeaway>
+    </div>
   );
 }

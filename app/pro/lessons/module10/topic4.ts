@@ -19,6 +19,7 @@ const topic4: TopicManifest = {
   learn: [
     {
       heading: "Drowning a service: attacking availability",
+      visual: { id: "packet-path", mode: "flood" },
       body: [
         "A denial-of-service attack does not try to break in or steal; it tries to make a service unavailable to its real users. The simplest way is to overwhelm it: send so many requests or so much traffic that the target cannot keep up, and legitimate visitors are crowded out. The data is safe, nothing is stolen, but the service is effectively down, which for many businesses is damage enough.",
         "This maps directly onto the CIA triad from Module 1. Confidentiality and integrity attacks go after your secrets and your data's correctness; a denial-of-service attack goes purely after availability. Recognising which pillar is under attack tells you immediately what kind of incident you have, and that a DDoS calls for very different defences than, say, a data breach.",

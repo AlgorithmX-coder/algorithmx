@@ -18,6 +18,7 @@ const topic1: TopicManifest = {
   learn: [
     {
       heading: "Five controls that stop most attacks",
+      visual: { id: "defence-layers" },
       body: [
         "The UK's Cyber Essentials scheme boils security down to five practical controls: firewalls (control the traffic in and out), secure configuration (remove defaults and unnecessary features), access control (give people only the access they need), security update management (patch promptly), and malware protection (defend against malicious software). These are not advanced, and that is the point.",
         "The striking claim behind the scheme, borne out by real-world data, is that getting these five basics right blocks the large majority of common internet attacks. Most attacks are opportunistic (recall Module 6's cybercrime economy), exploiting the basics being wrong: an unpatched system, a default password, an over-privileged account. Fix the basics, and you are no longer the easy target.",

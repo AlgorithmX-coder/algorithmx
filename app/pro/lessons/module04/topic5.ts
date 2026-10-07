@@ -35,6 +35,7 @@ const topic5: TopicManifest = {
     },
     {
       heading: "How signatures use key pairs in reverse",
+      visual: { id: "public-key", mode: "sign" },
       body: [
         "Digital signatures cleverly reuse the public/private key pair from earlier, the other way around. To sign, you use your private key (which only you have) to create a signature over the message; anyone can then use your public key (which everyone has) to verify that signature. Because only your private key could have produced a signature that your public key verifies, a valid signature proves it came from you, and because the signature covers the message content, any change to the message breaks it, proving integrity.",
         "Notice the elegant symmetry with encryption. For secrecy, others encrypt with your public key and you decrypt with your private key. For signing, you sign with your private key and others verify with your public key. The same key pair provides both confidentiality and authenticity, in opposite directions. You do not need the maths; you need the shape: private key signs, public key verifies, and that proves who sent it and that it is unchanged.",

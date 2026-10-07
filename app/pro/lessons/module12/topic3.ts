@@ -34,6 +34,7 @@ const topic3: TopicManifest = {
     },
     {
       heading: "How it goes wrong: access creep and standing privilege",
+      visual: { id: "network-spread", mode: "lateral" },
       body: [
         "In practice, least privilege erodes over time, and knowing how is half the battle. Access creep: people accumulate permissions as they change roles, but old access is rarely removed, so long-serving staff end up able to reach far more than they need. Over-provisioning: it is easier to grant broad access than to work out the minimum, so admins hand out more 'to be safe'. Standing privilege: powerful access left permanently available, even when only needed occasionally.",
         "Each of these is a gift to an attacker. A compromised long-serving account with accumulated access, or a found admin credential with standing privilege, turns a small foothold into a large breach. The defences are active, not passive: grant minimally, review access regularly, remove what is no longer needed, and prefer just-in-time access (granted only when needed) over standing privilege.",
