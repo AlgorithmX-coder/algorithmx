@@ -28,6 +28,7 @@ import { useEffect, useRef, useState } from "react";
 import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
 import { claimSpokenSlot, releaseSpokenSlot } from "@/app/components/lesson/InfoNarration";
+import { SLOTS, useClearSlot } from "@/app/components/lesson/captionSlots";
 
 const NARRATION_VOLUME = 0.5;
 const MANIFEST_URL = "/audio/voice/manifest.json";
@@ -91,10 +92,18 @@ export default function CoachCaption({
   triggerKey,
   onDone,
 }: CoachCaptionProps) {
+  // Where this caption may sit. It used to be pinned at bottom: 88, which is
+  // clear at 1414x771 and lands ON the board at the tester's 1093x525 - on
+  // week 6's Game Zone Bingo it covered the bottom row of cards. Now it takes
+  // the first slot that covers nothing, the same chooser the "Listening" pill
+  // has used across all twenty weeks.
+  const boxRef = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(true);
   // True while the recorded line is sounding (or committed to start). Drives
   // the click-guard below.
   const [playing, setPlaying] = useState(false);
+  // Re-placed as the board settles; null until the first placement.
+  const slot = useClearSlot(boxRef, true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   // Latest onDone without re-running the play effect (which is keyed on
   // triggerKey only, deliberately).
@@ -238,12 +247,13 @@ export default function CoachCaption({
     <>
       <NarrationClickGuard active={playing} hidePill />
       <div
+        ref={boxRef}
         role="status"
         style={{
           position: "fixed",
-          left: "50%",
-          bottom: 88,
-          transform: "translateX(-50%)",
+          ...(SLOTS[slot ?? 0].style),
+          // Hidden until placed, so it never flashes in the wrong spot.
+          visibility: slot === null ? "hidden" : "visible",
           zIndex: 60,
           maxWidth: "min(92vw, 520px)",
           display: "flex",
@@ -258,11 +268,16 @@ export default function CoachCaption({
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
           color: "#eaf2ff",
+          // Fade only. The old keyframe animated transform: translate(-50%, ...),
+          // which OVERRODE whichever transform the chosen slot sets - so in the
+          // bottom-left slot (transform: none, left: 20) the caption was dragged
+          // half its own width off the left edge of the screen. Measured as
+          // content-off-left on w6 s24 the moment the slot chooser was wired in.
           animation: "coachCaptionIn 0.35s ease-out both",
           pointerEvents: "none",
         }}
       >
-        <style>{`@keyframes coachCaptionIn {from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}`}</style>
+        <style>{`@keyframes coachCaptionIn {from{opacity:0}to{opacity:1}}`}</style>
         <span style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.3 }}>
           <span aria-hidden style={{ marginRight: 6 }}>
             🔊
