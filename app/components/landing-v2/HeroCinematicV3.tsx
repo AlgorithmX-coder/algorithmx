@@ -112,12 +112,15 @@ export default function HeroCinematicV3({
   ambience = true,
   backdrop,
   frameChildren,
+  rotZ = -17,
 }: {
   overlay?: boolean;
   staticOpen?: boolean;
   ambience?: boolean;
   backdrop?: ReactNode;
   frameChildren?: ReactNode;
+  /** The rig's flat rotation on the surface; the shipped hero's -17. */
+  rotZ?: number;
 } = {}) {
   const railRef = useRef<HTMLElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -324,7 +327,7 @@ export default function HeroCinematicV3({
             className="hv3-sceneScale"
             style={{
               rotateX: sceneRotX,
-              rotateZ: -17,
+              rotateZ: rotZ,
               scale: sceneScale,
               y: sceneY,
               /* Sharing the frame with a copy column (its own overlay or

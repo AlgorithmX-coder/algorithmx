@@ -241,9 +241,15 @@ const THEMES: Theme[] = [
   },
 ];
 
+/* Angle presets so the owner can point at the correct facing instead
+ * of describing it: a = shipped -17, then alternatives. */
+const ROTS: Record<string, number> = { a: -17, b: 17, c: 0, d: -32, e: 32 };
+
 function Inner() {
   const params = useSearchParams();
   const n = Math.min(20, Math.max(1, parseInt(params.get("theme") ?? "1", 10) || 1));
+  const rotKey = (params.get("rot") ?? "a").toLowerCase();
+  const rotZ = ROTS[rotKey] ?? -17;
   const t = THEMES[n - 1];
   const ink = t.dark ? "#f4f7ff" : "#14161d";
   const soft = t.dark ? "rgba(230,238,252,0.85)" : "#3c4351";
@@ -273,11 +279,72 @@ function Inner() {
           color: "#fff",
         }}
       >
-        {String(n).padStart(2, "0")} · {t.name}
+        {String(n).padStart(2, "0")} · {t.name} · {rotZ}°
       </span>
+      {/* owner controls: click through themes and angles, no URL editing */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 12,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 100,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 6,
+          padding: "10px 14px",
+          borderRadius: 16,
+          background: "rgba(20,22,29,0.88)",
+          boxShadow: "0 16px 40px -12px rgba(0,0,0,0.5)",
+        }}
+      >
+        <div style={{ display: "flex", gap: 5, flexWrap: "wrap", justifyContent: "center" }}>
+          {THEMES.map((_, i) => (
+            <a
+              key={i}
+              href={`?theme=${i + 1}&rot=${rotKey}`}
+              style={{
+                fontFamily: "var(--lv2-font-mono)",
+                fontSize: 11,
+                fontWeight: 700,
+                padding: "4px 8px",
+                borderRadius: 7,
+                textDecoration: "none",
+                color: i + 1 === n ? "#0b0e14" : "rgba(235,242,255,0.85)",
+                background: i + 1 === n ? "#7ee7ff" : "rgba(255,255,255,0.1)",
+              }}
+            >
+              {i + 1}
+            </a>
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
+          <span style={{ fontFamily: "var(--lv2-font-mono)", fontSize: 10, letterSpacing: "0.12em", color: "rgba(235,242,255,0.6)" }}>ANGLE</span>
+          {Object.entries(ROTS).map(([k, deg]) => (
+            <a
+              key={k}
+              href={`?theme=${n}&rot=${k}`}
+              style={{
+                fontFamily: "var(--lv2-font-mono)",
+                fontSize: 11,
+                fontWeight: 700,
+                padding: "4px 9px",
+                borderRadius: 7,
+                textDecoration: "none",
+                color: k === rotKey ? "#0b0e14" : "rgba(235,242,255,0.85)",
+                background: k === rotKey ? "#ffd27e" : "rgba(255,255,255,0.1)",
+              }}
+            >
+              {deg}°
+            </a>
+          ))}
+        </div>
+      </div>
       <HeroCinematic
         overlay={false}
         ambience={false}
+        rotZ={rotZ}
         backdrop={
           <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
             {t.bg}
