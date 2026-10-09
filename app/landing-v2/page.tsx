@@ -1,6 +1,6 @@
 import { Fredoka, Chakra_Petch } from "next/font/google";
 
-import HeroThreatMap from "@/app/components/landing-v2/HeroThreatMap";
+import HeroPowerLab from "@/app/components/landing-v2/HeroPowerLab";
 import PaperArcs from "@/app/components/landing-v2/PaperArcs";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProofBand from "@/app/components/ProofBand";
@@ -226,29 +226,23 @@ export default function LandingV2() {
       <SpotlightCursor />
       {/* cta null: no Get Started pill here (owner 2026-10-07) - it jumped
           to the platform signup; course pages carry their own auth now.
-          Night tone (owner 2026-10-09): the threat-map hero is dark, and
-          the Courses / Schools / Corporate chips keep their place but
-          glow in the night styling so the bar blends into the frame. */}
-      <Nav tone="night" cta={null} />
+          Sand tone again (owner 2026-10-09, round three): the hero went
+          back to light, so the bar returns to its paper styling. */}
+      <Nav tone="sand" cta={null} />
       <main>
-        <HeroThreatMap />
-        {/* The hero's defence network restated in ink on the paper
-            sections (owner 2026-10-09): page-level wrappers, because
-            ProofBand is shared with /schools and must not change there.
-            The tall runway dissolves the hero's navy into the sand over
-            ~340px - the white accreditation card floats through the
-            night-into-day gradient, so there is no hard seam at all
-            (owner: the first-to-second page contrast was too sharp). */}
+        <HeroPowerLab />
+        {/* The hero's circuitry restated in ink on the sections below
+            (page-level wrappers, because ProofBand is shared with
+            /schools and must not change there). The navy runway from
+            the dark hero round is gone - light flows into light. */}
         <div style={{ position: "relative" }}>
-          <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: 0, height: 340, background: "linear-gradient(180deg, #0b1120 0%, rgba(11,17,32,0.72) 30%, rgba(11,17,32,0.3) 62%, rgba(11,17,32,0) 100%)", pointerEvents: "none" }} />
           <PaperArcs />
           <ProofBand />
         </div>
         <ProblemStats />
-        {/* The 3D laptop lives INSIDE HeroThreatMap now (owner
-            2026-10-09: "I want the laptop on the main landing page") -
-            the mid-page MISSION CONTROL section it briefly occupied is
-            gone so the machine appears exactly once. */}
+        {/* The 3D laptop lives INSIDE HeroPowerLab (owner 2026-10-09:
+            "I like the whole laptop thing") - open on the dark threat
+            console, composited on the light bench. */}
         <div style={{ position: "relative" }}>
           <PaperArcs />
           <SubjectShowcase />
