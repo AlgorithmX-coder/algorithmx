@@ -277,12 +277,19 @@ export default function HeroOverlay() {
            and a positioned sibling would otherwise paint over it. */
         .lv2-hero-scrim {
           z-index: -1;
+          /* Stops retuned 2026-10-09 (mobile pass): the old 52/63/73%
+             run was sized for the CLOSED machine sitting low - once
+             the lid opened, the risen screen sat inside the veil and
+             the lit console rendered milk-washed on every phone
+             (keyboard below the fade line stayed crisp, which was the
+             tell). Copy ends ~36% down the frame; the scrim now clears
+             by 46%, before the open screen's top edge. */
           background: linear-gradient(
             180deg,
             rgba(246,241,233,0.97) 0%,
-            rgba(246,241,233,0.95) 52%,
-            rgba(246,241,233,0.5) 63%,
-            rgba(246,241,233,0) 73%
+            rgba(246,241,233,0.95) 34%,
+            rgba(246,241,233,0.45) 40%,
+            rgba(246,241,233,0) 46%
           ) !important;
         }
         /* The copy block is the nearest positioned ancestor, so without

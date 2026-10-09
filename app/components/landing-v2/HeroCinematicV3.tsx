@@ -190,6 +190,12 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
   /* Screen ignition + keyboard underglow + energy floor. */
   const screenT = useTransform(progress, (p) => smoothstep(0.4, 0.56, p));
   const screenGlow = useTransform(screenT, (v) => 0.55 * v);
+  /* The dormant wallpaper fades out as the console lights. Belt and
+     braces for phones: inside the preserve-3d chain some mobile
+     compositors sort the wallpaper ABOVE the lit console whatever the
+     z-index, which washed the screen grey; with the wallpaper at
+     opacity 0 once lit, sort order stops mattering. */
+  const dormantOpacity = useTransform(progress, (p) => 1 - smoothstep(0.4, 0.52, p));
   const kbGlow = useTransform(progress, (p) => smoothstep(0.5, 0.64, p));
   /* Dormant base raised 0.25 -> 0.45 (reviewer pass): the galaxy pool
    * is now clearly visible under the closed laptop, so the opening
@@ -292,12 +298,14 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            perspective: 1900,
-            perspectiveOrigin: "55% 34%",
           }}
         >
+          {/* Responsive size lives on this wrapper as transform: scale
+              (see .hv3-sceneScale rules); the old zoom approach broke
+              layer order inside the 3D scene on phones. Perspective
+              moves here with it, since it only reaches direct children. */}
+          <div className="hv3-sceneScale" style={{ perspective: 1900, perspectiveOrigin: "55% 34%" }}>
           <motion.div
-            className="hv3-sceneScale"
             style={{
               rotateX: sceneRotX,
               rotateZ: -17,
@@ -743,7 +751,13 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
                     inset: 0,
                     borderRadius: 16,
                     backfaceVisibility: "hidden",
-                    transform: "rotateX(180deg) translateZ(1.2px)",
+                    /* 3.5px, was 1.2px (2026-10-09 mobile pass): the
+                       phone breakpoints zoom the scene to ~0.44, which
+                       squeezed 1.2px of z-separation under a pixel and
+                       the open screen z-fought the lid's outer face -
+                       the console rendered as a washed-out blend on
+                       every phone. Invisible at perspective 1900. */
+                    transform: "rotateX(180deg) translateZ(3.5px)",
                     background: "linear-gradient(160deg, #d2d7de, #eef0f3)",
                     boxShadow: "inset 0 0 0 1px rgba(130,150,185,0.14)",
                     padding: 12,
@@ -779,42 +793,46 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
                   >
                     {/* dormant wallpaper — cosmic core + tilted orbit
                      *  rings (all static gradients/borders: rasterized
-                     *  once, free during the lid animation) */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background:
-                          "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(179,186,196,0.32) 34%, rgba(238,240,243,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.14) 7%, transparent 16%)",
-                        opacity: 0.55,
-                      }}
-                    />
-                    {[
-                      { w: "58%", h: "34%", o: 0.5, bw: 1.4 },
-                      { w: "78%", h: "48%", o: 0.32, bw: 1.2 },
-                      { w: "96%", h: "62%", o: 0.18, bw: 1 },
-                    ].map((ring, ri) => (
+                     *  once, free during the lid animation). The whole
+                     *  group fades out as the console ignites — see
+                     *  dormantOpacity. */}
+                    <motion.div style={{ position: "absolute", inset: 0, opacity: dormantOpacity }}>
                       <div
-                        key={ri}
-                        className="hv3-ring"
                         style={{
                           position: "absolute",
-                          left: "52%",
-                          top: "44%",
-                          width: ring.w,
-                          height: ring.h,
-                          /* rotate as a SEPARATE property so the drift
-                           * keyframe composes with the translate */
-                          transform: "translate(-50%, -50%)",
-                          rotate: "-14deg",
-                          animationDelay: `${ri * -7}s`,
-                          borderRadius: "50%",
-                          border: `${ring.bw}px solid rgba(140,220,255,${ring.o})`,
-                          boxShadow: `0 0 10px rgba(46,166,232,${ring.o * 0.5})`,
-                          opacity: 0.6,
+                          inset: 0,
+                          background:
+                            "radial-gradient(ellipse 62% 48% at 52% 44%, rgba(30,96,156,0.5) 0%, rgba(179,186,196,0.32) 34%, rgba(238,240,243,0.16) 60%, transparent 80%), radial-gradient(circle at 52% 44%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.14) 7%, transparent 16%)",
+                          opacity: 0.55,
                         }}
                       />
-                    ))}
+                      {[
+                        { w: "58%", h: "34%", o: 0.5, bw: 1.4 },
+                        { w: "78%", h: "48%", o: 0.32, bw: 1.2 },
+                        { w: "96%", h: "62%", o: 0.18, bw: 1 },
+                      ].map((ring, ri) => (
+                        <div
+                          key={ri}
+                          className="hv3-ring"
+                          style={{
+                            position: "absolute",
+                            left: "52%",
+                            top: "44%",
+                            width: ring.w,
+                            height: ring.h,
+                            /* rotate as a SEPARATE property so the drift
+                             * keyframe composes with the translate */
+                            transform: "translate(-50%, -50%)",
+                            rotate: "-14deg",
+                            animationDelay: `${ri * -7}s`,
+                            borderRadius: "50%",
+                            border: `${ring.bw}px solid rgba(140,220,255,${ring.o})`,
+                            boxShadow: `0 0 10px rgba(46,166,232,${ring.o * 0.5})`,
+                            opacity: 0.6,
+                          }}
+                        />
+                      ))}
+                    </motion.div>
                     {/* screen glass sheen */}
                     <div
                       style={{
@@ -843,6 +861,13 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
                         background:
                           "linear-gradient(180deg, rgba(9,13,21,0.97), rgba(12,17,26,0.98))",
                         zIndex: 2,
+                        /* explicit depth: inside the preserve-3d chain
+                           z-index is not what orders paint, 3D depth
+                           is, and with every sibling at z=0 the sort
+                           was device-dependent - phones painted the
+                           dormant face over the lit console. 0.6px is
+                           invisible at this perspective. */
+                        z: 0.6,
                       }}
                     >
                       <ScreenDashboard progress={progress} />
@@ -856,6 +881,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
                         background:
                           "radial-gradient(ellipse at 50% 40%, rgba(63,208,255,0.14), transparent 70%)",
                         zIndex: 4,
+                        z: 0.8,
                         pointerEvents: "none",
                       }}
                     />
@@ -866,6 +892,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
             </div>
           </motion.div>
           </motion.div>
+          </div>
         </div>
 
         {/* ignition flash — light kick as the screen lights (scroll-keyed
@@ -918,26 +945,29 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
            understood, the first is the fallback. See the comment on the
            element itself. */
         .hv3-pinFrame { height: 100vh; height: 100svh; }
+        /* Responsive size as transform: scale on the wrapper DIV around
+           the rig (framer owns the rig's own transform). zoom is gone:
+           it broke compositor layer order inside the 3D scene on
+           phones, washing out the lit screen. Same steps as before. */
         .hv3-sceneScale { transform-style: preserve-3d; }
-        @media (max-width: 1100px) { .hv3-sceneScale { zoom: 0.82; } }
-        @media (max-width: 1000px) { .hv3-sceneScale { zoom: 0.64; } }
-        @media (max-width: 768px)  { .hv3-sceneScale { zoom: 0.56; } }
+        @media (max-width: 1100px) { .hv3-sceneScale { transform: scale(0.82); } }
+        @media (max-width: 1000px) { .hv3-sceneScale { transform: scale(0.64); } }
+        @media (max-width: 768px)  { .hv3-sceneScale { transform: scale(0.56); } }
         /* Phones: one step smaller again. The scene grows through the pin
            (measured 432-594 at rest, 412-642 by the end of it) and the
            frame is only ~664 tall, which left no floor for the CTA the
            owner wants under it. */
-        @media (max-width: 640px)  { .hv3-sceneScale { zoom: 0.44; } }
+        @media (max-width: 640px)  { .hv3-sceneScale { transform: scale(0.44); } }
         /* Width alone is not enough on a phone: the frame also has to hold
            the copy and the button, and a short phone has 100px less to
            give. Measured at 390x600 the machine ran to 541 while the
            button started at 536. These two steps buy that back. */
-        @media (max-width: 640px) and (max-height: 700px) { .hv3-sceneScale { zoom: 0.36; } }
-        @media (max-width: 640px) and (max-height: 620px) { .hv3-sceneScale { zoom: 0.29; } }
+        @media (max-width: 640px) and (max-height: 700px) { .hv3-sceneScale { transform: scale(0.36); } }
+        @media (max-width: 640px) and (max-height: 620px) { .hv3-sceneScale { transform: scale(0.29); } }
         /* Shrinking alone raises the machine TOWARDS the copy, because the
            box shrinks about its own centre: at 0.22 the gap under it grew
            to 100 while the copy started overlapping it by 3. So on the
-           shortest phones it is pushed back down instead. margin, not
-           transform, because framer-motion owns the transform. */
+           shortest phones it is pushed back down instead. */
         @media (max-width: 640px) and (max-height: 620px) { .hv3-sceneScale { margin-top: 26px; } }
         /* SCROLL HINT on short windows: the overlay copy (headline, CTA,
          * trust row) fills the 100vh frame, so the hint drops to the
