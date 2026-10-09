@@ -876,11 +876,15 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
 
               <button
                 onClick={() => { playSound("select"); start(); }}
-                style={{ marginTop: 22, fontFamily: ROUNDED, fontWeight: 900, fontSize: 17, letterSpacing: "0.06em", textTransform: "uppercase", cursor: "pointer", color: "#12101f", padding: "15px 42px", border: "none", touchAction: "manipulation", clipPath: "polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%)", background: `linear-gradient(180deg, ${accent}, ${accent}cc)`, boxShadow: `0 0 26px -4px ${accent}bf, 0 10px 22px -10px #000` }}
+                style={{ marginTop: shortViewport ? 12 : 22, fontFamily: ROUNDED, fontWeight: 900, fontSize: 17, letterSpacing: "0.06em", textTransform: "uppercase", cursor: "pointer", color: "#12101f", padding: "15px 42px", border: "none", touchAction: "manipulation", clipPath: "polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%)", background: `linear-gradient(180deg, ${accent}, ${accent}cc)`, boxShadow: `0 0 26px -4px ${accent}bf, 0 10px 22px -10px #000` }}
               >
                 Initiate Test ▸
               </button>
-              <div style={{ marginTop: 12, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: `${accent}cc` }}>{HOW_TO_PLAY}</div>
+              {/* The one line telling the child what to actually do. Stacked under the
+                  button it fell below the fold at the tester's 1093x525 - measured
+                  12px under - so the instruction was sliced in half. Tighten the
+                  stack on a short window rather than move it. */}
+              <div style={{ marginTop: shortViewport ? 8 : 12, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: `${accent}cc` }}>{HOW_TO_PLAY}</div>
             </motion.div>
           )}
 

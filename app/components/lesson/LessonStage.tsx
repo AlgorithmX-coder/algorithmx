@@ -318,6 +318,11 @@ export default function LessonStage({
       )}
       <div
         ref={contentRef}
+        // The element the fit measures and zooms. Marked so a harness can find
+        // it by name: the stage's first child is a decorative 600px glow, and
+        // measuring that instead silently reports the same height on every
+        // screen, which looks like real data and is not.
+        data-lesson-content=""
         style={{
           position: "relative",
           zIndex: 1,
