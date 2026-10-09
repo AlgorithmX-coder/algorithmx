@@ -28,6 +28,7 @@ import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import LessonStage, {
   LESSON_HUD_HEIGHT,
+  LESSON_BOTTOM_PAD,
 } from "@/app/components/lesson/LessonStage";
 import { ComfortModeProvider, useComfortMode } from "@/app/lib/comfortMode";
 import { useLessonProgress } from "@/app/lib/useLessonProgress";
@@ -4851,7 +4852,9 @@ function DynamicLessonInner({
           paddingTop: LESSON_HUD_HEIGHT,
           paddingLeft: 0,
           paddingRight: 0,
-          paddingBottom: "max(20px, env(safe-area-inset-bottom, 0px))",
+          // Same constant the stage subtracts in its minHeight, so the two
+          // can never drift apart and re-introduce the always-on scroll bar.
+          paddingBottom: `max(${LESSON_BOTTOM_PAD}px, env(safe-area-inset-bottom, 0px))`,
         }}
       >
         <ScreenTransition
