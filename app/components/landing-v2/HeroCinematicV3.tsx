@@ -262,16 +262,39 @@ export default function HeroCinematicV3() {
           overflow: "hidden",
         }}
       >
-        {/* ambient cosmic wash — pure CSS, sits over GlobalBackdrop.
-         *  Wrapped so the bottom-fade mask feathers the wash into the
-         *  backdrop instead of cutting on the section edge. */}
+        {/* studio ground (owner 2026-10-09: make the fold look
+         *  professional). The blue nebula washes went grey over warm
+         *  sand and read as fog, and the page backdrop's particle field
+         *  read as confetti behind the headline. This layer replaces
+         *  both: a near-opaque sand ground, a hairline drafting grid
+         *  that fades out radially, and one quiet warm key light. All
+         *  static gradients - nothing animates. Wrapped in the
+         *  bottom-fade mask so the backdrop returns seamlessly below
+         *  the fold. */}
+        {/* NOT bottom-faded: the ground is opaque, and fading it let the
+            dark page backdrop bleed through as a smudge along the fold's
+            bottom edge. The next section is sand on sand, so the frame
+            edge is seamless without the mask. */}
         <div
           aria-hidden
-          className="hv3-bottomFade"
           style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
         >
-          <div className="hv3-nebulaA" />
-          <div className="hv3-nebulaB" />
+          <div style={{ position: "absolute", inset: 0, background: "rgba(246,241,233,0.97)" }} />
+          <div
+            className="hv3-grid"
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "repeating-linear-gradient(0deg, rgba(20,22,29,0.045) 0px, rgba(20,22,29,0.045) 1px, transparent 1px, transparent 64px), repeating-linear-gradient(90deg, rgba(20,22,29,0.045) 0px, rgba(20,22,29,0.045) 1px, transparent 1px, transparent 64px)",
+              maskImage: "radial-gradient(ellipse 85% 80% at 46% 42%, #000 30%, transparent 92%)",
+              WebkitMaskImage: "radial-gradient(ellipse 85% 80% at 46% 42%, #000 30%, transparent 92%)",
+            }}
+          />
+          {/* warm key light, upper left, over the copy column */}
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 52% 46% at 24% 22%, rgba(255,253,248,0.75), transparent 70%)" }} />
+          {/* a breath of brand teal behind the machine */}
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 36% 42% at 72% 44%, rgba(10,112,133,0.07), transparent 72%)" }} />
         </div>
 
         {/* ── 3D stage (contains real links — not aria-hidden) ── */}
@@ -306,55 +329,26 @@ export default function HeroCinematicV3() {
               transformStyle: "preserve-3d",
             }}
           >
-            {/* GALAXY FLOOR POOL — layered nebula + faint spiral swirl
-             *  under the deck (all static gradients; the single opacity
-             *  is the only animated value). Echoes the old hero's galaxy
-             *  floor at zero per-frame cost. */}
+            {/* CONTACT SHADOW — the galaxy pool went with the fog pass
+             *  (owner 2026-10-09): on the clean studio ground the
+             *  machine needs to SIT, not float, so a tight elliptical
+             *  shade under the deck plus a wider ambient soft one. It
+             *  rides the same rig, so it tracks the laptop through the
+             *  whole scroll; its opacity deepens slightly with the same
+             *  floorGlow value the pool used. */}
             <motion.div
               style={{
                 position: "absolute",
                 left: "50%",
                 top: "50%",
-                width: 1150,
-                height: 1150,
-                transform: "translate(-50%, -46%)",
+                width: 740,
+                height: 430,
+                transform: "translate(-50%, -30%)",
                 borderRadius: "50%",
                 opacity: floorGlow,
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: "50%",
-                  background:
-                    "radial-gradient(circle at 50% 50%, rgba(0,229,255,0.15) 0%, rgba(60,120,255,0.08) 28%, rgba(0,229,255,0.03) 52%, transparent 70%), " +
-                    "radial-gradient(ellipse 55% 38% at 38% 58%, rgba(120,80,220,0.10) 0%, transparent 65%), " +
-                    "radial-gradient(ellipse 48% 30% at 66% 40%, rgba(40,160,235,0.10) 0%, transparent 65%)",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  inset: "12%",
-                  borderRadius: "50%",
-                  background:
-                    "conic-gradient(from 210deg at 50% 50%, transparent 0deg, rgba(90,180,255,0.05) 40deg, transparent 90deg, rgba(140,120,255,0.05) 150deg, transparent 210deg, rgba(0,229,255,0.06) 280deg, transparent 340deg)",
-                  filter: "blur(6px)",
-                }}
-              />
-            </motion.div>
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                width: 780,
-                height: 560,
-                transform: "translate(-50%, -48%)",
-                borderRadius: "50%",
                 background:
-                  "radial-gradient(ellipse at 50% 50%, rgba(238,240,243,0.55) 0%, rgba(238,240,243,0.25) 45%, transparent 70%)",
+                  "radial-gradient(ellipse 42% 22% at 50% 50%, rgba(20,22,29,0.3) 0%, rgba(20,22,29,0.1) 46%, transparent 64%), " +
+                  "radial-gradient(ellipse 60% 32% at 50% 48%, rgba(20,22,29,0.07) 0%, transparent 66%)",
               }}
             />
 
@@ -938,25 +932,6 @@ export default function HeroCinematicV3() {
           mask-image: linear-gradient(to bottom,
             #000 0%, #000 82%, rgba(0,0,0,0.72) 88%, rgba(0,0,0,0.38) 94%, transparent 100%);
         }
-        .hv3-nebulaA, .hv3-nebulaB {
-          position: absolute; border-radius: 50%; pointer-events: none;
-          filter: blur(70px);
-        }
-        /* Nebula opacities raised (0.5 -> 0.7 / 0.4 -> 0.55) so the
-         * opening frame has visible cosmic atmosphere before the first
-         * scroll (reviewer pass: frame read as near-black). */
-        .hv3-nebulaA {
-          width: 55vw; height: 42vw; left: 8vw; top: 12vh; opacity: 0.7;
-          background: radial-gradient(ellipse, rgba(40,90,190,0.26), rgba(0,229,255,0.06) 55%, transparent 75%);
-          animation: hv3DriftA 26s ease-in-out infinite alternate;
-        }
-        .hv3-nebulaB {
-          width: 48vw; height: 40vw; right: 2vw; bottom: 4vh; opacity: 0.55;
-          background: radial-gradient(ellipse, rgba(90,60,200,0.21), rgba(63,208,255,0.06) 55%, transparent 75%);
-          animation: hv3DriftB 32s ease-in-out infinite alternate;
-        }
-        @keyframes hv3DriftA { from { transform: translate3d(0,0,0); } to { transform: translate3d(3vw,2vh,0); } }
-        @keyframes hv3DriftB { from { transform: translate3d(0,0,0); } to { transform: translate3d(-2.5vw,-2vh,0); } }
         .hv3-ledBreathe { animation: hv3Led 2.6s ease-in-out infinite; }
         @keyframes hv3Led { 0%,100% { filter: brightness(0.7); } 50% { filter: brightness(1.3); } }
         .hv3-blink { animation: hv3Blink 1.1s steps(2, start) infinite; }
@@ -971,7 +946,7 @@ export default function HeroCinematicV3() {
         .hv3-radarBlip { animation: hv3BlipPulse 3.3s ease-in-out infinite; }
         @keyframes hv3BlipPulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
         @media (prefers-reduced-motion: reduce) {
-          .hv3-nebulaA, .hv3-nebulaB, .hv3-ledBreathe, .hv3-blink, .hv3-ring, .hv3-sweep, .hv3-radarBlip { animation: none; }
+          .hv3-ledBreathe, .hv3-blink, .hv3-ring, .hv3-sweep, .hv3-radarBlip { animation: none; }
         }
       `}</style>
     </section>

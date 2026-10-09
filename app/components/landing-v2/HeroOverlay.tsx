@@ -120,6 +120,7 @@ export default function HeroOverlay() {
             telemetry and the LIVE NOW mark, which is the loudest the page
             gets without competing with the headline. */}
         <h1
+          className="lv2-hero-enter"
           style={{
             fontFamily: "var(--lv2-font-display)",
             /* Slightly reduced (6vw -> 5.4vw, cap 6rem -> 5.25rem) for
@@ -149,6 +150,7 @@ export default function HeroOverlay() {
         </h1>
 
         <p
+          className="lv2-hero-enter lv2-hero-enter-2"
           style={{
             fontFamily: "var(--lv2-font-display)",
             fontSize: "clamp(0.95rem, 1.2vw, 1.0625rem)",
@@ -165,27 +167,70 @@ export default function HeroOverlay() {
           {SUBLINE}
         </p>
 
+        {/* Proof hairline: three true, already-published facts in a
+            quiet mono row. The fold ended on a soft paragraph with
+            nothing anchoring credibility below it; this is the anchor,
+            stated not sold. */}
+        <div
+          className="lv2-hero-enter lv2-hero-enter-3 lv2-hero-proofline"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px 14px",
+            marginTop: "calc(var(--lv2-rail) * 0.55)",
+            paddingTop: 16,
+            borderTop: "1px solid rgba(20,22,29,0.14)",
+            maxWidth: "46ch",
+            fontFamily: "var(--lv2-font-mono)",
+            fontSize: 11.5,
+            fontWeight: 600,
+            letterSpacing: "0.13em",
+            textTransform: "uppercase",
+            color: "#5d6472",
+          }}
+        >
+          <span>6 live courses</span>
+          <span aria-hidden style={{ width: 4, height: 4, borderRadius: 999, background: "#0a7085" }} />
+          <span>Ages 6 to adult</span>
+          <span aria-hidden style={{ width: 4, height: 4, borderRadius: 999, background: "#0a7085" }} />
+          <span>Aligned with NCSC guidance</span>
+        </div>
+
         <div
           style={{
             display: "flex",
             gap: 12,
-            marginTop: "calc(var(--lv2-rail) * 0.6)",
+            marginTop: "calc(var(--lv2-rail) * 0.55)",
             flexWrap: "wrap",
             pointerEvents: "auto",
           }}
-          className="lv2-hero-cta-row"
+          className="lv2-hero-cta-row lv2-hero-enter lv2-hero-enter-4"
         >
           {/* Deliberately NOT a link (owner 2026-10-07): visitors should
-              scroll the whole story themselves rather than jump straight
-              to the streams, so the pill stays as a visual cue only.
-              pointerEvents none keeps hover and click affordances off
-              while the row itself stays interactive for any future CTA. */}
+              scroll the whole story themselves. The solid pill dressed
+              like a button for something unclickable, so it is now a
+              whisper cue (owner 2026-10-09 professional pass): a slim
+              track with a falling dot, then the same approved words. */}
           <span
-            className="lv2-hero-cta lv2-hero-cta-primary"
-            style={{ pointerEvents: "none" }}
+            className="lv2-hero-scrollcue"
+            style={{
+              pointerEvents: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 12,
+              fontFamily: "var(--lv2-font-mono)",
+              fontSize: 11.5,
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "#0a7085",
+            }}
           >
+            <span className="lv2-scrollcue-track" aria-hidden>
+              <span className="lv2-scrollcue-dot" />
+            </span>
             Scroll to continue
-            <span aria-hidden style={{ marginLeft: 8 }}>↓</span>
           </span>
         </div>
       </div>
@@ -207,6 +252,52 @@ export default function HeroOverlay() {
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
+      }
+      /* Scroll cue: a slim track with a falling dot. */
+      .lv2-scrollcue-track {
+        position: relative;
+        width: 2px;
+        height: 30px;
+        border-radius: 2px;
+        background: rgba(10, 112, 133, 0.25);
+        flex-shrink: 0;
+      }
+      .lv2-scrollcue-dot {
+        position: absolute;
+        left: 50%;
+        top: 10px;
+        width: 6px;
+        height: 6px;
+        margin-left: -3px;
+        border-radius: 999px;
+        background: #0a7085;
+        box-shadow: 0 0 8px rgba(10, 112, 133, 0.6);
+      }
+      /* Entrance choreography: the copy column rises in once on load,
+         top to bottom, 120ms apart. Both the hidden start and the
+         animation live inside the motion query, so reduced-motion
+         users simply see the static frame. */
+      @media (prefers-reduced-motion: no-preference) {
+        .lv2-hero-enter {
+          opacity: 0;
+          animation: lv2HeroRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .lv2-hero-enter-2 { animation-delay: 0.12s; }
+        .lv2-hero-enter-3 { animation-delay: 0.24s; }
+        .lv2-hero-enter-4 { animation-delay: 0.36s; }
+        .lv2-scrollcue-dot {
+          animation: lv2ScrollDot 2.1s cubic-bezier(0.45, 0, 0.45, 1) infinite;
+        }
+      }
+      @keyframes lv2HeroRise {
+        from { opacity: 0; transform: translateY(14px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes lv2ScrollDot {
+        0% { transform: translateY(-10px); opacity: 0; }
+        25% { opacity: 1; }
+        70% { opacity: 1; }
+        100% { transform: translateY(22px); opacity: 0; }
       }
       .lv2-hero-pad {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);
