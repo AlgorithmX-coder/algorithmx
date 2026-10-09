@@ -185,7 +185,12 @@ export default function HeroCinematicV3({
    * edge toward the viewer — the physical opening direction after the
    * scene tilt). Starts at p=0.06 so the very first wheel tick
    * responds. */
-  const lidAngle = useTransform(progress, (p) => 110 * smoothstep(0.06, 0.48, p));
+  /* Rest pose starts 12deg ajar (2026-10-09 self-review on the desk
+   * scene): dead-flat at p=0 the closed machine read as a thickness-less
+   * slab; a sliver of opening shows the deck's depth and lets the
+   * screen's glow leak out, so frame one reads as a real machine about
+   * to wake rather than a placemat. */
+  const lidAngle = useTransform(progress, (p) => 12 + 98 * smoothstep(0.06, 0.48, p));
   /* "Camera" = the whole scene group tilting/settling as you scroll. */
   /* Camera: open with a higher top-down establishing angle, settle into
    * a lower, more frontal product angle (screen closer to face-on) as
@@ -412,8 +417,10 @@ export default function HeroCinematicV3({
                   transformStyle: "preserve-3d",
                   background:
                     "linear-gradient(145deg, #b3bac4 0%, #d2d7de 45%, #d2d7de 100%)",
+                  /* the top inset band is the lid's occlusion shadow on
+                     the deck - visible through the ajar rest pose */
                   boxShadow:
-                    "inset 0 1px 0 rgba(32,36,45,0.82), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12)",
+                    "inset 0 1px 0 rgba(32,36,45,0.82), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12), inset 0 34px 36px -26px rgba(25,30,42,0.4)",
                 }}
               >
                 {/* hinge barrels along the back edge */}
