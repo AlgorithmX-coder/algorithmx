@@ -25,6 +25,8 @@
  * viewport and the page simply continues below.
  */
 
+import HeroCinematic from "./HeroCinematicV3";
+
 const AGES = ["AGES 6-9", "10-13", "14-17", "18+", "WORKPLACE"];
 
 const ACCREDITATIONS: Array<{
@@ -62,14 +64,16 @@ export default function HeroThreatMap() {
         fetchPriority="high"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 38%" }}
       />
-      {/* navy grade: legible nav at the top, anchored copy and plates at the bottom */}
+      {/* navy grade: legible nav at the top, anchored copy and plates at
+          the bottom, plus a left-side wash under the copy column now the
+          machine owns the right half (owner 2026-10-09). */}
       <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(180deg, rgba(11,17,32,0.62) 0%, rgba(11,17,32,0.3) 26%, rgba(11,17,32,0.44) 55%, rgba(11,17,32,0.88) 82%, rgba(11,17,32,0.97) 100%)",
+            "linear-gradient(180deg, rgba(11,17,32,0.62) 0%, rgba(11,17,32,0.3) 26%, rgba(11,17,32,0.44) 55%, rgba(11,17,32,0.88) 82%, rgba(11,17,32,0.97) 100%), linear-gradient(90deg, rgba(7,11,22,0.72) 0%, rgba(7,11,22,0.42) 34%, rgba(7,11,22,0) 58%)",
         }}
       />
       {/* slow aurora drift so the frame never sits perfectly still */}
@@ -128,49 +132,60 @@ export default function HeroThreatMap() {
         </circle>
       </svg>
 
-      {/* copy block */}
+      {/* THE MACHINE - the 3D laptop, open on the threat console,
+          composited over the city's right half (owner 2026-10-09:
+          "I want the laptop on the main landing page"). staticOpen:
+          no scroll rail, ambience suppressed; its course links are
+          live, hence pointerEvents stays on. */}
       <div
+        className="htm-stage"
         style={{
-          position: "relative",
+          position: "absolute",
+          right: "-1vw",
+          top: 92,
+          bottom: 128,
+          width: "56%",
           zIndex: 2,
-          width: "100%",
-          maxWidth: 1180,
-          margin: "0 auto",
-          padding: "140px 24px 0",
-          textAlign: "center",
+          transform: "scale(0.93)",
+          transformOrigin: "60% 30%",
         }}
       >
-        {/* local vignette so the headline owns its zone of the image
-            (owner 2026-10-09: title blended into the background) */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "46%",
-            width: "min(1240px, 96vw)",
-            height: "130%",
-            transform: "translate(-50%, -50%)",
-            background: "radial-gradient(ellipse 58% 52% at 50% 50%, rgba(7,11,22,0.66), rgba(7,11,22,0.28) 62%, transparent 78%)",
-            pointerEvents: "none",
-          }}
-        />
+        <HeroCinematic overlay={false} staticOpen />
+      </div>
+
+      {/* copy block - left column beside the machine */}
+      <div
+        className="htm-copy"
+        style={{
+          position: "relative",
+          zIndex: 3,
+          flex: 1,
+          width: "100%",
+          maxWidth: 1340,
+          margin: "0 auto",
+          padding: "120px 24px 24px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          pointerEvents: "none",
+        }}
+      >
         <h1
           className="htm-enter"
           style={{
-            position: "relative",
             fontFamily: "var(--lv2-font-display)",
-            fontSize: "clamp(2.5rem, 5.7vw, 5.3rem)",
-            lineHeight: 1.04,
-            letterSpacing: "-0.028em",
+            fontSize: "clamp(2.3rem, 3.9vw, 3.7rem)",
+            lineHeight: 1.06,
+            letterSpacing: "-0.026em",
             fontWeight: 650,
-            margin: "0 auto",
+            margin: 0,
+            maxWidth: "15ch",
             color: "#ffffff",
             textShadow: "0 2px 10px rgba(4,8,18,0.8), 0 10px 50px rgba(4,8,18,0.7)",
           }}
         >
-          Cyber and AI skills for
-          <br />
+          Cyber and AI skills for{" "}
           {/* textShadow none: a shadow on gradient-clipped text paints
               THROUGH the transparent letterforms as a grey smear and
               mutes the colours; the drop-shadow filter does the lifting */}
@@ -180,11 +195,11 @@ export default function HeroThreatMap() {
           className="htm-enter htm-enter-2"
           style={{
             fontFamily: "var(--lv2-font-display)",
-            fontSize: "clamp(0.95rem, 1.2vw, 1.0625rem)",
+            fontSize: "clamp(0.95rem, 1.15vw, 1.0625rem)",
             lineHeight: 1.6,
-            color: "rgba(225,233,250,0.88)",
-            maxWidth: "56ch",
-            margin: "20px auto 0",
+            color: "rgba(225,233,250,0.9)",
+            maxWidth: "44ch",
+            margin: "20px 0 0",
             textShadow: "0 1px 14px rgba(4,8,18,0.6)",
           }}
         >
@@ -198,10 +213,11 @@ export default function HeroThreatMap() {
           className="htm-enter htm-enter-3"
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             flexWrap: "wrap",
             gap: 10,
             marginTop: 26,
+            maxWidth: 480,
           }}
         >
           {AGES.map((a) => (
@@ -314,6 +330,16 @@ export default function HeroThreatMap() {
         }
         @media (max-width: 640px) {
           .htm-root { justify-content: flex-end; }
+        }
+        /* Narrow screens: the machine bows out and the copy re-centres -
+           the split composition needs the width. */
+        @media (max-width: 980px) {
+          .htm-stage { display: none; }
+          .htm-copy {
+            align-items: center !important;
+            text-align: center;
+          }
+          .htm-copy > div { justify-content: center !important; }
         }
         /* SMIL ignores the motion query, so the pinging circles are
            hidden outright for reduced-motion users; the static nodes

@@ -92,7 +92,15 @@ function smoothstep(a: number, b: number, x: number): number {
   return t * t * (3 - 2 * t);
 }
 
-export default function HeroCinematicV3({ overlay = true }: { overlay?: boolean } = {}) {
+/**
+ * overlay    false drops the headline/CTA column (the page said it already).
+ * staticOpen true renders the machine fully open and lit with NO scroll
+ *            rail or pinning - the frame fills its parent, for compositing
+ *            into another hero (2026-10-09: the threat-map first screen
+ *            features the laptop). Also suppresses the nebula/galaxy
+ *            ambience, which would paint fog over the host's backdrop.
+ */
+export default function HeroCinematicV3({ overlay = true, staticOpen = false }: { overlay?: boolean; staticOpen?: boolean } = {}) {
   const railRef = useRef<HTMLElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
@@ -151,7 +159,7 @@ export default function HeroCinematicV3({ overlay = true }: { overlay?: boolean 
     damping: 19,
     mass: 0.5,
   });
-  const progress = useTransform(smoothScroll, (v) => (reducedMotion ? 1 : v));
+  const progress = useTransform(smoothScroll, (v) => (reducedMotion || staticOpen ? 1 : v));
 
   /* ── beat-derived motion values (all scroll-pure) ────────────────── */
   /* Lid: 0deg = closed flat over the deck; +108deg = open (positive
@@ -240,7 +248,7 @@ export default function HeroCinematicV3({ overlay = true }: { overlay?: boolean 
       ref={railRef}
       style={{
         position: "relative",
-        height: isCompact ? "170vh" : "220vh",
+        height: staticOpen ? "100%" : isCompact ? "170vh" : "220vh",
         background: "transparent",
       }}
     >
@@ -255,24 +263,25 @@ export default function HeroCinematicV3({ overlay = true }: { overlay?: boolean 
           nothing there moves. */}
       <div
         className="hv3-pinFrame"
-        style={{
-          position: "sticky",
-          top: 0,
-          width: "100%",
-          overflow: "hidden",
-        }}
+        style={
+          staticOpen
+            ? { position: "relative", width: "100%", height: "100%", overflow: "visible" }
+            : { position: "sticky", top: 0, width: "100%", overflow: "hidden" }
+        }
       >
         {/* ambient cosmic wash — pure CSS, sits over GlobalBackdrop.
          *  Wrapped so the bottom-fade mask feathers the wash into the
          *  backdrop instead of cutting on the section edge. */}
-        <div
-          aria-hidden
-          className="hv3-bottomFade"
-          style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-        >
-          <div className="hv3-nebulaA" />
-          <div className="hv3-nebulaB" />
-        </div>
+        {!staticOpen && (
+          <div
+            aria-hidden
+            className="hv3-bottomFade"
+            style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+          >
+            <div className="hv3-nebulaA" />
+            <div className="hv3-nebulaB" />
+          </div>
+        )}
 
         {/* ── 3D stage (contains real links — not aria-hidden) ── */}
         <div
@@ -312,7 +321,8 @@ export default function HeroCinematicV3({ overlay = true }: { overlay?: boolean 
             {/* GALAXY FLOOR POOL — layered nebula + faint spiral swirl
              *  under the deck (all static gradients; the single opacity
              *  is the only animated value). Echoes the old hero's galaxy
-             *  floor at zero per-frame cost. */}
+             *  floor at zero per-frame cost. Hidden when composited into
+             *  another hero (staticOpen), where it reads as fog. */}
             <motion.div
               style={{
                 position: "absolute",
@@ -322,7 +332,8 @@ export default function HeroCinematicV3({ overlay = true }: { overlay?: boolean 
                 height: 1150,
                 transform: "translate(-50%, -46%)",
                 borderRadius: "50%",
-                opacity: floorGlow,
+                opacity: staticOpen ? 0 : floorGlow,
+                display: staticOpen ? "none" : undefined,
               }}
             >
               <div
@@ -347,19 +358,21 @@ export default function HeroCinematicV3({ overlay = true }: { overlay?: boolean 
                 }}
               />
             </motion.div>
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                width: 780,
-                height: 560,
-                transform: "translate(-50%, -48%)",
-                borderRadius: "50%",
-                background:
-                  "radial-gradient(ellipse at 50% 50%, rgba(238,240,243,0.55) 0%, rgba(238,240,243,0.25) 45%, transparent 70%)",
-              }}
-            />
+            {!staticOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  width: 780,
+                  height: 560,
+                  transform: "translate(-50%, -48%)",
+                  borderRadius: "50%",
+                  background:
+                    "radial-gradient(ellipse at 50% 50%, rgba(238,240,243,0.55) 0%, rgba(238,240,243,0.25) 45%, transparent 70%)",
+                }}
+              />
+            )}
 
             {/* ══ LAPTOP ══ */}
             <div
