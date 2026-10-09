@@ -416,8 +416,15 @@ export default function RequestInspector({
               )}
             </div>
 
-            {/* Inspect zones */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 8 }}>
+            {/* Inspect zones.
+                The side inset is the other half of W20 3a. Cutting the press
+                pulse from 4% to 1.5% was only half the fix: measured AFTER that
+                change, the boxes still sat flush to the frame (rest gap ~0.2px)
+                and the pulse still carried them 2-3px past its left edge, at
+                both 1093x525 and 1414x771. The tester asked for an offset as
+                well as a smaller jump. 6px a side clears the ~2.5px the pulse
+                grows by, with room over. */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 8, padding: "0 6px" }}>
               {req.zones.map((zone) => {
                 const c = zoneColour(zone);
                 const open = inspected.has(zone.id);

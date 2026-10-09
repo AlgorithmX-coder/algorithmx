@@ -414,8 +414,13 @@ export default function ProfileInspector({
               )}
             </div>
 
-            {/* Inspect zones */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 8 }}>
+            {/* Inspect zones.
+                Same side inset as the Request Inspector, for the same reason:
+                W17 4a is W20 3a's twin ("when any of the magnifying glass boxes
+                are pressed, they expand out of frame"). Shrinking the pulse was
+                half of it; the boxes also sat flush, so the press had nowhere to
+                go. 6px a side clears the ~2.5px the pulse grows by. */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 8, padding: "0 6px" }}>
               {profile.zones.map((zone) => {
                 const c = zoneColour(zone);
                 const open = inspected.has(zone.id);
