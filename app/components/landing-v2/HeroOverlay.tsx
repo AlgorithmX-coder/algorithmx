@@ -178,14 +178,21 @@ export default function HeroOverlay() {
           {/* Deliberately NOT a link (owner 2026-10-07): visitors should
               scroll the whole story themselves rather than jump straight
               to the streams, so the pill stays as a visual cue only.
-              pointerEvents none keeps hover and click affordances off
-              while the row itself stays interactive for any future CTA. */}
-          <span
-            className="lv2-hero-cta lv2-hero-cta-primary"
-            style={{ pointerEvents: "none" }}
-          >
+              Redesigned 2026-10-09 (owner: tighten it up): its own
+              class, free of the CTA !important chain - a compact teal
+              capsule with an inner highlight and a gently bobbing
+              double chevron instead of a text arrow. */}
+          <span className="lv2-scrollcue" style={{ pointerEvents: "none" }}>
             Scroll to continue
-            <span aria-hidden style={{ marginLeft: 8 }}>↓</span>
+            <svg
+              aria-hidden
+              viewBox="0 0 12 14"
+              className="lv2-scrollcue-chev"
+              style={{ width: 11, height: 13 }}
+            >
+              <path d="M1 2.5 L6 6.5 L11 2.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M1 8 L6 12 L11 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.55" />
+            </svg>
           </span>
         </div>
       </div>
@@ -207,6 +214,34 @@ export default function HeroOverlay() {
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
+      }
+      /* The scroll cue: compact teal capsule, crisp type, a double
+         chevron that bobs. Not a button - no hover states on purpose. */
+      .lv2-scrollcue {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 20px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #0d8098, #0a7085);
+        color: #f2fbfc;
+        font-family: var(--lv2-font-mono);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+        box-shadow:
+          0 12px 26px -14px rgba(10, 112, 133, 0.8),
+          0 0 0 1px rgba(10, 112, 133, 0.28),
+          inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      }
+      .lv2-scrollcue-chev { color: #bdf2f6; }
+      @media (prefers-reduced-motion: no-preference) {
+        .lv2-scrollcue-chev { animation: lv2ChevBob 1.8s ease-in-out infinite; }
+      }
+      @keyframes lv2ChevBob {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(3px); }
       }
       .lv2-hero-pad {
         padding: max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) calc(var(--lv2-rail) * 1.6);

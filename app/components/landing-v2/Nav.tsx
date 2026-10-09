@@ -643,30 +643,29 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         }
         @media (min-width: 641px) {
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
-          /* Owner 2026-10-07: "stand out more". Deeper tint, firmer
-             border, a step up in size and padding - still clearly below
-             a solid pill, so the hierarchy survives. Label #075a6b on
-             the 0.24 wash still clears 4.5:1. */
-          border-color: rgba(10, 112, 133, 0.6) !important;
-          background: rgba(10, 112, 133, 0.24) !important;
+          /* Redesigned 2026-10-09 (owner: make them look better). The
+             glow-halo pass read fuzzy up close; these are crisp premium
+             chips now - clean wash, firm hairline, sharp ink, a paper
+             top-light - and hover inverts to a solid teal pill so
+             interactivity is unmistakable. #075a6b on the 0.12 wash
+             clears 4.5:1 with room. */
+          border-color: rgba(10, 112, 133, 0.55) !important;
+          background: rgba(10, 112, 133, 0.12) !important;
           color: #075a6b !important;
           font-weight: 700;
           font-size: 13px !important;
-          padding: 9px 18px !important;
-          /* Owner: put these in glowing fonts. A halo works on black by
-             adding light; sand has no darkness to bloom into, so the glow
-             is a teal bloom carried by the letterforms themselves, over a
-             thin white lift that keeps them crisp on the wash. */
-          text-shadow: 0 0 10px rgba(10, 112, 133, 0.55), 0 1px 0 rgba(255, 255, 255, 0.6) !important;
-          box-shadow: 0 6px 16px -12px rgba(10, 112, 133, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+          letter-spacing: 0.16em !important;
+          padding: 9px 19px !important;
+          text-shadow: none !important;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 2px 6px -4px rgba(10, 112, 133, 0.5) !important;
         }
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover),
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):focus-visible) {
-          border-color: rgba(10, 112, 133, 0.85) !important;
-          background: rgba(10, 112, 133, 0.34) !important;
-          color: #05454f !important;
-          text-shadow: 0 0 14px rgba(10, 112, 133, 0.85), 0 1px 0 rgba(255, 255, 255, 0.6) !important;
-          box-shadow: 0 8px 20px -12px rgba(10, 112, 133, 1), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+          border-color: #0a7085 !important;
+          background: #0a7085 !important;
+          color: #fbf9f4 !important;
+          text-shadow: none !important;
+          box-shadow: 0 10px 22px -10px rgba(10, 112, 133, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
         }
         }
         :global(.lv2-nav-secondary) {
@@ -1267,7 +1266,7 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
         }
         .lv2-tel-div {
           width: 1px;
-          height: 16px;
+          height: 20px;
           background: linear-gradient(
             180deg,
             transparent,
@@ -1277,24 +1276,29 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
         }
         .lv2-tel-label {
           font-size: 11.5px;
-          font-weight: 600;
-          letter-spacing: 0.14em;
+          font-weight: 700;
+          letter-spacing: 0.13em;
           text-transform: uppercase;
           color: rgba(232, 237, 255, 0.7);
         }
-        /* The marks: each on the plate its artwork needs. */
+        /* The marks: each on the plate its artwork needs. Soft-rect
+           badge plates (2026-10-09 polish pass) - pills squeezed the
+           wordmark logos; a 9px radius reads like a certificate chip
+           and gives every mark the same visual weight. */
         .lv2-tel-plate {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          height: 28px;
-          padding: 0 9px;
-          border-radius: 999px;
+          height: 30px;
+          padding: 0 10px;
+          border-radius: 9px;
           background: #fff;
+          box-shadow: inset 0 0 0 1px rgba(20, 22, 29, 0.08), 0 2px 6px -3px rgba(10, 20, 40, 0.35);
         }
         .lv2-tel-plate-dark {
           background: #14161d;
-          border: 1px solid rgba(159, 245, 255, 0.22);
+          box-shadow: inset 0 0 0 1px rgba(159, 245, 255, 0.28), 0 2px 6px -3px rgba(10, 20, 40, 0.45);
+          border: none;
         }
         @media (prefers-reduced-motion: reduce) {
           .lv2-tel-scan {
