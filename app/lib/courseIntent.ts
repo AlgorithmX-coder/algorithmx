@@ -21,16 +21,24 @@ export function safeCourseSlug(raw: string | null | undefined): string | null {
   return raw && COURSE_SLUG_RE.test(raw) ? raw : null;
 }
 
-/* Courses that own a dedicated home to land on after auth, instead of the
- * family hub. Cyber Pro drops the learner straight onto its module page. */
+/* Every cybersecurity course lands the learner STRAIGHT in its own course,
+ * never the family hub (owner 2026-10-09: "take it straight to the course,
+ * not this hub"). Each destination mirrors the hub card's own Enter button,
+ * so the two can never disagree. The target routes still run their own
+ * entitlement / onboarding guards, so an un-set-up account is redirected
+ * from there rather than parked on the hub. */
 const COURSE_HOME: Record<string, string> = {
+  "cyber-heroes": "/dashboard",
+  cyberexplorers: "/explorers",
+  cyberstart: "/operators/portfolio",
   "cyberstart-pro": "/pro/course",
 };
 
 /**
- * The post-auth destination for a course. A course with its own home (see
- * COURSE_HOME) goes straight there; otherwise the family hub, optionally
- * pre-selecting the course. Pass the result of {@link safeCourseSlug}.
+ * The post-auth destination for a course. A known course goes straight to
+ * its own home (see COURSE_HOME); a login with no course context has
+ * nowhere course-specific to go, so it falls back to the hub. Pass the
+ * result of {@link safeCourseSlug}.
  */
 export function hubTargetFor(slug: string | null): string {
   if (slug && COURSE_HOME[slug]) return COURSE_HOME[slug];
