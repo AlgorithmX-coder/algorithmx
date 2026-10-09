@@ -92,7 +92,7 @@ function smoothstep(a: number, b: number, x: number): number {
   return t * t * (3 - 2 * t);
 }
 
-export default function HeroCinematicV3() {
+export default function HeroCinematicV3({ overlay = true }: { overlay?: boolean } = {}) {
   const railRef = useRef<HTMLElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
@@ -294,7 +294,10 @@ export default function HeroCinematicV3() {
               rotateZ: -17,
               scale: sceneScale,
               y: sceneY,
-              x: isCompact ? "5vw" : isMid ? "22vw" : "14vw",
+              /* With the overlay, the machine shares the frame with the
+                 copy column and sits right of centre; as the standalone
+                 MISSION CONTROL showcase it owns the frame and centres. */
+              x: overlay ? (isCompact ? "5vw" : isMid ? "22vw" : "14vw") : "0vw",
               transformStyle: "preserve-3d",
               willChange: "transform",
             }}
@@ -887,8 +890,11 @@ export default function HeroCinematicV3() {
 
         {/* headline / CTA column — visible from scroll 0 (2026-07-24
          *  reviewer pass: the dormant first frame read as empty/dark
-         *  with no message until p=0.68) */}
-        <HeroOverlay />
+         *  with no message until p=0.68).
+         *  overlay=false since 2026-10-09: the scene also serves as the
+         *  mid-page MISSION CONTROL showcase under the threat-map hero,
+         *  where the page already said its headline. */}
+        {overlay && <HeroOverlay />}
 
         {/* scroll hint */}
       </div>

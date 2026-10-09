@@ -1,7 +1,9 @@
 import { Fredoka, Chakra_Petch } from "next/font/google";
 
 import HeroThreatMap from "@/app/components/landing-v2/HeroThreatMap";
+import HeroCinematic from "@/app/components/landing-v2/HeroCinematicV3";
 import PaperArcs from "@/app/components/landing-v2/PaperArcs";
+import { sectionMark } from "@/app/components/sectionMark";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProofBand from "@/app/components/ProofBand";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
@@ -245,6 +247,32 @@ export default function LandingV2() {
           <ProofBand />
         </div>
         <ProblemStats />
+        {/* MISSION CONTROL - the 3D laptop is back (owner 2026-10-09:
+            "I like the laptop"), as a mid-page showcase rather than the
+            hero: scroll opens the lid onto the threat console, whose six
+            LIVE operations hand straight into Pick your stream below.
+            overlay=false - the page already said its headline up top. */}
+        <section aria-label="Mission control" style={{ position: "relative" }}>
+          <div style={{ maxWidth: 1180, margin: "0 auto", padding: "calc(var(--lv2-rail) * 1.4) var(--lv2-rail) 0", textAlign: "center" }}>
+            <p style={{ margin: 0 }}>
+              <span style={sectionMark}>{"// MISSION CONTROL"}</span>
+            </p>
+            <h2
+              style={{
+                fontFamily: "var(--lv2-font-display)",
+                fontSize: "clamp(1.8rem, 3.4vw, 2.9rem)",
+                fontWeight: 500,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.1,
+                color: "var(--lv2-ink)",
+                margin: "18px 0 0",
+              }}
+            >
+              Keep scrolling. The machine boots.
+            </h2>
+          </div>
+          <HeroCinematic overlay={false} />
+        </section>
         <div style={{ position: "relative" }}>
           <PaperArcs />
           <SubjectShowcase />
