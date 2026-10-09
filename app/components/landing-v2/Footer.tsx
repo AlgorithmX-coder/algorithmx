@@ -136,13 +136,15 @@ export default function Footer({ tone = "night", variant = "site" }: { tone?: Fo
           ) : (
             <FooterColumn
               tone={tone}
-              label="Subjects"
+              label="Courses"
               links={[
-                { name: "Cybersecurity", href: "/cybersecurity" },
                 { name: "Cyber Heroes", href: "/cyberheroes" },
                 { name: "Cyber Explorers", href: "/cyberexplorers" },
+                { name: "Cyber Ops", href: "/ops" },
+                { name: "Cyber Pro", href: "/pro" },
+                { name: "AI at work", href: "/corporate" },
               ]}
-              note="+ 5 more streams, encrypted until launch"
+              note="+ 5 more subjects in development"
             />
           )}
           {corporate && (

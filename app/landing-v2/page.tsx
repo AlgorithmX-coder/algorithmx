@@ -235,10 +235,12 @@ export default function LandingV2() {
         {/* The hero's defence network restated in ink on the paper
             sections (owner 2026-10-09): page-level wrappers, because
             ProofBand is shared with /schools and must not change there.
-            The top wisp lets the city glow bleed a breath into the
-            paper so the dark-to-light seam reads deliberate. */}
+            The tall runway dissolves the hero's navy into the sand over
+            ~340px - the white accreditation card floats through the
+            night-into-day gradient, so there is no hard seam at all
+            (owner: the first-to-second page contrast was too sharp). */}
         <div style={{ position: "relative" }}>
-          <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: 0, height: 90, background: "linear-gradient(180deg, rgba(11,17,32,0.16), transparent)", pointerEvents: "none" }} />
+          <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: 0, height: 340, background: "linear-gradient(180deg, #0b1120 0%, rgba(11,17,32,0.72) 30%, rgba(11,17,32,0.3) 62%, rgba(11,17,32,0) 100%)", pointerEvents: "none" }} />
           <PaperArcs />
           <ProofBand />
         </div>

@@ -282,21 +282,6 @@ export default function HeroThreatMap() {
         </div>
       </div>
 
-      {/* hairline seam: a thin cyan light along the frame's bottom edge
-          so the hand-off to the paper page reads designed, not cut */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: 2,
-          zIndex: 3,
-          background: "linear-gradient(90deg, transparent 6%, rgba(63,208,255,0.55) 50%, transparent 94%)",
-        }}
-      />
-
       <style jsx>{`
         .htm-grad {
           background: linear-gradient(92deg, #2fe3ff 0%, #8b7bff 55%, #ff5fb0 100%);
