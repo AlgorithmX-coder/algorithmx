@@ -25,8 +25,6 @@
  * viewport and the page simply continues below.
  */
 
-import HeroCinematic from "./HeroCinematicV3";
-
 const AGES = ["AGES 6-9", "10-13", "14-17", "18+", "WORKPLACE"];
 
 const ACCREDITATIONS: Array<{
@@ -64,16 +62,14 @@ export default function HeroThreatMap() {
         fetchPriority="high"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 38%" }}
       />
-      {/* navy grade: legible nav at the top, anchored copy and plates at
-          the bottom, plus a left-side wash under the copy column now the
-          machine owns the right half (owner 2026-10-09). */}
+      {/* navy grade: legible nav at the top, anchored copy and plates at the bottom */}
       <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(180deg, rgba(11,17,32,0.62) 0%, rgba(11,17,32,0.3) 26%, rgba(11,17,32,0.44) 55%, rgba(11,17,32,0.88) 82%, rgba(11,17,32,0.97) 100%), linear-gradient(90deg, rgba(7,11,22,0.72) 0%, rgba(7,11,22,0.42) 34%, rgba(7,11,22,0) 58%)",
+            "linear-gradient(180deg, rgba(11,17,32,0.62) 0%, rgba(11,17,32,0.3) 26%, rgba(11,17,32,0.44) 55%, rgba(11,17,32,0.88) 82%, rgba(11,17,32,0.97) 100%)",
         }}
       />
       {/* slow aurora drift so the frame never sits perfectly still */}
@@ -117,6 +113,35 @@ export default function HeroThreatMap() {
           <path d="M196,258 Q360,150 548,330" opacity={0.45} />
           <path d="M1148,214 Q1240,230 1278,262" opacity={0.5} />
         </g>
+        {/* POWER TRANSFER (owner 2026-10-09: "more motion in the
+            connections, power being transferred between buildings"):
+            glowing packets riding every arc, each a bright head towing
+            a dimmer tail dot on the same path a beat behind. Staggered
+            durations keep the traffic feeling organic. SMIL, so the
+            whole group is hidden under reduced motion via .htm-anim. */}
+        <g className="htm-anim">
+          {[
+            { d: "M340,206 Q470,96 608,196", dur: "3.2s", begin: "0s", c: "#7de7ff" },
+            { d: "M608,196 Q740,110 872,198", dur: "2.7s", begin: "0.6s", c: "#9d8dff" },
+            { d: "M872,198 Q1010,120 1148,214", dur: "3.6s", begin: "1.1s", c: "#7de7ff" },
+            { d: "M472,264 Q590,180 742,238", dur: "2.9s", begin: "0.3s", c: "#2fe28a" },
+            { d: "M742,238 Q900,170 1012,252", dur: "3.4s", begin: "1.6s", c: "#7de7ff" },
+            { d: "M196,258 Q360,150 548,330", dur: "4.1s", begin: "0.9s", c: "#9d8dff" },
+            { d: "M1148,214 Q1240,230 1278,262", dur: "2.2s", begin: "1.3s", c: "#2fe28a" },
+          ].map((p, i) => (
+            <g key={i}>
+              <circle r={3} fill={p.c} opacity={0.95}>
+                <animateMotion dur={p.dur} begin={p.begin} repeatCount="indefinite" path={p.d} />
+              </circle>
+              <circle r={4.6} fill="none" stroke={p.c} strokeWidth={0.8} opacity={0.4}>
+                <animateMotion dur={p.dur} begin={p.begin} repeatCount="indefinite" path={p.d} />
+              </circle>
+              <circle r={1.8} fill={p.c} opacity={0.45}>
+                <animateMotion dur={p.dur} begin={`${parseFloat(p.begin) + 0.22}s`} repeatCount="indefinite" path={p.d} />
+              </circle>
+            </g>
+          ))}
+        </g>
         {/* intercept pings - green for held, red for the one being blocked */}
         <circle className="htm-anim" cx={608} cy={196} r={6} fill="none" stroke="#ff5d73" strokeWidth={1.4}>
           <animate attributeName="r" values="3;22" dur="2.6s" repeatCount="indefinite" />
@@ -132,60 +157,49 @@ export default function HeroThreatMap() {
         </circle>
       </svg>
 
-      {/* THE MACHINE - the 3D laptop, open on the threat console,
-          composited over the city's right half (owner 2026-10-09:
-          "I want the laptop on the main landing page"). staticOpen:
-          no scroll rail, ambience suppressed; its course links are
-          live, hence pointerEvents stays on. */}
+      {/* copy block */}
       <div
-        className="htm-stage"
-        style={{
-          position: "absolute",
-          right: "-1vw",
-          top: 92,
-          bottom: 128,
-          width: "56%",
-          zIndex: 2,
-          transform: "scale(0.93)",
-          transformOrigin: "60% 30%",
-        }}
-      >
-        <HeroCinematic overlay={false} staticOpen />
-      </div>
-
-      {/* copy block - left column beside the machine */}
-      <div
-        className="htm-copy"
         style={{
           position: "relative",
-          zIndex: 3,
-          flex: 1,
+          zIndex: 2,
           width: "100%",
-          maxWidth: 1340,
+          maxWidth: 1180,
           margin: "0 auto",
-          padding: "120px 24px 24px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          pointerEvents: "none",
+          padding: "140px 24px 0",
+          textAlign: "center",
         }}
       >
+        {/* local vignette so the headline owns its zone of the image
+            (owner 2026-10-09: title blended into the background) */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "46%",
+            width: "min(1240px, 96vw)",
+            height: "130%",
+            transform: "translate(-50%, -50%)",
+            background: "radial-gradient(ellipse 58% 52% at 50% 50%, rgba(7,11,22,0.66), rgba(7,11,22,0.28) 62%, transparent 78%)",
+            pointerEvents: "none",
+          }}
+        />
         <h1
           className="htm-enter"
           style={{
+            position: "relative",
             fontFamily: "var(--lv2-font-display)",
-            fontSize: "clamp(2.3rem, 3.9vw, 3.7rem)",
-            lineHeight: 1.06,
-            letterSpacing: "-0.026em",
+            fontSize: "clamp(2.5rem, 5.7vw, 5.3rem)",
+            lineHeight: 1.04,
+            letterSpacing: "-0.028em",
             fontWeight: 650,
-            margin: 0,
-            maxWidth: "15ch",
+            margin: "0 auto",
             color: "#ffffff",
             textShadow: "0 2px 10px rgba(4,8,18,0.8), 0 10px 50px rgba(4,8,18,0.7)",
           }}
         >
-          Cyber and AI skills for{" "}
+          Cyber and AI skills for
+          <br />
           {/* textShadow none: a shadow on gradient-clipped text paints
               THROUGH the transparent letterforms as a grey smear and
               mutes the colours; the drop-shadow filter does the lifting */}
@@ -195,11 +209,11 @@ export default function HeroThreatMap() {
           className="htm-enter htm-enter-2"
           style={{
             fontFamily: "var(--lv2-font-display)",
-            fontSize: "clamp(0.95rem, 1.15vw, 1.0625rem)",
+            fontSize: "clamp(0.95rem, 1.2vw, 1.0625rem)",
             lineHeight: 1.6,
-            color: "rgba(225,233,250,0.9)",
-            maxWidth: "44ch",
-            margin: "20px 0 0",
+            color: "rgba(225,233,250,0.88)",
+            maxWidth: "56ch",
+            margin: "20px auto 0",
             textShadow: "0 1px 14px rgba(4,8,18,0.6)",
           }}
         >
@@ -213,11 +227,10 @@ export default function HeroThreatMap() {
           className="htm-enter htm-enter-3"
           style={{
             display: "flex",
-            justifyContent: "flex-start",
+            justifyContent: "center",
             flexWrap: "wrap",
             gap: 10,
             marginTop: 26,
-            maxWidth: 480,
           }}
         >
           {AGES.map((a) => (
@@ -330,16 +343,6 @@ export default function HeroThreatMap() {
         }
         @media (max-width: 640px) {
           .htm-root { justify-content: flex-end; }
-        }
-        /* Narrow screens: the machine bows out and the copy re-centres -
-           the split composition needs the width. */
-        @media (max-width: 980px) {
-          .htm-stage { display: none; }
-          .htm-copy {
-            align-items: center !important;
-            text-align: center;
-          }
-          .htm-copy > div { justify-content: center !important; }
         }
         /* SMIL ignores the motion query, so the pinging circles are
            hidden outright for reduced-motion users; the static nodes
