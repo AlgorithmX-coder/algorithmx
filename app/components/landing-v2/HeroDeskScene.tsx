@@ -34,28 +34,34 @@ const ACCREDITATIONS: Array<{
 function DeskBackdrop() {
   return (
     <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      {/* flat-lay desk: shot straight down, the same camera as the
+          laptop rig, so the closed machine genuinely lies ON the wood -
+          and the surface fills the frame at every window size, so the
+          composition cannot fall off a desk edge on taller screens. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/landing/hero-desk.webp"
+        src="/landing/hero-desk2.webp"
         alt=""
         fetchPriority="high"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 64%" }}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
       />
-      {/* paper veil: keeps the photo warm but quiet, and lifts the
-          left column for the copy */}
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(248,244,236,0.96) 0%, rgba(248,244,236,0.8) 42%, rgba(248,244,236,0.16) 66%, rgba(248,244,236,0.05) 100%)" }} />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(248,244,236,0.5) 0%, rgba(248,244,236,0) 30%, rgba(248,244,236,0) 70%, rgba(248,244,236,0.65) 100%)" }} />
-      {/* contact shadow on the tabletop, under the machine's spot */}
+      {/* paper veil lifting the left column for the copy */}
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(248,244,236,0.95) 0%, rgba(248,244,236,0.78) 40%, rgba(248,244,236,0.12) 64%, rgba(248,244,236,0.02) 100%)" }} />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(248,244,236,0.45) 0%, rgba(248,244,236,0) 26%, rgba(248,244,236,0) 72%, rgba(248,244,236,0.55) 100%)" }} />
+      {/* cast shadow: tracks the rig (centre + 16vw, the machine's x
+          offset), rotated with the deck, thrown right-and-down to obey
+          the window light coming from the left */}
       <div
         style={{
           position: "absolute",
-          left: "66%",
-          top: "64%",
-          width: 700,
-          height: 190,
-          transform: "translate(-50%, -30%)",
-          borderRadius: "50%",
-          background: "radial-gradient(ellipse 48% 40% at 50% 50%, rgba(70,55,35,0.3), rgba(70,55,35,0.1) 55%, transparent 72%)",
+          left: "calc(50% + 16vw)",
+          top: "50%",
+          width: 740,
+          height: 540,
+          transform: "translate(-46%, -42%) rotate(-17deg)",
+          borderRadius: 60,
+          background: "radial-gradient(ellipse 52% 48% at 50% 50%, rgba(70,55,35,0.32), rgba(70,55,35,0.12) 55%, transparent 74%)",
+          filter: "blur(6px)",
         }}
       />
     </div>

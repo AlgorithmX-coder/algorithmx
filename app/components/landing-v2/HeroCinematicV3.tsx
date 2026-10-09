@@ -185,12 +185,11 @@ export default function HeroCinematicV3({
    * edge toward the viewer — the physical opening direction after the
    * scene tilt). Starts at p=0.06 so the very first wheel tick
    * responds. */
-  /* Rest pose starts 12deg ajar (2026-10-09 self-review on the desk
-   * scene): dead-flat at p=0 the closed machine read as a thickness-less
-   * slab; a sliver of opening shows the deck's depth and lets the
-   * screen's glow leak out, so frame one reads as a real machine about
-   * to wake rather than a placemat. */
-  const lidAngle = useTransform(progress, (p) => 12 + 98 * smoothstep(0.06, 0.48, p));
+  /* Fully closed at rest. A 12deg-ajar experiment (2026-10-09) read as
+   * a broken half-shut machine on the desk scene - owner call: closed
+   * flat, with the SCENE'S camera matched to the rig instead (flat-lay
+   * desk), is what makes frame one look right. */
+  const lidAngle = useTransform(progress, (p) => 110 * smoothstep(0.06, 0.48, p));
   /* "Camera" = the whole scene group tilting/settling as you scroll. */
   /* Camera: open with a higher top-down establishing angle, settle into
    * a lower, more frontal product angle (screen closer to face-on) as
