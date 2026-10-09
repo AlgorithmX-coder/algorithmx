@@ -185,6 +185,12 @@ export default function PixIcon({
       alt={alt}
       width={size}
       height={size}
+      // Decode off the main thread. A lesson screen can mount a dozen of these
+      // at once (every bullet, every clue row), and a synchronous decode lands
+      // in the same frame as the screen transition. Measured at 1093x525,
+      // moving between screens produced single frames of 243ms and 309ms,
+      // which is what "laggy" and "blocky" describe in the reports.
+      decoding="async"
       className={className}
       style={{
         width: size,
