@@ -443,9 +443,19 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     // Graded test: ONE attempt per question, no retry. Tally the score and
     // grade at the very end (passMark correct to win, else redo the whole set).
     const nextCorrect = beaten + (wasCorrect ? 1 : 0);
+    // Where to float the CORRECT! / NOT QUITE popup: at the child's finger.
+    //
+    // A click raised by the KEYBOARD (Enter or Space on the focused option)
+    // carries clientX/clientY of 0, not the button's position. Subtracting the
+    // arena's offset then puts the popup at negative coordinates: measured at
+    // 1414x771 it landed at x=-37, y=-34, i.e. half off the top-left corner,
+    // so a keyboard player saw "CT!" in the corner instead of CORRECT! at their
+    // answer. Fall back to the middle of the arena whenever the event has no
+    // real pointer position.
     const rect = arenaRef.current?.getBoundingClientRect();
-    const tapX = rect ? e.clientX - rect.left : 300;
-    const tapY = rect ? e.clientY - rect.top : 200;
+    const hasPointer = e.clientX !== 0 || e.clientY !== 0;
+    const tapX = rect ? (hasPointer ? e.clientX - rect.left : rect.width / 2) : 300;
+    const tapY = rect ? (hasPointer ? e.clientY - rect.top : rect.height / 2) : 200;
 
     if (wasCorrect) {
       setScore((s) => s + 100);
