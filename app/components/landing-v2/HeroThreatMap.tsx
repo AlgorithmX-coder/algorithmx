@@ -140,22 +140,41 @@ export default function HeroThreatMap() {
           textAlign: "center",
         }}
       >
+        {/* local vignette so the headline owns its zone of the image
+            (owner 2026-10-09: title blended into the background) */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "46%",
+            width: "min(1240px, 96vw)",
+            height: "130%",
+            transform: "translate(-50%, -50%)",
+            background: "radial-gradient(ellipse 58% 52% at 50% 50%, rgba(7,11,22,0.66), rgba(7,11,22,0.28) 62%, transparent 78%)",
+            pointerEvents: "none",
+          }}
+        />
         <h1
           className="htm-enter"
           style={{
+            position: "relative",
             fontFamily: "var(--lv2-font-display)",
-            fontSize: "clamp(2.4rem, 5.4vw, 5rem)",
-            lineHeight: 1.02,
+            fontSize: "clamp(2.5rem, 5.7vw, 5.3rem)",
+            lineHeight: 1.04,
             letterSpacing: "-0.028em",
-            fontWeight: 500,
+            fontWeight: 650,
             margin: "0 auto",
-            color: "#f2f6ff",
-            textShadow: "0 2px 30px rgba(4,8,18,0.55)",
+            color: "#ffffff",
+            textShadow: "0 2px 10px rgba(4,8,18,0.8), 0 10px 50px rgba(4,8,18,0.7)",
           }}
         >
           Cyber and AI skills for
           <br />
-          <span className="htm-grad">all ages, schools and firms.</span>
+          {/* textShadow none: a shadow on gradient-clipped text paints
+              THROUGH the transparent letterforms as a grey smear and
+              mutes the colours; the drop-shadow filter does the lifting */}
+          <span className="htm-grad" style={{ textShadow: "none" }}>all ages, schools and firms.</span>
         </h1>
         <p
           className="htm-enter htm-enter-2"
@@ -263,12 +282,31 @@ export default function HeroThreatMap() {
         </div>
       </div>
 
+      {/* hairline seam: a thin cyan light along the frame's bottom edge
+          so the hand-off to the paper page reads designed, not cut */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 2,
+          zIndex: 3,
+          background: "linear-gradient(90deg, transparent 6%, rgba(63,208,255,0.55) 50%, transparent 94%)",
+        }}
+      />
+
       <style jsx>{`
         .htm-grad {
-          background: linear-gradient(92deg, #22d3ee 0%, #8b7bff 55%, #f472b6 100%);
+          background: linear-gradient(92deg, #2fe3ff 0%, #8b7bff 55%, #ff5fb0 100%);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
+          /* gradient-clipped text cannot carry a text-shadow (it paints
+             over the glyphs), so the lift comes from a tight drop-shadow;
+             a wide soft one greyed the colours out. */
+          filter: drop-shadow(0 2px 5px rgba(10, 16, 34, 0.9)) saturate(1.25);
         }
         @media (prefers-reduced-motion: no-preference) {
           .htm-glow {

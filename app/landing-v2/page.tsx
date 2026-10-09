@@ -1,6 +1,7 @@
 import { Fredoka, Chakra_Petch } from "next/font/google";
 
 import HeroThreatMap from "@/app/components/landing-v2/HeroThreatMap";
+import PaperArcs from "@/app/components/landing-v2/PaperArcs";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProofBand from "@/app/components/ProofBand";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
@@ -231,9 +232,21 @@ export default function LandingV2() {
       <Nav tone="night" cta={null} />
       <main>
         <HeroThreatMap />
-        <ProofBand />
+        {/* The hero's defence network restated in ink on the paper
+            sections (owner 2026-10-09): page-level wrappers, because
+            ProofBand is shared with /schools and must not change there.
+            The top wisp lets the city glow bleed a breath into the
+            paper so the dark-to-light seam reads deliberate. */}
+        <div style={{ position: "relative" }}>
+          <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: 0, height: 90, background: "linear-gradient(180deg, rgba(11,17,32,0.16), transparent)", pointerEvents: "none" }} />
+          <PaperArcs />
+          <ProofBand />
+        </div>
         <ProblemStats />
-        <SubjectShowcase />
+        <div style={{ position: "relative" }}>
+          <PaperArcs />
+          <SubjectShowcase />
+        </div>
         <ParentTrust />
         <Testimonials />
         <FAQ />
