@@ -25,7 +25,7 @@
  * viewport and the page simply continues below.
  */
 
-const AGES = ["AGES 6-9", "10-13", "14-17", "18+", "WORKPLACE"];
+const AGES = ["AGES 6-9", "10-13", "14-17", "18+", "SCHOOLS", "WORKPLACE"];
 
 const ACCREDITATIONS: Array<{
   src: string;
