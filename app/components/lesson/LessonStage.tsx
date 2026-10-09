@@ -33,6 +33,24 @@ import { useLessonTheme } from "./LessonThemeContext";
 export const LESSON_HUD_HEIGHT = 64;
 
 /**
+ * The bottom breathing pad `<main>` reserves under the stage (DynamicLesson:
+ * `paddingBottom: max(20px, env(safe-area-inset-bottom))`).
+ *
+ * It lives here because the stage's own minHeight has to subtract it AS WELL
+ * as the HUD. It did not, and the arithmetic made every lesson screen taller
+ * than the window it sits in:
+ *
+ *   main = 64 (HUD reserve) + stage(100dvh - 64) + 20 (this pad) = 100dvh + 20
+ *
+ * so the page could always scroll by at least 20px, on every week, at every
+ * window size. Measured at the owner's 1414x771, weeks 17 and 20 came back at
+ * exactly 791px against a 771px window. That is the scroll bar the tester
+ * reported on W17 2a ("I have to use the scroll down bar to see the bottom of
+ * the card"). Keep these two in step or the bar comes straight back.
+ */
+export const LESSON_BOTTOM_PAD = 20;
+
+/**
  * Short-viewport fit (UAT retest W6 2d/4a, W10 5a, W5 2b: "frame too small,"
  * buttons under the fold, the Listening pill landing on the board).
  *
@@ -67,6 +85,10 @@ const STAGE_FIT_MIN = 0.55;
 const STAGE_FIT_PAD = 24;
 /** The same reserve on a tall window, where the 3vw clamp is still in force. */
 const STAGE_FIT_PAD_TALL = 72;
+
+/** A few pixels of slack so a board that only just overflows still clears the
+ *  fit's 0.01 dead-band. See the worked example in useStageFit. */
+const STAGE_FIT_HEADROOM = 6;
 
 /**
  * Is the window too short for the layouts this course was drawn for?
@@ -124,11 +146,35 @@ export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
       // 1 and renders byte-identically to before, so the only screens that
       // change are the ones that were already broken.
       //
-      // The pad has to match the stage's real padding, which is ~33px top and
-      // bottom from a 3vw clamp on a tall window and 8px on a short one. Using
-      // the short figure everywhere would leave the fit believing it had 50px
-      // more room than it does, and the board would still overhang.
-      const avail = h - LESSON_HUD_HEIGHT - (h < STAGE_FIT_HEIGHT ? STAGE_FIT_PAD : STAGE_FIT_PAD_TALL);
+      // The pad used to be GUESSED at (STAGE_FIT_PAD / STAGE_FIT_PAD_TALL),
+      // and the guess was wrong, which is why boards still overhung after the
+      // fit was supposed to have solved this.
+      //
+      // Worked example, the owner's 1414x771 on any week's Learn screen:
+      //   guessed avail = 771 - 64 - 72            = 635
+      //   real stage padding is clamp(16,3vw,40)   = 40 top + 40 bottom = 80
+      //   main also reserves                       = LESSON_BOTTOM_PAD (20)
+      //   true avail    = 771 - 64 - 20 - 80       = 607
+      // The board measures 637. Against 635 the fit computes 0.997, which is
+      // inside the 0.01 dead-band, so it did NOTHING and the page scrolled by
+      // 30px. Against the true 607 it computes 0.95 and the board fits.
+      //
+      // So read the stage's ACTUAL padding instead of guessing it. Self-
+      // correcting if the clamp is ever retuned, and it cannot silently drift
+      // out of step the way two hard-coded numbers did.
+      const stage = el.closest<HTMLElement>("[data-lesson-stage]");
+      const scs = stage ? getComputedStyle(stage) : null;
+      const padV = scs
+        ? (parseFloat(scs.paddingTop) || 0) + (parseFloat(scs.paddingBottom) || 0)
+        : h < STAGE_FIT_HEIGHT ? STAGE_FIT_PAD : STAGE_FIT_PAD_TALL;
+      //
+      // STAGE_FIT_HEADROOM: the scale below is ignored when it moves by less
+      // than 0.01 (an anti-thrash dead-band against ResizeObserver feedback).
+      // With the budget corrected, several boards landed on a scale like 0.995
+      // - inside that dead-band, so nothing was applied and the page still
+      // scrolled by ~3px, which is still a scroll bar. A few pixels of headroom
+      // pushes those past the dead-band and costs nothing visible.
+      const avail = h - LESSON_HUD_HEIGHT - LESSON_BOTTOM_PAD - padV - STAGE_FIT_HEADROOM;
       if (natural <= 0 || avail <= 0) return;
       const next = Math.max(STAGE_FIT_MIN, Math.min(1, avail / natural));
       if (Math.abs(next - current) < 0.01) return;
@@ -208,11 +254,17 @@ export default function LessonStage({
       : {};
   return (
     <div
+      // useStageFit reads this element's real vertical padding off the DOM
+      // rather than guessing it; the marker is how it finds the stage.
+      data-lesson-stage=""
       style={{
         // 100dvh is the visible viewport height even when the mobile
         // toolbar collapses. minHeight (not height) so content can
         // grow naturally; the scroll fallback handles the rest.
-        minHeight: `calc(100dvh - ${LESSON_HUD_HEIGHT}px)`,
+        // Both reserves, not just the HUD: `<main>` adds LESSON_BOTTOM_PAD
+        // underneath this, so subtracting only the HUD left the page a
+        // guaranteed 20px taller than the window and it always scrolled.
+        minHeight: `calc(100dvh - ${LESSON_HUD_HEIGHT + LESSON_BOTTOM_PAD}px)`,
         background: bgValue,
         position: "relative",
         display: "flex",
@@ -266,6 +318,11 @@ export default function LessonStage({
       )}
       <div
         ref={contentRef}
+        // The element the fit measures and zooms. Marked so a harness can find
+        // it by name: the stage's first child is a decorative 600px glow, and
+        // measuring that instead silently reports the same height on every
+        // screen, which looks like real data and is not.
+        data-lesson-content=""
         style={{
           position: "relative",
           zIndex: 1,

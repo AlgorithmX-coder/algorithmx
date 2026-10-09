@@ -443,9 +443,19 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     // Graded test: ONE attempt per question, no retry. Tally the score and
     // grade at the very end (passMark correct to win, else redo the whole set).
     const nextCorrect = beaten + (wasCorrect ? 1 : 0);
+    // Where to float the CORRECT! / NOT QUITE popup: at the child's finger.
+    //
+    // A click raised by the KEYBOARD (Enter or Space on the focused option)
+    // carries clientX/clientY of 0, not the button's position. Subtracting the
+    // arena's offset then puts the popup at negative coordinates: measured at
+    // 1414x771 it landed at x=-37, y=-34, i.e. half off the top-left corner,
+    // so a keyboard player saw "CT!" in the corner instead of CORRECT! at their
+    // answer. Fall back to the middle of the arena whenever the event has no
+    // real pointer position.
     const rect = arenaRef.current?.getBoundingClientRect();
-    const tapX = rect ? e.clientX - rect.left : 300;
-    const tapY = rect ? e.clientY - rect.top : 200;
+    const hasPointer = e.clientX !== 0 || e.clientY !== 0;
+    const tapX = rect ? (hasPointer ? e.clientX - rect.left : rect.width / 2) : 300;
+    const tapY = rect ? (hasPointer ? e.clientY - rect.top : rect.height / 2) : 200;
 
     if (wasCorrect) {
       setScore((s) => s + 100);
@@ -866,11 +876,15 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
 
               <button
                 onClick={() => { playSound("select"); start(); }}
-                style={{ marginTop: 22, fontFamily: ROUNDED, fontWeight: 900, fontSize: 17, letterSpacing: "0.06em", textTransform: "uppercase", cursor: "pointer", color: "#12101f", padding: "15px 42px", border: "none", touchAction: "manipulation", clipPath: "polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%)", background: `linear-gradient(180deg, ${accent}, ${accent}cc)`, boxShadow: `0 0 26px -4px ${accent}bf, 0 10px 22px -10px #000` }}
+                style={{ marginTop: shortViewport ? 12 : 22, fontFamily: ROUNDED, fontWeight: 900, fontSize: 17, letterSpacing: "0.06em", textTransform: "uppercase", cursor: "pointer", color: "#12101f", padding: "15px 42px", border: "none", touchAction: "manipulation", clipPath: "polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%)", background: `linear-gradient(180deg, ${accent}, ${accent}cc)`, boxShadow: `0 0 26px -4px ${accent}bf, 0 10px 22px -10px #000` }}
               >
                 Initiate Test ▸
               </button>
-              <div style={{ marginTop: 12, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: `${accent}cc` }}>{HOW_TO_PLAY}</div>
+              {/* The one line telling the child what to actually do. Stacked under the
+                  button it fell below the fold at the tester's 1093x525 - measured
+                  12px under - so the instruction was sliced in half. Tighten the
+                  stack on a short window rather than move it. */}
+              <div style={{ marginTop: shortViewport ? 8 : 12, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: `${accent}cc` }}>{HOW_TO_PLAY}</div>
             </motion.div>
           )}
 

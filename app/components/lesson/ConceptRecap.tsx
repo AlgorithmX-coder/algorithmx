@@ -18,6 +18,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { useMotionIntensity } from "@/app/lib/gameEngine";
+import { useShortViewport } from "@/app/components/lesson/LessonStage";
 import { playSound } from "@/app/lib/sounds";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import GameButton from "@/app/components/lesson/GameButton";
@@ -45,6 +46,12 @@ export default function ConceptRecap({
   onContinue,
 }: ConceptRecapProps) {
   const isFinale = concept >= total;
+  // The recap has the same short-window problem as the Learn screen: at the
+  // tester's 1093x525 the stage fit floors at STAGE_FIT_MIN so the type stays
+  // readable for a six-year-old, and a tall recap still runs past the fold
+  // (w4 s7 measured 28px over). Take the room back from padding, never from
+  // the words.
+  const shortViewport = useShortViewport();
   // Strict reduced-motion: skip the entrance springs (render at rest).
   const reduce = useMotionIntensity() === 0;
   // Cohesion: the recap's "complete" accents follow the WEEK accent so every
@@ -72,7 +79,7 @@ export default function ConceptRecap({
         borderRadius: 28,
         overflow: "hidden",
         isolation: "isolate",
-        padding: "30px 26px 26px",
+        padding: shortViewport ? "16px 20px 16px" : "30px 26px 26px",
         background:
           "radial-gradient(120% 90% at 50% 0%, #14323a 0%, #0f1530 42%, #060a1c 100%)",
         boxShadow:
