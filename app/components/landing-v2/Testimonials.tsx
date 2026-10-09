@@ -163,6 +163,22 @@ export default function Testimonials() {
             transform: none;
           }
         }
+        /* Phones (2026-10-09 mobile pass): at 390px the desktop cell
+           width left two faint marks adrift in the band and it read as
+           broken. Tighter cells and a slightly smaller mark put three
+           to four logos in view, and the resting dim lifts so they
+           register at glance size. */
+        @media (max-width: 640px) {
+          .lv2-logo-cell {
+            padding: 0 16px;
+            min-height: 60px;
+            gap: 6px;
+          }
+          .lv2-logo-cell img {
+            height: 23px;
+            opacity: 0.95;
+          }
+        }
       `}</style>
     </section>
   );
