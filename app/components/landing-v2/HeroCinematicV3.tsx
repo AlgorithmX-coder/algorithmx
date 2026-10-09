@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import {
   motion,
   useMotionValue,
@@ -93,14 +93,32 @@ function smoothstep(a: number, b: number, x: number): number {
 }
 
 /**
- * overlay    false drops the headline/CTA column (the page said it already).
- * staticOpen true renders the machine fully open and lit with NO scroll
- *            rail or pinning - the frame fills its parent, for compositing
- *            into another hero (2026-10-09: the threat-map first screen
- *            features the laptop). Also suppresses the nebula/galaxy
- *            ambience, which would paint fog over the host's backdrop.
+ * overlay       false drops the headline/CTA column (the page said it already).
+ * staticOpen    true renders the machine fully open and lit with NO scroll
+ *               rail or pinning - the frame fills its parent, for compositing
+ *               into another hero. Implies ambience off.
+ * ambience      false hides the nebula washes and galaxy floor pool, for
+ *               compositing the machine over a host backdrop (2026-10-09:
+ *               the desk-scene hero) while KEEPING the scroll-open rail.
+ * backdrop      rendered first inside the pinned frame, behind the stage -
+ *               the host's own scene (e.g. the photographed desk).
+ * frameChildren rendered inside the pinned frame above the stage - the
+ *               host's copy column and accreditations, pinned with the
+ *               machine through the whole scroll.
  */
-export default function HeroCinematicV3({ overlay = true, staticOpen = false }: { overlay?: boolean; staticOpen?: boolean } = {}) {
+export default function HeroCinematicV3({
+  overlay = true,
+  staticOpen = false,
+  ambience = true,
+  backdrop,
+  frameChildren,
+}: {
+  overlay?: boolean;
+  staticOpen?: boolean;
+  ambience?: boolean;
+  backdrop?: ReactNode;
+  frameChildren?: ReactNode;
+} = {}) {
   const railRef = useRef<HTMLElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
@@ -272,7 +290,9 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
         {/* ambient cosmic wash — pure CSS, sits over GlobalBackdrop.
          *  Wrapped so the bottom-fade mask feathers the wash into the
          *  backdrop instead of cutting on the section edge. */}
-        {!staticOpen && (
+        {/* host scene behind everything, when composited (desk etc.) */}
+        {backdrop}
+        {!staticOpen && ambience && (
           <div
             aria-hidden
             className="hv3-bottomFade"
@@ -303,10 +323,10 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
               rotateZ: -17,
               scale: sceneScale,
               y: sceneY,
-              /* With the overlay, the machine shares the frame with the
-                 copy column and sits right of centre; as the standalone
-                 MISSION CONTROL showcase it owns the frame and centres. */
-              x: overlay ? (isCompact ? "5vw" : isMid ? "22vw" : "14vw") : "0vw",
+              /* Sharing the frame with a copy column (its own overlay or
+                 a host's frameChildren), the machine sits right of
+                 centre; owning the frame alone, it centres. */
+              x: overlay || frameChildren ? (isCompact ? "5vw" : isMid ? "22vw" : "16vw") : "0vw",
               transformStyle: "preserve-3d",
               willChange: "transform",
             }}
@@ -333,7 +353,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
                 transform: "translate(-50%, -46%)",
                 borderRadius: "50%",
                 opacity: staticOpen ? 0 : floorGlow,
-                display: staticOpen ? "none" : undefined,
+                display: staticOpen || !ambience ? "none" : undefined,
               }}
             >
               <div
@@ -358,7 +378,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
                 }}
               />
             </motion.div>
-            {!staticOpen && (
+            {!staticOpen && ambience && (
               <div
                 style={{
                   position: "absolute",
@@ -908,6 +928,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
          *  mid-page MISSION CONTROL showcase under the threat-map hero,
          *  where the page already said its headline. */}
         {overlay && <HeroOverlay />}
+        {frameChildren}
 
         {/* scroll hint */}
       </div>

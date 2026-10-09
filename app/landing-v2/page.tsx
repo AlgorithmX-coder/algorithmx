@@ -1,6 +1,6 @@
 import { Fredoka, Chakra_Petch } from "next/font/google";
 
-import HeroPowerLab from "@/app/components/landing-v2/HeroPowerLab";
+import HeroDeskScene from "@/app/components/landing-v2/HeroDeskScene";
 import PaperArcs from "@/app/components/landing-v2/PaperArcs";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProofBand from "@/app/components/ProofBand";
@@ -230,7 +230,7 @@ export default function LandingV2() {
           back to light, so the bar returns to its paper styling. */}
       <Nav tone="sand" cta={null} />
       <main>
-        <HeroPowerLab />
+        <HeroDeskScene />
         {/* The hero's circuitry restated in ink on the sections below
             (page-level wrappers, because ProofBand is shared with
             /schools and must not change there). The navy runway from
