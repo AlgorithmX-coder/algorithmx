@@ -1,6 +1,7 @@
 import { Fredoka, Chakra_Petch } from "next/font/google";
 
-import HeroCinematic from "@/app/components/landing-v2/HeroCinematicV3";
+import HeroThreatMap from "@/app/components/landing-v2/HeroThreatMap";
+import PaperArcs from "@/app/components/landing-v2/PaperArcs";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProofBand from "@/app/components/ProofBand";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
@@ -20,7 +21,7 @@ import ScrollFormObjects from "@/app/components/backgrounds/ScrollFormObjects";
  * Sections, in scroll order:
  *
  *   1. Top nav (sticky, glassmorphic dark)
- *   2. HeroCinematic - scroll-pinned 3D laptop scene + headline
+ *   2. HeroThreatMap - full-frame London threat-map hero (owner pick 2026-10-09)
  *   3. ProofBand - the four accreditations, one line of copy each
  *   4. ProblemStats - 3 stat cards
  *   5. SubjectShowcase - 6 subject tabs + course cards
@@ -224,13 +225,34 @@ export default function LandingV2() {
       <ScrollFormObjects tone="sand" />
       <SpotlightCursor />
       {/* cta null: no Get Started pill here (owner 2026-10-07) - it jumped
-          to the platform signup; course pages carry their own auth now. */}
-      <Nav tone="sand" cta={null} />
+          to the platform signup; course pages carry their own auth now.
+          Night tone (owner 2026-10-09): the threat-map hero is dark, and
+          the Courses / Schools / Corporate chips keep their place but
+          glow in the night styling so the bar blends into the frame. */}
+      <Nav tone="night" cta={null} />
       <main>
-        <HeroCinematic />
-        <ProofBand />
+        <HeroThreatMap />
+        {/* The hero's defence network restated in ink on the paper
+            sections (owner 2026-10-09): page-level wrappers, because
+            ProofBand is shared with /schools and must not change there.
+            The tall runway dissolves the hero's navy into the sand over
+            ~340px - the white accreditation card floats through the
+            night-into-day gradient, so there is no hard seam at all
+            (owner: the first-to-second page contrast was too sharp). */}
+        <div style={{ position: "relative" }}>
+          <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: 0, height: 340, background: "linear-gradient(180deg, #0b1120 0%, rgba(11,17,32,0.72) 30%, rgba(11,17,32,0.3) 62%, rgba(11,17,32,0) 100%)", pointerEvents: "none" }} />
+          <PaperArcs />
+          <ProofBand />
+        </div>
         <ProblemStats />
-        <SubjectShowcase />
+        {/* The 3D laptop lives INSIDE HeroThreatMap now (owner
+            2026-10-09: "I want the laptop on the main landing page") -
+            the mid-page MISSION CONTROL section it briefly occupied is
+            gone so the machine appears exactly once. */}
+        <div style={{ position: "relative" }}>
+          <PaperArcs />
+          <SubjectShowcase />
+        </div>
         <ParentTrust />
         <Testimonials />
         <FAQ />

@@ -45,10 +45,11 @@ interface Stream {
 
 /* Ages match the course landings; live matches the card's own count. */
 const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string; live: boolean }> = [
+  /* All four flipped live 2026-10 (Ops #463, Pro #430 + themed auth). */
   { id: "heroes", ages: "6 to 9", accent: "#8a5400", live: true },
   { id: "explorers", ages: "10 to 13", accent: "#0a6675", live: true },
-  { id: "ops", ages: "14 to 17", accent: "#5744c9", live: false },
-  { id: "pro", ages: "18+", accent: "#a63a08", live: false },
+  { id: "ops", ages: "14 to 17", accent: "#5744c9", live: true },
+  { id: "pro", ages: "18+", accent: "#a63a08", live: true },
 ];
 
 /**
@@ -67,8 +68,7 @@ const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string;
  *              handed over rather than hacked back.
  *   ops        the range engine's first capture, Northwind E-05: the
  *              payload runs against a real in-browser database and the
- *              finding is drafted at CVSS 9.8. Prototype today, hence
- *              the soon mark on the track.
+ *              finding is drafted at CVSS 9.8. Live since 2026-10.
  *   pro        module 9 web attacks: a real injection against a live
  *              database, then the parameterised fix that defeats it.
  *              The old claim here said "ship the security report", and
@@ -120,7 +120,7 @@ const STREAMS: Stream[] = [
   {
     id: "cybersecurity",
     name: "Cybersecurity",
-    ages: "Ages 6 → Adult · 2 of 4 tracks live",
+    ages: "Ages 6 → Adult · all 4 tracks live",
     status: "LIVE NOW",
     isLive: true,
     blurb:
@@ -144,7 +144,7 @@ const STREAMS: Stream[] = [
     icon: "M7 8h10a4 4 0 014 4 4 4 0 01-4 4H7a4 4 0 01-4-4 4 4 0 014-4z M8 12h3 M9.5 10.5v3 M15.5 11.5h.01 M17.5 13h.01",
     href: null,
     cta: "Coming 2026",
-    unlockIn: "3 months",
+    unlockIn: "2026",
   },
   {
     id: "ai-ml",
@@ -159,7 +159,7 @@ const STREAMS: Stream[] = [
     icon: "M8 8h8v8H8z M5 10V8h2 M5 14v2h2 M17 8h2v2 M17 16h2v-2 M10 5V3h2 M14 5V3h-2 M10 21v-2 M14 19v2",
     href: null,
     cta: "Coming 2026",
-    unlockIn: "6 months",
+    unlockIn: "2026",
   },
   {
     id: "app-dev",
@@ -174,7 +174,7 @@ const STREAMS: Stream[] = [
     icon: "M7 2h10a1 1 0 011 1v18a1 1 0 01-1 1H7a1 1 0 01-1-1V3a1 1 0 011-1z M11 18h2",
     href: null,
     cta: "Coming 2027",
-    unlockIn: "12 months",
+    unlockIn: "2027",
   },
   {
     id: "entrepreneurship",
@@ -189,7 +189,7 @@ const STREAMS: Stream[] = [
     icon: "M13 2L3 14h7l-1 8 10-12h-7l1-8z",
     href: null,
     cta: "Coming 2027",
-    unlockIn: "15 months",
+    unlockIn: "2027",
   },
   {
     id: "robotics",
@@ -204,7 +204,7 @@ const STREAMS: Stream[] = [
     icon: "M12 2v3 M5 8h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V9a1 1 0 011-1z M9 13h.01 M15 13h.01 M2 12v3 M22 12v3",
     href: null,
     cta: "Coming 2027",
-    unlockIn: "18 months",
+    unlockIn: "2027",
   },
 ];
 
@@ -274,9 +274,10 @@ export default function SubjectShowcase() {
                   "kickstart your career in IT", which spoke only to the
                   adult end of a platform that starts at six. */}
               The IT world our children will work in is being built right
-              now. Cyber Security is live today and five more courses
-              release soon, every one built on real projects: a six year
-              old&rsquo;s first safe password, an adult&rsquo;s first job in tech.
+              now. Cyber Security is live today across every age, and five
+              more subjects are in development, every one built on real
+              projects: a six year old&rsquo;s first safe password, an
+              adult&rsquo;s first job in tech.
             </p>
           </FadeUp>
         </div>
@@ -318,8 +319,8 @@ export default function SubjectShowcase() {
                   textShadow: "0 2px 14px rgba(255,255,255,0.90), 0 0 5px rgba(255,255,255,0.76)",
                 }}
               >
-                Every card below is a real course, locked and encrypted until
-                launch day. The first stream decrypts in 3 months.
+                Every card below is a real course in development, locked and
+                encrypted until launch day.
               </p>
             </div>
           </FadeUp>

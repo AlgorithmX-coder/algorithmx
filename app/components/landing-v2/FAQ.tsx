@@ -20,9 +20,8 @@ import { sectionMark } from "@/app/components/sectionMark";
  * (RECEIVE in app/schools/SchoolsLanding.tsx). If any of them change,
  * change them in both places.
  *
- * NOTE: this copy states the age bands as 7 to 9, 10 to 13, 14 to 16 and
- * adults, which the hero and the track chips do not yet match. Raised
- * with the owner on delivery.
+ * Age bands aligned to the live tracks (6-9, 10-13, 14-17, 18+) in the
+ * 2026-10-09 truth pass, owner-approved.
  */
 
 type FaqIcon = "ages" | "tag" | "code" | "clock" | "shield" | "bank" | "ai";
@@ -39,7 +38,7 @@ const FAQS: QA[] = [
   {
     icon: "ages",
     q: "Who is AlgorithmX for?",
-    a: "Anyone who wants to understand the tech shaping their world. We have pathways for ages 7 to 9, 10 to 13, 14 to 16 and adults, plus licensing for schools. Each one is pitched at the right level, so a 9-year-old and a career switcher get very different experiences.",
+    a: "Anyone who wants to understand the tech shaping their world. We have pathways for ages 6 to 9, 10 to 13, 14 to 17 and 18 plus, with workplace courses for firms and licensing for schools. Each one is pitched at the right level, so a 9-year-old and a career switcher get very different experiences.",
   },
   {
     icon: "tag",

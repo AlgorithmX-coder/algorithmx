@@ -11,10 +11,9 @@ import { sectionMark } from "@/app/components/sectionMark";
  * question the whole category now raises: what does this look like in a
  * world being reshaped by AI. Copy is the owner's own wording.
  *
- * NOTE: this copy states the age bands as 7 to 9, 10 to 13, 14 to 16 and
- * adults. The hero, the track chips and the stream data still say 6 to 9
- * and 14 to 17. Raised with the owner on delivery; do not "fix" either
- * side without their call.
+ * Age bands aligned to the live tracks (6-9, 10-13, 14-17, 18+) in the
+ * 2026-10-09 truth pass, owner-approved; the old 7-to-9 / 14-to-16
+ * wording predated the hero and chips.
  */
 
 type PillarIcon = "shield" | "person" | "gradcap" | "code" | "tag" | "globe";
@@ -37,7 +36,7 @@ const PILLARS: Pillar[] = [
   {
     title: "Right for every stage",
     copy:
-      "Pathways for ages 7 to 9, 10 to 13, 14 to 16 and adults, from first steps to career-ready skills. We meet every learner where they are. Never push, never patronise.",
+      "Pathways for ages 6 to 9, 10 to 13, 14 to 17 and 18 plus, from first steps to career-ready skills. We meet every learner where they are. Never push, never patronise.",
     accent: "#0a7085",
     icon: "person",
   },
