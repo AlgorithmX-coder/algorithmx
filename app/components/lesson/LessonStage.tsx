@@ -130,11 +130,18 @@ export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    let current = 1;
     const measure = () => {
       const h = window.innerHeight;
-      // getBoundingClientRect reflects zoom, so divide it back out.
-      const natural = el.getBoundingClientRect().height / current;
+      // getBoundingClientRect reflects zoom, so divide it back out - reading
+      // the zoom BACK OFF the element rather than from a variable holding
+      // the value we last asked for. setFit is async, so a ResizeObserver
+      // callback landing before React paints would otherwise measure the OLD
+      // rect against the NEW intended zoom, and compound that error on every
+      // pass. Computed style is what is actually painted, so the two can
+      // never disagree. (Same defect, same fix, as the intro card's own fit.)
+      const applied = parseFloat(window.getComputedStyle(el).zoom) || 1;
+      const painted = el.getBoundingClientRect().height;
+      const natural = painted / applied;
       // The gate used to be "only below STAGE_FIT_HEIGHT", to protect the
       // window the course was signed off at. Measuring that window proved the
       // protection was the bug: Week 2's Learn board is ~923px, so at the
@@ -177,8 +184,19 @@ export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
       const avail = h - LESSON_HUD_HEIGHT - LESSON_BOTTOM_PAD - padV - STAGE_FIT_HEADROOM;
       if (natural <= 0 || avail <= 0) return;
       const next = Math.max(STAGE_FIT_MIN, Math.min(1, avail / natural));
-      if (Math.abs(next - current) < 0.01) return;
-      current = next;
+      // The dead-band exists to stop ResizeObserver thrash, but it must
+      // never tolerate a board that is STILL past the fold. It used to be
+      // unconditional, so a board needing a 0.995 scale was left alone and
+      // the page kept a scroll bar - week 1 screens 11, 15, 19 and 23 each
+      // overhung the owner's 1414x771 by 3px for exactly this reason, and
+      // STAGE_FIT_HEADROOM was a plaster over it. So the dead-band now only
+      // applies while the content actually fits; an overflowing board is
+      // always acted on, however small the correction.
+      const stillOverflows = painted > avail + 0.5;
+      if (!stillOverflows && Math.abs(next - applied) < 0.01) return;
+      // True no-op guard: once clamped at STAGE_FIT_MIN, next stops moving,
+      // React bails on the identical state and this settles rather than loops.
+      if (Math.abs(next - applied) < 0.0005) return;
       setFit(next);
     };
     measure();
