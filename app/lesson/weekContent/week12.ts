@@ -472,9 +472,9 @@ export const WEEK_12: WeekContent = {
         },
         {
           id: "dare",
-          text: "Doing the pepper dare, tag 3 people or you're a chicken",
+          text: "Doing the pepper dare! Tag 3 people or you're a chicken",
           icon: "🪤",
-          readAloud: "Here is one of yours. Doing the pepper dare, tag three people or you are a chicken.",
+          readAloud: "Here is one of yours. Doing the pepper dare! Tag three people, or you are a chicken!",
           viewer: "a new teacher, in September",
           proud: false,
           why: "The dare will be over by next week. The print is still there, still daring people, long after everybody forgot why.",

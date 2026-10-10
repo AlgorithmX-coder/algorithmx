@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T11:19:37.193Z",
+  "generatedAt": "2026-10-09T20:28:23.761Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -7938,14 +7938,14 @@
       "file": "/audio/voice/656b2ff058bfd592.mp3"
     },
     {
-      "key": "44a2053de5f52c44",
+      "key": "3a8146e7106e2ca9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Here is one of yours. Doing the pepper dare, tag three people or you are a chicken.",
+      "text": "Here is one of yours. Doing the pepper dare! Tag three people, or you are a chicken!",
       "lines": [
-        "Here is one of yours. Doing the pepper dare, tag three people or you are a chicken."
+        "Here is one of yours. Doing the pepper dare! Tag three people, or you are a chicken!"
       ],
-      "file": "/audio/voice/44a2053de5f52c44.mp3"
+      "file": "/audio/voice/3a8146e7106e2ca9.mp3"
     },
     {
       "key": "cab5b7275a74bf9b",
