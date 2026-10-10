@@ -13,6 +13,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
+import { useArrowAdvance } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
@@ -67,6 +68,7 @@ type Dock =
   | null;
 
 export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCase: WarCase; onExit?: () => void; onNextCase?: () => void }) {
+  useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
   const [phase, setPhase] = useState<"boot" | "play" | "test" | "debrief">("boot");
   const [board, setBoard] = useState<string>("CASE BOARD");

@@ -15,6 +15,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
 import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
+import { useArrowAdvance } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
@@ -87,6 +88,7 @@ type Dock =
   | null;
 
 export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneCase: PhoneCase; onExit?: () => void; onNextCase?: () => void }) {
+  useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   // Fast test mode (?fast=1): skip the narrator wait so the owner can click
   // through quickly. Real users never set it, so the anti-skip stays on.
   const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";

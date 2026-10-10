@@ -154,6 +154,23 @@ export function stopWren() {
 }
 
 /**
+ * Fast-forward: collapses whatever WREN line is currently playing, firing
+ * the exact same completion path (`done()` + the caller's `onEnded`) a
+ * natural `ended` event would — so every onEnded-driven advance (a beat
+ * revealing the next one, a review bar unlocking CONTINUE, a dock's wait
+ * clearing) fires immediately instead of waiting out the clip. A no-op if
+ * nothing is speaking.
+ */
+export function skipWrenWait() {
+  if (!speaking || !wrenEl) return;
+  const onended = wrenEl.onended;
+  try {
+    wrenEl.pause();
+  } catch {}
+  if (typeof onended === "function") onended.call(wrenEl, new Event("ended"));
+}
+
+/**
  * WREN's "not quite, look again" nudge on a wrong practice answer. Generic and
  * answer-free, so one small set serves every practice in every case. Rotates
  * variants so it isn't the same line twice, and NEVER interrupts a clip already

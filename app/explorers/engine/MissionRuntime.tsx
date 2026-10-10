@@ -16,6 +16,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
+import { useArrowAdvance } from "./arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 
@@ -252,6 +253,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
 /* ============================================================== runtime */
 
 export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextCase }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"]; onExit?: () => void; onNextCase?: () => void }) {
+  useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   // Fast test mode (?fast=1): reuse the reduced-motion path to skip the narrator
   // wait / anti-skip so the owner can click through quickly. Real users never set
   // it, so the anti-skip stays on for them.
