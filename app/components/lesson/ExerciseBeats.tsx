@@ -161,15 +161,26 @@ export default function ExerciseIntroBeat({
     if (!fullScreen) return;
     const el = cardRef.current;
     if (!el) return;
-    let current = 1;
     const measure = () => {
-      // getBoundingClientRect reflects zoom; divide it out for the natural height.
-      const natural = el.getBoundingClientRect().height / current;
+      // getBoundingClientRect reflects zoom, so divide it out for the natural
+      // height - but read the zoom BACK OFF THE ELEMENT rather than from a
+      // variable holding the value we last asked for. setFit is async, so a
+      // ResizeObserver callback that lands before React has painted sees the
+      // OLD rect against the NEW intended zoom. The two then describe
+      // different states and each pass compounds the last one's error: swept
+      // down the viewport, the card settled at 228px on a floor that
+      // mathematically cannot go below 397px (0.62 x 641). It overshoots the
+      // other way just as easily, and a card measured too large hides its own
+      // top edge - the header and title simply gone, which is what the owner
+      // photographed on week 5 and what UAT W5 5c describes. Computed style
+      // is what is actually painted, so the two can never disagree.
+      const applied = parseFloat(window.getComputedStyle(el).zoom) || 1;
+      const rect = el.getBoundingClientRect().height;
+      const natural = rect / applied;
       const avail = window.innerHeight - HUD_RESERVE * 2;
       if (natural <= 0 || avail <= 0) return;
       const next = Math.max(MIN_FIT, Math.min(1, avail / natural));
-      if (Math.abs(next - current) < 0.01) return;
-      current = next;
+      if (Math.abs(next - applied) < 0.01) return;
       setFit(next);
     };
     measure();
@@ -240,7 +251,16 @@ export default function ExerciseIntroBeat({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "flex-start",
+        // `safe center` and NOT plain centring: centred while the card fits,
+        // and top-aligned the moment it does not. Plain centring (or the
+        // `margin: auto` that used to sit on the card) pushes the overflow
+        // ABOVE the scroll origin, where no amount of scrolling reaches it,
+        // so the top of the card is simply gone. That is exactly UAT W5 5c,
+        // "too tall for the desktop screen and i cant scroll up on it". A
+        // browser that does not know the `safe` keyword drops the whole
+        // declaration and falls back to the initial flex-start, which is the
+        // same safe behaviour.
+        justifyContent: "safe center",
         overflowY: "auto",
         // Fixed overlays keep clear of the HUD (see HUD_RESERVE); in-frame
         // overlays are unchanged.
@@ -274,7 +294,6 @@ export default function ExerciseIntroBeat({
           position: "relative",
           width: "100%",
           maxWidth: threat ? 560 : paced ? 470 : 420,
-          margin: "auto 0",
           zoom: fullScreen && fit < 1 ? fit : undefined,
           // Card grows to fit ALL its content (danger + title + the FULL
           // narration + button) so nothing is squeezed into a scroll sliver.
