@@ -11,6 +11,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BlockBackdrop } from "../BlockBackdrop";
+import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import type { BlockIntroData } from "./blockIntroData";
 
 const DISP = `"Oswald", "Arial Narrow", "Segoe UI", sans-serif`;
@@ -36,6 +37,7 @@ const CSS = `
 `;
 
 export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; onBegin: () => void }) {
+  useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   const t = data.theme;
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -100,6 +102,7 @@ export default function BlockIntro({ data, onBegin }: { data: BlockIntroData; on
       }}
     >
       <style>{CSS}</style>
+      <SkipButton />
       <BlockBackdrop variant={t.backdrop} colors={t.matrix} accent={acc} accentHi={accHi} reduced={!!reduce} opacity={0.6} />
 
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 1000, maxHeight: "calc(100vh - 24px)", display: "flex", flexDirection: "column", gap: 14, background: "linear-gradient(180deg, rgba(19,22,28,.72), rgba(10,12,16,.72))", border: "1px solid #232B36", borderRadius: 16, padding: "clamp(16px, 3vw, 26px)", backdropFilter: "blur(4px)" }}>

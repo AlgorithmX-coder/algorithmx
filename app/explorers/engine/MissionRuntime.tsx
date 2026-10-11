@@ -16,7 +16,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
-import { useArrowAdvance } from "./arrowAdvance";
+import { useArrowAdvance, SkipButton } from "./arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 
@@ -464,6 +464,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     <CaseThemeProvider value={theme}>
     <main style={{ ...(theme.surface as CSSProperties), minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
+      <SkipButton />
       {/* matrix-terminal backdrop, dimmed in-mission so it never fights the reading (kept for identity) */}
       <BlockBackdrop variant={theme.backdrop} colors={theme.matrix} accent={theme.accent} accentHi={theme.accentHi} reduced={reduced} opacity={0.42} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.32 }} />
