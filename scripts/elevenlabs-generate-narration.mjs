@@ -35,6 +35,7 @@
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import ffmpegPath from "ffmpeg-static";
+import { renameSync } from "node:fs";
 import { mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -865,6 +866,132 @@ function joinBlock(lines) {
   return lines.join(" ").replace(/\s+/g, " ").trim();
 }
 
+/**
+ * What we SEND to the model, as opposed to what we hash.
+ *
+ * The comment above turned out to be wrong: a space does not give the model
+ * sentence structure, it gives it one run-on paragraph, and it then weights
+ * every full stop like a comma. Real line breaks read as structure.
+ *
+ * The hash deliberately stays on the space-joined text, so adopting this does
+ * not invalidate a single existing recording.
+ */
+function speakBlock(lines) {
+  return lines.map((l) => l.trim()).filter(Boolean).join("\n");
+}
+
+/* ── Delivery spec ──────────────────────────────────────────────────────────
+ * Measured on week 1: Sarah's full stops were landing at 0.24-0.33s, barely
+ * longer than her commas, so a thought never settled before the next one
+ * began. That is what reads as synthetic, and it is also why she felt rushed
+ * at an ordinary speaking rate. The words were never the problem.
+ *
+ * So every silence is re-cut to one of four lengths, and the speech tempo
+ * SOLVES for the target pace rather than being a fixed number, because the
+ * model's own speed drifts about 10 wpm between generations of identical text.
+ */
+const SPEC_GAP = { comma: 0.20, stop: 0.55, thought: 0.90, reveal: 1.20 };
+const SPEC_TAIL = 0.30;
+const TARGET_WPM = 150;
+
+function mediaDuration(file) {
+  const r = runFfmpeg(["-i", file, "-f", "null", "-"]);
+  const m = ((r.stderr || "") + (r.stdout || "")).match(/Duration: (\d+):(\d+):([\d.]+)/);
+  return m ? Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]) : 0;
+}
+
+/**
+ * Rebuild a finished clip to the spec: her speech untouched, every silence
+ * re-cut. Returns false and leaves the file exactly as it was if anything
+ * about the clip makes reshaping unsafe.
+ */
+function shapeToSpec(file, lines) {
+  const words = lines.join(" ").replace(/\[[a-z ]*\]/gi, "").trim().split(/\s+/).filter(Boolean).length;
+  if (!words) return false;
+  const total = mediaDuration(file);
+  if (total <= 0) return false;
+
+  const probe = runFfmpeg(["-i", file, "-af", "silencedetect=noise=-36dB:d=0.08", "-f", "null", "-"]);
+  const log = (probe.stderr || "") + (probe.stdout || "");
+  const starts = [...log.matchAll(/silence_start: ([\d.]+)/g)].map((m) => Number(m[1]));
+  const ends = [...log.matchAll(/silence_end: ([\d.]+)/g)].map((m) => Number(m[1]));
+  const sil = starts
+    .map((s, i) => ({ start: s, end: ends[i] ?? total }))
+    .filter((s) => s.end > s.start && s.start > 0.02);
+
+  const spans = [];
+  let cursor = 0;
+  for (const s of sil) {
+    if (s.start - cursor > 0.04) spans.push({ from: cursor, to: s.start });
+    cursor = s.end;
+  }
+  if (total - cursor > 0.04) spans.push({ from: cursor, to: total });
+  // One span means she never paused. Nothing to reshape, and a block that short
+  // already sounds right as recorded.
+  if (spans.length < 2) return false;
+
+  const spanLen = spans.map((s) => s.to - s.from);
+  const rawGaps = [];
+  for (let i = 0; i + 1 < spans.length; i++) rawGaps.push(sil[i] ? sil[i].end - sil[i].start : 0);
+
+  // A short gap between two SHORT fragments is a staccato beat ("Dragon. Taco.
+  // Comet."), not a comma. Those must land as full stops or the three words
+  // read as one hurried list, which is exactly what the transcript showed.
+  const staccato = rawGaps.findIndex((g, i) => g < 0.30 && spanLen[i] < 1.1 && spanLen[i + 1] < 1.1);
+  // The long pause goes BEFORE the important word. The model will not place it
+  // reliably - identical text gave 1.14s on one generation and 0.53s on the
+  // next - so it is placed here, exactly once.
+  let revealAt = staccato > 0 ? staccato - 1 : -1;
+  if (revealAt < 0 && rawGaps.length) revealAt = rawGaps.indexOf(Math.max(...rawGaps));
+
+  const kinds = rawGaps.map((g, i) => {
+    if (i === revealAt) return "reveal";
+    if (g < 0.30 && spanLen[i] < 1.1 && spanLen[i + 1] < 1.1) return "stop";
+    if (g < 0.30) return "comma";
+    if (g < 0.50) return "stop";
+    if (g < 0.95) return "thought";
+    return "reveal";
+  });
+  const gapBudget = kinds.reduce((s, k) => s + SPEC_GAP[k], 0) + SPEC_TAIL;
+
+  const rawSpeech = spanLen.reduce((a, b) => a + b, 0);
+  const targetTotal = (words / TARGET_WPM) * 60;
+  let tempo = rawSpeech / Math.max(0.5, targetTotal - gapBudget);
+  if (!Number.isFinite(tempo)) return false;
+  tempo = Math.min(1.25, Math.max(0.85, tempo));
+
+  const parts = [];
+  const filters = [];
+  spans.forEach((sp, i) => {
+    filters.push(
+      `[0:a]atrim=${sp.from.toFixed(3)}:${sp.to.toFixed(3)},asetpts=PTS-STARTPTS,atempo=${tempo.toFixed(4)}[s${i}]`,
+    );
+    parts.push(`[s${i}]`);
+    if (kinds[i]) {
+      filters.push(`anullsrc=r=44100:cl=mono,atrim=0:${SPEC_GAP[kinds[i]].toFixed(3)}[g${i}]`);
+      parts.push(`[g${i}]`);
+    }
+  });
+  filters.push(`anullsrc=r=44100:cl=mono,atrim=0:${SPEC_TAIL.toFixed(3)}[tail]`);
+  parts.push("[tail]");
+  filters.push(`${parts.join("")}concat=n=${parts.length}:v=0:a=1[out]`);
+
+  const tmp = `${file}.spec.mp3`;
+  const r = runFfmpeg([
+    "-hide_banner", "-y", "-i", file,
+    "-filter_complex", filters.join(";"),
+    "-map", "[out]", "-c:a", "libmp3lame", "-b:a", "128k", "-ar", "44100",
+    tmp,
+  ]);
+  if (r.status !== 0) return false;
+  try {
+    renameSync(tmp, file);
+  } catch {
+    return false;
+  }
+  return true;
+}
+
 // Tracks which model the API actually accepted on the first call so
 // we don't re-attempt v3 for every block once we know it's unavailable.
 let acceptedModel = null;
@@ -897,7 +1024,7 @@ async function generateBlock(speaker, lines) {
   let lastError = null;
   for (const modelId of modelsToTry) {
     const body = {
-      text: blockText,
+      text: speakBlock(lines),
       model_id: modelId,
       voice_settings: VOICE_SETTINGS,
     };
@@ -945,6 +1072,10 @@ async function generateBlock(speaker, lines) {
       await writeFile(rawPath, bestBuf);
       if (!padEnding(rawPath, filepath)) await writeFile(filepath, bestBuf);
       await unlink(rawPath).catch(() => {});
+      // Re-cut the silences to the delivery spec. Leaves the clip exactly as
+      // recorded if it cannot do that safely, so a failure here never costs a
+      // recording we have already paid for.
+      shapeToSpec(filepath, lines);
       const buf = await readFile(filepath);
       return {
         key,

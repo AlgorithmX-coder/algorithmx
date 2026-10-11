@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T20:28:23.761Z",
+  "generatedAt": "2026-10-11T18:39:23.107Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -273,429 +273,410 @@
       "file": "/audio/voice/ccb6b7455450e622.mp3"
     },
     {
-      "key": "2758a8b61f0475eb",
+      "key": "1176b79736200cc8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[nervous] Oh no, Cyber Hero, look at this! The Hacker Raccoon is trying to steal Adam and Layla's passwords. If he cracks even one, he can get into all their games and messages. [warmly] But by the end of this week, you'll build a password he can NEVER break. Let's see what Mission Command has for us!",
+      "text": "Cyber Hero, come and look at this. The Hacker Raccoon is trying to steal Adam and Layla's passwords. If he cracks even one, he gets into all their games and all their messages. [warmly] By the end of this week you will know how to build a password he can NEVER break. Mission Command has the details. Let's go.",
       "lines": [
-        "[nervous] Oh no, Cyber Hero, look at this!",
+        "Cyber Hero, come and look at this.",
         "The Hacker Raccoon is trying to steal Adam and Layla's passwords.",
-        "If he cracks even one, he can get into all their games and messages.",
-        "[warmly] But by the end of this week, you'll build a password he can NEVER break.",
-        "Let's see what Mission Command has for us!"
+        "If he cracks even one, he gets into all their games and all their messages.",
+        "[warmly] By the end of this week you will know how to build a password he can NEVER break.",
+        "Mission Command has the details. Let's go."
       ],
-      "file": "/audio/voice/2758a8b61f0475eb.mp3"
+      "file": "/audio/voice/1176b79736200cc8.mp3"
     },
     {
-      "key": "25152319ba142c40",
+      "key": "1c522e9d5246a976",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Hey there, Cyber Hero! I've got a secret... just for you. [whispers] Come a little closer. Your password is like a magic key, and it's all YOURS. It's how the computer knows it's really YOU. [nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in. [excited] But a big, strong one? [laughs] He doesn't stand a chance! [warmly] First, let's learn the words heroes use!",
+      "text": "Let's start with the big question. What IS a password? Your password is like a key, and it belongs to nobody but you. When you type it in, the computer knows the real you has arrived. A weak key lets the Raccoon walk straight in. [warmly] A strong one keeps him outside, every single time. Before we build one, we need the words that heroes use. In a moment you will play Cyber Word Match and learn them.",
       "lines": [
-        "[warmly] Hey there, Cyber Hero! I've got a secret... just for you.",
-        "[whispers] Come a little closer.",
-        "Your password is like a magic key, and it's all YOURS.",
-        "It's how the computer knows it's really YOU.",
-        "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
-        "[excited] But a big, strong one? [laughs] He doesn't stand a chance!",
-        "[warmly] First, let's learn the words heroes use!"
+        "Let's start with the big question. What IS a password?",
+        "Your password is like a key, and it belongs to nobody but you.",
+        "When you type it in, the computer knows the real you has arrived.",
+        "A weak key lets the Raccoon walk straight in.",
+        "[warmly] A strong one keeps him outside, every single time.",
+        "Before we build one, we need the words that heroes use.",
+        "In a moment you will play Cyber Word Match and learn them."
       ],
-      "file": "/audio/voice/25152319ba142c40.mp3"
+      "file": "/audio/voice/1c522e9d5246a976.mp3"
     },
     {
-      "key": "1245edc89ef6aa4e",
+      "key": "21466dd56e906bf9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] On your very first challenge, we learn the cyber words! This game is all about knowing what a password really is, and the words that go with it. Out in the real world, once you know these words, nobody can muddle you up. Here is what you do. The cards are face down. Tap one card, then tap another to find its matching pair. [excited] Match them all and you're a cyber-word expert. Ready? Let's play!",
+      "text": "The cards are face down. Tap one, then tap another to find its pair. Match every pair and you will know the four words heroes use. [warmly] Off you go.",
       "lines": [
-        "[warmly] On your very first challenge, we learn the cyber words!",
-        "This game is all about knowing what a password really is, and the words that go with it.",
-        "Out in the real world, once you know these words, nobody can muddle you up.",
-        "Here is what you do. The cards are face down. Tap one card, then tap another to find its matching pair.",
-        "[excited] Match them all and you're a cyber-word expert. Ready? Let's play!"
+        "The cards are face down. Tap one, then tap another to find its pair.",
+        "Match every pair and you will know the four words heroes use.",
+        "[warmly] Off you go."
       ],
-      "file": "/audio/voice/1245edc89ef6aa4e.mp3"
+      "file": "/audio/voice/21466dd56e906bf9.mp3"
     },
     {
-      "key": "8b4da7d3609c9b5f",
+      "key": "3a8b995dbe739786",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Awesome matching! Now let's test your memory. You'll get ten seconds to remember where each card is. Then they flip over, tap where you think each one is!",
+      "text": "Good matching. Now a memory round. You have ten seconds to learn where each card sits. Then they flip over, and you tap where you think they are.",
       "lines": [
-        "[excited] Awesome matching! Now let's test your memory.",
-        "You'll get ten seconds to remember where each card is.",
-        "Then they flip over, tap where you think each one is!"
+        "Good matching. Now a memory round.",
+        "You have ten seconds to learn where each card sits.",
+        "Then they flip over, and you tap where you think they are."
       ],
-      "file": "/audio/voice/8b4da7d3609c9b5f.mp3"
+      "file": "/audio/voice/3a8b995dbe739786.mp3"
     },
     {
-      "key": "9b52459b0dbafb1f",
+      "key": "12d6efbe9b163463",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[proud] Every pair matched! Now you know the cyber words heroes use. [warmly] Out in the real world, when someone says password, strong, hacker or secret, you'll know exactly what they mean.",
+      "text": "[proud] Every pair matched. You now know the words: password, strong, hacker, secret. [warmly] When a grown-up uses one of those, you will know exactly what they mean.",
       "lines": [
-        "[proud] Every pair matched! Now you know the cyber words heroes use.",
-        "[warmly] Out in the real world, when someone says password, strong, hacker or secret, you'll know exactly what they mean."
+        "[proud] Every pair matched. You now know the words: password, strong, hacker, secret.",
+        "[warmly] When a grown-up uses one of those, you will know exactly what they mean."
       ],
-      "file": "/audio/voice/9b52459b0dbafb1f.mp3"
+      "file": "/audio/voice/12d6efbe9b163463.mp3"
     },
     {
-      "key": "c22dc6b39c516cc4",
+      "key": "ad9e0cc1ec3d02ce",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Exactly right. A password proves it's YOU. It's like showing a secret key that only YOU have. So the computer knows the REAL you is logging in, not a sneaky Raccoon. [excited] That is what keeps your stuff yours... [proud] Well done!",
+      "text": "That's right. A password proves it's YOU. It is a key only you have, so the computer lets you in and keeps everybody else out. [proud] Good start, Cyber Hero.",
       "lines": [
-        "[warmly] Exactly right. A password proves it's YOU.",
-        "It's like showing a secret key that only YOU have.",
-        "So the computer knows the REAL you is logging in, not a sneaky Raccoon.",
-        "[excited] That is what keeps your stuff yours...",
-        "[proud] Well done!"
+        "That's right. A password proves it's YOU.",
+        "It is a key only you have, so the computer lets you in and keeps everybody else out.",
+        "[proud] Good start, Cyber Hero."
       ],
-      "file": "/audio/voice/c22dc6b39c516cc4.mp3"
+      "file": "/audio/voice/ad9e0cc1ec3d02ce.mp3"
     },
     {
-      "key": "6e426cdf6b358144",
+      "key": "56c1a5d724adbab4",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's your first power, Cyber Hero! You know a password is your very own secret key. It proves it's really YOU. [warmly] So nobody can pretend to be you, and the Raccoon can't get into your things. Next, we'll make that key so long the Raccoon can never crack it. Come and see!",
+      "text": "First power learned. A password is your own secret key, and it proves it is really you. Nobody can pretend to be you, so the Raccoon stays out of your things. [warmly] Now, one thing makes a key hard to crack more than anything else, and it is simply how LONG it is.",
       "lines": [
-        "[excited] That's your first power, Cyber Hero!",
-        "You know a password is your very own secret key. It proves it's really YOU.",
-        "[warmly] So nobody can pretend to be you, and the Raccoon can't get into your things.",
-        "Next, we'll make that key so long the Raccoon can never crack it. Come and see!"
+        "First power learned. A password is your own secret key, and it proves it is really you.",
+        "Nobody can pretend to be you, so the Raccoon stays out of your things.",
+        "[warmly] Now, one thing makes a key hard to crack more than anything else, and it is simply how LONG it is."
       ],
-      "file": "/audio/voice/6e426cdf6b358144.mp3"
+      "file": "/audio/voice/56c1a5d724adbab4.mp3"
     },
     {
-      "key": "d80507bbeafa3dfb",
+      "key": "77f75ac707134e88",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Ooh, want to know a clever trick? The longer your key, the harder it is to crack! [excited] So glue three silly words together, like dragon, taco, comet! [laughs] Long, strong, and super easy to remember! [excited] Let's go and build one!",
+      "text": "Length. That is the whole trick. Every extra letter gives the Raccoon's guessing machine more work to do. A short password takes him a blink. A long one takes him YEARS. And the easiest way to make a long one is to glue three silly words together. Dragon. Taco. Comet. [warmly] Long, strong, and easy to remember. In a moment you will build one of your own.",
       "lines": [
-        "[excited] Ooh, want to know a clever trick?",
-        "The longer your key, the harder it is to crack!",
-        "[excited] So glue three silly words together, like dragon, taco, comet!",
-        "[laughs] Long, strong, and super easy to remember!",
-        "[excited] Let's go and build one!"
+        "Length. That is the whole trick.",
+        "Every extra letter gives the Raccoon's guessing machine more work to do.",
+        "A short password takes him a blink. A long one takes him YEARS.",
+        "And the easiest way to make a long one is to glue three silly words together.",
+        "Dragon. Taco. Comet.",
+        "[warmly] Long, strong, and easy to remember.",
+        "In a moment you will build one of your own."
       ],
-      "file": "/audio/voice/d80507bbeafa3dfb.mp3"
+      "file": "/audio/voice/77f75ac707134e88.mp3"
     },
     {
-      "key": "93e7907172935c06",
+      "key": "9d98aad1a6eef428",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] On your next challenge, we build a super-long password! This game is all about making your password long, by sticking three random words together. Out in the real world, a long password is one the Raccoon's machine can never crack in time. Here is what you do. Tap any three silly words from the wall to snap them together. [excited] The longer and sillier, the stronger it gets. Ready? Let's build!",
+      "text": "There is a wall of silly words in front of you. Tap any three to snap them together. The sillier your three, the harder they are to guess. [warmly] Build yours now.",
       "lines": [
-        "[warmly] On your next challenge, we build a super-long password!",
-        "This game is all about making your password long, by sticking three random words together.",
-        "Out in the real world, a long password is one the Raccoon's machine can never crack in time.",
-        "Here is what you do. Tap any three silly words from the wall to snap them together.",
-        "[excited] The longer and sillier, the stronger it gets. Ready? Let's build!"
+        "There is a wall of silly words in front of you. Tap any three to snap them together.",
+        "The sillier your three, the harder they are to guess.",
+        "[warmly] Build yours now."
       ],
-      "file": "/audio/voice/93e7907172935c06.mp3"
+      "file": "/audio/voice/9d98aad1a6eef428.mp3"
     },
     {
-      "key": "0460c239a169ef9d",
+      "key": "60e6b33e34a09672",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Go on, tap any word you like to begin!",
+      "text": "Tap any word you like to begin.",
       "lines": [
-        "Go on, tap any word you like to begin!"
+        "Tap any word you like to begin."
       ],
-      "file": "/audio/voice/0460c239a169ef9d.mp3"
+      "file": "/audio/voice/60e6b33e34a09672.mp3"
     },
     {
-      "key": "d5b8a4f476824232",
+      "key": "5be941dcfa9225c5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[proud] What a password! Now you can build one so long the Raccoon's machine never finishes guessing. [warmly] Out in the real world, three silly words are all it takes. Long really is strong.",
+      "text": "[proud] Look at the length of that! His machine would still be guessing next year. [warmly] Three silly words. That is all it takes.",
       "lines": [
-        "[proud] What a password! Now you can build one so long the Raccoon's machine never finishes guessing.",
-        "[warmly] Out in the real world, three silly words are all it takes. Long really is strong."
+        "[proud] Look at the length of that! His machine would still be guessing next year.",
+        "[warmly] Three silly words. That is all it takes."
       ],
-      "file": "/audio/voice/d5b8a4f476824232.mp3"
+      "file": "/audio/voice/5be941dcfa9225c5.mp3"
     },
     {
-      "key": "0748957c4d047ac9",
+      "key": "f36deddcad10ee77",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Yes! The long one, dragon-taco-comet, is the winner. The more letters there are, the longer the Raccoon's machine has to guess. Three random words make it so long he simply runs out of time. [excited] Long really is strong... [proud] Well done!",
+      "text": "Yes. Dragon-taco-comet is the one. The more letters there are, the more guesses his machine has to make, and it simply runs out of TIME. [proud] Nicely worked out.",
       "lines": [
-        "[warmly] Yes! The long one, dragon-taco-comet, is the winner.",
-        "The more letters there are, the longer the Raccoon's machine has to guess.",
-        "Three random words make it so long he simply runs out of time.",
-        "[excited] Long really is strong...",
-        "[proud] Well done!"
+        "Yes. Dragon-taco-comet is the one.",
+        "The more letters there are, the more guesses his machine has to make, and it simply runs out of TIME.",
+        "[proud] Nicely worked out."
       ],
-      "file": "/audio/voice/0748957c4d047ac9.mp3"
+      "file": "/audio/voice/f36deddcad10ee77.mp3"
     },
     {
-      "key": "46ea649ea5c72514",
+      "key": "e3f9a49904251792",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] That's your second power! You make your password nice and long with three random words. [warmly] So the Raccoon's guessing machine runs and runs and NEVER cracks it. Your stuff stays locked up tight. Next, we'll mix it up so there's nothing plain left for him to grab. Come on!",
+      "text": "Second power learned. You make a password long with three random words. The guessing machine runs and runs, and it never gets there. [warmly] But length on its own is not quite enough. A long password made of plain words still has a weak spot.",
       "lines": [
-        "[excited] That's your second power!",
-        "You make your password nice and long with three random words.",
-        "[warmly] So the Raccoon's guessing machine runs and runs and NEVER cracks it. Your stuff stays locked up tight.",
-        "Next, we'll mix it up so there's nothing plain left for him to grab. Come on!"
+        "Second power learned. You make a password long with three random words.",
+        "The guessing machine runs and runs, and it never gets there.",
+        "[warmly] But length on its own is not quite enough. A long password made of plain words still has a weak spot."
       ],
-      "file": "/audio/voice/46ea649ea5c72514.mp3"
+      "file": "/audio/voice/e3f9a49904251792.mp3"
     },
     {
-      "key": "dea400be098ddcc6",
+      "key": "3b9e31cd9ea5b6b0",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Now let's make that key SUPER tough! Mix it all up, big letters, little letters, numbers, and squiggly symbols! [nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite. [excited] But scramble it like that, [laughs] and he's totally stumped! [warmly] Grab your doctor coat, we have passwords to heal!",
+      "text": "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST. So we mix it up. Big letters, small letters, numbers, and symbols. Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all. Once there is no plain word left inside, he has nothing to look up. In a moment you will take some weak passwords into the Password Hospital and make them strong.",
       "lines": [
-        "[excited] Now let's make that key SUPER tough!",
-        "Mix it all up, big letters, little letters, numbers, and squiggly symbols!",
-        "[nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite.",
-        "[excited] But scramble it like that, [laughs] and he's totally stumped!",
-        "[warmly] Grab your doctor coat, we have passwords to heal!"
+        "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST.",
+        "So we mix it up. Big letters, small letters, numbers, and symbols.",
+        "Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all.",
+        "Once there is no plain word left inside, he has nothing to look up.",
+        "In a moment you will take some weak passwords into the Password Hospital and make them strong."
       ],
-      "file": "/audio/voice/dea400be098ddcc6.mp3"
+      "file": "/audio/voice/3b9e31cd9ea5b6b0.mp3"
     },
     {
-      "key": "2a7d9a33e5beaaa4",
+      "key": "7587e68dc6eb950b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] On your next challenge, you're the cyber-doctor! This game is all about MIXING a password up, so there's no plain word left inside. Out in the real world, a mixed-up password gives the Raccoon nothing to guess. Here is what you do. Look at each sick password, tap what is WRONG with it, then use your tools to make it strong. Watch the strength meter climb. [excited] Heal them all and the Raccoon is stumped. Ready? Let's go, Cyber Hero!",
+      "text": "Each patient is a weak password. Tap what is wrong with it, then use your tools to fix it. Watch the strength meter climb as you go. [warmly] Heal them all, Cyber Hero.",
       "lines": [
-        "[warmly] On your next challenge, you're the cyber-doctor!",
-        "This game is all about MIXING a password up, so there's no plain word left inside.",
-        "Out in the real world, a mixed-up password gives the Raccoon nothing to guess.",
-        "Here is what you do. Look at each sick password, tap what is WRONG with it, then use your tools to make it strong. Watch the strength meter climb.",
-        "[excited] Heal them all and the Raccoon is stumped. Ready? Let's go, Cyber Hero!"
+        "Each patient is a weak password. Tap what is wrong with it, then use your tools to fix it.",
+        "Watch the strength meter climb as you go.",
+        "[warmly] Heal them all, Cyber Hero."
       ],
-      "file": "/audio/voice/2a7d9a33e5beaaa4.mp3"
+      "file": "/audio/voice/7587e68dc6eb950b.mp3"
     },
     {
-      "key": "21cfe14959d2e00a",
+      "key": "968f0e0dbe28515e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Look at the patient. What's wrong with this password?",
+      "text": "Look at this patient. What is wrong with this password?",
       "lines": [
-        "Look at the patient. What's wrong with this password?"
+        "Look at this patient. What is wrong with this password?"
       ],
-      "file": "/audio/voice/21cfe14959d2e00a.mp3"
+      "file": "/audio/voice/968f0e0dbe28515e.mp3"
     },
     {
-      "key": "704f5f7eb3f327e2",
+      "key": "9505529630051239",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[proud] Every patient healed! Now you can turn a plain, weak password into a mixed-up jumble. [warmly] Out in the real world, a capital, a number and a symbol give the Raccoon nothing to guess.",
+      "text": "[proud] Every patient healed. A capital, a number and a symbol, and the plain word is gone. [warmly] Nothing left in there for him to look up.",
       "lines": [
-        "[proud] Every patient healed! Now you can turn a plain, weak password into a mixed-up jumble.",
-        "[warmly] Out in the real world, a capital, a number and a symbol give the Raccoon nothing to guess."
+        "[proud] Every patient healed. A capital, a number and a symbol, and the plain word is gone.",
+        "[warmly] Nothing left in there for him to look up."
       ],
-      "file": "/audio/voice/704f5f7eb3f327e2.mp3"
+      "file": "/audio/voice/9505529630051239.mp3"
     },
     {
-      "key": "3c05b08c96b03a78",
+      "key": "9bf21a7acb5f2cd6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Busted! That was a fib. A password that's all small letters is easy pickings. Mix in capitals, numbers and symbols and it turns into a jumble. The Raccoon's machine has to try WAY more guesses, so it gives up. [excited] Mix it up every time... [proud] Nice catch!",
+      "text": "Not true, and you spotted it. All small letters is an easy job for him. Add capitals, numbers and symbols and there are so many MORE guesses to make that his machine gives up. [proud] Sharp eyes, Cyber Hero.",
       "lines": [
-        "[warmly] Busted! That was a fib.",
-        "A password that's all small letters is easy pickings. Mix in capitals, numbers and symbols and it turns into a jumble.",
-        "The Raccoon's machine has to try WAY more guesses, so it gives up.",
-        "[excited] Mix it up every time...",
-        "[proud] Nice catch!"
+        "Not true, and you spotted it.",
+        "All small letters is an easy job for him. Add capitals, numbers and symbols and there are so many MORE guesses to make that his machine gives up.",
+        "[proud] Sharp eyes, Cyber Hero."
       ],
-      "file": "/audio/voice/3c05b08c96b03a78.mp3"
+      "file": "/audio/voice/9bf21a7acb5f2cd6.mp3"
     },
     {
-      "key": "bf3f6856710c974a",
+      "key": "7a31c7ba90758d1f",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's your third power! You mix in big letters, little letters, numbers and symbols. [warmly] So there's no plain word left for the Raccoon to guess. He's completely stumped! Next, we'll learn the most important one of all. Keeping it secret. Come and see!",
+      "text": "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside. Long, and mixed up. That is a very hard password to crack. [warmly] But there is one way he gets a password without cracking anything at all, and it is the thing we most need to talk about.",
       "lines": [
-        "[excited] That's your third power!",
-        "You mix in big letters, little letters, numbers and symbols.",
-        "[warmly] So there's no plain word left for the Raccoon to guess. He's completely stumped!",
-        "Next, we'll learn the most important one of all. Keeping it secret. Come and see!"
+        "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside.",
+        "Long, and mixed up. That is a very hard password to crack.",
+        "[warmly] But there is one way he gets a password without cracking anything at all, and it is the thing we most need to talk about."
       ],
-      "file": "/audio/voice/bf3f6856710c974a.mp3"
+      "file": "/audio/voice/7a31c7ba90758d1f.mp3"
     },
     {
-      "key": "e05d33abf49a1b1c",
+      "key": "15e8f34a3de8fded",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Okay, this is the MOST important part. Lean in close... [whispers] A password only works if you keep it SECRET. Don't tell your best friend. Don't leave it where anyone can peek! [warmly] The ONLY place you ever type it is your own real login screen, and the ONLY person who ever helps is a grown-up you really trust. Deal? [excited] Let's practise saying no to the sneaky pop-ups!",
+      "text": "He ASKS for it. That is his favorite trick, because a password you hand over needs no cracking at all. [warmly] So here is the rule. Your password stays secret. Not your best friend. Not somebody in your game. Not a message that says it is urgent. The only place you ever type it is your own real login screen. [whispers] And the only person who ever helps you with it is a trusted grown-up. In a moment you will meet some of his tricks and decide what to do.",
       "lines": [
-        "[warmly] Okay, this is the MOST important part. Lean in close...",
-        "[whispers] A password only works if you keep it SECRET.",
-        "Don't tell your best friend. Don't leave it where anyone can peek!",
-        "[warmly] The ONLY place you ever type it is your own real login screen, and the ONLY person who ever helps is a grown-up you really trust. Deal?",
-        "[excited] Let's practise saying no to the sneaky pop-ups!"
+        "He ASKS for it.",
+        "That is his favorite trick, because a password you hand over needs no cracking at all.",
+        "[warmly] So here is the rule. Your password stays secret.",
+        "Not your best friend. Not somebody in your game. Not a message that says it is urgent.",
+        "The only place you ever type it is your own real login screen.",
+        "[whispers] And the only person who ever helps you with it is a trusted grown-up.",
+        "In a moment you will meet some of his tricks and decide what to do."
       ],
-      "file": "/audio/voice/e05d33abf49a1b1c.mp3"
+      "file": "/audio/voice/15e8f34a3de8fded.mp3"
     },
     {
-      "key": "4dfa72e054fa7a8f",
+      "key": "90edc735dac2e3c2",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] On your next challenge, you make the smart choice! This game is all about keeping your password secret, even when something on the screen begs you to share it. The Raccoon LOVES to pop up and ask ever so nicely. So when a stranger, a website or even a friend asks for your password, you STOP and keep it secret. Your own real login screen is the one place it belongs. And if you're ever stuck, there is ONE safe person to ask: a parent, or a grown-up you trust. [excited] Here is what you do. Read each moment, think, then tap the card that keeps your secret safe. Ready? You've got this!",
+      "text": "You will see one moment at a time. Read it, think, then tap the card that keeps your secret safe. [warmly] Take your time. There is no rush on this one.",
       "lines": [
-        "[warmly] On your next challenge, you make the smart choice!",
-        "This game is all about keeping your password secret, even when something on the screen begs you to share it.",
-        "The Raccoon LOVES to pop up and ask ever so nicely. So when a stranger, a website or even a friend asks for your password, you STOP and keep it secret.",
-        "Your own real login screen is the one place it belongs. And if you're ever stuck, there is ONE safe person to ask: a parent, or a grown-up you trust.",
-        "[excited] Here is what you do. Read each moment, think, then tap the card that keeps your secret safe. Ready? You've got this!"
+        "You will see one moment at a time. Read it, think, then tap the card that keeps your secret safe.",
+        "[warmly] Take your time. There is no rush on this one."
       ],
-      "file": "/audio/voice/4dfa72e054fa7a8f.mp3"
+      "file": "/audio/voice/90edc735dac2e3c2.mp3"
     },
     {
-      "key": "2bf7da77c52c4728",
+      "key": "6df5b4ba08b1b647",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[proud] You kept your secret every single time! Now you know exactly who gets your password: only YOU, and a trusted grown-up. [warmly] Out in the real world, when a stranger, a pop-up or a friend asks for it, you pause, and the Raccoon gets nothing.",
+      "text": "[proud] You kept it secret every single time! [warmly] A stranger asked, a pop-up asked, a best friend asked, and he still has nothing.",
       "lines": [
-        "[proud] You kept your secret every single time! Now you know exactly who gets your password: only YOU, and a trusted grown-up.",
-        "[warmly] Out in the real world, when a stranger, a pop-up or a friend asks for it, you pause, and the Raccoon gets nothing."
+        "[proud] You kept it secret every single time!",
+        "[warmly] A stranger asked, a pop-up asked, a best friend asked, and he still has nothing."
       ],
-      "file": "/audio/voice/2bf7da77c52c4728.mp3"
+      "file": "/audio/voice/6df5b4ba08b1b647.mp3"
     },
     {
-      "key": "5bc053d99e516b2d",
+      "key": "70a5fde516be02a2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] That is right. Only YOU, and a trusted grown-up at home. Not your best friend, not your class, not anyone who asks. A password only stays safe while it stays YOUR secret. [excited] Keep it zipped, and the Raccoon gets nothing... [proud] Well done!",
+      "text": "Correct. You, and a trusted grown-up at home. Not your best friend, not your class, not ANYBODY who asks nicely. [proud] Exactly right.",
       "lines": [
-        "[warmly] That is right. Only YOU, and a trusted grown-up at home.",
-        "Not your best friend, not your class, not anyone who asks.",
-        "A password only stays safe while it stays YOUR secret.",
-        "[excited] Keep it zipped, and the Raccoon gets nothing...",
-        "[proud] Well done!"
+        "Correct. You, and a trusted grown-up at home.",
+        "Not your best friend, not your class, not ANYBODY who asks nicely.",
+        "[proud] Exactly right."
       ],
-      "file": "/audio/voice/5bc053d99e516b2d.mp3"
+      "file": "/audio/voice/70a5fde516be02a2.mp3"
     },
     {
-      "key": "fe36659713edcc37",
+      "key": "9bc1b8d81aac6625",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] That's your fourth power! You keep your password secret. You never share it, not EVEN with a best friend. [warmly] So no one can ever be tricked into handing it over to the Raccoon. One last power to master. Next, we'll learn which passwords the Raccoon guesses FIRST, so you never pick one. Come on, Cyber Hero!",
+      "text": "Fourth power learned. You keep your password secret, even from a best friend. So nobody can ever be talked into handing it over. [warmly] One power left. He does not guess at random. He has a list, and he tries the same things FIRST.",
       "lines": [
-        "[excited] That's your fourth power!",
-        "You keep your password secret. You never share it, not EVEN with a best friend.",
-        "[warmly] So no one can ever be tricked into handing it over to the Raccoon.",
-        "One last power to master. Next, we'll learn which passwords the Raccoon guesses FIRST, so you never pick one. Come on, Cyber Hero!"
+        "Fourth power learned. You keep your password secret, even from a best friend.",
+        "So nobody can ever be talked into handing it over.",
+        "[warmly] One power left. He does not guess at random. He has a list, and he tries the same things FIRST."
       ],
-      "file": "/audio/voice/fe36659713edcc37.mp3"
+      "file": "/audio/voice/9bc1b8d81aac6625.mp3"
     },
     {
-      "key": "da450acdbbff9c1d",
+      "key": "f5e1a8834f37d5f8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Let's get inside the sneaky Raccoon's head! [whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday? And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries! [excited] So pick something he'd NEVER guess, and outsmart him! [warmly] Let's find out WHY weak passwords are weak!",
+      "text": "Let's look at his list. Your name. Your birthday. Your pet. Your favorite team. And right at the top, one two three four five six. These are the first things he tries, because they are the things people pick MOST. [warmly] So we pick something that is on nobody's list. In a moment you will sort some weak passwords and work out why each one is weak.",
       "lines": [
-        "[excited] Let's get inside the sneaky Raccoon's head!",
-        "[whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday?",
-        "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
-        "[excited] So pick something he'd NEVER guess, and outsmart him!",
-        "[warmly] Let's find out WHY weak passwords are weak!"
+        "Let's look at his list.",
+        "Your name. Your birthday. Your pet. Your favorite team.",
+        "And right at the top, one two three four five six.",
+        "These are the first things he tries, because they are the things people pick MOST.",
+        "[warmly] So we pick something that is on nobody's list.",
+        "In a moment you will sort some weak passwords and work out why each one is weak."
       ],
-      "file": "/audio/voice/da450acdbbff9c1d.mp3"
+      "file": "/audio/voice/f5e1a8834f37d5f8.mp3"
     },
     {
-      "key": "8e299f4ff2384185",
+      "key": "f3c9e2ccc2535f34",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] On your last challenge, you turn detective! This game is all about spotting WHY a password is weak, so you never pick one like it. Out in the real world, knowing why a password is weak means you'll always build a strong one. Here is what you do. Look at each weak password, then tap the reason it's weak. Too short? A real word? About you? Or just keyboard keys in a row? [excited] Sort them all and no weak password can fool you. Ready? Let's investigate!",
+      "text": "Look at each weak password and tap the reason it is weak. Too short. A real word. Something about you. Or just keys in a row. [warmly] Sort them all, Cyber Hero.",
       "lines": [
-        "[warmly] On your last challenge, you turn detective!",
-        "This game is all about spotting WHY a password is weak, so you never pick one like it.",
-        "Out in the real world, knowing why a password is weak means you'll always build a strong one.",
-        "Here is what you do. Look at each weak password, then tap the reason it's weak. Too short? A real word? About you? Or just keyboard keys in a row?",
-        "[excited] Sort them all and no weak password can fool you. Ready? Let's investigate!"
+        "Look at each weak password and tap the reason it is weak.",
+        "Too short. A real word. Something about you. Or just keys in a row.",
+        "[warmly] Sort them all, Cyber Hero."
       ],
-      "file": "/audio/voice/8e299f4ff2384185.mp3"
+      "file": "/audio/voice/f3c9e2ccc2535f34.mp3"
     },
     {
-      "key": "3cd275ad13406734",
+      "key": "1f1f2f624cd16ae1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[proud] Case closed, Cyber Hero! Now you can spot WHY a password is weak before the Raccoon ever tries it. [warmly] Out in the real world, no names, no birthdays, no one-two-three-four-five-six. Just words nobody could guess.",
+      "text": "[proud] All sorted. You can see why a password is weak before you ever choose one. [warmly] No names, no birthdays, no numbers in a row.",
       "lines": [
-        "[proud] Case closed, Cyber Hero! Now you can spot WHY a password is weak before the Raccoon ever tries it.",
-        "[warmly] Out in the real world, no names, no birthdays, no one-two-three-four-five-six. Just words nobody could guess."
+        "[proud] All sorted. You can see why a password is weak before you ever choose one.",
+        "[warmly] No names, no birthdays, no numbers in a row."
       ],
-      "file": "/audio/voice/3cd275ad13406734.mp3"
+      "file": "/audio/voice/1f1f2f624cd16ae1.mp3"
     },
     {
-      "key": "08245b518046d743",
+      "key": "c2724b505eede08d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Yes! 'password' is the number-one password people pick. So it is the very FIRST thing the Raccoon tries. The safe ones are random words that have nothing to do with you. [excited] Pick something he would NEVER guess... [proud] Well done!",
+      "text": "Yes. The word password is the most popular password there is, so it is the FIRST thing he tries. The safe ones are random words with nothing to do with you. [proud] Nothing gets past you.",
       "lines": [
-        "[warmly] Yes! 'password' is the number-one password people pick.",
-        "So it is the very FIRST thing the Raccoon tries.",
-        "The safe ones are random words that have nothing to do with you.",
-        "[excited] Pick something he would NEVER guess...",
-        "[proud] Well done!"
+        "Yes. The word password is the most popular password there is, so it is the FIRST thing he tries.",
+        "The safe ones are random words with nothing to do with you.",
+        "[proud] Nothing gets past you."
       ],
-      "file": "/audio/voice/08245b518046d743.mp3"
+      "file": "/audio/voice/c2724b505eede08d.mp3"
     },
     {
-      "key": "86988cecde837d3b",
+      "key": "b875d244ff7a897d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] You've earned all FIVE powers, Cyber Hero! You steer clear of the obvious ones. No names, no birthdays, no one-two-three-four-five-six. [warmly] So the Raccoon can't guess his way in, no matter how hard he tries. Now, one quick Power Bingo to make it all stick... then the Raccoon gets locked out for good. Come on!",
+      "text": "[proud] That is all five powers, Cyber Hero! A key that proves it is you. Long. Mixed up. Secret. Nothing obvious. [warmly] Before we face him, let's put all five together one more time in Power Bingo.",
       "lines": [
-        "[excited] You've earned all FIVE powers, Cyber Hero!",
-        "You steer clear of the obvious ones. No names, no birthdays, no one-two-three-four-five-six.",
-        "[warmly] So the Raccoon can't guess his way in, no matter how hard he tries.",
-        "Now, one quick Power Bingo to make it all stick... then the Raccoon gets locked out for good. Come on!"
+        "[proud] That is all five powers, Cyber Hero!",
+        "A key that proves it is you. Long. Mixed up. Secret. Nothing obvious.",
+        "[warmly] Before we face him, let's put all five together one more time in Power Bingo."
       ],
-      "file": "/audio/voice/86988cecde837d3b.mp3"
+      "file": "/audio/voice/b875d244ff7a897d.mp3"
     },
     {
-      "key": "e4e5bc441d44a618",
+      "key": "816374067e98377f",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Listen to the move, then tap the dial for the power it used. Get it right and the bolt slides home!",
+      "text": "Listen to the move, then tap the dial for the power it used.",
       "lines": [
-        "Listen to the move, then tap the dial for the power it used. Get it right and the bolt slides home!"
+        "Listen to the move, then tap the dial for the power it used."
       ],
-      "file": "/audio/voice/e4e5bc441d44a618.mp3"
+      "file": "/audio/voice/816374067e98377f.mp3"
     },
     {
-      "key": "316dfcef22bc61f3",
+      "key": "e003d1e5f661521d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Final drill, Cyber Hero - it's Power Bingo! You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action. Here is what you do. I'll read out a move someone made, and you tap the dial for the power it used. Its bolt slides home into the vault door. [warmly] Then I'll tell you WHY it works. Bolt all four powers home to seal the vault - that's BINGO!",
+      "text": "I will read out something a person did. You tap the dial for the power they used, and the bolt slides into the vault door. Then I will tell you why it worked. [warmly] Four bolts home and the vault is sealed.",
       "lines": [
-        "[excited] Final drill, Cyber Hero - it's Power Bingo!",
-        "You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action.",
-        "Here is what you do. I'll read out a move someone made, and you tap the dial for the power it used. Its bolt slides home into the vault door.",
-        "[warmly] Then I'll tell you WHY it works. Bolt all four powers home to seal the vault - that's BINGO!"
+        "I will read out something a person did. You tap the dial for the power they used, and the bolt slides into the vault door.",
+        "Then I will tell you why it worked.",
+        "[warmly] Four bolts home and the vault is sealed."
       ],
-      "file": "/audio/voice/316dfcef22bc61f3.mp3"
+      "file": "/audio/voice/e003d1e5f661521d.mp3"
     },
     {
-      "key": "9ae545d3f411c33d",
+      "key": "156da1a61d72e70a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[proud] BINGO! You spotted every password power in action. [warmly] Long, mixed up, secret, and nothing obvious. Out in the real world, that's a password the Raccoon can never beat. Now let's lock him out for good!",
+      "text": "[excited] Bingo! Every power spotted. [warmly] Long, mixed up, secret, nothing obvious. Now let's go and lock him out.",
       "lines": [
-        "[proud] BINGO! You spotted every password power in action.",
-        "[warmly] Long, mixed up, secret, and nothing obvious. Out in the real world, that's a password the Raccoon can never beat. Now let's lock him out for good!"
+        "[excited] Bingo! Every power spotted.",
+        "[warmly] Long, mixed up, secret, nothing obvious. Now let's go and lock him out."
       ],
-      "file": "/audio/voice/9ae545d3f411c33d.mp3"
+      "file": "/audio/voice/156da1a61d72e70a.mp3"
     },
     {
-      "key": "d7deef07485d9b75",
+      "key": "32fa48546038a39d",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] WOW! Look at everything you learned this week! Your password is your secret key, make it nice and long, [excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess! [laughs] You did it, Cyber Hero! [excited] Now, time to claim your stickers!",
+      "text": "[warmly] Look at what you can do now, Cyber Hero. You know your password is a key that proves it is you. You make it long with three random words. You mix in capitals, numbers and symbols. You keep it secret. And you never pick the obvious. [proud] That is a password the Hacker Raccoon cannot beat. Time to claim your stickers!",
       "lines": [
-        "[excited] WOW! Look at everything you learned this week!",
-        "Your password is your secret key, make it nice and long,",
-        "[excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess!",
-        "[laughs] You did it, Cyber Hero! [excited] Now, time to claim your stickers!"
+        "[warmly] Look at what you can do now, Cyber Hero.",
+        "You know your password is a key that proves it is you.",
+        "You make it long with three random words.",
+        "You mix in capitals, numbers and symbols.",
+        "You keep it secret.",
+        "And you never pick the obvious.",
+        "[proud] That is a password the Hacker Raccoon cannot beat. Time to claim your stickers!"
       ],
-      "file": "/audio/voice/d7deef07485d9b75.mp3"
+      "file": "/audio/voice/32fa48546038a39d.mp3"
     },
     {
       "key": "8a408887b9a9bb0f",
@@ -748,104 +729,104 @@
       "file": "/audio/voice/875ba2c582b49cf1.mp3"
     },
     {
-      "key": "f1308d926dc13214",
+      "key": "0d1e06ae20865b6c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That 'free' gift was a trap - they only wanted your account, and now it's gone.",
+      "text": "There was no free gift. They wanted the account, and now it is theirs.",
       "lines": [
-        "That 'free' gift was a trap - they only wanted your account, and now it's gone."
+        "There was no free gift. They wanted the account, and now it is theirs."
       ],
-      "file": "/audio/voice/f1308d926dc13214.mp3"
+      "file": "/audio/voice/0d1e06ae20865b6c.mp3"
     },
     {
-      "key": "f126189690d2f3bb",
+      "key": "be0dcfe548657a45",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Yes! A real gift NEVER needs your password. You kept your secret safe.",
+      "text": "Good. A real gift never needs your password, so that was never a gift.",
       "lines": [
-        "Yes! A real gift NEVER needs your password. You kept your secret safe."
+        "Good. A real gift never needs your password, so that was never a gift."
       ],
-      "file": "/audio/voice/f126189690d2f3bb.mp3"
+      "file": "/audio/voice/be0dcfe548657a45.mp3"
     },
     {
-      "key": "d9b2a25d9a85ae74",
+      "key": "9c2801b39876256a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Friends can't get it back for you - and now they might learn your secret. There's a safer helper.",
+      "text": "A friend cannot get it back for you, and now they might know it. There is a better person to ask.",
       "lines": [
-        "Friends can't get it back for you - and now they might learn your secret. There's a safer helper."
+        "A friend cannot get it back for you, and now they might know it. There is a better person to ask."
       ],
-      "file": "/audio/voice/d9b2a25d9a85ae74.mp3"
+      "file": "/audio/voice/9c2801b39876256a.mp3"
     },
     {
-      "key": "9d2330fe269cb622",
+      "key": "d5f0368b645fb3af",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Exactly! A parent or trusted grown-up is the ONE person who helps you with your password.",
+      "text": "That is the one. A trusted grown-up is the only person who helps you with your password.",
       "lines": [
-        "Exactly! A parent or trusted grown-up is the ONE person who helps you with your password."
+        "That is the one. A trusted grown-up is the only person who helps you with your password."
       ],
-      "file": "/audio/voice/9d2330fe269cb622.mp3"
+      "file": "/audio/voice/d5f0368b645fb3af.mp3"
     },
     {
-      "key": "6fc9caa4578e93dc",
+      "key": "417924f065431f22",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That box doesn't check anything - it just STEALS whatever you type.",
+      "text": "That box checks nothing. It keeps whatever you type.",
       "lines": [
-        "That box doesn't check anything - it just STEALS whatever you type."
+        "That box checks nothing. It keeps whatever you type."
       ],
-      "file": "/audio/voice/6fc9caa4578e93dc.mp3"
+      "file": "/audio/voice/417924f065431f22.mp3"
     },
     {
-      "key": "54ff4f1a9bc4deed",
+      "key": "44c1fbb101915fe6",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Spot on! A real checker never wants your actual password.",
+      "text": "Closed, and quite right. A real checker never asks for your actual password.",
       "lines": [
-        "Spot on! A real checker never wants your actual password."
+        "Closed, and quite right. A real checker never asks for your actual password."
       ],
-      "file": "/audio/voice/54ff4f1a9bc4deed.mp3"
+      "file": "/audio/voice/44c1fbb101915fe6.mp3"
     },
     {
-      "key": "11d47ee3e52d5e63",
+      "key": "4cc24890b4990ea3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Even best friends shouldn't know. If THEIR account gets hacked, yours does too.",
+      "text": "Even a best friend should not know it. If their account is broken into, yours goes with it.",
       "lines": [
-        "Even best friends shouldn't know. If THEIR account gets hacked, yours does too."
+        "Even a best friend should not know it. If their account is broken into, yours goes with it."
       ],
-      "file": "/audio/voice/11d47ee3e52d5e63.mp3"
+      "file": "/audio/voice/4cc24890b4990ea3.mp3"
     },
     {
-      "key": "e86158fc4f0759aa",
+      "key": "7fb56db58d986aa0",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Perfect. Your password is YOUR secret - nobody else needs it, not even a best friend.",
+      "text": "You kept it. Nobody else needs your password, and that includes a best friend.",
       "lines": [
-        "Perfect. Your password is YOUR secret - nobody else needs it, not even a best friend."
+        "You kept it. Nobody else needs your password, and that includes a best friend."
       ],
-      "file": "/audio/voice/e86158fc4f0759aa.mp3"
+      "file": "/audio/voice/7fb56db58d986aa0.mp3"
     },
     {
-      "key": "b4113a76725e17ad",
+      "key": "b7517d4cb3debe84",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Yes! Your own real login screen is the ONE place your password belongs. Just make sure nobody is peeking.",
+      "text": "Yes. Your own login screen is the one place it belongs. Just check that nobody is watching.",
       "lines": [
-        "Yes! Your own real login screen is the ONE place your password belongs. Just make sure nobody is peeking."
+        "Yes. Your own login screen is the one place it belongs. Just check that nobody is watching."
       ],
-      "file": "/audio/voice/b4113a76725e17ad.mp3"
+      "file": "/audio/voice/b7517d4cb3debe84.mp3"
     },
     {
-      "key": "4699f6b1a4ff3881",
+      "key": "c314a1f6aaf0ce30",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A password has to go SOMEWHERE, and your own real login is exactly where it belongs. It's strangers, pop-ups and friends who never get it.",
+      "text": "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it.",
       "lines": [
-        "A password has to go SOMEWHERE, and your own real login is exactly where it belongs. It's strangers, pop-ups and friends who never get it."
+        "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it."
       ],
-      "file": "/audio/voice/4699f6b1a4ff3881.mp3"
+      "file": "/audio/voice/c314a1f6aaf0ce30.mp3"
     },
     {
       "key": "aeee37367b6fe7fa",
@@ -1108,44 +1089,44 @@
       "file": "/audio/voice/9a7294b4501fb6ca.mp3"
     },
     {
-      "key": "05d604dc7d7b4820",
+      "key": "c08e5990c31ac1e4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power.",
+      "text": "Four random words, so his cracker runs out of time. That is the long power.",
       "lines": [
-        "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power."
+        "Four random words, so his cracker runs out of time. That is the long power."
       ],
-      "file": "/audio/voice/05d604dc7d7b4820.mp3"
+      "file": "/audio/voice/c08e5990c31ac1e4.mp3"
     },
     {
-      "key": "4f143a23c8ae7709",
+      "key": "4b8298834485ff01",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power.",
+      "text": "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power.",
       "lines": [
-        "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power."
+        "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power."
       ],
-      "file": "/audio/voice/4f143a23c8ae7709.mp3"
+      "file": "/audio/voice/4b8298834485ff01.mp3"
     },
     {
-      "key": "e9ed17dc1fef7afa",
+      "key": "d1619a1074069544",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power.",
+      "text": "Ada told a grown-up and nobody else. That is keeping it secret.",
       "lines": [
-        "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power."
+        "Ada told a grown-up and nobody else. That is keeping it secret."
       ],
-      "file": "/audio/voice/e9ed17dc1fef7afa.mp3"
+      "file": "/audio/voice/d1619a1074069544.mp3"
     },
     {
-      "key": "524494c06abdb38c",
+      "key": "f880d7020d80ec3d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power.",
+      "text": "Nothing about Sam that anyone could guess. Nothing obvious, every time.",
       "lines": [
-        "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power."
+        "Nothing about Sam that anyone could guess. Nothing obvious, every time."
       ],
-      "file": "/audio/voice/524494c06abdb38c.mp3"
+      "file": "/audio/voice/f880d7020d80ec3d.mp3"
     },
     {
       "key": "dff7837a489be067",
@@ -1262,114 +1243,114 @@
       "file": "/audio/voice/789fa17624b31e6d.mp3"
     },
     {
-      "key": "890934b683ef0c38",
+      "key": "684bd2e510eae737",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Hiding a tablet, or a house rule about where to use it, won't stop anyone who finds it. A secret code you type in, a password, is the one thing that actually locks it.",
+      "text": "That's right! Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
       "lines": [
         "That's right!",
-        "Hiding a tablet, or a house rule about where to use it, won't stop anyone who finds it. A secret code you type in, a password, is the one thing that actually locks it."
+        "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it."
       ],
-      "file": "/audio/voice/890934b683ef0c38.mp3"
+      "file": "/audio/voice/684bd2e510eae737.mp3"
     },
     {
-      "key": "142193275f0bba09",
+      "key": "dc6a681a438dbd90",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Hiding a tablet, or a house rule about where to use it, won't stop anyone who finds it. A secret code you type in, a password, is the one thing that actually locks it.",
+      "text": "Not quite. Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
       "lines": [
         "Not quite.",
-        "Hiding a tablet, or a house rule about where to use it, won't stop anyone who finds it. A secret code you type in, a password, is the one thing that actually locks it."
+        "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it."
       ],
-      "file": "/audio/voice/142193275f0bba09.mp3"
+      "file": "/audio/voice/dc6a681a438dbd90.mp3"
     },
     {
-      "key": "5208851955d052b5",
+      "key": "87867be492c2c05a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! My robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+      "text": "That's right! His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
       "lines": [
         "That's right!",
-        "My robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
+        "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
       ],
-      "file": "/audio/voice/5208851955d052b5.mp3"
+      "file": "/audio/voice/87867be492c2c05a.mp3"
     },
     {
-      "key": "cec0b5360a942a85",
+      "key": "77c1200814da61d1",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. My robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+      "text": "Not quite. His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
       "lines": [
         "Not quite.",
-        "My robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
+        "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
       ],
-      "file": "/audio/voice/cec0b5360a942a85.mp3"
+      "file": "/audio/voice/77c1200814da61d1.mp3"
     },
     {
-      "key": "1cab3d917792072d",
+      "key": "df3c0af5ec883001",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! A capital, a number, AND a symbol all mixed through it beats a single extra added onto an ordinary word. A word plus a year, or a word plus a couple of symbols, is still mostly that ordinary word.",
+      "text": "That's right! A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
       "lines": [
         "That's right!",
-        "A capital, a number, AND a symbol all mixed through it beats a single extra added onto an ordinary word. A word plus a year, or a word plus a couple of symbols, is still mostly that ordinary word."
+        "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word."
       ],
-      "file": "/audio/voice/1cab3d917792072d.mp3"
+      "file": "/audio/voice/df3c0af5ec883001.mp3"
     },
     {
-      "key": "489d32f28dfd91db",
+      "key": "11bb7863097cd8a8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. A capital, a number, AND a symbol all mixed through it beats a single extra added onto an ordinary word. A word plus a year, or a word plus a couple of symbols, is still mostly that ordinary word.",
+      "text": "Not quite. A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
       "lines": [
         "Not quite.",
-        "A capital, a number, AND a symbol all mixed through it beats a single extra added onto an ordinary word. A word plus a year, or a word plus a couple of symbols, is still mostly that ordinary word."
+        "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word."
       ],
-      "file": "/audio/voice/489d32f28dfd91db.mp3"
+      "file": "/audio/voice/11bb7863097cd8a8.mp3"
     },
     {
-      "key": "8b39bc5abe2312c8",
+      "key": "587ab1b1d239868d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! A checker box, a free reward, even a best friend, none of them should ever get your real password. Keep it secret. The only person who helps is a trusted grown-up at home.",
+      "text": "That's right! A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home.",
       "lines": [
         "That's right!",
-        "A checker box, a free reward, even a best friend, none of them should ever get your real password. Keep it secret. The only person who helps is a trusted grown-up at home."
+        "A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home."
       ],
-      "file": "/audio/voice/8b39bc5abe2312c8.mp3"
+      "file": "/audio/voice/587ab1b1d239868d.mp3"
     },
     {
-      "key": "fcd60836d89df5a3",
+      "key": "f7af4d06453de40c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. A checker box, a free reward, even a best friend, none of them should ever get your real password. Keep it secret. The only person who helps is a trusted grown-up at home.",
+      "text": "Not quite. A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home.",
       "lines": [
         "Not quite.",
-        "A checker box, a free reward, even a best friend, none of them should ever get your real password. Keep it secret. The only person who helps is a trusted grown-up at home."
+        "A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home."
       ],
-      "file": "/audio/voice/fcd60836d89df5a3.mp3"
+      "file": "/audio/voice/f7af4d06453de40c.mp3"
     },
     {
-      "key": "11e76788e3841acd",
+      "key": "b626664577bc1dec",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! 'Password' with a 1, keyboard rows like qwerty, and famous heroes with a birthday-year are ALL near the top of my guess-list. The safe one is random words that have nothing to do with you.",
+      "text": "That's right! Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
       "lines": [
         "That's right!",
-        "'Password' with a 1, keyboard rows like qwerty, and famous heroes with a birthday-year are ALL near the top of my guess-list. The safe one is random words that have nothing to do with you."
+        "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you."
       ],
-      "file": "/audio/voice/11e76788e3841acd.mp3"
+      "file": "/audio/voice/b626664577bc1dec.mp3"
     },
     {
-      "key": "318915f6d9871a23",
+      "key": "03ac063ca41834e2",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. 'Password' with a 1, keyboard rows like qwerty, and famous heroes with a birthday-year are ALL near the top of my guess-list. The safe one is random words that have nothing to do with you.",
+      "text": "Not quite. Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
       "lines": [
         "Not quite.",
-        "'Password' with a 1, keyboard rows like qwerty, and famous heroes with a birthday-year are ALL near the top of my guess-list. The safe one is random words that have nothing to do with you."
+        "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you."
       ],
-      "file": "/audio/voice/318915f6d9871a23.mp3"
+      "file": "/audio/voice/03ac063ca41834e2.mp3"
     },
     {
       "key": "3cb3ae4986af44ec",
@@ -1622,44 +1603,44 @@
       "file": "/audio/voice/9a7294b4501fb6ca.mp3"
     },
     {
-      "key": "05d604dc7d7b4820",
+      "key": "c08e5990c31ac1e4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power.",
+      "text": "Four random words, so his cracker runs out of time. That is the long power.",
       "lines": [
-        "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power."
+        "Four random words, so his cracker runs out of time. That is the long power."
       ],
-      "file": "/audio/voice/05d604dc7d7b4820.mp3"
+      "file": "/audio/voice/c08e5990c31ac1e4.mp3"
     },
     {
-      "key": "4f143a23c8ae7709",
+      "key": "4b8298834485ff01",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power.",
+      "text": "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power.",
       "lines": [
-        "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power."
+        "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power."
       ],
-      "file": "/audio/voice/4f143a23c8ae7709.mp3"
+      "file": "/audio/voice/4b8298834485ff01.mp3"
     },
     {
-      "key": "e9ed17dc1fef7afa",
+      "key": "d1619a1074069544",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power.",
+      "text": "Ada told a grown-up and nobody else. That is keeping it secret.",
       "lines": [
-        "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power."
+        "Ada told a grown-up and nobody else. That is keeping it secret."
       ],
-      "file": "/audio/voice/e9ed17dc1fef7afa.mp3"
+      "file": "/audio/voice/d1619a1074069544.mp3"
     },
     {
-      "key": "524494c06abdb38c",
+      "key": "f880d7020d80ec3d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power.",
+      "text": "Nothing about Sam that anyone could guess. Nothing obvious, every time.",
       "lines": [
-        "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power."
+        "Nothing about Sam that anyone could guess. Nothing obvious, every time."
       ],
-      "file": "/audio/voice/524494c06abdb38c.mp3"
+      "file": "/audio/voice/f880d7020d80ec3d.mp3"
     },
     {
       "key": "f95fa777574b810e",
@@ -1742,94 +1723,94 @@
       "file": "/audio/voice/1c52cb25eadc0be4.mp3"
     },
     {
-      "key": "06b074b8427e7a80",
+      "key": "ee075c8e837a4cfb",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Four random words stuck together, like Mia's, make a password super LONG. That's the long-and-random power.",
+      "text": "Mia used four random words. That makes a password long, so this one is the long power.",
       "lines": [
-        "Four random words stuck together, like Mia's, make a password super LONG. That's the long-and-random power."
+        "Mia used four random words. That makes a password long, so this one is the long power."
       ],
-      "file": "/audio/voice/06b074b8427e7a80.mp3"
+      "file": "/audio/voice/ee075c8e837a4cfb.mp3"
     },
     {
-      "key": "2d26844f2fc20239",
+      "key": "eba2147df243bedf",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Capitals, numbers AND a symbol all mixed in - that's the mix-it-up power.",
+      "text": "Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power.",
       "lines": [
-        "Capitals, numbers AND a symbol all mixed in - that's the mix-it-up power."
+        "Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power."
       ],
-      "file": "/audio/voice/2d26844f2fc20239.mp3"
+      "file": "/audio/voice/eba2147df243bedf.mp3"
     },
     {
-      "key": "032184c175fe61dd",
+      "key": "134db3e411e2e1fb",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "She didn't share it with anyone - that's the keep-it-secret power.",
+      "text": "Ada did not share it with anybody. That is the keep-it-secret power.",
       "lines": [
-        "She didn't share it with anyone - that's the keep-it-secret power."
+        "Ada did not share it with anybody. That is the keep-it-secret power."
       ],
-      "file": "/audio/voice/032184c175fe61dd.mp3"
+      "file": "/audio/voice/134db3e411e2e1fb.mp3"
     },
     {
-      "key": "15f7fdfc59e58ced",
+      "key": "fdf2ccdffa08bc69",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "No name, no birthday, nothing easy to guess - that's the nothing-obvious power.",
+      "text": "No name and no birthday, nothing anyone could guess. That is the nothing-obvious power.",
       "lines": [
-        "No name, no birthday, nothing easy to guess - that's the nothing-obvious power."
+        "No name and no birthday, nothing anyone could guess. That is the nothing-obvious power."
       ],
-      "file": "/audio/voice/15f7fdfc59e58ced.mp3"
+      "file": "/audio/voice/fdf2ccdffa08bc69.mp3"
     },
     {
-      "key": "c579f86e8ded91bc",
+      "key": "5afcfecca00bdd9b",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Hiding a tablet, or a house rule about where to use it, won't stop anyone who finds it. A secret code you type in, a password, is the one thing that actually locks it.",
+      "text": "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
       "lines": [
-        "Hiding a tablet, or a house rule about where to use it, won't stop anyone who finds it. A secret code you type in, a password, is the one thing that actually locks it."
+        "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it."
       ],
-      "file": "/audio/voice/c579f86e8ded91bc.mp3"
+      "file": "/audio/voice/5afcfecca00bdd9b.mp3"
     },
     {
-      "key": "94b68a345fe32baf",
+      "key": "76ee73b85bb43052",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "My robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+      "text": "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
       "lines": [
-        "My robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
+        "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
       ],
-      "file": "/audio/voice/94b68a345fe32baf.mp3"
+      "file": "/audio/voice/76ee73b85bb43052.mp3"
     },
     {
-      "key": "be0fb143f3abe776",
+      "key": "e355c26c5da66403",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A capital, a number, AND a symbol all mixed through it beats a single extra added onto an ordinary word. A word plus a year, or a word plus a couple of symbols, is still mostly that ordinary word.",
+      "text": "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
       "lines": [
-        "A capital, a number, AND a symbol all mixed through it beats a single extra added onto an ordinary word. A word plus a year, or a word plus a couple of symbols, is still mostly that ordinary word."
+        "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word."
       ],
-      "file": "/audio/voice/be0fb143f3abe776.mp3"
+      "file": "/audio/voice/e355c26c5da66403.mp3"
     },
     {
-      "key": "f2261bde21f69d37",
+      "key": "9e35e752f5c8d96c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "A checker box, a free reward, even a best friend, none of them should ever get your real password. Keep it secret. The only person who helps is a trusted grown-up at home.",
+      "text": "A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home.",
       "lines": [
-        "A checker box, a free reward, even a best friend, none of them should ever get your real password. Keep it secret. The only person who helps is a trusted grown-up at home."
+        "A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home."
       ],
-      "file": "/audio/voice/f2261bde21f69d37.mp3"
+      "file": "/audio/voice/9e35e752f5c8d96c.mp3"
     },
     {
-      "key": "67bf96ff167e6f0b",
+      "key": "5025eda946fec339",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "'Password' with a 1, keyboard rows like qwerty, and famous heroes with a birthday-year are ALL near the top of my guess-list. The safe one is random words that have nothing to do with you.",
+      "text": "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
       "lines": [
-        "'Password' with a 1, keyboard rows like qwerty, and famous heroes with a birthday-year are ALL near the top of my guess-list. The safe one is random words that have nothing to do with you."
+        "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you."
       ],
-      "file": "/audio/voice/67bf96ff167e6f0b.mp3"
+      "file": "/audio/voice/5025eda946fec339.mp3"
     },
     {
       "key": "694c3fcb07c9e2eb",
@@ -40932,114 +40913,114 @@
       "file": "/audio/voice/7a43707bdd437c0b.mp3"
     },
     {
-      "key": "b7d74f30df89b36e",
+      "key": "fd9c1414f9cedb49",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. That 'free' gift was a trap - they only wanted your account, and now it's gone.",
+      "text": "Not quite. There was no free gift. They wanted the account, and now it is theirs.",
       "lines": [
         "Not quite.",
-        "That 'free' gift was a trap - they only wanted your account, and now it's gone."
+        "There was no free gift. They wanted the account, and now it is theirs."
       ],
-      "file": "/audio/voice/b7d74f30df89b36e.mp3"
+      "file": "/audio/voice/fd9c1414f9cedb49.mp3"
     },
     {
-      "key": "d17e4a476afae91f",
+      "key": "ca7d5b53871c3c87",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Yes! A real gift NEVER needs your password. You kept your secret safe.",
+      "text": "That's right! Good. A real gift never needs your password, so that was never a gift.",
       "lines": [
         "That's right!",
-        "Yes! A real gift NEVER needs your password. You kept your secret safe."
+        "Good. A real gift never needs your password, so that was never a gift."
       ],
-      "file": "/audio/voice/d17e4a476afae91f.mp3"
+      "file": "/audio/voice/ca7d5b53871c3c87.mp3"
     },
     {
-      "key": "6321d4c57c36ce56",
+      "key": "a93e2f46a758e217",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Friends can't get it back for you - and now they might learn your secret. There's a safer helper.",
+      "text": "Not quite. A friend cannot get it back for you, and now they might know it. There is a better person to ask.",
       "lines": [
         "Not quite.",
-        "Friends can't get it back for you - and now they might learn your secret. There's a safer helper."
+        "A friend cannot get it back for you, and now they might know it. There is a better person to ask."
       ],
-      "file": "/audio/voice/6321d4c57c36ce56.mp3"
+      "file": "/audio/voice/a93e2f46a758e217.mp3"
     },
     {
-      "key": "0bda68083097862e",
+      "key": "09342d5834532c8c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Exactly! A parent or trusted grown-up is the ONE person who helps you with your password.",
+      "text": "That's right! That is the one. A trusted grown-up is the only person who helps you with your password.",
       "lines": [
         "That's right!",
-        "Exactly! A parent or trusted grown-up is the ONE person who helps you with your password."
+        "That is the one. A trusted grown-up is the only person who helps you with your password."
       ],
-      "file": "/audio/voice/0bda68083097862e.mp3"
+      "file": "/audio/voice/09342d5834532c8c.mp3"
     },
     {
-      "key": "7c1e727cb1fe5892",
+      "key": "d0577d5e668543ea",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. That box doesn't check anything - it just STEALS whatever you type.",
+      "text": "Not quite. That box checks nothing. It keeps whatever you type.",
       "lines": [
         "Not quite.",
-        "That box doesn't check anything - it just STEALS whatever you type."
+        "That box checks nothing. It keeps whatever you type."
       ],
-      "file": "/audio/voice/7c1e727cb1fe5892.mp3"
+      "file": "/audio/voice/d0577d5e668543ea.mp3"
     },
     {
-      "key": "6f62b1bd39dd8241",
+      "key": "d5786fe698efc3e7",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Spot on! A real checker never wants your actual password.",
+      "text": "That's right! Closed, and quite right. A real checker never asks for your actual password.",
       "lines": [
         "That's right!",
-        "Spot on! A real checker never wants your actual password."
+        "Closed, and quite right. A real checker never asks for your actual password."
       ],
-      "file": "/audio/voice/6f62b1bd39dd8241.mp3"
+      "file": "/audio/voice/d5786fe698efc3e7.mp3"
     },
     {
-      "key": "d44e8abdca276b0b",
+      "key": "5e03863fff7278ea",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Even best friends shouldn't know. If THEIR account gets hacked, yours does too.",
+      "text": "Not quite. Even a best friend should not know it. If their account is broken into, yours goes with it.",
       "lines": [
         "Not quite.",
-        "Even best friends shouldn't know. If THEIR account gets hacked, yours does too."
+        "Even a best friend should not know it. If their account is broken into, yours goes with it."
       ],
-      "file": "/audio/voice/d44e8abdca276b0b.mp3"
+      "file": "/audio/voice/5e03863fff7278ea.mp3"
     },
     {
-      "key": "ed6326153dcb8243",
+      "key": "c33829b5fffff985",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Perfect. Your password is YOUR secret - nobody else needs it, not even a best friend.",
+      "text": "That's right! You kept it. Nobody else needs your password, and that includes a best friend.",
       "lines": [
         "That's right!",
-        "Perfect. Your password is YOUR secret - nobody else needs it, not even a best friend."
+        "You kept it. Nobody else needs your password, and that includes a best friend."
       ],
-      "file": "/audio/voice/ed6326153dcb8243.mp3"
+      "file": "/audio/voice/c33829b5fffff985.mp3"
     },
     {
-      "key": "83f0c9a5db786d94",
+      "key": "2024c90fb65840c3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Yes! Your own real login screen is the ONE place your password belongs. Just make sure nobody is peeking.",
+      "text": "That's right! Yes. Your own login screen is the one place it belongs. Just check that nobody is watching.",
       "lines": [
         "That's right!",
-        "Yes! Your own real login screen is the ONE place your password belongs. Just make sure nobody is peeking."
+        "Yes. Your own login screen is the one place it belongs. Just check that nobody is watching."
       ],
-      "file": "/audio/voice/83f0c9a5db786d94.mp3"
+      "file": "/audio/voice/2024c90fb65840c3.mp3"
     },
     {
-      "key": "986fa7d48b1ee468",
+      "key": "4988541d01cc418a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. A password has to go SOMEWHERE, and your own real login is exactly where it belongs. It's strangers, pop-ups and friends who never get it.",
+      "text": "Not quite. It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it.",
       "lines": [
         "Not quite.",
-        "A password has to go SOMEWHERE, and your own real login is exactly where it belongs. It's strangers, pop-ups and friends who never get it."
+        "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it."
       ],
-      "file": "/audio/voice/986fa7d48b1ee468.mp3"
+      "file": "/audio/voice/4988541d01cc418a.mp3"
     },
     {
       "key": "098762612dbf13e0",
@@ -41284,92 +41265,92 @@
       "file": "/audio/voice/e889dae10f23744d.mp3"
     },
     {
-      "key": "685addd4cd79b450",
+      "key": "b50ed21735a1b3f9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power.",
+      "text": "That's right! Four random words, so his cracker runs out of time. That is the long power.",
       "lines": [
         "That's right!",
-        "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power."
+        "Four random words, so his cracker runs out of time. That is the long power."
       ],
-      "file": "/audio/voice/685addd4cd79b450.mp3"
+      "file": "/audio/voice/b50ed21735a1b3f9.mp3"
     },
     {
-      "key": "1db324e6cff87036",
+      "key": "475b13aebde6c0dd",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Four random words stuck together, like Mia's, make a password super LONG. That's the long-and-random power.",
+      "text": "Not quite. Mia used four random words. That makes a password long, so this one is the long power.",
       "lines": [
         "Not quite.",
-        "Four random words stuck together, like Mia's, make a password super LONG. That's the long-and-random power."
+        "Mia used four random words. That makes a password long, so this one is the long power."
       ],
-      "file": "/audio/voice/1db324e6cff87036.mp3"
+      "file": "/audio/voice/475b13aebde6c0dd.mp3"
     },
     {
-      "key": "ba815c33101f30b3",
+      "key": "7e98aab3084cc4c8",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power.",
+      "text": "That's right! A capital, a number and a symbol, and the plain word is gone. The mix-it-up power.",
       "lines": [
         "That's right!",
-        "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power."
+        "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power."
       ],
-      "file": "/audio/voice/ba815c33101f30b3.mp3"
+      "file": "/audio/voice/7e98aab3084cc4c8.mp3"
     },
     {
-      "key": "bd85cdc634c7e3dc",
+      "key": "145b56e2fc2456ba",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. Capitals, numbers AND a symbol all mixed in - that's the mix-it-up power.",
+      "text": "Not quite. Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power.",
       "lines": [
         "Not quite.",
-        "Capitals, numbers AND a symbol all mixed in - that's the mix-it-up power."
+        "Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power."
       ],
-      "file": "/audio/voice/bd85cdc634c7e3dc.mp3"
+      "file": "/audio/voice/145b56e2fc2456ba.mp3"
     },
     {
-      "key": "8c2948713e01eab6",
+      "key": "7f7de42aa4be3526",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power.",
+      "text": "That's right! Ada told a grown-up and nobody else. That is keeping it secret.",
       "lines": [
         "That's right!",
-        "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power."
+        "Ada told a grown-up and nobody else. That is keeping it secret."
       ],
-      "file": "/audio/voice/8c2948713e01eab6.mp3"
+      "file": "/audio/voice/7f7de42aa4be3526.mp3"
     },
     {
-      "key": "6ebabf30be9e326a",
+      "key": "bde0736f6ede9921",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. She didn't share it with anyone - that's the keep-it-secret power.",
+      "text": "Not quite. Ada did not share it with anybody. That is the keep-it-secret power.",
       "lines": [
         "Not quite.",
-        "She didn't share it with anyone - that's the keep-it-secret power."
+        "Ada did not share it with anybody. That is the keep-it-secret power."
       ],
-      "file": "/audio/voice/6ebabf30be9e326a.mp3"
+      "file": "/audio/voice/bde0736f6ede9921.mp3"
     },
     {
-      "key": "84b0bca946d5bd10",
+      "key": "5b46c7b2ae650208",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "That's right! Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power.",
+      "text": "That's right! Nothing about Sam that anyone could guess. Nothing obvious, every time.",
       "lines": [
         "That's right!",
-        "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power."
+        "Nothing about Sam that anyone could guess. Nothing obvious, every time."
       ],
-      "file": "/audio/voice/84b0bca946d5bd10.mp3"
+      "file": "/audio/voice/5b46c7b2ae650208.mp3"
     },
     {
-      "key": "d669529d266cf4de",
+      "key": "30cb815426d30441",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Not quite. No name, no birthday, nothing easy to guess - that's the nothing-obvious power.",
+      "text": "Not quite. No name and no birthday, nothing anyone could guess. That is the nothing-obvious power.",
       "lines": [
         "Not quite.",
-        "No name, no birthday, nothing easy to guess - that's the nothing-obvious power."
+        "No name and no birthday, nothing anyone could guess. That is the nothing-obvious power."
       ],
-      "file": "/audio/voice/d669529d266cf4de.mp3"
+      "file": "/audio/voice/30cb815426d30441.mp3"
     },
     {
       "key": "3a53afe5d197177a",
