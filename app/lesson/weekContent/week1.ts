@@ -179,7 +179,7 @@ export const WEEK_1: WeekContent = {
       concept: 1,
       total: 5,
       learned: "You know a password is your own secret key that proves it's YOU - so no one can pretend to be you and get into your stuff.",
-      next: "making your password super strong",
+      next: "why a long password is a strong one",
       emblem: "🔑",
       narration: {
         speaker: "layla",
@@ -316,7 +316,7 @@ export const WEEK_1: WeekContent = {
       concept: 2,
       total: 5,
       learned: "You make your password long with three random words - so the Raccoon's guessing machine runs out of time before it ever cracks yours.",
-      next: "mixing it up to really stump the Raccoon",
+      next: "the weak spot a long password still has",
       emblem: "💪",
       narration: {
         speaker: "adam",
@@ -482,7 +482,7 @@ export const WEEK_1: WeekContent = {
       total: 5,
       learned:
         "You mix in capitals, numbers and symbols - so there's no plain word left for the Raccoon to guess.",
-      next: "keeping your password secret",
+      next: "the one way he gets in without cracking anything",
       emblem: "🎨",
       narration: {
         speaker: "layla",
@@ -547,8 +547,8 @@ export const WEEK_1: WeekContent = {
           frame: { appName: "Game Chat", icon: "🎮" },
           setup: "A player messages you: \"Send me your password and I'll give you FREE stuff!\"",
           choices: [
-            { text: "Send my password", isSafe: false, consequence: "That 'free' gift was a trap - they only wanted your account, and now it's gone." },
-            { text: "PAUSE - it's my secret", isSafe: true, consequence: "Yes! A real gift NEVER needs your password. You kept your secret safe." },
+            { text: "Send my password", isSafe: false, consequence: "There was no free gift. They wanted the account, and now it is theirs." },
+            { text: "PAUSE - it's my secret", isSafe: true, consequence: "Good. A real gift never needs your password, so that was never a gift." },
           ],
         },
         {
@@ -556,24 +556,24 @@ export const WEEK_1: WeekContent = {
           setup: "Uh oh - you forgot your password and can't log in. What's the smart thing to do?",
           safeKind: "ask",
           choices: [
-            { text: "Ask a friend to guess it", isSafe: false, consequence: "Friends can't get it back for you - and now they might learn your secret. There's a safer helper." },
-            { text: "Ask my mum or dad", isSafe: true, consequence: "Exactly! A parent or trusted grown-up is the ONE person who helps you with your password." },
+            { text: "Ask a friend to guess it", isSafe: false, consequence: "A friend cannot get it back for you, and now they might know it. There is a better person to ask." },
+            { text: "Ask my mom or dad", isSafe: true, consequence: "That is the one. A trusted grown-up is the only person who helps you with your password." },
           ],
         },
         {
           frame: { appName: "PasswordChecker.fun", icon: "🔐" },
           setup: "A website pops up: \"Type your password here and we'll tell you how STRONG it is!\"",
           choices: [
-            { text: "Type it in", isSafe: false, consequence: "That box doesn't check anything - it just STEALS whatever you type." },
-            { text: "PAUSE - close it", isSafe: true, consequence: "Spot on! A real checker never wants your actual password." },
+            { text: "Type it in", isSafe: false, consequence: "That box checks nothing. It keeps whatever you type." },
+            { text: "PAUSE - close it", isSafe: true, consequence: "Closed, and quite right. A real checker never asks for your actual password." },
           ],
         },
         {
           frame: { appName: "Messages", icon: "💬" },
           setup: "Your best friend texts: \"Tell me your password so I can log in and get you cool stuff!\"",
           choices: [
-            { text: "Tell my best friend", isSafe: false, consequence: "Even best friends shouldn't know. If THEIR account gets hacked, yours does too." },
-            { text: "PAUSE - keep it zipped", isSafe: true, consequence: "Perfect. Your password is YOUR secret - nobody else needs it, not even a best friend." },
+            { text: "Tell my best friend", isSafe: false, consequence: "Even a best friend should not know it. If their account is broken into, yours goes with it." },
+            { text: "PAUSE - keep it zipped", isSafe: true, consequence: "You kept it. Nobody else needs your password, and that includes a best friend." },
           ],
         },
         {
@@ -581,8 +581,8 @@ export const WEEK_1: WeekContent = {
           setup: "You open YOUR game on the family tablet. The real login screen asks for your password so you can play.",
           safeKind: "go",
           choices: [
-            { text: "Type it in - it's my own login", isSafe: true, consequence: "Yes! Your own real login screen is the ONE place your password belongs. Just make sure nobody is peeking." },
-            { text: "PAUSE - never type it anywhere", isSafe: false, consequence: "A password has to go SOMEWHERE, and your own real login is exactly where it belongs. It's strangers, pop-ups and friends who never get it." },
+            { text: "Type it in - it's my own login", isSafe: true, consequence: "Yes. Your own login screen is the one place it belongs. Just check that nobody is watching." },
+            { text: "PAUSE - never type it anywhere", isSafe: false, consequence: "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it." },
           ],
         },
       ],
@@ -629,7 +629,7 @@ export const WEEK_1: WeekContent = {
       concept: 4,
       total: 5,
       learned: "You keep your password secret and never share it - so no one can ever be tricked into handing it to the Raccoon.",
-      next: "spotting passwords that are too easy to guess",
+      next: "what is on the Raccoon's list",
       emblem: "🤫",
       narration: {
         speaker: "layla",
@@ -744,7 +744,7 @@ export const WEEK_1: WeekContent = {
       total: 5,
       learned:
         "You steer clear of obvious passwords - so the Raccoon can't guess his way in from your name, birthday or 123456.",
-      next: "one quick Power Bingo, then the final test",
+      next: "all five powers together in Power Bingo",
       emblem: "🕵️",
       narration: {
         speaker: "adam",
@@ -794,32 +794,32 @@ export const WEEK_1: WeekContent = {
           scene: "Mia's password is otter-lamp-rocket-comet. The Raccoon's cracker runs for a MILLION years and still can't open it!",
           sceneIcon: "🧩",
           signId: "long",
-          note: "Four random words stuck together, like Mia's, make a password super LONG. That's the long-and-random power.",
-          why: "Yes! Four random words make it so LONG the Raccoon's cracker gives up. That's your long-and-random power.",
+          note: "Mia used four random words. That makes a password long, so this one is the long power.",
+          why: "Four random words, so his cracker runs out of time. That is the long power.",
         },
         {
           id: "r-mix",
           scene: "Ben took his word and popped in a big capital, a 9 and a $ sign. Now it's a jumble the Raccoon can't read.",
           sceneIcon: "🔢",
           signId: "mix",
-          note: "Capitals, numbers AND a symbol all mixed in - that's the mix-it-up power.",
-          why: "Spot on! A capital, a number AND a symbol turn a plain word into a jumble. That's your mix-it-up power.",
+          note: "Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power.",
+          why: "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power.",
         },
         {
           id: "r-secret",
           scene: "A stranger in chat begs Ada for her password. She zips her lips and tells a grown-up instead.",
           sceneIcon: "💬",
           signId: "secret",
-          note: "She didn't share it with anyone - that's the keep-it-secret power.",
-          why: "Exactly! Ada kept it her secret and only told a grown-up. That's your keep-it-secret power.",
+          note: "Ada did not share it with anybody. That is the keep-it-secret power.",
+          why: "Ada told a grown-up and nobody else. That is keeping it secret.",
         },
         {
           id: "r-obvious",
           scene: "Sam nearly used his birthday... then picked something no one could EVER guess about him.",
           sceneIcon: "🎂",
           signId: "obvious",
-          note: "No name, no birthday, nothing easy to guess - that's the nothing-obvious power.",
-          why: "Great! No name, no birthday, nothing anyone could guess about him. That's your nothing-obvious power.",
+          note: "No name and no birthday, nothing anyone could guess. That is the nothing-obvious power.",
+          why: "Nothing about Sam that anyone could guess. Nothing obvious, every time.",
         },
       ],
       hints: {
@@ -922,7 +922,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Only a secret code locks it!",
-          explanation: "Hiding a tablet, or a house rule about where to use it, won't stop anyone who finds it. A secret code you type in, a password, is the one thing that actually locks it.",
+          explanation: "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
         },
         villainRight: {
           slug: "quiz-w1-right-what-1",
@@ -949,7 +949,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Long AND different is strong!",
-          explanation: "My robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+          explanation: "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
         },
         villainRight: {
           slug: "quiz-w1-right-length-1",
@@ -976,7 +976,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Mix in all three!",
-          explanation: "A capital, a number, AND a symbol all mixed through it beats a single extra added onto an ordinary word. A word plus a year, or a word plus a couple of symbols, is still mostly that ordinary word.",
+          explanation: "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
         },
         villainRight: {
           slug: "quiz-w1-right-mix-1",
@@ -1003,7 +1003,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Keep it secret!",
-          explanation: "A checker box, a free reward, even a best friend, none of them should ever get your real password. Keep it secret. The only person who helps is a trusted grown-up at home.",
+          explanation: "A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home.",
         },
         villainRight: {
           slug: "quiz-w1-right-secret-1",
@@ -1031,7 +1031,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Don't pick the obvious!",
-          explanation: "'Password' with a 1, keyboard rows like qwerty, and famous heroes with a birthday-year are ALL near the top of my guess-list. The safe one is random words that have nothing to do with you.",
+          explanation: "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
         },
         villainRight: {
           slug: "quiz-w1-right-obvious-1",
