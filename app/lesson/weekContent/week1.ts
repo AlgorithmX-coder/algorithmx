@@ -49,11 +49,11 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[nervous] Oh no, Cyber Hero, look at this!",
+          "Cyber Hero, come and look at this.",
           "The Hacker Raccoon is trying to steal Adam and Layla's passwords.",
-          "If he cracks even one, he can get into all their games and messages.",
-          "[warmly] But by the end of this week, you'll build a password he can NEVER break.",
-          "Let's see what Mission Command has for us!",
+          "If he cracks even one, he gets into all their games and all their messages.",
+          "[warmly] By the end of this week you will know how to build a password he can NEVER break.",
+          "Mission Command has the details. Let's go.",
         ],
       },
     },
@@ -95,13 +95,13 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Hey there, Cyber Hero! I've got a secret... just for you.",
-          "[whispers] Come a little closer.",
-          "Your password is like a magic key, and it's all YOURS.",
-          "It's how the computer knows it's really YOU.",
-          "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
-          "[excited] But a big, strong one? [laughs] He doesn't stand a chance!",
-          "[warmly] First, let's learn the words heroes use!",
+          "Let's start with the big question. What IS a password?",
+          "Your password is like a key, and it belongs to nobody but you.",
+          "When you type it in, the computer knows the real you has arrived.",
+          "A weak key lets the Raccoon walk straight in.",
+          "[warmly] A strong one keeps him outside, every single time.",
+          "Before we build one, we need the words that heroes use.",
+          "In a moment you will play Cyber Word Match and learn them.",
         ],
       },
     },
@@ -128,11 +128,9 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] On your very first challenge, we learn the cyber words!",
-          "This game is all about knowing what a password really is, and the words that go with it.",
-          "Out in the real world, once you know these words, nobody can muddle you up.",
-          "Here is what you do. The cards are face down. Tap one card, then tap another to find its matching pair.",
-          "[excited] Match them all and you're a cyber-word expert. Ready? Let's play!",
+          "The cards are face down. Tap one, then tap another to find its pair.",
+          "Match every pair and you will know the four words heroes use.",
+          "[warmly] Off you go.",
         ],
       },
       // Played at the "Rebuild From Memory" phase-2 card so the second
@@ -140,16 +138,16 @@ export const WEEK_1: WeekContent = {
       coachLines: {
         speaker: "layla",
         lines: [
-          "[excited] Awesome matching! Now let's test your memory.",
-          "You'll get ten seconds to remember where each card is.",
-          "Then they flip over, tap where you think each one is!",
+          "Good matching. Now a memory round.",
+          "You have ten seconds to learn where each card sits.",
+          "Then they flip over, and you tap where you think they are.",
         ],
       },
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every pair matched! Now you know the cyber words heroes use.",
-          "[warmly] Out in the real world, when someone says password, strong, hacker or secret, you'll know exactly what they mean.",
+          "[proud] Every pair matched. You now know the words: password, strong, hacker, secret.",
+          "[warmly] When a grown-up uses one of those, you will know exactly what they mean.",
         ],
       },
     },
@@ -168,11 +166,9 @@ export const WEEK_1: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] Exactly right. A password proves it's YOU.",
-          "It's like showing a secret key that only YOU have.",
-          "So the computer knows the REAL you is logging in, not a sneaky Raccoon.",
-          "[excited] That is what keeps your stuff yours...",
-          "[proud] Well done!",
+          "That's right. A password proves it's YOU.",
+          "It is a key only you have, so the computer lets you in and keeps everybody else out.",
+          "[proud] Good start, Cyber Hero.",
         ],
       },
     },
@@ -188,10 +184,9 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's your first power, Cyber Hero!",
-          "You know a password is your very own secret key. It proves it's really YOU.",
-          "[warmly] So nobody can pretend to be you, and the Raccoon can't get into your things.",
-          "Next, we'll make that key so long the Raccoon can never crack it. Come and see!",
+          "First power learned. A password is your own secret key, and it proves it is really you.",
+          "Nobody can pretend to be you, so the Raccoon stays out of your things.",
+          "[warmly] Now, one thing makes a key hard to crack more than anything else, and it is simply how LONG it is.",
         ],
       },
     },
@@ -217,11 +212,13 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Ooh, want to know a clever trick?",
-          "The longer your key, the harder it is to crack!",
-          "[excited] So glue three silly words together, like dragon, taco, comet!",
-          "[laughs] Long, strong, and super easy to remember!",
-          "[excited] Let's go and build one!",
+          "Length. That is the whole trick.",
+          "Every extra letter gives the Raccoon's guessing machine more work to do.",
+          "A short password takes him a blink. A long one takes him YEARS.",
+          "And the easiest way to make a long one is to glue three silly words together.",
+          "Dragon. Taco. Comet.",
+          "[warmly] Long, strong, and easy to remember.",
+          "In a moment you will build one of your own.",
         ],
       },
     },
@@ -273,22 +270,20 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] On your next challenge, we build a super-long password!",
-          "This game is all about making your password long, by sticking three random words together.",
-          "Out in the real world, a long password is one the Raccoon's machine can never crack in time.",
-          "Here is what you do. Tap any three silly words from the wall to snap them together.",
-          "[excited] The longer and sillier, the stronger it gets. Ready? Let's build!",
+          "There is a wall of silly words in front of you. Tap any three to snap them together.",
+          "The sillier your three, the harder they are to guess.",
+          "[warmly] Build yours now.",
         ],
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Go on, tap any word you like to begin!"],
+        lines: ["Tap any word you like to begin."],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] What a password! Now you can build one so long the Raccoon's machine never finishes guessing.",
-          "[warmly] Out in the real world, three silly words are all it takes. Long really is strong.",
+          "[proud] Look at the length of that! His machine would still be guessing next year.",
+          "[warmly] Three silly words. That is all it takes.",
         ],
       },
     },
@@ -308,11 +303,9 @@ export const WEEK_1: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] Yes! The long one, dragon-taco-comet, is the winner.",
-          "The more letters there are, the longer the Raccoon's machine has to guess.",
-          "Three random words make it so long he simply runs out of time.",
-          "[excited] Long really is strong...",
-          "[proud] Well done!",
+          "Yes. Dragon-taco-comet is the one.",
+          "The more letters there are, the more guesses his machine has to make, and it simply runs out of TIME.",
+          "[proud] Nicely worked out.",
         ],
       },
     },
@@ -328,10 +321,9 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] That's your second power!",
-          "You make your password nice and long with three random words.",
-          "[warmly] So the Raccoon's guessing machine runs and runs and NEVER cracks it. Your stuff stays locked up tight.",
-          "Next, we'll mix it up so there's nothing plain left for him to grab. Come on!",
+          "Second power learned. You make a password long with three random words.",
+          "The guessing machine runs and runs, and it never gets there.",
+          "[warmly] But length on its own is not quite enough. A long password made of plain words still has a weak spot.",
         ],
       },
     },
@@ -357,11 +349,11 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Now let's make that key SUPER tough!",
-          "Mix it all up, big letters, little letters, numbers, and squiggly symbols!",
-          "[nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite.",
-          "[excited] But scramble it like that, [laughs] and he's totally stumped!",
-          "[warmly] Grab your doctor coat, we have passwords to heal!",
+          "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST.",
+          "So we mix it up. Big letters, small letters, numbers, and symbols.",
+          "Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all.",
+          "Once there is no plain word left inside, he has nothing to look up.",
+          "In a moment you will take some weak passwords into the Password Hospital and make them strong.",
         ],
       },
     },
@@ -444,22 +436,20 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] On your next challenge, you're the cyber-doctor!",
-          "This game is all about MIXING a password up, so there's no plain word left inside.",
-          "Out in the real world, a mixed-up password gives the Raccoon nothing to guess.",
-          "Here is what you do. Look at each sick password, tap what is WRONG with it, then use your tools to make it strong. Watch the strength meter climb.",
-          "[excited] Heal them all and the Raccoon is stumped. Ready? Let's go, Cyber Hero!",
+          "Each patient is a weak password. Tap what is wrong with it, then use your tools to fix it.",
+          "Watch the strength meter climb as you go.",
+          "[warmly] Heal them all, Cyber Hero.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Look at the patient. What's wrong with this password?"],
+        lines: ["Look at this patient. What is wrong with this password?"],
       },
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every patient healed! Now you can turn a plain, weak password into a mixed-up jumble.",
-          "[warmly] Out in the real world, a capital, a number and a symbol give the Raccoon nothing to guess.",
+          "[proud] Every patient healed. A capital, a number and a symbol, and the plain word is gone.",
+          "[warmly] Nothing left in there for him to look up.",
         ],
       },
     },
@@ -478,11 +468,9 @@ export const WEEK_1: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] Busted! That was a fib.",
-          "A password that's all small letters is easy pickings. Mix in capitals, numbers and symbols and it turns into a jumble.",
-          "The Raccoon's machine has to try WAY more guesses, so it gives up.",
-          "[excited] Mix it up every time...",
-          "[proud] Nice catch!",
+          "Not true, and you spotted it.",
+          "All small letters is an easy job for him. Add capitals, numbers and symbols and there are so many MORE guesses to make that his machine gives up.",
+          "[proud] Sharp eyes, Cyber Hero.",
         ],
       },
     },
@@ -499,10 +487,9 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's your third power!",
-          "You mix in big letters, little letters, numbers and symbols.",
-          "[warmly] So there's no plain word left for the Raccoon to guess. He's completely stumped!",
-          "Next, we'll learn the most important one of all. Keeping it secret. Come and see!",
+          "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside.",
+          "Long, and mixed up. That is a very hard password to crack.",
+          "[warmly] But there is one way he gets a password without cracking anything at all, and it is the thing we most need to talk about.",
         ],
       },
     },
@@ -528,11 +515,13 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Okay, this is the MOST important part. Lean in close...",
-          "[whispers] A password only works if you keep it SECRET.",
-          "Don't tell your best friend. Don't leave it where anyone can peek!",
-          "[warmly] The ONLY place you ever type it is your own real login screen, and the ONLY person who ever helps is a grown-up you really trust. Deal?",
-          "[excited] Let's practise saying no to the sneaky pop-ups!",
+          "He ASKS for it.",
+          "That is his favorite trick, because a password you hand over needs no cracking at all.",
+          "[warmly] So here is the rule. Your password stays secret.",
+          "Not your best friend. Not somebody in your game. Not a message that says it is urgent.",
+          "The only place you ever type it is your own real login screen.",
+          "[whispers] And the only person who ever helps you with it is a trusted grown-up.",
+          "In a moment you will meet some of his tricks and decide what to do.",
         ],
       },
     },
@@ -600,18 +589,15 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] On your next challenge, you make the smart choice!",
-          "This game is all about keeping your password secret, even when something on the screen begs you to share it.",
-          "The Raccoon LOVES to pop up and ask ever so nicely. So when a stranger, a website or even a friend asks for your password, you STOP and keep it secret.",
-          "Your own real login screen is the one place it belongs. And if you're ever stuck, there is ONE safe person to ask: a parent, or a grown-up you trust.",
-          "[excited] Here is what you do. Read each moment, think, then tap the card that keeps your secret safe. Ready? You've got this!",
+          "You will see one moment at a time. Read it, think, then tap the card that keeps your secret safe.",
+          "[warmly] Take your time. There is no rush on this one.",
         ],
       },
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] You kept your secret every single time! Now you know exactly who gets your password: only YOU, and a trusted grown-up.",
-          "[warmly] Out in the real world, when a stranger, a pop-up or a friend asks for it, you pause, and the Raccoon gets nothing.",
+          "[proud] You kept it secret every single time!",
+          "[warmly] A stranger asked, a pop-up asked, a best friend asked, and he still has nothing.",
         ],
       },
     },
@@ -630,11 +616,9 @@ export const WEEK_1: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] That is right. Only YOU, and a trusted grown-up at home.",
-          "Not your best friend, not your class, not anyone who asks.",
-          "A password only stays safe while it stays YOUR secret.",
-          "[excited] Keep it zipped, and the Raccoon gets nothing...",
-          "[proud] Well done!",
+          "Correct. You, and a trusted grown-up at home.",
+          "Not your best friend, not your class, not ANYBODY who asks nicely.",
+          "[proud] Exactly right.",
         ],
       },
     },
@@ -650,10 +634,9 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's your fourth power!",
-          "You keep your password secret. You never share it, not EVEN with a best friend.",
-          "[warmly] So no one can ever be tricked into handing it over to the Raccoon.",
-          "One last power to master. Next, we'll learn which passwords the Raccoon guesses FIRST, so you never pick one. Come on, Cyber Hero!",
+          "Fourth power learned. You keep your password secret, even from a best friend.",
+          "So nobody can ever be talked into handing it over.",
+          "[warmly] One power left. He does not guess at random. He has a list, and he tries the same things FIRST.",
         ],
       },
     },
@@ -679,11 +662,12 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Let's get inside the sneaky Raccoon's head!",
-          "[whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday?",
-          "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
-          "[excited] So pick something he'd NEVER guess, and outsmart him!",
-          "[warmly] Let's find out WHY weak passwords are weak!",
+          "Let's look at his list.",
+          "Your name. Your birthday. Your pet. Your favorite team.",
+          "And right at the top, one two three four five six.",
+          "These are the first things he tries, because they are the things people pick MOST.",
+          "[warmly] So we pick something that is on nobody's list.",
+          "In a moment you will sort some weak passwords and work out why each one is weak.",
         ],
       },
     },
@@ -718,18 +702,16 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] On your last challenge, you turn detective!",
-          "This game is all about spotting WHY a password is weak, so you never pick one like it.",
-          "Out in the real world, knowing why a password is weak means you'll always build a strong one.",
-          "Here is what you do. Look at each weak password, then tap the reason it's weak. Too short? A real word? About you? Or just keyboard keys in a row?",
-          "[excited] Sort them all and no weak password can fool you. Ready? Let's investigate!",
+          "Look at each weak password and tap the reason it is weak.",
+          "Too short. A real word. Something about you. Or just keys in a row.",
+          "[warmly] Sort them all, Cyber Hero.",
         ],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Case closed, Cyber Hero! Now you can spot WHY a password is weak before the Raccoon ever tries it.",
-          "[warmly] Out in the real world, no names, no birthdays, no one-two-three-four-five-six. Just words nobody could guess.",
+          "[proud] All sorted. You can see why a password is weak before you ever choose one.",
+          "[warmly] No names, no birthdays, no numbers in a row.",
         ],
       },
     },
@@ -748,11 +730,9 @@ export const WEEK_1: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] Yes! 'password' is the number-one password people pick.",
-          "So it is the very FIRST thing the Raccoon tries.",
-          "The safe ones are random words that have nothing to do with you.",
-          "[excited] Pick something he would NEVER guess...",
-          "[proud] Well done!",
+          "Yes. The word password is the most popular password there is, so it is the FIRST thing he tries.",
+          "The safe ones are random words with nothing to do with you.",
+          "[proud] Nothing gets past you.",
         ],
       },
     },
@@ -769,10 +749,9 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] You've earned all FIVE powers, Cyber Hero!",
-          "You steer clear of the obvious ones. No names, no birthdays, no one-two-three-four-five-six.",
-          "[warmly] So the Raccoon can't guess his way in, no matter how hard he tries.",
-          "Now, one quick Power Bingo to make it all stick... then the Raccoon gets locked out for good. Come on!",
+          "[proud] That is all five powers, Cyber Hero!",
+          "A key that proves it is you. Long. Mixed up. Secret. Nothing obvious.",
+          "[warmly] Before we face him, let's put all five together one more time in Power Bingo.",
         ],
       },
     },
@@ -793,7 +772,7 @@ export const WEEK_1: WeekContent = {
       roundPrompt: "Which power did that move use? Tap its dial.",
       coachLines: {
         speaker: "adam",
-        lines: ["Listen to the move, then tap the dial for the power it used. Get it right and the bolt slides home!"],
+        lines: ["Listen to the move, then tap the dial for the power it used."],
       },
       introTitle: "Hero Power Bingo",
       introSubtitle: "Watch each move, then tap the dial for the password power it used. Four bolts home seals the vault!",
@@ -850,17 +829,16 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Final drill, Cyber Hero - it's Power Bingo!",
-          "You've learned how to build a password the Raccoon can never beat. Now let's spot the tricks in action.",
-          "Here is what you do. I'll read out a move someone made, and you tap the dial for the power it used. Its bolt slides home into the vault door.",
-          "[warmly] Then I'll tell you WHY it works. Bolt all four powers home to seal the vault - that's BINGO!",
+          "I will read out something a person did. You tap the dial for the power they used, and the bolt slides into the vault door.",
+          "Then I will tell you why it worked.",
+          "[warmly] Four bolts home and the vault is sealed.",
         ],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] BINGO! You spotted every password power in action.",
-          "[warmly] Long, mixed up, secret, and nothing obvious. Out in the real world, that's a password the Raccoon can never beat. Now let's lock him out for good!",
+          "[excited] Bingo! Every power spotted.",
+          "[warmly] Long, mixed up, secret, nothing obvious. Now let's go and lock him out.",
         ],
       },
     },
@@ -886,10 +864,13 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] WOW! Look at everything you learned this week!",
-          "Your password is your secret key, make it nice and long,",
-          "[excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess!",
-          "[laughs] You did it, Cyber Hero! [excited] Now, time to claim your stickers!",
+          "[warmly] Look at what you can do now, Cyber Hero.",
+          "You know your password is a key that proves it is you.",
+          "You make it long with three random words.",
+          "You mix in capitals, numbers and symbols.",
+          "You keep it secret.",
+          "And you never pick the obvious.",
+          "[proud] That is a password the Hacker Raccoon cannot beat. Time to claim your stickers!",
         ],
       },
     },

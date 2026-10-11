@@ -717,7 +717,15 @@ for (const file of files) {
         if (/\b(boss|showdown|who.?s boss|big test)\b/i.test(aRaw) && !/^(bossBattle|quizBoss)$/.test(sp.type) && !PASSIVE.has(sp.type)) r.push("ORDER PROMISE - recap promises the boss but the next screen is " + sp.type);
       }
       if (prev.type === "info" && sp.type !== "quickCheck" && !PASSIVE.has(sp.type)) {
-        const invites = /\b(let.s|ready|come on|time to|go|your turn|grab|tap|here we go|we learn|practise|practice)\b/i.test(aRaw);
+        // A Learn screen must hand INTO the game rather than stop dead. It used
+        // to have to do that with an exclamation or an upbeat verb, which is why
+        // every week ended its Learn on "Let's go and build one!". The week 1
+        // rewrite says the same thing calmly, and by name ("In a moment you will
+        // build one of your own."), which is still a handover, so the forward
+        // forms count too. What this rule is actually for, a Learn that names
+        // nothing and leaves the child guessing, still flags.
+        const invites = /\b(let.s|ready|come on|time to|go|your turn|grab|tap|here we go|we learn|practise|practice)\b/i.test(aRaw)
+          || /\b(in a moment|next you|you will|you'll|coming up|first you)\b/i.test(aRaw);
         if (!/!$/.test(aRaw) && !invites) r.push("LEARN ENDS FLAT - no invite into the game (W15 style: Let's go and practise...!)");
         const bw = words(sp.first);
         if (/^ready/i.test(aRaw) && bw.includes("ready")) r.push("ECHO - Ready? on the Learn and Ready? on the game intro");
