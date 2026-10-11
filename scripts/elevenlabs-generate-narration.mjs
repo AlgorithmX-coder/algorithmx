@@ -90,12 +90,28 @@ const VOICE = {
 //   speed       0.85 - clearly slower: a 6-9 TEACHING pace so kids have time
 //                      to absorb each idea. Stability 0.35 keeps it from
 //                      dragging at this slower speed.
+/* Owner, after hearing week 1: "some cards are really good, they flow really
+ * well, and then other cards are not... what I'm looking for is consistency."
+ *
+ * STABILITY is that control, and 0.35 sits in ElevenLabs' Creative range,
+ * which is deliberately variable from one generation to the next. It was set
+ * low to avoid a monotone, but the cost is that every clip interprets the
+ * same instruction differently, so a lesson made of 88 clips has 88 slightly
+ * different Sarahs in it.
+ *
+ * STYLE at 0.70 is performance. She is teaching five and six year olds, not
+ * performing at them, and the script no longer asks her to.
+ *
+ * The warmth those two were buying now comes from the authored [warmly] and
+ * [proud] tags, which eleven_v3 consumes properly, and the pacing comes from
+ * the delivery spec rather than from letting the model improvise.
+ */
 const VOICE_SETTINGS = {
-  stability: 0.35,
-  similarity_boost: 0.7,
-  style: 0.7,
+  stability: 0.6,
+  similarity_boost: 0.75,
+  style: 0.3,
   use_speaker_boost: true,
-  speed: 0.85,
+  speed: 0.9,
 };
 
 // Model priority: try eleven_v3 first (newest, most natural per
@@ -790,6 +806,10 @@ async function fetchWithRetry(url, init, attempts = 4) {
 function runFfmpeg(args) {
   return spawnSync(ffmpegPath, args, { encoding: "utf8", maxBuffer: 32 * 1024 * 1024 });
 }
+/** Same, but keeps stdout as bytes - for decoding a clip to raw PCM. */
+function runFfmpegBinary(args) {
+  return spawnSync(ffmpegPath, args, { maxBuffer: 1 << 28 });
+}
 /**
  * Where the voice actually stops, and how loud it still is there.
  *
@@ -892,7 +912,21 @@ function speakBlock(lines) {
  */
 const SPEC_GAP = { comma: 0.20, stop: 0.55, thought: 0.90, reveal: 1.20 };
 const SPEC_TAIL = 0.30;
-const TARGET_WPM = 150;
+/* Hold her ARTICULATION constant, not the overall words-per-minute.
+ *
+ * Targeting overall pace was the wrong quantity: it counts the silence, so
+ * on a short clip the fixed pauses eat most of the budget and the solver
+ * speeds her words up to compensate, while on a long one it slows them down.
+ * Measured across week 1 that produced articulation from 124 to 318 wpm -
+ * two and a half times faster on some cards than others, which is what
+ * 'some cards flow and others do not' sounds like.
+ *
+ * Articulation is what a listener hears as her speaking rate, so that is what
+ * stays fixed. The pauses then add on top from their own vocabulary, and a
+ * clip with more sentence breaks simply has more silence in it, which is what
+ * a person does anyway.
+ */
+const TARGET_ARTICULATION = 190;
 
 function mediaDuration(file) {
   const r = runFfmpeg(["-i", file, "-f", "null", "-"]);
@@ -926,9 +960,49 @@ function shapeToSpec(file, lines) {
     cursor = s.end;
   }
   if (total - cursor > 0.04) spans.push({ from: cursor, to: total });
-  // One span means she never paused. Nothing to reshape, and a block that short
-  // already sounds right as recorded.
-  if (spans.length < 2) return false;
+  if (!spans.length) return false;
+
+  /* Trim the breath off the end of each span.
+   *
+   * eleven_v3 breathes, which is good, but the breath sits INSIDE the span:
+   * measured on week 1, six of eight span-ends carried a tail 12 to 33dB below
+   * her speech. A short natural gap used to mask it. Against the clean silence
+   * this spec inserts it is suddenly audible at the end of every sentence,
+   * which is exactly what the owner heard.
+   *
+   * So walk back from the end of each span while the level stays low and cut
+   * that off. Capped, and skipped for anything shorter than 60ms, so a quiet
+   * consonant ("s", "f", "th") is never eaten - only a real breath is long
+   * enough and quiet enough to qualify.
+   */
+  const pcmProc = runFfmpegBinary(["-v", "quiet", "-i", file, "-ac", "1", "-ar", "16000", "-f", "s16le", "-"]);
+  const pcm = pcmProc.stdout;
+  if (pcm && pcm.length > 4) {
+    const SR = 16000;
+    const samples = Math.floor(pcm.length / 2);
+    const win = Math.floor(SR * 0.02);                       // 20ms steps
+    const levelAt = (i0) => {
+      let sum = 0, n = 0;
+      for (let i = i0; i < Math.min(samples, i0 + win); i++) {
+        const v = pcm.readInt16LE(i * 2) / 32768;
+        sum += v * v; n++;
+      }
+      return n ? Math.sqrt(sum / n) : 0;
+    };
+    // The clip's own speech level, so the threshold travels with the recording
+    // instead of being an absolute number that drifts with the voice.
+    let loud = 0;
+    for (let i = 0; i + win < samples; i += win) loud = Math.max(loud, levelAt(i));
+    const floor = loud * 0.06;                               // about 24dB down
+    const MAX_TRIM = 0.45;
+    for (const sp of spans) {
+      let end = Math.floor(sp.to * SR);
+      const limit = Math.max(Math.floor(sp.from * SR), end - Math.floor(MAX_TRIM * SR));
+      while (end - win > limit && levelAt(end - win) < floor) end -= win;
+      const trimmed = sp.to - end / SR;
+      if (trimmed >= 0.06) sp.to = end / SR;
+    }
+  }
 
   const spanLen = spans.map((s) => s.to - s.from);
   const rawGaps = [];
@@ -941,8 +1015,14 @@ function shapeToSpec(file, lines) {
   // The long pause goes BEFORE the important word. The model will not place it
   // reliably - identical text gave 1.14s on one generation and 0.53s on the
   // next - so it is placed here, exactly once.
-  let revealAt = staccato > 0 ? staccato - 1 : -1;
-  if (revealAt < 0 && rawGaps.length) revealAt = rawGaps.indexOf(Math.max(...rawGaps));
+  //
+  // Only on a clip with room for one. A reveal is a dramatic beat, and on a
+  // three-word line like "Off you go." a 1.20s pause plus the tail left the
+  // clip two thirds silence, reading as 47 wpm. A pause that long has to be
+  // earning its place in a passage, not padding a sentence.
+  const roomForReveal = words >= 14 && rawGaps.length >= 3;
+  let revealAt = roomForReveal && staccato > 0 ? staccato - 1 : -1;
+  if (revealAt < 0 && roomForReveal) revealAt = rawGaps.indexOf(Math.max(...rawGaps));
 
   const kinds = rawGaps.map((g, i) => {
     if (i === revealAt) return "reveal";
@@ -950,15 +1030,17 @@ function shapeToSpec(file, lines) {
     if (g < 0.30) return "comma";
     if (g < 0.50) return "stop";
     if (g < 0.95) return "thought";
-    return "reveal";
+    return roomForReveal ? "reveal" : "thought";
   });
-  const gapBudget = kinds.reduce((s, k) => s + SPEC_GAP[k], 0) + SPEC_TAIL;
 
   const rawSpeech = spanLen.reduce((a, b) => a + b, 0);
-  const targetTotal = (words / TARGET_WPM) * 60;
-  let tempo = rawSpeech / Math.max(0.5, targetTotal - gapBudget);
+  const targetSpeech = (words / TARGET_ARTICULATION) * 60;
+  let tempo = rawSpeech / Math.max(0.3, targetSpeech);
   if (!Number.isFinite(tempo)) return false;
-  tempo = Math.min(1.25, Math.max(0.85, tempo));
+  // A tight clamp on purpose. Stretching one clip hard to hit a number is
+  // itself audible, and a clip that needs more than this is better left
+  // slightly off than obviously processed.
+  tempo = Math.min(1.18, Math.max(0.88, tempo));
 
   const parts = [];
   const filters = [];
