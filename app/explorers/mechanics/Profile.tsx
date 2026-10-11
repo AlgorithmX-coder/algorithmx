@@ -8,11 +8,13 @@
 
 import { useState } from "react";
 import { playWrenNudge } from "../engine/audio";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, ProfilePayload } from "../engine/types";
 
 export default function Profile({ payload, audio, onEvent, voiceOn }: MechanicProps<ProfilePayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   // Muddle the behaviours so the matching ones aren't grouped in a predictable row.
   const [behaviors] = useState(() => {
     const a = [...payload.behaviors];

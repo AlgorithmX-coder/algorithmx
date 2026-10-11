@@ -11,11 +11,13 @@
 
 import { useState } from "react";
 import { playWrenNudge } from "../engine/audio";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton, Eyebrow } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { BuildPayload, MechanicProps } from "../engine/types";
 
 export default function Build({ payload, reduced, audio, onEvent, voiceOn }: MechanicProps<BuildPayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [picks, setPicks] = useState<Record<string, string>>({});
   const [misses, setMisses] = useState(0);
   const [tested, setTested] = useState(false);

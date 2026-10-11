@@ -12,11 +12,13 @@
 
 import { useEffect, useState } from "react";
 import { playWren, playWrenNudge, stopWren } from "../engine/audio";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, RedactPayload } from "../engine/types";
 
 export default function Redact({ payload, audio, onEvent, voiceOn }: MechanicProps<RedactPayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [redacted, setRedacted] = useState<Record<string, boolean>>({});
   const [wrongOnce, setWrongOnce] = useState(false);
   const [note, setNote] = useState<{ id: string; why: string; ok: boolean } | null>(null);

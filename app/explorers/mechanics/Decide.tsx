@@ -7,11 +7,13 @@
  */
 
 import { useState } from "react";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { DecidePayload, MechanicProps } from "../engine/types";
 
 export default function Decide({ payload, audio, onEvent }: MechanicProps<DecidePayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [chosen, setChosen] = useState<string | null>(null);
   const [wrongOnce, setWrongOnce] = useState(false);
   const option = payload.options.find((o) => o.id === chosen) ?? null;

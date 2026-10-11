@@ -16,7 +16,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
-import { useArrowAdvance, SkipButton } from "./arrowAdvance";
+import { useArrowAdvance, useSkipToComplete, SkipButton } from "./arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 
@@ -382,6 +382,27 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     window.scrollTo({ top: 0 });
   };
 
+  // UAT-only: jump straight past the CURRENT skill/boss/test entirely —
+  // learn, practice, checkpoint, whatever exercise is mid-flight — rather
+  // than fast-forwarding through it screen by screen. Deliberately bypasses
+  // the normal CHECKPOINT_PASSED/FIELDWORK_COMPLETED event emission (no real
+  // answer was given, so there's nothing honest to log); XP/mastery for the
+  // skipped skill just won't be recorded, which is fine for testing.
+  const skipSkill = () => {
+    stopWren();
+    setMapGate(null);
+    setPos((p) => {
+      if (p.beat === "cycle") {
+        const next = p.cycleIndex + 1;
+        return next < manifest.cycles.length ? { beat: "cycle", cycleIndex: next, stage: "intel" } : { beat: "incident", incidentPhase: 1 };
+      }
+      if (p.beat === "incident") return manifest.catchThem ? { beat: "catch" } : { beat: "debrief" };
+      if (p.beat === "catch") return { beat: "debrief" };
+      return p; // transmission/briefing/debrief/closed: nothing to skip
+    });
+    window.scrollTo({ top: 0 });
+  };
+
   const restart = () => {
     try {
       localStorage.removeItem(storageKey);
@@ -465,6 +486,29 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     <main style={{ ...(theme.surface as CSSProperties), minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
       <SkipButton />
+      <button
+        onClick={skipSkill}
+        aria-label="Skip this whole skill (testing)"
+        style={{
+          position: "fixed",
+          bottom: 60,
+          right: 14,
+          zIndex: 70,
+          fontFamily: MONO,
+          fontSize: 11.5,
+          fontWeight: 700,
+          letterSpacing: "0.03em",
+          color: "#7CFFC4",
+          background: "rgba(0,0,0,0.6)",
+          border: "1px solid rgba(124,255,196,0.55)",
+          borderRadius: 999,
+          padding: "8px 14px",
+          cursor: "pointer",
+          boxShadow: "0 6px 18px rgba(0,0,0,0.45)",
+        }}
+      >
+        Skip skill ⏭
+      </button>
       {/* matrix-terminal backdrop, dimmed in-mission so it never fights the reading (kept for identity) */}
       <BlockBackdrop variant={theme.backdrop} colors={theme.matrix} accent={theme.accent} accentHi={theme.accentHi} reduced={reduced} opacity={0.42} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.32 }} />
@@ -781,6 +825,7 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
   art: ArtifactLesson; voiceOn: boolean; reduced: boolean;
   audio: ReturnType<typeof useSignalAudio>; onDone: () => void;
 }) {
+  useSkipToComplete(onDone); // UAT Skip
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [active, setActive] = useState<string | null>(null);
   const total = art.hotspots.length;
@@ -1207,6 +1252,18 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }:
   const [reviewReady, setReviewReady] = useState(false);
   const q = questions[idx];
 
+  useSkipToComplete(() => {
+    // UAT Skip: pass the whole checkpoint at once, not just the current question.
+    stopWren();
+    emit({
+      type: "CHECKPOINT_PASSED",
+      sourceKey: `cycle-${cycleIndex}`,
+      evidence: questions.map((qq) => ({ questionId: qq.id, answerIndex: qq.answer, attempts: 1 })),
+    });
+    audio.stamp();
+    onNext();
+  });
+
   useEffect(() => { if (!questions.length) onNext(); return () => stopWren(); }, []);
   if (!q) return null;
 
@@ -1332,6 +1389,17 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
   const [passReviewReady, setPassReviewReady] = useState(false);
   const s = scenarios[idx];
   const score = scenarios.reduce((n, sc, i) => n + (answers[i] === sc.answer ? 1 : 0), 0);
+
+  useSkipToComplete(() => {
+    // UAT Skip: pass the whole 19-question test at once, from any phase
+    // (intro, mid-test, or waiting on the review bar) — no honest score to
+    // show, so the "X out of Y" readout just won't reflect a real run.
+    stopWren();
+    setPhase("passed");
+    setPassReviewReady(true);
+    audio.stamp();
+    emit({ type: "CHECKPOINT_PASSED", sourceKey: "case-test", evidence: [] });
+  });
 
   const begin = () => { audio.click(); setPhase("test"); };
 
