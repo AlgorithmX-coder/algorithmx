@@ -11,6 +11,7 @@
 
 import { useEffect, useState } from "react";
 import { playWren, playWrenNudge, stopWren } from "../engine/audio";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, UnmaskPayload } from "../engine/types";
@@ -18,6 +19,7 @@ import type { MechanicProps, UnmaskPayload } from "../engine/types";
 type Verdict = "REAL" | "FAKE";
 
 export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicProps<UnmaskPayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
   const [verdicts, setVerdicts] = useState<Record<string, Verdict>>({});
   const [submitted, setSubmitted] = useState(false);

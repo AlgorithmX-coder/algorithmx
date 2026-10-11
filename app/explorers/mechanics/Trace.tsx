@@ -14,11 +14,13 @@
  */
 
 import { useState } from "react";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton, Eyebrow } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, TraceCard, TracePayload } from "../engine/types";
 
 export default function Trace({ payload, reduced, audio, onEvent }: MechanicProps<TracePayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [stage, setStage] = useState<1 | 2>(1);
   const [pinned, setPinned] = useState<string[]>([]);
   const [rejected, setRejected] = useState<string[]>([]);

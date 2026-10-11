@@ -10,6 +10,7 @@
  */
 
 import { useState } from "react";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton, Eyebrow } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { CipherPayload, MechanicProps } from "../engine/types";
@@ -30,6 +31,7 @@ function caesar(text: string, n: number): string {
 }
 
 export default function Cipher({ payload, reduced, audio, onEvent }: MechanicProps<CipherPayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [roundIdx, setRoundIdx] = useState(0);
   const [dial, setDial] = useState(0);
   const [solvedIdx, setSolvedIdx] = useState<number | null>(null);

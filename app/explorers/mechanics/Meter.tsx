@@ -24,6 +24,7 @@
 
 import { useEffect, useState } from "react";
 import { playWren, playWrenNudge, stopWren } from "../engine/audio";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, MeterPayload } from "../engine/types";
@@ -31,6 +32,7 @@ import type { MechanicProps, MeterPayload } from "../engine/types";
 const SEGMENTS = 32;
 
 export default function Meter({ payload, audio, onEvent, voiceOn }: MechanicProps<MeterPayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [value, setValue] = useState(0);
   const [wrongOnce, setWrongOnce] = useState(false);
   const [locked, setLocked] = useState(false);

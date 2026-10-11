@@ -9,11 +9,13 @@
 
 import { useEffect, useState } from "react";
 import { playWren, playWrenNudge, stopWren } from "../engine/audio";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton, Bubble, DeviceFrame } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { EvidenceSegment, InspectPayload, MechanicProps } from "../engine/types";
 
 export default function Inspect({ payload, reduced, audio, onEvent, voiceOn }: MechanicProps<InspectPayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const allSegs: EvidenceSegment[] = [...payload.header.map((h) => h.seg), ...payload.body.flat()];
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [result, setResult] = useState<null | { wrong: string[]; missed: number }>(null);

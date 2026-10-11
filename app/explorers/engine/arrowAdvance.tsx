@@ -3,20 +3,51 @@ import { useEffect } from "react";
 import { skipWrenWait } from "./audio";
 
 /**
+ * UAT escape hatch: whatever exercise is currently on screen can register a
+ * "just mark me complete" callback here, so Skip can finish it instead of
+ * requiring a real answer. Only one exercise is ever mounted at a time, so a
+ * single module-level slot is enough — each mechanic sets it on mount and
+ * clears it on unmount (see useSkipToComplete below).
+ */
+let forceComplete: (() => void) | null = null;
+
+/**
+ * Call from any exercise component (a mechanic, a quiz question, the boss
+ * test...) with the same "I'm done" callback it already uses on a real
+ * correct answer. While that component is mounted, Skip will call this
+ * directly instead of hunting for a "→" button — so testers aren't blocked
+ * on actually solving the exercise.
+ */
+export function useSkipToComplete(onComplete: () => void) {
+  useEffect(() => {
+    forceComplete = onComplete;
+    return () => {
+      if (forceComplete === onComplete) forceComplete = null;
+    };
+  });
+}
+
+/**
  * The "move forward" action shared by the ArrowRight shortcut and the
  * visible Skip button: collapse whatever WREN line is currently pacing,
- * then click the next "move forward" control if one's already on screen.
+ * then either finish the current exercise (if one registered itself via
+ * useSkipToComplete) or click the next "move forward" control if one's
+ * already on screen.
  *
- * It never answers a real question for the tester. Every pure move-forward
- * button in this app's copy ends its label with "→" (CONTINUE →, NEXT CASE
- * →, FIGHT →...) — genuine choice/option buttons never do — so that's the
- * one thing this keys off. It also skips anything `position: fixed` (the
- * Leave / WREN-voice-toggle buttons, and the Skip button itself, all live
- * there in every block), and skips disabled buttons, so a half-finished
- * build/pin/spot submit can't fire early.
+ * Every pure move-forward button in this app's copy ends its label with "→"
+ * (CONTINUE →, NEXT CASE →, FIGHT →...) — genuine choice/option buttons
+ * never do — so that's the one thing the button-search keys off. It also
+ * skips anything `position: fixed` (the Leave / WREN-voice-toggle buttons,
+ * and the Skip button itself, all live there in every block), and skips
+ * disabled buttons, so a half-finished build/pin/spot submit can't fire
+ * early via that path.
  */
 export function advanceNow() {
   skipWrenWait();
+  if (forceComplete) {
+    forceComplete();
+    return;
+  }
   const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>("button"));
   const next = buttons.find(
     (b) => !b.disabled && b.textContent?.includes("→") && getComputedStyle(b).position !== "fixed",

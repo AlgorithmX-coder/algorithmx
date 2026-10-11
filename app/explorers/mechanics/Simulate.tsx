@@ -12,11 +12,13 @@
  */
 
 import { useState } from "react";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton, Bubble, Eyebrow } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, SimulatePayload } from "../engine/types";
 
 export default function Simulate({ payload, reduced, audio, onEvent }: MechanicProps<SimulatePayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [stepIdx, setStepIdx] = useState(0);
   const [chosen, setChosen] = useState<number | null>(null);
   const [misses, setMisses] = useState(0);

@@ -12,11 +12,13 @@
 
 import { useState } from "react";
 import { playWrenNudge } from "../engine/audio";
+import { useSkipToComplete } from "../engine/arrowAdvance";
 import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, SortPayload } from "../engine/types";
 
 export default function Sort({ payload, audio, onEvent, voiceOn }: MechanicProps<SortPayload>) {
+  useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
   const [held, setHeld] = useState<string | null>(null);
   const [placed, setPlaced] = useState<Record<string, string>>({}); // itemId -> bucketId
   const [wrongOnce, setWrongOnce] = useState(false);
